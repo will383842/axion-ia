@@ -200,9 +200,9 @@ export default async function Home({ params }: HomeProps) {
       {/* ───────────── HERO ───────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32">
         <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-            {/* Colonne gauche : copy */}
-            <div>
+          <div className="grid items-center gap-12 lg:grid-cols-[1.55fr_1fr] lg:gap-16 xl:gap-20">
+            {/* Colonne gauche : copy (élargie pour casser sur moins de lignes) */}
+            <div className="max-w-3xl">
               <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("heroEyebrow")}
@@ -214,7 +214,7 @@ export default async function Home({ params }: HomeProps) {
                 </em>
                 {t("heroTitlePart2")}
               </h1>
-              <p className="text-fg-soft mt-8 max-w-xl text-lg leading-relaxed sm:text-xl">
+              <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {t("heroDescription")}
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
@@ -234,215 +234,465 @@ export default async function Home({ params }: HomeProps) {
               </div>
             </div>
 
-            {/* Colonne droite : illustration narrative — 3 services connectés à votre entreprise */}
+            {/* Colonne droite : illustration narrative enrichie — 3 services
+                connectés à votre entreprise avec courbes, sparkline, badges. */}
             <div aria-hidden="true" className="relative hidden lg:block">
               <svg
-                viewBox="0 0 540 480"
+                viewBox="0 0 560 540"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-auto w-full"
               >
-                {/* Background halo */}
                 <defs>
-                  <radialGradient id="halo-c" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.10" />
+                  {/* Halos diffus par couleur */}
+                  <radialGradient id="halo-center" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.16" />
+                    <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
                     <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
                   </radialGradient>
                   <radialGradient id="halo-tc" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.22" />
                     <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
                   </radialGradient>
                   <radialGradient id="halo-pr" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.18" />
+                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.22" />
                     <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
                   </radialGradient>
                   <radialGradient id="halo-sg" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
+                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.22" />
                     <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
                   </radialGradient>
+                  {/* Gradient sparkline ascendant */}
+                  <linearGradient id="grad-spark" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="1" />
+                  </linearGradient>
+                  {/* Gradient remplissage sparkline */}
+                  <linearGradient id="grad-spark-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
+                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
+                  </linearGradient>
                 </defs>
 
-                {/* Halo ambient */}
-                <circle cx="270" cy="240" r="220" fill="url(#halo-c)" />
+                {/* ── Halos ambient larges ── */}
+                <circle cx="280" cy="270" r="260" fill="url(#halo-center)" />
 
-                {/* Centre : "votre entreprise" */}
-                <circle cx="270" cy="240" r="92" fill="var(--color-paper)" />
+                {/* ── Anneaux concentriques décoratifs autour du centre ── */}
                 <circle
-                  cx="270"
-                  cy="240"
-                  r="92"
+                  cx="280"
+                  cy="270"
+                  r="180"
                   stroke="var(--color-border-strong)"
-                  strokeWidth="1"
+                  strokeOpacity="0.35"
+                  strokeDasharray="2 6"
+                  fill="none"
                 />
+                <circle
+                  cx="280"
+                  cy="270"
+                  r="135"
+                  stroke="var(--color-border-strong)"
+                  strokeOpacity="0.55"
+                  fill="none"
+                />
+
+                {/* ── Connexions courbes Bézier (3 services → centre) ── */}
+                {/* Service 1 (haut, terracotta) */}
+                <path
+                  d="M 280 110 C 280 150, 280 180, 280 200"
+                  stroke="var(--color-terracotta)"
+                  strokeOpacity="0.55"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 5"
+                  fill="none"
+                />
+                {/* Service 2 (bas-gauche, primary) — courbe douce */}
+                <path
+                  d="M 110 430 C 160 380, 200 340, 240 310"
+                  stroke="var(--color-primary)"
+                  strokeOpacity="0.5"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 5"
+                  fill="none"
+                />
+                {/* Service 3 (bas-droite, sage) — courbe symétrique */}
+                <path
+                  d="M 450 430 C 400 380, 360 340, 320 310"
+                  stroke="var(--color-sage)"
+                  strokeOpacity="0.5"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 5"
+                  fill="none"
+                />
+
+                {/* ── Centre : "votre entreprise" enrichi ── */}
+                <circle cx="280" cy="270" r="78" fill="var(--color-paper)" />
+                <circle
+                  cx="280"
+                  cy="270"
+                  r="78"
+                  stroke="var(--color-terracotta)"
+                  strokeOpacity="0.4"
+                  strokeWidth="2"
+                  fill="none"
+                />
+                {/* Icône Brain stylisée (paths simples) */}
+                <g transform="translate(263, 240)">
+                  <path
+                    d="M 17 5 C 12 2, 5 5, 5 12 C 2 14, 2 20, 6 22 C 6 25, 10 27, 13 26 L 13 28 L 17 28 L 17 5 Z"
+                    fill="none"
+                    stroke="var(--color-terracotta)"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M 17 5 C 22 2, 29 5, 29 12 C 32 14, 32 20, 28 22 C 28 25, 24 27, 21 26 L 21 28 L 17 28"
+                    fill="none"
+                    stroke="var(--color-terracotta)"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M 12 12 L 17 12 M 22 12 L 17 12 M 12 17 L 17 17 M 22 17 L 17 17"
+                    stroke="var(--color-terracotta)"
+                    strokeOpacity="0.5"
+                    strokeWidth="0.8"
+                  />
+                </g>
                 <text
-                  x="270"
-                  y="232"
+                  x="280"
+                  y="300"
                   textAnchor="middle"
                   fontFamily="var(--font-serif)"
-                  fontSize="22"
+                  fontSize="18"
                   fontStyle="italic"
                   fontWeight="500"
                   fill="var(--color-terracotta)"
                 >
-                  Votre
+                  Votre entreprise
                 </text>
                 <text
-                  x="270"
-                  y="262"
+                  x="280"
+                  y="320"
                   textAnchor="middle"
                   fontFamily="var(--font-sans)"
-                  fontSize="14"
+                  fontSize="10"
                   fontWeight="600"
-                  fill="var(--color-fg)"
-                >
-                  ENTREPRISE
-                </text>
-                <text
-                  x="270"
-                  y="282"
-                  textAnchor="middle"
-                  fontFamily="var(--font-sans)"
-                  fontSize="11"
-                  letterSpacing="0.16em"
+                  letterSpacing="0.18em"
                   fill="var(--color-fg-muted)"
                 >
                   + IA = GAINS
                 </text>
 
-                {/* Service 1 : Intervenir (haut, terracotta) */}
+                {/* ── Service 1 : INTERVENIR (haut, terracotta) ── */}
                 <g>
-                  <circle cx="270" cy="60" r="52" fill="url(#halo-tc)" />
-                  <circle cx="270" cy="60" r="34" fill="var(--color-paper)" />
+                  <circle cx="280" cy="65" r="62" fill="url(#halo-tc)" />
+                  <circle cx="280" cy="65" r="40" fill="var(--color-paper)" />
                   <circle
-                    cx="270"
-                    cy="60"
-                    r="34"
+                    cx="280"
+                    cy="65"
+                    r="40"
+                    stroke="var(--color-terracotta)"
+                    strokeWidth="1.8"
+                  />
+                  {/* Icône Users (3 cercles) */}
+                  <circle cx="270" cy="58" r="4" fill="var(--color-terracotta)" />
+                  <circle cx="282" cy="56" r="5" fill="var(--color-terracotta)" />
+                  <circle cx="294" cy="58" r="4" fill="var(--color-terracotta)" />
+                  <path
+                    d="M 264 70 Q 270 66 276 70 M 276 68 Q 282 64 288 68 M 288 70 Q 294 66 300 70"
                     stroke="var(--color-terracotta)"
                     strokeWidth="1.5"
+                    fill="none"
+                    strokeLinecap="round"
                   />
                   <text
-                    x="270"
-                    y="56"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-terracotta)"
-                  >
-                    01
-                  </text>
-                  <text
-                    x="270"
-                    y="74"
+                    x="280"
+                    y="86"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
                     fontSize="9"
-                    fontWeight="600"
-                    fill="var(--color-fg)"
-                    letterSpacing="0.08em"
+                    fontWeight="700"
+                    letterSpacing="0.12em"
+                    fill="var(--color-terracotta)"
                   >
                     INTERVENIR
                   </text>
-                  <line
-                    x1="270"
-                    y1="100"
-                    x2="270"
-                    y2="148"
-                    stroke="var(--color-terracotta)"
-                    strokeOpacity="0.6"
-                    strokeDasharray="3 4"
-                    strokeWidth="1"
-                  />
-                </g>
-
-                {/* Service 2 : Auditer (bas-gauche, primary) */}
-                <g>
-                  <circle cx="80" cy="380" r="52" fill="url(#halo-pr)" />
-                  <circle cx="80" cy="380" r="34" fill="var(--color-paper)" />
-                  <circle cx="80" cy="380" r="34" stroke="var(--color-primary)" strokeWidth="1.5" />
+                  {/* Badge "1 jour" */}
+                  <g transform="translate(345, 50)">
+                    <rect width="56" height="26" rx="13" fill="var(--color-terracotta-soft)" />
+                    <text
+                      x="28"
+                      y="17"
+                      textAnchor="middle"
+                      fontFamily="var(--font-sans)"
+                      fontSize="11"
+                      fontWeight="600"
+                      fill="var(--color-terracotta-deep)"
+                    >
+                      1 jour
+                    </text>
+                  </g>
+                  {/* Numéro 01 */}
                   <text
-                    x="80"
-                    y="376"
+                    x="195"
+                    y="72"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
-                    fontSize="14"
+                    fontSize="42"
                     fontStyle="italic"
                     fontWeight="500"
-                    fill="var(--color-primary)"
+                    fill="var(--color-terracotta)"
+                    fillOpacity="0.4"
                   >
-                    02
+                    01
                   </text>
+                </g>
+
+                {/* ── Service 2 : AUDITER (bas-gauche, primary) ── */}
+                <g>
+                  <circle cx="110" cy="430" r="62" fill="url(#halo-pr)" />
+                  <circle cx="110" cy="430" r="40" fill="var(--color-paper)" />
+                  <circle
+                    cx="110"
+                    cy="430"
+                    r="40"
+                    stroke="var(--color-primary)"
+                    strokeWidth="1.8"
+                  />
+                  {/* Icône Search (loupe) */}
+                  <circle
+                    cx="105"
+                    cy="425"
+                    r="9"
+                    stroke="var(--color-primary)"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                  <line
+                    x1="113"
+                    y1="433"
+                    x2="120"
+                    y2="440"
+                    stroke="var(--color-primary)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                   <text
-                    x="80"
-                    y="394"
+                    x="110"
+                    y="455"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
                     fontSize="9"
-                    fontWeight="600"
-                    fill="var(--color-fg)"
-                    letterSpacing="0.08em"
+                    fontWeight="700"
+                    letterSpacing="0.12em"
+                    fill="var(--color-primary)"
                   >
                     AUDITER
                   </text>
-                  <line
-                    x1="113"
-                    y1="362"
-                    x2="190"
-                    y2="296"
-                    stroke="var(--color-primary)"
-                    strokeOpacity="0.5"
-                    strokeDasharray="3 4"
-                    strokeWidth="1"
-                  />
-                </g>
-
-                {/* Service 3 : Implémenter (bas-droite, sage) */}
-                <g>
-                  <circle cx="460" cy="380" r="52" fill="url(#halo-sg)" />
-                  <circle cx="460" cy="380" r="34" fill="var(--color-paper)" />
-                  <circle cx="460" cy="380" r="34" stroke="var(--color-sage)" strokeWidth="1.5" />
+                  {/* Badge "5 jours" */}
+                  <g transform="translate(30, 460)">
+                    <rect width="60" height="26" rx="13" fill="var(--color-primary-soft)" />
+                    <text
+                      x="30"
+                      y="17"
+                      textAnchor="middle"
+                      fontFamily="var(--font-sans)"
+                      fontSize="11"
+                      fontWeight="600"
+                      fill="var(--color-primary)"
+                    >
+                      5 jours
+                    </text>
+                  </g>
                   <text
-                    x="460"
-                    y="376"
+                    x="180"
+                    y="448"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
-                    fontSize="14"
+                    fontSize="42"
                     fontStyle="italic"
                     fontWeight="500"
-                    fill="var(--color-sage)"
+                    fill="var(--color-primary)"
+                    fillOpacity="0.4"
                   >
-                    03
+                    02
                   </text>
+                </g>
+
+                {/* ── Service 3 : IMPLÉMENTER (bas-droite, sage) ── */}
+                <g>
+                  <circle cx="450" cy="430" r="62" fill="url(#halo-sg)" />
+                  <circle cx="450" cy="430" r="40" fill="var(--color-paper)" />
+                  <circle cx="450" cy="430" r="40" stroke="var(--color-sage)" strokeWidth="1.8" />
+                  {/* Icône Wand2 stylisée (étoile + baguette) */}
+                  <path
+                    d="M 450 416 L 452 422 L 458 422 L 453 426 L 455 432 L 450 428 L 445 432 L 447 426 L 442 422 L 448 422 Z"
+                    fill="var(--color-sage)"
+                  />
+                  <line
+                    x1="438"
+                    y1="438"
+                    x2="446"
+                    y2="430"
+                    stroke="var(--color-sage)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                   <text
-                    x="460"
-                    y="394"
+                    x="450"
+                    y="455"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
                     fontSize="9"
-                    fontWeight="600"
-                    fill="var(--color-fg)"
-                    letterSpacing="0.08em"
+                    fontWeight="700"
+                    letterSpacing="0.10em"
+                    fill="var(--color-sage)"
                   >
                     IMPLÉMENTER
                   </text>
-                  <line
-                    x1="427"
-                    y1="362"
-                    x2="350"
-                    y2="296"
-                    stroke="var(--color-sage)"
-                    strokeOpacity="0.5"
-                    strokeDasharray="3 4"
-                    strokeWidth="1"
-                  />
+                  {/* Badge "sur mesure" */}
+                  <g transform="translate(460, 460)">
+                    <rect width="80" height="26" rx="13" fill="var(--color-sage-soft)" />
+                    <text
+                      x="40"
+                      y="17"
+                      textAnchor="middle"
+                      fontFamily="var(--font-sans)"
+                      fontSize="11"
+                      fontWeight="600"
+                      fill="var(--color-sage)"
+                    >
+                      sur mesure
+                    </text>
+                  </g>
+                  <text
+                    x="380"
+                    y="448"
+                    textAnchor="middle"
+                    fontFamily="var(--font-serif)"
+                    fontSize="42"
+                    fontStyle="italic"
+                    fontWeight="500"
+                    fill="var(--color-sage)"
+                    fillOpacity="0.4"
+                  >
+                    03
+                  </text>
                 </g>
 
-                {/* Particules de gain ambiantes */}
-                <circle cx="60" cy="120" r="3" fill="var(--color-terracotta)" opacity="0.5" />
-                <circle cx="490" cy="140" r="3" fill="var(--color-primary)" opacity="0.5" />
-                <circle cx="500" cy="80" r="2" fill="var(--color-sage)" opacity="0.5" />
-                <circle cx="40" cy="220" r="2" fill="var(--color-terracotta)" opacity="0.4" />
+                {/* ── Mini sparkline "courbe de gain" en bas ── */}
+                <g transform="translate(220, 510)">
+                  {/* Aire remplie */}
+                  <path
+                    d="M 0 16 L 15 14 L 30 13 L 45 11 L 60 8 L 75 6 L 90 3 L 105 1 L 120 0 L 120 20 L 0 20 Z"
+                    fill="url(#grad-spark-fill)"
+                  />
+                  {/* Ligne sparkline */}
+                  <path
+                    d="M 0 16 L 15 14 L 30 13 L 45 11 L 60 8 L 75 6 L 90 3 L 105 1 L 120 0"
+                    stroke="url(#grad-spark)"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                  {/* Point final highlighted */}
+                  <circle cx="120" cy="0" r="3.5" fill="var(--color-terracotta)" />
+                  <circle cx="120" cy="0" r="6" fill="var(--color-terracotta)" fillOpacity="0.25" />
+                </g>
+                <text
+                  x="280"
+                  y="500"
+                  textAnchor="middle"
+                  fontFamily="var(--font-sans)"
+                  fontSize="9"
+                  fontWeight="600"
+                  letterSpacing="0.18em"
+                  fill="var(--color-fg-muted)"
+                >
+                  ↗ GAINS DANS LE TEMPS
+                </text>
+
+                {/* ── Data badges flottants (bénéfices concrets) ── */}
+                <g transform="translate(395, 200)">
+                  <rect
+                    width="118"
+                    height="32"
+                    rx="16"
+                    fill="var(--color-paper)"
+                    stroke="var(--color-border-strong)"
+                  />
+                  <text
+                    x="59"
+                    y="20"
+                    textAnchor="middle"
+                    fontFamily="var(--font-sans)"
+                    fontSize="11"
+                    fontWeight="600"
+                    fill="var(--color-fg)"
+                  >
+                    +1 à 3 h / jour
+                  </text>
+                </g>
+                <g transform="translate(40, 160)">
+                  <rect
+                    width="100"
+                    height="32"
+                    rx="16"
+                    fill="var(--color-paper)"
+                    stroke="var(--color-border-strong)"
+                  />
+                  <text
+                    x="50"
+                    y="20"
+                    textAnchor="middle"
+                    fontFamily="var(--font-sans)"
+                    fontSize="11"
+                    fontWeight="600"
+                    fill="var(--color-primary)"
+                  >
+                    +CA · −coûts
+                  </text>
+                </g>
+                <g transform="translate(420, 320)">
+                  <rect
+                    width="100"
+                    height="32"
+                    rx="16"
+                    fill="var(--color-paper)"
+                    stroke="var(--color-border-strong)"
+                  />
+                  <text
+                    x="50"
+                    y="20"
+                    textAnchor="middle"
+                    fontFamily="var(--font-sans)"
+                    fontSize="11"
+                    fontWeight="600"
+                    fill="var(--color-sage)"
+                  >
+                    Marges +
+                  </text>
+                </g>
+
+                {/* ── Particules + étoiles décoratives ── */}
+                <circle cx="50" cy="60" r="2.5" fill="var(--color-terracotta)" opacity="0.6" />
+                <circle cx="510" cy="100" r="2" fill="var(--color-primary)" opacity="0.55" />
+                <circle cx="540" cy="280" r="2.5" fill="var(--color-sage)" opacity="0.5" />
+                <circle cx="20" cy="320" r="2" fill="var(--color-terracotta)" opacity="0.5" />
+                <circle cx="180" cy="20" r="1.5" fill="var(--color-sage)" opacity="0.45" />
+                <circle cx="380" cy="40" r="1.5" fill="var(--color-primary)" opacity="0.45" />
+                {/* Étoiles 4-pointes */}
+                <path
+                  d="M 30 240 L 32 246 L 38 248 L 32 250 L 30 256 L 28 250 L 22 248 L 28 246 Z"
+                  fill="var(--color-terracotta)"
+                  opacity="0.5"
+                />
+                <path
+                  d="M 530 170 L 532 175 L 537 177 L 532 179 L 530 184 L 528 179 L 523 177 L 528 175 Z"
+                  fill="var(--color-primary)"
+                  opacity="0.4"
+                />
               </svg>
             </div>
           </div>

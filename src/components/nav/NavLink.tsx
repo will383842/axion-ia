@@ -12,8 +12,10 @@ interface NavLinkProps {
   variant?: "desktop" | "mobile";
 }
 
-// Editorial v3 — desktop on terracotta header: italique mocha sur item actif,
-// underline animée mocha-fg. Mobile (drawer ivoire): bg sand sur item actif.
+// Editorial v3 — desktop on terracotta header (or mocha when scrolled):
+// font-semibold base pour visibilité maximale, underline 2px animée mocha-fg,
+// active = italique mocha + bold + underline pleine.
+// Mobile (drawer ivoire): bg sand sur item actif (full-width row).
 export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -38,14 +40,15 @@ export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
       href={href as never}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "relative text-sm font-medium tracking-tight transition-colors",
-        // Underline animée — couleur adaptée au tone du conteneur
-        "after:absolute after:-bottom-1.5 after:left-0 after:h-px after:transition-all after:duration-300",
-        // Sur header terracotta : nav blanche, underline ivoire, active = italique mocha
+        "relative text-base font-semibold tracking-tight transition-colors",
+        // Underline animée 2px (vs 1px précédent) — couleur adaptée au tone
+        "after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:transition-all after:duration-300",
+        // Header terracotta : underline ivoire / scrolled mocha : underline terracotta-soft
         "[[data-tone=terracotta]_&]:after:bg-mocha-fg",
+        "[[data-tone=terracotta]_[data-scrolled=true]_&]:after:bg-terracotta-soft",
         isActive
-          ? "text-mocha after:bg-terracotta italic after:w-full [[data-tone=terracotta]_&]:after:w-full"
-          : "text-mocha-fg/85 hover:text-mocha-fg [[data-tone=terracotta]_&]:after:w-0 [[data-tone=terracotta]_&]:hover:after:w-full",
+          ? "text-mocha [[data-tone=terracotta]_[data-scrolled=true]_&]:text-terracotta-soft italic after:w-full [[data-tone=terracotta]_&]:after:w-full"
+          : "text-mocha-fg hover:text-mocha [[data-tone=terracotta]_[data-scrolled=true]_&]:text-mocha-fg [[data-tone=terracotta]_[data-scrolled=true]_&]:hover:text-terracotta-soft [[data-tone=terracotta]_&]:after:w-0 [[data-tone=terracotta]_&]:hover:after:w-full",
       )}
     >
       {label}

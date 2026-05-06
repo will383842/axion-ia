@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
+import { HeaderScrollAware } from "@/components/nav/HeaderScrollAware";
 import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import "../globals.css";
@@ -123,7 +124,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <body className="bg-bg text-fg flex min-h-full flex-col font-sans">
         <SkipToContent />
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <Header />
+          <HeaderScrollAware>
+            <Header />
+          </HeaderScrollAware>
           <main id="main" className="flex-1">
             {children}
           </main>
