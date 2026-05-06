@@ -252,7 +252,7 @@ export default async function Home({ params }: HomeProps) {
               className="relative hidden lg:-mr-12 lg:block xl:-mr-20 2xl:-mr-32"
             >
               <svg
-                viewBox="0 0 560 540"
+                viewBox="0 0 560 580"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-auto w-full lg:scale-[1.15] xl:scale-[1.25]"
@@ -276,16 +276,6 @@ export default async function Home({ params }: HomeProps) {
                     <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.22" />
                     <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
                   </radialGradient>
-                  {/* Gradient sparkline ascendant */}
-                  <linearGradient id="grad-spark" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="1" />
-                  </linearGradient>
-                  {/* Gradient remplissage sparkline */}
-                  <linearGradient id="grad-spark-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-                  </linearGradient>
                 </defs>
 
                 {/* ── Halos ambient larges ── */}
@@ -398,294 +388,163 @@ export default async function Home({ params }: HomeProps) {
                   + IA = GAINS
                 </text>
 
-                {/* ── Service 1 : INTERVENIR (haut, terracotta) ── */}
+                {/* ── Service 1 : INTERVENIR (haut, terracotta)
+                    Mission : accompagner vos équipes. */}
                 <g>
-                  <circle cx="280" cy="65" r="62" fill="url(#halo-tc)" />
-                  <circle cx="280" cy="65" r="40" fill="var(--color-paper)" />
+                  <circle cx="280" cy="65" r="64" fill="url(#halo-tc)" />
+                  <circle cx="280" cy="65" r="44" fill="var(--color-paper)" />
                   <circle
                     cx="280"
                     cy="65"
-                    r="40"
+                    r="44"
+                    stroke="var(--color-terracotta)"
+                    strokeWidth="2"
+                  />
+                  {/* Icône Users (3 cercles + lignes corps) */}
+                  <circle cx="268" cy="56" r="4" fill="var(--color-terracotta)" />
+                  <circle cx="282" cy="54" r="5" fill="var(--color-terracotta)" />
+                  <circle cx="296" cy="56" r="4" fill="var(--color-terracotta)" />
+                  <path
+                    d="M 262 70 Q 268 66 274 70 M 275 68 Q 282 63 289 68 M 290 70 Q 296 66 302 70"
                     stroke="var(--color-terracotta)"
                     strokeWidth="1.8"
-                  />
-                  {/* Icône Users (3 cercles) */}
-                  <circle cx="270" cy="58" r="4" fill="var(--color-terracotta)" />
-                  <circle cx="282" cy="56" r="5" fill="var(--color-terracotta)" />
-                  <circle cx="294" cy="58" r="4" fill="var(--color-terracotta)" />
-                  <path
-                    d="M 264 70 Q 270 66 276 70 M 276 68 Q 282 64 288 68 M 288 70 Q 294 66 300 70"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="1.5"
                     fill="none"
                     strokeLinecap="round"
                   />
                   <text
                     x="280"
-                    y="86"
+                    y="92"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
-                    fontSize="9"
+                    fontSize="10"
                     fontWeight="700"
-                    letterSpacing="0.12em"
+                    letterSpacing="0.14em"
                     fill="var(--color-terracotta)"
                   >
                     INTERVENIR
                   </text>
-                  {/* Badge "1 jour" */}
-                  <g transform="translate(345, 50)">
-                    <rect width="56" height="26" rx="13" fill="var(--color-terracotta-soft)" />
-                    <text
-                      x="28"
-                      y="17"
-                      textAnchor="middle"
-                      fontFamily="var(--font-sans)"
-                      fontSize="11"
-                      fontWeight="600"
-                      fill="var(--color-terracotta-deep)"
-                    >
-                      1 jour
-                    </text>
-                  </g>
-                  {/* Numéro 01 */}
+                  {/* Sous-label mission */}
                   <text
-                    x="195"
-                    y="72"
+                    x="280"
+                    y="140"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
-                    fontSize="42"
+                    fontSize="14"
                     fontStyle="italic"
                     fontWeight="500"
-                    fill="var(--color-terracotta)"
-                    fillOpacity="0.4"
+                    fill="var(--color-fg)"
                   >
-                    01
+                    Accompagner vos équipes
                   </text>
                 </g>
 
-                {/* ── Service 2 : AUDITER (bas-gauche, primary) ── */}
+                {/* ── Service 2 : AUDITER (bas-gauche, primary)
+                    Mission : trouver où gagner du temps et de l'argent. */}
                 <g>
-                  <circle cx="110" cy="430" r="62" fill="url(#halo-pr)" />
-                  <circle cx="110" cy="430" r="40" fill="var(--color-paper)" />
-                  <circle
-                    cx="110"
-                    cy="430"
-                    r="40"
-                    stroke="var(--color-primary)"
-                    strokeWidth="1.8"
-                  />
-                  {/* Icône Search (loupe) */}
+                  <circle cx="110" cy="430" r="64" fill="url(#halo-pr)" />
+                  <circle cx="110" cy="430" r="44" fill="var(--color-paper)" />
+                  <circle cx="110" cy="430" r="44" stroke="var(--color-primary)" strokeWidth="2" />
+                  {/* Icône Loupe */}
                   <circle
                     cx="105"
-                    cy="425"
-                    r="9"
+                    cy="424"
+                    r="11"
                     stroke="var(--color-primary)"
-                    strokeWidth="2"
+                    strokeWidth="2.2"
                     fill="none"
                   />
                   <line
-                    x1="113"
+                    x1="114"
                     y1="433"
-                    x2="120"
-                    y2="440"
+                    x2="123"
+                    y2="442"
                     stroke="var(--color-primary)"
-                    strokeWidth="2"
+                    strokeWidth="2.2"
                     strokeLinecap="round"
                   />
                   <text
                     x="110"
-                    y="455"
+                    y="460"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
-                    fontSize="9"
+                    fontSize="10"
                     fontWeight="700"
-                    letterSpacing="0.12em"
+                    letterSpacing="0.14em"
                     fill="var(--color-primary)"
                   >
                     AUDITER
                   </text>
-                  {/* Badge "5 jours" */}
-                  <g transform="translate(30, 460)">
-                    <rect width="60" height="26" rx="13" fill="var(--color-primary-soft)" />
-                    <text
-                      x="30"
-                      y="17"
-                      textAnchor="middle"
-                      fontFamily="var(--font-sans)"
-                      fontSize="11"
-                      fontWeight="600"
-                      fill="var(--color-primary)"
-                    >
-                      5 jours
-                    </text>
-                  </g>
+                  {/* Sous-label mission */}
                   <text
-                    x="180"
-                    y="448"
+                    x="110"
+                    y="510"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
-                    fontSize="42"
+                    fontSize="14"
                     fontStyle="italic"
                     fontWeight="500"
-                    fill="var(--color-primary)"
-                    fillOpacity="0.4"
+                    fill="var(--color-fg)"
                   >
-                    02
+                    Trouver où gagner
                   </text>
                 </g>
 
-                {/* ── Service 3 : IMPLÉMENTER (bas-droite, sage) ── */}
+                {/* ── Service 3 : IMPLÉMENTER (bas-droite, sage)
+                    Mission : coder & déployer les outils sur mesure. */}
                 <g>
-                  <circle cx="450" cy="430" r="62" fill="url(#halo-sg)" />
-                  <circle cx="450" cy="430" r="40" fill="var(--color-paper)" />
-                  <circle cx="450" cy="430" r="40" stroke="var(--color-sage)" strokeWidth="1.8" />
-                  {/* Icône Wand2 stylisée (étoile + baguette) */}
+                  <circle cx="450" cy="430" r="64" fill="url(#halo-sg)" />
+                  <circle cx="450" cy="430" r="44" fill="var(--color-paper)" />
+                  <circle cx="450" cy="430" r="44" stroke="var(--color-sage)" strokeWidth="2" />
+                  {/* Icône Code (chevrons + slash) */}
                   <path
-                    d="M 450 416 L 452 422 L 458 422 L 453 426 L 455 432 L 450 428 L 445 432 L 447 426 L 442 422 L 448 422 Z"
-                    fill="var(--color-sage)"
+                    d="M 442 422 L 434 430 L 442 438"
+                    stroke="var(--color-sage)"
+                    strokeWidth="2.2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M 458 422 L 466 430 L 458 438"
+                    stroke="var(--color-sage)"
+                    strokeWidth="2.2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <line
-                    x1="438"
-                    y1="438"
-                    x2="446"
-                    y2="430"
+                    x1="453"
+                    y1="421"
+                    x2="447"
+                    y2="439"
                     stroke="var(--color-sage)"
-                    strokeWidth="2"
+                    strokeWidth="2.2"
                     strokeLinecap="round"
                   />
                   <text
                     x="450"
-                    y="455"
+                    y="460"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
-                    fontSize="9"
+                    fontSize="10"
                     fontWeight="700"
-                    letterSpacing="0.10em"
+                    letterSpacing="0.12em"
                     fill="var(--color-sage)"
                   >
                     IMPLÉMENTER
                   </text>
-                  {/* Badge "sur mesure" */}
-                  <g transform="translate(460, 460)">
-                    <rect width="80" height="26" rx="13" fill="var(--color-sage-soft)" />
-                    <text
-                      x="40"
-                      y="17"
-                      textAnchor="middle"
-                      fontFamily="var(--font-sans)"
-                      fontSize="11"
-                      fontWeight="600"
-                      fill="var(--color-sage)"
-                    >
-                      sur mesure
-                    </text>
-                  </g>
+                  {/* Sous-label mission */}
                   <text
-                    x="380"
-                    y="448"
+                    x="450"
+                    y="510"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
-                    fontSize="42"
+                    fontSize="14"
                     fontStyle="italic"
                     fontWeight="500"
-                    fill="var(--color-sage)"
-                    fillOpacity="0.4"
-                  >
-                    03
-                  </text>
-                </g>
-
-                {/* ── Mini sparkline "courbe de gain" en bas ── */}
-                <g transform="translate(220, 510)">
-                  {/* Aire remplie */}
-                  <path
-                    d="M 0 16 L 15 14 L 30 13 L 45 11 L 60 8 L 75 6 L 90 3 L 105 1 L 120 0 L 120 20 L 0 20 Z"
-                    fill="url(#grad-spark-fill)"
-                  />
-                  {/* Ligne sparkline */}
-                  <path
-                    d="M 0 16 L 15 14 L 30 13 L 45 11 L 60 8 L 75 6 L 90 3 L 105 1 L 120 0"
-                    stroke="url(#grad-spark)"
-                    strokeWidth="2"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                  {/* Point final highlighted */}
-                  <circle cx="120" cy="0" r="3.5" fill="var(--color-terracotta)" />
-                  <circle cx="120" cy="0" r="6" fill="var(--color-terracotta)" fillOpacity="0.25" />
-                </g>
-                <text
-                  x="280"
-                  y="500"
-                  textAnchor="middle"
-                  fontFamily="var(--font-sans)"
-                  fontSize="9"
-                  fontWeight="600"
-                  letterSpacing="0.18em"
-                  fill="var(--color-fg-muted)"
-                >
-                  ↗ GAINS DANS LE TEMPS
-                </text>
-
-                {/* ── Data badges flottants (bénéfices concrets) ── */}
-                <g transform="translate(395, 200)">
-                  <rect
-                    width="118"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    stroke="var(--color-border-strong)"
-                  />
-                  <text
-                    x="59"
-                    y="20"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="11"
-                    fontWeight="600"
                     fill="var(--color-fg)"
                   >
-                    +1 à 3 h / jour
-                  </text>
-                </g>
-                <g transform="translate(40, 160)">
-                  <rect
-                    width="100"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    stroke="var(--color-border-strong)"
-                  />
-                  <text
-                    x="50"
-                    y="20"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="11"
-                    fontWeight="600"
-                    fill="var(--color-primary)"
-                  >
-                    +CA · −coûts
-                  </text>
-                </g>
-                <g transform="translate(420, 320)">
-                  <rect
-                    width="100"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    stroke="var(--color-border-strong)"
-                  />
-                  <text
-                    x="50"
-                    y="20"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="11"
-                    fontWeight="600"
-                    fill="var(--color-sage)"
-                  >
-                    Marges +
+                    Coder & déployer
                   </text>
                 </g>
 

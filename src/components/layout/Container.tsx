@@ -7,8 +7,9 @@ interface ContainerProps<T extends ElementType = "div"> {
   children: ReactNode;
 }
 
-// Webflow-inspired container: max-w 1280, responsive padding 16/24/32/48.
-// Mobile-first as always (axionia-mobile-first).
+// Editorial v3 container: max-w 1440 (vs 1280 v1 webflow), responsive
+// padding progressif 16/24/40/64. Plus aéré sur grands écrans tout en
+// restant cadré (pas pleine largeur). Mobile-first.
 export function Container<T extends ElementType = "div">({
   as,
   className,
@@ -18,7 +19,7 @@ export function Container<T extends ElementType = "div">({
   const Component = (as ?? "div") as ElementType;
   return (
     <Component
-      className={cn("mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12", className)}
+      className={cn("mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 xl:px-16", className)}
       {...rest}
     >
       {children}
