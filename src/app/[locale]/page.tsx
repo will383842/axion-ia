@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Check, Users, Search, Wand2 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
+import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
@@ -48,10 +49,13 @@ export default async function Home({ params }: HomeProps) {
   const t = await getTranslations("home");
 
   // 3 services — intervenir / auditer / implémenter (cœur du message client).
+  // Chaque carte a SA couleur d'accent : terracotta (action humaine) / primary
+  // (analyse) / sage (production) — identité visuelle claire par service.
   const valuePropositions = [
     {
       id: "intervene",
       icon: Users,
+      accent: "terracotta" as const,
       action: t("value1Action"),
       headline: t("value1Headline"),
       price: t("value1Price"),
@@ -62,6 +66,7 @@ export default async function Home({ params }: HomeProps) {
     {
       id: "audit",
       icon: Search,
+      accent: "primary" as const,
       action: t("value2Action"),
       headline: t("value2Headline"),
       price: t("value2Price"),
@@ -72,6 +77,7 @@ export default async function Home({ params }: HomeProps) {
     {
       id: "implement",
       icon: Wand2,
+      accent: "sage" as const,
       action: t("value3Action"),
       headline: t("value3Headline"),
       price: t("value3Price"),
@@ -80,6 +86,44 @@ export default async function Home({ params }: HomeProps) {
       href: "/implementation" as const,
     },
   ];
+
+  // Mapping classes Tailwind pour chaque accent (évite la concaténation
+  // dynamique non détectable par le compilateur Tailwind).
+  const accentClasses = {
+    terracotta: {
+      iconBg: "bg-terracotta-soft",
+      iconFg: "text-terracotta-deep",
+      number: "text-terracotta",
+      headline: "text-terracotta",
+      hoverBorder: "hover:border-terracotta",
+      bulletIcon: "text-terracotta-deep",
+      gainBg: "bg-terracotta-soft",
+      gainText: "text-terracotta-deep",
+      ringHalo: "before:bg-terracotta/8",
+    },
+    primary: {
+      iconBg: "bg-primary-soft",
+      iconFg: "text-primary",
+      number: "text-primary",
+      headline: "text-primary",
+      hoverBorder: "hover:border-primary",
+      bulletIcon: "text-primary",
+      gainBg: "bg-primary-soft",
+      gainText: "text-primary",
+      ringHalo: "before:bg-primary/8",
+    },
+    sage: {
+      iconBg: "bg-sage-soft",
+      iconFg: "text-sage",
+      number: "text-sage",
+      headline: "text-sage",
+      hoverBorder: "hover:border-sage",
+      bulletIcon: "text-sage",
+      gainBg: "bg-sage-soft",
+      gainText: "text-sage",
+      ringHalo: "before:bg-sage/8",
+    },
+  } as const;
 
   const whyPoints = [t("valueWhy1"), t("valueWhy2"), t("valueWhy3"), t("valueWhy4")];
 
@@ -154,92 +198,269 @@ export default async function Home({ params }: HomeProps) {
   return (
     <>
       {/* ───────────── HERO ───────────── */}
-      <section className="bg-halo-warm relative overflow-hidden py-24 sm:py-32 lg:py-40">
-        {/* Visuel SVG abstrait éditorial à droite, masqué mobile */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-0 hidden -translate-y-1/2 lg:block"
-        >
-          <svg
-            width="520"
-            height="520"
-            viewBox="0 0 520 520"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="opacity-40"
-          >
-            <circle cx="260" cy="260" r="240" stroke="currentColor" strokeOpacity="0.08" />
-            <circle cx="260" cy="260" r="180" stroke="currentColor" strokeOpacity="0.12" />
-            <circle cx="260" cy="260" r="120" stroke="currentColor" strokeOpacity="0.15" />
-            <circle cx="260" cy="260" r="60" stroke="currentColor" strokeOpacity="0.2" />
-            <circle cx="260" cy="60" r="6" fill="var(--color-terracotta)" />
-            <circle cx="460" cy="260" r="6" fill="var(--color-primary)" />
-            <circle cx="380" cy="380" r="4" fill="var(--color-sage)" />
-            <circle cx="140" cy="320" r="4" fill="var(--color-terracotta)" />
-            <line
-              x1="260"
-              y1="60"
-              x2="260"
-              y2="200"
-              stroke="var(--color-terracotta)"
-              strokeWidth="1"
-              strokeDasharray="2 4"
-            />
-            <line
-              x1="460"
-              y1="260"
-              x2="320"
-              y2="260"
-              stroke="var(--color-primary)"
-              strokeWidth="1"
-              strokeDasharray="2 4"
-            />
-          </svg>
-        </div>
-
+      <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32">
         <Container className="relative">
-          <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-            {t("heroEyebrow")}
-          </p>
-          <h1 className="text-display-editorial text-fg max-w-5xl">
-            {t("heroTitlePart1")}{" "}
-            <em className="italic-editorial text-terracotta not-italic">
-              <span className="italic">{t("heroTitleEm")}</span>
-            </em>
-            {t("heroTitlePart2")}
-          </h1>
-          <p className="text-fg-soft mt-10 max-w-2xl text-lg leading-relaxed sm:text-xl">
-            {t("heroDescription")}
-          </p>
-          <div className="mt-12 flex flex-wrap gap-4">
-            <Link
-              href="/interventions/essentielle"
-              className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              {t("heroCtaPrimary")}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-            <Link
-              href="/cas-concrets"
-              className="text-fg border-border-strong cta-lift bg-paper/60 focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold backdrop-blur focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              {t("heroCtaSecondary")}
-            </Link>
+          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+            {/* Colonne gauche : copy */}
+            <div>
+              <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {t("heroEyebrow")}
+              </p>
+              <h1 className="text-display-editorial text-fg">
+                {t("heroTitlePart1")}{" "}
+                <em className="italic-editorial text-terracotta not-italic">
+                  <span className="italic">{t("heroTitleEm")}</span>
+                </em>
+                {t("heroTitlePart2")}
+              </h1>
+              <p className="text-fg-soft mt-8 max-w-xl text-lg leading-relaxed sm:text-xl">
+                {t("heroDescription")}
+              </p>
+              <div className="mt-10 flex flex-wrap gap-4">
+                <Link
+                  href="/interventions/essentielle"
+                  className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {t("heroCtaPrimary")}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/cas-concrets"
+                  className="text-fg border-border-strong cta-lift bg-paper/60 focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold backdrop-blur focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {t("heroCtaSecondary")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Colonne droite : illustration narrative — 3 services connectés à votre entreprise */}
+            <div aria-hidden="true" className="relative hidden lg:block">
+              <svg
+                viewBox="0 0 540 480"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-auto w-full"
+              >
+                {/* Background halo */}
+                <defs>
+                  <radialGradient id="halo-c" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.10" />
+                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
+                  </radialGradient>
+                  <radialGradient id="halo-tc" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
+                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
+                  </radialGradient>
+                  <radialGradient id="halo-pr" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.18" />
+                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+                  </radialGradient>
+                  <radialGradient id="halo-sg" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
+                    <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
+
+                {/* Halo ambient */}
+                <circle cx="270" cy="240" r="220" fill="url(#halo-c)" />
+
+                {/* Centre : "votre entreprise" */}
+                <circle cx="270" cy="240" r="92" fill="var(--color-paper)" />
+                <circle
+                  cx="270"
+                  cy="240"
+                  r="92"
+                  stroke="var(--color-border-strong)"
+                  strokeWidth="1"
+                />
+                <text
+                  x="270"
+                  y="232"
+                  textAnchor="middle"
+                  fontFamily="var(--font-serif)"
+                  fontSize="22"
+                  fontStyle="italic"
+                  fontWeight="500"
+                  fill="var(--color-terracotta)"
+                >
+                  Votre
+                </text>
+                <text
+                  x="270"
+                  y="262"
+                  textAnchor="middle"
+                  fontFamily="var(--font-sans)"
+                  fontSize="14"
+                  fontWeight="600"
+                  fill="var(--color-fg)"
+                >
+                  ENTREPRISE
+                </text>
+                <text
+                  x="270"
+                  y="282"
+                  textAnchor="middle"
+                  fontFamily="var(--font-sans)"
+                  fontSize="11"
+                  letterSpacing="0.16em"
+                  fill="var(--color-fg-muted)"
+                >
+                  + IA = GAINS
+                </text>
+
+                {/* Service 1 : Intervenir (haut, terracotta) */}
+                <g>
+                  <circle cx="270" cy="60" r="52" fill="url(#halo-tc)" />
+                  <circle cx="270" cy="60" r="34" fill="var(--color-paper)" />
+                  <circle
+                    cx="270"
+                    cy="60"
+                    r="34"
+                    stroke="var(--color-terracotta)"
+                    strokeWidth="1.5"
+                  />
+                  <text
+                    x="270"
+                    y="56"
+                    textAnchor="middle"
+                    fontFamily="var(--font-serif)"
+                    fontSize="14"
+                    fontStyle="italic"
+                    fontWeight="500"
+                    fill="var(--color-terracotta)"
+                  >
+                    01
+                  </text>
+                  <text
+                    x="270"
+                    y="74"
+                    textAnchor="middle"
+                    fontFamily="var(--font-sans)"
+                    fontSize="9"
+                    fontWeight="600"
+                    fill="var(--color-fg)"
+                    letterSpacing="0.08em"
+                  >
+                    INTERVENIR
+                  </text>
+                  <line
+                    x1="270"
+                    y1="100"
+                    x2="270"
+                    y2="148"
+                    stroke="var(--color-terracotta)"
+                    strokeOpacity="0.6"
+                    strokeDasharray="3 4"
+                    strokeWidth="1"
+                  />
+                </g>
+
+                {/* Service 2 : Auditer (bas-gauche, primary) */}
+                <g>
+                  <circle cx="80" cy="380" r="52" fill="url(#halo-pr)" />
+                  <circle cx="80" cy="380" r="34" fill="var(--color-paper)" />
+                  <circle cx="80" cy="380" r="34" stroke="var(--color-primary)" strokeWidth="1.5" />
+                  <text
+                    x="80"
+                    y="376"
+                    textAnchor="middle"
+                    fontFamily="var(--font-serif)"
+                    fontSize="14"
+                    fontStyle="italic"
+                    fontWeight="500"
+                    fill="var(--color-primary)"
+                  >
+                    02
+                  </text>
+                  <text
+                    x="80"
+                    y="394"
+                    textAnchor="middle"
+                    fontFamily="var(--font-sans)"
+                    fontSize="9"
+                    fontWeight="600"
+                    fill="var(--color-fg)"
+                    letterSpacing="0.08em"
+                  >
+                    AUDITER
+                  </text>
+                  <line
+                    x1="113"
+                    y1="362"
+                    x2="190"
+                    y2="296"
+                    stroke="var(--color-primary)"
+                    strokeOpacity="0.5"
+                    strokeDasharray="3 4"
+                    strokeWidth="1"
+                  />
+                </g>
+
+                {/* Service 3 : Implémenter (bas-droite, sage) */}
+                <g>
+                  <circle cx="460" cy="380" r="52" fill="url(#halo-sg)" />
+                  <circle cx="460" cy="380" r="34" fill="var(--color-paper)" />
+                  <circle cx="460" cy="380" r="34" stroke="var(--color-sage)" strokeWidth="1.5" />
+                  <text
+                    x="460"
+                    y="376"
+                    textAnchor="middle"
+                    fontFamily="var(--font-serif)"
+                    fontSize="14"
+                    fontStyle="italic"
+                    fontWeight="500"
+                    fill="var(--color-sage)"
+                  >
+                    03
+                  </text>
+                  <text
+                    x="460"
+                    y="394"
+                    textAnchor="middle"
+                    fontFamily="var(--font-sans)"
+                    fontSize="9"
+                    fontWeight="600"
+                    fill="var(--color-fg)"
+                    letterSpacing="0.08em"
+                  >
+                    IMPLÉMENTER
+                  </text>
+                  <line
+                    x1="427"
+                    y1="362"
+                    x2="350"
+                    y2="296"
+                    stroke="var(--color-sage)"
+                    strokeOpacity="0.5"
+                    strokeDasharray="3 4"
+                    strokeWidth="1"
+                  />
+                </g>
+
+                {/* Particules de gain ambiantes */}
+                <circle cx="60" cy="120" r="3" fill="var(--color-terracotta)" opacity="0.5" />
+                <circle cx="490" cy="140" r="3" fill="var(--color-primary)" opacity="0.5" />
+                <circle cx="500" cy="80" r="2" fill="var(--color-sage)" opacity="0.5" />
+                <circle cx="40" cy="220" r="2" fill="var(--color-terracotta)" opacity="0.4" />
+              </svg>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* ───────────── VALUE PROPOSITION (3 services + bénéfice client) ───────────── */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-36">
+      {/* ───────────── VALUE PROPOSITION (3 services + bénéfice client) ─────────────
+          C'est LA section la plus importante de la page — visibilité maximum,
+          chaque service a SA couleur d'accent dédiée. */}
+      <section className="bg-paper relative py-28 sm:py-32 lg:py-40">
         <Container>
           <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+            <div className="mb-20 max-w-4xl">
+              <p className="text-fg-muted mb-6 text-[13px] font-semibold tracking-[0.18em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("valueEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              <h2 className="text-fg text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.0] font-semibold tracking-tight">
                 {t("valueTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -249,67 +470,103 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("valueTitlePart2")}
               </h2>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
+              <p className="text-fg-soft mt-8 max-w-3xl text-lg leading-relaxed sm:text-xl">
                 {t("valueDescription")}
               </p>
             </div>
           </FadeInOnView>
 
-          <ul className="grid gap-6 lg:grid-cols-3">
+          <ul className="grid gap-8 lg:grid-cols-3">
             {valuePropositions.map((v, idx) => {
               const Icon = v.icon;
+              const a = accentClasses[v.accent];
               return (
-                <FadeInOnView key={v.id} delay={idx * 80}>
-                  <li>
+                <FadeInOnView key={v.id} delay={idx * 100}>
+                  <li className="h-full">
                     <Link
                       href={v.href}
-                      className="group bg-bg border-border hover:border-terracotta focus-visible:ring-primary flex h-full flex-col gap-6 rounded-2xl border p-8 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                      className={cn(
+                        "group bg-bg border-border focus-visible:ring-primary hover:shadow-card relative flex h-full flex-col gap-7 overflow-hidden rounded-3xl border p-10 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                        a.hoverBorder,
+                        // Halo accent diffus en arrière-plan, plus visible au hover
+                        "before:pointer-events-none before:absolute before:-top-32 before:-right-20 before:h-72 before:w-72 before:rounded-full before:opacity-50 before:blur-3xl before:transition-opacity before:duration-500 group-hover:before:opacity-100",
+                        a.ringHalo,
+                      )}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="bg-terracotta-soft text-terracotta-deep inline-flex h-12 w-12 items-center justify-center rounded-full">
-                          <Icon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                        <span className="text-fg-muted font-mono text-xs tracking-wider">
+                      {/* En-tête : numéro géant serif + icône accent */}
+                      <div className="relative flex items-start justify-between">
+                        <span
+                          className={cn("text-7xl leading-none font-medium tabular-nums", a.number)}
+                          style={{ fontFamily: "var(--font-serif)" }}
+                          aria-hidden="true"
+                        >
                           0{idx + 1}
                         </span>
+                        <span
+                          className={cn(
+                            "inline-flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110",
+                            a.iconBg,
+                            a.iconFg,
+                          )}
+                        >
+                          <Icon className="h-6 w-6" aria-hidden="true" />
+                        </span>
                       </div>
-                      <div>
-                        <h3 className="text-fg text-2xl leading-tight font-semibold tracking-tight">
+
+                      {/* Action + headline */}
+                      <div className="relative">
+                        <h3
+                          className="text-fg text-3xl leading-[1.1] font-medium tracking-tight"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
                           {v.action}
                         </h3>
                         <p
-                          className="text-terracotta mt-2 text-base italic"
+                          className={cn("mt-3 text-lg italic", a.headline)}
                           style={{ fontFamily: "var(--font-serif)" }}
                         >
                           {v.headline}
                         </p>
                       </div>
-                      <ul className="flex flex-1 flex-col gap-3">
+
+                      {/* Bullets ultra-concrets */}
+                      <ul className="relative flex flex-1 flex-col gap-4">
                         {v.bullets.map((b, i) => (
                           <li
                             key={i}
-                            className="text-fg-soft flex items-start gap-3 text-sm leading-relaxed"
+                            className="text-fg-soft flex items-start gap-3 text-[15px] leading-relaxed"
                           >
                             <Check
-                              className="text-sage mt-0.5 h-4 w-4 shrink-0"
+                              className={cn("mt-1 h-4 w-4 shrink-0", a.bulletIcon)}
                               aria-hidden="true"
                             />
                             <span>{b}</span>
                           </li>
                         ))}
                       </ul>
-                      <div className="border-border space-y-3 border-t pt-5">
-                        <p className="text-terracotta-deep text-sm font-semibold">{v.gain}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-fg-muted text-xs">{v.price}</span>
-                          <span className="text-primary inline-flex items-center gap-2 text-sm font-semibold">
-                            {isFr ? "Voir le détail" : "See details"}
-                            <ArrowRight
-                              className="h-4 w-4 transition group-hover:translate-x-1"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </div>
+
+                      {/* Gain client — bandeau coloré accent (mise en avant maximale) */}
+                      <div className={cn("relative rounded-xl px-5 py-4", a.gainBg)}>
+                        <p className={cn("text-base leading-snug font-semibold", a.gainText)}>
+                          {v.gain}
+                        </p>
+                      </div>
+
+                      {/* Prix + lien détail */}
+                      <div className="border-border relative flex items-center justify-between border-t pt-5">
+                        <span className="text-fg text-sm font-semibold">{v.price}</span>
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-2 text-sm font-semibold",
+                            a.headline,
+                          )}
+                        >
+                          {isFr ? "Voir le détail" : "See details"}
+                          <ArrowRight
+                            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                            aria-hidden="true"
+                          />
+                        </span>
                       </div>
                     </Link>
                   </li>

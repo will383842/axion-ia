@@ -15,8 +15,9 @@ export async function LocaleSwitcher() {
       aria-label={t("switchLanguage")}
       className={cn(
         "border-border inline-flex items-center gap-0.5 rounded-full border p-0.5",
-        // Adaptation sur fond mocha (header/footer)
+        // Adaptation sur fond mocha (footer) ou terracotta (header)
         "[[data-tone=dark]_&]:border-border-on-mocha",
+        "[[data-tone=terracotta]_&]:border-mocha/30",
       )}
     >
       {routing.locales.map((locale) => {
@@ -30,8 +31,8 @@ export async function LocaleSwitcher() {
             className={cn(
               "rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] uppercase transition",
               active
-                ? "bg-sand text-fg [[data-tone=dark]_&]:bg-mocha-fg [[data-tone=dark]_&]:text-mocha"
-                : "text-fg-muted hover:text-fg [[data-tone=dark]_&]:text-mocha-fg/70 [[data-tone=dark]_&]:hover:text-mocha-fg",
+                ? "bg-sand text-fg [[data-tone=dark]_&]:bg-mocha-fg [[data-tone=dark]_&]:text-mocha [[data-tone=terracotta]_&]:bg-mocha-fg [[data-tone=terracotta]_&]:text-terracotta"
+                : "text-fg-muted hover:text-fg [[data-tone=dark]_&]:text-mocha-fg/70 [[data-tone=dark]_&]:hover:text-mocha-fg [[data-tone=terracotta]_&]:text-mocha-fg/75 [[data-tone=terracotta]_&]:hover:text-mocha-fg",
             )}
           >
             {locale}
