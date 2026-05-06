@@ -70,6 +70,9 @@ export async function Footer() {
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 Axion
+                <span aria-hidden="true" className="text-mocha-fg/60 mx-0.5">
+                  -
+                </span>
                 <span
                   className="text-terracotta-soft italic"
                   style={{ fontFamily: "var(--font-serif)" }}

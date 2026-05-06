@@ -35,9 +35,10 @@ export async function Header() {
         className="bg-mocha/30 data-[scrolled=true]:bg-terracotta/60 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
       {/* Layout pleine largeur : Logo + Nav split + CTA centré + Locale */}
-      <div className="relative flex h-20 w-full items-center gap-4 px-6 transition-[height] duration-300 ease-out sm:px-8 lg:h-24 lg:gap-6 lg:px-12 xl:px-16 [[data-scrolled=true]_&]:h-16 [[data-scrolled=true]_&]:lg:h-20">
-        {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2 */}
-        <div className="flex flex-1 items-center gap-6 lg:gap-8 xl:gap-10">
+      <div className="relative flex h-20 w-full items-center gap-4 px-6 transition-[height] duration-300 ease-out sm:px-8 lg:h-24 lg:gap-3 lg:px-12 xl:gap-4 xl:px-16 [[data-scrolled=true]_&]:h-16 [[data-scrolled=true]_&]:lg:h-20">
+        {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2.
+            Nav justify-end → items poussés vers la droite, près du CTA central. */}
+        <div className="flex flex-1 items-center justify-between gap-6 lg:gap-8">
           {/* Logo dans badge ivoire — fait ressortir le "IA" terracotta sur
               tous les fonds (terracotta au top, mocha au scroll). Couleur du
               logo figée — n'évolue plus au scroll. */}
@@ -51,14 +52,20 @@ export async function Header() {
               style={{ fontFamily: "var(--font-serif)" }}
             >
               Axion
+              <span aria-hidden="true" className="text-fg/70 mx-0.5">
+                -
+              </span>
               <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
                 IA
               </span>
             </span>
           </Link>
 
-          {/* Desktop nav — 2 premiers items (gauche du CTA) */}
-          <nav aria-label={t("nav.home")} className="hidden items-center gap-7 lg:flex xl:gap-9">
+          {/* Desktop nav — 2 premiers items, poussés à droite (près du CTA) */}
+          <nav
+            aria-label={t("nav.home")}
+            className="hidden items-center gap-6 lg:flex lg:justify-end xl:gap-8"
+          >
             {navLeft.map((item) => (
               <NavLink key={item.href} href={item.href} label={item.label} />
             ))}
@@ -74,12 +81,11 @@ export async function Header() {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
 
-        {/* DROITE : Nav 3+4 + Locale */}
-        <div className="hidden flex-1 items-center justify-end gap-6 lg:flex lg:gap-8 xl:gap-10">
-          {/* Nav 2 derniers items (droite du CTA) */}
+        {/* DROITE : Nav 3+4 (poussés à gauche près du CTA) + Locale (à l'extrême droite) */}
+        <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-8">
           <nav
             aria-label={`${t("nav.home")} 2`}
-            className="hidden items-center gap-7 lg:flex xl:gap-9"
+            className="hidden items-center gap-6 lg:flex lg:justify-start xl:gap-8"
           >
             {navRight.map((item) => (
               <NavLink key={item.href} href={item.href} label={item.label} />

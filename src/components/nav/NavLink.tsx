@@ -40,8 +40,8 @@ export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
       href={href as never}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        // Texte plus gros : 16px font-semibold (vs 14px medium précédemment)
-        "relative text-[16px] font-semibold tracking-tight transition-colors",
+        // Texte plus gros : 17px font-semibold (vs 14px medium précédemment)
+        "relative text-[17px] font-semibold tracking-tight transition-colors",
         // Underline animée 2px — couleur adaptée au tone
         "after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:transition-all after:duration-300",
         // Header terracotta : underline ivoire / scrolled mocha : underline terracotta-soft
