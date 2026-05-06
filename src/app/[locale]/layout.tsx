@@ -127,6 +127,30 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
+        {/* Speculation Rules — eager prefetch + moderate prerender on hover/
+            viewport. PERF-010/NAV-015. Browsers without support ignore the
+            script silently (Safari fallback ↔ Chrome/Edge gain). */}
+        <script
+          type="speculationrules"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              prerender: [
+                {
+                  source: "document",
+                  where: { href_matches: `/${locale}/*` },
+                  eagerness: "moderate",
+                },
+              ],
+              prefetch: [
+                {
+                  source: "document",
+                  where: { href_matches: `/${locale}/*` },
+                  eagerness: "eager",
+                },
+              ],
+            }),
+          }}
+        />
       </body>
     </html>
   );

@@ -28,8 +28,20 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
   experimental: {
-    // Next.js 16 — flags revisited in later sprints after deeper docs read.
+    // React 19.2 ViewTransition integration — animates route navigations.
+    // Falls back to instant transitions in browsers without support and
+    // when prefers-reduced-motion is set (CSS-level guard).
+    viewTransition: true,
+    // PPR (Partial Prerendering) deferred — needs per-route Suspense
+    // boundaries before flipping. Re-evaluate Sprint 17 after server
+    // actions land.
+    // ppr: "incremental",
   },
+  // React Compiler deferred (PERF-004) — requires `babel-plugin-react-compiler`
+  // devDep + Babel takeover that slows Turbopack builds. Re-evaluate Sprint 17
+  // when we measure RUM baseline. Until then, Next 16's SWC optimizer + manual
+  // memoization in hot paths are sufficient.
+  // reactCompiler: true,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
