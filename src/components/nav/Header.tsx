@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Container } from "@/components/layout/Container";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
@@ -31,7 +30,9 @@ export async function Header() {
         aria-hidden="true"
         className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
-      <Container className="relative flex h-16 items-center justify-between gap-4 lg:h-20">
+      {/* Pleine largeur — pas de Container max-w-1280, padding latéral seulement.
+          Permet aux items de nav de s'étaler sur toute la largeur de l'écran. */}
+      <div className="relative flex h-16 w-full items-center justify-between gap-6 px-6 sm:px-8 lg:h-20 lg:px-12 xl:px-16">
         {/* Logo — wordmark serif italique editorial (signature Anthropic-like).
             "Axion" en ivoire / "IA" en mocha (marron foncé) — les deux marrons
             cohabitent pour préserver l'identité du logo. */}
@@ -51,10 +52,10 @@ export async function Header() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — étalé en pleine largeur entre logo et bloc droite */}
         <nav
           aria-label={t("nav.home")}
-          className="hidden flex-1 items-center justify-center gap-8 lg:flex"
+          className="hidden flex-1 items-center justify-center gap-10 lg:flex xl:gap-14"
         >
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} label={item.label} />
@@ -94,7 +95,7 @@ export async function Header() {
             </div>
           </nav>
         </MobileNav>
-      </Container>
+      </div>
     </header>
   );
 }
