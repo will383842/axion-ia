@@ -209,3 +209,26 @@ export function getCaseStudy(slug: string): CaseStudy | undefined {
 export function getAllSlugs(): string[] {
   return CASE_STUDIES.map((c) => c.slug);
 }
+
+function caseSlugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getAllIndustrySlugs(): string[] {
+  const set = new Set(CASE_STUDIES.map((c) => caseSlugify(c.industry)));
+  return [...set];
+}
+
+export function getCaseStudiesByIndustry(slug: string): CaseStudy[] {
+  return CASE_STUDIES.filter((c) => caseSlugify(c.industry) === slug);
+}
+
+export function getIndustryLabel(slug: string, locale: "fr" | "en"): string | undefined {
+  const found = CASE_STUDIES.find((c) => caseSlugify(c.industry) === slug);
+  return locale === "fr" ? found?.industry : found?.industryEn;
+}
