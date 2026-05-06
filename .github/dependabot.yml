@@ -1,0 +1,48 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Tallinn
+    open-pull-requests-limit: 5
+    groups:
+      next-stack:
+        patterns:
+          - "next"
+          - "@next/*"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@typescript-eslint/*"
+      tooling:
+        patterns:
+          - "eslint*"
+          - "prettier*"
+          - "husky"
+          - "lint-staged"
+          - "@commitlint/*"
+      tests:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "@testing-library/*"
+          - "playwright"
+          - "@playwright/*"
+          - "@axe-core/*"
+          - "jest-axe"
+    commit-message:
+      prefix: chore(deps)
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore(ci)

@@ -1,0 +1,4 @@
+pnpm typecheck
+pnpm i18n:check
+pnpm zod:check
+pnpm test

@@ -1,0 +1,20 @@
+title = "AxionIA gitleaks config"
+
+# Use gitleaks default rules + project-specific allowlist.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow placeholders in env templates and docs."
+paths = [
+  '''\.env\.example''',
+  '''README\.md''',
+  '''docs/.*\.md''',
+  '''_AUDIT/.*\.md''',
+]
+regexes = [
+  '''(?i)your[_-]?(api[_-]?key|secret|token)''',
+  '''placeholder''',
+  '''xxxx+''',
+  '''<.*?>''', # angle-bracket placeholders
+]

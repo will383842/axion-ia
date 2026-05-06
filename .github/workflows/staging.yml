@@ -1,0 +1,34 @@
+name: Staging · Gate C
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy-staging:
+    name: Deploy to staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: staging
+      url: https://staging.axion-ia.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger Coolify webhook
+        if: ${{ secrets.COOLIFY_STAGING_WEBHOOK != '' }}
+        run: |
+          curl -fsS -X POST "${{ secrets.COOLIFY_STAGING_WEBHOOK }}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"ref": "${{ github.sha }}"}'
+      - name: Smoke tests vs staging
+        env:
+          E2E_BASE_URL: https://staging.axion-ia.com
+        run: |
+          echo "Smoke tests stub — Sprint 22 wires real Playwright suite."
+      - name: OWASP ZAP baseline
+        run: echo "ZAP baseline stub — Sprint 21 wires real scan."

@@ -1,0 +1,95 @@
+name: CI · Gates A + B
+
+on:
+  pull_request:
+    branches: [main, staging]
+  push:
+    branches: [main, staging]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: 20.18.0
+  PNPM_VERSION: 10.33.4
+
+jobs:
+  gate-a:
+    name: Gate A · per-commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: TypeScript strict
+        run: pnpm typecheck
+      - name: ESLint
+        run: pnpm lint
+      - name: Prettier
+        run: pnpm format:check
+      - name: Vitest
+        run: pnpm test
+      - name: i18n parity
+        run: pnpm i18n:check
+      - name: Anti-formation grep
+        run: pnpm anti-formation:check
+      - name: Anti-SIREN grep
+        run: pnpm anti-siren:check
+      - name: Anti-hex grep
+        run: pnpm anti-hex:check
+      - name: use-client justified
+        run: pnpm use-client:check
+      - name: Zod schemas have tests
+        run: pnpm zod:check
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          config-path: axionia/.gitleaks.toml
+
+  gate-b:
+    name: Gate B · per-PR
+    needs: gate-a
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+      - name: Bundle size
+        run: pnpm bundle:check
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium webkit firefox
+      - name: Playwright suite
+        run: pnpm test:e2e
+      - name: Lighthouse CI
+        run: pnpm lhci:autorun
+        continue-on-error: true # Sprint 14 enables hard fail
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-b-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+            lhci/
+          retention-days: 7

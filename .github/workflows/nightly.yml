@@ -1,0 +1,36 @@
+name: Nightly · Gate D
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 03:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  nightly:
+    name: Nightly checks vs staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Full Playwright vs staging
+        env:
+          E2E_BASE_URL: https://staging.axion-ia.com
+        run: echo "Full E2E stub — Sprint 21 wires real suite."
+      - name: pnpm audit
+        run: pnpm audit --json > audit.json || true
+      - name: OWASP ZAP full scan
+        run: echo "ZAP full stub — Sprint 21."
+      - name: Mail-tester (7 templates × 2 locales)
+        run: echo "Mail-tester stub — Sprint 19."
+      - name: Backup restore drill
+        run: echo "Backup drill stub — Sprint 23."
+      - name: Lighthouse history
+        run: echo "Lighthouse history stub — Sprint 23."

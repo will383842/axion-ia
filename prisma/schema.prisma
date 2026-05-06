@@ -1,0 +1,23 @@
+// AxionIA · Prisma schema
+// Sprint 0 stub — full schema lands in Sprint 15 (M8).
+// Source: doc 09 + 09b + 09c + CLAUDE.md v6 §13.
+// PAS de Stripe → pas de Subscription / Customer / Invoice.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // Sprint 15 wires shadow + direct URLs + extensions.
+}
+
+// Placeholder model so prisma generate succeeds in Sprint 0.
+// Sprint 15 replaces with the full 17-table schema.
+model _SetupSentinel {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  note      String   @default("Replace with real schema in Sprint 15")
+}

@@ -1,0 +1,6 @@
+{
+  "_": "FR is the canonical locale (CLAUDE.md v6 §3). EN mirrors FR. Keep keys in sync — pnpm i18n:check enforces parity.",
+  "common": {
+    "skipToContent": "Aller au contenu"
+  }
+}
