@@ -20,6 +20,17 @@ interface ProductHeroProps {
 // Hero used by every product page. Combines eyebrow + h1 + AEO answer +
 // optional price + CTAs. Mobile-first; AEO bloc placed in the first fold
 // for axionia-seo-aeo citability.
+//
+// Accent border-left adds a 4px module-color stripe on the left of the
+// content block — strengthens the per-module visual identity without
+// changing the dominant Webflow Blue (cf. _AUDIT/VERIF-FRONTEND-DEEP DSN-002).
+const ACCENT_BORDER: Record<NonNullable<ProductHeroProps["accent"]>, string> = {
+  primary: "border-l-primary",
+  purple: "border-l-accent-purple",
+  orange: "border-l-accent-orange",
+  green: "border-l-accent-green",
+};
+
 export function ProductHero({
   eyebrow,
   accent = "primary",
@@ -34,7 +45,7 @@ export function ProductHero({
   return (
     <section className={cn("bg-bg text-fg py-16 sm:py-20 lg:py-28", className)}>
       <Container>
-        <div className="max-w-4xl">
+        <div className={cn("max-w-4xl border-l-4 pl-6 sm:pl-8", ACCENT_BORDER[accent])}>
           <Eyebrow variant={accent}>{eyebrow}</Eyebrow>
           <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04] font-semibold tracking-tight">
             {title}

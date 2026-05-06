@@ -1,78 +1,48 @@
 "use client";
-// use-client: trap-focus drawer + Escape key + open/close state. Server
-// rendering of nav links is handled by the parent <Header>; this client
-// component only manages the drawer UI and key handling.
+// use-client: Sheet (Radix Dialog) needs portals + focus trap + animation
+// states. Refactored from a custom div drawer per A11Y-003 / NAV-008
+// (focus trap absent + backdrop click no-op).
 
-import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 
 interface MobileNavProps {
   children: React.ReactNode;
 }
 
+// Mobile drawer = Radix Sheet (right-side). Inherits focus trap, Escape,
+// click-outside dismissal, and reduced-motion compliance from Radix.
 export function MobileNav({ children }: MobileNavProps) {
   const t = useTranslations("common");
   const [open, setOpen] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const trigger = triggerRef.current;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    // Move focus into dialog
-    dialogRef.current?.focus();
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-      // Restore focus to trigger (captured at effect start)
-      trigger?.focus();
-    };
-  }, [open]);
 
   return (
-    <>
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-expanded={open}
-        aria-controls="mobile-nav-dialog"
-        aria-label={t("openMenu")}
-        className="text-fg hover:bg-border/50 inline-flex h-11 w-11 items-center justify-center rounded-sm lg:hidden"
-      >
-        <Menu className="h-5 w-5" aria-hidden="true" />
-      </button>
-
-      {open ? (
-        <div
-          id="mobile-nav-dialog"
-          ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <button
+          type="button"
           aria-label={t("openMenu")}
-          tabIndex={-1}
-          className="bg-bg fixed inset-0 z-50 flex flex-col overflow-y-auto outline-none"
+          className="text-fg hover:bg-border/50 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none lg:hidden"
         >
-          <div className="border-border flex h-16 items-center justify-between border-b px-4">
-            <span className="text-fg text-sm font-semibold tracking-tight">AxionIA</span>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={t("closeMenu")}
-              className="text-fg hover:bg-border/50 inline-flex h-11 w-11 items-center justify-center rounded-sm"
-            >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="flex-1 px-4 py-6">{children}</div>
+          <Menu className="h-5 w-5" aria-hidden="true" />
+        </button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-full max-w-sm sm:max-w-sm">
+        <SheetTitle className="sr-only">{t("openMenu")}</SheetTitle>
+        <SheetDescription className="sr-only">AxionIA navigation</SheetDescription>
+        <div className="-m-6 flex h-full flex-col overflow-y-auto p-6">
+          <span className="text-fg mb-6 text-sm font-semibold tracking-tight">AxionIA</span>
+          {children}
         </div>
-      ) : null}
-    </>
+      </SheetContent>
+    </Sheet>
   );
 }

@@ -29,7 +29,7 @@ const SheetOverlay = React.forwardRef<
 });
 
 const sheetVariants = cva(
-  "bg-bg border-border fixed z-50 flex flex-col gap-4 p-6 shadow-elevated outline-none transition-transform duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out",
+  "bg-bg border-border fixed z-50 flex flex-col gap-4 p-6 shadow-card outline-none transition-transform duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out",
   {
     variants: {
       side: {
@@ -63,7 +63,7 @@ export const SheetContent = React.forwardRef<
         {children}
         <DialogPrimitive.Close
           aria-label="Close"
-          className="text-fg hover:bg-border/40 absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+          className="text-fg hover:bg-border/40 absolute right-3 top-3 inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </DialogPrimitive.Close>

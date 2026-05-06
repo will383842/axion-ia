@@ -116,7 +116,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
           type="button"
           onClick={() => shiftMonth(-1)}
           aria-label={labels.prevMonth}
-          className="text-fg hover:bg-border/40 focus-visible:ring-primary inline-flex h-10 w-10 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+          className="text-fg hover:bg-border/40 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none"
         >
           <ChevronLeft className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -127,7 +127,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
           type="button"
           onClick={() => shiftMonth(1)}
           aria-label={labels.nextMonth}
-          className="text-fg hover:bg-border/40 focus-visible:ring-primary inline-flex h-10 w-10 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+          className="text-fg hover:bg-border/40 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none"
         >
           <ChevronRight className="h-5 w-5" aria-hidden="true" />
         </button>

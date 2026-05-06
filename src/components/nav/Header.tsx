@@ -24,7 +24,7 @@ export async function Header() {
         <Link
           href="/"
           aria-label="AxionIA"
-          className="bg-primary text-primary-fg inline-flex h-8 w-8 items-center justify-center rounded-sm text-sm font-bold tracking-tight"
+          className="bg-primary text-primary-fg focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm text-base font-bold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           A
         </Link>
@@ -43,7 +43,7 @@ export async function Header() {
         <div className="hidden items-center gap-3 lg:flex">
           <Link
             href="/interventions/essentielle"
-            className="bg-primary text-primary-fg cta-translate inline-flex items-center gap-2 rounded-sm px-4 py-2.5 text-sm font-semibold"
+            className="bg-primary text-primary-fg cta-translate focus-visible:ring-primary inline-flex h-11 items-center gap-2 rounded-sm px-4 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {t("cta.bookIntervention")} · 490&nbsp;€
             <span aria-hidden="true">→</span>
