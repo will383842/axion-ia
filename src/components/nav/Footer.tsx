@@ -5,9 +5,7 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
 // Editorial doctrine v3 — footer compact best-practices 2026.
-// Pleine largeur (pas de Container max-w), padding lateral comme header,
-// hauteur drastiquement reduite, texte tous >= mocha-fg/75 pour visibilite,
-// social icons Lucide modernes minimalistes, layout 5 columns aligned.
+// Pleine largeur, hauteur minimale, 5 colonnes serrées, social Facebook+LinkedIn.
 export async function Footer() {
   const t = await getTranslations();
   const locale = await getLocale();
@@ -57,17 +55,18 @@ export async function Footer() {
       />
 
       {/* Pleine largeur avec padding lateral progressif (comme header) */}
-      <div className="px-6 py-14 sm:px-8 lg:px-12 lg:py-16 xl:px-16">
-        {/* Top : tagline compact + newsletter en ligne */}
-        <div className="border-border-on-mocha grid gap-10 border-b pb-12 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
-          <div>
+      <div className="px-6 py-10 sm:px-8 lg:px-12 lg:py-12 xl:px-16">
+        {/* Top dense : brand + 4 columns + newsletter — 5 colonnes serrées */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-10">
+          {/* Col 1 : Brand + tagline court + social */}
+          <div className="lg:col-span-2">
             <Link
               href="/"
               aria-label="AxionIA"
-              className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha mb-5 inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha mb-3 inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <span
-                className="text-3xl leading-none font-medium tracking-tight"
+                className="text-2xl leading-none font-medium tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 Axion
@@ -80,7 +79,7 @@ export async function Footer() {
               </span>
             </Link>
             <p
-              className="text-mocha-fg max-w-xl text-2xl leading-snug font-medium lg:text-[28px]"
+              className="text-mocha-fg mb-5 max-w-md text-base leading-snug font-medium"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {isFr ? (
@@ -95,45 +94,44 @@ export async function Footer() {
                 </>
               )}
             </p>
+            <p className="text-mocha-fg/85 mb-5 max-w-xs text-xs leading-relaxed">
+              {isFr
+                ? "AxionIA OÜ — Tallinn, Estonie. Interventions, audits, implémentations IA pour entreprises de toutes tailles."
+                : "AxionIA OÜ — Tallinn, Estonia. AI sessions, audits and implementations for companies of all sizes."}
+            </p>
+            <SocialLinks />
           </div>
 
-          {/* Newsletter compacte côté droit */}
-          <div className="lg:max-w-md lg:min-w-[420px]">
-            <p className="text-mocha-fg/75 mb-3 text-[11px] font-semibold tracking-[0.18em] uppercase">
+          {/* Col 2 : Services */}
+          <FooterColumn title={t("footer.services")} items={services} />
+          {/* Col 3 : Resources */}
+          <FooterColumn title={t("footer.resources")} items={resources} />
+          {/* Col 4 : Company + Legal compactés */}
+          <div className="space-y-8">
+            <FooterColumn title={t("footer.company")} items={company} />
+            <FooterColumn title={t("footer.legal")} items={legal} />
+          </div>
+        </div>
+
+        {/* Newsletter compact bandeau pleine largeur */}
+        <div className="border-border-on-mocha mt-10 grid gap-5 border-t pt-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="text-mocha-fg/75 mb-1 text-[11px] font-semibold tracking-[0.18em] uppercase">
               {t("footer.newsletter")}
             </p>
-            <p className="text-mocha-fg mb-4 text-sm leading-snug">
+            <p className="text-mocha-fg text-sm leading-snug">
               {isFr
-                ? "Une analyse IA par mois, dans votre inbox. Désinscription en 1 clic."
-                : "One AI analysis per month, in your inbox. One-click unsubscribe."}
+                ? "Une analyse IA par mois. Désinscription en 1 clic."
+                : "One AI analysis per month. One-click unsubscribe."}
             </p>
+          </div>
+          <div className="lg:min-w-[420px]">
             <NewsletterFooterForm />
           </div>
         </div>
 
-        {/* Columns + social */}
-        <div className="grid gap-10 py-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)] lg:gap-12">
-          {/* Brand minimal + social */}
-          <div>
-            <p className="text-mocha-fg/75 mb-4 text-[11px] font-semibold tracking-[0.18em] uppercase">
-              {isFr ? "Suivre" : "Follow"}
-            </p>
-            <SocialLinks />
-            <p className="text-mocha-fg/85 mt-6 max-w-xs text-sm leading-relaxed">
-              {isFr
-                ? "AxionIA OÜ — Tallinn, Estonie. Cabinet IA opérationnel pour entreprises de toutes tailles."
-                : "AxionIA OÜ — Tallinn, Estonia. Operational AI consultancy for companies of all sizes."}
-            </p>
-          </div>
-
-          <FooterColumn title={t("footer.services")} items={services} />
-          <FooterColumn title={t("footer.resources")} items={resources} />
-          <FooterColumn title={t("footer.company")} items={company} />
-          <FooterColumn title={t("footer.legal")} items={legal} />
-        </div>
-
         {/* Bottom strip — single line dense */}
-        <div className="border-border-on-mocha text-mocha-fg/75 flex flex-col gap-4 border-t pt-6 text-xs lg:flex-row lg:items-center lg:justify-between">
+        <div className="border-border-on-mocha text-mocha-fg/75 mt-8 flex flex-col gap-3 border-t pt-6 text-xs lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <span className="text-mocha-fg font-medium">© {year} AxionIA OÜ</span>
             <Dot />
@@ -169,10 +167,10 @@ interface FooterColumnProps {
 function FooterColumn({ title, items }: FooterColumnProps) {
   return (
     <div>
-      <h3 className="text-mocha-fg/75 mb-5 text-[11px] font-semibold tracking-[0.18em] uppercase">
+      <h3 className="text-mocha-fg/75 mb-4 text-[11px] font-semibold tracking-[0.18em] uppercase">
         {title}
       </h3>
-      <ul className="space-y-3 text-sm">
+      <ul className="space-y-2.5 text-sm">
         {items.map((item) => (
           <li key={item.href}>
             <Link
@@ -194,8 +192,23 @@ function FooterColumn({ title, items }: FooterColumnProps) {
   );
 }
 
-// Outline minimaliste 2026 — strokeWidth 1.6, viewBox 24, rounded paths.
-// Plus moderne que les SVG filled hérités v1 (qui faisaient datés).
+// Outline minimaliste 2026 — Facebook + LinkedIn (Will retire YouTube).
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
 function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -216,27 +229,10 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <rect x="2.5" y="6" width="19" height="12" rx="3" />
-      <path d="M10 9.5v5l4.5-2.5L10 9.5z" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
 
 function SocialLinks() {
-  // 2026 best practice: minimal outlined circles, hover gradient fill +
-  // ArrowUpRight reveal. 44px touch target. Outline icons (vs filled v1).
+  // 2026 best practice : minimal outlined circles, hover gradient fill +
+  // ArrowUpRight reveal. Facebook + LinkedIn (suppression YouTube — Will).
   const socials = [
     {
       href: "https://www.linkedin.com/company/axion-ia",
@@ -244,9 +240,9 @@ function SocialLinks() {
       Icon: LinkedinIcon,
     },
     {
-      href: "https://www.youtube.com/@axion-ia",
-      label: "YouTube",
-      Icon: YoutubeIcon,
+      href: "https://www.facebook.com/axionia",
+      label: "Facebook",
+      Icon: FacebookIcon,
     },
   ];
   return (

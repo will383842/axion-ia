@@ -6,19 +6,23 @@ import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 
 // Server Component. 5 items, ZERO dropdown (CLAUDE.md v6 §9.2).
-// Editorial doctrine v3 — fond `bg-terracotta` au top (couleur signature),
-// transition vers `bg-mocha` quand scrolled. Layout :
-// [Logo + Nav]                  [CTA pill centré]                  [Locale]
-// Le CTA central est l'élément le plus saillant — call-to-action prioritaire.
+// Editorial doctrine v3 — fond `bg-terracotta` au top, transition vers
+// `bg-mocha` quand scrolled. Layout balanced :
+// [Logo badge] [Nav 1, 2]    [CTA centré]    [Nav 3, 4] [Locale]
+// Le CTA central est l'élément le plus saillant.
 export async function Header() {
   const t = await getTranslations();
 
-  const navItems = [
+  // Nav items split — 2 gauche du CTA, 2 droite du CTA.
+  const navLeft = [
     { href: "/interventions", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },
+  ];
+  const navRight = [
     { href: "/implementation", label: t("nav.implementation") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
   ];
+  const navAll = [...navLeft, ...navRight];
 
   return (
     <header
@@ -30,41 +34,38 @@ export async function Header() {
         aria-hidden="true"
         className="bg-mocha/30 data-[scrolled=true]:bg-terracotta/60 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
-      {/* Layout : Logo+Nav (gauche, flex-1) — CTA centré — Locale (droite) */}
-      <div className="relative flex h-20 w-full items-center gap-6 px-6 transition-[height] duration-300 ease-out sm:px-8 lg:h-24 lg:px-12 xl:px-16 [[data-scrolled=true]_&]:h-16 [[data-scrolled=true]_&]:lg:h-20">
-        {/* GAUCHE : Logo + Nav */}
-        <div className="flex flex-1 items-center gap-8 xl:gap-12">
-          {/* Logo — wordmark serif italique editorial original :
-              "Axion" anthracite + "IA" italique terracotta (ton-sur-ton subtil
-              avec le fond du header — signature visuelle). */}
+      {/* Layout pleine largeur : Logo + Nav split + CTA centré + Locale */}
+      <div className="relative flex h-20 w-full items-center gap-4 px-6 transition-[height] duration-300 ease-out sm:px-8 lg:h-24 lg:gap-6 lg:px-12 xl:px-16 [[data-scrolled=true]_&]:h-16 [[data-scrolled=true]_&]:lg:h-20">
+        {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2 */}
+        <div className="flex flex-1 items-center gap-6 lg:gap-8 xl:gap-10">
+          {/* Logo dans badge ivoire — fait ressortir le "IA" terracotta sur
+              tous les fonds (terracotta au top, mocha au scroll). Couleur du
+              logo figée — n'évolue plus au scroll. */}
           <Link
             href="/"
             aria-label="AxionIA"
-            className="text-fg focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex shrink-0 items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="bg-paper text-fg shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center gap-1 rounded-xl px-4 py-2 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <span
-              className="text-3xl leading-none font-medium tracking-tight"
+              className="text-2xl leading-none font-medium tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               Axion
-              <span
-                className="text-terracotta [[data-scrolled=true]_&]:text-terracotta-soft italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
+              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
                 IA
               </span>
             </span>
           </Link>
 
-          {/* Desktop nav */}
-          <nav aria-label={t("nav.home")} className="hidden items-center gap-7 lg:flex xl:gap-10">
-            {navItems.map((item) => (
+          {/* Desktop nav — 2 premiers items (gauche du CTA) */}
+          <nav aria-label={t("nav.home")} className="hidden items-center gap-7 lg:flex xl:gap-9">
+            {navLeft.map((item) => (
               <NavLink key={item.href} href={item.href} label={item.label} />
             ))}
           </nav>
         </div>
 
-        {/* CENTRE : CTA pill ivoire saillant — call-to-action prioritaire */}
+        {/* CENTRE : CTA pill ivoire saillant */}
         <Link
           href="/interventions/essentielle"
           className="bg-mocha-fg text-mocha cta-lift hover:bg-paper focus-visible:ring-mocha focus-visible:ring-offset-terracotta hidden h-12 shrink-0 items-center gap-2 rounded-full px-6 text-sm font-bold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:inline-flex"
@@ -73,8 +74,17 @@ export async function Header() {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
 
-        {/* DROITE : Locale switcher */}
-        <div className="hidden flex-1 items-center justify-end gap-4 lg:flex">
+        {/* DROITE : Nav 3+4 + Locale */}
+        <div className="hidden flex-1 items-center justify-end gap-6 lg:flex lg:gap-8 xl:gap-10">
+          {/* Nav 2 derniers items (droite du CTA) */}
+          <nav
+            aria-label={`${t("nav.home")} 2`}
+            className="hidden items-center gap-7 lg:flex xl:gap-9"
+          >
+            {navRight.map((item) => (
+              <NavLink key={item.href} href={item.href} label={item.label} />
+            ))}
+          </nav>
           <LocaleSwitcher />
         </div>
 
@@ -82,7 +92,7 @@ export async function Header() {
         <div className="ml-auto lg:hidden">
           <MobileNav>
             <nav aria-label={t("nav.home")} className="flex flex-col gap-1 text-base">
-              {navItems.map((item) => (
+              {navAll.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
               <Link
