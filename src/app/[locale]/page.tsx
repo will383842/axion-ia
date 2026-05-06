@@ -252,7 +252,7 @@ export default async function Home({ params }: HomeProps) {
               className="relative hidden lg:-mr-12 lg:block xl:-mr-20 2xl:-mr-32"
             >
               <svg
-                viewBox="0 0 600 620"
+                viewBox="0 0 600 680"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-auto w-full lg:scale-[1.15] xl:scale-[1.25]"
@@ -327,7 +327,7 @@ export default async function Home({ params }: HomeProps) {
                 </defs>
 
                 {/* ── Background : grid texturé fade radial ── */}
-                <rect width="600" height="620" fill="url(#grid-fine)" mask="url(#vignette-mask)" />
+                <rect width="600" height="680" fill="url(#grid-fine)" mask="url(#vignette-mask)" />
 
                 {/* ── Halo ambient large ── */}
                 <circle cx="300" cy="310" r="290" fill="url(#halo-center)" />
@@ -515,13 +515,13 @@ export default async function Home({ params }: HomeProps) {
                     strokeDasharray="2 4"
                     fill="none"
                   />
-                  <circle cx="460" cy="110" r="46" fill="var(--color-paper)" />
+                  <circle cx="460" cy="110" r="54" fill="var(--color-paper)" />
                   <circle
                     cx="460"
                     cy="110"
-                    r="46"
+                    r="54"
                     stroke="var(--color-terracotta)"
-                    strokeWidth="2.2"
+                    strokeWidth="2.4"
                   />
                   {/* Icône Users (3 cercles + lignes corps) */}
                   <circle cx="446" cy="100" r="4.5" fill="var(--color-terracotta)" />
@@ -586,13 +586,13 @@ export default async function Home({ params }: HomeProps) {
                     strokeDasharray="2 4"
                     fill="none"
                   />
-                  <circle cx="120" cy="310" r="46" fill="var(--color-paper)" />
+                  <circle cx="120" cy="310" r="54" fill="var(--color-paper)" />
                   <circle
                     cx="120"
                     cy="310"
-                    r="46"
+                    r="54"
                     stroke="var(--color-primary)"
-                    strokeWidth="2.2"
+                    strokeWidth="2.4"
                   />
                   {/* Icône Loupe enrichie (avec poignée + reflet) */}
                   <circle
@@ -673,8 +673,8 @@ export default async function Home({ params }: HomeProps) {
                     strokeDasharray="2 4"
                     fill="none"
                   />
-                  <circle cx="460" cy="540" r="46" fill="var(--color-paper)" />
-                  <circle cx="460" cy="540" r="46" stroke="var(--color-sage)" strokeWidth="2.2" />
+                  <circle cx="460" cy="540" r="54" fill="var(--color-paper)" />
+                  <circle cx="460" cy="540" r="54" stroke="var(--color-sage)" strokeWidth="2.4" />
                   {/* Icône Code </> enrichie */}
                   <path
                     d="M 450 530 L 440 540 L 450 550"
