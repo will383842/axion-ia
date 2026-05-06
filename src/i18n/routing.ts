@@ -16,6 +16,7 @@ export const routing = defineRouting({
     "/": "/",
     "/design": "/design",
     "/components": "/components",
+    "/sections": "/sections",
 
     // Module 1 — Interventions entreprise
     "/interventions": { fr: "/interventions", en: "/interventions" },
