@@ -78,7 +78,9 @@ const emClasses: Record<SectionTone, string> = {
   mocha: "text-terracotta-soft",
 };
 
-// Editorial Section v3. Default tone = canvas (ivoire).
+// Editorial Section v3. Default tone = canvas (ivoire) pour h2/h3 ; quand
+// `titleAs="h1"` (= page hero) et tone non spécifié, default automatique
+// `halo-warm` pour harmoniser tous les hero du site avec la home.
 // Title supports an optional italic-editorial accent via `titleEm` + `titleTail`.
 export function Section({
   id,
@@ -91,16 +93,18 @@ export function Section({
   contentClassName,
   children,
   titleAs = "h2",
-  tone = "canvas",
+  tone,
   ...rest
 }: SectionProps) {
+  // Auto-default : h1 = halo-warm (page hero), sinon canvas.
+  const resolvedTone: SectionTone = tone ?? (titleAs === "h1" ? "halo-warm" : "canvas");
   const TitleTag = titleAs;
   return (
     <section
       id={id}
       className={cn(
         "relative overflow-hidden py-24 sm:py-28 lg:py-36",
-        toneClasses[tone],
+        toneClasses[resolvedTone],
         className,
       )}
       {...rest}
@@ -112,7 +116,7 @@ export function Section({
               <p
                 className={cn(
                   "text-[13px] font-medium tracking-[0.16em] uppercase",
-                  eyebrowClasses[tone],
+                  eyebrowClasses[resolvedTone],
                 )}
               >
                 {eyebrow}
@@ -122,13 +126,13 @@ export function Section({
               <TitleTag
                 className={cn(
                   "text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight",
-                  titleClasses[tone],
+                  titleClasses[resolvedTone],
                 )}
               >
                 {title}
                 {titleEm ? (
                   <span
-                    className={cn("italic-editorial mx-2", emClasses[tone])}
+                    className={cn("italic-editorial mx-2", emClasses[resolvedTone])}
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
                     {titleEm}
@@ -141,7 +145,7 @@ export function Section({
               <p
                 className={cn(
                   "max-w-2xl text-lg leading-relaxed sm:text-xl",
-                  descriptionClasses[tone],
+                  descriptionClasses[resolvedTone],
                 )}
               >
                 {description}
