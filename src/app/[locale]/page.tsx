@@ -210,9 +210,9 @@ export default async function Home({ params }: HomeProps) {
       {/* ───────────── HERO ───────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32">
         <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.55fr_1fr] lg:gap-16 xl:gap-20">
-            {/* Colonne gauche : copy (élargie pour casser sur moins de lignes) */}
-            <div className="max-w-3xl">
+          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-12 xl:gap-16">
+            {/* Colonne gauche : copy (titre garde sa taille géante) */}
+            <div className="max-w-2xl">
               <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("heroEyebrow")}
@@ -245,13 +245,17 @@ export default async function Home({ params }: HomeProps) {
             </div>
 
             {/* Colonne droite : illustration narrative enrichie — 3 services
-                connectés à votre entreprise avec courbes, sparkline, badges. */}
-            <div aria-hidden="true" className="relative hidden lg:block">
+                connectés à votre entreprise avec courbes, sparkline, badges.
+                Margin negative droite + scale pour effet "déborde" plus gros. */}
+            <div
+              aria-hidden="true"
+              className="relative hidden lg:-mr-12 lg:block xl:-mr-20 2xl:-mr-32"
+            >
               <svg
                 viewBox="0 0 560 540"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-auto w-full"
+                className="h-auto w-full lg:scale-[1.15] xl:scale-[1.25]"
               >
                 <defs>
                   {/* Halos diffus par couleur */}
