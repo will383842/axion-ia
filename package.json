@@ -37,6 +37,8 @@
     "anti-formation:check": "bash scripts/check-anti-formation.sh",
     "anti-siren:check": "bash scripts/check-anti-siren.sh",
     "anti-hex:check": "bash scripts/check-anti-hex.sh",
+    "contrast:check": "tsx scripts/check-contrast.ts",
+    "radius:check": "tsx scripts/check-radius.ts",
     "bundle:check": "size-limit",
     "bundle:analyze": "ANALYZE=true next build",
     "linkcheck": "linkinator http://localhost:3000 --recurse --silent",
@@ -46,7 +48,7 @@
     "vitals:report": "tsx scripts/vitals-report.ts",
     "worker": "tsx src/server/queue/worker.ts",
     "adr:new": "tsx scripts/adr-new.ts",
-    "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-formation:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm test",
+    "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-formation:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm contrast:check && pnpm radius:check && pnpm test",
     "prepare": "husky"
   },
   "dependencies": {
