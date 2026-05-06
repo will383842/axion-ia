@@ -163,7 +163,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
                 setSelectedDate(key);
                 setSelectedSlot(null);
               }}
-              aria-pressed={isSelected}
+              aria-selected={isSelected}
               aria-label={
                 status === "available"
                   ? `${day} · ${labels.available}`

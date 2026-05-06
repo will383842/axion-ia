@@ -158,7 +158,10 @@
   }
 }
 
-/* prefers-reduced-motion strict — kills all animations & transitions */
+/* prefers-reduced-motion strict — kills all animations & transitions.
+ * cta-translate hover override: keep the visual fade but neutralise the
+ * 6 px slide so motion-sensitive users don't perceive a teleport on hover
+ * (cf. _AUDIT/VERIF-FRONTEND-DEEP A11Y-006). */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -167,5 +170,8 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0ms !important;
     scroll-behavior: auto !important;
+  }
+  .cta-translate:hover {
+    transform: none !important;
   }
 }
