@@ -9,6 +9,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { ContactForm } from "@/components/forms/ContactForm";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
@@ -62,8 +63,8 @@ export default async function Contact({ params }: Props) {
         title={isFr ? "Démarrer un échange" : "Start a conversation"}
         description={
           isFr
-            ? "Réponse sous 48 h ouvrées. Le formulaire complet (5 étapes) sera mis en ligne au Sprint 13."
-            : "Reply within 48 business hours. The full 5-step form will go live in Sprint 13."
+            ? "Réponse sous 48 h ouvrées. Posez votre question ou décrivez votre besoin — nous revenons vers vous avec un devis détaillé."
+            : "Reply within 48 business hours. Ask a question or describe your need — we get back to you with a detailed quote."
         }
       />
 
@@ -89,8 +90,8 @@ export default async function Contact({ params }: Props) {
               <CardTitle>{isFr ? "Demander un audit" : "Request an audit"}</CardTitle>
               <CardDescription>
                 {isFr
-                  ? "4 tailles × 2 modalités. Formulaire 5 étapes (Sprint 13)."
-                  : "4 sizes × 2 modalities. 5-step form (Sprint 13)."}
+                  ? "4 tailles × 2 modalités. Formulaire 5 étapes."
+                  : "4 sizes × 2 modalities. 5-step form."}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -137,6 +138,41 @@ export default async function Contact({ params }: Props) {
               ? "Numéro d'enregistrement et coordonnées complètes : voir mentions légales."
               : "Registration number and full details: see legal notice."}
           </p>
+        </Container>
+      </Section>
+
+      <Section eyebrow={isFr ? "Message direct" : "Direct message"}>
+        <Container className="max-w-2xl">
+          <ContactForm
+            labels={
+              isFr
+                ? {
+                    name: "Nom & prénom",
+                    email: "Email professionnel",
+                    company: "Entreprise (optionnel)",
+                    message: "Votre message",
+                    consent:
+                      "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité.",
+                    submit: "Envoyer le message",
+                    sending: "Envoi…",
+                    success: "Message reçu. Nous vous répondons sous 48 h ouvrées.",
+                    failure:
+                      "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
+                  }
+                : {
+                    name: "Full name",
+                    email: "Professional email",
+                    company: "Company (optional)",
+                    message: "Your message",
+                    consent:
+                      "I agree to my data being used to process this request in accordance with the privacy policy.",
+                    submit: "Send message",
+                    sending: "Sending…",
+                    success: "Message received. We will reply within 48 business hours.",
+                    failure: "An error occurred. Try again or email contact@axion-ia.com.",
+                  }
+            }
+          />
         </Container>
       </Section>
 
