@@ -252,123 +252,235 @@ export default async function Home({ params }: HomeProps) {
               className="relative hidden lg:-mr-12 lg:block xl:-mr-20 2xl:-mr-32"
             >
               <svg
-                viewBox="0 0 560 580"
+                viewBox="0 0 600 620"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-auto w-full lg:scale-[1.15] xl:scale-[1.25]"
               >
                 <defs>
-                  {/* Halos diffus par couleur */}
+                  {/* Halos diffus radiaux par couleur */}
                   <radialGradient id="halo-center" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.16" />
-                    <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
+                    <stop offset="40%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
                     <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
                   </radialGradient>
                   <radialGradient id="halo-tc" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.22" />
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.30" />
+                    <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.10" />
                     <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
                   </radialGradient>
                   <radialGradient id="halo-pr" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.22" />
+                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.30" />
+                    <stop offset="60%" stopColor="var(--color-primary)" stopOpacity="0.10" />
                     <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
                   </radialGradient>
                   <radialGradient id="halo-sg" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.22" />
+                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.30" />
+                    <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.10" />
                     <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
                   </radialGradient>
+                  {/* Gradient diagonal pour cercle central — effet sphère */}
+                  <linearGradient id="grad-center" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--color-paper)" stopOpacity="1" />
+                    <stop offset="100%" stopColor="var(--color-bg)" stopOpacity="1" />
+                  </linearGradient>
+                  {/* Gradients linéaires pour connexions */}
+                  <linearGradient id="grad-link-tc" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.7" />
+                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.15" />
+                  </linearGradient>
+                  <linearGradient id="grad-link-pr" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.15" />
+                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0.7" />
+                  </linearGradient>
+                  <linearGradient id="grad-link-sg" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.15" />
+                    <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0.7" />
+                  </linearGradient>
+                  {/* Pattern grid très subtil — donne de la matière */}
+                  <pattern id="grid-fine" width="32" height="32" patternUnits="userSpaceOnUse">
+                    <path
+                      d="M 32 0 L 0 0 0 32"
+                      fill="none"
+                      stroke="var(--color-border-strong)"
+                      strokeWidth="0.5"
+                      strokeOpacity="0.35"
+                    />
+                  </pattern>
+                  {/* Filter glow doux */}
+                  <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  {/* Mask radial pour fade le grid sur les bords */}
+                  <radialGradient id="grid-mask" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="white" stopOpacity="0.6" />
+                    <stop offset="70%" stopColor="white" stopOpacity="0.1" />
+                    <stop offset="100%" stopColor="white" stopOpacity="0" />
+                  </radialGradient>
+                  <mask id="vignette-mask">
+                    <rect width="100%" height="100%" fill="url(#grid-mask)" />
+                  </mask>
                 </defs>
 
-                {/* ── Halos ambient larges ── */}
-                <circle cx="280" cy="270" r="260" fill="url(#halo-center)" />
+                {/* ── Background : grid texturé fade radial ── */}
+                <rect width="600" height="620" fill="url(#grid-fine)" mask="url(#vignette-mask)" />
 
-                {/* ── Anneaux concentriques décoratifs autour du centre ── */}
+                {/* ── Halo ambient large ── */}
+                <circle cx="300" cy="310" r="290" fill="url(#halo-center)" />
+
+                {/* ── Anneaux concentriques décoratifs (3 niveaux) ── */}
                 <circle
-                  cx="280"
-                  cy="270"
-                  r="180"
+                  cx="300"
+                  cy="310"
+                  r="220"
                   stroke="var(--color-border-strong)"
-                  strokeOpacity="0.35"
+                  strokeOpacity="0.18"
+                  strokeDasharray="1 8"
+                  fill="none"
+                />
+                <circle
+                  cx="300"
+                  cy="310"
+                  r="170"
+                  stroke="var(--color-border-strong)"
+                  strokeOpacity="0.30"
                   strokeDasharray="2 6"
                   fill="none"
                 />
                 <circle
-                  cx="280"
-                  cy="270"
-                  r="135"
+                  cx="300"
+                  cy="310"
+                  r="125"
                   stroke="var(--color-border-strong)"
                   strokeOpacity="0.55"
                   fill="none"
                 />
 
-                {/* ── Connexions courbes Bézier (3 services → centre) ── */}
-                {/* Service 1 (haut, terracotta) */}
+                {/* ── Connexions courbes Bézier multi-couches (3 services → centre) ── */}
+                {/* Service 1 — Intervenir (haut-droite) → centre : courbe douce + écho */}
                 <path
-                  d="M 280 110 C 280 150, 280 180, 280 200"
+                  d="M 460 110 C 420 170, 380 230, 340 270"
+                  stroke="url(#grad-link-tc)"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 460 110 C 410 160, 360 220, 340 270"
                   stroke="var(--color-terracotta)"
-                  strokeOpacity="0.55"
-                  strokeWidth="1.5"
-                  strokeDasharray="3 5"
+                  strokeOpacity="0.25"
+                  strokeWidth="1"
+                  strokeDasharray="2 4"
                   fill="none"
                 />
-                {/* Service 2 (bas-gauche, primary) — courbe douce */}
+                {/* Service 2 — Auditer (gauche) → centre */}
                 <path
-                  d="M 110 430 C 160 380, 200 340, 240 310"
+                  d="M 130 320 C 180 318, 230 315, 260 312"
+                  stroke="url(#grad-link-pr)"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 130 320 C 190 340, 240 332, 260 320"
                   stroke="var(--color-primary)"
-                  strokeOpacity="0.5"
-                  strokeWidth="1.5"
-                  strokeDasharray="3 5"
+                  strokeOpacity="0.25"
+                  strokeWidth="1"
+                  strokeDasharray="2 4"
                   fill="none"
                 />
-                {/* Service 3 (bas-droite, sage) — courbe symétrique */}
+                {/* Service 3 — Implémenter (bas-droite) → centre */}
                 <path
-                  d="M 450 430 C 400 380, 360 340, 320 310"
+                  d="M 460 540 C 420 480, 380 410, 340 360"
+                  stroke="url(#grad-link-sg)"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 460 540 C 430 470, 380 420, 340 360"
                   stroke="var(--color-sage)"
-                  strokeOpacity="0.5"
-                  strokeWidth="1.5"
-                  strokeDasharray="3 5"
+                  strokeOpacity="0.25"
+                  strokeWidth="1"
+                  strokeDasharray="2 4"
                   fill="none"
                 />
 
-                {/* ── Centre : "votre entreprise" enrichi ── */}
-                <circle cx="280" cy="270" r="78" fill="var(--color-paper)" />
+                {/* ── Centre : "votre entreprise" — sphère gradient + glow ── */}
+                {/* Outer glow ring */}
                 <circle
-                  cx="280"
-                  cy="270"
-                  r="78"
+                  cx="300"
+                  cy="310"
+                  r="100"
+                  fill="var(--color-terracotta)"
+                  fillOpacity="0.06"
+                  filter="url(#soft-glow)"
+                />
+                {/* Sphère principale */}
+                <circle cx="300" cy="310" r="88" fill="url(#grad-center)" />
+                <circle
+                  cx="300"
+                  cy="310"
+                  r="88"
                   stroke="var(--color-terracotta)"
-                  strokeOpacity="0.4"
+                  strokeOpacity="0.5"
                   strokeWidth="2"
                   fill="none"
                 />
-                {/* Icône Brain stylisée (paths simples) */}
-                <g transform="translate(263, 240)">
+                {/* Anneau interne décoratif */}
+                <circle
+                  cx="300"
+                  cy="310"
+                  r="76"
+                  stroke="var(--color-terracotta)"
+                  strokeOpacity="0.18"
+                  strokeWidth="1"
+                  strokeDasharray="2 4"
+                  fill="none"
+                />
+                {/* Highlight diagonal (effet sphère 3D subtil) */}
+                <ellipse
+                  cx="278"
+                  cy="288"
+                  rx="32"
+                  ry="14"
+                  fill="var(--color-paper)"
+                  fillOpacity="0.6"
+                  transform="rotate(-30 278 288)"
+                />
+                {/* Icône Brain stylisée enrichie */}
+                <g
+                  transform="translate(283, 280)"
+                  stroke="var(--color-terracotta)"
+                  fill="none"
+                  strokeWidth="1.6"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                >
+                  <path d="M 17 5 C 12 2, 5 5, 5 12 C 2 14, 2 20, 6 22 C 6 25, 10 27, 13 26 L 13 30 L 17 30 L 17 5 Z" />
+                  <path d="M 17 5 C 22 2, 29 5, 29 12 C 32 14, 32 20, 28 22 C 28 25, 24 27, 21 26 L 21 30 L 17 30" />
+                  {/* Synapses internes */}
                   <path
-                    d="M 17 5 C 12 2, 5 5, 5 12 C 2 14, 2 20, 6 22 C 6 25, 10 27, 13 26 L 13 28 L 17 28 L 17 5 Z"
-                    fill="none"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
+                    d="M 11 13 L 17 13 M 23 13 L 17 13 M 11 19 L 17 19 M 23 19 L 17 19"
+                    strokeOpacity="0.4"
+                    strokeWidth="0.9"
                   />
-                  <path
-                    d="M 17 5 C 22 2, 29 5, 29 12 C 32 14, 32 20, 28 22 C 28 25, 24 27, 21 26 L 21 28 L 17 28"
-                    fill="none"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M 12 12 L 17 12 M 22 12 L 17 12 M 12 17 L 17 17 M 22 17 L 17 17"
-                    stroke="var(--color-terracotta)"
-                    strokeOpacity="0.5"
-                    strokeWidth="0.8"
-                  />
+                  <circle cx="11" cy="13" r="0.8" fill="var(--color-terracotta)" stroke="none" />
+                  <circle cx="23" cy="13" r="0.8" fill="var(--color-terracotta)" stroke="none" />
+                  <circle cx="11" cy="19" r="0.8" fill="var(--color-terracotta)" stroke="none" />
+                  <circle cx="23" cy="19" r="0.8" fill="var(--color-terracotta)" stroke="none" />
                 </g>
+                {/* Label centre */}
                 <text
-                  x="280"
-                  y="300"
+                  x="300"
+                  y="345"
                   textAnchor="middle"
                   fontFamily="var(--font-serif)"
-                  fontSize="18"
+                  fontSize="20"
                   fontStyle="italic"
                   fontWeight="500"
                   fill="var(--color-terracotta)"
@@ -376,57 +488,79 @@ export default async function Home({ params }: HomeProps) {
                   Votre entreprise
                 </text>
                 <text
-                  x="280"
-                  y="320"
+                  x="300"
+                  y="364"
                   textAnchor="middle"
                   fontFamily="var(--font-sans)"
                   fontSize="10"
                   fontWeight="600"
-                  letterSpacing="0.18em"
+                  letterSpacing="0.20em"
                   fill="var(--color-fg-muted)"
                 >
                   + IA = GAINS
                 </text>
 
-                {/* ── Service 1 : INTERVENIR (haut, terracotta)
+                {/* ── Service 1 : INTERVENIR (haut-droite, terracotta)
                     Mission : accompagner vos équipes. */}
                 <g>
-                  <circle cx="280" cy="65" r="64" fill="url(#halo-tc)" />
-                  <circle cx="280" cy="65" r="44" fill="var(--color-paper)" />
+                  <circle cx="460" cy="110" r="80" fill="url(#halo-tc)" />
+                  {/* Pulse ring décoratif extérieur */}
                   <circle
-                    cx="280"
-                    cy="65"
-                    r="44"
+                    cx="460"
+                    cy="110"
+                    r="60"
                     stroke="var(--color-terracotta)"
-                    strokeWidth="2"
+                    strokeOpacity="0.25"
+                    strokeWidth="1"
+                    strokeDasharray="2 4"
+                    fill="none"
+                  />
+                  <circle cx="460" cy="110" r="46" fill="var(--color-paper)" />
+                  <circle
+                    cx="460"
+                    cy="110"
+                    r="46"
+                    stroke="var(--color-terracotta)"
+                    strokeWidth="2.2"
                   />
                   {/* Icône Users (3 cercles + lignes corps) */}
-                  <circle cx="268" cy="56" r="4" fill="var(--color-terracotta)" />
-                  <circle cx="282" cy="54" r="5" fill="var(--color-terracotta)" />
-                  <circle cx="296" cy="56" r="4" fill="var(--color-terracotta)" />
+                  <circle cx="446" cy="100" r="4.5" fill="var(--color-terracotta)" />
+                  <circle cx="462" cy="98" r="5.5" fill="var(--color-terracotta)" />
+                  <circle cx="478" cy="100" r="4.5" fill="var(--color-terracotta)" />
                   <path
-                    d="M 262 70 Q 268 66 274 70 M 275 68 Q 282 63 289 68 M 290 70 Q 296 66 302 70"
+                    d="M 440 116 Q 446 112 452 116 M 453 114 Q 462 108 471 114 M 472 116 Q 478 112 484 116"
                     stroke="var(--color-terracotta)"
-                    strokeWidth="1.8"
+                    strokeWidth="2"
                     fill="none"
                     strokeLinecap="round"
                   />
                   <text
-                    x="280"
-                    y="92"
+                    x="460"
+                    y="140"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
                     fontSize="10"
                     fontWeight="700"
-                    letterSpacing="0.14em"
+                    letterSpacing="0.16em"
                     fill="var(--color-terracotta)"
                   >
                     INTERVENIR
                   </text>
-                  {/* Sous-label mission */}
+                  {/* Sous-label mission — glassmorphism léger via rect */}
+                  <rect
+                    x="378"
+                    y="178"
+                    width="164"
+                    height="32"
+                    rx="16"
+                    fill="var(--color-paper)"
+                    fillOpacity="0.85"
+                    stroke="var(--color-border)"
+                    strokeWidth="1"
+                  />
                   <text
-                    x="280"
-                    y="140"
+                    x="460"
+                    y="199"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
                     fontSize="14"
@@ -438,46 +572,82 @@ export default async function Home({ params }: HomeProps) {
                   </text>
                 </g>
 
-                {/* ── Service 2 : AUDITER (bas-gauche, primary)
+                {/* ── Service 2 : AUDITER (gauche, primary)
                     Mission : trouver où gagner du temps et de l'argent. */}
                 <g>
-                  <circle cx="110" cy="430" r="64" fill="url(#halo-pr)" />
-                  <circle cx="110" cy="430" r="44" fill="var(--color-paper)" />
-                  <circle cx="110" cy="430" r="44" stroke="var(--color-primary)" strokeWidth="2" />
-                  {/* Icône Loupe */}
+                  <circle cx="120" cy="310" r="80" fill="url(#halo-pr)" />
                   <circle
-                    cx="105"
-                    cy="424"
-                    r="11"
+                    cx="120"
+                    cy="310"
+                    r="60"
                     stroke="var(--color-primary)"
-                    strokeWidth="2.2"
+                    strokeOpacity="0.25"
+                    strokeWidth="1"
+                    strokeDasharray="2 4"
                     fill="none"
                   />
-                  <line
-                    x1="114"
-                    y1="433"
-                    x2="123"
-                    y2="442"
+                  <circle cx="120" cy="310" r="46" fill="var(--color-paper)" />
+                  <circle
+                    cx="120"
+                    cy="310"
+                    r="46"
                     stroke="var(--color-primary)"
                     strokeWidth="2.2"
+                  />
+                  {/* Icône Loupe enrichie (avec poignée + reflet) */}
+                  <circle
+                    cx="115"
+                    cy="304"
+                    r="13"
+                    stroke="var(--color-primary)"
+                    strokeWidth="2.4"
+                    fill="none"
+                  />
+                  {/* Reflet sur la lentille */}
+                  <path
+                    d="M 109 298 Q 112 300 114 304"
+                    stroke="var(--color-primary)"
+                    strokeWidth="1.5"
+                    strokeOpacity="0.5"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="124"
+                    y1="313"
+                    x2="135"
+                    y2="324"
+                    stroke="var(--color-primary)"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                   />
                   <text
-                    x="110"
-                    y="460"
+                    x="120"
+                    y="350"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
                     fontSize="10"
                     fontWeight="700"
-                    letterSpacing="0.14em"
+                    letterSpacing="0.16em"
                     fill="var(--color-primary)"
                   >
                     AUDITER
                   </text>
                   {/* Sous-label mission */}
+                  <rect
+                    x="44"
+                    y="378"
+                    width="152"
+                    height="32"
+                    rx="16"
+                    fill="var(--color-paper)"
+                    fillOpacity="0.85"
+                    stroke="var(--color-border)"
+                    strokeWidth="1"
+                  />
                   <text
-                    x="110"
-                    y="510"
+                    x="120"
+                    y="399"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
                     fontSize="14"
@@ -492,51 +662,72 @@ export default async function Home({ params }: HomeProps) {
                 {/* ── Service 3 : IMPLÉMENTER (bas-droite, sage)
                     Mission : coder & déployer les outils sur mesure. */}
                 <g>
-                  <circle cx="450" cy="430" r="64" fill="url(#halo-sg)" />
-                  <circle cx="450" cy="430" r="44" fill="var(--color-paper)" />
-                  <circle cx="450" cy="430" r="44" stroke="var(--color-sage)" strokeWidth="2" />
-                  {/* Icône Code (chevrons + slash) */}
-                  <path
-                    d="M 442 422 L 434 430 L 442 438"
+                  <circle cx="460" cy="540" r="80" fill="url(#halo-sg)" />
+                  <circle
+                    cx="460"
+                    cy="540"
+                    r="60"
                     stroke="var(--color-sage)"
-                    strokeWidth="2.2"
+                    strokeOpacity="0.25"
+                    strokeWidth="1"
+                    strokeDasharray="2 4"
+                    fill="none"
+                  />
+                  <circle cx="460" cy="540" r="46" fill="var(--color-paper)" />
+                  <circle cx="460" cy="540" r="46" stroke="var(--color-sage)" strokeWidth="2.2" />
+                  {/* Icône Code </> enrichie */}
+                  <path
+                    d="M 450 530 L 440 540 L 450 550"
+                    stroke="var(--color-sage)"
+                    strokeWidth="2.5"
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                   <path
-                    d="M 458 422 L 466 430 L 458 438"
+                    d="M 470 530 L 480 540 L 470 550"
                     stroke="var(--color-sage)"
-                    strokeWidth="2.2"
+                    strokeWidth="2.5"
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                   <line
-                    x1="453"
-                    y1="421"
-                    x2="447"
-                    y2="439"
+                    x1="466"
+                    y1="528"
+                    x2="454"
+                    y2="552"
                     stroke="var(--color-sage)"
-                    strokeWidth="2.2"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                   />
                   <text
-                    x="450"
-                    y="460"
+                    x="460"
+                    y="580"
                     textAnchor="middle"
                     fontFamily="var(--font-sans)"
                     fontSize="10"
                     fontWeight="700"
-                    letterSpacing="0.12em"
+                    letterSpacing="0.14em"
                     fill="var(--color-sage)"
                   >
                     IMPLÉMENTER
                   </text>
                   {/* Sous-label mission */}
+                  <rect
+                    x="384"
+                    y="600"
+                    width="152"
+                    height="32"
+                    rx="16"
+                    fill="var(--color-paper)"
+                    fillOpacity="0.85"
+                    stroke="var(--color-border)"
+                    strokeWidth="1"
+                  />
                   <text
-                    x="450"
-                    y="510"
+                    x="460"
+                    y="621"
                     textAnchor="middle"
                     fontFamily="var(--font-serif)"
                     fontSize="14"
@@ -548,23 +739,73 @@ export default async function Home({ params }: HomeProps) {
                   </text>
                 </g>
 
-                {/* ── Particules + étoiles décoratives ── */}
-                <circle cx="50" cy="60" r="2.5" fill="var(--color-terracotta)" opacity="0.6" />
-                <circle cx="510" cy="100" r="2" fill="var(--color-primary)" opacity="0.55" />
-                <circle cx="540" cy="280" r="2.5" fill="var(--color-sage)" opacity="0.5" />
-                <circle cx="20" cy="320" r="2" fill="var(--color-terracotta)" opacity="0.5" />
-                <circle cx="180" cy="20" r="1.5" fill="var(--color-sage)" opacity="0.45" />
-                <circle cx="380" cy="40" r="1.5" fill="var(--color-primary)" opacity="0.45" />
+                {/* ── Particules + petits anneaux décoratifs flottants ── */}
+                {/* Mini ring orphelin (top-left) */}
+                <circle
+                  cx="60"
+                  cy="80"
+                  r="14"
+                  stroke="var(--color-terracotta)"
+                  strokeOpacity="0.35"
+                  strokeWidth="1"
+                  fill="none"
+                />
+                <circle cx="60" cy="80" r="2.5" fill="var(--color-terracotta)" opacity="0.7" />
+                {/* Mini ring (top-right) */}
+                <circle
+                  cx="540"
+                  cy="280"
+                  r="10"
+                  stroke="var(--color-sage)"
+                  strokeOpacity="0.35"
+                  strokeWidth="1"
+                  fill="none"
+                />
+                <circle cx="540" cy="280" r="2" fill="var(--color-sage)" opacity="0.6" />
+                {/* Particules dispersées */}
+                <circle cx="240" cy="50" r="2" fill="var(--color-primary)" opacity="0.55" />
+                <circle cx="40" cy="220" r="1.8" fill="var(--color-terracotta)" opacity="0.5" />
+                <circle cx="220" cy="540" r="2.5" fill="var(--color-primary)" opacity="0.55" />
+                <circle cx="30" cy="480" r="1.8" fill="var(--color-sage)" opacity="0.5" />
+                <circle cx="380" cy="60" r="1.5" fill="var(--color-sage)" opacity="0.5" />
                 {/* Étoiles 4-pointes */}
                 <path
-                  d="M 30 240 L 32 246 L 38 248 L 32 250 L 30 256 L 28 250 L 22 248 L 28 246 Z"
+                  d="M 50 380 L 52 386 L 58 388 L 52 390 L 50 396 L 48 390 L 42 388 L 48 386 Z"
                   fill="var(--color-terracotta)"
-                  opacity="0.5"
+                  opacity="0.6"
                 />
                 <path
-                  d="M 530 170 L 532 175 L 537 177 L 532 179 L 530 184 L 528 179 L 523 177 L 528 175 Z"
+                  d="M 555 440 L 557 445 L 562 447 L 557 449 L 555 454 L 553 449 L 548 447 L 553 445 Z"
                   fill="var(--color-primary)"
-                  opacity="0.4"
+                  opacity="0.5"
+                />
+                {/* Segments géométriques décoratifs */}
+                <line
+                  x1="30"
+                  y1="160"
+                  x2="50"
+                  y2="160"
+                  stroke="var(--color-terracotta)"
+                  strokeOpacity="0.4"
+                  strokeWidth="1"
+                />
+                <line
+                  x1="555"
+                  y1="180"
+                  x2="572"
+                  y2="180"
+                  stroke="var(--color-sage)"
+                  strokeOpacity="0.4"
+                  strokeWidth="1"
+                />
+                <line
+                  x1="555"
+                  y1="510"
+                  x2="572"
+                  y2="510"
+                  stroke="var(--color-primary)"
+                  strokeOpacity="0.4"
+                  strokeWidth="1"
                 />
               </svg>
             </div>

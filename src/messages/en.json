@@ -19,6 +19,7 @@
   },
   "cta": {
     "bookIntervention": "Book a session",
+    "bookInterventionLong": "Book an on-site AI session",
     "priceFrom": "from"
   },
   "footer": {
@@ -43,7 +44,7 @@
     "heroEyebrow": "Operational AI consultancy · for companies",
     "heroTitlePart1": "Artificial intelligence",
     "heroTitleEm": "that makes you win",
-    "heroTitlePart2": ". Time. Money. Peace of mind.",
+    "heroTitlePart2": ". Time, money.",
     "heroDescription": "We come to your company to show you what AI can concretely do for you: diagnostic, live demos on your real data, costed action plan. Your teams leave with concrete tools to apply from day one.",
     "heroCtaPrimary": "Get started · €490",
     "heroCtaSecondary": "See real cases",

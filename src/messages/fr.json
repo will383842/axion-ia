@@ -19,6 +19,7 @@
   },
   "cta": {
     "bookIntervention": "Réserver une intervention",
+    "bookInterventionLong": "Réserver une intervention en entreprise",
     "priceFrom": "à partir de"
   },
   "footer": {
@@ -43,7 +44,7 @@
     "heroEyebrow": "Cabinet IA opérationnel · pour entreprises",
     "heroTitlePart1": "L'intelligence artificielle",
     "heroTitleEm": "qui vous fait gagner",
-    "heroTitlePart2": ". Du temps. De l'argent. Du calme.",
+    "heroTitlePart2": ". Du temps, de l'argent.",
     "heroDescription": "On vient dans votre entreprise vous montrer ce que l'IA peut concrètement faire pour vous : diagnostic, démos sur vos vraies données, plan d'action chiffré. Vos équipes repartent avec du concret à appliquer dès le lendemain.",
     "heroCtaPrimary": "Démarrer · 490 €",
     "heroCtaSecondary": "Voir des cas concrets",
