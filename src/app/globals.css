@@ -23,7 +23,7 @@
   /* ----- Foreground (texte) ----- */
   --color-fg: #1a1815; /* anthracite-brun — texte principal (PAS du noir) */
   --color-fg-soft: #524b41; /* gris-brun moyen — texte secondaire */
-  --color-fg-muted: #80766a; /* gris-sable — texte tertiaire, captions */
+  --color-fg-muted: #6b6155; /* gris-sable — texte tertiaire, captions (WCAG AA sur bg/paper/sand) */
 
   /* ----- Accent identitaire : Webflow Blue conservé + chaleur ----- */
   --color-primary: #1a4dd9; /* bleu profond (était #146ef5, plus dense pour éditorial) */
@@ -37,7 +37,7 @@
   --color-terracotta-deep: #8c3010; /* terracotta foncé — hover */
 
   /* ----- Accent doux : vert sauge (proof/succès) ----- */
-  --color-sage: #7a8870;
+  --color-sage: #5e6c54; /* assombri pour WCAG AA sur paper (5.0:1) */
   --color-sage-soft: #e6ebe2;
 
   /* ----- Borders & dividers ----- */
@@ -56,7 +56,7 @@
   --color-accent-red: #ee1d36;
   --color-gray-800: #2a2520;
   --color-gray-700: #524b41;
-  --color-gray-600: #80766a;
+  --color-gray-600: #6b6155;
   --color-gray-300: #c8bda0;
   --color-border-hover: #c8bda0;
   --color-success: #5e7050;

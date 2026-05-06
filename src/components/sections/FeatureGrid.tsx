@@ -28,7 +28,7 @@ export function FeatureGrid({ items, columns = 3, className }: FeatureGridProps)
       {items.map((item) => (
         <li key={item.id} className="flex flex-col gap-5">
           {item.icon ? (
-            <div className="bg-terracotta-soft text-terracotta inline-flex h-12 w-12 items-center justify-center rounded-full">
+            <div className="bg-terracotta-soft text-terracotta-deep inline-flex h-12 w-12 items-center justify-center rounded-full">
               {item.icon}
             </div>
           ) : null}

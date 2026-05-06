@@ -37,7 +37,7 @@ export function CaseStudyCard({
               </span>
             ) : null}
             {metric ? (
-              <span className="bg-terracotta-soft text-terracotta inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
+              <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
                 {metric}
               </span>
             ) : null}
