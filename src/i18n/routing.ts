@@ -72,6 +72,8 @@ export const routing = defineRouting({
     "/blog": "/blog",
     "/faq": "/faq",
     "/centre-aide": { fr: "/centre-aide", en: "/help" },
+    "/reserver": { fr: "/reserver", en: "/book" },
+    "/roi": "/roi",
 
     // Légales
     "/mentions-legales": { fr: "/mentions-legales", en: "/legal-notice" },
@@ -82,6 +84,10 @@ export const routing = defineRouting({
     },
     "/cookies": "/cookies",
     "/rgpd": "/rgpd",
+    "/politique-deplacement": {
+      fr: "/politique-deplacement",
+      en: "/travel-policy",
+    },
   },
 });
 
