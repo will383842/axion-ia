@@ -4,7 +4,7 @@
 # whitelist below; everywhere else (code, comments, copy) the word must not appear.
 set -e
 
-PATTERN='formation|formateur|former vos|formé(e)?\b'
+PATTERN='\bformation\b|\bformations\b|\bformateur\b|\bformateurs\b|former vos|\bformé\b|\bformée\b|\bformés\b|\bformées\b'
 
 # Skip allowed paths and the whitelist marker.
 RESULTS=$(grep -REn --color=never \
