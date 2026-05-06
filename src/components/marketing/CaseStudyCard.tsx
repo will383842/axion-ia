@@ -1,6 +1,5 @@
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface CaseStudyCardProps {
@@ -12,6 +11,7 @@ interface CaseStudyCardProps {
   className?: string;
 }
 
+// Editorial v3 — title serif Fraunces, badges sand + terracotta-soft.
 export function CaseStudyCard({
   href,
   title,
@@ -28,16 +28,31 @@ export function CaseStudyCard({
         className,
       )}
     >
-      <Card className="cta-translate h-full">
+      <Card className="h-full">
         <CardHeader>
-          <div className="mb-3 flex items-center gap-2">
-            {industry ? <Badge variant="neutral">{industry}</Badge> : null}
-            {metric ? <Badge variant="success">{metric}</Badge> : null}
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            {industry ? (
+              <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+                {industry}
+              </span>
+            ) : null}
+            {metric ? (
+              <span className="bg-terracotta-soft text-terracotta inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
+                {metric}
+              </span>
+            ) : null}
           </div>
-          <CardTitle>{title}</CardTitle>
+          <CardTitle
+            className="text-2xl leading-[1.2] font-medium"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {title}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <CardDescription className="line-clamp-3">{excerpt}</CardDescription>
+          <CardDescription className="line-clamp-3 text-base leading-relaxed">
+            {excerpt}
+          </CardDescription>
         </CardContent>
       </Card>
     </Link>

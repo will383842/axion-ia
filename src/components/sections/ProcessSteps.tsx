@@ -14,32 +14,37 @@ interface ProcessStepsProps {
   className?: string;
 }
 
-// Numbered process steps. Horizontal layout collapses to vertical < lg.
+// Editorial v3 — numbered steps with serif terracotta numbers + top border line.
+// Auto-adapts on dark surfaces via descendant selectors.
 export function ProcessSteps({ steps, orientation = "horizontal", className }: ProcessStepsProps) {
   return (
     <ol
       className={cn(
-        "grid gap-8",
+        "grid gap-12",
         orientation === "horizontal" ? "lg:auto-cols-fr lg:grid-flow-col" : "",
         className,
       )}
     >
       {steps.map((step, idx) => (
-        <li key={step.id} className="flex gap-4">
+        <li
+          key={step.id}
+          className="border-border-strong [.bg-mocha-rich_&]:border-border-on-mocha flex flex-col gap-4 border-t pt-6"
+        >
           <span
             aria-hidden="true"
-            className="bg-primary text-primary-fg inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-sm text-sm font-semibold tabular-nums"
+            className="text-terracotta [.bg-mocha-rich_&]:text-terracotta-soft text-3xl font-medium tabular-nums"
+            style={{ fontFamily: "var(--font-serif)" }}
           >
             {String(idx + 1).padStart(2, "0")}
           </span>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-fg text-lg leading-tight font-semibold tracking-tight">
-              {step.title}
-            </h3>
-            {step.description ? (
-              <p className="text-base leading-relaxed text-gray-700">{step.description}</p>
-            ) : null}
-          </div>
+          <h3 className="text-fg [.bg-mocha-rich_&]:text-mocha-fg text-xl leading-tight font-semibold tracking-tight">
+            {step.title}
+          </h3>
+          {step.description ? (
+            <p className="text-fg-soft [.bg-mocha-rich_&]:text-mocha-fg/85 text-base leading-relaxed">
+              {step.description}
+            </p>
+          ) : null}
         </li>
       ))}
     </ol>

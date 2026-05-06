@@ -1,7 +1,7 @@
 import * as React from "react";
+import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/button";
 import { Cta } from "@/components/marketing/Cta";
 import { ProductHero } from "./ProductHero";
 import { FeatureGrid } from "./FeatureGrid";
@@ -36,9 +36,9 @@ interface ProductPageTemplateProps {
   jsonLd?: ReadonlyArray<Record<string, unknown>>;
 }
 
-// Single template every product page (Module 1/2/3) plugs into. Keeps
-// page files tiny (~10 lines each) and ensures structural parity for
-// SEO/AEO + Lighthouse. JSON-LD is emitted via <JsonLd>.
+// Editorial v3 — alternance auto des sections paper/sand/halo-cool/canvas/mocha
+// pour rythme visuel. Toutes les pages produits (Module 1/2/3, ~21 pages)
+// héritent automatiquement de cette doctrine.
 export function ProductPageTemplate({
   accent,
   copy,
@@ -60,7 +60,8 @@ export function ProductPageTemplate({
         cta={
           <>
             <Cta href={ctaPrimaryHref} size="lg">
-              {copy.ctaPrimary} →
+              {copy.ctaPrimary}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
             <Cta href={ctaSecondaryHref} variant="outline" size="lg">
               {copy.ctaSecondary}
@@ -69,15 +70,18 @@ export function ProductPageTemplate({
         }
       />
 
-      <Section eyebrow={copy.benefitsTitle.toUpperCase()} title={copy.benefitsTitle}>
+      {/* Bénéfices — paper white pour respiration */}
+      <Section tone="paper" eyebrow={copy.benefitsTitle.toUpperCase()} title={copy.benefitsTitle}>
         <FeatureGrid items={copy.benefits.map((b, i) => ({ id: `b-${i}`, ...b }))} columns={3} />
       </Section>
 
-      <Section eyebrow="Process" title={copy.processTitle}>
+      {/* Process — sand intermission */}
+      <Section tone="sand" eyebrow="Process" title={copy.processTitle}>
         <ProcessSteps steps={copy.processSteps.map((s, i) => ({ id: `s-${i}`, ...s }))} />
       </Section>
 
-      <Section eyebrow="Metrics" title={copy.metricsTitle}>
+      {/* Metrics — mocha riche pour gros contraste */}
+      <Section tone="mocha" eyebrow="Chiffres" title={copy.metricsTitle}>
         <MetricsRow
           stats={copy.metrics.map((m, i) => ({
             id: `m-${i}`,
@@ -89,17 +93,20 @@ export function ProductPageTemplate({
         />
       </Section>
 
-      <FaqBlock title={copy.faqTitle} items={copy.faqs} emitJsonLd={false} />
+      {/* FAQ — canvas pour repos */}
+      <FaqBlock title={copy.faqTitle} items={copy.faqs} emitJsonLd={false} tone="canvas" />
 
+      {/* CTA final — mocha riche signature */}
       <CtaBlock
         title={copy.ctaBlockTitle}
         description={copy.ctaBlockDescription}
         cta={
-          <Button asChild size="lg">
-            <a href={ctaPrimaryHref}>{copy.ctaPrimary} →</a>
-          </Button>
+          <Cta href={ctaPrimaryHref} size="lg">
+            {copy.ctaPrimary}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Cta>
         }
-        tone="dark"
+        tone="mocha"
       />
 
       <Container>

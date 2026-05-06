@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -6,7 +7,8 @@ import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 
 // Server Component. 5 items, ZERO dropdown (CLAUDE.md v6 §9.2).
-// Mobile drawer is the only client island.
+// Editorial doctrine v3 — bg ivoire avec backdrop blur, logo serif "Axion",
+// nav serif italique sur item actif, CTA rounded-full primary.
 export async function Header() {
   const t = await getTranslations();
 
@@ -18,21 +20,29 @@ export async function Header() {
   ];
 
   return (
-    <header className="bg-bg/95 border-border supports-[backdrop-filter]:bg-bg/85 sticky top-0 z-40 border-b backdrop-blur">
+    <header className="bg-bg/85 border-border supports-[backdrop-filter]:bg-bg/70 sticky top-0 z-40 border-b backdrop-blur-md">
       <Container className="flex h-16 items-center justify-between gap-4 lg:h-20">
-        {/* Logo */}
+        {/* Logo — wordmark serif italique editorial (signature Anthropic-like) */}
         <Link
           href="/"
           aria-label="AxionIA"
-          className="bg-primary text-primary-fg focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm text-base font-bold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="text-fg focus-visible:ring-primary inline-flex items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          A
+          <span
+            className="text-2xl leading-none font-medium tracking-tight"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            Axion
+            <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+              IA
+            </span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
         <nav
           aria-label={t("nav.home")}
-          className="hidden flex-1 items-center justify-center gap-7 lg:flex"
+          className="hidden flex-1 items-center justify-center gap-8 lg:flex"
         >
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} label={item.label} />
@@ -40,15 +50,15 @@ export async function Header() {
         </nav>
 
         {/* Right: CTA + locale (desktop) */}
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-4 lg:flex">
+          <LocaleSwitcher />
           <Link
             href="/interventions/essentielle"
-            className="bg-primary text-primary-fg cta-translate focus-visible:ring-primary inline-flex h-11 items-center gap-2 rounded-sm px-4 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {t("cta.bookIntervention")} · 490&nbsp;€
-            <span aria-hidden="true">→</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
-          <LocaleSwitcher />
         </div>
 
         {/* Mobile drawer */}
@@ -59,12 +69,13 @@ export async function Header() {
             ))}
             <Link
               href="/interventions/essentielle"
-              className="bg-primary text-primary-fg mt-4 flex items-center justify-center gap-2 rounded-sm px-4 py-3 text-base font-semibold"
+              className="bg-primary text-primary-fg mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
             >
-              {t("cta.bookIntervention")} · 490&nbsp;€ →
+              {t("cta.bookIntervention")} · 490&nbsp;€
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <div className="border-border mt-6 flex items-center justify-between border-t pt-4">
-              <span className="text-xs tracking-wide text-gray-700 uppercase">
+              <span className="text-fg-muted text-xs tracking-[0.16em] uppercase">
                 {t("common.switchLanguage")}
               </span>
               <LocaleSwitcher />

@@ -5,6 +5,91 @@
 
 ---
 
+## 2026-05-06 — Sprint 5b (correctif) · Home + Design v3 Editorial Premium
+
+**Auteur** : Will + Claude Opus 4.7
+**Référence** : ADR `docs/adr/0002-design-direction-editorial-premium.md`
+
+### Contexte
+
+Inspection live home post-Sprint 14 par Will → 2 verdicts :
+
+1. **Home placeholder Sprint 2 jamais remplacée** (Sprint 5 a livré pages produits, oublié home — trou non détecté par FRONTEND-DEEP-CHECK).
+2. **Doctrine "Webflow-light"** rejetée : _« vieillot, sans contraste, tout est blanc, trop carré »_. Pivot dark agressif aussi rejeté (_« haut de gamme sans noir »_). Direction validée → **Editorial Premium Light** (Anthropic / Mistral / Ramp).
+
+### Décisions structurantes
+
+- **ADR 0002** : Editorial Premium Light supersedes la doctrine implicite Webflow-light.
+- **Aucun fond noir** : ivoire / sand / mocha (brun-aubergine) au lieu de blanc / noir.
+- **Fraunces serif** chargée via `next/font` — titres + numbers + pull-quotes.
+- **Italiques terracotta** sur 1-2 mots-clés par titre (signature Anthropic).
+- **6 tones de Section** : canvas / paper / sand / halo-warm / halo-cool / mocha.
+- **Webflow Blue préservé** comme couleur identitaire `#1a4dd9`.
+- **i18n keys split** en `Part1` / `Em` / `Part2` pour rendre les italiques sans markup dans les traductions.
+
+### Livré ce sprint correctif
+
+**Home conversion-grade refondée** (`[locale]/page.tsx`) — 11 sections alternées :
+
+- Hero ivoire `bg-halo-warm` avec titre Fraunces géant 112px + italique terracotta
+- Trust strip sable (4 trust-points icônes circulaires)
+- Modules paper avec 3 cards radius-xl (numéros 01/02/03 mono)
+- Metrics mocha-rich (numbers Fraunces 96-112px)
+- Méthode halo-cool (4 colonnes border-top + numéros serif terracotta)
+- Cas concrets paper (3 cards titles serif + badges sand/terracotta-soft)
+- ROI sand (carte centrale paper)
+- Témoignages paper (4 pull-quotes serif italic + guillemets terracotta géants)
+- FAQ canvas (accordion natif + FAQPage JSON-LD)
+- CTA final mocha-rich avec italique terracotta
+- JSON-LD Organization + WebSite + FAQPage
+
+**Refonte tokens (`globals.css` v3)** :
+
+- 4 surfaces sans noir : `bg`, `paper`, `sand`, `mocha`, `mocha-soft`
+- 3 fonds composés : `bg-halo-warm`, `bg-halo-cool`, `bg-mocha-rich`
+- Foreground : `fg`, `fg-soft`, `fg-muted` anthracites-bruns
+- Accents : `terracotta`, `terracotta-soft`, `terracotta-deep`, `sage`, `sage-soft`
+- Radius : `xl` 20px, `2xl` 28px
+- Shadows : tons chauds rgba(42,37,32,…)
+- Utilities : `text-display-editorial`, `italic-editorial`, `cta-lift`
+
+**Layout root** : Fraunces chargée via `next/font/google` (variable + italique).
+
+**Composants partagés refondus (15 fichiers)** :
+
+- `<Header>` + `<NavLink>` + `<LocaleSwitcher>` + `<MobileNav>` (logo serif Axion**IA** italique, nav active italique terracotta, locale pill)
+- `<Footer>` (bg-mocha-rich, tagline serif géant, columns sobres)
+- `<Button>` + `<Cta>` (7 variants + terracotta, shape pill par défaut sur Cta marketing, cta-lift)
+- `<Card>` (radius-xl 20, padding 28, border sand, hover terracotta)
+- `<Section>` (6 tones + titleEm italic-editorial)
+- `<Hero>` (bg-halo-warm + indicator dot + titleEm)
+- `<ProductHero>` (21 pages produits — bg-halo-warm + halo accent latéral + h1 Fraunces)
+- `<MetricsRow>` + `<Stat>` (numbers Fraunces 96-112px + suffix terracotta, auto-adapt mocha)
+- `<ProcessSteps>` (numéros serif terracotta + top border, auto-adapt mocha)
+- `<CtaBlock>` (tones mocha/paper/sand + alias dark/light rétrocompat)
+- `<FaqBlock>` (tones canvas/paper/sand)
+- `<FeatureGrid>` (icônes terracotta-soft circulaires)
+- `<TimelineBlock>` (dates serif terracotta + ring-bg connector)
+- `<TeamGrid>` (sand avatar fallback, names serif, role italic terracotta)
+- `<LegalPageTemplate>` (hero halo-warm + body paper)
+- `<TestimonialCard>` (pull-quote pur figure + blockquote serif italic)
+- `<TestimonialsCarousel>` (boutons rounded-full, bordures sable)
+- `<ArticleCard>` + `<CaseStudyCard>` (titles serif Fraunces, badges sand + terracotta-soft)
+- `<ProductPageTemplate>` (alternance auto paper → sand → mocha → canvas → mocha)
+
+**i18n** : 64 nouvelles clés home FR+EN en parité (102 keys total).
+**Tests** : `Hero.test.tsx` réécrit pour assertion `text-display-editorial` + indicator dot accent. `Button.test.tsx` assertion `cta-lift`. **71/71 verts**.
+**Gates** : verify:all GREEN (typecheck · lint · i18n · anti-formation/siren/hex · use-client · contrast 10 paires AA · radius · 71 tests).
+
+### À faire ensuite
+
+- **Audit contraste étendu** : ajouter au `scripts/check-contrast.ts` les paires v3 (text-fg-muted sur bg-sand, text-mocha-fg/70 sur mocha-rich, etc.).
+- **Renforcer la modernité** (animations subtiles scroll-triggered, visuels SVG abstraits).
+- **Renforcer le message client** : intervention/audit/implémentation + bénéfice chiffré ultra-clair dès le hero.
+- **Reprendre la séquence d'audits** : 1/4 SPRINT-AUDIT, 2/4 Checkpoint, 4/4 VERIFICATION-FINALE Pass A.
+
+---
+
 ## 2026-05-06 — Sprint 0 (M1) · Setup repo & toolchain
 
 **Auteur** : Will + Claude Opus 4.7

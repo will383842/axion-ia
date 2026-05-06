@@ -5,29 +5,31 @@ import { cn } from "@/lib/utils";
 
 // Server Component — no JS shipped. Toggles between FR ↔ EN keeping the
 // current pathname (next-intl/navigation handles the locale rewrite).
+// Editorial v3 — pill style, active = bg sand + fg.
 export async function LocaleSwitcher() {
   const current = await getLocale();
   const t = await getTranslations("common");
 
   return (
-    <nav aria-label={t("switchLanguage")} className="flex items-center gap-1 text-xs">
-      {routing.locales.map((locale, idx) => {
+    <nav
+      aria-label={t("switchLanguage")}
+      className="border-border inline-flex items-center gap-0.5 rounded-full border p-0.5"
+    >
+      {routing.locales.map((locale) => {
         const active = locale === current;
         return (
-          <span key={locale} className="contents">
-            {idx > 0 ? <span className="text-gray-300">·</span> : null}
-            <Link
-              href="/"
-              locale={locale}
-              aria-current={active ? "true" : undefined}
-              className={cn(
-                "rounded-xs px-1.5 py-1 font-medium tracking-wide uppercase",
-                active ? "text-fg" : "hover:text-fg text-gray-600",
-              )}
-            >
-              {locale}
-            </Link>
-          </span>
+          <Link
+            key={locale}
+            href="/"
+            locale={locale}
+            aria-current={active ? "true" : undefined}
+            className={cn(
+              "rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] uppercase transition",
+              active ? "bg-sand text-fg" : "text-fg-muted hover:text-fg",
+            )}
+          >
+            {locale}
+          </Link>
         );
       })}
     </nav>

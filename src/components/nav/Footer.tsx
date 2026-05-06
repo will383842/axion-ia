@@ -5,13 +5,18 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
 // 5-zone footer per CLAUDE.md v6 §10. Pure Server Component.
+// Editorial doctrine v3 — bg-mocha-rich (alternative au noir), texte ivoire,
+// logo serif italique, columns sobres, dividers terracotta.
 export async function Footer() {
   const t = await getTranslations();
   const locale = await getLocale();
   const year = new Date().getFullYear();
 
   const services = [
-    { href: "/interventions/essentielle", label: "★ Essentielle 490 €" },
+    {
+      href: "/interventions/essentielle",
+      label: locale === "fr" ? "Essentielle · 490 €" : "Essential · €490",
+    },
     { href: "/interventions", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },
     { href: "/implementation", label: t("nav.implementation") },
@@ -38,42 +43,72 @@ export async function Footer() {
   ];
 
   return (
-    <footer className="border-border bg-bg text-fg border-t">
-      <Container className="py-16 lg:py-20">
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:grid-cols-5">
-          {/* Zone 1 — Identity */}
-          <div className="col-span-2 sm:col-span-3 lg:col-span-2">
-            <Link
-              href="/"
-              aria-label="AxionIA"
-              className="bg-primary text-primary-fg focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm text-base font-bold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+    <footer className="bg-mocha-rich text-mocha-fg relative overflow-hidden">
+      <Container className="relative py-20 lg:py-24">
+        {/* Top : tagline éditorial géant */}
+        <div className="border-border-on-mocha mb-16 max-w-3xl border-b pb-12">
+          <Link
+            href="/"
+            aria-label="AxionIA"
+            className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <span
+              className="text-3xl leading-none font-medium tracking-tight"
+              style={{ fontFamily: "var(--font-serif)" }}
             >
-              A
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-700">
-              AxionIA — {t("footer.tagline")}. OÜ estonienne · Tallinn.
-            </p>
-            <SocialLinks />
+              Axion
+              <span
+                className="text-terracotta-soft italic"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                IA
+              </span>
+            </span>
+          </Link>
+          <p
+            className="text-mocha-fg/85 mt-6 max-w-xl text-2xl leading-snug font-medium"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {locale === "fr" ? (
+              <>
+                Cabinet IA <span className="text-terracotta-soft italic">opérationnel</span>.
+                <br />
+                OÜ estonienne · Tallinn.
+              </>
+            ) : (
+              <>
+                <span className="text-terracotta-soft italic">Operational</span> AI consultancy.
+                <br />
+                Estonian OÜ · Tallinn.
+              </>
+            )}
+          </p>
+        </div>
+
+        {/* Columns + Newsletter */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+          {/* Newsletter zone */}
+          <div className="col-span-2 sm:col-span-3 lg:col-span-2">
             <NewsletterFooterForm />
+            <SocialLinks />
           </div>
 
           <FooterColumn title={t("footer.services")} items={services} />
           <FooterColumn title={t("footer.resources")} items={resources} />
-          <div>
+          <div className="space-y-10">
             <FooterColumn title={t("footer.company")} items={company} />
-            <div className="mt-8">
-              <FooterColumn title={t("footer.legal")} items={legal} />
-            </div>
+            <FooterColumn title={t("footer.legal")} items={legal} />
           </div>
         </div>
 
-        <div className="border-border mt-12 flex flex-col gap-4 border-t pt-6 text-xs text-gray-600 sm:flex-row sm:items-center sm:justify-between">
+        {/* Bottom strip */}
+        <div className="border-border-on-mocha text-mocha-fg/70 mt-16 flex flex-col gap-4 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} AxionIA OÜ · {t("footer.rights")}
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             {/* Native <a> — sitemap.xml is global, not locale-prefixed. */}
-            <a href="/sitemap.xml" className="hover:text-fg">
+            <a href="/sitemap.xml" className="hover:text-mocha-fg transition">
               {t("footer.siteMap")}
             </a>
             <LocaleSwitcher />
@@ -91,13 +126,15 @@ interface FooterColumnProps {
 function FooterColumn({ title, items }: FooterColumnProps) {
   return (
     <div>
-      <h3 className="text-fg text-xs font-semibold tracking-wide uppercase">{title}</h3>
-      <ul className="mt-4 space-y-2 text-sm text-gray-700">
+      <h3 className="text-mocha-fg/60 text-[11px] font-semibold tracking-[0.16em] uppercase">
+        {title}
+      </h3>
+      <ul className="mt-5 space-y-3 text-sm">
         {items.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href as never}
-              className="hover:text-fg focus-visible:ring-primary inline-flex min-h-11 items-center focus-visible:rounded-xs focus-visible:ring-2 focus-visible:outline-none"
+              className="text-mocha-fg/85 hover:text-terracotta-soft focus-visible:ring-terracotta inline-flex min-h-9 items-center transition focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none"
             >
               {item.label}
             </Link>
@@ -108,8 +145,7 @@ function FooterColumn({ title, items }: FooterColumnProps) {
   );
 }
 
-// Brand SVGs inline — lucide-react v1.x doesn't ship LinkedIn/YouTube and we
-// don't want a separate dep just for two glyphs.
+// Brand SVGs inline.
 function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
@@ -126,13 +162,12 @@ function YouTubeIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 function SocialLinks() {
-  // External links → rel + new tab. NAV-014 / Zone 1 social presence.
   const socials = [
     { href: "https://www.linkedin.com/company/axion-ia", label: "LinkedIn", Icon: LinkedInIcon },
     { href: "https://www.youtube.com/@axion-ia", label: "YouTube", Icon: YouTubeIcon },
   ];
   return (
-    <div className="mt-6 flex flex-wrap items-center gap-2">
+    <div className="mt-8 flex flex-wrap items-center gap-2">
       {socials.map(({ href, label, Icon }) => (
         <a
           key={label}
@@ -140,9 +175,9 @@ function SocialLinks() {
           target="_blank"
           rel="noopener noreferrer external"
           aria-label={label}
-          className="text-fg hover:bg-border/40 focus-visible:ring-primary inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+          className="text-mocha-fg/80 border-border-on-mocha hover:border-terracotta-soft hover:text-terracotta-soft focus-visible:ring-terracotta inline-flex h-11 w-11 items-center justify-center rounded-full border transition focus-visible:ring-2 focus-visible:outline-none"
         >
-          <Icon className="h-5 w-5" />
+          <Icon className="h-4 w-4" />
         </a>
       ))}
     </div>
@@ -171,8 +206,8 @@ async function NewsletterFooterForm() {
         failure: "Error. Try again or email contact@axion-ia.com.",
       };
   return (
-    <div className="mt-8 max-w-sm">
-      <h3 className="text-fg mb-3 text-xs font-semibold tracking-wide uppercase">
+    <div className="max-w-sm">
+      <h3 className="text-mocha-fg/60 mb-4 text-[11px] font-semibold tracking-[0.16em] uppercase">
         {t("footer.newsletter")}
       </h3>
       <NewsletterForm labels={labels} variant="inline" />

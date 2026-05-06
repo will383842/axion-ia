@@ -17,14 +17,14 @@ interface ExternalCtaProps extends Omit<ButtonProps, "asChild"> {
 
 type CtaProps = InternalCtaProps | ExternalCtaProps;
 
-// Conversion-grade CTA wrapper. Uses Button styles + i18n-aware <Link>.
-// `track` propagates as `data-cta` so analytics-tracking skill can pick it up.
-export function Cta({ href, track, children, external, ...rest }: CtaProps) {
+// Marketing CTA wrapper — pill shape (rounded-full) by default, signature
+// editorial v3. Form submits use <Button> directly with shape="rounded".
+export function Cta({ href, track, children, external, shape = "pill", ...rest }: CtaProps) {
   const dataAttrs = track ? { "data-cta": track } : {};
 
   if (external) {
     return (
-      <Button asChild {...rest}>
+      <Button asChild shape={shape} {...rest}>
         <a href={href} target="_blank" rel="noreferrer" {...dataAttrs}>
           {children}
         </a>
@@ -33,7 +33,7 @@ export function Cta({ href, track, children, external, ...rest }: CtaProps) {
   }
 
   return (
-    <Button asChild {...rest}>
+    <Button asChild shape={shape} {...rest}>
       <Link href={href as never} {...dataAttrs}>
         {children}
       </Link>

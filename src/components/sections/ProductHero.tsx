@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Container } from "@/components/layout/Container";
-import { Eyebrow } from "@/components/typography/Eyebrow";
 import { Price } from "@/components/marketing/Price";
 import { cn } from "@/lib/utils";
 
@@ -17,18 +16,27 @@ interface ProductHeroProps {
   className?: string;
 }
 
-// Hero used by every product page. Combines eyebrow + h1 + AEO answer +
-// optional price + CTAs. Mobile-first; AEO bloc placed in the first fold
-// for axionia-seo-aeo citability.
-//
-// Accent border-left adds a 4px module-color stripe on the left of the
-// content block — strengthens the per-module visual identity without
-// changing the dominant Webflow Blue (cf. _AUDIT/VERIF-FRONTEND-DEEP DSN-002).
+// Editorial v3 — bg-halo-warm + 4px accent border-l with terracotta halo.
+// Title uses Fraunces serif; answer block is body-sans for legibility.
 const ACCENT_BORDER: Record<NonNullable<ProductHeroProps["accent"]>, string> = {
   primary: "border-l-primary",
   purple: "border-l-accent-purple",
   orange: "border-l-accent-orange",
   green: "border-l-accent-green",
+};
+
+const ACCENT_HALO: Record<NonNullable<ProductHeroProps["accent"]>, string> = {
+  primary: "before:bg-primary/20",
+  purple: "before:bg-accent-purple/20",
+  orange: "before:bg-accent-orange/20",
+  green: "before:bg-accent-green/20",
+};
+
+const ACCENT_DOT: Record<NonNullable<ProductHeroProps["accent"]>, string> = {
+  primary: "bg-primary",
+  purple: "bg-accent-purple",
+  orange: "bg-accent-orange",
+  green: "bg-accent-green",
 };
 
 export function ProductHero({
@@ -43,24 +51,43 @@ export function ProductHero({
   className,
 }: ProductHeroProps) {
   return (
-    <section className={cn("bg-bg text-fg py-16 sm:py-20 lg:py-28", className)}>
-      <Container>
-        <div className={cn("max-w-4xl border-l-4 pl-6 sm:pl-8", ACCENT_BORDER[accent])}>
-          <Eyebrow variant={accent}>{eyebrow}</Eyebrow>
-          <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04] font-semibold tracking-tight">
+    <section
+      className={cn(
+        "bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32",
+        // Faint accent halo derrière le bord gauche
+        "before:absolute before:top-1/2 before:left-0 before:h-[60%] before:w-[20%] before:-translate-y-1/2 before:rounded-full before:blur-3xl",
+        ACCENT_HALO[accent],
+        className,
+      )}
+    >
+      <Container className="relative">
+        <div className={cn("relative max-w-4xl border-l-4 pl-6 sm:pl-10", ACCENT_BORDER[accent])}>
+          <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
+            <span
+              className={cn(
+                "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
+                ACCENT_DOT[accent],
+              )}
+            />
+            {eyebrow}
+          </p>
+          <h1
+            className="text-fg text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-medium tracking-tight"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             {title}
           </h1>
-          <div className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-700 sm:text-xl">
+          <div className="text-fg-soft mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl">
             {answer}
           </div>
           {typeof priceEur === "number" ? (
-            <div className="mt-8">
+            <div className="mt-10">
               <Price amount={priceEur} suffix={priceSuffix} size="xl" />
             </div>
           ) : null}
-          <div className="mt-8 flex flex-wrap gap-3">{cta}</div>
+          <div className="mt-10 flex flex-wrap gap-4">{cta}</div>
           {meta ? (
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-600">
+            <div className="text-fg-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
               {meta}
             </div>
           ) : null}

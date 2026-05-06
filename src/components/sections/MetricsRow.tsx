@@ -7,7 +7,7 @@ interface Metric {
   number: string | number;
   suffix?: string;
   label: string;
-  variant?: "default" | "primary" | "purple" | "orange" | "green";
+  variant?: "default" | "primary" | "purple" | "orange" | "green" | "terracotta";
 }
 
 interface MetricsRowProps {
@@ -15,12 +15,13 @@ interface MetricsRowProps {
   className?: string;
 }
 
-// Big-number stats row. Use 2-4 entries; mobile stacks to 2 cols.
+// Editorial v3 — big-number stats row. Mobile stacks to 2 cols, desktop
+// full row. Use 2-4 entries.
 export function MetricsRow({ stats, className }: MetricsRowProps) {
   const cols =
     stats.length >= 4 ? "lg:grid-cols-4" : stats.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2";
   return (
-    <dl className={cn("grid grid-cols-2 gap-6", cols, className)}>
+    <dl className={cn("grid grid-cols-2 gap-x-8 gap-y-12", cols, className)}>
       {stats.map((stat) => (
         <Stat
           key={stat.id}

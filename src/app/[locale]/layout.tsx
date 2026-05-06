@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Inconsolata } from "next/font/google";
+import { Manrope, Inconsolata, Fraunces } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -25,6 +25,17 @@ const inconsolata = Inconsolata({
   subsets: ["latin"],
   variable: "--font-inconsolata",
   display: "swap",
+});
+
+// Fraunces = serif éditorial premium (style Anthropic/Mistral). Variable axes
+// `opsz` (optical size) + `SOFT` activés pour rendu raffiné aux grandes tailles.
+// Loaded latin only, italic for emphasis on display headings.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
@@ -107,7 +118,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     <html
       lang={locale}
       dir="ltr"
-      className={`${manrope.variable} ${inconsolata.variable} h-full antialiased`}
+      className={`${manrope.variable} ${inconsolata.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="bg-bg text-fg flex min-h-full flex-col font-sans">
         <SkipToContent />

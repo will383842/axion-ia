@@ -12,9 +12,8 @@ interface NavLinkProps {
   variant?: "desktop" | "mobile";
 }
 
-// Desktop: subtle underline indicator. Mobile: bg tint (full-width row).
-// Active match = pathname starts with href (so /interventions/essentielle
-// also marks /interventions as the parent module).
+// Editorial v3 — desktop: italique terracotta sur item actif (signature Anthropic).
+// Mobile: bg sand sur item actif (full-width row).
 export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -25,8 +24,8 @@ export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
         href={href as never}
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "text-fg -mx-3 rounded-sm px-3 py-3 font-medium",
-          isActive ? "bg-primary/10 text-primary" : "hover:bg-border/40",
+          "text-fg -mx-3 rounded-md px-3 py-3 font-medium",
+          isActive ? "bg-sand text-terracotta italic" : "hover:bg-sand/60",
         )}
       >
         {label}
@@ -40,9 +39,7 @@ export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
       aria-current={isActive ? "page" : undefined}
       className={cn(
         "relative text-sm font-medium tracking-tight transition-colors",
-        isActive
-          ? "text-primary after:bg-primary after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5"
-          : "text-fg hover:text-primary",
+        isActive ? "text-terracotta italic" : "text-fg-soft hover:text-fg",
       )}
     >
       {label}

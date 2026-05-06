@@ -1,51 +1,151 @@
 import { cn } from "@/lib/utils";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { Container } from "./Container";
-import { Eyebrow } from "../typography/Eyebrow";
+
+export type SectionTone = "canvas" | "paper" | "sand" | "halo-warm" | "halo-cool" | "mocha";
 
 interface SectionProps extends Omit<ComponentPropsWithoutRef<"section">, "title"> {
   id?: string;
   eyebrow?: string;
   title?: ReactNode;
+  /** Optional emphasized portion inside the title (rendered in serif italic terracotta). */
+  titleEm?: ReactNode;
+  /** Trailing portion of the title after `titleEm` (so the eyebrow → title → em → tail flow stays inline). */
+  titleTail?: ReactNode;
   description?: ReactNode;
   className?: string;
   contentClassName?: string;
   children?: ReactNode;
   /**
+   * Visual tone — controls bg + foreground color. Tokens defined in globals.css.
+   * - `canvas`     : ivoire chaud (default)
+   * - `paper`      : papier blanc — contraste / sections cards
+   * - `sand`       : sable — intermissions
+   * - `halo-warm`  : ivoire + halo terracotta diffus
+   * - `halo-cool`  : sable + halo bleu/sauge
+   * - `mocha`      : brun-aubergine riche (alternative au noir)
+   */
+  tone?: SectionTone;
+  /**
    * Heading level for `title`. Default `h2`. Pass `h1` on listing pages
-   * that don't carry a `<Hero>` so each page has exactly one h1
-   * (cf. _AUDIT/VERIF-FRONTEND-DEEP A11Y-001 — WCAG 2.4.6).
+   * that don't carry a `<Hero>` so each page has exactly one h1 (WCAG 2.4.6).
    */
   titleAs?: "h1" | "h2" | "h3";
 }
 
-// Webflow vertical rhythm: py-16 sm py-20 lg py-28.
-// id supports anchor-based navigation; contentClassName overrides inner container.
+const toneClasses: Record<SectionTone, string> = {
+  canvas: "bg-bg text-fg",
+  paper: "bg-paper text-fg",
+  sand: "bg-sand text-fg",
+  "halo-warm": "bg-halo-warm text-fg",
+  "halo-cool": "bg-halo-cool text-fg",
+  mocha: "bg-mocha-rich text-mocha-fg",
+};
+
+const eyebrowClasses: Record<SectionTone, string> = {
+  canvas: "text-fg-muted",
+  paper: "text-fg-muted",
+  sand: "text-fg-muted",
+  "halo-warm": "text-fg-muted",
+  "halo-cool": "text-fg-muted",
+  mocha: "text-mocha-fg/70",
+};
+
+const descriptionClasses: Record<SectionTone, string> = {
+  canvas: "text-fg-soft",
+  paper: "text-fg-soft",
+  sand: "text-fg-soft",
+  "halo-warm": "text-fg-soft",
+  "halo-cool": "text-fg-soft",
+  mocha: "text-mocha-fg/85",
+};
+
+const titleClasses: Record<SectionTone, string> = {
+  canvas: "text-fg",
+  paper: "text-fg",
+  sand: "text-fg",
+  "halo-warm": "text-fg",
+  "halo-cool": "text-fg",
+  mocha: "text-mocha-fg",
+};
+
+const emClasses: Record<SectionTone, string> = {
+  canvas: "text-terracotta",
+  paper: "text-terracotta",
+  sand: "text-terracotta",
+  "halo-warm": "text-terracotta",
+  "halo-cool": "text-terracotta",
+  mocha: "text-terracotta-soft",
+};
+
+// Editorial Section v3. Default tone = canvas (ivoire).
+// Title supports an optional italic-editorial accent via `titleEm` + `titleTail`.
 export function Section({
   id,
   eyebrow,
   title,
+  titleEm,
+  titleTail,
   description,
   className,
   contentClassName,
   children,
   titleAs = "h2",
+  tone = "canvas",
   ...rest
 }: SectionProps) {
   const TitleTag = titleAs;
   return (
-    <section id={id} className={cn("py-16 sm:py-20 lg:py-28", className)} {...rest}>
-      <Container className={contentClassName}>
+    <section
+      id={id}
+      className={cn(
+        "relative overflow-hidden py-24 sm:py-28 lg:py-36",
+        toneClasses[tone],
+        className,
+      )}
+      {...rest}
+    >
+      <Container className={cn("relative", contentClassName)}>
         {(eyebrow ?? title ?? description) ? (
-          <header className="mb-10 max-w-3xl space-y-4 sm:mb-14">
-            {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+          <header className="mb-16 max-w-3xl space-y-5">
+            {eyebrow ? (
+              <p
+                className={cn(
+                  "text-[13px] font-medium tracking-[0.16em] uppercase",
+                  eyebrowClasses[tone],
+                )}
+              >
+                {eyebrow}
+              </p>
+            ) : null}
             {title ? (
-              <TitleTag className="text-fg text-[clamp(2rem,4vw,3.5rem)] leading-[1.04] font-semibold tracking-tight">
+              <TitleTag
+                className={cn(
+                  "text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight",
+                  titleClasses[tone],
+                )}
+              >
                 {title}
+                {titleEm ? (
+                  <span
+                    className={cn("italic-editorial mx-2", emClasses[tone])}
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {titleEm}
+                  </span>
+                ) : null}
+                {titleTail}
               </TitleTag>
             ) : null}
             {description ? (
-              <p className="max-w-2xl text-lg leading-relaxed text-gray-700">{description}</p>
+              <p
+                className={cn(
+                  "max-w-2xl text-lg leading-relaxed sm:text-xl",
+                  descriptionClasses[tone],
+                )}
+              >
+                {description}
+              </p>
             ) : null}
           </header>
         ) : null}

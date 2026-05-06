@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface TeamMember {
@@ -16,40 +15,36 @@ interface TeamGridProps {
   className?: string;
 }
 
+// Editorial v3 — sober card minus border, serif name, sand avatar fallback.
 export function TeamGrid({ members, className }: TeamGridProps) {
   return (
-    <ul className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}>
+    <ul className={cn("grid gap-10 sm:grid-cols-2 lg:grid-cols-3", className)}>
       {members.map((member) => (
-        <li key={member.id}>
-          <Card>
-            <CardContent className="flex flex-col gap-4 pt-6">
-              <div className="bg-border/60 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full">
-                {member.photoUrl ? (
-                  // Plain <img> — Sprint 5 swaps to next/image once we have
-                  // real photos and a CDN policy in place.
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={member.photoUrl}
-                    alt={member.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="text-lg font-semibold text-gray-600">
-                    {member.name.charAt(0)}
-                  </span>
-                )}
-              </div>
-              <div>
-                <h3 className="text-fg text-base leading-tight font-semibold tracking-tight">
-                  {member.name}
-                </h3>
-                <p className="text-sm text-gray-600">{member.role}</p>
-              </div>
-              {member.bio ? (
-                <p className="text-sm leading-relaxed text-gray-700">{member.bio}</p>
-              ) : null}
-            </CardContent>
-          </Card>
+        <li key={member.id} className="border-border-strong flex flex-col gap-5 border-t pt-6">
+          <div className="bg-sand text-fg-muted border-border flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border">
+            {member.photoUrl ? (
+              // Plain <img> — Sprint 5 swaps to next/image once we have
+              // real photos and a CDN policy in place.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={member.photoUrl} alt={member.name} className="h-full w-full object-cover" />
+            ) : (
+              <span className="text-2xl font-medium" style={{ fontFamily: "var(--font-serif)" }}>
+                {member.name.charAt(0)}
+              </span>
+            )}
+          </div>
+          <div>
+            <h3
+              className="text-fg text-2xl leading-tight font-medium"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {member.name}
+            </h3>
+            <p className="text-terracotta text-sm italic">{member.role}</p>
+          </div>
+          {member.bio ? (
+            <p className="text-fg-soft text-base leading-relaxed">{member.bio}</p>
+          ) : null}
         </li>
       ))}
     </ul>

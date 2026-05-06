@@ -15,11 +15,18 @@ describe("<Hero>", () => {
   it("scales the title for the home variant", () => {
     render(<Hero variant="home" title="Big" />);
     const h1 = screen.getByRole("heading", { level: 1 });
-    expect(h1.className).toContain("clamp(3rem,7vw,5rem)");
+    expect(h1.className).toContain("text-display-editorial");
   });
 
-  it("uses module accent eyebrow color", () => {
-    render(<Hero accent="orange" eyebrow="Audit module" title="Audit complet" />);
-    expect(screen.getByText("Audit module").className).toContain("text-accent-orange");
+  it("uses module accent indicator dot color", () => {
+    const { container } = render(
+      <Hero accent="orange" eyebrow="Audit module" title="Audit complet" />,
+    );
+    // Indicator dot is the first <span> inside the eyebrow paragraph.
+    const eyebrow = screen.getByText("Audit module");
+    const dot = eyebrow.querySelector("span");
+    expect(dot?.className).toContain("bg-accent-orange");
+    // Also assert the markup did render the eyebrow text.
+    expect(container.textContent).toContain("Audit module");
   });
 });

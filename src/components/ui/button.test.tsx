@@ -8,7 +8,7 @@ describe("<Button>", () => {
     const btn = screen.getByRole("button", { name: "Click" });
     expect(btn.tagName).toBe("BUTTON");
     expect(btn.className).toContain("bg-primary");
-    expect(btn.className).toContain("cta-translate");
+    expect(btn.className).toContain("cta-lift");
   });
 
   it("supports asChild via Slot", () => {

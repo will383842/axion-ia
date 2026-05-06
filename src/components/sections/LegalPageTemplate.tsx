@@ -9,28 +9,27 @@ interface LegalPageTemplateProps {
   lastUpdated?: string;
 }
 
-// Shared template for the 6 legal pages — long-form text only, max-w-3xl,
-// well-structured h2 sections so screen readers and search engines can index
-// the structure correctly.
+// Editorial v3 — sober, max-w-3xl, body Manrope + h2 sans-serif (legal pages
+// stay business-like, no serif here for legibility / quick scan).
 export function LegalPageTemplate({ title, intro, sections, lastUpdated }: LegalPageTemplateProps) {
   return (
     <>
-      <Section eyebrow="Légal" title={title} description={intro} />
+      <Section tone="halo-warm" eyebrow="Légal" title={title} description={intro} />
 
-      <Section>
+      <Section tone="paper">
         <Container className="max-w-3xl">
           {lastUpdated ? (
-            <p className="mb-8 text-xs tracking-wide text-gray-600 uppercase">
+            <p className="text-fg-muted mb-10 text-[11px] tracking-[0.16em] uppercase">
               Dernière mise à jour : {lastUpdated}
             </p>
           ) : null}
-          <div className="space-y-10">
+          <div className="space-y-12">
             {sections.map((section) => (
-              <section key={section.title} className="space-y-3">
-                <h2 className="text-fg text-xl leading-tight font-semibold tracking-tight">
+              <section key={section.title} className="space-y-4">
+                <h2 className="text-fg text-2xl leading-tight font-semibold tracking-tight">
                   {section.title}
                 </h2>
-                <p className="text-base leading-relaxed text-gray-700">{section.body}</p>
+                <p className="text-fg-soft text-base leading-relaxed">{section.body}</p>
               </section>
             ))}
           </div>

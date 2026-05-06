@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Container } from "@/components/layout/Container";
-import { Eyebrow } from "@/components/typography/Eyebrow";
 import { cn } from "@/lib/utils";
 
 type HeroVariant = "home" | "module" | "product" | "transverse";
@@ -8,9 +7,13 @@ type HeroVariant = "home" | "module" | "product" | "transverse";
 interface HeroProps {
   variant?: HeroVariant;
   eyebrow?: string;
-  /** Module color used by the eyebrow + accent border. */
-  accent?: "primary" | "purple" | "orange" | "green" | "pink" | "yellow" | "red";
+  /** Module color used by the eyebrow indicator dot. */
+  accent?: "primary" | "purple" | "orange" | "green" | "pink" | "yellow" | "red" | "terracotta";
   title: React.ReactNode;
+  /** Optional emphasized portion (rendered serif italic terracotta-soft). */
+  titleEm?: React.ReactNode;
+  /** Trailing portion after `titleEm`. */
+  titleTail?: React.ReactNode;
   description?: React.ReactNode;
   cta?: React.ReactNode;
   meta?: React.ReactNode;
@@ -18,58 +21,81 @@ interface HeroProps {
 }
 
 const verticalRhythm: Record<HeroVariant, string> = {
-  home: "py-20 sm:py-24 lg:py-32",
-  module: "py-16 sm:py-20 lg:py-28",
-  product: "py-16 sm:py-20 lg:py-28",
-  transverse: "py-12 sm:py-16 lg:py-20",
+  home: "py-24 sm:py-32 lg:py-40",
+  module: "py-20 sm:py-24 lg:py-32",
+  product: "py-20 sm:py-24 lg:py-32",
+  transverse: "py-16 sm:py-20 lg:py-24",
 };
 
 const titleScale: Record<HeroVariant, string> = {
-  home: "text-[clamp(3rem,7vw,5rem)] leading-[1.04] font-semibold tracking-tight",
-  module: "text-[clamp(2.5rem,6vw,4rem)] leading-[1.04] font-semibold tracking-tight",
-  product: "text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04] font-semibold tracking-tight",
-  transverse: "text-[clamp(2rem,5vw,3.5rem)] leading-[1.1] font-semibold tracking-tight",
+  home: "text-display-editorial",
+  module: "text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04] font-semibold tracking-tight",
+  product: "text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-semibold tracking-tight",
+  transverse: "text-[clamp(2rem,5vw,3.5rem)] leading-[1.08] font-semibold tracking-tight",
 };
 
-const eyebrowVariant: Record<
-  NonNullable<HeroProps["accent"]>,
-  "primary" | "purple" | "orange" | "green" | "pink" | "yellow" | "red"
-> = {
-  primary: "primary",
-  purple: "purple",
-  orange: "orange",
-  green: "green",
-  pink: "pink",
-  yellow: "yellow",
-  red: "red",
+const accentDot: Record<NonNullable<HeroProps["accent"]>, string> = {
+  primary: "bg-primary",
+  purple: "bg-accent-purple",
+  orange: "bg-accent-orange",
+  green: "bg-accent-green",
+  pink: "bg-accent-pink",
+  yellow: "bg-accent-yellow",
+  red: "bg-accent-red",
+  terracotta: "bg-terracotta",
 };
 
-// First-fold conversion block. Mobile-first; desktop expands type scale and
-// rhythm. Keep `description` short (max ~2 lines on desktop, ~3 on mobile).
+// First-fold conversion block. Editorial v3 — bg-halo-warm by default,
+// eyebrow indicator dot in module color, optional serif italic accent in title.
 export function Hero({
   variant = "module",
   eyebrow,
-  accent = "primary",
+  accent = "terracotta",
   title,
+  titleEm,
+  titleTail,
   description,
   cta,
   meta,
   className,
 }: HeroProps) {
   return (
-    <section className={cn("bg-bg text-fg", verticalRhythm[variant], className)}>
-      <Container>
-        <div className="max-w-4xl">
-          {eyebrow ? <Eyebrow variant={eyebrowVariant[accent]}>{eyebrow}</Eyebrow> : null}
-          <h1 className={cn("mt-4", titleScale[variant])}>{title}</h1>
+    <section
+      className={cn("bg-halo-warm relative overflow-hidden", verticalRhythm[variant], className)}
+    >
+      <Container className="relative">
+        <div className="max-w-5xl">
+          {eyebrow ? (
+            <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
+              <span
+                className={cn(
+                  "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
+                  accentDot[accent],
+                )}
+              />
+              {eyebrow}
+            </p>
+          ) : null}
+          <h1 className={cn("text-fg", titleScale[variant])}>
+            {title}
+            {titleEm ? (
+              <span
+                className="italic-editorial text-terracotta mx-2"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {titleEm}
+              </span>
+            ) : null}
+            {titleTail}
+          </h1>
           {description ? (
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-700 sm:text-xl">
+            <p className="text-fg-soft mt-10 max-w-2xl text-lg leading-relaxed sm:text-xl">
               {description}
             </p>
           ) : null}
-          {cta ? <div className="mt-10 flex flex-wrap gap-3">{cta}</div> : null}
+          {cta ? <div className="mt-12 flex flex-wrap gap-4">{cta}</div> : null}
           {meta ? (
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-600">
+            <div className="text-fg-muted mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
               {meta}
             </div>
           ) : null}

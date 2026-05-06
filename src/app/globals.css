@@ -1,102 +1,129 @@
 @import "tailwindcss";
 
 /* =============================================================
- * AxionIA · Design System tokens (Webflow-inspired)
- * Source de vérité : Design.md racine + ADR docs/adr/0001-design-direction-webflow.md
+ * AxionIA · Design System tokens v3 (Editorial Premium Light)
+ * Direction "Anthropic / Mistral" : ivoire chaud + sand + mocha + terracotta,
+ * serif Fraunces sur titres, pas de noir pur. Validée Will 2026-05-06.
  *
  * Hex codes are intentionally hardcoded HERE — this is the single token file
  * (`anti-hex` linter excludes globals.css). Application code consumes these
- * via Tailwind utilities only (`bg-primary`, `text-fg`, `rounded-md`, …).
+ * via Tailwind utilities only (`bg-canvas`, `text-fg`, `font-serif`, …).
  * =============================================================*/
 
 @theme {
-  /* ----- Palette: primary (Webflow Blue) ----- */
-  --color-primary: #146ef5;
-  --color-primary-hover: #0055d4;
-  --color-primary-400: #3b89ff;
-  --color-primary-300: #006acc;
-  --color-primary-fg: #ffffff;
+  /* ----- Surfaces : 4 tons éditoriaux (sans noir) ----- */
+  --color-bg: #faf8f3; /* canvas — ivoire chaud (était blanc froid) */
+  --color-paper: #ffffff; /* papier blanc pur — cards, sections de contraste */
+  --color-sand: #f0e9da; /* sable — sections "intermissions" */
+  --color-sand-deep: #e6dcc4; /* sable saturé — bordures, badges */
+  --color-mocha: #2a2520; /* brun-aubergine — sections premium (PAS du noir) */
+  --color-mocha-soft: #3d362f; /* mocha plus doux — gradients */
+  --color-mocha-fg: #f7f3ea; /* texte sur mocha — ivoire */
 
-  /* ----- Palette: 6 secondaries (disciplined — 1 per module/section) ----- */
+  /* ----- Foreground (texte) ----- */
+  --color-fg: #1a1815; /* anthracite-brun — texte principal (PAS du noir) */
+  --color-fg-soft: #524b41; /* gris-brun moyen — texte secondaire */
+  --color-fg-muted: #80766a; /* gris-sable — texte tertiaire, captions */
+
+  /* ----- Accent identitaire : Webflow Blue conservé + chaleur ----- */
+  --color-primary: #1a4dd9; /* bleu profond (était #146ef5, plus dense pour éditorial) */
+  --color-primary-hover: #0f3aae;
+  --color-primary-fg: #ffffff;
+  --color-primary-soft: #e8efff; /* halo bleu très doux pour fonds d'icônes */
+
+  /* ----- Accent éditorial : terracotta brique ----- */
+  --color-terracotta: #c24a1b; /* brique chaude — accents éditoriaux, italiques */
+  --color-terracotta-soft: #f5e3d8; /* halo terracotta doux */
+  --color-terracotta-deep: #8c3010; /* terracotta foncé — hover */
+
+  /* ----- Accent doux : vert sauge (proof/succès) ----- */
+  --color-sage: #7a8870;
+  --color-sage-soft: #e6ebe2;
+
+  /* ----- Borders & dividers ----- */
+  --color-border: #e5ddc8; /* sable doux pour bordures */
+  --color-border-strong: #c8bda0; /* sable saturé pour focus rings, dividers marqués */
+  --color-border-on-mocha: #4a4239;
+
+  /* ----- Compatibilité v1/v2 (ne pas supprimer — composants existants) ----- */
+  --color-primary-400: #4a73e0;
+  --color-primary-300: #1a4dd9;
   --color-accent-purple: #7a3dff;
   --color-accent-pink: #ed52cb;
   --color-accent-green: #00d722;
   --color-accent-orange: #ff6b00;
   --color-accent-yellow: #ffae13;
   --color-accent-red: #ee1d36;
+  --color-gray-800: #2a2520;
+  --color-gray-700: #524b41;
+  --color-gray-600: #80766a;
+  --color-gray-300: #c8bda0;
+  --color-border-hover: #c8bda0;
+  --color-success: #5e7050;
+  --color-warning: #c24a1b;
+  --color-error: #b8341c;
+  --color-info: #1a4dd9;
 
-  /* ----- Surface ----- */
-  --color-bg: #ffffff;
-  --color-fg: #080808;
-
-  /* ----- Neutrals ----- */
-  --color-gray-800: #222222;
-  --color-gray-700: #363636;
-  --color-gray-600: #5a5a5a;
-  --color-gray-300: #ababab;
-  --color-border: #d8d8d8;
-  --color-border-hover: #898989;
-
-  /* ----- Semantic aliases (success/warning/error/info) ----- */
-  --color-success: #00d722;
-  --color-warning: #ffae13;
-  --color-error: #ee1d36;
-  --color-info: #146ef5;
-
-  /* ----- Typography ----- */
+  /* ----- Typography v3 ----- */
   --font-sans:
     var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif:
+    var(--font-serif), "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", P052,
+    serif;
   --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Type scale (Webflow-inspired, see Design.md §3) */
-  --text-display: 5rem; /* 80px */
-  --text-display--line-height: 1.04;
-  --text-display--letter-spacing: -0.05em;
-  --text-section: 3.5rem; /* 56px */
+  /* Type scale v3 — display Fraunces italique géant pour signature Anthropic */
+  --text-display: 7rem;
+  --text-display--line-height: 0.96;
+  --text-display--letter-spacing: -0.04em;
+  --text-section: 4rem;
   --text-section--line-height: 1.04;
-  --text-sub: 2rem; /* 32px */
-  --text-sub--line-height: 1.3;
-  --text-feature: 1.5rem; /* 24px */
+  --text-sub: 2.25rem;
+  --text-sub--line-height: 1.2;
+  --text-feature: 1.5rem;
   --text-feature--line-height: 1.3;
-  --text-lead: 1.25rem; /* 20px */
-  --text-lead--line-height: 1.45;
-  --text-body: 1rem; /* 16px */
-  --text-body--line-height: 1.6;
-  --text-body--letter-spacing: -0.01em;
-  --text-label-up: 0.9375rem; /* 15px */
+  --text-lead: 1.375rem;
+  --text-lead--line-height: 1.5;
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  --text-body--letter-spacing: -0.005em;
+  --text-label-up: 0.8125rem;
   --text-label-up--line-height: 1.3;
-  --text-label-up--letter-spacing: 0.1em;
-  --text-caption: 0.875rem; /* 14px */
+  --text-label-up--letter-spacing: 0.16em;
+  --text-caption: 0.875rem;
   --text-caption--line-height: 1.5;
-  --text-badge-up: 0.8rem; /* 12.8px */
+  --text-badge-up: 0.75rem;
   --text-badge-up--line-height: 1.2;
-  --text-micro-up: 0.625rem; /* 10px */
+  --text-micro-up: 0.625rem;
   --text-micro-up--line-height: 1.3;
   --text-micro-up--letter-spacing: 0.1em;
 
-  /* ----- Radius (conservative 2-8px + full for avatars) ----- */
+  /* ----- Radius — éditorial : doux mais conservateur ----- */
   --radius-xs: 2px;
   --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px; /* cards éditoriales */
+  --radius-2xl: 28px; /* hero blocks */
   --radius-full: 9999px;
 
-  /* ----- Spacing — Webflow fractional scale (px equivalents) ----- */
-  --spacing-0_25: 0.0625rem; /* 1px */
-  --spacing-0_5: 0.15rem; /* 2.4px */
-  --spacing-0_75: 0.2rem; /* 3.2px */
-  --spacing-1_5: 0.35rem; /* 5.6px */
+  /* ----- Spacing — Webflow fractional scale ----- */
+  --spacing-0_25: 0.0625rem;
+  --spacing-0_5: 0.15rem;
+  --spacing-0_75: 0.2rem;
+  --spacing-1_5: 0.35rem;
 
-  /* ----- Shadows — 5-layer cascade signature (Design.md §6) ----- */
+  /* ----- Shadows v3 — feutrées, ton chaud ----- */
   --shadow-card:
-    rgba(0, 0, 0, 0) 0px 84px 24px, rgba(0, 0, 0, 0.01) 0px 54px 22px,
-    rgba(0, 0, 0, 0.04) 0px 30px 18px, rgba(0, 0, 0, 0.08) 0px 13px 13px,
-    rgba(0, 0, 0, 0.09) 0px 3px 7px;
+    rgba(42, 37, 32, 0) 0px 84px 24px, rgba(42, 37, 32, 0.02) 0px 54px 22px,
+    rgba(42, 37, 32, 0.05) 0px 30px 18px, rgba(42, 37, 32, 0.08) 0px 13px 13px,
+    rgba(42, 37, 32, 0.09) 0px 3px 7px;
   --shadow-elevated:
-    rgba(0, 0, 0, 0) 0px 110px 30px, rgba(0, 0, 0, 0.02) 0px 70px 28px,
-    rgba(0, 0, 0, 0.06) 0px 40px 24px, rgba(0, 0, 0, 0.1) 0px 18px 16px,
-    rgba(0, 0, 0, 0.11) 0px 4px 9px;
-  --shadow-subtle: rgba(0, 0, 0, 0.04) 0px 1px 2px, rgba(0, 0, 0, 0.06) 0px 4px 8px;
+    rgba(42, 37, 32, 0) 0px 110px 30px, rgba(42, 37, 32, 0.03) 0px 70px 28px,
+    rgba(42, 37, 32, 0.07) 0px 40px 24px, rgba(42, 37, 32, 0.1) 0px 18px 16px,
+    rgba(42, 37, 32, 0.11) 0px 4px 9px;
+  --shadow-subtle: rgba(42, 37, 32, 0.04) 0px 1px 2px, rgba(42, 37, 32, 0.06) 0px 4px 8px;
+  --shadow-inset-soft: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
 
   /* ----- Motion ----- */
   --ease-out-webflow: cubic-bezier(0.16, 1, 0.3, 1);
@@ -129,24 +156,90 @@
     background: var(--color-bg);
   }
 
-  /* Focus visible — never override the OS focus ring without restoring it. */
   :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: var(--radius-xs);
   }
 
-  /* Selection */
   ::selection {
-    background: var(--color-primary);
-    color: var(--color-primary-fg);
+    background: var(--color-terracotta);
+    color: var(--color-mocha-fg);
+  }
+
+  /* Italic emphasis on serif headings (signature éditoriale) */
+  em.editorial {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-terracotta);
+    font-weight: 500;
   }
 }
 
 /* =============================================================
- * Utilities — signature animations + a11y guard
+ * Utilities — éditorial signature + halos
  * =============================================================*/
 @layer utilities {
+  /* Halo gradient sand → terracotta très doux (Hero, intro) */
+  .bg-halo-warm {
+    background-color: var(--color-bg);
+    background-image:
+      radial-gradient(at 92% 8%, rgba(194, 74, 27, 0.1) 0px, transparent 55%),
+      radial-gradient(at 8% 92%, rgba(26, 77, 217, 0.06) 0px, transparent 60%);
+  }
+
+  /* Halo cool sand → blue subtle (alternance) */
+  .bg-halo-cool {
+    background-color: var(--color-sand);
+    background-image:
+      radial-gradient(at 88% 88%, rgba(26, 77, 217, 0.08) 0px, transparent 55%),
+      radial-gradient(at 12% 12%, rgba(122, 136, 112, 0.06) 0px, transparent 50%);
+  }
+
+  /* Mocha section avec gradient subtil — alternative au noir */
+  .bg-mocha-rich {
+    background-color: var(--color-mocha);
+    background-image:
+      radial-gradient(at 80% 20%, rgba(194, 74, 27, 0.18) 0px, transparent 55%),
+      radial-gradient(at 20% 80%, rgba(26, 77, 217, 0.14) 0px, transparent 55%);
+  }
+
+  /* Diviseur éditorial : ligne fine sable centrée */
+  .divider-editorial {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
+  }
+
+  /* Display giant — Fraunces italique + tracking serré (signature Anthropic) */
+  .text-display-editorial {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 9vw, 7rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+
+  /* Italic editorial accent — pour 1-2 mots-clés dans un titre */
+  .italic-editorial {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* CTA hover lift — 2px translate up + shadow growth (signature éditoriale) */
+  .cta-lift {
+    transition:
+      transform var(--duration-base) var(--ease-out-webflow),
+      box-shadow var(--duration-base) var(--ease-out-webflow),
+      background-color var(--duration-base) var(--ease-out-webflow);
+  }
+  .cta-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Compatibilité v1 — l'animation `cta-translate` reste pour les composants
+   * qui l'utilisent encore (ne pas casser). Same easing, lift au lieu de slide. */
   .cta-translate {
     transition:
       transform var(--duration-base) var(--ease-out-webflow),
@@ -154,14 +247,11 @@
       color var(--duration-base) var(--ease-out-webflow);
   }
   .cta-translate:hover {
-    transform: translateX(6px);
+    transform: translateY(-2px);
   }
 }
 
-/* prefers-reduced-motion strict — kills all animations & transitions.
- * cta-translate hover override: keep the visual fade but neutralise the
- * 6 px slide so motion-sensitive users don't perceive a teleport on hover
- * (cf. _AUDIT/VERIF-FRONTEND-DEEP A11Y-006). */
+/* prefers-reduced-motion strict */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -171,7 +261,8 @@
     transition-duration: 0ms !important;
     scroll-behavior: auto !important;
   }
-  .cta-translate:hover {
+  .cta-translate:hover,
+  .cta-lift:hover {
     transform: none !important;
   }
 }

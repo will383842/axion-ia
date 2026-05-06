@@ -11,6 +11,7 @@ interface ArticleCardProps {
   className?: string;
 }
 
+// Editorial v3 — title in serif, sober meta line.
 export function ArticleCard({
   href,
   title,
@@ -27,14 +28,21 @@ export function ArticleCard({
         className,
       )}
     >
-      <Card className="cta-translate h-full">
+      <Card className="h-full">
         <CardHeader>
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardTitle
+            className="text-2xl leading-[1.2] font-medium"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {title}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <CardDescription className="line-clamp-3">{excerpt}</CardDescription>
+          <CardDescription className="line-clamp-3 text-base leading-relaxed">
+            {excerpt}
+          </CardDescription>
           {publishedAt || readingTime ? (
-            <p className="mt-4 text-xs text-gray-600">
+            <p className="text-fg-muted mt-5 text-xs">
               {publishedAt ? <time dateTime={publishedAt}>{publishedAt}</time> : null}
               {publishedAt && readingTime ? <span aria-hidden="true"> · </span> : null}
               {readingTime}
