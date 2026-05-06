@@ -1,6 +1,7 @@
-// Every "use client" directive must be preceded by a justification comment:
-//   // use-client: <reason>
-// Enforces axionia-anti-spa: client boundary is an exception, not a default.
+// Every "use client" directive must have a justification comment of the
+// shape `// use-client: <reason>` either immediately before or immediately
+// after the directive. Next.js 16 requires the directive to be the first
+// non-comment line, so the "after" position is the canonical one.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -27,14 +28,14 @@ for (const file of walk(ROOT)) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]?.trim() ?? "";
     if (line === '"use client";' || line === "'use client';") {
-      const prev = lines[i - 1]?.trim() ?? "";
-      if (!prev.includes("use-client:")) {
-        offenders.push(`${file}:${i + 1}`);
-      }
+      const before = lines[i - 1]?.trim() ?? "";
+      const after = lines[i + 1]?.trim() ?? "";
+      const ok = before.includes("use-client:") || after.includes("use-client:");
+      if (!ok) offenders.push(`${file}:${i + 1}`);
       break;
     }
     if (line && !line.startsWith("//") && !line.startsWith("/*") && !line.startsWith("*")) {
-      break; // first non-comment, non-empty line passed; no directive present
+      break;
     }
   }
 }
@@ -43,7 +44,7 @@ if (offenders.length) {
   console.error("[use-client:check] missing justification comment on these files:");
   offenders.forEach((o) => console.error("  " + o));
   console.error(
-    '\nAdd a `// use-client: <reason>` comment immediately above each "use client" directive.',
+    '\nAdd a `// use-client: <reason>` comment immediately before or after each "use client" directive.',
   );
   process.exit(1);
 }

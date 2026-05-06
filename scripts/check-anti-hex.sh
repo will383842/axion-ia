@@ -8,7 +8,7 @@ PATTERN='#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b'
 RESULTS=$(grep -REn --color=never \
   --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' --include='*.mjs' \
   --exclude='globals.css' \
-  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=playwright-report --exclude-dir=coverage --exclude-dir=lhci --exclude-dir=test-results --exclude-dir=_design \
+  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=playwright-report --exclude-dir=coverage --exclude-dir=lhci --exclude-dir=test-results --exclude-dir=design \
   -E "$PATTERN" src/components src/app 2>/dev/null | grep -v '// hex-ok:' || true)
 
 if [ -n "$RESULTS" ]; then

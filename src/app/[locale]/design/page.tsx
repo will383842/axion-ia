@@ -2,19 +2,17 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Eyebrow } from "@/components/typography/Eyebrow";
 
-// Dev-only design reference page. NOT linked from anywhere; reach it manually
-// at http://localhost:3000/_design while iterating on tokens.
-// Sprint 2 will move this under `/[locale]/_design` once i18n lands.
+// Dev-only design reference page. Now nested under [locale] for consistency.
+// Reach it at http://localhost:3000/fr/_design or /en/_design.
 export default function DesignPage() {
   return (
-    <main id="main" className="bg-bg text-fg min-h-screen pb-32">
+    <>
       <Section
         eyebrow="Design system"
         title="AxionIA · Webflow-inspired tokens"
         description="Reference page rendering palette, typography, radius, shadows and motion. Source of truth: Design.md + ADR 0001."
       />
 
-      {/* ===== Palette primary ===== */}
       <Section eyebrow="Palette · primary">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           <Swatch name="bg-primary" className="bg-primary text-primary-fg" hex="#146ef5" />
@@ -29,7 +27,6 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      {/* ===== Palette secondaries ===== */}
       <Section eyebrow="Palette · 6 secondaries (disciplined)">
         <p className="mb-6 max-w-2xl text-sm text-gray-700">
           1 per section. Module 1 = blue (primary). Module 2 = orange. Module 3 = purple. Cas
@@ -45,7 +42,6 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      {/* ===== Neutrals ===== */}
       <Section eyebrow="Palette · neutrals">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           <Swatch name="text-fg" className="bg-fg text-bg" hex="#080808" />
@@ -57,7 +53,6 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      {/* ===== Typography scale ===== */}
       <Section eyebrow="Typography · Manrope + Inconsolata">
         <div className="space-y-6">
           <SpecimenLine
@@ -93,7 +88,6 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      {/* ===== Radius ===== */}
       <Section eyebrow="Radius · 2-8px conservative">
         <div className="flex flex-wrap gap-4">
           <RadiusBox size="rounded-xs" />
@@ -104,7 +98,6 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      {/* ===== Shadows ===== */}
       <Section eyebrow="Shadow · 5-layer cascade signature">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
           <ShadowCard name="shadow-subtle" className="shadow-subtle" />
@@ -113,7 +106,6 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      {/* ===== Motion ===== */}
       <Section eyebrow="Motion · translate-x-[6px] hover signature">
         <div className="flex flex-wrap gap-4">
           <button
@@ -136,7 +128,6 @@ export default function DesignPage() {
         </p>
       </Section>
 
-      {/* ===== Eyebrow variants ===== */}
       <Section eyebrow="Eyebrow · module variants">
         <Container className="space-y-3">
           <Eyebrow>default · neutral</Eyebrow>
@@ -149,7 +140,7 @@ export default function DesignPage() {
           <Eyebrow variant="red">red · error</Eyebrow>
         </Container>
       </Section>
-    </main>
+    </>
   );
 }
 

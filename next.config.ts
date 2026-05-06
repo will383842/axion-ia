@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
+import createNextIntlPlugin from "next-intl/plugin";
 
-// Headers de sécurité (CSP placeholder — raffinée Sprint 16 avec nonce dynamique)
+// next-intl plugin wires `src/i18n/request.ts` so Server Components can
+// call `getMessages()` / `getTranslations()` without explicit context.
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+
+// Headers de sécurité (CSP nonce dynamique arrive Sprint 16).
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -23,18 +28,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
   experimental: {
-    // Next.js 16 — flags revisited in Sprint 1 after reading
-    // node_modules/next/dist/docs/. The legacy `reactCompiler` flag was
-    // promoted/relocated in Next 16 (TS2353 here). PPR / View Transitions /
-    // useCache evaluated then.
+    // Next.js 16 — flags revisited in later sprints after deeper docs read.
   },
   async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: securityHeaders,
-      },
-    ];
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
 };
 
@@ -42,4 +39,4 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env["ANALYZE"] === "true",
 });
 
-export default bundleAnalyzer(nextConfig);
+export default withNextIntl(bundleAnalyzer(nextConfig));

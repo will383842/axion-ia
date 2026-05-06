@@ -1,6 +1,54 @@
 {
   "_": "EN mirror of fr.json. Never use the banned French word for 'training' — keep AxionIA wording 'intervention/session'.",
   "common": {
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "switchLanguage": "Switch language",
+    "loading": "Loading…"
+  },
+  "nav": {
+    "home": "Home",
+    "interventions": "Corporate AI sessions",
+    "audit": "Audit & optimization",
+    "implementation": "AI implementation",
+    "caseStudies": "Case studies",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "cta": {
+    "bookIntervention": "Book a session",
+    "priceFrom": "from"
+  },
+  "footer": {
+    "identity": "Identity",
+    "services": "Services",
+    "resources": "Resources",
+    "company": "Company",
+    "legal": "Legal",
+    "tagline": "Operational AI consultancy",
+    "rights": "All rights reserved",
+    "siteMap": "Sitemap",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "x": "X (Twitter)"
+  },
+  "home": {
+    "title": "AxionIA",
+    "subtitle": "Operational AI consultancy",
+    "description": "On-site AI sessions, audits and implementation for companies.",
+    "viewDesign": "View tokens"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The requested page doesn't exist or has been moved.",
+    "notFoundCta": "Back to home",
+    "internalTitle": "Something went wrong",
+    "internalBody": "We've been notified. You can try again.",
+    "retry": "Retry"
+  },
+  "breadcrumb": {
+    "home": "Home"
   }
 }

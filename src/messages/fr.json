@@ -1,6 +1,54 @@
 {
-  "_": "FR is the canonical locale (CLAUDE.md v6 §3). EN mirrors FR. Keep keys in sync — pnpm i18n:check enforces parity.",
+  "_": "FR canonical (CLAUDE.md v6 §3). EN mirrors. pnpm i18n:check enforces parity.",
   "common": {
-    "skipToContent": "Aller au contenu"
+    "skipToContent": "Aller au contenu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "switchLanguage": "Changer de langue",
+    "loading": "Chargement…"
+  },
+  "nav": {
+    "home": "Accueil",
+    "interventions": "Interventions entreprise",
+    "audit": "Audit & optimisation",
+    "implementation": "Implémentation IA",
+    "caseStudies": "Cas concrets",
+    "blog": "Blog",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "cta": {
+    "bookIntervention": "Réserver une intervention",
+    "priceFrom": "à partir de"
+  },
+  "footer": {
+    "identity": "Identité",
+    "services": "Services",
+    "resources": "Ressources",
+    "company": "Entreprise",
+    "legal": "Légal",
+    "tagline": "Cabinet IA opérationnel",
+    "rights": "Tous droits réservés",
+    "siteMap": "Plan du site",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "x": "X (Twitter)"
+  },
+  "home": {
+    "title": "AxionIA",
+    "subtitle": "Cabinet IA opérationnel",
+    "description": "Interventions, audit et implémentation IA pour entreprises.",
+    "viewDesign": "Voir les tokens"
+  },
+  "errors": {
+    "notFoundTitle": "Page introuvable",
+    "notFoundBody": "La page demandée n'existe pas ou a été déplacée.",
+    "notFoundCta": "Retour à l'accueil",
+    "internalTitle": "Une erreur est survenue",
+    "internalBody": "Nous avons été notifiés. Vous pouvez réessayer.",
+    "retry": "Réessayer"
+  },
+  "breadcrumb": {
+    "home": "Accueil"
   }
 }
