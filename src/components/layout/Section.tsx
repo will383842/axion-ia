@@ -119,20 +119,40 @@ export function Section({
                   eyebrowClasses[resolvedTone],
                 )}
               >
+                {/* Dot terracotta — signature visuelle orange dans chaque hero
+                    (cohérence home, garantit l'accent orange même sans titleEm) */}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
+                    resolvedTone === "mocha" ? "bg-terracotta-soft" : "bg-terracotta",
+                  )}
+                />
                 {eyebrow}
               </p>
             ) : null}
             {title ? (
               <TitleTag
                 className={cn(
-                  "text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight",
+                  // Hero (h1) : typo display editorial Fraunces géante (cohérence
+                  // home + tous les hero du site). Sections (h2/h3) : sans-serif
+                  // semibold conservé pour hiérarchie visuelle interne.
+                  titleAs === "h1"
+                    ? "text-display-editorial"
+                    : "text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight",
                   titleClasses[resolvedTone],
                 )}
               >
                 {title}
                 {titleEm ? (
                   <span
-                    className={cn("italic-editorial mx-2", emClasses[resolvedTone])}
+                    className={cn(
+                      // Italique terracotta editorial. Le `mx-2` ajoute une marge
+                      // horizontale visible. font-serif est déjà appliqué par
+                      // text-display-editorial sur h1, redondant inoffensif sur h2.
+                      "mx-2 italic",
+                      emClasses[resolvedTone],
+                    )}
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
                     {titleEm}
