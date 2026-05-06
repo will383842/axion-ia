@@ -76,7 +76,7 @@ export async function Header() {
             grace au glow + ring blanc fin (signature header). Le bleu sur
             terracotta cree un fort contraste, le ring blanc l'isole. */}
         <Link
-          href="/interventions/essentielle"
+          href="/reserver"
           className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 hidden h-12 shrink-0 items-center gap-2 rounded-full px-6 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:inline-flex"
         >
           {t("cta.bookInterventionLong")}
@@ -104,7 +104,7 @@ export async function Header() {
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
               <Link
-                href="/interventions/essentielle"
+                href="/reserver"
                 className="bg-terracotta text-mocha-fg mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
               >
                 {t("cta.bookInterventionLong")}
