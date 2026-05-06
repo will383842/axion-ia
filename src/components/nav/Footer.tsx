@@ -88,7 +88,7 @@ interface FooterColumnProps {
 function FooterColumn({ title, items }: FooterColumnProps) {
   return (
     <div>
-      <h2 className="text-fg text-xs font-semibold tracking-wide uppercase">{title}</h2>
+      <h3 className="text-fg text-xs font-semibold tracking-wide uppercase">{title}</h3>
       <ul className="mt-4 space-y-2 text-sm text-gray-700">
         {items.map((item) => (
           <li key={item.href}>

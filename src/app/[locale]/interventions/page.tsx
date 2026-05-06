@@ -52,6 +52,7 @@ export default async function InterventionsListing({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={loc === "fr" ? "Module 1" : "Module 1"}
         title={loc === "fr" ? "Interventions entreprise" : "Corporate AI sessions"}
         description={

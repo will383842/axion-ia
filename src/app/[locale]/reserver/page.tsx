@@ -126,6 +126,7 @@ export default async function ReserverPage({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={isFr ? "Calendrier maison" : "On-site calendar"}
         title={isFr ? "Réserver une intervention" : "Book a session"}
         description={

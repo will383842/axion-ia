@@ -7,15 +7,18 @@ import { routing } from "@/i18n/routing";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
+import { WebVitals } from "@/components/analytics/WebVitals";
 import "../globals.css";
 
 // Manrope = open-source substitute for proprietary WF Visual Sans Variable
 // (Webflow). ADR 0001-design-direction-webflow.md.
+// Trimmed to 2 weights (regular + semibold) — covers body, eyebrow, h1-h6.
+// Saves ~50 KB woff2 vs the previous 4-weight load (cf. PERF-005).
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
 });
 
 const inconsolata = Inconsolata({
@@ -115,6 +118,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           </main>
           <Footer />
         </NextIntlClientProvider>
+        <WebVitals />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

@@ -144,6 +144,7 @@ export function AuditForm({ labels }: AuditFormProps) {
               value={(watchAll as { size?: string }).size ?? ""}
               onValueChange={(v) => setValue("size" as never, v as never, { shouldValidate: true })}
               aria-label={labels.sizeQuestion}
+              aria-invalid={!!errors["size" as never]}
             >
               {labels.sizes.map((s) => (
                 <div key={s.key} className="flex items-center gap-2">
@@ -169,6 +170,7 @@ export function AuditForm({ labels }: AuditFormProps) {
                 setValue("modality" as never, v as never, { shouldValidate: true })
               }
               aria-label={labels.modalityQuestion}
+              aria-invalid={!!errors["modality" as never]}
             >
               <div className="flex items-center gap-2">
                 <RadioGroupItem value="remote" id="m-remote" />
@@ -189,6 +191,7 @@ export function AuditForm({ labels }: AuditFormProps) {
               <Input
                 id="industry"
                 placeholder={labels.industryPlaceholder}
+                aria-invalid={!!errors["industry" as never]}
                 {...register("industry" as never)}
               />
               {errors["industry" as never] ? (
@@ -203,6 +206,7 @@ export function AuditForm({ labels }: AuditFormProps) {
                 id="goals"
                 rows={5}
                 placeholder={labels.goalsPlaceholder}
+                aria-invalid={!!errors["goals" as never]}
                 {...register("goals" as never)}
               />
               {errors["goals" as never] ? (
@@ -218,15 +222,29 @@ export function AuditForm({ labels }: AuditFormProps) {
           <div className="space-y-4">
             <div className="grid gap-2">
               <Label htmlFor="contact-name">{labels.contactName}</Label>
-              <Input id="contact-name" {...register("contact" as never)} />
+              <Input
+                id="contact-name"
+                aria-invalid={!!errors["contact" as never]}
+                {...register("contact" as never)}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="contact-email">{labels.contactEmail}</Label>
-              <Input id="contact-email" type="email" {...register("email" as never)} />
+              <Input
+                id="contact-email"
+                type="email"
+                aria-invalid={!!errors["email" as never]}
+                {...register("email" as never)}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="contact-phone">{labels.contactPhone}</Label>
-              <Input id="contact-phone" type="tel" {...register("phone" as never)} />
+              <Input
+                id="contact-phone"
+                type="tel"
+                aria-invalid={!!errors["phone" as never]}
+                {...register("phone" as never)}
+              />
             </div>
           </div>
         ) : null}

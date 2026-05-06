@@ -50,6 +50,7 @@ export default async function BlogListing({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow="Blog"
         title={isFr ? "Méthodologie & cas d'usage IA" : "Methodology & AI use cases"}
         description={

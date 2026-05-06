@@ -59,6 +59,7 @@ export default async function Contact({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow="Contact"
         title={isFr ? "Démarrer un échange" : "Start a conversation"}
         description={

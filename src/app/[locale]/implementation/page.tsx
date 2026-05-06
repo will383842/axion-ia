@@ -50,6 +50,7 @@ export default async function ImplementationListing({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={isFr ? "Module 3 · accent purple" : "Module 3 · purple accent"}
         title={isFr ? "Implémentation IA" : "AI implementation"}
         description={

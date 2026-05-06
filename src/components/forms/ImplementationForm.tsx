@@ -148,6 +148,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
               value={(watchAll as { type?: string }).type ?? ""}
               onValueChange={(v) => setValue("type" as never, v as never, { shouldValidate: true })}
               aria-label={labels.typeQuestion}
+              aria-invalid={!!errors["type" as never]}
               className="grid gap-2 sm:grid-cols-2"
             >
               {labels.typeOptions.map((o) => (
@@ -174,6 +175,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
                 setValue("budget" as never, v as never, { shouldValidate: true })
               }
               aria-label={labels.budgetQuestion}
+              aria-invalid={!!errors["budget" as never]}
             >
               {labels.budgetOptions.map((o) => (
                 <div key={o.key} className="flex items-center gap-2">
@@ -192,6 +194,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
               id="description"
               rows={6}
               placeholder={labels.descriptionPlaceholder}
+              aria-invalid={!!errors["description" as never]}
               {...register("description" as never)}
             />
             {errors["description" as never] ? (
@@ -206,7 +209,12 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
           <div className="space-y-4">
             <div className="grid gap-2">
               <Label htmlFor="contact-name">{labels.contactName}</Label>
-              <Input id="contact-name" autoComplete="name" {...register("contact" as never)} />
+              <Input
+                id="contact-name"
+                autoComplete="name"
+                aria-invalid={!!errors["contact" as never]}
+                {...register("contact" as never)}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="contact-email">{labels.contactEmail}</Label>
@@ -214,6 +222,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
                 id="contact-email"
                 type="email"
                 autoComplete="email"
+                aria-invalid={!!errors["email" as never]}
                 {...register("email" as never)}
               />
             </div>

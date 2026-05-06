@@ -78,6 +78,7 @@ export default async function RoiPage({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={isFr ? "Simulateur · accent green" : "Simulator · green accent"}
         title={isFr ? "Estimez votre ROI IA en 30 secondes" : "Estimate your AI ROI in 30 seconds"}
         description={

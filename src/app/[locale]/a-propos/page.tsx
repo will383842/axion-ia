@@ -53,6 +53,7 @@ export default async function About({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={isFr ? "À propos" : "About"}
         title={
           isFr

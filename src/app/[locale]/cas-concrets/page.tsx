@@ -79,6 +79,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={isFr ? "Preuves sociales · accent green" : "Social proof · green accent"}
         title={isFr ? "Cas concrets" : "Case studies"}
         description={

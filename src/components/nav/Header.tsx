@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/layout/Container";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileNav } from "./MobileNav";
+import { NavLink } from "./NavLink";
 
 // Server Component. 5 items, ZERO dropdown (CLAUDE.md v6 §9.2).
 // Mobile drawer is the only client island.
@@ -34,13 +35,7 @@ export async function Header() {
           className="hidden flex-1 items-center justify-center gap-7 lg:flex"
         >
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href as never}
-              className="text-fg hover:text-primary text-sm font-medium tracking-tight"
-            >
-              {item.label}
-            </Link>
+            <NavLink key={item.href} href={item.href} label={item.label} />
           ))}
         </nav>
 
@@ -60,13 +55,7 @@ export async function Header() {
         <MobileNav>
           <nav aria-label={t("nav.home")} className="flex flex-col gap-1 text-base">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href as never}
-                className="text-fg hover:bg-border/40 -mx-3 rounded-sm px-3 py-3 font-medium"
-              >
-                {item.label}
-              </Link>
+              <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
             ))}
             <Link
               href="/interventions/essentielle"

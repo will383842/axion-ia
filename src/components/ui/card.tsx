@@ -1,14 +1,15 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-// Webflow card pattern: 1px border, rounded-md (6 px), shadow-card on hover.
+// Webflow card pattern: 1px border, rounded-sm (4 px) — aligned with Button
+// for visual hierarchy coherence (cf. _AUDIT/VERIF-FRONTEND-DEEP DSN-001).
 export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function Card({ className, ...rest }, ref) {
     return (
       <div
         ref={ref}
         className={cn(
-          "border-border bg-bg rounded-md border transition-shadow duration-200 hover:shadow-card",
+          "border-border bg-bg rounded-sm border transition-shadow duration-200 hover:shadow-card",
           className,
         )}
         {...rest}

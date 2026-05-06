@@ -110,7 +110,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
   }
 
   return (
-    <div className={cn("border-border bg-bg shadow-card rounded-md border p-6", className)}>
+    <div className={cn("border-border bg-bg shadow-card rounded-sm border p-6", className)}>
       <header className="mb-6 flex items-center justify-between">
         <button
           type="button"

@@ -59,6 +59,7 @@ export default async function AuditListing({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow={isFr ? "Module 2 · accent orange" : "Module 2 · orange accent"}
         title={isFr ? "Audit & optimisation" : "Audit & optimization"}
         description={

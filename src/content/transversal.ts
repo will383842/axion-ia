@@ -188,3 +188,33 @@ export function getBlogPost(slug: string): BlogPost | undefined {
 export function getAllBlogSlugs(): string[] {
   return BLOG_POSTS.map((p) => p.slug);
 }
+
+export function getAllBlogCategorySlugs(): string[] {
+  const cats = new Set(BLOG_POSTS.map((p) => slugify(p.category)));
+  return [...cats];
+}
+
+export function getBlogPostsByCategory(slug: string): BlogPost[] {
+  return BLOG_POSTS.filter((p) => slugify(p.category) === slug);
+}
+
+export type FaqEntry = (typeof FAQ_GLOBAL)[number];
+
+export function getFaqEntry(id: string): FaqEntry | undefined {
+  return FAQ_GLOBAL.find((f) => f.id === id);
+}
+
+export function getAllFaqIds(): string[] {
+  return FAQ_GLOBAL.map((f) => f.id);
+}
+
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export { slugify };

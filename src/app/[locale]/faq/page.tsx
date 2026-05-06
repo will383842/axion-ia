@@ -54,6 +54,7 @@ export default async function FaqPage({ params }: Props) {
   return (
     <>
       <Section
+        titleAs="h1"
         eyebrow="FAQ"
         title={isFr ? "Questions fréquentes" : "Frequently asked questions"}
         description={
