@@ -68,7 +68,7 @@ export default async function Essentielle({ params }: Props) {
     <ProductPageTemplate
       accent="primary"
       copy={copy}
-      ctaPrimaryHref="/interventions/essentielle"
+      ctaPrimaryHref="/reserver?intervention=essentielle"
       ctaSecondaryHref="/cas-concrets"
       jsonLd={jsonLd}
     />

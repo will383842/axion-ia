@@ -5,8 +5,7 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
-import { type CalendarSlot } from "@/components/calendar/HouseCalendar";
-import { BookingFlow } from "@/components/calendar/BookingFlow";
+import { BookingCalendar, type BookedSlot } from "@/components/calendar/BookingCalendar";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -16,24 +15,46 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-// Fixtures-only slots — Sprint 15 reads from Prisma `calendar_options`.
-function buildFixtureSlots(): CalendarSlot[] {
+// Fixtures-only — Sprint 17 connectera Prisma `calendar_bookings`.
+// Distribution réaliste : quelques dates prises sur les 60 prochains jours
+// avec différentes interventions, villes et durées (mix 1j/2j).
+function buildFixtureBookedSlots(): BookedSlot[] {
   const today = new Date();
-  const slots: CalendarSlot[] = [];
-  for (let offset = 1; offset <= 28; offset++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + offset);
-    const iso = d.toISOString().slice(0, 10);
-    const dow = d.getDay();
-    if (dow === 0 || dow === 6) continue; // weekends excluded
-    // Pseudo-deterministic distribution.
-    const bucket = offset % 5;
-    const status: CalendarSlot["status"] =
-      bucket === 0 ? "reserved" : bucket === 1 ? "option" : "available";
-    slots.push({ date: iso, time: "09:00", status });
-    slots.push({ date: iso, time: "14:00", status });
-  }
-  return slots;
+  const fixtures: Array<{
+    offsetDays: number;
+    intervention: BookedSlot["intervention"];
+    city: string;
+    duration: 1 | 2;
+  }> = [
+    { offsetDays: 3, intervention: "essentielle", city: "Paris", duration: 1 },
+    { offsetDays: 7, intervention: "equipes", city: "Lyon", duration: 2 },
+    { offsetDays: 10, intervention: "managers", city: "Bordeaux", duration: 1 },
+    { offsetDays: 14, intervention: "essentielle", city: "Nantes", duration: 1 },
+    { offsetDays: 17, intervention: "dirigeants", city: "Paris", duration: 1 },
+    { offsetDays: 21, intervention: "conference", city: "Marseille", duration: 1 },
+    { offsetDays: 24, intervention: "essentielle", city: "Lille", duration: 1 },
+    { offsetDays: 28, intervention: "equipes", city: "Toulouse", duration: 2 },
+    { offsetDays: 32, intervention: "essentielle", city: "Strasbourg", duration: 1 },
+    { offsetDays: 38, intervention: "managers", city: "Genève", duration: 1 },
+    { offsetDays: 42, intervention: "essentielle", city: "Bruxelles", duration: 1 },
+  ];
+  return fixtures
+    .map((f) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() + f.offsetDays);
+      const dow = d.getDay();
+      // Skip weekends (5/6 → 8/9 si fixe nécessaire; ici on suppose les fixtures
+      // sont déjà sur jours ouvrés. Skip si week-end pour rester safe).
+      if (dow === 0 || dow === 6) return null;
+      const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      return {
+        date: iso,
+        intervention: f.intervention,
+        city: f.city,
+        duration: f.duration,
+      };
+    })
+    .filter((s): s is BookedSlot => s !== null);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -44,12 +65,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/reserver",
     title:
       locale === "fr"
-        ? "Réserver une intervention · calendrier maison · AxionIA"
-        : "Book a session · on-site calendar · AxionIA",
+        ? "Réserver une intervention IA · calendrier · AxionIA"
+        : "Book an on-site AI session · calendar · AxionIA",
     description:
       locale === "fr"
-        ? "Réservez une intervention IA en sélectionnant un créneau disponible. Calendrier 3 états (disponible / option / réservé)."
-        : "Book an AI session by selecting an available slot. 3-state calendar (available / option / reserved).",
+        ? "Sélectionnez une date disponible, choisissez l'intervention IA souhaitée, la ville et la durée. Confirmation par email sous 1 h ouvrée."
+        : "Pick an available date, choose the AI intervention, city and duration. Email confirmation within 1 business hour.",
     alternates: { fr: "/reserver", en: "/book" },
   });
 }
@@ -69,81 +90,25 @@ export default async function ReserverPage({ params }: Props) {
     ],
   });
 
-  const calendarLabels = isFr
-    ? {
-        prevMonth: "Mois précédent",
-        nextMonth: "Mois suivant",
-        available: "Disponible",
-        option: "Option",
-        reserved: "Réservé",
-        selectDate: "Sélectionnez une date",
-        selectTime: "Choisir un créneau",
-        confirm: "Confirmer la réservation",
-        noSlots: "Aucun créneau ce jour.",
-        weekDays: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"] as const,
-      }
-    : {
-        prevMonth: "Previous month",
-        nextMonth: "Next month",
-        available: "Available",
-        option: "Option",
-        reserved: "Reserved",
-        selectDate: "Select a date",
-        selectTime: "Pick a slot",
-        confirm: "Confirm booking",
-        noSlots: "No slots this day.",
-        weekDays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const,
-      };
-
-  const formLabels = isFr
-    ? {
-        headerPrefix: "Créneau sélectionné :",
-        contactName: "Nom & prénom",
-        contactEmail: "Email professionnel",
-        contactPhone: "Téléphone (optionnel)",
-        consent:
-          "J'accepte que mes données soient utilisées pour traiter cette réservation conformément à la politique de confidentialité.",
-        cancel: "Changer de créneau",
-        submit: "Confirmer la réservation",
-        sending: "Envoi…",
-        success: "Réservation reçue. Vous recevrez la confirmation par email sous 1 h ouvrée.",
-        failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
-      }
-    : {
-        headerPrefix: "Selected slot:",
-        contactName: "Full name",
-        contactEmail: "Professional email",
-        contactPhone: "Phone (optional)",
-        consent:
-          "I agree to my data being used to process this booking in accordance with the privacy policy.",
-        cancel: "Change slot",
-        submit: "Confirm booking",
-        sending: "Sending…",
-        success: "Booking received. You will receive confirmation by email within 1 business hour.",
-        failure: "An error occurred. Try again or email contact@axion-ia.com.",
-      };
+  const bookedSlots = buildFixtureBookedSlots();
 
   return (
     <>
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Calendrier maison" : "On-site calendar"}
-        title={isFr ? "Réserver une" : "Book a"}
-        titleEm={isFr ? "intervention" : "session"}
+        eyebrow={isFr ? "Calendrier" : "Calendar"}
+        title={isFr ? "Réserver une" : "Book an"}
+        titleEm={isFr ? "intervention IA" : "AI intervention"}
         description={
           isFr
-            ? "Sélectionnez un créneau disponible puis renseignez vos coordonnées. Confirmation par email sous 1 h ouvrée."
-            : "Pick an available slot then enter your details. Email confirmation within 1 business hour."
+            ? "Cliquez sur une date libre dans le calendrier. Une fenêtre s'ouvre pour choisir l'intervention, la ville et la durée. Confirmation par email sous 1 h ouvrée."
+            : "Click an open date in the calendar. A window opens to choose the intervention, city and duration. Email confirmation within 1 business hour."
         }
       />
 
       <Section>
-        <Container className="max-w-3xl">
-          <BookingFlow
-            slots={buildFixtureSlots()}
-            calendarLabels={calendarLabels}
-            formLabels={formLabels}
-          />
+        <Container className="max-w-5xl">
+          <BookingCalendar initialBookedSlots={bookedSlots} locale={loc} />
         </Container>
       </Section>
 

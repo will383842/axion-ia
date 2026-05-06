@@ -63,7 +63,7 @@ export default async function Dirigeants({ params }: Props) {
     <ProductPageTemplate
       accent="primary"
       copy={copy}
-      ctaPrimaryHref="/contact"
+      ctaPrimaryHref="/reserver?intervention=dirigeants"
       ctaSecondaryHref="/interventions/essentielle"
       jsonLd={jsonLd}
     />

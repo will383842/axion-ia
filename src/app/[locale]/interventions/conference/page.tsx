@@ -63,7 +63,7 @@ export default async function Conference({ params }: Props) {
     <ProductPageTemplate
       accent="primary"
       copy={copy}
-      ctaPrimaryHref="/contact"
+      ctaPrimaryHref="/reserver?intervention=conference"
       ctaSecondaryHref="/interventions/essentielle"
       jsonLd={jsonLd}
     />
