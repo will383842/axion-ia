@@ -54,7 +54,8 @@ export default async function InterventionsListing({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={loc === "fr" ? "Module 1" : "Module 1"}
-        title={loc === "fr" ? "Interventions entreprise" : "Corporate AI sessions"}
+        title={loc === "fr" ? "Interventions" : "Corporate AI"}
+        titleEm={loc === "fr" ? "en entreprise" : "sessions"}
         description={
           loc === "fr"
             ? "5 formats d'intervention IA opérationnelle. Sur site, résultats dès le lendemain. Page phare : l'Essentielle 490 €."

@@ -55,11 +55,9 @@ export default async function About({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "À propos" : "About"}
-        title={
-          isFr
-            ? "Cabinet IA opérationnel · OÜ estonienne"
-            : "Operational AI consultancy · Estonian OÜ"
-        }
+        title={isFr ? "Cabinet IA" : "Operational AI"}
+        titleEm={isFr ? "opérationnel" : "consultancy"}
+        titleTail={isFr ? " · OÜ estonienne" : " · Estonian OÜ"}
         description={
           isFr
             ? "AxionIA accompagne les entreprises dans l'identification, la démonstration et l'implémentation d'usages IA générant un ROI mesurable. Société estonienne, hébergement UE."

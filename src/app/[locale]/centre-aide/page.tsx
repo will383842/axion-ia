@@ -95,7 +95,8 @@ export default async function HelpCenter({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Centre d'aide" : "Help center"}
-        title={isFr ? "Trouver une réponse rapide" : "Find a quick answer"}
+        title={isFr ? "Trouver une réponse" : "Find a quick"}
+        titleEm={isFr ? "rapide" : "answer"}
         description={
           isFr
             ? "Articles d'aide groupés par thématique. Sprint 15 ajoute une recherche FTS sur tout le contenu."

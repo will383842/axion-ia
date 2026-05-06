@@ -217,7 +217,7 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("heroEyebrow")}
               </p>
-              <h1 className="text-display-editorial text-fg">
+              <h1 className="display-editorial text-fg">
                 {t("heroTitlePart1")}{" "}
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic">{t("heroTitleEm")}</span>

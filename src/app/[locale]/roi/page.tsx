@@ -79,8 +79,10 @@ export default async function RoiPage({ params }: Props) {
     <>
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Simulateur · accent green" : "Simulator · green accent"}
-        title={isFr ? "Estimez votre ROI IA en 30 secondes" : "Estimate your AI ROI in 30 seconds"}
+        eyebrow={isFr ? "Simulateur" : "Simulator"}
+        title={isFr ? "Estimez votre" : "Estimate your"}
+        titleEm={isFr ? "ROI IA" : "AI ROI"}
+        titleTail={isFr ? " en 30 secondes" : " in 30 seconds"}
         description={
           isFr
             ? "4 paramètres, calcul instantané, basé sur les modèles utilisés en audit AxionIA."

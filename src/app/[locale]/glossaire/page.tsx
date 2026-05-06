@@ -133,7 +133,8 @@ export default async function GlossaryPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Glossaire" : "Glossary"}
-        title={isFr ? "Termes IA essentiels" : "Essential AI terms"}
+        title={isFr ? "Termes IA" : "Essential AI"}
+        titleEm={isFr ? "essentiels" : "terms"}
         description={
           isFr
             ? "12 termes pour parler IA en réunion sans se tromper. Mis à jour à chaque évolution majeure."

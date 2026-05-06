@@ -112,7 +112,8 @@ export default async function MethodologyPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Méthodologie" : "Methodology"}
-        title={isFr ? "4 étapes vers le ROI mesurable" : "4 steps to measurable ROI"}
+        title={isFr ? "4 étapes vers le" : "4 steps to"}
+        titleEm={isFr ? "ROI mesurable" : "measurable ROI"}
         description={
           isFr
             ? "Méthodologie AxionIA, éprouvée sur 50+ entreprises de la TPE au mid-market."

@@ -28,7 +28,7 @@ const verticalRhythm: Record<HeroVariant, string> = {
 };
 
 const titleScale: Record<HeroVariant, string> = {
-  home: "text-display-editorial",
+  home: "display-editorial",
   module: "text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.04] font-semibold tracking-tight",
   product: "text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-semibold tracking-tight",
   transverse: "text-[clamp(2rem,5vw,3.5rem)] leading-[1.08] font-semibold tracking-tight",

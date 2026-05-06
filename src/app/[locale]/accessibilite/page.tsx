@@ -107,7 +107,8 @@ export default async function AccessibilityPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Conformité" : "Conformance"}
-        title={isFr ? "Déclaration d'accessibilité" : "Accessibility statement"}
+        title={isFr ? "Déclaration" : "Accessibility"}
+        titleEm={isFr ? "d'accessibilité" : "statement"}
         description={
           isFr
             ? "WCAG 2.2 AA, RGAA 4.1, European Accessibility Act."

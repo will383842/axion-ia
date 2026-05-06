@@ -128,7 +128,8 @@ export default async function ReserverPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Calendrier maison" : "On-site calendar"}
-        title={isFr ? "Réserver une intervention" : "Book a session"}
+        title={isFr ? "Réserver une" : "Book a"}
+        titleEm={isFr ? "intervention" : "session"}
         description={
           isFr
             ? "Sélectionnez un créneau disponible puis renseignez vos coordonnées. Confirmation par email sous 1 h ouvrée."

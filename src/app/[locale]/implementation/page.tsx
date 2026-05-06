@@ -51,8 +51,9 @@ export default async function ImplementationListing({ params }: Props) {
     <>
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Module 3 · accent purple" : "Module 3 · purple accent"}
-        title={isFr ? "Implémentation IA" : "AI implementation"}
+        eyebrow={isFr ? "Module 3" : "Module 3"}
+        title={isFr ? "Implémentation" : "AI"}
+        titleEm={isFr ? "IA" : "implementation"}
         description={
           isFr
             ? "9 prestations IA pour industrialiser un usage. De l'automatisation simple (à partir de 990 €) à l'IA Custom (jusqu'à 50 000 €)."

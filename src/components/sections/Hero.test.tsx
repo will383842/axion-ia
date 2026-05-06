@@ -15,7 +15,7 @@ describe("<Hero>", () => {
   it("scales the title for the home variant", () => {
     render(<Hero variant="home" title="Big" />);
     const h1 = screen.getByRole("heading", { level: 1 });
-    expect(h1.className).toContain("text-display-editorial");
+    expect(h1.className).toContain("display-editorial");
   });
 
   it("uses module accent indicator dot color", () => {

@@ -60,7 +60,8 @@ export default async function ComparisonsListPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Décision" : "Decision"}
-        title={isFr ? "Comparaisons IA honnêtes" : "Honest AI comparisons"}
+        title={isFr ? "Comparaisons IA" : "Honest AI"}
+        titleEm={isFr ? "honnêtes" : "comparisons"}
         description={
           isFr
             ? "Tableaux de décision factuels — pas de FUD, pas de complaisance vendeur."
