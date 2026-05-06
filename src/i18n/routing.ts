@@ -48,6 +48,20 @@ export const routing = defineRouting({
       fr: "/implementation/ia-custom",
       en: "/implementation/custom-ai",
     },
+    "/implementation/chatbot": "/implementation/chatbot",
+    "/implementation/processus": {
+      fr: "/implementation/processus",
+      en: "/implementation/processes",
+    },
+    "/implementation/structuration": {
+      fr: "/implementation/structuration",
+      en: "/implementation/structuring",
+    },
+    "/implementation/crm-erp": "/implementation/crm-erp",
+    "/implementation/documents": "/implementation/documents",
+    "/implementation/agents": "/implementation/agents",
+    "/implementation/integrations": "/implementation/integrations",
+    "/implementation/no-code": "/implementation/no-code",
 
     // Cas concrets
     "/cas-concrets": { fr: "/cas-concrets", en: "/case-studies" },
