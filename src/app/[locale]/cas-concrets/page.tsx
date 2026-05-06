@@ -79,13 +79,19 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
   return (
     <>
       <Section
+        tone="halo-warm"
         titleAs="h1"
-        eyebrow={isFr ? "Preuves sociales · accent green" : "Social proof · green accent"}
-        title={isFr ? "Cas concrets" : "Case studies"}
+        eyebrow={
+          isFr
+            ? "Cas réels · de l'artisan au grand groupe"
+            : "Real cases · from artisans to large groups"
+        }
+        title={isFr ? "Ce qu'ils ont" : "What they've"}
+        titleEm={isFr ? "concrètement gagné" : "actually gained"}
         description={
           isFr
-            ? "Résultats clients chiffrés, contexte et témoignages. Filtrez par industrie ou taille d'entreprise."
-            : "Client results in numbers, context and testimonials. Filter by industry or company size."
+            ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles d'entreprises, toutes les régions, tous les budgets — résultats chiffrés et témoignages."
+            : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets — numerical results and testimonials."
         }
       />
 

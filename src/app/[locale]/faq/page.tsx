@@ -54,9 +54,11 @@ export default async function FaqPage({ params }: Props) {
   return (
     <>
       <Section
+        tone="halo-warm"
         titleAs="h1"
         eyebrow="FAQ"
-        title={isFr ? "Questions fréquentes" : "Frequently asked questions"}
+        title={isFr ? "Questions" : "Frequently asked"}
+        titleEm={isFr ? "fréquentes" : "questions"}
         description={
           isFr
             ? "Tout savoir sur les interventions, l'audit, l'implémentation, la souveraineté des données et la facturation."

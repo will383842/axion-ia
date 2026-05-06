@@ -153,14 +153,24 @@ export default async function Home({ params }: HomeProps) {
     { id: "golive", n: "04", title: t("method4Title"), description: t("method4Description") },
   ];
 
-  // 3 cas concrets.
-  const featuredCases = CASE_STUDIES.slice(0, 3).map((c) => ({
-    slug: c.slug,
-    industry: isFr ? c.industry : c.industryEn,
-    metric: c.metric,
-    title: c[loc].title,
-    excerpt: c[loc].excerpt,
-  }));
+  // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
+  // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
+  // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
+  const featuredSlugs = [
+    "tpe-artisan-prospection",
+    "industrie-comptabilite",
+    "banque-onboarding",
+  ] as const;
+  const featuredCases = featuredSlugs
+    .map((slug) => CASE_STUDIES.find((c) => c.slug === slug))
+    .filter((c): c is (typeof CASE_STUDIES)[number] => c !== undefined)
+    .map((c) => ({
+      slug: c.slug,
+      industry: isFr ? c.industry : c.industryEn,
+      metric: c.metric,
+      title: c[loc].title,
+      excerpt: c[loc].excerpt,
+    }));
 
   // FAQ.
   const faqs = FAQ_GLOBAL.map((f) => ({
@@ -736,7 +746,9 @@ export default async function Home({ params }: HomeProps) {
                     <Link
                       href={v.href}
                       className={cn(
-                        "group bg-bg border-border focus-visible:ring-primary hover:shadow-card relative flex h-full flex-col gap-7 overflow-hidden rounded-3xl border p-10 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                        // Toute la card est cliquable. Visuel d'affordance :
+                        // hover lift -2px + shadow + accent border + flèche slide.
+                        "group bg-bg border-border focus-visible:ring-primary hover:shadow-elevated relative flex h-full flex-col gap-7 overflow-hidden rounded-3xl border p-10 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                         a.hoverBorder,
                         // Halo accent diffus en arrière-plan, plus visible au hover
                         "before:pointer-events-none before:absolute before:-top-32 before:-right-20 before:h-72 before:w-72 before:rounded-full before:opacity-50 before:blur-3xl before:transition-opacity before:duration-500 group-hover:before:opacity-100",
@@ -802,20 +814,18 @@ export default async function Home({ params }: HomeProps) {
                         </p>
                       </div>
 
-                      {/* Prix + lien détail */}
+                      {/* Prix + flèche d'affordance (toute la card est cliquable) */}
                       <div className="border-border relative flex items-center justify-between border-t pt-5">
                         <span className="text-fg text-sm font-semibold">{v.price}</span>
                         <span
                           className={cn(
-                            "inline-flex items-center gap-2 text-sm font-semibold",
-                            a.headline,
+                            "inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110",
+                            a.iconBg,
+                            a.iconFg,
                           )}
+                          aria-hidden="true"
                         >
-                          {isFr ? "Voir le détail" : "See details"}
-                          <ArrowRight
-                            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                            aria-hidden="true"
-                          />
+                          <ArrowRight className="h-5 w-5" />
                         </span>
                       </div>
                     </Link>
