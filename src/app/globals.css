@@ -251,6 +251,43 @@
   }
 }
 
+/* =============================================================
+ * Form on dark — wrapper `[data-tone='dark']` adapte les inputs UI
+ * primitifs sur fond mocha (header CTA, footer newsletter).
+ * Tokens-only, pas de hex hardcodé.
+ * =============================================================*/
+[data-tone="dark"] input[type="email"],
+[data-tone="dark"] input[type="text"],
+[data-tone="dark"] input[type="search"],
+[data-tone="dark"] input[type="tel"],
+[data-tone="dark"] input[type="url"],
+[data-tone="dark"] textarea {
+  background-color: rgba(247, 243, 234, 0.06);
+  border-color: var(--color-border-on-mocha);
+  color: var(--color-mocha-fg);
+}
+[data-tone="dark"] input::placeholder,
+[data-tone="dark"] textarea::placeholder {
+  color: rgba(247, 243, 234, 0.45);
+}
+[data-tone="dark"] input:focus,
+[data-tone="dark"] textarea:focus {
+  border-color: var(--color-terracotta-soft);
+  background-color: rgba(247, 243, 234, 0.1);
+}
+[data-tone="dark"] label {
+  color: var(--color-mocha-fg);
+}
+[data-tone="dark"] button[role="checkbox"] {
+  border-color: var(--color-border-on-mocha);
+  background-color: rgba(247, 243, 234, 0.04);
+}
+[data-tone="dark"] button[role="checkbox"][data-state="checked"] {
+  background-color: var(--color-terracotta-soft);
+  border-color: var(--color-terracotta-soft);
+  color: var(--color-mocha);
+}
+
 /* prefers-reduced-motion strict */
 @media (prefers-reduced-motion: reduce) {
   *,

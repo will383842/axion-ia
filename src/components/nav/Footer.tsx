@@ -5,17 +5,19 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
 // 5-zone footer per CLAUDE.md v6 §10. Pure Server Component.
-// Editorial doctrine v3 — bg-mocha-rich (alternative au noir), texte ivoire,
-// logo serif italique, columns sobres, dividers terracotta.
+// Editorial doctrine v3 — bg mocha rich premium, tagline serif géant,
+// columns avec underline animée terracotta, newsletter dark-aware via
+// `[data-tone='dark']` wrapper (cf. globals.css).
 export async function Footer() {
   const t = await getTranslations();
   const locale = await getLocale();
+  const isFr = locale === "fr";
   const year = new Date().getFullYear();
 
   const services = [
     {
       href: "/interventions/essentielle",
-      label: locale === "fr" ? "Essentielle · 490 €" : "Essential · €490",
+      label: isFr ? "Essentielle · 490 €" : "Essential · €490",
     },
     { href: "/interventions", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },
@@ -25,32 +27,46 @@ export async function Footer() {
     { href: "/blog", label: t("nav.blog") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/faq", label: "FAQ" },
-    { href: "/centre-aide", label: locale === "fr" ? "Centre d'aide" : "Help center" },
+    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
   ];
   const company = [
     { href: "/a-propos", label: t("nav.about") },
     { href: "/contact", label: t("nav.contact") },
   ];
   const legal = [
-    { href: "/mentions-legales", label: locale === "fr" ? "Mentions légales" : "Legal notice" },
-    { href: "/conditions-generales", label: locale === "fr" ? "Conditions générales" : "Terms" },
+    { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
+    { href: "/conditions-generales", label: isFr ? "Conditions générales" : "Terms" },
     {
       href: "/politique-confidentialite",
-      label: locale === "fr" ? "Politique de confidentialité" : "Privacy policy",
+      label: isFr ? "Politique de confidentialité" : "Privacy policy",
     },
     { href: "/cookies", label: "Cookies" },
     { href: "/rgpd", label: "RGPD / GDPR" },
   ];
 
   return (
-    <footer className="bg-mocha-rich text-mocha-fg relative overflow-hidden">
-      <Container className="relative py-20 lg:py-24">
-        {/* Top : tagline éditorial géant */}
-        <div className="border-border-on-mocha mb-16 max-w-3xl border-b pb-12">
+    <footer
+      data-tone="dark"
+      className="bg-mocha-rich text-mocha-fg relative isolate overflow-hidden"
+    >
+      {/* Pre-footer transition — gradient sand → mocha pour transition douce */}
+      <div
+        aria-hidden="true"
+        className="from-bg pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b to-transparent opacity-10"
+      />
+      {/* Hairline terracotta en haut pour cohérence avec header */}
+      <span
+        aria-hidden="true"
+        className="bg-terracotta/40 pointer-events-none absolute inset-x-0 top-0 block h-px"
+      />
+
+      <Container className="relative py-24 lg:py-28">
+        {/* Top : tagline éditorial géant signature */}
+        <div className="border-border-on-mocha mb-20 max-w-4xl border-b pb-16">
           <Link
             href="/"
             aria-label="AxionIA"
-            className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha mb-8 inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <span
               className="text-3xl leading-none font-medium tracking-tight"
@@ -66,27 +82,29 @@ export async function Footer() {
             </span>
           </Link>
           <p
-            className="text-mocha-fg/85 mt-6 max-w-xl text-2xl leading-snug font-medium"
+            className="text-mocha-fg max-w-3xl text-[clamp(2rem,4vw,3.5rem)] leading-[1.1] font-medium tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            {locale === "fr" ? (
+            {isFr ? (
               <>
-                Cabinet IA <span className="text-terracotta-soft italic">opérationnel</span>.
+                Le cabinet IA{" "}
+                <span className="text-terracotta-soft italic">qui vous fait gagner</span>.
                 <br />
-                OÜ estonienne · Tallinn.
+                Interventions, audits, implémentations — UE, Tallinn.
               </>
             ) : (
               <>
-                <span className="text-terracotta-soft italic">Operational</span> AI consultancy.
+                The AI consultancy{" "}
+                <span className="text-terracotta-soft italic">that makes you win</span>.
                 <br />
-                Estonian OÜ · Tallinn.
+                Sessions, audits, implementations — EU, Tallinn.
               </>
             )}
           </p>
         </div>
 
-        {/* Columns + Newsletter */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+        {/* Newsletter + Columns */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-14 sm:grid-cols-3 lg:grid-cols-5">
           {/* Newsletter zone */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
             <NewsletterFooterForm />
@@ -95,20 +113,30 @@ export async function Footer() {
 
           <FooterColumn title={t("footer.services")} items={services} />
           <FooterColumn title={t("footer.resources")} items={resources} />
-          <div className="space-y-10">
+          <div className="space-y-12">
             <FooterColumn title={t("footer.company")} items={company} />
             <FooterColumn title={t("footer.legal")} items={legal} />
           </div>
         </div>
 
-        {/* Bottom strip */}
-        <div className="border-border-on-mocha text-mocha-fg/70 mt-16 flex flex-col gap-4 border-t pt-8 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} AxionIA OÜ · {t("footer.rights")}
-          </p>
+        {/* Bottom strip — proof points + copyright + locale switcher */}
+        <div className="border-border-on-mocha text-mocha-fg/60 mt-20 grid gap-6 border-t pt-10 text-xs lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <span className="text-mocha-fg/85">© {year} AxionIA OÜ</span>
+            <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />
+            <span>{isFr ? "Tallinn, Estonie" : "Tallinn, Estonia"}</span>
+            <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />
+            <span>
+              {isFr ? "Hébergé en UE · Hetzner Frankfurt" : "Hosted in EU · Hetzner Frankfurt"}
+            </span>
+            <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />
+            <span>RGPD</span>
+          </div>
           <div className="flex items-center gap-5">
-            {/* Native <a> — sitemap.xml is global, not locale-prefixed. */}
-            <a href="/sitemap.xml" className="hover:text-mocha-fg transition">
+            <a
+              href="/sitemap.xml"
+              className="hover:text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
               {t("footer.siteMap")}
             </a>
             <LocaleSwitcher />
@@ -126,17 +154,23 @@ interface FooterColumnProps {
 function FooterColumn({ title, items }: FooterColumnProps) {
   return (
     <div>
-      <h3 className="text-mocha-fg/60 text-[11px] font-semibold tracking-[0.16em] uppercase">
+      <h3 className="text-mocha-fg/55 text-[11px] font-semibold tracking-[0.18em] uppercase">
         {title}
       </h3>
-      <ul className="mt-5 space-y-3 text-sm">
+      <ul className="mt-6 space-y-3.5 text-sm">
         {items.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href as never}
-              className="text-mocha-fg/85 hover:text-terracotta-soft focus-visible:ring-terracotta inline-flex min-h-9 items-center transition focus-visible:rounded-sm focus-visible:ring-2 focus-visible:outline-none"
+              className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha group relative inline-flex min-h-9 items-center transition focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              {item.label}
+              <span className="relative">
+                {item.label}
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta-soft absolute -bottom-0.5 left-0 h-px w-0 transition-all duration-300 group-hover:w-full"
+                />
+              </span>
             </Link>
           </li>
         ))}
@@ -167,7 +201,7 @@ function SocialLinks() {
     { href: "https://www.youtube.com/@axion-ia", label: "YouTube", Icon: YouTubeIcon },
   ];
   return (
-    <div className="mt-8 flex flex-wrap items-center gap-2">
+    <div className="mt-10 flex flex-wrap items-center gap-3">
       {socials.map(({ href, label, Icon }) => (
         <a
           key={label}
@@ -175,7 +209,7 @@ function SocialLinks() {
           target="_blank"
           rel="noopener noreferrer external"
           aria-label={label}
-          className="text-mocha-fg/80 border-border-on-mocha hover:border-terracotta-soft hover:text-terracotta-soft focus-visible:ring-terracotta inline-flex h-11 w-11 items-center justify-center rounded-full border transition focus-visible:ring-2 focus-visible:outline-none"
+          className="text-mocha-fg/80 border-border-on-mocha hover:border-terracotta-soft hover:text-terracotta-soft hover:bg-mocha-fg/5 focus-visible:ring-terracotta focus-visible:ring-offset-mocha cta-lift inline-flex h-12 w-12 items-center justify-center rounded-full border transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <Icon className="h-4 w-4" />
         </a>
@@ -206,10 +240,26 @@ async function NewsletterFooterForm() {
         failure: "Error. Try again or email contact@axion-ia.com.",
       };
   return (
-    <div className="max-w-sm">
-      <h3 className="text-mocha-fg/60 mb-4 text-[11px] font-semibold tracking-[0.16em] uppercase">
+    <div className="max-w-md">
+      <h3 className="text-mocha-fg/55 mb-2 text-[11px] font-semibold tracking-[0.18em] uppercase">
         {t("footer.newsletter")}
       </h3>
+      <p
+        className="text-mocha-fg mb-5 max-w-sm text-lg leading-snug font-medium"
+        style={{ fontFamily: "var(--font-serif)" }}
+      >
+        {isFr ? (
+          <>
+            Une <span className="text-terracotta-soft italic">analyse IA</span> par mois. Aucun
+            spam, désinscription en 1 clic.
+          </>
+        ) : (
+          <>
+            One <span className="text-terracotta-soft italic">AI analysis</span> per month. No spam,
+            one-click unsubscribe.
+          </>
+        )}
+      </p>
       <NewsletterForm labels={labels} variant="inline" />
     </div>
   );

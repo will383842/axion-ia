@@ -12,8 +12,9 @@ interface NavLinkProps {
   variant?: "desktop" | "mobile";
 }
 
-// Editorial v3 — desktop: italique terracotta sur item actif (signature Anthropic).
-// Mobile: bg sand sur item actif (full-width row).
+// Editorial v3 — desktop on mocha header: italique terracotta-soft sur item
+// actif. Underline animée terracotta. Mobile (drawer ivoire): bg sand sur item
+// actif (full-width row).
 export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -39,7 +40,11 @@ export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
       aria-current={isActive ? "page" : undefined}
       className={cn(
         "relative text-sm font-medium tracking-tight transition-colors",
-        isActive ? "text-terracotta italic" : "text-fg-soft hover:text-fg",
+        // Underline animée terracotta sur hover/active
+        "after:bg-terracotta-soft after:absolute after:-bottom-1.5 after:left-0 after:h-px after:transition-all after:duration-300",
+        isActive
+          ? "text-terracotta-soft italic after:w-full"
+          : "text-mocha-fg/75 hover:text-mocha-fg after:w-0 hover:after:w-full",
       )}
     >
       {label}

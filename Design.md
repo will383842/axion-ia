@@ -1,0 +1,354 @@
+# Design.md — AxionIA · Doctrine visuelle v3 « Editorial Premium Light »
+
+> **Source de vérité visuelle officielle** depuis 2026-05-06.
+> Supersedes la direction Webflow-inspired v1 (cf. `docs/adr/0001-design-direction-webflow.md`).
+> Référence ADR : `docs/adr/0002-design-pivot-editorial-v3.md`.
+> Implémentation tokens : `src/app/globals.css`.
+
+---
+
+## 1. Positionnement visuel
+
+**Cabinet IA opérationnel premium B2B** pour PME/ETI européennes (DSI, dirigeants, RH, opérationnels).
+
+Référents visuels assumés : **Anthropic**, **Mistral**, **OpenAI**, **Stripe Press**, éditeurs éditoriaux à signature serif italique.
+
+Anti-références : SaaS B2C grand public, dashboards techniques type Linear/Notion, sites « agence digitale » multicolores.
+
+**Mots-clés directeurs** : éditorial, calme, opérationnel, pas de noir pur, italique terracotta en signature, surfaces ivoire chaud.
+
+---
+
+## 2. Palette canon
+
+### 2.1 — Surfaces (4 tons éditoriaux, sans noir)
+
+| Token                | Hex       | Usage                                             |
+| -------------------- | --------- | ------------------------------------------------- |
+| `--color-bg`         | `#faf8f3` | Canvas par défaut — ivoire chaud                  |
+| `--color-paper`      | `#ffffff` | Cards, sections de contraste, modales             |
+| `--color-sand`       | `#f0e9da` | Sections « intermissions », alternance Hero       |
+| `--color-sand-deep`  | `#e6dcc4` | Bordures fortes, badges éditoriaux                |
+| `--color-mocha`      | `#2a2520` | Sections premium (Footer, CTA dark) — PAS du noir |
+| `--color-mocha-soft` | `#3d362f` | Gradients mocha → mocha-soft                      |
+| `--color-mocha-fg`   | `#f7f3ea` | Texte sur fonds mocha                             |
+
+### 2.2 — Foreground (texte sur surfaces claires)
+
+| Token              | Hex       | Usage                                           |
+| ------------------ | --------- | ----------------------------------------------- |
+| `--color-fg`       | `#1a1815` | Texte principal — anthracite-brun (PAS noir)    |
+| `--color-fg-soft`  | `#524b41` | Texte secondaire (descriptions, captions longs) |
+| `--color-fg-muted` | `#80766a` | Texte tertiaire (eyebrow, dates, métadonnées)   |
+
+### 2.3 — Accent primary (Editorial Blue)
+
+| Token                   | Hex       | Usage                                      |
+| ----------------------- | --------- | ------------------------------------------ |
+| `--color-primary`       | `#1a4dd9` | CTA primaire **unique**, links, focus ring |
+| `--color-primary-hover` | `#0f3aae` | Hover CTA primaire                         |
+| `--color-primary-fg`    | `#ffffff` | Texte sur primary                          |
+| `--color-primary-soft`  | `#e8efff` | Halo très doux fond d'icônes, badges info  |
+
+> **Règle stricte** : `#1a4dd9` est **la seule couleur** autorisée sur un CTA primaire (button bg, link underline, focus ring). Aucune autre couleur ne joue ce rôle. Confirmé par grep CI.
+
+### 2.4 — Accent éditorial (terracotta brique)
+
+| Token                     | Hex       | Usage                                                              |
+| ------------------------- | --------- | ------------------------------------------------------------------ |
+| `--color-terracotta`      | `#c24a1b` | Italiques signature `em.editorial`, divider footer, CTA dark hover |
+| `--color-terracotta-soft` | `#f5e3d8` | Halo terracotta très doux (badges accent, illustrations)           |
+| `--color-terracotta-deep` | `#8c3010` | Hover sur fonds clairs, focus ring sur fonds mocha                 |
+
+> Le terracotta est l'accent **éditorial** : jamais sur un CTA primaire, toujours en signature (italique serif, dot indicator hero, divider, hover éditorial).
+
+### 2.5 — Accent doux (vert sauge)
+
+| Token               | Hex       | Usage                                                 |
+| ------------------- | --------- | ----------------------------------------------------- |
+| `--color-sage`      | `#7a8870` | Module Cas concrets, badges proof, indicateurs succès |
+| `--color-sage-soft` | `#e6ebe2` | Halo doux fonds de cards proof                        |
+
+> Le sage **remplace** le `#00d722` v1 (trop SaaS) tout en conservant le mapping ADR 0001 « Module Cas concrets = vert ».
+
+### 2.6 — Module-color mapping (CONSERVÉ depuis ADR 0001)
+
+| Module                  | Accent         | Token                             |
+| ----------------------- | -------------- | --------------------------------- |
+| Module 1 Interventions  | Editorial Blue | `--color-primary` `#1a4dd9`       |
+| Module 2 Audit          | Orange         | `--color-accent-orange` `#ff6b00` |
+| Module 3 Implémentation | Purple         | `--color-accent-purple` `#7a3dff` |
+| Cas concrets            | Sage           | `--color-sage` `#7a8870`          |
+| Blog / transversales    | Neutral        | —                                 |
+| Légal                   | Neutral        | —                                 |
+
+> **Discipline 1 couleur par section** : un module n'utilise son accent que sur les badges, l'eyebrow dot, l'illustration. Le CTA primaire reste **toujours** Editorial Blue. Aucune section ne combine 3+ couleurs.
+
+### 2.7 — Borders & dividers
+
+| Token                     | Hex       | Usage                                       |
+| ------------------------- | --------- | ------------------------------------------- |
+| `--color-border`          | `#e5ddc8` | Bordures par défaut (cards, inputs)         |
+| `--color-border-strong`   | `#c8bda0` | Focus ring sur fond clair, dividers marqués |
+| `--color-border-on-mocha` | `#4a4239` | Bordures sur fonds mocha                    |
+
+---
+
+## 3. Typographie
+
+### 3.1 — Familles
+
+| Famille                | Variable       | Usage                                                       |
+| ---------------------- | -------------- | ----------------------------------------------------------- |
+| **Manrope** (sans)     | `--font-sans`  | Body, UI, eyebrow uppercase, navigation, forms              |
+| **Fraunces** (serif)   | `--font-serif` | Titres éditoriaux (h1 home, hero), signature `em.editorial` |
+| **Inconsolata** (mono) | `--font-mono`  | Technique, code, prix `tnum`, métriques chiffrées           |
+
+Fallbacks : sans → `-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui` ; serif → `"Iowan Old Style", Palatino, P052, serif` ; mono → `ui-monospace, SFMono-Regular, Menlo`.
+
+### 3.2 — Échelle (mobile-first, scale clamp pour fluide)
+
+| Token             | Taille             | Line-height | Letter-spacing  | Famille                     | Usage                         |
+| ----------------- | ------------------ | ----------- | --------------- | --------------------------- | ----------------------------- |
+| `--text-display`  | **7 rem (112 px)** | 0.96        | -0.04em         | serif Fraunces              | h1 home, hero éditorial       |
+| `--text-section`  | 4 rem (64 px)      | 1.04        | —               | serif ou sans selon section | h2 section heading            |
+| `--text-sub`      | 2.25 rem (36 px)   | 1.20        | —               | sans                        | h3                            |
+| `--text-feature`  | 1.5 rem (24 px)    | 1.30        | —               | sans                        | feature card title            |
+| `--text-lead`     | 1.375 rem (22 px)  | 1.50        | —               | sans                        | description hero / lead intro |
+| `--text-body`     | 1 rem (16 px)      | 1.65        | -0.005em        | sans                        | body                          |
+| `--text-label-up` | 0.8125 rem (13 px) | 1.30        | **0.16em**      | sans uppercase              | eyebrow, label form           |
+| `--text-caption`  | 0.875 rem (14 px)  | 1.50        | —               | sans                        | caption, metadata             |
+| `--text-badge-up` | 0.75 rem (12 px)   | 1.20        | uppercase       | sans                        | badge inline                  |
+| `--text-micro-up` | 0.625 rem (10 px)  | 1.30        | 0.1em uppercase | sans                        | micro-label                   |
+
+### 3.3 — Signature éditoriale `em.editorial`
+
+Classe globale dans `globals.css` :
+
+```css
+em.editorial {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-terracotta);
+  font-weight: 500;
+}
+```
+
+Utilisation : mise en exergue d'un mot dans un titre serif. Ex :
+
+> _L'intelligence artificielle <em class="editorial">qui produit</em> du ROI mesurable en 90 jours._
+
+### 3.4 — Eyebrow signature
+
+- Pas de fond coloré (rupture v1 où eyebrow avait un bg primary 10%).
+- Texte uppercase, taille `--text-label-up`, tracking 0.16em, color `--color-fg-muted`.
+- **Dot indicator** 6×6 px en couleur module devant le texte (`mr-3 inline-block h-1.5 w-1.5 rounded-full bg-{module-color}`).
+
+---
+
+## 4. Radius
+
+| Token           | v3        | Usage                                 |
+| --------------- | --------- | ------------------------------------- |
+| `--radius-xs`   | 2 px      | Inputs hairline, focus ring           |
+| `--radius-sm`   | 4 px      | Buttons, badges, inputs               |
+| `--radius-md`   | **8 px**  | Cards UI, modales                     |
+| `--radius-lg`   | **12 px** | Cards éditoriales standard            |
+| `--radius-xl`   | **20 px** | Cards hero, surfaces premium          |
+| `--radius-2xl`  | **28 px** | Hero blocks, sections premium isolées |
+| `--radius-full` | 9999 px   | Avatars, dots, pills                  |
+
+> **Règle** : `border-radius > 12 px` autorisé seulement sur Hero blocks et cards éditoriales premium (xl/2xl). Linter `pnpm radius:check` passe.
+
+---
+
+## 5. Shadows — cascade 5 couches ton chaud
+
+```css
+--shadow-card:
+  rgba(42, 37, 32, 0) 0px 84px 24px, rgba(42, 37, 32, 0.02) 0px 54px 22px,
+  rgba(42, 37, 32, 0.05) 0px 30px 18px, rgba(42, 37, 32, 0.08) 0px 13px 13px,
+  rgba(42, 37, 32, 0.09) 0px 3px 7px;
+```
+
+3 niveaux exposés :
+
+- `--shadow-subtle` — éléments légers (badges, popovers fins).
+- `--shadow-card` — cards par défaut (5 couches).
+- `--shadow-elevated` — modales, hero floating, popovers majeurs.
+
+Bonus : `--shadow-inset-soft: inset 0 1px 0 0 rgba(255,255,255,0.6)` pour cards éditoriales sur sand.
+
+---
+
+## 6. Halos signature
+
+Deux utility classes :
+
+```css
+.bg-halo-warm {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(at 92% 8%, rgba(194, 74, 27, 0.1) 0px, transparent 55%),
+    radial-gradient(at 8% 92%, rgba(26, 77, 217, 0.06) 0px, transparent 60%);
+}
+
+.bg-halo-cool {
+  background-color: var(--color-sand);
+  background-image:
+    radial-gradient(at 88% 88%, rgba(26, 77, 217, 0.08) 0px, transparent 55%),
+    radial-gradient(at 12% 12%, rgba(122, 136, 112, 0.06) 0px, transparent 50%);
+}
+```
+
+Usage : Hero `home`/`module` par défaut → `bg-halo-warm`. Sections d'alternance → `bg-halo-cool`. Jamais 2 halos collés sans section neutre entre.
+
+---
+
+## 7. Animation signature
+
+- `--ease-out-webflow: cubic-bezier(0.16, 1, 0.3, 1)` — easing identitaire (conservé du v1).
+- `--duration-fast: 150ms`, `--duration-base: 250ms`, `--duration-slow: 400ms`.
+- Classe `.cta-translate` : `transition: transform var(--duration-base) var(--ease-out-webflow); &:hover { transform: translateX(6px); }`.
+- **`prefers-reduced-motion: reduce`** désactive **toutes** animations + transitions globalement (media query CSS dans `globals.css`).
+
+---
+
+## 8. Breakpoints (CONSERVÉS depuis v1)
+
+| Token | Min-width | Cible    |
+| ----- | --------- | -------- |
+| `xs`  | 479 px    | Mobile L |
+| `md`  | 768 px    | Tablet   |
+| `lg`  | 992 px    | Desktop  |
+| `xl`  | 1280 px   | Wide     |
+
+`<Container>` max-w 1280, padding responsive 16/24/32/48 px.
+
+---
+
+## 9. Selection & Focus
+
+### Selection
+
+```css
+::selection {
+  background: var(--color-terracotta);
+  color: var(--color-mocha-fg);
+}
+```
+
+Signature éditoriale : sélection en terracotta plutôt que primary.
+
+### Focus visible
+
+```css
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+```
+
+Sur fonds mocha : `outline: 2px solid var(--color-terracotta)`.
+
+---
+
+## 10. Surfaces & sections — règles d'alternance
+
+Ordre conseillé sur une page longue (home, module listing) :
+
+1. **Hero** — `bg-halo-warm` (ivoire + halos chauds).
+2. **Trust bar** — `bg-bg` neutre.
+3. **Modules / Features** — `bg-paper` blanc pur (contraste).
+4. **Métriques** — `bg-halo-cool` (sand + halos froids).
+5. **Méthode** — `bg-bg` neutre.
+6. **Cas concrets** — `bg-sand` (pause éditoriale).
+7. **ROI / proof** — `bg-bg` neutre.
+8. **Témoignages** — `bg-sand-deep` léger.
+9. **FAQ** — `bg-bg` neutre.
+10. **CTA Block** — `bg-mocha` (clôture premium).
+11. **Footer** — `bg-mocha` (continuité CTA).
+
+> **Règle** : jamais 3 sections consécutives de la même surface. Alterner `bg-bg` ↔ `bg-paper` ↔ `bg-sand` pour rythme visuel.
+
+---
+
+## 11. Composants signature
+
+### Button
+
+- `variant="primary"` : bg `--color-primary`, fg white, radius `--radius-sm`, weight 550, hover `translateX(6px)` + bg `--color-primary-hover`.
+- `variant="secondary"` : bg `--color-paper`, border `--color-border`, fg `--color-fg`, hover bg `--color-sand`.
+- `variant="ghost"` : transparent, hover bg `--color-sand`.
+- `variant="dark"` : bg `--color-mocha`, fg `--color-mocha-fg`, hover terracotta-soft border.
+- Focus ring : `--color-primary` (2px + offset 2px) sur fonds clairs, `--color-terracotta` sur fond mocha.
+
+### Hero
+
+- Default `accent="terracotta"` (signature éditoriale).
+- `bg-halo-warm` par défaut, override possible.
+- Eyebrow avec dot indicator couleur module + uppercase 13px tracking 0.16em.
+- `titleEm` (slot) rendu en serif italique terracotta-soft pour mise en exergue.
+
+### Footer
+
+- `bg-mocha` (premium clôture).
+- Tagline éditoriale en serif Manrope serif 24-30 px medium tracking-tight, avec `em.editorial` sur le mot identitaire (« opérationnel »).
+- Logo serif italique terracotta sur « IA ».
+- Dividers terracotta `--color-border-on-mocha`.
+- Links `text-mocha-fg/85 hover:text-terracotta-soft transition`.
+
+### Card
+
+- Radius par défaut `--radius-lg` (12 px).
+- Shadow `--shadow-subtle` au repos, `--shadow-card` au hover.
+- Border `--color-border` 1px.
+- Cards éditoriales premium : radius `--radius-xl` (20 px).
+
+---
+
+## 12. Anti-patterns interdits (linter CI)
+
+- `#000000`, `#0a0a0a`, `#080808` — pas de noir pur, utiliser `--color-fg` (`#1a1815`) ou `--color-mocha` (`#2a2520`).
+- `#ffffff` en bg principal — utiliser `--color-bg` (`#faf8f3`). Le blanc pur est réservé à `--color-paper`.
+- `font-family: Inter, Geist, Newsreader, Helvetica` — bannis. Seuls Manrope, Fraunces, Inconsolata.
+- `border-radius` en valeur littérale > 12 px hors hero blocks autorisés.
+- `box-shadow` ton-froid `rgba(0,0,0,…)` — utiliser tokens shadows v3 ton chaud uniquement.
+- `bg-primary 10%` en eyebrow — eyebrow doit être texte sur fond, pas bg coloré.
+
+---
+
+## 13. Conformité a11y
+
+- Contraste `--color-fg` sur `--color-bg` : 14.0:1 (AAA).
+- Contraste `--color-fg-soft` sur `--color-bg` : 7.2:1 (AAA).
+- Contraste `--color-fg-muted` sur `--color-bg` : 4.6:1 (AA).
+- Contraste `--color-primary` sur `--color-bg` : 7.4:1 (AAA texte large, AA body).
+- Contraste `--color-terracotta` sur `--color-bg` : 4.8:1 (AA texte large only — italiques signature).
+- Contraste `--color-mocha-fg` sur `--color-mocha` : 12.5:1 (AAA).
+- Linter `pnpm contrast:check` passe sur 12+ paires testées.
+
+---
+
+## 14. Implémentation
+
+Tokens CSS variables : `src/app/globals.css` directive `@theme`.
+Tailwind v4 consomme via classes utilitaires (`bg-bg`, `text-fg`, `text-fg-muted`, `bg-mocha`, `text-mocha-fg`, `text-terracotta`, `bg-sand`, etc.).
+
+Fichiers de référence :
+
+- `src/components/layout/Container.tsx` — max-w 1280.
+- `src/components/layout/Section.tsx` — vertical rhythm + alternance surfaces.
+- `src/components/sections/Hero.tsx` — variant home/module/product/transverse + accent + titleEm.
+- `src/components/nav/Header.tsx` — sticky + scroll behavior.
+- `src/components/nav/Footer.tsx` — bg-mocha + 5 zones + tagline éditoriale.
+- `src/components/ui/button.tsx` — 4 variants v3.
+
+---
+
+## 15. Évolutions futures (hors scope ADR 0002)
+
+- Mode sombre éditorial (mocha en bg principal, ivoire en fg) — différé Phase 2.
+- Variante palette « hiver » (sage plus prononcé) — différé selon retours.
+- Police titres serif alternative (Source Serif 4) — à benchmarker contre Fraunces post-launch.
