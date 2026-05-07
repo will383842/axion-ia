@@ -89,7 +89,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
             />
             <button
               type="submit"
-              className="bg-primary text-primary-fg cta-translate focus-visible:ring-primary inline-flex h-11 items-center gap-2 rounded-sm px-5 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-11 items-center gap-2 rounded-sm px-5 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {isFr ? "Rechercher" : "Search"} →
             </button>
@@ -97,7 +97,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
 
           {q ? (
             <div className="mt-10 space-y-4">
-              <p className="text-base text-gray-700">
+              <p className="text-fg-soft text-base">
                 {isFr
                   ? `Résultats pour « ${q} » — moteur Sprint 15. En attendant, essayez :`
                   : `Results for "${q}" — Sprint 15 engine. Meanwhile, try:`}

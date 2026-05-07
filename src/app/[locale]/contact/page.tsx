@@ -136,7 +136,7 @@ export default async function Contact({ params }: Props) {
               contact@axion-ia.com
             </a>
           </p>
-          <p className="text-sm text-gray-700">
+          <p className="text-fg-soft text-sm">
             {isFr
               ? "Numéro d'enregistrement et coordonnées complètes : voir mentions légales."
               : "Registration number and full details: see legal notice."}

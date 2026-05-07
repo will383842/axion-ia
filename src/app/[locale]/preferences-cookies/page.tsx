@@ -60,7 +60,7 @@ export default async function CookiePreferencesPage({ params }: Props) {
         }
       />
       <Section>
-        <Container className="max-w-2xl space-y-6 text-base leading-relaxed text-gray-700">
+        <Container className="text-fg-soft max-w-2xl space-y-6 text-base leading-relaxed">
           <p>
             {isFr
               ? "AxionIA n'utilise par défaut aucun cookie de tracking tiers. Le site fonctionne sans publicitaire, sans Google Analytics, sans Facebook Pixel. Seuls des cookies fonctionnels strictement nécessaires (langue, session admin) sont déposés."

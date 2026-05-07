@@ -28,7 +28,7 @@ export default function DesignPage() {
       </Section>
 
       <Section eyebrow="Palette · 6 secondaries (disciplined)">
-        <p className="mb-6 max-w-2xl text-sm text-gray-700">
+        <p className="text-fg-soft mb-6 max-w-2xl text-sm">
           1 per section. Module 1 = blue (primary). Module 2 = orange. Module 3 = purple. Cas
           concrets = green.
         </p>
@@ -110,18 +110,18 @@ export default function DesignPage() {
         <div className="flex flex-wrap gap-4">
           <button
             type="button"
-            className="bg-primary text-primary-fg cta-translate inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
+            className="bg-primary text-primary-fg cta-lift inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
           >
             Réserver une intervention →
           </button>
           <button
             type="button"
-            className="text-fg cta-translate inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
+            className="text-fg cta-lift inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
           >
             Lien ghost →
           </button>
         </div>
-        <p className="mt-4 max-w-2xl text-sm text-gray-700">
+        <p className="text-fg-soft mt-4 max-w-2xl text-sm">
           Hover any link above. With{" "}
           <code className="font-mono">prefers-reduced-motion: reduce</code>, the translate is
           automatically suppressed (see globals.css media query).
@@ -166,7 +166,7 @@ interface SpecimenLineProps {
 function SpecimenLine({ label, className, children }: SpecimenLineProps) {
   return (
     <div className="border-border border-l-2 pl-4">
-      <div className="font-mono text-[0.625rem] tracking-wide text-gray-600 uppercase">{label}</div>
+      <div className="text-fg-muted font-mono text-[0.625rem] tracking-wide uppercase">{label}</div>
       <div className={className}>{children}</div>
     </div>
   );

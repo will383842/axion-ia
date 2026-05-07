@@ -70,7 +70,7 @@ export default async function BlogArticle({ params }: Props) {
   return (
     <>
       <Section eyebrow={post.category} title={copy.title}>
-        <Container className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+        <Container className="text-fg-muted flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{post.category}</Badge>
           <time dateTime={post.publishedAt}>{post.publishedAt}</time>
           <span aria-hidden="true">·</span>

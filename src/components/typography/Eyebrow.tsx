@@ -18,7 +18,7 @@ interface EyebrowProps extends Omit<ComponentPropsWithoutRef<"p">, "title"> {
 // Uppercase label 12.8-15px, weight 500-600, tracking ~1.5px (Design.md §3).
 // `variant` lets each module pick its accent (axionia-design module-color mapping).
 const variantClasses: Record<EyebrowVariant, string> = {
-  default: "text-gray-700",
+  default: "text-fg-muted",
   primary: "text-primary",
   purple: "text-accent-purple",
   orange: "text-accent-orange",

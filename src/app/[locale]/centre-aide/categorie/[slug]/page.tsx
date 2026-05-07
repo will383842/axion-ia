@@ -88,7 +88,7 @@ export default async function HelpCategoryPage({ params }: Props) {
             {articles.map((a) => (
               <li key={a.slug}>
                 <a href={`/${locale}/centre-aide/${a.slug}`} className="block">
-                  <Card className="cta-translate h-full">
+                  <Card className="cta-lift h-full">
                     <CardHeader>
                       <CardTitle className="text-lg">{a[loc].title}</CardTitle>
                       <CardDescription>{a[loc].excerpt}</CardDescription>

@@ -100,7 +100,7 @@ export default async function AiGuidePage({ params }: Props) {
                 <span className="text-primary font-mono text-sm tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-base text-gray-700">{c}</span>
+                <span className="text-fg-soft text-base">{c}</span>
               </li>
             ))}
           </ol>

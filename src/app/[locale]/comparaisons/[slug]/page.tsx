@@ -89,7 +89,7 @@ export default async function ComparisonPage({ params }: Props) {
       )}
       <Section>
         <Container className="max-w-3xl">
-          <p className="text-base leading-relaxed text-gray-700">{copy.body}</p>
+          <p className="text-fg-soft text-base leading-relaxed">{copy.body}</p>
         </Container>
       </Section>
       <CtaBlock

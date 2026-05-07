@@ -71,7 +71,7 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
       />
 
       <Section>
-        <Container className="max-w-2xl space-y-6 text-base leading-relaxed text-gray-700">
+        <Container className="text-fg-soft max-w-2xl space-y-6 text-base leading-relaxed">
           {hasToken ? (
             <>
               <p>
@@ -87,7 +87,7 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
                 <input type="hidden" name="token" value={token} />
                 <button
                   type="submit"
-                  className="bg-primary text-primary-fg cta-translate inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
+                  className="bg-primary text-primary-fg cta-lift inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
                 >
                   {isFr ? "Confirmer le désabonnement" : "Confirm unsubscribe"} →
                 </button>
@@ -95,7 +95,7 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
                   {isFr ? "Annuler" : "Cancel"}
                 </Cta>
               </form>
-              <p className="text-xs text-gray-600">
+              <p className="text-fg-muted text-xs">
                 {isFr
                   ? "Vous pouvez toujours nous écrire à contact@axion-ia.com pour exercer vos droits RGPD (accès, rectification, effacement, portabilité, opposition)."
                   : "You can always email contact@axion-ia.com to exercise your GDPR rights (access, rectification, erasure, portability, objection)."}

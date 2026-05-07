@@ -179,7 +179,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
       >
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.length === 0 ? (
-            <li className="col-span-full text-center text-gray-700">
+            <li className="text-fg-soft col-span-full text-center">
               {isFr ? "Aucun cas ne correspond à ces filtres." : "No case matches these filters."}
             </li>
           ) : (

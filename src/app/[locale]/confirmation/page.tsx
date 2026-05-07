@@ -81,7 +81,7 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
             </AlertDescription>
           </Alert>
 
-          <p className="text-base leading-relaxed text-gray-700">
+          <p className="text-fg-soft text-base leading-relaxed">
             {isFr
               ? "En attendant, voici quelques ressources qui pourront vous être utiles :"
               : "In the meantime, here are some resources you may find useful:"}

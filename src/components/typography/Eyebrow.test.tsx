@@ -8,7 +8,7 @@ describe("<Eyebrow>", () => {
     const node = screen.getByText("label");
     expect(node.className).toContain("uppercase");
     expect(node.className).toContain("tracking-[0.1em]");
-    expect(node.className).toContain("text-gray-700");
+    expect(node.className).toContain("text-fg-muted");
   });
 
   it("applies module variant color", () => {

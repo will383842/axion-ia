@@ -86,7 +86,7 @@ export default async function HelpArticlePage({ params }: Props) {
 
       <Section>
         <Container className="max-w-3xl">
-          <div className="prose prose-slate max-w-none text-base leading-relaxed text-gray-700">
+          <div className="prose prose-slate text-fg-soft max-w-none text-base leading-relaxed">
             <p>{copy.body}</p>
           </div>
         </Container>

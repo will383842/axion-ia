@@ -130,7 +130,7 @@ export default async function MethodologyPage({ params }: Props) {
                 <h2 className="text-fg text-xl leading-tight font-semibold tracking-tight">
                   {s.h}
                 </h2>
-                <p className="text-base leading-relaxed text-gray-700">{s.p}</p>
+                <p className="text-fg-soft text-base leading-relaxed">{s.p}</p>
               </li>
             ))}
           </ol>

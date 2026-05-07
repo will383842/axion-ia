@@ -92,7 +92,7 @@ export default function ComponentsPage() {
               <CardDescription>One-line summary that supports the title.</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-700">
+              <p className="text-fg-soft text-sm">
                 Body content uses base Tailwind text classes. Hover the card to see the 5-layer
                 shadow signature.
               </p>

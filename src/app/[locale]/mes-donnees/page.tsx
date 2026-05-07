@@ -84,11 +84,11 @@ export default async function MyDataPage({ params }: Props) {
             {rights.map(([h, p]) => (
               <li key={h} className="py-4">
                 <h2 className="text-fg text-base font-semibold tracking-tight">{h}</h2>
-                <p className="mt-1 text-sm leading-relaxed text-gray-700">{p}</p>
+                <p className="text-fg-soft mt-1 text-sm leading-relaxed">{p}</p>
               </li>
             ))}
           </ul>
-          <div className="mt-10 space-y-4 text-base leading-relaxed text-gray-700">
+          <div className="text-fg-soft mt-10 space-y-4 text-base leading-relaxed">
             <p>
               {isFr ? "Pour exercer un droit, écrivez à" : "To exercise a right, email"}{" "}
               <a className="text-primary hover:underline" href="mailto:dpo@axion-ia.com">

@@ -115,7 +115,7 @@ export default async function HelpCenter({ params }: Props) {
                     <CardDescription>{section.desc}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-fg-muted text-sm">
                       {isFr
                         ? "Articles publiés au Sprint 15 (fixtures Prisma)."
                         : "Articles published in Sprint 15 (Prisma fixtures)."}
