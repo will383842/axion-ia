@@ -6,10 +6,9 @@ import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 
 // Server Component. 5 items, ZERO dropdown (CLAUDE.md v6 §9.2).
-// Editorial doctrine v3 — fond `bg-terracotta` au top, transition vers
-// `bg-mocha` quand scrolled. Layout balanced :
+// Editorial doctrine v3 — fond `bg-terracotta` constant (figé, pas de
+// transition au scroll). Layout balanced :
 // [Logo badge] [Nav 1, 2]    [CTA centré]    [Nav 3, 4] [Locale]
-// Le CTA central est l'élément le plus saillant.
 export async function Header() {
   const t = await getTranslations();
 
@@ -27,21 +26,18 @@ export async function Header() {
   return (
     <header
       data-tone="terracotta"
-      className="bg-terracotta border-terracotta-deep text-mocha-fg data-[scrolled=true]:bg-mocha data-[scrolled=true]:border-mocha supports-[backdrop-filter]:bg-terracotta/95 supports-[backdrop-filter]:data-[scrolled=true]:bg-mocha/85 sticky top-0 z-40 border-b backdrop-blur-md transition-[background-color,height,backdrop-filter,box-shadow] duration-300 ease-out data-[scrolled=true]:shadow-[0_8px_24px_-12px_rgba(42,37,32,0.5)] data-[scrolled=true]:backdrop-blur-xl"
+      className="bg-terracotta border-terracotta-deep text-mocha-fg supports-[backdrop-filter]:bg-terracotta/95 sticky top-0 z-40 border-b backdrop-blur-md"
     >
       {/* Hairline mocha sous le header pour signature subtile */}
       <span
         aria-hidden="true"
-        className="bg-mocha/30 data-[scrolled=true]:bg-terracotta/60 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
+        className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
       {/* Layout pleine largeur : Logo + Nav split + CTA centré + Locale */}
-      <div className="relative flex h-20 w-full items-center gap-4 px-6 transition-[height] duration-300 ease-out sm:px-8 lg:h-24 lg:gap-3 lg:px-12 xl:gap-4 xl:px-16 [[data-scrolled=true]_&]:h-16 [[data-scrolled=true]_&]:lg:h-20">
-        {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2.
-            Nav justify-end → items poussés vers la droite, près du CTA central. */}
+      <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-3 lg:px-12 xl:gap-4 xl:px-16">
+        {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2 */}
         <div className="flex flex-1 items-center justify-between gap-6 lg:gap-8">
-          {/* Logo dans badge ivoire — fait ressortir le "IA" terracotta sur
-              tous les fonds (terracotta au top, mocha au scroll). Couleur du
-              logo figée — n'évolue plus au scroll. */}
+          {/* Logo dans badge ivoire — fait ressortir "Axion-IA" sur fond terracotta. */}
           <Link
             href="/"
             aria-label="AxionIA"
@@ -72,9 +68,7 @@ export async function Header() {
           </nav>
         </div>
 
-        {/* CENTRE : CTA pill bleu primary saillant — distinct des autres CTAs
-            grace au glow + ring blanc fin (signature header). Le bleu sur
-            terracotta cree un fort contraste, le ring blanc l'isole. */}
+        {/* CENTRE : CTA pill bleu primary saillant */}
         <Link
           href="/reserver"
           className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 hidden h-12 shrink-0 items-center gap-2 rounded-full px-6 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:inline-flex"
@@ -83,7 +77,7 @@ export async function Header() {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
 
-        {/* DROITE : Nav 3+4 (poussés à gauche près du CTA) + Locale (à l'extrême droite) */}
+        {/* DROITE : Nav 3+4 + Locale */}
         <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-8">
           <nav
             aria-label={`${t("nav.home")} 2`}
