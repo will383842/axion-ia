@@ -1,11 +1,11 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./LocaleSwitcher";
-import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
-// Editorial doctrine v3 — footer compact best-practices 2026.
-// Pleine largeur, hauteur minimale, 5 colonnes serrées, social Facebook+LinkedIn.
+// 2026 reference: Linear / Anthropic / Stripe / Vercel — single dense row,
+// no separate newsletter band, slim one-line bottom strip. Flex+grid combo
+// (brand fixed-width left, 4 link cols flex-1 grid right) — avoids the
+// `grid-cols-12` JIT pitfall when `--breakpoint-sm` isn't defined.
 export async function Footer() {
   const t = await getTranslations();
   const locale = await getLocale();
@@ -31,16 +31,13 @@ export async function Footer() {
     { href: "/a-propos", label: t("nav.about") },
     { href: "/contact", label: t("nav.contact") },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
+    { href: "/presse", label: isFr ? "Presse" : "Press" },
   ];
   const legal = [
     { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
     { href: "/conditions-generales", label: isFr ? "CGV" : "Terms" },
-    {
-      href: "/politique-confidentialite",
-      label: isFr ? "Confidentialité" : "Privacy",
-    },
+    { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
     { href: "/cookies", label: "Cookies" },
-    { href: "/rgpd", label: "RGPD" },
   ];
 
   return (
@@ -48,25 +45,23 @@ export async function Footer() {
       data-tone="dark"
       className="bg-mocha-rich text-mocha-fg relative isolate overflow-hidden"
     >
-      {/* Hairline terracotta en haut (cohérence avec header) */}
       <span
         aria-hidden="true"
         className="bg-terracotta/40 pointer-events-none absolute inset-x-0 top-0 block h-px"
       />
 
-      {/* Pleine largeur avec padding lateral progressif (comme header) */}
-      <div className="px-6 py-10 sm:px-8 lg:px-12 lg:py-12 xl:px-16">
-        {/* Top dense : brand + 4 columns + newsletter — 5 colonnes serrées */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-10">
-          {/* Col 1 : Brand + tagline court + social */}
-          <div className="lg:col-span-2">
+      <div className="px-6 py-10 md:px-8 lg:px-12 lg:py-12 xl:px-16">
+        {/* Single dense row : brand fixed-width left + 4 link columns flex-1 right */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
+          {/* Brand column — fixed narrow width */}
+          <div className="lg:w-64 lg:shrink-0">
             <Link
               href="/"
               aria-label="AxionIA"
               className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha mb-3 inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <span
-                className="text-2xl leading-none font-medium tracking-tight"
+                className="text-xl leading-none font-medium tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 Axion
@@ -82,7 +77,7 @@ export async function Footer() {
               </span>
             </Link>
             <p
-              className="text-mocha-fg mb-5 max-w-md text-base leading-snug font-medium"
+              className="text-mocha-fg/85 max-w-xs text-sm leading-snug"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {isFr ? (
@@ -97,46 +92,24 @@ export async function Footer() {
                 </>
               )}
             </p>
-            <p className="text-mocha-fg/85 mb-5 max-w-xs text-xs leading-relaxed">
-              {isFr
-                ? "AxionIA OÜ — Tallinn, Estonie. Interventions, audits, implémentations IA pour entreprises de toutes tailles."
-                : "AxionIA OÜ — Tallinn, Estonia. AI sessions, audits and implementations for companies of all sizes."}
-            </p>
-            <SocialLinks />
+            <div className="mt-5">
+              <SocialLinks />
+            </div>
           </div>
 
-          {/* Col 2 : Services */}
-          <FooterColumn title={t("footer.services")} items={services} />
-          {/* Col 3 : Resources */}
-          <FooterColumn title={t("footer.resources")} items={resources} />
-          {/* Col 4 : Company + Legal compactés */}
-          <div className="space-y-8">
+          {/* 4 link columns — flex-1 to fill remaining space, equal-width grid */}
+          <div className="grid flex-1 grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-8 lg:gap-y-0">
+            <FooterColumn title={t("footer.services")} items={services} />
+            <FooterColumn title={t("footer.resources")} items={resources} />
             <FooterColumn title={t("footer.company")} items={company} />
             <FooterColumn title={t("footer.legal")} items={legal} />
           </div>
         </div>
 
-        {/* Newsletter compact bandeau pleine largeur */}
-        <div className="border-border-on-mocha mt-10 grid gap-5 border-t pt-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div>
-            <p className="text-mocha-fg/75 mb-1 text-[11px] font-semibold tracking-[0.18em] uppercase">
-              {t("footer.newsletter")}
-            </p>
-            <p className="text-mocha-fg text-sm leading-snug">
-              {isFr
-                ? "Une analyse IA par mois. Désinscription en 1 clic."
-                : "One AI analysis per month. One-click unsubscribe."}
-            </p>
-          </div>
-          <div className="lg:min-w-[420px]">
-            <NewsletterFooterForm />
-          </div>
-        </div>
-
-        {/* Bottom strip — single line dense */}
-        <div className="border-border-on-mocha text-mocha-fg/75 mt-8 flex flex-col gap-3 border-t pt-6 text-xs lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <span className="text-mocha-fg font-medium">© {year} AxionIA OÜ</span>
+        {/* Slim bottom strip — single line on desktop */}
+        <div className="border-border-on-mocha text-mocha-fg/65 mt-10 flex flex-col gap-3 border-t pt-5 text-xs lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span className="text-mocha-fg/85 font-medium">© {year} AxionIA OÜ</span>
             <Dot />
             <span>{isFr ? "Tallinn, Estonie" : "Tallinn, Estonia"}</span>
             <Dot />
@@ -144,13 +117,19 @@ export async function Footer() {
             <Dot />
             <span>RGPD</span>
           </div>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             <a
               href="/sitemap.xml"
-              className="text-mocha-fg/85 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {t("footer.siteMap")}
             </a>
+            <Link
+              href="/rgpd"
+              className="hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              RGPD
+            </Link>
             <LocaleSwitcher />
           </div>
         </div>
@@ -160,7 +139,9 @@ export async function Footer() {
 }
 
 function Dot() {
-  return <span aria-hidden="true" className="bg-mocha-fg/40 inline-block h-1 w-1 rounded-full" />;
+  return (
+    <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />
+  );
 }
 
 interface FooterColumnProps {
@@ -170,23 +151,17 @@ interface FooterColumnProps {
 function FooterColumn({ title, items }: FooterColumnProps) {
   return (
     <div>
-      <h3 className="text-mocha-fg/75 mb-4 text-[11px] font-semibold tracking-[0.18em] uppercase">
+      <h3 className="text-mocha-fg/55 mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
         {title}
       </h3>
-      <ul className="space-y-2.5 text-sm">
+      <ul className="space-y-2 text-sm">
         {items.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href as never}
-              className="text-mocha-fg/90 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha group inline-flex items-center transition focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="text-mocha-fg/85 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              <span className="relative">
-                {item.label}
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta-soft absolute -bottom-0.5 left-0 h-px w-0 transition-all duration-300 group-hover:w-full"
-                />
-              </span>
+              {item.label}
             </Link>
           </li>
         ))}
@@ -195,23 +170,8 @@ function FooterColumn({ title, items }: FooterColumnProps) {
   );
 }
 
-// Outline minimaliste 2026 — Facebook + LinkedIn (Will retire YouTube).
-function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
+// Minimal 2026 social: plain icons inline, no bordered circles. LinkedIn
+// first (B2B priority), Facebook second.
 function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -232,10 +192,24 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
 
 function SocialLinks() {
-  // 2026 best practice : minimal outlined circles, hover gradient fill +
-  // ArrowUpRight reveal. Facebook + LinkedIn (suppression YouTube — Will).
   const socials = [
     {
       href: "https://www.linkedin.com/company/axion-ia",
@@ -249,7 +223,7 @@ function SocialLinks() {
     },
   ];
   return (
-    <ul className="flex flex-wrap items-center gap-3">
+    <ul className="flex items-center gap-3">
       {socials.map(({ href, label, Icon }) => (
         <li key={label}>
           <a
@@ -257,45 +231,12 @@ function SocialLinks() {
             target="_blank"
             rel="noopener noreferrer external"
             aria-label={label}
-            className="text-mocha-fg/85 border-mocha-fg/25 hover:border-terracotta-soft hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha group relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-mocha-fg/70 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-8 w-8 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <Icon className="relative z-10 h-[18px] w-[18px]" />
-            {/* Subtle gradient fill on hover */}
-            <span
-              aria-hidden="true"
-              className="bg-terracotta-soft/10 absolute inset-0 -translate-y-full transition-transform duration-300 group-hover:translate-y-0"
-            />
-            <ArrowUpRight
-              className="absolute top-2 right-2 z-10 h-2.5 w-2.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              aria-hidden="true"
-              strokeWidth={2}
-            />
+            <Icon className="h-[18px] w-[18px]" />
           </a>
         </li>
       ))}
     </ul>
   );
-}
-
-async function NewsletterFooterForm() {
-  const locale = await getLocale();
-  const isFr = locale === "fr";
-  const labels = isFr
-    ? {
-        email: "Email professionnel",
-        consent: "J'accepte de recevoir la newsletter mensuelle. Désinscription en un clic.",
-        submit: "S'abonner",
-        sending: "Envoi…",
-        success: "Inscription confirmée. Premier email sous 7 jours.",
-        failure: "Erreur. Réessayez ou écrivez à contact@axion-ia.com.",
-      }
-    : {
-        email: "Professional email",
-        consent: "I agree to receive the monthly newsletter. One-click unsubscribe.",
-        submit: "Subscribe",
-        sending: "Sending…",
-        success: "Subscribed. First email within 7 days.",
-        failure: "Error. Try again or email contact@axion-ia.com.",
-      };
-  return <NewsletterForm labels={labels} variant="inline" />;
 }
