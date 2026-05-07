@@ -9,7 +9,7 @@ Cabinet IA opérationnel B2B premium · OÜ estonienne · multilingue FR/EN.
 ```bash
 pnpm install        # tire les deps + run husky prepare
 pnpm dev            # http://localhost:3000
-pnpm verify:all     # typecheck + lint + i18n + 4 anti-grep + tests
+pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 ```
 
 ## Stack
@@ -32,7 +32,7 @@ pnpm verify:all     # typecheck + lint + i18n + 4 anti-grep + tests
 
 ## Conventions non négociables
 
-- **Mot « formation » BANNI** (`axionia-core`) — `pnpm anti-formation:check` enforce 0 occurrence.
+- **Mot « formation »** : autorisé depuis 2026-05-07 (ADR 0003). Vocabulaire commercial réintégré pour les pages `/interventions` & co. Plus aucun gate `anti-formation`.
 - **Mobile-first absolu** (`axionia-mobile-first`) — Tailwind classes sans préfixe d'abord.
 - **OÜ estonienne** — jamais SIREN/SIRET/RCS · `pnpm anti-siren:check`.
 - **Server Components par défaut** · `'use client'` justifié obligatoire (`pnpm use-client:check`).
@@ -61,11 +61,11 @@ pnpm verify:all     # typecheck + lint + i18n + 4 anti-grep + tests
 | `pnpm db:seed`                                   | seed DB                                |
 | `pnpm worker`                                    | BullMQ worker                          |
 | `pnpm adr:new <slug>`                            | nouveau ADR                            |
-| `pnpm verify:all`                                | TS + lint + i18n + 4 anti-grep + tests |
+| `pnpm verify:all`                                | TS + lint + i18n + 3 anti-grep + tests |
 
 ## Gates CI
 
-- **Gate A — per-commit** : typecheck, lint, format, vitest, i18n, 4 anti-grep, gitleaks, zod tests.
+- **Gate A — per-commit** : typecheck, lint, format, vitest, i18n, 3 anti-grep, gitleaks, zod tests.
 - **Gate B — per-PR** : build, bundle size, Playwright cross-browser, Lighthouse CI.
 - **Gate C — per-merge main** : déploiement staging via Coolify + smoke + OWASP ZAP baseline.
 - **Gate D — nightly 03:00 UTC** : full Playwright vs staging, audit deps, ZAP full, mail-tester, backup drill.

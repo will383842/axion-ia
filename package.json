@@ -34,7 +34,6 @@
     "i18n:check": "tsx scripts/check-i18n.ts",
     "zod:check": "tsx scripts/check-zod.ts",
     "use-client:check": "tsx scripts/check-use-client.ts",
-    "anti-formation:check": "bash scripts/check-anti-formation.sh",
     "anti-siren:check": "bash scripts/check-anti-siren.sh",
     "anti-hex:check": "bash scripts/check-anti-hex.sh",
     "contrast:check": "tsx scripts/check-contrast.ts",
@@ -48,7 +47,7 @@
     "vitals:report": "tsx scripts/vitals-report.ts",
     "worker": "tsx src/server/queue/worker.ts",
     "adr:new": "tsx scripts/adr-new.ts",
-    "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-formation:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm contrast:check && pnpm radius:check && pnpm test",
+    "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm contrast:check && pnpm radius:check && pnpm test",
     "prepare": "husky"
   },
   "dependencies": {

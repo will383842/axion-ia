@@ -51,7 +51,7 @@ Particularités à acter dès maintenant :
 
 ### Hooks Husky
 
-- `pre-commit` : `lint-staged` + 4 grep checks (formation/SIREN/hex/use-client).
+- `pre-commit` : `lint-staged` + 3 grep checks (SIREN/hex/use-client). Le check `formation` a été retiré par l'ADR 0003 (2026-05-07).
 - `commit-msg` : `commitlint` Conventional Commits.
 - `pre-push` : `typecheck` + `i18n:check` + `zod:check` + `vitest`.
 
@@ -68,7 +68,7 @@ Particularités à acter dès maintenant :
 **Positives**
 
 - 0 dette technique à l'entrée du Sprint 1 ; toute violation détectée par CI.
-- Mobile-first / a11y / i18n / anti-formation / anti-SIREN forcés dès le premier commit.
+- Mobile-first / a11y / i18n / anti-SIREN forcés dès le premier commit. (Anti-formation retiré ADR 0003.)
 - Observability prête à recevoir des événements dès le premier visit local.
 - Convention single-source : `_DECISIONS-FINALES.md` > `CLAUDE.md` v6 > skills `axionia-*` > génériques LOCKés > .docx.
 

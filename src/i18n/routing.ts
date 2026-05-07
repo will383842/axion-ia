@@ -70,6 +70,12 @@ export const routing = defineRouting({
     "/implementation/integrations": "/implementation/integrations",
     "/implementation/no-code": "/implementation/no-code",
 
+    // Module 3 — Catalogue par fonction d'entreprise (8 catégories)
+    "/implementation/par-fonction/[slug]": {
+      fr: "/implementation/par-fonction/[slug]",
+      en: "/implementation/by-function/[slug]",
+    },
+
     // Cas concrets
     "/cas-concrets": { fr: "/cas-concrets", en: "/case-studies" },
     "/cas-concrets/[slug]": { fr: "/cas-concrets/[slug]", en: "/case-studies/[slug]" },

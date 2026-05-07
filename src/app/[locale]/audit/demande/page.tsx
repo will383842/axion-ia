@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Request an AI audit · 6 steps · AxionIA",
     description:
       locale === "fr"
-        ? "Formulaire 6 étapes pour demander un audit IA AxionIA — type d'audit, taille, secteur, lieu, modalité, périmètre. Devis personnalisé sous 48 h ouvrées."
-        : "6-step form to request an AxionIA AI audit — audit type, size, sector, location, modality, scope. Personalised quote within 48 business hours.",
+        ? "Formulaire 6 étapes pour demander un audit IA AxionIA — niveau (Flash / Process / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé sous 48 h ouvrées."
+        : "6-step form to request an AxionIA AI audit — level (Flash / Process / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote within 48 business hours.",
     alternates: { fr: "/audit/demande", en: "/audit/request" },
   });
 }
@@ -62,38 +62,38 @@ export default async function AuditRequest({ params }: Props) {
         successCta: "Faire une autre demande",
         failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
 
-        s1Eyebrow: "1 · Type d'audit",
-        s1Title: "Quel format d'audit vous correspond ?",
+        s1Eyebrow: "1 · Niveau d'audit",
+        s1Title: "Quel niveau d'audit vous correspond ?",
         s1Description:
-          "Vous pouvez tout faire auditer (toute l'entreprise) ou cibler un seul service / commerce / cabinet. Le type sélectionné préremplit la suite — vous pourrez tout modifier.",
+          "Du diagnostic flash (sans risque) au plan stratégique multi-sites. Le niveau sélectionné préremplit la suite — vous pourrez tout modifier.",
         auditTypes: [
           {
-            key: "complet" as const,
-            label: "Audit complet entreprise",
+            key: "flash" as const,
+            label: "Niveau 1 · Flash",
             description:
-              "Toute l'entreprise est passée au crible : tâches répétitives à automatiser, dépenses à optimiser, plan d'action chiffré.",
-            priceFrom: "Dès 290 €",
+              "Mini-diagnostic ciblé sur 1 process clé · 3-5 cas d'usage IA, plan 30/90 jours. Satisfait ou intégralement remboursé.",
+            priceFrom: "490 € (distance) · 890 € (sur site)",
           },
           {
-            key: "departement" as const,
-            label: "Audit par département",
+            key: "process" as const,
+            label: "Niveau 2 · Process",
             description:
-              "Un seul service au scalpel (RH, finance, vente, ops…). Quick-wins ciblés, plan d'action chiffré.",
-            priceFrom: "Dès 690 €",
+              "Audit poussé d'un processus complet (RH, finance, vente, ops…). Cartographie as-is/to-be + roadmap IA 6-12 mois.",
+            priceFrom: "1 900 € → 3 900 €",
           },
           {
-            key: "point-de-vente" as const,
-            label: "Audit point de vente",
+            key: "strategique-pme" as const,
+            label: "Niveau 3 · Stratégique PME",
             description:
-              "Commerce, restauration, services de proximité. Encaissement, fidélisation, prévisions, stocks.",
-            priceFrom: "Dès 490 €",
+              "Vision IA globale pour PME 20-250 salariés · 2-4 process majeurs, roadmap 12-24 mois. Garantie de découverte 30 j.",
+            priceFrom: "4 900 € → 9 900 €",
           },
           {
-            key: "cabinet" as const,
-            label: "Audit cabinet ou agence",
+            key: "strategique-eti" as const,
+            label: "Niveau 4 · Stratégique ETI",
             description:
-              "Cabinets d'avocats, études notariales, agences de conseil, cabinets d'experts. Productivité +30 %.",
-            priceFrom: "Dès 990 €",
+              "Audit stratégique multi-sites pour ETI / groupes · alignement CODIR, roadmap groupe 24 mois, gouvernance & AI Act.",
+            priceFrom: "À partir de 12 000 € · sur devis",
           },
         ],
 
@@ -116,7 +116,7 @@ export default async function AuditRequest({ params }: Props) {
         s3Eyebrow: "3 · Lieu & modalité",
         s3Title: "Sur site ou à distance ?",
         s3Description:
-          "On intervient partout en France et à l'international. Sur site recommandé pour l'audit complet et point de vente. À distance possible partout.",
+          "On intervient partout en France et à l'international. Sur site recommandé dès le niveau Process pour les ateliers métiers. À distance possible partout.",
         modalityLabel: "Modalité souhaitée",
         modalityRemote: "À distance",
         modalityRemoteHint: "Visio sécurisée + entretiens · gain de temps + tarif réduit.",
@@ -188,38 +188,38 @@ export default async function AuditRequest({ params }: Props) {
         successCta: "Send another request",
         failure: "An error occurred. Try again or email contact@axion-ia.com.",
 
-        s1Eyebrow: "1 · Audit type",
-        s1Title: "Which audit format fits you?",
+        s1Eyebrow: "1 · Audit level",
+        s1Title: "Which audit level fits you?",
         s1Description:
-          "You can audit everything (the whole company) or target a single service / store / firm. The selected type pre-fills the next steps — you can change anything later.",
+          "From the risk-free flash diagnosis to the multi-site strategic plan. The selected level pre-fills the next steps — you can change anything later.",
         auditTypes: [
           {
-            key: "complet" as const,
-            label: "Full company audit",
+            key: "flash" as const,
+            label: "Level 1 · Flash",
             description:
-              "Your whole company under the lens: 15 to 30 prioritized AI quick-wins, costed 12-month implementation plan.",
-            priceFrom: "From €290",
+              "Targeted mini-diagnosis on 1 key process · 3-5 AI use cases, 30/90-day plan. Satisfied or fully refunded.",
+            priceFrom: "€490 (remote) · €890 (on site)",
           },
           {
-            key: "departement" as const,
-            label: "Department audit",
+            key: "process" as const,
+            label: "Level 2 · Process",
             description:
-              "One service under the scalpel (HR, finance, sales, ops…). 8 to 15 targeted quick-wins, 6-month ROI plan.",
-            priceFrom: "From €690",
+              "In-depth audit of an end-to-end process (HR, finance, sales, ops…). As-is/to-be mapping + 6-12 month AI roadmap.",
+            priceFrom: "€1,900 → €3,900",
           },
           {
-            key: "point-de-vente" as const,
-            label: "Storefront audit",
+            key: "strategique-pme" as const,
+            label: "Level 3 · Strategic SMB",
             description:
-              "Retail, hospitality, neighbourhood services. Checkout, loyalty, forecasting, inventory.",
-            priceFrom: "From €490",
+              "Global AI vision for SMBs 20-250 staff · 2-4 major processes, 12-24 month roadmap. 30-day discovery guarantee.",
+            priceFrom: "€4,900 → €9,900",
           },
           {
-            key: "cabinet" as const,
-            label: "Firm or agency audit",
+            key: "strategique-eti" as const,
+            label: "Level 4 · Strategic mid-cap",
             description:
-              "Law firms, notary offices, consultancies, expert firms. +30% productivity.",
-            priceFrom: "From €990",
+              "Multi-site strategic audit for mid-caps / groups · leadership alignment, 24-month group roadmap, governance & AI Act.",
+            priceFrom: "From €12,000 · on quote",
           },
         ],
 
@@ -242,7 +242,7 @@ export default async function AuditRequest({ params }: Props) {
         s3Eyebrow: "3 · Location & modality",
         s3Title: "On site or remote?",
         s3Description:
-          "We work everywhere in France and worldwide. On site recommended for full audit and storefront. Remote possible everywhere.",
+          "We work everywhere in France and worldwide. On site recommended from Process level for business workshops. Remote possible everywhere.",
         modalityLabel: "Preferred modality",
         modalityRemote: "Remote",
         modalityRemoteHint: "Secure video + interviews · time saved + reduced fee.",

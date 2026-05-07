@@ -39,8 +39,6 @@ jobs:
         run: pnpm test
       - name: i18n parity
         run: pnpm i18n:check
-      - name: Anti-formation grep
-        run: pnpm anti-formation:check
       - name: Anti-SIREN grep
         run: pnpm anti-siren:check
       - name: Anti-hex grep

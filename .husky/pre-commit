@@ -1,5 +1,4 @@
 pnpm exec lint-staged
-pnpm anti-formation:check
 pnpm anti-siren:check
 pnpm anti-hex:check
 pnpm use-client:check
