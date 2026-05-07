@@ -437,7 +437,7 @@ export default async function AuditListing({ params }: Props) {
                         <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-fg text-base font-bold leading-tight">{opt.title}</p>
+                        <p className="text-fg text-base leading-tight font-bold">{opt.title}</p>
                         <p className="text-fg-soft mt-0.5 text-sm leading-snug">{opt.hint}</p>
                         <p className="text-terracotta-deep mt-1.5 text-[12px] font-bold tracking-wide">
                           → {opt.level}
@@ -534,7 +534,7 @@ export default async function AuditListing({ params }: Props) {
                         <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-fg text-base font-bold leading-tight">{opt.title}</p>
+                        <p className="text-fg text-base leading-tight font-bold">{opt.title}</p>
                         <p className="text-fg-soft mt-0.5 text-sm leading-snug">{opt.hint}</p>
                         <p className="text-terracotta-deep mt-1.5 text-[12px] font-bold tracking-wide">
                           → {opt.level}
@@ -563,7 +563,8 @@ export default async function AuditListing({ params }: Props) {
               >
                 diagnostic flash 490 €
               </a>{" "}
-              est conçu exactement pour ça : on identifie 3 à 5 endroits où l&apos;IA peut s&apos;insérer concrètement chez vous.
+              est conçu exactement pour ça : on identifie 3 à 5 endroits où l&apos;IA peut
+              s&apos;insérer concrètement chez vous.
             </>
           ) : (
             <>
@@ -574,7 +575,8 @@ export default async function AuditListing({ params }: Props) {
               >
                 €490 flash diagnosis
               </a>{" "}
-              is designed exactly for this: we identify 3 to 5 concrete places where AI can fit in your company.
+              is designed exactly for this: we identify 3 to 5 concrete places where AI can fit in
+              your company.
             </>
           )}
         </p>
@@ -700,9 +702,9 @@ export default async function AuditListing({ params }: Props) {
                 key={item.slug}
                 id={`level-${item.slug}`}
                 className={cn(
-                  "shadow-subtle group/card hover:shadow-card relative overflow-hidden rounded-3xl border-2 ring-1 transition-all scroll-mt-32",
+                  "shadow-subtle group/card hover:shadow-card relative scroll-mt-32 overflow-hidden rounded-3xl border-2 ring-1 transition-all",
                   // Highlight quand l'utilisateur arrive via #level-X (matcher).
-                  "target:ring-4 target:ring-terracotta target:scale-[1.01]",
+                  "target:ring-terracotta target:scale-[1.01] target:ring-4",
                   surface.container,
                   acc.border,
                   acc.haloRing,
@@ -752,10 +754,7 @@ export default async function AuditListing({ params }: Props) {
 
                       {/* PriceTag — étiquette de prix bien visible.
                           Sur card dark (ETI), on bascule terracotta-soft. */}
-                      <div
-                        aria-hidden="true"
-                        className="ml-auto shrink-0 text-right"
-                      >
+                      <div aria-hidden="true" className="ml-auto shrink-0 text-right">
                         <p
                           className={cn(
                             "text-[10px] font-bold tracking-[0.16em] uppercase sm:text-[11px]",
@@ -939,9 +938,7 @@ export default async function AuditListing({ params }: Props) {
                         </span>
                         <div>
                           <p className="text-fg text-sm font-bold">{a[loc].eyebrow}</p>
-                          <p className="text-fg-muted mt-0.5 text-[11px] leading-snug">
-                            {s.scope}
-                          </p>
+                          <p className="text-fg-muted mt-0.5 text-[11px] leading-snug">{s.scope}</p>
                         </div>
                       </div>
                     </td>

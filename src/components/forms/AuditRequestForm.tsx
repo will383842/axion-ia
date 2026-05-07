@@ -350,11 +350,7 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
             <p className="text-fg mt-1 text-[15px] leading-tight font-bold sm:text-base">
               {labels.auditTypes.find((t) => t.key === auditType)?.label ?? "—"}
               {modality
-                ? ` · ${
-                    modality === "remote"
-                      ? labels.modalityRemote
-                      : labels.modalityOnsite
-                  }`
+                ? ` · ${modality === "remote" ? labels.modalityRemote : labels.modalityOnsite}`
                 : ""}
             </p>
           </div>
@@ -374,12 +370,10 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
 
       {/* Indicateur de durée — réduit l'anxiété "ça va prendre combien ?" */}
       <p className="text-fg-muted mb-4 flex items-center gap-2 text-[12px]">
-        <Check
-          aria-hidden="true"
-          className="text-terracotta-deep h-3.5 w-3.5"
-          strokeWidth={2.5}
-        />
-        {isFr ? "≈ 3 minutes · vous pouvez revenir en arrière à tout moment" : "≈ 3 minutes · you can go back at any time"}
+        <Check aria-hidden="true" className="text-terracotta-deep h-3.5 w-3.5" strokeWidth={2.5} />
+        {isFr
+          ? "≈ 3 minutes · vous pouvez revenir en arrière à tout moment"
+          : "≈ 3 minutes · you can go back at any time"}
       </p>
 
       {/* Progress bar — 6 cercles */}
@@ -963,15 +957,9 @@ function Step4({
           >
             {scopeChars} / {MIN}
             {scopeChars >= MIN ? (
-              <Check
-                aria-hidden="true"
-                className="ml-1 inline h-3 w-3"
-                strokeWidth={3}
-              />
+              <Check aria-hidden="true" className="ml-1 inline h-3 w-3" strokeWidth={3} />
             ) : (
-              <span className="ml-1">
-                {isFr ? "min." : "min."}
-              </span>
+              <span className="ml-1">{isFr ? "min." : "min."}</span>
             )}
           </span>
         </div>
@@ -1023,15 +1011,9 @@ function Step4({
           >
             {goalsChars} / {MIN}
             {goalsChars >= MIN ? (
-              <Check
-                aria-hidden="true"
-                className="ml-1 inline h-3 w-3"
-                strokeWidth={3}
-              />
+              <Check aria-hidden="true" className="ml-1 inline h-3 w-3" strokeWidth={3} />
             ) : (
-              <span className="ml-1">
-                {isFr ? "min." : "min."}
-              </span>
+              <span className="ml-1">{isFr ? "min." : "min."}</span>
             )}
           </span>
         </div>
@@ -1070,16 +1052,11 @@ function Step4({
                 aria-pressed={isSel}
                 className={cn(
                   "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border-2 px-3.5 py-1.5 text-[13px] font-semibold transition-all focus-visible:ring-2 focus-visible:outline-none",
-                  isSel &&
-                    "border-terracotta bg-halo-warm text-terracotta-deep shadow-subtle",
+                  isSel && "border-terracotta bg-halo-warm text-terracotta-deep shadow-subtle",
                 )}
               >
                 {isSel ? (
-                  <Check
-                    aria-hidden="true"
-                    className="h-3.5 w-3.5"
-                    strokeWidth={3}
-                  />
+                  <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={3} />
                 ) : null}
                 {tool}
               </button>
@@ -1087,10 +1064,7 @@ function Step4({
           })}
         </div>
         <div className="grid gap-2 pt-1">
-          <Label
-            htmlFor="tools-other"
-            className="text-fg-muted text-[13px] font-semibold"
-          >
+          <Label htmlFor="tools-other" className="text-fg-muted text-[13px] font-semibold">
             {isFr ? "Autres outils (optionnel)" : "Other tools (optional)"}
           </Label>
           <Input
@@ -1311,9 +1285,7 @@ function Step6({
           </p>
           {!isFlash ? (
             <p className="text-mocha-fg/60 mt-1 text-[11px]">
-              {isFr
-                ? "Devis personnalisé sous 48 h"
-                : "Personalised quote within 48 h"}
+              {isFr ? "Devis personnalisé sous 48 h" : "Personalised quote within 48 h"}
             </p>
           ) : null}
         </div>

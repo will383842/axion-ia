@@ -123,11 +123,7 @@ export function AuditHeroSchema({ isFr, ariaLabel, className }: AuditHeroSchemaP
         </p>
         <div className="flex items-center gap-3 sm:gap-4">
           <span className="bg-terracotta-soft text-terracotta-deep flex h-11 w-11 shrink-0 items-center justify-center rounded-xl sm:h-12 sm:w-12">
-            <Building2
-              aria-hidden="true"
-              className="h-5 w-5 sm:h-6 sm:w-6"
-              strokeWidth={2.25}
-            />
+            <Building2 aria-hidden="true" className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={2.25} />
           </span>
           <div className="min-w-0">
             <p
@@ -173,11 +169,7 @@ export function AuditHeroSchema({ isFr, ariaLabel, className }: AuditHeroSchemaP
                   {num}
                 </span>
                 <span className="bg-terracotta-soft text-terracotta-deep flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
-                  <Icon
-                    aria-hidden="true"
-                    className="h-4 w-4"
-                    strokeWidth={2.25}
-                  />
+                  <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={2.25} />
                 </span>
                 <div className="min-w-0">
                   <p className="text-fg text-[13.5px] leading-tight font-bold sm:text-[14.5px]">

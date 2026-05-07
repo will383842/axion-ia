@@ -98,7 +98,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         ],
         modality: "À distance ou sur site",
         audience: "TPE & petites PME (0-30 salariés)",
-        scope: "1 zone à automatiser · ex. relation client, facturation, support, gestion documentaire",
+        scope:
+          "1 zone à automatiser · ex. relation client, facturation, support, gestion documentaire",
         outcomes: [
           "3 à 5 cas d'usage IA / automatisations identifiés",
           "Estimation des gains (heures libérées, erreurs évitées, dépenses)",

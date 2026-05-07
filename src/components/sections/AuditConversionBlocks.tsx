@@ -35,52 +35,51 @@ import { cn } from "@/lib/utils";
 // 1) TrustBadges — 4 pills de réassurance institutionnelle (sous le hero)
 // =============================================================================
 export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
-  const badges: ReadonlyArray<{ icon: LucideIcon; label: string; detail: string }> =
-    isFr
-      ? [
-          {
-            icon: MapPin,
-            label: "OÜ estonienne",
-            detail: "Société européenne · facturation HT",
-          },
-          {
-            icon: ShieldCheck,
-            label: "RGPD-first",
-            detail: "Données hébergées en UE · pas d'exfiltration",
-          },
-          {
-            icon: ScrollText,
-            label: "Compatible AI Act",
-            detail: "Audit aligné sur la réglementation 2026",
-          },
-          {
-            icon: Cpu,
-            label: "Cabinet IA pure-play",
-            detail: "100 % audit & implémentation IA — pas généraliste",
-          },
-        ]
-      : [
-          {
-            icon: MapPin,
-            label: "Estonian OÜ",
-            detail: "EU-registered company · excl. VAT invoicing",
-          },
-          {
-            icon: ShieldCheck,
-            label: "GDPR-first",
-            detail: "EU-hosted data · no exfiltration",
-          },
-          {
-            icon: ScrollText,
-            label: "AI Act ready",
-            detail: "Audit aligned with 2026 EU regulation",
-          },
-          {
-            icon: Cpu,
-            label: "Pure-play AI consultancy",
-            detail: "100 % AI audit & implementation — not generalist",
-          },
-        ];
+  const badges: ReadonlyArray<{ icon: LucideIcon; label: string; detail: string }> = isFr
+    ? [
+        {
+          icon: MapPin,
+          label: "OÜ estonienne",
+          detail: "Société européenne · facturation HT",
+        },
+        {
+          icon: ShieldCheck,
+          label: "RGPD-first",
+          detail: "Données hébergées en UE · pas d'exfiltration",
+        },
+        {
+          icon: ScrollText,
+          label: "Compatible AI Act",
+          detail: "Audit aligné sur la réglementation 2026",
+        },
+        {
+          icon: Cpu,
+          label: "Cabinet IA pure-play",
+          detail: "100 % audit & implémentation IA — pas généraliste",
+        },
+      ]
+    : [
+        {
+          icon: MapPin,
+          label: "Estonian OÜ",
+          detail: "EU-registered company · excl. VAT invoicing",
+        },
+        {
+          icon: ShieldCheck,
+          label: "GDPR-first",
+          detail: "EU-hosted data · no exfiltration",
+        },
+        {
+          icon: ScrollText,
+          label: "AI Act ready",
+          detail: "Audit aligned with 2026 EU regulation",
+        },
+        {
+          icon: Cpu,
+          label: "Pure-play AI consultancy",
+          detail: "100 % AI audit & implementation — not generalist",
+        },
+      ];
 
   return (
     <section className="bg-bg border-border border-b py-6">
@@ -95,12 +94,8 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
                   className="text-terracotta-deep h-4 w-4"
                   strokeWidth={2.25}
                 />
-                <span className="text-fg text-[12.5px] font-bold tracking-wide">
-                  {b.label}
-                </span>
-                <span className="text-fg-muted hidden text-[11.5px] sm:inline">
-                  · {b.detail}
-                </span>
+                <span className="text-fg text-[12.5px] font-bold tracking-wide">{b.label}</span>
+                <span className="text-fg-muted hidden text-[11.5px] sm:inline">· {b.detail}</span>
               </li>
             );
           })}
@@ -114,62 +109,61 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
 // 2) WhyAxionIA — 5 différenciants vs concurrence
 // =============================================================================
 export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
-  const points: ReadonlyArray<{ icon: LucideIcon; title: string; body: string }> =
-    isFr
-      ? [
-          {
-            icon: Cpu,
-            title: "Cabinet IA pure-play",
-            body: "On ne fait QUE de l'audit et de l'implémentation IA. Pas de généralistes qui font de tout, pas de juniors recyclés sur un sujet qu'ils découvrent.",
-          },
-          {
-            icon: Wallet,
-            title: "Tarifs publics, pas de black box",
-            body: "Notre pyramide est affichée. Pas de devis opaque qui revient à 30 k€ après 3 réunions de cadrage. Vous savez où vous allez avant de signer.",
-          },
-          {
-            icon: Layers,
-            title: "Du diagnostic à l'implémentation",
-            body: "On ne livre pas un PDF qui finit dans un tiroir : on peut exécuter le plan derrière (Module 3 Implémentation) avec la même équipe.",
-          },
-          {
-            icon: ScrollText,
-            title: "Méthode lisible, pas de jargon",
-            body: "On observe, on cartographie, on priorise, on remet le plan. 4 étapes claires que votre CODIR comprend en 5 minutes.",
-          },
-          {
-            icon: Award,
-            title: "Spécialisé AI Act 2026",
-            body: "Notre méthodo intègre les exigences AI Act dès le diagnostic — gouvernance, traçabilité, classification des usages. Anticipez plutôt que subir.",
-          },
-        ]
-      : [
-          {
-            icon: Cpu,
-            title: "Pure-play AI consultancy",
-            body: "We do ONLY AI audit and implementation. No generalists doing everything, no juniors learning the topic on your dime.",
-          },
-          {
-            icon: Wallet,
-            title: "Public pricing, no black box",
-            body: "Our pyramid is published. No opaque quote landing at €30k after 3 framing meetings. You know where you're going before signing.",
-          },
-          {
-            icon: Layers,
-            title: "From diagnosis to implementation",
-            body: "We don't ship a PDF that ends in a drawer: we execute the plan ourselves (Module 3 Implementation) with the same team.",
-          },
-          {
-            icon: ScrollText,
-            title: "Clear method, no jargon",
-            body: "We observe, we map, we prioritise, we hand over the plan. 4 simple steps your leadership grasps in 5 minutes.",
-          },
-          {
-            icon: Award,
-            title: "AI Act 2026 specialist",
-            body: "Our method bakes in AI Act requirements from day one — governance, traceability, use case classification. Anticipate, don't react.",
-          },
-        ];
+  const points: ReadonlyArray<{ icon: LucideIcon; title: string; body: string }> = isFr
+    ? [
+        {
+          icon: Cpu,
+          title: "Cabinet IA pure-play",
+          body: "On ne fait QUE de l'audit et de l'implémentation IA. Pas de généralistes qui font de tout, pas de juniors recyclés sur un sujet qu'ils découvrent.",
+        },
+        {
+          icon: Wallet,
+          title: "Tarifs publics, pas de black box",
+          body: "Notre pyramide est affichée. Pas de devis opaque qui revient à 30 k€ après 3 réunions de cadrage. Vous savez où vous allez avant de signer.",
+        },
+        {
+          icon: Layers,
+          title: "Du diagnostic à l'implémentation",
+          body: "On ne livre pas un PDF qui finit dans un tiroir : on peut exécuter le plan derrière (Module 3 Implémentation) avec la même équipe.",
+        },
+        {
+          icon: ScrollText,
+          title: "Méthode lisible, pas de jargon",
+          body: "On observe, on cartographie, on priorise, on remet le plan. 4 étapes claires que votre CODIR comprend en 5 minutes.",
+        },
+        {
+          icon: Award,
+          title: "Spécialisé AI Act 2026",
+          body: "Notre méthodo intègre les exigences AI Act dès le diagnostic — gouvernance, traçabilité, classification des usages. Anticipez plutôt que subir.",
+        },
+      ]
+    : [
+        {
+          icon: Cpu,
+          title: "Pure-play AI consultancy",
+          body: "We do ONLY AI audit and implementation. No generalists doing everything, no juniors learning the topic on your dime.",
+        },
+        {
+          icon: Wallet,
+          title: "Public pricing, no black box",
+          body: "Our pyramid is published. No opaque quote landing at €30k after 3 framing meetings. You know where you're going before signing.",
+        },
+        {
+          icon: Layers,
+          title: "From diagnosis to implementation",
+          body: "We don't ship a PDF that ends in a drawer: we execute the plan ourselves (Module 3 Implementation) with the same team.",
+        },
+        {
+          icon: ScrollText,
+          title: "Clear method, no jargon",
+          body: "We observe, we map, we prioritise, we hand over the plan. 4 simple steps your leadership grasps in 5 minutes.",
+        },
+        {
+          icon: Award,
+          title: "AI Act 2026 specialist",
+          body: "Our method bakes in AI Act requirements from day one — governance, traceability, use case classification. Anticipate, don't react.",
+        },
+      ];
 
   return (
     <Section
@@ -202,9 +196,7 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
                 </span>
                 <div className="min-w-0">
                   <h3 className="text-fg text-lg leading-snug font-bold">{p.title}</h3>
-                  <p className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
-                    {p.body}
-                  </p>
+                  <p className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">{p.body}</p>
                 </div>
               </div>
             </li>
@@ -237,13 +229,25 @@ interface SocialProofProps {
 export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps): ReactNode {
   const metrics = isFr
     ? [
-        { number: "+30", suffix: "%", label: "Productivité moyenne observée sur missions IA opérationnelles" },
-        { number: "−25", suffix: "%", label: "Dépenses opérationnelles ciblées en moyenne par audit" },
+        {
+          number: "+30",
+          suffix: "%",
+          label: "Productivité moyenne observée sur missions IA opérationnelles",
+        },
+        {
+          number: "−25",
+          suffix: "%",
+          label: "Dépenses opérationnelles ciblées en moyenne par audit",
+        },
         { number: "48", suffix: "h", label: "Délai de réponse au devis ouvré" },
         { number: "100", suffix: "%", label: "Audits livrés dans le périmètre annoncé" },
       ]
     : [
-        { number: "+30", suffix: "%", label: "Average productivity gain on operational AI engagements" },
+        {
+          number: "+30",
+          suffix: "%",
+          label: "Average productivity gain on operational AI engagements",
+        },
         { number: "−25", suffix: "%", label: "Average operational spending targeted per audit" },
         { number: "48", suffix: "h", label: "Quote turnaround on business hours" },
         { number: "100", suffix: "%", label: "Audits delivered within announced scope" },
@@ -297,14 +301,7 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
         },
       ];
 
-  const logos = [
-    "Conseil",
-    "Industrie",
-    "Distribution",
-    "Finance",
-    "Santé",
-    "Hôtellerie",
-  ];
+  const logos = ["Conseil", "Industrie", "Distribution", "Finance", "Santé", "Hôtellerie"];
 
   // Schema.org Review JSON-LD — alimente les rich snippets Google.
   // En l'absence de notes étoilées explicites côté témoignages, on émet
@@ -356,9 +353,7 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
       {/* Bandeau logos placeholder — secteurs en attendant les vrais logos */}
       <div className="mb-14">
         <p className="text-fg-muted mb-5 text-center text-[11px] font-bold tracking-[0.18em] uppercase">
-          {isFr
-            ? "Secteurs déjà accompagnés"
-            : "Sectors already supported"}
+          {isFr ? "Secteurs déjà accompagnés" : "Sectors already supported"}
         </p>
         <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:gap-x-12">
           {logos.map((s) => (
@@ -530,4 +525,3 @@ export function BeyondAuditBlock({ isFr }: { isFr: boolean }): ReactNode {
     </section>
   );
 }
-

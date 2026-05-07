@@ -127,20 +127,12 @@ export function ProductPageTemplate({
       {/* « Comment fonctionne une réservation » — sand intermission, 5 étapes.
           Eyebrow paramétrable (défaut "Réservation" pour Module 1, "Déroulement"
           ou "Method" sur audit). */}
-      <Section
-        tone="sand"
-        eyebrow={copy.processEyebrow ?? "Réservation"}
-        title={copy.processTitle}
-      >
+      <Section tone="sand" eyebrow={copy.processEyebrow ?? "Réservation"} title={copy.processTitle}>
         <ProcessSteps steps={copy.processSteps.map((s, i) => ({ id: `s-${i}`, ...s }))} />
       </Section>
 
       {/* Metrics — mocha riche pour gros contraste. Eyebrow paramétrable. */}
-      <Section
-        tone="mocha"
-        eyebrow={copy.metricsEyebrow ?? "Chiffres"}
-        title={copy.metricsTitle}
-      >
+      <Section tone="mocha" eyebrow={copy.metricsEyebrow ?? "Chiffres"} title={copy.metricsTitle}>
         <MetricsRow
           stats={copy.metrics.map((m, i) => ({
             id: `m-${i}`,
