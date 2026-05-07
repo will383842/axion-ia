@@ -10,6 +10,8 @@ import { Cta } from "@/components/marketing/Cta";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
+import { HelpHeroSchema } from "@/components/sections/HelpHeroSchema";
 import { HELP_ARTICLES, slugify } from "@/content/transversal";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
@@ -89,18 +91,68 @@ export default async function HelpCenter({ params }: Props) {
 
   return (
     <>
-      <Section
-        tone="halo-warm"
-        titleAs="h1"
-        eyebrow={isFr ? "Centre d'aide" : "Help center"}
-        title={isFr ? "Trouver une réponse" : "Find a quick"}
-        titleEm={isFr ? "rapide" : "answer"}
-        description={
-          isFr
-            ? "Articles groupés par thématique. Chaque question ouvre sur sa propre page indexable."
-            : "Articles grouped by topic. Each question opens on its own indexable page."
-        }
-      />
+      {/* HERO 2-col — texte à gauche, HelpHeroSchema (constellation 6 thématiques) à droite */}
+      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+        <Container className="relative">
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            <div className="max-w-xl">
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? "Centre d'aide" : "Help center"}
+              </p>
+              <h1 className="display-editorial text-fg mt-5">
+                {isFr ? "Trouver une réponse " : "Find a quick "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "rapide" : "answer"}
+                </span>
+              </h1>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+                {isFr
+                  ? "Articles groupés par thématique. Chaque question ouvre sur sa propre page indexable. 6 grandes familles couvrent l'essentiel."
+                  : "Articles grouped by topic. Each question opens on its own indexable page. 6 main families cover the essentials."}
+              </p>
+            </div>
+            <HelpHeroSchema
+              isFr={isFr}
+              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              ariaLabel={
+                isFr
+                  ? "Schéma : centre d'aide AxionIA organisé en 6 thématiques principales (démarrer, souveraineté, coûts & ROI, cas d'usage, formation, intégration)."
+                  : "Diagram: AxionIA help center organised into 6 main topics (get started, sovereignty, costs & ROI, use cases, training, integration)."
+              }
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* MID-SECTION — placeholder illustration bibliothèque conseils */}
+      <Section>
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <Illustration
+              slot="AIDE-01-hero"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/centre-aide-hero.avif"
+              caption={
+                isFr
+                  ? "Bibliothèque éditoriale — réponses rangées comme dans un manuel"
+                  : "Editorial library — answers organised like in a manual"
+              }
+              alt={
+                isFr
+                  ? "Illustration éditoriale d'une bibliothèque de conseils ouverte, symbole du centre d'aide AxionIA."
+                  : "Editorial illustration of an open advice library, symbol of the AxionIA help center."
+              }
+            />
+          </div>
+        </Container>
+      </Section>
 
       <Section eyebrow={isFr ? "Thématiques" : "Topics"}>
         <Container>

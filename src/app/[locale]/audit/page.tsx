@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Check,
   Globe2,
+  Building,
   Building2,
   Users2,
   Sparkles,
@@ -27,6 +28,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { AuditHeroSchema } from "@/components/sections/AuditHeroSchema";
 import {
   TrustBadges,
@@ -367,14 +369,14 @@ export default async function AuditListing({ params }: Props) {
               {(isFr
                 ? [
                     {
-                      icon: Building2,
+                      icon: Briefcase,
                       title: "TPE · 1 à 9 personnes",
                       hint: "Artisan, indépendant, petite équipe",
                       target: "flash",
                       level: "Niveau 1 · Flash · 490 €",
                     },
                     {
-                      icon: Building2,
+                      icon: Building,
                       title: "PME · 10 à 49 personnes",
                       hint: "1 service à optimiser ou aller plus loin",
                       target: "process",
@@ -397,14 +399,14 @@ export default async function AuditListing({ params }: Props) {
                   ]
                 : [
                     {
-                      icon: Building2,
+                      icon: Briefcase,
                       title: "Small · 1 to 9 people",
                       hint: "Artisan, freelance, small team",
                       target: "flash",
                       level: "Level 1 · Flash · €490",
                     },
                     {
-                      icon: Building2,
+                      icon: Building,
                       title: "SMB · 10 to 49 people",
                       hint: "1 service to optimise or go further",
                       target: "process",
@@ -1215,6 +1217,27 @@ export default async function AuditListing({ params }: Props) {
 
       {/* AU-DELÀ DE L'AUDIT — bandeau d'upsell vers Module 3 Implémentation */}
       <BeyondAuditBlock isFr={isFr} />
+
+      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="AUDIT-03-closing"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/audit-closing.avif"
+            caption={
+              isFr
+                ? "Plan d'action remis — document éditorial relié, prêt à exécuter"
+                : "Action plan handed over — bound editorial document, ready to execute"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'un plan d'action remis à l'issue d'un audit AxionIA."
+                : "Editorial illustration of an action plan delivered at the end of an AxionIA audit."
+            }
+          />
+        </Container>
+      </Section>
 
       {/* CTA FINAL */}
       <CtaBlock

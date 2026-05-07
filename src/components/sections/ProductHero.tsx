@@ -17,6 +17,9 @@ interface ProductHeroProps {
   priceSuffix?: "HT" | "from";
   cta: React.ReactNode;
   meta?: React.ReactNode;
+  /** Optionnel — schéma visuel rendu à droite du hero en lg+ (Sprint
+   * Visual Rhythm 2026). En son absence, layout 1-col historique. */
+  heroSchema?: React.ReactNode;
   className?: string;
 }
 
@@ -54,8 +57,47 @@ export function ProductHero({
   priceSuffix = "HT",
   cta,
   meta,
+  heroSchema,
   className,
 }: ProductHeroProps) {
+  const heroBlock = (
+    <div className={cn("relative max-w-4xl border-l-4 pl-6 sm:pl-10", ACCENT_BORDER[accent])}>
+      <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
+        <span
+          className={cn(
+            "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
+            ACCENT_DOT[accent],
+          )}
+        />
+        {eyebrow}
+      </p>
+      <h1
+        className="text-fg text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-medium tracking-tight"
+        style={{ fontFamily: "var(--font-serif)" }}
+      >
+        {title}
+        {titleEm ? (
+          <span className="text-terracotta mx-2 italic" style={{ fontFamily: "var(--font-serif)" }}>
+            {titleEm}
+          </span>
+        ) : null}
+        {titleTail}
+      </h1>
+      <div className="text-fg-soft mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl">{answer}</div>
+      {typeof priceEur === "number" ? (
+        <div className="mt-10">
+          <Price amount={priceEur} suffix={priceSuffix} size="xl" />
+        </div>
+      ) : null}
+      <div className="mt-10 flex flex-wrap gap-4">{cta}</div>
+      {meta ? (
+        <div className="text-fg-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
+          {meta}
+        </div>
+      ) : null}
+    </div>
+  );
+
   return (
     <section
       className={cn(
@@ -67,46 +109,15 @@ export function ProductHero({
       )}
     >
       <Container className="relative">
-        <div className={cn("relative max-w-4xl border-l-4 pl-6 sm:pl-10", ACCENT_BORDER[accent])}>
-          <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              className={cn(
-                "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                ACCENT_DOT[accent],
-              )}
-            />
-            {eyebrow}
-          </p>
-          <h1
-            className="text-fg text-[clamp(2.5rem,6vw,5rem)] leading-[1.04] font-medium tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {title}
-            {titleEm ? (
-              <span
-                className="text-terracotta mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {titleEm}
-              </span>
-            ) : null}
-            {titleTail}
-          </h1>
-          <div className="text-fg-soft mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl">
-            {answer}
+        {heroSchema ? (
+          // Layout 2-col Sprint Visual Rhythm 2026 — schéma visuel à droite en lg+
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            {heroBlock}
+            <div className="relative mx-auto w-full max-w-xl lg:mx-0">{heroSchema}</div>
           </div>
-          {typeof priceEur === "number" ? (
-            <div className="mt-10">
-              <Price amount={priceEur} suffix={priceSuffix} size="xl" />
-            </div>
-          ) : null}
-          <div className="mt-10 flex flex-wrap gap-4">{cta}</div>
-          {meta ? (
-            <div className="text-fg-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
-              {meta}
-            </div>
-          ) : null}
-        </div>
+        ) : (
+          heroBlock
+        )}
       </Container>
     </section>
   );

@@ -9,6 +9,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { RoiSimulator } from "@/components/roi/RoiSimulator";
+import { Illustration } from "@/components/visual/Illustration";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 
 interface Props {
@@ -96,9 +97,50 @@ export default async function RoiPage({ params }: Props) {
         }
       />
 
+      <Section tone="halo-warm">
+        <Container className="max-w-4xl">
+          <Illustration
+            slot="ROI-01-sankey"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/roi-hero.avif"
+            caption={
+              isFr
+                ? "Sankey opérationnel — flux d'heures canalisé vers la valeur ajoutée"
+                : "Operational sankey — hours channelled toward value-add work"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'un diagramme Sankey représentant le flux d'heures économisées par l'IA chez AxionIA."
+                : "Editorial illustration of a Sankey diagram representing the flow of hours saved by AI at AxionIA."
+            }
+            priority
+          />
+        </Container>
+      </Section>
+
       <Section>
         <Container className="max-w-5xl">
           <RoiSimulator labels={labels} />
+        </Container>
+      </Section>
+
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="ROI-02-closing"
+            aspectRatio="1:1"
+            filenameTarget="public/illustrations/roi-closing.avif"
+            caption={
+              isFr
+                ? "Cadran horaire éditorial — temps rendu à l'équipe"
+                : "Editorial hour dial — time returned to the team"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'un cadran horaire représentant les heures rendues à l'équipe grâce à l'IA."
+                : "Editorial illustration of an hour dial representing hours returned to the team thanks to AI."
+            }
+          />
         </Container>
       </Section>
 

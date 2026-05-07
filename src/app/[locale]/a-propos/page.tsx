@@ -10,6 +10,7 @@ import { TimelineBlock } from "@/components/sections/TimelineBlock";
 import { TeamGrid } from "@/components/sections/TeamGrid";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 
@@ -89,25 +90,64 @@ export default async function About({ params }: Props) {
       </Section>
 
       <Section eyebrow={isFr ? "Valeurs" : "Values"}>
-        <Container className="text-fg max-w-2xl space-y-6 text-lg leading-relaxed">
-          <p>
-            <strong>{isFr ? "Opérationnel d'abord." : "Operational first."}</strong>{" "}
-            {isFr
-              ? "Aucune intervention sans démonstration sur vos données réelles."
-              : "No engagement without a live demo on your real data."}
-          </p>
-          <p>
-            <strong>{isFr ? "ROI mesurable." : "Measurable ROI."}</strong>{" "}
-            {isFr
-              ? "Plan d'action chiffré priorisé, support post-livraison inclus."
-              : "Costed prioritised action plan, post-delivery support included."}
-          </p>
-          <p>
-            <strong>{isFr ? "Souveraineté." : "Sovereignty."}</strong>{" "}
-            {isFr
-              ? "Hébergement UE par défaut, modèles open-source quand pertinent."
-              : "EU hosting by default, open-source models when relevant."}
-          </p>
+        <Container className="max-w-5xl">
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-14">
+            <div className="text-fg space-y-6 text-lg leading-relaxed">
+              <p>
+                <strong>{isFr ? "Opérationnel d'abord." : "Operational first."}</strong>{" "}
+                {isFr
+                  ? "Aucune intervention sans démonstration sur vos données réelles."
+                  : "No engagement without a live demo on your real data."}
+              </p>
+              <p>
+                <strong>{isFr ? "ROI mesurable." : "Measurable ROI."}</strong>{" "}
+                {isFr
+                  ? "Plan d'action chiffré priorisé, support post-livraison inclus."
+                  : "Costed prioritised action plan, post-delivery support included."}
+              </p>
+              <p>
+                <strong>{isFr ? "Souveraineté." : "Sovereignty."}</strong>{" "}
+                {isFr
+                  ? "Hébergement UE par défaut, modèles open-source quand pertinent."
+                  : "EU hosting by default, open-source models when relevant."}
+              </p>
+            </div>
+            <Illustration
+              slot="APROPOS-02-mid"
+              aspectRatio="1:1"
+              filenameTarget="public/illustrations/a-propos-mid-1.avif"
+              caption={
+                isFr
+                  ? "Atelier d'architecte — précision, traces de craie, plan ouvert"
+                  : "Architect's workshop — precision, chalk traces, open blueprint"
+              }
+              alt={
+                isFr
+                  ? "Illustration éditoriale d'un atelier d'architecte symbolisant la précision opérationnelle d'AxionIA."
+                  : "Editorial illustration of an architect's workshop symbolizing AxionIA's operational precision."
+              }
+            />
+          </div>
+        </Container>
+      </Section>
+
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="APROPOS-03-closing"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/a-propos-closing.avif"
+            caption={
+              isFr
+                ? "Cabinet IA opérationnel — vue éditoriale d'un système en marche"
+                : "Operational AI consultancy — editorial view of a system at work"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'un cabinet IA opérationnel en activité — vue d'ensemble du système AxionIA."
+                : "Editorial illustration of an operational AI consultancy at work — overview of the AxionIA system."
+            }
+          />
         </Container>
       </Section>
 

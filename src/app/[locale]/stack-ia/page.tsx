@@ -11,6 +11,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { StackHeroSchema, type StackHeroNode } from "@/components/sections/StackHeroSchema";
 import { ToolLogo } from "@/components/sections/ToolLogo";
 import {
@@ -764,6 +765,27 @@ export default async function StackIaPage({ params }: Props) {
           </p>
         </Container>
       </section>
+
+      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="STACK-02-closing"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/stack-ia-closing.avif"
+            caption={
+              isFr
+                ? "Atelier d'outils éditorial — stack en mouvement, prête à servir"
+                : "Editorial tool workshop — stack in motion, ready to serve"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'un atelier d'outils opérationnels symbolisant la stack IA AxionIA en marche."
+                : "Editorial illustration of an operational tool workshop symbolizing the AxionIA AI stack at work."
+            }
+          />
+        </Container>
+      </Section>
 
       {/* CTA FINAL */}
       <CtaBlock

@@ -4,10 +4,12 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
+import { Container } from "@/components/layout/Container";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { BLOG_POSTS } from "@/content/transversal";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 
@@ -61,6 +63,29 @@ export default async function BlogListing({ params }: Props) {
             : "Field reports, AI audit methodology, operational quick-wins, custom AI strategy."
         }
       />
+
+      <Section tone="halo-warm">
+        <Container>
+          <div className="mx-auto max-w-4xl">
+            <Illustration
+              slot="BLOG-01-hero"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/blog-hero.avif"
+              caption={
+                isFr
+                  ? "Kiosque éditorial — articles ouverts en pile sur table claire"
+                  : "Editorial newsstand — open articles stacked on a light table"
+              }
+              alt={
+                isFr
+                  ? "Illustration éditoriale d'un kiosque ou d'articles empilés symbolisant la ligne éditoriale AxionIA."
+                  : "Editorial illustration of a newsstand or stacked articles symbolizing AxionIA's editorial line."
+              }
+              priority
+            />
+          </div>
+        </Container>
+      </Section>
 
       <Section>
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

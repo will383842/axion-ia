@@ -9,6 +9,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
@@ -92,6 +93,27 @@ export default async function AiGuidePage({ params }: Props) {
         }
       />
 
+      <Section tone="halo-warm">
+        <Container className="max-w-4xl">
+          <Illustration
+            slot="GUIDE-01-hero"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/guide-ia-hero.avif"
+            caption={
+              isFr
+                ? "Couverture éditoriale — livre opérationnel ouvert sur table claire"
+                : "Editorial cover — operational book open on a light table"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'une couverture de livre opérationnel ouverte, symbole du guide IA AxionIA 40 pages."
+                : "Editorial illustration of an open operational book cover, symbol of the 40-page AxionIA AI guide."
+            }
+            priority
+          />
+        </Container>
+      </Section>
+
       <Section eyebrow={isFr ? "Sommaire" : "Contents"}>
         <Container className="max-w-3xl">
           <ol className="border-border divide-border space-y-0 divide-y border-y">
@@ -130,6 +152,26 @@ export default async function AiGuidePage({ params }: Props) {
                     success: "Guide sent. Check your inbox (and spam).",
                     failure: "Error. Try again or email contact@axion-ia.com.",
                   }
+            }
+          />
+        </Container>
+      </Section>
+
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="GUIDE-03-closing"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/guide-ia-closing.avif"
+            caption={
+              isFr
+                ? "Page tournée — passer du guide à l'application concrète"
+                : "Turning the page — moving from guide to concrete application"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'une page de livre tournée, symbole du passage du guide à l'application IA concrète."
+                : "Editorial illustration of a turning book page, symbolizing the move from guide to concrete AI application."
             }
           />
         </Container>

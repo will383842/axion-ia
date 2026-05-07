@@ -11,6 +11,7 @@ import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import {
   Accordion,
@@ -1226,6 +1227,29 @@ export default async function Home({ params }: HomeProps) {
               </Accordion>
             </div>
           </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ───────────── CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 ───────────── */}
+      <section className="bg-canvas relative py-20 sm:py-24">
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <Illustration
+              slot="HOME-04-closing"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/home-closing.avif"
+              caption={
+                isFr
+                  ? "Cabinet IA opérationnel — vue d'ensemble du système en marche"
+                  : "Operational AI consultancy — overview of the system at work"
+              }
+              alt={
+                isFr
+                  ? "Illustration éditoriale d'un cabinet IA opérationnel en activité, vue d'ensemble AxionIA."
+                  : "Editorial illustration of an operational AI consultancy at work, AxionIA overview."
+              }
+            />
+          </div>
         </Container>
       </section>
 

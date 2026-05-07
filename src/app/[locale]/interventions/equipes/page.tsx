@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { Users, Wrench, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { getIntervention } from "@/content/interventions";
 import {
   buildProductMetadata,
@@ -59,13 +61,54 @@ export default async function Equipes({ params }: Props) {
       ],
     }),
   ];
+  const isFr = loc === "fr";
+  const heroSchema = (
+    <DetailHeroSchema
+      eyebrow={isFr ? "Une journée type" : "A typical day"}
+      title={isFr ? "Mise en pratique équipes" : "Team hands-on session"}
+      accent="primary"
+      blocks={[
+        {
+          icon: Users,
+          prefix: isFr ? "Matin" : "Morning",
+          label: isFr ? "Diagnostic métier" : "Field diagnostic",
+          detail: isFr
+            ? "Entretiens équipes, recensement des tâches répétitives concrètes."
+            : "Team interviews, mapping of concrete repetitive tasks.",
+        },
+        {
+          icon: Wrench,
+          prefix: isFr ? "Midi" : "Noon",
+          label: isFr ? "Atelier outils" : "Tools workshop",
+          detail: isFr
+            ? "Démos pratiques sur les outils IA prioritaires pour vos métiers."
+            : "Hands-on demos on the priority AI tools for your roles.",
+        },
+        {
+          icon: Sparkles,
+          prefix: isFr ? "Après-midi" : "Afternoon",
+          label: isFr ? "Plan d'autonomie" : "Autonomy plan",
+          detail: isFr
+            ? "Vos équipes repartent avec leur kit IA opérationnel personnel."
+            : "Your teams leave with their personal operational AI toolkit.",
+        },
+      ]}
+      ariaLabel={
+        isFr
+          ? "Schéma : journée type d'une intervention équipes — matin diagnostic métier, midi atelier outils, après-midi plan d'autonomie."
+          : "Diagram: typical day of a team session — morning field diagnostic, noon tools workshop, afternoon autonomy plan."
+      }
+    />
+  );
+
   return (
     <ProductPageTemplate
-      isFr={loc === "fr"}
+      isFr={isFr}
       accent="primary"
       copy={copy}
       ctaPrimaryHref="/reserver?intervention=equipes"
       ctaSecondaryHref="/interventions/essentielle"
+      heroSchema={heroSchema}
       jsonLd={jsonLd}
     />
   );

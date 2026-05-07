@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { Sunrise, Compass, ClipboardCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
 import { getIntervention } from "@/content/interventions";
 import {
   buildProductMetadata,
@@ -59,13 +61,54 @@ export default async function Dirigeants({ params }: Props) {
       ],
     }),
   ];
+  const isFr = loc === "fr";
+  const heroSchema = (
+    <DetailHeroSchema
+      eyebrow={isFr ? "Une journée type" : "A typical day"}
+      title={isFr ? "Cadrage stratégique dirigeants" : "Executive strategy session"}
+      accent="primary"
+      blocks={[
+        {
+          icon: Sunrise,
+          prefix: isFr ? "Matin" : "Morning",
+          label: isFr ? "Vision business" : "Business vision",
+          detail: isFr
+            ? "Enjeux stratégiques, contraintes, ambitions IA à 12-24 mois."
+            : "Strategic stakes, constraints, 12-24 month AI ambitions.",
+        },
+        {
+          icon: Compass,
+          prefix: isFr ? "Midi" : "Noon",
+          label: isFr ? "Démos sur vos données" : "Demos on your data",
+          detail: isFr
+            ? "Cas d'usage IA prioritaires testés en live, anonymisés."
+            : "Priority AI use cases tested live, anonymised.",
+        },
+        {
+          icon: ClipboardCheck,
+          prefix: isFr ? "Après-midi" : "Afternoon",
+          label: isFr ? "Plan d'action 90 jours" : "90-day action plan",
+          detail: isFr
+            ? "Quick-wins identifiés + roadmap chiffrée prête à arbitrer."
+            : "Quick-wins identified + costed roadmap ready to arbitrate.",
+        },
+      ]}
+      ariaLabel={
+        isFr
+          ? "Schéma : journée type d'une intervention dirigeants — matin vision business, midi démos sur vos données, après-midi plan d'action 90 jours."
+          : "Diagram: typical day of an executive session — morning business vision, noon demos on your data, afternoon 90-day action plan."
+      }
+    />
+  );
+
   return (
     <ProductPageTemplate
-      isFr={loc === "fr"}
+      isFr={isFr}
       accent="primary"
       copy={copy}
       ctaPrimaryHref="/reserver?intervention=dirigeants"
       ctaSecondaryHref="/interventions/essentielle"
+      heroSchema={heroSchema}
       jsonLd={jsonLd}
     />
   );

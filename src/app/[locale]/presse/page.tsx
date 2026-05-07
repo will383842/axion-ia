@@ -6,8 +6,10 @@ import { ArrowRight, Download, Mail } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
+import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { PressFacts } from "@/components/sections/PressFacts";
 import { PressKit } from "@/components/sections/PressKit";
@@ -221,6 +223,30 @@ export default async function PressePage({ params }: Props) {
             </a>
           </Button>
         </div>
+      </Section>
+
+      {/* HERO ILLUSTRATION — placeholder Sprint Visual Rhythm 2026 */}
+      <Section>
+        <Container>
+          <div className="mx-auto max-w-4xl">
+            <Illustration
+              slot="PRESSE-01-hero"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/presse-hero.avif"
+              caption={
+                isFr
+                  ? "Vitrine éditoriale magazine — Une de presse premium"
+                  : "Editorial magazine front — premium press cover"
+              }
+              alt={
+                isFr
+                  ? "Illustration éditoriale d'une vitrine de magazine premium symbolisant l'espace presse AxionIA."
+                  : "Editorial illustration of a premium magazine front symbolizing the AxionIA press room."
+              }
+              priority
+            />
+          </div>
+        </Container>
       </Section>
 
       {/* PITCH — boilerplate citable + faits clés en aside */}

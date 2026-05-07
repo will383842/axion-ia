@@ -12,6 +12,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ImplementationHeroSchema } from "@/components/sections/ImplementationHeroSchema";
 import { Link } from "@/i18n/navigation";
@@ -1176,6 +1177,27 @@ export default async function ImplementationListing({ params }: Props) {
         }
       >
         <FaqAccordion items={faqs} className="mx-auto max-w-3xl" />
+      </Section>
+
+      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="IMPL-03-closing"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/implementation-closing.avif"
+            caption={
+              isFr
+                ? "Implémentation livrée — système opérationnel, clés remises"
+                : "Implementation delivered — operational system, keys handed over"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'un système opérationnel livré à l'issue d'une implémentation AxionIA."
+                : "Editorial illustration of an operational system delivered at the end of an AxionIA implementation."
+            }
+          />
+        </Container>
       </Section>
 
       <CtaBlock

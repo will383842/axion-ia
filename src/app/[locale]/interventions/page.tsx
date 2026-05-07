@@ -11,6 +11,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { InterventionsHeroSchema } from "@/components/sections/InterventionsHeroSchema";
 import {
   INTERVENTIONS,
@@ -682,6 +683,27 @@ export default async function InterventionsListing({ params }: Props) {
             </article>
           ))}
         </div>
+      </Section>
+
+      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="INTERV-02-closing"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/interventions-closing.avif"
+            caption={
+              isFr
+                ? "Équipe en mouvement — silhouettes éditoriales orientées vers l'action"
+                : "Team in motion — editorial silhouettes oriented toward action"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'une équipe orientée vers l'action après une intervention AxionIA."
+                : "Editorial illustration of a team oriented toward action after an AxionIA session."
+            }
+          />
+        </Container>
       </Section>
 
       {/* CTA FINAL */}

@@ -62,6 +62,10 @@ interface ProductPageTemplateProps {
   };
   ctaPrimaryHref: string;
   ctaSecondaryHref: string;
+  /** Optionnel — schéma visuel rendu à droite du hero en lg+ (Sprint
+   * Visual Rhythm 2026). Permet d'injecter `<InterventionDetailHeroSchema>`
+   * ou `<AuditDetailHeroSchema>` selon le module sans dupliquer le template. */
+  heroSchema?: React.ReactNode;
   jsonLd?: ReadonlyArray<Record<string, unknown>>;
 }
 
@@ -74,6 +78,7 @@ export function ProductPageTemplate({
   copy,
   ctaPrimaryHref,
   ctaSecondaryHref,
+  heroSchema,
   jsonLd = [],
 }: ProductPageTemplateProps) {
   const metricsVariant: "primary" | "purple" | "orange" | "green" = accent;
@@ -100,6 +105,7 @@ export function ProductPageTemplate({
             </Cta>
           </>
         }
+        {...(heroSchema ? { heroSchema } : {})}
       />
 
       {/* Déroulement de la journée — JUSTE APRÈS LE HERO (Module 1).
