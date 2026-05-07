@@ -3,24 +3,40 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 
 interface LegalPageTemplateProps {
+  isFr: boolean;
   title: string;
   intro: string;
   sections: ReadonlyArray<{ title: string; body: string }>;
   lastUpdated?: string;
 }
 
-// Editorial v3 — sober, max-w-3xl, body Manrope + h2 sans-serif (legal pages
-// stay business-like, no serif here for legibility / quick scan).
-export function LegalPageTemplate({ title, intro, sections, lastUpdated }: LegalPageTemplateProps) {
+// Editorial v3 — sober body (max-w-3xl, h2 sans-serif) preserved for legal
+// legibility / quick scan. Hero promoted to canonical page hero (h1 +
+// display-editorial + halo-warm decoration) so legal pages share the same
+// visual weight as the rest of the site.
+export function LegalPageTemplate({
+  isFr,
+  title,
+  intro,
+  sections,
+  lastUpdated,
+}: LegalPageTemplateProps) {
   return (
     <>
-      <Section tone="halo-warm" eyebrow="Légal" title={title} description={intro} />
+      <Section
+        tone="halo-warm"
+        titleAs="h1"
+        eyebrow={isFr ? "Légal" : "Legal"}
+        title={title}
+        description={intro}
+      />
 
       <Section tone="paper">
         <Container className="max-w-3xl">
           {lastUpdated ? (
             <p className="text-fg-muted mb-10 text-[11px] tracking-[0.16em] uppercase">
-              Dernière mise à jour : {lastUpdated}
+              {isFr ? "Dernière mise à jour : " : "Last updated: "}
+              {lastUpdated}
             </p>
           ) : null}
           <div className="space-y-12">

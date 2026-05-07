@@ -603,7 +603,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       },
     },
     fr: {
-      eyebrow: "Offre phare · Module 1",
+      eyebrow: "Offre phare · Module 1 · 1 jour sur site",
       title: "L'intervention IA",
       titleEm: "Essentielle",
       answer:
@@ -723,7 +723,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       },
     },
     en: {
-      eyebrow: "Flagship offering · Module 1",
+      eyebrow: "Flagship offering · Module 1 · 1 day on site",
       title: "The",
       titleEm: "Essential",
       titleTail: " AI session",
@@ -891,7 +891,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     fr: {
       ...makeFr({
-        eyebrow: "Cible : équipes & salariés (11+)",
+        eyebrow: "Cible : équipes & salariés (11+) · 1 jour sur site",
         title: "Vos équipes gagnent",
         titleEm: "1 h par jour",
         answer:
@@ -903,7 +903,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     en: {
       ...makeEn({
-        eyebrow: "Audience: teams & staff (11+)",
+        eyebrow: "Audience: teams & staff (11+) · 1 day on site",
         title: "Your teams save",
         titleEm: "1 hour a day",
         answer:
@@ -965,7 +965,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     fr: {
       ...makeFr({
-        eyebrow: "Cible : managers",
+        eyebrow: "Cible : managers · 1 jour sur site",
         title: "Réduire vos",
         titleEm: "coûts cachés",
         answer:
@@ -977,7 +977,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     en: {
       ...makeEn({
-        eyebrow: "Audience: managers",
+        eyebrow: "Audience: managers · 1 day on site",
         title: "Cut your",
         titleEm: "hidden costs",
         answer:
@@ -1113,7 +1113,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     fr: {
       ...makeFr({
-        eyebrow: "Cible : dirigeants & CODIR",
+        eyebrow: "Cible : dirigeants & CODIR · 1 jour sur site",
         title: "L'IA",
         titleEm: "pour les dirigeants",
         answer:
@@ -1125,7 +1125,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     en: {
       ...makeEn({
-        eyebrow: "Audience: executives & CODIR",
+        eyebrow: "Audience: executives & CODIR · 1 day on site",
         title: "AI",
         titleEm: "for executives",
         answer:

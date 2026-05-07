@@ -227,12 +227,12 @@ export default async function ImplementationListing({ params }: Props) {
           },
           {
             name: "AxionIA",
-            tag: "Agence IA & automatisation",
+            tag: "Cabinet IA & automatisation",
             price: "490 € → sur devis",
             highlight: true,
             badge: "Le meilleur des deux mondes",
             pros: [
-              "Agence spécialisée IA & automatisation — vous avez un partenaire, pas un outil",
+              "Cabinet spécialisé IA & automatisation — vous avez un partenaire, pas un outil",
               "Forfait fixe · devis ferme avant tout démarrage",
               "Vraie IA connectée à vos outils (pas juste un workflow)",
               "Livraison en 2 à 6 semaines, sprints + démos hebdo",
@@ -244,7 +244,7 @@ export default async function ImplementationListing({ params }: Props) {
             cons: ["Pas de régie continue (volontairement — vous restez libre)"],
             criteria: ["yes", "yes", "yes", "yes"] as const,
             verdict:
-              "L'expertise d'une agence IA, l'agilité d'une équipe spécialisée, sans la facture ni la dépendance — l'équilibre que personne d'autre ne propose en France.",
+              "L'expertise d'un cabinet IA, l'agilité d'une équipe spécialisée, sans la facture ni la dépendance — l'équilibre que personne d'autre ne propose en France.",
           },
         ],
       }
@@ -295,12 +295,12 @@ export default async function ImplementationListing({ params }: Props) {
           },
           {
             name: "AxionIA",
-            tag: "AI & automation agency",
+            tag: "AI & automation consultancy",
             price: "€490 → on quote",
             highlight: true,
             badge: "Best of both worlds",
             pros: [
-              "Specialized AI & automation agency — a partner, not a tool",
+              "Specialized AI & automation consultancy — a partner, not a tool",
               "Fixed fee · firm quote before any kick-off",
               "Real AI wired to your tools (not just a workflow)",
               "Delivery in 2 to 6 weeks, sprints + weekly demos",
@@ -312,7 +312,7 @@ export default async function ImplementationListing({ params }: Props) {
             cons: ["No continuous time-and-materials (by design — you stay free)"],
             criteria: ["yes", "yes", "yes", "yes"] as const,
             verdict:
-              "An AI agency's expertise, a specialized team's agility, without the bill or the lock-in — the balance no one else offers.",
+              "An AI consultancy's expertise, a specialized team's agility, without the bill or the lock-in — the balance no one else offers.",
           },
         ],
       };

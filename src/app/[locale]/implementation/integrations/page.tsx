@@ -60,6 +60,7 @@ export default async function IntegrationsPage({ params }: Props) {
   ];
   return (
     <ProductPageTemplate
+      isFr={loc === "fr"}
       accent="purple"
       copy={copy}
       ctaPrimaryHref="/contact"

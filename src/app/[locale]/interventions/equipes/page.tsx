@@ -61,6 +61,7 @@ export default async function Equipes({ params }: Props) {
   ];
   return (
     <ProductPageTemplate
+      isFr={loc === "fr"}
       accent="primary"
       copy={copy}
       ctaPrimaryHref="/reserver?intervention=equipes"

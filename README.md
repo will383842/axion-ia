@@ -1,8 +1,8 @@
 # AxionIA
 
-Cabinet IA opérationnel B2B premium · OÜ estonienne · multilingue FR/EN.
+Cabinet IA opérationnel B2B premium · européen · multilingue FR/EN.
 
-> **Source de vérité** : `../AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 + `axionia-package/docs/_DECISIONS-FINALES.md` + `Design.md` racine + ADR `docs/adr/`.
+> **Source de vérité** : `../AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 + `axionia-package/docs/_DECISIONS-FINALES.md` + `Design.md` (doctrine visuelle v3.1 « Editorial Premium Light ») + ADR `docs/adr/` (notamment 0002 pivot v3 et 0004 typography v3.1).
 
 ## Quickstart
 
@@ -15,7 +15,7 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 ## Stack
 
 - **Framework** : Next.js 16 (App Router) · React 19.2 · TypeScript 5 strict
-- **Style** : Tailwind v4 + CSS variables (Webflow-inspired) · `Manrope` + `Inconsolata`
+- **Style** : Tailwind v4 + CSS variables (Editorial Premium Light v3.1, cf. `Design.md`) · `Manrope` (sans) + `Fraunces` (serif éditorial signature) + `Inconsolata` (mono)
 - **i18n** : `next-intl@3` (FR canonique, EN miroir)
 - **Forms** : `react-hook-form` + `zod`
 - **DB** : Postgres 16 + `prisma@5` (Sprint 15)
@@ -33,8 +33,9 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 ## Conventions non négociables
 
 - **Mot « formation »** : autorisé depuis 2026-05-07 (ADR 0003). Vocabulaire commercial réintégré pour les pages `/interventions` & co. Plus aucun gate `anti-formation`.
+- **Doctrine visuelle v3.1** : tout titre de page a un `h1` (WCAG 2.4.6) et passe par `<Section titleAs="h1" tone="halo-warm">` ou son équivalent canonique manuel (display-editorial Fraunces + dot terracotta + italic-editorial). `<LegalPageTemplate>` et `<ProductPageTemplate>` exigent une prop `isFr` pour la localisation des fallbacks/strings.
 - **Mobile-first absolu** (`axionia-mobile-first`) — Tailwind classes sans préfixe d'abord.
-- **OÜ estonienne** — jamais SIREN/SIRET/RCS · `pnpm anti-siren:check`.
+- **Pas de SIREN/SIRET/RCS** dans les copies marketing — la société est constituée hors France, le linter `pnpm anti-siren:check` enforce cette règle.
 - **Server Components par défaut** · `'use client'` justifié obligatoire (`pnpm use-client:check`).
 - **Aucun hex hardcodé** hors `globals.css` (`pnpm anti-hex:check`).
 - **i18n parité FR/EN** (`pnpm i18n:check`).
@@ -75,23 +76,48 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 
 ```
 src/
-├─ app/                    # Next.js App Router (locale-driven Sprint 2)
+├─ app/
+│  ├─ [locale]/            # Routes localisées FR/EN (App Router)
+│  │  ├─ page.tsx          # Home (référence design v3.1)
+│  │  ├─ interventions/    # Module 1 — 5 produits + listing
+│  │  ├─ audit/            # Module 2 — 4 niveaux + demande
+│  │  ├─ implementation/   # Module 3 — 9 prestations + par-fonction/par-techno
+│  │  ├─ cas-concrets/     # Cas concrets + secteurs
+│  │  ├─ blog/             # Articles + categorie/auteur/tag
+│  │  ├─ centre-aide/      # Help articles + categorie
+│  │  ├─ faq/              # FAQ + entries
+│  │  ├─ presse/           # Page presse · NewsroomPage
+│  │  ├─ comparaisons/     # Comparatifs
+│  │  ├─ {a-propos,contact,roi,reserver,recherche,...}
+│  │  ├─ {mentions-legales,conditions-generales,politique-*,cookies,rgpd}/
+│  │  └─ {design,components,sections}/   # Pages dev no-index
 │  ├─ api/vitals/route.ts  # web-vitals beacon (Edge)
-│  ├─ layout.tsx
-│  └─ page.tsx
-├─ components/             # UI atomic + composite (Sprint 3-4)
-├─ lib/                    # utils, schemas Zod, helpers
-├─ messages/               # next-intl FR / EN
-├─ instrumentation.ts      # Sentry server + edge
-├─ instrumentation-client.ts # Sentry browser
-├─ sentry.server.config.ts
-├─ sentry.edge.config.ts
+│  ├─ globals.css          # Tokens Editorial v3.1 (@theme directive)
+│  └─ layout.tsx
+├─ components/
+│  ├─ layout/              # Container, Section (composant central tones+titleEm)
+│  ├─ nav/                 # Header, Footer, MobileNav, LocaleSwitcher
+│  ├─ sections/            # ProductPageTemplate, LegalPageTemplate, Hero, FaqBlock, …
+│  ├─ marketing/           # Cta, JsonLd, ArticleCard, CaseStudyCard, Price, …
+│  ├─ forms/               # ContactForm, AuditRequestForm, NewsletterForm, …
+│  ├─ calendar/            # BookingCalendar, HouseCalendar
+│  ├─ roi/                 # RoiSimulator
+│  ├─ ui/                  # Atomes shadcn-like (Button, Card, Input, Alert, …)
+│  └─ {motion,a11y,analytics,typography}/
+├─ content/                # Source de vérité fixtures (interventions, audit,
+│                          #   implementations, case-studies, transversal,
+│                          #   press, legal, comparisons) FR + EN co-localisé
+├─ i18n/                   # routing + Link wrapper next-intl
+├─ messages/               # next-intl FR / EN (parité enforced via i18n:check)
+├─ lib/                    # utils, schemas Zod, helpers SEO/JSON-LD
+├─ instrumentation*.ts     # Sentry server + edge + browser
+├─ sentry.{server,edge}.config.ts
 └─ env.ts                  # @t3-oss/env-nextjs validation runtime
 
 scripts/                   # check-* custom + adr-new
 prisma/                    # schema + seeds (Sprint 15)
-docs/adr/                  # Architecture Decision Records
-.github/workflows/         # 4 workflows + dependabot
+docs/adr/                  # Architecture Decision Records (0001 → 0004)
+.github/workflows/         # workflows CI Gates A/B/C/D/E + dependabot
 ```
 
 ## Documentation locale Next 16

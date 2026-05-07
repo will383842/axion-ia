@@ -252,14 +252,14 @@ export default async function InterventionsListing({ params }: Props) {
               </p>
 
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Faire entrer l'IA " : "Bring AI "}
+                {isFr ? "Formez vos équipes à l'IA " : "Train your teams on AI "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "dans votre entreprise" : "into your company"}
+                  {isFr ? "en 1 ou 2 jours" : "in 1 or 2 days"}
                 </span>
-                {isFr ? " — concrètement, en une journée." : " — concretely, in a day."}
+                {isFr ? " — concrètement, sur site." : " — concretely, on site."}
               </h1>
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
@@ -285,19 +285,19 @@ export default async function InterventionsListing({ params }: Props) {
             </div>
 
             {/* Colonne droite — schéma SVG portrait, c'est l'argumentaire
-                visuel principal de la page. Wrapper max-w-2xl pour égaler
-                le AuditHeroSchema en taille visuelle. */}
-            <div className="relative mx-auto w-full max-w-2xl lg:mx-0">
-              <InterventionsHeroSchema
-                centerLabel={isFr ? "Votre entreprise" : "Your company"}
-                ariaLabel={
-                  isFr
-                    ? "Schéma : votre entreprise au centre, entourée des 5 formats d'intervention et de formation IA AxionIA et de leur bénéfice concret."
-                    : "Diagram: your company at the center, surrounded by the 5 AxionIA intervention and training formats and their concrete benefit."
-                }
-                nodes={heroNodes}
-              />
-            </div>
+                visuel principal de la page. lg:max-w-none pour utiliser tout
+                l'espace de la colonne grille (1.2fr) et égaler le
+                AuditHeroSchema. */}
+            <InterventionsHeroSchema
+              className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none"
+              centerLabel={isFr ? "Votre entreprise" : "Your company"}
+              ariaLabel={
+                isFr
+                  ? "Schéma : votre entreprise au centre, entourée des 5 formats d'intervention et de formation IA AxionIA et de leur bénéfice concret."
+                  : "Diagram: your company at the center, surrounded by the 5 AxionIA intervention and training formats and their concrete benefit."
+              }
+              nodes={heroNodes}
+            />
           </div>
         </Container>
       </section>
@@ -547,7 +547,7 @@ export default async function InterventionsListing({ params }: Props) {
                       </p>
                       <ul className="space-y-2">
                         {s.outcomes.map((o, i) => (
-                          <li key={i} className={cn("flex items-start gap-3 text-[14.5px]", txt)}>
+                          <li key={i} className={cn("flex items-start gap-3 text-base", txt)}>
                             <span
                               className={cn(
                                 "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
@@ -671,8 +671,8 @@ export default async function InterventionsListing({ params }: Props) {
               <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
                 {card.level}
               </p>
-              <h3 className="text-fg mt-2 text-lg leading-snug font-semibold">{card.title}</h3>
-              <p className="text-fg-soft mt-3 text-sm leading-relaxed">{card.body}</p>
+              <h3 className="text-fg mt-2 text-xl leading-snug font-semibold">{card.title}</h3>
+              <p className="text-fg-soft mt-3 text-base leading-relaxed">{card.body}</p>
               <p className="text-fg-muted mt-4 text-[12px] tracking-wide">
                 <span className="text-fg font-medium">
                   {isFr ? "Format conseillé : " : "Recommended format: "}

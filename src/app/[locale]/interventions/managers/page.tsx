@@ -61,6 +61,7 @@ export default async function Managers({ params }: Props) {
   ];
   return (
     <ProductPageTemplate
+      isFr={loc === "fr"}
       accent="primary"
       copy={copy}
       ctaPrimaryHref="/reserver?intervention=managers"

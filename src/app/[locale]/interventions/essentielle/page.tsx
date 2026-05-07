@@ -75,6 +75,7 @@ export default async function Essentielle({ params }: Props) {
   return (
     <>
       <ProductPageTemplate
+        isFr={loc === "fr"}
         accent="primary"
         copy={copy}
         ctaPrimaryHref="/reserver?intervention=essentielle"
@@ -125,7 +126,7 @@ export default async function Essentielle({ params }: Props) {
                     </p>
                     <p className="text-fg-muted mt-1 text-xs">{isFr ? "HT" : "excl. VAT"}</p>
                     <p className="text-fg mt-4 text-base leading-snug font-semibold">{size}</p>
-                    <p className="text-fg-soft mt-3 text-sm leading-relaxed">
+                    <p className="text-fg-soft mt-3 text-base leading-relaxed">
                       {isFr
                         ? "Une journée sur site (9 h – 17 h). Découverte des outils IA, ateliers pratiques, idées d'automatisations."
                         : "One day on site (9 a.m. – 5 p.m.). AI tool discovery, hands-on workshops, automation ideas."}

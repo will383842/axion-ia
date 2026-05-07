@@ -147,7 +147,7 @@ export default async function GlossaryPage({ params }: Props) {
             {TERMS.map((t) => (
               <div key={t.term} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-4">
                 <dt className="text-fg font-mono text-sm font-semibold">{t.term}</dt>
-                <dd className="text-fg-soft text-sm leading-relaxed">{t[loc]}</dd>
+                <dd className="text-fg-soft text-base leading-relaxed">{t[loc]}</dd>
               </div>
             ))}
           </dl>

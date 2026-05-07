@@ -80,8 +80,9 @@ export function InterventionsHeroSchema({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         xmlns="http://www.w3.org/2000/svg"
-        className="h-auto w-full"
+        className="h-auto w-full overflow-visible"
         preserveAspectRatio="xMidYMid meet"
+        overflow="visible"
       >
         <defs>
           <radialGradient id="iv-halo-tc" cx="50%" cy="50%" r="50%">

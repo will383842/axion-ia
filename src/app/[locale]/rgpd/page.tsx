@@ -45,7 +45,12 @@ export default async function Rgpd({ params }: Props) {
   });
   return (
     <>
-      <LegalPageTemplate title={copy.title} intro={copy.intro} sections={copy.sections} />
+      <LegalPageTemplate
+        isFr={isFr}
+        title={copy.title}
+        intro={copy.intro}
+        sections={copy.sections}
+      />
       <JsonLd data={breadcrumb} />
     </>
   );

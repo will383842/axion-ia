@@ -28,6 +28,7 @@ interface DaySchedule {
 }
 
 interface ProductPageTemplateProps {
+  isFr: boolean;
   accent: "primary" | "purple" | "orange" | "green";
   copy: {
     eyebrow: string;
@@ -68,6 +69,7 @@ interface ProductPageTemplateProps {
 // pour rythme visuel. Toutes les pages produits (Module 1/2/3, ~21 pages)
 // héritent automatiquement de cette doctrine.
 export function ProductPageTemplate({
+  isFr,
   accent,
   copy,
   ctaPrimaryHref,
@@ -109,6 +111,7 @@ export function ProductPageTemplate({
           rappelé en CTA final mocha. Module 1 uniquement (a daySchedule). */}
       {copy.daySchedule ? (
         <ReserveBigCta
+          isFr={isFr}
           ctaPrimaryHref={ctaPrimaryHref}
           ctaPrimary={copy.ctaPrimary}
           {...(typeof copy.priceEur === "number" ? { priceEur: copy.priceEur } : {})}
@@ -127,12 +130,20 @@ export function ProductPageTemplate({
       {/* « Comment fonctionne une réservation » — sand intermission, 5 étapes.
           Eyebrow paramétrable (défaut "Réservation" pour Module 1, "Déroulement"
           ou "Method" sur audit). */}
-      <Section tone="sand" eyebrow={copy.processEyebrow ?? "Réservation"} title={copy.processTitle}>
+      <Section
+        tone="sand"
+        eyebrow={copy.processEyebrow ?? (isFr ? "Réservation" : "Booking")}
+        title={copy.processTitle}
+      >
         <ProcessSteps steps={copy.processSteps.map((s, i) => ({ id: `s-${i}`, ...s }))} />
       </Section>
 
       {/* Metrics — mocha riche pour gros contraste. Eyebrow paramétrable. */}
-      <Section tone="mocha" eyebrow={copy.metricsEyebrow ?? "Chiffres"} title={copy.metricsTitle}>
+      <Section
+        tone="mocha"
+        eyebrow={copy.metricsEyebrow ?? (isFr ? "Chiffres" : "By the numbers")}
+        title={copy.metricsTitle}
+      >
         <MetricsRow
           stats={copy.metrics.map((m, i) => ({
             id: `m-${i}`,
@@ -172,10 +183,12 @@ export function ProductPageTemplate({
 // Bandeau CTA conversion — gros bouton « Je réserve cette intervention ».
 // Visible, halo-warm, prix et message d'urgence pour conversion maximale.
 function ReserveBigCta({
+  isFr,
   ctaPrimaryHref,
   ctaPrimary,
   priceEur,
 }: {
+  isFr: boolean;
   ctaPrimaryHref: string;
   ctaPrimary: string;
   priceEur?: number;
@@ -198,20 +211,31 @@ function ReserveBigCta({
               aria-hidden="true"
               className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
             />
-            Réservation directe
+            {isFr ? "Réservation directe" : "Direct booking"}
           </p>
           <h2
             className="text-fg mt-4 text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-medium tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            Je réserve <span className="text-terracotta italic">cette intervention</span>
+            {isFr ? "Je réserve " : "I book "}
+            <span className="text-terracotta italic">
+              {isFr ? "cette intervention" : "this session"}
+            </span>
           </h2>
           <p className="text-fg-soft mx-auto mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
-            Sélectionnez votre date dans le calendrier maison.{" "}
+            {isFr
+              ? "Sélectionnez votre date dans le calendrier maison. "
+              : "Pick your date in the on-site calendar. "}
             {typeof priceEur === "number"
-              ? `À partir de ${priceEur} € HT pour une journée sur site.`
-              : "Sur devis · réponse sous 48 h ouvrées."}{" "}
-            Confirmation immédiate, paiement 50 % à la réservation.
+              ? isFr
+                ? `À partir de ${priceEur} € HT pour une journée sur site.`
+                : `From €${priceEur} (excl. VAT) for an on-site day.`
+              : isFr
+                ? "Sur devis · réponse sous 48 h ouvrées."
+                : "On quote · reply within 48 business hours."}{" "}
+            {isFr
+              ? "Confirmation immédiate, paiement 50 % à la réservation."
+              : "Immediate confirmation, 50 % payment on booking."}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Cta href={ctaPrimaryHref} size="xl">
@@ -219,11 +243,13 @@ function ReserveBigCta({
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Cta href="/reserver" variant="outline" size="lg">
-              Voir le calendrier complet
+              {isFr ? "Voir le calendrier complet" : "See the full calendar"}
             </Cta>
           </div>
           <p className="text-fg-muted mt-6 text-xs">
-            ★ Frais de déplacement et hébergement au forfait journalier · pas de justificatifs
+            {isFr
+              ? "★ Frais de déplacement et hébergement au forfait journalier · pas de justificatifs"
+              : "★ Travel and lodging at a flat daily rate · no receipts"}
           </p>
         </div>
       </Container>

@@ -31,7 +31,7 @@ export default function ComponentsPage() {
       <Section
         eyebrow="Component library"
         title="AxionIA · atomic & composite UI"
-        description="Sprint 3 — atoms shadcn-style + Webflow tokens + AxionIA marketing primitives."
+        description="Atoms shadcn-style + Editorial v3.1 tokens + AxionIA marketing primitives."
       />
 
       <Section eyebrow="Buttons">

@@ -108,18 +108,26 @@ Fallbacks : sans → `-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui` 
 
 ### 3.2 — Échelle (mobile-first, scale clamp pour fluide)
 
-| Token             | Taille             | Line-height | Letter-spacing  | Famille                     | Usage                         |
-| ----------------- | ------------------ | ----------- | --------------- | --------------------------- | ----------------------------- |
-| `--text-display`  | **7 rem (112 px)** | 0.96        | -0.04em         | serif Fraunces              | h1 home, hero éditorial       |
-| `--text-section`  | 4 rem (64 px)      | 1.04        | —               | serif ou sans selon section | h2 section heading            |
-| `--text-sub`      | 2.25 rem (36 px)   | 1.20        | —               | sans                        | h3                            |
-| `--text-feature`  | 1.5 rem (24 px)    | 1.30        | —               | sans                        | feature card title            |
-| `--text-lead`     | 1.375 rem (22 px)  | 1.50        | —               | sans                        | description hero / lead intro |
-| `--text-body`     | 1 rem (16 px)      | 1.65        | -0.005em        | sans                        | body                          |
-| `--text-label-up` | 0.8125 rem (13 px) | 1.30        | **0.16em**      | sans uppercase              | eyebrow, label form           |
-| `--text-caption`  | 0.875 rem (14 px)  | 1.50        | —               | sans                        | caption, metadata             |
-| `--text-badge-up` | 0.75 rem (12 px)   | 1.20        | uppercase       | sans                        | badge inline                  |
-| `--text-micro-up` | 0.625 rem (10 px)  | 1.30        | 0.1em uppercase | sans                        | micro-label                   |
+> **v3.1 — 2026-05-07** : baseline corps montée de 16 → 18 px et `text-sm` 14 → 15 px pour s'aligner sur Anthropic (référence doctrinale, Design.md §1) et sortir du ressenti « tout petit sauf hero ». Voir ADR 0004 et `_AUDIT/AUDIT-TYPOGRAPHY-2026.md`. Tailwind v4 defaults `text-base` et `text-sm` sont **explicitement overridés dans `@theme`** ; tout le code consomme `text-base` (= `--text-base` = 18 px), `text-sm` (= `--text-sm` = 15 px), etc.
+
+| Token             | Taille                      | Line-height | Letter-spacing  | Famille                     | Usage                         |
+| ----------------- | --------------------------- | ----------- | --------------- | --------------------------- | ----------------------------- |
+| `--text-display`  | **7 rem (112 px)**          | 0.96        | -0.04em         | serif Fraunces              | h1 home, hero éditorial       |
+| `--text-section`  | 4 rem (64 px)               | 1.04        | —               | serif ou sans selon section | h2 section heading            |
+| `--text-sub`      | 2.25 rem (36 px)            | 1.20        | —               | sans                        | h3                            |
+| `--text-feature`  | 1.5 rem (24 px)             | 1.30        | —               | sans                        | feature card title            |
+| `--text-lead`     | **1.4375 rem (23 px)** v3.1 | 1.50        | —               | sans                        | description hero / lead intro |
+| `--text-body`     | **1.125 rem (18 px)** v3.1  | 1.70        | -0.005em        | sans                        | body (= `text-base` Tailwind) |
+| `--text-base`     | **1.125 rem (18 px)** v3.1  | 1.70        | -0.005em        | sans                        | override Tailwind default     |
+| `--text-sm`       | **0.9375 rem (15 px)** v3.1 | 1.55        | —               | sans                        | override Tailwind default     |
+| `--text-label-up` | 0.8125 rem (13 px)          | 1.30        | **0.16em**      | sans uppercase              | eyebrow, label form           |
+| `--text-caption`  | **0.9375 rem (15 px)** v3.1 | 1.55        | —               | sans                        | caption, metadata             |
+| `--text-badge-up` | 0.75 rem (12 px)            | 1.20        | uppercase       | sans                        | badge inline                  |
+| `--text-micro-up` | 0.625 rem (10 px)           | 1.30        | 0.1em uppercase | sans                        | micro-label                   |
+
+**Mesure de ligne cible** : 60-75 ch confort. Avec body 18 px : `max-w-2xl` (672 px) ≈ 75 ch ✓ ; éviter `max-w-3xl` (≈ 85 ch) sur les paragraphes éditoriaux longs.
+
+**Ratio hero/body** : doctrine v3.1 vise ~6.2× (display max 112 px / body 18 px). Médiane benchmark 2026 = 4.4×.
 
 ### 3.3 — Signature éditoriale `em.editorial`
 
@@ -284,12 +292,18 @@ Ordre conseillé sur une page longue (home, module listing) :
 - `variant="dark"` : bg `--color-mocha`, fg `--color-mocha-fg`, hover terracotta-soft border.
 - Focus ring : `--color-primary` (2px + offset 2px) sur fonds clairs, `--color-terracotta` sur fond mocha.
 
-### Hero
+### Section / Hero — composant central
 
-- Default `accent="terracotta"` (signature éditoriale).
-- `bg-halo-warm` par défaut, override possible.
-- Eyebrow avec dot indicator couleur module + uppercase 13px tracking 0.16em.
-- `titleEm` (slot) rendu en serif italique terracotta-soft pour mise en exergue.
+`<Section>` est le composant **canonique** pour toutes les sections de page (heros et sous-sections). Il porte 6 tones (`canvas | paper | sand | halo-warm | halo-cool | mocha`), gère eyebrow + dot terracotta + `titleEm` italic-editorial automatiquement, et applique `display-editorial` Fraunces géant quand `titleAs="h1"` est passé (avec décoration SVG `PageHeroDecoration` automatique : anneaux concentriques + halos + particules).
+
+- **Page hero canonique** : `<Section titleAs="h1" tone="halo-warm" eyebrow="…" title="…" titleEm="…" description="…" />`. WCAG 2.4.6 enforced — chaque page a exactement un h1.
+- **Hero manuel équivalent** (audit, interventions, cas-concrets, /audit/demande, /reserver) : section custom 2-cols avec `bg-halo-warm`, `display-editorial`, eyebrow + dot terracotta, `<h1>` Fraunces + italic terracotta. Permet d'embarquer un `HeroSchema` SVG narratif à droite. Les classes restent strictement les mêmes que celles que `<Section>` aurait appliquées.
+- **Composant `<Hero>`** (`components/sections/Hero.tsx`) : variante alternative pré-câblée avec dot indicator + accent + titleEm. Utilisé sur les pages dev `/sections` ; les pages publiques préfèrent `<Section titleAs="h1">` ou hero manuel.
+
+### Templates partagés
+
+- `<ProductPageTemplate>` (Module 1/2/3, ~18 pages produits) : prop `isFr` **requise** (sinon FR leak sur EN sur fallbacks/bloc `ReserveBigCta`). Hérite alternance auto paper → sand → mocha → canvas → mocha.
+- `<LegalPageTemplate>` (6 pages legal/policy) : prop `isFr` **requise**. Hero halo-warm h1 sobre (pas de `titleEm` — choix éditorial pour lisibilité juridique) + body paper sans-serif max-w-3xl.
 
 ### Footer
 
@@ -339,11 +353,17 @@ Tailwind v4 consomme via classes utilitaires (`bg-bg`, `text-fg`, `text-fg-muted
 Fichiers de référence :
 
 - `src/components/layout/Container.tsx` — max-w 1280.
-- `src/components/layout/Section.tsx` — vertical rhythm + alternance surfaces.
-- `src/components/sections/Hero.tsx` — variant home/module/product/transverse + accent + titleEm.
+- `src/components/layout/Section.tsx` — composant central : 6 tones, eyebrow + dot terracotta + titleEm italic-editorial, auto `display-editorial` + `PageHeroDecoration` quand `titleAs="h1"`.
+- `src/components/sections/ProductPageTemplate.tsx` — orchestrateur Module 1/2/3 (alternance auto paper → sand → mocha → canvas → mocha). **Prop `isFr` requise**.
+- `src/components/sections/LegalPageTemplate.tsx` — pages legal/policy. **Prop `isFr` requise**. Hero h1 sobre (sans titleEm) + body sans-serif max-w-3xl.
+- `src/components/sections/ProductHero.tsx` — hero produit avec `border-l-4` accent + halo accent latéral.
+- `src/components/sections/Hero.tsx` — variant alternative dot indicator + accent + titleEm (pages dev / cas spéciaux).
+- `src/components/marketing/Cta.tsx` — pill rounded-full + `cta-lift` (hover translate-y -1px + shadow elevated).
 - `src/components/nav/Header.tsx` — sticky + scroll behavior.
-- `src/components/nav/Footer.tsx` — bg-mocha + 5 zones + tagline éditoriale.
+- `src/components/nav/Footer.tsx` — bg-mocha + 5 colonnes + tagline éditoriale + newsletter.
 - `src/components/ui/button.tsx` — 4 variants v3.
+
+**Règle parité** : toute nouvelle page doit utiliser `<Section titleAs="h1" tone="halo-warm">` ou un hero manuel reproduisant strictement les mêmes classes (`bg-halo-warm` + `display-editorial` + dot terracotta + italic-editorial). Toute string visible utilisateur doit être localisée FR/EN — `i18n:check` enforce la parité des clés.
 
 ---
 

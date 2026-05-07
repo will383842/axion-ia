@@ -60,6 +60,7 @@ export default async function AuditFlashPage({ params }: Props) {
   ];
   return (
     <ProductPageTemplate
+      isFr={loc === "fr"}
       accent="orange"
       copy={copy}
       ctaPrimaryHref={`/audit/demande?type=${SLUG}`}
