@@ -1,16 +1,52 @@
 // Content pack — Module 1 Interventions entreprise (6 pages).
-// Webflow Blue accent. Source de vérité copy: docs 03 + 21 + 16.
-// Sprint 5 ships placeholders that pass the banned-word check; finer copy
-// iteration belongs to Sprint 9 polish.
+// Source de vérité copy: docs 03 + 21 + 16.
+// Sprint 5 ships placeholders; finer copy iteration belongs to Sprint 9 polish.
+// 2026-05-07 : extension `summary` pour la refonte du listing /interventions
+// (post-ADR 0003 lift formation ban) — la page met chaque format en valeur
+// dans un gros bloc dédié orienté conversion B2B.
 
 import type { Locale } from "@/i18n/routing";
 
 export type InterventionSlug = "essentielle" | "equipes" | "managers" | "conference" | "dirigeants";
 
+/** Accent visuel par intervention — conserve la palette Editorial v3. */
+export type InterventionAccent = "terracotta" | "primary" | "sage" | "mocha";
+
+/** Bloc résumé orienté conversion utilisé par la page listing /interventions. */
+export interface InterventionSummary {
+  /** Bénéfice tagline 1 ligne — promesse principale, conversion-friendly. */
+  benefitTagline: string;
+  /** Durée affichée (ex "1 jour", "2 jours", "½ journée"). */
+  duration: string;
+  /** Durée numérique pour bloquer N jours consécutifs sur le calendrier
+      de réservation. ½ journée = 1 (un seul jour bloqué). */
+  durationDays: 1 | 2;
+  /** Prix résumé (ligne unique pour le KPI). Toujours rempli — pour les
+      formats à plusieurs tranches, c'est l'entrée de gamme. */
+  price: string;
+  /** Tranches de prix par effectif — affichées si > 1. Format Essentielle :
+      3 lignes (2-4 / 5-6 / 7-8). Si absent : prix unique = `price`. */
+  priceTiers?: ReadonlyArray<{ size: string; price: string }>;
+  /** Taille de groupe (ex "jusqu'à 10 personnes", "dès 2 personnes"). */
+  groupSize: string;
+  /** Format pratique (ex "Sur site · France & international"). */
+  format: string;
+  /** Audience visée — qui se reconnaîtra. */
+  audience: string;
+  /** 3 compétences acquises après — phrasées « Vos équipes sauront… ». */
+  outcomes: ReadonlyArray<string>;
+  /** Déroulement — 3 phases courtes pour le bloc listing. */
+  outline: ReadonlyArray<string>;
+  /** Texte du CTA dédié. */
+  ctaLabel: string;
+}
+
 interface InterventionContent {
   slug: InterventionSlug;
   pathFr: string;
   pathEn: string;
+  accent: InterventionAccent;
+  summary: { fr: InterventionSummary; en: InterventionSummary };
   fr: PageCopy;
   en: PageCopy;
 }
@@ -18,6 +54,10 @@ interface InterventionContent {
 interface PageCopy {
   eyebrow: string;
   title: string;
+  /** Portion italique terracotta du titre (signature v3 — alignée avec Section). */
+  titleEm?: string;
+  /** Suite du titre après titleEm (texte standard). */
+  titleTail?: string;
   /** AEO answer block, 40-80 words. */
   answer: string;
   priceEur?: number;
@@ -34,62 +74,573 @@ interface PageCopy {
   ctaBlockTitle: string;
   ctaBlockDescription: string;
   metaSeo: { title: string; description: string };
+  /** Timeline détaillée d'une journée d'intervention/formation (optionnel,
+      réservé au Module 1 Interventions). 1 ou 2 jours selon le format. */
+  daySchedule?: DaySchedule;
 }
+
+export interface DayScheduleItem {
+  /** "9 h 00", "10 h 30", "Pause", etc. */
+  time: string;
+  title: string;
+  description?: string;
+}
+
+export interface DaySchedule {
+  /** Titre de la section (ex "Déroulement de la journée"). */
+  title: string;
+  /** Intro courte (ex "Programme type adapté en début de journée selon le tour de table."). */
+  intro?: string;
+  /** Une entrée par jour. Pour les formats 1 jour, un seul élément. */
+  days: ReadonlyArray<{
+    /** Étiquette du jour (ex "Jour 1", "Jour 2", "½ journée"). Optionnel
+        si un seul jour est rendu (auto-masqué). */
+    label?: string;
+    items: ReadonlyArray<DayScheduleItem>;
+  }>;
+  /** Note logistique en bas — déplacement/logement, etc. */
+  logisticsNote?: string;
+}
+
+// ============================================================================
+// Source unique pour les 3 tranches Essentielle — utilisée par
+// `/interventions/essentielle/page.tsx` (cards CTAs) ET `BookingCalendar`
+// (sélecteur tier dans step 1). PAS de duplication.
+// ============================================================================
+
+export type EssentielleTier = "intimiste" | "standard" | "complete";
+
+export interface EssentielleTierDef {
+  id: EssentielleTier;
+  /** Libellé court (ex "Intimiste"). */
+  labelFr: string;
+  labelEn: string;
+  /** Effectif (ex "2 à 4 personnes"). */
+  sizeFr: string;
+  sizeEn: string;
+  /** Prix HT en euros. */
+  priceEur: number;
+  /** Mis en avant dans l'UI ("★ Recommandé"). */
+  isFeatured?: boolean;
+}
+
+export const ESSENTIELLE_TIERS: ReadonlyArray<EssentielleTierDef> = [
+  {
+    id: "intimiste",
+    labelFr: "Intimiste",
+    labelEn: "Intimate",
+    sizeFr: "2 à 4 personnes",
+    sizeEn: "2 to 4 people",
+    priceEur: 490,
+  },
+  {
+    id: "standard",
+    labelFr: "Standard",
+    labelEn: "Standard",
+    sizeFr: "5 à 6 personnes",
+    sizeEn: "5 to 6 people",
+    priceEur: 790,
+    isFeatured: true,
+  },
+  {
+    id: "complete",
+    labelFr: "Complète",
+    labelEn: "Complete",
+    sizeFr: "7 à 8 personnes",
+    sizeEn: "7 to 8 people",
+    priceEur: 1190,
+  },
+];
+
+// ============================================================================
+// Tunnel de réservation — UNIVERSEL pour les 5 formats. Identique partout :
+// 1) je réserve 2) call de cadrage 3) acompte 50% 4) journée 5) solde + frais.
+// ============================================================================
+
+export const RESERVATION_STEPS_FR: ReadonlyArray<{ title: string; description: string }> = [
+  {
+    title: "Je réserve sur le calendrier",
+    description:
+      "Choix d'un créneau disponible en temps réel sur le calendrier maison. Confirmation immédiate.",
+  },
+  {
+    title: "Call de cadrage",
+    description:
+      "Un appel court (15 à 30 min) pour valider le format choisi, l'effectif et les modalités pratiques.",
+  },
+  {
+    title: "Paiement 50 %",
+    description:
+      "Acompte de 50 % du prix de la formation — virement bancaire ou carte. Facture immédiate.",
+  },
+  {
+    title: "Déroulement de la formation",
+    description:
+      "Journée d'intervention sur site, programme type publié sur cette page. Rien de sur-mesure : ressources pédagogiques standardisées.",
+  },
+  {
+    title: "Solde + frais annexes",
+    description:
+      "Solde 50 % après l'intervention, accompagné des frais de déplacement, hébergement et repas — facturés au forfait journalier (pas de justificatifs à transmettre).",
+  },
+];
+
+export const RESERVATION_STEPS_EN: ReadonlyArray<{ title: string; description: string }> = [
+  {
+    title: "I book on the calendar",
+    description: "Pick an available slot on our live booking calendar. Instant confirmation.",
+  },
+  {
+    title: "Framing call",
+    description:
+      "A short call (15 to 30 min) to confirm the chosen format, headcount and practicalities.",
+  },
+  {
+    title: "50 % payment",
+    description:
+      "50 % deposit on the training fee — bank transfer or card. Invoice issued immediately.",
+  },
+  {
+    title: "Session day",
+    description:
+      "On-site session, standard programme published on this page. Nothing bespoke: standardised learning takeaways.",
+  },
+  {
+    title: "Balance + travel fees",
+    description:
+      "Remaining 50 % after the session, plus travel, lodging and meals — billed at a flat daily rate (no receipts to forward).",
+  },
+];
+
+const LEARNING_TITLE_FR = "Ce que vos équipes apprendront";
+const LEARNING_TITLE_EN = "What your team will learn";
+const RESERVATION_TITLE_FR = "Comment fonctionne une réservation";
+const RESERVATION_TITLE_EN = "How a booking works";
+
+// ============================================================================
+// Programmes types par format — STANDARDISÉS, identiques pour toutes les
+// entreprises. Pas de personnalisation = pas de document à produire entre
+// chaque mission. Will, 2026-05-07.
+// ============================================================================
+
+const LOGISTICS_NOTE_FR =
+  "Frais de déplacement (transport, hébergement, repas hors séance) pris en charge par le client, facturés au forfait journalier après l'intervention — pas de justificatifs à transmettre. Disponibilités confirmées sous 48 h ouvrées.";
+
+const LOGISTICS_NOTE_EN =
+  "Travel costs (transport, lodging, meals outside the session) covered by the client, billed at a flat daily rate after the session — no receipts to forward. Availability confirmed within 48 business hours.";
+
+export const EQUIPES_SCHEDULE_FR: DaySchedule = {
+  title: "Déroulement de la journée",
+  intro:
+    "Programme type d'une journée Équipes (9 h – 17 h). Identique pour toutes les entreprises : les ateliers s'adaptent aux profils métier présents, les ressources pédagogiques sont standardisées.",
+  days: [
+    {
+      items: [
+        { time: "9 h 00", title: "Accueil + tour de table par profil métier" },
+        {
+          time: "9 h 30",
+          title: "Panorama des outils IA pour leurs métiers",
+          description: "Choix du bon outil selon la tâche (rédaction, analyse, automatisations).",
+        },
+        { time: "10 h 30", title: "Pause café" },
+        {
+          time: "10 h 45",
+          title: "Atelier pratique 1 — par profil métier",
+          description: "Chaque participant manipule l'IA sur ses propres tâches récurrentes.",
+        },
+        { time: "12 h 00", title: "Pause déjeuner (12 h – 14 h)" },
+        {
+          time: "14 h 00",
+          title: "Atelier pratique 2 — sur tâches récurrentes",
+          description: "Approfondir : prompts efficaces, garde-fous, qualité de sortie.",
+        },
+        { time: "15 h 00", title: "Pause café" },
+        {
+          time: "15 h 15",
+          title: "Atelier 3 — automatisations métier au quotidien",
+          description: "Repérer les chaînes de tâches automatisables sans code.",
+        },
+        {
+          time: "16 h 30",
+          title: "Récap des usages applicables + ressources",
+          description: "Référentiel d'outils, prompts types, cas d'usage par métier.",
+        },
+        { time: "17 h 00", title: "Q&A ouverte + clôture" },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_FR,
+};
+
+export const EQUIPES_SCHEDULE_EN: DaySchedule = {
+  title: "Day-by-day breakdown",
+  intro:
+    "Standard programme for the Teams day (9 a.m. – 5 p.m.). Identical for every company: workshops adapt to the roles in the room, learning takeaways are standardised.",
+  days: [
+    {
+      items: [
+        { time: "9:00", title: "Welcome + round table by role" },
+        {
+          time: "9:30",
+          title: "AI tools panorama for their roles",
+          description: "Picking the right tool per task (writing, analysis, automations).",
+        },
+        { time: "10:30", title: "Coffee break" },
+        {
+          time: "10:45",
+          title: "Hands-on workshop 1 — by role",
+          description: "Each participant practices AI on their own recurring tasks.",
+        },
+        { time: "12:00", title: "Lunch break (12:00 – 14:00)" },
+        {
+          time: "14:00",
+          title: "Hands-on workshop 2 — on recurring tasks",
+          description: "Going deeper: effective prompts, guardrails, output quality.",
+        },
+        { time: "15:00", title: "Coffee break" },
+        {
+          time: "15:15",
+          title: "Workshop 3 — day-to-day domain automations",
+          description: "Spotting no-code automation chains.",
+        },
+        {
+          time: "16:30",
+          title: "Use-case recap + takeaways",
+          description: "Tool reference sheet, prompt templates, use cases by role.",
+        },
+        { time: "17:00", title: "Open Q&A + close" },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_EN,
+};
+
+export const MANAGERS_SCHEDULE_FR: DaySchedule = {
+  title: "Déroulement de la journée",
+  intro:
+    "Programme type d'une journée Managers (9 h – 17 h). Identique pour toutes les entreprises : centré sur les usages IA managériaux (réunions, reporting, validations, délégation).",
+  days: [
+    {
+      items: [
+        { time: "9 h 00", title: "Accueil + objectifs managériaux" },
+        {
+          time: "9 h 30",
+          title: "Panorama IA pour managers",
+          description:
+            "Réunions, reporting, validations, délégation : où l'IA fait gagner du temps.",
+        },
+        { time: "10 h 30", title: "Pause café" },
+        {
+          time: "10 h 45",
+          title: "Atelier 1 — Comptes-rendus et synthèses assistés",
+          description: "Du verbatim au compte-rendu en 5 minutes.",
+        },
+        { time: "12 h 00", title: "Pause déjeuner (12 h – 14 h)" },
+        {
+          time: "14 h 00",
+          title: "Atelier 2 — Reporting et tableaux de bord",
+          description: "Synthèses récurrentes, lecture de chiffres, alertes utiles.",
+        },
+        { time: "15 h 00", title: "Pause café" },
+        {
+          time: "15 h 15",
+          title: "Atelier 3 — Validations et délégation",
+          description: "Cadrage de demandes, suivi des engagements, gestion des relances.",
+        },
+        {
+          time: "16 h 30",
+          title: "Récap boîte à outils managériale + ressources",
+        },
+        { time: "17 h 00", title: "Q&A ouverte + clôture" },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_FR,
+};
+
+export const MANAGERS_SCHEDULE_EN: DaySchedule = {
+  title: "Day-by-day breakdown",
+  intro:
+    "Standard programme for the Managers day (9 a.m. – 5 p.m.). Identical for every company: centred on manager-grade AI uses (meetings, reporting, sign-offs, delegation).",
+  days: [
+    {
+      items: [
+        { time: "9:00", title: "Welcome + manager objectives" },
+        {
+          time: "9:30",
+          title: "AI panorama for managers",
+          description: "Meetings, reporting, sign-offs, delegation: where AI saves time.",
+        },
+        { time: "10:30", title: "Coffee break" },
+        {
+          time: "10:45",
+          title: "Workshop 1 — Assisted minutes & summaries",
+          description: "From verbatim to clean minutes in 5 minutes.",
+        },
+        { time: "12:00", title: "Lunch break (12:00 – 14:00)" },
+        {
+          time: "14:00",
+          title: "Workshop 2 — Reporting & dashboards",
+          description: "Recurring summaries, reading numbers, useful alerts.",
+        },
+        { time: "15:00", title: "Coffee break" },
+        {
+          time: "15:15",
+          title: "Workshop 3 — Sign-offs & delegation",
+          description: "Framing requests, tracking commitments, follow-ups.",
+        },
+        {
+          time: "16:30",
+          title: "Manager toolbox recap + takeaways",
+        },
+        { time: "17:00", title: "Open Q&A + close" },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_EN,
+};
+
+export const CONFERENCE_SCHEDULE_FR: DaySchedule = {
+  title: "Déroulement de la conférence",
+  intro:
+    "Programme type d'une ½ journée conférence (3 h). Format collectif standardisé pour mettre tous vos collaborateurs au même niveau, indépendamment de leur métier.",
+  days: [
+    {
+      items: [
+        { time: "14 h 00", title: "Accueil + cadrage des thèmes" },
+        {
+          time: "14 h 15",
+          title: "Conférence — panorama IA opérationnelle 2026",
+          description: "1 h 30 · outils principaux + démos live + idées d'usages par secteur.",
+        },
+        { time: "15 h 45", title: "Pause" },
+        {
+          time: "16 h 00",
+          title: "Q&A ouverte",
+          description: "1 h pour confronter l'IA aux réalités terrain de vos équipes.",
+        },
+        {
+          time: "17 h 00",
+          title: "Ressources pédagogiques fournies + clôture",
+        },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_FR,
+};
+
+export const CONFERENCE_SCHEDULE_EN: DaySchedule = {
+  title: "Conference breakdown",
+  intro:
+    "Standard programme for the half-day talk (3 h). Standardised collective format to bring everyone in your company to the same level, regardless of their role.",
+  days: [
+    {
+      items: [
+        { time: "14:00", title: "Welcome + theme framing" },
+        {
+          time: "14:15",
+          title: "Talk — 2026 operational AI panorama",
+          description: "1 h 30 · main tools + live demos + use-case ideas by sector.",
+        },
+        { time: "15:45", title: "Break" },
+        {
+          time: "16:00",
+          title: "Open Q&A",
+          description: "1 hour to confront AI with your teams' field realities.",
+        },
+        {
+          time: "17:00",
+          title: "Learning takeaways shared + close",
+        },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_EN,
+};
+
+export const DIRIGEANTS_SCHEDULE_FR: DaySchedule = {
+  title: "Déroulement de la journée",
+  intro:
+    "Programme type d'une journée Dirigeants (9 h – 17 h). Identique pour toutes les entreprises : panorama, ateliers de positionnement, référentiel d'arbitrage IA pour vos décisions futures.",
+  days: [
+    {
+      items: [
+        { time: "9 h 00", title: "Accueil + tour de table CODIR" },
+        {
+          time: "9 h 30",
+          title: "Panorama IA 2026 — opportunités, risques, marché",
+          description: "État de l'art, où en sont les concurrents, ce qui marche vraiment.",
+        },
+        { time: "11 h 00", title: "Pause café" },
+        {
+          time: "11 h 15",
+          title: "Atelier 1 — Positionnement de votre entreprise",
+          description: "Échelle de maturité IA 2026 appliquée à votre contexte.",
+        },
+        { time: "12 h 00", title: "Déjeuner CODIR (12 h – 14 h)" },
+        {
+          time: "14 h 00",
+          title: "Atelier 2 — Cas d'usage prioritaires par fonction",
+          description: "Quels usages testent les ETI/grandes entreprises de votre secteur.",
+        },
+        { time: "15 h 30", title: "Pause" },
+        {
+          time: "15 h 45",
+          title: "Atelier 3 — Référentiel d'arbitrage des décisions IA",
+          description: "Grille de lecture pour évaluer vos prochains choix IA en interne.",
+        },
+        {
+          time: "17 h 00",
+          title: "Synthèse + ressources pédagogiques + clôture",
+          description: "Référentiel CODIR, cas d'usage, lectures recommandées.",
+        },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_FR,
+};
+
+export const DIRIGEANTS_SCHEDULE_EN: DaySchedule = {
+  title: "Day-by-day breakdown",
+  intro:
+    "Standard programme for the Executives day (9 a.m. – 5 p.m.). Identical for every company: panorama, positioning workshops, AI decision framework for your future calls.",
+  days: [
+    {
+      items: [
+        { time: "9:00", title: "Welcome + leadership round table" },
+        {
+          time: "9:30",
+          title: "2026 AI panorama — opportunities, risks, market",
+          description: "State of the art, where competitors stand, what really works.",
+        },
+        { time: "11:00", title: "Coffee break" },
+        {
+          time: "11:15",
+          title: "Workshop 1 — Position your company",
+          description: "2026 AI maturity scale applied to your context.",
+        },
+        { time: "12:00", title: "Leadership lunch (12:00 – 14:00)" },
+        {
+          time: "14:00",
+          title: "Workshop 2 — Priority use cases by function",
+          description: "What mid-market and enterprise peers in your sector are testing.",
+        },
+        { time: "15:30", title: "Break" },
+        {
+          time: "15:45",
+          title: "Workshop 3 — AI decision framework",
+          description: "Reading grid to assess your next internal AI choices.",
+        },
+        {
+          time: "17:00",
+          title: "Synthesis + takeaways + close",
+          description: "Leadership reference sheet, use cases, recommended reading.",
+        },
+      ],
+    },
+  ],
+  logisticsNote: LOGISTICS_NOTE_EN,
+};
 
 export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
   {
     slug: "essentielle",
     pathFr: "/interventions/essentielle",
     pathEn: "/interventions/essential",
+    accent: "terracotta",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'automatisations pour gagner du temps dès le lendemain. Une journée de formation, pas de plan sur-mesure, des ressources prêtes à utiliser.",
+        duration: "1 journée sur site (9 h – 17 h)",
+        durationDays: 1,
+        price: "à partir de 490 € HT",
+        priceTiers: [
+          { size: "2 à 4 personnes", price: "490 € HT" },
+          { size: "5 à 6 personnes", price: "790 € HT" },
+          { size: "7 à 8 personnes", price: "1 190 € HT" },
+        ],
+        groupSize: "2 à 8 personnes",
+        format: "Sur site · France & international",
+        audience: "TPE / PME / Grandes entreprises · sans pré-requis IA",
+        outcomes: [
+          "Vos équipes connaissent les principaux outils IA (ChatGPT, Claude, Copilot…) et savent quand s'en servir",
+          "Elles identifient 5 à 10 usages concrets sur leurs tâches : rédaction, recherche, synthèse, analyse",
+          "Elles repartent avec des idées d'automatisations applicables immédiatement à leur métier",
+        ],
+        outline: [
+          "Call de prise de contact (15 min visio) pour valider le format",
+          "Jour J · découverte des outils + ateliers pratiques + démos",
+          "Ressources pédagogiques fournies en fin de journée (référentiel + cas d'usage)",
+        ],
+        ctaLabel: "Découvrir l'Essentielle",
+      },
+      en: {
+        benefitTagline:
+          "Discover AI applied to your day-to-day — tools, concrete uses, automation ideas to save time from day two. A one-day training, no bespoke roadmap, ready-to-use takeaways.",
+        duration: "1 day on site (9 a.m. – 5 p.m.)",
+        durationDays: 1,
+        price: "from €490 (excl. VAT)",
+        priceTiers: [
+          { size: "2 to 4 people", price: "€490 excl. VAT" },
+          { size: "5 to 6 people", price: "€790 excl. VAT" },
+          { size: "7 to 8 people", price: "€1,190 excl. VAT" },
+        ],
+        groupSize: "2 to 8 people",
+        format: "On site · France & international",
+        audience: "Small / mid-market / enterprise · no AI prerequisites",
+        outcomes: [
+          "Your team knows the main AI tools (ChatGPT, Claude, Copilot…) and when to use them",
+          "They identify 5 to 10 concrete uses on their tasks: writing, research, synthesis, analysis",
+          "They leave with automation ideas they can apply to their domain right away",
+        ],
+        outline: [
+          "Intro call (15-min video) to confirm the format",
+          "Day · tool discovery + hands-on workshops + live demos",
+          "Learning takeaways shared at end of day (reference sheet + use cases)",
+        ],
+        ctaLabel: "Discover the Essential",
+      },
+    },
     fr: {
       eyebrow: "Offre phare · Module 1",
-      title: "L'intervention IA Essentielle",
+      title: "L'intervention IA",
+      titleEm: "Essentielle",
       answer:
-        "Une journée d'intervention sur site avec votre équipe : diagnostic, démonstrations IA appliquées à votre métier, plan d'action chiffré pour les 90 jours suivants. Livrable : feuille de route + 3 quick-wins implémentables dès le lendemain. Tous secteurs, tous niveaux, à partir de 490 € HT.",
+        "Une journée de formation IA sur site avec votre équipe (2 à 8 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'automatisations applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux, à partir de 490 € HT.",
       priceEur: 490,
       ctaPrimary: "Réserver une intervention",
       ctaSecondary: "Voir les cas concrets",
-      benefitsTitle: "Ce que vous obtenez",
+      benefitsTitle: LEARNING_TITLE_FR,
       benefits: [
         {
-          title: "Plan d'action chiffré 90 jours",
+          title: "Maîtrise des outils IA principaux",
           description:
-            "Liste priorisée d'usages IA pour votre entreprise, avec ROI estimé et complexité.",
+            "ChatGPT, Claude, Copilot, Gemini : à quoi ils servent vraiment, quand les choisir, comment les utiliser au quotidien.",
         },
         {
-          title: "3 quick-wins opérationnels",
+          title: "5 à 10 usages concrets identifiés",
           description:
-            "Démonstrations live sur vos données réelles, prêtes à reprendre dès le lendemain.",
+            "Rédaction, recherche, synthèse, analyse — appliqués aux tâches réelles de chaque participant.",
         },
         {
-          title: "30 jours de support",
-          description: "Échanges asynchrones illimités pour itérer sur les premiers déploiements.",
+          title: "Idées d'automatisations applicables",
+          description:
+            "Repérer où l'IA peut faire gagner du temps dès le lendemain, sans code et sans projet lourd.",
+        },
+        {
+          title: "Gain de temps immédiat & productivité",
+          description:
+            "Vos équipes ressortent avec des outils opérationnels qui font économiser plusieurs heures par semaine — productivité mesurable dès le retour au bureau, sans phase de transition.",
         },
       ],
-      processTitle: "Comment ça se déroule",
-      processSteps: [
-        {
-          title: "Préparation",
-          description: "Brief de 30 min en visio J-7. Vous nous transmettez 3 process cibles.",
-        },
-        {
-          title: "Jour J · matin",
-          description: "Diagnostic + démo IA appliquée à votre métier sur vos données.",
-        },
-        {
-          title: "Jour J · après-midi",
-          description: "Co-construction du plan d'action 90 jours avec votre équipe.",
-        },
-        {
-          title: "Suivi 30 j",
-          description: "Support asynchrone + check-in à J+30 pour valider l'avancement.",
-        },
-      ],
+      processTitle: RESERVATION_TITLE_FR,
+      processSteps: RESERVATION_STEPS_FR,
       metricsTitle: "Résultats observés",
       metrics: [
-        { number: "+38", suffix: "%", label: "ROI moyen sur 90 jours" },
+        { number: "+38", suffix: "%", label: "Productivité moyenne après formation" },
         { number: "2.4", suffix: "h/jour", label: "Temps gagné par collaborateur" },
-        { number: "11", suffix: "cas", label: "Études concrètes publiées" },
+        { number: "4.9", suffix: "/5", label: "Satisfaction participants" },
       ],
       faqTitle: "Questions fréquentes",
       faqs: [
@@ -97,7 +648,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "duration",
           question: "Quelle est la durée de l'intervention ?",
           answer:
-            "Une journée complète sur site (9 h - 17 h), brief inclus J-7 (30 min visio) et suivi 30 j inclus.",
+            "Une journée complète sur site (9 h - 17 h), précédée d'un call de cadrage de 15 min en visio.",
         },
         {
           id: "audience",
@@ -115,7 +666,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "deliverables",
           question: "Que reste-t-il après ?",
           answer:
-            "Un plan d'action chiffré + 3 démos prêtes à reprendre + 30 jours de support pour itérer.",
+            "Une boîte à outils standardisée : référentiel d'outils IA, prompts types, cas d'usage par métier — fournis en fin de journée et utilisables immédiatement.",
         },
       ],
       ctaBlockTitle: "Prête à démarrer concrètement avec l'IA ?",
@@ -124,58 +675,99 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       metaSeo: {
         title: "Intervention IA Essentielle · cabinet AxionIA · 490 € HT",
         description:
-          "Une journée d'intervention IA sur site : diagnostic, 3 démos opérationnelles, plan 90 jours chiffré + 30 j de support. Tous secteurs, tous niveaux.",
+          "Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'automatisations. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, dès 490 € HT.",
+      },
+      daySchedule: {
+        title: "Déroulement de la journée",
+        intro:
+          "Programme type d'une journée Essentielle (9 h – 17 h). Identique pour toutes les entreprises : pas de document sur-mesure, des ressources pédagogiques standardisées remises en fin de journée.",
+        days: [
+          {
+            items: [
+              { time: "9 h 00", title: "Accueil + tour de table + objectifs" },
+              {
+                time: "9 h 30",
+                title: "Découverte des outils IA principaux",
+                description:
+                  "ChatGPT, Claude, Copilot, Gemini : à quoi ils servent vraiment et quand les choisir.",
+              },
+              { time: "10 h 30", title: "Pause café" },
+              {
+                time: "10 h 45",
+                title: "Atelier 1 — Rédaction & communication assistées",
+                description: "Mails, comptes-rendus, supports : prompts efficaces, garde-fous.",
+              },
+              { time: "12 h 00", title: "Pause déjeuner (12 h – 14 h)" },
+              {
+                time: "14 h 00",
+                title: "Atelier 2 — Recherche, analyse & synthèse",
+                description: "Veille, extraction, traitement de documents et de données.",
+              },
+              { time: "15 h 00", title: "Pause café" },
+              {
+                time: "15 h 15",
+                title: "Atelier 3 — Idées d'automatisations sur leurs outils",
+                description:
+                  "Repérer les tâches répétitives et imaginer comment l'IA peut faire gagner du temps.",
+              },
+              {
+                time: "16 h 30",
+                title: "Récap des usages + ressources fournies",
+                description: "Référentiel des outils, prompts types, cas d'usage par métier.",
+              },
+              { time: "17 h 00", title: "Q&A ouverte + clôture" },
+            ],
+          },
+        ],
+        logisticsNote: LOGISTICS_NOTE_FR,
       },
     },
     en: {
       eyebrow: "Flagship offering · Module 1",
-      title: "The Essential AI session",
+      title: "The",
+      titleEm: "Essential",
+      titleTail: " AI session",
       answer:
-        "A one-day on-site session with your team: diagnostic, applied AI demos on your domain, costed 90-day action plan. Deliverable: roadmap + 3 quick-wins your team can pick up on day two. All industries, all levels, from €490 (excl. VAT).",
+        "A one-day on-site AI training with your team (2 to 8 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply automation ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels, from €490 (excl. VAT).",
       priceEur: 490,
       ctaPrimary: "Book a session",
       ctaSecondary: "See case studies",
-      benefitsTitle: "What you get",
+      benefitsTitle: LEARNING_TITLE_EN,
       benefits: [
         {
-          title: "Costed 90-day plan",
-          description: "Prioritized AI use cases with estimated ROI and complexity.",
+          title: "Mastery of the main AI tools",
+          description:
+            "ChatGPT, Claude, Copilot, Gemini: what they really do, when to pick each, and how to use them day to day.",
         },
         {
-          title: "3 operational quick-wins",
-          description: "Live demos on your real data, ready to resume the next day.",
+          title: "5 to 10 concrete uses identified",
+          description:
+            "Writing, research, synthesis, analysis — applied to each participant's real tasks.",
         },
         {
-          title: "30 days of support",
-          description: "Unlimited async exchanges to iterate on first deployments.",
+          title: "Ready-to-apply automation ideas",
+          description: "Spot where AI can save time the very next day, no code, no heavy project.",
+        },
+        {
+          title: "Immediate time savings & productivity",
+          description:
+            "Your team leaves with operational tools that save several hours per week — measurable productivity from day one back at the office, with no transition phase.",
         },
       ],
-      processTitle: "How it runs",
-      processSteps: [
-        { title: "Prep", description: "30-min remote brief at D-7. Share 3 target processes." },
-        { title: "Day · morning", description: "Diagnostic + applied AI demo on your data." },
-        {
-          title: "Day · afternoon",
-          description: "Co-build the 90-day action plan with your team.",
-        },
-        {
-          title: "30-day follow-up",
-          description: "Async support + D+30 check-in to validate progress.",
-        },
-      ],
+      processTitle: RESERVATION_TITLE_EN,
+      processSteps: RESERVATION_STEPS_EN,
       metricsTitle: "Observed results",
       metrics: [
-        { number: "+38", suffix: "%", label: "Average 90-day ROI" },
+        { number: "+38", suffix: "%", label: "Average productivity after training" },
         { number: "2.4", suffix: "h/day", label: "Time saved per employee" },
-        { number: "11", suffix: "cases", label: "Published case studies" },
+        { number: "4.9", suffix: "/5", label: "Participant satisfaction" },
       ],
       faqTitle: "Frequently asked",
       faqs: [
         {
           id: "duration",
           question: "How long is the session?",
-          answer:
-            "A full day on site (9 a.m. - 5 p.m.), including a 30-min remote brief at D-7 and a 30-day follow-up.",
+          answer: "A full day on site (9 a.m. - 5 p.m.), preceded by a 15-min framing call.",
         },
         {
           id: "audience",
@@ -192,7 +784,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "deliverables",
           question: "What remains afterwards?",
           answer:
-            "A costed action plan + 3 demos ready to resume + 30 days of support for iteration.",
+            "A standardised toolbox: AI tool reference, prompt templates, use cases by role — handed over at end of day and usable immediately.",
         },
       ],
       ctaBlockTitle: "Ready to start concretely with AI?",
@@ -201,7 +793,50 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       metaSeo: {
         title: "Essential AI session · AxionIA consultancy · €490 (excl. VAT)",
         description:
-          "A one-day on-site AI session: diagnostic, 3 operational demos, costed 90-day plan + 30 days of support. All industries, all levels.",
+          "A one-day on-site AI training (2 to 8 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, from €490 (excl. VAT).",
+      },
+      daySchedule: {
+        title: "Day-by-day breakdown",
+        intro:
+          "Standard programme for the Essential day (9 a.m. – 5 p.m.). Identical for every company: no bespoke document, standardised learning takeaways shared at end of day.",
+        days: [
+          {
+            items: [
+              { time: "9:00", title: "Welcome + round table + objectives" },
+              {
+                time: "9:30",
+                title: "Discovery of the main AI tools",
+                description:
+                  "ChatGPT, Claude, Copilot, Gemini: what they really do and when to pick each.",
+              },
+              { time: "10:30", title: "Coffee break" },
+              {
+                time: "10:45",
+                title: "Workshop 1 — AI-assisted writing & communication",
+                description: "Emails, minutes, decks: effective prompts, guardrails.",
+              },
+              { time: "12:00", title: "Lunch break (12:00 – 14:00)" },
+              {
+                time: "14:00",
+                title: "Workshop 2 — Research, analysis & synthesis",
+                description: "Watch, extraction, document and data processing.",
+              },
+              { time: "15:00", title: "Coffee break" },
+              {
+                time: "15:15",
+                title: "Workshop 3 — Automation ideas on their own tools",
+                description: "Spotting repetitive tasks and imagining where AI saves time.",
+              },
+              {
+                time: "16:30",
+                title: "Use-case recap + takeaways shared",
+                description: "Tool reference sheet, prompt templates, use cases by role.",
+              },
+              { time: "17:00", title: "Open Q&A + close" },
+            ],
+          },
+        ],
+        logisticsNote: LOGISTICS_NOTE_EN,
       },
     },
   },
@@ -209,85 +844,297 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     slug: "equipes",
     pathFr: "/interventions/equipes",
     pathEn: "/interventions/teams",
-    fr: makeFr({
-      eyebrow: "Cible : équipes & salariés (11+)",
-      title: "Vos équipes gagnent 1h par jour",
-      answer:
-        "Une journée d'intervention dédiée aux équipes opérationnelles (11+ collaborateurs). Cas d'usage IA concrets, ateliers pratiques, plan d'adoption progressif. À l'issue, chaque participant repart avec 3 outils déployés sur son poste.",
-      ctaPrimary: "Demander un devis équipes",
-      faqIntro: "équipes",
-    }),
-    en: makeEn({
-      eyebrow: "Audience: teams & staff (11+)",
-      title: "Your teams save 1h a day",
-      answer:
-        "A one-day session dedicated to operational teams (11+ members). Concrete AI use cases, hands-on workshops, gradual adoption plan. By the end, each participant leaves with 3 tools deployed on their workstation.",
-      ctaPrimary: "Request a team quote",
-      faqIntro: "teams",
-    }),
+    accent: "primary",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Approfondir l'IA en équipe — pratiquer les outils sur leurs propres tâches, faire gagner concrètement du temps. Formation standardisée, ressources fournies, aucun document sur-mesure.",
+        duration: "1 journée sur site",
+        durationDays: 1,
+        price: "Sur devis · réponse sous 48 h",
+        groupSize: "11 personnes et plus",
+        format: "Sur site · France & international",
+        audience: "PME, ETI, grandes entreprises · équipes opérationnelles 11+",
+        outcomes: [
+          "Chaque collaborateur sait utiliser 5 à 10 outils IA pertinents pour son métier",
+          "L'équipe identifie 10+ usages IA concrets sur ses tâches récurrentes",
+          "Elle gagne en autonomie pour automatiser ses propres petits process au quotidien",
+        ],
+        outline: [
+          "Call de prise de contact (20 min visio) pour valider effectif et format",
+          "Jour J · ateliers pratiques par profil métier + démos live",
+          "Ressources pédagogiques fournies en fin de journée (référentiel + cas d'usage)",
+        ],
+        ctaLabel: "Voir l'intervention équipes",
+      },
+      en: {
+        benefitTagline:
+          "Go deeper with AI as a team — practice tools on real tasks, save tangible time daily. Standardised training, takeaways provided, no bespoke documents.",
+        duration: "1 day on site",
+        durationDays: 1,
+        price: "On request · reply within 48 hours",
+        groupSize: "11 people and more",
+        format: "On site · France & international",
+        audience: "SMEs, mid-market, enterprise · operational teams 11+",
+        outcomes: [
+          "Each participant can confidently use 5 to 10 AI tools relevant to their domain",
+          "The team identifies 10+ concrete AI uses on its recurring tasks",
+          "They gain autonomy to automate their own small processes day to day",
+        ],
+        outline: [
+          "Intro call (20-min video) to confirm headcount and format",
+          "Day · domain workshops by role + live demos",
+          "Learning takeaways shared at end of day (reference sheet + use cases)",
+        ],
+        ctaLabel: "See the team session",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Cible : équipes & salariés (11+)",
+        title: "Vos équipes gagnent",
+        titleEm: "1 h par jour",
+        answer:
+          "Une journée d'intervention dédiée aux équipes opérationnelles (11+ collaborateurs). Cas d'usage IA concrets, ateliers pratiques par profil métier. À l'issue, chaque participant repart avec une boîte à outils prête à utiliser et des idées d'automatisations applicables au quotidien.",
+        ctaPrimary: "Demander un devis équipes",
+        faqIntro: "équipes",
+      }),
+      daySchedule: EQUIPES_SCHEDULE_FR,
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Audience: teams & staff (11+)",
+        title: "Your teams save",
+        titleEm: "1 hour a day",
+        answer:
+          "A one-day session dedicated to operational teams (11+ members). Concrete AI use cases, hands-on workshops by role. By the end, each participant leaves with a ready-to-use toolbox and automation ideas they can apply day to day.",
+        ctaPrimary: "Request a team quote",
+        faqIntro: "teams",
+      }),
+      daySchedule: EQUIPES_SCHEDULE_EN,
+    },
   },
   {
     slug: "managers",
     pathFr: "/interventions/managers",
     pathEn: "/interventions/managers",
-    fr: makeFr({
-      eyebrow: "Cible : managers",
-      title: "Réduire vos coûts cachés",
-      answer:
-        "Une journée pour managers : identifier les coûts cachés (réunions, reporting, validations) et y substituer des automatismes IA. Plan d'action chiffré centré sur le ROI managérial. Mesure d'impact à 90 jours.",
-      ctaPrimary: "Réserver l'intervention managers",
-      faqIntro: "managers",
-    }),
-    en: makeEn({
-      eyebrow: "Audience: managers",
-      title: "Cut your hidden costs",
-      answer:
-        "A manager-focused day: identify hidden costs (meetings, reporting, sign-offs) and replace them with AI automations. ROI-driven, costed action plan. 90-day impact tracking.",
-      ctaPrimary: "Book the manager session",
-      faqIntro: "managers",
-    }),
+    accent: "sage",
+    summary: {
+      fr: {
+        benefitTagline:
+          "L'IA pour managers — préparer ses réunions, gagner du temps sur le reporting, fluidifier les validations. Formation standardisée, des outils prêts à utiliser au retour au bureau.",
+        duration: "1 journée sur site",
+        durationDays: 1,
+        price: "Sur devis · réponse sous 48 h",
+        groupSize: "dès 2 managers · jusqu'à 12",
+        format: "Sur site · France & international (remote possible)",
+        audience: "Managers de PME, ETI, grandes entreprises · tous secteurs",
+        outcomes: [
+          "Vos managers savent utiliser l'IA pour leurs comptes-rendus, reporting, synthèses",
+          "Ils identifient les usages IA qui vont faire gagner du temps à leur équipe",
+          "Ils repartent avec une boîte à outils IA prête à utiliser dès le lendemain",
+        ],
+        outline: [
+          "Call de prise de contact (20 min visio) pour valider le format",
+          "Jour J · ateliers managers : réunions, reporting, validations + démos",
+          "Ressources pédagogiques fournies (référentiel + boîte à outils)",
+        ],
+        ctaLabel: "Voir l'intervention managers",
+      },
+      en: {
+        benefitTagline:
+          "AI for managers — prep your meetings, save time on reporting, smooth out sign-offs. Standardised training, ready-to-use takeaways for the next day at the office.",
+        duration: "1 day on site",
+        durationDays: 1,
+        price: "On request · reply within 48 hours",
+        groupSize: "from 2 managers · up to 12",
+        format: "On site · France & international (remote possible)",
+        audience: "SME / mid-market / enterprise managers · all sectors",
+        outcomes: [
+          "Your managers can use AI for minutes, reporting, summaries",
+          "They identify AI uses that will save their team time",
+          "They leave with a ready-to-use AI toolbox for the very next day",
+        ],
+        outline: [
+          "Intro call (20-min video) to confirm the format",
+          "Day · manager-grade workshops: meetings, reporting, sign-offs + demos",
+          "Learning takeaways shared (reference sheet + toolbox)",
+        ],
+        ctaLabel: "See the manager session",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Cible : managers",
+        title: "Réduire vos",
+        titleEm: "coûts cachés",
+        answer:
+          "Une journée pour managers : identifier les coûts cachés (réunions, reporting, validations) et y substituer l'IA appliquée. Boîte à outils managériale standardisée, prête à utiliser dès le retour au bureau.",
+        ctaPrimary: "Réserver l'intervention managers",
+        faqIntro: "managers",
+      }),
+      daySchedule: MANAGERS_SCHEDULE_FR,
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Audience: managers",
+        title: "Cut your",
+        titleEm: "hidden costs",
+        answer:
+          "A manager-focused day: identify hidden costs (meetings, reporting, sign-offs) and replace them with applied AI. Standardised manager toolbox, ready to use back at the office.",
+        ctaPrimary: "Book the manager session",
+        faqIntro: "managers",
+      }),
+      daySchedule: MANAGERS_SCHEDULE_EN,
+    },
   },
   {
     slug: "conference",
     pathFr: "/interventions/conference",
     pathEn: "/interventions/conference",
-    fr: makeFr({
-      eyebrow: "Format : ½ journée conférence",
-      title: "Ce que l'IA peut faire pour VOUS",
-      answer:
-        "Conférence d'1/2 journée tous niveaux : panorama clair des usages IA réellement opérationnels en 2026, démos live, sessions Q&A. Format pensé pour acculturer rapidement un grand groupe (jusqu'à 100 personnes).",
-      ctaPrimary: "Demander un devis conférence",
-      faqIntro: "conférence",
-    }),
-    en: makeEn({
-      eyebrow: "Format: half-day talk",
-      title: "What AI can do for YOU",
-      answer:
-        "A half-day talk for all levels: clear panorama of AI uses actually operational in 2026, live demos, Q&A. Designed to quickly upskill a large group (up to 100 attendees).",
-      ctaPrimary: "Request a talk quote",
-      faqIntro: "talk",
-    }),
+    accent: "terracotta",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Sensibiliser toute l'entreprise à l'IA en ½ journée — panorama 2026, démos live, idées d'usages, Q&A. Format collectif standardisé, le moyen le plus rapide de mettre tout le monde au même niveau.",
+        duration: "½ journée (3 h)",
+        durationDays: 1,
+        price: "Sur devis · réponse sous 48 h",
+        groupSize: "Format collectif · effectif libre",
+        format: "Présentiel ou remote · France & international",
+        audience: "Format collectif · TPE → grandes entreprises · tous niveaux",
+        outcomes: [
+          "Vos collaborateurs comprennent ce que l'IA peut vraiment faire en 2026",
+          "Ils repartent avec une liste de 5 à 10 usages IA applicables dès le lendemain",
+          "Ils osent expérimenter — la peur de l'IA cède à l'envie d'essayer",
+        ],
+        outline: [
+          "Call de prise de contact (15 min visio) pour valider thèmes et démos",
+          "Jour J · 1 h 30 conférence + démos live + 1 h Q&A ouverte",
+          "Ressources pédagogiques fournies en fin de session (référentiel + cas d'usage)",
+        ],
+        ctaLabel: "Demander un devis conférence",
+      },
+      en: {
+        benefitTagline:
+          "Upskill your whole company to AI in half a day — 2026 panorama, live demos, use ideas, Q&A. Standardised collective format, the fastest way to bring everyone to the same level.",
+        duration: "Half day (3 hours)",
+        durationDays: 1,
+        price: "On request · reply within 48 hours",
+        groupSize: "Collective format · open headcount",
+        format: "On site or remote · France & international",
+        audience: "Collective format · small to enterprise · all levels",
+        outcomes: [
+          "Your people understand what AI can really do in 2026",
+          "They leave with 5 to 10 ready-to-try uses for the next day",
+          "They dare to experiment — fear gives way to curiosity",
+        ],
+        outline: [
+          "Intro call (15-min video) to confirm themes and demos",
+          "Day · 1 h 30 talk + live demos + open 1-hour Q&A",
+          "Learning takeaways shared at end of session (reference sheet + use cases)",
+        ],
+        ctaLabel: "Request a talk quote",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Format : ½ journée conférence",
+        title: "Ce que l'IA peut faire",
+        titleEm: "pour vous",
+        answer:
+          "Conférence d'1/2 journée tous niveaux : panorama clair des usages IA réellement opérationnels en 2026, démos live, sessions Q&A. Format collectif standardisé pour acculturer rapidement un grand groupe.",
+        ctaPrimary: "Demander un devis conférence",
+        faqIntro: "conférence",
+      }),
+      daySchedule: CONFERENCE_SCHEDULE_FR,
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Format: half-day talk",
+        title: "What AI can do",
+        titleEm: "for you",
+        answer:
+          "A half-day talk for all levels: clear panorama of AI uses actually operational in 2026, live demos, Q&A. Standardised collective format to quickly upskill a large group.",
+        ctaPrimary: "Request a talk quote",
+        faqIntro: "talk",
+      }),
+      daySchedule: CONFERENCE_SCHEDULE_EN,
+    },
   },
   {
     slug: "dirigeants",
     pathFr: "/interventions/dirigeants",
     pathEn: "/interventions/executives",
-    fr: makeFr({
-      eyebrow: "Cible : dirigeants & CODIR",
-      title: "Devenir une entreprise IA",
-      answer:
-        "Une journée stratégique pour dirigeants et comité de direction : positionnement IA de l'entreprise, choix d'investissements à 12-24 mois, gouvernance, gestion des risques. Plan stratégique chiffré, validé en séance.",
-      ctaPrimary: "Réserver l'intervention CODIR",
-      faqIntro: "dirigeants",
-    }),
-    en: makeEn({
-      eyebrow: "Audience: executives & CODIR",
-      title: "Becoming an AI company",
-      answer:
-        "A strategic day for executives and the leadership committee: AI positioning, 12-24 month investment choices, governance, risk management. Costed strategic plan, validated in session.",
-      ctaPrimary: "Book the executive session",
-      faqIntro: "executives",
-    }),
+    accent: "mocha",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Comprendre l'IA en tant que dirigeant — opportunités, risques, état du marché 2026. Une journée pour situer son entreprise et éclairer ses choix. Formation standardisée, ressources fournies.",
+        duration: "1 journée sur site",
+        durationDays: 1,
+        price: "Sur devis · réponse sous 48 h",
+        groupSize: "CODIR · dès 2 dirigeants",
+        format: "Sur site dirigeant · France & international",
+        audience: "Dirigeants, CODIR, COMEX · TPE, PME, ETI, grandes entreprises",
+        outcomes: [
+          "Vous avez une vision claire de ce que l'IA permet vraiment en 2026",
+          "Vous identifiez les usages IA prioritaires pour votre entreprise",
+          "Vous repartez avec un référentiel d'arbitrage personnel pour vos décisions IA",
+        ],
+        outline: [
+          "Call de prise de contact (30 min visio) pour valider le format",
+          "Jour J · panorama IA 2026 + démos + ateliers de positionnement",
+          "Ressources pédagogiques fournies en fin de journée (référentiel CODIR + cas d'usage)",
+        ],
+        ctaLabel: "Voir l'intervention CODIR",
+      },
+      en: {
+        benefitTagline:
+          "Understand AI as an executive — opportunities, risks, 2026 market landscape. One day to situate your company and inform your decisions. Standardised training, takeaways provided.",
+        duration: "1 day on site",
+        durationDays: 1,
+        price: "On request · reply within 48 hours",
+        groupSize: "Leadership team · from 2 executives",
+        format: "On site · France & international",
+        audience: "Executives, leadership, COMEX · small to enterprise",
+        outcomes: [
+          "You have a clear view of what AI really enables in 2026",
+          "You identify the priority AI uses for your company",
+          "You leave with a personal decision framework for your AI choices",
+        ],
+        outline: [
+          "Intro call (30-min video) to confirm the format",
+          "Day · 2026 AI panorama + demos + positioning workshops",
+          "Learning takeaways shared at end of day (leadership reference + use cases)",
+        ],
+        ctaLabel: "See the leadership session",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Cible : dirigeants & CODIR",
+        title: "L'IA",
+        titleEm: "pour les dirigeants",
+        answer:
+          "Une journée pour dirigeants et comité de direction : panorama IA 2026, ateliers de positionnement, référentiel d'arbitrage des décisions IA. Formation standardisée, ressources pédagogiques fournies.",
+        ctaPrimary: "Réserver l'intervention CODIR",
+        faqIntro: "dirigeants",
+      }),
+      daySchedule: DIRIGEANTS_SCHEDULE_FR,
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Audience: executives & CODIR",
+        title: "AI",
+        titleEm: "for executives",
+        answer:
+          "A day for executives and the leadership committee: 2026 AI panorama, positioning workshops, AI decision framework. Standardised training, learning takeaways provided.",
+        ctaPrimary: "Book the executive session",
+        faqIntro: "executives",
+      }),
+      daySchedule: DIRIGEANTS_SCHEDULE_EN,
+    },
   },
 ];
 
@@ -307,6 +1154,8 @@ export function getInterventionCopy(slug: InterventionSlug, locale: Locale): Pag
 function makeFr(args: {
   eyebrow: string;
   title: string;
+  titleEm?: string;
+  titleTail?: string;
   answer: string;
   ctaPrimary: string;
   faqIntro: string;
@@ -314,30 +1163,36 @@ function makeFr(args: {
   return {
     eyebrow: args.eyebrow,
     title: args.title,
+    ...(args.titleEm ? { titleEm: args.titleEm } : {}),
+    ...(args.titleTail ? { titleTail: args.titleTail } : {}),
     answer: args.answer,
     ctaPrimary: args.ctaPrimary,
     ctaSecondary: "Voir l'Essentielle 490 €",
-    benefitsTitle: "Ce que vous obtenez",
+    benefitsTitle: LEARNING_TITLE_FR,
     benefits: [
       {
-        title: "Plan d'action chiffré",
-        description: "Priorisé selon votre maturité IA et vos contraintes.",
+        title: "Maîtrise des outils IA pertinents",
+        description:
+          "Les bons outils selon les profils de votre équipe — usages prioritaires, garde-fous, qualité de sortie.",
       },
       {
-        title: "Démos opérationnelles",
-        description: "Sur vos données réelles, prêtes à reprendre dès le lendemain.",
+        title: "Usages concrets identifiés",
+        description:
+          "Sur les vraies tâches récurrentes de votre équipe, applicables dès le lendemain.",
       },
       {
-        title: "30 jours de support",
-        description: "Itérations asynchrones pour valider les premiers déploiements.",
+        title: "Boîte à outils standardisée",
+        description:
+          "Référentiel d'outils, prompts types, cas d'usage par métier — fournis en fin de journée.",
+      },
+      {
+        title: "Gain de temps immédiat & productivité",
+        description:
+          "Plusieurs heures gagnées par semaine et par collaborateur dès le retour au bureau — productivité mesurable, sans phase de transition.",
       },
     ],
-    processTitle: "Comment ça se déroule",
-    processSteps: [
-      { title: "Préparation", description: "Brief 30 min visio à J-7." },
-      { title: "Jour J", description: "Intervention sur site, format adapté à la cible." },
-      { title: "Suivi 30 j", description: "Check-in J+30 + support asynchrone." },
-    ],
+    processTitle: RESERVATION_TITLE_FR,
+    processSteps: RESERVATION_STEPS_FR,
     metricsTitle: "Résultats observés",
     metrics: [
       { number: "+30", suffix: "%", label: "Productivité moyenne" },
@@ -350,13 +1205,13 @@ function makeFr(args: {
         id: "fit",
         question: `Cette intervention est-elle adaptée à mes ${args.faqIntro} ?`,
         answer:
-          "Oui — un brief J-7 personnalise le contenu à votre contexte exact. Aucun pré-requis IA.",
+          "Oui — la formation est standardisée et conçue pour s'adresser à tous les profils. Aucun pré-requis IA. Un call de cadrage de 15 min avant la journée valide l'adéquation.",
       },
       {
         id: "support",
-        question: "Quel suivi après l'intervention ?",
+        question: "Que reste-t-il après la journée ?",
         answer:
-          "30 jours de support asynchrone + check-in à J+30 pour valider l'avancement des quick-wins.",
+          "Une boîte à outils standardisée : référentiel d'outils IA, prompts types, cas d'usage par métier — fournis en fin de journée et utilisables immédiatement.",
       },
       {
         id: "remote",
@@ -377,6 +1232,8 @@ function makeFr(args: {
 function makeEn(args: {
   eyebrow: string;
   title: string;
+  titleEm?: string;
+  titleTail?: string;
   answer: string;
   ctaPrimary: string;
   faqIntro: string;
@@ -384,30 +1241,35 @@ function makeEn(args: {
   return {
     eyebrow: args.eyebrow,
     title: args.title,
+    ...(args.titleEm ? { titleEm: args.titleEm } : {}),
+    ...(args.titleTail ? { titleTail: args.titleTail } : {}),
     answer: args.answer,
     ctaPrimary: args.ctaPrimary,
     ctaSecondary: "See the Essential €490",
-    benefitsTitle: "What you get",
+    benefitsTitle: LEARNING_TITLE_EN,
     benefits: [
       {
-        title: "Costed action plan",
-        description: "Prioritized to your AI maturity and constraints.",
+        title: "Mastery of relevant AI tools",
+        description:
+          "The right tools for your team's roles — priority uses, guardrails, output quality.",
       },
       {
-        title: "Operational demos",
-        description: "On your real data, ready to resume the next day.",
+        title: "Concrete uses identified",
+        description: "On your team's real recurring tasks, applicable from the very next day.",
       },
       {
-        title: "30 days of support",
-        description: "Async iterations to validate first deployments.",
+        title: "Standardised toolbox",
+        description:
+          "Tool reference sheet, prompt templates, use cases by role — delivered at end of day.",
+      },
+      {
+        title: "Immediate time savings & productivity",
+        description:
+          "Several hours saved per week per employee from day one back at the office — measurable productivity, no transition phase.",
       },
     ],
-    processTitle: "How it runs",
-    processSteps: [
-      { title: "Prep", description: "30-min remote brief at D-7." },
-      { title: "Day", description: "On-site session adapted to the audience." },
-      { title: "30-day follow-up", description: "D+30 check-in + async support." },
-    ],
+    processTitle: RESERVATION_TITLE_EN,
+    processSteps: RESERVATION_STEPS_EN,
     metricsTitle: "Observed results",
     metrics: [
       { number: "+30", suffix: "%", label: "Average productivity" },
@@ -419,12 +1281,14 @@ function makeEn(args: {
       {
         id: "fit",
         question: `Is this session right for my ${args.faqIntro}?`,
-        answer: "Yes — a D-7 brief tailors the content to your exact context. No AI prerequisites.",
+        answer:
+          "Yes — the training is standardised and designed for all profiles. No AI prerequisites. A 15-min framing call before the day confirms the fit.",
       },
       {
         id: "support",
-        question: "What follow-up after the session?",
-        answer: "30 days of async support + D+30 check-in to validate quick-win progress.",
+        question: "What remains after the day?",
+        answer:
+          "A standardised toolbox: AI tool reference, prompt templates, use cases by role — handed over at end of day and usable immediately.",
       },
       {
         id: "remote",
