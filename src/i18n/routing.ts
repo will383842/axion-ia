@@ -75,6 +75,11 @@ export const routing = defineRouting({
       fr: "/implementation/par-fonction/[slug]",
       en: "/implementation/by-function/[slug]",
     },
+    // Module 3 — Approche par technologie (9 prestations)
+    "/implementation/par-techno": {
+      fr: "/implementation/par-techno",
+      en: "/implementation/by-technology",
+    },
 
     // Cas concrets
     "/cas-concrets": { fr: "/cas-concrets", en: "/case-studies" },
@@ -90,7 +95,6 @@ export const routing = defineRouting({
     "/blog/auteur/[slug]": { fr: "/blog/auteur/[slug]", en: "/blog/author/[slug]" },
     "/faq": "/faq",
     "/faq/[slug]": "/faq/[slug]",
-    "/faq/categorie/[slug]": { fr: "/faq/categorie/[slug]", en: "/faq/category/[slug]" },
     "/centre-aide": { fr: "/centre-aide", en: "/help" },
     "/centre-aide/[slug]": { fr: "/centre-aide/[slug]", en: "/help/[slug]" },
     "/centre-aide/categorie/[slug]": {
