@@ -7,9 +7,9 @@ interface ContainerProps<T extends ElementType = "div"> {
   children: ReactNode;
 }
 
-// Editorial v3 container: max-w 1520 (vs 1280 v1 webflow), responsive
-// padding progressif 16/24/40/64. Plus aéré sur grands écrans tout en
-// restant cadré (pas pleine largeur). Mobile-first.
+// Editorial v3 container: max-w 1520, responsive padding progressif
+// 16/24/40/64. Plus aéré sur grands écrans tout en restant cadré (pas
+// pleine largeur). Mobile-first.
 export function Container<T extends ElementType = "div">({
   as,
   className,

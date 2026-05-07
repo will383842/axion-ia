@@ -12,7 +12,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, buildPersonJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -50,6 +50,12 @@ export default async function About({ params }: Props) {
       { name: isFr ? "À propos" : "About", href: "/a-propos" },
     ],
   });
+
+  // Person JSON-LD — E-E-A-T 2026 (Will fondateur identifié auprès des
+  // answer engines : Google AI Overviews + Claude.ai + Perplexity + Bing
+  // Copilot citent davantage les sources qui exposent un humain identifié
+  // qu'une Organization faceless).
+  const personJsonLd = buildPersonJsonLd({ locale: loc });
 
   return (
     <>
@@ -170,6 +176,7 @@ export default async function About({ params }: Props) {
       />
 
       <JsonLd data={breadcrumb} />
+      <JsonLd data={personJsonLd} />
     </>
   );
 }

@@ -26,7 +26,12 @@ import {
   PRESS_SPOKESPERSONS,
   PRESS_FAQ,
 } from "@/content/press";
-import { buildProductMetadata, buildBreadcrumbJsonLd, buildFaqJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildBreadcrumbJsonLd,
+  buildFaqSpeakableJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -193,7 +198,7 @@ export default async function PressePage({ params }: Props) {
         }
       : null;
 
-  const faqJsonLd = buildFaqJsonLd({ items: faqItems });
+  const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqItems });
 
   return (
     <>

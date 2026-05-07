@@ -5,6 +5,65 @@
 
 ---
 
+## 2026-05-07 — Sprint AEO/GEO 2026 + audit Header & Nav + obsolescences purgées
+
+**Auteur** : Will + Claude Opus 4.7 (1M context)
+
+**Commits** (cette session, sur `main`) :
+
+- `e245d13` `fix(seo+nav)` — audit Header/Nav 2026 quick wins (sitemap G5, footer orphelines, Organization JSON-LD enrichi).
+- `1626aaa` `feat(header)` — badge prix CTA central + tracking + drawer mobile étendu §9.4.
+- `acd8080` `feat(seo)` — sitemap-index split Next 16 (`generateSitemaps`, 6 sous-sitemaps) + factories Organization/WebSite + cleanup `SITE_URL` × 8 fichiers.
+- `eda574b` `feat(aeo+geo)` — obsolescences audit closes (tarifs audit alignés sur pyramide actuelle, placeholders légaux neutralisés, OG image v3 `#1a4dd9`, /blog/[slug] câblé `buildArticleJsonLd`) + 5 nouvelles factories (Person, Article, FaqSpeakable, LocalBusiness, Place, ItemList).
+- `5d9d527` `refactor(seo+css)` — dedupe homepage Organization + rename `--ease-out-webflow` → `--ease-out-editorial` + nettoyage commentaires Webflow.
+
+**Audit livré** (`_AUDIT/`, ~272 KB de docs) :
+
+- `AUDIT-HEADER-NAVIGATION-2026.md` (rapport principal, 5 agents A-E parallèles + synthèse).
+- `header-architecture.json` + `nav-routes.csv` (50+ routes mappées).
+- `01-A-inventaire-nav.md` (Agent A inventaire interne, ~830 lignes).
+- `benchmarks-2026.md` (Agent B, 11/13 sites).
+- `adr-0003-navigation-mega-menu-PROPOSITION.md` (Agent C, sera renommée `axionia/docs/adr/0005`).
+- `adr-0004-pseo-villes-PROPOSITION.md` (Agent D + amendement Will V1=2150 villes >5000hab France, sera renommée `0006`).
+- `pseo-strategy.md` (Agent D, ~580 lignes).
+- `stack-fit-analysis.md` (Agent E, ~1130 lignes, 8 centralisations critiques).
+- `STRATEGIE-AEO-GEO-2026.md` (référence stratégique cible #1 ville/région).
+- `AUDIT-OBSOLESCENCES-CONFLITS-2026-05-07.md` (audit complet, 382 lignes).
+- `PHASE-FRONTEND-FINAL-PSEO-VILLES-REGIONS.md` (plan d'exécution chantier post-frontend).
+
+**Décisions Will** validées en bloc 2026-05-07 (8 STOP & ASK + amendement) :
+
+- Q1 11 outils `/stack-ia` conservés.
+- Q2 URL hiérarchique `/implantations/[region]/[ville]`.
+- Q3 métropole + 5 DROM, exclure COM.
+- Q4 Voie 2 mega-menus avec garde-fous WCAG 2.2 AA.
+- Q5 pipeline 80/20 LLM/Will + prompt caching Claude Sonnet 4.6.
+- Q6 phase 1 = top 50 villes (chefs-lieux + métropoles).
+- Q7 sitemap-index + sous-sitemaps (livré via `generateSitemaps`).
+- Q8 ⌘K Sprint post-pSEO.
+- **Amendement périmètre** : V1 = TOUTES villes >5 000 hab (~2 150) au lieu de 1 160 >10 000 hab. Coût recalculé 3 200-12 000 €.
+
+**Infrastructure SEO/AEO/GEO 2026 livrée** :
+
+- 12 factories JSON-LD dans `lib/seo.ts` : `buildProductMetadata`, `buildServiceJsonLd`, `buildFaqJsonLd`, `buildFaqSpeakableJsonLd`, `buildBreadcrumbJsonLd`, `buildOrganizationJsonLd`, `buildWebsiteJsonLd`, `buildPersonJsonLd`, `buildArticleJsonLd`, `buildLocalBusinessJsonLd`, `buildPlaceJsonLd`, `buildItemListJsonLd`.
+- `Organization` JSON-LD enrichi layout-level (10 champs) : logo + sameAs LinkedIn+Facebook + foundingDate 2024 + foundingLocation Tallinn EE + areaServed FR+EU + knowsLanguage + contactPoint bilingual + slots `vatID`/`registrikood` optionnels.
+- `Person` Will câblé `/a-propos` (E-E-A-T 2026).
+- `Article` complet `/blog/[slug]` (Person author + `dateModified` + `wordCount` + `keywords` + `articleSection` + `mainEntityOfPage` + image dynamique `/api/og`).
+- `FaqSpeakable` câblé homepage + `/faq` + `/presse` (Google Assistant + Alexa + Bixby voice citations).
+- Sitemap-index `/sitemap.xml` + 6 sous-sitemaps (`/sitemap/{pages,blog,help,cas-concrets,comparaisons,implementation}.xml`).
+- `BlogPost.updatedAt?: string` field ajouté pour signal `dateModified` distinct de `datePublished`.
+- Bug sitemap G5 corrigé (`/implementation/par-fonction/[slug]` 16 URLs maintenant indexables).
+- Cleanup Webflow complet (0 occurrence "Webflow" restante dans `src/`).
+- 5 paires hreflang `fr` / `en` / `x-default=fr` partout via `routing.pathnames` source unique.
+
+**Verify** : `pnpm verify:all` green (typecheck + lint + i18n 156 keys parité + 4 anti-banni gates + contrast 30 pairs ≥ AA + radius ≤ 8 px + 96/96 vitest tests). Build Next.js 16 production OK.
+
+**Données Estonia restantes** (Will fournira plus tard) : `vatID` (`EE-XXXXXXXXX`) + `registrikood`. Slots optionnels prêts dans `buildOrganizationJsonLd({ locale, vatID, registrikood })` à câbler depuis `layout.tsx`.
+
+**Prochain chantier** : Phase Frontend Final pSEO Villes/Régions (cf. `_AUDIT/PHASE-FRONTEND-FINAL-PSEO-VILLES-REGIONS.md`). V1 = ~2 150 villes >5 000 hab France métropole + 5 DROM. Pipeline LLM Claude Sonnet 4.6 + prompt caching. Rollout 3 phases sur 12 semaines. **NON LANCÉ** — Will finit le frontend en cours avant. Sprint 15 backend (Prisma) reste un chantier distinct.
+
+---
+
 ## 2026-05-07 — Purge site-wide « 90 jours » + « Tallinn / Estonie »
 
 **Auteur** : Will + Claude Opus 4.7

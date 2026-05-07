@@ -463,3 +463,89 @@ Fichiers de référence :
 - Mode sombre éditorial (mocha en bg principal, ivoire en fg) — différé Phase 2.
 - Variante palette « hiver » (sage plus prononcé) — différé selon retours.
 - Police titres serif alternative (Source Serif 4) — à benchmarker contre Fraunces post-launch.
+
+---
+
+## 16. Stack SEO / AEO / GEO 2026
+
+> Synchronisée avec `_AUDIT/STRATEGIE-AEO-GEO-2026.md` — 2026-05-07.
+> Cible : devenir #1 en France dans chaque ville et chaque région sur les requêtes IA opérationnelle B2B.
+
+### 16.1 — Sources de vérité (centralisations)
+
+| Domaine                      | Source unique                      | Fichier                                                      |
+| ---------------------------- | ---------------------------------- | ------------------------------------------------------------ |
+| URLs FR ↔ EN                 | `routing.pathnames`                | `src/i18n/routing.ts`                                        |
+| Métadonnées + hreflang       | `buildProductMetadata`             | `src/lib/seo.ts`                                             |
+| `SITE_URL`                   | `SITE_URL` exporté                 | `src/lib/seo.ts`                                             |
+| Sitemap-index                | `generateSitemaps()` Next 16       | `src/app/sitemap.ts`                                         |
+| Robots                       | `robots()` + `EXCLUDED_FROM_INDEX` | `src/app/robots.ts`                                          |
+| Composant injection JSON-LD  | `<JsonLd data={...} />`            | `src/components/marketing/JsonLd.tsx`                        |
+| `llms.txt` + `llms-full.txt` | Edge routes                        | `src/app/llms*.txt/route.ts`                                 |
+| RSS feeds (3)                | Edge routes                        | `src/app/[locale]/{blog,cas-concrets,faq}/feed.xml/route.ts` |
+| IndexNow Bing/Yandex         | API endpoint                       | `src/app/api/indexnow/route.ts`                              |
+| OG images dynamiques         | `/api/og?title=...`                | `src/app/api/og/route.tsx`                                   |
+
+### 16.2 — Factories JSON-LD disponibles dans `src/lib/seo.ts`
+
+| Factory                    | Schema émis                                                                                | Usage cible                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| `buildProductMetadata`     | `Metadata` Next.js + canonical + hreflang + OG + Twitter                                   | toutes pages                                    |
+| `buildServiceJsonLd`       | `Service` + `Offer`                                                                        | interventions, audit, implementation            |
+| `buildFaqJsonLd`           | `FAQPage`                                                                                  | FAQs basiques                                   |
+| `buildFaqSpeakableJsonLd`  | `FAQPage` + `speakable`                                                                    | FAQs voice-first (Assistant + Alexa + Bixby)    |
+| `buildBreadcrumbJsonLd`    | `BreadcrumbList`                                                                           | toutes pages > niveau 1                         |
+| `buildOrganizationJsonLd`  | `Organization` (10 champs + slots `vatID`/`registrikood`)                                  | layout-level                                    |
+| `buildWebsiteJsonLd`       | `WebSite` + `SearchAction`                                                                 | layout-level                                    |
+| `buildPersonJsonLd`        | `Person` + worksFor + knowsAbout + sameAs                                                  | `/a-propos`, `/blog/auteur/[slug]`              |
+| `buildArticleJsonLd`       | `Article` + `dateModified` + Person author + `wordCount` + `keywords` + `mainEntityOfPage` | `/blog/[slug]`, `/cas-concrets/[slug]`          |
+| `buildLocalBusinessJsonLd` | `ProfessionalService` + areaServed + geo + openingHoursSpecification + parentOrganization  | pages villes / régions (chantier post-frontend) |
+| `buildPlaceJsonLd`         | `Place` + geo + containedInPlace + population                                              | pages villes / régions                          |
+| `buildItemListJsonLd`      | `ItemList` + numberOfItems                                                                 | catalogue stack-ia, listings villes/régions     |
+
+### 16.3 — Empilement par type de page (cible)
+
+- **Layout (toutes pages)** : `Organization` + `WebSite`.
+- **Page produit (interventions, audit, implementation)** : `Service` + `Offer` + `Breadcrumb` + `FaqSpeakable`.
+- **Page hub (cas-concrets, blog, FAQ, comparaisons)** : `ItemList` + `Breadcrumb`.
+- **Page article blog** : `Article` (Person author + dateModified + wordCount) + `Breadcrumb`.
+- **Page article presse** : `Article` + `Person` (auteur) + `Breadcrumb`.
+- **Page `/a-propos`** : `Person` (Will fondateur, E-E-A-T 2026) + `Breadcrumb`.
+- **Page ville (chantier post-frontend)** : `LocalBusiness` + `Place` (avec geo + population) + `Breadcrumb` + `FaqSpeakable` + `ItemList` (villes proches).
+- **Page région** : `LocalBusiness` + `Place` + `ItemList` (top villes) + `Breadcrumb` + `FaqSpeakable`.
+- **Hub `/implantations`** : `ItemList` (régions) + `Place` (FR) + `Breadcrumb`.
+
+### 16.4 — Stratégie hreflang
+
+- **V1 actuelle** : `hreflang="fr"` + `hreflang="en"` + `hreflang="x-default" = fr` (langue seule).
+- **V2 future** (si expansion multi-pays confirmée) : `fr-FR`, `fr-BE`, `fr-CA`, `fr-CH`, `en-GB`, `en-US`, etc. — uniquement si contenu différencié par pays (sinon = duplicate content).
+- **Pages villes/régions FR-only V1** : `hreflang="fr"` seul (ROI EN incertain, V2 conditionnelle).
+- **Émis en 2 endroits cohérents** (source unique `routing.pathnames`) :
+  - `<head>` HTML via `buildProductMetadata.alternates.languages`.
+  - Sitemap entry via `alternateLanguages()` helper.
+
+### 16.5 — Sitemap-index Next 16
+
+- `/sitemap.xml` = sitemap-index (auto-généré par Next 16 via `generateSitemaps()`).
+- 6 sous-sitemaps actuels : `/sitemap/{pages,blog,help,cas-concrets,comparaisons,implementation}.xml`.
+- Limite Google : 50 000 URLs / sitemap. Largement respectée.
+- Ajouter une nouvelle section = 1 entry dans `generateSitemaps()` + 1 builder. Pas de refactor.
+- `lastModified` réel pour blog (via `BLOG_POSTS[].publishedAt`). Pour pages programmatiques, utiliser le champ `updatedAt?` typé du content.
+
+### 16.6 — Anti-patterns interdits
+
+- ❌ Redéclarer `SITE_URL` (anti-pattern, importer depuis `lib/seo`).
+- ❌ Construire un JSON-LD inline si une factory existe (anti-pattern, utiliser la factory).
+- ❌ Émettre 2 fois le même type d'entité sur une même page (ex: `Organization` layout + `Organization` page = ambigu Google).
+- ❌ Hardcoder `hreflang` sur une page (utiliser `routing.pathnames` + `buildProductMetadata`).
+- ❌ Créer un `data/villes.json` ou MDX par ville (le pattern est TS typé dans `src/content/`).
+- ❌ Créer un sitemap parallèle hors `app/sitemap.ts`.
+- ❌ Ajouter `hreflang="fr-FR"` si le contenu est identique à `hreflang="fr"` (= duplicate content).
+- ❌ Émettre `Article` sans `dateModified` (signal AEO faible).
+
+### 16.7 — Anti-données obsolètes
+
+- Tarifs audit : toujours synchroniser avec `src/content/audit.ts` (pyramide actuelle Flash 490 € → Stratégique ETI 12 000 €+). Source unique pour tout texte mentionnant des tarifs.
+- Couleurs : toujours `--color-primary` v3 `#1a4dd9` (jamais `#146ef5` ancien Webflow).
+- Easings : `--ease-out-editorial` (jamais `--ease-out-webflow`).
+- ADR Webflow `0001` est superseded par ADR `0002` (Editorial Premium v3). Aucun nouveau code ne doit référencer ADR 0001 ni la doctrine Webflow.

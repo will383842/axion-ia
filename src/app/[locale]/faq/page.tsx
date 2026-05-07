@@ -11,7 +11,7 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FAQ_GLOBAL } from "@/content/transversal";
-import { buildProductMetadata, buildFaqJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildFaqSpeakableJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -51,7 +51,7 @@ export default async function FaqPage({ params }: Props) {
     answer: entry[loc].answer,
   }));
 
-  const faqJsonLd = buildFaqJsonLd({ items });
+  const faqJsonLd = buildFaqSpeakableJsonLd({ items });
   const breadcrumb = buildBreadcrumbJsonLd({
     locale: loc,
     items: [

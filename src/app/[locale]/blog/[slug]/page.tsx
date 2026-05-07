@@ -56,6 +56,7 @@ export default async function BlogArticle({ params }: Props) {
     headline: copy.title,
     description: copy.excerpt,
     datePublished: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
     articleBody: copy.body,
     authorName: post.author,
     authorSlug: post.author.toLowerCase(),

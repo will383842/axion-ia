@@ -13,7 +13,7 @@ describe("<Badge>", () => {
     expect(screen.getByText("A").className).toContain("text-primary");
   });
 
-  it("is uppercase by default (Webflow doctrine)", () => {
+  it("is uppercase by default (Editorial v3 doctrine)", () => {
     render(<Badge>x</Badge>);
     expect(screen.getByText("x").className).toContain("uppercase");
   });

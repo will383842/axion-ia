@@ -120,7 +120,14 @@ export const FAQ_GLOBAL = [
 
 export interface BlogPost {
   slug: string;
-  publishedAt: string; // ISO
+  publishedAt: string; // ISO date string. Used for `Article.datePublished` JSON-LD.
+  /**
+   * ISO date string. Used for `Article.dateModified` JSON-LD (signal AEO 2026 :
+   * Google AI Overviews + Perplexity + Claude.ai valorisent l'écart freshness).
+   * Optionnel — fallback sur `publishedAt` si non fourni. À mettre à jour à
+   * chaque révision substantielle du `body`.
+   */
+  updatedAt?: string;
   readingTime: string;
   category: string;
   author: string;
