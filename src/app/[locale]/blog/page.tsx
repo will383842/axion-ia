@@ -2,25 +2,37 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { ArrowRight, FileText, Layers, Clock, RefreshCw } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
-import { Illustration } from "@/components/visual/Illustration";
+import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { BLOG_POSTS } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  return buildProductMetadata({
+  const meta = buildProductMetadata({
     locale,
     path: "/blog",
     title:
@@ -32,6 +44,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Articles AxionIA : méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom."
         : "AxionIA articles: AI audit methodology, operational quick-wins, custom AI strategy.",
   });
+  return {
+    ...meta,
+    alternates: {
+      ...meta.alternates,
+      types: { "application/rss+xml": `/${locale}/blog/feed.xml` },
+    },
+  };
 }
 
 export default async function BlogListing({ params }: Props) {
@@ -41,68 +60,211 @@ export default async function BlogListing({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/blog", label: "Blog" }];
+
+  // Catégories agrégées (count par catégorie)
+  const categoriesMap = new Map<string, { label: string; slug: string; count: number }>();
+  for (const post of BLOG_POSTS) {
+    const slug = slugify(post.category);
+    const existing = categoriesMap.get(slug);
+    if (existing) {
+      categoriesMap.set(slug, { ...existing, count: existing.count + 1 });
+    } else {
+      categoriesMap.set(slug, { label: post.category, slug, count: 1 });
+    }
+  }
+  const categories = [...categoriesMap.values()];
+  const categoryBase = isFr ? "/blog/categorie" : "/blog/category";
+
+  // Posts pour le hero schema (3 plus récents par publishedAt desc)
+  const sortedPosts = [...BLOG_POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const heroSchemaPosts = sortedPosts.slice(0, 3).map((p) => ({
+    slug: p.slug,
+    category: p.category,
+    readingTime: p.readingTime,
+    title: p[loc].title,
+  }));
+
+  // ItemList JSON-LD — expose chaque article au crawler depuis l'index
+  // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
+  // déjà émis ailleurs).
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: isFr ? "Articles AxionIA · ligne éditoriale" : "AxionIA articles · editorial line",
+    itemListElement: sortedPosts.map((post, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/${locale}/blog/${post.slug}`,
+      name: post[loc].title,
+    })),
+  } as const;
+
+  // Pills réassurance (count dynamique)
+  const pills = isFr
+    ? [
+        { icon: FileText, label: `${BLOG_POSTS.length} articles` },
+        { icon: Layers, label: `${categories.length} catégories` },
+        { icon: Clock, label: "Lecture 6-12 min" },
+        { icon: RefreshCw, label: "MAJ mensuelle" },
+      ]
+    : [
+        { icon: FileText, label: `${BLOG_POSTS.length} articles` },
+        { icon: Layers, label: `${categories.length} categories` },
+        { icon: Clock, label: "6-12 min read" },
+        { icon: RefreshCw, label: "Monthly updates" },
+      ];
 
   return (
     <>
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        titleAs="h1"
-        eyebrow="Blog"
-        title={isFr ? "Méthodologie &" : "Methodology &"}
-        titleEm={isFr ? "cas d'usage" : "AI use cases"}
-        titleTail={isFr ? " IA" : ""}
-        description={
-          isFr
-            ? "Retours terrain, méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom."
-            : "Field reports, AI audit methodology, operational quick-wins, custom AI strategy."
-        }
-      />
 
-      <Section tone="halo-warm">
-        <Container>
-          <div className="mx-auto max-w-4xl">
-            <Illustration
-              slot="BLOG-01-hero"
-              aspectRatio="16:9"
-              filenameTarget="public/illustrations/blog-hero.avif"
-              caption={
+      {/* HERO 2-col — texte à gauche, BlogHeroSchema (3 articles récents) à droite */}
+      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+        <Container className="relative">
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            <div className="max-w-xl">
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                Blog
+              </p>
+              <h1 className="display-editorial text-fg mt-5">
+                {isFr ? "Méthodologie & " : "Methodology & "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "cas d'usage" : "AI use cases"}
+                </span>
+                {isFr ? " IA" : ""}
+              </h1>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+                {isFr
+                  ? "Retours terrain, méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom. Chaque article est rédigé après une mission réelle — pas de spéculation, pas de hype."
+                  : "Field reports, AI audit methodology, operational quick-wins, custom AI strategy. Each article is written after a real engagement — no speculation, no hype."}
+              </p>
+              {/* Pills réassurance */}
+              <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
+                {pills.map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              {/* CTAs hero */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Cta href="#articles" size="lg">
+                  {isFr ? "Lire les articles" : "Read articles"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta href={`/${locale}/blog/feed.xml`} variant="outline" size="lg">
+                  {isFr ? "S'abonner RSS" : "Subscribe RSS"}
+                </Cta>
+              </div>
+            </div>
+            <BlogHeroSchema
+              isFr={isFr}
+              posts={heroSchemaPosts}
+              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              ariaLabel={
                 isFr
-                  ? "Kiosque éditorial — articles ouverts en pile sur table claire"
-                  : "Editorial newsstand — open articles stacked on a light table"
+                  ? "Schéma : 3 derniers articles AxionIA avec leur catégorie (méthodologie, cas d'usage, stratégie) et temps de lecture."
+                  : "Diagram: 3 latest AxionIA articles with their category (methodology, use cases, strategy) and reading time."
               }
-              alt={
-                isFr
-                  ? "Illustration éditoriale d'un kiosque ou d'articles empilés symbolisant la ligne éditoriale AxionIA."
-                  : "Editorial illustration of a newsstand or stacked articles symbolizing AxionIA's editorial line."
-              }
-              priority
             />
           </div>
         </Container>
+      </section>
+
+      {/* Pillar copy — ligne éditoriale */}
+      <Section eyebrow={isFr ? "Ligne éditoriale" : "Editorial line"} tone="paper">
+        <Container className="max-w-3xl">
+          <p className="text-fg-soft text-lg leading-relaxed">
+            {isFr
+              ? "AxionIA n'écrit que sur des sujets éprouvés en mission. Les articles documentent une méthodologie qui a fonctionné, un cas client qui a livré du ROI, ou une décision technique tranchée par l'expérience. Pas de revue de presse, pas de hot takes IA — chaque billet a vocation à rester actionnable 12 mois après publication. Si un sujet est pris dans la hype et n'a pas encore de réponse stable, on attend qu'il ait mûri avant d'en parler."
+              : "AxionIA writes only about topics tested in the field. Articles document a methodology that worked, a client case that delivered ROI, or a technical decision settled by experience. No press review, no AI hot takes — every post is meant to remain actionable 12 months after publication. If a topic is caught in the hype and has no stable answer, we wait for it to mature before writing about it."}
+          </p>
+        </Container>
       </Section>
 
-      <Section>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {BLOG_POSTS.map((post) => {
-            const c = post[loc];
-            return (
-              <li key={post.slug}>
-                <ArticleCard
-                  href={`/blog/${post.slug}`}
-                  title={c.title}
-                  excerpt={c.excerpt}
-                  publishedAt={post.publishedAt}
-                  readingTime={post.readingTime}
-                />
-              </li>
-            );
-          })}
-        </ul>
+      {/* Catégories */}
+      {categories.length > 0 ? (
+        <Section eyebrow={isFr ? "Thématiques" : "Topics"} tone="sand">
+          <Container>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {categories.map((cat) => (
+                <li key={cat.slug}>
+                  <a href={`/${locale}${categoryBase}/${cat.slug}`} className="group block h-full">
+                    <Card className="cta-lift h-full">
+                      <CardHeader>
+                        <CardTitle className="flex items-start justify-between gap-3">
+                          <span>{cat.label}</span>
+                          <ArrowRight
+                            className="text-fg-muted group-hover:text-primary mt-1 h-4 w-4 shrink-0 transition"
+                            aria-hidden="true"
+                          />
+                        </CardTitle>
+                        <CardDescription>
+                          {cat.count}{" "}
+                          {isFr
+                            ? `article${cat.count > 1 ? "s" : ""}`
+                            : `article${cat.count > 1 ? "s" : ""}`}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-primary text-sm font-medium">
+                          {isFr ? "Voir les articles" : "See articles"} →
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
+
+      {/* Articles */}
+      <Section
+        id="articles"
+        eyebrow={isFr ? "Tous les articles" : "All articles"}
+        title={isFr ? "Derniers articles" : "Latest articles"}
+      >
+        <Container>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {sortedPosts.map((post) => {
+              const c = post[loc];
+              return (
+                <li key={post.slug}>
+                  <ArticleCard
+                    href={`/blog/${post.slug}`}
+                    title={c.title}
+                    excerpt={c.excerpt}
+                    publishedAt={post.publishedAt}
+                    readingTime={post.readingTime}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </Container>
       </Section>
 
       <CtaBlock
@@ -119,6 +281,8 @@ export default async function BlogListing({ params }: Props) {
         }
         tone="dark"
       />
+
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }
