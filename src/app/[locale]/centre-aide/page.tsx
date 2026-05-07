@@ -120,7 +120,7 @@ export default async function HelpCenter({ params }: Props) {
             </div>
             <HelpHeroSchema
               isFr={isFr}
-              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              className="hero-schema"
               ariaLabel={
                 isFr
                   ? "Schéma : centre d'aide AxionIA organisé en 6 thématiques principales (démarrer, souveraineté, coûts & ROI, cas d'usage, formation, intégration)."

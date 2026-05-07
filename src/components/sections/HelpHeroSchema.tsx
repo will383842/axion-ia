@@ -41,7 +41,7 @@ export function HelpHeroSchema({ isFr, ariaLabel, className }: HelpHeroSchemaPro
       ];
 
   return (
-    <div role="img" aria-label={ariaLabel} className={className ?? "mx-auto w-full max-w-xl"}>
+    <div role="img" aria-label={ariaLabel} className={className ?? "hero-schema"}>
       {/* CENTRE éditorial — Trouver une réponse */}
       <div className="border-terracotta/40 bg-paper shadow-card relative mb-4 rounded-2xl border-2 p-4 text-center sm:p-5">
         <p className="text-terracotta-deep mb-2 text-[10px] font-semibold tracking-[0.18em] uppercase sm:text-[11px]">

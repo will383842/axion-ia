@@ -92,7 +92,7 @@ export function ImplementationHeroSchema({
     <div
       role="img"
       aria-label={ariaLabel}
-      className={className ?? "pointer-events-none mx-auto w-full max-w-2xl"}
+      className={className ?? "hero-schema pointer-events-none"}
     >
       <svg
         viewBox={`0 0 ${W} ${H}`}

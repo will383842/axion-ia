@@ -59,7 +59,7 @@ export function ComparisonsHeroSchema({
       ];
 
   return (
-    <div role="img" aria-label={ariaLabel} className={className ?? "mx-auto w-full max-w-xl"}>
+    <div role="img" aria-label={ariaLabel} className={className ?? "hero-schema"}>
       {/* CENTRE — votre cabinet (signal premium terracotta) */}
       <div className="border-terracotta/40 bg-paper shadow-card relative rounded-2xl border-2 p-4 sm:p-5">
         <p className="text-terracotta-deep mb-2 text-[10px] font-semibold tracking-[0.18em] uppercase sm:text-[11px]">

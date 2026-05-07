@@ -90,7 +90,7 @@ export default async function ComparisonsListPage({ params }: Props) {
             </div>
             <ComparisonsHeroSchema
               isFr={isFr}
-              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              className="hero-schema"
               ariaLabel={
                 isFr
                   ? "Schéma comparatif : AxionIA cabinet IA opérationnel au centre, encadré par 2 alternatives (SaaS générique, internalisation) — comparaison factuelle sans FUD."

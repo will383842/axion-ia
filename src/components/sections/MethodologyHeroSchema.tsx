@@ -117,7 +117,7 @@ export function MethodologyHeroSchema({
       ];
 
   return (
-    <div role="img" aria-label={ariaLabel} className={className ?? "mx-auto w-full max-w-xl"}>
+    <div role="img" aria-label={ariaLabel} className={className ?? "hero-schema"}>
       {/* === ACTE 1 — Votre entreprise (input) === */}
       <div className="border-border-strong bg-paper shadow-subtle relative rounded-2xl border-2 p-4 sm:p-5">
         <p className="text-fg-muted mb-2.5 text-[10px] font-semibold tracking-[0.18em] uppercase sm:text-[11px]">

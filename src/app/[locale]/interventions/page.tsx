@@ -242,8 +242,10 @@ export default async function InterventionsListing({ params }: Props) {
 
         <Container className={cn("relative", TIGHT_X)}>
           {/* Grille hero — proportion harmonisée avec /audit pour que les
-              schemas hero des pages module aient la même grosseur visuelle. */}
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16 xl:gap-20">
+              schemas hero des pages module aient la même grosseur visuelle.
+              v3.2 (2026-05-08) : 1fr 1fr unifié + `.hero-schema` cap 36rem
+              côté visuel. Doctrine hero schema width invariant. */}
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -292,7 +294,7 @@ export default async function InterventionsListing({ params }: Props) {
                 l'espace de la colonne grille (1.2fr) et égaler le
                 AuditHeroSchema. */}
             <InterventionsHeroSchema
-              className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none"
+              className="hero-schema pointer-events-none"
               centerLabel={isFr ? "Votre entreprise" : "Your company"}
               ariaLabel={
                 isFr

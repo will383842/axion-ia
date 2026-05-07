@@ -75,7 +75,7 @@ export function InterventionsHeroSchema({
     <div
       role="img"
       aria-label={ariaLabel}
-      className={className ?? "pointer-events-none mx-auto w-full max-w-md"}
+      className={className ?? "hero-schema pointer-events-none"}
     >
       <svg
         viewBox={`0 0 ${W} ${H}`}

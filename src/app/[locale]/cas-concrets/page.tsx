@@ -114,7 +114,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
             {/* Colonne droite — stack de 3 mini-cards exemples */}
             <CaseStudiesHeroSchema
               isFr={isFr}
-              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              className="hero-schema"
               ariaLabel={
                 isFr
                   ? "Exemples de cas concrets : industrie, conseil & juridique, retail multi-sites — chacun avec une métrique chiffrée concrète."

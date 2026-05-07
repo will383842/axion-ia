@@ -245,7 +245,7 @@ export default async function MethodologyPage({ params }: Props) {
             {/* Colonne droite — flow narratif méthodologie 4 étapes */}
             <MethodologyHeroSchema
               isFr={isFr}
-              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              className="hero-schema"
               ariaLabel={
                 isFr
                   ? "Schéma méthodologie AxionIA : votre entreprise au départ, 4 étapes méthodologiques (Identifier, Auditer, Implémenter, Mesurer), puis 4 résultats concrets (plan chiffré, process automatisés, équipes formées, ROI mesuré)."

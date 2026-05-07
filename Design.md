@@ -178,6 +178,21 @@ Fallbacks : sans → `-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui` 
 
 > **⚠ Hero h1 = utility `.display-editorial`, pas le token `--text-display`** : la classe `.display-editorial` (appliquée automatiquement par `<Section titleAs="h1">`) utilise `clamp(3rem, 7.5vw, 5.5rem)` v3.2 + `letter-spacing: -0.035em` (fluide). Le token `--text-display` (statique 5.5 rem / -0.04em) sert uniquement de fallback hors-utility. **Ne pas confondre.**
 
+### 3.5 — Hero Schemas (visuels colonne droite)
+
+> **v3.2 — 2026-05-08** : harmonisation des 11 hero schemas via `.hero-schema` doctrine class (`globals.css` @utilities). Avant : 3 patterns concurrents (`max-w-xl` / `max-w-md` / `max-w-2xl lg:max-w-none`). Après : invariant **36rem (576px) sur tous breakpoints**, aligné gauche en lg+ pour matcher la grille hero `1fr 1fr` unifiée.
+
+**Composants concernés** (tous dans `src/components/sections/*HeroSchema.tsx`) :
+`AuditHeroSchema`, `CaseStudiesHeroSchema`, `MethodologyHeroSchema`, `ComparisonsHeroSchema`, `HelpHeroSchema`, `StackHeroSchema`, `DetailHeroSchema`, `BlogHeroSchema`, `InterventionsHeroSchema`, `ImplementationHeroSchema` (10 + variantes).
+
+**Pages concernées** (8) : `/audit`, `/cas-concrets`, `/methodologie`, `/comparaisons`, `/centre-aide`, `/blog`, `/interventions`, `/stack-ia`, `/implementation`. Toutes utilisent désormais une grille hero `lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]` (avant : 3 pages utilisaient `1fr 1.2fr`).
+
+**Règles d'usage** :
+
+- Côté composant : default `className ?? "hero-schema"` (avec `pointer-events-none` ajouté pour les SVG orbital).
+- Côté page : passer `className="hero-schema"` directement (jamais de `max-w-*` ad-hoc).
+- Cas spécial (Implementation desktop-only) : `className="hero-schema pointer-events-none hidden lg:block"`.
+
 ### 3.3 — Signature éditoriale `em.editorial`
 
 Classe globale dans `globals.css` :

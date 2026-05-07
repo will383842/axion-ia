@@ -310,7 +310,7 @@ export default async function AuditListing({ params }: Props) {
                 visuel dominant. */}
             <AuditHeroSchema
               isFr={isFr}
-              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              className="hero-schema"
               ariaLabel={
                 isFr
                   ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit AxionIA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées à l'IA, pilotage au jour le jour)."

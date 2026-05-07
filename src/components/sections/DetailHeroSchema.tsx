@@ -76,7 +76,7 @@ export function DetailHeroSchema({
   className,
 }: DetailHeroSchemaProps): ReactNode {
   return (
-    <div role="img" aria-label={ariaLabel} className={className ?? "mx-auto w-full max-w-xl"}>
+    <div role="img" aria-label={ariaLabel} className={className ?? "hero-schema"}>
       {/* En-tête éditorial du schéma */}
       <div className={`bg-halo-warm rounded-2xl border-2 p-4 sm:p-5 ${ACCENT_BORDER[accent]}`}>
         <p

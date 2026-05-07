@@ -181,7 +181,7 @@ export default async function BlogListing({ params }: Props) {
             <BlogHeroSchema
               isFr={isFr}
               posts={heroSchemaPosts}
-              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              className="hero-schema"
               ariaLabel={
                 isFr
                   ? "Schéma : 3 derniers articles AxionIA avec leur catégorie (méthodologie, cas d'usage, stratégie) et temps de lecture."

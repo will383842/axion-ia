@@ -42,7 +42,7 @@ export function BlogHeroSchema({
 }: BlogHeroSchemaProps): ReactNode {
   const tiles = posts.slice(0, 3);
   return (
-    <div role="img" aria-label={ariaLabel} className={className}>
+    <div role="img" aria-label={ariaLabel} className={className ?? "hero-schema"}>
       <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.18em] uppercase">
         <span
           aria-hidden="true"

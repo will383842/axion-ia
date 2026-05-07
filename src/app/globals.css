@@ -259,6 +259,27 @@
     background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
   }
 
+  /* Hero schema visual container — harmonisé v3.2 (ADR 0007 follow-up 2026-05-08).
+     Cap 36rem (576px = max-w-xl) sur tous les breakpoints. Centré (mx-auto)
+     en mobile/tablet, aligné gauche (mx-0) en lg+ pour matcher la colonne
+     droite du grid hero 2-col `1fr 1fr`. Standardise les 11 hero schemas
+     (Audit, CaseStudies, Methodology, Comparisons, Help, Stack, Detail, Blog,
+     Interventions, Implementation, plus DetailHeroSchema produits) pour
+     cohérence visuelle. Doctrine : hero schema width invariant ↔ grille hero. */
+  .hero-schema {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 36rem;
+  }
+  @media (min-width: 992px) {
+    .hero-schema {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
   /* Display giant — Fraunces italique + tracking serré (signature Anthropic).
      v3.2 (ADR 0007) : cap 7rem→5.5rem (112→88 px) pour ratio hero/body 4.89× (médiane 2026 = 4.4×).
      Pré-v3.2 le ratio était 6.2× → ressenti « tout petit sauf hero ». */

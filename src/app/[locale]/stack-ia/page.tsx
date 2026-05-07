@@ -235,7 +235,7 @@ export default async function StackIaPage({ params }: Props) {
         />
 
         <Container className={cn("relative", TIGHT_X)}>
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16 xl:gap-20">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -292,7 +292,7 @@ export default async function StackIaPage({ params }: Props) {
                 Cohérence stricte avec InterventionsHeroSchema (même grammaire
                 visuelle : halos, anneaux, particules, serif italique terracotta). */}
             <StackHeroSchema
-              className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none"
+              className="hero-schema pointer-events-none"
               centerLabel={isFr ? "Votre business" : "Your business"}
               centerCaption={isFr ? "Stack IA · 2026" : "AI stack · 2026"}
               ariaLabel={

@@ -648,7 +648,7 @@ export default async function ImplementationListing({ params }: Props) {
         />
 
         <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16 xl:gap-20">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
@@ -733,7 +733,7 @@ export default async function ImplementationListing({ params }: Props) {
                   max-w-none pour utiliser tout l'espace de la colonne grille
                   (1.2fr) et égaler le AuditHeroSchema en taille visuelle. */}
               <ImplementationHeroSchema
-                className="pointer-events-none mx-auto hidden w-full max-w-none lg:block"
+                className="hero-schema pointer-events-none hidden lg:block"
                 centerLabel={isFr ? "Votre entreprise" : "Your company"}
                 ariaLabel={
                   isFr
