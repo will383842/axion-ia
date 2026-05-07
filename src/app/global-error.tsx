@@ -2,7 +2,7 @@
 // use-client: Next.js global-error contract requires a Client Component that
 // renders its own <html> + <body> because the root layout itself failed.
 // We import globals.css explicitly so design tokens (Tailwind + CSS vars)
-// are available even though the root layout never ran.
+// are available even though the root layout never ran. Doctrine v3 légère.
 
 import * as React from "react";
 import "./globals.css";
@@ -19,24 +19,33 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
   return (
     <html lang="fr">
-      <body className="bg-bg text-fg flex min-h-screen items-center justify-center p-8">
-        <div className="max-w-md text-center">
-          <p className="text-accent-red text-sm font-semibold tracking-wide uppercase">500</p>
-          <h1 className="mt-3 text-[clamp(2rem,5vw,3rem)] leading-[1.1] font-semibold tracking-tight">
-            Erreur critique · Critical error
+      <body className="bg-halo-warm text-fg flex min-h-screen items-center justify-center p-8">
+        <div className="max-w-xl text-center">
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+            <span
+              aria-hidden="true"
+              className="bg-accent-red mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
+            500 · Erreur critique · Critical error
+          </p>
+          <h1
+            className="text-fg mt-5 text-[clamp(2.5rem,6vw,4rem)] leading-[1.04] font-medium tracking-tight"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            Le site a rencontré une <span className="text-terracotta italic">erreur fatale</span>
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-gray-700">
-            Le site a rencontré une erreur fatale. The site hit a fatal error.
+          <p className="text-fg-soft mx-auto mt-5 max-w-md text-base leading-relaxed">
+            The site hit a fatal error. Nos équipes ont été notifiées.
           </p>
           {error.digest ? (
-            <p className="mt-2 font-mono text-xs text-gray-600">ref: {error.digest}</p>
+            <p className="text-fg-muted mt-3 font-mono text-xs">ref: {error.digest}</p>
           ) : null}
           <button
             type="button"
             onClick={reset}
-            className="bg-primary text-primary-fg cta-translate mt-8 inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
+            className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover mt-10 inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold"
           >
-            Réessayer · Try again
+            Réessayer · Try again →
           </button>
         </div>
       </body>

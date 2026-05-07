@@ -149,12 +149,23 @@
     "ctaBlockSecondary": "Parler à un intervenant"
   },
   "errors": {
-    "notFoundTitle": "Page introuvable",
-    "notFoundBody": "La page demandée n'existe pas ou a été déplacée.",
+    "notFoundEyebrow": "404 · Erreur d'aiguillage",
+    "notFoundTitle": "Cette page est",
+    "notFoundTitleEm": "introuvable",
+    "notFoundBody": "Le lien n'existe plus, a été déplacé, ou contient une faute de frappe. Voici quelques chemins utiles pour rebondir.",
     "notFoundCta": "Retour à l'accueil",
-    "internalTitle": "Une erreur est survenue",
-    "internalBody": "Nous avons été notifiés. Vous pouvez réessayer.",
-    "retry": "Réessayer"
+    "notFoundSecondary": "Nous contacter",
+    "notFoundSuggestionsTitle": "Vous cherchiez peut-être",
+    "notFoundLinkInterventions": "Interventions IA en entreprise",
+    "notFoundLinkAudit": "Audit & optimisation",
+    "notFoundLinkCases": "Cas concrets",
+    "notFoundLinkBook": "Réserver une intervention",
+    "internalEyebrow": "500 · Erreur interne",
+    "internalTitle": "Une erreur",
+    "internalTitleEm": "est survenue",
+    "internalBody": "Nous avons été notifiés et l'incident est suivi. Vous pouvez réessayer ou revenir plus tard.",
+    "retry": "Réessayer",
+    "backHome": "Retour à l'accueil"
   },
   "breadcrumb": {
     "home": "Accueil"

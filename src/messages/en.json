@@ -149,12 +149,23 @@
     "ctaBlockSecondary": "Talk to a consultant"
   },
   "errors": {
-    "notFoundTitle": "Page not found",
-    "notFoundBody": "The requested page doesn't exist or has been moved.",
+    "notFoundEyebrow": "404 · Routing error",
+    "notFoundTitle": "This page is",
+    "notFoundTitleEm": "not found",
+    "notFoundBody": "The link no longer exists, has been moved, or contains a typo. Here are a few useful paths to bounce back.",
     "notFoundCta": "Back to home",
-    "internalTitle": "Something went wrong",
-    "internalBody": "We've been notified. You can try again.",
-    "retry": "Retry"
+    "notFoundSecondary": "Contact us",
+    "notFoundSuggestionsTitle": "You may be looking for",
+    "notFoundLinkInterventions": "Corporate AI sessions",
+    "notFoundLinkAudit": "Audit & optimisation",
+    "notFoundLinkCases": "Case studies",
+    "notFoundLinkBook": "Book an intervention",
+    "internalEyebrow": "500 · Internal error",
+    "internalTitle": "Something",
+    "internalTitleEm": "went wrong",
+    "internalBody": "We've been notified and the incident is being tracked. You can retry or come back later.",
+    "retry": "Retry",
+    "backHome": "Back to home"
   },
   "breadcrumb": {
     "home": "Home"
