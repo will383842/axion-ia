@@ -8,6 +8,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { CaseStudiesHeroSchema } from "@/components/sections/CaseStudiesHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
@@ -78,22 +79,55 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
 
   return (
     <>
-      <Section
-        tone="halo-warm"
-        titleAs="h1"
-        eyebrow={
-          isFr
-            ? "Cas réels · de l'artisan au grand groupe"
-            : "Real cases · from artisans to large groups"
-        }
-        title={isFr ? "Ce qu'ils ont" : "What they've"}
-        titleEm={isFr ? "concrètement gagné" : "actually gained"}
-        description={
-          isFr
-            ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles d'entreprises, toutes les régions, tous les budgets — résultats chiffrés et témoignages."
-            : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets — numerical results and testimonials."
-        }
-      />
+      {/* HERO 2 colonnes — texte à gauche, stack de mini-cards de cas réels
+          à droite (CaseStudiesHeroSchema). Aligné sur le pattern audit /
+          interventions / implementation. */}
+      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+        <Container className="relative">
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            {/* Colonne gauche — eyebrow + titre + description */}
+            <div className="max-w-xl">
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-sage mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr
+                  ? "Cas réels · de l'artisan au grand groupe"
+                  : "Real cases · from artisans to large groups"}
+              </p>
+              <h1
+                className="text-fg mt-5 text-[clamp(2rem,5vw,4rem)] leading-[1.04] font-medium tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? "Ce qu'ils ont " : "What they've "}
+                <span
+                  className="text-sage mx-2 italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "concrètement gagné" : "actually gained"}
+                </span>
+              </h1>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+                {isFr
+                  ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles, toutes les régions, tous les budgets — résultats chiffrés et témoignages anonymisés."
+                  : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets — numerical results and anonymised testimonials."}
+              </p>
+            </div>
+
+            {/* Colonne droite — stack de 3 mini-cards exemples */}
+            <CaseStudiesHeroSchema
+              isFr={isFr}
+              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              ariaLabel={
+                isFr
+                  ? "Exemples de cas concrets : industrie, conseil & juridique, retail multi-sites — chacun avec une métrique chiffrée concrète."
+                  : "Concrete case examples: manufacturing, consulting & legal, multi-site retail — each with a concrete numerical metric."
+              }
+            />
+          </div>
+        </Container>
+      </section>
 
       <Section eyebrow={isFr ? "Filtres" : "Filters"}>
         <Container className="space-y-4">

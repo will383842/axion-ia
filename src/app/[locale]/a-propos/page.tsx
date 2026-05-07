@@ -57,11 +57,10 @@ export default async function About({ params }: Props) {
         eyebrow={isFr ? "À propos" : "About"}
         title={isFr ? "Cabinet IA" : "Operational AI"}
         titleEm={isFr ? "opérationnel" : "consultancy"}
-        titleTail={isFr ? " · OÜ estonienne" : " · Estonian OÜ"}
         description={
           isFr
-            ? "AxionIA accompagne les entreprises dans l'identification, la démonstration et l'implémentation d'usages IA générant un ROI mesurable. Société estonienne, hébergement UE."
-            : "AxionIA helps companies identify, demonstrate and implement AI use cases generating measurable ROI. Estonian company, EU hosting."
+            ? "AxionIA accompagne les entreprises dans l'identification, la démonstration et l'implémentation d'usages IA générant un ROI mesurable. Hébergement UE."
+            : "AxionIA helps companies identify, demonstrate and implement AI use cases generating measurable ROI. EU hosting."
         }
       />
 
@@ -90,7 +89,7 @@ export default async function About({ params }: Props) {
       </Section>
 
       <Section eyebrow={isFr ? "Valeurs" : "Values"}>
-        <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
+        <Container className="text-fg max-w-2xl space-y-6 text-lg leading-relaxed">
           <p>
             <strong>{isFr ? "Opérationnel d'abord." : "Operational first."}</strong>{" "}
             {isFr

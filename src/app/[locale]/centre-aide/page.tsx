@@ -90,6 +90,7 @@ export default async function HelpCenter({ params }: Props) {
   return (
     <>
       <Section
+        tone="halo-warm"
         titleAs="h1"
         eyebrow={isFr ? "Centre d'aide" : "Help center"}
         title={isFr ? "Trouver une réponse" : "Find a quick"}
