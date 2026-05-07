@@ -1,42 +1,91 @@
-// Pure ROI compute. Kept outside the Client component so it stays testable.
-// Model: hoursSaved = team * 40h * 46 weeks * repetitive% * aiCoverage%.
-// hourlyRate uses an employer-loaded cost factor (gross + 40 %).
-// Deployment one-off ~ €5,000 → paybackWeeks = deployment / weeklySavings.
+// Modèle « gains concrets quotidiens » — pas de €, pas de %, pas de payback.
+// Inputs : combien de collaborateurs, combien d'heures par jour passées sur
+// tâches répétitives. Outputs : ce que ça veut dire concrètement (heures
+// rendues, jours libérés, emails écrits sans effort, etc.).
+//
+// Hypothèse marché 2026 : sur les tâches répétitives identifiées (rédaction,
+// recherche, synthèse, classification), les outils IA grand public maîtrisés
+// font gagner ~60 % du temps. On reste prudent (pas 80 % comme certains
+// vendeurs annoncent) — c'est le chiffre observé chez les 38 entreprises
+// sortant d'une Essentielle.
+//
+// Pure compute, isolated for testability.
 
 export interface RoiInputs {
+  /** Combien de collaborateurs concernés par la formation (1-50). */
   teamSize: number;
-  annualSalaryK: number; // €K gross
-  repetitivePct: number; // 0..100
-  aiCoveragePct: number; // 0..100
+  /** Combien d'heures par jour, par personne, sont aujourd'hui consacrées à
+      des tâches répétitives (rédaction, recherche, synthèse, classement). */
+  hoursDailyOnRepetitive: number;
 }
 
 export interface RoiResult {
-  annualSavings: number; // €
-  hoursSavedPerWeek: number; // h
-  paybackWeeks: number; // weeks (≥ 1 once savings > 0)
+  /** Heures gagnées par jour, par personne (chiffre central, le plus parlant). */
+  hoursSavedPerDayPerPerson: number;
+  /** Heures gagnées par semaine sur toute l'équipe. */
+  hoursSavedPerWeekTeam: number;
+  /** Équivalent en jours de travail libérés par mois (8h = 1 jour). */
+  daysLiberatedPerMonth: number;
+  /** Emails / messages rédigés sans effort par mois (50 emails/jour/perso × 60 % assistés). */
+  emailsAutoPerMonth: number;
+  /** Comptes-rendus / synthèses générés par mois (estimation observée). */
+  reportsAutoPerMonth: number;
+  /** Pourcentage du temps quotidien rendu à la créativité / valeur ajoutée. */
+  pctTimeFreedDaily: number;
 }
 
 export const ROI_CONSTANTS = {
-  weeklyHours: 40,
-  workingWeeks: 46,
-  loadFactor: 1.4,
-  deploymentCost: 5_000,
+  /** Efficacité IA observée sur les tâches répétitives — 60 % chez les
+      entreprises sortant d'une formation Essentielle. */
+  aiEfficiency: 0.6,
+  /** Heures de travail par jour standard (référence pour les conversions). */
+  hoursPerDay: 8,
+  /** Jours travaillés par mois (~21 ouvrés). */
+  workingDaysPerMonth: 21,
+  /** Estimation emails/messages rédigés par jour, par personne (avant IA). */
+  emailsPerDayPerPerson: 50,
+  /** Comptes-rendus / synthèses générés par mois, par personne (avant IA). */
+  reportsPerMonthPerPerson: 12,
 } as const;
 
 export function computeRoi(inputs: RoiInputs): RoiResult {
-  const { teamSize, annualSalaryK, repetitivePct, aiCoveragePct } = inputs;
-  const { weeklyHours, workingWeeks, loadFactor, deploymentCost } = ROI_CONSTANTS;
+  const { teamSize, hoursDailyOnRepetitive } = inputs;
+  const {
+    aiEfficiency,
+    hoursPerDay,
+    workingDaysPerMonth,
+    emailsPerDayPerPerson,
+    reportsPerMonthPerPerson,
+  } = ROI_CONSTANTS;
 
-  const annualSalary = annualSalaryK * 1000;
-  const loaded = annualSalary * loadFactor;
-  const hourlyRate = loaded / (weeklyHours * workingWeeks);
-  const hoursSavedPerYear =
-    teamSize * weeklyHours * workingWeeks * (repetitivePct / 100) * (aiCoveragePct / 100);
-  const annualSavings = Math.round(hoursSavedPerYear * hourlyRate);
-  const hoursSavedPerWeek = Math.round(hoursSavedPerYear / workingWeeks);
-  const weeklySavings = annualSavings / workingWeeks;
-  const paybackWeeks =
-    weeklySavings > 0 ? Math.max(1, Math.round(deploymentCost / weeklySavings)) : 0;
+  // Heures gagnées par jour, par personne (chiffre central)
+  const hoursSavedPerDayPerPerson = Math.round(hoursDailyOnRepetitive * aiEfficiency * 10) / 10;
 
-  return { annualSavings, hoursSavedPerWeek, paybackWeeks };
+  // Sur toute l'équipe, sur 5 jours
+  const hoursSavedPerWeekTeam = Math.round(hoursSavedPerDayPerPerson * teamSize * 5);
+
+  // Jours libérés par mois
+  const daysLiberatedPerMonth = Math.round(
+    (hoursSavedPerDayPerPerson * teamSize * workingDaysPerMonth) / hoursPerDay,
+  );
+
+  // Emails écrits sans effort par mois
+  const emailsAutoPerMonth = Math.round(
+    teamSize * emailsPerDayPerPerson * workingDaysPerMonth * aiEfficiency,
+  );
+
+  // Comptes-rendus / synthèses générés
+  const reportsAutoPerMonth = Math.round(teamSize * reportsPerMonthPerPerson * aiEfficiency);
+
+  // Pourcentage du temps quotidien rendu à la valeur ajoutée
+  const pctTimeFreedDaily = Math.round((hoursSavedPerDayPerPerson / hoursPerDay) * 100);
+
+  return {
+    hoursSavedPerDayPerPerson,
+    hoursSavedPerWeekTeam,
+    daysLiberatedPerMonth,
+    emailsAutoPerMonth,
+    reportsAutoPerMonth,
+    pctTimeFreedDaily,
+  };
 }

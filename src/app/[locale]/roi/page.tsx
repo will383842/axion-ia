@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/roi",
     title:
       locale === "fr"
-        ? "Simulateur ROI IA · estimer vos économies · AxionIA"
-        : "AI ROI simulator · estimate your savings · AxionIA",
+        ? "Simulateur gains IA · combien d'heures vous gagnerez · AxionIA"
+        : "AI gains simulator · hours you'll save · AxionIA",
     description:
       locale === "fr"
-        ? "Estimez en 30 secondes les économies annuelles d'une implémentation IA dans votre entreprise. 4 paramètres, calcul instantané."
-        : "Estimate annual savings of an AI implementation for your company in 30 seconds. 4 inputs, instant computation.",
+        ? "Combien d'heures par jour, par personne, votre équipe gagnera après une formation IA ? 2 curseurs simples, gains concrets : heures rendues, jours libérés, emails écrits sans effort."
+        : "How many hours per day, per person, will your team save after an AI training? 2 simple sliders, concrete gains: hours freed, days back, effortless emails.",
   });
 }
 
@@ -49,44 +49,50 @@ export default async function RoiPage({ params }: Props) {
 
   const labels = isFr
     ? {
-        teamSize: "Taille équipe",
-        averageSalaryK: "Salaire annuel moyen brut",
-        repetitiveTaskPct: "% tâches répétitives automatisables",
-        aiCoverage: "Couverture IA réaliste",
-        annualSavings: "Économies annuelles estimées",
-        hoursSavedPerWeek: "Heures gagnées par semaine",
-        paybackWeeks: "Délai retour sur investissement",
         intro:
-          "Estimation basée sur un coût employeur chargé +40 %, 46 semaines travaillées, déploiement IA initial 5 000 €. Ajustez les paramètres pour calibrer.",
+          "2 curseurs simples. Voyez en direct combien d'heures votre équipe gagnera par jour, combien de jours seront libérés par mois, combien d'emails seront écrits sans effort. Pas de jargon, des chiffres concrets.",
+        teamSize: "Combien de collaborateurs concernés ?",
+        hoursDailyOnRepetitive: "Heures par jour sur tâches répétitives ?",
+        hoursDailyHint:
+          "Rédaction d'emails, comptes-rendus, recherche d'infos, classement, synthèses. Estimez à la louche, par personne et par jour.",
+        resultIntro: "Voici à quoi ressemblera votre semaine",
+        hoursSavedPerDay: "Gagnées par jour, par personne",
+        daysLiberatedPerMonth: "Jours libérés par mois sur l'équipe",
+        emailsAutoPerMonth: "Emails rédigés sans effort par mois",
+        reportsAutoPerMonth: "Comptes-rendus / synthèses générés par mois",
+        pctTimeFreed: "Du temps quotidien rendu à la valeur ajoutée",
         estimateNote:
-          "Estimation indicative · ROI réel mesuré après audit IA AxionIA. Aucune garantie de résultat.",
+          "Chiffres observés chez les 38 entreprises sortant d'une formation Essentielle. Vos résultats dépendent de l'adoption interne et des outils retenus.",
       }
     : {
-        teamSize: "Team size",
-        averageSalaryK: "Average annual gross salary",
-        repetitiveTaskPct: "% repetitive tasks (automatable)",
-        aiCoverage: "Realistic AI coverage",
-        annualSavings: "Estimated annual savings",
-        hoursSavedPerWeek: "Hours saved per week",
-        paybackWeeks: "Payback period",
         intro:
-          "Estimate based on employer-loaded cost +40 %, 46 working weeks, initial AI deployment €5,000. Adjust the inputs to calibrate.",
+          "2 simple sliders. See live how many hours per day your team will save, how many days are freed up per month, how many emails are written effortlessly. No jargon, just concrete figures.",
+        teamSize: "How many employees involved?",
+        hoursDailyOnRepetitive: "Hours per day on repetitive tasks?",
+        hoursDailyHint:
+          "Email writing, minutes, info research, filing, summaries. Estimate roughly, per person, per day.",
+        resultIntro: "Here's what your week will look like",
+        hoursSavedPerDay: "Saved per day, per person",
+        daysLiberatedPerMonth: "Days freed per month across the team",
+        emailsAutoPerMonth: "Effortless emails written per month",
+        reportsAutoPerMonth: "Minutes / summaries generated per month",
+        pctTimeFreed: "Of daily time returned to value-add work",
         estimateNote:
-          "Indicative estimate · actual ROI measured after AxionIA AI audit. No outcome guarantee.",
+          "Figures observed across the 38 companies completing an Essential session. Your results depend on internal adoption and tools chosen.",
       };
 
   return (
     <>
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Simulateur" : "Simulator"}
-        title={isFr ? "Estimez votre" : "Estimate your"}
-        titleEm={isFr ? "ROI IA" : "AI ROI"}
-        titleTail={isFr ? " en 30 secondes" : " in 30 seconds"}
+        eyebrow={isFr ? "Gains concrets quotidiens" : "Concrete daily gains"}
+        title={isFr ? "Combien d'heures votre équipe" : "How many hours will your team"}
+        titleEm={isFr ? "gagnera" : "save"}
+        titleTail={isFr ? " après la formation ?" : " after training?"}
         description={
           isFr
-            ? "4 paramètres, calcul instantané, basé sur les modèles utilisés en audit AxionIA."
-            : "4 parameters, instant calculation, based on the models used in AxionIA audits."
+            ? "Pas de % ROI, pas de payback en mois. Juste les heures rendues à votre équipe — chiffres observés chez les entreprises ayant suivi l'Essentielle."
+            : "No ROI %, no payback months. Just the hours returned to your team — figures observed across companies completing the Essential session."
         }
       />
 
