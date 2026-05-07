@@ -3,7 +3,7 @@
 > **Source de vérité visuelle officielle** depuis 2026-05-06.
 > Dernière synchro avec le code : **2026-05-07** (sweep complet `globals.css` + `button.tsx` + `Section.tsx` + `Container.tsx` + `Footer.tsx` + `ProductHero.tsx`).
 > Supersedes la direction Webflow-inspired v1 (cf. `docs/adr/0001-design-direction-webflow.md`).
-> Références ADR : `docs/adr/0002-design-pivot-editorial-v3.md`, `docs/adr/0003-button-system-v3.md` (si existant), `docs/adr/0004-typography-baseline-18-15.md`.
+> Références ADR : `docs/adr/0002-design-pivot-editorial-v3.md` et `docs/adr/0002-design-direction-editorial-premium.md` (deux fichiers ADR 0002 coexistent — anomalie de numérotation à arbitrer), `docs/adr/0004-typography-baseline-upgrade-v3-1.md`. ADR 0003 (`0003-lift-formation-ban.md`) traite du vocabulaire commercial, pas du Button system v3 (qui n'a pas d'ADR dédié).
 > Implémentation tokens : `src/app/globals.css` (directive `@theme`).
 
 ---
