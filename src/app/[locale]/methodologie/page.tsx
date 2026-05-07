@@ -11,7 +11,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSchema";
 import { Illustration } from "@/components/visual/Illustration";
-import { buildProductMetadata, buildBreadcrumbJsonLd, buildHowToJsonLd, SITE_URL } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, buildHowToJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -53,16 +54,9 @@ export default async function MethodologyPage({ params }: Props) {
     publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Méthodologie" : "Methodology",
-        href: "/methodologie",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" }];
 
   // HowTo JSON-LD — AEO 2026 critical : Google AI Overviews + Perplexity
   // citent les HowTo schemas pour répondre aux requêtes « comment AxionIA
@@ -195,6 +189,9 @@ export default async function MethodologyPage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO — layout 2 colonnes (text + flow narratif méthodologie). */}
       <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
         <div
@@ -379,7 +376,6 @@ export default async function MethodologyPage({ params }: Props) {
 
       <JsonLd data={articleJsonLd} />
       <JsonLd data={howToJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

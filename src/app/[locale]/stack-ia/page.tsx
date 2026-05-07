@@ -21,7 +21,7 @@ import {
   type StackAccent,
   type StackTool,
 } from "@/content/stack-ia";
-import { buildProductMetadata, buildBreadcrumbJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, buildFaqSpeakableJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -186,7 +186,7 @@ export default async function StackIaPage({ params }: Props) {
     ],
   });
 
-  const faqJsonLd = buildFaqJsonLd({
+  const faqJsonLd = buildFaqSpeakableJsonLd({
     items: STACK_FAQS.map((f) => ({ question: f[loc].question, answer: f[loc].answer })),
   });
 

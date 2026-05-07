@@ -9,9 +9,10 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPost, getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, buildArticleJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -66,17 +67,19 @@ export default async function BlogArticle({ params }: Props) {
     wordCount,
   });
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: "Blog", href: "/blog" },
-      { name: copy.title, href: `/blog/${slug}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). Le composant
+  // Breadcrumbs ajoute automatiquement l'item "Accueil" — on passe juste
+  // le path tail.
+  const breadcrumbItems = [
+    { href: "/blog", label: "Blog" },
+    { href: `/blog/${slug}`, label: copy.title },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section titleAs="h1" eyebrow={post.category} title={copy.title} description={copy.excerpt}>
         <Container className="text-fg-muted flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{post.category}</Badge>
@@ -125,7 +128,6 @@ export default async function BlogArticle({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

@@ -11,7 +11,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Badge } from "@/components/ui/badge";
 import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -47,36 +48,42 @@ export default async function CaseStudyPage({ params }: Props) {
   if (!cs) notFound();
   const copy = cs[loc];
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+  // Article JSON-LD spec AEO/GEO 2026 — factory unifiée (Person author + dateModified
+  // + mainEntityOfPage + image dynamique + keywords + section + wordCount).
+  const articleJsonLd = buildArticleJsonLd({
+    locale: loc,
+    path: `/cas-concrets/${slug}`,
     headline: copy.title,
     description: copy.excerpt,
-    url: `${SITE_URL}/${loc}/cas-concrets/${slug}`,
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
-    inLanguage: loc,
-  } as const;
-
-  const reviewJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Review",
-    itemReviewed: { "@type": "Service", name: "AxionIA AI consulting" },
-    reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-    reviewBody: copy.testimonialQuote,
-    author: { "@type": "Person", name: copy.testimonialAuthor },
-  } as const;
-
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Cas concrets" : "Case studies", href: "/cas-concrets" },
-      { name: copy.title, href: `/cas-concrets/${slug}` },
-    ],
+    datePublished: "2026-05-01",
+    articleSection: isFr ? cs.industry : cs.industryEn,
+    keywords: [cs.industry, cs.industryEn, cs.size ?? ""].filter(Boolean),
   });
+
+  // Review JSON-LD via factory — star rating Google SERP rich results.
+  const reviewJsonLd = buildReviewJsonLd({
+    authorName: copy.testimonialAuthor,
+    authorRole: copy.testimonialRole,
+    ratingValue: 5,
+    reviewBody: copy.testimonialQuote,
+    itemReviewed: {
+      type: "Service",
+      name: isFr ? "Conseil IA opérationnel AxionIA" : "AxionIA operational AI consulting",
+    },
+  });
+
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
+    { href: `/cas-concrets/${slug}`, label: copy.title },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Cas concret" : "Case study"}
@@ -137,7 +144,6 @@ export default async function CaseStudyPage({ params }: Props) {
 
       <JsonLd data={articleJsonLd} />
       <JsonLd data={reviewJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

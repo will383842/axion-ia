@@ -12,7 +12,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, buildPersonJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, buildPersonJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -43,13 +44,9 @@ export default async function About({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "À propos" : "About", href: "/a-propos" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/a-propos", label: isFr ? "À propos" : "About" }];
 
   // Person JSON-LD — E-E-A-T 2026 (Will fondateur identifié auprès des
   // answer engines : Google AI Overviews + Claude.ai + Perplexity + Bing
@@ -59,6 +56,9 @@ export default async function About({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "À propos" : "About"}
@@ -175,7 +175,6 @@ export default async function About({ params }: Props) {
         tone="dark"
       />
 
-      <JsonLd data={breadcrumb} />
       <JsonLd data={personJsonLd} />
     </>
   );

@@ -125,7 +125,7 @@ export default async function PressePage({ params }: Props) {
     url: pageUrl,
     name: t("metaTitle"),
     description: t("metaDescription"),
-    inLanguage: isFr ? "fr-FR" : "en-US",
+    inLanguage: loc,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     speakable: {
       "@type": "SpeakableSpecification",
@@ -189,10 +189,10 @@ export default async function PressePage({ params }: Props) {
               description: r.dek,
               datePublished: r.publishedAt,
               dateModified: r.publishedAt,
-              inLanguage: isFr ? "fr-FR" : "en-US",
+              inLanguage: loc,
               author: { "@type": "Organization", name: "AxionIA OÜ" },
               publisher: { "@type": "Organization", name: "AxionIA OÜ", url: SITE_URL },
-              image: `${SITE_URL}/og/og-axionia.png`,
+              image: `${SITE_URL}/api/og?title=${encodeURIComponent(r.title)}&accent=primary`,
             },
           })),
         }
