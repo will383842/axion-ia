@@ -39,8 +39,8 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
     ? [
         {
           icon: MapPin,
-          label: "OÜ estonienne",
-          detail: "Société européenne · facturation HT",
+          label: "Cabinet européen",
+          detail: "AxionIA OÜ · facturation HT",
         },
         {
           icon: ShieldCheck,
@@ -61,8 +61,8 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
     : [
         {
           icon: MapPin,
-          label: "Estonian OÜ",
-          detail: "EU-registered company · excl. VAT invoicing",
+          label: "European consultancy",
+          detail: "AxionIA OÜ · excl. VAT invoicing",
         },
         {
           icon: ShieldCheck,

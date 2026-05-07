@@ -84,7 +84,7 @@ export default async function MyDataPage({ params }: Props) {
             {rights.map(([h, p]) => (
               <li key={h} className="py-4">
                 <h2 className="text-fg text-base font-semibold tracking-tight">{h}</h2>
-                <p className="text-fg-soft mt-1 text-sm leading-relaxed">{p}</p>
+                <p className="text-fg-soft mt-1 text-base leading-relaxed">{p}</p>
               </li>
             ))}
           </ul>
@@ -100,8 +100,8 @@ export default async function MyDataPage({ params }: Props) {
             </p>
             <p>
               {isFr
-                ? "En cas de réponse insatisfaisante, vous pouvez saisir l'autorité estonienne de protection des données (Andmekaitse Inspektsioon) ou l'autorité équivalente de votre État membre UE (CNIL en France)."
-                : "If the response is unsatisfactory, you can file a complaint with the Estonian Data Protection Inspectorate (Andmekaitse Inspektsioon) or the equivalent authority in your EU member state (CNIL in France)."}
+                ? "En cas de réponse insatisfaisante, vous pouvez saisir l'autorité de protection des données compétente (Andmekaitse Inspektsioon · AKI) ou l'autorité équivalente de votre État membre UE (CNIL en France)."
+                : "If the response is unsatisfactory, you can file a complaint with the competent Data Protection Authority (Andmekaitse Inspektsioon · AKI) or the equivalent authority in your EU member state (CNIL in France)."}
             </p>
             <Cta href="/rgpd" variant="outline">
               {isFr ? "Voir la politique RGPD complète" : "See full GDPR policy"} →

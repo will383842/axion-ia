@@ -99,8 +99,8 @@ export default async function About({ params }: Props) {
           <p>
             <strong>{isFr ? "ROI mesurable." : "Measurable ROI."}</strong>{" "}
             {isFr
-              ? "Plan d'action chiffré 90 jours, support post-livraison inclus."
-              : "Costed 90-day action plan, post-delivery support included."}
+              ? "Plan d'action chiffré priorisé, support post-livraison inclus."
+              : "Costed prioritised action plan, post-delivery support included."}
           </p>
           <p>
             <strong>{isFr ? "Souveraineté." : "Sovereignty."}</strong>{" "}

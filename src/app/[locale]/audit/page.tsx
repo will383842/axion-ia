@@ -1102,8 +1102,8 @@ export default async function AuditListing({ params }: Props) {
                     "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par AxionIA (Module 3 Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en œuvre — sans frais additionnels si elle tient en 60 minutes.",
                 },
                 {
-                  id: "estonia",
-                  question: "Vous êtes une OÜ estonienne. C'est légal en France ?",
+                  id: "eu-jurisdiction",
+                  question: "AxionIA peut-elle facturer en France ?",
                   answer:
                     "Oui. AxionIA OÜ est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
                 },
@@ -1140,8 +1140,8 @@ export default async function AuditListing({ params }: Props) {
                     "You leave with a costed action plan, executable by your teams or by AxionIA (Module 3 Implementation). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
                 },
                 {
-                  id: "estonia",
-                  question: "You're an Estonian OÜ. Is that legal in France?",
+                  id: "eu-jurisdiction",
+                  question: "Can AxionIA invoice in France?",
                   answer:
                     "Yes. AxionIA OÜ is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
                 },

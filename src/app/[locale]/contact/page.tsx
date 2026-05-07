@@ -127,10 +127,6 @@ export default async function Contact({ params }: Props) {
             <strong>{isFr ? "Société" : "Company"} :</strong> AxionIA OÜ
           </p>
           <p>
-            <strong>{isFr ? "Juridiction" : "Jurisdiction"} :</strong>{" "}
-            {isFr ? "Estonie · Tallinn" : "Estonia · Tallinn"}
-          </p>
-          <p>
             <strong>Email :</strong>{" "}
             <a href="mailto:contact@axion-ia.com" className="text-primary hover:underline">
               contact@axion-ia.com
@@ -138,8 +134,8 @@ export default async function Contact({ params }: Props) {
           </p>
           <p className="text-fg-soft text-sm">
             {isFr
-              ? "Numéro d'enregistrement et coordonnées complètes : voir mentions légales."
-              : "Registration number and full details: see legal notice."}
+              ? "Coordonnées complètes et juridiction : voir mentions légales."
+              : "Full details and jurisdiction: see legal notice."}
           </p>
         </Container>
       </Section>

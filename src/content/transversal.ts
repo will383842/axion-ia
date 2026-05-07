@@ -5,8 +5,8 @@ export const ABOUT_TIMELINE = [
   {
     id: "2024",
     date: "2024",
-    fr: { title: "Création d'AxionIA OÜ", description: "Lancement du cabinet à Tallinn." },
-    en: { title: "AxionIA OÜ founded", description: "Consultancy launched in Tallinn." },
+    fr: { title: "Création d'AxionIA OÜ", description: "Lancement du cabinet IA opérationnel." },
+    en: { title: "AxionIA OÜ founded", description: "Operational AI consultancy launched." },
   },
   {
     id: "2025",
@@ -56,12 +56,12 @@ export const FAQ_GLOBAL = [
     fr: {
       question: "Qu'est-ce qu'AxionIA ?",
       answer:
-        "AxionIA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI mesurable en 90 jours.",
+        "AxionIA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable.",
     },
     en: {
       question: "What is AxionIA?",
       answer:
-        "AxionIA is an operational AI consultancy for companies. We work on site (or remote) to identify, demonstrate and implement AI use cases generating measurable ROI within 90 days.",
+        "AxionIA is an operational AI consultancy for companies. We work on site (or remote) to identify, demonstrate and implement AI use cases generating costed, measurable ROI.",
     },
   },
   {
@@ -108,12 +108,12 @@ export const FAQ_GLOBAL = [
     fr: {
       question: "Comment se passe la facturation ?",
       answer:
-        "Société estonienne (OÜ). Devis fixe + virement + facture (TVA EE selon résidence). Aucune mensualité, aucun engagement.",
+        "AxionIA OÜ. Devis fixe + virement + facture (régime TVA UE selon résidence du client). Aucune mensualité, aucun engagement.",
     },
     en: {
       question: "How does billing work?",
       answer:
-        "Estonian company (OÜ). Fixed quote + bank transfer + invoice (EU VAT according to residence). No subscriptions, no commitments.",
+        "AxionIA OÜ. Fixed quote + bank transfer + invoice (EU VAT regime according to client residence). No subscriptions, no commitments.",
     },
   },
 ] as const;
@@ -263,13 +263,13 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     category: "Comprendre un audit IA",
     fr: {
       title: "Quel est le périmètre d'un audit IA AxionIA ?",
-      excerpt: "Cartographie complète, chiffrage par opportunité, plan 90 jours.",
-      body: "L'audit IA AxionIA couvre 5 jours d'analyse : (1) cartographie de vos process actuels via interviews ; (2) identification de 8-15 opportunités IA scorées ROI/complexité ; (3) chiffrage individuel chaque opportunité (effort + coût + délai) ; (4) plan d'implémentation 90 jours priorisé ; (5) recommandations gouvernance données + sourcing modèles. Livrable : document PDF 25-40 pages + atelier de restitution 2 h.",
+      excerpt: "Cartographie complète, chiffrage par opportunité, plan d'implémentation priorisé.",
+      body: "L'audit IA AxionIA couvre 5 jours d'analyse : (1) cartographie de vos process actuels via interviews ; (2) identification de 8-15 opportunités IA scorées ROI/complexité ; (3) chiffrage individuel chaque opportunité (effort + coût + délai) ; (4) plan d'implémentation priorisé ; (5) recommandations gouvernance données + sourcing modèles. Livrable : document PDF 25-40 pages + atelier de restitution 2 h.",
     },
     en: {
       title: "What is the scope of an AxionIA AI audit?",
-      excerpt: "Complete mapping, per-opportunity costing, 90-day plan.",
-      body: "The AxionIA AI audit covers 5 days of analysis: (1) mapping your current processes via interviews; (2) identifying 8-15 AI opportunities scored ROI/complexity; (3) individual costing of each opportunity (effort + cost + timeline); (4) prioritised 90-day implementation plan; (5) data governance + model sourcing recommendations. Deliverable: 25-40 page PDF + 2h debrief workshop.",
+      excerpt: "Complete mapping, per-opportunity costing, prioritised implementation plan.",
+      body: "The AxionIA AI audit covers 5 days of analysis: (1) mapping your current processes via interviews; (2) identifying 8-15 AI opportunities scored ROI/complexity; (3) individual costing of each opportunity (effort + cost + timeline); (4) prioritised implementation plan; (5) data governance + model sourcing recommendations. Deliverable: 25-40 page PDF + 2h debrief workshop.",
     },
   },
   {
@@ -290,14 +290,14 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     slug: "facturation-tva-ee",
     category: "Facturation & TVA EE",
     fr: {
-      title: "Comment fonctionne la facturation TVA estonienne ?",
-      excerpt: "Société OÜ, virement, TVA selon résidence du client.",
-      body: "AxionIA OÜ est une société estonienne. Pour les clients UE B2B avec n° TVA intracommunautaire valide : autoliquidation, facture sans TVA. Pour clients UE B2C ou sans n° TVA : TVA EE 22 % appliquée. Pour clients hors UE : facture sans TVA, hors-champ. Paiement par virement SEPA/SWIFT, devis fixe, aucune mensualité. La facture est livrée par PDF signé sous 48 h après prestation.",
+      title: "Comment fonctionne la facturation TVA UE ?",
+      excerpt: "AxionIA OÜ, virement, TVA selon résidence du client.",
+      body: "AxionIA OÜ applique le régime TVA UE. Pour les clients UE B2B avec n° TVA intracommunautaire valide : autoliquidation, facture sans TVA. Pour clients UE B2C ou sans n° TVA : TVA UE applicable selon le siège du cabinet. Pour clients hors UE : facture sans TVA, hors-champ. Paiement par virement SEPA/SWIFT, devis fixe, aucune mensualité. La facture est livrée par PDF signé sous 48 h après prestation.",
     },
     en: {
-      title: "How does Estonian VAT billing work?",
-      excerpt: "OÜ company, bank transfer, VAT according to client residence.",
-      body: "AxionIA OÜ is an Estonian company. For EU B2B clients with valid intracommunity VAT number: reverse charge, invoice without VAT. For EU B2C or clients without VAT number: 22% Estonian VAT applied. For non-EU clients: invoice without VAT, out of scope. Payment via SEPA/SWIFT bank transfer, fixed quote, no subscriptions. Signed PDF invoice delivered within 48h of service.",
+      title: "How does EU VAT billing work?",
+      excerpt: "AxionIA OÜ, bank transfer, VAT according to client residence.",
+      body: "AxionIA OÜ applies the EU VAT regime. For EU B2B clients with valid intracommunity VAT number: reverse charge, invoice without VAT. For EU B2C or clients without VAT number: EU VAT applicable based on the consultancy's home jurisdiction. For non-EU clients: invoice without VAT, out of scope. Payment via SEPA/SWIFT bank transfer, fixed quote, no subscriptions. Signed PDF invoice delivered within 48h of service.",
     },
   },
   {

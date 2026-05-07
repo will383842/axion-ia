@@ -19,9 +19,9 @@ export default function SectionsPage() {
   return (
     <>
       <Hero
-        eyebrow="Sprint 4 — composite gallery"
+        eyebrow="Editorial v3.1 — composite gallery"
         title="Sections live"
-        description="All composite blocks rendered with realistic placeholders. Swap data for real content in Sprint 5+."
+        description="All composite blocks rendered with realistic placeholders. Reference page for design parity audits."
         cta={
           <>
             <Button>Primary CTA</Button>
@@ -35,7 +35,11 @@ export default function SectionsPage() {
           items={[
             { id: "a", title: "Mobile-first", description: "Tested at 360 px first." },
             { id: "b", title: "WCAG 2.2 AA", description: "Touch targets 44 px, focus visible." },
-            { id: "c", title: "Webflow-inspired", description: "Manrope + 5-layer shadow stack." },
+            {
+              id: "c",
+              title: "Editorial v3.1",
+              description: "Manrope + Fraunces + 5-layer shadow stack.",
+            },
           ]}
         />
       </Section>
@@ -163,7 +167,7 @@ export default function SectionsPage() {
                 id: "2024",
                 date: "2024",
                 title: "Création AxionIA OÜ",
-                description: "Lancement du cabinet à Tallinn.",
+                description: "Lancement du cabinet IA opérationnel.",
               },
               {
                 id: "2025",

@@ -71,7 +71,7 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "02",
           h: "Auditer",
-          p: "Audit IA en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation 90 jours chiffré. Livrable PDF 25-40 pages + atelier de restitution.",
+          p: "Audit IA en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation chiffré priorisé. Livrable PDF 25-40 pages + atelier de restitution.",
         },
         {
           n: "03",
@@ -81,7 +81,7 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "04",
           h: "Mesurer",
-          p: "Mesure du ROI réel sur 90 jours post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée. Pas d'engagement long terme.",
+          p: "Mesure du ROI réel post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée. Pas d'engagement long terme.",
         },
       ]
     : [
@@ -93,7 +93,7 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "02",
           h: "Audit",
-          p: "5-day AI audit: complete mapping, ROI/complexity scoring per opportunity, costed 90-day implementation plan. 25-40 page PDF deliverable + debrief workshop.",
+          p: "5-day AI audit: complete mapping, ROI/complexity scoring per opportunity, costed prioritised implementation plan. 25-40 page PDF deliverable + debrief workshop.",
         },
         {
           n: "03",
@@ -103,7 +103,7 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "04",
           h: "Measure",
-          p: "Real ROI measurement over 90 days post-deployment: hours saved, costs saved, qualitative impact. Iteration if quality drift observed. No long-term commitment.",
+          p: "Real ROI measurement post-deployment: hours saved, costs saved, qualitative impact. Iteration if quality drift observed. No long-term commitment.",
         },
       ];
 

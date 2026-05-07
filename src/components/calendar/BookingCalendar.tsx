@@ -1171,7 +1171,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
               max-h-[97vh] et popup XL, le scroll est rare en pratique. */}
             <div className="max-h-[calc(97vh-160px)] overflow-y-auto px-6 py-6 sm:px-9 sm:py-7 lg:px-12 lg:py-8">
               <DialogHeader className="sr-only">
-                <DialogTitle>Réservation</DialogTitle>
+                <DialogTitle>{isFr ? "Réservation" : "Booking"}</DialogTitle>
               </DialogHeader>
 
               {submittingState === "success" ? (
@@ -1895,8 +1895,8 @@ function StepRecap(props: {
         <p className="text-fg-soft text-[13px] leading-relaxed">
           <span className="text-fg font-semibold">
             {isFr
-              ? "Hébergement Hetzner Frankfurt · RGPD · OÜ estonienne"
-              : "Hetzner Frankfurt hosting · GDPR · Estonian OÜ"}
+              ? "Hébergement Hetzner Frankfurt · RGPD · Cabinet européen"
+              : "Hetzner Frankfurt hosting · GDPR · European consultancy"}
           </span>
           {" · "}
           {isFr

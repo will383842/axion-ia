@@ -78,8 +78,10 @@ export default async function CaseStudyPage({ params }: Props) {
   return (
     <>
       <Section
-        eyebrow={isFr ? "Cas concret · accent green" : "Case study · green accent"}
+        titleAs="h1"
+        eyebrow={isFr ? "Cas concret" : "Case study"}
         title={copy.title}
+        description={copy.excerpt}
       >
         <Container className="flex flex-wrap gap-2">
           <Badge variant="neutral">{isFr ? cs.industry : cs.industryEn}</Badge>
@@ -122,8 +124,8 @@ export default async function CaseStudyPage({ params }: Props) {
         title={isFr ? "Démarrez votre propre cas concret" : "Start your own case study"}
         description={
           isFr
-            ? "L'Essentielle 490 € pose le diagnostic + le plan d'action 90 jours."
-            : "The Essential €490 frames the diagnostic and the 90-day action plan."
+            ? "L'Essentielle 490 € pose le diagnostic + le plan d'action chiffré."
+            : "The Essential €490 frames the diagnostic and the costed action plan."
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">

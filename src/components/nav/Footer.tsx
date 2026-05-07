@@ -111,8 +111,6 @@ export async function Footer() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
             <span className="text-mocha-fg/85 font-medium">© {year} AxionIA OÜ</span>
             <Dot />
-            <span>{isFr ? "Tallinn, Estonie" : "Tallinn, Estonia"}</span>
-            <Dot />
             <span>{isFr ? "Hébergé en UE" : "Hosted in EU"}</span>
             <Dot />
             <span>RGPD</span>
@@ -139,9 +137,7 @@ export async function Footer() {
 }
 
 function Dot() {
-  return (
-    <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />
-  );
+  return <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />;
 }
 
 interface FooterColumnProps {

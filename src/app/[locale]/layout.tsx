@@ -99,7 +99,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     name: "AxionIA",
     url: SITE_URL,
     legalName: "AxionIA OÜ",
-    foundingLocation: { "@type": "Country", name: "Estonia" },
   } as const;
   const websiteJsonLd = {
     "@context": "https://schema.org",

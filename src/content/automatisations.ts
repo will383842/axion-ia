@@ -726,7 +726,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
         {
           title: "Prévisions de vente",
           benefit:
-            "Vous savez quel sera votre CA dans 30 / 60 / 90 jours, par produit et par client. Vous achetez juste, vous staffez juste.",
+            "Vous savez quel sera votre CA dans 30 / 60 / 120 jours, par produit et par client. Vous achetez juste, vous staffez juste.",
           audience: "E-commerce, industrie, distribution",
         },
         {
@@ -788,7 +788,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
         {
           title: "Sales forecasting",
           benefit:
-            "You know your revenue in 30 / 60 / 90 days, by product and customer. You buy right, you staff right.",
+            "You know your revenue in 30 / 60 / 120 days, by product and customer. You buy right, you staff right.",
           audience: "E-commerce, manufacturing, distribution",
         },
         {

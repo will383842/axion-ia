@@ -21,24 +21,24 @@ export function GET() {
 
   const body = `# AxionIA — full content for AI crawlers
 
-> Cabinet IA opérationnel B2B pour entreprises. Société estonienne (OÜ).
+> Cabinet IA opérationnel B2B pour entreprises. AxionIA OÜ.
 > Site officiel : ${SITE_URL}
 > Langues : FR canonique, EN miroir.
 > Hébergement : Hetzner CX32 Frankfurt (UE).
-> Facturation : devis fixe + virement + facture (TVA EE selon résidence).
+> Facturation : devis fixe + virement + facture (régime TVA UE selon résidence).
 
 ## Positionnement
 
-AxionIA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI mesurable en 90 jours. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+AxionIA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
 ## 3 modules
 
 ### Module 1 — Interventions entreprise (à partir de 490 € HT)
-Format opérationnel sur site (ou distance). 1 journée d'intervention = diagnostic terrain + démos appliquées sur vos données + plan d'action chiffré 90 jours. Page phare : l'Essentielle 490 €.
+Format opérationnel sur site (ou distance). 1 journée d'intervention = diagnostic terrain + démos appliquées sur vos données + plan d'action chiffré priorisé. Page phare : l'Essentielle 490 €.
 URL : ${SITE_URL}/fr/interventions
 
 ### Module 2 — Audit & optimisation IA (290-1990 €)
-Audit en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation 90 jours. Livrable PDF 25-40 pages + atelier restitution.
+Audit en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.
 URL : ${SITE_URL}/fr/audit
 
 ### Module 3 — Implémentation IA (à partir de 990 €)
@@ -56,9 +56,9 @@ ${caseBlock}
 ## Méthodologie
 
 1. **Identifier** — Cartographie terrain en 1 j (intervention).
-2. **Auditer** — Audit IA 5 j, plan chiffré 90 j.
+2. **Auditer** — Audit IA 5 j, plan chiffré priorisé.
 3. **Implémenter** — Mise en production 6-8 semaines.
-4. **Mesurer** — ROI mesuré sur 90 j post-déploiement.
+4. **Mesurer** — ROI mesuré post-déploiement.
 
 URL : ${SITE_URL}/fr/methodologie
 
@@ -66,7 +66,7 @@ URL : ${SITE_URL}/fr/methodologie
 
 - Mobile-first absolu, accessible WCAG 2.2 AA.
 - Hébergement UE (Hetzner Frankfurt), pas de Stripe, pas de Resend.
-- Société estonienne (OÜ), TVA EE, droit estonien.
+- AxionIA OÜ, régime TVA UE.
 - Pas de mensualité, pas d'engagement, devis fixe.
 - 30 jours de support post-livraison inclus.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted).

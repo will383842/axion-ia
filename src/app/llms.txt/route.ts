@@ -11,7 +11,7 @@ const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
 export function GET() {
   const body = `# AxionIA
 
-> Cabinet IA opérationnel B2B pour entreprises. OÜ estonienne.
+> Cabinet IA opérationnel B2B pour entreprises. Cabinet européen (AxionIA OÜ).
 > Site officiel : ${SITE_URL}
 > Langues : FR (canonique), EN.
 
@@ -26,7 +26,7 @@ export function GET() {
 
 - Mobile-first absolu, accessible WCAG 2.2 AA.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted).
-- Société estonienne — TVA EE — droit estonien.
+- AxionIA OÜ — régime TVA UE.
 `;
 
   return new Response(body, {

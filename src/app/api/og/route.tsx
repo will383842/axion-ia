@@ -103,7 +103,7 @@ export function GET(req: Request) {
         }}
       >
         <span>axion-ia.com</span>
-        <span>OÜ estonienne · UE</span>
+        <span>Cabinet IA · UE</span>
       </div>
 
       {/* Webflow accent stripe */}

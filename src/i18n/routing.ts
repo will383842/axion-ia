@@ -88,6 +88,7 @@ export const routing = defineRouting({
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },
     "/contact": { fr: "/contact", en: "/contact" },
+    "/presse": { fr: "/presse", en: "/press" },
     "/blog": "/blog",
     "/blog/[slug]": "/blog/[slug]",
     "/blog/categorie/[slug]": { fr: "/blog/categorie/[slug]", en: "/blog/category/[slug]" },

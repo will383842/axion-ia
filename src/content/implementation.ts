@@ -84,13 +84,13 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Automatiser vos processus métier",
       answer:
-        "Automatisation IA de processus métier : ordres de mission, validations, reporting, workflow conditionnels. Connexion à vos outils (CRM, ERP, mail, calendrier). ROI mesurable sur 90 jours.",
+        "Automatisation IA de processus métier : ordres de mission, validations, reporting, workflow conditionnels. Connexion à vos outils (CRM, ERP, mail, calendrier). ROI mesurable.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
       title: "Automate your business processes",
       answer:
-        "AI process automation: work orders, sign-offs, reporting, conditional workflows. Connection to your tools (CRM, ERP, mail, calendar). 90-day measurable ROI.",
+        "AI process automation: work orders, sign-offs, reporting, conditional workflows. Connection to your tools (CRM, ERP, mail, calendar). Measurable ROI.",
     }),
   },
   {

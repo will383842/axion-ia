@@ -31,11 +31,11 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     locale,
     path: "/",
     title: isFr
-      ? "Cabinet IA opérationnel · ROI 90 jours · AxionIA"
-      : "Operational AI consultancy · 90-day ROI · AxionIA",
+      ? "Cabinet IA opérationnel · ROI mesurable · AxionIA"
+      : "Operational AI consultancy · Measurable ROI · AxionIA",
     description: isFr
-      ? "Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, OÜ estonienne, à partir de 490 €."
-      : "On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, Estonian OÜ, from €490.",
+      ? "Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de 490 €."
+      : "On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from €490.",
     alternates: { fr: "/", en: "/" },
   });
 }
@@ -191,7 +191,6 @@ export default async function Home({ params }: HomeProps) {
     address: {
       "@type": "PostalAddress",
       addressCountry: "EE",
-      addressLocality: "Tallinn",
     },
   } as const;
 
