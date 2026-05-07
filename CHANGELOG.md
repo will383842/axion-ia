@@ -30,7 +30,11 @@ Format inspiré de [Keep a Changelog 1.1](https://keepachangelog.com/en/1.1.0/) 
 
 ### Removed
 
-- ~~Mot « formation » banni partout~~ — ban LEVÉ par ADR 0003 (lift formation ban). Plus aucun gate `anti-formation` côté CI.
+- ~~Mot « formation » banni partout~~ — gate CI retiré par ADR 0003 (2026-05-07). **Convention éditoriale 2026-05-08 (ADR 0008) supersedes** : « formation » doit être remplacé par « intervention coaching » partout (copy / slug / commit / meta / JSON-LD / content / seeds). Pas de gate CI ré-ajouté.
+
+### Added (2026-05-08)
+
+- ADR 0008 — Vocabulaire : « formation » → « intervention coaching » (`axionia/docs/adr/0008-vocabulary-intervention-coaching.md`). Sweep résiduel sur `src/content/*.ts` + `messages/*.json` à programmer Sprint 15+.
 
 ---
 

@@ -1,9 +1,9 @@
 # Design.md — AxionIA · Doctrine visuelle v3 « Editorial Premium Light »
 
 > **Source de vérité visuelle officielle** depuis 2026-05-06.
-> Dernière synchro avec le code : **2026-05-07** (sweep complet `globals.css` + `button.tsx` + `Section.tsx` + `Container.tsx` + `Footer.tsx` + `ProductHero.tsx`).
+> Dernière synchro avec le code : **2026-05-08** (typography hierarchy v3.2 — modular scale + hero cap, voir ADR 0007).
 > Supersedes la direction Webflow-inspired v1 (cf. `docs/adr/0001-design-direction-webflow.md`).
-> Références ADR : `docs/adr/0002-design-pivot-editorial-v3.md`, `docs/adr/0004-typography-baseline-upgrade-v3-1.md`. ADR 0003 (`0003-lift-formation-ban.md`) traite du vocabulaire commercial, pas du Button system v3 (qui n'a pas d'ADR dédié).
+> Références ADR : `docs/adr/0002-design-pivot-editorial-v3.md`, `docs/adr/0004-typography-baseline-upgrade-v3-1.md`, `docs/adr/0007-typography-hierarchy-v3-2.md`. ADR 0003 (`0003-lift-formation-ban.md`) traite du vocabulaire commercial, pas du Button system v3 (qui n'a pas d'ADR dédié).
 > Implémentation tokens : `src/app/globals.css` (directive `@theme`).
 
 ---
@@ -127,18 +127,36 @@ Fallbacks : sans → `-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui` 
 
 ### 3.2 — Échelle (mobile-first, scale clamp pour fluide)
 
-> **v3.1 — 2026-05-07** : baseline corps montée de 16 → 18 px et `text-sm` 14 → 15 px pour s'aligner sur Anthropic (référence doctrinale, Design.md §1) et sortir du ressenti « tout petit sauf hero ». Voir ADR 0004 et `_AUDIT/AUDIT-TYPOGRAPHY-2026.md`. Tailwind v4 defaults `text-base` et `text-sm` sont **explicitement overridés dans `@theme`** ; tout le code consomme `text-base` (= `--text-base` = 18 px), `text-sm` (= `--text-sm` = 15 px), etc.
+> **v3.2 — 2026-05-08** : modular scale 2026 complète. Tailwind v4 `text-lg` à `text-7xl` overridés dans `@theme` pour lisser la pyramide (H3 ratio 1.22-1.44, H2 ratio 2.22-2.89). Hero capped 88 px (vs 112 px v3.1) pour ratio hero/body 4.89× (médiane 2026 = 4.4×). Voir ADR 0007 et `_AUDIT/AUDIT-TYPOGRAPHY-2026.md`.
+
+> **v3.1 — 2026-05-07** : baseline corps montée de 16 → 18 px et `text-sm` 14 → 15 px (ADR 0004). Conservé en v3.2.
+
+#### Échelle Tailwind (overridée dans `@theme`)
+
+| Classe      | v3.2 (px)   | Line-height | Tracking | Usage doctrinaire           |
+| ----------- | ----------- | ----------- | -------- | --------------------------- |
+| `text-xs`   | 12 default  | 1.4         | —        | micro-labels                |
+| `text-sm`   | **15** v3.1 | 1.55        | —        | caption, secondaire         |
+| `text-base` | **18** v3.1 | 1.7         | -0.005em | body (corps de texte)       |
+| `text-lg`   | **20** v3.2 | 1.55        | -0.005em | lead court, h6              |
+| `text-xl`   | **22** v3.2 | 1.45        | -0.01em  | h5, h3 dans cards compactes |
+| `text-2xl`  | **26** v3.2 | 1.35        | -0.015em | h4, h3 secondaire           |
+| `text-3xl`  | **32** v3.2 | 1.2         | -0.02em  | h3 desktop, h2 mobile       |
+| `text-4xl`  | **40** v3.2 | 1.1         | -0.025em | h2 standard                 |
+| `text-5xl`  | **52** v3.2 | 1.05        | -0.03em  | h2 hero, h1 secondaire      |
+| `text-6xl`  | **64** v3.2 | 1.02        | -0.035em | h1 standard                 |
+| `text-7xl`  | **80** v3.2 | 1.0         | -0.04em  | h1 hero MAX cap             |
+
+#### Tokens custom (`--text-*`)
 
 | Token             | Taille                      | Line-height | Letter-spacing  | Famille                     | Usage                         |
 | ----------------- | --------------------------- | ----------- | --------------- | --------------------------- | ----------------------------- |
-| `--text-display`  | **7 rem (112 px)**          | 0.96        | -0.04em         | serif Fraunces              | token statique fallback       |
-| `--text-section`  | 4 rem (64 px)               | 1.04        | —               | serif ou sans selon section | h2 section heading            |
-| `--text-sub`      | 2.25 rem (36 px)            | 1.20        | —               | sans                        | h3                            |
-| `--text-feature`  | 1.5 rem (24 px)             | 1.30        | —               | sans                        | feature card title            |
+| `--text-display`  | **5.5 rem (88 px)** v3.2    | 0.98        | -0.04em         | serif Fraunces              | token statique fallback       |
+| `--text-section`  | **3 rem (48 px)** v3.2      | 1.08        | —               | serif ou sans selon section | h2 section heading            |
+| `--text-sub`      | **2 rem (32 px)** v3.2      | 1.20        | —               | sans                        | h3                            |
+| `--text-feature`  | **1.625 rem (26 px)** v3.2  | 1.30        | —               | sans                        | feature card title            |
 | `--text-lead`     | **1.4375 rem (23 px)** v3.1 | 1.50        | —               | sans                        | description hero / lead intro |
 | `--text-body`     | **1.125 rem (18 px)** v3.1  | 1.70        | -0.005em        | sans                        | body (= `text-base` Tailwind) |
-| `--text-base`     | **1.125 rem (18 px)** v3.1  | 1.70        | -0.005em        | sans                        | override Tailwind default     |
-| `--text-sm`       | **0.9375 rem (15 px)** v3.1 | 1.55        | —               | sans                        | override Tailwind default     |
 | `--text-label-up` | 0.8125 rem (13 px)          | 1.30        | **0.16em**      | sans uppercase              | eyebrow, label form           |
 | `--text-caption`  | **0.9375 rem (15 px)** v3.1 | 1.55        | —               | sans                        | caption, metadata             |
 | `--text-badge-up` | 0.75 rem (12 px)            | 1.20        | uppercase       | sans                        | badge inline                  |
@@ -146,9 +164,19 @@ Fallbacks : sans → `-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui` 
 
 **Mesure de ligne cible** : 60-75 ch confort. Avec body 18 px : `max-w-2xl` (672 px) ≈ 75 ch ✓ ; éviter `max-w-3xl` (≈ 85 ch) sur les paragraphes éditoriaux longs.
 
-**Ratio hero/body** : doctrine v3.1 vise ~6.2× (display max 112 px / body 18 px). Médiane benchmark 2026 = 4.4×.
+**Ratios v3.2 (anchored body 18 px)** :
 
-> **⚠ Hero h1 = utility `.display-editorial`, pas le token `--text-display`** : la classe `.display-editorial` (appliquée automatiquement par `<Section titleAs="h1">`) utilise `clamp(3rem, 9vw, 7rem)` + `letter-spacing: -0.035em` (fluide). Le token `--text-display` (statique 7 rem / -0.04em) sert uniquement de fallback hors-utility. **Ne pas confondre.**
+| Niveau        | Px  | Ratio body | Cible 2026 | Verdict  |
+| ------------- | --- | ---------- | ---------- | -------- |
+| Hero display  | 88  | **4.89×**  | ~4.4×      | ✓ aligné |
+| H1 (text-6xl) | 64  | 3.56×      | 3.5-4×     | ✓        |
+| H2 (text-4xl) | 40  | **2.22×**  | ≥2×        | ✓        |
+| H2 hero (5xl) | 52  | 2.89×      | 2.5-3×     | ✓        |
+| H3 (text-3xl) | 32  | **1.78×**  | ≥1.5×      | ✓        |
+| H3 small (xl) | 22  | **1.22×**  | ≥1.2×      | ✓        |
+| Lead          | 23  | 1.28×      | 1.2-1.4×   | ✓        |
+
+> **⚠ Hero h1 = utility `.display-editorial`, pas le token `--text-display`** : la classe `.display-editorial` (appliquée automatiquement par `<Section titleAs="h1">`) utilise `clamp(3rem, 7.5vw, 5.5rem)` v3.2 + `letter-spacing: -0.035em` (fluide). Le token `--text-display` (statique 5.5 rem / -0.04em) sert uniquement de fallback hors-utility. **Ne pas confondre.**
 
 ### 3.3 — Signature éditoriale `em.editorial`
 

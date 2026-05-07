@@ -72,29 +72,59 @@
     serif;
   --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Type scale v3.1 — Editorial Premium 18/15 (ADR 0003, scénario B Anthropic-aligned)
+  /* Type scale v3.2 — Modular hierarchy 2026 (ADR 0007, anchored body 18px Major Third 1.25)
    *
-   * Override des Tailwind v4 defaults : `text-base` (16→18 px), `text-sm` (14→15 px).
-   * Manrope x-height 0.515 < Inter 0.546 → bump nécessaire pour parité perceptive.
-   * Médiane 2026 (6 sites benchmark) = 17 px ; Anthropic = 18 px → on s'aligne sur la doctrine.
-   * Délibérément hors scope : `display-editorial` (clamp 3rem→7rem) inchangé. */
-  --text-base: 1.125rem; /* 18 px — était 16 px Tailwind default */
+   * Override des Tailwind v4 defaults : `text-base` (16→18 px), `text-sm` (14→15 px),
+   * + `text-lg` (18→20), `text-xl` (20→22), `text-2xl` (24→26), `text-3xl` (30→32),
+   * `text-4xl` (36→40), `text-5xl` (48→52), `text-6xl` (60→64), `text-7xl` (72→80).
+   *
+   * Pourquoi : pré-v3.2 le saut H3/body était 1.11× (text-xl=20 / body=18) et le hero
+   * `display-editorial` montait à 112 px, soit ratio hero/body 6.2× — médiane 2026 = 4.4×.
+   * v3.2 lisse la pyramide : H3 ratio 1.22-1.44, H2 ratio 2.22-2.89, hero capped 4.89×
+   * (display 88 px / body 18 px ≈ Stripe Press / Anthropic premium ceiling).
+   *
+   * Manrope x-height 0.515 < Inter 0.546 → on bump 1-2 px chaque palier pour parité perceptive. */
+  --text-base: 1.125rem; /* 18 px — body anchor (était 16 Tailwind default) */
   --text-base--line-height: 1.7;
   --text-base--letter-spacing: -0.005em;
-  --text-sm: 0.9375rem; /* 15 px — était 14 px Tailwind default */
+  --text-sm: 0.9375rem; /* 15 px — caption (était 14 Tailwind default) */
   --text-sm--line-height: 1.55;
+  --text-lg: 1.25rem; /* 20 px — lead, h6 (était 18 Tailwind default) */
+  --text-lg--line-height: 1.55;
+  --text-lg--letter-spacing: -0.005em;
+  --text-xl: 1.375rem; /* 22 px — h5, h3 small (était 20 Tailwind default) */
+  --text-xl--line-height: 1.45;
+  --text-xl--letter-spacing: -0.01em;
+  --text-2xl: 1.625rem; /* 26 px — h4 (était 24 Tailwind default) */
+  --text-2xl--line-height: 1.35;
+  --text-2xl--letter-spacing: -0.015em;
+  --text-3xl: 2rem; /* 32 px — h3 desktop (était 30 Tailwind default) */
+  --text-3xl--line-height: 1.2;
+  --text-3xl--letter-spacing: -0.02em;
+  --text-4xl: 2.5rem; /* 40 px — h2 (était 36 Tailwind default) */
+  --text-4xl--line-height: 1.1;
+  --text-4xl--letter-spacing: -0.025em;
+  --text-5xl: 3.25rem; /* 52 px — h2 hero (était 48 Tailwind default) */
+  --text-5xl--line-height: 1.05;
+  --text-5xl--letter-spacing: -0.03em;
+  --text-6xl: 4rem; /* 64 px — h1 (était 60 Tailwind default) */
+  --text-6xl--line-height: 1.02;
+  --text-6xl--letter-spacing: -0.035em;
+  --text-7xl: 5rem; /* 80 px — h1 hero MAX cap (était 72 Tailwind default) */
+  --text-7xl--line-height: 1;
+  --text-7xl--letter-spacing: -0.04em;
 
-  /* display Fraunces italique géant — signature Anthropic */
-  --text-display: 7rem;
-  --text-display--line-height: 0.96;
+  /* display Fraunces italique — capped 88 px (Stripe Press ceiling, ADR 0007) */
+  --text-display: 5.5rem; /* 88 px — était 112 px ; cap 2026 hero/body 4.89× */
+  --text-display--line-height: 0.98;
   --text-display--letter-spacing: -0.04em;
-  --text-section: 4rem;
-  --text-section--line-height: 1.04;
-  --text-sub: 2.25rem;
+  --text-section: 3rem; /* 48 px — sync avec text-4xl/5xl band (était 64 px) */
+  --text-section--line-height: 1.08;
+  --text-sub: 2rem; /* 32 px — sync avec text-3xl (était 36 px) */
   --text-sub--line-height: 1.2;
-  --text-feature: 1.5rem;
+  --text-feature: 1.625rem; /* 26 px — sync avec text-2xl (était 24 px) */
   --text-feature--line-height: 1.3;
-  --text-lead: 1.4375rem; /* 23 px — était 22 px (ratio body 1.28 ≈ Major Third) */
+  --text-lead: 1.4375rem; /* 23 px — entre text-xl (22) et text-2xl (26), ratio body 1.28 */
   --text-lead--line-height: 1.5;
   --text-body: 1.125rem; /* 18 px — sync avec text-base */
   --text-body--line-height: 1.7;
@@ -229,10 +259,12 @@
     background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
   }
 
-  /* Display giant — Fraunces italique + tracking serré (signature Anthropic) */
+  /* Display giant — Fraunces italique + tracking serré (signature Anthropic).
+     v3.2 (ADR 0007) : cap 7rem→5.5rem (112→88 px) pour ratio hero/body 4.89× (médiane 2026 = 4.4×).
+     Pré-v3.2 le ratio était 6.2× → ressenti « tout petit sauf hero ». */
   .display-editorial {
     font-family: var(--font-serif);
-    font-size: clamp(3rem, 9vw, 7rem);
+    font-size: clamp(3rem, 7.5vw, 5.5rem);
     line-height: 0.98;
     letter-spacing: -0.035em;
     font-weight: 500;
