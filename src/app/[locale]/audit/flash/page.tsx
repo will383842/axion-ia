@@ -16,7 +16,7 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-const SLUG = "cabinet" as const;
+const SLUG = "flash" as const;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function AuditPage({ params }: Props) {
+export default async function AuditFlashPage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
@@ -46,7 +46,7 @@ export default async function AuditPage({ params }: Props) {
       path,
       name: copy.title,
       description: copy.answer,
-      serviceType: "AI audit · firm",
+      serviceType: "AI flash diagnosis",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
     buildBreadcrumbJsonLd({
@@ -62,7 +62,7 @@ export default async function AuditPage({ params }: Props) {
     <ProductPageTemplate
       accent="orange"
       copy={copy}
-      ctaPrimaryHref="/audit/demande"
+      ctaPrimaryHref={`/audit/demande?type=${SLUG}`}
       ctaSecondaryHref="/audit"
       jsonLd={jsonLd}
     />

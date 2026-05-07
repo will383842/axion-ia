@@ -35,12 +35,18 @@ export const routing = defineRouting({
       en: "/interventions/executives",
     },
 
-    // Module 2 — Audit & optimisation
+    // Module 2 — Audit & optimisation (pyramide 4 niveaux 2026-05-07)
     "/audit": { fr: "/audit", en: "/audit" },
-    "/audit/complet": { fr: "/audit/complet", en: "/audit/full" },
-    "/audit/departement": { fr: "/audit/departement", en: "/audit/department" },
-    "/audit/point-de-vente": { fr: "/audit/point-de-vente", en: "/audit/storefront" },
-    "/audit/cabinet": { fr: "/audit/cabinet", en: "/audit/firm" },
+    "/audit/flash": { fr: "/audit/flash", en: "/audit/flash" },
+    "/audit/process": { fr: "/audit/process", en: "/audit/process" },
+    "/audit/strategique-pme": {
+      fr: "/audit/strategique-pme",
+      en: "/audit/strategic-pme",
+    },
+    "/audit/strategique-eti": {
+      fr: "/audit/strategique-eti",
+      en: "/audit/strategic-eti",
+    },
     "/audit/demande": { fr: "/audit/demande", en: "/audit/request" },
 
     // Module 3 — Implémentation IA

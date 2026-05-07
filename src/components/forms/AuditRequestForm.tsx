@@ -1,0 +1,1096 @@
+"use client";
+// use-client: 6-step wizard pour /audit/demande. State local volatile,
+// validation step-by-step via Zod, pré-remplissage via ?type=slug.
+// Submit en stub `[audit-request:submit:stub]` pour Sprint 17.
+
+import * as React from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  ClipboardCheck,
+  Building2,
+  MapPin,
+  Brain,
+  User,
+  Sparkles,
+  Zap,
+  Workflow,
+  Briefcase,
+  Network,
+} from "lucide-react";
+import {
+  auditRequestStep1Schema,
+  auditRequestStep2Schema,
+  auditRequestStep3Schema,
+  auditRequestStep4Schema,
+  auditRequestStep5Schema,
+  auditRequestStep6Schema,
+} from "@/lib/schemas/forms";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { cn } from "@/lib/utils";
+
+type AuditTypeKey = "flash" | "process" | "strategique-pme" | "strategique-eti";
+type SizeKey = "tpe" | "pme" | "mid" | "enterprise";
+type ModalityKey = "remote" | "onsite";
+type ScopeKey = "global" | "single-area";
+type MaturityKey = "zero" | "starting" | "mature";
+
+interface Labels {
+  // Generic
+  step: string; // "Étape" / "Step"
+  next: string;
+  previous: string;
+  cancel: string;
+  submit: string;
+  sending: string;
+  successHeader: string;
+  successTitle: string;
+  successBody: string;
+  successCta: string;
+  failure: string;
+  // Step 1 — type
+  s1Eyebrow: string;
+  s1Title: string;
+  s1Description: string;
+  auditTypes: ReadonlyArray<{
+    key: AuditTypeKey;
+    label: string;
+    description: string;
+    priceFrom: string;
+  }>;
+  // Step 2 — company
+  s2Eyebrow: string;
+  s2Title: string;
+  s2Description: string;
+  sizeLabel: string;
+  sizes: ReadonlyArray<{ key: SizeKey; label: string }>;
+  industryLabel: string;
+  industryPlaceholder: string;
+  companyNameLabel: string;
+  companyNamePlaceholder: string;
+  // Step 3 — modality + location
+  s3Eyebrow: string;
+  s3Title: string;
+  s3Description: string;
+  modalityLabel: string;
+  modalityRemote: string;
+  modalityRemoteHint: string;
+  modalityOnsite: string;
+  modalityOnsiteHint: string;
+  cityLabel: string;
+  cityPlaceholder: string;
+  countryLabel: string;
+  countryPlaceholder: string;
+  // Step 4 — scope + maturity + goals
+  s4Eyebrow: string;
+  s4Title: string;
+  s4Description: string;
+  scopeLabel: string;
+  scopeGlobal: string;
+  scopeGlobalHint: string;
+  scopeSingleArea: string;
+  scopeSingleAreaHint: string;
+  scopeDetailLabel: string;
+  scopeDetailPlaceholder: string;
+  maturityLabel: string;
+  maturityZero: string;
+  maturityStarting: string;
+  maturityMature: string;
+  goalsLabel: string;
+  goalsPlaceholder: string;
+  // Step 5 — contact
+  s5Eyebrow: string;
+  s5Title: string;
+  s5Description: string;
+  contactLabel: string;
+  emailLabel: string;
+  phoneLabel: string;
+  roleLabel: string;
+  rolePlaceholder: string;
+  // Step 6 — recap + consent
+  s6Eyebrow: string;
+  s6Title: string;
+  s6Description: string;
+  consentLabel: string;
+  recapTitle: string;
+  recapModality: string;
+  recapType: string;
+  recapSize: string;
+  recapIndustry: string;
+  recapLocation: string;
+  recapScope: string;
+  recapMaturity: string;
+  recapContact: string;
+  // Step circle labels (mobile)
+  stepLabels: ReadonlyArray<string>; // 6 entries
+}
+
+interface AuditRequestFormProps {
+  labels: Labels;
+}
+
+const STEP_ICONS = [ClipboardCheck, Building2, MapPin, Brain, User, Check] as const;
+
+export function AuditRequestForm({ labels }: AuditRequestFormProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Pré-remplissage via ?type=slug
+  const typeFromUrl = searchParams.get("type") as AuditTypeKey | null;
+  const validTypes: ReadonlyArray<AuditTypeKey> = [
+    "flash",
+    "process",
+    "strategique-pme",
+    "strategique-eti",
+  ];
+  const initialType: AuditTypeKey | null =
+    typeFromUrl && validTypes.includes(typeFromUrl) ? typeFromUrl : null;
+
+  const [step, setStep] = React.useState<1 | 2 | 3 | 4 | 5 | 6>(1);
+  const [submittingState, setSubmittingState] = React.useState<"idle" | "submitting" | "success">(
+    "idle",
+  );
+  const [serverError, setServerError] = React.useState<string | null>(null);
+
+  // Form fields
+  const [auditType, setAuditType] = React.useState<AuditTypeKey | null>(initialType);
+  const [size, setSize] = React.useState<SizeKey | null>(null);
+  const [industry, setIndustry] = React.useState("");
+  const [companyName, setCompanyName] = React.useState("");
+  const [modality, setModality] = React.useState<ModalityKey | null>(null);
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("");
+  const [scope, setScope] = React.useState<ScopeKey | null>(null);
+  const [scopeDetail, setScopeDetail] = React.useState("");
+  const [maturity, setMaturity] = React.useState<MaturityKey | null>(null);
+  const [goals, setGoals] = React.useState("");
+  const [contact, setContact] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [role, setRole] = React.useState("");
+  const [consent, setConsent] = React.useState(false);
+
+  // Sync URL ↔ state when user changes auditType in step 1.
+  function pickAuditType(key: AuditTypeKey) {
+    setAuditType(key);
+    const sp = new URLSearchParams(searchParams.toString());
+    sp.set("type", key);
+    router.replace(`${pathname}?${sp.toString()}`, { scroll: false });
+  }
+
+  // Step validity gates
+  const canStep1 = auditRequestStep1Schema.safeParse({ auditType }).success;
+  const canStep2 = auditRequestStep2Schema.safeParse({
+    size,
+    industry,
+    companyName: companyName || undefined,
+  }).success;
+  const canStep3 = auditRequestStep3Schema.safeParse({ modality, city, country }).success;
+  const canStep4 = auditRequestStep4Schema.safeParse({
+    scope,
+    scopeDetail,
+    maturity,
+    goals,
+  }).success;
+  const canStep5 = auditRequestStep5Schema.safeParse({
+    contact,
+    email,
+    phone: phone || undefined,
+    role: role || undefined,
+  }).success;
+  const canStep6 = auditRequestStep6Schema.safeParse({ consent }).success;
+
+  async function handleSubmit() {
+    setServerError(null);
+    setSubmittingState("submitting");
+    try {
+      await new Promise((r) => setTimeout(r, 600));
+      const payload = {
+        auditType,
+        size,
+        industry,
+        companyName: companyName || undefined,
+        modality,
+        city,
+        country,
+        scope,
+        scopeDetail,
+        maturity,
+        goals,
+        contact,
+        email,
+        phone: phone || undefined,
+        role: role || undefined,
+        consent,
+      };
+
+      console.warn("[audit-request:submit:stub]", payload);
+      setSubmittingState("success");
+    } catch {
+      setServerError(labels.failure);
+      setSubmittingState("idle");
+    }
+  }
+
+  // Success state — popup-style block, but inline in the page.
+  if (submittingState === "success") {
+    return (
+      <div className="bg-paper border-terracotta/25 shadow-card mx-auto max-w-3xl rounded-3xl border-2 p-8 sm:p-10">
+        <div className="bg-halo-warm border-terracotta/30 mb-6 rounded-2xl border-2 p-5">
+          <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
+            {labels.successHeader}
+          </p>
+          <p
+            className="text-fg mt-2 text-2xl leading-tight font-medium tracking-tight sm:text-3xl"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {labels.successTitle}
+          </p>
+          <p className="text-fg-soft mt-3 text-base leading-relaxed">{labels.successBody}</p>
+        </div>
+
+        <Button
+          type="button"
+          onClick={() => {
+            // Reset to start a new request
+            setStep(1);
+            setAuditType(initialType);
+            setSize(null);
+            setIndustry("");
+            setCompanyName("");
+            setModality(null);
+            setCity("");
+            setCountry("");
+            setScope(null);
+            setScopeDetail("");
+            setMaturity(null);
+            setGoals("");
+            setContact("");
+            setEmail("");
+            setPhone("");
+            setRole("");
+            setConsent(false);
+            setSubmittingState("idle");
+          }}
+          shape="pill"
+          variant="outline"
+        >
+          {labels.successCta}
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-paper border-border shadow-subtle mx-auto max-w-4xl rounded-3xl border-2 p-6 sm:p-8 lg:p-10">
+      {/* Progress bar — 6 cercles */}
+      <ProgressBar step={step} stepLabels={labels.stepLabels} stepWord={labels.step} />
+
+      <div className="py-2">
+        {step === 1 ? <Step1 labels={labels} auditType={auditType} onPick={pickAuditType} /> : null}
+
+        {step === 2 ? (
+          <Step2
+            labels={labels}
+            size={size}
+            setSize={setSize}
+            industry={industry}
+            setIndustry={setIndustry}
+            companyName={companyName}
+            setCompanyName={setCompanyName}
+          />
+        ) : null}
+
+        {step === 3 ? (
+          <Step3
+            labels={labels}
+            modality={modality}
+            setModality={setModality}
+            city={city}
+            setCity={setCity}
+            country={country}
+            setCountry={setCountry}
+          />
+        ) : null}
+
+        {step === 4 ? (
+          <Step4
+            labels={labels}
+            scope={scope}
+            setScope={setScope}
+            scopeDetail={scopeDetail}
+            setScopeDetail={setScopeDetail}
+            maturity={maturity}
+            setMaturity={setMaturity}
+            goals={goals}
+            setGoals={setGoals}
+          />
+        ) : null}
+
+        {step === 5 ? (
+          <Step5
+            labels={labels}
+            contact={contact}
+            setContact={setContact}
+            email={email}
+            setEmail={setEmail}
+            phone={phone}
+            setPhone={setPhone}
+            role={role}
+            setRole={setRole}
+          />
+        ) : null}
+
+        {step === 6 ? (
+          <Step6
+            labels={labels}
+            auditType={auditType}
+            size={size}
+            industry={industry}
+            companyName={companyName}
+            modality={modality}
+            city={city}
+            country={country}
+            scope={scope}
+            maturity={maturity}
+            contact={contact}
+            email={email}
+            consent={consent}
+            setConsent={setConsent}
+          />
+        ) : null}
+      </div>
+
+      {serverError ? (
+        <Alert variant="danger" role="alert" className="mt-4">
+          <AlertDescription>{serverError}</AlertDescription>
+        </Alert>
+      ) : null}
+
+      {/* Footer nav */}
+      <div className="border-border mt-6 flex items-center justify-between gap-3 border-t pt-6">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => (step > 1 ? setStep((s) => (s - 1) as 1 | 2 | 3 | 4 | 5 | 6) : undefined)}
+          disabled={step === 1}
+          shape="pill"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          {labels.previous}
+        </Button>
+
+        {step < 6 ? (
+          <Button
+            type="button"
+            onClick={() => setStep((s) => (s + 1) as 1 | 2 | 3 | 4 | 5 | 6)}
+            shape="pill"
+            disabled={
+              (step === 1 && !canStep1) ||
+              (step === 2 && !canStep2) ||
+              (step === 3 && !canStep3) ||
+              (step === 4 && !canStep4) ||
+              (step === 5 && !canStep5)
+            }
+          >
+            {labels.next}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            shape="pill"
+            disabled={!canStep6 || submittingState === "submitting"}
+            loading={submittingState === "submitting"}
+          >
+            {submittingState === "submitting" ? labels.sending : labels.submit}
+            <Check className="h-4 w-4" aria-hidden="true" />
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// === Sub-components ===
+
+function ProgressBar({
+  step,
+  stepLabels,
+  stepWord,
+}: {
+  step: 1 | 2 | 3 | 4 | 5 | 6;
+  stepLabels: ReadonlyArray<string>;
+  stepWord: string;
+}) {
+  return (
+    <div className="border-border-strong mb-8 grid grid-cols-3 gap-2 border-b-2 pb-6 sm:grid-cols-6 sm:gap-3 sm:pb-7">
+      {stepLabels.map((label, i) => {
+        const Icon = STEP_ICONS[i] ?? Check;
+        const idx = (i + 1) as 1 | 2 | 3 | 4 | 5 | 6;
+        const isActive = step === idx;
+        const isDone = step > idx;
+        return (
+          <div
+            key={label}
+            className={cn(
+              "flex flex-col items-center gap-1.5 text-center",
+              isActive && "text-terracotta-deep",
+              isDone && "text-fg",
+              !isActive && !isDone && "text-fg-muted",
+            )}
+          >
+            <span
+              className={cn(
+                "flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-all sm:h-14 sm:w-14",
+                isActive &&
+                  "bg-terracotta text-mocha-fg ring-terracotta/30 ring-offset-paper shadow-card scale-105 ring-4 ring-offset-2",
+                isDone && "bg-mocha text-mocha-fg shadow-subtle",
+                !isActive && !isDone && "bg-sand border-border-strong text-fg-muted border-2",
+              )}
+            >
+              {isDone ? (
+                <Check className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" strokeWidth={3} />
+              ) : (
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+              )}
+            </span>
+            <span
+              className={cn(
+                "block text-[10px] tracking-[0.18em] uppercase",
+                isActive ? "text-terracotta-deep font-bold" : "text-fg-muted font-semibold",
+              )}
+            >
+              {stepWord} {idx}
+            </span>
+            <span
+              className={cn(
+                "text-xs leading-tight font-bold sm:text-sm",
+                isActive && "text-terracotta-deep",
+              )}
+            >
+              {label}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+const TYPE_ICONS: Record<AuditTypeKey, typeof ClipboardCheck> = {
+  flash: Zap,
+  process: Workflow,
+  "strategique-pme": Briefcase,
+  "strategique-eti": Network,
+};
+
+function Step1({
+  labels,
+  auditType,
+  onPick,
+}: {
+  labels: Labels;
+  auditType: AuditTypeKey | null;
+  onPick: (k: AuditTypeKey) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <Header
+        eyebrow={labels.s1Eyebrow}
+        title={labels.s1Title}
+        description={labels.s1Description}
+      />
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {labels.auditTypes.map((opt) => {
+          const Icon = TYPE_ICONS[opt.key];
+          const isSel = auditType === opt.key;
+          return (
+            <button
+              key={opt.key}
+              type="button"
+              onClick={() => onPick(opt.key)}
+              className={cn(
+                "border-border bg-paper hover:border-terracotta hover:bg-halo-warm focus-visible:ring-terracotta group flex min-h-[120px] flex-col gap-3 rounded-2xl border-2 p-5 text-left transition-all focus-visible:ring-2 focus-visible:outline-none",
+                isSel && "border-terracotta bg-halo-warm shadow-card scale-[1.02]",
+              )}
+              aria-pressed={isSel}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+                    isSel
+                      ? "bg-terracotta text-mocha-fg"
+                      : "bg-terracotta-soft text-terracotta-deep",
+                  )}
+                >
+                  <Icon aria-hidden="true" className="h-5 w-5" />
+                </span>
+                <p className="text-fg text-base leading-snug font-semibold">{opt.label}</p>
+                {isSel ? (
+                  <Check
+                    className="text-terracotta-deep ml-auto h-5 w-5"
+                    aria-hidden="true"
+                    strokeWidth={3}
+                  />
+                ) : null}
+              </div>
+              <p className="text-fg-soft text-sm leading-relaxed">{opt.description}</p>
+              <p className="text-terracotta-deep mt-auto text-[13px] font-semibold tabular-nums">
+                {opt.priceFrom}
+              </p>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Step2({
+  labels,
+  size,
+  setSize,
+  industry,
+  setIndustry,
+  companyName,
+  setCompanyName,
+}: {
+  labels: Labels;
+  size: SizeKey | null;
+  setSize: (s: SizeKey) => void;
+  industry: string;
+  setIndustry: (s: string) => void;
+  companyName: string;
+  setCompanyName: (s: string) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <Header
+        eyebrow={labels.s2Eyebrow}
+        title={labels.s2Title}
+        description={labels.s2Description}
+      />
+
+      <fieldset className="space-y-3">
+        <Label className="text-fg block text-base font-bold sm:text-lg">
+          {labels.sizeLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {labels.sizes.map((s) => {
+            const isSel = size === s.key;
+            return (
+              <button
+                key={s.key}
+                type="button"
+                onClick={() => setSize(s.key)}
+                className={cn(
+                  "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta min-h-[76px] rounded-xl border-2 p-4 text-left text-sm font-semibold transition-all focus-visible:ring-2 focus-visible:outline-none",
+                  isSel
+                    ? "border-terracotta bg-halo-warm text-fg shadow-subtle scale-[1.02]"
+                    : "text-fg",
+                )}
+                aria-pressed={isSel}
+              >
+                {s.label}
+                {isSel ? (
+                  <Check
+                    aria-hidden="true"
+                    strokeWidth={3}
+                    className="text-terracotta-deep ml-auto inline-block h-4 w-4"
+                  />
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
+
+      <div className="grid gap-2">
+        <Label htmlFor="industry" className="text-fg text-base font-bold sm:text-lg">
+          {labels.industryLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <Input
+          id="industry"
+          value={industry}
+          onChange={(e) => setIndustry(e.target.value)}
+          placeholder={labels.industryPlaceholder}
+          className="h-12 rounded-lg"
+        />
+      </div>
+
+      <div className="grid gap-2">
+        <Label htmlFor="company-name" className="text-fg text-base font-bold sm:text-lg">
+          {labels.companyNameLabel}
+        </Label>
+        <Input
+          id="company-name"
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+          placeholder={labels.companyNamePlaceholder}
+          className="h-12 rounded-lg"
+          autoComplete="organization"
+        />
+      </div>
+    </div>
+  );
+}
+
+function Step3({
+  labels,
+  modality,
+  setModality,
+  city,
+  setCity,
+  country,
+  setCountry,
+}: {
+  labels: Labels;
+  modality: ModalityKey | null;
+  setModality: (m: ModalityKey) => void;
+  city: string;
+  setCity: (s: string) => void;
+  country: string;
+  setCountry: (s: string) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <Header
+        eyebrow={labels.s3Eyebrow}
+        title={labels.s3Title}
+        description={labels.s3Description}
+      />
+
+      <fieldset className="space-y-3">
+        <Label className="text-fg block text-base font-bold sm:text-lg">
+          {labels.modalityLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <ChoiceCard
+            selected={modality === "remote"}
+            onClick={() => setModality("remote")}
+            title={labels.modalityRemote}
+            hint={labels.modalityRemoteHint}
+          />
+          <ChoiceCard
+            selected={modality === "onsite"}
+            onClick={() => setModality("onsite")}
+            title={labels.modalityOnsite}
+            hint={labels.modalityOnsiteHint}
+          />
+        </div>
+      </fieldset>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-2">
+          <Label htmlFor="city" className="text-fg text-base font-bold sm:text-lg">
+            {labels.cityLabel}
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+          </Label>
+          <Input
+            id="city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder={labels.cityPlaceholder}
+            className="h-12 rounded-lg"
+            autoComplete="address-level2"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="country" className="text-fg text-base font-bold sm:text-lg">
+            {labels.countryLabel}
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+          </Label>
+          <Input
+            id="country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            placeholder={labels.countryPlaceholder}
+            className="h-12 rounded-lg"
+            autoComplete="country-name"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step4({
+  labels,
+  scope,
+  setScope,
+  scopeDetail,
+  setScopeDetail,
+  maturity,
+  setMaturity,
+  goals,
+  setGoals,
+}: {
+  labels: Labels;
+  scope: ScopeKey | null;
+  setScope: (s: ScopeKey) => void;
+  scopeDetail: string;
+  setScopeDetail: (s: string) => void;
+  maturity: MaturityKey | null;
+  setMaturity: (m: MaturityKey) => void;
+  goals: string;
+  setGoals: (s: string) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <Header
+        eyebrow={labels.s4Eyebrow}
+        title={labels.s4Title}
+        description={labels.s4Description}
+      />
+
+      <fieldset className="space-y-3">
+        <Label className="text-fg block text-base font-bold sm:text-lg">
+          {labels.scopeLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <ChoiceCard
+            selected={scope === "global"}
+            onClick={() => setScope("global")}
+            title={labels.scopeGlobal}
+            hint={labels.scopeGlobalHint}
+          />
+          <ChoiceCard
+            selected={scope === "single-area"}
+            onClick={() => setScope("single-area")}
+            title={labels.scopeSingleArea}
+            hint={labels.scopeSingleAreaHint}
+          />
+        </div>
+      </fieldset>
+
+      <div className="grid gap-2">
+        <Label htmlFor="scope-detail" className="text-fg text-base font-bold sm:text-lg">
+          {labels.scopeDetailLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <Textarea
+          id="scope-detail"
+          rows={3}
+          value={scopeDetail}
+          onChange={(e) => setScopeDetail(e.target.value)}
+          placeholder={labels.scopeDetailPlaceholder}
+          className="rounded-lg"
+        />
+      </div>
+
+      <fieldset className="space-y-3">
+        <Label className="text-fg block text-base font-bold sm:text-lg">
+          {labels.maturityLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {(
+            [
+              { key: "zero", label: labels.maturityZero },
+              { key: "starting", label: labels.maturityStarting },
+              { key: "mature", label: labels.maturityMature },
+            ] as const
+          ).map((m) => (
+            <ChoiceCard
+              key={m.key}
+              selected={maturity === m.key}
+              onClick={() => setMaturity(m.key)}
+              title={m.label}
+            />
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="grid gap-2">
+        <Label htmlFor="goals" className="text-fg text-base font-bold sm:text-lg">
+          {labels.goalsLabel}
+          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+        </Label>
+        <Textarea
+          id="goals"
+          rows={4}
+          value={goals}
+          onChange={(e) => setGoals(e.target.value)}
+          placeholder={labels.goalsPlaceholder}
+          className="rounded-lg"
+        />
+      </div>
+    </div>
+  );
+}
+
+function Step5({
+  labels,
+  contact,
+  setContact,
+  email,
+  setEmail,
+  phone,
+  setPhone,
+  role,
+  setRole,
+}: {
+  labels: Labels;
+  contact: string;
+  setContact: (s: string) => void;
+  email: string;
+  setEmail: (s: string) => void;
+  phone: string;
+  setPhone: (s: string) => void;
+  role: string;
+  setRole: (s: string) => void;
+}) {
+  return (
+    <div className="space-y-6">
+      <Header
+        eyebrow={labels.s5Eyebrow}
+        title={labels.s5Title}
+        description={labels.s5Description}
+      />
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-2">
+          <Label htmlFor="contact" className="text-fg text-base font-bold sm:text-lg">
+            {labels.contactLabel}
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+          </Label>
+          <Input
+            id="contact"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            className="h-12 rounded-lg"
+            autoComplete="name"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="email" className="text-fg text-base font-bold sm:text-lg">
+            {labels.emailLabel}
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-12 rounded-lg"
+            autoComplete="email"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="phone" className="text-fg text-base font-bold sm:text-lg">
+            {labels.phoneLabel}
+          </Label>
+          <Input
+            id="phone"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="h-12 rounded-lg"
+            autoComplete="tel"
+            inputMode="tel"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="role" className="text-fg text-base font-bold sm:text-lg">
+            {labels.roleLabel}
+          </Label>
+          <Input
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            placeholder={labels.rolePlaceholder}
+            className="h-12 rounded-lg"
+            autoComplete="organization-title"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step6({
+  labels,
+  auditType,
+  size,
+  industry,
+  companyName,
+  modality,
+  city,
+  country,
+  scope,
+  maturity,
+  contact,
+  email,
+  consent,
+  setConsent,
+}: {
+  labels: Labels;
+  auditType: AuditTypeKey | null;
+  size: SizeKey | null;
+  industry: string;
+  companyName: string;
+  modality: ModalityKey | null;
+  city: string;
+  country: string;
+  scope: ScopeKey | null;
+  maturity: MaturityKey | null;
+  contact: string;
+  email: string;
+  consent: boolean;
+  setConsent: (b: boolean) => void;
+}) {
+  const typeLabel = labels.auditTypes.find((t) => t.key === auditType)?.label ?? "—";
+  const sizeLabel = labels.sizes.find((s) => s.key === size)?.label ?? "—";
+  const modalityLabel =
+    modality === "remote"
+      ? labels.modalityRemote
+      : modality === "onsite"
+        ? labels.modalityOnsite
+        : "—";
+  const scopeLabel =
+    scope === "global"
+      ? labels.scopeGlobal
+      : scope === "single-area"
+        ? labels.scopeSingleArea
+        : "—";
+  const maturityLabel =
+    maturity === "zero"
+      ? labels.maturityZero
+      : maturity === "starting"
+        ? labels.maturityStarting
+        : maturity === "mature"
+          ? labels.maturityMature
+          : "—";
+
+  return (
+    <div className="space-y-6">
+      <Header
+        eyebrow={labels.s6Eyebrow}
+        title={labels.s6Title}
+        description={labels.s6Description}
+      />
+
+      <div className="bg-halo-warm border-terracotta/25 rounded-2xl border-2 p-5 sm:p-6">
+        <p className="text-terracotta-deep mb-4 text-[12px] font-semibold tracking-[0.16em] uppercase">
+          {labels.recapTitle}
+        </p>
+        <dl className="grid gap-4 sm:grid-cols-2">
+          <RecapRow label={labels.recapType} value={typeLabel} />
+          <RecapRow label={labels.recapSize} value={sizeLabel} />
+          <RecapRow
+            label={labels.recapIndustry}
+            value={industry ? `${industry}${companyName ? ` · ${companyName}` : ""}` : "—"}
+          />
+          <RecapRow label={labels.recapModality} value={modalityLabel} />
+          <RecapRow
+            label={labels.recapLocation}
+            value={city || country ? `${city}${city && country ? ", " : ""}${country}` : "—"}
+          />
+          <RecapRow label={labels.recapScope} value={scopeLabel} />
+          <RecapRow label={labels.recapMaturity} value={maturityLabel} />
+          <RecapRow
+            label={labels.recapContact}
+            value={contact || email ? `${contact}${contact && email ? " · " : ""}${email}` : "—"}
+          />
+        </dl>
+      </div>
+
+      <label className="bg-paper border-border hover:border-terracotta flex cursor-pointer items-start gap-3 rounded-xl border-2 p-4 transition-colors">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="text-terracotta focus-visible:ring-terracotta mt-1 h-5 w-5 shrink-0 rounded border-2 focus-visible:ring-2 focus-visible:outline-none"
+        />
+        <span className="text-fg text-sm leading-relaxed">{labels.consentLabel}</span>
+      </label>
+    </div>
+  );
+}
+
+function Header({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="space-y-2">
+      <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
+        <span
+          aria-hidden="true"
+          className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+        />
+        {eyebrow}
+      </p>
+      <h2
+        className="text-fg text-[clamp(1.4rem,2.4vw,2rem)] leading-tight font-medium tracking-tight"
+        style={{ fontFamily: "var(--font-serif)" }}
+      >
+        {title}
+      </h2>
+      <p className="text-fg-soft text-base leading-relaxed">{description}</p>
+    </div>
+  );
+}
+
+function ChoiceCard({
+  selected,
+  onClick,
+  title,
+  hint,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  title: string;
+  hint?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={cn(
+        "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta flex min-h-[76px] flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all focus-visible:ring-2 focus-visible:outline-none",
+        selected && "border-terracotta bg-halo-warm shadow-subtle scale-[1.02]",
+      )}
+    >
+      <span className="text-fg text-sm font-bold sm:text-base">{title}</span>
+      {hint ? (
+        <span className="text-fg-soft text-xs leading-relaxed sm:text-sm">{hint}</span>
+      ) : null}
+      {selected ? (
+        <Sparkles aria-hidden="true" className="text-terracotta-deep ml-auto h-4 w-4 self-end" />
+      ) : null}
+    </button>
+  );
+}
+
+function RecapRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-fg-muted text-[11px] font-semibold tracking-[0.12em] uppercase">
+        {label}
+      </dt>
+      <dd className="text-fg mt-1 text-sm leading-snug font-semibold">{value}</dd>
+    </div>
+  );
+}

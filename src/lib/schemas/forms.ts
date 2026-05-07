@@ -49,6 +49,55 @@ export const auditSchema = auditStep1Schema
   .merge(auditStep5Schema);
 export type AuditInput = z.infer<typeof auditSchema>;
 
+// Audit request — 6 steps (richer form for /audit/demande, 2026-05-07).
+// Capture le type d'audit, la taille + secteur, la modalité + lieu, le
+// périmètre + maturité IA, le contact et le consentement.
+export const auditRequestStep1Schema = z.object({
+  auditType: z.enum(["flash", "process", "strategique-pme", "strategique-eti"], {
+    errorMap: () => ({ message: "Niveau d'audit requis." }),
+  }),
+});
+export const auditRequestStep2Schema = z.object({
+  size: z.enum(["tpe", "pme", "mid", "enterprise"], {
+    errorMap: () => ({ message: "Taille requise." }),
+  }),
+  industry: z.string().min(2, "Secteur requis."),
+  companyName: z.string().optional(),
+});
+export const auditRequestStep3Schema = z.object({
+  modality: z.enum(["remote", "onsite"], {
+    errorMap: () => ({ message: "Modalité requise." }),
+  }),
+  city: z.string().min(2, "Ville requise."),
+  country: z.string().min(2, "Pays requis."),
+});
+export const auditRequestStep4Schema = z.object({
+  scope: z.enum(["global", "single-area"], {
+    errorMap: () => ({ message: "Périmètre requis." }),
+  }),
+  scopeDetail: z.string().min(20, "Au moins 20 caractères pour décrire le périmètre."),
+  maturity: z.enum(["zero", "starting", "mature"], {
+    errorMap: () => ({ message: "Maturité requise." }),
+  }),
+  goals: z.string().min(20, "Au moins 20 caractères."),
+});
+export const auditRequestStep5Schema = z.object({
+  contact: required,
+  email,
+  phone: z.string().optional(),
+  role: z.string().optional(),
+});
+export const auditRequestStep6Schema = z.object({
+  consent: z.literal(true, { errorMap: () => ({ message: "Consentement requis." }) }),
+});
+export const auditRequestSchema = auditRequestStep1Schema
+  .merge(auditRequestStep2Schema)
+  .merge(auditRequestStep3Schema)
+  .merge(auditRequestStep4Schema)
+  .merge(auditRequestStep5Schema)
+  .merge(auditRequestStep6Schema);
+export type AuditRequestInput = z.infer<typeof auditRequestSchema>;
+
 // Implementation — 4 steps (Sprint 17 finalize)
 export const implementationStep1Schema = z.object({
   type: z.enum([

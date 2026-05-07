@@ -8,6 +8,13 @@ import {
   auditStep3Schema,
   auditStep4Schema,
   auditStep5Schema,
+  auditRequestSchema,
+  auditRequestStep1Schema,
+  auditRequestStep2Schema,
+  auditRequestStep3Schema,
+  auditRequestStep4Schema,
+  auditRequestStep5Schema,
+  auditRequestStep6Schema,
   implementationSchema,
   implementationStep1Schema,
   implementationStep2Schema,
@@ -125,6 +132,109 @@ describe("auditSchema (5 steps)", () => {
 
   it("merged auditSchema rejects when any step is invalid", () => {
     expect(auditSchema.safeParse({ ...validFull, email: "broken" }).success).toBe(false);
+  });
+});
+
+describe("auditRequestSchema (6 steps)", () => {
+  const validFull = {
+    auditType: "flash" as const,
+    size: "pme" as const,
+    industry: "Industrie",
+    companyName: "ACME SAS",
+    modality: "onsite" as const,
+    city: "Paris",
+    country: "France",
+    scope: "global" as const,
+    scopeDetail:
+      "Cartographier l'ensemble des process commerciaux et opérationnels pour identifier les automatisations IA possibles.",
+    maturity: "starting" as const,
+    goals: "Réduire le temps passé sur les tâches répétitives de saisie et de relance commerciale.",
+    contact: "Jane Doe",
+    email: "jane@example.com",
+    phone: "+33612345678",
+    role: "Directrice opérations",
+    consent: true as const,
+  };
+
+  it("step 1 accepts each audit level", () => {
+    for (const auditType of ["flash", "process", "strategique-pme", "strategique-eti"] as const) {
+      expect(auditRequestStep1Schema.safeParse({ auditType }).success).toBe(true);
+    }
+  });
+
+  it("step 1 rejects unknown audit level", () => {
+    expect(auditRequestStep1Schema.safeParse({ auditType: "ghost" }).success).toBe(false);
+  });
+
+  it("step 2 requires size + industry", () => {
+    expect(auditRequestStep2Schema.safeParse({ size: "pme", industry: "Tech" }).success).toBe(true);
+    expect(auditRequestStep2Schema.safeParse({ size: "pme", industry: "" }).success).toBe(false);
+  });
+
+  it("step 3 requires modality + city + country", () => {
+    expect(
+      auditRequestStep3Schema.safeParse({
+        modality: "remote",
+        city: "Lyon",
+        country: "France",
+      }).success,
+    ).toBe(true);
+    expect(
+      auditRequestStep3Schema.safeParse({
+        modality: "onsite",
+        city: "",
+        country: "France",
+      }).success,
+    ).toBe(false);
+  });
+
+  it("step 4 requires scope + maturity + ≥20 char detail/goals", () => {
+    expect(
+      auditRequestStep4Schema.safeParse({
+        scope: "global",
+        scopeDetail: "trop court",
+        maturity: "zero",
+        goals: "trop court",
+      }).success,
+    ).toBe(false);
+    expect(
+      auditRequestStep4Schema.safeParse({
+        scope: "single-area",
+        scopeDetail: "Service commercial uniquement, équipe de 12 personnes.",
+        maturity: "starting",
+        goals: "Réduire le temps consacré aux relances clients.",
+      }).success,
+    ).toBe(true);
+  });
+
+  it("step 5 requires contact + email, role/phone optional", () => {
+    expect(
+      auditRequestStep5Schema.safeParse({
+        contact: "Jane",
+        email: "jane@example.com",
+      }).success,
+    ).toBe(true);
+    expect(
+      auditRequestStep5Schema.safeParse({
+        contact: "Jane",
+        email: "broken",
+      }).success,
+    ).toBe(false);
+  });
+
+  it("step 6 requires consent literal true", () => {
+    expect(auditRequestStep6Schema.safeParse({ consent: false }).success).toBe(false);
+    expect(auditRequestStep6Schema.safeParse({ consent: true }).success).toBe(true);
+  });
+
+  it("merged auditRequestSchema accepts a full valid payload", () => {
+    expect(auditRequestSchema.safeParse(validFull).success).toBe(true);
+  });
+
+  it("merged auditRequestSchema rejects when any step is invalid", () => {
+    expect(auditRequestSchema.safeParse({ ...validFull, scopeDetail: "trop court" }).success).toBe(
+      false,
+    );
   });
 });
 

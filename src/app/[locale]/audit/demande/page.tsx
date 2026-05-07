@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { Globe2, Building2, Mail, Clock } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { AuditForm } from "@/components/forms/AuditForm";
+import { AuditRequestForm } from "@/components/forms/AuditRequestForm";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 
 interface Props {
@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/audit/demande",
     title:
       locale === "fr"
-        ? "Demander un audit IA · 5 étapes · AxionIA"
-        : "Request an AI audit · 5 steps · AxionIA",
+        ? "Demander un audit IA · 6 étapes · AxionIA"
+        : "Request an AI audit · 6 steps · AxionIA",
     description:
       locale === "fr"
-        ? "Formulaire 5 étapes pour demander un audit IA AxionIA — réponse sous 48 h ouvrées."
-        : "5-step form to request an AxionIA AI audit — reply within 48 business hours.",
+        ? "Formulaire 6 étapes pour demander un audit IA AxionIA — type d'audit, taille, secteur, lieu, modalité, périmètre. Devis personnalisé sous 48 h ouvrées."
+        : "6-step form to request an AxionIA AI audit — audit type, size, sector, location, modality, scope. Personalised quote within 48 business hours.",
     alternates: { fr: "/audit/demande", en: "/audit/request" },
   });
 }
@@ -49,79 +49,329 @@ export default async function AuditRequest({ params }: Props) {
 
   const labels = isFr
     ? {
-        stepLabels: ["Taille", "Modalité", "Contexte", "Coordonnées", "Consentement"] as const,
+        step: "Étape",
         next: "Suivant",
         previous: "Précédent",
-        submit: "Envoyer la demande",
+        cancel: "Annuler",
+        submit: "Envoyer ma demande",
         sending: "Envoi…",
-        success: "Demande reçue. Nous vous répondons sous 48 h ouvrées.",
+        successHeader: "Demande enregistrée",
+        successTitle: "On vous rappelle sous 48 h ouvrées",
+        successBody:
+          "Notre équipe étudie votre contexte et vous renvoie un devis personnalisé par email — avec un créneau d'appel proposé pour le cadrage. Vérifiez vos spams si rien n'arrive sous 48 h.",
+        successCta: "Faire une autre demande",
         failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
-        sizeQuestion: "Quelle est la taille de votre entreprise ?",
+
+        s1Eyebrow: "1 · Type d'audit",
+        s1Title: "Quel format d'audit vous correspond ?",
+        s1Description:
+          "Vous pouvez tout faire auditer (toute l'entreprise) ou cibler un seul service / commerce / cabinet. Le type sélectionné préremplit la suite — vous pourrez tout modifier.",
+        auditTypes: [
+          {
+            key: "complet" as const,
+            label: "Audit complet entreprise",
+            description:
+              "Toute l'entreprise est passée au crible : tâches répétitives à automatiser, dépenses à optimiser, plan d'action chiffré.",
+            priceFrom: "Dès 290 €",
+          },
+          {
+            key: "departement" as const,
+            label: "Audit par département",
+            description:
+              "Un seul service au scalpel (RH, finance, vente, ops…). Quick-wins ciblés, plan d'action chiffré.",
+            priceFrom: "Dès 690 €",
+          },
+          {
+            key: "point-de-vente" as const,
+            label: "Audit point de vente",
+            description:
+              "Commerce, restauration, services de proximité. Encaissement, fidélisation, prévisions, stocks.",
+            priceFrom: "Dès 490 €",
+          },
+          {
+            key: "cabinet" as const,
+            label: "Audit cabinet ou agence",
+            description:
+              "Cabinets d'avocats, études notariales, agences de conseil, cabinets d'experts. Productivité +30 %.",
+            priceFrom: "Dès 990 €",
+          },
+        ],
+
+        s2Eyebrow: "2 · Votre entreprise",
+        s2Title: "Parlez-nous de vous",
+        s2Description:
+          "On a besoin de la taille et du secteur d'activité pour calibrer le devis et orienter le périmètre d'audit.",
+        sizeLabel: "Taille de votre entreprise",
         sizes: [
           { key: "tpe" as const, label: "TPE / Artisan (1-9)" },
           { key: "pme" as const, label: "PME (10-49)" },
           { key: "mid" as const, label: "Moyenne (50-249)" },
           { key: "enterprise" as const, label: "Grande (250+)" },
         ],
-        modalityQuestion: "Modalité souhaitée ?",
+        industryLabel: "Secteur d'activité",
+        industryPlaceholder: "Ex : industrie, juridique, retail, santé, hôtellerie…",
+        companyNameLabel: "Nom de l'entreprise (optionnel)",
+        companyNamePlaceholder: "Ex : ACME SAS",
+
+        s3Eyebrow: "3 · Lieu & modalité",
+        s3Title: "Sur site ou à distance ?",
+        s3Description:
+          "On intervient partout en France et à l'international. Sur site recommandé pour l'audit complet et point de vente. À distance possible partout.",
+        modalityLabel: "Modalité souhaitée",
         modalityRemote: "À distance",
+        modalityRemoteHint: "Visio sécurisée + entretiens · gain de temps + tarif réduit.",
         modalityOnsite: "Sur site",
-        industryQuestion: "Industrie",
-        industryPlaceholder: "Ex : industrie, juridique, retail…",
-        goalsQuestion: "Objectifs de l'audit",
-        goalsPlaceholder: "Décrivez en quelques lignes ce que vous attendez de l'audit.",
-        contactName: "Nom & prénom",
-        contactEmail: "Email professionnel",
-        contactPhone: "Téléphone (optionnel)",
+        modalityOnsiteHint: "Notre équipe se déplace · observation directe + immersion équipe.",
+        cityLabel: "Ville",
+        cityPlaceholder: "Ex : Paris, Lyon, Bruxelles, Genève…",
+        countryLabel: "Pays",
+        countryPlaceholder: "Ex : France, Belgique, Suisse, Luxembourg, Maroc…",
+
+        s4Eyebrow: "4 · Périmètre & objectifs",
+        s4Title: "Que voulez-vous étudier ?",
+        s4Description:
+          "Décrivez précisément ce que vous voulez auditer et les bénéfices attendus. Plus c'est précis, plus le devis est juste.",
+        scopeLabel: "Périmètre d'audit",
+        scopeGlobal: "Audit global",
+        scopeGlobalHint: "Toute l'entreprise, tous les services, vue d'ensemble.",
+        scopeSingleArea: "Audit ciblé",
+        scopeSingleAreaHint: "Un seul service, un commerce, un type de dossier précis.",
+        scopeDetailLabel: "Précisez le périmètre",
+        scopeDetailPlaceholder:
+          "Ex : « commerce de 8 personnes, focus relation client + caisse » — ou « tous les services sauf l'IT, dont équipe commerciale 25p, RH 5p, ops 12p ».",
+        maturityLabel: "Votre maturité IA actuelle",
+        maturityZero: "Aucun usage IA en place",
+        maturityStarting: "Premiers usages testés",
+        maturityMature: "Usages IA matures, on optimise",
+        goalsLabel: "Objectifs de l'audit",
+        goalsPlaceholder:
+          "Ex : « libérer du temps à l'équipe commerciale », « réduire les dépenses de prestations externes », « automatiser les saisies répétitives »…",
+
+        s5Eyebrow: "5 · Vos coordonnées",
+        s5Title: "Comment vous joindre ?",
+        s5Description: "Nom, email professionnel et téléphone — pour le call de cadrage.",
+        contactLabel: "Nom & prénom",
+        emailLabel: "Email professionnel",
+        phoneLabel: "Téléphone (optionnel mais conseillé)",
+        roleLabel: "Votre rôle dans l'entreprise (optionnel)",
+        rolePlaceholder: "Ex : Direction, DRH, COO, Head of operations…",
+
+        s6Eyebrow: "6 · Récap & envoi",
+        s6Title: "On vérifie ensemble avant l'envoi",
+        s6Description:
+          "Tout est modifiable en revenant sur les étapes précédentes. Cliquez sur « Envoyer » quand le récap est OK.",
         consentLabel:
-          "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité.",
+          "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité. Aucune donnée n'est revendue ni transmise à des tiers.",
+        recapTitle: "Votre demande en un coup d'œil",
+        recapModality: "Modalité",
+        recapType: "Type d'audit",
+        recapSize: "Taille",
+        recapIndustry: "Secteur",
+        recapLocation: "Lieu",
+        recapScope: "Périmètre",
+        recapMaturity: "Maturité IA",
+        recapContact: "Contact",
+
+        stepLabels: ["Type", "Entreprise", "Lieu", "Périmètre", "Contact", "Récap"] as const,
       }
     : {
-        stepLabels: ["Size", "Modality", "Context", "Contact", "Consent"] as const,
+        step: "Step",
         next: "Next",
         previous: "Previous",
-        submit: "Send request",
+        cancel: "Cancel",
+        submit: "Send my request",
         sending: "Sending…",
-        success: "Request received. We will reply within 48 business hours.",
+        successHeader: "Request saved",
+        successTitle: "We will call you back within 48 business hours",
+        successBody:
+          "Our team reviews your context and emails you a personalised quote — with a proposed framing call slot. Check your spam if nothing arrives within 48 h.",
+        successCta: "Send another request",
         failure: "An error occurred. Try again or email contact@axion-ia.com.",
-        sizeQuestion: "What is your company size?",
+
+        s1Eyebrow: "1 · Audit type",
+        s1Title: "Which audit format fits you?",
+        s1Description:
+          "You can audit everything (the whole company) or target a single service / store / firm. The selected type pre-fills the next steps — you can change anything later.",
+        auditTypes: [
+          {
+            key: "complet" as const,
+            label: "Full company audit",
+            description:
+              "Your whole company under the lens: 15 to 30 prioritized AI quick-wins, costed 12-month implementation plan.",
+            priceFrom: "From €290",
+          },
+          {
+            key: "departement" as const,
+            label: "Department audit",
+            description:
+              "One service under the scalpel (HR, finance, sales, ops…). 8 to 15 targeted quick-wins, 6-month ROI plan.",
+            priceFrom: "From €690",
+          },
+          {
+            key: "point-de-vente" as const,
+            label: "Storefront audit",
+            description:
+              "Retail, hospitality, neighbourhood services. Checkout, loyalty, forecasting, inventory.",
+            priceFrom: "From €490",
+          },
+          {
+            key: "cabinet" as const,
+            label: "Firm or agency audit",
+            description:
+              "Law firms, notary offices, consultancies, expert firms. +30% productivity.",
+            priceFrom: "From €990",
+          },
+        ],
+
+        s2Eyebrow: "2 · Your company",
+        s2Title: "Tell us about you",
+        s2Description:
+          "We need the size and the sector to calibrate the quote and orient the audit scope.",
+        sizeLabel: "Company size",
         sizes: [
           { key: "tpe" as const, label: "Small / Trades (1-9)" },
           { key: "pme" as const, label: "PME (10-49)" },
-          { key: "mid" as const, label: "Mid (50-249)" },
+          { key: "mid" as const, label: "Mid-market (50-249)" },
           { key: "enterprise" as const, label: "Enterprise (250+)" },
         ],
-        modalityQuestion: "Preferred modality?",
+        industryLabel: "Sector",
+        industryPlaceholder: "e.g. industry, legal, retail, healthcare, hospitality…",
+        companyNameLabel: "Company name (optional)",
+        companyNamePlaceholder: "e.g. ACME SAS",
+
+        s3Eyebrow: "3 · Location & modality",
+        s3Title: "On site or remote?",
+        s3Description:
+          "We work everywhere in France and worldwide. On site recommended for full audit and storefront. Remote possible everywhere.",
+        modalityLabel: "Preferred modality",
         modalityRemote: "Remote",
+        modalityRemoteHint: "Secure video + interviews · time saved + reduced fee.",
         modalityOnsite: "On site",
-        industryQuestion: "Industry",
-        industryPlaceholder: "e.g. industry, legal, retail…",
-        goalsQuestion: "Audit goals",
-        goalsPlaceholder: "Describe in a few lines what you expect from the audit.",
-        contactName: "Full name",
-        contactEmail: "Professional email",
-        contactPhone: "Phone (optional)",
+        modalityOnsiteHint: "Our team travels · direct observation + team immersion.",
+        cityLabel: "City",
+        cityPlaceholder: "e.g. Paris, Lyon, Brussels, Geneva…",
+        countryLabel: "Country",
+        countryPlaceholder: "e.g. France, Belgium, Switzerland, Luxembourg, Morocco…",
+
+        s4Eyebrow: "4 · Scope & goals",
+        s4Title: "What do you want audited?",
+        s4Description:
+          "Describe precisely what you want audited and the expected benefits. The more precise, the more accurate the quote.",
+        scopeLabel: "Audit scope",
+        scopeGlobal: "Global audit",
+        scopeGlobalHint: "Whole company, every service, big picture.",
+        scopeSingleArea: "Targeted audit",
+        scopeSingleAreaHint: "One service, one storefront, a single case type.",
+        scopeDetailLabel: "Detail the scope",
+        scopeDetailPlaceholder:
+          'e.g. "8-person store, focus on customer relation + checkout" — or "all services except IT, including 25-person sales, 5-person HR, 12-person ops".',
+        maturityLabel: "Current AI maturity",
+        maturityZero: "No AI use in place",
+        maturityStarting: "Early uses tried",
+        maturityMature: "Mature AI uses, optimizing",
+        goalsLabel: "Audit goals",
+        goalsPlaceholder:
+          'e.g. "identify 5 to 10 AI quick-wins to free up sales time", "benchmark our maturity vs competitors", "cost a 12-month implementation plan"…',
+
+        s5Eyebrow: "5 · Your contact",
+        s5Title: "How can we reach you?",
+        s5Description: "Name, professional email and phone — for the framing call.",
+        contactLabel: "Full name",
+        emailLabel: "Professional email",
+        phoneLabel: "Phone (optional but recommended)",
+        roleLabel: "Your role at the company (optional)",
+        rolePlaceholder: "e.g. CEO, Head of HR, COO, Head of operations…",
+
+        s6Eyebrow: "6 · Recap & send",
+        s6Title: "Let's check together before sending",
+        s6Description:
+          "Anything can be edited by going back to previous steps. Click Send when the recap looks good.",
         consentLabel:
-          "I agree to my data being used to process this request in accordance with the privacy policy.",
+          "I agree to my data being used to process this request in accordance with the privacy policy. No data is sold or transmitted to third parties.",
+        recapTitle: "Your request at a glance",
+        recapModality: "Modality",
+        recapType: "Audit type",
+        recapSize: "Size",
+        recapIndustry: "Sector",
+        recapLocation: "Location",
+        recapScope: "Scope",
+        recapMaturity: "AI maturity",
+        recapContact: "Contact",
+
+        stepLabels: ["Type", "Company", "Location", "Scope", "Contact", "Recap"] as const,
       };
+
+  // Bandeau réassurance — 4 pills.
+  const reassurance = [
+    {
+      icon: Globe2,
+      label: isFr ? "France & international" : "France & international",
+    },
+    {
+      icon: Building2,
+      label: isFr ? "TPE → grandes entreprises" : "Small → enterprise",
+    },
+    {
+      icon: Clock,
+      label: isFr ? "Devis sous 48 h ouvrées" : "Quote within 48 business hours",
+    },
+    {
+      icon: Mail,
+      label: isFr ? "Aucune relance, aucun engagement" : "No follow-up spam, no commitment",
+    },
+  ];
 
   return (
     <>
-      <Section
-        eyebrow={isFr ? "Audit · 5 étapes" : "Audit · 5 steps"}
-        title={isFr ? "Demander un audit IA" : "Request an AI audit"}
-        description={
-          isFr
-            ? "Réponse sous 48 h ouvrées avec devis personnalisé selon votre taille et modalité."
-            : "Reply within 48 business hours with a customized quote based on size and modality."
-        }
-      />
+      {/* Hero compact — paddings réduits pour rapprocher le formulaire de la fold. */}
+      <section className="bg-halo-warm relative overflow-hidden py-14 sm:py-16 lg:py-20">
+        <Container className="relative">
+          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+            <span
+              aria-hidden="true"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
+            {isFr ? "Demande d'audit · 6 étapes" : "Audit request · 6 steps"}
+          </p>
+          <h1
+            className="text-fg mt-4 text-[clamp(2rem,5vw,3.5rem)] leading-[1.04] font-medium tracking-tight"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {isFr ? "Demander un " : "Request an "}
+            <span className="text-terracotta italic">
+              {isFr ? "audit IA personnalisé" : "personalised AI audit"}
+            </span>
+          </h1>
+          <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
+            {isFr
+              ? "6 questions ciblées pour cadrer votre entreprise, votre périmètre et votre contexte. On vous renvoie un devis personnalisé sous 48 h ouvrées — TPE, PME, ETI ou grandes entreprises, France et international."
+              : "6 targeted questions to frame your company, scope and context. We email you a personalised quote within 48 business hours — small, mid-market or enterprise, France and worldwide."}
+          </p>
 
-      <Section>
-        <Container className="max-w-3xl">
-          <AuditForm labels={labels} />
+          {/* Bandeau réassurance — 4 pills */}
+          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+            {reassurance.map((r) => {
+              const Icon = r.icon;
+              return (
+                <li
+                  key={r.label}
+                  className="bg-paper/70 border-border-strong text-fg flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[13px] font-medium"
+                >
+                  <Icon className="text-terracotta-deep h-4 w-4" aria-hidden="true" />
+                  {r.label}
+                </li>
+              );
+            })}
+          </ul>
         </Container>
-      </Section>
+      </section>
+
+      {/* Form */}
+      <div className="bg-bg py-10 sm:py-14">
+        <Container>
+          <AuditRequestForm labels={labels} />
+        </Container>
+      </div>
 
       <JsonLd data={breadcrumb} />
     </>
