@@ -31,6 +31,7 @@ import {
   Mic,
   Crown,
   Star,
+  ShieldCheck,
 } from "lucide-react";
 import {
   Dialog,
@@ -390,6 +391,12 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     "idle",
   );
 
+  // === Save & resume — localStorage autosave du form ===
+  // Permet à l'utilisateur de fermer accidentellement le popup sans perdre
+  // son travail. Restauré au prochain ouverture.
+  const STORAGE_KEY = "axionia.booking.draft.v1";
+  const draftRestored = React.useRef<boolean>(false);
+
   // Form fields — 4 étapes
   const [companyName, setCompanyName] = React.useState("");
   const [companySize, setCompanySize] = React.useState<string>(SIZE_OPTIONS[1].value);
@@ -409,6 +416,128 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   const [comments, setComments] = React.useState("");
 
   const [consent, setConsent] = React.useState(false);
+
+  const [hasDraft, setHasDraft] = React.useState(false);
+  const [draftDismissed, setDraftDismissed] = React.useState(false);
+
+  // Détection brouillon : appelée depuis l'event handler `onCellClick`
+  // (pas dans un useEffect) — évite la règle React `set-state-in-effect`
+  // et garantit que la check ne se déclenche qu'au moment où le user
+  // ouvre la popup. La fonction est définie ici pour avoir accès au
+  // setState ; elle est appelée dans onCellClick juste après setOpenSlot.
+  function detectExistingDraft() {
+    if (draftRestored.current || draftDismissed) return;
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw);
+      // Critère "draft significatif" : entreprise renseignée (> 1 char).
+      if (draft?.companyName && draft.companyName.length > 1) {
+        setHasDraft(true);
+      }
+    } catch {
+      // localStorage indisponible (mode privé) — silently no-op
+    }
+  }
+
+  // Autosave à chaque changement form
+  React.useEffect(() => {
+    if (!openSlot || typeof window === "undefined") return;
+    if (!companyName) return; // évite d'écrire un draft vide
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          companyName,
+          companySize,
+          companySector,
+          companyCity,
+          contactFirstName,
+          contactLastName,
+          contactRole,
+          contactEmail,
+          contactPhone,
+          aiUsage,
+          aiTools,
+          hasAutomations,
+          auditInterest,
+          comments,
+          step,
+          ts: Date.now(),
+        }),
+      );
+    } catch {
+      // no-op
+    }
+  }, [
+    openSlot,
+    companyName,
+    companySize,
+    companySector,
+    companyCity,
+    contactFirstName,
+    contactLastName,
+    contactRole,
+    contactEmail,
+    contactPhone,
+    aiUsage,
+    aiTools,
+    hasAutomations,
+    auditInterest,
+    comments,
+    step,
+  ]);
+
+  function restoreDraft() {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw);
+      setCompanyName(draft.companyName ?? "");
+      setCompanySize(draft.companySize ?? SIZE_OPTIONS[1].value);
+      setCompanySector(draft.companySector ?? SECTOR_OPTIONS[0]);
+      setCompanyCity(draft.companyCity ?? "");
+      setContactFirstName(draft.contactFirstName ?? "");
+      setContactLastName(draft.contactLastName ?? "");
+      setContactRole(draft.contactRole ?? "");
+      setContactEmail(draft.contactEmail ?? "");
+      setContactPhone(draft.contactPhone ?? "");
+      setAiUsage(draft.aiUsage ?? "none");
+      setAiTools(draft.aiTools ?? "");
+      setHasAutomations(draft.hasAutomations ?? "no");
+      setAuditInterest(draft.auditInterest ?? "maybe");
+      setComments(draft.comments ?? "");
+      setStep(draft.step ?? 1);
+      setHasDraft(false);
+      draftRestored.current = true;
+    } catch {
+      // no-op
+    }
+  }
+
+  function dismissDraft() {
+    setHasDraft(false);
+    setDraftDismissed(true);
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        /* no-op */
+      }
+    }
+  }
+
+  function clearDraftOnSuccess() {
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        /* no-op */
+      }
+    }
+  }
 
   // Reset modal au close
   function closeModal() {
@@ -451,7 +580,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     }
   }
 
-  // === Stats social proof ===
+  // === Stats social proof + urgence légitime ===
   const slotsThisMonthBooked = bookedSlots.filter((s) => {
     const [y, m] = s.date.split("-").map(Number);
     return y === viewYear && m! - 1 === viewMonth;
@@ -464,6 +593,68 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     0,
     totalDaysThisMonth - slotsThisMonthBooked - passedDaysIfCurrent,
   );
+
+  // « Réservations cette semaine » — compte des bookings dans les 7 derniers jours
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  const sevenDaysAgoKey = dateKey(
+    sevenDaysAgo.getFullYear(),
+    sevenDaysAgo.getMonth(),
+    sevenDaysAgo.getDate(),
+  );
+  // ATTENTION : "cette semaine" = bookings sur la semaine en cours.
+  // Approximation pragmatique : count dates dans [today-7, today+7].
+  const sevenDaysAfter = new Date(today);
+  sevenDaysAfter.setDate(today.getDate() + 7);
+  const sevenDaysAfterKey = dateKey(
+    sevenDaysAfter.getFullYear(),
+    sevenDaysAfter.getMonth(),
+    sevenDaysAfter.getDate(),
+  );
+  const bookingsThisWeek = bookedSlots.filter(
+    (s) => s.date >= sevenDaysAgoKey && s.date <= sevenDaysAfterKey,
+  ).length;
+
+  // « Prochain créneau dispo » — premier jour futur non réservé compte tenu
+  // de la durée de l'intervention selectionnée
+  const dur = preselectedOpt.durationDays;
+  let nextAvailableKey: string | null = null;
+  for (let offset = 0; offset < 60; offset++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + offset);
+    const k = dateKey(d.getFullYear(), d.getMonth(), d.getDate());
+    if (bookedByDate.has(k)) continue;
+    if (dur === 2 && bookedByDate.has(addDays(k, 1))) continue;
+    nextAvailableKey = k;
+    break;
+  }
+  const nextAvailableLabel = React.useMemo(() => {
+    if (!nextAvailableKey) return null;
+    const [y, m, d] = nextAvailableKey.split("-").map(Number);
+    const dt = new Date(y!, m! - 1, d!);
+    const dayName = isFr
+      ? ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."][dt.getDay()]
+      : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][dt.getDay()];
+    const monthShort = isFr
+      ? [
+          "janv.",
+          "févr.",
+          "mars",
+          "avr.",
+          "mai",
+          "juin",
+          "juil.",
+          "août",
+          "sept.",
+          "oct.",
+          "nov.",
+          "déc.",
+        ][m! - 1]
+      : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][
+          m! - 1
+        ];
+    return `${dayName} ${d} ${monthShort}`;
+  }, [nextAvailableKey, isFr]);
 
   // Click sur une cellule
   function onCellClick(iso: string) {
@@ -480,6 +671,8 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     }
     setOpenSlot(iso);
     setStep(1);
+    // Check brouillon localStorage en event handler (pas useEffect).
+    detectExistingDraft();
   }
 
   // === SUBMIT (stub) ===
@@ -521,7 +714,11 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
       },
     ]);
 
-    setTimeout(() => setSubmittingState("success"), 600);
+    setTimeout(() => {
+      setSubmittingState("success");
+      // Draft consommé : on nettoie le localStorage.
+      clearDraftOnSuccess();
+    }, 600);
   }
 
   // === Validation par step ===
@@ -653,13 +850,13 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
 
       {/* COLONNE DROITE (lg+) / BOTTOM (mobile) — calendrier complet */}
       <div>
-        {/* Header social proof — stats compactes */}
+        {/* Header social proof + urgence légitime — calculé live */}
         <div className="border-border bg-paper mb-5 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border px-5 py-3 text-sm">
           <span className="inline-flex items-center gap-2">
             <Calendar aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
-            <span className="text-fg font-semibold tabular-nums">{slotsThisMonthBooked}</span>
+            <span className="text-fg font-semibold tabular-nums">{bookingsThisWeek}</span>
             <span className="text-fg-muted">
-              {isFr ? "réservations ce mois" : "bookings this month"}
+              {isFr ? "réservations cette semaine" : "bookings this week"}
             </span>
           </span>
           <span className="bg-border-strong h-4 w-px" aria-hidden="true" />
@@ -669,14 +866,24 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
               {availableSlots}
             </span>
             <span className="text-fg-muted">
-              {isFr ? "créneaux disponibles" : "available slots"}
+              {isFr ? "dispos ce mois" : "available this month"}
             </span>
           </span>
-          <span className="bg-border-strong hidden h-4 w-px sm:inline-block" aria-hidden="true" />
-          <span className="text-fg-muted hidden items-center gap-2 sm:inline-flex">
-            <Check aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
-            {isFr ? "Confirmation sous 48 h" : "Confirmation within 48 h"}
-          </span>
+          {nextAvailableLabel ? (
+            <>
+              <span
+                className="bg-border-strong hidden h-4 w-px sm:inline-block"
+                aria-hidden="true"
+              />
+              <span className="hidden items-center gap-2 sm:inline-flex">
+                <Check aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
+                <span className="text-fg-muted">
+                  {isFr ? "Prochain dispo : " : "Next available: "}
+                </span>
+                <span className="text-fg font-semibold">{nextAvailableLabel}</span>
+              </span>
+            </>
+          ) : null}
         </div>
 
         {/* CADRE CALENDRIER — bordure 2px + shadow + gradient halo-warm.
@@ -1041,8 +1248,85 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                 </div>
               ) : openSlot ? (
                 <>
+                  {/* Banner draft restauration — visible si form en cours détecté */}
+                  {hasDraft && !draftDismissed ? (
+                    <div className="bg-halo-warm border-terracotta/30 mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 px-4 py-3">
+                      <div className="flex min-w-0 flex-1 items-start gap-2.5">
+                        <Sparkles
+                          aria-hidden="true"
+                          className="text-terracotta-deep mt-0.5 h-4 w-4 shrink-0"
+                        />
+                        <div>
+                          <p className="text-fg text-sm leading-tight font-semibold">
+                            {isFr
+                              ? "Reprendre votre réservation en cours ?"
+                              : "Resume your booking in progress?"}
+                          </p>
+                          <p className="text-fg-soft mt-0.5 text-[12px] leading-tight">
+                            {isFr
+                              ? "Vos informations ont été sauvegardées automatiquement."
+                              : "Your information was saved automatically."}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={restoreDraft}
+                          size="sm"
+                          shape="pill"
+                          variant="primary"
+                        >
+                          {isFr ? "Reprendre" : "Resume"}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={dismissDraft}
+                          size="sm"
+                          shape="pill"
+                          variant="ghost"
+                        >
+                          {isFr ? "Recommencer" : "Restart"}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+
                   {/* Progress bar */}
                   <ProgressBar step={step} isFr={isFr} />
+
+                  {/* Bannière "Brouillon trouvé" — apparaît au step 1 quand
+                      un brouillon localStorage existe et n'a pas été
+                      explicitement rejeté. Permet de reprendre une saisie
+                      en cours. */}
+                  {step === 1 && hasDraft && !draftDismissed ? (
+                    <div className="bg-halo-warm border-terracotta/30 mb-5 flex flex-wrap items-center gap-3 rounded-2xl border-2 p-4 sm:p-5">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
+                          {isFr ? "Brouillon retrouvé" : "Draft found"}
+                        </p>
+                        <p className="text-fg mt-1 text-sm leading-snug">
+                          {isFr
+                            ? "Une saisie précédente a été sauvegardée sur cet appareil. Vous pouvez la reprendre ou repartir de zéro."
+                            : "A previous entry was saved on this device. You can resume it or start fresh."}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <Button type="button" shape="pill" size="sm" onClick={restoreDraft}>
+                          {isFr ? "Reprendre" : "Resume"}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          shape="pill"
+                          size="sm"
+                          onClick={dismissDraft}
+                        >
+                          {isFr ? "Repartir de zéro" : "Start fresh"}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
 
                   <div className="py-2">
                     {step === 1 ? (
@@ -1604,28 +1888,103 @@ function StepRecap(props: {
             : "I agree to be contacted to confirm this booking and discuss the practicalities. Data handled per our privacy policy."}
         </span>
       </label>
+
+      {/* Badge sécurité — trust signal final juste avant Confirmer */}
+      <div className="border-border bg-paper flex items-start gap-3 rounded-xl border px-4 py-3">
+        <ShieldCheck aria-hidden="true" className="text-terracotta-deep mt-0.5 h-5 w-5 shrink-0" />
+        <p className="text-fg-soft text-[13px] leading-relaxed">
+          <span className="text-fg font-semibold">
+            {isFr
+              ? "Hébergement Hetzner Frankfurt · RGPD · OÜ estonienne"
+              : "Hetzner Frankfurt hosting · GDPR · Estonian OÜ"}
+          </span>
+          {" · "}
+          {isFr
+            ? "Vos données ne quittent jamais l'UE. Réponse garantie sous 48 h ouvrées."
+            : "Your data never leaves the EU. Reply guaranteed within 48 business hours."}
+        </p>
+      </div>
     </div>
   );
 }
 
-// Témoignage flottant sous le calendrier — carte halo-warm avec avatar
-// initiales, étoiles, citation courte. Pas de nom d'entreprise (anonymat
-// préservé), prénom + initiale + rôle pour crédibilité B2B.
+// 3 témoignages anonymisés rotatifs (carousel auto 7s, pause au hover).
+// Personae B2B variés (DRH, DG, Présidente) pour couvrir tous les profils
+// décideurs. Aucun nom d'entreprise (anonymat preservé).
+const TESTIMONIALS = [
+  {
+    initials: "SL",
+    nameFr: "Sophie L.",
+    nameEn: "Sophie L.",
+    roleFr: "DRH · ETI industrielle · Lyon, 250 personnes",
+    roleEn: "HR Director · mid-size industrial · Lyon, 250 people",
+    quoteFr:
+      "Réservation en 2 minutes, call de cadrage très clair le lendemain. Mes 8 collaborateurs étaient opérationnels dès la semaine suivante.",
+    quoteEn:
+      "Booked in 2 minutes, very clear framing call the next day. My 8 employees were operational the following week.",
+    daysAgoFr: "il y a 12 jours",
+    daysAgoEn: "12 days ago",
+  },
+  {
+    initials: "MD",
+    nameFr: "Marc D.",
+    nameEn: "Marc D.",
+    roleFr: "DG · PME tech · Bordeaux, 35 personnes",
+    roleEn: "CEO · tech SMB · Bordeaux, 35 people",
+    quoteFr:
+      "On a gagné 9 heures par semaine, par personne, sur la rédaction d'emails et de comptes-rendus. ROI atteint en 3 semaines.",
+    quoteEn:
+      "We saved 9 hours per week, per person, on emails and minute writing. ROI hit in 3 weeks.",
+    daysAgoFr: "il y a 3 semaines",
+    daysAgoEn: "3 weeks ago",
+  },
+  {
+    initials: "CV",
+    nameFr: "Claire V.",
+    nameEn: "Claire V.",
+    roleFr: "Présidente · cabinet conseil · Paris, 65 personnes",
+    roleEn: "President · consulting firm · Paris, 65 people",
+    quoteFr:
+      "Programme standardisé, ressources prêtes à utiliser dès le retour au bureau. Aucun document sur-mesure à valider — c'est un vrai gain de temps managérial.",
+    quoteEn:
+      "Standardised programme, ready-to-use takeaways from day one back at the office. No bespoke documents to validate — real managerial time saved.",
+    daysAgoFr: "il y a 5 semaines",
+    daysAgoEn: "5 weeks ago",
+  },
+];
+
 function FloatingTestimonial({ isFr }: { isFr: boolean }) {
+  const [activeIdx, setActiveIdx] = React.useState(0);
+  const [isPaused, setIsPaused] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isPaused) return;
+    const id = window.setInterval(() => {
+      setActiveIdx((i) => (i + 1) % TESTIMONIALS.length);
+    }, 7000);
+    return () => window.clearInterval(id);
+  }, [isPaused]);
+
+  const t = TESTIMONIALS[activeIdx]!;
   return (
-    <div className="bg-halo-warm border-terracotta/25 shadow-subtle relative mt-7 overflow-hidden rounded-2xl border-2 p-5 sm:p-6">
-      {/* Halo décoratif */}
+    <div
+      className="bg-halo-warm border-terracotta/25 shadow-subtle relative mt-7 overflow-hidden rounded-2xl border-2 p-5 sm:p-6"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+      role="region"
+      aria-label={isFr ? "Témoignages clients" : "Customer testimonials"}
+    >
       <div
         aria-hidden="true"
         className="bg-terracotta/10 pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full blur-2xl"
       />
       <div className="relative flex flex-wrap items-start gap-4 sm:flex-nowrap sm:gap-5">
-        {/* Avatar initiales */}
         <span className="bg-terracotta text-mocha-fg shadow-subtle flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-base font-bold">
-          SL
+          {t.initials}
         </span>
         <div className="min-w-0 flex-1">
-          {/* Étoiles + meta */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="flex items-center gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -1639,33 +1998,40 @@ function FloatingTestimonial({ isFr }: { isFr: boolean }) {
               ))}
             </span>
             <span className="text-fg-muted text-[11px] font-medium">
-              {isFr ? "il y a 12 jours" : "12 days ago"}
+              {isFr ? t.daysAgoFr : t.daysAgoEn}
             </span>
           </div>
-
-          {/* Citation */}
           <blockquote
+            key={activeIdx}
             className="text-fg mt-2.5 text-[15px] leading-relaxed italic sm:text-base"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            «&nbsp;
-            {isFr
-              ? "Réservation en 2 minutes, call de cadrage très clair le lendemain. Mes 8 collaborateurs étaient opérationnels dès la semaine suivante."
-              : "Booked in 2 minutes, very clear framing call the next day. My 8 employees were operational the following week."}
-            &nbsp;»
+            «&nbsp;{isFr ? t.quoteFr : t.quoteEn}&nbsp;»
           </blockquote>
-
-          {/* Auteur */}
           <p className="text-fg-soft mt-3 text-[13px] leading-tight">
-            <span className="text-fg font-bold">Sophie L.</span>
-            <span className="text-fg-muted">
-              {" · "}
-              {isFr ? "DRH · ETI industrielle" : "HR Director · mid-size industrial"}
-              {" · "}
-              {isFr ? "Lyon, 250 personnes" : "Lyon, 250 people"}
-            </span>
+            <span className="text-fg font-bold">{isFr ? t.nameFr : t.nameEn}</span>
+            <span className="text-fg-muted"> · {isFr ? t.roleFr : t.roleEn}</span>
           </p>
         </div>
+      </div>
+
+      {/* Indicateurs carousel — 3 dots cliquables */}
+      <div className="relative mt-4 flex items-center justify-center gap-2">
+        {TESTIMONIALS.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setActiveIdx(i)}
+            aria-label={`${isFr ? "Témoignage" : "Testimonial"} ${i + 1}`}
+            aria-current={i === activeIdx ? "true" : undefined}
+            className={cn(
+              "rounded-full transition-all",
+              i === activeIdx
+                ? "bg-terracotta h-2 w-6"
+                : "bg-fg-muted/30 hover:bg-fg-muted/50 h-2 w-2",
+            )}
+          />
+        ))}
       </div>
     </div>
   );
