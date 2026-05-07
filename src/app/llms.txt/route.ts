@@ -2,11 +2,11 @@
 // Spec: https://llmstxt.org/
 // Sprint 14 will enrich this with full content blocks (llms-full.txt).
 
+import { SITE_URL } from "@/lib/seo";
+
 export const runtime = "edge";
 // Edge route handlers cannot be `force-static` in Next 16. We rely on
 // HTTP `Cache-Control` (1h fresh + 24h SWR) below for CDN caching.
-
-const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
 
 export function GET() {
   const body = `# AxionIA

@@ -8,6 +8,8 @@ import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
+import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
+import type { Locale } from "@/i18n/routing";
 import "../globals.css";
 
 // Manrope = open-source substitute for proprietary WF Visual Sans Variable
@@ -37,8 +39,6 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
 });
-
-const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
 
 // Pre-render every supported locale at build time.
 export function generateStaticParams() {
@@ -92,49 +92,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  // JSON-LD: Organization + WebSite (axionia-seo-aeo). Layout-level Organization
-  // étendu pour signal AEO/GEO 2026 (citations Claude.ai / Perplexity / SGE) :
-  // logo + sameAs + foundingDate + foundingLocation + areaServed + contactPoint.
-  // TODO Sprint 15 : ajouter `vatID: "EE-XXXXXXXXX"` + `taxID: "EE-XXXXXXXXX"` +
-  // `identifier: { '@type': 'PropertyValue', propertyID: 'registrikood', value: 'XXXXXXX' }`
-  // une fois les références fiscales/registre Estonia confirmées.
-  const organizationJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "AxionIA",
-    legalName: "AxionIA OÜ",
-    url: SITE_URL,
-    logo: `${SITE_URL}/opengraph-image`,
-    sameAs: ["https://www.linkedin.com/company/axion-ia", "https://www.facebook.com/axionia"],
-    foundingDate: "2024",
-    foundingLocation: {
-      "@type": "Place",
-      address: {
-        "@type": "PostalAddress",
-        addressCountry: "EE",
-        addressLocality: "Tallinn",
-      },
-    },
-    areaServed: ["FR", "EU"],
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: locale === "fr" ? "Service client" : "Customer service",
-      email: "presse@axion-ia.com",
-      availableLanguage: ["French", "English"],
-    },
-  } as const;
-  const websiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "AxionIA",
-    url: `${SITE_URL}/${locale}`,
-    inLanguage: locale,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_URL}/${locale}/recherche?q={query}`,
-      "query-input": "required name=query",
-    },
-  } as const;
+  // JSON-LD: Organization + WebSite (axionia-seo-aeo). Built via factories
+  // in `lib/seo.ts` so the same Organization entity is reused on landing
+  // pages (régions, villes, IA tools) without copy-paste drift.
+  // Will fournit plus tard : `vatID` + `registrikood` Estonia → ajouter ici.
+  const organizationJsonLd = buildOrganizationJsonLd({ locale: locale as Locale });
+  const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
 
   return (
     <html

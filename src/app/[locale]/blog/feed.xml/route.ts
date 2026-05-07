@@ -4,10 +4,9 @@
 import { BLOG_POSTS } from "@/content/transversal";
 import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
+import { SITE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
-
-const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
 
 interface RouteContext {
   params: Promise<{ locale: string }>;

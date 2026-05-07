@@ -10,22 +10,34 @@ import {
   getAllFaqIds,
   getAllHelpSlugs,
   getAllHelpCategorySlugs,
+  BLOG_POSTS,
 } from "@/content/transversal";
 import { getAllComparisonSlugs } from "@/content/comparaisons";
 import { AUTOMATISATION_SLUGS } from "@/content/automatisations";
 
-// Sitemap covers every public route declared in `routing.pathnames`, plus
-// dynamic enumerations for each programmatic pattern (blog categories/tags/
-// authors, FAQ entries, help articles, case-study industries, comparisons).
+// Next.js 16 sitemap-index pattern via `generateSitemaps()`.
+// `/sitemap.xml`         = sitemap-index (auto, lists sub-sitemaps)
+// `/sitemap/pages.xml`   = static routes (excluding [slug] templates + dev shells)
+// `/sitemap/blog.xml`    = posts + categories + tags + authors (lastModified = publishedAt)
+// `/sitemap/help.xml`    = centre-aide + faq
+// `/sitemap/cas-concrets.xml`  = case studies + industry filters
+// `/sitemap/comparaisons.xml`  = comparison pages
+// `/sitemap/implementation.xml`= /par-fonction/[slug] programmatic (G5 fix)
 //
-// Excluded:
-//   - dev shells (`/components`, `/design`, `/sections`)
-//   - private/no-index pages (`/desabonnement`, `/mes-donnees`,
-//     `/confirmation`, `/recherche`, `/preferences-cookies`)
-//   - dynamic [slug] templates themselves (we emit each resolved slug below).
+// Why split? Google limit = 50K URLs/sitemap, but signal quality also degrades
+// past ~1K URLs in a single flat file. Splitting by section gives:
+//   - faster crawl prioritization (blog weekly vs pages stable)
+//   - clearer Search Console diagnostics per section
+//   - room to scale to Sprint 15 cibles (régions ~18, villes ~1160 V1)
+//     without rewriting this file again — just append `regions` + `villes-[region]` ids.
 //
-// Each static entry exposes `alternates.languages` per next-intl pathnames
-// map, so search engines pick the correct localized URL.
+// Each entry exposes `alternates.languages` per next-intl pathnames map so
+// search engines pick the correct localized URL (Google ignores `priority`
+// since 2017 but still uses hreflang + lastmod + changefreq for crawl
+// budget allocation).
+
+type SitemapId = "pages" | "blog" | "help" | "cas-concrets" | "comparaisons" | "implementation";
+
 type PathnameKey = keyof typeof routing.pathnames;
 
 const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
@@ -69,15 +81,18 @@ interface DynamicSlug {
   slugs: ReadonlyArray<string>;
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
   priority: number;
+  /** Optional per-slug lastModified resolver. Defaults to `now`. */
+  lastModFor?: (slug: string) => Date | string;
 }
 
 function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataRoute.Sitemap {
   const out: MetadataRoute.Sitemap = [];
   for (const entry of entries) {
     for (const slug of entry.slugs) {
+      const lastMod = entry.lastModFor?.(slug) ?? now;
       out.push({
         url: `${SITE_URL}/fr${entry.fr.replace(":slug", slug)}`,
-        lastModified: now,
+        lastModified: lastMod,
         changeFrequency: entry.changeFrequency,
         priority: entry.priority,
         alternates: {
@@ -90,7 +105,7 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
       });
       out.push({
         url: `${SITE_URL}/en${(entry.en ?? entry.fr).replace(":slug", slug)}`,
-        lastModified: now,
+        lastModified: lastMod,
         changeFrequency: entry.changeFrequency,
         priority: entry.priority,
       });
@@ -99,10 +114,50 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
   return out;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-  const entries: MetadataRoute.Sitemap = [];
+// `generateSitemaps` — declares the sub-sitemaps. Next.js 16 wraps these in
+// an automatic sitemap-index at `/sitemap.xml` and exposes each child at
+// `/sitemap/<id>.xml`. Adding a new section = one entry here + one builder
+// below. No infra change needed for Sprint 15 villes/régions.
+export async function generateSitemaps(): Promise<Array<{ id: SitemapId }>> {
+  return [
+    { id: "pages" },
+    { id: "blog" },
+    { id: "help" },
+    { id: "cas-concrets" },
+    { id: "comparaisons" },
+    { id: "implementation" },
+  ];
+}
 
+export default async function sitemap(props: {
+  id: Promise<string>;
+}): Promise<MetadataRoute.Sitemap> {
+  const id = (await props.id) as SitemapId;
+  const now = new Date();
+  switch (id) {
+    case "pages":
+      return buildPagesSitemap(now);
+    case "blog":
+      return buildBlogSitemap(now);
+    case "help":
+      return buildHelpSitemap(now);
+    case "cas-concrets":
+      return buildCasConcretsSitemap(now);
+    case "comparaisons":
+      return buildComparaisonsSitemap(now);
+    case "implementation":
+      return buildImplementationSitemap(now);
+    default:
+      return [];
+  }
+}
+
+// ---------- builders ----------
+
+// Static routes — declared in `routing.pathnames` minus excluded + slug templates.
+// Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
+function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
@@ -117,86 +172,123 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
   }
-
-  entries.push(
-    ...buildDynamic(
-      [
-        {
-          fr: "/cas-concrets/:slug",
-          slugs: getAllCaseStudySlugs(),
-          changeFrequency: "monthly",
-          priority: 0.6,
-        },
-        {
-          fr: "/blog/:slug",
-          slugs: getAllBlogSlugs(),
-          changeFrequency: "monthly",
-          priority: 0.5,
-        },
-        {
-          fr: "/blog/categorie/:slug",
-          en: "/blog/category/:slug",
-          slugs: getAllBlogCategorySlugs(),
-          changeFrequency: "monthly",
-          priority: 0.5,
-        },
-        {
-          fr: "/blog/tag/:slug",
-          slugs: getAllBlogTagSlugs(),
-          changeFrequency: "monthly",
-          priority: 0.4,
-        },
-        {
-          fr: "/blog/auteur/:slug",
-          en: "/blog/author/:slug",
-          slugs: getAllBlogAuthorSlugs(),
-          changeFrequency: "monthly",
-          priority: 0.4,
-        },
-        {
-          fr: "/faq/:slug",
-          slugs: getAllFaqIds(),
-          changeFrequency: "monthly",
-          priority: 0.7,
-        },
-        {
-          fr: "/centre-aide/:slug",
-          en: "/help/:slug",
-          slugs: getAllHelpSlugs(),
-          changeFrequency: "monthly",
-          priority: 0.6,
-        },
-        {
-          fr: "/centre-aide/categorie/:slug",
-          en: "/help/category/:slug",
-          slugs: getAllHelpCategorySlugs(),
-          changeFrequency: "monthly",
-          priority: 0.5,
-        },
-        {
-          fr: "/cas-concrets/secteur/:slug",
-          en: "/case-studies/industry/:slug",
-          slugs: getAllIndustrySlugs(),
-          changeFrequency: "monthly",
-          priority: 0.5,
-        },
-        {
-          fr: "/comparaisons/:slug",
-          slugs: getAllComparisonSlugs(),
-          changeFrequency: "monthly",
-          priority: 0.5,
-        },
-        {
-          fr: "/implementation/par-fonction/:slug",
-          en: "/implementation/by-role/:slug",
-          slugs: AUTOMATISATION_SLUGS,
-          changeFrequency: "monthly",
-          priority: 0.6,
-        },
-      ],
-      now,
-    ),
-  );
-
   return entries;
+}
+
+// Blog posts use real `publishedAt` for `lastModified` — Google rewards
+// accurate lastmod (signal not gameable, used for crawl prioritization).
+// Categories / tags / authors stay on `now` (the listing page changes when
+// a new post enters the corpus).
+function buildBlogSitemap(now: Date): MetadataRoute.Sitemap {
+  const datesBySlug = new Map(BLOG_POSTS.map((p) => [p.slug, p.publishedAt]));
+  return buildDynamic(
+    [
+      {
+        fr: "/blog/:slug",
+        slugs: getAllBlogSlugs(),
+        changeFrequency: "monthly",
+        priority: 0.5,
+        lastModFor: (slug) => datesBySlug.get(slug) ?? now,
+      },
+      {
+        fr: "/blog/categorie/:slug",
+        en: "/blog/category/:slug",
+        slugs: getAllBlogCategorySlugs(),
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+      {
+        fr: "/blog/tag/:slug",
+        slugs: getAllBlogTagSlugs(),
+        changeFrequency: "monthly",
+        priority: 0.4,
+      },
+      {
+        fr: "/blog/auteur/:slug",
+        en: "/blog/author/:slug",
+        slugs: getAllBlogAuthorSlugs(),
+        changeFrequency: "monthly",
+        priority: 0.4,
+      },
+    ],
+    now,
+  );
+}
+
+function buildHelpSitemap(now: Date): MetadataRoute.Sitemap {
+  return buildDynamic(
+    [
+      {
+        fr: "/centre-aide/:slug",
+        en: "/help/:slug",
+        slugs: getAllHelpSlugs(),
+        changeFrequency: "monthly",
+        priority: 0.6,
+      },
+      {
+        fr: "/centre-aide/categorie/:slug",
+        en: "/help/category/:slug",
+        slugs: getAllHelpCategorySlugs(),
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+      {
+        fr: "/faq/:slug",
+        slugs: getAllFaqIds(),
+        changeFrequency: "monthly",
+        priority: 0.7,
+      },
+    ],
+    now,
+  );
+}
+
+function buildCasConcretsSitemap(now: Date): MetadataRoute.Sitemap {
+  return buildDynamic(
+    [
+      {
+        fr: "/cas-concrets/:slug",
+        slugs: getAllCaseStudySlugs(),
+        changeFrequency: "monthly",
+        priority: 0.6,
+      },
+      {
+        fr: "/cas-concrets/secteur/:slug",
+        en: "/case-studies/industry/:slug",
+        slugs: getAllIndustrySlugs(),
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+    ],
+    now,
+  );
+}
+
+function buildComparaisonsSitemap(now: Date): MetadataRoute.Sitemap {
+  return buildDynamic(
+    [
+      {
+        fr: "/comparaisons/:slug",
+        slugs: getAllComparisonSlugs(),
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+    ],
+    now,
+  );
+}
+
+function buildImplementationSitemap(now: Date): MetadataRoute.Sitemap {
+  return buildDynamic(
+    [
+      {
+        fr: "/implementation/par-fonction/:slug",
+        en: "/implementation/by-role/:slug",
+        slugs: AUTOMATISATION_SLUGS,
+        changeFrequency: "monthly",
+        priority: 0.6,
+      },
+    ],
+    now,
+  );
 }

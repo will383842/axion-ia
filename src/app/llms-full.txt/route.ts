@@ -4,10 +4,9 @@
 
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CASE_STUDIES } from "@/content/case-studies";
+import { SITE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
-
-const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
 
 export function GET() {
   const faqBlock = FAQ_GLOBAL.map(
