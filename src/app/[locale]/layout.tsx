@@ -140,28 +140,33 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         />
         {/* Speculation Rules — eager prefetch + moderate prerender on hover/
             viewport. PERF-010/NAV-015. Browsers without support ignore the
-            script silently (Safari fallback ↔ Chrome/Edge gain). */}
-        <script
-          type="speculationrules"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              prerender: [
-                {
-                  source: "document",
-                  where: { href_matches: `/${locale}/*` },
-                  eagerness: "moderate",
-                },
-              ],
-              prefetch: [
-                {
-                  source: "document",
-                  where: { href_matches: `/${locale}/*` },
-                  eagerness: "eager",
-                },
-              ],
-            }),
-          }}
-        />
+            script silently (Safari fallback ↔ Chrome/Edge gain).
+            Production-only: in `next dev`, eager prefetching saturates the
+            single dev server (Turbopack recompiles each route) and stalls
+            the user's actual click behind speculative requests. */}
+        {process.env.NODE_ENV === "production" && (
+          <script
+            type="speculationrules"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                prerender: [
+                  {
+                    source: "document",
+                    where: { href_matches: `/${locale}/*` },
+                    eagerness: "moderate",
+                  },
+                ],
+                prefetch: [
+                  {
+                    source: "document",
+                    where: { href_matches: `/${locale}/*` },
+                    eagerness: "eager",
+                  },
+                ],
+              }),
+            }}
+          />
+        )}
       </body>
     </html>
   );

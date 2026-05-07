@@ -8,7 +8,9 @@ if (dsn) {
     tracesSampleRate: process.env["NODE_ENV"] === "production" ? 0.1 : 1.0,
     environment: process.env["NEXT_PUBLIC_APP_ENV"] ?? "development",
     replaysSessionSampleRate: 0,
-    replaysOnErrorSampleRate: 0.05,
+    // Replays add ~30 KB to the client bundle and capture overhead on errors.
+    // 1% on errors is enough to debug regressions without weighing nav perf.
+    replaysOnErrorSampleRate: 0.01,
   });
 }
 

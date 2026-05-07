@@ -28,14 +28,32 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
   experimental: {
-    // React 19.2 ViewTransition integration — animates route navigations.
-    // Falls back to instant transitions in browsers without support and
-    // when prefers-reduced-motion is set (CSS-level guard).
-    viewTransition: true,
+    // ViewTransition disabled until we actually wrap route transitions in
+    // <ViewTransition>. The flag alone changes Next's navigation behavior
+    // (waits for render before swap) and adds perceived latency without
+    // any visual benefit. Re-enable when we adopt the API explicitly.
+    // viewTransition: true,
     // PPR (Partial Prerendering) deferred — needs per-route Suspense
     // boundaries before flipping. Re-evaluate Sprint 17 after server
     // actions land.
     // ppr: "incremental",
+    optimizePackageImports: [
+      "lucide-react",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-checkbox",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-label",
+      "@radix-ui/react-popover",
+      "@radix-ui/react-radio-group",
+      "@radix-ui/react-select",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-slider",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-switch",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-tooltip",
+    ],
   },
   // React Compiler deferred (PERF-004) — requires `babel-plugin-react-compiler`
   // devDep + Babel takeover that slows Turbopack builds. Re-evaluate Sprint 17
