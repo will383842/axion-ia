@@ -268,7 +268,7 @@ suggérés : Communiqués · Kit · Médias · Porte-parole · FAQ · Pitch.
 ## 2026-05-06 — Sprint 5b (correctif) · Home + Design v3 Editorial Premium
 
 **Auteur** : Will + Claude Opus 4.7
-**Référence** : ADR `docs/adr/0002-design-direction-editorial-premium.md`
+**Référence** : ADR `docs/adr/0002-design-pivot-editorial-v3.md`
 
 ### Contexte
 
