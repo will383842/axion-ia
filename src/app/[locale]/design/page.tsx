@@ -34,7 +34,7 @@ export default function DesignPage() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Swatch name="text-fg" className="bg-fg text-bg" hex="#1a1815" />
           <Swatch name="text-fg-soft" className="bg-fg-soft text-bg" hex="#524b41" />
-          <Swatch name="text-fg-muted" className="bg-fg-muted text-bg" hex="#80766a" />
+          <Swatch name="text-fg-muted" className="bg-fg-muted text-bg" hex="#6b6155" />
         </div>
       </Section>
 
@@ -80,7 +80,7 @@ export default function DesignPage() {
       {/* ── 2.5 Accent doux sage ── */}
       <Section eyebrow="Accent doux · sage (Module Cas concrets)">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-          <Swatch name="bg-sage" className="bg-sage text-mocha-fg" hex="#7a8870" />
+          <Swatch name="bg-sage" className="bg-sage text-mocha-fg" hex="#5e6c54" />
           <Swatch name="bg-sage-soft" className="bg-sage-soft text-sage" hex="#e6ebe2" />
         </div>
       </Section>
@@ -91,7 +91,7 @@ export default function DesignPage() {
           <ModuleRow module="Module 1 · Interventions" accent="primary" hex="#1a4dd9" />
           <ModuleRow module="Module 2 · Audit" accent="accent-orange" hex="#ff6b00" />
           <ModuleRow module="Module 3 · Implémentation" accent="accent-purple" hex="#7a3dff" />
-          <ModuleRow module="Cas concrets" accent="sage" hex="#7a8870" />
+          <ModuleRow module="Cas concrets" accent="sage" hex="#5e6c54" />
           <ModuleRow module="Blog / transversales" accent="—" hex="neutral" />
           <ModuleRow module="Légal" accent="—" hex="neutral" />
         </ul>

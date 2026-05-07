@@ -91,7 +91,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
             setValue("consent", c === true ? true : (false as never), { shouldValidate: true })
           }
         />
-        <Label htmlFor="newsletter-consent" className="text-xs leading-relaxed text-gray-700">
+        <Label htmlFor="newsletter-consent" className="text-fg-soft text-xs leading-relaxed">
           {labels.consent}
         </Label>
       </div>

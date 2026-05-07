@@ -92,7 +92,7 @@ export const SheetDescription = React.forwardRef<
   return (
     <DialogPrimitive.Description
       ref={ref}
-      className={cn("text-sm text-gray-700", className)}
+      className={cn("text-sm text-fg-soft", className)}
       {...rest}
     />
   );

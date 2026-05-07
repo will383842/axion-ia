@@ -52,7 +52,7 @@ export const DropdownMenuLabel = React.forwardRef<
   return (
     <DropdownMenuPrimitive.Label
       ref={ref}
-      className={cn("text-gray-600 px-3 py-1.5 text-xs font-semibold uppercase", className)}
+      className={cn("text-fg-muted px-3 py-1.5 text-xs font-semibold uppercase", className)}
       {...rest}
     />
   );

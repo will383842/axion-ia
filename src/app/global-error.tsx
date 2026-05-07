@@ -24,7 +24,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
           <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
             <span
               aria-hidden="true"
-              className="bg-accent-red mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
             />
             500 · Erreur critique · Critical error
           </p>

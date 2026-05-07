@@ -36,7 +36,7 @@ export function Price({ amount, currency = "EUR", suffix, size = "md", className
         {symbol}
       </span>
       {suffix ? (
-        <span className="text-xs font-medium tracking-wide text-gray-600 uppercase">{suffix}</span>
+        <span className="text-fg-muted text-xs font-medium tracking-wide uppercase">{suffix}</span>
       ) : null}
     </span>
   );

@@ -51,5 +51,5 @@ export const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(function AlertDescription({ className, ...rest }, ref) {
-  return <p ref={ref} className={cn("text-sm text-gray-700", className)} {...rest} />;
+  return <p ref={ref} className={cn("text-sm text-fg-soft", className)} {...rest} />;
 });

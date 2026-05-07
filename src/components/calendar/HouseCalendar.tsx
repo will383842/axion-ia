@@ -138,7 +138,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
           <div
             key={d}
             role="columnheader"
-            className="py-2 text-center text-xs font-semibold text-gray-600 uppercase"
+            className="text-fg-muted py-2 text-center text-xs font-semibold uppercase"
           >
             {d}
           </div>
@@ -175,7 +175,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
               }
               className={cn(
                 "focus-visible:ring-primary h-11 rounded-sm text-sm font-medium tabular-nums focus-visible:ring-2 focus-visible:outline-none",
-                disabled && "cursor-not-allowed text-gray-300",
+                disabled && "text-fg-muted/40 cursor-not-allowed",
                 !disabled &&
                   status === "available" &&
                   "bg-accent-green/10 text-fg hover:bg-accent-green/20",
@@ -184,7 +184,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
                   "bg-accent-yellow/15 text-fg hover:bg-accent-yellow/25",
                 !disabled &&
                   status === "reserved" &&
-                  "bg-border/60 cursor-not-allowed text-gray-700",
+                  "bg-border/60 text-fg-soft cursor-not-allowed",
                 isSelected && "ring-primary ring-2",
               )}
             >
@@ -206,7 +206,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
             {labels.selectTime}
           </h4>
           {slotsForSelected.length === 0 ? (
-            <p className="text-sm text-gray-700">{labels.noSlots}</p>
+            <p className="text-fg-soft text-sm">{labels.noSlots}</p>
           ) : (
             <ul className="flex flex-wrap gap-2">
               {slotsForSelected.map((s) => {
@@ -221,7 +221,8 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
                       aria-pressed={isSelectedSlot}
                       className={cn(
                         "focus-visible:ring-primary rounded-sm border px-3 py-2 text-sm tabular-nums focus-visible:ring-2 focus-visible:outline-none",
-                        disabled && "border-border bg-border/40 cursor-not-allowed text-gray-300",
+                        disabled &&
+                          "border-border bg-border/40 text-fg-muted/40 cursor-not-allowed",
                         !disabled &&
                           !isSelectedSlot &&
                           "border-border text-fg hover:border-border-hover",
@@ -245,7 +246,7 @@ export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCale
         </div>
       ) : null}
 
-      <footer className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-700">
+      <footer className="text-fg-soft mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs">
         <span className="flex items-center gap-2">
           <span aria-hidden="true" className="bg-accent-green/30 inline-block h-3 w-3 rounded-xs" />
           {labels.available}

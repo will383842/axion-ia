@@ -10,6 +10,7 @@ import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { CaseStudiesHeroSchema } from "@/components/sections/CaseStudiesHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Illustration } from "@/components/visual/Illustration";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 
@@ -96,10 +97,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                   ? "Cas réels · de l'artisan au grand groupe"
                   : "Real cases · from artisans to large groups"}
               </p>
-              <h1
-                className="text-fg mt-5 text-[clamp(2rem,5vw,4rem)] leading-[1.04] font-medium tracking-tight"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
+              <h1 className="text-fg display-editorial mt-5">
                 {isFr ? "Ce qu'ils ont " : "What they've "}
                 <span className="text-sage mx-2 italic" style={{ fontFamily: "var(--font-serif)" }}>
                   {isFr ? "concrètement gagné" : "actually gained"}
@@ -230,6 +228,27 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
             })
           )}
         </ul>
+      </Section>
+
+      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="CAS-02-mid"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/cas-concrets-mid-1.avif"
+            caption={
+              isFr
+                ? "Collection éditoriale d'objets opérationnels — chaque cas, sa preuve"
+                : "Editorial collection of operational objects — each case, its proof"
+            }
+            alt={
+              isFr
+                ? "Illustration éditoriale d'une collection d'objets opérationnels symbolisant les cas concrets clients AxionIA."
+                : "Editorial illustration of a collection of operational objects symbolizing AxionIA client case studies."
+            }
+          />
+        </Container>
       </Section>
 
       <CtaBlock

@@ -87,7 +87,7 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
                 <input type="hidden" name="token" value={token} />
                 <button
                   type="submit"
-                  className="bg-primary text-primary-fg cta-lift inline-flex items-center gap-2 rounded-sm px-5 py-3 text-base font-medium"
+                  className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-md px-5 py-3 text-base font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {isFr ? "Confirmer le désabonnement" : "Confirm unsubscribe"} →
                 </button>

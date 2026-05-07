@@ -252,18 +252,6 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-card);
   }
-
-  /* Compatibilité v1 — l'animation `cta-translate` reste pour les composants
-   * qui l'utilisent encore (ne pas casser). Same easing, lift au lieu de slide. */
-  .cta-translate {
-    transition:
-      transform var(--duration-base) var(--ease-out-webflow),
-      background-color var(--duration-base) var(--ease-out-webflow),
-      color var(--duration-base) var(--ease-out-webflow);
-  }
-  .cta-translate:hover {
-    transform: translateY(-2px);
-  }
 }
 
 /* =============================================================
@@ -333,7 +321,6 @@
     transition-duration: 0ms !important;
     scroll-behavior: auto !important;
   }
-  .cta-translate:hover,
   .cta-lift:hover {
     transform: none !important;
   }

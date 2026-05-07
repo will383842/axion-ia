@@ -132,7 +132,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
                 ? "border-primary bg-primary text-primary-fg"
                 : i < step
                   ? "border-primary text-primary"
-                  : "border-border text-gray-600",
+                  : "border-border text-fg-muted",
             )}
           >
             <span className="tabular-nums">{String(i + 1).padStart(2, "0")}</span> · {s}

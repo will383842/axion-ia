@@ -22,14 +22,14 @@ export function TrustBar({ logos, label, className }: TrustBarProps) {
   return (
     <div className={cn("flex flex-col items-center gap-6", className)}>
       {label ? (
-        <p className="text-xs font-semibold tracking-wide text-gray-600 uppercase">{label}</p>
+        <p className="text-fg-muted text-xs font-semibold tracking-wide uppercase">{label}</p>
       ) : null}
       <ul className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-80">
         {logos.map((entry) => (
           <li
             key={entry.id}
             aria-label={entry.name}
-            className="hover:text-fg text-gray-600 transition-colors"
+            className="hover:text-fg text-fg-muted transition-colors"
           >
             <span aria-hidden="true">{entry.logo}</span>
           </li>
