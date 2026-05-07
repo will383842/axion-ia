@@ -62,7 +62,12 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
 
   return (
     <>
-      <Section titleAs="h1" eyebrow="✓" title={isFr ? "Demande reçue" : "Request received"} />
+      <Section
+        titleAs="h1"
+        eyebrow="✓"
+        title={isFr ? "Demande" : "Request"}
+        titleEm={isFr ? "reçue" : "received"}
+      />
       <Section>
         <Container className="max-w-2xl space-y-6">
           <Alert variant="success" role="status">

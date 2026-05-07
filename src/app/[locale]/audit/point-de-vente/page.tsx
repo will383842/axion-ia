@@ -62,7 +62,7 @@ export default async function AuditPage({ params }: Props) {
     <ProductPageTemplate
       accent="orange"
       copy={copy}
-      ctaPrimaryHref="/contact"
+      ctaPrimaryHref="/audit/demande"
       ctaSecondaryHref="/audit"
       jsonLd={jsonLd}
     />

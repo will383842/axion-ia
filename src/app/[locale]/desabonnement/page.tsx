@@ -61,7 +61,8 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
       <Section
         titleAs="h1"
         eyebrow={isFr ? "RGPD · RFC 8058" : "GDPR · RFC 8058"}
-        title={isFr ? "Confirmer le désabonnement" : "Confirm unsubscribe"}
+        title={isFr ? "Confirmer le" : "Confirm"}
+        titleEm={isFr ? "désabonnement" : "unsubscribe"}
         description={
           isFr
             ? "Conformément au RGPD et à la RFC 8058 (List-Unsubscribe en un clic), vous pouvez retirer votre consentement à tout moment."

@@ -41,6 +41,7 @@ export const routing = defineRouting({
     "/audit/departement": { fr: "/audit/departement", en: "/audit/department" },
     "/audit/point-de-vente": { fr: "/audit/point-de-vente", en: "/audit/storefront" },
     "/audit/cabinet": { fr: "/audit/cabinet", en: "/audit/firm" },
+    "/audit/demande": { fr: "/audit/demande", en: "/audit/request" },
 
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
@@ -65,11 +66,13 @@ export const routing = defineRouting({
 
     // Cas concrets
     "/cas-concrets": { fr: "/cas-concrets", en: "/case-studies" },
+    "/cas-concrets/[slug]": { fr: "/cas-concrets/[slug]", en: "/case-studies/[slug]" },
 
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },
     "/contact": { fr: "/contact", en: "/contact" },
     "/blog": "/blog",
+    "/blog/[slug]": "/blog/[slug]",
     "/blog/categorie/[slug]": { fr: "/blog/categorie/[slug]", en: "/blog/category/[slug]" },
     "/blog/tag/[slug]": "/blog/tag/[slug]",
     "/blog/auteur/[slug]": { fr: "/blog/auteur/[slug]", en: "/blog/author/[slug]" },

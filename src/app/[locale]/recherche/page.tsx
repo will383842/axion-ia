@@ -63,7 +63,8 @@ export default async function SearchPage({ params, searchParams }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Recherche" : "Search"}
-        title={isFr ? "Trouver dans AxionIA" : "Search AxionIA"}
+        title={isFr ? "Trouver dans" : "Search"}
+        titleEm={isFr ? "AxionIA" : "AxionIA"}
         description={
           isFr
             ? "Recherche cross-content (blog, FAQ, aide, cas concrets, glossaire). Sprint 15 connecte Postgres FTS — pour l'instant le moteur est en cours de construction."

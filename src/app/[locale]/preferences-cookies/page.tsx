@@ -51,7 +51,8 @@ export default async function CookiePreferencesPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow="RGPD"
-        title={isFr ? "Préférences cookies" : "Cookie preferences"}
+        title={isFr ? "Préférences" : "Cookie"}
+        titleEm={isFr ? "cookies" : "preferences"}
         description={
           isFr
             ? "Granularité fine sur les cookies déposés. Modifiable à tout moment."

@@ -70,7 +70,8 @@ export default async function MyDataPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow="RGPD · GDPR"
-        title={isFr ? "Mes données RGPD" : "My GDPR data"}
+        title={isFr ? "Mes données" : "My"}
+        titleEm={isFr ? "RGPD" : "GDPR data"}
         description={
           isFr
             ? "AxionIA OÜ traite vos données conformément au RGPD UE 2016/679. Voici comment exercer vos droits."
