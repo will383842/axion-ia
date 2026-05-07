@@ -7,6 +7,10 @@ interface ProductHeroProps {
   eyebrow: string;
   accent?: "primary" | "purple" | "orange" | "green";
   title: React.ReactNode;
+  /** Portion du titre rendue en italique terracotta serif (signature v3). */
+  titleEm?: React.ReactNode;
+  /** Suite du titre après `titleEm` (texte standard). */
+  titleTail?: React.ReactNode;
   /** AEO answer block — 40-80 words, citable by LLMs. */
   answer: React.ReactNode;
   priceEur?: number;
@@ -43,6 +47,8 @@ export function ProductHero({
   eyebrow,
   accent = "primary",
   title,
+  titleEm,
+  titleTail,
   answer,
   priceEur,
   priceSuffix = "HT",
@@ -76,6 +82,15 @@ export function ProductHero({
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {title}
+            {titleEm ? (
+              <span
+                className="text-terracotta mx-2 italic"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {titleEm}
+              </span>
+            ) : null}
+            {titleTail}
           </h1>
           <div className="text-fg-soft mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl">
             {answer}

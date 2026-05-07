@@ -288,6 +288,26 @@
   color: var(--color-mocha);
 }
 
+/* Flash terracotta — titre calendrier quand l'intervention change.
+   Pulse rapide (800ms) qui attire l'œil sans gêner. */
+@keyframes title-flash {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.03);
+    text-shadow: 0 0 22px rgba(194, 74, 27, 0.45);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 0 rgba(194, 74, 27, 0);
+  }
+}
+
+.title-flash {
+  animation: title-flash 800ms ease-out;
+}
+
 /* prefers-reduced-motion strict */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -301,5 +321,8 @@
   .cta-translate:hover,
   .cta-lift:hover {
     transform: none !important;
+  }
+  .title-flash {
+    animation: none !important;
   }
 }
