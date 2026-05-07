@@ -92,13 +92,36 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  // JSON-LD: Organization + WebSite (axionia-seo-aeo).
+  // JSON-LD: Organization + WebSite (axionia-seo-aeo). Layout-level Organization
+  // étendu pour signal AEO/GEO 2026 (citations Claude.ai / Perplexity / SGE) :
+  // logo + sameAs + foundingDate + foundingLocation + areaServed + contactPoint.
+  // TODO Sprint 15 : ajouter `vatID: "EE-XXXXXXXXX"` + `taxID: "EE-XXXXXXXXX"` +
+  // `identifier: { '@type': 'PropertyValue', propertyID: 'registrikood', value: 'XXXXXXX' }`
+  // une fois les références fiscales/registre Estonia confirmées.
   const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "AxionIA",
-    url: SITE_URL,
     legalName: "AxionIA OÜ",
+    url: SITE_URL,
+    logo: `${SITE_URL}/opengraph-image`,
+    sameAs: ["https://www.linkedin.com/company/axion-ia", "https://www.facebook.com/axionia"],
+    foundingDate: "2024",
+    foundingLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "EE",
+        addressLocality: "Tallinn",
+      },
+    },
+    areaServed: ["FR", "EU"],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: locale === "fr" ? "Service client" : "Customer service",
+      email: "presse@axion-ia.com",
+      availableLanguage: ["French", "English"],
+    },
   } as const;
   const websiteJsonLd = {
     "@context": "https://schema.org",

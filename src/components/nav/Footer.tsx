@@ -22,6 +22,10 @@ export async function Footer() {
     { href: "/implementation", label: t("nav.implementation") },
   ];
   const resources = [
+    { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
+    { href: "/comparaisons", label: isFr ? "Comparaisons" : "Comparisons" },
+    { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
+    { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
     { href: "/blog", label: t("nav.blog") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/faq", label: "FAQ" },
@@ -29,6 +33,7 @@ export async function Footer() {
   ];
   const company = [
     { href: "/a-propos", label: t("nav.about") },
+    { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
@@ -37,6 +42,7 @@ export async function Footer() {
     { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
     { href: "/conditions-generales", label: isFr ? "CGV" : "Terms" },
     { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
+    { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
     { href: "/cookies", label: "Cookies" },
   ];
 

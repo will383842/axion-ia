@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
+import { SITE_URL } from "@/lib/seo";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
   getAllBlogSlugs,
@@ -11,8 +12,7 @@ import {
   getAllHelpCategorySlugs,
 } from "@/content/transversal";
 import { getAllComparisonSlugs } from "@/content/comparaisons";
-
-const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
+import { AUTOMATISATION_SLUGS } from "@/content/automatisations";
 
 // Sitemap covers every public route declared in `routing.pathnames`, plus
 // dynamic enumerations for each programmatic pattern (blog categories/tags/
@@ -185,6 +185,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
           slugs: getAllComparisonSlugs(),
           changeFrequency: "monthly",
           priority: 0.5,
+        },
+        {
+          fr: "/implementation/par-fonction/:slug",
+          en: "/implementation/by-role/:slug",
+          slugs: AUTOMATISATION_SLUGS,
+          changeFrequency: "monthly",
+          priority: 0.6,
         },
       ],
       now,
