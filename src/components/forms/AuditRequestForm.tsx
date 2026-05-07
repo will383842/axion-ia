@@ -133,11 +133,52 @@ interface Labels {
 
 interface AuditRequestFormProps {
   labels: Labels;
+  /** Locale active — utilisée par le helper de prix `priceFor`. */
+  locale: "fr" | "en";
 }
 
 const STEP_ICONS = [ClipboardCheck, Building2, MapPin, Brain, User, Check] as const;
 
-export function AuditRequestForm({ labels }: AuditRequestFormProps) {
+// Prix par niveau et modalité — utilisé par le bandeau persistent en
+// haut du form, le différentiel modalité Step 3 et le récap Step 6.
+// Les niveaux Process/PME/ETI ont le même prix indicatif distance/onsite
+// (le différentiel sera précisé dans le devis personnalisé).
+const PRICE_TABLE: Record<
+  AuditTypeKey,
+  { remote: { fr: string; en: string }; onsite: { fr: string; en: string } }
+> = {
+  flash: {
+    remote: { fr: "490 €", en: "€490" },
+    onsite: { fr: "890 €", en: "€890" },
+  },
+  process: {
+    remote: { fr: "Dès 1 900 €", en: "From €1,900" },
+    onsite: { fr: "Dès 1 900 €", en: "From €1,900" },
+  },
+  "strategique-pme": {
+    remote: { fr: "Dès 4 900 €", en: "From €4,900" },
+    onsite: { fr: "Dès 4 900 €", en: "From €4,900" },
+  },
+  "strategique-eti": {
+    remote: { fr: "À partir de 12 000 €", en: "From €12,000" },
+    onsite: { fr: "À partir de 12 000 €", en: "From €12,000" },
+  },
+};
+
+/** Helper : retourne le prix à afficher selon type + modalité + locale. */
+function priceFor(
+  type: AuditTypeKey | null,
+  modality: ModalityKey | null,
+  locale: "fr" | "en",
+): string {
+  if (!type) return "—";
+  const tier = PRICE_TABLE[type];
+  const m: "remote" | "onsite" = modality === "onsite" ? "onsite" : "remote";
+  return tier[m][locale];
+}
+
+export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
+  const isFr = locale === "fr";
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -171,6 +212,9 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
   const [scopeDetail, setScopeDetail] = React.useState("");
   const [maturity, setMaturity] = React.useState<MaturityKey | null>(null);
   const [goals, setGoals] = React.useState("");
+  // Outils utilisés — multi-select optionnel (ne bloque jamais le passage step).
+  const [tools, setTools] = React.useState<ReadonlyArray<string>>([]);
+  const [toolsOther, setToolsOther] = React.useState("");
   const [contact, setContact] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -224,6 +268,8 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
         scopeDetail,
         maturity,
         goals,
+        tools: tools.length > 0 ? tools : undefined,
+        toolsOther: toolsOther || undefined,
         contact,
         email,
         phone: phone || undefined,
@@ -276,6 +322,8 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
             setEmail("");
             setPhone("");
             setRole("");
+            setTools([]);
+            setToolsOther("");
             setConsent(false);
             setSubmittingState("idle");
           }}
@@ -290,6 +338,50 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
 
   return (
     <div className="bg-paper border-border shadow-subtle mx-auto max-w-4xl rounded-3xl border-2 p-6 sm:p-8 lg:p-10">
+      {/* Bandeau prix persistent — visible sur les 6 steps. Le user voit
+          en permanence ce qu'il s'engage à payer. Disparaît avant la
+          sélection du type au step 1 (auditType null). */}
+      {auditType ? (
+        <div className="bg-halo-warm border-terracotta/30 mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 px-5 py-4 sm:px-6 sm:py-5">
+          <div className="min-w-0">
+            <p className="text-fg-muted text-[10px] font-bold tracking-[0.18em] uppercase sm:text-[11px]">
+              {isFr ? "Vous demandez" : "You're requesting"}
+            </p>
+            <p className="text-fg mt-1 text-[15px] leading-tight font-bold sm:text-base">
+              {labels.auditTypes.find((t) => t.key === auditType)?.label ?? "—"}
+              {modality
+                ? ` · ${
+                    modality === "remote"
+                      ? labels.modalityRemote
+                      : labels.modalityOnsite
+                  }`
+                : ""}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-fg-muted text-[10px] font-bold tracking-[0.16em] uppercase">
+              {isFr ? "Prix indicatif HT" : "Indicative price"}
+            </p>
+            <p
+              className="text-terracotta mt-0.5 text-2xl leading-none font-medium tracking-tight italic tabular-nums sm:text-3xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {priceFor(auditType, modality, locale)}
+            </p>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Indicateur de durée — réduit l'anxiété "ça va prendre combien ?" */}
+      <p className="text-fg-muted mb-4 flex items-center gap-2 text-[12px]">
+        <Check
+          aria-hidden="true"
+          className="text-terracotta-deep h-3.5 w-3.5"
+          strokeWidth={2.5}
+        />
+        {isFr ? "≈ 3 minutes · vous pouvez revenir en arrière à tout moment" : "≈ 3 minutes · you can go back at any time"}
+      </p>
+
       {/* Progress bar — 6 cercles */}
       <ProgressBar step={step} stepLabels={labels.stepLabels} stepWord={labels.step} />
 
@@ -317,6 +409,8 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
             setCity={setCity}
             country={country}
             setCountry={setCountry}
+            auditType={auditType}
+            locale={locale}
           />
         ) : null}
 
@@ -331,6 +425,11 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
             setMaturity={setMaturity}
             goals={goals}
             setGoals={setGoals}
+            tools={tools}
+            setTools={setTools}
+            toolsOther={toolsOther}
+            setToolsOther={setToolsOther}
+            isFr={isFr}
           />
         ) : null}
 
@@ -360,10 +459,13 @@ export function AuditRequestForm({ labels }: AuditRequestFormProps) {
             country={country}
             scope={scope}
             maturity={maturity}
+            tools={tools}
+            toolsOther={toolsOther}
             contact={contact}
             email={email}
             consent={consent}
             setConsent={setConsent}
+            locale={locale}
           />
         ) : null}
       </div>
@@ -656,6 +758,8 @@ function Step3({
   setCity,
   country,
   setCountry,
+  auditType,
+  locale,
 }: {
   labels: Labels;
   modality: ModalityKey | null;
@@ -664,7 +768,16 @@ function Step3({
   setCity: (s: string) => void;
   country: string;
   setCountry: (s: string) => void;
+  auditType: AuditTypeKey | null;
+  locale: "fr" | "en";
 }) {
+  const isFr = locale === "fr";
+  const remotePrice = auditType ? PRICE_TABLE[auditType].remote[locale] : null;
+  const onsitePrice = auditType ? PRICE_TABLE[auditType].onsite[locale] : null;
+  // Différentiel prix visible uniquement si les deux modalités ont un prix
+  // distinct (Flash 490/890). Les autres niveaux ont le même prix de base.
+  const hasModalityDiff = remotePrice !== onsitePrice;
+
   return (
     <div className="space-y-6">
       <Header
@@ -684,14 +797,23 @@ function Step3({
             onClick={() => setModality("remote")}
             title={labels.modalityRemote}
             hint={labels.modalityRemoteHint}
+            {...(hasModalityDiff && remotePrice ? { priceTag: remotePrice } : {})}
           />
           <ChoiceCard
             selected={modality === "onsite"}
             onClick={() => setModality("onsite")}
             title={labels.modalityOnsite}
             hint={labels.modalityOnsiteHint}
+            {...(hasModalityDiff && onsitePrice ? { priceTag: onsitePrice } : {})}
           />
         </div>
+        {hasModalityDiff ? (
+          <p className="text-fg-muted text-[12px] leading-relaxed">
+            {isFr
+              ? "Le tarif sur site couvre le déplacement de notre équipe pour une journée terrain — observation directe et atelier de priorisation inclus."
+              : "On-site fee covers our team's travel for a field day — direct observation and prioritisation workshop included."}
+          </p>
+        ) : null}
       </fieldset>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -728,6 +850,28 @@ function Step3({
   );
 }
 
+// Liste prédéfinie d'outils — multi-select Step 4. Mix outils business
+// (Excel/CRM/ERP/...) + outils IA (ChatGPT/Claude/...) pour comprendre
+// l'écosystème complet du client en un seul champ. "Autres" → champ libre.
+const TOOL_OPTIONS: ReadonlyArray<string> = [
+  "Excel",
+  "CRM",
+  "ERP",
+  "Email",
+  "Drive / Cloud",
+  "Notion",
+  "Slack",
+  "Office 365",
+  "Google Workspace",
+  "Salesforce",
+  "HubSpot",
+  "ChatGPT",
+  "Claude",
+  "Copilot",
+  "Mistral",
+  "Gemini",
+];
+
 function Step4({
   labels,
   scope,
@@ -738,6 +882,11 @@ function Step4({
   setMaturity,
   goals,
   setGoals,
+  tools,
+  setTools,
+  toolsOther,
+  setToolsOther,
+  isFr,
 }: {
   labels: Labels;
   scope: ScopeKey | null;
@@ -748,7 +897,28 @@ function Step4({
   setMaturity: (m: MaturityKey) => void;
   goals: string;
   setGoals: (s: string) => void;
+  tools: ReadonlyArray<string>;
+  setTools: (t: ReadonlyArray<string>) => void;
+  toolsOther: string;
+  setToolsOther: (s: string) => void;
+  isFr: boolean;
 }) {
+  // Compteurs caractères : guident le user vers le minimum 20 chars exigé
+  // par le schéma Zod, sans laisser le bouton "Suivant" disabled sans
+  // explication.
+  const scopeChars = scopeDetail.length;
+  const goalsChars = goals.length;
+  const MIN = 20;
+
+  // Toggle d'un tool dans le multi-select.
+  function toggleTool(tool: string) {
+    if (tools.includes(tool)) {
+      setTools(tools.filter((t) => t !== tool));
+    } else {
+      setTools([...tools, tool]);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <Header
@@ -779,10 +949,32 @@ function Step4({
       </fieldset>
 
       <div className="grid gap-2">
-        <Label htmlFor="scope-detail" className="text-fg text-base font-bold sm:text-lg">
-          {labels.scopeDetailLabel}
-          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
-        </Label>
+        <div className="flex items-baseline justify-between gap-3">
+          <Label htmlFor="scope-detail" className="text-fg text-base font-bold sm:text-lg">
+            {labels.scopeDetailLabel}
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+          </Label>
+          <span
+            className={cn(
+              "text-[11px] font-bold tabular-nums",
+              scopeChars < MIN ? "text-fg-muted" : "text-sage",
+            )}
+            aria-live="polite"
+          >
+            {scopeChars} / {MIN}
+            {scopeChars >= MIN ? (
+              <Check
+                aria-hidden="true"
+                className="ml-1 inline h-3 w-3"
+                strokeWidth={3}
+              />
+            ) : (
+              <span className="ml-1">
+                {isFr ? "min." : "min."}
+              </span>
+            )}
+          </span>
+        </div>
         <Textarea
           id="scope-detail"
           rows={3}
@@ -817,10 +1009,32 @@ function Step4({
       </fieldset>
 
       <div className="grid gap-2">
-        <Label htmlFor="goals" className="text-fg text-base font-bold sm:text-lg">
-          {labels.goalsLabel}
-          <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
-        </Label>
+        <div className="flex items-baseline justify-between gap-3">
+          <Label htmlFor="goals" className="text-fg text-base font-bold sm:text-lg">
+            {labels.goalsLabel}
+            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+          </Label>
+          <span
+            className={cn(
+              "text-[11px] font-bold tabular-nums",
+              goalsChars < MIN ? "text-fg-muted" : "text-sage",
+            )}
+            aria-live="polite"
+          >
+            {goalsChars} / {MIN}
+            {goalsChars >= MIN ? (
+              <Check
+                aria-hidden="true"
+                className="ml-1 inline h-3 w-3"
+                strokeWidth={3}
+              />
+            ) : (
+              <span className="ml-1">
+                {isFr ? "min." : "min."}
+              </span>
+            )}
+          </span>
+        </div>
         <Textarea
           id="goals"
           rows={4}
@@ -830,6 +1044,68 @@ function Step4({
           className="rounded-lg"
         />
       </div>
+
+      {/* Outils utilisés — multi-select chips, optionnel.
+          Aide à contextualiser le devis (l'écosystème logiciel + outils IA
+          déjà testés dictent les recommandations possibles). */}
+      <fieldset className="space-y-3">
+        <Label className="text-fg block text-base font-bold sm:text-lg">
+          {isFr
+            ? "Outils principaux que vous utilisez (optionnel)"
+            : "Main tools you use (optional)"}
+        </Label>
+        <p className="text-fg-muted -mt-1 text-[12.5px] leading-relaxed">
+          {isFr
+            ? "Cliquez sur ceux qui vous concernent. Aide à calibrer le devis selon votre écosystème actuel."
+            : "Click those that apply. Helps calibrate the quote against your current ecosystem."}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {TOOL_OPTIONS.map((tool) => {
+            const isSel = tools.includes(tool);
+            return (
+              <button
+                key={tool}
+                type="button"
+                onClick={() => toggleTool(tool)}
+                aria-pressed={isSel}
+                className={cn(
+                  "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border-2 px-3.5 py-1.5 text-[13px] font-semibold transition-all focus-visible:ring-2 focus-visible:outline-none",
+                  isSel &&
+                    "border-terracotta bg-halo-warm text-terracotta-deep shadow-subtle",
+                )}
+              >
+                {isSel ? (
+                  <Check
+                    aria-hidden="true"
+                    className="h-3.5 w-3.5"
+                    strokeWidth={3}
+                  />
+                ) : null}
+                {tool}
+              </button>
+            );
+          })}
+        </div>
+        <div className="grid gap-2 pt-1">
+          <Label
+            htmlFor="tools-other"
+            className="text-fg-muted text-[13px] font-semibold"
+          >
+            {isFr ? "Autres outils (optionnel)" : "Other tools (optional)"}
+          </Label>
+          <Input
+            id="tools-other"
+            value={toolsOther}
+            onChange={(e) => setToolsOther(e.target.value)}
+            placeholder={
+              isFr
+                ? "Ex : Pipedrive, Airtable, Asana, Zapier…"
+                : "e.g. Pipedrive, Airtable, Asana, Zapier…"
+            }
+            className="h-11 rounded-lg"
+          />
+        </div>
+      </fieldset>
     </div>
   );
 }
@@ -934,10 +1210,13 @@ function Step6({
   country,
   scope,
   maturity,
+  tools,
+  toolsOther,
   contact,
   email,
   consent,
   setConsent,
+  locale,
 }: {
   labels: Labels;
   auditType: AuditTypeKey | null;
@@ -949,11 +1228,15 @@ function Step6({
   country: string;
   scope: ScopeKey | null;
   maturity: MaturityKey | null;
+  tools: ReadonlyArray<string>;
+  toolsOther: string;
   contact: string;
   email: string;
   consent: boolean;
   setConsent: (b: boolean) => void;
+  locale: "fr" | "en";
 }) {
+  const isFr = locale === "fr";
   const typeLabel = labels.auditTypes.find((t) => t.key === auditType)?.label ?? "—";
   const sizeLabel = labels.sizes.find((s) => s.key === size)?.label ?? "—";
   const modalityLabel =
@@ -977,6 +1260,11 @@ function Step6({
           ? labels.maturityMature
           : "—";
 
+  // Prix engagé — affiché en gros au-dessus du récap pour que le user
+  // voie clairement ce qu'il signe avant le consentement RGPD.
+  const finalPrice = priceFor(auditType, modality, locale);
+  const isFlash = auditType === "flash";
+
   return (
     <div className="space-y-6">
       <Header
@@ -984,6 +1272,52 @@ function Step6({
         title={labels.s6Title}
         description={labels.s6Description}
       />
+
+      {/* Prix engagé — affiché en gros, c'est ce que le user signe */}
+      <div className="bg-mocha-rich text-mocha-fg border-terracotta/30 flex flex-wrap items-center justify-between gap-5 rounded-2xl border-2 p-6 sm:p-7">
+        <div className="min-w-0">
+          <p className="text-mocha-fg/65 text-[10px] font-bold tracking-[0.18em] uppercase sm:text-[11px]">
+            {isFr ? "Vous demandez" : "You're requesting"}
+          </p>
+          <p className="text-mocha-fg mt-1.5 text-lg leading-snug font-bold sm:text-xl">
+            {labels.auditTypes.find((t) => t.key === auditType)?.label ?? "—"}
+          </p>
+          <p className="text-mocha-fg/75 mt-0.5 text-[13px]">
+            {modality === "remote"
+              ? labels.modalityRemote
+              : modality === "onsite"
+                ? labels.modalityOnsite
+                : ""}
+            {modality && (city || country)
+              ? ` · ${city}${city && country ? ", " : ""}${country}`
+              : ""}
+          </p>
+        </div>
+        <div className="text-right">
+          <p className="text-mocha-fg/65 text-[10px] font-bold tracking-[0.16em] uppercase">
+            {isFlash
+              ? isFr
+                ? "À régler"
+                : "To pay"
+              : isFr
+                ? "Prix indicatif HT"
+                : "Indicative price"}
+          </p>
+          <p
+            className="text-terracotta-soft mt-1 text-4xl leading-none font-medium tracking-tight italic tabular-nums sm:text-5xl"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {finalPrice}
+          </p>
+          {!isFlash ? (
+            <p className="text-mocha-fg/60 mt-1 text-[11px]">
+              {isFr
+                ? "Devis personnalisé sous 48 h"
+                : "Personalised quote within 48 h"}
+            </p>
+          ) : null}
+        </div>
+      </div>
 
       <div className="bg-halo-warm border-terracotta/25 rounded-2xl border-2 p-5 sm:p-6">
         <p className="text-terracotta-deep mb-4 text-[12px] font-semibold tracking-[0.16em] uppercase">
@@ -1003,6 +1337,14 @@ function Step6({
           />
           <RecapRow label={labels.recapScope} value={scopeLabel} />
           <RecapRow label={labels.recapMaturity} value={maturityLabel} />
+          {/* Outils — seulement si l'utilisateur en a sélectionné. Sinon
+              on n'affiche pas la ligne pour rester aéré. */}
+          {tools.length > 0 || toolsOther ? (
+            <RecapRow
+              label={isFr ? "Outils" : "Tools"}
+              value={[...tools, ...(toolsOther ? [toolsOther] : [])].join(" · ")}
+            />
+          ) : null}
           <RecapRow
             label={labels.recapContact}
             value={contact || email ? `${contact}${contact && email ? " · " : ""}${email}` : "—"}
@@ -1057,11 +1399,14 @@ function ChoiceCard({
   onClick,
   title,
   hint,
+  priceTag,
 }: {
   selected: boolean;
   onClick: () => void;
   title: string;
   hint?: string;
+  /** Étiquette de prix optionnelle affichée en haut à droite. */
+  priceTag?: string;
 }) {
   return (
     <button
@@ -1069,15 +1414,25 @@ function ChoiceCard({
       onClick={onClick}
       aria-pressed={selected}
       className={cn(
-        "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta flex min-h-[76px] flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all focus-visible:ring-2 focus-visible:outline-none",
+        "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta relative flex min-h-[76px] flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all focus-visible:ring-2 focus-visible:outline-none",
         selected && "border-terracotta bg-halo-warm shadow-subtle scale-[1.02]",
+        priceTag && "pr-20 sm:pr-24",
       )}
     >
       <span className="text-fg text-sm font-bold sm:text-base">{title}</span>
       {hint ? (
         <span className="text-fg-soft text-xs leading-relaxed sm:text-sm">{hint}</span>
       ) : null}
-      {selected ? (
+      {priceTag ? (
+        <span
+          className="text-terracotta absolute top-3 right-3 text-lg leading-none font-medium tracking-tight italic tabular-nums sm:text-xl"
+          style={{ fontFamily: "var(--font-serif)" }}
+          aria-hidden="true"
+        >
+          {priceTag}
+        </span>
+      ) : null}
+      {selected && !priceTag ? (
         <Sparkles aria-hidden="true" className="text-terracotta-deep ml-auto h-4 w-4 self-end" />
       ) : null}
     </button>

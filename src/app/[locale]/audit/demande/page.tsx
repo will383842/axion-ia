@@ -65,27 +65,27 @@ export default async function AuditRequest({ params }: Props) {
         s1Eyebrow: "1 · Niveau d'audit",
         s1Title: "Quel niveau d'audit vous correspond ?",
         s1Description:
-          "Du diagnostic flash (sans risque) au plan stratégique multi-sites. Le niveau sélectionné préremplit la suite — vous pourrez tout modifier.",
+          "Du diagnostic flash au plan stratégique multi-sites. Le niveau sélectionné préremplit la suite — vous pourrez tout modifier.",
         auditTypes: [
           {
             key: "flash" as const,
             label: "Niveau 1 · Flash",
             description:
-              "Mini-diagnostic ciblé sur 1 process clé · 3-5 cas d'usage IA, plan 30/90 jours. Satisfait ou intégralement remboursé.",
+              "Mini-diagnostic ciblé sur 1 zone clé · on identifie 3 à 5 endroits où l'IA peut s'insérer dans votre entreprise, avec gains estimés.",
             priceFrom: "490 € (distance) · 890 € (sur site)",
           },
           {
             key: "process" as const,
-            label: "Niveau 2 · Process",
+            label: "Niveau 2 · Audit ciblé",
             description:
-              "Audit poussé d'un processus complet (RH, finance, vente, ops…). Cartographie as-is/to-be + roadmap IA 6-12 mois.",
+              "Audit poussé d'un service complet (RH, finance, vente, ops…). On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois.",
             priceFrom: "1 900 € → 3 900 €",
           },
           {
             key: "strategique-pme" as const,
             label: "Niveau 3 · Stratégique PME",
             description:
-              "Vision IA globale pour PME 20-250 salariés · 2-4 process majeurs, roadmap 12-24 mois. Garantie de découverte 30 j.",
+              "Vision IA globale pour PME 20-250 salariés · 2-4 services majeurs étudiés, plan d'action 12-24 mois avec budgets.",
             priceFrom: "4 900 € → 9 900 €",
           },
           {
@@ -93,7 +93,7 @@ export default async function AuditRequest({ params }: Props) {
             label: "Niveau 4 · Stratégique ETI",
             description:
               "Audit stratégique multi-sites pour ETI / groupes · alignement CODIR, roadmap groupe 24 mois, gouvernance & AI Act.",
-            priceFrom: "À partir de 12 000 € · sur devis",
+            priceFrom: "À partir de 12 000 € · sur devis sur mesure",
           },
         ],
 
@@ -152,7 +152,7 @@ export default async function AuditRequest({ params }: Props) {
         s5Description: "Nom, email professionnel et téléphone — pour le call de cadrage.",
         contactLabel: "Nom & prénom",
         emailLabel: "Email professionnel",
-        phoneLabel: "Téléphone (optionnel mais conseillé)",
+        phoneLabel: "Téléphone (optionnel · pour le call de cadrage si devis accepté)",
         roleLabel: "Votre rôle dans l'entreprise (optionnel)",
         rolePlaceholder: "Ex : Direction, DRH, COO, Head of operations…",
 
@@ -191,27 +191,27 @@ export default async function AuditRequest({ params }: Props) {
         s1Eyebrow: "1 · Audit level",
         s1Title: "Which audit level fits you?",
         s1Description:
-          "From the risk-free flash diagnosis to the multi-site strategic plan. The selected level pre-fills the next steps — you can change anything later.",
+          "From the flash diagnosis to the multi-site strategic plan. The selected level pre-fills the next steps — you can change anything later.",
         auditTypes: [
           {
             key: "flash" as const,
             label: "Level 1 · Flash",
             description:
-              "Targeted mini-diagnosis on 1 key process · 3-5 AI use cases, 30/90-day plan. Satisfied or fully refunded.",
+              "Targeted mini-diagnosis on 1 key area · we identify 3 to 5 places where AI can fit in your company, with estimated gains.",
             priceFrom: "€490 (remote) · €890 (on site)",
           },
           {
             key: "process" as const,
-            label: "Level 2 · Process",
+            label: "Level 2 · Targeted audit",
             description:
-              "In-depth audit of an end-to-end process (HR, finance, sales, ops…). As-is/to-be mapping + 6-12 month AI roadmap.",
+              "In-depth audit of a full service (HR, finance, sales, ops…). We list everything that can be automated with costed gains and a 6-12 month plan.",
             priceFrom: "€1,900 → €3,900",
           },
           {
             key: "strategique-pme" as const,
             label: "Level 3 · Strategic SMB",
             description:
-              "Global AI vision for SMBs 20-250 staff · 2-4 major processes, 12-24 month roadmap. 30-day discovery guarantee.",
+              "Global AI vision for SMBs 20-250 staff · 2-4 major services studied, 12-24 month action plan with budgets.",
             priceFrom: "€4,900 → €9,900",
           },
           {
@@ -219,7 +219,7 @@ export default async function AuditRequest({ params }: Props) {
             label: "Level 4 · Strategic mid-cap",
             description:
               "Multi-site strategic audit for mid-caps / groups · leadership alignment, 24-month group roadmap, governance & AI Act.",
-            priceFrom: "From €12,000 · on quote",
+            priceFrom: "From €12,000 · custom quote, no cap",
           },
         ],
 
@@ -278,7 +278,7 @@ export default async function AuditRequest({ params }: Props) {
         s5Description: "Name, professional email and phone — for the framing call.",
         contactLabel: "Full name",
         emailLabel: "Professional email",
-        phoneLabel: "Phone (optional but recommended)",
+        phoneLabel: "Phone (optional · for the framing call if quote accepted)",
         roleLabel: "Your role at the company (optional)",
         rolePlaceholder: "e.g. CEO, Head of HR, COO, Head of operations…",
 
@@ -344,8 +344,8 @@ export default async function AuditRequest({ params }: Props) {
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "6 questions ciblées pour cadrer votre entreprise, votre périmètre et votre contexte. On vous renvoie un devis personnalisé sous 48 h ouvrées — TPE, PME, ETI ou grandes entreprises, France et international."
-              : "6 targeted questions to frame your company, scope and context. We email you a personalised quote within 48 business hours — small, mid-market or enterprise, France and worldwide."}
+              ? "6 questions pour cadrer votre projet. Devis personnalisé sous 48 h ouvrées · TPE → ETI · France & international."
+              : "6 questions to frame your project. Personalised quote within 48 business hours · Small → enterprise · France & worldwide."}
           </p>
 
           {/* Bandeau réassurance — 4 pills */}
@@ -369,7 +369,7 @@ export default async function AuditRequest({ params }: Props) {
       {/* Form */}
       <div className="bg-bg py-10 sm:py-14">
         <Container>
-          <AuditRequestForm labels={labels} />
+          <AuditRequestForm labels={labels} locale={loc} />
         </Container>
       </div>
 

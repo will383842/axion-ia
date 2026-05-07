@@ -13,7 +13,11 @@ import {
   Workflow,
   Briefcase,
   Network,
-  ShieldCheck,
+  Lightbulb,
+  Wrench,
+  BarChart3,
+  Compass,
+  type LucideIcon,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -24,6 +28,15 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AuditHeroSchema } from "@/components/sections/AuditHeroSchema";
+import {
+  TrustBadges,
+  WhyAxionIA,
+  SocialProof,
+  SignatureCard,
+  AuditFaqSection,
+  BeyondAuditBlock,
+} from "@/components/sections/AuditConversionBlocks";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { AUDITS, type AuditAccent, type AuditSlug } from "@/content/audit";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
@@ -43,8 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "AI audit · 4 levels · flash diagnosis from €490",
     description:
       locale === "fr"
-        ? "Pyramide d'audit IA en 4 niveaux : Flash (490 € · satisfait ou remboursé), Process (1 900-3 900 €), Stratégique PME (4 900-9 900 €), Stratégique ETI (à partir de 12 000 €). France & international."
-        : "4-level AI audit pyramid: Flash (€490 · satisfied or refunded), Process (€1,900-€3,900), Strategic SMB (€4,900-€9,900), Strategic mid-cap (from €12,000). France & worldwide.",
+        ? "Pyramide d'audit IA en 4 niveaux : Flash 490 €, Audit ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI à partir de 12 000 €. France & international."
+        : "4-level AI audit pyramid: Flash €490, Targeted audit €1,900-€3,900, Strategic SMB €4,900-€9,900, Strategic mid-cap from €12,000. France & worldwide.",
   });
 }
 
@@ -139,6 +152,15 @@ const ICON_BY_SLUG: Record<AuditSlug, typeof Zap> = {
   "strategique-eti": Network,
 };
 
+// Étiquette de prix top-right sur chaque card de la pyramide.
+// Affichée en serif italique terracotta — visible immédiatement à l'arrivée.
+const PRICE_TAG_BY_SLUG: Record<AuditSlug, { fr: string; en: string }> = {
+  flash: { fr: "490 €", en: "€490" },
+  process: { fr: "1 900 €", en: "€1,900" },
+  "strategique-pme": { fr: "4 900 €", en: "€4,900" },
+  "strategique-eti": { fr: "12 000 €", en: "€12,000" },
+};
+
 export default async function AuditListing({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
@@ -160,13 +182,13 @@ export default async function AuditListing({ params }: Props) {
     },
     {
       icon: Users2,
-      label: isFr ? "1 process ou toute l'entreprise" : "1 process or whole company",
+      label: isFr ? "1 zone ou toute l'entreprise" : "1 area or whole company",
       detail: isFr ? "Niveau adapté à votre besoin" : "Right level for your need",
     },
     {
-      icon: ShieldCheck,
-      label: isFr ? "Diagnostic flash sans risque" : "Flash diagnosis at zero risk",
-      detail: isFr ? "Satisfait ou intégralement remboursé" : "Satisfied or fully refunded",
+      icon: Zap,
+      label: isFr ? "Tâches automatisables identifiées" : "Automatable tasks identified",
+      detail: isFr ? "Avec gains chiffrés par tâche" : "With costed gains per task",
     },
     {
       icon: Sparkles,
@@ -216,11 +238,14 @@ export default async function AuditListing({ params }: Props) {
 
   return (
     <>
-      {/* HERO — layout 2 colonnes (text + flow narratif "C'est quoi un audit"). */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      {/* HERO — layout 2 colonnes (text + flow narratif "C'est quoi un audit").
+          Pas de overflow-hidden sur la section : le graphique peut être grand,
+          on ne veut pas qu'il soit tronqué. Le décor de fond est lui-même
+          absolute inset-0 donc ne dépassera pas. */}
+      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
           style={{
             backgroundImage:
               "linear-gradient(to right, var(--color-border-strong) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border-strong) 1px, transparent 1px)",
@@ -232,7 +257,7 @@ export default async function AuditListing({ params }: Props) {
         />
 
         <Container className={cn("relative", TIGHT_X)}>
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16 xl:gap-20">
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche — eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -244,19 +269,19 @@ export default async function AuditListing({ params }: Props) {
               </p>
 
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "4 façons d'amener l'" : "4 ways to bring "}
+                {isFr ? "Faites le point sur l'IA" : "Take stock of AI"}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "IA dans votre entreprise" : "AI into your company"}
+                  {isFr ? "dans votre entreprise" : "in your company"}
                 </span>
               </h1>
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Du diagnostic flash à 490 € (satisfait ou remboursé) au plan stratégique multi-sites. À chaque taille d'entreprise, son format. On intervient en TPE, PME, ETI ou grandes entreprises — France et international, à distance ou sur site."
-                  : "From the €490 flash diagnosis (satisfied or refunded) to the multi-site strategic plan. A fit for every company size. We work with small businesses, SMBs, mid-caps and large enterprises — France and worldwide, remote or on site."}
+                  ? "On cartographie votre entreprise et on identifie tout ce que l'IA peut y apporter, automatiser ou optimiser. 4 niveaux dès 490 € · France & international."
+                  : "We map your company and identify everything AI can bring, automate or optimise. 4 levels from €490 · France & worldwide."}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -274,31 +299,26 @@ export default async function AuditListing({ params }: Props) {
                   {isFr ? "Voir les cas concrets" : "See case studies"}
                 </Cta>
               </div>
-
-              {/* Réassurance directe sous le CTA */}
-              <p className="text-fg-muted mt-4 flex items-center gap-2 text-[13px]">
-                <ShieldCheck aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
-                {isFr
-                  ? "Satisfait ou intégralement remboursé sur le diagnostic flash."
-                  : "Satisfied or fully refunded on the flash diagnosis."}
-              </p>
             </div>
 
             {/* Colonne droite — flow narratif "Ce que c'est et comment ça
-                fonctionne". Sans fond, plus gros, langage simple. */}
-            <div className="relative mx-auto w-full max-w-2xl lg:mx-0">
-              <AuditHeroSchema
-                isFr={isFr}
-                ariaLabel={
-                  isFr
-                    ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit AxionIA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées à l'IA, pilotage au jour le jour)."
-                    : "Diagram: your company at the start, 4 methodology steps of the AxionIA audit (we observe, we map, we prioritise, we hand over the plan), then 6 concrete business gains (revenue growth, improved profitability, tasks automated, hours freed, teams trained in AI, day-to-day tracking)."
-                }
-              />
-            </div>
+                fonctionne". Compact : on garde le H1 du hero comme élément
+                visuel dominant. */}
+            <AuditHeroSchema
+              isFr={isFr}
+              className="relative mx-auto w-full max-w-xl lg:mx-0"
+              ariaLabel={
+                isFr
+                  ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit AxionIA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées à l'IA, pilotage au jour le jour)."
+                  : "Diagram: your company at the start, 4 methodology steps of the AxionIA audit (we observe, we map, we prioritise, we hand over the plan), then 6 concrete business gains (revenue growth, improved profitability, tasks automated, hours freed, teams trained in AI, day-to-day tracking)."
+              }
+            />
           </div>
         </Container>
       </section>
+
+      {/* TRUST BADGES — réassurance institutionnelle juste sous le hero */}
+      <TrustBadges isFr={isFr} />
 
       {/* BANDEAU « Pour qui » — réassurance immédiate, 5 pills */}
       <section className="bg-paper border-border border-y py-10">
@@ -322,15 +342,256 @@ export default async function AuditListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* PYRAMIDE — 4 cards par niveau */}
+      {/* MATCHER — orientation immédiate en 2 entrées (taille / situation).
+          Pure server : juste des <a href="#level-X"> qui scrollent vers la
+          card concernée. Le highlight :target la met en avant. */}
       <Section
-        eyebrow={isFr ? "Choisir votre niveau" : "Pick your level"}
-        title={isFr ? "Pyramide d'audit" : "Audit pyramid"}
-        titleEm={isFr ? "en 4 niveaux" : "in 4 levels"}
+        eyebrow={isFr ? "Trouvez votre niveau en 5 secondes" : "Find your level in 5 seconds"}
+        title={isFr ? "Lequel" : "Which one"}
+        titleEm={isFr ? "vous correspond ?" : "fits you?"}
         description={
           isFr
-            ? "Chaque niveau est cliquable et mène à la fiche dédiée. Vous voyez immédiatement le périmètre, le prix, ce que vous obtenez et la garantie associée. Le diagnostic flash est sans risque — si vous n'en tirez aucune valeur, on rembourse intégralement."
-            : "Every level is clickable and links to the dedicated page. You immediately see the scope, price, what you get and the guarantee. The flash diagnosis is risk-free — if you get no value out of it, we refund in full."
+            ? "Cliquez sur ce qui vous décrit le mieux — la page vous emmène directement à l'option recommandée. Vous pouvez aussi explorer la pyramide complète juste en dessous."
+            : "Click what describes you best — the page jumps straight to the recommended option. You can also explore the full pyramid below."
+        }
+        contentClassName={TIGHT_X}
+      >
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* Entrée A — par taille d'entreprise */}
+          <div>
+            <p className="text-fg-muted mb-4 flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] uppercase">
+              <Compass aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
+              {isFr ? "A · Selon la taille de votre entreprise" : "A · By company size"}
+            </p>
+            <ul className="space-y-3">
+              {(isFr
+                ? [
+                    {
+                      icon: Building2,
+                      title: "TPE · 1 à 9 personnes",
+                      hint: "Artisan, indépendant, petite équipe",
+                      target: "flash",
+                      level: "Niveau 1 · Flash · 490 €",
+                    },
+                    {
+                      icon: Building2,
+                      title: "PME · 10 à 49 personnes",
+                      hint: "1 service à optimiser ou aller plus loin",
+                      target: "process",
+                      level: "Niveau 2 · Audit ciblé · 1 900 €+",
+                    },
+                    {
+                      icon: Building2,
+                      title: "PME · 50 à 249 personnes",
+                      hint: "Plusieurs services, vision d'ensemble",
+                      target: "strategique-pme",
+                      level: "Niveau 3 · Stratégique PME · 4 900 €+",
+                    },
+                    {
+                      icon: Network,
+                      title: "ETI · 250+ ou multi-sites",
+                      hint: "Plusieurs BU, plusieurs sites, gouvernance IA",
+                      target: "strategique-eti",
+                      level: "Niveau 4 · Stratégique ETI · 12 000 €+",
+                    },
+                  ]
+                : [
+                    {
+                      icon: Building2,
+                      title: "Small · 1 to 9 people",
+                      hint: "Artisan, freelance, small team",
+                      target: "flash",
+                      level: "Level 1 · Flash · €490",
+                    },
+                    {
+                      icon: Building2,
+                      title: "SMB · 10 to 49 people",
+                      hint: "1 service to optimise or go further",
+                      target: "process",
+                      level: "Level 2 · Targeted · €1,900+",
+                    },
+                    {
+                      icon: Building2,
+                      title: "SMB · 50 to 249 people",
+                      hint: "Several services, full picture",
+                      target: "strategique-pme",
+                      level: "Level 3 · Strategic SMB · €4,900+",
+                    },
+                    {
+                      icon: Network,
+                      title: "Mid-cap · 250+ or multi-site",
+                      hint: "Several BUs, multiple sites, AI governance",
+                      target: "strategique-eti",
+                      level: "Level 4 · Strategic mid-cap · €12,000+",
+                    },
+                  ]
+              ).map((opt) => {
+                const Icon = opt.icon as LucideIcon;
+                return (
+                  <li key={opt.title}>
+                    <a
+                      href={`#level-${opt.target}`}
+                      className="border-border bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card focus-visible:ring-terracotta group flex items-center gap-4 rounded-2xl border-2 p-4 transition-all focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                      <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-mocha-fg flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors">
+                        <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-fg text-base font-bold leading-tight">{opt.title}</p>
+                        <p className="text-fg-soft mt-0.5 text-sm leading-snug">{opt.hint}</p>
+                        <p className="text-terracotta-deep mt-1.5 text-[12px] font-bold tracking-wide">
+                          → {opt.level}
+                        </p>
+                      </div>
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="text-terracotta-deep h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
+                      />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Entrée B — par situation/souhait */}
+          <div>
+            <p className="text-fg-muted mb-4 flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] uppercase">
+              <Compass aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
+              {isFr ? "B · Selon votre situation" : "B · By your situation"}
+            </p>
+            <ul className="space-y-3">
+              {(isFr
+                ? [
+                    {
+                      icon: Lightbulb,
+                      title: "Je veux savoir où l'IA peut s'insérer",
+                      hint: "Découvrir 3-5 endroits concrets, sans engagement",
+                      target: "flash",
+                      level: "Niveau 1 · Flash · 490 €",
+                    },
+                    {
+                      icon: Wrench,
+                      title: "Je veux automatiser un service précis",
+                      hint: "Vente, RH, finance, ops, support — étudié de A à Z",
+                      target: "process",
+                      level: "Niveau 2 · Audit ciblé · 1 900 €+",
+                    },
+                    {
+                      icon: BarChart3,
+                      title: "Je veux une vision globale de mon entreprise",
+                      hint: "Plusieurs services étudiés, plan stratégique chiffré",
+                      target: "strategique-pme",
+                      level: "Niveau 3 · Stratégique PME · 4 900 €+",
+                    },
+                    {
+                      icon: Network,
+                      title: "Je gère plusieurs sites ou plusieurs BU",
+                      hint: "Alignement CODIR, gouvernance, AI Act",
+                      target: "strategique-eti",
+                      level: "Niveau 4 · Stratégique ETI · 12 000 €+",
+                    },
+                  ]
+                : [
+                    {
+                      icon: Lightbulb,
+                      title: "I want to know where AI can fit in",
+                      hint: "Discover 3-5 concrete places, no commitment",
+                      target: "flash",
+                      level: "Level 1 · Flash · €490",
+                    },
+                    {
+                      icon: Wrench,
+                      title: "I want to automate a specific service",
+                      hint: "Sales, HR, finance, ops, support — studied A to Z",
+                      target: "process",
+                      level: "Level 2 · Targeted · €1,900+",
+                    },
+                    {
+                      icon: BarChart3,
+                      title: "I want a global vision of my company",
+                      hint: "Multiple services studied, costed strategic plan",
+                      target: "strategique-pme",
+                      level: "Level 3 · Strategic SMB · €4,900+",
+                    },
+                    {
+                      icon: Network,
+                      title: "I manage multiple sites or BUs",
+                      hint: "Leadership alignment, governance, AI Act",
+                      target: "strategique-eti",
+                      level: "Level 4 · Strategic mid-cap · €12,000+",
+                    },
+                  ]
+              ).map((opt) => {
+                const Icon = opt.icon as LucideIcon;
+                return (
+                  <li key={opt.title}>
+                    <a
+                      href={`#level-${opt.target}`}
+                      className="border-border bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card focus-visible:ring-terracotta group flex items-center gap-4 rounded-2xl border-2 p-4 transition-all focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                      <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-mocha-fg flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors">
+                        <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-fg text-base font-bold leading-tight">{opt.title}</p>
+                        <p className="text-fg-soft mt-0.5 text-sm leading-snug">{opt.hint}</p>
+                        <p className="text-terracotta-deep mt-1.5 text-[12px] font-bold tracking-wide">
+                          → {opt.level}
+                        </p>
+                      </div>
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="text-terracotta-deep h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
+                      />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+
+        {/* Helper "pas sûr" */}
+        <p className="text-fg-muted mt-8 text-center text-sm">
+          {isFr ? (
+            <>
+              Pas sûr·e ? Le{" "}
+              <a
+                href="#level-flash"
+                className="text-terracotta-deep font-semibold underline underline-offset-4 hover:opacity-80"
+              >
+                diagnostic flash 490 €
+              </a>{" "}
+              est conçu exactement pour ça : on identifie 3 à 5 endroits où l&apos;IA peut s&apos;insérer concrètement chez vous.
+            </>
+          ) : (
+            <>
+              Not sure? The{" "}
+              <a
+                href="#level-flash"
+                className="text-terracotta-deep font-semibold underline underline-offset-4 hover:opacity-80"
+              >
+                €490 flash diagnosis
+              </a>{" "}
+              is designed exactly for this: we identify 3 to 5 concrete places where AI can fit in your company.
+            </>
+          )}
+        </p>
+      </Section>
+
+      {/* PYRAMIDE — 4 cards par niveau (exploration complète).
+          Les ancres #level-flash, #level-process, etc. sont posées sur
+          chaque card pour que le matcher au-dessus puisse y scroller. */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Tous les niveaux en détail" : "All levels in detail"}
+        title={isFr ? "Comparez les" : "Compare the"}
+        titleEm={isFr ? "4 niveaux d'audit" : "4 audit levels"}
+        description={
+          isFr
+            ? "Vous arrivez ici depuis le sélecteur ? La carte qui vous est recommandée est mise en avant. Sinon, parcourez librement — chaque niveau précise le périmètre, le prix et les livrables."
+            : "Coming from the matcher above? Your recommended card is highlighted. Otherwise, browse freely — each level details scope, price and deliverables."
         }
         contentClassName={TIGHT_X}
       >
@@ -341,7 +602,6 @@ export default async function AuditListing({ params }: Props) {
             const acc = accentClasses[item.accent];
             const surface = surfaceBySlug[item.slug];
             const href = isFr ? item.pathFr : item.pathEn;
-            const isFlash = idx === 0;
             const isFlagship = idx === 0 || idx === 3; // Flash + ETI = pleine largeur
             const dark = surface.isDark;
             const Icon = ICON_BY_SLUG[item.slug];
@@ -407,21 +667,6 @@ export default async function AuditListing({ params }: Props) {
                     </dt>
                     <dd className={`mt-1 text-[15px] font-semibold ${txt}`}>{s.audience}</dd>
                   </div>
-                  {s.guarantee ? (
-                    <div className="border-terracotta/30 bg-terracotta-soft mt-2 rounded-lg border-2 p-3">
-                      <dt className="text-terracotta-deep text-[11px] font-bold tracking-[0.12em] uppercase">
-                        <ShieldCheck
-                          aria-hidden="true"
-                          className="mr-1 inline h-3.5 w-3.5"
-                          strokeWidth={2.5}
-                        />
-                        {isFr ? "Garantie" : "Guarantee"}
-                      </dt>
-                      <dd className="text-terracotta-deep mt-1 text-[13px] leading-snug font-bold">
-                        {s.guarantee}
-                      </dd>
-                    </div>
-                  ) : null}
                 </dl>
               </aside>
             );
@@ -453,8 +698,11 @@ export default async function AuditListing({ params }: Props) {
             return (
               <article
                 key={item.slug}
+                id={`level-${item.slug}`}
                 className={cn(
-                  "shadow-subtle group/card hover:shadow-card relative overflow-hidden rounded-3xl border-2 ring-1 transition-shadow",
+                  "shadow-subtle group/card hover:shadow-card relative overflow-hidden rounded-3xl border-2 ring-1 transition-all scroll-mt-32",
+                  // Highlight quand l'utilisateur arrive via #level-X (matcher).
+                  "target:ring-4 target:ring-terracotta target:scale-[1.01]",
                   surface.container,
                   acc.border,
                   acc.haloRing,
@@ -472,26 +720,6 @@ export default async function AuditListing({ params }: Props) {
 
                 <span aria-hidden="true" className={`block h-1.5 w-full ${acc.line}`} />
 
-                {/* Chip "Sans risque" sur le Flash, "Multi-sites" sur l'ETI */}
-                {isFlash ? (
-                  <span
-                    className={cn(
-                      "shadow-subtle pointer-events-none absolute top-5 right-5 z-[3] inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase",
-                      acc.chipBg,
-                      acc.chipText,
-                    )}
-                  >
-                    <Sparkles aria-hidden="true" className="h-3 w-3" />
-                    {isFr ? "Sans risque · 490 €" : "Risk-free · €490"}
-                  </span>
-                ) : null}
-                {item.slug === "strategique-eti" ? (
-                  <span className="bg-terracotta-soft text-terracotta-deep shadow-subtle pointer-events-none absolute top-5 right-5 z-[3] inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase">
-                    <Network aria-hidden="true" className="h-3 w-3" />
-                    {isFr ? "Multi-sites · groupes" : "Multi-site · groups"}
-                  </span>
-                ) : null}
-
                 <div
                   className={cn(
                     "p-7 sm:p-8",
@@ -500,7 +728,10 @@ export default async function AuditListing({ params }: Props) {
                   )}
                 >
                   <div>
-                    <div className="flex items-center gap-3">
+                    {/* Header : icon + eyebrow à gauche, PRIX en gros à droite.
+                        Le prix est l'élément le plus visible de la card —
+                        serif italique terracotta, immédiatement lisible. */}
+                    <div className="flex items-start gap-3">
                       <span
                         className={cn(
                           "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
@@ -512,12 +743,37 @@ export default async function AuditListing({ params }: Props) {
                       </span>
                       <span
                         className={cn(
-                          "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide uppercase",
+                          "mt-1 inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide uppercase",
                           acc.badge,
                         )}
                       >
                         {c.eyebrow}
                       </span>
+
+                      {/* PriceTag — étiquette de prix bien visible.
+                          Sur card dark (ETI), on bascule terracotta-soft. */}
+                      <div
+                        aria-hidden="true"
+                        className="ml-auto shrink-0 text-right"
+                      >
+                        <p
+                          className={cn(
+                            "text-[10px] font-bold tracking-[0.16em] uppercase sm:text-[11px]",
+                            dark ? "text-mocha-fg/65" : "text-fg-muted",
+                          )}
+                        >
+                          {isFr ? "À partir de" : "From"}
+                        </p>
+                        <p
+                          className={cn(
+                            "mt-0.5 text-[1.75rem] leading-none font-medium tracking-tight italic tabular-nums sm:text-[2rem] lg:text-[2.5rem]",
+                            dark ? "text-terracotta-soft" : "text-terracotta",
+                          )}
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {PRICE_TAG_BY_SLUG[item.slug][loc]}
+                        </p>
+                      </div>
                     </div>
 
                     <h2
@@ -556,7 +812,7 @@ export default async function AuditListing({ params }: Props) {
                       </p>
                       <ul className="space-y-2">
                         {s.outcomes.map((o, i) => (
-                          <li key={i} className={cn("flex items-start gap-3 text-[14.5px]", txt)}>
+                          <li key={i} className={cn("flex items-start gap-3 text-base", txt)}>
                             <span
                               className={cn(
                                 "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
@@ -600,20 +856,6 @@ export default async function AuditListing({ params }: Props) {
                         ))}
                       </ol>
                     </div>
-
-                    {/* Garantie inline (compact uniquement) */}
-                    {!isFlagship && s.guarantee ? (
-                      <div
-                        className={cn(
-                          "mt-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[12px] font-bold",
-                          acc.chipBg,
-                          acc.chipText,
-                        )}
-                      >
-                        <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
-                        {s.guarantee}
-                      </div>
-                    ) : null}
 
                     <div className="relative z-[2] mt-7 flex flex-wrap items-center gap-3">
                       <Link
@@ -697,11 +939,9 @@ export default async function AuditListing({ params }: Props) {
                         </span>
                         <div>
                           <p className="text-fg text-sm font-bold">{a[loc].eyebrow}</p>
-                          {s.guarantee ? (
-                            <p className="text-terracotta-deep mt-0.5 text-[11px] font-semibold">
-                              {s.guarantee}
-                            </p>
-                          ) : null}
+                          <p className="text-fg-muted mt-0.5 text-[11px] leading-snug">
+                            {s.scope}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -717,7 +957,7 @@ export default async function AuditListing({ params }: Props) {
           </table>
         </div>
 
-        <p className="text-fg-muted mt-6 max-w-3xl text-sm leading-relaxed">
+        <p className="text-fg-muted mt-6 max-w-2xl text-base leading-relaxed">
           {isFr
             ? "Frais de déplacement (sur site uniquement) : forfait journalier sans justificatifs. Logement à la charge du client si plus de 200 km de Paris. Détails dans la "
             : "Travel fees (on site only): flat daily rate, no receipts. Lodging at client's expense if more than 200 km from Paris. Details in the "}
@@ -751,8 +991,8 @@ export default async function AuditListing({ params }: Props) {
                 : "You're starting with AI or exploring?",
               answer: isFr ? "Niveau 1 · Flash" : "Level 1 · Flash",
               detail: isFr
-                ? "Vous voulez tester sans engagement. Sur 1 process clé, on identifie 3-5 cas d'usage et un plan 30/90 jours. Satisfait ou remboursé."
-                : "You want to test with no commitment. On 1 key process, we identify 3-5 use cases and a 30/90-day plan. Satisfied or refunded.",
+                ? "Sur 1 zone clé de votre entreprise, on identifie 3 à 5 endroits où l'IA peut s'insérer concrètement, avec gains chiffrés et plan d'action immédiat."
+                : "On 1 key area of your company, we identify 3 to 5 places where AI can fit in concretely, with costed gains and an immediate action plan.",
               cta: isFr
                 ? "Réserver le diagnostic flash · 490 €"
                 : "Book the flash diagnosis · €490",
@@ -761,13 +1001,13 @@ export default async function AuditListing({ params }: Props) {
             },
             {
               question: isFr
-                ? "Vous avez un service précis à optimiser ?"
-                : "You have a specific service to optimise?",
-              answer: isFr ? "Niveau 2 · Process" : "Level 2 · Process",
+                ? "Vous avez un service précis à automatiser ?"
+                : "You have a specific service to automate?",
+              answer: isFr ? "Niveau 2 · Audit ciblé" : "Level 2 · Targeted",
               detail: isFr
-                ? "RH, finance, vente, ops, support — un processus complet, cartographié de bout en bout, avec roadmap IA 6-12 mois et tâches automatisables chiffrées."
-                : "HR, finance, sales, ops, support — a full process mapped end to end, with a 6-12 month AI roadmap and costed automatable tasks.",
-              cta: isFr ? "Demander un audit Process" : "Request a Process audit",
+                ? "RH, finance, vente, ops, support — un service complet étudié de A à Z. On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois."
+                : "HR, finance, sales, ops, support — a full service studied A to Z. We list everything that can be automated with costed gains and a 6-12 month plan.",
+              cta: isFr ? "Demander un audit ciblé" : "Request a targeted audit",
               href: "/audit/demande?type=process",
               accent: "primary",
             },
@@ -808,7 +1048,7 @@ export default async function AuditListing({ params }: Props) {
                 >
                   → {q.answer}
                 </div>
-                <p className="text-fg-soft mt-4 flex-1 text-sm leading-relaxed">{q.detail}</p>
+                <p className="text-fg-soft mt-4 flex-1 text-base leading-relaxed">{q.detail}</p>
                 <Link
                   href={q.href as never}
                   className={cn(
@@ -824,6 +1064,99 @@ export default async function AuditListing({ params }: Props) {
           })}
         </div>
       </Section>
+
+      {/* POURQUOI AXIONIA — 5 différenciants vs concurrence */}
+      <WhyAxionIA isFr={isFr} />
+
+      {/* SIGNATURE FONDATEUR — légitimité humaine entre WhyAxionIA et SocialProof */}
+      <SignatureCard isFr={isFr} />
+
+      {/* PREUVE SOCIALE — métriques + bandeau secteurs + 3 témoignages */}
+      <SocialProof isFr={isFr} />
+
+      {/* FAQ — 6 questions clés + JSON-LD FAQPage */}
+      <AuditFaqSection
+        isFr={isFr}
+        items={
+          isFr
+            ? [
+                {
+                  id: "duree-reservation",
+                  question: "Combien de temps prend la réservation ?",
+                  answer:
+                    "Le diagnostic flash se réserve via un formulaire 6 étapes (≈ 3 minutes). Pour les niveaux Process / Stratégique, vous recevez un devis personnalisé sous 48 h ouvrées avec un créneau d'appel proposé pour le cadrage.",
+                },
+                {
+                  id: "remote-onsite",
+                  question: "À distance ou sur site, quelle différence ?",
+                  answer:
+                    "À distance : visio sécurisée + entretiens + analyse des données partagées. Plus rapide à organiser, tarif réduit. Sur site : observation directe, immersion équipe, ateliers métier physiques. Recommandé dès le niveau Process pour les ateliers métier et indispensable pour le niveau Point de vente.",
+                },
+                {
+                  id: "data",
+                  question: "Quelles données dois-je vous fournir ?",
+                  answer:
+                    "Aucune donnée sensible n'est exfiltrée hors UE. Tous les entretiens et analyses se font sur place ou en visio sécurisée. Pour calibrer le devis, nous demandons : taille de l'équipe, secteur, outils en place, périmètre cible. Aucun accès production demandé avant signature.",
+                },
+                {
+                  id: "after",
+                  question: "Que se passe-t-il après l'audit ?",
+                  answer:
+                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par AxionIA (Module 3 Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en œuvre — sans frais additionnels si elle tient en 60 minutes.",
+                },
+                {
+                  id: "estonia",
+                  question: "Vous êtes une OÜ estonienne. C'est légal en France ?",
+                  answer:
+                    "Oui. AxionIA OÜ est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
+                },
+                {
+                  id: "starting-point",
+                  question: "Et si après l'audit, je ne sais pas par où commencer ?",
+                  answer:
+                    "Notre rapport est volontairement priorisé : le quick-win #1 doit être lançable dans la semaine qui suit la restitution. Si vous hésitez, nous proposons un appel de clarification gratuit de 30 minutes dans les 30 jours suivant la livraison. Et le Module 3 Implémentation peut prendre le relais sans transition.",
+                },
+              ]
+            : [
+                {
+                  id: "duree-reservation",
+                  question: "How long does booking take?",
+                  answer:
+                    "The flash diagnosis is booked via a 6-step form (≈ 3 minutes). For Process / Strategic levels, you receive a personalised quote within 48 business hours with a proposed framing call slot.",
+                },
+                {
+                  id: "remote-onsite",
+                  question: "Remote or on site — what's the difference?",
+                  answer:
+                    "Remote: secure video + interviews + analysis of shared data. Faster to organise, reduced fee. On site: direct observation, team immersion, physical business workshops. Recommended from Process level for business workshops and essential for Storefront level.",
+                },
+                {
+                  id: "data",
+                  question: "What data do I need to provide?",
+                  answer:
+                    "No sensitive data is exfiltrated outside the EU. All interviews and analysis happen on-site or in secure video conferencing. To calibrate the quote we ask: team size, sector, tools in place, target scope. No production access requested before signing.",
+                },
+                {
+                  id: "after",
+                  question: "What happens after the audit?",
+                  answer:
+                    "You leave with a costed action plan, executable by your teams or by AxionIA (Module 3 Implementation). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
+                },
+                {
+                  id: "estonia",
+                  question: "You're an Estonian OÜ. Is that legal in France?",
+                  answer:
+                    "Yes. AxionIA OÜ is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
+                },
+                {
+                  id: "starting-point",
+                  question: "What if I don't know where to start after the audit?",
+                  answer:
+                    "Our report is deliberately prioritised: quick-win #1 must be launchable within a week of the debrief. If you hesitate, we offer a free 30-minute clarification call within the 30 days following delivery. And Module 3 Implementation can take over without transition.",
+                },
+              ]
+        }
+      />
 
       {/* SECTION ANTI-FEAR — quel que soit votre niveau IA */}
       <Section
@@ -843,17 +1176,17 @@ export default async function AuditListing({ params }: Props) {
               level: isFr ? "Niveau 1" : "Stage 1",
               title: isFr ? "Aucun usage IA en place" : "No AI use in place",
               body: isFr
-                ? "Le diagnostic flash identifie 3-5 quick-wins immédiats sans bouleverser vos process. Vous gardez la main, vous testez sans risque."
-                : "The flash diagnosis identifies 3-5 immediate quick-wins without disrupting your processes. You keep control, test without risk.",
-              recommendation: isFr ? "Flash · Process" : "Flash · Process",
+                ? "Le diagnostic flash identifie 3 à 5 endroits où l'IA peut s'insérer immédiatement, sans bouleverser votre quotidien. Vous gardez la main."
+                : "The flash diagnosis identifies 3 to 5 places where AI can fit in immediately, without disrupting your day-to-day. You keep control.",
+              recommendation: isFr ? "Flash · Audit ciblé" : "Flash · Targeted",
             },
             {
               level: isFr ? "Niveau 2" : "Stage 2",
               title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
               body: isFr
-                ? "L'audit Process structure ce qui marche, élimine ce qui n'en vaut pas la peine, et chiffre la suite avec une roadmap 6-12 mois."
-                : "The Process audit structures what works, drops what doesn't, and costs the next step with a 6-12 month roadmap.",
-              recommendation: isFr ? "Process · Stratégique PME" : "Process · Strategic SMB",
+                ? "L'audit ciblé sur un service structure ce qui marche, élimine ce qui n'en vaut pas la peine, et chiffre la suite avec un plan 6-12 mois."
+                : "The targeted audit on a service structures what works, drops what doesn't, and costs the next step with a 6-12 month plan.",
+              recommendation: isFr ? "Audit ciblé · Stratégique PME" : "Targeted · Strategic SMB",
             },
             {
               level: isFr ? "Niveau 3" : "Stage 3",
@@ -870,8 +1203,8 @@ export default async function AuditListing({ params }: Props) {
               <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
                 {card.level}
               </p>
-              <h3 className="text-fg mt-2 text-lg leading-snug font-semibold">{card.title}</h3>
-              <p className="text-fg-soft mt-3 text-sm leading-relaxed">{card.body}</p>
+              <h3 className="text-fg mt-2 text-xl leading-snug font-semibold">{card.title}</h3>
+              <p className="text-fg-soft mt-3 text-base leading-relaxed">{card.body}</p>
               <p className="text-fg-muted mt-4 text-[12px] tracking-wide">
                 <span className="text-fg font-medium">
                   {isFr ? "Niveau conseillé : " : "Recommended level: "}
@@ -883,6 +1216,9 @@ export default async function AuditListing({ params }: Props) {
         </div>
       </Section>
 
+      {/* AU-DELÀ DE L'AUDIT — bandeau d'upsell vers Module 3 Implémentation */}
+      <BeyondAuditBlock isFr={isFr} />
+
       {/* CTA FINAL */}
       <CtaBlock
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
@@ -890,8 +1226,8 @@ export default async function AuditListing({ params }: Props) {
         titleEm={isFr ? "à 490 €" : "at €490"}
         description={
           isFr
-            ? "Sans engagement · satisfait ou intégralement remboursé. 1 process clé, 3-5 cas d'usage IA, plan d'action 30/90 jours. Si vous voulez aller plus loin, on a 3 niveaux d'audit selon votre taille et votre ambition."
-            : "No commitment · satisfied or fully refunded. 1 key process, 3-5 AI use cases, 30/90-day action plan. To go further, we have 3 deeper audit levels based on your size and ambition."
+            ? "On identifie 3 à 5 endroits concrets où l'IA peut s'insérer dans votre entreprise et tout ce qui peut être automatisé. Si vous voulez aller plus loin, 3 niveaux d'audit plus profonds vous attendent selon votre taille et votre ambition."
+            : "We identify 3 to 5 concrete places where AI can fit in your company and everything that can be automated. To go further, 3 deeper audit levels await based on your size and ambition."
         }
         cta={
           <Cta href="/audit/demande?type=flash" size="lg">
@@ -899,6 +1235,14 @@ export default async function AuditListing({ params }: Props) {
           </Cta>
         }
         tone="dark"
+      />
+
+      {/* STICKY CTA MOBILE — apparaît au scroll, masqué sur lg+ */}
+      <StickyMobileCta
+        href="/audit/demande?type=flash"
+        label={isFr ? "Réserver Flash · 490 €" : "Book Flash · €490"}
+        track="audit-flash-sticky-mobile"
+        threshold={500}
       />
 
       <JsonLd data={breadcrumb} />

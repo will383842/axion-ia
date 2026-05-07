@@ -43,8 +43,14 @@ interface ProductPageTemplateProps {
     benefitsTitle: string;
     benefits: ReadonlyArray<{ title: string; description: string }>;
     processTitle: string;
+    /** Eyebrow de la section process. Défaut "Réservation" (Module 1
+        Interventions). Sur audit, on passe "Déroulement" / "Method". */
+    processEyebrow?: string;
     processSteps: ReadonlyArray<{ title: string; description: string }>;
     metricsTitle: string;
+    /** Eyebrow de la section metrics. Défaut "Chiffres". Sur audit, on
+        passe "Bénéfices" / "Benefits" (les metrics sont qualitatifs). */
+    metricsEyebrow?: string;
     metrics: ReadonlyArray<{ number: string; suffix: string; label: string }>;
     faqTitle: string;
     faqs: ReadonlyArray<{ id: string; question: string; answer: string }>;
@@ -118,13 +124,23 @@ export function ProductPageTemplate({
         />
       </Section>
 
-      {/* « Comment fonctionne une réservation » — sand intermission, 5 étapes */}
-      <Section tone="sand" eyebrow="Réservation" title={copy.processTitle}>
+      {/* « Comment fonctionne une réservation » — sand intermission, 5 étapes.
+          Eyebrow paramétrable (défaut "Réservation" pour Module 1, "Déroulement"
+          ou "Method" sur audit). */}
+      <Section
+        tone="sand"
+        eyebrow={copy.processEyebrow ?? "Réservation"}
+        title={copy.processTitle}
+      >
         <ProcessSteps steps={copy.processSteps.map((s, i) => ({ id: `s-${i}`, ...s }))} />
       </Section>
 
-      {/* Metrics — mocha riche pour gros contraste */}
-      <Section tone="mocha" eyebrow="Chiffres" title={copy.metricsTitle}>
+      {/* Metrics — mocha riche pour gros contraste. Eyebrow paramétrable. */}
+      <Section
+        tone="mocha"
+        eyebrow={copy.metricsEyebrow ?? "Chiffres"}
+        title={copy.metricsTitle}
+      >
         <MetricsRow
           stats={copy.metrics.map((m, i) => ({
             id: `m-${i}`,

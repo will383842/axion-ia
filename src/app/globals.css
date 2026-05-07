@@ -72,7 +72,19 @@
     serif;
   --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Type scale v3 — display Fraunces italique géant pour signature Anthropic */
+  /* Type scale v3.1 — Editorial Premium 18/15 (ADR 0003, scénario B Anthropic-aligned)
+   *
+   * Override des Tailwind v4 defaults : `text-base` (16→18 px), `text-sm` (14→15 px).
+   * Manrope x-height 0.515 < Inter 0.546 → bump nécessaire pour parité perceptive.
+   * Médiane 2026 (6 sites benchmark) = 17 px ; Anthropic = 18 px → on s'aligne sur la doctrine.
+   * Délibérément hors scope : `display-editorial` (clamp 3rem→7rem) inchangé. */
+  --text-base: 1.125rem;            /* 18 px — était 16 px Tailwind default */
+  --text-base--line-height: 1.7;
+  --text-base--letter-spacing: -0.005em;
+  --text-sm: 0.9375rem;              /* 15 px — était 14 px Tailwind default */
+  --text-sm--line-height: 1.55;
+
+  /* display Fraunces italique géant — signature Anthropic */
   --text-display: 7rem;
   --text-display--line-height: 0.96;
   --text-display--letter-spacing: -0.04em;
@@ -82,16 +94,16 @@
   --text-sub--line-height: 1.2;
   --text-feature: 1.5rem;
   --text-feature--line-height: 1.3;
-  --text-lead: 1.375rem;
+  --text-lead: 1.4375rem;            /* 23 px — était 22 px (ratio body 1.28 ≈ Major Third) */
   --text-lead--line-height: 1.5;
-  --text-body: 1rem;
-  --text-body--line-height: 1.65;
+  --text-body: 1.125rem;             /* 18 px — sync avec text-base */
+  --text-body--line-height: 1.7;
   --text-body--letter-spacing: -0.005em;
   --text-label-up: 0.8125rem;
   --text-label-up--line-height: 1.3;
   --text-label-up--letter-spacing: 0.16em;
-  --text-caption: 0.875rem;
-  --text-caption--line-height: 1.5;
+  --text-caption: 0.9375rem;        /* 15 px — sync avec text-sm */
+  --text-caption--line-height: 1.55;
   --text-badge-up: 0.75rem;
   --text-badge-up--line-height: 1.2;
   --text-micro-up: 0.625rem;
@@ -148,6 +160,9 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Smooth scroll pour les anchors du matcher /audit (#level-X).
+       Désactivé via prefers-reduced-motion plus bas. */
+    scroll-behavior: smooth;
   }
 
   body {

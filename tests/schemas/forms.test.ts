@@ -207,6 +207,28 @@ describe("auditRequestSchema (6 steps)", () => {
     ).toBe(true);
   });
 
+  it("step 4 accepts optional tools array + free text", () => {
+    expect(
+      auditRequestStep4Schema.safeParse({
+        scope: "global",
+        scopeDetail: "Service commercial uniquement, équipe de 12 personnes.",
+        maturity: "starting",
+        goals: "Réduire le temps consacré aux relances clients.",
+        tools: ["Excel", "CRM", "ChatGPT"],
+        toolsOther: "Pipedrive, Zapier",
+      }).success,
+    ).toBe(true);
+    // Tools omis → toujours valide
+    expect(
+      auditRequestStep4Schema.safeParse({
+        scope: "global",
+        scopeDetail: "Service commercial uniquement, équipe de 12 personnes.",
+        maturity: "starting",
+        goals: "Réduire le temps consacré aux relances clients.",
+      }).success,
+    ).toBe(true);
+  });
+
   it("step 5 requires contact + email, role/phone optional", () => {
     expect(
       auditRequestStep5Schema.safeParse({

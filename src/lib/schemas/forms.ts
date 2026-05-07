@@ -80,6 +80,10 @@ export const auditRequestStep4Schema = z.object({
     errorMap: () => ({ message: "Maturité requise." }),
   }),
   goals: z.string().min(20, "Au moins 20 caractères."),
+  /** Outils utilisés — multi-select avec liste prédéfinie + free text.
+      Optionnel : aide à contextualiser le devis sans bloquer la conversion. */
+  tools: z.array(z.string()).optional(),
+  toolsOther: z.string().optional(),
 });
 export const auditRequestStep5Schema = z.object({
   contact: required,
