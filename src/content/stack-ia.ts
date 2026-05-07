@@ -615,16 +615,16 @@ export interface StackFaqItem {
 
 export const STACK_FAQS: ReadonlyArray<StackFaqItem> = [
   {
-    id: "why-eleven",
+    id: "selection-criteria",
     fr: {
-      question: "Pourquoi seulement 11 outils alors qu'il en existe des milliers ?",
+      question: "Sur quels critères cette sélection a-t-elle été faite ?",
       answer:
-        "Parce que la valeur n'est pas dans le catalogue, elle est dans l'orchestration. 80 % des entreprises utilisent quotidiennement 2 ou 3 IA, pas 50. AxionIA déploie chez ses clients la stack la plus courte qui tient — 11 outils maximum, choisis pour leur complémentarité, leur maturité d'adoption en 2026, et leur capacité à se câbler entre eux.",
+        "Sur trois critères, dans cet ordre : usage terrain quotidien dans le cabinet, complémentarité avec les autres outils déjà retenus, et maturité d'adoption B2B en 2026. La page expose une sélection — pas un classement, pas un palmarès. D'autres outils excellents existent et seront ajoutés s'ils gagnent leur place dans nos déploiements clients aux prochaines revues trimestrielles.",
     },
     en: {
-      question: "Why only 11 tools when there are thousands?",
+      question: "What criteria drove this selection?",
       answer:
-        "Because value lives in orchestration, not catalogues. 80% of companies use 2 or 3 AIs daily, not 50. AxionIA deploys the shortest stack that stands up — 11 tools max, picked for complementarity, 2026 adoption maturity, and how well they wire together.",
+        "Three, in this order: daily field usage at the consultancy, complementarity with the other picks already in, and 2026 B2B adoption maturity. The page shows a selection — not a ranking, not a leaderboard. Other excellent tools exist and will be added if they earn a place in our client deployments at upcoming quarterly reviews.",
     },
   },
   {

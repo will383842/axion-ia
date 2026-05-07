@@ -11,6 +11,8 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { StackHeroSchema, type StackHeroNode } from "@/components/sections/StackHeroSchema";
+import { ToolLogo } from "@/components/sections/ToolLogo";
 import {
   STACK_CATEGORIES,
   STACK_TOOLS,
@@ -32,12 +34,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: locale === "fr" ? "/stack-ia" : "/ai-stack",
     title:
       locale === "fr"
-        ? "Stack IA opérationnelle 2026 · les 11 IA qu'on déploie réellement · cabinet AxionIA"
-        : "Operational AI stack 2026 · the 11 AIs we actually deploy · AxionIA consultancy",
+        ? "Stack IA opérationnelle 2026 · les IA déterminantes pour votre entreprise · cabinet AxionIA"
+        : "Operational AI stack 2026 · the decisive AIs for your business · AxionIA consultancy",
     description:
       locale === "fr"
-        ? "Pas un catalogue. Les 11 IA qu'AxionIA déploie réellement chez ses clients en 2026, par fonction métier — penser, produire, capter, construire, orchestrer. Choix assumés, aucun partenariat commercial."
-        : "Not a catalogue. The 11 AIs AxionIA actually deploys at clients in 2026, by business function — think, produce, capture, build, orchestrate. Assumed choices, no commercial partnerships.",
+        ? "Pas un catalogue. Une sélection des IA les plus déterminantes en 2026 pour transformer votre entreprise, par fonction métier — penser, produire, capter, construire, orchestrer. Choix assumés, aucun partenariat commercial."
+        : "Not a catalogue. A selection of the most decisive 2026 AIs to transform your business, by function — think, produce, capture, build, orchestrate. Assumed choices, no commercial partnerships.",
     alternates: { fr: "/stack-ia", en: "/ai-stack" },
   });
 }
@@ -128,10 +130,8 @@ export default async function StackIaPage({ params }: Props) {
   const principles = [
     {
       icon: Sparkles,
-      label: isFr ? "11 outils, pas 200" : "11 tools, not 200",
-      detail: isFr
-        ? "La stack la plus courte qui tient en production"
-        : "The shortest stack that stands up in production",
+      label: isFr ? "Sélection assumée" : "Curated selection",
+      detail: isFr ? "Les outils les plus déterminants en 2026" : "The most decisive 2026 picks",
     },
     {
       icon: ShieldCheck,
@@ -157,8 +157,8 @@ export default async function StackIaPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: isFr
-      ? "Stack IA opérationnelle 2026 · cabinet AxionIA"
-      : "Operational AI stack 2026 · AxionIA consultancy",
+      ? "Sélection IA opérationnelle 2026 · cabinet AxionIA"
+      : "Operational AI selection 2026 · AxionIA consultancy",
     numberOfItems: STACK_TOOLS.length,
     itemListElement: STACK_TOOLS.map((tool, idx) => ({
       "@type": "ListItem",
@@ -189,14 +189,28 @@ export default async function StackIaPage({ params }: Props) {
     items: STACK_FAQS.map((f) => ({ question: f[loc].question, answer: f[loc].answer })),
   });
 
-  // Hero side panel : grille des 11 monogrammes — visuel éditorial qui montre
-  // immédiatement le périmètre de la stack sans logo tiers (cohérence palette).
-  const heroNumbers: ReadonlyArray<{ value: string; labelFr: string; labelEn: string }> = [
-    { value: "11", labelFr: "outils retenus", labelEn: "tools retained" },
-    { value: "5", labelFr: "fonctions métier", labelEn: "business functions" },
-    { value: "0", labelFr: "partenariat commercial", labelEn: "commercial partnership" },
-    { value: "Q1", labelFr: "fréquence de revue", labelEn: "review cadence" },
-  ];
+  // 6 bénéfices ultimes que la stack IA débloque pour l'entreprise.
+  // Disposition orbitale = sens horaire depuis le haut-gauche.
+  // Ordre choisi : Futur (vision) → Performance (opérationnel) →
+  // Rentabilité (financier) → Monde (portée) → Argent (résultat) →
+  // Liberté (humain). On boucle sur l'humain, fin du parcours.
+  const heroNodes: ReadonlyArray<StackHeroNode> = isFr
+    ? [
+        { label: "Futur", detail: "Anticiper l'avenir", accent: "terracotta" },
+        { label: "Performance", detail: "Mieux, plus vite", accent: "primary" },
+        { label: "Rentabilité", detail: "Marges qui durent", accent: "sage" },
+        { label: "Monde", detail: "Présent partout", accent: "primary" },
+        { label: "Argent", detail: "CA débloqué", accent: "terracotta" },
+        { label: "Liberté", detail: "Hors du répétitif", accent: "mocha" },
+      ]
+    : [
+        { label: "Future", detail: "Read what's coming", accent: "terracotta" },
+        { label: "Performance", detail: "Better, faster", accent: "primary" },
+        { label: "Profitability", detail: "Margins that last", accent: "sage" },
+        { label: "Reach", detail: "Present everywhere", accent: "primary" },
+        { label: "Revenue", detail: "Top line unlocked", accent: "terracotta" },
+        { label: "Freedom", detail: "Out of grunt work", accent: "mocha" },
+      ];
 
   return (
     <>
@@ -218,7 +232,7 @@ export default async function StackIaPage({ params }: Props) {
         />
 
         <Container className={cn("relative", TIGHT_X)}>
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16 xl:gap-20">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16 xl:gap-20">
             {/* Colonne gauche — eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -229,21 +243,30 @@ export default async function StackIaPage({ params }: Props) {
                 {isFr ? "Doctrine · Stack 2026" : "Doctrine · 2026 Stack"}
               </p>
 
-              <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "La stack IA d'un cabinet" : "The AI stack of a"}
+              {/* H1 — display-editorial standard (cohérence cross-pages).
+                  Italique court « qui tourne » (multi-mots courts, points de
+                  wrap naturels) plutôt qu'« opérationnelle » (14 char unique
+                  qui débordait à 7rem). Sens préservé : « entreprise qui
+                  tourne » = « entreprise opérationnelle » en français vivant.
+                  hyphens-auto + lang en safety-net si jamais. */}
+              <h1
+                lang={isFr ? "fr" : "en"}
+                className="display-editorial text-fg mt-5 [overflow-wrap:break-word] hyphens-auto"
+              >
+                {isFr ? "La stack IA d'une entreprise " : "The AI stack of a business "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "opérationnel" : "operational consultancy"}
+                  {isFr ? "qui tourne" : "that just works"}
                 </span>
                 {isFr ? " en 2026." : " in 2026."}
               </h1>
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Il existe plus de 2 000 outils IA. On en utilise 11. Voici lesquels, pourquoi, et ce qu'on en fait concrètement chez nos clients — par fonction métier, sans partenariat commercial, mis à jour chaque trimestre."
-                  : "There are over 2,000 AI tools out there. We use 11. Here they are, why, and what we actually do with them at clients — by business function, no commercial partnership, refreshed every quarter."}
+                  ? "Il existe plus de 2 000 outils IA en 2026. En voici une sélection des plus déterminantes pour transformer votre entreprise — par fonction métier, sans partenariat commercial, mise à jour chaque trimestre."
+                  : "There are over 2,000 AI tools out there in 2026. Here's a selection of the most decisive ones to transform your business — by function, no commercial partnership, refreshed every quarter."}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -261,79 +284,21 @@ export default async function StackIaPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Colonne droite — panneau éditorial : 4 chiffres clés + grille
-                monogrammes. Pas de logos tiers : cohérence palette + zéro
-                problème de droits/licences. */}
-            <aside
-              aria-label={
-                isFr ? "Aperçu de la stack en chiffres" : "Stack at a glance — by the numbers"
+            {/* Colonne droite — schéma SVG portrait : votre business au centre,
+                propulsé par les 11 outils, débloque 6 bénéfices ultimes en orbite.
+                Cohérence stricte avec InterventionsHeroSchema (même grammaire
+                visuelle : halos, anneaux, particules, serif italique terracotta). */}
+            <StackHeroSchema
+              className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none"
+              centerLabel={isFr ? "Votre business" : "Your business"}
+              centerCaption={isFr ? "Stack IA · 2026" : "AI stack · 2026"}
+              ariaLabel={
+                isFr
+                  ? "Schéma : votre business au centre, propulsé par sa stack IA 2026, débloque 6 bénéfices — futur, performance, rentabilité, monde, argent, liberté."
+                  : "Diagram: your business at the center, powered by its 2026 AI stack, unlocks 6 outcomes — future, performance, profitability, reach, revenue, freedom."
               }
-              className="bg-paper border-border ring-terracotta/10 shadow-card relative rounded-3xl border p-7 ring-1 sm:p-8 lg:p-10"
-            >
-              <span
-                aria-hidden="true"
-                className="bg-terracotta absolute top-0 left-8 h-1.5 w-16 rounded-b-full"
-              />
-
-              <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
-                {isFr ? "Aperçu" : "At a glance"}
-              </p>
-
-              {/* 4 chiffres clés — typo serif italique terracotta sur les valeurs */}
-              <dl className="mt-5 grid grid-cols-2 gap-5">
-                {heroNumbers.map((n) => (
-                  <div key={n.value}>
-                    <dt className="text-fg-muted text-[11px] tracking-[0.12em] uppercase">
-                      {isFr ? n.labelFr : n.labelEn}
-                    </dt>
-                    <dd
-                      className="text-terracotta-deep mt-1 text-4xl leading-none italic sm:text-5xl"
-                      style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
-                    >
-                      {n.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-
-              <hr className="border-border my-7" />
-
-              {/* Grille monogrammes — 11 tiles colorées par accent de catégorie */}
-              <p className="text-fg-muted mb-4 text-[11px] tracking-[0.16em] uppercase">
-                {isFr ? "Les 11 outils" : "The 11 tools"}
-              </p>
-              <ul className="grid grid-cols-6 gap-2.5 sm:grid-cols-6 lg:grid-cols-6">
-                {STACK_TOOLS.map((tool) => {
-                  const cat = STACK_CATEGORIES.find((c) => c.id === tool.category);
-                  const acc = accentClasses[cat?.accent ?? "terracotta"];
-                  return (
-                    <li
-                      key={tool.id}
-                      className="aspect-square"
-                      title={`${tool.name} · ${tool.vendor}`}
-                    >
-                      <div
-                        className={cn(
-                          "flex h-full w-full items-center justify-center rounded-xl text-sm font-semibold tracking-tight shadow-[inset_0_-2px_0_rgba(0,0,0,0.08)]",
-                          acc.monogramBg,
-                          acc.monogramFg,
-                        )}
-                        style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
-                      >
-                        {tool.monogram}
-                      </div>
-                    </li>
-                  );
-                })}
-                {/* Tile "+" éditoriale qui complète la grille à 12 cases pour
-                    l'équilibre visuel de la dernière ligne. */}
-                <li className="aspect-square">
-                  <div className="border-border-strong text-fg-muted flex h-full w-full items-center justify-center rounded-xl border border-dashed text-xs">
-                    {isFr ? "Q1" : "Q1"}
-                  </div>
-                </li>
-              </ul>
-            </aside>
+              nodes={heroNodes}
+            />
           </div>
         </Container>
       </section>
@@ -465,18 +430,17 @@ export default async function StackIaPage({ params }: Props) {
                     <span aria-hidden="true" className={cn("block h-1.5 w-full", acc.line)} />
 
                     <div className="p-7 sm:p-8">
-                      {/* Header : monogramme + nom + vendor + maturity pill */}
+                      {/* Header : logo + nom + vendor + maturity pill */}
                       <header className="flex items-start gap-4">
                         <span
                           aria-hidden="true"
                           className={cn(
-                            "shadow-subtle flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-xl font-semibold",
+                            "shadow-subtle flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl",
                             acc.monogramBg,
                             acc.monogramFg,
                           )}
-                          style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
                         >
-                          {tool.monogram}
+                          <ToolLogo id={tool.id} className="h-7 w-7" />
                         </span>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -605,43 +569,55 @@ export default async function StackIaPage({ params }: Props) {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
-              from: "Granola",
-              to: "Claude",
+              fromId: "granola",
+              fromName: "Granola",
+              toId: "claude",
+              toName: "Claude",
               outputFr: "Compte-rendu client → plan de mission",
               outputEn: "Client minutes → mission plan",
               accent: "sage" as const,
             },
             {
-              from: "Perplexity",
-              to: "Claude",
+              fromId: "perplexity",
+              fromName: "Perplexity",
+              toId: "claude",
+              toName: "Claude",
               outputFr: "Veille sourcée → mémo stratégique",
               outputEn: "Sourced watch → strategic memo",
               accent: "sage" as const,
             },
             {
-              from: "ChatGPT",
-              to: "Claude",
+              fromId: "chatgpt",
+              fromName: "ChatGPT",
+              toId: "claude",
+              toName: "Claude",
               outputFr: "Brainstorming → version qui passe en prod",
               outputEn: "Brainstorm → version that ships",
               accent: "primary" as const,
             },
             {
-              from: "Cursor",
-              to: "Claude Code",
+              fromId: "cursor",
+              fromName: "Cursor",
+              toId: "claude-code",
+              toName: "Claude Code",
               outputFr: "Micro-itérations → marathon refactoring",
               outputEn: "Micro-iterations → refactor marathon",
               accent: "mocha" as const,
             },
             {
-              from: "v0",
-              to: "Cursor",
+              fromId: "v0",
+              fromName: "v0",
+              toId: "cursor",
+              toName: "Cursor",
               outputFr: "Prototype 30s → composant en repo",
               outputEn: "30s prototype → in-repo component",
               accent: "mocha" as const,
             },
             {
-              from: "n8n",
-              to: "Claude",
+              fromId: "n8n",
+              fromName: "n8n",
+              toId: "claude",
+              toName: "Claude",
               outputFr: "Workflow CRM → enrichissement IA",
               outputEn: "CRM workflow → AI enrichment",
               accent: "terracotta" as const,
@@ -659,22 +635,24 @@ export default async function StackIaPage({ params }: Props) {
                 <div className="flex items-center gap-3">
                   <span
                     className={cn(
-                      "rounded-lg px-3 py-1.5 text-sm font-semibold",
+                      "inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold",
                       acc.chipBg,
                       acc.chipText,
                     )}
                   >
-                    {combo.from}
+                    <ToolLogo id={combo.fromId} className="h-3.5 w-3.5" />
+                    {combo.fromName}
                   </span>
                   <ArrowRight aria-hidden="true" className={cn("h-4 w-4", acc.title)} />
                   <span
                     className={cn(
-                      "rounded-lg px-3 py-1.5 text-sm font-semibold",
+                      "inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold",
                       acc.chipBg,
                       acc.chipText,
                     )}
                   >
-                    {combo.to}
+                    <ToolLogo id={combo.toId} className="h-3.5 w-3.5" />
+                    {combo.toName}
                   </span>
                 </div>
                 <p className="text-fg mt-4 text-[15.5px] leading-relaxed">
@@ -683,6 +661,76 @@ export default async function StackIaPage({ params }: Props) {
               </article>
             );
           })}
+        </div>
+      </Section>
+
+      {/* CE QU'ON A ÉCARTÉ — renforce « choix assumés » et nourrit l'AEO
+          (queries du type « Notion AI vs Claude », « Make vs n8n »). */}
+      <Section
+        tone="canvas"
+        eyebrow={isFr ? "Choix éditorial" : "Editorial choice"}
+        title={isFr ? "Ce qu'on a écarté" : "What we ruled out"}
+        titleEm={isFr ? "(et pourquoi)" : "(and why)"}
+        description={
+          isFr
+            ? "Une stack honnête nomme aussi ce qu'elle ne prend pas. Voici cinq outils populaires qu'on a regardés sérieusement et qui ne sont pas dans notre déploiement 2026 — pas qu'ils soient mauvais, ils ne gagnent pas leur place."
+            : "An honest stack names what it leaves out. Here are five popular tools we looked at seriously and ruled out for our 2026 deployment — not because they're bad, but because they don't earn the slot."
+        }
+        contentClassName={TIGHT_X}
+      >
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              tool: "Notion AI",
+              fr: "Couche IA correcte, mais Claude fait mieux le job ailleurs. On garde Notion, sans son IA.",
+              en: "Decent AI layer, but Claude does the job better elsewhere. We keep Notion, drop its AI.",
+            },
+            {
+              tool: "GitHub Copilot",
+              fr: "Solide. Cursor a pris la main chez les seniors qui veulent du contrôle plutôt que de l'autocomplete.",
+              en: "Solid. Cursor took over with senior engineers who want control over raw autocomplete.",
+            },
+            {
+              tool: "Make · Zapier",
+              fr: "Hébergement tiers = vos données partent. n8n auto-hébergeable préserve la souveraineté.",
+              en: "Third-party hosting = your data leaves. Self-hostable n8n keeps sovereignty intact.",
+            },
+            {
+              tool: "Gemini",
+              fr: "Excellent en intégration Workspace. N'apporte rien de plus si vous êtes déjà sur Microsoft 365.",
+              en: "Excellent in Workspace integration. Adds nothing if you're already on Microsoft 365.",
+            },
+            {
+              tool: "Jasper · Writer",
+              fr: "Wrappers GPT avec couche métier marketing. Aussi bien d'utiliser GPT directement avec un bon prompt.",
+              en: "GPT wrappers with a marketing layer. You're as well off using GPT directly with a strong prompt.",
+            },
+            {
+              tool: "Otter · Fireflies",
+              fr: "Capture solide, mais avec bot dans la réunion. Granola tourne en fond, sans interrompre.",
+              en: "Solid capture, but with a bot in the meeting. Granola runs in the background, no interruption.",
+            },
+          ].map((item) => (
+            <article
+              key={item.tool}
+              className="border-border bg-paper relative rounded-2xl border p-6"
+            >
+              <div className="flex items-start gap-3">
+                <span
+                  aria-hidden="true"
+                  className="bg-fg-muted/15 text-fg-muted mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                >
+                  <span className="block h-0.5 w-3 rounded-full bg-current" />
+                </span>
+                <div>
+                  <h3 className="text-fg text-base leading-tight font-semibold">{item.tool}</h3>
+                  <p className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
+                    {isFr ? item.fr : item.en}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </Section>
 
