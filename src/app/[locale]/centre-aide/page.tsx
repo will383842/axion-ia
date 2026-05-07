@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -9,7 +10,8 @@ import { Cta } from "@/components/marketing/Cta";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { HELP_ARTICLES, slugify } from "@/content/transversal";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -45,50 +47,45 @@ export default async function HelpCenter({ params }: Props) {
     ],
   });
 
-  const sections = [
-    {
-      key: "intervention",
-      title: isFr ? "Avant l'intervention" : "Before the session",
-      desc: isFr
-        ? "Comment se préparer, quelles données fournir, qui inviter ?"
-        : "How to prepare, what data to provide, who to invite?",
-    },
-    {
-      key: "audit",
-      title: isFr ? "Comprendre un audit IA" : "Understanding an AI audit",
-      desc: isFr
-        ? "Périmètre, livrables, durée, modalité à distance ou sur site."
-        : "Scope, deliverables, duration, remote or on-site modality.",
-    },
-    {
-      key: "implementation",
-      title: isFr ? "Implémentation IA" : "AI implementation",
-      desc: isFr
-        ? "Phases d'un projet, choix techniques, gouvernance des données."
-        : "Project phases, technical choices, data governance.",
-    },
-    {
-      key: "billing",
-      title: isFr ? "Facturation & TVA EE" : "Billing & EU VAT",
-      desc: isFr
-        ? "Société estonienne, virement, facturation TVA selon résidence."
-        : "Estonian company, bank transfer, VAT billing per residence.",
-    },
-    {
-      key: "data",
-      title: isFr ? "Sécurité & données" : "Security & data",
-      desc: isFr
-        ? "Hébergement UE, RGPD, modèles open-source vs propriétaires."
-        : "EU hosting, GDPR, open-source vs proprietary models.",
-    },
-    {
-      key: "support",
-      title: isFr ? "Support post-livraison" : "Post-delivery support",
-      desc: isFr
-        ? "30 jours inclus, escalade, maintenance corrective."
-        : "30 days included, escalation, corrective maintenance.",
-    },
-  ];
+  // Group articles by category — each category becomes a clickable card
+  // pointing to /centre-aide/categorie/{slug} (which already exists).
+  const categoriesMap = new Map<
+    string,
+    { label: string; slug: string; articles: typeof HELP_ARTICLES }
+  >();
+  for (const article of HELP_ARTICLES) {
+    const catSlug = slugify(article.category);
+    const existing = categoriesMap.get(catSlug);
+    if (existing) {
+      categoriesMap.set(catSlug, {
+        ...existing,
+        articles: [...existing.articles, article],
+      });
+    } else {
+      categoriesMap.set(catSlug, {
+        label: article.category,
+        slug: catSlug,
+        articles: [article],
+      });
+    }
+  }
+  const categories = [...categoriesMap.values()];
+  const categoryBase = isFr ? "/centre-aide/categorie" : "/help/category";
+  const articleBase = isFr ? "/centre-aide" : "/help";
+
+  // ItemList JSON-LD — exposes every article URL to crawlers from the index
+  // (was orphan before; only the sitemap pointed at them).
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: isFr ? "Articles d'aide AxionIA" : "AxionIA help articles",
+    itemListElement: HELP_ARTICLES.map((article, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/${locale}${articleBase}/${article.slug}`,
+      name: article[loc].title,
+    })),
+  } as const;
 
   return (
     <>
@@ -99,29 +96,75 @@ export default async function HelpCenter({ params }: Props) {
         titleEm={isFr ? "rapide" : "answer"}
         description={
           isFr
-            ? "Articles d'aide groupés par thématique. Sprint 15 ajoute une recherche FTS sur tout le contenu."
-            : "Help articles grouped by theme. Sprint 15 adds full-text search across the content."
+            ? "Articles groupés par thématique. Chaque question ouvre sur sa propre page indexable."
+            : "Articles grouped by topic. Each question opens on its own indexable page."
         }
       />
 
       <Section eyebrow={isFr ? "Thématiques" : "Topics"}>
         <Container>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {sections.map((section) => (
-              <li key={section.key}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{section.title}</CardTitle>
-                    <CardDescription>{section.desc}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-fg-muted text-sm">
-                      {isFr
-                        ? "Articles publiés au Sprint 15 (fixtures Prisma)."
-                        : "Articles published in Sprint 15 (Prisma fixtures)."}
+            {categories.map((category) => (
+              <li key={category.slug}>
+                <a
+                  href={`/${locale}${categoryBase}/${category.slug}`}
+                  className="group block h-full"
+                >
+                  <Card className="cta-lift h-full">
+                    <CardHeader>
+                      <CardTitle className="flex items-start justify-between gap-3">
+                        <span>{category.label}</span>
+                        <ArrowUpRight
+                          className="text-fg-muted group-hover:text-primary mt-1 h-4 w-4 shrink-0 transition"
+                          aria-hidden="true"
+                        />
+                      </CardTitle>
+                      <CardDescription>
+                        {isFr
+                          ? `${category.articles.length} article${category.articles.length > 1 ? "s" : ""}`
+                          : `${category.articles.length} article${category.articles.length > 1 ? "s" : ""}`}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="text-fg-soft space-y-1.5 text-sm">
+                        {category.articles.slice(0, 3).map((a) => (
+                          <li key={a.slug} className="line-clamp-1">
+                            · {a[loc].title}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+
+      <Section eyebrow={isFr ? "Tous les articles" : "All articles"} tone="paper">
+        <Container>
+          <ul className="border-border divide-border divide-y border-y">
+            {HELP_ARTICLES.map((article) => (
+              <li key={article.slug}>
+                <a
+                  href={`/${locale}${articleBase}/${article.slug}`}
+                  className="group flex items-center justify-between gap-4 py-5"
+                >
+                  <div className="min-w-0">
+                    <p className="text-fg-muted mb-1 text-xs font-medium tracking-[0.12em] uppercase">
+                      {article.category}
                     </p>
-                  </CardContent>
-                </Card>
+                    <p className="text-fg group-hover:text-primary text-base font-medium transition">
+                      {article[loc].title}
+                    </p>
+                    <p className="text-fg-soft mt-1 line-clamp-1 text-sm">{article[loc].excerpt}</p>
+                  </div>
+                  <ArrowUpRight
+                    className="text-fg-muted group-hover:text-primary h-4 w-4 shrink-0 transition"
+                    aria-hidden="true"
+                  />
+                </a>
               </li>
             ))}
           </ul>
@@ -143,6 +186,7 @@ export default async function HelpCenter({ params }: Props) {
       />
 
       <JsonLd data={breadcrumb} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }

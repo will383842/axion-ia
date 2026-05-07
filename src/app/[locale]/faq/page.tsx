@@ -3,7 +3,9 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { ArrowUpRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
+import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -18,7 +20,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  return buildProductMetadata({
+  const meta = buildProductMetadata({
     locale,
     path: "/faq",
     title: locale === "fr" ? "FAQ · cabinet IA AxionIA" : "FAQ · AxionIA AI consultancy",
@@ -27,6 +29,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Questions fréquentes sur les interventions IA, l'audit, l'implémentation, la souveraineté des données, la facturation."
         : "Frequently asked questions on AI sessions, audit, implementation, data sovereignty, billing.",
   });
+  return {
+    ...meta,
+    alternates: {
+      ...meta.alternates,
+      types: { "application/rss+xml": `/${locale}/faq/feed.xml` },
+    },
+  };
 }
 
 export default async function FaqPage({ params }: Props) {
@@ -66,7 +75,39 @@ export default async function FaqPage({ params }: Props) {
         }
       />
 
-      <FaqBlock items={items} emitJsonLd={false} />
+      <FaqBlock
+        items={items}
+        emitJsonLd={false}
+        permalinkBase={`/${locale}/faq`}
+        permalinkLabel={isFr ? "Page dédiée" : "Dedicated page"}
+      />
+
+      <Section
+        eyebrow={isFr ? "Index" : "Index"}
+        title={isFr ? "Toutes les questions" : "All questions"}
+        tone="paper"
+      >
+        <Container className="max-w-3xl">
+          <ul className="border-border divide-border divide-y border-y">
+            {items.map((item) => (
+              <li key={item.id}>
+                <a
+                  href={`/${locale}/faq/${item.id}`}
+                  className="group flex items-center justify-between gap-4 py-4"
+                >
+                  <span className="text-fg group-hover:text-primary text-base font-medium transition">
+                    {item.question}
+                  </span>
+                  <ArrowUpRight
+                    className="text-fg-muted group-hover:text-primary h-4 w-4 shrink-0 transition"
+                    aria-hidden="true"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
 
       <CtaBlock
         title={isFr ? "Une question non listée ?" : "Question not listed?"}
