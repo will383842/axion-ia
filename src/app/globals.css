@@ -25,8 +25,8 @@
   --color-fg-soft: #524b41; /* gris-brun moyen — texte secondaire */
   --color-fg-muted: #6b6155; /* gris-sable — texte tertiaire, captions (WCAG AA sur bg/paper/sand) */
 
-  /* ----- Accent identitaire : Webflow Blue conservé + chaleur ----- */
-  --color-primary: #1a4dd9; /* bleu profond (était #146ef5, plus dense pour éditorial) */
+  /* ----- Accent identitaire : bleu profond éditorial + chaleur ----- */
+  --color-primary: #1a4dd9; /* bleu dense éditorial v3 (Editorial Premium Light, ADR 0002) */
   --color-primary-hover: #0f3aae;
   --color-primary-fg: #ffffff;
   --color-primary-soft: #e8efff; /* halo bleu très doux pour fonds d'icônes */
@@ -119,7 +119,7 @@
   --radius-2xl: 28px; /* hero blocks */
   --radius-full: 9999px;
 
-  /* ----- Spacing — Webflow fractional scale ----- */
+  /* ----- Spacing — fractional scale (héritée v1, conservée v3) ----- */
   --spacing-0_25: 0.0625rem;
   --spacing-0_5: 0.15rem;
   --spacing-0_75: 0.2rem;
@@ -138,12 +138,16 @@
   --shadow-inset-soft: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
 
   /* ----- Motion ----- */
-  --ease-out-webflow: cubic-bezier(0.16, 1, 0.3, 1);
+  /* `--ease-out-editorial` : courbe de sortie éditoriale v3. Renommée
+     depuis `--ease-out-editorial` (résidu doctrine v1, ADR 0001 obsolète).
+     La courbe physique est inchangée — seul le nom évolue pour cohérence
+     avec la doctrine v3 Editorial Premium Light (ADR 0002). */
+  --ease-out-editorial: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 400ms;
 
-  /* ----- Breakpoints (Webflow: 479/768/992/1280) ----- */
+  /* ----- Breakpoints (479/768/992/1280) ----- */
   --breakpoint-xs: 479px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
@@ -244,9 +248,9 @@
   /* CTA hover lift — 2px translate up + shadow growth (signature éditoriale) */
   .cta-lift {
     transition:
-      transform var(--duration-base) var(--ease-out-webflow),
-      box-shadow var(--duration-base) var(--ease-out-webflow),
-      background-color var(--duration-base) var(--ease-out-webflow);
+      transform var(--duration-base) var(--ease-out-editorial),
+      box-shadow var(--duration-base) var(--ease-out-editorial),
+      background-color var(--duration-base) var(--ease-out-editorial);
   }
   .cta-lift:hover {
     transform: translateY(-2px);

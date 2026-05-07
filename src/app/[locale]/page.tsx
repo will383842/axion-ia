@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
@@ -180,30 +180,12 @@ export default async function Home({ params }: HomeProps) {
     answer: f[loc].answer,
   }));
 
-  // JSON-LD.
-  const orgJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "AxionIA",
-    legalName: "AxionIA OÜ",
-    url: SITE_URL,
-    logo: `${SITE_URL}/icon.svg`,
-    foundingDate: "2024",
-    address: {
-      "@type": "PostalAddress",
-      addressCountry: "EE",
-    },
-  } as const;
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
-    })),
-  } as const;
+  // JSON-LD homepage. Organization déjà émis layout-level via
+  // `buildOrganizationJsonLd` (riche : sameAs + contactPoint + areaServed +
+  // foundingLocation + knowsLanguage). Pas de re-émission ici (signal Google
+  // "double Organization" ambigu). Le FAQ utilise `buildFaqSpeakableJsonLd`
+  // pour activer la voix (Google Assistant + Alexa + Bixby — AEO 2026).
+  const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqs });
 
   return (
     <>
@@ -1292,7 +1274,6 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      <JsonLd data={orgJsonLd} />
       <JsonLd data={faqJsonLd} />
     </>
   );
