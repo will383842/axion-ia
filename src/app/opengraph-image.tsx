@@ -1,0 +1,121 @@
+// Default OpenGraph image — `app/opengraph-image.tsx` Next 16 file convention.
+// 1200×630 PNG généré dynamiquement pour la homepage et fallback sur les
+// pages sans `metadata.openGraph.images` explicite. Doctrine v3 Editorial
+// Premium Light (ADR 0002) : terracotta surface, ivoire badge, Fraunces
+// serif italique sur "IA".
+//
+// Pour des OG images par-page paramétrées (avec titre custom), utiliser
+// `/api/og?title=...&accent=...` (cf. `src/app/api/og/route.tsx`).
+
+import { ImageResponse } from "next/og";
+
+export const runtime = "edge";
+
+export const alt = "AxionIA — Cabinet IA opérationnel B2B";
+
+export const size = {
+  width: 1200,
+  height: 630,
+};
+
+export const contentType = "image/png";
+
+// hex-ok: ImageResponse runs in Edge runtime where Tailwind tokens are not
+// available. Hex values mirror globals.css palette deliberately
+// (doctrine v3 Editorial Premium Light, ADR 0002).
+const TERRACOTTA = "#c24a1b"; // hex-ok: --color-terracotta v3
+const TERRACOTTA_DEEP = "#8c3010"; // hex-ok: --color-terracotta-deep v3
+const IVOIRE = "#faf8f3"; // hex-ok: --color-bg v3
+const PAPER = "#ffffff"; // hex-ok: --color-paper v3
+const FG = "#1a1815"; // hex-ok: --color-fg v3
+
+export default function OpengraphImage() {
+  return new ImageResponse(
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        background: `linear-gradient(135deg, ${TERRACOTTA} 0%, ${TERRACOTTA_DEEP} 100%)`,
+        padding: 80,
+      }}
+    >
+      {/* Logo badge ivoire — signature visuelle AxionIA */}
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          background: PAPER,
+          color: FG,
+          padding: "12px 24px",
+          borderRadius: 16,
+          fontSize: 36,
+          fontWeight: 500,
+          fontStyle: "normal",
+          fontFamily: "serif",
+          letterSpacing: "-0.02em",
+          alignSelf: "flex-start",
+        }}
+      >
+        <span>Axion</span>
+        <span style={{ margin: "0 4px", opacity: 0.6 }}>-</span>
+        <span style={{ color: TERRACOTTA, fontStyle: "italic" }}>IA</span>
+      </div>
+
+      {/* Titre éditorial */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginTop: 80,
+          color: IVOIRE,
+          fontFamily: "serif",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 88,
+            fontWeight: 500,
+            lineHeight: 1.05,
+            letterSpacing: "-0.02em",
+          }}
+        >
+          Cabinet IA
+        </div>
+        <div
+          style={{
+            fontSize: 88,
+            fontWeight: 500,
+            fontStyle: "italic",
+            lineHeight: 1.05,
+            letterSpacing: "-0.02em",
+            marginTop: 8,
+          }}
+        >
+          opérationnel
+        </div>
+      </div>
+
+      {/* Sous-titre + URL en bas */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          marginTop: "auto",
+          color: IVOIRE,
+          fontSize: 24,
+          fontFamily: "sans-serif",
+          opacity: 0.85,
+        }}
+      >
+        <span>Interventions · Audits · Implémentation IA</span>
+        <span style={{ fontWeight: 600 }}>axion-ia.com</span>
+      </div>
+    </div>,
+    {
+      ...size,
+    },
+  );
+}

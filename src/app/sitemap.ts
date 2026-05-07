@@ -13,7 +13,7 @@ import {
   BLOG_POSTS,
 } from "@/content/transversal";
 import { getAllComparisonSlugs } from "@/content/comparaisons";
-import { AUTOMATISATION_SLUGS } from "@/content/automatisations";
+import { AUTOMATISATION_SLUGS_FR, AUTOMATISATION_SLUGS_EN } from "@/content/automatisations";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 // `/sitemap.xml`         = sitemap-index (auto, lists sub-sitemaps)
@@ -78,7 +78,14 @@ interface DynamicSlug {
   fr: string;
   /** EN mirror path (defaults to FR). */
   en?: string;
+  /** FR-canonical slugs. */
   slugs: ReadonlyArray<string>;
+  /**
+   * Optional EN-translated slugs aligned by index with `slugs`.
+   * Use when EN slug is genuinely different (ex: `customer-service` for
+   * `service-client` in `/implementation/by-function/`). Defaults to `slugs`.
+   */
+  slugsEn?: ReadonlyArray<string>;
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
   priority: number;
   /** Optional per-slug lastModified resolver. Defaults to `now`. */
@@ -88,26 +95,37 @@ interface DynamicSlug {
 function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataRoute.Sitemap {
   const out: MetadataRoute.Sitemap = [];
   for (const entry of entries) {
-    for (const slug of entry.slugs) {
-      const lastMod = entry.lastModFor?.(slug) ?? now;
+    for (let i = 0; i < entry.slugs.length; i++) {
+      const slugFr = entry.slugs[i]!;
+      const slugEn = entry.slugsEn?.[i] ?? slugFr;
+      const lastMod = entry.lastModFor?.(slugFr) ?? now;
+      const frUrl = `${SITE_URL}/fr${entry.fr.replace(":slug", slugFr)}`;
+      const enUrl = `${SITE_URL}/en${(entry.en ?? entry.fr).replace(":slug", slugEn)}`;
       out.push({
-        url: `${SITE_URL}/fr${entry.fr.replace(":slug", slug)}`,
+        url: frUrl,
         lastModified: lastMod,
         changeFrequency: entry.changeFrequency,
         priority: entry.priority,
         alternates: {
           languages: {
-            fr: `${SITE_URL}/fr${entry.fr.replace(":slug", slug)}`,
-            en: `${SITE_URL}/en${(entry.en ?? entry.fr).replace(":slug", slug)}`,
-            "x-default": `${SITE_URL}/fr${entry.fr.replace(":slug", slug)}`,
+            fr: frUrl,
+            en: enUrl,
+            "x-default": frUrl,
           },
         },
       });
       out.push({
-        url: `${SITE_URL}/en${(entry.en ?? entry.fr).replace(":slug", slug)}`,
+        url: enUrl,
         lastModified: lastMod,
         changeFrequency: entry.changeFrequency,
         priority: entry.priority,
+        alternates: {
+          languages: {
+            fr: frUrl,
+            en: enUrl,
+            "x-default": frUrl,
+          },
+        },
       });
     }
   }
@@ -283,8 +301,9 @@ function buildImplementationSitemap(now: Date): MetadataRoute.Sitemap {
     [
       {
         fr: "/implementation/par-fonction/:slug",
-        en: "/implementation/by-role/:slug",
-        slugs: AUTOMATISATION_SLUGS,
+        en: "/implementation/by-function/:slug",
+        slugs: AUTOMATISATION_SLUGS_FR,
+        slugsEn: AUTOMATISATION_SLUGS_EN,
         changeFrequency: "monthly",
         priority: 0.6,
       },

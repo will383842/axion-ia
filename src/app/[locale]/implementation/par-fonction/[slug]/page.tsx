@@ -7,23 +7,29 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { AUTOMATISATIONS, type AutomatisationSlug } from "@/content/automatisations";
+import { AUTOMATISATIONS, getAutomatisationByLocaleSlug } from "@/content/automatisations";
 import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+// Slugs traduits par locale : EN utilise `customer-service` au lieu de
+// `service-client` (cf. `automatisations.ts` `pathEn`). On émet ici les
+// params correspondant au slug DE LA LOCALE, pas le slug FR canonique.
 export function generateStaticParams() {
   return AUTOMATISATIONS.flatMap((cat) =>
-    routing.locales.map((locale) => ({ locale, slug: cat.slug })),
+    routing.locales.map((locale) => ({
+      locale,
+      slug: (locale === "fr" ? cat.pathFr : cat.pathEn).split("/").pop()!,
+    })),
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const cat = AUTOMATISATIONS.find((c) => c.slug === slug);
+  const cat = getAutomatisationByLocaleSlug(slug);
   if (!cat) return {};
   const c = cat[locale];
   return buildProductMetadata({
@@ -42,10 +48,14 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const cat = AUTOMATISATIONS.find((c) => c.slug === (slug as AutomatisationSlug));
+  const cat = getAutomatisationByLocaleSlug(slug);
   if (!cat) notFound();
   const copy = cat[loc];
 
+  // Breadcrumb href doit pointer sur le path local (FR ou EN), pas
+  // hardcoder le path FR — sinon le breadcrumb HTML EN pointe vers
+  // une URL FR (anti-pattern hreflang).
+  const detailPath = isFr ? cat.pathFr : cat.pathEn;
   const breadcrumb = buildBreadcrumbJsonLd({
     locale: loc,
     items: [
@@ -54,7 +64,7 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
         name: isFr ? "Implémentation IA" : "AI implementation",
         href: "/implementation",
       },
-      { name: copy.cardTitle, href: `/implementation/par-fonction/${cat.slug}` },
+      { name: copy.cardTitle, href: detailPath },
     ],
   });
 

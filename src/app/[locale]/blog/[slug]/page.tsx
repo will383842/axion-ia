@@ -7,6 +7,7 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPost, getAllBlogSlugs } from "@/content/transversal";
@@ -79,7 +80,24 @@ export default async function BlogArticle({ params }: Props) {
       <Section titleAs="h1" eyebrow={post.category} title={copy.title} description={copy.excerpt}>
         <Container className="text-fg-muted flex flex-wrap items-center gap-3 text-sm">
           <Badge variant="neutral">{post.category}</Badge>
-          <time dateTime={post.publishedAt}>{post.publishedAt}</time>
+          <Link
+            href={`/blog/auteur/${post.author.toLowerCase()}` as never}
+            className="hover:text-terracotta-deep focus-visible:ring-terracotta rounded-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            {isFr ? "Par" : "By"} {post.author}
+          </Link>
+          <span aria-hidden="true">·</span>
+          <time dateTime={post.publishedAt} className="tabular-nums">
+            {isFr ? "Publié le" : "Published"} {post.publishedAt}
+          </time>
+          {post.updatedAt && post.updatedAt !== post.publishedAt ? (
+            <>
+              <span aria-hidden="true">·</span>
+              <time dateTime={post.updatedAt} className="tabular-nums">
+                {isFr ? "Mis à jour le" : "Updated"} {post.updatedAt}
+              </time>
+            </>
+          ) : null}
           <span aria-hidden="true">·</span>
           <span>{post.readingTime}</span>
         </Container>

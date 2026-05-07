@@ -11,6 +11,14 @@ interface ProductSeoInput {
   description: string;
   /** Optional alternate path per-locale; defaults to `path`. */
   alternates?: Partial<Record<Locale, string>>;
+  /**
+   * Optional explicit OG image URL. If absent, falls back to dynamic
+   * `/api/og?title=...` generated image. Always emitted in `openGraph.images`
+   * + `twitter.images` for LinkedIn/Slack/Twitter/Facebook previews.
+   */
+  ogImage?: string;
+  /** Optional accent for `/api/og` dynamic image (primary/purple/orange/green). */
+  ogAccent?: "primary" | "purple" | "orange" | "green";
 }
 
 export function buildProductMetadata({
@@ -19,9 +27,16 @@ export function buildProductMetadata({
   title,
   description,
   alternates,
+  ogImage,
+  ogAccent,
 }: ProductSeoInput): Metadata {
   const fr = alternates?.fr ?? path;
   const en = alternates?.en ?? path;
+  // Default OG image : dynamic `/api/og` with title + optional accent.
+  // For pages that need a custom static OG (homepage), pass `ogImage`.
+  const resolvedOgImage =
+    ogImage ??
+    `${SITE_URL}/api/og?title=${encodeURIComponent(title)}${ogAccent ? `&accent=${ogAccent}` : ""}`;
   return {
     title,
     description,
@@ -40,8 +55,21 @@ export function buildProductMetadata({
       title,
       description,
       siteName: "AxionIA",
+      images: [
+        {
+          url: resolvedOgImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [resolvedOgImage],
+    },
     robots: { index: true, follow: true },
   };
 }
@@ -569,5 +597,382 @@ export function buildItemListJsonLd({ locale, path, name, items }: ItemListJsonL
       url: item.url,
       ...(item.description ? { description: item.description } : {}),
     })),
+  } as const;
+}
+
+interface ProductJsonLdInput {
+  locale: Locale;
+  /** Path WITHOUT locale prefix. */
+  path: string;
+  name: string;
+  description: string;
+  /** Brand / vendor name (e.g. "Anthropic", "OpenAI"). */
+  brand?: string;
+  /** Image absolute URL. */
+  image?: string;
+  /** Category (e.g. "Modèle de langage", "Agent autonome"). */
+  category?: string;
+  /** Optional offer block. */
+  offer?: {
+    priceRange?: string; // ex "€20-€200/mois"
+    availability?: "InStock" | "PreOrder" | "Discontinued";
+    url?: string;
+  };
+}
+
+// Product JSON-LD — used for /stack-ia tools (catalogue d'outils IA tiers
+// recommandés par AxionIA). Permet à Google AI Overviews de citer chaque
+// outil individuellement quand un utilisateur demande "quel outil pour X ?".
+export function buildProductJsonLd({
+  locale,
+  path,
+  name,
+  description,
+  brand,
+  image,
+  category,
+  offer,
+}: ProductJsonLdInput) {
+  const url = `${SITE_URL}/${locale}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name,
+    description,
+    url,
+    ...(image ? { image } : {}),
+    ...(brand ? { brand: { "@type": "Brand", name: brand } } : {}),
+    ...(category ? { category } : {}),
+    ...(offer
+      ? {
+          offers: {
+            "@type": "Offer",
+            ...(offer.priceRange ? { priceRange: offer.priceRange } : {}),
+            availability: `https://schema.org/${offer.availability ?? "InStock"}`,
+            ...(offer.url ? { url: offer.url } : { url }),
+          },
+        }
+      : {}),
+  } as const;
+}
+
+interface HowToStepInput {
+  name: string;
+  text: string;
+  /** Optional image URL for the step. */
+  image?: string;
+  /** Optional URL anchor for deep linking. */
+  url?: string;
+}
+
+interface HowToJsonLdInput {
+  locale: Locale;
+  /** Path WITHOUT locale prefix. */
+  path: string;
+  name: string;
+  description: string;
+  /** Estimated total time, ISO 8601 duration (e.g. "P5D" = 5 days). */
+  totalTime?: string;
+  /** Estimated cost. */
+  estimatedCost?: { currency: string; value: string };
+  /** Tools / supplies needed (optional). */
+  supply?: ReadonlyArray<string>;
+  /** Steps in order. */
+  steps: ReadonlyArray<HowToStepInput>;
+}
+
+// HowTo JSON-LD — used for /methodologie (4-step AxionIA process : cadrage
+// → démo → plan → mise en production). Critical for AEO 2026 : Google AI
+// Overviews et Perplexity citent les HowTo schemas pour répondre aux
+// requêtes "comment faire X" / "quelles étapes pour Y".
+export function buildHowToJsonLd({
+  locale,
+  path,
+  name,
+  description,
+  totalTime,
+  estimatedCost,
+  supply,
+  steps,
+}: HowToJsonLdInput) {
+  const url = `${SITE_URL}/${locale}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name,
+    description,
+    url,
+    inLanguage: locale,
+    ...(totalTime ? { totalTime } : {}),
+    ...(estimatedCost
+      ? {
+          estimatedCost: {
+            "@type": "MonetaryAmount",
+            currency: estimatedCost.currency,
+            value: estimatedCost.value,
+          },
+        }
+      : {}),
+    ...(supply && supply.length
+      ? {
+          supply: supply.map((s) => ({ "@type": "HowToSupply", name: s })),
+        }
+      : {}),
+    step: steps.map((s, idx) => ({
+      "@type": "HowToStep",
+      position: idx + 1,
+      name: s.name,
+      text: s.text,
+      ...(s.image ? { image: s.image } : {}),
+      ...(s.url ? { url: s.url } : { url: `${url}#step-${idx + 1}` }),
+    })),
+  } as const;
+}
+
+interface ReviewJsonLdInput {
+  /** Author name (client / role / company anonymized). */
+  authorName: string;
+  /** Optional author role (e.g. "DRH"). */
+  authorRole?: string;
+  /** Rating 1-5. */
+  ratingValue: number;
+  /** Best rating (defaults to 5). */
+  bestRating?: number;
+  /** Review body. */
+  reviewBody: string;
+  /** Item being reviewed (Service or Product). */
+  itemReviewed: { type: "Service" | "Product"; name: string };
+  /** Date in ISO format. */
+  datePublished?: string;
+}
+
+// Review JSON-LD — used for testimonials / cas-concrets when client gives
+// explicit consent. Contributes to AggregateRating si plusieurs Reviews
+// sont agrégés. Star rating affiché dans Google SERP cards (rich results).
+export function buildReviewJsonLd({
+  authorName,
+  authorRole,
+  ratingValue,
+  bestRating = 5,
+  reviewBody,
+  itemReviewed,
+  datePublished,
+}: ReviewJsonLdInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    author: {
+      "@type": "Person",
+      name: authorName,
+      ...(authorRole ? { jobTitle: authorRole } : {}),
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue,
+      bestRating,
+    },
+    reviewBody,
+    itemReviewed: {
+      "@type": itemReviewed.type,
+      name: itemReviewed.name,
+    },
+    ...(datePublished ? { datePublished } : {}),
+  } as const;
+}
+
+interface AggregateRatingJsonLdInput {
+  /** Average rating. */
+  ratingValue: number;
+  /** Number of reviews. */
+  reviewCount: number;
+  /** Best rating (defaults to 5). */
+  bestRating?: number;
+  /** Item being rated. */
+  itemReviewed: { type: "Service" | "Product" | "Organization"; name: string };
+}
+
+// AggregateRating JSON-LD — used to summarize multiple Reviews. Affiche
+// les étoiles agrégées dans Google SERP (rich results). À utiliser sur
+// la page Service principale ou /a-propos quand on a ≥ 3 reviews collectées.
+export function buildAggregateRatingJsonLd({
+  ratingValue,
+  reviewCount,
+  bestRating = 5,
+  itemReviewed,
+}: AggregateRatingJsonLdInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    ratingValue,
+    reviewCount,
+    bestRating,
+    itemReviewed: {
+      "@type": itemReviewed.type,
+      name: itemReviewed.name,
+    },
+  } as const;
+}
+
+interface DatasetJsonLdInput {
+  locale: Locale;
+  /** Path WITHOUT locale prefix. */
+  path: string;
+  name: string;
+  description: string;
+  /** Optional keywords. */
+  keywords?: ReadonlyArray<string>;
+  /** License URL (e.g. CC BY 4.0). */
+  license?: string;
+  /** Date of publication. */
+  datePublished?: string;
+  /** Date of last update. */
+  dateModified?: string;
+  /** Distribution format(s). */
+  distribution?: ReadonlyArray<{ encodingFormat: string; contentUrl: string }>;
+  /** Spatial coverage (e.g. "France"). */
+  spatialCoverage?: string;
+  /** Temporal coverage (e.g. "2020/2025"). */
+  temporalCoverage?: string;
+}
+
+// Dataset JSON-LD — pour ROI calculator outputs, datasets stratégie IA,
+// chiffres consolidés AxionIA. Permet à Google Dataset Search de citer
+// AxionIA et à Claude/Perplexity de référencer les chiffres avec source.
+export function buildDatasetJsonLd({
+  locale,
+  path,
+  name,
+  description,
+  keywords,
+  license,
+  datePublished,
+  dateModified,
+  distribution,
+  spatialCoverage,
+  temporalCoverage,
+}: DatasetJsonLdInput) {
+  const url = `${SITE_URL}/${locale}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name,
+    description,
+    url,
+    inLanguage: locale,
+    creator: {
+      "@type": "Organization",
+      name: "AxionIA",
+      legalName: "AxionIA OÜ",
+      url: SITE_URL,
+    },
+    ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),
+    ...(license ? { license } : {}),
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified: dateModified ?? datePublished } : {}),
+    ...(distribution && distribution.length
+      ? {
+          distribution: distribution.map((d) => ({
+            "@type": "DataDownload",
+            encodingFormat: d.encodingFormat,
+            contentUrl: d.contentUrl,
+          })),
+        }
+      : {}),
+    ...(spatialCoverage ? { spatialCoverage } : {}),
+    ...(temporalCoverage ? { temporalCoverage } : {}),
+  } as const;
+}
+
+interface ImageObjectJsonLdInput {
+  /** Absolute image URL. */
+  url: string;
+  /** Image caption / alt-equivalent. */
+  caption?: string;
+  /** Image dimensions. */
+  width?: number;
+  height?: number;
+  /** Date created (ISO). */
+  uploadDate?: string;
+  /** Content licence URL. */
+  license?: string;
+}
+
+// ImageObject JSON-LD — pour les images riches (cas-concrets photo, hero
+// schemas avec contexte sémantique). Aide Google Image Search à comprendre
+// et citer les visuels AxionIA. Utiliser sur les pages avec images qui
+// méritent leur propre indexation (illustrations originales).
+export function buildImageObjectJsonLd({
+  url,
+  caption,
+  width,
+  height,
+  uploadDate,
+  license,
+}: ImageObjectJsonLdInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    contentUrl: url,
+    url,
+    ...(caption ? { caption } : {}),
+    ...(typeof width === "number" ? { width } : {}),
+    ...(typeof height === "number" ? { height } : {}),
+    ...(uploadDate ? { uploadDate } : {}),
+    ...(license ? { license } : {}),
+  } as const;
+}
+
+interface QAPageJsonLdInput {
+  locale: Locale;
+  /** Path WITHOUT locale prefix. */
+  path: string;
+  /** Main question. */
+  question: string;
+  /** Accepted answer. */
+  acceptedAnswer: { text: string; authorName?: string; upvoteCount?: number };
+  /** Optional suggested answers. */
+  suggestedAnswers?: ReadonlyArray<{ text: string; authorName?: string; upvoteCount?: number }>;
+}
+
+// QAPage JSON-LD — différent de FAQPage : pour pages détail FAQ par question
+// (forum-style). Utiliser sur /faq/[id] ou /centre-aide/[slug] où une seule
+// question domine la page. AEO : Google distingue QAPage (1 Q principale)
+// de FAQPage (liste de Q/A) — utile quand la page est centrée sur 1 réponse.
+export function buildQAPageJsonLd({
+  locale,
+  path,
+  question,
+  acceptedAnswer,
+  suggestedAnswers,
+}: QAPageJsonLdInput) {
+  const url = `${SITE_URL}/${locale}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "QAPage",
+    mainEntity: {
+      "@type": "Question",
+      name: question,
+      url,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: acceptedAnswer.text,
+        ...(acceptedAnswer.authorName
+          ? { author: { "@type": "Person", name: acceptedAnswer.authorName } }
+          : {}),
+        ...(typeof acceptedAnswer.upvoteCount === "number"
+          ? { upvoteCount: acceptedAnswer.upvoteCount }
+          : {}),
+      },
+      ...(suggestedAnswers && suggestedAnswers.length
+        ? {
+            suggestedAnswer: suggestedAnswers.map((a) => ({
+              "@type": "Answer",
+              text: a.text,
+              ...(a.authorName ? { author: { "@type": "Person", name: a.authorName } } : {}),
+              ...(typeof a.upvoteCount === "number" ? { upvoteCount: a.upvoteCount } : {}),
+            })),
+          }
+        : {}),
+    },
   } as const;
 }

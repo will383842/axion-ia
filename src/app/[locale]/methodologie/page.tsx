@@ -11,7 +11,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSchema";
 import { Illustration } from "@/components/visual/Illustration";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, buildHowToJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -62,6 +62,59 @@ export default async function MethodologyPage({ params }: Props) {
         href: "/methodologie",
       },
     ],
+  });
+
+  // HowTo JSON-LD — AEO 2026 critical : Google AI Overviews + Perplexity
+  // citent les HowTo schemas pour répondre aux requêtes « comment AxionIA
+  // procède ? », « quelles étapes pour un audit IA ? », etc.
+  const howToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/methodologie",
+    name: isFr
+      ? "Méthodologie AxionIA · 4 étapes vers le ROI"
+      : "AxionIA methodology · 4 steps to ROI",
+    description: isFr
+      ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
+      : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
+    totalTime: "P12W",
+    estimatedCost: { currency: "EUR", value: "490" },
+    steps: isFr
+      ? [
+          {
+            name: "Identifier",
+            text: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats à l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
+          },
+          {
+            name: "Auditer",
+            text: "Audit IA en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation chiffré priorisé. Livrable PDF 25-40 pages + atelier de restitution.",
+          },
+          {
+            name: "Implémenter",
+            text: "Mise en production en 6-8 semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif, support 30 jours inclus.",
+          },
+          {
+            name: "Mesurer",
+            text: "Mesure du ROI réel post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée.",
+          },
+        ]
+      : [
+          {
+            name: "Identify",
+            text: "Field mapping in 1 day on-site session. 3-5 candidate processes for AI, live demos on your anonymised data, identification of quick-wins deployable within 30 days.",
+          },
+          {
+            name: "Audit",
+            text: "5-day AI audit: complete mapping, ROI/complexity scoring per opportunity, costed prioritised implementation plan. 25-40 page PDF deliverable + debrief workshop.",
+          },
+          {
+            name: "Implement",
+            text: "Production deployment in 6-8 weeks: technical scoping, iterative prototype, user testing, progressive rollout, 30-day support included.",
+          },
+          {
+            name: "Measure",
+            text: "Real ROI measurement post-deployment: hours saved, cost saved, qualitative impact. Iteration if quality drift is observed.",
+          },
+        ],
   });
 
   const steps = isFr
@@ -325,6 +378,7 @@ export default async function MethodologyPage({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      <JsonLd data={howToJsonLd} />
       <JsonLd data={breadcrumb} />
     </>
   );

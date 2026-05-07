@@ -1061,3 +1061,20 @@ export function getAutomatisation(slug: AutomatisationSlug): AutomatisationCateg
 export const AUTOMATISATION_SLUGS: ReadonlyArray<AutomatisationSlug> = AUTOMATISATIONS.map(
   (c) => c.slug,
 );
+
+// Slugs FR vs EN — extraits depuis `pathFr` / `pathEn` car les slugs EN sont
+// traduits (ex `customer-service` ≠ `service-client`). Indispensable pour
+// `generateStaticParams` côté EN et pour le sitemap-index multilingue.
+export const AUTOMATISATION_SLUGS_FR: ReadonlyArray<string> = AUTOMATISATIONS.map(
+  (c) => c.pathFr.split("/").pop()!,
+);
+export const AUTOMATISATION_SLUGS_EN: ReadonlyArray<string> = AUTOMATISATIONS.map(
+  (c) => c.pathEn.split("/").pop()!,
+);
+
+/** Lookup `AutomatisationCategory` par slug, en cherchant dans pathFr OU pathEn. */
+export function getAutomatisationByLocaleSlug(slug: string): AutomatisationCategory | undefined {
+  return AUTOMATISATIONS.find(
+    (c) => c.pathFr.endsWith(`/${slug}`) || c.pathEn.endsWith(`/${slug}`) || c.slug === slug,
+  );
+}
