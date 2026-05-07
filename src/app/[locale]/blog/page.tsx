@@ -8,10 +8,10 @@ import { Container } from "@/components/layout/Container";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { BLOG_POSTS } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -41,16 +41,15 @@ export default async function BlogListing({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: "Blog", href: "/blog" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/blog", label: "Blog" }];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow="Blog"
@@ -120,8 +119,6 @@ export default async function BlogListing({ params }: Props) {
         }
         tone="dark"
       />
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

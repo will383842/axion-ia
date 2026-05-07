@@ -11,13 +11,13 @@ import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { ImplementationHeroSchema } from "@/components/sections/ImplementationHeroSchema";
 import { Link } from "@/i18n/navigation";
 import { AUTOMATISATIONS } from "@/content/automatisations";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -47,13 +47,14 @@ export default async function ImplementationListing({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Implémentation IA" : "AI implementation", href: "/implementation" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: "/implementation",
+      label: isFr ? "Implémentation IA" : "AI implementation",
+    },
+  ];
 
   // Engagements/réassurance — pills sous le hero. Vrais engagements opérables,
   // pas de chiffre client inventé.
@@ -628,6 +629,9 @@ export default async function ImplementationListing({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO — layout 2 colonnes (texte + schéma SVG), aligné /audit + /interventions */}
       <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
         <div
@@ -1223,8 +1227,6 @@ export default async function ImplementationListing({ params }: Props) {
         }
         tone="mocha"
       />
-
-      <JsonLd data={breadcrumb} />
 
       {/* CTA flottant mobile — visible < lg, après scroll passé le hero,
           caché en bas de page (le CTA Block final reprend le relais). */}

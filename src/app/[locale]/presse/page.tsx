@@ -26,12 +26,8 @@ import {
   PRESS_SPOKESPERSONS,
   PRESS_FAQ,
 } from "@/content/press";
-import {
-  buildProductMetadata,
-  buildBreadcrumbJsonLd,
-  buildFaqSpeakableJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, buildFaqSpeakableJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -108,13 +104,9 @@ export default async function PressePage({ params }: Props) {
   const pressPath = isFr ? "/presse" : "/press";
   const pageUrl = `${SITE_URL}/${loc}${pressPath}`;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Espace presse" : "Press room", href: "/presse" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/presse", label: isFr ? "Espace presse" : "Press room" }];
 
   // WebPage + NewsroomPage signal — speakable on the boilerplate paragraph
   // (citable LLM block) and the AEO direct-answer pitch.
@@ -202,6 +194,9 @@ export default async function PressePage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO — h1, halo-warm + page hero decoration (anneaux + halos) */}
       <Section
         titleAs="h1"
@@ -406,7 +401,6 @@ export default async function PressePage({ params }: Props) {
 
       {/* JSON-LD payloads — émis une seule fois, en bas de page */}
       <JsonLd data={pressJsonLd} />
-      <JsonLd data={breadcrumb} />
       <JsonLd data={faqJsonLd} />
       {personsJsonLd.map((p, idx) => (
         <JsonLd key={`person-${idx}`} data={p} />

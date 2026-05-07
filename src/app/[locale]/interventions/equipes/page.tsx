@@ -6,13 +6,10 @@ import { Users, Wrench, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
+import { Container } from "@/components/layout/Container";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getIntervention } from "@/content/interventions";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildFaqJsonLd,
-  buildBreadcrumbJsonLd,
-} from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -49,19 +46,17 @@ export default async function Equipes({ params }: Props) {
       serviceType: "AI consulting · teams",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    buildBreadcrumbJsonLd({
-      locale: loc,
-      items: [
-        { name: loc === "fr" ? "Accueil" : "Home", href: "/" },
-        {
-          name: loc === "fr" ? "Interventions entreprise" : "Corporate AI sessions",
-          href: "/interventions",
-        },
-        { name: copy.title, href: "/interventions/equipes" },
-      ],
-    }),
   ];
   const isFr = loc === "fr";
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: "/interventions",
+      label: isFr ? "Interventions entreprise" : "Corporate AI sessions",
+    },
+    { href: "/interventions/equipes", label: copy.title },
+  ];
   const heroSchema = (
     <DetailHeroSchema
       eyebrow={isFr ? "Une journée type" : "A typical day"}
@@ -102,14 +97,19 @@ export default async function Equipes({ params }: Props) {
   );
 
   return (
-    <ProductPageTemplate
-      isFr={isFr}
-      accent="primary"
-      copy={copy}
-      ctaPrimaryHref="/reserver?intervention=equipes"
-      ctaSecondaryHref="/interventions/essentielle"
-      heroSchema={heroSchema}
-      jsonLd={jsonLd}
-    />
+    <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+      <ProductPageTemplate
+        isFr={isFr}
+        accent="primary"
+        copy={copy}
+        ctaPrimaryHref="/reserver?intervention=equipes"
+        ctaSecondaryHref="/interventions/essentielle"
+        heroSchema={heroSchema}
+        jsonLd={jsonLd}
+      />
+    </>
   );
 }

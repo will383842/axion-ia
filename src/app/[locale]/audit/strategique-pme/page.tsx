@@ -6,13 +6,10 @@ import { Map as MapIcon, TrendingUp, ClipboardCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
+import { Container } from "@/components/layout/Container";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getAudit } from "@/content/audit";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildFaqJsonLd,
-  buildBreadcrumbJsonLd,
-} from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -51,16 +48,14 @@ export default async function AuditStrategiquePmePage({ params }: Props) {
       serviceType: "Strategic AI audit SMB",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    buildBreadcrumbJsonLd({
-      locale: loc,
-      items: [
-        { name: loc === "fr" ? "Accueil" : "Home", href: "/" },
-        { name: loc === "fr" ? "Audit & optimisation" : "Audit & optimization", href: "/audit" },
-        { name: copy.title, href: `/audit/${SLUG}` },
-      ],
-    }),
   ];
   const isFr = loc === "fr";
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/audit", label: isFr ? "Audit & optimisation" : "Audit & optimization" },
+    { href: `/audit/${SLUG}`, label: copy.title },
+  ];
   const heroSchema = (
     <DetailHeroSchema
       eyebrow={isFr ? "Vos livrables" : "Your deliverables"}
@@ -101,14 +96,19 @@ export default async function AuditStrategiquePmePage({ params }: Props) {
   );
 
   return (
-    <ProductPageTemplate
-      isFr={isFr}
-      accent="orange"
-      copy={copy}
-      ctaPrimaryHref={`/audit/demande?type=${SLUG}`}
-      ctaSecondaryHref="/audit"
-      heroSchema={heroSchema}
-      jsonLd={jsonLd}
-    />
+    <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+      <ProductPageTemplate
+        isFr={isFr}
+        accent="orange"
+        copy={copy}
+        ctaPrimaryHref={`/audit/demande?type=${SLUG}`}
+        ctaSecondaryHref="/audit"
+        heroSchema={heroSchema}
+        jsonLd={jsonLd}
+      />
+    </>
   );
 }

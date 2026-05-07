@@ -12,7 +12,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { ComparisonsHeroSchema } from "@/components/sections/ComparisonsHeroSchema";
 import { COMPARISONS } from "@/content/comparaisons";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -51,16 +52,15 @@ export default async function ComparisonsListPage({ params }: Props) {
     inLanguage: locale,
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Comparaisons" : "Comparisons", href: "/comparaisons" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/comparaisons", label: isFr ? "Comparaisons" : "Comparisons" }];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO 2-col — texte à gauche, ComparisonsHeroSchema à droite */}
       <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
         <Container className="relative">
@@ -157,7 +157,6 @@ export default async function ComparisonsListPage({ params }: Props) {
       />
 
       <JsonLd data={collectionJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

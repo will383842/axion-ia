@@ -13,7 +13,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { HelpHeroSchema } from "@/components/sections/HelpHeroSchema";
 import { HELP_ARTICLES, slugify } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -41,13 +42,9 @@ export default async function HelpCenter({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Centre d'aide" : "Help center", href: "/centre-aide" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" }];
 
   // Group articles by category — each category becomes a clickable card
   // pointing to /centre-aide/categorie/{slug} (which already exists).
@@ -91,6 +88,9 @@ export default async function HelpCenter({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO 2-col — texte à gauche, HelpHeroSchema (constellation 6 thématiques) à droite */}
       <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
         <Container className="relative">
@@ -238,7 +238,6 @@ export default async function HelpCenter({ params }: Props) {
         }
       />
 
-      <JsonLd data={breadcrumb} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

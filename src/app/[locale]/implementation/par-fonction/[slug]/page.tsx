@@ -4,11 +4,12 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
+import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { AUTOMATISATIONS, getAutomatisationByLocaleSlug } from "@/content/automatisations";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -56,20 +57,21 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
   // hardcoder le path FR — sinon le breadcrumb HTML EN pointe vers
   // une URL FR (anti-pattern hreflang).
   const detailPath = isFr ? cat.pathFr : cat.pathEn;
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Implémentation IA" : "AI implementation",
-        href: "/implementation",
-      },
-      { name: copy.cardTitle, href: detailPath },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: "/implementation",
+      label: isFr ? "Implémentation IA" : "AI implementation",
+    },
+    { href: detailPath, label: copy.cardTitle },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={copy.eyebrow}
@@ -143,8 +145,6 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
         }
         tone="mocha"
       />
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

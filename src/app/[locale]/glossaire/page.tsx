@@ -6,7 +6,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -120,16 +121,15 @@ export default async function GlossaryPage({ params }: Props) {
     })),
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Glossaire" : "Glossary", href: "/glossaire" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" }];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Glossaire" : "Glossary"}
@@ -154,7 +154,6 @@ export default async function GlossaryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={definedTermSetJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

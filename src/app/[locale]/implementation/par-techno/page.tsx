@@ -7,9 +7,10 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { Container } from "@/components/layout/Container";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { IMPLEMENTATIONS } from "@/content/implementation";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -43,20 +44,21 @@ export default async function ImplementationByTechPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Implémentation IA" : "AI implementation", href: "/implementation" },
-      {
-        name: isFr ? "Par technologie" : "By technology",
-        href: "/implementation/par-techno",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/implementation", label: isFr ? "Implémentation IA" : "AI implementation" },
+    {
+      href: isFr ? "/implementation/par-techno" : "/implementation/by-technology",
+      label: isFr ? "Par technologie" : "By technology",
+    },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Module 3 · Approche techno" : "Module 3 · Tech-driven"}
@@ -102,8 +104,6 @@ export default async function ImplementationByTechPage({ params }: Props) {
         }
         tone="dark"
       />
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

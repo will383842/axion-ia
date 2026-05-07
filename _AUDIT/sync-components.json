@@ -1,0 +1,835 @@
+{
+  "agent": "AGT-COMPONENTS",
+  "scanned_at": "2026-05-07T21:35:59.117097Z",
+  "head_sha": "fd915187077c78f693f67d7364b8db908993b957",
+  "byCategory": {
+    "ui": [
+      {
+        "name": "accordion",
+        "path": "src/components/ui/accordion.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "alert",
+        "path": "src/components/ui/alert.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": ["variants", "defaultVariants", "variant"],
+        "consumers": 9,
+        "hasTest": true
+      },
+      {
+        "name": "badge",
+        "path": "src/components/ui/badge.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": ["variants", "defaultVariants", "variant"],
+        "consumers": 4,
+        "hasTest": true
+      },
+      {
+        "name": "button",
+        "path": "src/components/ui/button.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": ["size", "shape", "variant"],
+        "consumers": 14,
+        "hasTest": true
+      },
+      {
+        "name": "card",
+        "path": "src/components/ui/card.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 6,
+        "hasTest": true
+      },
+      {
+        "name": "checkbox",
+        "path": "src/components/ui/checkbox.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 6,
+        "hasTest": false
+      },
+      {
+        "name": "dialog",
+        "path": "src/components/ui/dialog.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "dropdown-menu",
+        "path": "src/components/ui/dropdown-menu.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "input",
+        "path": "src/components/ui/input.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 8,
+        "hasTest": false
+      },
+      {
+        "name": "label",
+        "path": "src/components/ui/label.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 10,
+        "hasTest": false
+      },
+      {
+        "name": "popover",
+        "path": "src/components/ui/popover.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "radio-group",
+        "path": "src/components/ui/radio-group.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 3,
+        "hasTest": false
+      },
+      {
+        "name": "select",
+        "path": "src/components/ui/select.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "separator",
+        "path": "src/components/ui/separator.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "sheet",
+        "path": "src/components/ui/sheet.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": ["variants", "defaultVariants", "side"],
+        "consumers": 0,
+        "hasTest": false
+      },
+      {
+        "name": "skeleton",
+        "path": "src/components/ui/skeleton.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "slider",
+        "path": "src/components/ui/slider.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "switch",
+        "path": "src/components/ui/switch.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "tabs",
+        "path": "src/components/ui/tabs.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "textarea",
+        "path": "src/components/ui/textarea.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 5,
+        "hasTest": false
+      },
+      {
+        "name": "tooltip",
+        "path": "src/components/ui/tooltip.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      }
+    ],
+    "sections": [
+      {
+        "name": "AuditConversionBlocks",
+        "path": "src/components/sections/AuditConversionBlocks.tsx",
+        "useClient": false,
+        "propsType": "SocialProofProps",
+        "variants": [],
+        "consumers": 0,
+        "hasTest": false
+      },
+      {
+        "name": "AuditHeroSchema",
+        "path": "src/components/sections/AuditHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "AuditHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "CaseStudiesHeroSchema",
+        "path": "src/components/sections/CaseStudiesHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "CaseStudiesHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "CaseStudiesShowcase",
+        "path": "src/components/sections/CaseStudiesShowcase.tsx",
+        "useClient": false,
+        "propsType": "CaseStudiesShowcaseProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "ComparisonsHeroSchema",
+        "path": "src/components/sections/ComparisonsHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "ComparisonsHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "CtaBlock",
+        "path": "src/components/sections/CtaBlock.tsx",
+        "useClient": false,
+        "propsType": "CtaBlockProps",
+        "variants": [],
+        "consumers": 24,
+        "hasTest": false
+      },
+      {
+        "name": "DetailHeroSchema",
+        "path": "src/components/sections/DetailHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "DetailHeroSchemaProps",
+        "variants": [],
+        "consumers": 3,
+        "hasTest": false
+      },
+      {
+        "name": "FaqBlock",
+        "path": "src/components/sections/FaqBlock.tsx",
+        "useClient": false,
+        "propsType": "FaqBlockProps",
+        "variants": [],
+        "consumers": 4,
+        "hasTest": false
+      },
+      {
+        "name": "FeatureGrid",
+        "path": "src/components/sections/FeatureGrid.tsx",
+        "useClient": false,
+        "propsType": "FeatureGridProps",
+        "variants": [],
+        "consumers": 3,
+        "hasTest": true
+      },
+      {
+        "name": "HelpHeroSchema",
+        "path": "src/components/sections/HelpHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "HelpHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "Hero",
+        "path": "src/components/sections/Hero.tsx",
+        "useClient": false,
+        "propsType": "HeroProps",
+        "variants": [],
+        "consumers": 14,
+        "hasTest": true
+      },
+      {
+        "name": "ImplementationHeroSchema",
+        "path": "src/components/sections/ImplementationHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "ImplementationHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "InterventionsHeroSchema",
+        "path": "src/components/sections/InterventionsHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "InterventionsHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "LegalPageTemplate",
+        "path": "src/components/sections/LegalPageTemplate.tsx",
+        "useClient": false,
+        "propsType": "LegalPageTemplateProps",
+        "variants": [],
+        "consumers": 6,
+        "hasTest": false
+      },
+      {
+        "name": "MediaCoverage",
+        "path": "src/components/sections/MediaCoverage.tsx",
+        "useClient": false,
+        "propsType": "MediaCoverageProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "MethodologyHeroSchema",
+        "path": "src/components/sections/MethodologyHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "MethodologyHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "MetricsRow",
+        "path": "src/components/sections/MetricsRow.tsx",
+        "useClient": false,
+        "propsType": "MetricsRowProps",
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "PressContact",
+        "path": "src/components/sections/PressContact.tsx",
+        "useClient": false,
+        "propsType": "PressContactProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "PressFacts",
+        "path": "src/components/sections/PressFacts.tsx",
+        "useClient": false,
+        "propsType": "PressFactsProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "PressKit",
+        "path": "src/components/sections/PressKit.tsx",
+        "useClient": false,
+        "propsType": "PressKitProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "PressReleases",
+        "path": "src/components/sections/PressReleases.tsx",
+        "useClient": false,
+        "propsType": "PressReleasesProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "PressSpokesperson",
+        "path": "src/components/sections/PressSpokesperson.tsx",
+        "useClient": false,
+        "propsType": "PressSpokespersonProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "ProcessSteps",
+        "path": "src/components/sections/ProcessSteps.tsx",
+        "useClient": false,
+        "propsType": "ProcessStepsProps",
+        "variants": [],
+        "consumers": 4,
+        "hasTest": true
+      },
+      {
+        "name": "ProductHero",
+        "path": "src/components/sections/ProductHero.tsx",
+        "useClient": false,
+        "propsType": "ProductHeroProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "ProductPageTemplate",
+        "path": "src/components/sections/ProductPageTemplate.tsx",
+        "useClient": false,
+        "propsType": "ProductPageTemplateProps",
+        "variants": [],
+        "consumers": 18,
+        "hasTest": false
+      },
+      {
+        "name": "StackHeroSchema",
+        "path": "src/components/sections/StackHeroSchema.tsx",
+        "useClient": false,
+        "propsType": "StackHeroSchemaProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "TeamGrid",
+        "path": "src/components/sections/TeamGrid.tsx",
+        "useClient": false,
+        "propsType": "TeamGridProps",
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "TestimonialsCarousel",
+        "path": "src/components/sections/TestimonialsCarousel.tsx",
+        "useClient": true,
+        "propsType": "TestimonialsCarouselProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "TimelineBlock",
+        "path": "src/components/sections/TimelineBlock.tsx",
+        "useClient": false,
+        "propsType": "TimelineBlockProps",
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "ToolLogo",
+        "path": "src/components/sections/ToolLogo.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "TrustBar",
+        "path": "src/components/sections/TrustBar.tsx",
+        "useClient": false,
+        "propsType": "TrustBarProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      }
+    ],
+    "marketing": [
+      {
+        "name": "ArticleCard",
+        "path": "src/components/marketing/ArticleCard.tsx",
+        "useClient": false,
+        "propsType": "ArticleCardProps",
+        "variants": [],
+        "consumers": 6,
+        "hasTest": false
+      },
+      {
+        "name": "CaseStudyCard",
+        "path": "src/components/marketing/CaseStudyCard.tsx",
+        "useClient": false,
+        "propsType": "CaseStudyCardProps",
+        "variants": [],
+        "consumers": 6,
+        "hasTest": false
+      },
+      {
+        "name": "Cta",
+        "path": "src/components/marketing/Cta.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 58,
+        "hasTest": false
+      },
+      {
+        "name": "FaqAccordion",
+        "path": "src/components/marketing/FaqAccordion.tsx",
+        "useClient": false,
+        "propsType": "FaqAccordionProps",
+        "variants": [],
+        "consumers": 4,
+        "hasTest": false
+      },
+      {
+        "name": "JsonLd",
+        "path": "src/components/marketing/JsonLd.tsx",
+        "useClient": false,
+        "propsType": "JsonLdProps",
+        "variants": [],
+        "consumers": 90,
+        "hasTest": true
+      },
+      {
+        "name": "Price",
+        "path": "src/components/marketing/Price.tsx",
+        "useClient": false,
+        "propsType": "PriceProps",
+        "variants": [],
+        "consumers": 3,
+        "hasTest": true
+      },
+      {
+        "name": "Stat",
+        "path": "src/components/marketing/Stat.tsx",
+        "useClient": false,
+        "propsType": "StatProps",
+        "variants": [],
+        "consumers": 5,
+        "hasTest": false
+      },
+      {
+        "name": "StickyMobileCta",
+        "path": "src/components/marketing/StickyMobileCta.tsx",
+        "useClient": true,
+        "propsType": "StickyMobileCtaProps",
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "TestimonialCard",
+        "path": "src/components/marketing/TestimonialCard.tsx",
+        "useClient": false,
+        "propsType": "TestimonialCardProps",
+        "variants": [],
+        "consumers": 4,
+        "hasTest": false
+      }
+    ],
+    "nav": [
+      {
+        "name": "Breadcrumbs",
+        "path": "src/components/nav/Breadcrumbs.tsx",
+        "useClient": false,
+        "propsType": "BreadcrumbsProps",
+        "variants": [],
+        "consumers": 0,
+        "hasTest": false
+      },
+      {
+        "name": "Footer",
+        "path": "src/components/nav/Footer.tsx",
+        "useClient": false,
+        "propsType": "FooterColumnProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "Header",
+        "path": "src/components/nav/Header.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 7,
+        "hasTest": false
+      },
+      {
+        "name": "LocaleSwitcher",
+        "path": "src/components/nav/LocaleSwitcher.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      },
+      {
+        "name": "MobileNav",
+        "path": "src/components/nav/MobileNav.tsx",
+        "useClient": true,
+        "propsType": "MobileNavProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "NavLink",
+        "path": "src/components/nav/NavLink.tsx",
+        "useClient": true,
+        "propsType": "NavLinkProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      }
+    ],
+    "layout": [
+      {
+        "name": "Container",
+        "path": "src/components/layout/Container.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 49,
+        "hasTest": true
+      },
+      {
+        "name": "Section",
+        "path": "src/components/layout/Section.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 43,
+        "hasTest": false
+      }
+    ],
+    "forms": [
+      {
+        "name": "AuditForm",
+        "path": "src/components/forms/AuditForm.tsx",
+        "useClient": true,
+        "propsType": "AuditFormProps",
+        "variants": [],
+        "consumers": 0,
+        "hasTest": false
+      },
+      {
+        "name": "AuditRequestForm",
+        "path": "src/components/forms/AuditRequestForm.tsx",
+        "useClient": true,
+        "propsType": "AuditRequestFormProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "BookingForm",
+        "path": "src/components/forms/BookingForm.tsx",
+        "useClient": true,
+        "propsType": "BookingFormProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "ContactForm",
+        "path": "src/components/forms/ContactForm.tsx",
+        "useClient": true,
+        "propsType": "ContactFormProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "ImplementationForm",
+        "path": "src/components/forms/ImplementationForm.tsx",
+        "useClient": true,
+        "propsType": "ImplementationFormProps",
+        "variants": [],
+        "consumers": 0,
+        "hasTest": false
+      },
+      {
+        "name": "NewsletterForm",
+        "path": "src/components/forms/NewsletterForm.tsx",
+        "useClient": true,
+        "propsType": "NewsletterFormProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      }
+    ],
+    "typography": [
+      {
+        "name": "Eyebrow",
+        "path": "src/components/typography/Eyebrow.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 2,
+        "hasTest": true
+      }
+    ],
+    "motion": [
+      {
+        "name": "FadeInOnView",
+        "path": "src/components/motion/FadeInOnView.tsx",
+        "useClient": true,
+        "propsType": "FadeInOnViewProps",
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      }
+    ],
+    "calendar": [
+      {
+        "name": "BookingCalendar",
+        "path": "src/components/calendar/BookingCalendar.tsx",
+        "useClient": true,
+        "propsType": "BookingCalendarProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      },
+      {
+        "name": "BookingFlow",
+        "path": "src/components/calendar/BookingFlow.tsx",
+        "useClient": true,
+        "propsType": "BookingFlowProps",
+        "variants": [],
+        "consumers": 0,
+        "hasTest": false
+      },
+      {
+        "name": "HouseCalendar",
+        "path": "src/components/calendar/HouseCalendar.tsx",
+        "useClient": true,
+        "propsType": "HouseCalendarProps",
+        "variants": [],
+        "consumers": 2,
+        "hasTest": true
+      }
+    ],
+    "analytics": [
+      {
+        "name": "WebVitals",
+        "path": "src/components/analytics/WebVitals.tsx",
+        "useClient": true,
+        "propsType": null,
+        "variants": [],
+        "consumers": 2,
+        "hasTest": false
+      }
+    ],
+    "roi": [
+      {
+        "name": "RoiSimulator",
+        "path": "src/components/roi/RoiSimulator.tsx",
+        "useClient": true,
+        "propsType": "RoiSimulatorProps",
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      }
+    ],
+    "visual": [
+      {
+        "name": "Illustration",
+        "path": "src/components/visual/Illustration.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 14,
+        "hasTest": false
+      },
+      {
+        "name": "IllustrationPlaceholder",
+        "path": "src/components/visual/IllustrationPlaceholder.tsx",
+        "useClient": false,
+        "propsType": "IllustrationPlaceholderProps",
+        "variants": [],
+        "consumers": 0,
+        "hasTest": false
+      }
+    ],
+    "a11y": [
+      {
+        "name": "SkipToContent",
+        "path": "src/components/a11y/SkipToContent.tsx",
+        "useClient": false,
+        "propsType": null,
+        "variants": [],
+        "consumers": 1,
+        "hasTest": false
+      }
+    ]
+  },
+  "summary": {
+    "totalComponents": 85,
+    "byCategoryCount": {
+      "ui": 21,
+      "sections": 31,
+      "marketing": 9,
+      "nav": 6,
+      "layout": 2,
+      "forms": 6,
+      "typography": 1,
+      "motion": 1,
+      "calendar": 3,
+      "analytics": 1,
+      "roi": 1,
+      "visual": 2,
+      "a11y": 1
+    },
+    "clientComponents": 30,
+    "serverComponents": 55,
+    "withTests": 12,
+    "withoutTests": 73
+  },
+  "highlights": {
+    "heroSchemas": [
+      "AuditHeroSchema",
+      "CaseStudiesHeroSchema",
+      "ComparisonsHeroSchema",
+      "DetailHeroSchema",
+      "HelpHeroSchema",
+      "ImplementationHeroSchema",
+      "InterventionsHeroSchema",
+      "MethodologyHeroSchema",
+      "StackHeroSchema"
+    ],
+    "navStack": ["Footer", "Header", "LocaleSwitcher", "MobileNav", "NavLink"],
+    "schemaJsonLd": ["JsonLd"]
+  }
+}

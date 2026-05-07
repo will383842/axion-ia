@@ -7,8 +7,9 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getAllBlogTagSlugs, getBlogPostsByTag } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -50,17 +51,18 @@ export default async function BlogTagPage({ params }: Props) {
     isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: "Blog", href: "/blog" },
-      { name: `#${slug}`, href: `/blog/tag/${slug}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/blog", label: "Blog" },
+    { href: `/blog/tag/${slug}`, label: `#${slug}` },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow="Tag"
@@ -90,7 +92,6 @@ export default async function BlogTagPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={collectionJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

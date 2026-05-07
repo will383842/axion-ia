@@ -5,8 +5,8 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
-import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -37,16 +37,14 @@ export default async function AccessibilityPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Accessibilité" : "Accessibility",
-        href: "/accessibilite",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: isFr ? "/accessibilite" : "/accessibility",
+      label: isFr ? "Accessibilité" : "Accessibility",
+    },
+  ];
 
   const sections = isFr
     ? [
@@ -104,6 +102,9 @@ export default async function AccessibilityPage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Conformité" : "Conformance"}
@@ -130,8 +131,6 @@ export default async function AccessibilityPage({ params }: Props) {
           </div>
         </Container>
       </Section>
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

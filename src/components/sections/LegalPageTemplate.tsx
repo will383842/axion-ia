@@ -5,6 +5,8 @@ import { Container } from "@/components/layout/Container";
 interface LegalPageTemplateProps {
   isFr: boolean;
   title: string;
+  /** Optional emphasized portion rendered in serif italic terracotta (parity v3). */
+  titleEm?: string;
   intro: string;
   sections: ReadonlyArray<{ title: string; body: string }>;
   lastUpdated?: string;
@@ -17,6 +19,7 @@ interface LegalPageTemplateProps {
 export function LegalPageTemplate({
   isFr,
   title,
+  titleEm,
   intro,
   sections,
   lastUpdated,
@@ -28,6 +31,7 @@ export function LegalPageTemplate({
         titleAs="h1"
         eyebrow={isFr ? "Légal" : "Legal"}
         title={title}
+        {...(titleEm !== undefined ? { titleEm } : {})}
         description={intro}
       />
 

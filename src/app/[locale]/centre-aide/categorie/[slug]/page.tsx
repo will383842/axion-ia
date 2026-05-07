@@ -7,12 +7,13 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   getAllHelpCategorySlugs,
   getHelpArticlesByCategory,
   getHelpCategoryLabel,
 } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -62,20 +63,21 @@ export default async function HelpCategoryPage({ params }: Props) {
     inLanguage: locale,
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Centre d'aide" : "Help center", href: "/centre-aide" },
-      {
-        name: label,
-        href: `/centre-aide/categorie/${slug}`,
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
+    {
+      href: isFr ? `/centre-aide/categorie/${slug}` : `/help/category/${slug}`,
+      label,
+    },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Catégorie" : "Category"}
@@ -104,7 +106,6 @@ export default async function HelpCategoryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={collectionJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

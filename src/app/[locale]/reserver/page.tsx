@@ -7,8 +7,8 @@ import { Container } from "@/components/layout/Container";
 import { BookingCalendar, type BookedSlot } from "@/components/calendar/BookingCalendar";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -313,18 +313,22 @@ export default async function ReserverPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Réserver" : "Book", href: "/reserver" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: isFr ? "/reserver" : "/book",
+      label: isFr ? "Réserver" : "Book",
+    },
+  ];
 
   const bookedSlots = buildFixtureBookedSlots();
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* Hero compact : padding réduit pour rapprocher le calendrier de la fold */}
       <section className="bg-halo-warm relative overflow-hidden py-12 sm:py-14 lg:py-16">
         <Container className="relative">
@@ -373,8 +377,6 @@ export default async function ReserverPage({ params }: Props) {
           </Cta>
         }
       />
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

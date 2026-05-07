@@ -7,12 +7,13 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   getAllIndustrySlugs,
   getCaseStudiesByIndustry,
   getIndustryLabel,
 } from "@/content/case-studies";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -62,17 +63,21 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
     inLanguage: locale,
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Cas concrets" : "Case studies", href: "/cas-concrets" },
-      { name: label, href: `/cas-concrets/secteur/${slug}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
+    {
+      href: isFr ? `/cas-concrets/secteur/${slug}` : `/case-studies/industry/${slug}`,
+      label,
+    },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Secteur" : "Industry"}
@@ -102,7 +107,6 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={collectionJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

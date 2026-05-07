@@ -9,10 +9,10 @@ import { Cta } from "@/components/marketing/Cta";
 import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { CaseStudiesHeroSchema } from "@/components/sections/CaseStudiesHeroSchema";
-import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { CASE_STUDIES } from "@/content/case-studies";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -70,16 +70,17 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
     { key: "enterprise", label: isFr ? "Grande" : "Enterprise" },
   ];
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Cas concrets" : "Case studies", href: "/cas-concrets" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO 2 colonnes — texte à gauche, stack de mini-cards de cas réels
           à droite (CaseStudiesHeroSchema). Aligné sur le pattern audit /
           interventions / implementation. */}
@@ -266,8 +267,6 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         }
         tone="dark"
       />
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

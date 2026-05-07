@@ -8,8 +8,9 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getHelpArticle, getAllHelpSlugs, HELP_ARTICLES, slugify } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -61,14 +62,12 @@ export default async function HelpArticlePage({ params }: Props) {
     articleSection: article.category,
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Centre d'aide" : "Help center", href: "/centre-aide" },
-      { name: copy.title, href: `/centre-aide/${slug}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
+    { href: `/centre-aide/${slug}`, label: copy.title },
+  ];
 
   // Suggested neighbours — same category first.
   const others = HELP_ARTICLES.filter((a) => a.slug !== article.slug)
@@ -77,6 +76,9 @@ export default async function HelpArticlePage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={article.category}
@@ -124,7 +126,6 @@ export default async function HelpArticlePage({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

@@ -6,8 +6,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -35,19 +35,20 @@ export default async function CookiePreferencesPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Préférences cookies" : "Cookie preferences",
-        href: "/preferences-cookies",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: isFr ? "/preferences-cookies" : "/cookie-preferences",
+      label: isFr ? "Préférences cookies" : "Cookie preferences",
+    },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow="RGPD"
@@ -85,7 +86,6 @@ export default async function CookiePreferencesPage({ params }: Props) {
           </Cta>
         </Container>
       </Section>
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

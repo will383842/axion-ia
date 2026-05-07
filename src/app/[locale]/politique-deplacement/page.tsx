@@ -4,9 +4,10 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { LegalPageTemplate } from "@/components/sections/LegalPageTemplate";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { Container } from "@/components/layout/Container";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -36,22 +37,21 @@ export default async function PolitiqueDeplacement({ params }: Props) {
   const isFr = loc === "fr";
   const p = getLegal(SLUG);
   const copy = p[loc];
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: copy.title, href: `/${SLUG}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: isFr ? p.pathFr : p.pathEn, label: copy.title }];
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <LegalPageTemplate
         isFr={isFr}
         title={copy.title}
+        {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
       />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

@@ -10,7 +10,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -48,16 +49,15 @@ export default async function Contact({ params }: Props) {
     publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: "Contact", href: "/contact" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/contact", label: "Contact" }];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         tone="halo-warm"
         titleAs="h1"
@@ -191,7 +191,6 @@ export default async function Contact({ params }: Props) {
       />
 
       <JsonLd data={contactJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

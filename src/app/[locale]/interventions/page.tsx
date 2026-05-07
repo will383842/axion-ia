@@ -13,12 +13,13 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { InterventionsHeroSchema } from "@/components/sections/InterventionsHeroSchema";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   INTERVENTIONS,
   type InterventionAccent,
   type InterventionSlug,
 } from "@/content/interventions";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -171,16 +172,14 @@ export default async function InterventionsListing({ params }: Props) {
     },
   ];
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Interventions en entreprise" : "Corporate AI sessions",
-        href: "/interventions",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: "/interventions",
+      label: isFr ? "Interventions en entreprise" : "Corporate AI sessions",
+    },
+  ];
 
   // ItemList JSON-LD — chaque intervention listée comme Service.
   const itemListJsonLd = {
@@ -222,6 +221,9 @@ export default async function InterventionsListing({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO — layout custom 2 colonnes (text + schéma) gardant la doctrine v3 */}
       <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
         {/* Grille texturée fond — vignette douce */}
@@ -725,7 +727,6 @@ export default async function InterventionsListing({ params }: Props) {
         tone="dark"
       />
 
-      <JsonLd data={breadcrumb} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

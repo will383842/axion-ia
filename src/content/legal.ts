@@ -21,6 +21,8 @@ interface LegalContent {
 
 interface PageCopy {
   title: string;
+  /** Optional emphasized portion rendered in serif italic terracotta (parity v3). */
+  titleEm?: string;
   intro: string;
   sections: ReadonlyArray<{ title: string; body: string }>;
   metaSeo: { title: string; description: string };
@@ -32,7 +34,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     pathFr: "/mentions-legales",
     pathEn: "/legal-notice",
     fr: {
-      title: "Mentions légales",
+      title: "Mentions",
+      titleEm: "légales",
       intro:
         "Informations légales relatives au site axion-ia.com et à la société AxionIA OÜ, conformes au droit estonien.",
       sections: [
@@ -64,7 +67,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       },
     },
     en: {
-      title: "Legal notice",
+      title: "Legal",
+      titleEm: "notice",
       intro:
         "Legal information about axion-ia.com and AxionIA OÜ, in accordance with Estonian law.",
       sections: [
@@ -101,7 +105,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     pathFr: "/conditions-generales",
     pathEn: "/terms",
     fr: {
-      title: "Conditions générales",
+      title: "Conditions",
+      titleEm: "générales",
       intro:
         "Conditions générales de vente et d'utilisation des services AxionIA. Règles applicables aux interventions, audits, implémentations IA.",
       sections: [
@@ -141,7 +146,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       },
     },
     en: {
-      title: "Terms & conditions",
+      title: "Terms &",
+      titleEm: "conditions",
       intro:
         "Terms of sale and use for AxionIA services. Rules applicable to AI sessions, audits and implementations.",
       sections: [
@@ -186,7 +192,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     pathFr: "/politique-confidentialite",
     pathEn: "/privacy-policy",
     fr: {
-      title: "Politique de confidentialité",
+      title: "Politique de",
+      titleEm: "confidentialité",
       intro:
         "Comment AxionIA OÜ collecte, traite et protège vos données personnelles, conformément au RGPD (UE) 2016/679.",
       sections: [
@@ -226,7 +233,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       },
     },
     en: {
-      title: "Privacy policy",
+      title: "Privacy",
+      titleEm: "policy",
       intro:
         "How AxionIA OÜ collects, processes and protects your personal data under GDPR (EU) 2016/679.",
       sections: [
@@ -416,7 +424,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     pathFr: "/politique-deplacement",
     pathEn: "/travel-policy",
     fr: {
-      title: "Politique de déplacement",
+      title: "Politique de",
+      titleEm: "déplacement",
       intro:
         "Frais et conditions de déplacement applicables aux interventions sur site (Module 1) et audits sur site (Module 2).",
       sections: [
@@ -444,7 +453,8 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       },
     },
     en: {
-      title: "Travel policy",
+      title: "Travel",
+      titleEm: "policy",
       intro:
         "Travel fees and conditions applicable to on-site sessions (Module 1) and on-site audits (Module 2).",
       sections: [

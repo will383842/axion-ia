@@ -8,13 +8,9 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ESSENTIELLE_TIERS, getIntervention } from "@/content/interventions";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildFaqJsonLd,
-  buildBreadcrumbJsonLd,
-} from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 
 // ESSENTIELLE_TIERS importé de content/interventions.ts (source unique).
 
@@ -57,25 +53,26 @@ export default async function Essentielle({ params }: Props) {
       area: "Worldwide",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    buildBreadcrumbJsonLd({
-      locale: loc,
-      items: [
-        { name: loc === "fr" ? "Accueil" : "Home", href: "/" },
-        {
-          name: loc === "fr" ? "Interventions entreprise" : "Corporate AI sessions",
-          href: "/interventions",
-        },
-        { name: copy.title, href: "/interventions/essentielle" },
-      ],
-    }),
   ];
 
   const isFr = loc === "fr";
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: "/interventions",
+      label: isFr ? "Interventions entreprise" : "Corporate AI sessions",
+    },
+    { href: "/interventions/essentielle", label: copy.title },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <ProductPageTemplate
-        isFr={loc === "fr"}
+        isFr={isFr}
         accent="primary"
         copy={copy}
         ctaPrimaryHref="/reserver?intervention=essentielle"

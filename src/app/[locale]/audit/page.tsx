@@ -39,8 +39,9 @@ import {
   BeyondAuditBlock,
 } from "@/components/sections/AuditConversionBlocks";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { AUDITS, type AuditAccent, type AuditSlug } from "@/content/audit";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -199,13 +200,11 @@ export default async function AuditListing({ params }: Props) {
     },
   ];
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Audit & optimisation" : "Audit & optimization", href: "/audit" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/audit", label: isFr ? "Audit & optimisation" : "Audit & optimization" },
+  ];
 
   // ItemList JSON-LD — chaque niveau listé comme Service.
   const itemListJsonLd = {
@@ -240,6 +239,9 @@ export default async function AuditListing({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO — layout 2 colonnes (text + flow narratif "C'est quoi un audit").
           Pas de overflow-hidden sur la section : le graphique peut être grand,
           on ne veut pas qu'il soit tronqué. Le décor de fond est lui-même
@@ -1265,7 +1267,6 @@ export default async function AuditListing({ params }: Props) {
         threshold={500}
       />
 
-      <JsonLd data={breadcrumb} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

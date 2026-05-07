@@ -11,7 +11,8 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FAQ_GLOBAL } from "@/content/transversal";
-import { buildProductMetadata, buildFaqSpeakableJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -52,16 +53,15 @@ export default async function FaqPage({ params }: Props) {
   }));
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items });
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: "FAQ", href: "/faq" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/faq", label: "FAQ" }];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         tone="halo-warm"
         titleAs="h1"
@@ -122,7 +122,6 @@ export default async function FaqPage({ params }: Props) {
       />
 
       <JsonLd data={faqJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

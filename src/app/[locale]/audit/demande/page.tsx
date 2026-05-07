@@ -5,9 +5,9 @@ import { notFound } from "next/navigation";
 import { Globe2, Building2, Mail, Clock } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { AuditRequestForm } from "@/components/forms/AuditRequestForm";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -38,14 +38,12 @@ export default async function AuditRequest({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Audit & optimisation" : "Audit & optimization", href: "/audit" },
-      { name: isFr ? "Demande" : "Request", href: "/audit/demande" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/audit", label: isFr ? "Audit & optimisation" : "Audit & optimization" },
+    { href: "/audit/demande", label: isFr ? "Demande" : "Request" },
+  ];
 
   const labels = isFr
     ? {
@@ -323,6 +321,9 @@ export default async function AuditRequest({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* Hero compact — paddings réduits pour rapprocher le formulaire de la fold. */}
       <section className="bg-halo-warm relative overflow-hidden py-14 sm:py-16 lg:py-20">
         <Container className="relative">
@@ -372,8 +373,6 @@ export default async function AuditRequest({ params }: Props) {
           <AuditRequestForm labels={labels} locale={loc} />
         </Container>
       </div>
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

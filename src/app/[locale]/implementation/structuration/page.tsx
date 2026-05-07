@@ -4,13 +4,10 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
+import { Container } from "@/components/layout/Container";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getImplementation } from "@/content/implementation";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildFaqJsonLd,
-  buildBreadcrumbJsonLd,
-} from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -49,23 +46,27 @@ export default async function StructurationPage({ params }: Props) {
       serviceType: "AI implementation · structuration",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
-    buildBreadcrumbJsonLd({
-      locale: loc,
-      items: [
-        { name: loc === "fr" ? "Accueil" : "Home", href: "/" },
-        { name: loc === "fr" ? "Implémentation IA" : "AI implementation", href: "/implementation" },
-        { name: copy.title, href: `/implementation/${SLUG}` },
-      ],
-    }),
+  ];
+  const isFr = loc === "fr";
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/implementation", label: isFr ? "Implémentation IA" : "AI implementation" },
+    { href: `/implementation/${SLUG}`, label: copy.title },
   ];
   return (
-    <ProductPageTemplate
-      isFr={loc === "fr"}
-      accent="purple"
-      copy={copy}
-      ctaPrimaryHref="/contact"
-      ctaSecondaryHref="/cas-concrets"
-      jsonLd={jsonLd}
-    />
+    <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+      <ProductPageTemplate
+        isFr={isFr}
+        accent="purple"
+        copy={copy}
+        ctaPrimaryHref="/contact"
+        ctaSecondaryHref="/cas-concrets"
+        jsonLd={jsonLd}
+      />
+    </>
   );
 }

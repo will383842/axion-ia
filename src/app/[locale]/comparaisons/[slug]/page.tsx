@@ -8,8 +8,9 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getComparison, getAllComparisonSlugs } from "@/content/comparaisons";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -55,14 +56,12 @@ export default async function ComparisonPage({ params }: Props) {
     publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Comparaisons" : "Comparisons", href: "/comparaisons" },
-      { name: copy.title, href: `/comparaisons/${slug}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/comparaisons", label: isFr ? "Comparaisons" : "Comparisons" },
+    { href: `/comparaisons/${slug}`, label: copy.title },
+  ];
 
   // Split sur " vs " pour mettre "vs" en italique terracotta éditorial.
   // Si le titre ne contient pas " vs ", on garde le titre tel quel.
@@ -70,6 +69,9 @@ export default async function ComparisonPage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {vsMatch ? (
         <Section
           titleAs="h1"
@@ -107,7 +109,6 @@ export default async function ComparisonPage({ params }: Props) {
         tone="dark"
       />
       <JsonLd data={articleJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

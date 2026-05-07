@@ -7,12 +7,13 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   getAllBlogAuthorSlugs,
   getBlogPostsByAuthor,
   getBlogAuthorLabel,
 } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -62,17 +63,18 @@ export default async function BlogAuthorPage({ params }: Props) {
     },
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: "Blog", href: "/blog" },
-      { name: author, href: `/blog/auteur/${slug}` },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/blog", label: "Blog" },
+    { href: `/blog/auteur/${slug}`, label: author },
+  ];
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Auteur" : "Author"}
@@ -102,7 +104,6 @@ export default async function BlogAuthorPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={profileJsonLd} />
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

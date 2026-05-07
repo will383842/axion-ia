@@ -21,7 +21,8 @@ import {
   type StackAccent,
   type StackTool,
 } from "@/content/stack-ia";
-import { buildProductMetadata, buildBreadcrumbJsonLd, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -175,16 +176,14 @@ export default async function StackIaPage({ params }: Props) {
     })),
   } as const;
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Stack IA 2026" : "AI Stack 2026",
-        href: isFr ? "/stack-ia" : "/ai-stack",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    {
+      href: isFr ? "/stack-ia" : "/ai-stack",
+      label: isFr ? "Stack IA 2026" : "AI Stack 2026",
+    },
+  ];
 
   const faqJsonLd = buildFaqSpeakableJsonLd({
     items: STACK_FAQS.map((f) => ({ question: f[loc].question, answer: f[loc].answer })),
@@ -215,6 +214,9 @@ export default async function StackIaPage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       {/* HERO — layout 2 colonnes (texte + grille monogrammes). Doctrine v3 :
           halo-warm, titleEm serif italique terracotta, padding TIGHT_X. */}
       <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
@@ -815,7 +817,6 @@ export default async function StackIaPage({ params }: Props) {
         tone="dark"
       />
 
-      <JsonLd data={breadcrumb} />
       <JsonLd data={itemListJsonLd} />
       <JsonLd data={faqJsonLd} />
     </>

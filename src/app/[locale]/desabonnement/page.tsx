@@ -6,8 +6,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 // Unsubscribe landing — RFC 8058 (List-Unsubscribe) + RGPD compliance.
 // Public, no-index — accessed via signed token in email footers.
@@ -43,21 +43,19 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      {
-        name: isFr ? "Désabonnement" : "Unsubscribe",
-        href: "/desabonnement",
-      },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [
+    { href: "/desabonnement", label: isFr ? "Désabonnement" : "Unsubscribe" },
+  ];
 
   const hasToken = typeof token === "string" && token.length > 0;
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "RGPD · RFC 8058" : "GDPR · RFC 8058"}
@@ -124,8 +122,6 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
           )}
         </Container>
       </Section>
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }

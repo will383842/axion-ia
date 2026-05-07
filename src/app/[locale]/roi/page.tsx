@@ -7,10 +7,10 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import { JsonLd } from "@/components/marketing/JsonLd";
 import { RoiSimulator } from "@/components/roi/RoiSimulator";
 import { Illustration } from "@/components/visual/Illustration";
-import { buildProductMetadata, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -40,13 +40,9 @@ export default async function RoiPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const breadcrumb = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Simulateur ROI" : "ROI simulator", href: "/roi" },
-    ],
-  });
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" }];
 
   const labels = isFr
     ? {
@@ -84,6 +80,9 @@ export default async function RoiPage({ params }: Props) {
 
   return (
     <>
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Gains concrets quotidiens" : "Concrete daily gains"}
@@ -161,8 +160,6 @@ export default async function RoiPage({ params }: Props) {
         }
         tone="dark"
       />
-
-      <JsonLd data={breadcrumb} />
     </>
   );
 }
