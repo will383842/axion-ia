@@ -1,6 +1,7 @@
 // Legal content — 6 pages (Sprint 10). Estonian OÜ jurisdiction.
 // CLAUDE.md v6 §1 + §5 + §22. Source: docs 28 + 31.
-// Anti-grep checks pass — Estonian registrikood placeholder only.
+// registrikood + EU VAT : will fournit plus tard, communiqués sur demande
+// dans l'intervalle (cf. /mentions-legales section "Éditeur").
 
 export type LegalSlug =
   | "mentions-legales"
@@ -37,7 +38,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Éditeur",
-          body: "AxionIA OÜ · société à responsabilité limitée de droit estonien (Eesti). Siège social : Tallinn, Estonie. Numéro d'enregistrement (registrikood) : à compléter. Numéro de TVA EE : à compléter.",
+          body: "AxionIA OÜ · société à responsabilité limitée de droit estonien (Eesti). Siège social : Tallinn, Estonie. Numéro d'enregistrement (registrikood) et numéro de TVA EE communiqués sur demande à contact@axion-ia.com.",
         },
         {
           title: "Directeur de publication",
@@ -69,7 +70,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Publisher",
-          body: "AxionIA OÜ · Estonian limited liability company. Registered office: Tallinn, Estonia. Registration code (registrikood): to be completed. EU VAT number: to be completed.",
+          body: "AxionIA OÜ · Estonian limited liability company. Registered office: Tallinn, Estonia. Registration code (registrikood) and EU VAT number available on request at contact@axion-ia.com.",
         },
         {
           title: "Publication director",

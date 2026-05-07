@@ -69,12 +69,12 @@ export const FAQ_GLOBAL = [
     fr: {
       question: "Quels sont les 3 modules ?",
       answer:
-        "Module 1 — Interventions sur site (1 journée à partir de 490 €). Module 2 — Audit IA (cartographie + plan, 290-1990 €). Module 3 — Implémentation IA (mise en production, à partir de 990 €).",
+        "Module 1 — Interventions sur site (1 journée à partir de 490 €). Module 2 — Audit IA (4 niveaux : Flash 490 €, Ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI dès 12 000 €). Module 3 — Implémentation IA (mise en production, à partir de 990 €).",
     },
     en: {
       question: "What are the 3 modules?",
       answer:
-        "Module 1 — On-site sessions (1 day from €490). Module 2 — AI audit (mapping + plan, €290-1990). Module 3 — AI implementation (production deployment, from €990).",
+        "Module 1 — On-site sessions (1 day from €490). Module 2 — AI audit (4 tiers: Flash €490, Targeted €1,900-3,900, Strategic SME €4,900-9,900, Strategic Mid-cap from €12,000). Module 3 — AI implementation (production deployment, from €990).",
     },
   },
   {

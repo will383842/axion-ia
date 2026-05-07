@@ -67,14 +67,14 @@ export const PRESS_PITCH = {
   fr: {
     eyebrow: "Espace presse",
     short:
-      "AxionIA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de 490 €), audits IA chiffrés (290 € à 1 990 €) et implémentations sur mesure (à partir de 990 €). Hébergement UE par défaut, RGPD strict.",
+      "AxionIA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de 490 €), audits IA en 4 niveaux (Flash 490 € → Stratégique ETI dès 12 000 €) et implémentations sur mesure (à partir de 990 €). Hébergement UE par défaut, RGPD strict.",
     boilerplate:
       "AxionIA OÜ est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
   },
   en: {
     eyebrow: "Press room",
     short:
-      "AxionIA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from €490), costed AI audits (€290 to €1,990) and custom implementations (from €990). EU hosting by default, strict GDPR.",
+      "AxionIA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from €490), AI audits in 4 tiers (Flash €490 → Strategic Mid-cap from €12,000) and custom implementations (from €990). EU hosting by default, strict GDPR.",
     boilerplate:
       "AxionIA OÜ is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
   },
@@ -224,12 +224,12 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     fr: {
       title: "AxionIA lance sa plateforme de cabinet IA opérationnel",
       dek: "Le cabinet ouvre axion-ia.com, un point d'entrée unique pour les entreprises souhaitant identifier et déployer des usages IA à ROI mesurable.",
-      body: "AxionIA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain à partir de 490 €, audits IA chiffrés de 290 € à 1 990 €, et implémentations sur mesure à partir de 990 € — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.",
+      body: "AxionIA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain à partir de 490 €, audits IA chiffrés en 4 niveaux (Flash 490 €, Ciblé 1 900 à 3 900 €, Stratégique PME 4 900 à 9 900 €, Stratégique ETI à partir de 12 000 €), et implémentations sur mesure à partir de 990 € — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.",
     },
     en: {
       title: "AxionIA launches its operational AI consultancy platform",
       dek: "The firm opens axion-ia.com, a single entry point for companies looking to identify and deploy AI use cases with measurable ROI.",
-      body: "AxionIA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions from €490, costed AI audits from €290 to €1,990, and custom implementations from €990 — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.",
+      body: "AxionIA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions from €490, AI audits in 4 tiers (Flash €490, Targeted €1,900 to €3,900, Strategic SME €4,900 to €9,900, Strategic Mid-cap from €12,000), and custom implementations from €990 — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.",
     },
   },
   {

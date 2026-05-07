@@ -1,6 +1,7 @@
 // Content pack — Module 3 Implémentation IA (10 pages).
 // Purple #7a3dff accent. Source: docs 04 + 22.
-// Sprint 7 ships placeholders that pass the banned-word check.
+// Sprint 7 baseline. Note: ban du mot « formation » levé 2026-05-07 (ADR
+// `axionia/docs/adr/0003-lift-formation-ban.md`) — vocabulaire libre désormais.
 
 export type ImplementationSlug =
   | "ia-custom"

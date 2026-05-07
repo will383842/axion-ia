@@ -12,10 +12,10 @@ import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo
 import type { Locale } from "@/i18n/routing";
 import "../globals.css";
 
-// Manrope = open-source substitute for proprietary WF Visual Sans Variable
-// (Webflow). ADR 0001-design-direction-webflow.md.
-// Trimmed to 2 weights (regular + semibold) — covers body, eyebrow, h1-h6.
-// Saves ~50 KB woff2 vs the previous 4-weight load (cf. PERF-005).
+// Manrope — sans-serif éditorial pour body / eyebrow / h1-h6.
+// Doctrine v3 Editorial Premium Light : ADR 0002 (pivot v3) + ADR 0004
+// (typo baseline 18/15 v3.1). Trimmed à 2 weights (400 + 600) — couvre
+// l'ensemble des usages, économise ~50 KB woff2 vs un chargement 4-weights.
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",

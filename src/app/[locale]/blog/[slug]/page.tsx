@@ -10,7 +10,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPost, getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, buildArticleJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -46,17 +46,23 @@ export default async function BlogArticle({ params }: Props) {
   if (!post) notFound();
   const copy = post[loc];
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+  // Article JSON-LD spec AEO/GEO 2026 : Person author + dateModified +
+  // mainEntityOfPage + image dynamique + keywords + section + wordCount.
+  // Cible Google AI Overviews + Perplexity + Claude.ai citations.
+  const wordCount = copy.body.trim().split(/\s+/).length;
+  const articleJsonLd = buildArticleJsonLd({
+    locale: loc,
+    path: `/blog/${slug}`,
     headline: copy.title,
     description: copy.excerpt,
     datePublished: post.publishedAt,
-    inLanguage: loc,
-    url: `${SITE_URL}/${loc}/blog/${slug}`,
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
-    author: { "@type": "Organization", name: "AxionIA" },
-  } as const;
+    articleBody: copy.body,
+    authorName: post.author,
+    authorSlug: post.author.toLowerCase(),
+    keywords: post.tags,
+    articleSection: post.category,
+    wordCount,
+  });
 
   const breadcrumb = buildBreadcrumbJsonLd({
     locale: loc,

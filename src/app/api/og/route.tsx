@@ -7,9 +7,10 @@ import { ImageResponse } from "@vercel/og";
 export const runtime = "edge";
 
 // hex-ok: dynamic OG image runs in Edge runtime where Tailwind tokens are
-// not available. Hex values mirror globals.css palette deliberately.
+// not available. Hex values mirror globals.css palette deliberately
+// (doctrine v3 Editorial Premium Light, ADR 0002).
 const ACCENTS: Record<string, string> = {
-  primary: "#146ef5", // hex-ok: Webflow Blue token
+  primary: "#1a4dd9", // hex-ok: --color-primary v3 (was Webflow Blue #146ef5 v1)
   purple: "#7c3aed", // hex-ok: accent-purple token
   orange: "#f97316", // hex-ok: accent-orange token
   green: "#16a34a", // hex-ok: accent-green token
@@ -106,7 +107,7 @@ export function GET(req: Request) {
         <span>Cabinet IA · UE</span>
       </div>
 
-      {/* Webflow accent stripe */}
+      {/* Editorial v3 accent stripe */}
       <div
         style={{
           position: "absolute",
