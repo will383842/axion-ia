@@ -64,7 +64,8 @@ export default async function BlogTagPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow="Tag"
-        title={`#${slug}`}
+        title={isFr ? "Articles taggés" : "Tagged"}
+        titleEm={`#${slug}`}
         description={
           isFr
             ? `${posts.length} article${posts.length > 1 ? "s" : ""} tagué${posts.length > 1 ? "s" : ""}.`

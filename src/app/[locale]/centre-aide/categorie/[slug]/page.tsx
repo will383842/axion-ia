@@ -76,7 +76,12 @@ export default async function HelpCategoryPage({ params }: Props) {
 
   return (
     <>
-      <Section titleAs="h1" eyebrow={isFr ? "Catégorie" : "Category"} title={label} />
+      <Section
+        titleAs="h1"
+        eyebrow={isFr ? "Catégorie" : "Category"}
+        title={isFr ? "Catégorie" : "Category"}
+        titleEm={label}
+      />
       <Section>
         <Container>
           <ul className="grid gap-4 sm:grid-cols-2">

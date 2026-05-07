@@ -80,7 +80,8 @@ export default async function BlogCategoryPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Catégorie" : "Category"}
-        title={label}
+        title={isFr ? "Catégorie" : "Category"}
+        titleEm={label}
         description={
           isFr
             ? `${posts.length} article${posts.length > 1 ? "s" : ""} dans cette catégorie.`

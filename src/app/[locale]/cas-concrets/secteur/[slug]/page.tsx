@@ -76,7 +76,8 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Secteur" : "Industry"}
-        title={label}
+        title={isFr ? "Cas concrets en" : "Case studies in"}
+        titleEm={label}
         description={
           isFr
             ? `${studies.length} cas concret${studies.length > 1 ? "s" : ""} dans ce secteur.`

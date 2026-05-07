@@ -64,14 +64,29 @@ export default async function ComparisonPage({ params }: Props) {
     ],
   });
 
+  // Split sur " vs " pour mettre "vs" en italique terracotta éditorial.
+  // Si le titre ne contient pas " vs ", on garde le titre tel quel.
+  const vsMatch = copy.title.match(/^(.+?)\s+vs\s+(.+)$/i);
+
   return (
     <>
-      <Section
-        titleAs="h1"
-        eyebrow={isFr ? "Comparaison" : "Comparison"}
-        title={copy.title}
-        description={copy.excerpt}
-      />
+      {vsMatch ? (
+        <Section
+          titleAs="h1"
+          eyebrow={isFr ? "Comparaison" : "Comparison"}
+          title={vsMatch[1]}
+          titleEm="vs"
+          titleTail={` ${vsMatch[2]}`}
+          description={copy.excerpt}
+        />
+      ) : (
+        <Section
+          titleAs="h1"
+          eyebrow={isFr ? "Comparaison" : "Comparison"}
+          title={copy.title}
+          description={copy.excerpt}
+        />
+      )}
       <Section>
         <Container className="max-w-3xl">
           <p className="text-base leading-relaxed text-gray-700">{copy.body}</p>

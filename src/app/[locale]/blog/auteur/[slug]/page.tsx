@@ -76,7 +76,8 @@ export default async function BlogAuthorPage({ params }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Auteur" : "Author"}
-        title={author}
+        title={isFr ? "Articles de" : "Articles by"}
+        titleEm={author}
         description={
           isFr
             ? `${posts.length} article${posts.length > 1 ? "s" : ""} publié${posts.length > 1 ? "s" : ""} par ${author}.`
