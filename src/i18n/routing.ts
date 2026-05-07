@@ -111,6 +111,7 @@ export const routing = defineRouting({
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },
+    "/stack-ia": { fr: "/stack-ia", en: "/ai-stack" },
     "/glossaire": { fr: "/glossaire", en: "/glossary" },
     "/comparaisons": { fr: "/comparaisons", en: "/comparisons" },
     "/comparaisons/[slug]": { fr: "/comparaisons/[slug]", en: "/comparisons/[slug]" },
