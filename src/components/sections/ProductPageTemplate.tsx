@@ -27,6 +27,30 @@ interface DaySchedule {
   logisticsNote?: string;
 }
 
+interface Testimonial {
+  id: string;
+  quote: string;
+  author: string;
+  role: string;
+}
+
+interface MaturityLevel {
+  /** Niveau 1 / 2 / 3 displayed in the eyebrow dot. */
+  rank: 1 | 2 | 3;
+  name: string;
+  description: string;
+}
+
+interface MaturityLevels {
+  /** Section h2 title. */
+  title: string;
+  /** Eyebrow uppercase (e.g. "Pour qui ça marche"). */
+  eyebrow: string;
+  /** Optional intro paragraph below the title. */
+  intro?: string;
+  levels: ReadonlyArray<MaturityLevel>;
+}
+
 interface ProductPageTemplateProps {
   isFr: boolean;
   accent: "primary" | "purple" | "orange" | "green";
@@ -59,6 +83,14 @@ interface ProductPageTemplateProps {
     ctaBlockDescription: string;
     /** Optionnel — timeline détaillée d'une journée. Module 1 uniquement. */
     daySchedule?: DaySchedule;
+    /** Optionnel — 2-3 testimonials clients (D6 Proof). Si absent, section silencieuse. */
+    testimonials?: ReadonlyArray<Testimonial>;
+    /** Optionnel — eyebrow custom pour la section testimonials (défaut "Témoignages" / "Customer voices"). */
+    testimonialsEyebrow?: string;
+    /** Optionnel — titre h2 de la section testimonials (défaut "Ils l'ont fait" / "They did it"). */
+    testimonialsTitle?: string;
+    /** Optionnel — section anti-fear "Pour qui ça marche" 3 niveaux maturité (D7 Anti-fear). */
+    maturity?: MaturityLevels;
   };
   ctaPrimaryHref: string;
   ctaSecondaryHref: string;
@@ -161,6 +193,19 @@ export function ProductPageTemplate({
         />
       </Section>
 
+      {/* Section testimonials — D6 Proof. Optionnelle. paper white. */}
+      {copy.testimonials && copy.testimonials.length > 0 ? (
+        <TestimonialsSection
+          isFr={isFr}
+          items={copy.testimonials}
+          {...(copy.testimonialsEyebrow ? { eyebrow: copy.testimonialsEyebrow } : {})}
+          {...(copy.testimonialsTitle ? { title: copy.testimonialsTitle } : {})}
+        />
+      ) : null}
+
+      {/* Section anti-fear "Pour qui ça marche" — D7 Anti-fear. Optionnelle. sand. */}
+      {copy.maturity ? <MaturityLevelsSection maturity={copy.maturity} accent={accent} /> : null}
+
       {/* FAQ — canvas pour repos */}
       <FaqBlock title={copy.faqTitle} items={copy.faqs} emitJsonLd={false} tone="canvas" />
 
@@ -260,6 +305,101 @@ function ReserveBigCta({
         </div>
       </Container>
     </section>
+  );
+}
+
+// 3 testimonials cards éditoriales — D6 Proof. Server Component pure.
+// Renders only when copy.testimonials is non-empty (silent otherwise).
+function TestimonialsSection({
+  isFr,
+  items,
+  eyebrow,
+  title,
+}: {
+  isFr: boolean;
+  items: ReadonlyArray<Testimonial>;
+  eyebrow?: string;
+  title?: string;
+}) {
+  return (
+    <Section
+      tone="paper"
+      eyebrow={eyebrow ?? (isFr ? "Témoignages" : "Customer voices")}
+      title={title ?? (isFr ? "Ils l'ont fait" : "They did it")}
+    >
+      <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
+        {items.slice(0, 3).map((t) => (
+          <figure
+            key={t.id}
+            className="bg-bg border-border hover:border-terracotta/40 hover:shadow-card flex flex-col rounded-2xl border p-6 transition-all sm:p-7"
+          >
+            <span
+              aria-hidden="true"
+              className="text-terracotta-deep block text-5xl leading-none italic"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              &ldquo;
+            </span>
+            <blockquote className="text-fg mt-2 flex-1 text-base leading-relaxed sm:text-lg">
+              {t.quote}
+            </blockquote>
+            <figcaption className="border-border mt-6 border-t pt-4">
+              <p className="text-fg text-sm font-semibold">{t.author}</p>
+              <p className="text-fg-muted text-xs">{t.role}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// Anti-fear "Pour qui ça marche" — 3 niveaux maturité. D7. Server Component pure.
+// Renders only when copy.maturity is set (silent otherwise).
+function MaturityLevelsSection({
+  maturity,
+  accent,
+}: {
+  maturity: MaturityLevels;
+  accent: "primary" | "purple" | "orange" | "green";
+}) {
+  const accentDot: Record<typeof accent, string> = {
+    primary: "bg-primary",
+    purple: "bg-purple",
+    orange: "bg-terracotta",
+    green: "bg-sage",
+  };
+  return (
+    <Section
+      tone="sand"
+      eyebrow={maturity.eyebrow}
+      title={maturity.title}
+      description={maturity.intro}
+    >
+      <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
+        {maturity.levels.map((level) => (
+          <article
+            key={level.rank}
+            className="bg-paper border-border hover:border-terracotta/40 hover:shadow-card flex flex-col rounded-2xl border p-6 transition-all sm:p-7"
+          >
+            <p className="text-fg-muted mb-3 flex items-center gap-2 text-[12px] font-semibold tracking-[0.16em] uppercase">
+              <span
+                aria-hidden="true"
+                className={`${accentDot[accent]} inline-block h-1.5 w-1.5 rounded-full`}
+              />
+              {`Niveau ${level.rank}`}
+            </p>
+            <h3
+              className="text-fg text-xl leading-tight font-medium tracking-tight sm:text-2xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {level.name}
+            </h3>
+            <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">{level.description}</p>
+          </article>
+        ))}
+      </div>
+    </Section>
   );
 }
 

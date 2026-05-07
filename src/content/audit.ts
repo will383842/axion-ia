@@ -74,6 +74,13 @@ interface PageCopy {
   faqs: ReadonlyArray<{ id: string; question: string; answer: string }>;
   ctaBlockTitle: string;
   ctaBlockDescription: string;
+  /** Optional anti-fear "Pour qui ça marche" — 3 maturity levels (D7 parity v3). */
+  maturity?: {
+    title: string;
+    eyebrow: string;
+    intro?: string;
+    levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
+  };
   metaSeo: { title: string; description: string };
 }
 
@@ -475,6 +482,32 @@ function makeFr(args: {
     ctaBlockTitle: "Prête à cartographier vos opportunités IA ?",
     ctaBlockDescription:
       "Demandez votre audit — réponse sous 48 h ouvrées avec devis personnalisé selon votre taille et votre périmètre.",
+    maturity: {
+      eyebrow: "Pour qui ça marche",
+      title: "Trois niveaux de maturité IA",
+      intro:
+        "L'audit s'adapte à votre point de départ. Aucun prérequis technique — juste une volonté de structurer.",
+      levels: [
+        {
+          rank: 1,
+          name: "Découverte",
+          description:
+            "Aucun usage IA aujourd'hui. L'audit pose les fondations, identifie les premiers quick-wins et démystifie le sujet pour la direction.",
+        },
+        {
+          rank: 2,
+          name: "Expérimentation",
+          description:
+            "Quelques outils IA isolés (ChatGPT, Copilot…). L'audit cartographie l'existant et accélère la généralisation à toute l'organisation.",
+        },
+        {
+          rank: 3,
+          name: "Industrialisation",
+          description:
+            "IA déjà intégrée dans plusieurs métiers. L'audit identifie les gaps de gouvernance, les leviers d'optimisation et les angles morts.",
+        },
+      ],
+    },
     metaSeo: {
       title: `${args.title} · Audit AxionIA`,
       description: args.answer.slice(0, 160),
@@ -568,6 +601,32 @@ function makeEn(args: {
     ctaBlockTitle: "Ready to map your AI opportunities?",
     ctaBlockDescription:
       "Request your audit — reply within 48 business hours with a customized quote based on size and scope.",
+    maturity: {
+      eyebrow: "Who it works for",
+      title: "Three AI maturity levels",
+      intro:
+        "The audit adapts to your starting point. No technical prerequisite — just the will to structure.",
+      levels: [
+        {
+          rank: 1,
+          name: "Discovery",
+          description:
+            "No AI use today. The audit lays the groundwork, identifies first quick-wins and demystifies AI for leadership.",
+        },
+        {
+          rank: 2,
+          name: "Experimentation",
+          description:
+            "A few isolated AI tools (ChatGPT, Copilot…). The audit maps the existing setup and accelerates rollout across the organisation.",
+        },
+        {
+          rank: 3,
+          name: "Industrialisation",
+          description:
+            "AI already embedded in several functions. The audit identifies governance gaps, optimisation levers and blind spots.",
+        },
+      ],
+    },
     metaSeo: {
       title: `${args.title} · AxionIA Audit`,
       description: args.answer.slice(0, 160),

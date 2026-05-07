@@ -73,6 +73,13 @@ interface PageCopy {
   faqs: ReadonlyArray<{ id: string; question: string; answer: string }>;
   ctaBlockTitle: string;
   ctaBlockDescription: string;
+  /** Optional anti-fear "Pour qui ça marche" — 3 maturity levels (D7 parity v3). */
+  maturity?: {
+    title: string;
+    eyebrow: string;
+    intro?: string;
+    levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
+  };
   metaSeo: { title: string; description: string };
   /** Timeline détaillée d'une journée d'intervention/formation (optionnel,
       réservé au Module 1 Interventions). 1 ou 2 jours selon le format. */
@@ -1222,6 +1229,32 @@ function makeFr(args: {
     ],
     ctaBlockTitle: "Prête à démarrer ?",
     ctaBlockDescription: "Demandez un devis — réponse sous 48 h ouvrées.",
+    maturity: {
+      eyebrow: "Pour qui ça marche",
+      title: "Trois niveaux de maturité IA des équipes",
+      intro:
+        "L'intervention s'adapte au point de départ de votre équipe. Aucun pré-requis technique — juste l'envie d'avancer ensemble.",
+      levels: [
+        {
+          rank: 1,
+          name: "Curieuse",
+          description:
+            "Première découverte de l'IA. Format pédagogique, vocabulaire de base, démos accessibles, pas de jargon. Tous les profils peuvent suivre.",
+        },
+        {
+          rank: 2,
+          name: "Utilisatrice",
+          description:
+            "Déjà ChatGPT ou Claude en individuel. On structure l'usage pour qu'il devienne collectif, productif et reproductible — référentiel, prompts types, cadre.",
+        },
+        {
+          rank: 3,
+          name: "Experte",
+          description:
+            "IA quotidienne. L'intervention pousse vers les agents, l'automatisation custom, les use cases avancés et la diffusion à toute l'organisation.",
+        },
+      ],
+    },
     metaSeo: {
       title: `${args.title} · cabinet AxionIA`,
       description: args.answer.slice(0, 160),
@@ -1298,6 +1331,32 @@ function makeEn(args: {
     ],
     ctaBlockTitle: "Ready to start?",
     ctaBlockDescription: "Request a quote — reply within 48 business hours.",
+    maturity: {
+      eyebrow: "Who it works for",
+      title: "Three AI maturity levels in teams",
+      intro:
+        "The session adapts to your team's starting point. No technical prerequisite — just the will to move forward together.",
+      levels: [
+        {
+          rank: 1,
+          name: "Curious",
+          description:
+            "First contact with AI. Pedagogical format, base vocabulary, accessible demos, no jargon. Every profile can follow.",
+        },
+        {
+          rank: 2,
+          name: "User",
+          description:
+            "Already using ChatGPT or Claude individually. We structure the usage to make it collective, productive and reproducible — reference, prompt templates, framework.",
+        },
+        {
+          rank: 3,
+          name: "Expert",
+          description:
+            "AI is daily practice. The session pushes toward agents, custom automation, advanced use cases and rollout across the organisation.",
+        },
+      ],
+    },
     metaSeo: {
       title: `${args.title} · AxionIA consultancy`,
       description: args.answer.slice(0, 160),

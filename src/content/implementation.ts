@@ -39,6 +39,13 @@ interface PageCopy {
   faqs: ReadonlyArray<{ id: string; question: string; answer: string }>;
   ctaBlockTitle: string;
   ctaBlockDescription: string;
+  /** Optional anti-fear "Pour qui ça marche" — 3 maturity levels (D7 parity v3). */
+  maturity?: {
+    title: string;
+    eyebrow: string;
+    intro?: string;
+    levels: ReadonlyArray<{ rank: 1 | 2 | 3; name: string; description: string }>;
+  };
   metaSeo: { title: string; description: string };
 }
 
@@ -263,6 +270,32 @@ function makeFr(args: { eyebrow: string; title: string; answer: string }): PageC
     ctaBlockTitle: "Prête à industrialiser un usage IA ?",
     ctaBlockDescription:
       "Demandez un devis — réponse sous 48 h ouvrées avec spécification chiffrée du projet.",
+    maturity: {
+      eyebrow: "Pour qui ça marche",
+      title: "Trois niveaux de maturité technique",
+      intro:
+        "L'implémentation s'adapte à l'état de votre stack et de vos équipes. On part de votre point de départ, pas d'un état idéal théorique.",
+      levels: [
+        {
+          rank: 1,
+          name: "Découverte",
+          description:
+            "Aucune intégration IA en production. On part de zéro et on déploie un quick-win d'abord — preuve de valeur en 4-6 semaines.",
+        },
+        {
+          rank: 2,
+          name: "En cours",
+          description:
+            "Premiers POCs ou outils SaaS IA isolés. On industrialise et on connecte au reste de votre stack (CRM, ERP, data warehouse).",
+        },
+        {
+          rank: 3,
+          name: "Avancée",
+          description:
+            "IA en production sur plusieurs cas. On apporte expertise sur les sujets complexes (RAG custom, agents, fine-tuning ciblé).",
+        },
+      ],
+    },
     metaSeo: {
       title: `${args.title} · Implémentation IA · AxionIA`,
       description: args.answer.slice(0, 160),
@@ -326,6 +359,32 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
     ctaBlockTitle: "Ready to industrialize an AI use case?",
     ctaBlockDescription:
       "Request a quote — reply within 48 business hours with a costed project specification.",
+    maturity: {
+      eyebrow: "Who it works for",
+      title: "Three technical maturity levels",
+      intro:
+        "Implementation adapts to your stack and your team — we start from where you are, not from an idealised end state.",
+      levels: [
+        {
+          rank: 1,
+          name: "Discovery",
+          description:
+            "No AI integration in production. We start from zero and deploy a quick-win first — proof of value in 4-6 weeks.",
+        },
+        {
+          rank: 2,
+          name: "In progress",
+          description:
+            "Early POCs or isolated AI SaaS tools. We industrialise and connect to the rest of your stack (CRM, ERP, data warehouse).",
+        },
+        {
+          rank: 3,
+          name: "Advanced",
+          description:
+            "AI in production on several cases. We bring expertise on complex topics (custom RAG, agents, targeted fine-tuning).",
+        },
+      ],
+    },
     metaSeo: {
       title: `${args.title} · AI implementation · AxionIA`,
       description: args.answer.slice(0, 160),
