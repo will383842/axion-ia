@@ -285,17 +285,21 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 
 /**
  * Sous-tiers Approfondie (2 jours) — destiné aux équipes (gros effectifs).
- * Spec Will 2026-05-08 : brackets 2-8 / 9-15 / 15-30 personnes (et non
+ * Brackets Will 2026-05-08 : 2-8 / 9-15 / 15-30 personnes (et non
  * 2-4 / 5-6 / 7-8 comme Essentielle — Approfondie cible des équipes
  * complètes, pas des cellules pédagogiques fines).
  *
- * Tarifs proposés (à valider Will) — basés sur :
- *   - 2 jours = 1.8× Essentielle (proxy logique).
- *   - bracket 9-15 = 1.7× bracket 2-8 (économie d'échelle modérée).
- *   - bracket 15-30 = 1.6× bracket 9-15 (encore moins dégressif).
- *   2-8 pers  : 1 490 € → 186 €/pers (ceiling 8 pers)
- *   9-15 pers : 2 490 € → 166 €/pers (ceiling 15 pers, dégressif ✅)
- *   15-30 pers: 3 990 € → 133 €/pers (ceiling 30 pers, dégressif ✅)
+ * Tarifs (Sprint 14.10.5, à valider Will) — alignés sur Essentielle :
+ *   Logique = base Essentielle équivalente + forfait 2e jour (700 €).
+ *   Bracket 9-15 et 15-30 = extrapolation Essentielle au-delà de 8 pers
+ *   (×1.4 puis ×1.6) puis +700 €.
+ *
+ *   2-8 pers  : 1 890 € HT (= Essent. 1190 + 700)  → 236 €/pers (ceiling 8)
+ *   9-15 pers : 2 390 € HT (= 1190×1.4 + 700)       → 159 €/pers (ceiling 15) ✅ dégressif
+ *   15-30 pers: 3 390 € HT (= 1690×1.6 + 700)       → 113 €/pers (ceiling 30) ✅ dégressif
+ *
+ *   Cohérence vs Essentielle : Approfondie 2j/8pers = 945 €/jour vs
+ *   Essentielle 1j/8pers = 1190 €/jour → remise pour engagement 2 jours.
  */
 export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
@@ -304,7 +308,7 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Cell",
     rangeFr: "2 à 8 personnes",
     rangeEn: "2 to 8 people",
-    priceFlat: 1490,
+    priceFlat: 1890,
   },
   {
     id: "approfondie-equipe",
@@ -312,7 +316,7 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Team",
     rangeFr: "9 à 15 personnes",
     rangeEn: "9 to 15 people",
-    priceFlat: 2490,
+    priceFlat: 2390,
     isFeatured: true,
   },
   {
@@ -321,7 +325,7 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Department",
     rangeFr: "15 à 30 personnes",
     rangeEn: "15 to 30 people",
-    priceFlat: 3990,
+    priceFlat: 3390,
   },
 ];
 
@@ -358,7 +362,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-approfondie",
     labelFr: "Approfondie",
     labelEn: "Deep dive",
-    priceFlat: 1490,
+    priceFlat: 1890,
     durationFr: "2 jours",
     durationEn: "2 days",
     groupSizeFr: "2 à 30 personnes",
@@ -382,9 +386,11 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-dirigeants",
     labelFr: "Dirigeants",
     labelEn: "Executives",
-    onQuote: true,
+    priceFlat: 990,
     durationFr: "1 journée",
     durationEn: "1 day",
+    groupSizeFr: "1 à 5 personnes (vous + équipe rapprochée)",
+    groupSizeEn: "1 to 5 people (you + inner circle)",
     descriptionFr: "Cadrage stratégique en huis-clos pour comités de direction sur une journée.",
     descriptionEn: "In-camera strategic framing for executive committees over one day.",
     audienceSizes: ["pme", "eti", "grande-entreprise"],
@@ -457,6 +463,25 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
     descriptionFr: "Programmes annuels pour grandes entreprises et grands comptes.",
     descriptionEn: "Annual programs for large enterprises and key accounts.",
     audienceSizes: ["grande-entreprise"],
+  },
+  // Sprint 14.10.5 — IA custom d'entreprise (offre tech-spécifique).
+  // Orthogonale aux tiers par taille (POC/PME/ETI/grand-programme) ;
+  // s'applique aux clients qui veulent un projet sur mesure indépendamment
+  // de la taille. `IMPLEMENTATIONS::ia-custom` (content/implementation.ts)
+  // dérive son prix de ce tier.
+  {
+    id: "impl-ia-custom",
+    labelFr: "IA custom d'entreprise",
+    labelEn: "Custom enterprise AI",
+    priceMin: 8000,
+    priceMax: 50000,
+    durationFr: "4 à 12 semaines",
+    durationEn: "4 to 12 weeks",
+    descriptionFr:
+      "Implémentation IA sur mesure pour grands comptes : modèles fine-tuned, intégration profonde, équipe dédiée.",
+    descriptionEn:
+      "Tailor-made AI implementation for large accounts: fine-tuned models, deep integration, dedicated team.",
+    audienceSizes: ["pme", "eti", "grande-entreprise"],
   },
 ];
 
@@ -554,15 +579,18 @@ export function formatAmountRange(
 
 /**
  * Préfixe « dès » / « from » suivi du prix d'entrée. Utile pour les CTA.
- * `getEntryLabel(AUDIT_TIERS, "fr")` → « dès 490 € HT ».
+ * `getEntryLabel(AUDIT_TIERS, "fr")` → « dès 490 € HT » (compact: « dès 490 € »).
  */
 export function getEntryLabel(
   tiers: ReadonlyArray<PricingTier>,
   locale: "fr" | "en" = "fr",
+  opts: FormatAmountOptions = {},
 ): string {
   const price = getEntryPriceEur(tiers);
   if (price == null) return locale === "fr" ? "Sur devis" : "On request";
-  return locale === "fr" ? `dès ${formatAmount(price, "fr")}` : `from ${formatAmount(price, "en")}`;
+  return locale === "fr"
+    ? `dès ${formatAmount(price, "fr", opts)}`
+    : `from ${formatAmount(price, "en", opts)}`;
 }
 
 /**
@@ -572,12 +600,13 @@ export function getEntryLabel(
 export function getFromLabel(
   tiers: ReadonlyArray<PricingTier>,
   locale: "fr" | "en" = "fr",
+  opts: FormatAmountOptions = {},
 ): string {
   const price = getEntryPriceEur(tiers);
   if (price == null) return locale === "fr" ? "Sur devis" : "On request";
   return locale === "fr"
-    ? `À partir de ${formatAmount(price, "fr")}`
-    : `From ${formatAmount(price, "en")}`;
+    ? `À partir de ${formatAmount(price, "fr", opts)}`
+    : `From ${formatAmount(price, "en", opts)}`;
 }
 
 /**
@@ -597,12 +626,16 @@ export function getTierById<T extends PricingTier>(tiers: ReadonlyArray<T>, id: 
  * « 490 € à distance · 890 € sur site ». Si le tier n'a pas de
  * `priceFlatOnsite`, retombe sur le format `formatPrice` standard.
  */
-export function formatPriceWithOnsite(tier: PricingTier, locale: "fr" | "en" = "fr"): string {
+export function formatPriceWithOnsite(
+  tier: PricingTier,
+  locale: "fr" | "en" = "fr",
+  opts: FormatAmountOptions = {},
+): string {
   if (typeof tier.priceFlat === "number" && typeof tier.priceFlatOnsite === "number") {
     if (locale === "fr") {
-      return `${formatAmount(tier.priceFlat, "fr")} (à distance) · ${formatAmount(tier.priceFlatOnsite, "fr")} (sur site)`;
+      return `${formatAmount(tier.priceFlat, "fr", opts)} (à distance) · ${formatAmount(tier.priceFlatOnsite, "fr", opts)} (sur site)`;
     }
-    return `${formatAmount(tier.priceFlat, "en")} (remote) · ${formatAmount(tier.priceFlatOnsite, "en")} (on site)`;
+    return `${formatAmount(tier.priceFlat, "en", opts)} (remote) · ${formatAmount(tier.priceFlatOnsite, "en", opts)} (on site)`;
   }
   return formatPrice(tier, locale);
 }

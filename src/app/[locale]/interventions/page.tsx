@@ -26,6 +26,13 @@ import { Illustration } from "@/components/visual/Illustration";
 import { InterventionsHeroSchema } from "@/components/sections/InterventionsHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTIONS, type InterventionAccent } from "@/content/interventions";
+import {
+  INTERVENTION_TIERS,
+  formatAmount,
+  formatPrice,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
 import { ClaudeLogo } from "@/components/visual/ClaudeLogo";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -39,17 +46,22 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
+  const essentielle = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
+  const temps = getTierById(INTERVENTION_TIERS, "intervention-temps");
+  const essentiellePrice = formatAmount(essentielle.priceFlat!, loc);
+  const tempsPrice = formatPrice(temps, loc);
   return buildProductMetadata({
     locale,
     path: "/interventions",
     title:
-      locale === "fr"
+      loc === "fr"
         ? "Interventions IA en entreprise · 8 formats · France & international"
         : "Corporate AI sessions · 8 formats · France & international",
     description:
-      locale === "fr"
-        ? "Interventions et formations IA opérationnelles sur site : Essentielle dès 490 € HT (2-8 pers.), Gagner du temps 990 € HT (2-20), CODIR, conférence, sur demande. France et international."
-        : "Operational AI sessions on site: Essential from €490 (2-8 people), Save Time €990 (2-20), Leadership, 1-day talk, on request. France and international.",
+      loc === "fr"
+        ? `Interventions et formations IA opérationnelles sur site : Essentielle dès ${essentiellePrice} (2-8 pers.), Gagner du temps ${tempsPrice} (2-20), CODIR, conférence, sur demande. France et international.`
+        : `Operational AI sessions on site: Essential from ${essentiellePrice} (2-8 people), Save Time ${tempsPrice} (2-20), Leadership, 1-day talk, on request. France and international.`,
   });
 }
 
@@ -232,8 +244,12 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       titleEm: isFr ? "concrètement" : "concretely",
       duration: isFr ? "1 journée sur site" : "1 day on site",
       durationLabel: isFr ? "1 jour" : "1 day",
-      price: isFr ? "990 € HT" : "€990 excl. VAT",
-      priceLabel: isFr ? "990 € HT" : "€990",
+      price: formatPrice(getTierById(INTERVENTION_TIERS, "intervention-temps"), isFr ? "fr" : "en"),
+      priceLabel: formatAmount(
+        getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!,
+        isFr ? "fr" : "en",
+        { compact: true },
+      ),
       groupSize: isFr ? "2 à 20 personnes" : "2 to 20 people",
       audience: isFr
         ? "Équipes opérationnelles · TPE, PME, ETI"
@@ -294,18 +310,21 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       ctaLabel: isFr ? "Demander un devis Claude" : "Request Claude quote",
       surface: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     },
-    // Card 6 — CODIR / Dirigeants
+    // Card 6 — Direction (CODIR/COMEX) — repositionnement 2026-05-08 : pas
+    // une formation théorique, une journée de travail privilégié à vos côtés.
+    // Quick-wins activables semaine suivante + vision 12-24 mois + automatisations
+    // dirigeants. Prix fixe 990 € HT (Will, 2026-05-08).
     {
       key: "dirigeants",
       accent: "mocha",
       isDark: true,
-      badge: isFr ? "CODIR · COMEX" : "Leadership · COMEX",
-      title: isFr ? "Dirigeants" : "Executives",
-      titleEm: isFr ? "& CODIR" : "& Leadership",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
+      badge: isFr ? "Travail 1-to-1 · Quick-wins" : "1-on-1 · Quick-wins",
+      title: isFr ? "Direction" : "Direction",
+      titleEm: isFr ? "Journée stratégique" : "Strategic day",
+      duration: dir.duration,
       durationLabel: isFr ? "1 jour" : "1 day",
       price: dir.price,
-      priceLabel: isFr ? "Sur devis" : "On request",
+      priceLabel: dir.price,
       groupSize: dir.groupSize,
       audience: dir.audience,
       benefitTagline: dir.benefitTagline,
@@ -313,6 +332,7 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       href: dirHref,
       ctaLabel: dir.ctaLabel,
       surface: "bg-mocha-rich text-mocha-fg",
+      isHighlight: true,
     },
     // Card 7 — Conférence 1 journée (Sprint 14.10.4 : pas de demi-journée)
     {
@@ -410,6 +430,13 @@ export default async function InterventionsListing({ params }: Props) {
     },
   ];
 
+  const essentielleEntryAmount = getTierById(
+    INTERVENTION_TIERS,
+    "intervention-essentielle",
+  ).priceFlat!;
+  const tempsAmount = getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!;
+  const essentielleEntry = formatAmount(essentielleEntryAmount, loc);
+  const tempsLabel = formatAmount(tempsAmount, loc);
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/interventions",
@@ -417,10 +444,10 @@ export default async function InterventionsListing({ params }: Props) {
       ? "Interventions IA en entreprise · 8 formats · AxionIA"
       : "Corporate AI sessions · 8 formats · AxionIA",
     description: isFr
-      ? "Interventions et formations IA opérationnelles sur site : Essentielle dès 490 € HT (2 à 30+ personnes, 4 paliers), Gagner du temps 990 € HT (2-20), CODIR sur devis, conférence 1 journée, et sur demande particulière. France et international."
-      : "Operational AI sessions on site: Essential from €490 (2 to 30+ people, 4 tiers), Save Time €990 (2-20), Leadership on request, 1-day talk, and bespoke. France and international.",
+      ? `Interventions et formations IA opérationnelles sur site : Essentielle dès ${essentielleEntry} (2 à 30+ personnes, 4 paliers), Gagner du temps ${tempsLabel} (2-20), CODIR sur devis, conférence 1 journée, et sur demande particulière. France et international.`
+      : `Operational AI sessions on site: Essential from ${essentielleEntry} (2 to 30+ people, 4 tiers), Save Time ${tempsLabel} (2-20), Leadership on request, 1-day talk, and bespoke. France and international.`,
     serviceType: "AI training & engagement",
-    priceEur: 490,
+    priceEur: getEntryPriceEur(INTERVENTION_TIERS) ?? 0,
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -452,12 +479,16 @@ export default async function InterventionsListing({ params }: Props) {
   }> = [
     {
       label: isFr ? "Essentielle" : "Essential",
-      benefit: isFr ? "Découverte IA · dès 490 €" : "AI discovery · from €490",
+      benefit: isFr
+        ? `Découverte IA · dès ${formatAmount(essentielleEntryAmount, "fr", { compact: true })}`
+        : `AI discovery · from ${formatAmount(essentielleEntryAmount, "en", { compact: true })}`,
       accent: "terracotta",
     },
     {
       label: isFr ? "Gagner du temps" : "Save Time",
-      benefit: isFr ? "990 € · 2 à 20 personnes" : "€990 · 2 to 20 people",
+      benefit: isFr
+        ? `${formatAmount(tempsAmount, "fr", { compact: true })} · 2 à 20 personnes`
+        : `${formatAmount(tempsAmount, "en", { compact: true })} · 2 to 20 people`,
       accent: "primary",
     },
     {
@@ -489,10 +520,10 @@ export default async function InterventionsListing({ params }: Props) {
     },
     {
       icon: PhoneCall,
-      title: isFr ? "Nous vous appelons (15-30 min)" : "We call you (15-30 min)",
+      title: isFr ? "Nous vous appelons" : "We call you",
       detail: isFr
-        ? "Un appel court pour valider le format choisi, l'effectif, et les premières contraintes pratiques."
-        : "A short call to confirm the chosen format, headcount, and the first practical constraints.",
+        ? "Un appel pour valider le format choisi, l'effectif, et les premières contraintes pratiques."
+        : "A call to confirm the chosen format, headcount, and the first practical constraints.",
     },
     {
       icon: ClipboardCheck,
@@ -500,8 +531,8 @@ export default async function InterventionsListing({ params }: Props) {
         ? "Formulaire envoyé pour mieux connaître l'équipe"
         : "Form sent to know the team better",
       detail: isFr
-        ? "Un questionnaire court (10 min) sur les profils, outils déjà utilisés, douleurs métier — pour adapter l'intervention à votre contexte."
-        : "A short questionnaire (10 min) on roles, current tools, pain points — to adapt the session to your context.",
+        ? "Un questionnaire sur les profils, outils déjà utilisés, douleurs métier — pour adapter l'intervention à votre contexte."
+        : "A questionnaire on roles, current tools, pain points — to adapt the session to your context.",
     },
     {
       icon: Target,
@@ -556,8 +587,8 @@ export default async function InterventionsListing({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "8 formats d'intervention IA opérationnels — sur site, en France et à l'international. De 2 à 30+ personnes, dès 490 € HT. Pour TPE, PME, ETI ou grandes entreprises. À chaque entreprise son format. À chaque équipe son bénéfice concret, mesurable, dès le lendemain."
-                  : "8 operational AI session formats — on site, in France and abroad. From 2 to 30+ people, from €490. Small businesses, mid-market or enterprise. A format for every company, a concrete benefit for every team, starting the very next day."}
+                  ? `8 formats d'intervention IA opérationnels — sur site, en France et à l'international. De 2 à 30+ personnes, dès ${essentielleEntry}. Pour TPE, PME, ETI ou grandes entreprises. À chaque entreprise son format. À chaque équipe son bénéfice concret, mesurable, dès le lendemain.`
+                  : `8 operational AI session formats — on site, in France and abroad. From 2 to 30+ people, from ${formatAmount(essentielleEntryAmount, "en", { compact: true })}. Small businesses, mid-market or enterprise. A format for every company, a concrete benefit for every team, starting the very next day.`}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -960,15 +991,19 @@ export default async function InterventionsListing({ params }: Props) {
               body: isFr
                 ? "L'Essentielle ou la conférence 1 journée vous donnent une vision claire et des quick-wins prêts à reprendre."
                 : "The Essential or the 1-day talk gives you a clear vision and quick-wins ready to resume.",
-              recommendation: isFr ? "Essentielle 490 € · Conférence" : "Essential €490 · Talk",
+              recommendation: isFr
+                ? `Essentielle ${formatAmount(essentielleEntryAmount, "fr", { compact: true })} · Conférence`
+                : `Essential ${formatAmount(essentielleEntryAmount, "en", { compact: true })} · Talk`,
             },
             {
               level: isFr ? "Niveau 2" : "Stage 2",
               title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
               body: isFr
-                ? "Gagner du temps (990 € HT) structure ce qui marche, élimine ce qui n'en vaut pas la peine, et passe à l'échelle équipe."
-                : "Save Time (€990) structures what works, drops what doesn't, and scales it to the team.",
-              recommendation: isFr ? "Gagner du temps · 990 €" : "Save Time · €990",
+                ? `Gagner du temps (${tempsLabel}) structure ce qui marche, élimine ce qui n'en vaut pas la peine, et passe à l'échelle équipe.`
+                : `Save Time (${tempsLabel}) structures what works, drops what doesn't, and scales it to the team.`,
+              recommendation: isFr
+                ? `Gagner du temps · ${formatAmount(tempsAmount, "fr", { compact: true })}`
+                : `Save Time · ${formatAmount(tempsAmount, "en", { compact: true })}`,
             },
             {
               level: isFr ? "Niveau 3" : "Stage 3",

@@ -41,6 +41,13 @@ import {
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { AUDITS, type AuditAccent, type AuditSlug } from "@/content/audit";
+import {
+  AUDIT_TIERS,
+  formatAmount,
+  formatAmountRange,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -53,17 +60,28 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
+  const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
+  const cibleTier = getTierById(AUDIT_TIERS, "audit-cible");
+  const pmeTier = getTierById(AUDIT_TIERS, "audit-strategique-pme");
+  const etiTier = getTierById(AUDIT_TIERS, "audit-strategique-eti");
+  const flash = formatAmount(flashTier.priceFlat!, loc, { compact: true });
+  const cibleRange = formatAmountRange(cibleTier.priceMin!, cibleTier.priceMax!, loc, {
+    compact: true,
+  });
+  const pmeRange = formatAmountRange(pmeTier.priceMin!, pmeTier.priceMax!, loc, { compact: true });
+  const etiFrom = formatAmount(etiTier.priceMin!, loc, { compact: true });
   return buildProductMetadata({
     locale,
     path: "/audit",
     title:
-      locale === "fr"
-        ? "Audit IA en entreprise · 4 niveaux · diagnostic flash dès 490 €"
-        : "AI audit · 4 levels · flash diagnosis from €490",
+      loc === "fr"
+        ? `Audit IA en entreprise · 4 niveaux · diagnostic flash dès ${flash}`
+        : `AI audit · 4 levels · flash diagnosis from ${flash}`,
     description:
-      locale === "fr"
-        ? "Pyramide d'audit IA en 4 niveaux : Flash 490 €, Audit ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI Ã  partir de 12 000 €. France & international."
-        : "4-level AI audit pyramid: Flash €490, Targeted audit €1,900-€3,900, Strategic SMB €4,900-€9,900, Strategic mid-cap from €12,000. France & worldwide.",
+      loc === "fr"
+        ? `Pyramide d'audit IA en 4 niveaux : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. France & international.`
+        : `4-level AI audit pyramid: Flash ${flash}, Targeted audit ${cibleRange}, Strategic SMB ${pmeRange}, Strategic mid-cap from ${etiFrom}. France & worldwide.`,
   });
 }
 
@@ -160,12 +178,25 @@ const ICON_BY_SLUG: Record<AuditSlug, typeof Zap> = {
 
 // Étiquette de prix top-right sur chaque card de la pyramide.
 // Affichée en serif italique terracotta — visible immédiatement Ã  l'arrivée.
-const PRICE_TAG_BY_SLUG: Record<AuditSlug, { fr: string; en: string }> = {
-  flash: { fr: "490 €", en: "€490" },
-  process: { fr: "1 900 €", en: "€1,900" },
-  "strategique-pme": { fr: "4 900 €", en: "€4,900" },
-  "strategique-eti": { fr: "12 000 €", en: "€12,000" },
+// Mapping AuditSlug → tier id (SSOT pricing.ts).
+// Sprint 14.10.5 : zéro hardcode, tout dérivé de getTierById(AUDIT_TIERS, …).
+const TIER_ID_BY_SLUG: Record<AuditSlug, string> = {
+  flash: "audit-flash",
+  process: "audit-cible",
+  "strategique-pme": "audit-strategique-pme",
+  "strategique-eti": "audit-strategique-eti",
 };
+
+/** Prix d'entrée d'un slug audit en montant brut (number) — priceFlat ou priceMin. */
+function entryAmount(slug: AuditSlug): number {
+  const tier = getTierById(AUDIT_TIERS, TIER_ID_BY_SLUG[slug]);
+  return tier.priceFlat ?? tier.priceMin ?? 0;
+}
+
+/** Étiquette de prix top-right sur chaque card de la pyramide — compact (sans HT). */
+function priceTag(slug: AuditSlug, locale: "fr" | "en"): string {
+  return formatAmount(entryAmount(slug), locale, { compact: true });
+}
 
 export default async function AuditListing({ params }: Props) {
   const { locale } = await params;
@@ -203,6 +234,15 @@ export default async function AuditListing({ params }: Props) {
     },
   ];
 
+  // Étiquettes prix dérivées du SSOT (zéro hardcode — Sprint 14.10.5).
+  // Format compact (sans HT) pour les CTA, badges, level labels.
+  const priceFlash = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
+    compact: true,
+  });
+  const priceCibleFromPlus = `${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, loc, { compact: true })}+`;
+  const pricePmeFromPlus = `${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMin!, loc, { compact: true })}+`;
+  const priceEtiFromPlus = `${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, loc, { compact: true })}+`;
+
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [
@@ -212,6 +252,26 @@ export default async function AuditListing({ params }: Props) {
   // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
   // Signal AEO/GEO « audit IA disponible partout en France » pour Perplexity,
   // Google AI Overviews, Claude.ai. Couvre Country FR + 12 régions + Paris.
+  const flashAmount = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
+    compact: true,
+  });
+  const cibleAmountRange = formatAmountRange(
+    getTierById(AUDIT_TIERS, "audit-cible").priceMin!,
+    getTierById(AUDIT_TIERS, "audit-cible").priceMax!,
+    loc,
+    { compact: true },
+  );
+  const pmeAmountRange = formatAmountRange(
+    getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMin!,
+    getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMax!,
+    loc,
+    { compact: true },
+  );
+  const etiAmountFrom = formatAmount(
+    getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
+    loc,
+    { compact: true },
+  );
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/audit",
@@ -219,10 +279,10 @@ export default async function AuditListing({ params }: Props) {
       ? "Audit IA opérationnel · 4 niveaux · AxionIA"
       : "Operational AI audit · 4 tiers · AxionIA",
     description: isFr
-      ? "Audit IA en entreprise : pyramide 4 niveaux (Flash 490 € · Ciblé 1 900-3 900 € · Stratégique PME 4 900-9 900 € · Stratégique ETI dès 12 000 €). Diagnostic actionnable, ROI chiffré, plan d'attaque livré sous 5 jours."
-      : "Corporate AI audit: 4-tier pyramid (Flash €490 · Targeted €1,900-3,900 · SME Strategic €4,900-9,900 · Mid-cap Strategic from €12,000). Actionable diagnosis, costed ROI, action plan delivered in 5 days.",
+      ? `Audit IA en entreprise : pyramide 4 niveaux (Flash ${flashAmount} · Ciblé ${cibleAmountRange} · Stratégique PME ${pmeAmountRange} · Stratégique ETI dès ${etiAmountFrom}). Diagnostic actionnable, ROI chiffré, plan d'attaque livré sous 5 jours.`
+      : `Corporate AI audit: 4-tier pyramid (Flash ${flashAmount} · Targeted ${cibleAmountRange} · SME Strategic ${pmeAmountRange} · Mid-cap Strategic from ${etiAmountFrom}). Actionable diagnosis, costed ROI, action plan delivered in 5 days.`,
     serviceType: "AI audit",
-    priceEur: 490,
+    priceEur: getEntryPriceEur(AUDIT_TIERS) ?? 0,
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -304,8 +364,8 @@ export default async function AuditListing({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "On cartographie votre entreprise et on identifie tout ce que l'IA peut y apporter, automatiser ou optimiser. 4 niveaux dès 490 € · France & international."
-                  : "We map your company and identify everything AI can bring, automate or optimise. 4 levels from €490 · France & worldwide."}
+                  ? `On cartographie votre entreprise et on identifie tout ce que l'IA peut y apporter, automatiser ou optimiser. 4 niveaux dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} · France & international.`
+                  : `We map your company and identify everything AI can bring, automate or optimise. 4 levels from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} · France & worldwide.`}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -315,8 +375,8 @@ export default async function AuditListing({ params }: Props) {
                   className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(194,74,27,0.6)]"
                 >
                   {isFr
-                    ? "Réserver mon diagnostic flash · 490 €"
-                    : "Book my flash diagnosis · €490"}
+                    ? `Réserver mon diagnostic flash · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`
+                    : `Book my flash diagnosis · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/cas-concrets" variant="outline" size="lg">
@@ -395,28 +455,28 @@ export default async function AuditListing({ params }: Props) {
                       title: "TPE · 1 Ã  9 personnes",
                       hint: "Artisan, indépendant, petite équipe",
                       target: "flash",
-                      level: "Niveau 1 · Flash · 490 €",
+                      level: `Niveau 1 · Flash · ${priceFlash}`,
                     },
                     {
                       icon: Building,
                       title: "PME · 10 Ã  49 personnes",
                       hint: "1 service Ã  optimiser ou aller plus loin",
                       target: "process",
-                      level: "Niveau 2 · Audit ciblé · 1 900 €+",
+                      level: `Niveau 2 · Audit ciblé · ${priceCibleFromPlus}`,
                     },
                     {
                       icon: Building2,
                       title: "PME · 50 Ã  249 personnes",
                       hint: "Plusieurs services, vision d'ensemble",
                       target: "strategique-pme",
-                      level: "Niveau 3 · Stratégique PME · 4 900 €+",
+                      level: `Niveau 3 · Stratégique PME · ${pricePmeFromPlus}`,
                     },
                     {
                       icon: Network,
                       title: "ETI · 250+ ou multi-sites",
                       hint: "Plusieurs BU, plusieurs sites, gouvernance IA",
                       target: "strategique-eti",
-                      level: "Niveau 4 · Stratégique ETI · 12 000 €+",
+                      level: `Niveau 4 · Stratégique ETI · ${priceEtiFromPlus}`,
                     },
                   ]
                 : [
@@ -425,28 +485,28 @@ export default async function AuditListing({ params }: Props) {
                       title: "Small · 1 to 9 people",
                       hint: "Artisan, freelance, small team",
                       target: "flash",
-                      level: "Level 1 · Flash · €490",
+                      level: `Level 1 · Flash · ${priceFlash}`,
                     },
                     {
                       icon: Building,
                       title: "SMB · 10 to 49 people",
                       hint: "1 service to optimise or go further",
                       target: "process",
-                      level: "Level 2 · Targeted · €1,900+",
+                      level: `Level 2 · Targeted · ${priceCibleFromPlus}`,
                     },
                     {
                       icon: Building2,
                       title: "SMB · 50 to 249 people",
                       hint: "Several services, full picture",
                       target: "strategique-pme",
-                      level: "Level 3 · Strategic SMB · €4,900+",
+                      level: `Level 3 · Strategic SMB · ${pricePmeFromPlus}`,
                     },
                     {
                       icon: Network,
                       title: "Mid-cap · 250+ or multi-site",
                       hint: "Several BUs, multiple sites, AI governance",
                       target: "strategique-eti",
-                      level: "Level 4 · Strategic mid-cap · €12,000+",
+                      level: `Level 4 · Strategic mid-cap · ${priceEtiFromPlus}`,
                     },
                   ]
               ).map((opt) => {
@@ -492,28 +552,28 @@ export default async function AuditListing({ params }: Props) {
                       title: "Je veux savoir où l'IA peut s'insérer",
                       hint: "Découvrir 3-5 endroits concrets, sans engagement",
                       target: "flash",
-                      level: "Niveau 1 · Flash · 490 €",
+                      level: `Niveau 1 · Flash · ${priceFlash}`,
                     },
                     {
                       icon: Wrench,
                       title: "Je veux automatiser un service précis",
                       hint: "Vente, RH, finance, ops, support — étudié de A Ã  Z",
                       target: "process",
-                      level: "Niveau 2 · Audit ciblé · 1 900 €+",
+                      level: `Niveau 2 · Audit ciblé · ${priceCibleFromPlus}`,
                     },
                     {
                       icon: BarChart3,
                       title: "Je veux une vision globale de mon entreprise",
                       hint: "Plusieurs services étudiés, plan stratégique chiffré",
                       target: "strategique-pme",
-                      level: "Niveau 3 · Stratégique PME · 4 900 €+",
+                      level: `Niveau 3 · Stratégique PME · ${pricePmeFromPlus}`,
                     },
                     {
                       icon: Network,
                       title: "Je gère plusieurs sites ou plusieurs BU",
                       hint: "Alignement CODIR, gouvernance, AI Act",
                       target: "strategique-eti",
-                      level: "Niveau 4 · Stratégique ETI · 12 000 €+",
+                      level: `Niveau 4 · Stratégique ETI · ${priceEtiFromPlus}`,
                     },
                   ]
                 : [
@@ -522,28 +582,28 @@ export default async function AuditListing({ params }: Props) {
                       title: "I want to know where AI can fit in",
                       hint: "Discover 3-5 concrete places, no commitment",
                       target: "flash",
-                      level: "Level 1 · Flash · €490",
+                      level: `Level 1 · Flash · ${priceFlash}`,
                     },
                     {
                       icon: Wrench,
                       title: "I want to automate a specific service",
                       hint: "Sales, HR, finance, ops, support — studied A to Z",
                       target: "process",
-                      level: "Level 2 · Targeted · €1,900+",
+                      level: `Level 2 · Targeted · ${priceCibleFromPlus}`,
                     },
                     {
                       icon: BarChart3,
                       title: "I want a global vision of my company",
                       hint: "Multiple services studied, costed strategic plan",
                       target: "strategique-pme",
-                      level: "Level 3 · Strategic SMB · €4,900+",
+                      level: `Level 3 · Strategic SMB · ${pricePmeFromPlus}`,
                     },
                     {
                       icon: Network,
                       title: "I manage multiple sites or BUs",
                       hint: "Leadership alignment, governance, AI Act",
                       target: "strategique-eti",
-                      level: "Level 4 · Strategic mid-cap · €12,000+",
+                      level: `Level 4 · Strategic mid-cap · ${priceEtiFromPlus}`,
                     },
                   ]
               ).map((opt) => {
@@ -585,7 +645,7 @@ export default async function AuditListing({ params }: Props) {
                 href="#level-flash"
                 className="text-terracotta-deep font-semibold underline underline-offset-4 hover:opacity-80"
               >
-                diagnostic flash 490 €
+                diagnostic flash {priceFlash}
               </a>{" "}
               est conçu exactement pour ça : on identifie 3 Ã  5 endroits où l&apos;IA peut
               s&apos;insérer concrètement chez vous.
@@ -597,7 +657,7 @@ export default async function AuditListing({ params }: Props) {
                 href="#level-flash"
                 className="text-terracotta-deep font-semibold underline underline-offset-4 hover:opacity-80"
               >
-                €490 flash diagnosis
+                {priceFlash} flash diagnosis
               </a>{" "}
               is designed exactly for this: we identify 3 to 5 concrete places where AI can fit in
               your company.
@@ -794,7 +854,7 @@ export default async function AuditListing({ params }: Props) {
                           )}
                           style={{ fontFamily: "var(--font-serif)" }}
                         >
-                          {PRICE_TAG_BY_SLUG[item.slug][loc]}
+                          {priceTag(item.slug, loc)}
                         </p>
                       </div>
                     </div>
@@ -1015,8 +1075,8 @@ export default async function AuditListing({ params }: Props) {
                 ? "Sur 1 zone clé de votre entreprise, on identifie 3 Ã  5 endroits où l'IA peut s'insérer concrètement, avec gains chiffrés et plan d'action immédiat."
                 : "On 1 key area of your company, we identify 3 to 5 places where AI can fit in concretely, with costed gains and an immediate action plan.",
               cta: isFr
-                ? "Réserver le diagnostic flash · 490 €"
-                : "Book the flash diagnosis · €490",
+                ? `Réserver le diagnostic flash · ${priceFlash}`
+                : `Book the flash diagnosis · ${priceFlash}`,
               href: "/audit/demande?type=flash",
               accent: "terracotta",
             },
@@ -1040,8 +1100,8 @@ export default async function AuditListing({ params }: Props) {
                 ? "Niveau 3 ou 4 · Stratégique PME ou ETI"
                 : "Level 3 or 4 · Strategic SMB or mid-cap",
               detail: isFr
-                ? "PME 20-250 salariés : audit stratégique 4,9-9,9 k€. ETI / multi-sites : audit groupe Ã  partir de 12 k€, alignement CODIR et premiers jalons AI Act."
-                : "SMB 20-250 staff: strategic audit €4.9-9.9k. Mid-cap / multi-site: group audit from €12k, leadership alignment and AI Act milestones.",
+                ? `PME 20-250 salariés : audit stratégique ${pmeAmountRange}. ETI / multi-sites : audit groupe à partir de ${etiAmountFrom}, alignement CODIR et premiers jalons AI Act.`
+                : `SMB 20-250 staff: strategic audit ${pmeAmountRange}. Mid-cap / multi-site: group audit from ${etiAmountFrom}, leadership alignment and AI Act milestones.`,
               cta: isFr ? "Demander un audit stratégique" : "Request a strategic audit",
               href: "/audit/demande?type=strategique-pme",
               accent: "sage",
@@ -1277,7 +1337,7 @@ export default async function AuditListing({ params }: Props) {
       <CtaBlock
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
         title={isFr ? "Réservez votre diagnostic flash" : "Book your flash diagnosis"}
-        titleEm={isFr ? "Ã  490 €" : "at €490"}
+        titleEm={isFr ? `à ${priceFlash}` : `at ${priceFlash}`}
         description={
           isFr
             ? "On identifie 3 Ã  5 endroits concrets où l'IA peut s'insérer dans votre entreprise et tout ce qui peut être automatisé. Si vous voulez aller plus loin, 3 niveaux d'audit plus profonds vous attendent selon votre taille et votre ambition."
@@ -1285,7 +1345,10 @@ export default async function AuditListing({ params }: Props) {
         }
         cta={
           <Cta href="/audit/demande?type=flash" size="lg">
-            {isFr ? "Réserver mon diagnostic flash · 490 €" : "Book my flash diagnosis · €490"} â†’
+            {isFr
+              ? `Réserver mon diagnostic flash · ${priceFlash}`
+              : `Book my flash diagnosis · ${priceFlash}`}{" "}
+            →
           </Cta>
         }
         tone="dark"
@@ -1294,7 +1357,7 @@ export default async function AuditListing({ params }: Props) {
       {/* STICKY CTA MOBILE — apparaît au scroll, masqué sur lg+ */}
       <StickyMobileCta
         href="/audit/demande?type=flash"
-        label={isFr ? "Réserver Flash · 490 €" : "Book Flash · €490"}
+        label={isFr ? `Réserver Flash · ${priceFlash}` : `Book Flash · ${priceFlash}`}
         track="audit-flash-sticky-mobile"
         threshold={500}
       />

@@ -9,6 +9,7 @@ import { BookingCalendarLazy } from "@/components/calendar/BookingCalendarLazy";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { INTERVENTION_TIERS, formatPrice, getTierById } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
@@ -368,7 +369,11 @@ export default async function ReserverPage({ params }: Props) {
 
       <CtaBlock
         eyebrow={isFr ? "À noter" : "Note"}
-        title={isFr ? "L'Essentielle 490 € HT" : "The Essential €490 (excl. VAT)"}
+        title={
+          isFr
+            ? `L'Essentielle ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "fr")}`
+            : `The Essential ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "en")}`
+        }
         description={
           isFr
             ? "Le créneau est verrouillé après le versement de l'acompte 50 %. Conditions de réservation détaillées dans les CGV."

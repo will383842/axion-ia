@@ -2,6 +2,23 @@
 // Purple #7a3dff accent. Source: docs 04 + 22.
 // Sprint 7 baseline. Note: ban du mot « formation » levé 2026-05-07 (ADR
 // `axionia/docs/adr/0003-lift-formation-ban.md`) — vocabulaire libre désormais.
+// Sprint 14.10.5 (2026-05-08) : prix IA custom dérivés de pricing.ts (SSOT).
+
+import { IMPLEMENTATION_TIERS, formatAmount, formatAmountRange, getTierById } from "./pricing";
+
+const IA_CUSTOM_TIER = getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom");
+const IA_CUSTOM_RANGE_FR = formatAmountRange(
+  IA_CUSTOM_TIER.priceMin!,
+  IA_CUSTOM_TIER.priceMax!,
+  "fr",
+  { compact: true },
+);
+const IA_CUSTOM_RANGE_EN = formatAmountRange(
+  IA_CUSTOM_TIER.priceMin!,
+  IA_CUSTOM_TIER.priceMax!,
+  "en",
+  { compact: true },
+);
 
 export type ImplementationSlug =
   | "ia-custom"
@@ -56,15 +73,13 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathEn: "/implementation/custom-ai",
     fr: makeFr({
       eyebrow: "Service premium · Module 3",
-      title: "IA custom d'entreprise (8 000 - 50 000 €)",
-      answer:
-        "Implémentation IA sur mesure pour grands comptes : modèles fine-tuned sur vos données, intégration profonde dans vos systèmes, équipe dédiée. Prestations 8 000 à 50 000 € HT, livraison 4 à 12 semaines.",
+      title: `IA custom d'entreprise (${IA_CUSTOM_RANGE_FR})`,
+      answer: `Implémentation IA sur mesure pour grands comptes : modèles fine-tuned sur vos données, intégration profonde dans vos systèmes, équipe dédiée. Prestations ${formatAmount(IA_CUSTOM_TIER.priceMin!, "fr", { compact: true })} à ${formatAmount(IA_CUSTOM_TIER.priceMax!, "fr")}, livraison ${IA_CUSTOM_TIER.durationFr}.`,
     }),
     en: makeEn({
       eyebrow: "Premium service · Module 3",
-      title: "Custom enterprise AI (€8k - €50k)",
-      answer:
-        "Tailor-made AI implementation for large accounts: models fine-tuned on your data, deep integration into your systems, dedicated team. Engagements €8k to €50k (excl. VAT), 4-12 week delivery.",
+      title: `Custom enterprise AI (${IA_CUSTOM_RANGE_EN})`,
+      answer: `Tailor-made AI implementation for large accounts: models fine-tuned on your data, deep integration into your systems, dedicated team. Engagements ${formatAmount(IA_CUSTOM_TIER.priceMin!, "en", { compact: true })} to ${formatAmount(IA_CUSTOM_TIER.priceMax!, "en")}, ${IA_CUSTOM_TIER.durationEn} delivery.`,
     }),
   },
   {

@@ -18,6 +18,14 @@ import { Link } from "@/i18n/navigation";
 import { AUTOMATISATIONS } from "@/content/automatisations";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import {
+  AUDIT_TIERS,
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  formatAmount,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
 import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -30,17 +38,26 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
+  // « Mise en route IA » entry-level — aligné sur intervention-essentielle (490 €)
+  // qui correspond à la prestation « première automatisation simple ».
+  // TODO(pricing): valider mapping avec Will (intervention-essentielle vs impl-poc 990 €).
+  const entryAutomatisation = formatAmount(
+    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+    loc,
+    { compact: true },
+  );
   return buildProductMetadata({
     locale,
     path: "/implementation",
     title:
-      locale === "fr"
+      loc === "fr"
         ? "Implémentation IA · Catalogue par fonction · AxionIA"
         : "AI implementation · Catalogue by function · AxionIA",
     description:
-      locale === "fr"
-        ? "Catalogue d'automatisations IA par fonction d'entreprise (service client, ventes, marketing, RH, données, métier...). Forfait fixe Ã  partir de 490 €, sans abonnement mensuel, livraison 2-6 semaines."
-        : "AI automation catalogue by business function (customer service, sales, marketing, HR, data, operations...). Fixed fee from €490, no monthly subscription, 2-6 week delivery.",
+      loc === "fr"
+        ? `Catalogue d'automatisations IA par fonction d'entreprise (service client, ventes, marketing, RH, données, métier...). Forfait fixe à partir de ${entryAutomatisation}, sans abonnement mensuel, livraison 2-6 semaines.`
+        : `AI automation catalogue by business function (customer service, sales, marketing, HR, data, operations...). Fixed fee from ${entryAutomatisation}, no monthly subscription, 2-6 week delivery.`,
   });
 }
 
@@ -78,11 +95,18 @@ export default async function ImplementationListing({ params }: Props) {
 
   // Bandeau pricing transparent — fourchettes par typologie de projet,
   // alignées sur le catalogue Module 3.
+  // TODO(pricing): « Mise en route IA » est aligné sur intervention-essentielle
+  // (490 €) — valider avec Will si on doit basculer sur impl-poc.priceMin (990 €).
+  const startupAmount = formatAmount(
+    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+    loc,
+    { compact: true },
+  );
   const pricingTiers = isFr
     ? [
         {
           tag: "À partir de",
-          price: "490 €",
+          price: startupAmount,
           label: "Mise en route IA",
           desc: "Une première automatisation simple installée chez vous. Idéal artisan, commerce, TPE qui veut tester sans risque.",
         },
@@ -102,7 +126,7 @@ export default async function ImplementationListing({ params }: Props) {
     : [
         {
           tag: "From",
-          price: "€490",
+          price: startupAmount,
           label: "AI start-up",
           desc: "A first simple automation installed at your place. Great for trades, retail, SMB who want a risk-free test.",
         },
@@ -234,7 +258,7 @@ export default async function ImplementationListing({ params }: Props) {
           {
             name: "AxionIA",
             tag: "Cabinet IA & automatisation",
-            price: "490 € â†’ sur devis",
+            price: `${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} → sur devis`,
             highlight: true,
             badge: "Le meilleur des deux mondes",
             pros: [
@@ -302,7 +326,7 @@ export default async function ImplementationListing({ params }: Props) {
           {
             name: "AxionIA",
             tag: "AI & automation consultancy",
-            price: "€490 â†’ on quote",
+            price: `${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} → on quote`,
             highlight: true,
             badge: "Best of both worlds",
             pros: [
@@ -497,8 +521,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           id: "q-prix",
           question: "Combien ça coûte vraiment, en pratique ?",
-          answer:
-            "Une première automatisation simple démarre Ã  490 € HT. Les implémentations standards (plusieurs automatisations connectées) et l'IA Custom pour ETI ou grands comptes sont chiffrées sur devis selon votre périmètre. Toujours en forfait fixe : devis ferme avant tout démarrage, pas de dépassement.",
+          answer: `Une première automatisation simple démarre à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr")}. Les implémentations standards (plusieurs automatisations connectées) et l'IA Custom pour ETI ou grands comptes sont chiffrées sur devis selon votre périmètre. Toujours en forfait fixe : devis ferme avant tout démarrage, pas de dépassement.`,
         },
         {
           id: "q-proprio",
@@ -539,8 +562,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           id: "q-taille",
           question: "C'est adapté Ã  une entreprise comme la mienne ?",
-          answer:
-            "Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. Notre catalogue couvre artisan (devis, suivi clients) â†’ grand groupe (assistant juridique, agents internes). Si vous hésitez, l'audit Flash (490 €) cadre le projet en 2 jours.",
+          answer: `Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. Notre catalogue couvre artisan (devis, suivi clients) → grand groupe (assistant juridique, agents internes). Si vous hésitez, l'audit Flash (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}) cadre le projet en 2 jours.`,
         },
         {
           id: "q-hors-catalogue",
@@ -553,8 +575,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           id: "q-price",
           question: "How much does it really cost, in practice?",
-          answer:
-            "A first simple automation starts at €490 (excl. VAT). Standard implementations (multiple connected automations) and Custom AI for mid-cap or enterprise are quoted on a per-scope basis. Always fixed-fee: firm quote before any kick-off, no overrun.",
+          answer: `A first simple automation starts at ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en")}. Standard implementations (multiple connected automations) and Custom AI for mid-cap or enterprise are quoted on a per-scope basis. Always fixed-fee: firm quote before any kick-off, no overrun.`,
         },
         {
           id: "q-owner",
@@ -595,8 +616,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           id: "q-size",
           question: "Is this fit for a company like mine?",
-          answer:
-            "Yes, as long as there is a repetitive task or daily annoyance. Our catalogue covers trades (quoting, follow-up) â†’ enterprise (legal assistant, internal agents). If unsure, the Flash audit (€490) frames the project in 2 days.",
+          answer: `Yes, as long as there is a repetitive task or daily annoyance. Our catalogue covers trades (quoting, follow-up) → enterprise (legal assistant, internal agents). If unsure, the Flash audit (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}) frames the project in 2 days.`,
         },
         {
           id: "q-not-listed",
@@ -639,10 +659,10 @@ export default async function ImplementationListing({ params }: Props) {
       ? "Implémentation IA opérationnelle · AxionIA"
       : "Operational AI implementation · AxionIA",
     description: isFr
-      ? "Mise en production de cas IA opérationnels en 6 Ã  12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès 990 € HT."
-      : "Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from €990.",
+      ? `Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}.`
+      : `Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en")}.`,
     serviceType: "AI implementation",
-    priceEur: 990,
+    priceEur: getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0,
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -690,8 +710,8 @@ export default async function ImplementationListing({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Aucun prérequis technique — on part de votre niveau réel, de vos outils actuels, de votre quotidien. Forfait fixe Ã  partir de 490 €, livraison en 2 Ã  6 semaines. Vous payez une fois, c'est Ã  vous — pas d'abonnement mensuel."
-                  : "No technical prerequisite — we start from your actual level, your current tools, your daily reality. Fixed fee from €490, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription."}
+                  ? `Aucun prérequis technique — on part de votre niveau réel, de vos outils actuels, de votre quotidien. Forfait fixe à partir de ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel.`
+                  : `No technical prerequisite — we start from your actual level, your current tools, your daily reality. Fixed fee from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription.`}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">

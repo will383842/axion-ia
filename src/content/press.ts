@@ -2,6 +2,50 @@
 // Doctrine éditoriale v3 : ton factuel, anti-marketing. Anti-formation strict.
 // FR canonical · EN miroir. Parité enforced via tests/content/press.test.ts.
 
+import {
+  AUDIT_TIERS,
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  formatAmount,
+  getEntryLabel,
+  getTierById,
+} from "@/content/pricing";
+
+// ─────────────────────────────────────────────────────────────────
+// Helpers prix dérivés (zéro hardcode — Sprint 14.10.5).
+// ─────────────────────────────────────────────────────────────────
+const auditFlash = getTierById(AUDIT_TIERS, "audit-flash");
+const auditCible = getTierById(AUDIT_TIERS, "audit-cible");
+const auditPme = getTierById(AUDIT_TIERS, "audit-strategique-pme");
+const auditEti = getTierById(AUDIT_TIERS, "audit-strategique-eti");
+const interventionEssentielle = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
+
+function pressPitchShort(loc: "fr" | "en"): string {
+  const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
+  const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
+  const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
+  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
+  if (loc === "fr") {
+    return `AxionIA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de ${formatAmount(interventionEssentielle.priceFlat!, "fr", { compact: true })}, ${interventionsEntry}), audits IA en 4 niveaux (Flash ${flash} → Stratégique ETI dès ${etiFrom}) et implémentations sur mesure (${implEntry}). Hébergement UE par défaut, RGPD strict.`;
+  }
+  return `AxionIA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from ${formatAmount(interventionEssentielle.priceFlat!, "en", { compact: true })}, ${interventionsEntry}), AI audits in 4 tiers (Flash ${flash} → Strategic Mid-cap from ${etiFrom}) and custom implementations (${implEntry}). EU hosting by default, strict GDPR.`;
+}
+
+function pressReleaseLaunchBody(loc: "fr" | "en"): string {
+  const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
+  const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
+  const cibleMin = formatAmount(auditCible.priceMin!, loc, { compact: true });
+  const cibleMax = formatAmount(auditCible.priceMax!, loc, { compact: true });
+  const pmeMin = formatAmount(auditPme.priceMin!, loc, { compact: true });
+  const pmeMax = formatAmount(auditPme.priceMax!, loc, { compact: true });
+  const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
+  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
+  if (loc === "fr") {
+    return `AxionIA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé ${cibleMin} à ${cibleMax}, Stratégique PME ${pmeMin} à ${pmeMax}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+  }
+  return `AxionIA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted ${cibleMin} to ${cibleMax}, Strategic SME ${pmeMin} to ${pmeMax}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+}
+
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";
 
 export interface PressRelease {
@@ -63,22 +107,26 @@ export interface PressFaqEntry {
 // ─────────────────────────────────────────────────────────────────
 // PITCH presse — bloc direct-answer 40-80 mots citable LLMs (signal AEO).
 // ─────────────────────────────────────────────────────────────────
-export const PRESS_PITCH = {
+export interface PressPitchLocale {
+  eyebrow: string;
+  short: string;
+  boilerplate: string;
+}
+
+export const PRESS_PITCH: { fr: PressPitchLocale; en: PressPitchLocale } = {
   fr: {
     eyebrow: "Espace presse",
-    short:
-      "AxionIA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de 490 €), audits IA en 4 niveaux (Flash 490 € → Stratégique ETI dès 12 000 €) et implémentations sur mesure (à partir de 990 €). Hébergement UE par défaut, RGPD strict.",
+    short: pressPitchShort("fr"),
     boilerplate:
       "AxionIA OÜ est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
   },
   en: {
     eyebrow: "Press room",
-    short:
-      "AxionIA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from €490), AI audits in 4 tiers (Flash €490 → Strategic Mid-cap from €12,000) and custom implementations (from €990). EU hosting by default, strict GDPR.",
+    short: pressPitchShort("en"),
     boilerplate:
       "AxionIA OÜ is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
   },
-} as const;
+};
 
 // ─────────────────────────────────────────────────────────────────
 // FAITS clés — chiffres factuels pour journalistes (carte fact-sheet).
@@ -111,15 +159,21 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
   },
   {
     id: "starting-price",
-    fr: { label: "Prix d'entrée", value: "490 € · 1 journée" },
-    en: { label: "Starting price", value: "€490 · 1 day" },
+    fr: {
+      label: "Prix d'entrée",
+      value: `${formatAmount(interventionEssentielle.priceFlat!, "fr", { compact: true })} · ${interventionEssentielle.durationFr ?? "1 journée"}`,
+    },
+    en: {
+      label: "Starting price",
+      value: `${formatAmount(interventionEssentielle.priceFlat!, "en", { compact: true })} · ${interventionEssentielle.durationEn ?? "1 day"}`,
+    },
   },
   {
     id: "response-time",
     fr: { label: "Délai de réponse presse", value: "48 h ouvrées" },
     en: { label: "Press response time", value: "48 business hours" },
   },
-] as const;
+];
 
 // ─────────────────────────────────────────────────────────────────
 // PRESS KIT — assets téléchargeables. `fileUrl: null` = placeholder UI disabled.
@@ -224,12 +278,12 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     fr: {
       title: "AxionIA lance sa plateforme de cabinet IA opérationnel",
       dek: "Le cabinet ouvre axion-ia.com, un point d'entrée unique pour les entreprises souhaitant identifier et déployer des usages IA à ROI mesurable.",
-      body: "AxionIA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain à partir de 490 €, audits IA chiffrés en 4 niveaux (Flash 490 €, Ciblé 1 900 à 3 900 €, Stratégique PME 4 900 à 9 900 €, Stratégique ETI à partir de 12 000 €), et implémentations sur mesure à partir de 990 € — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.",
+      body: pressReleaseLaunchBody("fr"),
     },
     en: {
       title: "AxionIA launches its operational AI consultancy platform",
       dek: "The firm opens axion-ia.com, a single entry point for companies looking to identify and deploy AI use cases with measurable ROI.",
-      body: "AxionIA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions from €490, AI audits in 4 tiers (Flash €490, Targeted €1,900 to €3,900, Strategic SME €4,900 to €9,900, Strategic Mid-cap from €12,000), and custom implementations from €990 — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.",
+      body: pressReleaseLaunchBody("en"),
     },
   },
   {
@@ -262,7 +316,7 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
       body: "Faced with growing concerns from European executives about AI data sovereignty, AxionIA confirms a default EU hosting policy. All client data transits through and remains on Hetzner CX32 in Frankfurt. AI models can be hosted on-premise or on dedicated infrastructure if required. GDPR policy is strictly enforced: rights exercise within 30 days, systematic anonymization of samples used in demos, DPO reachable at dpo@axion-ia.com.",
     },
   },
-] as const;
+];
 
 // ─────────────────────────────────────────────────────────────────
 // COUVERTURE médias — Phase 1 vide. Premières mentions à venir.

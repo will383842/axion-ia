@@ -11,6 +11,13 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { IMPLEMENTATIONS } from "@/content/implementation";
+import {
+  IMPLEMENTATION_TIERS,
+  formatAmount,
+  formatAmountRange,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
@@ -89,8 +96,8 @@ export default async function ImplementationByTechPage({ params }: Props) {
         titleEm={isFr ? "brique techno" : "building block"}
         description={
           isFr
-            ? "Si vous raisonnez en briques techniques (chatbot, agents autonomes, structuration de données, IA Custom...), 9 prestations packagées vous attendent. De 990 € à 50 000 € HT, livraison 2 à 12 semaines."
-            : "If you think in technical building blocks (chatbot, autonomous agents, data structuring, custom AI...), 9 packaged services are ready. From €990 to €50,000 (excl. VAT), 2-12 week delivery."
+            ? `Si vous raisonnez en briques techniques (chatbot, agents autonomes, structuration de données, IA Custom...), 9 prestations packagées vous attendent. De ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "fr", { compact: true })} à ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "fr")}, livraison 2 à 12 semaines.`
+            : `If you think in technical building blocks (chatbot, autonomous agents, data structuring, custom AI...), 9 packaged services are ready. From ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "en", { compact: true })} to ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "en")}, 2-12 week delivery.`
         }
       />
 
@@ -117,8 +124,8 @@ export default async function ImplementationByTechPage({ params }: Props) {
         title={isFr ? "IA Custom · grands comptes" : "Custom AI · large accounts"}
         description={
           isFr
-            ? "Pour les implémentations sur mesure 8 000 € - 50 000 € HT. Équipe dédiée, modèles fine-tuned sur vos données."
-            : "For tailor-made implementations €8k - €50k (excl. VAT). Dedicated team, models fine-tuned on your data."
+            ? `Pour les implémentations sur mesure ${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "fr")}. Équipe dédiée, modèles fine-tuned sur vos données.`
+            : `For tailor-made implementations ${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "en")}. Dedicated team, models fine-tuned on your data.`
         }
         cta={
           <Cta href="/implementation/ia-custom" size="lg" track="par-techno-iacustom">

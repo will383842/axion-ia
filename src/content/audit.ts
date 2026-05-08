@@ -86,20 +86,91 @@ interface PageCopy {
 }
 
 // Mapping slug audit → tier id pricing.ts. Source unique des tarifs.
-import { AUDIT_TIERS } from "./pricing";
+// Sprint 14.10.5 : zéro hardcode — tous les prix dérivent de pricing.ts.
+import {
+  AUDIT_TIERS,
+  formatAmount,
+  formatAmountRange,
+  getTierById,
+  type PricingSubTier,
+  type PricingTier,
+} from "./pricing";
+
 const AUDIT_TIER_BY_SLUG: Record<AuditSlug, string> = {
   flash: "audit-flash",
   process: "audit-cible",
   "strategique-pme": "audit-strategique-pme",
   "strategique-eti": "audit-strategique-eti",
 };
-function priceEurForAudit(slug: AuditSlug): number {
-  const tier = AUDIT_TIERS.find((t) => t.id === AUDIT_TIER_BY_SLUG[slug]);
-  // `!` non-null : chaque slug audit doit avoir un tier mappé dans
-  // pricing.ts (defense in depth — si la map casse, le typecheck d'autres
-  // callers explosera avant qu'on atteigne le runtime).
-  return (tier!.priceFlat ?? tier!.priceMin)!;
+
+function tierForAudit(slug: AuditSlug): PricingTier {
+  return getTierById(AUDIT_TIERS, AUDIT_TIER_BY_SLUG[slug]);
 }
+
+function priceEurForAudit(slug: AuditSlug): number {
+  const tier = tierForAudit(slug);
+  return (tier.priceFlat ?? tier.priceMin)!;
+}
+
+/**
+ * Mappe les `subTiers` d'un audit vers la shape `{ size, price }` attendue
+ * par `AuditSummary.priceTiers`. Les libellés rangeFr/En décrivent le sous-tier
+ * (ex « À distance · périmètre simple »).
+ */
+function buildAuditPriceTiers(
+  subTiers: ReadonlyArray<PricingSubTier> | undefined,
+  locale: "fr" | "en",
+): ReadonlyArray<{ size: string; price: string }> {
+  if (!subTiers || subTiers.length === 0) return [];
+  return subTiers.map((s) => ({
+    size: locale === "fr" ? `${s.labelFr} · ${s.rangeFr}` : `${s.labelEn} · ${s.rangeEn}`,
+    price: formatAmount(s.priceFlat, locale, { compact: true }),
+  }));
+}
+
+// Pré-calcul des chaînes prix dérivées de pricing.ts pour les 4 audits.
+// Chaque entrée alimente `priceFrom` + `priceTiers` + `metaSeo.title`.
+const FLASH_TIER = tierForAudit("flash");
+const PROCESS_TIER = tierForAudit("process");
+const PME_TIER = tierForAudit("strategique-pme");
+const ETI_TIER = tierForAudit("strategique-eti");
+
+const FLASH_PRICE_FROM_FR = `Dès ${formatAmount(FLASH_TIER.priceFlat!, "fr", { compact: true })} (à distance) · ${formatAmount(FLASH_TIER.priceFlatOnsite!, "fr", { compact: true })} (sur site)`;
+const FLASH_PRICE_FROM_EN = `From ${formatAmount(FLASH_TIER.priceFlat!, "en", { compact: true })} (remote) · ${formatAmount(FLASH_TIER.priceFlatOnsite!, "en", { compact: true })} (on site)`;
+
+const PROCESS_PRICE_FROM_FR = formatAmountRange(
+  PROCESS_TIER.priceMin!,
+  PROCESS_TIER.priceMax!,
+  "fr",
+  { compact: true },
+);
+const PROCESS_PRICE_FROM_EN = formatAmountRange(
+  PROCESS_TIER.priceMin!,
+  PROCESS_TIER.priceMax!,
+  "en",
+  { compact: true },
+);
+
+const PME_PRICE_FROM_FR = formatAmountRange(PME_TIER.priceMin!, PME_TIER.priceMax!, "fr", {
+  compact: true,
+});
+const PME_PRICE_FROM_EN = formatAmountRange(PME_TIER.priceMin!, PME_TIER.priceMax!, "en", {
+  compact: true,
+});
+
+const ETI_PRICE_FROM_FR = `À partir de ${formatAmount(ETI_TIER.priceMin!, "fr", { compact: true })} · sur devis sur mesure`;
+const ETI_PRICE_FROM_EN = `From ${formatAmount(ETI_TIER.priceMin!, "en", { compact: true })} · custom quote, no cap`;
+
+// priceTiers ETI : sous-tier base + variante « sur devis » non listée dans
+// pricing.ts (par design — config multi-BU est devisée).
+const ETI_PRICE_TIERS_FR: ReadonlyArray<{ size: string; price: string }> = [
+  ...buildAuditPriceTiers(ETI_TIER.subTiers, "fr"),
+  { size: "Multi-BU · multi-sites · scope élargi", price: "Sur devis sur mesure" },
+];
+const ETI_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }> = [
+  ...buildAuditPriceTiers(ETI_TIER.subTiers, "en"),
+  { size: "Multi-BU · multi-site · extended scope", price: "Custom quote, no cap" },
+];
 
 export const AUDITS: ReadonlyArray<AuditContent> = [
   // ============================================================
@@ -115,11 +186,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Mini-diagnostic ciblé sur 1 zone clé de votre entreprise : 3 à 5 endroits où l'IA peut s'insérer concrètement, gains estimés, plan d'action immédiat.",
         duration: "Adapté à votre périmètre",
-        priceFrom: "Dès 490 € (à distance) · 890 € (sur site)",
-        priceTiers: [
-          { size: "Flash distance · 1 zone d'usage", price: "490 €" },
-          { size: "Flash terrain · sur site", price: "890 €" },
-        ],
+        priceFrom: FLASH_PRICE_FROM_FR,
+        priceTiers: buildAuditPriceTiers(FLASH_TIER.subTiers, "fr"),
         modality: "À distance ou sur site",
         audience: "TPE & petites PME (0-30 salariés)",
         scope:
@@ -140,11 +208,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Targeted mini-diagnosis on 1 key area of your company: 3-5 places where AI can concretely fit in, estimated gains, immediate action plan.",
         duration: "Tailored to your scope",
-        priceFrom: "From €490 (remote) · €890 (on site)",
-        priceTiers: [
-          { size: "Flash remote · 1 area", price: "€490" },
-          { size: "Flash on site · 1 day", price: "€890" },
-        ],
+        priceFrom: FLASH_PRICE_FROM_EN,
+        priceTiers: buildAuditPriceTiers(FLASH_TIER.subTiers, "en"),
         modality: "Remote or on site",
         audience: "Small businesses (0-30 staff)",
         scope: "1 area to automate · e.g. customer relations, billing, support, document handling",
@@ -163,7 +228,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     },
     fr: makeFr({
       eyebrow: "Niveau 1 · Flash",
-      title: "Diagnostic flash · 490 € à distance, 890 € sur site",
+      title: `Diagnostic flash · ${formatAmount(FLASH_TIER.priceFlat!, "fr", { compact: true })} à distance, ${formatAmount(FLASH_TIER.priceFlatOnsite!, "fr", { compact: true })} sur site`,
       answer:
         "Mini-diagnostic IA ciblé sur une zone clé de votre entreprise. 3 à 5 endroits où l'IA peut s'insérer, estimation des gains, plan d'action immédiat. Idéal pour démarrer.",
       priceEur: priceEurForAudit("flash"),
@@ -171,7 +236,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     }),
     en: makeEn({
       eyebrow: "Level 1 · Flash",
-      title: "Flash diagnosis · €490 remote, €890 on site",
+      title: `Flash diagnosis · ${formatAmount(FLASH_TIER.priceFlat!, "en", { compact: true })} remote, ${formatAmount(FLASH_TIER.priceFlatOnsite!, "en", { compact: true })} on site`,
       answer:
         "Targeted mini AI diagnosis on a key area of your company. 3-5 places where AI can fit, gain estimates, immediate action plan. Ideal to start.",
       priceEur: priceEurForAudit("flash"),
@@ -191,12 +256,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Audit poussé d'un service complet : on liste tout ce qui peut être automatisé ou optimisé par l'IA, avec gains chiffrés et plan d'action sur 6-12 mois.",
         duration: "Adapté à votre périmètre",
-        priceFrom: "1 900 € → 3 900 €",
-        priceTiers: [
-          { size: "Ciblé Solo · à distance, périmètre simple", price: "1 900 €" },
-          { size: "Ciblé Standard · mix site + visio", price: "2 900 €" },
-          { size: "Ciblé Avancé · service complexe, multi-acteurs", price: "3 900 €" },
-        ],
+        priceFrom: PROCESS_PRICE_FROM_FR,
+        priceTiers: buildAuditPriceTiers(PROCESS_TIER.subTiers, "fr"),
         modality: "À distance ou mix site + visio",
         audience: "TPE matures · PME 10-80 salariés",
         scope: "1 service complet · RH, vente, ops, finance, support — étudié de A à Z",
@@ -216,12 +277,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "In-depth audit of a full service: we list everything AI can automate or optimise, with costed gains and 6-12 month action plan.",
         duration: "Tailored to your scope",
-        priceFrom: "€1,900 → €3,900",
-        priceTiers: [
-          { size: "Targeted Solo · remote, simple scope", price: "€1,900" },
-          { size: "Targeted Standard · mix on-site + remote", price: "€2,900" },
-          { size: "Targeted Advanced · complex, multi-stakeholder", price: "€3,900" },
-        ],
+        priceFrom: PROCESS_PRICE_FROM_EN,
+        priceTiers: buildAuditPriceTiers(PROCESS_TIER.subTiers, "en"),
         modality: "Remote or hybrid on-site + remote",
         audience: "Mature small businesses · SMB 10-80 staff",
         scope: "1 complete service · HR, sales, ops, finance, support — studied A to Z",
@@ -240,7 +297,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     },
     fr: makeFr({
       eyebrow: "Niveau 2 · Audit ciblé",
-      title: "Audit ciblé d'un service · 1 900 € à 3 900 €",
+      title: `Audit ciblé d'un service · ${formatAmount(PROCESS_TIER.priceMin!, "fr", { compact: true })} à ${formatAmount(PROCESS_TIER.priceMax!, "fr", { compact: true })}`,
       answer:
         "Audit IA poussé d'un service complet de votre entreprise. On liste tout ce qui peut être automatisé ou optimisé, avec gains chiffrés et plan d'action concret. Volontairement focalisé pour rester actionnable.",
       priceEur: priceEurForAudit("process"),
@@ -248,7 +305,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     }),
     en: makeEn({
       eyebrow: "Level 2 · Targeted audit",
-      title: "Targeted audit of a service · €1,900 to €3,900",
+      title: `Targeted audit of a service · ${formatAmount(PROCESS_TIER.priceMin!, "en", { compact: true })} to ${formatAmount(PROCESS_TIER.priceMax!, "en", { compact: true })}`,
       answer:
         "In-depth AI audit of a full service in your company. We list everything that can be automated or optimised, with costed gains and an actionable plan. Deliberately focused.",
       priceEur: priceEurForAudit("process"),
@@ -268,11 +325,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Vision IA globale de votre PME : on identifie partout où l'IA peut s'insérer (vente, RH, ops, support…), priorisation par gain attendu, plan d'action 12-24 mois.",
         duration: "Adapté à votre périmètre",
-        priceFrom: "4 900 € → 9 900 €",
-        priceTiers: [
-          { size: "PME 20-50 salariés · 2 services majeurs", price: "4 900 €" },
-          { size: "PME 50-250 salariés · 3-4 services majeurs", price: "9 900 €" },
-        ],
+        priceFrom: PME_PRICE_FROM_FR,
+        priceTiers: buildAuditPriceTiers(PME_TIER.subTiers, "fr"),
         modality: "Mix sur site + à distance",
         audience: "PME 20-250 salariés",
         scope: "2 à 4 services majeurs · acquisition, vente, opérations, back-office",
@@ -292,11 +346,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Global AI vision for your SMB: we identify everywhere AI can fit (sales, HR, ops, support…), prioritisation by expected gain, 12-24 month action plan.",
         duration: "Tailored to your scope",
-        priceFrom: "€4,900 → €9,900",
-        priceTiers: [
-          { size: "SMB 20-50 staff · 2 major services", price: "€4,900" },
-          { size: "SMB 50-250 staff · 3-4 major services", price: "€9,900" },
-        ],
+        priceFrom: PME_PRICE_FROM_EN,
+        priceTiers: buildAuditPriceTiers(PME_TIER.subTiers, "en"),
         modality: "Hybrid on-site + remote",
         audience: "SMB 20-250 staff",
         scope: "2 to 4 major services · acquisition, sales, ops, back-office",
@@ -315,7 +366,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     },
     fr: makeFr({
       eyebrow: "Niveau 3 · Stratégique PME",
-      title: "Audit stratégique PME · 4 900 € à 9 900 €",
+      title: `Audit stratégique PME · ${formatAmount(PME_TIER.priceMin!, "fr", { compact: true })} à ${formatAmount(PME_TIER.priceMax!, "fr", { compact: true })}`,
       answer:
         "Vision IA globale pour PME 20-250 salariés. Cartographie de 2 à 4 services majeurs, priorisation des cas d'usage, plan d'action 12-24 mois avec phases et budgets.",
       priceEur: priceEurForAudit("strategique-pme"),
@@ -323,7 +374,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     }),
     en: makeEn({
       eyebrow: "Level 3 · Strategic SMB",
-      title: "Strategic SMB audit · €4,900 to €9,900",
+      title: `Strategic SMB audit · ${formatAmount(PME_TIER.priceMin!, "en", { compact: true })} to ${formatAmount(PME_TIER.priceMax!, "en", { compact: true })}`,
       answer:
         "Global AI vision for SMBs 20-250 staff. Mapping of 2-4 major services, use case prioritisation, 12-24 month action plan with phases and budgets.",
       priceEur: priceEurForAudit("strategique-pme"),
@@ -343,11 +394,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Audit stratégique multi-sites pour ETI / groupes : alignement CODIR, cartographie de tous les services et BU où l'IA peut s'insérer, plan d'action 24 mois, gouvernance et AI Act.",
         duration: "Adapté à votre périmètre",
-        priceFrom: "À partir de 12 000 € · sur devis sur mesure",
-        priceTiers: [
-          { size: "1-2 BU · 1-2 sites · 3-4 services", price: "À partir de 12 000 €" },
-          { size: "Multi-BU · multi-sites · scope élargi", price: "Sur devis sur mesure" },
-        ],
+        priceFrom: ETI_PRICE_FROM_FR,
+        priceTiers: ETI_PRICE_TIERS_FR,
         modality: "Sur site multi-sites + ateliers CODIR",
         audience: "ETI, grandes PME, groupes multi-sites",
         scope: "Plusieurs services / BU · multi-sites · multi-pays possibles",
@@ -367,11 +415,8 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
         benefitTagline:
           "Strategic multi-site audit for mid-cap and groups: leadership alignment, mapping of every service and BU where AI can fit, 24-month action plan, governance and AI Act.",
         duration: "Tailored to your scope",
-        priceFrom: "From €12,000 · custom quote, no cap",
-        priceTiers: [
-          { size: "1-2 BU · 1-2 sites · 3-4 services", price: "From €12,000" },
-          { size: "Multi-BU · multi-site · extended scope", price: "Custom quote, no cap" },
-        ],
+        priceFrom: ETI_PRICE_FROM_EN,
+        priceTiers: ETI_PRICE_TIERS_EN,
         modality: "On-site multi-location + leadership workshops",
         audience: "Mid-cap, large SMB, multi-site groups",
         scope: "Multiple services / BUs · multi-site · multi-country possible",
@@ -390,7 +435,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     },
     fr: makeFr({
       eyebrow: "Niveau 4 · Stratégique ETI",
-      title: "Audit stratégique ETI · à partir de 12 000 €",
+      title: `Audit stratégique ETI · à partir de ${formatAmount(ETI_TIER.priceMin!, "fr", { compact: true })}`,
       answer:
         "Audit stratégique multi-sites pour ETI, grandes PME et groupes. Cartographie multi-BU, roadmap IA groupe 24 mois, gouvernance et premiers jalons AI Act. Sur devis personnalisé.",
       priceEur: priceEurForAudit("strategique-eti"),
@@ -398,7 +443,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
     }),
     en: makeEn({
       eyebrow: "Level 4 · Strategic mid-cap",
-      title: "Strategic mid-cap audit · from €12,000",
+      title: `Strategic mid-cap audit · from ${formatAmount(ETI_TIER.priceMin!, "en", { compact: true })}`,
       answer:
         "Multi-site strategic audit for mid-caps, large SMBs and groups. Multi-BU mapping, 24-month group AI roadmap, governance and initial AI Act milestones. Custom quote.",
       priceEur: priceEurForAudit("strategique-eti"),

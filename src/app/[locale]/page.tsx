@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
+import { INTERVENTION_TIERS, formatAmount, getEntryPriceEur } from "@/content/pricing";
 import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
@@ -35,8 +36,8 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
       ? "Cabinet IA opérationnel · ROI mesurable · AxionIA"
       : "Operational AI consultancy · Measurable ROI · AxionIA",
     description: isFr
-      ? "Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, Ã  partir de 490 €."
-      : "On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from €490.",
+      ? `Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
+      : `On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
     alternates: { fr: "/", en: "/" },
   });
 }

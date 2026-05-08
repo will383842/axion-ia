@@ -5,20 +5,45 @@
 // (même trigger, même panel, même transitions, même a11y).
 //
 // Layout 3-col aligné sur Implantations :
-// • Col 1 — Tarifs fixes (Essentielle dès 490 € + Gagner du temps 990 €)
-// • Col 2 — Sur devis (CODIR / Conférence / Sur demande)
+// • Col 1 — Tarifs fixes (Essentielle 1j + Approfondie 2j + Gagner du temps + CODIR)
+// • Col 2 — Sur devis (Formation Claude / Conférence / Sur demande)
 // • Col 3 — Hub bg-halo-warm avec icône + tagline serif + CTA hub
 //
 // Le contenu reste strictement synchrone avec
-// `src/app/[locale]/interventions/page.tsx::buildCards()`. Les 4 paliers
-// Essentielle sont agrégés en 1 ligne « dès 490 € HT · 2 à 30+ pers. »
-// pour éviter la verbosité du dropdown (le listing les détaille en 4 cards).
+// `src/app/[locale]/interventions/page.tsx::buildCards()`. Pour les formats
+// multi-tarifs (Essentielle, Approfondie), les paliers sont agrégés en 1
+// ligne « dès N € HT » (le listing les détaille via subTierGrid).
+//
+// Sprint 14.10.5 — prix dérivés de `pricing.ts INTERVENTION_TIERS` (SSOT).
+// Plus aucun hardcoding « 490 € » / « 990 € » dans ce fichier.
 
 import * as React from "react";
 import { ArrowUpRight, GraduationCap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ClaudeLogo } from "@/components/visual/ClaudeLogo";
 import { HeaderMegaMenu } from "./HeaderMegaMenu";
+import { INTERVENTION_TIERS } from "@/content/pricing";
+
+// Helpers internes — récupèrent un tier par id depuis pricing.ts (SSOT) et
+// formatent son prix d'entrée en « dès N € HT » / « from €N ». Si la clé
+// disparaissait de pricing.ts, le `!` non-null casserait le typecheck →
+// signal clair pour le dev.
+function entryPriceFr(tierId: string): string {
+  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
+  return `dès ${t.priceFlat ?? t.priceMin} € HT`;
+}
+function entryPriceEn(tierId: string): string {
+  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
+  return `from €${t.priceFlat ?? t.priceMin}`;
+}
+function flatPriceFr(tierId: string): string {
+  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
+  return `${t.priceFlat} € HT`;
+}
+function flatPriceEn(tierId: string): string {
+  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
+  return `€${t.priceFlat}`;
+}
 
 interface HeaderInterventionsMenuProps {
   triggerLabel: string;
@@ -45,10 +70,20 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
     href: "/interventions/essentielle",
     labelFr: "Essentielle",
     labelEn: "Essential",
-    metaFr: "1 jour · 2 à 30 personnes",
-    metaEn: "1 day · 2 to 30 people",
-    priceFr: "dès 490 € HT",
-    priceEn: "from €490",
+    metaFr: "1 jour · 2 à 8 personnes",
+    metaEn: "1 day · 2 to 8 people",
+    priceFr: entryPriceFr("intervention-essentielle"),
+    priceEn: entryPriceEn("intervention-essentielle"),
+  },
+  {
+    key: "approfondie",
+    href: "/contact",
+    labelFr: "Approfondie",
+    labelEn: "Deep dive",
+    metaFr: "2 jours · 2 à 30 personnes (équipes)",
+    metaEn: "2 days · 2 to 30 people (teams)",
+    priceFr: entryPriceFr("intervention-approfondie"),
+    priceEn: entryPriceEn("intervention-approfondie"),
   },
   {
     key: "gagner-du-temps",
@@ -57,8 +92,18 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
     labelEn: "Save Time",
     metaFr: "1 jour · 2 à 20 personnes",
     metaEn: "1 day · 2 to 20 people",
-    priceFr: "990 € HT",
-    priceEn: "€990",
+    priceFr: flatPriceFr("intervention-temps"),
+    priceEn: flatPriceEn("intervention-temps"),
+  },
+  {
+    key: "dirigeants",
+    href: "/interventions/dirigeants",
+    labelFr: "Direction · CODIR",
+    labelEn: "Direction · Leadership",
+    metaFr: "1 jour 1-to-1 · vous + équipe rapprochée",
+    metaEn: "1 day 1-on-1 · you + inner circle",
+    priceFr: flatPriceFr("intervention-dirigeants"),
+    priceEn: flatPriceEn("intervention-dirigeants"),
   },
 ];
 
@@ -73,16 +118,6 @@ const ON_REQUEST_ITEMS: ReadonlyArray<MenuItem> = [
     priceFr: "Sur devis",
     priceEn: "On request",
     isClaude: true,
-  },
-  {
-    key: "dirigeants",
-    href: "/interventions/dirigeants",
-    labelFr: "Dirigeants · CODIR",
-    labelEn: "Executives & Leadership",
-    metaFr: "1 jour · CODIR · dès 2",
-    metaEn: "1 day · Leadership · 2+",
-    priceFr: "Sur devis",
-    priceEn: "On request",
   },
   {
     key: "conference",

@@ -1,6 +1,55 @@
 // Transversal content — about, FAQ, blog fixtures, help (Sprint 9).
 // Replaced by Prisma in Sprint 15 for blog/help articles.
 
+import {
+  AUDIT_TIERS,
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  MAINTENANCE_TIERS,
+  formatAmount,
+  formatAmountRange,
+  formatPrice,
+  getEntryLabel,
+  getTierById,
+} from "@/content/pricing";
+
+// Helpers locaux pour dériver les phrases FAQ multilingues à partir du SSOT
+// pricing. Aucun prix hardcodé : si Will modifie un tier, ces phrases se
+// mettent à jour automatiquement au build/start.
+const auditFlashTier = getTierById(AUDIT_TIERS, "audit-flash");
+const auditCibleTier = getTierById(AUDIT_TIERS, "audit-cible");
+const auditPmeTier = getTierById(AUDIT_TIERS, "audit-strategique-pme");
+const auditEtiTier = getTierById(AUDIT_TIERS, "audit-strategique-eti");
+const maintenanceStandard = getTierById(MAINTENANCE_TIERS, "maintenance-standard");
+
+function modulesAnswerFr(): string {
+  const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "fr", { compact: false });
+  const flash = formatAmount(auditFlashTier.priceFlat!, "fr", { compact: true });
+  const cibleRange = formatAmountRange(auditCibleTier.priceMin!, auditCibleTier.priceMax!, "fr", {
+    compact: true,
+  });
+  const pmeRange = formatAmountRange(auditPmeTier.priceMin!, auditPmeTier.priceMax!, "fr", {
+    compact: true,
+  });
+  const etiFrom = formatAmount(auditEtiTier.priceMin!, "fr", { compact: true });
+  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr", { compact: false });
+  return `Module 1 — Interventions sur site (1 journée à partir de ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, ${interventionsEntry}). Module 2 — Audit IA (4 niveaux : Flash ${flash}, Ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI dès ${etiFrom}). Module 3 — Implémentation IA (mise en production, ${implEntry}).`;
+}
+
+function modulesAnswerEn(): string {
+  const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "en", { compact: false });
+  const flash = formatAmount(auditFlashTier.priceFlat!, "en", { compact: true });
+  const cibleRange = formatAmountRange(auditCibleTier.priceMin!, auditCibleTier.priceMax!, "en", {
+    compact: true,
+  });
+  const pmeRange = formatAmountRange(auditPmeTier.priceMin!, auditPmeTier.priceMax!, "en", {
+    compact: true,
+  });
+  const etiFrom = formatAmount(auditEtiTier.priceMin!, "en", { compact: true });
+  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "en", { compact: false });
+  return `Module 1 — On-site sessions (1 day from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, ${interventionsEntry}). Module 2 — AI audit (4 tiers: Flash ${flash}, Targeted ${cibleRange}, Strategic SME ${pmeRange}, Strategic Mid-cap from ${etiFrom}). Module 3 — AI implementation (production deployment, ${implEntry}).`;
+}
+
 export const ABOUT_TIMELINE = [
   {
     id: "2024",
@@ -50,7 +99,13 @@ export const ABOUT_TEAM = [
   },
 ] as const;
 
-export const FAQ_GLOBAL = [
+export interface FaqEntry {
+  id: string;
+  fr: { question: string; answer: string };
+  en: { question: string; answer: string };
+}
+
+export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "definition",
     fr: {
@@ -68,13 +123,11 @@ export const FAQ_GLOBAL = [
     id: "modules",
     fr: {
       question: "Quels sont les 3 modules ?",
-      answer:
-        "Module 1 — Interventions sur site (1 journée à partir de 490 €). Module 2 — Audit IA (4 niveaux : Flash 490 €, Ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI dès 12 000 €). Module 3 — Implémentation IA (mise en production, à partir de 990 €).",
+      answer: modulesAnswerFr(),
     },
     en: {
       question: "What are the 3 modules?",
-      answer:
-        "Module 1 — On-site sessions (1 day from €490). Module 2 — AI audit (4 tiers: Flash €490, Targeted €1,900-3,900, Strategic SME €4,900-9,900, Strategic Mid-cap from €12,000). Module 3 — AI implementation (production deployment, from €990).",
+      answer: modulesAnswerEn(),
     },
   },
   {
@@ -116,7 +169,7 @@ export const FAQ_GLOBAL = [
         "AxionIA OÜ. Fixed quote + bank transfer + invoice (EU VAT regime according to client residence). No subscriptions, no commitments.",
     },
   },
-] as const;
+];
 
 // Blog : split Sprint 14.10 (2026-05-08) — `BlogPost` + données + helpers
 // déplacés dans `src/content/blog/`. Les exports ci-dessous restent disponibles
@@ -221,12 +274,12 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     fr: {
       title: "Quel support après livraison ?",
       excerpt: "30 jours de maintenance corrective inclus, escalade chaude.",
-      body: "Tout projet AxionIA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel à 290 € HT/mois (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.",
+      body: `Tout projet AxionIA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel à ${formatPrice(maintenanceStandard, "fr")} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
     },
     en: {
       title: "What post-delivery support?",
       excerpt: "30 days of corrective maintenance included, warm escalation.",
-      body: "Every AxionIA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract at €290/month (4h/month flat fee). No support is billed during the initial 30 days.",
+      body: `Every AxionIA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract at ${formatPrice(maintenanceStandard, "en")} (4h/month flat fee). No support is billed during the initial 30 days.`,
     },
   },
 ];
@@ -252,8 +305,6 @@ export function getHelpCategoryLabel(slug: string): string | undefined {
   const found = HELP_ARTICLES.find((a) => slugify(a.category) === slug);
   return found?.category;
 }
-
-export type FaqEntry = (typeof FAQ_GLOBAL)[number];
 
 export function getFaqEntry(id: string): FaqEntry | undefined {
   return FAQ_GLOBAL.find((f) => f.id === id);

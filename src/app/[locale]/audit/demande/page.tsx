@@ -7,6 +7,13 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { AuditRequestForm } from "@/components/forms/AuditRequestForm";
+import {
+  AUDIT_TIERS,
+  formatAmount,
+  formatAmountRange,
+  formatPriceWithOnsite,
+  getTierById,
+} from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
@@ -37,6 +44,28 @@ export default async function AuditRequest({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+
+  // Étiquettes prix dérivées du SSOT (zéro hardcode — Sprint 14.10.5).
+  const flashPriceFrom = formatPriceWithOnsite(getTierById(AUDIT_TIERS, "audit-flash"), loc, {
+    compact: true,
+  });
+  const ciblePriceRange = formatAmountRange(
+    getTierById(AUDIT_TIERS, "audit-cible").priceMin!,
+    getTierById(AUDIT_TIERS, "audit-cible").priceMax!,
+    loc,
+    { compact: true },
+  );
+  const pmePriceRange = formatAmountRange(
+    getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMin!,
+    getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMax!,
+    loc,
+    { compact: true },
+  );
+  const etiPriceFrom = formatAmount(
+    getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
+    loc,
+    { compact: true },
+  );
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -70,28 +99,28 @@ export default async function AuditRequest({ params }: Props) {
             label: "Niveau 1 · Flash",
             description:
               "Mini-diagnostic ciblé sur 1 zone clé · on identifie 3 Ã  5 endroits où l'IA peut s'insérer dans votre entreprise, avec gains estimés.",
-            priceFrom: "490 € (distance) · 890 € (sur site)",
+            priceFrom: flashPriceFrom,
           },
           {
             key: "process" as const,
             label: "Niveau 2 · Audit ciblé",
             description:
               "Audit poussé d'un service complet (RH, finance, vente, ops…). On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois.",
-            priceFrom: "1 900 € â†’ 3 900 €",
+            priceFrom: ciblePriceRange,
           },
           {
             key: "strategique-pme" as const,
             label: "Niveau 3 · Stratégique PME",
             description:
               "Vision IA globale pour PME 20-250 salariés · 2-4 services majeurs étudiés, plan d'action 12-24 mois avec budgets.",
-            priceFrom: "4 900 € â†’ 9 900 €",
+            priceFrom: pmePriceRange,
           },
           {
             key: "strategique-eti" as const,
             label: "Niveau 4 · Stratégique ETI",
             description:
               "Audit stratégique multi-sites pour ETI / groupes · alignement CODIR, roadmap groupe 24 mois, gouvernance & AI Act.",
-            priceFrom: "À partir de 12 000 € · sur devis sur mesure",
+            priceFrom: `À partir de ${etiPriceFrom} · sur devis sur mesure`,
           },
         ],
 
@@ -196,28 +225,28 @@ export default async function AuditRequest({ params }: Props) {
             label: "Level 1 · Flash",
             description:
               "Targeted mini-diagnosis on 1 key area · we identify 3 to 5 places where AI can fit in your company, with estimated gains.",
-            priceFrom: "€490 (remote) · €890 (on site)",
+            priceFrom: flashPriceFrom,
           },
           {
             key: "process" as const,
             label: "Level 2 · Targeted audit",
             description:
               "In-depth audit of a full service (HR, finance, sales, ops…). We list everything that can be automated with costed gains and a 6-12 month plan.",
-            priceFrom: "€1,900 â†’ €3,900",
+            priceFrom: ciblePriceRange,
           },
           {
             key: "strategique-pme" as const,
             label: "Level 3 · Strategic SMB",
             description:
               "Global AI vision for SMBs 20-250 staff · 2-4 major services studied, 12-24 month action plan with budgets.",
-            priceFrom: "€4,900 â†’ €9,900",
+            priceFrom: pmePriceRange,
           },
           {
             key: "strategique-eti" as const,
             label: "Level 4 · Strategic mid-cap",
             description:
               "Multi-site strategic audit for mid-caps / groups · leadership alignment, 24-month group roadmap, governance & AI Act.",
-            priceFrom: "From €12,000 · custom quote, no cap",
+            priceFrom: `From ${etiPriceFrom} · custom quote, no cap`,
           },
         ],
 
