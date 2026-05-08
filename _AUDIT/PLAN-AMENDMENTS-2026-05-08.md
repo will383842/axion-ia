@@ -2,7 +2,7 @@
 
 > **Statut** : doctrine vivante. Ce fichier acte les corrections à appliquer mentalement à `_AUDIT/02-PLAN.md`. Le 02-PLAN reste figé pour traçabilité historique. **Sources canoniques en cas de conflit** : ADRs `docs/adr/0001-0009`, `Design.md`, `CLAUDE.md`/`AGENTS.md`, mémoires `axionia_*`.
 >
-> **Origine** : audit de cohérence livré en 5 forks parallèles 2026-05-08 (forks A/B/C/D/E). Validé par Will [À CONFIRMER].
+> **Origine** : audit de cohérence livré en 5 forks parallèles 2026-05-08 (forks A/B/C/D/E). **Validé par Will 2026-05-08** (réponses tranchées en fin de session — voir §"Décisions tranchées" en bas).
 
 ---
 
@@ -202,3 +202,61 @@ Spec détaillée pour la section calendrier : `_AUDIT/SPEC-ADMIN-CALENDRIER-V2.m
 ✅ Naming brand : « AxionIA » (sans tiret) systématique dans CLAUDE/AGENTS/Design/ADRs/02-PLAN. « Axion-IA » réservé au repo path.
 ✅ Politique 90 jours / Tallinn : purgée site-wide sauf `legal.ts` (exception attendue).
 ✅ ADR 0001 doublon nettoyé (commit `18dd599`).
+
+---
+
+## Décisions tranchées 2026-05-08 (fin de session audit)
+
+### Q1 — Pages annoncées non livrées : **RETIRÉES DU PLAN**
+
+`/interventions/equipes`, `/interventions/managers`, `/temoignages/[slug]` — annoncées dans 02-PLAN M4 §1 et M6 §3 mais jamais livrées. Will a tranché 2026-05-08 : **état actuel = état final**. Module 1 Interventions = 4 templates (`essentielle`, `conference`, `dirigeants`, parent). Témoignages restent en composant `TestimonialsCarousel` (pas de route dédiée).
+
+**Implication** : ne plus considérer ces 3 routes comme un gap. Le 02-PLAN ligne 197-199 (« 6 pages × 2 langues = 12 routes effectives ») est rétroactivement amendé à 8 routes effectives (4 templates × 2 langues).
+
+### Q2 — Web Vitals V3-V6 (61 patches) : **AVANT M11 DÉPLOIEMENT**
+
+Will a tranché 2026-05-08 : appliquer V3-V6 dans la fenêtre pré-prod (juste avant M11), pas maintenant. Cohérent avec V3-V5 qui touchent Caddy/Dockerfile/standalone/Cloudflare = infra de toute façon nécessaire pour M11.
+
+**Implication** : la mémoire `axionia_audit_web_vitals_v3_v6_pending` reste active. Score Web Vitals 47.2 % accepté en l'état jusqu'à pré-déploiement. Le rappel proactif sur trigger phrases « Hetzner / Cloudflare / prod / déploiement » reste en vigueur.
+
+### Q3 — Fixes triviaux : **EXÉCUTÉS / RECONSIDÉRÉS**
+
+Validation à la source des 4 fixes proposés a réduit le périmètre :
+
+| Fix proposé                             | Statut                    | Pourquoi                                                                                                                                                                                                                                                                                               |
+| --------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `buildProductJsonLd` /stack-ia          | **Annulé (déjà couvert)** | `/stack-ia/page.tsx:159-178` câble déjà un `ItemList` JSON-LD avec `SoftwareApplication` pour les 11 outils. Ajouter `Product` ferait redondance.                                                                                                                                                      |
+| `priority={true}` hero images 11+ pages | **Annulé (no-op)**        | Aucune `<Image>` directe dans `[locale]/`. Seul le composant `Illustration` rend `next/image` quand `src` est fourni — mais `public/illustrations/` est vide (placeholders SVG partout). `priority` n'a aucun effet tant que les images GPT-image ne sont pas générées (Sprint Visual Rhythm Phase 2). |
+| `.well-known/indexnow.txt`              | **✅ EXÉCUTÉ**            | Route `app/api/indexnow/key/route.ts` créée + `keyLocation` dans `app/api/indexnow/route.ts:46` mis à jour de `${HOST}/${key}.txt` à `${HOST}/api/indexnow/key`. Cohérent avec spec IndexNow (`keyLocation` libre). Évite catch-all racine qui aurait conflé avec `[locale]`.                          |
+| Durcir Lighthouse seuils 1800/80/0.05   | **Reporté post V3-V6**    | Durcir maintenant = CI rouge en boucle sur `/reserver` (CLS 0.552 + Perf 66 mesurés baseline). À durcir après V3-V6 (cf. Q2).                                                                                                                                                                          |
+
+### Faux positifs détectés des audits passés (à NE PAS refixer)
+
+Validation à la source du code actuel a montré que 3 findings du fork E étaient obsolètes :
+
+- **`/reserver` CLS 0.552** → `BookingCalendarLazy.tsx:31-37` contient déjà un skeleton `min-h-[800px]` animate-pulse qui réserve l'espace. Le commentaire P-401 du composant atteste du patch V1+V2 commit `d21f9d0`. Le score 0.552 = baseline pré-V1/V2. **Mesure à refaire post-V1/V2 avant tout re-patch.**
+- **`api/og/route.tsx:13` couleur** → déjà `#1a4dd9` doctrine v3. Le commentaire `(was Webflow Blue #146ef5 v1)` est juste historique.
+- **`presse/page.tsx:120,184` `inLanguage`** → utilise `loc` variable, pas hardcodé.
+- **`presse/page.tsx:187` NewsArticle.image** → utilise `/api/og?title=...` dynamique, pas une URL 404.
+
+**Leçon documentée en mémoire** : les rapports `_AUDIT/AUDIT-OBSOLESCENCES-*.md` et `AUDIT-PERFECTION-*.md` peuvent eux-mêmes être obsolètes au moment de relecture. Toujours valider à la source du code actuel avant d'appliquer un fix recommandé par un audit ancien.
+
+### Q4 — Démarrage backend M8 : **EN ATTENTE**
+
+Question posée mais sans réponse au moment de cette mise à jour. À trancher en fin de session ou next session :
+
+- (a) Ouvrir conv backend M8 maintenant en parallèle (cette conv reste sur le frontend en attente)
+- (b) Finir frontend en attente d'abord (V3-V6 + pSEO Auvergne-Rhône-Alpes)
+- (c) Round de décisions sur les 10 STOP & ASK ouverts d'abord
+- (d) Stop session ici
+
+---
+
+## Fichiers modifiés cette session (2026-05-08 audit)
+
+- `_AUDIT/PLAN-AMENDMENTS-2026-05-08.md` — créé (ce fichier, overlay canonique)
+- `_AUDIT/02-PLAN.md` — bandeau d'avertissement en tête + mention « figé »
+- `src/app/api/indexnow/key/route.ts` — créé (Edge runtime, sert `INDEXNOW_KEY` en text/plain)
+- `src/app/api/indexnow/route.ts` — `keyLocation` mis à jour
+- `~/.claude/.../memory/axionia_audit_coherence_2026-05-08.md` — créé (mémoire persistante)
+- `~/.claude/.../memory/MEMORY.md` — index mis à jour

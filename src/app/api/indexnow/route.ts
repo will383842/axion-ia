@@ -43,7 +43,10 @@ export async function POST(req: Request) {
     body: JSON.stringify({
       host: body?.host ?? SITE_HOST,
       key,
-      keyLocation: `https://${SITE_HOST}/${key}.txt`,
+      // IndexNow spec allows any URL for keyLocation — we serve the key from a
+      // dedicated endpoint instead of `/${key}.txt` to avoid a root-level
+      // dynamic catch-all that would conflict with `[locale]` routing.
+      keyLocation: `https://${SITE_HOST}/api/indexnow/key`,
       urlList: urls,
     }),
   });
