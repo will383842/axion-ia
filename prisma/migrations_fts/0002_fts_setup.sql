@@ -1,4 +1,4 @@
--- AxionIA · FTS tsvector setup (Sprint 15 / M8 — migration 0002)
+-- Axion-IA · FTS tsvector setup (Sprint 15 / M8 — migration 0002)
 --
 -- À appliquer manuellement APRÈS la migration init Prisma :
 --   psql $DATABASE_URL -f prisma/migrations_fts/0002_fts_setup.sql

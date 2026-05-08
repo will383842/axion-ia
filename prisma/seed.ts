@@ -1,5 +1,5 @@
 /**
- * AxionIA · Prisma seed FR+EN (Sprint 15 / M8)
+ * Axion-IA · Prisma seed FR+EN (Sprint 15 / M8)
  *
  * Données de démo :
  * - 1 super-admin (password: AdminAxion2026! → à changer en prod)
@@ -170,9 +170,9 @@ async function seedAuthor() {
       name: "Will",
       email: "will@axion-ia.com",
       bioFr:
-        "Fondateur d'AxionIA, cabinet IA opérationnel pour entreprises. 10+ ans terrain dans la digitalisation et l'IA appliquée aux PME et ETI européennes.",
+        "Fondateur d'Axion-IA, cabinet IA opérationnel pour entreprises. 10+ ans terrain dans la digitalisation et l'IA appliquée aux PME et ETI européennes.",
       bioEn:
-        "Founder of AxionIA, an operational AI consultancy. 10+ years of hands-on experience digitizing and bringing applied AI to European SMEs and mid-market companies.",
+        "Founder of Axion-IA, an operational AI consultancy. 10+ years of hands-on experience digitizing and bringing applied AI to European SMEs and mid-market companies.",
       linkedinUrl: "https://www.linkedin.com/company/axionia",
     },
   });
@@ -239,9 +239,9 @@ async function seedArticles() {
         "Un audit réduit le coût total d'implémentation de 30 à 50 % et évite les paris technologiques ratés.",
       excerptEn: "An audit cuts total implementation cost by 30-50% and avoids failed tech bets.",
       bodyFr:
-        "Avant tout déploiement IA significatif, un audit cadré 5 à 10 jours permet de cartographier les flux, identifier les ROI immédiats, et qualifier les zones non-IA. Sur 30 missions menées par AxionIA en 2025-2026, les organisations ayant fait l'audit en amont ont divisé par deux la durée moyenne d'implémentation et abandonné en moyenne 2 idées sur 5 — économie nette estimée 50 000 €+ par projet PME.",
+        "Avant tout déploiement IA significatif, un audit cadré 5 à 10 jours permet de cartographier les flux, identifier les ROI immédiats, et qualifier les zones non-IA. Sur 30 missions menées par Axion-IA en 2025-2026, les organisations ayant fait l'audit en amont ont divisé par deux la durée moyenne d'implémentation et abandonné en moyenne 2 idées sur 5 — économie nette estimée 50 000 €+ par projet PME.",
       bodyEn:
-        "Before any significant AI deployment, a 5-10 day audit maps your flows, identifies immediate ROI, and qualifies non-AI zones. Across 30 missions led by AxionIA in 2025-2026, organizations that audited upfront halved their implementation timeline and dropped on average 2 ideas out of 5 — net savings estimated at €50K+ per SME project.",
+        "Before any significant AI deployment, a 5-10 day audit maps your flows, identifies immediate ROI, and qualifies non-AI zones. Across 30 missions led by Axion-IA in 2025-2026, organizations that audited upfront halved their implementation timeline and dropped on average 2 ideas out of 5 — net savings estimated at €50K+ per SME project.",
       categoryId: catStrat.id,
       publishedAt: new Date("2026-04-15T08:00:00Z"),
       readingTime: 7,
@@ -381,8 +381,8 @@ async function seedTestimonials() {
       company: "Indus·PME",
       sector: "Industrie",
       companySize: "10-49",
-      shortQuoteFr: "AxionIA a divisé par 3 notre temps de traitement comptable.",
-      shortQuoteEn: "AxionIA cut our accounting processing time by 3x.",
+      shortQuoteFr: "Axion-IA a divisé par 3 notre temps de traitement comptable.",
+      shortQuoteEn: "Axion-IA cut our accounting processing time by 3x.",
       fullQuoteFr:
         "Audit en 5 jours, déploiement en 6 semaines. ROI atteint en 4 mois sur le périmètre fournisseurs. Les équipes ont enfin du temps pour les sujets à valeur ajoutée.",
       fullQuoteEn:
@@ -656,18 +656,18 @@ async function seedFAQs() {
     {
       slug: "qu-est-ce-qu-axionia",
       category: "general",
-      qFr: "Qu'est-ce qu'AxionIA ?",
-      qEn: "What is AxionIA?",
-      aFr: "AxionIA est un cabinet IA opérationnel pour entreprises, basé en Estonie (UE). Nous intervenons sur trois modules : interventions sur site, audit, et implémentation IA.",
-      aEn: "AxionIA is an operational AI consultancy for companies, based in Estonia (EU). We deliver across three modules: on-site sessions, audits, and AI implementation.",
+      qFr: "Qu'est-ce qu'Axion-IA ?",
+      qEn: "What is Axion-IA?",
+      aFr: "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en Estonie (UE). Nous intervenons sur trois modules : interventions sur site, audit, et implémentation IA.",
+      aEn: "Axion-IA is an operational AI consultancy for companies, based in Estonia (EU). We deliver across three modules: on-site sessions, audits, and AI implementation.",
     },
     {
       slug: "qui-est-derriere-axionia",
       category: "general",
-      qFr: "Qui est derrière AxionIA ?",
-      qEn: "Who is behind AxionIA?",
-      aFr: "Will, fondateur, 10+ ans d'expérience terrain en digitalisation et IA appliquée. AxionIA OÜ est constituée en Estonie, conforme RGPD et droit européen.",
-      aEn: "Will, founder, with 10+ years of hands-on experience in digitization and applied AI. AxionIA OÜ is incorporated in Estonia, GDPR-compliant and aligned with EU law.",
+      qFr: "Qui est derrière Axion-IA ?",
+      qEn: "Who is behind Axion-IA?",
+      aFr: "Will, fondateur, 10+ ans d'expérience terrain en digitalisation et IA appliquée. Axion-IA OÜ est constituée en Estonie, conforme RGPD et droit européen.",
+      aEn: "Will, founder, with 10+ years of hands-on experience in digitization and applied AI. Axion-IA OÜ is incorporated in Estonia, GDPR-compliant and aligned with EU law.",
     },
     {
       slug: "ou-intervenez-vous",
@@ -680,8 +680,8 @@ async function seedFAQs() {
     {
       slug: "qu-est-ce-qu-une-intervention",
       category: "interventions",
-      qFr: "Qu'est-ce qu'une intervention AxionIA ?",
-      qEn: "What is an AxionIA session?",
+      qFr: "Qu'est-ce qu'une intervention Axion-IA ?",
+      qEn: "What is an Axion-IA session?",
       aFr: "Une intervention est une journée chez vous (ou en distanciel) pour cartographier vos flux, identifier les quick-wins IA et signer un plan d'action 90 jours.",
       aEn: "A session is one day at your premises (or remote) mapping your flows, identifying AI quick-wins, and signing a 90-day action plan.",
     },
@@ -696,8 +696,8 @@ async function seedFAQs() {
     {
       slug: "qu-est-ce-qu-un-audit",
       category: "audit",
-      qFr: "Qu'est-ce qu'un audit AxionIA ?",
-      qEn: "What is an AxionIA audit?",
+      qFr: "Qu'est-ce qu'un audit Axion-IA ?",
+      qEn: "What is an Axion-IA audit?",
       aFr: "Un audit est un diagnostic 5-10 jours qui cartographie vos flux, identifie les opportunités IA chiffrées, et livre un rapport actionnable.",
       aEn: "An audit is a 5-10 day diagnostic mapping your flows, identifying quantified AI opportunities, and delivering an actionable report.",
     },
@@ -754,8 +754,8 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Comment puis-je payer ?",
       qEn: "How can I pay?",
-      aFr: "Virement bancaire UE (IBAN estonien fourni). Facture émise par AxionIA OÜ avec TVA EE selon résidence.",
-      aEn: "EU bank transfer (Estonian IBAN provided). Invoice issued by AxionIA OÜ with Estonian VAT depending on residence.",
+      aFr: "Virement bancaire UE (IBAN estonien fourni). Facture émise par Axion-IA OÜ avec TVA EE selon résidence.",
+      aEn: "EU bank transfer (Estonian IBAN provided). Invoice issued by Axion-IA OÜ with Estonian VAT depending on residence.",
     },
     {
       slug: "donnees-rgpd",
@@ -786,8 +786,8 @@ async function seedFAQs() {
       category: "interventions",
       qFr: "Quelle différence entre intervention et formation ?",
       qEn: "What's the difference between a session and training?",
-      aFr: "Une intervention est concrète, opérationnelle, livre des résultats immédiats. AxionIA ne fait pas de formation académique mais un coaching terrain en entreprise.",
-      aEn: "A session is concrete, operational, and delivers immediate results. AxionIA does not run academic training but on-site corporate coaching.",
+      aFr: "Une intervention est concrète, opérationnelle, livre des résultats immédiats. Axion-IA ne fait pas de formation académique mais un coaching terrain en entreprise.",
+      aEn: "A session is concrete, operational, and delivers immediate results. Axion-IA does not run academic training but on-site corporate coaching.",
     },
     {
       slug: "qui-utilise-axionia",
@@ -911,12 +911,12 @@ async function seedHelpArticles() {
       isTutorial: false,
       slugFr: "comprendre-ma-facture-axionia",
       slugEn: "understanding-my-axionia-invoice",
-      titleFr: "Comprendre ma facture AxionIA",
-      titleEn: "Understanding my AxionIA invoice",
+      titleFr: "Comprendre ma facture Axion-IA",
+      titleEn: "Understanding my Axion-IA invoice",
       bodyFr:
-        "Facture émise par AxionIA OÜ (Estonie) en EUR, TVA EE 22 % par défaut. Pour clients B2B intra-UE avec numéro TVA, autoliquidation appliquée (TVA 0 %). Mention 'reverse charge' obligatoire.",
+        "Facture émise par Axion-IA OÜ (Estonie) en EUR, TVA EE 22 % par défaut. Pour clients B2B intra-UE avec numéro TVA, autoliquidation appliquée (TVA 0 %). Mention 'reverse charge' obligatoire.",
       bodyEn:
-        "Invoice issued by AxionIA OÜ (Estonia) in EUR, default 22% Estonian VAT. For intra-EU B2B clients with VAT number, reverse charge applies (0% VAT). 'Reverse charge' mention is mandatory.",
+        "Invoice issued by Axion-IA OÜ (Estonia) in EUR, default 22% Estonian VAT. For intra-EU B2B clients with VAT number, reverse charge applies (0% VAT). 'Reverse charge' mention is mandatory.",
     },
     {
       categoryId: catFacturation.id,
@@ -947,8 +947,8 @@ async function seedHelpArticles() {
       isTutorial: false,
       slugFr: "differences-3-modules-axionia",
       slugEn: "axionia-3-modules-differences",
-      titleFr: "Différences entre les 3 modules AxionIA",
-      titleEn: "Differences between AxionIA's 3 modules",
+      titleFr: "Différences entre les 3 modules Axion-IA",
+      titleEn: "Differences between Axion-IA's 3 modules",
       bodyFr:
         "Module 1 (Interventions) = exploration et alignement, 1 jour. Module 2 (Audit) = diagnostic 5-10 jours avec rapport. Module 3 (Implémentation) = déploiement IA concret 1 sem. à 12 sem.",
       bodyEn:
@@ -962,9 +962,9 @@ async function seedHelpArticles() {
       titleFr: "Qui est mon interlocuteur ?",
       titleEn: "Who is my contact?",
       bodyFr:
-        "Will, fondateur, est votre interlocuteur direct sur toutes les interventions et audits. Sur les implémentations longues, un chef de projet AxionIA dédié vous est assigné, Will reste sponsor.",
+        "Will, fondateur, est votre interlocuteur direct sur toutes les interventions et audits. Sur les implémentations longues, un chef de projet Axion-IA dédié vous est assigné, Will reste sponsor.",
       bodyEn:
-        "Will, founder, is your direct contact on all sessions and audits. On long implementations, a dedicated AxionIA project manager is assigned, with Will as sponsor.",
+        "Will, founder, is your direct contact on all sessions and audits. On long implementations, a dedicated Axion-IA project manager is assigned, with Will as sponsor.",
     },
   ];
 
@@ -1014,7 +1014,7 @@ async function seedHelpArticles() {
 // ============================================================
 
 async function main() {
-  console.log("→ AxionIA · seed FR+EN starting…");
+  console.log("→ Axion-IA · seed FR+EN starting…");
   await seedAdmin();
   await seedSettings();
   await seedCategories();

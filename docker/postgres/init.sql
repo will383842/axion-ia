@@ -1,4 +1,4 @@
--- AxionIA · Postgres dev init (Sprint 15 / M8)
+-- Axion-IA · Postgres dev init (Sprint 15 / M8)
 -- Extensions activées au boot du conteneur.
 -- citext = email/slugs case-insensitive
 -- pg_trgm = recherche fuzzy (admin search)
