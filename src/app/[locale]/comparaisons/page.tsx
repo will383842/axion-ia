@@ -2,10 +2,21 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import {
+  ArrowRight,
+  Scale,
+  ShieldCheck,
+  Wallet,
+  RefreshCw,
+  Sprout,
+  Boxes,
+  Building2,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -50,6 +61,13 @@ export default async function ComparisonsListPage({ params }: Props) {
     name: isFr ? "Comparaisons AxionIA" : "AxionIA comparisons",
     url: `${SITE_URL}/${locale}/comparaisons`,
     inLanguage: locale,
+    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    hasPart: COMPARISONS.map((c) => ({
+      "@type": "Article",
+      headline: c[loc].title,
+      description: c[loc].excerpt,
+      url: `${SITE_URL}/${locale}/comparaisons/${c.slug}`,
+    })),
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -87,6 +105,48 @@ export default async function ComparisonsListPage({ params }: Props) {
                   ? "Tableaux de décision factuels — pas de FUD, pas de complaisance vendeur. Cabinet IA, SaaS, internalisation : ce qui colle vraiment à votre contexte."
                   : "Factual decision tables — no FUD, no vendor complacency. AI consultancy, SaaS, in-house: what actually fits your context."}
               </p>
+              {/* Pills réassurance */}
+              <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
+                {[
+                  {
+                    icon: Scale,
+                    label: isFr
+                      ? `${COMPARISONS.length} comparaisons`
+                      : `${COMPARISONS.length} comparisons`,
+                  },
+                  {
+                    icon: ShieldCheck,
+                    label: isFr ? "Neutralité éditoriale" : "Editorial neutrality",
+                  },
+                  { icon: Wallet, label: isFr ? "Critères ROI" : "ROI criteria" },
+                  { icon: RefreshCw, label: isFr ? "MAJ trimestrielle" : "Quarterly updates" },
+                ].map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              {/* CTAs hero */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Cta href="#comparaisons" size="lg">
+                  {isFr ? "Parcourir les comparaisons" : "Browse comparisons"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta href="/audit" variant="outline" size="lg">
+                  {isFr ? "Demander un audit" : "Request an audit"}
+                </Cta>
+              </div>
             </div>
             <ComparisonsHeroSchema
               isFr={isFr}
@@ -124,7 +184,75 @@ export default async function ComparisonsListPage({ params }: Props) {
         </Container>
       </Section>
 
-      <Section>
+      {/* Anti-fear 3 niveaux décision — guide arbitrage par maturité */}
+      <Section eyebrow={isFr ? "Niveau de maturité" : "Maturity level"} tone="sand">
+        <Container>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sprout className="text-terracotta h-5 w-5" aria-hidden="true" />
+                  {isFr ? "1. Découverte" : "1. Discovery"}
+                </CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Premier essai IA, MVP, pilote — minimiser risque et coût initial."
+                    : "First AI try, MVP, pilot — minimise risk and initial cost."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-fg-soft text-sm leading-snug">
+                  {isFr
+                    ? "Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle 490 €). Pas d'investissement custom à ce stade."
+                    : "Default recommendation: generic SaaS or short consultancy mission (Essential €490). No custom investment at this stage."}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Boxes className="text-terracotta h-5 w-5" aria-hidden="true" />
+                  {isFr ? "2. Déploiement" : "2. Deployment"}
+                </CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Production cadrée, équipe formée — viser maintenabilité et ROI."
+                    : "Scoped production, trained team — aim for maintainability and ROI."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-fg-soft text-sm leading-snug">
+                  {isFr
+                    ? "Recommandation par défaut : cabinet IA opérationnel pour cadrage + implémentation packagée. Hybride avec SaaS ciblé sur les fonctions stables."
+                    : "Default recommendation: operational AI consultancy for scoping + packaged implementation. Hybrid with SaaS targeted on stable functions."}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="text-terracotta h-5 w-5" aria-hidden="true" />
+                  {isFr ? "3. Industrialisation" : "3. Industrialisation"}
+                </CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Scale, gouvernance, modèles propriétaires — viser indépendance long terme."
+                    : "Scale, governance, proprietary models — aim for long-term independence."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-fg-soft text-sm leading-snug">
+                  {isFr
+                    ? "Recommandation par défaut : équipe interne renforcée par cabinet IA en architecture + IA Custom (8-50 k€). Désengagement progressif des SaaS."
+                    : "Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (€8-50k). Progressive SaaS disengagement."}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="comparaisons" eyebrow={isFr ? "Comparaisons" : "Comparisons"}>
         <Container>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {COMPARISONS.map((c) => (
