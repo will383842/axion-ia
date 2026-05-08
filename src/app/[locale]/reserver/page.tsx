@@ -15,9 +15,9 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-// Fixtures-only — Sprint 17 connectera Prisma `calendar_bookings`.
+// Fixtures-only â€” Sprint 17 connectera Prisma `calendar_bookings`.
 // Distribution dense (social proof) avec ville/pays/secteur/taille publics
-// (anonymisé : pas de nom d'entreprise). Inclut sam/dim depuis 2026-05-07.
+// (anonymisÃ© : pas de nom d'entreprise). Inclut sam/dim depuis 2026-05-07.
 function buildFixtureBookedSlots(): BookedSlot[] {
   const today = new Date();
   const fixtures: Array<{
@@ -40,7 +40,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     },
     {
       offsetDays: 4,
-      intervention: "managers",
+      intervention: "conference",
       city: "Lyon",
       country: "FR",
       sector: "Industrie",
@@ -58,7 +58,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     },
     {
       offsetDays: 8,
-      intervention: "equipes",
+      intervention: "essentielle",
       city: "Nantes",
       country: "FR",
       sector: "Distribution",
@@ -79,7 +79,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
       intervention: "essentielle",
       city: "Marseille",
       country: "FR",
-      sector: "Hôtellerie",
+      sector: "HÃ´tellerie",
       companySize: "10-49",
       duration: 1,
     },
@@ -88,7 +88,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
       intervention: "conference",
       city: "Lille",
       country: "FR",
-      sector: "Santé",
+      sector: "SantÃ©",
       companySize: "50-249",
       duration: 1,
     },
@@ -97,13 +97,13 @@ function buildFixtureBookedSlots(): BookedSlot[] {
       intervention: "essentielle",
       city: "Toulouse",
       country: "FR",
-      sector: "Aérospatial",
+      sector: "AÃ©rospatial",
       companySize: "1000+",
       duration: 1,
     },
     {
       offsetDays: 19,
-      intervention: "managers",
+      intervention: "conference",
       city: "Strasbourg",
       country: "FR",
       sector: "Public",
@@ -113,7 +113,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     {
       offsetDays: 22,
       intervention: "essentielle",
-      city: "Genève",
+      city: "GenÃ¨ve",
       country: "CH",
       sector: "Finance",
       companySize: "50-249",
@@ -121,7 +121,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     },
     {
       offsetDays: 24,
-      intervention: "equipes",
+      intervention: "essentielle",
       city: "Bruxelles",
       country: "BE",
       sector: "Conseil",
@@ -157,7 +157,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     },
     {
       offsetDays: 34,
-      intervention: "managers",
+      intervention: "conference",
       city: "Lyon",
       country: "FR",
       sector: "Industrie",
@@ -193,10 +193,10 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     },
     {
       offsetDays: 45,
-      intervention: "equipes",
+      intervention: "essentielle",
       city: "Toulouse",
       country: "FR",
-      sector: "Aérospatial",
+      sector: "AÃ©rospatial",
       companySize: "250-999",
       duration: 1,
     },
@@ -221,7 +221,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     {
       offsetDays: 54,
       intervention: "essentielle",
-      city: "Genève",
+      city: "GenÃ¨ve",
       country: "CH",
       sector: "Tech",
       companySize: "10-49",
@@ -229,7 +229,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
     },
     {
       offsetDays: 57,
-      intervention: "managers",
+      intervention: "conference",
       city: "Paris",
       country: "FR",
       sector: "Distribution",
@@ -241,13 +241,13 @@ function buildFixtureBookedSlots(): BookedSlot[] {
       intervention: "essentielle",
       city: "Lille",
       country: "FR",
-      sector: "Santé",
+      sector: "SantÃ©",
       companySize: "10-49",
       duration: 1,
     },
     {
       offsetDays: 64,
-      intervention: "equipes",
+      intervention: "essentielle",
       city: "Lyon",
       country: "FR",
       sector: "Conseil",
@@ -259,7 +259,7 @@ function buildFixtureBookedSlots(): BookedSlot[] {
       intervention: "essentielle",
       city: "Bordeaux",
       country: "FR",
-      sector: "Hôtellerie",
+      sector: "HÃ´tellerie",
       companySize: "10-49",
       duration: 1,
     },
@@ -297,11 +297,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/reserver",
     title:
       locale === "fr"
-        ? "Réserver une intervention IA · calendrier · AxionIA"
-        : "Book an on-site AI session · calendar · AxionIA",
+        ? "RÃ©server une intervention IA Â· calendrier Â· AxionIA"
+        : "Book an on-site AI session Â· calendar Â· AxionIA",
     description:
       locale === "fr"
-        ? "Sélectionnez une date disponible, choisissez l'intervention IA souhaitée, la ville et la durée. Confirmation par email sous 1 h ouvrée."
+        ? "SÃ©lectionnez une date disponible, choisissez l'intervention IA souhaitÃ©e, la ville et la durÃ©e. Confirmation par email sous 1 h ouvrÃ©e."
         : "Pick an available date, choose the AI intervention, city and duration. Email confirmation within 1 business hour.",
     alternates: { fr: "/reserver", en: "/book" },
   });
@@ -314,12 +314,12 @@ export default async function ReserverPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [
     {
       href: isFr ? "/reserver" : "/book",
-      label: isFr ? "Réserver" : "Book",
+      label: isFr ? "RÃ©server" : "Book",
     },
   ];
 
@@ -330,8 +330,8 @@ export default async function ReserverPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* Hero compact : padding réduit pour rapprocher le calendrier de la fold */}
-      <section className="bg-halo-warm relative overflow-hidden py-12 sm:py-14 lg:py-16">
+      {/* Hero compact : padding rÃ©duit pour rapprocher le calendrier de la fold */}
+      <section className="bg-halo-warm relative overflow-hidden pt-7 pb-12 sm:pt-8 sm:pb-14 lg:pt-10 lg:pb-16">
         <Container className="relative">
           <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
             <span
@@ -344,20 +344,20 @@ export default async function ReserverPage({ params }: Props) {
             className="text-fg mt-4 text-[clamp(2rem,5vw,3.5rem)] leading-[1.04] font-medium tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            {isFr ? "Réserver une" : "Book an"}{" "}
+            {isFr ? "RÃ©server une" : "Book an"}{" "}
             <span className="text-terracotta italic">
               {isFr ? "intervention IA" : "AI intervention"}
             </span>
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "Choisissez la formation, puis cliquez sur une date libre. Réservation finalisée après call de cadrage + acompte 50 %."
+              ? "Choisissez la formation, puis cliquez sur une date libre. RÃ©servation finalisÃ©e aprÃ¨s call de cadrage + acompte 50 %."
               : "Pick the training, then click an open date. Booking finalised after framing call + 50 % deposit."}
           </p>
         </Container>
       </section>
 
-      {/* Calendrier — page quasi-pleine largeur (override Container max-w-1520) */}
+      {/* Calendrier â€” page quasi-pleine largeur (override Container max-w-1520) */}
       <div className="bg-bg py-8 sm:py-10">
         <div className="mx-auto w-full max-w-[1680px] px-4 sm:px-6 lg:px-8 xl:px-10">
           <BookingCalendarLazy initialBookedSlots={bookedSlots} locale={loc} />
@@ -365,16 +365,16 @@ export default async function ReserverPage({ params }: Props) {
       </div>
 
       <CtaBlock
-        eyebrow={isFr ? "À noter" : "Note"}
-        title={isFr ? "L'Essentielle 490 € HT" : "The Essential €490 (excl. VAT)"}
+        eyebrow={isFr ? "Ã€ noter" : "Note"}
+        title={isFr ? "L'Essentielle 490 â‚¬ HT" : "The Essential â‚¬490 (excl. VAT)"}
         description={
           isFr
-            ? "Le créneau est verrouillé après le versement de l'acompte 50 %. Conditions de réservation détaillées dans les CGV."
+            ? "Le crÃ©neau est verrouillÃ© aprÃ¨s le versement de l'acompte 50 %. Conditions de rÃ©servation dÃ©taillÃ©es dans les CGV."
             : "The slot is locked after the 50 % deposit is received. Booking conditions detailed in the Terms."
         }
         cta={
           <Cta href="/conditions-generales" variant="outline">
-            {isFr ? "Voir les CGV" : "See Terms"} →
+            {isFr ? "Voir les CGV" : "See Terms"} â†’
           </Cta>
         }
       />

@@ -20,11 +20,13 @@ interface HeroProps {
   className?: string;
 }
 
+// Top padding réduit ~40 % vs bas (Will 2026-05-08 — héro paraissait trop bas).
+// Le rythme bas reste inchangé pour préserver la respiration vers la section suivante.
 const verticalRhythm: Record<HeroVariant, string> = {
-  home: "py-24 sm:py-32 lg:py-40",
-  module: "py-20 sm:py-24 lg:py-32",
-  product: "py-20 sm:py-24 lg:py-32",
-  transverse: "py-16 sm:py-20 lg:py-24",
+  home: "pt-14 pb-24 sm:pt-20 sm:pb-32 lg:pt-24 lg:pb-40",
+  module: "pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32",
+  product: "pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32",
+  transverse: "pt-10 pb-16 sm:pt-12 sm:pb-20 lg:pt-14 lg:pb-24",
 };
 
 const titleScale: Record<HeroVariant, string> = {

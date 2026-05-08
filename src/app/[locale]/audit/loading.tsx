@@ -1,9 +1,9 @@
-// P-102 — `loading.tsx` granulaire `/audit` matché aux dimensions réelles
+// P-102 â€” `loading.tsx` granulaire `/audit` matchÃ© aux dimensions rÃ©elles
 // (hero 320 px + 3 cartes audit 280 px chacune + tarifs grid + CtaBlock).
 export default function AuditLoading() {
   return (
     <>
-      <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="bg-border h-4 w-40 animate-pulse rounded-xs" aria-hidden="true" />
           <div
@@ -24,7 +24,7 @@ export default function AuditLoading() {
           ))}
         </div>
       </div>
-      <span className="sr-only">Chargement de la page audit…</span>
+      <span className="sr-only">Chargement de la page auditâ€¦</span>
     </>
   );
 }

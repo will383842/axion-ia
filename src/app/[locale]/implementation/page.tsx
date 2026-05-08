@@ -35,12 +35,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/implementation",
     title:
       locale === "fr"
-        ? "Implémentation IA · Catalogue par fonction · AxionIA"
-        : "AI implementation · Catalogue by function · AxionIA",
+        ? "ImplÃ©mentation IA Â· Catalogue par fonction Â· AxionIA"
+        : "AI implementation Â· Catalogue by function Â· AxionIA",
     description:
       locale === "fr"
-        ? "Catalogue d'automatisations IA par fonction d'entreprise (service client, ventes, marketing, RH, données, métier...). Forfait fixe à partir de 490 €, sans abonnement mensuel, livraison 2-6 semaines."
-        : "AI automation catalogue by business function (customer service, sales, marketing, HR, data, operations...). Fixed fee from €490, no monthly subscription, 2-6 week delivery.",
+        ? "Catalogue d'automatisations IA par fonction d'entreprise (service client, ventes, marketing, RH, donnÃ©es, mÃ©tier...). Forfait fixe Ã  partir de 490 â‚¬, sans abonnement mensuel, livraison 2-6 semaines."
+        : "AI automation catalogue by business function (customer service, sales, marketing, HR, data, operations...). Fixed fee from â‚¬490, no monthly subscription, 2-6 week delivery.",
   });
 }
 
@@ -51,58 +51,58 @@ export default async function ImplementationListing({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [
     {
       href: "/implementation",
-      label: isFr ? "Implémentation IA" : "AI implementation",
+      label: isFr ? "ImplÃ©mentation IA" : "AI implementation",
     },
   ];
 
-  // Engagements/réassurance — pills sous le hero. Vrais engagements opérables,
-  // pas de chiffre client inventé.
+  // Engagements/rÃ©assurance â€” pills sous le hero. Vrais engagements opÃ©rables,
+  // pas de chiffre client inventÃ©.
   const trustItems = isFr
     ? [
         { icon: Clock, label: "Devis ferme sous 48 h" },
-        { icon: ShieldCheck, label: "Forfait fixe · sans abonnement" },
-        { icon: Sparkles, label: "Livraison en 2 à 6 semaines" },
-        { icon: Check, label: "Formation incluse · vous êtes propriétaire" },
+        { icon: ShieldCheck, label: "Forfait fixe Â· sans abonnement" },
+        { icon: Sparkles, label: "Livraison en 2 Ã  6 semaines" },
+        { icon: Check, label: "Formation incluse Â· vous Ãªtes propriÃ©taire" },
       ]
     : [
         { icon: Clock, label: "Firm quote within 48 h" },
-        { icon: ShieldCheck, label: "Fixed fee · no subscription" },
+        { icon: ShieldCheck, label: "Fixed fee Â· no subscription" },
         { icon: Sparkles, label: "Delivery in 2 to 6 weeks" },
-        { icon: Check, label: "Training included · you own everything" },
+        { icon: Check, label: "Training included Â· you own everything" },
       ];
 
-  // Bandeau pricing transparent — fourchettes par typologie de projet,
-  // alignées sur le catalogue Module 3.
+  // Bandeau pricing transparent â€” fourchettes par typologie de projet,
+  // alignÃ©es sur le catalogue Module 3.
   const pricingTiers = isFr
     ? [
         {
-          tag: "À partir de",
-          price: "490 €",
+          tag: "Ã€ partir de",
+          price: "490 â‚¬",
           label: "Mise en route IA",
-          desc: "Une première automatisation simple installée chez vous. Idéal artisan, commerce, TPE qui veut tester sans risque.",
+          desc: "Une premiÃ¨re automatisation simple installÃ©e chez vous. IdÃ©al artisan, commerce, TPE qui veut tester sans risque.",
         },
         {
           tag: "Forfait fixe",
           price: "Sur devis",
-          label: "Implémentation standard",
-          desc: "Plusieurs automatisations connectées entre elles dans une cohérence métier. Devis personnalisé selon votre périmètre.",
+          label: "ImplÃ©mentation standard",
+          desc: "Plusieurs automatisations connectÃ©es entre elles dans une cohÃ©rence mÃ©tier. Devis personnalisÃ© selon votre pÃ©rimÃ¨tre.",
         },
         {
           tag: "Sur mesure",
           price: "Sur devis",
-          label: "IA Custom · ETI & grands comptes",
-          desc: "Modèles fine-tuned, équipe dédiée, intégration profonde. Pour les périmètres complexes ou les institutions.",
+          label: "IA Custom Â· ETI & grands comptes",
+          desc: "ModÃ¨les fine-tuned, Ã©quipe dÃ©diÃ©e, intÃ©gration profonde. Pour les pÃ©rimÃ¨tres complexes ou les institutions.",
         },
       ]
     : [
         {
           tag: "From",
-          price: "€490",
+          price: "â‚¬490",
           label: "AI start-up",
           desc: "A first simple automation installed at your place. Great for trades, retail, SMB who want a risk-free test.",
         },
@@ -115,7 +115,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           tag: "Custom",
           price: "On quote",
-          label: "Custom AI · mid-cap & enterprise",
+          label: "Custom AI Â· mid-cap & enterprise",
           desc: "Fine-tuned models, dedicated team, deep integration. For complex perimeters or institutions.",
         },
       ];
@@ -123,18 +123,18 @@ export default async function ImplementationListing({ params }: Props) {
   const pillars = isFr
     ? [
         {
-          eyebrow: "Idéal",
+          eyebrow: "IdÃ©al",
           title: "Audit d'abord",
           description:
-            "Pour cadrer votre projet et identifier les usages à plus fort impact avant d'investir. Quatre niveaux d'audit, du diagnostic Flash à l'audit stratégique ETI.",
+            "Pour cadrer votre projet et identifier les usages Ã  plus fort impact avant d'investir. Quatre niveaux d'audit, du diagnostic Flash Ã  l'audit stratÃ©gique ETI.",
           ctaLabel: "Voir les niveaux d'audit",
           ctaHref: "/audit",
         },
         {
           eyebrow: "Si vous savez",
-          title: "Implémentation directe",
+          title: "ImplÃ©mentation directe",
           description:
-            "Vous avez une idée précise (chatbot, devis auto, assistant commercial). On l'installe en 2 à 6 semaines, en forfait fixe.",
+            "Vous avez une idÃ©e prÃ©cise (chatbot, devis auto, assistant commercial). On l'installe en 2 Ã  6 semaines, en forfait fixe.",
           ctaLabel: "Voir le catalogue",
           ctaHref: "#catalogue",
         },
@@ -142,8 +142,8 @@ export default async function ImplementationListing({ params }: Props) {
           eyebrow: "Notre engagement",
           title: "Sans abonnement",
           description:
-            "Vous payez une fois, c'est à vous. Pas de maintenance mensuelle imposée. Évolutions plus tard si vous le décidez.",
-          ctaLabel: "Comment ça marche",
+            "Vous payez une fois, c'est Ã  vous. Pas de maintenance mensuelle imposÃ©e. Ã‰volutions plus tard si vous le dÃ©cidez.",
+          ctaLabel: "Comment Ã§a marche",
           ctaHref: "/methodologie",
         },
       ]
@@ -174,111 +174,112 @@ export default async function ImplementationListing({ params }: Props) {
         },
       ];
 
-  // Bloc comparatif — Make/Zapier vs Agence classique vs AxionIA.
-  // Frontal, honnête, mais visuellement orienté pour mettre AxionIA en
-  // valeur (4 critères ✓/✗ en pied + colonne mise en avant).
-  // Critère states : "yes" / "no" / "partial".
+  // Bloc comparatif â€” Make/Zapier vs Agence classique vs AxionIA.
+  // Frontal, honnÃªte, mais visuellement orientÃ© pour mettre AxionIA en
+  // valeur (4 critÃ¨res âœ“/âœ— en pied + colonne mise en avant).
+  // CritÃ¨re states : "yes" / "no" / "partial".
   const comparison = isFr
     ? {
         eyebrow: "On peut comparer",
-        title: "Make · agence ·",
+        title: "Make Â· agence Â·",
         titleEm: "AxionIA",
         description:
-          "Trois manières d'automatiser votre entreprise avec l'IA. Sur 4 critères qui comptent vraiment, voici comment chacun se positionne.",
+          "Trois maniÃ¨res d'automatiser votre entreprise avec l'IA. Sur 4 critÃ¨res qui comptent vraiment, voici comment chacun se positionne.",
         criteriaLabels: [
-          "Forfait fixe (pas de dépassement)",
-          "Livraison ≤ 6 semaines",
+          "Forfait fixe (pas de dÃ©passement)",
+          "Livraison â‰¤ 6 semaines",
           "Vraie IA (pas juste no-code)",
-          "Vous êtes propriétaire · sans abonnement",
+          "Vous Ãªtes propriÃ©taire Â· sans abonnement",
         ],
         cols: [
           {
             name: "Make / Zapier",
             tag: "Plateforme no-code (DIY)",
-            price: "0 € → 99 €/mois",
+            price: "0 â‚¬ â†’ 99 â‚¬/mois",
             highlight: false,
             pros: [
-              "Bon pour automatisations très simples (si A → alors B)",
-              "Démarrage gratuit possible",
+              "Bon pour automatisations trÃ¨s simples (si A â†’ alors B)",
+              "DÃ©marrage gratuit possible",
             ],
             cons: [
-              "Vous configurez tout vous-même : aucun service, aucun accompagnement",
-              "Forte courbe d'apprentissage technique pour des cas avancés",
-              "Plafonne vite : pas d'IA réelle, pas d'intelligence métier",
-              "Coûts qui explosent au volume (facturé à la tâche)",
-              "Abonnement permanent — vous payez tant que ça tourne",
-              "Maintenance et corrections de pannes à votre charge",
+              "Vous configurez tout vous-mÃªme : aucun service, aucun accompagnement",
+              "Forte courbe d'apprentissage technique pour des cas avancÃ©s",
+              "Plafonne vite : pas d'IA rÃ©elle, pas d'intelligence mÃ©tier",
+              "CoÃ»ts qui explosent au volume (facturÃ© Ã  la tÃ¢che)",
+              "Abonnement permanent â€” vous payez tant que Ã§a tourne",
+              "Maintenance et corrections de pannes Ã  votre charge",
             ],
             criteria: ["no", "yes", "no", "no"] as const,
             verdict:
-              "C'est une plateforme, pas un partenaire. À vous de tout faire, de tout maintenir.",
+              "C'est une plateforme, pas un partenaire. Ã€ vous de tout faire, de tout maintenir.",
           },
           {
             name: "Agence classique",
             tag: "Sur mesure profond",
-            price: "25 k€ → 200 k€",
+            price: "25 kâ‚¬ â†’ 200 kâ‚¬",
             highlight: false,
             pros: [
-              "Capacité à traiter des sujets très complexes",
-              "Sur mesure poussé, équipe dédiée",
+              "CapacitÃ© Ã  traiter des sujets trÃ¨s complexes",
+              "Sur mesure poussÃ©, Ã©quipe dÃ©diÃ©e",
             ],
             cons: [
-              "Devis élastiques, dépassements fréquents",
-              "Délais 3 à 6 mois minimum",
-              "Régie au temps : vous payez les hésitations",
-              "Maintenance continue souvent imposée",
+              "Devis Ã©lastiques, dÃ©passements frÃ©quents",
+              "DÃ©lais 3 Ã  6 mois minimum",
+              "RÃ©gie au temps : vous payez les hÃ©sitations",
+              "Maintenance continue souvent imposÃ©e",
             ],
             criteria: ["no", "no", "yes", "partial"] as const,
-            verdict: "Pertinent pour des projets très grands ou avec contraintes techniques rares.",
+            verdict:
+              "Pertinent pour des projets trÃ¨s grands ou avec contraintes techniques rares.",
           },
           {
             name: "AxionIA",
             tag: "Cabinet IA & automatisation",
-            price: "490 € → sur devis",
+            price: "490 â‚¬ â†’ sur devis",
             highlight: true,
             badge: "Le meilleur des deux mondes",
             pros: [
-              "Cabinet spécialisé IA & automatisation — vous avez un partenaire, pas un outil",
-              "Forfait fixe · devis ferme avant tout démarrage",
-              "Vraie IA connectée à vos outils (pas juste un workflow)",
-              "Livraison en 2 à 6 semaines, sprints + démos hebdo",
-              "Vous êtes propriétaire — code, données, accès",
-              "Pas d'abonnement mensuel imposé",
-              "Catalogue éprouvé (~50 automatisations) + sur mesure",
-              "S'adapte de l'artisan à l'ETI · IA Custom pour les grands comptes",
+              "Cabinet spÃ©cialisÃ© IA & automatisation â€” vous avez un partenaire, pas un outil",
+              "Forfait fixe Â· devis ferme avant tout dÃ©marrage",
+              "Vraie IA connectÃ©e Ã  vos outils (pas juste un workflow)",
+              "Livraison en 2 Ã  6 semaines, sprints + dÃ©mos hebdo",
+              "Vous Ãªtes propriÃ©taire â€” code, donnÃ©es, accÃ¨s",
+              "Pas d'abonnement mensuel imposÃ©",
+              "Catalogue Ã©prouvÃ© (~50 automatisations) + sur mesure",
+              "S'adapte de l'artisan Ã  l'ETI Â· IA Custom pour les grands comptes",
             ],
-            cons: ["Pas de régie continue (volontairement — vous restez libre)"],
+            cons: ["Pas de rÃ©gie continue (volontairement â€” vous restez libre)"],
             criteria: ["yes", "yes", "yes", "yes"] as const,
             verdict:
-              "L'expertise d'un cabinet IA, l'agilité d'une équipe spécialisée, sans la facture ni la dépendance — l'équilibre que personne d'autre ne propose en France.",
+              "L'expertise d'un cabinet IA, l'agilitÃ© d'une Ã©quipe spÃ©cialisÃ©e, sans la facture ni la dÃ©pendance â€” l'Ã©quilibre que personne d'autre ne propose en France.",
           },
         ],
       }
     : {
         eyebrow: "Let's compare",
-        title: "Make · agency ·",
+        title: "Make Â· agency Â·",
         titleEm: "AxionIA",
         description:
           "Three ways to automate your business with AI. On the 4 criteria that actually matter, here is how each positions itself.",
         criteriaLabels: [
           "Fixed fee (no overrun)",
-          "Delivery ≤ 6 weeks",
+          "Delivery â‰¤ 6 weeks",
           "Real AI (not just no-code)",
-          "You own it · no subscription",
+          "You own it Â· no subscription",
         ],
         cols: [
           {
             name: "Make / Zapier",
             tag: "DIY no-code platform",
-            price: "€0 → €99/mo",
+            price: "â‚¬0 â†’ â‚¬99/mo",
             highlight: false,
-            pros: ["Good for very simple automations (if A → then B)", "Free tier to start"],
+            pros: ["Good for very simple automations (if A â†’ then B)", "Free tier to start"],
             cons: [
-              "You configure everything yourself — no service, no support",
+              "You configure everything yourself â€” no service, no support",
               "Steep learning curve for advanced cases",
               "Caps quickly: no real AI, no business intelligence",
               "Costs explode with volume (per-task billing)",
-              "Permanent subscription — you pay as long as it runs",
+              "Permanent subscription â€” you pay as long as it runs",
               "Maintenance and outages on you",
             ],
             criteria: ["no", "yes", "no", "no"] as const,
@@ -287,7 +288,7 @@ export default async function ImplementationListing({ params }: Props) {
           {
             name: "Classic agency",
             tag: "Deep custom",
-            price: "€25k → €200k",
+            price: "â‚¬25k â†’ â‚¬200k",
             highlight: false,
             pros: ["Can tackle very complex topics", "Deep custom, dedicated team"],
             cons: [
@@ -302,88 +303,89 @@ export default async function ImplementationListing({ params }: Props) {
           {
             name: "AxionIA",
             tag: "AI & automation consultancy",
-            price: "€490 → on quote",
+            price: "â‚¬490 â†’ on quote",
             highlight: true,
             badge: "Best of both worlds",
             pros: [
-              "Specialized AI & automation consultancy — a partner, not a tool",
-              "Fixed fee · firm quote before any kick-off",
+              "Specialized AI & automation consultancy â€” a partner, not a tool",
+              "Fixed fee Â· firm quote before any kick-off",
               "Real AI wired to your tools (not just a workflow)",
               "Delivery in 2 to 6 weeks, sprints + weekly demos",
-              "You own it — code, data, access",
+              "You own it â€” code, data, access",
               "No imposed monthly subscription",
               "Proven catalogue (~50 automations) + custom",
-              "Scales from trades to mid-cap · Custom AI for enterprise",
+              "Scales from trades to mid-cap Â· Custom AI for enterprise",
             ],
-            cons: ["No continuous time-and-materials (by design — you stay free)"],
+            cons: ["No continuous time-and-materials (by design â€” you stay free)"],
             criteria: ["yes", "yes", "yes", "yes"] as const,
             verdict:
-              "An AI consultancy's expertise, a specialized team's agility, without the bill or the lock-in — the balance no one else offers.",
+              "An AI consultancy's expertise, a specialized team's agility, without the bill or the lock-in â€” the balance no one else offers.",
           },
         ],
       };
 
-  // Scénarios types — couvrent le spectre artisan → grand groupe pour
-  // que chaque visiteur se reconnaisse. Format avant/après pour rendre
-  // tangible. Pas des témoignages : ordres de grandeur typiques.
-  // Disclaimer assumé en bas de section (transparence FR L.121-1).
+  // ScÃ©narios types â€” couvrent le spectre artisan â†’ grand groupe pour
+  // que chaque visiteur se reconnaisse. Format avant/aprÃ¨s pour rendre
+  // tangible. Pas des tÃ©moignages : ordres de grandeur typiques.
+  // Disclaimer assumÃ© en bas de section (transparence FR L.121-1).
   const scenarios = isFr
     ? [
         {
           size: "Artisan / TPE",
-          industry: "Plombier, électricien, paysagiste",
-          metric: "× 3 devis envoyés",
-          before: "Avant : 30 min le soir, devis oubliés, clients qui partent.",
+          industry: "Plombier, Ã©lectricien, paysagiste",
+          metric: "Ã— 3 devis envoyÃ©s",
+          before: "Avant : 30 min le soir, devis oubliÃ©s, clients qui partent.",
           after:
-            "Après : un brief vocal sur chantier, le devis sort en 30 secondes, prêt à envoyer.",
+            "AprÃ¨s : un brief vocal sur chantier, le devis sort en 30 secondes, prÃªt Ã  envoyer.",
         },
         {
           size: "Commerce / restauration",
-          industry: "Boutique, restaurant, hôtel",
-          metric: "100 % avis répondus",
-          before: "Avant : avis Google ignorés, DM Instagram en retard, clients perdus.",
+          industry: "Boutique, restaurant, hÃ´tel",
+          metric: "100 % avis rÃ©pondus",
+          before: "Avant : avis Google ignorÃ©s, DM Instagram en retard, clients perdus.",
           after:
-            "Après : tous les avis et DM reçoivent une réponse pro 24/7. Les étoiles montent toutes seules.",
+            "AprÃ¨s : tous les avis et DM reÃ§oivent une rÃ©ponse pro 24/7. Les Ã©toiles montent toutes seules.",
         },
         {
-          size: "Cabinet libéral / TPE",
-          industry: "Expert-comptable, avocat, médecin",
-          metric: "− 4 h / semaine",
-          before: "Avant : saisie de factures, comptes-rendus tapés à la main, paperasse partout.",
+          size: "Cabinet libÃ©ral / TPE",
+          industry: "Expert-comptable, avocat, mÃ©decin",
+          metric: "âˆ’ 4 h / semaine",
+          before:
+            "Avant : saisie de factures, comptes-rendus tapÃ©s Ã  la main, paperasse partout.",
           after:
-            "Après : tout est lu, classé, pré-rédigé. L'équipe se recentre sur le conseil et le diagnostic.",
+            "AprÃ¨s : tout est lu, classÃ©, prÃ©-rÃ©digÃ©. L'Ã©quipe se recentre sur le conseil et le diagnostic.",
         },
         {
           size: "PME B2B (10-50)",
-          industry: "Services, SaaS, distribution spécialisée",
+          industry: "Services, SaaS, distribution spÃ©cialisÃ©e",
           metric: "+ 22 % taux de signature",
-          before: "Avant : devis envoyés et oubliés, commerciaux qui appellent à l'aveugle.",
+          before: "Avant : devis envoyÃ©s et oubliÃ©s, commerciaux qui appellent Ã  l'aveugle.",
           after:
-            "Après : relances automatiques, leads scorés, commerciaux focalisés sur les chauds.",
+            "AprÃ¨s : relances automatiques, leads scorÃ©s, commerciaux focalisÃ©s sur les chauds.",
         },
         {
           size: "ETI (100-500)",
           industry: "Industrie, distribution, retail multi-sites",
-          metric: "20 h récupérées / mois",
+          metric: "20 h rÃ©cupÃ©rÃ©es / mois",
           before:
-            "Avant : reporting Excel manuel, veille concurrentielle improvisée, données dispersées.",
+            "Avant : reporting Excel manuel, veille concurrentielle improvisÃ©e, donnÃ©es dispersÃ©es.",
           after:
-            "Après : tableaux de bord auto, prévisions chiffrées, veille hebdo synthétisée, anomalies détectées avant qu'elles coûtent.",
+            "AprÃ¨s : tableaux de bord auto, prÃ©visions chiffrÃ©es, veille hebdo synthÃ©tisÃ©e, anomalies dÃ©tectÃ©es avant qu'elles coÃ»tent.",
         },
         {
           size: "Grand groupe (500+)",
-          industry: "Sièges, multi-pays, fonctions support centralisées",
-          metric: "× 5 productivité support",
-          before: "Avant : 50 fois la même question RH/IT/paie, équipes interrompues sans cesse.",
+          industry: "SiÃ¨ges, multi-pays, fonctions support centralisÃ©es",
+          metric: "Ã— 5 productivitÃ© support",
+          before: "Avant : 50 fois la mÃªme question RH/IT/paie, Ã©quipes interrompues sans cesse.",
           after:
-            "Après : chatbot interne sur vos procédures, traduction temps réel, recherche dans Drive en 5 secondes.",
+            "AprÃ¨s : chatbot interne sur vos procÃ©dures, traduction temps rÃ©el, recherche dans Drive en 5 secondes.",
         },
       ]
     : [
         {
           size: "Trades / micro-business",
           industry: "Plumber, electrician, landscaper",
-          metric: "3× quotes sent",
+          metric: "3Ã— quotes sent",
           before: "Before: 30 min in the evening, forgotten quotes, customers leaving.",
           after: "After: voice brief on site, quote out in 30 seconds, ready to send.",
         },
@@ -397,7 +399,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           size: "Professional firm / small biz",
           industry: "Accountant, lawyer, doctor",
-          metric: "−4 h / week",
+          metric: "âˆ’4 h / week",
           before: "Before: invoice entry, hand-typed minutes, paperwork everywhere.",
           after:
             "After: everything read, sorted, pre-drafted. The team refocuses on advice and diagnosis.",
@@ -420,43 +422,44 @@ export default async function ImplementationListing({ params }: Props) {
         {
           size: "Enterprise (500+)",
           industry: "HQs, multi-country, centralized support functions",
-          metric: "5× support productivity",
+          metric: "5Ã— support productivity",
           before: "Before: same HR/IT/payroll question 50 times, teams constantly interrupted.",
           after:
             "After: internal chatbot on your procedures, real-time translation, Drive search in 5 seconds.",
         },
       ];
 
-  // Process — comment se déroule un projet, transparence totale.
+  // Process â€” comment se dÃ©roule un projet, transparence totale.
   const processSteps = isFr
     ? [
         {
           id: "p1",
-          title: "Vous décrivez le besoin",
+          title: "Vous dÃ©crivez le besoin",
           description:
             "Formulaire de 5 min ou appel de 20 min. On creuse le contexte, les outils en place, les contraintes.",
         },
         {
           id: "p2",
-          title: "Devis ferme sous 48 h ouvrées",
+          title: "Devis ferme sous 48 h ouvrÃ©es",
           description:
-            "Périmètre précis, jalons, prix fixe. Vous signez ou pas — sans engagement avant signature.",
+            "PÃ©rimÃ¨tre prÃ©cis, jalons, prix fixe. Vous signez ou pas â€” sans engagement avant signature.",
         },
         {
           id: "p3",
-          title: "Cadrage technique · 1 sprint",
-          description: "On valide les détails, on connecte les outils, on aligne avec vos équipes.",
+          title: "Cadrage technique Â· 1 sprint",
+          description:
+            "On valide les dÃ©tails, on connecte les outils, on aligne avec vos Ã©quipes.",
         },
         {
           id: "p4",
-          title: "Build · 2 à 6 semaines",
-          description: "Sprints courts, démos hebdomadaires, validation continue. Pas de tunnel.",
+          title: "Build Â· 2 Ã  6 semaines",
+          description: "Sprints courts, dÃ©mos hebdomadaires, validation continue. Pas de tunnel.",
         },
         {
           id: "p5",
           title: "Livraison + formation incluse",
           description:
-            "Demi-journée de prise en main avec vos équipes. Documentation, runbook, accès à tout. C'est à vous.",
+            "Demi-journÃ©e de prise en main avec vos Ã©quipes. Documentation, runbook, accÃ¨s Ã  tout. C'est Ã  vous.",
         },
       ]
     : [
@@ -470,16 +473,16 @@ export default async function ImplementationListing({ params }: Props) {
           id: "p2",
           title: "Firm quote within 48 business hours",
           description:
-            "Precise scope, milestones, fixed price. You sign or not — no commitment before.",
+            "Precise scope, milestones, fixed price. You sign or not â€” no commitment before.",
         },
         {
           id: "p3",
-          title: "Technical framing · 1 sprint",
+          title: "Technical framing Â· 1 sprint",
           description: "We validate details, connect tools, align with your teams.",
         },
         {
           id: "p4",
-          title: "Build · 2 to 6 weeks",
+          title: "Build Â· 2 to 6 weeks",
           description: "Short sprints, weekly demos, continuous validation. No tunnel effect.",
         },
         {
@@ -490,63 +493,63 @@ export default async function ImplementationListing({ params }: Props) {
         },
       ];
 
-  // FAQ — levée d'objections principales (prix, propriété, délai, données,
-  // garantie, dépendance). 8 questions FR, 8 EN. Génère JSON-LD FAQPage auto.
+  // FAQ â€” levÃ©e d'objections principales (prix, propriÃ©tÃ©, dÃ©lai, donnÃ©es,
+  // garantie, dÃ©pendance). 8 questions FR, 8 EN. GÃ©nÃ¨re JSON-LD FAQPage auto.
   const faqs = isFr
     ? [
         {
           id: "q-prix",
-          question: "Combien ça coûte vraiment, en pratique ?",
+          question: "Combien Ã§a coÃ»te vraiment, en pratique ?",
           answer:
-            "Une première automatisation simple démarre à 490 € HT. Les implémentations standards (plusieurs automatisations connectées) et l'IA Custom pour ETI ou grands comptes sont chiffrées sur devis selon votre périmètre. Toujours en forfait fixe : devis ferme avant tout démarrage, pas de dépassement.",
+            "Une premiÃ¨re automatisation simple dÃ©marre Ã  490 â‚¬ HT. Les implÃ©mentations standards (plusieurs automatisations connectÃ©es) et l'IA Custom pour ETI ou grands comptes sont chiffrÃ©es sur devis selon votre pÃ©rimÃ¨tre. Toujours en forfait fixe : devis ferme avant tout dÃ©marrage, pas de dÃ©passement.",
         },
         {
           id: "q-proprio",
-          question: "Qui est propriétaire de ce que vous installez ?",
+          question: "Qui est propriÃ©taire de ce que vous installez ?",
           answer:
-            "Vous. Le code, les workflows, les configurations, la documentation — tout est livré dans vos comptes, vos outils, votre infrastructure. Si vous nous quittez demain, tout continue de fonctionner.",
+            "Vous. Le code, les workflows, les configurations, la documentation â€” tout est livrÃ© dans vos comptes, vos outils, votre infrastructure. Si vous nous quittez demain, tout continue de fonctionner.",
         },
         {
           id: "q-abonnement",
           question: "Y a-t-il une maintenance mensuelle obligatoire ?",
           answer:
-            "Non. Vous payez une fois, c'est à vous. Si plus tard vous voulez faire évoluer (nouvelles automatisations, ajustements), vous nous rappelez et on chiffre une mission complémentaire. Aucune redevance ne tourne en arrière-plan.",
+            "Non. Vous payez une fois, c'est Ã  vous. Si plus tard vous voulez faire Ã©voluer (nouvelles automatisations, ajustements), vous nous rappelez et on chiffre une mission complÃ©mentaire. Aucune redevance ne tourne en arriÃ¨re-plan.",
         },
         {
           id: "q-delai",
-          question: "Combien de temps avant que ça tourne chez moi ?",
+          question: "Combien de temps avant que Ã§a tourne chez moi ?",
           answer:
-            "Entre 2 et 6 semaines selon la complexité, à compter de la signature du devis. Une automatisation simple (lecture de factures, chatbot site web) : 2 semaines. Un projet plus structurant (assistant commercial connecté à votre CRM) : 4 à 6 semaines.",
+            "Entre 2 et 6 semaines selon la complexitÃ©, Ã  compter de la signature du devis. Une automatisation simple (lecture de factures, chatbot site web) : 2 semaines. Un projet plus structurant (assistant commercial connectÃ© Ã  votre CRM) : 4 Ã  6 semaines.",
         },
         {
           id: "q-donnees",
-          question: "Mes données sortent-elles de chez moi ?",
+          question: "Mes donnÃ©es sortent-elles de chez moi ?",
           answer:
-            "Hébergement UE par défaut, modèles compatibles RGPD. Pour les sujets sensibles, on déploie en infra dédiée ou on utilise des modèles open-source (Llama, Mistral) hébergés chez vous. Les choix techniques sont justifiés dans le devis avant signature.",
+            "HÃ©bergement UE par dÃ©faut, modÃ¨les compatibles RGPD. Pour les sujets sensibles, on dÃ©ploie en infra dÃ©diÃ©e ou on utilise des modÃ¨les open-source (Llama, Mistral) hÃ©bergÃ©s chez vous. Les choix techniques sont justifiÃ©s dans le devis avant signature.",
         },
         {
           id: "q-garantie",
-          question: "Et si je ne suis pas satisfait à la livraison ?",
+          question: "Et si je ne suis pas satisfait Ã  la livraison ?",
           answer:
-            "Sprints courts avec démos hebdomadaires : vous validez à chaque étape, pas de mauvaise surprise à la fin. À la livraison, 30 jours de support inclus pour ajustements. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, on la corrige sans surcoût.",
+            "Sprints courts avec dÃ©mos hebdomadaires : vous validez Ã  chaque Ã©tape, pas de mauvaise surprise Ã  la fin. Ã€ la livraison, 30 jours de support inclus pour ajustements. Si une fonctionnalitÃ© livrÃ©e ne correspond pas au cahier des charges signÃ©, on la corrige sans surcoÃ»t.",
         },
         {
           id: "q-prerequis",
-          question: "Faut-il déjà avoir une culture IA ou une équipe data en interne ?",
+          question: "Faut-il dÃ©jÃ  avoir une culture IA ou une Ã©quipe data en interne ?",
           answer:
-            "Non. On part de votre niveau réel — vos outils actuels, vos vraies tâches répétitives, votre quotidien. Aucune compétence technique n'est requise pour démarrer. On choisit ensemble des cas d'usage simples et tangibles, on construit la trajectoire à votre rythme, et la formation incluse à la livraison rend vos équipes autonomes. Si vous n'avez jamais touché à l'IA, c'est même souvent plus simple — pas d'habitudes à défaire.",
+            "Non. On part de votre niveau rÃ©el â€” vos outils actuels, vos vraies tÃ¢ches rÃ©pÃ©titives, votre quotidien. Aucune compÃ©tence technique n'est requise pour dÃ©marrer. On choisit ensemble des cas d'usage simples et tangibles, on construit la trajectoire Ã  votre rythme, et la formation incluse Ã  la livraison rend vos Ã©quipes autonomes. Si vous n'avez jamais touchÃ© Ã  l'IA, c'est mÃªme souvent plus simple â€” pas d'habitudes Ã  dÃ©faire.",
         },
         {
           id: "q-taille",
-          question: "C'est adapté à une entreprise comme la mienne ?",
+          question: "C'est adaptÃ© Ã  une entreprise comme la mienne ?",
           answer:
-            "Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. Notre catalogue couvre artisan (devis, suivi clients) → grand groupe (assistant juridique, agents internes). Si vous hésitez, l'audit Flash (490 €) cadre le projet en 2 jours.",
+            "Oui, du moment qu'il y a une tÃ¢che rÃ©pÃ©titive ou un agacement quotidien. Notre catalogue couvre artisan (devis, suivi clients) â†’ grand groupe (assistant juridique, agents internes). Si vous hÃ©sitez, l'audit Flash (490 â‚¬) cadre le projet en 2 jours.",
         },
         {
           id: "q-hors-catalogue",
-          question: "Mon besoin n'est pas dans le catalogue, vous le faites quand même ?",
+          question: "Mon besoin n'est pas dans le catalogue, vous le faites quand mÃªme ?",
           answer:
-            "Oui. Le catalogue représente les usages les plus demandés. Toute tâche répétitive ou processus chronophage spécifique à votre métier est automatisable. Décrivez-le, on revient avec un devis ferme sous 48 h.",
+            "Oui. Le catalogue reprÃ©sente les usages les plus demandÃ©s. Toute tÃ¢che rÃ©pÃ©titive ou processus chronophage spÃ©cifique Ã  votre mÃ©tier est automatisable. DÃ©crivez-le, on revient avec un devis ferme sous 48 h.",
         },
       ]
     : [
@@ -554,13 +557,13 @@ export default async function ImplementationListing({ params }: Props) {
           id: "q-price",
           question: "How much does it really cost, in practice?",
           answer:
-            "A first simple automation starts at €490 (excl. VAT). Standard implementations (multiple connected automations) and Custom AI for mid-cap or enterprise are quoted on a per-scope basis. Always fixed-fee: firm quote before any kick-off, no overrun.",
+            "A first simple automation starts at â‚¬490 (excl. VAT). Standard implementations (multiple connected automations) and Custom AI for mid-cap or enterprise are quoted on a per-scope basis. Always fixed-fee: firm quote before any kick-off, no overrun.",
         },
         {
           id: "q-owner",
           question: "Who owns what you install?",
           answer:
-            "You do. Code, workflows, configurations, documentation — everything is delivered into your accounts, your tools, your infrastructure. If you leave us tomorrow, everything keeps running.",
+            "You do. Code, workflows, configurations, documentation â€” everything is delivered into your accounts, your tools, your infrastructure. If you leave us tomorrow, everything keeps running.",
         },
         {
           id: "q-sub",
@@ -590,13 +593,13 @@ export default async function ImplementationListing({ params }: Props) {
           id: "q-prereq",
           question: "Do I need an existing AI culture or in-house data team to start?",
           answer:
-            "No. We start from your actual level — your current tools, your real repetitive tasks, your daily reality. No technical skill is required to begin. We pick simple, tangible use cases together, we build the trajectory at your pace, and the included training at delivery makes your teams autonomous. If you've never touched AI, it's often even simpler — no habits to undo.",
+            "No. We start from your actual level â€” your current tools, your real repetitive tasks, your daily reality. No technical skill is required to begin. We pick simple, tangible use cases together, we build the trajectory at your pace, and the included training at delivery makes your teams autonomous. If you've never touched AI, it's often even simpler â€” no habits to undo.",
         },
         {
           id: "q-size",
           question: "Is this fit for a company like mine?",
           answer:
-            "Yes, as long as there is a repetitive task or daily annoyance. Our catalogue covers trades (quoting, follow-up) → enterprise (legal assistant, internal agents). If unsure, the Flash audit (€490) frames the project in 2 days.",
+            "Yes, as long as there is a repetitive task or daily annoyance. Our catalogue covers trades (quoting, follow-up) â†’ enterprise (legal assistant, internal agents). If unsure, the Flash audit (â‚¬490) frames the project in 2 days.",
         },
         {
           id: "q-not-listed",
@@ -606,41 +609,41 @@ export default async function ImplementationListing({ params }: Props) {
         },
       ];
 
-  // 8 nœuds du schéma hero — un par fonction métier. L'ordre suit la
+  // 8 nÅ“uds du schÃ©ma hero â€” un par fonction mÃ©tier. L'ordre suit la
   // disposition horaire du SVG (top, top-right, right, bot-right, bottom,
-  // bot-left, left, top-left). Bénéfices courts, mesurables, parlants.
+  // bot-left, left, top-left). BÃ©nÃ©fices courts, mesurables, parlants.
   const heroNodes = isFr
     ? [
-        { label: "Ventes", benefit: "+ CA, − coût", accent: "primary" as const },
-        { label: "Service client", benefit: "Réponse 24/7", accent: "terracotta" as const },
-        { label: "Marketing", benefit: "Visibilité 10×", accent: "terracotta" as const },
-        { label: "Données", benefit: "Décisions claires", accent: "primary" as const },
-        { label: "Métier", benefit: "Chiffrer en 30 s", accent: "terracotta" as const },
-        { label: "Admin", benefit: "Zéro saisie", accent: "sage" as const },
-        { label: "RH", benefit: "Recruter 5× +", accent: "mocha" as const },
-        { label: "Com' interne", benefit: "Équipes alignées", accent: "sage" as const },
+        { label: "Ventes", benefit: "+ CA, âˆ’ coÃ»t", accent: "primary" as const },
+        { label: "Service client", benefit: "RÃ©ponse 24/7", accent: "terracotta" as const },
+        { label: "Marketing", benefit: "VisibilitÃ© 10Ã—", accent: "terracotta" as const },
+        { label: "DonnÃ©es", benefit: "DÃ©cisions claires", accent: "primary" as const },
+        { label: "MÃ©tier", benefit: "Chiffrer en 30 s", accent: "terracotta" as const },
+        { label: "Admin", benefit: "ZÃ©ro saisie", accent: "sage" as const },
+        { label: "RH", benefit: "Recruter 5Ã— +", accent: "mocha" as const },
+        { label: "Com' interne", benefit: "Ã‰quipes alignÃ©es", accent: "sage" as const },
       ]
     : [
-        { label: "Sales", benefit: "+ revenue, − cost", accent: "primary" as const },
+        { label: "Sales", benefit: "+ revenue, âˆ’ cost", accent: "primary" as const },
         { label: "Customer service", benefit: "24/7 answers", accent: "terracotta" as const },
-        { label: "Marketing", benefit: "10× visibility", accent: "terracotta" as const },
+        { label: "Marketing", benefit: "10Ã— visibility", accent: "terracotta" as const },
         { label: "Data", benefit: "Clear decisions", accent: "primary" as const },
         { label: "Operations", benefit: "Quote in 30 s", accent: "terracotta" as const },
         { label: "Back-office", benefit: "Zero data entry", accent: "sage" as const },
-        { label: "HR", benefit: "5× faster hiring", accent: "mocha" as const },
+        { label: "HR", benefit: "5Ã— faster hiring", accent: "mocha" as const },
         { label: "Internal comms", benefit: "Aligned teams", accent: "sage" as const },
       ];
 
-  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
+  // Service JSON-LD avec areasServed multi-rÃ©gions (Sprint 14.9 levier 2).
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/implementation",
     name: isFr
-      ? "Implémentation IA opérationnelle · AxionIA"
-      : "Operational AI implementation · AxionIA",
+      ? "ImplÃ©mentation IA opÃ©rationnelle Â· AxionIA"
+      : "Operational AI implementation Â· AxionIA",
     description: isFr
-      ? "Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès 990 € HT."
-      : "Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from €990.",
+      ? "Mise en production de cas IA opÃ©rationnels en 6 Ã  12 semaines : agents conversationnels, automatisation back-office, intÃ©gration CRM/ERP, IA custom. ROI chiffrÃ©, formation incluse, dÃ¨s 990 â‚¬ HT."
+      : "Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from â‚¬990.",
     serviceType: "AI implementation",
     priceEur: 990,
     areasServed: buildServiceAreasServed(loc),
@@ -652,8 +655,8 @@ export default async function ImplementationListing({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO — layout 2 colonnes (texte + schéma SVG), aligné /audit + /interventions */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      {/* HERO â€” layout 2 colonnes (texte + schÃ©ma SVG), alignÃ© /audit + /interventions */}
+      <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -675,11 +678,11 @@ export default async function ImplementationListing({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? "Module 3 · Implémentation IA" : "Module 3 · AI implementation"}
+                {isFr ? "Module 3 Â· ImplÃ©mentation IA" : "Module 3 Â· AI implementation"}
               </p>
 
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Vous savez déjà ce qu'il vous faut ? " : "Already know what you need? "}
+                {isFr ? "Vous savez dÃ©jÃ  ce qu'il vous faut ? " : "Already know what you need? "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -690,13 +693,13 @@ export default async function ImplementationListing({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Aucun prérequis technique — on part de votre niveau réel, de vos outils actuels, de votre quotidien. Forfait fixe à partir de 490 €, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel."
-                  : "No technical prerequisite — we start from your actual level, your current tools, your daily reality. Fixed fee from €490, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription."}
+                  ? "Aucun prÃ©requis technique â€” on part de votre niveau rÃ©el, de vos outils actuels, de votre quotidien. Forfait fixe Ã  partir de 490 â‚¬, livraison en 2 Ã  6 semaines. Vous payez une fois, c'est Ã  vous â€” pas d'abonnement mensuel."
+                  : "No technical prerequisite â€” we start from your actual level, your current tools, your daily reality. Fixed fee from â‚¬490, delivery in 2 to 6 weeks. You pay once, it's yours â€” no monthly subscription."}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta href="/contact" size="lg" track="impl-hero-primary">
-                  {isFr ? "Décrire mon besoin · réponse 48 h" : "Describe my need · 48 h reply"}
+                  {isFr ? "DÃ©crire mon besoin Â· rÃ©ponse 48 h" : "Describe my need Â· 48 h reply"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/audit" variant="outline" size="lg" track="impl-hero-audit">
@@ -706,8 +709,8 @@ export default async function ImplementationListing({ params }: Props) {
             </div>
 
             <div className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
-              {/* Mobile / tablette < lg : grid compact 2×4 — le SVG 8 satellites
-                  serait illisible sous 1024 px. Même contenu, autre densité. */}
+              {/* Mobile / tablette < lg : grid compact 2Ã—4 â€” le SVG 8 satellites
+                  serait illisible sous 1024 px. MÃªme contenu, autre densitÃ©. */}
               <ul
                 aria-label={
                   isFr
@@ -749,15 +752,15 @@ export default async function ImplementationListing({ params }: Props) {
                 })}
               </ul>
 
-              {/* Desktop ≥ lg : schéma SVG riche (entreprise + 8 satellites).
+              {/* Desktop â‰¥ lg : schÃ©ma SVG riche (entreprise + 8 satellites).
                   max-w-none pour utiliser tout l'espace de la colonne grille
-                  (1.2fr) et égaler le AuditHeroSchema en taille visuelle. */}
+                  (1.2fr) et Ã©galer le AuditHeroSchema en taille visuelle. */}
               <ImplementationHeroSchema
                 className="hero-schema pointer-events-none hidden lg:block"
                 centerLabel={isFr ? "Votre entreprise" : "Your company"}
                 ariaLabel={
                   isFr
-                    ? "Schéma : votre entreprise au centre, entourée des 8 fonctions automatisables (ventes, service client, marketing, données, métier, admin, RH, communication interne) avec leur gain concret."
+                    ? "SchÃ©ma : votre entreprise au centre, entourÃ©e des 8 fonctions automatisables (ventes, service client, marketing, donnÃ©es, mÃ©tier, admin, RH, communication interne) avec leur gain concret."
                     : "Diagram: your company at the center, surrounded by 8 automatable functions (sales, customer service, marketing, data, operations, back-office, HR, internal comms) with their concrete gain."
                 }
                 nodes={heroNodes}
@@ -767,7 +770,7 @@ export default async function ImplementationListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* BANDEAU RÉASSURANCE — engagements visibles immédiatement sous le hero. */}
+      {/* BANDEAU RÃ‰ASSURANCE â€” engagements visibles immÃ©diatement sous le hero. */}
       <section className="bg-paper border-border border-y py-8">
         <Container>
           <ul className="grid grid-cols-2 gap-x-8 gap-y-5 lg:grid-cols-4">
@@ -787,9 +790,9 @@ export default async function ImplementationListing({ params }: Props) {
       </section>
 
       <Section
-        eyebrow={isFr ? "Deux portes d'entrée" : "Two ways in"}
+        eyebrow={isFr ? "Deux portes d'entrÃ©e" : "Two ways in"}
         title={
-          isFr ? "Audit, ou directement implémentation" : "Audit, or straight to implementation"
+          isFr ? "Audit, ou directement implÃ©mentation" : "Audit, or straight to implementation"
         }
       >
         <ul className="grid gap-6 md:grid-cols-3">
@@ -814,14 +817,14 @@ export default async function ImplementationListing({ params }: Props) {
                     href={p.ctaHref}
                     className="text-terracotta-deep hover:text-terracotta inline-flex items-center gap-1 text-sm font-semibold"
                   >
-                    {p.ctaLabel} →
+                    {p.ctaLabel} â†’
                   </a>
                 ) : (
                   <Link
                     href={p.ctaHref as never}
                     className="text-terracotta-deep hover:text-terracotta inline-flex items-center gap-1 text-sm font-semibold"
                   >
-                    {p.ctaLabel} →
+                    {p.ctaLabel} â†’
                   </Link>
                 )}
               </div>
@@ -830,16 +833,16 @@ export default async function ImplementationListing({ params }: Props) {
         </ul>
       </Section>
 
-      {/* CATALOGUE 8 fonctions — cœur de la page conversion. */}
+      {/* CATALOGUE 8 fonctions â€” cÅ“ur de la page conversion. */}
       <Section
         id="catalogue"
         eyebrow={isFr ? "Catalogue par fonction" : "Catalogue by function"}
-        title={isFr ? "Choisissez le département à" : "Pick the function to"}
+        title={isFr ? "Choisissez le dÃ©partement Ã " : "Pick the function to"}
         titleEm={isFr ? "automatiser" : "automate"}
         description={
           isFr
-            ? "8 fonctions d'entreprise, ~50 automatisations prêtes à installer. Cliquez sur un domaine pour voir tout ce que l'on peut mettre en place — du standard téléphonique IA au chiffrage de chantier en 30 secondes."
-            : "8 business functions, ~50 automations ready to install. Click on an area to see everything we can set up — from AI phone receptionist to 30-second project quoting."
+            ? "8 fonctions d'entreprise, ~50 automatisations prÃªtes Ã  installer. Cliquez sur un domaine pour voir tout ce que l'on peut mettre en place â€” du standard tÃ©lÃ©phonique IA au chiffrage de chantier en 30 secondes."
+            : "8 business functions, ~50 automations ready to install. Click on an area to see everything we can set up â€” from AI phone receptionist to 30-second project quoting."
         }
       >
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -865,7 +868,7 @@ export default async function ImplementationListing({ params }: Props) {
                 <strong className="text-fg font-semibold">
                   Votre cas n&apos;est pas dans la liste ?
                 </strong>{" "}
-                Toute tâche répétitive est automatisable. Décrivez votre besoin,{" "}
+                Toute tÃ¢che rÃ©pÃ©titive est automatisable. DÃ©crivez votre besoin,{" "}
                 <Link
                   href="/contact"
                   className="text-terracotta-deep font-semibold underline-offset-4 hover:underline"
@@ -892,22 +895,24 @@ export default async function ImplementationListing({ params }: Props) {
             href="/implementation/par-techno"
             className="text-fg-muted hover:text-terracotta-deep text-sm font-medium underline-offset-4 hover:underline"
           >
-            {isFr ? "Approche par technologie (avancé) →" : "Tech-driven approach (advanced) →"}
+            {isFr
+              ? "Approche par technologie (avancÃ©) â†’"
+              : "Tech-driven approach (advanced) â†’"}
           </Link>
         </div>
       </Section>
 
-      {/* BANDEAU PRICING — placé après le catalogue : le visiteur a vu
-          l'offre, il est prêt pour le prix. Forfait fixe, pas de 50k visible
-          en tête (l'IA Custom est volontairement "sur devis"). */}
+      {/* BANDEAU PRICING â€” placÃ© aprÃ¨s le catalogue : le visiteur a vu
+          l'offre, il est prÃªt pour le prix. Forfait fixe, pas de 50k visible
+          en tÃªte (l'IA Custom est volontairement "sur devis"). */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "Tarifs · transparence" : "Pricing · full transparency"}
-        title={isFr ? "Combien ça coûte," : "What it costs,"}
+        eyebrow={isFr ? "Tarifs Â· transparence" : "Pricing Â· full transparency"}
+        title={isFr ? "Combien Ã§a coÃ»te," : "What it costs,"}
         titleEm={isFr ? "vraiment" : "truly"}
         description={
           isFr
-            ? "Forfait fixe systématique. Devis ferme avant tout démarrage. Pas de dépassement, pas d'abonnement, pas de surprise."
+            ? "Forfait fixe systÃ©matique. Devis ferme avant tout dÃ©marrage. Pas de dÃ©passement, pas d'abonnement, pas de surprise."
             : "Always fixed fee. Firm quote before kick-off. No overrun, no subscription, no surprise."
         }
       >
@@ -939,7 +944,7 @@ export default async function ImplementationListing({ params }: Props) {
                 href="/contact"
                 className="text-terracotta-deep font-semibold underline-offset-4 hover:underline"
               >
-                Demander un devis pour mon cas →
+                Demander un devis pour mon cas â†’
               </Link>
             </>
           ) : (
@@ -949,17 +954,17 @@ export default async function ImplementationListing({ params }: Props) {
                 href="/contact"
                 className="text-terracotta-deep font-semibold underline-offset-4 hover:underline"
               >
-                Request a quote for my case →
+                Request a quote for my case â†’
               </Link>
             </>
           )}
         </p>
       </Section>
 
-      {/* COMPARATIF — Make / Agence / AxionIA. Levée d'objection "pourquoi
-          pas X ?". Visuellement orienté pour positionner AxionIA en climax :
-          colonne mise en avant (scale + ring + fond teinté) + matrice critères
-          qui rend la supériorité visible en un coup d'oeil. */}
+      {/* COMPARATIF â€” Make / Agence / AxionIA. LevÃ©e d'objection "pourquoi
+          pas X ?". Visuellement orientÃ© pour positionner AxionIA en climax :
+          colonne mise en avant (scale + ring + fond teintÃ©) + matrice critÃ¨res
+          qui rend la supÃ©rioritÃ© visible en un coup d'oeil. */}
       <Section
         tone="sand"
         eyebrow={comparison.eyebrow}
@@ -979,7 +984,7 @@ export default async function ImplementationListing({ params }: Props) {
             >
               {col.highlight ? (
                 <span className="bg-terracotta text-mocha-fg absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-wide whitespace-nowrap uppercase shadow-lg">
-                  {"★"} {col.badge ?? (isFr ? "Notre approche" : "Our approach")}
+                  {"â˜…"} {col.badge ?? (isFr ? "Notre approche" : "Our approach")}
                 </span>
               ) : null}
 
@@ -1046,7 +1051,7 @@ export default async function ImplementationListing({ params }: Props) {
                     ? "border-terracotta/40 space-y-2 border-t pt-4"
                     : "border-border space-y-2 border-t pt-4"
                 }
-                aria-label={isFr ? "Comparatif sur 4 critères" : "Comparison on 4 criteria"}
+                aria-label={isFr ? "Comparatif sur 4 critÃ¨res" : "Comparison on 4 criteria"}
               >
                 {comparison.criteriaLabels.map((label, i) => {
                   const state = col.criteria[i];
@@ -1100,7 +1105,7 @@ export default async function ImplementationListing({ params }: Props) {
                   track="impl-compare-axionia"
                   className="mt-2 w-full justify-center"
                 >
-                  {isFr ? "Décrire mon besoin · 48 h" : "Describe my need · 48 h"}
+                  {isFr ? "DÃ©crire mon besoin Â· 48 h" : "Describe my need Â· 48 h"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
               ) : null}
@@ -1109,18 +1114,18 @@ export default async function ImplementationListing({ params }: Props) {
         </ul>
       </Section>
 
-      {/* SCÉNARIOS TYPES — couvrent le spectre artisan → grand groupe.
-          Format avant/après pour rendre tangible. Pas de témoignages clients :
+      {/* SCÃ‰NARIOS TYPES â€” couvrent le spectre artisan â†’ grand groupe.
+          Format avant/aprÃ¨s pour rendre tangible. Pas de tÃ©moignages clients :
           ordres de grandeur typiques. Disclaimer transparence en fin de section. */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "Pour qui ça change tout" : "For whom it changes everything"}
-        title={isFr ? "TPE, PME, ETI ou grand groupe —" : "Small, mid-market or enterprise —"}
-        titleEm={isFr ? "à chacun son scénario" : "each its own scenario"}
+        eyebrow={isFr ? "Pour qui Ã§a change tout" : "For whom it changes everything"}
+        title={isFr ? "TPE, PME, ETI ou grand groupe â€”" : "Small, mid-market or enterprise â€”"}
+        titleEm={isFr ? "Ã  chacun son scÃ©nario" : "each its own scenario"}
         description={
           isFr
-            ? "Notre cœur de cible : les TPE et PME qui veulent une IA opérationnelle vite, sans tunnel ni régie. Mais nos automatisations s'adaptent aussi à l'ETI, au grand groupe et aux institutions — IA Custom dédiée pour les périmètres complexes."
-            : "Our core target: small businesses and SMBs who want operational AI fast, no tunnel, no time-and-materials. But our automations also fit mid-market, enterprise and institutions — dedicated Custom AI for complex perimeters."
+            ? "Notre cÅ“ur de cible : les TPE et PME qui veulent une IA opÃ©rationnelle vite, sans tunnel ni rÃ©gie. Mais nos automatisations s'adaptent aussi Ã  l'ETI, au grand groupe et aux institutions â€” IA Custom dÃ©diÃ©e pour les pÃ©rimÃ¨tres complexes."
+            : "Our core target: small businesses and SMBs who want operational AI fast, no tunnel, no time-and-materials. But our automations also fit mid-market, enterprise and institutions â€” dedicated Custom AI for complex perimeters."
         }
       >
         <ul className="grid gap-5 md:grid-cols-2">
@@ -1158,7 +1163,7 @@ export default async function ImplementationListing({ params }: Props) {
                     aria-hidden="true"
                     className="text-terracotta-deep mt-0.5 inline-block w-12 shrink-0 text-[11px] font-semibold tracking-[0.18em] uppercase"
                   >
-                    {isFr ? "Après" : "After"}
+                    {isFr ? "AprÃ¨s" : "After"}
                   </span>
                   <span className="text-fg">{s.after}</span>
                 </p>
@@ -1168,54 +1173,54 @@ export default async function ImplementationListing({ params }: Props) {
         </ul>
         <p className="text-fg-muted mt-10 text-xs leading-relaxed">
           {isFr
-            ? "Scénarios représentatifs et non témoignages clients. Les résultats varient selon le contexte, les outils en place et l'engagement des équipes. Votre cas est unique — devis personnalisé sous 48 h."
-            : "Representative scenarios, not client testimonials. Outcomes depend on context, existing tools and team engagement. Your case is unique — personalized quote within 48 h."}
+            ? "ScÃ©narios reprÃ©sentatifs et non tÃ©moignages clients. Les rÃ©sultats varient selon le contexte, les outils en place et l'engagement des Ã©quipes. Votre cas est unique â€” devis personnalisÃ© sous 48 h."
+            : "Representative scenarios, not client testimonials. Outcomes depend on context, existing tools and team engagement. Your case is unique â€” personalized quote within 48 h."}
         </p>
       </Section>
 
-      {/* PROCESS — comment se déroule un projet. Lève l'opacité. */}
+      {/* PROCESS â€” comment se dÃ©roule un projet. LÃ¨ve l'opacitÃ©. */}
       <Section
         tone="sand"
-        eyebrow={isFr ? "Comment ça se passe" : "How it runs"}
-        title={isFr ? "5 étapes," : "5 steps,"}
-        titleEm={isFr ? "zéro tunnel" : "zero tunnel"}
+        eyebrow={isFr ? "Comment Ã§a se passe" : "How it runs"}
+        title={isFr ? "5 Ã©tapes," : "5 steps,"}
+        titleEm={isFr ? "zÃ©ro tunnel" : "zero tunnel"}
         description={
           isFr
-            ? "Sprints courts, démos hebdomadaires, validation continue. Vous voyez l'avancement en permanence — pas de boîte noire."
-            : "Short sprints, weekly demos, continuous validation. You see progress at all times — no black box."
+            ? "Sprints courts, dÃ©mos hebdomadaires, validation continue. Vous voyez l'avancement en permanence â€” pas de boÃ®te noire."
+            : "Short sprints, weekly demos, continuous validation. You see progress at all times â€” no black box."
         }
       >
         <ProcessSteps steps={processSteps} />
       </Section>
 
-      {/* FAQ — levée d'objections (prix, propriété, délai, données, garantie).
-          Émet automatiquement un FAQPage JSON-LD pour le SEO/AEO. */}
+      {/* FAQ â€” levÃ©e d'objections (prix, propriÃ©tÃ©, dÃ©lai, donnÃ©es, garantie).
+          Ã‰met automatiquement un FAQPage JSON-LD pour le SEO/AEO. */}
       <Section
         eyebrow={isFr ? "Vos questions" : "Your questions"}
         title={isFr ? "On" : "We"}
-        titleEm={isFr ? "lève toutes vos objections" : "lift every objection"}
+        titleEm={isFr ? "lÃ¨ve toutes vos objections" : "lift every objection"}
         description={
           isFr
-            ? "Les vraies questions des dirigeants avant de signer. Si la vôtre n'est pas listée, posez-la directement."
+            ? "Les vraies questions des dirigeants avant de signer. Si la vÃ´tre n'est pas listÃ©e, posez-la directement."
             : "The real questions executives ask before signing. If yours is not listed, ask it directly."
         }
       >
         <FaqAccordion items={faqs} className="mx-auto max-w-3xl" />
       </Section>
 
-      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 â€” pSEO) */}
       <LocalCoverageSection
         isFr={isFr}
-        serviceLabelFr="L'implémentation IA"
+        serviceLabelFr="L'implÃ©mentation IA"
         serviceLabelEn="AI implementation"
         serviceSlug="implementation"
         tone="paper"
       />
 
-      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
+      {/* FAQ GÃ‰OLOCALISÃ‰E (Sprint 14.9 levier 4 â€” pSEO) */}
       <LocalGeoFaqSection isFr={isFr} service="implementation" tone="sand" />
 
-      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      {/* CLOSING ILLUSTRATION â€” Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">
           <Illustration
@@ -1224,12 +1229,12 @@ export default async function ImplementationListing({ params }: Props) {
             filenameTarget="public/illustrations/implementation-closing.avif"
             caption={
               isFr
-                ? "Implémentation livrée — système opérationnel, clés remises"
-                : "Implementation delivered — operational system, keys handed over"
+                ? "ImplÃ©mentation livrÃ©e â€” systÃ¨me opÃ©rationnel, clÃ©s remises"
+                : "Implementation delivered â€” operational system, keys handed over"
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un système opérationnel livré à l'issue d'une implémentation AxionIA."
+                ? "Illustration Ã©ditoriale d'un systÃ¨me opÃ©rationnel livrÃ© Ã  l'issue d'une implÃ©mentation AxionIA."
                 : "Editorial illustration of an operational system delivered at the end of an AxionIA implementation."
             }
           />
@@ -1237,19 +1242,19 @@ export default async function ImplementationListing({ params }: Props) {
       </Section>
 
       <CtaBlock
-        eyebrow={isFr ? "Prêt à démarrer" : "Ready to start"}
+        eyebrow={isFr ? "PrÃªt Ã  dÃ©marrer" : "Ready to start"}
         title={isFr ? "Vous payez une fois." : "You pay"}
-        titleEm={isFr ? "C'est à vous." : "once."}
+        titleEm={isFr ? "C'est Ã  vous." : "once."}
         titleTail={isFr ? "" : " It's yours."}
         description={
           isFr
-            ? "Forfait fixe, livraison en 2 à 6 semaines, formation incluse. Pas d'abonnement, pas de maintenance imposée. Réponse à votre brief sous 48 h ouvrées."
+            ? "Forfait fixe, livraison en 2 Ã  6 semaines, formation incluse. Pas d'abonnement, pas de maintenance imposÃ©e. RÃ©ponse Ã  votre brief sous 48 h ouvrÃ©es."
             : "Fixed fee, 2 to 6 week delivery, training included. No subscription, no imposed maintenance. Reply to your brief within 48 business hours."
         }
         cta={
           <>
             <Cta href="/contact" size="lg" track="impl-final-primary">
-              {isFr ? "Décrire mon besoin · réponse 48 h" : "Describe my need · 48 h reply"}
+              {isFr ? "DÃ©crire mon besoin Â· rÃ©ponse 48 h" : "Describe my need Â· 48 h reply"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Cta href="/audit" size="lg" variant="outline" track="impl-final-audit">
@@ -1260,11 +1265,11 @@ export default async function ImplementationListing({ params }: Props) {
         tone="mocha"
       />
 
-      {/* CTA flottant mobile — visible < lg, après scroll passé le hero,
-          caché en bas de page (le CTA Block final reprend le relais). */}
+      {/* CTA flottant mobile â€” visible < lg, aprÃ¨s scroll passÃ© le hero,
+          cachÃ© en bas de page (le CTA Block final reprend le relais). */}
       <StickyMobileCta
         href="/contact"
-        label={isFr ? "Décrire mon besoin · 48 h" : "Describe my need · 48 h"}
+        label={isFr ? "DÃ©crire mon besoin Â· 48 h" : "Describe my need Â· 48 h"}
         track="impl-sticky-mobile"
       />
     </>

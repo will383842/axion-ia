@@ -1,10 +1,10 @@
-// P-102 — `loading.tsx` granulaire `/contact` matché aux dimensions réelles
-// (hero 320 px + form 600 px). Le form ContactForm hydrate après JS,
-// la skeleton réserve la surface pour éviter CLS au swap.
+// P-102 â€” `loading.tsx` granulaire `/contact` matchÃ© aux dimensions rÃ©elles
+// (hero 320 px + form 600 px). Le form ContactForm hydrate aprÃ¨s JS,
+// la skeleton rÃ©serve la surface pour Ã©viter CLS au swap.
 export default function ContactLoading() {
   return (
     <>
-      <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="bg-border h-4 w-32 animate-pulse rounded-xs" aria-hidden="true" />
           <div
@@ -22,7 +22,7 @@ export default function ContactLoading() {
           />
         </div>
       </div>
-      <span className="sr-only">Chargement du formulaire de contact…</span>
+      <span className="sr-only">Chargement du formulaire de contactâ€¦</span>
     </>
   );
 }

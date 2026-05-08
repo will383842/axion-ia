@@ -1,9 +1,10 @@
 // Content pack — Module 2 Audit & optimisation (5 pages).
 // Refonte 2026-05-07 : pyramide 4 niveaux orientée conversion B2B.
-//   N1 Flash · 490 € (distance) · 890 € (sur site) — produit d'appel
-//   N2 Ciblé · 1 900 → 3 900 € — cœur de marché PME
-//   N3 Stratégique PME · 4 900 → 9 900 € — premium PME
-//   N4 Stratégique ETI · à partir de 12 000 € — hero offer multi-sites
+// Sprint 14.10.3 : prix dérivés de `src/content/pricing.ts` (source unique).
+//   N1 Flash — produit d'appel (slug `flash`)
+//   N2 Ciblé — cœur de marché PME (slug `process`)
+//   N3 Stratégique PME — premium PME (slug `strategique-pme`)
+//   N4 Stratégique ETI — hero offer multi-sites (slug `strategique-eti`)
 //
 // Vocabulaire business : on parle de « zones à automatiser », « services à
 // étudier », « où l'IA peut s'insérer » — pas de jargon « process / process
@@ -84,6 +85,22 @@ interface PageCopy {
   metaSeo: { title: string; description: string };
 }
 
+// Mapping slug audit → tier id pricing.ts. Source unique des tarifs.
+import { AUDIT_TIERS } from "./pricing";
+const AUDIT_TIER_BY_SLUG: Record<AuditSlug, string> = {
+  flash: "audit-flash",
+  process: "audit-cible",
+  "strategique-pme": "audit-strategique-pme",
+  "strategique-eti": "audit-strategique-eti",
+};
+function priceEurForAudit(slug: AuditSlug): number {
+  const tier = AUDIT_TIERS.find((t) => t.id === AUDIT_TIER_BY_SLUG[slug]);
+  // `!` non-null : chaque slug audit doit avoir un tier mappé dans
+  // pricing.ts (defense in depth — si la map casse, le typecheck d'autres
+  // callers explosera avant qu'on atteigne le runtime).
+  return (tier!.priceFlat ?? tier!.priceMin)!;
+}
+
 export const AUDITS: ReadonlyArray<AuditContent> = [
   // ============================================================
   // NIVEAU 1 — FLASH (produit d'appel)
@@ -149,7 +166,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Diagnostic flash · 490 € à distance, 890 € sur site",
       answer:
         "Mini-diagnostic IA ciblé sur une zone clé de votre entreprise. 3 à 5 endroits où l'IA peut s'insérer, estimation des gains, plan d'action immédiat. Idéal pour démarrer.",
-      priceEur: 490,
+      priceEur: priceEurForAudit("flash"),
       ctaPrimary: "Réserver mon diagnostic flash",
     }),
     en: makeEn({
@@ -157,7 +174,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Flash diagnosis · €490 remote, €890 on site",
       answer:
         "Targeted mini AI diagnosis on a key area of your company. 3-5 places where AI can fit, gain estimates, immediate action plan. Ideal to start.",
-      priceEur: 490,
+      priceEur: priceEurForAudit("flash"),
       ctaPrimary: "Book my flash diagnosis",
     }),
   },
@@ -226,7 +243,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Audit ciblé d'un service · 1 900 € à 3 900 €",
       answer:
         "Audit IA poussé d'un service complet de votre entreprise. On liste tout ce qui peut être automatisé ou optimisé, avec gains chiffrés et plan d'action concret. Volontairement focalisé pour rester actionnable.",
-      priceEur: 1900,
+      priceEur: priceEurForAudit("process"),
       ctaPrimary: "Demander un audit ciblé",
     }),
     en: makeEn({
@@ -234,7 +251,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Targeted audit of a service · €1,900 to €3,900",
       answer:
         "In-depth AI audit of a full service in your company. We list everything that can be automated or optimised, with costed gains and an actionable plan. Deliberately focused.",
-      priceEur: 1900,
+      priceEur: priceEurForAudit("process"),
       ctaPrimary: "Request a targeted audit",
     }),
   },
@@ -301,7 +318,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Audit stratégique PME · 4 900 € à 9 900 €",
       answer:
         "Vision IA globale pour PME 20-250 salariés. Cartographie de 2 à 4 services majeurs, priorisation des cas d'usage, plan d'action 12-24 mois avec phases et budgets.",
-      priceEur: 4900,
+      priceEur: priceEurForAudit("strategique-pme"),
       ctaPrimary: "Demander un audit stratégique PME",
     }),
     en: makeEn({
@@ -309,7 +326,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Strategic SMB audit · €4,900 to €9,900",
       answer:
         "Global AI vision for SMBs 20-250 staff. Mapping of 2-4 major services, use case prioritisation, 12-24 month action plan with phases and budgets.",
-      priceEur: 4900,
+      priceEur: priceEurForAudit("strategique-pme"),
       ctaPrimary: "Request a Strategic SMB audit",
     }),
   },
@@ -376,7 +393,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Audit stratégique ETI · à partir de 12 000 €",
       answer:
         "Audit stratégique multi-sites pour ETI, grandes PME et groupes. Cartographie multi-BU, roadmap IA groupe 24 mois, gouvernance et premiers jalons AI Act. Sur devis personnalisé.",
-      priceEur: 12000,
+      priceEur: priceEurForAudit("strategique-eti"),
       ctaPrimary: "Demander un audit stratégique ETI",
     }),
     en: makeEn({
@@ -384,7 +401,7 @@ export const AUDITS: ReadonlyArray<AuditContent> = [
       title: "Strategic mid-cap audit · from €12,000",
       answer:
         "Multi-site strategic audit for mid-caps, large SMBs and groups. Multi-BU mapping, 24-month group AI roadmap, governance and initial AI Act milestones. Custom quote.",
-      priceEur: 12000,
+      priceEur: priceEurForAudit("strategique-eti"),
       ctaPrimary: "Request a Strategic mid-cap audit",
     }),
   },

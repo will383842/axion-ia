@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/centre-aide",
-    title: locale === "fr" ? "Centre d'aide · AxionIA" : "Help center · AxionIA",
+    title: locale === "fr" ? "Centre d'aide Â· AxionIA" : "Help center Â· AxionIA",
     description:
       locale === "fr"
         ? "Centre d'aide AxionIA : guides pratiques, tutoriels, support utilisateur."
@@ -42,11 +42,11 @@ export default async function HelpCenter({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [{ href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" }];
 
-  // Group articles by category — each category becomes a clickable card
+  // Group articles by category â€” each category becomes a clickable card
   // pointing to /centre-aide/categorie/{slug} (which already exists).
   const categoriesMap = new Map<
     string,
@@ -72,7 +72,7 @@ export default async function HelpCenter({ params }: Props) {
   const categoryBase = isFr ? "/centre-aide/categorie" : "/help/category";
   const articleBase = isFr ? "/centre-aide" : "/help";
 
-  // ItemList JSON-LD — exposes every article URL to crawlers from the index
+  // ItemList JSON-LD â€” exposes every article URL to crawlers from the index
   // (was orphan before; only the sitemap pointed at them).
   const itemListJsonLd = {
     "@context": "https://schema.org",
@@ -91,8 +91,8 @@ export default async function HelpCenter({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO 2-col — texte à gauche, HelpHeroSchema (constellation 6 thématiques) à droite */}
-      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+      {/* HERO 2-col â€” texte Ã  gauche, HelpHeroSchema (constellation 6 thÃ©matiques) Ã  droite */}
+      <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
@@ -104,7 +104,7 @@ export default async function HelpCenter({ params }: Props) {
                 {isFr ? "Centre d'aide" : "Help center"}
               </p>
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Trouver une réponse " : "Find a quick "}
+                {isFr ? "Trouver une rÃ©ponse " : "Find a quick "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -114,7 +114,7 @@ export default async function HelpCenter({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Articles groupés par thématique. Chaque question ouvre sur sa propre page indexable. 6 grandes familles couvrent l'essentiel."
+                  ? "Articles groupÃ©s par thÃ©matique. Chaque question ouvre sur sa propre page indexable. 6 grandes familles couvrent l'essentiel."
                   : "Articles grouped by topic. Each question opens on its own indexable page. 6 main families cover the essentials."}
               </p>
             </div>
@@ -123,7 +123,7 @@ export default async function HelpCenter({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : centre d'aide AxionIA organisé en 6 thématiques principales (démarrer, souveraineté, coûts & ROI, cas d'usage, formation, intégration)."
+                  ? "SchÃ©ma : centre d'aide AxionIA organisÃ© en 6 thÃ©matiques principales (dÃ©marrer, souverainetÃ©, coÃ»ts & ROI, cas d'usage, formation, intÃ©gration)."
                   : "Diagram: AxionIA help center organised into 6 main topics (get started, sovereignty, costs & ROI, use cases, training, integration)."
               }
             />
@@ -131,7 +131,7 @@ export default async function HelpCenter({ params }: Props) {
         </Container>
       </section>
 
-      {/* MID-SECTION — placeholder illustration bibliothèque conseils */}
+      {/* MID-SECTION â€” placeholder illustration bibliothÃ¨que conseils */}
       <Section>
         <Container>
           <div className="mx-auto max-w-3xl">
@@ -141,12 +141,12 @@ export default async function HelpCenter({ params }: Props) {
               filenameTarget="public/illustrations/centre-aide-hero.avif"
               caption={
                 isFr
-                  ? "Bibliothèque éditoriale — réponses rangées comme dans un manuel"
-                  : "Editorial library — answers organised like in a manual"
+                  ? "BibliothÃ¨que Ã©ditoriale â€” rÃ©ponses rangÃ©es comme dans un manuel"
+                  : "Editorial library â€” answers organised like in a manual"
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une bibliothèque de conseils ouverte, symbole du centre d'aide AxionIA."
+                  ? "Illustration Ã©ditoriale d'une bibliothÃ¨que de conseils ouverte, symbole du centre d'aide AxionIA."
                   : "Editorial illustration of an open advice library, symbol of the AxionIA help center."
               }
             />
@@ -154,7 +154,7 @@ export default async function HelpCenter({ params }: Props) {
         </Container>
       </Section>
 
-      <Section eyebrow={isFr ? "Thématiques" : "Topics"}>
+      <Section eyebrow={isFr ? "ThÃ©matiques" : "Topics"}>
         <Container>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
@@ -182,7 +182,7 @@ export default async function HelpCenter({ params }: Props) {
                       <ul className="text-fg-soft space-y-1.5 text-sm">
                         {category.articles.slice(0, 3).map((a) => (
                           <li key={a.slug} className="line-clamp-1">
-                            · {a[loc].title}
+                            Â· {a[loc].title}
                           </li>
                         ))}
                       </ul>
@@ -228,12 +228,12 @@ export default async function HelpCenter({ params }: Props) {
         title={isFr ? "Question non couverte ?" : "Question not covered?"}
         description={
           isFr
-            ? "Contactez-nous — réponse sous 48 h ouvrées."
-            : "Contact us — reply within 48 business hours."
+            ? "Contactez-nous â€” rÃ©ponse sous 48 h ouvrÃ©es."
+            : "Contact us â€” reply within 48 business hours."
         }
         cta={
           <Cta href="/contact" size="lg">
-            Contact →
+            Contact â†’
           </Cta>
         }
       />

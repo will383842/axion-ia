@@ -38,11 +38,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/comparaisons",
     title:
       locale === "fr"
-        ? "Comparaisons IA · cabinet vs alternatives · AxionIA"
-        : "AI comparisons · consultancy vs alternatives · AxionIA",
+        ? "Comparaisons IA Â· cabinet vs alternatives Â· AxionIA"
+        : "AI comparisons Â· consultancy vs alternatives Â· AxionIA",
     description:
       locale === "fr"
-        ? "Comparaisons honnêtes : cabinet IA vs SaaS générique, fine-tuning vs RAG, internalisation vs externalisation."
+        ? "Comparaisons honnÃªtes : cabinet IA vs SaaS gÃ©nÃ©rique, fine-tuning vs RAG, internalisation vs externalisation."
         : "Honest comparisons: AI consultancy vs generic SaaS, fine-tuning vs RAG, in-house vs outsourcing.",
     alternates: { fr: "/comparaisons", en: "/comparisons" },
   });
@@ -70,8 +70,8 @@ export default async function ComparisonsListPage({ params }: Props) {
     })),
   } as const;
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [{ href: "/comparaisons", label: isFr ? "Comparaisons" : "Comparisons" }];
 
   return (
@@ -79,8 +79,8 @@ export default async function ComparisonsListPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO 2-col — texte à gauche, ComparisonsHeroSchema à droite */}
-      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+      {/* HERO 2-col â€” texte Ã  gauche, ComparisonsHeroSchema Ã  droite */}
+      <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
@@ -89,7 +89,7 @@ export default async function ComparisonsListPage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? "Décision" : "Decision"}
+                {isFr ? "DÃ©cision" : "Decision"}
               </p>
               <h1 className="display-editorial text-fg mt-5">
                 {isFr ? "Comparaisons IA " : "Honest AI "}
@@ -97,15 +97,15 @@ export default async function ComparisonsListPage({ params }: Props) {
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "honnêtes" : "comparisons"}
+                  {isFr ? "honnÃªtes" : "comparisons"}
                 </span>
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Tableaux de décision factuels — pas de FUD, pas de complaisance vendeur. Cabinet IA, SaaS, internalisation : ce qui colle vraiment à votre contexte."
-                  : "Factual decision tables — no FUD, no vendor complacency. AI consultancy, SaaS, in-house: what actually fits your context."}
+                  ? "Tableaux de dÃ©cision factuels â€” pas de FUD, pas de complaisance vendeur. Cabinet IA, SaaS, internalisation : ce qui colle vraiment Ã  votre contexte."
+                  : "Factual decision tables â€” no FUD, no vendor complacency. AI consultancy, SaaS, in-house: what actually fits your context."}
               </p>
-              {/* Pills réassurance */}
+              {/* Pills rÃ©assurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
                 {[
                   {
@@ -116,9 +116,9 @@ export default async function ComparisonsListPage({ params }: Props) {
                   },
                   {
                     icon: ShieldCheck,
-                    label: isFr ? "Neutralité éditoriale" : "Editorial neutrality",
+                    label: isFr ? "NeutralitÃ© Ã©ditoriale" : "Editorial neutrality",
                   },
-                  { icon: Wallet, label: isFr ? "Critères ROI" : "ROI criteria" },
+                  { icon: Wallet, label: isFr ? "CritÃ¨res ROI" : "ROI criteria" },
                   { icon: RefreshCw, label: isFr ? "MAJ trimestrielle" : "Quarterly updates" },
                 ].map((pill) => {
                   const Icon = pill.icon;
@@ -153,15 +153,15 @@ export default async function ComparisonsListPage({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma comparatif : AxionIA cabinet IA opérationnel au centre, encadré par 2 alternatives (SaaS générique, internalisation) — comparaison factuelle sans FUD."
-                  : "Comparison diagram: AxionIA operational AI consultancy at the centre, flanked by 2 alternatives (generic SaaS, in-house team) — factual comparison without FUD."
+                  ? "SchÃ©ma comparatif : AxionIA cabinet IA opÃ©rationnel au centre, encadrÃ© par 2 alternatives (SaaS gÃ©nÃ©rique, internalisation) â€” comparaison factuelle sans FUD."
+                  : "Comparison diagram: AxionIA operational AI consultancy at the centre, flanked by 2 alternatives (generic SaaS, in-house team) â€” factual comparison without FUD."
               }
             />
           </div>
         </Container>
       </section>
 
-      {/* MID-SECTION — placeholder illustration matrix de décision */}
+      {/* MID-SECTION â€” placeholder illustration matrix de dÃ©cision */}
       <Section>
         <Container>
           <div className="mx-auto max-w-3xl">
@@ -171,12 +171,12 @@ export default async function ComparisonsListPage({ params }: Props) {
               filenameTarget="public/illustrations/comparaisons-mid-1.avif"
               caption={
                 isFr
-                  ? "Matrice de décision éditoriale — axes ROI / complexité"
-                  : "Editorial decision matrix — ROI / complexity axes"
+                  ? "Matrice de dÃ©cision Ã©ditoriale â€” axes ROI / complexitÃ©"
+                  : "Editorial decision matrix â€” ROI / complexity axes"
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une matrice 2D représentant les axes de décision d'un comparatif IA chez AxionIA."
+                  ? "Illustration Ã©ditoriale d'une matrice 2D reprÃ©sentant les axes de dÃ©cision d'un comparatif IA chez AxionIA."
                   : "Editorial illustration of a 2D matrix representing decision axes for an AI comparison at AxionIA."
               }
             />
@@ -184,27 +184,27 @@ export default async function ComparisonsListPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* Anti-fear 3 niveaux décision — guide arbitrage par maturité */}
-      <Section eyebrow={isFr ? "Niveau de maturité" : "Maturity level"} tone="sand">
+      {/* Anti-fear 3 niveaux dÃ©cision â€” guide arbitrage par maturitÃ© */}
+      <Section eyebrow={isFr ? "Niveau de maturitÃ©" : "Maturity level"} tone="sand">
         <Container>
           <div className="grid gap-4 sm:grid-cols-3">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sprout className="text-terracotta h-5 w-5" aria-hidden="true" />
-                  {isFr ? "1. Découverte" : "1. Discovery"}
+                  {isFr ? "1. DÃ©couverte" : "1. Discovery"}
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "Premier essai IA, MVP, pilote — minimiser risque et coût initial."
-                    : "First AI try, MVP, pilot — minimise risk and initial cost."}
+                    ? "Premier essai IA, MVP, pilote â€” minimiser risque et coÃ»t initial."
+                    : "First AI try, MVP, pilot â€” minimise risk and initial cost."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? "Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle 490 €). Pas d'investissement custom à ce stade."
-                    : "Default recommendation: generic SaaS or short consultancy mission (Essential €490). No custom investment at this stage."}
+                    ? "Recommandation par dÃ©faut : SaaS gÃ©nÃ©rique ou cabinet en mission courte (Essentielle 490 â‚¬). Pas d'investissement custom Ã  ce stade."
+                    : "Default recommendation: generic SaaS or short consultancy mission (Essential â‚¬490). No custom investment at this stage."}
                 </p>
               </CardContent>
             </Card>
@@ -212,18 +212,18 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Boxes className="text-terracotta h-5 w-5" aria-hidden="true" />
-                  {isFr ? "2. Déploiement" : "2. Deployment"}
+                  {isFr ? "2. DÃ©ploiement" : "2. Deployment"}
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "Production cadrée, équipe formée — viser maintenabilité et ROI."
-                    : "Scoped production, trained team — aim for maintainability and ROI."}
+                    ? "Production cadrÃ©e, Ã©quipe formÃ©e â€” viser maintenabilitÃ© et ROI."
+                    : "Scoped production, trained team â€” aim for maintainability and ROI."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? "Recommandation par défaut : cabinet IA opérationnel pour cadrage + implémentation packagée. Hybride avec SaaS ciblé sur les fonctions stables."
+                    ? "Recommandation par dÃ©faut : cabinet IA opÃ©rationnel pour cadrage + implÃ©mentation packagÃ©e. Hybride avec SaaS ciblÃ© sur les fonctions stables."
                     : "Default recommendation: operational AI consultancy for scoping + packaged implementation. Hybrid with SaaS targeted on stable functions."}
                 </p>
               </CardContent>
@@ -236,15 +236,15 @@ export default async function ComparisonsListPage({ params }: Props) {
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "Scale, gouvernance, modèles propriétaires — viser indépendance long terme."
-                    : "Scale, governance, proprietary models — aim for long-term independence."}
+                    ? "Scale, gouvernance, modÃ¨les propriÃ©taires â€” viser indÃ©pendance long terme."
+                    : "Scale, governance, proprietary models â€” aim for long-term independence."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? "Recommandation par défaut : équipe interne renforcée par cabinet IA en architecture + IA Custom (8-50 k€). Désengagement progressif des SaaS."
-                    : "Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (€8-50k). Progressive SaaS disengagement."}
+                    ? "Recommandation par dÃ©faut : Ã©quipe interne renforcÃ©e par cabinet IA en architecture + IA Custom (8-50 kâ‚¬). DÃ©sengagement progressif des SaaS."
+                    : "Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (â‚¬8-50k). Progressive SaaS disengagement."}
                 </p>
               </CardContent>
             </Card>
@@ -268,17 +268,17 @@ export default async function ComparisonsListPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* CtaBlock final — manquait sur cette page (gap audit Visual Rhythm 2026) */}
+      {/* CtaBlock final â€” manquait sur cette page (gap audit Visual Rhythm 2026) */}
       <CtaBlock
-        title={isFr ? "Une décision IA à prendre ?" : "An AI decision to make?"}
+        title={isFr ? "Une dÃ©cision IA Ã  prendre ?" : "An AI decision to make?"}
         description={
           isFr
-            ? "Réservez l'Essentielle 490 € : on cartographie votre situation et on tranche sur vos données, pas sur des slides."
-            : "Book the Essential €490: we map your situation and decide on your data, not on slides."
+            ? "RÃ©servez l'Essentielle 490 â‚¬ : on cartographie votre situation et on tranche sur vos donnÃ©es, pas sur des slides."
+            : "Book the Essential â‚¬490: we map your situation and decide on your data, not on slides."
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"} →
+            {isFr ? "Voir l'Essentielle 490 â‚¬" : "See the Essential â‚¬490"} â†’
           </Cta>
         }
         tone="dark"

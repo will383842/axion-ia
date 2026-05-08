@@ -25,10 +25,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/faq",
-    title: locale === "fr" ? "FAQ · cabinet IA AxionIA" : "FAQ · AxionIA AI consultancy",
+    title: locale === "fr" ? "FAQ Â· cabinet IA AxionIA" : "FAQ Â· AxionIA AI consultancy",
     description:
       locale === "fr"
-        ? "Questions fréquentes sur les interventions IA, l'audit, l'implémentation, la souveraineté des données, la facturation."
+        ? "Questions frÃ©quentes sur les interventions IA, l'audit, l'implÃ©mentation, la souverainetÃ© des donnÃ©es, la facturation."
         : "Frequently asked questions on AI sessions, audit, implementation, data sovereignty, billing.",
   });
   return {
@@ -54,8 +54,8 @@ export default async function FaqPage({ params }: Props) {
   }));
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items });
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [{ href: "/faq", label: "FAQ" }];
 
   return (
@@ -64,8 +64,8 @@ export default async function FaqPage({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2-col custom — texte à gauche, FaqHeroSchema 3 thématiques à droite */}
-      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+      {/* HERO 2-col custom â€” texte Ã  gauche, FaqHeroSchema 3 thÃ©matiques Ã  droite */}
+      <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
@@ -82,15 +82,15 @@ export default async function FaqPage({ params }: Props) {
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "fréquentes" : "questions"}
+                  {isFr ? "frÃ©quentes" : "questions"}
                 </span>
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Tout savoir sur les interventions, l'audit, l'implémentation, la souveraineté des données et la facturation. Réponses courtes, sourcées, citables par les LLMs."
+                  ? "Tout savoir sur les interventions, l'audit, l'implÃ©mentation, la souverainetÃ© des donnÃ©es et la facturation. RÃ©ponses courtes, sourcÃ©es, citables par les LLMs."
                   : "Everything about sessions, audit, implementation, data sovereignty and billing. Short, sourced, LLM-citable answers."}
               </p>
-              {/* Pills réassurance */}
+              {/* Pills rÃ©assurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
                 {[
                   {
@@ -134,16 +134,16 @@ export default async function FaqPage({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? `Schéma : ${items.length} questions AxionIA réparties en 3 thématiques — interventions/implémentation, audit IA, souveraineté/facturation.`
-                  : `Diagram: ${items.length} AxionIA questions across 3 topics — sessions/implementation, AI audit, sovereignty/billing.`
+                  ? `SchÃ©ma : ${items.length} questions AxionIA rÃ©parties en 3 thÃ©matiques â€” interventions/implÃ©mentation, audit IA, souverainetÃ©/facturation.`
+                  : `Diagram: ${items.length} AxionIA questions across 3 topics â€” sessions/implementation, AI audit, sovereignty/billing.`
               }
             />
           </div>
         </Container>
       </section>
 
-      {/* Most viewed — top 5 questions populaires */}
-      <Section eyebrow={isFr ? "Plus consultées" : "Most viewed"} tone="paper">
+      {/* Most viewed â€” top 5 questions populaires */}
+      <Section eyebrow={isFr ? "Plus consultÃ©es" : "Most viewed"} tone="paper">
         <Container className="max-w-3xl">
           <ul className="grid gap-3">
             {items.slice(0, 5).map((item, idx) => (
@@ -164,7 +164,7 @@ export default async function FaqPage({ params }: Props) {
                       {item.question}
                     </p>
                     <p className="text-fg-soft mt-1 line-clamp-2 text-sm leading-snug">
-                      {item.answer.slice(0, 140)}…
+                      {item.answer.slice(0, 140)}â€¦
                     </p>
                   </div>
                   <ArrowUpRight
@@ -182,7 +182,7 @@ export default async function FaqPage({ params }: Props) {
         items={items}
         emitJsonLd={false}
         permalinkBase={`/${locale}/faq`}
-        permalinkLabel={isFr ? "Page dédiée" : "Dedicated page"}
+        permalinkLabel={isFr ? "Page dÃ©diÃ©e" : "Dedicated page"}
       />
 
       <Section
@@ -214,13 +214,13 @@ export default async function FaqPage({ params }: Props) {
       </Section>
 
       <CtaBlock
-        title={isFr ? "Une question non listée ?" : "Question not listed?"}
+        title={isFr ? "Une question non listÃ©e ?" : "Question not listed?"}
         description={
-          isFr ? "Écrivez-nous à contact@axion-ia.com." : "Email us at contact@axion-ia.com."
+          isFr ? "Ã‰crivez-nous Ã  contact@axion-ia.com." : "Email us at contact@axion-ia.com."
         }
         cta={
           <Cta href="/contact" size="lg">
-            Contact →
+            Contact â†’
           </Cta>
         }
       />

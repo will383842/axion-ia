@@ -37,11 +37,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/blog",
     title:
       locale === "fr"
-        ? "Blog · méthodologie & cas d'usage IA · AxionIA"
-        : "Blog · methodology & AI use cases · AxionIA",
+        ? "Blog Â· mÃ©thodologie & cas d'usage IA Â· AxionIA"
+        : "Blog Â· methodology & AI use cases Â· AxionIA",
     description:
       locale === "fr"
-        ? "Articles AxionIA : méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom."
+        ? "Articles AxionIA : mÃ©thodologie d'audit IA, quick-wins opÃ©rationnels, stratÃ©gie IA Custom."
         : "AxionIA articles: AI audit methodology, operational quick-wins, custom AI strategy.",
   });
   return {
@@ -62,7 +62,7 @@ export default async function BlogListing({ params }: Props) {
 
   const breadcrumbItems = [{ href: "/blog", label: "Blog" }];
 
-  // Catégories agrégées (count par catégorie)
+  // CatÃ©gories agrÃ©gÃ©es (count par catÃ©gorie)
   const categoriesMap = new Map<string, { label: string; slug: string; count: number }>();
   for (const post of BLOG_POSTS) {
     const slug = slugify(post.category);
@@ -76,7 +76,7 @@ export default async function BlogListing({ params }: Props) {
   const categories = [...categoriesMap.values()];
   const categoryBase = isFr ? "/blog/categorie" : "/blog/category";
 
-  // Posts pour le hero schema (3 plus récents par publishedAt desc)
+  // Posts pour le hero schema (3 plus rÃ©cents par publishedAt desc)
   const sortedPosts = [...BLOG_POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   const heroSchemaPosts = sortedPosts.slice(0, 3).map((p) => ({
     slug: p.slug,
@@ -85,13 +85,13 @@ export default async function BlogListing({ params }: Props) {
     title: p[loc].title,
   }));
 
-  // ItemList JSON-LD — expose chaque article au crawler depuis l'index
+  // ItemList JSON-LD â€” expose chaque article au crawler depuis l'index
   // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
-  // déjà émis ailleurs).
+  // dÃ©jÃ  Ã©mis ailleurs).
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: isFr ? "Articles AxionIA · ligne éditoriale" : "AxionIA articles · editorial line",
+    name: isFr ? "Articles AxionIA Â· ligne Ã©ditoriale" : "AxionIA articles Â· editorial line",
     itemListElement: sortedPosts.map((post, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -100,11 +100,11 @@ export default async function BlogListing({ params }: Props) {
     })),
   } as const;
 
-  // Pills réassurance (count dynamique)
+  // Pills rÃ©assurance (count dynamique)
   const pills = isFr
     ? [
         { icon: FileText, label: `${BLOG_POSTS.length} articles` },
-        { icon: Layers, label: `${categories.length} catégories` },
+        { icon: Layers, label: `${categories.length} catÃ©gories` },
         { icon: Clock, label: "Lecture 6-12 min" },
         { icon: RefreshCw, label: "MAJ mensuelle" },
       ]
@@ -121,8 +121,8 @@ export default async function BlogListing({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2-col — texte à gauche, BlogHeroSchema (3 articles récents) à droite */}
-      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+      {/* HERO 2-col â€” texte Ã  gauche, BlogHeroSchema (3 articles rÃ©cents) Ã  droite */}
+      <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
@@ -134,7 +134,7 @@ export default async function BlogListing({ params }: Props) {
                 Blog
               </p>
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Méthodologie & " : "Methodology & "}
+                {isFr ? "MÃ©thodologie & " : "Methodology & "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -145,10 +145,10 @@ export default async function BlogListing({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Retours terrain, méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom. Chaque article est rédigé après une mission réelle — pas de spéculation, pas de hype."
-                  : "Field reports, AI audit methodology, operational quick-wins, custom AI strategy. Each article is written after a real engagement — no speculation, no hype."}
+                  ? "Retours terrain, mÃ©thodologie d'audit IA, quick-wins opÃ©rationnels, stratÃ©gie IA Custom. Chaque article est rÃ©digÃ© aprÃ¨s une mission rÃ©elle â€” pas de spÃ©culation, pas de hype."
+                  : "Field reports, AI audit methodology, operational quick-wins, custom AI strategy. Each article is written after a real engagement â€” no speculation, no hype."}
               </p>
-              {/* Pills réassurance */}
+              {/* Pills rÃ©assurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
                 {pills.map((pill) => {
                   const Icon = pill.icon;
@@ -184,7 +184,7 @@ export default async function BlogListing({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : 3 derniers articles AxionIA avec leur catégorie (méthodologie, cas d'usage, stratégie) et temps de lecture."
+                  ? "SchÃ©ma : 3 derniers articles AxionIA avec leur catÃ©gorie (mÃ©thodologie, cas d'usage, stratÃ©gie) et temps de lecture."
                   : "Diagram: 3 latest AxionIA articles with their category (methodology, use cases, strategy) and reading time."
               }
             />
@@ -192,20 +192,20 @@ export default async function BlogListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* Pillar copy — ligne éditoriale */}
-      <Section eyebrow={isFr ? "Ligne éditoriale" : "Editorial line"} tone="paper">
+      {/* Pillar copy â€” ligne Ã©ditoriale */}
+      <Section eyebrow={isFr ? "Ligne Ã©ditoriale" : "Editorial line"} tone="paper">
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "AxionIA n'écrit que sur des sujets éprouvés en mission. Les articles documentent une méthodologie qui a fonctionné, un cas client qui a livré du ROI, ou une décision technique tranchée par l'expérience. Pas de revue de presse, pas de hot takes IA — chaque billet a vocation à rester actionnable 12 mois après publication. Si un sujet est pris dans la hype et n'a pas encore de réponse stable, on attend qu'il ait mûri avant d'en parler."
-              : "AxionIA writes only about topics tested in the field. Articles document a methodology that worked, a client case that delivered ROI, or a technical decision settled by experience. No press review, no AI hot takes — every post is meant to remain actionable 12 months after publication. If a topic is caught in the hype and has no stable answer, we wait for it to mature before writing about it."}
+              ? "AxionIA n'Ã©crit que sur des sujets Ã©prouvÃ©s en mission. Les articles documentent une mÃ©thodologie qui a fonctionnÃ©, un cas client qui a livrÃ© du ROI, ou une dÃ©cision technique tranchÃ©e par l'expÃ©rience. Pas de revue de presse, pas de hot takes IA â€” chaque billet a vocation Ã  rester actionnable 12 mois aprÃ¨s publication. Si un sujet est pris dans la hype et n'a pas encore de rÃ©ponse stable, on attend qu'il ait mÃ»ri avant d'en parler."
+              : "AxionIA writes only about topics tested in the field. Articles document a methodology that worked, a client case that delivered ROI, or a technical decision settled by experience. No press review, no AI hot takes â€” every post is meant to remain actionable 12 months after publication. If a topic is caught in the hype and has no stable answer, we wait for it to mature before writing about it."}
           </p>
         </Container>
       </Section>
 
-      {/* Catégories */}
+      {/* CatÃ©gories */}
       {categories.length > 0 ? (
-        <Section eyebrow={isFr ? "Thématiques" : "Topics"} tone="sand">
+        <Section eyebrow={isFr ? "ThÃ©matiques" : "Topics"} tone="sand">
           <Container>
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((cat) => (
@@ -229,7 +229,7 @@ export default async function BlogListing({ params }: Props) {
                       </CardHeader>
                       <CardContent>
                         <p className="text-primary text-sm font-medium">
-                          {isFr ? "Voir les articles" : "See articles"} →
+                          {isFr ? "Voir les articles" : "See articles"} â†’
                         </p>
                       </CardContent>
                     </Card>
@@ -268,15 +268,15 @@ export default async function BlogListing({ params }: Props) {
       </Section>
 
       <CtaBlock
-        title={isFr ? "Démarrer concrètement" : "Start concretely"}
+        title={isFr ? "DÃ©marrer concrÃ¨tement" : "Start concretely"}
         description={
           isFr
-            ? "L'Essentielle 490 € pose le diagnostic + le plan d'action."
-            : "The Essential €490 frames the diagnostic and the action plan."
+            ? "L'Essentielle 490 â‚¬ pose le diagnostic + le plan d'action."
+            : "The Essential â‚¬490 frames the diagnostic and the action plan."
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle" : "See the Essential"} →
+            {isFr ? "Voir l'Essentielle" : "See the Essential"} â†’
           </Cta>
         }
         tone="dark"

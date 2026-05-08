@@ -24,8 +24,6 @@ export const routing = defineRouting({
       fr: "/interventions/essentielle",
       en: "/interventions/essential",
     },
-    "/interventions/equipes": { fr: "/interventions/equipes", en: "/interventions/teams" },
-    "/interventions/managers": { fr: "/interventions/managers", en: "/interventions/managers" },
     "/interventions/conference": {
       fr: "/interventions/conference",
       en: "/interventions/conference",

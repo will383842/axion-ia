@@ -234,8 +234,9 @@ export function Section({
       id={id}
       className={cn(
         "relative overflow-hidden",
-        // Hero : padding plus généreux pour respiration éditoriale
-        isPageHero ? "py-20 sm:py-24 lg:py-32" : "py-24 sm:py-28 lg:py-36",
+        // Hero : top réduit ~40 % vs bottom (Will 2026-05-08 — héro paraissait
+        // trop bas sous le header). Sections de contenu : `py-` symétrique conservé.
+        isPageHero ? "pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32" : "py-24 sm:py-28 lg:py-36",
         toneClasses[resolvedTone],
         className,
       )}

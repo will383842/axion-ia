@@ -66,19 +66,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = isPilot
     ? isFr
-      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Cabinet IA opérationnel`
-      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Operational AI consultancy`
+      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) Â· Cabinet IA opÃ©rationnel`
+      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) Â· Operational AI consultancy`
     : isFr
-      ? `${ville.nameFr} · Intervention IA opérationnelle (${region.nameFr})`
-      : `${ville.nameFr} · Operational AI engagement (${region.nameFr})`;
+      ? `${ville.nameFr} Â· Intervention IA opÃ©rationnelle (${region.nameFr})`
+      : `${ville.nameFr} Â· Operational AI engagement (${region.nameFr})`;
 
   const description = isPilot
     ? isFr
       ? (ville.copy?.directAnswerFr ?? ville.copy?.pitchFr ?? "")
       : (ville.copy?.directAnswerEn ?? ville.copy?.pitchEn ?? "")
     : isFr
-      ? `AxionIA intervient à ${ville.nameFr} (${region.nameFr}). Audit IA Flash dès 490 € HT, intervention sur site 1 journée, implémentation IA. Réservation directe en ligne.`
-      : `AxionIA operates in ${ville.nameFr} (${region.nameFr}). Flash AI audit from €490, 1-day on-site session, AI implementation. Direct online booking.`;
+      ? `AxionIA intervient Ã  ${ville.nameFr} (${region.nameFr}). Audit IA Flash dÃ¨s 490 â‚¬ HT, intervention sur site 1 journÃ©e, implÃ©mentation IA. RÃ©servation directe en ligne.`
+      : `AxionIA operates in ${ville.nameFr} (${region.nameFr}). Flash AI audit from â‚¬490, 1-day on-site session, AI implementation. Direct online booking.`;
 
   const meta = buildProductMetadata({
     locale,
@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       en: `/locations/${region.slug}/${ville.slug}`,
     },
   });
-  // Anti-doorway HCU 2024 — pages sans copy éditorial sortent en `noindex`
+  // Anti-doorway HCU 2024 â€” pages sans copy Ã©ditorial sortent en `noindex`
   // (la SSG construit la page mais Google ne l'indexe pas tant que Will
   // ne la promeut pas en pilote via un copy/<slug>.ts).
   if (!isPilot) {
@@ -143,8 +143,8 @@ export default async function VillePage({ params }: Props) {
     locale: loc,
     path: `/implantations/${region.slug}/${ville.slug}`,
     name: isFr
-      ? `AxionIA · cabinet IA opérationnel à ${ville.nameFr}`
-      : `AxionIA · operational AI consultancy in ${ville.nameFr}`,
+      ? `AxionIA Â· cabinet IA opÃ©rationnel Ã  ${ville.nameFr}`
+      : `AxionIA Â· operational AI consultancy in ${ville.nameFr}`,
     description: isFr ? copy.pitchFr : copy.pitchEn,
     areaServed: { type: "City", name: ville.nameFr },
     address: {
@@ -188,8 +188,8 @@ export default async function VillePage({ params }: Props) {
         })
       : null;
 
-  // FAQ items pour FaqBlock (accordion). On désactive son JSON-LD interne car
-  // on émet déjà le Speakable variant via buildFaqSpeakableJsonLd.
+  // FAQ items pour FaqBlock (accordion). On dÃ©sactive son JSON-LD interne car
+  // on Ã©met dÃ©jÃ  le Speakable variant via buildFaqSpeakableJsonLd.
   const faqItems =
     copy.faqGeolocalisee?.map((f, idx) => ({
       id: `${ville.slug}-faq-${idx}`,
@@ -204,8 +204,8 @@ export default async function VillePage({ params }: Props) {
       {faqSpeakableJsonLd ? <JsonLd data={faqSpeakableJsonLd} /> : null}
       {nearbyItemList ? <JsonLd data={nearbyItemList} /> : null}
 
-      {/* 1. HERO localisé — Section h1 custom layout 2-cols (parity /interventions) */}
-      <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32">
+      {/* 1. HERO localisÃ© â€” Section h1 custom layout 2-cols (parity /interventions) */}
+      <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div>
@@ -217,10 +217,10 @@ export default async function VillePage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? `Implantations · ${region.nameFr}` : `Locations · ${region.nameFr}`}
+                {isFr ? `Implantations Â· ${region.nameFr}` : `Locations Â· ${region.nameFr}`}
               </p>
               <h1 className="display-editorial text-fg">
-                {isFr ? "Cabinet IA opérationnel à" : "Operational AI consultancy in"}{" "}
+                {isFr ? "Cabinet IA opÃ©rationnel Ã " : "Operational AI consultancy in"}{" "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -264,7 +264,9 @@ export default async function VillePage({ params }: Props) {
                   shape="pill"
                   track="ville_cta_book"
                 >
-                  {isFr ? `Réserver à ${ville.nameFr} · 490 €` : `Book in ${ville.nameFr} · €490`}
+                  {isFr
+                    ? `RÃ©server Ã  ${ville.nameFr} Â· 490 â‚¬`
+                    : `Book in ${ville.nameFr} Â· â‚¬490`}
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
                 <Cta
@@ -275,7 +277,7 @@ export default async function VillePage({ params }: Props) {
                   track="ville_cta_audit"
                   data-source-ville={ville.slug}
                 >
-                  {isFr ? "Audit IA Flash · 490 €" : "Flash AI audit · €490"}
+                  {isFr ? "Audit IA Flash Â· 490 â‚¬" : "Flash AI audit Â· â‚¬490"}
                 </Cta>
               </div>
             </div>
@@ -288,7 +290,7 @@ export default async function VillePage({ params }: Props) {
                 nodes={copy.heroSchema.satellites}
                 ariaLabel={
                   isFr
-                    ? `Schéma écosystème B2B de ${ville.nameFr}`
+                    ? `SchÃ©ma Ã©cosystÃ¨me B2B de ${ville.nameFr}`
                     : `B2B ecosystem schema of ${ville.nameFr}`
                 }
               />
@@ -297,18 +299,18 @@ export default async function VillePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* 2. NOS 3 SERVICES À [VILLE] — cœur de la page (Sprint 14.9.1)
-          Indexation maximale : mots-clés long-tail « audit IA [Ville] »,
-          « intervention IA [Ville] », « implémentation IA [Ville] » dans
-          les h2/h3 + descriptions naturelles. Tarifs publics affichés
+      {/* 2. NOS 3 SERVICES Ã€ [VILLE] â€” cÅ“ur de la page (Sprint 14.9.1)
+          Indexation maximale : mots-clÃ©s long-tail Â« audit IA [Ville] Â»,
+          Â« intervention IA [Ville] Â», Â« implÃ©mentation IA [Ville] Â» dans
+          les h2/h3 + descriptions naturelles. Tarifs publics affichÃ©s
           (signal AEO/GEO : Perplexity / Claude / Gemini citent prix). */}
       <Section
         eyebrow={isFr ? "Nos services" : "Our services"}
-        title={isFr ? "Trois services AxionIA à" : "Three AxionIA services in"}
+        title={isFr ? "Trois services AxionIA Ã " : "Three AxionIA services in"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? `Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données. AxionIA délivre ses 3 prestations à ${ville.nameFr} comme partout en France métropolitaine.`
+            ? `Tarifs publics affichÃ©s, calendrier en temps rÃ©el, vous gardez la main sur vos donnÃ©es. AxionIA dÃ©livre ses 3 prestations Ã  ${ville.nameFr} comme partout en France mÃ©tropolitaine.`
             : `Public pricing displayed, real-time calendar, you keep control of your data. AxionIA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France.`
         }
         tone="paper"
@@ -318,17 +320,17 @@ export default async function VillePage({ params }: Props) {
             {
               href: "/audit" as const,
               icon: Briefcase,
-              h3Fr: `Audit IA à ${ville.nameFr}`,
+              h3Fr: `Audit IA Ã  ${ville.nameFr}`,
               h3En: `AI audit in ${ville.nameFr}`,
               priceTier: getEntryTier(AUDIT_TIERS),
               tagline: isFr
-                ? "Pyramide 4 niveaux : Flash, Ciblé, Stratégique PME, Stratégique ETI."
+                ? "Pyramide 4 niveaux : Flash, CiblÃ©, StratÃ©gique PME, StratÃ©gique ETI."
                 : "4-level pyramid: Flash, Targeted, SME Strategic, Mid-cap Strategic.",
               accent: "primary" as const,
               context:
                 copy.servicesContext?.audit?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Audit IA à ${ville.nameFr} aux mêmes tarifs publics que partout en France. Diagnostic actionnable et plan d'attaque chiffré.`
+                  ? `Audit IA Ã  ${ville.nameFr} aux mÃªmes tarifs publics que partout en France. Diagnostic actionnable et plan d'attaque chiffrÃ©.`
                   : `AI audit in ${ville.nameFr} at the same public pricing as anywhere in France. Actionable diagnosis and costed action plan.`),
               ctaFr: "Demander un audit",
               ctaEn: "Request an audit",
@@ -336,17 +338,17 @@ export default async function VillePage({ params }: Props) {
             {
               href: "/interventions" as const,
               icon: Building2,
-              h3Fr: `Interventions IA à ${ville.nameFr}`,
+              h3Fr: `Interventions IA Ã  ${ville.nameFr}`,
               h3En: `AI sessions in ${ville.nameFr}`,
               priceTier: getEntryTier(INTERVENTION_TIERS),
               tagline: isFr
-                ? "5 formats sur site : Essentielle, Équipes, Managers, Conférence, Dirigeants."
+                ? "5 formats sur site : Essentielle, Ã‰quipes, Managers, ConfÃ©rence, Dirigeants."
                 : "5 on-site formats: Essential, Teams, Managers, Talk, Executives.",
               accent: "terracotta" as const,
               context:
                 copy.servicesContext?.interventions?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Interventions IA en entreprise à ${ville.nameFr} sur site. Démos sur vos vraies données, pas de scénarios génériques.`
+                  ? `Interventions IA en entreprise Ã  ${ville.nameFr} sur site. DÃ©mos sur vos vraies donnÃ©es, pas de scÃ©narios gÃ©nÃ©riques.`
                   : `Corporate AI sessions in ${ville.nameFr} on site. Demos on your real data, no generic scenarios.`),
               ctaFr: "Voir le calendrier",
               ctaEn: "View the calendar",
@@ -354,17 +356,17 @@ export default async function VillePage({ params }: Props) {
             {
               href: "/implementation" as const,
               icon: Wrench,
-              h3Fr: `Implémentation IA à ${ville.nameFr}`,
+              h3Fr: `ImplÃ©mentation IA Ã  ${ville.nameFr}`,
               h3En: `AI implementation in ${ville.nameFr}`,
               priceTier: getEntryTier(IMPLEMENTATION_TIERS),
               tagline: isFr
-                ? "Mise en production avec ROI chiffré, formation incluse, sans dépendance imposée."
+                ? "Mise en production avec ROI chiffrÃ©, formation incluse, sans dÃ©pendance imposÃ©e."
                 : "Production deployment with costed ROI, training included, no imposed dependency.",
               accent: "sage" as const,
               context:
                 copy.servicesContext?.implementation?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Implémentation IA opérationnelle à ${ville.nameFr} : agents, automatisation back-office, intégration CRM/ERP, IA custom. Forfait fixe, aucun abonnement.`
+                  ? `ImplÃ©mentation IA opÃ©rationnelle Ã  ${ville.nameFr} : agents, automatisation back-office, intÃ©gration CRM/ERP, IA custom. Forfait fixe, aucun abonnement.`
                   : `Operational AI implementation in ${ville.nameFr}: agents, back-office automation, CRM/ERP integration, custom AI. Fixed fee, no subscription.`),
               ctaFr: "Discuter d'un projet",
               ctaEn: "Discuss a project",
@@ -412,7 +414,7 @@ export default async function VillePage({ params }: Props) {
                           : "text-sage"
                     }`}
                   >
-                    {isFr ? "Dès " : "From "}
+                    {isFr ? "DÃ¨s " : "From "}
                     {formatPrice(priceTier, isFr ? "fr" : "en")}
                   </p>
                   <p className="text-fg mt-3 text-sm leading-snug font-medium">{tagline}</p>
@@ -438,12 +440,12 @@ export default async function VillePage({ params }: Props) {
         </ul>
       </Section>
 
-      {/* 2bis. SECTIONS DÉTAILLÉES PAR SERVICE — perfection extrême Sprint 14.10.1
-          Affichées si copy.services renseigné (Paris pilote + futures villes
-          enrichies). Chaque section ~500-700 mots : hero + raisons + méthodologie
-          + tarifs INSEE + témoignages + garanties. Ces sections font passer la
-          page de ~1200 mots à ~5000+ mots — cap perfection #1 sur « audit IA Ville »,
-          « formation IA Ville », « implémentation IA Ville ». */}
+      {/* 2bis. SECTIONS DÃ‰TAILLÃ‰ES PAR SERVICE â€” perfection extrÃªme Sprint 14.10.1
+          AffichÃ©es si copy.services renseignÃ© (Paris pilote + futures villes
+          enrichies). Chaque section ~500-700 mots : hero + raisons + mÃ©thodologie
+          + tarifs INSEE + tÃ©moignages + garanties. Ces sections font passer la
+          page de ~1200 mots Ã  ~5000+ mots â€” cap perfection #1 sur Â« audit IA Ville Â»,
+          Â« formation IA Ville Â», Â« implÃ©mentation IA Ville Â». */}
       {copy.services?.audit ? (
         <VilleServiceDetailSection
           isFr={isFr}
@@ -478,15 +480,15 @@ export default async function VillePage({ params }: Props) {
         />
       ) : null}
 
-      {/* 3. POURQUOI AXIONIA À [VILLE] — différenciation anti-doorway HCU
-          + signal autorité (4 différenciateurs concrets, pas du blabla) */}
+      {/* 3. POURQUOI AXIONIA Ã€ [VILLE] â€” diffÃ©renciation anti-doorway HCU
+          + signal autoritÃ© (4 diffÃ©renciateurs concrets, pas du blabla) */}
       <Section
         eyebrow={isFr ? "Pourquoi nous" : "Why us"}
-        title={isFr ? "Ce qui change avec AxionIA à" : "What changes with AxionIA in"}
+        title={isFr ? "Ce qui change avec AxionIA Ã " : "What changes with AxionIA in"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? "Un cabinet IA opérationnel n'est pas un éditeur logiciel ni un cabinet de conseil traditionnel. Voici les 4 différences concrètes que vous obtenez à chaque mission."
+            ? "Un cabinet IA opÃ©rationnel n'est pas un Ã©diteur logiciel ni un cabinet de conseil traditionnel. Voici les 4 diffÃ©rences concrÃ¨tes que vous obtenez Ã  chaque mission."
             : "An operational AI consultancy is not a software vendor nor a traditional consulting firm. Here are the 4 concrete differences you get on every engagement."
         }
         tone="canvas"
@@ -497,28 +499,28 @@ export default async function VillePage({ params }: Props) {
               icon: MapPin,
               titleFr: "Sur site, pas en visio",
               titleEn: "On site, not on video calls",
-              detailFr: `Nous nous déplaçons à ${ville.nameFr} pour kick-off et restitutions. Frais inclus.`,
+              detailFr: `Nous nous dÃ©plaÃ§ons Ã  ${ville.nameFr} pour kick-off et restitutions. Frais inclus.`,
               detailEn: `We travel to ${ville.nameFr} for kick-off and read-outs. Fees included.`,
             },
             {
               icon: Euro,
-              titleFr: "Prix public, pas d'opacité",
+              titleFr: "Prix public, pas d'opacitÃ©",
               titleEn: "Public pricing, no opacity",
-              detailFr: "Tarifs affichés sur le site. Aucun jeu de devis, aucune surfacturation.",
+              detailFr: "Tarifs affichÃ©s sur le site. Aucun jeu de devis, aucune surfacturation.",
               detailEn: "Pricing displayed on the site. No quote game, no overbilling.",
             },
             {
               icon: ShieldCheck,
               titleFr: "Aucun lock-in technologique",
               titleEn: "No tech lock-in",
-              detailFr: "Pas d'abonnement, pas de SaaS imposé. Vous repartez avec les outils.",
+              detailFr: "Pas d'abonnement, pas de SaaS imposÃ©. Vous repartez avec les outils.",
               detailEn: "No subscription, no SaaS imposed. You leave with the tools.",
             },
             {
               icon: Target,
-              titleFr: "ROI chiffré avant et après",
+              titleFr: "ROI chiffrÃ© avant et aprÃ¨s",
               titleEn: "Costed ROI before and after",
-              detailFr: "On quantifie le gain avant la mission, on prouve après. Pas de baratin.",
+              detailFr: "On quantifie le gain avant la mission, on prouve aprÃ¨s. Pas de baratin.",
               detailEn: "We quantify the gain before the mission, we prove it after. No fluff.",
             },
           ].map(({ icon: Icon, titleFr, titleEn, detailFr, detailEn }, idx) => (
@@ -543,15 +545,15 @@ export default async function VillePage({ params }: Props) {
         </ul>
       </Section>
 
-      {/* 4. CAS CLIENTS PROCHES — Haversine 50 km, fallback silencieux */}
+      {/* 4. CAS CLIENTS PROCHES â€” Haversine 50 km, fallback silencieux */}
       {nearbyCases.length > 0 ? (
         <Section
           eyebrow={isFr ? "Cas clients proches" : "Nearby case studies"}
-          title={isFr ? "Déjà déployé" : "Already deployed"}
-          titleEm={isFr ? "à proximité" : "nearby"}
+          title={isFr ? "DÃ©jÃ  dÃ©ployÃ©" : "Already deployed"}
+          titleEm={isFr ? "Ã  proximitÃ©" : "nearby"}
           description={
             isFr
-              ? `Cas anonymisés à moins de 50 km de ${ville.nameFr}. ROI chiffré, contexte, livrables.`
+              ? `Cas anonymisÃ©s Ã  moins de 50 km de ${ville.nameFr}. ROI chiffrÃ©, contexte, livrables.`
               : `Anonymized cases within 50 km of ${ville.nameFr}. Costed ROI, context, deliverables.`
           }
           tone="paper"
@@ -566,7 +568,8 @@ export default async function VillePage({ params }: Props) {
                   className="group bg-bg hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card block h-full rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                    {isFr ? caseStudy.industry : caseStudy.industryEn} · {Math.round(distanceKm)} km
+                    {isFr ? caseStudy.industry : caseStudy.industryEn} Â· {Math.round(distanceKm)}{" "}
+                    km
                   </p>
                   <p
                     className="text-fg mt-2 text-lg leading-tight font-semibold"
@@ -585,15 +588,15 @@ export default async function VillePage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* 6. VILLES PROCHES (Haversine) — maillage régional */}
+      {/* 6. VILLES PROCHES (Haversine) â€” maillage rÃ©gional */}
       {nearbyVilles.length > 0 ? (
         <Section
-          eyebrow={isFr ? "Maillage régional" : "Regional mesh"}
+          eyebrow={isFr ? "Maillage rÃ©gional" : "Regional mesh"}
           title={isFr ? "Villes proches" : "Cities near"}
           titleEm={ville.nameFr}
           description={
             isFr
-              ? "Communes éligibles aux interventions sur site, triées par distance. Cliquez pour voir leur page locale."
+              ? "Communes Ã©ligibles aux interventions sur site, triÃ©es par distance. Cliquez pour voir leur page locale."
               : "Communes eligible for on-site engagements, sorted by distance. Click to see their local page."
           }
         >
@@ -613,7 +616,7 @@ export default async function VillePage({ params }: Props) {
                     {v.nameFr}
                   </span>
                   <span className="text-fg-muted mt-0.5 block text-[11px] tabular-nums">
-                    {Math.round(distanceKm)} km ·{" "}
+                    {Math.round(distanceKm)} km Â·{" "}
                     {v.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
                     {isFr ? "hab." : "inhab."}
                   </span>
@@ -624,18 +627,18 @@ export default async function VillePage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* 7. FAQ géolocalisée (Speakable JSON-LD émis ailleurs) */}
+      {/* 7. FAQ gÃ©olocalisÃ©e (Speakable JSON-LD Ã©mis ailleurs) */}
       {faqItems.length > 0 ? (
         <FaqBlock
-          eyebrow={isFr ? `FAQ · ${ville.nameFr}` : `FAQ · ${ville.nameFr}`}
+          eyebrow={isFr ? `FAQ Â· ${ville.nameFr}` : `FAQ Â· ${ville.nameFr}`}
           title={
             isFr
-              ? `Questions fréquentes à ${ville.nameFr}`
+              ? `Questions frÃ©quentes Ã  ${ville.nameFr}`
               : `Frequently asked questions in ${ville.nameFr}`
           }
           description={
             isFr
-              ? `Réponses adaptées aux entreprises de ${ville.nameFr} et ${region.nameFr}.`
+              ? `RÃ©ponses adaptÃ©es aux entreprises de ${ville.nameFr} et ${region.nameFr}.`
               : `Answers tailored to businesses in ${ville.nameFr} and ${region.nameFr}.`
           }
           items={faqItems}
@@ -644,11 +647,11 @@ export default async function VillePage({ params }: Props) {
         />
       ) : null}
 
-      {/* 8. ARTICLES BLOG LIÉS — silence si rien ne matche */}
+      {/* 8. ARTICLES BLOG LIÃ‰S â€” silence si rien ne matche */}
       {relatedPosts.length > 0 ? (
         <Section
           eyebrow={isFr ? "Articles & ressources" : "Articles & resources"}
-          title={isFr ? "Lecture complémentaire" : "Further reading"}
+          title={isFr ? "Lecture complÃ©mentaire" : "Further reading"}
           titleEm={ville.nameFr}
           tone="paper"
         >
@@ -660,7 +663,7 @@ export default async function VillePage({ params }: Props) {
                   className="group bg-bg hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card block h-full rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                    {post.category} · {post.readingTime}
+                    {post.category} Â· {post.readingTime}
                   </p>
                   <p
                     className="text-fg mt-2 text-lg leading-tight font-semibold"
@@ -678,29 +681,29 @@ export default async function VillePage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* 9. TISSU LOCAL — bandeau dense data INSEE + secteurs + accès.
-          Anti-doorway HCU 2024 : preuve de différenciation par ville
-          (les LLMs vérifient que chaque page ville a des data uniques). */}
+      {/* 9. TISSU LOCAL â€” bandeau dense data INSEE + secteurs + accÃ¨s.
+          Anti-doorway HCU 2024 : preuve de diffÃ©renciation par ville
+          (les LLMs vÃ©rifient que chaque page ville a des data uniques). */}
       <Section
         eyebrow={isFr ? "Tissu local" : "Local fabric"}
-        title={isFr ? "Données économiques" : "Economic data"}
+        title={isFr ? "DonnÃ©es Ã©conomiques" : "Economic data"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? `Sources : INSEE recensement légal (code commune ${ville.inseeCode}) + Sirene 2024. Données différenciées spécifiques à ${ville.nameFr} (signal anti-doorway HCU 2024).`
+            ? `Sources : INSEE recensement lÃ©gal (code commune ${ville.inseeCode}) + Sirene 2024. DonnÃ©es diffÃ©renciÃ©es spÃ©cifiques Ã  ${ville.nameFr} (signal anti-doorway HCU 2024).`
             : `Sources: INSEE legal census (commune code ${ville.inseeCode}) + Sirene 2024. City-specific differentiated data for ${ville.nameFr} (anti-doorway HCU 2024 signal).`
         }
         tone="paper"
       >
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Démographie */}
+          {/* DÃ©mographie */}
           <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
             <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
                 className="bg-primary mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
-              {isFr ? "Démographie" : "Demographics"}
+              {isFr ? "DÃ©mographie" : "Demographics"}
             </p>
             <p
               className="text-fg mt-3 text-2xl leading-tight font-semibold"
@@ -713,8 +716,8 @@ export default async function VillePage({ params }: Props) {
             </p>
             <p className="text-fg-soft mt-3 text-sm leading-relaxed">
               {isFr
-                ? `Code INSEE ${ville.inseeCode} · département ${ville.departementLabel ?? ville.departement}${ville.postalCode ? ` · ${ville.postalCode}` : ""}. Recensement légal INSEE 2024.`
-                : `INSEE code ${ville.inseeCode} · department ${ville.departementLabel ?? ville.departement}${ville.postalCode ? ` · ${ville.postalCode}` : ""}. INSEE 2024 legal census.`}
+                ? `Code INSEE ${ville.inseeCode} Â· dÃ©partement ${ville.departementLabel ?? ville.departement}${ville.postalCode ? ` Â· ${ville.postalCode}` : ""}. Recensement lÃ©gal INSEE 2024.`
+                : `INSEE code ${ville.inseeCode} Â· department ${ville.departementLabel ?? ville.departement}${ville.postalCode ? ` Â· ${ville.postalCode}` : ""}. INSEE 2024 legal census.`}
             </p>
           </article>
 
@@ -747,7 +750,7 @@ export default async function VillePage({ params }: Props) {
             </article>
           ) : null}
 
-          {/* Distances + accès */}
+          {/* Distances + accÃ¨s */}
           {(isFr ? copy.distancesFr : (copy.distancesEn ?? copy.distancesFr)) ? (
             <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
               <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
@@ -755,14 +758,14 @@ export default async function VillePage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-sage mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? "Logistique & accès" : "Logistics & access"}
+                {isFr ? "Logistique & accÃ¨s" : "Logistics & access"}
               </p>
               <p
                 className="text-fg mt-3 inline-flex items-center gap-2 text-xl leading-tight font-semibold"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 <TrainFront aria-hidden="true" className="h-5 w-5" />
-                {isFr ? "Gares & aéroports" : "Stations & airports"}
+                {isFr ? "Gares & aÃ©roports" : "Stations & airports"}
               </p>
               <p className="text-fg-soft mt-3 text-sm leading-relaxed">
                 {isFr ? copy.distancesFr : (copy.distancesEn ?? copy.distancesFr)}
@@ -772,10 +775,10 @@ export default async function VillePage({ params }: Props) {
         </div>
       </Section>
 
-      {/* 10. ÉCOSYSTÈME LOCAL — paragraphe différenciateur (gros texte) */}
+      {/* 10. Ã‰COSYSTÃˆME LOCAL â€” paragraphe diffÃ©renciateur (gros texte) */}
       {(isFr ? copy.ecosystemFr : (copy.ecosystemEn ?? copy.ecosystemFr)) ? (
         <Section
-          eyebrow={isFr ? "Écosystème" : "Ecosystem"}
+          eyebrow={isFr ? "Ã‰cosystÃ¨me" : "Ecosystem"}
           title={isFr ? "Le tissu B2B" : "The B2B fabric"}
           titleEm={`de ${ville.nameFr}`}
           tone="canvas"
@@ -789,14 +792,14 @@ export default async function VillePage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* CTA final pré-rempli ville */}
+      {/* CTA final prÃ©-rempli ville */}
       <CtaBlock
-        eyebrow={isFr ? `Démarrer à ${ville.nameFr}` : `Start in ${ville.nameFr}`}
-        title={isFr ? `Vous êtes basé à ${ville.nameFr} ?` : `You're based in ${ville.nameFr}?`}
-        titleEm={isFr ? "Réservez en ligne" : "Book online"}
+        eyebrow={isFr ? `DÃ©marrer Ã  ${ville.nameFr}` : `Start in ${ville.nameFr}`}
+        title={isFr ? `Vous Ãªtes basÃ© Ã  ${ville.nameFr} ?` : `You're based in ${ville.nameFr}?`}
+        titleEm={isFr ? "RÃ©servez en ligne" : "Book online"}
         description={
           isFr
-            ? `Calendrier réel temps réel. Acompte 50 % à la confirmation. Le champ « ville » sera pré-rempli avec ${ville.nameFr}.`
+            ? `Calendrier rÃ©el temps rÃ©el. Acompte 50 % Ã  la confirmation. Le champ Â« ville Â» sera prÃ©-rempli avec ${ville.nameFr}.`
             : `Real-time calendar. 50% deposit on confirmation. The "city" field will be pre-filled with ${ville.nameFr}.`
         }
         cta={
@@ -809,7 +812,7 @@ export default async function VillePage({ params }: Props) {
               track="ville_cta_book_final"
               data-source-ville={ville.slug}
             >
-              {isFr ? "Voir le calendrier · 490 €" : "View the calendar · €490"}
+              {isFr ? "Voir le calendrier Â· 490 â‚¬" : "View the calendar Â· â‚¬490"}
             </Cta>
             <Cta
               href="/contact"
@@ -818,7 +821,7 @@ export default async function VillePage({ params }: Props) {
               shape="pill"
               track="ville_cta_contact_final"
             >
-              {isFr ? "Parler à un consultant" : "Speak with a consultant"}
+              {isFr ? "Parler Ã  un consultant" : "Speak with a consultant"}
             </Cta>
           </div>
         }
@@ -828,13 +831,13 @@ export default async function VillePage({ params }: Props) {
 }
 
 // ===========================================================================
-// Stub minimal pour les ~2 156 villes sans copy éditorial.
+// Stub minimal pour les ~2 156 villes sans copy Ã©ditorial.
 // Anti-doorway HCU 2024 : la page existe physiquement (SSG, accessible aux
 // visiteurs qui tomberaient dessus via lien interne) mais porte
-// `<meta robots="noindex">` (cf. generateMetadata) et n'apparaît pas dans
+// `<meta robots="noindex">` (cf. generateMetadata) et n'apparaÃ®t pas dans
 // le sitemap (cf. buildImplantationsSitemap qui filtre sur getIndexableVilles).
-// Le contenu est sciemment minimal — pas de FAQ génériques copiées-collées,
-// pas de wall-of-text — pour éviter de polluer le crawl si un humain l'ouvre.
+// Le contenu est sciemment minimal â€” pas de FAQ gÃ©nÃ©riques copiÃ©es-collÃ©es,
+// pas de wall-of-text â€” pour Ã©viter de polluer le crawl si un humain l'ouvre.
 // ===========================================================================
 interface VilleStubProps {
   ville: Ville;
@@ -847,13 +850,13 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
   return (
     <Section
       titleAs="h1"
-      eyebrow={isFr ? `Implantations · ${regionNameFr}` : `Locations · ${regionNameFr}`}
-      title={isFr ? "AxionIA intervient à" : "AxionIA covers"}
+      eyebrow={isFr ? `Implantations Â· ${regionNameFr}` : `Locations Â· ${regionNameFr}`}
+      title={isFr ? "AxionIA intervient Ã " : "AxionIA covers"}
       titleEm={ville.nameFr}
       description={
         isFr
-          ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) fait partie des ${ville.population.toLocaleString("fr-FR")} habitants éligibles à nos interventions sur site, audits IA et missions d'implémentation. La page locale détaillée est en préparation — réservez dès maintenant via la page régionale.`
-          : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) is part of the ${ville.population.toLocaleString("en-US")} inhabitants eligible to our on-site engagements, AI audits and implementation missions. The detailed local page is in preparation — book now via the regional page.`
+          ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) fait partie des ${ville.population.toLocaleString("fr-FR")} habitants Ã©ligibles Ã  nos interventions sur site, audits IA et missions d'implÃ©mentation. La page locale dÃ©taillÃ©e est en prÃ©paration â€” rÃ©servez dÃ¨s maintenant via la page rÃ©gionale.`
+          : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) is part of the ${ville.population.toLocaleString("en-US")} inhabitants eligible to our on-site engagements, AI audits and implementation missions. The detailed local page is in preparation â€” book now via the regional page.`
       }
     >
       <div className="mb-8">
@@ -867,7 +870,7 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
           shape="pill"
           track="ville_stub_back_region"
         >
-          {isFr ? `Voir la région ${regionNameFr}` : `See the ${regionNameFr} region`}
+          {isFr ? `Voir la rÃ©gion ${regionNameFr}` : `See the ${regionNameFr} region`}
           <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
         </Cta>
         <Cta
@@ -878,7 +881,7 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
           track="ville_stub_book"
           data-source-ville={ville.slug}
         >
-          {isFr ? "Réserver une intervention · 490 €" : "Book an engagement · €490"}
+          {isFr ? "RÃ©server une intervention Â· 490 â‚¬" : "Book an engagement Â· â‚¬490"}
         </Cta>
       </div>
     </Section>

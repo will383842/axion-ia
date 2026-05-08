@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles } from "@/content/villes";
+import { INTERVENTION_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 // 2026 reference: Linear / Anthropic / Stripe / Vercel — single dense row,
@@ -14,10 +15,15 @@ export async function Footer() {
   const isFr = locale === "fr";
   const year = new Date().getFullYear();
 
+  // Tarif Essentielle dérivé de pricing.ts (source unique). Modification du
+  // prix dans `src/content/pricing.ts` propage automatiquement ici.
+  const essentiellePrice = formatPrice(getEntryTier(INTERVENTION_TIERS), isFr ? "fr" : "en")
+    .replace(" HT", "")
+    .replace(" (excl. VAT)", "");
   const services = [
     {
       href: "/interventions/essentielle",
-      label: isFr ? "Essentielle · 490 €" : "Essential · €490",
+      label: isFr ? `Essentielle · ${essentiellePrice}` : `Essential · ${essentiellePrice}`,
     },
     { href: "/interventions", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },

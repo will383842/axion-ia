@@ -36,21 +36,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/interventions",
     title:
       locale === "fr"
-        ? "Interventions IA en entreprise · 5 formats · France & international"
-        : "Corporate AI sessions · 5 formats · France & international",
+        ? "Interventions IA en entreprise Â· 5 formats Â· France & international"
+        : "Corporate AI sessions Â· 5 formats Â· France & international",
     description:
       locale === "fr"
-        ? "Interventions et formations IA opérationnelles : Essentielle 490 €, équipes, managers, conférence ½ journée, dirigeants. TPE / PME / grandes entreprises, France et international."
-        : "Operational AI sessions: Essential €490, teams, managers, half-day talk, executives. Small to enterprise, France and international.",
+        ? "Interventions et formations IA opÃ©rationnelles : Essentielle 490 â‚¬, Ã©quipes, managers, confÃ©rence Â½ journÃ©e, dirigeants. TPE / PME / grandes entreprises, France et international."
+        : "Operational AI sessions: Essential â‚¬490, teams, managers, half-day talk, executives. Small to enterprise, France and international.",
   });
 }
 
-// Padding latéral réduit pour cette page (vs Container default lg:px-10
+// Padding latÃ©ral rÃ©duit pour cette page (vs Container default lg:px-10
 // xl:px-16). Donne plus de respiration au contenu et resserre les marges
-// gauche/droite — Will, 2026-05-07.
+// gauche/droite â€” Will, 2026-05-07.
 const TIGHT_X = "lg:px-6 xl:px-10";
 
-// Mapping classes accent — pré-définis statiquement pour Tailwind JIT.
+// Mapping classes accent â€” prÃ©-dÃ©finis statiquement pour Tailwind JIT.
 const accentClasses: Record<
   InterventionAccent,
   {
@@ -99,7 +99,7 @@ const accentClasses: Record<
     border: "border-mocha-fg/15 hover:border-terracotta",
     title: "text-terracotta-soft",
     line: "bg-terracotta",
-    // CTA en terracotta — sort sur fond mocha sombre.
+    // CTA en terracotta â€” sort sur fond mocha sombre.
     cta: "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
     haloRing: "ring-terracotta/30",
     chipBg: "bg-terracotta-soft",
@@ -107,8 +107,8 @@ const accentClasses: Record<
   },
 };
 
-// Surface (fond du bloc) par slug — donne du peps en variant le décor d'un
-// format à l'autre. Le bloc dirigeants est dark (mocha-rich) : il tranche
+// Surface (fond du bloc) par slug â€” donne du peps en variant le dÃ©cor d'un
+// format Ã  l'autre. Le bloc dirigeants est dark (mocha-rich) : il tranche
 // volontairement avec les 4 autres.
 const surfaceBySlug: Record<
   InterventionSlug,
@@ -148,8 +148,8 @@ export default async function InterventionsListing({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // Bandeau "Pour qui" — 5 réassurances dont la mention frais déplacement
-  // (transparence B2B, préempte l'objection commerciale).
+  // Bandeau "Pour qui" â€” 5 rÃ©assurances dont la mention frais dÃ©placement
+  // (transparence B2B, prÃ©empte l'objection commerciale).
   const audienceStrip = [
     {
       icon: Globe2,
@@ -158,25 +158,25 @@ export default async function InterventionsListing({ params }: Props) {
     },
     {
       icon: Building2,
-      label: isFr ? "TPE · PME · grandes entreprises" : "Small · mid-market · enterprise",
+      label: isFr ? "TPE Â· PME Â· grandes entreprises" : "Small Â· mid-market Â· enterprise",
       detail: isFr ? "Tous secteurs, tous niveaux" : "All sectors, all levels",
     },
     {
       icon: Sparkles,
-      label: isFr ? "De débutant à expert IA" : "From AI novice to fluent",
-      detail: isFr ? "Un format adapté à chaque maturité" : "A format for every maturity",
+      label: isFr ? "De dÃ©butant Ã  expert IA" : "From AI novice to fluent",
+      detail: isFr ? "Un format adaptÃ© Ã  chaque maturitÃ©" : "A format for every maturity",
     },
     {
       icon: Plane,
-      label: isFr ? "Déplacement & logement" : "Travel & lodging",
+      label: isFr ? "DÃ©placement & logement" : "Travel & lodging",
       detail: isFr
-        ? "À la charge du client · forfait journalier"
-        : "Covered by client · flat daily rate",
+        ? "Ã€ la charge du client Â· forfait journalier"
+        : "Covered by client Â· flat daily rate",
     },
   ];
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [
     {
       href: "/interventions",
@@ -184,22 +184,22 @@ export default async function InterventionsListing({ params }: Props) {
     },
   ];
 
-  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
+  // Service JSON-LD avec areasServed multi-rÃ©gions (Sprint 14.9 levier 2).
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/interventions",
     name: isFr
-      ? "Interventions IA en entreprise · 5 formats · AxionIA"
-      : "Corporate AI sessions · 5 formats · AxionIA",
+      ? "Interventions IA en entreprise Â· 5 formats Â· AxionIA"
+      : "Corporate AI sessions Â· 5 formats Â· AxionIA",
     description: isFr
-      ? "Interventions et formations IA opérationnelles sur site : Essentielle 490 € HT (1 journée, jusqu'à 100 personnes), équipes, managers, conférence ½ journée, dirigeants. France métropolitaine et international."
-      : "Operational AI sessions on site: Essential €490 (1 day, up to 100 people), teams, managers, half-day talks, executives. Metropolitan France and international.",
+      ? "Interventions et formations IA opÃ©rationnelles sur site : Essentielle 490 â‚¬ HT (1 journÃ©e, jusqu'Ã  100 personnes), Ã©quipes, managers, confÃ©rence Â½ journÃ©e, dirigeants. France mÃ©tropolitaine et international."
+      : "Operational AI sessions on site: Essential â‚¬490 (1 day, up to 100 people), teams, managers, half-day talks, executives. Metropolitan France and international.",
     serviceType: "AI training & engagement",
     priceEur: 490,
     areasServed: buildServiceAreasServed(loc),
   });
 
-  // ItemList JSON-LD — chaque intervention listée comme Service.
+  // ItemList JSON-LD â€” chaque intervention listÃ©e comme Service.
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -230,7 +230,7 @@ export default async function InterventionsListing({ params }: Props) {
     }),
   } as const;
 
-  // Schema labels nodes — court, lisible dans le SVG.
+  // Schema labels nodes â€” court, lisible dans le SVG.
   const heroNodes = INTERVENTIONS.map((item) => ({
     label: isFr ? interventionShortLabelFr(item.slug) : interventionShortLabelEn(item.slug),
     benefit: isFr ? interventionShortBenefitFr(item.slug) : interventionShortBenefitEn(item.slug),
@@ -242,9 +242,9 @@ export default async function InterventionsListing({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO — layout custom 2 colonnes (text + schéma) gardant la doctrine v3 */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
-        {/* Grille texturée fond — vignette douce */}
+      {/* HERO â€” layout custom 2 colonnes (text + schÃ©ma) gardant la doctrine v3 */}
+      <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
+        {/* Grille texturÃ©e fond â€” vignette douce */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-60"
@@ -259,35 +259,35 @@ export default async function InterventionsListing({ params }: Props) {
         />
 
         <Container className={cn("relative", TIGHT_X)}>
-          {/* Grille hero — proportion harmonisée avec /audit pour que les
-              schemas hero des pages module aient la même grosseur visuelle.
-              v3.2 (2026-05-08) : 1fr 1fr unifié + `.hero-schema` cap 36rem
-              côté visuel. Doctrine hero schema width invariant. */}
+          {/* Grille hero â€” proportion harmonisÃ©e avec /audit pour que les
+              schemas hero des pages module aient la mÃªme grosseur visuelle.
+              v3.2 (2026-05-08) : 1fr 1fr unifiÃ© + `.hero-schema` cap 36rem
+              cÃ´tÃ© visuel. Doctrine hero schema width invariant. */}
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            {/* Colonne gauche — eyebrow + titre + description + CTAs */}
+            {/* Colonne gauche â€” eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? "Module 1 · Interventions" : "Module 1 · Sessions"}
+                {isFr ? "Module 1 Â· Interventions" : "Module 1 Â· Sessions"}
               </p>
 
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Formez vos équipes à l'IA " : "Train your teams on AI "}
+                {isFr ? "Formez vos Ã©quipes Ã  l'IA " : "Train your teams on AI "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {isFr ? "en 1 ou 2 jours" : "in 1 or 2 days"}
                 </span>
-                {isFr ? " — concrètement, sur site." : " — concretely, on site."}
+                {isFr ? " â€” concrÃ¨tement, sur site." : " â€” concretely, on site."}
               </h1>
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "5 formats d'intervention et de formation IA opérationnels, sur site, en France et à l'international. TPE, PME, ETI ou grandes entreprises. À chaque entreprise son format. À chaque équipe son bénéfice concret, mesurable, dès le lendemain."
+                  ? "5 formats d'intervention et de formation IA opÃ©rationnels, sur site, en France et Ã  l'international. TPE, PME, ETI ou grandes entreprises. Ã€ chaque entreprise son format. Ã€ chaque Ã©quipe son bÃ©nÃ©fice concret, mesurable, dÃ¨s le lendemain."
                   : "5 operational AI session and training formats, on site, in France and abroad. Small businesses, mid-market or enterprise. A format for every company. A concrete, measurable benefit for every team, starting the very next day."}
               </p>
 
@@ -298,7 +298,7 @@ export default async function InterventionsListing({ params }: Props) {
                   size="lg"
                   className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)]"
                 >
-                  {isFr ? "Réserver l'Essentielle · 490 €" : "Book the Essential · €490"}
+                  {isFr ? "RÃ©server l'Essentielle Â· 490 â‚¬" : "Book the Essential Â· â‚¬490"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/cas-concrets" variant="outline" size="lg">
@@ -307,16 +307,16 @@ export default async function InterventionsListing({ params }: Props) {
               </div>
             </div>
 
-            {/* Colonne droite — schéma SVG portrait, c'est l'argumentaire
+            {/* Colonne droite â€” schÃ©ma SVG portrait, c'est l'argumentaire
                 visuel principal de la page. lg:max-w-none pour utiliser tout
-                l'espace de la colonne grille (1.2fr) et égaler le
+                l'espace de la colonne grille (1.2fr) et Ã©galer le
                 AuditHeroSchema. */}
             <InterventionsHeroSchema
               className="hero-schema pointer-events-none"
               centerLabel={isFr ? "Votre entreprise" : "Your company"}
               ariaLabel={
                 isFr
-                  ? "Schéma : votre entreprise au centre, entourée des 5 formats d'intervention et de formation IA AxionIA et de leur bénéfice concret."
+                  ? "SchÃ©ma : votre entreprise au centre, entourÃ©e des 5 formats d'intervention et de formation IA AxionIA et de leur bÃ©nÃ©fice concret."
                   : "Diagram: your company at the center, surrounded by the 5 AxionIA intervention and training formats and their concrete benefit."
               }
               nodes={heroNodes}
@@ -325,7 +325,7 @@ export default async function InterventionsListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* BANDEAU « Pour qui » — réassurance immédiate, 5 pills */}
+      {/* BANDEAU Â« Pour qui Â» â€” rÃ©assurance immÃ©diate, 5 pills */}
       <section className="bg-paper border-border border-y py-10">
         <Container className={TIGHT_X}>
           <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
@@ -347,15 +347,15 @@ export default async function InterventionsListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* 5 FORMATS — Essentielle full-width, 4 autres en grid 2×2.
-          Fonds différenciés par format pour le peps. */}
+      {/* 5 FORMATS â€” Essentielle full-width, 4 autres en grid 2Ã—2.
+          Fonds diffÃ©renciÃ©s par format pour le peps. */}
       <Section
         eyebrow={isFr ? "Choisir votre format" : "Pick your format"}
         title={isFr ? "5 formats d'intervention" : "5 intervention formats"}
-        titleEm={isFr ? "à votre mesure" : "for every fit"}
+        titleEm={isFr ? "Ã  votre mesure" : "for every fit"}
         description={
           isFr
-            ? "Chaque bloc est cliquable et mène à la page dédiée du format. Vous voyez immédiatement la durée, le prix, ce que vos équipes sauront faire après et comment ça se déroule."
+            ? "Chaque bloc est cliquable et mÃ¨ne Ã  la page dÃ©diÃ©e du format. Vous voyez immÃ©diatement la durÃ©e, le prix, ce que vos Ã©quipes sauront faire aprÃ¨s et comment Ã§a se dÃ©roule."
             : "Every card is clickable and links to the dedicated format page. You immediately see the duration, price, what your team will be able to do, and how it runs."
         }
         contentClassName={TIGHT_X}
@@ -370,7 +370,7 @@ export default async function InterventionsListing({ params }: Props) {
             const isFlagship = idx === 0;
             const dark = surface.isDark;
 
-            // Tokens texte adaptés selon dark / light pour lisibilité.
+            // Tokens texte adaptÃ©s selon dark / light pour lisibilitÃ©.
             const txt = dark ? "text-mocha-fg" : "text-fg";
             const txtSoft = dark ? "text-mocha-fg/85" : "text-fg-soft";
             const txtMuted = dark ? "text-mocha-fg/70" : "text-fg-muted";
@@ -389,13 +389,13 @@ export default async function InterventionsListing({ params }: Props) {
                 <dl className="mt-4 space-y-4">
                   <div>
                     <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                      {isFr ? "Durée" : "Duration"}
+                      {isFr ? "DurÃ©e" : "Duration"}
                     </dt>
                     <dd className={`mt-1 text-[15px] font-semibold ${txt}`}>{s.duration}</dd>
                   </div>
                   {/* Si tranches multiples (Essentielle), on les expose toutes
                       pour que l'effectif et le prix correspondant soient lisibles
-                      du premier coup d'œil. */}
+                      du premier coup d'Å“il. */}
                   {s.priceTiers && s.priceTiers.length > 1 ? (
                     <div>
                       <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
@@ -440,10 +440,10 @@ export default async function InterventionsListing({ params }: Props) {
             );
 
             const KpiInline = (
-              // Version compacte 2×2 pour les blocs non-flagship.
+              // Version compacte 2Ã—2 pour les blocs non-flagship.
               <dl className="mt-6 grid grid-cols-2 gap-3">
                 {[
-                  { label: isFr ? "Durée" : "Duration", value: s.duration },
+                  { label: isFr ? "DurÃ©e" : "Duration", value: s.duration },
                   { label: isFr ? "Tarif" : "Price", value: s.price },
                   { label: isFr ? "Participants" : "Participants", value: s.groupSize },
                   { label: isFr ? "Format" : "Format", value: s.format },
@@ -476,18 +476,18 @@ export default async function InterventionsListing({ params }: Props) {
                 )}
                 {...(dark ? { "data-tone": "dark" as const } : {})}
               >
-                {/* Stretched link — couvre toute la card. Les CTAs internes
-                    (action principale + lien calendrier) sont remontés en
+                {/* Stretched link â€” couvre toute la card. Les CTAs internes
+                    (action principale + lien calendrier) sont remontÃ©s en
                     relative z-[2] plus bas pour rester cliquables au-dessus. */}
                 <Link
                   href={href as never}
-                  aria-label={`${c.title} — ${s.ctaLabel}`}
+                  aria-label={`${c.title} â€” ${s.ctaLabel}`}
                   className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <span className="sr-only">{s.ctaLabel}</span>
                 </Link>
 
-                {/* Liseré accent + label "Offre phare" sur Essentielle */}
+                {/* LiserÃ© accent + label "Offre phare" sur Essentielle */}
                 <span aria-hidden="true" className={`block h-1.5 w-full ${acc.line}`} />
                 {isFlagship ? (
                   <span
@@ -498,7 +498,7 @@ export default async function InterventionsListing({ params }: Props) {
                     )}
                   >
                     <Sparkles aria-hidden="true" className="h-3 w-3" />
-                    {isFr ? "Offre phare · 490 €" : "Flagship · €490"}
+                    {isFr ? "Offre phare Â· 490 â‚¬" : "Flagship Â· â‚¬490"}
                   </span>
                 ) : null}
 
@@ -537,12 +537,12 @@ export default async function InterventionsListing({ params }: Props) {
                           className={`ml-3 italic ${acc.title}`}
                           style={{ fontFamily: "var(--font-serif)" }}
                         >
-                          · {c.priceEur} €
+                          Â· {c.priceEur} â‚¬
                         </span>
                       ) : null}
                     </h2>
 
-                    {/* Bénéfice 1 ligne — punchy */}
+                    {/* BÃ©nÃ©fice 1 ligne â€” punchy */}
                     <p
                       className={cn(
                         "mt-4 leading-relaxed",
@@ -556,7 +556,7 @@ export default async function InterventionsListing({ params }: Props) {
                     {/* KPI inline (compact) sur les blocs non-flagship */}
                     {!isFlagship ? KpiInline : null}
 
-                    {/* Ce que vos équipes sauront faire */}
+                    {/* Ce que vos Ã©quipes sauront faire */}
                     <div className="mt-6">
                       <p
                         className={cn(
@@ -565,8 +565,8 @@ export default async function InterventionsListing({ params }: Props) {
                         )}
                       >
                         {isFr
-                          ? "À l'issue, vos équipes savent…"
-                          : "After the session, your team can…"}
+                          ? "Ã€ l'issue, vos Ã©quipes saventâ€¦"
+                          : "After the session, your team canâ€¦"}
                       </p>
                       <ul className="space-y-2">
                         {s.outcomes.map((o, i) => (
@@ -586,7 +586,7 @@ export default async function InterventionsListing({ params }: Props) {
                       </ul>
                     </div>
 
-                    {/* Déroulement */}
+                    {/* DÃ©roulement */}
                     <div className="mt-6">
                       <p
                         className={cn(
@@ -594,7 +594,7 @@ export default async function InterventionsListing({ params }: Props) {
                           txtMuted,
                         )}
                       >
-                        {isFr ? "Comment ça se déroule" : "How it runs"}
+                        {isFr ? "Comment Ã§a se dÃ©roule" : "How it runs"}
                       </p>
                       <ol className="grid gap-3 sm:grid-cols-3">
                         {s.outline.map((step, i) => (
@@ -615,8 +615,8 @@ export default async function InterventionsListing({ params }: Props) {
                       </ol>
                     </div>
 
-                    {/* CTA — au-dessus du stretched link via relative z-[2].
-                        Le lien calendrier reste indépendamment cliquable. */}
+                    {/* CTA â€” au-dessus du stretched link via relative z-[2].
+                        Le lien calendrier reste indÃ©pendamment cliquable. */}
                     <div className="relative z-[2] mt-7 flex flex-wrap items-center gap-3">
                       <Link
                         href={href as never}
@@ -641,7 +641,7 @@ export default async function InterventionsListing({ params }: Props) {
                     </div>
                   </div>
 
-                  {/* Aside KPI vertical — uniquement sur le bloc Essentielle */}
+                  {/* Aside KPI vertical â€” uniquement sur le bloc Essentielle */}
                   {isFlagship ? KpiCard : null}
                 </div>
               </article>
@@ -650,16 +650,16 @@ export default async function InterventionsListing({ params }: Props) {
         </div>
       </Section>
 
-      {/* SECTION ANTI-FEAR — quel que soit votre niveau IA */}
+      {/* SECTION ANTI-FEAR â€” quel que soit votre niveau IA */}
       <Section
         tone="sand"
-        eyebrow={isFr ? "Concerné·e quel que soit votre niveau" : "A fit for every AI maturity"}
-        title={isFr ? "De zéro IA à équipes IA-fluentes," : "From zero AI to fluent teams,"}
+        eyebrow={isFr ? "ConcernÃ©Â·e quel que soit votre niveau" : "A fit for every AI maturity"}
+        title={isFr ? "De zÃ©ro IA Ã  Ã©quipes IA-fluentes," : "From zero AI to fluent teams,"}
         titleEm={isFr ? "un format pour chaque entreprise" : "one format per company"}
         description={
           isFr
-            ? "Aucune entreprise n'est trop petite ni trop grande. Aucune équipe n'est trop débutante ni trop experte. Vous repartez avec un bénéfice concret — peu importe d'où vous partez."
-            : "No company is too small or too large. No team is too novice or too expert. You leave with a concrete benefit — whatever your starting point."
+            ? "Aucune entreprise n'est trop petite ni trop grande. Aucune Ã©quipe n'est trop dÃ©butante ni trop experte. Vous repartez avec un bÃ©nÃ©fice concret â€” peu importe d'oÃ¹ vous partez."
+            : "No company is too small or too large. No team is too novice or too expert. You leave with a concrete benefit â€” whatever your starting point."
         }
         contentClassName={TIGHT_X}
       >
@@ -667,27 +667,29 @@ export default async function InterventionsListing({ params }: Props) {
           {[
             {
               level: isFr ? "Niveau 1" : "Stage 1",
-              title: isFr ? "Aucun collaborateur formé à l'IA" : "No employee trained in AI yet",
+              title: isFr ? "Aucun collaborateur formÃ© Ã  l'IA" : "No employee trained in AI yet",
               body: isFr
-                ? "L'Essentielle ou la conférence ½ journée vous donnent une vision claire et 3 quick-wins prêts à reprendre."
+                ? "L'Essentielle ou la confÃ©rence Â½ journÃ©e vous donnent une vision claire et 3 quick-wins prÃªts Ã  reprendre."
                 : "The Essential or the half-day talk gives you a clear vision and 3 quick-wins ready to resume.",
-              recommendation: isFr ? "Essentielle 490 € · Conférence" : "Essential €490 · Talk",
+              recommendation: isFr
+                ? "Essentielle 490 â‚¬ Â· ConfÃ©rence"
+                : "Essential â‚¬490 Â· Talk",
             },
             {
               level: isFr ? "Niveau 2" : "Stage 2",
-              title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
+              title: isFr ? "Premiers usages IA dÃ©jÃ  testÃ©s" : "Early AI uses already tried",
               body: isFr
-                ? "L'intervention équipes ou managers structure ce qui marche, élimine ce qui n'en vaut pas la peine, et passe à l'échelle."
+                ? "L'intervention Ã©quipes ou managers structure ce qui marche, Ã©limine ce qui n'en vaut pas la peine, et passe Ã  l'Ã©chelle."
                 : "The team or manager session structures what works, drops what doesn't, and scales.",
-              recommendation: isFr ? "Équipes · Managers" : "Teams · Managers",
+              recommendation: isFr ? "Ã‰quipes Â· Managers" : "Teams Â· Managers",
             },
             {
               level: isFr ? "Niveau 3" : "Stage 3",
-              title: isFr ? "Équipes IA-fluentes en place" : "Fluent AI teams already in place",
+              title: isFr ? "Ã‰quipes IA-fluentes en place" : "Fluent AI teams already in place",
               body: isFr
-                ? "L'intervention dirigeants pose le cadre stratégique 12-24 mois — gouvernance, investissements, gestion des risques."
-                : "The leadership session sets the 12-24 month strategic frame — governance, investments, risk management.",
-              recommendation: isFr ? "Dirigeants · CODIR" : "Executives · Leadership",
+                ? "L'intervention dirigeants pose le cadre stratÃ©gique 12-24 mois â€” gouvernance, investissements, gestion des risques."
+                : "The leadership session sets the 12-24 month strategic frame â€” governance, investments, risk management.",
+              recommendation: isFr ? "Dirigeants Â· CODIR" : "Executives Â· Leadership",
             },
           ].map((card, idx) => (
             <article key={idx} className="bg-paper border-border relative rounded-2xl border p-6">
@@ -698,7 +700,7 @@ export default async function InterventionsListing({ params }: Props) {
               <p className="text-fg-soft mt-3 text-base leading-relaxed">{card.body}</p>
               <p className="text-fg-muted mt-4 text-[12px] tracking-wide">
                 <span className="text-fg font-medium">
-                  {isFr ? "Format conseillé : " : "Recommended format: "}
+                  {isFr ? "Format conseillÃ© : " : "Recommended format: "}
                 </span>
                 {card.recommendation}
               </p>
@@ -707,7 +709,7 @@ export default async function InterventionsListing({ params }: Props) {
         </div>
       </Section>
 
-      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 â€” pSEO) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="Les interventions IA"
@@ -716,10 +718,10 @@ export default async function InterventionsListing({ params }: Props) {
         tone="paper"
       />
 
-      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
+      {/* FAQ GÃ‰OLOCALISÃ‰E (Sprint 14.9 levier 4 â€” pSEO) */}
       <LocalGeoFaqSection isFr={isFr} service="interventions" tone="sand" />
 
-      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      {/* CLOSING ILLUSTRATION â€” Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">
           <Illustration
@@ -728,12 +730,12 @@ export default async function InterventionsListing({ params }: Props) {
             filenameTarget="public/illustrations/interventions-closing.avif"
             caption={
               isFr
-                ? "Équipe en mouvement — silhouettes éditoriales orientées vers l'action"
-                : "Team in motion — editorial silhouettes oriented toward action"
+                ? "Ã‰quipe en mouvement â€” silhouettes Ã©ditoriales orientÃ©es vers l'action"
+                : "Team in motion â€” editorial silhouettes oriented toward action"
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une équipe orientée vers l'action après une intervention AxionIA."
+                ? "Illustration Ã©ditoriale d'une Ã©quipe orientÃ©e vers l'action aprÃ¨s une intervention AxionIA."
                 : "Editorial illustration of a team oriented toward action after an AxionIA session."
             }
           />
@@ -742,18 +744,20 @@ export default async function InterventionsListing({ params }: Props) {
 
       {/* CTA FINAL */}
       <CtaBlock
-        eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
+        eyebrow={isFr ? "DÃ©marrer concrÃ¨tement" : "Start concretely"}
         title={
-          isFr ? "Réservez la prochaine intervention disponible" : "Book the next available session"
+          isFr
+            ? "RÃ©servez la prochaine intervention disponible"
+            : "Book the next available session"
         }
         description={
           isFr
-            ? "Calendrier maison en temps réel. Réponse sous 48 h ouvrées sur les devis. France et international — toutes les entreprises sont les bienvenues."
-            : "Live in-house calendar. 48-business-hour reply on quotes. France and international — every company is welcome."
+            ? "Calendrier maison en temps rÃ©el. RÃ©ponse sous 48 h ouvrÃ©es sur les devis. France et international â€” toutes les entreprises sont les bienvenues."
+            : "Live in-house calendar. 48-business-hour reply on quotes. France and international â€” every company is welcome."
         }
         cta={
           <Cta href="/reserver" size="lg">
-            {isFr ? "Voir le calendrier des interventions" : "See the intervention calendar"} →
+            {isFr ? "Voir le calendrier des interventions" : "See the intervention calendar"} â†’
           </Cta>
         }
         tone="dark"
@@ -765,16 +769,16 @@ export default async function InterventionsListing({ params }: Props) {
   );
 }
 
-// Helpers labels courts pour le schéma SVG hero. Le label est le NOM du
-// format (court), le bénéfice est ce que l'entreprise gagne concrètement.
-// Pas de jargon, pas d'acronymes obscurs ("quick-wins" évité côté hero —
-// trop technique pour un dirigeant qui découvre).
+// Helpers labels courts pour le schÃ©ma SVG hero. Le label est le NOM du
+// format (court), le bÃ©nÃ©fice est ce que l'entreprise gagne concrÃ¨tement.
+// Pas de jargon, pas d'acronymes obscurs ("quick-wins" Ã©vitÃ© cÃ´tÃ© hero â€”
+// trop technique pour un dirigeant qui dÃ©couvre).
 function interventionShortLabelFr(slug: string): string {
   switch (slug) {
     case "essentielle":
-      return "Démarrer en 1 jour";
+      return "DÃ©marrer en 1 jour";
     case "equipes":
-      return "Booster vos équipes";
+      return "Booster vos Ã©quipes";
     case "managers":
       return "Aligner vos managers";
     case "conference":
@@ -806,15 +810,15 @@ function interventionShortLabelEn(slug: string): string {
 function interventionShortBenefitFr(slug: string): string {
   switch (slug) {
     case "essentielle":
-      return "Découverte des outils IA · à partir de 490 €";
+      return "DÃ©couverte des outils IA Â· Ã  partir de 490 â‚¬";
     case "equipes":
-      return "+1 h gagnée par personne et par jour";
+      return "+1 h gagnÃ©e par personne et par jour";
     case "managers":
-      return "Réunions et reporting allégés de 30 %";
+      return "RÃ©unions et reporting allÃ©gÃ©s de 30 %";
     case "conference":
-      return "Sensibiliser toute l'entreprise en ½ jour";
+      return "Sensibiliser toute l'entreprise en Â½ jour";
     case "dirigeants":
-      return "Vision IA claire pour vos décisions";
+      return "Vision IA claire pour vos dÃ©cisions";
     default:
       return "";
   }
@@ -823,7 +827,7 @@ function interventionShortBenefitFr(slug: string): string {
 function interventionShortBenefitEn(slug: string): string {
   switch (slug) {
     case "essentielle":
-      return "AI tools discovery · from €490";
+      return "AI tools discovery Â· from â‚¬490";
     case "equipes":
       return "+1 hour saved per person, per day";
     case "managers":

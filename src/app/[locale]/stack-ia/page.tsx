@@ -36,21 +36,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: locale === "fr" ? "/stack-ia" : "/ai-stack",
     title:
       locale === "fr"
-        ? "Stack IA opérationnelle 2026 · les IA déterminantes pour votre entreprise · cabinet AxionIA"
-        : "Operational AI stack 2026 · the decisive AIs for your business · AxionIA consultancy",
+        ? "Stack IA opÃ©rationnelle 2026 Â· les IA dÃ©terminantes pour votre entreprise Â· cabinet AxionIA"
+        : "Operational AI stack 2026 Â· the decisive AIs for your business Â· AxionIA consultancy",
     description:
       locale === "fr"
-        ? "Pas un catalogue. Une sélection des IA les plus déterminantes en 2026 pour transformer votre entreprise, par fonction métier — penser, produire, capter, construire, orchestrer. Choix assumés, aucun partenariat commercial."
-        : "Not a catalogue. A selection of the most decisive 2026 AIs to transform your business, by function — think, produce, capture, build, orchestrate. Assumed choices, no commercial partnerships.",
+        ? "Pas un catalogue. Une sÃ©lection des IA les plus dÃ©terminantes en 2026 pour transformer votre entreprise, par fonction mÃ©tier â€” penser, produire, capter, construire, orchestrer. Choix assumÃ©s, aucun partenariat commercial."
+        : "Not a catalogue. A selection of the most decisive 2026 AIs to transform your business, by function â€” think, produce, capture, build, orchestrate. Assumed choices, no commercial partnerships.",
     alternates: { fr: "/stack-ia", en: "/ai-stack" },
   });
 }
 
-// Padding latéral réduit (cohérent avec /interventions, /audit).
+// Padding latÃ©ral rÃ©duit (cohÃ©rent avec /interventions, /audit).
 const TIGHT_X = "lg:px-6 xl:px-10";
 
-// Mapping classes accent — pré-définis statiquement pour Tailwind JIT.
-// Aligné sur /interventions, sans copie-coller : 1 source de vérité par page.
+// Mapping classes accent â€” prÃ©-dÃ©finis statiquement pour Tailwind JIT.
+// AlignÃ© sur /interventions, sans copie-coller : 1 source de vÃ©ritÃ© par page.
 const accentClasses: Record<
   StackAccent,
   {
@@ -111,14 +111,14 @@ const accentClasses: Record<
   },
 };
 
-// Maturité — pill discrète à droite du nom de l'outil.
+// MaturitÃ© â€” pill discrÃ¨te Ã  droite du nom de l'outil.
 const maturityCopy: Record<
   StackTool["maturity"],
   { fr: string; en: string; tone: "neutral" | "rising" | "niche" }
 > = {
   standard: { fr: "Standard 2026", en: "2026 standard", tone: "neutral" },
   rising: { fr: "Adoption forte", en: "Rising fast", tone: "rising" },
-  niche: { fr: "Niche assumée", en: "Niche bet", tone: "niche" },
+  niche: { fr: "Niche assumÃ©e", en: "Niche bet", tone: "niche" },
 };
 
 export default async function StackIaPage({ params }: Props) {
@@ -128,12 +128,12 @@ export default async function StackIaPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // 4 piliers de la doctrine — bandeau de réassurance immédiate sous le hero.
+  // 4 piliers de la doctrine â€” bandeau de rÃ©assurance immÃ©diate sous le hero.
   const principles = [
     {
       icon: Sparkles,
-      label: isFr ? "Sélection assumée" : "Curated selection",
-      detail: isFr ? "Les outils les plus déterminants en 2026" : "The most decisive 2026 picks",
+      label: isFr ? "SÃ©lection assumÃ©e" : "Curated selection",
+      detail: isFr ? "Les outils les plus dÃ©terminants en 2026" : "The most decisive 2026 picks",
     },
     {
       icon: ShieldCheck,
@@ -144,23 +144,25 @@ export default async function StackIaPage({ params }: Props) {
     },
     {
       icon: Info,
-      label: isFr ? "Choix assumés, pas neutres" : "Assumed picks, not neutral",
-      detail: isFr ? "On vous dit aussi quand l'éviter" : "We also tell you when to skip it",
+      label: isFr ? "Choix assumÃ©s, pas neutres" : "Assumed picks, not neutral",
+      detail: isFr ? "On vous dit aussi quand l'Ã©viter" : "We also tell you when to skip it",
     },
     {
       icon: RefreshCw,
-      label: isFr ? "Mise à jour trimestrielle" : "Quarterly update",
-      detail: isFr ? "Et à chaque sortie majeure d'éditeur" : "Plus on every major vendor release",
+      label: isFr ? "Mise Ã  jour trimestrielle" : "Quarterly update",
+      detail: isFr
+        ? "Et Ã  chaque sortie majeure d'Ã©diteur"
+        : "Plus on every major vendor release",
     },
   ];
 
-  // ItemList JSON-LD — chaque outil exposé pour AEO/GEO.
+  // ItemList JSON-LD â€” chaque outil exposÃ© pour AEO/GEO.
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: isFr
-      ? "Sélection IA opérationnelle 2026 · cabinet AxionIA"
-      : "Operational AI selection 2026 · AxionIA consultancy",
+      ? "SÃ©lection IA opÃ©rationnelle 2026 Â· cabinet AxionIA"
+      : "Operational AI selection 2026 Â· AxionIA consultancy",
     numberOfItems: STACK_TOOLS.length,
     itemListElement: STACK_TOOLS.map((tool, idx) => ({
       "@type": "ListItem",
@@ -176,8 +178,8 @@ export default async function StackIaPage({ params }: Props) {
     })),
   } as const;
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [
     {
       href: isFr ? "/stack-ia" : "/ai-stack",
@@ -189,19 +191,19 @@ export default async function StackIaPage({ params }: Props) {
     items: STACK_FAQS.map((f) => ({ question: f[loc].question, answer: f[loc].answer })),
   });
 
-  // 6 bénéfices ultimes que la stack IA débloque pour l'entreprise.
+  // 6 bÃ©nÃ©fices ultimes que la stack IA dÃ©bloque pour l'entreprise.
   // Disposition orbitale = sens horaire depuis le haut-gauche.
-  // Ordre choisi : Futur (vision) → Performance (opérationnel) →
-  // Rentabilité (financier) → Monde (portée) → Argent (résultat) →
-  // Liberté (humain). On boucle sur l'humain, fin du parcours.
+  // Ordre choisi : Futur (vision) â†’ Performance (opÃ©rationnel) â†’
+  // RentabilitÃ© (financier) â†’ Monde (portÃ©e) â†’ Argent (rÃ©sultat) â†’
+  // LibertÃ© (humain). On boucle sur l'humain, fin du parcours.
   const heroNodes: ReadonlyArray<StackHeroNode> = isFr
     ? [
         { label: "Futur", detail: "Anticiper l'avenir", accent: "terracotta" },
         { label: "Performance", detail: "Mieux, plus vite", accent: "primary" },
-        { label: "Rentabilité", detail: "Marges qui durent", accent: "sage" },
-        { label: "Monde", detail: "Présent partout", accent: "primary" },
-        { label: "Argent", detail: "CA débloqué", accent: "terracotta" },
-        { label: "Liberté", detail: "Hors du répétitif", accent: "mocha" },
+        { label: "RentabilitÃ©", detail: "Marges qui durent", accent: "sage" },
+        { label: "Monde", detail: "PrÃ©sent partout", accent: "primary" },
+        { label: "Argent", detail: "CA dÃ©bloquÃ©", accent: "terracotta" },
+        { label: "LibertÃ©", detail: "Hors du rÃ©pÃ©titif", accent: "mocha" },
       ]
     : [
         { label: "Future", detail: "Read what's coming", accent: "terracotta" },
@@ -217,10 +219,10 @@ export default async function StackIaPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO — layout 2 colonnes (texte + grille monogrammes). Doctrine v3 :
+      {/* HERO â€” layout 2 colonnes (texte + grille monogrammes). Doctrine v3 :
           halo-warm, titleEm serif italique terracotta, padding TIGHT_X. */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
-        {/* Grille texturée fond — vignette douce (identique à /interventions) */}
+      <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
+        {/* Grille texturÃ©e fond â€” vignette douce (identique Ã  /interventions) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-60"
@@ -236,21 +238,21 @@ export default async function StackIaPage({ params }: Props) {
 
         <Container className={cn("relative", TIGHT_X)}>
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            {/* Colonne gauche — eyebrow + titre + description + CTAs */}
+            {/* Colonne gauche â€” eyebrow + titre + description + CTAs */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? "Doctrine · Stack 2026" : "Doctrine · 2026 Stack"}
+                {isFr ? "Doctrine Â· Stack 2026" : "Doctrine Â· 2026 Stack"}
               </p>
 
-              {/* H1 — display-editorial standard (cohérence cross-pages).
-                  Italique court « qui tourne » (multi-mots courts, points de
-                  wrap naturels) plutôt qu'« opérationnelle » (14 char unique
-                  qui débordait à 7rem). Sens préservé : « entreprise qui
-                  tourne » = « entreprise opérationnelle » en français vivant.
+              {/* H1 â€” display-editorial standard (cohÃ©rence cross-pages).
+                  Italique court Â« qui tourne Â» (multi-mots courts, points de
+                  wrap naturels) plutÃ´t qu'Â« opÃ©rationnelle Â» (14 char unique
+                  qui dÃ©bordait Ã  7rem). Sens prÃ©servÃ© : Â« entreprise qui
+                  tourne Â» = Â« entreprise opÃ©rationnelle Â» en franÃ§ais vivant.
                   hyphens-auto + lang en safety-net si jamais. */}
               <h1
                 lang={isFr ? "fr" : "en"}
@@ -268,8 +270,8 @@ export default async function StackIaPage({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Il existe plus de 2 000 outils IA en 2026. En voici une sélection des plus déterminantes pour transformer votre entreprise — par fonction métier, sans partenariat commercial, mise à jour chaque trimestre."
-                  : "There are over 2,000 AI tools out there in 2026. Here's a selection of the most decisive ones to transform your business — by function, no commercial partnership, refreshed every quarter."}
+                  ? "Il existe plus de 2 000 outils IA en 2026. En voici une sÃ©lection des plus dÃ©terminantes pour transformer votre entreprise â€” par fonction mÃ©tier, sans partenariat commercial, mise Ã  jour chaque trimestre."
+                  : "There are over 2,000 AI tools out there in 2026. Here's a selection of the most decisive ones to transform your business â€” by function, no commercial partnership, refreshed every quarter."}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -278,7 +280,9 @@ export default async function StackIaPage({ params }: Props) {
                   size="lg"
                   className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)]"
                 >
-                  {isFr ? "Démarrer avec l'Essentielle · 490 €" : "Start with the Essential · €490"}
+                  {isFr
+                    ? "DÃ©marrer avec l'Essentielle Â· 490 â‚¬"
+                    : "Start with the Essential Â· â‚¬490"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/audit/flash" variant="outline" size="lg">
@@ -287,18 +291,18 @@ export default async function StackIaPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Colonne droite — schéma SVG portrait : votre business au centre,
-                propulsé par les 11 outils, débloque 6 bénéfices ultimes en orbite.
-                Cohérence stricte avec InterventionsHeroSchema (même grammaire
+            {/* Colonne droite â€” schÃ©ma SVG portrait : votre business au centre,
+                propulsÃ© par les 11 outils, dÃ©bloque 6 bÃ©nÃ©fices ultimes en orbite.
+                CohÃ©rence stricte avec InterventionsHeroSchema (mÃªme grammaire
                 visuelle : halos, anneaux, particules, serif italique terracotta). */}
             <StackHeroSchema
               className="hero-schema pointer-events-none"
               centerLabel={isFr ? "Votre business" : "Your business"}
-              centerCaption={isFr ? "Stack IA · 2026" : "AI stack · 2026"}
+              centerCaption={isFr ? "Stack IA Â· 2026" : "AI stack Â· 2026"}
               ariaLabel={
                 isFr
-                  ? "Schéma : votre business au centre, propulsé par sa stack IA 2026, débloque 6 bénéfices — futur, performance, rentabilité, monde, argent, liberté."
-                  : "Diagram: your business at the center, powered by its 2026 AI stack, unlocks 6 outcomes — future, performance, profitability, reach, revenue, freedom."
+                  ? "SchÃ©ma : votre business au centre, propulsÃ© par sa stack IA 2026, dÃ©bloque 6 bÃ©nÃ©fices â€” futur, performance, rentabilitÃ©, monde, argent, libertÃ©."
+                  : "Diagram: your business at the center, powered by its 2026 AI stack, unlocks 6 outcomes â€” future, performance, profitability, reach, revenue, freedom."
               }
               nodes={heroNodes}
             />
@@ -306,7 +310,7 @@ export default async function StackIaPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* BANDEAU « Notre principe » — 4 pills de réassurance doctrine */}
+      {/* BANDEAU Â« Notre principe Â» â€” 4 pills de rÃ©assurance doctrine */}
       <section className="bg-paper border-border border-y py-10">
         <Container className={TIGHT_X}>
           <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
@@ -328,7 +332,7 @@ export default async function StackIaPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* MANIFESTE — section paper, 1 paragraphe punchy + 3 piliers chiffrés */}
+      {/* MANIFESTE â€” section paper, 1 paragraphe punchy + 3 piliers chiffrÃ©s */}
       <Section
         tone="paper"
         eyebrow={isFr ? "Pourquoi cette page existe" : "Why this page exists"}
@@ -336,8 +340,8 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "pas un comparatif" : "not a comparison chart"}
         description={
           isFr
-            ? "Le marché ne demande plus « quel outil choisir » — il existe 200 sites qui répondent à ça. Il demande comment les faire travailler ensemble. Cette page est notre réponse, en 11 outils et 5 fonctions."
-            : "The market no longer asks 'which tool should I pick' — there are 200 sites for that. It asks how to make them work together. This page is our answer, in 11 tools and 5 functions."
+            ? "Le marchÃ© ne demande plus Â« quel outil choisir Â» â€” il existe 200 sites qui rÃ©pondent Ã  Ã§a. Il demande comment les faire travailler ensemble. Cette page est notre rÃ©ponse, en 11 outils et 5 fonctions."
+            : "The market no longer asks 'which tool should I pick' â€” there are 200 sites for that. It asks how to make them work together. This page is our answer, in 11 tools and 5 functions."
         }
         contentClassName={TIGHT_X}
       >
@@ -348,16 +352,16 @@ export default async function StackIaPage({ params }: Props) {
               titleFr: "On choisit pour vous",
               titleEn: "We pick for you",
               bodyFr:
-                "Pas une liste neutre des « 50 meilleures IA ». Onze outils qu'on connaît à fond et qu'on déploie nous-mêmes — vous gagnez les heures qu'on a passées à les comparer.",
+                "Pas une liste neutre des Â« 50 meilleures IA Â». Onze outils qu'on connaÃ®t Ã  fond et qu'on dÃ©ploie nous-mÃªmes â€” vous gagnez les heures qu'on a passÃ©es Ã  les comparer.",
               bodyEn:
-                "Not a neutral list of the '50 best AIs'. Eleven tools we know inside out and deploy ourselves — you save the hours we spent comparing them.",
+                "Not a neutral list of the '50 best AIs'. Eleven tools we know inside out and deploy ourselves â€” you save the hours we spent comparing them.",
             },
             {
               n: "02",
-              titleFr: "On vous dit aussi quand l'éviter",
+              titleFr: "On vous dit aussi quand l'Ã©viter",
               titleEn: "We also tell you when to skip it",
               bodyFr:
-                "Chaque fiche outil a son « Quand on l'évite ». Un outil qui marche partout n'existe pas. Connaître ses angles morts vaut autant que connaître ses forces.",
+                "Chaque fiche outil a son Â« Quand on l'Ã©vite Â». Un outil qui marche partout n'existe pas. ConnaÃ®tre ses angles morts vaut autant que connaÃ®tre ses forces.",
               bodyEn:
                 "Each tool card has a 'When to skip'. A tool that works everywhere doesn't exist. Knowing its blind spots matters as much as knowing its strengths.",
             },
@@ -366,7 +370,7 @@ export default async function StackIaPage({ params }: Props) {
               titleFr: "On montre les combos qui marchent",
               titleEn: "We show the combos that actually work",
               bodyFr:
-                "La valeur n'est jamais dans un outil isolé : elle est dans deux outils qui se parlent. Chaque fiche mentionne avec quoi on l'utilise pour livrer un résultat client.",
+                "La valeur n'est jamais dans un outil isolÃ© : elle est dans deux outils qui se parlent. Chaque fiche mentionne avec quoi on l'utilise pour livrer un rÃ©sultat client.",
               bodyEn:
                 "Value never lives in a single tool: it lives in two tools that talk to each other. Each card shows what we pair it with to ship a client result.",
             },
@@ -392,7 +396,7 @@ export default async function StackIaPage({ params }: Props) {
         </div>
       </Section>
 
-      {/* 5 CATÉGORIES — chacune une Section avec ses outils en cards */}
+      {/* 5 CATÃ‰GORIES â€” chacune une Section avec ses outils en cards */}
       {STACK_CATEGORIES.map((cat) => {
         const acc = accentClasses[cat.accent];
         const tools = STACK_TOOLS.filter((t) => t.category === cat.id);
@@ -429,7 +433,7 @@ export default async function StackIaPage({ params }: Props) {
                       acc.haloRing,
                     )}
                   >
-                    {/* Liseré accent en haut — signature visuelle alignée /interventions */}
+                    {/* LiserÃ© accent en haut â€” signature visuelle alignÃ©e /interventions */}
                     <span aria-hidden="true" className={cn("block h-1.5 w-full", acc.line)} />
 
                     <div className="p-7 sm:p-8">
@@ -467,15 +471,15 @@ export default async function StackIaPage({ params }: Props) {
                         </div>
                       </header>
 
-                      {/* Tagline — phrase punch */}
+                      {/* Tagline â€” phrase punch */}
                       <p
                         className={cn("mt-5 text-lg leading-snug italic", acc.title)}
                         style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
                       >
-                        « {t.tagline} »
+                        Â« {t.tagline} Â»
                       </p>
 
-                      {/* Use case AxionIA — paragraphe terrain */}
+                      {/* Use case AxionIA â€” paragraphe terrain */}
                       <p className="text-fg-soft mt-4 text-[15.5px] leading-relaxed">{t.useCase}</p>
 
                       {/* Quand on le sort */}
@@ -505,10 +509,10 @@ export default async function StackIaPage({ params }: Props) {
                         </ul>
                       </div>
 
-                      {/* Quand on l'évite */}
+                      {/* Quand on l'Ã©vite */}
                       <div className="mt-5">
                         <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
-                          {isFr ? "Quand on l'évite" : "When we skip it"}
+                          {isFr ? "Quand on l'Ã©vite" : "When we skip it"}
                         </p>
                         <ul className="space-y-2">
                           {t.whenToAvoid.map((avoid, i) => (
@@ -556,15 +560,15 @@ export default async function StackIaPage({ params }: Props) {
         );
       })}
 
-      {/* MATRICE COMBOS — synthèse visuelle des associations */}
+      {/* MATRICE COMBOS â€” synthÃ¨se visuelle des associations */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "La valeur composée" : "Composed value"}
+        eyebrow={isFr ? "La valeur composÃ©e" : "Composed value"}
         title={isFr ? "Les combos qui font" : "The combos that"}
         titleEm={isFr ? "vraiment livrer" : "actually ship"}
         description={
           isFr
-            ? "La règle : un outil seul produit un brouillon, deux outils alignés produisent un livrable client. Voici les enchaînements qu'on rejoue chez la plupart de nos clients."
+            ? "La rÃ¨gle : un outil seul produit un brouillon, deux outils alignÃ©s produisent un livrable client. Voici les enchaÃ®nements qu'on rejoue chez la plupart de nos clients."
             : "The rule: one tool produces a draft, two aligned tools produce a deliverable. Here are the chains we replay at most clients."
         }
         contentClassName={TIGHT_X}
@@ -576,8 +580,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "Granola",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Compte-rendu client → plan de mission",
-              outputEn: "Client minutes → mission plan",
+              outputFr: "Compte-rendu client â†’ plan de mission",
+              outputEn: "Client minutes â†’ mission plan",
               accent: "sage" as const,
             },
             {
@@ -585,8 +589,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "Perplexity",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Veille sourcée → mémo stratégique",
-              outputEn: "Sourced watch → strategic memo",
+              outputFr: "Veille sourcÃ©e â†’ mÃ©mo stratÃ©gique",
+              outputEn: "Sourced watch â†’ strategic memo",
               accent: "sage" as const,
             },
             {
@@ -594,8 +598,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "ChatGPT",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Brainstorming → version qui passe en prod",
-              outputEn: "Brainstorm → version that ships",
+              outputFr: "Brainstorming â†’ version qui passe en prod",
+              outputEn: "Brainstorm â†’ version that ships",
               accent: "primary" as const,
             },
             {
@@ -603,8 +607,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "Cursor",
               toId: "claude-code",
               toName: "Claude Code",
-              outputFr: "Micro-itérations → marathon refactoring",
-              outputEn: "Micro-iterations → refactor marathon",
+              outputFr: "Micro-itÃ©rations â†’ marathon refactoring",
+              outputEn: "Micro-iterations â†’ refactor marathon",
               accent: "mocha" as const,
             },
             {
@@ -612,8 +616,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "v0",
               toId: "cursor",
               toName: "Cursor",
-              outputFr: "Prototype 30s → composant en repo",
-              outputEn: "30s prototype → in-repo component",
+              outputFr: "Prototype 30s â†’ composant en repo",
+              outputEn: "30s prototype â†’ in-repo component",
               accent: "mocha" as const,
             },
             {
@@ -621,8 +625,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "n8n",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Workflow CRM → enrichissement IA",
-              outputEn: "CRM workflow → AI enrichment",
+              outputFr: "Workflow CRM â†’ enrichissement IA",
+              outputEn: "CRM workflow â†’ AI enrichment",
               accent: "terracotta" as const,
             },
           ].map((combo, idx) => {
@@ -667,17 +671,17 @@ export default async function StackIaPage({ params }: Props) {
         </div>
       </Section>
 
-      {/* CE QU'ON A ÉCARTÉ — renforce « choix assumés » et nourrit l'AEO
-          (queries du type « Notion AI vs Claude », « Make vs n8n »). */}
+      {/* CE QU'ON A Ã‰CARTÃ‰ â€” renforce Â« choix assumÃ©s Â» et nourrit l'AEO
+          (queries du type Â« Notion AI vs Claude Â», Â« Make vs n8n Â»). */}
       <Section
         tone="canvas"
-        eyebrow={isFr ? "Choix éditorial" : "Editorial choice"}
-        title={isFr ? "Ce qu'on a écarté" : "What we ruled out"}
+        eyebrow={isFr ? "Choix Ã©ditorial" : "Editorial choice"}
+        title={isFr ? "Ce qu'on a Ã©cartÃ©" : "What we ruled out"}
         titleEm={isFr ? "(et pourquoi)" : "(and why)"}
         description={
           isFr
-            ? "Une stack honnête nomme aussi ce qu'elle ne prend pas. Voici cinq outils populaires qu'on a regardés sérieusement et qui ne sont pas dans notre déploiement 2026 — pas qu'ils soient mauvais, ils ne gagnent pas leur place."
-            : "An honest stack names what it leaves out. Here are five popular tools we looked at seriously and ruled out for our 2026 deployment — not because they're bad, but because they don't earn the slot."
+            ? "Une stack honnÃªte nomme aussi ce qu'elle ne prend pas. Voici cinq outils populaires qu'on a regardÃ©s sÃ©rieusement et qui ne sont pas dans notre dÃ©ploiement 2026 â€” pas qu'ils soient mauvais, ils ne gagnent pas leur place."
+            : "An honest stack names what it leaves out. Here are five popular tools we looked at seriously and ruled out for our 2026 deployment â€” not because they're bad, but because they don't earn the slot."
         }
         contentClassName={TIGHT_X}
       >
@@ -690,27 +694,27 @@ export default async function StackIaPage({ params }: Props) {
             },
             {
               tool: "GitHub Copilot",
-              fr: "Solide. Cursor a pris la main chez les seniors qui veulent du contrôle plutôt que de l'autocomplete.",
+              fr: "Solide. Cursor a pris la main chez les seniors qui veulent du contrÃ´le plutÃ´t que de l'autocomplete.",
               en: "Solid. Cursor took over with senior engineers who want control over raw autocomplete.",
             },
             {
-              tool: "Make · Zapier",
-              fr: "Hébergement tiers = vos données partent. n8n auto-hébergeable préserve la souveraineté.",
+              tool: "Make Â· Zapier",
+              fr: "HÃ©bergement tiers = vos donnÃ©es partent. n8n auto-hÃ©bergeable prÃ©serve la souverainetÃ©.",
               en: "Third-party hosting = your data leaves. Self-hostable n8n keeps sovereignty intact.",
             },
             {
               tool: "Gemini",
-              fr: "Excellent en intégration Workspace. N'apporte rien de plus si vous êtes déjà sur Microsoft 365.",
+              fr: "Excellent en intÃ©gration Workspace. N'apporte rien de plus si vous Ãªtes dÃ©jÃ  sur Microsoft 365.",
               en: "Excellent in Workspace integration. Adds nothing if you're already on Microsoft 365.",
             },
             {
-              tool: "Jasper · Writer",
-              fr: "Wrappers GPT avec couche métier marketing. Aussi bien d'utiliser GPT directement avec un bon prompt.",
+              tool: "Jasper Â· Writer",
+              fr: "Wrappers GPT avec couche mÃ©tier marketing. Aussi bien d'utiliser GPT directement avec un bon prompt.",
               en: "GPT wrappers with a marketing layer. You're as well off using GPT directly with a strong prompt.",
             },
             {
-              tool: "Otter · Fireflies",
-              fr: "Capture solide, mais avec bot dans la réunion. Granola tourne en fond, sans interrompre.",
+              tool: "Otter Â· Fireflies",
+              fr: "Capture solide, mais avec bot dans la rÃ©union. Granola tourne en fond, sans interrompre.",
               en: "Solid capture, but with a bot in the meeting. Granola runs in the background, no interruption.",
             },
           ].map((item) => (
@@ -737,12 +741,12 @@ export default async function StackIaPage({ params }: Props) {
         </div>
       </Section>
 
-      {/* FAQ — questions vraies, format AEO. Pas d'accordion JS car
-          Server Component pur + meilleure indexation : tout est exposé
+      {/* FAQ â€” questions vraies, format AEO. Pas d'accordion JS car
+          Server Component pur + meilleure indexation : tout est exposÃ©
           en HTML statique, sans JS. */}
       <Section
         tone="sand"
-        eyebrow={isFr ? "Questions fréquentes" : "Frequently asked"}
+        eyebrow={isFr ? "Questions frÃ©quentes" : "Frequently asked"}
         title={isFr ? "Ce que les dirigeants" : "What leaders"}
         titleEm={isFr ? "nous demandent" : "actually ask"}
         contentClassName={TIGHT_X}
@@ -757,18 +761,18 @@ export default async function StackIaPage({ params }: Props) {
         </div>
       </Section>
 
-      {/* DISCLAIMER — transparence légale + posture éditoriale */}
+      {/* DISCLAIMER â€” transparence lÃ©gale + posture Ã©ditoriale */}
       <section className="bg-bg border-border border-t py-10">
         <Container className={TIGHT_X}>
           <p className="text-fg-muted mx-auto max-w-3xl text-center text-[13px] leading-relaxed">
             {isFr
-              ? "AxionIA n'est partenaire commercial, affilié, ni rémunéré par aucun des éditeurs cités sur cette page. Les marques sont la propriété de leurs détenteurs respectifs. Les choix présentés reflètent l'usage terrain quotidien du cabinet et sont susceptibles d'évoluer à chaque revue trimestrielle."
+              ? "AxionIA n'est partenaire commercial, affiliÃ©, ni rÃ©munÃ©rÃ© par aucun des Ã©diteurs citÃ©s sur cette page. Les marques sont la propriÃ©tÃ© de leurs dÃ©tenteurs respectifs. Les choix prÃ©sentÃ©s reflÃ¨tent l'usage terrain quotidien du cabinet et sont susceptibles d'Ã©voluer Ã  chaque revue trimestrielle."
               : "AxionIA is not a commercial partner, affiliate, or paid promoter of any vendor listed on this page. All trademarks are the property of their respective owners. The picks reflect the consultancy's daily field usage and are subject to change at each quarterly review."}
           </p>
         </Container>
       </section>
 
-      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      {/* CLOSING ILLUSTRATION â€” Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">
           <Illustration
@@ -777,12 +781,12 @@ export default async function StackIaPage({ params }: Props) {
             filenameTarget="public/illustrations/stack-ia-closing.avif"
             caption={
               isFr
-                ? "Atelier d'outils éditorial — stack en mouvement, prête à servir"
-                : "Editorial tool workshop — stack in motion, ready to serve"
+                ? "Atelier d'outils Ã©ditorial â€” stack en mouvement, prÃªte Ã  servir"
+                : "Editorial tool workshop â€” stack in motion, ready to serve"
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un atelier d'outils opérationnels symbolisant la stack IA AxionIA en marche."
+                ? "Illustration Ã©ditoriale d'un atelier d'outils opÃ©rationnels symbolisant la stack IA AxionIA en marche."
                 : "Editorial illustration of an operational tool workshop symbolizing the AxionIA AI stack at work."
             }
           />
@@ -796,13 +800,13 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "votre entreprise ?" : "your company?"}
         description={
           isFr
-            ? "30 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
-            : "30 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
+            ? "30 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez dÃ©jÃ , ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblÃ©e â€” qu'on dÃ©ploie ensuite ou non."
+            : "30 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack â€” whether or not we then deploy it."
         }
         cta={
           <>
             <Cta href="/audit/flash" size="lg">
-              {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
+              {isFr ? "RÃ©server l'audit flash" : "Book the flash audit"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link

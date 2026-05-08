@@ -101,7 +101,8 @@ export function ProductHero({
   return (
     <section
       className={cn(
-        "bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32",
+        // Top padding réduit ~40 % vs bas (Will 2026-05-08 — héro paraissait trop bas).
+        "bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32",
         // Faint accent halo derrière le bord gauche
         "before:absolute before:top-1/2 before:left-0 before:h-[60%] before:w-[20%] before:-translate-y-1/2 before:rounded-full before:blur-3xl",
         ACCENT_HALO[accent],

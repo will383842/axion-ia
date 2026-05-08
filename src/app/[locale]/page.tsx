@@ -32,11 +32,11 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     locale,
     path: "/",
     title: isFr
-      ? "Cabinet IA opérationnel · ROI mesurable · AxionIA"
-      : "Operational AI consultancy · Measurable ROI · AxionIA",
+      ? "Cabinet IA opÃ©rationnel Â· ROI mesurable Â· AxionIA"
+      : "Operational AI consultancy Â· Measurable ROI Â· AxionIA",
     description: isFr
-      ? "Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de 490 €."
-      : "On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from €490.",
+      ? "Interventions IA en entreprise, audits chiffrÃ©s et implÃ©mentations pour PME et ETI. HÃ©bergement UE, Ã  partir de 490 â‚¬."
+      : "On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from â‚¬490.",
     alternates: { fr: "/", en: "/" },
   });
 }
@@ -49,9 +49,9 @@ export default async function Home({ params }: HomeProps) {
   const isFr = loc === "fr";
   const t = await getTranslations("home");
 
-  // 3 services — intervenir / auditer / implémenter (cœur du message client).
+  // 3 services â€” intervenir / auditer / implÃ©menter (cÅ“ur du message client).
   // Chaque carte a SA couleur d'accent : terracotta (action humaine) / primary
-  // (analyse) / sage (production) — identité visuelle claire par service.
+  // (analyse) / sage (production) â€” identitÃ© visuelle claire par service.
   const valuePropositions = [
     {
       id: "intervene",
@@ -88,8 +88,8 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // Mapping classes Tailwind pour chaque accent (évite la concaténation
-  // dynamique non détectable par le compilateur Tailwind).
+  // Mapping classes Tailwind pour chaque accent (Ã©vite la concatÃ©nation
+  // dynamique non dÃ©tectable par le compilateur Tailwind).
   const accentClasses = {
     terracotta: {
       iconBg: "bg-terracotta-soft",
@@ -128,7 +128,7 @@ export default async function Home({ params }: HomeProps) {
 
   const whyPoints = [t("valueWhy1"), t("valueWhy2"), t("valueWhy3"), t("valueWhy4")];
 
-  // Métriques.
+  // MÃ©triques.
   const metrics = [
     { id: "roi", number: t("metric1Number"), suffix: t("metric1Suffix"), label: t("metric1Label") },
     { id: "eu", number: t("metric2Number"), suffix: t("metric2Suffix"), label: t("metric2Label") },
@@ -146,7 +146,7 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // 4 étapes méthode.
+  // 4 Ã©tapes mÃ©thode.
   const methodSteps = [
     { id: "scope", n: "01", title: t("method1Title"), description: t("method1Description") },
     { id: "demo", n: "02", title: t("method2Title"), description: t("method2Description") },
@@ -154,9 +154,9 @@ export default async function Home({ params }: HomeProps) {
     { id: "golive", n: "04", title: t("method4Title"), description: t("method4Description") },
   ];
 
-  // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
+  // 3 cas concrets â€” sÃ©lection diversifiÃ©e pour montrer le spectre complet
   // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
-  // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
+  // l'approche s'adapte Ã  toutes les Ã©chelles (cf. valueWhy2).
   const featuredSlugs = [
     "tpe-artisan-prospection",
     "industrie-comptabilite",
@@ -180,20 +180,20 @@ export default async function Home({ params }: HomeProps) {
     answer: f[loc].answer,
   }));
 
-  // JSON-LD homepage. Organization déjà émis layout-level via
+  // JSON-LD homepage. Organization dÃ©jÃ  Ã©mis layout-level via
   // `buildOrganizationJsonLd` (riche : sameAs + contactPoint + areaServed +
-  // foundingLocation + knowsLanguage). Pas de re-émission ici (signal Google
+  // foundingLocation + knowsLanguage). Pas de re-Ã©mission ici (signal Google
   // "double Organization" ambigu). Le FAQ utilise `buildFaqSpeakableJsonLd`
-  // pour activer la voix (Google Assistant + Alexa + Bixby — AEO 2026).
+  // pour activer la voix (Google Assistant + Alexa + Bixby â€” AEO 2026).
   const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqs });
 
   return (
     <>
-      {/* ───────────── HERO ───────────── */}
-      <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32">
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
         <Container className="relative">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            {/* Colonne gauche : copy (titre garde sa taille géante) */}
+            {/* Colonne gauche : copy (titre garde sa taille gÃ©ante) */}
             <div className="max-w-2xl">
               <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
@@ -226,12 +226,12 @@ export default async function Home({ params }: HomeProps) {
               </div>
             </div>
 
-            {/* Colonne droite : illustration narrative enrichie — 3 services
-                connectés à votre entreprise avec courbes, sparkline, badges.
-                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carré 576×576 lg+,
-                aligné sur les 10 autres pages (Audit, Cas-concrets, etc.) pour
+            {/* Colonne droite : illustration narrative enrichie â€” 3 services
+                connectÃ©s Ã  votre entreprise avec courbes, sparkline, badges.
+                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carrÃ© 576Ã—576 lg+,
+                alignÃ© sur les 10 autres pages (Audit, Cas-concrets, etc.) pour
                 harmonisation stricte. preserveAspectRatio="meet" letterbox
-                léger sides (~34px) pour viewBox 600×680 dans box 1:1. */}
+                lÃ©ger sides (~34px) pour viewBox 600Ã—680 dans box 1:1. */}
             <div aria-hidden="true" className="hero-schema pointer-events-none hidden lg:block">
               <svg
                 viewBox="0 0 600 680"
@@ -262,12 +262,12 @@ export default async function Home({ params }: HomeProps) {
                     <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.10" />
                     <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
                   </radialGradient>
-                  {/* Gradient diagonal pour cercle central — effet sphère */}
+                  {/* Gradient diagonal pour cercle central â€” effet sphÃ¨re */}
                   <linearGradient id="grad-center" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="var(--color-paper)" stopOpacity="1" />
                     <stop offset="100%" stopColor="var(--color-bg)" stopOpacity="1" />
                   </linearGradient>
-                  {/* Gradients linéaires pour connexions */}
+                  {/* Gradients linÃ©aires pour connexions */}
                   <linearGradient id="grad-link-tc" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.7" />
                     <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.15" />
@@ -280,7 +280,7 @@ export default async function Home({ params }: HomeProps) {
                     <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.15" />
                     <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0.7" />
                   </linearGradient>
-                  {/* Pattern grid très subtil — donne de la matière */}
+                  {/* Pattern grid trÃ¨s subtil â€” donne de la matiÃ¨re */}
                   <pattern id="grid-fine" width="32" height="32" patternUnits="userSpaceOnUse">
                     <path
                       d="M 32 0 L 0 0 0 32"
@@ -309,13 +309,13 @@ export default async function Home({ params }: HomeProps) {
                   </mask>
                 </defs>
 
-                {/* ── Background : grid texturé fade radial ── */}
+                {/* â”€â”€ Background : grid texturÃ© fade radial â”€â”€ */}
                 <rect width="600" height="680" fill="url(#grid-fine)" mask="url(#vignette-mask)" />
 
-                {/* ── Halo ambient large ── */}
+                {/* â”€â”€ Halo ambient large â”€â”€ */}
                 <circle cx="300" cy="310" r="290" fill="url(#halo-center)" />
 
-                {/* ── Anneaux concentriques décoratifs (3 niveaux) ── */}
+                {/* â”€â”€ Anneaux concentriques dÃ©coratifs (3 niveaux) â”€â”€ */}
                 <circle
                   cx="300"
                   cy="310"
@@ -343,8 +343,8 @@ export default async function Home({ params }: HomeProps) {
                   fill="none"
                 />
 
-                {/* ── Connexions courbes Bézier multi-couches (3 services → centre) ── */}
-                {/* Service 1 — Intervenir (haut-droite) → centre : courbe douce + écho */}
+                {/* â”€â”€ Connexions courbes BÃ©zier multi-couches (3 services â†’ centre) â”€â”€ */}
+                {/* Service 1 â€” Intervenir (haut-droite) â†’ centre : courbe douce + Ã©cho */}
                 <path
                   d="M 460 110 C 420 170, 380 230, 340 270"
                   stroke="url(#grad-link-tc)"
@@ -360,7 +360,7 @@ export default async function Home({ params }: HomeProps) {
                   strokeDasharray="2 4"
                   fill="none"
                 />
-                {/* Service 2 — Auditer (gauche) → centre */}
+                {/* Service 2 â€” Auditer (gauche) â†’ centre */}
                 <path
                   d="M 130 320 C 180 318, 230 315, 260 312"
                   stroke="url(#grad-link-pr)"
@@ -376,7 +376,7 @@ export default async function Home({ params }: HomeProps) {
                   strokeDasharray="2 4"
                   fill="none"
                 />
-                {/* Service 3 — Implémenter (bas-droite) → centre */}
+                {/* Service 3 â€” ImplÃ©menter (bas-droite) â†’ centre */}
                 <path
                   d="M 460 540 C 420 480, 380 410, 340 360"
                   stroke="url(#grad-link-sg)"
@@ -393,7 +393,7 @@ export default async function Home({ params }: HomeProps) {
                   fill="none"
                 />
 
-                {/* ── Centre : "votre entreprise" — sphère gradient + glow ── */}
+                {/* â”€â”€ Centre : "votre entreprise" â€” sphÃ¨re gradient + glow â”€â”€ */}
                 {/* Outer glow ring */}
                 <circle
                   cx="300"
@@ -403,7 +403,7 @@ export default async function Home({ params }: HomeProps) {
                   fillOpacity="0.06"
                   filter="url(#soft-glow)"
                 />
-                {/* Sphère principale */}
+                {/* SphÃ¨re principale */}
                 <circle cx="300" cy="310" r="88" fill="url(#grad-center)" />
                 <circle
                   cx="300"
@@ -414,7 +414,7 @@ export default async function Home({ params }: HomeProps) {
                   strokeWidth="2"
                   fill="none"
                 />
-                {/* Anneau interne décoratif */}
+                {/* Anneau interne dÃ©coratif */}
                 <circle
                   cx="300"
                   cy="310"
@@ -425,7 +425,7 @@ export default async function Home({ params }: HomeProps) {
                   strokeDasharray="2 4"
                   fill="none"
                 />
-                {/* Highlight diagonal (effet sphère 3D subtil) */}
+                {/* Highlight diagonal (effet sphÃ¨re 3D subtil) */}
                 <ellipse
                   cx="278"
                   cy="288"
@@ -435,7 +435,7 @@ export default async function Home({ params }: HomeProps) {
                   fillOpacity="0.6"
                   transform="rotate(-30 278 288)"
                 />
-                {/* Icône Brain stylisée enrichie */}
+                {/* IcÃ´ne Brain stylisÃ©e enrichie */}
                 <g
                   transform="translate(283, 280)"
                   stroke="var(--color-terracotta)"
@@ -483,11 +483,11 @@ export default async function Home({ params }: HomeProps) {
                   + IA = GAINS
                 </text>
 
-                {/* ── Service 1 : INTERVENIR (haut-droite, terracotta)
-                    Mission : accompagner vos équipes. */}
+                {/* â”€â”€ Service 1 : INTERVENIR (haut-droite, terracotta)
+                    Mission : accompagner vos Ã©quipes. */}
                 <g>
                   <circle cx="460" cy="110" r="80" fill="url(#halo-tc)" />
-                  {/* Pulse ring décoratif extérieur */}
+                  {/* Pulse ring dÃ©coratif extÃ©rieur */}
                   <circle
                     cx="460"
                     cy="110"
@@ -506,7 +506,7 @@ export default async function Home({ params }: HomeProps) {
                     stroke="var(--color-terracotta)"
                     strokeWidth="2.4"
                   />
-                  {/* Icône Users (3 cercles + lignes corps) */}
+                  {/* IcÃ´ne Users (3 cercles + lignes corps) */}
                   <circle cx="446" cy="100" r="4.5" fill="var(--color-terracotta)" />
                   <circle cx="462" cy="98" r="5.5" fill="var(--color-terracotta)" />
                   <circle cx="478" cy="100" r="4.5" fill="var(--color-terracotta)" />
@@ -529,7 +529,7 @@ export default async function Home({ params }: HomeProps) {
                   >
                     INTERVENIR
                   </text>
-                  {/* Sous-label mission — glassmorphism léger via rect */}
+                  {/* Sous-label mission â€” glassmorphism lÃ©ger via rect */}
                   <rect
                     x="378"
                     y="178"
@@ -551,12 +551,12 @@ export default async function Home({ params }: HomeProps) {
                     fontWeight="500"
                     fill="var(--color-fg)"
                   >
-                    Accompagner vos équipes
+                    Accompagner vos Ã©quipes
                   </text>
                 </g>
 
-                {/* ── Service 2 : AUDITER (gauche, primary)
-                    Mission : trouver où gagner du temps et de l'argent. */}
+                {/* â”€â”€ Service 2 : AUDITER (gauche, primary)
+                    Mission : trouver oÃ¹ gagner du temps et de l'argent. */}
                 <g>
                   <circle cx="120" cy="310" r="80" fill="url(#halo-pr)" />
                   <circle
@@ -577,7 +577,7 @@ export default async function Home({ params }: HomeProps) {
                     stroke="var(--color-primary)"
                     strokeWidth="2.4"
                   />
-                  {/* Icône Loupe enrichie (avec poignée + reflet) */}
+                  {/* IcÃ´ne Loupe enrichie (avec poignÃ©e + reflet) */}
                   <circle
                     cx="115"
                     cy="304"
@@ -638,12 +638,12 @@ export default async function Home({ params }: HomeProps) {
                     fontWeight="500"
                     fill="var(--color-fg)"
                   >
-                    Trouver où gagner
+                    Trouver oÃ¹ gagner
                   </text>
                 </g>
 
-                {/* ── Service 3 : IMPLÉMENTER (bas-droite, sage)
-                    Mission : coder & déployer les outils sur mesure. */}
+                {/* â”€â”€ Service 3 : IMPLÃ‰MENTER (bas-droite, sage)
+                    Mission : coder & dÃ©ployer les outils sur mesure. */}
                 <g>
                   <circle cx="460" cy="540" r="80" fill="url(#halo-sg)" />
                   <circle
@@ -658,7 +658,7 @@ export default async function Home({ params }: HomeProps) {
                   />
                   <circle cx="460" cy="540" r="54" fill="var(--color-paper)" />
                   <circle cx="460" cy="540" r="54" stroke="var(--color-sage)" strokeWidth="2.4" />
-                  {/* Icône Code </> enrichie */}
+                  {/* IcÃ´ne Code </> enrichie */}
                   <path
                     d="M 450 530 L 440 540 L 450 550"
                     stroke="var(--color-sage)"
@@ -694,7 +694,7 @@ export default async function Home({ params }: HomeProps) {
                     letterSpacing="0.14em"
                     fill="var(--color-sage)"
                   >
-                    IMPLÉMENTER
+                    IMPLÃ‰MENTER
                   </text>
                   {/* Sous-label mission */}
                   <rect
@@ -718,11 +718,11 @@ export default async function Home({ params }: HomeProps) {
                     fontWeight="500"
                     fill="var(--color-fg)"
                   >
-                    Coder & déployer
+                    Coder & dÃ©ployer
                   </text>
                 </g>
 
-                {/* ── Particules + petits anneaux décoratifs flottants ── */}
+                {/* â”€â”€ Particules + petits anneaux dÃ©coratifs flottants â”€â”€ */}
                 {/* Mini ring orphelin (top-left) */}
                 <circle
                   cx="60"
@@ -745,13 +745,13 @@ export default async function Home({ params }: HomeProps) {
                   fill="none"
                 />
                 <circle cx="540" cy="280" r="2" fill="var(--color-sage)" opacity="0.6" />
-                {/* Particules dispersées */}
+                {/* Particules dispersÃ©es */}
                 <circle cx="240" cy="50" r="2" fill="var(--color-primary)" opacity="0.55" />
                 <circle cx="40" cy="220" r="1.8" fill="var(--color-terracotta)" opacity="0.5" />
                 <circle cx="220" cy="540" r="2.5" fill="var(--color-primary)" opacity="0.55" />
                 <circle cx="30" cy="480" r="1.8" fill="var(--color-sage)" opacity="0.5" />
                 <circle cx="380" cy="60" r="1.5" fill="var(--color-sage)" opacity="0.5" />
-                {/* Étoiles 4-pointes */}
+                {/* Ã‰toiles 4-pointes */}
                 <path
                   d="M 50 380 L 52 386 L 58 388 L 52 390 L 50 396 L 48 390 L 42 388 L 48 386 Z"
                   fill="var(--color-terracotta)"
@@ -762,7 +762,7 @@ export default async function Home({ params }: HomeProps) {
                   fill="var(--color-primary)"
                   opacity="0.5"
                 />
-                {/* Segments géométriques décoratifs */}
+                {/* Segments gÃ©omÃ©triques dÃ©coratifs */}
                 <line
                   x1="30"
                   y1="160"
@@ -796,9 +796,9 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── VALUE PROPOSITION (3 services + bénéfice client) ─────────────
-          C'est LA section la plus importante de la page — visibilité maximum,
-          chaque service a SA couleur d'accent dédiée. */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUE PROPOSITION (3 services + bÃ©nÃ©fice client) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          C'est LA section la plus importante de la page â€” visibilitÃ© maximum,
+          chaque service a SA couleur d'accent dÃ©diÃ©e. */}
       <section className="bg-paper relative py-28 sm:py-32 lg:py-40">
         <Container>
           <FadeInOnView>
@@ -834,15 +834,15 @@ export default async function Home({ params }: HomeProps) {
                       href={v.href}
                       className={cn(
                         // Toute la card est cliquable. Visuel d'affordance :
-                        // hover lift -2px + shadow + accent border + flèche slide.
+                        // hover lift -2px + shadow + accent border + flÃ¨che slide.
                         "group bg-bg border-border focus-visible:ring-primary hover:shadow-elevated relative flex h-full flex-col gap-7 overflow-hidden rounded-3xl border p-10 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                         a.hoverBorder,
-                        // Halo accent diffus en arrière-plan, plus visible au hover
+                        // Halo accent diffus en arriÃ¨re-plan, plus visible au hover
                         "before:pointer-events-none before:absolute before:-top-32 before:-right-20 before:h-72 before:w-72 before:rounded-full before:opacity-50 before:blur-3xl before:transition-opacity before:duration-500 group-hover:before:opacity-100",
                         a.ringHalo,
                       )}
                     >
-                      {/* En-tête : numéro géant serif + icône accent */}
+                      {/* En-tÃªte : numÃ©ro gÃ©ant serif + icÃ´ne accent */}
                       <div className="relative flex items-start justify-between">
                         <span
                           className={cn("text-7xl leading-none font-medium tabular-nums", a.number)}
@@ -894,14 +894,14 @@ export default async function Home({ params }: HomeProps) {
                         ))}
                       </ul>
 
-                      {/* Gain client — bandeau coloré accent (mise en avant maximale) */}
+                      {/* Gain client â€” bandeau colorÃ© accent (mise en avant maximale) */}
                       <div className={cn("relative rounded-xl px-5 py-4", a.gainBg)}>
                         <p className={cn("text-base leading-snug font-semibold", a.gainText)}>
                           {v.gain}
                         </p>
                       </div>
 
-                      {/* Prix + flèche d'affordance (toute la card est cliquable) */}
+                      {/* Prix + flÃ¨che d'affordance (toute la card est cliquable) */}
                       <div className="border-border relative flex items-center justify-between border-t pt-5">
                         <span className="text-fg text-sm font-semibold">{v.price}</span>
                         <span
@@ -924,7 +924,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── WHY YOU CAN ONLY WIN ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ WHY YOU CAN ONLY WIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-halo-cool py-20 sm:py-24 lg:py-28">
         <Container>
           <FadeInOnView>
@@ -950,7 +950,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── METRICS (mocha riche) ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ METRICS (mocha riche) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
@@ -991,7 +991,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── METHOD ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ METHOD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-bg py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
@@ -1036,7 +1036,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── CASES ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CASES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-paper py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
@@ -1104,7 +1104,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── ROI ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ROI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-sand py-20 sm:py-24 lg:py-28">
         <Container>
           <FadeInOnView>
@@ -1137,7 +1137,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── TESTIMONIALS ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ TESTIMONIALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-paper py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
@@ -1176,9 +1176,9 @@ export default async function Home({ params }: HomeProps) {
                   </blockquote>
                   <footer className="text-fg-soft text-sm">
                     <span className="text-fg font-semibold">{c[loc].testimonialAuthor}</span>
-                    <span className="mx-2">·</span>
+                    <span className="mx-2">Â·</span>
                     <span>{c[loc].testimonialRole}</span>
-                    <span className="mx-2">·</span>
+                    <span className="mx-2">Â·</span>
                     <span>{isFr ? c.industry : c.industryEn}</span>
                   </footer>
                 </li>
@@ -1188,7 +1188,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── FAQ ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-bg py-24 sm:py-28 lg:py-36">
         <Container className="max-w-3xl">
           <FadeInOnView>
@@ -1213,7 +1213,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CLOSING ILLUSTRATION â€” Sprint Visual Rhythm 2026 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-canvas relative py-20 sm:py-24">
         <Container>
           <div className="mx-auto max-w-3xl">
@@ -1223,12 +1223,12 @@ export default async function Home({ params }: HomeProps) {
               filenameTarget="public/illustrations/home-closing.avif"
               caption={
                 isFr
-                  ? "Cabinet IA opérationnel — vue d'ensemble du système en marche"
-                  : "Operational AI consultancy — overview of the system at work"
+                  ? "Cabinet IA opÃ©rationnel â€” vue d'ensemble du systÃ¨me en marche"
+                  : "Operational AI consultancy â€” overview of the system at work"
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un cabinet IA opérationnel en activité, vue d'ensemble AxionIA."
+                  ? "Illustration Ã©ditoriale d'un cabinet IA opÃ©rationnel en activitÃ©, vue d'ensemble AxionIA."
                   : "Editorial illustration of an operational AI consultancy at work, AxionIA overview."
               }
             />
@@ -1236,7 +1236,7 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── CTA FINAL ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CTA FINAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
         <Container>
           <div className="max-w-3xl">

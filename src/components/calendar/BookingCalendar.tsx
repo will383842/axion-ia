@@ -26,8 +26,6 @@ import {
   Brain,
   ArrowRight,
   ArrowLeft,
-  Users2,
-  Briefcase,
   Mic,
   Crown,
   Star,
@@ -49,7 +47,7 @@ import { cn } from "@/lib/utils";
 // `durationDays` typé 1|2 large pour permettre l'évolution future (formation
 // 2 jours), sans figer le type à `1`.
 type InterventionOption = {
-  slug: "essentielle" | "equipes" | "managers" | "conference" | "dirigeants";
+  slug: "essentielle" | "conference" | "dirigeants";
   fr: string;
   en: string;
   durationDays: 1 | 2;
@@ -65,22 +63,6 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     durationDays: 1,
     scheduleHintFr: "Journée · 9 h – 17 h · dès 490 €",
     scheduleHintEn: "Day · 9 a.m. – 5 p.m. · from €490",
-  },
-  {
-    slug: "equipes",
-    fr: "Vos équipes",
-    en: "Your teams",
-    durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · 11 personnes et +",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 11+ people",
-  },
-  {
-    slug: "managers",
-    fr: "Managers",
-    en: "Managers",
-    durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · 2-12 managers",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 2-12 managers",
   },
   {
     slug: "conference",
@@ -125,24 +107,6 @@ const INTERVENTION_VISUAL: Record<
     previewFr:
       "Découvrir les outils IA · 5 à 10 usages identifiés · automatisations dès le lendemain",
     previewEn: "Discover AI tools · 5 to 10 uses identified · automations from day two",
-  },
-  equipes: {
-    icon: Users2,
-    accentBg: "bg-primary-soft",
-    accentFg: "text-primary",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    previewFr: "Approfondir l'IA en équipe · +1 h gagnée par personne et par jour",
-    previewEn: "Go deeper as a team · +1 hour saved per person, per day",
-  },
-  managers: {
-    icon: Briefcase,
-    accentBg: "bg-sage-soft",
-    accentFg: "text-sage",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    previewFr: "Réunions, reporting, validations · 30 % du temps managérial allégé",
-    previewEn: "Meetings, reporting, sign-offs · 30 % of manager time freed up",
   },
   conference: {
     icon: Mic,

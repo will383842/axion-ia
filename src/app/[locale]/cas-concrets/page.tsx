@@ -38,11 +38,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/cas-concrets",
     title:
       locale === "fr"
-        ? "Cas concrets · résultats clients chiffrés · AxionIA"
-        : "Case studies · client results, in numbers · AxionIA",
+        ? "Cas concrets Â· rÃ©sultats clients chiffrÃ©s Â· AxionIA"
+        : "Case studies Â· client results, in numbers Â· AxionIA",
     description:
       locale === "fr"
-        ? "Études de cas IA opérationnelle : industrie, juridique, retail, banque, artisanat. Résultats chiffrés, témoignages, contexte."
+        ? "Ã‰tudes de cas IA opÃ©rationnelle : industrie, juridique, retail, banque, artisanat. RÃ©sultats chiffrÃ©s, tÃ©moignages, contexte."
         : "Operational AI case studies: industry, legal, retail, banking, trades. Numerical results, testimonials, context.",
     alternates: { fr: "/cas-concrets", en: "/case-studies" },
   });
@@ -56,7 +56,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
   const isFr = loc === "fr";
   const sp = await searchParams;
 
-  // URL-driven filters — no client state.
+  // URL-driven filters â€” no client state.
   const filterIndustry = sp.industry?.toLowerCase();
   const filterSize = sp.size?.toLowerCase();
 
@@ -81,14 +81,14 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
     { key: "enterprise", label: isFr ? "Grande" : "Enterprise" },
   ];
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
+  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
+  // est ajoutÃ© automatiquement par le composant.
   const breadcrumbItems = [
     { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
   ];
 
-  // ItemList JSON-LD — expose tous les cas concrets au crawler depuis l'index
-  // (AEO/GEO 2026 : LLMs résolvent « cas clients AxionIA » avec liens directs).
+  // ItemList JSON-LD â€” expose tous les cas concrets au crawler depuis l'index
+  // (AEO/GEO 2026 : LLMs rÃ©solvent Â« cas clients AxionIA Â» avec liens directs).
   const itemListJsonLd = buildItemListJsonLd({
     locale: loc,
     path: "/cas-concrets",
@@ -110,13 +110,13 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO 2 colonnes — texte à gauche, stack de mini-cards de cas réels
-          à droite (CaseStudiesHeroSchema). Aligné sur le pattern audit /
+      {/* HERO 2 colonnes â€” texte Ã  gauche, stack de mini-cards de cas rÃ©els
+          Ã  droite (CaseStudiesHeroSchema). AlignÃ© sur le pattern audit /
           interventions / implementation. */}
-      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+      <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            {/* Colonne gauche — eyebrow + titre + description */}
+            {/* Colonne gauche â€” eyebrow + titre + description */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
@@ -124,21 +124,21 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                   className="bg-sage mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
                 {isFr
-                  ? "Cas réels · de l'artisan au grand groupe"
-                  : "Real cases · from artisans to large groups"}
+                  ? "Cas rÃ©els Â· de l'artisan au grand groupe"
+                  : "Real cases Â· from artisans to large groups"}
               </p>
               <h1 className="text-fg display-editorial mt-5">
                 {isFr ? "Ce qu'ils ont " : "What they've "}
                 <span className="text-sage mx-2 italic" style={{ fontFamily: "var(--font-serif)" }}>
-                  {isFr ? "concrètement gagné" : "actually gained"}
+                  {isFr ? "concrÃ¨tement gagnÃ©" : "actually gained"}
                 </span>
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles, toutes les régions, tous les budgets — résultats chiffrés et témoignages anonymisés."
-                  : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets — numerical results and anonymised testimonials."}
+                  ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles, toutes les rÃ©gions, tous les budgets â€” rÃ©sultats chiffrÃ©s et tÃ©moignages anonymisÃ©s."
+                  : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets â€” numerical results and anonymised testimonials."}
               </p>
-              {/* Pills réassurance */}
+              {/* Pills rÃ©assurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
                 {[
                   {
@@ -151,10 +151,10 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                       ? `${allIndustries.length} secteurs`
                       : `${allIndustries.length} industries`,
                   },
-                  { icon: BarChart3, label: isFr ? "Métriques chiffrées" : "Quantified metrics" },
+                  { icon: BarChart3, label: isFr ? "MÃ©triques chiffrÃ©es" : "Quantified metrics" },
                   {
                     icon: ShieldCheck,
-                    label: isFr ? "Témoignages anonymisés" : "Anonymised testimonials",
+                    label: isFr ? "TÃ©moignages anonymisÃ©s" : "Anonymised testimonials",
                   },
                 ].map((pill) => {
                   const Icon = pill.icon;
@@ -185,32 +185,32 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
               </div>
             </div>
 
-            {/* Colonne droite — stack de 3 mini-cards exemples */}
+            {/* Colonne droite â€” stack de 3 mini-cards exemples */}
             <CaseStudiesHeroSchema
               isFr={isFr}
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Exemples de cas concrets : industrie, conseil & juridique, retail multi-sites — chacun avec une métrique chiffrée concrète."
-                  : "Concrete case examples: manufacturing, consulting & legal, multi-site retail — each with a concrete numerical metric."
+                  ? "Exemples de cas concrets : industrie, conseil & juridique, retail multi-sites â€” chacun avec une mÃ©trique chiffrÃ©e concrÃ¨te."
+                  : "Concrete case examples: manufacturing, consulting & legal, multi-site retail â€” each with a concrete numerical metric."
               }
             />
           </div>
         </Container>
       </section>
 
-      {/* Pillar copy — posture cas concrets */}
+      {/* Pillar copy â€” posture cas concrets */}
       <Section eyebrow={isFr ? "Posture" : "Stance"} tone="paper">
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "Chaque cas publié ici représente une mission AxionIA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode AxionIA s'applique à toutes les tailles, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle 490 € pour vérifier."
-              : "Each case study here represents an AxionIA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the AxionIA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential €490 to validate."}
+              ? "Chaque cas publiÃ© ici reprÃ©sente une mission AxionIA rÃ©ellement livrÃ©e. Aucune fabrication, aucun pilote thÃ©orique. Les noms des clients sont anonymisÃ©s Ã  leur demande, mais les chiffres, les dÃ©lais et la mÃ©thode sont fidÃ¨les Ã  la rÃ©alitÃ© du terrain. Vous y verrez des contextes trÃ¨s diffÃ©rents â€” TPE artisanale, PME industrielle, grand compte juridique â€” parce que la mÃ©thode AxionIA s'applique Ã  toutes les tailles, Ã  condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle 490 â‚¬ pour vÃ©rifier."
+              : "Each case study here represents an AxionIA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts â€” small artisan business, mid-sized industrial SME, large legal account â€” because the AxionIA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential â‚¬490 to validate."}
           </p>
         </Container>
       </Section>
 
-      {/* Section anti-fear — "Choisir son cas" 3 critères */}
+      {/* Section anti-fear â€” "Choisir son cas" 3 critÃ¨res */}
       <Section eyebrow={isFr ? "Choisir son cas" : "Pick your case"} tone="sand">
         <Container>
           <div className="grid gap-4 sm:grid-cols-3">
@@ -222,7 +222,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "TPE, PME, ETI, grand compte. Chacune a sa logique : volume, gouvernance, vélocité décision."
+                    ? "TPE, PME, ETI, grand compte. Chacune a sa logique : volume, gouvernance, vÃ©locitÃ© dÃ©cision."
                     : "Small, SME, mid-cap, large account. Each has its logic: volume, governance, decision velocity."}
                 </CardDescription>
               </CardHeader>
@@ -235,7 +235,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "Industrie, juridique, retail, banque, artisanat. La pression IA n'est pas la même partout."
+                    ? "Industrie, juridique, retail, banque, artisanat. La pression IA n'est pas la mÃªme partout."
                     : "Industry, legal, retail, banking, trades. AI pressure isn't the same everywhere."}
                 </CardDescription>
               </CardHeader>
@@ -248,8 +248,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "L'Essentielle 490 €, audits 3-15 k€, implémentations 5-50 k€. ROI documenté à chaque palier."
-                    : "Essential €490, audits €3-15k, implementations €5-50k. Documented ROI at every tier."}
+                    ? "L'Essentielle 490 â‚¬, audits 3-15 kâ‚¬, implÃ©mentations 5-50 kâ‚¬. ROI documentÃ© Ã  chaque palier."
+                    : "Essential â‚¬490, audits â‚¬3-15k, implementations â‚¬5-50k. Documented ROI at every tier."}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -342,7 +342,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.length === 0 ? (
             <li className="text-fg-soft col-span-full text-center">
-              {isFr ? "Aucun cas ne correspond à ces filtres." : "No case matches these filters."}
+              {isFr ? "Aucun cas ne correspond Ã  ces filtres." : "No case matches these filters."}
             </li>
           ) : (
             filtered.map((c) => {
@@ -363,7 +363,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         </ul>
       </Section>
 
-      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
+      {/* CLOSING ILLUSTRATION â€” Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">
           <Illustration
@@ -372,12 +372,12 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
             filenameTarget="public/illustrations/cas-concrets-mid-1.avif"
             caption={
               isFr
-                ? "Collection éditoriale d'objets opérationnels — chaque cas, sa preuve"
-                : "Editorial collection of operational objects — each case, its proof"
+                ? "Collection Ã©ditoriale d'objets opÃ©rationnels â€” chaque cas, sa preuve"
+                : "Editorial collection of operational objects â€” each case, its proof"
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une collection d'objets opérationnels symbolisant les cas concrets clients AxionIA."
+                ? "Illustration Ã©ditoriale d'une collection d'objets opÃ©rationnels symbolisant les cas concrets clients AxionIA."
                 : "Editorial illustration of a collection of operational objects symbolizing AxionIA client case studies."
             }
           />
@@ -385,16 +385,16 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
       </Section>
 
       <CtaBlock
-        eyebrow={isFr ? "Démarrer" : "Start"}
+        eyebrow={isFr ? "DÃ©marrer" : "Start"}
         title={isFr ? "Devenez le prochain cas concret" : "Become the next case study"}
         description={
           isFr
-            ? "Démarrez par une intervention Essentielle 490 € pour identifier vos quick-wins."
-            : "Start with an Essential session €490 to identify your quick-wins."
+            ? "DÃ©marrez par une intervention Essentielle 490 â‚¬ pour identifier vos quick-wins."
+            : "Start with an Essential session â‚¬490 to identify your quick-wins."
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle" : "See the Essential"} →
+            {isFr ? "Voir l'Essentielle" : "See the Essential"} â†’
           </Cta>
         }
         tone="dark"
