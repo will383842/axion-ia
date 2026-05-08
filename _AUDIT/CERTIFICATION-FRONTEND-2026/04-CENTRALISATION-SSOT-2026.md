@@ -99,6 +99,16 @@
 3. Avant migration vers DB-driven (Sprint 15+)
 4. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Centraliser pour le plaisir (1 valeur utilisée 1 fois → ne pas extraire)
+- ❌ SSOT trop abstraite (helpers indirects qui rendent la lecture pénible)
+- ❌ Env vars lues directement avec `process.env.X` partout (use `lib/env.ts`)
+- ❌ Feature flags éparpillées en env vars (préférer DB-driven ou 1 fichier central)
+- ❌ Brand naming dur dans messages i18n + dans `lib/brand.ts` (single source)
+- ❌ Pricing dupliqué dans copy + JSON-LD + meta (use 1 SSOT + helpers)
+- ❌ Constants techniques mélangées avec data métier (séparer)
+
 ## Cible
 
 > 60/60. Aucune information critique n'est définie 2 fois. Modifier un prix, un nom, une URL, un env var = 1 seul endroit. Boot fail-fast si env invalide.

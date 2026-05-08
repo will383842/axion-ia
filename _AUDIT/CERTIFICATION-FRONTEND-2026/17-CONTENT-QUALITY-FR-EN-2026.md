@@ -85,6 +85,18 @@
 2. Avant changement tarif (impact business)
 3. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Tone marketing creux (« le meilleur », « révolutionnaire » sans preuve)
+- ❌ Jargon AI gratuit (« transformer-based », « LLM agentique » sans définir)
+- ❌ Anglicismes inutiles FR (« meeting » vs « réunion »)
+- ❌ Pricing différents entre pages (signal incohérence)
+- ❌ Apostrophes ASCII (`'` vs `’` typographique)
+- ❌ Phrases > 30 mots (illisibles, perdent le lecteur)
+- ❌ CTA vague (« En savoir plus » vs « Réserver Flash 490 € »)
+- ❌ Voix passive systématique (anti-conversion)
+- ❌ FAQ Q trop longues (> 100 chars = featured snippet impossible)
+
 ## Cible
 
 > 0 typo, ton premium consistant, pricing cohérent, tous patterns copy uniformes.

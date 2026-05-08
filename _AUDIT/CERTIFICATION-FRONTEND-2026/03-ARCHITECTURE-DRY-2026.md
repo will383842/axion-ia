@@ -112,6 +112,16 @@
 4. Avant changement module boundaries policy (ESLint restricted-imports)
 5. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Refactor « par esthétique » sans ROI mesurable
+- ❌ Sur-engineering (DI, CQRS, Clean Arch sur projet solo dev — anti-ROI)
+- ❌ Atomic design forcé partout (parfois 1 dossier feature suffit)
+- ❌ Module boundaries violations « juste cette fois » (c'est toujours « une fois »)
+- ❌ Path aliases changés sans migration imports (casse 100 fichiers)
+- ❌ Folder depth > 4 niveaux (signal manquement architecture)
+- ❌ Server Actions qui `throw` au lieu de retourner `{ ok: false }`
+
 ## Cible
 
 > 70/70 = architecture exemplaire. Module boundaries enforcées par ESLint. 0 fichier > 400 LOC. Patterns error/async cohérents.

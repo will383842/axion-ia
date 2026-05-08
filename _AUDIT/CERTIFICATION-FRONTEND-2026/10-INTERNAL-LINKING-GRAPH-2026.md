@@ -84,6 +84,17 @@
 2. Avant ajout outil crawl (deps)
 3. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Over-linking (15× lien vers même URL sur même page = pénalité Google)
+- ❌ Anchor exact-match répété (ratio max 30 % sur cible)
+- ❌ « Cliquez ici », « En savoir plus » comme anchor (anti-A11y + SEO)
+- ❌ Liens vers pages noindex (signal contradictoire à Google)
+- ❌ Redirect chains internes (ralentit + dilue PageRank)
+- ❌ Pages orphelines découvertes 6 mois après (audit régulier obligatoire)
+- ❌ Auto-link sans whitelist (risque liens vers pages disparues)
+- ❌ Ignorer les liens depuis sitemap interne (footer site map dilue)
+
 ## Cible
 
 > 0 orphan, click depth ≤ 3 sur 95 %+ pages, anchor diversity OK, 0 lien cassé, helper auto-link déployé pour scale.

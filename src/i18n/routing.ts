@@ -124,6 +124,23 @@ export const routing = defineRouting({
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
     "/accessibilite": { fr: "/accessibilite", en: "/accessibility" },
 
+    // pSEO services × villes (Sprint 14.10.1) — ranking #1 sur « audit IA <ville> »,
+    // « formation IA <ville> », « implémentation IA <ville> ». Pattern aligné sur
+    // l'existant `/implementation/par-fonction/[slug]` pour éviter collisions URL
+    // avec les sous-pages services dédiées (/audit/flash, /interventions/essentielle).
+    "/audit/par-ville/[ville]": {
+      fr: "/audit/par-ville/[ville]",
+      en: "/audit/by-city/[ville]",
+    },
+    "/interventions/par-ville/[ville]": {
+      fr: "/interventions/par-ville/[ville]",
+      en: "/interventions/by-city/[ville]",
+    },
+    "/implementation/par-ville/[ville]": {
+      fr: "/implementation/par-ville/[ville]",
+      en: "/implementation/by-city/[ville]",
+    },
+
     // pSEO Implantations (régions + villes >5000 hab + 5 DROM, ADR 0006)
     "/implantations": { fr: "/implantations", en: "/locations" },
     "/implantations/[region]": { fr: "/implantations/[region]", en: "/locations/[region]" },

@@ -63,7 +63,8 @@ type StaticSitemapId =
   | "cas-concrets"
   | "comparaisons"
   | "implementation"
-  | "implantations";
+  | "implantations"
+  | "services-villes";
 
 type PathnameKey = keyof typeof routing.pathnames;
 
@@ -199,6 +200,7 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "comparaisons",
     "implementation",
     "implantations",
+    "services-villes",
   ];
   return [...staticIds.map((id) => ({ id })), ...getVillesSitemapIds().map((id) => ({ id }))];
 }
@@ -225,6 +227,8 @@ export default async function sitemap(props: {
       return buildImplementationSitemap(now);
     case "implantations":
       return buildImplantationsHubSitemap(now);
+    case "services-villes":
+      return buildServicesVillesSitemap(now);
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -498,4 +502,56 @@ function buildVillesByRegionSitemap(
   // Slice par chunkIdx (1-indexed). Hors limites = array vide (sitemap ignoré).
   const start = (chunkIdx - 1) * SITEMAP_CHUNK_SIZE;
   return allUrls.slice(start, start + SITEMAP_CHUNK_SIZE);
+}
+
+// pSEO services × villes — 3 services × villes pilotes (avec copy.services).
+// Sprint 14.10.1 Commit B : émet `/audit/par-ville/<ville>`,
+// `/interventions/par-ville/<ville>`, `/implementation/par-ville/<ville>`
+// uniquement pour les villes dont `copy.services.<service>` est présent
+// (auto-promotion tier-1 dès qu'il y a un copy substantiel — décision Will
+// 2026-05-08 « toutes les villes indexables »).
+//
+// V1 = Paris seul a copy.services → 6 URLs (3 services × 2 locales). Quand
+// l'outil de génération produit les copies pour toutes les villes pilotes,
+// volume cible : ~50 villes × 3 services × 2 locales = 300 URLs Phase 1,
+// puis ~2150 × 3 × 2 = 12 900 URLs Phase 3 (chunking auto à activer).
+function buildServicesVillesSitemap(now: Date): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+  const services: ReadonlyArray<{
+    key: "audit" | "interventions" | "implementation";
+    pathFr: string;
+    pathEn: string;
+  }> = [
+    { key: "audit", pathFr: "/audit/par-ville", pathEn: "/audit/by-city" },
+    { key: "interventions", pathFr: "/interventions/par-ville", pathEn: "/interventions/by-city" },
+    {
+      key: "implementation",
+      pathFr: "/implementation/par-ville",
+      pathEn: "/implementation/by-city",
+    },
+  ];
+
+  for (const ville of getIndexableVilles()) {
+    for (const svc of services) {
+      if (!ville.copy?.services?.[svc.key]) continue;
+      const frUrl = `${SITE_URL}/fr${svc.pathFr}/${ville.slug}`;
+      const enUrl = `${SITE_URL}/en${svc.pathEn}/${ville.slug}`;
+      const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
+      entries.push({
+        url: frUrl,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+        alternates: { languages: langs },
+      });
+      entries.push({
+        url: enUrl,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+        alternates: { languages: langs },
+      });
+    }
+  }
+  return entries;
 }

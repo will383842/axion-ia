@@ -123,6 +123,17 @@ Livre :
 5. Avant tout commit
 6. Si cache hit rate drop > 20 % post-changement
 
+## 3bis. Anti-patterns à éviter (Pitfalls)
+
+- ❌ `purge_everything` Cloudflare en runtime (purge totale = 0 cache pendant ~5 min)
+- ❌ ISR `revalidate: 0` partout (élimine le cache, retour SSR pur)
+- ❌ Cache Rules sans `stale-while-revalidate` (utilisateur attend regen)
+- ❌ HTML cache `s-maxage: 31536000` (jamais invalidé sauf purge)
+- ❌ Cloudflare API token avec scope trop large (risque sécu)
+- ❌ Quota purge dépassé sans alerting (cache stale silencieux)
+- ❌ Cache key incluant cookies session (cache bypass + leak entre users)
+- ❌ Tests cache absent (régression silencieuse)
+
 ## 4. Cible
 
 > _« Cache hit rate Cloudflare ≥ 90 %. Time-to-fresh post-publish ≤ 60 sec. ISR fonctionnel sur toutes routes pSEO. Cloudflare cache purge atomique sur publish + depublish. 0 régression LCP/INP/CLS. »_

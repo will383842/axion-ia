@@ -142,6 +142,17 @@ Livre :
 6. Avant tout commit
 7. Si indexation rate < 50 % détecté
 
+## 3bis. Anti-patterns à éviter (Pitfalls)
+
+- ❌ Sitemap > 50 K URLs sans split (Google ignore au-delà)
+- ❌ lastmod uniforme (signal fraîcheur fake détecté)
+- ❌ IndexNow ping sans key host (rejeté)
+- ❌ Crawl budget gaspillé sur paramètres URL (canonical strict)
+- ❌ robots.txt disallow trop large (bloque indexation utile)
+- ❌ AI bots policy implicite (pas d'ADR = décision floue)
+- ❌ Pages noindex,nofollow sur villes non pilotes (perte transmission PageRank)
+- ❌ Search Console non connecté (cécité indexation)
+
 ## 4. Cible
 
 > _« Indexation rate ≥ 80 % à J+30 sur nouvelles URLs ; sitemap split conforme limites Google ; IndexNow ping atomique sur publish ; AI bots policy documentée ADR ; monitoring indexation auto via dashboard. »_

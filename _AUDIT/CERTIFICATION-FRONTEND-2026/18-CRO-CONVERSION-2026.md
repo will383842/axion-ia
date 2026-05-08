@@ -85,6 +85,19 @@
 3. Avant ajout outil tiers (Clarity, Plausible)
 4. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Form 15 fields sur première étape (abandon garanti)
+- ❌ CTA primaire pas above-fold (perdu sur mobile)
+- ❌ Trust signals fake (logos fictifs, testimonials inventés — interdit légalement)
+- ❌ Pricing caché derrière « Sur devis » (suspicion B2B premium)
+- ❌ Exit intent agressif sur B2B premium (mauvaise UX)
+- ❌ A/B testing sans traffic suffisant (résultats non significatifs < 1000 sessions/variant)
+- ❌ Funnel sans tracking (impossible d'optimiser)
+- ❌ Dark patterns (urgency fake, scarcity fake)
+- ❌ Confirmation post-submit sans feedback (utilisateur anxieux)
+- ❌ Email confirmation lent (> 1 min = utilisateur perdu)
+
 ## Cible
 
 > CTA partout, form UX optimal, trust signals présents, calendar booking fluide, funnel mesurable.

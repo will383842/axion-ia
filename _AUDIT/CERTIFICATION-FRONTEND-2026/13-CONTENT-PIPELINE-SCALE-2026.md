@@ -212,6 +212,17 @@ Patches en vagues V1-V5 :
 14. Si Lighthouse moyen drops > 10 pts post-rollout
 15. Si indexation drops > 20 % vs baseline
 
+## 6bis. Anti-patterns à éviter (Pitfalls)
+
+- ❌ Pipeline sans quality gate (1 mauvaise série = pénalité HCU sur tout le site)
+- ❌ Translation auto sans glossaire (« cabinet IA opérationnel » mal traduit)
+- ❌ Publish atomique non-idempotent (republish duplique)
+- ❌ Manque de throttle (saturer Cloudflare 1000 purges/jour gratuit)
+- ❌ Lastmod hardcodé build time (Google détecte fraîcheur fake)
+- ❌ Industrialiser avant Paris pilote validé (contre la doctrine projet)
+- ❌ AI generation sans seed/temperature contrôlés (pas reproductible)
+- ❌ Ignorer le sample manuel humain (1 % review obligatoire)
+
 ## 7. Livrables attendus
 
 ```

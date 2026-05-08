@@ -132,6 +132,17 @@
 6. Avant rollback auto activé (impact prod)
 7. Si quality gate rejette > 30 % (signal qualité source)
 
+## 3bis. Anti-patterns à éviter (Pitfalls)
+
+- ❌ Quality gate sans seuil chiffré (« généralement OK » = subjectif)
+- ❌ Lighthouse sample non stratifié (toutes sur Paris = biais)
+- ❌ RUM sans filtre bot (métriques polluées)
+- ❌ Anomaly detection trop sensible (alertes ignorées au bout d'1 semaine)
+- ❌ Rollback auto sans preuve cause (risque rollback abusif)
+- ❌ Indexation drop ignoré > 30 jours (perte SEO compounding)
+- ❌ Dashboard data sans owner (qui regarde ?)
+- ❌ Pause publish auto sans notification Will (silent failure)
+
 ## 4. Cible
 
 > _« 100 % des nouvelles URLs passent quality gate Zod + uniqueness avant publish. 1 % audité Lighthouse quotidien. RUM agrégé per route p75. Indexation rate monitoré quotidien. Rollback auto si anomalie. 0 page anti-HCU shippée. »_

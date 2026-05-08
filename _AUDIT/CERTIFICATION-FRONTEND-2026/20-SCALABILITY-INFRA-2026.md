@@ -195,6 +195,18 @@ Patches gratuits d'abord (ISR, cache, indexes), puis upgrades conditionnels apr�
 9. Si build time > 15 min (signal urgence)
 10. Si bandwidth > 80 % du quota Hetzner
 
+## 4bis. Anti-patterns à éviter (Pitfalls)
+
+- ❌ Full SSG à 100K pages (build time explose linéairement)
+- ❌ ISR sans `revalidatePath` après mutation (cache stale)
+- ❌ Postgres sans indexes composites (full table scans à 100K rows)
+- ❌ Pas d'autovacuum tuné (table bloat invisible)
+- ❌ Backup uniquement sur même VPS (single point of failure)
+- ❌ Cloudflare Cache Rules par défaut (HTML non caché en edge)
+- ❌ HTTP/3 désactivé (perte 10-20 % perf mobile)
+- ❌ Logs Coolify sans rotation (disk plein silencieux)
+- ❌ Upgrade VPS sans baseline metrics avant/après (impossible justifier)
+
 ## 5. Cible chiffrée
 
 > _« Le frontend AxionIA absorbe 100K URLs SSG + ISR pour les nouvelles, build < 10 min, runtime stable < 4 GB RAM, disk < 60 GB, bandwidth < 10 TB/mois sur CX32 + CF Free, sans dégradation Lighthouse / Web Vitals. »_

@@ -85,6 +85,19 @@
 3. Avant ajout dépendance auth/crypto
 4. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ CSP `unsafe-inline` toléré (annule la sécurité scripts)
+- ❌ Secrets dans `NEXT_PUBLIC_*` (visible client)
+- ❌ Secrets committed (gitleaks doit toujours bloquer)
+- ❌ Rotation secrets « quand on y pensera » (planifier)
+- ❌ `dangerouslySetInnerHTML` user-input (XSS garanti)
+- ❌ Eval / Function user-input
+- ❌ CORS `*` (over-permissive)
+- ❌ Cookies sans `httpOnly` ni `secure`
+- ❌ Mode debug activé en prod (`NODE_ENV=development`)
+- ❌ Désactiver gitleaks/audit dans CI « le temps que ça marche »
+
 ## Cible
 
 > Mozilla Observatory grade A+. CSP strict avec nonce. 0 secret leak. 0 XSS exploitable. Sprint 16 ready.

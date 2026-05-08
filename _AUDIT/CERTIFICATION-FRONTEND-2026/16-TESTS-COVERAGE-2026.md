@@ -1,8 +1,9 @@
 # 16 — TESTS & COVERAGE 2026
 
-> Audit qualité tests : vitest unit, Playwright e2e, Axe a11y, visual regression, i18n parity.
+> Audit qualité tests : vitest unit, Playwright e2e, Axe a11y, visual regression dédiée, mobile-specific perf, i18n parity.
+> Référence thresholds : `README.md` § Thresholds canoniques.
 
-## Audit en 5 chapitres × 10 critères = 50 points
+## Audit en 7 chapitres × 10 critères = 70 points
 
 ### 1. Vitest unit
 
@@ -75,6 +76,32 @@
 5.9 Test fixtures (data factories réutilisables)
 5.10 Test runbook (comment debugger un test fail)
 
+### 6. Visual regression testing (dédié)
+
+6.1 Outil OSS gratuit choisi (Lost Pixel ou Playwright `toHaveScreenshot()` natif — préférer Playwright natif)
+6.2 Baseline screenshots versionés (commit dans repo OU GitHub Actions artifacts)
+6.3 Coverage : Top 10 pages stratégiques × 3 viewports (mobile 375, tablet 768, desktop 1440)
+6.4 Pixel diff threshold configuré (typique 0,1 % par viewport, 0,5 % global)
+6.5 Anti-flake : disable animations + `waitForLoadState('networkidle')` + masquer dates/random
+6.6 Snapshots reviewables sur PR (GitHub Actions artifacts publics OU PR comment)
+6.7 Update-snapshots flow documenté (`pnpm test:e2e --update-snapshots` après validation visuelle)
+6.8 Scenarios par état (default, hover, focus, dark mode si applicable)
+6.9 Cadence : run sur chaque PR + nightly full
+6.10 Procédure rejet faux positif (screenshot diff manuel review obligatoire)
+
+### 7. Mobile-specific performance tests
+
+7.1 Lighthouse mobile preset configuré (LTE / Slow 4G throttling)
+7.2 Émulation device bas de gamme (Moto G4 ou Galaxy A50)
+7.3 Test mobile sur Top 5 pages × 2 réseaux (4G + Slow 3G simulés)
+7.4 RUM aggregation filtrée par device class (mobile / tablet / desktop)
+7.5 Top 10 worst LCP/INP par device class identifiés mensuel
+7.6 Tap target test automatique (Axe-core viewport mobile)
+7.7 Pinch-zoom + orientation tests (Playwright `setViewportSize` + emulate)
+7.8 Touch gestures alternatives (swipe → button) testées
+7.9 Service Worker offline cache test (si activé)
+7.10 PWA install prompt test (si manifest configuré)
+
 ## Méthode
 
 - Phase A : Vitest + Playwright config audit, coverage actuel
@@ -89,9 +116,19 @@
 2. Avant changement Lighthouse CI thresholds
 3. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Snapshot tests qui cassent au refactor (testent l'implémentation, pas le comportement)
+- ❌ Sur-mocking qui casse la confiance (mock DB → tests OK mais prod casse)
+- ❌ Visual regression sans masquage dates/random (faux positifs garantis)
+- ❌ Mobile perf testé uniquement en desktop throttled (ne reproduit pas appareil bas de gamme)
+- ❌ Coverage % comme but ultime (qualité tests > quantité)
+- ❌ E2e qui dépend d'API tierce non mockée (flaky)
+- ❌ PR gate désactivable au cas par cas (slippery slope)
+
 ## Cible
 
-> Coverage `lib/` ≥ 80 %. 5 parcours e2e. 0 violation Axe. LHCI gate bloquant. PR gate complet.
+> Coverage `lib/` ≥ 80 %, `hooks/` ≥ 80 %, `utils/` ≥ 90 %. 5 parcours e2e. 0 violation Axe. Visual regression Top 10 × 3 viewports (Lost Pixel ou Playwright). Mobile perf Lighthouse ≥ 90 sur Slow 4G + device bas de gamme émulé. LHCI gate bloquant. PR gate complet.
 
 ## Livrables
 

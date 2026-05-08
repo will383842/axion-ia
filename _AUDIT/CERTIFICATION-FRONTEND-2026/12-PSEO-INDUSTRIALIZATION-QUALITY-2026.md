@@ -85,6 +85,18 @@
 3. Avant depublish massif (impact SEO)
 4. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Template-replace pur (« cabinet IA à [VILLE] » × 2 150 fois) = doorway HCU garanti
+- ❌ Industrialiser sans Paris pilote validé d'abord (déjà retenu memory)
+- ❌ Publier toutes villes en `index` d'un coup (Google met du temps à indexer + risque pénalité si qualité faible)
+- ❌ Ignorer Search Console alerts indexation (signal majeur)
+- ❌ Photos stock identiques par ville (signal IA générique)
+- ❌ FAQ identiques copiées-collées (anti-uniqueness)
+- ❌ lastmod hardcodé build time (Google détecte l'arnaque fraîcheur)
+- ❌ Density keyword > 3 % (« cabinet IA Paris ... cabinet IA Paris ... » = stuffing)
+- ❌ Absence cas concrets locaux ou régionaux (signal E-E-A-T faible)
+
 ## Cible
 
 > 100 % villes indexables ont contenu unique, 0 doorway HCU, anti-duplicate gate actif, indexation rate ≥ 80 % à J+30.

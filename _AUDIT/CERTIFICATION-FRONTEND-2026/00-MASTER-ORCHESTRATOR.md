@@ -9,7 +9,7 @@
 
 Orchestrer la **certification complète frontend AxionIA niveau best-in-class 2026**, scale-ready (300K+ URLs), professionnel (standards SaaS premium), 100 % free-tier (Hetzner CX32 + Cloudflare Free), zéro régression.
 
-**Sortie attendue** : verdict GO / NO-GO production avec scoring `/2600` (26 audits × 100 pts).
+**Sortie attendue** : verdict GO / NO-GO production via Gate 26 (315 critères checklist exécutable, score normalisé /100). Voir § 5 « Système de scoring unifié ».
 
 ## 1. Contexte (lecture obligatoire avant tout)
 
@@ -125,13 +125,13 @@ Format :
 
 ## Statut global
 
-- Vague A : X/4 done · score moyen X/100
-- Vague B : X/3 done · score moyen X/100
-- Vague C : X/6 done · score moyen X/100
-- Vague D : X/5 done · score moyen X/100
-- Vague E : X/5 done · score moyen X/100
-- Vague F : X/3 done · score moyen X/100
-- **Total** : X/26 done · score global X/2600
+- Vague A : X/4 done · score moyen X %
+- Vague B : X/3 done · score moyen X %
+- Vague C : X/6 done · score moyen X %
+- Vague D : X/5 done · score moyen X %
+- Vague E : X/5 done · score moyen X %
+- Vague F : X/5 done · score moyen X %
+- **Total** : X/28 done · agrégat orchestrateur X % (indicatif) · **verdict Gate 26 : X/100**
 
 ## STOP & ASK ouverts
 

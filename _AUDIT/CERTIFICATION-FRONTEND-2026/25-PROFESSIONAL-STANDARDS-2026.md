@@ -176,6 +176,20 @@ Livre :
 3. Avant tout commit
 4. Si > 10 docs critiques manquantes (signal lourd)
 
+## 3bis. Anti-patterns à éviter (Pitfalls)
+
+- ❌ ADR rétroactif (« on documente quand ça marche ») — perte du « pourquoi »
+- ❌ Runbooks théoriques jamais testés (faux sens de sécurité)
+- ❌ Postmortem blame culture (perd info, intimide)
+- ❌ Onboarding doc obsolète (stack changé, scripts cassés)
+- ❌ Diagrammes ascii-only sans source versionable (perdus)
+- ❌ Browser matrix non testée (cibles théoriques)
+- ❌ Feature flags jamais nettoyés (dette compounding)
+- ❌ CHANGELOG.md « auto-générer plus tard »
+- ❌ Tech debt log absent (dette invisible)
+- ❌ PR template sans checklist self-review
+- ❌ Roadmap publique non maintenue (signal d'abandon)
+
 ## 4. Cible
 
 > _« Documentation niveau SaaS premium : 100 % ADRs à jour, runbooks ops complets, postmortem template prêt, onboarding < 30 min, diagrammes architecture présents, browser matrix documentée, feature flags strategy claire, semver + changelog rigoureux, tech debt log maintenu. Un nouveau dev contribue en < 1 jour. »_

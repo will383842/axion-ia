@@ -84,6 +84,19 @@
 2. Avant changement cookies banner
 3. Avant tout commit
 
+## Anti-patterns à éviter (Pitfalls)
+
+- ❌ Cookies banner « Accepter » plus visible que « Refuser » (illégal RGPD CNIL)
+- ❌ Cookies déposés avant consentement (sauf essentiels)
+- ❌ Politique privée copy-pastée d'un autre site (incohérence sous-traitants)
+- ❌ Mentions légales OÜ sans registrikood + VAT EE (manquement légal)
+- ❌ Hébergeur non mentionné (manquement obligatoire FR)
+- ❌ CGV génériques copy-pastées (risque juridique)
+- ❌ RGAA déclaration absente ou « En cours d'audit » permanent
+- ❌ Right-to-be-forgotten sans workflow réel (juste mentionné)
+- ❌ Sub-processors non listés à jour (Hetzner, CF, B2, OpenAI/Claude si AI)
+- ❌ Politique annulation floue (litige business risqué)
+
 ## Cible
 
 > 100 % conformité RGPD + RGAA + CGV. OÜ Estonienne mentions complètes. Cookies banner conforme. 0 risque juridique.
