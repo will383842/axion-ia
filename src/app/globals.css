@@ -918,3 +918,157 @@
 .admin-details > .admin-form-row {
   padding: 16px;
 }
+
+/* M9 T2.4 — Tiptap editor + Blog tabs */
+.tiptap-wrapper {
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  background-color: var(--color-paper);
+}
+.tiptap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  border-radius: 6px 6px 0 0;
+}
+.tiptap-toolbar button {
+  padding: 4px 10px;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font-manrope, system-ui);
+}
+.tiptap-toolbar button:hover:not(:disabled) {
+  background-color: var(--color-sand);
+}
+.tiptap-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.tiptap-toolbar .tiptap-btn-active {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.tiptap-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-border);
+  margin: 0 4px;
+}
+.tiptap-editor {
+  padding: 12px 16px;
+  min-height: 240px;
+}
+.tiptap-content {
+  outline: none;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.tiptap-content h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+}
+.tiptap-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+}
+.tiptap-content p {
+  margin: 8px 0;
+}
+.tiptap-content ul,
+.tiptap-content ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+.tiptap-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 16px;
+  margin: 12px 0;
+  color: var(--color-fg-muted);
+  font-style: italic;
+}
+.tiptap-content code {
+  background-color: var(--color-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--font-inconsolata, monospace);
+  font-size: 12px;
+}
+.tiptap-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 24px 0;
+}
+
+/* Blog form: tags + tabs */
+.admin-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg);
+}
+.admin-tag-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.admin-tag-checkbox:hover {
+  border-color: var(--color-primary);
+}
+.admin-tag-checkbox input {
+  margin: 0;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border);
+  margin: 16px 0 0;
+}
+.admin-tab {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-fg-muted);
+  font-family: var(--font-manrope, system-ui);
+}
+.admin-tab-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+.admin-tab-content {
+  padding: 16px 0;
+}
+.admin-tab-content-hidden {
+  display: none;
+}
+
+.admin-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 10px 0;
+}
