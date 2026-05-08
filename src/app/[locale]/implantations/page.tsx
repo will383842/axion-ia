@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, MapPin, Users } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
+import { fmtPopulation } from "@/lib/intl";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -82,8 +83,8 @@ export default async function ImplantationsHub({ params }: Props) {
         titleTail={isFr ? "." : "."}
         description={
           isFr
-            ? `Axion-IA intervient sur site dans 12 régions de France métropolitaine — ${totalVilles.toLocaleString("fr-FR")} communes éligibles, des chefs-lieux aux PME locales. Choisissez votre région ou votre métropole pour découvrir notre couverture.`
-            : `Axion-IA delivers on-site engagements across 12 metropolitan French regions — ${totalVilles.toLocaleString("en-US")} eligible communes, from prefectures to local SMEs. Pick your region or metropolitan area to explore our coverage.`
+            ? `Axion-IA intervient sur site dans 12 régions de France métropolitaine — ${fmtPopulation(totalVilles, "fr")} communes éligibles, des chefs-lieux aux PME locales. Choisissez votre région ou votre métropole pour découvrir notre couverture.`
+            : `Axion-IA delivers on-site engagements across 12 metropolitan French regions — ${fmtPopulation(totalVilles, "en")} eligible communes, from prefectures to local SMEs. Pick your region or metropolitan area to explore our coverage.`
         }
       >
         <div className="mb-10">
@@ -154,7 +155,7 @@ export default async function ImplantationsHub({ params }: Props) {
                 <div className="text-fg-muted mt-5 flex items-center gap-4 text-xs">
                   <span className="inline-flex items-center gap-1.5">
                     <Users className="h-3.5 w-3.5" aria-hidden="true" />
-                    {region.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+                    {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
                     {isFr ? "hab." : "inhab."}
                   </span>
                   <span className="inline-flex items-center gap-1.5">

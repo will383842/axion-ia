@@ -10,8 +10,9 @@ test.describe("i18n + layout", () => {
     await page.goto("/fr");
     await expect(page).toHaveURL(/\/fr$/);
 
-    // Find the EN link in the LocaleSwitcher (visible label = "en")
-    const enLink = page.locator('nav[aria-label="Changer de langue"] a', { hasText: "en" }).first();
+    // Find the EN link in the LocaleSwitcher via stable data-testid
+    // (resilient to aria-label translation across locales).
+    const enLink = page.locator('[data-testid="locale-switcher"] a', { hasText: "en" }).first();
     await enLink.click();
 
     await expect(page).toHaveURL(/\/en$/);

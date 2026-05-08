@@ -27,6 +27,7 @@ export function LocaleSwitcher() {
   return (
     <nav
       aria-label={t("switchLanguage")}
+      data-testid="locale-switcher"
       className={cn(
         "border-border inline-flex items-center gap-0.5 rounded-full border p-0.5",
         // Adaptation sur fond mocha (footer) ou terracotta (header)

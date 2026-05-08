@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { fmtNumber } from "@/lib/intl";
 
 interface PriceProps {
   amount: number;
@@ -18,10 +19,7 @@ const sizeClasses: Record<NonNullable<PriceProps["size"]>, string> = {
 // Tabular numerals so the digits don't jump on hover/swap.
 export function Price({ amount, currency = "EUR", suffix, size = "md", className }: PriceProps) {
   const symbol = currency === "USD" ? "$" : "€";
-  const formatted = new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+  const formatted = fmtNumber(amount, "fr");
   return (
     <span
       className={cn(

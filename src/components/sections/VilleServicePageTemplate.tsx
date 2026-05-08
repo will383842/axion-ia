@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { type Locale, routing } from "@/i18n/routing";
+import { fmtPopulation } from "@/lib/intl";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
@@ -338,7 +339,7 @@ export async function renderVilleServicePage({
         <div className="text-fg-muted mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <span className="inline-flex items-center gap-2">
             <Users className="h-4 w-4" aria-hidden="true" />
-            {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+            {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
             {isFr ? "habitants" : "inhabitants"}
           </span>
           <span className="inline-flex items-center gap-2">
@@ -441,8 +442,7 @@ export async function renderVilleServicePage({
                     {v.nameFr}
                   </span>
                   <span className="text-fg-muted mt-0.5 block text-[11px] tabular-nums">
-                    {Math.round(distanceKm)} km ·{" "}
-                    {v.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+                    {Math.round(distanceKm)} km · {fmtPopulation(v.population, isFr ? "fr" : "en")}{" "}
                     {isFr ? "hab." : "inhab."}
                   </span>
                 </Link>

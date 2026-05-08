@@ -28,13 +28,10 @@ interface PressReleasesProps {
   };
 }
 
+import { fmtDate } from "@/lib/intl";
+
 function formatDate(iso: string, locale: "fr" | "en"): string {
-  const d = new Date(iso);
-  return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(d);
+  return fmtDate(iso, locale);
 }
 
 // Press release cards — éditorial v3, structure card + tag pill terracotta-soft.

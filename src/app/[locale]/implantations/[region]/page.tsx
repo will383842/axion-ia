@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, MapPin, Building2, Briefcase, Wrench } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
+import { fmtPopulation } from "@/lib/intl";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -134,7 +135,7 @@ export default async function RegionPage({ params }: Props) {
         <div className="text-fg-muted mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <span className="inline-flex items-center gap-2">
             <MapPin className="h-4 w-4" aria-hidden="true" />
-            {region.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+            {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
             {isFr ? "habitants" : "inhabitants"}
           </span>
           <span className="inline-flex items-center gap-2">
@@ -194,7 +195,7 @@ export default async function RegionPage({ params }: Props) {
                     <div>
                       <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
                         {ville.departementLabel ?? ville.departement} ·{" "}
-                        {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+                        {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
                         {isFr ? "hab." : "inhab."}
                       </p>
                       <p
@@ -231,8 +232,8 @@ export default async function RegionPage({ params }: Props) {
         eyebrow={isFr ? "Couverture complète" : "Full coverage"}
         title={
           isFr
-            ? `${villes.length.toLocaleString("fr-FR")} communes éligibles`
-            : `${villes.length.toLocaleString("en-US")} eligible communes`
+            ? `${fmtPopulation(villes.length, "fr")} communes éligibles`
+            : `${fmtPopulation(villes.length, "en")} eligible communes`
         }
         titleEm={isFr ? `en ${region.nameFr}` : `in ${region.nameFr}`}
         description={
@@ -318,7 +319,7 @@ export default async function RegionPage({ params }: Props) {
                               ) : null}
                             </span>
                             <span className="text-fg-muted mt-0.5 block text-[10.5px] tabular-nums">
-                              {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+                              {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
                               {isFr ? "hab." : "inhab."}
                             </span>
                           </Link>

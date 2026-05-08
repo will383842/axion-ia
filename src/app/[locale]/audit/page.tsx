@@ -988,16 +988,23 @@ export default async function AuditListing({ params }: Props) {
       >
         <div className="border-border bg-paper shadow-subtle overflow-hidden rounded-2xl border">
           <table className="w-full text-left">
+            <caption className="sr-only">
+              {isFr
+                ? "Pyramide tarifaire des audits IA Axion-IA — 4 niveaux par audience et périmètre."
+                : "Axion-IA AI audit pricing pyramid — 4 levels by audience and scope."}
+            </caption>
             <thead className="bg-halo-warm border-border border-b">
               <tr>
-                <th className="text-fg p-5 text-sm font-semibold">{isFr ? "Niveau" : "Level"}</th>
-                <th className="text-fg p-5 text-sm font-semibold">
+                <th scope="col" className="text-fg p-5 text-sm font-semibold">
+                  {isFr ? "Niveau" : "Level"}
+                </th>
+                <th scope="col" className="text-fg p-5 text-sm font-semibold">
                   {isFr ? "Pour qui" : "Audience"}
                 </th>
-                <th className="text-fg hidden p-5 text-sm font-semibold sm:table-cell">
+                <th scope="col" className="text-fg hidden p-5 text-sm font-semibold sm:table-cell">
                   {isFr ? "Périmètre" : "Scope"}
                 </th>
-                <th className="text-fg p-5 text-right text-sm font-semibold">
+                <th scope="col" className="text-fg p-5 text-right text-sm font-semibold">
                   {isFr ? "Prix HT" : "Price excl. VAT"}
                 </th>
               </tr>

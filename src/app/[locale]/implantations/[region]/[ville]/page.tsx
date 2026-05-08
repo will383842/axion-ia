@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
+import { fmtPopulation } from "@/lib/intl";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -245,7 +246,7 @@ export default async function VillePage({ params }: Props) {
               <div className="text-fg-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
                 <span className="inline-flex items-center gap-2">
                   <Users className="h-4 w-4" aria-hidden="true" />
-                  {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+                  {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
                   {isFr ? "habitants" : "inhabitants"}
                 </span>
                 <span className="inline-flex items-center gap-2">
@@ -619,8 +620,7 @@ export default async function VillePage({ params }: Props) {
                     {v.nameFr}
                   </span>
                   <span className="text-fg-muted mt-0.5 block text-[11px] tabular-nums">
-                    {Math.round(distanceKm)} km ·{" "}
-                    {v.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+                    {Math.round(distanceKm)} km · {fmtPopulation(v.population, isFr ? "fr" : "en")}{" "}
                     {isFr ? "hab." : "inhab."}
                   </span>
                 </Link>
@@ -712,7 +712,7 @@ export default async function VillePage({ params }: Props) {
               className="text-fg mt-3 text-2xl leading-tight font-semibold"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+              {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
               <span className="text-fg-soft text-base font-normal">
                 {isFr ? "habitants" : "inhabitants"}
               </span>
@@ -860,8 +860,8 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
       titleEm={ville.nameFr}
       description={
         isFr
-          ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) fait partie des ${ville.population.toLocaleString("fr-FR")} habitants éligibles Ã  nos interventions sur site, audits IA et missions d'implémentation. La page locale détaillée est en préparation — réservez dès maintenant via la page régionale.`
-          : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) is part of the ${ville.population.toLocaleString("en-US")} inhabitants eligible to our on-site engagements, AI audits and implementation missions. The detailed local page is in preparation — book now via the regional page.`
+          ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) fait partie des ${fmtPopulation(ville.population, "fr")} habitants éligibles Ã  nos interventions sur site, audits IA et missions d'implémentation. La page locale détaillée est en préparation — réservez dès maintenant via la page régionale.`
+          : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) is part of the ${fmtPopulation(ville.population, "en")} inhabitants eligible to our on-site engagements, AI audits and implementation missions. The detailed local page is in preparation — book now via the regional page.`
       }
     >
       <div className="mb-8">

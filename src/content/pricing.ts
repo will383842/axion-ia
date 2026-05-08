@@ -531,12 +531,7 @@ export const PRICING_CATEGORIES = {
 // Helpers
 // ============================================================================
 
-/** Nombres formatés FR/EN cohérents — tabular numerals OK. */
-function fmtNumber(n: number, locale: "fr" | "en"): string {
-  return new Intl.NumberFormat(locale === "fr" ? "fr-FR" : "en-US", {
-    maximumFractionDigits: 0,
-  }).format(n);
-}
+import { fmtNumber } from "@/lib/intl";
 
 export interface FormatAmountOptions {
   /**

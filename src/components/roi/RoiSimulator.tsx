@@ -8,6 +8,7 @@ import { Clock, Users, FileText, Mail, Sparkles } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { fmtNumber } from "@/lib/intl";
 import { computeRoi } from "./compute";
 
 interface RoiSimulatorProps {
@@ -39,7 +40,7 @@ export function RoiSimulator({ className, labels }: RoiSimulatorProps) {
     [teamSize, hoursDailyOnRepetitive],
   );
 
-  const fmtFr = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
+  const fmtFr = { format: (n: number) => fmtNumber(n, "fr") };
 
   return (
     <div className={cn("relative", className)}>

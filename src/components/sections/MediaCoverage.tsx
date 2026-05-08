@@ -21,12 +21,10 @@ interface MediaCoverageProps {
   };
 }
 
+import { fmtDate } from "@/lib/intl";
+
 function formatDate(iso: string, locale: "fr" | "en"): string {
-  return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(iso));
+  return fmtDate(iso, locale);
 }
 
 // Media coverage list — éditorial v3, gracefully handles empty state.

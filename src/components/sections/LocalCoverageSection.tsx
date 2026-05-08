@@ -18,6 +18,7 @@ import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
+import { fmtPopulation } from "@/lib/intl";
 import { getIndexableRegions } from "@/content/regions";
 
 export interface LocalCoverageSectionProps {
@@ -90,8 +91,7 @@ export function LocalCoverageSection({
               </div>
               <p className="text-fg-muted mt-3 inline-flex items-center gap-1.5 text-xs tabular-nums">
                 <MapPin className="h-3 w-3" aria-hidden="true" />
-                {region.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
-                {isFr ? "hab." : "inhab."}
+                {fmtPopulation(region.population, isFr ? "fr" : "en")} {isFr ? "hab." : "inhab."}
               </p>
             </Link>
           </li>
