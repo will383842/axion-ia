@@ -49,6 +49,13 @@ export default async function BlogTagPage({ params }: Props) {
     url: `${SITE_URL}/${locale}/blog/tag/${slug}`,
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    hasPart: posts.map((p) => ({
+      "@type": "Article",
+      headline: p[loc].title,
+      url: `${SITE_URL}/${locale}/blog/${p.slug}`,
+      datePublished: p.publishedAt,
+      author: { "@type": "Person", name: p.author },
+    })),
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
