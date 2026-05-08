@@ -111,6 +111,43 @@
 
 **Ordre d'attaque suggéré Sprint 15 (M8)** : (1) schema Prisma 18 tables + 1ère migration + `prisma/seed.ts` + DATABASE_URL Hetzner. (2) Auth.js v5 + adapter Prisma + 2FA TOTP + middleware rate-limit Redis. (3) Server Actions par form (réutiliser `lib/schemas/forms.ts`). (4) BullMQ workers + 16 templates React Email + transport PMTA→MailWizz→Nodemailer fallback. (5) `lib/telegram.ts`. (6) routes admin CMS.
 
+### Amendements livraison Sprint 15 (2026-05-08, post-audit perfection)
+
+**Templates emails — 10 livrés au lieu de 8 doctrine §11** :
+
+| Template                       | Origine                                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------- |
+| `booking-confirmed`            | doctrine §11 #1                                                                         |
+| `option-posted`                | doctrine §11 #2                                                                         |
+| `option-reminder`              | doctrine §11 #3                                                                         |
+| `option-expired`               | doctrine §11 #4                                                                         |
+| `option-confirmed-by-admin`    | doctrine §11 #5                                                                         |
+| `option-refused-by-admin`      | doctrine §11 #6                                                                         |
+| `audit-confirmed`              | doctrine §11 #7 (renommé "Confirmation demande audit")                                  |
+| `implementation-confirmed`     | doctrine §11 #8 (renommé "Confirmation demande implémentation")                         |
+| **`newsletter-confirm-optin`** | **AJOUT Sprint 15** — RFC 8058 double opt-in obligatoire RGPD                           |
+| **`contact-confirmed`**        | **AJOUT Sprint 15** — Server Action contact (form contact non couvert par doctrine §11) |
+
+10 templates × 2 langues (FR/EN) = 20 variantes total. Validé livraison en Sprint 15 step 4 (commit `069bd23`).
+
+**Tags Telegram doctrine §11 — 7/9 utilisés en Sprint 15** :
+
+| Tag                  | État                                                                 |
+| -------------------- | -------------------------------------------------------------------- |
+| `[INTERVENTION]`     | ✅ utilisé dans `booking/actions.ts createBookingAction`             |
+| `[OPTION]`           | ✅ utilisé dans `booking/actions.ts postOption48hAction`             |
+| `[OPTION EXPIRÉE]`   | ✅ utilisé dans `option-expiration-worker.ts`                        |
+| `[AUDIT]`            | ✅ utilisé dans `audit/actions.ts` × 2                               |
+| `[AUTO]`             | ✅ utilisé dans `implementation/actions.ts`                          |
+| `[CONTACT]`          | ✅ utilisé dans `contact/actions.ts`                                 |
+| `[NEWSLETTER]`       | ✅ utilisé dans `newsletter/actions.ts`                              |
+| `[OPTION CONFIRMÉE]` | 🔴 **gated M9** (action admin `validateOption` non livrée Sprint 15) |
+| `[ANNULATION]`       | 🔴 **gated M9** (action admin `cancelBooking` non livrée Sprint 15)  |
+
+Tag déclarés dans `lib/telegram.ts` mais branchement Server Action en M9. Acté.
+
+**InterventionType enum aligné slugs UI (migration `20260508193001`)** : doctrine §4 énumère 5 interventions (essentielle, équipes, managers, conférence, dirigeants), code livré aligne sur 6 slugs UI canon `src/content/interventions.ts` : `essentielle`, `approfondie`, `gagner-du-temps`, `dirigeants`, `conference`, `intervention-claude`. Renames Postgres : `equipes`→`approfondie`, `managers`→`gagner_du_temps`, `coaching_individuel`→`intervention_claude`. UI émet kebab, Server Action convertit `slug.replace('-','_')` avant insert.
+
 ---
 
 ## M9 — Console admin

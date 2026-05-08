@@ -18,7 +18,7 @@
 /* eslint-disable no-console */
 
 import { PrismaClient } from "./generated/client";
-import * as argon2 from "argon2";
+import { hashPassword } from "../src/lib/auth-password";
 
 const prisma = new PrismaClient();
 
@@ -27,12 +27,9 @@ const prisma = new PrismaClient();
 // ============================================================
 
 async function seedAdmin() {
-  const passwordHash = await argon2.hash("AdminAxion2026!", {
-    type: argon2.argon2id,
-    memoryCost: 19456,
-    timeCost: 2,
-    parallelism: 1,
-  });
+  // Sprint 15 fix Fork 3 N8-3 : utilise SSOT lib/auth-password (Argon2id
+  // params OWASP 2024 centralises au lieu de duplicates).
+  const passwordHash = await hashPassword("AdminAxion2026!");
 
   const email = "admin@axion-ia.com";
   await prisma.adminUser.upsert({

@@ -68,17 +68,31 @@ export async function enqueueEmail(
 
 /**
  * Boot des cron jobs recurrents — appele une seule fois au demarrage du
- * worker (`pnpm worker`). Utilise des repeatable jobs BullMQ (idempotents).
+ * worker (`pnpm worker`). Utilise des repeatable jobs BullMQ.
+ *
+ * Sprint 15 fix Fork 1 W2 : avant `add()` on supprime tout repeat existant
+ * pour le meme jobId (idempotence en HA scaling — sinon plusieurs workers
+ * accumulent des entrees dans repeat: ZSET).
  */
 export async function bootRepeatableJobs(): Promise<void> {
   // Cron 5min : libere les options 48h expirees
+  await optionExpirationQueue.removeRepeatable(
+    "tick",
+    { pattern: "*/5 * * * *" },
+    "option-expiration-cron",
+  );
   await optionExpirationQueue.add(
     "tick",
     { tick: new Date().toISOString() },
     { repeat: { pattern: "*/5 * * * *" }, jobId: "option-expiration-cron" },
   );
 
-  // Cron 1h : envoie rappel H+24
+  // Cron 1h : envoie rappel H+24 (fenetre [22h,26h] post-fix Fork 1 C3)
+  await optionReminderQueue.removeRepeatable(
+    "tick",
+    { pattern: "0 * * * *" },
+    "option-reminder-cron",
+  );
   await optionReminderQueue.add(
     "tick",
     { tick: new Date().toISOString() },

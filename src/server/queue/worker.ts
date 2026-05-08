@@ -18,10 +18,15 @@ async function main() {
 
   console.log(`✓ ${workers.length} workers running. Cron jobs scheduled.`);
 
-  // Graceful shutdown sur SIGTERM/SIGINT (Coolify, Ctrl+C dev)
+  // Graceful shutdown sur SIGTERM/SIGINT (Coolify, Ctrl+C dev).
+  // Sprint 15 fix Fork 1 W3 : timeout drain explicite 25s (Coolify SIGKILL
+  // a 30s par defaut — on garde 5s de marge).
   const shutdown = async (signal: string) => {
-    console.log(`\n[worker] ${signal} received, closing…`);
-    await Promise.all(workers.map((w) => w.close()));
+    console.log(`\n[worker] ${signal} received, draining (25s max)…`);
+    const drainTimeout = new Promise<void>((resolve) => setTimeout(resolve, 25_000));
+    const drainAll = Promise.all(workers.map((w) => w.close()));
+    await Promise.race([drainAll, drainTimeout]);
+    console.log("[worker] shutdown complete.");
     process.exit(0);
   };
   process.on("SIGTERM", () => void shutdown("SIGTERM"));

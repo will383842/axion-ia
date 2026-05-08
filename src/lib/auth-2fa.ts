@@ -9,7 +9,10 @@
 
 import { generateSecret, generateURI, generateSync, verifySync } from "otplib";
 
-/** Tolerance en secondes (epochTolerance) — accepte le code precedent + courant. */
+/**
+ * Tolerance en secondes (otplib epochTolerance). Couvre prev + current + next
+ * window TOTP (chaque window = 30s). Sprint 15 fix Fork 3 N3-3 : doc precise.
+ */
 const EPOCH_TOLERANCE = 30;
 
 /**

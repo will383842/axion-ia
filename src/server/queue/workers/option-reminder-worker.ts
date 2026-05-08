@@ -15,9 +15,13 @@ export function startOptionReminderWorker(): Worker<OptionReminderJobData> {
     "option-reminder",
     async () => {
       const now = new Date();
-      // Fenetre : expiresAt dans (now+24h, now+25h]
-      const fromDate = new Date(now.getTime() + 24 * 3600 * 1000);
-      const toDate = new Date(now.getTime() + 25 * 3600 * 1000);
+      // Sprint 15 fix Fork 1 C3 : fenetre elargie [22h, 26h] pour garantir
+      // capture par au moins 2 ticks horaires. Avant : (24h, 25h] glissante
+      // ratait toute option creee a un offset minutes proche de l'heure
+      // pile (24h±dispatch_offset hors fenetre).
+      // Sentinel reminderSentAt empeche le double-rappel.
+      const fromDate = new Date(now.getTime() + 22 * 3600 * 1000);
+      const toDate = new Date(now.getTime() + 26 * 3600 * 1000);
 
       const due = await prisma.bookingOption.findMany({
         where: {

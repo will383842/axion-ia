@@ -19,6 +19,8 @@ export function startOptionExpirationWorker(): Worker<OptionExpirationJobData> {
   const worker = new Worker<OptionExpirationJobData>(
     "option-expiration",
     async () => {
+      // Liste les expirees a l'instant — donnees indicatives, status sera
+      // re-verifie dans la tx avec lock pessimiste (Sprint 15 fix Fork 1 C1).
       const expired = await prisma.bookingOption.findMany({
         where: { status: "pending", expiresAt: { lt: new Date() } },
         select: {
@@ -28,21 +30,42 @@ export function startOptionExpirationWorker(): Worker<OptionExpirationJobData> {
           contactEmail: true,
           locale: true,
           interventionType: true,
-          slot: { select: { slotDate: true, status: true } },
         },
       });
 
       if (expired.length === 0) return;
 
       for (const opt of expired) {
-        await prisma.$transaction(async (tx) => {
+        // Sprint 15 fix Fork 1 C1 : on RE-LIT slot.status DANS la tx avec
+        // SELECT FOR UPDATE pour eviter la race avec une confirmation admin
+        // (qui aurait pu changer status='reserved' → 'confirmed' via booking
+        // ferme entre temps).
+        const result = await prisma.$transaction(async (tx) => {
+          // Verrouille le slot pendant cette tx
+          const slotRows = await tx.$queryRaw<Array<{ status: string; slot_date: Date }>>`
+            SELECT status, slot_date FROM calendar_slots
+            WHERE id = ${opt.slotId}::uuid
+            FOR UPDATE
+          `;
+          const slot = slotRows[0];
+          if (!slot) return null;
+
+          // Re-verifie que l'option est toujours pending (un admin peut
+          // l'avoir confirmee ou refusee entre le findMany et la tx).
+          const opt2 = await tx.bookingOption.findUnique({
+            where: { id: opt.id },
+            select: { status: true },
+          });
+          if (!opt2 || opt2.status !== "pending") return null;
+
           await tx.bookingOption.update({
             where: { id: opt.id },
             data: { status: "expired" },
           });
+
           // Libere le slot uniquement si toujours reserved par cette option
-          // (et qu'il n'est pas devenu un booking ferme).
-          if (opt.slot?.status === "reserved") {
+          // (et qu'il n'est pas devenu un booking ferme entre temps).
+          if (slot.status === "reserved") {
             const otherActiveOption = await tx.bookingOption.findFirst({
               where: {
                 slotId: opt.slotId,
@@ -67,17 +90,21 @@ export function startOptionExpirationWorker(): Worker<OptionExpirationJobData> {
               });
             }
           }
+          return { slotDate: slot.slot_date };
         });
+
+        // Skip notif/email si option deja traitee par admin (race detected)
+        if (!result) continue;
 
         await enqueueEmail("option-expired", opt.contactEmail, opt.locale, {
           contactName: opt.contactName,
-          bookingDate: opt.slot?.slotDate.toISOString().slice(0, 10) ?? "",
+          bookingDate: result.slotDate.toISOString().slice(0, 10),
           interventionType: opt.interventionType,
         });
 
         await sendTelegram({
           tag: "OPTION EXPIRÉE",
-          body: `Option \`${opt.id}\` expirée\n• Contact : ${opt.contactName}\n• Date : ${opt.slot?.slotDate.toISOString().slice(0, 10)}\n• Intervention : ${opt.interventionType}`,
+          body: `Option \`${opt.id}\` expirée\n• Contact : ${opt.contactName}\n• Date : ${result.slotDate.toISOString().slice(0, 10)}\n• Intervention : ${opt.interventionType}`,
           silent: true,
         });
       }

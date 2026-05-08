@@ -326,6 +326,8 @@ describe("implementationSchema (4 steps)", () => {
 });
 
 describe("bookingSchema", () => {
+  // Sprint 15 audit Fork 2 C2-2 : interventionType + participantsCount sont
+  // desormais requis dans le schema (avant: lus brut hors safeParse).
   const valid = {
     date: "2026-06-15",
     time: "09:00",
@@ -333,6 +335,8 @@ describe("bookingSchema", () => {
     email: "jane@example.com",
     phone: "+33612345678",
     consent: true as const,
+    interventionType: "essentielle" as const,
+    participantsCount: 5,
   };
 
   it("accepts a fully valid booking", () => {
@@ -354,5 +358,19 @@ describe("bookingSchema", () => {
 
   it("rejects without consent", () => {
     expect(bookingSchema.safeParse({ ...valid, consent: false }).success).toBe(false);
+  });
+
+  it("rejects unknown interventionType slug", () => {
+    expect(bookingSchema.safeParse({ ...valid, interventionType: "managers" }).success).toBe(false);
+  });
+
+  it("coerces participantsCount string to number", () => {
+    const result = bookingSchema.safeParse({ ...valid, participantsCount: "12" });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.participantsCount).toBe(12);
+  });
+
+  it("rejects participantsCount < 1", () => {
+    expect(bookingSchema.safeParse({ ...valid, participantsCount: 0 }).success).toBe(false);
   });
 });
