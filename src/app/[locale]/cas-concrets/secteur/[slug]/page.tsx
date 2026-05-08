@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { ArrowRight, FileText, Building2, BarChart3, ShieldCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
+import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
@@ -61,6 +63,13 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
     name: isFr ? `Cas concrets ${label}` : `${label} case studies`,
     url: `${SITE_URL}/${locale}/cas-concrets/secteur/${slug}`,
     inLanguage: locale,
+    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    hasPart: studies.map((s) => ({
+      "@type": "Article",
+      headline: s[loc].title,
+      url: `${SITE_URL}/${locale}/cas-concrets/${s.slug}`,
+      about: { "@type": "Thing", name: loc === "fr" ? s.industry : s.industryEn },
+    })),
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -85,10 +94,44 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
         titleEm={label}
         description={
           isFr
-            ? `${studies.length} cas concret${studies.length > 1 ? "s" : ""} dans ce secteur.`
-            : `${studies.length} case stud${studies.length > 1 ? "ies" : "y"} in this industry.`
+            ? `${studies.length} cas concret${studies.length > 1 ? "s" : ""} dans ce secteur. Résultats chiffrés, temps de mise en œuvre, ROI documenté.`
+            : `${studies.length} case stud${studies.length > 1 ? "ies" : "y"} in this industry. Quantified results, implementation timelines, documented ROI.`
         }
-      />
+      >
+        <Container className="mt-8 max-w-2xl">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+            {[
+              {
+                icon: FileText,
+                label: `${studies.length} ${isFr ? "cas concrets" : "case studies"}`,
+              },
+              { icon: Building2, label: label },
+              { icon: BarChart3, label: isFr ? "ROI chiffré" : "Quantified ROI" },
+              { icon: ShieldCheck, label: isFr ? "Données anonymisées" : "Anonymised data" },
+            ].map((pill) => {
+              const Icon = pill.icon;
+              return (
+                <li
+                  key={pill.label}
+                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                >
+                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                  <span>{pill.label}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <Cta href="/cas-concrets" size="lg">
+              {isFr ? "Voir tous les cas" : "See all case studies"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta href="/audit" variant="outline" size="lg">
+              {isFr ? "Demander un audit" : "Request an audit"}
+            </Cta>
+          </div>
+        </Container>
+      </Section>
       <Section>
         <Container>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

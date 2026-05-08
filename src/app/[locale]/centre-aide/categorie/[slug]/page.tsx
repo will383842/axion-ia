@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { ArrowRight, FileText, HelpCircle, Compass, Clock } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
@@ -61,6 +63,13 @@ export default async function HelpCategoryPage({ params }: Props) {
     name: `${label} — ${isFr ? "Aide AxionIA" : "AxionIA help"}`,
     url: `${SITE_URL}/${locale}/centre-aide/categorie/${slug}`,
     inLanguage: locale,
+    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    hasPart: articles.map((a) => ({
+      "@type": "Article",
+      headline: a[loc].title,
+      description: a[loc].excerpt,
+      url: `${SITE_URL}/${locale}/centre-aide/${a.slug}`,
+    })),
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -83,7 +92,43 @@ export default async function HelpCategoryPage({ params }: Props) {
         eyebrow={isFr ? "Catégorie" : "Category"}
         title={isFr ? "Catégorie" : "Category"}
         titleEm={label}
-      />
+        description={
+          isFr
+            ? `${articles.length} article${articles.length > 1 ? "s" : ""} d'aide dans cette catégorie. Réponses courtes, sources vérifiées, mise à jour régulière.`
+            : `${articles.length} help article${articles.length > 1 ? "s" : ""} in this category. Short answers, verified sources, regular updates.`
+        }
+      >
+        <Container className="mt-8 max-w-2xl">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+            {[
+              { icon: FileText, label: `${articles.length} ${isFr ? "articles" : "articles"}` },
+              { icon: Compass, label: label },
+              { icon: HelpCircle, label: isFr ? "Réponses courtes" : "Short answers" },
+              { icon: Clock, label: isFr ? "Lecture < 5 min" : "< 5 min read" },
+            ].map((pill) => {
+              const Icon = pill.icon;
+              return (
+                <li
+                  key={pill.label}
+                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                >
+                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                  <span>{pill.label}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <Cta href="/centre-aide" size="lg">
+              {isFr ? "Tout le centre d'aide" : "Full help center"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta href="/contact" variant="outline" size="lg">
+              {isFr ? "Poser une question" : "Ask a question"}
+            </Cta>
+          </div>
+        </Container>
+      </Section>
       <Section>
         <Container>
           <ul className="grid gap-4 sm:grid-cols-2">
