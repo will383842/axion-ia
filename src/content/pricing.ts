@@ -407,8 +407,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "intervention-claude",
-    labelFr: "Formation Claude",
-    labelEn: "Claude training",
+    labelFr: "Intervention Claude",
+    labelEn: "Claude intervention",
     onQuote: true,
     durationFr: "1 journée",
     durationEn: "1 day",

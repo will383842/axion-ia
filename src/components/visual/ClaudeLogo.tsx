@@ -2,7 +2,7 @@
 // pour éviter une requête réseau supplémentaire et permettre le coloring
 // via `currentColor` côté CSS.
 //
-// Marque externe : utilisé uniquement pour identifier la « Formation Claude »
+// Marque externe : utilisé uniquement pour identifier l'« Intervention Claude »
 // (Chat · Cowork · Code) — module 1 listing /interventions + dropdown header.
 // Les couleurs Claude (peach Anthropic) sont appliquées via Tailwind
 // arbitrary classes au call-site, pas hardcodées ici.

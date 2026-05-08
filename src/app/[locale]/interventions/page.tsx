@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const TIGHT_X = "lg:px-6 xl:px-10";
 
 // `claude` est un accent local au listing /interventions, dédié à la card
-// « Formation Claude ». Anti-hex doctrine : exception assumée — ce sont les
+// « Intervention Claude ». Anti-hex doctrine : exception assumée — ce sont les
 // couleurs officielles de la marque Anthropic (peach), pas des tokens de
 // design AxionIA. Encapsulés ici, n'impactent ni le theme global ni les
 // autres pages.
@@ -128,7 +128,7 @@ const accentClasses: Record<
     chipText: "text-terracotta-deep",
   },
   // Anthropic Claude brand colors — exception anti-hex documentée pour la
-  // card « Formation Claude ». Couleurs imposées par la marque Anthropic
+  // card « Intervention Claude ». Couleurs imposées par la marque Anthropic
   // (logo + monogramme), pas tokenisables en variantes Tailwind.
   // hex-ok: brand-anthropic-claude
   claude: {
@@ -179,14 +179,17 @@ interface ListingCard {
 
 function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
   const essentielle = INTERVENTIONS.find((i) => i.slug === "essentielle")!;
+  const approfondie = INTERVENTIONS.find((i) => i.slug === "approfondie")!;
   const conference = INTERVENTIONS.find((i) => i.slug === "conference")!;
   const dirigeants = INTERVENTIONS.find((i) => i.slug === "dirigeants")!;
 
   const ess = essentielle.summary[isFr ? "fr" : "en"];
+  const appr = approfondie.summary[isFr ? "fr" : "en"];
   const conf = conference.summary[isFr ? "fr" : "en"];
   const dir = dirigeants.summary[isFr ? "fr" : "en"];
 
   const essHref = isFr ? essentielle.pathFr : essentielle.pathEn;
+  const apprHref = isFr ? approfondie.pathFr : approfondie.pathEn;
   const confHref = isFr ? conference.pathFr : conference.pathEn;
   const dirHref = isFr ? dirigeants.pathFr : dirigeants.pathEn;
 
@@ -234,6 +237,34 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       isFlagship: true,
       subTierGrid: essSubTierGrid,
     },
+    // Card — Approfondie 2 jours (équipes étendu) — même grille d'effectif
+    // qu'Essentielle mais 2 journées consécutives pour creuser. 3 paliers
+    // de prix dégressif au nombre de participants. Sprint 14.10.6.
+    {
+      key: "approfondie",
+      accent: "primary",
+      isDark: false,
+      badge: isFr ? "Équipes · 2 jours" : "Teams · 2 days",
+      title: isFr ? "Approfondie" : "Deep Dive",
+      titleEm: isFr ? "2 jours équipes" : "2-day teams",
+      duration: appr.duration,
+      durationLabel: isFr ? "2 jours" : "2 days",
+      price: appr.price,
+      priceLabel: appr.price,
+      groupSize: appr.groupSize,
+      audience: appr.audience,
+      benefitTagline: appr.benefitTagline,
+      outcomes: appr.outcomes,
+      href: apprHref,
+      ctaLabel: appr.ctaLabel,
+      surface: "bg-halo-cool",
+      subTierGrid: (appr.priceTiers ?? []).map((t, idx) => ({
+        label: isFr ? `Palier ${idx + 1}` : `Tier ${idx + 1}`,
+        range: t.size,
+        price: t.price,
+        ...(idx === 1 ? { isFeatured: true as const } : {}),
+      })),
+    },
     // Card 5 — Gagner du temps (NEW format)
     {
       key: "gagner-du-temps",
@@ -273,16 +304,16 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       surface: "bg-paper",
       isHighlight: true,
     },
-    // Card — Formation Claude (Chat · Cowork · Code) — outil-spécifique,
+    // Card — Intervention Claude (Chat · Cowork · Code) — outil-spécifique,
     // logo + encadrement aux couleurs Anthropic. Demande Will 2026-05-08.
     // Prix non précisé → « Sur devis » par défaut, à compléter quand Will
     // donnera le tarif fixe.
     {
-      key: "formation-claude",
+      key: "intervention-claude",
       accent: "claude",
       isDark: false,
       badge: isFr ? "Outil · Claude" : "Tool · Claude",
-      title: isFr ? "Formation Claude" : "Claude training",
+      title: isFr ? "Intervention Claude" : "Claude intervention",
       titleEm: isFr ? "Chat · Cowork · Code" : "Chat · Cowork · Code",
       duration: isFr ? "1 journée sur site" : "1 day on site",
       durationLabel: isFr ? "1 jour" : "1 day",
@@ -306,8 +337,8 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
             "Advanced AI workflows on Claude: long prompts, project memory, file attachments",
             "For tech teams: Claude Code CLI, code generation and refactoring",
           ],
-      href: "/interventions/formation-claude",
-      ctaLabel: isFr ? "Découvrir Formation Claude" : "Discover Claude training",
+      href: "/interventions/intervention-claude",
+      ctaLabel: isFr ? "Découvrir Intervention Claude" : "Discover Claude intervention",
       surface: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     },
     // Card 6 — Direction (CODIR/COMEX) — repositionnement 2026-05-08 : pas
@@ -744,7 +775,7 @@ export default async function InterventionsListing({ params }: Props) {
                 </div>
 
                 <div className="p-7 sm:p-8">
-                  {/* Logo Claude visible en haut de la card Formation Claude.
+                  {/* Logo Claude visible en haut de la card Intervention Claude.
                       Marqueur visuel fort qui distingue immédiatement cette
                       formation outil-spécifique des formats généraux. */}
                   {card.accent === "claude" ? (

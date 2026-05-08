@@ -7,6 +7,7 @@
 
 import type { Locale } from "@/i18n/routing";
 import {
+  APPROFONDIE_SUB_TIERS,
   ESSENTIELLE_SUB_TIERS,
   INTERVENTION_TIERS,
   formatAmount,
@@ -18,6 +19,8 @@ import {
 // Aucun montant ne doit être hardcodé ici : tout pointe vers les tiers centraux.
 const ESSENTIELLE_TIER = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
 const ESSENTIELLE_BASE_PRICE_EUR = ESSENTIELLE_TIER.priceFlat!;
+const APPROFONDIE_TIER = getTierById(INTERVENTION_TIERS, "intervention-approfondie");
+const APPROFONDIE_BASE_PRICE_EUR = APPROFONDIE_TIER.priceFlat!;
 const DIRIGEANTS_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
 const DIRIGEANTS_PRICE_FR = formatPrice(DIRIGEANTS_TIER, "fr");
 const DIRIGEANTS_PRICE_EN = formatPrice(DIRIGEANTS_TIER, "en");
@@ -49,8 +52,24 @@ const ESSENTIELLE_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }>
     price: formatAmount(sub.priceFlat, "en"),
   }));
 
+// Paliers Approfondie 2 jours (Sprint 14.10.6) — même grille d'effectif
+// qu'Essentielle (2-8 / 9-15 / 16-30 personnes), prix × 1.8 environ pour
+// la 2ème journée → 880 / 1420 / 2140 € HT. Source unique pricing.ts.
+const APPROFONDIE_PRICE_TIERS_FR: ReadonlyArray<{ size: string; price: string }> =
+  APPROFONDIE_SUB_TIERS.map((sub) => ({
+    size: sub.rangeFr,
+    price: formatAmount(sub.priceFlat, "fr"),
+  }));
+
+const APPROFONDIE_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }> =
+  APPROFONDIE_SUB_TIERS.map((sub) => ({
+    size: sub.rangeEn,
+    price: formatAmount(sub.priceFlat, "en"),
+  }));
+
 export type InterventionSlug =
   | "essentielle"
+  | "approfondie"
   | "conference"
   | "dirigeants"
   | "gagner-du-temps"
@@ -727,6 +746,192 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       },
     },
   },
+  // Sprint 14.10.6 — Approfondie 2 jours, format équipes étendu (Will, 2026-05-08).
+  // Même grille d'effectif qu'Essentielle (2-8 / 9-15 / 16-30) mais 2 jours
+  // consécutifs pour creuser : co-construction d'automatisations sur leurs
+  // vrais cas d'usage métier + plan d'action 30 jours.
+  {
+    slug: "approfondie",
+    pathFr: "/interventions/approfondie",
+    pathEn: "/interventions/deep-dive",
+    accent: "primary",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Deux journées consécutives sur site pour aller au fond du sujet : ateliers étendus, co-construction d'automatisations sur leurs vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.",
+        duration: "2 jours consécutifs sur site",
+        durationDays: 2,
+        price: `dès ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}`,
+        priceTiers: APPROFONDIE_PRICE_TIERS_FR,
+        groupSize: "2 à 30 personnes",
+        format: "Sur site · France & international",
+        audience: "Équipes opérationnelles complètes · TPE, PME, ETI",
+        outcomes: [
+          "Vos équipes maîtrisent l'IA appliquée à leurs métiers — pas de théorie générique",
+          "Co-construction de 10 à 20 automatisations spécifiques sur leurs vrais outils",
+          "Plan d'action 30 jours partagé, mesurable en gains de temps par personne",
+        ],
+        outline: [
+          "Call de cadrage en visio pour préparer les 2 journées sur leurs vrais cas d'usage",
+          "Jour 1 · panorama outils + ateliers pratiques · Jour 2 · co-construction automatisations + plan d'action 30 jours",
+          "Ressources fournies : référentiel d'outils, prompts maison, automatisations livrées prêtes à utiliser",
+        ],
+        ctaLabel: "Découvrir l'Approfondie",
+      },
+      en: {
+        benefitTagline:
+          "Two consecutive on-site days to go deep: extended workshops, co-built automations on their real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.",
+        duration: "2 consecutive days on site",
+        durationDays: 2,
+        price: `from ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}`,
+        priceTiers: APPROFONDIE_PRICE_TIERS_EN,
+        groupSize: "2 to 30 people",
+        format: "On site · France & international",
+        audience: "Full operational teams · small to mid-market",
+        outcomes: [
+          "Your teams master AI applied to their domain — no generic theory",
+          "Co-build 10 to 20 specific automations on their real tools",
+          "Shared 30-day action plan, measurable in time saved per person",
+        ],
+        outline: [
+          "Framing call by video to prep the 2 days on their real use cases",
+          "Day 1 · tools panorama + hands-on workshops · Day 2 · automation co-build + 30-day action plan",
+          "Takeaways: tool reference, in-house prompts, ready-to-use delivered automations",
+        ],
+        ctaLabel: "Discover Deep Dive",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Format équipes étendu · 2 jours sur site",
+        title: "Approfondie",
+        titleEm: "2 jours équipes",
+        answer: `Deux journées consécutives sur site (dès ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 880 / 1 420 / 2 140 € HT). Ateliers étendus, co-construction d'automatisations sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
+        ctaPrimary: "Réserver l'Approfondie",
+        faqIntro: "équipes",
+      }),
+      benefits: [
+        {
+          title: "Aller au fond du sujet · 2 jours",
+          description:
+            "Le 2ème jour change tout : on dépasse la découverte pour entrer dans la mise en pratique réelle, l'expérimentation et la co-construction.",
+        },
+        {
+          title: "10 à 20 automatisations co-construites",
+          description:
+            "Pas des slides : des automatisations testées sur vos vrais outils métier, prêtes à utiliser dès le retour au bureau.",
+        },
+        {
+          title: "Plan d'action 30 jours partagé",
+          description:
+            "À la fin du jour 2, plan d'action concret partagé : qui fait quoi, quand, avec quels outils, quels gains attendus.",
+        },
+        {
+          title: "Tarif dégressif au nombre de participants",
+          description:
+            "3 paliers d'effectif : 2-8 personnes (880 € HT), 9-15 (1 420 € HT), 16-30 (2 140 € HT). Plus l'équipe est grande, plus le coût par personne baisse.",
+        },
+      ],
+      metrics: [
+        { number: "2", suffix: "jours", label: "Format consécutif sur site" },
+        { number: "10-20", suffix: "automatisations", label: "Co-construites avec vos équipes" },
+        { number: "30", suffix: "jours", label: "Plan d'action partagé après" },
+      ],
+      faqs: [
+        {
+          id: "vs-essentielle",
+          question: "Différence avec l'Essentielle 1 jour ?",
+          answer:
+            "L'Essentielle découvre, l'Approfondie creuse. 1 jour = panorama + premières automatisations. 2 jours = ateliers étendus + co-construction sur vos vrais cas d'usage + plan d'action 30 jours partagé. Pour équipes qui veulent passer à l'échelle.",
+        },
+        {
+          id: "headcount",
+          question: "Quelle taille d'équipe ?",
+          answer:
+            "De 2 à 30 personnes, mêmes paliers que l'Essentielle (2-8 / 9-15 / 16-30) avec tarif dégressif. Au-delà de 30, voir « Sur demande particulière ».",
+        },
+        {
+          id: "tools",
+          question: "On travaille sur quels outils ?",
+          answer:
+            "Vos vrais outils du quotidien (Office 365, Google Workspace, votre CRM, votre ERP, etc.) + les outils IA grand public. Le call de cadrage permet de préparer les 2 jours.",
+        },
+        {
+          id: "deliverables",
+          question: "Que reste-t-il après ?",
+          answer:
+            "10 à 20 automatisations livrées prêtes à utiliser, référentiel d'outils, prompts maison + plan d'action 30 jours partagé. Suivi à 30 jours sur demande.",
+        },
+      ],
+      ctaBlockTitle: "Allez au fond du sujet en 2 jours",
+      ctaBlockDescription: `Réservez la prochaine Approfondie disponible — calendrier en temps réel. Tarif fixe dès ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}, 3 paliers d'effectif.`,
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Extended team format · 2 days on site",
+        title: "Deep Dive",
+        titleEm: "2-day teams",
+        answer: `Two consecutive on-site days (from ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 30 people depending on tier: €880 / €1,420 / €2,140). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
+        ctaPrimary: "Book Deep Dive",
+        faqIntro: "teams",
+      }),
+      benefits: [
+        {
+          title: "Go deep · 2 days",
+          description:
+            "Day 2 changes everything: we go beyond discovery into real practice, experimentation and co-build.",
+        },
+        {
+          title: "10 to 20 co-built automations",
+          description:
+            "No slides: automations tested on your real domain tools, ready to use back at the office.",
+        },
+        {
+          title: "Shared 30-day action plan",
+          description:
+            "By end of day 2, concrete shared action plan: who does what, when, with which tools, expected gains.",
+        },
+        {
+          title: "Pricing scales with headcount",
+          description:
+            "3 tiers: 2-8 people (€880), 9-15 (€1,420), 16-30 (€2,140). The bigger the team, the lower the per-person cost.",
+        },
+      ],
+      metrics: [
+        { number: "2", suffix: "days", label: "Consecutive on-site format" },
+        { number: "10-20", suffix: "automations", label: "Co-built with your teams" },
+        { number: "30", suffix: "days", label: "Action plan shared afterwards" },
+      ],
+      faqs: [
+        {
+          id: "vs-essentielle",
+          question: "Difference with the 1-day Essential?",
+          answer:
+            "Essential discovers, Deep Dive digs. 1 day = panorama + first automations. 2 days = extended workshops + co-build on your real cases + shared 30-day action plan. For teams ready to scale.",
+        },
+        {
+          id: "headcount",
+          question: "What team size?",
+          answer:
+            "From 2 to 30 people, same tiers as the Essential (2-8 / 9-15 / 16-30) with scaling pricing. Beyond 30, see 'Bespoke session'.",
+        },
+        {
+          id: "tools",
+          question: "Which tools do we work on?",
+          answer:
+            "Your real day-to-day tools (Office 365, Google Workspace, your CRM, your ERP, etc.) + the mainstream AI tools. The framing call lets us prep the 2 days.",
+        },
+        {
+          id: "deliverables",
+          question: "What remains afterwards?",
+          answer:
+            "10 to 20 ready-to-use automations, tool reference, in-house prompts + shared 30-day action plan. 30-day follow-up on request.",
+        },
+      ],
+      ctaBlockTitle: "Go deep on AI in 2 days",
+      ctaBlockDescription: `Book the next available Deep Dive — live calendar. Fixed fee from ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}, 3 headcount tiers.`,
+    },
+  },
   {
     slug: "conference",
     pathFr: "/interventions/conference",
@@ -1341,8 +1546,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     fr: {
       ...makeFr({
-        eyebrow: "Formation outil-spécifique · Claude (Anthropic) · 1 journée",
-        title: "Formation Claude",
+        eyebrow: "Intervention outil-spécifique · Claude (Anthropic) · 1 journée",
+        title: "Intervention Claude",
         titleEm: "Chat · Cowork · Code",
         answer:
           "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Pour les équipes qui veulent maîtriser l'outil IA de pointe en profondeur. Tarif sur devis selon vos profils et votre contexte.",
@@ -1408,8 +1613,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     en: {
       ...makeEn({
-        eyebrow: "Tool-specific training · Claude (Anthropic) · 1 day",
-        title: "Claude training",
+        eyebrow: "Tool-specific intervention · Claude (Anthropic) · 1 day",
+        title: "Claude intervention",
         titleEm: "Chat · Cowork · Code",
         answer:
           "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). For teams that want to master the cutting-edge AI tool in depth. Quoted on demand based on your profiles and context.",

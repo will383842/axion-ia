@@ -6,7 +6,7 @@
 //
 // Layout 3-col aligné sur Implantations :
 // • Col 1 — Tarifs fixes (Essentielle 1j + Approfondie 2j + Gagner du temps + CODIR)
-// • Col 2 — Sur devis (Formation Claude / Conférence / Sur demande)
+// • Col 2 — Sur devis (Intervention Claude / Conférence / Sur demande)
 // • Col 3 — Hub bg-halo-warm avec icône + tagline serif + CTA hub
 //
 // Le contenu reste strictement synchrone avec
@@ -78,9 +78,9 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
   },
   {
     key: "approfondie",
-    href: "/contact",
+    href: "/interventions/approfondie",
     labelFr: "Approfondie",
-    labelEn: "Deep dive",
+    labelEn: "Deep Dive",
     metaFr: "2 jours · 2 à 30 personnes (équipes)",
     metaEn: "2 days · 2 to 30 people (teams)",
     priceFr: entryPriceFr("intervention-approfondie"),
@@ -110,10 +110,10 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
 
 const ON_REQUEST_ITEMS: ReadonlyArray<MenuItem> = [
   {
-    key: "formation-claude",
-    href: "/interventions/formation-claude",
-    labelFr: "Formation Claude",
-    labelEn: "Claude training",
+    key: "intervention-claude",
+    href: "/interventions/intervention-claude",
+    labelFr: "Intervention Claude",
+    labelEn: "Claude intervention",
     metaFr: "1 jour · Chat · Cowork · Code",
     metaEn: "1 day · Chat · Cowork · Code",
     priceFr: "Sur devis",

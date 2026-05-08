@@ -26,6 +26,7 @@ import {
   Brain,
   ArrowRight,
   ArrowLeft,
+  Layers,
   Mic,
   Crown,
   Star,
@@ -42,23 +43,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
+import { APPROFONDIE_SUB_TIERS, ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
 
-// Prix d'entrée Essentielle dérivé de pricing.ts (premier sous-tier).
-// Affiché sous forme « dès 490 € » dans les hints et previews — Sprint 14.10.4
-// supprime les anciens hardcodings « dès 490 € » dans INTERVENTION_OPTIONS et
-// INTERVENTION_VISUAL.
+// Prix d'entrée Essentielle / Approfondie dérivés de pricing.ts (premier
+// sous-tier). Affichés sous forme « dès N € » dans les hints et previews —
+// Sprint 14.10.4 supprime les anciens hardcodings dans INTERVENTION_OPTIONS
+// et INTERVENTION_VISUAL.
 const ESSENTIELLE_ENTRY_PRICE_EUR = ESSENTIELLE_SUB_TIERS[0]!.priceFlat;
 const ESSENTIELLE_HINT_FR = `Journée · 9 h – 17 h · dès ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
 const ESSENTIELLE_HINT_EN = `Day · 9 a.m. – 5 p.m. · from €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
 const ESSENTIELLE_PRICE_TAG_FR = `dès ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
 const ESSENTIELLE_PRICE_TAG_EN = `from €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
+const APPROFONDIE_ENTRY_PRICE_EUR = APPROFONDIE_SUB_TIERS[0]!.priceFlat;
+const APPROFONDIE_HINT_FR = `2 jours consécutifs · dès ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
+const APPROFONDIE_HINT_EN = `2 consecutive days · from €${APPROFONDIE_ENTRY_PRICE_EUR}`;
+const APPROFONDIE_PRICE_TAG_FR = `dès ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
+const APPROFONDIE_PRICE_TAG_EN = `from €${APPROFONDIE_ENTRY_PRICE_EUR}`;
 
 // 5 interventions Module 1 — slug + label FR/EN + durationDays + scheduleHint.
 // `durationDays` typé 1|2 large pour permettre l'évolution future (formation
 // 2 jours), sans figer le type à `1`.
 type InterventionOption = {
-  slug: "essentielle" | "conference" | "dirigeants";
+  slug: "essentielle" | "approfondie" | "conference" | "dirigeants";
   fr: string;
   en: string;
   durationDays: 1 | 2;
@@ -74,6 +80,14 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     durationDays: 1,
     scheduleHintFr: ESSENTIELLE_HINT_FR,
     scheduleHintEn: ESSENTIELLE_HINT_EN,
+  },
+  {
+    slug: "approfondie",
+    fr: "L'Approfondie",
+    en: "Deep Dive",
+    durationDays: 2,
+    scheduleHintFr: APPROFONDIE_HINT_FR,
+    scheduleHintEn: APPROFONDIE_HINT_EN,
   },
   {
     slug: "conference",
@@ -118,6 +132,15 @@ const INTERVENTION_VISUAL: Record<
     previewFr:
       "Découvrir les outils IA · 5 à 10 usages identifiés · automatisations dès le lendemain",
     previewEn: "Discover AI tools · 5 to 10 uses identified · automations from day two",
+  },
+  approfondie: {
+    icon: Layers,
+    accentBg: "bg-primary-soft",
+    accentFg: "text-primary",
+    priceFr: APPROFONDIE_PRICE_TAG_FR,
+    priceEn: APPROFONDIE_PRICE_TAG_EN,
+    previewFr: "2 jours équipes · 10 à 20 automatisations co-construites · plan d'action 30 jours",
+    previewEn: "2 team days · 10 to 20 co-built automations · 30-day action plan",
   },
   conference: {
     icon: Mic,

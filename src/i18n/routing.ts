@@ -24,6 +24,10 @@ export const routing = defineRouting({
       fr: "/interventions/essentielle",
       en: "/interventions/essential",
     },
+    "/interventions/approfondie": {
+      fr: "/interventions/approfondie",
+      en: "/interventions/deep-dive",
+    },
     "/interventions/conference": {
       fr: "/interventions/conference",
       en: "/interventions/conference",

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { MessageSquare, FolderKanban, TerminalSquare } from "lucide-react";
+import { Layers, Wrench, Target } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { ProductPageTemplate } from "@/components/sections/ProductPageTemplate";
 import { DetailHeroSchema } from "@/components/sections/DetailHeroSchema";
@@ -18,7 +18,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const intervention = getIntervention("formation-claude");
+  const intervention = getIntervention("approfondie");
   const c = intervention[locale as Locale];
   return buildProductMetadata({
     locale,
@@ -29,12 +29,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function FormationClaude({ params }: Props) {
+export default async function Approfondie({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
-  const intervention = getIntervention("formation-claude");
+  const intervention = getIntervention("approfondie");
   const copy = intervention[loc];
   const path = loc === "fr" ? intervention.pathFr : intervention.pathEn;
   const jsonLd = [
@@ -43,7 +43,7 @@ export default async function FormationClaude({ params }: Props) {
       path,
       name: copy.title,
       description: copy.answer,
-      serviceType: "Claude (Anthropic) tool-specific training",
+      serviceType: "AI deep-dive training (2 days)",
     }),
     buildFaqJsonLd({ items: copy.faqs }),
   ];
@@ -53,43 +53,43 @@ export default async function FormationClaude({ params }: Props) {
       href: "/interventions",
       label: isFr ? "Interventions entreprise" : "Corporate AI sessions",
     },
-    { href: "/interventions/formation-claude", label: copy.title },
+    { href: "/interventions/approfondie", label: copy.title },
   ];
   const heroSchema = (
     <DetailHeroSchema
-      eyebrow={isFr ? "Une journée type" : "A typical day"}
-      title={isFr ? "Maîtriser Claude en 3 volets" : "Master Claude in 3 tracks"}
-      accent="orange"
+      eyebrow={isFr ? "2 journées consécutives" : "2 consecutive days"}
+      title={isFr ? "Aller au fond en 2 jours" : "Go deep in 2 days"}
+      accent="primary"
       blocks={[
         {
-          icon: MessageSquare,
-          prefix: isFr ? "Matin" : "Morning",
-          label: isFr ? "Chat" : "Chat",
+          icon: Layers,
+          prefix: isFr ? "Jour 1" : "Day 1",
+          label: isFr ? "Panorama + ateliers" : "Panorama + workshops",
           detail: isFr
-            ? "Rédaction, analyse, synthèse — prompts longs structurés, system prompts."
-            : "Writing, analysis, synthesis — long structured prompts, system prompts.",
+            ? "Découverte des outils IA + ateliers pratiques sur leurs vraies tâches métier."
+            : "AI tools panorama + hands-on workshops on their real domain tasks.",
         },
         {
-          icon: FolderKanban,
-          prefix: isFr ? "Midi" : "Noon",
-          label: isFr ? "Cowork" : "Cowork",
+          icon: Wrench,
+          prefix: isFr ? "Jour 2" : "Day 2",
+          label: isFr ? "Co-construction" : "Co-build",
           detail: isFr
-            ? "Projects, fichiers attachés, mémoire de projet, workflows multi-documents."
-            : "Projects, file attachments, project memory, multi-document workflows.",
+            ? "10 à 20 automatisations construites en direct sur vos vrais outils métier."
+            : "10 to 20 automations built live on your real domain tools.",
         },
         {
-          icon: TerminalSquare,
-          prefix: isFr ? "Après-midi" : "Afternoon",
-          label: isFr ? "Code (CLI)" : "Code (CLI)",
+          icon: Target,
+          prefix: isFr ? "Fin J2" : "End D2",
+          label: isFr ? "Plan d'action 30 jours" : "30-day action plan",
           detail: isFr
-            ? "Claude Code CLI : génération, refactoring, intégration git — pour équipes tech."
-            : "Claude Code CLI: generation, refactoring, git integration — for tech teams.",
+            ? "Plan partagé : qui fait quoi, quand, avec quels outils, quels gains attendus."
+            : "Shared plan: who does what, when, which tools, expected gains.",
         },
       ]}
       ariaLabel={
         isFr
-          ? "Schéma : journée type Formation Claude — matin Chat, midi Cowork (Projects), après-midi Code (CLI)."
-          : "Diagram: typical Claude Training day — morning Chat, noon Cowork (Projects), afternoon Code (CLI)."
+          ? "Schéma : Approfondie 2 jours — Jour 1 panorama et ateliers, Jour 2 co-construction d'automatisations, fin du jour 2 plan d'action 30 jours partagé."
+          : "Diagram: Deep Dive 2 days — Day 1 panorama and workshops, Day 2 automation co-build, end of day 2 shared 30-day action plan."
       }
     />
   );
@@ -101,9 +101,9 @@ export default async function FormationClaude({ params }: Props) {
       </Container>
       <ProductPageTemplate
         isFr={isFr}
-        accent="orange"
+        accent="primary"
         copy={copy}
-        ctaPrimaryHref="/contact?intervention=formation-claude"
+        ctaPrimaryHref="/reserver?intervention=approfondie"
         ctaSecondaryHref="/interventions/essentielle"
         heroSchema={heroSchema}
         jsonLd={jsonLd}
