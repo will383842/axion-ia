@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { Compass, Clock, RefreshCw, Quote } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -11,6 +12,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getHelpArticle, getAllHelpSlugs, HELP_ARTICLES, slugify } from "@/content/transversal";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { splitTitleEm } from "@/lib/title";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -79,17 +81,59 @@ export default async function HelpArticlePage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        titleAs="h1"
-        eyebrow={article.category}
-        title={copy.title}
-        description={copy.excerpt}
-      />
+      {(() => {
+        const t = splitTitleEm(copy.title);
+        const wordCount = copy.body.trim().split(/\s+/).length;
+        const readMin = Math.max(1, Math.ceil(wordCount / 200));
+        return (
+          <Section
+            titleAs="h1"
+            eyebrow={article.category}
+            title={t.lead}
+            titleEm={t.em}
+            description={copy.excerpt}
+          >
+            <Container className="mt-8 max-w-2xl">
+              <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+                {[
+                  { icon: Compass, label: article.category },
+                  { icon: Clock, label: isFr ? `Lecture ${readMin} min` : `${readMin} min read` },
+                  { icon: Quote, label: isFr ? "Réponse courte" : "Short answer" },
+                  { icon: RefreshCw, label: isFr ? "MAJ trimestrielle" : "Quarterly updates" },
+                ].map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Container>
+          </Section>
+        );
+      })()}
 
       <Section>
         <Container className="max-w-3xl">
-          <div className="prose prose-slate text-fg-soft max-w-none text-base leading-relaxed">
-            <p>{copy.body}</p>
+          <div className="prose prose-slate text-fg-soft max-w-none space-y-5 text-base leading-relaxed">
+            {/* Body multi-paragraphes (cohérent /blog[slug]/comparaisons[slug]) :
+                split par phrase pour densité éditoriale. Single sentence = 1 <p>. */}
+            {copy.body
+              .trim()
+              .split(/(?<=\.)\s+(?=[A-ZÀÉÈÔÎ])/)
+              .filter(Boolean)
+              .map((p, i) => (
+                <p key={`b-${i}`}>{p}</p>
+              ))}
           </div>
         </Container>
       </Section>

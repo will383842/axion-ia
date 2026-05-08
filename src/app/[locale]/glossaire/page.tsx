@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { ArrowRight, BookText, Mic, RefreshCw, Quote } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
@@ -137,10 +139,41 @@ export default async function GlossaryPage({ params }: Props) {
         titleEm={isFr ? "essentiels" : "terms"}
         description={
           isFr
-            ? "12 termes pour parler IA en réunion sans se tromper. Mis à jour à chaque évolution majeure."
-            : "12 terms to discuss AI in meetings without errors. Updated on each major evolution."
+            ? `${TERMS.length} termes pour parler IA en réunion sans se tromper. Définitions courtes, sourcées, citables par les LLMs. MAJ à chaque évolution majeure.`
+            : `${TERMS.length} terms to discuss AI in meetings without errors. Short, sourced, LLM-citable definitions. Updated on each major evolution.`
         }
-      />
+      >
+        <Container className="mt-8 max-w-2xl">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+            {[
+              { icon: BookText, label: isFr ? `${TERMS.length} termes` : `${TERMS.length} terms` },
+              { icon: Mic, label: isFr ? "AEO citable" : "AEO citable" },
+              { icon: Quote, label: isFr ? "Sources vérifiées" : "Verified sources" },
+              { icon: RefreshCw, label: isFr ? "MAJ continue" : "Continuous updates" },
+            ].map((pill) => {
+              const Icon = pill.icon;
+              return (
+                <li
+                  key={pill.label}
+                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                >
+                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                  <span>{pill.label}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <Cta href="/guide-ia" size="lg">
+              {isFr ? "Lire le guide IA 40 pages" : "Read the 40-page AI guide"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta href="/audit" variant="outline" size="lg">
+              {isFr ? "Demander un audit" : "Request an audit"}
+            </Cta>
+          </div>
+        </Container>
+      </Section>
       <Section>
         <Container className="max-w-3xl">
           <dl className="border-border divide-border space-y-0 divide-y border-y">
