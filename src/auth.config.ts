@@ -11,8 +11,8 @@ import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   pages: {
-    signIn: "/admin/login",
-    error: "/admin/login",
+    signIn: "/fr/admin/login", // remap dynamique gere dans authorized()
+    error: "/fr/admin/login",
   },
   session: {
     strategy: "jwt",
@@ -21,26 +21,35 @@ export const authConfig = {
   },
   callbacks: {
     /**
-     * Authorize callback — appele par le middleware pour decider si la requete
-     * peut continuer ou doit etre redirigee vers /admin/login.
+     * Authorize callback — invoque par le middleware sur chaque request matchee.
+     * Doctrine CLAUDE.md §14 : interface admin FR uniquement, mais on tolere
+     * /en/<prefix>/* en redirigeant vers /fr/<prefix>/* (layout admin gere
+     * la redirection finale).
      *
-     * @param auth   La session JWT decode (null si pas connecte)
-     * @param request La NextRequest
+     * URL pattern : /{fr|en}/{ADMIN_URL_PREFIX}/...
      */
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const adminPrefix = `/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}`;
-      const isOnAdmin = nextUrl.pathname.startsWith(adminPrefix);
-      const isOnAuthPage =
-        nextUrl.pathname === `${adminPrefix}/login` || nextUrl.pathname === `${adminPrefix}/2fa`;
+      const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
+      const adminRegex = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`);
+      const isOnAdmin = adminRegex.test(nextUrl.pathname);
+      if (!isOnAdmin) return true; // hors admin = laisse passer (public site)
 
-      if (isOnAdmin && !isOnAuthPage) {
-        if (!isLoggedIn) return false; // → redirect /admin/login
+      const loginRegex = new RegExp(`^/(fr|en)/${adminSegment}/login/?$`);
+      const isOnAuthPage = loginRegex.test(nextUrl.pathname);
+
+      // Page login accessible meme deconnecte
+      if (isOnAuthPage) {
+        if (isLoggedIn) {
+          // User deja connecte → renvoie vers le dashboard FR
+          return Response.redirect(new URL(`/fr/${adminSegment}`, nextUrl));
+        }
         return true;
       }
-      // User connecte qui visite /login → on le renvoie sur le dashboard
-      if (isLoggedIn && isOnAuthPage) {
-        return Response.redirect(new URL(adminPrefix, nextUrl));
+
+      // Toute autre page admin (incluant /2fa/setup, /, sub-routes) exige login
+      if (!isLoggedIn) {
+        return Response.redirect(new URL(`/fr/${adminSegment}/login`, nextUrl));
       }
       return true;
     },

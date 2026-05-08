@@ -1,0 +1,78 @@
+"use client";
+// use-client: useActionState + useState hooks pour wizard 2 etapes login (email+password puis TOTP).
+
+import { useActionState, useState } from "react";
+import { signInAction, type SignInState } from "@/features/admin-auth/actions";
+
+const initialState: SignInState = { ok: false, error: "" };
+
+export function LoginForm() {
+  const [state, formAction, pending] = useActionState(signInAction, initialState);
+  const [show2FA, setShow2FA] = useState(false);
+
+  // Si l'action retourne requires2FA, on bascule en step 2
+  if (!state.ok && "requires2FA" in state && state.requires2FA && !show2FA) {
+    setShow2FA(true);
+  }
+
+  return (
+    <form action={formAction} className="admin-form">
+      <div className="admin-field">
+        <label htmlFor="email" className="admin-label">
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          className="admin-input"
+          disabled={pending}
+        />
+      </div>
+      <div className="admin-field">
+        <label htmlFor="password" className="admin-label">
+          Mot de passe
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          required
+          autoComplete="current-password"
+          minLength={8}
+          className="admin-input"
+          disabled={pending}
+        />
+      </div>
+      {show2FA && (
+        <div className="admin-field">
+          <label htmlFor="totp" className="admin-label">
+            Code 2FA (6 chiffres)
+          </label>
+          <input
+            id="totp"
+            name="totp"
+            type="text"
+            required
+            autoComplete="one-time-code"
+            inputMode="numeric"
+            pattern="\d{6}"
+            maxLength={6}
+            className="admin-input admin-input-totp"
+            disabled={pending}
+          />
+        </div>
+      )}
+      {!state.ok && state.error && (
+        <p role="alert" className="admin-alert admin-alert-error">
+          {state.error}
+        </p>
+      )}
+      <button type="submit" className="admin-button" disabled={pending}>
+        {pending ? "Connexion..." : show2FA ? "Vérifier le code 2FA" : "Continuer"}
+      </button>
+    </form>
+  );
+}
