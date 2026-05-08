@@ -188,13 +188,37 @@ export async function forceUnsubscribeAction(
 export async function exportSubscribersCsvAction(
   input: Partial<ListSubscribersInput> = {},
 ): Promise<{ filename: string; csv: string }> {
-  await requireAdminRead();
+  // Sprint 15 fix Fork 2 C1-2 : RGPD — export PII reservé super_admin/admin
+  // (write privilege), avec activity log d'audit. Avant : requireAdminRead
+  // permettait à tous les admin (incl. reader/editor) d'exfiltrer la base.
+  const session = await requireAdminWrite();
   const parsed = listSchema.parse({ ...input, pageSize: 200, page: 1 });
   const where: Record<string, unknown> = {};
-  // Par defaut on exporte uniquement les confirmed (pour MailWizz / RGPD).
+  // Sprint 15 fix Fork 3 §15 RGPD : refuse explicitement unsubscribed/bounced
+  // pour eviter exfiltration accidentelle (RGPD art. 17 droit a l'oubli).
+  if (parsed.status === "unsubscribed" || parsed.status === "bounced") {
+    throw new Error("forbidden_status");
+  }
   where.status = parsed.status === "all" ? "confirmed" : parsed.status;
   if (parsed.locale !== "all") where.locale = parsed.locale;
   if (parsed.source) where.source = parsed.source;
+
+  // Activity log d'audit RGPD : qui a exporte combien quand
+  await prisma.activityLog.create({
+    data: {
+      adminUserId: session.userId,
+      action: "newsletter.exported",
+      targetType: "newsletter_subscriber",
+      changes: {
+        filters: {
+          status: String(where.status ?? "all"),
+          locale: parsed.locale,
+          source: parsed.source ?? null,
+        },
+      },
+      ipAddress: await getClientIp(),
+    },
+  });
 
   const rows = await prisma.newsletterSubscriber.findMany({
     where,

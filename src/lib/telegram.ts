@@ -14,6 +14,7 @@ export type TelegramTag =
   | "INTERVENTION"
   | "OPTION"
   | "OPTION CONFIRMÉE"
+  | "OPTION REFUSÉE" // Sprint 15 fix Fork 4 W1-4 : ajout pour decision admin
   | "OPTION EXPIRÉE"
   | "ANNULATION"
   | "AUDIT"

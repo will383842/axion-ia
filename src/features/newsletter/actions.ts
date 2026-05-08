@@ -11,7 +11,6 @@
 "use server";
 
 import crypto from "node:crypto";
-import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -19,13 +18,9 @@ import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
+import { getClientIp } from "@/lib/client-ip";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
-
-async function getClientIp(): Promise<string> {
-  const h = await headers();
-  return h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "unknown";
-}
 
 export async function subscribeNewsletterAction(
   _prev: NewsletterState,

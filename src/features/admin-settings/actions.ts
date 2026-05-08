@@ -85,31 +85,35 @@ export async function upsertSettingAction(
     return { ok: false, error: "JSON invalide. Vérifiez la syntaxe." };
   }
 
+  // Sprint 15 fix Fork 1 W6-1 : tx atomique upsert + activityLog (avant : 2
+  // statements separes → crash entre = setting modifie sans audit trail).
+  // Sprint 15 fix Fork 2 W2-2 : targetId = key pour requetes audit ciblees.
   const ip = await getClientIp();
-  await prisma.setting.upsert({
-    where: { key: parsed.data.key },
-    create: {
-      key: parsed.data.key,
-      value: value as never,
-      description: parsed.data.description ?? null,
-      updatedBy: session.userId,
-    },
-    update: {
-      value: value as never,
-      description: parsed.data.description ?? null,
-      updatedBy: session.userId,
-    },
-  });
-
-  await prisma.activityLog.create({
-    data: {
-      adminUserId: session.userId,
-      action: "setting.updated",
-      targetType: "setting",
-      changes: { key: parsed.data.key },
-      ipAddress: ip,
-    },
-  });
+  await prisma.$transaction([
+    prisma.setting.upsert({
+      where: { key: parsed.data.key },
+      create: {
+        key: parsed.data.key,
+        value: value as never,
+        description: parsed.data.description ?? null,
+        updatedBy: session.userId,
+      },
+      update: {
+        value: value as never,
+        description: parsed.data.description ?? null,
+        updatedBy: session.userId,
+      },
+    }),
+    prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "setting.updated",
+        targetType: "setting",
+        changes: { key: parsed.data.key },
+        ipAddress: ip,
+      },
+    }),
+  ]);
 
   // Revalidate les pages publiques qui pourraient depend du setting
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/settings`);

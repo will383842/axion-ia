@@ -21,6 +21,7 @@ import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
+import { getClientIp } from "@/lib/client-ip";
 import { slugToEnum, getInterventionPriceCents } from "@/lib/intervention-type";
 
 export type BookingState = { ok: true; bookingId: string } | { ok: false; error: string };
@@ -31,11 +32,6 @@ export type Option48hState =
       error: string;
       reason?: "slot_taken" | "slot_unavailable" | "validation" | "rate_limit" | "captcha";
     };
-
-async function getClientIp(): Promise<string> {
-  const h = await headers();
-  return h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "unknown";
-}
 
 // ============================================================
 // createBookingAction — reservation directe
@@ -78,38 +74,41 @@ export async function createBookingAction(
     parsed.data.participantsCount,
   );
 
-  // 1. Submission record (pour traceabilite)
-  const submission = await prisma.submission.create({
-    data: {
-      type: "intervention",
-      locale,
-      // Sprint 15 fix Fork 2 C4-2 : raison sociale separee si fournie
-      companyName: (formData.get("companyName") as string | null) ?? parsed.data.contact,
-      contactName: parsed.data.contact,
-      contactEmail: parsed.data.email,
-      contactPhone: parsed.data.phone ?? null,
-      details: {
-        interventionType: interventionTypeEnum,
-        bookingDate: parsed.data.date,
-        bookingTime: parsed.data.time,
-        participantsCount: parsed.data.participantsCount,
+  // Sprint 15 fix Fork 1 C2-1 : tx atomique submission + booking pour eviter
+  // submissions orphelines (crash entre les 2 statements = data integrity bug).
+  const userAgent = (await headers()).get("user-agent") ?? null;
+  const companyNameRaw = (formData.get("companyName") as string | null) ?? parsed.data.contact;
+  const { booking } = await prisma.$transaction(async (tx) => {
+    const submission = await tx.submission.create({
+      data: {
+        type: "intervention",
+        locale,
+        companyName: companyNameRaw,
+        contactName: parsed.data.contact,
+        contactEmail: parsed.data.email,
+        contactPhone: parsed.data.phone ?? null,
+        details: {
+          interventionType: interventionTypeEnum,
+          bookingDate: parsed.data.date,
+          bookingTime: parsed.data.time,
+          participantsCount: parsed.data.participantsCount,
+        },
+        ipAddress: ip,
+        userAgent,
       },
-      ipAddress: ip,
-      userAgent: (await headers()).get("user-agent") ?? null,
-    },
-  });
-
-  // 2. Booking record — pricePaidCents derive du pricing.ts (null si onQuote)
-  const booking = await prisma.booking.create({
-    data: {
-      interventionType: interventionTypeEnum,
-      bookingDate: bookingDateTime,
-      participantsCount: parsed.data.participantsCount,
-      submissionId: submission.id,
-      locale,
-      pricePaidCents,
-      participantsTier,
-    },
+    });
+    const b = await tx.booking.create({
+      data: {
+        interventionType: interventionTypeEnum,
+        bookingDate: bookingDateTime,
+        participantsCount: parsed.data.participantsCount,
+        submissionId: submission.id,
+        locale,
+        pricePaidCents,
+        participantsTier,
+      },
+    });
+    return { submission, booking: b };
   });
 
   await sendTelegram({

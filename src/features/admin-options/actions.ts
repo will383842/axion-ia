@@ -137,14 +137,24 @@ export async function validateOptionAction(
   const ip = await getClientIp();
 
   // Tx : flip option + cree booking + log activity. Tout ou rien.
+  // Sprint 15 fix Fork 1 C3-1 : SELECT FOR UPDATE sur la ligne option pour
+  // empecher 2 admins de valider la meme option en parallele (race condition
+  // → 2 bookings creees, slot @unique sauverait la 2e mais activity log
+  // dupliqué + email envoye 2x au visiteur).
   const result = await prisma.$transaction(async (tx) => {
-    // Lock pessimiste sur la ligne option pour eviter double-validation
+    const lockRows = await tx.$queryRaw<Array<{ id: string; status: string }>>`
+      SELECT id, status FROM bookings_options
+      WHERE id = ${parsed.data.id}::uuid
+      FOR UPDATE
+    `;
+    if (lockRows.length === 0) throw new Error("option_not_found");
+    if (lockRows[0]?.status !== "pending") throw new Error("option_not_pending");
+
     const opt = await tx.bookingOption.findUnique({
       where: { id: parsed.data.id },
       include: { slot: true },
     });
     if (!opt) throw new Error("option_not_found");
-    if (opt.status !== "pending") throw new Error("option_not_pending");
 
     const interventionSlug = enumToSlug(opt.interventionType);
     const { cents: pricePaidCents, tierLabel: participantsTier } = getInterventionPriceCents(
@@ -237,18 +247,27 @@ export async function refuseOptionAction(
   const ip = await getClientIp();
 
   const result = await prisma.$transaction(async (tx) => {
+    // Sprint 15 fix Fork 1 C3-1 : FOR UPDATE option (race protect)
+    const lockRows = await tx.$queryRaw<Array<{ id: string; status: string }>>`
+      SELECT id, status FROM bookings_options
+      WHERE id = ${parsed.data.id}::uuid
+      FOR UPDATE
+    `;
+    if (lockRows.length === 0) throw new Error("option_not_found");
+    if (lockRows[0]?.status !== "pending") throw new Error("option_not_pending");
+
     const opt = await tx.bookingOption.findUnique({
       where: { id: parsed.data.id },
       include: { slot: true },
     });
     if (!opt) throw new Error("option_not_found");
-    if (opt.status !== "pending") throw new Error("option_not_pending");
 
+    // Sprint 15 fix Fork 1 W8-1 : preserve notes existantes si pas de reason
     await tx.bookingOption.update({
       where: { id: parsed.data.id },
       data: {
         status: "refused",
-        notes: parsed.data.reason ?? null,
+        notes: parsed.data.reason ?? opt.notes,
       },
     });
 

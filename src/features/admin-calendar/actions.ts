@@ -117,6 +117,14 @@ export async function blockDateAction(
   const slotDate = new Date(`${parsed.data.date}T00:00:00.000Z`);
 
   await prisma.$transaction(async (tx) => {
+    // Sprint 15 fix Fork 2 W4-2 : SELECT FOR UPDATE pour verrouiller la ligne
+    // pendant la decision admin (race avec visiteur posant option en parallele).
+    await tx.$queryRaw`
+      SELECT id FROM calendar_slots
+      WHERE slot_date = ${slotDate}::date
+      FOR UPDATE
+    `;
+
     // Verifie pas de booking ferme sur ce slot
     const existing = await tx.calendarSlot.findUnique({
       where: { slotDate },

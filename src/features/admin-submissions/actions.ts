@@ -229,8 +229,25 @@ export async function updateSubmissionAction(
 export async function exportSubmissionsCsvAction(
   input: Partial<ListSubmissionsInput> = {},
 ): Promise<{ filename: string; csv: string }> {
-  await requireAdminReadSession();
+  // Sprint 15 fix Fork 2 C2-2 : RGPD — export PII reservé super_admin/admin
+  const session = await requireAdminWriteSession();
   const parsed = listSubmissionsSchema.parse({ ...input, pageSize: 100, page: 1 });
+
+  // Activity log d'audit RGPD
+  const exportFilters: { type: string; status: string; locale: string } = {
+    type: parsed.type,
+    status: parsed.status,
+    locale: parsed.locale,
+  };
+  await prisma.activityLog.create({
+    data: {
+      adminUserId: session.userId,
+      action: "submission.exported",
+      targetType: "submission",
+      changes: exportFilters,
+      ipAddress: await getClientIp(),
+    },
+  });
 
   const where: Record<string, unknown> = {};
   if (parsed.type !== "all") where.type = parsed.type;

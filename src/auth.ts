@@ -77,16 +77,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // pour egaliser le timing → empeche oracle email valide vs invalide.
         const passwordOk = await verifyPasswordSafe(user?.passwordHash, password);
         if (!user || user.status !== "active" || !passwordOk) {
-          if (user) {
-            await prisma.activityLog.create({
-              data: {
-                adminUserId: user.id,
-                action: "auth.login.failed",
-                ipAddress: ip,
-                changes: { reason: "invalid_password" },
+          // Sprint 15 fix Fork 2 W3-2 : log meme si user inexistant (sinon
+          // oracle email persistant via presence/absence d'activity_log entry).
+          await prisma.activityLog.create({
+            data: {
+              adminUserId: user?.id ?? null,
+              action: "auth.login.failed",
+              ipAddress: ip,
+              changes: {
+                reason: !user
+                  ? "unknown_email"
+                  : user.status !== "active"
+                    ? "account_inactive"
+                    : "invalid_password",
+                email,
               },
-            });
-          }
+            },
+          });
           return null;
         }
 
