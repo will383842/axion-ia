@@ -1086,3 +1086,40 @@
   overflow: auto;
   margin: 0;
 }
+
+/* M9 T3.3 — Users role badges + actions stack */
+.admin-badge-super_admin {
+  background-color: var(--color-terracotta-soft);
+  color: var(--color-terracotta-deep);
+  border: 1px solid var(--color-terracotta);
+}
+.admin-badge-admin {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.admin-badge-editor {
+  background-color: var(--color-sand);
+  color: var(--color-fg);
+}
+.admin-badge-reader {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-badge-active {
+  background-color: var(--color-sage-soft);
+  color: var(--color-sage);
+}
+.admin-badge-suspended {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-border);
+}
+.admin-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.admin-card-inline {
+  padding: 16px;
+}
