@@ -49,8 +49,6 @@ const REGION_SLUG_BY_CODE: Record<string, string> = Object.fromEntries(
   REGIONS.map((r) => [r.inseeCode, r.slug]),
 );
 
-const DROM_REGION_CODES = new Set(REGIONS.filter((r) => r.type === "drom").map((r) => r.inseeCode));
-
 const CONST_NAME_BY_REGION_SLUG: Record<string, string> = Object.fromEntries(
   REGIONS.map((r) => [r.slug, `VILLES_${r.slug.toUpperCase().replace(/-/g, "_")}`]),
 );
@@ -78,14 +76,11 @@ async function fetchCommunes(): Promise<ApiCommune[]> {
 }
 
 function assignSlugs(communes: ApiCommune[]): Map<string, string> {
-  // Priority order for slug collision: metropolitan first, then by population desc.
-  // Bigger metropolitan wins clean slug; DROM and smaller communes get -dept suffix.
-  const sorted = [...communes].sort((a, b) => {
-    const aDrom = DROM_REGION_CODES.has(a.codeRegion);
-    const bDrom = DROM_REGION_CODES.has(b.codeRegion);
-    if (aDrom !== bDrom) return aDrom ? 1 : -1;
-    return (b.population ?? 0) - (a.population ?? 0);
-  });
+  // Receives ONLY in-scope communes (filtered to mapped codeRegion before this
+  // call). Sort by population desc — bigger commune wins the clean slug, smaller
+  // collisions take the `-{dept}` suffix. Avoids polluting metropolitan slugs
+  // with out-of-scope DROM/COM duplicates.
+  const sorted = [...communes].sort((a, b) => (b.population ?? 0) - (a.population ?? 0));
 
   const used = new Set<string>();
   const slugByInsee = new Map<string, string>();
@@ -175,8 +170,17 @@ async function main(): Promise<void> {
   }
 
   const all = await fetchCommunes();
-  const filtered = all.filter((c) => (c.population ?? 0) >= POP_THRESHOLD);
-  console.warn(`[import:villes] kept ${filtered.length} communes >= ${POP_THRESHOLD} hab`);
+  const popOk = all.filter((c) => (c.population ?? 0) >= POP_THRESHOLD);
+  // Filter out communes whose codeRegion is not in REGIONS (DROM excluded
+  // 2026-05-08, COM/TAAF jamais inclus). Doing this BEFORE slug assignment
+  // ensures metropolitan communes don't lose clean slugs to out-of-scope
+  // homonyms (ex. Saint-Denis 93 vs Saint-Denis Réunion).
+  const filtered = popOk.filter((c) => REGION_SLUG_BY_CODE[c.codeRegion] !== undefined);
+  const skipped = popOk.length - filtered.length;
+  console.warn(
+    `[import:villes] kept ${filtered.length} in-scope communes >= ${POP_THRESHOLD} hab` +
+      (skipped > 0 ? ` (skipped ${skipped} out-of-scope: DROM + COM/TAAF)` : ""),
+  );
 
   const slugByInsee = assignSlugs(filtered);
 
@@ -184,21 +188,11 @@ async function main(): Promise<void> {
   const byRegionSlug = new Map<string, VilleDataOut[]>();
   for (const r of REGIONS) byRegionSlug.set(r.slug, []);
 
-  let skipped = 0;
   for (const c of filtered) {
-    const regionSlug = REGION_SLUG_BY_CODE[c.codeRegion];
-    if (!regionSlug) {
-      skipped++;
-      continue;
-    }
+    const regionSlug = REGION_SLUG_BY_CODE[c.codeRegion]!;
     const slug = slugByInsee.get(c.code);
     if (!slug) throw new Error(`No slug for commune ${c.code}`);
     byRegionSlug.get(regionSlug)!.push(toVilleData(c, slug, regionSlug));
-  }
-  if (skipped > 0) {
-    console.warn(
-      `[import:villes] skipped ${skipped} communes with unmapped codeRegion (likely COM/TAAF)`,
-    );
   }
 
   // Sort each region by population desc — biggest cities first in the array.

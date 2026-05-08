@@ -25,11 +25,6 @@ import { VILLES_NORMANDIE } from "./data/normandie";
 import { VILLES_BOURGOGNE_FRANCHE_COMTE } from "./data/bourgogne-franche-comte";
 import { VILLES_CENTRE_VAL_DE_LOIRE } from "./data/centre-val-de-loire";
 import { VILLES_CORSE } from "./data/corse";
-import { VILLES_GUADELOUPE } from "./data/guadeloupe";
-import { VILLES_MARTINIQUE } from "./data/martinique";
-import { VILLES_GUYANE } from "./data/guyane";
-import { VILLES_LA_REUNION } from "./data/la-reunion";
-import { VILLES_MAYOTTE } from "./data/mayotte";
 
 import { PARIS_COPY } from "./copy/paris";
 
@@ -62,11 +57,6 @@ const RAW_VILLES: ReadonlyArray<VilleData> = [
   ...VILLES_BOURGOGNE_FRANCHE_COMTE,
   ...VILLES_CENTRE_VAL_DE_LOIRE,
   ...VILLES_CORSE,
-  ...VILLES_GUADELOUPE,
-  ...VILLES_MARTINIQUE,
-  ...VILLES_GUYANE,
-  ...VILLES_LA_REUNION,
-  ...VILLES_MAYOTTE,
 ];
 
 export const VILLES: ReadonlyArray<Ville> = RAW_VILLES.map((v) => {

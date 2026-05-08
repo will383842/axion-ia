@@ -1,6 +1,6 @@
 // Phase Frontend Final pSEO Villes/Régions — Sprint 14.9 (2026-05-08).
-// 18 régions = 13 métropole + 5 DROM (COM volontairement exclus, cf. ADR 0006).
-// Données INSEE (recensement légal 2024). Slugs FR canoniques (kebab-case ASCII).
+// 13 régions métropole France (DROM + COM/TAAF volontairement exclus 2026-05-08
+// décision Will, cf. ADR 0006). Données INSEE. Slugs FR canoniques.
 //
 // Architecture pSEO (cf. axionia/docs/adr/0006-pseo-villes.md) :
 //   /implantations/[region]            → page région (top villes + maillage)
@@ -19,13 +19,16 @@ export interface Region {
   prefecture: string;
   /** Code INSEE région (2 ou 3 chiffres). */
   inseeCode: string;
-  /** Codes département inclus dans la région (numériques ou alphanum DROM/Corse). */
+  /** Codes département inclus dans la région (numériques ou alphanum Corse 2A/2B). */
   departements: ReadonlyArray<string>;
   /** Population légale (recensement INSEE 2024). */
   population: number;
   /** Coordonnées du chef-lieu (lat/lon WGS84). */
   geo: { lat: number; lon: number };
-  /** Type juridique : `metropole` (UE continentale) ou `drom` (Outre-mer). */
+  /**
+   * Type juridique. Seul `metropole` est utilisé V1 (DROM exclus 2026-05-08).
+   * L'union conserve `drom` pour faciliter une éventuelle ré-extension future.
+   */
   type: "metropole" | "drom";
   /** PIB régional (Md€, Eurostat 2023). Optionnel — métropoles surtout. */
   pibBillionsEur?: number;
@@ -279,92 +282,13 @@ export const REGIONS: ReadonlyArray<Region> = [
       "GDP €10 B, premium tourism, wines, agri-food (clementines, charcuterie). AxionIA delivers occasional short engagements (2-3 days) in Ajaccio and Bastia for island SMEs.",
   },
 
-  // === DROM (5) ===
-  {
-    slug: "guadeloupe",
-    nameFr: "Guadeloupe",
-    nameEn: "Guadeloupe",
-    prefecture: "Basse-Terre",
-    inseeCode: "01",
-    departements: ["971"],
-    population: 376000,
-    geo: { lat: 16.265, lon: -61.551 },
-    type: "drom",
-    publicationPhase: 3,
-    noindex: true,
-    pitchFr:
-      "DROM, économie tertiaire et tourisme, ETI agroalimentaires (canne, banane, rhum). AxionIA intervient à distance ou en mission ponctuelle (3-5 jours) auprès des entreprises de Pointe-à-Pitre et Basse-Terre.",
-    pitchEn:
-      "Overseas region, services and tourism economy, agri-food mid-caps (sugarcane, banana, rum). AxionIA works remotely or via occasional 3-5 day on-site missions for businesses in Pointe-à-Pitre and Basse-Terre.",
-  },
-  {
-    slug: "martinique",
-    nameFr: "Martinique",
-    nameEn: "Martinique",
-    prefecture: "Fort-de-France",
-    inseeCode: "02",
-    departements: ["972"],
-    population: 350000,
-    geo: { lat: 14.6415, lon: -61.0242 },
-    type: "drom",
-    publicationPhase: 3,
-    noindex: true,
-    pitchFr:
-      "DROM, distribution, tourisme, agro-industrie (rhum, banane). AxionIA accompagne à distance ou en mission ponctuelle les acteurs de Fort-de-France, Lamentin et Schoelcher.",
-    pitchEn:
-      "Overseas region, retail, tourism, agri-industry (rum, banana). AxionIA supports remotely or via occasional missions stakeholders in Fort-de-France, Lamentin and Schoelcher.",
-  },
-  {
-    slug: "guyane",
-    nameFr: "Guyane",
-    nameEn: "French Guiana",
-    prefecture: "Cayenne",
-    inseeCode: "03",
-    departements: ["973"],
-    population: 290000,
-    geo: { lat: 4.9333, lon: -52.3333 },
-    type: "drom",
-    publicationPhase: 3,
-    noindex: true,
-    pitchFr:
-      "DROM, base spatiale Kourou (CNES, ESA, Arianespace), forêt amazonienne, exploitation aurifère. AxionIA accompagne les sous-traitants spatial et les PME de Cayenne sur leurs cas IA opérationnels.",
-    pitchEn:
-      "Overseas region, Kourou space center (CNES, ESA, Arianespace), Amazon rainforest, gold mining. AxionIA serves space sub-contractors and Cayenne SMEs on operational AI cases.",
-  },
-  {
-    slug: "la-reunion",
-    nameFr: "La Réunion",
-    nameEn: "Réunion",
-    prefecture: "Saint-Denis",
-    inseeCode: "04",
-    departements: ["974"],
-    population: 873000,
-    geo: { lat: -20.8907, lon: 55.4551 },
-    type: "drom",
-    publicationPhase: 3,
-    noindex: true,
-    pitchFr:
-      "DROM, plus peuplé d'outre-mer (873 000 hab), tourisme, BTP, distribution, agro (canne). AxionIA intervient à distance ou via missions trimestrielles sur Saint-Denis et Saint-Pierre.",
-    pitchEn:
-      "Most populous overseas region (873 K inhab.), tourism, construction, retail, agri (sugarcane). AxionIA works remotely or via quarterly missions in Saint-Denis and Saint-Pierre.",
-  },
-  {
-    slug: "mayotte",
-    nameFr: "Mayotte",
-    nameEn: "Mayotte",
-    prefecture: "Mamoudzou",
-    inseeCode: "06",
-    departements: ["976"],
-    population: 321000,
-    geo: { lat: -12.8275, lon: 45.1662 },
-    type: "drom",
-    publicationPhase: 3,
-    noindex: true,
-    pitchFr:
-      "DROM, jeune département (101e, 2011), forte croissance démographique, économie en structuration. AxionIA intervient à distance auprès des entreprises de Mamoudzou et Koungou.",
-    pitchEn:
-      "Overseas region, recent department (#101, 2011), strong demographic growth, economy under structuration. AxionIA works remotely with businesses in Mamoudzou and Koungou.",
-  },
+  // === DROM volontairement exclus 2026-05-08 ===
+  // Décision Will : Axion-IA ne couvre pas Guadeloupe / Martinique / Guyane /
+  // La Réunion / Mayotte (pas d'intervention ni à distance V1, anti-doorway
+  // codebase). Si l'expansion est un jour décidée, ré-ajouter les blocs
+  // DROM ci-dessous + relancer `pnpm villes:import`. Voir aussi les
+  // 29 communes COM/TAAF déjà skippées par le script (Polynésie, Wallis,
+  // St-Barth, St-Martin, St-Pierre-et-Miquelon, Nouvelle-Calédonie).
 ];
 
 const SLUG_INDEX = new Map(REGIONS.map((r) => [r.slug, r] as const));
