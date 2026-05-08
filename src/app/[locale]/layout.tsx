@@ -119,8 +119,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             {children}
           </main>
           <Footer />
+          {/* P-304 — WebVitals dépend de `useLocale()` next-intl, doit donc
+              être enfant du provider sinon prerender throw. */}
+          <WebVitals />
         </NextIntlClientProvider>
-        <WebVitals />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

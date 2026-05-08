@@ -4,7 +4,8 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { BookingCalendar, type BookedSlot } from "@/components/calendar/BookingCalendar";
+import type { BookedSlot } from "@/components/calendar/BookingCalendar";
+import { BookingCalendarLazy } from "@/components/calendar/BookingCalendarLazy";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -359,7 +360,7 @@ export default async function ReserverPage({ params }: Props) {
       {/* Calendrier — page quasi-pleine largeur (override Container max-w-1520) */}
       <div className="bg-bg py-8 sm:py-10">
         <div className="mx-auto w-full max-w-[1680px] px-4 sm:px-6 lg:px-8 xl:px-10">
-          <BookingCalendar initialBookedSlots={bookedSlots} locale={loc} />
+          <BookingCalendarLazy initialBookedSlots={bookedSlots} locale={loc} />
         </div>
       </div>
 

@@ -53,3 +53,7 @@ Thumbs.db
 # Sentry
 .sentryclirc
 .next/build-manifest.json
+
+# Runtime data (RUM Web Vitals ndjson rotatif — P-303)
+/data/
+
