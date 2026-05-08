@@ -25,6 +25,7 @@ import { Link } from "@/i18n/navigation";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VilleHeroSchema } from "@/components/sections/VilleHeroSchema";
+import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDetailSection";
 
 import { getRegion } from "@/content/regions";
 import { VILLES, getVille, type Ville } from "@/content/villes";
@@ -432,6 +433,46 @@ export default async function VillePage({ params }: Props) {
           )}
         </ul>
       </Section>
+
+      {/* 2bis. SECTIONS DÉTAILLÉES PAR SERVICE — perfection extrême Sprint 14.10.1
+          Affichées si copy.services renseigné (Paris pilote + futures villes
+          enrichies). Chaque section ~500-700 mots : hero + raisons + méthodologie
+          + tarifs INSEE + témoignages + garanties. Ces sections font passer la
+          page de ~1200 mots à ~5000+ mots — cap perfection #1 sur « audit IA Ville »,
+          « formation IA Ville », « implémentation IA Ville ». */}
+      {copy.services?.audit ? (
+        <VilleServiceDetailSection
+          isFr={isFr}
+          service="audit"
+          villeNameFr={ville.nameFr}
+          villeSlug={ville.slug}
+          regionSlug={ville.region}
+          copy={copy.services.audit[loc]}
+          tone="paper"
+        />
+      ) : null}
+      {copy.services?.interventions ? (
+        <VilleServiceDetailSection
+          isFr={isFr}
+          service="interventions"
+          villeNameFr={ville.nameFr}
+          villeSlug={ville.slug}
+          regionSlug={ville.region}
+          copy={copy.services.interventions[loc]}
+          tone="canvas"
+        />
+      ) : null}
+      {copy.services?.implementation ? (
+        <VilleServiceDetailSection
+          isFr={isFr}
+          service="implementation"
+          villeNameFr={ville.nameFr}
+          villeSlug={ville.slug}
+          regionSlug={ville.region}
+          copy={copy.services.implementation[loc]}
+          tone="paper"
+        />
+      ) : null}
 
       {/* 3. POURQUOI AXIONIA À [VILLE] — différenciation anti-doorway HCU
           + signal autorité (4 différenciateurs concrets, pas du blabla) */}

@@ -102,13 +102,15 @@ Orchestrer la **certification complète frontend AxionIA niveau best-in-class 20
 
 **Critère passage Vague F** : `pnpm typecheck && pnpm lint && pnpm test && pnpm test:e2e` 100 % vert.
 
-### Vague F — Monitoring + Standards + GATE FINAL
+### Vague F — Monitoring + Standards + Pro Coverage + GATE FINAL
 
 | Ordre | Audit                        | Prompt                                | STOP & ASK                |
 | ----- | ---------------------------- | ------------------------------------- | ------------------------- |
 | F1    | Monitoring & Observability   | `24-MONITORING-OBSERVABILITY-2026.md` | ✅                        |
 | F2    | Professional Standards       | `25-PROFESSIONAL-STANDARDS-2026.md`   | ✅                        |
-| F3    | **FINAL CERTIFICATION GATE** | `26-FINAL-CERTIFICATION-GATE-2026.md` | ✅ Verdict final GO/NO-GO |
+| F3    | API Design + Forms + States  | `27-API-DESIGN-FORMS-STATES-2026.md`  | ✅                        |
+| F4    | Data Resilience + DR         | `28-DATA-RESILIENCE-DR-2026.md`       | ✅                        |
+| F5    | **FINAL CERTIFICATION GATE** | `26-FINAL-CERTIFICATION-GATE-2026.md` | ✅ Verdict final GO/NO-GO |
 
 ## 3. Tracking & livrables
 
@@ -187,36 +189,81 @@ Les prompts existants `_AUDIT/PROMPT-*` (Web Vitals, Code Health, SEO Master, et
 
 Pas de chevauchement. Lance CODE-HEALTH **avant** 03 et 04 dans la Vague A.
 
-## 5. Calcul du score global / 2600
+## 5. Système de scoring unifié
 
-| Vague            | Audits | Pondération             | Score max |
-| ---------------- | ------ | ----------------------- | --------- |
-| A                | 4      | ×1                      | 400       |
-| B                | 3      | ×1                      | 300       |
-| C                | 6      | ×1                      | 600       |
-| D                | 5      | **×2** (critique scale) | 1000      |
-| E                | 5      | ×1                      | 500       |
-| F                | 3      | ×1                      | 300       |
-| **Total ajusté** | 26     |                         | **3100**  |
+**Une seule échelle : pourcentage 0-100 % par audit, agrégé en moyenne pondérée.**
 
-> Note : Vague D pondérée ×2 vu la criticité scale. Score max = 3100, normalisé /2600 pour lisibilité.
+### Niveau 1 — Score par audit
 
-### Seuils GATE FINAL
+Chaque prompt audite sur `/N` (N = chapitres × 10 critères). Convertir en % (`score / N × 100`).
 
-| Score                | Verdict                                                         |
-| -------------------- | --------------------------------------------------------------- |
-| ≥ 95 % (≥ 2470/2600) | **GO PROD** — best-in-class certifié                            |
-| 85-94 % (2210-2469)  | **GO conditionnel** — patches identifiés appliqués sous 7 jours |
-| 70-84 % (1820-2209)  | **NO-GO** — vague D ou E à reprendre intégralement              |
-| < 70 %               | **NO-GO STRICT** — refonte d'un ou plusieurs domaines requise   |
+| Audit                                 | Total critères | Score max %  |
+| ------------------------------------- | -------------- | ------------ |
+| 03 Architecture DRY                   | 70             | 100 %        |
+| 04 Centralisation SSOT                | 60             | 100 %        |
+| 06 A11y                               | 60             | 100 %        |
+| 10 Internal Linking                   | 50             | 100 %        |
+| 12 pSEO Quality                       | 50             | 100 %        |
+| 13 Content Pipeline                   | 80             | 100 %        |
+| 14 i18n                               | 50             | 100 %        |
+| 15 Security                           | 50             | 100 %        |
+| 16 Tests                              | 50             | 100 %        |
+| 17 Content Quality                    | 50             | 100 %        |
+| 18 CRO                                | 50             | 100 %        |
+| 19 Legal                              | 50             | 100 %        |
+| 20 Scalability                        | 80             | 100 %        |
+| 21 Indexation                         | 60             | 100 %        |
+| 22 Cache ISR                          | 50             | 100 %        |
+| 23 Quality Auto                       | 60             | 100 %        |
+| 24 Monitoring                         | 50             | 100 %        |
+| 25 Pro Standards                      | 100            | 100 %        |
+| Externes (A1, A2, B1, C1, C2, C3, C5) | variable       | 100 % chacun |
+
+### Niveau 2 — Agrégation orchestrateur (indicative)
+
+Moyenne pondérée des audits par vague :
+
+| Vague | Audits                | Pondération | Note                                 |
+| ----- | --------------------- | ----------- | ------------------------------------ |
+| A     | 4 (A1+A2+03+04)       | ×1          | Foundations                          |
+| B     | 3 (B1+06+14)          | ×1          | Design + a11y + i18n                 |
+| C     | 6 (C1+C2+C3+10+C5+12) | ×1          | SEO + linking + pSEO                 |
+| D     | 5 (13+20+21+22+23)    | **×2**      | Scale (100-300 URLs/jour critique)   |
+| E     | 5 (15+16+17+18+19)    | ×1          | Tests + sécu + content + CRO + légal |
+| F     | 2 (24+25)             | ×1          | Monitoring + standards               |
+
+**Agrégat orchestrateur** = moyenne pondérée % sur 25 audits = **score indicatif** seulement. Pas le verdict final.
+
+### Niveau 3 — VERDICT FINAL via Gate 26
+
+**Le verdict GO/NO-GO repose UNIQUEMENT sur le Gate 26** (`26-FINAL-CERTIFICATION-GATE-2026.md`), qui est une checklist exécutable de 315 critères pondérés produisant un score normalisé /100.
+
+| Gate 26 score normalisé | Verdict                                                       |
+| ----------------------- | ------------------------------------------------------------- |
+| ≥ 95 %                  | **GO PROD** — best-in-class certifié 2026                     |
+| 85-94 %                 | **GO conditionnel** — patches identifiés sous 7 jours         |
+| 70-84 %                 | **NO-GO** — vague D ou E à reprendre intégralement            |
+| < 70 %                  | **NO-GO STRICT** — refonte d'un ou plusieurs domaines requise |
+
+**Le Gate 26 a sa propre logique de scoring détaillée dans le fichier 26.** L'agrégat orchestrateur (Niveau 2) sert de signal d'alerte précoce, pas de verdict.
 
 ## 6. Mode opératoire (toi, l'orchestrateur)
 
 ### Étape 1 : Préparer
 
 1. Crée `_RUN-LOG-YYYY-MM-DD.md`
-2. Vérifie que tous les 26 prompts existent (sinon STOP & ASK : créer le manquant)
-3. `pnpm install && pnpm build` pour partir d'un état clean
+2. **Vérifie que les 18 prompts internes du dossier existent** :
+   - `03-ARCHITECTURE-DRY-2026.md` à `26-FINAL-CERTIFICATION-GATE-2026.md` (cf. README pour liste complète)
+3. **Vérifie que les 7 prompts externes référencés existent** :
+   - `_AUDIT/PROMPT-WEB-VITALS-PERFECTION-2026.md` (audit A1)
+   - `_AUDIT/PROMPT-CODE-HEALTH-2026.md` (audit A2)
+   - `_AUDIT/PROMPT-VISUAL-RHYTHM-2026.md` + `PROMPT-TYPOGRAPHY-2026.md` + `PROMPT-HEADER-NAVIGATION-2026.md` (audit B1 design)
+   - `_AUDIT/PROMPT-SEO-MASTER-2026.md` (audit C1)
+   - `_AUDIT/PROMPT-SEO-AEO-GEO-2026.md` (audit C2)
+   - `_AUDIT/PROMPT-PAGE-AUDIT-PERFECT-2026.md` (audit C5)
+4. **Si un prompt manque → STOP & ASK obligatoire** (ne pas continuer la certification incomplète, ne pas inventer un audit)
+5. **Référencer les thresholds canoniques** : `_AUDIT/CERTIFICATION-FRONTEND-2026/README.md` § « Thresholds canoniques » fait foi pour TOUS les seuils chiffrés
+6. `pnpm install && pnpm build` pour partir d'un état clean
 
 ### Étape 2 : Exécuter vague par vague
 

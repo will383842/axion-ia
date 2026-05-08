@@ -90,11 +90,13 @@ Lance les 3 prompts critiques scaling :
 
 ### Vague F — Monitoring, Standards, Final Gate
 
-| #   | Prompt                       | Statut                                | Cible                                      |
-| --- | ---------------------------- | ------------------------------------- | ------------------------------------------ |
-| 24  | Monitoring & Observability   | `24-MONITORING-OBSERVABILITY-2026.md` | RUM + Search Console + uptime + alerting   |
-| 25  | Professional Standards       | `25-PROFESSIONAL-STANDARDS-2026.md`   | ADRs + runbooks + postmortems + onboarding |
-| 26  | **FINAL CERTIFICATION GATE** | `26-FINAL-CERTIFICATION-GATE-2026.md` | GO/NO-GO checklist exécutable              |
+| #   | Prompt                       | Statut                                | Cible                                               |
+| --- | ---------------------------- | ------------------------------------- | --------------------------------------------------- |
+| 24  | Monitoring & Observability   | `24-MONITORING-OBSERVABILITY-2026.md` | RUM + Search Console + uptime + alerting            |
+| 25  | Professional Standards       | `25-PROFESSIONAL-STANDARDS-2026.md`   | ADRs + runbooks + postmortems + onboarding          |
+| 27  | API Design + Forms + States  | `27-API-DESIGN-FORMS-STATES-2026.md`  | Server Actions shape + Zod symétrique + states cov. |
+| 28  | Data Resilience + DR         | `28-DATA-RESILIENCE-DR-2026.md`       | Prisma queries + indexes + migration runbook + DR   |
+| 26  | **FINAL CERTIFICATION GATE** | `26-FINAL-CERTIFICATION-GATE-2026.md` | GO/NO-GO checklist exécutable                       |
 
 ## Cadence recommandée
 
@@ -107,6 +109,93 @@ Lance les 3 prompts critiques scaling :
 | **Après gros rollout pSEO**    | 12, 13, 21, 23                             |
 | **Après Sprint backend (15+)** | 02, 15, 16                                 |
 | **Après changement design**    | 05 (3 prompts) + 06                        |
+
+## Thresholds canoniques (SSOT — référencer cette section partout)
+
+Tous les prompts du dossier référencent ces seuils. **NE JAMAIS** les redéfinir dans un prompt individuel — pointer ici.
+
+### Performance & Web Vitals
+
+- LCP p75 ≤ 1 800 ms (cible interne) / 2 500 ms (Google good)
+- INP p75 ≤ 100 ms (cible interne) / 200 ms (Google good)
+- CLS p75 ≤ 0,05 (cible interne) / 0,1 (Google good)
+- TBT ≤ 150 ms Lighthouse lab
+- TTFB p75 ≤ 100 ms via Cloudflare CDN
+- Bundle initial route home ≤ 70 KB gzip
+- Bundle initial route lourde (`/reserver`) ≤ 110 KB gzip
+- Build prod < 10 min sur Hetzner CX32
+
+### Quality content (anti-doorway HCU)
+
+- Min word count gold standard : **800 mots** par page indexable
+- Uniqueness Jaccard 5-grams : **≥ 0,7 distinct** vs corpus existant (chaque page distincte d'au moins 30 % des autres)
+- Lecture grade FR Flesch-Kincaid : ≥ 60
+- Densité par mot-clé : < 3 %
+
+### Indexation & SEO
+
+- Indexation rate à J+30 ≥ 80 % des nouvelles URLs
+- Time-to-index per page ≤ 7 jours
+- Sitemap split max 50 000 URLs / fichier
+- Sitemap < 10 MB / fichier (gzippé si > 1 MB)
+- Click depth max 3 depuis home pour 95 % pages indexables
+- Click depth max 4 pour 100 %
+
+### Cache & infra
+
+- Cache hit rate Cloudflare ≥ 90 %
+- Time-to-fresh post-publish ≤ 60 sec via Cloudflare
+- Origin pull rate ≤ 10 % du traffic total
+- Bandwidth Hetzner usage ≤ 50 % de 20 TB/mois
+- Disk Hetzner ≤ 80 % avant alerting
+
+### Quality automation
+
+- Lighthouse sampling : **1 % des nouvelles pages quotidien** (sample stratifié par région + template)
+- Régression alert : Lighthouse drop > 10 pts vs baseline
+- Bundle delta gate : > +5 KB gzip vs main = block PR
+- Bundle delta hard fail : > +20 KB gzip = block sans STOP & ASK
+- Anomaly alert : indexation drop > 10 %, RUM LCP p75 hausse > 20 %, error rate > 1 %, uptime < 99,9 %, disk > 80 %, RAM > 85 %, CPU > 80 % sustained
+
+### Tests coverage
+
+- Vitest coverage `lib/` ≥ 80 %
+- Vitest coverage `hooks/` ≥ 80 %
+- Vitest coverage `utils/` ≥ 90 %
+- Playwright e2e : 5 parcours critiques minimum
+- Axe-core a11y : 0 violation sur 15 pages stratégiques
+
+### File structure
+
+- File size max : 400 LOC (sinon split)
+- Folder depth max : 4 niveaux
+- Function length max : 50 LOC (sinon refactor)
+- Cyclomatic complexity max : 10
+
+### Cadences ops chiffrées
+
+- Backup auto Coolify : daily, retention 30j minimum
+- Restore drill : trimestriel obligatoire (RTO < 1h, RPO < 24h)
+- Secrets rotation : DB password annuel, API tokens trimestriel, Auth.js secret semestriel
+- Dependabot : weekly grouped PRs
+- `pnpm outdated` audit : trimestriel
+- DR drill complet : semestriel
+- Postmortem : obligatoire pour incident > 30 min downtime
+- Sample manual content review : 5 villes random / mois
+
+### Système de scoring unifié
+
+**Système unique appliqué partout** : chaque prompt audite sur `/N` (N = chapitres × 10 critères). Le master orchestrator agrège en pourcentage (0-100 %), pas en valeur absolue. Le gate final 26 est un **audit indépendant** de validation finale, scoré séparément (315 critères checklist exécutable).
+
+| Niveau                   | Source       | Output                                    |
+| ------------------------ | ------------ | ----------------------------------------- |
+| Audit individuel         | Prompt 03-25 | Score % par audit                         |
+| Agrégation orchestrateur | Master 00    | Moyenne pondérée % global (Vague D ×2)    |
+| Validation finale        | Gate 26      | Checklist 315 critères → verdict GO/NO-GO |
+
+**Verdict GO/NO-GO basé sur Gate 26 uniquement** (pas sur l'agrégation orchestrateur, qui est indicative).
+
+---
 
 ## Contraintes intouchables (toutes les certifications)
 

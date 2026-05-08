@@ -52,6 +52,10 @@ Auditer le pipeline éditorial bout-en-bout et proposer un plan complet pour :
 2.9 Cache des générations (republish = pas de re-call AI)
 2.10 Quota daily configuré (max 500 pages/jour pour absorber pics)
 
+### Frontière avec audit 23 (Quality Automation)
+
+> **13 cible le pipeline workflow** (génération → validation → publish → indexation). **23 cible le quality gate post-publish** (sampling Lighthouse, RUM aggregation, anomaly detection, rollback). La validation pré-publish (chapitre 3 ci-dessous) est **opérée par 13** mais **monitorée par 23**. Si conflit → 23 fait foi pour les seuils chiffrés (cf. README Thresholds canoniques).
+
 ### Chapitre 3 — Quality gate (anti-doorway HCU)
 
 3.1 Min word count par page indexable (≥ 800 mots gold standard)

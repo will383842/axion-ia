@@ -2,7 +2,7 @@
 
 > Audit single sources of truth : brand, prix, routes, copy, navigation, JSON-LD, design tokens, etc.
 
-## Audit en 5 chapitres × 10 critères = 50 points
+## Audit en 6 chapitres × 10 critères = 60 points
 
 ### 1. Design tokens
 

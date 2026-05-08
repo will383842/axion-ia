@@ -33,15 +33,10 @@ export interface VilleHeroConfig {
 }
 
 /**
- * Contexte local d'application des 3 services AxionIA à la ville.
- * Sprint 14.9.1 (refonte 2026-05-08) : cœur de la valeur AxionIA pour la
- * landing page ville. 1 phrase courte (~25-50 mots) par service précisant
- * comment AxionIA délivre concrètement à cette ville (logistique, secteurs
- * dominants, profils clients typiques, délai démarrage).
- *
- * Optionnel : si non fourni, fallback générique « À [Ville], aucun frais
- * de déplacement supplémentaire... ». Mais une page ville pilote vraiment
- * différenciée DOIT avoir les 3 phrases.
+ * Contexte local d'application des 3 services AxionIA — version COURTE
+ * pour la page ville mère (1 phrase ~25-50 mots par service).
+ * Conservé pour rétrocompat. Pour les pages ville × service dédiées
+ * (`/audit/[ville]`, etc.), utiliser `services` (long form) ci-dessous.
  */
 export interface VilleServicesContext {
   audit?: { fr: string; en: string };
@@ -49,13 +44,103 @@ export interface VilleServicesContext {
   implementation?: { fr: string; en: string };
 }
 
+/**
+ * Témoignage local pour preuve sociale spécifique à la ville × service.
+ * Anonymisé (pas de nom entreprise complet) pour respecter la convention
+ * AxionIA (cf. `src/content/case-studies.ts`).
+ */
+export interface VilleTestimonial {
+  /** Quote 30-80 mots. */
+  quote: string;
+  /** Rôle anonymisé (ex "Directeur général"). */
+  role: string;
+  /** Profil entreprise anonymisé (ex "ETI conseil 9e arrondissement, 250 collab"). */
+  companyProfile: string;
+}
+
+/**
+ * Copie longue d'un service à la ville — pour la page ville × service
+ * dédiée (`/audit/[ville]`, `/interventions/[ville]`, `/implementation/[ville]`).
+ *
+ * Sprint 14.10.1 (2026-05-08) : décision Will = « toutes villes indexables ».
+ * Cap = perfection extrême + différenciation anti-doorway HCU 2024.
+ * Volume cible : 1500-2500 mots par page ville × service (data unique).
+ */
+export interface VilleServiceCopyLocale {
+  /**
+   * Hero direct-answer 80-150 mots citable LLMs.
+   * Cible : `audit IA <ville>`, `formation IA <ville>`, `implémentation IA <ville>`.
+   * Doit mentionner : entité AxionIA + service + ville + tarif d'entrée +
+   * délai démarrage + différenciateur clé.
+   */
+  hero: string;
+  /**
+   * 4-6 raisons spécifiques pourquoi AxionIA à cette ville × service
+   * (data INSEE locale + secteurs B2B + cas clients secteurs présents).
+   * Ex pour audit Paris : "Pôle prioritaire 5j moyenne kick-off",
+   * "Frais déplacement intra-Paris inclus", "Tissu PME/ETI 215K entreprises", etc.
+   */
+  whyHere: ReadonlyArray<string>;
+  /**
+   * Méthodologie pas à pas — 4-6 étapes spécifiques au service.
+   * Différenciée de la doctrine générique : ancre contextes locaux quand pertinent.
+   */
+  methodology: ReadonlyArray<{ step: string; detail: string }>;
+  /**
+   * Grille tarifaire locale par taille entreprise INSEE (TPE/PME/ETI/GE).
+   * Tarifs publics, pas de devis opaque (différenciateur AxionIA).
+   */
+  pricing: ReadonlyArray<{
+    sizeLabel: string; // "TPE (< 10 collab)" / "PME (10-249)" / "ETI (250-4999)" / "Grande entreprise (5000+)"
+    price: string; // "490 € HT" / "1 900 - 3 900 € HT" / "Sur devis"
+    detail: string; // 1 phrase contextuelle
+  }>;
+  /**
+   * Témoignages clients locaux anonymisés (1-3 par service × ville).
+   * Pivot social proof : "ETI conseil 9e arrondissement, 250 collab" + quote.
+   */
+  testimonials?: ReadonlyArray<VilleTestimonial>;
+  /**
+   * FAQ spécifique au service à la ville (4-8 Q/R). Speakable JSON-LD.
+   * Sujets : tarifs locaux, délai démarrage, formats, RGPD, garanties,
+   * comparaison vs alternatives.
+   */
+  faq: ReadonlyArray<VilleFaq>;
+  /**
+   * Garanties / engagements spécifiques au service. 1 paragraphe ~50-100 mots.
+   * Anti-fear : RGPD, no lock-in, satisfaction, ROI chiffré.
+   */
+  guarantees: string;
+}
+
+/**
+ * Long-form services à la ville — alimente les 3 pages ville × service
+ * dédiées (`/audit/[ville]`, `/interventions/[ville]`, `/implementation/[ville]`)
+ * ainsi que des sections détaillées sur la page ville mère.
+ *
+ * Optionnel : si absent, les pages ville × service rendent un stub minimal
+ * `noindex follow` (anti-doorway HCU 2024).
+ */
+export interface VilleServicesLong {
+  audit?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
+  interventions?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
+  implementation?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
+}
+
 export interface VilleCopy {
   /** Pitch FR 30-50 mots, citable LLMs (signal AEO/GEO). */
   pitchFr: string;
   /** Pitch EN miroir. */
   pitchEn: string;
-  /** Contexte local d'application des 3 services AxionIA. */
+  /** Contexte local d'application des 3 services AxionIA (version courte). */
   servicesContext?: VilleServicesContext;
+  /**
+   * Long-form services à la ville (1500-2500 mots par service). Sprint 14.10.1.
+   * Alimente les pages ville × service dédiées + sections détaillées page mère.
+   * Cap : perfection extrême — chaque ville pilote DOIT avoir cette structure
+   * pour rank #1 sur « audit IA <ville> » / « formation IA <ville> » / etc.
+   */
+  services?: VilleServicesLong;
   /**
    * Direct-answer FR 40-80 mots (Q "qu'est-ce qu'AxionIA à [Ville] ?"),
    * citable verbatim par Perplexity / Claude.ai / Google AI Overviews.

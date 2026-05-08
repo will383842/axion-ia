@@ -2,7 +2,7 @@
 
 > Audit organisation fichiers, atomic design, naming, dead code, duplication.
 
-## Audit en 5 chapitres × 10 critères = 50 points
+## Audit en 7 chapitres × 10 critères = 70 points
 
 ### 1. App Router structure
 

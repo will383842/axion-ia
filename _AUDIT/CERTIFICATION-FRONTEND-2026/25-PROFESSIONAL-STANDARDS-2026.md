@@ -13,7 +13,7 @@ Pour atteindre le niveau "très professionnel" attendu d'un cabinet IA B2B premi
 - Incident response playbook
 - Tech debt maîtrisé
 
-## 1. Audit en 8 chapitres × 10 critères = 80 points
+## 1. Audit en 10 chapitres × 10 critères = 100 points
 
 ### Chapitre 1 — ADRs (Architecture Decision Records)
 
