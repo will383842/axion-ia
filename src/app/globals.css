@@ -820,3 +820,73 @@
   border: 1px dashed var(--color-border-strong);
   border-radius: 8px;
 }
+
+/* M9 T1.3 — Calendrier admin grid */
+.admin-calendar-grid-wrapper {
+  padding: 16px;
+}
+.admin-calendar-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.admin-calendar-header {
+  padding: 8px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+}
+.admin-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.admin-calendar-cell {
+  min-height: 90px;
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-paper);
+  font-size: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-calendar-cell-empty {
+  border: 1px dashed var(--color-border);
+  background-color: var(--color-bg);
+}
+.admin-calendar-cell-date {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.admin-calendar-cell-today {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+.admin-calendar-cell-available {
+  background-color: var(--color-paper);
+}
+.admin-calendar-cell-reserved {
+  background-color: var(--color-sage-soft);
+}
+.admin-calendar-cell-blocked {
+  background-color: var(--color-bg);
+  color: var(--color-fg-muted);
+}
+.admin-calendar-cell-status {
+  display: flex;
+}
+.admin-calendar-cell-meta {
+  font-size: 11px;
+  color: var(--color-fg-muted);
+}
+.admin-calendar-panel {
+  margin-top: 16px;
+}
