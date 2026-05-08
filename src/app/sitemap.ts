@@ -64,7 +64,11 @@ type StaticSitemapId =
   | "comparaisons"
   | "implementation"
   | "implantations"
-  | "services-villes";
+  | "services-villes-audit"
+  | "services-villes-interventions"
+  | "services-villes-implementation";
+
+type ServiceVillesKey = "audit" | "interventions" | "implementation";
 
 type PathnameKey = keyof typeof routing.pathnames;
 
@@ -200,7 +204,9 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "comparaisons",
     "implementation",
     "implantations",
-    "services-villes",
+    "services-villes-audit",
+    "services-villes-interventions",
+    "services-villes-implementation",
   ];
   return [...staticIds.map((id) => ({ id })), ...getVillesSitemapIds().map((id) => ({ id }))];
 }
@@ -227,8 +233,12 @@ export default async function sitemap(props: {
       return buildImplementationSitemap(now);
     case "implantations":
       return buildImplantationsHubSitemap(now);
-    case "services-villes":
-      return buildServicesVillesSitemap(now);
+    case "services-villes-audit":
+      return buildServicesVillesSitemap(now, "audit");
+    case "services-villes-interventions":
+      return buildServicesVillesSitemap(now, "interventions");
+    case "services-villes-implementation":
+      return buildServicesVillesSitemap(now, "implementation");
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -515,43 +525,39 @@ function buildVillesByRegionSitemap(
 // l'outil de génération produit les copies pour toutes les villes pilotes,
 // volume cible : ~50 villes × 3 services × 2 locales = 300 URLs Phase 1,
 // puis ~2150 × 3 × 2 = 12 900 URLs Phase 3 (chunking auto à activer).
-function buildServicesVillesSitemap(now: Date): MetadataRoute.Sitemap {
+// C6 cert 2026-05-08 : split en 3 sub-sitemaps par service pour anticiper
+// le scale 2150 villes × 3 services × 2 locales = 12 900 URLs (chaque service
+// = 4 300 URLs max, sous le cap 50 000 imposé par sitemaps.org). Search Console
+// préfère des sub-sitemaps homogènes par template plutôt qu'un mega-sitemap mixte.
+const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: string }> = {
+  audit: { pathFr: "/audit/par-ville", pathEn: "/audit/by-city" },
+  interventions: { pathFr: "/interventions/par-ville", pathEn: "/interventions/by-city" },
+  implementation: { pathFr: "/implementation/par-ville", pathEn: "/implementation/by-city" },
+};
+
+function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
-  const services: ReadonlyArray<{
-    key: "audit" | "interventions" | "implementation";
-    pathFr: string;
-    pathEn: string;
-  }> = [
-    { key: "audit", pathFr: "/audit/par-ville", pathEn: "/audit/by-city" },
-    { key: "interventions", pathFr: "/interventions/par-ville", pathEn: "/interventions/by-city" },
-    {
-      key: "implementation",
-      pathFr: "/implementation/par-ville",
-      pathEn: "/implementation/by-city",
-    },
-  ];
+  const { pathFr, pathEn } = SERVICE_VILLES_PATHS[service];
 
   for (const ville of getIndexableVilles()) {
-    for (const svc of services) {
-      if (!ville.copy?.services?.[svc.key]) continue;
-      const frUrl = `${SITE_URL}/fr${svc.pathFr}/${ville.slug}`;
-      const enUrl = `${SITE_URL}/en${svc.pathEn}/${ville.slug}`;
-      const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
-      entries.push({
-        url: frUrl,
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.7,
-        alternates: { languages: langs },
-      });
-      entries.push({
-        url: enUrl,
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.7,
-        alternates: { languages: langs },
-      });
-    }
+    if (!ville.copy?.services?.[service]) continue;
+    const frUrl = `${SITE_URL}/fr${pathFr}/${ville.slug}`;
+    const enUrl = `${SITE_URL}/en${pathEn}/${ville.slug}`;
+    const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
+    entries.push({
+      url: frUrl,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: langs },
+    });
+    entries.push({
+      url: enUrl,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: langs },
+    });
   }
   return entries;
 }

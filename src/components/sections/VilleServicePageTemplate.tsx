@@ -412,6 +412,65 @@ export async function renderVilleServicePage({
         />
       ) : null}
 
+      {/* Cross-services à la même ville — maillage 3 services × ville
+          (audit / interventions / implementation) — patch C4 cert 2026-05-08.
+          Renforce maillage interne sans avoir à parcourir 4 niveaux depuis home. */}
+      {(() => {
+        const otherServices: ServiceKey[] = (
+          ["audit", "interventions", "implementation"] as const
+        ).filter((s) => s !== service && !!ville.copy?.services?.[s]);
+        if (otherServices.length === 0) return null;
+        return (
+          <Section
+            eyebrow={isFr ? "Autres services à" : "Other services in"}
+            title={ville.nameFr}
+            titleEm={isFr ? "même ville" : "same city"}
+            description={
+              isFr
+                ? `Axion-IA délivre 3 prestations IA à ${ville.nameFr}. Découvrez les autres formats disponibles localement.`
+                : `Axion-IA delivers 3 AI services in ${ville.nameFr}. Discover the other formats available locally.`
+            }
+            tone="paper"
+          >
+            <ul className="grid gap-4 lg:grid-cols-2">
+              {otherServices.map((s) => {
+                const otherMeta = SERVICE_META[s];
+                const Icon = otherMeta.icon;
+                return (
+                  <li key={s}>
+                    <Link
+                      href={`${otherMeta.pathFr}/${ville.slug}` as never}
+                      data-source-region={ville.region}
+                      data-source-ville={ville.slug}
+                      data-cta-tracking={`ville_sister_service_${s}`}
+                      className="border-border bg-paper hover:border-terracotta-deep focus-visible:ring-terracotta group block rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta-deep mb-4 h-6 w-6"
+                        strokeWidth={2}
+                      />
+                      <h3
+                        className="text-fg group-hover:text-terracotta text-xl font-semibold tracking-tight transition"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {isFr ? otherMeta.nameFr : otherMeta.nameEn}{" "}
+                        <span className="italic">
+                          {isFr ? `à ${ville.nameFr}` : `in ${ville.nameFr}`}
+                        </span>
+                      </h3>
+                      <p className="text-fg-muted mt-2 text-sm leading-relaxed">
+                        {isFr ? otherMeta.eyebrowFr : otherMeta.eyebrowEn}
+                      </p>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </Section>
+        );
+      })()}
+
       {/* Villes proches même service — maillage interne */}
       {nearbyVilles.length > 0 ? (
         <Section

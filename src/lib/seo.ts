@@ -500,9 +500,30 @@ interface LocalBusinessJsonLdInput {
   geo?: { latitude: number; longitude: number };
   /** Optional price range (e.g. "€€€"). */
   priceRange?: string;
-  /** Optional opening hours (e.g. ["Mo-Fr 09:00-18:00"]). */
-  openingHours?: ReadonlyArray<string>;
+  /**
+   * Opening hours typés Schema.org (cf. https://schema.org/OpeningHoursSpecification).
+   * Default : Mo-Fr 09:00-18:00.
+   * Cert C6 2026-05-08 : forme objet typée requise (Google Validator rejette les
+   * arrays de strings type "Mo-Fr 09:00-18:00").
+   */
+  openingHours?: ReadonlyArray<{
+    dayOfWeek: ReadonlyArray<
+      "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"
+    >;
+    /** Format HH:MM 24h. */
+    opens: string;
+    /** Format HH:MM 24h. */
+    closes: string;
+  }>;
 }
+
+const DEFAULT_OPENING_HOURS = [
+  {
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "09:00",
+    closes: "18:00",
+  },
+] as const;
 
 // LocalBusiness JSON-LD — required for «#1 ville/région» strategy.
 // Each city/region landing page (Sprint 15) emits this so Google Maps,
@@ -518,7 +539,7 @@ export function buildLocalBusinessJsonLd({
   address,
   geo,
   priceRange = "€€€",
-  openingHours = ["Mo-Fr 09:00-18:00"],
+  openingHours = DEFAULT_OPENING_HOURS,
 }: LocalBusinessJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
   return {
@@ -560,7 +581,16 @@ export function buildLocalBusinessJsonLd({
           },
         }
       : {}),
-    ...(openingHours.length ? { openingHoursSpecification: openingHours } : {}),
+    ...(openingHours.length
+      ? {
+          openingHoursSpecification: openingHours.map((spec) => ({
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: spec.dayOfWeek,
+            opens: spec.opens,
+            closes: spec.closes,
+          })),
+        }
+      : {}),
   } as const;
 }
 
