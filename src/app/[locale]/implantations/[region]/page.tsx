@@ -337,8 +337,8 @@ export default async function RegionPage({ params }: Props) {
         titleEm={region.nameFr}
         description={
           isFr
-            ? "Toutes nos prestations sont disponibles sans surcoût géographique. Frais de déplacement intégrés au forfait pour les capitales régionales."
-            : "All our services are available without geographic surcharge. Travel fees included for regional capitals."
+            ? "Toutes nos prestations sont disponibles aux mêmes tarifs publics partout en France métropolitaine."
+            : "All our services are available at the same public pricing across all metropolitan France."
         }
         tone="sand"
       >

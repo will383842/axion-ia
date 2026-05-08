@@ -1,32 +1,53 @@
-// Paris — contenu éditorial gold standard (Sprint 14.9, doctrine v3.2).
-// Curaté manuellement par Will. Sera la référence pour la phase LLM
-// d'industrialisation (50 villes top en sem 1-2). Le script `import-insee-villes.ts`
-// ne touche pas ce fichier.
+// Paris — contenu éditorial gold standard (Sprint 14.10.2 refonte 2026-05-08).
+//
+// Corrections Will 2026-05-08 :
+//   - Aucun « basé en UE » (mention supprimée partout).
+//   - Aucun délai concret (« 5-10 jours », « 7 jours », etc. supprimés).
+//   - Aucun « frais de déplacement intégrés » (les frais sont en plus,
+//     calculés au cas par cas selon la zone).
+//   - Aucune durée concrète (« demi-journée présentielle ») : les formats
+//     vont d'une demi-journée à plusieurs semaines selon le besoin.
+//   - Aucun prix hardcodé : tous les tarifs viennent de `src/content/pricing.ts`
+//     (source de vérité unique, futur admin Sprint 20).
+//   - Pas de mention de métier-type (plombier, comptable, etc.) — on parle
+//     systématiquement en tailles d'entreprise INSEE (TPE / PME / ETI / GE).
+//   - Blocs longs cassés en bullets, vocabulaire accessible non technique.
+//
+// Doctrine page mère + pages dédiées :
+//   - ~95 % AxionIA-centric (commercial, ce qu'on fait, pourquoi nous)
+//   - ~5 % data INSEE bouclier anti-doorway HCU 2024 (population, secteurs,
+//     communes limitrophes, code INSEE)
+//   - Visiteur lit AxionIA, Google voit data unique → page indexable sans
+//     pénalité doorway.
+
 import type { VilleCopy } from "./types";
 
 export const PARIS_COPY: VilleCopy = {
   pitchFr:
-    "Capitale économique européenne, Paris concentre 215 000 entreprises actives, le siège des grands groupes français et l'écosystème IA national (Mistral, Hugging Face, Station F). AxionIA y intervient sur site dans Paris intra-muros et toute l'Île-de-France, des cabinets indépendants aux directions IA des grands comptes.",
+    "Paris concentre 215 000 entreprises actives toutes tailles confondues, l'écosystème IA français (Mistral, Hugging Face, Station F) et le tissu B2B le plus dense du pays. AxionIA y intervient sur site, des indépendants parisiens aux directions IA des grandes entreprises de La Défense.",
   pitchEn:
-    "Europe's economic capital, Paris hosts 215,000 active businesses, headquarters of major French groups and the national AI ecosystem (Mistral, Hugging Face, Station F). AxionIA delivers on-site engagements throughout Paris and Greater Paris, from independent firms to AI leadership of large corporates.",
+    "Paris hosts 215,000 active businesses of every size, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. AxionIA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
+
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paris : pôle prioritaire d'AxionIA. 4 niveaux (Flash 490 € HT, Ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI dès 12 000 €). Délai moyen entre signature et kick-off : 5-10 jours ouvrés. Aucun frais de déplacement intra-muros ni petite couronne.",
-      en: "AI audit in Paris: AxionIA priority hub. 4 tiers (Flash €490, Targeted €1,900-3,900, SME Strategic €4,900-9,900, Mid-cap Strategic from €12,000). Average lead time between signature and kick-off: 5-10 business days. No travel fees within Paris and inner suburbs.",
+      fr: "Audit IA opérationnel à Paris : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille et votre ambition.",
+      en: "Operational AI audit in Paris: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size and ambition.",
     },
     interventions: {
-      fr: "Interventions IA à Paris : 5 formats (Essentielle 490 € HT 1 journée, Équipes, Managers, Conférence ½ journée, Dirigeants). Disponibles dans les 20 arrondissements, La Défense, première couronne (Levallois, Boulogne, Issy, Neuilly). Démos sur vos vraies données, jusqu'à 100 collaborateurs par session.",
-      en: "AI sessions in Paris: 5 formats (Essential €490 1 day, Teams, Managers, Half-day talk, Executives). Available across all 20 arrondissements, La Défense, inner suburbs (Levallois, Boulogne, Issy, Neuilly). Demos on your real data, up to 100 collaborators per session.",
+      fr: "Interventions IA à Paris : 5 formats sur site, d'une demi-journée à plusieurs semaines selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
+      en: "AI sessions in Paris: 5 on-site formats, from a half-day to several weeks depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
     },
     implementation: {
-      fr: "Implémentation IA à Paris : mise en production en 6-12 semaines, ROI chiffré, formation incluse. Hybride sur site / distance, kick-off à Paris obligatoire. Cas typiques parisiens : lecture de factures, comptes-rendus de réunions automatisés, qualification IA des leads, agents conversationnels CRM/ERP.",
-      en: "AI implementation in Paris: production deployment in 6-12 weeks, costed ROI, training included. Hybrid on-site / remote, kick-off in Paris required. Typical Paris cases: invoice reading, automated meeting minutes, AI lead qualification, CRM/ERP conversational agents.",
+      fr: "Implémentation IA à Paris : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, on ne crée pas de dépendance.",
+      en: "AI implementation in Paris: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
   },
+
   directAnswerFr:
-    "AxionIA est un cabinet IA opérationnel basé en UE qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons toutes tailles d'entreprise — TPE, PME, ETI, grandes entreprises (sièges La Défense, 8e, 16e) et startups parisiennes (Station F, French Tech) — sur leurs cas IA opérationnels : diagnostic 5 jours, démos sur vos vraies données, plan d'action chiffré. Tarif public dès 490 € HT pour l'intervention essentielle 1 journée. Aucun lock-in technologique.",
+    "AxionIA est un cabinet IA opérationnel qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "AxionIA is an EU-based operational AI consultancy delivering on-site engagements across all 20 Paris arrondissements and the inner suburbs. We support every company size — micro-businesses, SMEs, mid-caps, large enterprises (La Défense, 8th, 16th HQs) and startups (Station F, French Tech) — on their operational AI use cases: 5-day diagnosis, demos on your real data, costed action plan. Public pricing from €490 for the 1-day essential engagement. No tech lock-in.",
+    "AxionIA is an operational AI consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+
   topSectorsNaf: [
     "Banque & Finance",
     "Conseil & Services aux entreprises",
@@ -35,14 +56,18 @@ export const PARIS_COPY: VilleCopy = {
     "Mode & Luxe",
     "Tourisme & Hôtellerie premium",
   ],
+
+  // Distance / accès — purement informatif, pas de mention « frais inclus ».
   distancesFr:
-    "Gares Montparnasse, du Nord, de Lyon et Saint-Lazare au cœur de Paris ; Roissy-Charles-de-Gaulle à 45 km, Orly à 25 km. Métro 14 lignes + RER A/B/C/D/E. Interventions sur site possibles en demi-journée depuis n'importe quel arrondissement.",
+    "Gares Montparnasse, du Nord, de Lyon et Saint-Lazare au cœur de Paris. Roissy-Charles-de-Gaulle, Orly. Métro 14 lignes + RER A/B/C/D/E pour rejoindre vos bureaux dans tous les arrondissements et la première couronne.",
   distancesEn:
-    "Montparnasse, Gare du Nord, Gare de Lyon and Saint-Lazare stations in central Paris; Roissy-Charles-de-Gaulle 45 km, Orly 25 km. Métro 14 lines + RER A/B/C/D/E. Half-day on-site engagements from any arrondissement.",
+    "Montparnasse, Gare du Nord, Gare de Lyon and Saint-Lazare stations in central Paris. Roissy-Charles-de-Gaulle, Orly. Métro 14 lines + RER A/B/C/D/E to reach your offices across every arrondissement and the inner suburbs.",
+
   ecosystemFr:
-    "Tissu B2B le plus dense de France toutes tailles confondues — micro-entreprises et indépendants (215 000 actives intra-muros), PME et ETI (cabinets d'expertise, scale-ups, ETI conseil), sièges grandes entreprises (La Défense, 8e, 16e), pôle deep-tech (Station F, Quai d'Innovation, écoles d'ingénieurs). L'écosystème IA français y est concentré : Mistral AI, Hugging Face, Owkin, Photoroom, Dust. Les directions IA des grands groupes pilotent leurs déploiements depuis ces sièges.",
+    "Tissu B2B le plus dense de France toutes tailles confondues — micro-entreprises et indépendants (215 000 actives intra-muros), PME et ETI (cabinets d'expertise, scale-ups, conseil), sièges grandes entreprises (La Défense, 8e, 16e), pôle deep-tech (Station F, Quai d'Innovation, écoles d'ingénieurs). L'écosystème IA français y est concentré : Mistral AI, Hugging Face, Owkin, Photoroom, Dust.",
   ecosystemEn:
-    "Densest B2B fabric in France across every company size — micro-businesses and independents (215,000 active within Paris), SMEs and mid-caps (expertise firms, scale-ups, mid-cap consulting), large-enterprise HQs (La Défense, 8th, 16th districts), deep-tech hub (Station F, Quai d'Innovation, engineering schools). The French AI ecosystem clusters here: Mistral AI, Hugging Face, Owkin, Photoroom, Dust. Major-group AI leadership steers deployments from these headquarters.",
+    "Densest B2B fabric in France across every company size — micro-businesses and independents (215,000 active within Paris), SMEs and mid-caps (expertise firms, scale-ups, consulting), large-enterprise HQs (La Défense, 8th, 16th districts), deep-tech hub (Station F, Quai d'Innovation, engineering schools). The French AI ecosystem clusters here: Mistral AI, Hugging Face, Owkin, Photoroom, Dust.",
+
   heroSchema: {
     centerSubLabel: "215 K entreprises actives",
     satellites: [
@@ -54,679 +79,678 @@ export const PARIS_COPY: VilleCopy = {
       { label: "Mode · Luxe", detail: "Maisons + cosmétique", accent: "terracotta" },
     ],
   },
-  // === SERVICES LONG-FORM PARIS — perfection extrême Sprint 14.10.1 ===
-  // Alimente :
-  //   - Sections détaillées sur la page mère /implantations/ile-de-france/paris
-  //   - Pages dédiées /audit/paris, /interventions/paris, /implementation/paris
-  // Cap : ~500-700 mots par service × 2 locales = ~3500 mots services seulement.
+
+  // === SERVICES LONG-FORM PARIS — refonte 14.10.2 (aérée, accessible) ===
+  // Aucun prix en dur (vient de pricing.ts via le rendu page),
+  // aucun délai chiffré, aucune mention « frais inclus », aucun « basé en UE ».
   services: {
     audit: {
       fr: {
-        hero: "Audit IA d'entreprise à Paris (75) : AxionIA cartographie en 5 à 10 jours ouvrés tous les workflows automatisables de votre organisation parisienne, avec un livrable PDF de 25-40 pages chiffré ROI à 12-24 mois. Quatre niveaux disponibles à Paris (Flash 490 € HT, Ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI dès 12 000 €), tous frais de déplacement intra-Paris et petite couronne inclus. Démarrage moyen sous 5 à 10 jours ouvrés depuis la signature, créneaux courts disponibles pour contraintes Q+1 budget ou CODIR.",
+        hero: "L'audit IA AxionIA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
         whyHere: [
-          "Pôle prioritaire #1 d'AxionIA : 60 % de nos audits sont déclenchés à Paris ou en Île-de-France (215 000 entreprises actives intra-muros, recensement Sirene 2024).",
-          "Frais de déplacement intégrés au forfait pour Paris intra-muros, La Défense, Levallois, Boulogne, Issy, Neuilly et toute la première couronne — pas de coûts cachés.",
-          "Délai signature → kick-off : 5 à 10 jours ouvrés en moyenne (vs 4-6 semaines chez les Big Four). Créneau court < 5 jours réservable sur Paris.",
-          "Tissu B2B parisien sur-représenté dans nos cas clients : cabinets d'expertise comptable, family offices, asset managers, ETI conseil 8e/9e/16e, scale-ups SaaS Sentier-République, maisons de mode Marais.",
-          "Nos consultants sont basés à Paris : déplacement même jour possible, ateliers présentiels les lundis/mardis/jeudis sans surcoût.",
-          "Restitutions toujours en présentiel à Paris : ateliers d'idéation, lecture du livrable avec votre CODIR, plan d'attaque transmis main à main.",
+          "Paris est notre premier pôle d'intervention : la majorité de nos audits y sont déclenchés.",
+          "Tissu B2B parisien sur-représenté chez nos clients : cabinets d'expertise comptable, family offices, asset managers, conseil 8e/9e/16e, scale-ups Sentier-République, maisons de mode Marais.",
+          "Nos consultants sont basés à Paris et se déplacent dans les 20 arrondissements ainsi que dans la première couronne.",
+          "Restitutions toujours en présentiel : ateliers d'idéation, lecture du livrable avec votre comité de direction, plan d'attaque transmis en main propre.",
+          "Aucun jeu de devis opaque : tarifs publics, vous savez exactement ce que vous payez avant de signer.",
+          "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit.",
         ],
         methodology: [
           {
-            step: "1. Préparation (J-5 à J-1)",
+            step: "Préparation",
             detail:
-              "Brief de cadrage 90 min en visio, signature NDA, accès aux 5-10 documents clés (organigramme, processus, KPIs). Aucun déplacement à ce stade — on prépare le terrain.",
+              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs).",
           },
           {
-            step: "2. Kick-off sur site (J1)",
+            step: "Kick-off sur site",
             detail:
-              "Demi-journée présentielle dans vos bureaux parisiens. Tour du tissu humain, observation des outils utilisés au quotidien, identification des 8-12 workflows candidats à l'IA.",
+              "Première venue à Paris dans vos locaux pour observer les outils utilisés au quotidien et identifier les workflows candidats à l'IA.",
           },
           {
-            step: "3. Entretiens collaborateurs (J2-J3)",
+            step: "Entretiens collaborateurs",
             detail:
-              "12 entretiens individuels de 30 min sur site (commerciaux, finance, RH, ops, support, direction). Cartographie fine des frictions, attentes, contraintes RGPD/sécurité.",
+              "Une série d'entretiens individuels courts (commerciaux, finance, RH, opérations, support, direction) pour cartographier finement frictions et attentes.",
           },
           {
-            step: "4. Démos sur vos vraies données (J4)",
+            step: "Démos sur vos vraies données",
             detail:
-              "Sur place dans vos locaux : démos Claude/Mistral/GPT-4 appliquées à 3 cas concrets identifiés. Vous voyez littéralement l'IA traiter vos PDFs, vos emails, vos factures.",
+              "Sur place : démos de Claude, Mistral, GPT-4 appliquées à vos PDFs, vos emails, vos factures. Pas de slides théoriques.",
           },
           {
-            step: "5. Restitution + plan d'action (J5)",
+            step: "Restitution + plan d'action",
             detail:
-              "Atelier de restitution 3 h dans vos locaux, livrable PDF 25-40 pages remis main à main : 5-10 quick-wins priorisés ROI/complexité, budget chiffré à 6-18 mois, roadmap actionnable.",
+              "Atelier de restitution dans vos locaux. Livrable PDF chiffré ROI/complexité remis en main propre, roadmap actionnable de 6-18 mois.",
           },
         ],
+        // Pricing référence pricing.ts via la page de rendu — ici uniquement
+        // les libellés contextuels, sans valeurs chiffrées en dur.
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Audit Flash 490 € HT",
+            sizeLabel: "TPE",
+            price: "Audit Flash",
             detail:
-              "1 journée sur site, 6 entretiens, 3 quick-wins identifiés, livrable PDF 12-15 pages. Démarrage moyen J+5. Adapté aux indépendants, micro-entreprises et cabinets parisiens 1-9 collab.",
+              "Adapté aux indépendants, micro-entreprises et cabinets parisiens jusqu'à une dizaine de collaborateurs.",
           },
           {
-            sizeLabel: "PME (10-249 collab)",
-            price: "Audit Ciblé 1 900 - 3 900 € HT",
+            sizeLabel: "PME",
+            price: "Audit Ciblé ou Stratégique PME",
             detail:
-              "3 jours sur site, 1 département/fonction (commercial OU comptable OU RH), 12 entretiens, 5-8 cas d'usage chiffrés. Idéal pour cabinets d'expertise, scale-ups Sentier, agences digital 25-150 collab.",
+              "Idéal pour cabinets d'expertise, scale-ups Sentier, agences digital de quelques dizaines à 250 collaborateurs.",
           },
           {
-            sizeLabel: "PME enrichie (50-249)",
-            price: "Audit Stratégique PME 4 900 - 9 900 € HT",
+            sizeLabel: "ETI",
+            price: "Audit Stratégique ETI",
             detail:
-              "5 jours sur site, audit complet multi-départements, 18-24 entretiens, 10-15 quick-wins + plan 12 mois. Pour PME parisiennes ambitieuses préparant un palier ETI.",
+              "Pour les ETI conseil 8e/9e, banques, maisons de mode établies souhaitant cadrer une trajectoire IA pluriannuelle.",
           },
           {
-            sizeLabel: "ETI (250-4999) & Grande entreprise (5000+)",
-            price: "Audit Stratégique ETI dès 12 000 € HT",
+            sizeLabel: "Grande entreprise",
+            price: "Audit Stratégique ETI étendu",
             detail:
-              "10 jours sur site répartis sur 4-6 semaines, audit transverse, 30+ entretiens, gouvernance IA + plan 24 mois. Adapté aux ETI conseil 9e, banques, sièges grands-comptes La Défense.",
+              "Pour les sièges grands-comptes La Défense souhaitant cadrer une gouvernance IA centralisée.",
           },
         ],
         testimonials: [
           {
             quote:
-              "L'audit AxionIA nous a livré en 5 jours ce que les Big Four nous chiffraient en 8 semaines à 60 000 €. Le rapport est chiffré, actionnable, sans jargon. On a démarré l'implémentation 3 semaines après.",
+              "AxionIA nous a livré ce que les Big Four nous chiffraient en plusieurs semaines. Le rapport est chiffré, actionnable, sans jargon. On a démarré l'implémentation très rapidement.",
             role: "DG",
-            companyProfile: "Cabinet d'expertise comptable, 9e arrondissement, 38 collaborateurs",
+            companyProfile: "Cabinet d'expertise comptable, 9e arrondissement",
           },
           {
             quote:
-              "Méthode pragmatique, démos sur nos vraies données plutôt que des slides théoriques. Le livrable a permis de prioriser nos 4 chantiers IA prioritaires sur 18 mois pour notre Comex.",
+              "Méthode pragmatique, démos sur nos vraies données plutôt que des slides théoriques. Le livrable a permis de prioriser nos chantiers IA pour le comité de direction.",
             role: "Directrice de la transformation",
-            companyProfile: "ETI conseil, 8e arrondissement, 240 collaborateurs",
+            companyProfile: "ETI conseil, 8e arrondissement",
           },
         ],
         faq: [
           {
-            q: "Quel est le délai de démarrage moyen pour un audit IA à Paris ?",
-            a: "5 à 10 jours ouvrés entre la signature du devis et le kick-off sur site. Si votre besoin est urgent (Q+1 budget, contrainte calendaire CODIR ou comité d'investissement), nous réservons des créneaux courts à 5 jours ouvrés sur Paris en priorité absolue.",
+            q: "Combien de temps dure un audit IA AxionIA à Paris ?",
+            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
           },
           {
-            q: "Le tarif inclut-il les frais de déplacement à Paris ?",
-            a: "Oui, intégralement. Aucun supplément pour Paris intra-muros, La Défense, et toute la première couronne (Levallois, Boulogne-Billancourt, Issy-les-Moulineaux, Neuilly-sur-Seine, Saint-Denis, Vincennes, Montreuil). Pour la grande couronne (>30 km) un forfait journalier transparent peut s'appliquer.",
+            q: "Quel ROI puis-je attendre d'un audit chez une PME parisienne ?",
+            a: "Sur les audits Stratégique PME, le ROI identifié à 12 mois représente l'équivalent de plusieurs équivalents temps plein gagnés sur les workflows automatisés (lecture factures, comptes-rendus, qualification leads). Le livrable détaille les chiffres précis pour votre cas.",
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "NDA signé avant le kick-off, données traitées exclusivement sur vos infrastructures (pas d'extraction vers nos serveurs). Hébergement UE par défaut, conformité RGPD stricte. Modèles IA testés en local ou sur infra dédiée chez vous si requis (souveraineté).",
+            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
-            q: "Quel ROI est généralement chiffré pour un audit à Paris ?",
-            a: "Sur nos audits Stratégique PME (4 900-9 900 €) parisiens, le ROI moyen identifié à 12 mois représente 8 à 15 ETP gagnés sur les workflows automatisés (lecture factures, comptes-rendus, qualification leads). Soit 250 000 à 600 000 € de gain annuel pour une PME 50-150 collab.",
-          },
-          {
-            q: "Quels secteurs parisiens sont les plus matures pour un audit IA ?",
-            a: "Cabinets d'expertise comptable et juridique (très matures, ROI immédiat sur la saisie), conseil et audit Big Four challengers, asset managers et family offices, scale-ups SaaS Sentier-République, agences digital 9e-10e. Les maisons de mode du Marais commencent à s'intéresser aux IA générative pour leur pôle créa.",
+            q: "Comment se déroule la restitution finale ?",
+            a: "Toujours en présentiel à Paris. Atelier de quelques heures dans vos locaux avec votre comité de direction ou équipe dirigeante. Vous repartez avec le livrable PDF en main propre.",
           },
           {
             q: "Différence avec un audit Big Four ou un cabinet de conseil traditionnel ?",
-            a: "AxionIA est un cabinet IA opérationnel : on cartographie ET on déploie. Nos consultants sont d'anciens praticiens IA, pas des MBA. Tarifs publics affichés, pas de devis à 30 K€ à négocier. Méthode 5 jours plutôt que 6 semaines. ROI chiffré et engageant. Aucun lock-in technologique : vous repartez avec votre plan, libre de l'exécuter avec qui vous voulez.",
+            a: "Nos consultants sont d'anciens praticiens IA, pas des MBA. Tarifs publics affichés, pas de devis à six chiffres à négocier. Méthode condensée plutôt que de longues missions. Et surtout : aucun lock-in, vous repartez avec votre plan, libre de l'exécuter avec qui vous voulez.",
+          },
+          {
+            q: "Faut-il être déjà mature sur l'IA pour vous solliciter ?",
+            a: "Non. Une grande partie de nos audits parisiens sont commandés par des dirigeants ou DG qui n'ont jamais lancé de chantier IA. L'audit est précisément fait pour ne pas vous engager dans la mauvaise direction.",
           },
         ],
         guarantees:
-          "Engagement AxionIA à Paris : livrable remis sous 7 jours ouvrés post-kick-off (si retard de notre fait, audit offert). Conformité RGPD totale (DPO sur demande), hébergement données 100 % UE (Hetzner Frankfurt). Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Satisfaction garantie : si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activée 0 fois sur 47 missions Paris à ce jour).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions parisiennes).",
       },
       en: {
-        hero: "Corporate AI audit in Paris (75): AxionIA maps in 5 to 10 business days every automatable workflow in your Paris organization, delivering a 25-40 page costed PDF with 12-24 month ROI. Four tiers available in Paris (Flash €490, Targeted €1,900-3,900, SME Strategic €4,900-9,900, Mid-cap Strategic from €12,000), all travel fees within Paris and inner suburbs included. Average lead time signature to kick-off: 5 to 10 business days, short slots available for Q+1 budget or board constraints.",
+        hero: "AxionIA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
         whyHere: [
-          "AxionIA's #1 priority hub: 60% of our audits are triggered in Paris or Greater Paris (215,000 active businesses within Paris, Sirene 2024 census).",
-          "Travel fees included for inner Paris, La Défense, Levallois, Boulogne, Issy, Neuilly and all inner suburbs — no hidden costs.",
-          "Signature → kick-off lead time: 5 to 10 business days average (vs 4-6 weeks at Big Four). Sub-5-day rush slots reservable in Paris.",
-          "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, mid-cap consulting 8th/9th/16th, Sentier-République SaaS scale-ups, Marais fashion houses.",
-          "Our consultants are Paris-based: same-day on-site visits possible, in-person workshops Mondays/Tuesdays/Thursdays at no surcharge.",
-          "Read-outs always in person in Paris: ideation workshops, deliverable walk-through with your leadership, action plan handed over face-to-face.",
+          "Paris is our top engagement hub: most of our audits originate there.",
+          "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, 8th/9th/16th consulting, Sentier-République scale-ups, Marais fashion houses.",
+          "Our consultants are Paris-based and travel across all 20 arrondissements and the inner suburbs.",
+          "Read-outs always in person: ideation workshops, deliverable walk-through with your leadership, action plan handed over face to face.",
+          "No opaque quote game: public pricing, you know exactly what you pay before signing.",
+          "You keep control: your action plan is executable with any vendor or in-house after our audit.",
         ],
         methodology: [
           {
-            step: "1. Preparation (D-5 to D-1)",
+            step: "Preparation",
             detail:
-              "90-min remote framing brief, NDA signed, access to 5-10 key documents (org chart, processes, KPIs). No travel yet — we set the stage.",
+              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs).",
           },
           {
-            step: "2. On-site kick-off (D1)",
+            step: "On-site kick-off",
             detail:
-              "Half-day in your Paris offices. Walk-through of human fabric, observation of daily tools, identification of 8-12 AI candidate workflows.",
+              "First visit to Paris at your offices to observe daily tools and identify AI candidate workflows.",
           },
           {
-            step: "3. Employee interviews (D2-D3)",
+            step: "Employee interviews",
             detail:
-              "12 individual 30-min interviews on site (sales, finance, HR, ops, support, leadership). Detailed mapping of frictions, expectations, GDPR/security constraints.",
+              "Series of short individual interviews (sales, finance, HR, operations, support, leadership) to map frictions and expectations.",
           },
           {
-            step: "4. Demos on your real data (D4)",
+            step: "Demos on your real data",
             detail:
-              "On site in your offices: Claude/Mistral/GPT-4 demos applied to 3 identified concrete cases. You literally see AI processing your PDFs, emails, invoices.",
+              "On site: demos of Claude, Mistral, GPT-4 applied to your PDFs, emails, invoices. No theoretical slides.",
           },
           {
-            step: "5. Read-out + action plan (D5)",
+            step: "Read-out + action plan",
             detail:
-              "3-hour read-out workshop in your offices, 25-40 page PDF deliverable handed over: 5-10 quick-wins prioritized by ROI/complexity, costed 6-18 month budget, actionable roadmap.",
+              "Read-out workshop at your offices. Costed PDF deliverable handed over, actionable 6-18 month roadmap.",
           },
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business (< 10)",
-            price: "Flash audit €490",
-            detail:
-              "1 day on site, 6 interviews, 3 quick-wins, 12-15 page PDF. Average start D+5. Suited to Paris freelancers, micro-firms, 1-9 person practices.",
+            sizeLabel: "Micro-business",
+            price: "Flash audit",
+            detail: "Suited to Paris freelancers, micro-firms and practices up to about ten staff.",
           },
           {
-            sizeLabel: "SME (10-249)",
-            price: "Targeted audit €1,900-3,900",
+            sizeLabel: "SME",
+            price: "Targeted or SME Strategic audit",
             detail:
-              "3 days on site, 1 department, 12 interviews, 5-8 costed use cases. Ideal for accounting firms, Sentier scale-ups, digital agencies 25-150 staff.",
+              "Ideal for accounting firms, Sentier scale-ups, digital agencies from a few dozen to 250 staff.",
           },
           {
-            sizeLabel: "Enriched SME (50-249)",
-            price: "SME Strategic audit €4,900-9,900",
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap Strategic audit",
             detail:
-              "5 days on site, full multi-department audit, 18-24 interviews, 10-15 quick-wins + 12-month plan. For ambitious Paris SMEs preparing a mid-cap step.",
+              "For 8th/9th mid-cap consulting, banks, established fashion houses framing a multi-year AI trajectory.",
           },
           {
-            sizeLabel: "Mid-cap (250-4999) & Large enterprise (5000+)",
-            price: "Mid-cap Strategic audit from €12,000",
-            detail:
-              "10 days on site over 4-6 weeks, transverse audit, 30+ interviews, AI governance + 24-month plan. Fits 9th mid-cap consulting, banks, La Défense HQs.",
+            sizeLabel: "Large enterprise",
+            price: "Extended Mid-cap Strategic audit",
+            detail: "For La Défense large-corporate HQs framing centralized AI governance.",
           },
         ],
         testimonials: [
           {
             quote:
-              "AxionIA's audit delivered in 5 days what the Big Four were quoting at €60,000 over 8 weeks. The report is costed, actionable, jargon-free. We started implementation 3 weeks after.",
+              "AxionIA delivered what the Big Four were quoting over several weeks. The report is costed, actionable, jargon-free. We started implementation very quickly.",
             role: "CEO",
-            companyProfile: "Accounting firm, 9th arrondissement, 38 staff",
+            companyProfile: "Accounting firm, 9th arrondissement",
           },
           {
             quote:
-              "Pragmatic method, demos on our real data rather than theoretical slides. The deliverable helped prioritize our 4 priority AI initiatives over 18 months for our exec committee.",
+              "Pragmatic method, demos on our real data rather than theoretical slides. The deliverable helped prioritize our AI initiatives for the executive committee.",
             role: "Head of Transformation",
-            companyProfile: "Mid-cap consulting, 8th arrondissement, 240 staff",
+            companyProfile: "Mid-cap consulting, 8th arrondissement",
           },
         ],
         faq: [
           {
-            q: "What is the average lead time for an AI audit in Paris?",
-            a: "5 to 10 business days between signed quote and on-site kick-off. For urgent needs (Q+1 budget, board calendar constraints), we reserve sub-5-day rush slots in Paris on absolute priority.",
+            q: "How long does an AxionIA AI audit take in Paris?",
+            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
-            q: "Are travel fees included in the Paris price?",
-            a: "Yes, fully. No surcharge for inner Paris, La Défense and all inner suburbs (Levallois, Boulogne-Billancourt, Issy-les-Moulineaux, Neuilly-sur-Seine, Saint-Denis, Vincennes, Montreuil). For outer suburbs (>30 km) a transparent daily flat-rate may apply.",
+            q: "What ROI can I expect for a Paris SME?",
+            a: "On SME Strategic audits, identified 12-month ROI represents the equivalent of several FTEs saved on automated workflows (invoice reading, meeting minutes, lead qualification). The deliverable details exact figures for your case.",
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "NDA signed before kick-off, data processed exclusively on your infrastructure (no extraction to our servers). EU hosting by default, strict GDPR compliance. AI models tested locally or on dedicated infra at your premises if required (sovereignty).",
+            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
-            q: "What ROI is typically costed for a Paris audit?",
-            a: "On our SME Strategic audits (€4,900-9,900) in Paris, the average 12-month ROI represents 8 to 15 FTEs saved on automated workflows (invoice reading, meeting minutes, lead qualification). That's €250K to €600K annual gain for a 50-150 staff SME.",
-          },
-          {
-            q: "Which Paris sectors are most mature for an AI audit?",
-            a: "Accounting and legal firms (very mature, immediate ROI on data entry), consulting and Big Four challengers, asset managers and family offices, Sentier-République SaaS scale-ups, 9th-10th digital agencies. Marais fashion houses are starting to look at generative AI for their creative teams.",
+            q: "How does the final read-out work?",
+            a: "Always in person in Paris. Workshop of a few hours at your offices with your leadership or executive committee. You leave with the PDF deliverable in hand.",
           },
           {
             q: "Difference with a Big Four audit or traditional consulting?",
-            a: "AxionIA is an operational AI consultancy: we map AND deploy. Our consultants are former AI practitioners, not MBAs. Public pricing, no €30K quote to negotiate. 5-day method rather than 6 weeks. Costed and committed ROI. No tech lock-in: you leave with your plan, free to execute with whoever you want.",
+            a: "Our consultants are former AI practitioners, not MBAs. Public pricing, no six-figure quote to negotiate. Condensed method rather than long missions. And above all: no lock-in, you leave with your plan, free to execute with whoever you want.",
+          },
+          {
+            q: "Do I need AI maturity to engage you?",
+            a: "No. A large share of our Paris audits are ordered by executives who have never launched an AI initiative. The audit exists precisely to avoid going in the wrong direction.",
           },
         ],
         guarantees:
-          "AxionIA's commitment in Paris: deliverable handed over within 7 business days post-kick-off (if delayed by us, audit comped). Full GDPR compliance (DPO on request), 100% EU data hosting (Hetzner Frankfurt). No tech lock-in: your action plan is executable with any vendor or in-house. Satisfaction guarantee: if after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause triggered 0 times across 47 Paris missions to date).",
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded (clause available but never triggered to date on our Paris missions).",
       },
     },
     interventions: {
       fr: {
-        hero: "Interventions IA en entreprise à Paris (75) : AxionIA délivre 5 formats sur site dans toute l'Île-de-France — Essentielle 1 journée 490 € HT (jusqu'à 100 collab), Équipes (1 département), Managers (CODIR), Conférence ½ journée (plénières), Dirigeants (board). Démos sur vos vraies données, méthode de prompting hands-on, vos équipes repartent avec des outils opérationnels installés sur leurs postes le soir même. Disponibles dans les 20 arrondissements, La Défense et la première couronne, frais de déplacement IDF intégrés.",
+        hero: "Les interventions IA AxionIA à Paris se déclinent en 5 formats sur site, d'une demi-journée à plusieurs semaines selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
-          "Premier pôle d'intervention AxionIA : ~40 % des sessions Essentielle se tiennent à Paris ou IDF, créneaux disponibles 3-5 jours après réservation.",
-          "Tous les arrondissements couverts en présentiel : 1er au 20e + La Défense + petite couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
-          "Format Essentielle 490 € HT calibré pour les TPE/PME parisiennes 5-100 collab : 1 journée, jusqu'à 100 personnes par session, démos sur vos workflows réels.",
-          "Format Conférence ½ journée parfait pour les plénières d'entreprise IDF (auditoriums La Défense, lofts Sentier, espaces collaboratifs Station F) : 200-500 collab.",
-          "Format Dirigeants spécifiquement adapté aux comités de direction parisiens : 3 h en huis-clos, cadrage stratégique 12-24 mois, gouvernance IA.",
-          "Vocabulaire ajusté au secteur dominant de votre entreprise (finance, conseil, tech, mode, retail) — pas de session générique.",
+          "Paris est notre premier terrain d'intervention : nous y déroulons une part importante de nos sessions chaque mois.",
+          "Tous les arrondissements couverts en présentiel ainsi que la première couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
+          "Le format Essentielle est calibré pour les structures parisiennes de quelques personnes à une centaine de collaborateurs.",
+          "Le format Conférence convient aux grandes plénières d'entreprise (auditoriums La Défense, lofts Sentier, espaces collaboratifs Station F).",
+          "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction parisiens.",
+          "Vocabulaire ajusté à votre secteur dominant : finance, conseil, tech, mode, retail. Pas de session générique recyclée.",
         ],
         methodology: [
           {
-            step: "1. Cadrage de la session (J-7)",
+            step: "Cadrage de la session",
             detail:
-              "30 min visio avec votre RH ou DG : profil des participants, secteurs métier dominants, 3-5 cas d'usage prioritaires identifiés ensemble. Pas de session générique.",
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur métier, les cas d'usage prioritaires.",
           },
           {
-            step: "2. Préparation des démos (J-5 à J-3)",
+            step: "Préparation des démos",
             detail:
-              "Nous récupérons 5-10 documents anonymisés représentatifs de votre activité (factures, emails, RH, contrats). Nous calibrons les démos pour qu'elles parlent à VOS équipes.",
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité (factures, emails, RH, contrats) pour calibrer les démos sur VOS données.",
           },
           {
-            step: "3. Arrivée et installation (J0 matin)",
+            step: "Arrivée et installation",
             detail:
-              "Nos consultants arrivent 30 min avant le début dans vos locaux parisiens. Vérification matériel, projection, accès Wi-Fi. Pas d'aléa technique.",
+              "Nos consultants arrivent en avance dans vos locaux pour vérifier matériel, projection, accès Wi-Fi. Pas d'aléa technique le jour J.",
           },
           {
-            step: "4. Session pédagogique (J0)",
+            step: "Session pédagogique",
             detail:
-              "1 journée (Essentielle) ou ½ journée (Conférence) ou 3 h (Dirigeants) : alternance théorie courte + démos longues sur VOS données + ateliers hands-on participants.",
+              "Selon le format choisi, alternance de théorie courte et de démos longues sur VOS données, suivies d'ateliers participatifs.",
           },
           {
-            step: "5. Outils installés et debrief (J0 soir)",
+            step: "Outils installés et debrief",
             detail:
-              "Chaque participant Essentielle repart avec 3-5 outils IA installés sur son poste, configurés pour son cas d'usage personnel. Outils utilisables dès le lendemain matin sans aide.",
+              "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel. Utilisables le lendemain matin sans aide extérieure.",
           },
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "Essentielle 490 € HT",
+            sizeLabel: "TPE",
+            price: "Format Essentielle",
             detail:
-              "1 journée sur site, jusqu'à 100 personnes (intra ou inter-entreprises), démos sur vos données. Idéal indépendants, cabinets, agences parisiennes 1-9 collab.",
+              "Idéal indépendants, cabinets, agences parisiennes jusqu'à une dizaine de collaborateurs.",
           },
           {
-            sizeLabel: "PME (10-249 collab)",
-            price: "Essentielle 490 € HT ou Équipes 1 900 € HT",
+            sizeLabel: "PME",
+            price: "Format Essentielle ou Équipes",
             detail:
-              "Essentielle : 1 journée groupe entier (max 100). Équipes : 1 journée focalisée sur 1 département (commerciaux, finance, RH...) avec démos métier dédiées.",
+              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commerciaux, finance, RH, opérations).",
           },
           {
-            sizeLabel: "ETI (250-4999) & Grande entreprise (5000+)",
-            price: "Conférence ½ journée 2 900 € HT ou Dirigeants 4 900 € HT",
+            sizeLabel: "ETI",
+            price: "Format Conférence ou Dirigeants",
             detail:
-              "Conférence : plénière 200-500 collab (auditoriums La Défense, espaces Sentier). Dirigeants : huis-clos CODIR 3 h, cadrage stratégique IA 12-24 mois.",
+              "Plénière pour grandes audiences ou huis-clos comité de direction selon votre objectif.",
           },
           {
-            sizeLabel: "Personnalisée multi-formats",
-            price: "Sur devis (forfait journée + frais)",
+            sizeLabel: "Grande entreprise",
+            price: "Format personnalisé multi-formats",
             detail:
-              "Combinaisons sur-mesure pour grands comptes parisiens : roadshow 5 sites La Défense, formation programmée trimestrielle, séminaires CODIR + équipes en cascade.",
+              "Combinaisons sur-mesure pour les sièges parisiens : roadshow multi-sites, séminaires CODIR + cascade équipes.",
           },
         ],
         testimonials: [
           {
             quote:
-              "Format Essentielle parfaitement calibré : nos 80 collab sont repartis avec ChatGPT, Claude et Notion AI installés et configurés. Le lendemain, 60 % les utilisaient déjà sur leur travail réel.",
+              "Format Essentielle parfaitement calibré : nos collaborateurs sont repartis avec leurs outils IA installés et configurés. Le lendemain, une partie significative les utilisaient déjà sur leur travail réel.",
             role: "DRH",
-            companyProfile: "Cabinet conseil parisien, 8e arrondissement, 80 collaborateurs",
+            companyProfile: "Cabinet conseil parisien, 8e arrondissement",
           },
           {
             quote:
-              "La conférence dirigeants nous a alignés en 3 h sur la trajectoire IA 18 mois. Aucun consultant traditionnel n'avait su cadrer aussi vite avec autant de pragmatisme.",
+              "La conférence dirigeants nous a alignés en quelques heures sur la trajectoire IA. Aucun consultant traditionnel n'avait su cadrer aussi vite avec autant de pragmatisme.",
             role: "Président",
-            companyProfile: "ETI familiale, siège La Défense, 350 collaborateurs",
+            companyProfile: "ETI familiale, siège La Défense",
           },
         ],
         faq: [
           {
-            q: "Quel délai pour réserver une intervention à Paris ?",
-            a: "Réservation directe sur le calendrier en ligne, créneaux disponibles 3 à 7 jours ouvrés après confirmation. Pour les périodes denses (rentrée septembre, janvier post-fêtes), réserver 2-3 semaines à l'avance.",
+            q: "Combien de temps dure une intervention AxionIA à Paris ?",
+            a: "Cela dépend du format choisi. Une Essentielle ou un format Équipes se déroule sur une journée. Une Conférence prend une demi-journée. Une intervention Dirigeants ou un programme personnalisé multi-formats peut s'étaler sur plusieurs semaines selon l'ampleur.",
           },
           {
-            q: "Quelle taille maximale de groupe pour Essentielle 490 € ?",
-            a: "Jusqu'à 100 collaborateurs par session Essentielle (capacité audio + interaction). Pour 100-300 personnes, format Conférence ½ journée plus adapté. Au-delà de 300, format Conférence + ateliers en sous-groupes.",
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
           },
           {
-            q: "Les outils installés sur les postes restent-ils utilisables ?",
-            a: "Oui — les outils installés sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in AxionIA, vous gardez la main.",
+            q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in AxionIA, vous gardez la main.",
           },
           {
-            q: "Peut-on adapter le contenu à notre secteur (finance, conseil, retail...) ?",
-            a: "Oui systématiquement. Le brief de cadrage J-7 nous permet d'ajuster vocabulaire, exemples, démos. Une session pour un cabinet d'expertise comptable parisien n'a strictement rien à voir avec une session pour une maison de mode du Marais.",
+            q: "Pouvez-vous adapter le contenu à notre secteur ?",
+            a: "Oui systématiquement. Le brief de cadrage en amont nous permet d'ajuster vocabulaire, exemples, démos. Une session pour un cabinet d'expertise comptable n'a rien à voir avec une session pour une maison de mode.",
           },
           {
-            q: "Faites-vous du Qualiopi ou des intitulés financables CPF ?",
-            a: "Pas en V1 (organisme de formation Qualiopi non encore certifié, en cours d'instruction Q1 2026). Les interventions sont facturables sur OPCO via votre fonds de formation continue selon les modalités de votre branche, devis détaillé disponible.",
+            q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
+            a: "Pas en V1 : nous ne sommes pas encore certifiés Qualiopi (instruction en cours). Les sessions sont facturables sur OPCO via votre fonds de formation continue selon votre branche, devis détaillé disponible.",
           },
           {
-            q: "Que se passe-t-il si on annule au dernier moment ?",
-            a: "Annulation ≥ 7 jours ouvrés avant J0 : remboursement intégral. Annulation 3-7 jours : 50 % retenu (frais consultant déjà bloqué). Annulation < 3 jours : 100 % retenu, mais session reportable une fois sans frais sur les 6 mois suivants.",
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
           },
         ],
         guarantees:
-          "Engagement AxionIA à Paris : créneau garanti si réservation > 7 jours ouvrés à l'avance. Si problème technique de notre fait (consultant absent, matériel défaillant), session reportée + 50 % remboursés. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les 3 outils installés, séance de remédiation de 90 min offerte. Vocabulaire ajusté à votre secteur (cadrage J-7), aucune session générique recyclée.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
       },
       en: {
-        hero: "Corporate AI sessions in Paris (75): AxionIA delivers 5 on-site formats across Greater Paris — Essential 1-day €490 (up to 100 staff), Teams (1 department), Managers (leadership), Half-day Talk (plenaries), Executives (board). Demos on your real data, hands-on prompting methodology, your teams leave with operational tools installed on their workstations the same evening. Available across all 20 arrondissements, La Défense and inner suburbs, Greater-Paris travel fees included.",
+        hero: "AxionIA's AI sessions in Paris come in 5 on-site formats, from a half-day to several weeks depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
-          "AxionIA's top engagement hub: ~40% of Essential sessions take place in Paris or Greater Paris, slots available 3-5 days after booking.",
-          "All arrondissements covered in person: 1st to 20th + La Défense + inner suburbs (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
-          "Essential €490 format calibrated for Paris micro/SMEs 5-100 staff: 1 day, up to 100 people per session, demos on your real workflows.",
-          "Half-day Talk format perfect for Greater-Paris corporate plenaries (La Défense auditoriums, Sentier lofts, Station F collaborative spaces): 200-500 staff.",
-          "Executives format specifically tailored to Paris boards: 3 hours in camera, 12-24 month strategic framing, AI governance.",
-          "Vocabulary adjusted to your dominant sector (finance, consulting, tech, fashion, retail) — no generic session.",
+          "Paris is our top engagement ground: a significant share of our sessions take place there each month.",
+          "All arrondissements covered in person plus the inner suburbs (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
+          "The Essential format is calibrated for Paris structures from a few people to about a hundred staff.",
+          "The Talk format suits large corporate plenaries (La Défense auditoriums, Sentier lofts, Station F collaborative spaces).",
+          "The Executives format enables in-camera framing for Paris executive committees.",
+          "Vocabulary adjusted to your dominant sector: finance, consulting, tech, fashion, retail. No recycled generic session.",
         ],
         methodology: [
           {
-            step: "1. Session framing (D-7)",
+            step: "Session framing",
             detail:
-              "30-min remote with your HR or CEO: participant profile, dominant sector, 3-5 priority use cases identified together. No generic session.",
+              "Remote exchange with your HR or leadership to target participant profile, sector, priority use cases.",
           },
           {
-            step: "2. Demo preparation (D-5 to D-3)",
+            step: "Demo preparation",
             detail:
-              "We collect 5-10 anonymized documents representative of your activity (invoices, emails, HR, contracts). We calibrate demos to speak to YOUR teams.",
+              "We collect a few anonymized documents representative of your activity (invoices, emails, HR, contracts) to calibrate demos on YOUR data.",
           },
           {
-            step: "3. Arrival and setup (D0 morning)",
+            step: "Arrival and setup",
             detail:
-              "Our consultants arrive 30 min before start in your Paris offices. Equipment check, projection, Wi-Fi access. No technical hiccup.",
+              "Our consultants arrive ahead of time at your offices to check equipment, projection, Wi-Fi access. No technical hiccup on D-day.",
           },
           {
-            step: "4. Pedagogical session (D0)",
+            step: "Pedagogical session",
             detail:
-              "1 day (Essential) or half-day (Talk) or 3 hours (Executives): alternation of short theory + long demos on YOUR data + hands-on participant workshops.",
+              "Depending on the chosen format, alternation of short theory and longer demos on YOUR data, followed by participatory workshops.",
           },
           {
-            step: "5. Tools installed and debrief (D0 evening)",
+            step: "Tools installed and debrief",
             detail:
-              "Each Essential participant leaves with 3-5 AI tools installed on their workstation, configured for their personal use case. Tools usable next morning without help.",
+              "Each participant leaves with AI tools installed and configured for their personal use case. Usable next morning without external help.",
           },
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business (< 10)",
-            price: "Essential €490",
-            detail:
-              "1 day on site, up to 100 people (intra or inter-company), demos on your data. Ideal for Paris freelancers, firms, agencies 1-9 staff.",
+            sizeLabel: "Micro-business",
+            price: "Essential format",
+            detail: "Ideal Paris freelancers, firms, agencies up to about ten staff.",
           },
           {
-            sizeLabel: "SME (10-249)",
-            price: "Essential €490 or Teams €1,900",
+            sizeLabel: "SME",
+            price: "Essential or Teams format",
             detail:
-              "Essential: 1 day whole group (max 100). Teams: 1 day focused on 1 department (sales, finance, HR...) with dedicated business demos.",
+              "Essential for the whole group or Teams to focus on one department (sales, finance, HR, operations).",
           },
           {
-            sizeLabel: "Mid-cap (250-4999) & Large enterprise (5000+)",
-            price: "Half-day Talk €2,900 or Executives €4,900",
+            sizeLabel: "Mid-cap",
+            price: "Talk or Executives format",
             detail:
-              "Talk: 200-500 staff plenary (La Défense auditoriums, Sentier spaces). Executives: 3-hour board in camera, 12-24 month AI strategic framing.",
+              "Plenary for large audiences or in-camera executive committee depending on your objective.",
           },
           {
-            sizeLabel: "Custom multi-format",
-            price: "On quote (day rate + fees)",
+            sizeLabel: "Large enterprise",
+            price: "Custom multi-format program",
             detail:
-              "Custom combinations for Paris large accounts: 5-site La Défense roadshow, programmed quarterly training, exec + cascade team seminars.",
+              "Custom combinations for Paris HQs: multi-site roadshows, exec committee + cascade team seminars.",
           },
         ],
         testimonials: [
           {
             quote:
-              "Essential format perfectly calibrated: our 80 staff left with ChatGPT, Claude and Notion AI installed and configured. The next day, 60% were already using them on real work.",
+              "Essential format perfectly calibrated: our staff left with their AI tools installed and configured. The next day, a significant share were already using them on real work.",
             role: "Head of HR",
-            companyProfile: "Paris consulting firm, 8th arrondissement, 80 staff",
+            companyProfile: "Paris consulting firm, 8th arrondissement",
           },
           {
             quote:
-              "The executive talk aligned us in 3 hours on the 18-month AI trajectory. No traditional consultant had been able to frame this fast with so much pragmatism.",
+              "The executive talk aligned us within hours on the AI trajectory. No traditional consultant had been able to frame this fast with so much pragmatism.",
             role: "President",
-            companyProfile: "Family-owned mid-cap, La Défense HQ, 350 staff",
+            companyProfile: "Family-owned mid-cap, La Défense HQ",
           },
         ],
         faq: [
           {
-            q: "What lead time to book a session in Paris?",
-            a: "Direct booking on the online calendar, slots available 3 to 7 business days after confirmation. For dense periods (September back-to-school, January post-holidays), book 2-3 weeks ahead.",
+            q: "How long does an AxionIA session in Paris take?",
+            a: "It depends on the chosen format. An Essential or Teams runs over a day. A Talk takes a half-day. An Executives or custom multi-format program can span several weeks depending on the scope.",
           },
           {
-            q: "Maximum group size for Essential €490?",
-            a: "Up to 100 staff per Essential session (audio + interaction capacity). For 100-300 people, Half-day Talk format more suitable. Above 300, Talk + sub-group workshops.",
+            q: "What group size can you handle?",
+            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
           },
           {
-            q: "Do the installed tools remain usable?",
-            a: "Yes — installed tools are individual accounts (free or with employee subscription) on ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity depending on profile. No AxionIA lock-in, you keep control.",
+            q: "Do the tools installed on workstations remain usable after the session?",
+            a: "Yes, they are individual accounts (free or with employee subscription) on ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity per profile. No AxionIA lock-in, you keep control.",
           },
           {
-            q: "Can content be adapted to our sector (finance, consulting, retail...)?",
-            a: "Yes systematically. The D-7 framing brief lets us adjust vocabulary, examples, demos. A session for a Paris accounting firm has strictly nothing to do with one for a Marais fashion house.",
+            q: "Can you adapt content to our sector?",
+            a: "Yes systematically. The upstream framing brief lets us adjust vocabulary, examples, demos. A session for an accounting firm has nothing to do with one for a fashion house.",
           },
           {
-            q: "Do you offer Qualiopi or CPF-fundable formats?",
-            a: "Not in V1 (Qualiopi-certified training body not yet, under Q1 2026 review). Sessions are billable to OPCO via your continuing education fund per your sector terms, detailed quote available.",
+            q: "Are your sessions eligible for training funds?",
+            a: "Not in V1: we are not yet Qualiopi-certified (under review). Sessions are billable to OPCO via your continuing education fund per your sector, detailed quote available.",
           },
           {
-            q: "What if we cancel at the last minute?",
-            a: "Cancellation ≥ 7 business days before D0: full refund. Cancellation 3-7 days: 50% retained (consultant slot already blocked). Cancellation < 3 days: 100% retained, but session rebookable once free of charge in the next 6 months.",
+            q: "What happens with a cancellation?",
+            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
           },
         ],
         guarantees:
-          "AxionIA's commitment in Paris: slot guaranteed if booked > 7 business days ahead. If our technical issue (absent consultant, faulty equipment), session rebooked + 50% refunded. Operational tools same evening: if your staff aren't autonomous next morning on the 3 installed tools, 90-min remediation session offered. Vocabulary adjusted to your sector (D-7 framing), no recycled generic session.",
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your sector, no recycled generic session.",
       },
     },
     implementation: {
       fr: {
-        hero: "Implémentation IA opérationnelle à Paris (75) : AxionIA met en production vos cas IA en 6 à 12 semaines avec ROI chiffré, formation équipes incluse, hybride sur site / distance avec kick-off obligatoire à Paris. Tarif fixe dès 990 € HT (POC), montant standard 8 000-25 000 € pour un déploiement PME, 25-80 K€ pour ETI. Cas typiques parisiens livrés : lecture automatisée de factures fournisseurs, génération de comptes-rendus de réunions, qualification IA des leads entrants, agents conversationnels CRM/ERP, automatisation back-office RH.",
+        hero: "L'implémentation IA AxionIA à Paris met vos cas IA en production avec un retour sur investissement chiffré contractuellement, formation de vos équipes incluse. Le mode est hybride sur site / distance, avec un kick-off obligatoire à Paris.",
         whyHere: [
-          "Pôle d'implémentation #1 AxionIA : 50 % de nos missions de déploiement sont initiées à Paris ou IDF (215 000 entreprises actives intra-muros).",
-          "Kick-off obligatoire en présentiel à Paris (3-5 jours sur site dans vos locaux) : alignement équipes, accès aux données, validation des intégrations CRM/ERP/email.",
-          "Itérations à distance ensuite (4-8 semaines) avec daily 15 min en visio + visite mensuelle sur site pour démos d'avancement avec votre Comex.",
-          "Recette finale toujours en présentiel à Paris : passation de pouvoir, formation équipes installées sur leur poste, documentation runbook remise.",
-          "Formation incluse pour 5-15 collaborateurs identifiés clés : ils deviennent les ambassadeurs IA internes, autonomes 30 jours après la fin de mission.",
-          "Cas typiques parisiens : cabinets d'expertise (lecture factures), ETI conseil 8e/9e (qualification leads), scale-ups SaaS Sentier (agents support), maisons de mode Marais (génération copy produit).",
+          "Paris concentre une part importante de nos missions d'implémentation, principalement sur les directions IA des grands groupes et les scale-ups en croissance.",
+          "Le kick-off se passe systématiquement en présentiel à Paris dans vos locaux : alignement des équipes, accès aux données, validation des intégrations CRM/ERP/email.",
+          "Itérations à distance ensuite avec un point quotidien court en visio et une visite mensuelle pour démos d'avancement avec votre comité de direction.",
+          "Recette finale toujours en présentiel à Paris : passation de pouvoir, formation des équipes installées sur leur poste, documentation runbook remise.",
+          "Formation incluse pour vos collaborateurs identifiés clés : ils deviennent les ambassadeurs IA internes, autonomes après la fin de mission.",
+          "Cas typiques parisiens : cabinets d'expertise (lecture de factures), conseil 8e/9e (qualification de leads), scale-ups SaaS Sentier (agents support), maisons de mode Marais (génération de copy produit).",
         ],
         methodology: [
           {
-            step: "1. Cadrage technique (S0, 2 jours)",
+            step: "Cadrage technique",
             detail:
-              "Atelier sur site Paris : revue architecture cible (CRM, ERP, mails, stockage), validation des contraintes RGPD/sécurité, sélection finale des modèles IA, signature SOW chiffré.",
+              "Atelier sur site Paris : revue de l'architecture cible (CRM, ERP, mails, stockage), validation des contraintes RGPD/sécurité, sélection finale des modèles IA, signature du SOW chiffré.",
           },
           {
-            step: "2. Kick-off + sprint 1 (S1-S2)",
+            step: "Kick-off + sprint initial",
             detail:
-              "3 jours sur site Paris : install accès, déploiement environnement de dev, première intégration end-to-end fonctionnelle (POC), validation visuelle avec votre équipe.",
+              "Plusieurs jours sur site Paris : installation des accès, déploiement de l'environnement de dev, première intégration end-to-end fonctionnelle (POC), validation visuelle avec votre équipe.",
           },
           {
-            step: "3. Itérations (S3-S8)",
+            step: "Itérations",
             detail:
-              "Travail à distance avec daily 15 min : enrichissement progressif des cas, intégration aux outils existants, tests sur volumes réels, ajustements UX.",
+              "Travail à distance avec un point quotidien court : enrichissement progressif des cas, intégration aux outils existants, tests sur volumes réels, ajustements UX.",
           },
           {
-            step: "4. Recette + formation (S9-S10)",
+            step: "Recette + formation",
             detail:
-              "Sur site Paris : tests d'acceptation utilisateurs, formation des 5-15 ambassadeurs internes, livraison du runbook documentation, plan de monitoring 90 j.",
+              "Sur site Paris : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring de quelques semaines.",
           },
           {
-            step: "5. Suivi post-go-live (S11-S12)",
+            step: "Suivi post-go-live",
             detail:
-              "À distance : surveillance des métriques de production, ajustements fins, mesure ROI réel vs prédit. Rapport final remis à 90 jours, mission close.",
+              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
           },
         ],
         pricing: [
           {
-            sizeLabel: "TPE (< 10 collab)",
-            price: "POC 990 € HT - 4 900 € HT",
+            sizeLabel: "TPE",
+            price: "POC",
             detail:
-              "Implémentation d'1 cas d'usage simple en 2-3 semaines (lecture factures OU comptes-rendus OU qualif leads). Idéal cabinets parisiens, indépendants, agences 1-9 collab.",
+              "Implémentation d'un cas d'usage simple en quelques semaines (lecture factures, comptes-rendus, qualification leads).",
           },
           {
-            sizeLabel: "PME (10-249 collab)",
-            price: "Mission 8 000 € HT - 25 000 € HT",
+            sizeLabel: "PME",
+            price: "Mission PME",
             detail:
-              "Déploiement 2-4 cas d'usage en 6-12 semaines, formation 5-10 ambassadeurs internes, intégration CRM/ERP. Pour cabinets d'expertise, scale-ups, agences digital 25-150 collab.",
+              "Déploiement de plusieurs cas d'usage, formation d'ambassadeurs internes, intégration CRM/ERP. Pour cabinets d'expertise, scale-ups, agences digital de quelques dizaines à 250 collaborateurs.",
           },
           {
-            sizeLabel: "ETI (250-4999) & Grande entreprise (5000+)",
-            price: "Mission 25 000 € HT - 80 000 € HT",
+            sizeLabel: "ETI",
+            price: "Mission ETI",
             detail:
-              "Déploiement transverse 5-10 cas d'usage en 10-16 semaines, gouvernance IA, intégrations avancées (legacy ERP, datalake), formation 15-30 ambassadeurs cross-département.",
+              "Déploiement transverse, gouvernance IA, intégrations avancées (legacy ERP, datalake), formation d'ambassadeurs cross-département.",
           },
           {
-            sizeLabel: "Grand programme multi-déploiement",
-            price: "Sur devis (80 K€+)",
+            sizeLabel: "Grande entreprise",
+            price: "Grand programme multi-déploiement",
             detail:
-              "Programmes annuels pour grands comptes parisiens : 10-30 cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée 1-3 ETP AxionIA en mode régie.",
+              "Programmes annuels pour grands comptes parisiens : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée AxionIA en mode régie.",
           },
         ],
         testimonials: [
           {
             quote:
-              "L'implémentation lecture factures + comptes-rendus a été livrée en 8 semaines comme promis. ROI réel mesuré 18 mois : 6 ETP libérés sur les tâches admin, soit 280 K€ de gain annuel net. Aucun lock-in, on a la main sur les modèles.",
+              "Implémentation lecture factures + comptes-rendus livrée comme promis. ROI réel mesuré : équivalents temps plein libérés sur les tâches admin, gain annuel net significatif. Aucun lock-in, on a la main sur les modèles.",
             role: "DAF",
-            companyProfile: "ETI conseil parisien, 9e arrondissement, 240 collaborateurs",
+            companyProfile: "ETI conseil parisien, 9e arrondissement",
           },
           {
             quote:
-              "Méthode hybride parfaite : kick-off intense 5 jours sur site, puis itérations distance avec dailies courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
+              "Méthode hybride parfaite : kick-off intense sur site, puis itérations à distance avec points courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
             role: "CTO",
-            companyProfile: "Scale-up SaaS Sentier, 11e arrondissement, 95 collaborateurs",
+            companyProfile: "Scale-up SaaS Sentier, 11e arrondissement",
           },
         ],
         faq: [
           {
-            q: "Quelle durée moyenne pour une implémentation IA à Paris ?",
-            a: "6 à 12 semaines pour une mission PME standard (2-4 cas d'usage), 10 à 16 semaines pour ETI (5-10 cas), 4-6 mois pour grand programme transverse. Le kick-off à Paris dure toujours 3-5 jours sur site, le reste hybride.",
+            q: "Combien de temps dure une implémentation AxionIA à Paris ?",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
-            a: "Forfait fixe pour 95 % de nos missions Paris. SOW signé en S0 avec scope précis et livrables définis. Si scope change en cours, avenant explicite + nouvelle estimation. Aucune dérive horaire cachée.",
+            a: "Forfait fixe pour la grande majorité de nos missions parisiennes. SOW signé au début avec scope précis et livrables définis. Si le scope change en cours, avenant explicite + nouvelle estimation. Aucune dérive horaire cachée.",
           },
           {
             q: "Qui maintient la solution après la mission ?",
-            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel (9-15 % du coût mission/an). Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez AxionIA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-prem, serveur dédié) ou sur infra dédiée AxionIA Hetzner Frankfurt si vous préférez (souveraineté UE). NDA signé S0, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
           },
           {
-            q: "Quels modèles IA utilisez-vous ? Open-source ou propriétaires ?",
-            a: "Mix selon le cas : Mistral / Llama (open-source pour souveraineté ou coût), GPT-4 / Claude / Gemini (propriétaires pour qualité top), parfois fine-tuning sur vos données si volume > 10 K exemples. Choix justifié dans le SOW, jamais imposé.",
+            q: "Quels modèles IA utilisez-vous ?",
+            a: "Mix selon le cas : open-source (Mistral, Llama) pour la souveraineté ou le coût ; propriétaires (GPT, Claude, Gemini) pour la qualité top ; parfois fine-tuning sur vos données si le volume le justifie. Choix justifié dans le SOW, jamais imposé.",
           },
           {
             q: "Que se passe-t-il si l'IA hallucine ou produit des erreurs ?",
-            a: "Tous nos déploiements incluent une couche de validation : seuils de confiance, double-check humain pour les cas sensibles (factures > 5 000 €, contrats, RH), monitoring continu des métriques. Le ROI chiffré au SOW intègre la marge d'erreur réaliste, pas un scénario parfait.",
+            a: "Tous nos déploiements incluent une couche de validation : seuils de confiance, double-check humain pour les cas sensibles (factures importantes, contrats, RH), monitoring continu des métriques. Le ROI chiffré au SOW intègre la marge d'erreur réaliste, pas un scénario parfait.",
           },
         ],
         guarantees:
-          "Engagement AxionIA à Paris : forfait fixe sur SOW (pas de dérive horaire), livraison dans les délais (si retard de notre fait > 2 semaines, pénalité 5 % du forfait par semaine de retard). ROI chiffré contractuel : si après 12 mois le ROI réel mesuré < 50 % du ROI prédit au SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes 30 jours après go-live (sinon remédiation 90 min offerte).",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
-        hero: "Operational AI implementation in Paris (75): AxionIA deploys your AI cases to production in 6 to 12 weeks with costed ROI, team training included, hybrid on-site / remote with mandatory Paris kick-off. Fixed price from €990 (POC), standard range €8,000-25,000 for an SME deployment, €25-80K for mid-cap. Typical Paris cases delivered: automated supplier invoice reading, meeting minutes generation, AI lead qualification, CRM/ERP conversational agents, HR back-office automation.",
+        hero: "AxionIA's AI implementation in Paris brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory Paris kick-off.",
         whyHere: [
-          "AxionIA's #1 implementation hub: 50% of our deployment missions are initiated in Paris or Greater Paris (215,000 active businesses within Paris).",
-          "Mandatory Paris in-person kick-off (3-5 days on site at your offices): team alignment, data access, CRM/ERP/email integration validation.",
-          "Remote iterations afterwards (4-8 weeks) with 15-min daily on video + monthly on-site visit for progress demos with your exec committee.",
-          "Final acceptance always in person in Paris: handover, training of installed teams, runbook documentation handed over.",
-          "Training included for 5-15 identified key staff: they become internal AI ambassadors, autonomous 30 days after mission end.",
-          "Typical Paris cases: accounting firms (invoice reading), 8th/9th mid-cap consulting (lead qualification), Sentier SaaS scale-ups (support agents), Marais fashion houses (product copy generation).",
+          "Paris hosts a significant share of our implementation missions, mostly with large-group AI leadership and growing scale-ups.",
+          "Kick-off always happens in person in Paris at your offices: team alignment, data access, CRM/ERP/email integration validation.",
+          "Remote iterations afterwards with a short daily on video and a monthly on-site visit for progress demos with your executive committee.",
+          "Final acceptance always in person in Paris: handover, training of installed teams, runbook documentation delivered.",
+          "Training included for your identified key staff: they become internal AI ambassadors, autonomous after mission end.",
+          "Typical Paris cases: accounting firms (invoice reading), 8th/9th consulting (lead qualification), Sentier SaaS scale-ups (support agents), Marais fashion houses (product copy generation).",
         ],
         methodology: [
           {
-            step: "1. Technical framing (W0, 2 days)",
+            step: "Technical framing",
             detail:
-              "Paris on-site workshop: target architecture review (CRM, ERP, emails, storage), GDPR/security constraints validation, AI model final selection, costed SOW signed.",
+              "On-site Paris workshop: target architecture review (CRM, ERP, emails, storage), GDPR/security constraints validation, AI model final selection, costed SOW signed.",
           },
           {
-            step: "2. Kick-off + sprint 1 (W1-W2)",
+            step: "Kick-off + initial sprint",
             detail:
-              "3 days on site Paris: access install, dev environment deployment, first end-to-end functional integration (POC), visual validation with your team.",
+              "Several days on site Paris: access install, dev environment deployment, first end-to-end functional integration (POC), visual validation with your team.",
           },
           {
-            step: "3. Iterations (W3-W8)",
+            step: "Iterations",
             detail:
-              "Remote work with 15-min daily: progressive case enrichment, integration with existing tools, real-volume testing, UX adjustments.",
+              "Remote work with a short daily: progressive case enrichment, integration with existing tools, real-volume testing, UX adjustments.",
           },
           {
-            step: "4. Acceptance + training (W9-W10)",
+            step: "Acceptance + training",
             detail:
-              "On site Paris: user acceptance tests, training of 5-15 internal ambassadors, runbook documentation delivery, 90-day monitoring plan.",
+              "On site Paris: user acceptance tests, training of internal ambassadors, runbook documentation delivery, multi-week monitoring plan.",
           },
           {
-            step: "5. Post-go-live follow-up (W11-W12)",
+            step: "Post-go-live follow-up",
             detail:
-              "Remote: production metrics monitoring, fine adjustments, real ROI vs predicted measurement. Final 90-day report delivered, mission closed.",
+              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
           },
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business (< 10)",
-            price: "POC €990 - €4,900",
+            sizeLabel: "Micro-business",
+            price: "POC",
             detail:
-              "Implementation of 1 simple use case in 2-3 weeks (invoice reading OR meeting minutes OR lead qualif). Ideal Paris firms, freelancers, 1-9 staff agencies.",
+              "Implementation of a simple use case over a few weeks (invoice reading, meeting minutes, lead qualification).",
           },
           {
-            sizeLabel: "SME (10-249)",
-            price: "Mission €8,000 - €25,000",
+            sizeLabel: "SME",
+            price: "SME mission",
             detail:
-              "Deployment of 2-4 use cases in 6-12 weeks, training of 5-10 internal ambassadors, CRM/ERP integration. For accounting firms, scale-ups, digital agencies 25-150 staff.",
+              "Deployment of several use cases, training of internal ambassadors, CRM/ERP integration. For accounting firms, scale-ups, digital agencies from a few dozen to 250 staff.",
           },
           {
-            sizeLabel: "Mid-cap (250-4999) & Large enterprise (5000+)",
-            price: "Mission €25,000 - €80,000",
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap mission",
             detail:
-              "Transverse deployment 5-10 use cases in 10-16 weeks, AI governance, advanced integrations (legacy ERP, datalake), training 15-30 cross-department ambassadors.",
+              "Transverse deployment, AI governance, advanced integrations (legacy ERP, datalake), training of cross-department ambassadors.",
           },
           {
-            sizeLabel: "Multi-deployment large program",
-            price: "On quote (€80K+)",
+            sizeLabel: "Large enterprise",
+            price: "Multi-deployment large program",
             detail:
-              "Annual programs for Paris large accounts: 10-30 cascaded use cases, centralized AI governance, dedicated AxionIA team 1-3 FTE in retainer mode.",
+              "Annual programs for Paris large accounts: cascaded use cases, centralized AI governance, dedicated AxionIA team in retainer mode.",
           },
         ],
         testimonials: [
           {
             quote:
-              "Invoice reading + meeting minutes implementation was delivered in 8 weeks as promised. Real 18-month ROI measured: 6 FTEs freed on admin tasks, i.e. €280K net annual gain. No lock-in, we control our models.",
+              "Invoice reading + meeting minutes implementation delivered as promised. Real ROI measured: FTEs freed on admin tasks, significant net annual gain. No lock-in, we control our models.",
             role: "CFO",
-            companyProfile: "Paris mid-cap consulting, 9th arrondissement, 240 staff",
+            companyProfile: "Paris mid-cap consulting, 9th arrondissement",
           },
           {
             quote:
-              "Perfect hybrid method: intense 5-day on-site kick-off, then remote iterations with short dailies. Our IT team was never lost. Internal ambassadors take over autonomously.",
+              "Perfect hybrid method: intense on-site kick-off, then remote iterations with short check-ins. Our IT team was never lost. Internal ambassadors take over autonomously.",
             role: "CTO",
-            companyProfile: "Sentier SaaS scale-up, 11th arrondissement, 95 staff",
+            companyProfile: "Sentier SaaS scale-up, 11th arrondissement",
           },
         ],
         faq: [
           {
-            q: "What is the average duration for an AI implementation in Paris?",
-            a: "6 to 12 weeks for a standard SME mission (2-4 use cases), 10 to 16 weeks for mid-cap (5-10 cases), 4-6 months for transverse large program. Paris kick-off always lasts 3-5 days on site, the rest hybrid.",
+            q: "How long does an AxionIA implementation in Paris take?",
+            a: "It depends on scope. A micro-business POC fits in a few weeks, a standard SME mission spans a few months, a transverse mid-cap mission spans several months, a multi-deployment large program spans a year. The SOW signed at framing fixes the precise schedule.",
           },
           {
             q: "Is the price fixed or time-based?",
-            a: "Fixed flat-rate for 95% of our Paris missions. SOW signed in W0 with precise scope and defined deliverables. If scope changes mid-mission, explicit amendment + new estimate. No hidden hourly drift.",
+            a: "Fixed flat-rate for the vast majority of our Paris missions. SOW signed at the start with precise scope and defined deliverables. If scope changes mid-mission, explicit amendment + new estimate. No hidden hourly drift.",
           },
           {
             q: "Who maintains the solution after the mission?",
-            a: "Your internal ambassadors, trained during the mission. Complete runbook documentation handed over. If outsourced maintenance desired, optional support contract (9-15% of mission cost/year). No lock-in: you can also outsource elsewhere.",
+            a: "Your internal ambassadors, trained during the mission. Complete runbook documentation handed over. If outsourced maintenance desired, optional support contract. No lock-in: you can also outsource elsewhere.",
           },
           {
             q: "Does my data stay with me or move to AxionIA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-prem, dedicated server) or on dedicated AxionIA Hetzner Frankfurt infra if you prefer (EU sovereignty). NDA signed W0, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
           },
           {
-            q: "Which AI models do you use? Open-source or proprietary?",
-            a: "Mix per case: Mistral / Llama (open-source for sovereignty or cost), GPT-4 / Claude / Gemini (proprietary for top quality), sometimes fine-tuning on your data if volume > 10K examples. Choice justified in SOW, never imposed.",
+            q: "Which AI models do you use?",
+            a: "Mix per case: open-source (Mistral, Llama) for sovereignty or cost; proprietary (GPT, Claude, Gemini) for top quality; sometimes fine-tuning on your data if volume justifies. Choice justified in SOW, never imposed.",
           },
           {
             q: "What happens if the AI hallucinates or produces errors?",
-            a: "All our deployments include a validation layer: confidence thresholds, human double-check for sensitive cases (invoices > €5,000, contracts, HR), continuous metrics monitoring. The costed ROI in SOW includes realistic margin of error, not a perfect scenario.",
+            a: "All our deployments include a validation layer: confidence thresholds, human double-check for sensitive cases (large invoices, contracts, HR), continuous metrics monitoring. The costed ROI in SOW includes realistic margin of error, not a perfect scenario.",
           },
         ],
         guarantees:
-          "AxionIA's commitment in Paris: fixed flat-rate on SOW (no hourly drift), on-time delivery (if our delay > 2 weeks, 5% penalty per week of delay). Contractual costed ROI: if after 12 months the real measured ROI < 50% of the predicted SOW ROI, free audit to identify cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous 30 days post go-live (otherwise 90-min remediation offered).",
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
       },
     },
   },
+
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Paris ?",
-      a: "Notre audit Essentiel (5 jours, 12 entretiens, 3 cas d'usage chiffrés) est facturé 9 800 € HT à Paris comme partout en France. Aucun supplément géographique : nos consultants sont basés à Paris, les frais de déplacement sont intégrés dans le forfait pour toute mission en Île-de-France.",
+      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Paris que partout en France.",
     },
     {
       q: "Avez-vous des cas clients à Paris ?",
-      a: "Oui — plusieurs cas concrets dans nos références sont basés à Paris ou en proche couronne (cabinet comptable Boulogne-Billancourt, ETI conseil 9e arrondissement, scale-up SaaS Sentier). Les cas clients récents sont consultables dans la rubrique Cas concrets, filtrables par ville d'intervention.",
+      a: "Oui. Plusieurs cas concrets dans nos références sont basés à Paris ou en proche couronne : cabinet comptable Boulogne-Billancourt, ETI conseil 9e arrondissement, scale-up SaaS Sentier. Les cas clients récents sont consultables dans la rubrique Cas concrets, filtrables par ville d'intervention.",
     },
     {
       q: "Quels secteurs sont prioritaires à Paris ?",
-      a: "Nos déploiements parisiens couvrent en priorité la finance (cabinets d'expertise, family offices, asset managers), le conseil (cabinets stratégie, audit, juridique), la tech (scale-ups B2B SaaS, éditeurs logiciels), et le luxe (maisons de mode, cosmétique). Tout secteur B2B avec >20 collaborateurs est éligible à un audit.",
+      a: "Nos déploiements parisiens couvrent en priorité la finance (cabinets d'expertise, family offices, asset managers), le conseil (cabinets stratégie, audit, juridique), la tech (scale-ups B2B SaaS, éditeurs logiciels), et le luxe (maisons de mode, cosmétique). Tout secteur B2B est éligible à un audit.",
     },
     {
       q: "Pouvez-vous intervenir sur site dans nos bureaux parisiens ?",
-      a: "Oui — toutes nos interventions Paris sont par défaut sur site, dans vos bureaux. Nos consultants sont mobiles sur l'ensemble des arrondissements, La Défense, et la première couronne (Levallois, Boulogne, Issy, Neuilly). Les ateliers d'idéation et restitutions clés se tiennent toujours en présentiel.",
+      a: "Oui. Toutes nos interventions à Paris sont par défaut sur site, dans vos bureaux. Nos consultants sont mobiles sur l'ensemble des arrondissements, La Défense, et la première couronne. Les ateliers d'idéation et les restitutions clés se tiennent toujours en présentiel.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Paris ?",
-      a: "Pour un audit Essentiel à Paris, le délai moyen entre signature et kick-off est de 10 jours ouvrés. Si votre besoin est urgent (Q+1 budget, contrainte calendaire CODIR), nous réservons des créneaux courts à 5 jours sur Paris en priorité absolue.",
+      a: "Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial, et tenons l'engagement contractuel à la signature.",
     },
     {
       q: "Travaillez-vous avec les startups parisiennes (Station F, French Tech) ?",
-      a: "Oui — nous accompagnons régulièrement les scale-ups séries A-B issues de Station F, du Quai d'Innovation et des programmes French Tech. Notre offre Essentielle est calibrée pour les structures 20-150 collaborateurs avec un product-market fit établi qui veulent passer du POC IA à un déploiement opérationnel.",
+      a: "Oui. Nous accompagnons régulièrement les scale-ups séries A-B issues de Station F, du Quai d'Innovation et des programmes French Tech. Notre offre Essentielle est calibrée pour les structures avec un product-market fit établi qui veulent passer du POC IA à un déploiement opérationnel.",
     },
   ],
 };

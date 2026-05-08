@@ -183,8 +183,8 @@ export function VilleServiceDetailSection({
           </h3>
           <p className="text-fg-soft mb-6 text-sm leading-relaxed">
             {isFr
-              ? "Classification INSEE officielle. Tous frais de déplacement intégrés au forfait. Aucun devis opaque, aucune surfacturation."
-              : "Official INSEE classification. All travel fees included in the flat-rate. No opaque quote, no overbilling."}
+              ? "Classification INSEE officielle. Tarifs publics affichés, aucun devis opaque ni surfacturation."
+              : "Official INSEE classification. Public pricing displayed, no opaque quote nor overbilling."}
           </p>
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {copy.pricing.map((tier, idx) => (

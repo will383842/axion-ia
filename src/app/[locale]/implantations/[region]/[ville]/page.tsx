@@ -31,6 +31,13 @@ import { getRegion } from "@/content/regions";
 import { VILLES, getVille, type Ville } from "@/content/villes";
 import { getNearbyVilles, getNearbyCases, getRelatedBlogPosts } from "@/lib/geo";
 import {
+  AUDIT_TIERS,
+  INTERVENTION_TIERS,
+  IMPLEMENTATION_TIERS,
+  formatPrice,
+  getEntryTier,
+} from "@/content/pricing";
+import {
   buildProductMetadata,
   buildItemListJsonLd,
   buildLocalBusinessJsonLd,
@@ -301,8 +308,8 @@ export default async function VillePage({ params }: Props) {
         titleEm={ville.nameFr}
         description={
           isFr
-            ? `Tarifs publics, frais de déplacement intégrés, calendrier en temps réel. AxionIA délivre ses 3 prestations à ${ville.nameFr} comme partout en France métropolitaine — aucune limite géographique sur les services.`
-            : `Public pricing, travel fees included, real-time calendar. AxionIA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France — no geographic limit on services.`
+            ? `Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données. AxionIA délivre ses 3 prestations à ${ville.nameFr} comme partout en France métropolitaine.`
+            : `Public pricing displayed, real-time calendar, you keep control of your data. AxionIA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France.`
         }
         tone="paper"
       >
@@ -313,8 +320,7 @@ export default async function VillePage({ params }: Props) {
               icon: Briefcase,
               h3Fr: `Audit IA à ${ville.nameFr}`,
               h3En: `AI audit in ${ville.nameFr}`,
-              priceFr: "dès 490 € HT",
-              priceEn: "from €490",
+              priceTier: getEntryTier(AUDIT_TIERS),
               tagline: isFr
                 ? "Pyramide 4 niveaux : Flash, Ciblé, Stratégique PME, Stratégique ETI."
                 : "4-level pyramid: Flash, Targeted, SME Strategic, Mid-cap Strategic.",
@@ -322,18 +328,17 @@ export default async function VillePage({ params }: Props) {
               context:
                 copy.servicesContext?.audit?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Audit IA à ${ville.nameFr} disponible sans surcoût géographique. Frais de déplacement intégrés au forfait. Diagnostic actionnable + plan d'attaque chiffré livré sous 5-10 jours ouvrés.`
-                  : `AI audit in ${ville.nameFr} available without geographic surcharge. Travel fees included. Actionable diagnosis + costed action plan delivered within 5-10 business days.`),
-              ctaFr: "Demander un audit Flash · 490 €",
-              ctaEn: "Request a Flash audit · €490",
+                  ? `Audit IA à ${ville.nameFr} aux mêmes tarifs publics que partout en France. Diagnostic actionnable et plan d'attaque chiffré.`
+                  : `AI audit in ${ville.nameFr} at the same public pricing as anywhere in France. Actionable diagnosis and costed action plan.`),
+              ctaFr: "Demander un audit",
+              ctaEn: "Request an audit",
             },
             {
               href: "/interventions" as const,
               icon: Building2,
               h3Fr: `Interventions IA à ${ville.nameFr}`,
               h3En: `AI sessions in ${ville.nameFr}`,
-              priceFr: "dès 490 € HT",
-              priceEn: "from €490",
+              priceTier: getEntryTier(INTERVENTION_TIERS),
               tagline: isFr
                 ? "5 formats sur site : Essentielle, Équipes, Managers, Conférence, Dirigeants."
                 : "5 on-site formats: Essential, Teams, Managers, Talk, Executives.",
@@ -341,21 +346,20 @@ export default async function VillePage({ params }: Props) {
               context:
                 copy.servicesContext?.interventions?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Interventions IA en entreprise à ${ville.nameFr} sur site, jusqu'à 100 collaborateurs par session. Démos sur vos vraies données, pas de scénarios génériques.`
-                  : `Corporate AI sessions in ${ville.nameFr} on site, up to 100 collaborators per session. Demos on your real data, no generic scenarios.`),
-              ctaFr: "Voir le calendrier · 490 €",
-              ctaEn: "View the calendar · €490",
+                  ? `Interventions IA en entreprise à ${ville.nameFr} sur site. Démos sur vos vraies données, pas de scénarios génériques.`
+                  : `Corporate AI sessions in ${ville.nameFr} on site. Demos on your real data, no generic scenarios.`),
+              ctaFr: "Voir le calendrier",
+              ctaEn: "View the calendar",
             },
             {
               href: "/implementation" as const,
               icon: Wrench,
               h3Fr: `Implémentation IA à ${ville.nameFr}`,
               h3En: `AI implementation in ${ville.nameFr}`,
-              priceFr: "dès 990 € HT",
-              priceEn: "from €990",
+              priceTier: getEntryTier(IMPLEMENTATION_TIERS),
               tagline: isFr
-                ? "Mise en production sur 6-12 semaines, ROI chiffré, formation incluse."
-                : "Production deployment over 6-12 weeks, costed ROI, training included.",
+                ? "Mise en production avec ROI chiffré, formation incluse, sans dépendance imposée."
+                : "Production deployment with costed ROI, training included, no imposed dependency.",
               accent: "sage" as const,
               context:
                 copy.servicesContext?.implementation?.[isFr ? "fr" : "en"] ??
@@ -371,8 +375,7 @@ export default async function VillePage({ params }: Props) {
               icon: Icon,
               h3Fr,
               h3En,
-              priceFr,
-              priceEn,
+              priceTier,
               tagline,
               accent,
               context,
@@ -409,7 +412,8 @@ export default async function VillePage({ params }: Props) {
                           : "text-sage"
                     }`}
                   >
-                    {isFr ? priceFr : priceEn}
+                    {isFr ? "Dès " : "From "}
+                    {formatPrice(priceTier, isFr ? "fr" : "en")}
                   </p>
                   <p className="text-fg mt-3 text-sm leading-snug font-medium">{tagline}</p>
                   <p className="text-fg-soft mt-4 grow text-sm leading-relaxed">{context}</p>

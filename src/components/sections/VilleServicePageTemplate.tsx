@@ -27,6 +27,15 @@ import { getRegion } from "@/content/regions";
 import { VILLES, getVille } from "@/content/villes";
 import { getNearbyVilles } from "@/lib/geo";
 import {
+  AUDIT_TIERS,
+  INTERVENTION_TIERS,
+  IMPLEMENTATION_TIERS,
+  formatPrice,
+  getEntryPriceEur,
+  getEntryTier,
+  type PricingTier,
+} from "@/content/pricing";
+import {
   buildProductMetadata,
   buildServiceJsonLd,
   buildLocalBusinessJsonLd,
@@ -38,6 +47,10 @@ import {
 
 type ServiceKey = "audit" | "interventions" | "implementation";
 
+// Tarifs centralisés dans `src/content/pricing.ts` (source de vérité unique).
+// `priceEur` n'est pas hardcodé ici — il est dérivé du tier d'entrée via
+// `getEntryPriceEur(<TIERS>)` quand on a besoin du chiffre brut (Service
+// JSON-LD), et `formatPrice(getEntryTier(<TIERS>))` pour l'affichage CTA.
 const SERVICE_META = {
   audit: {
     canonical: "/audit",
@@ -49,7 +62,7 @@ const SERVICE_META = {
     eyebrowEn: "Operational AI audit",
     icon: Briefcase,
     accent: "primary" as const,
-    priceEur: 490,
+    tiers: AUDIT_TIERS,
   },
   interventions: {
     canonical: "/interventions",
@@ -61,7 +74,7 @@ const SERVICE_META = {
     eyebrowEn: "Corporate AI sessions",
     icon: Building2,
     accent: "terracotta" as const,
-    priceEur: 490,
+    tiers: INTERVENTION_TIERS,
   },
   implementation: {
     canonical: "/implementation",
@@ -73,7 +86,7 @@ const SERVICE_META = {
     eyebrowEn: "Operational AI implementation",
     icon: Wrench,
     accent: "sage" as const,
-    priceEur: 990,
+    tiers: IMPLEMENTATION_TIERS,
   },
 } as const;
 
@@ -115,8 +128,8 @@ export async function buildPageMetadata(
       ? serviceCopy.fr.hero.slice(0, 200)
       : serviceCopy.en.hero.slice(0, 200)
     : isFr
-      ? `AxionIA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site, dès ${meta.priceEur} € HT. Tarifs publics, frais de déplacement intégrés, calendrier en temps réel.`
-      : `AxionIA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site, from €${meta.priceEur}. Public pricing, travel fees included, real-time calendar.`;
+      ? `AxionIA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données.`
+      : `AxionIA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Public pricing displayed, real-time calendar, you keep control of your data.`;
 
   const result = buildProductMetadata({
     locale,
@@ -157,6 +170,9 @@ export async function renderVilleServicePage({
   const isFr = loc === "fr";
   const meta = SERVICE_META[service];
   const hasCopy = !!ville.copy?.services?.[service];
+  const entryPriceEur = getEntryPriceEur(meta.tiers);
+  const entryTier: PricingTier = getEntryTier(meta.tiers);
+  const formattedEntryPrice = formatPrice(entryTier, isFr ? "fr" : "en");
 
   const breadcrumbItems = [
     {
@@ -225,7 +241,7 @@ export async function renderVilleServicePage({
       : `${meta.nameEn} in ${ville.nameFr} · AxionIA`,
     description: localeCopy.hero,
     serviceType: meta.nameEn,
-    priceEur: meta.priceEur,
+    ...(typeof entryPriceEur === "number" ? { priceEur: entryPriceEur } : {}),
     areasServed: [
       {
         type: "City",
@@ -257,7 +273,7 @@ export async function renderVilleServicePage({
       ...(ville.postalCode ? { postalCode: ville.postalCode } : {}),
     },
     geo: { latitude: ville.geo.lat, longitude: ville.geo.lon },
-    priceRange: meta.priceEur >= 1000 ? "€€€" : "€€",
+    priceRange: typeof entryPriceEur === "number" && entryPriceEur >= 1000 ? "€€€" : "€€",
   });
 
   // 3. BreadcrumbList JSON-LD (4 niveaux)
@@ -343,7 +359,7 @@ export async function renderVilleServicePage({
             data-source-ville={ville.slug}
             data-source-region={ville.region}
           >
-            {isFr ? `Réserver · ${meta.priceEur} €` : `Book · €${meta.priceEur}`}
+            {isFr ? `Réserver · ${formattedEntryPrice}` : `Book · ${formattedEntryPrice}`}
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </Cta>
           <Cta
@@ -459,8 +475,8 @@ export async function renderVilleServicePage({
               data-source-ville={ville.slug}
             >
               {isFr
-                ? `Voir le calendrier · ${meta.priceEur} €`
-                : `View the calendar · €${meta.priceEur}`}
+                ? `Voir le calendrier · ${formattedEntryPrice}`
+                : `View the calendar · ${formattedEntryPrice}`}
             </Cta>
             <Cta
               href="/contact"
