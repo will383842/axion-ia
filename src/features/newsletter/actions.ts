@@ -17,6 +17,7 @@ import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { Locale } from "../../../prisma/generated/client";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
@@ -89,9 +90,11 @@ export async function subscribeNewsletterAction(
     });
   }
 
-  // TODO Sprint 15 step 4 : enqueue email confirmation via BullMQ.
-  //   Pour l'instant on reste sur la creation token + notification Telegram.
-  //   L'email sera consume par le worker quand step 4 livre.
+  // 7. Enqueue email double opt-in (RFC 8058)
+  await enqueueEmail("newsletter-confirm-optin", parsed.data.email, locale, {
+    confirmToken,
+    unsubscribeToken: sub.unsubscribeToken ?? unsubscribeToken,
+  });
 
   return { ok: true };
 }

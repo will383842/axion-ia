@@ -30,7 +30,10 @@ services:
     image: redis:7-alpine
     container_name: axion-ia-redis
     restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    # noeviction obligatoire pour BullMQ (sinon jobs perdus si memory full).
+    # Le rate-limit reste safe : keys ont un TTL court (15min) donc la
+    # memoire ne grossit pas dans des conditions normales.
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
     ports:
       # Host 6381 → container 6379 (6379+6380 hôte déjà pris par WebFactory).
       - "6381:6379"

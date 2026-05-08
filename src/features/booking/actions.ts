@@ -19,6 +19,7 @@ import { bookingSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { Locale, InterventionType } from "../../../prisma/generated/client";
 
 export type BookingState = { ok: true; bookingId: string } | { ok: false; error: string };
@@ -103,6 +104,15 @@ export async function createBookingAction(
   await sendTelegram({
     tag: "INTERVENTION",
     body: `Nouvelle réservation ${interventionType}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${participantsCount}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${booking.id}\``,
+  });
+
+  await enqueueEmail("booking-confirmed", parsed.data.email, locale, {
+    contactName: parsed.data.contact,
+    bookingDate: parsed.data.date,
+    bookingTime: parsed.data.time,
+    interventionType,
+    participantsCount,
+    bookingId: booking.id,
   });
 
   return { ok: true, bookingId: booking.id };
@@ -196,6 +206,21 @@ export async function postOption48hAction(
     await sendTelegram({
       tag: "OPTION",
       body: `Nouvelle option 48h\n• Société : ${companyName} (${companySector})\n• Intervention : ${interventionType}\n• Participants : ${participantsCount}\n• Contact : ${contactName} (\`${contactEmail}\`)\n• Expire : ${expiresAt.toISOString()}\n• Locale : ${locale}\n• ID : \`${result.id}\``,
+    });
+
+    // Lookup slot date pour le payload email (le tx pourrait l'inclure mais
+    // on garde la simplicite ici — read commit-after-tx).
+    const slot = await prisma.calendarSlot.findUnique({
+      where: { id: slotId },
+      select: { slotDate: true },
+    });
+    await enqueueEmail("option-posted", contactEmail, locale, {
+      contactName,
+      companyName,
+      bookingDate: slot?.slotDate.toISOString().slice(0, 10) ?? "",
+      interventionType,
+      expiresAt: expiresAt.toISOString(),
+      optionId: result.id,
     });
 
     return { ok: true, optionId: result.id, expiresAt: expiresAt.toISOString() };

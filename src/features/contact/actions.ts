@@ -11,6 +11,7 @@ import { contactSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { Locale } from "../../../prisma/generated/client";
 
 export type ContactState = { ok: true } | { ok: false; error: string };
@@ -65,6 +66,11 @@ export async function submitContactAction(
   await sendTelegram({
     tag: "CONTACT",
     body: `Nouveau message\n• De : ${parsed.data.name} (\`${parsed.data.email}\`)${parsed.data.company ? `\n• Société : ${parsed.data.company}` : ""}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+  });
+
+  await enqueueEmail("contact-confirmed", parsed.data.email, locale, {
+    contactName: parsed.data.name,
+    submissionId: submission.id,
   });
 
   return { ok: true };

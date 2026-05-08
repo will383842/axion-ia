@@ -11,6 +11,7 @@ import { implementationSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { Locale } from "../../../prisma/generated/client";
 
 export type ImplementationState = { ok: true; submissionId: string } | { ok: false; error: string };
@@ -67,6 +68,13 @@ export async function submitImplementationAction(
   await sendTelegram({
     tag: "AUTO",
     body: `Nouvelle implémentation ${parsed.data.type} • budget ${parsed.data.budget}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+  });
+
+  await enqueueEmail("implementation-confirmed", parsed.data.email, locale, {
+    contactName: parsed.data.contact,
+    implType: parsed.data.type,
+    budget: parsed.data.budget,
+    submissionId: submission.id,
   });
 
   return { ok: true, submissionId: submission.id };
