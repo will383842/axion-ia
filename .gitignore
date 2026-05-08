@@ -32,10 +32,11 @@ yarn-error.log*
 .pnpm-debug.log*
 *.log
 
-# env files (env.example committed, env.local & env.test never)
+# env files (only *.example variants are committed)
 .env
 .env.*
 !.env.example
+!.env.dev.example
 
 # vercel (we don't deploy to Vercel but keep ignore)
 .vercel
@@ -56,4 +57,3 @@ Thumbs.db
 
 # Runtime data (RUM Web Vitals ndjson rotatif — P-303)
 /data/
-

@@ -1,23 +1,689 @@
-// AxionIA · Prisma schema
-// Sprint 0 stub — full schema lands in Sprint 15 (M8).
-// Source: doc 09 + 09b + 09c + CLAUDE.md v6 §13.
-// PAS de Stripe → pas de Subscription / Customer / Invoice.
+// AxionIA · Prisma schema (Sprint 15 / M8)
+// Sources canoniques :
+// - CLAUDE.md v6 §13 (liste 18 tables nominales)
+// - Dossier v10.1 docs/09 + 09b + 09c (specs champs)
+// - PLAN-AMENDMENTS-2026-05-08.md §M8 (ordre d'attaque)
+// - ADR 0008 (vocabulaire « intervention coaching »)
+// - ADR 0009 (hosting Hetzner CX32 + Cloudflare Free)
+//
+// Stratégie multi-locale (§ADDENDUM v4) :
+// - Articles / CaseStudies / HelpArticles → tables de traduction séparées (contenu long)
+// - FAQ / Testimonials / Categories      → champs *_fr / *_en (contenu court)
+// - Submissions / NewsletterSubscribers  → colonne locale unique
+//
+// Indexes FTS tsvector : ajoutés via migration SQL raw (Prisma ne gère pas natif).
+// Verrou pessimiste calendar_slots : `SELECT ... FOR UPDATE` côté Server Action,
+//   pas via contrainte Prisma.
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../prisma/generated/client"
+  provider        = "prisma-client-js"
+  output          = "../prisma/generated/client"
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // Sprint 15 wires shadow + direct URLs + extensions.
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [citext, pg_trgm, unaccent, uuidOssp(map: "uuid-ossp")]
 }
 
-// Placeholder model so prisma generate succeeds in Sprint 0.
-// Sprint 15 replaces with the full 17-table schema.
-model _SetupSentinel {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  note      String   @default("Replace with real schema in Sprint 15")
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Locale {
+  fr
+  en
+}
+
+enum SubmissionType {
+  audit
+  implementation
+  intervention
+  contact
+}
+
+enum SubmissionStatus {
+  new
+  in_progress
+  processed
+  archived
+}
+
+enum InterventionType {
+  essentielle
+  equipes
+  managers
+  conference
+  dirigeants
+  coaching_individuel
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  cancelled
+  postponed
+}
+
+enum CalendarSlotStatus {
+  available
+  reserved
+  blocked
+}
+
+enum BookingOptionStatus {
+  pending
+  confirmed
+  refused
+  expired
+  converted
+}
+
+enum PublishStatus {
+  draft
+  published
+  archived
+}
+
+enum TestimonialStatus {
+  pending
+  published
+  refused
+  archived
+}
+
+enum FAQCategory {
+  general
+  interventions
+  implementation
+  audit
+  pricing
+  process
+}
+
+enum SurveyTrigger {
+  immediate
+  scroll_50
+  delay_10s
+  exit_intent
+}
+
+enum SurveyStatus {
+  draft
+  active
+  ended
+  archived
+}
+
+enum AdminRole {
+  super_admin
+  admin
+  editor
+  reader
+}
+
+enum AdminStatus {
+  active
+  suspended
+}
+
+enum NewsletterStatus {
+  pending
+  confirmed
+  unsubscribed
+  bounced
+}
+
+enum ModuleKind {
+  intervention
+  implementation
+  audit
+}
+
+// ============================================================
+// 1. submissions
+// ============================================================
+
+model Submission {
+  id                  String           @id @default(uuid()) @db.Uuid
+  type                SubmissionType
+  status              SubmissionStatus @default(new)
+  locale              Locale           @default(fr)
+  // Identité société
+  companyName         String           @map("company_name")  @db.VarChar(255)
+  registrationNumber  String?          @map("registration_number") @db.VarChar(40)
+  sector              String?          @db.VarChar(100)
+  address             String?          @db.Text
+  employeesCount      String?          @map("employees_count") @db.VarChar(20)
+  // Contact
+  contactName         String           @map("contact_name") @db.VarChar(255)
+  contactRole         String?          @map("contact_role") @db.VarChar(100)
+  contactEmail        String           @map("contact_email") @db.Citext
+  contactPhone        String?          @map("contact_phone") @db.VarChar(30)
+  // Payload form
+  details             Json
+  // Admin workflow
+  internalNotes       String?          @map("internal_notes") @db.Text
+  assignedTo          String?          @map("assigned_to")    @db.VarChar(100)
+  // Anti-spam / source
+  ipAddress           String?          @map("ip_address")     @db.VarChar(64)
+  userAgent           String?          @map("user_agent")     @db.Text
+  referer             String?          @db.Text
+  turnstileScore      Decimal?         @map("turnstile_score") @db.Decimal(4, 3)
+  // Timestamps
+  submittedAt         DateTime         @default(now()) @map("submitted_at")
+  updatedAt           DateTime         @updatedAt      @map("updated_at")
+
+  bookings            Booking[]
+
+  @@index([type])
+  @@index([status])
+  @@index([locale])
+  @@index([submittedAt])
+  @@index([contactEmail])
+  @@map("submissions")
+}
+
+// ============================================================
+// 2. bookings
+// ============================================================
+
+model Booking {
+  id                 String           @id @default(uuid()) @db.Uuid
+  interventionType   InterventionType @map("intervention_type")
+  bookingDate        DateTime         @map("booking_date")
+  participantsCount  Int              @map("participants_count")
+  // Tarification (Sprint 14.10.x — pricing.ts SSOT)
+  participantsTier   String?          @map("participants_tier") @db.VarChar(40)
+  pricePaidCents     Int?             @map("price_paid_cents")
+  // Locale (langue formulaire)
+  locale             Locale           @default(fr)
+  // Liens
+  submissionId       String?          @map("submission_id") @db.Uuid
+  submission         Submission?      @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  slotId             String?          @unique @map("slot_id") @db.Uuid
+  slot               CalendarSlot?    @relation(fields: [slotId], references: [id], onDelete: SetNull)
+  // Calendrier externe (legacy Cal.com — peut rester null après migration calendrier maison)
+  calendarEventId    String?          @map("calendar_event_id") @db.VarChar(255)
+  status             BookingStatus    @default(pending)
+  internalNotes      String?          @map("internal_notes") @db.Text
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt      @map("updated_at")
+
+  @@index([interventionType])
+  @@index([bookingDate])
+  @@index([status])
+  @@index([locale])
+  @@map("bookings")
+}
+
+// ============================================================
+// 3. calendar_slots
+// ============================================================
+
+model CalendarSlot {
+  id                String             @id @default(uuid()) @db.Uuid
+  slotDate          DateTime           @map("slot_date") @db.Date
+  status            CalendarSlotStatus @default(available)
+  displaySector     String?            @map("display_sector") @db.VarChar(100)
+  participantsCount Int?               @map("participants_count")
+  interventionType  InterventionType?  @map("intervention_type")
+  showPublicly      Boolean            @default(true) @map("show_publicly")
+  blockedReason     String?            @map("blocked_reason") @db.Text
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt      @map("updated_at")
+
+  booking           Booking?
+  options           BookingOption[]
+
+  @@unique([slotDate])
+  @@index([status])
+  @@map("calendar_slots")
+}
+
+// ============================================================
+// 4. bookings_options
+// ============================================================
+
+model BookingOption {
+  id                String              @id @default(uuid()) @db.Uuid
+  slotId            String              @map("slot_id") @db.Uuid
+  slot              CalendarSlot        @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  // Société
+  companyName       String              @map("company_name") @db.VarChar(255)
+  companySector     String              @map("company_sector") @db.VarChar(100)
+  participantsCount Int                 @map("participants_count")
+  interventionType  InterventionType    @map("intervention_type")
+  // Contact
+  contactName       String              @map("contact_name") @db.VarChar(255)
+  contactEmail      String              @map("contact_email") @db.Citext
+  contactPhone      String              @map("contact_phone") @db.VarChar(30)
+  // RGPD
+  consentDisplay    Boolean             @default(false) @map("consent_display")
+  // Lifecycle
+  status            BookingOptionStatus @default(pending)
+  expiresAt         DateTime            @map("expires_at")
+  reminderSentAt    DateTime?           @map("reminder_sent_at")
+  confirmedAt       DateTime?           @map("confirmed_at")
+  notes             String?             @db.Text
+  locale            Locale              @default(fr)
+  createdAt         DateTime            @default(now()) @map("created_at")
+
+  @@index([slotId])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("bookings_options")
+}
+
+// ============================================================
+// 5. articles + 6. article_translations + 7. article_tags
+// ============================================================
+
+model Article {
+  id              String              @id @default(uuid()) @db.Uuid
+  // Champs structurels (mêmes pour toutes les langues)
+  authorId        String?             @map("author_id") @db.Uuid
+  author          Author?             @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId      String?             @map("category_id") @db.Uuid
+  category        Category?           @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage   String?             @map("featured_image") @db.VarChar(512)
+  status          PublishStatus       @default(draft)
+  publishedAt     DateTime?           @map("published_at")
+  readingTime     Int?                @map("reading_time")
+  viewsCount      Int                 @default(0) @map("views_count")
+  commentsEnabled Boolean             @default(false) @map("comments_enabled")
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt      @map("updated_at")
+
+  translations    ArticleTranslation[]
+  tags            ArticleTagOnArticle[]
+
+  @@index([status])
+  @@index([publishedAt])
+  @@map("articles")
+}
+
+model ArticleTranslation {
+  id              String   @id @default(uuid()) @db.Uuid
+  articleId       String   @map("article_id") @db.Uuid
+  article         Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  locale          Locale
+  title           String   @db.VarChar(255)
+  slug            String   @db.VarChar(255)
+  excerpt         String?  @db.Text
+  body            String   @db.Text
+  metaTitle       String?  @map("meta_title")       @db.VarChar(70)
+  metaDescription String?  @map("meta_description") @db.VarChar(160)
+  ogImage         String?  @map("og_image") @db.VarChar(512)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt      @map("updated_at")
+
+  @@unique([articleId, locale])
+  @@unique([locale, slug])
+  @@index([slug])
+  @@map("article_translations")
+}
+
+model ArticleTag {
+  id          String                @id @default(uuid()) @db.Uuid
+  slug        String                @unique @db.VarChar(120)
+  nameFr      String                @map("name_fr") @db.VarChar(120)
+  nameEn      String                @map("name_en") @db.VarChar(120)
+  descFr      String?               @map("desc_fr") @db.Text
+  descEn      String?               @map("desc_en") @db.Text
+  createdAt   DateTime              @default(now()) @map("created_at")
+
+  articles    ArticleTagOnArticle[]
+
+  @@map("article_tags")
+}
+
+model ArticleTagOnArticle {
+  articleId String     @map("article_id") @db.Uuid
+  tagId     String     @map("tag_id")     @db.Uuid
+  article   Article    @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       ArticleTag @relation(fields: [tagId],     references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@map("article_tags_on_articles")
+}
+
+// ============================================================
+// 8. authors
+// ============================================================
+
+model Author {
+  id          String    @id @default(uuid()) @db.Uuid
+  slug        String    @unique @db.VarChar(120)
+  name        String    @db.VarChar(120)
+  email       String?   @db.Citext
+  avatarUrl   String?   @map("avatar_url") @db.VarChar(512)
+  bioFr       String?   @map("bio_fr") @db.Text
+  bioEn       String?   @map("bio_en") @db.Text
+  linkedinUrl String?   @map("linkedin_url") @db.VarChar(512)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt      @map("updated_at")
+
+  articles    Article[]
+
+  @@map("authors")
+}
+
+// ============================================================
+// 9. testimonials  (option a — champs *_fr / *_en)
+// ============================================================
+
+model Testimonial {
+  id              String            @id @default(uuid()) @db.Uuid
+  slug            String            @unique @db.VarChar(160)
+  firstName       String            @map("first_name") @db.VarChar(100)
+  lastName        String            @map("last_name")  @db.VarChar(100)
+  role            String?           @db.VarChar(100)
+  company         String?           @db.VarChar(255)
+  sector          String?           @db.VarChar(100)
+  companySize     String?           @map("company_size") @db.VarChar(20)
+  // Quotes bilingues
+  shortQuoteFr    String            @map("short_quote_fr") @db.Text
+  shortQuoteEn    String            @map("short_quote_en") @db.Text
+  fullQuoteFr     String?           @map("full_quote_fr")  @db.Text
+  fullQuoteEn     String?           @map("full_quote_en")  @db.Text
+  rating          Int?
+  photoUrl        String?           @map("photo_url") @db.VarChar(512)
+  videoUrl        String?           @map("video_url") @db.VarChar(512)
+  module          ModuleKind?
+  resultHighlight String?           @map("result_highlight") @db.VarChar(255)
+  displayPages    Json?             @map("display_pages")
+  displayOrder    Int               @default(0) @map("display_order")
+  status          TestimonialStatus @default(pending)
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt      @map("updated_at")
+
+  caseStudies     CaseStudy[]
+
+  @@index([status])
+  @@index([sector])
+  @@map("testimonials")
+}
+
+// ============================================================
+// 10. case_studies + case_study_translations
+// ============================================================
+
+model CaseStudy {
+  id                  String                   @id @default(uuid()) @db.Uuid
+  // Structurel (commun aux 2 langues)
+  sector              String                   @db.VarChar(100)
+  companySizeRange    String                   @map("company_size_range") @db.VarChar(40)
+  region              String?                  @db.VarChar(100)
+  modulesUsed         Json                     @map("modules_used")
+  resultsQuantified   Json                     @map("results_quantified")
+  durationWeeks       Int?                     @map("duration_weeks")
+  roiWeeks            Int?                     @map("roi_weeks")
+  testimonialId       String?                  @map("testimonial_id") @db.Uuid
+  testimonial         Testimonial?             @relation(fields: [testimonialId], references: [id], onDelete: SetNull)
+  status              PublishStatus            @default(draft)
+  publishedAt         DateTime?                @map("published_at")
+  createdAt           DateTime                 @default(now()) @map("created_at")
+  updatedAt           DateTime                 @updatedAt      @map("updated_at")
+
+  translations        CaseStudyTranslation[]
+
+  @@index([sector])
+  @@index([status])
+  @@index([publishedAt])
+  @@map("case_studies")
+}
+
+model CaseStudyTranslation {
+  id              String    @id @default(uuid()) @db.Uuid
+  caseStudyId     String    @map("case_study_id") @db.Uuid
+  caseStudy       CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  locale          Locale
+  title           String    @db.VarChar(255)
+  slug            String    @db.VarChar(255)
+  problem         String    @db.Text
+  solution        String    @db.Text
+  metaTitle       String?   @map("meta_title")       @db.VarChar(70)
+  metaDescription String?   @map("meta_description") @db.VarChar(160)
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt      @map("updated_at")
+
+  @@unique([caseStudyId, locale])
+  @@unique([locale, slug])
+  @@map("case_study_translations")
+}
+
+// ============================================================
+// 11. faqs  (option a — champs *_fr / *_en)
+// ============================================================
+
+model FAQ {
+  id              String        @id @default(uuid()) @db.Uuid
+  slug            String        @unique @db.VarChar(180)
+  category        FAQCategory   @default(general)
+  questionFr      String        @map("question_fr") @db.VarChar(500)
+  questionEn      String        @map("question_en") @db.VarChar(500)
+  answerFr        String        @map("answer_fr") @db.Text
+  answerEn        String        @map("answer_en") @db.Text
+  metaTitle       String?       @map("meta_title")       @db.VarChar(70)
+  metaDescription String?       @map("meta_description") @db.VarChar(160)
+  displayOrder    Int           @default(0) @map("display_order")
+  viewCount       Int           @default(0) @map("view_count")
+  helpfulCount    Int           @default(0) @map("helpful_count")
+  status          PublishStatus @default(draft)
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt      @map("updated_at")
+
+  @@index([category])
+  @@index([status])
+  @@map("faqs")
+}
+
+// ============================================================
+// 12. help_articles + help_article_translations
+// ============================================================
+
+model HelpArticle {
+  id            String                   @id @default(uuid()) @db.Uuid
+  categoryId    String?                  @map("category_id") @db.Uuid
+  category      Category?                @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  isTutorial    Boolean                  @default(false) @map("is_tutorial")
+  status        PublishStatus            @default(draft)
+  publishedAt   DateTime?                @map("published_at")
+  createdAt     DateTime                 @default(now()) @map("created_at")
+  updatedAt     DateTime                 @updatedAt      @map("updated_at")
+
+  translations  HelpArticleTranslation[]
+
+  @@index([status])
+  @@index([publishedAt])
+  @@map("help_articles")
+}
+
+model HelpArticleTranslation {
+  id              String      @id @default(uuid()) @db.Uuid
+  helpArticleId   String      @map("help_article_id") @db.Uuid
+  helpArticle     HelpArticle @relation(fields: [helpArticleId], references: [id], onDelete: Cascade)
+  locale          Locale
+  title           String      @db.VarChar(255)
+  slug            String      @db.VarChar(255)
+  excerpt         String?     @db.Text
+  body            String      @db.Text
+  metaTitle       String?     @map("meta_title")       @db.VarChar(70)
+  metaDescription String?     @map("meta_description") @db.VarChar(160)
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt      @map("updated_at")
+
+  @@unique([helpArticleId, locale])
+  @@unique([locale, slug])
+  @@map("help_article_translations")
+}
+
+// ============================================================
+// 13. surveys  +  14. survey_responses
+// ============================================================
+
+model Survey {
+  id           String           @id @default(uuid()) @db.Uuid
+  title        String           @db.VarChar(255)
+  questions    Json
+  displayPages Json?            @map("display_pages")
+  trigger      SurveyTrigger    @default(immediate)
+  status       SurveyStatus     @default(draft)
+  startsAt     DateTime?        @map("starts_at")
+  endsAt       DateTime?        @map("ends_at")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt      @map("updated_at")
+
+  responses    SurveyResponse[]
+
+  @@index([status])
+  @@map("surveys")
+}
+
+model SurveyResponse {
+  id          String   @id @default(uuid()) @db.Uuid
+  surveyId    String   @map("survey_id") @db.Uuid
+  survey      Survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  answers     Json
+  visitorId   String?  @map("visitor_id") @db.VarChar(120)
+  pageUrl     String?  @map("page_url")   @db.Text
+  locale      Locale   @default(fr)
+  submittedAt DateTime @default(now()) @map("submitted_at")
+
+  @@index([surveyId])
+  @@index([submittedAt])
+  @@map("survey_responses")
+}
+
+// ============================================================
+// 15. categories  (option a — champs *_fr / *_en)
+// ============================================================
+
+model Category {
+  id            String        @id @default(uuid()) @db.Uuid
+  slug          String        @unique @db.VarChar(160)
+  parentId      String?       @map("parent_id") @db.Uuid
+  parent        Category?     @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: SetNull)
+  children      Category[]    @relation("CategoryToCategory")
+  module        ModuleKind?
+  nameFr        String        @map("name_fr") @db.VarChar(255)
+  nameEn        String        @map("name_en") @db.VarChar(255)
+  descriptionFr String?       @map("description_fr") @db.Text
+  descriptionEn String?       @map("description_en") @db.Text
+  icon          String?       @db.VarChar(80)
+  colorAccent   String?       @map("color_accent") @db.VarChar(7)
+  displayOrder  Int           @default(0) @map("display_order")
+  status        PublishStatus @default(published)
+  seoTitleFr    String?       @map("seo_title_fr") @db.VarChar(70)
+  seoTitleEn    String?       @map("seo_title_en") @db.VarChar(70)
+  seoDescFr     String?       @map("seo_desc_fr")  @db.VarChar(160)
+  seoDescEn     String?       @map("seo_desc_en")  @db.VarChar(160)
+  pageContentFr String?       @map("page_content_fr") @db.Text
+  pageContentEn String?       @map("page_content_en") @db.Text
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt      @map("updated_at")
+
+  articles      Article[]
+  helpArticles  HelpArticle[]
+
+  @@index([parentId])
+  @@index([module])
+  @@map("categories")
+}
+
+// ============================================================
+// 16. admin_users
+// ============================================================
+
+model AdminUser {
+  id                String        @id @default(uuid()) @db.Uuid
+  name              String        @db.VarChar(255)
+  email             String        @unique @db.Citext
+  // argon2id (CLAUDE.md §15 — minimum 12 chars en clair, hash argon2id côté Server Action)
+  passwordHash      String        @map("password_hash") @db.VarChar(255)
+  role              AdminRole     @default(reader)
+  // 2FA TOTP (otplib)
+  twoFactorSecret   String?       @map("two_factor_secret") @db.VarChar(255)
+  twoFactorEnabled  Boolean       @default(false) @map("two_factor_enabled")
+  twoFactorVerified Boolean       @default(false) @map("two_factor_verified")
+  lastLoginAt       DateTime?     @map("last_login_at")
+  lastLoginIp       String?       @map("last_login_ip") @db.VarChar(64)
+  status            AdminStatus   @default(active)
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt      @map("updated_at")
+
+  activityLogs      ActivityLog[]
+
+  @@index([role])
+  @@index([status])
+  @@map("admin_users")
+}
+
+// ============================================================
+// 17. activity_logs
+// ============================================================
+
+model ActivityLog {
+  id           String     @id @default(uuid()) @db.Uuid
+  adminUserId  String?    @map("admin_user_id") @db.Uuid
+  adminUser    AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+  action       String     @db.VarChar(120)
+  targetType   String?    @map("target_type") @db.VarChar(80)
+  targetId     String?    @map("target_id")   @db.Uuid
+  changes      Json?
+  ipAddress    String?    @map("ip_address") @db.VarChar(64)
+  userAgent    String?    @map("user_agent") @db.Text
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@index([adminUserId])
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+// ============================================================
+// 18. settings
+// ============================================================
+
+model Setting {
+  key         String   @id @db.VarChar(120)
+  value       Json
+  description String?  @db.Text
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  updatedBy   String?  @map("updated_by") @db.Uuid
+
+  @@map("settings")
+}
+
+// ============================================================
+// 19. newsletter_subscribers
+// ============================================================
+
+model NewsletterSubscriber {
+  id              String           @id @default(uuid()) @db.Uuid
+  email           String           @unique @db.Citext
+  locale          Locale           @default(fr)
+  status          NewsletterStatus @default(pending)
+  // Double opt-in
+  confirmToken    String?          @unique @map("confirm_token") @db.VarChar(120)
+  confirmSentAt   DateTime?        @map("confirm_sent_at")
+  confirmedAt     DateTime?        @map("confirmed_at")
+  unsubscribedAt  DateTime?        @map("unsubscribed_at")
+  unsubscribeToken String?         @unique @map("unsubscribe_token") @db.VarChar(120)
+  // Source / marketing
+  source          String?          @db.VarChar(120)
+  ipAddress       String?          @map("ip_address") @db.VarChar(64)
+  // MailWizz sync
+  mailwizzListUid String?          @map("mailwizz_list_uid") @db.VarChar(120)
+  mailwizzSubUid  String?          @map("mailwizz_sub_uid")  @db.VarChar(120)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt      @map("updated_at")
+
+  @@index([locale])
+  @@index([status])
+  @@map("newsletter_subscribers")
 }

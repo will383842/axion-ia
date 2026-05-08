@@ -1,0 +1,55 @@
+# AxionIA · dev local stack (Sprint 15 / M8)
+# Postgres 16 + Redis 7 + Mailhog
+# Lance via pnpm db:up / arrête via pnpm db:down
+# Prod = Hetzner CX32 + Coolify (ADR 0009), pas ce file.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: axionia-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: axionia
+      POSTGRES_PASSWORD: axionia_dev
+      POSTGRES_DB: axionia_dev
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
+      TZ: Europe/Paris
+    ports:
+      # Host 5433 → container 5432 (un Postgres natif Windows occupe déjà 5432).
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U axionia -d axionia_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: axionia-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    ports:
+      # Host 6381 → container 6379 (6379+6380 hôte déjà pris par WebFactory).
+      - "6381:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: axionia-mailhog
+    restart: unless-stopped
+    ports:
+      - "2525:1025"  # SMTP (mappé sur 2525 pour matcher SMTP_PORT du .env)
+      - "8025:8025"  # UI web http://localhost:8025
+
+volumes:
+  postgres_data:
+  redis_data:
