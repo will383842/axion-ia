@@ -121,6 +121,14 @@ export const routing = defineRouting({
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
     "/accessibilite": { fr: "/accessibilite", en: "/accessibility" },
 
+    // pSEO Implantations (régions + villes >5000 hab + 5 DROM, ADR 0006)
+    "/implantations": { fr: "/implantations", en: "/locations" },
+    "/implantations/[region]": { fr: "/implantations/[region]", en: "/locations/[region]" },
+    "/implantations/[region]/[ville]": {
+      fr: "/implantations/[region]/[ville]",
+      en: "/locations/[region]/[ville]",
+    },
+
     // Légales
     "/mentions-legales": { fr: "/mentions-legales", en: "/legal-notice" },
     "/conditions-generales": { fr: "/conditions-generales", en: "/terms" },

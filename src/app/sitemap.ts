@@ -36,7 +36,14 @@ import { AUTOMATISATION_SLUGS_FR, AUTOMATISATION_SLUGS_EN } from "@/content/auto
 // since 2017 but still uses hreflang + lastmod + changefreq for crawl
 // budget allocation).
 
-type SitemapId = "pages" | "blog" | "help" | "cas-concrets" | "comparaisons" | "implementation";
+type SitemapId =
+  | "pages"
+  | "blog"
+  | "help"
+  | "cas-concrets"
+  | "comparaisons"
+  | "implementation"
+  | "implantations";
 
 type PathnameKey = keyof typeof routing.pathnames;
 
@@ -52,7 +59,7 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {
-  return (key as string).includes("[slug]");
+  return /\[[^\]]+\]/.test(key as string);
 }
 
 function localizedHref(key: PathnameKey, locale: (typeof routing.locales)[number]): string {

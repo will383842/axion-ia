@@ -7,6 +7,15 @@ export interface CaseStudy {
   industryEn: string;
   size: "tpe" | "pme" | "mid" | "enterprise";
   metric: string;
+  /**
+   * Coordonnées WGS84 du client (ou ville d'intervention principale). Utilisé
+   * par `getNearbyCases()` sur les pages pSEO villes pour afficher un
+   * bandeau « cas client proche ». Optionnel — anonymisation client jamais
+   * compromise, le slug et la ville restent suffisants côté SEO.
+   */
+  geo?: { lat: number; lon: number };
+  /** Ville d'intervention publique (label affiché, ex. "Boulogne-Billancourt (92)"). */
+  cityLabel?: string;
   fr: CaseCopy;
   en: CaseCopy;
 }

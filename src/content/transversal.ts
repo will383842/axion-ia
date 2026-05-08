@@ -132,6 +132,13 @@ export interface BlogPost {
   category: string;
   author: string;
   tags: ReadonlyArray<string>;
+  /**
+   * Slugs de villes/régions auxquelles cet article est explicitement lié
+   * (utilisé par `getRelatedBlogPosts(ville)` sur les pages pSEO villes,
+   * cf. `src/lib/geo.ts`). Optionnel — sans liaison explicite, le matching
+   * retombe sur les `tags`.
+   */
+  relatedCities?: ReadonlyArray<string>;
   fr: { title: string; excerpt: string; body: string };
   en: { title: string; excerpt: string; body: string };
 }
