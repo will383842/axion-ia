@@ -1,5 +1,5 @@
 // Server Component — schéma visuel du hero /contact.
-// Stack de 3 mini-cards illustrant les 3 canaux d'entrée AxionIA :
+// Stack de 3 mini-cards illustrant les 3 canaux d'entrée Axion-IA :
 // (1) message direct sous 48 h ouvrées (lead), (2) intervention via
 // l'Essentielle, (3) audit cadré. Pattern hérité de BlogHeroSchema —
 // stack vertical, terracotta accent, première card en avant.

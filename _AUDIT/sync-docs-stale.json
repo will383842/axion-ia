@@ -213,7 +213,7 @@
       ]
     },
     {
-      "path": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md",
+      "path": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md",
       "exists": true,
       "stalenessLevel": "high",
       "staleMentions": [
@@ -244,7 +244,7 @@
       ]
     },
     {
-      "path": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_NO-STRIPE.md",
+      "path": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_NO-STRIPE.md",
       "exists": false,
       "note": "Référencé dans le prompt PROMPT-DOC-SYNC-V14 mais inexistant. Le ban Stripe est implicite dans _DECISIONS-FINALES.md (« Phase 1 100% hors ligne »)."
     },
@@ -313,7 +313,7 @@
     {
       "path": "axionia-package/.claude/skills/axionia-architecture/SKILL.md",
       "exists": true,
-      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-architecture/SKILL.md",
+      "path_actual": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-architecture/SKILL.md",
       "stalenessLevel": "high",
       "staleMentions": [
         {
@@ -331,7 +331,7 @@
     {
       "path": "axionia-package/.claude/skills/axionia-content-models/SKILL.md",
       "exists": true,
-      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-content-models/SKILL.md",
+      "path_actual": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-content-models/SKILL.md",
       "stalenessLevel": "high",
       "staleMentions": [
         {
@@ -344,7 +344,7 @@
     {
       "path": "axionia-package/.claude/skills/axionia-seo-aeo/SKILL.md",
       "exists": true,
-      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-seo-aeo/SKILL.md",
+      "path_actual": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-seo-aeo/SKILL.md",
       "stalenessLevel": "high",
       "staleMentions": [
         {
@@ -362,7 +362,7 @@
     {
       "path": "axionia-package/.claude/skills/axionia-design/SKILL.md",
       "exists": true,
-      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-design/SKILL.md",
+      "path_actual": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-design/SKILL.md",
       "stalenessLevel": "high",
       "staleMentions": [
         {
@@ -375,7 +375,7 @@
     {
       "path": "axionia-package/.claude/skills/axionia-stack/SKILL.md",
       "exists": true,
-      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-stack/SKILL.md",
+      "path_actual": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-stack/SKILL.md",
       "stalenessLevel": "medium",
       "staleMentions": [
         {
@@ -397,7 +397,7 @@
       "note": "22 LOCKs documentés"
     },
     {
-      "path": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md",
+      "path": "Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md",
       "exists": true,
       "stalenessLevel": "high_archived",
       "note": "Bible historique v6 06/05/2026. Mentions Webflow + Next.js 15 + formation banni. NE PAS toucher (source historique gelée). Documenter dans rapport que cette doc fait foi sur l'historique mais que les ADRs 0002-0004 + Sprint 14.5-14.9 prévalent en cas de conflit."

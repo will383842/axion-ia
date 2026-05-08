@@ -8,7 +8,7 @@
 
 ## Fix 1 — `Design.md` racine — Avertissement police propriétaire Webflow
 
-**Fichier** : `C:\Users\willi\Documents\Projets\Axion-IA\AxionIA_Dossier_FINAL_ABSOLU_v10.1\Design.md`
+**Fichier** : `C:\Users\willi\Documents\Projets\Axion-IA\Axion-IA_Dossier_FINAL_ABSOLU_v10.1\Design.md`
 
 **Section** : `## 3. Typography Rules` (insertion après le titre, avant `### Font: WF Visual Sans Variable, fallback: Arial`)
 
@@ -39,22 +39,22 @@ L'**ADR `docs/adr/0001-design-direction-webflow.md`** (acceptée 06/05/2026) et 
 ```markdown
 ## 3. Typography Rules
 
-> ⚠️ **Note technique AxionIA** : `WF Visual Sans Variable` est une police **propriétaire de Webflow**, **non disponible publiquement** pour les sites tiers.
+> ⚠️ **Note technique Axion-IA** : `WF Visual Sans Variable` est une police **propriétaire de Webflow**, **non disponible publiquement** pour les sites tiers.
 >
-> **Substitut adopté pour AxionIA** : **Manrope** (Google Fonts, variable, gratuite, look proche). Voir `axionia-design/SKILL.md` § Typographie.
+> **Substitut adopté pour Axion-IA** : **Manrope** (Google Fonts, variable, gratuite, look proche). Voir `axionia-design/SKILL.md` § Typographie.
 >
 > Alternative payante (si licence achetée) : GT Walsheim Pro, Aeonik Pro, Söhne — auto-hostées via `next/font/local`.
 
 ### Font: `WF Visual Sans Variable`, fallback: `Arial`
 ```
 
-**Ajout complémentaire** dans le tableau typographique pour cohérence : ligne « Substitut AxionIA » référençant Manrope, juste après la ligne `Code: Inconsolata`.
+**Ajout complémentaire** dans le tableau typographique pour cohérence : ligne « Substitut Axion-IA » référençant Manrope, juste après la ligne `Code: Inconsolata`.
 
 ---
 
 ## Fix 2 — `CLAUDE.md` ligne 92 — Suppression du mot « training » (équivalent EN de « formation » banni)
 
-**Fichier** : `C:\Users\willi\Documents\Projets\Axion-IA\AxionIA_Dossier_FINAL_ABSOLU_v10.1\CLAUDE.md`
+**Fichier** : `C:\Users\willi\Documents\Projets\Axion-IA\Axion-IA_Dossier_FINAL_ABSOLU_v10.1\CLAUDE.md`
 
 **Ligne** : 92 (section `## 3. INTERNATIONALISATION (i18n)` → « Règles éditoriales » → traduction des modules)
 
@@ -67,11 +67,11 @@ L'**ADR `docs/adr/0001-design-direction-webflow.md`** (acceptée 06/05/2026) et 
 > - "formation" → "intervention"
 > - "formateur" → "intervenant"
 >   [...]
->   Une intervention = concret, chez le client, résultat immédiat. AxionIA ne fait pas de formations. »
+>   Une intervention = concret, chez le client, résultat immédiat. Axion-IA ne fait pas de formations. »
 
 Le skill `axionia-core` §1 (règles non négociables) reprend ce ban absolu.
 
-Or, **« training » est l'équivalent EN exact de « formation »** dans le registre B2B/L&D. Laisser passer « Corporate AI training sessions » dans la traduction officielle EN trahit le positionnement (« AxionIA ne fait pas de formations ») et créera un dissonance vendeur direct sur les pages /en/ du site, tout en cassant la cohérence du lint check prévu (CLAUDE.md §20 ligne 739 : « Mot "formation" utilisé → Lint check »).
+Or, **« training » est l'équivalent EN exact de « formation »** dans le registre B2B/L&D. Laisser passer « Corporate AI training sessions » dans la traduction officielle EN trahit le positionnement (« Axion-IA ne fait pas de formations ») et créera un dissonance vendeur direct sur les pages /en/ du site, tout en cassant la cohérence du lint check prévu (CLAUDE.md §20 ligne 739 : « Mot "formation" utilisé → Lint check »).
 
 ### Diff — AVANT
 

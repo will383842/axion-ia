@@ -41,8 +41,8 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     locale,
     path: "/",
     title: isFr
-      ? "Cabinet IA opérationnel · ROI mesurable · AxionIA"
-      : "Operational AI consultancy · Measurable ROI · AxionIA",
+      ? "Cabinet IA opérationnel · ROI mesurable · Axion-IA"
+      : "Operational AI consultancy · Measurable ROI · Axion-IA",
     description: isFr
       ? `Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
       : `On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
@@ -1255,8 +1255,8 @@ export default async function Home({ params }: HomeProps) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un cabinet IA opérationnel en activité, vue d'ensemble AxionIA."
-                  : "Editorial illustration of an operational AI consultancy at work, AxionIA overview."
+                  ? "Illustration éditoriale d'un cabinet IA opérationnel en activité, vue d'ensemble Axion-IA."
+                  : "Editorial illustration of an operational AI consultancy at work, Axion-IA overview."
               }
             />
           </div>

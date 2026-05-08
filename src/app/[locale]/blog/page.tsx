@@ -38,12 +38,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/blog",
     title:
       locale === "fr"
-        ? "Blog · méthodologie & cas d'usage IA · AxionIA"
-        : "Blog · methodology & AI use cases · AxionIA",
+        ? "Blog · méthodologie & cas d'usage IA · Axion-IA"
+        : "Blog · methodology & AI use cases · Axion-IA",
     description:
       locale === "fr"
-        ? "Articles AxionIA : méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom."
-        : "AxionIA articles: AI audit methodology, operational quick-wins, custom AI strategy.",
+        ? "Articles Axion-IA : méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom."
+        : "Axion-IA articles: AI audit methodology, operational quick-wins, custom AI strategy.",
   });
   return {
     ...meta,
@@ -92,7 +92,7 @@ export default async function BlogListing({ params }: Props) {
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: isFr ? "Articles AxionIA · ligne éditoriale" : "AxionIA articles · editorial line",
+    name: isFr ? "Articles Axion-IA · ligne éditoriale" : "Axion-IA articles · editorial line",
     itemListElement: sortedPosts.map((post, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -185,8 +185,8 @@ export default async function BlogListing({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : 3 derniers articles AxionIA avec leur catégorie (méthodologie, cas d'usage, stratégie) et temps de lecture."
-                  : "Diagram: 3 latest AxionIA articles with their category (methodology, use cases, strategy) and reading time."
+                  ? "Schéma : 3 derniers articles Axion-IA avec leur catégorie (méthodologie, cas d'usage, stratégie) et temps de lecture."
+                  : "Diagram: 3 latest Axion-IA articles with their category (methodology, use cases, strategy) and reading time."
               }
             />
           </div>
@@ -198,8 +198,8 @@ export default async function BlogListing({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "AxionIA n'écrit que sur des sujets éprouvés en mission. Les articles documentent une méthodologie qui a fonctionné, un cas client qui a livré du ROI, ou une décision technique tranchée par l'expérience. Pas de revue de presse, pas de hot takes IA — chaque billet a vocation Ã  rester actionnable 12 mois après publication. Si un sujet est pris dans la hype et n'a pas encore de réponse stable, on attend qu'il ait mûri avant d'en parler."
-              : "AxionIA writes only about topics tested in the field. Articles document a methodology that worked, a client case that delivered ROI, or a technical decision settled by experience. No press review, no AI hot takes — every post is meant to remain actionable 12 months after publication. If a topic is caught in the hype and has no stable answer, we wait for it to mature before writing about it."}
+              ? "Axion-IA n'écrit que sur des sujets éprouvés en mission. Les articles documentent une méthodologie qui a fonctionné, un cas client qui a livré du ROI, ou une décision technique tranchée par l'expérience. Pas de revue de presse, pas de hot takes IA — chaque billet a vocation Ã  rester actionnable 12 mois après publication. Si un sujet est pris dans la hype et n'a pas encore de réponse stable, on attend qu'il ait mûri avant d'en parler."
+              : "Axion-IA writes only about topics tested in the field. Articles document a methodology that worked, a client case that delivered ROI, or a technical decision settled by experience. No press review, no AI hot takes — every post is meant to remain actionable 12 months after publication. If a topic is caught in the hype and has no stable answer, we wait for it to mature before writing about it."}
           </p>
         </Container>
       </Section>

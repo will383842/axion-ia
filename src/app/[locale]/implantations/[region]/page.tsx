@@ -81,8 +81,8 @@ export default async function RegionPage({ params }: Props) {
     locale: loc,
     path: `/implantations/${region.slug}`,
     name: isFr
-      ? `AxionIA · cabinet IA opérationnel en ${region.nameFr}`
-      : `AxionIA · operational AI consultancy in ${region.nameFr}`,
+      ? `Axion-IA · cabinet IA opérationnel en ${region.nameFr}`
+      : `Axion-IA · operational AI consultancy in ${region.nameFr}`,
     description: isFr ? region.pitchFr : region.pitchEn,
     areaServed: { type: "AdministrativeArea", name: region.nameFr },
     address: { city: region.prefecture, region: region.nameFr, country: "FR" },
@@ -104,8 +104,8 @@ export default async function RegionPage({ params }: Props) {
     locale: loc,
     path: `/implantations/${region.slug}`,
     name: isFr
-      ? `Villes en ${region.nameFr} couvertes par AxionIA`
-      : `Cities in ${region.nameFr} covered by AxionIA`,
+      ? `Villes en ${region.nameFr} couvertes par Axion-IA`
+      : `Cities in ${region.nameFr} covered by Axion-IA`,
     items: topVilles.map((ville, idx) => ({
       position: idx + 1,
       name: ville.nameFr,
@@ -226,7 +226,7 @@ export default async function RegionPage({ params }: Props) {
           réelle (~280 communes IDF, ~190 ARA, etc.) au lieu d'un top 12
           factice. Maillage interne massif vers les pages villes pilotes
           + stubs noindex (le crawl ne suit pas les noindex mais l'utilisateur
-          peut atterrir et trouver son AxionIA local). */}
+          peut atterrir et trouver son Axion-IA local). */}
       <Section
         eyebrow={isFr ? "Couverture complète" : "Full coverage"}
         title={

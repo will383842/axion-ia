@@ -1,8 +1,8 @@
-# GPT-Image Prompts Library — AxionIA Top 20 Pages
+# GPT-Image Prompts Library — Axion-IA Top 20 Pages
 
 > **Version** : 1.0 · 2026-05-07
 > **Statut** : DRAFT en attente validation Will
-> **Périmètre** : 53 prompts GPT-image prêts à coller pour les 20 pages stratégiques d'AxionIA.
+> **Périmètre** : 53 prompts GPT-image prêts à coller pour les 20 pages stratégiques d'Axion-IA.
 > **Doctrine** : Editorial Premium Light v3 + palette v3.1 EXACTE (cf. `visual-style-guide.md`).
 > **Moteur cible recommandé** : `gpt-image-1` API OpenAI (seed reproductible) ou DALL-E 3 via ChatGPT Plus (fallback).
 > **Budget OpenAI cible PERFECTION** : ~$13-15 (53 × $0.19 high quality + 30% retries).
@@ -13,7 +13,7 @@
 ## Sommaire
 
 - [Instructions de cohérence multi-générations](#instructions-de-coherence-multi-generations)
-- [Préfixe brand AxionIA (à coller en tête de chaque prompt)](#prefixe-brand-axionia)
+- [Préfixe brand Axion-IA (à coller en tête de chaque prompt)](#prefixe-brand-axionia)
 - [Table des prompts par page](#table-des-prompts-par-page)
 - [A. Pillar pages (5)](#a-pillar-pages)
 - [B. Listings pages (5)](#b-listings-pages)
@@ -41,13 +41,13 @@ Avant de lancer la production des 53 illustrations, fixer la stratégie suivante
 
 ---
 
-## Préfixe brand AxionIA
+## Préfixe brand Axion-IA
 
 > **À copier-coller en début de chaque prompt ci-dessous.** Aucune approximation hex tolérée. Citer EXACTEMENT les codes ci-dessous.
 
 ```text
 [PRÉFIXE BRAND AXIONIA — copy-paste avant tout sujet]
-Editorial illustration, AxionIA brand restrained palette EXACTLY:
+Editorial illustration, Axion-IA brand restrained palette EXACTLY:
 terracotta brick #c24a1b (accent only, sparingly, max 15% of composition),
 deep mocha brown #2a2520 (deep tones — NEVER pure black),
 sage green #5e6c54 (proof / secondary accent, sparingly),
@@ -147,7 +147,7 @@ Constraints (strict, non-negotiable):
 - **Composition** : focal point décalé à droite (règle des tiers), espace négatif large à gauche pour overlay typographique HTML « Cabinet IA opérationnel ».
 
 ```text
-[Coller préfixe brand AxionIA ici — voir top du document]
+[Coller préfixe brand Axion-IA ici — voir top du document]
 
 Subject: an editorial-style architectural diagram of an operational AI cabinet, drawn as if from a senior consultant's notebook. Several abstract rectangular modules of varying sizes connected by thin hairlines (think Anthropic research paper diagrams). One module is highlighted with a single subtle terracotta #c24a1b stroke accent. The overall feel is of a sophisticated system being mapped, not built — a draftsman's view of operational excellence.
 
@@ -172,13 +172,13 @@ Mood: serene, premium, contemplative — like opening a Stripe Press magazine to
 
 #### Prompt #HOME-02-mid
 
-- **Slot** : mid-1 (mi-page, après section « Pourquoi AxionIA »)
+- **Slot** : mid-1 (mi-page, après section « Pourquoi Axion-IA »)
 - **Aspect ratio** : 1:1 (square)
 - **Sujet** : main stylisée tenant un instrument de mesure éditorial (compas ouvert, ou règle pliée) au-dessus d'une feuille gridée.
 - **Composition** : centré, instrument occupe 40% du carré.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a stylized hand (silhouette only, no realistic skin texture) holding an open architect's compass over a gridded ivory paper. The compass tip touches one node on the grid, suggesting precision and calibration. Linework only, slightly hand-drawn quality.
 
@@ -189,8 +189,8 @@ Negative space: 50% (around the compass).
 Mood: precision, calibration, premium craftsmanship.
 ```
 
-- **Alt text FR** : « Main stylisée tenant un compas d'architecte au-dessus d'une feuille gridée — symbole de la précision opérationnelle d'AxionIA. »
-- **Alt text EN** : « Stylized hand holding an architect's compass over gridded paper — symbol of AxionIA's operational precision. »
+- **Alt text FR** : « Main stylisée tenant un compas d'architecte au-dessus d'une feuille gridée — symbole de la précision opérationnelle d'Axion-IA. »
+- **Alt text EN** : « Stylized hand holding an architect's compass over gridded paper — symbol of Axion-IA's operational precision. »
 - **Filename target** : `public/illustrations/home-mid-1.avif`
 - **Validation checklist** :
   1. Palette respectée ?
@@ -209,7 +209,7 @@ Mood: precision, calibration, premium craftsmanship.
 - **Composition** : empilement diagonal du coin supérieur gauche au coin inférieur droit.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: three open editorial notebooks stacked diagonally, viewed from above (top-down flat lay). Each notebook shows abstract diagrammatic notes — small connected dots, hairline arrows, simple geometric annotations (NO readable text, NO actual letters or words). One notebook has a thin terracotta #c24a1b underline accent.
 
@@ -220,8 +220,8 @@ Negative space: 40% around the stack.
 Mood: editorial, methodical, knowledge-craft (Anthropic research notebook aesthetic).
 ```
 
-- **Alt text FR** : « Trois carnets éditoriaux ouverts empilés en diagonale, contenant des annotations abstraites — illustration du travail méthodique d'AxionIA. »
-- **Alt text EN** : « Three open editorial notebooks stacked diagonally, with abstract annotations — illustration of AxionIA's methodical work. »
+- **Alt text FR** : « Trois carnets éditoriaux ouverts empilés en diagonale, contenant des annotations abstraites — illustration du travail méthodique d'Axion-IA. »
+- **Alt text EN** : « Three open editorial notebooks stacked diagonally, with abstract annotations — illustration of Axion-IA's methodical work. »
 - **Filename target** : `public/illustrations/home-mid-2.avif`
 - **Validation checklist** :
   1. Aucune lettre / mot lisible dans les annotations ?
@@ -240,7 +240,7 @@ Mood: editorial, methodical, knowledge-craft (Anthropic research notebook aesthe
 - **Composition** : horizon bas (1/3 du bas), grand ciel ivoire vide pour overlay CTA HTML.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a stylized editorial horizon — a single thin horizon hairline separates a vast ivory cream #faf8f3 sky (top 2/3) from a warm sand #f0e9da ground (bottom 1/3). On the right third of the horizon, a single abstract module silhouette rises (small geometric shape, like a minimal lighthouse or marker). One thin terracotta #c24a1b vertical accent line marks the module.
 
@@ -251,8 +251,8 @@ Negative space: 65% (most of the upper-left).
 Mood: open horizon, contemplative invitation, premium serenity (Stripe Press cover-page feel).
 ```
 
-- **Alt text FR** : « Horizon éditorial avec un module marqueur sur la droite — invitation visuelle à passer à l'action avec AxionIA. »
-- **Alt text EN** : « Editorial horizon with a marker module on the right — visual invitation to engage with AxionIA. »
+- **Alt text FR** : « Horizon éditorial avec un module marqueur sur la droite — invitation visuelle à passer à l'action avec Axion-IA. »
+- **Alt text EN** : « Editorial horizon with a marker module on the right — visual invitation to engage with Axion-IA. »
 - **Filename target** : `public/illustrations/home-closing.avif`
 - **Validation checklist** :
   1. Horizon précisément au 1/3 bas ?
@@ -275,7 +275,7 @@ Mood: open horizon, contemplative invitation, premium serenity (Stripe Press cov
 - **Composition** : symétrie miroir avec table fine au centre.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: two abstract editorial human silhouettes facing each other in profile (NO faces, NO realistic features — pure black silhouette outlines only, gender-neutral, generic). A thin editorial table is suggested between them as a single hairline. One silhouette is slightly larger (the consultant). Above the table, a small abstract diagram floats (3 connected dots).
 
@@ -286,8 +286,8 @@ Negative space: 55%.
 Mood: dialogue, alignment, mutual understanding (B2B consulting reception).
 ```
 
-- **Alt text FR** : « Deux silhouettes éditoriales en dialogue autour d'une table fine — symbole de la posture d'écoute d'AxionIA en intervention. »
-- **Alt text EN** : « Two editorial silhouettes in dialogue around a thin table — symbol of AxionIA's listening posture during interventions. »
+- **Alt text FR** : « Deux silhouettes éditoriales en dialogue autour d'une table fine — symbole de la posture d'écoute d'Axion-IA en intervention. »
+- **Alt text EN** : « Two editorial silhouettes in dialogue around a thin table — symbol of Axion-IA's listening posture during interventions. »
 - **Filename target** : `public/illustrations/interventions-mid-1.avif`
 - **Validation checklist** :
   1. Silhouettes outline (pas remplies) ?
@@ -306,7 +306,7 @@ Mood: dialogue, alignment, mutual understanding (B2B consulting reception).
 - **Composition** : trois portes en perspective décalée vers la droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: three editorial architectural door silhouettes aligned in slight perspective from left to right. Two doors are closed (simple rectangles outlined). The third door (rightmost) is slightly ajar, with a soft warm light glow emerging — the glow is rendered as warm sand #f0e9da gradient very subtle (NOT bright neon, just a hint of warmth).
 
@@ -339,7 +339,7 @@ Mood: choice, invitation, threshold of operational change.
 - **Composition** : loupe à droite, carte de processus s'étend sur tout le fond.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial-style magnifying glass (line-art only, slim handle, simple round lens) positioned on the right third, hovering over an abstract process map covering the background. The map consists of small dots connected by hairlines, forming a network. The lens magnifies one specific node, showing it slightly enlarged inside the lens with a single terracotta #c24a1b dot accent.
 
@@ -350,8 +350,8 @@ Negative space: 45%.
 Mood: investigation, discernment, surgical precision (a senior auditor's gaze).
 ```
 
-- **Alt text FR** : « Loupe éditoriale agrandissant un nœud d'une carte de processus abstraite — symbole de l'audit méticuleux d'AxionIA. »
-- **Alt text EN** : « Editorial magnifying glass enlarging a node within an abstract process map — symbol of AxionIA's meticulous audit. »
+- **Alt text FR** : « Loupe éditoriale agrandissant un nœud d'une carte de processus abstraite — symbole de l'audit méticuleux d'Axion-IA. »
+- **Alt text EN** : « Editorial magnifying glass enlarging a node within an abstract process map — symbol of Axion-IA's meticulous audit. »
 - **Filename target** : `public/illustrations/audit-hero.avif`
 - **Validation checklist** :
   1. Loupe en line-art (pas 3D) ?
@@ -370,7 +370,7 @@ Mood: investigation, discernment, surgical precision (a senior auditor's gaze).
 - **Composition** : entonnoir centré, 3 strates étiquetables (mais SANS texte intégré — overlay HTML).
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial inverted funnel diagram, oriented vertically (wide top, narrow bottom). Three internal strata visible as horizontal hairline divisions. Each stratum has a small abstract icon-shape (a circle with dots, an open square, a single dot) — purely abstract, NO text, NO labels.
 
@@ -381,8 +381,8 @@ Negative space: 40% (around the funnel).
 Mood: clarity, distillation, methodical reduction (an editorial information design).
 ```
 
-- **Alt text FR** : « Entonnoir éditorial inversé en trois strates symbolisant le processus d'audit AxionIA : observation, analyse, diagnostic. »
-- **Alt text EN** : « Inverted editorial funnel in three strata symbolizing AxionIA's audit process: observation, analysis, diagnosis. »
+- **Alt text FR** : « Entonnoir éditorial inversé en trois strates symbolisant le processus d'audit Axion-IA : observation, analyse, diagnostic. »
+- **Alt text EN** : « Inverted editorial funnel in three strata symbolizing Axion-IA's audit process: observation, analysis, diagnosis. »
 - **Filename target** : `public/illustrations/audit-mid-1.avif`
 - **Validation checklist** :
   1. Aucun texte / label dans les strates ?
@@ -401,7 +401,7 @@ Mood: clarity, distillation, methodical reduction (an editorial information desi
 - **Composition** : carnet centré, marges généreuses.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an open editorial notebook page viewed flat from above. The page shows five small checkboxes aligned vertically on the left margin. All five are subtly checked with a thin diagonal hairline (NOT a bold checkmark — very minimal, almost like a pencil stroke). Right of each checkbox, an abstract dot or small glyph (NO text, NO words, NO letters). One checkbox line is highlighted with a terracotta #c24a1b underscore.
 
@@ -412,8 +412,8 @@ Negative space: 30% margin around notebook.
 Mood: completion, validated checklist, methodical closure.
 ```
 
-- **Alt text FR** : « Page de carnet éditorial avec cinq cases cochées subtilement — symbole de la rigueur de livraison d'audit AxionIA. »
-- **Alt text EN** : « Editorial notebook page with five subtly ticked checkboxes — symbol of AxionIA's audit delivery rigor. »
+- **Alt text FR** : « Page de carnet éditorial avec cinq cases cochées subtilement — symbole de la rigueur de livraison d'audit Axion-IA. »
+- **Alt text EN** : « Editorial notebook page with five subtly ticked checkboxes — symbol of Axion-IA's audit delivery rigor. »
 - **Filename target** : `public/illustrations/audit-closing.avif`
 - **Validation checklist** :
   1. Aucune lettre / mot lisible ?
@@ -436,7 +436,7 @@ Mood: completion, validated checklist, methodical closure.
 - **Composition** : pile centrée, 5-7 modules de hauteurs variables.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial vertical stack of abstract modules — 5 to 7 rectangular boxes of slightly varying heights and widths, stacked from bottom to top with thin hairline outlines. Each module has 1-2 abstract internal markers (a dot, a hairline). One module in the middle is highlighted with a thin terracotta #c24a1b stroke (the "accent module"). NO text, NO labels.
 
@@ -447,8 +447,8 @@ Negative space: 50%.
 Mood: layered architecture, modular operational craft (a librarian's organized shelf).
 ```
 
-- **Alt text FR** : « Pile éditoriale de modules abstraits — métaphore visuelle de la stack IA opérationnelle d'AxionIA. »
-- **Alt text EN** : « Editorial stack of abstract modules — visual metaphor for AxionIA's operational AI stack. »
+- **Alt text FR** : « Pile éditoriale de modules abstraits — métaphore visuelle de la stack IA opérationnelle d'Axion-IA. »
+- **Alt text EN** : « Editorial stack of abstract modules — visual metaphor for Axion-IA's operational AI stack. »
 - **Filename target** : `public/illustrations/stack-ia-mid-1.avif`
 - **Validation checklist** :
   1. 5-7 modules empilés verticalement ?
@@ -467,7 +467,7 @@ Mood: layered architecture, modular operational craft (a librarian's organized s
 - **Composition** : module à gauche, faisceau qui s'étend vers la droite et le haut.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a single isolated abstract module (rectangular box, hairline outline) positioned on the left third. From the module, a thin radiating beam of hairlines extends toward the right and slightly upward — like rays from a star, but minimal and editorial (5-7 hairlines, varying lengths, fading toward their tips). One ray is terracotta #c24a1b.
 
@@ -478,8 +478,8 @@ Negative space: 60% (around and within the beam).
 Mood: deployment, expansion, operational reach.
 ```
 
-- **Alt text FR** : « Module isolé d'où s'étendent des hairlines fines — symbole du déploiement de la stack IA opérationnelle d'AxionIA. »
-- **Alt text EN** : « Isolated module with thin radiating hairlines — symbol of AxionIA's operational AI stack deployment. »
+- **Alt text FR** : « Module isolé d'où s'étendent des hairlines fines — symbole du déploiement de la stack IA opérationnelle d'Axion-IA. »
+- **Alt text EN** : « Isolated module with thin radiating hairlines — symbol of Axion-IA's operational AI stack deployment. »
 - **Filename target** : `public/illustrations/stack-ia-closing.avif`
 - **Validation checklist** :
   1. Module clairement défini à gauche ?
@@ -500,7 +500,7 @@ Mood: deployment, expansion, operational reach.
 - **Composition** : timeline horizontale au tiers bas, espace négatif large au-dessus.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial horizontal timeline with 5 milestones (small circles, hairline outlined). Between consecutive circles, the connecting hairline curves slightly (NOT straight — gives a hand-drawn editorial feel). Each circle has a single dot inside. The third circle (middle) has a terracotta #c24a1b dot inside.
 
@@ -511,8 +511,8 @@ Negative space: 60% (upper portion).
 Mood: methodical journey, editorial progression (a Stripe Press chapter divider).
 ```
 
-- **Alt text FR** : « Timeline éditoriale horizontale à cinq jalons — métaphore visuelle de la méthodologie progressive d'AxionIA. »
-- **Alt text EN** : « Editorial horizontal timeline with five milestones — visual metaphor for AxionIA's progressive methodology. »
+- **Alt text FR** : « Timeline éditoriale horizontale à cinq jalons — métaphore visuelle de la méthodologie progressive d'Axion-IA. »
+- **Alt text EN** : « Editorial horizontal timeline with five milestones — visual metaphor for Axion-IA's progressive methodology. »
 - **Filename target** : `public/illustrations/methodologie-hero.avif`
 - **Validation checklist** :
   1. Timeline clairement positionnée 1/3 bas ?
@@ -531,7 +531,7 @@ Mood: methodical journey, editorial progression (a Stripe Press chapter divider)
 - **Composition** : centré, mouvement de page suggéré.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a stylized hand silhouette (NO photographic skin, NO realistic features — pure outline silhouette) turning the page of an editorial notebook. View from a 3/4 angle from above. The page being turned is mid-flip, showing both sides slightly. Abstract markings on the visible page (hairlines, dots — NO readable text, NO words).
 
@@ -542,8 +542,8 @@ Negative space: 45%.
 Mood: progression, transition, page-turning method.
 ```
 
-- **Alt text FR** : « Main éditoriale tournant une page de carnet — symbole du passage d'une étape à l'autre dans la méthodologie AxionIA. »
-- **Alt text EN** : « Editorial hand turning a notebook page — symbol of step-to-step progression in AxionIA's methodology. »
+- **Alt text FR** : « Main éditoriale tournant une page de carnet — symbole du passage d'une étape à l'autre dans la méthodologie Axion-IA. »
+- **Alt text EN** : « Editorial hand turning a notebook page — symbol of step-to-step progression in Axion-IA's methodology. »
 - **Filename target** : `public/illustrations/methodologie-mid-1.avif`
 - **Validation checklist** :
   1. Main silhouette outline (pas réaliste) ?
@@ -562,7 +562,7 @@ Mood: progression, transition, page-turning method.
 - **Composition** : cycle centré, 4 nœuds disposés en losange vertical.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial closed-loop cycle diagram, oriented vertically. Four nodes arranged in a diamond shape (top, right, bottom, left). Connected by curved hairlines forming a continuous cycle. Each hairline has a small subtle arrowhead indicating clockwise rotation. One node (top) is terracotta #c24a1b filled, others outlined.
 
@@ -573,8 +573,8 @@ Negative space: 40%.
 Mood: iterative methodology, continuous improvement (Anthropic research diagram aesthetic).
 ```
 
-- **Alt text FR** : « Diagramme éditorial cyclique à quatre nœuds — illustration de l'itération méthodologique d'AxionIA. »
-- **Alt text EN** : « Editorial cyclical four-node diagram — illustration of AxionIA's methodological iteration. »
+- **Alt text FR** : « Diagramme éditorial cyclique à quatre nœuds — illustration de l'itération méthodologique d'Axion-IA. »
+- **Alt text EN** : « Editorial cyclical four-node diagram — illustration of Axion-IA's methodological iteration. »
 - **Filename target** : `public/illustrations/methodologie-mid-2.avif`
 - **Validation checklist** :
   1. Cycle fermé clairement lisible ?
@@ -593,7 +593,7 @@ Mood: iterative methodology, continuous improvement (Anthropic research diagram 
 - **Composition** : carnet à droite, plume à gauche, table fine en hairline.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a closed editorial notebook resting on a thin table, viewed from a 3/4 side angle. A stylized editorial fountain pen lies next to it (line-art only, simple silhouette, NO realistic chrome detail). One thin terracotta #c24a1b ribbon bookmark peeks from the notebook.
 
@@ -628,7 +628,7 @@ Mood: closure, completed methodology, ready for action.
 - **Composition** : plan occupe 60% du frame, espace négatif sur les marges.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial top-down architectural floor plan — abstract rooms or modules connected by thin hairlines, with small abstract annotations (dots, hairline arrows — NO text, NO measurements). Like an architect's working draft on tracing paper. One module is highlighted with a subtle terracotta #c24a1b stroke.
 
@@ -639,8 +639,8 @@ Negative space: 40% margins.
 Mood: planning, deployment blueprint, operational architecture.
 ```
 
-- **Alt text FR** : « Plan architectural éditorial vu de dessus — métaphore du déploiement opérationnel structuré d'AxionIA. »
-- **Alt text EN** : « Editorial top-down architectural plan — metaphor for AxionIA's structured operational deployment. »
+- **Alt text FR** : « Plan architectural éditorial vu de dessus — métaphore du déploiement opérationnel structuré d'Axion-IA. »
+- **Alt text EN** : « Editorial top-down architectural plan — metaphor for Axion-IA's structured operational deployment. »
 - **Filename target** : `public/illustrations/implementation-hero.avif`
 - **Validation checklist** :
   1. Plan top-down lisible ?
@@ -659,7 +659,7 @@ Mood: planning, deployment blueprint, operational architecture.
 - **Composition** : étagère centrée, 3 strates horizontales.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a stylized editorial 3-tier shelf, viewed from the front in slight 3/4 perspective. On each tier, 2-3 abstract small modules (rectangular boxes outlined). Modules vary slightly in size and proportion. One module on the middle tier has a terracotta #c24a1b accent stroke.
 
@@ -670,8 +670,8 @@ Negative space: 30% margins.
 Mood: organized deployment, layered implementation.
 ```
 
-- **Alt text FR** : « Étagère éditoriale à trois niveaux — illustration du déploiement organisé par paliers chez AxionIA. »
-- **Alt text EN** : « Editorial 3-tier shelf — illustration of AxionIA's tiered organized deployment. »
+- **Alt text FR** : « Étagère éditoriale à trois niveaux — illustration du déploiement organisé par paliers chez Axion-IA. »
+- **Alt text EN** : « Editorial 3-tier shelf — illustration of Axion-IA's tiered organized deployment. »
 - **Filename target** : `public/illustrations/implementation-mid-1.avif`
 - **Validation checklist** :
   1. 3 niveaux clairement distincts ?
@@ -690,7 +690,7 @@ Mood: organized deployment, layered implementation.
 - **Composition** : main à droite, structure à gauche.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: a stylized editorial hand silhouette (outline only, NO realistic skin, NO photographic features) placing a single abstract piece into an architectural framework. The piece is a simple editorial shape (NOT a lego brick, NOT a puzzle piece — more like an abstract module). The framework is a hairline structure with one missing slot.
 
@@ -701,8 +701,8 @@ Negative space: 45%.
 Mood: completion, final placement, operational closure.
 ```
 
-- **Alt text FR** : « Main éditoriale plaçant une dernière pièce dans une structure architecturale — symbole de la finalisation du déploiement AxionIA. »
-- **Alt text EN** : « Editorial hand placing a final piece into an architectural framework — symbol of AxionIA deployment completion. »
+- **Alt text FR** : « Main éditoriale plaçant une dernière pièce dans une structure architecturale — symbole de la finalisation du déploiement Axion-IA. »
+- **Alt text EN** : « Editorial hand placing a final piece into an architectural framework — symbol of Axion-IA deployment completion. »
 - **Filename target** : `public/illustrations/implementation-closing.avif`
 - **Validation checklist** :
   1. Main silhouette outline ?
@@ -723,7 +723,7 @@ Mood: completion, final placement, operational closure.
 - **Composition** : dossiers alignés horizontalement, espace au-dessus.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial row of 4-5 vertical folders/binders aligned horizontally as if on an archive shelf, viewed from a slight 3/4 angle. Each folder has slightly different proportions (height, width). Each folder has a thin label hairline at the top (NO text, NO words, just an empty rectangle outline). One folder is terracotta #c24a1b on its spine.
 
@@ -734,8 +734,8 @@ Negative space: 50% (upper portion).
 Mood: editorial archive, curated case studies, premium consultancy library.
 ```
 
-- **Alt text FR** : « Rangée de dossiers éditoriaux représentant les cas concrets d'AxionIA — esthétique d'archive premium. »
-- **Alt text EN** : « Row of editorial folders representing AxionIA case studies — premium archive aesthetic. »
+- **Alt text FR** : « Rangée de dossiers éditoriaux représentant les cas concrets d'Axion-IA — esthétique d'archive premium. »
+- **Alt text EN** : « Row of editorial folders representing Axion-IA case studies — premium archive aesthetic. »
 - **Filename target** : `public/illustrations/cas-concrets-hero.avif`
 - **Validation checklist** :
   1. 4-5 dossiers distincts ?
@@ -754,7 +754,7 @@ Mood: editorial archive, curated case studies, premium consultancy library.
 - **Composition** : page divisée en 4 zones par hairlines en croix.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial single-page case study layout viewed flat from above. The page is divided into 4 quadrants by a thin hairline cross (vertical + horizontal). Each quadrant contains a small abstract diagram (a few connected dots, a hairline curve, an open box, a tiny chart-suggestion). NO text, NO labels.
 
@@ -765,8 +765,8 @@ Negative space: 25% margin.
 Mood: structured case analysis, editorial dossier.
 ```
 
-- **Alt text FR** : « Page éditoriale de cas-concret divisée en quatre quadrants analytiques — illustration de la rigueur d'analyse AxionIA. »
-- **Alt text EN** : « Editorial case study page divided into four analytical quadrants — illustration of AxionIA's analytical rigor. »
+- **Alt text FR** : « Page éditoriale de cas-concret divisée en quatre quadrants analytiques — illustration de la rigueur d'analyse Axion-IA. »
+- **Alt text EN** : « Editorial case study page divided into four analytical quadrants — illustration of Axion-IA's analytical rigor. »
 - **Filename target** : `public/illustrations/cas-concrets-mid-1.avif`
 - **Validation checklist** :
   1. 4 quadrants clairement définis ?
@@ -785,7 +785,7 @@ Mood: structured case analysis, editorial dossier.
 - **Composition** : pile centrée, dépassements alternés gauche/droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial vertical stack of indexed case-study cards, viewed from the side. The cards stack with slight horizontal offsets (alternating left and right) so each card is partially visible. 6-7 cards total. Each card edge has a thin hairline marker tab (different positions per card). One card has a terracotta #c24a1b tab.
 
@@ -796,8 +796,8 @@ Negative space: 30%.
 Mood: indexed library, browsable catalog, premium curated cases.
 ```
 
-- **Alt text FR** : « Pile verticale de fiches indexées éditoriales — illustration du catalogue de cas concrets AxionIA. »
-- **Alt text EN** : « Vertical stack of indexed editorial cards — illustration of AxionIA's curated case study catalog. »
+- **Alt text FR** : « Pile verticale de fiches indexées éditoriales — illustration du catalogue de cas concrets Axion-IA. »
+- **Alt text EN** : « Vertical stack of indexed editorial cards — illustration of Axion-IA's curated case study catalog. »
 - **Filename target** : `public/illustrations/cas-concrets-mid-2.avif`
 - **Validation checklist** :
   1. 6-7 cartes distinctes empilées ?
@@ -818,7 +818,7 @@ Mood: indexed library, browsable catalog, premium curated cases.
 - **Composition** : balance centrée verticalement, espace au-dessus.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial-style balance scale (line-art only, slim minimalist version, NOT ornate). Two plates suspended from a horizontal beam by thin hairlines. The plates are slightly unbalanced — left plate slightly higher, right plate slightly lower. Each plate carries one or two small abstract objects (dots, mini-modules). The right plate's objects include one terracotta #c24a1b dot.
 
@@ -829,8 +829,8 @@ Negative space: 55%.
 Mood: deliberation, comparison, editorial fairness (a judge's restrained instrument).
 ```
 
-- **Alt text FR** : « Balance éditoriale légèrement déséquilibrée — symbole de la rigueur de comparaison d'AxionIA face aux alternatives. »
-- **Alt text EN** : « Slightly unbalanced editorial scale — symbol of AxionIA's rigorous comparison versus alternatives. »
+- **Alt text FR** : « Balance éditoriale légèrement déséquilibrée — symbole de la rigueur de comparaison d'Axion-IA face aux alternatives. »
+- **Alt text EN** : « Slightly unbalanced editorial scale — symbol of Axion-IA's rigorous comparison versus alternatives. »
 - **Filename target** : `public/illustrations/comparaisons-hero.avif`
 - **Validation checklist** :
   1. Balance line-art (pas 3D) ?
@@ -849,9 +849,9 @@ Mood: deliberation, comparison, editorial fairness (a judge's restrained instrum
 - **Composition** : matrice centrée, axes en hairlines fins.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
-Subject: an editorial 2x2 positioning matrix. Two perpendicular axis lines (horizontal + vertical) divide the frame into 4 quadrants. In each quadrant, a small abstract dot (representing an actor). The dot in the top-right quadrant is terracotta #c24a1b (representing AxionIA's ideal positioning). Other dots in deep mocha #2a2520. NO text, NO axis labels.
+Subject: an editorial 2x2 positioning matrix. Two perpendicular axis lines (horizontal + vertical) divide the frame into 4 quadrants. In each quadrant, a small abstract dot (representing an actor). The dot in the top-right quadrant is terracotta #c24a1b (representing Axion-IA's ideal positioning). Other dots in deep mocha #2a2520. NO text, NO axis labels.
 
 Composition: matrix centered, occupying middle 70% of the square. Axis lines hairline thin in warm anthracite-brown #1a1815. Background ivory cream #faf8f3 with very subtle warm sand #f0e9da haze in 2 quadrants.
 
@@ -860,14 +860,14 @@ Negative space: 30% margins.
 Mood: strategic positioning, editorial information design.
 ```
 
-- **Alt text FR** : « Matrice 2x2 éditoriale de positionnement — illustration de la posture stratégique d'AxionIA face aux alternatives. »
-- **Alt text EN** : « Editorial 2x2 positioning matrix — illustration of AxionIA's strategic posture versus alternatives. »
+- **Alt text FR** : « Matrice 2x2 éditoriale de positionnement — illustration de la posture stratégique d'Axion-IA face aux alternatives. »
+- **Alt text EN** : « Editorial 2x2 positioning matrix — illustration of Axion-IA's strategic posture versus alternatives. »
 - **Filename target** : `public/illustrations/comparaisons-mid-1.avif`
 - **Validation checklist** :
   1. 4 quadrants clairement définis ?
   2. Aucun texte / label axe ?
   3. Palette respectée ?
-  4. AxionIA en haut-droite ?
+  4. Axion-IA en haut-droite ?
   5. Accent terracotta sur 1 dot uniquement ?
 
 ---
@@ -882,7 +882,7 @@ Mood: strategic positioning, editorial information design.
 - **Composition** : pile à gauche, espace négatif à droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial stack of 4-5 magazines or journals casually stacked on a thin table, viewed from a 3/4 angle. Each magazine has a slightly different orientation (rotated a few degrees). NO readable cover text, NO titles — just abstract cover layouts (a hairline frame, a single dot, a small geometric shape). One magazine spine is terracotta #c24a1b.
 
@@ -893,8 +893,8 @@ Negative space: 60% (right side).
 Mood: editorial library, curated reading, premium magazine ambiance (Stripe Press cover-shelf).
 ```
 
-- **Alt text FR** : « Pile éditoriale de magazines empilés — illustration de la bibliothèque éditoriale du blog AxionIA. »
-- **Alt text EN** : « Editorial stack of magazines — illustration of AxionIA blog's editorial library. »
+- **Alt text FR** : « Pile éditoriale de magazines empilés — illustration de la bibliothèque éditoriale du blog Axion-IA. »
+- **Alt text EN** : « Editorial stack of magazines — illustration of Axion-IA blog's editorial library. »
 - **Filename target** : `public/illustrations/blog-hero.avif`
 - **Validation checklist** :
   1. 4-5 magazines distincts ?
@@ -913,7 +913,7 @@ Mood: editorial library, curated reading, premium magazine ambiance (Stripe Pres
 - **Composition** : carnet centré, plume diagonale.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial open notebook viewed from above, with a stylized fountain pen resting in the center binding (diagonally). Both pages show abstract notes — hairlines, small dots, a tiny circular diagram on the left page (NO text, NO words, NO letters anywhere).
 
@@ -924,8 +924,8 @@ Negative space: 30% margin.
 Mood: editorial writing, generic-but-on-brand article illustration.
 ```
 
-- **Alt text FR** : « Carnet éditorial ouvert avec plume — illustration générique d'article du blog AxionIA. »
-- **Alt text EN** : « Open editorial notebook with fountain pen — generic article illustration for AxionIA blog. »
+- **Alt text FR** : « Carnet éditorial ouvert avec plume — illustration générique d'article du blog Axion-IA. »
+- **Alt text EN** : « Open editorial notebook with fountain pen — generic article illustration for Axion-IA blog. »
 - **Filename target** : `public/illustrations/blog-article-generic.avif`
 - **Validation checklist** :
   1. Carnet et plume clairement visibles ?
@@ -946,7 +946,7 @@ Mood: editorial writing, generic-but-on-brand article illustration.
 - **Composition** : carte centrée, marges éditoriales.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial-style hand-drawn map of an abstract knowledge space — several rectangular "rooms" of varying sizes connected by thin pathway hairlines, like a museum floorplan or a cabinet's atelier map. Each room has 1-2 small abstract markers inside (a dot, a hairline). One room is terracotta #c24a1b outlined.
 
@@ -957,8 +957,8 @@ Negative space: 30% margins.
 Mood: navigable knowledge, editorial wayfinding.
 ```
 
-- **Alt text FR** : « Carte éditoriale d'un espace de connaissance avec plusieurs salles connectées — illustration du centre d'aide AxionIA. »
-- **Alt text EN** : « Editorial map of a knowledge space with connected rooms — illustration of AxionIA help center. »
+- **Alt text FR** : « Carte éditoriale d'un espace de connaissance avec plusieurs salles connectées — illustration du centre d'aide Axion-IA. »
+- **Alt text EN** : « Editorial map of a knowledge space with connected rooms — illustration of Axion-IA help center. »
 - **Filename target** : `public/illustrations/centre-aide-hero.avif`
 - **Validation checklist** :
   1. Map de salles connectées lisible ?
@@ -977,7 +977,7 @@ Mood: navigable knowledge, editorial wayfinding.
 - **Composition** : panneau central, flèches divergentes.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial signpost — a vertical thin pole with 3-4 thin arrow-shaped panels pointing in different directions (left, right, up-left, up-right). Each panel is a simple line-art rectangle with one end angled to suggest direction (NO text on panels). One panel is terracotta #c24a1b outlined.
 
@@ -988,8 +988,8 @@ Negative space: 50%.
 Mood: orientation, navigation, editorial wayfinding.
 ```
 
-- **Alt text FR** : « Panneau d'orientation éditorial avec quatre flèches divergentes — illustration des sections du centre d'aide AxionIA. »
-- **Alt text EN** : « Editorial signpost with four diverging arrows — illustration of AxionIA help center sections. »
+- **Alt text FR** : « Panneau d'orientation éditorial avec quatre flèches divergentes — illustration des sections du centre d'aide Axion-IA. »
+- **Alt text EN** : « Editorial signpost with four diverging arrows — illustration of Axion-IA help center sections. »
 - **Filename target** : `public/illustrations/centre-aide-mid-1.avif`
 - **Validation checklist** :
   1. Panneau et flèches lisibles ?
@@ -1012,7 +1012,7 @@ Mood: orientation, navigation, editorial wayfinding.
 - **Composition** : silhouette à gauche, système à droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial silhouette of an executive figure (NO photographic features, pure outline silhouette, gender-neutral, generic standing pose) viewed from a 3/4 back angle, facing an abstract wall-mounted modular system. The system has 5-6 abstract modules connected by hairlines, like a strategic dashboard. The figure's hand gestures slightly toward one module.
 
@@ -1023,8 +1023,8 @@ Negative space: 35%.
 Mood: executive contemplation, strategic mastery, premium decision-making.
 ```
 
-- **Alt text FR** : « Silhouette éditoriale d'un dirigeant face à un système modulaire stratégique — illustration de la posture exécutive avec AxionIA. »
-- **Alt text EN** : « Editorial silhouette of an executive facing a strategic modular system — illustration of executive posture with AxionIA. »
+- **Alt text FR** : « Silhouette éditoriale d'un dirigeant face à un système modulaire stratégique — illustration de la posture exécutive avec Axion-IA. »
+- **Alt text EN** : « Editorial silhouette of an executive facing a strategic modular system — illustration of executive posture with Axion-IA. »
 - **Filename target** : `public/illustrations/interventions-dirigeants-hero.avif`
 - **Validation checklist** :
   1. Silhouette outline (pas réaliste) ?
@@ -1043,7 +1043,7 @@ Mood: executive contemplation, strategic mastery, premium decision-making.
 - **Composition** : grille 2x3 d'indicateurs abstraits.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial dashboard layout viewed flat from the front. A 2x3 grid of 6 abstract indicator cards. Each card has a small unique abstract diagram (a sparkline hairline, a dot cluster, a circle gauge with a notch, a small bar suggestion, a single dot, a hairline curve). NO numbers, NO text, NO axis labels.
 
@@ -1054,8 +1054,8 @@ Negative space: 25% margin.
 Mood: executive dashboard, editorial KPI panel (Anthropic research summary aesthetic).
 ```
 
-- **Alt text FR** : « Tableau de bord éditorial à six indicateurs abstraits — illustration du pilotage stratégique pour dirigeants AxionIA. »
-- **Alt text EN** : « Editorial dashboard with six abstract indicators — illustration of strategic steering for AxionIA executives. »
+- **Alt text FR** : « Tableau de bord éditorial à six indicateurs abstraits — illustration du pilotage stratégique pour dirigeants Axion-IA. »
+- **Alt text EN** : « Editorial dashboard with six abstract indicators — illustration of strategic steering for Axion-IA executives. »
 - **Filename target** : `public/illustrations/interventions-dirigeants-mid-1.avif`
 - **Validation checklist** :
   1. Grille 2x3 visible ?
@@ -1076,7 +1076,7 @@ Mood: executive dashboard, editorial KPI panel (Anthropic research summary aesth
 - **Composition** : table au centre, silhouettes réparties autour.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: 4-5 editorial human silhouettes (outline only, NO faces, NO realistic features, gender-neutral, generic seated/standing poses, slight variation in posture) arranged around a circular editorial table viewed from a slight elevated 3/4 angle. The table surface shows a faint abstract diagram (hairlines, 2-3 dots — NO text). One silhouette has a discreet terracotta #c24a1b shoulder accent.
 
@@ -1087,8 +1087,8 @@ Negative space: 35%.
 Mood: collaborative team, editorial workshop, premium B2B (NOT stock-photo team meeting cliché — sophisticated restraint).
 ```
 
-- **Alt text FR** : « Quatre silhouettes éditoriales autour d'une table de travail circulaire — illustration de l'intervention équipes AxionIA. »
-- **Alt text EN** : « Four editorial silhouettes around a circular work table — illustration of AxionIA team interventions. »
+- **Alt text FR** : « Quatre silhouettes éditoriales autour d'une table de travail circulaire — illustration de l'intervention équipes Axion-IA. »
+- **Alt text EN** : « Four editorial silhouettes around a circular work table — illustration of Axion-IA team interventions. »
 - **Filename target** : `public/illustrations/interventions-equipes-hero.avif`
 - **Validation checklist** :
   1. 4-5 silhouettes outline ?
@@ -1107,7 +1107,7 @@ Mood: collaborative team, editorial workshop, premium B2B (NOT stock-photo team 
 - **Composition** : cartes en éventail léger.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: three editorial persona/role cards laid out fan-style on a thin table surface, viewed from a 3/4 angle from above. Each card is a minimal vertical rectangle with: an abstract circular silhouette at the top (no facial features), 2-3 hairline rows beneath (representing role attributes — NO actual text). The middle card has a terracotta #c24a1b top border accent.
 
@@ -1118,8 +1118,8 @@ Negative space: 35%.
 Mood: role mapping, persona work, editorial team analysis.
 ```
 
-- **Alt text FR** : « Trois cartes éditoriales de personas étalées en éventail — illustration de l'analyse des rôles dans une équipe par AxionIA. »
-- **Alt text EN** : « Three editorial persona cards spread fan-style — illustration of team role analysis by AxionIA. »
+- **Alt text FR** : « Trois cartes éditoriales de personas étalées en éventail — illustration de l'analyse des rôles dans une équipe par Axion-IA. »
+- **Alt text EN** : « Three editorial persona cards spread fan-style — illustration of team role analysis by Axion-IA. »
 - **Filename target** : `public/illustrations/interventions-equipes-mid-1.avif`
 - **Validation checklist** :
   1. 3 cartes en éventail ?
@@ -1140,7 +1140,7 @@ Mood: role mapping, persona work, editorial team analysis.
 - **Composition** : bâtiment à gauche, loupe à droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial silhouette of a small-medium business building (a simple architectural outline — NOT a skyscraper, more like a 3-floor editorial office or atelier facade), positioned on the left third. To its right, a stylized magnifying glass hovers in the air, oriented toward the building's middle floor. The lens has a single terracotta #c24a1b dot inside.
 
@@ -1151,8 +1151,8 @@ Negative space: 45%.
 Mood: scrutinizing the SMB, editorial diligence, premium audit posture.
 ```
 
-- **Alt text FR** : « Bâtiment de PME éditorial scruté par une loupe — illustration de l'audit stratégique AxionIA pour PME. »
-- **Alt text EN** : « Editorial SMB building scrutinized by a magnifying glass — illustration of AxionIA's strategic audit for SMBs. »
+- **Alt text FR** : « Bâtiment de PME éditorial scruté par une loupe — illustration de l'audit stratégique Axion-IA pour PME. »
+- **Alt text EN** : « Editorial SMB building scrutinized by a magnifying glass — illustration of Axion-IA's strategic audit for SMBs. »
 - **Filename target** : `public/illustrations/audit-strategique-pme-hero.avif`
 - **Validation checklist** :
   1. Bâtiment de taille PME (pas skyscraper) ?
@@ -1171,7 +1171,7 @@ Mood: scrutinizing the SMB, editorial diligence, premium audit posture.
 - **Composition** : organigramme centré.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial simplified org chart — 1 box at top, 2 boxes middle, 4 boxes bottom — connected by thin vertical hairlines forming a tree structure. Each box is an empty rectangle outline with a small dot inside (NO text, NO names). The top box has a terracotta #c24a1b stroke.
 
@@ -1182,8 +1182,8 @@ Negative space: 25% margin.
 Mood: organizational mapping, editorial structural diagnosis.
 ```
 
-- **Alt text FR** : « Organigramme éditorial simplifié à trois niveaux — illustration du diagnostic structurel AxionIA pour PME. »
-- **Alt text EN** : « Editorial simplified three-tier org chart — illustration of AxionIA's structural diagnosis for SMBs. »
+- **Alt text FR** : « Organigramme éditorial simplifié à trois niveaux — illustration du diagnostic structurel Axion-IA pour PME. »
+- **Alt text EN** : « Editorial simplified three-tier org chart — illustration of Axion-IA's structural diagnosis for SMBs. »
 - **Filename target** : `public/illustrations/audit-strategique-pme-mid-1.avif`
 - **Validation checklist** :
   1. Structure 1+2+4 visible ?
@@ -1204,7 +1204,7 @@ Mood: organizational mapping, editorial structural diagnosis.
 - **Composition** : strates occupent toute la largeur, négatif au-dessus.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial layered architecture cross-section — 4-5 horizontal strata stacked vertically (like a geological cross-section but minimal and editorial). Each stratum is a thin horizontal band with a few abstract markers inside (a dot, a hairline, a small geometric shape — NO text). The middle stratum has a terracotta #c24a1b internal accent dot.
 
@@ -1215,8 +1215,8 @@ Negative space: 40% (upper portion).
 Mood: layered AI knowledge, editorial cross-section, premium learning.
 ```
 
-- **Alt text FR** : « Coupe éditoriale stratifiée à cinq couches — illustration des strates de compréhension du guide IA AxionIA. »
-- **Alt text EN** : « Editorial layered cross-section with five strata — illustration of AI guide knowledge layers from AxionIA. »
+- **Alt text FR** : « Coupe éditoriale stratifiée à cinq couches — illustration des strates de compréhension du guide IA Axion-IA. »
+- **Alt text EN** : « Editorial layered cross-section with five strata — illustration of AI guide knowledge layers from Axion-IA. »
 - **Filename target** : `public/illustrations/guide-ia-hero.avif`
 - **Validation checklist** :
   1. 4-5 strates horizontales distinctes ?
@@ -1235,7 +1235,7 @@ Mood: layered AI knowledge, editorial cross-section, premium learning.
 - **Composition** : arbre centré vertical.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial taxonomic tree diagram, oriented top-down. One root node at the top, branches into 3 sub-nodes at level 2, each level-2 node branches into 2 leaves at level 3 (total: 1 + 3 + 6 nodes = 10). All nodes are small circles, all connections are thin hairlines. NO text, NO labels. One leaf at the bottom-right has a terracotta #c24a1b fill.
 
@@ -1246,8 +1246,8 @@ Negative space: 25% margin.
 Mood: AI taxonomy, editorial knowledge tree, structured learning.
 ```
 
-- **Alt text FR** : « Arbre éditorial taxonomique de l'IA — illustration de la structuration des concepts dans le guide AxionIA. »
-- **Alt text EN** : « Editorial AI taxonomic tree — illustration of concept structuring in AxionIA's AI guide. »
+- **Alt text FR** : « Arbre éditorial taxonomique de l'IA — illustration de la structuration des concepts dans le guide Axion-IA. »
+- **Alt text EN** : « Editorial AI taxonomic tree — illustration of concept structuring in Axion-IA's AI guide. »
 - **Filename target** : `public/illustrations/guide-ia-mid-1.avif`
 - **Validation checklist** :
   1. Structure 1+3+6 visible ?
@@ -1266,7 +1266,7 @@ Mood: AI taxonomy, editorial knowledge tree, structured learning.
 - **Composition** : silhouette à gauche, livre dans les mains.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial silhouette of a person seated, reading an open book held in their hands. View from a clean side profile. NO facial features, NO photographic detail — pure silhouette outline. The book has abstract markings on its visible pages (hairlines, dots, NO text). One page has a terracotta #c24a1b underline accent.
 
@@ -1277,8 +1277,8 @@ Negative space: 50% (right side).
 Mood: contemplative reading, editorial knowledge absorption, premium learning closure.
 ```
 
-- **Alt text FR** : « Silhouette éditoriale d'une personne lisant un livre ouvert — invitation à approfondir le guide IA AxionIA. »
-- **Alt text EN** : « Editorial silhouette of a person reading an open book — invitation to deepen AxionIA's AI guide. »
+- **Alt text FR** : « Silhouette éditoriale d'une personne lisant un livre ouvert — invitation à approfondir le guide IA Axion-IA. »
+- **Alt text EN** : « Editorial silhouette of a person reading an open book — invitation to deepen Axion-IA's AI guide. »
 - **Filename target** : `public/illustrations/guide-ia-closing.avif`
 - **Validation checklist** :
   1. Silhouette profil pure (pas visage) ?
@@ -1301,7 +1301,7 @@ Mood: contemplative reading, editorial knowledge absorption, premium learning cl
 - **Composition** : centrée, fond paper uni.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial stylized silhouette portrait — head and shoulders only, viewed in 3/4 profile. PURE OUTLINE SILHOUETTE — NO facial features, NO eyes, NO mouth, NO hair detail, NO realistic skin texture. Just a clean silhouette outline of a head + shoulders. Imagine an editorial Stripe Press author-portrait silhouette.
 
@@ -1312,8 +1312,8 @@ Negative space: 50% (around silhouette).
 Mood: editorial author silhouette, premium identity placeholder, NOT a photo-substitute (intentionally abstract).
 ```
 
-- **Alt text FR** : « Portrait silhouette éditorial stylisé du fondateur d'AxionIA — illustration abstraite, non-photoréaliste. »
-- **Alt text EN** : « Editorial stylized silhouette portrait of AxionIA's founder — abstract, non-photorealistic illustration. »
+- **Alt text FR** : « Portrait silhouette éditorial stylisé du fondateur d'Axion-IA — illustration abstraite, non-photoréaliste. »
+- **Alt text EN** : « Editorial stylized silhouette portrait of Axion-IA's founder — abstract, non-photorealistic illustration. »
 - **Filename target** : `public/portraits/will-illustration.avif`
 - **Validation checklist** :
   1. Aucun trait facial (yeux/bouche/cheveux détaillés) ?
@@ -1334,7 +1334,7 @@ Mood: editorial author silhouette, premium identity placeholder, NOT a photo-sub
 - **Composition** : ligne centrée verticalement, courbe douce.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial narrative timeline rendered as a gentle horizontal curve (NOT a straight line — slight S-shape, hand-drawn quality). Along the curve, 4-5 milestone dots, each accompanied by a small abstract icon (a hairline circle, a small square, a triangle outline, a single dot — NO text, NO dates). The third milestone has a terracotta #c24a1b dot.
 
@@ -1345,8 +1345,8 @@ Negative space: 60%.
 Mood: editorial life-path, narrative journey, premium personal story.
 ```
 
-- **Alt text FR** : « Ligne narrative éditoriale courbe à quatre jalons — illustration du parcours du fondateur AxionIA. »
-- **Alt text EN** : « Editorial curved narrative timeline with four milestones — illustration of AxionIA founder's journey. »
+- **Alt text FR** : « Ligne narrative éditoriale courbe à quatre jalons — illustration du parcours du fondateur Axion-IA. »
+- **Alt text EN** : « Editorial curved narrative timeline with four milestones — illustration of Axion-IA founder's journey. »
 - **Filename target** : `public/illustrations/a-propos-mid-1.avif`
 - **Validation checklist** :
   1. Courbe douce S-shape (pas droite) ?
@@ -1365,7 +1365,7 @@ Mood: editorial life-path, narrative journey, premium personal story.
 - **Composition** : porte à gauche, horizon à droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial open door (line-art outline only, simple architectural door + frame) on the left third, opening toward the right where a serene horizon hairline extends. Through the open door, the horizon glows softly with warm sand #f0e9da gradient. One thin terracotta #c24a1b accent on the door's edge.
 
@@ -1376,8 +1376,8 @@ Negative space: 60%.
 Mood: invitation, opening, editorial threshold to dialogue.
 ```
 
-- **Alt text FR** : « Porte éditoriale ouverte sur un horizon ivoire — invitation au dialogue avec AxionIA. »
-- **Alt text EN** : « Editorial open door onto an ivory horizon — invitation to dialogue with AxionIA. »
+- **Alt text FR** : « Porte éditoriale ouverte sur un horizon ivoire — invitation au dialogue avec Axion-IA. »
+- **Alt text EN** : « Editorial open door onto an ivory horizon — invitation to dialogue with Axion-IA. »
 - **Filename target** : `public/illustrations/a-propos-closing.avif`
 - **Validation checklist** :
   1. Porte ouverte clairement lisible ?
@@ -1398,7 +1398,7 @@ Mood: invitation, opening, editorial threshold to dialogue.
 - **Composition** : enveloppe à droite, espace négatif à gauche.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial envelope (line-art outline, simple rectangular shape with a triangular flap visible) lying on a thin editorial table, viewed from a 3/4 angle. NO stamps, NO addresses, NO text. The flap is slightly raised. A thin terracotta #c24a1b wax-seal-suggestion (a small circle) sits where a wax seal would be — NOT a realistic wax stamp, just a minimal hairline circle.
 
@@ -1409,8 +1409,8 @@ Negative space: 60%.
 Mood: editorial correspondence, premium communication invitation.
 ```
 
-- **Alt text FR** : « Enveloppe éditoriale stylisée avec sceau de cire — invitation à contacter AxionIA. »
-- **Alt text EN** : « Stylized editorial envelope with wax seal — invitation to contact AxionIA. »
+- **Alt text FR** : « Enveloppe éditoriale stylisée avec sceau de cire — invitation à contacter Axion-IA. »
+- **Alt text EN** : « Stylized editorial envelope with wax seal — invitation to contact Axion-IA. »
 - **Filename target** : `public/illustrations/contact-hero.avif`
 - **Validation checklist** :
   1. Enveloppe line-art (pas réaliste) ?
@@ -1429,7 +1429,7 @@ Mood: editorial correspondence, premium communication invitation.
 - **Composition** : alignées horizontalement.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: three editorial line-art icons aligned horizontally — a stylized telephone receiver (vintage editorial style, NOT modern smartphone), a stylized envelope (mail), a stylized calendar page (a small rectangle with a hairline grid). All in pure line-art outline only. Equal sizing. The middle icon (envelope) has a terracotta #c24a1b accent dot.
 
@@ -1440,8 +1440,8 @@ Negative space: 50%.
 Mood: contact channels, editorial communication options.
 ```
 
-- **Alt text FR** : « Trois icônes éditoriales : téléphone, enveloppe, calendrier — moyens de contact AxionIA. »
-- **Alt text EN** : « Three editorial icons: phone, envelope, calendar — AxionIA contact channels. »
+- **Alt text FR** : « Trois icônes éditoriales : téléphone, enveloppe, calendrier — moyens de contact Axion-IA. »
+- **Alt text EN** : « Three editorial icons: phone, envelope, calendar — Axion-IA contact channels. »
 - **Filename target** : `public/illustrations/contact-mid-1.avif`
 - **Validation checklist** :
   1. 3 icônes line-art distinctes ?
@@ -1462,7 +1462,7 @@ Mood: contact channels, editorial communication options.
 - **Composition** : journal centré, dépassement par les bords.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial open newspaper viewed flat from above. Multiple columns of abstract text-suggestion (hairlines, NO actual readable letters or words). 2-3 abstract photo-frames (rectangular outlines, with very abstract internal hatching — NO recognizable image inside). Headlines suggested by 2-3 thicker hairlines (NO actual text). One column has a terracotta #c24a1b accent stroke at its top.
 
@@ -1473,8 +1473,8 @@ Negative space: 25% (the page edges where the newspaper is cropped).
 Mood: editorial press, premium publication, journalistic gravitas.
 ```
 
-- **Alt text FR** : « Journal éditorial ouvert avec colonnes abstraites — illustration de la page presse AxionIA. »
-- **Alt text EN** : « Open editorial newspaper with abstract columns — illustration of AxionIA press page. »
+- **Alt text FR** : « Journal éditorial ouvert avec colonnes abstraites — illustration de la page presse Axion-IA. »
+- **Alt text EN** : « Open editorial newspaper with abstract columns — illustration of Axion-IA press page. »
 - **Filename target** : `public/illustrations/presse-hero.avif`
 - **Validation checklist** :
   1. Journal vu à plat lisible ?
@@ -1493,7 +1493,7 @@ Mood: editorial press, premium publication, journalistic gravitas.
 - **Composition** : grille centrée.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial 3x3 grid of empty rectangular frames (placeholders representing media logos). Each frame is a simple hairline rectangle. Empty inside (NO actual logos, NO text). The center frame has a terracotta #c24a1b stroke. Other frames in warm anthracite-brown #1a1815.
 
@@ -1504,8 +1504,8 @@ Negative space: 25% margin.
 Mood: editorial press grid, media kit placeholder, structured.
 ```
 
-- **Alt text FR** : « Grille éditoriale de placeholders média — illustration du kit presse AxionIA. »
-- **Alt text EN** : « Editorial grid of media placeholders — illustration of AxionIA press kit. »
+- **Alt text FR** : « Grille éditoriale de placeholders média — illustration du kit presse Axion-IA. »
+- **Alt text EN** : « Editorial grid of media placeholders — illustration of Axion-IA press kit. »
 - **Filename target** : `public/illustrations/presse-mid-1.avif`
 - **Validation checklist** :
   1. Grille 3x3 lisible ?
@@ -1528,7 +1528,7 @@ Mood: editorial press grid, media kit placeholder, structured.
 - **Composition** : flux horizontal gauche → droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial simplified Sankey-style flow diagram. On the left, 3 input streams (3 thin curved bands of varying widths) merge progressively toward the right, eventually converging into a single thicker output stream. The streams are filled (semi-transparent feel) and curve gracefully. The merging point is marked by a terracotta #c24a1b dot. NO text, NO labels.
 
@@ -1539,8 +1539,8 @@ Negative space: 35%.
 Mood: editorial flow visualization, ROI conversion, premium dataviz (Anthropic research dataviz aesthetic).
 ```
 
-- **Alt text FR** : « Diagramme Sankey éditorial simplifié représentant la conversion d'inputs en ROI — illustration du calculateur AxionIA. »
-- **Alt text EN** : « Editorial simplified Sankey diagram representing ROI conversion — illustration of AxionIA's calculator. »
+- **Alt text FR** : « Diagramme Sankey éditorial simplifié représentant la conversion d'inputs en ROI — illustration du calculateur Axion-IA. »
+- **Alt text EN** : « Editorial simplified Sankey diagram representing ROI conversion — illustration of Axion-IA's calculator. »
 - **Filename target** : `public/illustrations/roi-hero.avif`
 - **Validation checklist** :
   1. 3 inputs → 1 output lisibles ?
@@ -1559,7 +1559,7 @@ Mood: editorial flow visualization, ROI conversion, premium dataviz (Anthropic r
 - **Composition** : flèche en diagonale du coin inférieur gauche au coin supérieur droit.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial upward-curving arrow (NOT a generic stock-photo trend arrow — minimal, thin, slightly hand-drawn). The arrow starts at the bottom-left corner and curves gently upward to the top-right corner. Along its path, 3 small dots mark progression points. The arrowhead is tipped with a terracotta #c24a1b accent.
 
@@ -1570,8 +1570,8 @@ Negative space: 60% (around the arrow).
 Mood: editorial progression, gentle ascent, premium ROI realization.
 ```
 
-- **Alt text FR** : « Flèche éditoriale ascendante avec trois jalons — symbole de la progression du ROI AxionIA. »
-- **Alt text EN** : « Editorial upward arrow with three milestones — symbol of AxionIA ROI progression. »
+- **Alt text FR** : « Flèche éditoriale ascendante avec trois jalons — symbole de la progression du ROI Axion-IA. »
+- **Alt text EN** : « Editorial upward arrow with three milestones — symbol of Axion-IA ROI progression. »
 - **Filename target** : `public/illustrations/roi-closing.avif`
 - **Validation checklist** :
   1. Flèche courbe (pas stock) ?
@@ -1592,7 +1592,7 @@ Mood: editorial progression, gentle ascent, premium ROI realization.
 - **Composition** : calendrier centré.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial calendar grid viewed flat from above. A 5x5 grid of small rectangular cells representing days. Each cell is a thin hairline outline. One cell (mid-grid, slightly off-center) has a terracotta #c24a1b stroke and a single dot inside (the chosen appointment day). NO numbers, NO dates, NO text.
 
@@ -1603,8 +1603,8 @@ Negative space: 25% margin.
 Mood: editorial appointment selection, premium booking moment.
 ```
 
-- **Alt text FR** : « Grille de calendrier éditorial avec une case mise en avant — illustration de la réservation AxionIA. »
-- **Alt text EN** : « Editorial calendar grid with one highlighted cell — illustration of AxionIA booking. »
+- **Alt text FR** : « Grille de calendrier éditorial avec une case mise en avant — illustration de la réservation Axion-IA. »
+- **Alt text EN** : « Editorial calendar grid with one highlighted cell — illustration of Axion-IA booking. »
 - **Filename target** : `public/illustrations/reserver-hero.avif`
 - **Validation checklist** :
   1. Grille 5x5 lisible ?
@@ -1625,7 +1625,7 @@ Mood: editorial appointment selection, premium booking moment.
 > ⚠️ **Anti-handshake** : NE PAS générer une poignée de main corporate stock. Préférer une métaphore d'engagement éditoriale alternative.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial stylized hand silhouette (outline only, NO photographic skin) gently holding a small abstract token or object — NOT a handshake, NOT a corporate gesture. Imagine the hand cupping a small editorial sphere or holding a thin card. The object has a terracotta #c24a1b accent.
 
@@ -1638,8 +1638,8 @@ Mood: editorial commitment, gentle engagement, premium reassurance (NOT stock co
 CRITICAL: This is NOT a handshake. NO two hands meeting. NO corporate gesture cliché. Single hand only, with a small object.
 ```
 
-- **Alt text FR** : « Main éditoriale tenant un objet abstrait — symbole de l'engagement réservé avec AxionIA. »
-- **Alt text EN** : « Editorial hand holding an abstract object — symbol of reserved engagement with AxionIA. »
+- **Alt text FR** : « Main éditoriale tenant un objet abstrait — symbole de l'engagement réservé avec Axion-IA. »
+- **Alt text EN** : « Editorial hand holding an abstract object — symbol of reserved engagement with Axion-IA. »
 - **Filename target** : `public/illustrations/reserver-mid-1.avif`
 - **Validation checklist** :
   1. UNE SEULE main (pas handshake) ?
@@ -1660,7 +1660,7 @@ CRITICAL: This is NOT a handshake. NO two hands meeting. NO corporate gesture cl
 - **Composition** : empilement à gauche, négatif à droite.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial stack of 5 question cards (thin rectangular outlines) stacked vertically with slight horizontal offsets. The third card from the top is partially "opened" — pulled forward as if expanded, revealing a hint of abstract content inside (a hairline, a dot — NO text). One card edge is terracotta #c24a1b.
 
@@ -1671,8 +1671,8 @@ Negative space: 60%.
 Mood: editorial Q&A, expandable knowledge, premium FAQ.
 ```
 
-- **Alt text FR** : « Pile éditoriale de cartes de questions, l'une dépliée — illustration de la FAQ AxionIA. »
-- **Alt text EN** : « Editorial stack of question cards, one expanded — illustration of AxionIA FAQ. »
+- **Alt text FR** : « Pile éditoriale de cartes de questions, l'une dépliée — illustration de la FAQ Axion-IA. »
+- **Alt text EN** : « Editorial stack of question cards, one expanded — illustration of Axion-IA FAQ. »
 - **Filename target** : `public/illustrations/faq-hero.avif`
 - **Validation checklist** :
   1. 5 cartes empilées ?
@@ -1691,7 +1691,7 @@ Mood: editorial Q&A, expandable knowledge, premium FAQ.
 - **Composition** : centré.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial deconstructed question mark — the shape of a "?" suggested by fragmented hairlines and dots, NOT a fully drawn punctuation mark. Several thin curve segments + one dot at the bottom suggest the form without rendering it explicitly. One segment is terracotta #c24a1b.
 
@@ -1702,8 +1702,8 @@ Negative space: 65%.
 Mood: editorial inquiry, abstract questioning, premium curiosity.
 ```
 
-- **Alt text FR** : « Point d'interrogation éditorial déconstruit — diviseur visuel pour les sections FAQ AxionIA. »
-- **Alt text EN** : « Editorial deconstructed question mark — visual divider for AxionIA FAQ sections. »
+- **Alt text FR** : « Point d'interrogation éditorial déconstruit — diviseur visuel pour les sections FAQ Axion-IA. »
+- **Alt text EN** : « Editorial deconstructed question mark — visual divider for Axion-IA FAQ sections. »
 - **Filename target** : `public/illustrations/faq-mid-1.avif`
 - **Validation checklist** :
   1. Forme déconstruite (pas « ? » net) ?
@@ -1726,7 +1726,7 @@ Mood: editorial inquiry, abstract questioning, premium curiosity.
 - **Composition** : split 50/50 visuel/négatif.
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial composition for social sharing — left half shows a small abstract architectural diagram (3-4 connected modules with hairlines), right half is uniform ivory cream #faf8f3 negative space (will be overlaid with HTML title in production, but this image alone has NO text). One module on the left has a terracotta #c24a1b accent.
 
@@ -1737,8 +1737,8 @@ Negative space: 50% (right half).
 Mood: editorial social card, premium B2B preview.
 ```
 
-- **Alt text FR** : « Image OG d'AxionIA : diagramme architectural minimaliste, format social. »
-- **Alt text EN** : « AxionIA OG image: minimalist architectural diagram, social format. »
+- **Alt text FR** : « Image OG d'Axion-IA : diagramme architectural minimaliste, format social. »
+- **Alt text EN** : « Axion-IA OG image: minimalist architectural diagram, social format. »
 - **Filename target** : `public/og/home-og.png`
 - **Validation checklist** :
   1. Format ~1200x630 ?
@@ -1755,7 +1755,7 @@ Mood: editorial social card, premium B2B preview.
 - **Aspect ratio** : 1200x630
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial timeline OG composition — horizontal timeline with 5 milestone dots on the left half, blank ivory cream #faf8f3 on the right half. The middle milestone has a terracotta #c24a1b dot.
 
@@ -1766,8 +1766,8 @@ Negative space: 50%.
 Mood: editorial methodology preview.
 ```
 
-- **Alt text FR** : « Image OG méthodologie AxionIA : timeline éditoriale à cinq jalons. »
-- **Alt text EN** : « AxionIA methodology OG image: editorial five-milestone timeline. »
+- **Alt text FR** : « Image OG méthodologie Axion-IA : timeline éditoriale à cinq jalons. »
+- **Alt text EN** : « Axion-IA methodology OG image: editorial five-milestone timeline. »
 - **Filename target** : `public/og/methodologie-og.png`
 - **Validation checklist** :
   1. Timeline lisible ?
@@ -1784,7 +1784,7 @@ Mood: editorial methodology preview.
 - **Aspect ratio** : 1200x630
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial OG composition — magnifying glass on the left third over a small abstract process map. Right two-thirds: clean ivory cream #faf8f3 negative space.
 
@@ -1795,8 +1795,8 @@ Negative space: 65%.
 Mood: editorial audit preview.
 ```
 
-- **Alt text FR** : « Image OG audit AxionIA : loupe éditoriale sur carte de processus. »
-- **Alt text EN** : « AxionIA audit OG image: editorial magnifying glass over process map. »
+- **Alt text FR** : « Image OG audit Axion-IA : loupe éditoriale sur carte de processus. »
+- **Alt text EN** : « Axion-IA audit OG image: editorial magnifying glass over process map. »
 - **Filename target** : `public/og/audit-og.png`
 - **Validation checklist** :
   1. Loupe + map lisibles ?
@@ -1813,7 +1813,7 @@ Mood: editorial audit preview.
 - **Aspect ratio** : 1200x630
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial OG — row of 4-5 archive folders aligned along the bottom 1/3 of the frame, vast ivory cream #faf8f3 negative space above.
 
@@ -1824,8 +1824,8 @@ Negative space: 65% (upper portion).
 Mood: editorial case study archive preview.
 ```
 
-- **Alt text FR** : « Image OG cas-concrets AxionIA : rangée de dossiers éditoriaux. »
-- **Alt text EN** : « AxionIA case studies OG image: editorial archive folder row. »
+- **Alt text FR** : « Image OG cas-concrets Axion-IA : rangée de dossiers éditoriaux. »
+- **Alt text EN** : « Axion-IA case studies OG image: editorial archive folder row. »
 - **Filename target** : `public/og/cas-concrets-og.png`
 - **Validation checklist** :
   1. Dossiers alignés ?
@@ -1842,7 +1842,7 @@ Mood: editorial case study archive preview.
 - **Aspect ratio** : 1200x630
 
 ```text
-[Coller préfixe brand AxionIA ici]
+[Coller préfixe brand Axion-IA ici]
 
 Subject: an editorial OG — vertical stack of 5-6 abstract modules on the left third, vast ivory cream #faf8f3 negative space on the right.
 
@@ -1853,8 +1853,8 @@ Negative space: 65%.
 Mood: editorial AI stack preview.
 ```
 
-- **Alt text FR** : « Image OG stack-ia AxionIA : pile éditoriale de modules abstraits. »
-- **Alt text EN** : « AxionIA AI stack OG image: editorial stack of abstract modules. »
+- **Alt text FR** : « Image OG stack-ia Axion-IA : pile éditoriale de modules abstraits. »
+- **Alt text EN** : « Axion-IA AI stack OG image: editorial stack of abstract modules. »
 - **Filename target** : `public/og/stack-ia-og.png`
 - **Validation checklist** :
   1. Stack vertical lisible ?
@@ -1867,7 +1867,7 @@ Mood: editorial AI stack preview.
 
 ## Total
 
-**53 prompts GPT-image** prêts à coller, structurés pour les Top 20 pages stratégiques d'AxionIA + 5 OG images dynamiques.
+**53 prompts GPT-image** prêts à coller, structurés pour les Top 20 pages stratégiques d'Axion-IA + 5 OG images dynamiques.
 
 | Catégorie                | Pages  | Prompts             |
 | ------------------------ | ------ | ------------------- |

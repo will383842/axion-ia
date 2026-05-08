@@ -128,8 +128,8 @@ export async function buildPageMetadata(
       ? serviceCopy.fr.hero.slice(0, 200)
       : serviceCopy.en.hero.slice(0, 200)
     : isFr
-      ? `AxionIA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données.`
-      : `AxionIA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Public pricing displayed, real-time calendar, you keep control of your data.`;
+      ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données.`
+      : `Axion-IA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Public pricing displayed, real-time calendar, you keep control of your data.`;
 
   const result = buildProductMetadata({
     locale,
@@ -199,8 +199,8 @@ export async function renderVilleServicePage({
           titleEm={ville.nameFr}
           description={
             isFr
-              ? `AxionIA délivre ${meta.nameFr.toLowerCase()} dans toute la France métropolitaine, y compris à ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Page locale détaillée en préparation — réservation directe via la page régionale ou contact.`
-              : `AxionIA delivers ${meta.nameEn.toLowerCase()} across metropolitan France, including ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Detailed local page in preparation — direct booking via the regional page or contact.`
+              ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} dans toute la France métropolitaine, y compris à ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Page locale détaillée en préparation — réservation directe via la page régionale ou contact.`
+              : `Axion-IA delivers ${meta.nameEn.toLowerCase()} across metropolitan France, including ${ville.nameFr} (${ville.departementLabel ?? ville.departement}, ${region.nameFr}). Detailed local page in preparation — direct booking via the regional page or contact.`
           }
         >
           <div className="flex flex-wrap items-center gap-3">
@@ -237,8 +237,8 @@ export async function renderVilleServicePage({
     locale: loc,
     path: `${meta.pathFr}/${ville.slug}`,
     name: isFr
-      ? `${meta.nameFr} à ${ville.nameFr} · AxionIA`
-      : `${meta.nameEn} in ${ville.nameFr} · AxionIA`,
+      ? `${meta.nameFr} à ${ville.nameFr} · Axion-IA`
+      : `${meta.nameEn} in ${ville.nameFr} · Axion-IA`,
     description: localeCopy.hero,
     serviceType: meta.nameEn,
     ...(typeof entryPriceEur === "number" ? { priceEur: entryPriceEur } : {}),
@@ -262,8 +262,8 @@ export async function renderVilleServicePage({
     locale: loc,
     path: `${meta.pathFr}/${ville.slug}`,
     name: isFr
-      ? `AxionIA · ${meta.nameFr} à ${ville.nameFr}`
-      : `AxionIA · ${meta.nameEn} in ${ville.nameFr}`,
+      ? `Axion-IA · ${meta.nameFr} à ${ville.nameFr}`
+      : `Axion-IA · ${meta.nameEn} in ${ville.nameFr}`,
     description: localeCopy.hero,
     areaServed: { type: "City", name: ville.nameFr },
     address: {

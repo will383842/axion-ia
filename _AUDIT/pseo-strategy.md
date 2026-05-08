@@ -1,18 +1,18 @@
-# Agent D — Stratégie pSEO villes/régions AxionIA 2026
+# Agent D — Stratégie pSEO villes/régions Axion-IA 2026
 
 > Date : 2026-05-07
 > Auteur : Agent D (audit Header & Navigation 2026)
 > Cible : ~15 régions FR + ~2 100-3 500 villes FR (selon seuil retenu)
 > Objectif : maximiser visibilité SEO/AEO/GEO sans pénalité Google Helpful Content / Core Updates 2024-2025
 > Doctrine : différentiation éditoriale > volume pur (anti-doorway)
-> Statut : livrable Agent D, lecture seule sur le code AxionIA, mission externe (data INSEE + recherche pSEO)
+> Statut : livrable Agent D, lecture seule sur le code Axion-IA, mission externe (data INSEE + recherche pSEO)
 
 ---
 
 ## 0. TL;DR exécutif
 
 - **Volume réaliste cible** : **~2 150 communes FR > 5 000 hab** (métropole + DROM) selon INSEE recensement 2021. L'estimation initiale de Will (3 500) est haute — elle correspond plutôt au seuil > 3 500 hab. À trancher : seuil 5 000 (≈2 150 villes) ou 3 500 (≈3 500 villes).
-- **Top 10 pièges pSEO 2026** identifiés (HCU + Core Updates) — chaque piège a un contre-mesure AxionIA documentée.
+- **Top 10 pièges pSEO 2026** identifiés (HCU + Core Updates) — chaque piège a un contre-mesure Axion-IA documentée.
 - **Pipeline éditorial** : 80% LLM + 20% review humaine, sources INSEE + Sirene + data.gouv.fr + OSM, sections non-clonables (cas client proche, secteurs locaux dominants, logistique Paris).
 - **Rollout phasé 12 semaines** : 50 → 200 → 2 150 (ou 3 500), avec quality gate humain phase 1 + monitoring Search Console entre chaque phase.
 - **Budget total estimé** : **2 800 € à 6 200 €** (fourchette basse / haute), dominé par tokens LLM (~1 200-2 800 €) + temps Will review (~30-50h × tarif horaire interne).
@@ -65,7 +65,7 @@ WebFetch INSEE direct retourne 404 ou page sans données agrégées (tables tél
 
 ---
 
-## 2. Top 10 pièges pSEO 2026 + contre-mesures AxionIA
+## 2. Top 10 pièges pSEO 2026 + contre-mesures Axion-IA
 
 Référentiel mis à jour avec :
 
@@ -80,7 +80,7 @@ Référentiel mis à jour avec :
 
 **Détection Google** : algorithmes de détection de near-duplicates (SimHash, MinHash) + signaux comportementaux (taux de retour SERP, dwell time bas).
 
-**Contre-mesure AxionIA** :
+**Contre-mesure Axion-IA** :
 
 - 60% du contenu doit être **localement spécifique** : démographie INSEE, top 3 secteurs NAF locaux, distance Paris en TGV, cas client < 50 km si existe, FAQ géolocalisée.
 - 40% peut être commun (méthodologie Diagnostic→Pilote→Mise en prod, pricing, garanties, FAQ générale).
@@ -114,7 +114,7 @@ Référentiel mis à jour avec :
 
 - **20% review humaine systématique** par Will (spot-check 1/5 villes).
 - Phase 1 (50 villes prioritaires) : **100% review humaine** avant publication.
-- Auteur identifié sur chaque page (E-E-A-T) : "Audité par William [Nom], Directeur AxionIA, AI Governance Lead".
+- Auteur identifié sur chaque page (E-E-A-T) : "Audité par William [Nom], Directeur Axion-IA, AI Governance Lead".
 - JSON-LD `Person` author + `Organization` publisher avec sameAs LinkedIn.
 
 ### 2.5 Internal linking exagéré / faux signaux
@@ -129,7 +129,7 @@ Référentiel mis à jour avec :
 
 ### 2.6 Crawl budget mal géré sur sites jeunes
 
-**Piège** : AxionIA est un site jeune (domain authority faible). Google alloue un crawl budget limité. 2 150 nouvelles URLs publiées d'un coup = la majorité ne sera jamais crawlée, ou crawlée 1 fois puis abandonnée.
+**Piège** : Axion-IA est un site jeune (domain authority faible). Google alloue un crawl budget limité. 2 150 nouvelles URLs publiées d'un coup = la majorité ne sera jamais crawlée, ou crawlée 1 fois puis abandonnée.
 
 **Contre-mesure** :
 
@@ -144,9 +144,9 @@ Référentiel mis à jour avec :
 
 **Contre-mesure** :
 
-- AxionIA OÜ Estonie = **pas de LocalBusiness France**. Utiliser `Organization` + `Service` + `serviceArea` (GeoCircle 50 km autour de la ville) — sémantiquement honnête.
+- Axion-IA OÜ Estonie = **pas de LocalBusiness France**. Utiliser `Organization` + `Service` + `serviceArea` (GeoCircle 50 km autour de la ville) — sémantiquement honnête.
 - `LocalBusiness` réservé aux pages avec adresse physique réelle (uniquement le bureau d'attache si existe — Tallinn HQ).
-- Page ville = `Service` + `areaServed` ville + `provider` = AxionIA Organization. Conforme schema.org sans tromperie.
+- Page ville = `Service` + `areaServed` ville + `provider` = Axion-IA Organization. Conforme schema.org sans tromperie.
 
 ### 2.8 Hreflang erronés
 
@@ -191,7 +191,7 @@ Référentiel mis à jour avec :
 
 ### 3.1 Sources data (toutes gratuites)
 
-| Source                        | Données                                      | Format            | Usage AxionIA                               |
+| Source                        | Données                                      | Format            | Usage Axion-IA                              |
 | ----------------------------- | -------------------------------------------- | ----------------- | ------------------------------------------- |
 | **INSEE Populations légales** | Population par commune                       | CSV               | Hero, intro, archétype ville                |
 | **INSEE Sirene**              | Établissements par commune + code NAF        | API REST gratuite | Top 3 secteurs locaux dominants             |
@@ -213,11 +213,11 @@ Référentiel mis à jour avec :
 
 ```
 [SYSTEM PROMPT] (cached, ~3 000 tokens)
-- Doctrine éditoriale AxionIA (terracotta + serif italique titres, ton premium B2B)
+- Doctrine éditoriale Axion-IA (terracotta + serif italique titres, ton premium B2B)
 - Contraintes anti-doorway : 60% local, 40% commun
 - Contraintes typographiques : 16/14 baseline, pas de markdown sauvage
 - Contraintes SEO : H1 unique avec ville, H2 sections obligatoires, FAQ AEO
-- Glossaire AxionIA (cabinet IA opérationnel, pas agence/studio)
+- Glossaire Axion-IA (cabinet IA opérationnel, pas agence/studio)
 - Format de sortie JSON structuré (sections distinctes)
 
 [USER PROMPT] (variable, ~800 tokens par ville)
@@ -229,7 +229,7 @@ Référentiel mis à jour avec :
 - Top 3 secteurs NAF dominants : {nafs[]}
 - Distance Paris (km / temps TGV) : {dist_km, tgv_min}
 - Gare TGV la plus proche : {gare}
-- Cas client AxionIA < 50 km : {cas_client_nom?, cas_client_secteur?}
+- Cas client Axion-IA < 50 km : {cas_client_nom?, cas_client_secteur?}
 - 5 villes proches Haversine : {voisins[]}
 - Contraintes tier : {tier1|tier2|tier3}
   - tier1 : 3000 mots, 8 sections, FAQ 8 Q/R
@@ -264,7 +264,7 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
    - Métropole : "Cabinet IA opérationnel à {Ville} — accompagner la transformation IA des [secteur dominant] de la métropole {Region}"
    - Ville moyenne : "Audit IA et déploiement opérationnel pour les PME de {Ville} ({pop} habitants)"
    - Chef-lieu : "Stratégie IA pour les acteurs publics et industriels de {Ville}, capitale {region/dept}"
-   - Périurbain : "AxionIA accompagne les PME de {Ville} et du bassin {bassin_emploi}"
+   - Périurbain : "Axion-IA accompagne les PME de {Ville} et du bassin {bassin_emploi}"
 
 2. **Démographie + tissu économique local** [UNIQUE] :
    - Population, densité, % cadres, % formation supérieure (INSEE)
@@ -274,7 +274,7 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
 
 3. **Top 3-5 secteurs dominants NAF** [UNIQUE] :
    - Ex. Toulouse : Aéronautique (NAF 30.30Z) / Numérique / Santé.
-   - Argument : "AxionIA a accompagné [N] cabinets dans le secteur {NAF principal} en France — applicabilité directe à {Ville}."
+   - Argument : "Axion-IA a accompagné [N] cabinets dans le secteur {NAF principal} en France — applicabilité directe à {Ville}."
    - Données Sirene réelles, pas inventées.
 
 4. **Logistique Paris** [SEMI-UNIQUE] :
@@ -282,7 +282,7 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
    - Variation par ville mais structure commune.
 
 5. **Cas client proche < 50 km** [UNIQUE QUAND EXISTE] :
-   - Si AxionIA a un cas dans rayon 50 km : section dédiée, 200 mots, lien vers étude de cas.
+   - Si Axion-IA a un cas dans rayon 50 km : section dédiée, 200 mots, lien vers étude de cas.
    - Si pas de cas : section absente (pas de remplissage bidon — anti-thin-content discipline).
 
 6. **5-8 villes proches (Haversine)** [SEMI-UNIQUE] :
@@ -291,7 +291,7 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
 
 7. **FAQ géolocalisée 5-8 Q/R** [UNIQUE] :
    - "Combien coûte un audit IA à {Ville} ?" (réponse standard avec mention Paris + frais déplacement)
-   - "AxionIA se déplace-t-il à {Ville} ?" (oui, fréquence selon distance)
+   - "Axion-IA se déplace-t-il à {Ville} ?" (oui, fréquence selon distance)
    - "Quels sont les cas d'usage IA prioritaires pour les {secteur dominant} de {Region} ?" (réponse spécifique secteur)
    - 2-5 Q variables selon archétype.
 
@@ -310,7 +310,7 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
 
 **Argument 80/20** :
 
-- **100% LLM** = risque HCU élevé + tonalité AxionIA non maîtrisée. Rejeté.
+- **100% LLM** = risque HCU élevé + tonalité Axion-IA non maîtrisée. Rejeté.
 - **50/50** = 12 semaines × 8h/semaine review humaine = 96h. Inacceptable pour un fondateur.
 - **80/20 avec quality gate phase 1 = 100%** = équilibre qualité / coût / risque optimal. Recommandé.
 
@@ -346,9 +346,9 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
 3. Section secteurs NAF : pertinent (pas "agriculture" pour Lyon) ?
 4. Cas client mentionné = vrai (pas hallucination LLM) ?
 5. Voisins Haversine = 5-8 villes réellement proches ?
-6. FAQ : 5+ questions, réponses utiles (pas "Oui, AxionIA peut intervenir à X" répété) ?
+6. FAQ : 5+ questions, réponses utiles (pas "Oui, Axion-IA peut intervenir à X" répété) ?
 7. Wordcount ≥ 1 500 (tier3) / 2 200 (tier2) / 3 000 (tier1) ?
-8. Tonalité AxionIA respectée (cabinet IA opérationnel, pas agence) ?
+8. Tonalité Axion-IA respectée (cabinet IA opérationnel, pas agence) ?
 9. CTA + champ ville pré-rempli fonctionne ?
 10. JSON-LD `Service` + `areaServed` + `Person` author généré ?
 
@@ -475,7 +475,7 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 
 - Hetzner CX32 Frankfurt + Coolify + Cloudflare gratuit (doctrine déploiement Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`). 2 150 pages SSG ≈ 55 MB d'output statique, bien sous les capacités du serveur.
 - Builds : SSG Next.js 16 sur le pipeline Coolify, déclenchés à chaque push.
-- **Coût additionnel hosting : 0 €** (le serveur AxionIA Hetzner est déjà prévu pour le projet, pas de ligne budget dédiée à la pSEO).
+- **Coût additionnel hosting : 0 €** (le serveur Axion-IA Hetzner est déjà prévu pour le projet, pas de ligne budget dédiée à la pSEO).
 
 ### 5.5 Indexing API Google
 
@@ -485,8 +485,8 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 
 ### 5.6 Outils annexes (optionnels)
 
-- Screaming Frog (audit technique avant rollout) : **209 €/an** (déjà possédé probablement par AxionIA).
-- Ahrefs ou Semrush (monitoring SERP) : 100-400 €/mois — non bloquant V1, déjà couvert si AxionIA a abonnement existant.
+- Screaming Frog (audit technique avant rollout) : **209 €/an** (déjà possédé probablement par Axion-IA).
+- Ahrefs ou Semrush (monitoring SERP) : 100-400 €/mois — non bloquant V1, déjà couvert si Axion-IA a abonnement existant.
 - **Coût additionnel : 0 € si outils existants, sinon 200-500 €.**
 
 ### 5.7 Total budget estimé
@@ -503,7 +503,7 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 
 ### 5.8 ROI / break-even
 
-- 1 client B2B AxionIA premium = 15-50 K€ mission.
+- 1 client B2B Axion-IA premium = 15-50 K€ mission.
 - Break-even V2 = **1 lead converti** sur 12 mois.
 - Hypothèse conservative : 2 150 pages × 0.5% CTR × 50 impressions/mois moyenne = ~540 visites/mois → 5 leads/mois → 0.5 conversion/mois → 6 conversions/an = **80-300 K€ revenue annuelle attribuable**.
 - **ROI : 15× à 60×** sur scénario médian. Forte recommandation GO.
@@ -580,7 +580,7 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 2. **Tarif Claude Sonnet 4.6** : grille publique Anthropic 2026-05.
 3. **Valorisation temps Will** : à arbitrer par Will selon sa propre métrique de coût opportunité fondateur. Le poste « temps Will » est dominant en heures (~29 h V2 sur 12 semaines).
 4. **CTR moyen 0.5%** : standard pSEO post-HCU mature, peut être 0.3-1.5% selon qualité.
-5. **Conversion 1.7% impressions→lead, 10% lead→client** : standard B2B premium sans benchmark AxionIA réel.
+5. **Conversion 1.7% impressions→lead, 10% lead→client** : standard B2B premium sans benchmark Axion-IA réel.
 
 ### 7.3 Risques résiduels non couverts par cette stratégie
 
@@ -596,7 +596,7 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 **Effort** :
 
 - Will : 25-29h review sur 12 semaines + 4h/an refresh.
-- Pipeline dev (côté équipe technique AxionIA, hors Will) : ~5-8 jours-homme pour scripts INSEE + boucle LLM + interface review + sitemaps + intégration Next.js. Estim. 4-6 K€ si externalisé, < 1 K€ si fait in-house en 1 sprint.
+- Pipeline dev (côté équipe technique Axion-IA, hors Will) : ~5-8 jours-homme pour scripts INSEE + boucle LLM + interface review + sitemaps + intégration Next.js. Estim. 4-6 K€ si externalisé, < 1 K€ si fait in-house en 1 sprint.
 
 **Charges principales V1 PERFECTION** (option B amendée 2 150 villes >5 000 hab) :
 
@@ -615,10 +615,10 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 3. **DROM** : inclure les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) dès V1 ou différer V2 ? (Agent D recommande inclus V1.)
 4. **Phase 1** : top 50 villes (recommandé) ou top 100 ? (Agent D recommande 50.)
 5. **Valorisation temps Will** : confirmer la métrique de coût opportunité fondateur que Will souhaite utiliser pour le suivi budgétaire ?
-6. **Dev pipeline** : in-house (1 sprint AxionIA) ou externalisé (5-8 J-H) ?
-7. **Outils SERP monitoring** : Ahrefs/Semrush déjà abonnés AxionIA, ou besoin nouvelle ligne budget ?
+6. **Dev pipeline** : in-house (1 sprint Axion-IA) ou externalisé (5-8 J-H) ?
+7. **Outils SERP monitoring** : Ahrefs/Semrush déjà abonnés Axion-IA, ou besoin nouvelle ligne budget ?
 8. **Indexing API Google** : compte service Google déjà configuré, ou setup à faire avant phase 1 ?
-9. **Auteur E-E-A-T** : Will signe les pages comme "Directeur AxionIA, AI Governance Lead", ou nom de plume / co-signature équipe ?
+9. **Auteur E-E-A-T** : Will signe les pages comme "Directeur Axion-IA, AI Governance Lead", ou nom de plume / co-signature équipe ?
 10. **Refresh annuel** : automatisé janvier (recommandé) ou trigger manuel sur décision Will ?
 
 ---

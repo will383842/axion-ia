@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/roi",
     title:
       locale === "fr"
-        ? "Simulateur gains IA · combien d'heures vous gagnerez · AxionIA"
-        : "AI gains simulator · hours you'll save · AxionIA",
+        ? "Simulateur gains IA · combien d'heures vous gagnerez · Axion-IA"
+        : "AI gains simulator · hours you'll save · Axion-IA",
     description:
       locale === "fr"
         ? "Combien d'heures par jour, par personne, votre équipe gagnera après une formation IA ? 2 curseurs simples, gains concrets : heures rendues, jours libérés, emails écrits sans effort."
@@ -132,8 +132,8 @@ export default async function RoiPage({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un diagramme Sankey représentant le flux d'heures économisées par l'IA chez AxionIA."
-                : "Editorial illustration of a Sankey diagram representing the flow of hours saved by AI at AxionIA."
+                ? "Illustration éditoriale d'un diagramme Sankey représentant le flux d'heures économisées par l'IA chez Axion-IA."
+                : "Editorial illustration of a Sankey diagram representing the flow of hours saved by AI at Axion-IA."
             }
             priority
           />
@@ -173,8 +173,8 @@ export default async function RoiPage({ params }: Props) {
         }
         description={
           isFr
-            ? "L'audit AxionIA livre un plan d'implémentation chiffré avec ROI mesuré sur vos process réels."
-            : "The AxionIA audit delivers a costed implementation plan with ROI measured on your actual processes."
+            ? "L'audit Axion-IA livre un plan d'implémentation chiffré avec ROI mesuré sur vos process réels."
+            : "The Axion-IA audit delivers a costed implementation plan with ROI measured on your actual processes."
         }
         cta={
           <Cta href="/audit" size="lg">

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/mes-donnees",
-    title: locale === "fr" ? "Mes données RGPD · AxionIA" : "My GDPR data · AxionIA",
+    title: locale === "fr" ? "Mes données RGPD · Axion-IA" : "My GDPR data · Axion-IA",
     description:
       locale === "fr"
         ? "Exercer vos droits RGPD : accès, rectification, effacement, portabilité, opposition."
@@ -73,8 +73,8 @@ export default async function MyDataPage({ params }: Props) {
         titleEm={isFr ? "RGPD" : "GDPR data"}
         description={
           isFr
-            ? "AxionIA OÜ traite vos données conformément au RGPD UE 2016/679. Voici comment exercer vos droits."
-            : "AxionIA OÜ processes your data in accordance with EU GDPR 2016/679. Here's how to exercise your rights."
+            ? "Axion-IA OÜ traite vos données conformément au RGPD UE 2016/679. Voici comment exercer vos droits."
+            : "Axion-IA OÜ processes your data in accordance with EU GDPR 2016/679. Here's how to exercise your rights."
         }
       />
       <Section>

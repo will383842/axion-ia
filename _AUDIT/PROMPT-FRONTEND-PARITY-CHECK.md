@@ -1,4 +1,4 @@
-# 🎨 PROMPT FRONTEND PARITY CHECK — AxionIA · Audit cohérence cross-pages
+# 🎨 PROMPT FRONTEND PARITY CHECK — Axion-IA · Audit cohérence cross-pages
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** pour les évolutions HEAD `fd91518` (64 routes, doctrine v3 commitée, refactor Module Audit).
 >
@@ -205,7 +205,7 @@ Pour chaque page, scorer chaque dimension sur 0-3 :
 ## 📊 MATRICE DE SORTIE — `_AUDIT/AUDIT-PARITY-V14.md`
 
 ```markdown
-# AUDIT PARITY V14 — AxionIA
+# AUDIT PARITY V14 — Axion-IA
 
 - Date : 2026-MM-DD
 - Référence qualité : `/interventions` HEAD post-refonte (`feat(interventions): redesign listing`)

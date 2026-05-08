@@ -1,4 +1,4 @@
-# Audit Header & Navigation 2026 — AxionIA
+# Audit Header & Navigation 2026 — Axion-IA
 
 > **Statut** : Accepté en bloc 2026-05-07 (Will valide les 8 recommandations consolidées). Implémentation **différée** — Will finit son frontend en cours avant. ADR 0003 → renommée `0005` au démarrage. ADR 0004 → renommée `0006`.
 >
@@ -12,7 +12,7 @@
 > **Périmètre** : Header desktop + mobile + mega-menus + footer + breadcrumbs + pSEO régions/villes + ⌘K + SEO/AEO/GEO 2026.
 > **Méthode** : 5 agents parallèles + agent principal de synthèse (~100-140 min comme prévu).
 > **Cible** : scénario **PERFECTION 2026** (validé Will dans le lancement).
-> **Doctrine de référence** : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414 (le `axionia/CLAUDE.md` racine est un stub `@AGENTS.md` — confirmation Agent A et lecture HEAD).
+> **Doctrine de référence** : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414 (le `axionia/CLAUDE.md` racine est un stub `@AGENTS.md` — confirmation Agent A et lecture HEAD).
 > **Contraintes intouchables** : fond `bg-terracotta` du header + logo (badge ivoire + Axion-IA serif italique) — Will explicit.
 
 ---
@@ -21,11 +21,11 @@
 
 ### Diagnostic
 
-Le header actuel d'AxionIA (HEAD `a726ca9`) est un **Server Component à 4 items** (`/interventions`, `/audit`, `/implementation`, `/cas-concrets`) — pas 5 comme le commentaire de code et la doctrine §9.1 le prétendent (Agent A : `/blog` a été déplacé en footer). Il respecte strictement la doctrine **ZERO dropdown** (§9.2 du dossier source v10.1) — aucun `Popover`, `DropdownMenu`, `HoverCard` importé. Esthétique signature préservée : fond terracotta figé (commit `941a8e1`), logo serif italique, hairline mocha bottom, layout balanced split CTA centré.
+Le header actuel d'Axion-IA (HEAD `a726ca9`) est un **Server Component à 4 items** (`/interventions`, `/audit`, `/implementation`, `/cas-concrets`) — pas 5 comme le commentaire de code et la doctrine §9.1 le prétendent (Agent A : `/blog` a été déplacé en footer). Il respecte strictement la doctrine **ZERO dropdown** (§9.2 du dossier source v10.1) — aucun `Popover`, `DropdownMenu`, `HoverCard` importé. Esthétique signature préservée : fond terracotta figé (commit `941a8e1`), logo serif italique, hairline mocha bottom, layout balanced split CTA centré.
 
 Cependant, **3 forces de tension structurelle** rendent la navigation actuelle sous-dimensionnée pour la stratégie 2026 :
 
-1. **Catalogue IA `/stack-ia`** (HEAD livré 2026-05-07, refonte working tree en cours) — page IA officielle AxionIA, **non liée depuis le header ni le footer** (Agent A : page orpheline, alors qu'elle est centrale éditorialement).
+1. **Catalogue IA `/stack-ia`** (HEAD livré 2026-05-07, refonte working tree en cours) — page IA officielle Axion-IA, **non liée depuis le header ni le footer** (Agent A : page orpheline, alors qu'elle est centrale éditorialement).
 2. **Expansion pSEO villes & régions** prévue par Will : volume corrigé à **~2 150 villes >5 000 hab** par Agent D (vs 3 500 estimé initialement), V1 recommandée à **1 160 villes >10 000 hab + 5 DROM**.
 3. **9 pages stratégiques orphelines** (Agent A : `/accessibilite`, `/comparaisons`, `/glossaire`, `/guide-ia`, `/methodologie`, `/politique-deplacement`, `/stack-ia`, +utilitaires privacy) — surface SEO/UX gâchée.
 
@@ -95,7 +95,7 @@ Cependant, **3 forces de tension structurelle** rendent la navigation actuelle s
 
 - Convergence 4-6 items header sur sites premium B2B (Anthropic 5, Stripe 5, Vercel 4-5, Linear 4, Cohere 5, Mistral 4, Qonto 6, Deloitte 5).
 - Apple à 9-12 = exception catalogue produit, non transposable B2B.
-- Sticky condensation au scroll = pattern dominant 2026 (Stripe, Apple). AxionIA = sticky figé = équivalent UX, plus simple.
+- Sticky condensation au scroll = pattern dominant 2026 (Stripe, Apple). Axion-IA = sticky figé = équivalent UX, plus simple.
 
 🟠 **Verdict** : Header solide mais sous-dimensionné pour la cible PERFECTION 2026. Doit absorber catalogue IA + hub Implantations sans déborder. Cible 7 items (logo + 5 « slots » + ⌘K + locale).
 
@@ -245,7 +245,7 @@ Cependant, **3 forces de tension structurelle** rendent la navigation actuelle s
   - Lien `/accessibilite`.
 - Newsletter : non présente.
 
-🎯 **Standard 2026** (Agent B) : footer = miroir du mega-menu (Stripe, Vercel, Anthropic, Qonto convergent sur 6-8 hubs colonnes). Newsletter footer rare mais différenciante (Cohere seul) — pour AxionIA premium = légitime et distinctif.
+🎯 **Standard 2026** (Agent B) : footer = miroir du mega-menu (Stripe, Vercel, Anthropic, Qonto convergent sur 6-8 hubs colonnes). Newsletter footer rare mais différenciante (Cohere seul) — pour Axion-IA premium = légitime et distinctif.
 
 🔴 **Verdict** : Refonte complète obligatoire (5 zones + bandeau légal + newsletter).
 
@@ -575,7 +575,7 @@ Refonte 4 cols → 5 zones + bandeau légal complet :
 +        </FooterColumn>
        </div>
 +      <BottomBar>
-+        © AxionIA OÜ — N° registre EE-XXXXXXX · TVA EE-XXXXXXXXX · {email} · {tel}
++        © Axion-IA OÜ — N° registre EE-XXXXXXX · TVA EE-XXXXXXXXX · {email} · {tel}
 +        <FooterLink href="/mentions-legales">Mentions légales</FooterLink>
 +        <FooterLink href="/conditions-generales">CGV</FooterLink>
 +        <FooterLink href="/politique-confidentialite">Confidentialité</FooterLink>

@@ -1,4 +1,4 @@
-# Agent — Audit obsolescences + conflits AxionIA 2026-05-07
+# Agent — Audit obsolescences + conflits Axion-IA 2026-05-07
 
 > Date : 2026-05-07
 > HEAD : `acd8080`
@@ -20,7 +20,7 @@ Toutes les dates `2024` / `2025` du codebase ont été inspectées. Verdict :
 | `src/content/press.ts:72`                    | « cabinet de conseil IA opérationnel fondé en 2024 »                                | **Légitime** — date historique                                          |
 | `src/content/press.ts:79`                    | « operational AI consultancy founded in 2024 »                                      | **Légitime**                                                            |
 | `src/content/press.ts:89-90`                 | `foundingDate value: "2024"` (Press kit fact sheet)                                 | **Légitime**                                                            |
-| `src/content/transversal.ts:6-7`             | Timeline `id: "2024", date: "2024"` (Création AxionIA OÜ)                           | **Légitime**                                                            |
+| `src/content/transversal.ts:6-7`             | Timeline `id: "2024", date: "2024"` (Création Axion-IA OÜ)                          | **Légitime**                                                            |
 | `src/content/transversal.ts:12-13`           | Timeline `id: "2025", date: "2025"` (Premières interventions terrain — 10 missions) | **Légitime** — étape historique de la timeline                          |
 | `src/app/[locale]/presse/page.tsx:134`       | `foundingDate: "2024"`                                                              | **Légitime**                                                            |
 | `src/app/[locale]/page.tsx:191`              | `foundingDate: "2024"` (homepage Organization)                                      | **Légitime** mais **doublon JSON-LD** : déjà émis par layout (cf. §3.4) |
@@ -106,34 +106,34 @@ Doctrine §9.2 = ZERO dropdown. ADR 0003 (proposition) = méga-menus acceptés e
 
 ### 2.2 Naming « cabinet IA opérationnel » vs agence/studio/atelier
 
-Doctrine = **cabinet IA opérationnel** (FR) / **operational AI consultancy** (EN). Jamais agence/studio/atelier pour décrire AxionIA elle-même.
+Doctrine = **cabinet IA opérationnel** (FR) / **operational AI consultancy** (EN). Jamais agence/studio/atelier pour décrire Axion-IA elle-même.
 
 #### Auto-référentiel — VERDICT À CONFIRMER
 
-| File:Line                                                   | Texte                                                                                                                             | Verdict                                                                  |
-| ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `src/content/automatisations.ts:309`                        | `cardTagline: "Publier, écrire, créer — 10x plus vite, sans agence."`                                                             | OK — décrit le bénéfice client (sans recourir à une agence), pas AxionIA |
-| `src/content/automatisations.ts:315`                        | « moins de coûts d'agence »                                                                                                       | OK — bénéfice anti-agence                                                |
-| `src/content/automatisations.ts:333`                        | « sans payer 1 500 €/mois à une agence »                                                                                          | OK                                                                       |
-| `src/content/automatisations.ts:370`                        | EN « 10x faster, no agency needed »                                                                                               | OK                                                                       |
-| `src/content/automatisations.ts:376`                        | EN « fewer agency costs »                                                                                                         | OK                                                                       |
-| `src/content/automatisations.ts:394`                        | EN « without paying €1,500/month to an agency »                                                                                   | OK                                                                       |
-| `src/components/sections/AuditConversionBlocks.tsx:176-177` | « un Big 4 (cher, lent), un freelance (incertain), une **agence** digitale (généraliste). Voici pourquoi AxionIA est différent. » | OK — comparaison concurrents                                             |
-| `src/app/[locale]/implementation/page.tsx:179, 212`         | `title: "Make · agence ·"`, `name: "Agence classique"` (tableau comparatif Make/Agence/AxionIA)                                   | OK — concurrents nommés                                                  |
-| `src/app/[locale]/implementation/page.tsx:254, 283`         | `title: "Make · agency ·"`, `name: "Classic agency"`                                                                              | OK                                                                       |
-| `src/app/[locale]/implementation/page.tsx:172, 935`         | Commentaires `// Bloc comparatif — Make/Zapier vs Agence classique vs AxionIA.`                                                   | OK                                                                       |
+| File:Line                                                   | Texte                                                                                                                              | Verdict                                                                   |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `src/content/automatisations.ts:309`                        | `cardTagline: "Publier, écrire, créer — 10x plus vite, sans agence."`                                                              | OK — décrit le bénéfice client (sans recourir à une agence), pas Axion-IA |
+| `src/content/automatisations.ts:315`                        | « moins de coûts d'agence »                                                                                                        | OK — bénéfice anti-agence                                                 |
+| `src/content/automatisations.ts:333`                        | « sans payer 1 500 €/mois à une agence »                                                                                           | OK                                                                        |
+| `src/content/automatisations.ts:370`                        | EN « 10x faster, no agency needed »                                                                                                | OK                                                                        |
+| `src/content/automatisations.ts:376`                        | EN « fewer agency costs »                                                                                                          | OK                                                                        |
+| `src/content/automatisations.ts:394`                        | EN « without paying €1,500/month to an agency »                                                                                    | OK                                                                        |
+| `src/components/sections/AuditConversionBlocks.tsx:176-177` | « un Big 4 (cher, lent), un freelance (incertain), une **agence** digitale (généraliste). Voici pourquoi Axion-IA est différent. » | OK — comparaison concurrents                                              |
+| `src/app/[locale]/implementation/page.tsx:179, 212`         | `title: "Make · agence ·"`, `name: "Agence classique"` (tableau comparatif Make/Agence/Axion-IA)                                   | OK — concurrents nommés                                                   |
+| `src/app/[locale]/implementation/page.tsx:254, 283`         | `title: "Make · agency ·"`, `name: "Classic agency"`                                                                               | OK                                                                        |
+| `src/app/[locale]/implementation/page.tsx:172, 935`         | Commentaires `// Bloc comparatif — Make/Zapier vs Agence classique vs Axion-IA.`                                                   | OK                                                                        |
 
-**Conclusion §2.2** : aucune occurrence d'« agence/agency » ne décrit AxionIA. Toutes désignent les concurrents. Conforme à la doctrine.
+**Conclusion §2.2** : aucune occurrence d'« agence/agency » ne décrit Axion-IA. Toutes désignent les concurrents. Conforme à la doctrine.
 
 #### Mentions « atelier / workshop »
 
-L'usage est massif (≈ 30 occurrences) mais SÉMANTIQUE : « atelier » = unité de contenu d'une intervention (ex « Atelier 1 — Comptes-rendus assistés »). Pas un descripteur de l'entité AxionIA.
+L'usage est massif (≈ 30 occurrences) mais SÉMANTIQUE : « atelier » = unité de contenu d'une intervention (ex « Atelier 1 — Comptes-rendus assistés »). Pas un descripteur de l'entité Axion-IA.
 
 | File:Line                                                         | Verdict                                                                                            |
 | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/content/interventions.ts:248-260, 335-347, 477-489, 697-709` | OK — `Atelier 1`, `Atelier 2`, `Atelier 3` = blocs pédagogiques                                    |
 | `src/app/[locale]/a-propos/page.tsx:121-127`                      | « **Atelier d'architecte** — précision, traces de craie, plan ouvert » + EN `Architect's workshop` | OK — métaphore visuelle d'illustration, sémantiquement défendable comme symbole de précision opérationnelle. Vigilance : si les LLMs lisent cette caption ils peuvent la rattacher au descripteur de l'entité. **À surveiller** mais pas un conflit dur |
-| `src/content/stack-ia.ts:128, 135`                                | `title: "L'atelier"` / `"The workshop"`                                                            | À VERIFIER — section en h2 sur la page Stack IA. Pourrait laisser entendre AxionIA = atelier. Cf. `src/app/[locale]/stack-ia/page.tsx:778-784` `« Atelier d'outils éditorial »` / EN `« Editorial tool workshop »` — métaphore. Idem : surveillance     |
+| `src/content/stack-ia.ts:128, 135`                                | `title: "L'atelier"` / `"The workshop"`                                                            | À VERIFIER — section en h2 sur la page Stack IA. Pourrait laisser entendre Axion-IA = atelier. Cf. `src/app/[locale]/stack-ia/page.tsx:778-784` `« Atelier d'outils éditorial »` / EN `« Editorial tool workshop »` — métaphore. Idem : surveillance    |
 | `src/content/transversal.ts:267` (FAQ)                            | « Livrable : document PDF 25-40 pages + atelier de restitution 2 h »                               | OK — atelier = format pédagogique                                                                                                                                                                                                                       |
 | `src/app/[locale]/methodologie/page.tsx:77, 99`                   | « atelier de restitution » / « debrief workshop »                                                  | OK                                                                                                                                                                                                                                                      |
 | `src/app/[locale]/interventions/equipes/page.tsx:82, 98`          | « Atelier outils » / `Tools workshop`                                                              | OK                                                                                                                                                                                                                                                      |
@@ -143,10 +143,10 @@ L'usage est massif (≈ 30 occurrences) mais SÉMANTIQUE : « atelier » = unit�
 
 #### Mentions « studio »
 
-| File:Line                                     | Texte                                                         | Verdict                                                     |
-| --------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------- |
-| `src/content/press.ts:349, 354`               | « interviews … vidéo (**studio** ou visio HD) … »             | OK — désigne un format d'interview (studio TV), pas AxionIA |
-| `src/app/[locale]/stack-ia/page.tsx:778, 779` | (cf. ci-dessus métaphore atelier — pas de « studio » nominal) | —                                                           |
+| File:Line                                     | Texte                                                         | Verdict                                                      |
+| --------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ |
+| `src/content/press.ts:349, 354`               | « interviews … vidéo (**studio** ou visio HD) … »             | OK — désigne un format d'interview (studio TV), pas Axion-IA |
+| `src/app/[locale]/stack-ia/page.tsx:778, 779` | (cf. ci-dessus métaphore atelier — pas de « studio » nominal) | —                                                            |
 
 OK, aucun conflit.
 
@@ -246,8 +246,8 @@ const articleJsonLd = {
   datePublished: post.publishedAt,
   inLanguage: loc,
   url: `${SITE_URL}/${loc}/blog/${slug}`,
-  publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
-  author: { "@type": "Organization", name: "AxionIA" }, // ← Organization, PAS Person
+  publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+  author: { "@type": "Organization", name: "Axion-IA" }, // ← Organization, PAS Person
 } as const;
 ```
 
@@ -294,9 +294,9 @@ Toutes les pages avec FAQ utilisent `buildFaqJsonLd()` (sans Speakable) :
 
 - `/a-propos` (`src/app/[locale]/a-propos/page.tsx:14-15`) importe seulement `buildBreadcrumbJsonLd`. **Pas de Person Schema émis.**
 - `/blog/auteur/[slug]` (page bio auteur) : à inspecter mais `grep buildPersonJsonLd` = 0 hit donc également absent.
-- `/blog/[slug]` : utilise `author: { "@type": "Organization", name: "AxionIA" }` au lieu de `Person`.
+- `/blog/[slug]` : utilise `author: { "@type": "Organization", name: "Axion-IA" }` au lieu de `Person`.
 
-**Signal AEO 2026** : sans `Person` schema, AxionIA reste une `Organization` faceless. Les LLMs answer-engines préfèrent citer les sources qui ont un humain identifié — réduit le citation rate en SGE / Claude.ai / Perplexity / Bing Copilot.
+**Signal AEO 2026** : sans `Person` schema, Axion-IA reste une `Organization` faceless. Les LLMs answer-engines préfèrent citer les sources qui ont un humain identifié — réduit le citation rate en SGE / Claude.ai / Perplexity / Bing Copilot.
 
 ### 3.4 Organization JSON-LD — état post-`acd8080`
 
@@ -304,7 +304,7 @@ Toutes les pages avec FAQ utilisent `buildFaqJsonLd()` (sans Speakable) :
 
 `src/lib/seo.ts:154-202` `buildOrganizationJsonLd` :
 
-- ✅ `name`, `legalName: "AxionIA OÜ"`, `url`, `logo: ${SITE_URL}/opengraph-image`
+- ✅ `name`, `legalName: "Axion-IA OÜ"`, `url`, `logo: ${SITE_URL}/opengraph-image`
 - ✅ `description` localisée
 - ✅ `sameAs: [LinkedIn, Facebook]`
 - ✅ `foundingDate: "2024"`
@@ -367,7 +367,7 @@ Liste numérotée par impact AEO/GEO 2026 décroissant, sans toucher aux pages v
 
 2. **Câbler `buildFaqSpeakableJsonLd` sur les 22 pages FAQ** (toutes les pages produit + `/faq`, `/presse`, `/stack-ia`). Remplacer `buildFaqJsonLd` par `buildFaqSpeakableJsonLd` quand le bloc FAQ est short-form (<200 mots/réponse). **Impact : visibilité voice + Google Assistant + Alexa.**
 
-3. **Câbler `buildPersonJsonLd` sur `/a-propos` + `/blog/auteur/[slug]` + `/blog/[slug]` (author)**. Will fondateur identifié = **E-E-A-T 2026 mainstream**. Sans cela, AxionIA reste un cabinet faceless aux yeux des LLMs.
+3. **Câbler `buildPersonJsonLd` sur `/a-propos` + `/blog/auteur/[slug]` + `/blog/[slug]` (author)**. Will fondateur identifié = **E-E-A-T 2026 mainstream**. Sans cela, Axion-IA reste un cabinet faceless aux yeux des LLMs.
 
 4. **Corriger les tarifs audit obsolètes** dans `src/content/transversal.ts:72,77` (FAQ « modules ») + `src/content/press.ts:70,77,227,232` (press copy + press releases). Remplacer la mention `290-1990 €` par la pyramide actuelle (`Flash 490 €, Ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI dès 12 000 €`). **Impact AEO : élimine la donnée de prix contradictoire entre `/presse` et `/audit`.**
 

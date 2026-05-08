@@ -124,8 +124,8 @@ Status : OK.
 
 #### Fix 16-1 — Hero : « former » -> « accompagner »
 
-- **Avant** : `AxionIA forme vos équipes, identifie vos économies cachées et déploie des automatisations…`
-- **Après** : `AxionIA accompagne vos équipes, identifie vos économies cachées et déploie des automatisations…`
+- **Avant** : `Axion-IA forme vos équipes, identifie vos économies cachées et déploie des automatisations…`
+- **Après** : `Axion-IA accompagne vos équipes, identifie vos économies cachées et déploie des automatisations…`
 
 Status : OK. Aucune autre occurrence de `former leurs équipes` détectée dans ce fichier.
 
@@ -181,14 +181,14 @@ Status : OK.
 #### Fix 31-1 — Tribunal compétent
 
 - **Avant** : `…Tribunal compétent : Saint-Étienne (42).`
-- **Après** : `…Tribunaux compétents : Tribunaux de Tallinn (Estonie) — droit estonien (la société est AxionIA OÜ, OU estonienne).`
+- **Après** : `…Tribunaux compétents : Tribunaux de Tallinn (Estonie) — droit estonien (la société est Axion-IA OÜ, OU estonienne).`
 
 Status : OK.
 
 #### Fix 31-2 — Loi applicable + note Estonie/France
 
 - **Avant** : `Droit français. Ces CGV sont régies par les lois françaises.`
-- **Après** : `Loi applicable : Droit estonien (registrikood EE, TVA EE). Ces CGV sont régies par les lois estoniennes. Note : le siège social de la société AxionIA OÜ est en Estonie ; les interventions physiques peuvent avoir lieu en France selon disponibilité de l'intervenant.`
+- **Après** : `Loi applicable : Droit estonien (registrikood EE, TVA EE). Ces CGV sont régies par les lois estoniennes. Note : le siège social de la société Axion-IA OÜ est en Estonie ; les interventions physiques peuvent avoir lieu en France selon disponibilité de l'intervenant.`
 
 Status : OK.
 
@@ -209,6 +209,6 @@ Copy-Item "_backup_pre_v10.2\*.docx" -Destination "." -Force
 ## Notes techniques
 
 1. **Aucun problème multi-runs rencontré** : tous les paragraphes ciblés étaient en `runs=1`. La fonction `replace_in_paragraph` sait quand même collapser les multi-runs au cas où.
-2. **Séparateur de liste** : les documents AxionIA utilisent le caractère middle-dot `·` (U+00B7) et non l'em-dash `—` (U+2014). Round 2 du script a dû ajuster en conséquence pour 09-2, 09-3, 13-1, 13-3c, 13-3d, 10-1a, 10-1b, 10-1c.
+2. **Séparateur de liste** : les documents Axion-IA utilisent le caractère middle-dot `·` (U+00B7) et non l'em-dash `—` (U+2014). Round 2 du script a dû ajuster en conséquence pour 09-2, 09-3, 13-1, 13-3c, 13-3d, 10-1a, 10-1b, 10-1c.
 3. **Doublons résolus implicitement** : le fix 09-1d (variante ENUM avec « NULL pour catégories blog ») a été couvert par 09-1b grâce au fait que `find_exact = "ENUM : intervention / automatisation / audit"` matchait les deux paragraphes (avec et sans suffixe).
 4. **Ajout structurel** : une nouvelle ligne `HETZNER_STORAGE_ENDPOINT` a été ajoutée au tableau env vars de `13-Infrastructure-Deploiement.docx` (table[5]) car la spec mentionnait 4 variables Hetzner alors que le doc original n'en exposait que 3.

@@ -30,8 +30,8 @@ export default function ComponentsPage() {
     <>
       <Section
         eyebrow="Component library"
-        title="AxionIA · atomic & composite UI"
-        description="Atoms shadcn-style + Editorial v3.1 tokens + AxionIA marketing primitives."
+        title="Axion-IA · atomic & composite UI"
+        description="Atoms shadcn-style + Editorial v3.1 tokens + Axion-IA marketing primitives."
       />
 
       <Section eyebrow="Buttons">

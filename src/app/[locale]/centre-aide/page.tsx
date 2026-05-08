@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/centre-aide",
-    title: locale === "fr" ? "Centre d'aide · AxionIA" : "Help center · AxionIA",
+    title: locale === "fr" ? "Centre d'aide · Axion-IA" : "Help center · Axion-IA",
     description:
       locale === "fr"
-        ? "Centre d'aide AxionIA : guides pratiques, tutoriels, support utilisateur."
-        : "AxionIA help center: practical guides, tutorials, user support.",
+        ? "Centre d'aide Axion-IA : guides pratiques, tutoriels, support utilisateur."
+        : "Axion-IA help center: practical guides, tutorials, user support.",
     alternates: { fr: "/centre-aide", en: "/help" },
   });
 }
@@ -77,7 +77,7 @@ export default async function HelpCenter({ params }: Props) {
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: isFr ? "Articles d'aide AxionIA" : "AxionIA help articles",
+    name: isFr ? "Articles d'aide Axion-IA" : "Axion-IA help articles",
     itemListElement: HELP_ARTICLES.map((article, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -123,8 +123,8 @@ export default async function HelpCenter({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : centre d'aide AxionIA organisé en 6 thématiques principales (démarrer, souveraineté, coûts & ROI, cas d'usage, formation, intégration)."
-                  : "Diagram: AxionIA help center organised into 6 main topics (get started, sovereignty, costs & ROI, use cases, training, integration)."
+                  ? "Schéma : centre d'aide Axion-IA organisé en 6 thématiques principales (démarrer, souveraineté, coûts & ROI, cas d'usage, formation, intégration)."
+                  : "Diagram: Axion-IA help center organised into 6 main topics (get started, sovereignty, costs & ROI, use cases, training, integration)."
               }
             />
           </div>
@@ -146,8 +146,8 @@ export default async function HelpCenter({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une bibliothèque de conseils ouverte, symbole du centre d'aide AxionIA."
-                  : "Editorial illustration of an open advice library, symbol of the AxionIA help center."
+                  ? "Illustration éditoriale d'une bibliothèque de conseils ouverte, symbole du centre d'aide Axion-IA."
+                  : "Editorial illustration of an open advice library, symbol of the Axion-IA help center."
               }
             />
           </div>

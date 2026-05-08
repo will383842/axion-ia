@@ -49,9 +49,9 @@ export function GET() {
       `### ${c.fr.title} (${c.industry}, ${c.size})\n\n${c.fr.excerpt} · Métrique : ${c.metric}.`,
   ).join("\n\n");
 
-  const body = `# AxionIA — full content for AI crawlers
+  const body = `# Axion-IA — full content for AI crawlers
 
-> Cabinet IA opérationnel B2B pour entreprises. AxionIA OÜ.
+> Cabinet IA opérationnel B2B pour entreprises. Axion-IA OÜ.
 > Site officiel : ${SITE_URL}
 > Langues : FR canonique, EN miroir.
 > Hébergement : Hetzner CX32 Frankfurt (UE).
@@ -59,7 +59,7 @@ export function GET() {
 
 ## Positionnement
 
-AxionIA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
 ## 3 modules
 
@@ -96,7 +96,7 @@ URL : ${SITE_URL}/fr/methodologie
 
 - Mobile-first absolu, accessible WCAG 2.2 AA.
 - Hébergement UE (Hetzner Frankfurt), pas de Stripe, pas de Resend.
-- AxionIA OÜ, régime TVA UE.
+- Axion-IA OÜ, régime TVA UE.
 - Pas de mensualité, pas d'engagement, devis fixe.
 - 30 jours de support post-livraison inclus.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted).

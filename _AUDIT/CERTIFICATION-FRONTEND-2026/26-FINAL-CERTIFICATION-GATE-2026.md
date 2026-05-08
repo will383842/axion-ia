@@ -283,7 +283,7 @@ Génère `_AUDIT/CERTIFICATION-FRONTEND-2026/_VERDICT-FINAL-YYYY-MM-DD.md` :
 
 ## 5. Cible
 
-> _« Verdict GO PROD avec score ≥ 95/100, AxionIA est certifié best-in-class frontend 2026, scale-ready 300K+ URLs, professionnel SaaS premium, 100 % free-tier, prêt pour rampe 100-300 URLs/jour sans risque. »_
+> _« Verdict GO PROD avec score ≥ 95/100, Axion-IA est certifié best-in-class frontend 2026, scale-ready 300K+ URLs, professionnel SaaS premium, 100 % free-tier, prêt pour rampe 100-300 URLs/jour sans risque. »_
 
 ## 6. STOP & ASK
 

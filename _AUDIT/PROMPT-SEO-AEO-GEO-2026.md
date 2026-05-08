@@ -1,4 +1,4 @@
-# 🌐 PROMPT SEO + AEO + GEO 2026 — AxionIA · Audit perfection extrême
+# 🌐 PROMPT SEO + AEO + GEO 2026 — Axion-IA · Audit perfection extrême
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** : HEAD a déjà 19 factories JSON-LD (5 nouvelles depuis V1) + sitemap-index Next 16 (cf. Sprint 14.8). Recalibrer les attentes en conséquence.
 >
@@ -12,7 +12,7 @@
 
 ## 🎯 SCOPE & POSTURE
 
-**Cible** : pousser SEO + AEO + GEO d'AxionIA au niveau **« cabinet IA premium B2B citable comme référence »** par les moteurs LLM en 2026 (Perplexity, ChatGPT search, Claude, Google AI Overview/AI Mode, Mistral Le Chat, Bing Copilot, You.com, Brave Summarizer).
+**Cible** : pousser SEO + AEO + GEO d'Axion-IA au niveau **« cabinet IA premium B2B citable comme référence »** par les moteurs LLM en 2026 (Perplexity, ChatGPT search, Claude, Google AI Overview/AI Mode, Mistral Le Chat, Bing Copilot, You.com, Brave Summarizer).
 
 **3 disciplines distinctes** (souvent confondues) :
 
@@ -241,7 +241,7 @@ Pour chaque type de page, types attendus :
 ### 2.A.1 · llms.txt
 
 - Présent racine site (`/llms.txt`).
-- Format markdown avec sections `# AxionIA`, `> tagline`, links pillar pages.
+- Format markdown avec sections `# Axion-IA`, `> tagline`, links pillar pages.
 - Validé contre proposed standard llms.txt v0.1 (anthropic+others).
 - ≤ 500 lignes.
 
@@ -304,7 +304,7 @@ Pour chaque type de page, types attendus :
   <p>
     Un cabinet IA opérationnel est une structure de conseil spécialisée dans l'intervention sur site
     auprès d'entreprises pour identifier, démontrer et déployer des cas d'usage d'intelligence
-    artificielle à ROI mesurable sous 90 jours. AxionIA est un cabinet IA opérationnel basé à
+    artificielle à ROI mesurable sous 90 jours. Axion-IA est un cabinet IA opérationnel basé à
     Tallinn (OÜ estonienne), intervenant en français et en anglais auprès de PME et ETI.
   </p>
 </div>
@@ -335,7 +335,7 @@ Pour chaque type de page, types attendus :
 7. « cabinet IA OÜ estonienne TVA EE »
 8. « ROI projet IA 90 jours mesurable »
 9. « simulateur ROI intelligence artificielle gratuit »
-10. « AxionIA avis cabinet IA »
+10. « Axion-IA avis cabinet IA »
 
 ### 2.D.2 · 5 moteurs LLM 2026
 
@@ -359,7 +359,7 @@ Pour chaque type de page, types attendus :
 
 ### 2.D.4 · Optimisation post-test
 
-- Si AxionIA non cité sur question N → identifier la page qui devrait être cible → renforcer direct-answer block + mots-clés sémantiques + entity signals.
+- Si Axion-IA non cité sur question N → identifier la page qui devrait être cible → renforcer direct-answer block + mots-clés sémantiques + entity signals.
 - Si cité mais snippet mauvais → réécrire le direct-answer pour qu'il soit le snippet idéal.
 
 ---
@@ -385,7 +385,7 @@ Pour chaque type de page, types attendus :
 ### 3.A.3 · Authoritativeness signals
 
 - **Mentions médias** (page presse, cf. § Page presse).
-- **Citations externes** (autres sites qui linkent vers AxionIA — backlinks de qualité).
+- **Citations externes** (autres sites qui linkent vers Axion-IA — backlinks de qualité).
 - **Interventions publiques** (podcasts, conférences) listées.
 - **Reconnaissance pro** (awards, certifications, partenariats officiels).
 
@@ -406,7 +406,7 @@ Pour chaque type de page, types attendus :
 | Author bylines                       | ✅/❌    | A/B/C   | `/blog/...`  | ...    |
 | Last-modified dates                  |          |         |              |        |
 | Trust signals (OÜ/RGPD/HTTPS)        |          |         |              |        |
-| Brand consistency (« AxionIA »)      |          |         |              |        |
+| Brand consistency (« Axion-IA »)     |          |         |              |        |
 | Entity disambiguation (registrikood) |          |         |              |        |
 | First-hand experience (cas concrets) |          |         |              |        |
 | Bio expert (À propos)                |          |         |              |        |
@@ -419,14 +419,14 @@ Pour chaque type de page, types attendus :
 
 ### 3.B.1 · Brand consistency strict
 
-- **« AxionIA »** écrit identiquement partout : copy, alt, meta, structured data, code commits.
+- **« Axion-IA »** écrit identiquement partout : copy, alt, meta, structured data, code commits.
 - Anti-patterns : `Axion IA` (avec espace), `Axionia` (capitalisation), `Axion-IA` (tiret), `axion-ia` (lowercase) — sauf URL (`axion-ia.com` accepté).
 - Grep CI : `pnpm brand:check` (script à ajouter si pas déjà fait).
 - 100 % occurrences vérifiées.
 
 ### 3.B.2 · NAP consistency (Name, Address, Phone)
 
-- **Nom** : AxionIA OÜ.
+- **Nom** : Axion-IA OÜ.
 - **Adresse** : adresse complète Tallinn identique partout (footer, contact, mentions légales, structured data, Google My Business si créé).
 - **Téléphone** : format E.164 international identique partout.
 - **Email** : `contact@axion-ia.com` cohérent.
@@ -456,12 +456,12 @@ Pour chaque type de page, types attendus :
 
 ### 3.C.3 · Wikidata / Wikipedia presence
 
-- **Wikidata** : créer entrée `AxionIA` avec :
+- **Wikidata** : créer entrée `Axion-IA` avec :
   - P31 (instance of) : Q4830453 (business)
   - P17 (country) : Q191 (Estonia)
   - P159 (headquarters location) : Q1770 (Tallinn)
   - P856 (official website) : `https://axion-ia.com`
-  - P1448 (official name) : `AxionIA OÜ`
+  - P1448 (official name) : `Axion-IA OÜ`
   - P1320 (registrikood) : numéro
   - P1454 (legal form) : Q1062671 (osaühing)
 - **Wikipedia** : différer (notabilité requise = mentions médias indépendantes ≥ 3, voir GEO 3.A.3 → page presse).
@@ -607,7 +607,7 @@ Sitemap: https://axion-ia.com/sitemap.xml
 | Métrique                         | Cible                 | Mesuré |
 | -------------------------------- | --------------------- | ------ |
 | E-E-A-T scorecard score          | ≥ 9/11 lignes vertes  | ...    |
-| Brand consistency « AxionIA »    | 100 %                 | ...    |
+| Brand consistency « Axion-IA »   | 100 %                 | ...    |
 | NAP consistency                  | 100 %                 | ...    |
 | Organization schema sameAs       | ≥ 3 profils officiels | ...    |
 | Wikidata entrée créée            | ✅                    | ...    |
@@ -622,7 +622,7 @@ Sitemap: https://axion-ia.com/sitemap.xml
 # 📋 SORTIE — `_AUDIT/AUDIT-SEO-AEO-GEO-2026.md`
 
 ```markdown
-# AUDIT SEO + AEO + GEO 2026 — AxionIA
+# AUDIT SEO + AEO + GEO 2026 — Axion-IA
 
 - Date : 2026-MM-DD
 - Auditeur : Claude Opus 4.7 (1M context) + 4 agents

@@ -8,10 +8,11 @@
 // `/api/og?title=...&accent=...` (cf. `src/app/api/og/route.tsx`).
 
 import { ImageResponse } from "next/og";
+import { BRAND } from "@/lib/brand";
 
 export const runtime = "edge";
 
-export const alt = "AxionIA — Cabinet IA opérationnel B2B";
+export const alt = `${BRAND.name} — Cabinet IA opérationnel B2B`;
 
 export const size = {
   width: 1200,
@@ -41,7 +42,7 @@ export default function OpengraphImage() {
         padding: 80,
       }}
     >
-      {/* Logo badge ivoire — signature visuelle AxionIA */}
+      {/* Logo badge ivoire — signature visuelle Axion-IA */}
       <div
         style={{
           display: "inline-flex",

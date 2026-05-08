@@ -14,13 +14,13 @@ export const COMPARISONS: ReadonlyArray<Comparison> = [
       title: "Cabinet IA vs SaaS générique : quand choisir quoi ?",
       excerpt:
         "Le SaaS IA générique couvre 60-70 % des besoins standards. Le cabinet adresse les 30 % spécifiques métier.",
-      body: "Le SaaS IA générique (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) couvre 60-70 % des besoins productivité standards : rédaction, résumés, traduction, analyse de documents génériques. Coût 20-30 €/user/mois. Le cabinet IA opérationnel comme AxionIA adresse les 30 % spécifiques métier non couverts : intégration aux process internes, RAG sur documents propriétaires, agents adaptés à votre stack outil. Coût ponctuel 5-50 k€ par projet, ROI mesurable sur 6-12 mois. Règle simple : commencez par le SaaS générique, escaladez au cabinet quand un besoin spécifique justifie un projet > 5 k€.",
+      body: "Le SaaS IA générique (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) couvre 60-70 % des besoins productivité standards : rédaction, résumés, traduction, analyse de documents génériques. Coût 20-30 €/user/mois. Le cabinet IA opérationnel comme Axion-IA adresse les 30 % spécifiques métier non couverts : intégration aux process internes, RAG sur documents propriétaires, agents adaptés à votre stack outil. Coût ponctuel 5-50 k€ par projet, ROI mesurable sur 6-12 mois. Règle simple : commencez par le SaaS générique, escaladez au cabinet quand un besoin spécifique justifie un projet > 5 k€.",
     },
     en: {
       title: "AI consultancy vs generic SaaS: when to pick what?",
       excerpt:
         "Generic AI SaaS covers 60-70% of standard needs. Consultancy addresses the 30% domain-specific.",
-      body: "Generic AI SaaS (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) covers 60-70% of standard productivity needs: writing, summaries, translation, generic document analysis. Cost €20-30/user/month. An operational AI consultancy like AxionIA addresses the 30% domain-specific not covered: internal process integration, RAG on proprietary documents, agents adapted to your tool stack. One-off cost €5-50k per project, measurable ROI over 6-12 months. Simple rule: start with generic SaaS, escalate to consultancy when a specific need justifies a > €5k project.",
+      body: "Generic AI SaaS (ChatGPT Enterprise, Microsoft Copilot, Gemini for Workspace) covers 60-70% of standard productivity needs: writing, summaries, translation, generic document analysis. Cost €20-30/user/month. An operational AI consultancy like Axion-IA addresses the 30% domain-specific not covered: internal process integration, RAG on proprietary documents, agents adapted to your tool stack. One-off cost €5-50k per project, measurable ROI over 6-12 months. Simple rule: start with generic SaaS, escalate to consultancy when a specific need justifies a > €5k project.",
     },
   },
   {

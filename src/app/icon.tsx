@@ -1,5 +1,5 @@
 // Dynamic icon — `app/icon.tsx` Next 16 file convention. Replaces a static
-// favicon.ico with a code-generated icon respecting the AxionIA editorial
+// favicon.ico with a code-generated icon respecting the Axion-IA editorial
 // doctrine v3 (ADR 0002) : terracotta surface, ivoire badge, Fraunces serif
 // italic « A ».
 

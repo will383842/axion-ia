@@ -1,4 +1,4 @@
-# AxionIA — Visual Inventory Internal (Agent A)
+# Axion-IA — Visual Inventory Internal (Agent A)
 
 **Date** : 2026-05-07 (HEAD `941a8e1`+, post-pivot v3.1)
 **Périmètre** : Top 20 pages stratégiques sous `axionia/src/app/[locale]/`
@@ -196,7 +196,7 @@ Format de fiche : eyebrow → hero quality → mid-section visuals → closing �
   - Section "Pyramide 4 niveaux" : 4 cards (2 flagship Flash+ETI full-width) avec icône module + price tag serif italique terracotta XL. **Visuel riche** (price tag = signature visuelle forte).
   - Section "Tarifs" : table HTML. Plain.
   - Section "Quiz 3 questions" : 3 cards Q/A avec accent. Plain.
-  - `WhyAxionIA` (composant 5 différenciants).
+  - `WhyAxion-IA` (composant 5 différenciants).
   - `SignatureCard` (signature fondateur).
   - `SocialProof`.
   - `AuditFaqSection` 6 questions.
@@ -242,7 +242,7 @@ Format de fiche : eyebrow → hero quality → mid-section visuals → closing �
   - Section "2 portes d'entrée" : 3 cards plain. Pas d'illustration.
   - Section "Catalogue" : 8 fonctions via `<CaseStudyCard>`. Plain.
   - Section "Pricing 3 tiers" : 3 cards serif XL price. Plain.
-  - Section "Comparatif Make/Agence/AxionIA" : table 3 colonnes avec colonne mise en avant scale 1.04 + ring + badge ★. **Visuel solide**.
+  - Section "Comparatif Make/Agence/Axion-IA" : table 3 colonnes avec colonne mise en avant scale 1.04 + ring + badge ★. **Visuel solide**.
   - Section "Scénarios 6 segments" : 6 cards avant/après serif metric. **Visuel solide**.
   - `ProcessSteps` 5 étapes.
   - `FaqAccordion` 9 questions.
@@ -530,7 +530,7 @@ axionia/public/
 
 ### 5.2 Génération OG / opengraph-image
 
-**Une seule route OG** : `src/app/api/og/route.tsx` utilisant `@vercel/og`'s `ImageResponse`. Endpoint unique non-paramétrique (probablement). Côté metadata Next 16, **aucun `opengraph-image.tsx` per-page** détecté (Glob retourne 0 résultat). Toutes les pages héritent uniquement de l'OG `siteName: "AxionIA"` + image probablement implicite via favicon ou non définie.
+**Une seule route OG** : `src/app/api/og/route.tsx` utilisant `@vercel/og`'s `ImageResponse`. Endpoint unique non-paramétrique (probablement). Côté metadata Next 16, **aucun `opengraph-image.tsx` per-page** détecté (Glob retourne 0 résultat). Toutes les pages héritent uniquement de l'OG `siteName: "Axion-IA"` + image probablement implicite via favicon ou non définie.
 
 **Conséquence SEO** : sur LinkedIn / Twitter / WhatsApp, le partage d'une URL produit `/audit` ou `/stack-ia` affichera probablement une carte sans image distinctive. Pour AEO 2026, c'est un manque-à-gagner critique (les LLMs scrapent les `<meta property="og:image">` pour citer visuellement).
 
@@ -540,9 +540,9 @@ axionia/public/
    ```ts
    buildImageObjectJsonLd({ url, caption, width, height, locale, representativeOfPage = true });
    ```
-2. **Générer `opengraph-image.tsx` per-page Top 20** via Next 16 `ImageResponse` API. Réutiliser le SVG du HeroSchema correspondant en background, ajouter eyebrow + h1 + AxionIA logo.
+2. **Générer `opengraph-image.tsx` per-page Top 20** via Next 16 `ImageResponse` API. Réutiliser le SVG du HeroSchema correspondant en background, ajouter eyebrow + h1 + Axion-IA logo.
 3. **Émettre `ImageObject` JSON-LD** sur chaque page qui a un HeroSchema, pointant vers `/api/og?page={slug}` (ou `/{locale}/{path}/opengraph-image`).
-4. **Documenter dans `Design.md`** la convention OG : 1200×630 px, halo-warm bg, eyebrow uppercase 24px Manrope, h1 serif Fraunces 64px, sous-titre 28px Manrope, AxionIA wordmark coin bas-droit.
+4. **Documenter dans `Design.md`** la convention OG : 1200×630 px, halo-warm bg, eyebrow uppercase 24px Manrope, h1 serif Fraunces 64px, sous-titre 28px Manrope, Axion-IA wordmark coin bas-droit.
 
 ---
 

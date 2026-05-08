@@ -1,4 +1,4 @@
-// Types canoniques content factory AxionIA — Sprint 14.10 (2026-05-08).
+// Types canoniques content factory Axion-IA — Sprint 14.10 (2026-05-08).
 // Documentés dans `_AUDIT/PROMPT-CONTENT-FACTORY-SPEC.md`.
 //
 // Décisions Will 2026-05-08 :
@@ -128,7 +128,7 @@ export interface BlogPost {
   sectors?: ReadonlyArray<BlogSector>;
   /** Tailles entreprise ciblées. Optionnel. */
   companySizes?: ReadonlyArray<BlogCompanySize>;
-  /** Types de prestation AxionIA traités. Optionnel. */
+  /** Types de prestation Axion-IA traités. Optionnel. */
   serviceTypes?: ReadonlyArray<BlogServiceType>;
   /** Slugs villes liées (cf. `src/content/villes/`). Optionnel. */
   relatedCities?: ReadonlyArray<string>;

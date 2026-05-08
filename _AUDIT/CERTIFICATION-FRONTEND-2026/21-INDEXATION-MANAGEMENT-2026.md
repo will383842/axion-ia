@@ -5,7 +5,7 @@
 
 ## 0. Contexte
 
-Google indexe en moyenne 10-30 % d'un site large nouveau sans signaux forts. À 100K URLs AxionIA, on vise ≥ 80 % grâce à :
+Google indexe en moyenne 10-30 % d'un site large nouveau sans signaux forts. À 100K URLs Axion-IA, on vise ≥ 80 % grâce à :
 
 - Sitemap split + lastmod accurate
 - IndexNow ping immédiat
@@ -85,7 +85,7 @@ Google indexe en moyenne 10-30 % d'un site large nouveau sans signaux forts. À 
   5.6 Schema.org E-E-A-T enrichi (Person + Organization + datePublished + dateModified)
   5.7 Author bio pages (Person schema, sameAs LinkedIn/Twitter)
   5.8 Citations sourcées (sources externes traçables)
-  5.9 Brand mentions tracking (search « AxionIA » sur web mensuel)
+  5.9 Brand mentions tracking (search « Axion-IA » sur web mensuel)
   5.10 Wikipedia entity considered (long-terme E-E-A-T)
 
 ### Chapitre 6 — Monitoring indexation

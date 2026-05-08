@@ -11,13 +11,13 @@
 
 ## Contexte
 
-Expansion de surface de visibilité SEO majeure pour AxionIA :
+Expansion de surface de visibilité SEO majeure pour Axion-IA :
 
 1. **Pages régions** FR (~13-18 régions selon décision DROM-COM).
 2. **Pages villes** FR > 5 000 habitants (volume corrigé ~2 150 communes — sources INSEE COG + populations légales).
 3. **Page « Toutes les IA »** déjà livrée sous `/stack-ia` (HEAD).
 
-`CLAUDE.md` v6 ne couvre pas le pSEO programmatique à cette échelle. Cet ADR engage AxionIA sur le volume cible, profondeur URL, périmètre géographique, pipeline éditorial, rollout et gouvernance.
+`CLAUDE.md` v6 ne couvre pas le pSEO programmatique à cette échelle. Cet ADR engage Axion-IA sur le volume cible, profondeur URL, périmètre géographique, pipeline éditorial, rollout et gouvernance.
 
 ## Décisions (Q1-Q8 validées Will 2026-05-07)
 

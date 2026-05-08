@@ -1,8 +1,8 @@
-# AxionIA
+# Axion-IA
 
 Cabinet IA opérationnel B2B premium · européen · multilingue FR/EN.
 
-> **Source de vérité** : `../AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 + `axionia-package/docs/_DECISIONS-FINALES.md` + `Design.md` (doctrine visuelle v3.1 « Editorial Premium Light ») + ADR `docs/adr/` (notamment 0002 pivot v3 et 0004 typography v3.1).
+> **Source de vérité** : `../Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 + `axionia-package/docs/_DECISIONS-FINALES.md` + `Design.md` (doctrine visuelle v3.1 « Editorial Premium Light ») + ADR `docs/adr/` (notamment 0002 pivot v3 et 0004 typography v3.1).
 
 ## Quickstart
 
@@ -129,4 +129,4 @@ docs/adr/                  # Architecture Decision Records (0001 → 0004)
 - [`SESSION_LOG.md`](./SESSION_LOG.md) — journal de session
 - [`docs/adr/`](./docs/adr/) — décisions structurelles
 - [`_AUDIT/02-PLAN.md`](./_AUDIT/02-PLAN.md) — jalons M1-M11
-- `../AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` — référence projet
+- `../Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` — référence projet

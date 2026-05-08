@@ -1,4 +1,4 @@
-# CHANGELOG — Application des cadenas LOCK-01..23 sur les skills AxionIA
+# CHANGELOG — Application des cadenas LOCK-01..23 sur les skills Axion-IA
 
 **Date d'application** : 2026-05-06
 **Périmètre** : 34 SKILL.md modifiés (22 LOCKs uniques sur 23, dont LOCK-17 sur 2 skills, LOCK-22 sur 8 skills, LOCK-23 sur 4 skills).
@@ -11,137 +11,137 @@
 
 - **Fichier** : `web-design-guidelines/SKILL.md`
 - **Description avant (tronquée)** : « Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI"... Linter agnostique de design system, complémentaire d'axionia-design (style) et d'axionia-mobile-first (stratégie responsive). »
-- **Phrase ajoutée** : « [LOCK-01] Sur AxionIA, direction visuelle Webflow-inspired (cf. `axionia-design`). Ce skill complète comme linter UI mais ne propose PAS de direction visuelle. »
+- **Phrase ajoutée** : « [LOCK-01] Sur Axion-IA, direction visuelle Webflow-inspired (cf. `axionia-design`). Ce skill complète comme linter UI mais ne propose PAS de direction visuelle. »
 
 ## LOCK-02 — `ui-ux-pro-max`
 
 - **Fichier** : `ui-ux-pro-max/SKILL.md`
 - **Description avant (tronquée)** : « UI/UX design intelligence. 50 styles, 21 palettes... Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, flat design... Integrations: shadcn/ui MCP for component search and examples. »
-- **Phrase ajoutée** : « [LOCK-02] Sur AxionIA, doctrine visuelle = `axionia-design` (Webflow-inspired). Ce skill peut suggérer brutalism/glassmorphism/gradients colorés que `axionia-design` rejette : filtrer impérativement. »
+- **Phrase ajoutée** : « [LOCK-02] Sur Axion-IA, doctrine visuelle = `axionia-design` (Webflow-inspired). Ce skill peut suggérer brutalism/glassmorphism/gradients colorés que `axionia-design` rejette : filtrer impérativement. »
 
 ## LOCK-03 — `frontend-design`
 
 - **Fichier** : `frontend-design/SKILL.md`
 - **Description avant (tronquée)** : « Create distinctive, production-grade frontend interfaces with high design quality... Generates creative, polished code that avoids generic AI aesthetics. »
-- **Phrase ajoutée** : « [LOCK-03] Sur AxionIA, doctrine visuelle = `axionia-design` (Webflow-inspired). Ce skill peut suggérer brutalism/maximalist/glassmorphism/gradients colorés que `axionia-design` rejette : filtrer impérativement. »
+- **Phrase ajoutée** : « [LOCK-03] Sur Axion-IA, doctrine visuelle = `axionia-design` (Webflow-inspired). Ce skill peut suggérer brutalism/maximalist/glassmorphism/gradients colorés que `axionia-design` rejette : filtrer impérativement. »
 
 ## LOCK-04 — `copywriting`
 
 - **Fichier** : `copywriting/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to write, rewrite, or improve marketing copy... For email copy, see email-sequence. For popup copy, see popup-cro. For editing existing copy, see copy-editing. »
-- **Phrase ajoutée** : « [LOCK-04] Sur AxionIA, mots « formation/formateur/former/training » BANNIS (cf. `axionia-core` §2). Utiliser « intervention/intervenant/accompagner ». Prix toujours en € HT. »
+- **Phrase ajoutée** : « [LOCK-04] Sur Axion-IA, mots « formation/formateur/former/training » BANNIS (cf. `axionia-core` §2). Utiliser « intervention/intervenant/accompagner ». Prix toujours en € HT. »
 
 ## LOCK-05 — `copy-editing`
 
 - **Fichier** : `copy-editing/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to edit, review, or improve existing marketing copy... For writing new copy, see copywriting. »
-- **Phrase ajoutée** : « [LOCK-05] Sur AxionIA, mots « formation/formateur/former/training » BANNIS (cf. `axionia-core` §2). Utiliser « intervention/intervenant/accompagner ». Prix toujours en € HT. »
+- **Phrase ajoutée** : « [LOCK-05] Sur Axion-IA, mots « formation/formateur/former/training » BANNIS (cf. `axionia-core` §2). Utiliser « intervention/intervenant/accompagner ». Prix toujours en € HT. »
 
 ## LOCK-06 — `content-strategy`
 
 - **Fichier** : `content-strategy/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to plan a content strategy... For social media content specifically, see social-content. »
-- **Phrase ajoutée** : « [LOCK-06] Sur AxionIA, mots « formation/training » BANNIS (cf. `axionia-core` §2). Cabinet IA B2B vitrine OÜ estonienne, pas SaaS classique — adapter clusters et tonalité. »
+- **Phrase ajoutée** : « [LOCK-06] Sur Axion-IA, mots « formation/training » BANNIS (cf. `axionia-core` §2). Cabinet IA B2B vitrine OÜ estonienne, pas SaaS classique — adapter clusters et tonalité. »
 
 ## LOCK-07 — `page-cro`
 
 - **Fichier** : `page-cro/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to optimize, improve, or increase conversions on any marketing page... For popups/modals, see popup-cro. »
-- **Phrase ajoutée** : « [LOCK-07] Sur AxionIA, anti-SPA absolu (cf. `axionia-anti-spa`). Server Components par défaut. Pas de fetchs dans `useEffect`. »
+- **Phrase ajoutée** : « [LOCK-07] Sur Axion-IA, anti-SPA absolu (cf. `axionia-anti-spa`). Server Components par défaut. Pas de fetchs dans `useEffect`. »
 
 ## LOCK-08 — `form-cro`
 
 - **Fichier** : `form-cro/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to optimize any form that is NOT signup/registration... For popups containing forms, see popup-cro. »
-- **Phrase ajoutée** : « [LOCK-08] Sur AxionIA, anti-SPA (cf. `axionia-anti-spa`) + tooling = RHF+Zod+Zustand (cf. `axionia-forms`). Pas de Formspree/Typeform externes. »
+- **Phrase ajoutée** : « [LOCK-08] Sur Axion-IA, anti-SPA (cf. `axionia-anti-spa`) + tooling = RHF+Zod+Zustand (cf. `axionia-forms`). Pas de Formspree/Typeform externes. »
 
 ## LOCK-09 — `popup-cro`
 
 - **Fichier** : `popup-cro/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to create or optimize popups, modals, overlays, slide-ins, or banners for conversion purposes... For general page conversion optimization, see page-cro. »
-- **Phrase ajoutée** : « [LOCK-09] Sur AxionIA, anti-SPA (cf. `axionia-anti-spa`) + sobriété B2B premium — popups très parcimonieux, pas d'exit-intent agressif. »
+- **Phrase ajoutée** : « [LOCK-09] Sur Axion-IA, anti-SPA (cf. `axionia-anti-spa`) + sobriété B2B premium — popups très parcimonieux, pas d'exit-intent agressif. »
 
 ## LOCK-10 — `email-sequence`
 
 - **Fichier** : `email-sequence/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to create or optimize an email sequence... For in-app onboarding, see onboarding-cro. »
-- **Phrase ajoutée** : « [LOCK-10] Sur AxionIA, tooling email = PowerMTA + MailWizz self-hosted + Nodemailer + React Email (cf. `axionia-emails`). Resend/SendGrid/Mailgun/Brevo/Mailchimp INTERDITS. »
+- **Phrase ajoutée** : « [LOCK-10] Sur Axion-IA, tooling email = PowerMTA + MailWizz self-hosted + Nodemailer + React Email (cf. `axionia-emails`). Resend/SendGrid/Mailgun/Brevo/Mailchimp INTERDITS. »
 
 ## LOCK-11 — `cold-email`
 
 - **Fichier** : `cold-email/SKILL.md`
 - **Description avant (tronquée)** : « Write B2B cold emails and follow-up sequences that get replies... For sales collateral beyond emails, see sales-enablement. »
-- **Phrase ajoutée** : « [LOCK-11] Sur AxionIA, tooling = PowerMTA + MailWizz self-hosted (cf. `axionia-emails`). Resend/SendGrid/Mailgun INTERDITS. Cible décideurs B2B premium tickets 290-50k€, pas de mass cold à grande échelle. »
+- **Phrase ajoutée** : « [LOCK-11] Sur Axion-IA, tooling = PowerMTA + MailWizz self-hosted (cf. `axionia-emails`). Resend/SendGrid/Mailgun INTERDITS. Cible décideurs B2B premium tickets 290-50k€, pas de mass cold à grande échelle. »
 
 ## LOCK-12 — `seo-audit-marketing`
 
 - **Fichier** : `seo-audit-marketing/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to audit, review, or diagnose SEO issues on their site... For AI search optimization, see ai-seo. »
-- **Phrase ajoutée** : « [LOCK-12] Sur AxionIA, canon SEO/AEO = `axionia-seo-aeo`. Mot « formation » banni. URLs canoniques `/implementation` `/cas-concrets` `/conditions-generales`. »
+- **Phrase ajoutée** : « [LOCK-12] Sur Axion-IA, canon SEO/AEO = `axionia-seo-aeo`. Mot « formation » banni. URLs canoniques `/implementation` `/cas-concrets` `/conditions-generales`. »
 
 ## LOCK-13 — `ai-seo`
 
 - **Fichier** : `ai-seo/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to optimize content for AI search engines, get cited by LLMs... For structured data implementation, see schema-markup. »
-- **Phrase ajoutée** : « [LOCK-13] Sur AxionIA, canon SEO/AEO = `axionia-seo-aeo`. Mot « formation » banni. URLs canoniques `/implementation` `/cas-concrets`. »
+- **Phrase ajoutée** : « [LOCK-13] Sur Axion-IA, canon SEO/AEO = `axionia-seo-aeo`. Mot « formation » banni. URLs canoniques `/implementation` `/cas-concrets`. »
 
 ## LOCK-14 — `seo-hreflang`
 
 - **Fichier** : `seo-hreflang/SKILL.md`
 - **Description avant (tronquée, format YAML `>`)** : « Hreflang and international SEO audit, validation, and generation... Use when user says "hreflang", "i18n SEO", "international SEO", "multi-language", "multi-region", or "language tags". »
-- **Phrase ajoutée** : « [LOCK-14] Sur AxionIA, génération hreflang = `axionia-i18n` (next-intl). Ce skill = validation post-build uniquement. »
+- **Phrase ajoutée** : « [LOCK-14] Sur Axion-IA, génération hreflang = `axionia-i18n` (next-intl). Ce skill = validation post-build uniquement. »
 
 ## LOCK-15 — `seo-sitemap`
 
 - **Fichier** : `seo-sitemap/SKILL.md`
 - **Description avant (tronquée, format YAML `>`)** : « Analyze existing XML sitemaps or generate new ones with industry templates... Use when user says "sitemap", "generate sitemap", "sitemap issues", or "XML sitemap". »
-- **Phrase ajoutée** : « [LOCK-15] Sur AxionIA, génération sitemap = `axionia-seo-aeo` (multi-fichiers FR+EN). Ce skill = validation uniquement. »
+- **Phrase ajoutée** : « [LOCK-15] Sur Axion-IA, génération sitemap = `axionia-seo-aeo` (multi-fichiers FR+EN). Ce skill = validation uniquement. »
 
 ## LOCK-16 — `schema-markup`
 
 - **Fichier** : `schema-markup/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to add, fix, or optimize schema markup and structured data on their site... For AI search optimization, see ai-seo. »
-- **Phrase ajoutée** : « [LOCK-16] Sur AxionIA, génération JSON-LD = `axionia-seo-aeo`. Ce skill = validation Schema.org uniquement. »
+- **Phrase ajoutée** : « [LOCK-16] Sur Axion-IA, génération JSON-LD = `axionia-seo-aeo`. Ce skill = validation Schema.org uniquement. »
 
 ## LOCK-17a — `seo-page`
 
 - **Fichier** : `seo-page/SKILL.md`
 - **Description avant (tronquée, format YAML `>`)** : « Deep single-page SEO analysis covering on-page elements, content quality, technical meta tags, schema, images, and performance... »
-- **Phrase ajoutée** : « [LOCK-17] Sur AxionIA, perf budgets = `axionia-performance` (LCP<1.8s strict, INP<80ms, CLS<0.05). »
+- **Phrase ajoutée** : « [LOCK-17] Sur Axion-IA, perf budgets = `axionia-performance` (LCP<1.8s strict, INP<80ms, CLS<0.05). »
 
 ## LOCK-17b — `seo-drift`
 
 - **Fichier** : `seo-drift/SKILL.md`
 - **Description avant (tronquée, format YAML `>`)** : « SEO drift monitoring: capture baselines of SEO-critical elements, detect changes, and track regressions over time. Git for SEO... »
-- **Phrase ajoutée** : « [LOCK-17] Sur AxionIA, perf budgets = `axionia-performance` (LCP<1.8s strict, INP<80ms, CLS<0.05). »
+- **Phrase ajoutée** : « [LOCK-17] Sur Axion-IA, perf budgets = `axionia-performance` (LCP<1.8s strict, INP<80ms, CLS<0.05). »
 
 ## LOCK-18 — `analytics-tracking`
 
 - **Fichier** : `analytics-tracking/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants to set up, improve, or audit analytics tracking and measurement... For A/B test measurement, see ab-test-setup. »
-- **Phrase ajoutée** : « [LOCK-18] Sur AxionIA, analytics = Plausible self-hosted UNIQUEMENT. GA4/GTM/Mixpanel/Segment/Amplitude INTERDITS sans validation Will. »
+- **Phrase ajoutée** : « [LOCK-18] Sur Axion-IA, analytics = Plausible self-hosted UNIQUEMENT. GA4/GTM/Mixpanel/Segment/Amplitude INTERDITS sans validation Will. »
 
 ## LOCK-19 — `paid-ads`
 
 - **Fichier** : `paid-ads/SKILL.md`
 - **Description avant (tronquée)** : « When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms... For landing page optimization, see page-cro. »
-- **Phrase ajoutée** : « [LOCK-19] Sur AxionIA, LinkedIn Ads prioritaire (B2B décideurs premium). Pas de Meta/TikTok grand public. »
+- **Phrase ajoutée** : « [LOCK-19] Sur Axion-IA, LinkedIn Ads prioritaire (B2B décideurs premium). Pas de Meta/TikTok grand public. »
 
 ## LOCK-20 — `owasp-security`
 
 - **Fichier** : `owasp-security/SKILL.md`
 - **Description avant (tronquée)** : « Use when reviewing code for security vulnerabilities, implementing authentication/authorization, handling user input, or discussing web application security. Covers OWASP Top 10:2025, ASVS 5.0, LLM Top 10 (2025), and Agentic AI security (2026). »
-- **Phrase ajoutée** : « [LOCK-20] Sur AxionIA, valeurs effectives CSP/headers/secrets dans `axionia-deployment`. Ce skill = checklist OWASP Top 10/ASVS 5.0. »
+- **Phrase ajoutée** : « [LOCK-20] Sur Axion-IA, valeurs effectives CSP/headers/secrets dans `axionia-deployment`. Ce skill = checklist OWASP Top 10/ASVS 5.0. »
 
 ## LOCK-21 — `test-driven-development`
 
 - **Fichier** : `test-driven-development/SKILL.md`
 - **Description avant (tronquée)** : « Use when implementing any feature or bugfix, before writing implementation code »
-- **Phrase ajoutée** : « [LOCK-21] Sur AxionIA, stack tests = Vitest + Playwright + axe-core (cf. `axionia-testing`). Patterns Next.js 15 spécifiques. »
+- **Phrase ajoutée** : « [LOCK-21] Sur Axion-IA, stack tests = Vitest + Playwright + axe-core (cf. `axionia-testing`). Patterns Next.js 15 spécifiques. »
 
 ## LOCK-22 — Skills Phase 1 sans Stripe/inscription/app mobile
 
-Phrase ajoutée (commune à 8 skills) : « [LOCK-22] Sur AxionIA Phase 1 (vitrine B2B sans abonnement Stripe, sans inscription utilisateur, sans app mobile), ce skill ne s'invoque PAS automatiquement. Phase 2+ ré-évaluer. Voir `docs/_NO-STRIPE.md`. » (Variantes mineures par skill : `community-marketing` mentionne « sans utilisateurs récurrents app », `revops` mentionne « sans CRM intégré », `referral-program` mentionne « sans tracking affiliés intégré », `aso-audit` mentionne « sans app mobile ».)
+Phrase ajoutée (commune à 8 skills) : « [LOCK-22] Sur Axion-IA Phase 1 (vitrine B2B sans abonnement Stripe, sans inscription utilisateur, sans app mobile), ce skill ne s'invoque PAS automatiquement. Phase 2+ ré-évaluer. Voir `docs/_NO-STRIPE.md`. » (Variantes mineures par skill : `community-marketing` mentionne « sans utilisateurs récurrents app », `revops` mentionne « sans CRM intégré », `referral-program` mentionne « sans tracking affiliés intégré », `aso-audit` mentionne « sans app mobile ».)
 
 - `signup-flow-cro/SKILL.md` — desc avant : « When the user wants to optimize signup, registration, account creation, or trial activation flows... For lead capture forms (not account creation), see form-cro. »
 - `paywall-upgrade-cro/SKILL.md` — desc avant : « When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates... For pricing decisions, see pricing-strategy. »
@@ -154,7 +154,7 @@ Phrase ajoutée (commune à 8 skills) : « [LOCK-22] Sur AxionIA Phase 1 (vitrin
 
 ## LOCK-23 — Skills méta surdimensionnés en solo
 
-Phrase ajoutée (commune aux 4 skills) : « [LOCK-23] Sur AxionIA solo (Will), ce skill est utile mais peut être surdimensionné. Invoquer seulement quand pertinent. » (Variantes mineures : `subagent-driven-development` ajoute « (gros plans multi-tâches indépendantes) », `writing-skills` ajoute « (création/édition de nouveaux skills uniquement) ».)
+Phrase ajoutée (commune aux 4 skills) : « [LOCK-23] Sur Axion-IA solo (Will), ce skill est utile mais peut être surdimensionné. Invoquer seulement quand pertinent. » (Variantes mineures : `subagent-driven-development` ajoute « (gros plans multi-tâches indépendantes) », `writing-skills` ajoute « (création/édition de nouveaux skills uniquement) ».)
 
 - `subagent-driven-development/SKILL.md` — desc avant : « Use when executing implementation plans with independent tasks in the current session »
 - `dispatching-parallel-agents/SKILL.md` — desc avant : « Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies »
@@ -195,6 +195,6 @@ Phrase ajoutée (commune aux 4 skills) : « [LOCK-23] Sur AxionIA solo (Will), c
 ## Notes
 
 - Les skills `_archive/seo-schema/` et `_archive/seo-flow/` n'ont PAS été touchés (déjà archivés).
-- Les 18 skills `axionia-*`, `superpowers/using-superpowers`, `claude-md-improver`, `claude-automation-recommender` n'ont PAS été cadenassés (canon AxionIA propre, ou skills méta consentis).
+- Les 18 skills `axionia-*`, `superpowers/using-superpowers`, `claude-md-improver`, `claude-automation-recommender` n'ont PAS été cadenassés (canon Axion-IA propre, ou skills méta consentis).
 - Aucune modification du corps des SKILL.md — uniquement la ligne `description:` (ou bloc YAML `>`) du frontmatter.
 - Toutes les descriptions modifiées restent ≤ 1024 caractères.

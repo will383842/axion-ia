@@ -35,11 +35,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/cas-concrets/secteur/${slug}`,
-    title: locale === "fr" ? `Cas concrets ${label} · AxionIA` : `${label} case studies · AxionIA`,
+    title:
+      locale === "fr" ? `Cas concrets ${label} · Axion-IA` : `${label} case studies · Axion-IA`,
     description:
       locale === "fr"
-        ? `Cas concrets AxionIA dans le secteur ${label}. Résultats chiffrés et témoignages.`
-        : `AxionIA case studies in the ${label} sector. Quantified results and testimonials.`,
+        ? `Cas concrets Axion-IA dans le secteur ${label}. Résultats chiffrés et témoignages.`
+        : `Axion-IA case studies in the ${label} sector. Quantified results and testimonials.`,
     alternates: {
       fr: `/cas-concrets/secteur/${slug}`,
       en: `/case-studies/industry/${slug}`,
@@ -63,7 +64,7 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
     name: isFr ? `Cas concrets ${label}` : `${label} case studies`,
     url: `${SITE_URL}/${locale}/cas-concrets/secteur/${slug}`,
     inLanguage: locale,
-    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: studies.map((s) => ({
       "@type": "Article",
       headline: s[loc].title,

@@ -65,8 +65,10 @@ export async function generateMetadata({
   return {
     metadataBase: new URL(SITE_URL),
     title: {
-      default: isFr ? "AxionIA — Cabinet IA opérationnel" : "AxionIA — Operational AI consultancy",
-      template: "%s · AxionIA",
+      default: isFr
+        ? "Axion-IA — Cabinet IA opérationnel"
+        : "Axion-IA — Operational AI consultancy",
+      template: "%s · Axion-IA",
     },
     description: isFr
       ? "Cabinet IA opérationnel · interventions, audit et implémentation IA pour entreprises."
@@ -83,7 +85,7 @@ export async function generateMetadata({
       type: "website",
       locale: isFr ? "fr_FR" : "en_US",
       url: `${SITE_URL}/${locale}`,
-      siteName: "AxionIA",
+      siteName: "Axion-IA",
     },
     twitter: { card: "summary_large_image" },
     robots: { index: true, follow: true },

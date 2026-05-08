@@ -312,7 +312,7 @@ function makeFr(args: { eyebrow: string; title: string; answer: string }): PageC
       ],
     },
     metaSeo: {
-      title: `${args.title} · Implémentation IA · AxionIA`,
+      title: `${args.title} · Implémentation IA · Axion-IA`,
       description: args.answer.slice(0, 160),
     },
   };
@@ -401,7 +401,7 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
       ],
     },
     metaSeo: {
-      title: `${args.title} · AI implementation · AxionIA`,
+      title: `${args.title} · AI implementation · Axion-IA`,
       description: args.answer.slice(0, 160),
     },
   };

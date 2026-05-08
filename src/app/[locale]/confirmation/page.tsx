@@ -21,11 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/confirmation",
-    title: locale === "fr" ? "Confirmation · AxionIA" : "Confirmation · AxionIA",
+    title: locale === "fr" ? "Confirmation · Axion-IA" : "Confirmation · Axion-IA",
     description:
       locale === "fr"
-        ? "Votre demande a bien été reçue par AxionIA."
-        : "Your request was received by AxionIA.",
+        ? "Votre demande a bien été reçue par Axion-IA."
+        : "Your request was received by Axion-IA.",
   });
   return { ...meta, robots: { index: false, follow: false } };
 }

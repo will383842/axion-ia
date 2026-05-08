@@ -13,7 +13,7 @@ dans tout le code, copy et i18n du site. Le check `pnpm anti-formation:check`
 hook `pre-commit` Husky et dans le job Gate A du workflow `.github/workflows/ci.yml`.
 
 Cette règle visait à imposer le vocabulaire « intervention IA opérationnelle »
-plutôt que « formation IA » pour mieux différencier l'offre AxionIA des
+plutôt que « formation IA » pour mieux différencier l'offre Axion-IA des
 catalogues de formation classiques (CPF, OPCO, etc.).
 
 À l'usage commercial — rédaction de la page `/interventions` orientée conversion
@@ -22,9 +22,9 @@ ban est devenu contre-productif :
 
 - Les prospects entreprise cherchent « formation IA » comme requête naturelle.
 - Le mot reste légitime côté SEO/AEO/GEO (intent dominant en français).
-- L'offre AxionIA combine intervention sur site **et** transmission de
+- L'offre Axion-IA combine intervention sur site **et** transmission de
   compétences ; le mot « formation » décrit fidèlement la dimension pédagogique.
-- Aucune obligation légale ne contraint le vocabulaire (AxionIA OÜ n'est pas un
+- Aucune obligation légale ne contraint le vocabulaire (Axion-IA OÜ n'est pas un
   organisme de formation déclaré ; pas de CPF, pas de Qualiopi).
 
 ## Décision

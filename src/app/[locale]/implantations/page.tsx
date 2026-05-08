@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Implantations · Cabinet IA opérationnel partout en France"
       : "Locations · Operational AI consultancy across France",
     description: isFr
-      ? "AxionIA intervient sur site dans 12 régions et plus de 2 150 communes françaises. Trouvez votre métropole, vos villes proches et votre cabinet IA opérationnel local."
-      : "AxionIA operates on site across 12 regions and 2,150+ French communes. Find your metropolitan area, nearby cities and your local operational AI consultancy.",
+      ? "Axion-IA intervient sur site dans 12 régions et plus de 2 150 communes françaises. Trouvez votre métropole, vos villes proches et votre cabinet IA opérationnel local."
+      : "Axion-IA operates on site across 12 regions and 2,150+ French communes. Find your metropolitan area, nearby cities and your local operational AI consultancy.",
     alternates: { fr: "/implantations", en: "/locations" },
   });
 }
@@ -53,11 +53,11 @@ export default async function ImplantationsHub({ params }: Props) {
   const breadcrumbItems = [{ href: "/implantations", label: isFr ? "Implantations" : "Locations" }];
 
   // ItemList JSON-LD régions — signal AEO/GEO : LLMs énumèrent les 12 régions
-  // couvertes quand un utilisateur demande « où intervient AxionIA ? ».
+  // couvertes quand un utilisateur demande « où intervient Axion-IA ? ».
   const regionsItemList = buildItemListJsonLd({
     locale: loc,
     path: "/implantations",
-    name: isFr ? "Régions couvertes par AxionIA" : "Regions covered by AxionIA",
+    name: isFr ? "Régions couvertes par Axion-IA" : "Regions covered by Axion-IA",
     items: indexableRegions.map((region, idx) => ({
       position: idx + 1,
       name: region.nameFr,
@@ -82,8 +82,8 @@ export default async function ImplantationsHub({ params }: Props) {
         titleTail={isFr ? "." : "."}
         description={
           isFr
-            ? `AxionIA intervient sur site dans 12 régions de France métropolitaine — ${totalVilles.toLocaleString("fr-FR")} communes éligibles, des chefs-lieux aux PME locales. Choisissez votre région ou votre métropole pour découvrir notre couverture.`
-            : `AxionIA delivers on-site engagements across 12 metropolitan French regions — ${totalVilles.toLocaleString("en-US")} eligible communes, from prefectures to local SMEs. Pick your region or metropolitan area to explore our coverage.`
+            ? `Axion-IA intervient sur site dans 12 régions de France métropolitaine — ${totalVilles.toLocaleString("fr-FR")} communes éligibles, des chefs-lieux aux PME locales. Choisissez votre région ou votre métropole pour découvrir notre couverture.`
+            : `Axion-IA delivers on-site engagements across 12 metropolitan French regions — ${totalVilles.toLocaleString("en-US")} eligible communes, from prefectures to local SMEs. Pick your region or metropolitan area to explore our coverage.`
         }
       >
         <div className="mb-10">

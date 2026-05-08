@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: locale === "fr" ? "/stack-ia" : "/ai-stack",
     title:
       locale === "fr"
-        ? "Stack IA opérationnelle 2026 · les IA déterminantes pour votre entreprise · cabinet AxionIA"
-        : "Operational AI stack 2026 · the decisive AIs for your business · AxionIA consultancy",
+        ? "Stack IA opérationnelle 2026 · les IA déterminantes pour votre entreprise · cabinet Axion-IA"
+        : "Operational AI stack 2026 · the decisive AIs for your business · Axion-IA consultancy",
     description:
       locale === "fr"
         ? "Pas un catalogue. Une sélection des IA les plus déterminantes en 2026 pour transformer votre entreprise, par fonction métier — penser, produire, capter, construire, orchestrer. Choix assumés, aucun partenariat commercial."
@@ -160,8 +160,8 @@ export default async function StackIaPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: isFr
-      ? "Sélection IA opérationnelle 2026 · cabinet AxionIA"
-      : "Operational AI selection 2026 · AxionIA consultancy",
+      ? "Sélection IA opérationnelle 2026 · cabinet Axion-IA"
+      : "Operational AI selection 2026 · Axion-IA consultancy",
     numberOfItems: STACK_TOOLS.length,
     itemListElement: STACK_TOOLS.map((tool, idx) => ({
       "@type": "ListItem",
@@ -478,7 +478,7 @@ export default async function StackIaPage({ params }: Props) {
                         « {t.tagline} »
                       </p>
 
-                      {/* Use case AxionIA — paragraphe terrain */}
+                      {/* Use case Axion-IA — paragraphe terrain */}
                       <p className="text-fg-soft mt-4 text-[15.5px] leading-relaxed">{t.useCase}</p>
 
                       {/* Quand on le sort */}
@@ -765,8 +765,8 @@ export default async function StackIaPage({ params }: Props) {
         <Container className={TIGHT_X}>
           <p className="text-fg-muted mx-auto max-w-3xl text-center text-[13px] leading-relaxed">
             {isFr
-              ? "AxionIA n'est partenaire commercial, affilié, ni rémunéré par aucun des éditeurs cités sur cette page. Les marques sont la propriété de leurs détenteurs respectifs. Les choix présentés reflètent l'usage terrain quotidien du cabinet et sont susceptibles d'évoluer Ã  chaque revue trimestrielle."
-              : "AxionIA is not a commercial partner, affiliate, or paid promoter of any vendor listed on this page. All trademarks are the property of their respective owners. The picks reflect the consultancy's daily field usage and are subject to change at each quarterly review."}
+              ? "Axion-IA n'est partenaire commercial, affilié, ni rémunéré par aucun des éditeurs cités sur cette page. Les marques sont la propriété de leurs détenteurs respectifs. Les choix présentés reflètent l'usage terrain quotidien du cabinet et sont susceptibles d'évoluer Ã  chaque revue trimestrielle."
+              : "Axion-IA is not a commercial partner, affiliate, or paid promoter of any vendor listed on this page. All trademarks are the property of their respective owners. The picks reflect the consultancy's daily field usage and are subject to change at each quarterly review."}
           </p>
         </Container>
       </section>
@@ -785,8 +785,8 @@ export default async function StackIaPage({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un atelier d'outils opérationnels symbolisant la stack IA AxionIA en marche."
-                : "Editorial illustration of an operational tool workshop symbolizing the AxionIA AI stack at work."
+                ? "Illustration éditoriale d'un atelier d'outils opérationnels symbolisant la stack IA Axion-IA en marche."
+                : "Editorial illustration of an operational tool workshop symbolizing the Axion-IA AI stack at work."
             }
           />
         </Container>

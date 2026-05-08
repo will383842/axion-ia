@@ -1,6 +1,6 @@
 // P-104 — `loading.tsx` granulaire `/implantations/[region]/[ville]` —
 // template ville pSEO (2 150+ SSG livrés Sprint 14.9). Hero + 10 sections
-// réservées, conforme Ã  la structure AxionIA-centric (interventions,
+// réservées, conforme Ã  la structure Axion-IA-centric (interventions,
 // méthodologie, tarifs, FAQ AEO, related cities).
 export default function VilleLoading() {
   return (

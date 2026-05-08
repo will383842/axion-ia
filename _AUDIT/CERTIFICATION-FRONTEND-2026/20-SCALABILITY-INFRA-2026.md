@@ -209,7 +209,7 @@ Patches gratuits d'abord (ISR, cache, indexes), puis upgrades conditionnels apr�
 
 ## 5. Cible chiffrée
 
-> _« Le frontend AxionIA absorbe 100K URLs SSG + ISR pour les nouvelles, build < 10 min, runtime stable < 4 GB RAM, disk < 60 GB, bandwidth < 10 TB/mois sur CX32 + CF Free, sans dégradation Lighthouse / Web Vitals. »_
+> _« Le frontend Axion-IA absorbe 100K URLs SSG + ISR pour les nouvelles, build < 10 min, runtime stable < 4 GB RAM, disk < 60 GB, bandwidth < 10 TB/mois sur CX32 + CF Free, sans dégradation Lighthouse / Web Vitals. »_
 
 ## 6. Livrables
 

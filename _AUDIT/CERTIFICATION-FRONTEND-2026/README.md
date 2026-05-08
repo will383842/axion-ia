@@ -1,6 +1,6 @@
-# Certification Frontend Perfection 2026 — AxionIA
+# Certification Frontend Perfection 2026 — Axion-IA
 
-Dossier complet d'audits pour certifier le frontend AxionIA niveau **best-in-class 2026**, **scale-ready** (jusqu'à 300K+ URLs) et **très professionnel** (standards SaaS premium).
+Dossier complet d'audits pour certifier le frontend Axion-IA niveau **best-in-class 2026**, **scale-ready** (jusqu'à 300K+ URLs) et **très professionnel** (standards SaaS premium).
 
 ## À qui s'adresse ce dossier
 
@@ -114,16 +114,32 @@ Lance les 3 prompts critiques scaling :
 
 Tous les prompts du dossier référencent ces seuils. **NE JAMAIS** les redéfinir dans un prompt individuel — pointer ici.
 
+> **Doctrine SSOT (2026-05-08)** : **le code est la source de vérité**. Quand le code et un document divergent (lighthouserc.json, size-limit, next.config.ts, AGENTS.md, ce README), c'est ce document qui s'aligne sur le code, pas l'inverse — sauf décision explicite Will pour durcir le code. Les **cibles internes** ci-dessous sont des objectifs ; les **gates CI** sont les seuils réellement enforcés à un instant T.
+
 ### Performance & Web Vitals
 
-- LCP p75 ≤ 1 800 ms (cible interne) / 2 500 ms (Google good)
-- INP p75 ≤ 100 ms (cible interne) / 200 ms (Google good)
-- CLS p75 ≤ 0,05 (cible interne) / 0,1 (Google good)
+**Cibles internes (objectif post-V6 Web Vitals)** :
+
+- LCP p75 ≤ 1 800 ms · INP p75 ≤ 100 ms · CLS p75 ≤ 0,05
 - TBT ≤ 150 ms Lighthouse lab
 - TTFB p75 ≤ 100 ms via Cloudflare CDN
 - Bundle initial route home ≤ 70 KB gzip
 - Bundle initial route lourde (`/reserver`) ≤ 110 KB gzip
 - Build prod < 10 min sur Hetzner CX32
+
+**Gates CI réellement enforced (état 2026-05-08)** :
+
+- `lighthouserc.json` : Lighthouse perf/a11y/best-practices ≥ 0.95, SEO ≥ 1.0, LCP ≤ 2 500 ms, INP ≤ 200 ms, CLS ≤ 0.1, TBT ≤ 200 ms — **seuils Google « good »**, durcissement par paliers post-V6 (voir mémoire `axionia_audit_web_vitals_v3_v6_pending.md`).
+- `package.json#size-limit` : 100 KB par chunk `.next/static/chunks/**/*.js` — **gate chunk-level**, pas route-level. Les budgets par route (70 / 110 KB) vivent dans `AGENTS.md` et sont vérifiés manuellement / via `pnpm bundle:check` jusqu'à mise en place d'un gate route-level dédié.
+- AGENTS.md : SSOT Web Vitals 2026 par route — exception `/reserver` INP ≤ 150 ms et First Load ≤ 110 KB gz.
+
+**Features Next 16 reportées (next.config.ts)** :
+
+- PPR (Partial Prerendering) : deferred Sprint 17 (post-server-actions).
+- ViewTransition API : deferred jusqu'à wrap explicite des routes.
+- React Compiler : deferred PERF-004 (post-RUM baseline).
+
+Les audits D2/D4/A1 **constatent** ces reports comme dette technique tracée, ils ne flagguent pas comme régression.
 
 ### Quality content (anti-doorway HCU)
 

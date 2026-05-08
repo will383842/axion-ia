@@ -13,6 +13,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
+import { BRAND } from "@/lib/brand";
 
 interface MobileNavProps {
   children: React.ReactNode;
@@ -37,9 +38,9 @@ export function MobileNav({ children }: MobileNavProps) {
       </SheetTrigger>
       <SheetContent side="right" className="w-full max-w-sm sm:max-w-sm">
         <SheetTitle className="sr-only">{t("openMenu")}</SheetTitle>
-        <SheetDescription className="sr-only">AxionIA navigation</SheetDescription>
+        <SheetDescription className="sr-only">{`${BRAND.name} navigation`}</SheetDescription>
         <div className="-m-6 flex h-full flex-col overflow-y-auto p-6">
-          <span className="text-fg mb-6 text-sm font-semibold tracking-tight">AxionIA</span>
+          <span className="text-fg mb-6 text-sm font-semibold tracking-tight">{BRAND.name}</span>
           {children}
         </div>
       </SheetContent>

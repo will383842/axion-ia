@@ -1,5 +1,5 @@
 // Server Component — schéma visuel du hero /a-propos.
-// Stack 3 mini-cards illustrant les 3 piliers AxionIA : opérationnel
+// Stack 3 mini-cards illustrant les 3 piliers Axion-IA : opérationnel
 // d'abord, ROI mesurable, souveraineté UE. Pattern hérité de BlogHeroSchema /
 // ContactHeroSchema — accent terracotta éditorial, .hero-schema cap 36rem v3.2.
 //
@@ -71,7 +71,7 @@ export function AboutHeroSchema({ isFr, ariaLabel, className }: AboutHeroSchemaP
           aria-hidden="true"
           className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
         />
-        {isFr ? "Doctrine AxionIA · 3 piliers" : "AxionIA doctrine · 3 pillars"}
+        {isFr ? "Doctrine Axion-IA · 3 piliers" : "Axion-IA doctrine · 3 pillars"}
       </p>
 
       <div className="space-y-3.5">

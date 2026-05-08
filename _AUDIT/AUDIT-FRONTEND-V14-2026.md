@@ -1,4 +1,4 @@
-# AUDIT FRONTEND V14-2026 — AxionIA
+# AUDIT FRONTEND V14-2026 — Axion-IA
 
 **Working dir** : `axionia/` (sous-repo Next.js 16, branche `main`)
 **HEAD** : `941a8e1` (22 commits ahead `origin/main`, range `5942d2f → 941a8e1`, 2026-05-06 → 2026-05-07)
@@ -31,7 +31,7 @@ Les 2 P0 cumulés sont **du contenu éditorial** (`dateModified` articles + bio 
 ### Ce qui est solide
 
 - **Sprints 0-14 livrés** (57+ pages, 71/71 tests verts, 5 anti-banni gates au vert)
-- **Doctrine v3 Editorial Premium Light cohérente** : 256 occurrences `AxionIA` canoniques, 27/30 hero avec pattern titleEm italique terracotta, 35 pages avec eyebrow + dot, header `bg-terracotta` figé confirmé
+- **Doctrine v3 Editorial Premium Light cohérente** : 256 occurrences `Axion-IA` canoniques, 27/30 hero avec pattern titleEm italique terracotta, 35 pages avec eyebrow + dot, header `bg-terracotta` figé confirmé
 - **0 hex hardcodé non-justifié** hors `globals.css`, **0 `any`**, **0 `@ts-ignore`**, **0 import `../../../`**, **0 TODO/FIXME**
 - **i18n parité parfaite** : 145 keys fr=en, 0 occurrence "formation/siren/payment provider/email provider"
 - **Infra perf complète** : `viewTransition`, `next/font`, `WebVitals` beacon, Speculation Rules, `lighthouserc`, `size-limit`, bundle analyzer

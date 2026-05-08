@@ -67,9 +67,9 @@
 | `cabinet`        | 33                                                        |
 | `accompagnement` | 1 ⚠️ **D-P3-3** rare (préférence "intervention" voulue ?) |
 
-### Capitalisation `AxionIA`
+### Capitalisation `Axion-IA`
 
-- Canonique `AxionIA` : 256 occurrences `src/`
+- Canonique `Axion-IA` : 256 occurrences `src/`
 - `Axion-IA` : 1 occurrence (commentaire code `Header.tsx:40` décrivant rendu visuel logo) — ✅ non bloquant
 - `Axionia` / `Axion IA` (espace) : 0
 

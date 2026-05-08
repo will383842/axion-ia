@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/cas-concrets/${slug}`,
-    title: `${c.title} · AxionIA`,
+    title: `${c.title} · Axion-IA`,
     description: c.excerpt,
   });
 }
@@ -71,7 +71,7 @@ export default async function CaseStudyPage({ params }: Props) {
     reviewBody: copy.testimonialQuote,
     itemReviewed: {
       type: "Service",
-      name: isFr ? "Conseil IA opérationnel AxionIA" : "AxionIA operational AI consulting",
+      name: isFr ? "Conseil IA opérationnel Axion-IA" : "Axion-IA operational AI consulting",
     },
   });
 

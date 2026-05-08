@@ -30,12 +30,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/a-propos",
     title:
       locale === "fr"
-        ? "À propos · cabinet IA opérationnel · AxionIA"
-        : "About · operational AI consultancy · AxionIA",
+        ? "À propos · cabinet IA opérationnel · Axion-IA"
+        : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "AxionIA OÜ — cabinet IA opérationnel pour entreprises. Mission, équipe, valeurs, parcours."
-        : "AxionIA OÜ — operational AI consultancy for companies. Mission, team, values, timeline.",
+        ? "Axion-IA OÜ — cabinet IA opérationnel pour entreprises. Mission, équipe, valeurs, parcours."
+        : "Axion-IA OÜ — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
 }
@@ -86,13 +86,13 @@ export default async function About({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "AxionIA accompagne les entreprises dans l'identification, la démonstration et l'implémentation d'usages IA générant un ROI mesurable. Hébergement UE, méthode documentée, livrables actionnables."
-                  : "AxionIA helps companies identify, demonstrate and implement AI use cases generating measurable ROI. EU hosting, documented method, actionable deliverables."}
+                  ? "Axion-IA accompagne les entreprises dans l'identification, la démonstration et l'implémentation d'usages IA générant un ROI mesurable. Hébergement UE, méthode documentée, livrables actionnables."
+                  : "Axion-IA helps companies identify, demonstrate and implement AI use cases generating measurable ROI. EU hosting, documented method, actionable deliverables."}
               </p>
               {/* Pills réassurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
                 {[
-                  { icon: Building2, label: "AxionIA OÜ · Tallinn" },
+                  { icon: Building2, label: "Axion-IA OÜ · Tallinn" },
                   { icon: ShieldCheck, label: isFr ? "Hébergement UE" : "EU hosting" },
                   { icon: Calendar, label: isFr ? "Fondé 2024" : "Founded 2024" },
                   { icon: Globe2, label: isFr ? "FR · EN · UE" : "FR · EN · EU" },
@@ -131,21 +131,21 @@ export default async function About({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : doctrine AxionIA en 3 piliers — opérationnel d'abord, ROI mesurable, souveraineté UE."
-                  : "Diagram: AxionIA doctrine in 3 pillars — operational first, measurable ROI, EU sovereignty."
+                  ? "Schéma : doctrine Axion-IA en 3 piliers — opérationnel d'abord, ROI mesurable, souveraineté UE."
+                  : "Diagram: Axion-IA doctrine in 3 pillars — operational first, measurable ROI, EU sovereignty."
               }
             />
           </div>
         </Container>
       </section>
 
-      {/* Pillar copy — pourquoi AxionIA */}
-      <Section eyebrow={isFr ? "Pourquoi AxionIA" : "Why AxionIA"} tone="paper">
+      {/* Pillar copy — pourquoi Axion-IA */}
+      <Section eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"} tone="paper">
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "Le marché de l'IA d'entreprise en 2026 est saturé de promesses non tenues. Pilotes qui ne passent jamais en production. Démos époustouflantes sur des données fabriquées. Factures longues comme un bras pour des outils sans ROI mesurable. AxionIA prend le contre-pied : aucune intervention sans démonstration sur vos données réelles, aucun devis sans plan d'action chiffré priorisé, aucun déploiement sans support post-livraison. Cabinet IA opérationnel signifie : on travaille dans vos process, pas à côté. Tallinn, Estonie : siège choisi pour la stabilité juridique UE et l'agilité fiscale, opérations 100 % à distance pour la France et l'UE."
-              : "The enterprise AI market in 2026 is saturated with broken promises. Pilots that never reach production. Stunning demos on fabricated data. Long invoices for tools without measurable ROI. AxionIA takes the opposite stance: no engagement without a live demo on your real data, no quote without a costed prioritised action plan, no deployment without post-delivery support. Operational AI consultancy means: we work inside your processes, not next to them. Tallinn, Estonia: HQ chosen for EU legal stability and fiscal agility, 100% remote operations for France and the EU."}
+              ? "Le marché de l'IA d'entreprise en 2026 est saturé de promesses non tenues. Pilotes qui ne passent jamais en production. Démos époustouflantes sur des données fabriquées. Factures longues comme un bras pour des outils sans ROI mesurable. Axion-IA prend le contre-pied : aucune intervention sans démonstration sur vos données réelles, aucun devis sans plan d'action chiffré priorisé, aucun déploiement sans support post-livraison. Cabinet IA opérationnel signifie : on travaille dans vos process, pas à côté. Tallinn, Estonie : siège choisi pour la stabilité juridique UE et l'agilité fiscale, opérations 100 % à distance pour la France et l'UE."
+              : "The enterprise AI market in 2026 is saturated with broken promises. Pilots that never reach production. Stunning demos on fabricated data. Long invoices for tools without measurable ROI. Axion-IA takes the opposite stance: no engagement without a live demo on your real data, no quote without a costed prioritised action plan, no deployment without post-delivery support. Operational AI consultancy means: we work inside your processes, not next to them. Tallinn, Estonia: HQ chosen for EU legal stability and fiscal agility, 100% remote operations for France and the EU."}
           </p>
         </Container>
       </Section>
@@ -260,8 +260,8 @@ export default async function About({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un atelier d'architecte symbolisant la précision opérationnelle d'AxionIA."
-                  : "Editorial illustration of an architect's workshop symbolizing AxionIA's operational precision."
+                  ? "Illustration éditoriale d'un atelier d'architecte symbolisant la précision opérationnelle d'Axion-IA."
+                  : "Editorial illustration of an architect's workshop symbolizing Axion-IA's operational precision."
               }
             />
           </div>
@@ -281,8 +281,8 @@ export default async function About({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un cabinet IA opérationnel en activité — vue d'ensemble du système AxionIA."
-                : "Editorial illustration of an operational AI consultancy at work — overview of the AxionIA system."
+                ? "Illustration éditoriale d'un cabinet IA opérationnel en activité — vue d'ensemble du système Axion-IA."
+                : "Editorial illustration of an operational AI consultancy at work — overview of the Axion-IA system."
             }
           />
         </Container>

@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/preferences-cookies",
-    title: locale === "fr" ? "Préférences cookies · AxionIA" : "Cookie preferences · AxionIA",
+    title: locale === "fr" ? "Préférences cookies · Axion-IA" : "Cookie preferences · Axion-IA",
     description:
       locale === "fr"
-        ? "Gérer votre consentement cookies AxionIA."
-        : "Manage your AxionIA cookie consent.",
+        ? "Gérer votre consentement cookies Axion-IA."
+        : "Manage your Axion-IA cookie consent.",
     alternates: { fr: "/preferences-cookies", en: "/cookie-preferences" },
   });
 }
@@ -64,8 +64,8 @@ export default async function CookiePreferencesPage({ params }: Props) {
         <Container className="text-fg-soft max-w-2xl space-y-6 text-base leading-relaxed">
           <p>
             {isFr
-              ? "AxionIA n'utilise par défaut aucun cookie de tracking tiers. Le site fonctionne sans publicitaire, sans Google Analytics, sans Facebook Pixel. Seuls des cookies fonctionnels strictement nécessaires (langue, session admin) sont déposés."
-              : "AxionIA doesn't use any third-party tracking cookies by default. The site runs without ads, without Google Analytics, without Facebook Pixel. Only strictly necessary functional cookies (language, admin session) are deposited."}
+              ? "Axion-IA n'utilise par défaut aucun cookie de tracking tiers. Le site fonctionne sans publicitaire, sans Google Analytics, sans Facebook Pixel. Seuls des cookies fonctionnels strictement nécessaires (langue, session admin) sont déposés."
+              : "Axion-IA doesn't use any third-party tracking cookies by default. The site runs without ads, without Google Analytics, without Facebook Pixel. Only strictly necessary functional cookies (language, admin session) are deposited."}
           </p>
           <p>
             {isFr

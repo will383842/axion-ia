@@ -28,12 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/audit/demande",
     title:
       locale === "fr"
-        ? "Demander un audit IA · 6 étapes · AxionIA"
-        : "Request an AI audit · 6 steps · AxionIA",
+        ? "Demander un audit IA · 6 étapes · Axion-IA"
+        : "Request an AI audit · 6 steps · Axion-IA",
     description:
       locale === "fr"
-        ? "Formulaire 6 étapes pour demander un audit IA AxionIA — niveau (Flash / Process / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé sous 48 h ouvrées."
-        : "6-step form to request an AxionIA AI audit — level (Flash / Process / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote within 48 business hours.",
+        ? "Formulaire 6 étapes pour demander un audit IA Axion-IA — niveau (Flash / Process / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé sous 48 h ouvrées."
+        : "6-step form to request an Axion-IA AI audit — level (Flash / Process / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote within 48 business hours.",
     alternates: { fr: "/audit/demande", en: "/audit/request" },
   });
 }

@@ -1,4 +1,4 @@
-# AUDIT PARITY V14 — AxionIA · Cohérence cross-pages (audit complet)
+# AUDIT PARITY V14 — Axion-IA · Cohérence cross-pages (audit complet)
 
 - **Date** : 2026-05-08
 - **Référence qualité** : `/interventions` HEAD — **36/36**

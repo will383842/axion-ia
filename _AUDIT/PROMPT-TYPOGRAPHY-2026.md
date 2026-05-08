@@ -1,4 +1,4 @@
-# ✒️ PROMPT TYPOGRAPHY AUDIT 2026 — AxionIA · Lisibilité & échelle éditoriale
+# ✒️ PROMPT TYPOGRAPHY AUDIT 2026 — Axion-IA · Lisibilité & échelle éditoriale
 
 > **Version 1.0 · 2026-05-07**
 > ⚠️ **STATUT 2026-05-07 (post-exécution)** : audit livré, scénario B retenu, **patch appliqué via ADR 0004** (`docs/adr/0004-typography-baseline-upgrade-v3-1.md`). Baseline corps actuel = **18 px** (`--text-base: 1.125rem`, `--text-sm: 0.9375rem`, `--text-body: 1.125rem`). Ce prompt reste utile pour ré-auditer après changements futurs ; les chiffres « actuel 16/14 » ci-dessous sont historiques pré-patch.
@@ -82,7 +82,7 @@ Tu sais que **le baseline ne fait pas tout** : la perception « petit » naît a
 3. https://linear.app — corps tech compact mais lisible.
 4. https://vercel.com — corps Geist, équilibre marketing.
 5. https://openai.com — corps Söhne éditorial.
-6. https://mistral.ai — corps latin, échelle proche AxionIA.
+6. https://mistral.ai — corps latin, échelle proche Axion-IA.
 
 Pour chaque benchmark, extraire (DOM inspect via `WebFetch` + analyse CSS) :
 
@@ -116,7 +116,7 @@ Pour chaque benchmark, extraire (DOM inspect via `WebFetch` + analyse CSS) :
 | -------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **AGT-TOKENS** | Explore                               | Inventaire complet des tokens typo dans `globals.css` (font-sizes, line-heights, letter-spacings) + détecter les `--text-*` utilisés vs définis-mais-non-utilisés + Tailwind defaults non overridés (`text-base`, `text-sm`, etc.).                                                                                                                                               |
 | **AGT-USAGE**  | Explore                               | Sur les 15 pages échantillon : grep `text-(xs\|sm\|base\|body\|lg\|xl\|2xl\|3xl)` + classes typo custom. Compter les occurrences par taille, identifier les **abus de text-sm** (cards, KPI, témoignages, FAQ items) et les **manques de text-base** (paragraphes inheriting le default body). Lister les `max-w-*` accolés à des paragraphes pour mesurer ligne effective en ch. |
-| **AGT-BENCH**  | general-purpose (autorisé `WebFetch`) | Aspirer les 6 benchmarks externes (Anthropic, Stripe Press, Linear, Vercel, OpenAI, Mistral). Extraire body / H1 / H2 / H3 / line-height / tracking / line-length. Produire tableau comparatif vs AxionIA actuel.                                                                                                                                                                 |
+| **AGT-BENCH**  | general-purpose (autorisé `WebFetch`) | Aspirer les 6 benchmarks externes (Anthropic, Stripe Press, Linear, Vercel, OpenAI, Mistral). Extraire body / H1 / H2 / H3 / line-height / tracking / line-length. Produire tableau comparatif vs Axion-IA actuel.                                                                                                                                                                |
 
 L'agent principal pendant ce temps :
 
@@ -195,7 +195,7 @@ Pour chaque dimension, scorer **état actuel** et **état cible 2026** sur 0-3 (
 ## 📊 MATRICE DE SORTIE — `_AUDIT/AUDIT-TYPOGRAPHY-2026.md`
 
 ```markdown
-# AUDIT TYPOGRAPHY 2026 — AxionIA
+# AUDIT TYPOGRAPHY 2026 — Axion-IA
 
 - Date : 2026-05-07
 - Doctrine de référence : v3 Editorial Premium Light (ADR 0002)
@@ -215,11 +215,11 @@ Pour chaque dimension, scorer **état actuel** et **état cible 2026** sur 0-3 (
 | Dim | État actuel /3 | Cible 2026 /3 | Gap | Priorité |
 | --- | -------------- | ------------- | --- | -------- |
 
-## 3. Tableau benchmark externe vs AxionIA
+## 3. Tableau benchmark externe vs Axion-IA
 
 | Site             | Body px | LH body | H1 px   | H2 px | Tracking display | Line-length |
 | ---------------- | ------- | ------- | ------- | ----- | ---------------- | ----------- |
-| AxionIA actuel   | 16      | 1.65    | ~80-112 | 64    | -0.04em          | 84 ch       |
+| Axion-IA actuel  | 16      | 1.65    | ~80-112 | 64    | -0.04em          | 84 ch       |
 | Anthropic        | ?       | ?       | ?       | ?     | ?                | ?           |
 | Stripe Press     | ?       | ?       | ?       | ?     | ?                | ?           |
 | Linear           | ?       | ?       | ?       | ?     | ?                | ?           |

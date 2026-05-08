@@ -789,6 +789,6 @@ Le périmètre LCP/Images/Network hints est **architecturalement sain** mais sou
 
 **Top 2 patches À VALIDER** (STOP & ASK) : P-007 (`ssr: false` calendar), P-002 (Next 16 doctrine `Illustration`).
 
-Pas de gap rouge sang. La doctrine v3 visuelle est intouchée. JSON-LD / anti-doorway / naming AxionIA inchangés.
+Pas de gap rouge sang. La doctrine v3 visuelle est intouchée. JSON-LD / anti-doorway / naming Axion-IA inchangés.
 
 **Prêt pour consolidation par l'agent superviseur (Phase D).**

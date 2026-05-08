@@ -19,11 +19,11 @@ export const POST: BlogPost = {
   fr: {
     title: "Pourquoi auditer avant d'implémenter",
     excerpt: "L'audit identifie où l'IA crée de la valeur sans casser vos workflows existants.",
-    body: "Implémenter de l'IA sans audit revient à ouvrir un projet de digitalisation sans backlog priorisé : on consomme du temps et du budget sur des sujets qui n'ont pas de valeur. L'audit IA AxionIA cartographie en 5 jours toutes les opportunités, scorées par ROI estimé et complexité, livrant un plan d'attaque actionnable.",
+    body: "Implémenter de l'IA sans audit revient à ouvrir un projet de digitalisation sans backlog priorisé : on consomme du temps et du budget sur des sujets qui n'ont pas de valeur. L'audit IA Axion-IA cartographie en 5 jours toutes les opportunités, scorées par ROI estimé et complexité, livrant un plan d'attaque actionnable.",
   },
   en: {
     title: "Why audit before you implement",
     excerpt: "The audit pinpoints where AI creates value without breaking your existing workflows.",
-    body: "Implementing AI without an audit is like running a digitalization project without a prioritized backlog: time and budget go to topics that don't drive value. The AxionIA AI audit maps every opportunity in 5 days, scored by estimated ROI and complexity, delivering an actionable plan.",
+    body: "Implementing AI without an audit is like running a digitalization project without a prioritized backlog: time and budget go to topics that don't drive value. The Axion-IA AI audit maps every opportunity in 5 days, scored by estimated ROI and complexity, delivering an actionable plan.",
   },
 };

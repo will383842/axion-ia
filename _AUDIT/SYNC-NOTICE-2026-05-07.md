@@ -4,7 +4,7 @@
 
 ## Évolutions HEAD post-publication initiale (06/05/2026)
 
-Le code AxionIA a évolué entre 2026-05-06 et 2026-05-07 (`axionia/` HEAD `fd91518`, ~30 commits dont 22 pushés `origin/main` en Sprint 14.5-14.9). Plusieurs prompts ont été rédigés AVANT ces livrables et contiennent des mentions désormais inexactes.
+Le code Axion-IA a évolué entre 2026-05-06 et 2026-05-07 (`axionia/` HEAD `fd91518`, ~30 commits dont 22 pushés `origin/main` en Sprint 14.5-14.9). Plusieurs prompts ont été rédigés AVANT ces livrables et contiennent des mentions désormais inexactes.
 
 ### Mentions susceptibles d'être périmées
 

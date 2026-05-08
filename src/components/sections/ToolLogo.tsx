@@ -2,7 +2,7 @@
 //
 // Doctrine v2 (2026-05-07) : 11 marks dessinés à la main, harmonisés en fill
 // solide `currentColor`. Pas de SVG officiels ni de press kits — choix
-// éditorial AxionIA. Chaque mark suggère le caractère du brand sans copier
+// éditorial Axion-IA. Chaque mark suggère le caractère du brand sans copier
 // son logo : on évite tout problème de propriété intellectuelle ET on garde
 // une cohérence visuelle premium (toutes les marques ont le même grain).
 //

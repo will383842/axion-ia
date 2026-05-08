@@ -1,6 +1,8 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { BRAND } from "@/lib/brand";
+import { ROUTES } from "@/lib/routes";
 import { getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles } from "@/content/villes";
 import { INTERVENTION_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
@@ -96,8 +98,8 @@ export async function Header() {
         <div className="flex flex-1 items-center justify-between gap-6 lg:gap-8">
           {/* Logo dans badge ivoire — fait ressortir "Axion-IA" sur fond terracotta. */}
           <Link
-            href="/"
-            aria-label="AxionIA"
+            href={ROUTES.home}
+            aria-label={BRAND.name}
             className="bg-paper text-fg shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center gap-1 rounded-xl px-4 py-2 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <span

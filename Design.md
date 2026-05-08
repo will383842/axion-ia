@@ -1,8 +1,8 @@
-# Design.md — AxionIA · Doctrine visuelle v3 « Editorial Premium Light »
+# Design.md — Axion-IA · Doctrine visuelle v3 « Editorial Premium Light »
 
 > **Source de vérité visuelle officielle** depuis 2026-05-06.
 > Dernière synchro avec le code : **2026-05-08** (typography hierarchy v3.2 — modular scale + hero cap, voir ADR 0007).
-> Supersedes la direction Webflow-inspired v1 (cf. `docs/adr/0001-design-direction-webflow.md`).
+> Supersedes la direction Webflow-inspired v1 (historique non gardé en ADR — l'ADR 0001 réel est `docs/adr/0001-stack-initial.md`, le pivot v3 est tracé dans ADR 0002).
 > Références ADR : `docs/adr/0002-design-pivot-editorial-v3.md`, `docs/adr/0004-typography-baseline-upgrade-v3-1.md`, `docs/adr/0007-typography-hierarchy-v3-2.md`. ADR 0003 (`0003-lift-formation-ban.md`) traite du vocabulaire commercial, pas du Button system v3 (qui n'a pas d'ADR dédié).
 > Implémentation tokens : `src/app/globals.css` (directive `@theme`).
 

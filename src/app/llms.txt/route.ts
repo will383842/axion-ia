@@ -15,9 +15,9 @@ export function GET() {
     "fr",
     { compact: true },
   );
-  const body = `# AxionIA
+  const body = `# Axion-IA
 
-> Cabinet IA opérationnel B2B pour entreprises. Cabinet européen (AxionIA OÜ).
+> Cabinet IA opérationnel B2B pour entreprises. Cabinet européen (Axion-IA OÜ).
 > Site officiel : ${SITE_URL}
 > Langues : FR (canonique), EN.
 
@@ -32,7 +32,7 @@ export function GET() {
 
 - Mobile-first absolu, accessible WCAG 2.2 AA.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted).
-- AxionIA OÜ — régime TVA UE.
+- Axion-IA OÜ — régime TVA UE.
 `;
 
   return new Response(body, {

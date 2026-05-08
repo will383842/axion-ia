@@ -1,4 +1,4 @@
-# 🎨 PROMPT VISUAL RHYTHM AUDIT 2026 — AxionIA · Rythme visuel, imagerie & cohérence
+# 🎨 PROMPT VISUAL RHYTHM AUDIT 2026 — Axion-IA · Rythme visuel, imagerie & cohérence
 
 > **Version 1.1 · 2026-05-07** (patch : hex palette exacts extraits de `globals.css` v3.1, Next.js 16 `ImageResponse` pour OG dynamiques, alt text i18n explicite, GPT-image-1 seed reproductible, cohérence multi-générations renforcée, chiffrage coût OpenAI, lecture explicite HeroSchema existants, clarification benchmarks)
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA\axionia`.
@@ -10,14 +10,14 @@
 
 ## 🎯 OBJECTIF
 
-Will a constaté que certaines pages AxionIA peuvent souffrir d'un **excès de texte sans respiration visuelle**, ce qui dégrade la perception premium B2B (signal « consultant générique qui empile du contenu » sur un cabinet positionné premium). Le site a été développé Sprints 0-14 entièrement en code (SVG inline + Lucide icons + gradients Tailwind) sans pipeline asset externe.
+Will a constaté que certaines pages Axion-IA peuvent souffrir d'un **excès de texte sans respiration visuelle**, ce qui dégrade la perception premium B2B (signal « consultant générique qui empile du contenu » sur un cabinet positionné premium). Le site a été développé Sprints 0-14 entièrement en code (SVG inline + Lucide icons + gradients Tailwind) sans pipeline asset externe.
 
 **Mission** : auditer le **rythme visuel page par page** (top 20 pages stratégiques), produire **pour chaque page** une fiche prescriptive avec :
 
 1. Inventaire visuel actuel (icônes, SVG, gradients, screenshots, illustrations).
 2. Diagnostic des sections « mur de texte » sans ancrage visuel (cadence cible : un point d'ancrage visuel tous les 1-2 écrans de scroll).
 3. Recommandations précises : _quel type de visuel_, _où le placer_, _comment le produire_ (SVG inline custom / Lucide icon / `next/image` avec asset généré GPT-image / diagramme codé en composant React).
-4. **Pour chaque visuel à générer via GPT-image** : prompt copy-paste prêt à l'emploi, calibré sur le style guide AxionIA (palette terracotta/mocha/sage/paper/sand, doctrine Editorial Premium Light v3).
+4. **Pour chaque visuel à générer via GPT-image** : prompt copy-paste prêt à l'emploi, calibré sur le style guide Axion-IA (palette terracotta/mocha/sage/paper/sand, doctrine Editorial Premium Light v3).
 5. Métadonnées AEO/GEO 2026 (alt riches, schema `ImageObject`, OpenGraph dédié, file sizing).
 
 **Posture** : 100% prescriptif (audit TOP demandé par Will), pas défensif. Chaque page doit ressortir avec un plan d'action concret et des assets prêts à produire.
@@ -80,7 +80,7 @@ Tu connais à froid les patterns visuels 2026 :
 
 Pour tout visuel **non codable en SVG inline raisonnablement** (photo réaliste, illustration narrative complexe, scène conceptuelle), le rapport doit produire un **prompt GPT-image** copy-paste pour Will, calibré :
 
-- **Style** : injecter explicitement la **palette AxionIA exacte** (extraits de `globals.css` `@theme` block v3.1, vérifié 2026-05-07) :
+- **Style** : injecter explicitement la **palette Axion-IA exacte** (extraits de `globals.css` `@theme` block v3.1, vérifié 2026-05-07) :
   - `--color-bg` (canvas ivoire chaud) : **`#faf8f3`**
   - `--color-paper` (blanc pur) : **`#ffffff`**
   - `--color-sand` : **`#f0e9da`** · `--color-sand-deep` : **`#e6dcc4`**
@@ -175,7 +175,7 @@ Pour chaque benchmark, extraire :
 - Palette utilisée dans les visuels (cohérence avec brand ?).
 - Style illustration (vectoriel / 3D / aquarelle / mixed media / minimaliste).
 - Emploi photos humaines (équipe / clients / personne).
-- ⚠️ Faille observée → leçon pour AxionIA.
+- ⚠️ Faille observée → leçon pour Axion-IA.
 
 ---
 
@@ -227,7 +227,7 @@ Pour chaque benchmark, extraire :
 4.3 **Prompt GPT-image template** (pour Will, copy-paste dans ChatGPT — hex palette EXACTS v3.1) :
 
 ```
-Editorial illustration, AxionIA brand restrained palette EXACTLY:
+Editorial illustration, Axion-IA brand restrained palette EXACTLY:
 terracotta brick #c24a1b (accent only, sparingly),
 warm mocha brown #2a2520 (deep tones, NEVER pure black),
 sage green #5e6c54 (proof/secondary accent),
@@ -246,7 +246,7 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
 4.4 **Choix moteur** :
 
 - **DALL-E 3 via ChatGPT Plus** : gratuit (inclus abonnement), qualité bonne, **pas de seed reproductible** (chaque gen unique).
-- **`gpt-image-1` via OpenAI API** : qualité 2026 supérieure (gestion meilleure du texte évité, palette plus fidèle), **supporte `seed` paramètre pour reproductibilité partielle**, coût ~$0.19/image qualité haute. Recommandé pour AxionIA (cohérence > économie marginale).
+- **`gpt-image-1` via OpenAI API** : qualité 2026 supérieure (gestion meilleure du texte évité, palette plus fidèle), **supporte `seed` paramètre pour reproductibilité partielle**, coût ~$0.19/image qualité haute. Recommandé pour Axion-IA (cohérence > économie marginale).
 - **DALL-E 3 via API** : ~$0.04-0.12/image standard / HD. Pas de seed.
   4.5 **Cohérence multi-illustrations — stratégies cumulables** :
 - (a) Toutes générations dans **la même session ChatGPT** (le contexte de session aide à la cohérence stylistique sur DALL-E 3).
@@ -297,18 +297,18 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
 7.6 Anonymisation clients : pour cas-concrets, jamais photo client réelle sans accord écrit. Préfère illustration GPT-image générique de la fonction (« CFO d'une PME industrielle »).
 7.7 Pas de photos stock générique « équipe diverse souriante » — anti-pattern absolu.
 7.8 Pas de photos « bureau Estonie » (revendication OÜ) si pas authentique — éviter le mensonge visuel.
-7.9 Alt text photos personnes : nom + rôle (ex : « Will [Nom], fondateur AxionIA »).
+7.9 Alt text photos personnes : nom + rôle (ex : « Will [Nom], fondateur Axion-IA »).
 7.10 Cohérence colorimétrie : photos retouchées avec léger filtre warm (palette terracotta/mocha) pour cohérence brand. Possible via Photoshop ou ChatGPT image edit.
 
 ### Chapitre 8 — Image SEO / AEO 2026
 
 8.1 Alt text : descriptif riche, naturel, contient kw pertinents sans bourrage.
 8.2 Filename SEO-friendly : `audit-ia-cabinet-axionia.avif` > `IMG_1234.avif`.
-8.3 Schema `ImageObject` JSON-LD pour images clés : `creator` = AxionIA, `caption`, `contentUrl`, `license`.
+8.3 Schema `ImageObject` JSON-LD pour images clés : `creator` = Axion-IA, `caption`, `contentUrl`, `license`.
 8.4 OpenGraph image dédiée par page : `opengraph-image.tsx` Next.js 16 + **`ImageResponse`** (`next/og`) — composant React SSR-rendered en PNG 1200x630 au build/runtime. Permet de générer des OG images dynamiques (ex: `/cas-concrets/[slug]/opengraph-image.tsx` qui prend titre + accent terracotta + diagramme depuis le slug). Pas besoin de bitmap statique. Plus puissant que template Photoshop. Réutilise les fonts `next/font` déjà chargées.
 8.5 Twitter card `summary_large_image` (1200x630, déjà géré dans `lib/seo.ts buildProductMetadata`).
 8.6 LinkedIn preview : check rendering via inspector LinkedIn.
-8.7 Sitemap images : Google sitemap-image.xml dédié si nombreux assets — overkill pour AxionIA actuel, mais à prévoir si pSEO villes (chaque ville = 1+ image).
+8.7 Sitemap images : Google sitemap-image.xml dédié si nombreux assets — overkill pour Axion-IA actuel, mais à prévoir si pSEO villes (chaque ville = 1+ image).
 8.8 AEO : Perplexity/SGE/Claude.ai citent images si schema correct + alt riche + caption visible.
 8.9 GEO : `<figure><img alt="..."><figcaption>...` plus puissant que `<img alt>` seul (signal sémantique fort).
 8.10 No-text-in-image rule : éviter texte intégré dans visuel (sauf logos), préférer overlay HTML (i18n + a11y + SEO).
@@ -335,7 +335,7 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
 10.5 **Style diagramme** : line-art outline, palette restreinte (max 3 couleurs/diagramme), labels typographiques (Manrope sans, Fraunces serif italique pour `titleEm` brand-coherent).
 10.6 **Hierarchy visuelle** : hero > section opener > inline support > decorative.
 10.7 **Cohérence inter-pages** : si une icône représente un concept (« audit »), même icône partout, jamais alterner.
-10.8 **Prompts GPT-image préfixe** : tous les prompts doivent commencer par le même bloc « style editorial AxionIA » pour cohérence inter-générations.
+10.8 **Prompts GPT-image préfixe** : tous les prompts doivent commencer par le même bloc « style editorial Axion-IA » pour cohérence inter-générations.
 10.9 **Naming assets** : convention `public/[type]/[page]-[slot].[ext]` (`illustrations/`, `screenshots/`, `portraits/`, `og/`).
 10.10 **Versioning** : si refresh asset, garder ancien sous `-v1` (rollback possible).
 
@@ -383,7 +383,7 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
 ### Agent C — Style guide & prompts GPT-image générateurs
 
 - Sur la base de la palette extraite (Agent A) + benchmarks (Agent B), produire :
-  - **Style guide AxionIA imagerie** (palette + iconographie + photo + illustration + diagramme + animation).
+  - **Style guide Axion-IA imagerie** (palette + iconographie + photo + illustration + diagramme + animation).
   - **Prompt préfixe GPT-image** réutilisable (le bloc « editorial illustration in restrained palette... » à coller en début de toute génération).
   - **20-50 prompts spécifiques** prêts à coller, un par visuel manquant identifié (à compléter par l'agent principal après diag).
 - Output : `visual-style-guide.md` + base de `gpt-image-prompts.md`.
@@ -430,7 +430,7 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
   - DALL-E 3 standard : $0.040/image · DALL-E 3 HD : $0.080/image.
   - GPT-image-1 low quality : $0.011/image · medium : $0.042/image · high : $0.190/image.
   - GPT-image-1 image edits : ~même tarif que generation.
-  - Pour AxionIA : recommander GPT-image-1 high (qualité + seed reproductible). Budget cible :
+  - Pour Axion-IA : recommander GPT-image-1 high (qualité + seed reproductible). Budget cible :
     - MIN ~10 visuels × $0.19 = **~$2** (négligeable).
     - STANDARD ~25 visuels × $0.19 = **~$5**.
     - PERFECTION ~50-80 visuels × $0.19 = **~$10-15**.
@@ -468,7 +468,7 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
    - 3 scénarios chiffrés (MIN / STANDARD / PERFECTION 2026).
    - Roadmap d'implémentation par sprint.
 
-2. **`_AUDIT/visual-style-guide.md`** : style guide unifié AxionIA imagerie (palette extraite, iconographie, photo, illustration, diagramme, animation, naming convention).
+2. **`_AUDIT/visual-style-guide.md`** : style guide unifié Axion-IA imagerie (palette extraite, iconographie, photo, illustration, diagramme, animation, naming convention).
 
 3. **`_AUDIT/gpt-image-prompts.md`** : prompts GPT-image prêts à coller (préfixe brand commun + un prompt par visuel manquant identifié, structuré par page).
 
@@ -497,7 +497,7 @@ Reference: visual language of Anthropic research papers + Stripe Press editorial
 Le rapport `AUDIT-VISUAL-RHYTHM-2026.md` doit ouvrir sur :
 
 ```
-# Audit Visual Rhythm 2026 — AxionIA
+# Audit Visual Rhythm 2026 — Axion-IA
 
 > Statut : DRAFT en attente validation Will
 > Date : 2026-05-XX

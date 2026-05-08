@@ -23,12 +23,12 @@ export function ComparisonsHeroSchema({
   const center = isFr
     ? {
         eyebrow: "Cabinet IA opérationnel",
-        title: "AxionIA",
+        title: "Axion-IA",
         detail: "Diagnostic, plan chiffré, implémentation pilotée. Hébergement UE.",
       }
     : {
         eyebrow: "Operational AI consultancy",
-        title: "AxionIA",
+        title: "Axion-IA",
         detail: "Diagnostic, costed plan, piloted implementation. EU hosting.",
       };
 

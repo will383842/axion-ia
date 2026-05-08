@@ -1,4 +1,4 @@
-# 📰 PROMPT PAGE PRESSE — AxionIA · Mini-sprint correctif
+# 📰 PROMPT PAGE PRESSE — Axion-IA · Mini-sprint correctif
 
 > **Version 1.0 · 2026-05-07** (statut : **base livrée** au commit `38879bc` `feat(press): add press room (FR+EN) + site-wide copy purge`. Reste à dérouler : page détail communiqué `/presse/[slug]`, assets `public/press-kit/`, alias `presse@axion-ia.com`, releases réelles, photo porte-parole.)
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA\axionia` (sous-repo Next.js 16).
@@ -36,21 +36,21 @@ Ajouter une **page presse** complète FR + EN qui renforce massivement les signa
 
 1. **Hero** (variant `transverse` avec `accent="terracotta"`, halo warm)
    - Eyebrow : « Espace presse · OÜ Estonie » (FR) / « Press room · Estonian OÜ » (EN)
-   - Title avec `titleEm` serif italique sur mot identitaire (ex : « Ressources <em>presse</em> AxionIA »)
+   - Title avec `titleEm` serif italique sur mot identitaire (ex : « Ressources <em>presse</em> Axion-IA »)
    - Description courte : pitch presse en 1-2 phrases
    - CTA primaire : « Télécharger le press kit » → ancre `#press-kit`
    - CTA secondaire : « Contacter la presse » → ancre `#contact`
 
 2. **Section Pitch presse** (`bg-paper` ou `bg-bg`)
    - Bloc direct-answer 40-80 mots citable par LLMs (signal AEO)
-   - Statistiques clés AxionIA en `<dl>` ou `<MetricsRow>` :
+   - Statistiques clés Axion-IA en `<dl>` ou `<MetricsRow>` :
      - Année de fondation OÜ
      - Nombre d'interventions livrées (à remplir, fixture)
      - Pays opérés (FR + EU)
      - ROI moyen mesuré
 
 3. **Section Press kit** (id `press-kit`, `bg-sand` ou `bg-halo-cool`)
-   - Logos AxionIA (PNG haute déf + SVG + clear space rules)
+   - Logos Axion-IA (PNG haute déf + SVG + clear space rules)
    - Photos officielles (porte-parole + équipe, format 1:1 + 16:9)
    - Brand book PDF (synthétique : palette + typo + ton)
    - Wordmark variations (couleur, monochrome, dark, light)
@@ -62,10 +62,10 @@ Ajouter une **page presse** complète FR + EN qui renforce massivement les signa
    - 3-5 fixtures de releases (peuvent être placeholders éditoriaux pour Phase 1)
    - Chaque release = card avec : date, titre, dek, tag (Lancement / Partenariat / Étude / Annonce produit), lien « Lire le communiqué » → page détail `[slug]`
    - Page détail : `/presse/[slug]` FR + `/press/[slug]` EN avec template `<NewsArticle>` schema
-   - **Au minimum 1 release réelle** : annonce du lancement AxionIA (date à définir avec Will)
+   - **Au minimum 1 release réelle** : annonce du lancement Axion-IA (date à définir avec Will)
 
 5. **Section Couverture médias** (id `couverture`, `bg-paper`)
-   - Logos médias qui ont parlé d'AxionIA (placeholders Phase 1, à remplacer dès premières mentions)
+   - Logos médias qui ont parlé d'Axion-IA (placeholders Phase 1, à remplacer dès premières mentions)
    - 3-5 articles externes en cards (logo média + date + titre article + lien externe `rel="noopener noreferrer"`)
    - Si aucun encore → message « Premières interventions médias à venir — contactez-nous pour interviews exclusives »
 
@@ -87,7 +87,7 @@ Ajouter une **page presse** complète FR + EN qui renforce massivement les signa
 
 8. **Section FAQ presse** (id `faq`, `bg-bg`)
    - 5-8 questions fréquentes journalistes (FAQPage schema)
-   - Ex : « Quelle est la juridiction d'AxionIA ? », « Qui sont vos clients types ? », « Pouvez-vous fournir des cas concrets pour articles ? », « Acceptez-vous les interviews vidéo ? »
+   - Ex : « Quelle est la juridiction d'Axion-IA ? », « Qui sont vos clients types ? », « Pouvez-vous fournir des cas concrets pour articles ? », « Acceptez-vous les interviews vidéo ? »
    - Réutiliser `<FaqAccordion>` avec auto JSON-LD FAQPage.
 
 ---
@@ -102,13 +102,13 @@ const pressJsonLd = {
   "@type": "WebPage",
   "@id": `${SITE_URL}/${locale === "fr" ? "presse" : "press"}`,
   url: `${SITE_URL}/${locale === "fr" ? "presse" : "press"}`,
-  name: locale === "fr" ? "Espace presse AxionIA" : "AxionIA press room",
+  name: locale === "fr" ? "Espace presse Axion-IA" : "Axion-IA press room",
   inLanguage: locale === "fr" ? "fr-FR" : "en-US",
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
   about: {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
-    name: "AxionIA OÜ",
+    name: "Axion-IA OÜ",
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
@@ -164,10 +164,10 @@ const releaseJsonLd = {
   headline: release.title,
   datePublished: release.date,
   dateModified: release.dateModified ?? release.date,
-  author: { "@type": "Organization", name: "AxionIA OÜ" },
+  author: { "@type": "Organization", name: "Axion-IA OÜ" },
   publisher: {
     "@type": "Organization",
-    name: "AxionIA OÜ",
+    name: "Axion-IA OÜ",
     logo: { "@type": "ImageObject", url: `${SITE_URL}/og/logo-axionia.png` },
   },
   image: [`${SITE_URL}/api/og?title=${encodeURIComponent(release.title)}`],
@@ -248,7 +248,7 @@ const releaseJsonLd = {
 
 1. **Email `presse@axion-ia.com`** : à créer côté DNS/MX (peut être alias vers `contact@axion-ia.com` Phase 1, alias dédié Phase 2).
 2. **Press kit assets** (`public/press-kit/`) : si Will n'a pas encore les fichiers (logos haute déf, brand book PDF, photos), créer les placeholders avec note `TODO: Will à fournir` dans `content/press.ts` et désactiver les boutons download via `disabled` UI. Ne pas inventer des fichiers.
-3. **Communiqués fixtures** : peuvent être éditoriaux Phase 1 (ex : « AxionIA lance son cabinet IA opérationnel à Tallinn »). Au moins **1 release réelle** datée pour signal authentique.
+3. **Communiqués fixtures** : peuvent être éditoriaux Phase 1 (ex : « Axion-IA lance son cabinet IA opérationnel à Tallinn »). Au moins **1 release réelle** datée pour signal authentique.
 4. **Couverture médias** : si aucun article encore, message transparent « Premières interventions médias à venir — contactez-nous pour exclusivités » plutôt que de fabriquer de la couverture inexistante (anti-pattern E-E-A-T).
 5. **Porte-parole** : nom + photo réels indispensables (E-E-A-T trust). Si Will n'a pas encore défini, demander avant de coder.
 6. **Tonalité presse** : factuelle, pas marketing. Pas de superlatifs (« le meilleur cabinet », « leader »). Faits + chiffres + sources.

@@ -35,7 +35,7 @@
 3.1 LocalBusiness schema valide
 3.2 areaServed correct (city + postalCode)
 3.3 Geo coordinates accurate (INSEE source)
-3.4 Address postale (siège AxionIA + areaServed)
+3.4 Address postale (siège Axion-IA + areaServed)
 3.5 Place schema pour entité ville
 3.6 PostalAddress correct
 3.7 PriceRange si pertinent
@@ -47,7 +47,7 @@
 
 4.1 Lien vers région parent
 4.2 Lien vers villes proches (3-6 villes département)
-4.3 Lien vers services AxionIA (audit/intervention/implementation)
+4.3 Lien vers services Axion-IA (audit/intervention/implementation)
 4.4 Breadcrumbs corrects
 4.5 Lien vers cas concrets régionaux
 4.6 Lien vers blog articles régionaux (si Sprint 14.6+)

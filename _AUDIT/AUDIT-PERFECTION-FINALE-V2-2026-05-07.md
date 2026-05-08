@@ -41,7 +41,7 @@ Dans la build output, route `/icon` apparaît bien comme `ƒ /icon` (dynamique E
 
 Pas de régression sur les 62 pages : la signature `ProductSeoInput` ajoute deux champs **optionnels** (`ogImage?`, `ogAccent?`), aucun call site existant n'a besoin d'être modifié. Build OK.
 
-🟠 **Encodage URL** : `encodeURIComponent(title)` traite les caractères spéciaux (`·`, `&`, accents). Vérifié sur `/methodologie:23-30` titre `"Méthodologie AxionIA · 4 étapes vers le ROI"` → URL générée propre.
+🟠 **Encodage URL** : `encodeURIComponent(title)` traite les caractères spéciaux (`·`, `&`, accents). Vérifié sur `/methodologie:23-30` titre `"Méthodologie Axion-IA · 4 étapes vers le ROI"` → URL générée propre.
 
 ### 1.6 🟠 Slug bug par-fonction EN — **partiellement** résolu
 
@@ -214,7 +214,7 @@ C'est l'**Action 3** de l'audit V1 (« reportée — nécessite design pass spé
 | Article.author Person                        | ✅                           | ✅                | `seo.ts:384-388`                                   |
 | `Person.sameAs` étendu (X, Mastodon, GitHub) | 🟠 LinkedIn seul             | 🟠 LinkedIn seul  | inchangé                                           |
 | `Organization.sameAs` (X, YouTube...)        | 🟠 LinkedIn + FB             | 🟠 LinkedIn + FB  | `seo.ts:201` inchangé                              |
-| `Organization.legalName` AxionIA OÜ          | ✅                           | ✅                | `seo.ts:195`                                       |
+| `Organization.legalName` Axion-IA OÜ         | ✅                           | ✅                | `seo.ts:195`                                       |
 | `Organization.foundingDate` 2024             | ✅                           | ✅                | `seo.ts:202`                                       |
 | `Organization.foundingLocation` Tallinn EE   | ✅                           | ✅                | `seo.ts:203-210`                                   |
 | `Organization.contactPoint`                  | ✅                           | ✅                | `seo.ts:213-218`                                   |

@@ -565,8 +565,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           id: "team-size",
           question: "Combien de participants ?",
-          answer:
-            "Trois paliers d'effectif : 2 à 8 personnes (490 € HT), 9 à 15 (790 € HT), 16 à 30 (1 190 € HT). Au-delà de 30 collaborateurs : voir « Sur demande particulière » pour un format adapté.",
+          answer: `Trois paliers d'effectif : ${ESSENTIELLE_PRICE_TIERS_FR.map((t) => `${t.size} (${t.price})`).join(", ")}. Au-delà de 30 collaborateurs : voir « Sur demande particulière » pour un format adapté.`,
         },
         {
           id: "deliverables",
@@ -579,7 +578,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ctaBlockDescription:
         "Réservez la prochaine intervention disponible. Le calendrier maison affiche les créneaux en temps réel.",
       metaSeo: {
-        title: `Intervention IA Essentielle · cabinet AxionIA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
+        title: `Intervention IA Essentielle · cabinet Axion-IA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
         description: `Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'automatisations. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, dès ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
       },
       daySchedule: {
@@ -684,8 +683,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           id: "team-size",
           question: "How many participants?",
-          answer:
-            "Three headcount tiers: 2 to 8 people (€490), 9 to 15 (€790), 16 to 30 (€1,190). Beyond 30: see 'Bespoke session' for an adapted format.",
+          answer: `Three headcount tiers: ${ESSENTIELLE_PRICE_TIERS_EN.map((t) => `${t.size} (${t.price})`).join(", ")}. Beyond 30: see 'Bespoke session' for an adapted format.`,
         },
         {
           id: "deliverables",
@@ -698,7 +696,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ctaBlockDescription:
         "Book the next available session. The on-site calendar shows live availability.",
       metaSeo: {
-        title: `Essential AI session · AxionIA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
+        title: `Essential AI session · Axion-IA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
         description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, from ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
       },
       daySchedule: {
@@ -1498,7 +1496,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     // L'accent peach Anthropic est appliqué uniquement sur le listing
     // /interventions (override local `claude`). Sur la page produit
     // dédiée, on retient `terracotta` qui est le tone le plus proche
-    // visuellement du peach Claude dans la palette AxionIA standard.
+    // visuellement du peach Claude dans la palette Axion-IA standard.
     accent: "terracotta",
     summary: {
       fr: {
@@ -1792,7 +1790,7 @@ function makeFr(args: {
       ],
     },
     metaSeo: {
-      title: `${args.title} · cabinet AxionIA`,
+      title: `${args.title} · cabinet Axion-IA`,
       description: args.answer.slice(0, 160),
     },
   };
@@ -1894,7 +1892,7 @@ function makeEn(args: {
       ],
     },
     metaSeo: {
-      title: `${args.title} · AxionIA consultancy`,
+      title: `${args.title} · Axion-IA consultancy`,
       description: args.answer.slice(0, 160),
     },
   };

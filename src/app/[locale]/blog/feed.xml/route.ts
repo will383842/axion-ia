@@ -38,7 +38,7 @@ export async function GET(_req: Request, { params }: RouteContext) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AxionIA · Blog ${locale.toUpperCase()}</title>
+    <title>Axion-IA · Blog ${locale.toUpperCase()}</title>
     <link>${SITE_URL}/${locale}/blog</link>
     <description>${isFr ? "Méthodologie, cas d'usage et stratégie IA pour entreprises." : "Methodology, use cases and AI strategy for businesses."}</description>
     <language>${locale === "fr" ? "fr-FR" : "en-US"}</language>

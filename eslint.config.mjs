@@ -17,6 +17,29 @@ const eslintConfig = defineConfig([
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
+      // A3.2 — module boundaries enforcement (warn d'abord, durcir en error
+      // une fois la baseline propre). Empêche : lib/ et content/ d'importer
+      // depuis components/ ou app/ (sens descendant uniquement).
+      "no-restricted-imports": [
+        "warn",
+        {
+          patterns: [
+            {
+              group: ["@/components/*", "@/app/*"],
+              message:
+                "Module boundary: lib/ and content/ must not import from components/ or app/ (descending imports only).",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["src/components/**/*.{ts,tsx}", "src/app/**/*.{ts,tsx}"],
+    rules: {
+      // Composants et pages peuvent importer librement depuis lib/, content/,
+      // hooks/, types/, etc. → on désactive la règle ci-dessus pour ce scope.
+      "no-restricted-imports": "off",
     },
   },
   globalIgnores([

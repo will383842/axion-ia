@@ -2,7 +2,7 @@
 
 **Date** : 2026-05-07
 **Auteur** : Will + Claude (Opus 4.7)
-**Statut** : addendum au brief `Wireframes-Briefs-AxionIA/08-Console-Admin.md` (Sprint 20)
+**Statut** : addendum au brief `Wireframes-Briefs-Axion-IA/08-Console-Admin.md` (Sprint 20)
 **Sprints concernés** : 15 (Prisma) → 17 (Server actions) → 20 (UI admin)
 
 ## Contexte

@@ -61,9 +61,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "Première région économique européenne (838 Md€ PIB), berceau de l'écosystème IA français — Mistral, Hugging Face, Station F. AxionIA y intervient sur site dans toute la couronne francilienne, des sièges grand-compte de La Défense aux PME parisiennes intra-muros.",
+      "Première région économique européenne (838 Md€ PIB), berceau de l'écosystème IA français — Mistral, Hugging Face, Station F. Axion-IA y intervient sur site dans toute la couronne francilienne, des sièges grand-compte de La Défense aux PME parisiennes intra-muros.",
     pitchEn:
-      "Europe's leading economic region (€838 B GDP), home to the French AI ecosystem — Mistral, Hugging Face, Station F. AxionIA intervenes on site across Greater Paris, from La Défense headquarters to inner-Paris SMEs.",
+      "Europe's leading economic region (€838 B GDP), home to the French AI ecosystem — Mistral, Hugging Face, Station F. Axion-IA intervenes on site across Greater Paris, from La Défense headquarters to inner-Paris SMEs.",
   },
   {
     slug: "auvergne-rhone-alpes",
@@ -79,9 +79,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Grenoble, Clermont-Ferrand, Annecy. AxionIA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
+      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
     pitchEn:
-      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Grenoble, Clermont-Ferrand, Annecy. AxionIA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
+      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
   },
   {
     slug: "provence-alpes-cote-d-azur",
@@ -97,9 +97,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 173 Md€, écosystème PME diversifié — tourisme premium, maritime, aérospatial, tech (Sophia-Antipolis). AxionIA accompagne dirigeants et DAF de Marseille, Aix-en-Provence, Nice, Toulon, Cannes sur leurs déploiements IA opérationnels.",
+      "PIB 173 Md€, écosystème PME diversifié — tourisme premium, maritime, aérospatial, tech (Sophia-Antipolis). Axion-IA accompagne dirigeants et DAF de Marseille, Aix-en-Provence, Nice, Toulon, Cannes sur leurs déploiements IA opérationnels.",
     pitchEn:
-      "GDP €173 B, diversified SME ecosystem — premium tourism, maritime, aerospace, tech (Sophia-Antipolis). AxionIA supports leaders and CFOs in Marseille, Aix-en-Provence, Nice, Toulon, Cannes on their operational AI deployments.",
+      "GDP €173 B, diversified SME ecosystem — premium tourism, maritime, aerospace, tech (Sophia-Antipolis). Axion-IA supports leaders and CFOs in Marseille, Aix-en-Provence, Nice, Toulon, Cannes on their operational AI deployments.",
   },
   {
     slug: "occitanie",
@@ -115,9 +115,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 178 Md€, capitale aéronautique européenne (Airbus, ATR), filière santé (Montpellier), agro-alimentaire dense. AxionIA y intervient auprès des ETI sous-traitantes et des laboratoires recherche.",
+      "PIB 178 Md€, capitale aéronautique européenne (Airbus, ATR), filière santé (Montpellier), agro-alimentaire dense. Axion-IA y intervient auprès des ETI sous-traitantes et des laboratoires recherche.",
     pitchEn:
-      "GDP €178 B, European aerospace capital (Airbus, ATR), health sector (Montpellier), dense agri-food. AxionIA serves sub-contracting mid-caps and research labs.",
+      "GDP €178 B, European aerospace capital (Airbus, ATR), health sector (Montpellier), dense agri-food. Axion-IA serves sub-contracting mid-caps and research labs.",
   },
   {
     slug: "nouvelle-aquitaine",
@@ -133,9 +133,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 178 Md€, plus grande région française par superficie. Vins (Bordeaux), aéronautique, agro-tourisme, énergie. AxionIA accompagne les domaines viticoles, ETI agro et PME tech de Bordeaux à Pau.",
+      "PIB 178 Md€, plus grande région française par superficie. Vins (Bordeaux), aéronautique, agro-tourisme, énergie. Axion-IA accompagne les domaines viticoles, ETI agro et PME tech de Bordeaux à Pau.",
     pitchEn:
-      "GDP €178 B, France's largest region by area. Wines (Bordeaux), aerospace, agri-tourism, energy. AxionIA supports wineries, agri mid-caps and tech SMEs from Bordeaux to Pau.",
+      "GDP €178 B, France's largest region by area. Wines (Bordeaux), aerospace, agri-tourism, energy. Axion-IA supports wineries, agri mid-caps and tech SMEs from Bordeaux to Pau.",
   },
   {
     slug: "hauts-de-france",
@@ -151,9 +151,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 167 Md€, hub logistique européen (port de Dunkerque, Eurotunnel), industrie automobile, distribution. AxionIA intervient auprès des sièges Auchan, Decathlon, Bonduelle et de l'écosystème industriel régional.",
+      "PIB 167 Md€, hub logistique européen (port de Dunkerque, Eurotunnel), industrie automobile, distribution. Axion-IA intervient auprès des sièges Auchan, Decathlon, Bonduelle et de l'écosystème industriel régional.",
     pitchEn:
-      "GDP €167 B, European logistics hub (Dunkirk port, Eurotunnel), automotive industry, retail. AxionIA serves Auchan, Decathlon, Bonduelle headquarters and the regional industrial ecosystem.",
+      "GDP €167 B, European logistics hub (Dunkirk port, Eurotunnel), automotive industry, retail. Axion-IA serves Auchan, Decathlon, Bonduelle headquarters and the regional industrial ecosystem.",
   },
   {
     slug: "grand-est",
@@ -169,9 +169,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 165 Md€, frontière Allemagne–Suisse–Belgique–Luxembourg. Champagne, automobile (Peugeot, Smart), pharma. AxionIA y déploie des interventions cross-border DE/FR pour ETI exportatrices.",
+      "PIB 165 Md€, frontière Allemagne–Suisse–Belgique–Luxembourg. Champagne, automobile (Peugeot, Smart), pharma. Axion-IA y déploie des interventions cross-border DE/FR pour ETI exportatrices.",
     pitchEn:
-      "GDP €165 B, German–Swiss–Belgian–Luxembourg border. Champagne, automotive (Peugeot, Smart), pharma. AxionIA delivers cross-border DE/FR engagements for exporting mid-caps.",
+      "GDP €165 B, German–Swiss–Belgian–Luxembourg border. Champagne, automotive (Peugeot, Smart), pharma. Axion-IA delivers cross-border DE/FR engagements for exporting mid-caps.",
   },
   {
     slug: "pays-de-la-loire",
@@ -187,9 +187,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 122 Md€, ETI industrielles familiales (Le Mans, Cholet, Vendée), naval (STX Saint-Nazaire), agro-alimentaire. AxionIA accompagne les transmissions et les pivots IA des dirigeants de la Vendée à la Loire-Atlantique.",
+      "PIB 122 Md€, ETI industrielles familiales (Le Mans, Cholet, Vendée), naval (STX Saint-Nazaire), agro-alimentaire. Axion-IA accompagne les transmissions et les pivots IA des dirigeants de la Vendée à la Loire-Atlantique.",
     pitchEn:
-      "GDP €122 B, family industrial mid-caps (Le Mans, Cholet, Vendée), naval (STX Saint-Nazaire), agri-food. AxionIA supports successions and AI pivots from Vendée to Loire-Atlantique.",
+      "GDP €122 B, family industrial mid-caps (Le Mans, Cholet, Vendée), naval (STX Saint-Nazaire), agri-food. Axion-IA supports successions and AI pivots from Vendée to Loire-Atlantique.",
   },
   {
     slug: "bretagne",
@@ -205,9 +205,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 102 Md€, agro-alimentaire (1ère région de France), tech (Rennes), maritime. AxionIA intervient auprès des coopératives agricoles, des ETI agro-industrielles et de l'écosystème b<>com de Rennes.",
+      "PIB 102 Md€, agro-alimentaire (1ère région de France), tech (Rennes), maritime. Axion-IA intervient auprès des coopératives agricoles, des ETI agro-industrielles et de l'écosystème b<>com de Rennes.",
     pitchEn:
-      "GDP €102 B, agri-food (France's #1 region), tech (Rennes), maritime. AxionIA serves agricultural cooperatives, agri-industrial mid-caps and Rennes' b<>com ecosystem.",
+      "GDP €102 B, agri-food (France's #1 region), tech (Rennes), maritime. Axion-IA serves agricultural cooperatives, agri-industrial mid-caps and Rennes' b<>com ecosystem.",
   },
   {
     slug: "normandie",
@@ -223,9 +223,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 95 Md€, Le Havre (1er port français en valeur), pétrochimie, automobile, élevage. AxionIA accompagne les industriels de Rouen, Caen et l'axe Seine sur des cas IA opérationnels logistique et qualité.",
+      "PIB 95 Md€, Le Havre (1er port français en valeur), pétrochimie, automobile, élevage. Axion-IA accompagne les industriels de Rouen, Caen et l'axe Seine sur des cas IA opérationnels logistique et qualité.",
     pitchEn:
-      "GDP €95 B, Le Havre (France's #1 port by value), petrochemical, automotive, livestock. AxionIA supports industrial operators in Rouen, Caen and the Seine corridor on operational AI cases — logistics and quality.",
+      "GDP €95 B, Le Havre (France's #1 port by value), petrochemical, automotive, livestock. Axion-IA supports industrial operators in Rouen, Caen and the Seine corridor on operational AI cases — logistics and quality.",
   },
   {
     slug: "bourgogne-franche-comte",
@@ -241,9 +241,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 81 Md€, vins (Bourgogne), automobile (PSA Sochaux, Alstom Belfort), microtechnique. AxionIA intervient auprès des sous-traitants Tier 1 automobile et des domaines viticoles familiaux.",
+      "PIB 81 Md€, vins (Bourgogne), automobile (PSA Sochaux, Alstom Belfort), microtechnique. Axion-IA intervient auprès des sous-traitants Tier 1 automobile et des domaines viticoles familiaux.",
     pitchEn:
-      "GDP €81 B, wines (Burgundy), automotive (PSA Sochaux, Alstom Belfort), microtechnology. AxionIA serves Tier 1 automotive sub-contractors and family wineries.",
+      "GDP €81 B, wines (Burgundy), automotive (PSA Sochaux, Alstom Belfort), microtechnology. Axion-IA serves Tier 1 automotive sub-contractors and family wineries.",
   },
   {
     slug: "centre-val-de-loire",
@@ -259,9 +259,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "PIB 76 Md€, cosmétique (vallée des parfums), pharma (Tours), logistique (Orléans, plateforme nord-Loire). AxionIA accompagne les ETI de la Cosmetic Valley et de la pharma touraine.",
+      "PIB 76 Md€, cosmétique (vallée des parfums), pharma (Tours), logistique (Orléans, plateforme nord-Loire). Axion-IA accompagne les ETI de la Cosmetic Valley et de la pharma touraine.",
     pitchEn:
-      "GDP €76 B, cosmetics (perfume valley), pharma (Tours), logistics (Orléans, north-Loire hub). AxionIA supports Cosmetic Valley mid-caps and Tours' pharma cluster.",
+      "GDP €76 B, cosmetics (perfume valley), pharma (Tours), logistics (Orléans, north-Loire hub). Axion-IA supports Cosmetic Valley mid-caps and Tours' pharma cluster.",
   },
   {
     slug: "corse",
@@ -277,9 +277,9 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 2,
     noindex: true,
     pitchFr:
-      "PIB 10 Md€, tourisme premium, vins, agro-alimentaire (clémentines, charcuterie). AxionIA intervient ponctuellement à Ajaccio et Bastia sur des missions courtes (2-3 jours) auprès des PME insulaires.",
+      "PIB 10 Md€, tourisme premium, vins, agro-alimentaire (clémentines, charcuterie). Axion-IA intervient ponctuellement à Ajaccio et Bastia sur des missions courtes (2-3 jours) auprès des PME insulaires.",
     pitchEn:
-      "GDP €10 B, premium tourism, wines, agri-food (clementines, charcuterie). AxionIA delivers occasional short engagements (2-3 days) in Ajaccio and Bastia for island SMEs.",
+      "GDP €10 B, premium tourism, wines, agri-food (clementines, charcuterie). Axion-IA delivers occasional short engagements (2-3 days) in Ajaccio and Bastia for island SMEs.",
   },
 
   // === DROM volontairement exclus 2026-05-08 ===

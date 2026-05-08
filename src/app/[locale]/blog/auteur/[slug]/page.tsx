@@ -36,10 +36,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/blog/auteur/${slug}`,
-    title: isFr ? `Articles de ${author} · AxionIA` : `Articles by ${author} · AxionIA`,
+    title: isFr ? `Articles de ${author} · Axion-IA` : `Articles by ${author} · Axion-IA`,
     description: isFr
-      ? `Articles publiés par ${author} sur le blog AxionIA.`
-      : `Articles by ${author} on the AxionIA blog.`,
+      ? `Articles publiés par ${author} sur le blog Axion-IA.`
+      : `Articles by ${author} on the Axion-IA blog.`,
   });
 }
 
@@ -61,7 +61,7 @@ export default async function BlogAuthorPage({ params }: Props) {
       "@type": "Person",
       name: author,
       url: `${SITE_URL}/${locale}/blog/auteur/${slug}`,
-      worksFor: { "@type": "Organization", name: "AxionIA" },
+      worksFor: { "@type": "Organization", name: "Axion-IA" },
     },
   } as const;
 
@@ -93,7 +93,7 @@ export default async function BlogAuthorPage({ params }: Props) {
             {[
               { icon: FileText, label: `${posts.length} ${isFr ? "articles" : "articles"}` },
               { icon: BookOpenCheck, label: isFr ? "Méthodologie testée" : "Field-tested method" },
-              { icon: Briefcase, label: "AxionIA OÜ" },
+              { icon: Briefcase, label: "Axion-IA OÜ" },
               { icon: Clock, label: isFr ? "Lecture 6-12 min" : "6-12 min read" },
             ].map((pill) => {
               const Icon = pill.icon;
@@ -114,7 +114,7 @@ export default async function BlogAuthorPage({ params }: Props) {
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
             <Cta href="/a-propos" variant="outline" size="lg">
-              {isFr ? "À propos d'AxionIA" : "About AxionIA"}
+              {isFr ? "À propos d'Axion-IA" : "About Axion-IA"}
             </Cta>
           </div>
         </Container>

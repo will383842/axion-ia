@@ -1,6 +1,6 @@
 // Server Component — schéma visuel du hero /methodologie.
 // FLOW NARRATIF en 3 actes (variante AuditHeroSchema) adaptée à la
-// méthodologie AxionIA en 4 étapes :
+// méthodologie Axion-IA en 4 étapes :
 //
 //   ACTE 1 — INPUT : votre entreprise telle qu'elle est aujourd'hui.
 //   ACTE 2 — PROCESSUS : 4 étapes méthodologiques (Identifier, Auditer,
@@ -54,7 +54,7 @@ export function MethodologyHeroSchema({
   className,
 }: MethodologyHeroSchemaProps): ReactNode {
   // 4 étapes méthodologiques — ce qu'on FAIT pendant un cycle complet
-  // AxionIA (Identifier → Auditer → Implémenter → Mesurer).
+  // Axion-IA (Identifier → Auditer → Implémenter → Mesurer).
   const steps: ReadonlyArray<ProcessStep> = isFr
     ? [
         {

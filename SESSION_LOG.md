@@ -1,4 +1,4 @@
-# SESSION_LOG — AxionIA
+# SESSION_LOG — Axion-IA
 
 > Append-only journal of work sessions on the Next.js codebase.
 > One entry per significant session. Most recent on top.
@@ -86,10 +86,10 @@
 | metric1 home « 90j → premiers gains »        | metric1 « 5j → cartographier toutes vos opportunités IA » |
 | Tallinn, Estonie / Tallinn, Estonia          | retiré (footer bottom strip + contact)                    |
 | OÜ estonienne / Estonian OÜ                  | Cabinet européen / European consultancy                   |
-| société estonienne                           | AxionIA OÜ / régime TVA UE                                |
+| société estonienne                           | Axion-IA OÜ / régime TVA UE                               |
 | addressLocality: "Tallinn" (JSON-LD home)    | retiré                                                    |
 | foundingLocation: "Estonia" (JSON-LD layout) | retiré                                                    |
-| FAQ audit « Vous êtes une OÜ estonienne ? »  | « AxionIA peut-elle facturer en France ? »                |
+| FAQ audit « Vous êtes une OÜ estonienne ? »  | « Axion-IA peut-elle facturer en France ? »               |
 
 ### Fichiers touchés (15)
 
@@ -200,7 +200,7 @@ Avant l'audit `PROMPT-SEO-AEO-GEO-2026.md`, ouverture d'un mini-sprint pour
 créer un espace presse complet — signal GEO E-E-A-T fort (page autorité
 médias + porte-parole + communiqués + press kit) et point d'entrée pour
 journalistes. Inspiration mise en page : page `/fr-fr/presse` SOS-Expat,
-mais transposée 100 % à la doctrine HEAD AxionIA (titleEm serif italique,
+mais transposée 100 % à la doctrine HEAD Axion-IA (titleEm serif italique,
 accents terracotta, halo warm, mocha-rich pour la bande contact).
 
 ### Livré

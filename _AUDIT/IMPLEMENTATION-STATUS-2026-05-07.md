@@ -33,7 +33,7 @@
 | `src/components/visual/Illustration.tsx`            | Server Component | Wrapper auto : si `src` fourni → `next/image` AVIF/WebP. Sinon → `IllustrationPlaceholder`. Gère figure/figcaption.                                   |
 | `src/components/sections/MethodologyHeroSchema.tsx` | Server Component | Flow vertical 4 étapes (Identifier → Auditer → Implémenter → Mesurer). Pattern doctrine `AuditHeroSchema`.                                            |
 | `src/components/sections/DetailHeroSchema.tsx`      | Server Component | **Paramétrable** : props `accent` + `blocks[]` + `eyebrow` + `title`. Réutilisable sur sous-pages produit (`/interventions/{slug}`, `/audit/{slug}`). |
-| `src/components/sections/ComparisonsHeroSchema.tsx` | Server Component | Triangle 3 pôles : AxionIA centre + 2 alternatives (SaaS générique, internalisation). Doctrine comparaison neutre, pas de FUD.                        |
+| `src/components/sections/ComparisonsHeroSchema.tsx` | Server Component | Triangle 3 pôles : Axion-IA centre + 2 alternatives (SaaS générique, internalisation). Doctrine comparaison neutre, pas de FUD.                       |
 | `src/components/sections/HelpHeroSchema.tsx`        | Server Component | Constellation 6 thématiques d'aide (Démarrer · Souveraineté · Coûts & ROI · Cas d'usage · Formation · Intégration).                                   |
 
 ---
@@ -107,7 +107,7 @@ public/og/[page]-og.png             (1200×630 OG images)
 **Workflow** :
 
 1. Ouvrir `_AUDIT/gpt-image-prompts.md` → identifier prompt par slot ID (ex `METHO-01-hero`).
-2. Copier préfixe brand AxionIA + sujet du prompt → coller dans ChatGPT Plus (DALL-E 3) ou OpenAI playground (`gpt-image-1` API seed=42).
+2. Copier préfixe brand Axion-IA + sujet du prompt → coller dans ChatGPT Plus (DALL-E 3) ou OpenAI playground (`gpt-image-1` API seed=42).
 3. Drop l'image AVIF dans le bon dossier `public/illustrations/`.
 4. Sur la page concernée, ajouter `src="/illustrations/[page]-[slot].avif"` à l'`<Illustration>` correspondante. Le placeholder disparaît automatiquement, layout préservé (paddingTop calculé selon aspectRatio).
 5. Coût indicatif : ~$0.19/image en `gpt-image-1` high quality, ou $0 marginal sur ChatGPT Plus inclus.

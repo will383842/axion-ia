@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/faq/${slug}`,
-    title: `${copy.question} · ${isFr ? "FAQ AxionIA" : "AxionIA FAQ"}`,
+    title: `${copy.question} · ${isFr ? "FAQ Axion-IA" : "Axion-IA FAQ"}`,
     description: copy.answer,
   });
 }
@@ -60,7 +60,7 @@ export default async function FaqEntryPage({ params }: Props) {
         "@type": "Answer",
         text: copy.answer,
         url: `${SITE_URL}/${locale}/faq/${slug}`,
-        author: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+        author: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
       },
     },
   } as const;
@@ -92,8 +92,8 @@ export default async function FaqEntryPage({ params }: Props) {
             titleEm={t.em}
             description={
               isFr
-                ? "Réponse directe AxionIA — courte, sourcée, mise à jour régulièrement."
-                : "Direct AxionIA answer — short, sourced, regularly updated."
+                ? "Réponse directe Axion-IA — courte, sourcée, mise à jour régulièrement."
+                : "Direct Axion-IA answer — short, sourced, regularly updated."
             }
           >
             <Container className="mt-8 max-w-2xl">

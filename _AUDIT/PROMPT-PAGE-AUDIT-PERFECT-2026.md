@@ -1,4 +1,4 @@
-# 🔬 PROMPT PAGE AUDIT PERFECT 2026 — AxionIA · Audit per-page exhaustif
+# 🔬 PROMPT PAGE AUDIT PERFECT 2026 — Axion-IA · Audit per-page exhaustif
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** pour les évolutions HEAD `fd91518` (64 routes, doctrine v3, ban formation levé).
 >
@@ -124,15 +124,15 @@ Tu es **auditeur senior frontend perfection 2026** — double casquette UX + ing
 37. Page référencée dans `llms.txt` (si pillar) ou `llms-full.txt` (si éditorial).
 38. RSS feed inclut la page si applicable (blog/cas/FAQ/presse).
 39. Itemscope microdata `Question`/`Answer` cohérent avec JSON-LD (double signal).
-40. **Citability test 5 LLMs** sur le mot-clé principal de la page → AxionIA cité au moins 1× sur 5 (baseline minimal).
+40. **Citability test 5 LLMs** sur le mot-clé principal de la page → Axion-IA cité au moins 1× sur 5 (baseline minimal).
 
 ## CATÉGORIE 5 — GEO (Generative Engine Optimization) + E-E-A-T (10 critères)
 
 41. **Experience signal** : first-hand experience documenté (cas concret méthodologie réelle, pas générique).
 42. **Expertise signal** : si page éditoriale → `Person` author byline avec `jobTitle` + `worksFor` + `sameAs` LinkedIn.
 43. **Authoritativeness signal** : citations externes/sources/références si applicable.
-44. **Trust signal** : mentions légales/contractuelles AxionIA OÜ (droit estonien, AKI, TVA EE) **uniquement sur pages légales** (`legal.ts`) — purgé du marketing copy 2026-05-07. Pour les autres pages : email RGPD + signaux UE/cabinet européen acceptables.
-45. **Brand consistency** : « AxionIA » écrit identiquement (jamais « Axion IA », « Axionia », « Axion-IA »).
+44. **Trust signal** : mentions légales/contractuelles Axion-IA OÜ (droit estonien, AKI, TVA EE) **uniquement sur pages légales** (`legal.ts`) — purgé du marketing copy 2026-05-07. Pour les autres pages : email RGPD + signaux UE/cabinet européen acceptables.
+45. **Brand consistency** : « Axion-IA » écrit identiquement (jamais « Axion IA », « Axionia », « Axion-IA »).
 46. **NAP consistency** : Name + Address + Phone identiques sur la page et footer.
 47. **dateModified** présent et cohérent (signal Google QDF — Query Deserves Freshness).
 48. **Author attribution** sur articles blog/cas (Person schema avec photo + bio + sameAs).
@@ -254,11 +254,11 @@ Tu es **auditeur senior frontend perfection 2026** — double casquette UX + ing
 
 ### Catégorie 1 — SEO technique
 
-| #   | Critère              | Score 0-3 | Note                                                       | Localisation |
-| --- | -------------------- | --------- | ---------------------------------------------------------- | ------------ |
-| 1   | `<title>` 50-60c     | 3         | "Cabinet IA opérationnel · ROI mesurable · AxionIA" 52c ✅ | page.tsx:42  |
-| 2   | `<meta description>` | 2         | 158c, manque CTA implicite                                 | page.tsx:43  |
-| ... | ...                  | ...       | ...                                                        | ...          |
+| #   | Critère              | Score 0-3 | Note                                                        | Localisation |
+| --- | -------------------- | --------- | ----------------------------------------------------------- | ------------ |
+| 1   | `<title>` 50-60c     | 3         | "Cabinet IA opérationnel · ROI mesurable · Axion-IA" 52c ✅ | page.tsx:42  |
+| 2   | `<meta description>` | 2         | 158c, manque CTA implicite                                  | page.tsx:43  |
+| ... | ...                  | ...       | ...                                                         | ...          |
 
 [idem pour catégories 2 à 10]
 

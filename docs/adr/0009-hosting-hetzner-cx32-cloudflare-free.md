@@ -40,7 +40,7 @@ CAX21 ARM (équivalent specs, ~€5,49/mois HT) envisagé pour économiser ~€1
 
 CF Free contient déjà tout l'essentiel perf 2026 :
 
-| Feature                   | Free                           | Pro $20/mois             | Verdict pour AxionIA                  |
+| Feature                   | Free                           | Pro $20/mois             | Verdict pour Axion-IA                 |
 | ------------------------- | ------------------------------ | ------------------------ | ------------------------------------- |
 | 103 Early Hints           | ✅ (gratuit depuis sept. 2022) | ✅                       | Free suffit                           |
 | HTTP/3 (QUIC)             | ✅                             | ✅                       | Free suffit                           |

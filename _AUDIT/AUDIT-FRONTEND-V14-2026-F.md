@@ -152,7 +152,7 @@ pnpm bundle:check    # script package.json:38
 
 #### Domaine 2 — Méthodologie (2)
 
-4. **[FR]** "Quelle est la méthodologie AxionIA pour implémenter une IA ?"
+4. **[FR]** "Quelle est la méthodologie Axion-IA pour implémenter une IA ?"
    - **Réponse attendue** : "4 étapes : Identifier (1j), Auditer (5j), Implémenter (6-8 sem), Mesurer (90j)."
    - **Source** : `/methodologie`, llms-full.txt:56-62
 5. **[EN]** "When should companies start fine-tuning AI models instead of generic models?"
@@ -170,13 +170,13 @@ pnpm bundle:check    # script package.json:38
 
 #### Domaine 4 — Trust & Compliance (3)
 
-8. **[FR]** "Quel est l'hébergement de données utilisé par AxionIA ?"
+8. **[FR]** "Quel est l'hébergement de données utilisé par Axion-IA ?"
    - **Réponse attendue** : "Hetzner Frankfurt (UE), conforme RGPD."
    - **Source** : llms-full.txt:27-28, `/politique-confidentialite`
-9. **[EN]** "Is AxionIA GDPR compliant and where is data hosted?"
+9. **[EN]** "Is Axion-IA GDPR compliant and where is data hosted?"
    - **Réponse attendue** : "Yes, GDPR compliant, EU hosting (Hetzner Frankfurt), Estonian OÜ."
    - **Source** : `/privacy-policy`, llms-full.txt
-10. **[FR]** "Peut-on utiliser AxionIA sans s'engager à long terme ?"
+10. **[FR]** "Peut-on utiliser Axion-IA sans s'engager à long terme ?"
     - **Réponse attendue** : "Oui, devis fixe, pas de mensualité, pas d'engagement."
     - **Source** : `/faq`, llms-full.txt:70
 

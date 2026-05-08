@@ -7,7 +7,7 @@
 
 ## 0. Mission
 
-Orchestrer la **certification complète frontend AxionIA niveau best-in-class 2026**, scale-ready (300K+ URLs), professionnel (standards SaaS premium), 100 % free-tier (Hetzner CX32 + Cloudflare Free), zéro régression.
+Orchestrer la **certification complète frontend Axion-IA niveau best-in-class 2026**, scale-ready (300K+ URLs), professionnel (standards SaaS premium), 100 % free-tier (Hetzner CX32 + Cloudflare Free), zéro régression.
 
 **Sortie attendue** : verdict GO / NO-GO production via Gate 26 (315 critères checklist exécutable, score normalisé /100). Voir § 5 « Système de scoring unifié ».
 
@@ -263,7 +263,8 @@ Moyenne pondérée des audits par vague :
    - `_AUDIT/PROMPT-PAGE-AUDIT-PERFECT-2026.md` (audit C5)
 4. **Si un prompt manque → STOP & ASK obligatoire** (ne pas continuer la certification incomplète, ne pas inventer un audit)
 5. **Référencer les thresholds canoniques** : `_AUDIT/CERTIFICATION-FRONTEND-2026/README.md` § « Thresholds canoniques » fait foi pour TOUS les seuils chiffrés
-6. `pnpm install && pnpm build` pour partir d'un état clean
+6. **Phase 0.5 — Reality check code vs doctrine (lecture seule)** : avant la Vague A, vérifie que `package.json`, `lighthouserc.json`, `next.config.ts`, `src/content/pricing.ts`, `Design.md`, ADRs `docs/adr/*` reflètent la doctrine annoncée par le README cert. Toute divergence est traitée par mise à jour du document, pas du code (cf. doctrine SSOT § README). Logger les écarts dans `_RUN-LOG`.
+7. `pnpm install && pnpm build` **optionnel** : ne lancer que si la session prévoit de patcher du code ou si le `.next/` local est sale. Pour un audit lecture-seule, skip et noter dans le run-log.
 
 ### Étape 2 : Exécuter vague par vague
 

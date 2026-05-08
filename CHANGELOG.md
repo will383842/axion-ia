@@ -1,4 +1,4 @@
-# Changelog AxionIA
+# Changelog Axion-IA
 
 Tous les changements notables du sous-repo `axionia/` sont consignés ici.
 

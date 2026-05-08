@@ -11,7 +11,7 @@ export default function DesignPage() {
       <Section
         titleAs="h1"
         eyebrow="Design system · v3.1"
-        title="AxionIA · Editorial"
+        title="Axion-IA · Editorial"
         titleEm="Premium Light"
         description="Reference page rendering palette, typography, radius, shadows, halos and motion. Source of truth: Design.md + ADR 0002 (pivot v3) + ADR 0004 (typography v3.1)."
       />
@@ -121,7 +121,7 @@ export default function DesignPage() {
           </SpecimenLine>
           <SpecimenLine label="lead · 1.4375rem (23 px) v3.1 · sans">
             <span className="text-fg-soft text-[1.4375rem] leading-[1.50]">
-              Paragraphe lead. AxionIA aligne corps & lead sur Anthropic depuis ADR 0004.
+              Paragraphe lead. Axion-IA aligne corps & lead sur Anthropic depuis ADR 0004.
             </span>
           </SpecimenLine>
           <SpecimenLine label="body / text-base · 1.125rem (18 px) v3.1 · -0.005em">

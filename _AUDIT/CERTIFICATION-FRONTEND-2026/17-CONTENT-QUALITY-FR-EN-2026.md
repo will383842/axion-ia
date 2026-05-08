@@ -20,7 +20,7 @@
 ### 2. Tone & voix de marque
 
 2.1 « cabinet IA opérationnel » FR / « operational AI consultancy » EN partout
-2.2 Jamais « agence/studio/atelier » pour AxionIA
+2.2 Jamais « agence/studio/atelier » pour Axion-IA
 2.3 Tone premium B2B (formel, expert, accessible)
 2.4 Pas de jargon AI gratuit (« transformer-based », « LLM agentique », expliquer)
 2.5 Ton consistant homepage / services / blog

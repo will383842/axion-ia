@@ -1,4 +1,4 @@
-# 🔬 PROMPT FRONTEND AUDIT V14-2026 — AxionIA · Vérification bout-en-bout post-Sprints 0-14
+# 🔬 PROMPT FRONTEND AUDIT V14-2026 — Axion-IA · Vérification bout-en-bout post-Sprints 0-14
 
 > **Version 1.0 · 2026-05-07** · audit unifié pré-backend
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA\axionia` (sous-repo Next.js 16).
@@ -66,8 +66,8 @@ Tu es **lead frontend reviewer indépendant** (double casquette UX + ingénieur 
 11. `axionia/package.json` — stack verrouillée (Next 16.2.4, Auth.js v5 beta, etc.).
 12. `axionia/.github/workflows/*.yml` — gates CI configurés.
 13. `axionia/docs/adr/*.md` — Architecture Decision Records.
-14. `Navigation-Complete-AxionIA.md` — sitemap exhaustif + user flows.
-15. `Wireframes-Briefs-AxionIA/00-08*.md` — 9 wireframes-briefs (référence visuelle de chaque page).
+14. `Navigation-Complete-Axion-IA.md` — sitemap exhaustif + user flows.
+15. `Wireframes-Briefs-Axion-IA/00-08*.md` — 9 wireframes-briefs (référence visuelle de chaque page).
 
 ### Skills
 
@@ -78,7 +78,7 @@ Tu es **lead frontend reviewer indépendant** (double casquette UX + ingénieur 
 
 18. `axionia-package/docs/_DECISIONS-FINALES.md` — décisions verrouillées 06/05/2026.
 19. `axionia-package/docs/_NO-STRIPE.md` — interdiction Stripe Phase 1.
-20. `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 — bible projet.
+20. `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 — bible projet.
 
 ### Doctrine visuelle — état 2026-05-07 (post-itérations Will)
 
@@ -174,7 +174,7 @@ GO si 0 P0 + ≤ 5 P1 cumulés sur les 15 commits. Sinon NO-GO Sprint 15.
 Pour **chaque** template du `_AUDIT/02b-mapping-pages.md` :
 
 - URL FR + EN existe (HTTP 200 build local).
-- Composant respecte le wireframe-brief associé (cf. `Wireframes-Briefs-AxionIA/`).
+- Composant respecte le wireframe-brief associé (cf. `Wireframes-Briefs-Axion-IA/`).
 - `generateMetadata` présent (title + description + canonical + alternates hreflang FR/EN/x-default).
 - JSON-LD présent et valide (Schema.org Validator API).
 - `<Breadcrumbs>` présent (sauf accueil) + JSON-LD `BreadcrumbList`.
@@ -399,7 +399,7 @@ Interroger sur 10 questions cibles :
 7. « ROI projet IA mesurable » (le terme « 90 jours » est purgé du marketing copy 2026-05-07)
 8. « simulateur ROI intelligence artificielle »
 9. « audit IA dirigeants ETI »
-10. « AxionIA avis cabinet »
+10. « Axion-IA avis cabinet »
 
 Sur **5 moteurs LLM 2026** :
 
@@ -410,7 +410,7 @@ Sur **5 moteurs LLM 2026** :
 - **Mistral Le Chat** (Pro)
 - _(bonus : Bing Copilot, You.com, Brave Search Summarizer)_
 
-Tableau de citation : URL citée, snippet rendu, position, qualité de la formulation. Si AxionIA n'apparaît dans aucun → P1 sur le chapitre AEO, sinon documenter le baseline pour comparaison Pass B.
+Tableau de citation : URL citée, snippet rendu, position, qualité de la formulation. Si Axion-IA n'apparaît dans aucun → P1 sur le chapitre AEO, sinon documenter le baseline pour comparaison Pass B.
 
 ## C.3 — GEO 2026 (Generative Engine Optimization)
 
@@ -425,7 +425,7 @@ Tableau de citation : URL citée, snippet rendu, position, qualité de la formul
 
 ### C.3.B · Brand mentions & co-citation
 
-- **Brand consistency** : « AxionIA » écrit identiquement partout (jamais « Axion IA », « Axionia », « Axion-IA » mélangés). Vérifier copy + alt + meta + structured data.
+- **Brand consistency** : « Axion-IA » écrit identiquement partout (jamais « Axion IA », « Axionia », « Axion-IA » mélangés). Vérifier copy + alt + meta + structured data.
 - **Co-citation entities** : pages mentionnent les bons partenaires/écosystème (Hetzner, Cloudflare, OÜ Estonia) qui renforcent l'autorité.
 - **Knowledge panel hints** : `Organization.sameAs` pointe vers profils officiels (LinkedIn, GitHub si applicable, Crunchbase, e-Business Register estonien).
 
@@ -476,9 +476,9 @@ Tableau de citation : URL citée, snippet rendu, position, qualité de la formul
 - 0 string hardcodée hors `messages/*.json` (script AST scan).
 - Vocabulaire cohérent : « cabinet », « intervention », « accompagnement », « opérationnel ». Banni : « formation »/« formateur »/« former » (sauf intent SEO whitelisted).
 - 0 « SIREN »/« SIRET »/« RCS » (anti-siren).
-- AxionIA OÜ mentionnée correctement sur les pages **légales uniquement** (`legal.ts` : droit estonien, AKI, TVA EE — obligatoires). Marketing copy purgé 2026-05-07 ; toute occurrence résiduelle « OÜ estonienne » / « Tallinn » / « Estonie » / « 90 jours » hors `legal.ts` = P1.
+- Axion-IA OÜ mentionnée correctement sur les pages **légales uniquement** (`legal.ts` : droit estonien, AKI, TVA EE — obligatoires). Marketing copy purgé 2026-05-07 ; toute occurrence résiduelle « OÜ estonienne » / « Tallinn » / « Estonie » / « 90 jours » hors `legal.ts` = P1.
 - Tonalité homogène (ne pas mélanger ton « startup B2C » et « cabinet B2B »).
-- Capitalization : « AxionIA » écrit identiquement (jamais « Axion IA », « Axionia », « Axion-IA »).
+- Capitalization : « Axion-IA » écrit identiquement (jamais « Axion IA », « Axionia », « Axion-IA »).
 - Espaces insécables FR (`&nbsp;`) avant `:`, `;`, `?`, `!`, `»`, après `«`, autour de `–`.
 
 ## D.3 — JSON-LD cohérence transverse
@@ -657,7 +657,7 @@ Sprint 0 Vitest configuré, Sprint 4 ≥ 50 %, Sprint 14 cible 70 %. Vérifier r
 Structure imposée :
 
 ```markdown
-# AUDIT FRONTEND V14-2026 — AxionIA
+# AUDIT FRONTEND V14-2026 — Axion-IA
 
 - Date : 2026-MM-DD
 - Auditeur : Claude Opus 4.7 (1M context)

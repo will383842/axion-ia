@@ -23,7 +23,7 @@
 > - Mobile-friendly natif (pas de menus à reproduire en accordéon)
 > - SEO meilleur : les pages parents reçoivent du jus de lien depuis le header
 
-(Source : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 353-359, version v6 selon journal de bord lignes 826-839 et 866-890.)
+(Source : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 353-359, version v6 selon journal de bord lignes 826-839 et 866-890.)
 
 ### Citations connexes (cohérence doctrinale)
 
@@ -139,8 +139,8 @@ ADR formel autorise les mega-menus pour exactement **deux** entrées du header, 
 
 **Bénéfices**
 
-- **Découvrabilité** : 1 clic pour atteindre Claude, GPT, Mistral depuis n'importe quelle page → impact direct sur AEO/GEO (citation par Perplexity/ChatGPT d'AxionIA quand requête « cabinet IA Mistral » par ex).
-- **UX desktop** : aligne AxionIA sur les références B2B premium (Anthropic, Vercel, Linear, Stripe). Signal de maturité du cabinet.
+- **Découvrabilité** : 1 clic pour atteindre Claude, GPT, Mistral depuis n'importe quelle page → impact direct sur AEO/GEO (citation par Perplexity/ChatGPT d'Axion-IA quand requête « cabinet IA Mistral » par ex).
+- **UX desktop** : aligne Axion-IA sur les références B2B premium (Anthropic, Vercel, Linear, Stripe). Signal de maturité du cabinet.
 - **Profil PERFECTION 2026** : seul scénario qui permet d'exposer simultanément le catalogue + les implantations sans surcharger le footer.
 - **Architecture future-proof** : si ajout d'une 12ème ou 15ème surface (ex: « Recherche IA », « Cas concrets sectoriels »), un mega-menu peut absorber ; un header plat ne le peut pas.
 
@@ -238,13 +238,13 @@ Le drawer §9.4 (ligne 390-404) accueille les nouvelles surfaces **en plat** :
 ### Positives
 
 - Catalogue IA et arborescence Implantations exposés en 1 clic depuis le header → impact AEO/GEO direct (Perplexity / ChatGPT plus enclins à citer une page accessible en 1 clic depuis racine).
-- AxionIA aligne son DOM-info-architecture sur les références B2B premium 2026 (Anthropic, Vercel, Linear, Stripe) — signal de maturité « cabinet IA opérationnel » (cf. mémoire `axionia_naming_cabinet.md`).
+- Axion-IA aligne son DOM-info-architecture sur les références B2B premium 2026 (Anthropic, Vercel, Linear, Stripe) — signal de maturité « cabinet IA opérationnel » (cf. mémoire `axionia_naming_cabinet.md`).
 - Doctrine §9.2 réécrite proprement plutôt que contournée — traçabilité ADR (pratique stipulée mémoire `axionia_audit_pattern.md` : empiler des prompts/ADR plutôt que patcher).
 - Architecture future-proof pour ajout d'une 3ème pression de scale (recherche IA, secteurs, partenariats) : un mega-menu peut absorber.
 
 ### Négatives / À surveiller
 
-- **Risque dérive éditoriale** : si la discipline ADR 0002 (terracotta + Fraunces + ivoire) n'est pas tenue, le mega-menu pousse AxionIA vers le SaaS B2C — exactement la tension qu'ADR 0002 a corrigée. Garde-fous esthétiques **non négociables**.
+- **Risque dérive éditoriale** : si la discipline ADR 0002 (terracotta + Fraunces + ivoire) n'est pas tenue, le mega-menu pousse Axion-IA vers le SaaS B2C — exactement la tension qu'ADR 0002 a corrigée. Garde-fous esthétiques **non négociables**.
 - **Surcoût a11y QA** : 2 nouveaux composants client → +30-45 min de revue WCAG par PR touchant le Header. Ajouter checklist explicite dans le template de PR.
 - **Surcoût Playwright** : 4-6 nouveaux tests (open trigger, close ESC, focus trap, keyboard arrows, prefers-reduced-motion, mobile drawer accordéon).
 - **Surveillance INP** : hover-intent + outside-click listener ajoutent 2 listeners globaux au document. Mesurer INP P75 post-déploiement (cible ≤ 80 ms cf. §8 v5).
@@ -256,7 +256,7 @@ Le drawer §9.4 (ligne 390-404) accueille les nouvelles surfaces **en plat** :
 - **Mémoire `axionia_progress.md`** : à mettre à jour après merge.
 - **`_AUDIT/PROMPT-FRONTEND-AUDIT-V14-2026.md`** chapitre Doctrine — ajouter référence à cette ADR (la doctrine HEAD inclura les mega-menus).
 - **`_AUDIT/PROMPT-HEADER-NAVIGATION-2026.md`** v1.3 — ce prompt devient validé en aval ; pas de réécriture.
-- **`Wireframes-Briefs-AxionIA/02-Page-Accueil.md` et fichiers wireframes header** — à mettre à jour en cohérence si présents.
+- **`Wireframes-Briefs-Axion-IA/02-Page-Accueil.md` et fichiers wireframes header** — à mettre à jour en cohérence si présents.
 - **`axionia/Design.md`** chapitre Header — section à ajouter sur les mega-menus.
 
 ---
@@ -343,7 +343,7 @@ Si après mise en prod l'INP P75 dépasse 80 ms, ou si l'audit a11y axe-core éc
 
 ## Liens
 
-- **Doctrine source** : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` §9.1 / §9.2 / §9.4 / §20 / §22 (lignes 333-409, 743, 881, 908).
+- **Doctrine source** : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` §9.1 / §9.2 / §9.4 / §20 / §22 (lignes 333-409, 743, 881, 908).
 - **Prompt parent** : `_AUDIT/PROMPT-HEADER-NAVIGATION-2026.md` v1.3 (Méthodologie §Agent C ligne 400-409, scénario PERFECTION 2026 ligne 442, INTERDITS ligne 448-454).
 - **ADR liées** : `axionia/docs/adr/0001-stack-initial.md`, `axionia/docs/adr/0002-design-pivot-editorial-v3.md`, `axionia/docs/adr/0003-lift-formation-ban.md`, `axionia/docs/adr/0004-typography-baseline-upgrade-v3-1.md`.
 - **Mémoires Will** : `axionia_audit_pattern.md` (empiler ADR), `axionia_design_pivot.md` (terracotta + serif italique fait foi), `axionia_stack_ia_page.md` (monogrammes pas logos), `axionia_naming_cabinet.md` (« cabinet IA opérationnel »), `axionia_perf_audit_2026-05-07.md` (lenteur clics — surveiller INP).

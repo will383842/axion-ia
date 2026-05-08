@@ -5,7 +5,7 @@
 
 ## 0. Contexte
 
-AxionIA va passer de **4 342 HTML statiques actuels** à un rythme de **100-300 nouvelles URLs/jour** :
+Axion-IA va passer de **4 342 HTML statiques actuels** à un rythme de **100-300 nouvelles URLs/jour** :
 
 - 36 500 à 109 500 nouvelles URLs/an
 - 100K-300K URLs cumulées à année 3

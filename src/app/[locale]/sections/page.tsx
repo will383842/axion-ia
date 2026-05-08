@@ -166,7 +166,7 @@ export default function SectionsPage() {
               {
                 id: "2024",
                 date: "2024",
-                title: "Création AxionIA OÜ",
+                title: "Création Axion-IA OÜ",
                 description: "Lancement du cabinet IA opérationnel.",
               },
               {

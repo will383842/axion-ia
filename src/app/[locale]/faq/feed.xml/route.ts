@@ -32,9 +32,9 @@ export async function GET(_req: Request, { params }: RouteContext) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AxionIA · FAQ ${locale.toUpperCase()}</title>
+    <title>Axion-IA · FAQ ${locale.toUpperCase()}</title>
     <link>${SITE_URL}/${locale}/faq</link>
-    <description>${isFr ? "Questions fréquentes sur AxionIA." : "Frequently asked questions about AxionIA."}</description>
+    <description>${isFr ? "Questions fréquentes sur Axion-IA." : "Frequently asked questions about Axion-IA."}</description>
     <language>${locale === "fr" ? "fr-FR" : "en-US"}</language>
     <atom:link href="${SITE_URL}/${locale}/faq/feed.xml" rel="self" type="application/rss+xml" />
 ${items}

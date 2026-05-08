@@ -1,4 +1,4 @@
-# 🔄 PROMPT DOC SYNC V14 — AxionIA · Synchronisation docs ↔ code
+# 🔄 PROMPT DOC SYNC V14 — Axion-IA · Synchronisation docs ↔ code
 
 > **Version 1.0 · 2026-05-07** · réconciliation documentation avec la réalité du code
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA`
@@ -9,7 +9,7 @@
 
 ## 🎯 SCOPE
 
-Le code AxionIA a massivement évolué entre 2026-05-06 et 2026-05-07 (~30 commits) tandis que plusieurs documents sources sont restés sur l'état initial. Ce prompt **synchronise les docs avec le code** sans toucher au code lui-même.
+Le code Axion-IA a massivement évolué entre 2026-05-06 et 2026-05-07 (~30 commits) tandis que plusieurs documents sources sont restés sur l'état initial. Ce prompt **synchronise les docs avec le code** sans toucher au code lui-même.
 
 ### Constat à 2026-05-07 (snapshot HEAD)
 
@@ -74,7 +74,7 @@ Tu es **technical writer senior** + auditeur de cohérence documentation/code. L
 27. `axionia/Design.md` — doctrine visuelle racine.
 28. `axionia-package/.claude/skills/axionia-*/SKILL.md` — 18 skills.
 29. `axionia-package/.claude/skills/CHANGELOG-LOCKS.md` — 22 LOCKs.
-30. `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 — bible projet (à reviewer mais probablement source historique gelée).
+30. `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 — bible projet (à reviewer mais probablement source historique gelée).
 31. Mémoire `~/.claude/projects/C--Users-willi/memory/axionia_*.md` — 8 fichiers.
 
 ---
@@ -228,7 +228,7 @@ Format : 3 sections concises **après** les mises à jour docs.
 # 📊 SORTIE — `_AUDIT/DOC-SYNC-REPORT-V14.md`
 
 ```markdown
-# Doc Sync Report V14 — AxionIA
+# Doc Sync Report V14 — Axion-IA
 
 - Date : 2026-MM-DD
 - Auditeur : Claude Opus 4.7 (1M context) + 5 agents

@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: locale === "fr" ? "/implementation/par-techno" : "/implementation/by-technology",
     title:
       locale === "fr"
-        ? "Implémentation IA par technologie · 9 prestations · AxionIA"
-        : "AI implementation by technology · 9 services · AxionIA",
+        ? "Implémentation IA par technologie · 9 prestations · Axion-IA"
+        : "AI implementation by technology · 9 services · Axion-IA",
     description:
       locale === "fr"
         ? "9 prestations d'implémentation IA par brique technologique : chatbot, agents autonomes, structuration, CRM/ERP, documents, intégrations, no-code, IA Custom premium."
@@ -63,7 +63,7 @@ export default async function ImplementationByTechPage({ params }: Props) {
   ];
 
   // ItemList JSON-LD — expose les 9 prestations IMPLEMENTATIONS au crawler
-  // (AEO/GEO 2026 : LLMs résolvent « quelles prestations IA AxionIA par
+  // (AEO/GEO 2026 : LLMs résolvent « quelles prestations IA Axion-IA par
   // brique technologique ? » avec URL par item — chaque slug a sa page
   // dédiée /implementation/${slug}).
   const detailPath = isFr ? "/implementation/par-techno" : "/implementation/by-technology";
@@ -71,8 +71,8 @@ export default async function ImplementationByTechPage({ params }: Props) {
     locale: loc,
     path: detailPath,
     name: isFr
-      ? "9 prestations d'implémentation IA AxionIA · par technologie"
-      : "9 AxionIA AI implementation services · by technology",
+      ? "9 prestations d'implémentation IA Axion-IA · par technologie"
+      : "9 Axion-IA AI implementation services · by technology",
     items: IMPLEMENTATIONS.map((item, idx) => {
       const c = item[loc];
       return {

@@ -1,6 +1,6 @@
-# 📚 PHASE 0 — Fiches de lecture · AxionIA
+# 📚 PHASE 0 — Fiches de lecture · Axion-IA
 
-> **Mission** : synthèse READ-ONLY de TOUS les documents/skills du dossier AxionIA, prélude à l'audit transverse de la Phase 1. Conforme au prompt-maître v1.1 (06/05/2026).
+> **Mission** : synthèse READ-ONLY de TOUS les documents/skills du dossier Axion-IA, prélude à l'audit transverse de la Phase 1. Conforme au prompt-maître v1.1 (06/05/2026).
 >
 > **Source de vérité ultime** : `axionia-package/docs/_DECISIONS-FINALES.md` (06/05/2026).
 > **Référence Claude Code** : `CLAUDE.md v5` (réécrit pour aligner sur \_DECISIONS-FINALES).
@@ -159,7 +159,7 @@ Méthode : extraction `python-docx` → fiche 10 lignes par doc + détection des
 
 - **Statut** : à corriger.
 - Compteurs officiels : +120 / +18 000 h / +6,4 M€ / 96 %.
-- **Sous-titre Hero contient « AxionIA _forme_ vos équipes »** — verbe banni.
+- **Sous-titre Hero contient « Axion-IA _forme_ vos équipes »** — verbe banni.
 - **Cohérence** : ÉCART (voir contradictions §6).
 
 ### 17 — Témoignages & Preuves Sociales
@@ -383,7 +383,7 @@ Méthode : extraction `python-docx` → fiche 10 lignes par doc + détection des
 - Warmup IP : 10/j → 2000+/j (S6+).
 - **Cohérence** : OK.
 
-### Navigation-Complete-AxionIA.md
+### Navigation-Complete-Axion-IA.md
 
 - 61 templates × 2 langues = 340 routes au démarrage.
 - 7 user flows critiques (Mermaid), états spéciaux par écran.
@@ -456,16 +456,16 @@ Le **mégapack** (`axionia-megapack-skills/`) est un **sous-ensemble strict** du
 
 # 5. Inventaire `awesome-design-md-main/` (73 marques)
 
-**Top 12 marques recommandées pour le futur `DESIGN.md` AxionIA** (Phase 2.0) :
+**Top 12 marques recommandées pour le futur `DESIGN.md` Axion-IA** (Phase 2.0) :
 
-| Rang | Marque         | Justification AxionIA                                                                                                 |
+| Rang | Marque         | Justification Axion-IA                                                                                                |
 | ---- | -------------- | --------------------------------------------------------------------------------------------------------------------- |
 | 1    | **Vercel**     | Blanc dominant, near-black #171717, _shadow-as-border_, Geist Sans serré. Référence absolue pour cabinet IA premium.  |
 | 2    | **Stripe**     | Blanc canvas, navy #061b31, weight 300 display, ombres bleu-tintées = signaux luxe sans gradients.                    |
 | 3    | **Linear**     | Discipline structurelle, single accent #5e6ad2, hairlines hyperfines. À inverser en thème clair.                      |
 | 4    | **Apple**      | Galerie museum-like, Action Blue unique, type négative letter-spacing. Modèle pages cas-concrets et IA Custom.        |
 | 5    | **IBM**        | Carbon Design = sobriété enterprise pure, blanc + IBM Blue + IBM Plex Sans 300. Très proche McKinsey/Roland Berger.   |
-| 6    | **Mintlify**   | Dual mode docs : marketing clair + docs dense. Pour centre d'aide / FAQ / blog AxionIA.                               |
+| 6    | **Mintlify**   | Dual mode docs : marketing clair + docs dense. Pour centre d'aide / FAQ / blog Axion-IA.                              |
 | 7    | **Cal.com**    | Blanc, CTA noir, Cal Sans + Inter. Modèle direct pour calendrier maison.                                              |
 | 8    | **Intercom**   | Cream blanc + Saans + un seul Fin Orange. Leçon « single accent » SaaS service.                                       |
 | 9    | **Superhuman** | Blanc dominant 90%+, un seul moment dramatique. Inspiration page d'accueil et /interventions/essentielle.             |

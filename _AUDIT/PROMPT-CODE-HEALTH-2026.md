@@ -1,4 +1,4 @@
-# 🔬 PROMPT CODE HEALTH AUDIT 2026 — AxionIA · Rapidité site (Phase A) + Santé long-terme (Phase B)
+# 🔬 PROMPT CODE HEALTH AUDIT 2026 — Axion-IA · Rapidité site (Phase A) + Santé long-terme (Phase B)
 
 > **Version 1.0 · 2026-05-07**
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA\axionia` (sous-repo Next.js 16).
@@ -75,7 +75,7 @@ Tu es **lead software engineer + principal performance engineer** pour Next.js 1
 - **Outils** : `knip` (dead code + unused deps), `madge` (circular deps), `jscpd` (clone detection), `@next/bundle-analyzer` (bundle composition), ESLint (`eslint-plugin-complexity`, `eslint-plugin-functional`, `eslint-plugin-import`), `depcheck` (unused npm deps).
 - **Code smells** : long methods (> 50 lignes), god classes, feature envy, primitive obsession, shotgun surgery, divergent change, switch statement abuse.
 
-**Spécialisation AxionIA** : tu sais que Will doit gérer ~150 fichiers actuels + scale ~2 150 pages générées via templates (villes) + i18n FR/EN + 7+ factories JSON-LD + composants HeroSchema multiples. Le prompt vise **maintenabilité solo dev** sur 12+ mois + scale build à 2 150 routes statiques.
+**Spécialisation Axion-IA** : tu sais que Will doit gérer ~150 fichiers actuels + scale ~2 150 pages générées via templates (villes) + i18n FR/EN + 7+ factories JSON-LD + composants HeroSchema multiples. Le prompt vise **maintenabilité solo dev** sur 12+ mois + scale build à 2 150 routes statiques.
 
 **Posture** :
 
@@ -184,7 +184,7 @@ A4.3 Layout shifts (CLS) causés par composants hydratés tardivement.
 A4.4 Re-renders abusifs : audit React DevTools flame graph sur pages typiques.
 A4.5 `useMemo`/`useCallback` mal placés (sur-optimisation = surcoût) ou manquants (sous-optimisation).
 A4.6 Context providers trop larges (re-render cascade).
-A4.7 Listes non-virtualisées si > 100 items (rare sur AxionIA mais à vérifier sur catalogue villes futur).
+A4.7 Listes non-virtualisées si > 100 items (rare sur Axion-IA mais à vérifier sur catalogue villes futur).
 A4.8 Animations CSS vs JS : cohérence, prefers-reduced-motion respect.
 A4.9 Event listeners passifs (`{ passive: true }`) sur scroll/touch.
 A4.10 Web Workers / OffscreenCanvas : si calcul lourd côté client (ROI calculator ?), envisager.
@@ -263,7 +263,7 @@ B4.10 Inférence vs annotation explicite : balance lisibilité/sécurité.
 B5.1 Test coverage globale (% lines + % branches) — outil : Vitest/Jest coverage.
 B5.2 Coverage par fichier — identifier zones critiques sous-testées.
 B5.3 Tests existants pertinence : tests qui testent l'implémentation (cassent au refactor) vs tests qui testent le comportement (robustes).
-B5.4 Tests E2E vs unit vs integration : ratio AxionIA actuel.
+B5.4 Tests E2E vs unit vs integration : ratio Axion-IA actuel.
 B5.5 `lib/utils.test.ts` et autres tests existants : qualité (assertions précises, edge cases).
 B5.6 Mocks : usage approprié vs sur-mocking qui casse la confiance.
 B5.7 Snapshot tests : volume + maintenance cost.
@@ -403,7 +403,7 @@ B6.10 Commit messages convention (Conventional Commits + scope ?).
 Le rapport `AUDIT-CODE-HEALTH-2026.md` doit ouvrir sur :
 
 ```
-# Audit Code Health 2026 — AxionIA
+# Audit Code Health 2026 — Axion-IA
 
 > Statut : DRAFT en attente validation Will
 > Date : 2026-05-XX

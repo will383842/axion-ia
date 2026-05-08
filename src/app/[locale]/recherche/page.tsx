@@ -21,11 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/recherche",
-    title: locale === "fr" ? "Recherche · AxionIA" : "Search · AxionIA",
+    title: locale === "fr" ? "Recherche · Axion-IA" : "Search · Axion-IA",
     description:
       locale === "fr"
-        ? "Recherche full-text sur le contenu AxionIA — interventions, audit, blog, FAQ, aide."
-        : "Full-text search across AxionIA content — sessions, audit, blog, FAQ, help.",
+        ? "Recherche full-text sur le contenu Axion-IA — interventions, audit, blog, FAQ, aide."
+        : "Full-text search across Axion-IA content — sessions, audit, blog, FAQ, help.",
     alternates: { fr: "/recherche", en: "/search" },
   });
   return { ...meta, robots: { index: false, follow: true } };
@@ -64,7 +64,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
         titleAs="h1"
         eyebrow={isFr ? "Recherche" : "Search"}
         title={isFr ? "Trouver dans" : "Search"}
-        titleEm={isFr ? "AxionIA" : "AxionIA"}
+        titleEm={isFr ? "Axion-IA" : "Axion-IA"}
         description={
           isFr
             ? "Recherche cross-content (blog, FAQ, aide, cas concrets, glossaire). Sprint 15 connecte Postgres FTS — pour l'instant le moteur est en cours de construction."

@@ -126,7 +126,7 @@ export default async function PressePage({ params }: Props) {
     about: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "AxionIA OÜ",
+      name: "Axion-IA OÜ",
       url: SITE_URL,
       foundingDate: "2024",
       address: {
@@ -160,7 +160,7 @@ export default async function PressePage({ params }: Props) {
     sameAs: [p.linkedinUrl],
     knowsAbout: [...p.knowsAbout],
     knowsLanguage: p.languages.map((l) => (l === "fr" ? "French" : "English")),
-    worksFor: { "@type": "Organization", name: "AxionIA OÜ", url: SITE_URL },
+    worksFor: { "@type": "Organization", name: "Axion-IA OÜ", url: SITE_URL },
   }));
 
   const releasesItemList =
@@ -182,8 +182,8 @@ export default async function PressePage({ params }: Props) {
               datePublished: r.publishedAt,
               dateModified: r.publishedAt,
               inLanguage: loc,
-              author: { "@type": "Organization", name: "AxionIA OÜ" },
-              publisher: { "@type": "Organization", name: "AxionIA OÜ", url: SITE_URL },
+              author: { "@type": "Organization", name: "Axion-IA OÜ" },
+              publisher: { "@type": "Organization", name: "Axion-IA OÜ", url: SITE_URL },
               image: `${SITE_URL}/api/og?title=${encodeURIComponent(r.title)}&accent=primary`,
             },
           })),
@@ -240,8 +240,8 @@ export default async function PressePage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une vitrine de magazine premium symbolisant l'espace presse AxionIA."
-                  : "Editorial illustration of a premium magazine front symbolizing the AxionIA press room."
+                  ? "Illustration éditoriale d'une vitrine de magazine premium symbolisant l'espace presse Axion-IA."
+                  : "Editorial illustration of a premium magazine front symbolizing the Axion-IA press room."
               }
               priority
             />

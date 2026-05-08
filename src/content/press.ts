@@ -26,9 +26,9 @@ function pressPitchShort(loc: "fr" | "en"): string {
   const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `AxionIA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de ${formatAmount(interventionEssentielle.priceFlat!, "fr", { compact: true })}, ${interventionsEntry}), audits IA en 4 niveaux (Flash ${flash} → Stratégique ETI dès ${etiFrom}) et implémentations sur mesure (${implEntry}). Hébergement UE par défaut, RGPD strict.`;
+    return `Axion-IA est un cabinet IA opérationnel pour entreprises de toutes tailles — de l'artisan à l'ETI. Nous intervenons sur site ou à distance pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain (à partir de ${formatAmount(interventionEssentielle.priceFlat!, "fr", { compact: true })}, ${interventionsEntry}), audits IA en 4 niveaux (Flash ${flash} → Stratégique ETI dès ${etiFrom}) et implémentations sur mesure (${implEntry}). Hébergement UE par défaut, RGPD strict.`;
   }
-  return `AxionIA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from ${formatAmount(interventionEssentielle.priceFlat!, "en", { compact: true })}, ${interventionsEntry}), AI audits in 4 tiers (Flash ${flash} → Strategic Mid-cap from ${etiFrom}) and custom implementations (${implEntry}). EU hosting by default, strict GDPR.`;
+  return `Axion-IA is an operational AI consultancy for companies of all sizes — from sole traders to mid-caps. We work on site or remotely to identify, demonstrate and implement AI use cases generating measurable return on investment. Three modules: on-site sessions (from ${formatAmount(interventionEssentielle.priceFlat!, "en", { compact: true })}, ${interventionsEntry}), AI audits in 4 tiers (Flash ${flash} → Strategic Mid-cap from ${etiFrom}) and custom implementations (${implEntry}). EU hosting by default, strict GDPR.`;
 }
 
 function pressReleaseLaunchBody(loc: "fr" | "en"): string {
@@ -41,9 +41,9 @@ function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `AxionIA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé ${cibleMin} à ${cibleMax}, Stratégique PME ${pmeMin} à ${pmeMax}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+    return `Axion-IA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé ${cibleMin} à ${cibleMax}, Stratégique PME ${pmeMin} à ${pmeMax}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
   }
-  return `AxionIA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted ${cibleMin} to ${cibleMax}, Strategic SME ${pmeMin} to ${pmeMax}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+  return `Axion-IA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted ${cibleMin} to ${cibleMax}, Strategic SME ${pmeMin} to ${pmeMax}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
 }
 
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";
@@ -118,13 +118,13 @@ export const PRESS_PITCH: { fr: PressPitchLocale; en: PressPitchLocale } = {
     eyebrow: "Espace presse",
     short: pressPitchShort("fr"),
     boilerplate:
-      "AxionIA OÜ est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
+      "Axion-IA OÜ est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
   },
   en: {
     eyebrow: "Press room",
     short: pressPitchShort("en"),
     boilerplate:
-      "AxionIA OÜ is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
+      "Axion-IA OÜ is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
   },
 };
 
@@ -276,12 +276,12 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     publishedAt: "2026-05-07",
     tag: "launch",
     fr: {
-      title: "AxionIA lance sa plateforme de cabinet IA opérationnel",
+      title: "Axion-IA lance sa plateforme de cabinet IA opérationnel",
       dek: "Le cabinet ouvre axion-ia.com, un point d'entrée unique pour les entreprises souhaitant identifier et déployer des usages IA à ROI mesurable.",
       body: pressReleaseLaunchBody("fr"),
     },
     en: {
-      title: "AxionIA launches its operational AI consultancy platform",
+      title: "Axion-IA launches its operational AI consultancy platform",
       dek: "The firm opens axion-ia.com, a single entry point for companies looking to identify and deploy AI use cases with measurable ROI.",
       body: pressReleaseLaunchBody("en"),
     },
@@ -291,14 +291,14 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     publishedAt: "2026-05-07",
     tag: "milestone",
     fr: {
-      title: "AxionIA publie sa méthode en quatre étapes",
+      title: "Axion-IA publie sa méthode en quatre étapes",
       dek: "Cadrage, démonstration, plan chiffré, mise en production — pour passer de l'idée IA au déploiement opérationnel sans POC perdu.",
-      body: "AxionIA détaille pour la presse sa méthode propriétaire en quatre étapes. Étape 1 : cadrage 30 minutes gratuit pour qualifier le besoin. Étape 2 : démonstration sur site ou à distance, sur les vraies données du client. Étape 3 : plan chiffré priorisé livré sous 5 jours. Étape 4 : mise en production avec 30 jours de support inclus. Cette approche élimine les POC théoriques sans suite, traditionnellement responsables de 80 % des échecs IA en entreprise.",
+      body: "Axion-IA détaille pour la presse sa méthode propriétaire en quatre étapes. Étape 1 : cadrage 30 minutes gratuit pour qualifier le besoin. Étape 2 : démonstration sur site ou à distance, sur les vraies données du client. Étape 3 : plan chiffré priorisé livré sous 5 jours. Étape 4 : mise en production avec 30 jours de support inclus. Cette approche élimine les POC théoriques sans suite, traditionnellement responsables de 80 % des échecs IA en entreprise.",
     },
     en: {
-      title: "AxionIA publishes its four-step method",
+      title: "Axion-IA publishes its four-step method",
       dek: "Scoping, demonstration, costed plan, production — to go from AI idea to operational deployment without abandoned POCs.",
-      body: "AxionIA details its proprietary four-step method for the press. Step 1: free 30-minute scoping call to qualify the need. Step 2: on-site or remote demonstration on the client's real data. Step 3: prioritized costed plan delivered within 5 days. Step 4: production deployment with 30 days of support included. This approach eliminates the abandoned theoretical POCs traditionally responsible for 80% of enterprise AI failures.",
+      body: "Axion-IA details its proprietary four-step method for the press. Step 1: free 30-minute scoping call to qualify the need. Step 2: on-site or remote demonstration on the client's real data. Step 3: prioritized costed plan delivered within 5 days. Step 4: production deployment with 30 days of support included. This approach eliminates the abandoned theoretical POCs traditionally responsible for 80% of enterprise AI failures.",
     },
   },
   {
@@ -306,14 +306,14 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     publishedAt: "2026-05-07",
     tag: "study",
     fr: {
-      title: "Souveraineté IA : AxionIA confirme l'hébergement UE par défaut",
+      title: "Souveraineté IA : Axion-IA confirme l'hébergement UE par défaut",
       dek: "Tous les workloads clients sont hébergés sur Hetzner Frankfurt. Aucun envoi de données sensibles à des tiers sans consentement explicite.",
-      body: "Face aux préoccupations croissantes des dirigeants européens sur la souveraineté des données IA, AxionIA confirme une politique d'hébergement UE par défaut. Toute donnée client transite et reste sur Hetzner CX32 à Frankfurt. Les modèles IA peuvent être hébergés on-premise ou sur infrastructure dédiée si requis. La politique RGPD est strictement appliquée : exercice des droits sous 30 jours, anonymisation systématique des échantillons utilisés en démos, DPO joignable à dpo@axion-ia.com.",
+      body: "Face aux préoccupations croissantes des dirigeants européens sur la souveraineté des données IA, Axion-IA confirme une politique d'hébergement UE par défaut. Toute donnée client transite et reste sur Hetzner CX32 à Frankfurt. Les modèles IA peuvent être hébergés on-premise ou sur infrastructure dédiée si requis. La politique RGPD est strictement appliquée : exercice des droits sous 30 jours, anonymisation systématique des échantillons utilisés en démos, DPO joignable à dpo@axion-ia.com.",
     },
     en: {
-      title: "AI sovereignty: AxionIA confirms EU hosting by default",
+      title: "AI sovereignty: Axion-IA confirms EU hosting by default",
       dek: "All client workloads are hosted on Hetzner Frankfurt. No sensitive data sent to third parties without explicit consent.",
-      body: "Faced with growing concerns from European executives about AI data sovereignty, AxionIA confirms a default EU hosting policy. All client data transits through and remains on Hetzner CX32 in Frankfurt. AI models can be hosted on-premise or on dedicated infrastructure if required. GDPR policy is strictly enforced: rights exercise within 30 days, systematic anonymization of samples used in demos, DPO reachable at dpo@axion-ia.com.",
+      body: "Faced with growing concerns from European executives about AI data sovereignty, Axion-IA confirms a default EU hosting policy. All client data transits through and remains on Hetzner CX32 in Frankfurt. AI models can be hosted on-premise or on dedicated infrastructure if required. GDPR policy is strictly enforced: rights exercise within 30 days, systematic anonymization of samples used in demos, DPO reachable at dpo@axion-ia.com.",
     },
   },
 ];
@@ -341,13 +341,13 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
     ],
     fr: {
       name: "Will",
-      role: "Fondateur · lead consultant AxionIA",
-      bio: "Dix ans en transformation digitale, opérationnel terrain. Will dirige les interventions AxionIA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
+      role: "Fondateur · lead consultant Axion-IA",
+      bio: "Dix ans en transformation digitale, opérationnel terrain. Will dirige les interventions Axion-IA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
     },
     en: {
       name: "Will",
-      role: "Founder · lead consultant AxionIA",
-      bio: "Ten years in digital transformation, hands-on field practice. Will leads AxionIA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
+      role: "Founder · lead consultant Axion-IA",
+      bio: "Ten years in digital transformation, hands-on field practice. Will leads Axion-IA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
     },
   },
 ] as const;
@@ -359,14 +359,14 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
   {
     id: "company",
     fr: {
-      question: "Quelle est la structure juridique d'AxionIA ?",
+      question: "Quelle est la structure juridique d'Axion-IA ?",
       answer:
-        "AxionIA OÜ est une société de droit européen. La facturation est émise selon le régime TVA UE applicable à la résidence du client (autoliquidation B2B intracommunautaire avec n° TVA valide).",
+        "Axion-IA OÜ est une société de droit européen. La facturation est émise selon le régime TVA UE applicable à la résidence du client (autoliquidation B2B intracommunautaire avec n° TVA valide).",
     },
     en: {
-      question: "What is AxionIA's legal structure?",
+      question: "What is Axion-IA's legal structure?",
       answer:
-        "AxionIA OÜ is a European-law company. Invoicing is issued under the EU VAT regime applicable to the client's residence (intracommunity B2B reverse charge with valid VAT number).",
+        "Axion-IA OÜ is a European-law company. Invoicing is issued under the EU VAT regime applicable to the client's residence (intracommunity B2B reverse charge with valid VAT number).",
     },
   },
   {
@@ -374,12 +374,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Qui sont vos clients types ?",
       answer:
-        "AxionIA accompagne tous types d'entreprises — artisans, TPE, PME, ETI, grandes organisations. La méthode s'adapte à l'échelle, mais reste identique : démo sur données réelles, plan chiffré, mise en production rapide.",
+        "Axion-IA accompagne tous types d'entreprises — artisans, TPE, PME, ETI, grandes organisations. La méthode s'adapte à l'échelle, mais reste identique : démo sur données réelles, plan chiffré, mise en production rapide.",
     },
     en: {
       question: "Who are your typical clients?",
       answer:
-        "AxionIA serves companies of all sizes — sole traders, small businesses, SMEs, mid-caps, large organizations. The method adapts to scale but remains identical: demo on real data, costed plan, fast production deployment.",
+        "Axion-IA serves companies of all sizes — sole traders, small businesses, SMEs, mid-caps, large organizations. The method adapts to scale but remains identical: demo on real data, costed plan, fast production deployment.",
     },
   },
   {
@@ -411,12 +411,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
   {
     id: "data-policy",
     fr: {
-      question: "Comment AxionIA traite-t-elle les données clients ?",
+      question: "Comment Axion-IA traite-t-elle les données clients ?",
       answer:
         "Hébergement UE par défaut sur Hetzner Frankfurt. Aucun envoi de données sensibles à des tiers sans consentement explicite. Politique RGPD complète, exercice des droits sous 30 jours, anonymisation systématique des échantillons utilisés en démos.",
     },
     en: {
-      question: "How does AxionIA handle client data?",
+      question: "How does Axion-IA handle client data?",
       answer:
         "EU hosting by default on Hetzner Frankfurt. No sensitive data sent to third parties without explicit consent. Full GDPR policy, rights exercise within 30 days, systematic anonymization of samples used in demos.",
     },
@@ -426,12 +426,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Proposez-vous des exclusivités presse ?",
       answer:
-        "Oui, sous réserve de réciprocité éditoriale. Pour les annonces produits ou études sectorielles, AxionIA peut accorder une fenêtre d'embargo de 24 à 72 h à un média lead. Contact : presse@axion-ia.com avec sujet « Exclusivité ».",
+        "Oui, sous réserve de réciprocité éditoriale. Pour les annonces produits ou études sectorielles, Axion-IA peut accorder une fenêtre d'embargo de 24 à 72 h à un média lead. Contact : presse@axion-ia.com avec sujet « Exclusivité ».",
     },
     en: {
       question: "Do you offer press exclusives?",
       answer:
-        'Yes, subject to editorial reciprocity. For product announcements or sector studies, AxionIA can grant a 24 to 72-hour embargo window to a lead media outlet. Contact: presse@axion-ia.com with subject "Exclusive".',
+        'Yes, subject to editorial reciprocity. For product announcements or sector studies, Axion-IA can grant a 24 to 72-hour embargo window to a lead media outlet. Contact: presse@axion-ia.com with subject "Exclusive".',
     },
   },
 ] as const;

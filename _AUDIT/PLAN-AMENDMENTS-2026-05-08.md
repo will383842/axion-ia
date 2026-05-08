@@ -1,4 +1,4 @@
-# AxionIA — `02-PLAN.md` amendments officiels (2026-05-08)
+# Axion-IA — `02-PLAN.md` amendments officiels (2026-05-08)
 
 > **Statut** : doctrine vivante. Ce fichier acte les corrections à appliquer mentalement à `_AUDIT/02-PLAN.md`. Le 02-PLAN reste figé pour traçabilité historique. **Sources canoniques en cas de conflit** : ADRs `docs/adr/0001-0009`, `Design.md`, `CLAUDE.md`/`AGENTS.md`, mémoires `axionia_*`.
 >
@@ -76,7 +76,7 @@
 | Ligne                         | Avant                                                                  | Après / canon                                                                                                       | Source                                                                 |
 | ----------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | L342                          | « Mentions légales : OÜ + registrikood + adresse Tallinn + hébergeur » | Tallinn purgée site-wide 2026-05-07 sauf `src/content/legal.ts` (RGPD art. 13(1)(d) + droit estonien obligatoires). | SESSION_LOG 2026-05-07 + mémoire `axionia_session_2026-05-07_pivot_v3` |
-| L858                          | COMPANY_NAME footer = « AxionIA OÜ · Tallinn · ... »                   | Footer affiche « AxionIA OÜ » sans Tallinn marketing.                                                               | Idem                                                                   |
+| L858                          | COMPANY_NAME footer = « Axion-IA OÜ · Tallinn · ... »                  | Footer affiche « Axion-IA OÜ » sans Tallinn marketing.                                                              | Idem                                                                   |
 | `/temoignages/[slug]` annoncé | Pas livré (témoignages = composant `TestimonialsCarousel`)             | Décision pendante : route dédiée ou rester en composant ?                                                           | fork C                                                                 |
 
 ---
@@ -199,7 +199,7 @@ Spec détaillée pour la section calendrier : `_AUDIT/SPEC-ADMIN-CALENDRIER-V2.m
 ✅ Vocabulaire « intervention coaching » : ADR 0008 + DOC-SYNC + sweep skills.
 ✅ Hosting €6,49/mois : ADR 0009 + mémoire `axionia_hosting_hetzner.md`.
 ✅ pSEO périmètre : ADR 0006 fige 2 168 pages V1.
-✅ Naming brand : « AxionIA » (sans tiret) systématique dans CLAUDE/AGENTS/Design/ADRs/02-PLAN. « Axion-IA » réservé au repo path.
+✅ Naming brand : « Axion-IA » (sans tiret) systématique dans CLAUDE/AGENTS/Design/ADRs/02-PLAN. « Axion-IA » réservé au repo path.
 ✅ Politique 90 jours / Tallinn : purgée site-wide sauf `legal.ts` (exception attendue).
 ✅ ADR 0001 doublon nettoyé (commit `18dd599`).
 

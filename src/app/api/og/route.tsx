@@ -23,8 +23,8 @@ const WHITE = "#ffffff"; // hex-ok: --color-bg token
 
 export function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const title = searchParams.get("title") ?? "AxionIA — Cabinet IA opérationnel";
-  const eyebrow = searchParams.get("eyebrow") ?? "AxionIA";
+  const title = searchParams.get("title") ?? "Axion-IA — Cabinet IA opérationnel";
+  const eyebrow = searchParams.get("eyebrow") ?? "Axion-IA";
   const accent = ACCENTS[searchParams.get("accent") ?? "primary"] ?? ACCENTS["primary"];
 
   return new ImageResponse(

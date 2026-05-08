@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/faq",
-    title: locale === "fr" ? "FAQ · cabinet IA AxionIA" : "FAQ · AxionIA AI consultancy",
+    title: locale === "fr" ? "FAQ · cabinet IA Axion-IA" : "FAQ · Axion-IA AI consultancy",
     description:
       locale === "fr"
         ? "Questions fréquentes sur les interventions IA, l'audit, l'implémentation, la souveraineté des données, la facturation."
@@ -134,8 +134,8 @@ export default async function FaqPage({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? `Schéma : ${items.length} questions AxionIA réparties en 3 thématiques — interventions/implémentation, audit IA, souveraineté/facturation.`
-                  : `Diagram: ${items.length} AxionIA questions across 3 topics — sessions/implementation, AI audit, sovereignty/billing.`
+                  ? `Schéma : ${items.length} questions Axion-IA réparties en 3 thématiques — interventions/implémentation, audit IA, souveraineté/facturation.`
+                  : `Diagram: ${items.length} Axion-IA questions across 3 topics — sessions/implementation, AI audit, sovereignty/billing.`
               }
             />
           </div>

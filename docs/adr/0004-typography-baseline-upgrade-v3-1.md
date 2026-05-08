@@ -15,7 +15,7 @@ L'ADR 0002 (Editorial Premium v3) a fixé la doctrine typographique : Manrope co
 Trois faits constatés le 2026-05-07 ont rendu cette définition insuffisante :
 
 1. **Ressenti utilisateur** : Will a signalé que « tout est écrit en tout petit sauf le hero » sur l'ensemble des pages. Le ratio hero/body actuel est de **7.0×** (display 112 px / body 16 px), contre une médiane benchmark 2026 de **4.4×**.
-2. **Benchmark 2026 (audit AGT-BENCH, 6 sites)** : Anthropic 18 px, Stripe Press 19 px, OpenAI 17-18 px, Vercel 16 px, Mistral 16-17 px, Linear 15 px. **Médiane = 17 px**. AxionIA à 16 px se situe en bas de fourchette, sous sa propre référence doctrinale (Anthropic, citée Design.md §1).
+2. **Benchmark 2026 (audit AGT-BENCH, 6 sites)** : Anthropic 18 px, Stripe Press 19 px, OpenAI 17-18 px, Vercel 16 px, Mistral 16-17 px, Linear 15 px. **Médiane = 17 px**. Axion-IA à 16 px se situe en bas de fourchette, sous sa propre référence doctrinale (Anthropic, citée Design.md §1).
 3. **Manrope x-height = 0.515**, soit **5.7 % inférieure à Inter (0.546)** et 3.7 % inférieure à Söhne (0.535). À taille égale, Manrope paraît visuellement plus petit. Le baseline 16 px Tailwind défaut, **non overridé dans `@theme`**, ne compense pas ce défaut physique de la fonte.
 
 Conséquence : l'audit AGT-TOKENS a montré que **les 10 tokens custom `--text-*` sont DEAD CODE** (0 usage) et que 13/13 classes Tailwind utilisaient les defaults bruts. Le système typographique défini dans la doctrine **n'était pas appliqué dans le code**.

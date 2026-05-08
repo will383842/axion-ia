@@ -3,6 +3,8 @@ import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles } from "@/content/villes";
 import { INTERVENTION_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
+import { BRAND } from "@/lib/brand";
+import { ROUTES } from "@/lib/routes";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 // 2026 reference: Linear / Anthropic / Stripe / Vercel — single dense row,
@@ -112,8 +114,8 @@ export async function Footer() {
           {/* Brand column — fixed narrow width */}
           <div className="lg:w-64 lg:shrink-0">
             <Link
-              href="/"
-              aria-label="AxionIA"
+              href={ROUTES.home}
+              aria-label={BRAND.name}
               className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha mb-3 inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <span
@@ -166,7 +168,7 @@ export async function Footer() {
         {/* Slim bottom strip — single line on desktop */}
         <div className="border-border-on-mocha text-mocha-fg/65 mt-10 flex flex-col gap-3 border-t pt-5 text-xs lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-            <span className="text-mocha-fg/85 font-medium">© {year} AxionIA OÜ</span>
+            <span className="text-mocha-fg/85 font-medium">{`© ${year} ${BRAND.legalName}`}</span>
             <Dot />
             <span>{isFr ? "Hébergé en UE" : "Hosted in EU"}</span>
             <Dot />

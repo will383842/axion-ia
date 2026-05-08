@@ -1,4 +1,4 @@
-# AxionIA — Mapping page-par-page
+# Axion-IA — Mapping page-par-page
 
 **Version 2 · 2026-05-07 · FR**
 **Source de vérité** : code HEAD `axionia/` `fd91518` (DOC-SYNC V14, cf. `_AUDIT/sync-pages.json` + `sync-content.json` + `sync-infra.json`).
@@ -253,7 +253,7 @@ Cette v2 remplace la v1 du 06/05/2026 qui prétendait 75 templates pré-Sprint e
 
 ## 17. Versions de ce mapping
 
-- **v1 06/05/2026** : 75 templates pré-Sprint, basé sur `Navigation-Complete-AxionIA.md` + CLAUDE.md v6 + `_DECISIONS-FINALES.md`. Module 2 Audit listait 5 pages `complet/departement/point-de-vente/cabinet`.
+- **v1 06/05/2026** : 75 templates pré-Sprint, basé sur `Navigation-Complete-Axion-IA.md` + CLAUDE.md v6 + `_DECISIONS-FINALES.md`. Module 2 Audit listait 5 pages `complet/departement/point-de-vente/cabinet`.
 - **v2 2026-05-07** : 64 routes templates HEAD (`fd91518`). Réécriture intégrale post-DOC-SYNC V14 (cf. `_AUDIT/sync-snapshot.md`). Module 2 Audit refactor (Sprint 6 réactualisé). Section « Pages éditoriales » NEW. JSON-LD étendu à 19 factories (5 nouvelles).
 
 **Sources de vérité** : `axionia/src/app/[locale]/**/page.tsx`, `axionia/src/content/*.ts`, `axionia/src/lib/seo.ts`, `axionia/src/i18n/routing.ts`, `axionia/src/app/sitemap.ts`. ADRs : 0001 stack, 0002 design pivot v3, 0003 lift formation ban, 0004 typography v3.1.

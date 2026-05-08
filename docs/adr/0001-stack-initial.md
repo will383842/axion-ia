@@ -3,7 +3,7 @@
 - **Statut** : Accepté
 - **Date** : 2026-05-06
 - **Auteur** : Will + Claude (Opus 4.7)
-- **Référence** : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 §6, `_DECISIONS-FINALES.md`, `_AUDIT/02-PLAN.md` jalon M1
+- **Référence** : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 §6, `_DECISIONS-FINALES.md`, `_AUDIT/02-PLAN.md` jalon M1
 
 ## Contexte
 

@@ -1,4 +1,4 @@
-# AUDIT TYPOGRAPHY 2026 — AxionIA
+# AUDIT TYPOGRAPHY 2026 — Axion-IA
 
 - **Date** : 2026-05-07
 - **Doctrine de référence** : v3 Editorial Premium Light (ADR 0002, `axionia/docs/adr/0002-design-pivot-editorial-v3.md`)
@@ -222,22 +222,22 @@ Effet perçu par Will : « tout est écrit en tout petit sauf le hero ». **Math
 
 ---
 
-## 3. Tableau benchmark externe vs AxionIA
+## 3. Tableau benchmark externe vs Axion-IA
 
 Source : AGT-BENCH (`WebFetch` 6 sites + connaissances publiques 2024-2026).
 
-| Site               | Body family              | Body px               | LH body  | H1 px            | H2 px              | H3 px   | Tracking display | Line-length        |
-| ------------------ | ------------------------ | --------------------- | -------- | ---------------- | ------------------ | ------- | ---------------- | ------------------ |
-| **AxionIA actuel** | Manrope                  | **16**                | **1.65** | clamp 48→**112** | 24-64 (incohérent) | 18-24   | -0.04em          | ~84 ch (max-w-2xl) |
-| Anthropic          | Tiempos / Styrene        | **18**                | 1.55     | ~72-96           | 40-48              | 22-24   | -0.02em          | ~62 ch             |
-| Stripe Press       | Söhne / Tiempos Headline | **19**                | 1.6      | ~64-88           | 36-44              | 22      | -0.01em          | ~60 ch             |
-| Linear             | Inter Variable           | **15**                | 1.5      | ~64-80           | 32-40              | 18-20   | -0.025em         | ~70 ch             |
-| Vercel             | Geist Sans               | **16** (text-copy-16) | 1.5      | ~72              | 40-48              | 20-24   | -0.02em          | ~65 ch             |
-| OpenAI             | Söhne / OpenAI Sans      | **17-18**             | 1.5      | ~60-80           | 36-44              | 20-22   | -0.015em         | ~60 ch             |
-| Mistral            | ABC Diatype              | **16-17**             | 1.5      | ~56-72           | 32-40              | 20      | -0.02em          | ~70 ch             |
-| **Médiane 2026**   | —                        | **17**                | **1.5**  | **~75**          | **~40**            | **~22** | **-0.02em**      | **~65 ch**         |
+| Site                | Body family              | Body px               | LH body  | H1 px            | H2 px              | H3 px   | Tracking display | Line-length        |
+| ------------------- | ------------------------ | --------------------- | -------- | ---------------- | ------------------ | ------- | ---------------- | ------------------ |
+| **Axion-IA actuel** | Manrope                  | **16**                | **1.65** | clamp 48→**112** | 24-64 (incohérent) | 18-24   | -0.04em          | ~84 ch (max-w-2xl) |
+| Anthropic           | Tiempos / Styrene        | **18**                | 1.55     | ~72-96           | 40-48              | 22-24   | -0.02em          | ~62 ch             |
+| Stripe Press        | Söhne / Tiempos Headline | **19**                | 1.6      | ~64-88           | 36-44              | 22      | -0.01em          | ~60 ch             |
+| Linear              | Inter Variable           | **15**                | 1.5      | ~64-80           | 32-40              | 18-20   | -0.025em         | ~70 ch             |
+| Vercel              | Geist Sans               | **16** (text-copy-16) | 1.5      | ~72              | 40-48              | 20-24   | -0.02em          | ~65 ch             |
+| OpenAI              | Söhne / OpenAI Sans      | **17-18**             | 1.5      | ~60-80           | 36-44              | 20-22   | -0.015em         | ~60 ch             |
+| Mistral             | ABC Diatype              | **16-17**             | 1.5      | ~56-72           | 32-40              | 20      | -0.02em          | ~70 ch             |
+| **Médiane 2026**    | —                        | **17**                | **1.5**  | **~75**          | **~40**            | **~22** | **-0.02em**      | **~65 ch**         |
 
-**Lecture** : AxionIA est **bas-de-fourchette sur le body** (16 vs médiane 17), **pile dans la fourchette LH** (1.65 OK), **hors fourchette line-length** (84 ch vs cible 60-75).
+**Lecture** : Axion-IA est **bas-de-fourchette sur le body** (16 vs médiane 17), **pile dans la fourchette LH** (1.65 OK), **hors fourchette line-length** (84 ch vs cible 60-75).
 
 Le hero `display-editorial` (jusqu'à 112 px) est **légèrement au-dessus du plafond du marché** (Stripe Press monte à 88 px max), ce qui creuse le delta hero/body.
 
@@ -252,7 +252,7 @@ Le hero `display-editorial` (jusqu'à 112 px) est **légèrement au-dessus du pl
   - `axionia/src/app/[locale]/audit/page.tsx:675` — descriptions des niveaux d'audit en `text-sm` (4-5 lignes).
   - `axionia/src/app/[locale]/audit/page.tsx:1034` — questions du quiz « Quel niveau pour vous ? » en `text-sm`.
   - `axionia/src/app/[locale]/interventions/page.tsx:675` — bénéfices de chaque intervention en `text-sm`.
-  - `axionia/src/app/[locale]/implementation/page.tsx:1018-1034` — comparaison Make/Zapier vs Agence vs AxionIA.
+  - `axionia/src/app/[locale]/implementation/page.tsx:1018-1034` — comparaison Make/Zapier vs Agence vs Axion-IA.
 - **Px actuel → cible** : 14 px → 15-16 px (selon scénario).
 - **Effort** : 50-80 changements de classe sur ~20-30 occurrences problématiques (les autres `text-sm` sur labels/badges restent OK).
 

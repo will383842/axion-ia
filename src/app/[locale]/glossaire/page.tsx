@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/glossaire",
     title:
       locale === "fr"
-        ? "Glossaire IA · termes essentiels · AxionIA"
-        : "AI glossary · essential terms · AxionIA",
+        ? "Glossaire IA · termes essentiels · Axion-IA"
+        : "AI glossary · essential terms · Axion-IA",
     description:
       locale === "fr"
-        ? "Glossaire IA AxionIA : LLM, RAG, fine-tuning, agents, MCP, vectorisation, hallucination, prompt engineering."
-        : "AxionIA AI glossary: LLM, RAG, fine-tuning, agents, MCP, vectorization, hallucination, prompt engineering.",
+        ? "Glossaire IA Axion-IA : LLM, RAG, fine-tuning, agents, MCP, vectorisation, hallucination, prompt engineering."
+        : "Axion-IA AI glossary: LLM, RAG, fine-tuning, agents, MCP, vectorization, hallucination, prompt engineering.",
     alternates: { fr: "/glossaire", en: "/glossary" },
   });
 }
@@ -112,7 +112,7 @@ export default async function GlossaryPage({ params }: Props) {
   const definedTermSetJsonLd = {
     "@context": "https://schema.org",
     "@type": "DefinedTermSet",
-    name: isFr ? "Glossaire IA AxionIA" : "AxionIA AI glossary",
+    name: isFr ? "Glossaire IA Axion-IA" : "Axion-IA AI glossary",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/glossaire`,
     hasDefinedTerm: TERMS.map((t) => ({

@@ -1,11 +1,11 @@
 // Content pack — page /stack-ia (FR) · /ai-stack (EN).
-// La doctrine AxionIA en 2026 : 11 outils retenus parmi 2000+, organisés par
+// La doctrine Axion-IA en 2026 : 11 outils retenus parmi 2000+, organisés par
 // fonction métier. Choix assumés, pas catalogue neutre. Aucun partenariat
-// commercial avec les éditeurs cités. Source : usage terrain cabinet AxionIA.
+// commercial avec les éditeurs cités. Source : usage terrain cabinet Axion-IA.
 //
 // Will, 2026-05-07 : page créée pour répondre à la question "quelles IA sont
 // vraiment utilisées au quotidien par les entreprises". Frame = arsenal
-// AxionIA, pas catalogue.
+// Axion-IA, pas catalogue.
 
 /** Accent visuel — aligné sur la palette éditoriale (interventions). */
 export type StackAccent = "terracotta" | "primary" | "sage" | "mocha";
@@ -42,7 +42,7 @@ export interface StackTool {
 interface ToolCopy {
   /** Pitch en 1 phrase. */
   tagline: string;
-  /** Comment AxionIA s'en sert concrètement (1 paragraphe ~3 phrases). */
+  /** Comment Axion-IA s'en sert concrètement (1 paragraphe ~3 phrases). */
   useCase: string;
   /** Quand on le sort (3-4 bullets). */
   whenToUse: ReadonlyArray<string>;
@@ -161,7 +161,7 @@ export const STACK_CATEGORIES: ReadonlyArray<StackCategory> = [
 ];
 
 // ============================================================================
-// 11 outils — choix assumés AxionIA. Aucun partenariat commercial avec ces
+// 11 outils — choix assumés Axion-IA. Aucun partenariat commercial avec ces
 // éditeurs. Si un outil est retiré, c'est qu'il est sorti de notre usage
 // terrain, pas qu'il est mauvais en soi.
 // ============================================================================
@@ -630,12 +630,12 @@ export const STACK_FAQS: ReadonlyArray<StackFaqItem> = [
   {
     id: "no-partnership",
     fr: {
-      question: "AxionIA est-il partenaire commercial des éditeurs cités ?",
+      question: "Axion-IA est-il partenaire commercial des éditeurs cités ?",
       answer:
         "Non. Aucun des choix présentés sur cette page ne fait l'objet d'un partenariat, d'une commission, ou d'un programme d'affiliation. Les outils sont retenus uniquement sur la base de l'usage terrain quotidien du cabinet et des résultats observés chez nos clients.",
     },
     en: {
-      question: "Is AxionIA a commercial partner of the vendors listed?",
+      question: "Is Axion-IA a commercial partner of the vendors listed?",
       answer:
         "No. None of the choices on this page involve a partnership, commission, or affiliate programme. Tools are picked solely on the consultancy's daily field usage and the results observed at clients.",
     },

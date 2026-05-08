@@ -82,7 +82,7 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
 
   // ItemList JSON-LD — expose les automatisations du catalogue de la
   // catégorie au crawler (AEO/GEO 2026 : LLMs résolvent « quelles
-  // automatisations IA AxionIA sur la fonction X ? »). Items sans URL
+  // automatisations IA Axion-IA sur la fonction X ? »). Items sans URL
   // car ils n'ont pas de page dédiée — name + description suffisent
   // pour citabilité.
   const itemListJsonLd = {

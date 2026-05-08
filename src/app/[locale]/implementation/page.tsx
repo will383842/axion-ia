@@ -52,8 +52,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/implementation",
     title:
       loc === "fr"
-        ? "Implémentation IA · Catalogue par fonction · AxionIA"
-        : "AI implementation · Catalogue by function · AxionIA",
+        ? "Implémentation IA · Catalogue par fonction · Axion-IA"
+        : "AI implementation · Catalogue by function · Axion-IA",
     description:
       loc === "fr"
         ? `Catalogue d'automatisations IA par fonction d'entreprise (service client, ventes, marketing, RH, données, métier...). Forfait fixe à partir de ${entryAutomatisation}, sans abonnement mensuel, livraison 2-6 semaines.`
@@ -198,15 +198,15 @@ export default async function ImplementationListing({ params }: Props) {
         },
       ];
 
-  // Bloc comparatif — Make/Zapier vs Agence classique vs AxionIA.
-  // Frontal, honnête, mais visuellement orienté pour mettre AxionIA en
+  // Bloc comparatif — Make/Zapier vs Agence classique vs Axion-IA.
+  // Frontal, honnête, mais visuellement orienté pour mettre Axion-IA en
   // valeur (4 critères âœ“/âœ— en pied + colonne mise en avant).
   // Critère states : "yes" / "no" / "partial".
   const comparison = isFr
     ? {
         eyebrow: "On peut comparer",
         title: "Make · agence ·",
-        titleEm: "AxionIA",
+        titleEm: "Axion-IA",
         description:
           "Trois manières d'automatiser votre entreprise avec l'IA. Sur 4 critères qui comptent vraiment, voici comment chacun se positionne.",
         criteriaLabels: [
@@ -256,7 +256,7 @@ export default async function ImplementationListing({ params }: Props) {
             verdict: "Pertinent pour des projets très grands ou avec contraintes techniques rares.",
           },
           {
-            name: "AxionIA",
+            name: "Axion-IA",
             tag: "Cabinet IA & automatisation",
             price: `${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} → sur devis`,
             highlight: true,
@@ -281,7 +281,7 @@ export default async function ImplementationListing({ params }: Props) {
     : {
         eyebrow: "Let's compare",
         title: "Make · agency ·",
-        titleEm: "AxionIA",
+        titleEm: "Axion-IA",
         description:
           "Three ways to automate your business with AI. On the 4 criteria that actually matter, here is how each positions itself.",
         criteriaLabels: [
@@ -324,7 +324,7 @@ export default async function ImplementationListing({ params }: Props) {
             verdict: "Right for very large projects or rare technical constraints.",
           },
           {
-            name: "AxionIA",
+            name: "Axion-IA",
             tag: "AI & automation consultancy",
             price: `${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} → on quote`,
             highlight: true,
@@ -656,8 +656,8 @@ export default async function ImplementationListing({ params }: Props) {
     locale: loc,
     path: "/implementation",
     name: isFr
-      ? "Implémentation IA opérationnelle · AxionIA"
-      : "Operational AI implementation · AxionIA",
+      ? "Implémentation IA opérationnelle · Axion-IA"
+      : "Operational AI implementation · Axion-IA",
     description: isFr
       ? `Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}.`
       : `Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en")}.`,
@@ -976,8 +976,8 @@ export default async function ImplementationListing({ params }: Props) {
         </p>
       </Section>
 
-      {/* COMPARATIF — Make / Agence / AxionIA. Levée d'objection "pourquoi
-          pas X ?". Visuellement orienté pour positionner AxionIA en climax :
+      {/* COMPARATIF — Make / Agence / Axion-IA. Levée d'objection "pourquoi
+          pas X ?". Visuellement orienté pour positionner Axion-IA en climax :
           colonne mise en avant (scale + ring + fond teinté) + matrice critères
           qui rend la supériorité visible en un coup d'oeil. */}
       <Section
@@ -1249,8 +1249,8 @@ export default async function ImplementationListing({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un système opérationnel livré Ã  l'issue d'une implémentation AxionIA."
-                : "Editorial illustration of an operational system delivered at the end of an AxionIA implementation."
+                ? "Illustration éditoriale d'un système opérationnel livré Ã  l'issue d'une implémentation Axion-IA."
+                : "Editorial illustration of an operational system delivered at the end of an Axion-IA implementation."
             }
           />
         </Container>

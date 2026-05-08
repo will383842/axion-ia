@@ -16,19 +16,19 @@
 //   - Blocs longs cassés en bullets, vocabulaire accessible non technique.
 //
 // Doctrine page mère + pages dédiées :
-//   - ~95 % AxionIA-centric (commercial, ce qu'on fait, pourquoi nous)
+//   - ~95 % Axion-IA-centric (commercial, ce qu'on fait, pourquoi nous)
 //   - ~5 % data INSEE bouclier anti-doorway HCU 2024 (population, secteurs,
 //     communes limitrophes, code INSEE)
-//   - Visiteur lit AxionIA, Google voit data unique → page indexable sans
+//   - Visiteur lit Axion-IA, Google voit data unique → page indexable sans
 //     pénalité doorway.
 
 import type { VilleCopy } from "./types";
 
 export const PARIS_COPY: VilleCopy = {
   pitchFr:
-    "Paris concentre 215 000 entreprises actives toutes tailles confondues, l'écosystème IA français (Mistral, Hugging Face, Station F) et le tissu B2B le plus dense du pays. AxionIA y intervient sur site, des indépendants parisiens aux directions IA des grandes entreprises de La Défense.",
+    "Paris concentre 215 000 entreprises actives toutes tailles confondues, l'écosystème IA français (Mistral, Hugging Face, Station F) et le tissu B2B le plus dense du pays. Axion-IA y intervient sur site, des indépendants parisiens aux directions IA des grandes entreprises de La Défense.",
   pitchEn:
-    "Paris hosts 215,000 active businesses of every size, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. AxionIA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
+    "Paris hosts 215,000 active businesses of every size, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. Axion-IA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
 
   servicesContext: {
     audit: {
@@ -46,9 +46,9 @@ export const PARIS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "AxionIA est un cabinet IA opérationnel qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet IA opérationnel qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "AxionIA is an operational AI consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is an operational AI consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Banque & Finance",
@@ -88,7 +88,7 @@ export const PARIS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA AxionIA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
         whyHere: [
           "Paris est notre premier pôle d'intervention : la majorité de nos audits y sont déclenchés.",
           "Tissu B2B parisien sur-représenté chez nos clients : cabinets d'expertise comptable, family offices, asset managers, conseil 8e/9e/16e, scale-ups Sentier-République, maisons de mode Marais.",
@@ -155,7 +155,7 @@ export const PARIS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "AxionIA nous a livré ce que les Big Four nous chiffraient en plusieurs semaines. Le rapport est chiffré, actionnable, sans jargon. On a démarré l'implémentation très rapidement.",
+              "Axion-IA nous a livré ce que les Big Four nous chiffraient en plusieurs semaines. Le rapport est chiffré, actionnable, sans jargon. On a démarré l'implémentation très rapidement.",
             role: "DG",
             companyProfile: "Cabinet d'expertise comptable, 9e arrondissement",
           },
@@ -168,7 +168,7 @@ export const PARIS_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "Combien de temps dure un audit IA AxionIA à Paris ?",
+            q: "Combien de temps dure un audit IA Axion-IA à Paris ?",
             a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
           },
           {
@@ -196,7 +196,7 @@ export const PARIS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions parisiennes).",
       },
       en: {
-        hero: "AxionIA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
         whyHere: [
           "Paris is our top engagement hub: most of our audits originate there.",
           "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, 8th/9th/16th consulting, Sentier-République scale-ups, Marais fashion houses.",
@@ -259,7 +259,7 @@ export const PARIS_COPY: VilleCopy = {
         testimonials: [
           {
             quote:
-              "AxionIA delivered what the Big Four were quoting over several weeks. The report is costed, actionable, jargon-free. We started implementation very quickly.",
+              "Axion-IA delivered what the Big Four were quoting over several weeks. The report is costed, actionable, jargon-free. We started implementation very quickly.",
             role: "CEO",
             companyProfile: "Accounting firm, 9th arrondissement",
           },
@@ -272,7 +272,7 @@ export const PARIS_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "How long does an AxionIA AI audit take in Paris?",
+            q: "How long does an Axion-IA AI audit take in Paris?",
             a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
           },
           {
@@ -302,7 +302,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA AxionIA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
         whyHere: [
           "Paris est notre premier terrain d'intervention : nous y déroulons une part importante de nos sessions chaque mois.",
           "Tous les arrondissements couverts en présentiel ainsi que la première couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -380,7 +380,7 @@ export const PARIS_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "Combien de temps dure une intervention AxionIA à Paris ?",
+            q: "Combien de temps dure une intervention Axion-IA à Paris ?",
             a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
@@ -389,7 +389,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
-            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in AxionIA, vous gardez la main.",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
           },
           {
             q: "Pouvez-vous adapter le contenu à notre secteur ?",
@@ -408,7 +408,7 @@ export const PARIS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
       },
       en: {
-        hero: "AxionIA's AI sessions in Paris come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        hero: "Axion-IA's AI sessions in Paris come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Paris is our top engagement ground: a significant share of our sessions take place there each month.",
           "All arrondissements covered in person plus the inner suburbs (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -485,7 +485,7 @@ export const PARIS_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "How long does an AxionIA session in Paris take?",
+            q: "How long does an Axion-IA session in Paris take?",
             a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
@@ -494,7 +494,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Do the tools installed on workstations remain usable after the session?",
-            a: "Yes, they are individual accounts (free or with employee subscription) on ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity per profile. No AxionIA lock-in, you keep control.",
+            a: "Yes, they are individual accounts (free or with employee subscription) on ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity per profile. No Axion-IA lock-in, you keep control.",
           },
           {
             q: "Can you adapt content to our sector?",
@@ -515,7 +515,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     implementation: {
       fr: {
-        hero: "L'implémentation IA AxionIA à Paris met vos cas IA en production avec un retour sur investissement chiffré contractuellement, formation de vos équipes incluse. Le mode est hybride sur site / distance, avec un kick-off obligatoire à Paris.",
+        hero: "L'implémentation IA Axion-IA à Paris met vos cas IA en production avec un retour sur investissement chiffré contractuellement, formation de vos équipes incluse. Le mode est hybride sur site / distance, avec un kick-off obligatoire à Paris.",
         whyHere: [
           "Paris concentre une part importante de nos missions d'implémentation, principalement sur les directions IA des grands groupes et les scale-ups en croissance.",
           "Le kick-off se passe systématiquement en présentiel à Paris dans vos locaux : alignement des équipes, accès aux données, validation des intégrations CRM/ERP/email.",
@@ -574,7 +574,7 @@ export const PARIS_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Grand programme multi-déploiement",
             detail:
-              "Programmes annuels pour grands comptes parisiens : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée AxionIA en mode régie.",
+              "Programmes annuels pour grands comptes parisiens : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA en mode régie.",
           },
         ],
         testimonials: [
@@ -593,7 +593,7 @@ export const PARIS_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "Combien de temps dure une implémentation AxionIA à Paris ?",
+            q: "Combien de temps dure une implémentation Axion-IA à Paris ?",
             a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
@@ -605,7 +605,7 @@ export const PARIS_COPY: VilleCopy = {
             a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
           },
           {
-            q: "Mes données restent-elles chez moi ou partent-elles chez AxionIA ?",
+            q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
             a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
           },
           {
@@ -621,7 +621,7 @@ export const PARIS_COPY: VilleCopy = {
           "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
-        hero: "AxionIA's AI implementation in Paris brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory Paris kick-off.",
+        hero: "Axion-IA's AI implementation in Paris brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory Paris kick-off.",
         whyHere: [
           "Paris hosts a significant share of our implementation missions, mostly with large-group AI leadership and growing scale-ups.",
           "Kick-off always happens in person in Paris at your offices: team alignment, data access, CRM/ERP/email integration validation.",
@@ -680,7 +680,7 @@ export const PARIS_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Multi-deployment large program",
             detail:
-              "Annual programs for Paris large accounts: cascaded use cases, centralized AI governance, dedicated AxionIA team in retainer mode.",
+              "Annual programs for Paris large accounts: cascaded use cases, centralized AI governance, dedicated Axion-IA team in retainer mode.",
           },
         ],
         testimonials: [
@@ -699,7 +699,7 @@ export const PARIS_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "How long does an AxionIA implementation in Paris take?",
+            q: "How long does an Axion-IA implementation in Paris take?",
             a: "It depends on scope. A micro-business POC fits in a few weeks, a standard SME mission spans a few months, a transverse mid-cap mission spans several months, a multi-deployment large program spans a year. The SOW signed at framing fixes the precise schedule.",
           },
           {
@@ -711,7 +711,7 @@ export const PARIS_COPY: VilleCopy = {
             a: "Your internal ambassadors, trained during the mission. Complete runbook documentation handed over. If outsourced maintenance desired, optional support contract. No lock-in: you can also outsource elsewhere.",
           },
           {
-            q: "Does my data stay with me or move to AxionIA?",
+            q: "Does my data stay with me or move to Axion-IA?",
             a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
           },
           {

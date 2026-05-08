@@ -40,7 +40,7 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: MapPin,
           label: "Cabinet européen",
-          detail: "AxionIA OÜ · facturation HT",
+          detail: "Axion-IA OÜ · facturation HT",
         },
         {
           icon: ShieldCheck,
@@ -62,7 +62,7 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: MapPin,
           label: "European consultancy",
-          detail: "AxionIA OÜ · excl. VAT invoicing",
+          detail: "Axion-IA OÜ · excl. VAT invoicing",
         },
         {
           icon: ShieldCheck,
@@ -168,13 +168,13 @@ export function WhyAxionIA({ isFr }: { isFr: boolean }): ReactNode {
   return (
     <Section
       tone="paper"
-      eyebrow={isFr ? "Pourquoi AxionIA" : "Why AxionIA"}
+      eyebrow={isFr ? "Pourquoi Axion-IA" : "Why Axion-IA"}
       title={isFr ? "5 raisons concrètes" : "5 concrete reasons"}
       titleEm={isFr ? "de nous choisir" : "to choose us"}
       description={
         isFr
-          ? "Vous avez le choix entre un Big 4 (cher, lent), un freelance (incertain), une agence digitale (généraliste). Voici pourquoi AxionIA est différent."
-          : "You can pick a Big 4 (expensive, slow), a freelance (uncertain), a digital agency (generalist). Here's why AxionIA is different."
+          ? "Vous avez le choix entre un Big 4 (cher, lent), un freelance (incertain), une agence digitale (généraliste). Voici pourquoi Axion-IA est différent."
+          : "You can pick a Big 4 (expensive, slow), a freelance (uncertain), a digital agency (generalist). Here's why Axion-IA is different."
       }
       contentClassName="lg:px-6 xl:px-10"
     >
@@ -257,21 +257,21 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
     ? [
         {
           quote:
-            "Nous avons lancé un diagnostic flash sans grand espoir. En 1 demi-journée, AxionIA nous a livré 5 quick-wins concrets. Trois mois plus tard, on a libéré 8 heures par semaine sur l'équipe administrative.",
+            "Nous avons lancé un diagnostic flash sans grand espoir. En 1 journée, Axion-IA nous a livré 5 quick-wins concrets. Trois mois plus tard, on a libéré 8 heures par semaine sur l'équipe administrative.",
           author: "Direction générale",
           role: "DG",
           company: "Cabinet conseil · 25 collaborateurs · France",
         },
         {
           quote:
-            "Le rapport AxionIA tient en 30 pages, sans jargon, avec un plan d'action chiffré jusqu'à la dernière tâche. Notre CODIR a validé en une seule session. C'est devenu notre référentiel IA interne.",
+            "Le rapport Axion-IA tient en 30 pages, sans jargon, avec un plan d'action chiffré jusqu'à la dernière tâche. Notre CODIR a validé en une seule session. C'est devenu notre référentiel IA interne.",
           author: "Directeur des opérations",
           role: "COO",
           company: "PME industrielle · 80 collaborateurs · Belgique",
         },
         {
           quote:
-            "Ce qui nous a convaincu : pas de prix opaque, pas de framework abstrait. AxionIA cartographie ce que VOUS faites, identifie ce que l'IA peut automatiser chez VOUS. Pragmatique.",
+            "Ce qui nous a convaincu : pas de prix opaque, pas de framework abstrait. Axion-IA cartographie ce que VOUS faites, identifie ce que l'IA peut automatiser chez VOUS. Pragmatique.",
           author: "Responsable transformation",
           role: "Head of Transformation",
           company: "Groupe distribution · 250+ · Suisse",
@@ -280,21 +280,21 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
     : [
         {
           quote:
-            "We tried the flash diagnosis without much hope. In half a day, AxionIA delivered 5 concrete quick-wins. Three months later, we freed up 8 hours a week on our admin team.",
+            "We tried the flash diagnosis without much hope. In half a day, Axion-IA delivered 5 concrete quick-wins. Three months later, we freed up 8 hours a week on our admin team.",
           author: "Managing Director",
           role: "MD",
           company: "Consulting firm · 25 staff · France",
         },
         {
           quote:
-            "The AxionIA report fits 30 pages, no jargon, with a costed action plan down to the last task. Our leadership signed off in a single session. It's now our internal AI reference.",
+            "The Axion-IA report fits 30 pages, no jargon, with a costed action plan down to the last task. Our leadership signed off in a single session. It's now our internal AI reference.",
           author: "Director of Operations",
           role: "COO",
           company: "Industrial SMB · 80 staff · Belgium",
         },
         {
           quote:
-            "What sold us: no opaque pricing, no abstract framework. AxionIA maps what YOU do, identifies what AI can automate FOR YOU. Pragmatic.",
+            "What sold us: no opaque pricing, no abstract framework. Axion-IA maps what YOU do, identifies what AI can automate FOR YOU. Pragmatic.",
           author: "Head of Transformation",
           role: "Head of Transformation",
           company: "Retail group · 250+ · Switzerland",
@@ -311,7 +311,7 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
     ? {
         "@context": "https://schema.org",
         "@type": "Service",
-        name: "AxionIA · Audit IA",
+        name: "Axion-IA · Audit IA",
         review: testimonials.map((t) => ({
           "@type": "Review",
           reviewBody: t.quote,
@@ -423,13 +423,13 @@ export function SignatureCard({ isFr }: { isFr: boolean }): ReactNode {
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 {isFr
-                  ? "« J'ai créé AxionIA parce que les entreprises méritent mieux qu'un PowerPoint à 30 k€ et 6 mois de réunions. On va sur le terrain, on identifie ce qui marche, on chiffre, on remet un plan exécutable. »"
-                  : "“I built AxionIA because companies deserve more than a €30k slide deck and 6 months of meetings. We go on site, identify what works, cost it, hand over an actionable plan.”"}
+                  ? "« J'ai créé Axion-IA parce que les entreprises méritent mieux qu'un PowerPoint à 30 k€ et 6 mois de réunions. On va sur le terrain, on identifie ce qui marche, on chiffre, on remet un plan exécutable. »"
+                  : "“I built Axion-IA because companies deserve more than a €30k slide deck and 6 months of meetings. We go on site, identify what works, cost it, hand over an actionable plan.”"}
               </blockquote>
               <p className="text-fg-soft mt-4 text-sm">
                 <span className="text-fg font-bold">Will</span>
                 <span className="mx-2">·</span>
-                <span>{isFr ? "Fondateur AxionIA" : "AxionIA founder"}</span>
+                <span>{isFr ? "Fondateur Axion-IA" : "Axion-IA founder"}</span>
               </p>
             </div>
           </div>

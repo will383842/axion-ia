@@ -1,19 +1,19 @@
-# Visual Style Guide — AxionIA Imagerie 2026
+# Visual Style Guide — Axion-IA Imagerie 2026
 
 > **Version** : 1.0 · 2026-05-07
 > **Statut** : DRAFT en attente validation Will
-> **Périmètre** : Style guide unifié pour tous les visuels AxionIA (icônes Lucide, SVG inline codés, illustrations GPT-image, photos, diagrammes, OG images Next.js 16 `ImageResponse`).
+> **Périmètre** : Style guide unifié pour tous les visuels Axion-IA (icônes Lucide, SVG inline codés, illustrations GPT-image, photos, diagrammes, OG images Next.js 16 `ImageResponse`).
 > **Doctrine de référence** : Editorial Premium Light v3 (cf. `Design.md`, `axionia_design_pivot.md`).
 > **Référence palette** : `globals.css` `@theme` block v3.1 (vérifié 2026-05-07).
 > **Audience** : Will (utilisateur unique), agents Claude (audits suivants), futurs contributeurs si onboardés.
 
-Ce document est la **source de vérité unique** pour tout asset visuel produit, généré, ou intégré dans AxionIA. Il est **lecture seule pour l'audit en cours** (aucune modif code), mais **prescriptif** pour toutes les sessions de génération GPT-image et d'intégration future.
+Ce document est la **source de vérité unique** pour tout asset visuel produit, généré, ou intégré dans Axion-IA. Il est **lecture seule pour l'audit en cours** (aucune modif code), mais **prescriptif** pour toutes les sessions de génération GPT-image et d'intégration future.
 
 ---
 
 ## 1. Palette stricte (hex v3.1 EXACTS — aucune approximation autorisée)
 
-> Tous les visuels AxionIA, qu'ils soient codés (SVG inline / composants React) ou générés (GPT-image / DALL-E 3 / `gpt-image-1`), doivent **exclusivement** utiliser les hex ci-dessous. Aucune approximation type « warm orange » ou « beige clair » n'est admise dans les prompts ou dans les composants. **Toujours citer le hex EXACT** (`#c24a1b`, pas `#c34a1c` ni `~terracotta`).
+> Tous les visuels Axion-IA, qu'ils soient codés (SVG inline / composants React) ou générés (GPT-image / DALL-E 3 / `gpt-image-1`), doivent **exclusivement** utiliser les hex ci-dessous. Aucune approximation type « warm orange » ou « beige clair » n'est admise dans les prompts ou dans les composants. **Toujours citer le hex EXACT** (`#c24a1b`, pas `#c34a1c` ni `~terracotta`).
 
 ### 1.1 Backgrounds & surfaces
 
@@ -94,7 +94,7 @@ Chaque illustration générée doit respecter cette **distribution chromatique c
 
 Chaque icône Lucide doit respecter :
 
-- `stroke-width: 1.5` (figé pour cohérence — Lucide default est 2, AxionIA override à 1.5 pour rendu plus éditorial).
+- `stroke-width: 1.5` (figé pour cohérence — Lucide default est 2, Axion-IA override à 1.5 pour rendu plus éditorial).
 - `fill: none` (toutes les icônes outline, jamais filled).
 - `stroke` : `currentColor` (héritage de la couleur parent — pas de hardcode).
 - Tailles autorisées : `size-4` (16px), `size-5` (20px), `size-6` (24px) Tailwind tokens. **Pas de `size-7`+ ni custom px.**
@@ -183,7 +183,7 @@ Si un concept n'a pas d'icône Lucide adéquate, **coder un SVG inline custom** 
 
 ### 3.5 Contraintes prompt strictes
 
-Tout prompt GPT-image AxionIA doit (cf. **préfixe brand** ci-dessous, § 11) :
+Tout prompt GPT-image Axion-IA doit (cf. **préfixe brand** ci-dessous, § 11) :
 
 1. Citer **les hex EXACTS** v3.1 (`#c24a1b`, `#2a2520`, etc. — jamais d'approximation textuelle).
 2. Imposer négatif space ≥ 40%.
@@ -198,7 +198,7 @@ Tout prompt GPT-image AxionIA doit (cf. **préfixe brand** ci-dessous, § 11) :
 
 ## 4. Style photo
 
-### 4.1 Photo Will (fondateur AxionIA)
+### 4.1 Photo Will (fondateur Axion-IA)
 
 **Si Will accepte d'être photographié** :
 
@@ -342,7 +342,7 @@ Pattern existant dans `stack-ia.ts` (`tone: "paper" | "sand" | "halo-warm" | "ha
 
 ### 8.1 Principe : subtilité
 
-L'animation AxionIA est **éditoriale, pas spectaculaire**. Elle sert la lisibilité, pas le wow-factor.
+L'animation Axion-IA est **éditoriale, pas spectaculaire**. Elle sert la lisibilité, pas le wow-factor.
 
 ### 8.2 Patterns autorisés
 
@@ -479,7 +479,7 @@ Ne pas accumuler indéfiniment : conserver max **2 versions par asset** (`couran
 ### 11.2 Stratégie (b) — Seed reproductible via `gpt-image-1` API
 
 - L'API OpenAI `gpt-image-1` supporte le paramètre **`seed` (entier)**.
-- Utiliser **le même seed** sur tous les prompts d'une collection (ex: `seed=42` pour toutes les illustrations AxionIA).
+- Utiliser **le même seed** sur tous les prompts d'une collection (ex: `seed=42` pour toutes les illustrations Axion-IA).
 - Cohérence ~75-85% (variations naturelles dans le rendu, mais palette + composition + style très proches).
 - **Coût** : ~$0.19/image qualité haute. Budget 50 images = ~$10 + 30% retries = ~$13.
 
@@ -502,11 +502,11 @@ Ne pas accumuler indéfiniment : conserver max **2 versions par asset** (`couran
 - Dans ChatGPT Plus : « Garde le même style mais change le sujet : [nouveau sujet] ». Le contexte de la conversation aide.
 - Cohérence ~70-80% si fait dans la foulée, dégrade si nouvelle session.
 
-### 11.6 Préfixe brand AxionIA — bloc COPY-PASTE à coller en début de chaque génération
+### 11.6 Préfixe brand Axion-IA — bloc COPY-PASTE à coller en début de chaque génération
 
 ```
 [PRÉFIXE BRAND AXIONIA — copy-paste avant tout sujet]
-Editorial illustration, AxionIA brand restrained palette EXACTLY:
+Editorial illustration, Axion-IA brand restrained palette EXACTLY:
 terracotta brick #c24a1b (accent only, sparingly, max 15% of composition),
 deep mocha brown #2a2520 (deep tones — NEVER pure black),
 sage green #5e6c54 (proof / secondary accent, sparingly),
@@ -529,7 +529,7 @@ Constraints (strict, non-negotiable):
 - Reference visual language: Anthropic illustrations + Stripe Press editorial
 ```
 
-### 11.7 Combinaison recommandée pour AxionIA (PERFECTION 2026)
+### 11.7 Combinaison recommandée pour Axion-IA (PERFECTION 2026)
 
 1. Utiliser `gpt-image-1` API (seed=42, qualité haute).
 2. Injecter préfixe brand en `system` prompt.

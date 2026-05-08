@@ -538,7 +538,7 @@ function makeFr(args: {
         id: "next",
         question: "Et après l'audit ?",
         answer:
-          "Vous repartez avec un plan d'action exécutable par vos équipes ou par AxionIA (Module 3 · Implémentation).",
+          "Vous repartez avec un plan d'action exécutable par vos équipes ou par Axion-IA (Module 3 · Implémentation).",
       },
     ],
     ctaBlockTitle: "Prête à cartographier vos opportunités IA ?",
@@ -571,7 +571,7 @@ function makeFr(args: {
       ],
     },
     metaSeo: {
-      title: `${args.title} · Audit AxionIA`,
+      title: `${args.title} · Audit Axion-IA`,
       description: args.answer.slice(0, 160),
     },
   };
@@ -657,7 +657,7 @@ function makeEn(args: {
         id: "next",
         question: "What happens next?",
         answer:
-          "You leave with an action plan executable by your team or by AxionIA (Module 3 · Implementation).",
+          "You leave with an action plan executable by your team or by Axion-IA (Module 3 · Implementation).",
       },
     ],
     ctaBlockTitle: "Ready to map your AI opportunities?",
@@ -690,7 +690,7 @@ function makeEn(args: {
       ],
     },
     metaSeo: {
-      title: `${args.title} · AxionIA Audit`,
+      title: `${args.title} · Axion-IA Audit`,
       description: args.answer.slice(0, 160),
     },
   };

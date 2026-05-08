@@ -73,10 +73,10 @@
 ### 6. AEO/GEO drift detection (LLM ranking)
 
 6.1 20 prompts canoniques définis (« cabinet IA opérationnel France », « audit IA flash entreprise », « consultant IA Paris », etc.)
-6.2 Test mensuel automatisé sur ChatGPT (via OpenAI API ou OpenRouter) : AxionIA cité ?
-6.3 Test mensuel sur Claude (Anthropic API) : AxionIA cité ?
-6.4 Test mensuel sur Perplexity (API ou scrape) : AxionIA cité ?
-6.5 Test mensuel sur Google AI Overviews (manuel ou tool) : AxionIA présent ?
+6.2 Test mensuel automatisé sur ChatGPT (via OpenAI API ou OpenRouter) : Axion-IA cité ?
+6.3 Test mensuel sur Claude (Anthropic API) : Axion-IA cité ?
+6.4 Test mensuel sur Perplexity (API ou scrape) : Axion-IA cité ?
+6.5 Test mensuel sur Google AI Overviews (manuel ou tool) : Axion-IA présent ?
 6.6 Tracker cite-rate par prompt (% présence sur 20 queries)
 6.7 Alert si cite-rate drop > 30 % vs baseline
 6.8 Sample positions (1er cité, 2e, 3e+) tracké

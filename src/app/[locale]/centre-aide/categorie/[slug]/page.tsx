@@ -35,11 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/centre-aide/categorie/${slug}`,
-    title: locale === "fr" ? `${label} · Aide AxionIA` : `${label} · AxionIA help`,
+    title: locale === "fr" ? `${label} · Aide Axion-IA` : `${label} · Axion-IA help`,
     description:
       locale === "fr"
-        ? `Articles d'aide AxionIA dans la catégorie ${label}.`
-        : `AxionIA help articles in the ${label} category.`,
+        ? `Articles d'aide Axion-IA dans la catégorie ${label}.`
+        : `Axion-IA help articles in the ${label} category.`,
     alternates: {
       fr: `/centre-aide/categorie/${slug}`,
       en: `/help/category/${slug}`,
@@ -60,10 +60,10 @@ export default async function HelpCategoryPage({ params }: Props) {
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${label} — ${isFr ? "Aide AxionIA" : "AxionIA help"}`,
+    name: `${label} — ${isFr ? "Aide Axion-IA" : "Axion-IA help"}`,
     url: `${SITE_URL}/${locale}/centre-aide/categorie/${slug}`,
     inLanguage: locale,
-    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: articles.map((a) => ({
       "@type": "Article",
       headline: a[loc].title,

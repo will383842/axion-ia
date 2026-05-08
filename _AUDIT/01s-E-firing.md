@@ -13,9 +13,9 @@
 
 | ✓/✗ | Prompt utilisateur                                                    | Skill cible attendu                    |
 | :-: | --------------------------------------------------------------------- | -------------------------------------- |
-|  ✓  | « On démarre une nouvelle session sur AxionIA, prépare-toi »          | axionia-core (chargement systématique) |
+|  ✓  | « On démarre une nouvelle session sur Axion-IA, prépare-toi »         | axionia-core (chargement systématique) |
 |  ✓  | « Je rédige le hero, peut-on dire `formations IA pour dirigeants` ? » | axionia-core (lexique banni)           |
-|  ✓  | « Quel est le statut juridique d'AxionIA déjà ? »                     | axionia-core                           |
+|  ✓  | « Quel est le statut juridique d'Axion-IA déjà ? »                    | axionia-core                           |
 |  ✗  | « Configure Sentry self-hosted »                                      | axionia-monitoring                     |
 |  ✗  | « Crée une migration Prisma pour la table bookings »                  | axionia-database                       |
 |  ✗  | « Optimise le hero pour Core Web Vitals »                             | axionia-performance                    |
@@ -125,7 +125,7 @@
 | :-: | ---------------------------------------------------------- | --------------------------------- |
 |  ✓  | « Ajoute le schema Organization avec adresse Tallinn »     | axionia-seo-aeo                   |
 |  ✓  | « Bloc AEO 60 mots en haut de /interventions/essentielle » | axionia-seo-aeo                   |
-|  ✓  | « Génère llms.txt pour AxionIA »                           | axionia-seo-aeo                   |
+|  ✓  | « Génère llms.txt pour Axion-IA »                          | axionia-seo-aeo                   |
 |  ✗  | « Mes Core Web Vitals chutent, audite »                    | axionia-performance               |
 |  ✗  | « Pourquoi GSC dit pas indexé ? »                          | seo-google (canon mesure terrain) |
 |  ✗  | « Réécris le hero pour plus de conversion »                | copywriting (avec cadenas)        |
@@ -213,12 +213,12 @@
 
 - **Prompts à risque** : « Crée une landing page premium pour /interventions », « Améliore le design du hero », « Audite l'UI ».
 - **Symptôme** : les 4 skills se déclenchent. Sans hiérarchie explicite, `ui-ux-pro-max` ou `frontend-design` peut imposer du brutalism/glassmorphism contredisant `axionia-design`.
-- **Fix proposé** : `axionia-core` déclare déjà la hiérarchie (lignes 165-169). À renforcer : ajouter une note dans la **description** de `web-design-guidelines`, `ui-ux-pro-max`, `frontend-design` : « En contexte AxionIA, voir `axionia-design` pour la direction visuelle (Webflow-inspired). »
+- **Fix proposé** : `axionia-core` déclare déjà la hiérarchie (lignes 165-169). À renforcer : ajouter une note dans la **description** de `web-design-guidelines`, `ui-ux-pro-max`, `frontend-design` : « En contexte Axion-IA, voir `axionia-design` pour la direction visuelle (Webflow-inspired). »
 
 ### CR-02 — Double matching SEO : `axionia-seo-aeo` + `seo-audit-marketing` + `ai-seo`
 
 - **Prompts à risque** : « Audite mon SEO », « Mon traffic chute », « Optimise pour AI Overviews ».
-- **Symptôme** : les 3 skills matchent. Le générique ne sait pas le scope AxionIA (mot « formation » banni, OÜ, FR/EN).
+- **Symptôme** : les 3 skills matchent. Le générique ne sait pas le scope Axion-IA (mot « formation » banni, OÜ, FR/EN).
 - **Fix proposé** : neutraliser `seo-audit-marketing` au profit de `axionia-seo-aeo` ; cadenasser `ai-seo` (note dans description).
 
 ### CR-03 — Schema dupliqué : `schema-markup` + `seo-schema`
@@ -231,7 +231,7 @@
 
 - **Prompts à risque** : « Crée une séquence email », « Écris un cold email », « Drip campaign ».
 - **Symptôme** : `email-sequence` propose Resend/Mailchimp par défaut (interdit).
-- **Fix proposé** : note dans description : « Sur AxionIA, le tooling est PowerMTA + MailWizz (voir `axionia-emails`). Ce skill est utilisable pour stratégie/contenu, pas pour le tooling. »
+- **Fix proposé** : note dans description : « Sur Axion-IA, le tooling est PowerMTA + MailWizz (voir `axionia-emails`). Ce skill est utilisable pour stratégie/contenu, pas pour le tooling. »
 
 ### CR-05 — Forms : `axionia-forms` + `form-cro` + `signup-flow-cro` + `popup-cro`
 
@@ -261,7 +261,7 @@
 
 - **Prompts à risque** : « Page formation entreprise », « formation IA dirigeants », « catalogue de formations ».
 - **Symptôme** : aucun skill générique ne sait que ce mot est BANNI. Risque de produire du contenu non conforme.
-- **Fix proposé** : automate via hook (Phase 2) — grep `formation|formateur|former|formé` sur outputs ; pour Phase 1.S, mention explicite dans la description de `copywriting`, `seo-audit-marketing`, `ai-seo` : « Sur AxionIA, voir `axionia-core` §1 (lexique banni). »
+- **Fix proposé** : automate via hook (Phase 2) — grep `formation|formateur|former|formé` sur outputs ; pour Phase 1.S, mention explicite dans la description de `copywriting`, `seo-audit-marketing`, `ai-seo` : « Sur Axion-IA, voir `axionia-core` §1 (lexique banni). »
 
 ### CR-10 — Auth/2FA : `axionia-stack` + `axionia-admin-ux` + `owasp-security`
 
@@ -284,16 +284,16 @@
 
 ### Skills génériques (cadenas)
 
-- **web-design-guidelines** : ajouter « Sur AxionIA, voir `axionia-design` pour la direction visuelle (Webflow-inspired). »
+- **web-design-guidelines** : ajouter « Sur Axion-IA, voir `axionia-design` pour la direction visuelle (Webflow-inspired). »
 - **ui-ux-pro-max** : idem.
 - **frontend-design** : idem (ne pas modifier le SKILL.md externe — gérer via routage `axionia-core`).
-- **copywriting** : ajouter « Sur AxionIA, mot `formation` banni — voir `axionia-core` §1. »
-- **page-cro** / **popup-cro** / **form-cro** : ajouter « Sur AxionIA, vérifier `axionia-anti-spa` (SSR/SSG natif) avant tout pattern client-side. »
-- **email-sequence** / **cold-email** : ajouter « Sur AxionIA, tooling = PowerMTA + MailWizz (voir `axionia-emails`). »
-- **seo-audit-marketing** / **ai-seo** / **schema-markup** : ajouter « Sur AxionIA, voir `axionia-seo-aeo` pour overrides projet. »
-- **seo-hreflang** : ajouter « Sur AxionIA, génération via `axionia-i18n` (next-intl). Ce skill = validation post-build. »
-- **test-driven-development** : ajouter « Sur AxionIA, stack tests = Vitest+Playwright via `axionia-testing`. »
-- **owasp-security** : ajouter « Sur AxionIA, valeurs effectives (CSP/HSTS) dans `axionia-deployment`. »
+- **copywriting** : ajouter « Sur Axion-IA, mot `formation` banni — voir `axionia-core` §1. »
+- **page-cro** / **popup-cro** / **form-cro** : ajouter « Sur Axion-IA, vérifier `axionia-anti-spa` (SSR/SSG natif) avant tout pattern client-side. »
+- **email-sequence** / **cold-email** : ajouter « Sur Axion-IA, tooling = PowerMTA + MailWizz (voir `axionia-emails`). »
+- **seo-audit-marketing** / **ai-seo** / **schema-markup** : ajouter « Sur Axion-IA, voir `axionia-seo-aeo` pour overrides projet. »
+- **seo-hreflang** : ajouter « Sur Axion-IA, génération via `axionia-i18n` (next-intl). Ce skill = validation post-build. »
+- **test-driven-development** : ajouter « Sur Axion-IA, stack tests = Vitest+Playwright via `axionia-testing`. »
+- **owasp-security** : ajouter « Sur Axion-IA, valeurs effectives (CSP/HSTS) dans `axionia-deployment`. »
 
 ## 4. Synthèse
 

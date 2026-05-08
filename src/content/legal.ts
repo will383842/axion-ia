@@ -37,11 +37,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Mentions",
       titleEm: "légales",
       intro:
-        "Informations légales relatives au site axion-ia.com et à la société AxionIA OÜ, conformes au droit estonien.",
+        "Informations légales relatives au site axion-ia.com et à la société Axion-IA OÜ, conformes au droit estonien.",
       sections: [
         {
           title: "Éditeur",
-          body: "AxionIA OÜ · société à responsabilité limitée de droit estonien (Eesti). Siège social : Tallinn, Estonie. Numéro d'enregistrement (registrikood) et numéro de TVA EE communiqués sur demande à contact@axion-ia.com.",
+          body: "Axion-IA OÜ · société à responsabilité limitée de droit estonien (Eesti). Siège social : Tallinn, Estonie. Numéro d'enregistrement (registrikood) et numéro de TVA EE communiqués sur demande à contact@axion-ia.com.",
         },
         {
           title: "Directeur de publication",
@@ -53,7 +53,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Propriété intellectuelle",
-          body: "L'ensemble des contenus du site (textes, marques, logos, mises en page) est la propriété d'AxionIA OÜ. Toute reproduction non autorisée est interdite.",
+          body: "L'ensemble des contenus du site (textes, marques, logos, mises en page) est la propriété d'Axion-IA OÜ. Toute reproduction non autorisée est interdite.",
         },
         {
           title: "Loi applicable",
@@ -61,20 +61,20 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Mentions légales · AxionIA OÜ",
+        title: "Mentions légales · Axion-IA OÜ",
         description:
-          "Mentions légales d'AxionIA OÜ (société de droit estonien). Hébergement Hetzner Frankfurt UE.",
+          "Mentions légales d'Axion-IA OÜ (société de droit estonien). Hébergement Hetzner Frankfurt UE.",
       },
     },
     en: {
       title: "Legal",
       titleEm: "notice",
       intro:
-        "Legal information about axion-ia.com and AxionIA OÜ, in accordance with Estonian law.",
+        "Legal information about axion-ia.com and Axion-IA OÜ, in accordance with Estonian law.",
       sections: [
         {
           title: "Publisher",
-          body: "AxionIA OÜ · Estonian limited liability company. Registered office: Tallinn, Estonia. Registration code (registrikood) and EU VAT number available on request at contact@axion-ia.com.",
+          body: "Axion-IA OÜ · Estonian limited liability company. Registered office: Tallinn, Estonia. Registration code (registrikood) and EU VAT number available on request at contact@axion-ia.com.",
         },
         {
           title: "Publication director",
@@ -86,7 +86,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Intellectual property",
-          body: "All content on the site (text, marks, logos, layouts) is the property of AxionIA OÜ. Any unauthorized reproduction is prohibited.",
+          body: "All content on the site (text, marks, logos, layouts) is the property of Axion-IA OÜ. Any unauthorized reproduction is prohibited.",
         },
         {
           title: "Applicable law",
@@ -94,9 +94,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Legal notice · AxionIA OÜ",
+        title: "Legal notice · Axion-IA OÜ",
         description:
-          "Legal notice for AxionIA OÜ (Estonian company). Hetzner Frankfurt EU hosting.",
+          "Legal notice for Axion-IA OÜ (Estonian company). Hetzner Frankfurt EU hosting.",
       },
     },
   },
@@ -108,11 +108,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Conditions",
       titleEm: "générales",
       intro:
-        "Conditions générales de vente et d'utilisation des services AxionIA. Règles applicables aux interventions, audits, implémentations IA.",
+        "Conditions générales de vente et d'utilisation des services Axion-IA. Règles applicables aux interventions, audits, implémentations IA.",
       sections: [
         {
           title: "Objet",
-          body: "Les présentes conditions régissent la vente et la prestation des services AxionIA OÜ : interventions sur site, audits IA, implémentations IA. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
+          body: "Les présentes conditions régissent la vente et la prestation des services Axion-IA OÜ : interventions sur site, audits IA, implémentations IA. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
         },
         {
           title: "Devis et commande",
@@ -124,11 +124,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Livraison",
-          body: "Les délais sont indiqués dans chaque devis. AxionIA s'engage à respecter les délais sauf cas de force majeure ou retard imputable au client (accès données, disponibilité équipe).",
+          body: "Les délais sont indiqués dans chaque devis. Axion-IA s'engage à respecter les délais sauf cas de force majeure ou retard imputable au client (accès données, disponibilité équipe).",
         },
         {
           title: "Garanties et limites de responsabilité",
-          body: "AxionIA fournit ses prestations selon les standards de l'art. La responsabilité d'AxionIA est limitée au montant facturé pour la prestation concernée. Aucune garantie de résultat n'est donnée — les ROI estimés sont indicatifs.",
+          body: "Axion-IA fournit ses prestations selon les standards de l'art. La responsabilité d'Axion-IA est limitée au montant facturé pour la prestation concernée. Aucune garantie de résultat n'est donnée — les ROI estimés sont indicatifs.",
         },
         {
           title: "Annulation et remboursement",
@@ -140,20 +140,20 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Conditions générales · AxionIA",
+        title: "Conditions générales · Axion-IA",
         description:
-          "CGV et CGU AxionIA OÜ : devis, paiement, livraison, garanties. Droit estonien applicable.",
+          "CGV et CGU Axion-IA OÜ : devis, paiement, livraison, garanties. Droit estonien applicable.",
       },
     },
     en: {
       title: "Terms &",
       titleEm: "conditions",
       intro:
-        "Terms of sale and use for AxionIA services. Rules applicable to AI sessions, audits and implementations.",
+        "Terms of sale and use for Axion-IA services. Rules applicable to AI sessions, audits and implementations.",
       sections: [
         {
           title: "Purpose",
-          body: "These terms govern the sale and provision of AxionIA OÜ services: on-site sessions, AI audits, AI implementations. Any order implies full acceptance of these terms.",
+          body: "These terms govern the sale and provision of Axion-IA OÜ services: on-site sessions, AI audits, AI implementations. Any order implies full acceptance of these terms.",
         },
         {
           title: "Quote and order",
@@ -165,11 +165,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Delivery",
-          body: "Lead times are stated in each quote. AxionIA commits to delivery times except in case of force majeure or delay attributable to the client (data access, team availability).",
+          body: "Lead times are stated in each quote. Axion-IA commits to delivery times except in case of force majeure or delay attributable to the client (data access, team availability).",
         },
         {
           title: "Warranties and liability limits",
-          body: "AxionIA delivers per industry standards. AxionIA's liability is limited to the amount billed for the relevant service. No outcome guarantee — estimated ROI are indicative.",
+          body: "Axion-IA delivers per industry standards. Axion-IA's liability is limited to the amount billed for the relevant service. No outcome guarantee — estimated ROI are indicative.",
         },
         {
           title: "Cancellation and refund",
@@ -181,9 +181,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Terms & conditions · AxionIA",
+        title: "Terms & conditions · Axion-IA",
         description:
-          "AxionIA OÜ T&Cs: quotes, payment, delivery, warranties. Estonian law applies.",
+          "Axion-IA OÜ T&Cs: quotes, payment, delivery, warranties. Estonian law applies.",
       },
     },
   },
@@ -195,11 +195,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Politique de",
       titleEm: "confidentialité",
       intro:
-        "Comment AxionIA OÜ collecte, traite et protège vos données personnelles, conformément au RGPD (UE) 2016/679.",
+        "Comment Axion-IA OÜ collecte, traite et protège vos données personnelles, conformément au RGPD (UE) 2016/679.",
       sections: [
         {
           title: "Responsable du traitement",
-          body: "AxionIA OÜ, société de droit estonien. Email DPO : dpo@axion-ia.com. Autorité de contrôle compétente : AKI (Andmekaitse Inspektsioon, autorité estonienne de protection des données).",
+          body: "Axion-IA OÜ, société de droit estonien. Email DPO : dpo@axion-ia.com. Autorité de contrôle compétente : AKI (Andmekaitse Inspektsioon, autorité estonienne de protection des données).",
         },
         {
           title: "Données collectées",
@@ -227,7 +227,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Politique de confidentialité · AxionIA",
+        title: "Politique de confidentialité · Axion-IA",
         description:
           "RGPD, données personnelles, droits, AKI estonienne. Hébergement UE Hetzner Frankfurt.",
       },
@@ -236,11 +236,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Privacy",
       titleEm: "policy",
       intro:
-        "How AxionIA OÜ collects, processes and protects your personal data under GDPR (EU) 2016/679.",
+        "How Axion-IA OÜ collects, processes and protects your personal data under GDPR (EU) 2016/679.",
       sections: [
         {
           title: "Data controller",
-          body: "AxionIA OÜ, Estonian company. DPO email: dpo@axion-ia.com. Competent supervisory authority: AKI (Andmekaitse Inspektsioon, Estonian data protection authority).",
+          body: "Axion-IA OÜ, Estonian company. DPO email: dpo@axion-ia.com. Competent supervisory authority: AKI (Andmekaitse Inspektsioon, Estonian data protection authority).",
         },
         {
           title: "Data collected",
@@ -268,7 +268,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Privacy policy · AxionIA",
+        title: "Privacy policy · Axion-IA",
         description: "GDPR, personal data, rights, Estonian AKI. EU Hetzner Frankfurt hosting.",
       },
     },
@@ -300,9 +300,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Politique de cookies · AxionIA",
+        title: "Politique de cookies · Axion-IA",
         description:
-          "Cookies AxionIA : strictement nécessaires + Plausible anonyme. Aucun cookie publicitaire.",
+          "Cookies Axion-IA : strictement nécessaires + Plausible anonyme. Aucun cookie publicitaire.",
       },
     },
     en: {
@@ -328,9 +328,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Cookie policy · AxionIA",
+        title: "Cookie policy · Axion-IA",
         description:
-          "AxionIA cookies: strictly necessary + anonymous Plausible. No advertising cookies.",
+          "Axion-IA cookies: strictly necessary + anonymous Plausible. No advertising cookies.",
       },
     },
   },
@@ -341,7 +341,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     fr: {
       title: "RGPD · droits utilisateurs",
       intro:
-        "Récapitulatif de vos droits RGPD applicables aux données traitées par AxionIA OÜ. Réponse sous 30 jours par notre DPO.",
+        "Récapitulatif de vos droits RGPD applicables aux données traitées par Axion-IA OÜ. Réponse sous 30 jours par notre DPO.",
       sections: [
         {
           title: "Droit d'accès (art. 15)",
@@ -373,15 +373,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "RGPD · droits utilisateurs · AxionIA",
+        title: "RGPD · droits utilisateurs · Axion-IA",
         description:
-          "Vos 6 droits RGPD chez AxionIA OÜ : accès, rectification, effacement, opposition, portabilité, limitation.",
+          "Vos 6 droits RGPD chez Axion-IA OÜ : accès, rectification, effacement, opposition, portabilité, limitation.",
       },
     },
     en: {
       title: "GDPR · user rights",
       intro:
-        "Summary of your GDPR rights applicable to data processed by AxionIA OÜ. DPO reply within 30 days.",
+        "Summary of your GDPR rights applicable to data processed by Axion-IA OÜ. DPO reply within 30 days.",
       sections: [
         {
           title: "Right of access (art. 15)",
@@ -413,9 +413,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "GDPR · user rights · AxionIA",
+        title: "GDPR · user rights · Axion-IA",
         description:
-          "Your 6 GDPR rights at AxionIA OÜ: access, rectification, erasure, objection, portability, restriction.",
+          "Your 6 GDPR rights at Axion-IA OÜ: access, rectification, erasure, objection, portability, restriction.",
       },
     },
   },
@@ -447,9 +447,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Politique de déplacement · AxionIA",
+        title: "Politique de déplacement · Axion-IA",
         description:
-          "Frais et conditions de déplacement AxionIA pour interventions sur site. Périmètre France/BE/LU/CH.",
+          "Frais et conditions de déplacement Axion-IA pour interventions sur site. Périmètre France/BE/LU/CH.",
       },
     },
     en: {
@@ -476,9 +476,9 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
       ],
       metaSeo: {
-        title: "Travel policy · AxionIA",
+        title: "Travel policy · Axion-IA",
         description:
-          "AxionIA travel fees and conditions for on-site sessions. France/BE/LU/CH standard area.",
+          "Axion-IA travel fees and conditions for on-site sessions. France/BE/LU/CH standard area.",
       },
     },
   },

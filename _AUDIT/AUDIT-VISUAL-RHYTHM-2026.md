@@ -1,4 +1,4 @@
-# Audit Visual Rhythm 2026 — AxionIA
+# Audit Visual Rhythm 2026 — Axion-IA
 
 > **Statut** : ✅ **Sprint A + B LIVRÉ 2026-05-07** · build production clean · zéro régression
 > **Date d'audit** : 2026-05-07
@@ -11,7 +11,7 @@
 
 ## 0. Synthèse exécutive
 
-**Diagnostic** : la grammaire visuelle d'AxionIA tient sur **deux jambes solides** (5 HeroSchema éditoriaux gold-standard + iconographie Lucide 100% disciplinée, zéro hex hardcodé, zéro photo stock) et **une jambe absente** (rythme visuel des mid-sections + closings + 12/20 pages sans hero illustré). C'est une silhouette « consultant qui empile du contenu » sur la moitié des pages stratégiques, pas un cabinet IA premium 2026.
+**Diagnostic** : la grammaire visuelle d'Axion-IA tient sur **deux jambes solides** (5 HeroSchema éditoriaux gold-standard + iconographie Lucide 100% disciplinée, zéro hex hardcodé, zéro photo stock) et **une jambe absente** (rythme visuel des mid-sections + closings + 12/20 pages sans hero illustré). C'est une silhouette « consultant qui empile du contenu » sur la moitié des pages stratégiques, pas un cabinet IA premium 2026.
 
 **Pages les plus problématiques** :
 
@@ -50,7 +50,7 @@
 ### 1.1 Audit page-par-page (Ch.1)
 
 - Cadence cible : **1 ancrage visuel tous les 1-2 écrans (~300-500 mots)**. Confirmée par benchmark Agent B (5-7 visuels narratifs par homepage, médiane sur 8 sites vérifiés).
-- Réalité AxionIA : `/methodologie` 0 visuel/280 mots, `/comparaisons` 0/80 mots chrome, `/blog` 0/50 mots chrome, `/centre-aide` 0/140 mots chrome → cadence **0** sur 10/20 pages.
+- Réalité Axion-IA : `/methodologie` 0 visuel/280 mots, `/comparaisons` 0/80 mots chrome, `/blog` 0/50 mots chrome, `/centre-aide` 0/140 mots chrome → cadence **0** sur 10/20 pages.
 - Pages en sur-densité d'icônes Lucide identiques : `/audit` (`Building2` ×4), `/stack-ia` (`Check` ×11+), `/centre-aide` (`ArrowUpRight` ×N). Doublons à varier ou contenir.
 
 ### 1.2 Hero & section openers (Ch.2)
@@ -93,7 +93,7 @@
 ### 1.8 Image SEO / AEO 2026 (Ch.8)
 
 - `buildImageObjectJsonLd` à créer dans `src/lib/seo.ts` : `{ url, caption, width, height, locale, representativeOfPage = true }`.
-- `opengraph-image.tsx` per-page Top 20 via Next 16 `ImageResponse` (`next/og`). Réutiliser le SVG du HeroSchema en background, ajouter eyebrow + h1 + AxionIA wordmark coin bas-droit. Format 1200×630.
+- `opengraph-image.tsx` per-page Top 20 via Next 16 `ImageResponse` (`next/og`). Réutiliser le SVG du HeroSchema en background, ajouter eyebrow + h1 + Axion-IA wordmark coin bas-droit. Format 1200×630.
 - `<figure><img alt><figcaption>` plus puissant que `<img alt>` seul (signal sémantique GEO fort) — à appliquer sur les illustrations narratives clés.
 
 ### 1.9 Performance images (Ch.9)
@@ -138,7 +138,7 @@
 
 #### A3. `/audit` — 🟢 sain (page la plus dense visuellement)
 
-- **Inventaire** : `AuditHeroSchema` flow 3 actes, TrustBadges, matcher 8 options icônes, pyramide 4 niveaux avec price tag serif italique terracotta XL, table tarifs, quiz Q/A, WhyAxionIA, SignatureCard, FAQ, anti-fear 3 stages, BeyondAuditBlock. Word count ~3 500.
+- **Inventaire** : `AuditHeroSchema` flow 3 actes, TrustBadges, matcher 8 options icônes, pyramide 4 niveaux avec price tag serif italique terracotta XL, table tarifs, quiz Q/A, WhyAxion-IA, SignatureCard, FAQ, anti-fear 3 stages, BeyondAuditBlock. Word count ~3 500.
 - **Gaps** : (a) `Building2` ×4 dans matcher (perte différenciation) ; (b) sections quiz + tarifs + anti-fear plain ; (c) closing visuel absent.
 - **P0 — Diversifier matcher icons** : 4 options « par taille » → `Building2` (TPE) / `Building` (PME) / `Briefcase` (ETI) / `Factory` (industrie). Effort 0.5h.
 - **P1 — Hero illustration alternative AVIF** : prompt **AUDIT-01-hero** (cabinet d'architecte). Garder optionnellement avec le flow SVG. Effort 1h.
@@ -171,7 +171,7 @@
 
 #### B1. `/implementation` — 🟢 sain
 
-- **Inventaire** : `ImplementationHeroSchema` desktop (8 satellites) + grid 2×4 mobile fallback, bandeau 4 pills Lucide, 2 portes, catalogue 8 fonctions, pricing 3 tiers, comparatif Make/Agence/AxionIA (table 3 cols avec colonne mise en avant scale 1.04 ring + badge ★), scénarios 6 segments avant/après serif metric, ProcessSteps 5 étapes, FAQ. Word count ~3 800.
+- **Inventaire** : `ImplementationHeroSchema` desktop (8 satellites) + grid 2×4 mobile fallback, bandeau 4 pills Lucide, 2 portes, catalogue 8 fonctions, pricing 3 tiers, comparatif Make/Agence/Axion-IA (table 3 cols avec colonne mise en avant scale 1.04 ring + badge ★), scénarios 6 segments avant/après serif metric, ProcessSteps 5 étapes, FAQ. Word count ~3 800.
 - **Gaps** : (a) catalogue 8 fonctions plain ; (b) pricing plain ; (c) ProcessSteps déjà visuel mais perfectible ; (d) closing visuel absent.
 - **P1 — Mid-section illustration** : prompt **IMPL-02-mid** (atelier d'intégration). Effort 1.5h.
 - **P1 — Closing illustration** : prompt **IMPL-03-closing**. Effort 1.5h.
@@ -313,17 +313,17 @@
 
 1. **Illustration vectorielle propriétaire (UUID CDN ou SVG nommé court) > photo stock corporate** — 7/8 sites vérifiés. Photo stock corporate **0/8 sites** : pattern mort en 2026 premium B2B.
 2. **Cadence « 1 visuel narratif = 1 idée/section »** plutôt que densité mécanique par paragraphe — 8/8 sites. Médiane **5-7 visuels narratifs par homepage** (range : 1 chez Anthropic minimaliste extrême → 60 chez Cohere maximaliste).
-3. **Iconographie Lucide-style ou SVG inline propriétaire** (zéro icon-font 2010s) — 7/8 sites. AxionIA déjà conforme ✅.
+3. **Iconographie Lucide-style ou SVG inline propriétaire** (zéro icon-font 2010s) — 7/8 sites. Axion-IA déjà conforme ✅.
 
 **3 anti-patterns confirmés** :
 
 1. **Photo stock corporate générique** : 0/8 sites — confirmé mort.
-2. **`alt=""` ou alt manquant** sur images narratives : Anthropic + Linear + Stripe le font (à éviter par AxionIA pour différenciation a11y/AEO).
+2. **`alt=""` ou alt manquant** sur images narratives : Anthropic + Linear + Stripe le font (à éviter par Axion-IA pour différenciation a11y/AEO).
 3. **Palette polluée par badges tiers + filenames SEO-stuffed** : Pennylane uniquement. Anti-pattern post-2020 à éviter.
 
 **Limites Agent B** : openai.com (403 Forbidden 4 routes) et mckinsey.com (timeout 60s × 4 routes) non vérifiés directement par WebFetch — documentés comme tels dans le livrable, à inspecter manuellement par Will si besoin.
 
-**Verdict transposable AxionIA** : la doctrine actuelle (Lucide + SVG inline + 0 photo stock) est **alignée à l'état de l'art 2026**. Le gap n'est **pas** dans la nature des visuels, c'est dans la **cadence** (12/20 pages sans hero illustré, 20/20 sans closing visuel).
+**Verdict transposable Axion-IA** : la doctrine actuelle (Lucide + SVG inline + 0 photo stock) est **alignée à l'état de l'art 2026**. Le gap n'est **pas** dans la nature des visuels, c'est dans la **cadence** (12/20 pages sans hero illustré, 20/20 sans closing visuel).
 
 ---
 
@@ -443,7 +443,7 @@ Justifications :
 4. **Stroke-width canonique** : standardiser à `2.25` pour tous les Lucide en pill/chip ou laisser default 2 + override 3 sur Check pill ? Recommandation : documenter la règle actuelle (default 2 nav, 2.25 module/chip, 3 Check pill) dans `Design.md`.
 5. **`Sparkles` overuse** : remplacer par icônes spécifiques (`Award` premium, `Compass` doctrine, `Star` phare) ou assumer le pattern « Sparkles = signal IA / innovation » ? Recommandation : remplacer sur `/audit` et `/implementation` où la sémantique IA est implicite, garder sur `/stack-ia` et `/interventions` où c'est signal IA explicite.
 6. **Press-kit gating** (Sprint 14.6) : 6 placeholders dans `PressKit.tsx` actuellement vides (logo, palette, type, etc.). Production avant Visual Rhythm C ou en parallèle ?
-7. **Moteur GPT-image** : `gpt-image-1` API avec seed=42 (reproductibilité ~75-85%, $13-15) vs DALL-E 3 ChatGPT Plus (gratuit avec abonnement, cohérence ~60-70%, pas de seed) ? Recommandation : `gpt-image-1` API pour la collection AxionIA — l'écart de cohérence justifie largement le $15.
+7. **Moteur GPT-image** : `gpt-image-1` API avec seed=42 (reproductibilité ~75-85%, $13-15) vs DALL-E 3 ChatGPT Plus (gratuit avec abonnement, cohérence ~60-70%, pas de seed) ? Recommandation : `gpt-image-1` API pour la collection Axion-IA — l'écart de cohérence justifie largement le $15.
 8. **`/methodologie` extension copy** : 280 mots → 600 mots avec section « Pourquoi cette méthodologie » avant CtaBlock. Will est-il OK pour rédiger les ~300 mots additionnels ?
 
 ---

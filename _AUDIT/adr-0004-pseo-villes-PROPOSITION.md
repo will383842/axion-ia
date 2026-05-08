@@ -4,7 +4,7 @@
 - **Statut historique** : DRAFT
 - **Date** : 2026-05-07
 - **Auteur** : Agent principal (audit Header & Navigation 2026) + Agent D (stratégie pSEO)
-- **Référence** : Cette ADR engage AxionIA sur une expansion durable de la surface SEO. Elle dépend de l'**ADR 0003** (mega-menus avec garde-fous, à valider en parallèle) pour rendre les pages atterrissables depuis le header.
+- **Référence** : Cette ADR engage Axion-IA sur une expansion durable de la surface SEO. Elle dépend de l'**ADR 0003** (mega-menus avec garde-fous, à valider en parallèle) pour rendre les pages atterrissables depuis le header.
 - **Audit source** : `_AUDIT/AUDIT-HEADER-NAVIGATION-2026.md` + `_AUDIT/pseo-strategy.md` + `_AUDIT/stack-fit-analysis.md` (2026-05-07).
 - **Note slot** : les slots ADR 0001-0004 sont **déjà occupés** dans `axionia/docs/adr/` (stack initial, design pivot, lift formation, typography baseline). À la validation, ce fichier sera renommé `axionia/docs/adr/0006-pseo-villes-regions-2026.md` (l'ADR navigation §9.2 prendra `0005`).
 
@@ -12,13 +12,13 @@
 
 ## Contexte
 
-Will prépare une **expansion de surface de visibilité SEO majeure** pour AxionIA :
+Will prépare une **expansion de surface de visibilité SEO majeure** pour Axion-IA :
 
 1. **Pages régions** FR (~13-18 régions selon décision DROM-COM).
 2. **Pages villes** FR > 5 000 habitants (volume initial estimé 3 500 par Will, **corrigé à ~2 150 par Agent D** — sources INSEE COG + populations légales).
 3. **Page « Toutes les IA »** déjà livrée sous `/stack-ia` (HEAD `a726ca9`+, refonte working tree non commitée 2026-05-07).
 
-Le `CLAUDE.md` v6 de référence (`AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414) ne couvre pas le pSEO programmatique à cette échelle. Aucune ADR n'a encore engagé AxionIA sur :
+Le `CLAUDE.md` v6 de référence (`Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414) ne couvre pas le pSEO programmatique à cette échelle. Aucune ADR n'a encore engagé Axion-IA sur :
 
 - Le **volume cible** (>5 000 hab vs >10 000 hab vs métropoles only).
 - La **profondeur URL** (plat vs hiérarchique).
@@ -40,7 +40,7 @@ Adopter la **stratégie pSEO villes/régions PERFECTION 2026** issue de l'audit 
 
 | Décision                               | Option retenue                                                                          | Alternatives                                           | Justification courte                                                                                                                                                                                                                                                                    |
 | -------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **D1 — Périmètre géographique**        | **Métropole + 5 DROM** (Guadeloupe, Martinique, Guyane, Réunion, Mayotte) — exclure COM | Métropole only / +COM                                  | ROI nul B2B sur COM (Polynésie, Nouvelle-Calédonie, Wallis-et-Futuna, Saint-Pierre-et-Miquelon, Saint-Martin) + risque thin content. DROM = clients B2B francophones, marché AxionIA pertinent.                                                                                         |
+| **D1 — Périmètre géographique**        | **Métropole + 5 DROM** (Guadeloupe, Martinique, Guyane, Réunion, Mayotte) — exclure COM | Métropole only / +COM                                  | ROI nul B2B sur COM (Polynésie, Nouvelle-Calédonie, Wallis-et-Futuna, Saint-Pierre-et-Miquelon, Saint-Martin) + risque thin content. DROM = clients B2B francophones, marché Axion-IA pertinent.                                                                                        |
 | **D2 — Volume V1 (amendé 2026-05-07)** | **TOUTES les ~2 150 villes >5 000 hab France métropole + ~30 communes DROM**            | V1 dégradée = 1 160 villes (>10 000 hab) / top 50 only | Décision Will : couverture maximale dès V1. Quality gate par phasage progressif (top 50 → top 200 → exhaustif sur 12 semaines), pas par seuil de population. Grands gagnants côté SEO : moteurs de recherche locaux indexent les noms de communes même petites.                         |
 | **D3 — Profondeur URL**                | **Option B hiérarchique** : `/implantations/[region]/[ville]`                           | A plat / C 3 niveaux                                   | Meilleur PageRank flow (région → ville). Crawl segmentation propre. URLs lisibles. Évite 3 niveaux (URLs longues).                                                                                                                                                                      |
 | **D4 — Slug ville**                    | **kebab-case sans accent**, gestion homonymes via suffixe code postal département       | Slug brut INSEE                                        | `paris`, `lyon`, `boulogne-billancourt`, `saint-denis-93` (Seine-Saint-Denis) vs `saint-denis-974` (Réunion).                                                                                                                                                                           |
@@ -149,7 +149,7 @@ Limite Google 50 K URLs/sitemap : largement respectée (région la plus dense = 
 - INSEE COG / Sirene API : **gratuit**.
 - data.gouv.fr référentiel communes : **gratuit**.
 - DataForSEO ou Ahrefs (volumes recherche) : ~50-200 €/mois (optionnel — recommandé phase 2 pour prioriser les villes les plus recherchées).
-- Hosting **Hetzner CX32 Frankfurt + Coolify + Cloudflare gratuit** (Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`) : SSG strict, ~2 150 pages × ~25 KB HTML compressé ≈ 55 MB build, bien sous les limites du serveur. Pas de coût additionnel hosting au-delà du serveur AxionIA déjà prévu.
+- Hosting **Hetzner CX32 Frankfurt + Coolify + Cloudflare gratuit** (Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`) : SSG strict, ~2 150 pages × ~25 KB HTML compressé ≈ 55 MB build, bien sous les limites du serveur. Pas de coût additionnel hosting au-delà du serveur Axion-IA déjà prévu.
 - Indexing API Google : gratuit (quota 200 URLs/jour → top 50 phase 1 soumis en 1 jour).
 
 ### Total V1
@@ -158,7 +158,7 @@ Charges principales : ~36 h Will sur 12 semaines (review + spot-check) + ~8.5 j-
 
 ### ROI attendu
 
-1 client B2B premium AxionIA = 15-50 K€ TTC sur 12 mois. **Break-even = 1 client.** ROI 12 mois cible 15× à 60×.
+1 client B2B premium Axion-IA = 15-50 K€ TTC sur 12 mois. **Break-even = 1 client.** ROI 12 mois cible 15× à 60×.
 
 ## Conséquences
 
@@ -193,8 +193,8 @@ Charges principales : ~36 h Will sur 12 semaines (review + spot-check) + ~8.5 j-
 4. **URL plate `/villes/[ville]`** — rejetée : pas de hiérarchie SEO ville→région, dilue link equity.
 5. **URL 3 niveaux `/implantations/[region]/[departement]/[ville]`** — rejetée : URLs trop longues + complexité maintenance + pas de gain SEO mesurable vs Option B.
 6. **Algolia Cloud pour ⌘K et recherche** — rejetée : 500 €/mois récurrent vs Pagefind self-hosted gratuit (build-time, parfait pour ~2 150 pages SSG).
-7. **MDX par ville** — rejetée : anti-pattern stack AxionIA (TS typé strict via `src/content/`).
-8. **JSON `data/villes.json`** — rejetée : anti-pattern stack AxionIA (TS typé, pas JSON).
+7. **MDX par ville** — rejetée : anti-pattern stack Axion-IA (TS typé strict via `src/content/`).
+8. **JSON `data/villes.json`** — rejetée : anti-pattern stack Axion-IA (TS typé, pas JSON).
 9. **Inclure COM (Polynésie, Nouvelle-Calédonie, Wallis-et-Futuna, Saint-Pierre-et-Miquelon, Saint-Martin)** — rejetée : ROI B2B nul + risque thin content (économie locale insuffisante pour différentiation).
 10. **EN parité villes V1** — rejetée : coût rédactionnel × 2 pour ROI B2B incertain. Décision FR-only V1, EN évaluée V2 si signaux internationaux Search Console (Hreflang `x-default` = `fr`).
 

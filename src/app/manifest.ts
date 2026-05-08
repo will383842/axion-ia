@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
+import { ROUTES } from "@/lib/routes";
 
 // Web App Manifest — `app/manifest.ts` Next 16 file convention.
 // Permet à un visiteur d'ajouter axion-ia.com comme raccourci sur son
@@ -11,12 +13,12 @@ import { SITE_URL } from "@/lib/seo";
 // pointe sur la home racine, le routing locale prend le relais).
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "AxionIA — Cabinet IA opérationnel",
-    short_name: "AxionIA",
+    name: `${BRAND.name} — ${BRAND.taglineFr.charAt(0).toUpperCase()}${BRAND.taglineFr.slice(1)}`,
+    short_name: BRAND.name,
     description:
       "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises.",
-    start_url: "/",
-    scope: "/",
+    start_url: ROUTES.home,
+    scope: ROUTES.home,
     display: "standalone",
     orientation: "portrait-primary",
     background_color: "#faf8f3", // hex-ok: W3C Web App Manifest spec requires hex literals (no CSS vars at PWA install time)
@@ -53,20 +55,20 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: "Réserver une intervention",
         short_name: "Réserver",
-        description: "Calendrier de réservation AxionIA",
-        url: "/fr/reserver",
+        description: `Calendrier de réservation ${BRAND.name}`,
+        url: `/fr${ROUTES.reserve}`,
       },
       {
         name: "Demander un audit",
         short_name: "Audit",
-        description: "Demande d'audit IA AxionIA",
-        url: "/fr/audit",
+        description: `Demande d'audit IA ${BRAND.name}`,
+        url: `/fr${ROUTES.audit}`,
       },
       {
         name: "Stack IA",
         short_name: "Stack",
-        description: "Catalogue des outils IA AxionIA",
-        url: "/fr/stack-ia",
+        description: `Catalogue des outils IA ${BRAND.name}`,
+        url: `/fr${ROUTES.stackIa}`,
       },
     ],
     id: SITE_URL,

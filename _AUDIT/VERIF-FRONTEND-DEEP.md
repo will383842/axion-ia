@@ -1,4 +1,4 @@
-# Rapport Frontend Deep-Check — AxionIA
+# Rapport Frontend Deep-Check — Axion-IA
 
 - **Date audit initial** : 2026-05-06
 - **Date résolution** : 2026-05-06 (5 phases de polish)
@@ -185,11 +185,11 @@ Reste 5 warnings ESLint (RHF watch incompatible-library, non bloquantes).
 
 **À tester runtime** :
 
-1. Q : « interventions IA pour entreprises » → Perplexity cite-t-il AxionIA ?
+1. Q : « interventions IA pour entreprises » → Perplexity cite-t-il Axion-IA ?
 2. Q : « audit IA d'entreprise » → ChatGPT récupère-t-il le bloc réponse ?
 3. Q : « cabinet IA Estonie » → Claude détecte-t-il les JSON-LD ?
 4. Q : « implémentation chatbot multilingue » → Google AIO référence ?
-5. Q : « formation IA distance B2B » → Bing Copilot inclut articles AxionIA ?
+5. Q : « formation IA distance B2B » → Bing Copilot inclut articles Axion-IA ?
    6-10 : 5 questions cibles complémentaires.
 
 ---

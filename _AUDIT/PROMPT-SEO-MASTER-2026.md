@@ -1,4 +1,4 @@
-# 🌐 PROMPT SEO MASTER AUDIT 2026 — AxionIA · Visibilité maximale, future-proof, sans aucun oubli
+# 🌐 PROMPT SEO MASTER AUDIT 2026 — Axion-IA · Visibilité maximale, future-proof, sans aucun oubli
 
 > **Version 1.0 · 2026-05-07**
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA\axionia` (sous-repo Next.js 16).
@@ -10,7 +10,7 @@
 
 ## 🎯 MISSION
 
-Will, fondateur d'AxionIA (cabinet IA opérationnel B2B premium, OÜ estonienne), prépare une expansion programmatic SEO majeure : **~1160 villes >10 000 hab + 5 DROM en V1** (validé STOP & ASK Q6 audit Header-Nav 2026-05-07), avec extension possible à **~2150 villes >5000 hab** en V2/V3. Le site doit atteindre une **visibilité maximale** dans chaque ville cible **et** être **citable comme référence** par les moteurs d'IA générative (Perplexity, ChatGPT search, Claude.ai, Google AI Overview/AI Mode, Mistral Le Chat, Bing Copilot, You.com, Brave Summarizer, ChatGPT Atlas, Arc Search) **maintenant ET dans 2-3 ans** (anticipation évolutions agentic browsers + LLM crawlers).
+Will, fondateur d'Axion-IA (cabinet IA opérationnel B2B premium, OÜ estonienne), prépare une expansion programmatic SEO majeure : **~1160 villes >10 000 hab + 5 DROM en V1** (validé STOP & ASK Q6 audit Header-Nav 2026-05-07), avec extension possible à **~2150 villes >5000 hab** en V2/V3. Le site doit atteindre une **visibilité maximale** dans chaque ville cible **et** être **citable comme référence** par les moteurs d'IA générative (Perplexity, ChatGPT search, Claude.ai, Google AI Overview/AI Mode, Mistral Le Chat, Bing Copilot, You.com, Brave Summarizer, ChatGPT Atlas, Arc Search) **maintenant ET dans 2-3 ans** (anticipation évolutions agentic browsers + LLM crawlers).
 
 **Mission triple** :
 
@@ -38,7 +38,7 @@ Tu es **le meilleur consultant SEO/AEO/GEO au monde** spécialisé dans la **vis
 - **IndexNow protocol** (Bing/Yandex/Seznam push indexing).
 - **Sécurité SEO** : HSTS, CSP, certificat SSL, security headers (Mozilla Observatory A+).
 
-**Spécialisation AxionIA** : tu sais qu'un cabinet IA opérationnel B2B premium ne joue PAS sur le volume de trafic mais sur la **qualité du trafic ICP** (Ideal Customer Profile : DG/COO/CFO PME industrielles 50-500 ETP, FR métropole + DROM). 1 client B2B premium acquis (15-50 K€/mission) > 100 leads non-qualifiés. Donc audit orienté **conversion qualifiée**, pas trafic brut.
+**Spécialisation Axion-IA** : tu sais qu'un cabinet IA opérationnel B2B premium ne joue PAS sur le volume de trafic mais sur la **qualité du trafic ICP** (Ideal Customer Profile : DG/COO/CFO PME industrielles 50-500 ETP, FR métropole + DROM). 1 client B2B premium acquis (15-50 K€/mission) > 100 leads non-qualifiés. Donc audit orienté **conversion qualifiée**, pas trafic brut.
 
 **Posture** :
 
@@ -88,7 +88,7 @@ Tu es **le meilleur consultant SEO/AEO/GEO au monde** spécialisé dans la **vis
 - JSON-LD `Organization` layout-level **enrichi 2026-05-07** (cf. `src/lib/seo.ts:154` `buildOrganizationJsonLd`) : `logo` + `sameAs` LinkedIn/FB + `address` Tallinn EE + `foundingDate` + `foundingLocation` + `areaServed` + `knowsLanguage` + `contactPoint` présents. **Reste à câbler** : `vatID` + `identifier (registrikood)` (params optionnels exposés, à passer depuis le call-site quand Will fournit les références estoniennes).
 - 4 factories `lib/seo.ts` **livrées 2026-05-07** : `buildLocalBusinessJsonLd` (ProfessionalService) + `buildPlaceJsonLd` + `buildItemListJsonLd` + `buildOrganizationJsonLd`. Restent à câbler côté pages quand Sprint 15 villes/régions arrivera.
 - Sitemap `/implementation/par-fonction/[slug]` : couvert par `buildImplementationSitemap` (HEAD `src/app/sitemap.ts`). `/presse/[slug]` : page détail communiqué pas encore implémentée (seul `/presse` listing existe), à ajouter à `buildDynamic` quand `[slug]` arrivera (Sprint 14.6+).
-- Doctrine source = `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414 (le `axionia/CLAUDE.md` racine est un stub `@AGENTS.md`).
+- Doctrine source = `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414 (le `axionia/CLAUDE.md` racine est un stub `@AGENTS.md`).
 
 ---
 
@@ -123,7 +123,7 @@ Tu es **le meilleur consultant SEO/AEO/GEO au monde** spécialisé dans la **vis
 - ❌ Sitemap parallèle hors `app/sitemap.ts`.
 - ❌ SSR pour 1160-2150 pages villes (SSG strict).
 - ❌ Algolia/Typesense Cloud sans avoir évalué Pagefind self-hosted.
-- ❌ Doctrine `axionia/CLAUDE.md` (stub) — utiliser `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414 comme source autorité.
+- ❌ Doctrine `axionia/CLAUDE.md` (stub) — utiliser `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` lignes 333-414 comme source autorité.
 
 ---
 
@@ -142,7 +142,7 @@ Tu es **le meilleur consultant SEO/AEO/GEO au monde** spécialisé dans la **vis
 9. `axionia/src/app/api/og/route.tsx` (présent HEAD — OG dynamique edge runtime).
 10. `axionia/src/messages/fr.json` + `src/messages/en.json` (i18n SEO copy).
 11. `axionia/src/content/*.ts` (audit, automatisations, case-studies, comparaisons, implementation, interventions, legal, press, stack-ia, transversal).
-12. `axionia/CLAUDE.md` (stub) + `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` (autorité).
+12. `axionia/CLAUDE.md` (stub) + `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` (autorité).
 13. `axionia/Design.md`, `axionia/AGENTS.md`.
 14. Tous fichiers `_AUDIT/AUDIT-*.md` livrés à date.
 15. ADRs existants `_AUDIT/adr-*.md` (0001 à 0004 propositions).
@@ -215,7 +215,7 @@ Pour chaque : extraire `<head>` complet (meta tags, OG, JSON-LD, hreflang, canon
 
 ### Chapitre 3 — Métadonnées HTML head (par page)
 
-3.1 `<title>` : 50-60 caractères, kw principal en début, brand AxionIA en fin (`| AxionIA` ou `· AxionIA`).
+3.1 `<title>` : 50-60 caractères, kw principal en début, brand Axion-IA en fin (`| Axion-IA` ou `· Axion-IA`).
 3.2 `<meta name="description">` : 140-160 caractères, naturel, CTA implicite, pas de bourrage kw.
 3.3 OpenGraph complet : `og:type`, `og:url`, `og:title`, `og:description`, `og:image` (1200x630 minimum), `og:locale` (`fr_FR` / `en_US`), `og:site_name`.
 3.4 Twitter Card : `twitter:card="summary_large_image"`, `twitter:site`, `twitter:creator`, `twitter:title`, `twitter:description`, `twitter:image`.
@@ -232,7 +232,7 @@ Pour chaque : extraire `<head>` complet (meta tags, OG, JSON-LD, hreflang, canon
 4.2 Self-canonical sur toutes pages indexables (même celles sans variant).
 4.3 Pages paginées : canonical sur self, pas sur page 1 (Google 2024+ guidance).
 4.4 Pages filtrées (`?categorie=rag`) : canonical vers version sans filtres OU `noindex` selon stratégie.
-4.5 hreflang matrix : `fr` ↔ `en` ↔ `x-default` (= `fr` pour AxionIA).
+4.5 hreflang matrix : `fr` ↔ `en` ↔ `x-default` (= `fr` pour Axion-IA).
 4.6 hreflang réciprocité : si A pointe B, B pointe A (sinon Google ignore).
 4.7 hreflang format : `<link rel="alternate" hreflang="fr" href="https://axion-ia.com/fr/audit">` (URL absolue obligatoire).
 4.8 hreflang en sitemap (alternative à `<head>`, redondant idéal pour robustesse).
@@ -307,8 +307,8 @@ Pour chaque : extraire `<head>` complet (meta tags, OG, JSON-LD, hreflang, canon
 ### Chapitre 10 — GEO 2026 (Generative Engine Optimization)
 
 10.1 Cible : présence dans poids LLM (ChatGPT, Gemini, Claude, Mistral) **sans citation** mais avec brand awareness.
-10.2 Brand mentions : tracker mentions « AxionIA » sur web (Brand24, Mention.com, Google Alerts).
-10.3 Knowledge Graph entry : créer/maintenir entité Wikidata pour AxionIA (process : créer item Wikidata + propriétés + sources).
+10.2 Brand mentions : tracker mentions « Axion-IA » sur web (Brand24, Mention.com, Google Alerts).
+10.3 Knowledge Graph entry : créer/maintenir entité Wikidata pour Axion-IA (process : créer item Wikidata + propriétés + sources).
 10.4 Wikipedia article (FR + EN) si critères notabilité atteints (citations presse > 3 sources indépendantes).
 10.5 Structured data exhaustive (cf. chapitre 5) — facilite extraction par crawlers LLM training.
 10.6 robots.txt AI bots : **autoriser** crawlers training (GPTBot, ClaudeBot, Google-Extended, etc.) si stratégie GEO. Sinon **refuser** = invisible LLMs futurs (cf. chapitre 13).
@@ -320,7 +320,7 @@ Pour chaque : extraire `<head>` complet (meta tags, OG, JSON-LD, hreflang, canon
 ### Chapitre 11 — Local SEO France ~1160-2150 villes
 
 11.1 LocalBusiness schema par ville (cf. 5.2) avec geo coords INSEE exactes.
-11.2 NAP consistency : Name « AxionIA » + Address + Phone identiques partout (footer, mentions légales, schema, Google Business). Format téléphone international `+33 X XX XX XX XX`.
+11.2 NAP consistency : Name « Axion-IA » + Address + Phone identiques partout (footer, mentions légales, schema, Google Business). Format téléphone international `+33 X XX XX XX XX`.
 11.3 Google Business Profile : si Will accepte (engagement RGPD données personnelles), créer fiche GBP catégorie « Conseil en informatique » + sous-catégorie « Conseil IA/automatisation ». Sinon, schéma LocalBusiness web seul.
 11.4 Pages villes — sections obligatoires (cf. AUDIT-HEADER-NAV ch.5.4) : hero localisé, démographie INSEE, secteurs dominants, distance Paris/gare/aéroport, cas client proche, 5-8 villes proches (Haversine), FAQ géolocalisée, CTA réservation pré-rempli ville.
 11.5 Anti-doorway pages : 40-60% différentiation min par ville (cf. pSEO strategy). LLM 80/20 + revue Will obligatoire.
@@ -366,7 +366,7 @@ Sitemap: https://axion-ia.com/sitemap.xml
   13.6 Orphan pages : zéro page indexable orpheline. Constat audit Header-Nav : 9 pages orphelines à corriger (`/stack-ia`, `/comparaisons`, `/glossaire`, `/guide-ia`, `/methodologie`, `/accessibilite`, `/politique-deplacement`, +2).
   13.7 Crawl budget : sur site jeune avec 1325+ URLs, prioriser pages stratégiques (services + top 50 villes phase 1) via Indexing API + maillage interne fort. Search Console crawl stats à monitorer mensuellement.
   13.8 IndexNow API : configurée pour Bing/Yandex push indexing. Hook on `dateModified` change.
-  13.9 **llms.txt** : présence à la racine `https://axion-ia.com/llms.txt` (proposed standard 2025). Format markdown avec sections `# AxionIA`, `> brief description`, `## Docs`, `## Optional`. Fournir contexte LLM-friendly du site.
+  13.9 **llms.txt** : présence à la racine `https://axion-ia.com/llms.txt` (proposed standard 2025). Format markdown avec sections `# Axion-IA`, `> brief description`, `## Docs`, `## Optional`. Fournir contexte LLM-friendly du site.
   13.10 **llms-full.txt** : version étendue concaténant tout contenu indexable en markdown — facilite ingestion par LLMs sans avoir à crawler. Cible LLM crawlers respectueux du standard.
 
 ### Chapitre 14 — Future-proof 2026+
@@ -375,12 +375,12 @@ Sitemap: https://axion-ia.com/sitemap.xml
 14.2 **ChatGPT Atlas** (navigateur OpenAI lancé 2024-2025) : compatibilité Web Standards strictes, schema.org propre, performance, accessibility — Atlas favorise sites bien structurés.
 14.3 **Arc Search** + **Perplexity Comet** + autres agentic browsers : navigation par tâches, pas par URLs. Optimisation = clarité intent par page (1 page = 1 intent), CTA clairs.
 14.4 **Claude.ai computer use** : agents qui naviguent comme humains. Sites avec UX claire + structure sémantique = mieux compris par agents IA.
-14.5 **Sora video citation** (si OpenAI lance citation vidéo) : embedder VideoObject schema sur futures vidéos AxionIA (interventions filmées, demos, podcast).
+14.5 **Sora video citation** (si OpenAI lance citation vidéo) : embedder VideoObject schema sur futures vidéos Axion-IA (interventions filmées, demos, podcast).
 14.6 **Multimodal search** : Google Lens, Bing Visual Search, ChatGPT image input. Image SEO renforcé (cf. AUDIT-VISUAL-RHYTHM) + alt text descriptifs riches.
 14.7 **Voice search 2026** : 50% recherches sont vocales (estimation). Optimiser pour requêtes naturelles longues (« combien coûte un audit IA pour une PME industrielle de 100 salariés »), FAQ format Q&A naturel.
 14.8 **Brand entity recognition** : Knowledge Graph entry (Wikidata), Wikipedia article si critères, schema `Organization` complet — préparer reconnaissance entity pour LLMs futurs.
 14.9 **Semantic HTML 5+** : utiliser balises sémantiques (`<article>`, `<section>`, `<aside>`, `<figure>`, `<details>`, `<dialog>`) pour signaler structure aux agents IA — anticipation Web Standards 2027.
-14.10 **WebRTC / WebGPU / OffscreenCanvas** : si AxionIA développe demos IA interactives (chatbot inline, viz IA en direct), utiliser ces APIs modernes — signal innovation + préparation futur web agentic.
+14.10 **WebRTC / WebGPU / OffscreenCanvas** : si Axion-IA développe demos IA interactives (chatbot inline, viz IA en direct), utiliser ces APIs modernes — signal innovation + préparation futur web agentic.
 
 ### Chapitre 15 — Maintenance, gouvernance & cleanup
 
@@ -440,7 +440,7 @@ Sitemap: https://axion-ia.com/sitemap.xml
 
 - Setup test prompts AEO : 50 prompts × 5 LLMs (utiliser WebFetch Perplexity public si possible, sinon checklist manuel).
 - Audit pSEO villes (consolider audit Header-Nav existant + check implémentation actuelle).
-- Audit brand mentions (recherches Google « AxionIA »).
+- Audit brand mentions (recherches Google « Axion-IA »).
 - Audit Knowledge Graph + Wikidata (présence ou absence).
 - Output : `05-aeo-geo-local-seo.md` + matrice citation 50 prompts × 5 LLMs.
 
@@ -478,7 +478,7 @@ Sitemap: https://axion-ia.com/sitemap.xml
 - ❌ **Modifier sans ADR** des décisions structurelles déjà validées (8 STOP & ASK Header-Nav).
 - ❌ **Recommander outils payants** sans alternative gratuite/self-hosted (Algolia, Brand24 vs Pagefind, Google Alerts).
 - ❌ **Promettre des résultats SEO chiffrés** (ranking #1 sur kw X) — SEO 2026 = probabilités, pas garanties.
-- ❌ **Ignorer les contraintes existantes** (fond terracotta, logo, doctrine `AxionIA_Dossier_FINAL_ABSOLU_v10.1`, stack Next.js 16).
+- ❌ **Ignorer les contraintes existantes** (fond terracotta, logo, doctrine `Axion-IA_Dossier_FINAL_ABSOLU_v10.1`, stack Next.js 16).
 - ❌ **Schema fake reviews** (pénalité Google 2024+ certaine).
 - ❌ **Doorway pages générées** sans différentiation 40-60% (cf. anti-doorway pSEO strategy).
 - ❌ **Bot blocking aveugle** sans réflexion stratégique (refuser GPTBot = invisible LLMs futurs).
@@ -534,7 +534,7 @@ Sitemap: https://axion-ia.com/sitemap.xml
 Le rapport `AUDIT-SEO-MASTER-2026.md` doit ouvrir sur :
 
 ```
-# Audit SEO Master 2026 — AxionIA
+# Audit SEO Master 2026 — Axion-IA
 
 > Statut : DRAFT en attente validation Will
 > Date : 2026-05-XX

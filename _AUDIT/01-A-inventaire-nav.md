@@ -1,4 +1,4 @@
-# Agent A — Inventaire interne navigation AxionIA (état HEAD)
+# Agent A — Inventaire interne navigation Axion-IA (état HEAD)
 
 > Date : 2026-05-07
 > HEAD : `a726ca9` (sha complet : `a726ca9ad8d1b91a357c2ed1322fd1d7bd4ebc2a`)
@@ -59,7 +59,7 @@
  40:           {/* Logo dans badge ivoire — fait ressortir "Axion-IA" sur fond terracotta. */}
  41:           <Link
  42:             href="/"
- 43:             aria-label="AxionIA"
+ 43:             aria-label="Axion-IA"
  44:             className="bg-paper text-fg shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center gap-1 rounded-xl px-4 py-2 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
  45:           >
  46:             <span
@@ -210,9 +210,9 @@
 37:       </SheetTrigger>
 38:       <SheetContent side="right" className="w-full max-w-sm sm:max-w-sm">
 39:         <SheetTitle className="sr-only">{t("openMenu")}</SheetTitle>
-40:         <SheetDescription className="sr-only">AxionIA navigation</SheetDescription>
+40:         <SheetDescription className="sr-only">Axion-IA navigation</SheetDescription>
 41:         <div className="-m-6 flex h-full flex-col overflow-y-auto p-6">
-42:           <span className="text-fg mb-6 text-sm font-semibold tracking-tight">AxionIA</span>
+42:           <span className="text-fg mb-6 text-sm font-semibold tracking-tight">Axion-IA</span>
 43:           {children}
 44:         </div>
 45:       </SheetContent>
@@ -429,7 +429,7 @@
  50:         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
  51:           {/* Brand column */}
  52:           <div className="lg:w-64 lg:shrink-0">
- 53:             <Link href="/" aria-label="AxionIA" ...>
+ 53:             <Link href="/" aria-label="Axion-IA" ...>
  54:               <span ... font-serif >Axion<span>-</span><span italic>IA</span></span>
  55:             </Link>
  56:             <p className="text-mocha-fg/85 max-w-xs text-sm leading-snug" font-serif>
@@ -447,7 +447,7 @@
  68:         </div>
  69:         {/* Slim bottom strip */}
  70:         <div className="border-border-on-mocha text-mocha-fg/65 mt-10 flex flex-col gap-3 border-t pt-5 text-xs lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
- 71:           <div>© {year} AxionIA OÜ · Hébergé en UE · RGPD</div>
+ 71:           <div>© {year} Axion-IA OÜ · Hébergé en UE · RGPD</div>
  72:           <div>
  73:             <a href="/sitemap.xml">{t("footer.siteMap")}</a>
  74:             <Link href="/rgpd">RGPD</Link>
@@ -475,7 +475,7 @@
 | **8.7** Liens Entreprise                                  | ⚠️ Partiel           | A `/roi` (non prescrit) et manque `/partenaires` et `/carrieres` (prescrits §10.1 zone 4). `/presse` présent (ok).                                                                                                                                                                                                                                                                                         |
 | **8.8** Liens Légal                                       | ⚠️ Partiel           | Manque RGPD dans la liste (mais lien RGPD présent dans bottom strip ligne 74).                                                                                                                                                                                                                                                                                                                             |
 | **8.9** Réseaux sociaux                                   | ⚠️ 2 sur 3 prescrits | LinkedIn + Facebook (lignes 211-220). §10.1 zone 1 prescrit **LinkedIn + YouTube + X**. Facebook substitue YouTube et X.                                                                                                                                                                                                                                                                                   |
-| **8.10** Bandeau bas                                      | ⚠️ Partiel           | `© AxionIA OÜ · Hébergé en UE · RGPD` + sitemap.xml + lien `/rgpd` + LocaleSwitcher. **Manque** : numéro d'enregistrement OÜ, TVA EE, email/téléphone, lien `/accessibilite` (prescrits §10.2).                                                                                                                                                                                                            |
+| **8.10** Bandeau bas                                      | ⚠️ Partiel           | `© Axion-IA OÜ · Hébergé en UE · RGPD` + sitemap.xml + lien `/rgpd` + LocaleSwitcher. **Manque** : numéro d'enregistrement OÜ, TVA EE, email/téléphone, lien `/accessibilite` (prescrits §10.2).                                                                                                                                                                                                           |
 
 ---
 
@@ -900,14 +900,14 @@ Extrait clé (lignes 95-115) :
  96: const organizationJsonLd = {
  97:   "@context": "https://schema.org",
  98:   "@type": "Organization",
- 99:   name: "AxionIA",
+ 99:   name: "Axion-IA",
 100:   url: SITE_URL,
-101:   legalName: "AxionIA OÜ",
+101:   legalName: "Axion-IA OÜ",
 102: } as const;
 103: const websiteJsonLd = {
 104:   "@context": "https://schema.org",
 105:   "@type": "WebSite",
-106:   name: "AxionIA",
+106:   name: "Axion-IA",
 107:   url: `${SITE_URL}/${locale}`,
 108:   inLanguage: locale,
 109:   potentialAction: {
@@ -949,7 +949,7 @@ Lignes 145-170 : `<script type="speculationrules">` avec `prerender` (eagerness 
 
 ## 9. CLAUDE.md §9.2 in extenso
 
-**Source** : `C:\Users\willi\Documents\Projets\Axion-IA\AxionIA_Dossier_FINAL_ABSOLU_v10.1\CLAUDE.md`
+**Source** : `C:\Users\willi\Documents\Projets\Axion-IA\Axion-IA_Dossier_FINAL_ABSOLU_v10.1\CLAUDE.md`
 
 > Note : le `CLAUDE.md` du sous-repo `axionia/` est un simple `@AGENTS.md` (1 ligne). La doctrine §9.x se trouve dans le dossier projet parent (v10.1 dossier final absolu).
 
@@ -1164,22 +1164,22 @@ Indexable : `sitemap` = présent dans sitemap | `robots:noindex` = page emit met
 
 ## 13. Récap blocages / fichiers manquants
 
-| Élément attendu                                 | Statut                                                                                                                                                                                           |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `axionia/src/components/nav/Header.tsx`         | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/components/nav/MobileNav.tsx`      | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/components/nav/NavLink.tsx`        | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/components/nav/LocaleSwitcher.tsx` | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/components/nav/Breadcrumbs.tsx`    | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/components/nav/Footer.tsx`         | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/i18n/navigation.ts`                | ✅ lu HEAD (6 lignes)                                                                                                                                                                            |
-| `axionia/src/i18n/routing.ts`                   | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/messages/fr.json`                      | ⚠️ Inexistant à ce path. **Trouvé à `axionia/src/messages/fr.json`** (idem en.json). Structure conforme attendue.                                                                                |
-| `axionia/messages/en.json`                      | ⚠️ Inexistant à ce path. Trouvé à `axionia/src/messages/en.json`.                                                                                                                                |
-| `axionia/src/app/[locale]/layout.tsx`           | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/app/sitemap.ts`                    | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/src/app/robots.ts`                     | ✅ lu HEAD                                                                                                                                                                                       |
-| `axionia/CLAUDE.md` §9.2                        | ⚠️ `axionia/CLAUDE.md` = 1 ligne `@AGENTS.md`. **§9.x trouvé dans `C:\...\AxionIA_Dossier_FINAL_ABSOLU_v10.1\CLAUDE.md`** (lignes 333-414). Citation littérale §9 complète au §9 du présent doc. |
-| `axionia/src/app/[locale]/recherche/page.tsx`   | ✅ lu (~140 lignes). SSR via searchParams.                                                                                                                                                       |
+| Élément attendu                                 | Statut                                                                                                                                                                                            |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `axionia/src/components/nav/Header.tsx`         | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/components/nav/MobileNav.tsx`      | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/components/nav/NavLink.tsx`        | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/components/nav/LocaleSwitcher.tsx` | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/components/nav/Breadcrumbs.tsx`    | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/components/nav/Footer.tsx`         | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/i18n/navigation.ts`                | ✅ lu HEAD (6 lignes)                                                                                                                                                                             |
+| `axionia/src/i18n/routing.ts`                   | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/messages/fr.json`                      | ⚠️ Inexistant à ce path. **Trouvé à `axionia/src/messages/fr.json`** (idem en.json). Structure conforme attendue.                                                                                 |
+| `axionia/messages/en.json`                      | ⚠️ Inexistant à ce path. Trouvé à `axionia/src/messages/en.json`.                                                                                                                                 |
+| `axionia/src/app/[locale]/layout.tsx`           | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/app/sitemap.ts`                    | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/src/app/robots.ts`                     | ✅ lu HEAD                                                                                                                                                                                        |
+| `axionia/CLAUDE.md` §9.2                        | ⚠️ `axionia/CLAUDE.md` = 1 ligne `@AGENTS.md`. **§9.x trouvé dans `C:\...\Axion-IA_Dossier_FINAL_ABSOLU_v10.1\CLAUDE.md`** (lignes 333-414). Citation littérale §9 complète au §9 du présent doc. |
+| `axionia/src/app/[locale]/recherche/page.tsx`   | ✅ lu (~140 lignes). SSR via searchParams.                                                                                                                                                        |
 
 **Aucun blocage majeur**. Toutes les sources de vérité sont accessibles et cohérentes. Les divergences listées (paths messages, CLAUDE.md indirection) sont signalées mais résolues.

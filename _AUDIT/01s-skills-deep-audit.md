@@ -77,8 +77,8 @@ Mention spéciales : C-02 (touch targets 3 sources), C-03 (perf budgets 3 source
 
 ### P0 — Bloquant Phase 2 (à fixer immédiatement après cet audit)
 
-1. **Cadenas tooling email** (LOCK-10, LOCK-11) — décisions absolues `_DECISIONS-FINALES.md` : ajouter dans descriptions de `email-sequence` et `cold-email` une note « Sur AxionIA, voir `axionia-emails` (PowerMTA + MailWizz). Resend/SendGrid/Mailgun/Brevo INTERDITS. »
-2. **Cadenas lexique** (LOCK-04, 05, 06, 12, 13) — ajouter note « Sur AxionIA, mot `formation` BANNI — voir `axionia-core` §1. » dans descriptions de `copywriting`, `copy-editing`, `content-strategy`, `seo-audit-marketing`, `ai-seo`.
+1. **Cadenas tooling email** (LOCK-10, LOCK-11) — décisions absolues `_DECISIONS-FINALES.md` : ajouter dans descriptions de `email-sequence` et `cold-email` une note « Sur Axion-IA, voir `axionia-emails` (PowerMTA + MailWizz). Resend/SendGrid/Mailgun/Brevo INTERDITS. »
+2. **Cadenas lexique** (LOCK-04, 05, 06, 12, 13) — ajouter note « Sur Axion-IA, mot `formation` BANNI — voir `axionia-core` §1. » dans descriptions de `copywriting`, `copy-editing`, `content-strategy`, `seo-audit-marketing`, `ai-seo`.
 3. **Désactivation 8 skills hors scope** : `signup-flow-cro`, `paywall-upgrade-cro`, `onboarding-cro`, `churn-prevention`, `revops`, `community-marketing`, `referral-program`, `aso-audit` (déplacer dans `_archive/` ou flag `disabled: true`).
 4. **Désactivation `seo-schema`** (doublon strict de `schema-markup`).
 5. **Règle de précédence formellement déclarée canon dans `axionia-core`** (cf. §7 ci-dessous) — ajouter une section unique en tête de `axionia-core/SKILL.md` avec les 5 niveaux.
@@ -90,7 +90,7 @@ Mention spéciales : C-02 (touch targets 3 sources), C-03 (perf budgets 3 source
 8. Préciser dans `axionia-seo-aeo` que **perf budgets canon = `axionia-performance`** + **hreflang génération canon = `axionia-i18n`**.
 9. Cadenas `web-design-guidelines`, `ui-ux-pro-max`, `frontend-design` (LOCK-01..03) avec note overrides direction visuelle.
 10. Cadenas `page-cro`, `form-cro`, `popup-cro` (LOCK-07..09) avec note `axionia-anti-spa`.
-11. Cadenas `seo-hreflang`, `seo-sitemap`, `schema-markup`, `seo-page`, `seo-drift` (LOCK-14..17) — overrides scope AxionIA.
+11. Cadenas `seo-hreflang`, `seo-sitemap`, `schema-markup`, `seo-page`, `seo-drift` (LOCK-14..17) — overrides scope Axion-IA.
 12. Cadenas `owasp-security` (LOCK-20) — valeurs effectives dans `axionia-deployment`.
 13. Cadenas `test-driven-development` (LOCK-21) — stack tests dans `axionia-testing`.
 
@@ -136,7 +136,7 @@ Mention spéciales : C-02 (touch targets 3 sources), C-03 (perf budgets 3 source
 
 **À inscrire dans `axionia-core` (et nulle part ailleurs) en section unique en tête :**
 
-> ### Règle de précédence (canon AxionIA)
+> ### Règle de précédence (canon Axion-IA)
 >
 > En cas de conflit entre sources de doctrine, l'ordre de précédence est strict :
 >
@@ -183,7 +183,7 @@ Cette règle remplace toute mention disséminée et devient la source unique. Le
 ### Q7 — Désactivation `seo-audit-marketing` au profit de `axionia-seo-aeo` ?
 
 > Le générique répète ce que le spécifique fait mieux et avec scope projet.
-> **Recommandation** : Cadenasser fortement (LOCK-12) plutôt que désactiver — utile pour onboarder de nouveaux contributeurs sur les fondamentaux SEO. Mais sur AxionIA, le canon est `axionia-seo-aeo`.
+> **Recommandation** : Cadenasser fortement (LOCK-12) plutôt que désactiver — utile pour onboarder de nouveaux contributeurs sur les fondamentaux SEO. Mais sur Axion-IA, le canon est `axionia-seo-aeo`.
 
 ### Q8 — Hook Phase 2 : grep `formation|formateur|former|formé` automatique ?
 
@@ -211,4 +211,4 @@ Cette règle remplace toute mention disséminée et devient la source unique. Le
 - **1 règle de précédence canon** à formaliser dans `axionia-core` en section unique en tête.
 - **10 questions Q1-Q10** pour Will avant Phase 2.
 
-Cet audit donne un plan d'action exécutable séquentiellement P0 → P3 sur 1-2 sessions de travail. Une fois P0+P1 livrés, le routing skills sera prédictible et la doctrine AxionIA sans contradiction documentée.
+Cet audit donne un plan d'action exécutable séquentiellement P0 → P3 sur 1-2 sessions de travail. Une fois P0+P1 livrés, le routing skills sera prédictible et la doctrine Axion-IA sans contradiction documentée.

@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/comparaisons",
     title:
       locale === "fr"
-        ? "Comparaisons IA · cabinet vs alternatives · AxionIA"
-        : "AI comparisons · consultancy vs alternatives · AxionIA",
+        ? "Comparaisons IA · cabinet vs alternatives · Axion-IA"
+        : "AI comparisons · consultancy vs alternatives · Axion-IA",
     description:
       locale === "fr"
         ? "Comparaisons honnêtes : cabinet IA vs SaaS générique, fine-tuning vs RAG, internalisation vs externalisation."
@@ -65,10 +65,10 @@ export default async function ComparisonsListPage({ params }: Props) {
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: isFr ? "Comparaisons AxionIA" : "AxionIA comparisons",
+    name: isFr ? "Comparaisons Axion-IA" : "Axion-IA comparisons",
     url: `${SITE_URL}/${locale}/comparaisons`,
     inLanguage: locale,
-    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: COMPARISONS.map((c) => ({
       "@type": "Article",
       headline: c[loc].title,
@@ -160,8 +160,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma comparatif : AxionIA cabinet IA opérationnel au centre, encadré par 2 alternatives (SaaS générique, internalisation) — comparaison factuelle sans FUD."
-                  : "Comparison diagram: AxionIA operational AI consultancy at the centre, flanked by 2 alternatives (generic SaaS, in-house team) — factual comparison without FUD."
+                  ? "Schéma comparatif : Axion-IA cabinet IA opérationnel au centre, encadré par 2 alternatives (SaaS générique, internalisation) — comparaison factuelle sans FUD."
+                  : "Comparison diagram: Axion-IA operational AI consultancy at the centre, flanked by 2 alternatives (generic SaaS, in-house team) — factual comparison without FUD."
               }
             />
           </div>
@@ -183,8 +183,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une matrice 2D représentant les axes de décision d'un comparatif IA chez AxionIA."
-                  : "Editorial illustration of a 2D matrix representing decision axes for an AI comparison at AxionIA."
+                  ? "Illustration éditoriale d'une matrice 2D représentant les axes de décision d'un comparatif IA chez Axion-IA."
+                  : "Editorial illustration of a 2D matrix representing decision axes for an AI comparison at Axion-IA."
               }
             />
           </div>

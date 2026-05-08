@@ -17,7 +17,7 @@ export const env = createEnv({
     SMTP_HOST: z.string().default("localhost"),
     SMTP_PORT: z.coerce.number().int().positive().default(2525),
     SMTP_FROM_ADDRESS: z.string().email().default("noreply@axion-ia.com"),
-    SMTP_FROM_NAME: z.string().default("AxionIA"),
+    SMTP_FROM_NAME: z.string().default("Axion-IA"),
     SMTP_FROM_MARKETING: z.string().email().default("news@axion-ia.com"),
     PMTA_API_URL: z.string().url().optional(),
     PMTA_API_KEY: z.string().optional(),

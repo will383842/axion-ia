@@ -1,6 +1,6 @@
-# 🧭 PROMPT HEADER & NAVIGATION AUDIT 2026 — AxionIA · Architecture, scale & visibilité
+# 🧭 PROMPT HEADER & NAVIGATION AUDIT 2026 — Axion-IA · Architecture, scale & visibilité
 
-> **Version 1.3 · 2026-05-07** (patch : `/stack-ia` reconnue comme LA page IA officielle AxionIA — refonte en cours avec `StackHeroSchema.tsx` + 108/81 modifs sur `page.tsx`. Plus de scénario « catalogue exhaustif distinct », mais question résiduelle : garder 11 outils sélectionnés ou étendre `stack-ia.ts` à plus large catalogue ?)
+> **Version 1.3 · 2026-05-07** (patch : `/stack-ia` reconnue comme LA page IA officielle Axion-IA — refonte en cours avec `StackHeroSchema.tsx` + 108/81 modifs sur `page.tsx`. Plus de scénario « catalogue exhaustif distinct », mais question résiduelle : garder 11 outils sélectionnés ou étendre `stack-ia.ts` à plus large catalogue ?)
 > Working directory : `C:\Users\willi\Documents\Projets\Axion-IA\axionia`.
 > Sortie : `_AUDIT/AUDIT-HEADER-NAVIGATION-2026.md` + `header-architecture.json` + `nav-routes.csv` + **patch proposé** (diffs `Header.tsx`, `MobileNav.tsx`, `messages/*.json`, `app/[locale]/...` non commités) + **proposition ADR** révision CLAUDE.md v6 §9.2.
 > Durée estimée : 100-140 min (5 agents parallèles + agent principal).
@@ -10,7 +10,7 @@
 
 ## 🎯 OBJECTIF
 
-Will, fondateur d'AxionIA (cabinet IA opérationnel B2B premium, AxionIA OÜ — droit estonien limité aux pages légales, marketing copy purgé 2026-05-07), prépare une **expansion de surface de visibilité majeure** :
+Will, fondateur d'Axion-IA (cabinet IA opérationnel B2B premium, Axion-IA OÜ — droit estonien limité aux pages légales, marketing copy purgé 2026-05-07), prépare une **expansion de surface de visibilité majeure** :
 
 1. **Page "Toutes les IA"** (catalogue exhaustif des IA opérationnelles, en cours de création).
 2. **Pages régions** (~13-18 régions FR métropole + DROM-COM si pertinent).
@@ -232,7 +232,7 @@ Pour chaque benchmark, extraire :
 - Footer architecture (combien de colonnes, quels hubs).
 - Breadcrumbs (présence, position, schema BreadcrumbList).
 - Internal linking pSEO (villes proches, régions limitrophes).
-- ⚠️ Faille observée (chez chaque benchmark) → leçon pour AxionIA.
+- ⚠️ Faille observée (chez chaque benchmark) → leçon pour Axion-IA.
 
 ---
 
@@ -270,7 +270,7 @@ Pour chaque benchmark, extraire :
 >
 > ⚠️ **Audit doit prendre HEAD comme référence ET signaler que le working tree contient une refonte non committée** — l'agent doit lire à la fois la version HEAD et la version working tree pour avoir une vue complète, sans présumer laquelle est canonique. Les patches proposés doivent référencer HEAD.
 
-3.0 **Question résiduelle pour Will** (pas un scénario a/b/c — un choix unique) : garder le format arsenal sélectif 11 outils (doctrine assumée, premium) OU étendre `stack-ia.ts` à un catalogue plus large (50-200 outils, ex : tous les outils que les clients AxionIA sont susceptibles d'utiliser). Trancher **après** lecture de la version refondue de `page.tsx`.
+3.0 **Question résiduelle pour Will** (pas un scénario a/b/c — un choix unique) : garder le format arsenal sélectif 11 outils (doctrine assumée, premium) OU étendre `stack-ia.ts` à un catalogue plus large (50-200 outils, ex : tous les outils que les clients Axion-IA sont susceptibles d'utiliser). Trancher **après** lecture de la version refondue de `page.tsx`.
 3.1 **Pas de nouveau slug séparé** : ne PAS proposer `/ia`, `/catalogue-ia`, `/intelligences-artificielles` comme pages distinctes. `/stack-ia` est la page IA officielle.
 3.2 Position dans header : item dédié au header (priorité maximale) **ou** sous mega-menu « IA & Solutions » qui agrégerait `/stack-ia` + `/comparaisons` + `/guide-ia` (cette dernière existe aussi, dossier vu dans `app/[locale]/`).
 3.3 Structure page catalogue : grid filtrable, recherche, catégories (chatbot / RAG / agents / vision / voice / etc.).
@@ -525,7 +525,7 @@ Pas de patch écrit sans validation explicite Will pour ce qui touche :
 Le rapport `AUDIT-HEADER-NAVIGATION-2026.md` doit ouvrir sur :
 
 ```
-# Audit Header & Navigation 2026 — AxionIA
+# Audit Header & Navigation 2026 — Axion-IA
 
 > Statut : DRAFT en attente validation Will
 > Date : 2026-05-XX

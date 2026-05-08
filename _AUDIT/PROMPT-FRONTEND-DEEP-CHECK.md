@@ -1,4 +1,4 @@
-# 🔬 PROMPT FRONTEND DEEP-CHECK — AxionIA · Audit avant kickoff backend
+# 🔬 PROMPT FRONTEND DEEP-CHECK — Axion-IA · Audit avant kickoff backend
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** — HEAD `fd91518` (post-Sprint 14.5-14.9). Le chiffre canonique est désormais 64 routes templates et le module Audit est refactoré (`/audit/{flash, process, strategique-pme, strategique-eti, demande}`).
 >
@@ -44,12 +44,12 @@ Tu es **lead frontend reviewer** indépendant, double casquette UX + ingénieur.
 
 - `_AUDIT/02b-mapping-pages.md` — **64 routes templates HEAD (cf. SYNC-NOTICE-2026-05-07.md) uniques** (référence completeness).
 - `_AUDIT/02-PLAN.md` — DoD jalons.
-- `Navigation-Complete-AxionIA.md` — sitemap exhaustif + user flows + états spéciaux.
-- `Wireframes-Briefs-AxionIA/00-08*.md` — 9 wireframes-briefs (référence visuelle de chaque page).
+- `Navigation-Complete-Axion-IA.md` — sitemap exhaustif + user flows + états spéciaux.
+- `Wireframes-Briefs-Axion-IA/00-08*.md` — 9 wireframes-briefs (référence visuelle de chaque page).
 - **`axionia/Design.md` v3** — doctrine **Editorial Premium Light** (canon visuel actif depuis 2026-05-06).
 - **`axionia/docs/adr/0002-design-pivot-editorial-v3.md`** — décision pivot v3 (supersedes 0001).
 - `axionia/docs/adr/0001-design-direction-webflow.md` — superseded, conservé pour traçabilité historique des sprints 0-14 livrés sous v1.
-- `AxionIA_Dossier_FINAL_ABSOLU_v10.1/Design.md` — **OBSOLÈTE** (Webflow v1, archivé).
+- `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/Design.md` — **OBSOLÈTE** (Webflow v1, archivé).
 - `axionia-package/docs/_DECISIONS-FINALES.md` — décisions stack.
 - Skills `axionia-*` (18) — règles attendues dans le code.
 
@@ -502,7 +502,7 @@ L'agent principal pendant ce temps : chapitres 1, 2, 7, 11 ci-dessous.
 ## RAPPORT FINAL — `_AUDIT/VERIF-FRONTEND-DEEP.md`
 
 ```markdown
-# Rapport Frontend Deep-Check — AxionIA
+# Rapport Frontend Deep-Check — Axion-IA
 
 - Date : 2026-XX-XX
 - Auditeur : Claude Opus 4.7 + 6 agents parallèles

@@ -1,4 +1,4 @@
-# AxionIA — Plan d'implémentation maître (M1 → M11)
+# Axion-IA — Plan d'implémentation maître (M1 → M11)
 
 > **⚠️ DOCUMENT FIGÉ — overlay canonique 2026-05-08**
 >
@@ -15,7 +15,7 @@
 
 ## Vue d'ensemble
 
-Le développement d'AxionIA est découpé en **11 jalons (M1 → M11)** pour un total visé d'environ **56 jours-homme**. Chaque jalon est une unité livrable autonome, testable, validable par Will. L'ordre n'est pas strict pour M2-M3 (parallélisables) mais l'est pour M1 (préalable) et M11 (final).
+Le développement d'Axion-IA est découpé en **11 jalons (M1 → M11)** pour un total visé d'environ **56 jours-homme**. Chaque jalon est une unité livrable autonome, testable, validable par Will. L'ordre n'est pas strict pour M2-M3 (parallélisables) mais l'est pour M1 (préalable) et M11 (final).
 
 | #   | Jalon                                                                  | Estimation  | Dépendances | Skills majeurs                                             |
 | --- | ---------------------------------------------------------------------- | ----------- | ----------- | ---------------------------------------------------------- |
@@ -101,7 +101,7 @@ M1 terminé. Lecture de `Design.md` racine, ADR 0001, skill `axionia-design`.
 1. `app/globals.css` : tokens CSS variables Webflow-inspired (Webflow Blue `#146ef5`, 6 secondaires purple/pink/green/orange/yellow/red, near-black `#080808`, canvas blanc, échelle spacing fractionnelle 4/8/12/16/24/32/48/64/96).
 2. `tailwind.config.ts` : extension `theme.extend.colors`/`spacing`/`borderRadius`/`boxShadow` mappant les CSS variables. Shadow signature 5-couches cascade définie comme `shadow-card-elevated`.
 3. `next/font` : Manrope (variable, weights 400/500/600/700/800) + Inconsolata (mono) — `display: 'swap'`, preload sur layout racine.
-4. 25+ composants shadcn customisés avec variants AxionIA :
+4. 25+ composants shadcn customisés avec variants Axion-IA :
    - `Button` : variants `primary` (Webflow Blue), `secondary` (outline), `ghost`, `link` ; tailles `sm`/`md`/`lg` ; signature `translate-x-[6px]` au hover sur primary + arrow icon.
    - `Card` : variant `elevated` avec shadow 5-couches, radius 8px.
    - `Input`, `Textarea`, `Select` : focus ring Webflow Blue 2px, error state rouge `#ee1d36`.
@@ -142,7 +142,7 @@ Implémenter le Header épuré 5 items + CTA central sticky + sélecteur FR·EN,
 
 ### Prérequis
 
-M2 terminé. Lecture de `Navigation-Complete-AxionIA.md` §4 (header desktop + mobile + footer).
+M2 terminé. Lecture de `Navigation-Complete-Axion-IA.md` §4 (header desktop + mobile + footer).
 
 ### Livrables
 
@@ -568,7 +568,7 @@ M8 terminé.
 
 ### Objectif
 
-Couverture qualité complète : tests E2E Playwright sur les 7 flows critiques (cf. `Navigation-Complete-AxionIA.md` §3), Lighthouse CI bloquant en pre-merge sur seuils stricts (Perf ≥ 95, A11y ≥ 95, Best Practices ≥ 95, SEO ≥ 100, LCP < 1.8s, INP < 80ms, CLS < 0.05), sécurité OWASP Top 10 + Turnstile + CSP strict + headers de sécurité + audit `npm audit` + scan SAST GitHub.
+Couverture qualité complète : tests E2E Playwright sur les 7 flows critiques (cf. `Navigation-Complete-Axion-IA.md` §3), Lighthouse CI bloquant en pre-merge sur seuils stricts (Perf ≥ 95, A11y ≥ 95, Best Practices ≥ 95, SEO ≥ 100, LCP < 1.8s, INP < 80ms, CLS < 0.05), sécurité OWASP Top 10 + Turnstile + CSP strict + headers de sécurité + audit `npm audit` + scan SAST GitHub.
 
 ### Prérequis
 
@@ -718,7 +718,7 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 
 ### R1 — Direction visuelle Webflow-inspired vs positionnement B2B premium
 
-**Description** : la palette Webflow (Webflow Blue + 6 secondaires) est associée à un grand public/no-code, alors qu'AxionIA cible un B2B premium (cabinet IA McKinsey-like).
+**Description** : la palette Webflow (Webflow Blue + 6 secondaires) est associée à un grand public/no-code, alors qu'Axion-IA cible un B2B premium (cabinet IA McKinsey-like).
 **Impact** : potentielle perception « grand public » par les décideurs C-level, baisse de conversion sur cibles dirigeantes.
 **Mitigation** :
 
@@ -824,8 +824,8 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 **Question** : PowerMTA est un produit commercial Sparkpost (anciennement Port25). Coût licence ~3000-5000 USD/an pour l'édition pro.
 **Statut** : Will maîtrise PowerMTA via SOS-Expat (licence existante ?). À confirmer :
 
-- Licence transférable / partageable avec AxionIA ?
-- Si non, achat dédié AxionIA OUI/NON ?
+- Licence transférable / partageable avec Axion-IA ?
+- Si non, achat dédié Axion-IA OUI/NON ?
 - Alternative : Postfix + OpenDKIM si licence indisponible (perte d'expertise Will + délivrabilité moindre).
   **Statut** : DÉCISION REQUISE avant M8 (intégration emails) et M11 (déploiement).
   **Bloquant pour** : M8 (en partie, peut être mocké), M11 (totalement).
@@ -862,8 +862,8 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 
 ### D8 — Identité société (nom commercial)
 
-**Question** : Will fournit-il le nom commercial d'AxionIA OÜ avant M11 ?
-**Statut** : variable `COMPANY_NAME` à compléter avant prod. Tant que vide, footer affiche « AxionIA OÜ · Tallinn · [numéro à compléter] ».
+**Question** : Will fournit-il le nom commercial d'Axion-IA OÜ avant M11 ?
+**Statut** : variable `COMPANY_NAME` à compléter avant prod. Tant que vide, footer affiche « Axion-IA OÜ · Tallinn · [numéro à compléter] ».
 **Bloquant pour** : M11 (mentions légales).
 
 ---
@@ -911,5 +911,5 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 
 **Sources de vérité** :
 
-- Origine : `_DECISIONS-FINALES.md` (06/05/2026) · `CLAUDE.md` v6 · ADR `docs/adr/0001-design-direction-webflow.md` · `Navigation-Complete-AxionIA.md` v1 · skills `axionia-*`.
+- Origine : `_DECISIONS-FINALES.md` (06/05/2026) · `CLAUDE.md` v6 · ADR `docs/adr/0001-design-direction-webflow.md` · `Navigation-Complete-Axion-IA.md` v1 · skills `axionia-*`.
 - À jour 2026-05-07 : ADRs `axionia/docs/adr/0002-0004` (commités) + `_AUDIT/sync-snapshot.md` + `_AUDIT/02b-mapping-pages.md` v2 (64 routes HEAD).

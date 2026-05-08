@@ -1,5 +1,5 @@
 {
-  "_": "EN mirror of fr.json. Never use the banned French word for 'training' — keep AxionIA wording 'intervention/session'.",
+  "_": "EN mirror of fr.json. Never use the banned French word for 'training' — keep Axion-IA wording 'intervention/session'.",
   "common": {
     "skipToContent": "Skip to content",
     "openMenu": "Open menu",
@@ -38,7 +38,7 @@
     "x": "X (Twitter)"
   },
   "home": {
-    "title": "AxionIA",
+    "title": "Axion-IA",
     "subtitle": "Operational AI consultancy",
     "description": "On-site AI sessions, audits and implementation for companies.",
     "viewDesign": "View tokens",
@@ -172,17 +172,17 @@
     "home": "Home"
   },
   "press": {
-    "metaTitle": "Press room · AxionIA",
-    "metaDescription": "AxionIA press room — boilerplate, media kit, releases, spokesperson and dedicated journalist contact. Response within 48 business hours, FR + EN.",
+    "metaTitle": "Press room · Axion-IA",
+    "metaDescription": "Axion-IA press room — boilerplate, media kit, releases, spokesperson and dedicated journalist contact. Response within 48 business hours, FR + EN.",
     "heroEyebrow": "Press room",
-    "heroTitle": "AxionIA",
+    "heroTitle": "Axion-IA",
     "heroTitleEm": "press",
     "heroTitleTail": " resources",
-    "heroDescription": "Everything journalists and media need to cover AxionIA — boilerplate, media kit, releases, spokesperson and direct contact.",
+    "heroDescription": "Everything journalists and media need to cover Axion-IA — boilerplate, media kit, releases, spokesperson and direct contact.",
     "heroCtaPrimary": "Download media kit",
     "heroCtaSecondary": "Contact the press desk",
     "pitchEyebrow": "Press pitch",
-    "pitchTitle": "AxionIA in",
+    "pitchTitle": "Axion-IA in",
     "pitchTitleEm": "sixty words",
     "pitchTitleTail": ".",
     "pitchSpeakable": "Citable block for AI engines and voice summaries.",
@@ -198,7 +198,7 @@
     "releasesTitle": "Recent",
     "releasesTitleEm": "releases",
     "releasesTitleTail": ".",
-    "releasesDescription": "Official AxionIA announcements — launches, milestones, studies and partnerships.",
+    "releasesDescription": "Official Axion-IA announcements — launches, milestones, studies and partnerships.",
     "releasesRead": "Read the release",
     "releasesEmpty": "No release available yet.",
     "tagLaunch": "Launch",
@@ -208,7 +208,7 @@
     "tagMilestone": "Milestone",
     "coverageEyebrow": "Media coverage",
     "coverageTitle": "They covered",
-    "coverageTitleEm": "AxionIA",
+    "coverageTitleEm": "Axion-IA",
     "coverageTitleTail": ".",
     "coverageDescription": "Articles, interviews and external mentions — updated as coverage rolls in.",
     "coverageEmpty": "First media coverage is coming. Reach out for exclusive interviews or sector exclusives.",
@@ -229,7 +229,7 @@
     "contactDescription": "Email us directly at the dedicated press address. We respond within 48 business hours, in French and English.",
     "contactCta": "Email the press desk",
     "contactEmail": "presse@axion-ia.com",
-    "contactSubject": "Press request — AxionIA",
+    "contactSubject": "Press request — Axion-IA",
     "contactResponseTimeLabel": "Response time",
     "contactResponseTimeValue": "48 business hours",
     "contactLanguagesLabel": "Languages",
@@ -238,6 +238,6 @@
     "faqTitle": "Frequent journalist",
     "faqTitleEm": "questions",
     "faqTitleTail": ".",
-    "faqDescription": "Six answers to ground your AxionIA coverage fast."
+    "faqDescription": "Six answers to ground your Axion-IA coverage fast."
   }
 }

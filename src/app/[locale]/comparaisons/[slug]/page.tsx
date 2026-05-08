@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/comparaisons/${slug}`,
-    title: `${copy.title} · AxionIA`,
+    title: `${copy.title} · Axion-IA`,
     description: copy.excerpt,
   });
 }
@@ -55,7 +55,7 @@ export default async function ComparisonPage({ params }: Props) {
     description: copy.excerpt,
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/comparaisons/${slug}`,
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -183,8 +183,8 @@ export default async function ComparisonPage({ params }: Props) {
         title={isFr ? "Besoin d'arbitrer pour votre cas ?" : "Need to arbitrate for your case?"}
         description={
           isFr
-            ? "L'audit IA AxionIA livre une recommandation chiffrée en 5 jours."
-            : "The AxionIA AI audit delivers a costed recommendation in 5 days."
+            ? "L'audit IA Axion-IA livre une recommandation chiffrée en 5 jours."
+            : "The Axion-IA AI audit delivers a costed recommendation in 5 days."
         }
         cta={
           <Cta href="/audit" size="lg">

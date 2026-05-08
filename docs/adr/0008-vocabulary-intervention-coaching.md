@@ -40,18 +40,18 @@ ADR 0003 (2026-05-07) a retiré le check CI `anti-formation` pour permettre la r
 
 ### Périmètre d'application
 
-| Surface                                                            | Application                                           |
-| ------------------------------------------------------------------ | ----------------------------------------------------- |
-| Copy public (`messages/fr.json`, `messages/en.json`)               | **OBLIGATOIRE**                                       |
-| Slugs publics (URLs)                                               | **OBLIGATOIRE**                                       |
-| JSON-LD (Service.name, FAQPage answers, Article.body)              | **OBLIGATOIRE**                                       |
-| Meta (title, description, OG)                                      | **OBLIGATOIRE**                                       |
-| Content modules (`src/content/*.ts`)                               | **OBLIGATOIRE**                                       |
-| Fixtures de test                                                   | **OBLIGATOIRE**                                       |
-| Seeds Prisma                                                       | **OBLIGATOIRE**                                       |
-| Commits Conventional                                               | **OBLIGATOIRE**                                       |
-| Documentation (`_AUDIT/`, `axionia/`, skills `axionia-*`)          | **OBLIGATOIRE** sauf citations historiques explicites |
-| Bible historique `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 | NON modifiée (source figée — décision Will préalable) |
+| Surface                                                             | Application                                           |
+| ------------------------------------------------------------------- | ----------------------------------------------------- |
+| Copy public (`messages/fr.json`, `messages/en.json`)                | **OBLIGATOIRE**                                       |
+| Slugs publics (URLs)                                                | **OBLIGATOIRE**                                       |
+| JSON-LD (Service.name, FAQPage answers, Article.body)               | **OBLIGATOIRE**                                       |
+| Meta (title, description, OG)                                       | **OBLIGATOIRE**                                       |
+| Content modules (`src/content/*.ts`)                                | **OBLIGATOIRE**                                       |
+| Fixtures de test                                                    | **OBLIGATOIRE**                                       |
+| Seeds Prisma                                                        | **OBLIGATOIRE**                                       |
+| Commits Conventional                                                | **OBLIGATOIRE**                                       |
+| Documentation (`_AUDIT/`, `axionia/`, skills `axionia-*`)           | **OBLIGATOIRE** sauf citations historiques explicites |
+| Bible historique `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 | NON modifiée (source figée — décision Will préalable) |
 
 ### Pas de gate CI
 
@@ -65,7 +65,7 @@ Si dérive constatée à l'usage, un gate CI pourra être ré-introduit via un A
 
 - Branding « cabinet IA opérationnel » et « intervention coaching » cohérents avec le positionnement B2B premium (vs « formation » qui évoque organisme de formation classique).
 - SEO long-tail : « intervention coaching IA » est une niche moins saturée que « formation IA ».
-- Distinction claire avec les organismes de formation Qualiopi (AxionIA OÜ ne souhaite pas s'inscrire dans ce cadre réglementaire).
+- Distinction claire avec les organismes de formation Qualiopi (Axion-IA OÜ ne souhaite pas s'inscrire dans ce cadre réglementaire).
 
 ### Négatives / À surveiller
 

@@ -108,7 +108,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Une autre automatisation en tête ?",
       customDescription:
         "Cette liste n'est pas exhaustive. Si vous avez une idée précise — un cas que vous voyez chez un concurrent, un agacement quotidien chez vos équipes, une demande récurrente de vos clients — décrivez-la. On revient avec un devis ferme sous 48h ouvrées.",
-      metaTitle: "Automatisations IA service client · AxionIA",
+      metaTitle: "Automatisations IA service client · Axion-IA",
       metaDescription:
         "7 automatisations IA service client à installer en forfait fixe : chatbot 24/7, tri des mails, standard téléphonique, suivi satisfaction, relance avis, réponse aux avis, centre d'aide.",
     },
@@ -169,7 +169,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Another automation in mind?",
       customDescription:
         "This list is not exhaustive. If you have a specific idea — something you saw at a competitor, a daily annoyance for your teams, a recurring customer request — describe it. We come back with a firm quote within 48 business hours.",
-      metaTitle: "AI customer service automations · AxionIA",
+      metaTitle: "AI customer service automations · Axion-IA",
       metaDescription:
         "7 AI customer service automations on a fixed-fee basis: 24/7 chatbot, email triage, phone receptionist, satisfaction tracking, review requests, review replies, help center.",
     },
@@ -235,7 +235,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Un cas commercial à part ?",
       customDescription:
         "Vente complexe, cycle long, plusieurs interlocuteurs, secteur réglementé — chaque entreprise a son tempo. Décrivez votre processus de vente actuel, on revient avec une proposition d'automatisation chiffrée sous 48h ouvrées.",
-      metaTitle: "Automatisations IA ventes & prospection · AxionIA",
+      metaTitle: "Automatisations IA ventes & prospection · Axion-IA",
       metaDescription:
         "7 automatisations IA ventes : génération devis 30s, prospection LinkedIn, scoring leads, relances, recherche prospects, assistant RDV, priorisation pipeline. Forfait fixe.",
     },
@@ -294,7 +294,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "A specific sales case?",
       customDescription:
         "Complex sale, long cycle, multiple stakeholders, regulated industry — every business has its rhythm. Describe your current sales process, we come back with a costed proposal within 48 business hours.",
-      metaTitle: "AI sales & prospecting automations · AxionIA",
+      metaTitle: "AI sales & prospecting automations · Axion-IA",
       metaDescription:
         "7 AI sales automations: 30s quote generation, LinkedIn prospecting, lead scoring, follow-ups, prospect research, meeting assistant, pipeline prioritization. Fixed fee.",
     },
@@ -360,7 +360,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Un besoin marketing spécifique ?",
       customDescription:
         "Stratégie de contenu sur un secteur précis, automatisation d'un événement annuel, gestion d'une communauté multi-langue — toute idée se chiffre. Décrivez le besoin, on revient sous 48h.",
-      metaTitle: "Automatisations IA marketing & communication · AxionIA",
+      metaTitle: "Automatisations IA marketing & communication · Axion-IA",
       metaDescription:
         "7 automatisations IA marketing : posts réseaux sociaux, newsletter, articles SEO, visuels produits, DM Instagram, ads, personnalisation site. Forfait fixe.",
     },
@@ -420,7 +420,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "A specific marketing need?",
       customDescription:
         "Content strategy in a specific sector, annual event automation, multi-language community management — any idea can be quoted. Describe the need, we come back within 48h.",
-      metaTitle: "AI marketing & communication automations · AxionIA",
+      metaTitle: "AI marketing & communication automations · Axion-IA",
       metaDescription:
         "7 AI marketing automations: social posts, newsletter, SEO articles, product visuals, Instagram DMs, ads, site personalization. Fixed fee.",
     },
@@ -486,7 +486,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Un autre processus à automatiser ?",
       customDescription:
         "Toute tâche administrative répétitive est automatisable : déclarations sociales, notes de frais, relances clients, états de stock. Décrivez le processus actuel et le volume mensuel, on revient avec un devis sous 48h.",
-      metaTitle: "Automatisations IA administratif & back-office · AxionIA",
+      metaTitle: "Automatisations IA administratif & back-office · Axion-IA",
       metaDescription:
         "7 automatisations IA back-office : saisie factures, tri mails, contrats, extraction PDF, rapprochement bancaire, comptes-rendus, bons de commande. Forfait fixe.",
     },
@@ -546,7 +546,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Another process to automate?",
       customDescription:
         "Any repetitive admin task can be automated: payroll filings, expenses, customer reminders, inventory reports. Describe the current process and monthly volume, we come back with a quote within 48h.",
-      metaTitle: "AI back-office & admin automations · AxionIA",
+      metaTitle: "AI back-office & admin automations · Axion-IA",
       metaDescription:
         "7 AI back-office automations: invoice entry, email sorting, contracts, PDF extraction, bank reconciliation, meeting minutes, purchase orders. Fixed fee.",
     },
@@ -612,7 +612,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Un sujet RH spécifique ?",
       customDescription:
         "Politique de mobilité interne, automatisation des entretiens annuels, formation continue à la carte — chaque organisation a ses priorités RH. Décrivez le besoin, on revient sous 48h.",
-      metaTitle: "Automatisations IA ressources humaines · AxionIA",
+      metaTitle: "Automatisations IA ressources humaines · Axion-IA",
       metaDescription:
         "7 automatisations IA RH : tri CV, réponse candidats, chatbot procédures, fiches de poste, onboarding, plannings, signaux démission. Forfait fixe.",
     },
@@ -672,7 +672,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "A specific HR topic?",
       customDescription:
         "Internal mobility policy, automated annual reviews, on-demand learning — every organization has its HR priorities. Describe the need, we come back within 48h.",
-      metaTitle: "AI HR automations · AxionIA",
+      metaTitle: "AI HR automations · Axion-IA",
       metaDescription:
         "7 AI HR automations: CV screening, candidate replies, procedure chatbot, job descriptions, onboarding, scheduling, attrition signals. Fixed fee.",
     },
@@ -739,7 +739,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Une analyse spécifique à automatiser ?",
       customDescription:
         "Analyse de cohorte, segmentation marketing, scoring de risque — tout indicateur que vous regardez aujourd'hui à la main peut être automatisé. Décrivez ce que vous suivez en Excel, on revient avec un devis sous 48h.",
-      metaTitle: "Automatisations IA données & pilotage · AxionIA",
+      metaTitle: "Automatisations IA données & pilotage · Axion-IA",
       metaDescription:
         "7 automatisations IA pilotage : tableaux de bord, analyse client, détection churn, retours clients, veille, prévisions, anomalies. Forfait fixe.",
     },
@@ -801,7 +801,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "A specific analysis to automate?",
       customDescription:
         "Cohort analysis, marketing segmentation, risk scoring — any indicator you watch by hand today can be automated. Describe what you track in Excel, we come back with a quote within 48h.",
-      metaTitle: "AI data & analytics automations · AxionIA",
+      metaTitle: "AI data & analytics automations · Axion-IA",
       metaDescription:
         "7 AI analytics automations: dashboards, customer analysis, churn detection, feedback, intel, forecasting, anomalies. Fixed fee.",
     },
@@ -867,7 +867,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Votre métier n'est pas dans la liste ?",
       customDescription:
         "Tout métier a ses tâches répétitives ou ses moments de friction. Décrivez votre journée type ou votre processus opérationnel le plus pénible, on revient avec une proposition chiffrée sous 48h.",
-      metaTitle: "Automatisations IA métier & production · AxionIA",
+      metaTitle: "Automatisations IA métier & production · Axion-IA",
       metaDescription:
         "7 automatisations IA métier : chiffrage chantier, menus restau, juridique, diagnostic, tournées, rapports, inventaire. Forfait fixe.",
     },
@@ -928,7 +928,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Your industry is not on the list?",
       customDescription:
         "Every craft has its repetitive tasks and friction moments. Describe a typical day or your most painful operational process, we come back with a costed proposal within 48h.",
-      metaTitle: "AI operations & core-business automations · AxionIA",
+      metaTitle: "AI operations & core-business automations · Axion-IA",
       metaDescription:
         "7 AI operations automations: construction quotes, restaurant menus, legal, diagnosis, routes, reports, inventory. Fixed fee.",
     },
@@ -989,7 +989,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "Un sujet de comm' interne particulier ?",
       customDescription:
         "Onboarding multi-sites, change management, animation de communauté interne — tout besoin de fluidification se chiffre. Décrivez le besoin, on revient sous 48h.",
-      metaTitle: "Automatisations IA communication interne · AxionIA",
+      metaTitle: "Automatisations IA communication interne · Axion-IA",
       metaDescription:
         "6 automatisations IA communication interne : chatbot RH/IT, résumé réunions, traduction, recherche docs, procédures qualité, newsletter interne. Forfait fixe.",
     },
@@ -1045,7 +1045,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
       customTitle: "A specific internal comms topic?",
       customDescription:
         "Multi-site onboarding, change management, internal community — any smoothing need can be quoted. Describe the need, we come back within 48h.",
-      metaTitle: "AI internal communication automations · AxionIA",
+      metaTitle: "AI internal communication automations · Axion-IA",
       metaDescription:
         "6 AI internal communication automations: HR/IT chatbot, meeting summaries, translation, doc search, quality procedures, internal newsletter. Fixed fee.",
     },

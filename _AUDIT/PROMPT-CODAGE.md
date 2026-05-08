@@ -1,4 +1,4 @@
-# 🛠️ PROMPT D'IMPLÉMENTATION — AxionIA · Design → Frontend → Vérif → Backend
+# 🛠️ PROMPT D'IMPLÉMENTATION — Axion-IA · Design → Frontend → Vérif → Backend
 
 > Version 3.0 · 2026-05-06 (soir) — pivot doctrine **Editorial Premium Light v3** (ADR 0002 supersedes 0001) + 103 skills + plan M1-M11.
 > À utiliser **après** validation des phases 0, 1, 1.S et 2 du `PROMPT-MAITRE.md` (audit + plan + Design.md + skill `axionia-architecture` validés par Will).
@@ -7,7 +7,7 @@
 > ⚠️ **Pivot doctrinal v1 → v3** acté le 2026-05-06 :
 >
 > - **Source de vérité visuelle ACTUELLE** : `axionia/Design.md` v3 + `axionia/docs/adr/0002-design-pivot-editorial-v3.md`. Doctrine **Editorial Premium Light** : surfaces ivoire chaud `#faf8f3` + sand + mocha `#2a2520` (pas de noir pur), primary Editorial Blue `#1a4dd9` (densifié depuis `#146ef5`), accent éditorial **terracotta** `#c24a1b`, accent doux **sage** `#7a8870`, **3 polices** Manrope (sans) + Fraunces (serif, NEW) + Inconsolata (mono), type scale display **7rem (112px)**, radius `xs:2 / sm:4 / md:8 / lg:12 / xl:20 / 2xl:28`, shadows **ton chaud** `rgba(42,37,32,…)` cascade 5 couches, halos `bg-halo-warm` / `bg-halo-cool`, signature `em.editorial` (serif italique terracotta), animation `translate-x-[6px]` conservée, breakpoints 479/768/992/1280, max-w 1280.
-> - **Source de vérité v1 HISTORIQUE** (sprints 0-14 livrés) : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/Design.md` + `docs/adr/0001-design-direction-webflow.md` — **archivés**, conservés uniquement pour traçabilité de la DoD historique des sprints 0-14 (commits `f52a2b4` → `1135136` + polish `01c5a59` → `f2ea1e6`).
+> - **Source de vérité v1 HISTORIQUE** (sprints 0-14 livrés) : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/Design.md` + `docs/adr/0001-design-direction-webflow.md` — **archivés**, conservés uniquement pour traçabilité de la DoD historique des sprints 0-14 (commits `f52a2b4` → `1135136` + polish `01c5a59` → `f2ea1e6`).
 > - **Conséquence pour PROMPT-SPRINT-AUDIT** : la DoD attendue Sprint N (N ∈ 0..14) reste celle de la v1 historique pour la croisée DoD attendue/déclarée/réelle. Le pivot v3 est traité comme un **Sprint 14.5 « Pivot doctrinal »** (post-Sprint 14 polish) à commiter séparément.
 > - **Conséquence pour CHECKPOINT FINAL** + audits frontend (FRONTEND-DEEP-CHECK, VERIFICATION-FINALE) : la doctrine v3 fait foi.
 
@@ -90,7 +90,7 @@ Ces gates sont configurés au **Sprint 0** et tournent en CI à chaque commit / 
 - **Bundle analyzer** : `@next/bundle-analyzer` rapport HTML uploadé en artifact.
 - **Cross-browser matrix Playwright** : Chromium + WebKit + Firefox sur 3 viewports (360, 768, 1280).
 - **Mobile devices Playwright** : iPhone 14 Pro, iPhone SE, Pixel 7, Samsung S22.
-- **Semgrep** : règles OWASP Top 10 + custom rules AxionIA.
+- **Semgrep** : règles OWASP Top 10 + custom rules Axion-IA.
 - **CodeQL** GitHub natif.
 - **Dependabot** PRs auto pour dépendances.
 
@@ -568,7 +568,7 @@ Composant `<Breadcrumbs items={[...]} />` Server Component avec JSON-LD `Breadcr
    - `<Badge>` variants `neutral | accent | success | warning | danger`.
    - `<Alert>` 4 variants idem.
    - `<Tabs>`, `<Accordion>`, `<Tooltip>`, `<Dialog>`, `<Sheet>`, `<DropdownMenu>` (admin uniquement), `<Popover>`.
-2. Composants AxionIA spécifiques :
+2. Composants Axion-IA spécifiques :
    - `<I18nLink>` (wrapper next-intl).
    - `<LocaleSwitcher>`.
    - `<Price amount={490} currency="EUR" suffix="HT" />`.
@@ -764,9 +764,9 @@ Composant `<Breadcrumbs items={[...]} />` Server Component avec JSON-LD `Breadcr
 - `/a-propos` — wireframe + doc 30. `<Hero>` + mission + équipe + timeline + valeurs + CTA.
 - `/guide-utilisation` — doc 32.
 - `/contact` — formulaire contact (sprint 13) + info OÜ + carte (statique).
-- `/methodologie` — page transversale présentant la méthodologie AxionIA (intervention → audit → implémentation), schémas + chiffres.
+- `/methodologie` — page transversale présentant la méthodologie Axion-IA (intervention → audit → implémentation), schémas + chiffres.
 - `/glossaire` — listing termes techniques IA + définitions FR/EN. Schema.org `DefinedTermSet`.
-- `/comparaisons` (listing) + `/comparaisons/[slug]` — pages « AxionIA vs cabinet conseil traditionnel », « AxionIA vs ESN », etc.
+- `/comparaisons` (listing) + `/comparaisons/[slug]` — pages « Axion-IA vs cabinet conseil traditionnel », « Axion-IA vs ESN », etc.
 
 #### 9.B · Blog (5 templates)
 
@@ -1399,7 +1399,7 @@ Comme pour le frontend, mid-sprint checkpoints obligatoires :
 - Disaster recovery drill : couper le VPS → restaurer ailleurs en < 2h.
 - Charge testing : k6 ou autocannon, 100 RPS sur la home, p95 < 500ms.
 - Sécurité review externe (pentester sur 1 jour si budget) ou auto-pentest avec OWASP ZAP + Burp Community.
-- AEO baseline : interroger Perplexity, ChatGPT, Claude, Google AI Overview sur 10 questions cibles → noter quels résultats AxionIA est cité.
+- AEO baseline : interroger Perplexity, ChatGPT, Claude, Google AI Overview sur 10 questions cibles → noter quels résultats Axion-IA est cité.
 
 ---
 
@@ -1412,7 +1412,7 @@ Comme pour le frontend, mid-sprint checkpoints obligatoires :
 | `_AUDIT/06-owasp-pass.md`           | Passe OWASP ASVS 5.0 + NIST SP 800-63-4.                                                    |
 | `_AUDIT/07-runbook.md`              | Rollback, restore, rotation DKIM, incidents emails.                                         |
 | `_AUDIT/08-disaster-recovery.md`    | Drill DR documenté avec captures.                                                           |
-| `_AUDIT/09-aeo-baseline.md`         | Citations AxionIA sur Perplexity/ChatGPT/Claude/AIO.                                        |
+| `_AUDIT/09-aeo-baseline.md`         | Citations Axion-IA sur Perplexity/ChatGPT/Claude/AIO.                                       |
 | `docs/adr/*.md`                     | Architecture Decision Records.                                                              |
 | `CHANGELOG.md`                      | Historique versions.                                                                        |
 | `SESSION_LOG.md`                    | Log session par session.                                                                    |
@@ -1439,7 +1439,7 @@ Confirme en 5 lignes que tu as lu ce prompt. Crée la TaskList globale (un sprin
 
 - **Statut** : ✅ commité 2026-05-06/07, dispersé `5942d2f` → `941a8e1` (22 commits pushed).
 - **ADR** : `axionia/docs/adr/0002-design-pivot-editorial-v3.md` (supersedes 0001).
-- **Livré** : palette ivoire chaud + sand + mocha + terracotta + sage, Fraunces serif italique signature `em.editorial`, halos `.bg-halo-warm` + `.bg-halo-cool` + `.bg-mocha-rich`, refonte Hero/Footer/Header (couleur figée terracotta), 256 occurrences `AxionIA` canoniques.
+- **Livré** : palette ivoire chaud + sand + mocha + terracotta + sage, Fraunces serif italique signature `em.editorial`, halos `.bg-halo-warm` + `.bg-halo-cool` + `.bg-mocha-rich`, refonte Hero/Footer/Header (couleur figée terracotta), 256 occurrences `Axion-IA` canoniques.
 - **Dette traçabilité** : pivot non atomisé en commit dédié `feat(design): pivot v3` (A-P1-2).
 
 ### Sprint 14.6 — Espace presse `/presse` + content/press.ts

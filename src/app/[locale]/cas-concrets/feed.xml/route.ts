@@ -34,7 +34,7 @@ export async function GET(_req: Request, { params }: RouteContext) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AxionIA · ${isFr ? "Cas concrets" : "Case studies"} ${locale.toUpperCase()}</title>
+    <title>Axion-IA · ${isFr ? "Cas concrets" : "Case studies"} ${locale.toUpperCase()}</title>
     <link>${SITE_URL}/${locale}/cas-concrets</link>
     <description>${isFr ? "Résultats clients chiffrés et témoignages." : "Quantified client results and testimonials."}</description>
     <language>${locale === "fr" ? "fr-FR" : "en-US"}</language>

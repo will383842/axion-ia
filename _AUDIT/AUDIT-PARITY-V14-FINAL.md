@@ -1,4 +1,4 @@
-# AUDIT PARITY V14 — FINAL · AxionIA · Bilan refontes 2026-05-08
+# AUDIT PARITY V14 — FINAL · Axion-IA · Bilan refontes 2026-05-08
 
 - **Date** : 2026-05-08
 - **Référence** : `AUDIT-PARITY-V14.md` (audit initial 60 pages, score global 70 %)
@@ -161,7 +161,7 @@ Phase 0 (validation runtime 6 pages refondues) a confirmé via `pnpm build` + in
 
 **Front-end perfection atteinte** sur le scope audit V14 V1 (60 pages publiques). Score global passé de **70 % → 92 %** (parity excellente). Tous les déficits P0/P1 traités, infrastructure sitemap scale 100K+ verrouillée, patterns doctrine consolidés et réutilisables pour les futures pages.
 
-Le reste du backlog (Phase 4-9 du plan d'exécution complet : indexation prod, pSEO industrialisation, sprints backend, content factory, SEO continu) sort du scope « audit V14 parity » et appartient à la roadmap produit AxionIA.
+Le reste du backlog (Phase 4-9 du plan d'exécution complet : indexation prod, pSEO industrialisation, sprints backend, content factory, SEO continu) sort du scope « audit V14 parity » et appartient à la roadmap produit Axion-IA.
 
 ---
 

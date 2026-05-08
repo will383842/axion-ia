@@ -466,7 +466,7 @@ Cet audit ne livre que le **page-lente** (P-504).
 ````markdown
 # Runbook — page lente
 
-> Symptôme : un visiteur signale une page AxionIA lente. CrUX p75 LCP > 2 500 ms ou INP > 200 ms sur une route précise. Diagnostic en 5 étapes, ~5 minutes.
+> Symptôme : un visiteur signale une page Axion-IA lente. CrUX p75 LCP > 2 500 ms ou INP > 200 ms sur une route précise. Diagnostic en 5 étapes, ~5 minutes.
 
 ## 1. Identifier la route exacte (30 s)
 
@@ -632,7 +632,7 @@ Détails : `_AUDIT/AUDIT-WEB-VITALS-2026-ROADMAP.md` (à produire par superviseu
 **Fichier 1** : `scripts/crux-snapshot.ts` (nouveau — à créer Phase E).
 
 ```ts
-// CrUX snapshot mensuel — interroge Chrome UX Report API pour AxionIA
+// CrUX snapshot mensuel — interroge Chrome UX Report API pour Axion-IA
 // et archive le résultat dans _AUDIT/CRUX-snapshot-YYYY-MM.json.
 //
 // Usage :

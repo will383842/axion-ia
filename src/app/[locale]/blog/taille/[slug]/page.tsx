@@ -42,10 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/blog/taille/${slug}`,
-    title: isFr ? `${label} · Articles IA AxionIA` : `${label} · AxionIA AI articles`,
+    title: isFr ? `${label} · Articles IA Axion-IA` : `${label} · Axion-IA AI articles`,
     description: isFr
-      ? `Articles AxionIA dédiés aux ${label} : cas d'usage IA, audit, interventions, implémentation adaptés à votre taille d'entreprise.`
-      : `AxionIA articles for ${label} businesses: AI use cases, audit, sessions, implementation tailored to your company size.`,
+      ? `Articles Axion-IA dédiés aux ${label} : cas d'usage IA, audit, interventions, implémentation adaptés à votre taille d'entreprise.`
+      : `Axion-IA articles for ${label} businesses: AI use cases, audit, sessions, implementation tailored to your company size.`,
     alternates: { fr: `/blog/taille/${slug}`, en: `/blog/size/${slug}` },
   });
 }
@@ -65,10 +65,10 @@ export default async function BlogCompanySizePage({ params }: Props) {
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${label} — ${isFr ? "Articles AxionIA" : "AxionIA articles"}`,
+    name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
     url: `${SITE_URL}/${locale}/blog/${isFr ? "taille" : "size"}/${slug}`,
     inLanguage: locale,
-    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: tier1Posts.map((p) => ({
       "@type": "Article",
       headline: p[loc].title,

@@ -1,6 +1,6 @@
 // Server Component — placeholder visuel éditorial pour les emplacements
 // d'illustrations Sprint Visual Rhythm 2026 en attente de génération
-// GPT-image. Affiche un cadre stylé palette AxionIA avec slot ID + ratio +
+// GPT-image. Affiche un cadre stylé palette Axion-IA avec slot ID + ratio +
 // filename target — Will substitue par l'image réelle quand elle est
 // générée et droppée dans `public/illustrations/`.
 //

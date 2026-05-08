@@ -70,7 +70,7 @@ test.describe("SEO endpoints", () => {
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"]).toContain("text/plain");
     const body = await res.text();
-    expect(body).toContain("AxionIA");
+    expect(body).toContain("Axion-IA");
     expect(body).toContain("Modules");
   });
 });

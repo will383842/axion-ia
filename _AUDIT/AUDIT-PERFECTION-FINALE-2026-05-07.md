@@ -1,4 +1,4 @@
-# Audit perfection finale AxionIA — 8 dimensions
+# Audit perfection finale Axion-IA — 8 dimensions
 
 > Date : 2026-05-07
 > HEAD : `c884adc` (feat(aeo+geo): finalize perfection — Person /a-propos + FaqSpeakable + BlogPost.updatedAt)
@@ -416,7 +416,7 @@ Pas de breadcrumb sur `design`, `components`, `sections` (cohérent avec `EXCLUD
 
 ### 7.2 Expertise
 
-✅ `Person.knowsAbout` — 6 sujets (`seo.ts:283-290`) : « Intelligence artificielle opérationnelle », « Audit IA d'entreprise », « Implémentation IA », « Automatisation processus métier », « RAG », « LLM ». **Cohérents avec le positionnement AxionIA**.
+✅ `Person.knowsAbout` — 6 sujets (`seo.ts:283-290`) : « Intelligence artificielle opérationnelle », « Audit IA d'entreprise », « Implémentation IA », « Automatisation processus métier », « RAG », « LLM ». **Cohérents avec le positionnement Axion-IA**.
 ✅ `PRESS_SPOKESPERSONS` aussi typés Person (`src/app/[locale]/presse/page.tsx:162-172`) avec `knowsAbout` + `knowsLanguage`.
 
 ### 7.3 Authoritativeness
@@ -426,7 +426,7 @@ Pas de breadcrumb sur `design`, `components`, `sections` (cohérent avec `EXCLUD
 
 ### 7.4 Trust
 
-✅ `Organization.legalName` = `"AxionIA OÜ"` (`seo.ts:167`).
+✅ `Organization.legalName` = `"Axion-IA OÜ"` (`seo.ts:167`).
 ✅ `Organization.foundingDate` = `"2024"` (`seo.ts:174`).
 ✅ `Organization.foundingLocation` = Tallinn, EE (`seo.ts:175-182`).
 ✅ `Organization.contactPoint` (`seo.ts:185-190`) avec email + langues.
@@ -481,7 +481,7 @@ Pas de breadcrumb sur `design`, `components`, `sections` (cohérent avec `EXCLUD
 
 ✅ `Illustration.tsx:91` (composant central) : `alt={alt}` — prop requise (`alt: string`, ligne 22).
 ✅ Pages auditées (`/a-propos:130-134,151-155`, `/presse:251`, etc.) passent toujours un `alt` localisé.
-🟠 `<img>` natifs (`PressSpokesperson.tsx:46`, `TeamGrid.tsx:29`) ont un `alt={member.name}` simple — descriptif, mais pourrait être enrichi (« Photo de Will, fondateur AxionIA » > « Will »).
+🟠 `<img>` natifs (`PressSpokesperson.tsx:46`, `TeamGrid.tsx:29`) ont un `alt={member.name}` simple — descriptif, mais pourrait être enrichi (« Photo de Will, fondateur Axion-IA » > « Will »).
 
 ### 8.4 Inventaire icônes / manifest / og statique
 
@@ -549,7 +549,7 @@ Avant le chantier pSEO villes/régions (Sprint 15), pour atteindre la perfection
 
 9. **🟠 Ajouter `priority` sur les hero `<Illustration>` des 11 pages-produit** (interventions/_, audit/_, implementation/\*) qui ont un hero illustré. LCP -10-20 % sur mobile.
 
-10. **🟠 Brancher `vatID` + `registrikood` (`AxionIA OÜ`) sur le layout** (`src/app/[locale]/layout.tsx:99` → ajouter `vatID: process.env["NEXT_PUBLIC_AXIONIA_VAT_ID"], registrikood: process.env["NEXT_PUBLIC_AXIONIA_REGISTRIKOOD"]`). Trust signal légal complet. Bloqué tant que Will ne fournit pas les valeurs.
+10. **🟠 Brancher `vatID` + `registrikood` (`Axion-IA OÜ`) sur le layout** (`src/app/[locale]/layout.tsx:99` → ajouter `vatID: process.env["NEXT_PUBLIC_AXIONIA_VAT_ID"], registrikood: process.env["NEXT_PUBLIC_AXIONIA_REGISTRIKOOD"]`). Trust signal légal complet. Bloqué tant que Will ne fournit pas les valeurs.
 
 ### Bonus (non-bloquant pour pSEO mais haute valeur)
 

@@ -1,7 +1,7 @@
 # CHANGELOG Wireframes — Corrections P0 audit Phase 1
 
 **Date** : 2026-05-06
-**Scope** : application des corrections P0 détectées par l'audit Phase 1 sur les briefs wireframes AxionIA
+**Scope** : application des corrections P0 détectées par l'audit Phase 1 sur les briefs wireframes Axion-IA
 **Référentiels cités dans les nouveaux textes** : `axionia-emails`, `axionia-performance`, `axionia-design`, ADR 0001 du 06/05/2026 (`_DECISIONS-FINALES.md`).
 
 ---
@@ -256,7 +256,7 @@
 
 ## Vérifications négatives
 
-Recherches exhaustives sur l'ensemble du dossier `Wireframes-Briefs-AxionIA/` post-correction :
+Recherches exhaustives sur l'ensemble du dossier `Wireframes-Briefs-Axion-IA/` post-correction :
 
 | Pattern                                                                            | Résultat                                                            |
 | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- |

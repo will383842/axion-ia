@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/accessibilite",
     title:
       locale === "fr"
-        ? "Déclaration d'accessibilité · AxionIA"
-        : "Accessibility statement · AxionIA",
+        ? "Déclaration d'accessibilité · Axion-IA"
+        : "Accessibility statement · Axion-IA",
     description:
       locale === "fr"
         ? "Déclaration de conformité WCAG 2.2 AA, audits, voies de recours."
@@ -50,7 +50,7 @@ export default async function AccessibilityPage({ params }: Props) {
     ? [
         {
           h: "Engagement",
-          p: "AxionIA OÜ s'engage à rendre son site axion-ia.com accessible conformément aux Web Content Accessibility Guidelines 2.2 niveau AA (WCAG 2.2 AA), au RGAA 4.1 et aux exigences de l'European Accessibility Act (EAA, Directive UE 2019/882).",
+          p: "Axion-IA OÜ s'engage à rendre son site axion-ia.com accessible conformément aux Web Content Accessibility Guidelines 2.2 niveau AA (WCAG 2.2 AA), au RGAA 4.1 et aux exigences de l'European Accessibility Act (EAA, Directive UE 2019/882).",
         },
         {
           h: "État de conformité",
@@ -76,7 +76,7 @@ export default async function AccessibilityPage({ params }: Props) {
     : [
         {
           h: "Commitment",
-          p: "AxionIA OÜ is committed to making its axion-ia.com website accessible in accordance with Web Content Accessibility Guidelines 2.2 Level AA (WCAG 2.2 AA), RGAA 4.1, and the European Accessibility Act (EAA, EU Directive 2019/882).",
+          p: "Axion-IA OÜ is committed to making its axion-ia.com website accessible in accordance with Web Content Accessibility Guidelines 2.2 Level AA (WCAG 2.2 AA), RGAA 4.1, and the European Accessibility Act (EAA, EU Directive 2019/882).",
         },
         {
           h: "Conformance status",

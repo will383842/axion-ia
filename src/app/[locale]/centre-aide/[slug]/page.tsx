@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/centre-aide/${slug}`,
-    title: `${copy.title} · ${locale === "fr" ? "Aide AxionIA" : "AxionIA help"}`,
+    title: `${copy.title} · ${locale === "fr" ? "Aide Axion-IA" : "Axion-IA help"}`,
     description: copy.excerpt,
     alternates: { fr: `/centre-aide/${slug}`, en: `/help/${slug}` },
   });
@@ -57,10 +57,10 @@ export default async function HelpArticlePage({ params }: Props) {
     url: `${SITE_URL}/${locale}/centre-aide/${slug}`,
     isPartOf: {
       "@type": "WebSite",
-      name: "AxionIA",
+      name: "Axion-IA",
       url: SITE_URL,
     },
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
     articleSection: article.category,
   } as const;
 

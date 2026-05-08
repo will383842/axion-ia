@@ -45,11 +45,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `/blog/secteur/${slug}`,
     title: isFr
-      ? `${label} · Articles IA AxionIA par secteur`
-      : `${label} · AxionIA AI articles by sector`,
+      ? `${label} · Articles IA Axion-IA par secteur`
+      : `${label} · Axion-IA AI articles by sector`,
     description: isFr
-      ? `Articles AxionIA dédiés au secteur ${label.toLowerCase()} : audit IA, interventions, implémentation, cas d'usage métier.`
-      : `AxionIA articles dedicated to the ${label.toLowerCase()} sector: AI audit, sessions, implementation, sector-specific use cases.`,
+      ? `Articles Axion-IA dédiés au secteur ${label.toLowerCase()} : audit IA, interventions, implémentation, cas d'usage métier.`
+      : `Axion-IA articles dedicated to the ${label.toLowerCase()} sector: AI audit, sessions, implementation, sector-specific use cases.`,
     alternates: { fr: `/blog/secteur/${slug}`, en: `/blog/sector/${slug}` },
   });
 }
@@ -69,10 +69,10 @@ export default async function BlogSectorPage({ params }: Props) {
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${label} — ${isFr ? "Articles AxionIA" : "AxionIA articles"}`,
+    name: `${label} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
     url: `${SITE_URL}/${locale}/blog/${isFr ? "secteur" : "sector"}/${slug}`,
     inLanguage: locale,
-    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: tier1Posts.map((p) => ({
       "@type": "Article",
       headline: p[loc].title,
@@ -101,8 +101,8 @@ export default async function BlogSectorPage({ params }: Props) {
         titleTail={isFr ? "" : " sector"}
         description={
           isFr
-            ? `${posts.length} article${posts.length > 1 ? "s" : ""} dédié${posts.length > 1 ? "s" : ""} aux entreprises du secteur ${label.toLowerCase()}. Audit IA, interventions, implémentation et cas d'usage métiers documentés par AxionIA.`
-            : `${posts.length} article${posts.length > 1 ? "s" : ""} dedicated to ${label.toLowerCase()} sector businesses. AI audit, sessions, implementation and sector-specific use cases documented by AxionIA.`
+            ? `${posts.length} article${posts.length > 1 ? "s" : ""} dédié${posts.length > 1 ? "s" : ""} aux entreprises du secteur ${label.toLowerCase()}. Audit IA, interventions, implémentation et cas d'usage métiers documentés par Axion-IA.`
+            : `${posts.length} article${posts.length > 1 ? "s" : ""} dedicated to ${label.toLowerCase()} sector businesses. AI audit, sessions, implementation and sector-specific use cases documented by Axion-IA.`
         }
       >
         <div className="mt-7 flex flex-wrap items-center gap-3">

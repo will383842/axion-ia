@@ -9,30 +9,30 @@ Selon le prompt-maître Phase 1.S §7 : `axionia-architecture`, `axionia-content
 
 ### F-CREATE-01 — `axionia-architecture` ✅ À CRÉER
 
-| Champ                | Valeur                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Path                 | `.claude/skills/axionia-architecture/SKILL.md`                                                                                                                                                                                                                                                                                                                                            |
-| Description proposée | « Architecture macro d'AxionIA : monorepo structure, conventions de dossiers Next.js 15 App Router, séparation public / `(public)` / `(admin)`, RSC vs Client boundaries, shared packages, lib/ vs app/, et patterns d'organisation. À charger pour toute discussion sur la structure du repo, le nommage des dossiers, l'organisation des routes, ou la séparation des préoccupations. » |
-| Justification        | Aujourd'hui ces conventions sont éparpillées entre `axionia-stack` (lib/UI choices), `axionia-anti-spa` (RSC/Client), `axionia-admin-ux` (admin layout), CLAUDE.md §17 (conventions). Un skill unique de meta-architecture est utile pour Phase 4.                                                                                                                                        |
-| Dépendances          | `axionia-stack`, `axionia-anti-spa`, `axionia-i18n` (App Router avec [locale])                                                                                                                                                                                                                                                                                                            |
+| Champ                | Valeur                                                                                                                                                                                                                                                                                                                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Path                 | `.claude/skills/axionia-architecture/SKILL.md`                                                                                                                                                                                                                                                                                                                                             |
+| Description proposée | « Architecture macro d'Axion-IA : monorepo structure, conventions de dossiers Next.js 15 App Router, séparation public / `(public)` / `(admin)`, RSC vs Client boundaries, shared packages, lib/ vs app/, et patterns d'organisation. À charger pour toute discussion sur la structure du repo, le nommage des dossiers, l'organisation des routes, ou la séparation des préoccupations. » |
+| Justification        | Aujourd'hui ces conventions sont éparpillées entre `axionia-stack` (lib/UI choices), `axionia-anti-spa` (RSC/Client), `axionia-admin-ux` (admin layout), CLAUDE.md §17 (conventions). Un skill unique de meta-architecture est utile pour Phase 4.                                                                                                                                         |
+| Dépendances          | `axionia-stack`, `axionia-anti-spa`, `axionia-i18n` (App Router avec [locale])                                                                                                                                                                                                                                                                                                             |
 
 ### F-CREATE-02 — `axionia-content-models` ✅ À CRÉER
 
-| Champ                | Valeur                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Path                 | `.claude/skills/axionia-content-models/SKILL.md`                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Description proposée | « Modèles de contenu AxionIA : articles de blog, FAQ, cas concrets, témoignages, articles centre d'aide, auteurs, tags, catégories. À charger pour toute création/modification de contenu structuré, gestion du multilingue FR/EN par contenu (champ vs table de traduction), slugs uniques, MDX vs Tiptap, schemas Zod côté admin, et règles éditoriales. Complémentaire de `axionia-database` (schémas BDD) et `axionia-admin-ux` (UI éditeur). » |
-| Justification        | `axionia-database` porte tout aujourd'hui (tables + champs + multilingue) — surcharge. `axionia-admin-ux` traite l'UI éditeur. Il manque la **règle métier de modélisation** (slug par locale ? table de traduction ? Tiptap vs MDX ? renderers FAQ ?).                                                                                                                                                                                             |
-| Dépendances          | `axionia-database`, `axionia-admin-ux`, `axionia-i18n`                                                                                                                                                                                                                                                                                                                                                                                              |
+| Champ                | Valeur                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Path                 | `.claude/skills/axionia-content-models/SKILL.md`                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Description proposée | « Modèles de contenu Axion-IA : articles de blog, FAQ, cas concrets, témoignages, articles centre d'aide, auteurs, tags, catégories. À charger pour toute création/modification de contenu structuré, gestion du multilingue FR/EN par contenu (champ vs table de traduction), slugs uniques, MDX vs Tiptap, schemas Zod côté admin, et règles éditoriales. Complémentaire de `axionia-database` (schémas BDD) et `axionia-admin-ux` (UI éditeur). » |
+| Justification        | `axionia-database` porte tout aujourd'hui (tables + champs + multilingue) — surcharge. `axionia-admin-ux` traite l'UI éditeur. Il manque la **règle métier de modélisation** (slug par locale ? table de traduction ? Tiptap vs MDX ? renderers FAQ ?).                                                                                                                                                                                              |
+| Dépendances          | `axionia-database`, `axionia-admin-ux`, `axionia-i18n`                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### F-CREATE-03 — `axionia-payments` ⚠️ DOC « NO-STRIPE » plutôt que skill
 
-| Champ           | Valeur                                                                                                                                                                                                                                                                                                                     |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Path            | `axionia-package/docs/_NO-STRIPE.md` (pas de SKILL.md)                                                                                                                                                                                                                                                                     |
-| Justification   | Phase 1 d'AxionIA n'a **aucun paiement en ligne** (devis humain Telegram + facturation manuelle). Créer un skill « payments » serait inviter à coder Stripe. **Recommandation** : doc explicite `_NO-STRIPE.md` qui acte « pas de paiement online en phase 1 », à invoquer par `axionia-core` si quelqu'un demande Stripe. |
-| Contenu doc     | Listing des décisions : pas de Stripe, pas de paywall, devis human-in-the-loop, prix HT en €, TVA EE en sus selon résidence client, facture manuelle générée admin.                                                                                                                                                        |
-| Skill à créer ? | **NON** en Phase 1. À reconsidérer si Phase 2+ introduit paiement online.                                                                                                                                                                                                                                                  |
+| Champ           | Valeur                                                                                                                                                                                                                                                                                                                      |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Path            | `axionia-package/docs/_NO-STRIPE.md` (pas de SKILL.md)                                                                                                                                                                                                                                                                      |
+| Justification   | Phase 1 d'Axion-IA n'a **aucun paiement en ligne** (devis humain Telegram + facturation manuelle). Créer un skill « payments » serait inviter à coder Stripe. **Recommandation** : doc explicite `_NO-STRIPE.md` qui acte « pas de paiement online en phase 1 », à invoquer par `axionia-core` si quelqu'un demande Stripe. |
+| Contenu doc     | Listing des décisions : pas de Stripe, pas de paywall, devis human-in-the-loop, prix HT en €, TVA EE en sus selon résidence client, facture manuelle générée admin.                                                                                                                                                         |
+| Skill à créer ? | **NON** en Phase 1. À reconsidérer si Phase 2+ introduit paiement online.                                                                                                                                                                                                                                                   |
 
 ### F-CREATE-04 — `axionia-observability` ❌ NE PAS CRÉER (doublon `axionia-monitoring`)
 
@@ -42,13 +42,13 @@ Selon le prompt-maître Phase 1.S §7 : `axionia-architecture`, `axionia-content
 | Justification      | `axionia-monitoring` couvre déjà : Sentry (errors + tracing), Uptime Kuma (uptime + SSL), Pino (logs structurés), Plausible (analytics), Telegram alerts, sauvegardes Postgres + restauration mensuelle. Ajouter `axionia-observability` créerait un doublon strict. |
 | Action recommandée | Renforcer la **description** de `axionia-monitoring` pour qu'elle déclenche aussi sur les mots-clés « observability », « tracing », « SLO », « SLI ».                                                                                                                |
 
-## 2. Skills à SUPPRIMER ou ARCHIVER (redondants/inutiles AxionIA)
+## 2. Skills à SUPPRIMER ou ARCHIVER (redondants/inutiles Axion-IA)
 
 ### F-DELETE-01 — `seo-schema` 🔁 doublon strict de `schema-markup`
 
 - **Action** : déplacer dans `.claude/skills/_archive/seo-schema/` (ou ajouter `disabled: true` dans le frontmatter selon la convention du runner).
 - **Raison** : description identique fonctionnellement, `schema-markup` est plus mature et mieux décrit.
-- **Skill canon** : `schema-markup` (lui-même cadenassé pour scope AxionIA).
+- **Skill canon** : `schema-markup` (lui-même cadenassé pour scope Axion-IA).
 
 ### F-DELETE-02 — `signup-flow-cro` ❌ hors scope projet
 
@@ -129,15 +129,15 @@ Selon le prompt-maître Phase 1.S §7 : `axionia-architecture`, `axionia-content
 
 Cadenas = **ajouter dans la description du SKILL.md** une note du style :
 
-> « Sur AxionIA, voir `axionia-X` pour les overrides projet (lexique, tooling, direction visuelle). »
+> « Sur Axion-IA, voir `axionia-X` pour les overrides projet (lexique, tooling, direction visuelle). »
 
 ### F-LOCK-01 — `web-design-guidelines`
 
-> Note à ajouter : « Sur AxionIA, voir `axionia-design` pour la direction visuelle (Webflow-inspired) qui prime sur les recommandations génériques radius/shadow/gradient. »
+> Note à ajouter : « Sur Axion-IA, voir `axionia-design` pour la direction visuelle (Webflow-inspired) qui prime sur les recommandations génériques radius/shadow/gradient. »
 
 ### F-LOCK-02 — `ui-ux-pro-max`
 
-> Note : « Sur AxionIA, la direction visuelle est arrêtée (Webflow-inspired sobre B2B). Utilisable uniquement pour : font pairings (à filtrer Manrope+Inconsolata), spacing scale, contrastes, technical patterns. **PAS** pour glassmorphism/brutalism/claymorphism/neumorphism — bannis. »
+> Note : « Sur Axion-IA, la direction visuelle est arrêtée (Webflow-inspired sobre B2B). Utilisable uniquement pour : font pairings (à filtrer Manrope+Inconsolata), spacing scale, contrastes, technical patterns. **PAS** pour glassmorphism/brutalism/claymorphism/neumorphism — bannis. »
 
 ### F-LOCK-03 — `frontend-design`
 
@@ -145,7 +145,7 @@ Cadenas = **ajouter dans la description du SKILL.md** une note du style :
 
 ### F-LOCK-04 — `copywriting`
 
-> Note : « Sur AxionIA, le mot `formation` est BANNI (utiliser `intervention`). Voir `axionia-core` §1 lexique banni. La société est OÜ estonienne — pas de SIREN/SIRET. Toutes les chaînes via next-intl FR+EN. »
+> Note : « Sur Axion-IA, le mot `formation` est BANNI (utiliser `intervention`). Voir `axionia-core` §1 lexique banni. La société est OÜ estonienne — pas de SIREN/SIRET. Toutes les chaînes via next-intl FR+EN. »
 
 ### F-LOCK-05 — `copy-editing`
 
@@ -153,23 +153,23 @@ Cadenas = **ajouter dans la description du SKILL.md** une note du style :
 
 ### F-LOCK-06 — `content-strategy`
 
-> Note : « Sur AxionIA, lexique banni : `formation`. Voir `axionia-core` §1. Les contenus structurés (blog, FAQ, cas concrets, centre d'aide) sont régis par `axionia-content-models` et `axionia-database`. »
+> Note : « Sur Axion-IA, lexique banni : `formation`. Voir `axionia-core` §1. Les contenus structurés (blog, FAQ, cas concrets, centre d'aide) sont régis par `axionia-content-models` et `axionia-database`. »
 
 ### F-LOCK-07 — `page-cro`
 
-> Note : « Sur AxionIA, vérifier `axionia-anti-spa` (SSR/SSG natif obligatoire) avant tout pattern client-side ou A/B test JS. Direction visuelle = `axionia-design`. Lexique = `axionia-core`. »
+> Note : « Sur Axion-IA, vérifier `axionia-anti-spa` (SSR/SSG natif obligatoire) avant tout pattern client-side ou A/B test JS. Direction visuelle = `axionia-design`. Lexique = `axionia-core`. »
 
 ### F-LOCK-08 — `form-cro`
 
-> Note : « Sur AxionIA, voir `axionia-forms` pour la stack RHF+Zod+Zustand+shadcn. Pas de pattern client-side qui dégrade SSR (`axionia-anti-spa`). »
+> Note : « Sur Axion-IA, voir `axionia-forms` pour la stack RHF+Zod+Zustand+shadcn. Pas de pattern client-side qui dégrade SSR (`axionia-anti-spa`). »
 
 ### F-LOCK-09 — `popup-cro`
 
-> Note : « Sur AxionIA, glassmorphism interdit (`axionia-design`), JS client lourd interdit (`axionia-anti-spa`). Préférer Server-rendered modals + CSS `dialog` natif. »
+> Note : « Sur Axion-IA, glassmorphism interdit (`axionia-design`), JS client lourd interdit (`axionia-anti-spa`). Préférer Server-rendered modals + CSS `dialog` natif. »
 
 ### F-LOCK-10 — `email-sequence`
 
-> Note : « Sur AxionIA, le tooling email est PowerMTA + MailWizz self-hosted (voir `axionia-emails`). **Resend / SendGrid / Mailgun / Brevo / Mailchimp INTERDITS.** Templates React Email FR+EN obligatoires. »
+> Note : « Sur Axion-IA, le tooling email est PowerMTA + MailWizz self-hosted (voir `axionia-emails`). **Resend / SendGrid / Mailgun / Brevo / Mailchimp INTERDITS.** Templates React Email FR+EN obligatoires. »
 
 ### F-LOCK-11 — `cold-email`
 
@@ -177,47 +177,47 @@ Cadenas = **ajouter dans la description du SKILL.md** une note du style :
 
 ### F-LOCK-12 — `seo-audit-marketing`
 
-> Note : « Sur AxionIA, voir `axionia-seo-aeo` pour les overrides projet (lexique `formation` banni, OÜ estonienne, FR+EN, sitemap multi-fichier, bloc AEO 50-80 mots, llms.txt). »
+> Note : « Sur Axion-IA, voir `axionia-seo-aeo` pour les overrides projet (lexique `formation` banni, OÜ estonienne, FR+EN, sitemap multi-fichier, bloc AEO 50-80 mots, llms.txt). »
 
 ### F-LOCK-13 — `ai-seo`
 
-> Note identique à `seo-audit-marketing`. **Plus** : « llms.txt sur AxionIA respecte le lexique banni. »
+> Note identique à `seo-audit-marketing`. **Plus** : « llms.txt sur Axion-IA respecte le lexique banni. »
 
 ### F-LOCK-14 — `schema-markup`
 
-> Note : « Sur AxionIA, voir `axionia-seo-aeo` pour les schemas localisés FR/EN AxionIA-specific (Organization OÜ Tallinn, Service par module, FAQPage, Article bilingue). Ce skill = générateur générique JSON-LD. »
+> Note : « Sur Axion-IA, voir `axionia-seo-aeo` pour les schemas localisés FR/EN Axion-IA-specific (Organization OÜ Tallinn, Service par module, FAQPage, Article bilingue). Ce skill = générateur générique JSON-LD. »
 
 ### F-LOCK-15 — `seo-page` / `seo-drift`
 
-> Note : « Sur AxionIA, scope défini par `axionia-seo-aeo`. Lexique banni `axionia-core`. Hreflang généré par `axionia-i18n`. »
+> Note : « Sur Axion-IA, scope défini par `axionia-seo-aeo`. Lexique banni `axionia-core`. Hreflang généré par `axionia-i18n`. »
 
 ### F-LOCK-16 — `seo-hreflang`
 
-> Note : « Sur AxionIA, génération hreflang via `axionia-i18n` (next-intl + sitemap multi-fichier). Ce skill = validation post-build uniquement. »
+> Note : « Sur Axion-IA, génération hreflang via `axionia-i18n` (next-intl + sitemap multi-fichier). Ce skill = validation post-build uniquement. »
 
 ### F-LOCK-17 — `seo-sitemap`
 
-> Note : « Sur AxionIA, structure sitemap multi-fichier × 2 langues définie dans `axionia-seo-aeo` et `axionia-i18n`. »
+> Note : « Sur Axion-IA, structure sitemap multi-fichier × 2 langues définie dans `axionia-seo-aeo` et `axionia-i18n`. »
 
 ### F-LOCK-18 — `analytics-tracking`
 
-> Note : « Sur AxionIA, analytics = Plausible self-hosted RGPD-friendly (voir `axionia-monitoring`). **GA4 / GTM / Mixpanel / Segment INTERDITS** sans validation explicite Will. »
+> Note : « Sur Axion-IA, analytics = Plausible self-hosted RGPD-friendly (voir `axionia-monitoring`). **GA4 / GTM / Mixpanel / Segment INTERDITS** sans validation explicite Will. »
 
 ### F-LOCK-19 — `ab-test-setup`
 
-> Note : « Sur AxionIA, A/B tests autorisés uniquement en SSR ou cookie-based pour respecter `axionia-anti-spa`. Tracking via Plausible custom events. Phase 1 = pas d'A/B test (volume insuffisant). »
+> Note : « Sur Axion-IA, A/B tests autorisés uniquement en SSR ou cookie-based pour respecter `axionia-anti-spa`. Tracking via Plausible custom events. Phase 1 = pas d'A/B test (volume insuffisant). »
 
 ### F-LOCK-20 — `owasp-security`
 
-> Note : « Sur AxionIA, valeurs effectives (CSP, HSTS, X-Frame-Options, CSRF tokens, rate limit) configurées dans `axionia-deployment`. Ce skill = doctrine OWASP Top 10. »
+> Note : « Sur Axion-IA, valeurs effectives (CSP, HSTS, X-Frame-Options, CSRF tokens, rate limit) configurées dans `axionia-deployment`. Ce skill = doctrine OWASP Top 10. »
 
 ### F-LOCK-21 — `test-driven-development`
 
-> Note : « Sur AxionIA, stack tests = Vitest + Playwright + axe-core via `axionia-testing` (canon). Ce skill = méthode rouge-vert-refactor générique. »
+> Note : « Sur Axion-IA, stack tests = Vitest + Playwright + axe-core via `axionia-testing` (canon). Ce skill = méthode rouge-vert-refactor générique. »
 
 ### F-LOCK-22 — `brainstorming` / `writing-plans` / `executing-plans` / `subagent-driven-development`
 
-> Note : « Sur AxionIA, ces skills s'invoquent **sous** la cadence du PROMPT-MAITRE (Phases 0 → N), pas en remplacement. Voir `_DECISIONS-FINALES.md` et `axionia-core`. »
+> Note : « Sur Axion-IA, ces skills s'invoquent **sous** la cadence du PROMPT-MAITRE (Phases 0 → N), pas en remplacement. Voir `_DECISIONS-FINALES.md` et `axionia-core`. »
 
 ### F-LOCK-23 — `claude-md-improver` / `claude-automation-recommender`
 
@@ -240,19 +240,19 @@ Cadenas = **ajouter dans la description du SKILL.md** une note du style :
 
 ### À DÉSACTIVER projet-level (10+ skills)
 
-| Skill                                                                                                                      | Raison                                                                                   |
-| -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `seo-ecommerce`                                                                                                            | F-DELETE-10                                                                              |
-| `seo-local`                                                                                                                | F-DELETE-11                                                                              |
-| `seo-maps`                                                                                                                 | F-DELETE-11                                                                              |
-| `seo-backlinks`                                                                                                            | F-DELETE-15 (Phase 3+)                                                                   |
-| `seo-dataforseo`                                                                                                           | F-DELETE-13 (compte payant)                                                              |
-| `seo-image-gen`                                                                                                            | F-DELETE-12 (MCP nanobanana absent)                                                      |
-| `seo-flow`                                                                                                                 | F-DELETE-14                                                                              |
-| `seo-audit-marketing`                                                                                                      | doublon `axionia-seo-aeo` — désactiver ou cadenasser fortement                           |
-| `seo-audit-technical`                                                                                                      | doublon partiel `axionia-seo-aeo` — cadenasser ou désactiver                             |
-| `seo-content`                                                                                                              | doublon `axionia-seo-aeo` + `copywriting` cadenassé — cadenasser                         |
-| `seo-cluster`, `seo-competitor-pages`, `seo-geo`, `seo-images`, `seo-plan`, `seo-programmatic`, `seo-sxo`, `seo-technical` | À évaluer cas par cas — beaucoup sont génériques utiles ; cadenasser pour scope AxionIA. |
+| Skill                                                                                                                      | Raison                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `seo-ecommerce`                                                                                                            | F-DELETE-10                                                                               |
+| `seo-local`                                                                                                                | F-DELETE-11                                                                               |
+| `seo-maps`                                                                                                                 | F-DELETE-11                                                                               |
+| `seo-backlinks`                                                                                                            | F-DELETE-15 (Phase 3+)                                                                    |
+| `seo-dataforseo`                                                                                                           | F-DELETE-13 (compte payant)                                                               |
+| `seo-image-gen`                                                                                                            | F-DELETE-12 (MCP nanobanana absent)                                                       |
+| `seo-flow`                                                                                                                 | F-DELETE-14                                                                               |
+| `seo-audit-marketing`                                                                                                      | doublon `axionia-seo-aeo` — désactiver ou cadenasser fortement                            |
+| `seo-audit-technical`                                                                                                      | doublon partiel `axionia-seo-aeo` — cadenasser ou désactiver                              |
+| `seo-content`                                                                                                              | doublon `axionia-seo-aeo` + `copywriting` cadenassé — cadenasser                          |
+| `seo-cluster`, `seo-competitor-pages`, `seo-geo`, `seo-images`, `seo-plan`, `seo-programmatic`, `seo-sxo`, `seo-technical` | À évaluer cas par cas — beaucoup sont génériques utiles ; cadenasser pour scope Axion-IA. |
 
 ## 5. Décision sur les 38 skills CRO/marketing
 
@@ -324,4 +324,4 @@ Cadenas = **ajouter dans la description du SKILL.md** une note du style :
 4. **Cadenas P1** : reste des locks (anti-SPA dans CRO, hreflang, schemas, etc.).
 5. **Doc P1** : `_NO-STRIPE.md`.
 6. **Désactivation P2** : SEO non pertinents (ecommerce, local, maps, backlinks, dataforseo, image-gen, flow).
-7. **Audit Phase 2** : valider que le routing produit les résultats attendus sur 30 prompts AxionIA (Annexe E).
+7. **Audit Phase 2** : valider que le routing produit les résultats attendus sur 30 prompts Axion-IA (Annexe E).

@@ -70,7 +70,7 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 // `claude` est un accent local au listing /interventions, dédié à la card
 // « Intervention Claude ». Anti-hex doctrine : exception assumée — ce sont les
 // couleurs officielles de la marque Anthropic (peach), pas des tokens de
-// design AxionIA. Encapsulés ici, n'impactent ni le theme global ni les
+// design Axion-IA. Encapsulés ici, n'impactent ni le theme global ni les
 // autres pages.
 type ListingAccent = InterventionAccent | "claude";
 
@@ -472,8 +472,8 @@ export default async function InterventionsListing({ params }: Props) {
     locale: loc,
     path: "/interventions",
     name: isFr
-      ? "Interventions IA en entreprise · 8 formats · AxionIA"
-      : "Corporate AI sessions · 8 formats · AxionIA",
+      ? "Interventions IA en entreprise · 8 formats · Axion-IA"
+      : "Corporate AI sessions · 8 formats · Axion-IA",
     description: isFr
       ? `Interventions et formations IA opérationnelles sur site : Essentielle dès ${essentielleEntry} (2 à 30+ personnes, 4 paliers), Gagner du temps ${tempsLabel} (2-20), CODIR sur devis, conférence 1 journée, et sur demande particulière. France et international.`
       : `Operational AI sessions on site: Essential from ${essentielleEntry} (2 to 30+ people, 4 tiers), Save Time ${tempsLabel} (2-20), Leadership on request, 1-day talk, and bespoke. France and international.`,
@@ -642,8 +642,8 @@ export default async function InterventionsListing({ params }: Props) {
               centerLabel={isFr ? "Votre entreprise" : "Your company"}
               ariaLabel={
                 isFr
-                  ? "Schéma : votre entreprise au centre, entourée des grandes familles de formats d'intervention IA AxionIA et de leur bénéfice concret."
-                  : "Diagram: your company at the centre, surrounded by the AxionIA intervention format families and their concrete benefit."
+                  ? "Schéma : votre entreprise au centre, entourée des grandes familles de formats d'intervention IA Axion-IA et de leur bénéfice concret."
+                  : "Diagram: your company at the centre, surrounded by the Axion-IA intervention format families and their concrete benefit."
               }
               nodes={heroNodes}
             />
@@ -1085,8 +1085,8 @@ export default async function InterventionsListing({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une équipe orientée vers l'action après une intervention AxionIA."
-                : "Editorial illustration of a team oriented toward action after an AxionIA session."
+                ? "Illustration éditoriale d'une équipe orientée vers l'action après une intervention Axion-IA."
+                : "Editorial illustration of a team oriented toward action after an Axion-IA session."
             }
           />
         </Container>

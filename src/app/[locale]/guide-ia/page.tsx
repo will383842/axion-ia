@@ -68,7 +68,7 @@ export default async function AiGuidePage({ params }: Props) {
 
   // CreativeWork JSON-LD enrichi avec hasPart (chapters) — AEO/GEO 2026 :
   // expose la structure du guide aux LLMs pour citations granulaires
-  // (« quel chapitre du guide AxionIA traite des coûts ? »). Plus rich
+  // (« quel chapitre du guide Axion-IA traite des coûts ? »). Plus rich
   // que l'ancien Offer plat — combine Offer (gratuit) + CreativeWork
   // (table des matières structurée).
   const guideJsonLd = {
@@ -77,7 +77,7 @@ export default async function AiGuidePage({ params }: Props) {
     name: isFr ? "Guide IA entreprise · 40 pages" : "Enterprise AI guide · 40 pages",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/guide-ia`,
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
     numberOfPages: 40,
     isAccessibleForFree: true,
     offers: {
@@ -85,13 +85,13 @@ export default async function AiGuidePage({ params }: Props) {
       price: "0",
       priceCurrency: "EUR",
       availability: "https://schema.org/InStock",
-      seller: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+      seller: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
     },
     hasPart: chapters.map((title, idx) => ({
       "@type": "Chapter",
       position: idx + 1,
       name: title,
-      isPartOf: { "@type": "CreativeWork", name: "Guide IA AxionIA" },
+      isPartOf: { "@type": "CreativeWork", name: "Guide IA Axion-IA" },
     })),
   } as const;
 
@@ -150,8 +150,8 @@ export default async function AiGuidePage({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une couverture de livre opérationnel ouverte, symbole du guide IA AxionIA 40 pages."
-                : "Editorial illustration of an open operational book cover, symbol of the 40-page AxionIA AI guide."
+                ? "Illustration éditoriale d'une couverture de livre opérationnel ouverte, symbole du guide IA Axion-IA 40 pages."
+                : "Editorial illustration of an open operational book cover, symbol of the 40-page Axion-IA AI guide."
             }
             priority
           />

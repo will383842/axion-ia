@@ -1,4 +1,4 @@
-// Source de vérité unique des tarifs publics AxionIA — Sprint 14.10.2 (2026-05-08).
+// Source de vérité unique des tarifs publics Axion-IA — Sprint 14.10.2 (2026-05-08).
 //
 // Décision Will 2026-05-08 : aucun prix hardcodé dans les pages ou copy ville.
 // Tous les prix affichés (audit, interventions, implémentation) viennent de ce
@@ -518,7 +518,7 @@ export const MAINTENANCE_TIERS: ReadonlyArray<PricingTier> = [
   },
 ];
 
-/** Catalogue complet des prestations AxionIA — facilite la dérivation et la
+/** Catalogue complet des prestations Axion-IA — facilite la dérivation et la
  *  recherche par id depuis n'importe quel consommateur. */
 export const PRICING_CATEGORIES = {
   audit: AUDIT_TIERS,

@@ -11,7 +11,7 @@ Mode **lecture seule strict**. Aucun fichier source modifié — seul ce livrabl
 
 ## 0. Synthèse exécutive (à lire avant tout)
 
-Le code AxionIA repose sur **6 centralisations dures** que tout nouveau pattern doit RESPECTER, jamais doubler :
+Le code Axion-IA repose sur **6 centralisations dures** que tout nouveau pattern doit RESPECTER, jamais doubler :
 
 1. **`src/content/*.ts`** — TS typé (jamais MDX/JSON), avec helpers `getAllXxxSlugs()` / `getXxxBySlug()` exportés.
 2. **`src/i18n/routing.ts`** — `routing.pathnames` est la **seule** source de vérité pour les slugs FR↔EN.
@@ -137,7 +137,7 @@ Réutilisable, importer plutôt que redéclarer.
 
 - `alternates.canonical` = `/${locale}${path}`.
 - `alternates.languages` = `{ fr, en, "x-default" }` avec mapping cross-locale.
-- `openGraph` (type website, locale `fr_FR`/`en_US`, siteName `AxionIA`).
+- `openGraph` (type website, locale `fr_FR`/`en_US`, siteName `Axion-IA`).
 - `twitter` (`summary_large_image`).
 - `robots: { index: true, follow: true }` (par défaut indexable).
 
@@ -167,7 +167,7 @@ Réutilisable, importer plutôt que redéclarer.
 - ❌ `buildLocalBusinessJsonLd` — nécessaire pour pages villes (LocalBusiness Schema.org avec address, areaServed, geo coordinates).
 - ❌ `buildPlaceJsonLd` — nécessaire pour pages régions (Place / AdministrativeArea).
 - ❌ `buildItemListJsonLd` (objet inline construit dans `stack-ia/page.tsx:158-177` — bonne occasion d'extraire en factory réutilisable pour pages hub régions/villes).
-- ❌ `buildOrganizationJsonLd` (organisation AxionIA OÜ — utile en page presse + footer global).
+- ❌ `buildOrganizationJsonLd` (organisation Axion-IA OÜ — utile en page presse + footer global).
 
 ---
 
@@ -391,11 +391,11 @@ export interface StackFaqItem {
 
 `stack-ia.ts:1-9` : commentaire en-tête —
 
-> « La doctrine AxionIA en 2026 : 11 outils retenus parmi 2000+, organisés par fonction métier. Choix assumés, pas catalogue neutre. Aucun partenariat commercial avec les éditeurs cités. »
+> « La doctrine Axion-IA en 2026 : 11 outils retenus parmi 2000+, organisés par fonction métier. Choix assumés, pas catalogue neutre. Aucun partenariat commercial avec les éditeurs cités. »
 
 `stack-ia.ts:163-168` : avant `STACK_TOOLS` —
 
-> « 11 outils — choix assumés AxionIA. Aucun partenariat commercial avec ces éditeurs. Si un outil est retiré, c'est qu'il est sorti de notre usage terrain, pas qu'il est mauvais en soi. »
+> « 11 outils — choix assumés Axion-IA. Aucun partenariat commercial avec ces éditeurs. Si un outil est retiré, c'est qu'il est sorti de notre usage terrain, pas qu'il est mauvais en soi. »
 
 **Implication pour audit Header** : si l'agent principal envisage d'ÉTENDRE le catalogue (ex : ajouter sous-pages `/stack-ia/[slug]`), il doit **respecter cette doctrine** — chaque ajout = revue trimestrielle, pas une simple insertion.
 
@@ -478,8 +478,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/implantations/villes/${ville}`,
     title:
       locale === "fr"
-        ? `IA à ${v.fr.name} · cabinet AxionIA`
-        : `AI in ${v.en.name} · AxionIA consultancy`,
+        ? `IA à ${v.fr.name} · cabinet Axion-IA`
+        : `AI in ${v.en.name} · Axion-IA consultancy`,
     description: v[locale].description,
     alternates: {
       fr: `/implantations/villes/${ville}`,
@@ -790,7 +790,7 @@ export async function generateStaticParams() {
 
 ### 14.7 ❌ Ajouter Algolia Cloud sans avoir évalué Pagefind
 
-**Pourquoi** : ADR Sprint 14 (à confirmer) priorise les solutions self-hosted UE (Pagefind statique, MeiliSearch sur Hetzner). Algolia = SaaS US = sortie de souveraineté assumée par AxionIA OÜ (cf. `legal.ts:218-226` politique de confidentialité, et `press.ts:259-263` souveraineté UE par défaut).
+**Pourquoi** : ADR Sprint 14 (à confirmer) priorise les solutions self-hosted UE (Pagefind statique, MeiliSearch sur Hetzner). Algolia = SaaS US = sortie de souveraineté assumée par Axion-IA OÜ (cf. `legal.ts:218-226` politique de confidentialité, et `press.ts:259-263` souveraineté UE par défaut).
 
 **Faire à la place** : présenter à Will un comparatif Pagefind / MeiliSearch / Typesense self-hosted AVANT de proposer Algolia.
 
@@ -952,8 +952,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/implantations/villes/${ville}`,
     title:
       locale === "fr"
-        ? `Cabinet IA opérationnel à ${v.fr.name} · AxionIA`
-        : `Operational AI consultancy in ${v.en.name} · AxionIA`,
+        ? `Cabinet IA opérationnel à ${v.fr.name} · Axion-IA`
+        : `Operational AI consultancy in ${v.en.name} · Axion-IA`,
     description: v[locale].description,
     alternates: {
       fr: `/implantations/villes/${ville}`,

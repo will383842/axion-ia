@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: `/blog/tag/${slug}`,
-    title: isFr ? `Tag #${slug} · AxionIA` : `Tag #${slug} · AxionIA`,
-    description: isFr ? `Articles AxionIA tagués #${slug}.` : `AxionIA articles tagged #${slug}.`,
+    title: isFr ? `Tag #${slug} · Axion-IA` : `Tag #${slug} · Axion-IA`,
+    description: isFr ? `Articles Axion-IA tagués #${slug}.` : `Axion-IA articles tagged #${slug}.`,
   });
 }
 
@@ -45,10 +45,10 @@ export default async function BlogTagPage({ params }: Props) {
   const collectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `#${slug} — ${isFr ? "Articles AxionIA" : "AxionIA articles"}`,
+    name: `#${slug} — ${isFr ? "Articles Axion-IA" : "Axion-IA articles"}`,
     url: `${SITE_URL}/${locale}/blog/tag/${slug}`,
     inLanguage: locale,
-    isPartOf: { "@type": "WebSite", name: "AxionIA", url: SITE_URL },
+    isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
     hasPart: posts.map((p) => ({
       "@type": "Article",
       headline: p[loc].title,

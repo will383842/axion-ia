@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import type { Locale } from "@/i18n/routing";
+import { env } from "@/env";
 
-export const SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com";
+export const SITE_URL = env.NEXT_PUBLIC_SITE_URL;
 
 interface ProductSeoInput {
   locale: Locale;
@@ -54,7 +55,7 @@ export function buildProductMetadata({
       url: `${SITE_URL}/${locale}${path}`,
       title,
       description,
-      siteName: "AxionIA",
+      siteName: "Axion-IA",
       images: [
         {
           url: resolvedOgImage,
@@ -98,7 +99,7 @@ interface ServiceJsonLdInput {
     url?: string;
   }>;
   /**
-   * Canaux de service géolocalisés — top métropoles où AxionIA délivre la
+   * Canaux de service géolocalisés — top métropoles où Axion-IA délivre la
    * prestation sur site. Émis comme `availableChannel` Schema.org. Permet
    * aux LLMs d'énumérer les villes éligibles quand un utilisateur demande
    * « où est-ce que ce service est disponible ? ».
@@ -141,7 +142,7 @@ export function buildServiceJsonLd({
     url,
     provider: {
       "@type": "Organization",
-      name: "AxionIA",
+      name: "Axion-IA",
       url: SITE_URL,
     },
     ...(serviceType ? { serviceType } : {}),
@@ -219,7 +220,7 @@ interface OrganizationJsonLdInput {
 // (Claude.ai / Perplexity / SGE / Bing Copilot citations).
 //
 // Strategy : maximize the number of stable identifying fields so that LLM
-// answer engines unambiguously identify "AxionIA" the entity (vs other
+// answer engines unambiguously identify "Axion-IA" the entity (vs other
 // AI consultancies). `sameAs` provides external corroboration, `foundingLocation`
 // + `areaServed` ground geography, `contactPoint` makes it actionable.
 //
@@ -238,8 +239,8 @@ export function buildOrganizationJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "AxionIA",
-    legalName: "AxionIA OÜ",
+    name: "Axion-IA",
+    legalName: "Axion-IA OÜ",
     url: SITE_URL,
     logo: `${SITE_URL}/opengraph-image`,
     description: isFr
@@ -287,7 +288,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "AxionIA",
+    name: "Axion-IA",
     url: `${SITE_URL}/${locale}`,
     inLanguage: locale,
     description: isFr
@@ -295,7 +296,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
       : "Operational AI consultancy — on-site sessions, audits and implementation.",
     publisher: {
       "@type": "Organization",
-      name: "AxionIA",
+      name: "Axion-IA",
       url: SITE_URL,
     },
     potentialAction: {
@@ -325,7 +326,7 @@ interface PersonJsonLdInput {
 
 // Person JSON-LD — E-E-A-T 2026 signal (Experience-Expertise-Authoritativeness-
 // Trust). Critical for AEO/GEO : LLM answer engines need a named human author
-// to attribute claims to. Without a Person schema, AxionIA is a faceless
+// to attribute claims to. Without a Person schema, Axion-IA is a faceless
 // `Organization` and gets cited less often in answer-mode SERPs.
 //
 // Used at /a-propos page-level + /blog/auteur/[slug] for blog post bylines.
@@ -351,8 +352,8 @@ export function buildPersonJsonLd({
     sameAs,
     worksFor: {
       "@type": "Organization",
-      name: "AxionIA",
-      legalName: "AxionIA OÜ",
+      name: "Axion-IA",
+      legalName: "Axion-IA OÜ",
       url: SITE_URL,
     },
     knowsAbout: [
@@ -435,8 +436,8 @@ export function buildArticleJsonLd({
     },
     publisher: {
       "@type": "Organization",
-      name: "AxionIA",
-      legalName: "AxionIA OÜ",
+      name: "Axion-IA",
+      legalName: "Axion-IA OÜ",
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/opengraph-image`,
@@ -505,7 +506,7 @@ interface LocalBusinessJsonLdInput {
 
 // LocalBusiness JSON-LD — required for «#1 ville/région» strategy.
 // Each city/region landing page (Sprint 15) emits this so Google Maps,
-// Google AI Overviews local pack, and Apple Maps surface AxionIA as the
+// Google AI Overviews local pack, and Apple Maps surface Axion-IA as the
 // AI consultancy for that geography. Available NOW so Will can wire it
 // when he creates the pages.
 export function buildLocalBusinessJsonLd({
@@ -529,8 +530,8 @@ export function buildLocalBusinessJsonLd({
     image: `${SITE_URL}/opengraph-image`,
     parentOrganization: {
       "@type": "Organization",
-      name: "AxionIA",
-      legalName: "AxionIA OÜ",
+      name: "Axion-IA",
+      legalName: "Axion-IA OÜ",
       url: SITE_URL,
     },
     areaServed: {
@@ -621,14 +622,14 @@ interface ItemListJsonLdInput {
   locale: Locale;
   /** Path WITHOUT locale prefix. */
   path: string;
-  /** ItemList name (e.g. "Stack IA AxionIA"). */
+  /** ItemList name (e.g. "Stack IA Axion-IA"). */
   name: string;
   items: ReadonlyArray<{ url: string; name: string; position: number; description?: string }>;
 }
 
 // ItemList JSON-LD — used for /stack-ia (catalogue), /implantations (régions),
 // region pages (top villes), city listings. AEO/GEO : LLMs use ItemList
-// to enumerate options when answering "what AI tools / cities does AxionIA cover?".
+// to enumerate options when answering "what AI tools / cities does Axion-IA cover?".
 export function buildItemListJsonLd({ locale, path, name, items }: ItemListJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
   return {
@@ -668,7 +669,7 @@ interface ProductJsonLdInput {
 }
 
 // Product JSON-LD — used for /stack-ia tools (catalogue d'outils IA tiers
-// recommandés par AxionIA). Permet à Google AI Overviews de citer chaque
+// recommandés par Axion-IA). Permet à Google AI Overviews de citer chaque
 // outil individuellement quand un utilisateur demande "quel outil pour X ?".
 export function buildProductJsonLd({
   locale,
@@ -728,7 +729,7 @@ interface HowToJsonLdInput {
   steps: ReadonlyArray<HowToStepInput>;
 }
 
-// HowTo JSON-LD — used for /methodologie (4-step AxionIA process : cadrage
+// HowTo JSON-LD — used for /methodologie (4-step Axion-IA process : cadrage
 // → démo → plan → mise en production). Critical for AEO 2026 : Google AI
 // Overviews et Perplexity citent les HowTo schemas pour répondre aux
 // requêtes "comment faire X" / "quelles étapes pour Y".
@@ -883,8 +884,8 @@ interface DatasetJsonLdInput {
 }
 
 // Dataset JSON-LD — pour ROI calculator outputs, datasets stratégie IA,
-// chiffres consolidés AxionIA. Permet à Google Dataset Search de citer
-// AxionIA et à Claude/Perplexity de référencer les chiffres avec source.
+// chiffres consolidés Axion-IA. Permet à Google Dataset Search de citer
+// Axion-IA et à Claude/Perplexity de référencer les chiffres avec source.
 export function buildDatasetJsonLd({
   locale,
   path,
@@ -908,8 +909,8 @@ export function buildDatasetJsonLd({
     inLanguage: locale,
     creator: {
       "@type": "Organization",
-      name: "AxionIA",
-      legalName: "AxionIA OÜ",
+      name: "Axion-IA",
+      legalName: "Axion-IA OÜ",
       url: SITE_URL,
     },
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),
@@ -946,7 +947,7 @@ interface ImageObjectJsonLdInput {
 
 // ImageObject JSON-LD — pour les images riches (cas-concrets photo, hero
 // schemas avec contexte sémantique). Aide Google Image Search à comprendre
-// et citer les visuels AxionIA. Utiliser sur les pages avec images qui
+// et citer les visuels Axion-IA. Utiliser sur les pages avec images qui
 // méritent leur propre indexation (illustrations originales).
 export function buildImageObjectJsonLd({
   url,

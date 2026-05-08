@@ -1,4 +1,4 @@
-# 🔬 PROMPT VÉRIFICATION FINALE — AxionIA · Audit production readiness
+# 🔬 PROMPT VÉRIFICATION FINALE — Axion-IA · Audit production readiness
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** pour les évolutions HEAD `fd91518` (post-Sprint 14.5-14.9).
 >
@@ -30,14 +30,14 @@ Tu es **auditeur senior** indépendant. Tu n'as ni codé ce projet ni participé
 2. `axionia-package/docs/_NO-STRIPE.md` — interdiction Stripe Phase 1.
 3. **`axionia/Design.md` v3** — doctrine visuelle **Editorial Premium Light** (canon actif).
 4. **`axionia/docs/adr/0002-design-pivot-editorial-v3.md`** — pivot v3 (supersedes 0001).
-5. `AxionIA_Dossier_FINAL_ABSOLU_v10.1/Design.md` — **archivé** (Webflow v1, ne pas utiliser comme source).
-6. `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 — bible projet.
+5. `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/Design.md` — **archivé** (Webflow v1, ne pas utiliser comme source).
+6. `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` v6 — bible projet.
 7. `axionia/docs/adr/*.md` — Architecture Decision Records (ADR 0001 stack, ADR 0002 design v3).
 8. `_AUDIT/02-PLAN.md` — plan M1-M11.
 9. `_AUDIT/02b-mapping-pages.md` — **64 routes templates HEAD (cf. SYNC-NOTICE-2026-05-07.md) uniques** = inventaire de référence.
 10. `_AUDIT/00-fiches-lecture.md` — 16 contradictions Phase 0 (vérifier qu'elles sont neutralisées).
 11. `_AUDIT/01s-skills-deep-audit.md` + annexes A-F — règles skills.
-12. `Navigation-Complete-AxionIA.md` — sitemap exhaustif.
+12. `Navigation-Complete-Axion-IA.md` — sitemap exhaustif.
 13. `RAPPORT_AUDIT_v10.1.md` — 404/404 checks v10.1 (régressions à détecter).
 14. `_AUDIT/CHANGELOG-v10.2.md` — passe v10.2 documentaire.
 15. Skills `axionia-*` (18) cadenassés — règles à vérifier appliquées.
@@ -235,7 +235,7 @@ Pendant que les 5 agents tournent, l'agent principal exécute les chapitres 1, 2
 - Hreflang sur sitemap multilingue + alternate `<link>` chaque page.
 - OG images 1200×630, Twitter cards `summary_large_image`.
 - Blocs réponse directe AEO (40-80 mots question→réponse) en haut des pages produit pour citation LLM.
-- **AEO citability test** : interroger Perplexity, ChatGPT, Claude, Google AI Overview sur 10 questions cibles (« cabinet IA premium France », « audit IA entreprise », « intervention IA opérationnelle », etc.) → noter si AxionIA est cité, sur quelles questions, et la qualité du snippet cité.
+- **AEO citability test** : interroger Perplexity, ChatGPT, Claude, Google AI Overview sur 10 questions cibles (« cabinet IA premium France », « audit IA entreprise », « intervention IA opérationnelle », etc.) → noter si Axion-IA est cité, sur quelles questions, et la qualité du snippet cité.
 - RSS feeds blog + cas concrets + FAQ valides W3C.
 - Semantic HTML : un seul `<h1>` par page, hiérarchie h1→h6 cohérente.
 
@@ -435,7 +435,7 @@ Pendant que les 5 agents tournent, l'agent principal exécute les chapitres 1, 2
 - Échantillonner 5 fichiers du code qui devraient le respecter.
 - Vérifier que les règles du SKILL.md sont effectivement appliquées dans le code.
 - Lister écarts.
-- Vérifier que les LOCKs sur skills génériques (22) sont actifs (commentaire `> ⚠️ AxionIA: voir axionia-X` dans la description).
+- Vérifier que les LOCKs sur skills génériques (22) sont actifs (commentaire `> ⚠️ Axion-IA: voir axionia-X` dans la description).
 
 ### 22. Audit documentation
 
@@ -476,7 +476,7 @@ Pendant que les 5 agents tournent, l'agent principal exécute les chapitres 1, 2
 Structure imposée :
 
 ```markdown
-# Rapport vérification finale — AxionIA — Pass {A|B}
+# Rapport vérification finale — Axion-IA — Pass {A|B}
 
 - Date : 2026-XX-XX
 - Auditeur : Claude Opus 4.7 (1M context)

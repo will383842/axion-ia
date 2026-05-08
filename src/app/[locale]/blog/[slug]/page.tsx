@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: `${c.title} · AxionIA`,
+    title: `${c.title} · Axion-IA`,
     description: c.excerpt,
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).

@@ -79,8 +79,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? (ville.copy?.directAnswerFr ?? ville.copy?.pitchFr ?? "")
       : (ville.copy?.directAnswerEn ?? ville.copy?.pitchEn ?? "")
     : isFr
-      ? `AxionIA intervient à ${ville.nameFr} (${region.nameFr}). Audit IA Flash dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, intervention sur site 1 journée, implémentation IA. Réservation directe en ligne.`
-      : `AxionIA operates in ${ville.nameFr} (${region.nameFr}). Flash AI audit from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en")}, 1-day on-site session, AI implementation. Direct online booking.`;
+      ? `Axion-IA intervient à ${ville.nameFr} (${region.nameFr}). Audit IA Flash dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, intervention sur site 1 journée, implémentation IA. Réservation directe en ligne.`
+      : `Axion-IA operates in ${ville.nameFr} (${region.nameFr}). Flash AI audit from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en")}, 1-day on-site session, AI implementation. Direct online booking.`;
 
   const meta = buildProductMetadata({
     locale,
@@ -145,8 +145,8 @@ export default async function VillePage({ params }: Props) {
     locale: loc,
     path: `/implantations/${region.slug}/${ville.slug}`,
     name: isFr
-      ? `AxionIA · cabinet IA opérationnel Ã  ${ville.nameFr}`
-      : `AxionIA · operational AI consultancy in ${ville.nameFr}`,
+      ? `Axion-IA · cabinet IA opérationnel Ã  ${ville.nameFr}`
+      : `Axion-IA · operational AI consultancy in ${ville.nameFr}`,
     description: isFr ? copy.pitchFr : copy.pitchEn,
     areaServed: { type: "City", name: ville.nameFr },
     address: {
@@ -310,12 +310,12 @@ export default async function VillePage({ params }: Props) {
           (signal AEO/GEO : Perplexity / Claude / Gemini citent prix). */}
       <Section
         eyebrow={isFr ? "Nos services" : "Our services"}
-        title={isFr ? "Trois services AxionIA Ã " : "Three AxionIA services in"}
+        title={isFr ? "Trois services Axion-IA Ã " : "Three Axion-IA services in"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? `Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données. AxionIA délivre ses 3 prestations Ã  ${ville.nameFr} comme partout en France métropolitaine.`
-            : `Public pricing displayed, real-time calendar, you keep control of your data. AxionIA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France.`
+            ? `Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données. Axion-IA délivre ses 3 prestations Ã  ${ville.nameFr} comme partout en France métropolitaine.`
+            : `Public pricing displayed, real-time calendar, you keep control of your data. Axion-IA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France.`
         }
         tone="paper"
       >
@@ -488,7 +488,7 @@ export default async function VillePage({ params }: Props) {
           + signal autorité (4 différenciateurs concrets, pas du blabla) */}
       <Section
         eyebrow={isFr ? "Pourquoi nous" : "Why us"}
-        title={isFr ? "Ce qui change avec AxionIA Ã " : "What changes with AxionIA in"}
+        title={isFr ? "Ce qui change avec Axion-IA Ã " : "What changes with Axion-IA in"}
         titleEm={ville.nameFr}
         description={
           isFr
@@ -856,7 +856,7 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
     <Section
       titleAs="h1"
       eyebrow={isFr ? `Implantations · ${regionNameFr}` : `Locations · ${regionNameFr}`}
-      title={isFr ? "AxionIA intervient Ã " : "AxionIA covers"}
+      title={isFr ? "Axion-IA intervient Ã " : "Axion-IA covers"}
       titleEm={ville.nameFr}
       description={
         isFr

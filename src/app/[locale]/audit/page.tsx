@@ -276,8 +276,8 @@ export default async function AuditListing({ params }: Props) {
     locale: loc,
     path: "/audit",
     name: isFr
-      ? "Audit IA opérationnel · 4 niveaux · AxionIA"
-      : "Operational AI audit · 4 tiers · AxionIA",
+      ? "Audit IA opérationnel · 4 niveaux · Axion-IA"
+      : "Operational AI audit · 4 tiers · Axion-IA",
     description: isFr
       ? `Audit IA en entreprise : pyramide 4 niveaux (Flash ${flashAmount} · Ciblé ${cibleAmountRange} · Stratégique PME ${pmeAmountRange} · Stratégique ETI dès ${etiAmountFrom}). Diagnostic actionnable, ROI chiffré, plan d'attaque livré sous 5 jours.`
       : `Corporate AI audit: 4-tier pyramid (Flash ${flashAmount} · Targeted ${cibleAmountRange} · SME Strategic ${pmeAmountRange} · Mid-cap Strategic from ${etiAmountFrom}). Actionable diagnosis, costed ROI, action plan delivered in 5 days.`,
@@ -393,8 +393,8 @@ export default async function AuditListing({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit AxionIA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées Ã  l'IA, pilotage au jour le jour)."
-                  : "Diagram: your company at the start, 4 methodology steps of the AxionIA audit (we observe, we map, we prioritise, we hand over the plan), then 6 concrete business gains (revenue growth, improved profitability, tasks automated, hours freed, teams trained in AI, day-to-day tracking)."
+                  ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit Axion-IA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées Ã  l'IA, pilotage au jour le jour)."
+                  : "Diagram: your company at the start, 4 methodology steps of the Axion-IA audit (we observe, we map, we prioritise, we hand over the plan), then 6 concrete business gains (revenue growth, improved profitability, tasks automated, hours freed, teams trained in AI, day-to-day tracking)."
               }
             />
           </div>
@@ -1183,13 +1183,13 @@ export default async function AuditListing({ params }: Props) {
                   id: "after",
                   question: "Que se passe-t-il après l'audit ?",
                   answer:
-                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par AxionIA (Module 3 Implémentation). Une session de suivi peut être programmée 30 Ã  60 jours après la livraison pour challenger la mise en Å“uvre — sans frais additionnels si elle tient en 60 minutes.",
+                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par Axion-IA (Module 3 Implémentation). Une session de suivi peut être programmée 30 Ã  60 jours après la livraison pour challenger la mise en Å“uvre — sans frais additionnels si elle tient en 60 minutes.",
                 },
                 {
                   id: "eu-jurisdiction",
-                  question: "AxionIA peut-elle facturer en France ?",
+                  question: "Axion-IA peut-elle facturer en France ?",
                   answer:
-                    "Oui. AxionIA OÜ est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
+                    "Oui. Axion-IA OÜ est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
                 },
                 {
                   id: "starting-point",
@@ -1221,13 +1221,13 @@ export default async function AuditListing({ params }: Props) {
                   id: "after",
                   question: "What happens after the audit?",
                   answer:
-                    "You leave with a costed action plan, executable by your teams or by AxionIA (Module 3 Implementation). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
+                    "You leave with a costed action plan, executable by your teams or by Axion-IA (Module 3 Implementation). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
                 },
                 {
                   id: "eu-jurisdiction",
-                  question: "Can AxionIA invoice in France?",
+                  question: "Can Axion-IA invoice in France?",
                   answer:
-                    "Yes. AxionIA OÜ is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
+                    "Yes. Axion-IA OÜ is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
                 },
                 {
                   id: "starting-point",
@@ -1326,8 +1326,8 @@ export default async function AuditListing({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un plan d'action remis Ã  l'issue d'un audit AxionIA."
-                : "Editorial illustration of an action plan delivered at the end of an AxionIA audit."
+                ? "Illustration éditoriale d'un plan d'action remis Ã  l'issue d'un audit Axion-IA."
+                : "Editorial illustration of an action plan delivered at the end of an Axion-IA audit."
             }
           />
         </Container>

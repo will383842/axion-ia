@@ -19,11 +19,11 @@
 
 ### 2. Brand & naming
 
-2.1 1 seul `lib/brand.ts` exporte « AxionIA », « cabinet IA opérationnel »
+2.1 1 seul `lib/brand.ts` exporte « Axion-IA », « cabinet IA opérationnel »
 2.2 Imports `BRAND.name`, `BRAND.tagline.fr`, `BRAND.tagline.en` partout
-2.3 0 « AxionIA » hardcodé en dur (sauf `lib/brand.ts`)
+2.3 0 « Axion-IA » hardcodé en dur (sauf `lib/brand.ts`)
 2.4 0 « cabinet IA opérationnel » hardcodé (centraliser ou messages i18n)
-2.5 0 « agence/studio » utilisé pour AxionIA (uniquement concurrents)
+2.5 0 « agence/studio » utilisé pour Axion-IA (uniquement concurrents)
 2.6 OG image source unique (`opengraph-image.tsx`)
 2.7 Favicon source unique (`icon.tsx`)
 2.8 Apple icon unique (`apple-icon.tsx`)

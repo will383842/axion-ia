@@ -33,7 +33,7 @@ export interface VilleHeroConfig {
 }
 
 /**
- * Contexte local d'application des 3 services AxionIA — version COURTE
+ * Contexte local d'application des 3 services Axion-IA — version COURTE
  * pour la page ville mère (1 phrase ~25-50 mots par service).
  * Conservé pour rétrocompat. Pour les pages ville × service dédiées
  * (`/audit/[ville]`, etc.), utiliser `services` (long form) ci-dessous.
@@ -47,7 +47,7 @@ export interface VilleServicesContext {
 /**
  * Témoignage local pour preuve sociale spécifique à la ville × service.
  * Anonymisé (pas de nom entreprise complet) pour respecter la convention
- * AxionIA (cf. `src/content/case-studies.ts`).
+ * Axion-IA (cf. `src/content/case-studies.ts`).
  */
 export interface VilleTestimonial {
   /** Quote 30-80 mots. */
@@ -70,12 +70,12 @@ export interface VilleServiceCopyLocale {
   /**
    * Hero direct-answer 80-150 mots citable LLMs.
    * Cible : `audit IA <ville>`, `formation IA <ville>`, `implémentation IA <ville>`.
-   * Doit mentionner : entité AxionIA + service + ville + tarif d'entrée +
+   * Doit mentionner : entité Axion-IA + service + ville + tarif d'entrée +
    * délai démarrage + différenciateur clé.
    */
   hero: string;
   /**
-   * 4-6 raisons spécifiques pourquoi AxionIA à cette ville × service
+   * 4-6 raisons spécifiques pourquoi Axion-IA à cette ville × service
    * (data INSEE locale + secteurs B2B + cas clients secteurs présents).
    * Ex pour audit Paris : "Pôle prioritaire 5j moyenne kick-off",
    * "Frais déplacement intra-Paris inclus", "Tissu PME/ETI 215K entreprises", etc.
@@ -88,7 +88,7 @@ export interface VilleServiceCopyLocale {
   methodology: ReadonlyArray<{ step: string; detail: string }>;
   /**
    * Grille tarifaire locale par taille entreprise INSEE (TPE/PME/ETI/GE).
-   * Tarifs publics, pas de devis opaque (différenciateur AxionIA).
+   * Tarifs publics, pas de devis opaque (différenciateur Axion-IA).
    */
   pricing: ReadonlyArray<{
     sizeLabel: string; // "TPE (< 10 collab)" / "PME (10-249)" / "ETI (250-4999)" / "Grande entreprise (5000+)"
@@ -132,7 +132,7 @@ export interface VilleCopy {
   pitchFr: string;
   /** Pitch EN miroir. */
   pitchEn: string;
-  /** Contexte local d'application des 3 services AxionIA (version courte). */
+  /** Contexte local d'application des 3 services Axion-IA (version courte). */
   servicesContext?: VilleServicesContext;
   /**
    * Long-form services à la ville (1500-2500 mots par service). Sprint 14.10.1.
@@ -142,7 +142,7 @@ export interface VilleCopy {
    */
   services?: VilleServicesLong;
   /**
-   * Direct-answer FR 40-80 mots (Q "qu'est-ce qu'AxionIA à [Ville] ?"),
+   * Direct-answer FR 40-80 mots (Q "qu'est-ce qu'Axion-IA à [Ville] ?"),
    * citable verbatim par Perplexity / Claude.ai / Google AI Overviews.
    * Différent du `pitchFr` (plus narratif, hero-positionnel) : ce champ
    * est lu en premier par les LLMs et doit être autonome — entité +
@@ -151,7 +151,7 @@ export interface VilleCopy {
   directAnswerFr?: string;
   /** Direct-answer EN miroir. */
   directAnswerEn?: string;
-  /** Top secteurs NAF (B2B AxionIA pertinents) — ex. "Banque/Finance, Conseil, Tech". */
+  /** Top secteurs NAF (B2B Axion-IA pertinents) — ex. "Banque/Finance, Conseil, Tech". */
   topSectorsNaf?: ReadonlyArray<string>;
   /** Texte court distances clés (gares, aéroports, métro). 1-2 phrases FR. */
   distancesFr?: string;

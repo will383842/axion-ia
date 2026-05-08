@@ -1,4 +1,4 @@
-# 🎯 PROMPT MAÎTRE — AxionIA · Audit total → Plan → Frontend → Backend
+# 🎯 PROMPT MAÎTRE — Axion-IA · Audit total → Plan → Frontend → Backend
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** : HEAD `fd91518` (post-Sprint 14.5-14.9). Sprints 0-14 + 14.5-14.9 livrés/pushés. Lift formation ban (ADR 0003), pivot doctrine v3 (ADR 0002), typography v3.1 (ADR 0004), 64 routes templates (vs 75 v1).
 >
@@ -7,9 +7,9 @@
 
 ---
 
-Tu es l'architecte principal du projet **AxionIA** (`C:\Users\willi\Documents\Projets\Axion-IA`). Ta mission est de livrer un site **parfait** : zéro incohérence, zéro régression SEO/AEO, mobile-first absolu, accessible WCAG 2.2 AA, conforme à toutes les décisions du **06/05/2026**. Tu travailles en mode **auto** avec validations courtes (« OUI / CONTINUE / STOP »).
+Tu es l'architecte principal du projet **Axion-IA** (`C:\Users\willi\Documents\Projets\Axion-IA`). Ta mission est de livrer un site **parfait** : zéro incohérence, zéro régression SEO/AEO, mobile-first absolu, accessible WCAG 2.2 AA, conforme à toutes les décisions du **06/05/2026**. Tu travailles en mode **auto** avec validations courtes (« OUI / CONTINUE / STOP »).
 
-> ⚠️ Source de vérité ultime : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md`. En cas de conflit avec un autre fichier, ce document fait foi. Le `RAPPORT_AUDIT_v10.1.md` indique 404/404 checks verts au 06/05/2026 — toute régression doit être tracée.
+> ⚠️ Source de vérité ultime : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md`. En cas de conflit avec un autre fichier, ce document fait foi. Le `RAPPORT_AUDIT_v10.1.md` indique 404/404 checks verts au 06/05/2026 — toute régression doit être tracée.
 
 ---
 
@@ -17,16 +17,16 @@ Tu es l'architecte principal du projet **AxionIA** (`C:\Users\willi\Documents\Pr
 
 1. Charger systématiquement le skill **`axionia-core`**.
 2. Lire **intégralement** :
-   - `AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md`
-   - `AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md`
-   - `AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/25-Stack-Technique-v3.md`
-   - `AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/13-Infrastructure-v2.md`
-   - `Navigation-Complete-AxionIA.md` (sitemap + user flows)
+   - `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md`
+   - `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md`
+   - `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/25-Stack-Technique-v3.md`
+   - `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/13-Infrastructure-v2.md`
+   - `Navigation-Complete-Axion-IA.md` (sitemap + user flows)
    - `RAPPORT_AUDIT_v10.1.md`
-   - Les 9 wireframes-briefs `Wireframes-Briefs-AxionIA/00-08*.md`
+   - Les 9 wireframes-briefs `Wireframes-Briefs-Axion-IA/00-08*.md`
 3. Convertir et lire les **33 fichiers `.docx`** du dossier (utilise `python-docx` via Bash ou un script Node `mammoth`). Synthétise chaque doc en une fiche de 10 lignes max.
 4. **Inventorier le mégapack de skills livré avec le projet** (88 skills) :
-   - Path : `AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-megapack-skills/.claude/skills/`
+   - Path : `Axion-IA_Dossier_FINAL_ABSOLU_v10.1/axionia-megapack-skills/.claude/skills/`
    - **8 skills `axionia-*`** : core, design, mobile-first, stack, i18n, seo-aeo, forms, database.
    - **80 skills tiers** organisés en 5 familles (cf. `README.md` du mégapack) :
      - 🔵 Workflow (~14, pack superpowers) : `using-superpowers`, `brainstorming`, `writing-plans`, `executing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `test-driven-development`, `systematic-debugging`, `verification-before-completion`, `requesting-code-review`, `receiving-code-review`, `finishing-a-development-branch`, `using-git-worktrees`, `writing-skills`.
@@ -34,9 +34,9 @@ Tu es l'architecte principal du projet **AxionIA** (`C:\Users\willi\Documents\Pr
      - 🟠 CRO / marketing (~30) : `page-cro`, `form-cro`, `popup-cro`, `signup-flow-cro`, `paywall-upgrade-cro`, `onboarding-cro`, `churn-prevention`, `copywriting`, `copy-editing`, `content-strategy`, `cold-email`, `email-sequence`, `ad-creative`, `paid-ads`, `lead-magnets`, `launch-strategy`, `directory-submissions`, `referral-program`, `co-marketing`, `community-marketing`, `customer-research`, `competitor-profiling`, `competitor-alternatives`, `marketing-ideas`, `marketing-psychology`, `pricing-strategy`, `product-marketing-context`, `revops`, `sales-enablement`, `social-content`, `analytics-tracking`, `ab-test-setup`, `aso-audit`, `free-tool-strategy`, `image`, `video`.
      - 🔴 Sécurité : `owasp-security`.
 5. Lister les skills `axionia-*` **chargés en session** (12 attendus) et **comparer** au mégapack (8 présents). Détecter les 4 skills `axionia-*` cités en session mais absents du mégapack (probablement : `axionia-anti-spa`, `axionia-deployment`, `axionia-emails`, `axionia-a11y`) → vérifier leur source (`~/.claude/skills/` global ?) et trancher en PHASE 1.S où est leur canon.
-6. **Recenser le repo `awesome-design-md-main/`** (60+ DESIGN.md de marques premium B2B : Stripe, Linear, Vercel, Notion, Sentry, Posthog, Mintlify, Cal, Cursor, Sanity, Webflow, Resend, Supabase, Mistral, x.ai, Cohere, Apple, Figma, Tesla, etc.). C'est de l'inspi visuelle exploitable pour fabriquer le `DESIGN.md` AxionIA en Phase 2 (charte couleurs reportée → tokens neutres + parti pris validé via mix de design systems premium).
+6. **Recenser le repo `awesome-design-md-main/`** (60+ DESIGN.md de marques premium B2B : Stripe, Linear, Vercel, Notion, Sentry, Posthog, Mintlify, Cal, Cursor, Sanity, Webflow, Resend, Supabase, Mistral, x.ai, Cohere, Apple, Figma, Tesla, etc.). C'est de l'inspi visuelle exploitable pour fabriquer le `DESIGN.md` Axion-IA en Phase 2 (charte couleurs reportée → tokens neutres + parti pris validé via mix de design systems premium).
 
-> Sortie de la phase 0 : un fichier `_AUDIT/00-fiches-lecture.md` regroupant les fiches docx (33) + wireframes (9) + docs racine (3) + inventaire mégapack (88 skills, ventilation 5 familles, écart session/mégapack chiffré) + index `awesome-design-md` (60+ marques classées par pertinence AxionIA).
+> Sortie de la phase 0 : un fichier `_AUDIT/00-fiches-lecture.md` regroupant les fiches docx (33) + wireframes (9) + docs racine (3) + inventaire mégapack (88 skills, ventilation 5 familles, écart session/mégapack chiffré) + index `awesome-design-md` (60+ marques classées par pertinence Axion-IA).
 
 ---
 
@@ -100,10 +100,10 @@ Cellules :
 
 Cas explicites à instruire **obligatoirement** (chacun a un risque réel de conflit) :
 
-- `axionia-design` ↔ `web-design-guidelines` (génériques peuvent suggérer gradients/glassmorphism interdits chez AxionIA).
+- `axionia-design` ↔ `web-design-guidelines` (génériques peuvent suggérer gradients/glassmorphism interdits chez Axion-IA).
 - `axionia-seo-aeo` ↔ `seo-audit-marketing` / `ai-seo` / `schema-markup` / `seo-schema` / `seo-page` (les génériques ne savent pas que `formation` est banni, que la société est OÜ, ni les URLs canoniques FR/EN).
 - `axionia-stack` ↔ choix par défaut des skills génériques (un skill `copywriting` peut conseiller Resend/Mailchimp, interdits).
-- `axionia-emails` ↔ `email-sequence` / `cold-email` (génériques supposent ESP type Resend ; AxionIA = PowerMTA + MailWizz maison).
+- `axionia-emails` ↔ `email-sequence` / `cold-email` (génériques supposent ESP type Resend ; Axion-IA = PowerMTA + MailWizz maison).
 - `axionia-forms` ↔ `form-cro` / `signup-flow-cro` / `popup-cro` (les génériques peuvent pousser des patterns SPA interdits par `axionia-anti-spa`).
 - `axionia-i18n` ↔ `seo-hreflang` (qui prime sur la génération hreflang).
 - `axionia-mobile-first` ↔ `axionia-design` ↔ `axionia-a11y` (touch targets 44×44 et focus visible : trois fois mentionné, doit être canon une seule fois).
@@ -152,8 +152,8 @@ Cette règle est unique, citée par référence dans tous les autres skills, jam
 
 - Liste des skills manquants à créer : `axionia-architecture`, `axionia-testing`, `axionia-admin-console`, `axionia-content-models`, `axionia-payments` ou doc « no-stripe », `axionia-observability`, `axionia-performance`, **`axionia-anti-spa`**, **`axionia-deployment`**, **`axionia-emails`**, **`axionia-a11y`** (ces 4 derniers s'ils ne sont effectivement pas dans le mégapack — à confirmer phase 0 §5).
 - Liste des skills à **supprimer ou archiver** parce que redondants avec un `axionia-*` (ex. neutraliser `web-design-guidelines` si présent global, neutraliser `seo-audit-marketing` au profit de `axionia-seo-aeo` sur le scope projet, etc.).
-- Liste des skills à **garder mais cadenasser** par une note dans leur description (« sur AxionIA, voir `axionia-X` pour les overrides »).
-- **Décision sur les 22 skills SEO du mégapack** : lesquels garder actifs sur AxionIA (à mon avis : `seo-schema`, `seo-hreflang`, `seo-sitemap`, `seo-page`, `seo-drift`, `seo-google`, `ai-seo`, `schema-markup`), lesquels désactiver projet-level (`seo-ecommerce`, `seo-local`, `seo-maps`, `seo-backlinks`, `seo-dataforseo` si pas de compte → trancher).
+- Liste des skills à **garder mais cadenasser** par une note dans leur description (« sur Axion-IA, voir `axionia-X` pour les overrides »).
+- **Décision sur les 22 skills SEO du mégapack** : lesquels garder actifs sur Axion-IA (à mon avis : `seo-schema`, `seo-hreflang`, `seo-sitemap`, `seo-page`, `seo-drift`, `seo-google`, `ai-seo`, `schema-markup`), lesquels désactiver projet-level (`seo-ecommerce`, `seo-local`, `seo-maps`, `seo-backlinks`, `seo-dataforseo` si pas de compte → trancher).
 - **Décision sur les 30 skills CRO/marketing** : actifs (`page-cro`, `form-cro`, `popup-cro`, `signup-flow-cro` non applicable car pas de signup public, `copywriting`, `copy-editing`, `content-strategy`, `email-sequence`, `lead-magnets`, `launch-strategy`, `competitor-profiling`, `competitor-alternatives`, `analytics-tracking`, `ab-test-setup`), désactiver les inutiles à un site vitrine B2B premium (`paywall-upgrade-cro`, `onboarding-cro`, `churn-prevention`, `aso-audit`, `cold-email` selon stratégie outbound).
 
 Annexe → `_AUDIT/01s-F-actions.md`.
@@ -168,7 +168,7 @@ Annexe → `_AUDIT/01s-F-actions.md`.
 
 ## PHASE 2 — Plan d'implémentation maître + Skill `axionia-architecture`
 
-### 2.0 · Créer `DESIGN.md` AxionIA (avant tout code visuel)
+### 2.0 · Créer `DESIGN.md` Axion-IA (avant tout code visuel)
 
 À la racine du futur repo Next.js. Source de vérité visuelle du projet (la charte couleurs étant officiellement reportée — cf. doc 02 — il faut un parti pris défendable et révocable).
 
@@ -176,12 +176,12 @@ Procédure :
 
 1. Lire **8 à 12 DESIGN.md** sélectionnés dans `awesome-design-md-main/awesome-design-md-main/design-md/` parmi les marques premium B2B alignées au positionnement « McKinsey/Roland Berger sobriété » : **stripe, linear.app, vercel, notion, sentry, mintlify, cal, cursor, sanity, posthog, supabase, mistral.ai**. (Éviter les marques grand public émotionnelles : ferrari, lamborghini, nike, etc.)
 2. Extraire pour chacun : palette, typographie, scale d'espacement, motion principles, verbes de marque, anti-patterns visuels.
-3. Synthétiser un `DESIGN.md` AxionIA :
+3. Synthétiser un `DESIGN.md` Axion-IA :
    - Tokens CSS variables provisoires (charte officielle reportée → noter explicitement « provisoire, valider avec Will »).
    - Typographie (probable : Inter ou Geist + une serif pour les titres ?).
    - Spacing scale (4-8-12-16-24-32-48-64-96).
    - Motion principles (ease-out 200-300ms, `prefers-reduced-motion` strict).
-   - Anti-patterns AxionIA (pas de gradients gratuits, pas de glassmorphism, 80 % blanc dominant, jamais d'emoji décoratif, jamais de stock photo).
+   - Anti-patterns Axion-IA (pas de gradients gratuits, pas de glassmorphism, 80 % blanc dominant, jamais d'emoji décoratif, jamais de stock photo).
    - Photographic style (B&W ou desaturé léger pour humains, geometric abstract sinon).
 4. Mettre à jour `axionia-design` pour pointer vers ce `DESIGN.md` comme source unique des tokens.
 

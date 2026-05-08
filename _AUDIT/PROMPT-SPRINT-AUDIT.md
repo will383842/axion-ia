@@ -1,4 +1,4 @@
-# 🧾 PROMPT SPRINT-AUDIT — AxionIA · Croisement DoD attendue / déclarée / réelle
+# 🧾 PROMPT SPRINT-AUDIT — Axion-IA · Croisement DoD attendue / déclarée / réelle
 
 > 📌 **Lire d'abord [`_AUDIT/SYNC-NOTICE-2026-05-07.md`](./SYNC-NOTICE-2026-05-07.md)** : Sprints 14.5-14.9 sont commités/pushés (pas working copy). HEAD `fd91518`, 1 commit ahead `origin/main`.
 >

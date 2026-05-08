@@ -6,13 +6,13 @@ describe("<JsonLd>", () => {
   it("emits a script tag with application/ld+json type", () => {
     const { container } = render(
       <JsonLd
-        data={{ "@context": "https://schema.org", "@type": "Organization", name: "AxionIA" }}
+        data={{ "@context": "https://schema.org", "@type": "Organization", name: "Axion-IA" }}
       />,
     );
     const script = container.querySelector('script[type="application/ld+json"]');
     expect(script).toBeTruthy();
     expect(script?.innerHTML).toContain("Organization");
-    expect(script?.innerHTML).toContain("AxionIA");
+    expect(script?.innerHTML).toContain("Axion-IA");
   });
 
   it("does not double-escape JSON entities", () => {

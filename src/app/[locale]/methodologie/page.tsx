@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/methodologie",
     title:
       locale === "fr"
-        ? "Méthodologie AxionIA · 4 étapes vers le ROI"
-        : "AxionIA methodology · 4 steps to ROI",
+        ? "Méthodologie Axion-IA · 4 étapes vers le ROI"
+        : "Axion-IA methodology · 4 steps to ROI",
     description:
       locale === "fr"
         ? "Notre méthodologie : audit terrain, démos appliquées, plan chiffré, implémentation pilotée."
@@ -48,11 +48,11 @@ export default async function MethodologyPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: isFr
-      ? "Méthodologie AxionIA · 4 étapes vers le ROI"
-      : "AxionIA methodology · 4 steps to ROI",
+      ? "Méthodologie Axion-IA · 4 étapes vers le ROI"
+      : "Axion-IA methodology · 4 steps to ROI",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/methodologie`,
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -60,14 +60,14 @@ export default async function MethodologyPage({ params }: Props) {
   const breadcrumbItems = [{ href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" }];
 
   // HowTo JSON-LD — AEO 2026 critical : Google AI Overviews + Perplexity
-  // citent les HowTo schemas pour répondre aux requêtes « comment AxionIA
+  // citent les HowTo schemas pour répondre aux requêtes « comment Axion-IA
   // procède ? », « quelles étapes pour un audit IA ? », etc.
   const howToJsonLd = buildHowToJsonLd({
     locale: loc,
     path: "/methodologie",
     name: isFr
-      ? "Méthodologie AxionIA · 4 étapes vers le ROI"
-      : "AxionIA methodology · 4 steps to ROI",
+      ? "Méthodologie Axion-IA · 4 étapes vers le ROI"
+      : "Axion-IA methodology · 4 steps to ROI",
     description: isFr
       ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
       : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
@@ -229,8 +229,8 @@ export default async function MethodologyPage({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Méthodologie AxionIA, éprouvée sur 50+ entreprises de la TPE au mid-market. On démontre sur vos données, pas sur des démos vendeur."
-                  : "AxionIA methodology, proven on 50+ companies from small business to mid-market. We demonstrate on your data, not vendor demos."}
+                  ? "Méthodologie Axion-IA, éprouvée sur 50+ entreprises de la TPE au mid-market. On démontre sur vos données, pas sur des démos vendeur."
+                  : "Axion-IA methodology, proven on 50+ companies from small business to mid-market. We demonstrate on your data, not vendor demos."}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta href="/audit" size="lg">
@@ -249,8 +249,8 @@ export default async function MethodologyPage({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma méthodologie AxionIA : votre entreprise au départ, 4 étapes méthodologiques (Identifier, Auditer, Implémenter, Mesurer), puis 4 résultats concrets (plan chiffré, process automatisés, équipes formées, ROI mesuré)."
-                  : "AxionIA methodology diagram: your company at the start, 4 method steps (Identify, Audit, Implement, Measure), then 4 concrete outcomes (costed plan, automated processes, trained teams, measured ROI)."
+                  ? "Schéma méthodologie Axion-IA : votre entreprise au départ, 4 étapes méthodologiques (Identifier, Auditer, Implémenter, Mesurer), puis 4 résultats concrets (plan chiffré, process automatisés, équipes formées, ROI mesuré)."
+                  : "Axion-IA methodology diagram: your company at the start, 4 method steps (Identify, Audit, Implement, Measure), then 4 concrete outcomes (costed plan, automated processes, trained teams, measured ROI)."
               }
             />
           </div>
@@ -291,8 +291,8 @@ export default async function MethodologyPage({ params }: Props) {
         titleEm={isFr ? "cette méthode" : "method"}
         description={
           isFr
-            ? "Trois principes non-négociables qui guident chaque mission AxionIA, du diagnostic flash Ã  l'audit stratégique ETI."
-            : "Three non-negotiable principles guiding every AxionIA engagement, from flash diagnosis to strategic mid-cap audit."
+            ? "Trois principes non-négociables qui guident chaque mission Axion-IA, du diagnostic flash Ã  l'audit stratégique ETI."
+            : "Three non-negotiable principles guiding every Axion-IA engagement, from flash diagnosis to strategic mid-cap audit."
         }
       >
         <Container>
@@ -309,8 +309,8 @@ export default async function MethodologyPage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un compas d'architecte au-dessus d'une feuille gridée, symbole de la précision méthodologique d'AxionIA."
-                  : "Editorial illustration of an architect's compass over gridded paper, symbol of AxionIA's methodological precision."
+                  ? "Illustration éditoriale d'un compas d'architecte au-dessus d'une feuille gridée, symbole de la précision méthodologique d'Axion-IA."
+                  : "Editorial illustration of an architect's compass over gridded paper, symbol of Axion-IA's methodological precision."
               }
               className="border-terracotta/30 bg-halo-warm shadow-subtle relative w-full overflow-hidden rounded-2xl border-2 border-dashed lg:sticky lg:top-24"
             />
@@ -352,8 +352,8 @@ export default async function MethodologyPage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'un cycle continu représentant la méthodologie AxionIA appliquée dans la durée."
-                  : "Editorial illustration of a continuous cycle representing the AxionIA methodology applied over time."
+                  ? "Illustration éditoriale d'un cycle continu représentant la méthodologie Axion-IA appliquée dans la durée."
+                  : "Editorial illustration of a continuous cycle representing the Axion-IA methodology applied over time."
               }
             />
           </div>

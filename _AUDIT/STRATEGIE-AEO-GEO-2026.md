@@ -1,4 +1,4 @@
-# Stratégie SEO/AEO/GEO 2026 — AxionIA
+# Stratégie SEO/AEO/GEO 2026 — Axion-IA
 
 > **Date** : 2026-05-07 (amendée même jour pour V1 amendé)
 > **Cible** : devenir #1 en France dans chaque ville et chaque région sur les requêtes IA opérationnelle B2B. Lancement France-only dans un premier temps. Multi-pays (BE, CH, CA) et EN parité villes = an 2 conditionnel.
@@ -47,7 +47,7 @@ Sur une requête « cabinet IA opérationnel à Lyon » :
 
 ---
 
-## 1. Diagnostic AxionIA — état post-`acd8080`
+## 1. Diagnostic Axion-IA — état post-`acd8080`
 
 ### Ce qui est en place (✅)
 
@@ -113,7 +113,7 @@ Sur une requête « cabinet IA opérationnel à Lyon » :
 
 ### Stratégie « ville/région » — empilement sémantique
 
-Pour qu'AxionIA capte la requête « cabinet IA à [Ville] », chaque page ville Sprint 15 doit empiler :
+Pour qu'Axion-IA capte la requête « cabinet IA à [Ville] », chaque page ville Sprint 15 doit empiler :
 
 ```ts
 <JsonLd data={buildLocalBusinessJsonLd({ locale, path, name, ... })} />
@@ -151,14 +151,14 @@ Conformément à ADR 0006 (`_AUDIT/adr-0004-pseo-villes-PROPOSITION.md` accepté
 
 ### Pourquoi #1 deviendra atteignable
 
-| Concurrent type                                        | Faiblesse exploitable AxionIA                        |
+| Concurrent type                                        | Faiblesse exploitable Axion-IA                       |
 | ------------------------------------------------------ | ---------------------------------------------------- |
 | Cabinets de conseil classiques (BCG/McKinsey/Deloitte) | Aucune page dédiée par ville. Trop génériques.       |
 | Agences IA locales (Lyon, Paris, etc.)                 | 1-2 villes maximum, pas de stratégie nationale.      |
 | Make / Zapier integrators                              | Pas un cabinet, juste des intégrateurs.              |
 | Editeurs SaaS IA                                       | N'ont pas vocation à se positionner sur « cabinet ». |
 
-→ **AxionIA est seul à pouvoir cumuler** : (1) cabinet positionné national, (2) **2 150 pages villes V1 + 18 régions** (couverture maximale France >5 000 hab), (3) data structurée parfaite, (4) entité `Organization` Estonia stable cross-langue, (5) `Person` Will identifié E-E-A-T.
+→ **Axion-IA est seul à pouvoir cumuler** : (1) cabinet positionné national, (2) **2 150 pages villes V1 + 18 régions** (couverture maximale France >5 000 hab), (3) data structurée parfaite, (4) entité `Organization` Estonia stable cross-langue, (5) `Person` Will identifié E-E-A-T.
 
 ---
 

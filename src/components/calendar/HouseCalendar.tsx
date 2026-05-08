@@ -62,7 +62,7 @@ const EN_MONTHS = [
   "December",
 ];
 
-// AxionIA on-site calendar — 3-state slots (available/option/reserved).
+// Axion-IA on-site calendar — 3-state slots (available/option/reserved).
 // CLAUDE.md v6 §11 + doc 24. Sprint 15 plugs Prisma; Sprint 11 uses fixtures.
 export function HouseCalendar({ slots, onConfirm, className, labels }: HouseCalendarProps) {
   const today = React.useMemo(() => new Date(), []);

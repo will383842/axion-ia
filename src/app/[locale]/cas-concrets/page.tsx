@@ -39,8 +39,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/cas-concrets",
     title:
       locale === "fr"
-        ? "Cas concrets · résultats clients chiffrés · AxionIA"
-        : "Case studies · client results, in numbers · AxionIA",
+        ? "Cas concrets · résultats clients chiffrés · Axion-IA"
+        : "Case studies · client results, in numbers · Axion-IA",
     description:
       locale === "fr"
         ? "Études de cas IA opérationnelle : industrie, juridique, retail, banque, artisanat. Résultats chiffrés, témoignages, contexte."
@@ -89,11 +89,11 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
   ];
 
   // ItemList JSON-LD — expose tous les cas concrets au crawler depuis l'index
-  // (AEO/GEO 2026 : LLMs résolvent « cas clients AxionIA » avec liens directs).
+  // (AEO/GEO 2026 : LLMs résolvent « cas clients Axion-IA » avec liens directs).
   const itemListJsonLd = buildItemListJsonLd({
     locale: loc,
     path: "/cas-concrets",
-    name: isFr ? "Cas concrets AxionIA" : "AxionIA case studies",
+    name: isFr ? "Cas concrets Axion-IA" : "Axion-IA case studies",
     items: CASE_STUDIES.map((c, idx) => {
       const copy = c[loc];
       const desc = copy.excerpt;
@@ -205,8 +205,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? `Chaque cas publié ici représente une mission AxionIA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode AxionIA s'applique à toutes les tailles, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour vérifier.`
-              : `Each case study here represents an AxionIA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the AxionIA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to validate.`}
+              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode Axion-IA s'applique à toutes les tailles, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour vérifier.`
+              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the Axion-IA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to validate.`}
           </p>
         </Container>
       </Section>
@@ -382,8 +382,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une collection d'objets opérationnels symbolisant les cas concrets clients AxionIA."
-                : "Editorial illustration of a collection of operational objects symbolizing AxionIA client case studies."
+                ? "Illustration éditoriale d'une collection d'objets opérationnels symbolisant les cas concrets clients Axion-IA."
+                : "Editorial illustration of a collection of operational objects symbolizing Axion-IA client case studies."
             }
           />
         </Container>

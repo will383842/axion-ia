@@ -7,7 +7,7 @@
 
 ## 0. Contexte (à lire avant tout)
 
-Tu es invoqué sur le projet **AxionIA** — cabinet IA opérationnel B2B premium, OÜ estonienne. Le repo est à `Axion-IA/axionia/` (Next.js 16, App Router, Turbopack, next-intl FR/EN, ~4 342 HTML SSG après pSEO villes/régions Sprint 14.9).
+Tu es invoqué sur le projet **Axion-IA** — cabinet IA opérationnel B2B premium, OÜ estonienne. Le repo est à `Axion-IA/axionia/` (Next.js 16, App Router, Turbopack, next-intl FR/EN, ~4 342 HTML SSG après pSEO villes/régions Sprint 14.9).
 
 **État frontend au lancement de cet audit** :
 
@@ -45,7 +45,7 @@ Tu es invoqué sur le projet **AxionIA** — cabinet IA opérationnel B2B premiu
 
 - Direction visuelle figée HEAD : titleEm serif italique (Fraunces) + Header terracotta + hero-schema carré 576×576 lg+ (cf. mémoire `axionia_design_pivot.md`, `axionia_hero_schema_v3_2.md`).
 - Naming : « cabinet IA opérationnel » FR / « operational AI consultancy » EN. Jamais agence/studio/atelier.
-- Repo/dossier = **Axion-IA** (tiret) ; marque customer-facing dans `src/` = **AxionIA** (sans tiret).
+- Repo/dossier = **Axion-IA** (tiret) ; marque customer-facing dans `src/` = **Axion-IA** (sans tiret).
 - Anti-doorway HCU sur les villes non-pilotes (copy-gated indexation) — ne pas casser.
 
 **Lecture obligatoire avant patch** :
@@ -62,7 +62,7 @@ Tu es invoqué sur le projet **AxionIA** — cabinet IA opérationnel B2B premiu
 
 ### Contexte hébergement (intouchable — décidé ADR 0001)
 
-AxionIA est déployé sur **Hetzner Cloud** (UE — souveraineté OÜ estonienne). **PAS de Vercel.** **PAS de Netlify.** Toutes les features perf doivent fonctionner sur :
+Axion-IA est déployé sur **Hetzner Cloud** (UE — souveraineté OÜ estonienne). **PAS de Vercel.** **PAS de Netlify.** Toutes les features perf doivent fonctionner sur :
 
 - **Hetzner Cloud VPS CX32** (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB traffic — €6,49/mois HT, décision ferme Will 2026-05-08). CX22 (2 vCPU / 4 GB) écarté car insuffisant pour build SSG 4 342 pages + 3 containers (Next/Postgres/Redis) + Coolify.
 - **Node.js 22+ runtime** (`next start` ou Docker `output: "standalone"`)
@@ -198,7 +198,7 @@ L'agent **DOIT** :
 
 ## 1. Mission
 
-**Audit + plan de patches 100 % prescriptif** pour atteindre, sur AxionIA :
+**Audit + plan de patches 100 % prescriptif** pour atteindre, sur Axion-IA :
 
 1. **Lighthouse Lab** : Performance 100, Best Practices 100, A11y 100, SEO 100 sur **les 15 pages stratégiques** (Top 80/20 — listées §3) — desktop et mobile.
 2. **Core Web Vitals field data (CrUX)** : p75 vert sur **toutes les URLs indexables** :
@@ -657,7 +657,7 @@ routes:
 
 - **Doctrine v3 visuelle** figée HEAD : titleEm serif italique, Header terracotta, hero-schema carré 576×576, modular scale typo v3.2 (cf. ADR 0007). **Aucun patch ne doit dégrader le rendu visuel.**
 - **Anti-doorway HCU** sur villes non pilotes (copy-gated `noindex`) — ne pas casser.
-- **Naming** : « cabinet IA opérationnel » FR / « operational AI consultancy » EN. **AxionIA** sans tiret dans `src/`, **Axion-IA** avec tiret pour repo/dossier/domaine.
+- **Naming** : « cabinet IA opérationnel » FR / « operational AI consultancy » EN. **Axion-IA** sans tiret dans `src/`, **Axion-IA** avec tiret pour repo/dossier/domaine.
 - **Lighthouse CI seuils existants** ne se relâchent **jamais** (uniquement se durcissent).
 - **JSON-LD** existant ne se casse pas (Organization, WebSite, BreadcrumbList, ItemList, LocalBusiness, Place, FAQPage, etc.).
 - **Tests** vitest passent à chaque vague.
@@ -723,7 +723,7 @@ Crée une nouvelle entrée mémoire :
 
 ```markdown
 ---
-name: AxionIA audit Web Vitals 2026 livré YYYY-MM-DD
+name: Axion-IA audit Web Vitals 2026 livré YYYY-MM-DD
 description: Audit perf complet 150 critères / 6 agents / 5 livrables _AUDIT/. Score X/1500. Top 5 quick wins + Top 5 structurels + roadmap V1-V6.
 type: project
 ---

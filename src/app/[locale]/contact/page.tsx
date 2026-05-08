@@ -29,12 +29,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/contact",
     title:
       locale === "fr"
-        ? "Contact · AxionIA · réponse sous 48 h ouvrées"
-        : "Contact · AxionIA · 48 business-hour reply",
+        ? "Contact · Axion-IA · réponse sous 48 h ouvrées"
+        : "Contact · Axion-IA · 48 business-hour reply",
     description:
       locale === "fr"
-        ? "Demandez un devis ou réservez une intervention. Réponse sous 48 h ouvrées. AxionIA OÜ — cabinet IA opérationnel."
-        : "Request a quote or book a session. Reply within 48 business hours. AxionIA OÜ — operational AI consultancy.",
+        ? "Demandez un devis ou réservez une intervention. Réponse sous 48 h ouvrées. Axion-IA OÜ — cabinet IA opérationnel."
+        : "Request a quote or book a session. Reply within 48 business hours. Axion-IA OÜ — operational AI consultancy.",
   });
 }
 
@@ -92,7 +92,7 @@ export default async function Contact({ params }: Props) {
           id: "scope",
           question: "Quels sujets traitez-vous, lesquels écartez-vous ?",
           answer:
-            "AxionIA intervient sur l'IA opérationnelle B2B : audits, intégration IA Custom, automatisations, formation. Hors scope : développement d'apps grand public, projets ML pure recherche, hébergement long terme. En cas de hors scope, nous orientons vers un partenaire pertinent dans la réponse.",
+            "Axion-IA intervient sur l'IA opérationnelle B2B : audits, intégration IA Custom, automatisations, formation. Hors scope : développement d'apps grand public, projets ML pure recherche, hébergement long terme. En cas de hors scope, nous orientons vers un partenaire pertinent dans la réponse.",
         },
       ]
     : [
@@ -122,13 +122,13 @@ export default async function Contact({ params }: Props) {
           id: "scope",
           question: "What topics do you cover, what do you decline?",
           answer:
-            "AxionIA covers operational B2B AI: audits, Custom AI integration, automations, training. Out of scope: consumer apps, pure ML research, long-term hosting. When out of scope, we point you to a relevant partner in the reply.",
+            "Axion-IA covers operational B2B AI: audits, Custom AI integration, automations, training. Out of scope: consumer apps, pure ML research, long-term hosting. When out of scope, we point you to a relevant partner in the reply.",
         },
       ];
 
   // ContactPage JSON-LD enrichi : `mainEntity: ContactPoint` expose le canal
   // contact comme entité actionnable (AEO/GEO 2026, Perplexity / SGE / Claude.ai
-  // resolution d'entité « comment contacter AxionIA »). Cohérent avec la
+  // resolution d'entité « comment contacter Axion-IA »). Cohérent avec la
   // doctrine `buildOrganizationJsonLd` du layout — ici on déclare le point
   // de contact spécifique de la page /contact (vs Organization global).
   const contactJsonLd = {
@@ -136,11 +136,11 @@ export default async function Contact({ params }: Props) {
     "@type": "ContactPage",
     url: `${SITE_URL}/${loc}/contact`,
     inLanguage: loc,
-    name: isFr ? "Contact AxionIA" : "Contact AxionIA",
+    name: isFr ? "Contact Axion-IA" : "Contact Axion-IA",
     description: isFr
-      ? "Formulaire de contact AxionIA — réponse sous 48 h ouvrées, sans engagement, données stockées en UE."
-      : "AxionIA contact form — reply within 48 business hours, no commitment, data stored in the EU.",
-    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+      ? "Formulaire de contact Axion-IA — réponse sous 48 h ouvrées, sans engagement, données stockées en UE."
+      : "Axion-IA contact form — reply within 48 business hours, no commitment, data stored in the EU.",
+    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
     mainEntity: {
       "@type": "ContactPoint",
       contactType: isFr ? "Service client" : "Customer service",
@@ -225,8 +225,8 @@ export default async function Contact({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? `Schéma : 3 portes d'entrée AxionIA — message direct (48 h ouvrées), Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audit cadré 4 tailles.`
-                  : `Diagram: 3 ways into AxionIA — direct message (48 business hours), Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, scoped audit 4 sizes.`
+                  ? `Schéma : 3 portes d'entrée Axion-IA — message direct (48 h ouvrées), Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audit cadré 4 tailles.`
+                  : `Diagram: 3 ways into Axion-IA — direct message (48 business hours), Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, scoped audit 4 sizes.`
               }
             />
           </div>
@@ -238,8 +238,8 @@ export default async function Contact({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "AxionIA traite chaque message comme un signal opérationnel, pas comme un lead. La règle est explicite : un humain lit, un humain répond, et la réponse arrive sous 48 heures ouvrées — souvent avant. Si votre besoin sort de notre périmètre (apps grand public, R&D pure, hébergement long terme), nous le disons et nous vous orientons vers un partenaire pertinent. Si la demande tombe pile dans nos interventions, vous repartez avec un devis cadré, un planning, et la doctrine que nous appliquerons. Pas de relance commerciale automatisée, pas de séquence email, pas d'outil tiers de tracking. Cabinet IA opérationnel signifie aussi : relation client opérationnelle."
-              : "AxionIA treats every message as an operational signal, not a lead. The rule is explicit: a human reads, a human replies, and the reply lands within 48 business hours — often sooner. If your need falls out of scope (consumer apps, pure R&D, long-term hosting), we say so and point you to a relevant partner. If the request lands squarely in our practice, you walk away with a scoped quote, a schedule, and the doctrine we will apply. No automated chasing, no email sequence, no third-party tracking. Operational AI consultancy also means: operational client relationship."}
+              ? "Axion-IA traite chaque message comme un signal opérationnel, pas comme un lead. La règle est explicite : un humain lit, un humain répond, et la réponse arrive sous 48 heures ouvrées — souvent avant. Si votre besoin sort de notre périmètre (apps grand public, R&D pure, hébergement long terme), nous le disons et nous vous orientons vers un partenaire pertinent. Si la demande tombe pile dans nos interventions, vous repartez avec un devis cadré, un planning, et la doctrine que nous appliquerons. Pas de relance commerciale automatisée, pas de séquence email, pas d'outil tiers de tracking. Cabinet IA opérationnel signifie aussi : relation client opérationnelle."
+              : "Axion-IA treats every message as an operational signal, not a lead. The rule is explicit: a human reads, a human replies, and the reply lands within 48 business hours — often sooner. If your need falls out of scope (consumer apps, pure R&D, long-term hosting), we say so and point you to a relevant partner. If the request lands squarely in our practice, you walk away with a scoped quote, a schedule, and the doctrine we will apply. No automated chasing, no email sequence, no third-party tracking. Operational AI consultancy also means: operational client relationship."}
           </p>
         </Container>
       </Section>
@@ -303,7 +303,7 @@ export default async function Contact({ params }: Props) {
       <Section eyebrow={isFr ? "Coordonnées" : "Details"}>
         <Container className="text-fg max-w-2xl space-y-2 text-base leading-relaxed">
           <p>
-            <strong>{isFr ? "Société" : "Company"} :</strong> AxionIA OÜ
+            <strong>{isFr ? "Société" : "Company"} :</strong> Axion-IA OÜ
           </p>
           <p>
             <strong>Email :</strong>{" "}

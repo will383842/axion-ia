@@ -2,13 +2,13 @@
 // services canoniques (`/audit`, `/interventions`, `/implementation`).
 // Sprint 14.9 levier 2.
 //
-// Construit la liste des entités Schema.org couvertes par AxionIA :
+// Construit la liste des entités Schema.org couvertes par Axion-IA :
 //   - Country FR (premier — racine sémantique)
 //   - 12 régions métropolitaines indexable (lien vers /implantations/[region])
 //   - Top 12 villes par population indexable (V1 = Paris seul)
 //
 // Permet à Perplexity / Claude.ai / Google AI Overviews d'énumérer les zones
-// couvertes quand un utilisateur demande « où AxionIA opère-t-il ? ».
+// couvertes quand un utilisateur demande « où Axion-IA opère-t-il ? ».
 
 import { getIndexableRegions } from "@/content/regions";
 import { getIndexableVilles } from "@/content/villes";

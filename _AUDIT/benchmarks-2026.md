@@ -65,7 +65,7 @@
 - **Footer** : 8 hubs : Products | Models | Solutions | Claude Platform | Resources | Help and security | Company | Terms and policies.
 - **Breadcrumbs** : non observés sur home.
 - **Newsletter / social** : pas de newsletter visible. Réseaux sociaux : LinkedIn, X, YouTube.
-- **Faille → leçon AxionIA** : la doctrine "solution-driven" se voit jusque dans la nomenclature (`Economic Futures`, `Commitments`) — privilégier des libellés substantifs et différenciants plutôt que génériques (`Solutions` seul).
+- **Faille → leçon Axion-IA** : la doctrine "solution-driven" se voit jusque dans la nomenclature (`Economic Futures`, `Commitments`) — privilégier des libellés substantifs et différenciants plutôt que génériques (`Solutions` seul).
 
 ### 2. stripe.com (FR) — OK
 
@@ -82,7 +82,7 @@
 - **Footer** : 6 colonnes : Produits et tarifs | Solutions | Développeurs | Intégrations | Ressources | Entreprise + Support.
 - **Breadcrumbs** : non observés sur home.
 - **Newsletter / social** : non observés dans l'extrait.
-- **Faille → leçon AxionIA** : footer = miroir hiérarchique du mega-menu, ce qui sert le crawl SEO et la mémoire utilisateur. À répliquer.
+- **Faille → leçon Axion-IA** : footer = miroir hiérarchique du mega-menu, ce qui sert le crawl SEO et la mémoire utilisateur. À répliquer.
 
 ### 3. vercel.com — OK
 
@@ -97,7 +97,7 @@
 - **Footer** : 7 colonnes : Get Started | Build | Scale | Secure | Resources | Learn | Frameworks/SDKs/Use Cases/Company/Community.
 - **Breadcrumbs** : non observés.
 - **Newsletter / social** : GitHub, LinkedIn, X, YouTube + Status page. Pas de newsletter.
-- **Faille → leçon AxionIA** : 3 colonnes uniformes par mega-menu = lisibilité maximale. Imposer un gabarit visuel constant pour tous les mega-menus AxionIA.
+- **Faille → leçon Axion-IA** : 3 colonnes uniformes par mega-menu = lisibilité maximale. Imposer un gabarit visuel constant pour tous les mega-menus Axion-IA.
 
 ### 4. linear.app — OK
 
@@ -109,7 +109,7 @@
 - **Footer** : 6 hubs : Product | Features | Company | Resources | Connect | Legal.
 - **Breadcrumbs** : non observés.
 - **Newsletter / social** : X, GitHub, YouTube. Pas de newsletter.
-- **Faille → leçon AxionIA** : pas de switcher locale = positionnement EN-only assumé. AxionIA en FR/EN doit avoir un switcher visible (différenciation OÜ estonienne).
+- **Faille → leçon Axion-IA** : pas de switcher locale = positionnement EN-only assumé. Axion-IA en FR/EN doit avoir un switcher visible (différenciation OÜ estonienne).
 
 ### 5. apple.com — OK
 
@@ -121,13 +121,13 @@
 - **Footer** : 4 hubs principaux : Shop and Learn | Apple Wallet | Account | Entertainment + sections complémentaires (Apple Store, Business, Education, Healthcare, Government, Values, About).
 - **Breadcrumbs** : non détectés sur home.
 - **Newsletter / social** : non observés.
-- **Faille → leçon AxionIA** : 9+ items header = catalogue produit. Pour un cabinet B2B, viser 5-7 max pour préserver lisibilité — pattern Apple n'est pas transposable au consulting.
+- **Faille → leçon Axion-IA** : 9+ items header = catalogue produit. Pour un cabinet B2B, viser 5-7 max pour préserver lisibilité — pattern Apple n'est pas transposable au consulting.
 
 ### 6. openai.com — BLOQUÉ
 
 - **État** : HTTP 403 Forbidden sur `https://openai.com`, `https://www.openai.com/`, `https://www.openai.com/about`, `https://openai.com/index/`.
 - **Action** : aucune extraction possible via WebFetch. Site protégé par WAF/Cloudflare strict.
-- **Faille → leçon AxionIA** : non observable. À compléter manuellement par capture d'écran si critique.
+- **Faille → leçon Axion-IA** : non observable. À compléter manuellement par capture d'écran si critique.
 
 ### 7. mistral.ai — OK
 
@@ -138,7 +138,7 @@
 - **Locale** : EN. Switcher locale `en` visible footer.
 - **Footer** : 4 colonnes : Why Mistral | Explore | Build | Legal. Réseaux sociaux : X, LinkedIn, Discord. Pas de newsletter.
 - **Breadcrumbs** : non.
-- **Faille → leçon AxionIA** : Mistral mise sur la simplicité (liens directs, pas de mega-menu) — efficace pour startup mais sous-exploite le footer en hub SEO. AxionIA doit faire mieux côté hubs (modèle Stripe).
+- **Faille → leçon Axion-IA** : Mistral mise sur la simplicité (liens directs, pas de mega-menu) — efficace pour startup mais sous-exploite le footer en hub SEO. Axion-IA doit faire mieux côté hubs (modèle Stripe).
 
 ### 8. cohere.com — OK
 
@@ -155,7 +155,7 @@
 - **Footer** : 5 colonnes : Products | Solutions | Resources | Company | Réseaux sociaux. **Newsletter présente avec formulaire email.**
 - **Breadcrumbs** : non.
 - **Réseaux sociaux** : LinkedIn, Discord, X, Support.
-- **Faille → leçon AxionIA** : Cohere = seul site IA observé avec newsletter footer explicite. Pour AxionIA (cabinet premium B2B), une newsletter "Stratégie IA" en footer est légitime et différenciante.
+- **Faille → leçon Axion-IA** : Cohere = seul site IA observé avec newsletter footer explicite. Pour Axion-IA (cabinet premium B2B), une newsletter "Stratégie IA" en footer est légitime et différenciante.
 
 ### 9. booking.com — PARTIEL (URL patterns extraits)
 
@@ -169,17 +169,17 @@
   - **Breadcrumbs** : présents — format `Home > Hotels > France`.
   - **Footer hubs** : All destinations | All flight destinations | All car rental locations | All vacation destinations.
   - **Densité** : Paris = 23 978 hôtels, South of France = 164 295 hôtels (compteurs visibles).
-- **Faille → leçon AxionIA** : pattern `/[type]/[locale]/[slug]` (4 niveaux : country/region/city/landmark). Pour AxionIA pSEO villes/régions, transposer en `/regions/[slug]` + `/villes/[slug]` + `/secteurs/[slug]/[ville]` avec breadcrumbs canoniques `Accueil > Régions > Île-de-France > Paris`.
+- **Faille → leçon Axion-IA** : pattern `/[type]/[locale]/[slug]` (4 niveaux : country/region/city/landmark). Pour Axion-IA pSEO villes/régions, transposer en `/regions/[slug]` + `/villes/[slug]` + `/secteurs/[slug]/[ville]` avec breadcrumbs canoniques `Accueil > Régions > Île-de-France > Paris`.
 
 ### 10. airbnb.com — BLOQUÉ
 
 - **État** : HTTP 403 sur `airbnb.com`, `airbnb.fr`, `news.airbnb.com`, `airbnb.com/sitemaps/v2`, `airbnb.fr/s/Paris`. Bot detection agressif.
-- **Faille → leçon AxionIA** : non observable. Le pattern Airbnb (`/s/<lieu>--<pays>/homes`) est connu ailleurs mais non confirmable ici.
+- **Faille → leçon Axion-IA** : non observable. Le pattern Airbnb (`/s/<lieu>--<pays>/homes`) est connu ailleurs mais non confirmable ici.
 
 ### 11. mckinsey.com — BLOQUÉ
 
 - **État** : socket closed unexpectedly / timeout sur `/`, `/about-us`, `/featured-insights`, `/quarterly`. Probable WAF anti-bot.
-- **Faille → leçon AxionIA** : non observable directement. Fallback Deloitte ci-dessous.
+- **Faille → leçon Axion-IA** : non observable directement. Fallback Deloitte ci-dessous.
 
 ### 11bis. deloitte.com (FR) — OK (fallback McKinsey)
 
@@ -194,7 +194,7 @@
 - **Locale** : FR-FR par défaut, switcher `GLOBAL - EN` présent en header (rare — la plupart le mettent footer).
 - **Footer** : 4 hubs : Travailler avec nous | Bureau locations (8 villes) | Expertises (6 services) | Further resources (events, press, alumni). Pas de newsletter. Réseaux : LinkedIn, Instagram, YouTube.
 - **Breadcrumbs** : non sur home.
-- **Faille → leçon AxionIA** : libellés FR substantifs (`Qui sommes-nous ?`, `Notre savoir-faire`, `Nos points de vue`) au lieu d'anglicismes. Pour AxionIA FR, préférer `Cabinet`, `Méthode`, `Vues` plutôt que `About`/`Solutions`/`Insights`.
+- **Faille → leçon Axion-IA** : libellés FR substantifs (`Qui sommes-nous ?`, `Notre savoir-faire`, `Nos points de vue`) au lieu d'anglicismes. Pour Axion-IA FR, préférer `Cabinet`, `Méthode`, `Vues` plutôt que `About`/`Solutions`/`Insights`.
 
 ### 12. qonto.com — OK
 
@@ -212,7 +212,7 @@
 - **Footer** : 8 colonnes : Business Account | Business Cards | Company Creation | Get Paid + Financing | Financing Tools | Resources | Company | For Developers + badges réglementaires (ACPR, FGDR).
 - **Breadcrumbs** : non sur home.
 - **Réseaux sociaux** : Facebook, X, LinkedIn, Instagram, Medium + App Store / Play Store. Pas de newsletter.
-- **Faille → leçon AxionIA** : 1) image promotionnelle dans chaque mega-menu = pattern différenciant (à étudier pour AxionIA si compatible doctrine). 2) badges réglementaires footer (ACPR, FGDR) = trust signals — équivalent AxionIA = mention OÜ estonienne, RGPD, mentions légales.
+- **Faille → leçon Axion-IA** : 1) image promotionnelle dans chaque mega-menu = pattern différenciant (à étudier pour Axion-IA si compatible doctrine). 2) badges réglementaires footer (ACPR, FGDR) = trust signals — équivalent Axion-IA = mention OÜ estonienne, RGPD, mentions légales.
 
 ### 12bis. pennylane.com — OK (bonus FR)
 
@@ -223,7 +223,7 @@
 - **Locale** : `France` en footer (switcher implicite).
 - **Footer** : 4 colonnes : Nos ressources utiles (7) | À propos (8) | Aide (6) | Experts-comptables (7). Sociaux : LinkedIn, TikTok, Instagram, YouTube.
 - **Breadcrumbs** : non sur home.
-- **Faille → leçon AxionIA** : Pennylane = preuve qu'un SaaS B2B FR peut survivre sans mega-menu, mais le footer est plus pauvre que Qonto. Trade-off à éviter pour AxionIA qui vise la profondeur SEO via pSEO villes/régions.
+- **Faille → leçon Axion-IA** : Pennylane = preuve qu'un SaaS B2B FR peut survivre sans mega-menu, mais le footer est plus pauvre que Qonto. Trade-off à éviter pour Axion-IA qui vise la profondeur SEO via pSEO villes/régions.
 
 ### 13. gouvernement.fr — REDIRECT puis BLOQUÉ
 
@@ -244,7 +244,7 @@
 - **Footer** : 8 sections : Fiches pratiques par thèmes (11 liens) | Démarches et outils (6) | Nous connaître (6) | Related services (3) | Legal/compliance (6) | Partner logos (4).
 - **Breadcrumbs** : structure suggérée sur pages internes (non visibles sur home).
 - **URL pattern** : `/particuliers/vosdroits/[CODE]` — ex. `F14128`, `F16225`. **Pas de pattern régions/villes** : codes opaques uniquement.
-- **Faille → leçon AxionIA** : service-public.fr = anti-pattern pour pSEO local. Codes F-XXXXX au lieu de slugs sémantiques `paris`, `marseille`. AxionIA doit faire l'inverse : slugs SEO-friendly (`/regions/ile-de-france`, `/villes/paris`, `/secteurs/sante/lyon`).
+- **Faille → leçon Axion-IA** : service-public.fr = anti-pattern pour pSEO local. Codes F-XXXXX au lieu de slugs sémantiques `paris`, `marseille`. Axion-IA doit faire l'inverse : slugs SEO-friendly (`/regions/ile-de-france`, `/villes/paris`, `/secteurs/sante/lyon`).
 
 ---
 
@@ -252,35 +252,35 @@
 
 ### Pattern 1 — Header : 4-6 items max
 
-Tous les sites premium accessibles convergent sur **4 à 6 items** dans le header desktop (Anthropic 5, Stripe 5, Vercel 4-5, Linear 4, Cohere 5, Mistral 4, Qonto 6, Deloitte 5, Pennylane 6). Apple à 9-12 est l'exception (catalogue produit). Pour AxionIA (cabinet B2B), viser **5-6 items** : `Méthode/Approche`, `Interventions`, `Cabinet`, `Vues/Insights`, `Stack IA`, + CTA.
+Tous les sites premium accessibles convergent sur **4 à 6 items** dans le header desktop (Anthropic 5, Stripe 5, Vercel 4-5, Linear 4, Cohere 5, Mistral 4, Qonto 6, Deloitte 5, Pennylane 6). Apple à 9-12 est l'exception (catalogue produit). Pour Axion-IA (cabinet B2B), viser **5-6 items** : `Méthode/Approche`, `Interventions`, `Cabinet`, `Vues/Insights`, `Stack IA`, + CTA.
 
 ### Pattern 2 — Mega-menus : 2-3 colonnes uniformes
 
-Quand mega-menu il y a, la majorité tourne autour de **2 à 3 colonnes** : Vercel 3 cols partout, Cohere 1-3 cols, Anthropic 2-3 cols, Qonto 2-3 cols. **Vercel impose un gabarit de 3 colonnes uniforme sur tous ses mega-menus** = lisibilité maximale. À répliquer pour AxionIA. Profondeur : 1-2 niveaux, jamais plus.
+Quand mega-menu il y a, la majorité tourne autour de **2 à 3 colonnes** : Vercel 3 cols partout, Cohere 1-3 cols, Anthropic 2-3 cols, Qonto 2-3 cols. **Vercel impose un gabarit de 3 colonnes uniforme sur tous ses mega-menus** = lisibilité maximale. À répliquer pour Axion-IA. Profondeur : 1-2 niveaux, jamais plus.
 
 ### Pattern 3 — ⌘K command palette : non observable depuis WebFetch
 
-Aucun site n'expose la palette ⌘K dans le HTML statique fetched (rendue côté JS). Stripe et Vercel sont réputés l'avoir, mais non confirmable. **Conclusion** : la ⌘K n'est pas un signal SEO mais un bonus UX premium. Pour AxionIA, la prévoir Sprint 17+ (post-pSEO).
+Aucun site n'expose la palette ⌘K dans le HTML statique fetched (rendue côté JS). Stripe et Vercel sont réputés l'avoir, mais non confirmable. **Conclusion** : la ⌘K n'est pas un signal SEO mais un bonus UX premium. Pour Axion-IA, la prévoir Sprint 17+ (post-pSEO).
 
 ### Pattern 4 — Footer = miroir hiérarchique du header
 
-Stripe, Vercel, Anthropic, Qonto : le footer reproduit la structure des mega-menus en colonnes hub (6-8 colonnes typiquement). Cela sert le crawl SEO et la mémoire utilisateur. **Pour AxionIA** : footer 6-8 hubs minimum (Cabinet | Méthode | Interventions | Stack IA | Vues | Régions | Villes | Légal).
+Stripe, Vercel, Anthropic, Qonto : le footer reproduit la structure des mega-menus en colonnes hub (6-8 colonnes typiquement). Cela sert le crawl SEO et la mémoire utilisateur. **Pour Axion-IA** : footer 6-8 hubs minimum (Cabinet | Méthode | Interventions | Stack IA | Vues | Régions | Villes | Légal).
 
 ### Pattern 5 — Newsletter rare, sociaux systématiques
 
-Sur 8 sites observables, 1 seule newsletter footer explicite (Cohere). Réseaux sociaux : systématique (LinkedIn dominant, X universel, GitHub/Discord pour devs, YouTube pour content). Pour AxionIA premium : LinkedIn + X + (option) Newsletter "Stratégie IA" = différenciant.
+Sur 8 sites observables, 1 seule newsletter footer explicite (Cohere). Réseaux sociaux : systématique (LinkedIn dominant, X universel, GitHub/Discord pour devs, YouTube pour content). Pour Axion-IA premium : LinkedIn + X + (option) Newsletter "Stratégie IA" = différenciant.
 
 ### Pattern 6 — Locale switcher : 1 à 8 langues
 
-Stripe (multi), Apple (`United States` → choisir), Mistral (1 EN), Cohere (none), Qonto (8 locales), Pennylane (FR only), Linear (none). **Qonto à 8 locales est le maximum observé**. Pour AxionIA OÜ estonienne ciblant FR + EN, switcher header/footer visible obligatoire (≠ Linear EN-only).
+Stripe (multi), Apple (`United States` → choisir), Mistral (1 EN), Cohere (none), Qonto (8 locales), Pennylane (FR only), Linear (none). **Qonto à 8 locales est le maximum observé**. Pour Axion-IA OÜ estonienne ciblant FR + EN, switcher header/footer visible obligatoire (≠ Linear EN-only).
 
 ### Pattern 7 — Breadcrumbs : invisibles sur home, présents sur pages internes
 
-Aucun benchmark n'expose breadcrumbs sur la home. Booking.com confirmé sur pages pays/région : `Home > Hotels > France`. Pour AxionIA, breadcrumbs obligatoires sur toutes pages > niveau 1 (Sprint 14.6 et au-delà), avec JSON-LD `BreadcrumbList`.
+Aucun benchmark n'expose breadcrumbs sur la home. Booking.com confirmé sur pages pays/région : `Home > Hotels > France`. Pour Axion-IA, breadcrumbs obligatoires sur toutes pages > niveau 1 (Sprint 14.6 et au-delà), avec JSON-LD `BreadcrumbList`.
 
 ### Pattern 8 — Sticky behavior : non confirmable depuis HTML statique
 
-Le comportement sticky/condensation est piloté CSS+JS, non visible dans WebFetch. Anthropic confirme "figé sticky" ; Cohere "reste visible au scroll" ; les autres : non observable. Pour AxionIA, doctrine `/interventions` HEAD impose sticky avec condensation au scroll.
+Le comportement sticky/condensation est piloté CSS+JS, non visible dans WebFetch. Anthropic confirme "figé sticky" ; Cohere "reste visible au scroll" ; les autres : non observable. Pour Axion-IA, doctrine `/interventions` HEAD impose sticky avec condensation au scroll.
 
 ---
 
@@ -302,9 +302,9 @@ Le comportement sticky/condensation est piloté CSS+JS, non visible dans WebFetc
 
 - Slugs opaques `F14128`, `F16225` au lieu de slugs sémantiques.
 - Pas de hiérarchie régions/villes officielles dans la nav.
-- Leçon : ne pas reproduire ce pattern. AxionIA doit privilégier **`/regions/[slug]`, `/villes/[slug]`, `/secteurs/[slug]/[ville]`** avec breadcrumbs `Accueil > Régions > Île-de-France > Paris`.
+- Leçon : ne pas reproduire ce pattern. Axion-IA doit privilégier **`/regions/[slug]`, `/villes/[slug]`, `/secteurs/[slug]/[ville]`** avec breadcrumbs `Accueil > Régions > Île-de-France > Paris`.
 
-### Recommandation pSEO AxionIA (prompt PROMPT-HEADER-NAVIGATION-2026 §pSEO ~3500 pages)
+### Recommandation pSEO Axion-IA (prompt PROMPT-HEADER-NAVIGATION-2026 §pSEO ~3500 pages)
 
 - Pattern URL : `/regions/[region-slug]`, `/villes/[ville-slug]`, `/secteurs/[secteur-slug]/[ville-slug]`.
 - Slugs sémantiques (`ile-de-france`, `paris`, `lyon`, `provence-alpes-cote-d-azur`).
@@ -315,23 +315,23 @@ Le comportement sticky/condensation est piloté CSS+JS, non visible dans WebFetc
 
 ---
 
-## 13 leçons pour AxionIA (1 site = 1 phrase)
+## 13 leçons pour Axion-IA (1 site = 1 phrase)
 
 1. **anthropic.com** — Privilégier des libellés substantifs et différenciants (`Economic Futures`, `Commitments`) plutôt que génériques (`Solutions`, `About`).
 2. **stripe.com** — Le footer doit être un miroir hiérarchique du mega-menu pour servir crawl SEO + mémoire utilisateur.
 3. **vercel.com** — Imposer un gabarit de 3 colonnes uniforme sur tous les mega-menus pour la lisibilité.
-4. **linear.app** — Ne pas suivre Linear sur le EN-only : AxionIA OÜ doit avoir un switcher locale FR/EN visible header.
+4. **linear.app** — Ne pas suivre Linear sur le EN-only : Axion-IA OÜ doit avoir un switcher locale FR/EN visible header.
 5. **apple.com** — 9+ items header est un anti-pattern pour un cabinet B2B ; rester à 5-6.
-6. **openai.com** — (non observable) protection WAF agressive = preuve qu'un site IA premium peut/doit hardener son edge ; AxionIA peut prévoir un rate-limit raisonnable côté Vercel/Caddy.
-7. **mistral.ai** — Liens directs sans mega-menu = simplicité startup, mais sous-exploite le footer en hub SEO ; AxionIA doit faire mieux côté hubs.
+6. **openai.com** — (non observable) protection WAF agressive = preuve qu'un site IA premium peut/doit hardener son edge ; Axion-IA peut prévoir un rate-limit raisonnable côté Vercel/Caddy.
+7. **mistral.ai** — Liens directs sans mega-menu = simplicité startup, mais sous-exploite le footer en hub SEO ; Axion-IA doit faire mieux côté hubs.
 8. **cohere.com** — Newsletter footer explicite + form email = différenciant pour cabinet IA premium (à intégrer Sprint 14.x).
-9. **booking.com** — URL pattern hiérarchique à 4 niveaux + breadcrumbs canoniques + compteurs densité = doctrine pSEO villes/régions à transposer pour AxionIA.
-10. **airbnb.com** — (non observable) le pattern Airbnb 403 partout suggère un Cloudflare très strict ; ne pas viser ce niveau de protection sur AxionIA (impacterait crawl Google).
-11. **mckinsey.com** — (non observable) consulting top-tier = WAF strict + pas d'API ouverte ; AxionIA visant le même segment doit soigner son edge sans bloquer Googlebot.
-    11bis. **deloitte.com** — Libellés FR substantifs (`Qui sommes-nous ?`, `Nos points de vue`) plutôt qu'anglicismes ; AxionIA FR doit imposer le même standard.
-12. **qonto.com** — 8 locales + image promotionnelle dans chaque mega-menu + badges réglementaires footer = trust signals à répliquer (mention OÜ, RGPD, mentions légales footer AxionIA).
-    12bis. **pennylane.com** — Pas de mega-menu = trade-off lisibilité ↔ profondeur SEO ; AxionIA doit choisir la profondeur (modèle Stripe/Vercel) car pSEO ~3500 pages.
-13. **service-public.gouv.fr** — Slugs opaques `F14128` = anti-pattern absolu ; AxionIA doit privilégier slugs sémantiques kebab-case (`/regions/ile-de-france`, `/villes/paris`).
+9. **booking.com** — URL pattern hiérarchique à 4 niveaux + breadcrumbs canoniques + compteurs densité = doctrine pSEO villes/régions à transposer pour Axion-IA.
+10. **airbnb.com** — (non observable) le pattern Airbnb 403 partout suggère un Cloudflare très strict ; ne pas viser ce niveau de protection sur Axion-IA (impacterait crawl Google).
+11. **mckinsey.com** — (non observable) consulting top-tier = WAF strict + pas d'API ouverte ; Axion-IA visant le même segment doit soigner son edge sans bloquer Googlebot.
+    11bis. **deloitte.com** — Libellés FR substantifs (`Qui sommes-nous ?`, `Nos points de vue`) plutôt qu'anglicismes ; Axion-IA FR doit imposer le même standard.
+12. **qonto.com** — 8 locales + image promotionnelle dans chaque mega-menu + badges réglementaires footer = trust signals à répliquer (mention OÜ, RGPD, mentions légales footer Axion-IA).
+    12bis. **pennylane.com** — Pas de mega-menu = trade-off lisibilité ↔ profondeur SEO ; Axion-IA doit choisir la profondeur (modèle Stripe/Vercel) car pSEO ~3500 pages.
+13. **service-public.gouv.fr** — Slugs opaques `F14128` = anti-pattern absolu ; Axion-IA doit privilégier slugs sémantiques kebab-case (`/regions/ile-de-france`, `/villes/paris`).
 
 ---
 

@@ -10,7 +10,7 @@
 
 ## 0. Pourquoi ce document existe
 
-Le « Sprint 15 » historique d'AxionIA = **M8 Prisma + migrations + seeders** (cf. `_AUDIT/PROMPT-CODAGE.md:990`). C'est du backend pur.
+Le « Sprint 15 » historique d'Axion-IA = **M8 Prisma + migrations + seeders** (cf. `_AUDIT/PROMPT-CODAGE.md:990`). C'est du backend pur.
 
 Le chantier décrit ici (mega-menus + foundation AEO/GEO + pSEO 2 150 villes) est un travail **frontend final** indépendant qui :
 
@@ -282,7 +282,7 @@ Spot-check 5 % Will (~16 h sur 6 semaines).
 ### System prompt (cached ~3 000 tokens)
 
 ```
-Tu rédiges la fiche d'une ville française pour AxionIA, cabinet IA opérationnel B2B premium (OÜ estonienne).
+Tu rédiges la fiche d'une ville française pour Axion-IA, cabinet IA opérationnel B2B premium (OÜ estonienne).
 
 Doctrine éditoriale : ton sobre, professionnel, sans superlatifs creux. Pas de mots interdits :
 "révolutionnaire", "incontournable", "leader", "innovant" (sans preuve), "expert" (laisse les

@@ -1,9 +1,9 @@
 # Benchmarks Visual 2026 — Audit grammaire visuelle B2B premium
 
-**Agent B — Audit Visual Rhythm 2026 AxionIA**
+**Agent B — Audit Visual Rhythm 2026 Axion-IA**
 **Date : 2026-05-07**
 **Méthode : WebFetch (HTML/CSS texte uniquement, pas de capture d'image)**
-**Périmètre : 10 sites de référence pour calibrer le rythme visuel d'AxionIA**
+**Périmètre : 10 sites de référence pour calibrer le rythme visuel d'Axion-IA**
 
 ---
 
@@ -39,25 +39,25 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Verdict 2 — La cadence visuelle dominante est 1 visuel par section narrative, pas 1 visuel par 200 mots.** Linear (~22 visuels homepage / 8 par /features), Anthropic (1 seul `<img>` homepage), Vercel (10 paires light/dark = 5 illustrations narratives), Cohere (~60 dont 18 logos clients en carrousel), Arc (15 dont 5 narratifs). Pattern : chaque section produit raconte UNE chose avec UN visuel signature, pas une mosaïque. Anthropic pousse le minimalisme à l'extrême (1 image full page) ; Linear pousse l'opposé (UI screenshot par feature) — les deux fonctionnent.
 
-**Verdict 3 — L'illustration vectorielle propriétaire écrase le 3D rendu et la photo.** Mistral (5 illustrations sectionnelles + check icons orange), Cohere (gradients abstraits + screenshots produit), Anthropic (Project Glasswing en illustration), Vercel (illustrations pair light/dark + gradient mesh inline SVG), Linear (UI screenshots traités comme illustrations). Le 3D rendu (style Stripe 2022, Apple) a quasi-disparu ; le retour est au vectoriel plat plus éditorial. Pour AxionIA, cela valide la doctrine pure-code SVG inline + Lucide + GPT-image fallback — c'est le standard 2026, pas une économie.
+**Verdict 3 — L'illustration vectorielle propriétaire écrase le 3D rendu et la photo.** Mistral (5 illustrations sectionnelles + check icons orange), Cohere (gradients abstraits + screenshots produit), Anthropic (Project Glasswing en illustration), Vercel (illustrations pair light/dark + gradient mesh inline SVG), Linear (UI screenshots traités comme illustrations). Le 3D rendu (style Stripe 2022, Apple) a quasi-disparu ; le retour est au vectoriel plat plus éditorial. Pour Axion-IA, cela valide la doctrine pure-code SVG inline + Lucide + GPT-image fallback — c'est le standard 2026, pas une économie.
 
 ---
 
 ## 2. Matrice 10 benchmarks
 
-| Site                 | Imagerie dominante                                                                                | Cadence (visuels narratifs/page)                                               | Palette principale (déduite)                                              | Style illustration                                                                     | Photos humaines                                        | Verdict transposable AxionIA                                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| **anthropic.com**    | Illustration vectorielle propriétaire (1 hero)                                                    | 1 image / 6 sections = ultra-minimal                                           | Off-white + texte foncé + accent (CDN webp)                               | Hero unique signature, reste = typo + cards texte                                      | Aucune                                                 | Permission de RADICALEMENT réduire le nombre de visuels. 1 hero + 5 sections texte est valide en 2026                                         |
-| **stripe.com**       | Mix : photo street éditoriale + bento backgrounds                                                 | ~35 visuels / page longue (8 logos + 4 photo + bento + dataviz)                | Stripe purple/blue + jaune accent kiosk                                   | Bento backgrounds (`payment-bento-background.jpg`) + dataviz statique 3x               | Oui : 4 portraits leadership + 4 photos de rue clients | Bento grid produit + dataviz statique dédiée = pattern à reprendre pour /interventions et /stack-ia                                           |
-| **press.stripe.com** | Couvertures de livres (photographies de couverture) + headshots auteurs                           | ~30 visuels modulaires en grille                                               | Neutres beige/blanc + accents par couverture                              | Catalogue magazine, beaucoup de whitespace                                             | Oui : portraits auteurs                                | Pattern "catalogue éditorial" applicable à une future page /etudes ou /publications AxionIA                                                   |
-| **linear.app**       | UI screenshots produit (CDN imagedelivery)                                                        | 22+ images homepage / 80+ /features (8 features × ~10 captures)                | Pas exposé en HTML inline (Tailwind compilé)                              | Captures UI ultra-soignées avec UUID filenames                                         | Oui : avatars équipe (Karri, Jori) en mock-ups         | Si AxionIA produit un dashboard client, le traiter comme Linear : screenshots sur fond ivory + ombre douce                                    |
-| **vercel.com**       | Illustrations pair light/dark + gradient mesh inline SVG + code blocks                            | 5 illustrations narratives × 2 thèmes + code SVG                               | CSS variables dual-theme                                                  | Vectoriel propriétaire + mesh gradient calculé                                         | Aucune                                                 | Le pattern "1 illustration par fonctionnalité, dual theme" est trop dépendant du dark mode. AxionIA mono-mode → simplifier                    |
-| **openai.com**       | NON VÉRIFIÉ (403). Connaissance domaine : illustrations abstraites éditoriales DALL-E style       | NV                                                                             | NV (réputé : noir + accents)                                              | Réputé : abstraite éditoriale                                                          | NV                                                     | À auditer manuellement (capture écran). Ne pas s'inspirer sans vérification                                                                   |
-| **mistral.ai**       | Illustration vectorielle propriétaire + check icons orange + logos clients                        | ~43 visuels (15 logos + 5 illus + 8 check + 8 diagrammes + footer)             | Orange accent (`check-orange` ×12) + noir/blanc                           | Vectoriel plat + diagrammes architecture                                               | Aucune                                                 | Le check-icon orange répété 12x = ancrage palette par micro-élément. Transposable AxionIA avec terracotta sur Lucide icons                    |
-| **mckinsey.com**     | NON VÉRIFIÉ (timeouts répétés). Connaissance domaine : photo corporate haute production + dataviz | NV                                                                             | NV (réputé : navy + blanc)                                                | Réputé : photo + dataviz éditoriale                                                    | Réputé : oui                                           | À auditer manuellement. Représente l'ancien standard B2B premium qu'AxionIA dépasse                                                           |
-| **pennylane.com**    | UI screenshots produit + photos témoins clients                                                   | ~25 visuels (1 hero dashboard + 5 features + 7 testimonials + 4 badges)        | `#74A2A2` teal + `#FFC107` Google + `#00b67a` Trustpilot + `#1976D2` blue | Mix illustrations vectorielles `Illus_*.svg` + screenshots PNG                         | Oui : 7 portraits clients                              | La multiplication des palettes (4 hex différents) est un anti-pattern. AxionIA reste sur 4 couleurs max                                       |
-| **arc.net**          | Screenshots browser + hero produit                                                                | ~15 visuels (5 narratifs + 10 icons/social)                                    | Non exposé HTML                                                           | Screenshots PNG (zero-chrome, space-swiping, theme-picker) + hero `dia-hero-image.png` | Aucune                                                 | Pattern minimaliste : 5 visuels narratifs suffisent à raconter un produit créatif. Confirme verdict 2                                         |
-| **cohere.com**       | Gradients abstraits + screenshots produit + logos clients                                         | ~60 visuels (18 logos × carrousel + 7 industries + 4 backgrounds + 3 features) | Bleus/teals + noir #000 + orange accent                                   | Backgrounds gradient PNG larges (2880×1200) + product screenshots                      | Aucune                                                 | Le gradient mesh PNG en background plein écran (2880×1680) est un pattern repris partout en 2026 — à intégrer dans hero AxionIA via GPT-image |
+| Site                 | Imagerie dominante                                                                                | Cadence (visuels narratifs/page)                                               | Palette principale (déduite)                                              | Style illustration                                                                     | Photos humaines                                        | Verdict transposable Axion-IA                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **anthropic.com**    | Illustration vectorielle propriétaire (1 hero)                                                    | 1 image / 6 sections = ultra-minimal                                           | Off-white + texte foncé + accent (CDN webp)                               | Hero unique signature, reste = typo + cards texte                                      | Aucune                                                 | Permission de RADICALEMENT réduire le nombre de visuels. 1 hero + 5 sections texte est valide en 2026                                          |
+| **stripe.com**       | Mix : photo street éditoriale + bento backgrounds                                                 | ~35 visuels / page longue (8 logos + 4 photo + bento + dataviz)                | Stripe purple/blue + jaune accent kiosk                                   | Bento backgrounds (`payment-bento-background.jpg`) + dataviz statique 3x               | Oui : 4 portraits leadership + 4 photos de rue clients | Bento grid produit + dataviz statique dédiée = pattern à reprendre pour /interventions et /stack-ia                                            |
+| **press.stripe.com** | Couvertures de livres (photographies de couverture) + headshots auteurs                           | ~30 visuels modulaires en grille                                               | Neutres beige/blanc + accents par couverture                              | Catalogue magazine, beaucoup de whitespace                                             | Oui : portraits auteurs                                | Pattern "catalogue éditorial" applicable à une future page /etudes ou /publications Axion-IA                                                   |
+| **linear.app**       | UI screenshots produit (CDN imagedelivery)                                                        | 22+ images homepage / 80+ /features (8 features × ~10 captures)                | Pas exposé en HTML inline (Tailwind compilé)                              | Captures UI ultra-soignées avec UUID filenames                                         | Oui : avatars équipe (Karri, Jori) en mock-ups         | Si Axion-IA produit un dashboard client, le traiter comme Linear : screenshots sur fond ivory + ombre douce                                    |
+| **vercel.com**       | Illustrations pair light/dark + gradient mesh inline SVG + code blocks                            | 5 illustrations narratives × 2 thèmes + code SVG                               | CSS variables dual-theme                                                  | Vectoriel propriétaire + mesh gradient calculé                                         | Aucune                                                 | Le pattern "1 illustration par fonctionnalité, dual theme" est trop dépendant du dark mode. Axion-IA mono-mode → simplifier                    |
+| **openai.com**       | NON VÉRIFIÉ (403). Connaissance domaine : illustrations abstraites éditoriales DALL-E style       | NV                                                                             | NV (réputé : noir + accents)                                              | Réputé : abstraite éditoriale                                                          | NV                                                     | À auditer manuellement (capture écran). Ne pas s'inspirer sans vérification                                                                    |
+| **mistral.ai**       | Illustration vectorielle propriétaire + check icons orange + logos clients                        | ~43 visuels (15 logos + 5 illus + 8 check + 8 diagrammes + footer)             | Orange accent (`check-orange` ×12) + noir/blanc                           | Vectoriel plat + diagrammes architecture                                               | Aucune                                                 | Le check-icon orange répété 12x = ancrage palette par micro-élément. Transposable Axion-IA avec terracotta sur Lucide icons                    |
+| **mckinsey.com**     | NON VÉRIFIÉ (timeouts répétés). Connaissance domaine : photo corporate haute production + dataviz | NV                                                                             | NV (réputé : navy + blanc)                                                | Réputé : photo + dataviz éditoriale                                                    | Réputé : oui                                           | À auditer manuellement. Représente l'ancien standard B2B premium qu'Axion-IA dépasse                                                           |
+| **pennylane.com**    | UI screenshots produit + photos témoins clients                                                   | ~25 visuels (1 hero dashboard + 5 features + 7 testimonials + 4 badges)        | `#74A2A2` teal + `#FFC107` Google + `#00b67a` Trustpilot + `#1976D2` blue | Mix illustrations vectorielles `Illus_*.svg` + screenshots PNG                         | Oui : 7 portraits clients                              | La multiplication des palettes (4 hex différents) est un anti-pattern. Axion-IA reste sur 4 couleurs max                                       |
+| **arc.net**          | Screenshots browser + hero produit                                                                | ~15 visuels (5 narratifs + 10 icons/social)                                    | Non exposé HTML                                                           | Screenshots PNG (zero-chrome, space-swiping, theme-picker) + hero `dia-hero-image.png` | Aucune                                                 | Pattern minimaliste : 5 visuels narratifs suffisent à raconter un produit créatif. Confirme verdict 2                                          |
+| **cohere.com**       | Gradients abstraits + screenshots produit + logos clients                                         | ~60 visuels (18 logos × carrousel + 7 industries + 4 backgrounds + 3 features) | Bleus/teals + noir #000 + orange accent                                   | Backgrounds gradient PNG larges (2880×1200) + product screenshots                      | Aucune                                                 | Le gradient mesh PNG en background plein écran (2880×1680) est un pattern repris partout en 2026 — à intégrer dans hero Axion-IA via GPT-image |
 
 ---
 
@@ -79,10 +79,10 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Faille / piège observé** : Les `<img>` sans `alt` text sur la homepage = anti-pattern accessibilité. Ne pas répliquer.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
 - Permission explicite de viser 1 hero illustration + 5 sections texte sans visuel pour /a-propos ou /manifeste.
-- Toujours fournir alt text descriptif (Anthropic l'oublie, AxionIA fait mieux).
+- Toujours fournir alt text descriptif (Anthropic l'oublie, Axion-IA fait mieux).
 
 ---
 
@@ -108,12 +108,12 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **press.stripe.com** : ~30 visuels en grille modulaire, dominés par couvertures de livres (chaque livre = 1 visuel + 1 portrait auteur). Pattern catalogue éditorial.
 
-**Faille / piège observé** : Densité (35 visuels) potentiellement écrasante — mais Stripe la rachète par segmentation forte. Pour AxionIA (page courte) c'est trop.
+**Faille / piège observé** : Densité (35 visuels) potentiellement écrasante — mais Stripe la rachète par segmentation forte. Pour Axion-IA (page courte) c'est trop.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
 - Pattern "bento background" (1 fond JPEG abstrait par produit) reprenable pour /interventions et /stack-ia (1 image de fond GPT-image par bloc).
-- Press.stripe.com = inspiration directe pour future page /etudes-de-cas ou /publications AxionIA en grille modulaire.
+- Press.stripe.com = inspiration directe pour future page /etudes-de-cas ou /publications Axion-IA en grille modulaire.
 
 ---
 
@@ -137,9 +137,9 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 - Aucun alt text sur 80+ images = anti-pattern accessibilité critique.
 - Filenames UUID = SEO image quasi-zéro. Linear l'assume parce que l'app fait tout.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- AxionIA n'a PAS de produit screenshotable (cabinet IA opérationnel = livrables clients, pas SaaS). Donc le pattern Linear ne s'applique PAS directement.
+- Axion-IA n'a PAS de produit screenshotable (cabinet IA opérationnel = livrables clients, pas SaaS). Donc le pattern Linear ne s'applique PAS directement.
 - En revanche, transposable pour des "screenshots de livrables" type /etudes-de-cas (capture d'un audit IA réel anonymisé, fond ivory, ombre douce).
 
 ---
@@ -164,12 +164,12 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Cadence visuelle** : 5 sections produit × (1 illustration + 1 code block + parfois 1 gradient mesh) = ~15 visuels narratifs, mais vu comme ~5 "moments" visuels.
 
-**Faille / piège observé** : Toute la richesse Vercel repose sur le toggle dark/light. Un site mono-thème (AxionIA est paper/ivory only) perd la moitié du pattern. Et le code block en SVG est pertinent pour Vercel (DevTool) mais hors-sujet AxionIA.
+**Faille / piège observé** : Toute la richesse Vercel repose sur le toggle dark/light. Un site mono-thème (Axion-IA est paper/ivory only) perd la moitié du pattern. Et le code block en SVG est pertinent pour Vercel (DevTool) mais hors-sujet Axion-IA.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- Le gradient mesh inline SVG en background hero = pattern à intégrer (déjà partiellement présent sur AxionIA si on a vérifié `bg-gradient-to-br` Tailwind v4).
-- Une illustration propriétaire par section = oui. Un code block visuel = non sauf si AxionIA expose des prompts ou snippets IA (cas /stack-ia possible).
+- Le gradient mesh inline SVG en background hero = pattern à intégrer (déjà partiellement présent sur Axion-IA si on a vérifié `bg-gradient-to-br` Tailwind v4).
+- Une illustration propriétaire par section = oui. Un code block visuel = non sauf si Axion-IA expose des prompts ou snippets IA (cas /stack-ia possible).
 
 ---
 
@@ -185,9 +185,9 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Cadence supposée** : Hero illustration + grilles de publications avec 1 thumbnail par carte (similaire Anthropic mais plus dense).
 
-**Leçon transposable AxionIA (sous réserve d'audit manuel)** :
+**Leçon transposable Axion-IA (sous réserve d'audit manuel)** :
 
-- Le format "publication = hero abstrait" est transposable, mais AxionIA produit des audits, pas des papers — donc non applicable directement à la homepage.
+- Le format "publication = hero abstrait" est transposable, mais Axion-IA produit des audits, pas des papers — donc non applicable directement à la homepage.
 - ACTION : Will à charger manuellement openai.com, capturer 5 screenshots, les insérer ici pour validation.
 
 ---
@@ -217,10 +217,10 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Faille / piège observé** : Les 12 répétitions de `check-orange` flirtent avec le tic visuel. Un check icon répété 12x indique probablement 12 features alignées en bullet list — risque de bullet-soup.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- Pattern "icône-accent répétée comme ancrage couleur" très transposable : remplacer `check-orange` Mistral par `Lucide CheckCircle terracotta` AxionIA, max 5-6 répétitions par page (pas 12).
-- 5 illustrations sectionnelles vectorielles propriétaires = cible AxionIA pour une page produit type /interventions.
+- Pattern "icône-accent répétée comme ancrage couleur" très transposable : remplacer `check-orange` Mistral par `Lucide CheckCircle terracotta` Axion-IA, max 5-6 répétitions par page (pas 12).
+- 5 illustrations sectionnelles vectorielles propriétaires = cible Axion-IA pour une page produit type /interventions.
 
 ---
 
@@ -236,11 +236,11 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Cadence supposée** : Hero photo + grilles d'insights avec 1 photo par carte (souvent 6-12 cartes). Densité visuelle élevée.
 
-**Faille / piège observé (depuis connaissance domaine)** : McKinsey représente l'ANCIEN standard B2B premium (photo corporate + dataviz). AxionIA cherche à dépasser ce standard, pas à le copier.
+**Faille / piège observé (depuis connaissance domaine)** : McKinsey représente l'ANCIEN standard B2B premium (photo corporate + dataviz). Axion-IA cherche à dépasser ce standard, pas à le copier.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- ANTI-pattern : ne pas reproduire la photo corporate stock. AxionIA est positionné comme "Anthropic / Stripe Press de l'IA appliquée", pas comme "McKinsey de l'IA".
+- ANTI-pattern : ne pas reproduire la photo corporate stock. Axion-IA est positionné comme "Anthropic / Stripe Press de l'IA appliquée", pas comme "McKinsey de l'IA".
 - Conserver la dataviz éditoriale soignée (cf. Stripe `DatavizStatic3x.png`).
 
 ---
@@ -272,9 +272,9 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 - Palette à 4 hex différents (#74A2A2 + #FFC107 + #00b67a + #1976D2) sans hiérarchie visible = pollution visuelle. Les 3 derniers sont des couleurs d'éléments tiers (Google, Trustpilot, Material) — Pennylane n'a pas réussi à les neutraliser.
 - Filenames SEO-stuffed (`image_du_saas_pennylane_plateforme_tout_en_un_entreprise.png`) = pratique SEO 2018, périmée et anti-élégante.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- ANTI-pattern à éviter : ne pas laisser des éléments tiers (badges Trustpilot, étoiles Google) imposer leur couleur. Si AxionIA intègre du social proof, le restyler en monochrome terracotta/mocha.
+- ANTI-pattern à éviter : ne pas laisser des éléments tiers (badges Trustpilot, étoiles Google) imposer leur couleur. Si Axion-IA intègre du social proof, le restyler en monochrome terracotta/mocha.
 - ANTI-pattern : pas de filenames SEO bourrés en 2026. Préférer slugs courts (`audit-ia.svg`, pas `image_audit_ia_axionia_cabinet_premium.svg`).
 
 ---
@@ -294,11 +294,11 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Cadence visuelle** : ~15 visuels total dont 5 narratifs. Très minimaliste pour une marque créative — confirme le verdict 2 (1 visuel par section narrative suffit).
 
-**Faille / piège observé** : Arc compense le minimalisme par des animations CSS lourdes (non capturables en HTML). Pour AxionIA (no-JS-heavy promise), répliquer sans animations.
+**Faille / piège observé** : Arc compense le minimalisme par des animations CSS lourdes (non capturables en HTML). Pour Axion-IA (no-JS-heavy promise), répliquer sans animations.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- 5 visuels narratifs suffisent à raconter un produit créatif → AxionIA peut viser 5-7 visuels narratifs maximum sur sa homepage (hors logos clients et icônes).
+- 5 visuels narratifs suffisent à raconter un produit créatif → Axion-IA peut viser 5-7 visuels narratifs maximum sur sa homepage (hors logos clients et icônes).
 
 ---
 
@@ -328,10 +328,10 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 **Faille / piège observé** : Le carrousel de 18 logos répétés alourdit le compteur visuel sans rien apporter (ils sont déjà tous visibles en static grid). Anti-pattern UX 2026.
 
-**Leçon transposable AxionIA** :
+**Leçon transposable Axion-IA** :
 
-- Background gradient mesh PNG large format (2880×1680) = pattern à intégrer dans hero AxionIA via 1 GPT-image générée terracotta/sage/sand (cohérent doctrine).
-- Si AxionIA affiche logos clients, GRILLE STATIQUE 6-8 logos, pas carrousel 18.
+- Background gradient mesh PNG large format (2880×1680) = pattern à intégrer dans hero Axion-IA via 1 GPT-image générée terracotta/sage/sand (cohérent doctrine).
+- Si Axion-IA affiche logos clients, GRILLE STATIQUE 6-8 logos, pas carrousel 18.
 
 ---
 
@@ -355,7 +355,7 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 2. **Carrousel de logos clients infini** : Cohere et Stripe le font, mais c'est le seul anti-pattern partagé — la grille statique 6-8 logos est plus respectueuse de l'attention 2026.
 
-3. **`alt=""` ou alt manquant sur images narratives** : Anthropic, Linear (80+ images sans alt), Stripe (la plupart). Anti-pattern accessibilité massif chez le top tier — AxionIA peut FAIRE MIEUX gratuitement.
+3. **`alt=""` ou alt manquant sur images narratives** : Anthropic, Linear (80+ images sans alt), Stripe (la plupart). Anti-pattern accessibilité massif chez le top tier — Axion-IA peut FAIRE MIEUX gratuitement.
 
 4. **Palette polluée par badges tiers** (Pennylane : Google jaune + Trustpilot vert + Material blue) : neutralisable en monochrome.
 
@@ -363,7 +363,7 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 6. **Densité visuelle uniforme 1-visuel-par-paragraphe** : aucun site ne le fait. Cadence narrative > cadence mécanique.
 
-### 4.3 Cadence optimale observée pour AxionIA
+### 4.3 Cadence optimale observée pour Axion-IA
 
 **Médianes calculées sur 8 sites vérifiés** :
 
@@ -373,7 +373,7 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 - Sections par homepage : médiane 6-7.
 - **Ratio = ~1 visuel narratif par section**.
 
-**Recommandation cadence AxionIA homepage** :
+**Recommandation cadence Axion-IA homepage** :
 
 - 1 hero illustration ou gradient mesh (terracotta + sand + sage).
 - 4-5 visuels narratifs (1 par bloc produit / pillar / pourquoi-axion).
@@ -386,7 +386,7 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 
 - 1 hero + 1 visuel par bloc produit (4-6 blocs) + 1 visuel testimonial = 6-8 visuels narratifs total.
 
-### 4.4 Verdicts spécifiques pour AxionIA (synthèse actionnable)
+### 4.4 Verdicts spécifiques pour Axion-IA (synthèse actionnable)
 
 | #   | Décision                                                               | Justification benchmarks                                                    |
 | --- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -397,7 +397,7 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 | V5  | Cadence : 5-7 visuels narratifs homepage, 6-8 par page produit         | Médiane benchmarks                                                          |
 | V6  | Iconographie Lucide terracotta, max 6 répétitions du même icon         | Mistral pousse à 12, c'est trop                                             |
 | V7  | Filenames courts et significatifs (`audit-ia.svg`, `pillar-ops.svg`)   | Anti-pattern Pennylane confirmé                                             |
-| V8  | Pas de dark/light dual mode                                            | AxionIA mono-mode paper/ivory ; le pattern Vercel n'apporte rien sans dark  |
+| V8  | Pas de dark/light dual mode                                            | Axion-IA mono-mode paper/ivory ; le pattern Vercel n'apporte rien sans dark |
 | V9  | Future page /etudes-de-cas en grille modulaire type press.stripe.com   | Pattern catalogue éditorial validé pour B2B premium                         |
 | V10 | Auditer manuellement openai.com et mckinsey.com (capture écran)        | WebFetch bloqué, ne pas s'inspirer sans vérification                        |
 
@@ -419,7 +419,7 @@ Trois verdicts transversaux émergent de l'analyse des 10 benchmarks (8 vérifi�
 - Présence d'inline SVG vs `<img>` SVG.
 - Structure des sections (hero, features, footer).
 
-Cet audit est suffisant pour GUIDER les décisions de cadence et de type d'imagerie AxionIA. Il n'est PAS suffisant pour reproduire un style visuel précis sans capture écran complémentaire.
+Cet audit est suffisant pour GUIDER les décisions de cadence et de type d'imagerie Axion-IA. Il n'est PAS suffisant pour reproduire un style visuel précis sans capture écran complémentaire.
 
 ---
 

@@ -106,7 +106,7 @@ Tous les autres skills `axionia-*` se terminent par une « Checklist avant merge
 
 #### E5 — Référence à `axionia-core` non systématique (D10)
 
-8 skills sur 17 référencent explicitement `axionia-core` ; 9 le font implicitement (mention de « projet AxionIA », « société estonienne », « formation banni »). À standardiser : chaque SKILL.md devrait commencer par une ligne du type :
+8 skills sur 17 référencent explicitement `axionia-core` ; 9 le font implicitement (mention de « projet Axion-IA », « société estonienne », « formation banni »). À standardiser : chaque SKILL.md devrait commencer par une ligne du type :
 
 > « > Doctrine parente : `axionia-core` (à charger systématiquement avant). »
 
@@ -139,7 +139,7 @@ Le **skill modèle** à imposer comme référence pour aligner les autres est un
 
 Tous les autres skills doivent vérifier qu'ils :
 
-1. **Démarrent par un H1** « # AxionIA — [domaine] »
+1. **Démarrent par un H1** « # Axion-IA — [domaine] »
 2. Référencent `axionia-core` explicitement dès l'introduction
 3. Listent leurs **règles non négociables** en numéroté ou tableau
 4. Fournissent **au moins 3 exemples ✅ et 3 anti-exemples ❌**

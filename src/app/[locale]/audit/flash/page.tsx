@@ -79,8 +79,8 @@ export default async function AuditFlashPage({ params }: Props) {
             accent="orange"
             ariaLabel={
               isFr
-                ? "Schéma : 3 livrables d'un audit flash AxionIA — cartographie des process, scoring ROI/complexité, plan d'action 30/60/90 jours."
-                : "Diagram: 3 deliverables of an AxionIA flash audit — process mapping, ROI/complexity scoring, 30/60/90-day action plan."
+                ? "Schéma : 3 livrables d'un audit flash Axion-IA — cartographie des process, scoring ROI/complexité, plan d'action 30/60/90 jours."
+                : "Diagram: 3 deliverables of an Axion-IA flash audit — process mapping, ROI/complexity scoring, 30/60/90-day action plan."
             }
             blocks={[
               {

@@ -38,7 +38,7 @@
     "x": "X (Twitter)"
   },
   "home": {
-    "title": "AxionIA",
+    "title": "Axion-IA",
     "subtitle": "Cabinet IA opérationnel",
     "description": "Interventions, audit et implémentation IA pour entreprises.",
     "viewDesign": "Voir les tokens",
@@ -172,17 +172,17 @@
     "home": "Accueil"
   },
   "press": {
-    "metaTitle": "Espace presse · AxionIA",
-    "metaDescription": "Espace presse AxionIA — boilerplate, kit médias, communiqués, porte-parole et contact dédié journalistes. Réponse sous 48 h ouvrées, FR + EN.",
+    "metaTitle": "Espace presse · Axion-IA",
+    "metaDescription": "Espace presse Axion-IA — boilerplate, kit médias, communiqués, porte-parole et contact dédié journalistes. Réponse sous 48 h ouvrées, FR + EN.",
     "heroEyebrow": "Espace presse",
     "heroTitle": "Ressources",
     "heroTitleEm": "presse",
-    "heroTitleTail": " AxionIA",
-    "heroDescription": "Tout ce dont les journalistes et médias ont besoin pour parler d'AxionIA — boilerplate, kit médias, communiqués, porte-parole et contact direct.",
+    "heroTitleTail": " Axion-IA",
+    "heroDescription": "Tout ce dont les journalistes et médias ont besoin pour parler d'Axion-IA — boilerplate, kit médias, communiqués, porte-parole et contact direct.",
     "heroCtaPrimary": "Télécharger le kit presse",
     "heroCtaSecondary": "Contacter la presse",
     "pitchEyebrow": "Pitch presse",
-    "pitchTitle": "AxionIA en",
+    "pitchTitle": "Axion-IA en",
     "pitchTitleEm": "soixante mots",
     "pitchTitleTail": ".",
     "pitchSpeakable": "Bloc citable par moteurs IA et résumés vocaux.",
@@ -198,7 +198,7 @@
     "releasesTitle": "Communiqués",
     "releasesTitleEm": "récents",
     "releasesTitleTail": ".",
-    "releasesDescription": "Les annonces officielles d'AxionIA — lancements, jalons, études et partenariats.",
+    "releasesDescription": "Les annonces officielles d'Axion-IA — lancements, jalons, études et partenariats.",
     "releasesRead": "Lire le communiqué",
     "releasesEmpty": "Aucun communiqué disponible pour l'instant.",
     "tagLaunch": "Lancement",
@@ -208,7 +208,7 @@
     "tagMilestone": "Jalon",
     "coverageEyebrow": "Couverture médias",
     "coverageTitle": "Ils ont parlé d'",
-    "coverageTitleEm": "AxionIA",
+    "coverageTitleEm": "Axion-IA",
     "coverageTitleTail": ".",
     "coverageDescription": "Articles, interviews et mentions externes — mis à jour à mesure des retombées.",
     "coverageEmpty": "Premières interventions médias à venir. Contactez-nous pour interviews exclusives ou exclusivités sectorielles.",
@@ -229,7 +229,7 @@
     "contactDescription": "Écrivez-nous directement à l'adresse presse dédiée. Nous répondons sous 48 h ouvrées, en français et en anglais.",
     "contactCta": "Écrire à la presse",
     "contactEmail": "presse@axion-ia.com",
-    "contactSubject": "Demande presse — AxionIA",
+    "contactSubject": "Demande presse — Axion-IA",
     "contactResponseTimeLabel": "Délai de réponse",
     "contactResponseTimeValue": "48 h ouvrées",
     "contactLanguagesLabel": "Langues",
@@ -238,6 +238,6 @@
     "faqTitle": "Les questions",
     "faqTitleEm": "fréquentes",
     "faqTitleTail": " des journalistes.",
-    "faqDescription": "Six réponses pour cadrer rapidement vos publications sur AxionIA."
+    "faqDescription": "Six réponses pour cadrer rapidement vos publications sur Axion-IA."
   }
 }
