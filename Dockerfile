@@ -27,7 +27,11 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY .npmrc* ./
 
-# Active corepack (pnpm sans install global) + fetch deps
+# Active corepack (pnpm sans install global) + fetch deps.
+# COREPACK_INTEGRITY_KEYS=0 contourne le bug de signature pnpm@10.x avec
+# les clés embarquées dans Node 20.18 (corepack ne reconnaît pas la nouvelle
+# clé pnpm). Voir https://github.com/nodejs/corepack/issues/612.
+ENV COREPACK_INTEGRITY_KEYS=0
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 RUN pnpm install --frozen-lockfile --prefer-offline
 
@@ -48,6 +52,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV COREPACK_INTEGRITY_KEYS=0
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
 RUN pnpm prisma:generate
