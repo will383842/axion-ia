@@ -1930,9 +1930,9 @@ const TESTIMONIALS = [
     roleFr: "Présidente · cabinet conseil · Paris, 65 personnes",
     roleEn: "President · consulting firm · Paris, 65 people",
     quoteFr:
-      "Programme standardisé, ressources prêtes à utiliser dès le retour au bureau. Aucun document sur-mesure à valider — c'est un vrai gain de temps managérial.",
+      "Programme cadré et ressources prêtes à utiliser dès le retour au bureau — un vrai gain de temps managérial pour mes équipes.",
     quoteEn:
-      "Standardised programme, ready-to-use takeaways from day one back at the office. No bespoke documents to validate — real managerial time saved.",
+      "Tight programme and ready-to-use takeaways from day one back at the office — real managerial time saved for my teams.",
     daysAgoFr: "il y a 5 semaines",
     daysAgoEn: "5 weeks ago",
   },

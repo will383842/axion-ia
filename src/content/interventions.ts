@@ -193,12 +193,12 @@ export const RESERVATION_STEPS_FR: ReadonlyArray<{ title: string; description: s
   {
     title: "Déroulement de la formation",
     description:
-      "Journée d'intervention sur site, programme type publié sur cette page. Rien de sur-mesure : ressources pédagogiques standardisées.",
+      "Journée d'intervention sur site selon le programme type publié — ressources pédagogiques standardisées remises en fin de journée.",
   },
   {
     title: "Solde + frais annexes",
     description:
-      "Solde 50 % après l'intervention, accompagné des frais de déplacement, hébergement et repas — facturés au forfait journalier (pas de justificatifs à transmettre).",
+      "Solde 50 % après l'intervention, accompagné des frais de logement, repas et forfait trajet — facturés au cas par cas selon la distance et la durée (devis transparent fourni avant signature).",
   },
 ];
 
@@ -397,7 +397,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     summary: {
       fr: {
         benefitTagline:
-          "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'automatisations pour gagner du temps dès le lendemain. Une journée de formation, pas de plan sur-mesure, des ressources prêtes à utiliser.",
+          "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'automatisations pour gagner du temps dès le lendemain. Une journée de formation sur site, ressources prêtes à utiliser dès le retour au bureau.",
         duration: "1 journée sur site (9 h – 17 h)",
         durationDays: 1,
         price: "à partir de 490 € HT",
@@ -424,7 +424,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       },
       en: {
         benefitTagline:
-          "Discover AI applied to your day-to-day — tools, concrete uses, automation ideas to save time from day two. A one-day training, no bespoke roadmap, ready-to-use takeaways.",
+          "Discover AI applied to your day-to-day — tools, concrete uses, automation ideas to save time from day two. A one-day on-site training with ready-to-use takeaways from day one back at the office.",
         duration: "1 day on site (9 a.m. – 5 p.m.)",
         durationDays: 1,
         price: "from €490 (excl. VAT)",
@@ -528,7 +528,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       daySchedule: {
         title: "Déroulement de la journée",
         intro:
-          "Programme type d'une journée Essentielle (9 h – 17 h). Identique pour toutes les entreprises : pas de document sur-mesure, des ressources pédagogiques standardisées remises en fin de journée.",
+          "Programme type d'une journée Essentielle (9 h – 17 h). Identique pour toutes les entreprises : des ressources pédagogiques standardisées remises en fin de journée pour être réutilisées dès le lendemain.",
         days: [
           {
             items: [
@@ -646,7 +646,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       daySchedule: {
         title: "Day-by-day breakdown",
         intro:
-          "Standard programme for the Essential day (9 a.m. – 5 p.m.). Identical for every company: no bespoke document, standardised learning takeaways shared at end of day.",
+          "Standard programme for the Essential day (9 a.m. – 5 p.m.). Identical for every company: standardised learning takeaways shared at end of day, ready to reuse the next morning.",
         days: [
           {
             items: [

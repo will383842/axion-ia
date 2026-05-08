@@ -203,7 +203,7 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? "Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle 490 €). Pas d'investissement custom Ã  ce stade."
+                    ? "Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle 490 €). Pas d'investissement custom à ce stade."
                     : "Default recommendation: generic SaaS or short consultancy mission (Essential €490). No custom investment at this stage."}
                 </p>
               </CardContent>

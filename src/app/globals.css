@@ -286,7 +286,11 @@
       height: 36rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      /* flex-start (et non center) : si le contenu dépasse 36rem (ex.
+         AuditHeroSchema), l'overflow part vers le bas et n'envahit jamais
+         l'espace du header. Will 2026-05-08 — graphique audit passait sous
+         le header avec center. */
+      justify-content: flex-start;
     }
   }
 
