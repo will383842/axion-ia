@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { FileText, BookOpen, Tag, RefreshCw } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -42,18 +43,6 @@ export default async function AiGuidePage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const offerJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Offer",
-    name: isFr ? "Guide IA entreprise · 40 pages" : "Enterprise AI guide · 40 pages",
-    inLanguage: locale,
-    price: "0",
-    priceCurrency: "EUR",
-    availability: "https://schema.org/InStock",
-    seller: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
-    url: `${SITE_URL}/${locale}/guide-ia`,
-  } as const;
-
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/guide-ia", label: isFr ? "Guide IA" : "AI guide" }];
@@ -76,6 +65,35 @@ export default async function AiGuidePage({ params }: Props) {
         "Common pitfalls (8 anti-patterns to avoid)",
       ];
 
+  // CreativeWork JSON-LD enrichi avec hasPart (chapters) — AEO/GEO 2026 :
+  // expose la structure du guide aux LLMs pour citations granulaires
+  // (« quel chapitre du guide AxionIA traite des coûts ? »). Plus rich
+  // que l'ancien Offer plat — combine Offer (gratuit) + CreativeWork
+  // (table des matières structurée).
+  const guideJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: isFr ? "Guide IA entreprise · 40 pages" : "Enterprise AI guide · 40 pages",
+    inLanguage: locale,
+    url: `${SITE_URL}/${locale}/guide-ia`,
+    publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+    numberOfPages: 40,
+    isAccessibleForFree: true,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      seller: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
+    },
+    hasPart: chapters.map((title, idx) => ({
+      "@type": "Chapter",
+      position: idx + 1,
+      name: title,
+      isPartOf: { "@type": "CreativeWork", name: "Guide IA AxionIA" },
+    })),
+  } as const;
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -91,7 +109,32 @@ export default async function AiGuidePage({ params }: Props) {
             ? "Tout ce qu'un dirigeant ou responsable opérations doit savoir avant de déployer l'IA en 2026. Téléchargement immédiat après inscription."
             : "Everything a CEO or operations lead must know before deploying AI in 2026. Instant download after signup."
         }
-      />
+      >
+        <Container className="mt-8 max-w-2xl">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+            {[
+              { icon: FileText, label: isFr ? "40 pages PDF" : "40 PDF pages" },
+              {
+                icon: BookOpen,
+                label: isFr ? `${chapters.length} chapitres` : `${chapters.length} chapters`,
+              },
+              { icon: Tag, label: isFr ? "Gratuit · 0 €" : "Free · €0" },
+              { icon: RefreshCw, label: isFr ? "MAJ semestrielle" : "Bi-annual updates" },
+            ].map((pill) => {
+              const Icon = pill.icon;
+              return (
+                <li
+                  key={pill.label}
+                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                >
+                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                  <span>{pill.label}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </Container>
+      </Section>
 
       <Section tone="halo-warm">
         <Container className="max-w-4xl">
@@ -191,7 +234,7 @@ export default async function AiGuidePage({ params }: Props) {
         }
       />
 
-      <JsonLd data={offerJsonLd} />
+      <JsonLd data={guideJsonLd} />
     </>
   );
 }
