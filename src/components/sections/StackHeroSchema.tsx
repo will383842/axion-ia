@@ -1,7 +1,8 @@
 // Server Component — schéma visuel du hero /stack-ia (FR) /ai-stack (EN).
-// Pattern : copie strict de InterventionsHeroSchema — orbite elliptique
-// portrait, centre serif italique terracotta, 6 satellites (vs 5 sur
-// /interventions) chacun avec son accent. Aucun JS, SSR pur.
+// Pattern : copie strict de InterventionsHeroSchema — viewBox carré 560×560
+// (harmonisé doctrine `.hero-schema` v3.3, 2026-05-08), orbite quasi-circulaire,
+// centre serif italique terracotta, 6 satellites (vs 5 sur /interventions)
+// chacun avec son accent. Aucun JS, SSR pur.
 //
 // Narration : votre business au centre, les 6 bénéfices ultimes que la
 // stack IA opérationnelle débloque autour. Pas d'icône — typographie
@@ -59,16 +60,16 @@ export function StackHeroSchema({
   ariaLabel,
   className,
 }: StackHeroSchemaProps): ReactNode {
-  // Canvas portrait — même proportion que InterventionsHeroSchema.
+  // Canvas carré 1:1 — harmonisé doctrine .hero-schema v3.3 (2026-05-08).
   const W = 560;
-  const H = 760;
+  const H = 560;
   const cx = W / 2;
   const cy = H / 2;
-  // Orbite légèrement resserrée vs /interventions (rx 185→160) car on a
-  // 6 satellites au lieu de 5 → labels risquent moins de déborder en
-  // largeur dans la colonne voisine du hero.
+  // Orbite quasi-circulaire (ry légèrement > rx) — 6 satellites distribués
+  // sur les arcs haut + bas (zone safe [-130°, 130°]), aucun ne touche la
+  // face gauche (180°) où les labels déborderaient sur la colonne titre.
   const rx = 160;
-  const ry = 280;
+  const ry = 180;
 
   // 6 angles répartis dans l'arc haut + bas, tous dans la zone safe
   // [-130°, 130°] → AUCUN satellite ne se retrouve sur la face gauche

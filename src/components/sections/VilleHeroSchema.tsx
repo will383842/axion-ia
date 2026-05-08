@@ -1,40 +1,44 @@
-// Server Component — schéma visuel du hero /interventions.
-// Format CARRÉ (560×560) — harmonisé doctrine `.hero-schema` v3.3
-// (2026-05-08). Orbite quasi-circulaire (rx 170, ry 180) pour caser 5
-// satellites sans collision de labels dans la boîte 1:1.
-// Reprend la grammaire du PageHeroDecoration (anneaux + halos terracotta /
-// primary / sage + particules) mais avec l'entreprise au centre et les
-// 5 formats en orbite, chacun affichant son bénéfice concret.
+// Server Component — schéma visuel hero des pages villes pSEO.
+// Format CARRÉ 560×560 — harmonisé doctrine `.hero-schema` v3.3
+// (2026-05-08), orbite quasi-circulaire avec 6 satellites représentant
+// l'écosystème économique local (secteurs NAF dominants, hubs, gares, etc.).
+// Centre = nom de la ville en serif italique terracotta.
 //
-// Pas d'animation ; SSR-friendly ; `aria-label` au niveau du wrapper.
+// Doctrine v3.3 .hero-schema : zéro animation, zéro halo massif débordant,
+// SSR-friendly, palette tokens uniquement (anti-hex strict). Réutilisable
+// pour tous les pilotes ville (Paris d'abord, puis Lyon, Marseille, etc.
+// à mesure que Will publie un copy).
 
 import type { ReactNode } from "react";
 
-export interface InterventionsHeroSchemaProps {
-  /** Label central (ex "Votre entreprise"). */
+export interface VilleHeroSatellite {
+  /** Label gras (~12-18 caractères max). */
+  label: string;
+  /** Sous-label détail (~25 caractères max). */
+  detail: string;
+  /** Accent éditorial cohérent doctrine v3 (4 couleurs autorisées). */
+  accent: "terracotta" | "primary" | "sage" | "mocha";
+}
+
+export interface VilleHeroSchemaProps {
+  /** Nom de la ville (ex "Paris"). Affiché en italic Fraunces terracotta. */
   centerLabel: string;
-  /** Cinq satellites. Ordre = haut-gauche → bas-gauche dans le sens horaire. */
-  nodes: ReadonlyArray<{
-    label: string;
-    benefit: string;
-    accent: "terracotta" | "primary" | "sage" | "mocha";
-  }>;
-  /** Texte alternatif pour les lecteurs d'écran (le SVG est décoratif). */
+  /** Légende sous le label (ex "Écosystème IA · 215 K entreprises"). */
+  centerSubLabel?: string;
+  /** Six satellites — ordre = sens horaire à partir du haut-gauche. */
+  nodes: ReadonlyArray<VilleHeroSatellite>;
+  /** Texte alternatif pour les lecteurs d'écran. */
   ariaLabel: string;
   className?: string;
 }
 
-const accentColor: Record<"terracotta" | "primary" | "sage" | "mocha", string> = {
+const ACCENT_TOKEN: Record<"terracotta" | "primary" | "sage" | "mocha", string> = {
   terracotta: "var(--color-terracotta)",
   primary: "var(--color-primary)",
   sage: "var(--color-sage)",
   mocha: "var(--color-mocha)",
 };
 
-/**
- * Position d'un satellite sur une orbite elliptique.
- * angleDeg = 0 → droit, -90 → haut, 90 → bas.
- */
 function ellipsePos(
   angleDeg: number,
   rx: number,
@@ -46,31 +50,28 @@ function ellipsePos(
   return { x: cx + Math.cos(rad) * rx, y: cy + Math.sin(rad) * ry };
 }
 
-export function InterventionsHeroSchema({
+export function VilleHeroSchema({
   centerLabel,
+  centerSubLabel,
   nodes,
   ariaLabel,
   className,
-}: InterventionsHeroSchemaProps): ReactNode {
-  // Canvas carré 1:1 — harmonisé doctrine .hero-schema v3.3.
+}: VilleHeroSchemaProps): ReactNode {
+  // Canvas carré 1:1 — harmonisé doctrine .hero-schema v3.3 (2026-05-08).
   const W = 560;
   const H = 560;
   const cx = W / 2;
   const cy = H / 2;
-  // Orbite quasi-circulaire : ry légèrement > rx pour conserver la lisibilité
-  // verticale des labels (haut/bas vs gauche/droite).
-  const rx = 170;
+  // Orbite quasi-circulaire (ry légèrement > rx) — 6 satellites distribués
+  // sur les arcs haut + bas pour éviter chevauchement labels gauche/droite.
+  const rx = 180;
   const ry = 180;
 
-  // 5 angles répartis verticalement autour du centre.
-  // Top, top-right, right, bottom-right, bottom-left, top-left… on en utilise 5.
-  // Disposition retenue (sens horaire depuis le haut) :
-  //   0 : top-left  (-110°)
-  //   1 : top-right ( -65°)
-  //   2 : right     (   0°)
-  //   3 : bottom    (  65°)
-  //   4 : bottom-left ( 130°)
-  const angles = [-110, -65, 0, 65, 130];
+  // 6 satellites distribués pour éviter chevauchement labels :
+  //   0 top-left (-115°) · 1 top-right (-65°)
+  //   2 right (-5°)      · 3 bottom-right (60°)
+  //   4 bottom-left (115°) · 5 left (180°)
+  const angles = [-115, -65, -5, 60, 115, 180];
 
   return (
     <div
@@ -86,20 +87,20 @@ export function InterventionsHeroSchema({
         overflow="visible"
       >
         <defs>
-          <radialGradient id="iv-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.25" />
-            <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
+          <radialGradient id="vh-halo-tc" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.22" />
+            <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.05" />
             <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="iv-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.14" />
+          <radialGradient id="vh-halo-pr" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.12" />
             <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="iv-halo-sg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
+          <radialGradient id="vh-halo-sg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.16" />
             <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
           </radialGradient>
-          <pattern id="iv-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+          <pattern id="vh-grid" width="48" height="48" patternUnits="userSpaceOnUse">
             <path
               d="M 48 0 L 0 0 0 48"
               fill="none"
@@ -108,29 +109,29 @@ export function InterventionsHeroSchema({
               strokeOpacity="0.18"
             />
           </pattern>
-          <radialGradient id="iv-grid-mask" cx="50%" cy="50%" r="55%">
+          <radialGradient id="vh-grid-mask" cx="50%" cy="50%" r="55%">
             <stop offset="0%" stopColor="white" stopOpacity="0.55" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </radialGradient>
-          <mask id="iv-vignette-mask">
-            <rect width="100%" height="100%" fill="url(#iv-grid-mask)" />
+          <mask id="vh-vignette-mask">
+            <rect width="100%" height="100%" fill="url(#vh-grid-mask)" />
           </mask>
         </defs>
 
         {/* Grille texturée fade vignette */}
-        <rect width={W} height={H} fill="url(#iv-grid)" mask="url(#iv-vignette-mask)" />
+        <rect width={W} height={H} fill="url(#vh-grid)" mask="url(#vh-vignette-mask)" />
 
-        {/* Halos diffus — top-right primary, bottom-left sage, centre terracotta */}
-        <circle cx={cx} cy={cy} r={360} fill="url(#iv-halo-tc)" />
-        <circle cx={W - 70} cy={120} r={160} fill="url(#iv-halo-pr)" />
-        <circle cx={70} cy={H - 110} r={150} fill="url(#iv-halo-sg)" />
+        {/* Halos doux — terracotta centre, primary haut-droite, sage bas-gauche */}
+        <circle cx={cx} cy={cy} r={360} fill="url(#vh-halo-tc)" />
+        <circle cx={W - 60} cy={130} r={170} fill="url(#vh-halo-pr)" />
+        <circle cx={70} cy={H - 120} r={150} fill="url(#vh-halo-sg)" />
 
-        {/* Anneaux concentriques décoratifs centre — ellipses pour matcher orbit */}
+        {/* Anneaux concentriques décoratifs (orbite) */}
         <ellipse
           cx={cx}
           cy={cy}
-          rx={rx + 40}
-          ry={ry + 40}
+          rx={rx + 45}
+          ry={ry + 45}
           stroke="var(--color-border-strong)"
           strokeOpacity="0.20"
           strokeDasharray="2 8"
@@ -149,14 +150,14 @@ export function InterventionsHeroSchema({
         <ellipse
           cx={cx}
           cy={cy}
-          rx={rx - 50}
-          ry={ry - 75}
+          rx={rx - 55}
+          ry={ry - 80}
           stroke="var(--color-border-strong)"
           strokeOpacity="0.30"
           fill="none"
         />
 
-        {/* Liaisons centre → satellites (pointillé doux accent) */}
+        {/* Liaisons centre → satellites */}
         {nodes.map((node, idx) => {
           const angle = angles[idx] ?? 0;
           const pos = ellipsePos(angle, rx, ry, cx, cy);
@@ -167,7 +168,7 @@ export function InterventionsHeroSchema({
               y1={cy}
               x2={pos.x}
               y2={pos.y}
-              stroke={accentColor[node.accent]}
+              stroke={ACCENT_TOKEN[node.accent]}
               strokeOpacity="0.40"
               strokeWidth="1.25"
               strokeDasharray="3 6"
@@ -175,43 +176,38 @@ export function InterventionsHeroSchema({
           );
         })}
 
-        {/* Satellites — 5 nœuds bénéfice */}
+        {/* Satellites */}
         {nodes.map((node, idx) => {
           const angle = angles[idx] ?? 0;
           const pos = ellipsePos(angle, rx, ry, cx, cy);
-          // Décalage du label hors du nœud selon l'angle.
-          // Côté gauche/droite du centre → le texte se met du même côté
-          // (plus loin du centre).
-          const isRight = pos.x > cx;
-          const tx = isRight ? pos.x + 22 : pos.x - 22;
-          const anchor = isRight ? "start" : "end";
+          const isRight = pos.x > cx + 4;
+          const isLeft = pos.x < cx - 4;
+          const tx = isRight ? pos.x + 22 : isLeft ? pos.x - 22 : pos.x;
+          const anchor = isRight ? "start" : isLeft ? "end" : "middle";
           return (
             <g key={`n-${idx}`}>
-              {/* Halos doubles autour du dot */}
               <circle
                 cx={pos.x}
                 cy={pos.y}
                 r={32}
-                fill={accentColor[node.accent]}
+                fill={ACCENT_TOKEN[node.accent]}
                 fillOpacity="0.10"
               />
               <circle
                 cx={pos.x}
                 cy={pos.y}
                 r={22}
-                fill={accentColor[node.accent]}
+                fill={ACCENT_TOKEN[node.accent]}
                 fillOpacity="0.20"
               />
-              {/* Dot principal */}
               <circle
                 cx={pos.x}
                 cy={pos.y}
                 r={11}
-                fill={accentColor[node.accent]}
+                fill={ACCENT_TOKEN[node.accent]}
                 stroke="var(--color-bg)"
                 strokeWidth="3"
               />
-              {/* Label format (gras) */}
               <text
                 x={tx}
                 y={pos.y - 3}
@@ -223,7 +219,6 @@ export function InterventionsHeroSchema({
               >
                 {node.label}
               </text>
-              {/* Bénéfice concret (sous-label) */}
               <text
                 x={tx}
                 y={pos.y + 16}
@@ -233,17 +228,17 @@ export function InterventionsHeroSchema({
                 fontWeight="500"
                 fill="var(--color-fg-soft)"
               >
-                {node.benefit}
+                {node.detail}
               </text>
             </g>
           );
         })}
 
-        {/* Centre — entreprise, sujet du schéma */}
+        {/* Centre — ville pivot du schéma */}
         <circle
           cx={cx}
           cy={cy}
-          r={78}
+          r={82}
           fill="var(--color-paper)"
           stroke="var(--color-terracotta)"
           strokeWidth="2.5"
@@ -251,7 +246,7 @@ export function InterventionsHeroSchema({
         <circle
           cx={cx}
           cy={cy}
-          r={78}
+          r={82}
           fill="none"
           stroke="var(--color-terracotta)"
           strokeOpacity="0.20"
@@ -259,27 +254,30 @@ export function InterventionsHeroSchema({
         />
         <text
           x={cx}
-          y={cy - 4}
+          y={centerSubLabel ? cy - 6 : cy + 6}
           textAnchor="middle"
           fontFamily="var(--font-serif), serif"
           fontStyle="italic"
-          fontSize="24"
+          fontSize="32"
           fontWeight="500"
           fill="var(--color-terracotta)"
         >
-          {centerLabel.split(" ")[0]}
+          {centerLabel}
         </text>
-        <text
-          x={cx}
-          y={cy + 22}
-          textAnchor="middle"
-          fontFamily="var(--font-manrope), system-ui, sans-serif"
-          fontSize="14"
-          fontWeight="600"
-          fill="var(--color-fg)"
-        >
-          {centerLabel.split(" ").slice(1).join(" ")}
-        </text>
+        {centerSubLabel ? (
+          <text
+            x={cx}
+            y={cy + 22}
+            textAnchor="middle"
+            fontFamily="var(--font-manrope), system-ui, sans-serif"
+            fontSize="11"
+            fontWeight="600"
+            fill="var(--color-fg)"
+            letterSpacing="0.08em"
+          >
+            {centerSubLabel.toUpperCase()}
+          </text>
+        ) : null}
 
         {/* Particules décoratives */}
         <circle cx={50} cy={90} r={2.5} fill="var(--color-terracotta)" opacity="0.55" />

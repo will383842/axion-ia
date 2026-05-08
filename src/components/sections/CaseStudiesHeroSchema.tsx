@@ -2,8 +2,10 @@
 // Stack de 3 mini-cards de cas clients avec métriques chiffrées,
 // effet "pile" en perspective légère pour suggérer "il y en a plein".
 //
-// Doctrine : zéro fond (transparent). Accent sage (couleur module Cas
-// concrets selon CLAUDE.md v6 + ADR 0002). Pas d'animation ; SSR-friendly.
+// Doctrine couleur (2026-05-08) : terracotta lead (cohérence brand avec
+// les 6 autres heroes Audit/Methodologie/Comparisons/Help/Blog/Contact),
+// sage en accent métrique sur les cards alternatives (#1/#2). Pas
+// d'animation ; SSR-friendly.
 //
 // Les métriques affichées sont des EXEMPLES anonymisés (secteur + taille
 // + métrique). À remplacer par de vraies données quand 5-10 cas seront
@@ -96,11 +98,11 @@ export function CaseStudiesHeroSchema({
 
   return (
     <div role="img" aria-label={ariaLabel} className={className ?? "hero-schema"}>
-      {/* Légende au-dessus de la pile */}
+      {/* Légende au-dessus de la pile — accent terracotta brand */}
       <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.18em] uppercase">
         <span
           aria-hidden="true"
-          className="bg-sage mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+          className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
         />
         {isFr ? "Cas réels · 3 exemples" : "Real cases · 3 examples"}
       </p>
@@ -119,16 +121,16 @@ export function CaseStudiesHeroSchema({
               key={c.industry}
               className={
                 isLead
-                  ? "border-sage/40 bg-paper shadow-card relative rounded-2xl border-2 p-5 sm:p-6"
+                  ? "border-terracotta/40 bg-halo-warm shadow-card relative rounded-2xl border-2 p-5 sm:p-6"
                   : "border-border-strong bg-paper shadow-subtle relative rounded-2xl border p-4 sm:p-5"
               }
             >
               <div className="flex items-start gap-4">
-                {/* Icône secteur */}
+                {/* Icône secteur — terracotta sur lead, sage sur alts */}
                 <span
                   className={
                     isLead
-                      ? "bg-sage-soft text-sage flex h-12 w-12 shrink-0 items-center justify-center rounded-xl sm:h-14 sm:w-14"
+                      ? "bg-terracotta-soft text-terracotta-deep flex h-12 w-12 shrink-0 items-center justify-center rounded-xl sm:h-14 sm:w-14"
                       : "bg-sage-soft text-sage flex h-10 w-10 shrink-0 items-center justify-center rounded-lg sm:h-11 sm:w-11"
                   }
                 >
@@ -152,12 +154,13 @@ export function CaseStudiesHeroSchema({
                   <p className="text-fg-muted mt-0.5 text-[12.5px]">{c.size}</p>
                 </div>
 
-                {/* Métrique en gros — serif italique sage (couleur module) */}
+                {/* Métrique en gros — terracotta sur lead (cohérence brand),
+                    sage sur cards alternatives (sémantique métrique/croissance). */}
                 <div className="text-right">
                   <p
                     className={
                       isLead
-                        ? "text-sage text-2xl leading-none font-medium tracking-tight italic tabular-nums sm:text-3xl"
+                        ? "text-terracotta text-2xl leading-none font-medium tracking-tight italic tabular-nums sm:text-3xl"
                         : "text-sage text-xl leading-none font-medium tracking-tight italic tabular-nums sm:text-2xl"
                     }
                     style={{ fontFamily: "var(--font-serif)" }}
@@ -167,7 +170,7 @@ export function CaseStudiesHeroSchema({
                   <p className="text-fg-soft mt-1 flex items-center justify-end gap-1 text-[11px] leading-snug">
                     <MetricIcon
                       aria-hidden="true"
-                      className="text-sage h-3 w-3"
+                      className={isLead ? "text-terracotta h-3 w-3" : "text-sage h-3 w-3"}
                       strokeWidth={2.5}
                     />
                     <span className="max-w-[140px] text-right sm:max-w-[180px]">

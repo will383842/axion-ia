@@ -259,13 +259,16 @@
     background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
   }
 
-  /* Hero schema visual container — harmonisé v3.2 (ADR 0007 follow-up 2026-05-08).
-     Cap 36rem (576px = max-w-xl) sur tous les breakpoints. Centré (mx-auto)
-     en mobile/tablet, aligné gauche (mx-0) en lg+ pour matcher la colonne
-     droite du grid hero 2-col `1fr 1fr`. Standardise les 11 hero schemas
-     (Audit, CaseStudies, Methodology, Comparisons, Help, Stack, Detail, Blog,
-     Interventions, Implementation, plus DetailHeroSchema produits) pour
-     cohérence visuelle. Doctrine : hero schema width invariant ↔ grille hero. */
+  /* Hero schema visual container — harmonisé v3.3 (2026-05-08 follow-up).
+     Cap 36rem (576px = max-w-xl) sur tous les breakpoints + lock hauteur 36rem
+     (carré 576×576) au lg+. Centré (mx-auto) en mobile/tablet, aligné gauche
+     (mx-0) en lg+ pour matcher la colonne droite du grid hero 2-col `1fr 1fr`.
+     Au lg+ : flex column + justify-center → contenu HTML court (cards) centré
+     verticalement, contenu SVG à viewBox carré (560×560) fit-to-container.
+     Standardise tous les hero schemas (Audit, CaseStudies, Methodology,
+     Comparisons, Help, Stack, Detail, Blog, Interventions, Implementation,
+     Contact + DetailHeroSchema produits + home inline SVG) pour cohérence
+     visuelle stricte. Doctrine : hero schema = invariant 576×576 lg+. */
   .hero-schema {
     position: relative;
     margin-left: auto;
@@ -277,6 +280,10 @@
     .hero-schema {
       margin-left: 0;
       margin-right: 0;
+      height: 36rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 

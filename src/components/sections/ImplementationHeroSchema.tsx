@@ -1,5 +1,6 @@
 // Server Component — schéma visuel du hero /implementation.
-// Format quasi-carré (~660 × 700) pour caser 8 satellites autour du centre
+// Format carré 1:1 (560×560) — harmonisé doctrine `.hero-schema` v3.3
+// (2026-05-08). Orbite circulaire pour caser 8 satellites autour du centre
 // "Votre entreprise" sans collision de labels. Reprend la grammaire du
 // PageHeroDecoration / InterventionsHeroSchema (anneaux + halos terracotta /
 // primary / sage + particules) avec 8 fonctions métier en orbite, chacune
@@ -49,15 +50,16 @@ export function ImplementationHeroSchema({
   ariaLabel,
   className,
 }: ImplementationHeroSchemaProps): ReactNode {
-  // Canvas légèrement paysage pour caser 8 satellites + labels.
-  const W = 720;
-  const H = 700;
+  // Canvas carré 1:1 — harmonisé doctrine .hero-schema v3.3 (2026-05-08).
+  const W = 560;
+  const H = 560;
   const cx = W / 2;
   const cy = H / 2;
-  // Orbite quasi-circulaire (rx légèrement > ry) — on a la place horizontale
-  // pour éviter les chevauchements de labels gauche/droite.
-  const rx = 250;
-  const ry = 230;
+  // Orbite quasi-circulaire (rx légèrement > ry) — proportions resserrées
+  // vs version 720×700 (rx 250→195, ry 230→180) pour tenir dans le carré 560
+  // sans débordement de labels à gauche/droite.
+  const rx = 195;
+  const ry = 180;
 
   // 8 angles répartis pour minimiser les collisions de labels.
   // Sens horaire depuis le haut. On évite 0° et 180° pile (= labels horizontaux

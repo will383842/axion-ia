@@ -18,7 +18,9 @@ export async function Header() {
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // Nav items split — 2 gauche du CTA, 2 droite du CTA (desktop).
+  // Nav items split — 2 gauche du CTA, 3 droite du CTA (desktop).
+  // 5e item « Implantations » ajouté Sprint 14.9 (pSEO villes/régions, ADR 0006)
+  // — point d'entrée vers les 12 régions et 2 157 communes éligibles.
   const navLeft = [
     { href: "/interventions", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },
@@ -26,6 +28,7 @@ export async function Header() {
   const navRight = [
     { href: "/implementation", label: t("nav.implementation") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
+    { href: "/implantations", label: t("nav.implantations") },
   ] as const;
   const navAll = [...navLeft, ...navRight];
 

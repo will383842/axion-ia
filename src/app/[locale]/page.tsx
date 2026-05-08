@@ -192,7 +192,7 @@ export default async function Home({ params }: HomeProps) {
       {/* ───────────── HERO ───────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-20 sm:py-24 lg:py-32">
         <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-12 xl:gap-16">
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche : copy (titre garde sa taille géante) */}
             <div className="max-w-2xl">
               <p className="text-fg-muted mb-8 text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -228,16 +228,17 @@ export default async function Home({ params }: HomeProps) {
 
             {/* Colonne droite : illustration narrative enrichie — 3 services
                 connectés à votre entreprise avec courbes, sparkline, badges.
-                Margin negative droite + scale pour effet "déborde" plus gros. */}
-            <div
-              aria-hidden="true"
-              className="relative hidden lg:-mr-12 lg:block xl:-mr-20 2xl:-mr-32"
-            >
+                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carré 576×576 lg+,
+                aligné sur les 10 autres pages (Audit, Cas-concrets, etc.) pour
+                harmonisation stricte. preserveAspectRatio="meet" letterbox
+                léger sides (~34px) pour viewBox 600×680 dans box 1:1. */}
+            <div aria-hidden="true" className="hero-schema pointer-events-none hidden lg:block">
               <svg
                 viewBox="0 0 600 680"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-auto w-full lg:scale-[1.15] xl:scale-[1.25]"
+                preserveAspectRatio="xMidYMid meet"
+                className="block h-full w-full"
               >
                 <defs>
                   {/* Halos diffus radiaux par couleur */}

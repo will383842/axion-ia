@@ -1,5 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getTopRegionsByPib } from "@/content/regions";
+import { getIndexableVilles } from "@/content/villes";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 // 2026 reference: Linear / Anthropic / Stripe / Vercel — single dense row,
@@ -44,6 +46,23 @@ export async function Footer() {
     { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
     { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
     { href: "/cookies", label: "Cookies" },
+  ];
+  // 5e zone Implantations — ajoutée Sprint 14.9 (pSEO villes/régions, ADR 0006).
+  // Top 6 régions par PIB + lien hub + villes pilotes (V1 = Paris seul).
+  // Le footer expose les pages atterissables même quand l'utilisateur n'a pas
+  // ouvert le mega-menu (filet de maillage interne pour le crawl Google).
+  const topRegions = getTopRegionsByPib(6);
+  const pilotVilles = getIndexableVilles();
+  const implantationsLinks: Array<{ href: string; label: string }> = [
+    { href: "/implantations", label: isFr ? "Toutes les régions" : "All regions" },
+    ...topRegions.map((r) => ({
+      href: `/implantations/${r.slug}`,
+      label: r.nameFr,
+    })),
+    ...pilotVilles.map((v) => ({
+      href: `/implantations/${v.region}/${v.slug}`,
+      label: `${v.nameFr} ★`,
+    })),
   ];
 
   return (
@@ -103,11 +122,12 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* 4 link columns — flex-1 to fill remaining space, equal-width grid */}
-          <div className="grid flex-1 grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-8 lg:gap-y-0">
+          {/* 5 link columns — flex-1 to fill remaining space, equal-width grid */}
+          <div className="grid flex-1 grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 lg:gap-y-0">
             <FooterColumn title={t("footer.services")} items={services} />
             <FooterColumn title={t("footer.resources")} items={resources} />
             <FooterColumn title={t("footer.company")} items={company} />
+            <FooterColumn title={t("nav.implantations")} items={implantationsLinks} />
             <FooterColumn title={t("footer.legal")} items={legal} />
           </div>
         </div>
