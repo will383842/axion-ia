@@ -19,7 +19,10 @@ import {
   type InterventionAccent,
   type InterventionSlug,
 } from "@/content/interventions";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -180,6 +183,21 @@ export default async function InterventionsListing({ params }: Props) {
       label: isFr ? "Interventions en entreprise" : "Corporate AI sessions",
     },
   ];
+
+  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
+  const serviceJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path: "/interventions",
+    name: isFr
+      ? "Interventions IA en entreprise · 5 formats · AxionIA"
+      : "Corporate AI sessions · 5 formats · AxionIA",
+    description: isFr
+      ? "Interventions et formations IA opérationnelles sur site : Essentielle 490 € HT (1 journée, jusqu'à 100 personnes), équipes, managers, conférence ½ journée, dirigeants. France métropolitaine et international."
+      : "Operational AI sessions on site: Essential €490 (1 day, up to 100 people), teams, managers, half-day talks, executives. Metropolitan France and international.",
+    serviceType: "AI training & engagement",
+    priceEur: 490,
+    areasServed: buildServiceAreasServed(loc),
+  });
 
   // ItemList JSON-LD — chaque intervention listée comme Service.
   const itemListJsonLd = {
@@ -689,6 +707,18 @@ export default async function InterventionsListing({ params }: Props) {
         </div>
       </Section>
 
+      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="Les interventions IA"
+        serviceLabelEn="AI sessions"
+        serviceSlug="interventions"
+        tone="paper"
+      />
+
+      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
+      <LocalGeoFaqSection isFr={isFr} service="interventions" tone="sand" />
+
       {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">
@@ -729,6 +759,7 @@ export default async function InterventionsListing({ params }: Props) {
         tone="dark"
       />
 
+      <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

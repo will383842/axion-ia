@@ -1,9 +1,12 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { getTopRegionsByPib } from "@/content/regions";
+import { getIndexableVilles } from "@/content/villes";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
+import { HeaderImplantationsMenu } from "./HeaderImplantationsMenu";
 
 // Server Component. 4 items desktop + ZERO dropdown (CLAUDE.md v6 §9.2 —
 // révision §9.2-bis acceptée en bloc 2026-05-07 mais Sprint 15 différé).
@@ -47,6 +50,22 @@ export async function Header() {
   // Badge prix CTA central (§9.3) — Essentielle = tarif d'entrée 490 € HT.
   const ctaPriceBadge = isFr ? "dès 490 €" : "from €490";
   const ctaAriaLabel = `${t("cta.bookInterventionLong")} — ${ctaPriceBadge}`;
+
+  // Mega-menu Implantations (Sprint 14.9, ADR 0005). Les données proviennent
+  // de regions.ts + villes/index.ts — Will n'a qu'à ajouter un copy/<slug>.ts
+  // pour faire apparaître une nouvelle ville pilote dans le menu.
+  const megaMenuRegions = getTopRegionsByPib(6).map((r) => ({
+    slug: r.slug,
+    nameFr: r.nameFr,
+    prefecture: r.prefecture,
+    ...(typeof r.pibBillionsEur === "number" ? { pibBillionsEur: r.pibBillionsEur } : {}),
+  }));
+  const megaMenuVilles = getIndexableVilles().map((v) => ({
+    slug: v.slug,
+    nameFr: v.nameFr,
+    region: v.region,
+    ...(v.departementLabel !== undefined ? { departementLabel: v.departementLabel } : {}),
+  }));
 
   return (
     <header
@@ -111,15 +130,25 @@ export async function Header() {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
 
-        {/* DROITE : Nav 3+4 + Locale */}
+        {/* DROITE : Nav 3+4+5 + Locale */}
         <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-8">
           <nav
             aria-label={`${t("nav.home")} 2`}
             className="hidden items-center gap-6 lg:flex lg:justify-start xl:gap-8"
           >
-            {navRight.map((item) => (
-              <NavLink key={item.href} href={item.href} label={item.label} />
-            ))}
+            {navRight.map((item) =>
+              item.href === "/implantations" ? (
+                <HeaderImplantationsMenu
+                  key={item.href}
+                  topRegions={megaMenuRegions}
+                  pilotVilles={megaMenuVilles}
+                  triggerLabel={item.label}
+                  isFr={isFr}
+                />
+              ) : (
+                <NavLink key={item.href} href={item.href} label={item.label} />
+              ),
+            )}
           </nav>
           <LocaleSwitcher />
         </div>

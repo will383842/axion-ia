@@ -82,7 +82,28 @@ interface ServiceJsonLdInput {
   /** Price in EUR HT. Omit for "on-quote" services. */
   priceEur?: number;
   serviceType?: string;
+  /** Single area served (legacy, string). Use `areasServed` for multi-region. */
   area?: string;
+  /**
+   * Multi-area coverage — Country + administrative regions + city channels.
+   * Sprint 14.9 levier 2 : signal AEO/GEO « disponible partout en France »
+   * pour pages services canoniques (`/audit`, `/interventions`, `/implementation`).
+   * Chaque entrée typée en `Country` / `AdministrativeArea` / `City` selon
+   * Schema.org. Optionnel `url` pour pointer vers la page locale dédiée
+   * (ex. `/implantations/[region]`).
+   */
+  areasServed?: ReadonlyArray<{
+    type: "Country" | "AdministrativeArea" | "City";
+    name: string;
+    url?: string;
+  }>;
+  /**
+   * Canaux de service géolocalisés — top métropoles où AxionIA délivre la
+   * prestation sur site. Émis comme `availableChannel` Schema.org. Permet
+   * aux LLMs d'énumérer les villes éligibles quand un utilisateur demande
+   * « où est-ce que ce service est disponible ? ».
+   */
+  availableChannels?: ReadonlyArray<{ name: string; url: string }>;
 }
 
 export function buildServiceJsonLd({
@@ -93,8 +114,25 @@ export function buildServiceJsonLd({
   priceEur,
   serviceType,
   area,
+  areasServed,
+  availableChannels,
 }: ServiceJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
+
+  // Schema.org : `areaServed` peut être un string OU un tableau d'objets
+  // typés (Country/AdministrativeArea/City). On privilégie `areasServed`
+  // (multi) et on retombe sur `area` (string legacy) seulement si non fourni.
+  const areaServedNode =
+    areasServed && areasServed.length > 0
+      ? areasServed.map((a) => ({
+          "@type": a.type,
+          name: a.name,
+          ...(a.url ? { url: a.url } : {}),
+        }))
+      : area
+        ? area
+        : undefined;
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -107,7 +145,16 @@ export function buildServiceJsonLd({
       url: SITE_URL,
     },
     ...(serviceType ? { serviceType } : {}),
-    ...(area ? { areaServed: area } : {}),
+    ...(areaServedNode !== undefined ? { areaServed: areaServedNode } : {}),
+    ...(availableChannels && availableChannels.length > 0
+      ? {
+          availableChannel: availableChannels.map((c) => ({
+            "@type": "ServiceChannel",
+            name: c.name,
+            serviceUrl: c.url,
+          })),
+        }
+      : {}),
     ...(typeof priceEur === "number"
       ? {
           offers: {

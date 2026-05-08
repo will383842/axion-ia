@@ -41,7 +41,10 @@ import {
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { AUDITS, type AuditAccent, type AuditSlug } from "@/content/audit";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -205,6 +208,23 @@ export default async function AuditListing({ params }: Props) {
   const breadcrumbItems = [
     { href: "/audit", label: isFr ? "Audit & optimisation" : "Audit & optimization" },
   ];
+
+  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
+  // Signal AEO/GEO « audit IA disponible partout en France » pour Perplexity,
+  // Google AI Overviews, Claude.ai. Couvre Country FR + 12 régions + Paris.
+  const serviceJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path: "/audit",
+    name: isFr
+      ? "Audit IA opérationnel · 4 niveaux · AxionIA"
+      : "Operational AI audit · 4 tiers · AxionIA",
+    description: isFr
+      ? "Audit IA en entreprise : pyramide 4 niveaux (Flash 490 € · Ciblé 1 900-3 900 € · Stratégique PME 4 900-9 900 € · Stratégique ETI dès 12 000 €). Diagnostic actionnable, ROI chiffré, plan d'attaque livré sous 5 jours."
+      : "Corporate AI audit: 4-tier pyramid (Flash €490 · Targeted €1,900-3,900 · SME Strategic €4,900-9,900 · Mid-cap Strategic from €12,000). Actionable diagnosis, costed ROI, action plan delivered in 5 days.",
+    serviceType: "AI audit",
+    priceEur: 490,
+    areasServed: buildServiceAreasServed(loc),
+  });
 
   // ItemList JSON-LD — chaque niveau listé comme Service.
   const itemListJsonLd = {
@@ -1220,6 +1240,18 @@ export default async function AuditListing({ params }: Props) {
       {/* AU-DELÀ DE L'AUDIT — bandeau d'upsell vers Module 3 Implémentation */}
       <BeyondAuditBlock isFr={isFr} />
 
+      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'audit IA"
+        serviceLabelEn="AI audit"
+        serviceSlug="audit"
+        tone="paper"
+      />
+
+      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
+      <LocalGeoFaqSection isFr={isFr} service="audit" tone="sand" />
+
       {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">
@@ -1267,6 +1299,7 @@ export default async function AuditListing({ params }: Props) {
         threshold={500}
       />
 
+      <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} />
     </>
   );

@@ -17,7 +17,11 @@ import { ImplementationHeroSchema } from "@/components/sections/ImplementationHe
 import { Link } from "@/i18n/navigation";
 import { AUTOMATISATIONS } from "@/content/automatisations";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/marketing/JsonLd";
+import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -627,8 +631,24 @@ export default async function ImplementationListing({ params }: Props) {
         { label: "Internal comms", benefit: "Aligned teams", accent: "sage" as const },
       ];
 
+  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
+  const serviceJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path: "/implementation",
+    name: isFr
+      ? "Implémentation IA opérationnelle · AxionIA"
+      : "Operational AI implementation · AxionIA",
+    description: isFr
+      ? "Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès 990 € HT."
+      : "Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from €990.",
+    serviceType: "AI implementation",
+    priceEur: 990,
+    areasServed: buildServiceAreasServed(loc),
+  });
+
   return (
     <>
+      <JsonLd data={serviceJsonLd} />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
@@ -1182,6 +1202,18 @@ export default async function ImplementationListing({ params }: Props) {
       >
         <FaqAccordion items={faqs} className="mx-auto max-w-3xl" />
       </Section>
+
+      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'implémentation IA"
+        serviceLabelEn="AI implementation"
+        serviceSlug="implementation"
+        tone="paper"
+      />
+
+      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
+      <LocalGeoFaqSection isFr={isFr} service="implementation" tone="sand" />
 
       {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
