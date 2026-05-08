@@ -3,19 +3,23 @@ import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
-  getAllBlogSlugs,
   getAllBlogCategorySlugs,
   getAllBlogTagSlugs,
   getAllBlogAuthorSlugs,
   getAllFaqIds,
   getAllHelpSlugs,
   getAllHelpCategorySlugs,
-  BLOG_POSTS,
 } from "@/content/transversal";
 import { getAllComparisonSlugs } from "@/content/comparaisons";
 import { AUTOMATISATION_SLUGS_FR, AUTOMATISATION_SLUGS_EN } from "@/content/automatisations";
 import { getIndexableRegions } from "@/content/regions";
 import { getIndexableVilles } from "@/content/villes";
+import {
+  getIndexableBlogPosts,
+  getAllBlogSectorSlugs,
+  getAllBlogCompanySizeSlugs,
+  getAllBlogServiceTypeSlugs,
+} from "@/content/blog";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -266,12 +270,18 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
 // Categories / tags / authors stay on `now` (the listing page changes when
 // a new post enters the corpus).
 function buildBlogSitemap(now: Date): MetadataRoute.Sitemap {
-  const datesBySlug = new Map(BLOG_POSTS.map((p) => [p.slug, p.publishedAt]));
+  // Anti-doorway HCU 2024 (Sprint 14.10) : seuls les articles tier-1 (validés
+  // qualité + score ≥ 70 + body ≥ 800 mots + faq ≥ 4 + directAnswer 40-80 mots)
+  // entrent dans le sitemap. Tier-2 (bulk en attente review) et tier-3 (drafts)
+  // restent crawlable mais hors sitemap → crawl budget Google concentré.
+  const indexable = getIndexableBlogPosts();
+  const indexableSlugs = indexable.map((p) => p.slug);
+  const datesBySlug = new Map(indexable.map((p) => [p.slug, p.publishedAt]));
   return buildDynamic(
     [
       {
         fr: "/blog/:slug",
-        slugs: getAllBlogSlugs(),
+        slugs: indexableSlugs,
         changeFrequency: "monthly",
         priority: 0.5,
         lastModFor: (slug) => datesBySlug.get(slug) ?? now,
@@ -295,6 +305,27 @@ function buildBlogSitemap(now: Date): MetadataRoute.Sitemap {
         slugs: getAllBlogAuthorSlugs(),
         changeFrequency: "monthly",
         priority: 0.4,
+      },
+      // Sprint 14.10 — pages taxonomies métier (secteur · taille · service).
+      {
+        fr: "/blog/secteur/:slug",
+        en: "/blog/sector/:slug",
+        slugs: [...getAllBlogSectorSlugs()],
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+      {
+        fr: "/blog/taille/:slug",
+        en: "/blog/size/:slug",
+        slugs: [...getAllBlogCompanySizeSlugs()],
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+      {
+        fr: "/blog/service/:slug",
+        slugs: [...getAllBlogServiceTypeSlugs()],
+        changeFrequency: "monthly",
+        priority: 0.5,
       },
     ],
     now,

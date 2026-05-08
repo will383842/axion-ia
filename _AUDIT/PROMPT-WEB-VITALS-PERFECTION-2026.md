@@ -64,7 +64,7 @@ Tu es invoqué sur le projet **AxionIA** — cabinet IA opérationnel B2B premiu
 
 AxionIA est déployé sur **Hetzner Cloud** (UE — souveraineté OÜ estonienne). **PAS de Vercel.** **PAS de Netlify.** Toutes les features perf doivent fonctionner sur :
 
-- **Hetzner Cloud VPS** (typiquement CX22-CX32 ARM, €3,79-6,29/mois — déjà budgété)
+- **Hetzner Cloud VPS CX32** (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB traffic — €6,49/mois HT, décision ferme Will 2026-05-08). CX22 (2 vCPU / 4 GB) écarté car insuffisant pour build SSG 4 342 pages + 3 containers (Next/Postgres/Redis) + Coolify.
 - **Node.js 22+ runtime** (`next start` ou Docker `output: "standalone"`)
 - **Reverse proxy à choisir** : **Caddy 2** (recommandé — auto-HTTPS, HTTP/3, Early Hints, Brotli natif, config simple) OU Nginx 1.25+
 - **CDN front recommandé** : **Cloudflare free tier** (DNS + CDN illimité + Brotli + HTTP/3 + 103 Early Hints + WAF + cache rules — tout gratuit, illimité)
@@ -99,7 +99,8 @@ AxionIA est déployé sur **Hetzner Cloud** (UE — souveraineté OÜ estonienne
 └────────────────┬────────────────────────────────┘
                  │ (origin pull)
 ┌────────────────▼────────────────────────────────┐
-│  Hetzner Cloud CX32 (€6,29/mois — déjà budgété) │
+│  Hetzner Cloud CX32 (€6,49/mois HT — décidé)    │
+│  4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB     │
 │  ┌───────────────────────────────────────────┐  │
 │  │  Caddy 2 (reverse proxy, auto-HTTPS,      │  │
 │  │  HTTP/3, Early Hints, Brotli)             │  │
@@ -185,13 +186,13 @@ L'agent **DOIT** :
 3. Mettre le patch dans la dernière vague de la roadmap (V6 « optionnel premium »).
 4. Déclencher un STOP & ASK avant exécution.
 
-### Hetzner — décision actuelle
+### Hetzner — décision ferme (Will 2026-05-08)
 
-- **VPS Hetzner CX22-CX32** (€3,79-6,29/mois) : déjà budgété et validé ADR 0001.
-- **Cloudflare free tier en front** : recommandé fortement (gratuit, gain LCP −100 à −400 ms via 200+ POPs + 103 Early Hints).
-- **Aucun upgrade payant** envisagé en V1-V2.
+- **VPS Hetzner CX32** : 4 vCPU x86 / 8 GB RAM / 80 GB NVMe SSD / 20 TB traffic / €6,49/mois HT. Décidé pour absorber build SSG 4 342 pages + 3 containers (Next + Postgres + Redis) + Coolify sans swap.
+- **Cloudflare free tier en front** : décidé. Inclut DNS + CDN illimité + 103 Early Hints + Brotli + HTTP/3 + WAF basic + DDoS illimité + Web Analytics. Suffisant pour V1-V2 (< 50 K visites/mois).
+- **Aucun upgrade payant** envisagé en V1-V2. Cloudflare Pro ($20/mois) à reconsidérer Sprint 16 uniquement pour WAF Managed Rules. Argo Smart Routing ($5/mois + $0,10/GB) à reconsidérer si trafic international > 30 % en V2.
 
-**Default** : Hetzner CX32 + Caddy + Cloudflare free + Next 16 standalone. Toute alternative déclenche STOP & ASK.
+**Default ferme** : Hetzner CX32 + Coolify + Caddy 2 + Next 16 standalone + Postgres + Redis containerisés + Cloudflare free. Toute alternative déclenche STOP & ASK.
 
 ---
 

@@ -13,6 +13,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { BLOG_POSTS, getBlogPost, getAllBlogSlugs } from "@/content/transversal";
+import { resolveTier } from "@/content/blog";
 import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
 
 interface Props {
@@ -30,12 +31,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getBlogPost(slug);
   if (!post) return {};
   const c = post[locale];
-  return buildProductMetadata({
+  const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
     title: `${c.title} · AxionIA`,
     description: c.excerpt,
   });
+  // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
+  // tier-1 = index follow (sitemap inclus) · tier-2 = noindex follow
+  // (crawlable mais non indexé) · tier-3 = noindex nofollow.
+  const tier = resolveTier(post);
+  if (tier === "tier-2-noindex-follow") {
+    return { ...meta, robots: { index: false, follow: true } };
+  }
+  if (tier === "tier-3-noindex-nofollow") {
+    return { ...meta, robots: { index: false, follow: false } };
+  }
+  return meta;
 }
 
 // Découpe heuristique du titre en `lead` + `em` (em = portion serif italique

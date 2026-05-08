@@ -118,136 +118,23 @@ export const FAQ_GLOBAL = [
   },
 ] as const;
 
-export interface BlogPost {
-  slug: string;
-  publishedAt: string; // ISO date string. Used for `Article.datePublished` JSON-LD.
-  /**
-   * ISO date string. Used for `Article.dateModified` JSON-LD (signal AEO 2026 :
-   * Google AI Overviews + Perplexity + Claude.ai valorisent l'écart freshness).
-   * Optionnel — fallback sur `publishedAt` si non fourni. À mettre à jour à
-   * chaque révision substantielle du `body`.
-   */
-  updatedAt?: string;
-  readingTime: string;
-  category: string;
-  author: string;
-  tags: ReadonlyArray<string>;
-  /**
-   * Slugs de villes/régions auxquelles cet article est explicitement lié
-   * (utilisé par `getRelatedBlogPosts(ville)` sur les pages pSEO villes,
-   * cf. `src/lib/geo.ts`). Optionnel — sans liaison explicite, le matching
-   * retombe sur les `tags`.
-   */
-  relatedCities?: ReadonlyArray<string>;
-  fr: { title: string; excerpt: string; body: string };
-  en: { title: string; excerpt: string; body: string };
-}
-
-export const BLOG_POSTS: ReadonlyArray<BlogPost> = [
-  {
-    slug: "pourquoi-auditer-avant-implementer",
-    publishedAt: "2026-04-12",
-    readingTime: "6 min",
-    category: "Méthodologie",
-    author: "Will",
-    tags: ["audit", "methodologie", "roi"],
-    fr: {
-      title: "Pourquoi auditer avant d'implémenter",
-      excerpt: "L'audit identifie où l'IA crée de la valeur sans casser vos workflows existants.",
-      body: "Implémenter de l'IA sans audit revient à ouvrir un projet de digitalisation sans backlog priorisé : on consomme du temps et du budget sur des sujets qui n'ont pas de valeur. L'audit IA AxionIA cartographie en 5 jours toutes les opportunités, scorées par ROI estimé et complexité, livrant un plan d'attaque actionnable.",
-    },
-    en: {
-      title: "Why audit before you implement",
-      excerpt:
-        "The audit pinpoints where AI creates value without breaking your existing workflows.",
-      body: "Implementing AI without an audit is like running a digitalization project without a prioritized backlog: time and budget go to topics that don't drive value. The AxionIA AI audit maps every opportunity in 5 days, scored by estimated ROI and complexity, delivering an actionable plan.",
-    },
-  },
-  {
-    slug: "3-quick-wins-2026",
-    publishedAt: "2026-04-22",
-    readingTime: "8 min",
-    category: "Cas d'usage",
-    author: "Will",
-    tags: ["quick-wins", "automatisation", "pme"],
-    fr: {
-      title: "3 quick-wins IA opérationnels en 2026",
-      excerpt:
-        "Lecture de factures, comptes-rendus de réunion, qualification de leads — déployables en moins d'un mois.",
-      body: "En 2026, les modèles IA matures permettent trois quick-wins déployables sous 30 jours dans presque toute organisation : 1) Lecture automatisée des factures entrantes (gain 30-50 % temps comptable). 2) Génération de comptes-rendus de réunions (gain 1-2 h/jour/cadre). 3) Qualification IA des leads entrants (gain 30 % conversion). Chacun coûte moins de 5 000 € à déployer pour une PME.",
-    },
-    en: {
-      title: "3 operational AI quick-wins in 2026",
-      excerpt:
-        "Invoice reading, meeting minutes, lead qualification — deployable in under a month.",
-      body: "In 2026, mature AI models enable three quick-wins deployable within 30 days in almost any organization: 1) Automated reading of incoming invoices (30-50% accounting time savings). 2) Meeting minute generation (1-2h/day/manager savings). 3) AI lead qualification (30% conversion uplift). Each costs less than €5k to deploy for an SME.",
-    },
-  },
-  {
-    slug: "ia-custom-quand-vraiment",
-    publishedAt: "2026-05-01",
-    readingTime: "12 min",
-    category: "Stratégie",
-    author: "Will",
-    tags: ["ia-custom", "fine-tuning", "strategie"],
-    fr: {
-      title: "IA Custom : quand est-ce vraiment nécessaire ?",
-      excerpt: "À partir de quel moment passer de l'IA générique au fine-tuning sur vos données ?",
-      body: "Le fine-tuning IA n'est rarement justifié avant 6-12 mois d'usage de modèles génériques. Les signaux objectifs : volume de données spécifiques métier > 10 k exemples, exigence de latence sous 100 ms, contraintes de souveraineté ou de coût d'inférence. AxionIA déconseille systématiquement le fine-tuning prématuré, qui consomme 8 000 à 50 000 € sans garantie de gain par rapport à du prompt engineering soigné.",
-    },
-    en: {
-      title: "Custom AI: when is it really necessary?",
-      excerpt: "When do you move from generic AI to fine-tuning on your data?",
-      body: "AI fine-tuning is rarely justified before 6-12 months of using generic models. Objective signals: domain-specific data volume > 10k examples, sub-100ms latency requirement, sovereignty or inference cost constraints. AxionIA systematically discourages premature fine-tuning, which costs €8k-50k with no guaranteed gain over careful prompt engineering.",
-    },
-  },
-];
-
-export function getBlogPost(slug: string): BlogPost | undefined {
-  return BLOG_POSTS.find((p) => p.slug === slug);
-}
-
-export function getAllBlogSlugs(): string[] {
-  return BLOG_POSTS.map((p) => p.slug);
-}
-
-export function getAllBlogCategorySlugs(): string[] {
-  const cats = new Set(BLOG_POSTS.map((p) => slugify(p.category)));
-  return [...cats];
-}
-
-export function getBlogPostsByCategory(slug: string): BlogPost[] {
-  return BLOG_POSTS.filter((p) => slugify(p.category) === slug);
-}
-
-export function getBlogCategoryLabel(slug: string): string | undefined {
-  const found = BLOG_POSTS.find((p) => slugify(p.category) === slug);
-  return found?.category;
-}
-
-export function getAllBlogTagSlugs(): string[] {
-  const tags = new Set<string>();
-  BLOG_POSTS.forEach((p) => p.tags.forEach((t) => tags.add(slugify(t))));
-  return [...tags];
-}
-
-export function getBlogPostsByTag(slug: string): BlogPost[] {
-  return BLOG_POSTS.filter((p) => p.tags.some((t) => slugify(t) === slug));
-}
-
-export function getAllBlogAuthorSlugs(): string[] {
-  const authors = new Set(BLOG_POSTS.map((p) => slugify(p.author)));
-  return [...authors];
-}
-
-export function getBlogPostsByAuthor(slug: string): BlogPost[] {
-  return BLOG_POSTS.filter((p) => slugify(p.author) === slug);
-}
-
-export function getBlogAuthorLabel(slug: string): string | undefined {
-  const found = BLOG_POSTS.find((p) => slugify(p.author) === slug);
-  return found?.author;
-}
+// Blog : split Sprint 14.10 (2026-05-08) — `BlogPost` + données + helpers
+// déplacés dans `src/content/blog/`. Les exports ci-dessous restent disponibles
+// pour rétrocompatibilité avec les pages /blog/* + sitemap + getRelatedBlogPosts.
+export type { BlogPost, BlogPostCopy, BlogFaqItem } from "@/content/blog";
+export {
+  BLOG_POSTS,
+  getBlogPost,
+  getAllBlogSlugs,
+  getAllBlogCategorySlugs,
+  getBlogPostsByCategory,
+  getBlogCategoryLabel,
+  getAllBlogTagSlugs,
+  getBlogPostsByTag,
+  getAllBlogAuthorSlugs,
+  getBlogPostsByAuthor,
+  getBlogAuthorLabel,
+} from "@/content/blog";
 
 // Help center articles — Sprint 14 fixtures, replaced by Prisma in Sprint 15.
 export interface HelpArticle {
