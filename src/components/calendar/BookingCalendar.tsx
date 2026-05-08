@@ -42,6 +42,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
+
+// Prix d'entrée Essentielle dérivé de pricing.ts (premier sous-tier).
+// Affiché sous forme « dès 490 € » dans les hints et previews — Sprint 14.10.4
+// supprime les anciens hardcodings « dès 490 € » dans INTERVENTION_OPTIONS et
+// INTERVENTION_VISUAL.
+const ESSENTIELLE_ENTRY_PRICE_EUR = ESSENTIELLE_SUB_TIERS[0]!.priceFlat;
+const ESSENTIELLE_HINT_FR = `Journée · 9 h – 17 h · dès ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
+const ESSENTIELLE_HINT_EN = `Day · 9 a.m. – 5 p.m. · from €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
+const ESSENTIELLE_PRICE_TAG_FR = `dès ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
+const ESSENTIELLE_PRICE_TAG_EN = `from €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
 
 // 5 interventions Module 1 — slug + label FR/EN + durationDays + scheduleHint.
 // `durationDays` typé 1|2 large pour permettre l'évolution future (formation
@@ -61,8 +72,8 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     fr: "L'Essentielle",
     en: "The Essential",
     durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · dès 490 €",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · from €490",
+    scheduleHintFr: ESSENTIELLE_HINT_FR,
+    scheduleHintEn: ESSENTIELLE_HINT_EN,
   },
   {
     slug: "conference",
@@ -102,8 +113,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Sparkles,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "dès 490 €",
-    priceEn: "from €490",
+    priceFr: ESSENTIELLE_PRICE_TAG_FR,
+    priceEn: ESSENTIELLE_PRICE_TAG_EN,
     previewFr:
       "Découvrir les outils IA · 5 à 10 usages identifiés · automatisations dès le lendemain",
     previewEn: "Discover AI tools · 5 to 10 uses identified · automations from day two",
@@ -129,8 +140,11 @@ const INTERVENTION_VISUAL: Record<
   },
 };
 
-// Essentielle uniquement : 3 tranches selon nb participants. Synchro
-// avec content/interventions.ts → INTERVENTIONS[0].summary.priceTiers.
+// Essentielle uniquement : 3 tranches selon nb participants.
+// Source unique : `pricing.ts::ESSENTIELLE_SUB_TIERS` (Sprint 14.10.4).
+// Le shape local est dérivé pour garder l'URL `?tier=intimiste` stable
+// (vs id pricing.ts `essentielle-intimiste`) et conserver les noms de
+// champs `sizeFr/En`/`priceEur` historiquement utilisés dans la JSX.
 export type EssentielleTier = "intimiste" | "standard" | "complete";
 
 const ESSENTIELLE_TIERS: ReadonlyArray<{
@@ -141,33 +155,18 @@ const ESSENTIELLE_TIERS: ReadonlyArray<{
   sizeEn: string;
   priceEur: number;
   isFeatured?: boolean;
-}> = [
-  {
-    id: "intimiste",
-    labelFr: "Intimiste",
-    labelEn: "Intimate",
-    sizeFr: "2 à 4 personnes",
-    sizeEn: "2 to 4 people",
-    priceEur: 490,
-  },
-  {
-    id: "standard",
-    labelFr: "Standard",
-    labelEn: "Standard",
-    sizeFr: "5 à 6 personnes",
-    sizeEn: "5 to 6 people",
-    priceEur: 790,
-    isFeatured: true,
-  },
-  {
-    id: "complete",
-    labelFr: "Complète",
-    labelEn: "Complete",
-    sizeFr: "7 à 8 personnes",
-    sizeEn: "7 to 8 people",
-    priceEur: 1190,
-  },
-];
+}> = ESSENTIELLE_SUB_TIERS.map((t) => {
+  const shortId = t.id.replace(/^essentielle-/, "") as EssentielleTier;
+  return {
+    id: shortId,
+    labelFr: t.labelFr,
+    labelEn: t.labelEn,
+    sizeFr: t.rangeFr,
+    sizeEn: t.rangeEn,
+    priceEur: t.priceFlat,
+    ...(t.isFeatured ? { isFeatured: true as const } : {}),
+  };
+});
 
 const SECTOR_OPTIONS = [
   "Tech / SaaS",

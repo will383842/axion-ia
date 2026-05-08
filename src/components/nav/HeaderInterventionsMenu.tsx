@@ -1,53 +1,52 @@
 "use client";
-// use-client: hover-intent state + keyboard handlers (Esc, Tab) pour le mega-menu Interventions.
-// Hover-intent mega-menu pour le déclencheur « Interventions ». Liste 5
-// grandes familles de formats — strictement synchrones avec le listing
-// /interventions (4 paliers Essentielle agrégés en 1 ligne « dès 490 € »
-// + Gagner du temps + CODIR + Conférence + Sur demande).
+// use-client: mega-menu interactif (hover-intent, focus management, ARIA dynamique) — délégué à HeaderMegaMenu.
+// Mega-menu Header « Interventions ». Délègue le shell à `HeaderMegaMenu`
+// pour rester strictement cohérent visuellement avec `HeaderImplantationsMenu`
+// (même trigger, même panel, même transitions, même a11y).
 //
-// Doctrine garde-fous (alignée HeaderImplantationsMenu / ADR 0005) :
-// hover-intent 100/200 ms, fermeture Esc + clic extérieur, focusable
-// clavier, pas de mega-menu mobile (drawer plat dans MobileNav).
+// Layout 3-col aligné sur Implantations :
+// • Col 1 — Tarifs fixes (Essentielle dès 490 € + Gagner du temps 990 €)
+// • Col 2 — Sur devis (CODIR / Conférence / Sur demande)
+// • Col 3 — Hub bg-halo-warm avec icône + tagline serif + CTA hub
+//
+// Le contenu reste strictement synchrone avec
+// `src/app/[locale]/interventions/page.tsx::buildCards()`. Les 4 paliers
+// Essentielle sont agrégés en 1 ligne « dès 490 € HT · 2 à 30+ pers. »
+// pour éviter la verbosité du dropdown (le listing les détaille en 4 cards).
 
 import * as React from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, GraduationCap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { ClaudeLogo } from "@/components/visual/ClaudeLogo";
+import { HeaderMegaMenu } from "./HeaderMegaMenu";
 
 interface HeaderInterventionsMenuProps {
   triggerLabel: string;
   isFr: boolean;
 }
 
-const HOVER_OPEN_DELAY_MS = 100;
-const HOVER_CLOSE_DELAY_MS = 200;
-
 interface MenuItem {
   key: string;
   href: string;
   labelFr: string;
   labelEn: string;
-  durationFr: string;
-  durationEn: string;
-  groupFr: string;
-  groupEn: string;
+  metaFr: string;
+  metaEn: string;
   priceFr: string;
   priceEn: string;
+  /** Flag visuel : applique l'accent Anthropic Claude (logo + peach branded)
+   *  pour différencier la formation outil-spécifique. */
+  isClaude?: boolean;
 }
 
-// Source de vérité : doit rester strictement synchrone avec
-// `src/app/[locale]/interventions/page.tsx::buildCards()`. Les 4 paliers
-// Essentielle sont agrégés en 1 ligne avec « dès 490 € » côté menu pour
-// éviter la verbosité (le listing les détaille sur 4 cards séparées).
-const MENU_ITEMS: ReadonlyArray<MenuItem> = [
+const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
   {
     key: "essentielle",
     href: "/interventions/essentielle",
     labelFr: "Essentielle",
     labelEn: "Essential",
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupFr: "2 à 30 personnes et +",
-    groupEn: "2 to 30+ people",
+    metaFr: "1 jour · 2 à 30 personnes",
+    metaEn: "1 day · 2 to 30 people",
     priceFr: "dès 490 € HT",
     priceEn: "from €490",
   },
@@ -56,22 +55,32 @@ const MENU_ITEMS: ReadonlyArray<MenuItem> = [
     href: "/reserver",
     labelFr: "Gagner du temps",
     labelEn: "Save Time",
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupFr: "2 à 20 personnes",
-    groupEn: "2 to 20 people",
+    metaFr: "1 jour · 2 à 20 personnes",
+    metaEn: "1 day · 2 to 20 people",
     priceFr: "990 € HT",
     priceEn: "€990",
+  },
+];
+
+const ON_REQUEST_ITEMS: ReadonlyArray<MenuItem> = [
+  {
+    key: "formation-claude",
+    href: "/contact",
+    labelFr: "Formation Claude",
+    labelEn: "Claude training",
+    metaFr: "1 jour · Chat · Cowork · Code",
+    metaEn: "1 day · Chat · Cowork · Code",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    isClaude: true,
   },
   {
     key: "dirigeants",
     href: "/interventions/dirigeants",
     labelFr: "Dirigeants · CODIR",
-    labelEn: "Executives",
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupFr: "CODIR · dès 2",
-    groupEn: "Leadership · 2+",
+    labelEn: "Executives & Leadership",
+    metaFr: "1 jour · CODIR · dès 2",
+    metaEn: "1 day · Leadership · 2+",
     priceFr: "Sur devis",
     priceEn: "On request",
   },
@@ -80,10 +89,8 @@ const MENU_ITEMS: ReadonlyArray<MenuItem> = [
     href: "/interventions/conference",
     labelFr: "Conférence",
     labelEn: "Talk",
-    durationFr: "1 journée",
-    durationEn: "1 day",
-    groupFr: "Effectif libre",
-    groupEn: "Open headcount",
+    metaFr: "1 journée · effectif libre",
+    metaEn: "1 day · open headcount",
     priceFr: "Sur devis",
     priceEn: "On request",
   },
@@ -92,140 +99,160 @@ const MENU_ITEMS: ReadonlyArray<MenuItem> = [
     href: "/contact",
     labelFr: "Sur demande particulière",
     labelEn: "Bespoke",
-    durationFr: "Selon besoin",
-    durationEn: "As needed",
-    groupFr: "Selon besoin",
-    groupEn: "As needed",
+    metaFr: "Selon besoin · sur mesure",
+    metaEn: "As needed · custom",
     priceFr: "Sur devis",
     priceEn: "On request",
   },
 ];
 
+function MenuItemLink({
+  item,
+  isFr,
+  onClose,
+}: {
+  item: MenuItem;
+  isFr: boolean;
+  onClose: () => void;
+}) {
+  // Anthropic Claude brand colors — exception anti-hex documentée pour
+  // identifier la formation outil-spécifique. Couleurs imposées par la marque
+  // Anthropic (peach + deep + cream bg).
+  const isClaude = item.isClaude === true;
+  return (
+    <Link
+      href={item.href as never}
+      onClick={onClose}
+      data-cta-tracking="header_interventions_format"
+      data-source-slug={item.key}
+      className={
+        isClaude
+          ? "group -mx-2 flex items-center justify-between gap-3 rounded-md border border-[#D97757]/30 px-2 py-1.5 transition hover:bg-[#FFF5EC] focus-visible:ring-2 focus-visible:ring-[#D97757] focus-visible:ring-offset-1 focus-visible:outline-none" // hex-ok: brand-anthropic-claude
+          : "group hover:bg-sand focus-visible:ring-terracotta -mx-2 flex items-baseline justify-between gap-3 rounded-md px-2 py-1.5 transition focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
+      }
+    >
+      {isClaude ? (
+        <ClaudeLogo
+          ariaLabel="Claude (Anthropic)"
+          className={"h-4 w-4 shrink-0 text-[#D97757]" /* */} // hex-ok: brand-anthropic-claude
+        />
+      ) : null}
+      <span className="min-w-0 flex-1">
+        <span
+          className={
+            isClaude
+              ? "block text-sm font-semibold tracking-tight text-[#9C3E1E] transition" // hex-ok: brand-anthropic-claude
+              : "text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
+          }
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          {isFr ? item.labelFr : item.labelEn}
+        </span>
+        <span
+          className={
+            isClaude ? "text-[11px] text-[#9C3E1E]/70" : "text-fg-muted text-[11px]" // hex-ok: brand-anthropic-claude
+          }
+        >
+          {isFr ? item.metaFr : item.metaEn}
+        </span>
+      </span>
+      <span
+        className={
+          isClaude
+            ? "shrink-0 text-[12px] font-semibold text-[#D97757] tabular-nums" // hex-ok: brand-anthropic-claude
+            : "text-terracotta-deep shrink-0 text-[12px] font-semibold tabular-nums"
+        }
+      >
+        {isFr ? item.priceFr : item.priceEn}
+      </span>
+    </Link>
+  );
+}
+
 export function HeaderInterventionsMenu({
   triggerLabel,
   isFr,
 }: HeaderInterventionsMenuProps): React.ReactNode {
-  const [open, setOpen] = React.useState(false);
-  const openTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const closeTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const wrapperRef = React.useRef<HTMLDivElement>(null);
-
-  const cancelTimers = () => {
-    if (openTimer.current) clearTimeout(openTimer.current);
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    openTimer.current = undefined;
-    closeTimer.current = undefined;
-  };
-
-  const handleEnter = () => {
-    cancelTimers();
-    openTimer.current = setTimeout(() => setOpen(true), HOVER_OPEN_DELAY_MS);
-  };
-
-  const handleLeave = () => {
-    cancelTimers();
-    closeTimer.current = setTimeout(() => setOpen(false), HOVER_CLOSE_DELAY_MS);
-  };
-
-  React.useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    const onClickOutside = (e: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onClickOutside);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onClickOutside);
-    };
-  }, [open]);
-
-  React.useEffect(() => () => cancelTimers(), []);
-
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div
-      ref={wrapperRef}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-      onFocus={() => {
-        cancelTimers();
-        setOpen(true);
-      }}
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
-          cancelTimers();
-          setOpen(false);
-        }
-      }}
-      className="relative"
+    <HeaderMegaMenu
+      triggerLabel={triggerLabel}
+      triggerHref="/interventions"
+      triggerTrackingId="header_interventions_megamenu_trigger"
+      panelLabel={triggerLabel}
+      panelAlign="left"
     >
-      <Link
-        href="/interventions"
-        aria-haspopup="true"
-        aria-expanded={open}
-        className="text-mocha-fg hover:text-mocha focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex items-center gap-1.5 rounded-sm px-1 text-[17px] font-semibold tracking-tight transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        data-cta-tracking="header_interventions_megamenu_trigger"
-      >
-        {triggerLabel}
-        <span
-          aria-hidden="true"
-          className={`text-mocha-fg/70 inline-block text-[10px] transition-transform ${open ? "rotate-180" : ""}`}
-        >
-          ▾
-        </span>
-      </Link>
+      {({ close }) => (
+        <div className="grid grid-cols-1 gap-0 sm:grid-cols-3">
+          {/* Col 1 — Tarifs fixes (Essentielle + Gagner du temps) */}
+          <div className="border-border/60 border-b p-5 sm:border-r sm:border-b-0">
+            <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
+              {isFr ? "Tarifs fixes" : "Fixed price"}
+            </p>
+            <ul className="space-y-1">
+              {FIXED_PRICE_ITEMS.map((item) => (
+                <li key={item.key}>
+                  <MenuItemLink item={item} isFr={isFr} onClose={close} />
+                </li>
+              ))}
+            </ul>
+            <p className="text-fg-muted mt-4 text-[11px] leading-snug">
+              {isFr
+                ? "Réservation directe sur le calendrier · confirmation immédiate."
+                : "Book directly on the calendar · instant confirmation."}
+            </p>
+          </div>
 
-      <div
-        role="region"
-        aria-label={triggerLabel}
-        className={`bg-paper text-fg shadow-card pointer-events-${open ? "auto" : "none"} border-border-strong/40 absolute top-full left-0 z-50 mt-3 w-[min(560px,90vw)] origin-top-left rounded-2xl border transition duration-150 ${
-          open ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
-        }`}
-      >
-        <div className="p-5">
-          <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
-            {isFr ? "5 familles de formats" : "5 format families"}
-          </p>
-          <ul className="space-y-1">
-            {MENU_ITEMS.map((item) => (
-              <li key={item.key}>
-                <Link
-                  href={item.href as never}
-                  onClick={() => setOpen(false)}
-                  data-cta-tracking="header_interventions_format"
-                  data-source-slug={item.key}
-                  className="group hover:bg-sand focus-visible:ring-terracotta -mx-2 flex items-baseline justify-between gap-3 rounded-md px-2 py-2 transition focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
-                >
-                  <span className="min-w-0 flex-1">
-                    <span
-                      className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {isFr ? item.labelFr : item.labelEn}
-                    </span>
-                    <span className="text-fg-muted text-[11px]">
-                      {isFr ? item.durationFr : item.durationEn} ·{" "}
-                      {isFr ? item.groupFr : item.groupEn}
-                    </span>
-                  </span>
-                  <span className="text-terracotta-deep shrink-0 text-[12px] font-semibold tabular-nums">
-                    {isFr ? item.priceFr : item.priceEn}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="border-border/60 mt-4 border-t pt-4">
+          {/* Col 2 — Sur devis (CODIR / Conférence / Sur demande) */}
+          <div className="border-border/60 border-b p-5 sm:border-r sm:border-b-0">
+            <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
+              {isFr ? "Sur devis" : "On request"}
+            </p>
+            <ul className="space-y-1">
+              {ON_REQUEST_ITEMS.map((item) => (
+                <li key={item.key}>
+                  <MenuItemLink item={item} isFr={isFr} onClose={close} />
+                </li>
+              ))}
+            </ul>
+            <p className="text-fg-muted mt-4 text-[11px] leading-snug">
+              {isFr
+                ? "Réponse devis sous 48 h ouvrées après cadrage par appel."
+                : "Quote reply within 48 business hours after framing call."}
+            </p>
+          </div>
+
+          {/* Col 3 — Hub */}
+          <div className="bg-halo-warm rounded-r-2xl p-5">
+            <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
+              {isFr ? "Tous les formats" : "All formats"}
+            </p>
+            <div
+              aria-hidden="true"
+              className="text-terracotta/70 mb-4 flex items-center justify-center"
+            >
+              <GraduationCap className="h-12 w-12" strokeWidth={1.5} />
+            </div>
+            <p
+              className="text-fg mb-4 text-base leading-tight font-semibold"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr ? (
+                <>
+                  Formez vos équipes à l&apos;IA{" "}
+                  <span className="text-terracotta italic">en 1 jour, sur site</span>.
+                </>
+              ) : (
+                <>
+                  Train your teams on AI{" "}
+                  <span className="text-terracotta italic">in 1 day, on site</span>.
+                </>
+              )}
+            </p>
             <Link
               href="/interventions"
-              onClick={() => setOpen(false)}
+              onClick={close}
               data-cta-tracking="header_interventions_hub"
+              data-source-target="/interventions"
               className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex w-full items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               {isFr ? "Voir tous les formats" : "See all formats"}
@@ -233,7 +260,7 @@ export function HeaderInterventionsMenu({
             </Link>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </HeaderMegaMenu>
   );
 }

@@ -9,13 +9,32 @@ import type { Locale } from "@/i18n/routing";
 import { INTERVENTION_TIERS } from "./pricing";
 
 // Sprint 14.10.3 — prix dérivés de `src/content/pricing.ts` (source unique).
-// Les 3 sous-tiers Intimiste/Standard/Complète restent ici (sous-format
-// d'Essentielle, hors scope pricing.ts V1 — à migrer Sprint 20+ admin).
 // `!` non-null : `intervention-essentielle` est garanti dans INTERVENTION_TIERS
 // (defense in depth — si supprimé, le typecheck d'autres callers cassera avant).
 const ESSENTIELLE_BASE_PRICE_EUR = INTERVENTION_TIERS.find(
   (t) => t.id === "intervention-essentielle",
 )!.priceFlat!;
+
+// Paliers d'effectif Essentielle pour le listing public — décision Will
+// 2026-05-08 : 3 tranches lisibles (2-8 / 9-15 / 16-30), prix fixe 490 € HT
+// pour la première, sur devis au-delà. Au-dessus de 30, voir « Sur demande
+// particulière » (card dédiée sur le listing).
+//
+// Note : `BookingCalendar` conserve un découpage interne plus fin (sous-tiers
+// 2-4/5-6/7-8) pour le flow de réservation — c'est intentionnel et ne
+// contredit pas ce listing : 490 € reste le prix d'entrée, les paliers
+// internes 5-6/7-8 ne sont accessibles que dans le tunnel de réservation.
+const ESSENTIELLE_PRICE_TIERS_FR: ReadonlyArray<{ size: string; price: string }> = [
+  { size: "2 à 8 personnes", price: "490 € HT" },
+  { size: "9 à 15 personnes", price: "790 € HT" },
+  { size: "16 à 30 personnes", price: "1 190 € HT" },
+];
+
+const ESSENTIELLE_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }> = [
+  { size: "2 to 8 people", price: "€490 excl. VAT" },
+  { size: "9 to 15 people", price: "€790 excl. VAT" },
+  { size: "16 to 30 people", price: "€1,190 excl. VAT" },
+];
 
 export type InterventionSlug = "essentielle" | "conference" | "dirigeants";
 
@@ -400,14 +419,9 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'automatisations pour gagner du temps dès le lendemain. Une journée de formation sur site, ressources prêtes à utiliser dès le retour au bureau.",
         duration: "1 journée sur site (9 h – 17 h)",
         durationDays: 1,
-        price: "à partir de 490 € HT",
-        priceTiers: [
-          { size: "2 à 8 personnes", price: "490 € HT" },
-          { size: "9 à 15 personnes", price: "Sur devis" },
-          { size: "16 à 30 personnes", price: "Sur devis" },
-          { size: "30 personnes et +", price: "Sur devis" },
-        ],
-        groupSize: "2 à 30 personnes et +",
+        price: `à partir de ${ESSENTIELLE_BASE_PRICE_EUR} € HT`,
+        priceTiers: ESSENTIELLE_PRICE_TIERS_FR,
+        groupSize: "2 à 30 personnes",
         format: "Sur site · France & international",
         audience: "TPE / PME / Grandes entreprises · sans pré-requis IA",
         outcomes: [
@@ -427,14 +441,9 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Discover AI applied to your day-to-day — tools, concrete uses, automation ideas to save time from day two. A one-day on-site training with ready-to-use takeaways from day one back at the office.",
         duration: "1 day on site (9 a.m. – 5 p.m.)",
         durationDays: 1,
-        price: "from €490 (excl. VAT)",
-        priceTiers: [
-          { size: "2 to 8 people", price: "€490 excl. VAT" },
-          { size: "9 to 15 people", price: "On request" },
-          { size: "16 to 30 people", price: "On request" },
-          { size: "30+ people", price: "On request" },
-        ],
-        groupSize: "2 to 30+ people",
+        price: `from €${ESSENTIELLE_BASE_PRICE_EUR} (excl. VAT)`,
+        priceTiers: ESSENTIELLE_PRICE_TIERS_EN,
+        groupSize: "2 to 30 people",
         format: "On site · France & international",
         audience: "Small / mid-market / enterprise · no AI prerequisites",
         outcomes: [

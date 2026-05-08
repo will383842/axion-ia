@@ -26,6 +26,7 @@ import { Illustration } from "@/components/visual/Illustration";
 import { InterventionsHeroSchema } from "@/components/sections/InterventionsHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTIONS, type InterventionAccent } from "@/content/interventions";
+import { ClaudeLogo } from "@/components/visual/ClaudeLogo";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -54,8 +55,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const TIGHT_X = "lg:px-6 xl:px-10";
 
+// `claude` est un accent local au listing /interventions, dédié à la card
+// « Formation Claude ». Anti-hex doctrine : exception assumée — ce sont les
+// couleurs officielles de la marque Anthropic (peach), pas des tokens de
+// design AxionIA. Encapsulés ici, n'impactent ni le theme global ni les
+// autres pages.
+type ListingAccent = InterventionAccent | "claude";
+
 const accentClasses: Record<
-  InterventionAccent,
+  ListingAccent,
   {
     badge: string;
     border: string;
@@ -107,11 +115,32 @@ const accentClasses: Record<
     chipBg: "bg-terracotta-soft",
     chipText: "text-terracotta-deep",
   },
+  // Anthropic Claude brand colors — exception anti-hex documentée pour la
+  // card « Formation Claude ». Couleurs imposées par la marque Anthropic
+  // (logo + monogramme), pas tokenisables en variantes Tailwind.
+  // hex-ok: brand-anthropic-claude
+  claude: {
+    badge: "bg-[#FFF5EC] text-[#9C3E1E] border border-[#D97757]/30", // hex-ok: brand-anthropic-claude
+    border: "border-[#D97757]/40 hover:border-[#D97757]", // hex-ok: brand-anthropic-claude
+    title: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
+    line: "bg-[#D97757]", // hex-ok: brand-anthropic-claude
+    cta: "bg-[#D97757] text-white hover:bg-[#B85F3E]", // hex-ok: brand-anthropic-claude
+    haloRing: "ring-[#D97757]/15", // hex-ok: brand-anthropic-claude
+    chipBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
+    chipText: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
+  },
 };
+
+interface ListingCardSubTier {
+  label: string;
+  range: string;
+  price: string;
+  isFeatured?: boolean;
+}
 
 interface ListingCard {
   key: string;
-  accent: InterventionAccent;
+  accent: ListingAccent;
   isDark: boolean;
   badge: string;
   title: string;
@@ -129,6 +158,11 @@ interface ListingCard {
   surface: string;
   isFlagship?: boolean;
   isHighlight?: boolean;
+  /**
+   * Grille de sous-tarifs par tranche d'effectif. Affichée sous le tagline
+   * pour les formats multi-prix (Essentielle, Approfondie). Sprint 14.10.4.
+   */
+  subTierGrid?: ReadonlyArray<ListingCardSubTier>;
 }
 
 function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
@@ -144,25 +178,41 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
   const confHref = isFr ? conference.pathFr : conference.pathEn;
   const dirHref = isFr ? dirigeants.pathFr : dirigeants.pathEn;
 
-  // 4 paliers Essentielle — tous pointent vers /interventions/essentielle.
-  // Le palier 2-8 personnes est l'offre phare (490 € HT, prix fixe).
-  // Les 3 autres paliers sont sur devis (effectif > 8 → tarification ad hoc).
-  const essTiers = ess.priceTiers ?? [];
+  // 1 card Essentielle (1 jour) avec 3 paliers d'effectif visibles inline :
+  // 2-8 personnes → 490 € HT (prix fixe), 9-15 → Sur devis, 16-30 → Sur devis.
+  // Au-delà de 30 personnes : voir card « Sur demande particulière » plus bas.
+  const essSubTierGrid: ReadonlyArray<ListingCardSubTier> = (ess.priceTiers ?? []).map(
+    (t, idx) => ({
+      label: isFr ? `Palier ${idx + 1}` : `Tier ${idx + 1}`,
+      range: t.size,
+      price: t.price,
+      // Premier palier mis en avant (490 € HT prix d'entrée).
+      ...(idx === 0 ? { isFeatured: true as const } : {}),
+    }),
+  );
+
+  // Prix d'entrée Essentielle (palier 2-8 personnes). Aligné sur
+  // INTERVENTION_TIERS dans pricing.ts via summary.priceTiers[0].
+  const essEntryPriceLabel = ess.priceTiers?.[0]?.price
+    ? isFr
+      ? `dès ${ess.priceTiers[0].price}`
+      : `from ${ess.priceTiers[0].price}`
+    : ess.price;
 
   return [
-    // Card 1 — Essentielle 2-8 personnes (offre phare)
+    // Card 1 — Essentielle 1 jour (offre phare avec 3 paliers d'effectif inline)
     {
-      key: "essentielle-2-8",
+      key: "essentielle",
       accent: "terracotta",
       isDark: false,
       badge: isFr ? "Offre phare" : "Flagship",
       title: isFr ? "Essentielle" : "Essential",
-      titleEm: isFr ? "2 à 8 personnes" : "2 to 8 people",
+      titleEm: isFr ? "1 journée découverte" : "1-day discovery",
       duration: isFr ? "1 journée sur site" : "1 day on site",
       durationLabel: isFr ? "1 jour" : "1 day",
-      price: essTiers[0]?.price ?? (isFr ? "490 € HT" : "€490"),
-      priceLabel: essTiers[0]?.price ?? (isFr ? "490 € HT" : "€490"),
-      groupSize: essTiers[0]?.size ?? (isFr ? "2 à 8 personnes" : "2 to 8 people"),
+      price: essEntryPriceLabel,
+      priceLabel: essEntryPriceLabel,
+      groupSize: isFr ? "2 à 30 personnes" : "2 to 30 people",
       audience: ess.audience,
       benefitTagline: ess.benefitTagline,
       outcomes: ess.outcomes,
@@ -170,66 +220,7 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       ctaLabel: ess.ctaLabel,
       surface: "bg-paper",
       isFlagship: true,
-    },
-    // Card 2 — Essentielle 9-15
-    {
-      key: "essentielle-9-15",
-      accent: "terracotta",
-      isDark: false,
-      badge: isFr ? "Effectif moyen" : "Mid headcount",
-      title: isFr ? "Essentielle" : "Essential",
-      titleEm: isFr ? "9 à 15 personnes" : "9 to 15 people",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: essTiers[1]?.price ?? (isFr ? "Sur devis" : "On request"),
-      priceLabel: essTiers[1]?.price ?? (isFr ? "Sur devis" : "On request"),
-      groupSize: essTiers[1]?.size ?? (isFr ? "9 à 15 personnes" : "9 to 15 people"),
-      audience: ess.audience,
-      benefitTagline: ess.benefitTagline,
-      outcomes: ess.outcomes,
-      href: essHref,
-      ctaLabel: isFr ? "Découvrir l'Essentielle" : "Discover the Essential",
-      surface: "bg-halo-warm",
-    },
-    // Card 3 — Essentielle 16-30
-    {
-      key: "essentielle-16-30",
-      accent: "terracotta",
-      isDark: false,
-      badge: isFr ? "Grande équipe" : "Large team",
-      title: isFr ? "Essentielle" : "Essential",
-      titleEm: isFr ? "16 à 30 personnes" : "16 to 30 people",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: essTiers[2]?.price ?? (isFr ? "Sur devis" : "On request"),
-      priceLabel: essTiers[2]?.price ?? (isFr ? "Sur devis" : "On request"),
-      groupSize: essTiers[2]?.size ?? (isFr ? "16 à 30 personnes" : "16 to 30 people"),
-      audience: ess.audience,
-      benefitTagline: ess.benefitTagline,
-      outcomes: ess.outcomes,
-      href: essHref,
-      ctaLabel: isFr ? "Découvrir l'Essentielle" : "Discover the Essential",
-      surface: "bg-paper",
-    },
-    // Card 4 — Essentielle 30+ (sur devis)
-    {
-      key: "essentielle-30plus",
-      accent: "terracotta",
-      isDark: false,
-      badge: isFr ? "Très grande équipe" : "Very large team",
-      title: isFr ? "Essentielle" : "Essential",
-      titleEm: isFr ? "30 personnes et +" : "30+ people",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: essTiers[3]?.price ?? (isFr ? "Sur devis" : "On request"),
-      priceLabel: essTiers[3]?.price ?? (isFr ? "Sur devis" : "On request"),
-      groupSize: essTiers[3]?.size ?? (isFr ? "30 personnes et +" : "30+ people"),
-      audience: ess.audience,
-      benefitTagline: ess.benefitTagline,
-      outcomes: ess.outcomes,
-      href: essHref,
-      ctaLabel: isFr ? "Découvrir l'Essentielle" : "Discover the Essential",
-      surface: "bg-halo-warm",
+      subTierGrid: essSubTierGrid,
     },
     // Card 5 — Gagner du temps (NEW format)
     {
@@ -265,6 +256,43 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       ctaLabel: isFr ? "Réserver Gagner du temps" : "Book Save Time",
       surface: "bg-paper",
       isHighlight: true,
+    },
+    // Card — Formation Claude (Chat · Cowork · Code) — outil-spécifique,
+    // logo + encadrement aux couleurs Anthropic. Demande Will 2026-05-08.
+    // Prix non précisé → « Sur devis » par défaut, à compléter quand Will
+    // donnera le tarif fixe.
+    {
+      key: "formation-claude",
+      accent: "claude",
+      isDark: false,
+      badge: isFr ? "Outil · Claude" : "Tool · Claude",
+      title: isFr ? "Formation Claude" : "Claude training",
+      titleEm: isFr ? "Chat · Cowork · Code" : "Chat · Cowork · Code",
+      duration: isFr ? "1 journée sur site" : "1 day on site",
+      durationLabel: isFr ? "1 jour" : "1 day",
+      price: isFr ? "Sur devis" : "On request",
+      priceLabel: isFr ? "Sur devis" : "On request",
+      groupSize: isFr ? "Selon besoin" : "As needed",
+      audience: isFr
+        ? "Équipes qui veulent maîtriser Claude (Anthropic) en profondeur"
+        : "Teams that want to master Claude (Anthropic) in depth",
+      benefitTagline: isFr
+        ? "Une journée 100 % dédiée à Claude — l'assistant Anthropic. Trois volets : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (Claude Code en CLI, génération et refactoring). Vos équipes ressortent autonomes sur l'outil de pointe IA."
+        : "A full day 100 % focused on Claude — Anthropic's assistant. Three tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, memory) and Code (Claude Code CLI, generation and refactoring). Your teams leave autonomous on the cutting-edge AI tool.",
+      outcomes: isFr
+        ? [
+            "Maîtrise des 3 surfaces Claude : Chat (web), Cowork (Projects), Code (CLI)",
+            "Workflows IA avancés sur Claude : prompts longs, mémoire de projet, fichiers attachés",
+            "Pour les équipes tech : Claude Code en CLI, génération et refactoring de code",
+          ]
+        : [
+            "Mastery of all 3 Claude surfaces: Chat (web), Cowork (Projects), Code (CLI)",
+            "Advanced AI workflows on Claude: long prompts, project memory, file attachments",
+            "For tech teams: Claude Code CLI, code generation and refactoring",
+          ],
+      href: "/contact",
+      ctaLabel: isFr ? "Demander un devis Claude" : "Request Claude quote",
+      surface: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     },
     // Card 6 — CODIR / Dirigeants
     {
@@ -685,6 +713,31 @@ export default async function InterventionsListing({ params }: Props) {
                 </div>
 
                 <div className="p-7 sm:p-8">
+                  {/* Logo Claude visible en haut de la card Formation Claude.
+                      Marqueur visuel fort qui distingue immédiatement cette
+                      formation outil-spécifique des formats généraux. */}
+                  {card.accent === "claude" ? (
+                    <div className="mb-5 flex items-center gap-3">
+                      {/* hex-ok: brand-anthropic-claude */}
+                      <span
+                        className={
+                          "flex h-12 w-12 items-center justify-center rounded-xl bg-[#D97757]/10" // hex-ok: brand-anthropic-claude
+                        }
+                      >
+                        <ClaudeLogo
+                          ariaLabel="Claude (Anthropic)"
+                          className={"h-7 w-7 text-[#D97757]" /* hex-ok */} // hex-ok: brand-anthropic-claude
+                        />
+                      </span>
+                      <span
+                        className={
+                          "text-[12px] font-semibold tracking-[0.14em] text-[#9C3E1E] uppercase" // hex-ok: brand-anthropic-claude
+                        }
+                      >
+                        {isFr ? "Logo Claude · Anthropic" : "Claude logo · Anthropic"}
+                      </span>
+                    </div>
+                  ) : null}
                   <span
                     className={cn(
                       "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide uppercase",
@@ -717,6 +770,62 @@ export default async function InterventionsListing({ params }: Props) {
                   <p className={cn("mt-4 text-[15.5px] leading-relaxed", txtSoft)}>
                     {card.benefitTagline}
                   </p>
+
+                  {card.subTierGrid && card.subTierGrid.length > 0 ? (
+                    <div className="mt-6">
+                      <p
+                        className={cn(
+                          "mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase",
+                          txtMuted,
+                        )}
+                      >
+                        {isFr ? "Tarifs selon l'effectif" : "Pricing by headcount"}
+                      </p>
+                      <div className="grid gap-2.5 sm:grid-cols-3">
+                        {card.subTierGrid.map((t) => (
+                          <div
+                            key={t.label}
+                            className={cn(
+                              "relative flex flex-col items-start rounded-xl border p-3",
+                              t.isFeatured
+                                ? "border-terracotta bg-paper shadow-subtle"
+                                : "border-border/60 bg-paper/60",
+                            )}
+                          >
+                            {t.isFeatured ? (
+                              <span className="bg-terracotta text-mocha-fg absolute -top-2 left-3 rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase">
+                                ★ {isFr ? "Recommandé" : "Recommended"}
+                              </span>
+                            ) : null}
+                            <span
+                              className={cn(
+                                "text-[10px] font-bold tracking-[0.14em] uppercase",
+                                txtMuted,
+                              )}
+                            >
+                              {t.label}
+                            </span>
+                            <span
+                              className={cn(
+                                "mt-1 text-lg leading-none font-bold tabular-nums sm:text-xl",
+                                t.isFeatured ? "text-terracotta-deep" : txt,
+                              )}
+                            >
+                              {t.price}
+                            </span>
+                            <span
+                              className={cn(
+                                "mt-1 text-[12px] leading-tight font-semibold",
+                                txtSoft,
+                              )}
+                            >
+                              {t.range}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
 
                   <div className="mt-6">
                     <p
