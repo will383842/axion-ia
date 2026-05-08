@@ -9,8 +9,9 @@ import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { IMPLEMENTATIONS } from "@/content/implementation";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -53,6 +54,28 @@ export default async function ImplementationByTechPage({ params }: Props) {
       label: isFr ? "Par technologie" : "By technology",
     },
   ];
+
+  // ItemList JSON-LD — expose les 9 prestations IMPLEMENTATIONS au crawler
+  // (AEO/GEO 2026 : LLMs résolvent « quelles prestations IA AxionIA par
+  // brique technologique ? » avec URL par item — chaque slug a sa page
+  // dédiée /implementation/${slug}).
+  const detailPath = isFr ? "/implementation/par-techno" : "/implementation/by-technology";
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: detailPath,
+    name: isFr
+      ? "9 prestations d'implémentation IA AxionIA · par technologie"
+      : "9 AxionIA AI implementation services · by technology",
+    items: IMPLEMENTATIONS.map((item, idx) => {
+      const c = item[loc];
+      return {
+        position: idx + 1,
+        name: c.title,
+        url: `${SITE_URL}/${loc}/implementation/${item.slug}`,
+        description: c.answer.slice(0, 200),
+      };
+    }),
+  });
 
   return (
     <>
@@ -104,6 +127,8 @@ export default async function ImplementationByTechPage({ params }: Props) {
         }
         tone="dark"
       />
+
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }
