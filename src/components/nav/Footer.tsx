@@ -59,10 +59,35 @@ export async function Footer() {
       href: `/implantations/${r.slug}`,
       label: r.nameFr,
     })),
-    ...pilotVilles.map((v) => ({
-      href: `/implantations/${v.region}/${v.slug}`,
-      label: `${v.nameFr} ★`,
-    })),
+    ...pilotVilles.flatMap((v) => {
+      const links: Array<{ href: string; label: string }> = [
+        {
+          href: `/implantations/${v.region}/${v.slug}`,
+          label: `${v.nameFr} ★`,
+        },
+      ];
+      // Sprint 14.10.1 Commit C — sous-liens services × ville pilote.
+      // Maillage interne dense vers /<service>/par-ville/<slug>.
+      if (v.copy?.services?.audit) {
+        links.push({
+          href: `/audit/par-ville/${v.slug}`,
+          label: isFr ? `Audit IA ${v.nameFr}` : `AI audit ${v.nameFr}`,
+        });
+      }
+      if (v.copy?.services?.interventions) {
+        links.push({
+          href: `/interventions/par-ville/${v.slug}`,
+          label: isFr ? `Interventions IA ${v.nameFr}` : `AI sessions ${v.nameFr}`,
+        });
+      }
+      if (v.copy?.services?.implementation) {
+        links.push({
+          href: `/implementation/par-ville/${v.slug}`,
+          label: isFr ? `Implémentation IA ${v.nameFr}` : `AI implementation ${v.nameFr}`,
+        });
+      }
+      return links;
+    }),
   ];
 
   return (

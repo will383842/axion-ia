@@ -26,6 +26,14 @@ interface VilleItem {
   nameFr: string;
   region: string;
   departementLabel?: string;
+  /**
+   * Services × ville pilote disponibles (Sprint 14.10.1 Commit C). Si la
+   * ville a un copy.services.<svc>, le service apparaît en sous-lien sous
+   * la card ville. Ex Paris : audit + interventions + implementation actifs.
+   */
+  hasServicesAudit?: boolean;
+  hasServicesInterventions?: boolean;
+  hasServicesImplementation?: boolean;
 }
 
 export interface HeaderImplantationsMenuProps {
@@ -180,7 +188,7 @@ export function HeaderImplantationsMenu({
               {isFr ? "Villes pilotes" : "Pilot cities"}
             </p>
             {pilotVilles.length > 0 ? (
-              <ul className="space-y-1">
+              <ul className="space-y-3">
                 {pilotVilles.map((v) => (
                   <li key={v.slug}>
                     <Link
@@ -200,11 +208,57 @@ export function HeaderImplantationsMenu({
                           {v.nameFr}
                         </span>
                         <span className="text-fg-muted text-[11px]">
-                          {isFr ? "Page gold standard" : "Gold standard page"}
+                          {isFr ? "Page locale + 3 services" : "Local page + 3 services"}
                           {v.departementLabel ? ` · ${v.departementLabel}` : ""}
                         </span>
                       </span>
                     </Link>
+                    {/* Sous-liens services × ville pilote (Sprint 14.10.1 Commit C) */}
+                    {v.hasServicesAudit ||
+                    v.hasServicesInterventions ||
+                    v.hasServicesImplementation ? (
+                      <ul className="border-border/40 mt-1 ml-6 flex flex-wrap gap-x-3 gap-y-1 border-l pl-3">
+                        {v.hasServicesAudit ? (
+                          <li>
+                            <Link
+                              href={`/audit/par-ville/${v.slug}` as never}
+                              onClick={() => setOpen(false)}
+                              data-cta-tracking="header_megamenu_service_audit"
+                              data-source-ville={v.slug}
+                              className="text-primary hover:text-primary-hover text-[11px] font-semibold tracking-tight underline-offset-2 hover:underline"
+                            >
+                              {isFr ? "Audit IA" : "AI audit"}
+                            </Link>
+                          </li>
+                        ) : null}
+                        {v.hasServicesInterventions ? (
+                          <li>
+                            <Link
+                              href={`/interventions/par-ville/${v.slug}` as never}
+                              onClick={() => setOpen(false)}
+                              data-cta-tracking="header_megamenu_service_interventions"
+                              data-source-ville={v.slug}
+                              className="text-terracotta-deep hover:text-terracotta text-[11px] font-semibold tracking-tight underline-offset-2 hover:underline"
+                            >
+                              {isFr ? "Interventions IA" : "AI sessions"}
+                            </Link>
+                          </li>
+                        ) : null}
+                        {v.hasServicesImplementation ? (
+                          <li>
+                            <Link
+                              href={`/implementation/par-ville/${v.slug}` as never}
+                              onClick={() => setOpen(false)}
+                              data-cta-tracking="header_megamenu_service_implementation"
+                              data-source-ville={v.slug}
+                              className="text-sage hover:text-fg text-[11px] font-semibold tracking-tight underline-offset-2 hover:underline"
+                            >
+                              {isFr ? "Implémentation IA" : "AI implementation"}
+                            </Link>
+                          </li>
+                        ) : null}
+                      </ul>
+                    ) : null}
                   </li>
                 ))}
               </ul>

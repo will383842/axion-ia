@@ -65,6 +65,12 @@ export async function Header() {
     nameFr: v.nameFr,
     region: v.region,
     ...(v.departementLabel !== undefined ? { departementLabel: v.departementLabel } : {}),
+    // Sprint 14.10.1 Commit C — flags services × ville pilote pour exposer
+    // /audit/par-ville/<slug>, /interventions/par-ville/<slug>, etc. dans
+    // les sous-liens du mega-menu si copy.services.<svc> renseigné.
+    hasServicesAudit: !!v.copy?.services?.audit,
+    hasServicesInterventions: !!v.copy?.services?.interventions,
+    hasServicesImplementation: !!v.copy?.services?.implementation,
   }));
 
   return (
