@@ -32,6 +32,14 @@ export const routing = defineRouting({
       fr: "/interventions/dirigeants",
       en: "/interventions/executives",
     },
+    "/interventions/gagner-du-temps": {
+      fr: "/interventions/gagner-du-temps",
+      en: "/interventions/save-time",
+    },
+    "/interventions/intervention-claude": {
+      fr: "/interventions/intervention-claude",
+      en: "/interventions/intervention-claude",
+    },
 
     // Module 2 — Audit & optimisation (pyramide 4 niveaux 2026-05-07)
     "/audit": { fr: "/audit", en: "/audit" },

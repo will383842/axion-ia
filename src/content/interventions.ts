@@ -15,12 +15,18 @@ import {
 } from "./pricing";
 
 // Sprint 14.10.3 / 14.10.5 — prix dérivés de `src/content/pricing.ts` (source unique).
-// Aucun montant ne doit être hardcodé ici : tout pointe vers ESSENTIELLE_SUB_TIERS.
+// Aucun montant ne doit être hardcodé ici : tout pointe vers les tiers centraux.
 const ESSENTIELLE_TIER = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
 const ESSENTIELLE_BASE_PRICE_EUR = ESSENTIELLE_TIER.priceFlat!;
 const DIRIGEANTS_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
 const DIRIGEANTS_PRICE_FR = formatPrice(DIRIGEANTS_TIER, "fr");
 const DIRIGEANTS_PRICE_EN = formatPrice(DIRIGEANTS_TIER, "en");
+const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
+const TEMPS_PRICE_FR = formatPrice(TEMPS_TIER, "fr");
+const TEMPS_PRICE_EN = formatPrice(TEMPS_TIER, "en");
+const CLAUDE_TIER = getTierById(INTERVENTION_TIERS, "intervention-claude");
+const CLAUDE_PRICE_FR = formatPrice(CLAUDE_TIER, "fr");
+const CLAUDE_PRICE_EN = formatPrice(CLAUDE_TIER, "en");
 
 // Paliers d'effectif Essentielle pour le listing public — Sprint 14.10.5
 // (Will 2026-05-08). Source unique = `pricing.ts::ESSENTIELLE_SUB_TIERS`
@@ -43,7 +49,12 @@ const ESSENTIELLE_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }>
     price: formatAmount(sub.priceFlat, "en"),
   }));
 
-export type InterventionSlug = "essentielle" | "conference" | "dirigeants";
+export type InterventionSlug =
+  | "essentielle"
+  | "conference"
+  | "dirigeants"
+  | "gagner-du-temps"
+  | "intervention-claude";
 
 /** Accent visuel par intervention — conserve la palette Editorial v3. */
 export type InterventionAccent = "terracotta" | "primary" | "sage" | "mocha";
@@ -440,7 +451,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         durationDays: 1,
         price: `à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_FR,
-        groupSize: "2 à 8 personnes (au-delà : Approfondie 2 jours)",
+        groupSize: "2 à 30 personnes",
         format: "Sur site · France & international",
         audience: "TPE / PME / Grandes entreprises · sans pré-requis IA",
         outcomes: [
@@ -462,7 +473,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         durationDays: 1,
         price: `from ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_EN,
-        groupSize: "2 to 8 people (above: 2-day Deep Dive)",
+        groupSize: "2 to 30 people",
         format: "On site · France & international",
         audience: "Small / mid-market / enterprise · no AI prerequisites",
         outcomes: [
@@ -483,7 +494,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       title: "L'intervention IA",
       titleEm: "Essentielle",
       answer:
-        "Une journée de formation IA sur site avec votre équipe (2 à 8 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'automatisations applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux.",
+        "Une journée de formation IA sur site avec votre équipe (2 à 30 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'automatisations applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux.",
       priceEur: ESSENTIELLE_BASE_PRICE_EUR,
       ctaPrimary: "Réserver une intervention",
       ctaSecondary: "Voir les cas concrets",
@@ -524,7 +535,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "duration",
           question: "Quelle est la durée de l'intervention ?",
           answer:
-            "Une journée complète sur site (9 h - 17 h), précédée d'un call de cadrage de 15 min en visio.",
+            "Une journée complète sur site (9 h - 17 h), précédée d'un call de cadrage en visio pour préparer le format.",
         },
         {
           id: "audience",
@@ -536,7 +547,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "team-size",
           question: "Combien de participants ?",
           answer:
-            "Jusqu'à 10 collaborateurs. Au-delà, voir l'intervention « Vos équipes gagnent 1h/jour ».",
+            "Trois paliers d'effectif : 2 à 8 personnes (490 € HT), 9 à 15 (790 € HT), 16 à 30 (1 190 € HT). Au-delà de 30 collaborateurs : voir « Sur demande particulière » pour un format adapté.",
         },
         {
           id: "deliverables",
@@ -603,7 +614,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       titleEm: "Essential",
       titleTail: " AI session",
       answer:
-        "A one-day on-site AI training with your team (2 to 8 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply automation ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels.",
+        "A one-day on-site AI training with your team (2 to 30 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply automation ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels.",
       priceEur: ESSENTIELLE_BASE_PRICE_EUR,
       ctaPrimary: "Book a session",
       ctaSecondary: "See case studies",
@@ -642,7 +653,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           id: "duration",
           question: "How long is the session?",
-          answer: "A full day on site (9 a.m. - 5 p.m.), preceded by a 15-min framing call.",
+          answer:
+            "A full day on site (9 a.m. - 5 p.m.), preceded by a framing video call to prep the format.",
         },
         {
           id: "audience",
@@ -653,7 +665,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           id: "team-size",
           question: "How many participants?",
-          answer: "Up to 10 team members. Beyond, see 'Your teams save 1h a day'.",
+          answer:
+            "Three headcount tiers: 2 to 8 people (€490), 9 to 15 (€790), 16 to 30 (€1,190). Beyond 30: see 'Bespoke session' for an adapted format.",
         },
         {
           id: "deliverables",
@@ -667,7 +680,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         "Book the next available session. The on-site calendar shows live availability.",
       metaSeo: {
         title: `Essential AI session · AxionIA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
-        description: `A one-day on-site AI training (2 to 8 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, from ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
+        description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, from ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
       },
       daySchedule: {
         title: "Day-by-day breakdown",
@@ -765,26 +778,138 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     fr: {
       ...makeFr({
-        eyebrow: "Format : 1 journée conférence",
-        title: "Ce que l'IA peut faire",
-        titleEm: "pour vous",
+        eyebrow: "Conférence collective · 1 journée · effectif libre",
+        title: "Conférence",
+        titleEm: "Acculturation IA collective",
         answer:
-          "Conférence d'une journée tous niveaux : panorama clair des usages IA réellement opérationnels en 2026, démos live, ateliers pratiques, sessions Q&A. Format collectif standardisé pour acculturer rapidement un grand groupe.",
+          "Une journée de conférence collective tous niveaux pour acculturer rapidement un grand groupe : panorama clair des usages IA réellement opérationnels en 2026, démos live, sessions Q&A. Format standardisé, effectif libre — du petit comité à la plénière. Idéal pour séminaire, kick-off ou journée d'entreprise.",
         ctaPrimary: "Demander un devis conférence",
         faqIntro: "conférence",
       }),
+      benefits: [
+        {
+          title: "Acculturer toute l'entreprise en 1 jour",
+          description:
+            "Format collectif standardisé pour passer un grand groupe au même niveau IA — sans dépendance individuelle aux profils ni aux métiers.",
+        },
+        {
+          title: "Panorama IA 2026 + démos live",
+          description:
+            "État de l'art clair des usages IA réellement opérationnels, illustré par des démos live qui parlent à tous les profils.",
+        },
+        {
+          title: "Q&A ouverte qui libère",
+          description:
+            "Une heure de Q&A pour confronter l'IA aux réalités terrain de vos équipes — peurs adressées, curiosité libérée, envie d'essayer enclenchée.",
+        },
+        {
+          title: "Ressources réutilisables après",
+          description:
+            "Référentiel d'outils + 5 à 10 idées d'usages applicables le lendemain — pour que la conférence laisse une trace, pas juste une impression.",
+        },
+      ],
+      metrics: [
+        { number: "1", suffix: "jour", label: "Format unique standardisé" },
+        { number: "5-10", suffix: "usages", label: "Idées partagées en fin de session" },
+        { number: "0", suffix: "limite", label: "Effectif libre · plénière OK" },
+      ],
+      faqs: [
+        {
+          id: "audience",
+          question: "Pour qui ?",
+          answer:
+            "Conférence collective tous niveaux IA, tous profils, tous métiers. Le format le plus rapide pour acculturer un grand effectif sans micro-cibler.",
+        },
+        {
+          id: "headcount",
+          question: "Combien de personnes maximum ?",
+          answer:
+            "Pas de limite : du petit comité à la plénière. Adaptée aux séminaires, kick-off, journées d'entreprise, conventions internes.",
+        },
+        {
+          id: "remote",
+          question: "Présentiel ou distanciel ?",
+          answer:
+            "Sur site recommandé pour l'engagement et les démos live. Format remote possible sur demande, devis adapté.",
+        },
+        {
+          id: "deliverables",
+          question: "Que reste-t-il après ?",
+          answer:
+            "Un référentiel d'outils + idées d'usages partagés en fin de session, réutilisables et prêts à être diffusés en interne.",
+        },
+      ],
+      ctaBlockTitle: "Acculturez toute l'entreprise à l'IA",
+      ctaBlockDescription:
+        "Demandez un devis conférence — réponse sous 48 h ouvrées. Format adapté à votre effectif et à vos enjeux.",
       daySchedule: CONFERENCE_SCHEDULE_FR,
     },
     en: {
       ...makeEn({
-        eyebrow: "Format: 1-day talk",
-        title: "What AI can do",
-        titleEm: "for you",
+        eyebrow: "Collective talk · 1 day · open headcount",
+        title: "Talk",
+        titleEm: "Collective AI awareness",
         answer:
-          "A 1-day talk for all levels: clear panorama of AI uses actually operational in 2026, live demos, hands-on workshops, Q&A. Standardised collective format to quickly upskill a large group.",
+          "A one-day collective talk for all AI levels to quickly upskill a large group: clear panorama of AI uses actually operational in 2026, live demos, Q&A. Standardised format, open headcount — from small audience to plenary. Ideal for seminars, kick-offs or company days.",
         ctaPrimary: "Request a talk quote",
         faqIntro: "talk",
       }),
+      benefits: [
+        {
+          title: "Upskill the whole company in 1 day",
+          description:
+            "Standardised collective format to bring a large group to the same AI level — no individual dependency on profiles or roles.",
+        },
+        {
+          title: "2026 AI panorama + live demos",
+          description:
+            "Clear state of the art of AI uses actually operational, illustrated with live demos that speak to every profile.",
+        },
+        {
+          title: "Open Q&A that unlocks",
+          description:
+            "An hour of Q&A to confront AI with your teams' field realities — fears addressed, curiosity unlocked, urge to try sparked.",
+        },
+        {
+          title: "Reusable takeaways",
+          description:
+            "Tool reference + 5 to 10 use ideas applicable the next day — so the talk leaves a trace, not just an impression.",
+        },
+      ],
+      metrics: [
+        { number: "1", suffix: "day", label: "Single standardised format" },
+        { number: "5-10", suffix: "uses", label: "Ideas shared by end of session" },
+        { number: "0", suffix: "limit", label: "Open headcount · plenary OK" },
+      ],
+      faqs: [
+        {
+          id: "audience",
+          question: "Who is it for?",
+          answer:
+            "Collective talk for all AI levels, all profiles, all roles. The fastest format to upskill a large group without micro-targeting.",
+        },
+        {
+          id: "headcount",
+          question: "How many people maximum?",
+          answer:
+            "No limit: from small audience to plenary. Fits seminars, kick-offs, company days, internal conventions.",
+        },
+        {
+          id: "remote",
+          question: "On site or remote?",
+          answer:
+            "On site recommended for engagement and live demos. Remote format on request, adjusted quote.",
+        },
+        {
+          id: "deliverables",
+          question: "What remains afterwards?",
+          answer:
+            "A tool reference + use ideas shared at end of session — reusable and ready to broadcast internally.",
+        },
+      ],
+      ctaBlockTitle: "Upskill the whole company to AI",
+      ctaBlockDescription:
+        "Request a talk quote — reply within 48 business hours. Format adapted to your headcount and stakes.",
       daySchedule: CONFERENCE_SCHEDULE_EN,
     },
   },
@@ -976,6 +1101,379 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       daySchedule: DIRIGEANTS_SCHEDULE_EN,
     },
   },
+  // Sprint 14.10.6 — page produit dédiée pour les 2 formats nouveaux du listing
+  // (Will, 2026-05-08). Avant : CTAs pointaient direct vers /reserver et
+  // /contact, ce qui sautait l'étape « pourquoi je devrais cliquer » côté
+  // visiteur. Maintenant : page complète avec hero + benefits + outline + FAQs.
+  {
+    slug: "gagner-du-temps",
+    pathFr: "/interventions/gagner-du-temps",
+    pathEn: "/interventions/save-time",
+    accent: "primary",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Une journée pour gagner du temps concrètement : automatisations IA sur les tâches répétitives, prompts efficaces, intégration dans le flux de travail quotidien. Vos équipes ressortent avec des heures gagnées chaque semaine.",
+        duration: "1 journée sur site",
+        durationDays: 1,
+        price: TEMPS_PRICE_FR,
+        groupSize: "2 à 20 personnes",
+        format: "Sur site · France & international",
+        audience: "Équipes opérationnelles · TPE, PME, ETI",
+        outcomes: [
+          "Vos équipes identifient leurs tâches répétitives chronophages et y appliquent l'IA",
+          "Chaque participant repart avec 5 à 10 automatisations testées sur ses propres outils",
+          "Gain mesurable dès le retour au bureau — plusieurs heures par personne et par semaine",
+        ],
+        outline: [
+          "Call de cadrage en visio pour préparer la journée sur vos outils réels",
+          "Jour J · ateliers pratiques sur les chronophages identifiés + tests live des automatisations",
+          "Ressources fournies en fin de journée : prompts types, référentiel d'outils, plan d'application personnel",
+        ],
+        ctaLabel: "Réserver Gagner du temps",
+      },
+      en: {
+        benefitTagline:
+          "One day to save time concretely: AI automations on repetitive tasks, effective prompts, integration into daily workflow. Your teams leave with hours saved every week.",
+        duration: "1 day on site",
+        durationDays: 1,
+        price: TEMPS_PRICE_EN,
+        groupSize: "2 to 20 people",
+        format: "On site · France & international",
+        audience: "Operational teams · small to mid-market",
+        outcomes: [
+          "Your teams spot their time-consuming repetitive tasks and apply AI to them",
+          "Each participant leaves with 5 to 10 automations tested on their own tools",
+          "Measurable gains the day back at the office — hours per person, per week",
+        ],
+        outline: [
+          "Framing call by video to prep the day on your real tools",
+          "Day · hands-on workshops on identified time-sinks + live automation tests",
+          "Takeaways at end of day: prompt templates, tool reference, personal application plan",
+        ],
+        ctaLabel: "Book Save Time",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Productivité équipes · 1 journée sur site",
+        title: "Gagner du temps",
+        titleEm: "concrètement",
+        answer: `Une journée à ${TEMPS_PRICE_FR} sur site, dédiée à la productivité de vos équipes (2 à 20 personnes). On identifie les tâches répétitives qui mangent leurs heures, on les automatise avec l'IA, on intègre dans leur flux de travail quotidien. Vos équipes repartent avec 5 à 10 automatisations testées et un gain mesurable de plusieurs heures par semaine et par personne.`,
+        ctaPrimary: "Réserver Gagner du temps",
+        faqIntro: "équipes",
+      }),
+      benefits: [
+        {
+          title: "Identifier les chronophages réels",
+          description:
+            "Audit collaboratif des tâches répétitives qui mangent les heures de vos équipes — pas une formation théorique, on travaille sur leurs vraies tâches.",
+        },
+        {
+          title: "5 à 10 automatisations testées",
+          description:
+            "Chaque participant repart avec ses automatisations IA prêtes à utiliser, testées en live sur ses propres outils — pas des slides, des choses qui tournent.",
+        },
+        {
+          title: "Prompts efficaces & garde-fous",
+          description:
+            "Bibliothèque de prompts types par profil métier + cadre d'usage pour éviter les erreurs courantes (hallucinations, qualité de sortie, confidentialité).",
+        },
+        {
+          title: "Gain mesurable dès le lendemain",
+          description:
+            "Plusieurs heures gagnées par semaine et par collaborateur dès le retour au bureau — productivité visible sans phase de transition.",
+        },
+      ],
+      metrics: [
+        { number: "990", suffix: "€ HT", label: "Tarif fixe, sans surprise" },
+        { number: "5-10", suffix: "automations", label: "Testées par participant" },
+        { number: "+2", suffix: "h/jour", label: "Gain moyen par collaborateur" },
+      ],
+      faqs: [
+        {
+          id: "headcount",
+          question: "Quelle taille d'équipe ?",
+          answer:
+            "De 2 à 20 personnes pour garder l'aspect atelier (chacun manipule ses outils). Au-delà, voir l'Essentielle (3 paliers jusqu'à 30 personnes) ou la Conférence (effectif libre).",
+        },
+        {
+          id: "tools",
+          question: "On travaille sur quels outils ?",
+          answer:
+            "Vos vrais outils du quotidien (Office 365, Google Workspace, votre CRM, votre ERP, etc.) + les outils IA grand public (ChatGPT, Claude, Copilot). Le call de cadrage permet de préparer.",
+        },
+        {
+          id: "level",
+          question: "Faut-il un niveau IA préalable ?",
+          answer:
+            "Non. La journée s'adapte au niveau réel des participants — du débutant à l'utilisateur régulier. Aucun pré-requis technique.",
+        },
+        {
+          id: "deliverables",
+          question: "Que reste-t-il après ?",
+          answer:
+            "Bibliothèque de prompts types, référentiel d'outils, plan d'application personnel par participant + suivi à 30 jours sur demande.",
+        },
+      ],
+      ctaBlockTitle: "Gagnez plusieurs heures par semaine et par personne",
+      ctaBlockDescription: `Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe ${TEMPS_PRICE_FR}, pas de surprise.`,
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Team productivity · 1 day on site",
+        title: "Save Time",
+        titleEm: "concretely",
+        answer: `A ${TEMPS_PRICE_EN} day on site, dedicated to your teams' productivity (2 to 20 people). We identify the repetitive tasks eating their hours, automate them with AI, embed them in their daily workflow. Your teams leave with 5 to 10 automations tested and a measurable gain of several hours per week and per person.`,
+        ctaPrimary: "Book Save Time",
+        faqIntro: "teams",
+      }),
+      benefits: [
+        {
+          title: "Spot the real time-sinks",
+          description:
+            "Collaborative audit of the repetitive tasks eating your teams' hours — no theory, we work on their actual tasks.",
+        },
+        {
+          title: "5 to 10 automations tested",
+          description:
+            "Each participant leaves with their AI automations ready to use, tested live on their own tools — no slides, things that actually run.",
+        },
+        {
+          title: "Effective prompts & guardrails",
+          description:
+            "Prompt template library by role + usage framework to avoid common mistakes (hallucinations, output quality, confidentiality).",
+        },
+        {
+          title: "Measurable gains the next day",
+          description:
+            "Hours saved per week per employee from day one back at the office — visible productivity, no transition phase.",
+        },
+      ],
+      metrics: [
+        { number: "€990", suffix: "flat", label: "Fixed fee, no surprises" },
+        { number: "5-10", suffix: "automations", label: "Tested per participant" },
+        { number: "+2", suffix: "h/day", label: "Average gain per employee" },
+      ],
+      faqs: [
+        {
+          id: "headcount",
+          question: "What team size?",
+          answer:
+            "From 2 to 20 people to keep the workshop feel (everyone uses their own tools). Beyond, see the Essential (3 tiers up to 30 people) or the Talk (open headcount).",
+        },
+        {
+          id: "tools",
+          question: "Which tools do we work on?",
+          answer:
+            "Your real day-to-day tools (Office 365, Google Workspace, your CRM, your ERP, etc.) + the mainstream AI tools (ChatGPT, Claude, Copilot). The framing call lets us prep.",
+        },
+        {
+          id: "level",
+          question: "Is prior AI level required?",
+          answer:
+            "No. The day adapts to the participants' real level — from beginner to regular user. No technical prerequisite.",
+        },
+        {
+          id: "deliverables",
+          question: "What remains afterwards?",
+          answer:
+            "Prompt template library, tool reference, personal application plan per participant + 30-day follow-up on request.",
+        },
+      ],
+      ctaBlockTitle: "Save several hours per week per person",
+      ctaBlockDescription: `Book the next date — live calendar, instant confirmation. Fixed fee ${TEMPS_PRICE_EN}, no surprise.`,
+    },
+  },
+  {
+    slug: "intervention-claude",
+    pathFr: "/interventions/intervention-claude",
+    pathEn: "/interventions/intervention-claude",
+    // Note : `accent` est typé `InterventionAccent` (palette globale).
+    // L'accent peach Anthropic est appliqué uniquement sur le listing
+    // /interventions (override local `claude`). Sur la page produit
+    // dédiée, on retient `terracotta` qui est le tone le plus proche
+    // visuellement du peach Claude dans la palette AxionIA standard.
+    accent: "terracotta",
+    summary: {
+      fr: {
+        benefitTagline:
+          "Une journée 100 % dédiée à Claude (Anthropic). Trois volets : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (Claude Code en CLI, génération et refactoring). Vos équipes ressortent autonomes sur l'outil de pointe IA.",
+        duration: "1 journée sur site",
+        durationDays: 1,
+        price: CLAUDE_PRICE_FR,
+        groupSize: "Selon besoin (2 à 12 conseillé)",
+        format: "Sur site · France & international",
+        audience: "Équipes qui veulent maîtriser Claude en profondeur",
+        outcomes: [
+          "Maîtrise des 3 surfaces Claude : Chat (web/app), Cowork (Projects, mémoire de projet, fichiers attachés), Code (CLI)",
+          "Workflows IA avancés sur Claude : prompts longs et structurés, system prompts, tool use, agents",
+          "Pour les équipes tech : Claude Code en CLI, génération et refactoring de code, intégration dans le flow git",
+        ],
+        outline: [
+          "Call de cadrage en visio pour comprendre vos profils et adapter les 3 volets à votre contexte",
+          "Jour J · matin Chat (rédaction, analyse, synthèse) · midi Cowork (Projects, fichiers, mémoire) · après-midi Code (CLI, refactoring)",
+          "Ressources fournies : prompts maison, exemples d'utilisation, intégrations recommandées",
+        ],
+        ctaLabel: "Demander un devis Claude",
+      },
+      en: {
+        benefitTagline:
+          "A full day 100 % focused on Claude (Anthropic). Three tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, memory) and Code (Claude Code CLI, generation and refactoring). Your teams leave autonomous on the cutting-edge AI tool.",
+        duration: "1 day on site",
+        durationDays: 1,
+        price: CLAUDE_PRICE_EN,
+        groupSize: "As needed (2 to 12 recommended)",
+        format: "On site · France & international",
+        audience: "Teams that want to master Claude in depth",
+        outcomes: [
+          "Mastery of all 3 Claude surfaces: Chat (web/app), Cowork (Projects, project memory, file attachments), Code (CLI)",
+          "Advanced AI workflows on Claude: long structured prompts, system prompts, tool use, agents",
+          "For tech teams: Claude Code CLI, code generation and refactoring, git flow integration",
+        ],
+        outline: [
+          "Framing call by video to understand your profiles and adapt the 3 tracks to your context",
+          "Day · morning Chat (writing, analysis, synthesis) · noon Cowork (Projects, files, memory) · afternoon Code (CLI, refactoring)",
+          "Takeaways: in-house prompts, usage examples, recommended integrations",
+        ],
+        ctaLabel: "Request a Claude quote",
+      },
+    },
+    fr: {
+      ...makeFr({
+        eyebrow: "Formation outil-spécifique · Claude (Anthropic) · 1 journée",
+        title: "Formation Claude",
+        titleEm: "Chat · Cowork · Code",
+        answer:
+          "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Pour les équipes qui veulent maîtriser l'outil IA de pointe en profondeur. Tarif sur devis selon vos profils et votre contexte.",
+        ctaPrimary: "Demander un devis Claude",
+        faqIntro: "équipes Claude",
+      }),
+      benefits: [
+        {
+          title: "Maîtrise des 3 surfaces Claude",
+          description:
+            "Chat (web/app pour la rédaction et l'analyse), Cowork (Projects, mémoire de projet, fichiers attachés), Code (Claude Code CLI pour générer et refactorer). Les trois usages, dans la même journée.",
+        },
+        {
+          title: "Workflows IA avancés",
+          description:
+            "Prompts longs et structurés, system prompts, tool use, premiers agents — au-delà de la simple « question dans une boîte de chat ».",
+        },
+        {
+          title: "Volet Code pour équipes tech",
+          description:
+            "Claude Code en CLI : génération de code, refactoring, lecture de codebase, intégration dans le flow git existant — gain de productivité dev mesurable.",
+        },
+        {
+          title: "Outil-spécifique, pas générique",
+          description:
+            "Contrairement à une formation IA générale, on creuse uniquement Claude. Vous ressortez expert·e d'un outil — pas survoleur·euse de cinq.",
+        },
+      ],
+      metrics: [
+        { number: "3", suffix: "volets", label: "Chat · Cowork · Code" },
+        { number: "1", suffix: "outil", label: "Claude (Anthropic), en profondeur" },
+        { number: "100", suffix: "%", label: "Pratique sur vos cas réels" },
+      ],
+      faqs: [
+        {
+          id: "why-claude",
+          question: "Pourquoi une formation dédiée à Claude ?",
+          answer:
+            "Parce qu'une formation générique « tous les chatbots IA » survole. Claude (Anthropic) a des particularités fortes (Projects, mémoire, fichiers, Code CLI) qui méritent une journée dédiée pour vraiment exploiter le potentiel.",
+        },
+        {
+          id: "code-track",
+          question: "Le volet Code est-il obligatoire ?",
+          answer:
+            "Non. Si votre équipe n'est pas tech, le volet Code peut être remplacé par un approfondissement Cowork (Projects multi-fichiers, automatisations métier). Le call de cadrage adapte les 3 volets à votre contexte.",
+        },
+        {
+          id: "level",
+          question: "Faut-il déjà utiliser Claude ?",
+          answer:
+            "Non. La journée part du niveau zéro et monte progressivement. Si vos équipes ont déjà une pratique, on accélère et on creuse plus loin.",
+        },
+        {
+          id: "tools",
+          question: "Faut-il des comptes Claude payants ?",
+          answer:
+            "Recommandé pour la journée (Claude Pro / Team) — sinon les fonctionnalités Projects et Code ne sont pas accessibles. On peut conseiller le bon plan dans le call de cadrage.",
+        },
+      ],
+      ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
+      ctaBlockDescription:
+        "Demandez un devis adapté à vos profils et à votre contexte — réponse sous 48 h ouvrées.",
+    },
+    en: {
+      ...makeEn({
+        eyebrow: "Tool-specific training · Claude (Anthropic) · 1 day",
+        title: "Claude training",
+        titleEm: "Chat · Cowork · Code",
+        answer:
+          "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). For teams that want to master the cutting-edge AI tool in depth. Quoted on demand based on your profiles and context.",
+        ctaPrimary: "Request a Claude quote",
+        faqIntro: "Claude teams",
+      }),
+      benefits: [
+        {
+          title: "Mastery of all 3 Claude surfaces",
+          description:
+            "Chat (web/app for writing and analysis), Cowork (Projects, project memory, file attachments), Code (Claude Code CLI to generate and refactor). All three uses, in the same day.",
+        },
+        {
+          title: "Advanced AI workflows",
+          description:
+            "Long structured prompts, system prompts, tool use, first agents — beyond the simple 'question in a chat box'.",
+        },
+        {
+          title: "Code track for tech teams",
+          description:
+            "Claude Code CLI: code generation, refactoring, codebase reading, integration into existing git flow — measurable dev productivity gains.",
+        },
+        {
+          title: "Tool-specific, not generic",
+          description:
+            "Unlike a general AI training, we dig only into Claude. You leave expert on one tool — not a tourist of five.",
+        },
+      ],
+      metrics: [
+        { number: "3", suffix: "tracks", label: "Chat · Cowork · Code" },
+        { number: "1", suffix: "tool", label: "Claude (Anthropic), in depth" },
+        { number: "100", suffix: "%", label: "Hands-on on your real cases" },
+      ],
+      faqs: [
+        {
+          id: "why-claude",
+          question: "Why a Claude-specific training?",
+          answer:
+            "Because a generic 'all AI chatbots' training stays surface. Claude (Anthropic) has strong specifics (Projects, memory, files, Code CLI) that deserve a dedicated day to truly tap the potential.",
+        },
+        {
+          id: "code-track",
+          question: "Is the Code track mandatory?",
+          answer:
+            "No. If your team isn't tech, the Code track can be replaced with deeper Cowork (multi-file Projects, business automations). The framing call adapts the 3 tracks to your context.",
+        },
+        {
+          id: "level",
+          question: "Do we need to already use Claude?",
+          answer:
+            "No. The day starts from zero and ramps up. If your teams already practice, we accelerate and go further.",
+        },
+        {
+          id: "tools",
+          question: "Do we need paid Claude accounts?",
+          answer:
+            "Recommended for the day (Claude Pro / Team) — otherwise Projects and Code features aren't accessible. We can advise on the right plan in the framing call.",
+        },
+      ],
+      ctaBlockTitle: "Master Claude (Anthropic) in depth",
+      ctaBlockDescription:
+        "Request a quote adapted to your profiles and context — reply within 48 business hours.",
+    },
+  },
 ];
 
 export function getIntervention(slug: InterventionSlug): InterventionContent {
@@ -1045,7 +1543,7 @@ function makeFr(args: {
         id: "fit",
         question: `Cette intervention est-elle adaptée à mes ${args.faqIntro} ?`,
         answer:
-          "Oui — la formation est standardisée et conçue pour s'adresser à tous les profils. Aucun pré-requis IA. Un call de cadrage de 15 min avant la journée valide l'adéquation.",
+          "Oui — la formation est standardisée et conçue pour s'adresser à tous les profils. Aucun pré-requis IA. Un call de cadrage en visio avant la journée valide l'adéquation.",
       },
       {
         id: "support",
@@ -1148,7 +1646,7 @@ function makeEn(args: {
         id: "fit",
         question: `Is this session right for my ${args.faqIntro}?`,
         answer:
-          "Yes — the training is standardised and designed for all profiles. No AI prerequisites. A 15-min framing call before the day confirms the fit.",
+          "Yes — the training is standardised and designed for all profiles. No AI prerequisites. A framing video call before the day confirms the fit.",
       },
       {
         id: "support",

@@ -268,8 +268,8 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
             "Each participant leaves with 5 to 10 automations tested on their own tools",
             "Measurable gains the day back at the office — hours per person, per week",
           ],
-      href: "/reserver",
-      ctaLabel: isFr ? "Réserver Gagner du temps" : "Book Save Time",
+      href: "/interventions/gagner-du-temps",
+      ctaLabel: isFr ? "Découvrir Gagner du temps" : "Discover Save Time",
       surface: "bg-paper",
       isHighlight: true,
     },
@@ -306,8 +306,8 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
             "Advanced AI workflows on Claude: long prompts, project memory, file attachments",
             "For tech teams: Claude Code CLI, code generation and refactoring",
           ],
-      href: "/contact",
-      ctaLabel: isFr ? "Demander un devis Claude" : "Request Claude quote",
+      href: "/interventions/formation-claude",
+      ctaLabel: isFr ? "Découvrir Formation Claude" : "Discover Claude training",
       surface: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     },
     // Card 6 — Direction (CODIR/COMEX) — repositionnement 2026-05-08 : pas
@@ -375,12 +375,12 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
         : "For setups that don't fit our standard formats: split-site day, mixed audiences, ultra-specific content, multi-day, offsite, international. We frame by call, build it together, then quote.",
       outcomes: isFr
         ? [
-            "Cadrage par visio (30 min) pour comprendre votre besoin et vos contraintes",
+            "Cadrage par visio pour comprendre votre besoin et vos contraintes",
             "Programme personnalisé construit ensemble — durée, contenu, modalités",
             "Devis détaillé sous 48 h ouvrées · facture après l'intervention",
           ]
         : [
-            "Framing video call (30 min) to understand your need and constraints",
+            "Framing video call to understand your need and constraints",
             "Personalised programme built together — duration, content, format",
             "Detailed quote within 48 business hours · invoice after the session",
           ],

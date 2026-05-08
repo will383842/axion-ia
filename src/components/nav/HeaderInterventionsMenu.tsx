@@ -71,8 +71,8 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
     href: "/interventions/essentielle",
     labelFr: "Essentielle",
     labelEn: "Essential",
-    metaFr: "1 jour · 2 à 8 personnes",
-    metaEn: "1 day · 2 to 8 people",
+    metaFr: "1 jour · 2 à 30 personnes",
+    metaEn: "1 day · 2 to 30 people",
     priceFr: entryPriceFr("intervention-essentielle"),
     priceEn: entryPriceEn("intervention-essentielle"),
   },
@@ -88,7 +88,7 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
   },
   {
     key: "gagner-du-temps",
-    href: "/reserver",
+    href: "/interventions/gagner-du-temps",
     labelFr: "Gagner du temps",
     labelEn: "Save Time",
     metaFr: "1 jour · 2 à 20 personnes",
@@ -111,7 +111,7 @@ const FIXED_PRICE_ITEMS: ReadonlyArray<MenuItem> = [
 const ON_REQUEST_ITEMS: ReadonlyArray<MenuItem> = [
   {
     key: "formation-claude",
-    href: "/contact",
+    href: "/interventions/formation-claude",
     labelFr: "Formation Claude",
     labelEn: "Claude training",
     metaFr: "1 jour · Chat · Cowork · Code",

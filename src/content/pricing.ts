@@ -246,30 +246,39 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
 // ============================================================================
 
 /**
- * Sous-tiers Essentielle (1 jour) — variations selon nombre de participants.
- * Migré depuis `content/interventions.ts::ESSENTIELLE_TIERS`. Source unique.
+ * Sous-tiers Essentielle (1 jour) — Sprint 14.10.5c (Will 2026-05-08).
  *
- * NOTE Will 2026-05-08 : tarifs actuels (490/790/1190) ne sont PAS dégressifs
- * par participant — à ajuster manuellement si besoin (cf. priceFlat).
- *   2-4 pers : 490 € → 122,5 €/pers
- *   5-6 pers : 790 € → 131,7 €/pers (hausse, à revoir)
- *   7-8 pers : 1 190 € → 148,8 €/pers (hausse, à revoir)
+ * Brackets canoniques imposés par Will : 2-8 / 9-15 / 16-30 personnes.
+ * Identiques à Approfondie (même grille pour tous les formats).
+ *
+ *   2-8 pers   :   490 € HT (prix d'entrée flagship)
+ *   9-15 pers  :   790 € HT (recommandé · effectif moyen)
+ *   16-30 pers : 1 190 € HT (grande équipe)
+ *
+ * Dégressivité €/pers (au pire de chaque bracket) :
+ *     61 € → 53 € → 40 €/pers ✅ vraiment dégressif
+ *
+ * Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
+ *
+ * IDs `essentielle-intimiste/standard/complete` conservés pour compat
+ * avec les URLs `?tier=intimiste` du BookingCalendar (les LABELS décrivent
+ * le type de groupe — petit / moyen / grand — pas la fourchette précise).
  */
 export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "essentielle-intimiste",
     labelFr: "Intimiste",
     labelEn: "Intimate",
-    rangeFr: "2 à 4 personnes",
-    rangeEn: "2 to 4 people",
+    rangeFr: "2 à 8 personnes",
+    rangeEn: "2 to 8 people",
     priceFlat: 490,
   },
   {
     id: "essentielle-standard",
     labelFr: "Standard",
     labelEn: "Standard",
-    rangeFr: "5 à 6 personnes",
-    rangeEn: "5 to 6 people",
+    rangeFr: "9 à 15 personnes",
+    rangeEn: "9 to 15 people",
     priceFlat: 790,
     isFeatured: true,
   },
@@ -277,50 +286,45 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     id: "essentielle-complete",
     labelFr: "Complète",
     labelEn: "Complete",
-    rangeFr: "7 à 8 personnes",
-    rangeEn: "7 to 8 people",
+    rangeFr: "16 à 30 personnes",
+    rangeEn: "16 to 30 people",
     priceFlat: 1190,
   },
 ];
 
 /**
- * Sous-tiers Approfondie (2 jours) — Sprint 14.10.5 (Will 2026-05-08).
+ * Sous-tiers Approfondie (2 jours) — Sprint 14.10.5c (Will 2026-05-08).
  *
- * Logique de cohérence stricte avec Essentielle (Will : « 490 → 1890 illogique ») :
+ * Brackets identiques à Essentielle (Will : « pas 2-4 mais 2-8, pas 5-6
+ * mais 9-15, pas 7-8 mais 16-30 »). Cohérence stricte avec Essentielle :
  *   Approfondie N pers (2j) = Essentielle N pers (1j) × 1.8
- *   Le coefficient 1.8 reflète le coût marginal du 2e jour (~80 % du 1er
- *   jour : prof déjà mobilisé sur site, logement+repas déjà payés, donc
- *   pas un doublement strict).
+ *   Le coefficient 1.8 reflète le coût marginal du 2e jour (~80 % du 1er :
+ *   prof déjà mobilisé, logement+repas déjà payés, pas doublement strict).
  *
- *   2-4 pers  :   880 € HT (= 490 × 1.8 arrondi)   ← cellule intimiste
- *   5-6 pers  : 1 420 € HT (= 790 × 1.8 arrondi)   ← standard recommandé
- *   7-8 pers  : 2 140 € HT (= 1190 × 1.8 arrondi)  ← cellule complète
- *   9-15 pers : 2 990 € HT (extrapolation × 1.8)   ← équipe
- *   15-30 pers: 4 990 € HT (extrapolation × 1.8)   ← département
+ *   2-8 pers   :   880 € HT (=  490 × 1.8 arrondi)
+ *   9-15 pers  : 1 420 € HT (=  790 × 1.8 arrondi)
+ *   16-30 pers : 2 140 € HT (= 1190 × 1.8 arrondi)
  *
- *   Dégressivité €/pers (au pire de chaque bracket) :
- *     220 → 237 → 268 → 199 → 166 → 113 €/pers
- *   Le saut sur 7-8 (268 €/pers) est attendu : c'est la borne haute du
- *   format intimiste. Au-delà, on bascule en équipe avec dégressivité
- *   nette (199 → 166 → 113).
+ * Dégressivité €/pers (au pire de chaque bracket) :
+ *     110 € → 95 € → 71 €/pers ✅ vraiment dégressif
  *
- *   Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
+ * Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
  */
 export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "approfondie-intimiste",
     labelFr: "Intimiste",
     labelEn: "Intimate",
-    rangeFr: "2 à 4 personnes",
-    rangeEn: "2 to 4 people",
+    rangeFr: "2 à 8 personnes",
+    rangeEn: "2 to 8 people",
     priceFlat: 880,
   },
   {
     id: "approfondie-standard",
     labelFr: "Standard",
     labelEn: "Standard",
-    rangeFr: "5 à 6 personnes",
-    rangeEn: "5 to 6 people",
+    rangeFr: "9 à 15 personnes",
+    rangeEn: "9 to 15 people",
     priceFlat: 1420,
     isFeatured: true,
   },
@@ -328,25 +332,9 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     id: "approfondie-complete",
     labelFr: "Complète",
     labelEn: "Complete",
-    rangeFr: "7 à 8 personnes",
-    rangeEn: "7 to 8 people",
+    rangeFr: "16 à 30 personnes",
+    rangeEn: "16 to 30 people",
     priceFlat: 2140,
-  },
-  {
-    id: "approfondie-equipe",
-    labelFr: "Équipe",
-    labelEn: "Team",
-    rangeFr: "9 à 15 personnes",
-    rangeEn: "9 to 15 people",
-    priceFlat: 2990,
-  },
-  {
-    id: "approfondie-departement",
-    labelFr: "Département",
-    labelEn: "Department",
-    rangeFr: "15 à 30 personnes",
-    rangeEn: "15 to 30 people",
-    priceFlat: 4990,
   },
 ];
 
@@ -390,9 +378,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     groupSizeEn: "2 to 30 people",
     subTiers: APPROFONDIE_SUB_TIERS,
     descriptionFr:
-      "Approfondissement IA sur deux journées consécutives — même grille d'effectif qu'Essentielle (cellules 2-4 / 5-6 / 7-8) + équipes 9-15 et départements 15-30.",
+      "Approfondissement IA sur deux journées consécutives — même grille d'effectif qu'Essentielle (2-8 / 9-15 / 16-30 personnes), tarif × 1.8 pour le 2e jour.",
     descriptionEn:
-      "Two-day AI deep dive — same headcount grid as Essential (2-4 / 5-6 / 7-8 cells) plus 9-15 teams and 15-30 departments.",
+      "Two-day AI deep dive — same headcount grid as Essential (2-8 / 9-15 / 16-30 people), price × 1.8 for the 2nd day.",
   },
   {
     id: "intervention-conference",
