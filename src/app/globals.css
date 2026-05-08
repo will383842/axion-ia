@@ -1072,3 +1072,9 @@
   font-size: 13px;
   padding: 10px 0;
 }
+
+/* M9 T2.5 — Mono input pour JSON */
+.admin-mono {
+  font-family: var(--font-inconsolata, monospace);
+  font-size: 12px;
+}
