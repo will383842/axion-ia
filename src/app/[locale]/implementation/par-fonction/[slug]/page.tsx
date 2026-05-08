@@ -8,8 +8,9 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { AUTOMATISATIONS, getAutomatisationByLocaleSlug } from "@/content/automatisations";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -66,6 +67,41 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
     },
     { href: detailPath, label: copy.cardTitle },
   ];
+
+  // Service JSON-LD — la page représente une catégorie d'automatisations
+  // proposées comme service (pattern aligné /audit, /interventions). Sans
+  // priceEur car le devis est forfaitaire variable par item.
+  const serviceJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path: detailPath,
+    name: copy.metaTitle,
+    description: copy.metaDescription,
+    serviceType: isFr ? "Automatisation IA" : "AI automation",
+    area: "FR/EU",
+  });
+
+  // ItemList JSON-LD — expose les automatisations du catalogue de la
+  // catégorie au crawler (AEO/GEO 2026 : LLMs résolvent « quelles
+  // automatisations IA AxionIA sur la fonction X ? »). Items sans URL
+  // car ils n'ont pas de page dédiée — name + description suffisent
+  // pour citabilité.
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: copy.itemsTitle,
+    url: `${SITE_URL}/${loc}${detailPath}`,
+    numberOfItems: copy.items.length,
+    itemListElement: copy.items.map((item, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      item: {
+        "@type": "Service",
+        name: item.title,
+        description: item.benefit,
+        audience: { "@type": "Audience", audienceType: item.audience },
+      },
+    })),
+  } as const;
 
   return (
     <>
@@ -145,6 +181,9 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
         }
         tone="mocha"
       />
+
+      <JsonLd data={serviceJsonLd} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }
