@@ -20,7 +20,13 @@ export type TelegramTag =
   | "AUDIT"
   | "AUTO"
   | "CONTACT"
-  | "NEWSLETTER";
+  | "NEWSLETTER"
+  // ops tags Sprint 23
+  | "DEPLOY"
+  | "INCIDENT"
+  | "BACKUP"
+  | "MONITORING"
+  | "SECURITY";
 
 export interface TelegramMessage {
   tag: TelegramTag;
@@ -64,4 +70,28 @@ export async function sendTelegram(msg: TelegramMessage): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+// ─── Ops alert helpers (Sprint 23 / M11) ─────────────────────────────────────
+
+/** Alert ops critique : déploiement, incident, échec backup. */
+export async function alertOps(
+  tag: "DEPLOY" | "INCIDENT" | "BACKUP" | "MONITORING" | "SECURITY",
+  body: string,
+  options?: { silent?: boolean },
+): Promise<boolean> {
+  return sendTelegram({ tag, body, silent: options?.silent ?? false });
+}
+
+/** Alert incident production avec stack trace + URL. */
+export async function alertIncident(
+  title: string,
+  details: { url?: string; statusCode?: number; error?: string; userId?: string },
+): Promise<boolean> {
+  const lines = [`*${title}*`];
+  if (details.url) lines.push(`URL : \`${details.url}\``);
+  if (details.statusCode) lines.push(`Status : ${details.statusCode}`);
+  if (details.userId) lines.push(`User : ${details.userId}`);
+  if (details.error) lines.push(`\nErreur :\n\`\`\`\n${details.error.slice(0, 500)}\n\`\`\``);
+  return sendTelegram({ tag: "INCIDENT", body: lines.join("\n"), silent: false });
 }

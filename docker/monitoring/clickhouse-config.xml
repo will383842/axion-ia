@@ -1,0 +1,8 @@
+<clickhouse>
+  <logger>
+    <level>warning</level>
+    <console>true</console>
+  </logger>
+  <!-- Bind only to internal network -->
+  <listen_host>0.0.0.0</listen_host>
+</clickhouse>

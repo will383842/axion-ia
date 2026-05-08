@@ -1,0 +1,129 @@
+# Stack monitoring Axion-IA — Sprint 23 (M11 monitoring).
+#
+# Déploiement self-hosted des 3 outils observability hors stack app
+# (séparation services pour resilience : si app DOWN, monitoring stay UP).
+#
+# Services :
+#   - sentry-stack (image getsentry/self-hosted simplifiée — production
+#     réelle = clone https://github.com/getsentry/self-hosted + ./install.sh)
+#   - plausible (analytics privacy-first GDPR sans cookies)
+#   - plausible-clickhouse (DB columnar pour Plausible)
+#   - plausible-postgres (DB Plausible config users/sites)
+#   - uptime-kuma (monitoring uptime + ping + SSL expiry)
+#
+# Lance via : docker compose -f docker/monitoring/docker-compose.monitoring.yml up -d
+#
+# Réseau : `axion-ia-monitoring` isolé du réseau app principal.
+# Caddy (stack app) reverse-proxy chaque outil sur son sous-domaine :
+#   - sentry.axion-ia.com    → sentry-web:9000
+#   - plausible.axion-ia.com → plausible:8000
+#   - uptime.axion-ia.com    → uptime-kuma:3001
+
+networks:
+  axion-ia-monitoring:
+    name: axion-ia-monitoring
+  axion-ia-shared:
+    external: true
+    name: axion-ia_default
+
+services:
+  # ─── Plausible Analytics ─────────────────────────────────────────────
+  plausible-postgres:
+    image: postgres:16-alpine
+    container_name: axion-ia-plausible-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${PLAUSIBLE_PG_PASSWORD:?required}
+      POSTGRES_DB: plausible_db
+      TZ: Europe/Paris
+    volumes:
+      - plausible_pg_data:/var/lib/postgresql/data
+    networks:
+      - axion-ia-monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d plausible_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  plausible-clickhouse:
+    image: clickhouse/clickhouse-server:24.12-alpine
+    container_name: axion-ia-plausible-ch
+    restart: unless-stopped
+    volumes:
+      - plausible_ch_data:/var/lib/clickhouse
+      - ./clickhouse-config.xml:/etc/clickhouse-server/config.d/logging.xml:ro
+      - ./clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
+    networks:
+      - axion-ia-monitoring
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+  plausible:
+    image: ghcr.io/plausible/community-edition:v3.0.1
+    container_name: axion-ia-plausible
+    restart: unless-stopped
+    command: sh -c "/entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    depends_on:
+      plausible-postgres:
+        condition: service_healthy
+      plausible-clickhouse:
+        condition: service_started
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      BASE_URL: ${PLAUSIBLE_BASE_URL:-https://plausible.axion-ia.com}
+      SECRET_KEY_BASE: ${PLAUSIBLE_SECRET_KEY:?required}
+      TOTP_VAULT_KEY: ${PLAUSIBLE_TOTP_KEY:?required}
+      DATABASE_URL: postgres://postgres:${PLAUSIBLE_PG_PASSWORD}@plausible-postgres:5432/plausible_db
+      CLICKHOUSE_DATABASE_URL: http://plausible-clickhouse:8123/plausible_events_db
+      MAILER_EMAIL: noreply@axion-ia.com
+      SMTP_HOST_ADDR: ${SMTP_HOST:-mail.axion-ia.com}
+      SMTP_HOST_PORT: ${SMTP_PORT:-587}
+      SMTP_USER_NAME: ${SMTP_USER}
+      SMTP_USER_PWD: ${SMTP_PASSWORD}
+      DISABLE_REGISTRATION: "invite_only"
+    networks:
+      - axion-ia-monitoring
+      - axion-ia-shared
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.5"
+
+  # ─── Uptime Kuma ─────────────────────────────────────────────────────
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: axion-ia-uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - uptime_kuma_data:/app/data
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      UPTIME_KUMA_PORT: 3001
+      TZ: Europe/Paris
+    networks:
+      - axion-ia-monitoring
+      - axion-ia-shared
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+
+volumes:
+  plausible_pg_data:
+  plausible_ch_data:
+  uptime_kuma_data:

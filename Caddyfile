@@ -87,3 +87,41 @@ axion-ia.com, www.axion-ia.com {
 		health_timeout 5s
 	}
 }
+
+# ─── Monitoring sous-domaines (Sprint 23 / M11) ─────────────────────────────
+# Reverse-proxy chaque outil self-hosted sur son sous-domaine.
+# Cloudflare proxied (DDoS basic + caching).
+
+sentry.axion-ia.com {
+	encode zstd br gzip
+	reverse_proxy localhost:9000 {
+		flush_interval -1
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Frame-Options DENY
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+}
+
+plausible.axion-ia.com {
+	encode zstd br gzip
+	reverse_proxy localhost:8000
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options nosniff
+		# Plausible script.js doit être cacheable côté browser
+		Cache-Control "public, max-age=86400"
+	}
+}
+
+uptime.axion-ia.com {
+	encode zstd br gzip
+	reverse_proxy localhost:3001
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Frame-Options DENY
+		X-Content-Type-Options nosniff
+	}
+}

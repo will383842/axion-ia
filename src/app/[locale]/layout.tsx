@@ -8,6 +8,7 @@ import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
+import { Plausible } from "@/components/analytics/Plausible";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
@@ -151,6 +152,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           {/* P-304 — WebVitals dépend de `useLocale()` next-intl, doit donc
               être enfant du provider sinon prerender throw. */}
           <WebVitals />
+          {/* Plausible Analytics self-hosted (Sprint 23 / M11) — no-op si
+              NEXT_PUBLIC_PLAUSIBLE_DOMAIN absent. afterInteractive donc
+              n'impacte pas LCP. */}
+          <Plausible />
         </NextIntlClientProvider>
         <script
           type="application/ld+json"
