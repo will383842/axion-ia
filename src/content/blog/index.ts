@@ -242,19 +242,18 @@ export function getSectorLabel(sector: BlogSector, locale: "fr" | "en"): string 
   return (locale === "fr" ? SECTOR_LABELS_FR : SECTOR_LABELS_EN)[sector];
 }
 
+// Classification INSEE officielle (4 tailles) — cf. types.ts.
 const SIZE_LABELS_FR: Record<BlogCompanySize, string> = {
   tpe: "TPE",
   pme: "PME",
-  gme: "Grandes PME",
   eti: "ETI",
-  "grand-compte": "Grand compte",
+  "grande-entreprise": "Grande entreprise",
 };
 const SIZE_LABELS_EN: Record<BlogCompanySize, string> = {
-  tpe: "Micro",
+  tpe: "Micro-business",
   pme: "SME",
-  gme: "Large SME",
   eti: "Mid-cap",
-  "grand-compte": "Large enterprise",
+  "grande-entreprise": "Large enterprise",
 };
 
 export function getCompanySizeLabel(size: BlogCompanySize, locale: "fr" | "en"): string {

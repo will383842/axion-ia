@@ -177,6 +177,16 @@ Comparer chaque score avec le run précédent. Si chute > 10 pts → STOP & ASK 
 
 Lighthouse CI thresholds (`lighthouserc.json`) ne peuvent que se durcir, jamais se relâcher.
 
+### Complémentarité prompts existants vs nouveaux
+
+Les prompts existants `_AUDIT/PROMPT-*` (Web Vitals, Code Health, SEO Master, etc.) sont **référencés** par cet orchestrateur, **pas duplicate**. Les nouveaux prompts `_AUDIT/CERTIFICATION-FRONTEND-2026/XX-*` couvrent les **angles non couverts** par les existants :
+
+- **PROMPT-CODE-HEALTH-2026** (existant, 160 critères) : TS strictness, complexité, code mort, deps, tests, conventions DX → **engineering interne**
+- **03-ARCHITECTURE-DRY** (nouveau, 70 critères) : atomic design, project root, module boundaries, patterns code → **structure projet**
+- **04-CENTRALISATION-SSOT** (nouveau, 60 critères) : single source of truth data + config → **data layer centralization**
+
+Pas de chevauchement. Lance CODE-HEALTH **avant** 03 et 04 dans la Vague A.
+
 ## 5. Calcul du score global / 2600
 
 | Vague            | Audits | Pondération             | Score max |

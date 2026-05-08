@@ -99,7 +99,9 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
       setServerError(null);
       try {
         await new Promise((r) => setTimeout(r, 600));
-        console.warn("[implementation:submit:stub]", next);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[implementation:submit:stub]", next);
+        }
         setDone(true);
       } catch {
         setServerError(labels.failure);

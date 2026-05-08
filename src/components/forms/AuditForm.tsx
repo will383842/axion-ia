@@ -94,7 +94,9 @@ export function AuditForm({ labels }: AuditFormProps) {
       try {
         await new Promise((r) => setTimeout(r, 600));
 
-        console.warn("[audit:submit:stub]", next);
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[audit:submit:stub]", next);
+        }
         setDone(true);
       } catch {
         setServerError(labels.failure);

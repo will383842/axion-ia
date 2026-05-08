@@ -29,12 +29,18 @@ const inconsolata = Inconsolata({
   display: "swap",
 });
 
-// Fraunces = serif éditorial premium (style Anthropic/Mistral). Variable axes
-// `opsz` (optical size) + `SOFT` activés pour rendu raffiné aux grandes tailles.
+// Fraunces = serif éditorial premium (style Anthropic/Mistral).
 // Loaded latin only, italic for emphasis on display headings.
+//
+// P-105 — la `variable` next/font expose désormais `--font-fraunces` (et non
+// plus `--font-serif`). Raison : `globals.css` exposait `--font-serif:
+// var(--font-serif), …` ce qui auto-référençait la variable et empêchait la
+// cascade des fallbacks intermédiaires. Le renommage casse l'auto-ref :
+// next/font écrit `--font-fraunces` puis globals.css chaîne via
+// `--font-serif: var(--font-fraunces), "Iowan Old Style", …`.
 const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-fraunces",
   display: "swap",
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
@@ -123,12 +129,14 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        {/* Speculation Rules — eager prefetch + moderate prerender on hover/
-            viewport. PERF-010/NAV-015. Browsers without support ignore the
-            script silently (Safari fallback ↔ Chrome/Edge gain).
-            Production-only: in `next dev`, eager prefetching saturates the
-            single dev server (Turbopack recompiles each route) and stalls
-            the user's actual click behind speculative requests. */}
+        {/* Speculation Rules — P-013 cible Top 15 stratégiques en `eager` +
+            fallback `moderate` sur le reste du locale. Avant ce patch, `eager`
+            tournait sur 4 562 SSG → consommation bandwidth Cloudflare massive
+            sans valeur (la grande majorité des SSG = pages secondaires).
+            Désormais : eager seulement sur les pages que 80 % des visiteurs
+            visitent, moderate (hover/viewport) sur le reste.
+            Browsers sans support ignorent silencieusement.
+            Production-only : `next dev` sature Turbopack si on `eager`. */}
         {process.env.NODE_ENV === "production" && (
           <script
             type="speculationrules"
@@ -137,15 +145,56 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                 prerender: [
                   {
                     source: "document",
-                    where: { href_matches: `/${locale}/*` },
+                    where: {
+                      href_matches: [
+                        `/${locale}`,
+                        `/${locale}/interventions`,
+                        `/${locale}/interventions/*`,
+                        `/${locale}/audit`,
+                        `/${locale}/audit/*`,
+                        `/${locale}/implementation`,
+                        `/${locale}/cas-concrets`,
+                        `/${locale}/methodologie`,
+                        `/${locale}/comparaisons`,
+                        `/${locale}/stack-ia`,
+                        `/${locale}/implantations`,
+                        `/${locale}/implantations/ile-de-france`,
+                        `/${locale}/implantations/ile-de-france/paris`,
+                        `/${locale}/reserver`,
+                        `/${locale}/contact`,
+                      ],
+                    },
                     eagerness: "moderate",
                   },
                 ],
                 prefetch: [
                   {
                     source: "document",
-                    where: { href_matches: `/${locale}/*` },
+                    where: {
+                      href_matches: [
+                        `/${locale}`,
+                        `/${locale}/interventions`,
+                        `/${locale}/interventions/*`,
+                        `/${locale}/audit`,
+                        `/${locale}/audit/*`,
+                        `/${locale}/implementation`,
+                        `/${locale}/cas-concrets`,
+                        `/${locale}/methodologie`,
+                        `/${locale}/comparaisons`,
+                        `/${locale}/stack-ia`,
+                        `/${locale}/implantations`,
+                        `/${locale}/implantations/ile-de-france`,
+                        `/${locale}/implantations/ile-de-france/paris`,
+                        `/${locale}/reserver`,
+                        `/${locale}/contact`,
+                      ],
+                    },
                     eagerness: "eager",
+                  },
+                  {
+                    source: "document",
+                    where: { href_matches: `/${locale}/*` },
+                    eagerness: "moderate",
                   },
                 ],
               }),

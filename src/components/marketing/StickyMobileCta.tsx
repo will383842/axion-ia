@@ -29,14 +29,30 @@ export function StickyMobileCta({ href, label, track, threshold = 600 }: StickyM
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    // P-200 — rAF + dedup pour limiter les setState à 1/frame (60 Hz).
+    // Avant : chaque event scroll déclenchait setVisible() même si la valeur
+    // était identique → React schedule un re-render → INP +20-40 ms mobile
+    // sur pages longues. Désormais on coalesce dans rAF et on ne setState
+    // que si la valeur change réellement.
+    let scheduled = false;
+    let lastVisible = false;
+    const compute = () => {
       const past = window.scrollY > threshold;
-      // Cache aussi près du bas de page pour ne pas masquer le footer/CTA final.
       const nearBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 320;
-      setVisible(past && !nearBottom);
+      const next = past && !nearBottom;
+      if (next !== lastVisible) {
+        lastVisible = next;
+        setVisible(next);
+      }
+      scheduled = false;
     };
-    onScroll();
+    const onScroll = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(compute);
+    };
+    compute();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {

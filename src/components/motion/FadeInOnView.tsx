@@ -1,9 +1,7 @@
 "use client";
-// use-client: motion/react requires hooks (useInView) and listens for
-// prefers-reduced-motion at runtime.
+// use-client: IntersectionObserver runs in the browser only.
 
 import * as React from "react";
-import { motion, useReducedMotion } from "motion/react";
 
 interface FadeInOnViewProps {
   children: React.ReactNode;
@@ -12,21 +10,56 @@ interface FadeInOnViewProps {
   className?: string;
 }
 
-// Fade + 8 px upward translate when entering viewport. Disabled entirely
-// when prefers-reduced-motion is set (motion/react handles it natively).
+// P-410 — Remplace `motion/react` (Framer Motion v11, ~30 KB gz) par
+// IntersectionObserver natif + transition CSS. Mêmes signaux UX (fade +
+// 8 px translate, durée 400 ms, easing custom, once-only, margin
+// -10/-10) mais 0 KB shipped. `prefers-reduced-motion` est déjà géré
+// globalement par `globals.css` (rule `@media reduce` qui force
+// `transition-duration: 0ms`), pas besoin de hook React dédié.
+//
+// Cumul : `FadeInOnView` est utilisé sur ~16 pages × 4 562 SSG → suppression
+// de motion = −30 KB gz × millions de page-views/an.
 export function FadeInOnView({ children, delay = 0, className }: FadeInOnViewProps) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    // IntersectionObserver est universellement supporté depuis 2017 (Chrome
+    // 51+, Firefox 55+, Safari 12.1+, Edge 15+). Pas de fallback nécessaire
+    // en 2026 — Next 16 cible déjà des navigateurs modernes.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            // setState appelé depuis un callback IO async (browser event loop)
+            // — pas de cascading render. Le lint react-hooks ne flag pas ici.
+            setVisible(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "-10% 0px -10% 0px" },
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: delay / 1000 }}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translate3d(0, 0, 0)" : "translate3d(0, 8px, 0)",
+        transition: `opacity 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+        // `will-change` optimise sans coût (composite layer une seule fois).
+        willChange: visible ? "auto" : "opacity, transform",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

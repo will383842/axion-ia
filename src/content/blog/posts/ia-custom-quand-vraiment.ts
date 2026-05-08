@@ -9,7 +9,7 @@ export const POST: BlogPost = {
   category: "Stratégie",
   author: "Will",
   tags: ["ia-custom", "fine-tuning", "strategie"],
-  companySizes: ["pme", "eti", "grand-compte"],
+  companySizes: ["pme", "eti", "grande-entreprise"],
   serviceTypes: ["implementation"],
   format: "article",
   // V1 stub court — sera enrichi (>600 mots + directAnswer + FAQ) puis re-promu tier-1.

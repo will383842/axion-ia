@@ -24,9 +24,9 @@ export const PARIS_COPY: VilleCopy = {
     },
   },
   directAnswerFr:
-    "AxionIA est un cabinet IA opérationnel basé en UE qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons PME, ETI, sièges grands-comptes et startups parisiennes (Station F, La Défense) sur leurs cas IA opérationnels — diagnostic 5 jours, démos sur vos vraies données, plan d'action chiffré. Tarif public dès 490 € HT pour l'intervention essentielle 1 journée. Aucun lock-in technologique.",
+    "AxionIA est un cabinet IA opérationnel basé en UE qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons toutes tailles d'entreprise — TPE, PME, ETI, grandes entreprises (sièges La Défense, 8e, 16e) et startups parisiennes (Station F, French Tech) — sur leurs cas IA opérationnels : diagnostic 5 jours, démos sur vos vraies données, plan d'action chiffré. Tarif public dès 490 € HT pour l'intervention essentielle 1 journée. Aucun lock-in technologique.",
   directAnswerEn:
-    "AxionIA is an EU-based operational AI consultancy delivering on-site engagements across all 20 Paris arrondissements and the inner suburbs. We support Paris SMEs, mid-caps, headquarters and startups (Station F, La Défense) on their operational AI use cases — 5-day diagnosis, demos on your real data, costed action plan. Public pricing from €490 for the 1-day essential engagement. No tech lock-in.",
+    "AxionIA is an EU-based operational AI consultancy delivering on-site engagements across all 20 Paris arrondissements and the inner suburbs. We support every company size — micro-businesses, SMEs, mid-caps, large enterprises (La Défense, 8th, 16th HQs) and startups (Station F, French Tech) — on their operational AI use cases: 5-day diagnosis, demos on your real data, costed action plan. Public pricing from €490 for the 1-day essential engagement. No tech lock-in.",
   topSectorsNaf: [
     "Banque & Finance",
     "Conseil & Services aux entreprises",
@@ -40,9 +40,9 @@ export const PARIS_COPY: VilleCopy = {
   distancesEn:
     "Montparnasse, Gare du Nord, Gare de Lyon and Saint-Lazare stations in central Paris; Roissy-Charles-de-Gaulle 45 km, Orly 25 km. Métro 14 lines + RER A/B/C/D/E. Half-day on-site engagements from any arrondissement.",
   ecosystemFr:
-    "Tissu PME/ETI le plus dense de France, sièges grands-comptes (La Défense, 8e, 16e), pôle deep-tech (Station F, Quai d'Innovation, écoles d'ingénieurs). L'écosystème IA français y est concentré : Mistral AI, Hugging Face, Owkin, Photoroom, Dust. Les directions IA des grands groupes pilotent leurs déploiements depuis ces sièges.",
+    "Tissu B2B le plus dense de France toutes tailles confondues — micro-entreprises et indépendants (215 000 actives intra-muros), PME et ETI (cabinets d'expertise, scale-ups, ETI conseil), sièges grandes entreprises (La Défense, 8e, 16e), pôle deep-tech (Station F, Quai d'Innovation, écoles d'ingénieurs). L'écosystème IA français y est concentré : Mistral AI, Hugging Face, Owkin, Photoroom, Dust. Les directions IA des grands groupes pilotent leurs déploiements depuis ces sièges.",
   ecosystemEn:
-    "Densest SME/mid-cap fabric in France, large-corporate HQs (La Défense, 8th, 16th districts), deep-tech hub (Station F, Quai d'Innovation, engineering schools). The French AI ecosystem clusters here: Mistral AI, Hugging Face, Owkin, Photoroom, Dust. Major-group AI leadership steers deployments from these headquarters.",
+    "Densest B2B fabric in France across every company size — micro-businesses and independents (215,000 active within Paris), SMEs and mid-caps (expertise firms, scale-ups, mid-cap consulting), large-enterprise HQs (La Défense, 8th, 16th districts), deep-tech hub (Station F, Quai d'Innovation, engineering schools). The French AI ecosystem clusters here: Mistral AI, Hugging Face, Owkin, Photoroom, Dust. Major-group AI leadership steers deployments from these headquarters.",
   heroSchema: {
     centerSubLabel: "215 K entreprises actives",
     satellites: [

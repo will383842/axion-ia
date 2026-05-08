@@ -47,7 +47,9 @@ export function ContactForm({ labels }: ContactFormProps) {
       // Sprint 17 wires the server action; for now we log and pretend.
       await new Promise((r) => setTimeout(r, 600));
 
-      console.warn("[contact:submit:stub]", values);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("[contact:submit:stub]", values);
+      }
     } catch {
       setServerError(labels.failure);
     }

@@ -41,7 +41,9 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
     setServerError(null);
     try {
       await new Promise((r) => setTimeout(r, 400));
-      console.warn("[newsletter:submit:stub]", values);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("[newsletter:submit:stub]", values);
+      }
     } catch {
       setServerError(labels.failure);
     }

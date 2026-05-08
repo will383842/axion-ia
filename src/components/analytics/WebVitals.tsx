@@ -3,6 +3,8 @@
 // metrics ship from the browser via navigator.sendBeacon.
 
 import { useReportWebVitals } from "next/web-vitals";
+import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 
 const VITALS_ENDPOINT = "/api/vitals";
 
@@ -14,13 +16,35 @@ interface VitalsPayload {
   delta: number;
   navigationType: string;
   href: string;
+  // P-304 / P-500 — payload enrichi pour analytics + dashboard Sprint 20
+  // /admin/pseo-stats. Ces champs permettent d'agréger LCP/INP/CLS par route
+  // (template Next, pas href absolu), par locale, par condition réseau et
+  // par device pour piloter les patches perf data-driven.
+  route: string;
+  locale: string;
+  effectiveType: string | null;
+  deviceMemory: number | null;
 }
 
-// Reports CLS / LCP / INP / FCP / TTFB to /api/vitals (Edge route).
-// Uses sendBeacon when available so payload survives page unload, falls back
-// to fetch keepalive otherwise. Fail-silent — no UI surface, no console noise.
+// `Network Information API` shape — non typé par lib.dom.d.ts en 2026
+// (Working Draft). On fait une narrowing manuelle.
+interface NetworkInformation {
+  effectiveType?: "slow-2g" | "2g" | "3g" | "4g";
+}
+interface NavigatorWithExtras extends Navigator {
+  connection?: NetworkInformation;
+  deviceMemory?: number;
+}
+
+// Reports CLS / LCP / INP / FCP / TTFB to /api/vitals (Node.js runtime —
+// Hetzner self-hosted, cf. P-303). Uses sendBeacon when available so payload
+// survives page unload, falls back to fetch keepalive otherwise. Fail-silent
+// — no UI surface, no console noise.
 export function WebVitals() {
+  const pathname = usePathname();
+  const locale = useLocale();
   useReportWebVitals((metric) => {
+    const nav = typeof navigator !== "undefined" ? (navigator as NavigatorWithExtras) : null;
     const payload: VitalsPayload = {
       id: metric.id,
       name: metric.name,
@@ -29,6 +53,10 @@ export function WebVitals() {
       delta: metric.delta,
       navigationType: metric.navigationType,
       href: typeof window !== "undefined" ? window.location.href : "",
+      route: pathname ?? "",
+      locale,
+      effectiveType: nav?.connection?.effectiveType ?? null,
+      deviceMemory: nav?.deviceMemory ?? null,
     };
     const body = JSON.stringify(payload);
     try {

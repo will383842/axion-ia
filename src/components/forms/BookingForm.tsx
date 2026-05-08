@@ -55,7 +55,9 @@ export function BookingForm({ date, time, onCancel, labels }: BookingFormProps) 
     setServerError(null);
     try {
       await new Promise((r) => setTimeout(r, 600));
-      console.warn("[booking:submit:stub]", values);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("[booking:submit:stub]", values);
+      }
     } catch {
       setServerError(labels.failure);
     }

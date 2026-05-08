@@ -277,7 +277,9 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
         consent,
       };
 
-      console.warn("[audit-request:submit:stub]", payload);
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("[audit-request:submit:stub]", payload);
+      }
       setSubmittingState("success");
     } catch {
       setServerError(labels.failure);

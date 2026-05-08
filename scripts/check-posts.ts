@@ -52,7 +52,8 @@ const ALLOWED_SECTORS: ReadonlyArray<BlogSector> = [
   "immobilier",
   "autre",
 ];
-const ALLOWED_SIZES: ReadonlyArray<BlogCompanySize> = ["tpe", "pme", "gme", "eti", "grand-compte"];
+// Classification INSEE officielle (4 tailles) — cf. src/content/blog/types.ts.
+const ALLOWED_SIZES: ReadonlyArray<BlogCompanySize> = ["tpe", "pme", "eti", "grande-entreprise"];
 const ALLOWED_SERVICES: ReadonlyArray<BlogServiceType> = [
   "audit",
   "interventions",

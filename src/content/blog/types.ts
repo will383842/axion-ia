@@ -41,7 +41,18 @@ export type BlogSector =
   | "immobilier"
   | "autre";
 
-export type BlogCompanySize = "tpe" | "pme" | "gme" | "eti" | "grand-compte";
+/**
+ * Tailles d'entreprise — classification INSEE officielle (4 catégories).
+ *   - `tpe`               : Micro-entreprise (< 10 salariés, CA < 2 M€)
+ *   - `pme`               : Petite/moyenne entreprise (10-249 salariés, CA < 50 M€)
+ *   - `eti`               : Entreprise de taille intermédiaire (250-4999, CA < 1500 M€)
+ *   - `grande-entreprise` : Grande entreprise / grand compte (5000+, CA > 1500 M€)
+ *
+ * Sprint 14.10.1 (2026-05-08) : alignement INSEE strict (auparavant 5 valeurs
+ * dont `gme` et `grand-compte` non standards). Cohérent avec recherches Google
+ * naturelles (« audit IA pour ETI », « formation IA grande entreprise »).
+ */
+export type BlogCompanySize = "tpe" | "pme" | "eti" | "grande-entreprise";
 
 export type BlogServiceType = "audit" | "interventions" | "implementation";
 

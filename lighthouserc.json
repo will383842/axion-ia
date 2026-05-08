@@ -5,9 +5,7 @@
       "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready",
       "numberOfRuns": 3,
-      "settings": {
-        "preset": "desktop"
-      }
+      "settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
     },
     "assert": {
       "preset": "lighthouse:no-pwa",

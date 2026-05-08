@@ -19,10 +19,42 @@ const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
 ];
 
+// P-310 — Vary header pour CDN (Cloudflare). Permet aux POPs de servir la
+// bonne variante (HTML vs RSC payload, prefetch vs full nav, encoding).
+// Sans ce header, CF peut servir un payload RSC à un browser qui veut HTML.
+const cdnHeaders = [
+  {
+    key: "Vary",
+    value: "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding",
+  },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // V1 garde compress: true (Next compresse pour `next start`). V3 passera
+  // false quand Caddy 2 prendra le relais en amont (anti-double-compression).
   compress: true,
+  // P-508 — explicite (déjà default false en Next 16, mais clarté config).
+  productionBrowserSourceMaps: false,
+  // P-302 — build artifact léger pour Docker Hetzner standalone.
+  output: "standalone",
+  // P-400 — verrouille les deps Server-only contre tout leak vers le client.
+  // Si un import client utilise par erreur l'un de ces paquets, le build fail
+  // explicitement au lieu d'embarquer ~200-500 KB de code Node.js dans le
+  // bundle browser.
+  serverExternalPackages: [
+    "@prisma/client",
+    "prisma",
+    "argon2",
+    "bullmq",
+    "ioredis",
+    "otplib",
+    "sharp",
+    "pino",
+    "@react-email/render",
+    "nodemailer",
+  ],
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [],
@@ -61,7 +93,7 @@ const nextConfig: NextConfig = {
   // memoization in hot paths are sufficient.
   // reactCompiler: true,
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [{ source: "/:path*", headers: [...securityHeaders, ...cdnHeaders] }];
   },
 };
 

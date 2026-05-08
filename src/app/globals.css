@@ -67,8 +67,11 @@
   /* ----- Typography v3 ----- */
   --font-sans:
     var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /* P-105 : chaîne désormais `--font-fraunces` (variable next/font renommée)
+     pour éviter l'auto-référence `--font-serif: var(--font-serif)` qui
+     empêchait les fallbacks intermédiaires d'être actifs. */
   --font-serif:
-    var(--font-serif), "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", P052,
+    var(--font-fraunces), "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", P052,
     serif;
   --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -390,5 +393,16 @@
   }
   .title-flash {
     animation: none !important;
+  }
+  /* P-205 — anticipe l'activation future de View Transitions (V4 / Sprint 17).
+     Tant que `experimental.viewTransition` n'est pas activé, ce bloc est sans
+     effet. Quand il le sera, les utilisateurs avec `prefers-reduced-motion`
+     verront des transitions instantanées au lieu d'animations directionnelles
+     (cf. doctrine prompt §12.5 + ADR 0013 refus motivé Sprint 14). */
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
