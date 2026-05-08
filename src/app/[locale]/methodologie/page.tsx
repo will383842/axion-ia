@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/methodologie",
     title:
       locale === "fr"
-        ? "MÃ©thodologie AxionIA Â· 4 Ã©tapes vers le ROI"
-        : "AxionIA methodology Â· 4 steps to ROI",
+        ? "Méthodologie AxionIA · 4 étapes vers le ROI"
+        : "AxionIA methodology · 4 steps to ROI",
     description:
       locale === "fr"
-        ? "Notre mÃ©thodologie : audit terrain, dÃ©mos appliquÃ©es, plan chiffrÃ©, implÃ©mentation pilotÃ©e."
+        ? "Notre méthodologie : audit terrain, démos appliquées, plan chiffré, implémentation pilotée."
         : "Our methodology: field audit, applied demos, costed plan, piloted implementation.",
     alternates: { fr: "/methodologie", en: "/methodology" },
   });
@@ -47,30 +47,28 @@ export default async function MethodologyPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: isFr
-      ? "MÃ©thodologie AxionIA Â· 4 Ã©tapes vers le ROI"
-      : "AxionIA methodology Â· 4 steps to ROI",
+      ? "Méthodologie AxionIA · 4 étapes vers le ROI"
+      : "AxionIA methodology · 4 steps to ROI",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/methodologie`,
     publisher: { "@type": "Organization", name: "AxionIA", url: SITE_URL },
   } as const;
 
-  // Breadcrumb visuel + JSON-LD intÃ©grÃ© (composant unique). L'item "Accueil"
-  // est ajoutÃ© automatiquement par le composant.
-  const breadcrumbItems = [
-    { href: "/methodologie", label: isFr ? "MÃ©thodologie" : "Methodology" },
-  ];
+  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
+  // est ajouté automatiquement par le composant.
+  const breadcrumbItems = [{ href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" }];
 
-  // HowTo JSON-LD â€” AEO 2026 critical : Google AI Overviews + Perplexity
-  // citent les HowTo schemas pour rÃ©pondre aux requÃªtes Â« comment AxionIA
-  // procÃ¨de ? Â», Â« quelles Ã©tapes pour un audit IA ? Â», etc.
+  // HowTo JSON-LD — AEO 2026 critical : Google AI Overviews + Perplexity
+  // citent les HowTo schemas pour répondre aux requêtes « comment AxionIA
+  // procède ? », « quelles étapes pour un audit IA ? », etc.
   const howToJsonLd = buildHowToJsonLd({
     locale: loc,
     path: "/methodologie",
     name: isFr
-      ? "MÃ©thodologie AxionIA Â· 4 Ã©tapes vers le ROI"
-      : "AxionIA methodology Â· 4 steps to ROI",
+      ? "Méthodologie AxionIA · 4 étapes vers le ROI"
+      : "AxionIA methodology · 4 steps to ROI",
     description: isFr
-      ? "Notre mÃ©thode propriÃ©taire en 4 Ã©tapes : identifier sur le terrain, auditer en 5 jours, implÃ©menter en 6-8 semaines, mesurer le ROI rÃ©el."
+      ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
       : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
     totalTime: "P12W",
     estimatedCost: { currency: "EUR", value: "490" },
@@ -78,19 +76,19 @@ export default async function MethodologyPage({ params }: Props) {
       ? [
           {
             name: "Identifier",
-            text: "Cartographie terrain en 1 journÃ©e d'intervention sur site. 3-5 process candidats Ã  l'IA, dÃ©mos live sur vos donnÃ©es anonymisÃ©es, identification des quick-wins dÃ©ployables sous 30 jours.",
+            text: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats Ã  l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
           },
           {
             name: "Auditer",
-            text: "Audit IA en 5 jours : cartographie complÃ¨te, scoring ROI/complexitÃ© par opportunitÃ©, plan d'implÃ©mentation chiffrÃ© priorisÃ©. Livrable PDF 25-40 pages + atelier de restitution.",
+            text: "Audit IA en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation chiffré priorisé. Livrable PDF 25-40 pages + atelier de restitution.",
           },
           {
-            name: "ImplÃ©menter",
-            text: "Mise en production en 6-8 semaines : cadrage technique, prototype itÃ©ratif, tests utilisateurs, dÃ©ploiement progressif, support 30 jours inclus.",
+            name: "Implémenter",
+            text: "Mise en production en 6-8 semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif, support 30 jours inclus.",
           },
           {
             name: "Mesurer",
-            text: "Mesure du ROI rÃ©el post-dÃ©ploiement : heures Ã©conomisÃ©es, coÃ»t Ã©conomisÃ©, impact qualitatif. ItÃ©ration si dÃ©rive de qualitÃ© observÃ©e.",
+            text: "Mesure du ROI réel post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée.",
           },
         ]
       : [
@@ -118,22 +116,22 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "01",
           h: "Identifier",
-          p: "Cartographie terrain en 1 journÃ©e d'intervention sur site. 3-5 process candidats Ã  l'IA, dÃ©mos live sur vos donnÃ©es anonymisÃ©es, identification des quick-wins dÃ©ployables sous 30 jours.",
+          p: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats Ã  l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
         },
         {
           n: "02",
           h: "Auditer",
-          p: "Audit IA en 5 jours : cartographie complÃ¨te, scoring ROI/complexitÃ© par opportunitÃ©, plan d'implÃ©mentation chiffrÃ© priorisÃ©. Livrable PDF 25-40 pages + atelier de restitution.",
+          p: "Audit IA en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation chiffré priorisé. Livrable PDF 25-40 pages + atelier de restitution.",
         },
         {
           n: "03",
-          h: "ImplÃ©menter",
-          p: "Mise en production en 6-8 semaines : cadrage technique, prototype itÃ©ratif, tests utilisateurs, dÃ©ploiement progressif, support 30 jours inclus. Stack open-source ou propriÃ©taire selon le cas.",
+          h: "Implémenter",
+          p: "Mise en production en 6-8 semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif, support 30 jours inclus. Stack open-source ou propriétaire selon le cas.",
         },
         {
           n: "04",
           h: "Mesurer",
-          p: "Mesure du ROI rÃ©el post-dÃ©ploiement : heures Ã©conomisÃ©es, coÃ»t Ã©conomisÃ©, impact qualitatif. ItÃ©ration si dÃ©rive de qualitÃ© observÃ©e. Pas d'engagement long terme.",
+          p: "Mesure du ROI réel post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée. Pas d'engagement long terme.",
         },
       ]
     : [
@@ -162,22 +160,22 @@ export default async function MethodologyPage({ params }: Props) {
   const whyMethodology = isFr
     ? [
         {
-          h: "Sur vos donnÃ©es, pas sur des dÃ©mos vendeur",
-          p: "Chaque Ã©tape s'appuie sur vos process rÃ©els, vos outils, vos chiffres. On dÃ©montre, on ne raconte pas.",
+          h: "Sur vos données, pas sur des démos vendeur",
+          p: "Chaque étape s'appuie sur vos process réels, vos outils, vos chiffres. On démontre, on ne raconte pas.",
         },
         {
-          h: "DÃ©couplÃ©e du contrat long",
-          p: "Vous pouvez vous arrÃªter aprÃ¨s l'audit, aprÃ¨s l'implÃ©mentation, aprÃ¨s la mesure. Aucun lock-in technique ni commercial.",
+          h: "Découplée du contrat long",
+          p: "Vous pouvez vous arrêter après l'audit, après l'implémentation, après la mesure. Aucun lock-in technique ni commercial.",
         },
         {
-          h: "MesurÃ©e, pas promise",
-          p: "Le ROI est calculÃ© sur des indicateurs convenus avant le dÃ©ploiement, pas sur des projections marketing.",
+          h: "Mesurée, pas promise",
+          p: "Le ROI est calculé sur des indicateurs convenus avant le déploiement, pas sur des projections marketing.",
         },
       ]
     : [
         {
           h: "On your data, not on vendor demos",
-          p: "Every step uses your real processes, tools and numbers. We demonstrate â€” we don't pitch.",
+          p: "Every step uses your real processes, tools and numbers. We demonstrate — we don't pitch.",
         },
         {
           h: "Decoupled from long contracts",
@@ -194,7 +192,7 @@ export default async function MethodologyPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO â€” layout 2 colonnes (text + flow narratif mÃ©thodologie). */}
+      {/* HERO — layout 2 colonnes (text + flow narratif méthodologie). */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <div
           aria-hidden="true"
@@ -210,17 +208,17 @@ export default async function MethodologyPage({ params }: Props) {
         />
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            {/* Colonne gauche â€” eyebrow + titre + description + CTA */}
+            {/* Colonne gauche — eyebrow + titre + description + CTA */}
             <div className="max-w-xl">
               <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? "MÃ©thodologie" : "Methodology"}
+                {isFr ? "Méthodologie" : "Methodology"}
               </p>
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "4 Ã©tapes vers le " : "4 steps to "}
+                {isFr ? "4 étapes vers le " : "4 steps to "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -230,7 +228,7 @@ export default async function MethodologyPage({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "MÃ©thodologie AxionIA, Ã©prouvÃ©e sur 50+ entreprises de la TPE au mid-market. On dÃ©montre sur vos donnÃ©es, pas sur des dÃ©mos vendeur."
+                  ? "Méthodologie AxionIA, éprouvée sur 50+ entreprises de la TPE au mid-market. On démontre sur vos données, pas sur des démos vendeur."
                   : "AxionIA methodology, proven on 50+ companies from small business to mid-market. We demonstrate on your data, not vendor demos."}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -244,13 +242,13 @@ export default async function MethodologyPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Colonne droite â€” flow narratif mÃ©thodologie 4 Ã©tapes */}
+            {/* Colonne droite — flow narratif méthodologie 4 étapes */}
             <MethodologyHeroSchema
               isFr={isFr}
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "SchÃ©ma mÃ©thodologie AxionIA : votre entreprise au dÃ©part, 4 Ã©tapes mÃ©thodologiques (Identifier, Auditer, ImplÃ©menter, Mesurer), puis 4 rÃ©sultats concrets (plan chiffrÃ©, process automatisÃ©s, Ã©quipes formÃ©es, ROI mesurÃ©)."
+                  ? "Schéma méthodologie AxionIA : votre entreprise au départ, 4 étapes méthodologiques (Identifier, Auditer, Implémenter, Mesurer), puis 4 résultats concrets (plan chiffré, process automatisés, équipes formées, ROI mesuré)."
                   : "AxionIA methodology diagram: your company at the start, 4 method steps (Identify, Audit, Implement, Measure), then 4 concrete outcomes (costed plan, automated processes, trained teams, measured ROI)."
               }
             />
@@ -258,14 +256,14 @@ export default async function MethodologyPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* SECTION â€” dÃ©tail des 4 Ã©tapes */}
+      {/* SECTION — détail des 4 étapes */}
       <Section
-        eyebrow={isFr ? "Le dÃ©tail" : "In detail"}
-        title={isFr ? "Comment se dÃ©roule" : "How it"}
-        titleEm={isFr ? "concrÃ¨tement" : "actually unfolds"}
+        eyebrow={isFr ? "Le détail" : "In detail"}
+        title={isFr ? "Comment se déroule" : "How it"}
+        titleEm={isFr ? "concrètement" : "actually unfolds"}
         description={
           isFr
-            ? "Quatre temps clairement sÃ©parÃ©s. Chacun produit un livrable concret. Chacun peut Ãªtre le dernier."
+            ? "Quatre temps clairement séparés. Chacun produit un livrable concret. Chacun peut être le dernier."
             : "Four clearly separated phases. Each produces a concrete deliverable. Each can be the last."
         }
       >
@@ -284,15 +282,15 @@ export default async function MethodologyPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* SECTION â€” Pourquoi cette mÃ©thodologie (extension copy +300 mots) */}
+      {/* SECTION — Pourquoi cette méthodologie (extension copy +300 mots) */}
       <Section
         tone="sand"
         eyebrow={isFr ? "Notre parti pris" : "Our principle"}
         title={isFr ? "Pourquoi" : "Why this"}
-        titleEm={isFr ? "cette mÃ©thode" : "method"}
+        titleEm={isFr ? "cette méthode" : "method"}
         description={
           isFr
-            ? "Trois principes non-nÃ©gociables qui guident chaque mission AxionIA, du diagnostic flash Ã  l'audit stratÃ©gique ETI."
+            ? "Trois principes non-négociables qui guident chaque mission AxionIA, du diagnostic flash Ã  l'audit stratégique ETI."
             : "Three non-negotiable principles guiding every AxionIA engagement, from flash diagnosis to strategic mid-cap audit."
         }
       >
@@ -305,12 +303,12 @@ export default async function MethodologyPage({ params }: Props) {
               filenameTarget="public/illustrations/methodologie-mid-1.avif"
               caption={
                 isFr
-                  ? "Compas d'architecte sur feuille gridÃ©e â€” prÃ©cision opÃ©rationnelle"
-                  : "Architect's compass on gridded paper â€” operational precision"
+                  ? "Compas d'architecte sur feuille gridée — précision opérationnelle"
+                  : "Architect's compass on gridded paper — operational precision"
               }
               alt={
                 isFr
-                  ? "Illustration Ã©ditoriale d'un compas d'architecte au-dessus d'une feuille gridÃ©e, symbole de la prÃ©cision mÃ©thodologique d'AxionIA."
+                  ? "Illustration éditoriale d'un compas d'architecte au-dessus d'une feuille gridée, symbole de la précision méthodologique d'AxionIA."
                   : "Editorial illustration of an architect's compass over gridded paper, symbol of AxionIA's methodological precision."
               }
               className="border-terracotta/30 bg-halo-warm shadow-subtle relative w-full overflow-hidden rounded-2xl border-2 border-dashed lg:sticky lg:top-24"
@@ -338,7 +336,7 @@ export default async function MethodologyPage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* SECTION â€” closing visual avant CtaBlock */}
+      {/* SECTION — closing visual avant CtaBlock */}
       <Section tone="canvas">
         <Container>
           <div className="mx-auto max-w-3xl">
@@ -348,12 +346,12 @@ export default async function MethodologyPage({ params }: Props) {
               filenameTarget="public/illustrations/methodologie-closing.avif"
               caption={
                 isFr
-                  ? "Cycle continu â€” la mÃ©thode appliquÃ©e, ronde mais pas rÃ©pÃ©titive"
-                  : "Continuous cycle â€” method applied, looping but not repeating"
+                  ? "Cycle continu — la méthode appliquée, ronde mais pas répétitive"
+                  : "Continuous cycle — method applied, looping but not repeating"
               }
               alt={
                 isFr
-                  ? "Illustration Ã©ditoriale d'un cycle continu reprÃ©sentant la mÃ©thodologie AxionIA appliquÃ©e dans la durÃ©e."
+                  ? "Illustration éditoriale d'un cycle continu représentant la méthodologie AxionIA appliquée dans la durée."
                   : "Editorial illustration of a continuous cycle representing the AxionIA methodology applied over time."
               }
             />
@@ -362,15 +360,15 @@ export default async function MethodologyPage({ params }: Props) {
       </Section>
 
       <CtaBlock
-        title={isFr ? "PrÃªt Ã  dÃ©marrer ?" : "Ready to start?"}
+        title={isFr ? "Prêt Ã  démarrer ?" : "Ready to start?"}
         description={
           isFr
-            ? "RÃ©servez l'Essentielle 490 â‚¬ pour identifier 3-5 quick-wins en une journÃ©e."
-            : "Book the Essential â‚¬490 to identify 3-5 quick-wins in one day."
+            ? "Réservez l'Essentielle 490 € pour identifier 3-5 quick-wins en une journée."
+            : "Book the Essential €490 to identify 3-5 quick-wins in one day."
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle 490 â‚¬" : "See the Essential â‚¬490"} â†’
+            {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"} â†’
           </Cta>
         }
         tone="dark"

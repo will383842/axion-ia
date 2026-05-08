@@ -1,4 +1,4 @@
-// P-102 â€” `loading.tsx` granulaire `/audit` matchÃ© aux dimensions rÃ©elles
+// P-102 — `loading.tsx` granulaire `/audit` matché aux dimensions réelles
 // (hero 320 px + 3 cartes audit 280 px chacune + tarifs grid + CtaBlock).
 export default function AuditLoading() {
   return (
@@ -24,7 +24,7 @@ export default function AuditLoading() {
           ))}
         </div>
       </div>
-      <span className="sr-only">Chargement de la page auditâ€¦</span>
+      <span className="sr-only">Chargement de la page audit…</span>
     </>
   );
 }

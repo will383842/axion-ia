@@ -1,7 +1,7 @@
-// P-104 â€” `loading.tsx` granulaire `/implantations/[region]/[ville]` â€”
-// template ville pSEO (2 150+ SSG livrÃ©s Sprint 14.9). Hero + 10 sections
-// rÃ©servÃ©es, conforme Ã  la structure AxionIA-centric (interventions,
-// mÃ©thodologie, tarifs, FAQ AEO, related cities).
+// P-104 — `loading.tsx` granulaire `/implantations/[region]/[ville]` —
+// template ville pSEO (2 150+ SSG livrés Sprint 14.9). Hero + 10 sections
+// réservées, conforme Ã  la structure AxionIA-centric (interventions,
+// méthodologie, tarifs, FAQ AEO, related cities).
 export default function VilleLoading() {
   return (
     <>
@@ -22,7 +22,7 @@ export default function VilleLoading() {
           <div className="bg-border h-3 w-1/2 animate-pulse rounded-xs" aria-hidden="true" />
         </div>
       </div>
-      {/* 3 sections rÃ©servÃ©es (interventions / mÃ©thodologie / tarifs) */}
+      {/* 3 sections réservées (interventions / méthodologie / tarifs) */}
       <div className="bg-paper py-16">
         <div className="mx-auto w-full max-w-[1280px] space-y-12 px-4 sm:px-6 lg:px-8">
           {[0, 1, 2].map((i) => (
@@ -34,7 +34,7 @@ export default function VilleLoading() {
           ))}
         </div>
       </div>
-      <span className="sr-only">Chargement de la page villeâ€¦</span>
+      <span className="sr-only">Chargement de la page ville…</span>
     </>
   );
 }
