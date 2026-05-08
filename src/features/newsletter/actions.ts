@@ -18,7 +18,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { Locale } from "../../../prisma/generated/client";
+import { parseLocale } from "@/lib/schemas/locale";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
 
@@ -39,8 +39,9 @@ export async function subscribeNewsletterAction(
     return { ok: false, error: "Trop de tentatives. Réessayez dans 5 minutes." };
   }
 
-  // 2. Honeypot (champ "company" cache rempli = bot)
-  if (formData.get("company")) return { ok: true }; // silent succes pour bot
+  // 2. Honeypot — Sprint 15 fix Fork 3 C1-3 : champ "website" canonique
+  // (uniformise avec contact/audit/booking/implementation/option48h)
+  if (formData.get("website")) return { ok: true }; // silent succes pour bot
 
   // 3. Turnstile
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
@@ -54,7 +55,7 @@ export async function subscribeNewsletterAction(
   });
   if (!parsed.success) return { ok: false, error: "Email ou consentement invalide." };
 
-  const locale = ((formData.get("locale") as string) || "fr") as Locale;
+  const locale = parseLocale(formData.get("locale"));
   const source = (formData.get("source") as string) || null;
 
   // 5. Upsert (idempotent : si deja inscrit pending → renvoie token)
@@ -90,11 +91,18 @@ export async function subscribeNewsletterAction(
     });
   }
 
-  // 7. Enqueue email double opt-in (RFC 8058)
-  await enqueueEmail("newsletter-confirm-optin", parsed.data.email, locale, {
-    confirmToken,
-    unsubscribeToken: sub.unsubscribeToken ?? unsubscribeToken,
-  });
+  // 7. Enqueue email double opt-in (RFC 8058) — marketing=true pour expéditeur news@
+  // (CLAUDE.md §11 doctrine : newsletter via news@axion-ia.com vs noreply@ transac)
+  await enqueueEmail(
+    "newsletter-confirm-optin",
+    parsed.data.email,
+    locale,
+    {
+      confirmToken,
+      unsubscribeToken: sub.unsubscribeToken ?? unsubscribeToken,
+    },
+    { marketing: true },
+  );
 
   return { ok: true };
 }

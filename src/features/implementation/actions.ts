@@ -12,7 +12,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { Locale } from "../../../prisma/generated/client";
+import { parseLocale } from "@/lib/schemas/locale";
 
 export type ImplementationState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -46,7 +46,7 @@ export async function submitImplementationAction(
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
-  const locale = ((formData.get("locale") as string) || "fr") as Locale;
+  const locale = parseLocale(formData.get("locale"));
 
   const submission = await prisma.submission.create({
     data: {

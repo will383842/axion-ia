@@ -15,12 +15,13 @@
 
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { bookingSchema } from "@/lib/schemas/forms";
+import { bookingSchema, option48hSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { Locale, InterventionType } from "../../../prisma/generated/client";
+import { parseLocale } from "@/lib/schemas/locale";
+import { slugToEnum, getInterventionPriceCents } from "@/lib/intervention-type";
 
 export type BookingState = { ok: true; bookingId: string } | { ok: false; error: string };
 export type Option48hState =
@@ -62,56 +63,66 @@ export async function createBookingAction(
     email: formData.get("email"),
     phone: formData.get("phone") || undefined,
     consent: formData.get("consent") === "true" || formData.get("consent") === "on",
+    interventionType: formData.get("interventionType"),
+    participantsCount: formData.get("participantsCount"),
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
-  const interventionType = (formData.get("interventionType") as InterventionType) ?? "essentielle";
-  const participantsCount = Number(formData.get("participantsCount") ?? 1);
-  const locale = ((formData.get("locale") as string) || "fr") as Locale;
+  const locale = parseLocale(formData.get("locale"));
   const bookingDateTime = new Date(`${parsed.data.date}T${parsed.data.time}:00.000Z`);
+  const interventionTypeEnum = slugToEnum(parsed.data.interventionType);
+
+  // Sprint 15 fix Fork 4 doctrine 9 : derive pricePaidCents via pricing.ts SSOT
+  const { cents: pricePaidCents, tierLabel: participantsTier } = getInterventionPriceCents(
+    parsed.data.interventionType,
+    parsed.data.participantsCount,
+  );
 
   // 1. Submission record (pour traceabilite)
   const submission = await prisma.submission.create({
     data: {
       type: "intervention",
       locale,
-      companyName: parsed.data.contact,
+      // Sprint 15 fix Fork 2 C4-2 : raison sociale separee si fournie
+      companyName: (formData.get("companyName") as string | null) ?? parsed.data.contact,
       contactName: parsed.data.contact,
       contactEmail: parsed.data.email,
       contactPhone: parsed.data.phone ?? null,
       details: {
-        interventionType,
+        interventionType: interventionTypeEnum,
         bookingDate: parsed.data.date,
         bookingTime: parsed.data.time,
-        participantsCount,
+        participantsCount: parsed.data.participantsCount,
       },
       ipAddress: ip,
       userAgent: (await headers()).get("user-agent") ?? null,
     },
   });
 
-  // 2. Booking record (pas de slot lock ici — booking direct, pas option)
+  // 2. Booking record — pricePaidCents derive du pricing.ts (null si onQuote)
   const booking = await prisma.booking.create({
     data: {
-      interventionType,
+      interventionType: interventionTypeEnum,
       bookingDate: bookingDateTime,
-      participantsCount,
+      participantsCount: parsed.data.participantsCount,
       submissionId: submission.id,
       locale,
+      pricePaidCents,
+      participantsTier,
     },
   });
 
   await sendTelegram({
     tag: "INTERVENTION",
-    body: `Nouvelle réservation ${interventionType}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${participantsCount}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${booking.id}\``,
+    body: `Nouvelle réservation ${interventionTypeEnum}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${parsed.data.participantsCount}\n• Prix : ${pricePaidCents != null ? `${(pricePaidCents / 100).toFixed(0)} € HT` : "sur devis"}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${booking.id}\``,
   });
 
   await enqueueEmail("booking-confirmed", parsed.data.email, locale, {
     contactName: parsed.data.contact,
     bookingDate: parsed.data.date,
     bookingTime: parsed.data.time,
-    interventionType,
-    participantsCount,
+    interventionType: interventionTypeEnum,
+    participantsCount: parsed.data.participantsCount,
     bookingId: booking.id,
   });
 
@@ -141,30 +152,37 @@ export async function postOption48hAction(
     return { ok: false, error: "Captcha échoué.", reason: "captcha" };
   }
 
-  const slotId = formData.get("slotId") as string | null;
-  const companyName = formData.get("companyName") as string | null;
-  const companySector = formData.get("companySector") as string | null;
-  const interventionType = (formData.get("interventionType") as InterventionType) ?? "essentielle";
-  const participantsCount = Number(formData.get("participantsCount") ?? 1);
-  const contactName = formData.get("contactName") as string | null;
-  const contactEmail = formData.get("contactEmail") as string | null;
-  const contactPhone = formData.get("contactPhone") as string | null;
-  const consentDisplay = formData.get("consentDisplay") === "true";
-  const locale = ((formData.get("locale") as string) || "fr") as Locale;
-
-  if (!slotId || !companyName || !companySector || !contactName || !contactEmail || !contactPhone) {
+  // Sprint 15 fix Fork 2 C3-2 : validation Zod stricte avec consentRgpd obligatoire
+  const parsed = option48hSchema.safeParse({
+    slotId: formData.get("slotId"),
+    companyName: formData.get("companyName"),
+    companySector: formData.get("companySector"),
+    participantsCount: formData.get("participantsCount"),
+    interventionType: formData.get("interventionType"),
+    contactName: formData.get("contactName"),
+    contactEmail: formData.get("contactEmail"),
+    contactPhone: formData.get("contactPhone"),
+    consentDisplay: formData.get("consentDisplay"),
+    consent: formData.get("consent") === "true" || formData.get("consent") === "on",
+  });
+  if (!parsed.success) {
     return { ok: false, error: "Champs invalides.", reason: "validation" };
   }
+  const locale = parseLocale(formData.get("locale"));
+  const interventionTypeEnum = slugToEnum(parsed.data.interventionType);
+  const consentDisplay = parsed.data.consentDisplay === true;
 
   const expiresAt = new Date(Date.now() + 48 * 3600 * 1000);
 
   try {
+    // Sprint 15 fix Fork 3 W4-3 : on inclut slotDate dans le SELECT verrou
+    // pour eviter un round-trip post-tx (et pour resilience si suppression).
     const result = await prisma.$transaction(async (tx) => {
       // Verrou pessimiste : SELECT ... FOR UPDATE bloque les autres tx
       // jusqu'au commit/rollback. Postgres serializable level natif.
-      const rows = await tx.$queryRaw<Array<{ id: string; status: string }>>`
-        SELECT id, status FROM calendar_slots
-        WHERE id = ${slotId}::uuid
+      const rows = await tx.$queryRaw<Array<{ id: string; status: string; slot_date: Date }>>`
+        SELECT id, status, slot_date FROM calendar_slots
+        WHERE id = ${parsed.data.slotId}::uuid
         FOR UPDATE
       `;
       const slot = rows[0];
@@ -178,52 +196,47 @@ export async function postOption48hAction(
       // Cree l'option + flip slot.status='reserved' atomiquement
       const option = await tx.bookingOption.create({
         data: {
-          slotId,
-          companyName,
-          companySector,
-          interventionType,
-          participantsCount,
-          contactName,
-          contactEmail,
-          contactPhone,
+          slotId: parsed.data.slotId,
+          companyName: parsed.data.companyName,
+          companySector: parsed.data.companySector,
+          interventionType: interventionTypeEnum,
+          participantsCount: parsed.data.participantsCount,
+          contactName: parsed.data.contactName,
+          contactEmail: parsed.data.contactEmail,
+          contactPhone: parsed.data.contactPhone,
           consentDisplay,
           locale,
           expiresAt,
         },
       });
       await tx.calendarSlot.update({
-        where: { id: slotId },
+        where: { id: parsed.data.slotId },
         data: {
           status: "reserved",
-          displaySector: consentDisplay ? companySector : null,
-          interventionType,
-          participantsCount,
+          displaySector: consentDisplay ? parsed.data.companySector : null,
+          interventionType: interventionTypeEnum,
+          participantsCount: parsed.data.participantsCount,
         },
       });
-      return option;
+      return { option, slotDate: slot.slot_date };
     });
 
     await sendTelegram({
       tag: "OPTION",
-      body: `Nouvelle option 48h\n• Société : ${companyName} (${companySector})\n• Intervention : ${interventionType}\n• Participants : ${participantsCount}\n• Contact : ${contactName} (\`${contactEmail}\`)\n• Expire : ${expiresAt.toISOString()}\n• Locale : ${locale}\n• ID : \`${result.id}\``,
+      body: `Nouvelle option 48h\n• Société : ${parsed.data.companyName} (${parsed.data.companySector})\n• Intervention : ${interventionTypeEnum}\n• Participants : ${parsed.data.participantsCount}\n• Contact : ${parsed.data.contactName} (\`${parsed.data.contactEmail}\`)\n• Expire : ${expiresAt.toISOString()}\n• Locale : ${locale}\n• ID : \`${result.option.id}\``,
     });
 
-    // Lookup slot date pour le payload email (le tx pourrait l'inclure mais
-    // on garde la simplicite ici — read commit-after-tx).
-    const slot = await prisma.calendarSlot.findUnique({
-      where: { id: slotId },
-      select: { slotDate: true },
-    });
-    await enqueueEmail("option-posted", contactEmail, locale, {
-      contactName,
-      companyName,
-      bookingDate: slot?.slotDate.toISOString().slice(0, 10) ?? "",
-      interventionType,
+    await enqueueEmail("option-posted", parsed.data.contactEmail, locale, {
+      contactName: parsed.data.contactName,
+      companyName: parsed.data.companyName,
+      bookingDate: result.slotDate.toISOString().slice(0, 10),
+      interventionType: interventionTypeEnum,
+      participantsCount: parsed.data.participantsCount,
       expiresAt: expiresAt.toISOString(),
-      optionId: result.id,
+      optionId: result.option.id,
     });
 
-    return { ok: true, optionId: result.id, expiresAt: expiresAt.toISOString() };
+    return { ok: true, optionId: result.option.id, expiresAt: expiresAt.toISOString() };
   } catch (err) {
     const reason = (err as Error).message;
     if (reason === "slot_taken") {

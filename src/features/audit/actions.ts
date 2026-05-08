@@ -13,7 +13,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { Locale } from "../../../prisma/generated/client";
+import { parseLocale } from "@/lib/schemas/locale";
 
 export type AuditState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -21,12 +21,6 @@ async function getClientIp(): Promise<string> {
   const h = await headers();
   return h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "unknown";
 }
-
-function bodyFromObj(obj: Record<string, unknown>): FormDataEntryValue | null {
-  return null;
-  void obj;
-}
-void bodyFromObj;
 
 export async function submitAuditAction(
   _prev: AuditState,
@@ -51,17 +45,19 @@ export async function submitAuditAction(
     contact: formData.get("contact"),
     email: formData.get("email"),
     phone: formData.get("phone") || undefined,
+    companyName: formData.get("companyName") || undefined,
     consent: formData.get("consent") === "true" || formData.get("consent") === "on",
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
-  const locale = ((formData.get("locale") as string) || "fr") as Locale;
+  const locale = parseLocale(formData.get("locale"));
 
   const submission = await prisma.submission.create({
     data: {
       type: "audit",
       locale,
-      companyName: parsed.data.contact,
+      // Sprint 15 fix Fork 2 C4-2 : utilise companyName si fourni
+      companyName: parsed.data.companyName ?? parsed.data.contact,
       contactName: parsed.data.contact,
       contactEmail: parsed.data.email,
       contactPhone: parsed.data.phone ?? null,
@@ -129,7 +125,7 @@ export async function submitAuditRequestAction(
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
-  const locale = ((formData.get("locale") as string) || "fr") as Locale;
+  const locale = parseLocale(formData.get("locale"));
 
   const submission = await prisma.submission.create({
     data: {
@@ -163,12 +159,16 @@ export async function submitAuditRequestAction(
     body: `Nouvelle demande audit ${parsed.data.auditType} • ${parsed.data.size}\n• Secteur : ${parsed.data.industry}\n• Lieu : ${parsed.data.city}, ${parsed.data.country} (${parsed.data.modality})\n• Maturité : ${parsed.data.maturity}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
   });
 
+  // Sprint 15 fix Fork 2 W1-2 : enqueue avec tools/role pour Telegram + email
   await enqueueEmail("audit-confirmed", parsed.data.email, locale, {
     contactName: parsed.data.contact,
     auditType: parsed.data.auditType,
     size: parsed.data.size,
     industry: parsed.data.industry,
     submissionId: submission.id,
+    tools: parsed.data.tools ?? [],
+    toolsOther: parsed.data.toolsOther,
+    role: parsed.data.role,
   });
 
   return { ok: true, submissionId: submission.id };

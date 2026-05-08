@@ -9,6 +9,7 @@ import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
+import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
 import "../globals.css";
 
@@ -103,8 +104,21 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   // JSON-LD: Organization + WebSite (axionia-seo-aeo). Built via factories
   // in `lib/seo.ts` so the same Organization entity is reused on landing
   // pages (régions, villes, IA tools) without copy-paste drift.
-  // Will fournit plus tard : `vatID` + `registrikood` Estonia → ajouter ici.
-  const organizationJsonLd = buildOrganizationJsonLd({ locale: locale as Locale });
+  // vatID (EE-VAT) + registrikood (Estonia commercial registry) sourced
+  // depuis env.ts — passés en optional. Si non définis, JSON-LD sans ces
+  // champs (validateur Google n'exige pas, mais signal E-E-A-T plus fort
+  // quand présents pour LLMs disambiguation Wikidata).
+  // Build conditionnel pour exactOptionalPropertyTypes — on n'assigne la
+  // prop que si la valeur est definie (Sprint 15 fix typecheck strict).
+  const organizationJsonLdInput: {
+    locale: Locale;
+    vatID?: string;
+    registrikood?: string;
+  } = { locale: locale as Locale };
+  if (env.COMPANY_VAT_NUMBER) organizationJsonLdInput.vatID = env.COMPANY_VAT_NUMBER;
+  if (env.COMPANY_REGISTRATION_NUMBER)
+    organizationJsonLdInput.registrikood = env.COMPANY_REGISTRATION_NUMBER;
+  const organizationJsonLd = buildOrganizationJsonLd(organizationJsonLdInput);
   const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
 
   return (

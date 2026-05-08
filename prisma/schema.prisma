@@ -1,4 +1,4 @@
-// AxionIA · Prisma schema (Sprint 15 / M8)
+// Axion-IA · Prisma schema (Sprint 15 / M8)
 // Sources canoniques :
 // - CLAUDE.md v6 §13 (liste 18 tables nominales)
 // - Dossier v10.1 docs/09 + 09b + 09c (specs champs)
@@ -51,13 +51,16 @@ enum SubmissionStatus {
   archived
 }
 
+// Aligne sur les slugs UI (src/content/interventions.ts InterventionSlug).
+// UI emet en kebab-case (ex. "gagner-du-temps") ; Server Action convertit
+// '-' → '_' avant prisma.create (Postgres enum n'aime pas le tiret).
 enum InterventionType {
   essentielle
-  equipes
-  managers
+  approfondie
   conference
   dirigeants
-  coaching_individuel
+  gagner_du_temps
+  intervention_claude
 }
 
 enum BookingStatus {
@@ -117,11 +120,13 @@ enum SurveyStatus {
   archived
 }
 
+// CLAUDE.md §14 livre la doctrine FR : super admin / admin / editeur / lecteur.
+// Convention §17 (commentaires + identifiers en anglais) → on garde editor/reader.
 enum AdminRole {
   super_admin
   admin
-  editor
-  reader
+  editor // = editeur (FR doctrine §14)
+  reader // = lecteur (FR doctrine §14)
 }
 
 enum AdminStatus {
