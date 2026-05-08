@@ -784,3 +784,39 @@
   min-height: 80px;
   font-family: var(--font-manrope, system-ui);
 }
+
+/* M9 T1.2 — Options admin urgency + boutons */
+.admin-button-active {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.admin-urgency-critical {
+  background-color: var(--color-terracotta-soft);
+}
+.admin-urgency-high {
+  background-color: var(--color-terracotta-soft);
+}
+.admin-urgency-medium td:first-child::before {
+  content: "⚠ ";
+  color: var(--color-terracotta);
+}
+.admin-button-validate {
+  background-color: var(--color-sage);
+}
+.admin-button-validate:hover:not(:disabled) {
+  background-color: var(--color-sage);
+  filter: brightness(0.92);
+}
+.admin-button-refuse {
+  background-color: var(--color-accent-red);
+}
+.admin-button-refuse:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+.admin-form-refuse {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 8px;
+}
