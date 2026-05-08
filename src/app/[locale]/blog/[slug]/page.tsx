@@ -15,6 +15,7 @@ import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { BLOG_POSTS, getBlogPost, getAllBlogSlugs } from "@/content/transversal";
 import { resolveTier } from "@/content/blog";
 import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -271,8 +272,8 @@ export default async function BlogArticle({ params }: Props) {
         title={isFr ? "Mettre en pratique" : "Put it to work"}
         description={
           isFr
-            ? "Démarrez par une intervention Essentielle 490 €."
-            : "Start with an Essential session €490."
+            ? `Démarrez par une intervention Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}.`
+            : `Start with an Essential session ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">

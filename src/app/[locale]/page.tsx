@@ -9,7 +9,15 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
-import { INTERVENTION_TIERS, formatAmount, getEntryPriceEur } from "@/content/pricing";
+import {
+  AUDIT_TIERS,
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  formatAmount,
+  formatAmountRange,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
 import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
@@ -50,6 +58,24 @@ export default async function Home({ params }: HomeProps) {
   const isFr = loc === "fr";
   const t = await getTranslations("home");
 
+  // Prix dérivés du SSOT pricing.ts — injectés dans les messages i18n via {price}/{priceRange}.
+  // Sprint 14.10.5 : zéro hardcode. Range audit obsolète (290-1990 €) remplacé par
+  // le range complet du catalogue (Flash priceFlat → ETI priceMin) ; alternative
+  // ciblé+PME (1 900-9 900) plus restrictive — choix : range complet pour englober
+  // toute la pyramide audit dans la copy "Cartographie complète".
+  const interventionEntryPrice = formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, loc, {
+    compact: true,
+  });
+  const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
+    compact: true,
+  });
+  const auditRange = formatAmountRange(
+    getEntryPriceEur(AUDIT_TIERS) ?? 0,
+    getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
+    loc,
+    { compact: true },
+  );
+
   // 3 services — intervenir / auditer / implémenter (cÅ“ur du message client).
   // Chaque carte a SA couleur d'accent : terracotta (action humaine) / primary
   // (analyse) / sage (production) — identité visuelle claire par service.
@@ -60,7 +86,7 @@ export default async function Home({ params }: HomeProps) {
       accent: "terracotta" as const,
       action: t("value1Action"),
       headline: t("value1Headline"),
-      price: t("value1Price"),
+      price: t("value1Price", { price: interventionEntryPrice }),
       bullets: [t("value1Bullet1"), t("value1Bullet2"), t("value1Bullet3")],
       gain: t("value1Gain"),
       href: "/interventions" as const,
@@ -71,7 +97,7 @@ export default async function Home({ params }: HomeProps) {
       accent: "primary" as const,
       action: t("value2Action"),
       headline: t("value2Headline"),
-      price: t("value2Price"),
+      price: t("value2Price", { priceRange: auditRange }),
       bullets: [t("value2Bullet1"), t("value2Bullet2"), t("value2Bullet3")],
       gain: t("value2Gain"),
       href: "/audit" as const,
@@ -82,7 +108,7 @@ export default async function Home({ params }: HomeProps) {
       accent: "sage" as const,
       action: t("value3Action"),
       headline: t("value3Headline"),
-      price: t("value3Price"),
+      price: t("value3Price", { price: implEntryPrice }),
       bullets: [t("value3Bullet1"), t("value3Bullet2"), t("value3Bullet3")],
       gain: t("value3Gain"),
       href: "/implementation" as const,
@@ -215,7 +241,7 @@ export default async function Home({ params }: HomeProps) {
                   href="/interventions/essentielle"
                   className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  {t("heroCtaPrimary")}
+                  {t("heroCtaPrimary", { price: interventionEntryPrice })}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
                 <Link

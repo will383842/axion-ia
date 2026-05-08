@@ -16,6 +16,7 @@ import {
   getBlogCategoryLabel,
 } from "@/content/transversal";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -118,7 +119,9 @@ export default async function BlogCategoryPage({ params }: Props) {
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
             <Cta href="/interventions/essentielle" variant="outline" size="lg">
-              {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"}
+              {isFr
+                ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
             </Cta>
           </div>
         </Container>

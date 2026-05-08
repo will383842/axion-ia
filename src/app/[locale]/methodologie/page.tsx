@@ -13,6 +13,7 @@ import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSche
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildHowToJsonLd, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -363,12 +364,15 @@ export default async function MethodologyPage({ params }: Props) {
         title={isFr ? "Prêt Ã  démarrer ?" : "Ready to start?"}
         description={
           isFr
-            ? "Réservez l'Essentielle 490 € pour identifier 3-5 quick-wins en une journée."
-            : "Book the Essential €490 to identify 3-5 quick-wins in one day."
+            ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour identifier 3-5 quick-wins en une journée.`
+            : `Book the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to identify 3-5 quick-wins in one day.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"} â†’
+            {isFr
+              ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+              : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}{" "}
+            â†’
           </Cta>
         }
         tone="dark"

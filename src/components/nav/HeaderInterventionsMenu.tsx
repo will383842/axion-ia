@@ -22,27 +22,28 @@ import { ArrowUpRight, GraduationCap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ClaudeLogo } from "@/components/visual/ClaudeLogo";
 import { HeaderMegaMenu } from "./HeaderMegaMenu";
-import { INTERVENTION_TIERS } from "@/content/pricing";
+import { INTERVENTION_TIERS, formatAmount, formatPrice, getTierById } from "@/content/pricing";
 
 // Helpers internes — récupèrent un tier par id depuis pricing.ts (SSOT) et
-// formatent son prix d'entrée en « dès N € HT » / « from €N ». Si la clé
-// disparaissait de pricing.ts, le `!` non-null casserait le typecheck →
-// signal clair pour le dev.
+// formatent son prix via les helpers SSOT. Si la clé disparaissait de
+// pricing.ts, getTierById throw → signal clair pour le dev.
 function entryPriceFr(tierId: string): string {
-  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
-  return `dès ${t.priceFlat ?? t.priceMin} € HT`;
+  const t = getTierById(INTERVENTION_TIERS, tierId);
+  const amount = t.priceFlat ?? t.priceMin;
+  if (amount == null) return "Sur devis";
+  return `dès ${formatAmount(amount, "fr")}`;
 }
 function entryPriceEn(tierId: string): string {
-  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
-  return `from €${t.priceFlat ?? t.priceMin}`;
+  const t = getTierById(INTERVENTION_TIERS, tierId);
+  const amount = t.priceFlat ?? t.priceMin;
+  if (amount == null) return "On request";
+  return `from ${formatAmount(amount, "en")}`;
 }
 function flatPriceFr(tierId: string): string {
-  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
-  return `${t.priceFlat} € HT`;
+  return formatPrice(getTierById(INTERVENTION_TIERS, tierId), "fr");
 }
 function flatPriceEn(tierId: string): string {
-  const t = INTERVENTION_TIERS.find((x) => x.id === tierId)!;
-  return `€${t.priceFlat}`;
+  return formatPrice(getTierById(INTERVENTION_TIERS, tierId), "en");
 }
 
 interface HeaderInterventionsMenuProps {

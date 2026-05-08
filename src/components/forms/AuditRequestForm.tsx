@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { cn } from "@/lib/utils";
 
 type AuditTypeKey = "flash" | "process" | "strategique-pme" | "strategique-eti";
@@ -143,27 +144,55 @@ const STEP_ICONS = [ClipboardCheck, Building2, MapPin, Brain, User, Check] as co
 // haut du form, le différentiel modalité Step 3 et le récap Step 6.
 // Les niveaux Process/PME/ETI ont le même prix indicatif distance/onsite
 // (le différentiel sera précisé dans le devis personnalisé).
-const PRICE_TABLE: Record<
+// Sprint 14.10.5 : entièrement dérivé de SSOT pricing.ts (zéro hardcode).
+const TIER_ID_BY_TYPE: Record<AuditTypeKey, string> = {
+  flash: "audit-flash",
+  process: "audit-cible",
+  "strategique-pme": "audit-strategique-pme",
+  "strategique-eti": "audit-strategique-eti",
+};
+
+function buildPriceTable(): Record<
   AuditTypeKey,
   { remote: { fr: string; en: string }; onsite: { fr: string; en: string } }
-> = {
-  flash: {
-    remote: { fr: "490 €", en: "€490" },
-    onsite: { fr: "890 €", en: "€890" },
-  },
-  process: {
-    remote: { fr: "Dès 1 900 €", en: "From €1,900" },
-    onsite: { fr: "Dès 1 900 €", en: "From €1,900" },
-  },
-  "strategique-pme": {
-    remote: { fr: "Dès 4 900 €", en: "From €4,900" },
-    onsite: { fr: "Dès 4 900 €", en: "From €4,900" },
-  },
-  "strategique-eti": {
-    remote: { fr: "À partir de 12 000 €", en: "From €12,000" },
-    onsite: { fr: "À partir de 12 000 €", en: "From €12,000" },
-  },
-};
+> {
+  const flash = getTierById(AUDIT_TIERS, "audit-flash");
+  const cible = getTierById(AUDIT_TIERS, "audit-cible");
+  const pme = getTierById(AUDIT_TIERS, "audit-strategique-pme");
+  const eti = getTierById(AUDIT_TIERS, "audit-strategique-eti");
+  const flashRemoteFr = formatAmount(flash.priceFlat!, "fr", { compact: true });
+  const flashRemoteEn = formatAmount(flash.priceFlat!, "en", { compact: true });
+  const flashOnsiteFr = formatAmount(flash.priceFlatOnsite!, "fr", { compact: true });
+  const flashOnsiteEn = formatAmount(flash.priceFlatOnsite!, "en", { compact: true });
+  const cibleFr = `Dès ${formatAmount(cible.priceMin!, "fr", { compact: true })}`;
+  const cibleEn = `From ${formatAmount(cible.priceMin!, "en", { compact: true })}`;
+  const pmeFr = `Dès ${formatAmount(pme.priceMin!, "fr", { compact: true })}`;
+  const pmeEn = `From ${formatAmount(pme.priceMin!, "en", { compact: true })}`;
+  const etiFr = `À partir de ${formatAmount(eti.priceMin!, "fr", { compact: true })}`;
+  const etiEn = `From ${formatAmount(eti.priceMin!, "en", { compact: true })}`;
+  return {
+    flash: {
+      remote: { fr: flashRemoteFr, en: flashRemoteEn },
+      onsite: { fr: flashOnsiteFr, en: flashOnsiteEn },
+    },
+    process: {
+      remote: { fr: cibleFr, en: cibleEn },
+      onsite: { fr: cibleFr, en: cibleEn },
+    },
+    "strategique-pme": {
+      remote: { fr: pmeFr, en: pmeEn },
+      onsite: { fr: pmeFr, en: pmeEn },
+    },
+    "strategique-eti": {
+      remote: { fr: etiFr, en: etiEn },
+      onsite: { fr: etiFr, en: etiEn },
+    },
+  };
+}
+
+const PRICE_TABLE = buildPriceTable();
+// Suppress unused warning — TIER_ID_BY_TYPE est exposé pour usage futur (admin pricing).
+void TIER_ID_BY_TYPE;
 
 /** Helper : retourne le prix à afficher selon type + modalité + locale. */
 function priceFor(

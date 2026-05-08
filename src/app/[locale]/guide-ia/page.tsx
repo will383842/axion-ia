@@ -13,6 +13,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -224,8 +225,8 @@ export default async function AiGuidePage({ params }: Props) {
         title={isFr ? "Préfèrez parler en direct ?" : "Prefer talking directly?"}
         description={
           isFr
-            ? "Réservez l'Essentielle 490 € — identification de 3-5 quick-wins en une journée."
-            : "Book the Essential €490 — identify 3-5 quick-wins in one day."
+            ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} — identification de 3-5 quick-wins en une journée.`
+            : `Book the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} — identify 3-5 quick-wins in one day.`
         }
         cta={
           <Cta href="/interventions/essentielle" variant="outline">

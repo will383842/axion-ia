@@ -15,6 +15,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { REGIONS, getIndexableRegions, getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles, VILLES } from "@/content/villes";
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -90,7 +91,9 @@ export default async function ImplantationsHub({ params }: Props) {
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Cta href="/audit" variant="primary" size="lg" shape="pill" track="hub_cta_audit">
-            {isFr ? "Demander un audit Flash · 490 €" : "Request a Flash audit · €490"}
+            {isFr
+              ? `Demander un audit Flash · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+              : `Request a Flash audit · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </Cta>
           <Cta href="/contact" variant="ghost" size="lg" shape="pill" track="hub_cta_contact">
@@ -269,7 +272,9 @@ export default async function ImplantationsHub({ params }: Props) {
         cta={
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Cta href="/reserver" variant="terracotta" size="lg" shape="pill" track="hub_cta_book">
-              {isFr ? "Voir le calendrier · 490 €" : "View the calendar · €490"}
+              {isFr
+                ? `Voir le calendrier · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                : `View the calendar · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
             </Cta>
             <Cta href="/audit" variant="outline" size="lg" shape="pill" track="hub_cta_audit_final">
               {isFr ? "Audit IA détaillé" : "Detailed AI audit"}

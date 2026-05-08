@@ -15,6 +15,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { buildProductMetadata, buildPersonJsonLd } from "@/lib/seo";
 
 interface Props {
@@ -115,7 +116,9 @@ export default async function About({ params }: Props) {
               {/* CTAs hero */}
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta href="/interventions/essentielle" size="lg">
-                  {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"}
+                  {isFr
+                    ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                    : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
                 <Cta href="/audit" variant="outline" size="lg">
@@ -292,8 +295,8 @@ export default async function About({ params }: Props) {
         }
         description={
           isFr
-            ? "L'Essentielle 490 € est conçue pour démarrer vite, sans pré-requis IA."
-            : "The Essential €490 is designed to start fast, with no AI prerequisites."
+            ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} est conçue pour démarrer vite, sans pré-requis IA.`
+            : `The Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} is designed to start fast, with no AI prerequisites.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">

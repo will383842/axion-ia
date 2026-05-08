@@ -15,6 +15,7 @@ import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/lib/seo";
 import { splitTitleEm } from "@/lib/title";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -164,8 +165,8 @@ export default async function CaseStudyPage({ params }: Props) {
         title={isFr ? "Démarrez votre propre cas concret" : "Start your own case study"}
         description={
           isFr
-            ? "L'Essentielle 490 € pose le diagnostic + le plan d'action chiffré."
-            : "The Essential €490 frames the diagnostic and the costed action plan."
+            ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pose le diagnostic + le plan d'action chiffré.`
+            : `The Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} frames the diagnostic and the costed action plan.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">

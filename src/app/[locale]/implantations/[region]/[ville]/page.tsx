@@ -35,7 +35,9 @@ import {
   INTERVENTION_TIERS,
   IMPLEMENTATION_TIERS,
   formatPrice,
+  formatAmount,
   getEntryTier,
+  getTierById,
 } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -77,8 +79,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? (ville.copy?.directAnswerFr ?? ville.copy?.pitchFr ?? "")
       : (ville.copy?.directAnswerEn ?? ville.copy?.pitchEn ?? "")
     : isFr
-      ? `AxionIA intervient Ã  ${ville.nameFr} (${region.nameFr}). Audit IA Flash dès 490 € HT, intervention sur site 1 journée, implémentation IA. Réservation directe en ligne.`
-      : `AxionIA operates in ${ville.nameFr} (${region.nameFr}). Flash AI audit from €490, 1-day on-site session, AI implementation. Direct online booking.`;
+      ? `AxionIA intervient à ${ville.nameFr} (${region.nameFr}). Audit IA Flash dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}, intervention sur site 1 journée, implémentation IA. Réservation directe en ligne.`
+      : `AxionIA operates in ${ville.nameFr} (${region.nameFr}). Flash AI audit from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en")}, 1-day on-site session, AI implementation. Direct online booking.`;
 
   const meta = buildProductMetadata({
     locale,
@@ -264,7 +266,9 @@ export default async function VillePage({ params }: Props) {
                   shape="pill"
                   track="ville_cta_book"
                 >
-                  {isFr ? `Réserver Ã  ${ville.nameFr} · 490 €` : `Book in ${ville.nameFr} · €490`}
+                  {isFr
+                    ? `Réserver à ${ville.nameFr} · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                    : `Book in ${ville.nameFr} · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
                 <Cta
@@ -275,7 +279,9 @@ export default async function VillePage({ params }: Props) {
                   track="ville_cta_audit"
                   data-source-ville={ville.slug}
                 >
-                  {isFr ? "Audit IA Flash · 490 €" : "Flash AI audit · €490"}
+                  {isFr
+                    ? `Audit IA Flash · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`
+                    : `Flash AI audit · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`}
                 </Cta>
               </div>
             </div>
@@ -809,7 +815,9 @@ export default async function VillePage({ params }: Props) {
               track="ville_cta_book_final"
               data-source-ville={ville.slug}
             >
-              {isFr ? "Voir le calendrier · 490 €" : "View the calendar · €490"}
+              {isFr
+                ? `Voir le calendrier · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                : `View the calendar · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
             </Cta>
             <Cta
               href="/contact"
@@ -878,7 +886,9 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
           track="ville_stub_book"
           data-source-ville={ville.slug}
         >
-          {isFr ? "Réserver une intervention · 490 €" : "Book an engagement · €490"}
+          {isFr
+            ? `Réserver une intervention · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+            : `Book an engagement · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
         </Cta>
       </div>
     </Section>

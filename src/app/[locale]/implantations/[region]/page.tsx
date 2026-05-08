@@ -14,6 +14,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 
 import { REGIONS, getRegion } from "@/content/regions";
 import { getVillesByRegion } from "@/content/villes";
+import { AUDIT_TIERS, INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildItemListJsonLd,
@@ -155,7 +156,9 @@ export default async function RegionPage({ params }: Props) {
             shape="pill"
             track="region_cta_book"
           >
-            {isFr ? "Réserver · dès 490 €" : "Book · from €490"}
+            {isFr
+              ? `Réserver · dès ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+              : `Book · from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </Cta>
           <Cta href="/audit" variant="ghost" size="lg" shape="pill" track="region_cta_audit">
@@ -349,8 +352,8 @@ export default async function RegionPage({ params }: Props) {
               icon: Briefcase,
               label: isFr ? "Audit IA" : "AI audit",
               detail: isFr
-                ? "4 niveaux · Flash 490 € → Stratégique ETI dès 12 000 €"
-                : "4 tiers · Flash €490 → Mid-cap strategic from €12,000",
+                ? `4 niveaux · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} → Stratégique ETI dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "fr", { compact: true })}`
+                : `4 tiers · Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} → Mid-cap strategic from ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "en", { compact: true })}`,
               accent: "primary" as const,
             },
             {
@@ -358,8 +361,8 @@ export default async function RegionPage({ params }: Props) {
               icon: Building2,
               label: isFr ? "Interventions sur site" : "On-site sessions",
               detail: isFr
-                ? "1 journée 490 € · jusqu'à 100 personnes · démos sur vos données"
-                : "1 day €490 · up to 100 people · demos on your data",
+                ? `1 journée ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} · jusqu'à 100 personnes · démos sur vos données`
+                : `1 day ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} · up to 100 people · demos on your data`,
               accent: "terracotta" as const,
             },
             {
@@ -430,7 +433,9 @@ export default async function RegionPage({ params }: Props) {
               shape="pill"
               track="region_cta_book_final"
             >
-              {isFr ? "Voir le calendrier · 490 €" : "View the calendar · €490"}
+              {isFr
+                ? `Voir le calendrier · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                : `View the calendar · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
             </Cta>
             <Cta
               href="/contact"

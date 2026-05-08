@@ -15,6 +15,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ContactHeroSchema } from "@/components/sections/ContactHeroSchema";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -74,8 +75,7 @@ export default async function Contact({ params }: Props) {
         {
           id: "engagement",
           question: "Faut-il signer un engagement pour échanger ?",
-          answer:
-            "Non. L'échange initial — message, appel découverte, envoi d'informations — est sans engagement. L'engagement contractuel commence uniquement Ã  la réservation d'une intervention payante (Essentielle 490 € ou plus) ou d'un audit cadré, et fait l'objet d'un devis explicite.",
+          answer: `Non. L'échange initial — message, appel découverte, envoi d'informations — est sans engagement. L'engagement contractuel commence uniquement à la réservation d'une intervention payante (Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} ou plus) ou d'un audit cadré, et fait l'objet d'un devis explicite.`,
         },
         {
           id: "rgpd",
@@ -86,8 +86,7 @@ export default async function Contact({ params }: Props) {
         {
           id: "rdv",
           question: "Puis-je réserver un appel directement ?",
-          answer:
-            "Oui. L'Essentielle (490 €, 90 min) est un appel diagnostic facturé qui se réserve sur le calendrier maison avec créneaux en temps réel. Pour un échange découverte gratuit (15-20 min), passez par le formulaire en précisant « appel découverte » dans le message.",
+          answer: `Oui. L'Essentielle (${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, 90 min) est un appel diagnostic facturé qui se réserve sur le calendrier maison avec créneaux en temps réel. Pour un échange découverte gratuit (15-20 min), passez par le formulaire en précisant « appel découverte » dans le message.`,
         },
         {
           id: "scope",
@@ -106,8 +105,7 @@ export default async function Contact({ params }: Props) {
         {
           id: "engagement",
           question: "Do I need to commit to anything to talk?",
-          answer:
-            "No. The initial exchange — message, discovery call, info sent — is no-commitment. Contractual commitment only starts when you book a paid session (Essential €490 or above) or a scoped audit, and is always covered by an explicit quote.",
+          answer: `No. The initial exchange — message, discovery call, info sent — is no-commitment. Contractual commitment only starts when you book a paid session (Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} or above) or a scoped audit, and is always covered by an explicit quote.`,
         },
         {
           id: "rgpd",
@@ -118,8 +116,7 @@ export default async function Contact({ params }: Props) {
         {
           id: "rdv",
           question: "Can I book a call directly?",
-          answer:
-            "Yes. The Essential (€490, 90 min) is a paid diagnostic call bookable on the on-site calendar with live availability. For a free discovery exchange (15-20 min), use the form and mention « discovery call » in the message.",
+          answer: `Yes. The Essential (${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, 90 min) is a paid diagnostic call bookable on the on-site calendar with live availability. For a free discovery exchange (15-20 min), use the form and mention « discovery call » in the message.`,
         },
         {
           id: "scope",
@@ -217,7 +214,9 @@ export default async function Contact({ params }: Props) {
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
                 <Cta href="/interventions/essentielle" variant="outline" size="lg">
-                  {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"}
+                  {isFr
+                    ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+                    : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
                 </Cta>
               </div>
             </div>
@@ -226,8 +225,8 @@ export default async function Contact({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : 3 portes d'entrée AxionIA — message direct (48 h ouvrées), Essentielle 490 €, audit cadré 4 tailles."
-                  : "Diagram: 3 ways into AxionIA — direct message (48 business hours), Essential €490, scoped audit 4 sizes."
+                  ? `Schéma : 3 portes d'entrée AxionIA — message direct (48 h ouvrées), Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audit cadré 4 tailles.`
+                  : `Diagram: 3 ways into AxionIA — direct message (48 business hours), Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, scoped audit 4 sizes.`
               }
             />
           </div>
@@ -377,7 +376,10 @@ export default async function Contact({ params }: Props) {
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"} â†’
+            {isFr
+              ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+              : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}{" "}
+            â†’
           </Cta>
         }
         tone="dark"

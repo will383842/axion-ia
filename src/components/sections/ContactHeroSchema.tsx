@@ -10,6 +10,7 @@
 
 import type { ReactNode } from "react";
 import { Mail, CalendarClock, ClipboardCheck } from "lucide-react";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 export interface ContactHeroSchemaProps {
   isFr: boolean;
@@ -22,6 +23,7 @@ export function ContactHeroSchema({
   ariaLabel,
   className,
 }: ContactHeroSchemaProps): ReactNode {
+  const essentielleAmount = getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!;
   const channels = isFr
     ? [
         {
@@ -34,7 +36,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Intervention",
-          title: "L'Essentielle · 490 €",
+          title: `L'Essentielle · ${formatAmount(essentielleAmount, "fr", { compact: true })}`,
           detail: "Diagnostic 90 min + plan d'action.",
           lead: false,
         },
@@ -57,7 +59,7 @@ export function ContactHeroSchema({
         {
           icon: CalendarClock,
           eyebrow: "Session",
-          title: "The Essential · €490",
+          title: `The Essential · ${formatAmount(essentielleAmount, "en", { compact: true })}`,
           detail: "90-min diagnostic + action plan.",
           lead: false,
         },

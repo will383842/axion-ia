@@ -2,6 +2,7 @@
 // Spec: https://llmstxt.org/
 // Sprint 14 will enrich this with full content blocks (llms-full.txt).
 
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { SITE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
@@ -9,6 +10,11 @@ export const runtime = "edge";
 // HTTP `Cache-Control` (1h fresh + 24h SWR) below for CDN caching.
 
 export function GET() {
+  const essentiellePrice = formatAmount(
+    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+    "fr",
+    { compact: true },
+  );
   const body = `# AxionIA
 
 > Cabinet IA opérationnel B2B pour entreprises. Cabinet européen (AxionIA OÜ).
@@ -17,7 +23,7 @@ export function GET() {
 
 ## Modules
 
-- [Interventions entreprise](${SITE_URL}/fr/interventions) — formats opérationnels, page phare ${SITE_URL}/fr/interventions/essentielle (490 €).
+- [Interventions entreprise](${SITE_URL}/fr/interventions) — formats opérationnels, page phare ${SITE_URL}/fr/interventions/essentielle (${essentiellePrice}).
 - [Audit & optimisation](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités.
 - [Implémentation IA](${SITE_URL}/fr/implementation) — automatisations et IA Custom.
 - [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés.

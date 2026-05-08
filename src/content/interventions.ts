@@ -796,73 +796,183 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     summary: {
       fr: {
         benefitTagline:
-          "Une journée 100 % stratégique avec vous pour mettre à plat votre quotidien dirigeant. On étudie votre emploi du temps, ce qui vous pèse, les tâches répétitives, vos coûts cachés. Ensemble, on identifie les leviers IA & automatisations qui vont vous faire gagner du temps, augmenter vos marges et réduire vos frais de personnel. Vous repartez le soir avec 3 à 5 actions activables dès le lendemain — et sous 7 jours, vous recevez le rapport complet de mise en œuvre chiffré, prêt à exécuter.",
-        duration: "1 journée stratégique sur site + rapport sous 7 jours",
+          "Une journée 1-to-1 pour mettre à plat votre quotidien dirigeant. On identifie les leviers IA qui libèrent vos heures, augmentent vos marges et réduisent vos frais de personnel. Le soir, 3 actions immédiates. Sous 7 jours, votre rapport complet de mise en œuvre.",
+        duration: "1 journée + rapport sous 7 jours",
         durationDays: 1,
         price: DIRIGEANTS_PRICE_FR,
-        groupSize: "Vous + équipe rapprochée (1 à 5 personnes)",
+        groupSize: "Vous + équipe rapprochée (1 à 5)",
         format: "Sur site dirigeant · France & international",
-        audience: "Fondateurs, DG, dirigeants, CODIR, COMEX · TPE → grandes entreprises",
+        audience: "Fondateurs, DG, CODIR, COMEX",
         outcomes: [
-          "Le soir même : 3 à 5 actions concrètes activables dès le lendemain matin (outils à utiliser, prompts prêts à coller, premiers paramétrages simples) — pour un gain de temps immédiat sur votre semaine",
-          "Cartographie de votre semaine type : où va réellement votre temps, quelles tâches mangent vos heures à forte valeur, lesquelles peuvent passer en IA ou en automatisation",
-          "3 à 5 leviers chiffrés pour augmenter vos marges : automatisations équipes (gain frais de personnel), accélération commerciale, réduction des coûts cachés, productivité dirigeant",
-          "Vision IA 12-24 mois pour votre entreprise + grille d'arbitrage personnelle pour décider seul sur les futurs investissements IA, sans dépendre d'un cabinet",
-          "Sous 7 jours · rapport complet de mise en œuvre : synthèse de la journée + recherches & vérifications post-séance + plan d'exécution priorisé et chiffré, prêt à lancer par vos équipes ou par nous",
+          "3 actions immédiates activables dès le lendemain — gain de temps tout de suite, sans attendre",
+          "Leviers chiffrés pour vos marges : frais de personnel, accélération commerciale, coûts cachés",
+          "Vision IA 12-24 mois + grille d'arbitrage pour décider seul, sans dépendre d'un cabinet",
+          "Rapport sous 7 jours : plan d'exécution priorisé et chiffré, prêt à lancer par vos équipes ou par nous",
         ],
         outline: [
-          "Call de cadrage en visio — premier portrait de votre quotidien et de vos enjeux 2026 pour préparer la journée",
-          "Jour J — 100 % stratégie : matin · audit emploi du temps + tâches répétitives + coûts cachés · après-midi · conception des leviers IA & automatisations + chiffrage · fin de journée · vous repartez avec vos 3 à 5 actions immédiates + la vision 12-24 mois",
-          "Sous 7 jours · envoi du rapport complet de mise en œuvre — synthèse de la journée + recherches complémentaires + plan d'exécution priorisé et chiffré",
+          "Call de cadrage en visio — premier portrait de votre quotidien et de vos enjeux",
+          "Jour J · 100 % stratégie : emploi du temps · chronophages · coûts cachés · leviers IA · vision 12-24 mois",
+          "Sous 7 jours · rapport complet de mise en œuvre, chiffré et priorisé",
         ],
         ctaLabel: "Réserver votre journée Direction",
       },
       en: {
         benefitTagline:
-          "A fully strategic day at your side to lay your executive daily life flat. We study your schedule, what weighs on you, repetitive tasks, hidden costs. Together, we map the AI & automation levers that will save you time, lift your margins and reduce headcount costs. You leave that evening with 3 to 5 actions you can activate the next morning — and within 7 days, you receive the full quantified implementation report, ready to execute.",
-        duration: "1 strategic day on site + report within 7 days",
+          "A 1-on-1 day to lay your executive daily life flat. We map the AI levers that free your hours, lift your margins and reduce headcount costs. That evening, 3 immediate actions. Within 7 days, your full implementation report.",
+        duration: "1 day + report within 7 days",
         durationDays: 1,
         price: DIRIGEANTS_PRICE_EN,
         groupSize: "You + inner circle (1 to 5)",
         format: "On site · France & international",
-        audience: "Founders, CEOs, executives, leadership, COMEX · small to enterprise",
+        audience: "Founders, CEOs, leadership, COMEX",
         outcomes: [
-          "That same evening: 3 to 5 concrete actions activable the next morning (tools to use, ready-to-paste prompts, first simple setups) — for an immediate time gain on your week",
-          "Mapping of your typical week: where your time really goes, which tasks eat your high-value hours, which ones can move to AI or automation",
-          "3 to 5 quantified levers to lift your margins: team automations (headcount savings), sales acceleration, hidden-cost reduction, executive productivity",
-          "12-24 month AI vision for your company + personal decision framework so you call your own shots on future AI investments — no consulting dependency",
-          "Within 7 days · full implementation report: day-of synthesis + post-session research & validation + prioritised quantified execution plan, ready to ship by your teams or by us",
+          "3 immediate actions activable the next morning — time gain right away, no waiting",
+          "Quantified levers for your margins: headcount costs, sales acceleration, hidden costs",
+          "12-24 month AI vision + decision framework so you call your own shots, no consulting dependency",
+          "Within 7 days · prioritised quantified execution plan, ready to ship by your teams or by us",
         ],
         outline: [
-          "Framing call by video — first portrait of your daily life and 2026 stakes to prepare the day",
-          "Day — 100 % strategy: morning · audit of schedule + repetitive tasks + hidden costs · afternoon · design of AI levers & automations + quantification · end of day · you leave with 3 to 5 immediate actions + the 12-24 month vision",
-          "Within 7 days · full implementation report — day-of synthesis + complementary research + prioritised quantified execution plan",
+          "Framing call by video — first portrait of your daily life and stakes",
+          "Day · 100 % strategy: schedule · time-sinks · hidden costs · AI levers · 12-24 month vision",
+          "Within 7 days · full implementation report, quantified and prioritised",
         ],
         ctaLabel: "Book your Director's day",
       },
     },
     fr: {
       ...makeFr({
-        eyebrow: "Cible : dirigeants & CODIR · 1 jour sur site",
-        title: "L'IA",
-        titleEm: "pour les dirigeants",
+        eyebrow: "Journée stratégique 1-to-1 · CODIR · COMEX",
+        title: "Direction",
+        titleEm: "Journée stratégique",
         answer:
-          "Une journée pour dirigeants et comité de direction : panorama IA 2026, ateliers de positionnement, référentiel d'arbitrage des décisions IA. Formation standardisée, ressources pédagogiques fournies.",
-        ctaPrimary: "Réserver l'intervention CODIR",
+          "Une journée stratégique 1-to-1 sur votre site avec votre équipe rapprochée (1 à 5). On met à plat votre quotidien dirigeant, on identifie les leviers IA qui libèrent vos heures, augmentent vos marges et réduisent vos frais de personnel. Le soir : 3 actions activables dès le lendemain. Sous 7 jours : rapport complet de mise en œuvre, chiffré et priorisé.",
+        ctaPrimary: "Réserver votre journée Direction",
         faqIntro: "dirigeants",
       }),
+      benefits: [
+        {
+          title: "Libérer vos heures dirigeant",
+          description:
+            "Boîte mail, prépa CODIR, reporting, comptes-rendus, suivi commercial : on cartographie vos chronophages réels et on identifie ce qui peut passer en IA — chiffré en heures par semaine.",
+        },
+        {
+          title: "Augmenter vos marges",
+          description:
+            "Leviers IA × frais de personnel (automatisations équipes), accélération commerciale, réduction des coûts cachés — chaque levier chiffré en € attendus, pas en promesses vagues.",
+        },
+        {
+          title: "Décider seul sur l'IA",
+          description:
+            "Vision 12-24 mois pour votre entreprise + grille d'arbitrage personnelle — vous tranchez vos prochains investissements IA en autonomie, sans dépendre d'un cabinet.",
+        },
+        {
+          title: "Plan d'exécution sous 7 jours",
+          description:
+            "Rapport complet livré sous 7 jours : synthèse de la journée + recherches & vérifications post-séance + plan d'exécution priorisé et chiffré, prêt à lancer par vos équipes ou par nous.",
+        },
+      ],
+      metrics: [
+        { number: "3", suffix: "actions", label: "activables dès le lendemain" },
+        { number: "12-24", suffix: "mois", label: "Vision IA cadrée pour l'entreprise" },
+        { number: "7", suffix: "jours", label: "Rapport complet livré" },
+      ],
+      faqs: [
+        {
+          id: "no-implementation",
+          question: "Y a-t-il de l'implémentation pendant la journée ?",
+          answer:
+            "Non. La journée est 100 % stratégique : on identifie, on chiffre, on priorise. L'implémentation se fait après — soit par vos équipes (le rapport est prêt à exécuter), soit par nous via les autres modules (Implémentation IA).",
+        },
+        {
+          id: "report",
+          question: "Que contient exactement le rapport sous 7 jours ?",
+          answer:
+            "Synthèse de la journée + recherches complémentaires faites après la séance (vérification des outils, comparatifs, chiffrages affinés) + plan d'exécution priorisé avec coûts, gains attendus et calendrier indicatif. Document directement actionnable.",
+        },
+        {
+          id: "fit",
+          question: "Pour qui est-ce vraiment fait ?",
+          answer:
+            "Fondateurs, DG, dirigeants de business unit, CODIR, COMEX — TPE jusqu'aux grandes entreprises. Le format 1-to-1 (vous + équipe rapprochée 1 à 5) garantit que la journée colle exactement à votre contexte et à vos enjeux.",
+        },
+        {
+          id: "follow-up",
+          question: "Y a-t-il un suivi après le rapport ?",
+          answer:
+            "Le rapport est livré clés en main. Si vous voulez une exécution accompagnée, on bascule sur le module Implémentation IA — sur devis selon le périmètre.",
+        },
+      ],
+      ctaBlockTitle: "Prêt·e à libérer vos heures dirigeant ?",
+      ctaBlockDescription:
+        "Réservez la prochaine date disponible. Calendrier maison en temps réel, confirmation immédiate, rapport sous 7 jours après la journée.",
       daySchedule: DIRIGEANTS_SCHEDULE_FR,
     },
     en: {
       ...makeEn({
-        eyebrow: "Audience: executives & CODIR · 1 day on site",
-        title: "AI",
-        titleEm: "for executives",
+        eyebrow: "Strategic 1-on-1 day · Leadership · COMEX",
+        title: "Direction",
+        titleEm: "Strategic day",
         answer:
-          "A day for executives and the leadership committee: 2026 AI panorama, positioning workshops, AI decision framework. Standardised training, learning takeaways provided.",
-        ctaPrimary: "Book the executive session",
+          "A strategic 1-on-1 day on site with your inner circle (1 to 5). We lay your executive daily life flat, map the AI levers that free your hours, lift your margins and reduce headcount costs. That evening: 3 actions activable the next morning. Within 7 days: a full quantified, prioritised implementation report.",
+        ctaPrimary: "Book your Director's day",
         faqIntro: "executives",
       }),
+      benefits: [
+        {
+          title: "Free your executive hours",
+          description:
+            "Inbox, board prep, reporting, meeting minutes, sales follow-up: we map your real time-sinks and identify what can move to AI — quantified in hours per week.",
+        },
+        {
+          title: "Lift your margins",
+          description:
+            "AI × headcount levers (team automations), sales acceleration, hidden cost reduction — each lever quantified in expected €, not vague promises.",
+        },
+        {
+          title: "Call your own AI shots",
+          description:
+            "12-24 month vision for your company + personal decision framework — you decide on future AI investments in autonomy, no consulting dependency.",
+        },
+        {
+          title: "Execution plan within 7 days",
+          description:
+            "Full report delivered within 7 days: day-of synthesis + post-session research & validation + prioritised quantified execution plan, ready to ship by your teams or by us.",
+        },
+      ],
+      metrics: [
+        { number: "3", suffix: "actions", label: "activable the next morning" },
+        { number: "12-24", suffix: "months", label: "AI vision framed for the company" },
+        { number: "7", suffix: "days", label: "Full report delivered" },
+      ],
+      faqs: [
+        {
+          id: "no-implementation",
+          question: "Is there implementation during the day?",
+          answer:
+            "No. The day is 100 % strategic: we identify, quantify, prioritise. Implementation happens after — either by your teams (the report is ready to execute), or by us via other modules (AI Implementation).",
+        },
+        {
+          id: "report",
+          question: "What's exactly in the 7-day report?",
+          answer:
+            "Day-of synthesis + complementary research done after the session (tool validation, comparisons, refined quantification) + prioritised execution plan with costs, expected gains and indicative timeline. A directly actionable document.",
+        },
+        {
+          id: "fit",
+          question: "Who is this really for?",
+          answer:
+            "Founders, CEOs, business unit directors, leadership team, COMEX — small to enterprise. The 1-on-1 format (you + inner circle 1 to 5) guarantees the day fits your context and stakes exactly.",
+        },
+        {
+          id: "follow-up",
+          question: "Is there a follow-up after the report?",
+          answer:
+            "The report is delivered turn-key. If you want supported execution, we move to the AI Implementation module — quoted based on scope.",
+        },
+      ],
+      ctaBlockTitle: "Ready to free your executive hours?",
+      ctaBlockDescription:
+        "Book the next available date. Live in-house calendar, instant confirmation, full report within 7 days after the day.",
       daySchedule: DIRIGEANTS_SCHEDULE_EN,
     },
   },

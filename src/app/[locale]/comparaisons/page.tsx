@@ -25,6 +25,13 @@ import { ComparisonsHeroSchema } from "@/components/sections/ComparisonsHeroSche
 import { COMPARISONS } from "@/content/comparaisons";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import {
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  formatAmount,
+  formatAmountRange,
+  getTierById,
+} from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -203,8 +210,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? "Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle 490 €). Pas d'investissement custom à ce stade."
-                    : "Default recommendation: generic SaaS or short consultancy mission (Essential €490). No custom investment at this stage."}
+                    ? `Recommandation par défaut : SaaS générique ou cabinet en mission courte (Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}). Pas d'investissement custom à ce stade.`
+                    : `Default recommendation: generic SaaS or short consultancy mission (Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}). No custom investment at this stage.`}
                 </p>
               </CardContent>
             </Card>
@@ -243,8 +250,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               <CardContent>
                 <p className="text-fg-soft text-sm leading-snug">
                   {isFr
-                    ? "Recommandation par défaut : équipe interne renforcée par cabinet IA en architecture + IA Custom (8-50 k€). Désengagement progressif des SaaS."
-                    : "Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (€8-50k). Progressive SaaS disengagement."}
+                    ? `Recommandation par défaut : équipe interne renforcée par cabinet IA en architecture + IA Custom (${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "fr", { compact: true })}). Désengagement progressif des SaaS.`
+                    : `Default recommendation: in-house team augmented by AI consultancy on architecture + Custom AI (${formatAmountRange(getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMin!, getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!, "en", { compact: true })}). Progressive SaaS disengagement.`}
                 </p>
               </CardContent>
             </Card>
@@ -273,12 +280,15 @@ export default async function ComparisonsListPage({ params }: Props) {
         title={isFr ? "Une décision IA Ã  prendre ?" : "An AI decision to make?"}
         description={
           isFr
-            ? "Réservez l'Essentielle 490 € : on cartographie votre situation et on tranche sur vos données, pas sur des slides."
-            : "Book the Essential €490: we map your situation and decide on your data, not on slides."
+            ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} : on cartographie votre situation et on tranche sur vos données, pas sur des slides.`
+            : `Book the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}: we map your situation and decide on your data, not on slides.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">
-            {isFr ? "Voir l'Essentielle 490 €" : "See the Essential €490"} â†’
+            {isFr
+              ? `Voir l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+              : `See the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}{" "}
+            â†’
           </Cta>
         }
         tone="dark"

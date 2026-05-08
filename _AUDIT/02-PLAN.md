@@ -1,7 +1,15 @@
 # AxionIA — Plan d'implémentation maître (M1 → M11)
 
-**Version 1 · 06/05/2026 · FR**
-**Source de vérité** : `_DECISIONS-FINALES.md` + `CLAUDE.md` v6 + ADR `docs/adr/0001-design-direction-webflow.md` + skills `axionia-*`.
+> **⚠️ DOCUMENT FIGÉ — overlay canonique 2026-05-08**
+>
+> Ce plan a été rédigé le 06/05/2026 et conserve son état initial pour traçabilité historique. Plusieurs sections sont obsolètes (stack Next 15→16.2.4, doctrine Webflow→Editorial Premium Light v3, ban-formation→intervention coaching, CF Pro→CF Free, etc.).
+>
+> **➜ Lire d'abord `_AUDIT/PLAN-AMENDMENTS-2026-05-08.md`** qui acte les corrections officielles section par section. Le fichier amendments est la source de vérité ; ce 02-PLAN reste figé.
+>
+> Sources canoniques actuelles : ADRs `docs/adr/0001-stack-initial.md` à `0009-hosting-hetzner-cx32-cloudflare-free.md`, `Design.md`, `CLAUDE.md`/`AGENTS.md`, `CHANGELOG.md`, `SESSION_LOG.md`.
+
+**Version 1 · 06/05/2026 · FR** _(figée — voir amendments 2026-05-08)_
+**Source de vérité originale (obsolète, voir amendments)** : `_DECISIONS-FINALES.md` + `CLAUDE.md` v6 + ADR `docs/adr/0001-design-direction-webflow.md` + skills `axionia-*`.
 
 ---
 

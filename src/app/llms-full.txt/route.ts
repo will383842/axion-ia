@@ -4,11 +4,42 @@
 
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CASE_STUDIES } from "@/content/case-studies";
+import {
+  AUDIT_TIERS,
+  IMPLEMENTATION_TIERS,
+  INTERVENTION_TIERS,
+  formatAmount,
+  formatAmountRange,
+  getEntryLabel,
+  getTierById,
+} from "@/content/pricing";
 import { SITE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
 
 export function GET() {
+  // Sprint 14.10.5 — prix dérivés du SSOT pricing.ts (zéro hardcode).
+  // L'ancienne mention « 290-1990 € » audit était OBSOLÈTE (les vrais tiers
+  // commencent à 490 €). Range complet du catalogue audit (Flash → ETI).
+  const interventionsEntry = formatAmount(
+    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+    "fr",
+  );
+  const interventionsCompact = formatAmount(
+    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
+    "fr",
+    { compact: true },
+  );
+  const auditFlashAmount = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
+  const auditPmeMax = getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMax!;
+  const auditRange = formatAmountRange(auditFlashAmount, auditPmeMax, "fr");
+  const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr").replace(/^dès\s/, "à partir de ");
+  const iaCustomMax = formatAmount(
+    getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom").priceMax!,
+    "fr",
+    { compact: true },
+  );
+
   const faqBlock = FAQ_GLOBAL.map(
     (f) => `### ${f.fr.question}\n\n${f.fr.answer}\n\n(EN) ${f.en.answer}`,
   ).join("\n\n");
@@ -32,16 +63,16 @@ AxionIA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur s
 
 ## 3 modules
 
-### Module 1 — Interventions entreprise (à partir de 490 € HT)
-Format opérationnel sur site (ou distance). 1 journée d'intervention = diagnostic terrain + démos appliquées sur vos données + plan d'action chiffré priorisé. Page phare : l'Essentielle 490 €.
+### Module 1 — Interventions entreprise (à partir de ${interventionsEntry})
+Format opérationnel sur site (ou distance). 1 journée d'intervention = diagnostic terrain + démos appliquées sur vos données + plan d'action chiffré priorisé. Page phare : l'Essentielle ${interventionsCompact}.
 URL : ${SITE_URL}/fr/interventions
 
-### Module 2 — Audit & optimisation IA (290-1990 €)
+### Module 2 — Audit & optimisation IA (${auditRange})
 Audit en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.
 URL : ${SITE_URL}/fr/audit
 
-### Module 3 — Implémentation IA (à partir de 990 €)
-Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement, support 30 j inclus. 9 prestations dont l'IA Custom premium (jusqu'à 50 k€).
+### Module 3 — Implémentation IA (${implEntry})
+Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement, support 30 j inclus. 9 prestations dont l'IA Custom premium (jusqu'à ${iaCustomMax}).
 URL : ${SITE_URL}/fr/implementation
 
 ## FAQ

@@ -15,6 +15,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { BLOG_POSTS } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -271,8 +272,8 @@ export default async function BlogListing({ params }: Props) {
         title={isFr ? "Démarrer concrètement" : "Start concretely"}
         description={
           isFr
-            ? "L'Essentielle 490 € pose le diagnostic + le plan d'action."
-            : "The Essential €490 frames the diagnostic and the action plan."
+            ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pose le diagnostic + le plan d'action.`
+            : `The Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} frames the diagnostic and the action plan.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">

@@ -18,6 +18,7 @@ import {
   type BlogCompanySize,
 } from "@/content/blog";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -105,7 +106,9 @@ export default async function BlogCompanySizePage({ params }: Props) {
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Cta>
           <Cta href="/audit" variant="outline" size="lg">
-            {isFr ? "Demander un audit Flash · 490 €" : "Request a Flash audit · €490"}
+            {isFr
+              ? `Demander un audit Flash · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
+              : `Request a Flash audit · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
           </Cta>
         </div>
       </Section>

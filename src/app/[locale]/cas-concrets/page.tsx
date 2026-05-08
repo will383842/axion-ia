@@ -24,6 +24,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
+import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -204,8 +205,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "Chaque cas publié ici représente une mission AxionIA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés Ã  leur demande, mais les chiffres, les délais et la méthode sont fidèles Ã  la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode AxionIA s'applique Ã  toutes les tailles, Ã  condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle 490 € pour vérifier."
-              : "Each case study here represents an AxionIA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the AxionIA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential €490 to validate."}
+              ? `Chaque cas publié ici représente une mission AxionIA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode AxionIA s'applique à toutes les tailles, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour vérifier.`
+              : `Each case study here represents an AxionIA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the AxionIA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to validate.`}
           </p>
         </Container>
       </Section>
@@ -247,9 +248,13 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                   {isFr ? "Par budget" : "By budget"}
                 </CardTitle>
                 <CardDescription>
+                  {/* TODO(pricing): valider avec Will — « audits 3-15 k€ » et « implémentations 5-50 k€ »
+                      sont des fourchettes marketing larges qui dépassent la grille pricing.ts officielle
+                      (audits 490 → 12 000 €, implémentations 990 → 80 000 €). Ranges laissés intacts
+                      car la conversion exacte est ambiguë (fourchettes marketing ≠ tiers SSOT). */}
                   {isFr
-                    ? "L'Essentielle 490 €, audits 3-15 k€, implémentations 5-50 k€. ROI documenté Ã  chaque palier."
-                    : "Essential €490, audits €3-15k, implementations €5-50k. Documented ROI at every tier."}
+                    ? `L'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}, audits 3-15 k€, implémentations 5-50 k€. ROI documenté à chaque palier.`
+                    : `Essential ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}, audits €3-15k, implementations €5-50k. Documented ROI at every tier.`}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -389,8 +394,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         title={isFr ? "Devenez le prochain cas concret" : "Become the next case study"}
         description={
           isFr
-            ? "Démarrez par une intervention Essentielle 490 € pour identifier vos quick-wins."
-            : "Start with an Essential session €490 to identify your quick-wins."
+            ? `Démarrez par une intervention Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour identifier vos quick-wins.`
+            : `Start with an Essential session ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })} to identify your quick-wins.`
         }
         cta={
           <Cta href="/interventions/essentielle" size="lg">

@@ -17,7 +17,13 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
 import type { VilleServiceCopyLocale } from "@/content/villes/copy/types";
-import { INTERVENTION_FEES_NOTE } from "@/content/pricing";
+import {
+  AUDIT_TIERS,
+  INTERVENTION_FEES_NOTE,
+  INTERVENTION_TIERS,
+  formatAmount,
+  getTierById,
+} from "@/content/pricing";
 
 export interface VilleServiceDetailSectionProps {
   /** Locale courante. */
@@ -36,6 +42,13 @@ export interface VilleServiceDetailSectionProps {
   tone?: "paper" | "sand" | "canvas";
 }
 
+// Sprint 14.10.5 — CTAs prix dérivés du SSOT pricing.ts (zéro hardcode).
+const auditFlashAmount = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
+const interventionEssentielleAmount = getTierById(
+  INTERVENTION_TIERS,
+  "intervention-essentielle",
+).priceFlat!;
+
 const SERVICE_META = {
   audit: {
     accent: "primary" as const,
@@ -44,8 +57,8 @@ const SERVICE_META = {
     labelEn: "AI audit",
     eyebrowFr: "Audit IA opérationnel",
     eyebrowEn: "Operational AI audit",
-    ctaFr: "Demander un audit Flash · 490 €",
-    ctaEn: "Request a Flash audit · €490",
+    ctaFr: `Demander un audit Flash · ${formatAmount(auditFlashAmount, "fr", { compact: true })}`,
+    ctaEn: `Request a Flash audit · ${formatAmount(auditFlashAmount, "en", { compact: true })}`,
   },
   interventions: {
     accent: "terracotta" as const,
@@ -54,8 +67,8 @@ const SERVICE_META = {
     labelEn: "AI sessions",
     eyebrowFr: "Interventions IA en entreprise",
     eyebrowEn: "Corporate AI sessions",
-    ctaFr: "Voir le calendrier · 490 €",
-    ctaEn: "View the calendar · €490",
+    ctaFr: `Voir le calendrier · ${formatAmount(interventionEssentielleAmount, "fr", { compact: true })}`,
+    ctaEn: `View the calendar · ${formatAmount(interventionEssentielleAmount, "en", { compact: true })}`,
   },
   implementation: {
     accent: "sage" as const,
