@@ -890,3 +890,10 @@
 .admin-calendar-panel {
   margin-top: 16px;
 }
+
+/* M9 T2.1 — FAQ admin form rows */
+.admin-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
