@@ -1,0 +1,192 @@
+﻿{
+  "scripts": [
+    "dev",
+    "build",
+    "start",
+    "lint",
+    "typecheck",
+    "test",
+    "test:e2e",
+    "lhci",
+    "i18n:check",
+    "seo:audit",
+    "a11y:audit"
+  ],
+  "scanned_at": "2026-05-07T23:22:04+02:00",
+  "head_sha": "fd915187077c78f693f67d7364b8db908993b957",
+  "stack": {
+    "prisma": "5.22.0",
+    "react": "19.2.4",
+    "playwright": "1.59.1",
+    "next": "16.2.4",
+    "nodeVersion": "20.18.0",
+    "nextIntl": "4.11.0",
+    "pnpmVersion": "10.33.4",
+    "typescript": "5",
+    "tailwind": "4",
+    "vitest": "2.1.9"
+  },
+  "css": {
+    "rootTokens": 46,
+    "typeScale": "Editorial Premium 18/15 (Manrope x-height 0.515 bumped to 18px base)",
+    "customClasses": [
+      "bg-halo-warm",
+      "bg-halo-cool",
+      "bg-mocha-rich",
+      "divider-editorial",
+      "display-editorial",
+      "italic-editorial",
+      "cta-lift",
+      "title-flash"
+    ]
+  },
+  "agent": "AGT-INFRA",
+  "robots": {
+    "disallow": [
+      "/api/",
+      "/_next/",
+      "/design",
+      "/fr/design",
+      "/en/design",
+      "/components",
+      "/fr/components",
+      "/en/components",
+      "/sections",
+      "/fr/sections",
+      "/en/sections"
+    ],
+    "allow": ["/"]
+  },
+  "sitemap": {
+    "totalSubSitemaps": 6,
+    "subSitemapIds": ["pages", "blog", "help", "cas-concrets", "comparaisons", "implementation"],
+    "hasIndex": true
+  },
+  "llms": {
+    "txtSections": ["Modules", "Stratégie"],
+    "fullTxtSections": [
+      "Positionnement",
+      "Modules",
+      "FAQ",
+      "Cas concrets",
+      "Méthodologie",
+      "Engagement"
+    ]
+  },
+  "seo": {
+    "factories": [
+      {
+        "signature": "(input: ProductSeoInput) =\u003e Metadata",
+        "name": "buildProductMetadata",
+        "type": "Metadata"
+      },
+      {
+        "signature": "(input: ServiceJsonLdInput) =\u003e Service",
+        "name": "buildServiceJsonLd",
+        "type": "Service"
+      },
+      {
+        "signature": "(input: FaqJsonLdInput) =\u003e FAQPage",
+        "name": "buildFaqJsonLd",
+        "type": "FAQPage"
+      },
+      {
+        "signature": "(input: BreadcrumbJsonLdInput) =\u003e BreadcrumbList",
+        "name": "buildBreadcrumbJsonLd",
+        "type": "BreadcrumbList"
+      },
+      {
+        "signature": "(input: OrganizationJsonLdInput) =\u003e Organization",
+        "name": "buildOrganizationJsonLd",
+        "type": "Organization"
+      },
+      {
+        "signature": "(input: WebsiteJsonLdInput) =\u003e WebSite",
+        "name": "buildWebsiteJsonLd",
+        "type": "WebSite"
+      },
+      {
+        "signature": "(input: PersonJsonLdInput) =\u003e Person",
+        "name": "buildPersonJsonLd",
+        "type": "Person",
+        "newSinceV1": true
+      },
+      {
+        "signature": "(input: ArticleJsonLdInput) =\u003e Article",
+        "name": "buildArticleJsonLd",
+        "type": "Article"
+      },
+      {
+        "signature": "(input: FaqSpeakableInput) =\u003e FAQPage",
+        "name": "buildFaqSpeakableJsonLd",
+        "type": "FAQPage+Speakable",
+        "newSinceV1": true
+      },
+      {
+        "signature": "(input: LocalBusinessJsonLdInput) =\u003e ProfessionalService",
+        "name": "buildLocalBusinessJsonLd",
+        "type": "ProfessionalService",
+        "newSinceV1": true
+      },
+      {
+        "signature": "(input: PlaceJsonLdInput) =\u003e Place",
+        "name": "buildPlaceJsonLd",
+        "type": "Place",
+        "newSinceV1": true
+      },
+      {
+        "signature": "(input: ItemListJsonLdInput) =\u003e ItemList",
+        "name": "buildItemListJsonLd",
+        "type": "ItemList",
+        "newSinceV1": true
+      },
+      {
+        "signature": "(input: ProductJsonLdInput) =\u003e Product",
+        "name": "buildProductJsonLd",
+        "type": "Product"
+      },
+      {
+        "signature": "(input: HowToJsonLdInput) =\u003e HowTo",
+        "name": "buildHowToJsonLd",
+        "type": "HowTo"
+      },
+      {
+        "signature": "(input: ReviewJsonLdInput) =\u003e Review",
+        "name": "buildReviewJsonLd",
+        "type": "Review"
+      },
+      {
+        "signature": "(input: AggregateRatingJsonLdInput) =\u003e AggregateRating",
+        "name": "buildAggregateRatingJsonLd",
+        "type": "AggregateRating"
+      },
+      {
+        "signature": "(input: DatasetJsonLdInput) =\u003e Dataset",
+        "name": "buildDatasetJsonLd",
+        "type": "Dataset"
+      },
+      {
+        "signature": "(input: ImageObjectJsonLdInput) =\u003e ImageObject",
+        "name": "buildImageObjectJsonLd",
+        "type": "ImageObject"
+      },
+      {
+        "signature": "(input: QAPageJsonLdInput) =\u003e QAPage",
+        "name": "buildQAPageJsonLd",
+        "type": "QAPage"
+      }
+    ],
+    "totalFactories": 19,
+    "newSinceV1": ["Person", "FaqSpeakable", "LocalBusiness", "Place", "ItemList"]
+  },
+  "ci": {
+    "totalWorkflows": 4,
+    "totalGates": 5,
+    "workflows": ["ci.yml", "nightly.yml", "staging.yml", "release.yml"]
+  },
+  "i18n": {
+    "pathnamesCount": 61,
+    "locales": ["fr", "en"],
+    "defaultLocale": "fr"
+  }
+}

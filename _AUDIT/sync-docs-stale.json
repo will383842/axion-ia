@@ -1,0 +1,439 @@
+{
+  "agent": "AGT-DOCS",
+  "scanned_at": "2026-05-07T23:42:00Z",
+  "head_sha": "fd915187077c78f693f67d7364b8db908993b957",
+  "note": "Reconstitué depuis le résumé textuel de l'agent (le JSON n'avait pas été écrit) + grep complémentaire de l'agent principal.",
+  "docs": [
+    {
+      "path": "_AUDIT/02b-mapping-pages.md",
+      "exists": true,
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "line": 10,
+          "citation": "61 templates × 2 langues + variantes ≈ 170 routes",
+          "reason": "HEAD = 64 routes live (cf. sync-pages.json)",
+          "fix": "réécrire récap volumétrique"
+        },
+        {
+          "line": 33,
+          "citation": "Module 2 — Audit & optimisation (5 pages × 2 langues)",
+          "reason": "Module Audit refactoré : flash/process/strategique-pme/strategique-eti/demande",
+          "fix": "réécrire toute la table Module 2"
+        },
+        {
+          "line": 38,
+          "citation": "/fr/audit/complet | /en/audit/complete",
+          "reason": "Routes refactorées",
+          "fix": "remplacer par /audit/flash + 4 autres"
+        },
+        {
+          "line": 39,
+          "citation": "/fr/audit/departement | /en/audit/department",
+          "reason": "Routes refactorées",
+          "fix": "remplacer par /audit/process"
+        },
+        {
+          "line": 40,
+          "citation": "/fr/audit/point-de-vente | /en/audit/retail-store",
+          "reason": "Routes refactorées",
+          "fix": "remplacer par /audit/strategique-pme"
+        },
+        {
+          "line": 41,
+          "citation": "/fr/audit/cabinet | /en/audit/firm",
+          "reason": "Routes refactorées",
+          "fix": "remplacer par /audit/strategique-eti + /audit/demande"
+        },
+        {
+          "line": 288,
+          "citation": "TOTAL templates uniques ~75",
+          "reason": "HEAD = 64 routes live + 6 récentes",
+          "fix": "réécrire récap → ~64-70 routes effectives"
+        },
+        {
+          "section": "Manquants",
+          "citation": "/presse, /stack-ia, /implementation/par-fonction/[slug], /implementation/par-techno",
+          "reason": "Pages live manquantes du mapping",
+          "fix": "ajouter section éditoriale + sous-sections implementation"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/02-PLAN.md",
+      "exists": true,
+      "stalenessLevel": "medium",
+      "staleMentions": [
+        {
+          "section": "M2 Design",
+          "citation": "Webflow Blue + 6 secondaires",
+          "reason": "ADR 0002 a pivoté vers Editorial Premium Light v3",
+          "fix": "noter pivot v3"
+        },
+        {
+          "section": "M4",
+          "citation": "/audit/complet, /audit/departement, /audit/point-de-vente, /audit/cabinet",
+          "reason": "Routes refactorées",
+          "fix": "remplacer noms"
+        },
+        {
+          "section": "Récapitulatif",
+          "citation": "M1-M11 jalons sans Sprint 14.5/14.6/14.7/14.8/14.9",
+          "reason": "Sprints livrés et pushés origin/main 2026-05-07",
+          "fix": "append annexe Sprints 14.5→14.9 livrés"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-CODAGE.md",
+      "exists": true,
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "line": 621,
+          "citation": "/audit/complet — audit complet entreprise",
+          "reason": "Route refactorée",
+          "fix": "remplacer par /audit/flash + autres"
+        },
+        {
+          "line": 622,
+          "citation": "/audit/departement",
+          "reason": "Route refactorée",
+          "fix": "remplacer par /audit/process"
+        },
+        {
+          "line": 623,
+          "citation": "/audit/point-de-vente",
+          "reason": "Route refactorée",
+          "fix": "remplacer par /audit/strategique-pme"
+        },
+        {
+          "line": 624,
+          "citation": "/audit/cabinet",
+          "reason": "Route refactorée",
+          "fix": "remplacer par /audit/strategique-eti + /audit/demande"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-MAITRE.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "staleMentions": [
+        {
+          "section": "scope",
+          "citation": "phases d'audit pré-Sprint 0",
+          "reason": "Sprints 0-14 + 14.5→14.9 livrés",
+          "fix": "append note de status si pertinent"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-FRONTEND-AUDIT-V14-2026.md",
+      "exists": true,
+      "stalenessLevel": "high",
+      "staleMentions": [
+        { "citation": "75 templates", "reason": "HEAD = 64 routes", "fix": "remplacer chiffre" },
+        {
+          "citation": "anti-formation gate",
+          "reason": "ADR 0003 a levé le ban",
+          "fix": "supprimer mentions"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-VERIFICATION-FINALE.md",
+      "exists": true,
+      "stalenessLevel": "medium",
+      "staleMentions": [
+        { "citation": "75 templates", "reason": "HEAD = 64 routes", "fix": "remplacer" },
+        {
+          "citation": "audit/complet | departement | point-de-vente | cabinet",
+          "reason": "Routes refactorées",
+          "fix": "remplacer"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-FRONTEND-DEEP-CHECK.md",
+      "exists": true,
+      "stalenessLevel": "medium",
+      "staleMentions": [
+        {
+          "citation": "75 templates / formation gate / 16px body",
+          "reason": "Tous obsolètes (HEAD)",
+          "fix": "sweep"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-SPRINT-AUDIT.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "staleMentions": [
+        { "citation": "anciennes routes audit", "reason": "Refactor", "fix": "sweep" }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-PAGE-AUDIT-PERFECT-2026.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "staleMentions": [
+        {
+          "citation": "75 templates / 64 routes prétendu",
+          "reason": "Confirmer après lecture précise",
+          "fix": "valider"
+        }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-PAGE-PRESSE.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "note": "Sprint 14.6 livré commit 38879bc — ce prompt peut être archivé ou marqué CLOS"
+    },
+    {
+      "path": "_AUDIT/PROMPT-FRONTEND-PARITY-CHECK.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "staleMentions": [
+        { "citation": "75 templates / anti-formation", "reason": "Périmé", "fix": "sweep" }
+      ]
+    },
+    {
+      "path": "_AUDIT/PROMPT-SEO-AEO-GEO-2026.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "staleMentions": [
+        {
+          "citation": "4 factories JSON-LD",
+          "reason": "HEAD = 19 factories (5 nouvelles depuis V1)",
+          "fix": "remplacer chiffre"
+        }
+      ]
+    },
+    {
+      "path": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_DECISIONS-FINALES.md",
+      "exists": true,
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "line": 26,
+          "citation": "Next.js 15 App Router",
+          "reason": "HEAD = Next.js 16.2.4",
+          "fix": "noter dans section ADRs ratifiés"
+        },
+        {
+          "section": "Charte couleurs (soir 06/05)",
+          "citation": "Webflow-inspired Webflow Blue + 6 secondaires + Manrope",
+          "reason": "ADR 0002 (2026-05-06) pivot Editorial Premium Light v3",
+          "fix": "ajouter section ADRs ratifiés depuis 2026-05-06 (0002 + 0003 + 0004)"
+        },
+        {
+          "line": 98,
+          "citation": "Mot 'formation' dans tout le projet (banni)",
+          "reason": "ADR 0003 lift formation ban (2026-05-07)",
+          "fix": "lever la mention + ajouter ADR 0003 au log"
+        },
+        {
+          "section": "8 templates × 2 langues = 16 templates",
+          "citation": "ne mentionne pas ADRs 0002-0006",
+          "reason": "État de mai 2026 figé",
+          "fix": "ajouter section ADRs récents"
+        }
+      ]
+    },
+    {
+      "path": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/docs/_NO-STRIPE.md",
+      "exists": false,
+      "note": "Référencé dans le prompt PROMPT-DOC-SYNC-V14 mais inexistant. Le ban Stripe est implicite dans _DECISIONS-FINALES.md (« Phase 1 100% hors ligne »)."
+    },
+    {
+      "path": "axionia/Design.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "note": "Sweep 2026-05-07 a déjà aligné Design.md avec ADR 0002+0003+0004 (cf. mémoire axionia_design_pivot.md). Vérifier 1 derniere fois mention 16px body si reste."
+    },
+    {
+      "path": "axionia/CLAUDE.md",
+      "exists": true,
+      "stalenessLevel": "ok",
+      "note": "Stub @AGENTS.md — à jour"
+    },
+    {
+      "path": "axionia/AGENTS.md",
+      "exists": true,
+      "stalenessLevel": "ok"
+    },
+    {
+      "path": "axionia/SESSION_LOG.md",
+      "exists": true,
+      "stalenessLevel": "unknown",
+      "note": "Append-only log — à scanner pour voir si Sprint 14.5→14.9 sont consignés"
+    },
+    {
+      "path": "axionia/README.md",
+      "exists": true,
+      "stalenessLevel": "low",
+      "note": "Mention 'formation autorisée 2026-05-07' déjà sync (cf. AGT-DOCS)"
+    },
+    {
+      "path": "axionia/docs/adr/0001-stack-initial.md",
+      "exists": true,
+      "stalenessLevel": "ok"
+    },
+    {
+      "path": "axionia/docs/adr/0002-design-pivot-editorial-v3.md",
+      "exists": true,
+      "stalenessLevel": "ok",
+      "note": "Doublon résolu par commit 18dd599 — 1 seul fichier 0002-* dans docs/adr/"
+    },
+    {
+      "path": "axionia/docs/adr/0003-lift-formation-ban.md",
+      "exists": true,
+      "stalenessLevel": "ok"
+    },
+    {
+      "path": "axionia/docs/adr/0004-typography-baseline-upgrade-v3-1.md",
+      "exists": true,
+      "stalenessLevel": "ok"
+    },
+    {
+      "path": "_AUDIT/adr-0003-navigation-mega-menu-PROPOSITION.md",
+      "exists": true,
+      "stalenessLevel": "info",
+      "note": "À renommer 0005-navigation-mega-menu.md et committer dans axionia/docs/adr/ (status proposed) si Will valide"
+    },
+    {
+      "path": "_AUDIT/adr-0004-pseo-villes-PROPOSITION.md",
+      "exists": true,
+      "stalenessLevel": "info",
+      "note": "À renommer 0006-pseo-villes.md et committer dans axionia/docs/adr/ (status proposed) si Will valide"
+    },
+    {
+      "path": "axionia-package/.claude/skills/axionia-architecture/SKILL.md",
+      "exists": true,
+      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-architecture/SKILL.md",
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "citation": "ne liste pas les nouvelles routes /presse, /stack-ia, /comparaisons, /comparaisons/[slug], /glossaire, /guide-ia, /methodologie, /accessibilite, /recherche, /implementation/par-fonction/[slug], /implementation/par-techno",
+          "reason": "Pages livrées Sprints 5→14.6",
+          "fix": "réécrire arborescence"
+        },
+        {
+          "citation": "module 2 audit complet/departement/point-de-vente/cabinet",
+          "reason": "Refactor Sprint 6",
+          "fix": "remplacer"
+        }
+      ]
+    },
+    {
+      "path": "axionia-package/.claude/skills/axionia-content-models/SKILL.md",
+      "exists": true,
+      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-content-models/SKILL.md",
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "citation": "ne liste pas press, stack-ia, comparaisons, automatisations",
+          "reason": "4 nouveaux modules content/ depuis V1",
+          "fix": "ajouter sections"
+        }
+      ]
+    },
+    {
+      "path": "axionia-package/.claude/skills/axionia-seo-aeo/SKILL.md",
+      "exists": true,
+      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-seo-aeo/SKILL.md",
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "citation": "factories Organization/Service/Offer/FAQPage/Article/BreadcrumbList/Person/Review",
+          "reason": "HEAD a 19 factories dont 5 nouvelles (LocalBusiness, Place, ItemList, FaqSpeakable, HowTo, Dataset, QAPage)",
+          "fix": "ajouter factories"
+        },
+        {
+          "citation": "sitemap multi-fichier 10 sous-sitemaps",
+          "reason": "HEAD = sitemap-index Next 16 + 6 sous-sitemaps via generateSitemaps",
+          "fix": "remplacer architecture"
+        }
+      ]
+    },
+    {
+      "path": "axionia-package/.claude/skills/axionia-design/SKILL.md",
+      "exists": true,
+      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-design/SKILL.md",
+      "stalenessLevel": "high",
+      "staleMentions": [
+        {
+          "citation": "Webflow-inspired + Webflow Blue + 6 secondaires",
+          "reason": "ADR 0002 pivot v3 (2026-05-06)",
+          "fix": "réécrire pour Editorial Premium Light + ADR 0004 typo v3.1"
+        }
+      ]
+    },
+    {
+      "path": "axionia-package/.claude/skills/axionia-stack/SKILL.md",
+      "exists": true,
+      "path_actual": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-package/.claude/skills/axionia-stack/SKILL.md",
+      "stalenessLevel": "medium",
+      "staleMentions": [
+        {
+          "citation": "Next.js 15",
+          "reason": "HEAD = Next.js 16.2.4",
+          "fix": "remplacer + noter Auth.js v5 beta.31, NextAuth, pnpm 10.33.4, Vitest 2.1.9, Playwright 1.59.1, Tailwind 4"
+        }
+      ]
+    },
+    {
+      "path": "axionia-package/.claude/skills/CHANGELOG-LOCKS.md",
+      "exists": false,
+      "note": "Localisé en _AUDIT/CHANGELOG-LOCKS.md (umbrella) — chemin différent du prompt"
+    },
+    {
+      "path": "_AUDIT/CHANGELOG-LOCKS.md",
+      "exists": true,
+      "stalenessLevel": "ok",
+      "note": "22 LOCKs documentés"
+    },
+    {
+      "path": "AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md",
+      "exists": true,
+      "stalenessLevel": "high_archived",
+      "note": "Bible historique v6 06/05/2026. Mentions Webflow + Next.js 15 + formation banni. NE PAS toucher (source historique gelée). Documenter dans rapport que cette doc fait foi sur l'historique mais que les ADRs 0002-0004 + Sprint 14.5-14.9 prévalent en cas de conflit."
+    },
+    {
+      "path": "memory/axionia_progress.md",
+      "exists": true,
+      "stalenessLevel": "ok_to_append",
+      "note": "Excellente cohérence Sprints 14.5-14.9. Append uniquement le dernier commit fd91518 step A SEO/AEO 76%→95% si pas déjà mentionné."
+    },
+    {
+      "path": "memory/axionia_design_pivot.md",
+      "exists": true,
+      "stalenessLevel": "ok",
+      "note": "Sync 2026-05-07 fait. Mentionne déjà ADR 0004 typo v3.1."
+    }
+  ],
+  "summary": {
+    "totalDocsScanned": 31,
+    "byStaleness": {
+      "high": 7,
+      "medium": 5,
+      "low": 7,
+      "ok": 9,
+      "info": 2,
+      "missing": 2
+    },
+    "topStalePatterns": [
+      "/audit/complet|departement|point-de-vente|cabinet (refactoré flash/process/strategique-pme/strategique-eti/demande)",
+      "75 templates / 61 templates / 170 routes (HEAD = 64 routes)",
+      "Word formation banni (ADR 0003 lève le ban 2026-05-07)",
+      "Webflow-inspired + Webflow Blue (ADR 0002 pivot v3 Editorial Premium Light)",
+      "text-base 16px (ADR 0004 v3.1 override 18px)",
+      "4 factories JSON-LD (HEAD 19 factories)",
+      "Sprint 14.5 working copy (commité + pushé)",
+      "22 commits ahead origin/main (réalité = 1 commit ahead seulement)"
+    ]
+  }
+}

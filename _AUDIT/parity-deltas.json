@@ -1,0 +1,701 @@
+{
+  "$schema": "axionia/parity-deltas-v1",
+  "auditDate": "2026-05-08",
+  "reference": {
+    "page": "/interventions",
+    "commit": "feat(interventions): redesign listing",
+    "score": 36,
+    "max": 36
+  },
+  "globalScore": {
+    "pagesAudited": 24,
+    "weightedPercent": 77,
+    "verdict": "BONNE"
+  },
+  "categories": {
+    "A_listings_modules": { "pages": 2, "avg": 33.5, "max": 36, "percent": 93 },
+    "B_listings_transversaux": { "pages": 2, "avg": 19.5, "max": 36, "percent": 54 },
+    "C_pages_editoriales": { "pages": 4, "avg": 21, "max": 36, "percent": 58 },
+    "D_utilitaires": { "pages": 2, "avg": 20, "max": 36, "percent": 56 },
+    "E_produit_individuelles": { "pages": 5, "avg": 28.6, "max": 36, "percent": 79 },
+    "F_cas_concrets_slug": { "pages": 1, "avg": 23, "max": 36, "percent": 64 },
+    "G_blog_slug": { "pages": 1, "avg": 17, "max": 36, "percent": 47 },
+    "H_legales": { "pages": 7, "avg": 17.4, "max": 18, "percent": 96 }
+  },
+  "pages": [
+    {
+      "slug": "/interventions",
+      "category": "reference",
+      "scores": {
+        "D1": 3,
+        "D2": 3,
+        "D3": 3,
+        "D4": 3,
+        "D5": 3,
+        "D6": 3,
+        "D7": 3,
+        "D8": 3,
+        "D9": 3,
+        "D10": 3,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 36,
+      "max": 36,
+      "priority": null,
+      "effort": null
+    },
+    {
+      "slug": "/audit",
+      "category": "A",
+      "scores": {
+        "D1": 3,
+        "D2": 3,
+        "D3": 3,
+        "D4": 3,
+        "D5": 3,
+        "D6": 3,
+        "D7": 2,
+        "D8": 3,
+        "D9": 3,
+        "D10": 3,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 35,
+      "max": 36,
+      "priority": "P0-polish",
+      "effort": "XS",
+      "actions": ["enrichir D7 anti-fear (2 para + 1 mini-cas par taille)"]
+    },
+    {
+      "slug": "/implementation",
+      "category": "A",
+      "scores": {
+        "D1": 3,
+        "D2": 2,
+        "D3": 3,
+        "D4": 3,
+        "D5": 3,
+        "D6": 2,
+        "D7": 2,
+        "D8": 3,
+        "D9": 3,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 32,
+      "max": 36,
+      "priority": "P1",
+      "effort": "S",
+      "actions": [
+        "enrichir ImplementationHeroSchema desktop SVG",
+        "ajouter 2-3 mini-témoignages dans scenarios"
+      ]
+    },
+    {
+      "slug": "/cas-concrets",
+      "category": "B",
+      "scores": {
+        "D1": 3,
+        "D2": 2,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 3,
+        "D7": 0,
+        "D8": 3,
+        "D9": 2,
+        "D10": 2,
+        "D11": 3,
+        "D12": 2
+      },
+      "total": 25,
+      "max": 36,
+      "priority": "P1",
+      "effort": "M",
+      "actions": [
+        "+4 pills réassurance",
+        "élargir CaseStudyCard (maturité/gain%)",
+        "section 'Choisir son cas'",
+        "émettre ItemList JSON-LD"
+      ]
+    },
+    {
+      "slug": "/blog",
+      "category": "B",
+      "scores": {
+        "D1": 1,
+        "D2": 0,
+        "D3": 0,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 0,
+        "D8": 2,
+        "D9": 1,
+        "D10": 2,
+        "D11": 3,
+        "D12": 2
+      },
+      "total": 14,
+      "max": 36,
+      "priority": "P0",
+      "effort": "M",
+      "actions": [
+        "refonte hero (titleEm + schema)",
+        "+4 pills (count, topics, search, latest)",
+        "pillar copy 'pourquoi blog'",
+        "émettre BlogPosting JSON-LD per article",
+        "section Most viewed top-5"
+      ]
+    },
+    {
+      "slug": "/a-propos",
+      "category": "C",
+      "scores": {
+        "D1": 2,
+        "D2": 1,
+        "D3": 2,
+        "D4": 2,
+        "D5": 1,
+        "D6": 2,
+        "D7": 1,
+        "D8": 2,
+        "D9": 3,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 24,
+      "max": 36,
+      "priority": "P1",
+      "effort": "M",
+      "actions": [
+        "+2 CTAs hero",
+        "schéma hero (timeline/équipe mini)",
+        "pillar 'why us' 100-150 mots",
+        "section proof (X clients / Y projects / Z impact)"
+      ]
+    },
+    {
+      "slug": "/contact",
+      "category": "C",
+      "scores": {
+        "D1": 2,
+        "D2": 0,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 0,
+        "D7": 0,
+        "D8": 2,
+        "D9": 2,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 17,
+      "max": 36,
+      "priority": "P0",
+      "effort": "M",
+      "actions": [
+        "layout 2-col hero + schéma",
+        "+4 trust pills (48h, no-commit, RGPD, méthode)",
+        "CTA hierarchy primary+secondary",
+        "Form JSON-LD",
+        "micro-FAQ"
+      ]
+    },
+    {
+      "slug": "/faq",
+      "category": "C",
+      "scores": {
+        "D1": 2,
+        "D2": 0,
+        "D3": 0,
+        "D4": 2,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 2,
+        "D10": 3,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 19,
+      "max": 36,
+      "priority": "P1",
+      "effort": "M",
+      "actions": [
+        "+CTA hero",
+        "+3 pills (count, search, recent)",
+        "section 'Most viewed Q&A top-5'",
+        "breadcrumb amélioré"
+      ]
+    },
+    {
+      "slug": "/centre-aide",
+      "category": "C",
+      "scores": {
+        "D1": 3,
+        "D2": 2,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 1,
+        "D7": 0,
+        "D8": 2,
+        "D9": 3,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 24,
+      "max": 36,
+      "priority": "P1",
+      "effort": "M",
+      "actions": [
+        "+3 pills (6 cat, 30 articles, MAJ)",
+        "enrichir HelpHeroSchema desc",
+        "section Popular Questions top-5",
+        "HelpCenter JSON-LD"
+      ]
+    },
+    {
+      "slug": "/reserver",
+      "category": "D",
+      "scores": {
+        "D1": 2,
+        "D2": 0,
+        "D3": 0,
+        "D4": 2,
+        "D5": 0,
+        "D6": 0,
+        "D7": 0,
+        "D8": 2,
+        "D9": 2,
+        "D10": 1,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 18,
+      "max": 36,
+      "priority": "P1",
+      "effort": "XS",
+      "actions": ["hero schéma léger", "2 trust pills (no-commit, time-to-confirm)"],
+      "note": "page utilitaire — niveau acceptable"
+    },
+    {
+      "slug": "/roi",
+      "category": "D",
+      "scores": {
+        "D1": 3,
+        "D2": 1,
+        "D3": 0,
+        "D4": 2,
+        "D5": 1,
+        "D6": 0,
+        "D7": 0,
+        "D8": 2,
+        "D9": 2,
+        "D10": 1,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 22,
+      "max": 36,
+      "priority": "P1",
+      "effort": "S",
+      "actions": ["rehausser Illustration en DetailHeroSchema riche"]
+    },
+    {
+      "slug": "/interventions/essentielle",
+      "category": "E",
+      "scores": {
+        "D1": 3,
+        "D2": 1,
+        "D3": 2,
+        "D4": 3,
+        "D5": 3,
+        "D6": 2,
+        "D7": 1,
+        "D8": 3,
+        "D9": 3,
+        "D10": 3,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 33,
+      "max": 36,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["polish léger D2"]
+    },
+    {
+      "slug": "/audit/flash",
+      "category": "E",
+      "scores": {
+        "D1": 3,
+        "D2": 0,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 1,
+        "D7": 1,
+        "D8": 3,
+        "D9": 2,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 27,
+      "max": 36,
+      "priority": "P1",
+      "effort": "S",
+      "actions": ["ajouter AuditHeroSchema (3 livrables : mapping/scoring/plan)"]
+    },
+    {
+      "slug": "/audit/strategique-pme",
+      "category": "E",
+      "scores": {
+        "D1": 3,
+        "D2": 2,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 1,
+        "D7": 1,
+        "D8": 3,
+        "D9": 2,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 29,
+      "max": 36,
+      "priority": "P1",
+      "effort": "S",
+      "actions": ["revoir palette halo orange (figma → code)"]
+    },
+    {
+      "slug": "/implementation/ia-custom",
+      "category": "E",
+      "scores": {
+        "D1": 3,
+        "D2": 0,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 1,
+        "D7": 1,
+        "D8": 3,
+        "D9": 2,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 27,
+      "max": 36,
+      "priority": "P1",
+      "effort": "M",
+      "actions": ["+DetailHeroSchema", "+testimonials section template"]
+    },
+    {
+      "slug": "/implementation/chatbot",
+      "category": "E",
+      "scores": {
+        "D1": 3,
+        "D2": 0,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 1,
+        "D7": 1,
+        "D8": 3,
+        "D9": 2,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 27,
+      "max": 36,
+      "priority": "P1",
+      "effort": "M",
+      "actions": ["+DetailHeroSchema", "+testimonials section template"]
+    },
+    {
+      "slug": "/cas-concrets/[slug]",
+      "category": "F",
+      "scores": {
+        "D1": 2,
+        "D2": 0,
+        "D3": 1,
+        "D4": 2,
+        "D5": 2,
+        "D6": 2,
+        "D7": 1,
+        "D8": 2,
+        "D9": 1,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 23,
+      "max": 36,
+      "priority": "P1",
+      "effort": "S",
+      "actions": ["+BreadcrumbList JSON-LD", "+titleEm serif", "accents v3 cosmétique"]
+    },
+    {
+      "slug": "/blog/[slug]",
+      "category": "G",
+      "scores": {
+        "D1": 2,
+        "D2": 0,
+        "D3": 0,
+        "D4": 1,
+        "D5": 1,
+        "D6": 0,
+        "D7": 0,
+        "D8": 2,
+        "D9": 1,
+        "D10": 2,
+        "D11": 3,
+        "D12": 3
+      },
+      "total": 17,
+      "max": 36,
+      "priority": "P0",
+      "effort": "S",
+      "actions": [
+        "body multi-<p> parsing (1 seul <p> ~150-200 mots actuellement)",
+        "+titleEm hero",
+        "+related articles section"
+      ]
+    },
+    {
+      "slug": "/mentions-legales",
+      "category": "H",
+      "scores": { "D1": 2, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 17,
+      "max": 18,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["+titleEm via LegalPageTemplate"]
+    },
+    {
+      "slug": "/conditions-generales",
+      "category": "H",
+      "scores": { "D1": 2, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 17,
+      "max": 18,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["+titleEm via LegalPageTemplate"]
+    },
+    {
+      "slug": "/politique-confidentialite",
+      "category": "H",
+      "scores": { "D1": 2, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 17,
+      "max": 18,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["+titleEm via LegalPageTemplate"]
+    },
+    {
+      "slug": "/cookies",
+      "category": "H",
+      "scores": { "D1": 2, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 17,
+      "max": 18,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["+titleEm via LegalPageTemplate"]
+    },
+    {
+      "slug": "/rgpd",
+      "category": "H",
+      "scores": { "D1": 2, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 17,
+      "max": 18,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["+titleEm via LegalPageTemplate"]
+    },
+    {
+      "slug": "/politique-deplacement",
+      "category": "H",
+      "scores": { "D1": 2, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 17,
+      "max": 18,
+      "priority": "P2",
+      "effort": "XS",
+      "actions": ["+titleEm via LegalPageTemplate"]
+    },
+    {
+      "slug": "/accessibilite",
+      "category": "H",
+      "scores": { "D1": 3, "D9": 3, "D10": 3, "D11": 3, "D12": 3, "LEGAL_SPEC": 3 },
+      "total": 18,
+      "max": 18,
+      "priority": null,
+      "effort": null,
+      "note": "modèle de référence légale (hero inline, propage titleEm)"
+    }
+  ],
+  "templates": {
+    "ProductPageTemplate": {
+      "score": 28,
+      "max": 36,
+      "appliesTo": [
+        "/audit/flash",
+        "/audit/process",
+        "/audit/strategique-pme",
+        "/audit/strategique-eti",
+        "/audit/demande",
+        "/implementation/ia-custom",
+        "/implementation/chatbot",
+        "/implementation/processus",
+        "/implementation/structuration",
+        "/implementation/crm-erp",
+        "/implementation/documents",
+        "/implementation/agents",
+        "/implementation/integrations",
+        "/implementation/no-code"
+      ],
+      "missingVsGold": [
+        "D5 outcomes/outline (-1)",
+        "D6 testimonials inline (-1)",
+        "D7 anti-fear/maturité (-1)"
+      ],
+      "fixImpact": "+12 points cumulés sur 4 pages auditées (et probablement +30 sur les 14 produits qui utilisent le template)",
+      "effort": "M",
+      "priority": "P1"
+    },
+    "LegalPageTemplate": {
+      "score": 17,
+      "max": 18,
+      "appliesTo": [
+        "/mentions-legales",
+        "/conditions-generales",
+        "/politique-confidentialite",
+        "/cookies",
+        "/rgpd",
+        "/politique-deplacement"
+      ],
+      "missingProp": "titleEm",
+      "fixImpact": "+6 points cumulés (1 pt × 6 pages)",
+      "effort": "XS",
+      "priority": "P2"
+    }
+  },
+  "patterns": [
+    {
+      "id": "hero-2col-schema",
+      "name": "Hero 2-col éditorial + schéma satellite",
+      "applies": "all listings + product + transversales",
+      "missing_on": [
+        "/blog",
+        "/contact",
+        "/faq",
+        "/a-propos",
+        "/audit/flash",
+        "/cas-concrets/[slug]",
+        "/blog/[slug]"
+      ],
+      "effort": "XS-M"
+    },
+    {
+      "id": "pyramid-conversion",
+      "name": "Pyramide de conversion par niveaux",
+      "applies": "/audit, /interventions",
+      "missing_on": [
+        "/implementation (pas pyramide explicite)",
+        "/cas-concrets (pas par maturité)"
+      ],
+      "effort": "M"
+    },
+    {
+      "id": "social-proof",
+      "name": "TrustBadges + SignatureCard + 3 testimonials",
+      "applies": "/audit",
+      "missing_on": [
+        "/blog",
+        "/contact",
+        "/centre-aide",
+        "/a-propos",
+        "/cas-concrets",
+        "ProductPageTemplate"
+      ],
+      "effort": "M"
+    },
+    {
+      "id": "anti-fear",
+      "name": "Section 3 cartes maturité / niveaux",
+      "applies": "/audit, /interventions",
+      "missing_on": ["/blog", "/contact", "/centre-aide", "/cas-concrets", "ProductPageTemplate"],
+      "effort": "S-M"
+    },
+    {
+      "id": "cta-dark-final",
+      "name": "CtaBlock tone='dark' ou 'mocha' final",
+      "applies": "presque toutes pages",
+      "missing_on": [],
+      "status": "OK"
+    }
+  ],
+  "topRefactorImpact": [
+    {
+      "rank": 1,
+      "target": "/blog (index)",
+      "currentScore": 14,
+      "targetScore": 30,
+      "delta": "+16",
+      "effort": "M"
+    },
+    {
+      "rank": 2,
+      "target": "ProductPageTemplate",
+      "currentScore": 28,
+      "targetScore": 33,
+      "delta": "+5 × 14 pages = +70 cumulés",
+      "effort": "M"
+    },
+    {
+      "rank": 3,
+      "target": "/contact",
+      "currentScore": 17,
+      "targetScore": 28,
+      "delta": "+11",
+      "effort": "M"
+    },
+    {
+      "rank": 4,
+      "target": "/blog/[slug]",
+      "currentScore": 17,
+      "targetScore": 26,
+      "delta": "+9",
+      "effort": "S"
+    },
+    {
+      "rank": 5,
+      "target": "/faq",
+      "currentScore": 19,
+      "targetScore": 28,
+      "delta": "+9",
+      "effort": "M"
+    },
+    {
+      "rank": 6,
+      "target": "LegalPageTemplate (titleEm prop)",
+      "currentScore": 17,
+      "targetScore": 18,
+      "delta": "+1 × 6 = +6 cumulés",
+      "effort": "XS"
+    }
+  ]
+}

@@ -128,5 +128,5 @@ docs/adr/                  # Architecture Decision Records (0001 → 0004)
 
 - [`SESSION_LOG.md`](./SESSION_LOG.md) — journal de session
 - [`docs/adr/`](./docs/adr/) — décisions structurelles
-- `../_AUDIT/02-PLAN.md` — jalons M1-M11
+- [`_AUDIT/02-PLAN.md`](./_AUDIT/02-PLAN.md) — jalons M1-M11
 - `../AxionIA_Dossier_FINAL_ABSOLU_v10.1/CLAUDE.md` — référence projet

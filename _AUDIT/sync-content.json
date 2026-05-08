@@ -1,0 +1,221 @@
+{
+  "agent": "AGT-CONTENT",
+  "scanned_at": "2026-05-07T23:40:00Z",
+  "head_sha": "fd915187077c78f693f67d7364b8db908993b957",
+  "note": "Reconstitué depuis le résumé textuel de l'agent (le JSON n'avait pas été écrit). Les chiffres ci-dessous proviennent du rapport AGT-CONTENT.",
+  "files": [
+    {
+      "name": "press.ts",
+      "path": "src/content/press.ts",
+      "exports": [
+        "PRESS_PITCH",
+        "PRESS_FACTS",
+        "PRESS_KIT_ASSETS",
+        "PRESS_RELEASES",
+        "PRESS_MEDIA_COVERAGE",
+        "PRESS_SPOKESPERSONS",
+        "PRESS_FAQ"
+      ],
+      "entitiesCount": 22,
+      "localeFields": { "fr": ["title", "dek", "body"], "en": ["title", "dek", "body"] },
+      "parite": "OK",
+      "helpers": ["getPressRelease", "getAllPressReleaseSlugs"],
+      "tsTypes": [
+        "PressRelease",
+        "PressReleaseTag",
+        "MediaCoverageItem",
+        "PressSpokesperson",
+        "PressKitAsset",
+        "PressFact",
+        "PressFaqEntry"
+      ],
+      "consumers": ["src/app/[locale]/presse/page.tsx", "src/app/sitemap.ts"]
+    },
+    {
+      "name": "interventions.ts",
+      "path": "src/content/interventions.ts",
+      "exports": [
+        "INTERVENTIONS",
+        "ESSENTIELLE_TIERS",
+        "RESERVATION_STEPS_FR",
+        "RESERVATION_STEPS_EN"
+      ],
+      "entitiesCount": 8,
+      "parite": "OK",
+      "helpers": ["getIntervention", "getInterventionCopy"],
+      "tsTypes": [
+        "InterventionSlug",
+        "InterventionAccent",
+        "InterventionSummary",
+        "InterventionContent",
+        "PageCopy",
+        "DaySchedule",
+        "DayScheduleItem",
+        "EssentielleTier",
+        "EssentielleTierDef"
+      ],
+      "consumers": ["src/app/[locale]/interventions/*/page.tsx"]
+    },
+    {
+      "name": "case-studies.ts",
+      "path": "src/content/case-studies.ts",
+      "exports": ["CASE_STUDIES"],
+      "entitiesCount": 5,
+      "parite": "OK",
+      "helpers": [
+        "getCaseStudy",
+        "getAllSlugs",
+        "getAllIndustrySlugs",
+        "getCaseStudiesByIndustry",
+        "getIndustryLabel"
+      ],
+      "tsTypes": ["CaseStudy", "CaseCopy"],
+      "consumers": [
+        "src/app/[locale]/cas-concrets/page.tsx",
+        "src/app/[locale]/cas-concrets/[slug]/page.tsx"
+      ]
+    },
+    {
+      "name": "comparaisons.ts",
+      "path": "src/content/comparaisons.ts",
+      "exports": ["COMPARISONS"],
+      "entitiesCount": 3,
+      "parite": "OK",
+      "helpers": ["getComparison", "getAllComparisonSlugs"],
+      "tsTypes": ["Comparison"],
+      "consumers": [
+        "src/app/[locale]/comparaisons/page.tsx",
+        "src/app/[locale]/comparaisons/[slug]/page.tsx"
+      ]
+    },
+    {
+      "name": "audit.ts",
+      "path": "src/content/audit.ts",
+      "exports": ["AUDITS"],
+      "entitiesCount": 4,
+      "parite": "OK",
+      "helpers": ["getAudit"],
+      "tsTypes": ["AuditSlug", "AuditAccent", "AuditSummary", "AuditContent", "PageCopy"],
+      "consumers": ["src/app/[locale]/audit/page.tsx", "src/app/[locale]/audit/[slug]/page.tsx"]
+    },
+    {
+      "name": "stack-ia.ts",
+      "path": "src/content/stack-ia.ts",
+      "exports": ["STACK_CATEGORIES", "STACK_TOOLS", "STACK_FAQS"],
+      "entitiesCount": 21,
+      "parite": "OK",
+      "tsTypes": [
+        "StackAccent",
+        "StackCategoryId",
+        "StackCategory",
+        "StackTool",
+        "ToolCopy",
+        "StackFaqItem"
+      ],
+      "consumers": ["src/app/[locale]/stack-ia/page.tsx"]
+    },
+    {
+      "name": "implementation.ts",
+      "path": "src/content/implementation.ts",
+      "exports": ["IMPLEMENTATIONS"],
+      "entitiesCount": 9,
+      "parite": "OK",
+      "helpers": ["getImplementation"],
+      "tsTypes": ["ImplementationSlug", "ImplementationContent", "PageCopy"],
+      "consumers": ["src/app/[locale]/implementation/*/page.tsx"]
+    },
+    {
+      "name": "legal.ts",
+      "path": "src/content/legal.ts",
+      "exports": ["LEGAL_PAGES"],
+      "entitiesCount": 6,
+      "parite": "OK",
+      "helpers": ["getLegal"],
+      "tsTypes": ["LegalSlug", "LegalContent", "PageCopy"],
+      "consumers": ["src/app/[locale]/[legal-slug]/page.tsx"]
+    },
+    {
+      "name": "transversal.ts",
+      "path": "src/content/transversal.ts",
+      "exports": ["ABOUT_TIMELINE", "ABOUT_TEAM", "FAQ_GLOBAL", "BLOG_POSTS", "HELP_ARTICLES"],
+      "entitiesCount": 18,
+      "parite": "OK",
+      "helpers": [
+        "getBlogPost",
+        "getAllBlogSlugs",
+        "getAllBlogCategorySlugs",
+        "getBlogPostsByCategory",
+        "getBlogCategoryLabel",
+        "getAllBlogTagSlugs",
+        "getBlogPostsByTag",
+        "getAllBlogAuthorSlugs",
+        "getBlogPostsByAuthor",
+        "getBlogAuthorLabel",
+        "getHelpArticle",
+        "getAllHelpSlugs",
+        "getAllHelpCategorySlugs",
+        "getHelpArticlesByCategory",
+        "getHelpCategoryLabel",
+        "getFaqEntry",
+        "getAllFaqIds",
+        "slugify"
+      ],
+      "tsTypes": ["BlogPost", "HelpArticle", "FaqEntry"],
+      "consumers": [
+        "src/app/[locale]/blog/**",
+        "src/app/[locale]/centre-aide/**",
+        "src/app/[locale]/faq/**"
+      ]
+    },
+    {
+      "name": "automatisations.ts",
+      "path": "src/content/automatisations.ts",
+      "exports": [
+        "AUTOMATISATIONS",
+        "AUTOMATISATION_SLUGS",
+        "AUTOMATISATION_SLUGS_FR",
+        "AUTOMATISATION_SLUGS_EN"
+      ],
+      "entitiesCount": 56,
+      "parite": "OK",
+      "helpers": ["getAutomatisation", "getAutomatisationByLocaleSlug"],
+      "tsTypes": ["AutomatisationSlug", "AutomationItem", "CategoryCopy", "AutomatisationCategory"],
+      "consumers": [
+        "src/app/[locale]/implementation/par-fonction/[slug]/page.tsx",
+        "src/app/[locale]/implementation/par-techno/page.tsx"
+      ]
+    },
+    {
+      "name": "press.test.ts",
+      "path": "src/content/press.test.ts",
+      "exports": [],
+      "note": "Test stub, pas un vrai content module"
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "names": [
+      "press",
+      "interventions",
+      "case-studies",
+      "comparaisons",
+      "audit",
+      "stack-ia",
+      "implementation",
+      "legal",
+      "transversal",
+      "automatisations",
+      "press.test (test stub)"
+    ],
+    "newSinceV1": ["press", "stack-ia", "comparaisons", "automatisations"],
+    "totalEntities": 138,
+    "pariteIssues": []
+  },
+  "i18nMessages": {
+    "frKeys": 168,
+    "enKeys": 168,
+    "missingInEN": [],
+    "missingInFR": [],
+    "parite": "OK"
+  }
+}

@@ -1,0 +1,80 @@
+page,gap_type,priority,recommended_solution,effort_hours,gpt_prompt_id
+/,closing-illustration,P0,GPT-image AVIF avant CtaBlock final,1.5,HOME-04-closing
+/,mid-section-illustration,P1,GPT-image AVIF 1:1 compas architectural,1,HOME-02-mid
+/,mid-section-illustration,P1,GPT-image AVIF 1:1 vagues opérationnelles,1,HOME-03-mid
+/,hero-alternative-illustration,P1,GPT-image AVIF 16:9 architectural diagram,1,HOME-01-hero
+/,refactor-component,P2,Extraire SVG inline 400 LOC en HomeHeroSchema.tsx,4,
+/,opengraph-image,P2,opengraph-image.tsx via Next 16 ImageResponse,1,OG-HOME-01
+/interventions,mid-section-illustration,P1,GPT-image AVIF 1:1 silhouettes équipe,1.5,INTERV-01-mid
+/interventions,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,INTERV-02-closing
+/interventions,icon-overuse,P2,Diversifier Check bullets en Check/Dot/PlusCircle,0.5,
+/interventions,opengraph-image,P2,opengraph-image.tsx réutilise InterventionsHeroSchema SVG,1.5,
+/audit,icon-overuse,P0,Matcher Building2 x4 -> mix Building2/Building/Briefcase/Factory,0.5,
+/audit,hero-alternative-illustration,P1,GPT-image AVIF 16:9 cabinet architecte,1,AUDIT-01-hero
+/audit,mid-section-illustration,P1,GPT-image AVIF 4:5 process,1.5,AUDIT-02-process
+/audit,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,AUDIT-03-closing
+/audit,opengraph-image,P2,opengraph-image.tsx réutilise AuditHeroSchema flow,1.5,OG-AUDIT-01
+/stack-ia,mid-section-illustration,P1,GPT-image AVIF 1:1 atelier outils,1.5,STACK-01-mid
+/stack-ia,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,STACK-02-closing
+/stack-ia,opengraph-image,P2,opengraph-image.tsx + cluster monogrammes,1.5,OG-STACK-01
+/methodologie,heroschema-component,P0,Créer MethodologyHeroSchema.tsx flow horizontal 4 étapes,5,
+/methodologie,hero-illustration,P0,GPT-image AVIF 16:9 cabinet architecte,1.5,METHO-01-hero
+/methodologie,copy-extension,P0,Étendre page de 280 à 600 mots (section Pourquoi),2,
+/methodologie,mid-section-illustration,P1,GPT-image AVIF 1:1 sablier opérationnel,1.5,METHO-02-mid
+/methodologie,mid-section-illustration,P1,GPT-image AVIF 4:5 cycle continu,1.5,METHO-03-mid
+/methodologie,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,METHO-04-closing
+/methodologie,opengraph-image,P2,opengraph-image.tsx via ImageResponse,1.5,OG-METHO-01
+/implementation,mid-section-illustration,P1,GPT-image AVIF 1:1 atelier intégration,1.5,IMPL-02-mid
+/implementation,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,IMPL-03-closing
+/implementation,hero-alternative-illustration,P2,GPT-image AVIF 16:9 hero alternative,1,IMPL-01-hero
+/cas-concrets,hero-alternative-illustration,P1,GPT-image AVIF 16:9 étagère bibliothèque,1,CAS-01-hero
+/cas-concrets,mid-section-illustration,P1,GPT-image AVIF 1:1 collection objets,1.5,CAS-02-mid
+/cas-concrets,listing-illustration,P2,GPT-image AVIF 4:5 vue tableau,1.5,CAS-03-listing
+/cas-concrets,opengraph-image,P2,opengraph-image.tsx via ImageResponse,1.5,OG-CAS-01
+/comparaisons,heroschema-component,P0,Créer ComparisonsHeroSchema.tsx triangle 3-pôles,4,
+/comparaisons,hero-illustration,P0,GPT-image AVIF 16:9 balance/matrice,1.5,COMP-01-hero
+/comparaisons,closing-block,P1,Ajouter CtaBlock final manquant,0.5,
+/comparaisons,mid-section-illustration,P1,GPT-image AVIF 1:1 matrice 2D,1.5,COMP-02-matrix
+/blog,heroschema-component,P1,Créer BlogHeroSchema.tsx stack 3 mini-articles,3,
+/blog,hero-illustration,P1,GPT-image AVIF 16:9 kiosque éditorial,1.5,BLOG-01-hero
+/blog,article-fallback-illustration,P2,GPT-image AVIF 1:1 fallback ArticleCard,1.5,BLOG-02-article-generic
+/centre-aide,heroschema-component,P1,Créer HelpHeroSchema.tsx constellation 6 thématiques,3.5,
+/centre-aide,hero-illustration,P1,GPT-image AVIF 16:9 bibliothèque conseils,1.5,AIDE-01-hero
+/centre-aide,section-illustration,P2,GPT-image AVIF 1:1 section,1.5,AIDE-02-section
+/interventions/dirigeants,heroschema-component,P0,Créer InterventionDetailHeroSchema.tsx daily timeline,5,
+/interventions/dirigeants,template-patch,P0,Patcher ProductPageTemplate slot heroSchema lg:grid-cols-2,1,
+/interventions/dirigeants,hero-illustration,P1,GPT-image AVIF 16:9 hero,1.5,INT-DIR-01-hero
+/interventions/dirigeants,mid-section-illustration,P1,GPT-image AVIF 1:1 mid,1.5,INT-DIR-02-mid
+/interventions/equipes,heroschema-component,P0,Couvert par patch ProductPageTemplate,0,
+/interventions/equipes,hero-illustration,P1,GPT-image AVIF 16:9 hero,1.5,INT-EQ-01-hero
+/interventions/equipes,mid-section-illustration,P1,GPT-image AVIF 1:1 mid,1.5,INT-EQ-02-mid
+/audit/strategique-pme,heroschema-component,P0,Créer AuditDetailHeroSchema.tsx 3 livrables stack,4,
+/audit/strategique-pme,template-patch,P0,Patcher ProductPageTemplate côté /audit/{slug},1,
+/audit/strategique-pme,hero-illustration,P1,GPT-image AVIF 16:9 hero,1.5,AUD-PME-01-hero
+/audit/strategique-pme,mid-section-illustration,P1,GPT-image AVIF 1:1 mid,1.5,AUD-PME-02-mid
+/guide-ia,hero-illustration,P1,GPT-image AVIF 16:9 couverture livre éditorial,1.5,GUIDE-01-hero
+/guide-ia,mid-section-illustration,P1,GPT-image AVIF 4:5 taxonomie ramifiée,1.5,GUIDE-02-mid
+/guide-ia,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,GUIDE-03-closing
+/guide-ia,custom-component,P2,Composant TocDiagram SVG codé chapitres cliquables,5,
+/a-propos,heroschema-component,P0,Créer AboutHeroSchema.tsx timeline verticale ABOUT_TIMELINE,4,
+/a-propos,portrait-decision,P0,STOP&ASK photo Will réelle vs illustrée GPT-image,0,APROPOS-01-portrait
+/a-propos,mid-section-illustration,P1,GPT-image AVIF 1:1 atelier précis,1.5,APROPOS-02-mid
+/a-propos,closing-illustration,P1,GPT-image AVIF 16:9 closing,1.5,APROPOS-03-closing
+/contact,hero-illustration,P2,GPT-image AVIF 16:9 porte ouverte éditoriale,1.5,CONTACT-01-hero
+/contact,mid-section-illustration,P2,GPT-image AVIF 1:1 mid,1.5,CONTACT-02-mid
+/presse,heroschema-component,P0,Créer PressHeroSchema.tsx stack 3 facts (PRESS_FACTS data),3.5,
+/presse,press-kit-assets,P0,Livrer 6 assets press-kit (logo+palette+type+favicon+screenshot+monogrammes),4,
+/presse,hero-illustration,P1,GPT-image AVIF 16:9 vitrine éditoriale magazine,1.5,PRESSE-01-hero
+/presse,mid-section-illustration,P1,GPT-image AVIF 1:1 mid,1.5,PRESSE-02-mid
+/roi,heroschema-component,P0,Créer RoiHeroSchema.tsx 2 curseurs miniatures + sankey,4,
+/roi,hero-illustration,P1,GPT-image AVIF 16:9 sankey flux opérationnel,1.5,ROI-01-sankey
+/roi,closing-illustration,P1,GPT-image AVIF 1:1 closing,1.5,ROI-02-closing
+/reserver,hero-illustration,P2,GPT-image AVIF 16:9 calendrier éditorial annoté,1.5,RES-01-hero
+/reserver,mid-section-illustration,P2,GPT-image AVIF 1:1 rassurante,1.5,RES-02-mid
+/faq,hero-illustration,P2,GPT-image AVIF 16:9 questions éditoriales,1.5,FAQ-01-hero
+/faq,section-divider-illustration,P2,GPT-image AVIF 1:1 divider,1.5,FAQ-02-divider
+GLOBAL,seo-infrastructure,P1,Créer buildImageObjectJsonLd dans src/lib/seo.ts,1,
+GLOBAL,seo-infrastructure,P2,opengraph-image.tsx per-page Top 20 via Next 16 ImageResponse (5 OG prompts factorisables),3,
+GLOBAL,documentation,P2,Documenter stroke-width canon (2/2.25/3) dans Design.md,0.5,
+GLOBAL,asset-cleanup,P2,Nettoyer 5 SVG démo Next.js de public/ (file/globe/next/vercel/window),0.25,
+GLOBAL,icon-diversification,P1,Diversifier Sparkles overuse sur /audit et /implementation (Award/Compass/Star),1,

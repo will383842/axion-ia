@@ -1,0 +1,335 @@
+{
+  "$schema": "https://axion-ia.com/schemas/header-architecture-2026.json",
+  "version": "2026.05.07-perfection",
+  "status": "DRAFT — en attente validation Will",
+  "scenarioRetenu": "PERFECTION 2026 (validé Will dans le lancement)",
+  "constraintsAbsolues": {
+    "headerBackground": "bg-terracotta",
+    "headerBackgroundLock": "Will explicit — interdit de toucher",
+    "logoSpec": "badge-ivoire-axion-ia-serif-italique",
+    "logoLock": "Will explicit — interdit de toucher",
+    "wcag": "2.2-AA-non-negociable",
+    "doctrineEditoriale": "v3 (ADR 0002) + typo v3.1 (ADR 0004) — préservée",
+    "headerLockedSinceCommit": "941a8e1 (fix(header): retire scroll-aware)"
+  },
+  "headerDesktop": {
+    "items": 7,
+    "doctrine": "Voie 2 ADR §9.2 (mega-menus avec garde-fous) — recommandé Agent C",
+    "layout": "balanced split avec CTA central — préserve esthétique actuelle",
+    "sticky": "figé (inchangé HEAD)",
+    "structure": [
+      {
+        "type": "logo",
+        "position": "left",
+        "href": "/",
+        "i18nKey": "nav.home",
+        "rendering": "RSC"
+      },
+      {
+        "type": "link",
+        "position": "left-1",
+        "href": "/interventions",
+        "i18nKey": "nav.interventions",
+        "rendering": "RSC"
+      },
+      {
+        "type": "megaMenu",
+        "position": "left-2",
+        "trigger": "IA & Solutions",
+        "i18nKey": "nav.iaSolutions",
+        "rendering": "client (border-line, lazy)",
+        "columns": 3,
+        "depth": 2,
+        "hoverIntent": "150ms (Apple HIG)",
+        "links": [
+          {
+            "section": "Stack IA",
+            "i18nKey": "nav.iaSolutions.stack",
+            "items": [
+              { "label": "Catalogue 11 outils", "href": "/stack-ia" },
+              { "label": "Filtres par fonction", "href": "/stack-ia#fonctions" },
+              { "label": "FAQ IA opérationnelle", "href": "/stack-ia#faq" }
+            ]
+          },
+          {
+            "section": "Comparaisons",
+            "i18nKey": "nav.iaSolutions.comparaisons",
+            "items": [
+              { "label": "Comparaisons outils", "href": "/comparaisons" },
+              { "label": "Guide IA opérationnelle", "href": "/guide-ia" },
+              { "label": "Glossaire", "href": "/glossaire" }
+            ]
+          },
+          {
+            "section": "Méthodologie",
+            "i18nKey": "nav.iaSolutions.methodologie",
+            "items": [
+              { "label": "Notre méthodologie", "href": "/methodologie" },
+              { "label": "Cas concrets", "href": "/cas-concrets" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ctaCentral",
+        "position": "center",
+        "href": "/audit",
+        "i18nKey": "cta.audit490",
+        "label": "Demander un audit",
+        "badge": "490 €",
+        "badgeSpec": "Doctrine §9.3 — pricing transparency premium",
+        "tracking": "cta_central_click",
+        "rendering": "RSC"
+      },
+      {
+        "type": "megaMenu",
+        "position": "right-1",
+        "trigger": "Implantations",
+        "i18nKey": "nav.implantations",
+        "rendering": "client (border-line, lazy)",
+        "columns": 3,
+        "depth": 2,
+        "hoverIntent": "150ms",
+        "links": [
+          {
+            "section": "Régions",
+            "i18nKey": "nav.implantations.regions",
+            "items": "buildDynamic — top 6 régions par PIB (IDF, ARA, NAQ, OCC, HDF, GES) + lien 'Toutes les régions'"
+          },
+          {
+            "section": "Métropoles",
+            "i18nKey": "nav.implantations.metropoles",
+            "items": "Top 8 villes par poids économique (Paris, Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg) + lien 'Toutes les villes'"
+          },
+          {
+            "section": "Hub",
+            "i18nKey": "nav.implantations.hub",
+            "items": [
+              { "label": "Carte FR cliquable", "href": "/implantations" },
+              { "label": "5 DROM", "href": "/implantations#drom" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "link",
+        "position": "right-2",
+        "href": "/cas-concrets",
+        "i18nKey": "nav.casConcrets",
+        "rendering": "RSC"
+      },
+      {
+        "type": "commandPalette",
+        "position": "right-trigger",
+        "trigger": "⌘K",
+        "i18nKey": "nav.search",
+        "rendering": "client (lazy, suspended)",
+        "library": "cmdk (~12 KB gzip) ou Pagefind self-hosted",
+        "scope": "pages site + IA catalogue + villes + régions + blog + FAQ",
+        "fallback": "/recherche existante (SSR, déjà en place HEAD)",
+        "articulation": "overlay rapide → lien 'Voir tous les résultats' vers /recherche?q=...",
+        "deferral": "Possiblement Sprint 16 si bandwidth tendu (Agent B : ⌘K = bonus UX, pas signal SEO)"
+      },
+      {
+        "type": "localeSwitcher",
+        "position": "right-end",
+        "rendering": "RSC",
+        "current": "FR↔EN (déjà en place HEAD)"
+      }
+    ]
+  },
+  "mobileNav": {
+    "doctrine": "Drawer slide-in droite + CTA bar permanente niveau 2 (correction non-conformité §9.4 Agent A)",
+    "items": [
+      "/interventions",
+      "/audit (avec badge 490 €)",
+      "/implementation",
+      "/cas-concrets",
+      "/stack-ia (NEW — page IA stratégique)",
+      "/implantations (NEW — hub villes/régions)",
+      "/blog",
+      "/faq",
+      "/centre-aide",
+      "/a-propos",
+      "/contact"
+    ],
+    "ctaBarLevel2": {
+      "position": "sticky bottom drawer",
+      "primary": "/audit",
+      "secondary": "tel: + email contact"
+    },
+    "localeSwitcher": "haut drawer",
+    "commandPalette": "icône loupe en haut drawer → ouvre overlay full-screen",
+    "megaMenuMobile": "ACCORDÉON (pas mega-menu) — chaque section IA & Solutions / Implantations = collapsible"
+  },
+  "footer": {
+    "doctrine": "5 zones §10.1 (correction Agent A — actuel = 4 cols)",
+    "columns": [
+      {
+        "title": "Identité",
+        "items": [
+          "Logo + signature 1 ligne",
+          "Newsletter Stratégie IA (différenciante — Agent B)",
+          "LinkedIn + Facebook + YouTube + X"
+        ]
+      },
+      {
+        "title": "IA & Solutions",
+        "items": ["/stack-ia", "/comparaisons", "/guide-ia", "/glossaire", "/ia-custom"]
+      },
+      {
+        "title": "Cabinet",
+        "items": ["/a-propos", "/methodologie", "/contact", "/presse", "/carrieres", "/partenaires"]
+      },
+      {
+        "title": "Ressources",
+        "items": ["/blog", "/faq", "/centre-aide", "/cas-concrets", "/roi"]
+      },
+      {
+        "title": "Implantations (NEW)",
+        "items": [
+          "/implantations",
+          "Top 12 villes",
+          "Régions FR",
+          "5 DROM",
+          "Lien 'Toutes les implantations'"
+        ]
+      }
+    ],
+    "bottomBar": {
+      "doctrine": "§10.2 — corrections Agent A",
+      "items": [
+        "© AxionIA OÜ — N° registre EE-XXXXXXX",
+        "TVA : EE-XXXXXXXXX",
+        "Email + téléphone contact",
+        "/mentions-legales",
+        "/conditions-generales",
+        "/politique-confidentialite",
+        "/accessibilite",
+        "/preferences-cookies"
+      ]
+    }
+  },
+  "breadcrumbs": {
+    "doctrine": "Toutes les pages > niveau 1, position sous header avant H1",
+    "schema": "BreadcrumbList JSON-LD obligatoire (factory buildBreadcrumbJsonLd à étendre)",
+    "i18n": "labels traduits FR/EN",
+    "patterns": {
+      "ville": "Accueil > Implantations > [Région] > [Ville]",
+      "region": "Accueil > Implantations > [Région]",
+      "stackTool": "Accueil > IA & Solutions > Stack IA > [Outil] (si /stack-ia/[slug] activé)",
+      "casConcret": "Accueil > Cas concrets > [Secteur] > [Cas]",
+      "comparaison": "Accueil > IA & Solutions > Comparaisons > [Comparaison]"
+    }
+  },
+  "commandPaletteK": {
+    "scope": "Pages + IA catalogue + villes + régions + blog + FAQ + cas-concrets",
+    "tech": "cmdk (Pacôme Lebot, ~12 KB gzip) ou Pagefind (self-hosted, build-time)",
+    "indexer": "Pagefind recommandé — gratuit, build-time, parfait pour ~2150 pages SSG",
+    "articulation": "Overlay rapide → 'Voir tous les résultats' → /recherche?q=... (existante SSR)",
+    "i18n": "index FR + EN séparés, switch sur locale active",
+    "a11y": "focus trap, ESC fermer, ARIA combobox + listbox",
+    "schedule": "Sprint 15 si bandwidth — sinon Sprint 16 (Agent B : pas signal SEO, bonus UX)"
+  },
+  "schemaOrgPerLayout": {
+    "Organization": {
+      "currentMinimal": "name + url + legalName (HEAD, Agent A)",
+      "extendTo": "+ logo + sameAs (LinkedIn, Facebook, YouTube, X) + address + vatID + foundingDate + foundingLocation Estonia",
+      "factory": "buildOrganizationJsonLd à créer (gap E G1)"
+    },
+    "WebSite": {
+      "currentHEAD": "WebSite + SearchAction (déjà OK, pointe /recherche)",
+      "noChange": true
+    }
+  },
+  "schemaOrgPerPage": {
+    "stackIa": "ItemList (catalogue) + Product (par outil si /stack-ia/[slug])",
+    "stackToolDetail": "Product + Offer (si activé)",
+    "implantationsHub": "ItemList (régions) + Place (FR)",
+    "regionPage": "Place + LocalBusiness (areaServed = région) + ItemList (top villes) + BreadcrumbList",
+    "villePage": "LocalBusiness (areaServed = ville) + Place + FAQPage + BreadcrumbList",
+    "comparaisonPage": "Article + ItemList",
+    "factories": [
+      "buildLocalBusinessJsonLd (NEW — gap E G1)",
+      "buildPlaceJsonLd (NEW — gap E G1)",
+      "buildItemListJsonLd (NEW — gap E G1)",
+      "buildOrganizationJsonLd (NEW — gap E G1)"
+    ]
+  },
+  "sitemapStrategy": {
+    "current": "axionia/src/app/sitemap.ts — pattern buildDynamic, 47 entries dans routing.pathnames",
+    "proposed": "sitemap-index.xml + sous-sitemaps (Next 16 supporte via app/sitemap-[id]/route.ts)",
+    "subSitemaps": [
+      "sitemap-pages.xml (statiques)",
+      "sitemap-blog.xml",
+      "sitemap-cas-concrets.xml",
+      "sitemap-comparaisons.xml",
+      "sitemap-faq.xml",
+      "sitemap-centre-aide.xml",
+      "sitemap-stack-ia.xml (si /stack-ia/[slug])",
+      "sitemap-regions.xml",
+      "sitemap-villes-[region].xml (1 par région métropole + 1 DROM)",
+      "sitemap-implementation-fonctions.xml (corrige bug E G5)",
+      "sitemap-presse-articles.xml (corrige gap E G6)"
+    ],
+    "limit50K": "OK (2150 villes + reste = bien sous 50K — split par région = clarté humaine)",
+    "stopAndAsk": "Q7 : split sitemap = refactor non-trivial, valider avant"
+  },
+  "robotsStrategy": {
+    "current": "axionia/src/app/robots.ts — directives présentes + EXCLUDED_FROM_INDEX",
+    "noChange": "garder comme HEAD",
+    "excludeFromIndex": [
+      "/preferences-cookies",
+      "/desabonnement",
+      "/mes-donnees",
+      "/confirmation",
+      "/cookies",
+      "/rgpd",
+      "/politique-deplacement",
+      "/recherche"
+    ],
+    "addToWhitelist": [
+      "/implantations",
+      "/implantations/[region]",
+      "/implantations/[region]/[ville]"
+    ]
+  },
+  "performanceBudget": {
+    "lcp": "< 2.5s — préservé (mega-menus client lazy, ⌘K lazy)",
+    "inp": "< 200ms — préservé (hover-intent 150ms < 200ms)",
+    "cls": "< 0.1 — préservé (mega-menu absolute, pas de shift)",
+    "doctrine": "Sprint 12 budget — pas de régression Lighthouse",
+    "watchlist": "/recherche moteur réel Sprint 15 = bundle ⌘K à mesurer"
+  },
+  "i18nMatrix": {
+    "fr": "Source de vérité — toutes pages ont version FR",
+    "en": "Parité requise sauf villes/régions FR-only (recommandé phase 1)",
+    "xDefault": "fr",
+    "hreflangPattern": "buildProductMetadata + alternates.languages (déjà OK lib/seo.ts)",
+    "stackIa": "/stack-ia ↔ /ai-stack (déjà en place)",
+    "implantations": "/implantations ↔ /locations (à ajouter routing.pathnames)",
+    "regions": "/implantations/regions/[r] ↔ /locations/regions/[r] OU FR-only V1 (à trancher Will)",
+    "villes": "/implantations/villes/[v] ↔ /locations/cities/[v] OU FR-only V1 (recommandé Agent D : FR-only V1)"
+  },
+  "stopAndAskOuverts": [
+    "Q1 — /stack-ia : 11 outils sélectifs (HEAD) vs catalogue plus large (50-200) — recommandation Agent E : conserver 11 + ADR explicite si extension",
+    "Q2 — Profondeur URL villes : Option A plat / Option B hiérarchique / Option C 3 niveaux — recommandation Agent D : Option B `/implantations/[region]/[ville]`",
+    "Q3 — Régions : métropole only vs +DROM-COM — recommandation Agent D : métropole + 5 DROM (Guadeloupe, Martinique, Guyane, Réunion, Mayotte), exclure COM (Polynésie, Nouvelle-Calédonie, etc.) — ROI nul B2B + risque thin content",
+    "Q4 — ADR §9.2 : Voie 1 maintien / Voie 2 révision / Voie 3 hybride — recommandation Agent C : Voie 2 (mega-menus avec garde-fous, seule compatible PERFECTION 2026)",
+    "Q5 — Pipeline pSEO : 100% review / 80/20 / 50/50 — recommandation Agent D : 80/20 (phase 1 100% Will, phase 2 spot-check 20%, phase 3 spot-check 5%)",
+    "Q6 — Phase 1 V1 : top 50 villes vs top 100 — recommandation Agent D : top 50 (12.5h Will, 2 semaines) — V1 totale = 1160 villes >10000 hab (pas 2150 >5000 hab)",
+    "Q7 — Split sitemap (sitemap-index.xml + sous-sitemaps via routes app/sitemap-[id]/route.ts) — recommandation : OUI (refactor non-trivial mais nécessaire à 2150+ villes)",
+    "Q8 — ⌘K Sprint 15 ou Sprint 16 — recommandation Agent B : Sprint 16 OK (bonus UX, pas signal SEO — pSEO villes prioritaire)"
+  ],
+  "deliverablesLies": {
+    "agentA": "_AUDIT/01-A-inventaire-nav.md (~830 lignes)",
+    "agentB": "_AUDIT/benchmarks-2026.md (~600-1000 lignes)",
+    "agentC": "_AUDIT/adr-0003-navigation-mega-menu-PROPOSITION.md (340 lignes — sera renommée 0005 à validation)",
+    "agentD": "_AUDIT/pseo-strategy.md (~580 lignes)",
+    "agentE": "_AUDIT/stack-fit-analysis.md (~1130 lignes)",
+    "synthese": "_AUDIT/AUDIT-HEADER-NAVIGATION-2026.md (rapport principal)",
+    "csv": "_AUDIT/nav-routes.csv",
+    "json": "_AUDIT/header-architecture.json (ce fichier)",
+    "adr0004": "_AUDIT/adr-0004-pseo-villes-PROPOSITION.md (sera renommée 0006 à validation)"
+  }
+}

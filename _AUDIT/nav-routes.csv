@@ -1,0 +1,53 @@
+path_fr,path_en,template,sitemap,priority,changefreq,hreflang,schema_type,parent_breadcrumb,nav_header,nav_footer,indexable,status,notes
+/,/,page,sitemap.xml,1.0,weekly,fr-en,Organization+WebSite+SearchAction,,logo,Identite,yes,EXISTING,layout-level Organization à étendre (logo+sameAs+address+vatID — Agent A)
+/interventions,/interventions,page,sitemap.xml,0.9,weekly,fr-en,Service,/,yes,no,yes,EXISTING,gold standard parity Will
+/audit,/audit,page,sitemap.xml,0.9,weekly,fr-en,Service+Offer,/,CTA-central,no,yes,EXISTING,ajouter badge 490 € + tracking cta_central_click (corr Agent A)
+/implementation,/implementation,page,sitemap.xml,0.9,weekly,fr-en,Service,/,no,Cabinet,yes,EXISTING,déplacé header → footer V1 (5 items + 2 mega + CTA = 8 max)
+/implementation/par-fonction/[slug],/implementation/by-role/[slug],detail,sitemap-implementation-fonctions.xml,0.6,monthly,fr-en,Service,/implementation,no,no,yes,EXISTING+BUG_AGENT_E_G5,manque entry buildDynamic dans sitemap.ts (à corriger en bonus)
+/cas-concrets,/case-studies,listing,sitemap.xml,0.85,weekly,fr-en,ItemList,/,yes,Ressources,yes,EXISTING,
+/cas-concrets/[slug],/case-studies/[slug],detail,sitemap-cas-concrets.xml,0.7,monthly,fr-en,Article+Service,/cas-concrets,no,no,yes,EXISTING,
+/cas-concrets/secteur/[slug],/case-studies/sector/[slug],listing,sitemap-cas-concrets.xml,0.6,monthly,fr-en,ItemList,/cas-concrets,no,no,yes,EXISTING,
+/stack-ia,/ai-stack,page,sitemap.xml,0.85,weekly,fr-en,ItemList+Product,/,megaMenu-ia,IA-Solutions,yes,EXISTING_REFONTE,refonte non commitée working tree (page.tsx +161/-119) — HEAD = référence audit
+/stack-ia/[slug],/ai-stack/[slug],detail,sitemap-stack-ia.xml,0.6,monthly,fr-en,Product+Offer,/stack-ia,no,no,yes,FUTURE_OPTIONAL,uniquement si Will valide étendre stack-ia.ts catalogue (Q1 STOP&ASK)
+/comparaisons,/comparisons,listing,sitemap.xml,0.7,monthly,fr-en,ItemList,/,megaMenu-ia,IA-Solutions,yes,EXISTING,
+/comparaisons/[slug],/comparisons/[slug],detail,sitemap-comparaisons.xml,0.6,monthly,fr-en,Article+ItemList,/comparaisons,no,no,yes,EXISTING,
+/guide-ia,/ai-guide,page,sitemap.xml,0.7,weekly,fr-en,Article,/,megaMenu-ia,IA-Solutions,yes,EXISTING,actuellement orpheline (Agent A) — ajouter au mega-menu IA & Solutions
+/glossaire,/glossary,page,sitemap.xml,0.5,monthly,fr-en,DefinedTerm+ItemList,/,megaMenu-ia,IA-Solutions,yes,EXISTING,actuellement orpheline (Agent A)
+/methodologie,/methodology,page,sitemap.xml,0.7,monthly,fr-en,Article,/,megaMenu-ia,Cabinet,yes,EXISTING,actuellement orpheline (Agent A)
+/blog,/blog,listing,sitemap.xml,0.7,daily,fr-en,Blog,/,no,Ressources,yes,EXISTING,déplacé en footer (HEAD)
+/blog/[slug],/blog/[slug],detail,sitemap-blog.xml,0.6,monthly,fr-en,BlogPosting,/blog,no,no,yes,EXISTING,
+/blog/categorie/[slug],/blog/category/[slug],listing,sitemap-blog.xml,0.5,weekly,fr-en,ItemList,/blog,no,no,yes,EXISTING,
+/blog/tag/[slug],/blog/tag/[slug],listing,sitemap-blog.xml,0.4,weekly,fr-en,ItemList,/blog,no,no,yes,EXISTING,
+/blog/auteur/[slug],/blog/author/[slug],listing,sitemap-blog.xml,0.4,monthly,fr-en,Person+ItemList,/blog,no,no,yes,EXISTING,
+/faq,/faq,listing,sitemap.xml,0.7,weekly,fr-en,FAQPage,/,no,Ressources,yes,EXISTING,
+/faq/[id],/faq/[id],detail,sitemap-faq.xml,0.5,monthly,fr-en,Question,/faq,no,no,yes,EXISTING,
+/centre-aide,/help,listing,sitemap.xml,0.6,weekly,fr-en,FAQPage+ItemList,/,no,Ressources,yes,EXISTING,
+/centre-aide/[slug],/help/[slug],detail,sitemap-centre-aide.xml,0.4,monthly,fr-en,Article,/centre-aide,no,no,yes,EXISTING,
+/centre-aide/categorie/[slug],/help/category/[slug],listing,sitemap-centre-aide.xml,0.4,monthly,fr-en,ItemList,/centre-aide,no,no,yes,EXISTING,
+/a-propos,/about,page,sitemap.xml,0.7,monthly,fr-en,AboutPage,/,no,Cabinet,yes,EXISTING,
+/contact,/contact,page,sitemap.xml,0.8,monthly,fr-en,ContactPage,/,no,Cabinet,yes,EXISTING,
+/reserver,/book,page,sitemap.xml,0.85,monthly,fr-en,ReserveAction,/,no,Cabinet,yes,EXISTING,
+/presse,/press,listing,sitemap.xml,0.6,monthly,fr-en,Article+ItemList,/,no,Cabinet,yes,EXISTING,
+/presse/[slug],/press/[slug],detail,sitemap-presse-articles.xml,0.5,monthly,fr-en,NewsArticle,/presse,no,no,yes,FUTURE_AGENT_E_G6,manque entry buildDynamic dans sitemap.ts
+/roi,/roi,page,sitemap.xml,0.6,monthly,fr-en,Article,/,no,Ressources,yes,EXISTING,
+/recherche,/search,page,—,0,—,fr-en,—,/,no,no,no,EXISTING_NOINDEX,SSR existante moteur réel Sprint 15 — articulation ⌘K (overlay → /recherche?q=...)
+/implantations,/locations,hub,sitemap.xml,0.85,weekly,fr-en,ItemList+Place,/,megaMenu-implantations,Implantations,yes,FUTURE_TO_CREATE,carte FR cliquable + top régions + lien 'Toutes les villes'
+/implantations/regions/[region],/locations/regions/[region],detail,sitemap-regions.xml,0.7,monthly,fr-en,Place+LocalBusiness+ItemList+BreadcrumbList,/implantations,megaMenu-implantations(top6),Implantations(top6),yes,FUTURE_TO_CREATE,~13-18 régions (métropole + 5 DROM, exclure COM — recommandation Agent D)
+/implantations/[region]/[ville],/locations/[region]/[city],detail,sitemap-villes-[region].xml,0.5,monthly,fr-en,LocalBusiness+Place+FAQPage+BreadcrumbList,/implantations/regions/[region],megaMenu-implantations(top8),Implantations(top12),yes,FUTURE_TO_CREATE,Option B hiérarchique (recommandation Agent D) — V1 = 1160 villes >10000hab, V2 = 2150 villes >5000hab
+/ia-custom,/ai-custom,page,sitemap.xml,0.6,monthly,fr-en,Service,/,no,IA-Solutions,yes,FUTURE_TO_CREATE,Agent A signale absence — page IA sur-mesure complément /stack-ia
+/partenaires,/partners,page,sitemap.xml,0.5,monthly,fr-en,Article,/,no,Cabinet,yes,FUTURE_TO_CREATE,Agent A signale absence
+/carrieres,/careers,page,sitemap.xml,0.5,monthly,fr-en,JobPosting+ItemList,/,no,Cabinet,yes,FUTURE_TO_CREATE,Agent A signale absence
+/accessibilite,/accessibility,page,sitemap.xml,0.4,yearly,fr-en,WebPage,/,no,bottomBar,yes,EXISTING,actuellement orpheline (Agent A)
+/mentions-legales,/legal-notice,page,sitemap.xml,0.3,yearly,fr-en,WebPage,/,no,bottomBar,yes,EXISTING,
+/conditions-generales,/terms,page,sitemap.xml,0.3,yearly,fr-en,WebPage,/,no,bottomBar,yes,EXISTING,
+/politique-confidentialite,/privacy-policy,page,sitemap.xml,0.4,yearly,fr-en,WebPage,/,no,bottomBar,yes,EXISTING,
+/cookies,/cookies,page,sitemap.xml,0.3,yearly,fr-en,WebPage,/,no,bottomBar,yes,EXISTING,
+/rgpd,/gdpr,page,sitemap.xml,0.3,yearly,fr-en,WebPage,/,no,bottomBar,yes,EXISTING,
+/politique-deplacement,/travel-policy,page,—,0,—,fr-en,—,/,no,no,no,EXISTING_NOINDEX,EXCLUDED_FROM_INDEX
+/preferences-cookies,/cookie-preferences,utility,—,0,—,fr-en,—,/,no,bottomBar,no,EXISTING_NOINDEX,EXCLUDED_FROM_INDEX
+/desabonnement,/unsubscribe,utility,—,0,—,fr-en,—,/,no,no,no,EXISTING_NOINDEX,EXCLUDED_FROM_INDEX
+/mes-donnees,/my-data,utility,—,0,—,fr-en,—,/,no,bottomBar,no,EXISTING_NOINDEX,EXCLUDED_FROM_INDEX
+/confirmation,/confirmation,utility,—,0,—,fr-en,—,/,no,no,no,EXISTING_NOINDEX,EXCLUDED_FROM_INDEX post-réservation
+/components,—,dev-shell,—,0,—,—,—,—,no,no,no,DEV_SHELL,exclu audit nav (Agent A)
+/sections,—,dev-shell,—,0,—,—,—,—,no,no,no,DEV_SHELL,exclu audit nav (Agent A)
+/design,—,dev-shell,—,0,—,—,—,—,no,no,no,DEV_SHELL,exclu audit nav (Agent A)

@@ -1,0 +1,239 @@
+{
+  "auditDate": "2026-05-07",
+  "doctrineRef": "v3 Editorial Premium Light (ADR 0002)",
+  "doctrineFreshness": {
+    "designMd": "2026-05-06T22:19:10Z",
+    "adr0002v3": "2026-05-06T22:19:10Z",
+    "globalsCss": "HEAD",
+    "tokensAlignmentDoctrineVsCss": "10/10",
+    "tokensActuallyConsumedInCode": "0/10 (DEAD CODE)"
+  },
+  "currentBaseline": {
+    "bodyPx": 16,
+    "smPx": 14,
+    "lineHeightBody": 1.65,
+    "letterSpacingBody": "-0.005em",
+    "fontFamilyBody": "Manrope",
+    "manropeXHeight": 0.515,
+    "tailwindOverride": false,
+    "customTokensConsumed": false,
+    "arbitraryTextValuesCount": 201
+  },
+  "scenarios": {
+    "A_measured": {
+      "bodyPx": 17,
+      "smPx": 15,
+      "captionPx": 15,
+      "lineHeightBody": 1.65,
+      "lineHeightSm": 1.55,
+      "deltaBodyPct": 6.25,
+      "deltaSmPct": 7.1,
+      "maxW2xlInCh": 79,
+      "heroBodyRatio": 6.6,
+      "pageLevelPatchesEstimate": "0-3",
+      "risk": "very-low",
+      "matchesReference": "median 2026"
+    },
+    "B_premium": {
+      "bodyPx": 18,
+      "smPx": 15,
+      "captionPx": 15,
+      "leadPx": 23,
+      "lineHeightBody": 1.7,
+      "lineHeightSm": 1.55,
+      "deltaBodyPct": 12.5,
+      "deltaSmPct": 7.1,
+      "maxW2xlInCh": 75,
+      "heroBodyRatio": 6.2,
+      "pageLevelPatchesEstimate": "5-10",
+      "risk": "moderate",
+      "matchesReference": "Anthropic",
+      "recommended": true
+    },
+    "C_generous": {
+      "bodyPx": 19,
+      "smPx": 16,
+      "captionPx": 16,
+      "leadPx": 24,
+      "featurePx": 26,
+      "lineHeightBody": 1.7,
+      "lineHeightSm": 1.6,
+      "deltaBodyPct": 18.75,
+      "deltaSmPct": 14.3,
+      "maxW2xlInCh": 71,
+      "heroBodyRatio": 5.9,
+      "pageLevelPatchesEstimate": "15-25",
+      "risk": "high",
+      "matchesReference": "Stripe Press"
+    }
+  },
+  "benchmarks": {
+    "anthropic": {
+      "bodyFamily": "Tiempos/Styrene",
+      "bodyPx": 18,
+      "lineHeight": 1.55,
+      "h1Px": 84,
+      "h2Px": 44,
+      "h3Px": 23,
+      "trackingDisplay": "-0.02em",
+      "lineLengthCh": 62,
+      "source": "CONNU"
+    },
+    "stripePress": {
+      "bodyFamily": "Söhne",
+      "bodyPx": 19,
+      "lineHeight": 1.6,
+      "h1Px": 76,
+      "h2Px": 40,
+      "h3Px": 22,
+      "trackingDisplay": "-0.01em",
+      "lineLengthCh": 60,
+      "source": "CONNU"
+    },
+    "linear": {
+      "bodyFamily": "Inter Variable",
+      "bodyPx": 15,
+      "lineHeight": 1.5,
+      "h1Px": 72,
+      "h2Px": 36,
+      "h3Px": 19,
+      "trackingDisplay": "-0.025em",
+      "lineLengthCh": 70,
+      "source": "CONNU+DOC"
+    },
+    "vercel": {
+      "bodyFamily": "Geist Sans",
+      "bodyPx": 16,
+      "lineHeight": 1.5,
+      "h1Px": 72,
+      "h2Px": 44,
+      "h3Px": 22,
+      "trackingDisplay": "-0.02em",
+      "lineLengthCh": 65,
+      "source": "DOC"
+    },
+    "openai": {
+      "bodyFamily": "Söhne/OpenAI Sans",
+      "bodyPx": 17.5,
+      "lineHeight": 1.5,
+      "h1Px": 70,
+      "h2Px": 40,
+      "h3Px": 21,
+      "trackingDisplay": "-0.015em",
+      "lineLengthCh": 60,
+      "source": "CONNU"
+    },
+    "mistral": {
+      "bodyFamily": "ABC Diatype",
+      "bodyPx": 16.5,
+      "lineHeight": 1.5,
+      "h1Px": 64,
+      "h2Px": 36,
+      "h3Px": 20,
+      "trackingDisplay": "-0.02em",
+      "lineLengthCh": 70,
+      "source": "CONNU"
+    },
+    "median2026": {
+      "bodyFamily": null,
+      "bodyPx": 17,
+      "lineHeight": 1.5,
+      "h1Px": 75,
+      "h2Px": 40,
+      "h3Px": 22,
+      "trackingDisplay": "-0.02em",
+      "lineLengthCh": 65,
+      "source": "calc"
+    }
+  },
+  "verdict": "INSUFFISANT",
+  "scoreGlobal": "15/30",
+  "scoreByDimension": {
+    "dim1_baselineBody": { "current": 1, "target": 3, "gap": 2, "priority": "P0" },
+    "dim2_baselineSm": { "current": 1, "target": 3, "gap": 2, "priority": "P0" },
+    "dim3_typeScale": { "current": 1, "target": 2, "gap": 1, "priority": "P1" },
+    "dim4_lineHeight": { "current": 2, "target": 3, "gap": 1, "priority": "P2" },
+    "dim5_letterSpacing": { "current": 3, "target": 3, "gap": 0, "priority": "OK" },
+    "dim6_lineLength": { "current": 1, "target": 3, "gap": 2, "priority": "P0" },
+    "dim7_hierarchy": { "current": 1, "target": 3, "gap": 2, "priority": "P0" },
+    "dim8_numerals": { "current": 2, "target": 3, "gap": 1, "priority": "P2" },
+    "dim9_italicEditorial": { "current": 2, "target": 3, "gap": 1, "priority": "P2" },
+    "dim10_mochaContrast": { "current": 2, "target": 3, "gap": 1, "priority": "P3" }
+  },
+  "p0Findings": [
+    {
+      "id": "P0-1",
+      "title": "text-sm abusé sur contenu de lecture",
+      "pages": ["/audit", "/implementation", "/cas-concrets", "/interventions"],
+      "occurrences": 40,
+      "fixEffort": "20-30 class changes"
+    },
+    {
+      "id": "P0-2",
+      "title": "Baseline corps text-base non overridé",
+      "rootCause": "@theme block ne définit pas --text-base",
+      "fixEffort": "1 token edit globals.css"
+    },
+    {
+      "id": "P0-3",
+      "title": "Line-length hors fourchette 60-75ch",
+      "examples": ["max-w-2xl + text-base = 84ch", "max-w-3xl + text-lg = 96ch"],
+      "fixEffort": "3-5 paragraphes"
+    },
+    {
+      "id": "P0-4",
+      "title": "Hiérarchie H2/H3/body insuffisante",
+      "ratios": { "h2BodyAudit": 2.25, "h2BodyImpl": 1.5, "h3BodyAudit": 1.125 },
+      "target": { "h2Body": 2.5, "h3Body": 1.5 },
+      "fixEffort": "15-20 headings"
+    }
+  ],
+  "p1Findings": [
+    { "id": "P1-1", "title": "Tokens --text-* DEAD CODE", "tokensCount": 10, "usagesCount": 0 },
+    {
+      "id": "P1-2",
+      "title": "Saut feature→lead = 1.09 trop faible",
+      "recommendation": "modular scale Major Third 1.25"
+    },
+    { "id": "P1-3", "title": "201 text-[arbitrary] court-circuitent l'échelle" }
+  ],
+  "pagesAlreadyOk": ["/blog", "/methodologie", "/cas-concrets", "/contact", "/mentions-legales"],
+  "pageLevelPatches": [
+    {
+      "rank": 1,
+      "scope": "/audit, /implementation",
+      "change": "text-sm → text-base sur cards body",
+      "occurrences": "20-30"
+    },
+    {
+      "rank": 2,
+      "scope": "/audit, /implementation, /",
+      "change": "bump H3 d'un cran (text-lg → text-xl)",
+      "occurrences": "15-20"
+    },
+    {
+      "rank": 3,
+      "scope": "/a-propos, /methodologie",
+      "change": "max-w-3xl → max-w-2xl",
+      "occurrences": "3-5"
+    },
+    {
+      "rank": 4,
+      "scope": "/audit, /interventions",
+      "change": "text-[14.5px] → text-base",
+      "occurrences": "10-15"
+    },
+    {
+      "rank": 5,
+      "scope": "Footer, Header CTA mocha",
+      "change": "vérifier text-mocha-fg body après bump",
+      "occurrences": "à mesurer"
+    }
+  ],
+  "recommendation": {
+    "scenario": "B_premium",
+    "reason": "doctrine v3 cite Anthropic (18px) en référence; A reste sous Anthropic; C dépasse vers Stripe Press hors-doctrine actuelle",
+    "adrRequired": "ADR 0003 — Typography baseline upgrade (delta v3.1)",
+    "sprintEstimate": "Sprint 14.7 (token) + Sprint 14.8 (page-level patches)"
+  }
+}

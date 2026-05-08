@@ -1,0 +1,981 @@
+﻿{
+  "i18n": {
+    "pathnamesCount": 137,
+    "localePrefix": "always",
+    "defaultLocale": "fr",
+    "supportedLocales": ["fr", "en"],
+    "note": "Full bidirectional mapping FR\u003c-\u003eEN in routing.ts"
+  },
+  "agent": "AGT-PAGES",
+  "items": [
+    {
+      "jsonld": ["Organization", "FAQSpeakable"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "home",
+      "path": "src/app/[locale]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Cabinet IA opérationnel",
+        "alternates": true
+      },
+      "route": "/",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList", "Person"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "transversal",
+      "path": "src/app/[locale]/a-propos/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "À propos",
+        "alternates": true
+      },
+      "route": "/a-propos",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/accessibilite/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Déclaration d\u0027accessibilité",
+        "alternates": true
+      },
+      "route": "/accessibilite",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList", "ItemList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/audit/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Audit IA en entreprise",
+        "alternates": true
+      },
+      "route": "/audit",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": true,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/audit/demande/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Demande d\u0027audit",
+        "alternates": false
+      },
+      "route": "/audit/demande",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service", "FAQPage", "BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/audit/flash/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Diagnostic Flash",
+        "alternates": true
+      },
+      "route": "/audit/flash",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/audit/process/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Audit Ciblé",
+        "alternates": true
+      },
+      "route": "/audit/process",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/audit/strategique-pme/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Audit Stratégique PME",
+        "alternates": true
+      },
+      "route": "/audit/strategique-pme",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/audit/strategique-eti/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Audit Stratégique ETI",
+        "alternates": true
+      },
+      "route": "/audit/strategique-eti",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/blog/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Blog",
+        "alternates": true
+      },
+      "route": "/blog",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BlogPosting"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/blog/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Article Blog",
+        "alternates": true
+      },
+      "route": "/blog/[slug]",
+      "dynamicParams": {
+        "slug": "getAllBlogSlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/blog/categorie/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Catégorie Blog",
+        "alternates": true
+      },
+      "route": "/blog/categorie/[slug]",
+      "dynamicParams": {
+        "slug": "getAllBlogCategorySlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/blog/tag/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Tag Blog",
+        "alternates": true
+      },
+      "route": "/blog/tag/[slug]",
+      "dynamicParams": {
+        "slug": "getAllBlogTagSlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/blog/auteur/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Auteur Blog",
+        "alternates": true
+      },
+      "route": "/blog/auteur/[slug]",
+      "dynamicParams": {
+        "slug": "getAllBlogAuthorSlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/cas-concrets/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Cas Concrets",
+        "alternates": true
+      },
+      "route": "/cas-concrets",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["WebPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/cas-concrets/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Cas Concret Détail",
+        "alternates": true
+      },
+      "route": "/cas-concrets/[slug]",
+      "dynamicParams": {
+        "slug": "getAllCaseStudySlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/cas-concrets/secteur/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Secteur Cas Concrets",
+        "alternates": true
+      },
+      "route": "/cas-concrets/secteur/[slug]",
+      "dynamicParams": {
+        "slug": "getAllIndustrySlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/centre-aide/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Centre d\u0027Aide",
+        "alternates": true
+      },
+      "route": "/centre-aide",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["WebPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/centre-aide/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Article Aide",
+        "alternates": true
+      },
+      "route": "/centre-aide/[slug]",
+      "dynamicParams": {
+        "slug": "getAllHelpSlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/centre-aide/categorie/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Catégorie Aide",
+        "alternates": true
+      },
+      "route": "/centre-aide/categorie/[slug]",
+      "dynamicParams": {
+        "slug": "getAllHelpCategorySlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/comparaisons/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Comparaisons",
+        "alternates": true
+      },
+      "route": "/comparaisons",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["ComparisonChart"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/comparaisons/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Comparaison Détail",
+        "alternates": true
+      },
+      "route": "/comparaisons/[slug]",
+      "dynamicParams": {
+        "slug": "getAllComparisonSlugs()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": [],
+      "useClient": false,
+      "i18nLink": false,
+      "type": "dev",
+      "path": "src/app/[locale]/components/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Design System",
+        "alternates": false
+      },
+      "route": "/components",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/conditions-generales/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Conditions Générales",
+        "alternates": true
+      },
+      "route": "/conditions-generales",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/confirmation/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Confirmation",
+        "alternates": false
+      },
+      "route": "/confirmation",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList", "Organization"],
+      "useClient": true,
+      "i18nLink": true,
+      "type": "transversal",
+      "path": "src/app/[locale]/contact/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Contact",
+        "alternates": true
+      },
+      "route": "/contact",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/cookies/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Cookies",
+        "alternates": true
+      },
+      "route": "/cookies",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/desabonnement/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Désabonnement",
+        "alternates": false
+      },
+      "route": "/desabonnement",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": false,
+      "i18nLink": false,
+      "type": "dev",
+      "path": "src/app/[locale]/design/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Design System",
+        "alternates": false
+      },
+      "route": "/design",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/faq/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "FAQ",
+        "alternates": true
+      },
+      "route": "/faq",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["FAQPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/faq/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Question FAQ",
+        "alternates": true
+      },
+      "route": "/faq/[slug]",
+      "dynamicParams": {
+        "slug": "getAllFaqIds()",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["WebPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/glossaire/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Glossaire IA",
+        "alternates": true
+      },
+      "route": "/glossaire",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["WebPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/guide-ia/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Guide IA",
+        "alternates": true
+      },
+      "route": "/guide-ia",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/implementation/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Implémentation IA",
+        "alternates": true
+      },
+      "route": "/implementation",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/agents/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Agents IA",
+        "alternates": true
+      },
+      "route": "/implementation/agents",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/chatbot/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Chatbot",
+        "alternates": true
+      },
+      "route": "/implementation/chatbot",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/crm-erp/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "CRM/ERP",
+        "alternates": true
+      },
+      "route": "/implementation/crm-erp",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/documents/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Gestion Documents",
+        "alternates": true
+      },
+      "route": "/implementation/documents",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/ia-custom/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "IA Custom",
+        "alternates": true
+      },
+      "route": "/implementation/ia-custom",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/integrations/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Intégrations",
+        "alternates": true
+      },
+      "route": "/implementation/integrations",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/no-code/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "No-Code/Low-Code",
+        "alternates": true
+      },
+      "route": "/implementation/no-code",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/par-fonction/[slug]/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Par Fonction",
+        "alternates": true
+      },
+      "route": "/implementation/par-fonction/[slug]",
+      "dynamicParams": {
+        "slug": "AUTOMATISATION_SLUGS_FR",
+        "generate": true
+      }
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/implementation/par-techno/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Par Technologie",
+        "alternates": true
+      },
+      "route": "/implementation/par-techno",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/processus/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Processus",
+        "alternates": true
+      },
+      "route": "/implementation/processus",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/implementation/structuration/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Structuration",
+        "alternates": true
+      },
+      "route": "/implementation/structuration",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "listing",
+      "path": "src/app/[locale]/interventions/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Interventions",
+        "alternates": true
+      },
+      "route": "/interventions",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/interventions/conference/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Conférence",
+        "alternates": true
+      },
+      "route": "/interventions/conference",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/interventions/dirigeants/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Dirigeants",
+        "alternates": true
+      },
+      "route": "/interventions/dirigeants",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/interventions/equipes/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Équipes",
+        "alternates": true
+      },
+      "route": "/interventions/equipes",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/interventions/essentielle/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Essentielle",
+        "alternates": true
+      },
+      "route": "/interventions/essentielle",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["Service"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/interventions/managers/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Managers",
+        "alternates": true
+      },
+      "route": "/interventions/managers",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/mentions-legales/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Mentions Légales",
+        "alternates": true
+      },
+      "route": "/mentions-legales",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/mes-donnees/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Mes Données",
+        "alternates": false
+      },
+      "route": "/mes-donnees",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["WebPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/methodologie/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Méthodologie",
+        "alternates": true
+      },
+      "route": "/methodologie",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/politique-confidentialite/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Politique de Confidentialité",
+        "alternates": true
+      },
+      "route": "/politique-confidentialite",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/politique-deplacement/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Politique de Déplacement",
+        "alternates": true
+      },
+      "route": "/politique-deplacement",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": true,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/preferences-cookies/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Préférences Cookies",
+        "alternates": false
+      },
+      "route": "/preferences-cookies",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "transversal",
+      "path": "src/app/[locale]/presse/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Presse",
+        "alternates": true
+      },
+      "route": "/presse",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": true,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/recherche/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Recherche",
+        "alternates": false
+      },
+      "route": "/recherche",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": true,
+      "i18nLink": true,
+      "type": "system",
+      "path": "src/app/[locale]/reserver/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Réserver",
+        "alternates": true
+      },
+      "route": "/reserver",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "legal",
+      "path": "src/app/[locale]/rgpd/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "RGPD",
+        "alternates": true
+      },
+      "route": "/rgpd",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["BreadcrumbList"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "produit",
+      "path": "src/app/[locale]/roi/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "ROI Calculator",
+        "alternates": true
+      },
+      "route": "/roi",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": [],
+      "useClient": false,
+      "i18nLink": false,
+      "type": "dev",
+      "path": "src/app/[locale]/sections/page.tsx",
+      "metadata": {
+        "hasGenerate": false,
+        "title": "Design System Sections",
+        "alternates": false
+      },
+      "route": "/sections",
+      "dynamicParams": null
+    },
+    {
+      "jsonld": ["WebPage"],
+      "useClient": false,
+      "i18nLink": true,
+      "type": "editorial",
+      "path": "src/app/[locale]/stack-ia/page.tsx",
+      "metadata": {
+        "hasGenerate": true,
+        "title": "Stack IA",
+        "alternates": true
+      },
+      "route": "/stack-ia",
+      "dynamicParams": null
+    }
+  ],
+  "scanned_at": "2026-05-07T23:36:07.4109846+02:00",
+  "sitemap": {
+    "estimatedBlogEntries": 50,
+    "subSitemaps": ["pages", "blog", "help", "cas-concrets", "comparaisons", "implementation"],
+    "estimatedTotalEntries": 5000,
+    "estimatedImplementationSlugs": 20,
+    "hasGenerateSitemaps": true
+  },
+  "summary": {
+    "byType": {
+      "transversal": 4,
+      "listing": 13,
+      "legal": 11,
+      "editorial": 9,
+      "dev": 3,
+      "home": 1,
+      "produit": 24,
+      "system": 8
+    },
+    "total": 64,
+    "newSinceV1": [
+      "/presse",
+      "/stack-ia",
+      "/comparaisons",
+      "/comparaisons/[slug]",
+      "/glossaire",
+      "/guide-ia",
+      "/methodologie",
+      "/accessibilite",
+      "/recherche",
+      "/implementation/par-fonction/[slug]",
+      "/implementation/par-techno"
+    ]
+  },
+  "llms": {
+    "llmsTxt": "Route: /llms.txt/route.ts — sections indexed",
+    "llmsFullTxt": "Route: /llms-full.txt/route.ts — extended sections",
+    "robotsTxt": "Full robots.txt in app/ root"
+  },
+  "head_sha": "fd915187077c78f693f67d7364b8db908993b957"
+}

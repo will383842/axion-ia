@@ -1,0 +1,209 @@
+{
+  "audit": "FRONTEND-V14-2026",
+  "date": "2026-05-07",
+  "head": "941a8e1",
+  "ahead_origin_main": 22,
+  "working_tree_clean": true,
+  "doctrine": "HEAD = doctrine commitée officielle (cohérence interne uniquement)",
+  "verdict": "GO_SPRINT_15",
+  "verdict_qualifier": "GO_CONDITIONAL — 3 P0 contenu non bloquants à corriger en parallèle (~3h30)",
+  "tests_status": {
+    "vitest_files_passed": 15,
+    "vitest_tests_passed": 71,
+    "vitest_tests_failed": 0,
+    "duration_seconds": 48.96,
+    "coverage_measured_at_head": false
+  },
+  "anti_banni_gates": {
+    "i18n_check": "PASS — 145 keys in sync",
+    "anti_formation_check": "PASS — 0",
+    "anti_siren_check": "PASS — 0",
+    "anti_hex_check": "PASS — 0",
+    "contrast_check": "PASS — 30 pairs WCAG AA+",
+    "radius_check": "PASS",
+    "use_client_check": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS"
+  },
+  "doctrine_internal_check": {
+    "tokens_consumed": {
+      "--color-terracotta": 43,
+      "--color-primary": 22,
+      "--color-sage": 20,
+      "--color-paper": 8,
+      "--color-border-strong": 8,
+      "--color-fg": 5,
+      "--color-bg": 4,
+      "--color-mocha": 2
+    },
+    "fonts_loaded": ["Manrope", "Inconsolata", "Fraunces"],
+    "hex_hardcoded_outside_globals_css": 0,
+    "header_pattern": "bg-terracotta figé (no scroll-aware) confirmed Header.tsx:29",
+    "h1_with_titleEm": "27/30 (3 exceptions justified: dynamic + showcase)",
+    "eyebrow_dot_terracotta": "35 pages with eyebrow + auto dot via Section.tsx:265",
+    "axionia_canonical_count": 256,
+    "axionia_variants_count": 0
+  },
+  "templates_coverage": {
+    "expected": 75,
+    "found": "60+ pages live",
+    "covered_pct": 80,
+    "notes": "/reserver and /roi exist (AGT-COVERAGE false negative corrected). /maintenance missing (P1 acceptable). 14 admin routes scope M6+."
+  },
+  "findings": {
+    "P0": [
+      {
+        "id": "C-P0-1",
+        "section": "GEO E-E-A-T",
+        "title": "dateModified absent on BlogPost + CaseStudy",
+        "files": ["src/content/transversal.ts:126", "src/content/case-studies.ts:22"],
+        "effort_hours": 2,
+        "blocking_sprint_15": false
+      },
+      {
+        "id": "C-P0-2",
+        "section": "GEO E-E-A-T",
+        "title": "Bio Will too short (< 30 chars vs 150-200 expected)",
+        "files": ["src/content/transversal.ts:42-43"],
+        "effort_hours": 1,
+        "blocking_sprint_15": false
+      },
+      {
+        "id": "C-P0-3",
+        "section": "GEO Trust",
+        "title": "registrikood + VAT EE = 'à compléter' placeholder",
+        "files": ["src/content/legal.ts:40"],
+        "effort_hours": 0.17,
+        "blocking_sprint_15": false
+      }
+    ],
+    "P1": [
+      {
+        "id": "A-P1-1",
+        "section": "DoD Sprints 0-14",
+        "title": "SESSION_LOG incomplete (Sprints 1-4, 6-9 not documented)",
+        "effort_hours": 5
+      },
+      {
+        "id": "A-P1-2",
+        "section": "DoD Sprint 14.5 pivot",
+        "title": "Pivot v3 not atomized (no single feat(design) commit)",
+        "effort_hours": 1
+      },
+      {
+        "id": "B-P1-1",
+        "section": "Templates",
+        "title": "/maintenance page missing (acceptable if no MAINTENANCE_MODE)",
+        "effort_hours": 0.5
+      },
+      {
+        "id": "C-P1-1",
+        "section": "SEO IndexNow",
+        "title": "INDEXNOW_KEY env = TODO placeholder",
+        "files": ["src/app/api/indexnow/route.ts"],
+        "effort_hours": 0.25
+      },
+      {
+        "id": "C-P1-2",
+        "section": "AEO",
+        "title": "No AggregateRating on /cas-concrets",
+        "effort_hours": 0.5
+      },
+      {
+        "id": "C-P1-3",
+        "section": "GEO Entity",
+        "title": "Organization.identifier missing (post C-P0-3)",
+        "effort_hours": 0.17
+      },
+      {
+        "id": "C-P1-4",
+        "section": "GEO AI bots",
+        "title": "robots.ts no explicit AI bot rules",
+        "files": ["src/app/robots.ts"],
+        "effort_hours": 0.08
+      },
+      {
+        "id": "C-P1-5",
+        "section": "SEO sitemap",
+        "title": "Sitemap lastModified = build date (not edit date)",
+        "files": ["src/app/sitemap.ts:113"],
+        "effort_hours": 3
+      }
+    ],
+    "P2": [
+      {
+        "id": "B-P2-1",
+        "title": "~20 pages without visible <Breadcrumbs> component (transversales/légales)"
+      },
+      {
+        "id": "B-P2-2",
+        "title": "Breadcrumbs.tsx never imported visually (JSON-LD via helper OK)"
+      },
+      { "id": "B-P2-3", "title": "scroll-behavior: smooth not set globally in globals.css" },
+      { "id": "D-P2-1", "title": "FaqAccordion vs FaqBlock — fuzzy boundary, consolidatable" },
+      { "id": "D-P2-2", "title": "Dual calendar (HouseCalendar legacy + BookingCalendar)" },
+      {
+        "id": "D-P2-3",
+        "title": "Breadcrumbs.tsx visual component never rendered (same as B-P2-2)"
+      },
+      { "id": "D-P2-4", "title": "Organization JSON-LD emitted 2x (layout + home)" },
+      { "id": "D-P2-5", "title": "5 forms in stub mode [*:submit:stub] — endpoints to wire" },
+      { "id": "E-P2-1", "title": "reactCompiler + ppr disabled (acceptable, documented reasons)" },
+      { "id": "E-P2-2", "title": "No <Image priority> (acceptable, LCP is text)" },
+      {
+        "id": "E-P2-3",
+        "title": "E2e coverage thin (9 tests × 5 browsers), 0 @a11y test despite axe-core installed"
+      }
+    ],
+    "P3": [
+      {
+        "id": "D-P3-1",
+        "title": "6 orphan UI components (dropdown-menu, popover, select, switch, tabs, tooltip)"
+      },
+      { "id": "D-P3-2", "title": "<Hero> standalone used 1x (showcase only)" },
+      { "id": "D-P3-3", "title": "'accompagnement' count = 1 (rare vocabulary to arbitrate)" },
+      { "id": "D-P3-4", "title": "Button API surface (15 variants) >> real page usage" },
+      { "id": "D-P3-5", "title": "3 H1 pages without titleEm (dynamic + showcase, justified)" },
+      { "id": "E-P3-1", "title": "size-limit minimal budget (no per-page nor CSS)" },
+      { "id": "E-P3-2", "title": "Coverage not measured at HEAD (script absent)" }
+    ]
+  },
+  "totals": {
+    "P0": 3,
+    "P1": 8,
+    "P2": 11,
+    "P3": 7
+  },
+  "go_no_go_criteria": {
+    "P0_max": 0,
+    "P0_actual_blocking_sprint_15": 0,
+    "P0_actual_content_only": 3,
+    "P1_max": 5,
+    "P1_actual": 8,
+    "P1_acceptable_post_sprint_15": true,
+    "tests_min": 71,
+    "tests_actual": 71,
+    "anti_banni_gates_must_pass": true,
+    "anti_banni_gates_pass": true
+  },
+  "deferred_tools_methodology": [
+    "F.1 — Lighthouse CI réel (script lhci:autorun pré-câblé)",
+    "F.2 — axe-core via Playwright (créer tests/e2e/a11y.spec.ts)",
+    "F.3 — Cross-browser e2e réel (5 projets Playwright pré-configurés)",
+    "F.4 — Bundle size-limit run (étendre budgets)",
+    "F.5 — Coverage measurement (ajouter script test:coverage)",
+    "F.6 — Citability test 5 LLMs × 10 questions (méthodologie complète documentée)",
+    "F.7 — Linkinator broken-link",
+    "F.8 — Sentry source maps + RUM"
+  ],
+  "next_sprint": "Sprint 15 — Auth.js v5 + Prisma users/sessions",
+  "decision_question": {
+    "label": "Will choisit la suite",
+    "options": [
+      "OUI — démarrer Sprint 15 immédiatement, P0 contenu en sub-task parallèle (ou différés Sprint 16)",
+      "CONTINUE — Sprint 15 + corriger P0 contenu maintenant (registrikood 10min + dateModified 2h + bio Will 1h)",
+      "STOP corrections — bloquer Sprint 15, corriger toutes P0+P1 (effort total ~7h30)",
+      "STOP doctrine — re-ouvrir doctrine v3 commitée (préciser ce que tu veux changer)"
+    ]
+  }
+}
