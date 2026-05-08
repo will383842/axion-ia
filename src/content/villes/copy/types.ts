@@ -32,11 +32,30 @@ export interface VilleHeroConfig {
   }>;
 }
 
+/**
+ * Contexte local d'application des 3 services AxionIA à la ville.
+ * Sprint 14.9.1 (refonte 2026-05-08) : cœur de la valeur AxionIA pour la
+ * landing page ville. 1 phrase courte (~25-50 mots) par service précisant
+ * comment AxionIA délivre concrètement à cette ville (logistique, secteurs
+ * dominants, profils clients typiques, délai démarrage).
+ *
+ * Optionnel : si non fourni, fallback générique « À [Ville], aucun frais
+ * de déplacement supplémentaire... ». Mais une page ville pilote vraiment
+ * différenciée DOIT avoir les 3 phrases.
+ */
+export interface VilleServicesContext {
+  audit?: { fr: string; en: string };
+  interventions?: { fr: string; en: string };
+  implementation?: { fr: string; en: string };
+}
+
 export interface VilleCopy {
   /** Pitch FR 30-50 mots, citable LLMs (signal AEO/GEO). */
   pitchFr: string;
   /** Pitch EN miroir. */
   pitchEn: string;
+  /** Contexte local d'application des 3 services AxionIA. */
+  servicesContext?: VilleServicesContext;
   /**
    * Direct-answer FR 40-80 mots (Q "qu'est-ce qu'AxionIA à [Ville] ?"),
    * citable verbatim par Perplexity / Claude.ai / Google AI Overviews.

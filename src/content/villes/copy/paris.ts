@@ -9,6 +9,20 @@ export const PARIS_COPY: VilleCopy = {
     "Capitale économique européenne, Paris concentre 215 000 entreprises actives, le siège des grands groupes français et l'écosystème IA national (Mistral, Hugging Face, Station F). AxionIA y intervient sur site dans Paris intra-muros et toute l'Île-de-France, des cabinets indépendants aux directions IA des grands comptes.",
   pitchEn:
     "Europe's economic capital, Paris hosts 215,000 active businesses, headquarters of major French groups and the national AI ecosystem (Mistral, Hugging Face, Station F). AxionIA delivers on-site engagements throughout Paris and Greater Paris, from independent firms to AI leadership of large corporates.",
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Paris : pôle prioritaire d'AxionIA. 4 niveaux (Flash 490 € HT, Ciblé 1 900-3 900 €, Stratégique PME 4 900-9 900 €, Stratégique ETI dès 12 000 €). Délai moyen entre signature et kick-off : 5-10 jours ouvrés. Aucun frais de déplacement intra-muros ni petite couronne.",
+      en: "AI audit in Paris: AxionIA priority hub. 4 tiers (Flash €490, Targeted €1,900-3,900, SME Strategic €4,900-9,900, Mid-cap Strategic from €12,000). Average lead time between signature and kick-off: 5-10 business days. No travel fees within Paris and inner suburbs.",
+    },
+    interventions: {
+      fr: "Interventions IA à Paris : 5 formats (Essentielle 490 € HT 1 journée, Équipes, Managers, Conférence ½ journée, Dirigeants). Disponibles dans les 20 arrondissements, La Défense, première couronne (Levallois, Boulogne, Issy, Neuilly). Démos sur vos vraies données, jusqu'à 100 collaborateurs par session.",
+      en: "AI sessions in Paris: 5 formats (Essential €490 1 day, Teams, Managers, Half-day talk, Executives). Available across all 20 arrondissements, La Défense, inner suburbs (Levallois, Boulogne, Issy, Neuilly). Demos on your real data, up to 100 collaborators per session.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Paris : mise en production en 6-12 semaines, ROI chiffré, formation incluse. Hybride sur site / distance, kick-off à Paris obligatoire. Cas typiques parisiens : lecture de factures, comptes-rendus de réunions automatisés, qualification IA des leads, agents conversationnels CRM/ERP.",
+      en: "AI implementation in Paris: production deployment in 6-12 weeks, costed ROI, training included. Hybrid on-site / remote, kick-off in Paris required. Typical Paris cases: invoice reading, automated meeting minutes, AI lead qualification, CRM/ERP conversational agents.",
+    },
+  },
   directAnswerFr:
     "AxionIA est un cabinet IA opérationnel basé en UE qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons PME, ETI, sièges grands-comptes et startups parisiennes (Station F, La Défense) sur leurs cas IA opérationnels — diagnostic 5 jours, démos sur vos vraies données, plan d'action chiffré. Tarif public dès 490 € HT pour l'intervention essentielle 1 journée. Aucun lock-in technologique.",
   directAnswerEn:

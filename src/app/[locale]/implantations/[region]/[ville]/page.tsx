@@ -6,7 +6,10 @@ import {
   ArrowUpRight,
   Briefcase,
   Building2,
+  Euro,
   MapPin,
+  ShieldCheck,
+  Target,
   TrainFront,
   Users,
   Wrench,
@@ -286,114 +289,216 @@ export default async function VillePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* 3. DÉMOGRAPHIE + SECTEURS NAF + DISTANCES — bloc data dense */}
+      {/* 2. NOS 3 SERVICES À [VILLE] — cœur de la page (Sprint 14.9.1)
+          Indexation maximale : mots-clés long-tail « audit IA [Ville] »,
+          « intervention IA [Ville] », « implémentation IA [Ville] » dans
+          les h2/h3 + descriptions naturelles. Tarifs publics affichés
+          (signal AEO/GEO : Perplexity / Claude / Gemini citent prix). */}
       <Section
-        eyebrow={isFr ? "Tissu local" : "Local fabric"}
-        title={isFr ? "Données économiques" : "Economic data"}
+        eyebrow={isFr ? "Nos services" : "Our services"}
+        title={isFr ? "Trois services AxionIA à" : "Three AxionIA services in"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? "Source : INSEE (recensement légal 2024) + Sirene 2024. Données différenciées par ville (anti-doorway HCU 2024)."
-            : "Source: INSEE (2024 legal census) + Sirene 2024. City-specific differentiated data (anti-doorway HCU 2024)."
+            ? `Tarifs publics, frais de déplacement intégrés, calendrier en temps réel. AxionIA délivre ses 3 prestations à ${ville.nameFr} comme partout en France métropolitaine — aucune limite géographique sur les services.`
+            : `Public pricing, travel fees included, real-time calendar. AxionIA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France — no geographic limit on services.`
         }
         tone="paper"
       >
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Démographie */}
-          <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
-            <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-primary mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Démographie" : "Demographics"}
-            </p>
-            <p
-              className="text-fg mt-3 text-2xl leading-tight font-semibold"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
-              <span className="text-fg-soft text-base font-normal">{isFr ? "hab." : "inhab."}</span>
-            </p>
-            <p className="text-fg-soft mt-3 text-sm leading-relaxed">
-              {isFr
-                ? `Code INSEE ${ville.inseeCode} · département ${ville.departementLabel ?? ville.departement}. Recensement légal INSEE 2024.`
-                : `INSEE code ${ville.inseeCode} · department ${ville.departementLabel ?? ville.departement}. INSEE 2024 legal census.`}
-            </p>
-          </article>
-
-          {/* Secteurs NAF */}
-          {copy.topSectorsNaf?.length ? (
-            <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
-              <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Top secteurs NAF" : "Top NAF sectors"}
-              </p>
-              <p
-                className="text-fg mt-3 text-xl leading-tight font-semibold"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? "Tissu B2B dominant" : "Dominant B2B fabric"}
-              </p>
-              <ul className="mt-4 space-y-1.5">
-                {copy.topSectorsNaf.map((sector, idx) => (
-                  <li key={idx} className="text-fg-soft text-sm leading-snug">
-                    <span className="text-fg-muted mr-2 text-xs tabular-nums">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    {sector}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ) : null}
-
-          {/* Distances */}
-          {(isFr ? copy.distancesFr : (copy.distancesEn ?? copy.distancesFr)) ? (
-            <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
-              <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-sage mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Accès" : "Access"}
-              </p>
-              <p
-                className="text-fg mt-3 inline-flex items-center gap-2 text-xl leading-tight font-semibold"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                <TrainFront aria-hidden="true" className="h-5 w-5" />
-                {isFr ? "Gares & aéroports" : "Stations & airports"}
-              </p>
-              <p className="text-fg-soft mt-3 text-sm leading-relaxed">
-                {isFr ? copy.distancesFr : (copy.distancesEn ?? copy.distancesFr)}
-              </p>
-            </article>
-          ) : null}
-        </div>
+        <ul className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {[
+            {
+              href: "/audit" as const,
+              icon: Briefcase,
+              h3Fr: `Audit IA à ${ville.nameFr}`,
+              h3En: `AI audit in ${ville.nameFr}`,
+              priceFr: "dès 490 € HT",
+              priceEn: "from €490",
+              tagline: isFr
+                ? "Pyramide 4 niveaux : Flash, Ciblé, Stratégique PME, Stratégique ETI."
+                : "4-level pyramid: Flash, Targeted, SME Strategic, Mid-cap Strategic.",
+              accent: "primary" as const,
+              context:
+                copy.servicesContext?.audit?.[isFr ? "fr" : "en"] ??
+                (isFr
+                  ? `Audit IA à ${ville.nameFr} disponible sans surcoût géographique. Frais de déplacement intégrés au forfait. Diagnostic actionnable + plan d'attaque chiffré livré sous 5-10 jours ouvrés.`
+                  : `AI audit in ${ville.nameFr} available without geographic surcharge. Travel fees included. Actionable diagnosis + costed action plan delivered within 5-10 business days.`),
+              ctaFr: "Demander un audit Flash · 490 €",
+              ctaEn: "Request a Flash audit · €490",
+            },
+            {
+              href: "/interventions" as const,
+              icon: Building2,
+              h3Fr: `Interventions IA à ${ville.nameFr}`,
+              h3En: `AI sessions in ${ville.nameFr}`,
+              priceFr: "dès 490 € HT",
+              priceEn: "from €490",
+              tagline: isFr
+                ? "5 formats sur site : Essentielle, Équipes, Managers, Conférence, Dirigeants."
+                : "5 on-site formats: Essential, Teams, Managers, Talk, Executives.",
+              accent: "terracotta" as const,
+              context:
+                copy.servicesContext?.interventions?.[isFr ? "fr" : "en"] ??
+                (isFr
+                  ? `Interventions IA en entreprise à ${ville.nameFr} sur site, jusqu'à 100 collaborateurs par session. Démos sur vos vraies données, pas de scénarios génériques.`
+                  : `Corporate AI sessions in ${ville.nameFr} on site, up to 100 collaborators per session. Demos on your real data, no generic scenarios.`),
+              ctaFr: "Voir le calendrier · 490 €",
+              ctaEn: "View the calendar · €490",
+            },
+            {
+              href: "/implementation" as const,
+              icon: Wrench,
+              h3Fr: `Implémentation IA à ${ville.nameFr}`,
+              h3En: `AI implementation in ${ville.nameFr}`,
+              priceFr: "dès 990 € HT",
+              priceEn: "from €990",
+              tagline: isFr
+                ? "Mise en production sur 6-12 semaines, ROI chiffré, formation incluse."
+                : "Production deployment over 6-12 weeks, costed ROI, training included.",
+              accent: "sage" as const,
+              context:
+                copy.servicesContext?.implementation?.[isFr ? "fr" : "en"] ??
+                (isFr
+                  ? `Implémentation IA opérationnelle à ${ville.nameFr} : agents, automatisation back-office, intégration CRM/ERP, IA custom. Forfait fixe, aucun abonnement.`
+                  : `Operational AI implementation in ${ville.nameFr}: agents, back-office automation, CRM/ERP integration, custom AI. Fixed fee, no subscription.`),
+              ctaFr: "Discuter d'un projet",
+              ctaEn: "Discuss a project",
+            },
+          ].map(
+            ({
+              href,
+              icon: Icon,
+              h3Fr,
+              h3En,
+              priceFr,
+              priceEn,
+              tagline,
+              accent,
+              context,
+              ctaFr,
+              ctaEn,
+            }) => (
+              <li key={href}>
+                <article
+                  className={`bg-bg border-border-strong/40 hover:shadow-card shadow-subtle flex h-full flex-col rounded-2xl border-2 p-6 transition`}
+                >
+                  <span
+                    className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-md ${
+                      accent === "primary"
+                        ? "bg-primary-soft text-primary"
+                        : accent === "terracotta"
+                          ? "bg-terracotta-soft text-terracotta-deep"
+                          : "bg-sand-deep text-sage"
+                    }`}
+                  >
+                    <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={2.25} />
+                  </span>
+                  <h3
+                    className="text-fg text-2xl leading-tight font-semibold tracking-tight"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {isFr ? h3Fr : h3En}
+                  </h3>
+                  <p
+                    className={`mt-2 text-sm font-bold tracking-tight ${
+                      accent === "primary"
+                        ? "text-primary"
+                        : accent === "terracotta"
+                          ? "text-terracotta-deep"
+                          : "text-sage"
+                    }`}
+                  >
+                    {isFr ? priceFr : priceEn}
+                  </p>
+                  <p className="text-fg mt-3 text-sm leading-snug font-medium">{tagline}</p>
+                  <p className="text-fg-soft mt-4 grow text-sm leading-relaxed">{context}</p>
+                  <div className="mt-6">
+                    <Cta
+                      href={href}
+                      variant={accent === "terracotta" ? "terracotta" : "primary"}
+                      size="md"
+                      shape="pill"
+                      track={`ville_service_${href.slice(1)}`}
+                      data-source-ville={ville.slug}
+                      data-source-region={ville.region}
+                    >
+                      {isFr ? ctaFr : ctaEn}
+                      <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                    </Cta>
+                  </div>
+                </article>
+              </li>
+            ),
+          )}
+        </ul>
       </Section>
 
-      {/* 4. ÉCOSYSTÈME LOCAL — paragraphe différenciateur (gros texte) */}
-      {(isFr ? copy.ecosystemFr : (copy.ecosystemEn ?? copy.ecosystemFr)) ? (
-        <Section
-          eyebrow={isFr ? "Écosystème" : "Ecosystem"}
-          title={isFr ? "Le tissu B2B" : "The B2B fabric"}
-          titleEm={`de ${ville.nameFr}`}
-          tone="canvas"
-        >
-          <p
-            className="text-fg max-w-3xl text-xl leading-relaxed sm:text-2xl"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {isFr ? copy.ecosystemFr : (copy.ecosystemEn ?? copy.ecosystemFr)}
-          </p>
-        </Section>
-      ) : null}
+      {/* 3. POURQUOI AXIONIA À [VILLE] — différenciation anti-doorway HCU
+          + signal autorité (4 différenciateurs concrets, pas du blabla) */}
+      <Section
+        eyebrow={isFr ? "Pourquoi nous" : "Why us"}
+        title={isFr ? "Ce qui change avec AxionIA à" : "What changes with AxionIA in"}
+        titleEm={ville.nameFr}
+        description={
+          isFr
+            ? "Un cabinet IA opérationnel n'est pas un éditeur logiciel ni un cabinet de conseil traditionnel. Voici les 4 différences concrètes que vous obtenez à chaque mission."
+            : "An operational AI consultancy is not a software vendor nor a traditional consulting firm. Here are the 4 concrete differences you get on every engagement."
+        }
+        tone="canvas"
+      >
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              icon: MapPin,
+              titleFr: "Sur site, pas en visio",
+              titleEn: "On site, not on video calls",
+              detailFr: `Nous nous déplaçons à ${ville.nameFr} pour kick-off et restitutions. Frais inclus.`,
+              detailEn: `We travel to ${ville.nameFr} for kick-off and read-outs. Fees included.`,
+            },
+            {
+              icon: Euro,
+              titleFr: "Prix public, pas d'opacité",
+              titleEn: "Public pricing, no opacity",
+              detailFr: "Tarifs affichés sur le site. Aucun jeu de devis, aucune surfacturation.",
+              detailEn: "Pricing displayed on the site. No quote game, no overbilling.",
+            },
+            {
+              icon: ShieldCheck,
+              titleFr: "Aucun lock-in technologique",
+              titleEn: "No tech lock-in",
+              detailFr: "Pas d'abonnement, pas de SaaS imposé. Vous repartez avec les outils.",
+              detailEn: "No subscription, no SaaS imposed. You leave with the tools.",
+            },
+            {
+              icon: Target,
+              titleFr: "ROI chiffré avant et après",
+              titleEn: "Costed ROI before and after",
+              detailFr: "On quantifie le gain avant la mission, on prouve après. Pas de baratin.",
+              detailEn: "We quantify the gain before the mission, we prove it after. No fluff.",
+            },
+          ].map(({ icon: Icon, titleFr, titleEn, detailFr, detailEn }, idx) => (
+            <li
+              key={idx}
+              className="bg-paper border-border-strong/40 shadow-subtle rounded-2xl border-2 p-5"
+            >
+              <span className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md">
+                <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
+              </span>
+              <p
+                className="text-fg text-base leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? titleFr : titleEn}
+              </p>
+              <p className="text-fg-soft mt-3 text-sm leading-relaxed">
+                {isFr ? detailFr : detailEn}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      {/* 5. CAS CLIENTS PROCHES — Haversine 50 km, fallback silencieux */}
+      {/* 4. CAS CLIENTS PROCHES — Haversine 50 km, fallback silencieux */}
       {nearbyCases.length > 0 ? (
         <Section
           eyebrow={isFr ? "Cas clients proches" : "Nearby case studies"}
@@ -528,86 +633,116 @@ export default async function VillePage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* 9. CTA final + maillage canonique 3 services */}
+      {/* 9. TISSU LOCAL — bandeau dense data INSEE + secteurs + accès.
+          Anti-doorway HCU 2024 : preuve de différenciation par ville
+          (les LLMs vérifient que chaque page ville a des data uniques). */}
       <Section
-        eyebrow={isFr ? "Nos services" : "Our services"}
-        title={isFr ? "Disponibles à" : "Available in"}
+        eyebrow={isFr ? "Tissu local" : "Local fabric"}
+        title={isFr ? "Données économiques" : "Economic data"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? "Aucun surcoût géographique. Frais de déplacement intégrés au forfait pour les capitales régionales."
-            : "No geographic surcharge. Travel fees included for regional capitals."
+            ? `Sources : INSEE recensement légal (code commune ${ville.inseeCode}) + Sirene 2024. Données différenciées spécifiques à ${ville.nameFr} (signal anti-doorway HCU 2024).`
+            : `Sources: INSEE legal census (commune code ${ville.inseeCode}) + Sirene 2024. City-specific differentiated data for ${ville.nameFr} (anti-doorway HCU 2024 signal).`
         }
-        tone="canvas"
+        tone="paper"
       >
-        <ul className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {[
-            {
-              href: "/audit" as const,
-              icon: Briefcase,
-              label: isFr ? "Audit IA" : "AI audit",
-              detail: isFr
-                ? "4 niveaux · Flash 490 € → Stratégique ETI dès 12 000 €"
-                : "4 tiers · Flash €490 → Mid-cap strategic from €12,000",
-              accent: "primary" as const,
-            },
-            {
-              href: "/interventions" as const,
-              icon: Building2,
-              label: isFr ? "Interventions sur site" : "On-site sessions",
-              detail: isFr
-                ? "1 journée 490 € · jusqu'à 100 personnes · démos sur vos données"
-                : "1 day €490 · up to 100 people · demos on your data",
-              accent: "terracotta" as const,
-            },
-            {
-              href: "/implementation" as const,
-              icon: Wrench,
-              label: isFr ? "Implémentation IA" : "AI implementation",
-              detail: isFr
-                ? "Mise en production sur 6-12 semaines · ROI chiffré"
-                : "Production deployment over 6-12 weeks · costed ROI",
-              accent: "sage" as const,
-            },
-          ].map(({ href, icon: Icon, label, detail, accent }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                data-cta-tracking="ville_canonical_link"
-                data-source-ville={ville.slug}
-                data-source-target={href}
-                className="group bg-paper hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card block h-full rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Démographie */}
+          <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
+            <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
+              <span
+                aria-hidden="true"
+                className="bg-primary mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              />
+              {isFr ? "Démographie" : "Demographics"}
+            </p>
+            <p
+              className="text-fg mt-3 text-2xl leading-tight font-semibold"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {ville.population.toLocaleString(isFr ? "fr-FR" : "en-US")}{" "}
+              <span className="text-fg-soft text-base font-normal">
+                {isFr ? "habitants" : "inhabitants"}
+              </span>
+            </p>
+            <p className="text-fg-soft mt-3 text-sm leading-relaxed">
+              {isFr
+                ? `Code INSEE ${ville.inseeCode} · département ${ville.departementLabel ?? ville.departement}${ville.postalCode ? ` · ${ville.postalCode}` : ""}. Recensement légal INSEE 2024.`
+                : `INSEE code ${ville.inseeCode} · department ${ville.departementLabel ?? ville.departement}${ville.postalCode ? ` · ${ville.postalCode}` : ""}. INSEE 2024 legal census.`}
+            </p>
+          </article>
+
+          {/* Secteurs NAF */}
+          {copy.topSectorsNaf?.length ? (
+            <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
+              <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
                 <span
-                  className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md ${
-                    accent === "primary"
-                      ? "bg-primary-soft text-primary"
-                      : accent === "terracotta"
-                        ? "bg-terracotta-soft text-terracotta-deep"
-                        : "bg-sand-deep text-sage"
-                  }`}
-                >
-                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
-                </span>
-                <p
-                  className="text-fg text-xl leading-tight font-semibold"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {label}
-                </p>
-                <p className="text-fg-soft mt-3 text-sm leading-relaxed">{detail}</p>
-                <p className="text-terracotta mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">
-                  {isFr ? "Voir le service" : "See service"}
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                  aria-hidden="true"
+                  className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? "Top secteurs B2B" : "Top B2B sectors"}
+              </p>
+              <p
+                className="text-fg mt-3 text-xl leading-tight font-semibold"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? "Tissu dominant" : "Dominant fabric"}
+              </p>
+              <ul className="mt-4 space-y-1.5">
+                {copy.topSectorsNaf.map((sector, idx) => (
+                  <li key={idx} className="text-fg-soft text-sm leading-snug">
+                    <span className="text-fg-muted mr-2 text-xs tabular-nums">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    {sector}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ) : null}
+
+          {/* Distances + accès */}
+          {(isFr ? copy.distancesFr : (copy.distancesEn ?? copy.distancesFr)) ? (
+            <article className="bg-bg border-border-strong/40 rounded-2xl border-2 p-6">
+              <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-sage mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? "Logistique & accès" : "Logistics & access"}
+              </p>
+              <p
+                className="text-fg mt-3 inline-flex items-center gap-2 text-xl leading-tight font-semibold"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                <TrainFront aria-hidden="true" className="h-5 w-5" />
+                {isFr ? "Gares & aéroports" : "Stations & airports"}
+              </p>
+              <p className="text-fg-soft mt-3 text-sm leading-relaxed">
+                {isFr ? copy.distancesFr : (copy.distancesEn ?? copy.distancesFr)}
+              </p>
+            </article>
+          ) : null}
+        </div>
       </Section>
+
+      {/* 10. ÉCOSYSTÈME LOCAL — paragraphe différenciateur (gros texte) */}
+      {(isFr ? copy.ecosystemFr : (copy.ecosystemEn ?? copy.ecosystemFr)) ? (
+        <Section
+          eyebrow={isFr ? "Écosystème" : "Ecosystem"}
+          title={isFr ? "Le tissu B2B" : "The B2B fabric"}
+          titleEm={`de ${ville.nameFr}`}
+          tone="canvas"
+        >
+          <p
+            className="text-fg max-w-3xl text-xl leading-relaxed sm:text-2xl"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {isFr ? copy.ecosystemFr : (copy.ecosystemEn ?? copy.ecosystemFr)}
+          </p>
+        </Section>
+      ) : null}
 
       {/* CTA final pré-rempli ville */}
       <CtaBlock
