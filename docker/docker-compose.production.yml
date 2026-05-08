@@ -1,0 +1,214 @@
+# Production stack Axion-IA — Sprint 22 (M11) ADR 0009.
+# Hetzner CPX32 (8 vCPU AMD Milan + 16 GB RAM + 240 GB NVMe) Frankfurt
+# = €11,90/mois HT (vs CX32 Intel à €6,49/mois testé insuffisant pour
+# 2150 villes pSEO + 10 templates email + 3 workers BullMQ).
+#
+# Stack :
+#   - postgres 16-alpine (persistent volume, healthcheck)
+#   - redis 7-alpine (noeviction policy BullMQ)
+#   - app (Next 16 standalone, 3000)
+#   - worker (BullMQ, sans port)
+#   - caddy 2 (80/443 SSL auto Let's Encrypt + reverse-proxy app)
+#
+# Coolify s'occupe en realite de :
+#   - DNS Cloudflare (configure manuellement, voir docs/ops/dns-records.md)
+#   - Backups PostgreSQL → Hetzner Storage Box (Sprint 23)
+#   - Logs aggregation
+#   - Secrets management (.env.production charge via Coolify env vars)
+#
+# Ce fichier reste utile pour :
+#   - Smoke test local pre-deploiement (docker compose -f ce file up)
+#   - Reference architecturale claire vs Coolify auto-config
+#   - Override en cas de migration future hors Coolify
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: axion-ia-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-axion_ia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+      POSTGRES_DB: ${POSTGRES_DB:-axion_ia_prod}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
+      TZ: Europe/Paris
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-axion_ia} -d ${POSTGRES_DB:-axion_ia_prod}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+
+  redis:
+    image: redis:7-alpine
+    container_name: axion-ia-redis-prod
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --maxmemory
+      - "1gb"
+      - --maxmemory-policy
+      - noeviction
+      - --requirepass
+      - ${REDIS_PASSWORD:?required}
+    volumes:
+      - redis_data_prod:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "0.5"
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://axion-ia.com}
+        NEXT_PUBLIC_APP_ENV: production
+    image: axion-ia-app:latest
+    container_name: axion-ia-app-prod
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-axion_ia}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-axion_ia_prod}?schema=public
+      DIRECT_URL: postgresql://${POSTGRES_USER:-axion_ia}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-axion_ia_prod}?schema=public
+      REDIS_URL: redis://default:${REDIS_PASSWORD}@redis:6379
+      AUTH_SECRET: ${AUTH_SECRET:?required}
+      AUTH_URL: ${AUTH_URL:-https://axion-ia.com}
+      ADMIN_URL_PREFIX: ${ADMIN_URL_PREFIX:?required}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?required}
+      SMTP_HOST: ${SMTP_HOST:-localhost}
+      SMTP_PORT: ${SMTP_PORT:-2525}
+      SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS:-noreply@axion-ia.com}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Axion-IA}
+      SMTP_FROM_MARKETING: ${SMTP_FROM_MARKETING:-news@axion-ia.com}
+      PMTA_API_URL: ${PMTA_API_URL}
+      PMTA_API_KEY: ${PMTA_API_KEY}
+      MAILWIZZ_API_URL: ${MAILWIZZ_API_URL}
+      MAILWIZZ_API_KEY: ${MAILWIZZ_API_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:?required}
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:?required}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://axion-ia.com}
+      NEXT_PUBLIC_APP_ENV: production
+      NEXT_PUBLIC_DEFAULT_LOCALE: fr
+      NEXT_PUBLIC_PLAUSIBLE_DOMAIN: axion-ia.com
+      NEXT_PUBLIC_PLAUSIBLE_API_URL: ${NEXT_PUBLIC_PLAUSIBLE_API_URL}
+      NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN}
+      SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+      INDEXNOW_KEY: ${INDEXNOW_KEY:?required}
+      COMPANY_NAME: ${COMPANY_NAME:-Axion-IA OÜ}
+      COMPANY_REGISTRATION_NUMBER: ${COMPANY_REGISTRATION_NUMBER}
+      COMPANY_VAT_NUMBER: ${COMPANY_VAT_NUMBER}
+      COMPANY_ADDRESS: ${COMPANY_ADDRESS}
+      COMPANY_EMAIL: ${COMPANY_EMAIL:-contact@axion-ia.com}
+      COMPANY_DPO_EMAIL: ${COMPANY_DPO_EMAIL:-dpo@axion-ia.com}
+      COMPANY_PHONE: ${COMPANY_PHONE}
+      HETZNER_STORAGE_ENDPOINT: ${HETZNER_STORAGE_ENDPOINT}
+      HETZNER_STORAGE_BUCKET: ${HETZNER_STORAGE_BUCKET}
+      HETZNER_STORAGE_KEY: ${HETZNER_STORAGE_KEY}
+      HETZNER_STORAGE_SECRET: ${HETZNER_STORAGE_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "3.0"
+
+  worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile.worker
+    image: axion-ia-worker:latest
+    container_name: axion-ia-worker-prod
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-axion_ia}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-axion_ia_prod}?schema=public
+      DIRECT_URL: postgresql://${POSTGRES_USER:-axion_ia}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-axion_ia_prod}?schema=public
+      REDIS_URL: redis://default:${REDIS_PASSWORD}@redis:6379
+      SMTP_HOST: ${SMTP_HOST:-localhost}
+      SMTP_PORT: ${SMTP_PORT:-2525}
+      SMTP_FROM_ADDRESS: ${SMTP_FROM_ADDRESS:-noreply@axion-ia.com}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Axion-IA}
+      SMTP_FROM_MARKETING: ${SMTP_FROM_MARKETING:-news@axion-ia.com}
+      PMTA_API_URL: ${PMTA_API_URL}
+      PMTA_API_KEY: ${PMTA_API_KEY}
+      MAILWIZZ_API_URL: ${MAILWIZZ_API_URL}
+      MAILWIZZ_API_KEY: ${MAILWIZZ_API_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://axion-ia.com}
+      INDEXNOW_KEY: ${INDEXNOW_KEY:?required}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      # Worker n'a pas d'HTTP — on check que le process node tourne
+      test: ["CMD", "pgrep", "-f", "src/server/queue/worker.ts"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.5"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: axion-ia-caddy-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3 QUIC
+    volumes:
+      - ../Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+
+volumes:
+  postgres_data_prod:
+  redis_data_prod:
+  caddy_data:
+  caddy_config:

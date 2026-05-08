@@ -1,0 +1,70 @@
+# Dockerfile worker BullMQ — Sprint 22 (M11 deploiement).
+#
+# Service separe du web app pour isoler le throughput email/cron du request
+# handling Next. Lance via `pnpm worker` → consume queues Redis :
+#   - emails (10 templates React Email × FR/EN)
+#   - option-expiration (cron 5min)
+#   - option-reminder (cron 1h, fenetre [22h, 26h])
+#
+# Aligne avec axionia_audit_sequence.md Sprint 18 + ADR 0009 :
+#   - Coolify deploie 2 services Web + Worker (meme image partagee possible
+#     mais on garde 2 Dockerfiles distincts pour resource limits independants)
+#   - Worker n'a pas besoin de exposer un port → pas d'EXPOSE
+#   - Healthcheck via `pgrep node` + ping Redis (ENTRYPOINT script)
+
+# -----------------------------------------------------------------------------
+# Stage 1 : deps
+# -----------------------------------------------------------------------------
+FROM node:20.18.0-alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY .npmrc* ./
+
+ENV COREPACK_INTEGRITY_KEYS=0
+RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
+RUN pnpm install --frozen-lockfile --prefer-offline
+
+# -----------------------------------------------------------------------------
+# Stage 2 : builder — generate Prisma client + transpile TS
+# -----------------------------------------------------------------------------
+FROM node:20.18.0-alpine AS builder
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+ENV COREPACK_INTEGRITY_KEYS=0
+RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
+RUN pnpm prisma:generate
+
+# -----------------------------------------------------------------------------
+# Stage 3 : runner — slim worker runtime
+# -----------------------------------------------------------------------------
+FROM node:20.18.0-alpine AS runner
+RUN apk add --no-cache libc6-compat tini
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# User non-root
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 worker
+
+# Copy node_modules + src + prisma generated client + tsx (worker run via tsx)
+COPY --from=builder --chown=worker:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=worker:nodejs /app/src ./src
+COPY --from=builder --chown=worker:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=worker:nodejs /app/package.json ./
+COPY --from=builder --chown=worker:nodejs /app/tsconfig.json ./
+
+USER worker
+
+# Tini = init process pour graceful SIGTERM (Coolify SIGKILL @ 30s,
+# cf. Sprint 15 step 4 worker.ts shutdown handler 25s timeout)
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Pas d'EXPOSE (worker ne sert pas HTTP)
+CMD ["node", "--experimental-strip-types", "src/server/queue/worker.ts"]
