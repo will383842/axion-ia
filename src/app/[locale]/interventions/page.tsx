@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       locale === "fr"
         ? "Interventions et formations IA opérationnelles sur site : Essentielle dès 490 € HT (2-8 pers.), Gagner du temps 990 € HT (2-20), CODIR, conférence, sur demande. France et international."
-        : "Operational AI sessions on site: Essential from €490 (2-8 people), Save Time €990 (2-20), Leadership, half-day talk, on request. France and international.",
+        : "Operational AI sessions on site: Essential from €490 (2-8 people), Save Time €990 (2-20), Leadership, 1-day talk, on request. France and international.",
   });
 }
 
@@ -286,16 +286,16 @@ function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
       ctaLabel: dir.ctaLabel,
       surface: "bg-mocha-rich text-mocha-fg",
     },
-    // Card 7 — Conférence ½ journée
+    // Card 7 — Conférence 1 journée (Sprint 14.10.4 : pas de demi-journée)
     {
       key: "conference",
       accent: "terracotta",
       isDark: false,
       badge: isFr ? "Format collectif" : "Collective format",
       title: isFr ? "Conférence" : "Talk",
-      titleEm: isFr ? "½ journée" : "Half day",
-      duration: isFr ? "½ journée (3 h)" : "Half day (3 h)",
-      durationLabel: isFr ? "½ jour" : "½ day",
+      titleEm: isFr ? "1 journée" : "1 day",
+      duration: isFr ? "1 journée" : "1 day",
+      durationLabel: isFr ? "1 j" : "1 d",
       price: conf.price,
       priceLabel: isFr ? "Sur devis" : "On request",
       groupSize: conf.groupSize,
@@ -389,8 +389,8 @@ export default async function InterventionsListing({ params }: Props) {
       ? "Interventions IA en entreprise · 8 formats · AxionIA"
       : "Corporate AI sessions · 8 formats · AxionIA",
     description: isFr
-      ? "Interventions et formations IA opérationnelles sur site : Essentielle dès 490 € HT (2 à 30+ personnes, 4 paliers), Gagner du temps 990 € HT (2-20), CODIR sur devis, conférence ½ journée, et sur demande particulière. France et international."
-      : "Operational AI sessions on site: Essential from €490 (2 to 30+ people, 4 tiers), Save Time €990 (2-20), Leadership on request, half-day talk, and bespoke. France and international.",
+      ? "Interventions et formations IA opérationnelles sur site : Essentielle dès 490 € HT (2 à 30+ personnes, 4 paliers), Gagner du temps 990 € HT (2-20), CODIR sur devis, conférence 1 journée, et sur demande particulière. France et international."
+      : "Operational AI sessions on site: Essential from €490 (2 to 30+ people, 4 tiers), Save Time €990 (2-20), Leadership on request, 1-day talk, and bespoke. France and international.",
     serviceType: "AI training & engagement",
     priceEur: 490,
     areasServed: buildServiceAreasServed(loc),
@@ -438,7 +438,7 @@ export default async function InterventionsListing({ params }: Props) {
       accent: "mocha",
     },
     {
-      label: isFr ? "Conférence ½ jour" : "Half-day talk",
+      label: isFr ? "Conférence 1 jour" : "1-day talk",
       benefit: isFr ? "Toute l'entreprise au même niveau" : "Whole company aligned",
       accent: "terracotta",
     },
@@ -521,7 +521,7 @@ export default async function InterventionsListing({ params }: Props) {
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "en 1 ou ½ journée" : "in 1 or ½ day"}
+                  {isFr ? "en 1 ou 2 journées" : "in 1 or 2 days"}
                 </span>
                 {isFr ? " — concrètement, sur site." : " — concretely, on site."}
               </h1>
@@ -849,8 +849,8 @@ export default async function InterventionsListing({ params }: Props) {
               level: isFr ? "Niveau 1" : "Stage 1",
               title: isFr ? "Aucun collaborateur formé à l'IA" : "No employee trained in AI yet",
               body: isFr
-                ? "L'Essentielle (490 € HT) ou la conférence ½ journée vous donnent une vision claire et des quick-wins prêts à reprendre."
-                : "The Essential (€490) or the half-day talk gives you a clear vision and quick-wins ready to resume.",
+                ? "L'Essentielle ou la conférence 1 journée vous donnent une vision claire et des quick-wins prêts à reprendre."
+                : "The Essential or the 1-day talk gives you a clear vision and quick-wins ready to resume.",
               recommendation: isFr ? "Essentielle 490 € · Conférence" : "Essential €490 · Talk",
             },
             {

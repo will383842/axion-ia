@@ -66,11 +66,11 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
   },
   {
     slug: "conference",
-    fr: "Conférence ½ journée",
-    en: "Half-day talk",
+    fr: "Conférence 1 journée",
+    en: "1-day talk",
     durationDays: 1,
-    scheduleHintFr: "Après-midi · 14 h – 17 h · format collectif",
-    scheduleHintEn: "Afternoon · 2 p.m. – 5 p.m. · collective format",
+    scheduleHintFr: "Journée · 9 h – 17 h · format collectif",
+    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · collective format",
   },
   {
     slug: "dirigeants",
@@ -875,7 +875,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
           ref pour auto-scroll mobile au changement d'intervention. */}
         <div
           ref={calendarFrameRef}
-          className="border-border-strong bg-paper shadow-card relative overflow-hidden rounded-3xl border-2 p-6 sm:p-8 lg:p-10"
+          className="border-border-strong bg-paper shadow-card relative overflow-hidden rounded-3xl border-2 p-4 sm:p-6 lg:p-8"
         >
           {/* Halo décoratif top-right */}
           <div
@@ -895,7 +895,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                 </p>
                 <h2
                   key={`title-${flashKey}`}
-                  className="text-fg title-flash mt-1 text-[clamp(2rem,3.5vw,3.25rem)] leading-tight font-medium tracking-tight"
+                  className="text-fg title-flash mt-1 text-[clamp(1.5rem,2.4vw,2.25rem)] leading-tight font-medium tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {months[viewMonth]} <span className="text-terracotta italic">{viewYear}</span>
@@ -909,23 +909,23 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                 onClick={prevMonth}
                 disabled={!canGoPrev}
                 aria-label={isFr ? "Mois précédent" : "Previous month"}
-                className="border-border-strong text-fg bg-paper hover:border-terracotta hover:text-terracotta-deep hover:shadow-card flex h-14 w-14 items-center justify-center rounded-full border-2 transition-all disabled:cursor-not-allowed disabled:opacity-25"
+                className="border-border-strong text-fg bg-paper hover:border-terracotta hover:text-terracotta-deep hover:shadow-card flex h-11 w-11 items-center justify-center rounded-full border-2 transition-all disabled:cursor-not-allowed disabled:opacity-25"
               >
-                <ChevronLeft className="h-6 w-6" aria-hidden="true" />
+                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
                 type="button"
                 onClick={nextMonth}
                 aria-label={isFr ? "Mois suivant" : "Next month"}
-                className="border-border-strong text-fg bg-paper hover:border-terracotta hover:text-terracotta-deep hover:shadow-card flex h-14 w-14 items-center justify-center rounded-full border-2 transition-all"
+                className="border-border-strong text-fg bg-paper hover:border-terracotta hover:text-terracotta-deep hover:shadow-card flex h-11 w-11 items-center justify-center rounded-full border-2 transition-all"
               >
-                <ChevronRight className="h-6 w-6" aria-hidden="true" />
+                <ChevronRight className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
           </div>
 
           {/* Weekday header — plus visible */}
-          <div className="relative mb-4 grid grid-cols-7 gap-2.5 sm:gap-4">
+          <div className="relative mb-4 grid grid-cols-7 gap-1.5 sm:gap-2.5">
             {weekDays.map((d) => (
               <div
                 key={d}
@@ -937,7 +937,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
           </div>
 
           {/* Calendar grid — cells plus grandes, contraste +++ */}
-          <ol className="relative grid grid-cols-7 gap-2.5 sm:gap-4">
+          <ol className="relative grid grid-cols-7 gap-1.5 sm:gap-2.5">
             {cells.map((cell) => {
               if (cell.day === null) {
                 return <li key={cell.key} className="aspect-square" />;
@@ -984,16 +984,16 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                       "group relative flex aspect-square w-full flex-col items-stretch justify-start rounded-2xl text-left transition-all",
                       // Passé : SIMPLE — line-through opacity 40
                       isPast &&
-                        "text-fg-muted cursor-not-allowed p-3 line-through opacity-40 sm:p-4",
+                        "text-fg-muted cursor-not-allowed p-2 line-through opacity-40 sm:p-2.5",
                       // Réservé : LUMINEUX (halo-warm + accent terracotta) avec infos publiques
                       isBooked &&
-                        "bg-halo-warm border-terracotta/40 text-fg shadow-subtle cursor-not-allowed border-2 p-2 sm:p-3",
+                        "bg-halo-warm border-terracotta/40 text-fg shadow-subtle cursor-not-allowed border-2 p-1.5 sm:p-2",
                       // Chevauchement (2j et J+1 pris) — neutre
                       isBlockedByOverlap &&
-                        "border-border bg-paper text-fg-muted cursor-not-allowed border-2 p-3 opacity-40 sm:p-4",
+                        "border-border bg-paper text-fg-muted cursor-not-allowed border-2 p-2 opacity-40 sm:p-2.5",
                       // Dispo : lumineux, hover halo-warm + lift fort
                       isAvailable &&
-                        "border-border-strong bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card text-fg cursor-pointer border-2 p-3 hover:-translate-y-1 sm:p-4",
+                        "border-border-strong bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card text-fg cursor-pointer border-2 p-2 hover:-translate-y-1 sm:p-2.5",
                       isToday &&
                         isAvailable &&
                         "ring-terracotta/40 ring-offset-paper ring-4 ring-offset-2",
@@ -1005,8 +1005,8 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                         className={cn(
                           "font-bold tabular-nums",
                           isBooked
-                            ? "text-fg text-lg sm:text-xl"
-                            : "text-2xl sm:text-3xl lg:text-4xl",
+                            ? "text-fg text-base sm:text-lg"
+                            : "text-lg sm:text-xl lg:text-2xl",
                           isToday && isAvailable && "text-terracotta-deep",
                         )}
                       >

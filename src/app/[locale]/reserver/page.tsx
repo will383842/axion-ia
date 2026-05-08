@@ -357,9 +357,11 @@ export default async function ReserverPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* Calendrier — page quasi-pleine largeur (override Container max-w-1520) */}
+      {/* Calendrier — largeur standard (max-w-7xl ≈ 1280px) pour tenir sur un
+          viewport laptop sans cellules géantes (Will 2026-05-08 — calendrier
+          paraissait trop gros sur la page). */}
       <div className="bg-bg py-8 sm:py-10">
-        <div className="mx-auto w-full max-w-[1680px] px-4 sm:px-6 lg:px-8 xl:px-10">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <BookingCalendarLazy initialBookedSlots={bookedSlots} locale={loc} />
         </div>
       </div>

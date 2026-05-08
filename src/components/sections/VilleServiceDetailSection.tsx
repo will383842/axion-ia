@@ -17,6 +17,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
 import type { VilleServiceCopyLocale } from "@/content/villes/copy/types";
+import { INTERVENTION_FEES_NOTE } from "@/content/pricing";
 
 export interface VilleServiceDetailSectionProps {
   /** Locale courante. */
@@ -211,6 +212,14 @@ export function VilleServiceDetailSection({
               </li>
             ))}
           </ul>
+          {/* Note frais annexes interventions — Sprint 14.10.4 (Will 2026-05-08).
+              Affichée seulement pour le service interventions ; les frais
+              audit / implementation sont gérés dans leur SOW respectif. */}
+          {service === "interventions" ? (
+            <p className="text-fg-muted mt-6 text-xs leading-relaxed italic">
+              {isFr ? INTERVENTION_FEES_NOTE.fr : INTERVENTION_FEES_NOTE.en}
+            </p>
+          ) : null}
         </div>
       ) : null}
 

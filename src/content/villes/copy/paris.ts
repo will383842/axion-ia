@@ -1,12 +1,14 @@
-// Paris — contenu éditorial gold standard (Sprint 14.10.2 refonte 2026-05-08).
+// Paris — contenu éditorial gold standard (Sprint 14.10.4 refonte 2026-05-08).
 //
 // Corrections Will 2026-05-08 :
 //   - Aucun « basé en UE » (mention supprimée partout).
 //   - Aucun délai concret (« 5-10 jours », « 7 jours », etc. supprimés).
 //   - Aucun « frais de déplacement intégrés » (les frais sont en plus,
 //     calculés au cas par cas selon la zone).
-//   - Aucune durée concrète (« demi-journée présentielle ») : les formats
-//     vont d'une demi-journée à plusieurs semaines selon le besoin.
+//   - Aucune demi-journée : durée minimale = 1 journée. Formats vont
+//     de 1 journée à plusieurs semaines selon le besoin.
+//   - Mention systématique « frais de logement, repas et forfait trajet
+//     en sus » sur les formats interventions.
 //   - Aucun prix hardcodé : tous les tarifs viennent de `src/content/pricing.ts`
 //     (source de vérité unique, futur admin Sprint 20).
 //   - Pas de mention de métier-type (plombier, comptable, etc.) — on parle
@@ -34,8 +36,8 @@ export const PARIS_COPY: VilleCopy = {
       en: "Operational AI audit in Paris: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size and ambition.",
     },
     interventions: {
-      fr: "Interventions IA à Paris : 5 formats sur site, d'une demi-journée à plusieurs semaines selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste.",
-      en: "AI sessions in Paris: 5 on-site formats, from a half-day to several weeks depending on your teams. Your staff leave autonomous with AI tools installed on their workstations.",
+      fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      en: "AI sessions in Paris: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
       fr: "Implémentation IA à Paris : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, on ne crée pas de dépendance.",
@@ -300,7 +302,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA AxionIA à Paris se déclinent en 5 formats sur site, d'une demi-journée à plusieurs semaines selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
+        hero: "Les interventions IA AxionIA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
         whyHere: [
           "Paris est notre premier terrain d'intervention : nous y déroulons une part importante de nos sessions chaque mois.",
           "Tous les arrondissements couverts en présentiel ainsi que la première couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -379,7 +381,7 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une intervention AxionIA à Paris ?",
-            a: "Cela dépend du format choisi. Une Essentielle ou un format Équipes se déroule sur une journée. Une Conférence prend une demi-journée. Une intervention Dirigeants ou un programme personnalisé multi-formats peut s'étaler sur plusieurs semaines selon l'ampleur.",
+            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
@@ -406,7 +408,7 @@ export const PARIS_COPY: VilleCopy = {
           "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur, aucune session générique recyclée.",
       },
       en: {
-        hero: "AxionIA's AI sessions in Paris come in 5 on-site formats, from a half-day to several weeks depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
+        hero: "AxionIA's AI sessions in Paris come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
         whyHere: [
           "Paris is our top engagement ground: a significant share of our sessions take place there each month.",
           "All arrondissements covered in person plus the inner suburbs (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -484,7 +486,7 @@ export const PARIS_COPY: VilleCopy = {
         faq: [
           {
             q: "How long does an AxionIA session in Paris take?",
-            a: "It depends on the chosen format. An Essential or Teams runs over a day. A Talk takes a half-day. An Executives or custom multi-format program can span several weeks depending on the scope.",
+            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
           },
           {
             q: "What group size can you handle?",
