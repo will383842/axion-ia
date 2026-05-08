@@ -59,6 +59,11 @@ export const env = createEnv({
 
     INDEXNOW_KEY: z.string().min(8).max(128).optional(),
 
+    // D3 cert 2026-05-08 — verification meta GSC + Bing Webmaster Tools.
+    // Sans property vérifiée, pas de coverage report ni URL Inspection API.
+    GOOGLE_SITE_VERIFICATION: z.string().optional(),
+    BING_SITE_VERIFICATION: z.string().optional(),
+
     COMPANY_NAME: z.string().optional(),
     COMPANY_REGISTRATION_NUMBER: z.string().optional(),
     COMPANY_VAT_NUMBER: z.string().optional(),
@@ -104,6 +109,8 @@ export const env = createEnv({
     SENTRY_DSN: process.env.SENTRY_DSN,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     INDEXNOW_KEY: process.env.INDEXNOW_KEY,
+    GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION,
+    BING_SITE_VERIFICATION: process.env.BING_SITE_VERIFICATION,
     COMPANY_NAME: process.env.COMPANY_NAME,
     COMPANY_REGISTRATION_NUMBER: process.env.COMPANY_REGISTRATION_NUMBER,
     COMPANY_VAT_NUMBER: process.env.COMPANY_VAT_NUMBER,

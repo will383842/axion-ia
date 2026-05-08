@@ -1,4 +1,4 @@
-# ADR 0009 — Hébergement Hetzner CX32 + Cloudflare Free
+# ADR 0009 — Hébergement Hetzner CPX32 + Cloudflare Free
 
 - **Statut** : Accepté
 - **Date** : 2026-05-08
@@ -9,14 +9,14 @@
 
 ADR 0001 stack-initial fixait Hetzner comme hébergeur (Vercel écarté, souveraineté UE OÜ estonienne) sans figer la taille de l'instance ni le CDN frontal. Lors de la création du prompt Web Vitals 2026 (2026-05-08), Will a explicitement demandé une décision chiffrée sur :
 
-1. **Hetzner CX22 vs CX32** (taille VPS)
+1. **Hetzner CX22 vs CPX32** (taille VPS)
 2. **Cloudflare Free vs Pro $20/mois vs Argo $5/mois** (frontend CDN/sécu)
 
 Cet ADR grave la réponse pour que tous les audits, prompts et runbooks reposent sur la même base.
 
 ## Décision
 
-### VPS — Hetzner Cloud **CX32** (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB / €6,49/mois HT)
+### VPS — Hetzner Cloud **CPX32** (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB / €6,49/mois HT)
 
 CX22 (2 vCPU / 4 GB RAM, €3,79/mois HT) écarté car insuffisant pour absorber simultanément :
 
@@ -32,7 +32,7 @@ CX22 (2 vCPU / 4 GB RAM, €3,79/mois HT) écarté car insuffisant pour absorber
 | **Runtime régulier**                 | **~3-4 GB**   |
 | **Pendant build**                    | **~5-6 GB**   |
 
-CX22 → swap pendant build, risque OOM. CX32 → marge confortable, pas de swap. Delta de €2,70/mois HT (~€32/an) négligeable face au risque opérationnel.
+CX22 → swap pendant build, risque OOM. CPX32 → marge confortable, pas de swap. Delta de €2,70/mois HT (~€32/an) négligeable face au risque opérationnel.
 
 CAX21 ARM (équivalent specs, ~€5,49/mois HT) envisagé pour économiser ~€1/mois — non retenu, Will préfère x86 pour homogénéité avec stack Docker classique.
 
@@ -64,7 +64,7 @@ Add-ons Cloudflare différés :
 
 ### Hébergement DB & Cache
 
-Containerisés sur le **même VPS CX32** via Coolify :
+Containerisés sur le **même VPS CPX32** via Coolify :
 
 - **PostgreSQL 16** container (Sprint 15 active full schema 17 tables)
 - **Redis** container (Sprint 18 BullMQ queues)
@@ -82,7 +82,7 @@ PgBouncer (connection pooling) à reconsidérer V2 si > 100 connexions concurren
 
 | Composant                 | Coût/mois HT      |
 | ------------------------- | ----------------- |
-| Hetzner CX32              | €6,49             |
+| Hetzner CPX32             | €6,49             |
 | Cloudflare Free           | €0                |
 | Backblaze B2 (10 GB free) | €0                |
 | **Total V1-V2**           | **€6,49/mois HT** |
@@ -104,7 +104,7 @@ Tout le reste (perf 2026, CDN, 103 Early Hints, HTTP/3, Brotli, image optim loca
 
 - Charge admin sys non-nulle (Coolify + Caddy + Postgres self-hosted vs Vercel managed).
   - Mitigation : Coolify abstrait l'essentiel, Caddy a une config simple, Postgres container standard.
-- Build CPU-bound sur 4 vCPU shared CX32 (~4-8 min pour 4 342 pages SSG).
+- Build CPU-bound sur 4 vCPU shared CPX32 (~4-8 min pour 4 342 pages SSG).
   - Mitigation : build off-peak ou en CI GitHub Actions (gratuit) avec push de l'artifact `output: "standalone"`.
 - Si trafic explose au-delà de 50 K visites/mois ou 20 TB traffic : upgrade Hetzner CX42 (€13,10/mois HT) ou ajout Cloudflare Argo Smart Routing.
 - Pas de SLA 99,99 % — Hetzner SLA est 99,9 % et Cloudflare Free n'a pas de SLA contractuel.
@@ -114,7 +114,7 @@ Tout le reste (perf 2026, CDN, 103 Early Hints, HTTP/3, Brotli, image optim loca
 
 - **Hetzner CX22** (€3,79/mois HT, 2 vCPU / 4 GB) — écarté : insuffisant pour build + 3 containers + Coolify, swap garanti pendant build.
 - **Hetzner CAX21 ARM** (€5,49/mois HT, 4 vCPU ARM / 8 GB) — écarté : Will préfère x86 pour homogénéité Docker. À reconsidérer V2 si on cherche ~10-15 % perf/€ supplémentaire.
-- **Hetzner CCX dedicated** (€13-27/mois HT, 2-4 vCPU dedicated / 8-16 GB) — écarté V1 : overkill, à reconsidérer si saturation CPU shared sur CX32.
+- **Hetzner CCX dedicated** (€13-27/mois HT, 2-4 vCPU dedicated / 8-16 GB) — écarté V1 : overkill, à reconsidérer si saturation CPU shared sur CPX32.
 - **Cloudflare Pro $20/mois** — écarté V1 : 80 % redondant avec Next + Caddy + sharp. Reconsidérer Sprint 16 pour WAF Managed Rules OWASP.
 - **Cloudflare Argo Smart Routing $5/mois + $0,10/GB** — reporté V2 si audience internationale > 30 %.
 - **Vercel Hobby/Pro** — écarté définitivement ADR 0001 (souveraineté UE).
@@ -126,7 +126,7 @@ Tout le reste (perf 2026, CDN, 103 Early Hints, HTTP/3, Brotli, image optim loca
 - Sprint 15 (DB activation) : container Postgres provisionné via Coolify, schema 17 tables.
 - Sprint 16 (auth + sécu) : reconsidérer CF Pro pour WAF Managed Rules OWASP.
 - Sprint 18 (queues) : container Redis + BullMQ workers.
-- V2 (post-lancement) : monitoring traffic réel + saturation CX32, décision upgrade si besoin.
+- V2 (post-lancement) : monitoring traffic réel + saturation CPX32, décision upgrade si besoin.
 
 ## Référence prompt audit
 

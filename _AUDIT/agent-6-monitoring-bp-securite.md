@@ -102,7 +102,7 @@ Sans ces 4 champs, le dashboard RUM Sprint 20 ne pourra ni segmenter ni alerter 
 
 ### État ADR (numéros libres + sujets prioritaires)
 
-ADR pris : 0001 → 0009 (0009 = hosting Hetzner CX32 + Cloudflare free, 2026-05-08).
+ADR pris : 0001 → 0009 (0009 = hosting Hetzner CPX32 + Cloudflare free, 2026-05-08).
 
 **Numéros libres suivants** :
 
@@ -439,7 +439,7 @@ Cet audit ne livre que le **page-lente** (P-504).
 +
 +## Hosting & infra (ADR 0009 ferme)
 +
-+Hetzner CX32 + Coolify + Caddy 2 + Next 16 standalone + Postgres + Redis + Cloudflare free tier. **Pas de Vercel.** **Pas de Cloudflare Pro.** **Pas de Sentry Pro.** Toute alternative déclenche STOP & ASK.
++Hetzner CPX32 + Coolify + Caddy 2 + Next 16 standalone + Postgres + Redis + Cloudflare free tier. **Pas de Vercel.** **Pas de Cloudflare Pro.** **Pas de Sentry Pro.** Toute alternative déclenche STOP & ASK.
 +
 +## Monitoring (Sprint 20+)
 +
@@ -494,14 +494,14 @@ Note : LCP, INP, TBT, CLS, score perf. Si LCP > 2 500 ms ou perf < 0,9 → diagn
 
 Chrome DevTools → onglet **Performance** → enregistrer 6 s sur la page.
 
-| Symptôme             | Coupable probable                               | Patch type                       |
-| -------------------- | ----------------------------------------------- | -------------------------------- |
-| LCP image > 2 s      | Pas de `priority` + `<link rel="preload">`      | Critère 2.2 / 9.7                |
-| LCP texte H1 > 1,5 s | Font swap CLS, pas de preload font              | Critère 8.8                      |
-| TBT > 300 ms         | Bundle initial > 250 KB gzip ou hydration heavy | Critère 6.1 / 11.1 (compiler)    |
-| CLS > 0,05           | Image sans dimensions OU font swap              | Critère 3.1 / 8.3                |
-| INP > 200 ms         | Handler client > 50 ms sync                     | Critère 4.3 / 11.6               |
-| TTFB > 500 ms        | Cache CDN miss OU Caddy down                    | Critère 5.5 + check Hetzner CX32 |
+| Symptôme             | Coupable probable                               | Patch type                        |
+| -------------------- | ----------------------------------------------- | --------------------------------- |
+| LCP image > 2 s      | Pas de `priority` + `<link rel="preload">`      | Critère 2.2 / 9.7                 |
+| LCP texte H1 > 1,5 s | Font swap CLS, pas de preload font              | Critère 8.8                       |
+| TBT > 300 ms         | Bundle initial > 250 KB gzip ou hydration heavy | Critère 6.1 / 11.1 (compiler)     |
+| CLS > 0,05           | Image sans dimensions OU font swap              | Critère 3.1 / 8.3                 |
+| INP > 200 ms         | Handler client > 50 ms sync                     | Critère 4.3 / 11.6                |
+| TTFB > 500 ms        | Cache CDN miss OU Caddy down                    | Critère 5.5 + check Hetzner CPX32 |
 
 ## 4. RUM payload (60 s)
 
@@ -555,7 +555,7 @@ Compare la médiane p75 28 jours vs Lighthouse Lab local. Écart > 30 % = bug sp
 
 **Statut** : Proposé (2026-05-08)
 **Décideur** : Will
-**Lié à** : ADR 0009 (hosting Hetzner CX32 + Cloudflare free)
+**Lié à** : ADR 0009 (hosting Hetzner CPX32 + Cloudflare free)
 
 ## Contexte
 
@@ -596,7 +596,7 @@ Détails : `_AUDIT/AUDIT-WEB-VITALS-2026-ROADMAP.md` (à produire par superviseu
 **Négatives / Risques** :
 - PPR active SC streaming → couvre besoin de Suspense par segment, à valider STOP & ASK avant V3.
 - React Compiler ajoute Babel → impact build time +15-25 % cold (acceptable).
-- Caddy 2 install requise sur VPS Hetzner CX32 (V5 dépend ADR 0014).
+- Caddy 2 install requise sur VPS Hetzner CPX32 (V5 dépend ADR 0014).
 - View Transitions affecte navigation perçue, opt-in par route (V6).
 
 ## Suivi

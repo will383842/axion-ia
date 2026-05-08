@@ -58,6 +58,12 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [],
+    // D4 cert 2026-05-08 — anti-pattern Next 16 self-hosted : default
+    // minimumCacheTTL = 60 sec → invalidation transforms AVIF/WebP toutes
+    // les minutes côté disk cache, pression I/O CX/CPX32 inutile. Cible
+    // doctrine = 1 an immutable (les hashes URL `next/image` garantissent
+    // invalidation sur changement de source).
+    minimumCacheTTL: 31536000,
   },
   experimental: {
     // ViewTransition disabled until we actually wrap route transitions in

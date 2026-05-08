@@ -337,7 +337,7 @@ Sous `/[ADMIN_URL_PREFIX]` (variable env). Auth obligatoire. Charger skill `axio
 
 ## PHASE 5 — Déploiement, monitoring, finalisation
 
-- VPS Hetzner CX32 + Coolify (compose).
+- VPS Hetzner CPX32 + Coolify (compose).
 - Cloudflare proxy + WAF + cache rules + Turnstile siteverify.
 - Caddy/Traefik SSL auto.
 - Plausible + Sentry self-hosted + Uptime Kuma.

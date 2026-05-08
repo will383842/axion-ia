@@ -111,7 +111,7 @@
 
 - **Path** : `.claude/skills/axionia-deployment/SKILL.md`
 - **Lignes** : 526
-- **Description** (verbatim, tronquée 250) : « Déploiement et infrastructure d'Axion-IA sur Hetzner Cloud + Coolify + Cloudflare. À charger pour toute tâche de DevOps, Docker, configuration serveur, CI/CD, sauvegardes, monitoring, ou question sur le déploiement. Couvre la configuration Hetzner CX32, Cool »
+- **Description** (verbatim, tronquée 250) : « Déploiement et infrastructure d'Axion-IA sur Hetzner Cloud + Coolify + Cloudflare. À charger pour toute tâche de DevOps, Docker, configuration serveur, CI/CD, sauvegardes, monitoring, ou question sur le déploiement. Couvre la configuration Hetzner CPX32, Cool »
 - **Triggers FR** : « DevOps », « Docker », « configuration serveur », « CI/CD », « sauvegardes », « déploiement », « rollback »
 - **Triggers EN** : « Hetzner », « Coolify », « Cloudflare », « Caddy », « SSL », « WAF », « rclone »
 - **Triggers négatifs** : Vercel, Netlify, AWS, GCP, Azure, Render, Railway, Fly.io, Cloudflare Pages explicitement interdits

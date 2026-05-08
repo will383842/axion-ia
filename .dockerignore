@@ -1,0 +1,62 @@
+# .dockerignore — patch D2 cert 2026-05-08.
+# Réduit le contexte build Docker (sinon pull node_modules + .next entier
+# = build slow + image gonflée).
+
+# Build outputs
+.next
+out
+dist
+build
+*.tsbuildinfo
+
+# Deps
+node_modules
+.pnpm-store
+
+# Test artifacts
+coverage
+playwright-report
+test-results
+lhci
+
+# Git + IDE
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Env files (NE JAMAIS embarquer dans image — passer via --env-file ou Coolify)
+.env
+.env.*
+!.env.example
+!.env.dev.example
+!.env.production.example
+
+# Docs / audits (pas needed runtime)
+docs
+_AUDIT
+AGENTS.md
+CHANGELOG.md
+SESSION_LOG.md
+README.md
+
+# Tooling configs (non runtime)
+.husky
+.prettierrc*
+.editorconfig
+commitlint.config.mjs
+playwright.config.ts
+vitest.config.ts
+vitest.integration.config.ts
+lighthouserc.json
+
+# Logs / data ops
+data/vitals/*.ndjson
+*.log
+
+# Misc
+.DS_Store
+Thumbs.db
+*.tmp
+.claude_*

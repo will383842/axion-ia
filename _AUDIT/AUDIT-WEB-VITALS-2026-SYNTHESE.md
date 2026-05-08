@@ -95,7 +95,7 @@
 - **Effort** : L (1 jour dev)
 - **Gain** : TTFB −300 à −500 ms p75 (Brotli + 103 Early Hints + HTTP/3 + cache rules)
 - **Risque** : Moyen (config initiale Hetzner)
-- **Dépend de** : provisionnement CX32 (€6,49/mois)
+- **Dépend de** : provisionnement CPX32 (€6,49/mois)
 - **Détail** : `_AUDIT/agent-4-ttfb-ppr-cache.md` P-300/P-301/P-302
 
 ### 2. **P-308 + P-307 — PPR `incremental` + Suspense boundaries** _(STOP & ASK obligatoire)_
@@ -199,7 +199,7 @@
 
 ### 11. Patch `[BUDGET-FLAG]` (§8.11)
 
-- **Aucun [BUDGET-FLAG] déclenché** — tous les patches restent dans le périmètre Hetzner CX32 + Caddy + Cloudflare free.
+- **Aucun [BUDGET-FLAG] déclenché** — tous les patches restent dans le périmètre Hetzner CPX32 + Caddy + Cloudflare free.
 - Sentry @sentry/nextjs free tier conservé (5K errors + 10K perf events/mois).
 
 ### 12. Upgrade payant (§8.12)

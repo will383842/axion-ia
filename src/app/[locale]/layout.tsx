@@ -90,6 +90,19 @@ export async function generateMetadata({
     },
     twitter: { card: "summary_large_image" },
     robots: { index: true, follow: true },
+    // D3 cert 2026-05-08 — verification meta GSC + Bing Webmaster Tools.
+    // Sans property vérifiée, pas de coverage report ni URL Inspection API.
+    // Build conditionnel : meta absente si env vars non définies (dev/preview).
+    ...(env.GOOGLE_SITE_VERIFICATION || env.BING_SITE_VERIFICATION
+      ? {
+          verification: {
+            ...(env.GOOGLE_SITE_VERIFICATION ? { google: env.GOOGLE_SITE_VERIFICATION } : {}),
+            ...(env.BING_SITE_VERIFICATION
+              ? { other: { "msvalidate.01": env.BING_SITE_VERIFICATION } }
+              : {}),
+          },
+        }
+      : {}),
   };
 }
 

@@ -28,7 +28,7 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 - **Quality** : Husky + lint-staged + commitlint + 4 anti-grep custom + size-limit
 - **Observability** : `@sentry/nextjs` + endpoint `/api/vitals` Edge + Plausible self-hosted
 - **CI** : Gates A/B/C/D/E (cf. `.github/workflows/`)
-- **Hosting** : Hetzner CX32 Frankfurt (UE) + Coolify + Cloudflare proxy/WAF (Sprint 22)
+- **Hosting** : Hetzner CPX32 Frankfurt (UE) + Coolify + Cloudflare proxy/WAF (Sprint 22)
 
 ## Conventions non négociables
 

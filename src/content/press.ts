@@ -308,12 +308,12 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     fr: {
       title: "Souveraineté IA : Axion-IA confirme l'hébergement UE par défaut",
       dek: "Tous les workloads clients sont hébergés sur Hetzner Frankfurt. Aucun envoi de données sensibles à des tiers sans consentement explicite.",
-      body: "Face aux préoccupations croissantes des dirigeants européens sur la souveraineté des données IA, Axion-IA confirme une politique d'hébergement UE par défaut. Toute donnée client transite et reste sur Hetzner CX32 à Frankfurt. Les modèles IA peuvent être hébergés on-premise ou sur infrastructure dédiée si requis. La politique RGPD est strictement appliquée : exercice des droits sous 30 jours, anonymisation systématique des échantillons utilisés en démos, DPO joignable à dpo@axion-ia.com.",
+      body: "Face aux préoccupations croissantes des dirigeants européens sur la souveraineté des données IA, Axion-IA confirme une politique d'hébergement UE par défaut. Toute donnée client transite et reste sur Hetzner CPX32 à Frankfurt. Les modèles IA peuvent être hébergés on-premise ou sur infrastructure dédiée si requis. La politique RGPD est strictement appliquée : exercice des droits sous 30 jours, anonymisation systématique des échantillons utilisés en démos, DPO joignable à dpo@axion-ia.com.",
     },
     en: {
       title: "AI sovereignty: Axion-IA confirms EU hosting by default",
       dek: "All client workloads are hosted on Hetzner Frankfurt. No sensitive data sent to third parties without explicit consent.",
-      body: "Faced with growing concerns from European executives about AI data sovereignty, Axion-IA confirms a default EU hosting policy. All client data transits through and remains on Hetzner CX32 in Frankfurt. AI models can be hosted on-premise or on dedicated infrastructure if required. GDPR policy is strictly enforced: rights exercise within 30 days, systematic anonymization of samples used in demos, DPO reachable at dpo@axion-ia.com.",
+      body: "Faced with growing concerns from European executives about AI data sovereignty, Axion-IA confirms a default EU hosting policy. All client data transits through and remains on Hetzner CPX32 in Frankfurt. AI models can be hosted on-premise or on dedicated infrastructure if required. GDPR policy is strictly enforced: rights exercise within 30 days, systematic anonymization of samples used in demos, DPO reachable at dpo@axion-ia.com.",
     },
   },
 ];

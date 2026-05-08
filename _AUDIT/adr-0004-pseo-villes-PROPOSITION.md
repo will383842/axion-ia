@@ -149,7 +149,7 @@ Limite Google 50 K URLs/sitemap : largement respectée (région la plus dense = 
 - INSEE COG / Sirene API : **gratuit**.
 - data.gouv.fr référentiel communes : **gratuit**.
 - DataForSEO ou Ahrefs (volumes recherche) : ~50-200 €/mois (optionnel — recommandé phase 2 pour prioriser les villes les plus recherchées).
-- Hosting **Hetzner CX32 Frankfurt + Coolify + Cloudflare gratuit** (Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`) : SSG strict, ~2 150 pages × ~25 KB HTML compressé ≈ 55 MB build, bien sous les limites du serveur. Pas de coût additionnel hosting au-delà du serveur Axion-IA déjà prévu.
+- Hosting **Hetzner CPX32 Frankfurt + Coolify + Cloudflare gratuit** (Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`) : SSG strict, ~2 150 pages × ~25 KB HTML compressé ≈ 55 MB build, bien sous les limites du serveur. Pas de coût additionnel hosting au-delà du serveur Axion-IA déjà prévu.
 - Indexing API Google : gratuit (quota 200 URLs/jour → top 50 phase 1 soumis en 1 jour).
 
 ### Total V1

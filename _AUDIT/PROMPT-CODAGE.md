@@ -1269,7 +1269,7 @@ Composant `<Breadcrumbs items={[...]} />` Server Component avec JSON-LD `Breadcr
 
 **Étapes**
 
-1. Provisionner VPS Hetzner CX32 Frankfurt + Storage Box BX11 + IP dédiée mail.
+1. Provisionner VPS Hetzner CPX32 Frankfurt + Storage Box BX11 + IP dédiée mail.
 2. Installer Coolify self-hosted.
 3. Docker Compose : `web`, `worker`, `postgres`, `redis`, `mailpit-staging` (pas en prod), `powermta`, `mailwizz`.
 4. Déclarer apps dans Coolify : `axionia-web` + `axionia-worker` + `axionia-mailwizz`.

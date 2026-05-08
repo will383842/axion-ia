@@ -370,7 +370,7 @@ Pas de breadcrumb sur `design`, `components`, `sections` (cohérent avec `EXCLUD
 
 ✅ Documentée dans `_AUDIT/PROMPT-CODAGE.md:1162-1178` :
 
-- VPS Hetzner CX32 Frankfurt + Storage Box BX11.
+- VPS Hetzner CPX32 Frankfurt + Storage Box BX11.
 - Coolify self-hosted.
 - Cloudflare proxy + WAF + Turnstile.
 - SSL via Caddy ou Traefik (auto-renouvel).

@@ -11,7 +11,7 @@ Dossier complet d'audits pour certifier le frontend Axion-IA niveau **best-in-cl
 ## Contexte projet (intouchable)
 
 - Cabinet IA opérationnel B2B premium · OÜ Estonienne
-- Hébergement : Hetzner Cloud CX32 + Coolify + Caddy 2 + Cloudflare Free (ADR 0009)
+- Hébergement : Hetzner Cloud CPX32 + Coolify + Caddy 2 + Cloudflare Free (ADR 0009)
 - Stack : Next 16 + React 19 + Tailwind 4 + next-intl FR/EN + Prisma 5 + Postgres 16 + Redis
 - Doctrine v3 visuelle figée (titleEm Fraunces, Header terracotta, hero-schema 576×576)
 - pSEO villes/régions livré (4 342 HTML SSG) + **industrialisation 100-300 nouvelles URLs/jour à venir**
@@ -125,7 +125,7 @@ Tous les prompts du dossier référencent ces seuils. **NE JAMAIS** les redéfin
 - TTFB p75 ≤ 100 ms via Cloudflare CDN
 - Bundle initial route home ≤ 70 KB gzip
 - Bundle initial route lourde (`/reserver`) ≤ 110 KB gzip
-- Build prod < 10 min sur Hetzner CX32
+- Build prod < 10 min sur Hetzner CPX32
 
 **Gates CI réellement enforced (état 2026-05-08)** :
 
@@ -217,7 +217,7 @@ Les audits D2/D4/A1 **constatent** ces reports comme dette technique tracée, il
 
 - Doctrine v3 visuelle figée (Design.md, ADR 0002, 0007)
 - Naming « cabinet IA opérationnel » FR / « operational AI consultancy » EN
-- Hetzner CX32 + CF Free (ADR 0009) — aucun coût récurrent additionnel sans validation
+- Hetzner CPX32 + CF Free (ADR 0009) — aucun coût récurrent additionnel sans validation
 - Anti-doorway HCU sur villes non pilotes
 - Lighthouse CI seuils existants ne se relâchent jamais (uniquement se durcissent)
 - 100 % outils OSS / Free tier / déjà budgété
@@ -236,7 +236,7 @@ Aucun audit n'applique de patch sans GO du user.
 
 ## Liens externes
 
-- ADR 0009 hosting : `docs/adr/0009-hosting-hetzner-cx32-cloudflare-free.md`
+- ADR 0009 hosting : `docs/adr/0009-hosting-hetzner-cpx32-cloudflare-free.md`
 - Mémoire hosting : `axionia_hosting_hetzner.md` (Claude memory)
 - Mémoire prompt Web Vitals : `axionia_prompt_web_vitals.md`
 - Audit séquence canonique : `axionia_audit_sequence.md`

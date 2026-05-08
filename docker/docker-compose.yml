@@ -1,7 +1,7 @@
 # Axion-IA · dev local stack (Sprint 15 / M8)
 # Postgres 16 + Redis 7 + Mailhog
 # Lance via pnpm db:up / arrête via pnpm db:down
-# Prod = Hetzner CX32 + Coolify (ADR 0009), pas ce file.
+# Prod = Hetzner CPX32 + Coolify (ADR 0009), pas ce file.
 
 services:
   postgres:

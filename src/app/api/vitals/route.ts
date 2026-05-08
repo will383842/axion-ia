@@ -1,7 +1,7 @@
 // use-client: not needed — this is a Route Handler, not a React Component.
 //
 // P-303 — Runtime Node.js (default Next 16) au lieu de `runtime = "edge"`.
-// Raison : Hetzner CX32 self-hosted (ADR 0009) ne supporte pas Edge Runtime.
+// Raison : Hetzner CPX32 self-hosted (ADR 0009) ne supporte pas Edge Runtime.
 // L'annotation `edge` était trompeuse : `next start` exécutait quand même
 // cette route en Node, mais avec contraintes Edge subset (pas d'`fs`).
 // Désormais on assume Node.js, on valide Zod + on persiste en ndjson rotatif

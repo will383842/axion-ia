@@ -788,7 +788,7 @@ Aucun patch de cet agent ne modifie :
 
 ### F.2 — Cible field data (CrUX) — non mesurable Phase A
 
-Critères 3.10 et 8.9 de cette grille exigent CrUX p75 28 j. À évaluer **Phase F** post-déploiement Hetzner CX32 + Caddy + Cloudflare. Pour l'instant scoring 0,5 partout sur ces deux critères = position prudente.
+Critères 3.10 et 8.9 de cette grille exigent CrUX p75 28 j. À évaluer **Phase F** post-déploiement Hetzner CPX32 + Caddy + Cloudflare. Pour l'instant scoring 0,5 partout sur ces deux critères = position prudente.
 
 ### F.3 — Lien avec autres agents
 

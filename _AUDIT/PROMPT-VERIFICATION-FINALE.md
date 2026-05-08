@@ -372,7 +372,7 @@ Pendant que les 5 agents tournent, l'agent principal exécute les chapitres 1, 2
 
 ### 17. Audit infra & déploiement (Pass B)
 
-- VPS Hetzner CX32 Frankfurt up.
+- VPS Hetzner CPX32 Frankfurt up.
 - Storage Box BX11 1 To monté.
 - IP dédiée mail correctement reverse-DNS.
 - Coolify déploie web + worker + powermta + mailwizz + postgres + redis.

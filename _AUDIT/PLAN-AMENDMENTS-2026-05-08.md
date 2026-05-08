@@ -177,7 +177,7 @@ Spec détaillée pour la section calendrier : `_AUDIT/SPEC-ADMIN-CALENDRIER-V2.m
 
 | Ligne / sujet                           | Avant 02-PLAN                               | Après / canon                                                                                                   | Source   |
 | --------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------- |
-| Hosting                                 | « Hetzner CX32 commandé » (vague)           | Hetzner CX32 + Coolify + Caddy 2 + Cloudflare Free. **Total V1-V2 = €6,49/mois HT**.                            | ADR 0009 |
+| Hosting                                 | « Hetzner CPX32 commandé » (vague)          | Hetzner CPX32 + Coolify + Caddy 2 + Cloudflare Free. **Total V1-V2 = €6,49/mois HT**.                           | ADR 0009 |
 | L627-670 prescriptions Cloudflare       | CF Pro WAF + Bot Fight Mode + Rate Limiting | **SUPPLANTÉ** : CF Free suffit pour V1-V2. WAF Pro reporté Sprint 16+ si trafic justifie.                       | ADR 0009 |
 | Sentry full                             | Préconisé                                   | **Décision pendante** : Sentry full (~150 KB gz = 53 % shell) vs RUM custom Hetzner-pure (Web Vitals V6 P-415). | fork E   |
 | `docker/docker-compose.yml` (dev local) | À créer                                     | Absent. À créer pour Postgres 16 + Redis 7 + Mailhog.                                                           | fork A   |

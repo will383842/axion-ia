@@ -7,7 +7,7 @@
 
 ## 0. Mission
 
-Orchestrer la **certification complète frontend Axion-IA niveau best-in-class 2026**, scale-ready (300K+ URLs), professionnel (standards SaaS premium), 100 % free-tier (Hetzner CX32 + Cloudflare Free), zéro régression.
+Orchestrer la **certification complète frontend Axion-IA niveau best-in-class 2026**, scale-ready (300K+ URLs), professionnel (standards SaaS premium), 100 % free-tier (Hetzner CPX32 + Cloudflare Free), zéro régression.
 
 **Sortie attendue** : verdict GO / NO-GO production via Gate 26 (315 critères checklist exécutable, score normalisé /100). Voir § 5 « Système de scoring unifié ».
 
@@ -17,7 +17,7 @@ Orchestrer la **certification complète frontend Axion-IA niveau best-in-class 2
 
 - Next 16 + React 19 + Tailwind 4 + next-intl FR/EN
 - Prisma 5 + PostgreSQL 16 + Redis (containers Coolify)
-- Hetzner Cloud CX32 + Caddy 2 + Cloudflare Free (ADR 0009)
+- Hetzner Cloud CPX32 + Caddy 2 + Cloudflare Free (ADR 0009)
 - 4 342 HTML SSG actuels + **rampe à 100-300 nouvelles URLs/jour** (industrialisation pSEO)
 
 ### Doctrine intouchable

@@ -183,7 +183,7 @@ Patches en vagues V1-V5 :
 
 ## 4. Contraintes
 
-- 100 % outils OSS / Free tier / Hetzner CX32 + Cloudflare Free
+- 100 % outils OSS / Free tier / Hetzner CPX32 + Cloudflare Free
 - Pas de Stripe (NO-STRIPE.md)
 - Si AI utilisé : Claude API ou DeepL API (à coût documenté + STOP & ASK)
 - Doctrine v3 visuelle figée

@@ -328,7 +328,7 @@ Pour chaque page ville, **6 sections** dont **3 totalement uniques** (data INSEE
 5. Queue review humaine : interface web minimaliste (Will valide / corrige / rejette)
 6. Build SSG Next.js : 1 page/ville statique
 7. Sitemap XML auto-généré par tier
-8. Deploy Hetzner CX32 + Coolify (Sprint 22) : commit → preview → prod
+8. Deploy Hetzner CPX32 + Coolify (Sprint 22) : commit → preview → prod
 ```
 
 ---
@@ -473,7 +473,7 @@ Le temps Will reste le **poste dominant** du budget global (review qualitative +
 
 ### 5.4 Hosting
 
-- Hetzner CX32 Frankfurt + Coolify + Cloudflare gratuit (doctrine déploiement Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`). 2 150 pages SSG ≈ 55 MB d'output statique, bien sous les capacités du serveur.
+- Hetzner CPX32 Frankfurt + Coolify + Cloudflare gratuit (doctrine déploiement Sprint 22, cf. `_AUDIT/PROMPT-CODAGE.md`). 2 150 pages SSG ≈ 55 MB d'output statique, bien sous les capacités du serveur.
 - Builds : SSG Next.js 16 sur le pipeline Coolify, déclenchés à chaque push.
 - **Coût additionnel hosting : 0 €** (le serveur Axion-IA Hetzner est déjà prévu pour le projet, pas de ligne budget dédiée à la pSEO).
 

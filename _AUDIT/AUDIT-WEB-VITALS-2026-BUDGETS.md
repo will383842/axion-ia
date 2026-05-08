@@ -2,7 +2,7 @@
 
 **Date** : 2026-05-08
 **Format** : YAML applicable en CI (Lighthouse CI assertions + size-limit)
-**Cible interne stricte** : LCP ≤ 1 800 ms p75 / INP ≤ 100 ms p75 / CLS = 0 / Performance 100/100/100/100 sur 15 pages stratégiques (médiane sur 5 runs en environnement Hetzner CX32 + Caddy + Cloudflare prod simulé)
+**Cible interne stricte** : LCP ≤ 1 800 ms p75 / INP ≤ 100 ms p75 / CLS = 0 / Performance 100/100/100/100 sur 15 pages stratégiques (médiane sur 5 runs en environnement Hetzner CPX32 + Caddy + Cloudflare prod simulé)
 **Source baseline** : `.next/diagnostics/route-bundle-stats.json` (build 2026-05-08 13:02)
 
 ---

@@ -54,7 +54,7 @@ export function GET() {
 > Cabinet IA opérationnel B2B pour entreprises. Axion-IA OÜ.
 > Site officiel : ${SITE_URL}
 > Langues : FR canonique, EN miroir.
-> Hébergement : Hetzner CX32 Frankfurt (UE).
+> Hébergement : Hetzner CPX32 Frankfurt (UE).
 > Facturation : devis fixe + virement + facture (régime TVA UE selon résidence).
 
 ## Positionnement

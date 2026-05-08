@@ -20,17 +20,30 @@ jobs:
           node-version: 20.18.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Full Playwright vs staging
+      # D5 cert 2026-05-08 — stubs `echo` convertis en `if: false` explicites
+      # pour éviter les faux positifs verts (audit D5 anti-pattern majeur).
+      # Chaque step listé reste planifié mais désactivé jusqu'à implémentation.
+      - name: Full Playwright vs staging (NOT IMPLEMENTED — Sprint 21)
+        if: false
         env:
           E2E_BASE_URL: https://staging.axion-ia.com
-        run: echo "Full E2E stub — Sprint 21 wires real suite."
+        run: pnpm test:e2e
       - name: pnpm audit
         run: pnpm audit --json > audit.json || true
-      - name: OWASP ZAP full scan
-        run: echo "ZAP full stub — Sprint 21."
-      - name: Mail-tester (7 templates × 2 locales)
-        run: echo "Mail-tester stub — Sprint 19."
-      - name: Backup restore drill
-        run: echo "Backup drill stub — Sprint 23."
-      - name: Lighthouse history
-        run: echo "Lighthouse history stub — Sprint 23."
+      - name: OWASP ZAP full scan (NOT IMPLEMENTED — Sprint 21)
+        if: false
+        run: docker run -t owasp/zap2docker-stable zap-baseline.py -t https://staging.axion-ia.com
+      - name: Mail-tester 7 templates x 2 locales (NOT IMPLEMENTED — Sprint 19)
+        if: false
+        run: pnpm tsx scripts/mail-tester.ts
+      - name: Backup restore drill (NOT IMPLEMENTED — Sprint 23)
+        if: false
+        run: pnpm tsx scripts/backup-drill.ts
+      - name: Lighthouse history (NOT IMPLEMENTED — Sprint 23)
+        if: false
+        run: pnpm lhci:autorun --upload.target=temporary-public-storage
+      - name: Notify nightly status
+        if: failure()
+        run: |
+          echo "Nightly Gate D failure — manual review required."
+          echo "Will : Sprint 21/19/23 stubs to wire."

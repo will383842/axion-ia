@@ -1,0 +1,89 @@
+# Caddyfile production Axion-IA — patch D2 cert 2026-05-08.
+#
+# Reverse-proxy en frontal de Next 16 standalone (port 3000) avec :
+#   - TLS auto via Let's Encrypt (zero config)
+#   - HTTP/3 (QUIC) auto-activé
+#   - Brotli + Gzip compression (préfère Brotli)
+#   - Headers immutable sur assets statiques /_next/static/*
+#   - Vary header (RSC + Accept-Encoding) pour cache CDN propre
+#   - Server-Timing pour debug perf en dev
+#
+# Aligné ADR 0009 (Hetzner CPX32 + Coolify + Caddy 2 + Cloudflare Free).
+# Cloudflare en amont : Caddy reçoit le HTTPS terminé Cloudflare → Caddy
+# applique les directives compress/headers → forward vers Next localhost:3000.
+#
+# Pré-requis :
+#   - DNS axion-ia.com pointe vers Cloudflare (proxied)
+#   - Cloudflare SSL/TLS mode = Full (strict) — certificate Let's Encrypt
+#     côté Caddy honoré par CF
+#   - Coolify expose port 80+443 vers internet
+#
+# Test local :
+#   caddy run --config Caddyfile
+
+{
+	# Logs structurés JSON pour ingestion Coolify / observability
+	log {
+		output stdout
+		format json
+		level INFO
+	}
+
+	# Auto HTTPS Let's Encrypt
+	auto_https on
+
+	# HTTP/3 enabled by default in Caddy 2.7+
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+axion-ia.com, www.axion-ia.com {
+	# Redirige www → apex pour signal canonical SEO
+	@www host www.axion-ia.com
+	redir @www https://axion-ia.com{uri} permanent
+
+	# Brotli (préféré) + Gzip fallback. Niveau 6 (équilibre CPU/ratio).
+	encode {
+		zstd
+		br 6
+		gzip 6
+		minimum_length 1024
+	}
+
+	# Headers de sécurité supplémentaires (en complément Next.config.ts).
+	# Caddy applique APRÈS Next, donc les directives Next priment sur les CSP/HSTS.
+	header {
+		# Performance
+		Server "Caddy"
+		# CDN-friendly Vary (next.config.ts émet déjà mais redondance OK)
+		Vary "Accept-Encoding, RSC, Next-Router-State-Tree, Next-Router-Prefetch"
+	}
+
+	# Assets statiques Next 16 — immutable cache long max-age (1 an).
+	# Les hashes dans les URLs garantissent invalidation auto au build suivant.
+	@nextStatic path /_next/static/*
+	header @nextStatic {
+		Cache-Control "public, max-age=31536000, immutable"
+	}
+
+	# Public assets (favicon, robots.txt, opengraph fallback, etc.) — 1 jour.
+	@publicAssets path *.ico *.png *.svg *.webp *.avif *.woff2 *.txt
+	header @publicAssets {
+		Cache-Control "public, max-age=86400"
+	}
+
+	# Reverse proxy vers Next 16 standalone server.
+	reverse_proxy localhost:3000 {
+		# Forward des headers réels (IP client + protocole)
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Forwarded-Host {host}
+
+		# Health check passive (Caddy détecte 502/503 et retire de la pool)
+		health_uri /api/healthz
+		health_interval 30s
+		health_timeout 5s
+	}
+}

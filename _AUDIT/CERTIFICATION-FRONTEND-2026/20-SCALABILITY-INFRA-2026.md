@@ -1,6 +1,6 @@
 # 20 — SCALABILITY INFRA 2026 (cible 300K+ URLs)
 
-> **Audit infrastructure scaling** : Hetzner CX32 + Coolify + Caddy + Cloudflare Free doit absorber 300K+ pages, 100-300 nouvelles/jour, 100K visites/mois sans saturer.
+> **Audit infrastructure scaling** : Hetzner CPX32 + Coolify + Caddy + Cloudflare Free doit absorber 300K+ pages, 100-300 nouvelles/jour, 100K visites/mois sans saturer.
 > Lancer fenêtre fraîche depuis `Axion-IA/axionia/`.
 
 ## 0. Contexte
@@ -12,7 +12,7 @@ Cible 3 ans : **300K+ URLs**. Charge prévisible :
 - 10K-100K visites/mois (estimation V1-V2)
 - Build cible < 10 min même à 100K pages
 
-Constat : Hetzner CX32 (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB) a des **limites mesurables** qu'il faut anticiper.
+Constat : Hetzner CPX32 (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB) a des **limites mesurables** qu'il faut anticiper.
 
 ## 1. Mission
 
@@ -45,7 +45,7 @@ Auditer scalability bout-en-bout et identifier les **points de saturation futurs
 2.3 Redis container stable < 256 MB
 2.4 Coolify orchestrator < 512 MB
 2.5 Caddy 2 < 50 MB
-2.6 Total runtime < 4 GB (50 % marge sur 8 GB CX32)
+2.6 Total runtime < 4 GB (50 % marge sur 8 GB CPX32)
 2.7 Pas de swap pendant runtime régulier
 2.8 CPU steady < 50 % (marge pour pics)
 2.9 Memory leak detection (process restart auto si RSS > seuil)
@@ -134,7 +134,7 @@ Auditer scalability bout-en-bout et identifier les **points de saturation futurs
 ### Phase A — Mesure baseline
 
 1. `pnpm build` actuel : durée + RAM peak + bundle size
-2. Hetzner CX32 actuel : `df -h`, `free -h`, `top`, `docker stats`
+2. Hetzner CPX32 actuel : `df -h`, `free -h`, `top`, `docker stats`
 3. Cloudflare analytics : cache hit rate, bandwidth, requests
 4. Postgres : `pg_stat_statements`, top 10 slow queries
 5. Search Console : indexation rate, crawl errors
@@ -164,7 +164,7 @@ Optimisations gratuites prioritaires :
 
 Upgrades conditionnels chiffrés :
 
-- CX42 (€13,10/mois HT) → +160 GB SSD + 8 vCPU si CX32 saturé
+- CX42 (€13,10/mois HT) → +160 GB SSD + 8 vCPU si CPX32 saturé
 - Volume Hetzner (€0,04/GB/mois) → si DB > 40 GB
 - Read replica → si lectures DB > 1000 req/s
 - Cloudflare Pro $20/mois → si besoin WAF Managed (Sprint 16) ou SLA
@@ -209,7 +209,7 @@ Patches gratuits d'abord (ISR, cache, indexes), puis upgrades conditionnels apr�
 
 ## 5. Cible chiffrée
 
-> _« Le frontend Axion-IA absorbe 100K URLs SSG + ISR pour les nouvelles, build < 10 min, runtime stable < 4 GB RAM, disk < 60 GB, bandwidth < 10 TB/mois sur CX32 + CF Free, sans dégradation Lighthouse / Web Vitals. »_
+> _« Le frontend Axion-IA absorbe 100K URLs SSG + ISR pour les nouvelles, build < 10 min, runtime stable < 4 GB RAM, disk < 60 GB, bandwidth < 10 TB/mois sur CPX32 + CF Free, sans dégradation Lighthouse / Web Vitals. »_
 
 ## 6. Livrables
 

@@ -616,7 +616,7 @@ Aucun outil payant requis pour ce périmètre INP / Compiler / VT. Tous les outi
 
 **Quand activer** : **Vague V4 du roadmap web vitals 2026**, après V1 (quick wins INP P-200 à P-205) et V2 (LCP preload + fonts). **Pas Sprint 17.** Le code est prêt aujourd'hui ; attendre 8 semaines = laisser 8 semaines d'INP dégradé sans raison.
 
-**Coût build time estimé** : +10-25 % sur cold build (mesure exacte à chiffrer en V4 sur le repo réel). Sur Hetzner CX32 (4 vCPU x86), build SSG 4 562 pages actuel ~~~5-7 min → +1-1,5 min après Compiler. Acceptable dans la fenêtre CI GitHub Actions (gratuit, pas de minute limit jusqu'à 2 000/mois).
+**Coût build time estimé** : +10-25 % sur cold build (mesure exacte à chiffrer en V4 sur le repo réel). Sur Hetzner CPX32 (4 vCPU x86), build SSG 4 562 pages actuel ~~~5-7 min → +1-1,5 min après Compiler. Acceptable dans la fenêtre CI GitHub Actions (gratuit, pas de minute limit jusqu'à 2 000/mois).
 
 **Coût bundle JS** : +0 à +5 % uncompressed (mesure à confirmer). Sur les 15 pages stratégiques actuelles 800 KB-1 MB uncompressed, +5 % = +40-50 KB max — négligeable face au gain runtime.
 

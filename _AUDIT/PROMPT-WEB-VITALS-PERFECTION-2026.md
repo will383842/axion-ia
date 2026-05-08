@@ -64,7 +64,7 @@ Tu es invoqué sur le projet **Axion-IA** — cabinet IA opérationnel B2B premi
 
 Axion-IA est déployé sur **Hetzner Cloud** (UE — souveraineté OÜ estonienne). **PAS de Vercel.** **PAS de Netlify.** Toutes les features perf doivent fonctionner sur :
 
-- **Hetzner Cloud VPS CX32** (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB traffic — €6,49/mois HT, décision ferme Will 2026-05-08). CX22 (2 vCPU / 4 GB) écarté car insuffisant pour build SSG 4 342 pages + 3 containers (Next/Postgres/Redis) + Coolify.
+- **Hetzner Cloud VPS CPX32** (4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB traffic — €6,49/mois HT, décision ferme Will 2026-05-08). CX22 (2 vCPU / 4 GB) écarté car insuffisant pour build SSG 4 342 pages + 3 containers (Next/Postgres/Redis) + Coolify.
 - **Node.js 22+ runtime** (`next start` ou Docker `output: "standalone"`)
 - **Reverse proxy à choisir** : **Caddy 2** (recommandé — auto-HTTPS, HTTP/3, Early Hints, Brotli natif, config simple) OU Nginx 1.25+
 - **CDN front recommandé** : **Cloudflare free tier** (DNS + CDN illimité + Brotli + HTTP/3 + 103 Early Hints + WAF + cache rules — tout gratuit, illimité)
@@ -99,7 +99,7 @@ Axion-IA est déployé sur **Hetzner Cloud** (UE — souveraineté OÜ estonienn
 └────────────────┬────────────────────────────────┘
                  │ (origin pull)
 ┌────────────────▼────────────────────────────────┐
-│  Hetzner Cloud CX32 (€6,49/mois HT — décidé)    │
+│  Hetzner Cloud CPX32 (€6,49/mois HT — décidé)    │
 │  4 vCPU x86 / 8 GB RAM / 80 GB NVMe / 20 TB     │
 │  ┌───────────────────────────────────────────┐  │
 │  │  Caddy 2 (reverse proxy, auto-HTTPS,      │  │
@@ -188,11 +188,11 @@ L'agent **DOIT** :
 
 ### Hetzner — décision ferme (Will 2026-05-08)
 
-- **VPS Hetzner CX32** : 4 vCPU x86 / 8 GB RAM / 80 GB NVMe SSD / 20 TB traffic / €6,49/mois HT. Décidé pour absorber build SSG 4 342 pages + 3 containers (Next + Postgres + Redis) + Coolify sans swap.
+- **VPS Hetzner CPX32** : 4 vCPU x86 / 8 GB RAM / 80 GB NVMe SSD / 20 TB traffic / €6,49/mois HT. Décidé pour absorber build SSG 4 342 pages + 3 containers (Next + Postgres + Redis) + Coolify sans swap.
 - **Cloudflare free tier en front** : décidé. Inclut DNS + CDN illimité + 103 Early Hints + Brotli + HTTP/3 + WAF basic + DDoS illimité + Web Analytics. Suffisant pour V1-V2 (< 50 K visites/mois).
 - **Aucun upgrade payant** envisagé en V1-V2. Cloudflare Pro ($20/mois) à reconsidérer Sprint 16 uniquement pour WAF Managed Rules. Argo Smart Routing ($5/mois + $0,10/GB) à reconsidérer si trafic international > 30 % en V2.
 
-**Default ferme** : Hetzner CX32 + Coolify + Caddy 2 + Next 16 standalone + Postgres + Redis containerisés + Cloudflare free. Toute alternative déclenche STOP & ASK.
+**Default ferme** : Hetzner CPX32 + Coolify + Caddy 2 + Next 16 standalone + Postgres + Redis containerisés + Cloudflare free. Toute alternative déclenche STOP & ASK.
 
 ---
 
@@ -211,7 +211,7 @@ L'agent **DOIT** :
 
 **Cible chiffrée à valider à la fin** :
 
-> _« Sur les 15 pages stratégiques, en environnement Hetzner CX32 + Caddy + Cloudflare prod simulé (Lighthouse `--preset=desktop` ET `mobile slow 4G`), nous obtenons 100/100/100/100 en moyenne sur 5 runs ; en field data CrUX p75 sur 28 jours, nous sommes vert sur LCP/INP/CLS pour 95 %+ des origines. »_
+> _« Sur les 15 pages stratégiques, en environnement Hetzner CPX32 + Caddy + Cloudflare prod simulé (Lighthouse `--preset=desktop` ET `mobile slow 4G`), nous obtenons 100/100/100/100 en moyenne sur 5 runs ; en field data CrUX p75 sur 28 jours, nous sommes vert sur LCP/INP/CLS pour 95 %+ des origines. »_
 
 ---
 

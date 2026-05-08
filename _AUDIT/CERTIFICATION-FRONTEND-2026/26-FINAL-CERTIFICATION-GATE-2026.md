@@ -24,7 +24,7 @@ Synthétiser les résultats des **25 audits précédents** + appliquer une check
 - [ ] CLS p75 ≤ 0,05
 - [ ] Bundle initial route home ≤ 70 KB gzip
 - [ ] Bundle initial route lourde (/reserver) ≤ 100 KB gzip
-- [ ] Build prod < 10 min sur Hetzner CX32
+- [ ] Build prod < 10 min sur Hetzner CPX32
 - [ ] Cache hit rate Cloudflare ≥ 90 %
 - [ ] HTTP/3 actif Caddy + Cloudflare (vérif `curl --http3`)
 - [ ] Brotli actif (vérif headers)
@@ -130,7 +130,7 @@ Synthétiser les résultats des **25 audits précédents** + appliquer une check
 - [ ] Anomaly detection actif
 - [ ] Rollback procédure documentée + testée
 - [ ] Pipeline 100-300 URLs/jour démontré end-to-end
-- [ ] Hetzner CX32 RAM/CPU/disk monitoring actif
+- [ ] Hetzner CPX32 RAM/CPU/disk monitoring actif
 - [ ] Postgres indexes optimaux + autovacuum tuné
 - [ ] Backup auto Coolify + restore drill testé
 - [ ] Page lifecycle (publish/depublish/archived) géré

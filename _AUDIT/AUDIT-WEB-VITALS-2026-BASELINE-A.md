@@ -16,7 +16,7 @@
 - Sentry **@sentry/nextjs 10.51.0** (SDK + Replay 1 % on-error, Tracing 10 % en prod)
 - Fonts : `next/font/google` self-hosted — Manrope (400, 600), Inconsolata (1 weight), Fraunces (400/500/600 + italic, axes opsz/SOFT)
 - Build : Turbopack (no `output: "standalone"` activé)
-- Hosting cible : Hetzner CX32 + Caddy 2 (à installer) + Cloudflare free (à configurer)
+- Hosting cible : Hetzner CPX32 + Caddy 2 (à installer) + Cloudflare free (à configurer)
 - Runtime : Node.js 22 (pas Vercel Edge)
 
 ### Configuration `next.config.ts` (état)
@@ -219,7 +219,7 @@ Rapports archivés : `_AUDIT/lighthouse-smoke-2026-05-08/{home-fr,reserver-fr,pa
 
 ### Cible recommandée Phase F (validation finale)
 
-Run Lighthouse complet (15 pages × FR+EN × desktop+mobile × 3 runs) sur **staging Hetzner CX32 + Caddy 2 + Cloudflare free** post-V1/V2/V3 patches. Résultats publiés dans `_AUDIT/AUDIT-WEB-VITALS-2026-VALIDATION-FINALE.md`.
+Run Lighthouse complet (15 pages × FR+EN × desktop+mobile × 3 runs) sur **staging Hetzner CPX32 + Caddy 2 + Cloudflare free** post-V1/V2/V3 patches. Résultats publiés dans `_AUDIT/AUDIT-WEB-VITALS-2026-VALIDATION-FINALE.md`.
 
 ---
 

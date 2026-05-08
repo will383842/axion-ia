@@ -4,7 +4,7 @@
 // - Dossier v10.1 docs/09 + 09b + 09c (specs champs)
 // - PLAN-AMENDMENTS-2026-05-08.md §M8 (ordre d'attaque)
 // - ADR 0008 (vocabulaire « intervention coaching »)
-// - ADR 0009 (hosting Hetzner CX32 + Cloudflare Free)
+// - ADR 0009 (hosting Hetzner CPX32 + Cloudflare Free)
 //
 // Stratégie multi-locale (§ADDENDUM v4) :
 // - Articles / CaseStudies / HelpArticles → tables de traduction séparées (contenu long)

@@ -3,7 +3,7 @@
 **Date** : 2026-05-08
 **Périmètre** : chapitres 5 (TTFB) + 10 (Streaming & PPR) + 13 (Caching) du prompt `_AUDIT/PROMPT-WEB-VITALS-PERFECTION-2026.md`.
 **Méthode** : lecture seule. 30 critères × 15 pages stratégiques = 450 cases scorées.
-**Stack cible** : Hetzner CX32 + Caddy 2 (à installer) + Cloudflare free (à configurer) + Next 16.2.4 self-hosted.
+**Stack cible** : Hetzner CPX32 + Caddy 2 (à installer) + Cloudflare free (à configurer) + Next 16.2.4 self-hosted.
 **Doc Next 16 lue** : `node_modules/next/dist/docs/01-app/02-guides/{self-hosting,ppr-platform-guide,cdn-caching,streaming}.md`.
 
 ---
@@ -19,7 +19,7 @@
 | 5.3  | 103 Early Hints via Caddy ou Cloudflare                                             |  **0 / 15** | Pas de Caddyfile ni config Cloudflare en place. Ressources critiques (woff2 Manrope, woff2 Fraunces, CSS hero) jamais pré-poussées. Gain LCP −100 à −400 ms perdu.                                                                                                                                                                                         |
 | 5.4  | ISR `revalidate` configuré là où pertinent                                          | **15 / 15** | Aucune ISR sur les 15 pages (toutes 100 % SSG) — c'est correct. Les feeds (`feed.xml`, `llms.txt`) ont un `Cache-Control: max-age=900-3600, swr=86400` cohérent côté Route Handler. **Conformité : pas de `revalidate` parasite.**                                                                                                                         |
 | 5.5  | `Cache-Control` granulaire HTML / assets                                            |  **0 / 15** | Aucun header cache custom dans `next.config.ts` pour HTML. Next 16 émet par défaut `s-maxage=31536000` sur SSG (cf. doc) — OK théorique mais sans Caddy/CF en aval, aucun edge cache n'en bénéficie. Sur `/_next/static/*`, Next pose `public,max-age=31536000,immutable` automatiquement (vérifié). Mais pas de Caddy → Hetzner sert tout depuis Node.js. |
-| 5.6  | Brotli côté Caddy ET Cloudflare, désactiver `compress: true` Next si proxy compress |  **0 / 15** | `compress: true` actif Next. Pas de Caddy. Cloudflare libre activera Brotli auto, mais double compression Next → Caddy → CF possible (gaspillage CPU CX32 ~5-8 %).                                                                                                                                                                                         |
+| 5.6  | Brotli côté Caddy ET Cloudflare, désactiver `compress: true` Next si proxy compress |  **0 / 15** | `compress: true` actif Next. Pas de Caddy. Cloudflare libre activera Brotli auto, mais double compression Next → Caddy → CF possible (gaspillage CPU CPX32 ~5-8 %).                                                                                                                                                                                        |
 | 5.7  | Pas de redirect chain                                                               | **15 / 15** | `next.config.ts` n'a aucun `async redirects()`. `proxy.ts` (next-intl middleware) gère la négociation locale uniquement (308 vers `/fr` ou `/en` à la racine — _un seul hop_, pas de chain).                                                                                                                                                               |
 | 5.8  | Hostname canonical unique                                                           | **15 / 15** | Métadonnées `metadataBase` posées. Cloudflare DNS fixera www → apex via redirect 301 (à vérifier Phase E). Aucun bascule mid-path détecté dans le code.                                                                                                                                                                                                    |
 | 5.9  | HTTP/3 (QUIC) activé                                                                |  **0 / 15** | Pas de Caddy, pas de Cloudflare → HTTP/3 inactif. Next start émet HTTP/1.1 nu. Gain handshake ~50-150 ms p75 perdu sur connexions mobiles.                                                                                                                                                                                                                 |
@@ -124,7 +124,7 @@ Pas de mesure runtime (pas de prod). Heuristique basée sur :
 **Contenu complet** :
 
 ```caddy
-# Caddyfile — Axion-IA prod Hetzner CX32
+# Caddyfile — Axion-IA prod Hetzner CPX32
 # Cible : axionia.eu + www.axionia.eu (apex + www)
 # Stack : Caddy 2 → Next.js standalone (localhost:3000)
 # Doc : https://caddyserver.com/docs/caddyfile
@@ -263,7 +263,7 @@ axionia.eu {
 # Dockerfile — Axion-IA Next 16 standalone
 # Build : docker build -t axionia:latest .
 # Run   : docker run -p 3000:3000 axionia:latest
-# Cible : Hetzner CX32 + Coolify
+# Cible : Hetzner CPX32 + Coolify
 
 # ──────────── Stage 1 : deps (cache pnpm) ────────────
 FROM node:22-alpine AS deps
@@ -283,7 +283,7 @@ RUN apk add --no-cache libc6-compat \
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Build SSG 4 562 pages (~5-12 min sur CX32)
+# Build SSG 4 562 pages (~5-12 min sur CPX32)
 RUN pnpm build
 
 # ──────────── Stage 3 : runner (production minimal) ────────────
@@ -1150,7 +1150,7 @@ Pas de diff — rédaction libre suivant template ADR existant.
 
 ### STOP & ASK #5 — `compress: true` Next vs Caddy `encode br`
 
-**Contexte** : P-302 propose `compress: process.env.NODE_ENV !== "production"`. Si Caddy en aval compresse, double-pass Next gzip puis Caddy Brotli = gaspillage CPU CX32 (~5-8 % charge inutile). Mais si Caddy tombe (debug, redémarrage), Next solo doit pouvoir compresser.
+**Contexte** : P-302 propose `compress: process.env.NODE_ENV !== "production"`. Si Caddy en aval compresse, double-pass Next gzip puis Caddy Brotli = gaspillage CPU CPX32 (~5-8 % charge inutile). Mais si Caddy tombe (debug, redémarrage), Next solo doit pouvoir compresser.
 
 **Décision requise** : éteindre `compress: true` en prod ou garder ceinture-bretelles ?
 
@@ -1162,7 +1162,7 @@ Pas de diff — rédaction libre suivant template ADR existant.
 
 **Recommandé** : **A** + monitoring (alerte si Caddy down) ou **B** si économie CPU non critique.
 
-**Impact si on attend** : non critique, ~5 % CPU CX32.
+**Impact si on attend** : non critique, ~5 % CPU CPX32.
 
 ---
 
@@ -1180,7 +1180,7 @@ Effort XS/S, gain ≥ 100 ms ou critère bloquant.
 
 ## 9. Roadmap Hetzner — checklist déploiement
 
-Ordre opérationnel à exécuter pour passer V0 (dev local) → V1 (prod Hetzner CX32).
+Ordre opérationnel à exécuter pour passer V0 (dev local) → V1 (prod Hetzner CPX32).
 
 ### Pré-requis code (cet audit)
 
@@ -1188,9 +1188,9 @@ Ordre opérationnel à exécuter pour passer V0 (dev local) → V1 (prod Hetzner
 - [ ] Commit + tests verts (`pnpm verify:all`)
 - [ ] `pnpm build` confirme `.next/standalone/` créé
 
-### Étape 1 — Provisionner Hetzner CX32
+### Étape 1 — Provisionner Hetzner CPX32
 
-- [ ] Hetzner Cloud Console → Create CX32 (4 vCPU x86 / 8 GB / 80 GB NVMe)
+- [ ] Hetzner Cloud Console → Create CPX32 (4 vCPU x86 / 8 GB / 80 GB NVMe)
 - [ ] Datacenter recommandé : **FSN1 (Falkenstein, DE)** — minimise latence CF Paris/Francfort
 - [ ] OS : Ubuntu 24.04 LTS
 - [ ] SSH key Will uploadée
@@ -1215,7 +1215,7 @@ Ordre opérationnel à exécuter pour passer V0 (dev local) → V1 (prod Hetzner
 ### Étape 4 — Cloudflare (P-309)
 
 - [ ] Add site `axionia.eu` plan Free
-- [ ] DNS A record → IP Hetzner CX32 (proxied 🟧 ON)
+- [ ] DNS A record → IP Hetzner CPX32 (proxied 🟧 ON)
 - [ ] Update nameservers OVH/registrar
 - [ ] Cache Rules (P-309 §2 — 6 règles)
 - [ ] Speed Settings (P-309 §3)
@@ -1227,7 +1227,7 @@ Ordre opérationnel à exécuter pour passer V0 (dev local) → V1 (prod Hetzner
 ### Étape 5 — Premier déploiement
 
 - [ ] Coolify → Deploy main branch
-- [ ] Build dans CX32 ~5-12 min (4 562 SSG)
+- [ ] Build dans CPX32 ~5-12 min (4 562 SSG)
 - [ ] Healthcheck `/api/healthz` UP
 - [ ] Caddy reverse_proxy UP
 - [ ] CF DNS propagé → `curl -I https://axionia.eu/`

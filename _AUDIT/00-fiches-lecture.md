@@ -372,12 +372,12 @@ Méthode : extraction `python-docx` → fiche 10 lignes par doc + détection des
 
 - Philosophie (perf SEO/AEO + souveraineté UE + coût ~0), 4 couches.
 - Cite explicitement « motion (Framer Motion light) 15kb », `@vercel/og` (lib npm MIT).
-- Coûts détaillés Hetzner CX32 7€ + Storage 4€ + IP 1€ + Backups 1,40€ = ~14,60€/mois.
+- Coûts détaillés Hetzner CPX32 7€ + Storage 4€ + IP 1€ + Backups 1,40€ = ~14,60€/mois.
 - **Cohérence** : excellente avec \_DECISIONS-FINALES et CLAUDE.md v5.
 
 ### 13-Infrastructure-v2.md
 
-- Domaine confirmé, Hetzner CX32 Frankfurt, DNS Cloudflare 14 records (mail. en DNS-only).
+- Domaine confirmé, Hetzner CPX32 Frankfurt, DNS Cloudflare 14 records (mail. en DNS-only).
 - SSL Let's Encrypt + Cloudflare Origin, HSTS preload, emails maison PowerMTA+MailWizz.
 - DKIM 2048 + SPF strict + DMARC + BIMI + reverse DNS PTR.
 - Warmup IP : 10/j → 2000+/j (S6+).

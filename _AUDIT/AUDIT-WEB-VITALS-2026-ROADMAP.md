@@ -16,7 +16,7 @@ quick wins ──────► lazy + INP + RUM ► Hetzner stack ────
 ~1 350/2 250       ~1 600/2 250      ~1 750/2 250         ~1 950/2 250      ~2 100/2 250        ~2 200/2 250
 
 Pré-requis OPS Will :
-                                     [Hetzner CX32          [ADR 0011 PPR    [Cloudflare DNS
+                                     [Hetzner CPX32          [ADR 0011 PPR    [Cloudflare DNS
                                       provisioning]          + 0012 Compiler]   active]
 ```
 
@@ -139,7 +139,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 **Cible** : ~1 600 → ~1 750 / 2 250 (+7 %)
 **Pré-requis** :
 
-- VPS Hetzner CX32 provisionné (€6,49/mois HT)
+- VPS Hetzner CPX32 provisionné (€6,49/mois HT)
 - Compte Cloudflare DNS basculé sur Hetzner
 - Coolify ou Docker Compose installés sur Hetzner
 
@@ -156,7 +156,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 
 ### Ops Will pour V3
 
-1. Provisionner CX32 Hetzner (Console Hetzner Cloud)
+1. Provisionner CPX32 Hetzner (Console Hetzner Cloud)
 2. Installer Coolify (one-click installer Hetzner ou docker-compose)
 3. Configurer DNS Cloudflare → IP Hetzner (proxy ON)
 4. Push image Docker via GitHub Actions ou registry interne

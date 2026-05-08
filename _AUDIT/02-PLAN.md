@@ -6,7 +6,7 @@
 >
 > **➜ Lire d'abord `_AUDIT/PLAN-AMENDMENTS-2026-05-08.md`** qui acte les corrections officielles section par section. Le fichier amendments est la source de vérité ; ce 02-PLAN reste figé.
 >
-> Sources canoniques actuelles : ADRs `docs/adr/0001-stack-initial.md` à `0009-hosting-hetzner-cx32-cloudflare-free.md`, `Design.md`, `CLAUDE.md`/`AGENTS.md`, `CHANGELOG.md`, `SESSION_LOG.md`.
+> Sources canoniques actuelles : ADRs `docs/adr/0001-stack-initial.md` à `0009-hosting-hetzner-cpx32-cloudflare-free.md`, `Design.md`, `CLAUDE.md`/`AGENTS.md`, `CHANGELOG.md`, `SESSION_LOG.md`.
 
 **Version 1 · 06/05/2026 · FR** _(figée — voir amendments 2026-05-08)_
 **Source de vérité originale (obsolète, voir amendments)** : `_DECISIONS-FINALES.md` + `CLAUDE.md` v6 + ADR `docs/adr/0001-design-direction-webflow.md` + skills `axionia-*`.
@@ -44,7 +44,7 @@ Initialiser le dépôt Next.js 15 App Router avec la stack arrêtée, le tooling
 
 - Node 22 LTS installé localement.
 - Docker Desktop ou Podman pour Postgres 16 + Redis 7 en local.
-- Compte Hetzner Cloud (CX32 commandé), domaine `axion-ia.com` confirmé.
+- Compte Hetzner Cloud (CPX32 commandé), domaine `axion-ia.com` confirmé.
 - Variables d'env documentées dans `_DECISIONS-FINALES.md` §12 (CLAUDE.md v6).
 
 ### Livrables
@@ -636,7 +636,7 @@ M9 terminé.
 
 ### Objectif
 
-Mise en production : provisionnement Hetzner CX32 Frankfurt + Storage Box BX11 + IP dédiée mail, Coolify self-hosted, déploiement Docker Compose (Next.js + Postgres 16 + Redis 7 + PowerMTA + MailWizz + Plausible + Sentry self-hosted + Uptime Kuma), Cloudflare proxy + WAF + DDoS + CDN, Let's Encrypt SSL, DNS configuré (A, AAAA, MX, SPF, DKIM 2048, DMARC, BIMI, IndexNow), warmup IP email progressif, sauvegardes Postgres quotidiennes chiffrées sur Storage Box, monitoring Sentry + Uptime Kuma + Pino.
+Mise en production : provisionnement Hetzner CPX32 Frankfurt + Storage Box BX11 + IP dédiée mail, Coolify self-hosted, déploiement Docker Compose (Next.js + Postgres 16 + Redis 7 + PowerMTA + MailWizz + Plausible + Sentry self-hosted + Uptime Kuma), Cloudflare proxy + WAF + DDoS + CDN, Let's Encrypt SSL, DNS configuré (A, AAAA, MX, SPF, DKIM 2048, DMARC, BIMI, IndexNow), warmup IP email progressif, sauvegardes Postgres quotidiennes chiffrées sur Storage Box, monitoring Sentry + Uptime Kuma + Pino.
 
 ### Prérequis
 
@@ -645,7 +645,7 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 ### Livrables
 
 1. **Provisionnement Hetzner** :
-   - VPS CX32 Frankfurt (4 vCPU, 8 GB RAM, 80 GB NVMe).
+   - VPS CPX32 Frankfurt (4 vCPU, 8 GB RAM, 80 GB NVMe).
    - Storage Box BX11 (1 TB) configuré S3-compatible.
    - IP dédiée mail (rDNS configuré sur `mail.axion-ia.com`).
    - Backups Hetzner natif activés (quotidien).
@@ -832,7 +832,7 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 
 ### D3 — VPS Hetzner provisionné
 
-**Question** : VPS Hetzner CX32 Frankfurt commandé ? Storage Box BX11 commandé ? IP dédiée mail commandée ? Domaine `axion-ia.com` acquis ?
+**Question** : VPS Hetzner CPX32 Frankfurt commandé ? Storage Box BX11 commandé ? IP dédiée mail commandée ? Domaine `axion-ia.com` acquis ?
 **Statut** : à confirmer par Will au démarrage M1.
 **Bloquant pour** : M11 (totalement). M1 peut démarrer avec Docker local.
 
