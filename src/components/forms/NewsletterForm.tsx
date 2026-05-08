@@ -3,8 +3,10 @@
 
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useLocale } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newsletterSchema, type NewsletterInput } from "@/lib/schemas/forms";
+import { subscribeNewsletterAction } from "@/features/newsletter/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +26,7 @@ interface NewsletterFormProps {
 }
 
 export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormProps) {
+  const locale = useLocale();
   const {
     register,
     handleSubmit,
@@ -37,15 +40,24 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
   const consent = watch("consent");
   const [serverError, setServerError] = React.useState<string | null>(null);
 
+  // E4 cert 2026-05-08 — wired to Sprint 15 `subscribeNewsletterAction`
+  // (rate-limit + Turnstile + double opt-in token via email queue).
   async function onSubmit(values: NewsletterInput) {
     setServerError(null);
     try {
-      await new Promise((r) => setTimeout(r, 400));
-      if (process.env.NODE_ENV !== "production") {
-        console.warn("[newsletter:submit:stub]", values);
+      const fd = new FormData();
+      fd.set("email", values.email);
+      fd.set("consent", values.consent ? "true" : "false");
+      fd.set("locale", locale);
+
+      const result = await subscribeNewsletterAction({ ok: false, error: "" }, fd);
+      if (!result.ok) {
+        setServerError(result.error || labels.failure);
+        throw new Error(result.error || labels.failure);
       }
-    } catch {
-      setServerError(labels.failure);
+    } catch (err) {
+      if (!serverError) setServerError(labels.failure);
+      throw err instanceof Error ? err : new Error(String(err));
     }
   }
 

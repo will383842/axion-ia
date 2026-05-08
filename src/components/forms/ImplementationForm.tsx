@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useLocale } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   implementationStep1Schema,
@@ -11,6 +12,7 @@ import {
   implementationStep4Schema,
   type ImplementationInput,
 } from "@/lib/schemas/forms";
+import { submitImplementationAction } from "@/features/implementation/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,6 +66,7 @@ interface ImplementationFormProps {
 }
 
 export function ImplementationForm({ initialType, labels }: ImplementationFormProps) {
+  const locale = useLocale();
   const [step, setStep] = React.useState(0);
   const [data, setData] = React.useState<Partial<ImplementationInput>>(
     initialType ? { type: initialType } : {},
@@ -96,11 +99,23 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
     if (step < SCHEMAS.length - 1) {
       setStep((s) => s + 1);
     } else {
+      // E4 cert 2026-05-08 — wired to Sprint 15 `submitImplementationAction`.
       setServerError(null);
       try {
-        await new Promise((r) => setTimeout(r, 600));
-        if (process.env.NODE_ENV !== "production") {
-          console.warn("[implementation:submit:stub]", next);
+        const fd = new FormData();
+        const v = next as Partial<ImplementationInput>;
+        if (v.type) fd.set("type", v.type);
+        if (v.budget) fd.set("budget", v.budget);
+        if (v.description) fd.set("description", v.description);
+        if (v.contact) fd.set("contact", v.contact);
+        if (v.email) fd.set("email", v.email);
+        fd.set("consent", v.consent ? "true" : "false");
+        fd.set("locale", locale);
+
+        const result = await submitImplementationAction({ ok: false, error: "" }, fd);
+        if (!result.ok) {
+          setServerError(result.error || labels.failure);
+          return;
         }
         setDone(true);
       } catch {

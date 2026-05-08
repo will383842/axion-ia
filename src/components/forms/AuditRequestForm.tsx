@@ -34,6 +34,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { submitAuditRequestAction } from "@/features/audit/actions";
 import { cn } from "@/lib/utils";
 
 type AuditTypeKey = "flash" | "process" | "strategique-pme" | "strategique-eti";
@@ -280,34 +281,37 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
   }).success;
   const canStep6 = auditRequestStep6Schema.safeParse({ consent }).success;
 
+  // E4 cert 2026-05-08 — wired to Sprint 15 `submitAuditRequestAction`.
   async function handleSubmit() {
     setServerError(null);
     setSubmittingState("submitting");
     try {
-      await new Promise((r) => setTimeout(r, 600));
-      const payload = {
-        auditType,
-        size,
-        industry,
-        companyName: companyName || undefined,
-        modality,
-        city,
-        country,
-        scope,
-        scopeDetail,
-        maturity,
-        goals,
-        tools: tools.length > 0 ? tools : undefined,
-        toolsOther: toolsOther || undefined,
-        contact,
-        email,
-        phone: phone || undefined,
-        role: role || undefined,
-        consent,
-      };
+      const fd = new FormData();
+      if (auditType) fd.set("auditType", auditType);
+      if (size) fd.set("size", size);
+      if (industry) fd.set("industry", industry);
+      if (companyName) fd.set("companyName", companyName);
+      if (modality) fd.set("modality", modality);
+      if (city) fd.set("city", city);
+      if (country) fd.set("country", country);
+      if (scope) fd.set("scope", scope);
+      if (scopeDetail) fd.set("scopeDetail", scopeDetail);
+      if (maturity) fd.set("maturity", maturity);
+      if (goals) fd.set("goals", goals);
+      for (const t of tools) fd.append("tools", t);
+      if (toolsOther) fd.set("toolsOther", toolsOther);
+      if (contact) fd.set("contact", contact);
+      if (email) fd.set("email", email);
+      if (phone) fd.set("phone", phone);
+      if (role) fd.set("role", role);
+      fd.set("consent", consent ? "true" : "false");
+      fd.set("locale", locale);
 
-      if (process.env.NODE_ENV !== "production") {
-        console.warn("[audit-request:submit:stub]", payload);
+      const result = await submitAuditRequestAction({ ok: false, error: "" }, fd);
+      if (!result.ok) {
+        setServerError(result.error || labels.failure);
+        setSubmittingState("idle");
+        return;
       }
       setSubmittingState("success");
     } catch {

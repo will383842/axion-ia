@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useLocale } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   auditStep1Schema,
@@ -13,6 +14,7 @@ import {
   auditStep5Schema,
   type AuditInput,
 } from "@/lib/schemas/forms";
+import { submitAuditAction } from "@/features/audit/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -58,6 +60,7 @@ const SCHEMAS = [
 ] as const;
 
 export function AuditForm({ labels }: AuditFormProps) {
+  const locale = useLocale();
   const [step, setStep] = React.useState(0);
   const [data, setData] = React.useState<Partial5<AuditInput>>({});
   const [serverError, setServerError] = React.useState<string | null>(null);
@@ -89,13 +92,26 @@ export function AuditForm({ labels }: AuditFormProps) {
     if (step < SCHEMAS.length - 1) {
       setStep((s) => s + 1);
     } else {
-      // Final submit
+      // E4 cert 2026-05-08 — wired to Sprint 15 `submitAuditAction`.
       setServerError(null);
       try {
-        await new Promise((r) => setTimeout(r, 600));
+        const fd = new FormData();
+        const finalValues = next as Partial<AuditInput>;
+        if (finalValues.size) fd.set("size", finalValues.size);
+        if (finalValues.modality) fd.set("modality", finalValues.modality);
+        if (finalValues.industry) fd.set("industry", finalValues.industry);
+        if (finalValues.goals) fd.set("goals", finalValues.goals);
+        if (finalValues.contact) fd.set("contact", finalValues.contact);
+        if (finalValues.email) fd.set("email", finalValues.email);
+        if (finalValues.phone) fd.set("phone", finalValues.phone);
+        if (finalValues.companyName) fd.set("companyName", finalValues.companyName);
+        fd.set("consent", finalValues.consent ? "true" : "false");
+        fd.set("locale", locale);
 
-        if (process.env.NODE_ENV !== "production") {
-          console.warn("[audit:submit:stub]", next);
+        const result = await submitAuditAction({ ok: false, error: "" }, fd);
+        if (!result.ok) {
+          setServerError(result.error || labels.failure);
+          return;
         }
         setDone(true);
       } catch {

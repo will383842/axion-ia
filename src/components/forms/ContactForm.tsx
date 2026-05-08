@@ -3,8 +3,10 @@
 
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useLocale } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactInput } from "@/lib/schemas/forms";
+import { submitContactAction } from "@/features/contact/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +29,7 @@ interface ContactFormProps {
 }
 
 export function ContactForm({ labels }: ContactFormProps) {
+  const locale = useLocale();
   const {
     register,
     handleSubmit,
@@ -41,17 +44,31 @@ export function ContactForm({ labels }: ContactFormProps) {
 
   const [serverError, setServerError] = React.useState<string | null>(null);
 
+  // E4 cert 2026-05-08 — wired to Sprint 15 server action `submitContactAction`
+  // (rate-limit + Turnstile + Telegram + email queue). Patch CRITIQUE : avant
+  // ce patch, form en stub `setTimeout(600)` → 0 lead persisté en prod V1.
   async function onSubmit(values: ContactInput) {
     setServerError(null);
     try {
-      // Sprint 17 wires the server action; for now we log and pretend.
-      await new Promise((r) => setTimeout(r, 600));
+      const fd = new FormData();
+      fd.set("name", values.name);
+      fd.set("email", values.email);
+      if (values.company) fd.set("company", values.company);
+      fd.set("message", values.message);
+      fd.set("consent", values.consent ? "true" : "false");
+      fd.set("locale", locale);
+      // Note Sprint 16 : Turnstile widget integration to inject
+      // `cf-turnstile-response`. Until then, server action returns
+      // « Captcha échoué » when TURNSTILE_SECRET_KEY is set in prod.
 
-      if (process.env.NODE_ENV !== "production") {
-        console.warn("[contact:submit:stub]", values);
+      const result = await submitContactAction({ ok: false, error: "" }, fd);
+      if (!result.ok) {
+        setServerError(result.error || labels.failure);
+        throw new Error(result.error || labels.failure);
       }
-    } catch {
-      setServerError(labels.failure);
+    } catch (err) {
+      if (!serverError) setServerError(labels.failure);
+      throw err instanceof Error ? err : new Error(String(err));
     }
   }
 
