@@ -14,12 +14,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 
 import { REGIONS, getIndexableRegions, getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles, VILLES } from "@/content/villes";
-import {
-  buildProductMetadata,
-  buildBreadcrumbJsonLd,
-  buildItemListJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -33,8 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/implantations",
     title: isFr
-      ? "Implantations · Cabinet IA opérationnel partout en France · AxionIA"
-      : "Locations · Operational AI consultancy across France · AxionIA",
+      ? "Implantations · Cabinet IA opérationnel partout en France"
+      : "Locations · Operational AI consultancy across France",
     description: isFr
       ? "AxionIA intervient sur site dans 12 régions et plus de 2 150 communes françaises. Trouvez votre métropole, vos villes proches et votre cabinet IA opérationnel local."
       : "AxionIA operates on site across 12 regions and 2,150+ French communes. Find your metropolitan area, nearby cities and your local operational AI consultancy.",
@@ -70,19 +65,12 @@ export default async function ImplantationsHub({ params }: Props) {
     })),
   });
 
-  // BreadcrumbList JSON-LD — délégué à la factory pour cohérence du site.
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Implantations" : "Locations", href: "/implantations" },
-    ],
-  });
+  // BreadcrumbList JSON-LD : émis automatiquement par <Breadcrumbs items={…} />
+  // (cf. src/components/nav/Breadcrumbs.tsx) — pas de double émission ici.
 
   return (
     <>
       <JsonLd data={regionsItemList} />
-      <JsonLd data={breadcrumbJsonLd} />
 
       {/* Hero — Section h1 (auto halo-warm + décoration) */}
       <Section

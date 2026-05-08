@@ -16,7 +16,6 @@ import { REGIONS, getRegion } from "@/content/regions";
 import { getVillesByRegion } from "@/content/villes";
 import {
   buildProductMetadata,
-  buildBreadcrumbJsonLd,
   buildItemListJsonLd,
   buildLocalBusinessJsonLd,
   buildPlaceJsonLd,
@@ -41,8 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `/implantations/${region.slug}`,
     title: isFr
-      ? `${region.nameFr} · Cabinet IA opérationnel · AxionIA`
-      : `${region.nameFr} · Operational AI consultancy · AxionIA`,
+      ? `${region.nameFr} · Cabinet IA opérationnel`
+      : `${region.nameFr} · Operational AI consultancy`,
     description: isFr ? region.pitchFr : region.pitchEn,
     alternates: {
       fr: `/implantations/${region.slug}`,
@@ -75,17 +74,7 @@ export default async function RegionPage({ params }: Props) {
     { href: `/implantations/${region.slug}`, label: region.nameFr },
   ];
 
-  // ---- JSON-LD stack (4 schemas) ----
-  // BreadcrumbList — délégué factory.
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Implantations" : "Locations", href: "/implantations" },
-      { name: region.nameFr, href: `/implantations/${region.slug}` },
-    ],
-  });
-
+  // ---- JSON-LD stack (3 schemas + BreadcrumbList auto via <Breadcrumbs>) ----
   // LocalBusiness — areaServed = AdministrativeArea régionale.
   const localBusinessJsonLd = buildLocalBusinessJsonLd({
     locale: loc,
@@ -125,7 +114,6 @@ export default async function RegionPage({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={localBusinessJsonLd} />
       <JsonLd data={placeJsonLd} />
       <JsonLd data={villesItemList} />

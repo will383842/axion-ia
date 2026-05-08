@@ -28,7 +28,6 @@ import { VILLES, getVille, type Ville } from "@/content/villes";
 import { getNearbyVilles, getNearbyCases, getRelatedBlogPosts } from "@/lib/geo";
 import {
   buildProductMetadata,
-  buildBreadcrumbJsonLd,
   buildItemListJsonLd,
   buildLocalBusinessJsonLd,
   buildPlaceJsonLd,
@@ -56,11 +55,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = isPilot
     ? isFr
-      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Cabinet IA opérationnel · AxionIA`
-      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Operational AI consultancy · AxionIA`
+      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Cabinet IA opérationnel`
+      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Operational AI consultancy`
     : isFr
-      ? `${ville.nameFr} · AxionIA intervient ici (${region.nameFr})`
-      : `${ville.nameFr} · AxionIA covers this area (${region.nameFr})`;
+      ? `${ville.nameFr} · Intervention IA opérationnelle (${region.nameFr})`
+      : `${ville.nameFr} · Operational AI engagement (${region.nameFr})`;
 
   const description = isPilot
     ? isFr
@@ -128,17 +127,7 @@ export default async function VillePage({ params }: Props) {
   const nearbyCases = getNearbyCases(ville.geo, 50, 3);
   const relatedPosts = getRelatedBlogPosts(ville, 3);
 
-  // ---- JSON-LD stack (5 schemas empilés) ----
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? "Implantations" : "Locations", href: "/implantations" },
-      { name: region.nameFr, href: `/implantations/${region.slug}` },
-      { name: ville.nameFr, href: `/implantations/${region.slug}/${ville.slug}` },
-    ],
-  });
-
+  // ---- JSON-LD stack (4 schemas + BreadcrumbList auto via <Breadcrumbs>) ----
   const localBusinessJsonLd = buildLocalBusinessJsonLd({
     locale: loc,
     path: `/implantations/${region.slug}/${ville.slug}`,
@@ -199,7 +188,6 @@ export default async function VillePage({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={localBusinessJsonLd} />
       <JsonLd data={placeJsonLd} />
       {faqSpeakableJsonLd ? <JsonLd data={faqSpeakableJsonLd} /> : null}
