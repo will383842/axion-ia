@@ -1078,3 +1078,11 @@
   font-family: var(--font-inconsolata, monospace);
   font-size: 12px;
 }
+
+/* M9 T3.2 — Settings JSON cell display */
+.admin-json-cell {
+  max-width: 320px;
+  max-height: 100px;
+  overflow: auto;
+  margin: 0;
+}
