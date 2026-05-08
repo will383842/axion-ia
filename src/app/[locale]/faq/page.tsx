@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { ArrowRight, ArrowUpRight, HelpCircle, Mic, RefreshCw, Rss } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { ArrowUpRight } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FaqHeroSchema } from "@/components/sections/FaqHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -62,18 +63,120 @@ export default async function FaqPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        tone="halo-warm"
-        titleAs="h1"
-        eyebrow="FAQ"
-        title={isFr ? "Questions" : "Frequently asked"}
-        titleEm={isFr ? "fréquentes" : "questions"}
-        description={
-          isFr
-            ? "Tout savoir sur les interventions, l'audit, l'implémentation, la souveraineté des données et la facturation."
-            : "Everything about sessions, audit, implementation, data sovereignty and billing."
-        }
-      />
+
+      {/* HERO 2-col custom — texte à gauche, FaqHeroSchema 3 thématiques à droite */}
+      <section className="bg-halo-warm text-fg relative py-20 sm:py-24 lg:py-28">
+        <Container className="relative">
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            <div className="max-w-xl">
+              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                FAQ
+              </p>
+              <h1 className="display-editorial text-fg mt-5">
+                {isFr ? "Questions " : "Frequently asked "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "fréquentes" : "questions"}
+                </span>
+              </h1>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+                {isFr
+                  ? "Tout savoir sur les interventions, l'audit, l'implémentation, la souveraineté des données et la facturation. Réponses courtes, sourcées, citables par les LLMs."
+                  : "Everything about sessions, audit, implementation, data sovereignty and billing. Short, sourced, LLM-citable answers."}
+              </p>
+              {/* Pills réassurance */}
+              <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
+                {[
+                  {
+                    icon: HelpCircle,
+                    label: isFr ? `${items.length} questions` : `${items.length} questions`,
+                  },
+                  { icon: Mic, label: isFr ? "AEO speakable" : "AEO speakable" },
+                  { icon: Rss, label: "RSS feed" },
+                  { icon: RefreshCw, label: isFr ? "MAJ trimestrielle" : "Quarterly updates" },
+                ].map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              {/* CTAs hero */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Cta href="#index" size="lg">
+                  {isFr ? "Toutes les questions" : "All questions"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta href={`/${locale}/faq/feed.xml`} variant="outline" size="lg">
+                  {isFr ? "S'abonner RSS" : "Subscribe RSS"}
+                </Cta>
+              </div>
+            </div>
+            <FaqHeroSchema
+              isFr={isFr}
+              totalCount={items.length}
+              className="hero-schema"
+              ariaLabel={
+                isFr
+                  ? `Schéma : ${items.length} questions AxionIA réparties en 3 thématiques — interventions/implémentation, audit IA, souveraineté/facturation.`
+                  : `Diagram: ${items.length} AxionIA questions across 3 topics — sessions/implementation, AI audit, sovereignty/billing.`
+              }
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* Most viewed — top 5 questions populaires */}
+      <Section eyebrow={isFr ? "Plus consultées" : "Most viewed"} tone="paper">
+        <Container className="max-w-3xl">
+          <ul className="grid gap-3">
+            {items.slice(0, 5).map((item, idx) => (
+              <li key={`pop-${item.id}`}>
+                <a
+                  href={`/${locale}/faq/${item.id}`}
+                  className="border-border bg-paper hover:border-terracotta/60 group flex items-start gap-4 rounded-xl border p-4 transition"
+                >
+                  <span
+                    className="text-terracotta text-2xl leading-none font-medium tabular-nums"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                    aria-hidden="true"
+                  >
+                    0{idx + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-fg group-hover:text-terracotta-deep text-base leading-snug font-medium transition">
+                      {item.question}
+                    </p>
+                    <p className="text-fg-soft mt-1 line-clamp-2 text-sm leading-snug">
+                      {item.answer.slice(0, 140)}…
+                    </p>
+                  </div>
+                  <ArrowUpRight
+                    className="text-fg-muted group-hover:text-terracotta mt-1 h-4 w-4 shrink-0 transition"
+                    aria-hidden="true"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
 
       <FaqBlock
         items={items}
@@ -83,6 +186,7 @@ export default async function FaqPage({ params }: Props) {
       />
 
       <Section
+        id="index"
         eyebrow={isFr ? "Index" : "Index"}
         title={isFr ? "Toutes les questions" : "All questions"}
         tone="paper"
