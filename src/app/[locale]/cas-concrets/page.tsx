@@ -2,17 +2,28 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import {
+  ArrowRight,
+  FileText,
+  Building2,
+  BarChart3,
+  ShieldCheck,
+  Users,
+  Wallet,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { CaseStudiesHeroSchema } from "@/components/sections/CaseStudiesHeroSchema";
 import { Illustration } from "@/components/visual/Illustration";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -76,6 +87,24 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
     { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
   ];
 
+  // ItemList JSON-LD — expose tous les cas concrets au crawler depuis l'index
+  // (AEO/GEO 2026 : LLMs résolvent « cas clients AxionIA » avec liens directs).
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/cas-concrets",
+    name: isFr ? "Cas concrets AxionIA" : "AxionIA case studies",
+    items: CASE_STUDIES.map((c, idx) => {
+      const copy = c[loc];
+      const desc = copy.excerpt;
+      return {
+        position: idx + 1,
+        name: copy.title,
+        url: `https://axion-ia.com/${loc}/cas-concrets/${c.slug}`,
+        ...(desc ? { description: desc.slice(0, 200) } : {}),
+      };
+    }),
+  });
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -109,6 +138,51 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
                   ? "Industrie, juridique, retail, banque, artisanat. Toutes les tailles, toutes les régions, tous les budgets — résultats chiffrés et témoignages anonymisés."
                   : "Industry, legal, retail, banking, trades. All sizes, all regions, all budgets — numerical results and anonymised testimonials."}
               </p>
+              {/* Pills réassurance */}
+              <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
+                {[
+                  {
+                    icon: FileText,
+                    label: `${CASE_STUDIES.length} ${isFr ? "cas concrets" : "case studies"}`,
+                  },
+                  {
+                    icon: Building2,
+                    label: isFr
+                      ? `${allIndustries.length} secteurs`
+                      : `${allIndustries.length} industries`,
+                  },
+                  { icon: BarChart3, label: isFr ? "Métriques chiffrées" : "Quantified metrics" },
+                  {
+                    icon: ShieldCheck,
+                    label: isFr ? "Témoignages anonymisés" : "Anonymised testimonials",
+                  },
+                ].map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              {/* CTAs hero */}
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Cta href="#cas" size="lg">
+                  {isFr ? "Parcourir les cas" : "Browse cases"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta href="/audit" variant="outline" size="lg">
+                  {isFr ? "Demander un audit" : "Request an audit"}
+                </Cta>
+              </div>
             </div>
 
             {/* Colonne droite — stack de 3 mini-cards exemples */}
@@ -125,7 +199,65 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         </Container>
       </section>
 
-      <Section eyebrow={isFr ? "Filtres" : "Filters"}>
+      {/* Pillar copy — posture cas concrets */}
+      <Section eyebrow={isFr ? "Posture" : "Stance"} tone="paper">
+        <Container className="max-w-3xl">
+          <p className="text-fg-soft text-lg leading-relaxed">
+            {isFr
+              ? "Chaque cas publié ici représente une mission AxionIA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, grand compte juridique — parce que la méthode AxionIA s'applique à toutes les tailles, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par l'Essentielle 490 € pour vérifier."
+              : "Each case study here represents an AxionIA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, mid-sized industrial SME, large legal account — because the AxionIA method scales to all sizes, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the Essential €490 to validate."}
+          </p>
+        </Container>
+      </Section>
+
+      {/* Section anti-fear — "Choisir son cas" 3 critères */}
+      <Section eyebrow={isFr ? "Choisir son cas" : "Pick your case"} tone="sand">
+        <Container>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="text-terracotta h-5 w-5" aria-hidden="true" />
+                  {isFr ? "Par taille" : "By size"}
+                </CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "TPE, PME, ETI, grand compte. Chacune a sa logique : volume, gouvernance, vélocité décision."
+                    : "Small, SME, mid-cap, large account. Each has its logic: volume, governance, decision velocity."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="text-terracotta h-5 w-5" aria-hidden="true" />
+                  {isFr ? "Par secteur" : "By industry"}
+                </CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Industrie, juridique, retail, banque, artisanat. La pression IA n'est pas la même partout."
+                    : "Industry, legal, retail, banking, trades. AI pressure isn't the same everywhere."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Wallet className="text-terracotta h-5 w-5" aria-hidden="true" />
+                  {isFr ? "Par budget" : "By budget"}
+                </CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "L'Essentielle 490 €, audits 3-15 k€, implémentations 5-50 k€. ROI documenté à chaque palier."
+                    : "Essential €490, audits €3-15k, implementations €5-50k. Documented ROI at every tier."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="cas" eyebrow={isFr ? "Filtres" : "Filters"}>
         <Container className="space-y-4">
           <div>
             <p className="text-fg mb-2 text-xs font-semibold tracking-wide uppercase">
@@ -267,6 +399,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         }
         tone="dark"
       />
+
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }
