@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { HelpCircle, Clock, RefreshCw, ShieldCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -11,6 +12,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getFaqEntry, getAllFaqIds, FAQ_GLOBAL } from "@/content/transversal";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { splitTitleEm } from "@/lib/title";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -78,12 +80,50 @@ export default async function FaqEntryPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        titleAs="h1"
-        eyebrow="FAQ"
-        title={copy.question}
-        description={isFr ? "Réponse directe AxionIA." : "Direct AxionIA answer."}
-      />
+      {(() => {
+        const t = splitTitleEm(copy.question);
+        const wordCount = copy.answer.trim().split(/\s+/).length;
+        const readMin = Math.max(1, Math.ceil(wordCount / 200));
+        return (
+          <Section
+            titleAs="h1"
+            eyebrow="FAQ"
+            title={t.lead}
+            titleEm={t.em}
+            description={
+              isFr
+                ? "Réponse directe AxionIA — courte, sourcée, mise à jour régulièrement."
+                : "Direct AxionIA answer — short, sourced, regularly updated."
+            }
+          >
+            <Container className="mt-8 max-w-2xl">
+              <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+                {[
+                  { icon: HelpCircle, label: isFr ? "Question fréquente" : "Frequent question" },
+                  { icon: Clock, label: isFr ? `Lecture ${readMin} min` : `${readMin} min read` },
+                  { icon: RefreshCw, label: isFr ? "MAJ trimestrielle" : "Quarterly updates" },
+                  { icon: ShieldCheck, label: isFr ? "Source : doctrine" : "Source: doctrine" },
+                ].map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Container>
+          </Section>
+        );
+      })()}
 
       <Section>
         <Container className="max-w-3xl">

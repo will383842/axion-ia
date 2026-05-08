@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { Building2, BarChart3, ShieldCheck, Calendar } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -13,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/lib/seo";
+import { splitTitleEm } from "@/lib/title";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -84,17 +86,48 @@ export default async function CaseStudyPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      <Section
-        titleAs="h1"
-        eyebrow={isFr ? "Cas concret" : "Case study"}
-        title={copy.title}
-        description={copy.excerpt}
-      >
-        <Container className="flex flex-wrap gap-2">
-          <Badge variant="neutral">{isFr ? cs.industry : cs.industryEn}</Badge>
-          <Badge variant="success">{cs.metric}</Badge>
-        </Container>
-      </Section>
+      {(() => {
+        const t = splitTitleEm(copy.title);
+        return (
+          <Section
+            titleAs="h1"
+            eyebrow={isFr ? "Cas concret" : "Case study"}
+            title={t.lead}
+            titleEm={t.em}
+            description={copy.excerpt}
+          >
+            <Container className="mt-8 max-w-3xl">
+              <div className="mb-5 flex flex-wrap gap-2">
+                <Badge variant="neutral">{isFr ? cs.industry : cs.industryEn}</Badge>
+                <Badge variant="success">{cs.metric}</Badge>
+              </div>
+              <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+                {[
+                  { icon: Building2, label: isFr ? cs.industry : cs.industryEn },
+                  { icon: BarChart3, label: cs.metric },
+                  { icon: ShieldCheck, label: isFr ? "Données anonymisées" : "Anonymised data" },
+                  { icon: Calendar, label: isFr ? "Mission 2024-2026" : "2024-2026 engagement" },
+                ].map((pill) => {
+                  const Icon = pill.icon;
+                  return (
+                    <li
+                      key={pill.label}
+                      className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className="text-terracotta h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      <span>{pill.label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Container>
+          </Section>
+        );
+      })()}
 
       <Section eyebrow={isFr ? "Contexte" : "Context"}>
         <Container className="text-fg max-w-3xl text-lg leading-relaxed">{copy.context}</Container>

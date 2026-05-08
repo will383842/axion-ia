@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import { Scale, Wallet, ShieldCheck, Zap } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -72,26 +74,109 @@ export default async function ComparisonPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {vsMatch ? (
-        <Section
-          titleAs="h1"
-          eyebrow={isFr ? "Comparaison" : "Comparison"}
-          title={vsMatch[1]}
-          titleEm="vs"
-          titleTail={` ${vsMatch[2]}`}
-          description={copy.excerpt}
-        />
-      ) : (
-        <Section
-          titleAs="h1"
-          eyebrow={isFr ? "Comparaison" : "Comparison"}
-          title={copy.title}
-          description={copy.excerpt}
-        />
-      )}
-      <Section>
-        <Container className="max-w-3xl">
-          <p className="text-fg-soft text-base leading-relaxed">{copy.body}</p>
+      {(() => {
+        // Pills réassurance comparaison — 4 critères de décision standard.
+        const pills = [
+          { icon: Scale, label: isFr ? "Comparaison neutre" : "Neutral comparison" },
+          { icon: Wallet, label: isFr ? "Critères ROI" : "ROI criteria" },
+          { icon: ShieldCheck, label: isFr ? "RGPD · UE" : "GDPR · EU" },
+          { icon: Zap, label: isFr ? "Quand choisir quoi" : "When to choose what" },
+        ];
+        const heroChildren = (
+          <Container className="mt-8 max-w-2xl">
+            <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+              {pills.map((pill) => {
+                const Icon = pill.icon;
+                return (
+                  <li
+                    key={pill.label}
+                    className="text-fg-soft inline-flex items-center gap-2 text-sm"
+                  >
+                    <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
+                    <span>{pill.label}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </Container>
+        );
+        return vsMatch ? (
+          <Section
+            titleAs="h1"
+            eyebrow={isFr ? "Comparaison" : "Comparison"}
+            title={vsMatch[1]}
+            titleEm="vs"
+            titleTail={` ${vsMatch[2]}`}
+            description={copy.excerpt}
+          >
+            {heroChildren}
+          </Section>
+        ) : (
+          <Section
+            titleAs="h1"
+            eyebrow={isFr ? "Comparaison" : "Comparison"}
+            title={copy.title}
+            description={copy.excerpt}
+          >
+            {heroChildren}
+          </Section>
+        );
+      })()}
+
+      {(() => {
+        // Body multi-paragraphes : split par phrase pour densité éditoriale
+        // (audit V14 D4). Si copy.body n'a qu'1 phrase, fallback en 1 `<p>`.
+        const paragraphs = copy.body
+          .trim()
+          .split(/(?<=\.)\s+(?=[A-ZÀÉÈÔÎ])/)
+          .filter(Boolean);
+        return (
+          <Section>
+            <Container className="text-fg max-w-3xl space-y-5 text-base leading-relaxed">
+              {paragraphs.map((p, i) => (
+                <p key={`p-${i}`} className="text-fg-soft">
+                  {p}
+                </p>
+              ))}
+            </Container>
+          </Section>
+        );
+      })()}
+
+      <Section eyebrow={isFr ? "Quand choisir quoi" : "When to choose what"} tone="sand">
+        <Container>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>{isFr ? "Volume de données" : "Data volume"}</CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Plus le volume métier est important, plus l'option spécialisée prend le dessus sur le générique."
+                    : "The larger the domain dataset, the more the specialised option overtakes the generic."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>{isFr ? "Sensibilité données" : "Data sensitivity"}</CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Données sensibles ou stratégiques → préférer l'option avec hébergement UE et gouvernance maîtrisée."
+                    : "Sensitive or strategic data → prefer the option with EU hosting and controlled governance."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>{isFr ? "Vélocité décision" : "Decision velocity"}</CardTitle>
+                <CardDescription>
+                  {isFr
+                    ? "Time-to-value < 3 mois → privilégier l'option packagée. Roadmap > 6 mois → l'option custom devient pertinente."
+                    : "Time-to-value < 3 months → prefer the packaged option. Roadmap > 6 months → custom becomes relevant."}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
         </Container>
       </Section>
       <CtaBlock
