@@ -1,7 +1,24 @@
 {
   "ci": {
     "collect": {
-      "url": ["http://localhost:3000/"],
+      "url": [
+        "http://localhost:3000/fr",
+        "http://localhost:3000/en",
+        "http://localhost:3000/fr/interventions",
+        "http://localhost:3000/en/interventions",
+        "http://localhost:3000/fr/interventions/essentielle",
+        "http://localhost:3000/en/interventions/essential",
+        "http://localhost:3000/fr/audit",
+        "http://localhost:3000/en/audit",
+        "http://localhost:3000/fr/implementation",
+        "http://localhost:3000/en/implementation",
+        "http://localhost:3000/fr/cas-concrets",
+        "http://localhost:3000/en/case-studies",
+        "http://localhost:3000/fr/blog",
+        "http://localhost:3000/en/blog",
+        "http://localhost:3000/fr/contact",
+        "http://localhost:3000/en/contact"
+      ],
       "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready",
       "numberOfRuns": 3,
@@ -14,10 +31,12 @@
         "categories:accessibility": ["error", { "minScore": 0.95 }],
         "categories:best-practices": ["error", { "minScore": 0.95 }],
         "categories:seo": ["error", { "minScore": 1 }],
-        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
-        "interaction-to-next-paint": ["error", { "maxNumericValue": 200 }],
-        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
-        "total-blocking-time": ["error", { "maxNumericValue": 200 }]
+        "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+        "interaction-to-next-paint": ["error", { "maxNumericValue": 80 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 150 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
+        "speed-index": ["error", { "maxNumericValue": 2500 }]
       }
     },
     "upload": {

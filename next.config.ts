@@ -6,17 +6,47 @@ import createNextIntlPlugin from "next-intl/plugin";
 // call `getMessages()` / `getTranslations()` without explicit context.
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
-// Headers de sécurité (CSP nonce dynamique arrive Sprint 16).
+// Headers de sécurité OWASP — Sprint 21 (M10) durcissement final.
+// CSP : permissif pour Next.js 16 (next/script inline avec nonce, next/image,
+// styled-jsx). En prod, Caddyfile peut overrider avec une CSP plus stricte.
+//
+// Note Sprint 21 : `unsafe-inline` sur style-src tolere par next/font + Tailwind
+// JIT (necessaire). Pour CSP strict-dynamic avec nonce dynamique → Sprint 24+
+// (refactor app/[locale]/layout.tsx pour propager nonce headers via
+// `import { headers } from 'next/headers'`).
+const cspProduction = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://plausible.axion-ia.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org",
+  "frame-src 'self' https://challenges.cloudflare.com",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value:
+      "camera=(), microphone=(), geolocation=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), payment=(), usb=()",
   },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
   { key: "X-DNS-Prefetch-Control", value: "on" },
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+  // CSP active uniquement en production (en dev, next/dev injecte des scripts
+  // hot-reload qui violent la CSP — overhead pour zero benefice securitaire).
+  ...(process.env.NODE_ENV === "production"
+    ? [{ key: "Content-Security-Policy", value: cspProduction }]
+    : []),
 ];
 
 // P-310 — Vary header pour CDN (Cloudflare). Permet aux POPs de servir la
