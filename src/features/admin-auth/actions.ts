@@ -6,21 +6,16 @@
 
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import * as argon2 from "argon2";
 import { signIn, signOut, auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generate2FASecret, verify2FACode } from "@/lib/auth-2fa";
+import { verifyPasswordSafe } from "@/lib/auth-password";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/client-ip";
 import { signInSchema, setup2FASchema, disable2FASchema } from "@/lib/schemas/auth";
 
 const ADMIN_PREFIX = `/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}`;
-
-async function getClientIp(): Promise<string> {
-  const h = await headers();
-  return h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "unknown";
-}
 
 // ============================================================
 // signInAction — login email + password + (optionnel) TOTP
@@ -30,8 +25,9 @@ export type SignInState = { ok: true } | { ok: false; error: string; requires2FA
 
 export async function signInAction(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const ip = await getClientIp();
-  const rl = await checkRateLimit(`auth:login:${ip}`, { limit: 5, windowSec: 900 });
-  if (!rl.allowed) {
+  // Rate-limit composite IP+email (Sprint 15 fix Fork 3 W1-3)
+  const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, { limit: 10, windowSec: 900 });
+  if (!rlIp.allowed) {
     return { ok: false, error: "Trop de tentatives. Réessayez dans 15 minutes." };
   }
 
@@ -43,17 +39,23 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
   if (!parsed.success) {
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
+  const rlEmail = await checkRateLimit(`auth:login:email:${parsed.data.email}`, {
+    limit: 5,
+    windowSec: 900,
+  });
+  if (!rlEmail.allowed) {
+    return { ok: false, error: "Trop de tentatives. Réessayez dans 15 minutes." };
+  }
 
-  // Pre-check pour distinguer "2FA manquant" de "credentials invalides"
+  // Pre-check pour distinguer "2FA manquant" de "credentials invalides".
+  // Sprint 15 fix Fork 3 W8-3 : verifyPasswordSafe avec dummy hash si user
+  // absent → timing constant, oracle email closed.
   const user = await prisma.adminUser.findUnique({
     where: { email: parsed.data.email },
     select: { passwordHash: true, twoFactorEnabled: true, status: true, role: true },
   });
-  if (!user || user.status !== "active") {
-    return { ok: false, error: "Email ou mot de passe invalide." };
-  }
-  const passwordOk = await argon2.verify(user.passwordHash, parsed.data.password);
-  if (!passwordOk) {
+  const passwordOk = await verifyPasswordSafe(user?.passwordHash, parsed.data.password);
+  if (!user || user.status !== "active" || !passwordOk) {
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
 
@@ -73,6 +75,16 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
       redirect: false,
     });
   } catch {
+    // Sprint 15 fix Fork 3 W3-3 : log explicite reason invalid_2fa cote action
+    // (en plus du log dans Auth.js Credentials provider).
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: null,
+        action: "auth.login.failed",
+        ipAddress: ip,
+        changes: { reason: "invalid_2fa_or_locked", email: parsed.data.email },
+      },
+    });
     return { ok: false, error: "Code 2FA invalide ou compte verrouille." };
   }
 
@@ -100,20 +112,31 @@ export async function setup2FAStartAction(): Promise<Setup2FAStartState> {
   const session = await auth();
   if (!session?.user?.id) return { ok: false, error: "Session expirée." };
 
-  const user = await prisma.adminUser.findUnique({
-    where: { id: session.user.id },
-    select: { email: true, twoFactorEnabled: true },
-  });
-  if (!user) return { ok: false, error: "Utilisateur introuvable." };
-  if (user.twoFactorEnabled) return { ok: false, error: "2FA déjà activée." };
+  // Sprint 15 fix Fork 3 W6-3 : tx atomique + log activity pour tracer
+  // les races (2 tabs simultanes generent secret en parallele).
+  const result = await prisma.$transaction(async (tx) => {
+    const user = await tx.adminUser.findUnique({
+      where: { id: session.user.id },
+      select: { email: true, twoFactorEnabled: true },
+    });
+    if (!user) return { ok: false as const, error: "Utilisateur introuvable." };
+    if (user.twoFactorEnabled) return { ok: false as const, error: "2FA déjà activée." };
 
-  const { secret, otpauthUrl } = generate2FASecret(user.email);
-  // Stocke le secret en draft (twoFactorEnabled reste false jusqu'a verification)
-  await prisma.adminUser.update({
-    where: { id: session.user.id },
-    data: { twoFactorSecret: secret },
+    const { secret, otpauthUrl } = generate2FASecret(user.email);
+    await tx.adminUser.update({
+      where: { id: session.user.id },
+      data: { twoFactorSecret: secret },
+    });
+    await tx.activityLog.create({
+      data: {
+        adminUserId: session.user.id,
+        action: "auth.2fa.setup_started",
+        ipAddress: await getClientIp(),
+      },
+    });
+    return { ok: true as const, secret, otpauthUrl };
   });
-  return { ok: true, secret, otpauthUrl };
+  return result;
 }
 
 // ============================================================
@@ -143,17 +166,21 @@ export async function setup2FAConfirmAction(
     return { ok: false, error: "Code 2FA incorrect." };
   }
 
-  await prisma.adminUser.update({
-    where: { id: session.user.id },
-    data: { twoFactorEnabled: true, twoFactorVerified: true },
-  });
-  await prisma.activityLog.create({
-    data: {
-      adminUserId: session.user.id,
-      action: "auth.2fa.enabled",
-      ipAddress: await getClientIp(),
-    },
-  });
+  // Sprint 15 fix Fork 3 W5-3 : atomique update + activity log dans une tx
+  const ip = await getClientIp();
+  await prisma.$transaction([
+    prisma.adminUser.update({
+      where: { id: session.user.id },
+      data: { twoFactorEnabled: true, twoFactorVerified: true },
+    }),
+    prisma.activityLog.create({
+      data: {
+        adminUserId: session.user.id,
+        action: "auth.2fa.enabled",
+        ipAddress: ip,
+      },
+    }),
+  ]);
 
   return { ok: true };
 }
@@ -187,28 +214,33 @@ export async function disable2FAAction(
     return { ok: false, error: "2FA obligatoire pour ce rôle." };
   }
 
-  const passwordOk = await argon2.verify(user.passwordHash, parsed.data.password);
+  const passwordOk = await verifyPasswordSafe(user.passwordHash, parsed.data.password);
   if (!passwordOk) return { ok: false, error: "Mot de passe incorrect." };
 
   if (!verify2FACode(parsed.data.code, user.twoFactorSecret)) {
     return { ok: false, error: "Code 2FA incorrect." };
   }
 
-  await prisma.adminUser.update({
-    where: { id: session.user.id },
-    data: {
-      twoFactorEnabled: false,
-      twoFactorVerified: false,
-      twoFactorSecret: null,
-    },
-  });
-  await prisma.activityLog.create({
-    data: {
-      adminUserId: session.user.id,
-      action: "auth.2fa.disabled",
-      ipAddress: await getClientIp(),
-    },
-  });
+  // Sprint 15 fix Fork 3 W5-3 : update + log atomic — avant: 2 statements
+  // separes, crash entre = 2FA disabled sans audit trace.
+  const ip = await getClientIp();
+  await prisma.$transaction([
+    prisma.adminUser.update({
+      where: { id: session.user.id },
+      data: {
+        twoFactorEnabled: false,
+        twoFactorVerified: false,
+        twoFactorSecret: null,
+      },
+    }),
+    prisma.activityLog.create({
+      data: {
+        adminUserId: session.user.id,
+        action: "auth.2fa.disabled",
+        ipAddress: ip,
+      },
+    }),
+  ]);
 
   return { ok: true };
 }

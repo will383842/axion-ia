@@ -21,8 +21,20 @@
 import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 
+// Sprint 15 fix Fork 3 W7-3 : protection injection CRLF dans From header.
+// SMTP_FROM_NAME peut etre alimente via env compromise → strip caracteres
+// dangereux (CR, LF, double-quote, less/greater-than).
+function sanitizeFromName(raw: string): string {
+  return (
+    raw
+      .replace(/[\r\n"<>]/g, "")
+      .trim()
+      .slice(0, 80) || "Axion-IA"
+  );
+}
+
 const FROM_ADDRESS = process.env.SMTP_FROM_ADDRESS ?? "noreply@axion-ia.com";
-const FROM_NAME = process.env.SMTP_FROM_NAME ?? "Axion-IA";
+const FROM_NAME = sanitizeFromName(process.env.SMTP_FROM_NAME ?? "Axion-IA");
 const FROM_MARKETING = process.env.SMTP_FROM_MARKETING ?? "news@axion-ia.com";
 
 let _transport: Transporter | null = null;

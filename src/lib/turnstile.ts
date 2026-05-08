@@ -21,8 +21,12 @@ export async function verifyTurnstile(
   remoteIp?: string,
 ): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
+  // Sprint 15 fix Fork 3 C2-3 : fail-closed des que prod OU staging.
+  // Avant : `NODE_ENV !== "production"` laissait passer staging vulnerable.
+  // Maintenant : seul `NEXT_PUBLIC_APP_ENV=development` autorise le bypass.
   if (!secret) {
-    if (process.env.NODE_ENV !== "production") return true;
+    const appEnv = process.env.NEXT_PUBLIC_APP_ENV ?? "development";
+    if (appEnv === "development") return true;
     return false;
   }
   if (!token) return false;

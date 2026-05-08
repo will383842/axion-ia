@@ -12,10 +12,10 @@
 
 import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import * as argon2 from "argon2";
 import { authConfig } from "./auth.config";
 import { prisma } from "./lib/prisma";
 import { verify2FACode } from "./lib/auth-2fa";
+import { verifyPasswordSafe } from "./lib/auth-password";
 import { checkRateLimit } from "./lib/rate-limit";
 import { signInSchema } from "./lib/schemas/auth";
 import type { AdminRole } from "../prisma/generated/client";
@@ -55,25 +55,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const { email, password, totp } = parsed.data;
         const ip = typeof raw?.ipAddress === "string" ? raw.ipAddress : "unknown";
 
-        // 2. Rate limit IP-based
-        const rl = await checkRateLimit(`auth:login:${ip}`, { limit: 5, windowSec: 900 });
-        if (!rl.allowed) return null;
+        // 2. Rate limit composite IP + email (Sprint 15 fix Fork 3 W1-3).
+        // Avant : IP-only → users NAT/CGNAT bloques par voisin malicieux.
+        // Maintenant : double-bucket — l'attaquant doit saturer BOTH IP + email.
+        const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, {
+          limit: 10,
+          windowSec: 900,
+        });
+        if (!rlIp.allowed) return null;
+        const rlEmail = await checkRateLimit(`auth:login:email:${email}`, {
+          limit: 5,
+          windowSec: 900,
+        });
+        if (!rlEmail.allowed) return null;
 
         // 3. Lookup user
         const user = await prisma.adminUser.findUnique({ where: { email } });
-        if (!user || user.status !== "active") return null;
 
-        // 4. Verify password
-        const passwordOk = await argon2.verify(user.passwordHash, password);
-        if (!passwordOk) {
-          await prisma.activityLog.create({
-            data: {
-              adminUserId: user.id,
-              action: "auth.login.failed",
-              ipAddress: ip,
-              changes: { reason: "invalid_password" },
-            },
-          });
+        // 4. Verify password timing-safe (Sprint 15 fix Fork 3 W8-3).
+        // Si user n'existe pas, on verifie quand meme contre un dummy hash
+        // pour egaliser le timing → empeche oracle email valide vs invalide.
+        const passwordOk = await verifyPasswordSafe(user?.passwordHash, password);
+        if (!user || user.status !== "active" || !passwordOk) {
+          if (user) {
+            await prisma.activityLog.create({
+              data: {
+                adminUserId: user.id,
+                action: "auth.login.failed",
+                ipAddress: ip,
+                changes: { reason: "invalid_password" },
+              },
+            });
+          }
           return null;
         }
 

@@ -8,7 +8,27 @@ export const env = createEnv({
     DIRECT_URL: z.string().url().optional(),
     REDIS_URL: z.string().url().optional(),
 
-    AUTH_SECRET: z.string().min(32).optional(),
+    // Sprint 15 fix Fork 3 C3-3 : superRefine en prod (min 32, refuse dev_*).
+    AUTH_SECRET: z
+      .string()
+      .min(32)
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "AUTH_SECRET is required in production",
+          });
+          return;
+        }
+        if (val.startsWith("dev_") || val.startsWith("dev-")) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "AUTH_SECRET must not start with 'dev_' in production",
+          });
+        }
+      }),
     AUTH_URL: z.string().url().optional(),
 
     ADMIN_URL_PREFIX: z.string().min(4).optional(),
