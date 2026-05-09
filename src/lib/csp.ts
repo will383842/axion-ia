@@ -56,10 +56,21 @@ export interface BuildCspOptions {
  * Construit la chaîne CSP. En mode strict, l'inline-without-nonce est bloqué.
  * En mode soft, l'inline reste autorisé (SSG public preserved).
  *
- * `strict-dynamic` est inclus dans les deux modes : sur les browsers qui le
- * supportent (Chrome 52+, Firefox 52+, Safari 15.4+) il invalide les host
- * whitelists pour script-src, ce qui durcit déjà significativement par
- * rapport à un host-only fallback.
+ * Mode strict (admin) : nonce + strict-dynamic, pas d'unsafe-inline / unsafe-eval.
+ *
+ * Mode soft (SSG public) : `unsafe-inline` + `unsafe-eval` SEULS, **sans nonce
+ * ni strict-dynamic**. Cause : selon CSP3 (et tous les browsers modernes),
+ * dès qu'un `nonce-*` ou hash apparaît dans script-src, `unsafe-inline` est
+ * IGNORÉ. Idem pour `strict-dynamic` qui désactive les host allowlists ET
+ * bypass `unsafe-inline`. Combiner les deux régimes dans la même directive
+ * = tout l'inline non-noncé est bloqué → hydration Next.js cassée → pages
+ * "vides" en prod (bug observé 2026-05-09 sur axion-ia.com).
+ *
+ * Tradeoff assumé : la SSG publique reste sur CSP relaxed (acceptable pour
+ * un site marketing public sans auth ; ADR pas de PII saisi sur ces routes).
+ * L'admin garde la CSP nonce+strict-dynamic, qui est le vrai périmètre
+ * sensible. Migration globale vers strict-dynamic = Sprint 16 PERF (cf.
+ * commentaire en tête de fichier).
  */
 export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
   const scriptSrc = strict
@@ -76,8 +87,6 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
         "'self'",
         "'unsafe-inline'",
         "'unsafe-eval'",
-        `'nonce-${nonce}'`,
-        "'strict-dynamic'",
         "https://challenges.cloudflare.com",
         "https://plausible.axion-ia.com",
       ].join(" ");
