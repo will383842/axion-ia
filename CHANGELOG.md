@@ -6,6 +6,10 @@ Format inspiré de [Keep a Changelog 1.1](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Fixed
+
+- Stabilisation prod 2026-05-09 : CSP soft mode (drop nonce+strict-dynamic, commit `b31d0c8`), pivot sitemap → sitemap-index (commit `6b7c669`), correction REDIS_URL (typo `7O` → `70`), purge buildkit cache 51 GB (cause OOM build), purge cache Cloudflare. Site stable, healthcheck `redis: ok`.
+
 ### Added
 
 - DOC-SYNC V14 (2026-05-07) : matrice diff code ↔ docs + 5 sorties JSON (`_AUDIT/sync-*.json`) + `_AUDIT/sync-snapshot.md` + 9+ docs synchronisées. Cf. `_AUDIT/DOC-SYNC-REPORT-V14.md`.
