@@ -40,13 +40,15 @@ export default auth((req) => {
   if (response) {
     const strict = isStrictCspPath(req.nextUrl.pathname);
     response.headers.set("Content-Security-Policy", buildCspHeader({ nonce, strict }));
-    // COEP require-corp : isolation cross-origin pour fenetres/iframes.
-    // Compat Plausible : le script tiers doit servir
-    // `Cross-Origin-Resource-Policy: cross-origin` pour passer le filtre.
-    // Plausible self-hosted le fait par defaut. Si bug observe en staging,
-    // bascule en `credentialless` (laisse le browser charger sans CORP mais
-    // sans cookies).
-    response.headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+    // COEP credentialless : isolation cross-origin sans exiger CORP sur chaque
+    // ressource externe. Ressources cross-origin chargees sans cookies/creds.
+    // Bascule depuis `require-corp` 2026-05-09 — ce dernier bloquait Plausible,
+    // Turnstile, fonts Google et assets CDN qui n'envoient pas explicitement
+    // Cross-Origin-Resource-Policy. Consequence observee prod : hydration JS
+    // partielle → composants Motion restent figes a opacity:0 → site "vide".
+    // `credentialless` garde l'isolation (SharedArrayBuffer, COOP cross-origin)
+    // sans casser le chargement des assets externes.
+    response.headers.set("Cross-Origin-Embedder-Policy", "credentialless");
     // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
     response.headers.set("x-nonce", nonce);
   }
