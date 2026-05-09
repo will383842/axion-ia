@@ -607,6 +607,46 @@
   font-weight: 600;
   margin: 8px 0 0;
 }
+.admin-status-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.admin-status-ok {
+  color: var(--color-success);
+}
+.admin-status-degraded,
+.admin-status-down {
+  color: var(--color-warning);
+}
+.admin-status-down {
+  color: var(--color-error);
+}
+.admin-status-not-configured,
+.admin-status-unknown {
+  color: var(--color-fg-muted);
+}
+.admin-infra-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+.admin-infra-card:hover {
+  border-color: var(--color-fg);
+}
+.admin-infra-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
 .admin-2fa-secret-card {
   padding: 20px;
   margin-bottom: 24px;
