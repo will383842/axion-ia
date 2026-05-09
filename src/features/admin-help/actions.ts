@@ -114,12 +114,27 @@ const slugSchema = z
   .max(255)
   .regex(/^[a-z0-9-]+$/);
 
+// Sprint 24 / C4 : Tiptap fournit 3 sources (HTML rendu / JSON canon / text plain).
+const tiptapJsonString = z
+  .string()
+  .optional()
+  .transform((v) => {
+    if (!v) return null;
+    try {
+      return JSON.parse(v) as unknown;
+    } catch {
+      return null;
+    }
+  });
+
 const translationSchema = z.object({
   locale: z.enum(["fr", "en"]),
   title: z.string().min(3).max(255),
   slug: slugSchema,
   excerpt: z.string().max(500).optional(),
   body: z.string().min(10),
+  bodyJson: tiptapJsonString,
+  bodyText: z.string().optional(),
   metaTitle: z.string().max(70).optional(),
   metaDescription: z.string().max(160).optional(),
 });
@@ -159,7 +174,9 @@ export async function upsertHelpArticleAction(
       title: formData.get("fr_title"),
       slug: formData.get("fr_slug"),
       excerpt: formData.get("fr_excerpt") || undefined,
-      body: formData.get("fr_body"),
+      body: formData.get("fr_body_html"),
+      bodyJson: formData.get("fr_body_json") || undefined,
+      bodyText: formData.get("fr_body_text") || undefined,
       metaTitle: formData.get("fr_metaTitle") || undefined,
       metaDescription: formData.get("fr_metaDescription") || undefined,
     },
@@ -168,7 +185,9 @@ export async function upsertHelpArticleAction(
       title: formData.get("en_title"),
       slug: formData.get("en_slug"),
       excerpt: formData.get("en_excerpt") || undefined,
-      body: formData.get("en_body"),
+      body: formData.get("en_body_html"),
+      bodyJson: formData.get("en_body_json") || undefined,
+      bodyText: formData.get("en_body_text") || undefined,
       metaTitle: formData.get("en_metaTitle") || undefined,
       metaDescription: formData.get("en_metaDescription") || undefined,
     },
@@ -200,6 +219,8 @@ export async function upsertHelpArticleAction(
             slug: tr.slug,
             excerpt: tr.excerpt ?? null,
             body: tr.body,
+            ...(tr.bodyJson !== null ? { bodyJson: tr.bodyJson as object } : {}),
+            bodyText: tr.bodyText ?? null,
             metaTitle: tr.metaTitle ?? null,
             metaDescription: tr.metaDescription ?? null,
           },
@@ -208,6 +229,8 @@ export async function upsertHelpArticleAction(
             slug: tr.slug,
             excerpt: tr.excerpt ?? null,
             body: tr.body,
+            ...(tr.bodyJson !== null ? { bodyJson: tr.bodyJson as object } : {}),
+            bodyText: tr.bodyText ?? null,
             metaTitle: tr.metaTitle ?? null,
             metaDescription: tr.metaDescription ?? null,
           },

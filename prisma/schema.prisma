@@ -319,6 +319,10 @@ model ArticleTranslation {
   slug            String   @db.VarChar(255)
   excerpt         String?  @db.Text
   body            String   @db.Text
+  // Sprint 24 / C4 — sources canoniques Tiptap pour reuse cote consumer (search,
+  // RSS, AMP, AI summarisation). HTML reste source rendu, JSON/text derives.
+  bodyJson        Json?    @map("body_json")
+  bodyText        String?  @map("body_text") @db.Text
   metaTitle       String?  @map("meta_title")       @db.VarChar(70)
   metaDescription String?  @map("meta_description") @db.VarChar(160)
   ogImage         String?  @map("og_image") @db.VarChar(512)
@@ -450,6 +454,11 @@ model CaseStudyTranslation {
   slug            String    @db.VarChar(255)
   problem         String    @db.Text
   solution        String    @db.Text
+  // Sprint 24 / C4 — sources canoniques Tiptap (problem + solution).
+  problemJson     Json?     @map("problem_json")
+  problemText     String?   @map("problem_text") @db.Text
+  solutionJson    Json?     @map("solution_json")
+  solutionText    String?   @map("solution_text") @db.Text
   metaTitle       String?   @map("meta_title")       @db.VarChar(70)
   metaDescription String?   @map("meta_description") @db.VarChar(160)
   createdAt       DateTime  @default(now()) @map("created_at")
@@ -516,6 +525,9 @@ model HelpArticleTranslation {
   slug            String      @db.VarChar(255)
   excerpt         String?     @db.Text
   body            String      @db.Text
+  // Sprint 24 / C4 — sources canoniques Tiptap (HTML rendu / JSON canon / text plain).
+  bodyJson        Json?       @map("body_json")
+  bodyText        String?     @map("body_text") @db.Text
   metaTitle       String?     @map("meta_title")       @db.VarChar(70)
   metaDescription String?     @map("meta_description") @db.VarChar(160)
   createdAt       DateTime    @default(now()) @map("created_at")

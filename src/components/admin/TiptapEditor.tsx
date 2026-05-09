@@ -1,12 +1,20 @@
 "use client";
-// use-client: useEditor hook Tiptap + state pour bind html avec hidden input form.
+// use-client: useEditor hook Tiptap + state pour bind html/json/text avec hidden inputs form.
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
 
 interface Props {
-  /** name de l'input hidden — sera lu cote Server Action via formData.get(name). */
+  /**
+   * Prefix des inputs hidden. Sprint 24 / C4 : 3 sources canoniques sont
+   * exposees au form au lieu d'un seul HTML :
+   *   - `${name}_html` : HTML rendu (source rendu cote consumer).
+   *   - `${name}_json` : JSON Tiptap (reuse RSS/AMP/AI, edit precis cote admin).
+   *   - `${name}_text` : texte plain (search FTS, OG description fallback).
+   * Les Server Actions doivent lire `${name}_html` pour le rendu et
+   * persister _json + _text en sus.
+   */
   name: string;
   /** HTML initial (pour edit). */
   initialHtml?: string;
@@ -18,19 +26,25 @@ interface Props {
  * Editor Tiptap minimal V1 (StarterKit = bold/italic/h1-h6/lists/blockquote/
  * code/hr/strike/underline natifs). M9 v2 : ajouter Image + Link + Table.
  *
- * Pattern form integration : on bind editor.getHTML() a un input hidden
- * portant `name` — quand le form submit, le HTML est envoye au server.
+ * Pattern form integration : on bind 3 inputs hidden au lieu d'un seul.
+ * Voir Props.name pour la convention de nommage.
  *
  * SSR-safe : Tiptap v3 avec immediatelyRender:false ne touche pas au DOM
  * jusqu'au commit phase, evite mismatch hydration sans `mounted` state.
  */
 export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
   const [html, setHtml] = useState(initialHtml);
+  const [json, setJson] = useState<string>("");
+  const [text, setText] = useState<string>("");
   const editor = useEditor({
     extensions: [StarterKit],
     content: initialHtml,
     immediatelyRender: false, // SSR-safe per Tiptap v3 docs
-    onUpdate: ({ editor: e }) => setHtml(e.getHTML()),
+    onUpdate: ({ editor: e }) => {
+      setHtml(e.getHTML());
+      setJson(JSON.stringify(e.getJSON()));
+      setText(e.getText());
+    },
     editorProps: {
       attributes: {
         class: "tiptap-content",
@@ -41,7 +55,9 @@ export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
 
   return (
     <div className="tiptap-wrapper">
-      <input type="hidden" name={name} value={html} />
+      <input type="hidden" name={`${name}_html`} value={html} />
+      <input type="hidden" name={`${name}_json`} value={json} />
+      <input type="hidden" name={`${name}_text`} value={text} />
       {editor && (
         <div className="tiptap-toolbar">
           <button

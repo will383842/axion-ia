@@ -121,12 +121,30 @@ const slugSchema = z
   .max(255)
   .regex(/^[a-z0-9-]+$/);
 
+// Sprint 24 / C4 : Tiptap fournit 3 sources (HTML rendu / JSON canon / text plain)
+// pour problem ET solution.
+const tiptapJsonString = z
+  .string()
+  .optional()
+  .transform((v) => {
+    if (!v) return null;
+    try {
+      return JSON.parse(v) as unknown;
+    } catch {
+      return null;
+    }
+  });
+
 const translationSchema = z.object({
   locale: z.enum(["fr", "en"]),
   title: z.string().min(3).max(255),
   slug: slugSchema,
   problem: z.string().min(20),
+  problemJson: tiptapJsonString,
+  problemText: z.string().optional(),
   solution: z.string().min(20),
+  solutionJson: tiptapJsonString,
+  solutionText: z.string().optional(),
   metaTitle: z.string().max(70).optional(),
   metaDescription: z.string().max(160).optional(),
 });
@@ -199,8 +217,12 @@ export async function upsertCaseStudyAction(
       locale: "fr",
       title: formData.get("fr_title"),
       slug: formData.get("fr_slug"),
-      problem: formData.get("fr_problem"),
-      solution: formData.get("fr_solution"),
+      problem: formData.get("fr_problem_html"),
+      problemJson: formData.get("fr_problem_json") || undefined,
+      problemText: formData.get("fr_problem_text") || undefined,
+      solution: formData.get("fr_solution_html"),
+      solutionJson: formData.get("fr_solution_json") || undefined,
+      solutionText: formData.get("fr_solution_text") || undefined,
       metaTitle: formData.get("fr_metaTitle") || undefined,
       metaDescription: formData.get("fr_metaDescription") || undefined,
     },
@@ -208,8 +230,12 @@ export async function upsertCaseStudyAction(
       locale: "en",
       title: formData.get("en_title"),
       slug: formData.get("en_slug"),
-      problem: formData.get("en_problem"),
-      solution: formData.get("en_solution"),
+      problem: formData.get("en_problem_html"),
+      problemJson: formData.get("en_problem_json") || undefined,
+      problemText: formData.get("en_problem_text") || undefined,
+      solution: formData.get("en_solution_html"),
+      solutionJson: formData.get("en_solution_json") || undefined,
+      solutionText: formData.get("en_solution_text") || undefined,
       metaTitle: formData.get("en_metaTitle") || undefined,
       metaDescription: formData.get("en_metaDescription") || undefined,
     },
@@ -246,7 +272,11 @@ export async function upsertCaseStudyAction(
             title: tr.title,
             slug: tr.slug,
             problem: tr.problem,
+            ...(tr.problemJson !== null ? { problemJson: tr.problemJson as object } : {}),
+            problemText: tr.problemText ?? null,
             solution: tr.solution,
+            ...(tr.solutionJson !== null ? { solutionJson: tr.solutionJson as object } : {}),
+            solutionText: tr.solutionText ?? null,
             metaTitle: tr.metaTitle ?? null,
             metaDescription: tr.metaDescription ?? null,
           },
@@ -254,7 +284,11 @@ export async function upsertCaseStudyAction(
             title: tr.title,
             slug: tr.slug,
             problem: tr.problem,
+            ...(tr.problemJson !== null ? { problemJson: tr.problemJson as object } : {}),
+            problemText: tr.problemText ?? null,
             solution: tr.solution,
+            ...(tr.solutionJson !== null ? { solutionJson: tr.solutionJson as object } : {}),
+            solutionText: tr.solutionText ?? null,
             metaTitle: tr.metaTitle ?? null,
             metaDescription: tr.metaDescription ?? null,
           },
