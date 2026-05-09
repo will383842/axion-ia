@@ -65,7 +65,13 @@ export default function robots(): MetadataRoute.Robots {
         disallow: "/",
       })),
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    // /sitemap-index.xml = root sitemap-index listing all sub-sitemaps emitted
+    // via `generateSitemaps()` in `app/sitemap.ts`. Next 16 reserves /sitemap.xml
+    // for the metadata convention itself (which only generates `/sitemap/<id>.xml`
+    // sub-sitemaps, no auto-index), so the index is exposed at /sitemap-index.xml
+    // via `app/sitemap-index.xml/route.ts`. Googlebot follows this directive
+    // and discovers the ~17 500 SSG routes through the indexed sub-sitemaps.
+    sitemap: `${SITE_URL}/sitemap-index.xml`,
     host: SITE_URL,
   };
 }
