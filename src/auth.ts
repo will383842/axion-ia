@@ -18,7 +18,31 @@ import { verify2FACode } from "./lib/auth-2fa";
 import { verifyPasswordSafe } from "./lib/auth-password";
 import { checkRateLimit } from "./lib/rate-limit";
 import { signInSchema } from "./lib/schemas/auth";
-import type { AdminRole } from "../prisma/generated/client";
+import type { AdminRole, AdminStatus } from "../prisma/generated/client";
+
+// Sprint 24 / B3 — cache 60s pour le check status admin dans le JWT callback.
+// Sans cache, chaque requête authentifiée déclenche un round-trip DB ; 60s
+// suffit (revocation < 60s satisfait la cible audit P1 « revocation < 24h »).
+// Map module-level — survit aux requêtes Node runtime, naturellement bornée
+// par cold-start frequency.
+const STATUS_CACHE_TTL_MS = 60_000;
+const statusCache = new Map<string, { status: AdminStatus; ts: number }>();
+
+async function getCachedAdminStatus(adminUserId: string): Promise<AdminStatus | null> {
+  const now = Date.now();
+  const cached = statusCache.get(adminUserId);
+  if (cached && now - cached.ts < STATUS_CACHE_TTL_MS) return cached.status;
+  const row = await prisma.adminUser.findUnique({
+    where: { id: adminUserId },
+    select: { status: true },
+  });
+  if (!row) {
+    statusCache.delete(adminUserId);
+    return null;
+  }
+  statusCache.set(adminUserId, { status: row.status, ts: now });
+  return row.status;
+}
 
 declare module "next-auth" {
   interface Session {
@@ -36,6 +60,28 @@ const ROLES_REQUIRING_2FA: ReadonlySet<AdminRole> = new Set(["super_admin", "adm
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  callbacks: {
+    ...authConfig.callbacks,
+    /**
+     * Sprint 24 / B3 — enrich + revoke check.
+     *
+     * 1. Au signIn, copie id+role+status (comme l'Edge callback).
+     * 2. À chaque refresh JWT, recheck `adminUser.status` via un cache 60s :
+     *    si le compte est `suspended` ou supprimé, on retourne `null` →
+     *    Auth.js détruit le JWT et le user est forcé à se reconnecter.
+     */
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = (user as { role?: string }).role;
+      }
+      const adminUserId = typeof token.id === "string" ? token.id : null;
+      if (!adminUserId) return token;
+      const status = await getCachedAdminStatus(adminUserId);
+      if (status !== "active") return null;
+      return token;
+    },
+  },
   providers: [
     Credentials({
       credentials: {
