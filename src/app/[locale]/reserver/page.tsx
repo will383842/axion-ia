@@ -11,14 +11,92 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTION_TIERS, formatPrice, getTierById } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
+import { prisma } from "@/lib/prisma";
+import { enumToSlug } from "@/lib/intervention-type";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
-// Fixtures-only — Sprint 17 connectera Prisma `calendar_bookings`.
-// Distribution dense (social proof) avec ville/pays/secteur/taille publics
-// (anonymisé : pas de nom d'entreprise). Inclut sam/dim depuis 2026-05-07.
+// P0-3 fix — bookings réels depuis Prisma. Anonymisés (jamais le nom de la
+// société publique côté visiteur) : on expose la ville (depuis Submission)
+// + le secteur + une fourchette de taille déduite de participantsCount.
+// Limité aux 4 interventions affichées dans le calendrier (essentielle /
+// approfondie / conference / dirigeants). `gagner-du-temps` /
+// `intervention-claude` ne s'affichent pas (pas de slot calendrier dédié).
+async function loadDbBookedSlots(): Promise<BookedSlot[]> {
+  if (!process.env["DATABASE_URL"]) return [];
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const horizon = new Date(today);
+    horizon.setDate(horizon.getDate() + 90);
+
+    const bookings = await prisma.booking.findMany({
+      where: {
+        bookingDate: { gte: today, lte: horizon },
+        status: { not: "cancelled" },
+      },
+      select: {
+        bookingDate: true,
+        interventionType: true,
+        participantsCount: true,
+        submission: {
+          select: {
+            sector: true,
+            address: true,
+            employeesCount: true,
+            details: true,
+          },
+        },
+      },
+      orderBy: { bookingDate: "asc" },
+      take: 250,
+    });
+
+    const VISIBLE = new Set(["essentielle", "approfondie", "conference", "dirigeants"]);
+    const out: BookedSlot[] = [];
+    for (const b of bookings) {
+      const slug = enumToSlug(b.interventionType);
+      if (!VISIBLE.has(slug)) continue;
+      const iso = b.bookingDate.toISOString().slice(0, 10);
+      const det = b.submission?.details as Record<string, unknown> | null | undefined;
+      const cityFromDetails =
+        det && typeof det["companyCity"] === "string" ? (det["companyCity"] as string) : null;
+      const city = cityFromDetails ?? b.submission?.address ?? "—";
+      const sectorFromDetails =
+        det && typeof det["companySector"] === "string" ? (det["companySector"] as string) : null;
+      const sector = sectorFromDetails ?? b.submission?.sector ?? "—";
+      const size = b.submission?.employeesCount ?? bracketParticipants(b.participantsCount);
+      const duration: 1 | 2 = slug === "approfondie" ? 2 : 1;
+      out.push({
+        date: iso,
+        intervention: slug as BookedSlot["intervention"],
+        city,
+        sector,
+        companySize: size,
+        duration,
+      });
+    }
+    return out;
+  } catch {
+    // Fallback silencieux — la page doit toujours afficher les fixtures
+    // social proof même si la DB est offline (résilience visiteur).
+    return [];
+  }
+}
+
+function bracketParticipants(n: number): string {
+  if (n <= 9) return "1-9";
+  if (n <= 49) return "10-49";
+  if (n <= 249) return "50-249";
+  if (n <= 999) return "250-999";
+  return "1000+";
+}
+
+// Fixtures social proof — gardés en plus des bookings DB pour densifier
+// l'affichage tant que le volume réel est faible. Anonymisé (jamais le nom
+// d'entreprise). Inclut sam/dim depuis 2026-05-07.
 function buildFixtureBookedSlots(): BookedSlot[] {
   const today = new Date();
   const fixtures: Array<{
@@ -324,7 +402,13 @@ export default async function ReserverPage({ params }: Props) {
     },
   ];
 
-  const bookedSlots = buildFixtureBookedSlots();
+  // P0-3 fix : charger les bookings DB confirmés/pending pour les 90 prochains
+  // jours et les fusionner avec les fixtures (social proof). Best-effort : si
+  // la DB est indisponible (build statique sans DATABASE_URL), on retombe sur
+  // les seules fixtures pour ne pas casser la SSG. La page reste dynamic via
+  // les revalidatePath des admin-actions.
+  const realBookedSlots = await loadDbBookedSlots();
+  const bookedSlots: ReadonlyArray<BookedSlot> = [...realBookedSlots, ...buildFixtureBookedSlots()];
 
   return (
     <>

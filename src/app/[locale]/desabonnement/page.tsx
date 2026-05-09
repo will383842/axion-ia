@@ -15,7 +15,12 @@ import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ token?: string }>;
+  searchParams: Promise<{
+    token?: string;
+    status?: "ok" | "fail";
+    already?: string;
+    reason?: string;
+  }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -37,11 +42,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DesabonnementPage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { token } = await searchParams;
+  const { token, status, already, reason } = await searchParams;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+
+  // Bandeau résultat après /api/unsubscribe (P0-5 fix). Affiché AVANT le form
+  // pour confirmer ou expliquer l'échec à l'utilisateur. Idempotent : si
+  // l'utilisateur reload après confirm, il voit "déjà désinscrit".
+  const resultBanner =
+    status === "ok"
+      ? {
+          ok: true as const,
+          title:
+            already === "1"
+              ? isFr
+                ? "Vous étiez déjà désinscrit·e."
+                : "You were already unsubscribed."
+              : isFr
+                ? "Désabonnement confirmé."
+                : "Unsubscribe confirmed.",
+          desc: isFr
+            ? "Vous ne recevrez plus nos communications. Conservez ce lien comme preuve si nécessaire."
+            : "You won't receive any further communications. Keep this link as proof if needed.",
+        }
+      : status === "fail"
+        ? {
+            ok: false as const,
+            title:
+              reason === "missing_token"
+                ? isFr
+                  ? "Lien invalide."
+                  : "Invalid link."
+                : reason === "invalid_token"
+                  ? isFr
+                    ? "Lien expiré ou inconnu."
+                    : "Link expired or unknown."
+                  : isFr
+                    ? "Erreur interne."
+                    : "Internal error.",
+            desc: isFr
+              ? "Vous pouvez nous écrire à contact@axion-ia.com pour exercer manuellement vos droits RGPD."
+              : "Email us at contact@axion-ia.com to exercise your GDPR rights manually.",
+          }
+        : null;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -70,7 +115,20 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
 
       <Section>
         <Container className="text-fg-soft max-w-2xl space-y-6 text-base leading-relaxed">
-          {hasToken ? (
+          {resultBanner ? (
+            <div
+              role={resultBanner.ok ? "status" : "alert"}
+              className={
+                resultBanner.ok
+                  ? "border-sage/40 bg-sage/10 rounded-xl border-2 p-5"
+                  : "border-accent-red/40 bg-accent-red/10 rounded-xl border-2 p-5"
+              }
+            >
+              <p className="text-fg text-base font-semibold">{resultBanner.title}</p>
+              <p className="text-fg-soft mt-2 text-sm leading-relaxed">{resultBanner.desc}</p>
+            </div>
+          ) : null}
+          {hasToken && status !== "ok" ? (
             <>
               <p>
                 {isFr

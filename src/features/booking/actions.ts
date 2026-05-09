@@ -78,13 +78,24 @@ export async function createBookingAction(
   // submissions orphelines (crash entre les 2 statements = data integrity bug).
   const userAgent = (await headers()).get("user-agent") ?? null;
   const companyNameRaw = (formData.get("companyName") as string | null) ?? parsed.data.contact;
+  // P0-3 fix : on persiste les champs social proof reçus depuis BookingCalendar
+  // pour qu'ils soient lisibles par /reserver/page.tsx::loadDbBookedSlots.
+  const companySectorRaw = (formData.get("companySector") as string | null) ?? null;
+  const companyCityRaw = (formData.get("companyCity") as string | null) ?? null;
+  const companySizeRaw = (formData.get("companySize") as string | null) ?? null;
+  const contactRoleRaw = (formData.get("contactRole") as string | null) ?? null;
+  const notesRaw = (formData.get("notes") as string | null) ?? null;
   const { booking } = await prisma.$transaction(async (tx) => {
     const submission = await tx.submission.create({
       data: {
         type: "intervention",
         locale,
         companyName: companyNameRaw,
+        sector: companySectorRaw,
+        address: companyCityRaw,
+        employeesCount: companySizeRaw,
         contactName: parsed.data.contact,
+        contactRole: contactRoleRaw,
         contactEmail: parsed.data.email,
         contactPhone: parsed.data.phone ?? null,
         details: {
@@ -92,6 +103,9 @@ export async function createBookingAction(
           bookingDate: parsed.data.date,
           bookingTime: parsed.data.time,
           participantsCount: parsed.data.participantsCount,
+          ...(companyCityRaw ? { companyCity: companyCityRaw } : {}),
+          ...(companySectorRaw ? { companySector: companySectorRaw } : {}),
+          ...(notesRaw ? { notes: notesRaw } : {}),
         },
         ipAddress: ip,
         userAgent,

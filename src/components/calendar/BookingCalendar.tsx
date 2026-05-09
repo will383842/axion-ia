@@ -44,6 +44,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { APPROFONDIE_SUB_TIERS, ESSENTIELLE_SUB_TIERS } from "@/content/pricing";
+import { createBookingAction } from "@/features/booking/actions";
 
 // Prix d'entrée Essentielle / Approfondie dérivés de pricing.ts (premier
 // sous-tier). Affichés sous forme « dès N € » dans les hints et previews —
@@ -673,59 +674,82 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     detectExistingDraft();
   }
 
-  // === SUBMIT (stub) ===
-  function handleSubmit() {
+  // === SUBMIT — wired to createBookingAction (P0-1 fix) ===
+  // Map tier → participantsCount mid-bracket :
+  //   intimiste 2-8   → 5   ; standard 9-15 → 12   ; complete 16-30 → 20
+  // Pour les autres interventions (approfondie/conference/dirigeants), pas
+  // de tier sélecteur — on envoie 1 (signal LLM, on s'aligne ensuite par tel).
+  function getParticipantsForSubmission(): number {
+    if (preselectedOpt.slug !== "essentielle") return 1;
+    if (selectedTier === "intimiste") return 5;
+    if (selectedTier === "standard") return 12;
+    return 20; // complete
+  }
+
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
+
+  async function handleSubmit() {
     if (!openSlot) return;
     setSubmittingState("submitting");
-    // Calcul prix selon tier pour Essentielle uniquement.
-    const tier =
-      preselectedOpt.slug === "essentielle"
-        ? ESSENTIELLE_TIERS.find((t) => t.id === selectedTier)
-        : undefined;
-    // [booking:submit:stub] — Sprint 17 branchera Server Action + Prisma + Telegram + email.
-    // P-509 — gated `NODE_ENV !== "production"` pour ne pas polluer la console
-    // en prod (Lighthouse Best Practices déduit des points pour les logs prod).
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[booking:submit:stub]", {
-        date: openSlot,
-        duration: preselectedOpt.durationDays,
-        intervention: preselectedOpt.slug,
-        ...(tier ? { tier: tier.id, priceEur: tier.priceEur } : {}),
-        company: {
-          name: companyName,
-          size: companySize,
-          sector: companySector,
-          city: companyCity,
-        },
-        contact: {
-          firstName: contactFirstName,
-          lastName: contactLastName,
-          role: contactRole,
-          email: contactEmail,
-          phone: contactPhone,
-        },
-        ai: { usage: aiUsage, tools: aiTools, hasAutomations, auditInterest, comments },
-      });
+    setSubmitError(null);
+
+    const participantsCount = getParticipantsForSubmission();
+    const fullName = [contactFirstName, contactLastName].filter(Boolean).join(" ").trim() || "—";
+    const detailedNotes = [
+      contactRole ? `Rôle : ${contactRole}` : null,
+      `Effectif : ${companySize}`,
+      `Ville : ${companyCity}`,
+      `Usage IA actuel : ${aiUsage}`,
+      aiTools ? `Outils : ${aiTools}` : null,
+      `Automations : ${hasAutomations}`,
+      `Audit : ${auditInterest}`,
+      comments ? `Commentaires : ${comments}` : null,
+    ]
+      .filter(Boolean)
+      .join(" | ");
+
+    const formData = new FormData();
+    formData.set("date", openSlot);
+    formData.set("time", "09:00"); // intervention sur site démarre à 09h
+    formData.set("contact", fullName);
+    formData.set("email", contactEmail);
+    if (contactPhone) formData.set("phone", contactPhone);
+    formData.set("consent", consent ? "true" : "false");
+    formData.set("interventionType", preselectedOpt.slug);
+    formData.set("participantsCount", String(participantsCount));
+    formData.set("companyName", companyName);
+    formData.set("companySector", companySector);
+    formData.set("companyCity", companyCity);
+    formData.set("companySize", companySize);
+    if (contactRole) formData.set("contactRole", contactRole);
+    formData.set("notes", detailedNotes);
+    formData.set("locale", locale);
+
+    try {
+      const res = await createBookingAction({ ok: false, error: "" }, formData);
+      if (res.ok) {
+        // Mise à jour optimiste UI — slot anonymisé social proof
+        setBookedSlots((prev) => [
+          ...prev,
+          {
+            date: openSlot,
+            intervention: preselectedOpt.slug,
+            city: companyCity || "—",
+            sector: companySector,
+            companySize,
+            duration: preselectedOpt.durationDays,
+          },
+        ]);
+        setSubmittingState("success");
+        clearDraftOnSuccess();
+      } else {
+        setSubmittingState("idle");
+        setSubmitError(res.error);
+      }
+    } catch {
+      setSubmittingState("idle");
+      setSubmitError(isFr ? "Erreur réseau — réessayez." : "Network error — please retry.");
     }
-
-    // Ajout local (simulation) — slot anonymisé avec infos publiques
-    setBookedSlots((prev) => [
-      ...prev,
-      {
-        date: openSlot,
-        intervention: preselectedOpt.slug,
-        city: companyCity || "—",
-        sector: companySector,
-        companySize,
-        duration: preselectedOpt.durationDays,
-      },
-    ]);
-
-    setTimeout(() => {
-      setSubmittingState("success");
-      // Draft consommé : on nettoie le localStorage.
-      clearDraftOnSuccess();
-    }, 600);
   }
 
   // === Validation par step ===
@@ -1450,6 +1474,11 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                       </Button>
                     )}
                   </div>
+                  {submitError ? (
+                    <p role="alert" className="text-accent-red mt-3 text-sm" aria-live="assertive">
+                      {submitError}
+                    </p>
+                  ) : null}
                 </>
               ) : null}
             </div>

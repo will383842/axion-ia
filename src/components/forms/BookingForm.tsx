@@ -1,11 +1,12 @@
 "use client";
-// use-client: posts to a server action (Sprint 17) and reads the slot
-// passed by the parent calendar via props — needs interactive submit UI.
+// use-client: posts to createBookingAction and reads the slot passed by the
+// parent calendar via props — needs interactive submit UI.
 
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bookingSchema, type BookingInput } from "@/lib/schemas/forms";
+import { createBookingAction } from "@/features/booking/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +17,12 @@ interface BookingFormProps {
   /** Pre-filled by the calendar selection. */
   date: string; // ISO yyyy-mm-dd
   time: string; // hh:mm
+  /** Slug intervention sélectionnée par le parent — passé à createBookingAction. */
+  interventionType?: BookingInput["interventionType"];
+  /** Effectif estimé (defaut 1 si non précisé). */
+  participantsCount?: number;
+  /** Locale FR/EN (défaut FR) — passée au Server Action pour email + tracking. */
+  locale?: "fr" | "en";
   onCancel?: () => void;
   labels: {
     headerPrefix: string;
@@ -31,7 +38,15 @@ interface BookingFormProps {
   };
 }
 
-export function BookingForm({ date, time, onCancel, labels }: BookingFormProps) {
+export function BookingForm({
+  date,
+  time,
+  interventionType = "essentielle",
+  participantsCount = 1,
+  locale = "fr",
+  onCancel,
+  labels,
+}: BookingFormProps) {
   const {
     register,
     handleSubmit,
@@ -40,7 +55,12 @@ export function BookingForm({ date, time, onCancel, labels }: BookingFormProps) 
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<BookingInput>({
     resolver: zodResolver(bookingSchema as never) as never,
-    defaultValues: { date, time } as never,
+    defaultValues: {
+      date,
+      time,
+      interventionType,
+      participantsCount,
+    } as never,
   });
   const consent = watch("consent");
   const [serverError, setServerError] = React.useState<string | null>(null);
@@ -49,14 +69,27 @@ export function BookingForm({ date, time, onCancel, labels }: BookingFormProps) 
   React.useEffect(() => {
     setValue("date", date as never);
     setValue("time", time as never);
-  }, [date, time, setValue]);
+    setValue("interventionType", interventionType as never);
+    setValue("participantsCount", participantsCount as never);
+  }, [date, time, interventionType, participantsCount, setValue]);
 
   async function onSubmit(values: BookingInput) {
     setServerError(null);
     try {
-      await new Promise((r) => setTimeout(r, 600));
-      if (process.env.NODE_ENV !== "production") {
-        console.warn("[booking:submit:stub]", values);
+      const formData = new FormData();
+      formData.set("date", values.date);
+      formData.set("time", values.time);
+      formData.set("contact", values.contact);
+      formData.set("email", values.email);
+      if (values.phone) formData.set("phone", values.phone);
+      formData.set("consent", values.consent ? "true" : "false");
+      formData.set("interventionType", values.interventionType);
+      formData.set("participantsCount", String(values.participantsCount));
+      formData.set("locale", locale);
+
+      const res = await createBookingAction({ ok: false, error: "" }, formData);
+      if (!res.ok) {
+        setServerError(res.error || labels.failure);
       }
     } catch {
       setServerError(labels.failure);

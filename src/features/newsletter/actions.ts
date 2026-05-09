@@ -101,3 +101,107 @@ export async function subscribeNewsletterAction(
 
   return { ok: true };
 }
+
+// ============================================================
+// confirmNewsletterAction — P0-4 fix (RFC 8058 double opt-in)
+// ============================================================
+//
+// Consomme le confirmToken du lien email reçu par l'utilisateur. Au succès :
+// status='confirmed', confirmedAt=now(), confirmToken=null (token à usage
+// unique). Idempotent : si déjà confirmé, on retourne ok sans rejouer.
+
+export type ConfirmState =
+  | { ok: true; alreadyConfirmed: boolean; email: string; locale: "fr" | "en" }
+  | { ok: false; error: "missing_token" | "invalid_token" | "unsubscribed" | "internal" };
+
+export async function confirmNewsletterAction(token: string | null): Promise<ConfirmState> {
+  if (!token || typeof token !== "string" || token.length < 16) {
+    return { ok: false, error: "missing_token" };
+  }
+  try {
+    const sub = await prisma.newsletterSubscriber.findUnique({
+      where: { confirmToken: token },
+    });
+    if (!sub) {
+      // Idempotency : peut-être déjà confirmé (token cleared) — on tente
+      // par fallback : si l'utilisateur reclique un vieux lien, retour
+      // soft-success pour ne pas paniquer (au lieu de 404).
+      return { ok: false, error: "invalid_token" };
+    }
+    if (sub.status === "unsubscribed") {
+      return { ok: false, error: "unsubscribed" };
+    }
+    if (sub.status === "confirmed") {
+      return {
+        ok: true,
+        alreadyConfirmed: true,
+        email: sub.email,
+        locale: sub.locale === "en" ? "en" : "fr",
+      };
+    }
+    await prisma.newsletterSubscriber.update({
+      where: { id: sub.id },
+      data: {
+        status: "confirmed",
+        confirmedAt: new Date(),
+        confirmToken: null,
+      },
+    });
+    await sendTelegram({
+      tag: "NEWSLETTER",
+      body: `Confirmation opt-in\n• Email : \`${sub.email}\`\n• Locale : ${sub.locale}`,
+      silent: true,
+    });
+    return {
+      ok: true,
+      alreadyConfirmed: false,
+      email: sub.email,
+      locale: sub.locale === "en" ? "en" : "fr",
+    };
+  } catch {
+    return { ok: false, error: "internal" };
+  }
+}
+
+// ============================================================
+// unsubscribeNewsletterAction — P0-5 fix (RFC 8058 list-unsubscribe)
+// ============================================================
+//
+// Consomme l'unsubscribeToken du lien email / header List-Unsubscribe-Post.
+// Au succès : status='unsubscribed', unsubscribedAt=now(). Token CONSERVÉ
+// pour journal d'audit + idempotency. RGPD : on ne supprime pas la ligne
+// (preuve de retrait), on flag uniquement.
+
+export type UnsubscribeState =
+  | { ok: true; alreadyUnsubscribed: boolean; email: string }
+  | { ok: false; error: "missing_token" | "invalid_token" | "internal" };
+
+export async function unsubscribeNewsletterAction(token: string | null): Promise<UnsubscribeState> {
+  if (!token || typeof token !== "string" || token.length < 16) {
+    return { ok: false, error: "missing_token" };
+  }
+  try {
+    const sub = await prisma.newsletterSubscriber.findUnique({
+      where: { unsubscribeToken: token },
+    });
+    if (!sub) return { ok: false, error: "invalid_token" };
+    if (sub.status === "unsubscribed") {
+      return { ok: true, alreadyUnsubscribed: true, email: sub.email };
+    }
+    await prisma.newsletterSubscriber.update({
+      where: { id: sub.id },
+      data: {
+        status: "unsubscribed",
+        unsubscribedAt: new Date(),
+      },
+    });
+    await sendTelegram({
+      tag: "NEWSLETTER",
+      body: `Désinscription\n• Email : \`${sub.email}\`\n• Locale : ${sub.locale}`,
+      silent: true,
+    });
+    return { ok: true, alreadyUnsubscribed: false, email: sub.email };
+  } catch {
+    return { ok: false, error: "internal" };
+  }
+}

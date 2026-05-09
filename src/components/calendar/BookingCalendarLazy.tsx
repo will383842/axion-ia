@@ -39,7 +39,7 @@ const BookingCalendarInner = dynamic(
 );
 
 interface BookingCalendarLazyProps {
-  initialBookedSlots: BookedSlot[];
+  initialBookedSlots: ReadonlyArray<BookedSlot>;
   locale: "fr" | "en";
 }
 
