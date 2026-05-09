@@ -2,8 +2,19 @@
 // Doctrine v3 légère : pas d'i18n (hors layout locale), texte bilingue inline,
 // Fraunces + halo-warm pour cohérence visuelle avec le reste du site.
 
+import type { Metadata } from "next";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
+
+// metadataBase explicite : ce fichier est hors `[locale]/layout.tsx` donc
+// n'hérite pas du `metadataBase` localisé. Sans ça, Next.js fallback sur
+// `http://localhost:3000` côté og:image (résolu via `app/opengraph-image.tsx`),
+// ce qui casse les previews sociales si quelqu'un partage une URL 404.
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  robots: { index: false, follow: false },
+};
 
 export default function RootNotFound() {
   return (
