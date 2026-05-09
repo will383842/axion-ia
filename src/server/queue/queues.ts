@@ -12,6 +12,7 @@ import type {
   OptionReminderJobData,
   NewsletterCampaignJobData,
   SearchIndexerJobData,
+  RetentionPurgeJobData,
 } from "./types";
 
 const connection = getBullConnection();
@@ -46,6 +47,12 @@ export const newsletterQueue = new Queue<NewsletterCampaignJobData>("newsletter"
 export const searchIndexerQueue = new Queue<SearchIndexerJobData>("search-indexer", {
   connection,
   defaultJobOptions,
+});
+
+// Sprint 24 / D3 — purge RGPD quotidienne (cron 03:00 UTC).
+export const retentionPurgeQueue = new Queue<RetentionPurgeJobData>("retention-purge", {
+  connection,
+  defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
 });
 
 // ============================================================
@@ -97,5 +104,17 @@ export async function bootRepeatableJobs(): Promise<void> {
     "tick",
     { tick: new Date().toISOString() },
     { repeat: { pattern: "0 * * * *" }, jobId: "option-reminder-cron" },
+  );
+
+  // Sprint 24 / D3 — RGPD purge quotidienne 03:00 UTC.
+  await retentionPurgeQueue.removeRepeatable(
+    "tick",
+    { pattern: "0 3 * * *" },
+    "retention-purge-cron",
+  );
+  await retentionPurgeQueue.add(
+    "tick",
+    { tick: new Date().toISOString() },
+    { repeat: { pattern: "0 3 * * *" }, jobId: "retention-purge-cron" },
   );
 }

@@ -20,7 +20,8 @@ export type EmailJobName =
   | "audit-confirmed"
   | "implementation-confirmed"
   | "newsletter-confirm-optin"
-  | "contact-confirmed";
+  | "contact-confirmed"
+  | "gdpr-export-link";
 
 export interface EmailJobData {
   template: EmailJobName;
@@ -66,4 +67,12 @@ export interface NewsletterCampaignJobData {
 export interface SearchIndexerJobData {
   table: "articles" | "help_articles" | "case_studies";
   rowId: string;
+}
+
+// ============================================================
+// Queue: retention-purge (Sprint 24 / D3 — RGPD daily 03:00)
+// ============================================================
+
+export interface RetentionPurgeJobData {
+  tick: string;
 }

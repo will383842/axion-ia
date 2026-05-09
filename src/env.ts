@@ -121,6 +121,14 @@ export const env = createEnv({
     COMPANY_EMAIL: z.string().email().optional(),
     COMPANY_DPO_EMAIL: z.string().email().optional(),
     COMPANY_PHONE: z.string().optional(),
+
+    // Sprint 24 / D3 — RGPD retention-purge worker (cron daily 03:00 UTC).
+    // Toutes optionnelles (defaults dans le worker). Doit être ≥ 1 mois sinon
+    // ignorée (anti-misconfig accidentel qui supprimerait toute la base).
+    RETENTION_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
+    RETENTION_SUBS_ARCHIVE_MONTHS: z.coerce.number().int().min(1).optional(),
+    RETENTION_NEWSLETTER_UNSUB_MONTHS: z.coerce.number().int().min(1).optional(),
+    RETENTION_BOOKINGS_CANCELLED_MONTHS: z.coerce.number().int().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -171,6 +179,10 @@ export const env = createEnv({
     COMPANY_EMAIL: process.env.COMPANY_EMAIL,
     COMPANY_DPO_EMAIL: process.env.COMPANY_DPO_EMAIL,
     COMPANY_PHONE: process.env.COMPANY_PHONE,
+    RETENTION_LOGS_MONTHS: process.env.RETENTION_LOGS_MONTHS,
+    RETENTION_SUBS_ARCHIVE_MONTHS: process.env.RETENTION_SUBS_ARCHIVE_MONTHS,
+    RETENTION_NEWSLETTER_UNSUB_MONTHS: process.env.RETENTION_NEWSLETTER_UNSUB_MONTHS,
+    RETENTION_BOOKINGS_CANCELLED_MONTHS: process.env.RETENTION_BOOKINGS_CANCELLED_MONTHS,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,

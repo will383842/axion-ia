@@ -225,11 +225,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           title: "Hébergement et transferts",
           body: "Toutes les données sont hébergées dans l'UE (Hetzner Frankfurt). Aucun transfert hors UE sauf consentement explicite (ex : appel à un modèle IA tiers américain pour une démonstration, signalé en amont).",
         },
+        {
+          title: "Sous-processeurs et destinataires des données",
+          body: "Conformément à l'article 13.1.e du RGPD, voici la liste des sous-processeurs auxquels Axion-IA OÜ recourt : Hetzner Online GmbH (hébergement VPS + Storage Box backups, Allemagne Frankfurt — DPA signé, ISO 27001) ; Cloudflare, Inc. (CDN + DDoS + Turnstile captcha, États-Unis avec transferts via SCC + DPF — DPA online + clauses contractuelles types) ; Backblaze, Inc. (stockage offsite des backups DB chiffrés AES-256 dont la clé reste hors Backblaze, région Pays-Bas EU — DPA online + clauses contractuelles types) ; Telegram FZ-LLC (notifications admin via Bot API, email contact uniquement si formulaire contact, Émirats Arabes Unis — pas de DPA standard, minimisation PII appliquée). Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+        },
       ],
       metaSeo: {
         title: "Politique de confidentialité · Axion-IA",
         description:
-          "RGPD, données personnelles, droits, AKI estonienne. Hébergement UE Hetzner Frankfurt.",
+          "RGPD, données personnelles, droits, AKI estonienne. Hébergement UE Hetzner Frankfurt + sous-processeurs déclarés.",
       },
     },
     en: {
@@ -266,10 +270,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           title: "Hosting and transfers",
           body: "All data is hosted in the EU (Hetzner Frankfurt). No transfers outside the EU except with explicit consent (e.g., calling a third-party US AI model for a demo, flagged in advance).",
         },
+        {
+          title: "Sub-processors and data recipients",
+          body: "In accordance with GDPR article 13.1.e, the sub-processors used by Axion-IA OÜ are: Hetzner Online GmbH (VPS hosting + Storage Box backups, Germany Frankfurt — DPA signed, ISO 27001); Cloudflare, Inc. (CDN + DDoS + Turnstile captcha, United States with transfers under SCC + DPF — online DPA + standard contractual clauses); Backblaze, Inc. (offsite storage of AES-256 encrypted DB backups whose key remains outside Backblaze, Netherlands EU region — online DPA + standard contractual clauses); Telegram FZ-LLC (admin notifications via Bot API, contact email only when contact form is used, United Arab Emirates — no standard DPA, PII minimisation applied). No data is ever sold or shared for advertising purposes.",
+        },
       ],
       metaSeo: {
         title: "Privacy policy · Axion-IA",
-        description: "GDPR, personal data, rights, Estonian AKI. EU Hetzner Frankfurt hosting.",
+        description:
+          "GDPR, personal data, rights, Estonian AKI. EU Hetzner Frankfurt hosting + declared sub-processors.",
       },
     },
   },

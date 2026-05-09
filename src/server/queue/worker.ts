@@ -7,12 +7,18 @@
 import { startEmailWorker } from "./workers/email-worker";
 import { startOptionExpirationWorker } from "./workers/option-expiration-worker";
 import { startOptionReminderWorker } from "./workers/option-reminder-worker";
+import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { bootRepeatableJobs } from "./queues";
 
 async function main() {
   console.log("→ Axion-IA · BullMQ workers booting…");
 
-  const workers = [startEmailWorker(), startOptionExpirationWorker(), startOptionReminderWorker()];
+  const workers = [
+    startEmailWorker(),
+    startOptionExpirationWorker(),
+    startOptionReminderWorker(),
+    startRetentionPurgeWorker(),
+  ];
 
   await bootRepeatableJobs();
 

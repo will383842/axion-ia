@@ -216,6 +216,9 @@ export async function validateOptionAction(
   });
 
   revalidatePath(adminPath("fr", "options"));
+  // Sprint 24 / C1 — la decision admin modifie la dispo cote public.
+  revalidatePath("/fr/reserver");
+  revalidatePath("/en/book");
   return { ok: true };
 }
 
@@ -323,6 +326,9 @@ export async function refuseOptionAction(
   });
 
   revalidatePath(adminPath("fr", "options"));
+  // Sprint 24 / C1 — la decision admin libère le slot cote public.
+  revalidatePath("/fr/reserver");
+  revalidatePath("/en/book");
   return { ok: true };
 }
 

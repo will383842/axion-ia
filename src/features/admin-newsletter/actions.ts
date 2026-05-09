@@ -183,6 +183,78 @@ export async function forceUnsubscribeAction(
 }
 
 // ============================================================
+// eraseSubscriber — droit a l'effacement RGPD (Sprint 24 / D1)
+// ============================================================
+//
+// Suppression hard de la ligne newsletter_subscribers. Conserve la trace
+// activity_log avec hash email pour audit RGPD (sans réintroduire le PII).
+// Reservé super_admin uniquement.
+
+const eraseSubscriberSchema = z.object({
+  id: z.string().uuid(),
+  reason: z.string().min(3).max(500),
+});
+export type EraseSubscriberState = { ok: true } | { ok: false; error: string };
+
+export async function eraseSubscriberAction(
+  _prev: EraseSubscriberState,
+  formData: FormData,
+): Promise<EraseSubscriberState> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Permission insuffisante." };
+  const role = (session.user as { role?: string }).role;
+  if (role !== "super_admin") {
+    return { ok: false, error: "Effacement RGPD réservé super_admin." };
+  }
+  const parsed = eraseSubscriberSchema.safeParse({
+    id: formData.get("id"),
+    reason: formData.get("reason"),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
+  }
+
+  const ip = await getClientIp();
+
+  await prisma.$transaction(async (tx) => {
+    const sub = await tx.newsletterSubscriber.findUnique({
+      where: { id: parsed.data.id },
+      select: { id: true, email: true },
+    });
+    if (!sub) throw new Error("subscriber_not_found");
+
+    await tx.newsletterSubscriber.delete({ where: { id: parsed.data.id } });
+
+    const emailHash = await hashEmailForAudit(sub.email);
+    await tx.activityLog.create({
+      data: {
+        adminUserId: session.user.id,
+        action: "newsletter.erased",
+        targetType: "newsletter_subscriber",
+        targetId: parsed.data.id,
+        changes: {
+          reason: parsed.data.reason,
+          emailHash,
+        },
+        ipAddress: ip,
+      },
+    });
+  });
+
+  revalidatePath(adminPath("fr", "newsletter"));
+  return { ok: true };
+}
+
+// Hash email SHA-256 hex pour audit trail RGPD (Sprint 24 / D1).
+async function hashEmailForAudit(email: string): Promise<string> {
+  const data = new TextEncoder().encode(email.toLowerCase().trim());
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+// ============================================================
 // export CSV (RGPD-friendly : pas d'export des unsubscribed)
 // ============================================================
 

@@ -224,6 +224,92 @@ export async function updateSubmissionAction(
 }
 
 // ============================================================
+// eraseSubmission — droit a l'effacement RGPD (Sprint 24 / D1)
+// ============================================================
+//
+// Suppression hard du Submission. Conserve une trace dans activity_log avec
+// l'action `submission.erased` (RGPD-grade : audit trail de la demande
+// d'effacement préservé sans réintroduire les PII supprimées).
+// Reservé super_admin uniquement (RGPD écrasement = haute responsabilité).
+
+const eraseSubmissionSchema = z.object({
+  id: z.string().uuid(),
+  reason: z.string().min(3).max(500),
+});
+export type EraseSubmissionState = { ok: true } | { ok: false; error: string };
+
+export async function eraseSubmissionAction(
+  _prev: EraseSubmissionState,
+  formData: FormData,
+): Promise<EraseSubmissionState> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Permission insuffisante." };
+  const role = (session.user as { role?: string }).role;
+  if (role !== "super_admin") {
+    return { ok: false, error: "Effacement RGPD réservé super_admin." };
+  }
+  const parsed = eraseSubmissionSchema.safeParse({
+    id: formData.get("id"),
+    reason: formData.get("reason"),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
+  }
+
+  const ip = await getClientIp();
+
+  await prisma.$transaction(async (tx) => {
+    const sub = await tx.submission.findUnique({
+      where: { id: parsed.data.id },
+      select: { id: true, type: true, contactEmail: true },
+    });
+    if (!sub) throw new Error("submission_not_found");
+
+    // Detache les bookings (Submission.id devient null sur Booking.submissionId)
+    // pour ne pas casser la referentielle. Le Booking lui-même reste (donnée
+    // contractuelle conservée 5 ans, obligation comptable EE).
+    await tx.booking.updateMany({
+      where: { submissionId: parsed.data.id },
+      data: { submissionId: null },
+    });
+
+    await tx.submission.delete({ where: { id: parsed.data.id } });
+
+    // Activity log RGPD : on ne re-stocke pas l'email supprimé en clair, on
+    // conserve uniquement le hash + reason + targetId pour traçabilité.
+    const emailHash = await hashEmailForAudit(sub.contactEmail);
+    await tx.activityLog.create({
+      data: {
+        adminUserId: session.user.id,
+        action: "submission.erased",
+        targetType: "submission",
+        targetId: parsed.data.id,
+        changes: {
+          reason: parsed.data.reason,
+          submissionType: sub.type,
+          contactEmailHash: emailHash,
+        },
+        ipAddress: ip,
+      },
+    });
+  });
+
+  revalidatePath(adminPath("fr", "submissions"));
+  return { ok: true };
+}
+
+// Hash email SHA-256 hex pour audit trail RGPD (Sprint 24 / D1).
+// Permet de prouver qu'une demande d'effacement a porté sur une donnée
+// précise, sans réintroduire l'email en clair dans activity_log.
+async function hashEmailForAudit(email: string): Promise<string> {
+  const data = new TextEncoder().encode(email.toLowerCase().trim());
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+// ============================================================
 // exportSubmissionsCsv — UTF-8 BOM (Excel compatible)
 // ============================================================
 
