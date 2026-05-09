@@ -99,3 +99,89 @@ jobs:
             test-results/
             lhci/
           retention-days: 7
+
+  gate-c-docker:
+    # Boots the production Dockerfile end-to-end against ephemeral Redis +
+    # Postgres and verifies /api/healthz returns 200. Catches issues that
+    # `pnpm build` alone cannot: Dockerfile regressions, eager-init crashes
+    # at container start, missing env vars, healthcheck mis-config, etc.
+    name: Gate C · Docker smoke test
+    needs: gate-a
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate ephemeral test secrets
+        id: secrets
+        run: |
+          echo "auth_secret=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
+          echo "backup_pass=$(openssl rand -base64 48 | tr -d '\n')" >> "$GITHUB_OUTPUT"
+          echo "redis_pass=$(openssl rand -hex 24)" >> "$GITHUB_OUTPUT"
+
+      - name: Start ephemeral Redis on host network
+        run: |
+          docker run -d --name redis-smoke --network host \
+            redis:7-alpine \
+            redis-server --requirepass "${{ steps.secrets.outputs.redis_pass }}"
+          for i in $(seq 1 20); do
+            if docker exec redis-smoke redis-cli -a '${{ steps.secrets.outputs.redis_pass }}' PING 2>/dev/null | grep -q PONG; then
+              echo "redis ready"; break
+            fi
+            sleep 1
+          done
+
+      - name: Build production Dockerfile
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_SITE_URL=https://smoke.test \
+            --build-arg NEXT_PUBLIC_APP_ENV=production \
+            -t axion-ia:smoke .
+
+      - name: Run container with smoke env
+        run: |
+          docker run -d --name axion-ia-smoke --network host \
+            -e NODE_ENV=production \
+            -e PORT=3000 \
+            -e HOSTNAME=0.0.0.0 \
+            -e NEXT_PUBLIC_SITE_URL=https://smoke.test \
+            -e NEXT_PUBLIC_APP_ENV=production \
+            -e NEXT_PUBLIC_DEFAULT_LOCALE=fr \
+            -e AUTH_SECRET='${{ steps.secrets.outputs.auth_secret }}' \
+            -e ADMIN_URL_PREFIX=admin-smoke-test-1234 \
+            -e BACKUP_ENCRYPTION_PASSPHRASE='${{ steps.secrets.outputs.backup_pass }}' \
+            -e REDIS_URL='redis://default:${{ steps.secrets.outputs.redis_pass }}@localhost:6379/0' \
+            axion-ia:smoke
+
+      - name: Wait for Docker HEALTHCHECK to pass (max 5 min)
+        run: |
+          for i in $(seq 1 60); do
+            STATUS=$(docker inspect --format='{{.State.Health.Status}}' axion-ia-smoke 2>/dev/null || echo unknown)
+            echo "[$i/60] container health: $STATUS"
+            if [ "$STATUS" = healthy ]; then exit 0; fi
+            if [ "$STATUS" = unhealthy ]; then echo '::error::container went unhealthy'; exit 1; fi
+            sleep 5
+          done
+          echo '::error::timeout waiting for healthy'
+          exit 1
+
+      - name: Verify /api/healthz returns 200 + status:ok
+        run: |
+          set -e
+          BODY=$(curl -fsS --max-time 10 http://localhost:3000/api/healthz)
+          echo "$BODY"
+          echo "$BODY" | grep -q '"status":"ok"'
+
+      - name: Container logs (always)
+        if: always()
+        run: |
+          echo "=== axion-ia-smoke logs (last 200) ==="
+          docker logs --tail 200 axion-ia-smoke 2>&1 || true
+          echo "=== redis-smoke logs (last 50) ==="
+          docker logs --tail 50 redis-smoke 2>&1 || true
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker rm -f axion-ia-smoke 2>/dev/null || true
+          docker rm -f redis-smoke 2>/dev/null || true

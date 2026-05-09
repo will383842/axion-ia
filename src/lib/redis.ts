@@ -20,6 +20,10 @@ const baseOptions: RedisOptions = {
   // Pas de retry infini sur ECONNREFUSED en dev (DB down) — fail fast
   maxRetriesPerRequest: 3,
   enableReadyCheck: true,
+  // Defer connection until first command. Avoids blocking Node boot when
+  // Redis is unreachable (build-time SSG, brief outages). Consumers that
+  // actually use Redis trigger the connect implicitly.
+  lazyConnect: true,
 };
 
 function createRedis(): Redis {

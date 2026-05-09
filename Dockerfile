@@ -69,6 +69,11 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
+# curl for orchestrator healthchecks (Coolify falls back to wget busybox
+# which is unreliable; with curl present the same path /api/healthz works
+# the same way locally, in Coolify, and in CI smoke tests).
+RUN apk add --no-cache curl
+
 # User non-root pour sécurité
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
@@ -81,6 +86,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 USER nextjs
 
 EXPOSE 3000
+
+# Native Docker HEALTHCHECK — does not depend on orchestrator config.
+# Pure Node so it always works regardless of which CLI tools are installed.
+# start-period 120s lets Next 16 boot + warm Prisma + lazy queues without
+# false negatives on first deploy of large bundles.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/api/healthz',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
 
 # server.js exposé par Next 16 standalone
 CMD ["node", "server.js"]

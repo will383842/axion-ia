@@ -17,6 +17,10 @@ export function getBullConnection(): Redis {
   _bullConnection = new Redis(REDIS_URL, {
     maxRetriesPerRequest: null, // requis BullMQ
     enableReadyCheck: false,
+    // Defer connection until first BullMQ command. Same rationale as
+    // src/lib/redis.ts — avoids blocking Node boot via queues.ts top-level
+    // Queue instantiation when Redis is unreachable.
+    lazyConnect: true,
   });
   _bullConnection.on("error", (err: Error) => {
     if (process.env.NODE_ENV !== "production") {
