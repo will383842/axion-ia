@@ -2,12 +2,14 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
-// eslint-config-next already wires `eslint-plugin-jsx-a11y` (recommended preset).
-// We only sharpen the a11y rules here without re-declaring the plugin.
+// eslint-config-next already wires `eslint-plugin-jsx-a11y`. We sharpen 3
+// rules from the recommended preset to "error" — this works because flat
+// config inherits plugin namespaces from earlier blocks in the same array.
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    files: ["**/*.{ts,tsx,js,jsx,mjs}"],
     rules: {
       "jsx-a11y/anchor-is-valid": "error",
       "jsx-a11y/click-events-have-key-events": "error",
