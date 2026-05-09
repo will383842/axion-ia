@@ -1,21 +1,26 @@
 "use client";
-// use-client: useActionState pour 2 forms (block + unblock) avec UI distincte.
+// use-client: useActionState pour 3 forms (block + unblock + cancel) avec UI distincte.
 
 import { useActionState, useState } from "react";
 import {
   blockDateAction,
   unblockDateAction,
+  cancelBookingAction,
   type BlockDateState,
   type UnblockDateState,
+  type CancelBookingState,
 } from "@/features/admin-calendar/actions";
 
 const initBlock: BlockDateState = { ok: false, error: "" };
 const initUnblock: UnblockDateState = { ok: false, error: "" };
+const initCancel: CancelBookingState = { ok: false, error: "" };
 
 export function CalendarBlockPanel() {
   const [bState, bAction, bPending] = useActionState(blockDateAction, initBlock);
   const [uState, uAction, uPending] = useActionState(unblockDateAction, initUnblock);
-  const [tab, setTab] = useState<"block" | "unblock">("block");
+  const [cState, cAction, cPending] = useActionState(cancelBookingAction, initCancel);
+  const [tab, setTab] = useState<"block" | "unblock" | "cancel">("block");
+  const [cancelConfirm, setCancelConfirm] = useState("");
 
   return (
     <div className="admin-calendar-panel">
@@ -34,9 +39,87 @@ export function CalendarBlockPanel() {
         >
           Débloquer une date
         </button>
+        <button
+          type="button"
+          onClick={() => setTab("cancel")}
+          className={`admin-button-ghost ${tab === "cancel" ? "admin-button-active" : ""}`}
+        >
+          Annuler une réservation
+        </button>
       </div>
 
-      {tab === "block" ? (
+      {tab === "cancel" ? (
+        <form action={cAction} className="admin-form">
+          <p className="admin-meta">
+            Annule une réservation ferme. Le créneau est libéré et un email d&apos;annulation est
+            envoyé au contact (si disponible). Action <strong>irréversible</strong>.
+          </p>
+          <div className="admin-field">
+            <label htmlFor="cancel-booking-id" className="admin-label">
+              ID de la réservation (UUID)
+            </label>
+            <input
+              id="cancel-booking-id"
+              name="bookingId"
+              type="text"
+              required
+              pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+              className="admin-input"
+              placeholder="00000000-0000-0000-0000-000000000000"
+              disabled={cPending}
+            />
+          </div>
+          <div className="admin-field">
+            <label htmlFor="cancel-reason" className="admin-label">
+              Motif (envoyé au contact dans l&apos;email)
+            </label>
+            <textarea
+              id="cancel-reason"
+              name="reason"
+              required
+              maxLength={500}
+              rows={3}
+              className="admin-input admin-textarea"
+              placeholder="Ex: imprévu côté Axion-IA, réorganisation planning…"
+              disabled={cPending}
+            />
+          </div>
+          <div className="admin-field">
+            <label htmlFor="cancel-confirm" className="admin-label">
+              Tapez <code>annuler</code> pour confirmer
+            </label>
+            <input
+              id="cancel-confirm"
+              type="text"
+              value={cancelConfirm}
+              onChange={(e) => setCancelConfirm(e.target.value)}
+              className="admin-input"
+              autoComplete="off"
+              disabled={cPending}
+            />
+          </div>
+          {cState.ok ? (
+            <p role="status" className="admin-alert admin-alert-success">
+              ✓ Réservation annulée. Créneau libéré, email envoyé si contact disponible.
+            </p>
+          ) : cState.error ? (
+            <p role="alert" className="admin-alert admin-alert-error">
+              {cState.error === "booking_not_found"
+                ? "Réservation introuvable."
+                : cState.error === "booking_already_cancelled"
+                  ? "Cette réservation est déjà annulée."
+                  : cState.error}
+            </p>
+          ) : null}
+          <button
+            type="submit"
+            className="admin-button admin-button-refuse"
+            disabled={cPending || cancelConfirm !== "annuler"}
+          >
+            {cPending ? "Annulation..." : "Annuler la réservation"}
+          </button>
+        </form>
+      ) : tab === "block" ? (
         <form action={bAction} className="admin-form">
           <div className="admin-field">
             <label htmlFor="block-date" className="admin-label">

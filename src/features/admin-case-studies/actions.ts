@@ -14,6 +14,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
 import type { PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -272,7 +273,7 @@ export async function upsertCaseStudyAction(
       return c;
     });
 
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/case-studies`);
+    revalidatePath(adminPath("fr", "case-studies"));
     revalidatePath("/fr/cas-concrets");
     revalidatePath("/en/case-studies");
     return { ok: true, id: cs.id, created };
@@ -317,6 +318,6 @@ export async function archiveCaseStudyAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/case-studies`);
+  revalidatePath(adminPath("fr", "case-studies"));
   return { ok: true };
 }

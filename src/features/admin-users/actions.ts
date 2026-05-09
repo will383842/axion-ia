@@ -17,6 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { hashPassword } from "@/lib/auth-password";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { adminPath } from "@/lib/admin-path";
 import type { AdminRole, AdminStatus } from "../../../prisma/generated/client";
 
 async function requireSuperAdmin() {
@@ -175,7 +176,7 @@ export async function createAdminUserAction(
       });
       return u;
     });
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/users`);
+    revalidatePath(adminPath("fr", "users"));
     return { ok: true, id: user.id };
   } catch (err) {
     const msg = err instanceof Error ? err.message : "internal";
@@ -244,7 +245,7 @@ export async function updateAdminUserAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/users`);
+  revalidatePath(adminPath("fr", "users"));
   return { ok: true };
 }
 
@@ -298,7 +299,7 @@ export async function reset2FACrossUserAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/users`);
+  revalidatePath(adminPath("fr", "users"));
   return { ok: true };
 }
 
@@ -344,6 +345,6 @@ export async function resetPasswordCrossUserAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/users`);
+  revalidatePath(adminPath("fr", "users"));
   return { ok: true };
 }

@@ -12,6 +12,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
 import type { ModuleKind, PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -212,7 +213,7 @@ export async function upsertCategoryAction(
         ipAddress: await getClientIp(),
       },
     });
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/categories`);
+    revalidatePath(adminPath("fr", "categories"));
     return { ok: true, id: cat.id, created };
   } catch (err) {
     const msg = err instanceof Error ? err.message : "internal";
@@ -265,6 +266,6 @@ export async function archiveCategoryAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/categories`);
+  revalidatePath(adminPath("fr", "categories"));
   return { ok: true };
 }

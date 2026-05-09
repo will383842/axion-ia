@@ -14,8 +14,7 @@ import { verifyPasswordSafe } from "@/lib/auth-password";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/client-ip";
 import { signInSchema, setup2FASchema, disable2FASchema } from "@/lib/schemas/auth";
-
-const ADMIN_PREFIX = `/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}`;
+import { adminSegment } from "@/lib/admin-path";
 
 // ============================================================
 // signInAction — login email + password + (optionnel) TOTP
@@ -88,7 +87,7 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
     return { ok: false, error: "Code 2FA invalide ou compte verrouille." };
   }
 
-  redirect(ADMIN_PREFIX);
+  redirect(`/${adminSegment()}`);
 }
 
 // ============================================================
@@ -97,7 +96,7 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
 
 export async function signOutAction(): Promise<void> {
   await signOut({ redirect: false });
-  redirect(`${ADMIN_PREFIX}/login`);
+  redirect(`/${adminSegment()}/login`);
 }
 
 // ============================================================

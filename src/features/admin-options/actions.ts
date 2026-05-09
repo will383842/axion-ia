@@ -6,7 +6,7 @@
 //  - VALIDER → option.status='confirmed' + cree Booking ferme + email
 //    option-confirmed-by-admin + Telegram [OPTION CONFIRMÉE]
 //  - REFUSER → option.status='refused' + libere slot + email
-//    option-refused-by-admin + Telegram [OPTION CONFIRMÉE] (tag global)
+//    option-refused-by-admin + Telegram [OPTION REFUSÉE] (tag dédié)
 
 "use server";
 
@@ -18,6 +18,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { getInterventionPriceCents, enumToSlug } from "@/lib/intervention-type";
+import { adminPath } from "@/lib/admin-path";
 import type { BookingOptionStatus, Locale } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -214,7 +215,7 @@ export async function validateOptionAction(
     bookingId: result.booking.id,
   });
 
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/options`);
+  revalidatePath(adminPath("fr", "options"));
   return { ok: true };
 }
 
@@ -310,7 +311,7 @@ export async function refuseOptionAction(
   });
 
   await sendTelegram({
-    tag: "OPTION CONFIRMÉE", // tag canonical existant — refus est une "decision admin"
+    tag: "OPTION REFUSÉE",
     body: `Option \`${result.id}\` refusée par admin\n• Société : ${result.companyName}\n• Date : ${result.slot.slotDate.toISOString().slice(0, 10)}${parsed.data.reason ? `\n• Motif : ${parsed.data.reason}` : ""}`,
   });
 
@@ -321,7 +322,7 @@ export async function refuseOptionAction(
     reason: parsed.data.reason,
   });
 
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/options`);
+  revalidatePath(adminPath("fr", "options"));
   return { ok: true };
 }
 

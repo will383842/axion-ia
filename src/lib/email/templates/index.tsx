@@ -8,6 +8,7 @@ import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
 import type { Locale } from "../../../../prisma/generated/client";
 import { BookingConfirmedEmail, bookingConfirmedSubject } from "./booking-confirmed";
+import { BookingCancelledEmail, bookingCancelledSubject } from "./booking-cancelled";
 import { OptionPostedEmail, optionPostedSubject } from "./option-posted";
 import { OptionReminderEmail, optionReminderSubject } from "./option-reminder";
 import { OptionExpiredEmail, optionExpiredSubject } from "./option-expired";
@@ -38,6 +39,10 @@ const TEMPLATES: TemplateMap = {
   "booking-confirmed": {
     subject: bookingConfirmedSubject,
     component: BookingConfirmedEmail,
+  },
+  "booking-cancelled": {
+    subject: bookingCancelledSubject,
+    component: BookingCancelledEmail,
   },
   "option-posted": {
     subject: optionPostedSubject,

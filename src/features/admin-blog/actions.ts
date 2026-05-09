@@ -15,6 +15,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
 import type { PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -280,7 +281,7 @@ export async function upsertArticleAction(
       return a;
     });
 
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/blog`);
+    revalidatePath(adminPath("fr", "blog"));
     revalidatePath("/fr/blog");
     revalidatePath("/en/blog");
     revalidatePath(`/fr/blog/${parsed.data.fr.slug}`);
@@ -343,7 +344,7 @@ export async function archiveArticleAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/blog`);
+  revalidatePath(adminPath("fr", "blog"));
   revalidatePath("/fr/blog");
   revalidatePath("/en/blog");
   return { ok: true };

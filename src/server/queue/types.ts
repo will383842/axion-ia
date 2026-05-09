@@ -11,6 +11,7 @@ import type { Locale } from "../../../prisma/generated/client";
 
 export type EmailJobName =
   | "booking-confirmed"
+  | "booking-cancelled"
   | "option-posted"
   | "option-reminder"
   | "option-expired"

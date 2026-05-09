@@ -14,6 +14,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -116,7 +117,7 @@ export async function upsertSettingAction(
   ]);
 
   // Revalidate les pages publiques qui pourraient depend du setting
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/settings`);
+  revalidatePath(adminPath("fr", "settings"));
   revalidatePath("/fr");
   revalidatePath("/en");
   return { ok: true };
@@ -154,6 +155,6 @@ export async function deleteSettingAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/settings`);
+  revalidatePath(adminPath("fr", "settings"));
   return { ok: true };
 }

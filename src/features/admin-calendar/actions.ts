@@ -17,6 +17,9 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
+import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { BookingStatus, CalendarSlotStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -173,7 +176,143 @@ export async function blockDateAction(
     });
   });
 
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/calendrier`);
+  revalidatePath(adminPath("fr", "calendrier"));
+  return { ok: true };
+}
+
+// ============================================================
+// cancelBooking — Sprint 24 / C3
+// ============================================================
+//
+// Annule une reservation ferme : Booking.status='cancelled', libere le slot
+// (status='available' si pas d'autre option/booking concurrent), envoie
+// email au contact (si trouve) et alerte Telegram [ANNULATION].
+// Le contact provient soit de la Submission liee, soit de la BookingOption
+// d'origine (slotId match + status='converted').
+
+const cancelBookingSchema = z.object({
+  bookingId: z.string().uuid(),
+  reason: z.string().min(1, "Motif requis.").max(500),
+});
+export type CancelBookingState = { ok: true } | { ok: false; error: string };
+
+export async function cancelBookingAction(
+  _prev: CancelBookingState,
+  formData: FormData,
+): Promise<CancelBookingState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  const parsed = cancelBookingSchema.safeParse({
+    bookingId: formData.get("bookingId"),
+    reason: formData.get("reason"),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
+  }
+
+  const ip = await getClientIp();
+
+  const result = await prisma.$transaction(async (tx) => {
+    const lockRows = await tx.$queryRaw<Array<{ id: string; status: string }>>`
+      SELECT id, status FROM bookings
+      WHERE id = ${parsed.data.bookingId}::uuid
+      FOR UPDATE
+    `;
+    if (lockRows.length === 0) throw new Error("booking_not_found");
+    if (lockRows[0]?.status === "cancelled") throw new Error("booking_already_cancelled");
+
+    const booking = await tx.booking.findUnique({
+      where: { id: parsed.data.bookingId },
+      include: {
+        slot: true,
+        submission: {
+          select: { contactName: true, contactEmail: true, locale: true },
+        },
+      },
+    });
+    if (!booking) throw new Error("booking_not_found");
+
+    await tx.booking.update({
+      where: { id: parsed.data.bookingId },
+      data: {
+        status: "cancelled",
+        internalNotes: parsed.data.reason,
+      },
+    });
+
+    // Libere slot si plus rien dessus
+    if (booking.slotId && booking.slot) {
+      const otherOption = await tx.bookingOption.findFirst({
+        where: {
+          slotId: booking.slotId,
+          status: { in: ["pending", "confirmed"] },
+        },
+        select: { id: true },
+      });
+      if (!otherOption && booking.slot.status === "reserved") {
+        await tx.calendarSlot.update({
+          where: { id: booking.slotId },
+          data: {
+            status: "available",
+            displaySector: null,
+            interventionType: null,
+            participantsCount: null,
+          },
+        });
+      }
+    }
+
+    // Recupere contact depuis BookingOption d'origine si pas de submission
+    let contactName = booking.submission?.contactName ?? null;
+    let contactEmail = booking.submission?.contactEmail ?? null;
+    if (!contactEmail && booking.slotId) {
+      const originOption = await tx.bookingOption.findFirst({
+        where: { slotId: booking.slotId, status: "converted" },
+        select: { contactName: true, contactEmail: true },
+        orderBy: { createdAt: "desc" },
+      });
+      if (originOption) {
+        contactName = originOption.contactName;
+        contactEmail = originOption.contactEmail;
+      }
+    }
+
+    await tx.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "booking.cancelled",
+        targetType: "booking",
+        targetId: parsed.data.bookingId,
+        changes: { reason: parsed.data.reason },
+        ipAddress: ip,
+      },
+    });
+
+    return { booking, contactName, contactEmail };
+  });
+
+  await sendTelegram({
+    tag: "ANNULATION",
+    body: `Réservation \`${result.booking.id}\` annulée par admin\n• Date : ${result.booking.bookingDate.toISOString().slice(0, 10)}\n• Type : ${result.booking.interventionType}\n• Motif : ${parsed.data.reason}`,
+  });
+
+  if (result.contactEmail && result.contactName) {
+    await enqueueEmail("booking-cancelled", result.contactEmail, result.booking.locale, {
+      contactName: result.contactName,
+      bookingDate: result.booking.bookingDate.toISOString().slice(0, 10),
+      interventionType: result.booking.interventionType,
+      reason: parsed.data.reason,
+    });
+  }
+
+  revalidatePath(adminPath("fr", "calendrier"));
+  revalidatePath(adminPath("fr", "options"));
+  revalidatePath("/fr/reserver");
+  revalidatePath("/en/book");
   return { ok: true };
 }
 
@@ -225,6 +364,6 @@ export async function unblockDateAction(
     }),
   ]);
 
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/calendrier`);
+  revalidatePath(adminPath("fr", "calendrier"));
   return { ok: true };
 }

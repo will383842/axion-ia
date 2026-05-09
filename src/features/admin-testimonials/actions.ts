@@ -14,6 +14,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
 import type { TestimonialStatus, ModuleKind } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -201,7 +202,7 @@ export async function upsertTestimonialAction(
         ipAddress: await getClientIp(),
       },
     });
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/testimonials`);
+    revalidatePath(adminPath("fr", "testimonials"));
     revalidatePath("/fr");
     revalidatePath("/en");
     return { ok: true, id: t.id, created };
@@ -246,6 +247,6 @@ export async function archiveTestimonialAction(
       },
     }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/testimonials`);
+  revalidatePath(adminPath("fr", "testimonials"));
   return { ok: true };
 }

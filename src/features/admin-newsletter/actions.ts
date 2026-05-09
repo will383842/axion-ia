@@ -14,6 +14,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { adminPath } from "@/lib/admin-path";
 import type { NewsletterStatus, Locale } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -177,7 +178,7 @@ export async function forceUnsubscribeAction(
     }),
     prisma.activityLog.create({ data: logData }),
   ]);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"}/newsletter`);
+  revalidatePath(adminPath("fr", "newsletter"));
   return { ok: true };
 }
 
