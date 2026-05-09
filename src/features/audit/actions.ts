@@ -12,6 +12,7 @@ import { auditSchema, auditRequestSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -70,7 +71,7 @@ export async function submitAuditAction(
 
   await sendTelegram({
     tag: "AUDIT",
-    body: `Nouveau audit ${parsed.data.size} • ${parsed.data.modality}\n• Secteur : ${parsed.data.industry}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    body: `Nouveau audit ${parsed.data.size} • ${parsed.data.modality}\n• Secteur : ${parsed.data.industry}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
   });
 
   await enqueueEmail("audit-confirmed", parsed.data.email, locale, {
@@ -152,7 +153,7 @@ export async function submitAuditRequestAction(
 
   await sendTelegram({
     tag: "AUDIT",
-    body: `Nouvelle demande audit ${parsed.data.auditType} • ${parsed.data.size}\n• Secteur : ${parsed.data.industry}\n• Lieu : ${parsed.data.city}, ${parsed.data.country} (${parsed.data.modality})\n• Maturité : ${parsed.data.maturity}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    body: `Nouvelle demande audit ${parsed.data.auditType} • ${parsed.data.size}\n• Secteur : ${parsed.data.industry}\n• Lieu : ${parsed.data.city}, ${parsed.data.country} (${parsed.data.modality})\n• Maturité : ${parsed.data.maturity}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
   });
 
   // Sprint 15 fix Fork 2 W1-2 : enqueue avec tools/role pour Telegram + email

@@ -11,6 +11,7 @@ import { contactSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -61,7 +62,7 @@ export async function submitContactAction(
 
   await sendTelegram({
     tag: "CONTACT",
-    body: `Nouveau message\n• De : ${parsed.data.name} (\`${parsed.data.email}\`)${parsed.data.company ? `\n• Société : ${parsed.data.company}` : ""}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    body: `Nouveau message\n• De : ${redactContactLine(parsed.data.name, parsed.data.email)}${parsed.data.company ? `\n• Société : ${parsed.data.company}` : ""}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
   });
 
   await enqueueEmail("contact-confirmed", parsed.data.email, locale, {

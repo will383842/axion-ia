@@ -19,6 +19,7 @@ import { bookingSchema, option48hSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -127,7 +128,7 @@ export async function createBookingAction(
 
   await sendTelegram({
     tag: "INTERVENTION",
-    body: `Nouvelle réservation ${interventionTypeEnum}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${parsed.data.participantsCount}\n• Prix : ${pricePaidCents != null ? `${(pricePaidCents / 100).toFixed(0)} € HT` : "sur devis"}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${booking.id}\``,
+    body: `Nouvelle réservation ${interventionTypeEnum}\n• Date : ${parsed.data.date} ${parsed.data.time}\n• Participants : ${parsed.data.participantsCount}\n• Prix : ${pricePaidCents != null ? `${(pricePaidCents / 100).toFixed(0)} € HT` : "sur devis"}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${booking.id}\``,
   });
 
   await enqueueEmail("booking-confirmed", parsed.data.email, locale, {
@@ -236,7 +237,7 @@ export async function postOption48hAction(
 
     await sendTelegram({
       tag: "OPTION",
-      body: `Nouvelle option 48h\n• Société : ${parsed.data.companyName} (${parsed.data.companySector})\n• Intervention : ${interventionTypeEnum}\n• Participants : ${parsed.data.participantsCount}\n• Contact : ${parsed.data.contactName} (\`${parsed.data.contactEmail}\`)\n• Expire : ${expiresAt.toISOString()}\n• Locale : ${locale}\n• ID : \`${result.option.id}\``,
+      body: `Nouvelle option 48h\n• Société : ${parsed.data.companyName} (${parsed.data.companySector})\n• Intervention : ${interventionTypeEnum}\n• Participants : ${parsed.data.participantsCount}\n• Contact : ${redactContactLine(parsed.data.contactName, parsed.data.contactEmail)}\n• Expire : ${expiresAt.toISOString()}\n• Locale : ${locale}\n• ID : \`${result.option.id}\``,
     });
 
     await enqueueEmail("option-posted", parsed.data.contactEmail, locale, {

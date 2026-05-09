@@ -16,6 +16,7 @@ import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { redactEmail } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -81,7 +82,7 @@ export async function subscribeNewsletterAction(
   if (sub.status === "pending") {
     await sendTelegram({
       tag: "NEWSLETTER",
-      body: `Nouvelle inscription pending\n• Email : \`${parsed.data.email}\`\n• Locale : ${locale}${source ? `\n• Source : ${source}` : ""}`,
+      body: `Nouvelle inscription pending\n• Email : \`${redactEmail(parsed.data.email)}\`\n• Locale : ${locale}${source ? `\n• Source : ${source}` : ""}`,
       silent: true,
     });
   }
@@ -149,7 +150,7 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
     });
     await sendTelegram({
       tag: "NEWSLETTER",
-      body: `Confirmation opt-in\n• Email : \`${sub.email}\`\n• Locale : ${sub.locale}`,
+      body: `Confirmation opt-in\n• Email : \`${redactEmail(sub.email)}\`\n• Locale : ${sub.locale}`,
       silent: true,
     });
     return {
@@ -197,7 +198,7 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
     });
     await sendTelegram({
       tag: "NEWSLETTER",
-      body: `Désinscription\n• Email : \`${sub.email}\`\n• Locale : ${sub.locale}`,
+      body: `Désinscription\n• Email : \`${redactEmail(sub.email)}\`\n• Locale : ${sub.locale}`,
       silent: true,
     });
     return { ok: true, alreadyUnsubscribed: false, email: sub.email };

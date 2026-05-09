@@ -13,6 +13,7 @@ import { getBullConnection } from "../connection";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "../queues";
 import { sendTelegram } from "@/lib/telegram";
+import { redactName } from "@/lib/pii-redaction";
 import type { OptionExpirationJobData } from "../types";
 
 export function startOptionExpirationWorker(): Worker<OptionExpirationJobData> {
@@ -104,7 +105,7 @@ export function startOptionExpirationWorker(): Worker<OptionExpirationJobData> {
 
         await sendTelegram({
           tag: "OPTION EXPIRÉE",
-          body: `Option \`${opt.id}\` expirée\n• Contact : ${opt.contactName}\n• Date : ${result.slotDate.toISOString().slice(0, 10)}\n• Intervention : ${opt.interventionType}`,
+          body: `Option \`${opt.id}\` expirée\n• Contact : ${redactName(opt.contactName)}\n• Date : ${result.slotDate.toISOString().slice(0, 10)}\n• Intervention : ${opt.interventionType}`,
           silent: true,
         });
       }

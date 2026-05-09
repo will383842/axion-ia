@@ -11,6 +11,7 @@ import { implementationSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -63,7 +64,7 @@ export async function submitImplementationAction(
 
   await sendTelegram({
     tag: "AUTO",
-    body: `Nouvelle implémentation ${parsed.data.type} • budget ${parsed.data.budget}\n• Contact : ${parsed.data.contact} (\`${parsed.data.email}\`)\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    body: `Nouvelle implémentation ${parsed.data.type} • budget ${parsed.data.budget}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
   });
 
   await enqueueEmail("implementation-confirmed", parsed.data.email, locale, {
