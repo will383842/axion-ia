@@ -59,10 +59,29 @@ export interface SendEmailParams {
   /** Newsletter expediteur (`news@`) au lieu de transactionnel (`noreply@`). */
   marketing?: boolean;
   replyTo?: string;
+  /**
+   * P0 RGPD-3 fix audit final 2026-05-09 — token unsubscribe RFC 8058.
+   * Si fourni, on ajoute les headers `List-Unsubscribe` + `List-Unsubscribe-Post`
+   * exigés par Gmail/Yahoo Sender Requirements 2024 + Apple Mail / Outlook.
+   * Sans ces headers : le bouton natif "Désabonner" du client mail n'apparaît
+   * pas → risque classement spam + non-conformité Gmail bulk sender.
+   */
+  unsubscribeToken?: string;
 }
 
 export async function sendEmail(params: SendEmailParams): Promise<{ messageId: string }> {
   const t = getTransport();
+
+  // RFC 8058 — List-Unsubscribe (mandatory bulk senders 2024+).
+  // Format : `<https://...>` (URL one-click) + optionnel `<mailto:...>`.
+  const headers: Record<string, string> = {};
+  if (params.unsubscribeToken) {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+    const url = `${siteUrl}/api/unsubscribe?token=${encodeURIComponent(params.unsubscribeToken)}`;
+    headers["List-Unsubscribe"] = `<${url}>, <mailto:unsubscribe@axion-ia.com>`;
+    headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
+  }
+
   const info = await t.sendMail({
     from: `"${FROM_NAME}" <${params.marketing ? FROM_MARKETING : FROM_ADDRESS}>`,
     to: Array.isArray(params.to) ? params.to.join(", ") : params.to,
@@ -70,6 +89,7 @@ export async function sendEmail(params: SendEmailParams): Promise<{ messageId: s
     html: params.html,
     text: params.text ?? stripHtml(params.html),
     replyTo: params.replyTo,
+    ...(Object.keys(headers).length > 0 ? { headers } : {}),
   });
   return { messageId: info.messageId };
 }

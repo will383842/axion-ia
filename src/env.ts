@@ -31,7 +31,30 @@ export const env = createEnv({
       }),
     AUTH_URL: z.string().url().optional(),
 
-    ADMIN_URL_PREFIX: z.string().min(4).optional(),
+    // P2 audit OWASP-RUNTIME — durci de min(4) → min(16) + refus dev fallback en prod.
+    // ADMIN_URL_PREFIX agit comme secret URL pour eviter brute-force admin —
+    // 16 chars random alphanumeriques = entropie ~96 bits. La valeur dev
+    // `admin-dev-x7k2n9` (publique dans le repo) doit etre refusee en prod.
+    ADMIN_URL_PREFIX: z
+      .string()
+      .min(16)
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "ADMIN_URL_PREFIX is required in production",
+          });
+          return;
+        }
+        if (val.startsWith("admin-dev") || val === "admin-dev-x7k2n9") {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "ADMIN_URL_PREFIX must not use the public dev fallback in production",
+          });
+        }
+      }),
     ADMIN_EMAIL: z.string().email().optional(),
 
     SMTP_HOST: z.string().default("localhost"),
@@ -53,6 +76,33 @@ export const env = createEnv({
     HETZNER_STORAGE_BUCKET: z.string().optional(),
     HETZNER_STORAGE_KEY: z.string().optional(),
     HETZNER_STORAGE_SECRET: z.string().optional(),
+    // P0-OPS-1 fix audit OWASP-RUNTIME — vars SSH rsync requises pour
+    // scripts/backup-postgres.sh + restore-postgres-test.sh. Sans elles
+    // le cron quotidien crash → 0 backup chiffré pendant N jours.
+    HETZNER_STORAGE_USER: z.string().optional(),
+    HETZNER_STORAGE_HOST: z.string().optional(),
+    // P0-OPS-2 fix — passphrase AES-256 backups. ≥ 32 chars random,
+    // refuse fallback dev en prod (superRefine).
+    BACKUP_ENCRYPTION_PASSPHRASE: z
+      .string()
+      .min(32)
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "BACKUP_ENCRYPTION_PASSPHRASE is required in production",
+          });
+          return;
+        }
+        if (val.startsWith("dev_") || val.startsWith("dev-")) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "BACKUP_ENCRYPTION_PASSPHRASE must not start with 'dev_' in production",
+          });
+        }
+      }),
 
     SENTRY_DSN: z.string().url().optional(),
     SENTRY_AUTH_TOKEN: z.string().optional(),
@@ -106,6 +156,9 @@ export const env = createEnv({
     HETZNER_STORAGE_BUCKET: process.env.HETZNER_STORAGE_BUCKET,
     HETZNER_STORAGE_KEY: process.env.HETZNER_STORAGE_KEY,
     HETZNER_STORAGE_SECRET: process.env.HETZNER_STORAGE_SECRET,
+    HETZNER_STORAGE_USER: process.env.HETZNER_STORAGE_USER,
+    HETZNER_STORAGE_HOST: process.env.HETZNER_STORAGE_HOST,
+    BACKUP_ENCRYPTION_PASSPHRASE: process.env.BACKUP_ENCRYPTION_PASSPHRASE,
     SENTRY_DSN: process.env.SENTRY_DSN,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     INDEXNOW_KEY: process.env.INDEXNOW_KEY,

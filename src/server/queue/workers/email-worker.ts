@@ -18,12 +18,23 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     async (job) => {
       const { template, to, locale, payload, marketing } = job.data;
       const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
+      // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
+      // Marketing emails ET transactionnels qui contiennent un lien
+      // unsubscribe DOIVENT exposer les headers `List-Unsubscribe` +
+      // `List-Unsubscribe-Post` pour Gmail/Yahoo/Apple/Outlook 2024+.
+      const unsubscribeToken =
+        payload && typeof payload === "object" && "unsubscribeToken" in payload
+          ? typeof (payload as { unsubscribeToken?: unknown }).unsubscribeToken === "string"
+            ? (payload as { unsubscribeToken: string }).unsubscribeToken
+            : undefined
+          : undefined;
       await sendEmail({
         to,
         subject,
         html,
         text,
         marketing: marketing === true,
+        ...(unsubscribeToken ? { unsubscribeToken } : {}),
       });
     },
     { connection: getBullConnection(), concurrency: 8 },

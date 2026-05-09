@@ -129,7 +129,27 @@ const nextConfig: NextConfig = {
   // memoization in hot paths are sufficient.
   // reactCompiler: true,
   async headers() {
-    return [{ source: "/:path*", headers: [...securityHeaders, ...cdnHeaders] }];
+    return [
+      { source: "/:path*", headers: [...securityHeaders, ...cdnHeaders] },
+      // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
+      // revalide à chaque hit (sitemap-index 9 fichiers + OG images statiques).
+      {
+        source: "/sitemap.xml",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" }],
+      },
+      {
+        source: "/sitemap/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" }],
+      },
+      {
+        source: "/opengraph-image",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800" }],
+      },
+      {
+        source: "/twitter-image",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800" }],
+      },
+    ];
   },
 };
 
