@@ -22,7 +22,20 @@ const baseOptions: RedisOptions = {
   enableReadyCheck: true,
 };
 
-export const redis = globalForRedis.redis ?? new Redis(REDIS_URL, baseOptions);
+function createRedis(): Redis {
+  const client = new Redis(REDIS_URL, baseOptions);
+  // Avoid Node crash from unhandled "error" event when Redis is unreachable
+  // at boot. Connection retries continue per retryStrategy; consumers that
+  // need Redis will see commands fail individually via maxRetriesPerRequest.
+  client.on("error", (err: Error) => {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("[redis]", err.message);
+    }
+  });
+  return client;
+}
+
+export const redis = globalForRedis.redis ?? createRedis();
 
 if (process.env.NODE_ENV !== "production") globalForRedis.redis = redis;
 

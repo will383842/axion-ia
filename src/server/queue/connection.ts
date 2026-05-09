@@ -18,5 +18,10 @@ export function getBullConnection(): Redis {
     maxRetriesPerRequest: null, // requis BullMQ
     enableReadyCheck: false,
   });
+  _bullConnection.on("error", (err: Error) => {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("[bullmq-redis]", err.message);
+    }
+  });
   return _bullConnection;
 }
