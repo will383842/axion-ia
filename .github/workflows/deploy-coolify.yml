@@ -1,0 +1,63 @@
+name: Deploy · Coolify (axion-ia.com)
+
+# Triggers a Coolify deploy via REST API after every push to `main` once
+# the CI gates have passed. Replaces the broken GitHub App webhook flow:
+# we POST directly to Coolify with a long-lived API token stored in
+# repo secrets, so there is no HMAC secret to keep in sync.
+#
+# Required repo secrets (set via `gh secret set <NAME>`):
+#   COOLIFY_API_TOKEN  Sanctum token, format `<id>|<plaintext>` from
+#                      Coolify → Keys & Tokens → Create new token (scope
+#                      write+deploy).
+#   COOLIFY_URL        e.g. `http://178.105.55.15:8000` (no trailing slash).
+#   COOLIFY_APP_UUID   The application UUID, e.g. `mqbmlz1bcwsdwi3t9fxsllqt`
+#                      (Coolify → application → URL contains it).
+#
+# Manual trigger: workflow_dispatch (Actions tab → Run workflow).
+
+on:
+  workflow_run:
+    workflows: ["CI · Gates A + B"]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Trigger Coolify deploy
+    runs-on: ubuntu-latest
+    # Skip if upstream CI failed; allow manual dispatch even when CI didn't run.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: POST /api/v1/deploy
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ] || [ -z "${COOLIFY_APP_UUID:-}" ]; then
+            echo "::error::Missing required secrets (COOLIFY_API_TOKEN, COOLIFY_URL, COOLIFY_APP_UUID). Set them via 'gh secret set'."
+            exit 1
+          fi
+          echo "Triggering deploy on Coolify for app ${COOLIFY_APP_UUID}…"
+          response=$(curl -fsSL -G \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify response: ${response}"
+          # Extract deployment_uuid for traceability in Actions logs.
+          deployment_uuid=$(echo "${response}" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+          if [ -n "${deployment_uuid}" ]; then
+            echo "Deployment queued: ${deployment_uuid}"
+            echo "Track at ${COOLIFY_URL}/deployment/${deployment_uuid}"
+            echo "deployment_uuid=${deployment_uuid}" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Could not extract deployment_uuid from response."
+          fi
