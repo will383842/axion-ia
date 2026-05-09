@@ -60,7 +60,7 @@ Newsletter **double opt-in RFC 8058** correctement implémenté :
 
 ## 3. Droit à l'effacement (RGPD art. 17) — Verdict : **PARTIEL / P1**
 
-**Page legale existe** : `/rgpd` (`src/content/legal.ts:354-357`) + `/mes-donnees` (`src/app/[locale]/mes-donnees/page.tsx:48`) annoncent le droit avec contact `dpo@axion-ia.com`.
+**Page legale existe** : `/rgpd` (`src/content/legal.ts:354-357`) + `/mes-donnees` (`src/app/[locale]/mes-donnees/page.tsx:48`) annoncent le droit avec contact `contact@axion-ia.com`.
 
 **Mais aucune action admin de suppression côté code** :
 
@@ -88,7 +88,7 @@ Newsletter **double opt-in RFC 8058** correctement implémenté :
 Mais **AUCUN endpoint user-facing pour qu'un user récupère ses propres données** (RGPD art. 20.2 « format structuré, couramment utilisé et lisible par machine »).
 
 - **P1-4** : aucun `/api/me` / `/api/gdpr/export?token=…` n'existe. Pour respecter strictement art. 20, le DPO peut faire un export CSV manuel à la demande (process documenté dans `/mes-donnees`), MAIS la doctrine 2026 (CNIL « guide RGPD pour le développeur » + EDPB 02/2024) recommande un mécanisme self-service basé sur lien signé email, similaire au token unsubscribe. **Action** : créer `/api/gdpr-export` produisant un JSON groupant `submissions` (where contactEmail) + `bookings` (via submissionId) + `newsletter_subscribers` (where email) + `activity_logs` (where adminUserId si admin). Cf. modèle `unsubscribe`.
-- **P1-5** : la page `/mes-donnees` (`src/app/[locale]/mes-donnees/page.tsx:91-99`) renvoie **uniquement** vers email `dpo@axion-ia.com`. Pas de lien direct « Demander mes données maintenant ». Acceptable V1 mais à industrialiser dans Sprint 24.
+- **P1-5** : la page `/mes-donnees` (`src/app/[locale]/mes-donnees/page.tsx:91-99`) renvoie **uniquement** vers email `contact@axion-ia.com`. Pas de lien direct « Demander mes données maintenant ». Acceptable V1 mais à industrialiser dans Sprint 24.
 
 ## 5. Mentions légales — Verdict : **OK avec réserves / P1**
 
@@ -106,7 +106,7 @@ Mais **AUCUN endpoint user-facing pour qu'un user récupère ses propres donnée
 
 - **P1-6** : `registrikood` (Estonian commercial registry code, équivalent SIREN) marqué « communiqué sur demande » (`src/content/legal.ts:44, 77`). Or il s'agit d'une donnée **publique** (ariregister.rik.ee) que tout site marchand UE doit afficher en clair. Will l'a en attente côté immat-OÜ. **Bloquant pour B2C UE — contournable en B2B pur**, mais à intégrer dans `env.COMPANY_REGISTRATION_NUMBER` dès réception.
 - **P1-7** : `EU VAT` (numéro de TVA EE) idem « sur demande ». Pour facturation B2B intra-communautaire (reverse charge), le numéro TVA doit figurer sur les factures, et il est de bonne pratique de l'afficher sur les mentions légales (Stripe/Lemon Squeezy/Paddle l'exigent pour B2B EU sales). Idem `env.COMPANY_VAT_ID`.
-- **P2-2** : pas de mention du **DPO email** dans `/mentions-legales`. Bonne pratique : ajouter une section « Délégué à la protection des données » avec `dpo@axion-ia.com` (déjà présent dans `/politique-confidentialite` § Responsable du traitement).
+- **P2-2** : pas de mention du **DPO email** dans `/mentions-legales`. Bonne pratique : ajouter une section « Délégué à la protection des données » avec `contact@axion-ia.com` (déjà présent dans `/politique-confidentialite` § Responsable du traitement).
 
 ## 6. CGU/CGV — Verdict : **OK** (P3 sur médiation)
 
@@ -389,7 +389,7 @@ Audit cabinet **B2B premium UE** ciblant FR/BE/LU/CH (politique de déplacement 
        SameSite=strict, HttpOnly, Secure. maxAge ≤ 7 jours pour console admin
        contenant PII clients. [P2-5, P2-6]
 
-[ ] 8. La boîte mail dpo@axion-ia.com est provisionnée, redirigée vers Will
+[ ] 8. La boîte mail contact@axion-ia.com est provisionnée, redirigée vers Will
        (ou avocat partenaire), et un SLA de réponse < 30 jours est documenté
        dans le runbook DPO. Gabarit de réponse RGPD prêt en FR + EN.
 

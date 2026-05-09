@@ -199,7 +199,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Responsable du traitement",
-          body: "Axion-IA OÜ, société de droit estonien. Email DPO : dpo@axion-ia.com. Autorité de contrôle compétente : AKI (Andmekaitse Inspektsioon, autorité estonienne de protection des données).",
+          body: "Axion-IA OÜ, société de droit estonien. Email DPO : contact@axion-ia.com. Autorité de contrôle compétente : AKI (Andmekaitse Inspektsioon, autorité estonienne de protection des données).",
         },
         {
           title: "Données collectées",
@@ -219,7 +219,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Vos droits",
-          body: "Accès, rectification, effacement, opposition, portabilité, limitation. Contactez dpo@axion-ia.com. Vous avez également le droit d'introduire une réclamation auprès de l'AKI.",
+          body: "Accès, rectification, effacement, opposition, portabilité, limitation. Contactez contact@axion-ia.com. Vous avez également le droit d'introduire une réclamation auprès de l'AKI.",
         },
         {
           title: "Hébergement et transferts",
@@ -244,7 +244,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Data controller",
-          body: "Axion-IA OÜ, Estonian company. DPO email: dpo@axion-ia.com. Competent supervisory authority: AKI (Andmekaitse Inspektsioon, Estonian data protection authority).",
+          body: "Axion-IA OÜ, Estonian company. DPO email: contact@axion-ia.com. Competent supervisory authority: AKI (Andmekaitse Inspektsioon, Estonian data protection authority).",
         },
         {
           title: "Data collected",
@@ -264,7 +264,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Your rights",
-          body: "Access, rectification, erasure, objection, portability, limitation. Contact dpo@axion-ia.com. You also have the right to lodge a complaint with AKI.",
+          body: "Access, rectification, erasure, objection, portability, limitation. Contact contact@axion-ia.com. You also have the right to lodge a complaint with AKI.",
         },
         {
           title: "Hosting and transfers",
@@ -378,7 +378,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Comment exercer vos droits",
-          body: "Email : dpo@axion-ia.com. Réponse sous 30 jours. En cas d'insatisfaction, vous pouvez saisir l'AKI (autorité estonienne de protection des données) — www.aki.ee.",
+          body: "Email : contact@axion-ia.com. Réponse sous 30 jours. En cas d'insatisfaction, vous pouvez saisir l'AKI (autorité estonienne de protection des données) — www.aki.ee.",
         },
       ],
       metaSeo: {
@@ -418,7 +418,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "How to exercise your rights",
-          body: "Email: dpo@axion-ia.com. Reply within 30 days. If unsatisfied, you may file a complaint with AKI (Estonian DPA) — www.aki.ee.",
+          body: "Email: contact@axion-ia.com. Reply within 30 days. If unsatisfied, you may file a complaint with AKI (Estonian DPA) — www.aki.ee.",
         },
       ],
       metaSeo: {

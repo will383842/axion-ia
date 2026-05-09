@@ -27,20 +27,20 @@
 
 ## Records TXT (email security)
 
-| Type | Name                | Value                                                                                                        | Notes                                        |
-| ---- | ------------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| TXT  | @                   | `v=spf1 mx ip4:<CPX32-IPv4> -all`                                                                            | SPF strict                                   |
-| TXT  | \_dmarc             | `v=DMARC1; p=quarantine; pct=100; rua=mailto:dpo@axion-ia.com; ruf=mailto:dpo@axion-ia.com; adkim=s; aspf=s` | DMARC quarantine + reports                   |
-| TXT  | default.\_domainkey | `v=DKIM1; k=rsa; p=<DKIM-PUBLIC-KEY-2048-BITS>`                                                              | DKIM signature (généré par PowerMTA)         |
-| TXT  | mta-sts             | `v=STSv1; id=2026050901;`                                                                                    | MTA-STS policy (avec well-known/mta-sts.txt) |
-| TXT  | \_smtp.\_tls        | `v=TLSRPTv1; rua=mailto:dpo@axion-ia.com`                                                                    | TLS-RPT reports                              |
+| Type | Name                | Value                                                                                                                | Notes                                        |
+| ---- | ------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| TXT  | @                   | `v=spf1 mx ip4:<CPX32-IPv4> -all`                                                                                    | SPF strict                                   |
+| TXT  | \_dmarc             | `v=DMARC1; p=quarantine; pct=100; rua=mailto:contact@axion-ia.com; ruf=mailto:contact@axion-ia.com; adkim=s; aspf=s` | DMARC quarantine + reports                   |
+| TXT  | default.\_domainkey | `v=DKIM1; k=rsa; p=<DKIM-PUBLIC-KEY-2048-BITS>`                                                                      | DKIM signature (généré par PowerMTA)         |
+| TXT  | mta-sts             | `v=STSv1; id=2026050901;`                                                                                            | MTA-STS policy (avec well-known/mta-sts.txt) |
+| TXT  | \_smtp.\_tls        | `v=TLSRPTv1; rua=mailto:contact@axion-ia.com`                                                                        | TLS-RPT reports                              |
 
 ## Records CAA (autorisation Let's Encrypt)
 
-| Type | Name | Flags | Tag   | Value                     | Notes      |
-| ---- | ---- | ----- | ----- | ------------------------- | ---------- |
-| CAA  | @    | 0     | issue | "letsencrypt.org"         | Caddy ACME |
-| CAA  | @    | 0     | iodef | "mailto:dpo@axion-ia.com" | Reporting  |
+| Type | Name | Flags | Tag   | Value                         | Notes      |
+| ---- | ---- | ----- | ----- | ----------------------------- | ---------- |
+| CAA  | @    | 0     | issue | "letsencrypt.org"             | Caddy ACME |
+| CAA  | @    | 0     | iodef | "mailto:contact@axion-ia.com" | Reporting  |
 
 ## Records BIMI (logo email — ADR 0009 future)
 

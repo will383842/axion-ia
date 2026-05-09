@@ -40,7 +40,7 @@ Si vous souhaitez que nous transmettions directement ces données à un autre re
 
 Cordialement,
 DPO Axion-IA OÜ
-dpo@axion-ia.com
+contact@axion-ia.com
 
 ---
 
@@ -68,4 +68,4 @@ If you want us to transmit this data directly to another controller, share their
 
 Best regards,
 DPO Axion-IA OÜ
-dpo@axion-ia.com
+contact@axion-ia.com

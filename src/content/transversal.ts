@@ -260,12 +260,12 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     fr: {
       title: "Comment Axion-IA sécurise mes données ?",
       excerpt: "Hébergement UE Hetzner Frankfurt, RGPD strict, pas de partage tiers.",
-      body: "Toutes les données client sont hébergées sur Hetzner CPX32 à Frankfurt (UE). Aucun partage avec des tiers sans consentement explicite. Les modèles IA peuvent être hébergés chez vous (on-prem) ou sur infrastructure dédiée si requis. Politique RGPD complète, exercice des droits sous 30 jours, DPO joignable à dpo@axion-ia.com. Anonymisation systématique des échantillons utilisés pour démos.",
+      body: "Toutes les données client sont hébergées sur Hetzner CPX32 à Frankfurt (UE). Aucun partage avec des tiers sans consentement explicite. Les modèles IA peuvent être hébergés chez vous (on-prem) ou sur infrastructure dédiée si requis. Politique RGPD complète, exercice des droits sous 30 jours, DPO joignable à contact@axion-ia.com. Anonymisation systématique des échantillons utilisés pour démos.",
     },
     en: {
       title: "How does Axion-IA secure my data?",
       excerpt: "EU hosting Hetzner Frankfurt, strict GDPR, no third-party sharing.",
-      body: "All client data is hosted on Hetzner CPX32 in Frankfurt (EU). No sharing with third parties without explicit consent. AI models can be hosted with you (on-prem) or on dedicated infrastructure if required. Complete GDPR policy, rights exercise within 30 days, DPO reachable at dpo@axion-ia.com. Systematic anonymisation of samples used for demos.",
+      body: "All client data is hosted on Hetzner CPX32 in Frankfurt (EU). No sharing with third parties without explicit consent. AI models can be hosted with you (on-prem) or on dedicated infrastructure if required. Complete GDPR policy, rights exercise within 30 days, DPO reachable at contact@axion-ia.com. Systematic anonymisation of samples used for demos.",
     },
   },
   {

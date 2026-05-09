@@ -20,10 +20,7 @@ livraisons.
   - URL : https://www.cloudflare.com/cloudflare-customer-dpa/
   - Procédure : Dashboard CF → Manage Account → Configurations → Privacy → Sign
   - Mettre à jour `_AUDIT/DPA-REGISTER.md` §3 (date)
-- [ ] **A3** Créer boîte mail `dpo@axion-ia.com`
-  - Hébergeur mail (PowerMTA ou Hetzner mailbox).
-  - Vérifier réception en envoyant un test depuis un compte externe.
-  - Configurer redirection vers boîte personnelle Will pendant V1.
+- [x] **A3** ~~Créer boîte mail DPO~~ → **résolu** : Axion-IA OÜ utilise `contact@axion-ia.com` (boîte existante) comme adresse RGPD/DPO unique. Pas de boîte dédiée à créer. Will = DPO de fait pour V1 (gérant unique, < 250 employés → pas d'obligation de désigner un DPO formel RGPD art. 37).
 
 ---
 
@@ -79,7 +76,7 @@ Référence : `docs/ops/dns-records.md`. IP cible Hetzner : `178.105.55.15`.
 - [ ] **C10** TXT email security (4 records) :
   - SPF : `v=spf1 mx ip4:178.105.55.15 -all`
   - DKIM : `default._domainkey` → `v=DKIM1; k=rsa; p=<2048-bit-key>`
-  - DMARC : `_dmarc` → `v=DMARC1; p=quarantine; rua=mailto:dpo@axion-ia.com; pct=100; adkim=s; aspf=s`
+  - DMARC : `_dmarc` → `v=DMARC1; p=quarantine; rua=mailto:contact@axion-ia.com; pct=100; adkim=s; aspf=s`
   - BIMI (optionnel) : `default._bimi` → `v=BIMI1; l=https://axion-ia.com/bimi-logo.svg`
 - [ ] **C11** CAA :
   - Type CAA · Nom `@` · Tag `issue` · Valeur `letsencrypt.org`

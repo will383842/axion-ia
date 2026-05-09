@@ -90,8 +90,8 @@ export default async function MyDataPage({ params }: Props) {
           <div className="text-fg-soft mt-10 space-y-4 text-base leading-relaxed">
             <p>
               {isFr ? "Pour exercer un droit, écrivez à" : "To exercise a right, email"}{" "}
-              <a className="text-primary hover:underline" href="mailto:dpo@axion-ia.com">
-                dpo@axion-ia.com
+              <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+                contact@axion-ia.com
               </a>{" "}
               {isFr
                 ? "avec votre identité (copie pièce d'identité acceptée). Réponse sous 30 jours conformément à l'art. 12 RGPD."

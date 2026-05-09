@@ -1,6 +1,10 @@
 # DPA Register — Axion-IA OÜ
 
-**Responsable** : Will (gérant Axion-IA OÜ) · DPO email `dpo@axion-ia.com`
+**Responsable** : Will (gérant Axion-IA OÜ) · contact RGPD = `contact@axion-ia.com`
+**Désignation DPO** : pas d'obligation formelle (RGPD art. 37 — Axion-IA OÜ
+est gérant unique, < 250 employés, pas de profilage à grande échelle).
+Will agit comme **DPO de fait** : toute demande RGPD passe par
+`contact@axion-ia.com`.
 **Tenue** : ce fichier sert de registre RGPD art. 30 (registre des activités
 de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 **Statut juridique** : RGPD (UE) 2016/679, droit estonien (AKI compétent).
@@ -129,6 +133,6 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | ---------- | ----------------------------------------------------------------------------- |
 | 2026-05-09 | Création du registre (Sprint 24.1). 4 lignes à signer/accepter avant cutover. |
 | 2026-05-09 | ADR 0010 acté (minimisation PII Telegram Option A).                           |
-| _(date)_   | DPA Hetzner signé (Will). Référence : ********\_********                      |
+| _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***              |
 | _(date)_   | DPA Cloudflare accepté (Will).                                                |
 | _(date)_   | Audit AKI annuel (rappel : prévoir Q4 2026).                                  |

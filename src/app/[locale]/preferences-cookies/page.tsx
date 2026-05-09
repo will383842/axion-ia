@@ -76,8 +76,8 @@ export default async function CookiePreferencesPage({ params }: Props) {
             {isFr
               ? "Pour exercer vos droits RGPD ou demander un journal complet des cookies déposés, écrivez à"
               : "To exercise your GDPR rights or request a complete log of deposited cookies, email"}{" "}
-            <a className="text-primary hover:underline" href="mailto:dpo@axion-ia.com">
-              dpo@axion-ia.com
+            <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+              contact@axion-ia.com
             </a>
             .
           </p>

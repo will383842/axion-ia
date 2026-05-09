@@ -209,7 +209,7 @@
 - [ ] DPA Cloudflare accepté (online)
 - [ ] DPA Backblaze accepté (online) + region switchée EU
 - [ ] Décision Telegram : minimisation PII OU switch Mattermost UE
-- [ ] DPO email `dpo@axion-ia.com` actif (boîte créée + monitoré)
+- [ ] DPO email `contact@axion-ia.com` actif (boîte créée + monitoré)
 
 ### Tests
 
@@ -266,7 +266,7 @@ auxquels Axion-IA OÜ recourt pour le traitement de vos données :
 | Telegram FZ-LLC | Notifications admin (Telegram Bot API) | Email contact (uniquement si formulaire contact) | Émirats Arabes Unis | Pas de DPA standard — minimisation PII appliquée |
 
 Vous pouvez exercer vos droits RGPD (accès, rectification, effacement,
-portabilité, opposition) en écrivant à dpo@axion-ia.com sous 30 jours.
+portabilité, opposition) en écrivant à contact@axion-ia.com sous 30 jours.
 
 Aucune donnée n'est vendue ni partagée à des fins publicitaires.
 ```

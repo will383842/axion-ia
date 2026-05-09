@@ -51,7 +51,7 @@
 | Bio expert          | ⚠️ **C-P0-2** | `transversal.ts:42-43` "Will · Founder · 10 ans digital" = trop court (< 30 chars). Cible E-E-A-T = 150-200 mots avec certifications, parcours, prix                     |
 | Last-modified dates | ❌ **C-P0-1** | `datePublished` présent, **aucun `dateModified`** sur articles blog ni cas-concrets. Articles 2026 affichent date publi seule. Sitemap `lastModified = now` (date build) |
 | Trust OÜ estonienne | ✅            | Header logo, footer copyright, `legalName: "Axion-IA OÜ"` partout                                                                                                        |
-| RGPD compliance     | ✅            | `/politique-confidentialite`, `/desabonnement` (RFC 8058 + RGPD rights), DPO email `dpo@axion-ia.com` (`legal.ts:234`)                                                   |
+| RGPD compliance     | ✅            | `/politique-confidentialite`, `/desabonnement` (RFC 8058 + RGPD rights), DPO email `contact@axion-ia.com` (`legal.ts:234`)                                               |
 | Hetzner EU          | ✅            | llms-full.txt:27 "Hetzner CPX32 Frankfurt", `/politique-confidentialite`                                                                                                 |
 | Registrikood + VAT  | ❌ **C-P0-3** | `legal.ts:40` "à compléter" placeholder — bloquant légal Estonia + crawlers                                                                                              |
 

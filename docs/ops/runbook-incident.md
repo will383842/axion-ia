@@ -187,7 +187,7 @@ curl -fsS https://axion-ia.com/api/healthz | jq .
 
 ### 4.3 RGPD obligation
 
-Notification CNIL si fuite données = 72h max. DPO : `dpo@axion-ia.com`.
+Notification CNIL si fuite données = 72h max. DPO : `contact@axion-ia.com`.
 
 ---
 
@@ -386,7 +386,7 @@ docker exec axion-ia-postgres-prod psql -U axion_ia -d axion_ia_prod -c "
 
 ### 12.4 Notify CNIL si données utilisateurs touchées
 
-DPO `dpo@axion-ia.com` doit déclarer sous 72h via `notifications.cnil.fr`.
+DPO `contact@axion-ia.com` doit déclarer sous 72h via `notifications.cnil.fr`.
 
 ---
 
@@ -397,7 +397,7 @@ DPO `dpo@axion-ia.com` doit déclarer sous 72h via `notifications.cnil.fr`.
 | Rôle            | Contact                                |
 | --------------- | -------------------------------------- |
 | Tech lead       | Will (williamsjullin@gmail.com)        |
-| DPO             | dpo@axion-ia.com                       |
+| DPO             | contact@axion-ia.com                   |
 | Hetzner support | https://console.hetzner.cloud → ticket |
 | Cloudflare      | https://dash.cloudflare.com → support  |
 

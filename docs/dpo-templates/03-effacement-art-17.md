@@ -44,7 +44,7 @@ En cas d'insatisfaction, vous pouvez introduire une réclamation auprès de l'AK
 
 Cordialement,
 DPO Axion-IA OÜ
-dpo@axion-ia.com
+contact@axion-ia.com
 
 ---
 
@@ -69,4 +69,4 @@ If unsatisfied, you may lodge a complaint with AKI — www.aki.ee.
 
 Best regards,
 DPO Axion-IA OÜ
-dpo@axion-ia.com
+contact@axion-ia.com

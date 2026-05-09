@@ -46,7 +46,7 @@ A     sentry.axion-ia.com    → <IP-CPX32>     (proxied)
 A     plausible.axion-ia.com → <IP-CPX32>     (proxied)
 A     uptime.axion-ia.com    → <IP-CPX32>     (proxied)
 TXT   axion-ia.com           → "v=spf1 mx -all"
-TXT   _dmarc.axion-ia.com    → "v=DMARC1; p=quarantine; rua=mailto:dpo@axion-ia.com; ruf=mailto:dpo@axion-ia.com"
+TXT   _dmarc.axion-ia.com    → "v=DMARC1; p=quarantine; rua=mailto:contact@axion-ia.com; ruf=mailto:contact@axion-ia.com"
 TXT   default._domainkey.axion-ia.com → "v=DKIM1; k=rsa; p=<dkim-public-key-2048-bits>"
 ```
 

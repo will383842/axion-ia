@@ -781,7 +781,7 @@ M10 terminé. VPS Hetzner provisionné, domaine acquis, IP dédiée commandée.
 
 - Plausible self-hosted (pas de bannière cookie obligatoire).
 - Pas de tracking tiers (pas de Google Analytics, pas de Facebook Pixel).
-- DPO email `dpo@axion-ia.com` opérationnel.
+- DPO email `contact@axion-ia.com` opérationnel.
 - Procédures droits RGPD documentées (accès, rectification, suppression, portabilité, opposition).
 - Validation Will / cabinet juridique sur les pages légales avant M11.
 
