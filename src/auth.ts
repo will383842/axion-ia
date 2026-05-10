@@ -96,11 +96,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ipAddress: { type: "hidden" },
       },
       async authorize(raw) {
-        // 1. Validation Zod
+        // 1. Validation Zod.
+        // Important: HTML forms send empty fields as `""` (empty string),
+        // and `signInAction` forwards `totp: parsed.data.totp ?? ""` to
+        // signIn(). But signInSchema.totp is `z.string().regex(/^\d{6}$/).optional()`
+        // which rejects "" (only accepts undefined or 6 digits). Without
+        // the normalization below, every login WITHOUT 2FA fails with a
+        // silent Zod throw → CredentialsSignin → "Email, mot de passe ou
+        // code 2FA invalide" misleading error in the UI.
+        // Discovered live during M9 admin first sign-in 2026-05-10 by
+        // querying activity_log: action=auth.login.failed but no inner
+        // reason from auth.ts (unknown_email/invalid_password/etc.) — only
+        // the outer catch in actions.ts. Root cause: the early return at
+        // safeParse line was the silent culprit.
         const parsed = signInSchema.safeParse({
           email: raw?.email,
           password: raw?.password,
-          totp: raw?.totp,
+          totp: raw?.totp || undefined, // normalize "" → undefined
         });
         if (!parsed.success) return null;
         const { email, password, totp } = parsed.data;

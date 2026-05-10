@@ -68,12 +68,15 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
     return { ok: false, error: "Code 2FA requis.", requires2FA: true };
   }
 
-  // Delegue a Auth.js Credentials provider qui re-verifie tout + emet le JWT
+  // Delegue a Auth.js Credentials provider qui re-verifie tout + emet le JWT.
+  // Pass `undefined` for missing totp (NOT empty string) so the inner Zod
+  // schema in auth.ts accepts it via `.optional()`. Empty string fails the
+  // regex and produces a silent CredentialsSignin throw.
   try {
     await signIn("credentials", {
       email: parsed.data.email,
       password: parsed.data.password,
-      totp: parsed.data.totp ?? "",
+      totp: parsed.data.totp ?? undefined,
       ipAddress: ip,
       redirect: false,
     });
