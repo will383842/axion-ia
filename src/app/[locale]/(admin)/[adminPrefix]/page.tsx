@@ -73,6 +73,25 @@ export default async function AdminDashboardPage({ params }: PageProps) {
       </div>
 
       <div className="admin-card">
+        <h2 className="admin-h2">Ops · Monitoring</h2>
+        <p className="admin-meta-block">Centralisation des outils tiers et des alertes ops :</p>
+        <ul className="admin-meta-block">
+          <li>
+            <a href={`/fr/${adminPrefix}/infra`} className="admin-link">
+              /infra
+            </a>{" "}
+            — Console infra (14 outils, statut live, liens directs)
+          </li>
+          <li>
+            <a href={`/fr/${adminPrefix}/alerts`} className="admin-link">
+              /alerts
+            </a>{" "}
+            — Alertes agrégées (Sentry · UptimeRobot · Coolify)
+          </li>
+        </ul>
+      </div>
+
+      <div className="admin-card">
         <h2 className="admin-h2">Sections M9 à venir</h2>
         <p className="admin-meta-block">
           14 sections complètes prévues : Calendrier · Options · Soumissions · Blog · Cas concrets ·
