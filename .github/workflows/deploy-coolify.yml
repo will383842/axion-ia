@@ -6,12 +6,23 @@ name: Deploy · Coolify (axion-ia.com)
 # repo secrets, so there is no HMAC secret to keep in sync.
 #
 # Required repo secrets (set via `gh secret set <NAME>`):
-#   COOLIFY_API_TOKEN  Sanctum token, format `<id>|<plaintext>` from
-#                      Coolify → Keys & Tokens → Create new token (scope
-#                      write+deploy).
-#   COOLIFY_URL        e.g. `http://178.105.55.15:8000` (no trailing slash).
-#   COOLIFY_APP_UUID   The application UUID, e.g. `mqbmlz1bcwsdwi3t9fxsllqt`
-#                      (Coolify → application → URL contains it).
+#   COOLIFY_API_TOKEN     Sanctum token, format `<id>|<plaintext>` from
+#                         Coolify → Keys & Tokens → Create new token (scope
+#                         write+deploy).
+#   COOLIFY_URL           e.g. `http://178.105.55.15:8000` (no trailing slash).
+#   COOLIFY_APP_UUID      The application UUID, e.g. `mqbmlz1bcwsdwi3t9fxsllqt`
+#                         (Coolify → application → URL contains it).
+#   CLOUDFLARE_API_TOKEN  Cloudflare zone token with Cache:Purge permission.
+#   CLOUDFLARE_ZONE_ID    Zone ID for axion-ia.com.
+#
+# Pipeline: trigger deploy → wait for it to finish → purge Cloudflare cache.
+# The CF purge step is critical: without it, edge nodes serve stale HTML
+# with old Server Action IDs that don't match the new deployed code, causing
+# `UnrecognizedActionError: Server Action … was not found on the server`
+# on POST forms (most painful on /admin/login). The CF Cache Rule "Admin
+# bypass cache" already prevents admin caching, but public pages with
+# Server Actions (e.g. /reserver, /contact) can also see this if cached
+# pre-deploy. Full purge_everything is heavy-handed but bulletproof.
 #
 # Manual trigger: workflow_dispatch (Actions tab → Run workflow).
 
@@ -61,3 +72,50 @@ jobs:
           else
             echo "::warning::Could not extract deployment_uuid from response."
           fi
+        id: deploy
+
+      - name: Wait for Coolify deployment to finish (max 30 min)
+        if: steps.deploy.outputs.deployment_uuid != ''
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          DEPLOYMENT_UUID: ${{ steps.deploy.outputs.deployment_uuid }}
+        run: |
+          set -euo pipefail
+          DEADLINE=$((SECONDS + 1800))
+          while [ $SECONDS -lt $DEADLINE ]; do
+            STATUS=$(curl -fsSL -m 15 \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/deployments/${DEPLOYMENT_UUID}" 2>/dev/null \
+              | grep -oE '"status":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+            echo "[$(date +%H:%M:%S)] deploy status: ${STATUS}"
+            case "${STATUS}" in
+              finished) echo "Deployment succeeded ✓"; exit 0 ;;
+              failed|cancelled-by-user) echo "::error::Deployment ${STATUS}"; exit 1 ;;
+              "") echo "::warning::Empty status from API, retrying"; sleep 30 ;;
+              *) sleep 30 ;;
+            esac
+          done
+          echo "::error::Deployment timeout (30 min)"; exit 1
+
+      - name: Purge Cloudflare cache (post-deploy)
+        if: success()
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ZONE_ID:-}" ]; then
+            echo "::warning::Skipping CF purge — secrets not set"; exit 0
+          fi
+          echo "Purging Cloudflare cache for zone ${CLOUDFLARE_ZONE_ID}…"
+          response=$(curl -fsSL -m 30 -X POST \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}' \
+            "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache")
+          echo "${response}" | grep -q '"success":true' || {
+            echo "::error::CF purge failed: ${response}"
+            exit 1
+          }
+          echo "Cloudflare cache purged ✓"
