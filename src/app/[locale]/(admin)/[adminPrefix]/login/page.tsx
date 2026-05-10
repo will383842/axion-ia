@@ -23,7 +23,8 @@ export default async function AdminLoginPage({ params }: PageProps) {
     <section className="admin-login-section">
       <h1 className="admin-h1">Connexion admin</h1>
       <p className="admin-lede">
-        Authentification 2FA TOTP requise pour les rôles super_admin et admin.
+        Connectez-vous avec votre email et mot de passe. Si la 2FA est activée sur votre compte, un
+        code TOTP à 6 chiffres vous sera demandé.
       </p>
       <LoginForm />
     </section>

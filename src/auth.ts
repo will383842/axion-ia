@@ -96,6 +96,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ipAddress: { type: "hidden" },
       },
       async authorize(raw) {
+        // [DEBUG TEMPORAIRE 2026-05-10 — à retirer post-validation login]
+        // dump des credentials reçus pour identifier pourquoi le browser
+        // fail mais pas le curl direct sur /api/auth/callback/credentials.
+        try {
+          const r = raw as Record<string, unknown> | null | undefined;
+          console.error(
+            "[authorize-debug] raw=",
+            JSON.stringify({
+              email: r?.email,
+              password_len: typeof r?.password === "string" ? r.password.length : null,
+              totp: r?.totp,
+              totp_type: typeof r?.totp,
+              ipAddress: r?.ipAddress,
+              all_keys: r ? Object.keys(r) : [],
+            }),
+          );
+        } catch {
+          /* never break authorize */
+        }
         // 1. Validation Zod.
         // Important: HTML forms send empty fields as `""` (empty string),
         // and `signInAction` forwards `totp: parsed.data.totp ?? ""` to
@@ -114,7 +133,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           password: raw?.password,
           totp: raw?.totp || undefined, // normalize "" → undefined
         });
-        if (!parsed.success) return null;
+        if (!parsed.success) {
+          console.error(
+            "[authorize-debug] Zod safeParse FAILED:",
+            JSON.stringify(parsed.error.issues),
+          );
+          return null;
+        }
         const { email, password, totp } = parsed.data;
         const ip = typeof raw?.ipAddress === "string" ? raw.ipAddress : "unknown";
 
