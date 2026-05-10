@@ -607,6 +607,32 @@
   font-weight: 600;
   margin: 8px 0 0;
 }
+.admin-input-with-toggle {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.admin-input-with-toggle .admin-input {
+  flex: 1;
+  padding-right: 88px;
+}
+.admin-input-toggle {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--color-fg-muted);
+  border-radius: 4px;
+}
+.admin-input-toggle:hover {
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+}
 .admin-status-pill {
   display: inline-block;
   font-size: 11px;
