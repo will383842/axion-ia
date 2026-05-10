@@ -136,7 +136,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "husky": "^9.1.7",
     "jest-axe": "^10.0.0",
-    "jsdom": "^29.1.1",
+    "jsdom": "^25.0.1",
     "kill-port": "^2.0.1",
     "linkinator": "^7.6.1",
     "lint-staged": "^15.5.2",
