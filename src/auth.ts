@@ -128,10 +128,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // reason from auth.ts (unknown_email/invalid_password/etc.) — only
         // the outer catch in actions.ts. Root cause: the early return at
         // safeParse line was the silent culprit.
+        // Normalize totp: Auth.js v5 sérialise `undefined` en string littéral
+        // "undefined" via signIn("credentials", { totp: undefined }) — donc
+        // raw.totp arrive comme "undefined" (string 9 chars), pas la valeur
+        // undefined. Le filter ci-dessous traite tous les cas no-totp:
+        // null, undefined, "", "undefined" (string) → undefined réel.
+        const totpRaw = raw?.totp;
+        const totpNorm =
+          typeof totpRaw === "string" && totpRaw && totpRaw !== "undefined" ? totpRaw : undefined;
         const parsed = signInSchema.safeParse({
           email: raw?.email,
           password: raw?.password,
-          totp: raw?.totp || undefined, // normalize "" → undefined
+          totp: totpNorm,
         });
         if (!parsed.success) {
           console.error(
