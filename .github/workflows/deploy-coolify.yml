@@ -74,15 +74,25 @@ jobs:
           fi
         id: deploy
 
-      - name: Wait for Coolify deployment to finish (max 30 min)
+      - name: Wait for Coolify deployment to finish (max 60 min)
         if: steps.deploy.outputs.deployment_uuid != ''
+        timeout-minutes: 65
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           DEPLOYMENT_UUID: ${{ steps.deploy.outputs.deployment_uuid }}
         run: |
           set -euo pipefail
-          DEADLINE=$((SECONDS + 1800))
+          # 60 min hard ceiling. Real Coolify build for Next 16 SSG 17 500
+          # routes on CPX32 averages 18-22 min; 60 min covers tail latency
+          # (slow I/O, retries, contention with other Coolify workloads).
+          # Previous 30 min ceiling caused 1 timeout on 2026-05-10 when the
+          # build was actually finishing successfully — the post-deploy
+          # purge step was skipped, leaving CF to serve stale HTML.
+          DEADLINE=$((SECONDS + 3600))
+          # Poll every 60s instead of 30s to halve API noise and reduce the
+          # risk of rate-limiting on the Coolify Sanctum token under burst.
+          POLL_INTERVAL=60
           while [ $SECONDS -lt $DEADLINE ]; do
             STATUS=$(curl -fsSL -m 15 \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
@@ -92,11 +102,11 @@ jobs:
             case "${STATUS}" in
               finished) echo "Deployment succeeded ✓"; exit 0 ;;
               failed|cancelled-by-user) echo "::error::Deployment ${STATUS}"; exit 1 ;;
-              "") echo "::warning::Empty status from API, retrying"; sleep 30 ;;
-              *) sleep 30 ;;
+              "") echo "::warning::Empty status from API, retrying"; sleep $POLL_INTERVAL ;;
+              *) sleep $POLL_INTERVAL ;;
             esac
           done
-          echo "::error::Deployment timeout (30 min)"; exit 1
+          echo "::error::Deployment timeout (60 min)"; exit 1
 
       - name: Purge Cloudflare cache (post-deploy)
         if: success()
