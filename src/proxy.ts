@@ -64,6 +64,15 @@ export const config = {
   // DevTools). Same fix already applied for sitemap/robots/llms.
   // `icon` and `apple-icon` are similarly root-only generated routes.
   matcher: [
-    "/((?!api/og|api/indexnow|api/vitals|api/healthz|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
+    // Excludes Auth.js routes (`api/auth/*`) — Auth.js v5 requires its
+    // endpoints to live at root /api/auth/* without locale prefix. Without
+    // this exclusion, the i18n middleware 307-redirects every Auth.js call
+    // (csrf, session, signin, callback/credentials) to /fr/api/auth/*,
+    // which Auth.js does not recognize → CredentialsSignin throw on every
+    // login attempt → user sees "Code 2FA invalide ou compte verrouille"
+    // (the generic catch-block fallback in actions.ts).
+    // Discovered live during M9 admin first sign-in 2026-05-10 by
+    // observing 307 → location: https://axion-ia.com/fr/api/auth/callback/credentials.
+    "/((?!api/og|api/indexnow|api/vitals|api/healthz|api/auth|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
   ],
 };
