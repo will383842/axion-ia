@@ -104,6 +104,9 @@ if [ -n "${RESTORE_KEY:-}" ]; then
   require_var R2_BUCKET_NAME
   require_var R2_ENDPOINT
 
+  PG_URL_CLEAN="${DIRECT_URL%%\?*}"
+  [ -z "$PG_URL_CLEAN" ] && PG_URL_CLEAN="${DATABASE_URL%%\?*}"
+
   echo "→ Mode restore depuis : s3://${R2_BUCKET_NAME}/${RESTORE_KEY}"
   s3 s3 cp "s3://${R2_BUCKET_NAME}/${RESTORE_KEY}" "${WORK_DIR}/restore.enc"
   echo "→ Decrypt + decompress"
@@ -115,7 +118,7 @@ if [ -n "${RESTORE_KEY:-}" ]; then
   pg_restore --list "${WORK_DIR}/restore.dump" | head -20
   echo
   echo "✅ Dump valide. Pour restorer pour de vrai dans la DB cible :"
-  echo "   pg_restore --clean --if-exists --no-owner --dbname=\"\$DATABASE_URL\" ${WORK_DIR}/restore.dump"
+  echo "   pg_restore --clean --if-exists --no-owner --dbname=\"${PG_URL_CLEAN}\" ${WORK_DIR}/restore.dump"
   exit 0
 fi
 
@@ -128,9 +131,17 @@ require_var R2_SECRET_ACCESS_KEY
 require_var R2_BUCKET_NAME
 require_var R2_ENDPOINT
 
+# pg_dump n'accepte pas les params Prisma (?schema=, ?connection_limit=,
+# ?pool_timeout=). On utilise DIRECT_URL si dispo (déjà sans pool params),
+# sinon on strip les params problématiques de DATABASE_URL.
+PG_URL="${DIRECT_URL:-$DATABASE_URL}"
+# Strip tous les query params (le seul param utile pour pg_dump serait
+# sslmode= ou similar que Prisma met aussi mais c'est rare en interne docker)
+PG_URL_CLEAN="${PG_URL%%\?*}"
+
 echo "→ Backup ${BACKUP_TYPE} : ${BACKUP_NAME}"
 echo "→ pg_dump → gzip → encrypt"
-pg_dump --format=custom --no-owner --no-acl "${DATABASE_URL}" \
+pg_dump --format=custom --no-owner --no-acl "${PG_URL_CLEAN}" \
   | gzip --best \
   | openssl enc -aes-256-cbc -salt -pbkdf2 \
       -pass "env:BACKUP_ENCRYPTION_PASSPHRASE" \
