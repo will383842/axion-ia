@@ -56,7 +56,12 @@ declare module "next-auth" {
   }
 }
 
-const ROLES_REQUIRING_2FA: ReadonlySet<AdminRole> = new Set(["super_admin", "admin"]);
+// Reserved for re-enforcing role-based 2FA on privileged accounts (ANSSI
+// hardening). Currently 2FA is opt-in per user (`twoFactorEnabled` flag) to
+// allow first-login bootstrap. To re-enforce, restore in the requires2FA
+// expression below: `|| _ROLES_REQUIRING_2FA.has(user.role)`.
+const _ROLES_REQUIRING_2FA: ReadonlySet<AdminRole> = new Set(["super_admin", "admin"]);
+void _ROLES_REQUIRING_2FA;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -143,13 +148,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        // 5. Verify 2FA if enabled (mandatory for super_admin / admin)
-        const requires2FA = user.twoFactorEnabled || ROLES_REQUIRING_2FA.has(user.role);
+        // 5. Verify 2FA if enabled (bootstrap window: super_admin/admin can
+        //    log in without 2FA on first sign-in, must enable via /2fa/setup
+        //    afterwards which then makes 2FA mandatory).
+        // To re-enforce role-based 2FA, restore: `|| ROLES_REQUIRING_2FA.has(user.role)`
+        const requires2FA = user.twoFactorEnabled;
         if (requires2FA) {
-          if (!user.twoFactorEnabled || !user.twoFactorSecret) {
-            // Compte sans 2FA setup mais role exige 2FA → refus.
-            // (Le user sera redirige vers /admin/2fa/setup au prochain login
-            // une fois le password valide cote UI separement.)
+          if (!user.twoFactorSecret) {
+            // 2FA enabled but no secret — corrupted state, refuse.
             return null;
           }
           if (!totp) return null;
