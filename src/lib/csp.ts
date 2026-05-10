@@ -97,7 +97,7 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org",
+    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io",
     "frame-src 'self' https://challenges.cloudflare.com",
     "frame-ancestors 'none'",
     "form-action 'self'",
