@@ -5,6 +5,23 @@ name: Deploy · Coolify (axion-ia.com)
 # we POST directly to Coolify with a long-lived API token stored in
 # repo secrets, so there is no HMAC secret to keep in sync.
 #
+# ───── BUILDKIT CACHE WARNING (READ THIS) ─────
+# Coolify rebuilds the entire Next.js 16 SSG bundle (17 500 routes, ~6 GB
+# RAM peak) on each deploy. Docker BuildKit accumulates ~1-2 GB of layer
+# cache per build. On Hetzner CPX32 (8 GB RAM, shared with Postgres,
+# Redis, Coolify-helper containers), the cache must be pruned regularly
+# or the host will OOM-kill the build during `exporting layers` (exit
+# code 255, no clear error in Coolify UI).
+#
+# REQUIRED ON VPS (one-time setup, idempotent — safe to re-run):
+#   ( crontab -l 2>/dev/null | grep -v "docker builder prune"; \
+#     echo "0 4 * * 0 /usr/bin/docker builder prune -af >> /var/log/docker-builder-prune.log 2>&1" \
+#   ) | crontab -
+#
+# Schedule: weekly Sunday 04:00 UTC (low-traffic window). Previous
+# config was monthly which is too rare during active development —
+# 30+ commits/week saturates the cache in days.
+#
 # Required repo secrets (set via `gh secret set <NAME>`):
 #   COOLIFY_API_TOKEN     Sanctum token, format `<id>|<plaintext>` from
 #                         Coolify → Keys & Tokens → Create new token (scope
