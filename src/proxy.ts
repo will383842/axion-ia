@@ -64,15 +64,24 @@ export const config = {
   // DevTools). Same fix already applied for sitemap/robots/llms.
   // `icon` and `apple-icon` are similarly root-only generated routes.
   matcher: [
-    // Excludes Auth.js routes (`api/auth/*`) — Auth.js v5 requires its
-    // endpoints to live at root /api/auth/* without locale prefix. Without
-    // this exclusion, the i18n middleware 307-redirects every Auth.js call
-    // (csrf, session, signin, callback/credentials) to /fr/api/auth/*,
-    // which Auth.js does not recognize → CredentialsSignin throw on every
-    // login attempt → user sees "Code 2FA invalide ou compte verrouille"
-    // (the generic catch-block fallback in actions.ts).
+    // ALL `api/*` routes are root-mounted (no locale variants exist under
+    // [locale]/api/* in this project), so the i18n middleware must never
+    // touch them. Otherwise Auth.js (api/auth/*), admin exports
+    // (api/admin/*/export), GDPR export (api/gdpr-export/*),
+    // unsubscribe (api/unsubscribe), indexnow webhook (api/indexnow),
+    // healthz (api/healthz), vitals (api/vitals), etc. all 307-redirect
+    // to /fr/api/* and break externally-signed callbacks (Auth.js
+    // CredentialsSignin throw, IndexNow Bing rejected, unsubscribe link
+    // 307→200 instead of action, RGPD export form silently failing…).
+    //
     // Discovered live during M9 admin first sign-in 2026-05-10 by
     // observing 307 → location: https://axion-ia.com/fr/api/auth/callback/credentials.
-    "/((?!api/og|api/indexnow|api/vitals|api/healthz|api/auth|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
+    // Audit then revealed 4 more API routes silently broken by the same
+    // middleware bug.
+    //
+    // Special files (manifest, robots, sitemap, icons, opengraph) and
+    // static asset extensions are also excluded — same rationale: no
+    // locale variants.
+    "/((?!api/|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|twitter-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
   ],
 };
