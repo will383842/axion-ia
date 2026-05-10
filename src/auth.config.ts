@@ -9,10 +9,24 @@
 
 import type { NextAuthConfig } from "next-auth";
 
+// Lit ADMIN_URL_PREFIX depuis l'env au moment du module load (Edge runtime
+// = même process pour toutes les requêtes). Auth.js v5 exige une string
+// statique pour `pages.signIn` (pas une fonction), donc on la résout ici.
+// Si l'env var change en cours de runtime (rare), un redéploiement est
+// nécessaire — comportement attendu pour une URL de fingerprint admin.
+const adminUrlPrefix = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
+
 export const authConfig = {
   pages: {
-    signIn: "/fr/admin/login", // remap dynamique gere dans authorized()
-    error: "/fr/admin/login",
+    // Construit dynamiquement depuis ADMIN_URL_PREFIX au lieu de hardcoder
+    // /fr/admin/login (qui pointait sur une route inexistante en prod où
+    // le prefix vaut admin-xfz5hk0j7hrk). Bug latent : si Auth.js
+    // redirigeait vers cette page (catch-all redirect avant authorized()),
+    // l'utilisateur voyait un 404. Le callback authorized() ci-dessous
+    // override la plupart des cas mais pas tous (server actions errors,
+    // etc.).
+    signIn: `/fr/${adminUrlPrefix}/login`,
+    error: `/fr/${adminUrlPrefix}/login`,
   },
   session: {
     strategy: "jwt",

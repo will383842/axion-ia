@@ -77,18 +77,31 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
       ipAddress: ip,
       redirect: false,
     });
-  } catch {
-    // Sprint 15 fix Fork 3 W3-3 : log explicite reason invalid_2fa cote action
-    // (en plus du log dans Auth.js Credentials provider).
+  } catch (err) {
+    // Capture la VRAIE cause Auth.js (CredentialsSignin, RedirectError, etc.)
+    // pour debug. Ne pas l'exposer à l'utilisateur (information leak), mais
+    // l'écrire dans activity_log.changes pour audit + dans console.error
+    // pour Sentry/UptimeRobot. Exemple historique : un middleware mal
+    // configuré redirect 307 /api/auth/* → Auth.js throw, l'ancien catch
+    // retournait "Code 2FA invalide ou compte verrouille" trompeur.
+    const cause = err instanceof Error ? err.message : String(err);
+    const errorName = err instanceof Error ? err.name : "Unknown";
+    console.error(`[signInAction] Auth.js failed: ${errorName}: ${cause}`);
     await prisma.activityLog.create({
       data: {
         adminUserId: null,
         action: "auth.login.failed",
         ipAddress: ip,
-        changes: { reason: "invalid_2fa_or_locked", email: parsed.data.email },
+        changes: {
+          reason: "auth_provider_throw",
+          email: parsed.data.email,
+          errorName,
+          // Truncate to keep activity_log row small. Full stack in console.error.
+          cause: cause.slice(0, 250),
+        },
       },
     });
-    return { ok: false, error: "Code 2FA invalide ou compte verrouille." };
+    return { ok: false, error: "Email, mot de passe ou code 2FA invalide." };
   }
 
   redirect(`/${adminSegment()}`);

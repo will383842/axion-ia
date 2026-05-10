@@ -157,6 +157,14 @@ export async function validateOptionAction(
     });
     if (!opt) throw new Error("option_not_found");
 
+    // Sprint 24+ fix audit 2026-05-10 : verrouille AUSSI la ligne calendar_slots
+    // pour éviter qu'un visiteur public pose simultanément une nouvelle option
+    // sur le même slot pendant que l'admin valide. Booking.slotId @unique
+    // sauverait la 2e insertion, mais on aurait quand même un email visiteur
+    // partiellement traité + activity log incohérent. Lock atomique = état
+    // serializable garanti.
+    await tx.$queryRaw`SELECT id FROM calendar_slots WHERE id = ${opt.slotId}::uuid FOR UPDATE`;
+
     const interventionSlug = enumToSlug(opt.interventionType);
     const { cents: pricePaidCents, tierLabel: participantsTier } = getInterventionPriceCents(
       interventionSlug,
@@ -336,10 +344,18 @@ export async function refuseOptionAction(
 // getOptionDetail
 // ============================================================
 
+const getOptionDetailSchema = z.object({ id: z.string().uuid() });
+
 export async function getOptionDetailAction(id: string) {
   await requireAdminRead();
+  // Sprint 24+ fix audit 2026-05-10 : valide UUID avant Prisma findUnique.
+  // Sans Zod, un id non-UUID pouvait remonter une PrismaClientValidationError
+  // au lieu d'un return null clean — friction debug + risque d'expose du
+  // code interne dans les logs publics.
+  const parsed = getOptionDetailSchema.safeParse({ id });
+  if (!parsed.success) return null;
   return prisma.bookingOption.findUnique({
-    where: { id },
+    where: { id: parsed.data.id },
     include: { slot: true },
   });
 }

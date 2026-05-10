@@ -318,12 +318,19 @@ export async function upsertArticleAction(
         `${baseUrl}/fr/blog/${parsed.data.fr.slug}`,
         `${baseUrl}/en/blog/${parsed.data.en.slug}`,
       ];
-      // Fire-and-forget (non bloquant pour l'admin)
+      // Fire-and-forget (non bloquant pour l'admin) mais on logue l'échec
+      // dans console.error (= Sentry) au lieu d'un .catch(() => {}) muet.
+      // Sprint 24+ fix audit 2026-05-10 : sans log, articles non indexés
+      // restent silencieusement invisibles aux moteurs → impact SEO
+      // indétectable. Pas de blocage admin (UX), juste alerte ops.
       fetch(`${baseUrl}/api/indexnow`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ urls }),
-      }).catch(() => {});
+      }).catch((err) => {
+        const cause = err instanceof Error ? err.message : String(err);
+        console.error(`[admin-blog] indexnow ping failed for ${urls.join(",")}: ${cause}`);
+      });
     }
 
     return { ok: true, id: article.id, created };

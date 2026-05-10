@@ -220,13 +220,23 @@ export async function cancelBookingAction(
   const ip = await getClientIp();
 
   const result = await prisma.$transaction(async (tx) => {
-    const lockRows = await tx.$queryRaw<Array<{ id: string; status: string }>>`
-      SELECT id, status FROM bookings
+    const lockRows = await tx.$queryRaw<
+      Array<{ id: string; status: string; slotId: string | null }>
+    >`
+      SELECT id, status, slot_id as "slotId" FROM bookings
       WHERE id = ${parsed.data.bookingId}::uuid
       FOR UPDATE
     `;
     if (lockRows.length === 0) throw new Error("booking_not_found");
     if (lockRows[0]?.status === "cancelled") throw new Error("booking_already_cancelled");
+
+    // Sprint 24+ fix audit 2026-05-10 : verrouille aussi le slot pour
+    // éviter qu'un visiteur public pose une option simultanément (le slot
+    // serait alors faussement marqué 'reserved' par le visiteur juste après
+    // qu'on libère le slot suite à l'annulation admin).
+    if (lockRows[0]?.slotId) {
+      await tx.$queryRaw`SELECT id FROM calendar_slots WHERE id = ${lockRows[0].slotId}::uuid FOR UPDATE`;
+    }
 
     const booking = await tx.booking.findUnique({
       where: { id: parsed.data.bookingId },

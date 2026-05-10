@@ -159,7 +159,13 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
       email: sub.email,
       locale: sub.locale === "en" ? "en" : "fr",
     };
-  } catch {
+  } catch (err) {
+    // Sprint 24+ fix audit 2026-05-10 : log la vraie cause au lieu d'un
+    // catch silencieux. RGPD double opt-in nécessite un audit trail des
+    // confirmations échouées (pas juste des succès). Sans ce log, les
+    // confirmations perdues sont invisibles côté ops.
+    const cause = err instanceof Error ? err.message : String(err);
+    console.error(`[confirmNewsletter] DB error: ${cause}`);
     return { ok: false, error: "internal" };
   }
 }
