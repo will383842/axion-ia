@@ -88,10 +88,13 @@ notify_telegram() {
 s3() {
   # Wrapper aws-cli avec endpoint R2 + region auto. Utilise les standard
   # AWS env vars pour les creds (AWS_ACCESS_KEY_ID/SECRET) qu'on map depuis R2_*.
+  # AWS_PAGER="" désactive le pager (équivalent --cli-pager= en v2 mais
+  # compatible aws-cli v1 du repo Alpine, qui ne reconnaît pas le flag).
   AWS_ACCESS_KEY_ID="${R2_ACCESS_KEY_ID}" \
     AWS_SECRET_ACCESS_KEY="${R2_SECRET_ACCESS_KEY}" \
     AWS_REGION="auto" \
-    aws --endpoint-url "${R2_ENDPOINT}" --cli-pager= "$@"
+    AWS_PAGER="" \
+    aws --endpoint-url "${R2_ENDPOINT}" "$@"
 }
 
 # ─── Mode restore ────────────────────────────────────────────────────────────
