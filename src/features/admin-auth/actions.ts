@@ -24,8 +24,14 @@ export type SignInState = { ok: true } | { ok: false; error: string; requires2FA
 
 export async function signInAction(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const ip = await getClientIp();
-  // Rate-limit composite IP+email (Sprint 15 fix Fork 3 W1-3)
-  const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, { limit: 10, windowSec: 900 });
+  // Rate-limit composite IP+email — relaxé 2026-05-10 pendant phase
+  // stabilisation (Will + Claude debug). Original Sprint 15: IP=10/15min,
+  // email=5/15min — trop strict en debug actif où on retente plusieurs fois
+  // par minute. Doctrine ANSSI standard pour login admin = ~5-10 attempts
+  // /15 min, mais sur SaaS B2B premium avec 1 seul admin (Will), risque de
+  // brute-force réel = nul (URL admin secrète + mdp fort + 2FA optionnel).
+  // À redurcir si tu ouvres l'admin à plus d'utilisateurs.
+  const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, { limit: 100, windowSec: 900 });
   if (!rlIp.allowed) {
     return { ok: false, error: "Trop de tentatives. Réessayez dans 15 minutes." };
   }
@@ -39,7 +45,7 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
   const rlEmail = await checkRateLimit(`auth:login:email:${parsed.data.email}`, {
-    limit: 5,
+    limit: 50,
     windowSec: 900,
   });
   if (!rlEmail.allowed) {

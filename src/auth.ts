@@ -143,16 +143,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const { email, password, totp } = parsed.data;
         const ip = typeof raw?.ipAddress === "string" ? raw.ipAddress : "unknown";
 
-        // 2. Rate limit composite IP + email (Sprint 15 fix Fork 3 W1-3).
-        // Avant : IP-only → users NAT/CGNAT bloques par voisin malicieux.
-        // Maintenant : double-bucket — l'attaquant doit saturer BOTH IP + email.
+        // 2. Rate limit composite IP + email — relaxé 2026-05-10 (cf.
+        // commentaire identique dans actions.ts signInAction). Limites élevées
+        // pour V1 admin solo, à redurcir si admin ouvert à plus d'utilisateurs.
         const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, {
-          limit: 10,
+          limit: 100,
           windowSec: 900,
         });
         if (!rlIp.allowed) return null;
         const rlEmail = await checkRateLimit(`auth:login:email:${email}`, {
-          limit: 5,
+          limit: 50,
           windowSec: 900,
         });
         if (!rlEmail.allowed) return null;
