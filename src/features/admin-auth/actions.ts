@@ -58,8 +58,12 @@ export async function signInAction(_prev: SignInState, formData: FormData): Prom
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
 
-  // 2FA mandatory pour super_admin/admin
-  const requires2FA = user.twoFactorEnabled || user.role === "super_admin" || user.role === "admin";
+  // 2FA requise UNIQUEMENT si l'admin l'a explicitement activée via /admin/2fa/setup.
+  // Mode bootstrap : un super_admin/admin fraîchement seedé doit pouvoir se connecter
+  // une 1re fois pour configurer son 2FA. Une fois activée (twoFactorEnabled=true),
+  // elle devient obligatoire pour tout login ultérieur.
+  // Pour exiger 2FA dès le 1er login (forcé par rôle), réajouter la condition rôle.
+  const requires2FA = user.twoFactorEnabled;
   if (requires2FA && !parsed.data.totp) {
     return { ok: false, error: "Code 2FA requis.", requires2FA: true };
   }
