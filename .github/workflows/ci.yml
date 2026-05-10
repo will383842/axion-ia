@@ -29,6 +29,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Required before any TypeScript step: many imports reference
+      # ../prisma/generated/client which is only materialized by prisma generate.
+      # Without this, tsc fails with TS2307 "Cannot find module" + cascade of
+      # TS7006 implicit-any across all admin features and email templates.
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
       - name: TypeScript strict
         run: pnpm typecheck
       - name: ESLint
@@ -70,6 +76,10 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Same rationale as gate-a: prisma client must exist before build/test
+      # steps that import @prisma/client / generated types.
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
       - name: Build
         run: pnpm build
       - name: Bundle size
