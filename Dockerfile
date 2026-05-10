@@ -53,6 +53,18 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV COREPACK_INTEGRITY_KEYS=0
+# Cap Node.js heap at 4 GB for the build to avoid OOM on Hetzner CPX32
+# (8 GB RAM total, shared with Coolify host containers + Postgres + Redis).
+# Default Node heap is ~75% of host RAM = ~6 GB which leaves only ~1-2 GB
+# for Docker BuildKit's "exporting layers" phase, causing exit code 255
+# kills under cache pressure. 4 GB is enough for Next 16 SSG of 17 500
+# routes when combined with NEXT_PRIVATE_WORKER_THREADS=2 below.
+ENV NODE_OPTIONS=--max-old-space-size=4096
+# Limit Next.js Turbopack/SSG worker pool to 2 (default 3 on 4-core CPX32).
+# Each worker holds its own page-data cache (~500 MB - 1 GB), so capping
+# at 2 saves ~1 GB peak RAM during static generation. SSG total time
+# increases by ~25% (4 min instead of 3) but eliminates OOM risk.
+ENV NEXT_PRIVATE_WORKER_THREADS=2
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
 RUN pnpm prisma:generate

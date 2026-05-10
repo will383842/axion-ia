@@ -14,9 +14,24 @@ name: Deploy · Coolify (axion-ia.com)
 # code 255, no clear error in Coolify UI).
 #
 # REQUIRED ON VPS (one-time setup, idempotent — safe to re-run):
+#
+#   # 1. Weekly buildkit cache prune (Sunday 04:00 UTC):
 #   ( crontab -l 2>/dev/null | grep -v "docker builder prune"; \
 #     echo "0 4 * * 0 /usr/bin/docker builder prune -af >> /var/log/docker-builder-prune.log 2>&1" \
 #   ) | crontab -
+#
+#   # 2. Cap BuildKit cache at 5 GB so it never grows beyond what CPX32
+#   #    can handle during `exporting layers`. Without this cap, the cache
+#   #    grows to 30-50 GB after a few weeks and can kill builds even with
+#   #    the weekly prune above.
+#   sudo mkdir -p /etc/buildkit
+#   sudo tee /etc/buildkit/buildkitd.toml >/dev/null <<'TOML'
+#   [worker.oci]
+#     gc = true
+#     gckeepstorage = "5GB"
+#   TOML
+#   # Reload buildkit (only needed once after writing the file):
+#   sudo docker builder prune -af
 #
 # Schedule: weekly Sunday 04:00 UTC (low-traffic window). Previous
 # config was monthly which is too rare during active development —
