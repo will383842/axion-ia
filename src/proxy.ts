@@ -56,8 +56,14 @@ export default auth((req) => {
 });
 
 export const config = {
-  // Tout sauf API publiques + assets statiques + sitemap/robots/llms.
+  // Tout sauf API publiques + assets statiques + sitemap/robots/llms/manifest/icons.
+  // Without `manifest\.webmanifest` exclusion, the i18n middleware rewrites
+  // /manifest.webmanifest to /fr/manifest.webmanifest which does not exist
+  // (Next.js manifest is root-level via app/manifest.ts), producing a HTML 404
+  // that the browser fails to parse as JSON ("Manifest: Syntax error" in
+  // DevTools). Same fix already applied for sitemap/robots/llms.
+  // `icon` and `apple-icon` are similarly root-only generated routes.
   matcher: [
-    "/((?!api/og|api/indexnow|api/vitals|api/healthz|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
+    "/((?!api/og|api/indexnow|api/vitals|api/healthz|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
   ],
 };
