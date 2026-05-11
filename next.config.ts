@@ -168,6 +168,18 @@ const sentryBuildOptions = {
   reactComponentAnnotation: { enabled: false },
 };
 
-const composedConfig = bundleAnalyzer(nextConfig);
+const composedConfig = withNextIntl(bundleAnalyzer(nextConfig));
 
-export default withNextIntl(withSentryConfig(composedConfig, sentryBuildOptions));
+// Audit E2E 2026-05-11 fix dev — `withSentryConfig` n'est appliqué qu'en
+// build prod. En dev (Turbopack), le wrapper casse la résolution des routes
+// (toutes les routes hors /[locale] root retournent 404). Le SDK Sentry
+// runtime reste actif via `instrumentation.ts` même sans wrapper de build —
+// seul l'upload des sourcemaps + le release tracking dépend du wrapper.
+//
+// Toggle pour forcer en dev (debug) : `FORCE_SENTRY_BUILD_PLUGIN=true pnpm dev`.
+const enableSentryBuildPlugin =
+  process.env["NODE_ENV"] === "production" || process.env["FORCE_SENTRY_BUILD_PLUGIN"] === "true";
+
+export default enableSentryBuildPlugin
+  ? withSentryConfig(composedConfig, sentryBuildOptions)
+  : composedConfig;
