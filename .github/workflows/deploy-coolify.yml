@@ -161,3 +161,57 @@ jobs:
             exit 1
           }
           echo "Cloudflare cache purged ✓"
+
+  # ───────────────────────────────────────────────────────────────────────
+  # Lighthouse CI hard fail post-deploy — Audit E2E 2026-05-11 P0-CONF-17.
+  # AGENTS.md déclare « Lighthouse CI gate les PR » mais `pnpm lhci` n'était
+  # câblé nulle part. Cette gate :
+  #   - hit la prod live (post-purge CF, donc HTML frais)
+  #   - 5 URLs stratégiques (FR home, EN home, /audit, /reserver, /paris)
+  #   - assertions strictes via lighthouserc.json (budgets LCP/INP/CLS/TBT)
+  #   - hard fail si budgets dépassés → bloque le verdict de la pipeline
+  #
+  # En cas de fail isolé sans régression code (CrUX bruit, latence Hetzner),
+  # workflow_dispatch permet de re-trigger après stabilisation. Si un
+  # incident persistant survient, désactiver `if: success()` ici en attendant
+  # le fix puis ouvrir une issue tag `lhci-flake`.
+  lhci:
+    name: Lighthouse CI post-deploy gate
+    needs: deploy
+    if: success()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install LHCI + deps
+        run: pnpm install --frozen-lockfile --filter . --prod=false
+
+      - name: Run lhci collect + assert (prod URLs)
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          # Hit la prod live (déploiement validé par steps deploy précédent).
+          npx --yes @lhci/cli@0.15 collect \
+            --url=https://axion-ia.com/fr \
+            --url=https://axion-ia.com/en \
+            --url=https://axion-ia.com/fr/audit \
+            --url=https://axion-ia.com/fr/reserver \
+            --url=https://axion-ia.com/fr/implantations/ile-de-france/paris \
+            --numberOfRuns=2 \
+            --settings.preset=desktop \
+            --settings.throttlingMethod=devtools
+          npx --yes @lhci/cli@0.15 assert

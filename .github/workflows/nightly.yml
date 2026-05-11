@@ -1,15 +1,42 @@
 name: Nightly · Gate D
 
+# Audit E2E 2026-05-11 P0-CONF-09 — 5/7 steps `if: false` activés.
+#
+# Avant ce patch :
+#   - Full Playwright `if: false`
+#   - OWASP ZAP `if: false`
+#   - mail-tester `if: false`
+#   - backup-drill `if: false`
+#   - Lighthouse history `if: false`
+# → Gate D fantôme, faux signal vert toutes les nuits.
+#
+# Stratégie d'activation :
+#   - Chaque step a maintenant un toggle `if: ${{ vars.NIGHTLY_<STEP>_ENABLED == 'true' }}`
+#     (variable repo Settings → Secrets and variables → Actions → Variables).
+#     Permet à Will d'activer step-par-step en évitant un fail global jour 1.
+#   - Defaults : tout actif sauf `mail-tester` (envoie un vrai mail, à laisser
+#     opt-in jusqu'à création boîte dpo@axion-ia.com).
+#   - `continue-on-error: false` partout (hard fail Gate D).
+#
+# Pré-requis VPS / config :
+#   - STAGING_URL (variable repo) : URL staging si déployée, sinon prod.
+#   - DATABASE_URL_TEST_RESTORE (secret) : DB jetable pour restore-drill.
+#   - PLAYWRIGHT_BASE_URL passe via env.
+
 on:
   schedule:
     - cron: "0 3 * * *" # 03:00 UTC daily
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  nightly:
-    name: Nightly checks vs staging
+  playwright-staging:
+    name: Full Playwright (chromium) vs prod
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
+    if: ${{ vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -17,33 +44,181 @@ jobs:
           version: 10.33.4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.18.0
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # D5 cert 2026-05-08 — stubs `echo` convertis en `if: false` explicites
-      # pour éviter les faux positifs verts (audit D5 anti-pattern majeur).
-      # Chaque step listé reste planifié mais désactivé jusqu'à implémentation.
-      - name: Full Playwright vs staging (NOT IMPLEMENTED — Sprint 21)
-        if: false
+      - name: Install Playwright chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run E2E flows (chromium) vs prod
         env:
-          E2E_BASE_URL: https://staging.axion-ia.com
-        run: pnpm test:e2e
-      - name: pnpm audit
-        run: pnpm audit --json > audit.json || true
-      - name: OWASP ZAP full scan (NOT IMPLEMENTED — Sprint 21)
-        if: false
-        run: docker run -t owasp/zap2docker-stable zap-baseline.py -t https://staging.axion-ia.com
-      - name: Mail-tester 7 templates x 2 locales (NOT IMPLEMENTED — Sprint 19)
-        if: false
-        run: pnpm tsx scripts/mail-tester.ts
-      - name: Backup restore drill (NOT IMPLEMENTED — Sprint 23)
-        if: false
-        run: pnpm tsx scripts/backup-drill.ts
-      - name: Lighthouse history (NOT IMPLEMENTED — Sprint 23)
-        if: false
-        run: pnpm lhci:autorun --upload.target=temporary-public-storage
-      - name: Notify nightly status
-        if: failure()
+          PLAYWRIGHT_BASE_URL: ${{ vars.STAGING_URL || 'https://axion-ia.com' }}
+        run: pnpm test:e2e --project=chromium
+
+  pnpm-audit:
+    name: pnpm audit (deps CVE scan)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --prod
+      - name: pnpm audit (production deps) — hard fail high/critical
         run: |
-          echo "Nightly Gate D failure — manual review required."
-          echo "Will : Sprint 21/19/23 stubs to wire."
+          set -e
+          pnpm audit --prod --audit-level high --json > audit.json
+          high=$(grep -oE '"severity":"(high|critical)"' audit.json | wc -l || true)
+          echo "High/critical vulnerabilities: $high"
+          if [ "$high" -gt 0 ]; then
+            echo "::error::Nightly audit found $high high/critical CVEs"
+            cat audit.json
+            exit 1
+          fi
+
+  zap-baseline:
+    name: OWASP ZAP baseline scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ vars.NIGHTLY_ZAP_ENABLED != 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: ZAP baseline vs prod
+        # owasp/zap2docker-stable image renamed → use zaproxy/zap-stable
+        run: |
+          docker run --rm -t \
+            -v ${{ github.workspace }}:/zap/wrk \
+            zaproxy/zap-stable zap-baseline.py \
+            -t "${{ vars.STAGING_URL || 'https://axion-ia.com' }}" \
+            -I -m 10 -T 25 \
+            -r zap-report.html || ZAP_EXIT=$?
+          # ZAP exit 0=clean, 1=warnings, 2=errors. On accepte les warnings
+          # mais on bloque sur les errors (vrais issues sécu).
+          if [ "${ZAP_EXIT:-0}" -ge 2 ]; then exit 1; fi
+      - name: Upload ZAP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-baseline-report
+          path: zap-report.html
+          retention-days: 14
+
+  mail-tester:
+    name: Mail deliverability probe (mail-tester.com)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # OPT-IN par défaut (envoie un vrai email à mail-tester.com).
+    # Active via `gh variable set NIGHTLY_MAIL_TESTER_ENABLED --body true`.
+    if: ${{ vars.NIGHTLY_MAIL_TESTER_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Send sample email + fetch mail-tester score
+        env:
+          MAIL_TESTER_TO: ${{ secrets.MAIL_TESTER_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM_ADDRESS: ${{ secrets.SMTP_FROM_ADDRESS }}
+          SMTP_FROM_NAME: ${{ secrets.SMTP_FROM_NAME }}
+        run: pnpm tsx scripts/test-email-e2e.ts
+
+  backup-drill:
+    name: Backup restore drill (test DB)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ vars.NIGHTLY_BACKUP_DRILL_ENABLED != 'false' }}
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: axionia_drill
+          POSTGRES_PASSWORD: drill
+          POSTGRES_DB: axionia_drill
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull latest Postgres backup (R2 or Hetzner storage)
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
+        # `scripts/restore-postgres-test.sh` pull le backup le plus récent
+        # depuis R2/Hetzner, le déchiffre, et le restore dans la DB postgres
+        # service ci-dessus. Le script doit corriger `bookings_simple` →
+        # `bookings` (audit E2E P1-DB-05). Si pas implémenté → fail.
+        run: |
+          chmod +x scripts/restore-postgres-test.sh
+          DATABASE_URL_TEST=postgresql://axionia_drill:drill@localhost:5432/axionia_drill \
+            bash scripts/restore-postgres-test.sh
+
+  lighthouse-history:
+    name: Lighthouse history (5 URLs)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    if: ${{ vars.NIGHTLY_LHCI_ENABLED != 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: LHCI collect + upload temp storage
+        run: |
+          npx --yes @lhci/cli@0.15 collect \
+            --url=https://axion-ia.com/fr \
+            --url=https://axion-ia.com/en \
+            --url=https://axion-ia.com/fr/audit \
+            --url=https://axion-ia.com/fr/reserver \
+            --url=https://axion-ia.com/fr/implantations/ile-de-france/paris \
+            --numberOfRuns=3 \
+            --settings.preset=desktop
+          npx --yes @lhci/cli@0.15 upload --target=temporary-public-storage
+          # Assertions soft pour le history nocturne : on log, on fail pas
+          # (les hard fails se font dans deploy-coolify.yml).
+          npx --yes @lhci/cli@0.15 assert || echo "::warning::LHCI assertions failed (history mode)"
+
+  notify-failure:
+    name: Notify nightly failure
+    runs-on: ubuntu-latest
+    needs: [playwright-staging, pnpm-audit, zap-baseline, mail-tester, backup-drill, lighthouse-history]
+    if: failure()
+    steps:
+      - name: Post Telegram alert
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "${TELEGRAM_BOT_TOKEN:-}" ]; then
+            echo "::warning::No TELEGRAM_BOT_TOKEN — skipping notif"
+            exit 0
+          fi
+          curl -sf -X POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=🌙 Nightly Gate D FAILED — run ${{ github.run_id }} : ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -d "disable_web_page_preview=true"
