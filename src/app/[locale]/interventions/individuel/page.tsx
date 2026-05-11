@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Mail, User, Compass, Target, Sparkles } from "lucide-react";
+import { ArrowRight, Mail, Briefcase, Compass, PenLine, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -83,34 +83,37 @@ export default async function IndividuelFamilyPage({ params }: Props) {
     areasServed: buildServiceAreasServed(loc),
   });
 
-  // 3 mini-blocs « pour qui » — toujours visibles, même quand la liste est vide.
+  // 3 mini-blocs « pour qui » — Will (2026-05-11) : ouvert à n'importe quel
+  // poste, pas réservé aux managers/dirigeants. Secrétaire, comptable, designer,
+  // commercial, formateur, indépendant — chacun a ses tâches répétitives qui
+  // peuvent passer en IA.
   const audiences = [
     {
-      icon: User,
-      titleFr: "Managers · directeurs",
-      titleEn: "Managers · directors",
+      icon: Briefcase,
+      titleFr: "N'importe quel poste opérationnel",
+      titleEn: "Any operational role",
       bodyFr:
-        "Vous gérez une équipe et voulez gagner en maîtrise IA personnelle avant d'embarquer les autres — ou en parallèle.",
+        "Secrétaire, comptable, commercial, RH, gestionnaire, formateur, assistant·e… Si votre quotidien contient des tâches répétitives (mails, comptes-rendus, reporting, fichiers, recherches), on les passe en IA ensemble.",
       bodyEn:
-        "You manage a team and want to gain personal AI mastery before bringing others on board — or in parallel.",
+        "Assistant, accountant, sales, HR, manager, trainer, support… If your day contains repetitive tasks (emails, meeting notes, reporting, files, research), we move them to AI together.",
     },
     {
       icon: Compass,
-      titleFr: "Indépendants · freelances",
-      titleEn: "Independents · freelancers",
+      titleFr: "Indépendant·e ou freelance",
+      titleEn: "Independent or freelancer",
       bodyFr:
-        "Vous travaillez seul·e et l'IA pourrait doubler votre productivité — encore faut-il savoir par où commencer concrètement.",
+        "Vous travaillez seul·e, chaque heure compte. On regarde votre stack (devis, agenda, prospection, contenus, livraisons clients) et on automatise tout ce qui est automatisable. Amorti en quelques jours.",
       bodyEn:
-        "You work solo and AI could double your productivity — but you need to know where to start, concretely.",
+        "You work solo, every hour counts. We review your stack (quotes, calendar, outreach, content, client deliverables) and automate everything that can be. Pays back in days.",
     },
     {
-      icon: Target,
-      titleFr: "Cadres dirigeants · N-1",
-      titleEn: "Senior managers · C-1",
+      icon: PenLine,
+      titleFr: "Métiers créatifs ou spécialisés",
+      titleEn: "Creative or specialised roles",
       bodyFr:
-        "Vous êtes membre du COMEX, DSI, DRH, DAF — vous voulez monter en compétence IA personnelle avant de l'imposer à vos équipes. Coaching confidentiel sur vos vrais sujets.",
+        "Designer, traducteur, rédacteur, juriste, consultant, développeur… Workflows IA dédiés à votre métier précis. On part de vos vrais cas d'usage, pas de génériques.",
       bodyEn:
-        "You sit on the executive committee — CIO, CHRO, CFO — and want personal AI upskilling before rolling it out to your teams. Confidential coaching on your real topics.",
+        "Designer, translator, writer, lawyer, consultant, developer… AI workflows dedicated to your exact job. We start from your real use cases, not generic ones.",
     },
   ];
 
@@ -127,17 +130,14 @@ export default async function IndividuelFamilyPage({ params }: Props) {
             <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
-                className="bg-primary mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                className="bg-sage mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
               {isFr ? "Famille · Coaching individuel" : "Family · Individual coaching"}
             </p>
 
             <h1 className="display-editorial text-fg mt-5">
               {isFr ? "Coaching IA 1-to-1 " : "1-on-1 AI coaching "}
-              <span
-                className="text-primary mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
+              <span className="text-sage mx-2 italic" style={{ fontFamily: "var(--font-serif)" }}>
                 {isFr ? "amorti en quelques jours" : "pays for itself in days"}
               </span>
             </h1>
@@ -158,7 +158,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
               ).map((chip) => (
                 <li
                   key={chip}
-                  className="bg-primary-soft text-primary border-primary/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+                  className="bg-sage-soft text-sage border-sage/30 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
                 >
                   <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   {chip}
@@ -212,7 +212,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
           contentClassName={TIGHT_X}
         >
           <div className="bg-paper border-border shadow-subtle mx-auto max-w-2xl rounded-3xl border p-8 sm:p-10">
-            <div className="bg-primary-soft text-primary mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl">
+            <div className="bg-sage-soft text-sage mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl">
               <Sparkles aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
             </div>
             <h2 className="text-fg text-2xl leading-tight font-semibold">
@@ -239,7 +239,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                   ]
               ).map((line, i) => (
                 <li key={i} className="text-fg flex items-start gap-3">
-                  <span className="bg-primary-soft text-primary mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
+                  <span className="bg-sage-soft text-sage mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
                     <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   </span>
                   <span className="leading-relaxed">{line}</span>
@@ -277,7 +277,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                 key={idx}
                 className="bg-paper border-border shadow-subtle rounded-2xl border p-6"
               >
-                <div className="bg-primary-soft text-primary mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
+                <div className="bg-sage-soft text-sage mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
                   <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
                 </div>
                 <h3 className="text-fg text-lg leading-snug font-semibold">

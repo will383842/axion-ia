@@ -129,17 +129,19 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     slug: "individuel",
     labelFr: "Coaching individuel",
     labelEn: "Individual coaching",
-    // Tagline orienté ROI — Will (2026-05-11) : chaque coaching s'amortit en
-    // quelques jours grâce aux heures gagnées chaque semaine. C'est la valeur,
-    // pas le format, qui doit accrocher.
+    // Tagline inclusif — Will (2026-05-11) : n'importe quel poste (secrétaire,
+    // comptable, manager, indépendant, designer…). On fait le point sur le
+    // métier, on automatise les tâches répétitives, on installe les bons outils.
     taglineFr:
-      "Coaching IA 1-to-1 sur mesure — amorti en quelques jours grâce aux heures gagnées chaque semaine. Pour managers, indépendants, freelances, dirigeants solo.",
+      "Coaching IA 1-to-1 sur mesure pour n'importe quel poste — secrétaire, comptable, manager, indépendant, designer… On fait le point sur votre métier, on automatise les tâches répétitives, on installe les bons outils. Amorti en quelques jours grâce aux heures gagnées.",
     taglineEn:
-      "Bespoke 1-on-1 AI coaching — pays for itself in days thanks to the hours reclaimed every week. For managers, independents, freelancers, solo executives.",
+      "Bespoke 1-on-1 AI coaching for any role — assistant, accountant, manager, independent, designer… We review your job, automate repetitive tasks, install the right tools. Pays for itself in days thanks to the hours reclaimed.",
     pathFr: "/interventions/individuel",
     pathEn: "/interventions/individual",
     hasDurations: false,
-    accent: "primary",
+    // Sprint 14.10.7 fix Will (2026-05-11) : sage au lieu de primary (bleu).
+    // « Amorti en quelques jours » ne doit pas être en bleu vif.
+    accent: "sage",
   },
   {
     // Sprint 14.10.7 — recentrage Will (2026-05-11) : 1 dirigeant (pas CODIR),
@@ -177,7 +179,9 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     pathFr: "/interventions/conference",
     pathEn: "/interventions/conference",
     hasDurations: false,
-    accent: "sage",
+    // Sprint 14.10.7 fix Will (2026-05-11) : primary récupéré ici suite au
+    // swap avec Individuel (qui passe à sage pour éviter le bleu vif).
+    accent: "primary",
   },
 ] as const;
 

@@ -231,8 +231,10 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             que larges sur desktop. Badge palier XXL agrandi, padding y
             étendu, min-h pour forcer une silhouette rectangle vertical
             cohérente entre les 4 cards même quand le contenu varie.
-            Grid mobile-first : 1 col → 2 (sm) → 4 sur 1 ligne dès md (768px). */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4 md:gap-4 lg:gap-6">
+            Grid mobile-first : 1 col → 4 sur 1 ligne dès sm (640px).
+            Will (2026-05-11) : forcer 4 cards sur 1 ligne même sur écrans
+            moyens où la sidebar VSCode/DevTools réduit la zone utile. */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 sm:gap-3 md:gap-4 lg:gap-6">
           {durationRows.map(({ duration: d, href, count, metaFr, metaEn, features }) => {
             const isQuote = d.isQuoteOnly === true;
             const isEmpty = !isQuote && count === 0;
@@ -251,7 +253,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
               <article
                 key={d.id}
                 className={cn(
-                  "group/duration shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 md:min-h-[520px] lg:min-h-[560px]",
+                  "group/duration shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 sm:min-h-[460px] md:min-h-[520px] lg:min-h-[560px]",
                   isQuote
                     ? "bg-sand border-sage/40 hover:border-sage hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(120,143,98,0.30)]"
                     : "bg-paper border-terracotta/30 hover:border-terracotta hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]",
@@ -271,10 +273,12 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                   className={cn("block h-2 w-full", isQuote ? "bg-sage" : "bg-terracotta")}
                 />
 
-                {/* Badge palier XXL — accroche visuelle dominante */}
+                {/* Badge palier XXL — accroche visuelle dominante.
+                    Padding réduit sur sm (4 cards serrées) pour économiser
+                    la verticale, étendu sur md+ pour silhouette portrait. */}
                 <div
                   className={cn(
-                    "relative flex items-center justify-center py-10 sm:py-12 md:py-14",
+                    "relative flex items-center justify-center py-8 sm:py-9 md:py-14",
                     isQuote ? "bg-sage-soft/50" : "bg-terracotta-soft/45",
                   )}
                 >

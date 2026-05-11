@@ -205,13 +205,17 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
         return { label, meta };
       });
       const total = countFormatsByFamily("collectives");
+      // Prix d'entrée famille Collectives = tier le moins cher (4h à 390 €).
+      const fourHPrice = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
+      const entryFr = formatAmount(fourHPrice, "fr", { compact: true });
+      const entryEn = formatAmount(fourHPrice, "en", { compact: true });
       return {
         family,
         icon: Users,
         subRows,
         countLabel: isFr
-          ? `${total} formation${total > 1 ? "s" : ""} · 4 paliers durée`
-          : `${total} training${total > 1 ? "s" : ""} · 4 duration tiers`,
+          ? `${total} formations · à partir de ${entryFr}`
+          : `${total} trainings · starting at ${entryEn}`,
         ctaLabel: isFr ? "Voir les interventions équipes" : "See team sessions",
         surface: "bg-paper",
       };
@@ -277,15 +281,16 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
           },
         ],
         countLabel: isFr
-          ? `${count} format${count > 1 ? "s" : ""} · gains chiffrés`
-          : `${count} format${count > 1 ? "s" : ""} · quantified gains`,
+          ? `${count} format${count > 1 ? "s" : ""} · à partir de ${formatAmount(dirigeantsTier.priceFlat!, "fr", { compact: true })}`
+          : `${count} format${count > 1 ? "s" : ""} · starting at ${formatAmount(dirigeantsTier.priceFlat!, "en", { compact: true })}`,
         ctaLabel: isFr ? "Voir les offres dirigeants" : "See executives offers",
         surface: "bg-mocha-rich text-mocha-fg",
         isDark: true,
       };
     }
     // Conférence — liste plate (1 format en V1, format historique sorti de
-    // Collectives/1-jour pour devenir sa propre famille).
+    // Collectives/1-jour pour devenir sa propre famille). Pas de prix fixe :
+    // chaque conférence est cadrée selon le périmètre (effectif, durée, lieu).
     const count = countFormatsByFamily("conference");
     return {
       family,
@@ -305,8 +310,8 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
         },
       ],
       countLabel: isFr
-        ? `${count} format${count > 1 ? "s" : ""} · plénière`
-        : `${count} format${count > 1 ? "s" : ""} · plenary`,
+        ? `${count} format${count > 1 ? "s" : ""} · sur devis`
+        : `${count} format${count > 1 ? "s" : ""} · on request`,
       ctaLabel: isFr ? "Voir les conférences" : "See talks",
       surface: "bg-halo-warm",
     };

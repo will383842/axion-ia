@@ -402,7 +402,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                 aria-hidden="true"
                 className={cn(
                   "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                  slug === "coaching-decouverte" ? "bg-primary" : "bg-sage",
+                  slug === "coaching-decouverte" ? "bg-terracotta" : "bg-sage",
                 )}
               />
               {isFr ? "Coaching individuel · 1 jour" : "Individual coaching · 1 day"}
@@ -419,7 +419,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
               <span
                 className={cn(
                   "mx-2 italic",
-                  slug === "coaching-decouverte" ? "text-primary" : "text-sage",
+                  slug === "coaching-decouverte" ? "text-terracotta-deep" : "text-sage",
                 )}
                 style={{ fontFamily: "var(--font-serif)" }}
               >
@@ -439,7 +439,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight",
                     slug === "coaching-decouverte"
-                      ? "bg-primary-soft text-primary border-primary/25"
+                      ? "bg-terracotta-soft text-terracotta-deep border-terracotta/25"
                       : "bg-sage-soft text-sage border-sage/30",
                   )}
                 >
@@ -486,7 +486,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                   className={cn(
                     "mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl",
                     slug === "coaching-decouverte"
-                      ? "bg-primary-soft text-primary"
+                      ? "bg-terracotta-soft text-terracotta-deep"
                       : "bg-sage-soft text-sage",
                   )}
                 >
@@ -525,7 +525,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                 className={cn(
                   "absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-4",
                   slug === "coaching-decouverte"
-                    ? "bg-primary ring-primary-soft"
+                    ? "bg-terracotta ring-terracotta-soft"
                     : "bg-sage ring-sage-soft",
                 )}
               >
@@ -535,7 +535,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                 <span
                   className={cn(
                     "text-[13px] font-bold tracking-wide uppercase tabular-nums",
-                    slug === "coaching-decouverte" ? "text-primary" : "text-sage",
+                    slug === "coaching-decouverte" ? "text-terracotta-deep" : "text-sage",
                   )}
                 >
                   {item.time}
@@ -580,7 +580,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                   className={cn(
                     "mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45",
                     slug === "coaching-decouverte"
-                      ? "bg-primary-soft text-primary"
+                      ? "bg-terracotta-soft text-terracotta-deep"
                       : "bg-sage-soft text-sage",
                   )}
                 >
