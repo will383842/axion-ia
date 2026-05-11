@@ -10,7 +10,6 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 import { HeaderImplantationsMenu } from "./HeaderImplantationsMenu";
-import { HeaderInterventionsMenu } from "./HeaderInterventionsMenu";
 
 // Server Component. 4 items desktop + ZERO dropdown (CLAUDE.md v6 §9.2 —
 // révision §9.2-bis acceptée en bloc 2026-05-07 mais Sprint 15 différé).
@@ -121,13 +120,9 @@ export async function Header() {
             aria-label={t("nav.home")}
             className="hidden items-center gap-6 lg:flex lg:justify-end xl:gap-8"
           >
-            {navLeft.map((item) =>
-              item.href === "/interventions" ? (
-                <HeaderInterventionsMenu key={item.href} triggerLabel={item.label} isFr={isFr} />
-              ) : (
-                <NavLink key={item.href} href={item.href} label={item.label} />
-              ),
-            )}
+            {navLeft.map((item) => (
+              <NavLink key={item.href} href={item.href} label={item.label} />
+            ))}
           </nav>
         </div>
 
