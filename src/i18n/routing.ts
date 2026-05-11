@@ -20,6 +20,35 @@ export const routing = defineRouting({
 
     // Module 1 — Interventions entreprise
     "/interventions": { fr: "/interventions", en: "/interventions" },
+
+    // Sprint 14.10.7 (2026-05-11) — refonte taxonomique en 3 blocs famille.
+    // Hub famille « Formations équipe » + 4 paliers durée.
+    "/interventions/collectives": {
+      fr: "/interventions/collectives",
+      en: "/interventions/team-trainings",
+    },
+    "/interventions/collectives/4h": {
+      fr: "/interventions/collectives/4h",
+      en: "/interventions/team-trainings/4h",
+    },
+    "/interventions/collectives/1-jour": {
+      fr: "/interventions/collectives/1-jour",
+      en: "/interventions/team-trainings/1-day",
+    },
+    "/interventions/collectives/2-jours": {
+      fr: "/interventions/collectives/2-jours",
+      en: "/interventions/team-trainings/2-days",
+    },
+    "/interventions/collectives/3-jours-plus": {
+      fr: "/interventions/collectives/3-jours-plus",
+      en: "/interventions/team-trainings/3-days-plus",
+    },
+    // Famille « Coaching individuel » (liste plate, vide en V1).
+    "/interventions/individuel": {
+      fr: "/interventions/individuel",
+      en: "/interventions/individual",
+    },
+
     "/interventions/essentielle": {
       fr: "/interventions/essentielle",
       en: "/interventions/essential",

@@ -1,10 +1,14 @@
 // Server Component — schéma visuel du hero /interventions.
 // Format CARRÉ (560×560) — harmonisé doctrine `.hero-schema` v3.3
-// (2026-05-08). Orbite quasi-circulaire (rx 170, ry 180) pour caser 5
-// satellites sans collision de labels dans la boîte 1:1.
+// (2026-05-08). Orbite quasi-circulaire (rx 170, ry 180) pour caser
+// N satellites sans collision de labels dans la boîte 1:1.
 // Reprend la grammaire du PageHeroDecoration (anneaux + halos terracotta /
-// primary / sage + particules) mais avec l'entreprise au centre et les
-// 5 formats en orbite, chacun affichant son bénéfice concret.
+// primary / sage + particules) avec l'entreprise au centre et les
+// blocs en orbite, chacun affichant son bénéfice concret.
+//
+// Sprint 14.10.7 (2026-05-11) — refonte hub /interventions : passe de 5
+// formats à 3 blocs famille. Le composant accepte désormais N nodes
+// (1-7 raisonnable) avec disposition tunée pour 3 et 5.
 //
 // Pas d'animation ; SSR-friendly ; `aria-label` au niveau du wrapper.
 
@@ -13,7 +17,8 @@ import type { ReactNode } from "react";
 export interface InterventionsHeroSchemaProps {
   /** Label central (ex "Votre entreprise"). */
   centerLabel: string;
-  /** Cinq satellites. Ordre = haut-gauche → bas-gauche dans le sens horaire. */
+  /** Satellites (3 ou 5 ordres tunés, sinon distribution équidistante).
+      Ordre = haut-gauche → bas-gauche dans le sens horaire. */
   nodes: ReadonlyArray<{
     label: string;
     benefit: string;
@@ -62,15 +67,18 @@ export function InterventionsHeroSchema({
   const rx = 170;
   const ry = 180;
 
-  // 5 angles répartis verticalement autour du centre.
-  // Top, top-right, right, bottom-right, bottom-left, top-left… on en utilise 5.
-  // Disposition retenue (sens horaire depuis le haut) :
-  //   0 : top-left  (-110°)
-  //   1 : top-right ( -65°)
-  //   2 : right     (   0°)
-  //   3 : bottom    (  65°)
-  //   4 : bottom-left ( 130°)
-  const angles = [-110, -65, 0, 65, 130];
+  // Disposition des satellites en fonction de leur nombre.
+  // - 5 nodes : pentagone irrégulier tuné pour la boîte 1:1 (rétro-compat
+  //   avec le hero formats historique avant Sprint 14.10.7).
+  // - 3 nodes : triangle équilatéral haut-gauche / haut-droit / bas
+  //   (refonte 3 blocs famille, Sprint 14.10.7).
+  // - Autre N : distribution équidistante autour du cercle (démarre en haut).
+  const angles =
+    nodes.length === 5
+      ? [-110, -65, 0, 65, 130]
+      : nodes.length === 3
+        ? [-130, -50, 90]
+        : Array.from({ length: nodes.length }, (_, i) => -90 + (i * 360) / nodes.length);
 
   return (
     <div

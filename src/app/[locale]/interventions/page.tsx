@@ -4,7 +4,6 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import {
   ArrowRight,
-  Check,
   Globe2,
   Building2,
   Sparkles,
@@ -13,6 +12,11 @@ import {
   PhoneCall,
   ClipboardCheck,
   Target,
+  Users,
+  User,
+  Briefcase,
+  Clock,
+  Megaphone,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -25,59 +29,68 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { InterventionsHeroSchema } from "@/components/sections/InterventionsHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { INTERVENTIONS, type InterventionAccent } from "@/content/interventions";
-import {
-  INTERVENTION_TIERS,
-  formatAmount,
-  formatPrice,
-  getEntryPriceEur,
-  getTierById,
-} from "@/content/pricing";
-import { ClaudeLogo } from "@/components/visual/ClaudeLogo";
-import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { INTERVENTION_TIERS, formatAmount, getEntryPriceEur, getTierById } from "@/content/pricing";
+import {
+  FAMILIES,
+  COLLECTIVE_DURATIONS,
+  countFormatsByFamily,
+  countFormatsByCell,
+  familyPath,
+  type FamilyDef,
+  type FormatAccent,
+} from "@/content/interventions-taxonomy";
+import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
+
+const TIGHT_X = "lg:px-6 xl:px-10";
+
+// ============================================================================
+// Sprint 14.10.7 (2026-05-11) — refonte taxonomique en 3 BLOCS FAMILLE.
+//
+// Avant : 8 cards format (Essentielle, Approfondie, Gagner du temps, Claude,
+// Conférence, Dirigeants, Sur demande, etc.) listées en 2 colonnes.
+//
+// Après : 3 cards famille (Formations équipe / Coaching individuel /
+// Dirigeants) sur le hub. Le détail (paliers durée + formats) est exposé en
+// cliquant sur chaque famille.
+//
+// Architecture : SSOT `src/content/interventions-taxonomy.ts`. Une nouvelle
+// formation = 1 entrée dans `INTERVENTION_FORMATS`. Aucune modif de cette page
+// requise pour qu'elle se reflète dans le compteur.
+// ============================================================================
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const essentielle = getTierById(INTERVENTION_TIERS, "intervention-essentielle");
-  const temps = getTierById(INTERVENTION_TIERS, "intervention-temps");
   const essentiellePrice = formatAmount(essentielle.priceFlat!, loc);
-  const tempsPrice = formatPrice(temps, loc);
   return buildProductMetadata({
     locale,
     path: "/interventions",
     title:
       loc === "fr"
-        ? "Interventions IA en entreprise · 8 formats · France & international"
-        : "Corporate AI sessions · 8 formats · France & international",
+        ? "Interventions IA en entreprise · 4 familles · France & international"
+        : "Corporate AI sessions · 4 families · France & international",
     description:
       loc === "fr"
-        ? `Interventions et formations IA opérationnelles sur site : Essentielle dès ${essentiellePrice} (2-8 pers.), Gagner du temps ${tempsPrice} (2-20), CODIR, conférence, sur demande. France et international.`
-        : `Operational AI sessions on site: Essential from ${essentiellePrice} (2-8 people), Save Time ${tempsPrice} (2-20), Leadership, 1-day talk, on request. France and international.`,
+        ? `Interventions et formations IA opérationnelles sur site organisées en 4 blocs : formations équipe (4 h à 3 j+, dès ${essentiellePrice}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
+        : `Operational AI sessions on site organised in 4 blocks: team trainings (4 h to 3 d+, from ${essentiellePrice}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
   });
 }
 
-const TIGHT_X = "lg:px-6 xl:px-10";
-
-// `claude` est un accent local au listing /interventions, dédié à la card
-// « Intervention Claude ». Anti-hex doctrine : exception assumée — ce sont les
-// couleurs officielles de la marque Anthropic (peach), pas des tokens de
-// design Axion-IA. Encapsulés ici, n'impactent ni le theme global ni les
-// autres pages.
-type ListingAccent = InterventionAccent | "claude";
-
-const accentClasses: Record<
-  ListingAccent,
+// ----------------------------------------------------------------------------
+// Accents Tailwind par famille — palette Editorial v3 + exception Claude.
+// ----------------------------------------------------------------------------
+const familyAccentClasses: Record<
+  FormatAccent,
   {
-    badge: string;
     border: string;
     title: string;
     line: string;
@@ -85,10 +98,12 @@ const accentClasses: Record<
     haloRing: string;
     chipBg: string;
     chipText: string;
+    badge: string;
+    iconBg: string;
+    iconText: string;
   }
 > = {
   terracotta: {
-    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/20",
     border: "border-terracotta/35 hover:border-terracotta",
     title: "text-terracotta-deep",
     line: "bg-terracotta",
@@ -96,9 +111,11 @@ const accentClasses: Record<
     haloRing: "ring-terracotta/15",
     chipBg: "bg-terracotta-soft",
     chipText: "text-terracotta-deep",
+    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/20",
+    iconBg: "bg-terracotta-soft",
+    iconText: "text-terracotta-deep",
   },
   primary: {
-    badge: "bg-primary-soft text-primary border border-primary/25",
     border: "border-primary/35 hover:border-primary",
     title: "text-primary",
     line: "bg-primary",
@@ -106,9 +123,11 @@ const accentClasses: Record<
     haloRing: "ring-primary/15",
     chipBg: "bg-primary-soft",
     chipText: "text-primary",
+    badge: "bg-primary-soft text-primary border border-primary/25",
+    iconBg: "bg-primary-soft",
+    iconText: "text-primary",
   },
   sage: {
-    badge: "bg-sage-soft text-sage border border-sage/30",
     border: "border-sage/40 hover:border-sage",
     title: "text-sage",
     line: "bg-sage",
@@ -116,9 +135,11 @@ const accentClasses: Record<
     haloRing: "ring-sage/20",
     chipBg: "bg-sage-soft",
     chipText: "text-sage",
+    badge: "bg-sage-soft text-sage border border-sage/30",
+    iconBg: "bg-sage-soft",
+    iconText: "text-sage",
   },
   mocha: {
-    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/30",
     border: "border-mocha-fg/15 hover:border-terracotta",
     title: "text-terracotta-soft",
     line: "bg-terracotta",
@@ -126,13 +147,13 @@ const accentClasses: Record<
     haloRing: "ring-terracotta/30",
     chipBg: "bg-terracotta-soft",
     chipText: "text-terracotta-deep",
+    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/30",
+    iconBg: "bg-terracotta-soft",
+    iconText: "text-terracotta-deep",
   },
-  // Anthropic Claude brand colors — exception anti-hex documentée pour la
-  // card « Intervention Claude ». Couleurs imposées par la marque Anthropic
-  // (logo + monogramme), pas tokenisables en variantes Tailwind.
-  // hex-ok: brand-anthropic-claude
+  // hex-ok: brand-anthropic-claude — non utilisé pour les cards famille
+  // mais conservé pour compat avec les cards format où Claude est présent.
   claude: {
-    badge: "bg-[#FFF5EC] text-[#9C3E1E] border border-[#D97757]/30", // hex-ok: brand-anthropic-claude
     border: "border-[#D97757]/40 hover:border-[#D97757]", // hex-ok: brand-anthropic-claude
     title: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
     line: "bg-[#D97757]", // hex-ok: brand-anthropic-claude
@@ -140,286 +161,162 @@ const accentClasses: Record<
     haloRing: "ring-[#D97757]/15", // hex-ok: brand-anthropic-claude
     chipBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     chipText: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
+    badge: "bg-[#FFF5EC] text-[#9C3E1E] border border-[#D97757]/30", // hex-ok: brand-anthropic-claude
+    iconBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
+    iconText: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
   },
 };
 
-interface ListingCardSubTier {
-  label: string;
-  range: string;
-  price: string;
-  isFeatured?: boolean;
-}
+// ----------------------------------------------------------------------------
+// Helpers locaux pour construire chaque card famille (libellés, sub-rows…).
+// ----------------------------------------------------------------------------
 
-interface ListingCard {
-  key: string;
-  accent: ListingAccent;
-  isDark: boolean;
-  badge: string;
-  title: string;
-  titleEm?: string;
-  duration: string;
-  durationLabel: string;
-  price: string;
-  priceLabel: string;
-  groupSize: string;
-  audience: string;
-  benefitTagline: string;
-  outcomes: ReadonlyArray<string>;
-  href: string;
+interface FamilyCardData {
+  family: FamilyDef;
+  icon: typeof Users;
+  /** Sub-rows : paliers durée (Collectives) ou résumé liste plate (Individuel/Dirigeants). */
+  subRows: ReadonlyArray<{ label: string; meta: string }>;
+  /** Statut affiché en haut de la card. */
+  countLabel: string;
+  /** CTA label. */
   ctaLabel: string;
+  /** Surface de fond. */
   surface: string;
-  isFlagship?: boolean;
-  isHighlight?: boolean;
-  /**
-   * Grille de sous-tarifs par tranche d'effectif. Affichée sous le tagline
-   * pour les formats multi-prix (Essentielle, Approfondie). Sprint 14.10.4.
-   */
-  subTierGrid?: ReadonlyArray<ListingCardSubTier>;
+  /** Dark mode pour la card (texte clair sur fond foncé). */
+  isDark?: boolean;
 }
 
-function buildCards(isFr: boolean): ReadonlyArray<ListingCard> {
-  const essentielle = INTERVENTIONS.find((i) => i.slug === "essentielle")!;
-  const approfondie = INTERVENTIONS.find((i) => i.slug === "approfondie")!;
-  const conference = INTERVENTIONS.find((i) => i.slug === "conference")!;
-  const dirigeants = INTERVENTIONS.find((i) => i.slug === "dirigeants")!;
-
-  const ess = essentielle.summary[isFr ? "fr" : "en"];
-  const appr = approfondie.summary[isFr ? "fr" : "en"];
-  const conf = conference.summary[isFr ? "fr" : "en"];
-  const dir = dirigeants.summary[isFr ? "fr" : "en"];
-
-  const essHref = isFr ? essentielle.pathFr : essentielle.pathEn;
-  const apprHref = isFr ? approfondie.pathFr : approfondie.pathEn;
-  const confHref = isFr ? conference.pathFr : conference.pathEn;
-  const dirHref = isFr ? dirigeants.pathFr : dirigeants.pathEn;
-
-  // 1 card Essentielle (1 jour) avec 3 paliers d'effectif visibles inline :
-  // 2-8 personnes → 490 € HT (prix fixe), 9-15 → Sur devis, 16-30 → Sur devis.
-  // Au-delà de 30 personnes : voir card « Sur demande particulière » plus bas.
-  const essSubTierGrid: ReadonlyArray<ListingCardSubTier> = (ess.priceTiers ?? []).map(
-    (t, idx) => ({
-      label: isFr ? `Palier ${idx + 1}` : `Tier ${idx + 1}`,
-      range: t.size,
-      price: t.price,
-      // Premier palier mis en avant (490 € HT prix d'entrée).
-      ...(idx === 0 ? { isFeatured: true as const } : {}),
-    }),
-  );
-
-  // Prix d'entrée Essentielle (palier 2-8 personnes). Aligné sur
-  // INTERVENTION_TIERS dans pricing.ts via summary.priceTiers[0].
-  const essEntryPriceLabel = ess.priceTiers?.[0]?.price
-    ? isFr
-      ? `dès ${ess.priceTiers[0].price}`
-      : `from ${ess.priceTiers[0].price}`
-    : ess.price;
-
-  return [
-    // Card 1 — Essentielle 1 jour (offre phare avec 3 paliers d'effectif inline)
-    {
-      key: "essentielle",
-      accent: "terracotta",
-      isDark: false,
-      badge: isFr ? "Offre phare" : "Flagship",
-      title: isFr ? "Essentielle" : "Essential",
-      titleEm: isFr ? "1 journée découverte" : "1-day discovery",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: essEntryPriceLabel,
-      priceLabel: essEntryPriceLabel,
-      groupSize: isFr ? "2 à 30 personnes" : "2 to 30 people",
-      audience: ess.audience,
-      benefitTagline: ess.benefitTagline,
-      outcomes: ess.outcomes,
-      href: essHref,
-      ctaLabel: ess.ctaLabel,
-      surface: "bg-paper",
-      isFlagship: true,
-      subTierGrid: essSubTierGrid,
-    },
-    // Card — Approfondie 2 jours (équipes étendu) — même grille d'effectif
-    // qu'Essentielle mais 2 journées consécutives pour creuser. 3 paliers
-    // de prix dégressif au nombre de participants. Sprint 14.10.6.
-    {
-      key: "approfondie",
-      accent: "primary",
-      isDark: false,
-      badge: isFr ? "Équipes · 2 jours" : "Teams · 2 days",
-      title: isFr ? "Approfondie" : "Deep Dive",
-      titleEm: isFr ? "2 jours équipes" : "2-day teams",
-      duration: appr.duration,
-      durationLabel: isFr ? "2 jours" : "2 days",
-      price: appr.price,
-      priceLabel: appr.price,
-      groupSize: appr.groupSize,
-      audience: appr.audience,
-      benefitTagline: appr.benefitTagline,
-      outcomes: appr.outcomes,
-      href: apprHref,
-      ctaLabel: appr.ctaLabel,
-      surface: "bg-halo-cool",
-      subTierGrid: (appr.priceTiers ?? []).map((t, idx) => ({
-        label: isFr ? `Palier ${idx + 1}` : `Tier ${idx + 1}`,
-        range: t.size,
-        price: t.price,
-        ...(idx === 1 ? { isFeatured: true as const } : {}),
-      })),
-    },
-    // Card 5 — Gagner du temps (NEW format)
-    {
-      key: "gagner-du-temps",
-      accent: "primary",
-      isDark: false,
-      badge: isFr ? "Productivité" : "Productivity",
-      title: isFr ? "Gagner du temps" : "Save Time",
-      titleEm: isFr ? "concrètement" : "concretely",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: formatPrice(getTierById(INTERVENTION_TIERS, "intervention-temps"), isFr ? "fr" : "en"),
-      priceLabel: formatAmount(
-        getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!,
-        isFr ? "fr" : "en",
-        { compact: true },
-      ),
-      groupSize: isFr ? "2 à 20 personnes" : "2 to 20 people",
-      audience: isFr
-        ? "Équipes opérationnelles · TPE, PME, ETI"
-        : "Operational teams · small to mid-market",
-      benefitTagline: isFr
-        ? "Une journée pour gagner du temps concrètement : automatisations IA sur les tâches récurrentes, prompts efficaces, intégration dans le flux de travail quotidien. Vos équipes ressortent avec des heures gagnées chaque semaine."
-        : "One day to save time concretely: AI automations on recurring tasks, effective prompts, integration into daily workflow. Your teams leave with hours saved every week.",
-      outcomes: isFr
-        ? [
-            "Vos équipes identifient leurs tâches répétitives chronophages et y appliquent l'IA",
-            "Chaque participant repart avec 5 à 10 automatisations testées sur ses propres outils",
-            "Gain mesurable dès le retour au bureau — plusieurs heures par personne et par semaine",
-          ]
-        : [
-            "Your team spots their time-consuming recurring tasks and applies AI to them",
-            "Each participant leaves with 5 to 10 automations tested on their own tools",
-            "Measurable gains the day back at the office — hours per person, per week",
-          ],
-      href: "/interventions/gagner-du-temps",
-      ctaLabel: isFr ? "Découvrir Gagner du temps" : "Discover Save Time",
-      surface: "bg-paper",
-      isHighlight: true,
-    },
-    // Card — Intervention Claude (Chat · Cowork · Code) — outil-spécifique,
-    // logo + encadrement aux couleurs Anthropic. Demande Will 2026-05-08.
-    // Prix non précisé → « Sur devis » par défaut, à compléter quand Will
-    // donnera le tarif fixe.
-    {
-      key: "intervention-claude",
-      accent: "claude",
-      isDark: false,
-      badge: isFr ? "Outil · Claude" : "Tool · Claude",
-      title: isFr ? "Intervention Claude" : "Claude intervention",
-      titleEm: isFr ? "Chat · Cowork · Code" : "Chat · Cowork · Code",
-      duration: isFr ? "1 journée sur site" : "1 day on site",
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: isFr ? "Sur devis" : "On request",
-      priceLabel: isFr ? "Sur devis" : "On request",
-      groupSize: isFr ? "Selon besoin" : "As needed",
-      audience: isFr
-        ? "Équipes qui veulent maîtriser Claude (Anthropic) en profondeur"
-        : "Teams that want to master Claude (Anthropic) in depth",
-      benefitTagline: isFr
-        ? "Une journée 100 % dédiée à Claude — l'assistant Anthropic. Trois volets : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (Claude Code en CLI, génération et refactoring). Vos équipes ressortent autonomes sur l'outil de pointe IA."
-        : "A full day 100 % focused on Claude — Anthropic's assistant. Three tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, memory) and Code (Claude Code CLI, generation and refactoring). Your teams leave autonomous on the cutting-edge AI tool.",
-      outcomes: isFr
-        ? [
-            "Maîtrise des 3 surfaces Claude : Chat (web), Cowork (Projects), Code (CLI)",
-            "Workflows IA avancés sur Claude : prompts longs, mémoire de projet, fichiers attachés",
-            "Pour les équipes tech : Claude Code en CLI, génération et refactoring de code",
-          ]
-        : [
-            "Mastery of all 3 Claude surfaces: Chat (web), Cowork (Projects), Code (CLI)",
-            "Advanced AI workflows on Claude: long prompts, project memory, file attachments",
-            "For tech teams: Claude Code CLI, code generation and refactoring",
-          ],
-      href: "/interventions/intervention-claude",
-      ctaLabel: isFr ? "Découvrir Intervention Claude" : "Discover Claude intervention",
-      surface: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
-    },
-    // Card 6 — Direction (CODIR/COMEX) — repositionnement 2026-05-08 : pas
-    // une formation théorique, une journée de travail privilégié à vos côtés.
-    // Quick-wins activables semaine suivante + vision 12-24 mois + automatisations
-    // dirigeants. Prix fixe 990 € HT (Will, 2026-05-08).
-    {
-      key: "dirigeants",
-      accent: "mocha",
-      isDark: true,
-      badge: isFr ? "Travail 1-to-1 · Quick-wins" : "1-on-1 · Quick-wins",
-      title: isFr ? "Direction" : "Direction",
-      titleEm: isFr ? "Journée stratégique" : "Strategic day",
-      duration: dir.duration,
-      durationLabel: isFr ? "1 jour" : "1 day",
-      price: dir.price,
-      priceLabel: dir.price,
-      groupSize: dir.groupSize,
-      audience: dir.audience,
-      benefitTagline: dir.benefitTagline,
-      outcomes: dir.outcomes,
-      href: dirHref,
-      ctaLabel: dir.ctaLabel,
-      surface: "bg-mocha-rich text-mocha-fg",
-      isHighlight: true,
-    },
-    // Card 7 — Conférence 1 journée (Sprint 14.10.4 : pas de demi-journée)
-    {
-      key: "conference",
-      accent: "terracotta",
-      isDark: false,
-      badge: isFr ? "Format collectif" : "Collective format",
-      title: isFr ? "Conférence" : "Talk",
-      titleEm: isFr ? "1 journée" : "1 day",
-      duration: isFr ? "1 journée" : "1 day",
-      durationLabel: isFr ? "1 j" : "1 d",
-      price: conf.price,
-      priceLabel: isFr ? "Sur devis" : "On request",
-      groupSize: conf.groupSize,
-      audience: conf.audience,
-      benefitTagline: conf.benefitTagline,
-      outcomes: conf.outcomes,
-      href: confHref,
-      ctaLabel: conf.ctaLabel,
+function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
+  return FAMILIES.map((family): FamilyCardData => {
+    if (family.id === "collectives") {
+      // Sub-rows = 4 paliers durée, avec compteur de formats par cellule.
+      const subRows = COLLECTIVE_DURATIONS.map((d) => {
+        const count = countFormatsByCell("collectives", d.id);
+        const label = isFr ? d.labelFr : d.labelEn;
+        let meta: string;
+        if (d.isQuoteOnly) {
+          meta = isFr ? "sur devis" : "on request";
+        } else if (count === 0) {
+          meta = isFr ? "Bientôt" : "Coming soon";
+        } else if (count === 1) {
+          meta = isFr ? "1 formation" : "1 training";
+        } else {
+          meta = isFr ? `${count} formations` : `${count} trainings`;
+        }
+        return { label, meta };
+      });
+      const total = countFormatsByFamily("collectives");
+      return {
+        family,
+        icon: Users,
+        subRows,
+        countLabel: isFr
+          ? `${total} formation${total > 1 ? "s" : ""} · 4 paliers durée`
+          : `${total} training${total > 1 ? "s" : ""} · 4 duration tiers`,
+        ctaLabel: isFr ? "Voir les formations équipe" : "See team trainings",
+        surface: "bg-paper",
+      };
+    }
+    if (family.id === "individuel") {
+      const count = countFormatsByFamily("individuel");
+      // Liste plate. Si vide, on annonce la mise à dispo prochaine.
+      const subRows =
+        count > 0
+          ? [
+              {
+                label: isFr ? "Formats disponibles" : "Available formats",
+                meta: isFr
+                  ? `${count} format${count > 1 ? "s" : ""}`
+                  : `${count} format${count > 1 ? "s" : ""}`,
+              },
+            ]
+          : [
+              {
+                label: isFr ? "Coaching IA personnel" : "Personal AI coaching",
+                meta: isFr ? "Sur devis" : "On request",
+              },
+              {
+                label: isFr ? "Managers · indépendants" : "Managers · independents",
+                meta: isFr ? "1-to-1" : "1-on-1",
+              },
+              {
+                label: isFr ? "Format à définir ensemble" : "Format defined together",
+                meta: isFr ? "Visio ou présentiel" : "Remote or on site",
+              },
+            ];
+      return {
+        family,
+        icon: User,
+        subRows,
+        countLabel:
+          count > 0
+            ? isFr
+              ? `${count} format${count > 1 ? "s" : ""} disponible${count > 1 ? "s" : ""}`
+              : `${count} format${count > 1 ? "s" : ""} available`
+            : isFr
+              ? "Sur devis · cadrage par visio"
+              : "On request · framing by video",
+        ctaLabel: isFr ? "Demander un coaching" : "Request a coaching",
+        surface: "bg-halo-cool",
+      };
+    }
+    if (family.id === "dirigeants") {
+      const count = countFormatsByFamily("dirigeants");
+      const dirigeantsTier = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+      return {
+        family,
+        icon: Briefcase,
+        subRows: [
+          {
+            label: isFr ? "Journée stratégique CODIR" : "Strategic CODIR day",
+            meta: isFr
+              ? `${formatAmount(dirigeantsTier.priceFlat!, "fr", { compact: true })} · 1 jour`
+              : `${formatAmount(dirigeantsTier.priceFlat!, "en", { compact: true })} · 1 day`,
+          },
+          {
+            label: isFr ? "Effectif" : "Group size",
+            meta: isFr ? "1 à 5 personnes" : "1 to 5 people",
+          },
+          {
+            label: isFr ? "Huis clos · CODIR / COMEX" : "In camera · CODIR / COMEX",
+            meta: isFr ? "Quick-wins activables" : "Actionable quick-wins",
+          },
+        ],
+        countLabel: isFr
+          ? `${count} format${count > 1 ? "s" : ""} · journée stratégique`
+          : `${count} format${count > 1 ? "s" : ""} · strategic day`,
+        ctaLabel: isFr ? "Voir l'offre dirigeants" : "See executives offer",
+        surface: "bg-mocha-rich text-mocha-fg",
+        isDark: true,
+      };
+    }
+    // Conférence — liste plate (1 format en V1, format historique sorti de
+    // Collectives/1-jour pour devenir sa propre famille).
+    const count = countFormatsByFamily("conference");
+    return {
+      family,
+      icon: Megaphone,
+      subRows: [
+        {
+          label: isFr ? "Plénière 1 journée" : "1-day plenary",
+          meta: isFr ? "Sur devis" : "On request",
+        },
+        {
+          label: isFr ? "Effectif" : "Group size",
+          meta: isFr ? "30+ personnes" : "30+ people",
+        },
+        {
+          label: isFr ? "Format" : "Format",
+          meta: isFr ? "Séminaires · kick-off annuels" : "Seminars · annual kick-offs",
+        },
+      ],
+      countLabel: isFr
+        ? `${count} format${count > 1 ? "s" : ""} · plénière`
+        : `${count} format${count > 1 ? "s" : ""} · plenary`,
+      ctaLabel: isFr ? "Voir l'offre conférence" : "See talk offer",
       surface: "bg-halo-warm",
-    },
-    // Card 8 — Sur demande particulière (NEW)
-    {
-      key: "sur-demande",
-      accent: "sage",
-      isDark: false,
-      badge: isFr ? "Sur mesure" : "Bespoke",
-      title: isFr ? "Sur demande" : "On request",
-      titleEm: isFr ? "particulière" : "bespoke",
-      duration: isFr ? "Selon besoin" : "As needed",
-      durationLabel: isFr ? "Selon besoin" : "As needed",
-      price: isFr ? "Sur devis" : "On request",
-      priceLabel: isFr ? "Sur devis" : "On request",
-      groupSize: isFr ? "Selon besoin" : "As needed",
-      audience: isFr
-        ? "Toute entreprise · besoin spécifique · format hors-cadre"
-        : "Any company · specific need · non-standard format",
-      benefitTagline: isFr
-        ? "Pour les configurations qui ne rentrent pas dans nos formats standards : journée sur 2 sites, public mixte, contenus ultra-spécifiques, multi-jours, offsite, internationale. On cadre par appel, on construit ensemble, on chiffre."
-        : "For setups that don't fit our standard formats: split-site day, mixed audiences, ultra-specific content, multi-day, offsite, international. We frame by call, build it together, then quote.",
-      outcomes: isFr
-        ? [
-            "Cadrage par visio pour comprendre votre besoin et vos contraintes",
-            "Programme personnalisé construit ensemble — durée, contenu, modalités",
-            "Devis détaillé sous 48 h ouvrées · facture après l'intervention",
-          ]
-        : [
-            "Framing video call to understand your need and constraints",
-            "Personalised programme built together — duration, content, format",
-            "Detailed quote within 48 business hours · invoice after the session",
-          ],
-      href: "/contact",
-      ctaLabel: isFr ? "Demander un devis sur mesure" : "Request a bespoke quote",
-      surface: "bg-sand",
-    },
-  ];
+    };
+  });
 }
 
 export default async function InterventionsListing({ params }: Props) {
@@ -428,6 +325,12 @@ export default async function InterventionsListing({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+
+  const essentielleEntryAmount = getTierById(
+    INTERVENTION_TIERS,
+    "intervention-essentielle",
+  ).priceFlat!;
+  const essentielleEntry = formatAmount(essentielleEntryAmount, loc);
 
   const audienceStrip = [
     {
@@ -461,86 +364,72 @@ export default async function InterventionsListing({ params }: Props) {
     },
   ];
 
-  const essentielleEntryAmount = getTierById(
-    INTERVENTION_TIERS,
-    "intervention-essentielle",
-  ).priceFlat!;
-  const tempsAmount = getTierById(INTERVENTION_TIERS, "intervention-temps").priceFlat!;
-  const essentielleEntry = formatAmount(essentielleEntryAmount, loc);
-  const tempsLabel = formatAmount(tempsAmount, loc);
+  // JSON-LD Service principal — pointe vers le hub et liste les 3 familles
+  // via le ItemList plus bas.
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/interventions",
     name: isFr
-      ? "Interventions IA en entreprise · 8 formats · Axion-IA"
-      : "Corporate AI sessions · 8 formats · Axion-IA",
+      ? "Interventions IA en entreprise · 4 familles · Axion-IA"
+      : "Corporate AI sessions · 4 families · Axion-IA",
     description: isFr
-      ? `Interventions et formations IA opérationnelles sur site : Essentielle dès ${essentielleEntry} (2 à 30+ personnes, 4 paliers), Gagner du temps ${tempsLabel} (2-20), CODIR sur devis, conférence 1 journée, et sur demande particulière. France et international.`
-      : `Operational AI sessions on site: Essential from ${essentielleEntry} (2 to 30+ people, 4 tiers), Save Time ${tempsLabel} (2-20), Leadership on request, 1-day talk, and bespoke. France and international.`,
+      ? `Catalogue d'interventions et formations IA opérationnelles sur site, organisé en 4 familles : formations équipe (4 paliers durée de 4 h à 3 j+, dès ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
+      : `Catalogue of operational AI sessions on site, organised in 4 families: team trainings (4 duration tiers from 4 h to 3 d+, from ${essentielleEntry}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
     serviceType: "AI training & engagement",
     priceEur: getEntryPriceEur(INTERVENTION_TIERS) ?? 0,
     areasServed: buildServiceAreasServed(loc),
   });
 
-  const cards = buildCards(isFr);
+  const familyCards = buildFamilyCards(isFr);
 
+  // ItemList JSON-LD — 3 items = 3 familles. Le détail des formats reste
+  // exposé par chaque page famille / page durée via leur propre JSON-LD.
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: isFr ? "Interventions IA en entreprise" : "Corporate AI sessions",
-    itemListElement: cards.map((card, idx) => ({
+    name: isFr ? "Familles d'interventions IA" : "AI session families",
+    itemListElement: familyCards.map(({ family }, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
       item: {
         "@type": "Service",
-        name: `${card.title} ${card.titleEm ?? ""}`.trim(),
-        url: `${SITE_URL}/${locale}${card.href}`,
-        description: card.benefitTagline,
+        name: isFr ? family.labelFr : family.labelEn,
+        url: `${SITE_URL}/${locale}${familyPath(family, loc)}`,
+        description: isFr ? family.taglineFr : family.taglineEn,
       },
     })),
   } as const;
 
-  // Hero schema — 5 nodes représentant les grandes familles de formats
-  // (4 paliers Essentielle réduits à 1 node « Essentielle » pour la lisibilité
-  // du diagramme, +1 node Gagner du temps, +1 CODIR, +1 Conférence, +1 Sur demande).
+  // Hero schema — 4 nodes famille (Sprint 14.10.7 + ajout Conférence).
+  // Distribution équidistante en losange via le composant (N=4 → [-90,0,90,180]).
   const heroNodes: ReadonlyArray<{
     label: string;
     benefit: string;
-    accent: InterventionAccent;
+    accent: "terracotta" | "primary" | "sage" | "mocha";
   }> = [
     {
-      label: isFr ? "Essentielle" : "Essential",
-      benefit: isFr
-        ? `Découverte IA · dès ${formatAmount(essentielleEntryAmount, "fr", { compact: true })}`
-        : `AI discovery · from ${formatAmount(essentielleEntryAmount, "en", { compact: true })}`,
+      label: isFr ? "Formations équipe" : "Team trainings",
+      benefit: isFr ? "De 4 h à 3 j+ · 2 à 30+ personnes" : "From 4 h to 3 d+ · 2 to 30+ people",
       accent: "terracotta",
     },
     {
-      label: isFr ? "Gagner du temps" : "Save Time",
-      benefit: isFr
-        ? `${formatAmount(tempsAmount, "fr", { compact: true })} · 2 à 20 personnes`
-        : `${formatAmount(tempsAmount, "en", { compact: true })} · 2 to 20 people`,
+      label: isFr ? "Coaching individuel" : "Individual coaching",
+      benefit: isFr ? "1-to-1 sur mesure" : "Bespoke 1-on-1",
       accent: "primary",
     },
     {
-      label: isFr ? "CODIR · Dirigeants" : "Leadership",
-      benefit: isFr ? "Vision IA pour vos décisions" : "Clear AI vision for decisions",
+      label: isFr ? "Dirigeants" : "Executives",
+      benefit: isFr ? "Journée stratégique CODIR" : "Strategic CODIR day",
       accent: "mocha",
     },
     {
-      label: isFr ? "Conférence 1 jour" : "1-day talk",
-      benefit: isFr ? "Toute l'entreprise au même niveau" : "Whole company aligned",
-      accent: "terracotta",
-    },
-    {
-      label: isFr ? "Sur demande" : "Bespoke",
-      benefit: isFr ? "Configurations sur mesure" : "Custom configurations",
+      label: isFr ? "Conférence" : "Talk",
+      benefit: isFr ? "Plénière 1 journée · 30+" : "1-day plenary · 30+",
       accent: "sage",
     },
   ];
 
-  // Tunnel de réservation — 4 étapes claires, demandées explicitement par Will :
-  // calendrier → call → formulaire/questionnaire → intervention adaptée.
+  // Tunnel de réservation 4 étapes — inchangé depuis Sprint 14.10 (Will).
   const reservationFlow = [
     {
       icon: Calendar,
@@ -580,7 +469,7 @@ export default async function InterventionsListing({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO */}
+      {/* HERO — 3 blocs famille au lieu de 8 formats (Sprint 14.10.7) */}
       <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
         <div
           aria-hidden="true"
@@ -606,20 +495,20 @@ export default async function InterventionsListing({ params }: Props) {
               </p>
 
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Formez vos équipes à l'IA " : "Train your teams on AI "}
+                {isFr ? "Formez votre entreprise à l'IA " : "Train your company on AI "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "en 1 ou 2 journées" : "in 1 or 2 days"}
+                  {isFr ? "à votre niveau" : "at your level"}
                 </span>
                 {isFr ? " — concrètement, sur site." : " — concretely, on site."}
               </h1>
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? `8 formats d'intervention IA opérationnels — sur site, en France et à l'international. De 2 à 30+ personnes, dès ${essentielleEntry}. Pour TPE, PME, ETI ou grandes entreprises. À chaque entreprise son format. À chaque équipe son bénéfice concret, mesurable, dès le lendemain.`
-                  : `8 operational AI session formats — on site, in France and abroad. From 2 to 30+ people, from ${formatAmount(essentielleEntryAmount, "en", { compact: true })}. Small businesses, mid-market or enterprise. A format for every company, a concrete benefit for every team, starting the very next day.`}
+                  ? `4 grandes familles d'interventions IA pour s'adapter à toute configuration : formations équipe (de 4 heures à plusieurs jours, dès ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international. À chaque entreprise son format.`
+                  : `4 main families of AI sessions to fit every configuration: team trainings (from 4 hours to several days, from ${essentielleEntry}), 1-on-1 individual coaching, executive strategic day, and plenary talk. France and abroad. A format for every company.`}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -642,8 +531,8 @@ export default async function InterventionsListing({ params }: Props) {
               centerLabel={isFr ? "Votre entreprise" : "Your company"}
               ariaLabel={
                 isFr
-                  ? "Schéma : votre entreprise au centre, entourée des grandes familles de formats d'intervention IA Axion-IA et de leur bénéfice concret."
-                  : "Diagram: your company at the centre, surrounded by the Axion-IA intervention format families and their concrete benefit."
+                  ? "Schéma : votre entreprise au centre, entourée des 4 familles d'interventions Axion-IA — formations équipe, coaching individuel, dirigeants, conférence."
+                  : "Diagram: your company at the centre, surrounded by the 4 Axion-IA session families — team trainings, individual coaching, executives, talk."
               }
               nodes={heroNodes}
             />
@@ -651,7 +540,7 @@ export default async function InterventionsListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* BANDEAU « Pour qui » */}
+      {/* BANDEAU « Pour qui » — inchangé */}
       <section className="bg-paper border-border border-y py-10">
         <Container className={TIGHT_X}>
           <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
@@ -673,44 +562,43 @@ export default async function InterventionsListing({ params }: Props) {
         </Container>
       </section>
 
-      {/* 8 CARDS — grille 2 colonnes uniforme. Prix + durée ULTRA visibles
-          via banner haut de card (chip terracotta + chip neutre). Cards
-          1-4 = 4 paliers Essentielle (cliquables vers /interventions/essentielle).
-          5 = Gagner du temps (NEW, 990 €), 6 = CODIR, 7 = Conférence, 8 = Sur demande. */}
+      {/* 4 CARDS FAMILLE — coeur de la refonte Sprint 14.10.7 */}
       <Section
-        eyebrow={isFr ? "Choisir votre format" : "Pick your format"}
-        title={isFr ? "8 formats d'intervention" : "8 intervention formats"}
-        titleEm={isFr ? "à votre mesure" : "for every fit"}
+        eyebrow={isFr ? "Choisir votre famille" : "Pick your family"}
+        title={isFr ? "4 familles" : "4 families"}
+        titleEm={isFr ? "d'intervention IA" : "of AI sessions"}
         description={
           isFr
-            ? "Chaque bloc affiche prix HT et durée en haut, lisibles au premier coup d'œil. Cliquez pour la page détaillée du format ou pour ouvrir le calendrier de réservation."
-            : "Every card shows price (excl. VAT) and duration at the top, readable at a glance. Click for the format's detail page or to open the booking calendar."
+            ? "Cliquez sur une famille pour voir le détail. Les formations équipe sont organisées par durée (4 h, 1 j, 2 j, 3 j+). Le coaching individuel, la journée dirigeants et la conférence sont des listes plates de formats."
+            : "Click a family to see the detail. Team trainings are organised by duration (4 h, 1 d, 2 d, 3 d+). Individual coaching, executive day and talk are flat format lists."
         }
         contentClassName={TIGHT_X}
       >
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-7">
-          {cards.map((card) => {
-            const acc = accentClasses[card.accent];
-            const dark = card.isDark;
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+          {familyCards.map((card) => {
+            const acc = familyAccentClasses[card.family.accent];
+            const Icon = card.icon;
+            const dark = card.isDark === true;
             const txt = dark ? "text-mocha-fg" : "text-fg";
             const txtSoft = dark ? "text-mocha-fg/85" : "text-fg-soft";
             const txtMuted = dark ? "text-mocha-fg/70" : "text-fg-muted";
+            const href = familyPath(card.family, loc);
 
             return (
               <article
-                key={card.key}
+                key={card.family.id}
                 className={cn(
-                  "shadow-subtle group/card hover:shadow-card relative overflow-hidden rounded-3xl border-2 ring-1 transition-shadow",
+                  "shadow-subtle group/family hover:shadow-card relative overflow-hidden rounded-3xl border-2 ring-1 transition-shadow",
                   card.surface,
                   acc.border,
                   acc.haloRing,
                 )}
                 {...(dark ? { "data-tone": "dark" as const } : {})}
               >
-                {/* Stretched link couvre la card. CTA interne en relative z-[2]. */}
+                {/* Stretched link couvre la card */}
                 <Link
-                  href={card.href as never}
-                  aria-label={`${card.title} ${card.titleEm ?? ""} — ${card.ctaLabel}`}
+                  href={href as never}
+                  aria-label={`${isFr ? card.family.labelFr : card.family.labelEn} — ${card.ctaLabel}`}
                   className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <span className="sr-only">{card.ctaLabel}</span>
@@ -718,210 +606,77 @@ export default async function InterventionsListing({ params }: Props) {
 
                 <span aria-hidden="true" className={`block h-1.5 w-full ${acc.line}`} />
 
-                {/* BANNER PRIX + DURÉE — la signature de cette refonte. Ultra
-                    visible : chip prix terracotta gros, chip durée neutre,
-                    badge audience à droite. Lisible en moins d'une seconde. */}
-                <div
-                  className={cn(
-                    "flex flex-wrap items-center justify-between gap-3 px-7 pt-6 sm:px-8",
-                    dark ? "border-mocha-fg/15" : "border-border/60",
-                  )}
-                >
-                  <div className="flex flex-wrap items-baseline gap-2.5">
+                <div className="p-7 sm:p-8">
+                  {/* En-tête : icône + badge count */}
+                  <div className="flex items-start justify-between gap-4">
                     <span
                       className={cn(
-                        "rounded-full px-4 py-1.5 text-base font-bold tracking-tight tabular-nums shadow-[0_4px_12px_-4px_rgba(0,0,0,0.15)] sm:text-lg",
-                        acc.cta,
+                        "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl",
+                        acc.iconBg,
+                        acc.iconText,
                       )}
                     >
-                      {card.priceLabel}
+                      <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
                     </span>
                     <span
                       className={cn(
-                        "inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-semibold tracking-tight",
-                        dark
-                          ? "bg-mocha-soft border-mocha-fg/20 text-mocha-fg"
-                          : "bg-paper border-border/60 text-fg",
+                        "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase",
+                        acc.badge,
                       )}
                     >
-                      <span aria-hidden="true" className="mr-1.5 opacity-60">
-                        ⏱
-                      </span>
-                      {card.durationLabel}
-                    </span>
-                    <span
-                      className={cn(
-                        "inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-semibold tracking-tight",
-                        dark
-                          ? "bg-mocha-soft border-mocha-fg/20 text-mocha-fg"
-                          : "bg-paper border-border/60 text-fg",
-                      )}
-                    >
-                      <span aria-hidden="true" className="mr-1.5 opacity-60">
-                        👥
-                      </span>
-                      {card.groupSize}
+                      {card.countLabel}
                     </span>
                   </div>
-                  <span
-                    className={cn(
-                      "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase",
-                      acc.badge,
-                    )}
-                  >
-                    {card.isFlagship ? <Sparkles className="mr-1 h-3 w-3" /> : null}
-                    {card.badge}
-                  </span>
-                </div>
 
-                <div className="p-7 sm:p-8">
-                  {/* Logo Claude visible en haut de la card Intervention Claude.
-                      Marqueur visuel fort qui distingue immédiatement cette
-                      formation outil-spécifique des formats généraux. */}
-                  {card.accent === "claude" ? (
-                    <div className="mb-5 flex items-center gap-3">
-                      {/* hex-ok: brand-anthropic-claude */}
-                      <span
-                        className={
-                          "flex h-12 w-12 items-center justify-center rounded-xl bg-[#D97757]/10" // hex-ok: brand-anthropic-claude
-                        }
-                      >
-                        <ClaudeLogo
-                          ariaLabel="Claude (Anthropic)"
-                          className={"h-7 w-7 text-[#D97757]" /* hex-ok */} // hex-ok: brand-anthropic-claude
-                        />
-                      </span>
-                      <span
-                        className={
-                          "text-[12px] font-semibold tracking-[0.14em] text-[#9C3E1E] uppercase" // hex-ok: brand-anthropic-claude
-                        }
-                      >
-                        {isFr ? "Logo Claude · Anthropic" : "Claude logo · Anthropic"}
-                      </span>
-                    </div>
-                  ) : null}
-                  <span
-                    className={cn(
-                      "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide uppercase",
-                      acc.badge,
-                    )}
-                  >
-                    {card.audience}
-                  </span>
-
+                  {/* Titre famille */}
                   <h2
                     className={cn(
-                      "mt-4 text-[clamp(1.5rem,2.4vw,2rem)] leading-tight font-semibold tracking-tight",
+                      "mt-6 text-[clamp(1.5rem,2.4vw,2rem)] leading-tight font-semibold tracking-tight",
                       txt,
                     )}
                   >
-                    {card.title}
-                    {card.titleEm ? (
-                      <>
-                        {" "}
-                        <span
-                          className={`italic ${acc.title}`}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {card.titleEm}
-                        </span>
-                      </>
-                    ) : null}
+                    {isFr ? card.family.labelFr : card.family.labelEn}
                   </h2>
 
-                  <p className={cn("mt-4 text-[15.5px] leading-relaxed", txtSoft)}>
-                    {card.benefitTagline}
+                  {/* Tagline */}
+                  <p className={cn("mt-3 text-[15.5px] leading-relaxed", txtSoft)}>
+                    {isFr ? card.family.taglineFr : card.family.taglineEn}
                   </p>
 
-                  {card.subTierGrid && card.subTierGrid.length > 0 ? (
-                    <div className="mt-6">
-                      <p
-                        className={cn(
-                          "mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase",
-                          txtMuted,
-                        )}
+                  {/* Sub-rows : paliers durée ou résumé */}
+                  <ul
+                    className={cn(
+                      "mt-6 space-y-2.5 border-t pt-5",
+                      dark ? "border-mocha-fg/15" : "border-border/60",
+                    )}
+                  >
+                    {card.subRows.map((row, i) => (
+                      <li
+                        key={i}
+                        className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1"
                       >
-                        {isFr ? "Tarifs selon l'effectif" : "Pricing by headcount"}
-                      </p>
-                      <div className="grid gap-2.5 sm:grid-cols-3">
-                        {card.subTierGrid.map((t) => (
-                          <div
-                            key={t.label}
-                            className={cn(
-                              "relative flex flex-col items-start rounded-xl border p-3",
-                              t.isFeatured
-                                ? "border-terracotta bg-paper shadow-subtle"
-                                : "border-border/60 bg-paper/60",
-                            )}
-                          >
-                            {t.isFeatured ? (
-                              <span className="bg-terracotta text-mocha-fg absolute -top-2 left-3 rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase">
-                                ★ {isFr ? "Recommandé" : "Recommended"}
-                              </span>
-                            ) : null}
-                            <span
-                              className={cn(
-                                "text-[10px] font-bold tracking-[0.14em] uppercase",
-                                txtMuted,
-                              )}
-                            >
-                              {t.label}
-                            </span>
-                            <span
-                              className={cn(
-                                "mt-1 text-lg leading-none font-bold tabular-nums sm:text-xl",
-                                t.isFeatured ? "text-terracotta-deep" : txt,
-                              )}
-                            >
-                              {t.price}
-                            </span>
-                            <span
-                              className={cn(
-                                "mt-1 text-[12px] leading-tight font-semibold",
-                                txtSoft,
-                              )}
-                            >
-                              {t.range}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
+                        <span
+                          className={cn("flex items-center gap-2 text-[14px] font-medium", txt)}
+                        >
+                          {card.family.id === "collectives" ? (
+                            <Clock
+                              aria-hidden="true"
+                              className={cn("h-3.5 w-3.5 opacity-60", acc.iconText)}
+                            />
+                          ) : null}
+                          {row.label}
+                        </span>
+                        <span className={cn("text-[12.5px] tabular-nums", txtMuted)}>
+                          {row.meta}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
 
-                  <div className="mt-6">
-                    <p
-                      className={cn(
-                        "mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase",
-                        txtMuted,
-                      )}
-                    >
-                      {isFr
-                        ? "À l'issue, vos équipes savent…"
-                        : "After the session, your team can…"}
-                    </p>
-                    <ul className="space-y-2">
-                      {card.outcomes.map((o, i) => (
-                        <li key={i} className={cn("flex items-start gap-3 text-base", txt)}>
-                          <span
-                            className={cn(
-                              "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                              acc.chipBg,
-                              acc.chipText,
-                            )}
-                          >
-                            <Check aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
-                          </span>
-                          <span className="leading-relaxed">{o}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* CTA principale + lien calendrier — au-dessus du stretched link */}
+                  {/* CTA principale — au-dessus du stretched link */}
                   <div className="relative z-[2] mt-7 flex flex-wrap items-center gap-3">
                     <Link
-                      href={card.href as never}
+                      href={href as never}
                       className={cn(
                         "cta-lift inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors",
                         acc.cta,
@@ -930,20 +685,18 @@ export default async function InterventionsListing({ params }: Props) {
                       {card.ctaLabel}
                       <ArrowRight aria-hidden="true" className="h-4 w-4" />
                     </Link>
-                    {card.href !== "/reserver" && card.href !== "/contact" ? (
-                      <Link
-                        href="/reserver"
-                        className={cn(
-                          "inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4",
-                          dark
-                            ? "text-mocha-fg hover:text-terracotta-soft"
-                            : "text-fg hover:text-terracotta-deep",
-                        )}
-                      >
-                        {isFr ? "Voir le calendrier" : "See the calendar"}
-                        <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
-                      </Link>
-                    ) : null}
+                    <Link
+                      href="/reserver"
+                      className={cn(
+                        "inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4",
+                        dark
+                          ? "text-mocha-fg hover:text-terracotta-soft"
+                          : "text-fg hover:text-terracotta-deep",
+                      )}
+                    >
+                      {isFr ? "Voir le calendrier" : "See the calendar"}
+                      <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+                    </Link>
                   </div>
                 </div>
               </article>
@@ -952,9 +705,7 @@ export default async function InterventionsListing({ params }: Props) {
         </div>
       </Section>
 
-      {/* COMMENT ÇA SE PASSE — section dédiée demandée explicitement par Will :
-          calendrier → appel → formulaire → intervention adaptée. Visible aussi
-          comme rassurance commerciale (B2B : « comment je réserve concrètement »). */}
+      {/* COMMENT ÇA SE PASSE — tunnel réservation 4 étapes (inchangé) */}
       <Section
         tone="paper"
         eyebrow={isFr ? "Comment ça se passe" : "How it works"}
@@ -1001,16 +752,16 @@ export default async function InterventionsListing({ params }: Props) {
         </div>
       </Section>
 
-      {/* SECTION ANTI-FEAR — quel que soit votre niveau IA */}
+      {/* ANTI-FEAR — 3 niveaux maturité, recos pointent maintenant vers les familles */}
       <Section
         tone="sand"
         eyebrow={isFr ? "Concerné·e quel que soit votre niveau" : "A fit for every AI maturity"}
         title={isFr ? "De zéro IA à équipes IA-fluentes," : "From zero AI to fluent teams,"}
-        titleEm={isFr ? "un format pour chaque entreprise" : "one format per company"}
+        titleEm={isFr ? "une famille pour chaque situation" : "one family per situation"}
         description={
           isFr
-            ? "Aucune entreprise n'est trop petite ni trop grande. Aucune équipe n'est trop débutante ni trop experte. Vous repartez avec un bénéfice concret — peu importe d'où vous partez."
-            : "No company is too small or too large. No team is too novice or too expert. You leave with a concrete benefit — whatever your starting point."
+            ? "Aucune entreprise n'est trop petite ni trop grande. Aucune équipe n'est trop débutante ni trop experte. À chaque maturité IA correspond une famille — vous repartez avec un bénéfice concret."
+            : "No company is too small or too large. No team is too novice or too expert. To each AI maturity its family — you leave with a concrete benefit."
         }
         contentClassName={TIGHT_X}
       >
@@ -1020,29 +771,30 @@ export default async function InterventionsListing({ params }: Props) {
               level: isFr ? "Niveau 1" : "Stage 1",
               title: isFr ? "Aucun collaborateur formé à l'IA" : "No employee trained in AI yet",
               body: isFr
-                ? "L'Essentielle ou la conférence 1 journée vous donnent une vision claire et des quick-wins prêts à reprendre."
-                : "The Essential or the 1-day talk gives you a clear vision and quick-wins ready to resume.",
-              recommendation: isFr
-                ? `Essentielle ${formatAmount(essentielleEntryAmount, "fr", { compact: true })} · Conférence`
-                : `Essential ${formatAmount(essentielleEntryAmount, "en", { compact: true })} · Talk`,
+                ? `Démarrez par une formation équipe Essentielle ${formatAmount(essentielleEntryAmount, "fr", { compact: true })} ou une conférence 1 journée pour mettre tout le monde au même niveau.`
+                : `Start with an Essential team training ${formatAmount(essentielleEntryAmount, "en", { compact: true })} or a 1-day talk to bring everyone to the same level.`,
+              recommendation: isFr ? "Famille : Formations équipe" : "Family: Team trainings",
+              href: "/interventions/collectives",
             },
             {
               level: isFr ? "Niveau 2" : "Stage 2",
               title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
               body: isFr
-                ? `Gagner du temps (${tempsLabel}) structure ce qui marche, élimine ce qui n'en vaut pas la peine, et passe à l'échelle équipe.`
-                : `Save Time (${tempsLabel}) structures what works, drops what doesn't, and scales it to the team.`,
+                ? "Coaching individuel pour structurer ce qui marche chez les managers clés, ou Approfondie 2 jours pour passer toute l'équipe à l'échelle."
+                : "Individual coaching to structure what works for key managers, or 2-day Deep Dive to scale the whole team.",
               recommendation: isFr
-                ? `Gagner du temps · ${formatAmount(tempsAmount, "fr", { compact: true })}`
-                : `Save Time · ${formatAmount(tempsAmount, "en", { compact: true })}`,
+                ? "Familles : Individuel · Équipe"
+                : "Families: Individual · Team",
+              href: "/interventions/individuel",
             },
             {
               level: isFr ? "Niveau 3" : "Stage 3",
               title: isFr ? "Équipes IA-fluentes en place" : "Fluent AI teams already in place",
               body: isFr
-                ? "L'intervention CODIR pose le cadre stratégique 12-24 mois — gouvernance, investissements, gestion des risques."
-                : "The Leadership session sets the 12-24 month strategic frame — governance, investments, risk management.",
-              recommendation: isFr ? "Dirigeants · CODIR" : "Executives · Leadership",
+                ? "Journée stratégique CODIR pour cadrer la gouvernance IA 12-24 mois, les investissements prioritaires et la gestion des risques."
+                : "Strategic CODIR day to frame 12-24 month AI governance, priority investments and risk management.",
+              recommendation: isFr ? "Famille : Dirigeants" : "Family: Executives",
+              href: "/interventions/dirigeants",
             },
           ].map((card, idx) => (
             <article key={idx} className="bg-paper border-border relative rounded-2xl border p-6">
@@ -1053,9 +805,14 @@ export default async function InterventionsListing({ params }: Props) {
               <p className="text-fg-soft mt-3 text-base leading-relaxed">{card.body}</p>
               <p className="text-fg-muted mt-4 text-[12px] tracking-wide">
                 <span className="text-fg font-medium">
-                  {isFr ? "Format conseillé : " : "Recommended format: "}
+                  {isFr ? "Recommandé : " : "Recommended: "}
                 </span>
-                {card.recommendation}
+                <Link
+                  href={card.href as never}
+                  className="text-terracotta-deep hover:text-terracotta font-medium underline underline-offset-4"
+                >
+                  {card.recommendation}
+                </Link>
               </p>
             </article>
           ))}
