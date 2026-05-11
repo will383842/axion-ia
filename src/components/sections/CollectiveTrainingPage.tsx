@@ -331,10 +331,9 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
   const priceEn = formatAmount(fourHTier.priceFlat!, "en");
   const contactHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
 
-  // Couleur de la card depuis taxonomy (terracotta pour demarrage, primary
-  // pour atelier ciblé).
-  const accent = entry?.accent ?? "terracotta";
-  const isTerracotta = accent === "terracotta";
+  // Sprint 14.10.7 fix charte couleur : tout en terracotta (orange Axion-IA).
+  // L'`accent` taxonomy est toujours terracotta pour ces 2 formations 4 h
+  // (charte respectée). Variable retirée car plus de variation conditionnelle.
 
   const breadcrumbItems = [
     { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
@@ -391,10 +390,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
             <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
-                className={cn(
-                  "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                  isTerracotta ? "bg-terracotta" : "bg-primary",
-                )}
+                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
               {isFr ? "Formation équipe · 4 heures" : "Team training · 4 hours"}
               {entry?.badgeFr ? (
@@ -408,10 +404,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
             <h1 className="display-editorial text-fg mt-5">
               {isFr ? config.titleFr : config.titleEn}{" "}
               <span
-                className={cn(
-                  "mx-2 italic",
-                  isTerracotta ? "text-terracotta-deep" : "text-primary",
-                )}
+                className="text-terracotta-deep mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 {isFr ? config.titleEmFr : config.titleEmEn}
@@ -424,12 +417,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
 
             {/* Bandeau prix + chips ROI */}
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span
-                className={cn(
-                  "rounded-full px-4 py-1.5 text-base font-bold tracking-tight tabular-nums shadow-[0_4px_12px_-4px_rgba(0,0,0,0.15)]",
-                  isTerracotta ? "bg-terracotta text-mocha-fg" : "bg-primary text-primary-fg",
-                )}
-              >
+              <span className="bg-terracotta text-mocha-fg rounded-full px-4 py-1.5 text-base font-bold tracking-tight tabular-nums shadow-[0_4px_12px_-4px_rgba(0,0,0,0.15)]">
                 {isFr ? priceFr : priceEn}
               </span>
               <span className="text-fg-soft text-[13px]">
@@ -441,12 +429,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
               {(isFr ? config.chipsFr : config.chipsEn).map((chip) => (
                 <li
                   key={chip}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight",
-                    isTerracotta
-                      ? "bg-terracotta-soft text-terracotta-deep border-terracotta/25"
-                      : "bg-primary-soft text-primary border-primary/25",
-                  )}
+                  className="bg-terracotta-soft text-terracotta-deep border-terracotta/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
                 >
                   <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   {chip}
@@ -487,14 +470,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
                 key={i}
                 className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
               >
-                <div
-                  className={cn(
-                    "mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl",
-                    isTerracotta
-                      ? "bg-terracotta-soft text-terracotta-deep"
-                      : "bg-primary-soft text-primary",
-                  )}
-                >
+                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
                   <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
                 </div>
                 <h3 className="text-fg text-lg leading-snug font-semibold">
@@ -527,22 +503,12 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
             <li key={i} className="relative pb-6 last:pb-0">
               <span
                 aria-hidden="true"
-                className={cn(
-                  "absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-4",
-                  isTerracotta
-                    ? "bg-terracotta ring-terracotta-soft"
-                    : "bg-primary ring-primary-soft",
-                )}
+                className="bg-terracotta ring-terracotta-soft absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-4"
               >
                 <Clock aria-hidden="true" className="text-paper h-2 w-2" strokeWidth={3} />
               </span>
               <div className="flex flex-wrap items-baseline gap-x-3">
-                <span
-                  className={cn(
-                    "text-[13px] font-bold tracking-wide uppercase tabular-nums",
-                    isTerracotta ? "text-terracotta-deep" : "text-primary",
-                  )}
-                >
+                <span className="text-terracotta-deep text-[13px] font-bold tracking-wide uppercase tabular-nums">
                   {item.time}
                 </span>
                 <span className="text-fg text-[15px] font-semibold">
@@ -582,12 +548,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
                 <span>{isFr ? f.qFr : f.qEn}</span>
                 <span
                   aria-hidden="true"
-                  className={cn(
-                    "mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45",
-                    isTerracotta
-                      ? "bg-terracotta-soft text-terracotta-deep"
-                      : "bg-primary-soft text-primary",
-                  )}
+                  className="bg-terracotta-soft text-terracotta-deep mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45"
                 >
                   +
                 </span>

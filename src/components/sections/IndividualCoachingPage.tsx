@@ -400,10 +400,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
             <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
-                className={cn(
-                  "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                  slug === "coaching-decouverte" ? "bg-terracotta" : "bg-sage",
-                )}
+                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
               {isFr ? "Coaching individuel · 1 jour" : "Individual coaching · 1 day"}
               {entry?.badgeFr ? (
@@ -417,10 +414,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
             <h1 className="display-editorial text-fg mt-5">
               {isFr ? config.titleFr : config.titleEn}{" "}
               <span
-                className={cn(
-                  "mx-2 italic",
-                  slug === "coaching-decouverte" ? "text-terracotta-deep" : "text-sage",
-                )}
+                className="text-terracotta-deep mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 {isFr ? config.titleEmFr : config.titleEmEn}
@@ -436,12 +430,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
               {(isFr ? config.chipsFr : config.chipsEn).map((chip) => (
                 <li
                   key={chip}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight",
-                    slug === "coaching-decouverte"
-                      ? "bg-terracotta-soft text-terracotta-deep border-terracotta/25"
-                      : "bg-sage-soft text-sage border-sage/30",
-                  )}
+                  className="bg-terracotta-soft text-terracotta-deep border-terracotta/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
                 >
                   <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   {chip}
@@ -482,14 +471,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                 key={i}
                 className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
               >
-                <div
-                  className={cn(
-                    "mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl",
-                    slug === "coaching-decouverte"
-                      ? "bg-terracotta-soft text-terracotta-deep"
-                      : "bg-sage-soft text-sage",
-                  )}
-                >
+                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
                   <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
                 </div>
                 <h3 className="text-fg text-lg leading-snug font-semibold">
@@ -522,22 +504,12 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
             <li key={i} className="relative pb-6 last:pb-0">
               <span
                 aria-hidden="true"
-                className={cn(
-                  "absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-4",
-                  slug === "coaching-decouverte"
-                    ? "bg-terracotta ring-terracotta-soft"
-                    : "bg-sage ring-sage-soft",
-                )}
+                className="bg-terracotta ring-terracotta-soft absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-4"
               >
                 <Clock aria-hidden="true" className="text-paper h-2 w-2" strokeWidth={3} />
               </span>
               <div className="flex flex-wrap items-baseline gap-x-3">
-                <span
-                  className={cn(
-                    "text-[13px] font-bold tracking-wide uppercase tabular-nums",
-                    slug === "coaching-decouverte" ? "text-terracotta-deep" : "text-sage",
-                  )}
-                >
+                <span className="text-terracotta-deep text-[13px] font-bold tracking-wide uppercase tabular-nums">
                   {item.time}
                 </span>
                 <span className="text-fg text-[15px] font-semibold">
@@ -577,12 +549,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
                 <span>{isFr ? f.qFr : f.qEn}</span>
                 <span
                   aria-hidden="true"
-                  className={cn(
-                    "mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45",
-                    slug === "coaching-decouverte"
-                      ? "bg-terracotta-soft text-terracotta-deep"
-                      : "bg-sage-soft text-sage",
-                  )}
+                  className="bg-terracotta-soft text-terracotta-deep mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45"
                 >
                   +
                 </span>

@@ -255,7 +255,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                 className={cn(
                   "group/duration shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 sm:min-h-[460px] md:min-h-[520px] lg:min-h-[560px]",
                   isQuote
-                    ? "bg-sand border-sage/40 hover:border-sage hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(120,143,98,0.30)]"
+                    ? "bg-sand border-terracotta-deep/40 hover:border-terracotta-deep hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(180,80,40,0.30)]"
                     : "bg-paper border-terracotta/30 hover:border-terracotta hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]",
                 )}
               >
@@ -270,7 +270,10 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                 {/* Filet couleur en haut */}
                 <span
                   aria-hidden="true"
-                  className={cn("block h-2 w-full", isQuote ? "bg-sage" : "bg-terracotta")}
+                  className={cn(
+                    "block h-2 w-full",
+                    isQuote ? "bg-terracotta-deep" : "bg-terracotta",
+                  )}
                 />
 
                 {/* Badge palier XXL — accroche visuelle dominante.
@@ -279,14 +282,14 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                 <div
                   className={cn(
                     "relative flex items-center justify-center py-8 sm:py-9 md:py-14",
-                    isQuote ? "bg-sage-soft/50" : "bg-terracotta-soft/45",
+                    isQuote ? "bg-terracotta-soft/65" : "bg-terracotta-soft/45",
                   )}
                 >
                   <span
                     aria-hidden="true"
                     className={cn(
                       "font-display text-[clamp(3.75rem,8vw,6rem)] leading-none font-bold tracking-tight tabular-nums transition-transform duration-200 group-hover/duration:scale-110",
-                      isQuote ? "text-sage" : "text-terracotta-deep",
+                      isQuote ? "text-terracotta-deep" : "text-terracotta-deep",
                     )}
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
@@ -316,7 +319,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                           aria-hidden="true"
                           className={cn(
                             "mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
-                            isQuote ? "bg-sage" : "bg-terracotta",
+                            isQuote ? "bg-terracotta-deep" : "bg-terracotta",
                           )}
                         />
                         <span className="font-medium">{feat}</span>
@@ -329,7 +332,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     className={cn(
                       "mt-5 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold",
                       isQuote
-                        ? "bg-sage-soft text-sage"
+                        ? "bg-terracotta-soft text-terracotta-deep"
                         : isEmpty
                           ? "bg-paper border-border text-fg-muted border"
                           : "bg-terracotta-soft text-terracotta-deep",
@@ -350,7 +353,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       className={cn(
                         "inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors",
                         isQuote
-                          ? "bg-sage text-mocha-fg hover:bg-sage/85"
+                          ? "bg-terracotta-deep text-mocha-fg hover:bg-terracotta-deep/85"
                           : "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
                       )}
                     >

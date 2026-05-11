@@ -139,9 +139,10 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     pathFr: "/interventions/individuel",
     pathEn: "/interventions/individual",
     hasDurations: false,
-    // Sprint 14.10.7 fix Will (2026-05-11) : sage au lieu de primary (bleu).
-    // « Amorti en quelques jours » ne doit pas être en bleu vif.
-    accent: "sage",
+    // Sprint 14.10.7 fix charte couleur (Will 2026-05-11) : terracotta
+    // (orange brûlé Axion-IA) — pas de bleu ni de vert. Distinction inter-famille
+    // se fait par la mise en page et le contenu, pas la couleur.
+    accent: "terracotta",
   },
   {
     // Sprint 14.10.7 — recentrage Will (2026-05-11) : 1 dirigeant (pas CODIR),
@@ -179,9 +180,9 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     pathFr: "/interventions/conference",
     pathEn: "/interventions/conference",
     hasDurations: false,
-    // Sprint 14.10.7 fix Will (2026-05-11) : primary récupéré ici suite au
-    // swap avec Individuel (qui passe à sage pour éviter le bleu vif).
-    accent: "primary",
+    // Sprint 14.10.7 fix charte couleur (Will 2026-05-11) : terracotta
+    // (orange brûlé Axion-IA), comme toutes les familles non-Dirigeants.
+    accent: "terracotta",
   },
 ] as const;
 
@@ -304,7 +305,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     groupSizeEn: "2 to 15 people",
     audienceFr: "Équipe avec besoin métier précis",
     audienceEn: "Team with a specific business need",
-    accent: "primary",
+    accent: "terracotta",
     badgeFr: "Cas d'usage · 4 h",
     badgeEn: "Use case · 4 h",
   },
@@ -351,7 +352,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     groupSizeEn: "2 to 20 people",
     audienceFr: "Équipes opérationnelles · TPE, PME, ETI",
     audienceEn: "Operational teams · small to mid-market",
-    accent: "primary",
+    accent: "terracotta",
     badgeFr: "Productivité",
     badgeEn: "Productivity",
   },
@@ -400,7 +401,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     groupSizeEn: "2 to 30 people",
     audienceFr: "Équipes opérationnelles · TPE, PME, ETI",
     audienceEn: "Operational teams · small to mid-market",
-    accent: "primary",
+    accent: "terracotta",
     badgeFr: "Équipes · 2 jours",
     badgeEn: "Teams · 2 days",
   },
@@ -477,7 +478,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     groupSizeEn: "Large audiences · 30+ people",
     audienceFr: "Toute l'entreprise au même niveau",
     audienceEn: "Whole company aligned",
-    accent: "sage",
+    accent: "terracotta",
     badgeFr: "Format collectif",
     badgeEn: "Collective format",
   },
@@ -508,7 +509,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     groupSizeEn: "1 person (strict 1-on-1)",
     audienceFr: "Managers, indépendants, dirigeants solo · découvrent l'IA",
     audienceEn: "Managers, independents, solo executives · discovering AI",
-    accent: "primary",
+    accent: "terracotta",
     badgeFr: "Niveau débutant → intermédiaire",
     badgeEn: "Beginner → intermediate",
   },
@@ -529,7 +530,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     groupSizeEn: "1 person (strict 1-on-1)",
     audienceFr: "Pros déjà à l'aise avec ChatGPT/Claude · veulent maxer",
     audienceEn: "Pros already comfortable with ChatGPT/Claude · want to max out",
-    accent: "sage",
+    accent: "terracotta",
     badgeFr: "Niveau avancé",
     badgeEn: "Advanced level",
   },

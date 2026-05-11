@@ -90,7 +90,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
                 aria-hidden="true"
                 className={cn(
                   "mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                  isQuote ? "bg-sage" : "bg-terracotta",
+                  isQuote ? "bg-terracotta-deep" : "bg-terracotta",
                 )}
               />
               {isFr ? "Formations équipe" : "Team trainings"}
@@ -150,7 +150,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           contentClassName={TIGHT_X}
         >
           <div className="bg-paper border-border shadow-subtle mx-auto max-w-2xl rounded-3xl border p-8 sm:p-10">
-            <div className="bg-sage-soft text-sage mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl">
+            <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl">
               <Sparkles aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
             </div>
             <h2 className="text-fg text-2xl leading-tight font-semibold">
@@ -177,7 +177,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
                   ]
               ).map((line, i) => (
                 <li key={i} className="text-fg flex items-start gap-3">
-                  <span className="bg-sage-soft text-sage mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
+                  <span className="bg-terracotta-soft text-terracotta-deep mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
                     <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   </span>
                   <span className="leading-relaxed">{line}</span>

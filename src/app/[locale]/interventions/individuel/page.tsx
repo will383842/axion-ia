@@ -130,14 +130,17 @@ export default async function IndividuelFamilyPage({ params }: Props) {
             <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
               <span
                 aria-hidden="true"
-                className="bg-sage mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
               {isFr ? "Famille · Coaching individuel" : "Family · Individual coaching"}
             </p>
 
             <h1 className="display-editorial text-fg mt-5">
               {isFr ? "Coaching IA 1-to-1 " : "1-on-1 AI coaching "}
-              <span className="text-sage mx-2 italic" style={{ fontFamily: "var(--font-serif)" }}>
+              <span
+                className="text-terracotta mx-2 italic"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
                 {isFr ? "amorti en quelques jours" : "pays for itself in days"}
               </span>
             </h1>
@@ -158,7 +161,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
               ).map((chip) => (
                 <li
                   key={chip}
-                  className="bg-sage-soft text-sage border-sage/30 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+                  className="bg-terracotta-soft text-terracotta-deep border-terracotta/30 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
                 >
                   <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   {chip}
@@ -212,7 +215,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
           contentClassName={TIGHT_X}
         >
           <div className="bg-paper border-border shadow-subtle mx-auto max-w-2xl rounded-3xl border p-8 sm:p-10">
-            <div className="bg-sage-soft text-sage mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl">
+            <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl">
               <Sparkles aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
             </div>
             <h2 className="text-fg text-2xl leading-tight font-semibold">
@@ -239,7 +242,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                   ]
               ).map((line, i) => (
                 <li key={i} className="text-fg flex items-start gap-3">
-                  <span className="bg-sage-soft text-sage mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
+                  <span className="bg-terracotta-soft text-terracotta-deep mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
                     <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
                   </span>
                   <span className="leading-relaxed">{line}</span>
@@ -277,7 +280,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                 key={idx}
                 className="bg-paper border-border shadow-subtle rounded-2xl border p-6"
               >
-                <div className="bg-sage-soft text-sage mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
+                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
                   <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
                 </div>
                 <h3 className="text-fg text-lg leading-snug font-semibold">
