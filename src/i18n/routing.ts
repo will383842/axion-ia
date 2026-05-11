@@ -132,6 +132,7 @@ export const routing = defineRouting({
     "/desabonnement": { fr: "/desabonnement", en: "/unsubscribe" },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
+    "/mes-donnees/export": { fr: "/mes-donnees/export", en: "/my-data/export" },
     "/accessibilite": { fr: "/accessibilite", en: "/accessibility" },
 
     // pSEO services × villes (Sprint 14.10.1) — ranking #1 sur « audit IA <ville> »,
