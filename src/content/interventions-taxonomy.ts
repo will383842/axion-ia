@@ -265,8 +265,10 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     slug: "demarrage-ia-express",
     family: "collectives",
     duration: "4h",
-    pathFr: "/interventions/demande?objet=demarrage-ia-express",
-    pathEn: "/interventions/request?objet=demarrage-ia-express",
+    // Sprint 14.10.7 fix Will (2026-05-11) : page détail indexable
+    // dédiée. Avant : /interventions/demande?objet=... (sans page propre).
+    pathFr: "/interventions/demarrage-ia-express",
+    pathEn: "/interventions/ai-express-kickoff",
     labelFr: "Démarrage IA Express",
     labelEn: "AI Express Kickoff",
     taglineFr:
@@ -287,8 +289,9 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     slug: "atelier-ia-cible",
     family: "collectives",
     duration: "4h",
-    pathFr: "/interventions/demande?objet=atelier-ia-cible",
-    pathEn: "/interventions/request?objet=atelier-ia-cible",
+    // Sprint 14.10.7 fix Will (2026-05-11) : page détail indexable dédiée.
+    pathFr: "/interventions/atelier-ia-cible",
+    pathEn: "/interventions/targeted-ai-workshop",
     labelFr: "Atelier IA ciblé",
     labelEn: "Targeted AI Workshop",
     taglineFr:
