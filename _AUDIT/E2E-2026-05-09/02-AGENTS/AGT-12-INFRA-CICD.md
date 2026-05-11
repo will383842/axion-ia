@@ -143,7 +143,7 @@ Justification :
 
 **P2-INFRA-19 — `.env.example:34` `SMTP_FROM_NAME=AxionIA`** ⇒ devrait être `Axion-IA` selon décision naming 2026-05-08 (mémoire `axionia_naming_brand_vs_project`).
 
-**P2-INFRA-20 — `docker-compose.production.yml:128` env `BACKBLAZE_*` ou `R2_*`** non présents\*_ — `scripts/backup-postgres-r2.sh` existe et utilise `R2\__`vars (lignes 16-24), mais ces vars ne sont JAMAIS dans`src/env.ts`, ni dans `docker-compose.production.yml`, ni dans `.env.example`. Le script est mort si `R2_BUCKET_NAME` etc. ne sont pas définis ailleurs.
+**P2-INFRA-20 — `docker-compose.production.yml:128` env `BACKBLAZE_*` ou `R2_*`** non présents\*\_ — `scripts/backup-postgres-r2.sh` existe et utilise `R2\__`vars (lignes 16-24), mais ces vars ne sont JAMAIS dans`src/env.ts`, ni dans `docker-compose.production.yml`, ni dans `.env.example`. Le script est mort si `R2_BUCKET_NAME` etc. ne sont pas définis ailleurs.
 
 **P2-INFRA-21 — `Caddyfile:71-74` `@publicAssets path *.ico *.png *.svg *.webp *.avif *.woff2 *.txt`** — capture aussi `robots.txt`/`llms.txt` à `max-age=86400`. Conflit potentiel avec CF Cache Rule `Robots.txt - 7 days` (cf. P1-INFRA-04). CF prend précédence mais drift documentation.
 
