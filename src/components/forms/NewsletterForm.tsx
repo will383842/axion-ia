@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
 interface NewsletterFormProps {
   labels: {
@@ -38,10 +39,16 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
     resolver: zodResolver(newsletterSchema as never) as never,
   });
   const consent = watch("consent");
+  const {
+    token: turnstileToken,
+    widget: turnstileWidget,
+    reset: resetTurnstile,
+  } = useTurnstileToken("newsletter");
   const [serverError, setServerError] = React.useState<string | null>(null);
 
   // E4 cert 2026-05-08 — wired to Sprint 15 `subscribeNewsletterAction`
   // (rate-limit + Turnstile + double opt-in token via email queue).
+  // Audit E2E 2026-05-11 P0-CONF-02 — Turnstile widget client câblé.
   async function onSubmit(values: NewsletterInput) {
     setServerError(null);
     try {
@@ -49,9 +56,11 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
       fd.set("email", values.email);
       fd.set("consent", values.consent ? "true" : "false");
       fd.set("locale", locale);
+      if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
       const result = await subscribeNewsletterAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
+        resetTurnstile();
         setServerError(result.error || labels.failure);
         throw new Error(result.error || labels.failure);
       }
@@ -120,6 +129,8 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
           <AlertDescription>{serverError}</AlertDescription>
         </Alert>
       ) : null}
+
+      <div className="sm:basis-full">{turnstileWidget}</div>
     </form>
   );
 }

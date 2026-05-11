@@ -23,6 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
 type Partial5<T> = Partial<T>;
 
@@ -65,6 +66,11 @@ export function AuditForm({ labels }: AuditFormProps) {
   const [data, setData] = React.useState<Partial5<AuditInput>>({});
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
+  const {
+    token: turnstileToken,
+    widget: turnstileWidget,
+    reset: resetTurnstile,
+  } = useTurnstileToken("audit");
 
   const schema = SCHEMAS[step]!;
   const {
@@ -107,9 +113,11 @@ export function AuditForm({ labels }: AuditFormProps) {
         if (finalValues.companyName) fd.set("companyName", finalValues.companyName);
         fd.set("consent", finalValues.consent ? "true" : "false");
         fd.set("locale", locale);
+        if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
         const result = await submitAuditAction({ ok: false, error: "" }, fd);
         if (!result.ok) {
+          resetTurnstile();
           setServerError(result.error || labels.failure);
           return;
         }
@@ -268,20 +276,23 @@ export function AuditForm({ labels }: AuditFormProps) {
         ) : null}
 
         {step === 4 ? (
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="audit-consent"
-              checked={(watchAll as { consent?: boolean }).consent === true}
-              onCheckedChange={(c) =>
-                setValue("consent" as never, (c === true ? true : false) as never, {
-                  shouldValidate: true,
-                })
-              }
-            />
-            <Label htmlFor="audit-consent" className="text-sm leading-relaxed">
-              {labels.consentLabel}
-            </Label>
-          </div>
+          <>
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="audit-consent"
+                checked={(watchAll as { consent?: boolean }).consent === true}
+                onCheckedChange={(c) =>
+                  setValue("consent" as never, (c === true ? true : false) as never, {
+                    shouldValidate: true,
+                  })
+                }
+              />
+              <Label htmlFor="audit-consent" className="text-sm leading-relaxed">
+                {labels.consentLabel}
+              </Label>
+            </div>
+            {turnstileWidget}
+          </>
         ) : null}
 
         {serverError ? (

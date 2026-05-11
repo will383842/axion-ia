@@ -21,6 +21,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
 const SCHEMAS = [
   implementationStep1Schema,
@@ -73,6 +74,11 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
   );
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
+  const {
+    token: turnstileToken,
+    widget: turnstileWidget,
+    reset: resetTurnstile,
+  } = useTurnstileToken("implementation");
 
   const schema = SCHEMAS[step]!;
   const {
@@ -111,9 +117,11 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
         if (v.email) fd.set("email", v.email);
         fd.set("consent", v.consent ? "true" : "false");
         fd.set("locale", locale);
+        if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
         const result = await submitImplementationAction({ ok: false, error: "" }, fd);
         if (!result.ok) {
+          resetTurnstile();
           setServerError(result.error || labels.failure);
           return;
         }
@@ -257,6 +265,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
                 {labels.consent}
               </Label>
             </div>
+            {turnstileWidget}
           </div>
         ) : null}
 

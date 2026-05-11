@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
 interface ContactFormProps {
   labels: {
@@ -41,12 +42,17 @@ export function ContactForm({ labels }: ContactFormProps) {
     resolver: zodResolver(contactSchema as never) as never,
   });
   const consent = watch("consent");
+  const {
+    token: turnstileToken,
+    widget: turnstileWidget,
+    reset: resetTurnstile,
+  } = useTurnstileToken("contact");
 
   const [serverError, setServerError] = React.useState<string | null>(null);
 
   // E4 cert 2026-05-08 — wired to Sprint 15 server action `submitContactAction`
-  // (rate-limit + Turnstile + Telegram + email queue). Patch CRITIQUE : avant
-  // ce patch, form en stub `setTimeout(600)` → 0 lead persisté en prod V1.
+  // (rate-limit + Turnstile + Telegram + email queue).
+  // Audit E2E 2026-05-11 P0-CONF-02 — Turnstile widget client câblé.
   async function onSubmit(values: ContactInput) {
     setServerError(null);
     try {
@@ -57,12 +63,11 @@ export function ContactForm({ labels }: ContactFormProps) {
       fd.set("message", values.message);
       fd.set("consent", values.consent ? "true" : "false");
       fd.set("locale", locale);
-      // Note Sprint 16 : Turnstile widget integration to inject
-      // `cf-turnstile-response`. Until then, server action returns
-      // « Captcha échoué » when TURNSTILE_SECRET_KEY is set in prod.
+      if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
       const result = await submitContactAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
+        resetTurnstile();
         setServerError(result.error || labels.failure);
         throw new Error(result.error || labels.failure);
       }
@@ -146,6 +151,8 @@ export function ContactForm({ labels }: ContactFormProps) {
           <AlertDescription>{serverError}</AlertDescription>
         </Alert>
       ) : null}
+
+      {turnstileWidget}
 
       <Button type="submit" loading={isSubmitting} size="lg">
         {isSubmitting ? labels.sending : labels.submit} →

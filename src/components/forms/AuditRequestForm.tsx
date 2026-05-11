@@ -36,6 +36,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { submitAuditRequestAction } from "@/features/audit/actions";
 import { cn } from "@/lib/utils";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
 type AuditTypeKey = "flash" | "process" | "strategique-pme" | "strategique-eti";
 type SizeKey = "tpe" | "pme" | "mid" | "enterprise";
@@ -229,6 +230,11 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
     "idle",
   );
   const [serverError, setServerError] = React.useState<string | null>(null);
+  const {
+    token: turnstileToken,
+    widget: turnstileWidget,
+    reset: resetTurnstile,
+  } = useTurnstileToken("audit-request");
 
   // Form fields
   const [auditType, setAuditType] = React.useState<AuditTypeKey | null>(initialType);
@@ -306,9 +312,11 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
       if (role) fd.set("role", role);
       fd.set("consent", consent ? "true" : "false");
       fd.set("locale", locale);
+      if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
       const result = await submitAuditRequestAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
+        resetTurnstile();
         setServerError(result.error || labels.failure);
         setSubmittingState("idle");
         return;
@@ -477,25 +485,28 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
         ) : null}
 
         {step === 6 ? (
-          <Step6
-            labels={labels}
-            auditType={auditType}
-            size={size}
-            industry={industry}
-            companyName={companyName}
-            modality={modality}
-            city={city}
-            country={country}
-            scope={scope}
-            maturity={maturity}
-            tools={tools}
-            toolsOther={toolsOther}
-            contact={contact}
-            email={email}
-            consent={consent}
-            setConsent={setConsent}
-            locale={locale}
-          />
+          <>
+            <Step6
+              labels={labels}
+              auditType={auditType}
+              size={size}
+              industry={industry}
+              companyName={companyName}
+              modality={modality}
+              city={city}
+              country={country}
+              scope={scope}
+              maturity={maturity}
+              tools={tools}
+              toolsOther={toolsOther}
+              contact={contact}
+              email={email}
+              consent={consent}
+              setConsent={setConsent}
+              locale={locale}
+            />
+            {turnstileWidget}
+          </>
         ) : null}
       </div>
 

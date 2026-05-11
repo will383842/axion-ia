@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
 interface BookingFormProps {
   /** Pre-filled by the calendar selection. */
@@ -63,6 +64,11 @@ export function BookingForm({
     } as never,
   });
   const consent = watch("consent");
+  const {
+    token: turnstileToken,
+    widget: turnstileWidget,
+    reset: resetTurnstile,
+  } = useTurnstileToken("booking");
   const [serverError, setServerError] = React.useState<string | null>(null);
 
   // Keep date/time in sync if the parent re-selects.
@@ -86,9 +92,11 @@ export function BookingForm({
       formData.set("interventionType", values.interventionType);
       formData.set("participantsCount", String(values.participantsCount));
       formData.set("locale", locale);
+      if (turnstileToken) formData.set("cf-turnstile-response", turnstileToken);
 
       const res = await createBookingAction({ ok: false, error: "" }, formData);
       if (!res.ok) {
+        resetTurnstile();
         setServerError(res.error || labels.failure);
       }
     } catch {
@@ -180,6 +188,8 @@ export function BookingForm({
           <AlertDescription>{serverError}</AlertDescription>
         </Alert>
       ) : null}
+
+      {turnstileWidget}
 
       <div className="flex flex-wrap gap-3">
         {onCancel ? (
