@@ -97,7 +97,7 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
   const txt = dark ? "text-mocha-fg" : "text-fg";
   const txtSoft = dark ? "text-mocha-fg/85" : "text-fg-soft";
   const href = formatPath(entry, locale);
-  const ctaLabel = isFr ? "Découvrir ce format" : "Discover this format";
+  const ctaLabel = isFr ? "Voir cette formation en détail" : "See this training in detail";
 
   return (
     <article
@@ -195,14 +195,14 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
             <Link
               href="/reserver"
               className={cn(
-                "inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4",
+                "cta-lift inline-flex items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-colors",
                 dark
-                  ? "text-mocha-fg hover:text-terracotta-soft"
-                  : "text-fg hover:text-terracotta-deep",
+                  ? "border-mocha-fg/40 text-mocha-fg hover:bg-mocha-fg/10"
+                  : "border-terracotta-deep text-terracotta-deep hover:bg-terracotta-soft",
               )}
             >
-              {isFr ? "Voir le calendrier" : "See the calendar"}
-              <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+              {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>
           ) : null}
         </div>

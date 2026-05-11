@@ -113,8 +113,12 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
 
             <div className="mt-7 flex flex-wrap items-center gap-3">
               {!isQuote ? (
-                <Cta href="/reserver" size="lg">
-                  {isFr ? "Voir le calendrier" : "See the calendar"}
+                <Cta
+                  href="/reserver"
+                  size="lg"
+                  className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+                >
+                  {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
               ) : (

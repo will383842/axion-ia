@@ -863,8 +863,12 @@ export default async function InterventionsListing({ params }: Props) {
             : "Live in-house calendar. 48-business-hour reply on quotes. France and international — every company is welcome."
         }
         cta={
-          <Cta href="/reserver" size="lg">
-            {isFr ? "Voir le calendrier des interventions" : "See the intervention calendar"} →
+          <Cta
+            href="/reserver"
+            size="lg"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+          >
+            {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"} →
           </Cta>
         }
         tone="dark"
