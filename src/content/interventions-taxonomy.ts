@@ -129,23 +129,29 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
     slug: "individuel",
     labelFr: "Coaching individuel",
     labelEn: "Individual coaching",
+    // Tagline orienté ROI — Will (2026-05-11) : chaque coaching s'amortit en
+    // quelques jours grâce aux heures gagnées chaque semaine. C'est la valeur,
+    // pas le format, qui doit accrocher.
     taglineFr:
-      "Coaching IA 1-to-1 sur mesure — managers, indépendants, freelances, dirigeants solo.",
-    taglineEn: "Bespoke 1-on-1 AI coaching — managers, independents, freelancers, solo executives.",
+      "Coaching IA 1-to-1 sur mesure — amorti en quelques jours grâce aux heures gagnées chaque semaine. Pour managers, indépendants, freelances, dirigeants solo.",
+    taglineEn:
+      "Bespoke 1-on-1 AI coaching — pays for itself in days thanks to the hours reclaimed every week. For managers, independents, freelancers, solo executives.",
     pathFr: "/interventions/individuel",
     pathEn: "/interventions/individual",
     hasDurations: false,
     accent: "primary",
   },
   {
+    // Sprint 14.10.7 — recentrage Will (2026-05-11) : 1 dirigeant (pas CODIR),
+    // bénéfices visibles (structurer l'entreprise + chiffrer les gains IA).
     id: "dirigeants",
     slug: "dirigeants",
     labelFr: "Dirigeants",
     labelEn: "Executives",
     taglineFr:
-      "Journée stratégique en huis clos pour comités de direction — vision IA 12-24 mois + quick-wins activables.",
+      "Journée(s) 1-to-1 avec le dirigeant — structurer l'entreprise, implémenter l'IA et chiffrer précisément les gains. Pour un seul dirigeant, pas un comité.",
     taglineEn:
-      "In-camera strategic day for executive committees — 12-24 month AI vision + actionable quick-wins.",
+      "1-on-1 day(s) with the executive — structure the company, implement AI and quantify precise gains. For one executive, not a committee.",
     // V1 : pointe directement vers la page format existante (riche, Sprint 14.10).
     // V2 quand Will ajoutera d'autres formats Dirigeants : hub famille dédié.
     pathFr: "/interventions/dirigeants",
@@ -245,6 +251,57 @@ const DIRIGEANTS_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeants
 
 export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   // -------------------------------------------------------------------------
+  // FAMILLE : Collectives / Palier 4 heures
+  // Sprint 14.10.7 (Will 2026-05-11) — 2 demi-journées express. Prix « Sur
+  // devis » en V1 (à figer après premiers retours). Pas de page détail
+  // dédiée : pathFr pointe vers /contact?objet=...#message pour cadrage rapide.
+  // -------------------------------------------------------------------------
+  {
+    slug: "demarrage-ia-express",
+    family: "collectives",
+    duration: "4h",
+    pathFr: "/interventions/demande?objet=demarrage-ia-express",
+    pathEn: "/interventions/request?objet=demarrage-ia-express",
+    labelFr: "Démarrage IA Express",
+    labelEn: "AI Express Kickoff",
+    taglineFr:
+      "Demi-journée (4 h) pour démystifier l'IA : panorama outils 2026, démos live sur cas réels de votre secteur, 2-3 prompts opérationnels testés ensemble. Vos équipes ressortent avec une vision claire et des quick-wins prêts à appliquer.",
+    taglineEn:
+      "Half-day (4 h) to demystify AI: 2026 tools panorama, live demos on real cases from your sector, 2-3 operational prompts tested together. Your teams leave with a clear vision and quick-wins ready to apply.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "2 à 20 personnes",
+    groupSizeEn: "2 to 20 people",
+    audienceFr: "Équipes qui découvrent l'IA · TPE, PME",
+    audienceEn: "Teams discovering AI · small businesses",
+    accent: "terracotta",
+    badgeFr: "Découverte · 4 h",
+    badgeEn: "Discovery · 4 h",
+  },
+  {
+    slug: "atelier-ia-cible",
+    family: "collectives",
+    duration: "4h",
+    pathFr: "/interventions/demande?objet=atelier-ia-cible",
+    pathEn: "/interventions/request?objet=atelier-ia-cible",
+    labelFr: "Atelier IA ciblé",
+    labelEn: "Targeted AI Workshop",
+    taglineFr:
+      "Demi-journée (4 h) focalisée sur UN cas d'usage métier précis : rédaction commerciale, analyse de documents, automatisation reporting, traduction… À l'issue, chaque participant repart avec le cas implémenté sur son poste.",
+    taglineEn:
+      "Half-day (4 h) focused on ONE specific business case: sales writing, document analysis, reporting automation, translation… By the end, each participant leaves with the case implemented on their workstation.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "2 à 15 personnes",
+    groupSizeEn: "2 to 15 people",
+    audienceFr: "Équipe avec besoin métier précis",
+    audienceEn: "Team with a specific business need",
+    accent: "primary",
+    badgeFr: "Cas d'usage · 4 h",
+    badgeEn: "Use case · 4 h",
+  },
+
+  // -------------------------------------------------------------------------
   // FAMILLE : Collectives / Palier 1 jour
   // -------------------------------------------------------------------------
   {
@@ -258,8 +315,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     taglineFr:
       "Découverte IA en 1 journée — vos équipes repartent avec des automatisations testées sur leurs propres outils.",
     taglineEn: "1-day AI discovery — your teams leave with automations tested on their own tools.",
-    priceFr: `dès ${formatAmount(ESSENTIELLE_PRICE, "fr")}`,
-    priceEn: `from ${formatAmount(ESSENTIELLE_PRICE, "en")}`,
+    priceFr: `À partir de ${formatAmount(ESSENTIELLE_PRICE, "fr")}`,
+    priceEn: `Starting at ${formatAmount(ESSENTIELLE_PRICE, "en")}`,
     groupSizeFr: "2 à 30 personnes",
     groupSizeEn: "2 to 30 people",
     audienceFr: "TPE · PME · ETI · grandes entreprises",
@@ -329,8 +386,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     taglineFr:
       "Approfondissement IA sur 2 journées consécutives — équipes IA-fluentes à la sortie, même grille d'effectif qu'Essentielle.",
     taglineEn: "2-day AI deep dive — your teams leave AI-fluent, same headcount grid as Essential.",
-    priceFr: `dès ${formatAmount(APPROFONDIE_PRICE, "fr")}`,
-    priceEn: `from ${formatAmount(APPROFONDIE_PRICE, "en")}`,
+    priceFr: `À partir de ${formatAmount(APPROFONDIE_PRICE, "fr")}`,
+    priceEn: `Starting at ${formatAmount(APPROFONDIE_PRICE, "en")}`,
     groupSizeFr: "2 à 30 personnes",
     groupSizeEn: "2 to 30 people",
     audienceFr: "Équipes opérationnelles · TPE, PME, ETI",
@@ -348,21 +405,21 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     family: "dirigeants",
     pathFr: "/interventions/dirigeants",
     pathEn: "/interventions/executives",
-    labelFr: "Journée stratégique CODIR",
-    labelEn: "Strategic CODIR day",
+    labelFr: "Journée stratégique dirigeant",
+    labelEn: "Strategic executive day",
     taglineFr:
-      "1 journée stratégique en huis clos — quick-wins activables semaine suivante + vision IA 12-24 mois pour vos décisions.",
+      "1 journée 1-to-1 avec le dirigeant — structurer l'entreprise, implémenter l'IA et chiffrer précisément les gains poste par poste. Vision IA 12-24 mois + quick-wins activables.",
     taglineEn:
-      "1 strategic day in camera — actionable quick-wins for next week + 12-24 month AI vision for your decisions.",
+      "1 day 1-on-1 with the executive — structure the company, implement AI and quantify gains role by role. 12-24 month AI vision + actionable quick-wins.",
     priceFr: formatPrice(DIRIGEANTS_TIER, "fr"),
     priceEn: formatPrice(DIRIGEANTS_TIER, "en"),
-    groupSizeFr: "1 à 5 personnes (vous + équipe rapprochée)",
-    groupSizeEn: "1 to 5 people (you + inner circle)",
-    audienceFr: "CODIR, COMEX, direction générale",
-    audienceEn: "Executive committees, top management",
+    groupSizeFr: "1 dirigeant (1-to-1)",
+    groupSizeEn: "1 executive (1-on-1)",
+    audienceFr: "Dirigeant TPE, PME, ETI ou grande entreprise",
+    audienceEn: "Executive of small business, mid-market or enterprise",
     accent: "mocha",
-    badgeFr: "Quick-wins · 1-to-1",
-    badgeEn: "Quick-wins · 1-to-1",
+    badgeFr: "Gains chiffrés · 1-to-1",
+    badgeEn: "Quantified gains · 1-on-1",
   },
 
   // -------------------------------------------------------------------------
@@ -393,27 +450,56 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   },
 
   // -------------------------------------------------------------------------
-  // FAMILLE : Individuel (liste plate, vide pour l'instant — à remplir).
-  // Quand tu rajoutes un coaching 1-to-1, copier-coller le template ci-dessous.
-  //
-  //   {
-  //     slug: "coaching-decouverte-1h",
-  //     family: "individuel",
-  //     pathFr: "/contact?objet=coaching-decouverte",
-  //     pathEn: "/contact?objet=coaching-decouverte",
-  //     labelFr: "Coaching IA · découverte",
-  //     labelEn: "AI coaching · discovery",
-  //     taglineFr: "...",
-  //     taglineEn: "...",
-  //     priceFr: "Sur devis",
-  //     priceEn: "On request",
-  //     groupSizeFr: "1 personne",
-  //     groupSizeEn: "1 person",
-  //     audienceFr: "Managers, indépendants, freelances",
-  //     audienceEn: "Managers, independents, freelancers",
-  //     accent: "sage",
-  //   },
+  // FAMILLE : Individuel — 2 formats 1 jour, différenciés par profil maturité.
+  // Will (2026-05-11) : même objectif fonctionnel (audit poste + automatismes
+  // + programme implémentation devis), 2 cibles distinctes :
+  //   • Découverte : managers/indépendants qui démarrent l'IA
+  //   • Productivité avancée : utilisateurs IA déjà à l'aise qui maxent
+  // Prix « Sur devis » en V1 — Will tranchera après les premiers retours
+  // commerciaux.
   // -------------------------------------------------------------------------
+  {
+    slug: "coaching-decouverte",
+    family: "individuel",
+    pathFr: "/interventions/coaching-decouverte",
+    pathEn: "/interventions/discovery-coaching",
+    labelFr: "Coaching IA · Découverte personnelle",
+    labelEn: "AI Coaching · Personal discovery",
+    taglineFr:
+      "1 journée sur votre poste pour découvrir l'IA pratique : on cartographie vos chronophages, on installe les outils essentiels, on met en place 3 à 5 automatismes concrets et on remet un plan d'implémentation pour aller plus loin sur devis.",
+    taglineEn:
+      "1 day on your workstation to discover practical AI: we map your time-sinks, install essential tools, set up 3-5 concrete automations and deliver an implementation plan to go further on request.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "1 personne (1-to-1 strict)",
+    groupSizeEn: "1 person (strict 1-on-1)",
+    audienceFr: "Managers, indépendants, dirigeants solo · découvrent l'IA",
+    audienceEn: "Managers, independents, solo executives · discovering AI",
+    accent: "primary",
+    badgeFr: "Niveau débutant → intermédiaire",
+    badgeEn: "Beginner → intermediate",
+  },
+  {
+    slug: "coaching-avance",
+    family: "individuel",
+    pathFr: "/interventions/coaching-avance",
+    pathEn: "/interventions/advanced-coaching",
+    labelFr: "Coaching IA · Productivité avancée",
+    labelEn: "AI Coaching · Advanced productivity",
+    taglineFr:
+      "1 journée pour passer au niveau supérieur : workflows IA multi-outils, agents personnels, Claude CLI / API, automatisations sophistiquées. On audite votre stack actuelle, on l'optimise, on industrialise. Programme d'implémentation possible sur devis pour aller encore plus loin.",
+    taglineEn:
+      "1 day to level up: multi-tool AI workflows, personal agents, Claude CLI / API, sophisticated automations. We audit your current stack, optimise it, industrialise it. Further implementation programme on request.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "1 personne (1-to-1 strict)",
+    groupSizeEn: "1 person (strict 1-on-1)",
+    audienceFr: "Pros déjà à l'aise avec ChatGPT/Claude · veulent maxer",
+    audienceEn: "Pros already comfortable with ChatGPT/Claude · want to max out",
+    accent: "sage",
+    badgeFr: "Niveau avancé",
+    badgeEn: "Advanced level",
+  },
 ] as const;
 
 // ============================================================================
@@ -477,11 +563,12 @@ export function formatPath(entry: InterventionFormatEntry, locale: Locale): stri
 }
 
 /**
- * Pour les paliers `isQuoteOnly` (3 jours et +) : construit l'URL contact
- * avec l'objet pré-rempli. Localisé via le chemin contact.
+ * Pour les paliers `isQuoteOnly` (3 jours et +) : construit l'URL de la page
+ * demande dédiée avec l'objet pré-rempli. Sprint 14.10.7 — Will exige une
+ * page indexable (/interventions/demande) pas un scroll anchor.
  */
 export function quoteContactPath(duration: DurationDef, locale: Locale): string {
-  const base = locale === "fr" ? "/contact" : "/contact";
+  const base = locale === "fr" ? "/interventions/demande" : "/interventions/request";
   const obj = duration.contactObject ?? "formation-sur-mesure";
   return `${base}?objet=${encodeURIComponent(obj)}`;
 }

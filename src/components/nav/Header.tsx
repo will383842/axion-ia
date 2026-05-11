@@ -51,9 +51,11 @@ export async function Header() {
   // Sprint 14.10.3 : un changement de tarif Essentielle dans pricing.ts se
   // propage automatiquement ici sans modification du Header.
   const entryFormatted = formatPrice(getEntryTier(INTERVENTION_TIERS), isFr ? "fr" : "en");
+  // Sprint 14.10.7 (Will 2026-05-11) : « À partir de » / « Starting at »
+  // au lieu de « dès » / « from » pour cohérence end-to-end sur tout le site.
   const ctaPriceBadge = isFr
-    ? `dès ${entryFormatted.replace(" HT", "")}`
-    : `from ${entryFormatted.replace(" (excl. VAT)", "")}`;
+    ? `À partir de ${entryFormatted.replace(" HT", "")}`
+    : `Starting at ${entryFormatted.replace(" (excl. VAT)", "")}`;
   const ctaAriaLabel = `${t("cta.bookInterventionLong")} — ${ctaPriceBadge}`;
 
   return (

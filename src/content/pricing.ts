@@ -393,17 +393,22 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     descriptionEn: "Plenary for large audiences on a single day (seminars, annual kick-offs).",
   },
   {
+    // Sprint 14.10.7 (Will 2026-05-11) — recentrage sur LE dirigeant (singulier).
+    // Plus de CODIR/COMEX : c'est une journée 1-to-1 avec le dirigeant pour
+    // structurer l'entreprise et chiffrer précisément les gains d'implémentation IA.
     id: "intervention-dirigeants",
     labelFr: "Dirigeants",
     labelEn: "Executives",
     priceFlat: 990,
     durationFr: "1 journée",
     durationEn: "1 day",
-    groupSizeFr: "1 à 5 personnes (vous + équipe rapprochée)",
-    groupSizeEn: "1 to 5 people (you + inner circle)",
-    descriptionFr: "Cadrage stratégique en huis-clos pour comités de direction sur une journée.",
-    descriptionEn: "In-camera strategic framing for executive committees over one day.",
-    audienceSizes: ["pme", "eti", "grande-entreprise"],
+    groupSizeFr: "1 dirigeant (1-to-1)",
+    groupSizeEn: "1 executive (1-on-1)",
+    descriptionFr:
+      "Journée 1-to-1 avec le dirigeant pour structurer l'entreprise et chiffrer les gains d'implémentation IA.",
+    descriptionEn:
+      "1-on-1 day with the executive to structure the company and quantify AI implementation gains.",
+    audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
     id: "intervention-claude",
@@ -583,8 +588,11 @@ export function formatAmountRange(
 }
 
 /**
- * Préfixe « dès » / « from » suivi du prix d'entrée. Utile pour les CTA.
- * `getEntryLabel(AUDIT_TIERS, "fr")` → « dès 490 € HT » (compact: « dès 490 € »).
+ * Préfixe « À partir de » / « Starting at » suivi du prix d'entrée. Utile
+ * pour les CTA et labels prix. Sprint 14.10.7 (Will 2026-05-11) — harmonisé
+ * sur « À partir de » (au lieu de « dès ») pour cohérence end-to-end sur
+ * tout le site. Comportement aligné sur `getFromLabel`.
+ * `getEntryLabel(AUDIT_TIERS, "fr")` → « À partir de 490 € HT ».
  */
 export function getEntryLabel(
   tiers: ReadonlyArray<PricingTier>,
@@ -594,8 +602,8 @@ export function getEntryLabel(
   const price = getEntryPriceEur(tiers);
   if (price == null) return locale === "fr" ? "Sur devis" : "On request";
   return locale === "fr"
-    ? `dès ${formatAmount(price, "fr", opts)}`
-    : `from ${formatAmount(price, "en", opts)}`;
+    ? `À partir de ${formatAmount(price, "fr", opts)}`
+    : `Starting at ${formatAmount(price, "en", opts)}`;
 }
 
 /**
@@ -647,9 +655,9 @@ export function formatPriceWithOnsite(
 
 /**
  * Formate un tier pour affichage. Retourne « 490 € HT », « 1 900 - 3 900 € HT »,
- * « dès 12 000 € HT » ou « Sur devis » selon les bornes définies. Suffixe
- * automatiquement la périodicité quand `recurrenceFr/En` est défini
- * (ex « 290 € HT/mois »).
+ * « À partir de 12 000 € HT » ou « Sur devis » selon les bornes définies.
+ * Suffixe automatiquement la périodicité quand `recurrenceFr/En` est défini
+ * (ex « 290 € HT/mois »). Sprint 14.10.7 — « À partir de » harmonisé.
  */
 export function formatPrice(tier: PricingTier, locale: "fr" | "en" = "fr"): string {
   const fmt = (n: number): string => fmtNumber(n, locale);
@@ -666,7 +674,7 @@ export function formatPrice(tier: PricingTier, locale: "fr" | "en" = "fr"): stri
     return `${fmt(tier.priceMin)} - ${fmt(tier.priceMax)}${currency}${recurrence}`;
   }
   if (typeof tier.priceMin === "number") {
-    return `${locale === "fr" ? "dès" : "from"} ${fmt(tier.priceMin)}${currency}${recurrence}`;
+    return `${locale === "fr" ? "À partir de" : "Starting at"} ${fmt(tier.priceMin)}${currency}${recurrence}`;
   }
   return locale === "fr" ? "Sur devis" : "On quote";
 }

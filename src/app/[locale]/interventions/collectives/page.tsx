@@ -1,8 +1,9 @@
+// Sprint 14.10.7 — hub famille « Formations équipe » avec 4 paliers durée.
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Users, Clock, Sparkles } from "lucide-react";
+import { ArrowRight, Users, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -81,6 +82,31 @@ export default async function CollectivesFamilyHub({ params }: Props) {
     loc,
   );
 
+  // Features par palier durée — Sprint 14.10.7 (Will 2026-05-11) : enrichir
+  // les cards pour qu'elles soient parlantes (3 points de positionnement par
+  // palier). Évite le rendu trop simpliste « badge + compteur ».
+  const FEATURES_BY_DURATION: Record<
+    (typeof COLLECTIVE_DURATIONS)[number]["id"],
+    { fr: ReadonlyArray<string>; en: ReadonlyArray<string> }
+  > = {
+    "4h": {
+      fr: ["Demi-journée express", "Découverte ciblée", "Quick-wins immédiats"],
+      en: ["Express half-day", "Targeted discovery", "Immediate quick-wins"],
+    },
+    "1-jour": {
+      fr: ["Cadrage du matin", "Ateliers pratiques", "Plan d'action le soir"],
+      en: ["Morning framing", "Hands-on workshops", "Action plan by evening"],
+    },
+    "2-jours": {
+      fr: ["Approfondissement", "Cas réels de l'équipe", "Transfert IA-fluence"],
+      en: ["Deep dive", "Real team cases", "AI-fluency transfer"],
+    },
+    "3-jours-plus": {
+      fr: ["Séminaires dirigeants", "Off-sites équipe", "Programmes multi-sites"],
+      en: ["Executive seminars", "Team off-sites", "Multi-site programmes"],
+    },
+  };
+
   // Détail de chaque palier durée pour affichage en grid.
   const durationRows = COLLECTIVE_DURATIONS.map((d) => {
     const count = countFormatsByCell("collectives", d.id);
@@ -106,6 +132,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       count,
       metaFr,
       metaEn,
+      features: FEATURES_BY_DURATION[d.id],
     };
   });
 
@@ -200,96 +227,134 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         }
         contentClassName={TIGHT_X}
       >
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
-          {durationRows.map(({ duration: d, href, count, metaFr, metaEn }) => {
+        {/* Sprint 14.10.7 (Will 2026-05-11) — cards portrait, plus hautes
+            que larges sur desktop. Badge palier XXL agrandi, padding y
+            étendu, min-h pour forcer une silhouette rectangle vertical
+            cohérente entre les 4 cards même quand le contenu varie.
+            Grid mobile-first : 1 col → 2 (sm) → 4 sur 1 ligne dès md (768px). */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4 md:gap-4 lg:gap-6">
+          {durationRows.map(({ duration: d, href, count, metaFr, metaEn, features }) => {
             const isQuote = d.isQuoteOnly === true;
             const isEmpty = !isQuote && count === 0;
+            const featureLabels = isFr ? features.fr : features.en;
+            const ctaLabelFr = isQuote
+              ? "Demander un devis"
+              : isEmpty
+                ? "Nous contacter"
+                : "Voir les formations";
+            const ctaLabelEn = isQuote
+              ? "Request a quote"
+              : isEmpty
+                ? "Contact us"
+                : "See trainings";
             return (
               <article
                 key={d.id}
                 className={cn(
-                  "shadow-subtle hover:shadow-card border-border ring-terracotta/10 relative overflow-hidden rounded-3xl border-2 ring-1 transition-shadow",
-                  isQuote ? "bg-sand" : "bg-paper",
+                  "group/duration shadow-subtle relative flex h-full flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 md:min-h-[520px] lg:min-h-[560px]",
+                  isQuote
+                    ? "bg-sand border-sage/40 hover:border-sage hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(120,143,98,0.30)]"
+                    : "bg-paper border-terracotta/30 hover:border-terracotta hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(205,107,72,0.30)]",
                 )}
               >
                 <Link
                   href={href as never}
-                  aria-label={`${isFr ? d.labelFr : d.labelEn}`}
+                  aria-label={`${isFr ? d.labelFr : d.labelEn} — ${isFr ? ctaLabelFr : ctaLabelEn}`}
                   className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  <span className="sr-only">{isFr ? d.labelFr : d.labelEn}</span>
+                  <span className="sr-only">{isFr ? ctaLabelFr : ctaLabelEn}</span>
                 </Link>
 
+                {/* Filet couleur en haut */}
                 <span
                   aria-hidden="true"
-                  className={cn("block h-1.5 w-full", isQuote ? "bg-sage" : "bg-terracotta")}
+                  className={cn("block h-2 w-full", isQuote ? "bg-sage" : "bg-terracotta")}
                 />
 
-                <div className="p-6 sm:p-7">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={cn(
-                        "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl",
-                        isQuote
-                          ? "bg-sage-soft text-sage"
-                          : "bg-terracotta-soft text-terracotta-deep",
-                      )}
-                    >
-                      <Clock aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
-                    </span>
-                    <span
-                      className={cn(
-                        "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase",
-                        isQuote
-                          ? "bg-sage-soft text-sage border-sage/30 border"
-                          : isEmpty
-                            ? "bg-paper border-border text-fg-muted border"
-                            : "bg-terracotta-soft text-terracotta-deep border-terracotta/20 border",
-                      )}
-                    >
-                      {d.shortFr}
-                    </span>
-                  </div>
+                {/* Badge palier XXL — accroche visuelle dominante */}
+                <div
+                  className={cn(
+                    "relative flex items-center justify-center py-10 sm:py-12 md:py-14",
+                    isQuote ? "bg-sage-soft/50" : "bg-terracotta-soft/45",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "font-display text-[clamp(3.75rem,8vw,6rem)] leading-none font-bold tracking-tight tabular-nums transition-transform duration-200 group-hover/duration:scale-110",
+                      isQuote ? "text-sage" : "text-terracotta-deep",
+                    )}
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {d.shortFr}
+                  </span>
+                </div>
 
-                  <h2 className="text-fg mt-5 text-xl leading-tight font-semibold">
+                {/* Contenu textuel — enrichi de 3 features pour donner de
+                    la consistance au-delà du simple badge + compteur. */}
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <h2 className="text-fg text-lg leading-tight font-semibold sm:text-xl">
                     {isFr ? d.labelFr : d.labelEn}
                   </h2>
                   <p className="text-fg-soft mt-2 text-[13.5px] leading-relaxed">
                     {isFr ? d.durationDetailFr : d.durationDetailEn}
                   </p>
 
+                  {/* 3 features visuelles — point coloré + texte court.
+                      Donnent une idée concrète de « ce qu'on y fait ». */}
+                  <ul className="mt-5 space-y-2">
+                    {featureLabels.map((feat, i) => (
+                      <li
+                        key={i}
+                        className="text-fg flex items-start gap-2.5 text-[13px] leading-snug"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            "mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
+                            isQuote ? "bg-sage" : "bg-terracotta",
+                          )}
+                        />
+                        <span className="font-medium">{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Métadonnée compteur — pill séparée, ressort comme indicateur de stock */}
                   <div
                     className={cn(
-                      "border-border/60 mt-5 flex items-center gap-2 border-t pt-4 text-[13px] font-medium",
-                      isEmpty ? "text-fg-muted" : "text-fg",
+                      "mt-5 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold",
+                      isQuote
+                        ? "bg-sage-soft text-sage"
+                        : isEmpty
+                          ? "bg-paper border-border text-fg-muted border"
+                          : "bg-terracotta-soft text-terracotta-deep",
                     )}
                   >
                     {isQuote ? (
-                      <Sparkles aria-hidden="true" className="text-sage h-4 w-4" />
+                      <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
                     ) : (
-                      <Users aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
+                      <Users aria-hidden="true" className="h-3.5 w-3.5" />
                     )}
                     <span>{isFr ? metaFr : metaEn}</span>
                   </div>
 
-                  <div className="relative z-[2] mt-5">
+                  {/* Bouton CTA plein large — fait clairement "BLOC CLIQUABLE" */}
+                  <div className="relative z-[2] mt-auto pt-6">
                     <Link
                       href={href as never}
                       className={cn(
-                        "inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4",
+                        "inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors",
                         isQuote
-                          ? "text-sage hover:text-sage/80"
-                          : "text-terracotta-deep hover:text-terracotta",
+                          ? "bg-sage text-mocha-fg hover:bg-sage/85"
+                          : "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
                       )}
                     >
-                      {isQuote
-                        ? isFr
-                          ? "Demander un devis"
-                          : "Request a quote"
-                        : isFr
-                          ? "Voir les formations"
-                          : "See trainings"}
-                      <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+                      <span>{isFr ? ctaLabelFr : ctaLabelEn}</span>
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="h-4 w-4 transition-transform duration-200 group-hover/duration:translate-x-1"
+                      />
                     </Link>
                   </div>
                 </div>
@@ -310,7 +375,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             : "A short call to understand your context, point you to the right duration, and explain how it works. No commitment."
         }
         cta={
-          <Cta href="/contact" size="lg">
+          <Cta href={"/interventions/demande?objet=cadrage-formation-equipe" as never} size="lg">
             {isFr ? "Demander un appel" : "Request a call"} →
           </Cta>
         }

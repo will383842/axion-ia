@@ -29,10 +29,16 @@ export async function verifyTurnstile(
     if (appEnv === "development") return true;
     return false;
   }
-  if (!token) return false;
 
-  // Dev keys → on accepte sans appeler Cloudflare
+  // Dev keys (Cloudflare test secrets publics) → bypass TOTAL, même sans token.
+  // Sprint 14.10.7 fix Will 2026-05-11 : en dev local le widget invisible peut
+  // ne pas générer de token (réseau lent, AdBlock, première frappe rapide).
+  // Comme la dev key est publique et explicitement « always passes » côté CF,
+  // on accepte la soumission sans token côté serveur aussi. Risque sécuritaire :
+  // nul (la dev key ne peut pas être utilisée en prod — clé publique connue).
   if (DEV_KEYS.has(secret)) return true;
+
+  if (!token) return false;
 
   try {
     const ctrl = new AbortController();

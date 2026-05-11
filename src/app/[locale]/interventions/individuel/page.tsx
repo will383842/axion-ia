@@ -69,7 +69,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
     },
   ];
 
-  const contactHref = `/contact?objet=${encodeURIComponent(CONTACT_OBJECT)}`;
+  const contactHref = `/interventions/demande?objet=${encodeURIComponent(CONTACT_OBJECT)}`;
 
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
@@ -105,12 +105,12 @@ export default async function IndividuelFamilyPage({ params }: Props) {
     },
     {
       icon: Target,
-      titleFr: "Dirigeants solo",
-      titleEn: "Solo executives",
+      titleFr: "Cadres dirigeants · N-1",
+      titleEn: "Senior managers · C-1",
       bodyFr:
-        "Vous êtes dirigeant·e d'une TPE sans CODIR à former — la journée Dirigeants en groupe n'est pas le bon format pour vous.",
+        "Vous êtes membre du COMEX, DSI, DRH, DAF — vous voulez monter en compétence IA personnelle avant de l'imposer à vos équipes. Coaching confidentiel sur vos vrais sujets.",
       bodyEn:
-        "You run a small business with no CODIR to train — the group executive day isn't the right format for you.",
+        "You sit on the executive committee — CIO, CHRO, CFO — and want personal AI upskilling before rolling it out to your teams. Confidential coaching on your real topics.",
     },
   ];
 
@@ -138,13 +138,33 @@ export default async function IndividuelFamilyPage({ params }: Props) {
                 className="text-primary mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "à votre rythme" : "at your pace"}
+                {isFr ? "amorti en quelques jours" : "pays for itself in days"}
               </span>
             </h1>
 
             <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
               {isFr ? family.taglineFr : family.taglineEn}
             </p>
+
+            {/* Bandeau ROI 3 chips — value-prop immédiate au-dessus du fold. */}
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {(isFr
+                ? [
+                    "Amorti en quelques jours",
+                    "Heures gagnées chaque semaine",
+                    "Format 1-to-1 sur mesure",
+                  ]
+                : ["Pays for itself in days", "Hours saved every week", "Bespoke 1-on-1 format"]
+              ).map((chip) => (
+                <li
+                  key={chip}
+                  className="bg-primary-soft text-primary border-primary/25 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+                >
+                  <ArrowRight aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
+                  {chip}
+                </li>
+              ))}
+            </ul>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Cta href={contactHref} size="lg">

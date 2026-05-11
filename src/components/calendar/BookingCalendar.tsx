@@ -47,19 +47,20 @@ import { APPROFONDIE_SUB_TIERS, ESSENTIELLE_SUB_TIERS } from "@/content/pricing"
 import { createBookingAction } from "@/features/booking/actions";
 
 // Prix d'entrée Essentielle / Approfondie dérivés de pricing.ts (premier
-// sous-tier). Affichés sous forme « dès N € » dans les hints et previews —
+// sous-tier). Affichés sous forme « À partir de N € » dans les hints et previews —
 // Sprint 14.10.4 supprime les anciens hardcodings dans INTERVENTION_OPTIONS
-// et INTERVENTION_VISUAL.
+// et INTERVENTION_VISUAL ; Sprint 14.10.7 (Will 2026-05-11) harmonise sur
+// « À partir de » / « Starting at » au lieu de « dès » / « from ».
 const ESSENTIELLE_ENTRY_PRICE_EUR = ESSENTIELLE_SUB_TIERS[0]!.priceFlat;
-const ESSENTIELLE_HINT_FR = `Journée · 9 h – 17 h · dès ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
-const ESSENTIELLE_HINT_EN = `Day · 9 a.m. – 5 p.m. · from €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
-const ESSENTIELLE_PRICE_TAG_FR = `dès ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
-const ESSENTIELLE_PRICE_TAG_EN = `from €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
+const ESSENTIELLE_HINT_FR = `Journée · 9 h – 17 h · à partir de ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
+const ESSENTIELLE_HINT_EN = `Day · 9 a.m. – 5 p.m. · starting at €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
+const ESSENTIELLE_PRICE_TAG_FR = `À partir de ${ESSENTIELLE_ENTRY_PRICE_EUR} €`;
+const ESSENTIELLE_PRICE_TAG_EN = `Starting at €${ESSENTIELLE_ENTRY_PRICE_EUR}`;
 const APPROFONDIE_ENTRY_PRICE_EUR = APPROFONDIE_SUB_TIERS[0]!.priceFlat;
-const APPROFONDIE_HINT_FR = `2 jours consécutifs · dès ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
-const APPROFONDIE_HINT_EN = `2 consecutive days · from €${APPROFONDIE_ENTRY_PRICE_EUR}`;
-const APPROFONDIE_PRICE_TAG_FR = `dès ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
-const APPROFONDIE_PRICE_TAG_EN = `from €${APPROFONDIE_ENTRY_PRICE_EUR}`;
+const APPROFONDIE_HINT_FR = `2 jours consécutifs · à partir de ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
+const APPROFONDIE_HINT_EN = `2 consecutive days · starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
+const APPROFONDIE_PRICE_TAG_FR = `À partir de ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
+const APPROFONDIE_PRICE_TAG_EN = `Starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
 
 // 5 interventions Module 1 — slug + label FR/EN + durationDays + scheduleHint.
 // `durationDays` typé 1|2 large pour permettre l'évolution future (formation
@@ -100,11 +101,11 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
   },
   {
     slug: "dirigeants",
-    fr: "Dirigeants & CODIR",
-    en: "Executives & leadership",
+    fr: "Dirigeant (1-to-1)",
+    en: "Executive (1-on-1)",
     durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · 2 dirigeants et +",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 2+ executives",
+    scheduleHintFr: "Journée · 9 h – 17 h · 1 dirigeant strict",
+    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 1 executive only",
   },
 ];
 

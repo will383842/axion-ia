@@ -1,3 +1,4 @@
+// HMR trigger 2026-05-11 (force re-index after routes.d.ts cache invalidation).
 import { defineRouting } from "next-intl/routing";
 
 // Locales supportées : FR canonique, EN miroir.
@@ -43,10 +44,25 @@ export const routing = defineRouting({
       fr: "/interventions/collectives/3-jours-plus",
       en: "/interventions/team-trainings/3-days-plus",
     },
-    // Famille « Coaching individuel » (liste plate, vide en V1).
+    // Page dédiée formulaire interventions (pattern miroir de /audit/demande).
+    // Sprint 14.10.7 — Will exige une page indexable, pas un scroll anchor.
+    "/interventions/demande": {
+      fr: "/interventions/demande",
+      en: "/interventions/request",
+    },
+
+    // Famille « Coaching individuel » + 2 formats 1 jour (Sprint 14.10.7).
     "/interventions/individuel": {
       fr: "/interventions/individuel",
       en: "/interventions/individual",
+    },
+    "/interventions/coaching-decouverte": {
+      fr: "/interventions/coaching-decouverte",
+      en: "/interventions/discovery-coaching",
+    },
+    "/interventions/coaching-avance": {
+      fr: "/interventions/coaching-avance",
+      en: "/interventions/advanced-coaching",
     },
 
     "/interventions/essentielle": {

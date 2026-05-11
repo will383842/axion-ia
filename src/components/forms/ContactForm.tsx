@@ -27,9 +27,15 @@ interface ContactFormProps {
     success: string;
     failure: string;
   };
+  /**
+   * Message pré-rempli au chargement (ex : depuis `/interventions/demande?objet=...`).
+   * Sprint 14.10.7 (Will 2026-05-11) — préfill contextuel pour les pages de
+   * cadrage interventions qui dirigent vers ce formulaire avec un objet.
+   */
+  defaultMessage?: string;
 }
 
-export function ContactForm({ labels }: ContactFormProps) {
+export function ContactForm({ labels, defaultMessage }: ContactFormProps) {
   const locale = useLocale();
   const {
     register,
@@ -40,6 +46,8 @@ export function ContactForm({ labels }: ContactFormProps) {
   } = useForm<ContactInput>({
     // See AuditForm — same TS drift workaround.
     resolver: zodResolver(contactSchema as never) as never,
+    // `as never` aligne avec le pattern existant (drift TS RHF + Zod literal).
+    ...(defaultMessage ? { defaultValues: { message: defaultMessage } as never } : {}),
   });
   const consent = watch("consent");
   const {

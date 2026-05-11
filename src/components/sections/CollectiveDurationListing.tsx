@@ -261,7 +261,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
             : "A 15-minute call to make sure this format fits your context. No commitment."
         }
         cta={
-          <Cta href="/contact" size="lg">
+          <Cta href={`/interventions/demande?objet=cadrage-${duration.slug}` as never} size="lg">
             {isFr ? "Demander un appel" : "Request a call"} →
           </Cta>
         }

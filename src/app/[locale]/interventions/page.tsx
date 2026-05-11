@@ -15,7 +15,6 @@ import {
   Users,
   User,
   Briefcase,
-  Clock,
   Megaphone,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
@@ -80,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Corporate AI sessions · 4 families · France & international",
     description:
       loc === "fr"
-        ? `Interventions et formations IA opérationnelles sur site organisées en 4 blocs : formations équipe (4 h à 3 j+, dès ${essentiellePrice}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
+        ? `Interventions et formations IA opérationnelles sur site organisées en 4 blocs : formations équipe (4 h à 3 j+, à partir de ${essentiellePrice}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
         : `Operational AI sessions on site organised in 4 blocks: team trainings (4 h to 3 d+, from ${essentiellePrice}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
   });
 }
@@ -213,37 +212,30 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
         countLabel: isFr
           ? `${total} formation${total > 1 ? "s" : ""} · 4 paliers durée`
           : `${total} training${total > 1 ? "s" : ""} · 4 duration tiers`,
-        ctaLabel: isFr ? "Voir les formations équipe" : "See team trainings",
+        ctaLabel: isFr ? "Voir les interventions équipes" : "See team sessions",
         surface: "bg-paper",
       };
     }
     if (family.id === "individuel") {
       const count = countFormatsByFamily("individuel");
-      // Liste plate. Si vide, on annonce la mise à dispo prochaine.
-      const subRows =
-        count > 0
-          ? [
-              {
-                label: isFr ? "Formats disponibles" : "Available formats",
-                meta: isFr
-                  ? `${count} format${count > 1 ? "s" : ""}`
-                  : `${count} format${count > 1 ? "s" : ""}`,
-              },
-            ]
-          : [
-              {
-                label: isFr ? "Coaching IA personnel" : "Personal AI coaching",
-                meta: isFr ? "Sur devis" : "On request",
-              },
-              {
-                label: isFr ? "Managers · indépendants" : "Managers · independents",
-                meta: isFr ? "1-to-1" : "1-on-1",
-              },
-              {
-                label: isFr ? "Format à définir ensemble" : "Format defined together",
-                meta: isFr ? "Visio ou présentiel" : "Remote or on site",
-              },
-            ];
+      // Sub-rows orientés ROI — Will (2026-05-11) : faire ressortir le bénéfice
+      // concret (chaque coaching amorti en quelques jours, gain de temps direct).
+      // Si des formats sont publiés un jour, on garde les mêmes promesses ROI
+      // en première ligne — c'est la valeur, pas le compteur, qui doit accrocher.
+      const subRows = [
+        {
+          label: isFr ? "Amorti en quelques jours" : "Pays for itself in days",
+          meta: isFr ? "ROI concret" : "Concrete ROI",
+        },
+        {
+          label: isFr ? "Gain de temps direct" : "Direct time savings",
+          meta: isFr ? "Heures récupérées par semaine" : "Hours reclaimed per week",
+        },
+        {
+          label: isFr ? "Format 1-to-1 sur mesure" : "Bespoke 1-on-1",
+          meta: isFr ? "Visio ou présentiel" : "Remote or on site",
+        },
+      ];
       return {
         family,
         icon: User,
@@ -251,41 +243,43 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
         countLabel:
           count > 0
             ? isFr
-              ? `${count} format${count > 1 ? "s" : ""} disponible${count > 1 ? "s" : ""}`
-              : `${count} format${count > 1 ? "s" : ""} available`
+              ? `${count} coaching${count > 1 ? "s" : ""} · amorti rapide`
+              : `${count} coaching${count > 1 ? "s" : ""} · quick payback`
             : isFr
-              ? "Sur devis · cadrage par visio"
-              : "On request · framing by video",
-        ctaLabel: isFr ? "Demander un coaching" : "Request a coaching",
+              ? "Amorti en quelques jours · ROI rapide"
+              : "Pays back in days · quick ROI",
+        ctaLabel: isFr ? "Voir les coachings individuels" : "See individual coachings",
         surface: "bg-halo-cool",
       };
     }
     if (family.id === "dirigeants") {
       const count = countFormatsByFamily("dirigeants");
       const dirigeantsTier = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+      // Sub-rows orientées bénéfices concrets pour le dirigeant — Will (2026-05-11) :
+      // structurer l'entreprise + chiffrer les gains IA + 1-to-1 (pas CODIR/COMEX).
       return {
         family,
         icon: Briefcase,
         subRows: [
           {
-            label: isFr ? "Journée stratégique CODIR" : "Strategic CODIR day",
+            label: isFr ? "Structurer votre entreprise" : "Structure your company",
+            meta: isFr ? "1 ou plusieurs jours" : "1 or several days",
+          },
+          {
+            label: isFr ? "Implémenter l'IA · gains chiffrés" : "Implement AI · quantified gains",
+            meta: isFr ? "ROI précis poste/poste" : "Precise ROI role by role",
+          },
+          {
+            label: isFr ? "1 dirigeant (pas de comité)" : "1 executive (no committee)",
             meta: isFr
-              ? `${formatAmount(dirigeantsTier.priceFlat!, "fr", { compact: true })} · 1 jour`
-              : `${formatAmount(dirigeantsTier.priceFlat!, "en", { compact: true })} · 1 day`,
-          },
-          {
-            label: isFr ? "Effectif" : "Group size",
-            meta: isFr ? "1 à 5 personnes" : "1 to 5 people",
-          },
-          {
-            label: isFr ? "Huis clos · CODIR / COMEX" : "In camera · CODIR / COMEX",
-            meta: isFr ? "Quick-wins activables" : "Actionable quick-wins",
+              ? `À partir de ${formatAmount(dirigeantsTier.priceFlat!, "fr", { compact: true })} · 1 jour`
+              : `Starting at ${formatAmount(dirigeantsTier.priceFlat!, "en", { compact: true })} · 1 day`,
           },
         ],
         countLabel: isFr
-          ? `${count} format${count > 1 ? "s" : ""} · journée stratégique`
-          : `${count} format${count > 1 ? "s" : ""} · strategic day`,
-        ctaLabel: isFr ? "Voir l'offre dirigeants" : "See executives offer",
+          ? `${count} format${count > 1 ? "s" : ""} · gains chiffrés`
+          : `${count} format${count > 1 ? "s" : ""} · quantified gains`,
+        ctaLabel: isFr ? "Voir les offres dirigeants" : "See executives offers",
         surface: "bg-mocha-rich text-mocha-fg",
         isDark: true,
       };
@@ -313,7 +307,7 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
       countLabel: isFr
         ? `${count} format${count > 1 ? "s" : ""} · plénière`
         : `${count} format${count > 1 ? "s" : ""} · plenary`,
-      ctaLabel: isFr ? "Voir l'offre conférence" : "See talk offer",
+      ctaLabel: isFr ? "Voir les conférences" : "See talks",
       surface: "bg-halo-warm",
     };
   });
@@ -373,7 +367,7 @@ export default async function InterventionsListing({ params }: Props) {
       ? "Interventions IA en entreprise · 4 familles · Axion-IA"
       : "Corporate AI sessions · 4 families · Axion-IA",
     description: isFr
-      ? `Catalogue d'interventions et formations IA opérationnelles sur site, organisé en 4 familles : formations équipe (4 paliers durée de 4 h à 3 j+, dès ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
+      ? `Catalogue d'interventions et formations IA opérationnelles sur site, organisé en 4 familles : formations équipe (4 paliers durée de 4 h à 3 j+, à partir de ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
       : `Catalogue of operational AI sessions on site, organised in 4 families: team trainings (4 duration tiers from 4 h to 3 d+, from ${essentielleEntry}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
     serviceType: "AI training & engagement",
     priceEur: getEntryPriceEur(INTERVENTION_TIERS) ?? 0,
@@ -419,7 +413,7 @@ export default async function InterventionsListing({ params }: Props) {
     },
     {
       label: isFr ? "Dirigeants" : "Executives",
-      benefit: isFr ? "Journée stratégique CODIR" : "Strategic CODIR day",
+      benefit: isFr ? "Journée 1-to-1 · gains chiffrés" : "1-on-1 day · quantified gains",
       accent: "mocha",
     },
     {
@@ -507,7 +501,7 @@ export default async function InterventionsListing({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? `4 grandes familles d'interventions IA pour s'adapter à toute configuration : formations équipe (de 4 heures à plusieurs jours, dès ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international. À chaque entreprise son format.`
+                  ? `4 grandes familles d'interventions IA pour s'adapter à toute configuration : formations équipe (de 4 heures à plusieurs jours, à partir de ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international. À chaque entreprise son format.`
                   : `4 main families of AI sessions to fit every configuration: team trainings (from 4 hours to several days, from ${essentielleEntry}), 1-on-1 individual coaching, executive strategic day, and plenary talk. France and abroad. A format for every company.`}
               </p>
 
@@ -588,7 +582,7 @@ export default async function InterventionsListing({ params }: Props) {
               <article
                 key={card.family.id}
                 className={cn(
-                  "shadow-subtle group/family hover:shadow-card relative overflow-hidden rounded-3xl border-2 ring-1 transition-shadow",
+                  "shadow-subtle group/family relative flex h-full flex-col overflow-hidden rounded-3xl border-2 ring-1 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_22px_52px_-14px_rgba(0,0,0,0.22)]",
                   card.surface,
                   acc.border,
                   acc.haloRing,
@@ -604,34 +598,42 @@ export default async function InterventionsListing({ params }: Props) {
                   <span className="sr-only">{card.ctaLabel}</span>
                 </Link>
 
-                <span aria-hidden="true" className={`block h-1.5 w-full ${acc.line}`} />
+                {/* Filet couleur en haut — épais pour ancrer l'accent visuel */}
+                <span aria-hidden="true" className={`block h-2 w-full ${acc.line}`} />
 
-                <div className="p-7 sm:p-8">
-                  {/* En-tête : icône + badge count */}
-                  <div className="flex items-start justify-between gap-4">
-                    <span
-                      className={cn(
-                        "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl",
-                        acc.iconBg,
-                        acc.iconText,
-                      )}
-                    >
-                      <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.75} />
-                    </span>
-                    <span
-                      className={cn(
-                        "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase",
-                        acc.badge,
-                      )}
-                    >
-                      {card.countLabel}
-                    </span>
-                  </div>
+                {/* Zone hero — icône XXL centrée sur fond pastel teinté.
+                    Même grammaire que le badge XXL des cards palier durée. */}
+                <div
+                  className={cn(
+                    "relative flex flex-col items-center justify-center gap-3 py-8 sm:py-10",
+                    dark ? "bg-mocha-deep/40" : `${acc.chipBg}/45`,
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "relative flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl transition-transform duration-200 group-hover/family:scale-110",
+                      acc.iconBg,
+                      acc.iconText,
+                    )}
+                  >
+                    <Icon aria-hidden="true" className="h-10 w-10" strokeWidth={1.75} />
+                  </span>
+                  <span
+                    className={cn(
+                      "inline-flex items-center rounded-full px-3.5 py-1 text-[11px] font-semibold tracking-wide uppercase",
+                      acc.badge,
+                    )}
+                  >
+                    {card.countLabel}
+                  </span>
+                </div>
 
+                {/* Contenu textuel */}
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
                   {/* Titre famille */}
                   <h2
                     className={cn(
-                      "mt-6 text-[clamp(1.5rem,2.4vw,2rem)] leading-tight font-semibold tracking-tight",
+                      "text-[clamp(1.5rem,2.4vw,2rem)] leading-tight font-semibold tracking-tight",
                       txt,
                     )}
                   >
@@ -639,63 +641,59 @@ export default async function InterventionsListing({ params }: Props) {
                   </h2>
 
                   {/* Tagline */}
-                  <p className={cn("mt-3 text-[15.5px] leading-relaxed", txtSoft)}>
+                  <p className={cn("mt-3 text-[14.5px] leading-relaxed", txtSoft)}>
                     {isFr ? card.family.taglineFr : card.family.taglineEn}
                   </p>
 
-                  {/* Sub-rows : paliers durée ou résumé */}
+                  {/* Sub-rows : paliers durée ou bénéfices.
+                      Liste compacte avec coche colorée pour ressembler à des
+                      points de vente, pas à un tableau Excel. */}
                   <ul
                     className={cn(
-                      "mt-6 space-y-2.5 border-t pt-5",
+                      "mt-5 space-y-2 border-t pt-4",
                       dark ? "border-mocha-fg/15" : "border-border/60",
                     )}
                   >
                     {card.subRows.map((row, i) => (
                       <li
                         key={i}
-                        className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1"
+                        className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5"
                       >
                         <span
-                          className={cn("flex items-center gap-2 text-[14px] font-medium", txt)}
+                          className={cn(
+                            "inline-flex items-center gap-2 text-[13.5px] font-medium",
+                            txt,
+                          )}
                         >
-                          {card.family.id === "collectives" ? (
-                            <Clock
-                              aria-hidden="true"
-                              className={cn("h-3.5 w-3.5 opacity-60", acc.iconText)}
-                            />
-                          ) : null}
+                          <span
+                            aria-hidden="true"
+                            className={cn("inline-block h-1.5 w-1.5 rounded-full", acc.line)}
+                          />
                           {row.label}
                         </span>
-                        <span className={cn("text-[12.5px] tabular-nums", txtMuted)}>
-                          {row.meta}
-                        </span>
+                        <span className={cn("text-[12px] tabular-nums", txtMuted)}>{row.meta}</span>
                       </li>
                     ))}
                   </ul>
 
-                  {/* CTA principale — au-dessus du stretched link */}
-                  <div className="relative z-[2] mt-7 flex flex-wrap items-center gap-3">
+                  {/* Bouton CTA plein large — UNIQUE call-to-action.
+                      Le calendrier est accessible plus loin dans le tunnel
+                      (sous-page famille / page durée / page format).
+                      Sprint 14.10.7 (Will 2026-05-11) : retiré le lien
+                      « Voir le calendrier » pour épurer la card. */}
+                  <div className="relative z-[2] mt-auto pt-6">
                     <Link
                       href={href as never}
                       className={cn(
-                        "cta-lift inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors",
+                        "inline-flex w-full items-center justify-between gap-2 rounded-2xl px-5 py-3.5 text-[14px] font-semibold transition-colors",
                         acc.cta,
                       )}
                     >
-                      {card.ctaLabel}
-                      <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                    </Link>
-                    <Link
-                      href="/reserver"
-                      className={cn(
-                        "inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4",
-                        dark
-                          ? "text-mocha-fg hover:text-terracotta-soft"
-                          : "text-fg hover:text-terracotta-deep",
-                      )}
-                    >
-                      {isFr ? "Voir le calendrier" : "See the calendar"}
-                      <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+                      <span>{card.ctaLabel}</span>
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="h-4 w-4 transition-transform duration-200 group-hover/family:translate-x-1"
+                      />
                     </Link>
                   </div>
                 </div>
@@ -791,8 +789,8 @@ export default async function InterventionsListing({ params }: Props) {
               level: isFr ? "Niveau 3" : "Stage 3",
               title: isFr ? "Équipes IA-fluentes en place" : "Fluent AI teams already in place",
               body: isFr
-                ? "Journée stratégique CODIR pour cadrer la gouvernance IA 12-24 mois, les investissements prioritaires et la gestion des risques."
-                : "Strategic CODIR day to frame 12-24 month AI governance, priority investments and risk management.",
+                ? "Journée stratégique 1-to-1 avec le dirigeant pour structurer la gouvernance IA 12-24 mois, chiffrer les investissements prioritaires et la gestion des risques."
+                : "Strategic 1-on-1 executive day to structure 12-24 month AI governance, quantify priority investments and risk management.",
               recommendation: isFr ? "Famille : Dirigeants" : "Family: Executives",
               href: "/interventions/dirigeants",
             },

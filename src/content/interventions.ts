@@ -379,7 +379,7 @@ export const DIRIGEANTS_SCHEDULE_FR: DaySchedule = {
   days: [
     {
       items: [
-        { time: "9 h 00", title: "Accueil + tour de table CODIR" },
+        { time: "9 h 00", title: "Accueil + cadrage 1-to-1 avec le dirigeant" },
         {
           time: "9 h 30",
           title: "Panorama IA 2026 — opportunités, risques, marché",
@@ -391,7 +391,7 @@ export const DIRIGEANTS_SCHEDULE_FR: DaySchedule = {
           title: "Atelier 1 — Positionnement de votre entreprise",
           description: "Échelle de maturité IA 2026 appliquée à votre contexte.",
         },
-        { time: "12 h 00", title: "Déjeuner CODIR (12 h – 14 h)" },
+        { time: "12 h 00", title: "Déjeuner avec le dirigeant (12 h – 14 h)" },
         {
           time: "14 h 00",
           title: "Atelier 2 — Cas d'usage prioritaires par fonction",
@@ -406,7 +406,7 @@ export const DIRIGEANTS_SCHEDULE_FR: DaySchedule = {
         {
           time: "17 h 00",
           title: "Synthèse + ressources pédagogiques + clôture",
-          description: "Référentiel CODIR, cas d'usage, lectures recommandées.",
+          description: "Référentiel dirigeant, cas d'usage, lectures recommandées.",
         },
       ],
     },
@@ -421,7 +421,7 @@ export const DIRIGEANTS_SCHEDULE_EN: DaySchedule = {
   days: [
     {
       items: [
-        { time: "9:00", title: "Welcome + leadership round table" },
+        { time: "9:00", title: "Welcome + 1-on-1 framing with the executive" },
         {
           time: "9:30",
           title: "2026 AI panorama — opportunities, risks, market",
@@ -433,7 +433,7 @@ export const DIRIGEANTS_SCHEDULE_EN: DaySchedule = {
           title: "Workshop 1 — Position your company",
           description: "2026 AI maturity scale applied to your context.",
         },
-        { time: "12:00", title: "Leadership lunch (12:00 – 14:00)" },
+        { time: "12:00", title: "Lunch with the executive (12:00 – 14:00)" },
         {
           time: "14:00",
           title: "Workshop 2 — Priority use cases by function",
@@ -448,7 +448,7 @@ export const DIRIGEANTS_SCHEDULE_EN: DaySchedule = {
         {
           time: "17:00",
           title: "Synthesis + takeaways + close",
-          description: "Leadership reference sheet, use cases, recommended reading.",
+          description: "Executive reference sheet, use cases, recommended reading.",
         },
       ],
     },
@@ -490,7 +490,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Discover AI applied to your day-to-day — tools, concrete uses, automation ideas to save time from day two. A one-day on-site training with ready-to-use takeaways from day one back at the office.",
         duration: "1 day on site (9 a.m. – 5 p.m.)",
         durationDays: 1,
-        price: `from ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
+        price: `Starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_EN,
         groupSize: "2 to 30 people",
         format: "On site · France & international",
@@ -579,7 +579,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         "Réservez la prochaine intervention disponible. Le calendrier maison affiche les créneaux en temps réel.",
       metaSeo: {
         title: `Intervention IA Essentielle · cabinet Axion-IA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
-        description: `Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'automatisations. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, dès ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
+        description: `Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'automatisations. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
       },
       daySchedule: {
         title: "Déroulement de la journée",
@@ -697,7 +697,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         "Book the next available session. The on-site calendar shows live availability.",
       metaSeo: {
         title: `Essential AI session · Axion-IA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
-        description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, from ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
+        description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
       },
       daySchedule: {
         title: "Day-by-day breakdown",
@@ -759,7 +759,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Deux journées consécutives sur site pour aller au fond du sujet : ateliers étendus, co-construction d'automatisations sur leurs vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.",
         duration: "2 jours consécutifs sur site",
         durationDays: 2,
-        price: `dès ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}`,
+        price: `À partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}`,
         priceTiers: APPROFONDIE_PRICE_TIERS_FR,
         groupSize: "2 à 30 personnes",
         format: "Sur site · France & international",
@@ -781,7 +781,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Two consecutive on-site days to go deep: extended workshops, co-built automations on their real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.",
         duration: "2 consecutive days on site",
         durationDays: 2,
-        price: `from ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}`,
+        price: `Starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}`,
         priceTiers: APPROFONDIE_PRICE_TIERS_EN,
         groupSize: "2 to 30 people",
         format: "On site · France & international",
@@ -804,7 +804,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Format équipes étendu · 2 jours sur site",
         title: "Approfondie",
         titleEm: "2 jours équipes",
-        answer: `Deux journées consécutives sur site (dès ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 880 / 1 420 / 2 140 € HT). Ateliers étendus, co-construction d'automatisations sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
+        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 880 / 1 420 / 2 140 € HT). Ateliers étendus, co-construction d'automatisations sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
         ctaPrimary: "Réserver l'Approfondie",
         faqIntro: "équipes",
       }),
@@ -862,14 +862,14 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       ctaBlockTitle: "Allez au fond du sujet en 2 jours",
-      ctaBlockDescription: `Réservez la prochaine Approfondie disponible — calendrier en temps réel. Tarif fixe dès ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}, 3 paliers d'effectif.`,
+      ctaBlockDescription: `Réservez la prochaine Approfondie disponible — calendrier en temps réel. Tarif fixe à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}, 3 paliers d'effectif.`,
     },
     en: {
       ...makeEn({
         eyebrow: "Extended team format · 2 days on site",
         title: "Deep Dive",
         titleEm: "2-day teams",
-        answer: `Two consecutive on-site days (from ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 30 people depending on tier: €880 / €1,420 / €2,140). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
+        answer: `Two consecutive on-site days (starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 30 people depending on tier: €880 / €1,420 / €2,140). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
         ctaPrimary: "Book Deep Dive",
         faqIntro: "teams",
       }),
@@ -927,7 +927,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       ctaBlockTitle: "Go deep on AI in 2 days",
-      ctaBlockDescription: `Book the next available Deep Dive — live calendar. Fixed fee from ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}, 3 headcount tiers.`,
+      ctaBlockDescription: `Book the next available Deep Dive — live calendar. Fixed fee starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}, 3 headcount tiers.`,
     },
   },
   {
@@ -1124,13 +1124,13 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     summary: {
       fr: {
         benefitTagline:
-          "Une journée 1-to-1 pour mettre à plat votre quotidien dirigeant. On identifie les leviers IA qui libèrent vos heures, augmentent vos marges et réduisent vos frais de personnel. Le soir, 3 actions immédiates. Sous 7 jours, votre rapport complet de mise en œuvre.",
+          "Une journée strictement 1-to-1 (vous seul·e avec moi) pour structurer votre entreprise et chiffrer précisément les gains d'implémentation IA poste par poste. Le soir, 3 actions immédiates. Sous 7 jours, votre rapport complet de mise en œuvre — gains chiffrés en € attendus.",
         duration: "1 journée + rapport sous 7 jours",
         durationDays: 1,
         price: DIRIGEANTS_PRICE_FR,
-        groupSize: "Vous + équipe rapprochée (1 à 5)",
+        groupSize: "1 dirigeant (1-to-1)",
         format: "Sur site dirigeant · France & international",
-        audience: "Fondateurs, DG, CODIR, COMEX",
+        audience: "Dirigeant TPE, PME, ETI ou grande entreprise",
         outcomes: [
           "3 actions immédiates activables dès le lendemain — gain de temps tout de suite, sans attendre",
           "Leviers chiffrés pour vos marges : frais de personnel, accélération commerciale, coûts cachés",
@@ -1146,13 +1146,13 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       },
       en: {
         benefitTagline:
-          "A 1-on-1 day to lay your executive daily life flat. We map the AI levers that free your hours, lift your margins and reduce headcount costs. That evening, 3 immediate actions. Within 7 days, your full implementation report.",
+          "A strictly 1-on-1 day (just you and me) to structure your company and quantify AI implementation gains role by role. That evening, 3 immediate actions. Within 7 days, your full implementation report — gains quantified in expected €.",
         duration: "1 day + report within 7 days",
         durationDays: 1,
         price: DIRIGEANTS_PRICE_EN,
-        groupSize: "You + inner circle (1 to 5)",
+        groupSize: "1 executive (1-on-1)",
         format: "On site · France & international",
-        audience: "Founders, CEOs, leadership, COMEX",
+        audience: "Executive of small business, mid-market or enterprise",
         outcomes: [
           "3 immediate actions activable the next morning — time gain right away, no waiting",
           "Quantified levers for your margins: headcount costs, sales acceleration, hidden costs",
@@ -1169,11 +1169,11 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     fr: {
       ...makeFr({
-        eyebrow: "Journée stratégique 1-to-1 · CODIR · COMEX",
-        title: "Direction",
+        eyebrow: "Journée stratégique 1-to-1 dirigeant",
+        title: "Dirigeant",
         titleEm: "Journée stratégique",
         answer:
-          "Une journée stratégique 1-to-1 sur votre site avec votre équipe rapprochée (1 à 5). On met à plat votre quotidien dirigeant, on identifie les leviers IA qui libèrent vos heures, augmentent vos marges et réduisent vos frais de personnel. Le soir : 3 actions activables dès le lendemain. Sous 7 jours : rapport complet de mise en œuvre, chiffré et priorisé.",
+          "Une journée stratégique 1-to-1 sur votre site, vous seul·e avec moi. On met à plat votre quotidien dirigeant, on structure votre entreprise et on identifie les leviers IA qui libèrent vos heures, augmentent vos marges et réduisent vos frais de personnel — chiffrés précisément poste par poste. Le soir : 3 actions activables dès le lendemain. Sous 7 jours : rapport complet de mise en œuvre, chiffré et priorisé.",
         ctaPrimary: "Réserver votre journée Direction",
         faqIntro: "dirigeants",
       }),
@@ -1181,7 +1181,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           title: "Libérer vos heures dirigeant",
           description:
-            "Boîte mail, prépa CODIR, reporting, comptes-rendus, suivi commercial : on cartographie vos chronophages réels et on identifie ce qui peut passer en IA — chiffré en heures par semaine.",
+            "Boîte mail, préparation de réunions, reporting, comptes-rendus, suivi commercial : on cartographie vos chronophages réels et on identifie ce qui peut passer en IA — chiffré en heures par semaine.",
         },
         {
           title: "Augmenter vos marges",
@@ -1221,7 +1221,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "fit",
           question: "Pour qui est-ce vraiment fait ?",
           answer:
-            "Fondateurs, DG, dirigeants de business unit, CODIR, COMEX — TPE jusqu'aux grandes entreprises. Le format 1-to-1 (vous + équipe rapprochée 1 à 5) garantit que la journée colle exactement à votre contexte et à vos enjeux.",
+            "Fondateurs, DG, dirigeants de TPE / PME / ETI / grandes entreprises. Le format strictement 1-to-1 (vous seul·e avec moi, pas de comité) garantit que la journée colle exactement à votre contexte et à vos enjeux personnels — confidentialité totale.",
         },
         {
           id: "follow-up",
@@ -1237,11 +1237,11 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     },
     en: {
       ...makeEn({
-        eyebrow: "Strategic 1-on-1 day · Leadership · COMEX",
-        title: "Direction",
+        eyebrow: "Strategic 1-on-1 executive day",
+        title: "Executive",
         titleEm: "Strategic day",
         answer:
-          "A strategic 1-on-1 day on site with your inner circle (1 to 5). We lay your executive daily life flat, map the AI levers that free your hours, lift your margins and reduce headcount costs. That evening: 3 actions activable the next morning. Within 7 days: a full quantified, prioritised implementation report.",
+          "A strictly 1-on-1 strategic day on site, just you and me. We lay your executive daily life flat, structure your company, and map the AI levers that free your hours, lift your margins and reduce headcount costs — quantified precisely role by role. That evening: 3 actions activable the next morning. Within 7 days: a full quantified, prioritised implementation report.",
         ctaPrimary: "Book your Director's day",
         faqIntro: "executives",
       }),
@@ -1289,7 +1289,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "fit",
           question: "Who is this really for?",
           answer:
-            "Founders, CEOs, business unit directors, leadership team, COMEX — small to enterprise. The 1-on-1 format (you + inner circle 1 to 5) guarantees the day fits your context and stakes exactly.",
+            "Founders, CEOs, executives of small to enterprise companies. The strictly 1-on-1 format (just you and me, no committee) guarantees the day fits your context and personal stakes exactly — total confidentiality.",
         },
         {
           id: "follow-up",
