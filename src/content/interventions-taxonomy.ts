@@ -426,6 +426,31 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     badgeFr: "Gains chiffrés · 1-to-1",
     badgeEn: "Quantified gains · 1-on-1",
   },
+  {
+    // Sprint 14.10.7 (Will 2026-05-11) — variante Claude pour dirigeant.
+    // Même format 1-to-1 que la journée stratégique, mais focalisé sur la
+    // maîtrise complète de Claude (Anthropic) côté dirigeant : Chat avancé,
+    // Projects mémoire, Code CLI pour les dossiers stratégiques.
+    slug: "claude-dirigeant",
+    family: "dirigeants",
+    pathFr: "/interventions/demande?objet=claude-dirigeant",
+    pathEn: "/interventions/request?objet=claude-dirigeant",
+    labelFr: "Intervention Claude · Dirigeant",
+    labelEn: "Claude Intervention · Executive",
+    taglineFr:
+      "1 journée 1-to-1 avec le dirigeant 100 % dédiée à Claude (Anthropic) — Chat avancé, Projects + mémoire stratégique, Claude Code CLI pour vos dossiers confidentiels. À la sortie, vous maîtrisez l'outil IA de pointe pour vos décisions.",
+    taglineEn:
+      "1-on-1 executive day 100 % focused on Claude (Anthropic) — advanced Chat, Projects + strategic memory, Claude Code CLI for your confidential files. You leave with full mastery of the cutting-edge AI tool for your decisions.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "1 dirigeant (1-to-1)",
+    groupSizeEn: "1 executive (1-on-1)",
+    audienceFr: "Dirigeant qui veut maîtriser Claude pour ses propres dossiers",
+    audienceEn: "Executive who wants to master Claude for their own files",
+    accent: "claude",
+    badgeFr: "Outil · Claude",
+    badgeEn: "Tool · Claude",
+  },
 
   // -------------------------------------------------------------------------
   // FAMILLE : Conférence (liste plate, pas de paliers durée)
@@ -504,6 +529,31 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     accent: "sage",
     badgeFr: "Niveau avancé",
     badgeEn: "Advanced level",
+  },
+  {
+    // Sprint 14.10.7 (Will 2026-05-11) — variante Claude pour 1 personne.
+    // Format implémentation 1-to-1 strictement focalisé sur Claude (Anthropic) :
+    // installation, configuration Projects + Code CLI sur votre poste, agents
+    // personnels Claude, workflows Claude-only adaptés à votre métier.
+    slug: "claude-implementation-individuel",
+    family: "individuel",
+    pathFr: "/interventions/demande?objet=claude-implementation-individuel",
+    pathEn: "/interventions/request?objet=claude-implementation-individuel",
+    labelFr: "Implémentation Claude · Individuel",
+    labelEn: "Claude Implementation · Individual",
+    taglineFr:
+      "1 journée 1-to-1 sur votre poste, 100 % Claude (Anthropic) : installation, configuration Chat + Projects + Code CLI, agents personnels Claude pour vos cas récurrents, workflows métier dédiés. À la sortie, vous maîtrisez Claude pour votre travail quotidien.",
+    taglineEn:
+      "1-on-1 day on your workstation, 100 % Claude (Anthropic): installation, Chat + Projects + Code CLI configuration, personal Claude agents for your recurring cases, dedicated business workflows. You leave with full Claude mastery for your daily work.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "1 personne (1-to-1 strict)",
+    groupSizeEn: "1 person (strict 1-on-1)",
+    audienceFr: "N'importe quel poste · veut maîtriser Claude en profondeur",
+    audienceEn: "Any role · wants to master Claude in depth",
+    accent: "claude",
+    badgeFr: "Outil · Claude",
+    badgeEn: "Tool · Claude",
   },
 ] as const;
 
