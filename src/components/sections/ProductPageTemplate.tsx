@@ -289,12 +289,12 @@ function ReserveBigCta({
               : "Immediate confirmation, 50 % payment on booking."}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            {/* Sprint 14.10.7 fix Will (2026-05-11) : un seul CTA — le bouton
+                secondaire « Voir le calendrier complet » menait au même endroit
+                que ctaPrimary, doublon retiré pour clarifier l'action principale. */}
             <Cta href={ctaPrimaryHref} size="xl">
               {ctaPrimary}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Cta>
-            <Cta href="/reserver" variant="outline" size="lg">
-              {isFr ? "Voir le calendrier complet" : "See the full calendar"}
             </Cta>
           </div>
           <p className="text-fg-muted mt-6 text-xs">

@@ -97,7 +97,7 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
   const txt = dark ? "text-mocha-fg" : "text-fg";
   const txtSoft = dark ? "text-mocha-fg/85" : "text-fg-soft";
   const href = formatPath(entry, locale);
-  const ctaLabel = isFr ? "Voir cette formation en détail" : "See this training in detail";
+  const ctaLabel = isFr ? "Voir cette intervention en détail" : "See this session in detail";
 
   return (
     <article
