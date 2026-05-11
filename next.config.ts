@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import createNextIntlPlugin from "next-intl/plugin";
 
@@ -137,4 +138,36 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env["ANALYZE"] === "true",
 });
 
-export default withNextIntl(bundleAnalyzer(nextConfig));
+// Audit E2E 2026-05-11 P0-CONF-05 — réintégration `withSentryConfig`.
+// Sans ce wrapper, `SENTRY_AUTH_TOKEN` n'est jamais consommé au build et les
+// sourcemaps ne sont pas uploadées → stacks prod minifiées illisibles.
+//
+// Toggle d'opt-out pour les builds d'audit / dev / CI :
+//   SENTRY_DISABLE_AUTO_UPLOAD=true npx next build
+// désactive l'upload + le release-creation mais garde le SDK runtime.
+const sentryDisableAutoUpload =
+  process.env["SENTRY_DISABLE_AUTO_UPLOAD"] === "true" ||
+  process.env["NEXT_PUBLIC_SENTRY_RELEASE_DISABLE"] === "true";
+
+const sentryOrg = process.env["SENTRY_ORG"];
+const sentryProject = process.env["SENTRY_PROJECT"];
+const sentryBuildOptions = {
+  ...(sentryOrg ? { org: sentryOrg } : {}),
+  ...(sentryProject ? { project: sentryProject } : {}),
+  // Silencieux quand pas en CI pour ne pas polluer dev local.
+  silent: !process.env["CI"],
+  // Skip upload si toggle d'audit OU si AUTH_TOKEN absent (CI sans secrets).
+  disableServerWebpackPlugin: sentryDisableAutoUpload || !process.env["SENTRY_AUTH_TOKEN"],
+  disableClientWebpackPlugin: sentryDisableAutoUpload || !process.env["SENTRY_AUTH_TOKEN"],
+  // Tunnel optionnel — bypass adblockers (ajouter une route /monitoring si désiré
+  // Sprint 16). Pour l'instant on n'active pas pour éviter d'augmenter la
+  // surface d'attaque sans monitoring tunnelé en place.
+  // tunnelRoute: "/monitoring",
+  hideSourceMaps: true,
+  widenClientFileUpload: true,
+  reactComponentAnnotation: { enabled: false },
+};
+
+const composedConfig = bundleAnalyzer(nextConfig);
+
+export default withNextIntl(withSentryConfig(composedConfig, sentryBuildOptions));

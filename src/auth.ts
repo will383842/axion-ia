@@ -96,25 +96,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ipAddress: { type: "hidden" },
       },
       async authorize(raw) {
-        // [DEBUG TEMPORAIRE 2026-05-10 — à retirer post-validation login]
-        // dump des credentials reçus pour identifier pourquoi le browser
-        // fail mais pas le curl direct sur /api/auth/callback/credentials.
-        try {
-          const r = raw as Record<string, unknown> | null | undefined;
-          console.error(
-            "[authorize-debug] raw=",
-            JSON.stringify({
-              email: r?.email,
-              password_len: typeof r?.password === "string" ? r.password.length : null,
-              totp: r?.totp,
-              totp_type: typeof r?.totp,
-              ipAddress: r?.ipAddress,
-              all_keys: r ? Object.keys(r) : [],
-            }),
-          );
-        } catch {
-          /* never break authorize */
-        }
+        // Audit E2E 2026-05-11 P0-CONF-07 — debug dump credentials retiré.
+        // Le dump précédent loggait email + IP + tailles de password (PII) à
+        // chaque tentative de login → fuitait dans Sentry breadcrumbs (P0-CONF-06).
+        // Diagnostic résolu par le commit b6d17ad (auth.ts string-literal
+        // "undefined" serialization). Plus de raison de garder ce dump.
         // 1. Validation Zod.
         // Important: HTML forms send empty fields as `""` (empty string),
         // and `signInAction` forwards `totp: parsed.data.totp ?? ""` to

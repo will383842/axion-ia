@@ -1,56 +1,50 @@
-# Runbook monitoring — Sprint 23 (M11)
+# Runbook monitoring — Sprint 23 (M11) + révision Audit E2E 2026-05-11
 
-**Stack** : Sentry self-hosted + Plausible self-hosted + Uptime Kuma + Telegram alerts.
+**Stack effectif V1** : Sentry **SaaS EU** + Plausible self-hosted + Uptime Kuma + Telegram alerts.
 
-## 1. Sentry self-hosted
+> Audit E2E 2026-05-11 P0-CONF-08 — Précédente version de ce runbook annonçait
+> "Sentry self-hosted" mais le compose `docker/monitoring/docker-compose.monitoring.yml`
+> n'a jamais inclus Sentry. Décision V1 : **Sentry SaaS EU** (DSN
+> `ingest.de.sentry.io`, hébergement Allemagne) couvre les besoins sans le coût
+> infra de la self-host (~8 GB RAM + 6 services + Kafka/Snuba/Symbolicator).
+> À reconsidérer Sprint 17+ si volume d'events justifie le coût ou pour
+> souveraineté renforcée.
 
-Le SDK `@sentry/nextjs` est déjà intégré (`src/sentry.server.config.ts`,
-`src/sentry.edge.config.ts`, `src/instrumentation-client.ts`). Reste à
-provisionner Sentry self-hosted sur le VPS.
+## 1. Sentry SaaS EU
 
-### Installation
+Le SDK `@sentry/nextjs` est intégré dans :
 
-Pas géré par notre `docker-compose.monitoring.yml` (Sentry self-hosted requiert
-son propre installateur multi-conteneurs avec Snuba/Kafka/Symbolicator).
+- `src/sentry.server.config.ts` (runtime Node serverless functions)
+- `src/sentry.edge.config.ts` (runtime Edge proxy + middlewares)
+- `src/instrumentation-client.ts` (runtime browser)
 
-```bash
-ssh root@<cpx32>
-cd /var/www
-git clone https://github.com/getsentry/self-hosted.git sentry-onpremise
-cd sentry-onpremise
-git checkout 25.x.x  # version stable
-./install.sh --skip-user-prompt
-docker compose up -d
+PII scrub global via `src/lib/observability/sentry-pii-scrub.ts` (audit E2E
+2026-05-11 P0-CONF-06 — RGPD Art. 32).
 
-# Premier login : créer super-user via prompt
-# Puis créer projet "axion-ia" → JS / Next.js
-# Récupérer DSN → variable env SENTRY_DSN + NEXT_PUBLIC_SENTRY_DSN
-```
+### Configuration env (Coolify)
 
-### DNS + Caddy reverse-proxy
+| Variable                 | Valeur                  | Où                        |
+| ------------------------ | ----------------------- | ------------------------- |
+| `SENTRY_DSN`             | DSN privé serveur       | Coolify env runtime       |
+| `NEXT_PUBLIC_SENTRY_DSN` | DSN client (= server)   | Coolify env build+runtime |
+| `SENTRY_AUTH_TOKEN`      | Token upload sourcemaps | Coolify env build-only    |
+| `SENTRY_ORG`             | slug org Sentry         | Coolify env build-only    |
+| `SENTRY_PROJECT`         | slug projet Sentry      | Coolify env build-only    |
 
-Ajouter dans `/var/www/axion-ia/axionia/Caddyfile` :
+→ Sans `SENTRY_AUTH_TOKEN`, `withSentryConfig` (audit E2E P0-CONF-05 réintégré
+2026-05-11) skip l'upload des sourcemaps. Stacks prod restent minifiées.
 
-```caddy
-sentry.axion-ia.com {
-    encode zstd br gzip
-    reverse_proxy localhost:9000 {
-        flush_interval -1
-    }
-    header {
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-        X-Frame-Options DENY
-        X-Content-Type-Options nosniff
-    }
-}
-```
+### Sous-domaine `sentry.axion-ia.com`
+
+**N'existe plus** (P0-CONF-08). Accès au dashboard via `https://sentry.io/...`
+SaaS direct.
 
 ### Vérifier capture
 
 ```bash
-# Force une exception côté serveur pour valider que Sentry capture
-curl -X POST https://axion-ia.com/api/test-sentry  # créer route si besoin
-# → erreur visible https://sentry.axion-ia.com/issues/
+# Force une exception côté serveur via /api/healthz (à modifier ponctuel)
+# ou crée une route /api/test-sentry temporaire pour valider.
+# → erreur visible dans dashboard Sentry SaaS
 ```
 
 ### Alerts Telegram via Sentry webhook
@@ -143,7 +137,7 @@ Web UI à `https://uptime.axion-ia.com` (créer admin user au 1er login) :
 | Robots        | HTTP(s)             | https://axion-ia.com/robots.txt                      | 10min    | Telegram     |
 | Reserve form  | HTTP(s) - Keyword   | https://axion-ia.com/fr/reserver, keyword=`Réserver` | 5min     | Telegram     |
 | Postgres      | TCP                 | <cpx32>:5432 (interne, via VPN ou local exec)        | 60s      | Telegram     |
-| Sentry        | HTTP(s)             | https://sentry.axion-ia.com/_health/                 | 5min     | Telegram     |
+| Sentry SaaS   | HTTP(s)             | https://sentry.io/api/0/                             | 5min     | Telegram     |
 | Plausible     | HTTP(s)             | https://plausible.axion-ia.com/api/health            | 5min     | Telegram     |
 | SSL cert main | HTTPS - Cert expiry | https://axion-ia.com                                 | daily    | Telegram     |
 | SSL cert mail | HTTPS - Cert expiry | https://mail.axion-ia.com                            | daily    | Telegram     |

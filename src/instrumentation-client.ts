@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
+import { piiScrubBeforeSend } from "./lib/observability/sentry-pii-scrub";
 
 const dsn = process.env["NEXT_PUBLIC_SENTRY_DSN"];
 const isProd = process.env["NODE_ENV"] === "production";
@@ -15,6 +16,9 @@ if (dsn) {
     // une dep tierce activerait Replay implicitement.
     replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 0,
+    // Audit E2E 2026-05-11 P0-CONF-06 — RGPD Art. 32.
+    sendDefaultPii: false,
+    beforeSend: piiScrubBeforeSend,
   });
 }
 

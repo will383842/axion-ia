@@ -1,21 +1,24 @@
 # Stack monitoring Axion-IA — Sprint 23 (M11 monitoring).
 #
-# Déploiement self-hosted des 3 outils observability hors stack app
+# Déploiement self-hosted des outils observability hors stack app
 # (séparation services pour resilience : si app DOWN, monitoring stay UP).
 #
-# Services :
-#   - sentry-stack (image getsentry/self-hosted simplifiée — production
-#     réelle = clone https://github.com/getsentry/self-hosted + ./install.sh)
+# Services réellement déployés :
 #   - plausible (analytics privacy-first GDPR sans cookies)
 #   - plausible-clickhouse (DB columnar pour Plausible)
 #   - plausible-postgres (DB Plausible config users/sites)
 #   - uptime-kuma (monitoring uptime + ping + SSL expiry)
 #
+# Sentry — choix stack (Audit E2E 2026-05-11 P0-CONF-08) :
+# Axion-IA utilise **Sentry SaaS EU** (DSN ingest.de.sentry.io) configuré via
+# `SENTRY_DSN` env. La self-host de Sentry est **HORS scope V1** (~8 GB RAM
+# + ~6 services + ./install.sh = trop lourd pour CPX32 partagé). À reconsidérer
+# Sprint 17+ si volume d'events justifie le coût d'infra.
+#
 # Lance via : docker compose -f docker/monitoring/docker-compose.monitoring.yml up -d
 #
 # Réseau : `axion-ia-monitoring` isolé du réseau app principal.
 # Caddy (stack app) reverse-proxy chaque outil sur son sous-domaine :
-#   - sentry.axion-ia.com    → sentry-web:9000
 #   - plausible.axion-ia.com → plausible:8000
 #   - uptime.axion-ia.com    → uptime-kuma:3001
 

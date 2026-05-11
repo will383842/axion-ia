@@ -11,9 +11,9 @@ export async function register() {
   }
 }
 
-// Hand server-side render errors to Sentry. Sprint 21 swaps this for the
-// official `onRequestError` re-export once we confirm its presence in the
-// installed @sentry/nextjs build.
+// Hand server-side render errors to Sentry. Le scrub PII est appliqué par
+// `beforeSend` posé dans `sentry.server.config.ts` et `sentry.edge.config.ts`
+// (audit E2E 2026-05-11 P0-CONF-06 — RGPD Art. 32).
 export function onRequestError(err: unknown): void {
   Sentry.captureException(err);
 }
