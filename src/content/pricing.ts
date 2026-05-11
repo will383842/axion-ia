@@ -340,6 +340,24 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
+    // Sprint 14.10.7 (Will 2026-05-11) — palier 4 h Collectives. Prix
+    // unique partagé par les 2 formations 4 h actuelles (Démarrage IA
+    // Express + Atelier IA ciblé). Si plus tard Will différencie les
+    // tarifs, splitter en 2 tiers distincts.
+    id: "intervention-4h",
+    labelFr: "Formation 4 heures",
+    labelEn: "4-hour training",
+    priceFlat: 390,
+    durationFr: "Demi-journée (4 h)",
+    durationEn: "Half-day (4 h)",
+    groupSizeFr: "2 à 20 personnes",
+    groupSizeEn: "2 to 20 people",
+    descriptionFr:
+      "Format express demi-journée pour découvrir l'IA ou cadrer un cas d'usage métier précis.",
+    descriptionEn: "Half-day express format to discover AI or frame a specific business use case.",
+    audienceSizes: ["tpe", "pme"],
+  },
+  {
     id: "intervention-essentielle",
     labelFr: "Essentielle",
     labelEn: "Essential",

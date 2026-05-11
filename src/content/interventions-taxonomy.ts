@@ -244,6 +244,7 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
 // qu'elle apparaisse automatiquement sur sa page famille / palier durée.
 // ============================================================================
 
+const FOUR_H_PRICE = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
 const ESSENTIELLE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!;
 const APPROFONDIE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-approfondie").priceFlat!;
 const TEMPS_TIER = getTierById(INTERVENTION_TIERS, "intervention-temps");
@@ -268,8 +269,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "Demi-journée (4 h) pour démystifier l'IA : panorama outils 2026, démos live sur cas réels de votre secteur, 2-3 prompts opérationnels testés ensemble. Vos équipes ressortent avec une vision claire et des quick-wins prêts à appliquer.",
     taglineEn:
       "Half-day (4 h) to demystify AI: 2026 tools panorama, live demos on real cases from your sector, 2-3 operational prompts tested together. Your teams leave with a clear vision and quick-wins ready to apply.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
+    priceFr: formatAmount(FOUR_H_PRICE, "fr"),
+    priceEn: formatAmount(FOUR_H_PRICE, "en"),
     groupSizeFr: "2 à 20 personnes",
     groupSizeEn: "2 to 20 people",
     audienceFr: "Équipes qui découvrent l'IA · TPE, PME",
@@ -290,8 +291,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "Demi-journée (4 h) focalisée sur UN cas d'usage métier précis : rédaction commerciale, analyse de documents, automatisation reporting, traduction… À l'issue, chaque participant repart avec le cas implémenté sur son poste.",
     taglineEn:
       "Half-day (4 h) focused on ONE specific business case: sales writing, document analysis, reporting automation, translation… By the end, each participant leaves with the case implemented on their workstation.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
+    priceFr: formatAmount(FOUR_H_PRICE, "fr"),
+    priceEn: formatAmount(FOUR_H_PRICE, "en"),
     groupSizeFr: "2 à 15 personnes",
     groupSizeEn: "2 to 15 people",
     audienceFr: "Équipe avec besoin métier précis",
