@@ -410,25 +410,55 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   // FAMILLE : Dirigeants (liste plate, pas de paliers durée)
   // -------------------------------------------------------------------------
   {
+    // Sprint 14.10.7 (Will 2026-05-12) — refondu : focus 100 % sur la
+    // PRODUCTIVITÉ PERSONNELLE du dirigeant. Comment optimiser SA journée,
+    // automatiser SES tâches répétitives, lui faire gagner du temps. C'est
+    // une formation sur le dirigeant LUI-MÊME.
     slug: "dirigeants",
     family: "dirigeants",
     pathFr: "/interventions/dirigeants",
     pathEn: "/interventions/executives",
-    labelFr: "Journée stratégique dirigeant",
-    labelEn: "Strategic executive day",
+    labelFr: "Productivité dirigeant",
+    labelEn: "Executive productivity",
     taglineFr:
-      "1 journée 1-to-1 avec le dirigeant — structurer l'entreprise, implémenter l'IA et chiffrer précisément les gains poste par poste. Vision IA 12-24 mois + quick-wins activables.",
+      "1 journée 1-to-1 entièrement sur VOUS, dirigeant. On regarde votre vraie journée — boîte mail, prépa réunions, reporting, suivi commercial, comptes-rendus — et on installe les bons usages IA pour vous faire gagner plusieurs heures par semaine. Sans intermédiaire, sans équipe à embarquer.",
     taglineEn:
-      "1 day 1-on-1 with the executive — structure the company, implement AI and quantify gains role by role. 12-24 month AI vision + actionable quick-wins.",
+      "1-on-1 day entirely about YOU, the executive. We look at your real day — inbox, meeting prep, reporting, sales follow-up, meeting notes — and install the right AI methods to save you several hours per week. No intermediary, no team to onboard.",
     priceFr: formatPrice(DIRIGEANTS_TIER, "fr"),
     priceEn: formatPrice(DIRIGEANTS_TIER, "en"),
     groupSizeFr: "1 dirigeant (1-to-1)",
     groupSizeEn: "1 executive (1-on-1)",
-    audienceFr: "Dirigeant TPE, PME, ETI ou grande entreprise",
-    audienceEn: "Executive of small business, mid-market or enterprise",
+    audienceFr: "Dirigeant qui veut gagner du temps sur son propre quotidien",
+    audienceEn: "Executive who wants to save time on their own daily work",
     accent: "mocha",
-    badgeFr: "Gains chiffrés · 1-to-1",
-    badgeEn: "Quantified gains · 1-on-1",
+    badgeFr: "Gain de temps personnel · 1-to-1",
+    badgeEn: "Personal time saving · 1-on-1",
+  },
+  {
+    // Sprint 14.10.7 (Will 2026-05-12) — 2ᵉ format dirigeants : VISION
+    // STRATÉGIQUE pour l'entreprise. Pas un audit complet, juste « ouvrir
+    // les yeux » du dirigeant : panorama IA secteur, opportunités stratégiques,
+    // comment ses concurrents bougent, comment penser différemment grâce à
+    // l'IA, quelles automatisations en surface l'entreprise pourrait viser.
+    slug: "dirigeant-vision-strategique",
+    family: "dirigeants",
+    pathFr: "/interventions/demande?objet=dirigeant-vision-strategique",
+    pathEn: "/interventions/request?objet=dirigeant-vision-strategique",
+    labelFr: "Vision IA stratégique",
+    labelEn: "Strategic AI vision",
+    taglineFr:
+      "1 journée 1-to-1 pour ouvrir les yeux du dirigeant sur ce que l'IA change DANS SON SECTEUR. Panorama des opportunités stratégiques, ce que font vraiment vos concurrents, quelles automatisations chercher, comment penser différemment l'entreprise. Pas un audit complet — un déclic stratégique.",
+    taglineEn:
+      "1-on-1 day to open the executive's eyes to what AI changes IN THEIR SECTOR. Strategic opportunity panorama, what competitors actually do, automations to look for, how to think the company differently. Not a full audit — a strategic shift.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "1 dirigeant (1-to-1)",
+    groupSizeEn: "1 executive (1-on-1)",
+    audienceFr: "Dirigeant qui veut anticiper la vague IA sur son secteur",
+    audienceEn: "Executive who wants to anticipate the AI wave on their sector",
+    accent: "mocha",
+    badgeFr: "Vision & stratégie · 1-to-1",
+    badgeEn: "Vision & strategy · 1-on-1",
   },
   {
     // Sprint 14.10.7 (Will 2026-05-11) — variante Claude pour dirigeant.
