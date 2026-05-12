@@ -126,9 +126,10 @@ export const routing = defineRouting({
     // Module 2 — Audit & optimisation (pyramide 4 niveaux 2026-05-07)
     "/audit": { fr: "/audit", en: "/audit" },
     "/audit/flash": { fr: "/audit/flash", en: "/audit/flash" },
-    "/audit/process": { fr: "/audit/process", en: "/audit/process" },
     // Sprint 14.10.8 (Will 2026-05-12) — /audit/cible remplace /audit/process.
     // Slug aligné sur pricing.ts AUDIT_TIERS id "audit-cible".
+    // Le slug legacy /audit/process est géré via 301 dans next.config.ts
+    // (sortie sitemap+routing pour ne pas exposer une URL 301 indexable).
     "/audit/cible": { fr: "/audit/cible", en: "/audit/targeted" },
     "/audit/strategique-pme": {
       fr: "/audit/strategique-pme",

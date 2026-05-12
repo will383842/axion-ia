@@ -83,6 +83,10 @@ export default async function AuditHub({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
   // JSON-LD Service global pour le hub /audit (factory centralisée).
+  // Sprint 14.10.8 : retrait `priceEur: 0` qui pouvait être interprété par
+  // Google comme « service gratuit » → mauvais signal rich results. Le prix
+  // d'entrée 490 € est exposé sur les pages détail tier (où il est
+  // contextualisé).
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/audit",
@@ -91,7 +95,6 @@ export default async function AuditHub({ params }: Props) {
       ? "4 niveaux d'audit IA selon la taille de l'entreprise et la situation. France & international."
       : "4 AI audit levels by company size and situation. France & international.",
     serviceType: "AI audit",
-    priceEur: 0,
   });
 
   // ItemList JSON-LD — 4 tiers d'audit. AEO 2026 : LLMs énumèrent les niveaux
@@ -389,6 +392,61 @@ export default async function AuditHub({ params }: Props) {
 
       {/* AU-DELÀ DE L'AUDIT — upsell module Implémentation */}
       <BeyondAuditBlock isFr={isFr} />
+
+      {/* CROSS-MODULES — Sprint 14.10.8 (Will 2026-05-12) : harmonisation
+          tunnels. Si l'audit n'est pas le bon format, proposer Interventions
+          (formation équipe) ou Implémentation (mise en œuvre). */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Pas le bon format ?" : "Not the right format?"}
+        title={isFr ? "Vous préférez" : "Would you rather"}
+        titleEm={isFr ? "former ou implémenter ?" : "train or implement?"}
+        description={
+          isFr
+            ? "L'audit est l'angle « comprendre et chiffrer ». Si vous savez déjà ce que vous voulez et cherchez à former vos équipes ou à passer à l'action, ces 2 modules sont vos prochaines étapes."
+            : "Audit is the « understand and quantify » angle. If you already know what you want and seek to train teams or move to action, these 2 modules are your next steps."
+        }
+        contentClassName={TIGHT_X}
+      >
+        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
+          <Cta
+            href="/interventions"
+            variant="outline"
+            size="lg"
+            className="hover:bg-terracotta-soft justify-start py-6 text-left"
+          >
+            <Users aria-hidden="true" className="text-terracotta-deep h-5 w-5" />
+            <span className="flex flex-col items-start gap-0.5">
+              <span className="text-fg text-base font-semibold">
+                {isFr ? "Former vos équipes →" : "Train your teams →"}
+              </span>
+              <span className="text-fg-soft text-[13px] leading-snug">
+                {isFr
+                  ? "14 formats interventions IA · Collectives, individuelles, dirigeants, conférences"
+                  : "14 AI session formats · Team, individual, executive, talks"}
+              </span>
+            </span>
+          </Cta>
+          <Cta
+            href="/implementation"
+            variant="outline"
+            size="lg"
+            className="hover:bg-terracotta-soft justify-start py-6 text-left"
+          >
+            <FileText aria-hidden="true" className="text-terracotta-deep h-5 w-5" />
+            <span className="flex flex-col items-start gap-0.5">
+              <span className="text-fg text-base font-semibold">
+                {isFr ? "Implémenter l'IA →" : "Implement AI →"}
+              </span>
+              <span className="text-fg-soft text-[13px] leading-snug">
+                {isFr
+                  ? "Mise en production IA · agents, automatisations, IA custom, intégrations"
+                  : "Production AI · agents, automations, custom AI, integrations"}
+              </span>
+            </span>
+          </Cta>
+        </div>
+      </Section>
 
       {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
       <LocalCoverageSection

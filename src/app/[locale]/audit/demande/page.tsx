@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Request an AI audit · 6 steps · Axion-IA",
     description:
       locale === "fr"
-        ? "Formulaire 6 étapes pour demander un audit IA Axion-IA — niveau (Flash / Process / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé sous 48 h ouvrées."
-        : "6-step form to request an Axion-IA AI audit — level (Flash / Process / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote within 48 business hours.",
+        ? "Formulaire 6 étapes pour demander un audit IA Axion-IA — niveau (Flash / Ciblé / Stratégique PME / ETI), taille, secteur, lieu, périmètre. Devis personnalisé sous 48 h ouvrées."
+        : "6-step form to request an Axion-IA AI audit — level (Flash / Targeted / Strategic SMB / mid-cap), size, sector, location, scope. Personalised quote within 48 business hours.",
     alternates: { fr: "/audit/demande", en: "/audit/request" },
   });
 }
@@ -102,8 +102,8 @@ export default async function AuditRequest({ params }: Props) {
             priceFrom: flashPriceFrom,
           },
           {
-            key: "process" as const,
-            label: "Niveau 2 · Audit ciblé",
+            key: "cible" as const,
+            label: "Niveau 2 · Audit Ciblé",
             description:
               "Audit poussé d'un service complet (RH, finance, vente, ops…). On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois.",
             priceFrom: ciblePriceRange,
@@ -143,7 +143,7 @@ export default async function AuditRequest({ params }: Props) {
         s3Eyebrow: "3 · Lieu & modalité",
         s3Title: "Sur site ou à distance ?",
         s3Description:
-          "On intervient partout en France et à l'international. Sur site recommandé dès le niveau Process pour les ateliers métiers. À distance possible partout.",
+          "On intervient partout en France et à l'international. Sur site recommandé dès le niveau Ciblé pour les ateliers métiers. À distance possible partout.",
         modalityLabel: "Modalité souhaitée",
         modalityRemote: "À distance",
         modalityRemoteHint: "Visio sécurisée + entretiens · gain de temps + tarif réduit.",
@@ -228,7 +228,7 @@ export default async function AuditRequest({ params }: Props) {
             priceFrom: flashPriceFrom,
           },
           {
-            key: "process" as const,
+            key: "cible" as const,
             label: "Level 2 · Targeted audit",
             description:
               "In-depth audit of a full service (HR, finance, sales, ops…). We list everything that can be automated with costed gains and a 6-12 month plan.",
@@ -269,7 +269,7 @@ export default async function AuditRequest({ params }: Props) {
         s3Eyebrow: "3 · Location & modality",
         s3Title: "On site or remote?",
         s3Description:
-          "We work everywhere in France and worldwide. On site recommended from Process level for business workshops. Remote possible everywhere.",
+          "We work everywhere in France and worldwide. On site recommended from Targeted level for business workshops. Remote possible everywhere.",
         modalityLabel: "Preferred modality",
         modalityRemote: "Remote",
         modalityRemoteHint: "Secure video + interviews · time saved + reduced fee.",

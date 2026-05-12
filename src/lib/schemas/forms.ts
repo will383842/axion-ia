@@ -57,7 +57,10 @@ export type AuditInput = z.infer<typeof auditSchema>;
 // Capture le type d'audit, la taille + secteur, la modalité + lieu, le
 // périmètre + maturité IA, le contact et le consentement.
 export const auditRequestStep1Schema = z.object({
-  auditType: z.enum(["flash", "process", "strategique-pme", "strategique-eti"], {
+  // Sprint 14.10.8 (Will 2026-05-12) — rename "process" → "cible" (aligné
+  // sur pricing.ts AUDIT_TIERS id "audit-cible"). Pas de migration DB
+  // (auditType n'est pas un enum Postgres, stocké en string).
+  auditType: z.enum(["flash", "cible", "strategique-pme", "strategique-eti"], {
     errorMap: () => ({ message: "Niveau d'audit requis." }),
   }),
 });

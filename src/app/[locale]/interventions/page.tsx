@@ -850,6 +850,58 @@ export default async function InterventionsListing({ params }: Props) {
         </Container>
       </Section>
 
+      {/* CROSS-MODULES — Sprint 14.10.8 (Will 2026-05-12) : symétrie avec /audit.
+          Si les interventions ne sont pas le bon angle, proposer Audit (comprendre)
+          ou Implémentation (passer à l'action). */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Pas le bon format ?" : "Not the right format?"}
+        title={isFr ? "Vous préférez" : "Would you rather"}
+        titleEm={isFr ? "auditer ou implémenter ?" : "audit or implement?"}
+        description={
+          isFr
+            ? "Les interventions forment vos équipes. Si vous voulez d'abord comprendre où l'IA peut servir, ou si vous voulez directement passer à l'action sur un cas précis, ces 2 modules sont vos prochaines étapes."
+            : "Sessions train your teams. If you want to first understand where AI can help, or to directly move to action on a specific case, these 2 modules are your next steps."
+        }
+      >
+        <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2 lg:gap-7">
+          <Cta
+            href="/audit"
+            variant="outline"
+            size="lg"
+            className="hover:bg-terracotta-soft justify-start py-6 text-left"
+          >
+            <span className="flex flex-col items-start gap-0.5">
+              <span className="text-fg text-base font-semibold">
+                {isFr ? "Auditer d'abord →" : "Audit first →"}
+              </span>
+              <span className="text-fg-soft text-[13px] leading-snug">
+                {isFr
+                  ? "4 niveaux d'audit · Flash 490 € → Stratégique ETI 12 000 €+"
+                  : "4 audit levels · Flash €490 → Strategic mid-cap €12,000+"}
+              </span>
+            </span>
+          </Cta>
+          <Cta
+            href="/implementation"
+            variant="outline"
+            size="lg"
+            className="hover:bg-terracotta-soft justify-start py-6 text-left"
+          >
+            <span className="flex flex-col items-start gap-0.5">
+              <span className="text-fg text-base font-semibold">
+                {isFr ? "Implémenter l'IA →" : "Implement AI →"}
+              </span>
+              <span className="text-fg-soft text-[13px] leading-snug">
+                {isFr
+                  ? "Mise en production IA · agents, automatisations, IA custom, intégrations"
+                  : "Production AI · agents, automations, custom AI, integrations"}
+              </span>
+            </span>
+          </Cta>
+        </div>
+      </Section>
+
       <CtaBlock
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
         title={

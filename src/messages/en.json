@@ -20,7 +20,7 @@
   },
   "cta": {
     "bookIntervention": "Book a session",
-    "bookInterventionLong": "Book an on-site AI session",
+    "bookInterventionLong": "Book an AI session or audit",
     "priceFrom": "from"
   },
   "footer": {
@@ -160,7 +160,7 @@
     "notFoundLinkInterventions": "Corporate AI sessions",
     "notFoundLinkAudit": "Audit & optimisation",
     "notFoundLinkCases": "Case studies",
-    "notFoundLinkBook": "Book an intervention",
+    "notFoundLinkBook": "Book a session or audit",
     "internalEyebrow": "500 · Internal error",
     "internalTitle": "Something",
     "internalTitleEm": "went wrong",

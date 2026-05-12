@@ -384,12 +384,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/reserver",
     title:
       locale === "fr"
-        ? "Réserver une intervention IA · calendrier · Axion-IA"
-        : "Book an on-site AI session · calendar · Axion-IA",
+        ? "Réserver une intervention ou Audit IA · calendrier · Axion-IA"
+        : "Book an AI session or audit · calendar · Axion-IA",
     description:
       locale === "fr"
-        ? "Sélectionnez une date disponible, choisissez l'intervention IA souhaitée, la ville et la durée. Confirmation par email sous 1 h ouvrée."
-        : "Pick an available date, choose the AI intervention, city and duration. Email confirmation within 1 business hour.",
+        ? "Sélectionnez une date disponible, choisissez l'intervention ou l'audit IA souhaité, la ville et la durée. Confirmation par email sous 1 h ouvrée."
+        : "Pick an available date, choose the AI session or audit, city and duration. Email confirmation within 1 business hour.",
     alternates: { fr: "/reserver", en: "/book" },
   });
 }
@@ -439,13 +439,13 @@ export default async function ReserverPage({ params }: Props) {
           >
             {isFr ? "Réserver une" : "Book an"}{" "}
             <span className="text-terracotta italic">
-              {isFr ? "intervention IA" : "AI intervention"}
+              {isFr ? "intervention ou un audit IA" : "AI session or audit"}
             </span>
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "Choisissez la formation, puis cliquez sur une date libre. Réservation finalisée après call de cadrage + acompte 50 %."
-              : "Pick the training, then click an open date. Booking finalised after framing call + 50 % deposit."}
+              ? "Choisissez l'intervention ou l'audit, puis cliquez sur une date libre. Réservation finalisée après call de cadrage + acompte 50 %."
+              : "Pick the session or audit, then click an open date. Booking finalised after framing call + 50 % deposit."}
           </p>
         </Container>
       </section>

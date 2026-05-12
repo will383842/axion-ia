@@ -157,7 +157,8 @@ describe("auditRequestSchema (6 steps)", () => {
   };
 
   it("step 1 accepts each audit level", () => {
-    for (const auditType of ["flash", "process", "strategique-pme", "strategique-eti"] as const) {
+    // Sprint 14.10.8 (Will 2026-05-12) — rename "process" → "cible".
+    for (const auditType of ["flash", "cible", "strategique-pme", "strategique-eti"] as const) {
       expect(auditRequestStep1Schema.safeParse({ auditType }).success).toBe(true);
     }
   });

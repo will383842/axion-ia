@@ -109,6 +109,19 @@ const nextConfig: NextConfig = {
   // when we measure RUM baseline. Until then, Next 16's SWC optimizer + manual
   // memoization in hot paths are sufficient.
   // reactCompiler: true,
+  // Sprint 14.10.8 (Will 2026-05-12) — Redirects 301.
+  // `/audit/process` (ancien slug refactoré en `/audit/cible`) → 301 propre
+  // au niveau edge, sans frapper le rendu Next. Évite que `routing.pathnames`
+  // expose l'URL legacy au sitemap auto + au crawler.
+  async redirects() {
+    return [
+      {
+        source: "/:locale(fr|en)/audit/process",
+        destination: "/:locale/audit/cible",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: [...securityHeaders, ...cdnHeaders] },

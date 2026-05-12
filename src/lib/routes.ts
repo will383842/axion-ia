@@ -44,10 +44,10 @@ export const ROUTES = {
   interventionsGagnerDuTemps: "/interventions/gagner-du-temps",
   interventionsClaude: "/interventions/intervention-claude",
 
-  // Module 2 — Audit
+  // Module 2 — Audit (Sprint 14.10.8 : auditProcess → auditCible)
   audit: "/audit",
   auditFlash: "/audit/flash",
-  auditProcess: "/audit/process",
+  auditCible: "/audit/cible",
   auditStrategiquePme: "/audit/strategique-pme",
   auditStrategiqueEti: "/audit/strategique-eti",
   auditDemande: "/audit/demande",

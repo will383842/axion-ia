@@ -38,7 +38,7 @@ import { submitAuditRequestAction } from "@/features/audit/actions";
 import { cn } from "@/lib/utils";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 
-type AuditTypeKey = "flash" | "process" | "strategique-pme" | "strategique-eti";
+type AuditTypeKey = "flash" | "cible" | "strategique-pme" | "strategique-eti";
 type SizeKey = "tpe" | "pme" | "mid" | "enterprise";
 type ModalityKey = "remote" | "onsite";
 type ScopeKey = "global" | "single-area";
@@ -149,7 +149,7 @@ const STEP_ICONS = [ClipboardCheck, Building2, MapPin, Brain, User, Check] as co
 // Sprint 14.10.5 : entièrement dérivé de SSOT pricing.ts (zéro hardcode).
 const TIER_ID_BY_TYPE: Record<AuditTypeKey, string> = {
   flash: "audit-flash",
-  process: "audit-cible",
+  cible: "audit-cible",
   "strategique-pme": "audit-strategique-pme",
   "strategique-eti": "audit-strategique-eti",
 };
@@ -177,7 +177,7 @@ function buildPriceTable(): Record<
       remote: { fr: flashRemoteFr, en: flashRemoteEn },
       onsite: { fr: flashOnsiteFr, en: flashOnsiteEn },
     },
-    process: {
+    cible: {
       remote: { fr: cibleFr, en: cibleEn },
       onsite: { fr: cibleFr, en: cibleEn },
     },
@@ -214,16 +214,31 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Pré-remplissage via ?type=slug
+  // Pré-remplissage via ?type=slug OU ?objet=<subTierId>
+  // (Sprint 14.10.8 — Will 2026-05-12 : les pages détail audit utilisent
+  // `?objet=audit-cible-solo` etc., on doit remapper vers AuditTypeKey).
   const typeFromUrl = searchParams.get("type") as AuditTypeKey | null;
+  const objetFromUrl = searchParams.get("objet");
   const validTypes: ReadonlyArray<AuditTypeKey> = [
     "flash",
-    "process",
+    "cible",
     "strategique-pme",
     "strategique-eti",
   ];
+  function mapObjetToType(objet: string | null): AuditTypeKey | null {
+    if (!objet) return null;
+    if (objet.startsWith("audit-flash")) return "flash";
+    if (objet.startsWith("audit-cible")) return "cible";
+    if (objet.startsWith("audit-strategique-pme")) return "strategique-pme";
+    if (objet.startsWith("audit-strategique-eti")) return "strategique-eti";
+    return null;
+  }
   const initialType: AuditTypeKey | null =
-    typeFromUrl && validTypes.includes(typeFromUrl) ? typeFromUrl : null;
+    (typeFromUrl && validTypes.includes(typeFromUrl) ? typeFromUrl : null) ??
+    mapObjetToType(objetFromUrl);
+  // Conservation granularité sous-tier (ex. audit-cible-solo) pour
+  // traçabilité Server Action.
+  const initialSubTierId = objetFromUrl;
 
   const [step, setStep] = React.useState<1 | 2 | 3 | 4 | 5 | 6>(1);
   const [submittingState, setSubmittingState] = React.useState<"idle" | "submitting" | "success">(
@@ -294,6 +309,10 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
     try {
       const fd = new FormData();
       if (auditType) fd.set("auditType", auditType);
+      // Granularité sous-tier (Sprint 14.10.8) — préservée dans la submission
+      // si le visiteur vient d'une carte sous-tier (?objet=audit-cible-solo).
+      // Server Action persiste cette valeur dans Submission.details si dispo.
+      if (initialSubTierId) fd.set("subTierId", initialSubTierId);
       if (size) fd.set("size", size);
       if (industry) fd.set("industry", industry);
       if (companyName) fd.set("companyName", companyName);
@@ -630,7 +649,7 @@ function ProgressBar({
 
 const TYPE_ICONS: Record<AuditTypeKey, typeof ClipboardCheck> = {
   flash: Zap,
-  process: Workflow,
+  cible: Workflow,
   "strategique-pme": Briefcase,
   "strategique-eti": Network,
 };

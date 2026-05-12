@@ -799,7 +799,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
               {isFr ? "Étape 1" : "Step 1"}
             </p>
             <p className="text-fg mt-0.5 text-base leading-tight font-bold sm:text-lg">
-              {isFr ? "Quelle intervention vous intéresse ?" : "Which intervention?"}
+              {isFr ? "Quelle intervention ou audit ?" : "Which session or audit?"}
             </p>
           </div>
         </div>

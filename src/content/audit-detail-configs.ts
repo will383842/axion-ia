@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { AuditTier } from "./audit-taxonomy";
+import type { InterventionSlug } from "@/lib/intervention-type";
 
 export interface AuditBenefit {
   icon: LucideIcon;
@@ -60,7 +61,8 @@ export interface AuditSubTierCard {
   /** Pour ctaType=contact : query objet à pré-remplir. */
   contactObject?: string;
   /** Pour ctaType=calendar : pré-fill intervention slug du calendrier. */
-  calendarSlug?: string;
+  /** Slug InterventionSlug typé — empêche les typos à la compilation. */
+  calendarSlug?: InterventionSlug;
   /** Mise en avant visuelle (1 par tier). */
   isFeatured?: boolean;
 }
