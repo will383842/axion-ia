@@ -7,10 +7,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import {
-  InterventionRequestForm,
-  mapObjetToSubject,
-} from "@/components/forms/InterventionRequestForm";
+import { InterventionRequestForm } from "@/components/forms/InterventionRequestForm";
+import { mapObjetToSubject } from "@/lib/intervention-subject-mapping";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { INTERVENTION_FORMATS } from "@/content/interventions-taxonomy";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";

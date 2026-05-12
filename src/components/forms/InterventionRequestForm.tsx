@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { SUBJECT_OPTIONS } from "@/lib/intervention-subject-mapping";
 
 // Indicatifs téléphoniques courants — Will pourra étendre. Liste ordonnée
 // par pertinence pour la cible Axion-IA (FR + UE + grands marchés).
@@ -53,36 +54,12 @@ interface FormValues {
   consent: boolean;
 }
 
-interface SubjectOption {
-  value: string;
-  labelFr: string;
-  labelEn: string;
-}
-
-const SUBJECT_OPTIONS: ReadonlyArray<SubjectOption> = [
-  {
-    value: "formation-equipe",
-    labelFr: "Formation équipe (4 h à 3 j)",
-    labelEn: "Team training (4 h to 3 d)",
-  },
-  {
-    value: "coaching-individuel",
-    labelFr: "Coaching individuel 1-to-1",
-    labelEn: "1-on-1 individual coaching",
-  },
-  {
-    value: "journee-dirigeant",
-    labelFr: "Journée stratégique dirigeant",
-    labelEn: "Executive strategic day",
-  },
-  { value: "conference", labelFr: "Conférence plénière", labelEn: "Plenary talk" },
-  {
-    value: "devis-sur-mesure",
-    labelFr: "Devis sur mesure (multi-jours, multi-sites)",
-    labelEn: "Bespoke quote (multi-day, multi-site)",
-  },
-  { value: "question-generale", labelFr: "Question générale", labelEn: "General question" },
-];
+// SUBJECT_OPTIONS importé depuis `@/lib/intervention-subject-mapping`
+// pour être utilisable des 2 côtés (Client + Server). Sprint 14.10.7
+// fix Will (2026-05-12) — résout l'erreur 500 « Attempted to call
+// mapObjetToSubject() from the server but mapObjetToSubject is on the
+// client » qui apparaissait quand /interventions/demande?objet=... était
+// requêtée.
 
 interface Labels {
   firstName: string;
@@ -338,32 +315,8 @@ export function InterventionRequestForm({ labels, defaultSubject, defaultDescrip
   );
 }
 
-// Mapping query string `?objet=<slug>` (depuis taxonomy ou ad-hoc) vers
-// SUBJECT_OPTIONS.value pour pré-sélectionner le select. Si pas de match,
-// le select reste vide et le slug brut sera repris dans la description
-// pré-remplie par la page server.
-export function mapObjetToSubject(objet: string | undefined): string {
-  if (!objet) return "";
-  // Mappings explicites
-  if (
-    objet.includes("formation") ||
-    objet.includes("collective") ||
-    objet.includes("cadrage-4h") ||
-    objet.includes("cadrage-1-jour") ||
-    objet.includes("cadrage-2-jours") ||
-    objet.includes("cadrage-3-jours") ||
-    objet.includes("demarrage-ia-express") ||
-    objet.includes("atelier-ia-cible") ||
-    objet.includes("essentielle") ||
-    objet.includes("approfondie") ||
-    objet.includes("gagner-du-temps") ||
-    objet.includes("claude")
-  ) {
-    return "formation-equipe";
-  }
-  if (objet.includes("coaching")) return "coaching-individuel";
-  if (objet.includes("dirigeant")) return "journee-dirigeant";
-  if (objet.includes("conference")) return "conference";
-  if (objet.includes("sur-mesure") || objet.includes("devis")) return "devis-sur-mesure";
-  return "";
-}
+// mapObjetToSubject déplacé vers `@/lib/intervention-subject-mapping` pour
+// être utilisable côté serveur (la page server `/interventions/demande/page.tsx`
+// en a besoin pour pré-sélectionner le subject avant le rendu RSC).
+// Réexport pour ne pas casser les imports existants.
+export { mapObjetToSubject } from "@/lib/intervention-subject-mapping";
