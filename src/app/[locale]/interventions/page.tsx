@@ -498,8 +498,8 @@ export default async function InterventionsListing({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Découvrez les interventions et pré-réservez directement sur le calendrier en ligne pour un échange téléphonique."
-                  : "Discover the sessions and pre-book directly on the live calendar for a phone exchange."}
+                  ? "Et si vos équipes gagnaient plusieurs heures par semaine ? Si les tâches répétitives passaient en automatique ? Si votre dirigeant décidait en connaissance de cause, plan d'action chiffré en main ? Nos interventions sur site livrent du concret — automatisations testées, méthodes installées, impact mesurable dès le lendemain."
+                  : "What if your teams reclaimed hours each week? If repetitive tasks ran on autopilot? If your executive made decisions backed by a quantified action plan? Our on-site sessions deliver concrete results — tested automations, installed methods, measurable impact from day one."}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">

@@ -187,24 +187,28 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             </p>
 
             <h1 className="display-editorial text-fg mt-5">
-              {isFr ? "Choisissez la durée " : "Pick the duration "}
+              {isFr ? "Vos équipes plus performantes " : "Your teams more efficient "}
               <span
                 className="text-terracotta mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "qui vous va" : "that fits you"}
+                {isFr ? "en une demi-journée à 3 jours" : "in a half-day to 3 days"}
               </span>
             </h1>
 
             <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
               {isFr
-                ? `4 paliers durée pour vos formations IA équipe — de la demi-journée express (4 h) à l'immersion longue (3 jours et plus, sur devis). Cliquez sur le palier pour voir les formations disponibles dans cette durée.`
-                : `4 duration tiers for your team AI trainings — from express half-day (4 h) to long immersion (3 days+, on request). Click a tier to see the trainings available for that duration.`}
+                ? "Vos équipes apprennent l'IA sur leurs vrais outils, leurs vrais cas. Elles ressortent avec des automatisations qui tournent dès le lendemain, des heures gagnées chaque semaine, et une autonomie nouvelle. Choisissez la durée selon vos objectifs — 4 h pour démarrer, 1 ou 2 jours pour structurer, plusieurs jours pour transformer."
+                : "Your teams learn AI on their real tools, their real cases. They leave with automations running from day one, hours saved every week, and new autonomy. Pick the duration that matches your goals — 4 h to kick off, 1 or 2 days to structure, several days to transform."}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Cta href="/reserver" size="lg">
-                {isFr ? "Réserver sur le calendrier" : "Book on the calendar"}
+              <Cta
+                href="/reserver"
+                size="lg"
+                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+              >
+                {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
                 <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </Cta>
               <Cta href="/interventions" variant="outline" size="lg">
@@ -217,13 +221,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
 
       {/* 4 CARDS PALIER DURÉE */}
       <Section
-        eyebrow={isFr ? "Choisir une durée" : "Pick a duration"}
-        title={isFr ? "4 paliers durée" : "4 duration tiers"}
-        titleEm={isFr ? "selon votre besoin" : "to fit your need"}
+        eyebrow={isFr ? "Quel objectif pour votre équipe ?" : "What's the goal for your team?"}
+        title={isFr ? "4 niveaux d'impact" : "4 levels of impact"}
+        titleEm={isFr ? "selon vos ambitions" : "to match your ambition"}
         description={
           isFr
-            ? "Chaque palier ouvre une page avec les formations disponibles à cette durée. Si la durée que vous voulez n'a pas encore de formation publiée, contactez-nous : on construit du sur-mesure."
-            : "Each tier opens a page with the trainings available at that duration. If your preferred duration has no published training yet, get in touch — we build it bespoke."
+            ? "Du démarrage express à la transformation complète. Chaque format livre un bénéfice concret pour vos équipes — automatisations testées, méthodes installées, gains chiffrés."
+            : "From express kickoff to complete transformation. Each format delivers a concrete benefit for your teams — tested automations, installed methods, quantified gains."
         }
         contentClassName={TIGHT_X}
       >
