@@ -62,11 +62,11 @@ const APPROFONDIE_HINT_EN = `2 consecutive days · starting at €${APPROFONDIE_
 const APPROFONDIE_PRICE_TAG_FR = `À partir de ${APPROFONDIE_ENTRY_PRICE_EUR} €`;
 const APPROFONDIE_PRICE_TAG_EN = `Starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`;
 
-// 5 interventions Module 1 — slug + label FR/EN + durationDays + scheduleHint.
-// `durationDays` typé 1|2 large pour permettre l'évolution future (formation
-// 2 jours), sans figer le type à `1`.
+// 5 interventions Module 1 + audit Flash terrain — slug + label FR/EN +
+// durationDays + scheduleHint. Sprint 14.10.8 (Will 2026-05-12) : ajout
+// `audit-flash-onsite` (réservation directe depuis le hub /audit refondu).
 type InterventionOption = {
-  slug: "essentielle" | "approfondie" | "conference" | "dirigeants";
+  slug: "essentielle" | "approfondie" | "conference" | "dirigeants" | "audit-flash-onsite";
   fr: string;
   en: string;
   durationDays: 1 | 2;
@@ -106,6 +106,17 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     durationDays: 1,
     scheduleHintFr: "Journée · 9 h – 17 h · 1 dirigeant strict",
     scheduleHintEn: "Day · 9 a.m. – 5 p.m. · 1 executive only",
+  },
+  {
+    // Sprint 14.10.8 (Will 2026-05-12) — Audit Flash terrain 890 € réservable
+    // directement sur le calendrier. Slot 1 journée 9 h-17 h sur site avec
+    // démos live + plan d'action sous 48 h.
+    slug: "audit-flash-onsite",
+    fr: "Audit Flash terrain · 890 €",
+    en: "On-site Flash audit · €890",
+    durationDays: 1,
+    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 890 € HT",
+    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €890",
   },
 ];
 
@@ -162,6 +173,15 @@ const INTERVENTION_VISUAL: Record<
     previewFr:
       "Vision claire de l'IA en 2026 · usages prioritaires identifiés · référentiel d'arbitrage",
     previewEn: "Clear AI vision for 2026 · priority uses identified · decision framework",
+  },
+  "audit-flash-onsite": {
+    icon: ShieldCheck,
+    accentBg: "bg-terracotta-soft",
+    accentFg: "text-terracotta-deep",
+    priceFr: "890 € HT",
+    priceEn: "€890",
+    previewFr: "1 journée sur site · cartographie 1 zone d'usage · démos live · rapport sous 48 h",
+    previewEn: "1 day on site · map 1 use area · live demos · report within 48 h",
   },
 };
 

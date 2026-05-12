@@ -15,6 +15,9 @@ export const INTERVENTION_SLUGS = [
   "dirigeants",
   "gagner-du-temps",
   "intervention-claude",
+  // Sprint 14.10.8 (Will 2026-05-12) — audit Flash sur site (890 €) réservable
+  // directement sur le calendrier depuis le hub /audit refondu.
+  "audit-flash-onsite",
 ] as const;
 
 export type InterventionSlug = (typeof INTERVENTION_SLUGS)[number];
@@ -44,6 +47,7 @@ import {
   INTERVENTION_TIERS,
   ESSENTIELLE_SUB_TIERS,
   APPROFONDIE_SUB_TIERS,
+  AUDIT_TIERS,
 } from "@/content/pricing";
 
 /** Map slug UI → id pricing tier (`intervention-<id>`). */
@@ -54,6 +58,8 @@ const SLUG_TO_TIER_ID: Record<InterventionSlug, string> = {
   dirigeants: "intervention-dirigeants",
   "gagner-du-temps": "intervention-temps",
   "intervention-claude": "intervention-claude",
+  // Audit Flash terrain — mappe vers le tier audit-flash, sous-tier audit-flash-onsite.
+  "audit-flash-onsite": "audit-flash",
 };
 
 /**
@@ -86,6 +92,15 @@ export function getInterventionPriceCents(
   slug: InterventionSlug,
   participantsCount: number,
 ): { cents: number | null; tierLabel: string | null } {
+  // Cas spécial Sprint 14.10.8 : audit-flash-onsite = prix fixe 890 €.
+  if (slug === "audit-flash-onsite") {
+    const auditFlash = AUDIT_TIERS.find((t) => t.id === "audit-flash");
+    const onsite = auditFlash?.subTiers?.find((s) => s.id === "audit-flash-onsite");
+    if (onsite?.priceFlat) {
+      return { cents: onsite.priceFlat * 100, tierLabel: onsite.labelFr };
+    }
+    return { cents: 89000, tierLabel: "Audit Flash terrain" };
+  }
   const tierId = SLUG_TO_TIER_ID[slug];
   const tier = INTERVENTION_TIERS.find((t) => t.id === tierId);
   if (!tier) return { cents: null, tierLabel: null };

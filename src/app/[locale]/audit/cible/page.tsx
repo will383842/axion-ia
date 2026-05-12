@@ -7,9 +7,10 @@ import { AuditDetailPage } from "@/components/sections/AuditDetailPage";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { buildProductMetadata } from "@/lib/seo";
 
-// Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Flash via template SSOT.
+// Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Ciblé via template SSOT.
+// Remplace /audit/process (renommé selon doctrine pricing.ts AUDIT_TIERS).
 
-const TIER = "audit-flash" as const;
+const TIER = "audit-cible" as const;
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -22,16 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   return buildProductMetadata({
     locale,
-    path: "/audit/flash",
+    path: isFr ? "/audit/cible" : "/audit/targeted",
     title: isFr
-      ? "Audit Flash IA · 490 € distance / 890 € sur site · Axion-IA"
-      : "Flash AI audit · €490 remote / €890 on site · Axion-IA",
+      ? "Audit IA Ciblé · 1 département · 1 900 → 3 900 € · Axion-IA"
+      : "Targeted AI audit · 1 department · €1,900 → €3,900 · Axion-IA",
     description: isFr ? c.promiseFr : c.promiseEn,
-    alternates: { fr: "/audit/flash", en: "/audit/flash" },
+    alternates: { fr: "/audit/cible", en: "/audit/targeted" },
   });
 }
 
-export default async function AuditFlashPage({ params }: Props) {
+export default async function AuditCiblePage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);

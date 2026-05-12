@@ -54,7 +54,15 @@ async function loadDbBookedSlots(): Promise<BookedSlot[]> {
       take: 250,
     });
 
-    const VISIBLE = new Set(["essentielle", "approfondie", "conference", "dirigeants"]);
+    const VISIBLE = new Set([
+      "essentielle",
+      "approfondie",
+      "conference",
+      "dirigeants",
+      // Sprint 14.10.8 (Will 2026-05-12) — audit Flash terrain affichable
+      // dans le calendrier social-proof feed.
+      "audit-flash-onsite",
+    ]);
     const out: BookedSlot[] = [];
     for (const b of bookings) {
       const slug = enumToSlug(b.interventionType);

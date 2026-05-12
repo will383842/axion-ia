@@ -2,34 +2,16 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  Check,
-  Globe2,
-  Building,
-  Building2,
-  Users2,
-  Sparkles,
-  Zap,
-  Workflow,
-  Briefcase,
-  Network,
-  Lightbulb,
-  Wrench,
-  BarChart3,
-  Compass,
-  type LucideIcon,
-} from "lucide-react";
+import { Calendar, Mail, ShieldCheck, Clock, FileText, Users } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { Illustration } from "@/components/visual/Illustration";
-import { AuditHeroSchema } from "@/components/sections/AuditHeroSchema";
+import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { AuditHubToggle } from "@/components/sections/AuditHubToggle";
 import {
   TrustBadges,
   WhyAxionIA,
@@ -39,23 +21,32 @@ import {
   BeyondAuditBlock,
 } from "@/components/sections/AuditConversionBlocks";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
-import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { AUDITS, type AuditAccent, type AuditSlug } from "@/content/audit";
-import {
-  AUDIT_TIERS,
-  formatAmount,
-  formatAmountRange,
-  getEntryPriceEur,
-  getTierById,
-} from "@/content/pricing";
-import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
+import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+
+// ============================================================================
+// Sprint 14.10.8 (Will 2026-05-12) — refonte hub /audit en 2 axes toggle.
+//
+// Pattern miroir de /interventions :
+//   - Hero court
+//   - Switch « Par taille » / « Par situation » (composant AuditHubToggle)
+//   - Sections de réassurance (TrustBadges, WhyAxionIA, SignatureCard, SocialProof)
+//   - FAQ
+//   - Section anti-fear « quel que soit votre niveau IA »
+//   - BeyondAuditBlock (upsell module Implémentation)
+//   - LocalCoverage + LocalGeoFaq (pSEO villes/régions)
+//   - CtaBlock + StickyMobileCta
+//   - JSON-LD : Service + ItemList (4 tiers)
+// ============================================================================
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
+
+const TIGHT_X = "lg:px-6 xl:px-10";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -76,1084 +67,161 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/audit",
     title:
       loc === "fr"
-        ? `Audit IA en entreprise · 4 niveaux · diagnostic flash dès ${flash}`
-        : `AI audit · 4 levels · flash diagnosis from ${flash}`,
+        ? `Audit IA · 4 niveaux · Flash dès ${flash} · Axion-IA`
+        : `AI audit · 4 levels · Flash from ${flash} · Axion-IA`,
     description:
       loc === "fr"
-        ? `Pyramide d'audit IA en 4 niveaux : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. France & international.`
-        : `4-level AI audit pyramid: Flash ${flash}, Targeted audit ${cibleRange}, Strategic SMB ${pmeRange}, Strategic mid-cap from ${etiFrom}. France & worldwide.`,
+        ? `4 niveaux d'audit IA : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. Choisissez selon votre taille ou votre situation.`
+        : `4-level AI audit: Flash ${flash}, Targeted ${cibleRange}, Strategic SMB ${pmeRange}, Strategic mid-cap from ${etiFrom}. Choose by size or by situation.`,
   });
 }
 
-// Padding latéral réduit (alignement avec /interventions).
-const TIGHT_X = "lg:px-6 xl:px-10";
-
-// Mapping classes accent — pré-définis statiquement pour Tailwind JIT.
-const accentClasses: Record<
-  AuditAccent,
-  {
-    badge: string;
-    border: string;
-    title: string;
-    line: string;
-    cta: string;
-    haloRing: string;
-    chipBg: string;
-    chipText: string;
-  }
-> = {
-  terracotta: {
-    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/20",
-    border: "border-terracotta/35 hover:border-terracotta",
-    title: "text-terracotta-deep",
-    line: "bg-terracotta",
-    cta: "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
-    haloRing: "ring-terracotta/15",
-    chipBg: "bg-terracotta-soft",
-    chipText: "text-terracotta-deep",
-  },
-  primary: {
-    badge: "bg-primary-soft text-primary border border-primary/25",
-    border: "border-primary/35 hover:border-primary",
-    title: "text-primary",
-    line: "bg-primary",
-    cta: "bg-primary text-primary-fg hover:bg-primary-hover",
-    haloRing: "ring-primary/15",
-    chipBg: "bg-primary-soft",
-    chipText: "text-primary",
-  },
-  sage: {
-    badge: "bg-sage-soft text-sage border border-sage/30",
-    border: "border-sage/40 hover:border-sage",
-    title: "text-sage",
-    line: "bg-sage",
-    cta: "bg-sage text-mocha-fg hover:opacity-90",
-    haloRing: "ring-sage/20",
-    chipBg: "bg-sage-soft",
-    chipText: "text-sage",
-  },
-  mocha: {
-    badge: "bg-terracotta-soft text-terracotta-deep border border-terracotta/30",
-    border: "border-mocha-fg/15 hover:border-terracotta",
-    title: "text-terracotta-soft",
-    line: "bg-terracotta",
-    cta: "bg-terracotta text-mocha-fg hover:bg-terracotta-deep",
-    haloRing: "ring-terracotta/30",
-    chipBg: "bg-terracotta-soft",
-    chipText: "text-terracotta-deep",
-  },
-};
-
-// Surface (fond du bloc) par niveau — peps en variant le décor.
-// Le bloc ETI est dark (mocha-rich) pour signaler le hero offer.
-const surfaceBySlug: Record<AuditSlug, { container: string; aside: string; isDark: boolean }> = {
-  flash: {
-    container: "bg-halo-warm",
-    aside: "bg-paper border-terracotta/15",
-    isDark: false,
-  },
-  process: {
-    container: "bg-halo-cool",
-    aside: "bg-paper border-primary/15",
-    isDark: false,
-  },
-  "strategique-pme": {
-    container: "bg-sand",
-    aside: "bg-paper border-sage/20",
-    isDark: false,
-  },
-  "strategique-eti": {
-    container: "bg-mocha-rich text-mocha-fg",
-    aside: "bg-mocha-soft border-mocha-fg/15",
-    isDark: true,
-  },
-};
-
-const ICON_BY_SLUG: Record<AuditSlug, typeof Zap> = {
-  flash: Zap,
-  process: Workflow,
-  "strategique-pme": Briefcase,
-  "strategique-eti": Network,
-};
-
-// Étiquette de prix top-right sur chaque card de la pyramide.
-// Affichée en serif italique terracotta — visible immédiatement à l'arrivée.
-// Mapping AuditSlug → tier id (SSOT pricing.ts).
-// Sprint 14.10.5 : zéro hardcode, tout dérivé de getTierById(AUDIT_TIERS, …).
-const TIER_ID_BY_SLUG: Record<AuditSlug, string> = {
-  flash: "audit-flash",
-  process: "audit-cible",
-  "strategique-pme": "audit-strategique-pme",
-  "strategique-eti": "audit-strategique-eti",
-};
-
-/** Prix d'entrée d'un slug audit en montant brut (number) — priceFlat ou priceMin. */
-function entryAmount(slug: AuditSlug): number {
-  const tier = getTierById(AUDIT_TIERS, TIER_ID_BY_SLUG[slug]);
-  return tier.priceFlat ?? tier.priceMin ?? 0;
-}
-
-/** Étiquette de prix top-right sur chaque card de la pyramide — compact (sans HT). */
-function priceTag(slug: AuditSlug, locale: "fr" | "en"): string {
-  return formatAmount(entryAmount(slug), locale, { compact: true });
-}
-
-export default async function AuditListing({ params }: Props) {
+export default async function AuditHub({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-
-  // Bandeau "Pour qui" — 5 réassurances B2B.
-  const audienceStrip = [
-    {
-      icon: Globe2,
-      label: isFr ? "France & international" : "France & international",
-      detail: isFr ? "Sur site partout dans le monde" : "On site worldwide",
-    },
-    {
-      icon: Building2,
-      label: isFr ? "TPE â†’ ETI / groupes" : "Small â†’ mid-cap",
-      detail: isFr ? "Tous secteurs, tous niveaux" : "All sectors, all levels",
-    },
-    {
-      icon: Users2,
-      label: isFr ? "1 zone ou toute l'entreprise" : "1 area or whole company",
-      detail: isFr ? "Niveau adapté à votre besoin" : "Right level for your need",
-    },
-    {
-      icon: Zap,
-      label: isFr ? "Tâches automatisables identifiées" : "Automatable tasks identified",
-      detail: isFr ? "Avec gains chiffrés par tâche" : "With costed gains per task",
-    },
-    {
-      icon: Sparkles,
-      label: isFr ? "Plan d'action chiffré" : "Costed action plan",
-      detail: isFr ? "Quick-wins triés par gain et complexité" : "Quick-wins sorted by gain & ease",
-    },
-  ];
-
-  // Étiquettes prix dérivées du SSOT (zéro hardcode — Sprint 14.10.5).
-  // Format compact (sans HT) pour les CTA, badges, level labels.
-  const priceFlash = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
-    compact: true,
-  });
-  const priceCibleFromPlus = `${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, loc, { compact: true })}+`;
-  const pricePmeFromPlus = `${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMin!, loc, { compact: true })}+`;
-  const priceEtiFromPlus = `${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, loc, { compact: true })}+`;
-
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
-  const breadcrumbItems = [
-    { href: "/audit", label: isFr ? "Audit & optimisation" : "Audit & optimization" },
-  ];
-
-  // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
-  // Signal AEO/GEO « audit IA disponible partout en France » pour Perplexity,
-  // Google AI Overviews, Claude.ai. Couvre Country FR + 12 régions + Paris.
-  const flashAmount = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
-    compact: true,
-  });
-  const cibleAmountRange = formatAmountRange(
-    getTierById(AUDIT_TIERS, "audit-cible").priceMin!,
-    getTierById(AUDIT_TIERS, "audit-cible").priceMax!,
-    loc,
-    { compact: true },
-  );
-  const pmeAmountRange = formatAmountRange(
-    getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMin!,
-    getTierById(AUDIT_TIERS, "audit-strategique-pme").priceMax!,
-    loc,
-    { compact: true },
-  );
-  const etiAmountFrom = formatAmount(
-    getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
-    loc,
-    { compact: true },
-  );
+  // JSON-LD Service global pour le hub /audit (factory centralisée).
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/audit",
-    name: isFr
-      ? "Audit IA opérationnel · 4 niveaux · Axion-IA"
-      : "Operational AI audit · 4 tiers · Axion-IA",
+    name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? `Audit IA en entreprise : pyramide 4 niveaux (Flash ${flashAmount} · Ciblé ${cibleAmountRange} · Stratégique PME ${pmeAmountRange} · Stratégique ETI dès ${etiAmountFrom}). Diagnostic actionnable, ROI chiffré, plan d'attaque livré sous 5 jours.`
-      : `Corporate AI audit: 4-tier pyramid (Flash ${flashAmount} · Targeted ${cibleAmountRange} · SME Strategic ${pmeAmountRange} · Mid-cap Strategic from ${etiAmountFrom}). Actionable diagnosis, costed ROI, action plan delivered in 5 days.`,
+      ? "4 niveaux d'audit IA selon la taille de l'entreprise et la situation. France & international."
+      : "4 AI audit levels by company size and situation. France & international.",
     serviceType: "AI audit",
-    priceEur: getEntryPriceEur(AUDIT_TIERS) ?? 0,
-    areasServed: buildServiceAreasServed(loc),
+    priceEur: 0,
   });
 
-  // ItemList JSON-LD — chaque niveau listé comme Service.
-  const itemListJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: isFr ? "Audits IA — pyramide 4 niveaux" : "AI audits — 4-level pyramid",
-    itemListElement: AUDITS.map((item, idx) => {
-      const path = isFr ? item.pathFr : item.pathEn;
-      const c = item[loc];
-      return {
-        "@type": "ListItem",
-        position: idx + 1,
-        item: {
-          "@type": "Service",
-          name: c.title,
-          url: `${SITE_URL}/${locale}${path}`,
-          description: item.summary[loc].benefitTagline,
-          ...(c.priceEur
-            ? {
-                offers: {
-                  "@type": "Offer",
-                  price: c.priceEur,
-                  priceCurrency: "EUR",
-                  availability: "https://schema.org/InStock",
-                },
-              }
-            : {}),
-        },
-      };
-    }),
-  } as const;
+  // ItemList JSON-LD — 4 tiers d'audit. AEO 2026 : LLMs énumèrent les niveaux
+  // d'audit quand quelqu'un demande « quels audits IA propose Axion-IA ? ».
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/audit",
+    name: isFr ? "Niveaux d'audit IA Axion-IA" : "Axion-IA AI audit levels",
+    items: AUDIT_TIERS_META.map((tier, idx) => ({
+      position: idx + 1,
+      name: isFr ? tier.labelFr : tier.labelEn,
+      url: `${SITE_URL}/${loc}${auditTierPath(tier, loc)}`,
+      description: isFr ? tier.taglineFr : tier.taglineEn,
+    })),
+  });
+
+  // 4 trust pills hero
+  const heroPills = isFr
+    ? [
+        { icon: Clock, label: "Réponse 48 h ouvrées" },
+        { icon: ShieldCheck, label: "Confidentialité totale" },
+        { icon: FileText, label: "Livrables actionnables" },
+        { icon: Users, label: "TPE → grandes entreprises" },
+      ]
+    : [
+        { icon: Clock, label: "Reply within 48 business hours" },
+        { icon: ShieldCheck, label: "Total confidentiality" },
+        { icon: FileText, label: "Actionable deliverables" },
+        { icon: Users, label: "Small businesses → enterprise" },
+      ];
+
+  const breadcrumbItems = [{ href: "/audit", label: isFr ? "Audit IA" : "AI audit" }];
 
   return (
     <>
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO — layout 2 colonnes (text + flow narratif "C'est quoi un audit").
-          Pas de overflow-hidden sur la section : le graphique peut être grand,
-          on ne veut pas qu'il soit tronqué. Le décor de fond est lui-même
-          absolute inset-0 donc ne dépassera pas. */}
-      <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, var(--color-border-strong) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border-strong) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            maskImage: "radial-gradient(ellipse at center, white 15%, transparent 70%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, white 15%, transparent 70%)",
-            opacity: 0.1,
+
+      {/* HERO */}
+      <section className="bg-halo-warm relative overflow-hidden py-14 sm:py-18 lg:py-22">
+        <Container className={cn("relative", TIGHT_X)}>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
+              <span
+                aria-hidden="true"
+                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+              />
+              {isFr
+                ? "Audit IA · 4 niveaux · 2 portes d'entrée"
+                : "AI audit · 4 levels · 2 entry doors"}
+            </p>
+
+            <h1 className="display-editorial text-fg mt-5">
+              {isFr ? "Choisissez votre audit IA " : "Choose your AI audit "}
+              <span
+                className="text-terracotta-deep mx-2 italic"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? "en 30 secondes" : "in 30 seconds"}
+              </span>
+            </h1>
+
+            <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              {isFr
+                ? "4 niveaux d'audit IA pour entreprise — du diagnostic Flash 490 € à l'audit Stratégique ETI 12 000 €+. Choisissez l'angle qui vous parle : la taille de votre entreprise OU votre situation."
+                : "4 AI audit levels for companies — from €490 Flash diagnosis to €12,000+ Strategic mid-cap audit. Choose the angle that speaks to you: your company size OR your situation."}
+            </p>
+
+            {/* Trust pills */}
+            <ul className="mt-6 flex flex-wrap items-center justify-center gap-2">
+              {heroPills.map((p) => {
+                const Icon = p.icon;
+                return (
+                  <li
+                    key={p.label}
+                    className="bg-paper border-border text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium"
+                  >
+                    <Icon aria-hidden="true" className="text-terracotta-deep h-3.5 w-3.5" />
+                    {p.label}
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Cta
+                href="/reserver?intervention=audit-flash-onsite"
+                size="lg"
+                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+              >
+                <Calendar aria-hidden="true" className="h-4 w-4" />
+                {isFr ? `Réserver un Flash terrain · 890 €` : `Book on-site Flash · €890`}
+              </Cta>
+              <Cta href="/audit/demande" variant="outline" size="lg">
+                <Mail aria-hidden="true" className="h-4 w-4" />
+                {isFr ? "Demander un cadrage" : "Request framing"}
+              </Cta>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* HUB TOGGLE — 2 axes Par taille / Par situation */}
+      <Section
+        eyebrow={isFr ? "2 portes d'entrée" : "2 entry doors"}
+        title={isFr ? "Comment voulez-vous" : "How do you want"}
+        titleEm={isFr ? "choisir ?" : "to choose?"}
+        contentClassName={TIGHT_X}
+      >
+        <AuditHubToggle
+          locale={loc}
+          labels={{
+            bySizeTab: isFr ? "Par taille d'entreprise" : "By company size",
+            bySituationTab: isFr ? "Par situation" : "By situation",
+            bySizeDescription: isFr
+              ? `${AUDIT_BY_SIZE.length} segments selon votre effectif INSEE : TPE, PME, ETI, grande entreprise. Chaque segment pointe vers le niveau d'audit le mieux calibré.`
+              : `${AUDIT_BY_SIZE.length} segments by your INSEE headcount: small business, SME, mid-cap, enterprise. Each segment points to the best-calibrated audit level.`,
+            bySituationDescription: isFr
+              ? "4 angles d'entrée selon votre contexte business : urgence, premier audit, approfondissement, gouvernance multi-BU."
+              : "4 entry angles by business context: urgent, first audit, deepening, multi-BU governance.",
+            learnMore: isFr ? "Voir le format" : "See format",
           }}
         />
+      </Section>
 
-        <Container className={cn("relative", TIGHT_X)}>
-          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
-            {/* Colonne gauche — eyebrow + titre + description + CTAs */}
-            <div className="max-w-xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Module 2 · Audit & optimisation" : "Module 2 · Audit & optimization"}
-              </p>
-
-              <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Faites le point sur l'IA" : "Take stock of AI"}
-                <span
-                  className="text-terracotta mx-2 italic"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {isFr ? "dans votre entreprise" : "in your company"}
-                </span>
-              </h1>
-
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
-                {isFr
-                  ? `On cartographie votre entreprise et on identifie tout ce que l'IA peut y apporter, automatiser ou optimiser. 4 niveaux dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} · France & international.`
-                  : `We map your company and identify everything AI can bring, automate or optimise. 4 levels from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} · France & worldwide.`}
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Cta
-                  href="/audit/demande?type=flash"
-                  size="lg"
-                  className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(194,74,27,0.6)]"
-                >
-                  {isFr
-                    ? `Réserver mon diagnostic flash · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`
-                    : `Book my flash diagnosis · ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`}
-                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                </Cta>
-                <Cta href="/cas-concrets" variant="outline" size="lg">
-                  {isFr ? "Voir les cas concrets" : "See case studies"}
-                </Cta>
-              </div>
-            </div>
-
-            {/* Colonne droite — flow narratif "Ce que c'est et comment ça
-                fonctionne". Compact : on garde le H1 du hero comme élément
-                visuel dominant. */}
-            <AuditHeroSchema
-              isFr={isFr}
-              className="hero-schema"
-              ariaLabel={
-                isFr
-                  ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit Axion-IA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées à l'IA, pilotage au jour le jour)."
-                  : "Diagram: your company at the start, 4 methodology steps of the Axion-IA audit (we observe, we map, we prioritise, we hand over the plan), then 6 concrete business gains (revenue growth, improved profitability, tasks automated, hours freed, teams trained in AI, day-to-day tracking)."
-              }
-            />
-          </div>
-        </Container>
-      </section>
-
-      {/* TRUST BADGES — réassurance institutionnelle juste sous le hero */}
+      {/* TRUST BADGES — Sprint conversion 14.7+ */}
       <TrustBadges isFr={isFr} />
 
-      {/* BANDEAU « Pour qui » — réassurance immédiate, 5 pills */}
-      <section className="bg-paper border-border border-y py-10">
-        <Container className={TIGHT_X}>
-          <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-5">
-            {audienceStrip.map((item) => {
-              const Icon = item.icon;
-              return (
-                <li key={item.label} className="flex items-start gap-3">
-                  <span className="bg-terracotta-soft text-terracotta-deep flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-                    <Icon aria-hidden="true" className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="text-fg text-sm font-semibold">{item.label}</p>
-                    <p className="text-fg-soft mt-1 text-xs">{item.detail}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
-
-      {/* MATCHER — orientation immédiate en 2 entrées (taille / situation).
-          Pure server : juste des <a href="#level-X"> qui scrollent vers la
-          card concernée. Le highlight :target la met en avant. */}
-      <Section
-        eyebrow={isFr ? "Trouvez votre niveau en 5 secondes" : "Find your level in 5 seconds"}
-        title={isFr ? "Lequel" : "Which one"}
-        titleEm={isFr ? "vous correspond ?" : "fits you?"}
-        description={
-          isFr
-            ? "Cliquez sur ce qui vous décrit le mieux — la page vous emmène directement à l'option recommandée. Vous pouvez aussi explorer la pyramide complète juste en dessous."
-            : "Click what describes you best — the page jumps straight to the recommended option. You can also explore the full pyramid below."
-        }
-        contentClassName={TIGHT_X}
-      >
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
-          {/* Entrée A — par taille d'entreprise */}
-          <div>
-            <p className="text-fg-muted mb-4 flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] uppercase">
-              <Compass aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
-              {isFr ? "A · Selon la taille de votre entreprise" : "A · By company size"}
-            </p>
-            <ul className="space-y-3">
-              {(isFr
-                ? [
-                    {
-                      icon: Briefcase,
-                      title: "TPE · 1 à 9 personnes",
-                      hint: "Artisan, indépendant, petite équipe",
-                      target: "flash",
-                      level: `Niveau 1 · Flash · ${priceFlash}`,
-                    },
-                    {
-                      icon: Building,
-                      title: "PME · 10 à 49 personnes",
-                      hint: "1 service à optimiser ou aller plus loin",
-                      target: "process",
-                      level: `Niveau 2 · Audit ciblé · ${priceCibleFromPlus}`,
-                    },
-                    {
-                      icon: Building2,
-                      title: "PME · 50 à 249 personnes",
-                      hint: "Plusieurs services, vision d'ensemble",
-                      target: "strategique-pme",
-                      level: `Niveau 3 · Stratégique PME · ${pricePmeFromPlus}`,
-                    },
-                    {
-                      icon: Network,
-                      title: "ETI · 250+ ou multi-sites",
-                      hint: "Plusieurs BU, plusieurs sites, gouvernance IA",
-                      target: "strategique-eti",
-                      level: `Niveau 4 · Stratégique ETI · ${priceEtiFromPlus}`,
-                    },
-                  ]
-                : [
-                    {
-                      icon: Briefcase,
-                      title: "Small · 1 to 9 people",
-                      hint: "Artisan, freelance, small team",
-                      target: "flash",
-                      level: `Level 1 · Flash · ${priceFlash}`,
-                    },
-                    {
-                      icon: Building,
-                      title: "SMB · 10 to 49 people",
-                      hint: "1 service to optimise or go further",
-                      target: "process",
-                      level: `Level 2 · Targeted · ${priceCibleFromPlus}`,
-                    },
-                    {
-                      icon: Building2,
-                      title: "SMB · 50 to 249 people",
-                      hint: "Several services, full picture",
-                      target: "strategique-pme",
-                      level: `Level 3 · Strategic SMB · ${pricePmeFromPlus}`,
-                    },
-                    {
-                      icon: Network,
-                      title: "Mid-cap · 250+ or multi-site",
-                      hint: "Several BUs, multiple sites, AI governance",
-                      target: "strategique-eti",
-                      level: `Level 4 · Strategic mid-cap · ${priceEtiFromPlus}`,
-                    },
-                  ]
-              ).map((opt) => {
-                const Icon = opt.icon as LucideIcon;
-                return (
-                  <li key={opt.title}>
-                    <a
-                      href={`#level-${opt.target}`}
-                      className="border-border bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card focus-visible:ring-terracotta group flex items-center gap-4 rounded-2xl border-2 p-4 transition-all focus-visible:ring-2 focus-visible:outline-none"
-                    >
-                      <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-mocha-fg flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors">
-                        <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-fg text-base leading-tight font-bold">{opt.title}</p>
-                        <p className="text-fg-soft mt-0.5 text-sm leading-snug">{opt.hint}</p>
-                        <p className="text-terracotta-deep mt-1.5 text-[12px] font-bold tracking-wide">
-                          â†’ {opt.level}
-                        </p>
-                      </div>
-                      <ArrowRight
-                        aria-hidden="true"
-                        className="text-terracotta-deep h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
-                      />
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          {/* Entrée B — par situation/souhait */}
-          <div>
-            <p className="text-fg-muted mb-4 flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] uppercase">
-              <Compass aria-hidden="true" className="text-terracotta-deep h-4 w-4" />
-              {isFr ? "B · Selon votre situation" : "B · By your situation"}
-            </p>
-            <ul className="space-y-3">
-              {(isFr
-                ? [
-                    {
-                      icon: Lightbulb,
-                      title: "Je veux savoir où l'IA peut s'insérer",
-                      hint: "Découvrir 3-5 endroits concrets, sans engagement",
-                      target: "flash",
-                      level: `Niveau 1 · Flash · ${priceFlash}`,
-                    },
-                    {
-                      icon: Wrench,
-                      title: "Je veux automatiser un service précis",
-                      hint: "Vente, RH, finance, ops, support — étudié de A à Z",
-                      target: "process",
-                      level: `Niveau 2 · Audit ciblé · ${priceCibleFromPlus}`,
-                    },
-                    {
-                      icon: BarChart3,
-                      title: "Je veux une vision globale de mon entreprise",
-                      hint: "Plusieurs services étudiés, plan stratégique chiffré",
-                      target: "strategique-pme",
-                      level: `Niveau 3 · Stratégique PME · ${pricePmeFromPlus}`,
-                    },
-                    {
-                      icon: Network,
-                      title: "Je gère plusieurs sites ou plusieurs BU",
-                      hint: "Alignement CODIR, gouvernance, AI Act",
-                      target: "strategique-eti",
-                      level: `Niveau 4 · Stratégique ETI · ${priceEtiFromPlus}`,
-                    },
-                  ]
-                : [
-                    {
-                      icon: Lightbulb,
-                      title: "I want to know where AI can fit in",
-                      hint: "Discover 3-5 concrete places, no commitment",
-                      target: "flash",
-                      level: `Level 1 · Flash · ${priceFlash}`,
-                    },
-                    {
-                      icon: Wrench,
-                      title: "I want to automate a specific service",
-                      hint: "Sales, HR, finance, ops, support — studied A to Z",
-                      target: "process",
-                      level: `Level 2 · Targeted · ${priceCibleFromPlus}`,
-                    },
-                    {
-                      icon: BarChart3,
-                      title: "I want a global vision of my company",
-                      hint: "Multiple services studied, costed strategic plan",
-                      target: "strategique-pme",
-                      level: `Level 3 · Strategic SMB · ${pricePmeFromPlus}`,
-                    },
-                    {
-                      icon: Network,
-                      title: "I manage multiple sites or BUs",
-                      hint: "Leadership alignment, governance, AI Act",
-                      target: "strategique-eti",
-                      level: `Level 4 · Strategic mid-cap · ${priceEtiFromPlus}`,
-                    },
-                  ]
-              ).map((opt) => {
-                const Icon = opt.icon as LucideIcon;
-                return (
-                  <li key={opt.title}>
-                    <a
-                      href={`#level-${opt.target}`}
-                      className="border-border bg-paper hover:border-terracotta hover:bg-halo-warm hover:shadow-card focus-visible:ring-terracotta group flex items-center gap-4 rounded-2xl border-2 p-4 transition-all focus-visible:ring-2 focus-visible:outline-none"
-                    >
-                      <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-mocha-fg flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors">
-                        <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-fg text-base leading-tight font-bold">{opt.title}</p>
-                        <p className="text-fg-soft mt-0.5 text-sm leading-snug">{opt.hint}</p>
-                        <p className="text-terracotta-deep mt-1.5 text-[12px] font-bold tracking-wide">
-                          â†’ {opt.level}
-                        </p>
-                      </div>
-                      <ArrowRight
-                        aria-hidden="true"
-                        className="text-terracotta-deep h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1"
-                      />
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-
-        {/* Helper "pas sûr" */}
-        <p className="text-fg-muted mt-8 text-center text-sm">
-          {isFr ? (
-            <>
-              Pas sûr·e ? Le{" "}
-              <a
-                href="#level-flash"
-                className="text-terracotta-deep font-semibold underline underline-offset-4 hover:opacity-80"
-              >
-                diagnostic flash {priceFlash}
-              </a>{" "}
-              est conçu exactement pour ça : on identifie 3 à 5 endroits où l&apos;IA peut
-              s&apos;insérer concrètement chez vous.
-            </>
-          ) : (
-            <>
-              Not sure? The{" "}
-              <a
-                href="#level-flash"
-                className="text-terracotta-deep font-semibold underline underline-offset-4 hover:opacity-80"
-              >
-                {priceFlash} flash diagnosis
-              </a>{" "}
-              is designed exactly for this: we identify 3 to 5 concrete places where AI can fit in
-              your company.
-            </>
-          )}
-        </p>
-      </Section>
-
-      {/* PYRAMIDE — 4 cards par niveau (exploration complète).
-          Les ancres #level-flash, #level-process, etc. sont posées sur
-          chaque card pour que le matcher au-dessus puisse y scroller. */}
-      <Section
-        tone="paper"
-        eyebrow={isFr ? "Tous les niveaux en détail" : "All levels in detail"}
-        title={isFr ? "Comparez les" : "Compare the"}
-        titleEm={isFr ? "4 niveaux d'audit" : "4 audit levels"}
-        description={
-          isFr
-            ? "Vous arrivez ici depuis le sélecteur ? La carte qui vous est recommandée est mise en avant. Sinon, parcourez librement — chaque niveau précise le périmètre, le prix et les livrables."
-            : "Coming from the matcher above? Your recommended card is highlighted. Otherwise, browse freely — each level details scope, price and deliverables."
-        }
-        contentClassName={TIGHT_X}
-      >
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-7">
-          {AUDITS.map((item, idx) => {
-            const c = item[loc];
-            const s = item.summary[loc];
-            const acc = accentClasses[item.accent];
-            const surface = surfaceBySlug[item.slug];
-            const href = isFr ? item.pathFr : item.pathEn;
-            const isFlagship = idx === 0 || idx === 3; // Flash + ETI = pleine largeur
-            const dark = surface.isDark;
-            const Icon = ICON_BY_SLUG[item.slug];
-
-            const txt = dark ? "text-mocha-fg" : "text-fg";
-            const txtSoft = dark ? "text-mocha-fg/85" : "text-fg-soft";
-            const txtMuted = dark ? "text-mocha-fg/70" : "text-fg-muted";
-            const stepBg = dark ? "bg-mocha-soft border-mocha-fg/15" : "bg-paper border-border";
-            const linkColor = dark
-              ? "text-mocha-fg hover:text-terracotta-soft"
-              : "text-fg hover:text-terracotta-deep";
-
-            const KpiCard = (
-              <aside
-                className={cn("shadow-subtle self-start rounded-2xl border p-6", surface.aside)}
-              >
-                <p className={`text-[12px] font-semibold tracking-[0.16em] uppercase ${acc.title}`}>
-                  {isFr ? "L'essentiel" : "At a glance"}
-                </p>
-                <dl className="mt-4 space-y-4">
-                  <div>
-                    <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                      {isFr ? "Périmètre" : "Scope"}
-                    </dt>
-                    <dd className={`mt-1 text-[15px] font-semibold ${txt}`}>{s.scope}</dd>
-                  </div>
-                  {s.priceTiers && s.priceTiers.length > 0 ? (
-                    <div>
-                      <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                        {isFr ? "Tarifs" : "Pricing"}
-                      </dt>
-                      <ul className="mt-2 space-y-1.5">
-                        {s.priceTiers.map((tier, i) => (
-                          <li
-                            key={i}
-                            className="border-l-terracotta rounded-md border-l-2 py-1 pl-3"
-                          >
-                            <p className={cn("text-[12.5px]", txtSoft)}>{tier.size}</p>
-                            <p className={cn("mt-0.5 text-[14px] font-semibold tabular-nums", txt)}>
-                              {tier.price}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : (
-                    <div>
-                      <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                        {isFr ? "Tarif" : "Price"}
-                      </dt>
-                      <dd className={`mt-1 text-[15px] font-semibold ${txt}`}>{s.priceFrom}</dd>
-                    </div>
-                  )}
-                  <div>
-                    <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                      {isFr ? "Modalité" : "Modality"}
-                    </dt>
-                    <dd className={`mt-1 text-[15px] font-semibold ${txt}`}>{s.modality}</dd>
-                  </div>
-                  <div>
-                    <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                      {isFr ? "Pour qui" : "Audience"}
-                    </dt>
-                    <dd className={`mt-1 text-[15px] font-semibold ${txt}`}>{s.audience}</dd>
-                  </div>
-                </dl>
-              </aside>
-            );
-
-            const KpiInline = (
-              <dl className="mt-6 grid grid-cols-2 gap-3">
-                {[
-                  { label: isFr ? "Périmètre" : "Scope", value: s.scope },
-                  { label: isFr ? "Tarif" : "Price", value: s.priceFrom },
-                  { label: isFr ? "Modalité" : "Modality", value: s.modality },
-                  { label: isFr ? "Pour qui" : "Audience", value: s.audience },
-                ].map((k, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      "rounded-xl border px-4 py-3",
-                      dark ? "bg-mocha-soft border-mocha-fg/12" : "bg-paper/80 border-border",
-                    )}
-                  >
-                    <dt className={`text-[11px] tracking-[0.12em] uppercase ${txtMuted}`}>
-                      {k.label}
-                    </dt>
-                    <dd className={`mt-1 text-[14px] font-semibold ${txt}`}>{k.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            );
-
-            return (
-              <article
-                key={item.slug}
-                id={`level-${item.slug}`}
-                className={cn(
-                  "shadow-subtle group/card hover:shadow-card relative scroll-mt-32 overflow-hidden rounded-3xl border-2 ring-1 transition-all",
-                  // Highlight quand l'utilisateur arrive via #level-X (matcher).
-                  "target:ring-terracotta target:scale-[1.01] target:ring-4",
-                  surface.container,
-                  acc.border,
-                  acc.haloRing,
-                  isFlagship && "lg:col-span-2",
-                )}
-                {...(dark ? { "data-tone": "dark" as const } : {})}
-              >
-                <Link
-                  href={href as never}
-                  aria-label={`${c.title} — ${s.ctaLabel}`}
-                  className="focus-visible:ring-terracotta absolute inset-0 z-[1] rounded-3xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <span className="sr-only">{s.ctaLabel}</span>
-                </Link>
-
-                <span aria-hidden="true" className={`block h-1.5 w-full ${acc.line}`} />
-
-                <div
-                  className={cn(
-                    "p-7 sm:p-8",
-                    isFlagship &&
-                      "lg:grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-10 lg:p-10",
-                  )}
-                >
-                  <div>
-                    {/* Header : icon + eyebrow à gauche, PRIX en gros à droite.
-                        Le prix est l'élément le plus visible de la card —
-                        serif italique terracotta, immédiatement lisible. */}
-                    <div className="flex items-start gap-3">
-                      <span
-                        className={cn(
-                          "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-                          acc.chipBg,
-                          acc.chipText,
-                        )}
-                      >
-                        <Icon aria-hidden="true" className="h-5 w-5" />
-                      </span>
-                      <span
-                        className={cn(
-                          "mt-1 inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide uppercase",
-                          acc.badge,
-                        )}
-                      >
-                        {c.eyebrow}
-                      </span>
-
-                      {/* PriceTag — étiquette de prix bien visible.
-                          Sur card dark (ETI), on bascule terracotta-soft. */}
-                      <div aria-hidden="true" className="ml-auto shrink-0 text-right">
-                        <p
-                          className={cn(
-                            "text-[10px] font-bold tracking-[0.16em] uppercase sm:text-[11px]",
-                            dark ? "text-mocha-fg/65" : "text-fg-muted",
-                          )}
-                        >
-                          {isFr ? "À partir de" : "From"}
-                        </p>
-                        <p
-                          className={cn(
-                            "mt-0.5 text-[1.75rem] leading-none font-medium tracking-tight italic tabular-nums sm:text-[2rem] lg:text-[2.5rem]",
-                            dark ? "text-terracotta-soft" : "text-terracotta",
-                          )}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {priceTag(item.slug, loc)}
-                        </p>
-                      </div>
-                    </div>
-
-                    <h2
-                      className={cn(
-                        "mt-4 leading-tight font-semibold tracking-tight",
-                        isFlagship
-                          ? "text-[clamp(1.75rem,3vw,2.5rem)]"
-                          : "text-[clamp(1.5rem,2.4vw,2rem)]",
-                        txt,
-                      )}
-                    >
-                      {c.title}
-                    </h2>
-
-                    <p
-                      className={cn(
-                        "mt-4 leading-relaxed",
-                        isFlagship ? "text-lg" : "text-[15.5px]",
-                        txtSoft,
-                      )}
-                    >
-                      {s.benefitTagline}
-                    </p>
-
-                    {!isFlagship ? KpiInline : null}
-
-                    {/* Ce que vous obtenez */}
-                    <div className="mt-6">
-                      <p
-                        className={cn(
-                          "mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase",
-                          txtMuted,
-                        )}
-                      >
-                        {isFr ? "Ce que vous obtenez" : "What you get"}
-                      </p>
-                      <ul className="space-y-2">
-                        {s.outcomes.map((o, i) => (
-                          <li key={i} className={cn("flex items-start gap-3 text-base", txt)}>
-                            <span
-                              className={cn(
-                                "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                                acc.chipBg,
-                                acc.chipText,
-                              )}
-                            >
-                              <Check aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
-                            </span>
-                            <span className="leading-relaxed">{o}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Déroulement */}
-                    <div className="mt-6">
-                      <p
-                        className={cn(
-                          "mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase",
-                          txtMuted,
-                        )}
-                      >
-                        {isFr ? "Comment ça se déroule" : "How it runs"}
-                      </p>
-                      <ol className="grid gap-3 sm:grid-cols-3">
-                        {s.outline.map((step, i) => (
-                          <li key={i} className={cn("relative rounded-xl border p-4", stepBg)}>
-                            <span
-                              aria-hidden="true"
-                              className={cn(
-                                "mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold",
-                                acc.chipBg,
-                                acc.chipText,
-                              )}
-                            >
-                              {i + 1}
-                            </span>
-                            <p className={cn("text-[12.5px] leading-relaxed", txt)}>{step}</p>
-                          </li>
-                        ))}
-                      </ol>
-                    </div>
-
-                    <div className="relative z-[2] mt-7 flex flex-wrap items-center gap-3">
-                      <Link
-                        href={`/audit/demande?type=${item.slug}` as never}
-                        className={cn(
-                          "cta-lift inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors",
-                          acc.cta,
-                        )}
-                      >
-                        {s.ctaLabel}
-                        <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                      </Link>
-                      <Link
-                        href={href as never}
-                        className={cn(
-                          "inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4",
-                          linkColor,
-                        )}
-                      >
-                        {isFr ? "Voir le détail" : "See details"}
-                        <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
-                      </Link>
-                    </div>
-                  </div>
-
-                  {isFlagship ? KpiCard : null}
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* GRILLE TARIFAIRE consolidée — 4 lignes par niveau */}
-      <Section
-        id="tarifs"
-        tone="sand"
-        eyebrow={isFr ? "Tarifs affichés" : "Public pricing"}
-        title={isFr ? "Pyramide tarifaire" : "Pricing pyramid"}
-        titleEm={isFr ? "transparente" : "transparent"}
-        description={
-          isFr
-            ? "Tarifs HT. Sous le marché à chaque étage, structure professionnelle, scope défini. Pour les ETI, devis personnalisé sous 48 h ouvrées avec phases et budgets."
-            : "Excl. VAT. Below market at every step, professional structure, defined scope. For mid-caps, custom quote within 48 business hours with phases and budgets."
-        }
-        contentClassName={TIGHT_X}
-      >
-        <div className="border-border bg-paper shadow-subtle overflow-hidden rounded-2xl border">
-          <table className="w-full text-left">
-            <caption className="sr-only">
-              {isFr
-                ? "Pyramide tarifaire des audits IA Axion-IA — 4 niveaux par audience et périmètre."
-                : "Axion-IA AI audit pricing pyramid — 4 levels by audience and scope."}
-            </caption>
-            <thead className="bg-halo-warm border-border border-b">
-              <tr>
-                <th scope="col" className="text-fg p-5 text-sm font-semibold">
-                  {isFr ? "Niveau" : "Level"}
-                </th>
-                <th scope="col" className="text-fg p-5 text-sm font-semibold">
-                  {isFr ? "Pour qui" : "Audience"}
-                </th>
-                <th scope="col" className="text-fg hidden p-5 text-sm font-semibold sm:table-cell">
-                  {isFr ? "Périmètre" : "Scope"}
-                </th>
-                <th scope="col" className="text-fg p-5 text-right text-sm font-semibold">
-                  {isFr ? "Prix HT" : "Price excl. VAT"}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {AUDITS.map((a) => {
-                const s = a.summary[loc];
-                const Icon = ICON_BY_SLUG[a.slug];
-                const acc = accentClasses[a.accent];
-                return (
-                  <tr key={a.slug} className="border-border border-b last:border-0">
-                    <td className="p-5">
-                      <div className="flex items-start gap-3">
-                        <span
-                          className={cn(
-                            "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-                            acc.chipBg,
-                            acc.chipText,
-                          )}
-                        >
-                          <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={2.25} />
-                        </span>
-                        <div>
-                          <p className="text-fg text-sm font-bold">{a[loc].eyebrow}</p>
-                          <p className="text-fg-muted mt-0.5 text-[11px] leading-snug">{s.scope}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-fg-soft p-5 text-sm">{s.audience}</td>
-                    <td className="text-fg-soft hidden p-5 text-sm sm:table-cell">{s.scope}</td>
-                    <td className="text-fg p-5 text-right text-sm font-bold tabular-nums">
-                      {s.priceFrom}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        <p className="text-fg-muted mt-6 max-w-2xl text-base leading-relaxed">
-          {isFr
-            ? "Frais de déplacement (sur site uniquement) : forfait journalier sans justificatifs. Logement à la charge du client si plus de 200 km de Paris. Détails dans la "
-            : "Travel fees (on site only): flat daily rate, no receipts. Lodging at client's expense if more than 200 km from Paris. Details in the "}
-          <Link
-            href="/politique-deplacement"
-            className="text-terracotta-deep underline underline-offset-4 hover:opacity-80"
-          >
-            {isFr ? "politique de déplacement" : "travel policy"}
-          </Link>
-          .
-        </p>
-      </Section>
-
-      {/* QUIZ "Comment choisir votre niveau" — 3 questions guides */}
-      <Section
-        eyebrow={isFr ? "Comment choisir" : "How to choose"}
-        title={isFr ? "Quel niveau" : "Which level"}
-        titleEm={isFr ? "pour vous ?" : "for you?"}
-        description={
-          isFr
-            ? "3 questions simples pour vous orienter vers le bon format. La règle : commencez petit (Flash), montez en gamme quand vous avez besoin de profondeur."
-            : "3 simple questions to point you to the right format. The rule: start small (Flash), level up when you need depth."
-        }
-        contentClassName={TIGHT_X}
-      >
-        <div className="grid gap-5 lg:grid-cols-3">
-          {[
-            {
-              question: isFr
-                ? "Vous démarrez avec l'IA ou vous explorez ?"
-                : "You're starting with AI or exploring?",
-              answer: isFr ? "Niveau 1 · Flash" : "Level 1 · Flash",
-              detail: isFr
-                ? "Sur 1 zone clé de votre entreprise, on identifie 3 à 5 endroits où l'IA peut s'insérer concrètement, avec gains chiffrés et plan d'action immédiat."
-                : "On 1 key area of your company, we identify 3 to 5 places where AI can fit in concretely, with costed gains and an immediate action plan.",
-              cta: isFr
-                ? `Réserver le diagnostic flash · ${priceFlash}`
-                : `Book the flash diagnosis · ${priceFlash}`,
-              href: "/audit/demande?type=flash",
-              accent: "terracotta",
-            },
-            {
-              question: isFr
-                ? "Vous avez un service précis à automatiser ?"
-                : "You have a specific service to automate?",
-              answer: isFr ? "Niveau 2 · Audit ciblé" : "Level 2 · Targeted",
-              detail: isFr
-                ? "RH, finance, vente, ops, support — un service complet étudié de A à Z. On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois."
-                : "HR, finance, sales, ops, support — a full service studied A to Z. We list everything that can be automated with costed gains and a 6-12 month plan.",
-              cta: isFr ? "Demander un audit ciblé" : "Request a targeted audit",
-              href: "/audit/demande?type=process",
-              accent: "primary",
-            },
-            {
-              question: isFr
-                ? "Vous voulez une vision globale ou un plan groupe ?"
-                : "You want a global vision or a group plan?",
-              answer: isFr
-                ? "Niveau 3 ou 4 · Stratégique PME ou ETI"
-                : "Level 3 or 4 · Strategic SMB or mid-cap",
-              detail: isFr
-                ? `PME 20-250 salariés : audit stratégique ${pmeAmountRange}. ETI / multi-sites : audit groupe à partir de ${etiAmountFrom}, alignement CODIR et premiers jalons AI Act.`
-                : `SMB 20-250 staff: strategic audit ${pmeAmountRange}. Mid-cap / multi-site: group audit from ${etiAmountFrom}, leadership alignment and AI Act milestones.`,
-              cta: isFr ? "Demander un audit stratégique" : "Request a strategic audit",
-              href: "/audit/demande?type=strategique-pme",
-              accent: "sage",
-            },
-          ].map((q, i) => {
-            const acc = accentClasses[q.accent as AuditAccent];
-            return (
-              <article
-                key={i}
-                className={cn(
-                  "bg-paper shadow-subtle relative flex flex-col rounded-2xl border-2 p-6",
-                  acc.border,
-                )}
-              >
-                <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                  {isFr ? `Question ${i + 1}` : `Question ${i + 1}`}
-                </p>
-                <h3 className="text-fg mt-2 text-lg leading-snug font-bold">{q.question}</h3>
-                <div
-                  className={cn(
-                    "mt-4 inline-block self-start rounded-full px-3 py-1 text-[12px] font-bold",
-                    acc.chipBg,
-                    acc.chipText,
-                  )}
-                >
-                  â†’ {q.answer}
-                </div>
-                <p className="text-fg-soft mt-4 flex-1 text-base leading-relaxed">{q.detail}</p>
-                <Link
-                  href={q.href as never}
-                  className={cn(
-                    "cta-lift mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold transition-colors",
-                    acc.cta,
-                  )}
-                >
-                  {q.cta}
-                  <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
-                </Link>
-              </article>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* POURQUOI AXIONIA — 5 différenciants vs concurrence */}
+      {/* POURQUOI AXIONIA — différenciants vs concurrence */}
       <WhyAxionIA isFr={isFr} />
 
       {/* SIGNATURE FONDATEUR — légitimité humaine entre WhyAxionIA et SocialProof */}
@@ -1162,7 +230,7 @@ export default async function AuditListing({ params }: Props) {
       {/* PREUVE SOCIALE — métriques + bandeau secteurs + 3 témoignages */}
       <SocialProof isFr={isFr} />
 
-      {/* FAQ — 6 questions clés + JSON-LD FAQPage */}
+      {/* FAQ — 6 questions clés + JSON-LD FAQPage (via FaqAccordion factory) */}
       <AuditFaqSection
         isFr={isFr}
         items={
@@ -1172,25 +240,25 @@ export default async function AuditListing({ params }: Props) {
                   id: "duree-reservation",
                   question: "Combien de temps prend la réservation ?",
                   answer:
-                    "Le diagnostic flash se réserve via un formulaire 6 étapes (â‰ˆ 3 minutes). Pour les niveaux Process / Stratégique, vous recevez un devis personnalisé sous 48 h ouvrées avec un créneau d'appel proposé pour le cadrage.",
+                    "L'audit Flash terrain (890 €) se réserve directement sur le calendrier en 2 minutes. Pour Flash distance et les niveaux Ciblé / Stratégique, vous recevez un devis personnalisé sous 48 h ouvrées avec un créneau d'appel de cadrage proposé.",
                 },
                 {
                   id: "remote-onsite",
                   question: "À distance ou sur site, quelle différence ?",
                   answer:
-                    "À distance : visio sécurisée + entretiens + analyse des données partagées. Plus rapide à organiser, tarif réduit. Sur site : observation directe, immersion équipe, ateliers métier physiques. Recommandé dès le niveau Process pour les ateliers métier et indispensable pour le niveau Point de vente.",
+                    "À distance : visio sécurisée + entretiens + analyse des données partagées. Plus rapide à organiser, tarif réduit. Sur site : observation directe, immersion équipe, ateliers métier physiques. Recommandé dès le niveau Ciblé pour les ateliers métier.",
                 },
                 {
                   id: "data",
                   question: "Quelles données dois-je vous fournir ?",
                   answer:
-                    "Aucune donnée sensible n'est exfiltrée hors UE. Tous les entretiens et analyses se font sur place ou en visio sécurisée. Pour calibrer le devis, nous demandons : taille de l'équipe, secteur, outils en place, périmètre cible. Aucun accès production demandé avant signature.",
+                    "Aucune donnée sensible n'est exfiltrée hors UE. Tous les entretiens et analyses se font sur place ou en visio sécurisée. Pour calibrer le devis : taille de l'équipe, secteur, outils en place, périmètre cible. Aucun accès production demandé avant signature.",
                 },
                 {
                   id: "after",
                   question: "Que se passe-t-il après l'audit ?",
                   answer:
-                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par Axion-IA (Module 3 Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en Å“uvre — sans frais additionnels si elle tient en 60 minutes.",
+                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par Axion-IA (module Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en œuvre — sans frais additionnels si elle tient en 60 minutes.",
                 },
                 {
                   id: "eu-jurisdiction",
@@ -1200,9 +268,9 @@ export default async function AuditListing({ params }: Props) {
                 },
                 {
                   id: "starting-point",
-                  question: "Et si après l'audit, je ne sais pas par où commencer ?",
+                  question: "Et si je ne sais pas par où commencer ?",
                   answer:
-                    "Notre rapport est volontairement priorisé : le quick-win #1 doit être lançable dans la semaine qui suit la restitution. Si vous hésitez, nous proposons un appel de clarification gratuit de 30 minutes dans les 30 jours suivant la livraison. Et le Module 3 Implémentation peut prendre le relais sans transition.",
+                    "Notre rapport est volontairement priorisé : le quick-win #1 doit être lançable dans la semaine qui suit la restitution. Si vous hésitez, nous proposons un appel de clarification gratuit de 30 minutes dans les 30 jours suivant la livraison. Et le module Implémentation peut prendre le relais sans transition.",
                 },
               ]
             : [
@@ -1210,25 +278,25 @@ export default async function AuditListing({ params }: Props) {
                   id: "duree-reservation",
                   question: "How long does booking take?",
                   answer:
-                    "The flash diagnosis is booked via a 6-step form (â‰ˆ 3 minutes). For Process / Strategic levels, you receive a personalised quote within 48 business hours with a proposed framing call slot.",
+                    "The on-site Flash audit (€890) is booked directly on the calendar in 2 minutes. For remote Flash and Targeted / Strategic levels, you receive a personalised quote within 48 business hours with a proposed framing call slot.",
                 },
                 {
                   id: "remote-onsite",
                   question: "Remote or on site — what's the difference?",
                   answer:
-                    "Remote: secure video + interviews + analysis of shared data. Faster to organise, reduced fee. On site: direct observation, team immersion, physical business workshops. Recommended from Process level for business workshops and essential for Storefront level.",
+                    "Remote: secure video + interviews + analysis of shared data. Faster to organise, reduced fee. On site: direct observation, team immersion, physical business workshops. Recommended from Targeted level for business workshops.",
                 },
                 {
                   id: "data",
                   question: "What data do I need to provide?",
                   answer:
-                    "No sensitive data is exfiltrated outside the EU. All interviews and analysis happen on-site or in secure video conferencing. To calibrate the quote we ask: team size, sector, tools in place, target scope. No production access requested before signing.",
+                    "No sensitive data is exfiltrated outside the EU. All interviews and analysis happen on-site or in secure video conferencing. To calibrate the quote: team size, sector, tools in place, target scope. No production access requested before signing.",
                 },
                 {
                   id: "after",
                   question: "What happens after the audit?",
                   answer:
-                    "You leave with a costed action plan, executable by your teams or by Axion-IA (Module 3 Implementation). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
+                    "You leave with a costed action plan, executable by your teams or by Axion-IA (Implementation module). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
                 },
                 {
                   id: "eu-jurisdiction",
@@ -1238,9 +306,9 @@ export default async function AuditListing({ params }: Props) {
                 },
                 {
                   id: "starting-point",
-                  question: "What if I don't know where to start after the audit?",
+                  question: "What if I don't know where to start?",
                   answer:
-                    "Our report is deliberately prioritised: quick-win #1 must be launchable within a week of the debrief. If you hesitate, we offer a free 30-minute clarification call within the 30 days following delivery. And Module 3 Implementation can take over without transition.",
+                    "Our report is deliberately prioritised: quick-win #1 must be launchable within a week of the debrief. If you hesitate, we offer a free 30-minute clarification call within the 30 days following delivery. And the Implementation module can take over without transition.",
                 },
               ]
         }
@@ -1248,6 +316,7 @@ export default async function AuditListing({ params }: Props) {
 
       {/* SECTION ANTI-FEAR — quel que soit votre niveau IA */}
       <Section
+        tone="sand"
         eyebrow={isFr ? "Concerné·e quel que soit votre niveau" : "A fit for every AI maturity"}
         title={isFr ? "De zéro IA à équipes IA-fluentes," : "From zero AI to fluent teams,"}
         titleEm={isFr ? "un audit pour chaque entreprise" : "an audit for every company"}
@@ -1259,34 +328,48 @@ export default async function AuditListing({ params }: Props) {
         contentClassName={TIGHT_X}
       >
         <div className="grid gap-6 sm:grid-cols-3">
-          {[
-            {
-              level: isFr ? "Niveau 1" : "Stage 1",
-              title: isFr ? "Aucun usage IA en place" : "No AI use in place",
-              body: isFr
-                ? "Le diagnostic flash identifie 3 à 5 endroits où l'IA peut s'insérer immédiatement, sans bouleverser votre quotidien. Vous gardez la main."
-                : "The flash diagnosis identifies 3 to 5 places where AI can fit in immediately, without disrupting your day-to-day. You keep control.",
-              recommendation: isFr ? "Flash · Audit ciblé" : "Flash · Targeted",
-            },
-            {
-              level: isFr ? "Niveau 2" : "Stage 2",
-              title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
-              body: isFr
-                ? "L'audit ciblé sur un service structure ce qui marche, élimine ce qui n'en vaut pas la peine, et chiffre la suite avec un plan 6-12 mois."
-                : "The targeted audit on a service structures what works, drops what doesn't, and costs the next step with a 6-12 month plan.",
-              recommendation: isFr ? "Audit ciblé · Stratégique PME" : "Targeted · Strategic SMB",
-            },
-            {
-              level: isFr ? "Niveau 3" : "Stage 3",
-              title: isFr
-                ? "Usages IA matures, recherche d'optimisation"
-                : "Mature AI uses, looking to optimize",
-              body: isFr
-                ? "L'audit stratégique pose un benchmark concurrentiel et identifie les leviers de scalabilité multi-sites encore inexploités."
-                : "The strategic audit benchmarks competitors and identifies unexploited multi-site scaling levers.",
-              recommendation: isFr ? "Stratégique PME · ETI" : "Strategic SMB · mid-cap",
-            },
-          ].map((card, idx) => (
+          {(isFr
+            ? [
+                {
+                  level: "Niveau 1",
+                  title: "Aucun usage IA en place",
+                  body: "Le diagnostic Flash identifie 3 à 5 endroits où l'IA peut s'insérer immédiatement, sans bouleverser votre quotidien. Vous gardez la main.",
+                  recommendation: "Flash · Ciblé",
+                },
+                {
+                  level: "Niveau 2",
+                  title: "Premiers usages IA déjà testés",
+                  body: "L'audit Ciblé sur un département structure ce qui marche, élimine ce qui n'en vaut pas la peine, et chiffre la suite avec un plan 6-12 mois.",
+                  recommendation: "Ciblé · Stratégique PME",
+                },
+                {
+                  level: "Niveau 3",
+                  title: "Usages IA matures, recherche d'optimisation",
+                  body: "L'audit Stratégique pose un benchmark concurrentiel et identifie les leviers de scalabilité multi-sites encore inexploités.",
+                  recommendation: "Stratégique PME · ETI",
+                },
+              ]
+            : [
+                {
+                  level: "Stage 1",
+                  title: "No AI use in place",
+                  body: "The Flash diagnosis identifies 3 to 5 places where AI can fit in immediately, without disrupting your day-to-day. You keep control.",
+                  recommendation: "Flash · Targeted",
+                },
+                {
+                  level: "Stage 2",
+                  title: "Early AI uses already tried",
+                  body: "The Targeted audit on a department structures what works, drops what doesn't, and costs the next step with a 6-12 month plan.",
+                  recommendation: "Targeted · Strategic SMB",
+                },
+                {
+                  level: "Stage 3",
+                  title: "Mature AI uses, looking to optimize",
+                  body: "The Strategic audit benchmarks competitors and identifies unexploited multi-site scaling levers.",
+                  recommendation: "Strategic SMB · mid-cap",
+                },
+              ]
+          ).map((card, idx) => (
             <article key={idx} className="bg-paper border-border relative rounded-2xl border p-6">
               <p className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
                 {card.level}
@@ -1304,10 +387,10 @@ export default async function AuditListing({ params }: Props) {
         </div>
       </Section>
 
-      {/* AU-DELÀ DE L'AUDIT — bandeau d'upsell vers Module 3 Implémentation */}
+      {/* AU-DELÀ DE L'AUDIT — upsell module Implémentation */}
       <BeyondAuditBlock isFr={isFr} />
 
-      {/* COUVERTURE NATIONALE (Sprint 14.9 levier 3 — pSEO) */}
+      {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
       <LocalCoverageSection
         isFr={isFr}
         serviceLabelFr="L'audit IA"
@@ -1316,56 +399,37 @@ export default async function AuditListing({ params }: Props) {
         tone="paper"
       />
 
-      {/* FAQ GÉOLOCALISÉE (Sprint 14.9 levier 4 — pSEO) */}
+      {/* FAQ GÉOLOCALISÉE (pSEO villes/régions) */}
       <LocalGeoFaqSection isFr={isFr} service="audit" tone="sand" />
-
-      {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
-      <Section tone="canvas">
-        <Container className="max-w-3xl">
-          <Illustration
-            slot="AUDIT-03-closing"
-            aspectRatio="16:9"
-            filenameTarget="public/illustrations/audit-closing.avif"
-            caption={
-              isFr
-                ? "Plan d'action remis — document éditorial relié, prêt à exécuter"
-                : "Action plan handed over — bound editorial document, ready to execute"
-            }
-            alt={
-              isFr
-                ? "Illustration éditoriale d'un plan d'action remis à l'issue d'un audit Axion-IA."
-                : "Editorial illustration of an action plan delivered at the end of an Axion-IA audit."
-            }
-          />
-        </Container>
-      </Section>
 
       {/* CTA FINAL */}
       <CtaBlock
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
-        title={isFr ? "Réservez votre diagnostic flash" : "Book your flash diagnosis"}
-        titleEm={isFr ? `à ${priceFlash}` : `at ${priceFlash}`}
+        title={isFr ? "Réservez votre Flash terrain" : "Book your on-site Flash"}
+        titleEm={isFr ? `à 890 €` : `at €890`}
         description={
           isFr
-            ? "On identifie 3 à 5 endroits concrets où l'IA peut s'insérer dans votre entreprise et tout ce qui peut être automatisé. Si vous voulez aller plus loin, 3 niveaux d'audit plus profonds vous attendent selon votre taille et votre ambition."
-            : "We identify 3 to 5 concrete places where AI can fit in your company and everything that can be automated. To go further, 3 deeper audit levels await based on your size and ambition."
+            ? "1 journée complète dans vos locaux, démos live, plan d'action sous 48 h. Réservation directe sur le calendrier maison. Sans engagement avant signature."
+            : "Full day on your premises, live demos, action plan within 48 h. Direct booking on our calendar. No commitment before signing."
         }
         cta={
-          <Cta href="/audit/demande?type=flash" size="lg">
-            {isFr
-              ? `Réserver mon diagnostic flash · ${priceFlash}`
-              : `Book my flash diagnosis · ${priceFlash}`}{" "}
-            →
+          <Cta
+            href="/reserver?intervention=audit-flash-onsite"
+            size="lg"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+          >
+            <Calendar aria-hidden="true" className="h-4 w-4" />
+            {isFr ? "Réserver sur le calendrier" : "Book on the calendar"}
           </Cta>
         }
         tone="dark"
       />
 
-      {/* STICKY CTA MOBILE — apparaît au scroll, masqué sur lg+ */}
+      {/* STICKY CTA MOBILE */}
       <StickyMobileCta
-        href="/audit/demande?type=flash"
-        label={isFr ? `Réserver Flash · ${priceFlash}` : `Book Flash · ${priceFlash}`}
-        track="audit-flash-sticky-mobile"
+        href="/reserver?intervention=audit-flash-onsite"
+        label={isFr ? `Flash terrain · 890 €` : `On-site Flash · €890`}
+        track="audit-flash-onsite-sticky"
         threshold={500}
       />
 

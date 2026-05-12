@@ -127,6 +127,9 @@ export const routing = defineRouting({
     "/audit": { fr: "/audit", en: "/audit" },
     "/audit/flash": { fr: "/audit/flash", en: "/audit/flash" },
     "/audit/process": { fr: "/audit/process", en: "/audit/process" },
+    // Sprint 14.10.8 (Will 2026-05-12) — /audit/cible remplace /audit/process.
+    // Slug aligné sur pricing.ts AUDIT_TIERS id "audit-cible".
+    "/audit/cible": { fr: "/audit/cible", en: "/audit/targeted" },
     "/audit/strategique-pme": {
       fr: "/audit/strategique-pme",
       en: "/audit/strategic-pme",

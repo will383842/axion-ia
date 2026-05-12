@@ -61,6 +61,9 @@ enum InterventionType {
   dirigeants
   gagner_du_temps
   intervention_claude
+  // Sprint 14.10.8 (Will 2026-05-12) — audit Flash sur site 890 € réservable
+  // directement sur le calendrier (cf. /audit hub refondu en 2 axes).
+  audit_flash_onsite
 }
 
 enum BookingStatus {
