@@ -27,7 +27,7 @@ export function InterventionFaqList({ items, isFr }: Props) {
           className="bg-paper border-border group/faq open:shadow-subtle rounded-2xl border p-5"
         >
           <summary className="text-fg flex cursor-pointer items-start justify-between gap-3 text-base font-semibold">
-            <span>{isFr ? f.qFr : f.qEn}</span>
+            <span data-faq-q>{isFr ? f.qFr : f.qEn}</span>
             <span
               aria-hidden="true"
               className="bg-terracotta-soft text-terracotta-deep mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45"
@@ -35,7 +35,9 @@ export function InterventionFaqList({ items, isFr }: Props) {
               +
             </span>
           </summary>
-          <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">{isFr ? f.aFr : f.aEn}</p>
+          <p data-faq-a className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
+            {isFr ? f.aFr : f.aEn}
+          </p>
         </details>
       ))}
     </div>

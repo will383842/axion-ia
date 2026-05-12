@@ -15,7 +15,7 @@ import {
   getBlogPostsByAuthor,
   getBlogAuthorLabel,
 } from "@/content/transversal";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildPersonJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -53,16 +53,20 @@ export default async function BlogAuthorPage({ params }: Props) {
   const isFr = loc === "fr";
   const posts = getBlogPostsByAuthor(slug);
 
-  // ProfilePage Schema — E-E-A-T signal for Google.
+  // ProfilePage Schema + Person enrichi — E-E-A-T 2026 signal fort (audit
+  // perfection 2026-05-12). Le Person via factory centralisée porte jobTitle,
+  // sameAs LinkedIn, knowsAbout (expertises IA), knowsLanguage.
+  const personJsonLd = buildPersonJsonLd({
+    locale: loc,
+    slug,
+    name: author,
+  });
   const profileJsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    mainEntity: {
-      "@type": "Person",
-      name: author,
-      url: `${SITE_URL}/${locale}/blog/auteur/${slug}`,
-      worksFor: { "@type": "Organization", name: "Axion-IA" },
-    },
+    url: `${SITE_URL}/${locale}/blog/auteur/${slug}`,
+    inLanguage: locale,
+    mainEntity: personJsonLd,
   } as const;
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"

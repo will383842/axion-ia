@@ -46,9 +46,11 @@ export function FaqAccordion({
       <Accordion type="single" collapsible className={className}>
         {items.map((item) => (
           <AccordionItem key={item.id} value={item.id}>
-            <AccordionTrigger>{item.question}</AccordionTrigger>
+            <AccordionTrigger>
+              <span data-faq-q>{item.question}</span>
+            </AccordionTrigger>
             <AccordionContent>
-              <p>{item.answer}</p>
+              <p data-faq-a>{item.answer}</p>
               {permalinkBase ? (
                 <a
                   href={`${permalinkBase}/${item.id}`}

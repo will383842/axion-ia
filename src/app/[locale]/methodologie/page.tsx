@@ -12,7 +12,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSchema";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildHowToJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildHowToJsonLd, buildArticleJsonLd, BUILD_DATE } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -44,16 +44,25 @@ export default async function MethodologyPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+  // Article JSON-LD via factory centralisée — porte les signaux E-E-A-T 2026
+  // (Author + dateModified + publisher logo + mainEntityOfPage) automatiquement.
+  // Audit perfection 2026-05-12.
+  const articleJsonLd = buildArticleJsonLd({
+    locale: loc,
+    path: loc === "fr" ? "/methodologie" : "/methodology",
     headline: isFr
       ? "Méthodologie Axion-IA · 4 étapes vers le ROI"
       : "Axion-IA methodology · 4 steps to ROI",
-    inLanguage: locale,
-    url: `${SITE_URL}/${locale}/methodologie`,
-    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
-  } as const;
+    description: isFr
+      ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
+      : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
+    datePublished: "2025-12-01",
+    dateModified: BUILD_DATE,
+    articleSection: isFr ? "Méthodologie" : "Methodology",
+    keywords: isFr
+      ? ["méthodologie IA", "audit IA", "implémentation IA", "ROI IA"]
+      : ["AI methodology", "AI audit", "AI implementation", "AI ROI"],
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.

@@ -8,6 +8,17 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 export const SITE_URL = env.NEXT_PUBLIC_SITE_URL;
 
+// Build timestamp ISO — signal de fraîcheur AI Overviews 2026.
+// Résolu au cold-start (build standalone Coolify ou rebuild dev). Google /
+// Perplexity / Claude.ai privilégient le contenu frais → toute page Service
+// auto-émet `dateModified` à cette date. Sans ce signal, on rate l'opportunité
+// "Google AI Overviews répond directement" pour les requêtes locales.
+//
+// Pour override par page (article blog, cas concret), passer `dateModified`
+// explicitement aux factories. Pour services canoniques (audit, interventions),
+// la build-date est suffisante — elle marque que le site est actif et maintenu.
+export const BUILD_DATE = new Date().toISOString();
+
 interface ProductSeoInput {
   locale: Locale;
   /** Localized pathname WITHOUT locale prefix, e.g. /interventions/essentielle. */
@@ -87,6 +98,12 @@ interface ServiceJsonLdInput {
   /** Price in EUR HT. Omit for "on-quote" services. */
   priceEur?: number;
   serviceType?: string;
+  /**
+   * ISO date string — signal de fraîcheur Google AI Overviews 2026. Default :
+   * `BUILD_DATE` (cold-start du serveur Next). Passer explicitement pour
+   * écraser (ex. service modifié à une date connue).
+   */
+  dateModified?: string;
   /** Single area served (legacy, string). Use `areasServed` for multi-region. */
   area?: string;
   /**
@@ -118,6 +135,7 @@ export function buildServiceJsonLd({
   description,
   priceEur,
   serviceType,
+  dateModified,
   area,
   areasServed,
   availableChannels,
@@ -154,6 +172,11 @@ export function buildServiceJsonLd({
     name,
     description,
     url,
+    // dateModified : signal de fraîcheur AI Overviews 2026. Auto-injecté à
+    // la BUILD_DATE si la page n'a rien passé explicitement (audit perfection
+    // 2026-05-12). Pour bypass (rare), passer `dateModified: ""` ne suffit
+    // pas — il faudrait étendre l'interface. Le default couvre 100 % des cas.
+    dateModified: dateModified ?? BUILD_DATE,
     provider: {
       "@type": "Organization",
       name: "Axion-IA",
@@ -186,9 +209,22 @@ export function buildServiceJsonLd({
 
 interface FaqJsonLdInput {
   items: ReadonlyArray<{ question: string; answer: string }>;
+  /**
+   * Sélecteur CSS pour Speakable AEO 2026 (Google Assistant + Alexa). Defaults
+   * à `[data-faq-q],[data-faq-a]` — convention site Axion-IA pour marquer les
+   * réponses lisibles à voix haute. Passer `false` pour désactiver speakable
+   * (rare : ex. FAQ confidentielle technique).
+   */
+  speakable?: boolean | string;
 }
 
-export function buildFaqJsonLd({ items }: FaqJsonLdInput) {
+export function buildFaqJsonLd({ items, speakable = true }: FaqJsonLdInput) {
+  // Auto-injection Speakable (audit perfection 2026-05-12) — chaque FAQ est
+  // désormais éligible Google Assistant / Alexa quand un utilisateur demande
+  // "Axion-IA, comment ça se passe une formation IA ?" via vocal. Sans
+  // override, on cible les attributs data-faq-q et data-faq-a (à appliquer
+  // dans les composants InterventionFaqList / FaqAccordion progressivement).
+  const speakableSelector = typeof speakable === "string" ? speakable : "[data-faq-q],[data-faq-a]";
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -197,6 +233,14 @@ export function buildFaqJsonLd({ items }: FaqJsonLdInput) {
       name: item.question,
       acceptedAnswer: { "@type": "Answer", text: item.answer },
     })),
+    ...(speakable !== false
+      ? {
+          speakable: {
+            "@type": "SpeakableSpecification",
+            cssSelector: [speakableSelector],
+          },
+        }
+      : {}),
   } as const;
 }
 
