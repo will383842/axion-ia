@@ -10,7 +10,7 @@
   "nav": {
     "home": "Accueil",
     "interventions": "Interventions entreprise",
-    "audit": "Audit & optimisation",
+    "audit": "Audit IA",
     "implementation": "Implémentation IA",
     "caseStudies": "Cas concrets",
     "implantations": "Implantations",
@@ -158,7 +158,7 @@
     "notFoundSecondary": "Nous contacter",
     "notFoundSuggestionsTitle": "Vous cherchiez peut-être",
     "notFoundLinkInterventions": "Interventions IA en entreprise",
-    "notFoundLinkAudit": "Audit & optimisation",
+    "notFoundLinkAudit": "Audit IA",
     "notFoundLinkCases": "Cas concrets",
     "notFoundLinkBook": "Réserver une intervention ou un audit",
     "internalEyebrow": "500 · Erreur interne",

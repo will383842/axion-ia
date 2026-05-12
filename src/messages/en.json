@@ -10,7 +10,7 @@
   "nav": {
     "home": "Home",
     "interventions": "Corporate AI sessions",
-    "audit": "Audit & optimization",
+    "audit": "AI audit",
     "implementation": "AI implementation",
     "caseStudies": "Case studies",
     "implantations": "Locations",
@@ -158,7 +158,7 @@
     "notFoundSecondary": "Contact us",
     "notFoundSuggestionsTitle": "You may be looking for",
     "notFoundLinkInterventions": "Corporate AI sessions",
-    "notFoundLinkAudit": "Audit & optimisation",
+    "notFoundLinkAudit": "AI audit",
     "notFoundLinkCases": "Case studies",
     "notFoundLinkBook": "Book a session or audit",
     "internalEyebrow": "500 · Internal error",

@@ -139,9 +139,12 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         </Container>
       </section>
 
-      {/* SOUS-TIERS — Choisissez votre format (cartes cliquables) */}
+      {/* SOUS-TIERS — Choisissez votre format (cartes cliquables).
+          tone sand pour casser avec hero halo-warm sans dupliquer le paper
+          du Programme qui suit. Rythme final : warm → sand → paper → default
+          → sand → dark (parité avec InterventionDetailPage). */}
       <Section
-        tone="paper"
+        tone="sand"
         eyebrow={isFr ? "Choisissez votre format" : "Choose your format"}
         title={isFr ? "Formats" : "Available"}
         titleEm={isFr ? "disponibles" : "formats"}
@@ -219,9 +222,9 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         </div>
       </Section>
 
-      {/* PROGRAMME / DÉROULÉ */}
+      {/* PROGRAMME / DÉROULÉ — tone paper (aligné sur InterventionDetailPage). */}
       <Section
-        tone="sand"
+        tone="paper"
         eyebrow={isFr ? config.scheduleEyebrowFr : config.scheduleEyebrowEn}
         title={isFr ? "Comment" : "How"}
         titleEm={isFr ? "ça se passe" : "it works"}
@@ -246,9 +249,9 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
 
-      {/* FAQ */}
+      {/* FAQ — tone sand (aligné sur InterventionDetailPage). */}
       <Section
-        tone="paper"
+        tone="sand"
         eyebrow="FAQ"
         title={isFr ? "Questions" : "Questions"}
         titleEm={isFr ? "fréquentes" : "we hear often"}
