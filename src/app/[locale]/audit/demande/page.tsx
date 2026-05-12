@@ -87,7 +87,7 @@ export default async function AuditRequest({ params }: Props) {
         successBody:
           "Notre équipe étudie votre contexte et vous renvoie un devis personnalisé par email — avec un créneau d'appel proposé pour le cadrage. Vérifiez vos spams si rien n'arrive sous 48 h.",
         successCta: "Faire une autre demande",
-        failure: "Une erreur est survenue. Réessayez ou écrivez Ã  contact@axion-ia.com.",
+        failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
 
         s1Eyebrow: "1 · Niveau d'audit",
         s1Title: "Quel niveau d'audit vous correspond ?",
@@ -98,7 +98,7 @@ export default async function AuditRequest({ params }: Props) {
             key: "flash" as const,
             label: "Niveau 1 · Flash",
             description:
-              "Mini-diagnostic ciblé sur 1 zone clé · on identifie 3 Ã  5 endroits où l'IA peut s'insérer dans votre entreprise, avec gains estimés.",
+              "Mini-diagnostic ciblé sur 1 zone clé · on identifie 3 à 5 endroits où l'IA peut s'insérer dans votre entreprise, avec gains estimés.",
             priceFrom: flashPriceFrom,
           },
           {
@@ -141,9 +141,9 @@ export default async function AuditRequest({ params }: Props) {
         companyNamePlaceholder: "Ex : ACME SAS",
 
         s3Eyebrow: "3 · Lieu & modalité",
-        s3Title: "Sur site ou Ã  distance ?",
+        s3Title: "Sur site ou à distance ?",
         s3Description:
-          "On intervient partout en France et Ã  l'international. Sur site recommandé dès le niveau Process pour les ateliers métiers. À distance possible partout.",
+          "On intervient partout en France et à l'international. Sur site recommandé dès le niveau Process pour les ateliers métiers. À distance possible partout.",
         modalityLabel: "Modalité souhaitée",
         modalityRemote: "À distance",
         modalityRemoteHint: "Visio sécurisée + entretiens · gain de temps + tarif réduit.",
@@ -172,7 +172,7 @@ export default async function AuditRequest({ params }: Props) {
         maturityMature: "Usages IA matures, on optimise",
         goalsLabel: "Objectifs de l'audit",
         goalsPlaceholder:
-          "Ex : « libérer du temps Ã  l'équipe commerciale », « réduire les dépenses de prestations externes », « automatiser les saisies répétitives »…",
+          "Ex : « libérer du temps à l'équipe commerciale », « réduire les dépenses de prestations externes », « automatiser les saisies répétitives »…",
 
         s5Eyebrow: "5 · Vos coordonnées",
         s5Title: "Comment vous joindre ?",
@@ -188,7 +188,7 @@ export default async function AuditRequest({ params }: Props) {
         s6Description:
           "Tout est modifiable en revenant sur les étapes précédentes. Cliquez sur « Envoyer » quand le récap est OK.",
         consentLabel:
-          "J'accepte que mes données soient utilisées pour traiter cette demande conformément Ã  la politique de confidentialité. Aucune donnée n'est revendue ni transmise Ã  des tiers.",
+          "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité. Aucune donnée n'est revendue ni transmise à des tiers.",
         recapTitle: "Votre demande en un coup d'Å“il",
         recapModality: "Modalité",
         recapType: "Type d'audit",

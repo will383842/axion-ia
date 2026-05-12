@@ -86,7 +86,7 @@ export default async function ComparisonsListPage({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO 2-col — texte Ã  gauche, ComparisonsHeroSchema Ã  droite */}
+      {/* HERO 2-col — texte à gauche, ComparisonsHeroSchema à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
@@ -109,7 +109,7 @@ export default async function ComparisonsListPage({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Tableaux de décision factuels — pas de FUD, pas de complaisance vendeur. Cabinet IA, SaaS, internalisation : ce qui colle vraiment Ã  votre contexte."
+                  ? "Tableaux de décision factuels — pas de FUD, pas de complaisance vendeur. Cabinet IA, SaaS, internalisation : ce qui colle vraiment à votre contexte."
                   : "Factual decision tables — no FUD, no vendor complacency. AI consultancy, SaaS, in-house: what actually fits your context."}
               </p>
               {/* Pills réassurance */}
@@ -277,7 +277,7 @@ export default async function ComparisonsListPage({ params }: Props) {
 
       {/* CtaBlock final — manquait sur cette page (gap audit Visual Rhythm 2026) */}
       <CtaBlock
-        title={isFr ? "Une décision IA Ã  prendre ?" : "An AI decision to make?"}
+        title={isFr ? "Une décision IA à prendre ?" : "An AI decision to make?"}
         description={
           isFr
             ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} : on cartographie votre situation et on tranche sur vos données, pas sur des slides.`

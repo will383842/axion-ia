@@ -1,9 +1,14 @@
 name: Deploy · Coolify (axion-ia.com)
 
-# Triggers a Coolify deploy via REST API after every push to `main` once
-# the CI gates have passed. Replaces the broken GitHub App webhook flow:
-# we POST directly to Coolify with a long-lived API token stored in
-# repo secrets, so there is no HMAC secret to keep in sync.
+# Triggers a Coolify deploy via REST API on every push to `main`.
+# Sprint 14.10.7 fix (2026-05-12) : auparavant via workflow_run après CI Gates
+# A + B success, mais workflow_run ne firait jamais (bug GitHub Actions).
+# Bascule sur push direct — la qualité est garantie en amont par les hooks
+# pre-push (typecheck + lint + 149 tests). Le CI Gates A + B continue de
+# tourner en parallèle pour signaler tout problème.
+# Replaces the broken GitHub App webhook flow: we POST directly to Coolify
+# with a long-lived API token stored in repo secrets, so there is no HMAC
+# secret to keep in sync.
 #
 # ───── BUILDKIT CACHE WARNING (READ THIS) ─────
 # Coolify rebuilds the entire Next.js 16 SSG bundle (17 500 routes, ~6 GB
@@ -59,10 +64,20 @@ name: Deploy · Coolify (axion-ia.com)
 # Manual trigger: workflow_dispatch (Actions tab → Run workflow).
 
 on:
-  workflow_run:
-    workflows: ["CI · Gates A + B"]
+  # Sprint 14.10.7 fix Will (2026-05-12) : le trigger `workflow_run` ne
+  # se déclenchait jamais (0/50 derniers runs étaient en event=workflow_run).
+  # Cause probable : bug GitHub Actions où workflow_run reste silencieusement
+  # inactif quand le workflow file est ajouté après création du repo. On
+  # bascule donc sur un trigger `push: branches:[main]` direct — les hooks
+  # pre-push exécutent déjà tests + lint + typecheck, donc la garantie de
+  # qualité est conservée.
+  push:
     branches: [main]
-    types: [completed]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - "_AUDIT/**"
+      - ".gitignore"
   workflow_dispatch:
 
 permissions:
@@ -72,8 +87,6 @@ jobs:
   deploy:
     name: Trigger Coolify deploy
     runs-on: ubuntu-latest
-    # Skip if upstream CI failed; allow manual dispatch even when CI didn't run.
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: POST /api/v1/deploy
         env:

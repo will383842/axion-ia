@@ -111,8 +111,8 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO 2 colonnes — texte Ã  gauche, stack de mini-cards de cas réels
-          Ã  droite (CaseStudiesHeroSchema). Aligné sur le pattern audit /
+      {/* HERO 2 colonnes — texte à gauche, stack de mini-cards de cas réels
+          à droite (CaseStudiesHeroSchema). Aligné sur le pattern audit /
           interventions / implementation. */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
@@ -347,7 +347,7 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.length === 0 ? (
             <li className="text-fg-soft col-span-full text-center">
-              {isFr ? "Aucun cas ne correspond Ã  ces filtres." : "No case matches these filters."}
+              {isFr ? "Aucun cas ne correspond à ces filtres." : "No case matches these filters."}
             </li>
           ) : (
             filtered.map((c) => {

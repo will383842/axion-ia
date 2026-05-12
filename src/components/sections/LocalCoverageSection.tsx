@@ -50,8 +50,8 @@ export function LocalCoverageSection({
       titleTail="."
       description={
         isFr
-          ? "Tarifs publics identiques partout en France métropolitaine. Cliquez sur votre région pour découvrir le tissu B2B local et nos cas concrets à proximité."
-          : "Same public pricing across all metropolitan France. Click your region to discover the local B2B fabric and our nearby case studies."
+          ? "Nous intervenons partout en France métropolitaine. Cliquez sur votre région pour voir comment nous accompagnons les entreprises près de chez vous."
+          : "We operate across mainland France. Click your region to see how we support companies near you."
       }
       tone={tone}
     >

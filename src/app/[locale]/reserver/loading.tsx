@@ -1,6 +1,6 @@
 // P-101 — `loading.tsx` granulaire `/reserver` matché aux dimensions réelles
 // du contenu. Le skeleton précédent (loading.tsx global) montrait un placeholder
-// hero Ã  ~268 px alors que la vraie page fait : hero 320 px + breadcrumbs +
+// hero à ~268 px alors que la vraie page fait : hero 320 px + breadcrumbs +
 // calendar 800 px + ctaBlock. Sans réservation correcte, le swap loadingâ†’page
 // déclenche un CLS â‰¥ 0,4 (mesuré 0,552 sur Lighthouse smoke). Cette version
 // pré-réserve les bonnes hauteurs.

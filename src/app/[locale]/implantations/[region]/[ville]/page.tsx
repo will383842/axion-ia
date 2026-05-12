@@ -146,7 +146,7 @@ export default async function VillePage({ params }: Props) {
     locale: loc,
     path: `/implantations/${region.slug}/${ville.slug}`,
     name: isFr
-      ? `Axion-IA · cabinet IA opérationnel Ã  ${ville.nameFr}`
+      ? `Axion-IA · cabinet IA opérationnel à ${ville.nameFr}`
       : `Axion-IA · operational AI consultancy in ${ville.nameFr}`,
     description: isFr ? copy.pitchFr : copy.pitchEn,
     areaServed: { type: "City", name: ville.nameFr },
@@ -192,7 +192,7 @@ export default async function VillePage({ params }: Props) {
       : null;
 
   // FAQ items pour FaqBlock (accordion). On désactive son JSON-LD interne car
-  // on émet déjÃ  le Speakable variant via buildFaqSpeakableJsonLd.
+  // on émet déjà le Speakable variant via buildFaqSpeakableJsonLd.
   const faqItems =
     copy.faqGeolocalisee?.map((f, idx) => ({
       id: `${ville.slug}-faq-${idx}`,
@@ -223,7 +223,7 @@ export default async function VillePage({ params }: Props) {
                 {isFr ? `Implantations · ${region.nameFr}` : `Locations · ${region.nameFr}`}
               </p>
               <h1 className="display-editorial text-fg">
-                {isFr ? "Cabinet IA opérationnel Ã " : "Operational AI consultancy in"}{" "}
+                {isFr ? "Cabinet IA opérationnel à" : "Operational AI consultancy in"}{" "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -311,11 +311,11 @@ export default async function VillePage({ params }: Props) {
           (signal AEO/GEO : Perplexity / Claude / Gemini citent prix). */}
       <Section
         eyebrow={isFr ? "Nos services" : "Our services"}
-        title={isFr ? "Trois services Axion-IA Ã " : "Three Axion-IA services in"}
+        title={isFr ? "Trois services Axion-IA à" : "Three Axion-IA services in"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? `Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données. Axion-IA délivre ses 3 prestations Ã  ${ville.nameFr} comme partout en France métropolitaine.`
+            ? `Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données. Axion-IA délivre ses 3 prestations à ${ville.nameFr} comme partout en France métropolitaine.`
             : `Public pricing displayed, real-time calendar, you keep control of your data. Axion-IA delivers its 3 services in ${ville.nameFr} as anywhere in metropolitan France.`
         }
         tone="paper"
@@ -325,7 +325,7 @@ export default async function VillePage({ params }: Props) {
             {
               href: "/audit" as const,
               icon: Briefcase,
-              h3Fr: `Audit IA Ã  ${ville.nameFr}`,
+              h3Fr: `Audit IA à ${ville.nameFr}`,
               h3En: `AI audit in ${ville.nameFr}`,
               priceTier: getEntryTier(AUDIT_TIERS),
               tagline: isFr
@@ -335,7 +335,7 @@ export default async function VillePage({ params }: Props) {
               context:
                 copy.servicesContext?.audit?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Audit IA Ã  ${ville.nameFr} aux mêmes tarifs publics que partout en France. Diagnostic actionnable et plan d'attaque chiffré.`
+                  ? `Audit IA à ${ville.nameFr} aux mêmes tarifs publics que partout en France. Diagnostic actionnable et plan d'attaque chiffré.`
                   : `AI audit in ${ville.nameFr} at the same public pricing as anywhere in France. Actionable diagnosis and costed action plan.`),
               ctaFr: "Demander un audit",
               ctaEn: "Request an audit",
@@ -343,7 +343,7 @@ export default async function VillePage({ params }: Props) {
             {
               href: "/interventions" as const,
               icon: Building2,
-              h3Fr: `Interventions IA Ã  ${ville.nameFr}`,
+              h3Fr: `Interventions IA à ${ville.nameFr}`,
               h3En: `AI sessions in ${ville.nameFr}`,
               priceTier: getEntryTier(INTERVENTION_TIERS),
               tagline: isFr
@@ -353,7 +353,7 @@ export default async function VillePage({ params }: Props) {
               context:
                 copy.servicesContext?.interventions?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Interventions IA en entreprise Ã  ${ville.nameFr} sur site. Démos sur vos vraies données, pas de scénarios génériques.`
+                  ? `Interventions IA en entreprise à ${ville.nameFr} sur site. Démos sur vos vraies données, pas de scénarios génériques.`
                   : `Corporate AI sessions in ${ville.nameFr} on site. Demos on your real data, no generic scenarios.`),
               ctaFr: "Voir le calendrier",
               ctaEn: "View the calendar",
@@ -361,7 +361,7 @@ export default async function VillePage({ params }: Props) {
             {
               href: "/implementation" as const,
               icon: Wrench,
-              h3Fr: `Implémentation IA Ã  ${ville.nameFr}`,
+              h3Fr: `Implémentation IA à ${ville.nameFr}`,
               h3En: `AI implementation in ${ville.nameFr}`,
               priceTier: getEntryTier(IMPLEMENTATION_TIERS),
               tagline: isFr
@@ -371,7 +371,7 @@ export default async function VillePage({ params }: Props) {
               context:
                 copy.servicesContext?.implementation?.[isFr ? "fr" : "en"] ??
                 (isFr
-                  ? `Implémentation IA opérationnelle Ã  ${ville.nameFr} : agents, automatisation back-office, intégration CRM/ERP, IA custom. Forfait fixe, aucun abonnement.`
+                  ? `Implémentation IA opérationnelle à ${ville.nameFr} : agents, automatisation back-office, intégration CRM/ERP, IA custom. Forfait fixe, aucun abonnement.`
                   : `Operational AI implementation in ${ville.nameFr}: agents, back-office automation, CRM/ERP integration, custom AI. Fixed fee, no subscription.`),
               ctaFr: "Discuter d'un projet",
               ctaEn: "Discuss a project",
@@ -449,7 +449,7 @@ export default async function VillePage({ params }: Props) {
           Affichées si copy.services renseigné (Paris pilote + futures villes
           enrichies). Chaque section ~500-700 mots : hero + raisons + méthodologie
           + tarifs INSEE + témoignages + garanties. Ces sections font passer la
-          page de ~1200 mots Ã  ~5000+ mots — cap perfection #1 sur « audit IA Ville »,
+          page de ~1200 mots à ~5000+ mots — cap perfection #1 sur « audit IA Ville »,
           « formation IA Ville », « implémentation IA Ville ». */}
       {copy.services?.audit ? (
         <VilleServiceDetailSection
@@ -489,11 +489,11 @@ export default async function VillePage({ params }: Props) {
           + signal autorité (4 différenciateurs concrets, pas du blabla) */}
       <Section
         eyebrow={isFr ? "Pourquoi nous" : "Why us"}
-        title={isFr ? "Ce qui change avec Axion-IA Ã " : "What changes with Axion-IA in"}
+        title={isFr ? "Ce qui change avec Axion-IA à" : "What changes with Axion-IA in"}
         titleEm={ville.nameFr}
         description={
           isFr
-            ? "Un cabinet IA opérationnel n'est pas un éditeur logiciel ni un cabinet de conseil traditionnel. Voici les 4 différences concrètes que vous obtenez Ã  chaque mission."
+            ? "Un cabinet IA opérationnel n'est pas un éditeur logiciel ni un cabinet de conseil traditionnel. Voici les 4 différences concrètes que vous obtenez à chaque mission."
             : "An operational AI consultancy is not a software vendor nor a traditional consulting firm. Here are the 4 concrete differences you get on every engagement."
         }
         tone="canvas"
@@ -504,7 +504,7 @@ export default async function VillePage({ params }: Props) {
               icon: MapPin,
               titleFr: "Sur site, pas en visio",
               titleEn: "On site, not on video calls",
-              detailFr: `Nous nous déplaçons Ã  ${ville.nameFr} pour kick-off et restitutions. Frais inclus.`,
+              detailFr: `Nous nous déplaçons à ${ville.nameFr} pour kick-off et restitutions. Frais inclus.`,
               detailEn: `We travel to ${ville.nameFr} for kick-off and read-outs. Fees included.`,
             },
             {
@@ -554,11 +554,11 @@ export default async function VillePage({ params }: Props) {
       {nearbyCases.length > 0 ? (
         <Section
           eyebrow={isFr ? "Cas clients proches" : "Nearby case studies"}
-          title={isFr ? "DéjÃ  déployé" : "Already deployed"}
-          titleEm={isFr ? "Ã  proximité" : "nearby"}
+          title={isFr ? "Déjà déployé" : "Already deployed"}
+          titleEm={isFr ? "à proximité" : "nearby"}
           description={
             isFr
-              ? `Cas anonymisés Ã  moins de 50 km de ${ville.nameFr}. ROI chiffré, contexte, livrables.`
+              ? `Cas anonymisés à moins de 50 km de ${ville.nameFr}. ROI chiffré, contexte, livrables.`
               : `Anonymized cases within 50 km of ${ville.nameFr}. Costed ROI, context, deliverables.`
           }
           tone="paper"
@@ -636,7 +636,7 @@ export default async function VillePage({ params }: Props) {
           eyebrow={isFr ? `FAQ · ${ville.nameFr}` : `FAQ · ${ville.nameFr}`}
           title={
             isFr
-              ? `Questions fréquentes Ã  ${ville.nameFr}`
+              ? `Questions fréquentes à ${ville.nameFr}`
               : `Frequently asked questions in ${ville.nameFr}`
           }
           description={
@@ -693,7 +693,7 @@ export default async function VillePage({ params }: Props) {
         titleEm={ville.nameFr}
         description={
           isFr
-            ? `Sources : INSEE recensement légal (code commune ${ville.inseeCode}) + Sirene 2024. Données différenciées spécifiques Ã  ${ville.nameFr} (signal anti-doorway HCU 2024).`
+            ? `Sources : INSEE recensement légal (code commune ${ville.inseeCode}) + Sirene 2024. Données différenciées spécifiques à ${ville.nameFr} (signal anti-doorway HCU 2024).`
             : `Sources: INSEE legal census (commune code ${ville.inseeCode}) + Sirene 2024. City-specific differentiated data for ${ville.nameFr} (anti-doorway HCU 2024 signal).`
         }
         tone="paper"
@@ -797,12 +797,12 @@ export default async function VillePage({ params }: Props) {
 
       {/* CTA final pré-rempli ville */}
       <CtaBlock
-        eyebrow={isFr ? `Démarrer Ã  ${ville.nameFr}` : `Start in ${ville.nameFr}`}
-        title={isFr ? `Vous êtes basé Ã  ${ville.nameFr} ?` : `You're based in ${ville.nameFr}?`}
+        eyebrow={isFr ? `Démarrer à ${ville.nameFr}` : `Start in ${ville.nameFr}`}
+        title={isFr ? `Vous êtes basé à ${ville.nameFr} ?` : `You're based in ${ville.nameFr}?`}
         titleEm={isFr ? "Réservez en ligne" : "Book online"}
         description={
           isFr
-            ? `Calendrier réel temps réel. Acompte 50 % Ã  la confirmation. Le champ « ville » sera pré-rempli avec ${ville.nameFr}.`
+            ? `Calendrier réel temps réel. Acompte 50 % à la confirmation. Le champ « ville » sera pré-rempli avec ${ville.nameFr}.`
             : `Real-time calendar. 50% deposit on confirmation. The "city" field will be pre-filled with ${ville.nameFr}.`
         }
         cta={
@@ -826,7 +826,7 @@ export default async function VillePage({ params }: Props) {
               shape="pill"
               track="ville_cta_contact_final"
             >
-              {isFr ? "Parler Ã  un consultant" : "Speak with a consultant"}
+              {isFr ? "Parler à un consultant" : "Speak with a consultant"}
             </Cta>
           </div>
         }
@@ -856,11 +856,11 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
     <Section
       titleAs="h1"
       eyebrow={isFr ? `Implantations · ${regionNameFr}` : `Locations · ${regionNameFr}`}
-      title={isFr ? "Axion-IA intervient Ã " : "Axion-IA covers"}
+      title={isFr ? "Axion-IA intervient à" : "Axion-IA covers"}
       titleEm={ville.nameFr}
       description={
         isFr
-          ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) fait partie des ${fmtPopulation(ville.population, "fr")} habitants éligibles Ã  nos interventions sur site, audits IA et missions d'implémentation. La page locale détaillée est en préparation — réservez dès maintenant via la page régionale.`
+          ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) fait partie des ${fmtPopulation(ville.population, "fr")} habitants éligibles à nos interventions sur site, audits IA et missions d'implémentation. La page locale détaillée est en préparation — réservez dès maintenant via la page régionale.`
           : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) is part of the ${fmtPopulation(ville.population, "en")} inhabitants eligible to our on-site engagements, AI audits and implementation missions. The detailed local page is in preparation — book now via the regional page.`
       }
     >

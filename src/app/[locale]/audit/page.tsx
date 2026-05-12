@@ -177,7 +177,7 @@ const ICON_BY_SLUG: Record<AuditSlug, typeof Zap> = {
 };
 
 // Étiquette de prix top-right sur chaque card de la pyramide.
-// Affichée en serif italique terracotta — visible immédiatement Ã  l'arrivée.
+// Affichée en serif italique terracotta — visible immédiatement à l'arrivée.
 // Mapping AuditSlug → tier id (SSOT pricing.ts).
 // Sprint 14.10.5 : zéro hardcode, tout dérivé de getTierById(AUDIT_TIERS, …).
 const TIER_ID_BY_SLUG: Record<AuditSlug, string> = {
@@ -220,7 +220,7 @@ export default async function AuditListing({ params }: Props) {
     {
       icon: Users2,
       label: isFr ? "1 zone ou toute l'entreprise" : "1 area or whole company",
-      detail: isFr ? "Niveau adapté Ã  votre besoin" : "Right level for your need",
+      detail: isFr ? "Niveau adapté à votre besoin" : "Right level for your need",
     },
     {
       icon: Zap,
@@ -393,7 +393,7 @@ export default async function AuditListing({ params }: Props) {
               className="hero-schema"
               ariaLabel={
                 isFr
-                  ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit Axion-IA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées Ã  l'IA, pilotage au jour le jour)."
+                  ? "Schéma : votre entreprise au départ, 4 étapes méthodologiques de l'audit Axion-IA (on observe, on cartographie, on priorise, on remet le plan), puis 6 gains business concrets (chiffre d'affaires en hausse, rentabilité améliorée, tâches automatisées, heures libérées, équipes formées à l'IA, pilotage au jour le jour)."
                   : "Diagram: your company at the start, 4 methodology steps of the Axion-IA audit (we observe, we map, we prioritise, we hand over the plan), then 6 concrete business gains (revenue growth, improved profitability, tasks automated, hours freed, teams trained in AI, day-to-day tracking)."
               }
             />
@@ -435,7 +435,7 @@ export default async function AuditListing({ params }: Props) {
         titleEm={isFr ? "vous correspond ?" : "fits you?"}
         description={
           isFr
-            ? "Cliquez sur ce qui vous décrit le mieux — la page vous emmène directement Ã  l'option recommandée. Vous pouvez aussi explorer la pyramide complète juste en dessous."
+            ? "Cliquez sur ce qui vous décrit le mieux — la page vous emmène directement à l'option recommandée. Vous pouvez aussi explorer la pyramide complète juste en dessous."
             : "Click what describes you best — the page jumps straight to the recommended option. You can also explore the full pyramid below."
         }
         contentClassName={TIGHT_X}
@@ -452,21 +452,21 @@ export default async function AuditListing({ params }: Props) {
                 ? [
                     {
                       icon: Briefcase,
-                      title: "TPE · 1 Ã  9 personnes",
+                      title: "TPE · 1 à 9 personnes",
                       hint: "Artisan, indépendant, petite équipe",
                       target: "flash",
                       level: `Niveau 1 · Flash · ${priceFlash}`,
                     },
                     {
                       icon: Building,
-                      title: "PME · 10 Ã  49 personnes",
-                      hint: "1 service Ã  optimiser ou aller plus loin",
+                      title: "PME · 10 à 49 personnes",
+                      hint: "1 service à optimiser ou aller plus loin",
                       target: "process",
                       level: `Niveau 2 · Audit ciblé · ${priceCibleFromPlus}`,
                     },
                     {
                       icon: Building2,
-                      title: "PME · 50 Ã  249 personnes",
+                      title: "PME · 50 à 249 personnes",
                       hint: "Plusieurs services, vision d'ensemble",
                       target: "strategique-pme",
                       level: `Niveau 3 · Stratégique PME · ${pricePmeFromPlus}`,
@@ -557,7 +557,7 @@ export default async function AuditListing({ params }: Props) {
                     {
                       icon: Wrench,
                       title: "Je veux automatiser un service précis",
-                      hint: "Vente, RH, finance, ops, support — étudié de A Ã  Z",
+                      hint: "Vente, RH, finance, ops, support — étudié de A à Z",
                       target: "process",
                       level: `Niveau 2 · Audit ciblé · ${priceCibleFromPlus}`,
                     },
@@ -647,7 +647,7 @@ export default async function AuditListing({ params }: Props) {
               >
                 diagnostic flash {priceFlash}
               </a>{" "}
-              est conçu exactement pour ça : on identifie 3 Ã  5 endroits où l&apos;IA peut
+              est conçu exactement pour ça : on identifie 3 à 5 endroits où l&apos;IA peut
               s&apos;insérer concrètement chez vous.
             </>
           ) : (
@@ -814,7 +814,7 @@ export default async function AuditListing({ params }: Props) {
                   )}
                 >
                   <div>
-                    {/* Header : icon + eyebrow Ã  gauche, PRIX en gros Ã  droite.
+                    {/* Header : icon + eyebrow à gauche, PRIX en gros à droite.
                         Le prix est l'élément le plus visible de la card —
                         serif italique terracotta, immédiatement lisible. */}
                     <div className="flex items-start gap-3">
@@ -981,7 +981,7 @@ export default async function AuditListing({ params }: Props) {
         titleEm={isFr ? "transparente" : "transparent"}
         description={
           isFr
-            ? "Tarifs HT. Sous le marché Ã  chaque étage, structure professionnelle, scope défini. Pour les ETI, devis personnalisé sous 48 h ouvrées avec phases et budgets."
+            ? "Tarifs HT. Sous le marché à chaque étage, structure professionnelle, scope défini. Pour les ETI, devis personnalisé sous 48 h ouvrées avec phases et budgets."
             : "Excl. VAT. Below market at every step, professional structure, defined scope. For mid-caps, custom quote within 48 business hours with phases and budgets."
         }
         contentClassName={TIGHT_X}
@@ -1047,7 +1047,7 @@ export default async function AuditListing({ params }: Props) {
 
         <p className="text-fg-muted mt-6 max-w-2xl text-base leading-relaxed">
           {isFr
-            ? "Frais de déplacement (sur site uniquement) : forfait journalier sans justificatifs. Logement Ã  la charge du client si plus de 200 km de Paris. Détails dans la "
+            ? "Frais de déplacement (sur site uniquement) : forfait journalier sans justificatifs. Logement à la charge du client si plus de 200 km de Paris. Détails dans la "
             : "Travel fees (on site only): flat daily rate, no receipts. Lodging at client's expense if more than 200 km from Paris. Details in the "}
           <Link
             href="/politique-deplacement"
@@ -1079,7 +1079,7 @@ export default async function AuditListing({ params }: Props) {
                 : "You're starting with AI or exploring?",
               answer: isFr ? "Niveau 1 · Flash" : "Level 1 · Flash",
               detail: isFr
-                ? "Sur 1 zone clé de votre entreprise, on identifie 3 Ã  5 endroits où l'IA peut s'insérer concrètement, avec gains chiffrés et plan d'action immédiat."
+                ? "Sur 1 zone clé de votre entreprise, on identifie 3 à 5 endroits où l'IA peut s'insérer concrètement, avec gains chiffrés et plan d'action immédiat."
                 : "On 1 key area of your company, we identify 3 to 5 places where AI can fit in concretely, with costed gains and an immediate action plan.",
               cta: isFr
                 ? `Réserver le diagnostic flash · ${priceFlash}`
@@ -1089,11 +1089,11 @@ export default async function AuditListing({ params }: Props) {
             },
             {
               question: isFr
-                ? "Vous avez un service précis Ã  automatiser ?"
+                ? "Vous avez un service précis à automatiser ?"
                 : "You have a specific service to automate?",
               answer: isFr ? "Niveau 2 · Audit ciblé" : "Level 2 · Targeted",
               detail: isFr
-                ? "RH, finance, vente, ops, support — un service complet étudié de A Ã  Z. On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois."
+                ? "RH, finance, vente, ops, support — un service complet étudié de A à Z. On liste tout ce qui peut être automatisé avec gains chiffrés et plan 6-12 mois."
                 : "HR, finance, sales, ops, support — a full service studied A to Z. We list everything that can be automated with costed gains and a 6-12 month plan.",
               cta: isFr ? "Demander un audit ciblé" : "Request a targeted audit",
               href: "/audit/demande?type=process",
@@ -1178,7 +1178,7 @@ export default async function AuditListing({ params }: Props) {
                   id: "remote-onsite",
                   question: "À distance ou sur site, quelle différence ?",
                   answer:
-                    "À distance : visio sécurisée + entretiens + analyse des données partagées. Plus rapide Ã  organiser, tarif réduit. Sur site : observation directe, immersion équipe, ateliers métier physiques. Recommandé dès le niveau Process pour les ateliers métier et indispensable pour le niveau Point de vente.",
+                    "À distance : visio sécurisée + entretiens + analyse des données partagées. Plus rapide à organiser, tarif réduit. Sur site : observation directe, immersion équipe, ateliers métier physiques. Recommandé dès le niveau Process pour les ateliers métier et indispensable pour le niveau Point de vente.",
                 },
                 {
                   id: "data",
@@ -1190,7 +1190,7 @@ export default async function AuditListing({ params }: Props) {
                   id: "after",
                   question: "Que se passe-t-il après l'audit ?",
                   answer:
-                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par Axion-IA (Module 3 Implémentation). Une session de suivi peut être programmée 30 Ã  60 jours après la livraison pour challenger la mise en Å“uvre — sans frais additionnels si elle tient en 60 minutes.",
+                    "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par Axion-IA (Module 3 Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en Å“uvre — sans frais additionnels si elle tient en 60 minutes.",
                 },
                 {
                   id: "eu-jurisdiction",
@@ -1249,7 +1249,7 @@ export default async function AuditListing({ params }: Props) {
       {/* SECTION ANTI-FEAR — quel que soit votre niveau IA */}
       <Section
         eyebrow={isFr ? "Concerné·e quel que soit votre niveau" : "A fit for every AI maturity"}
-        title={isFr ? "De zéro IA Ã  équipes IA-fluentes," : "From zero AI to fluent teams,"}
+        title={isFr ? "De zéro IA à équipes IA-fluentes," : "From zero AI to fluent teams,"}
         titleEm={isFr ? "un audit pour chaque entreprise" : "an audit for every company"}
         description={
           isFr
@@ -1264,13 +1264,13 @@ export default async function AuditListing({ params }: Props) {
               level: isFr ? "Niveau 1" : "Stage 1",
               title: isFr ? "Aucun usage IA en place" : "No AI use in place",
               body: isFr
-                ? "Le diagnostic flash identifie 3 Ã  5 endroits où l'IA peut s'insérer immédiatement, sans bouleverser votre quotidien. Vous gardez la main."
+                ? "Le diagnostic flash identifie 3 à 5 endroits où l'IA peut s'insérer immédiatement, sans bouleverser votre quotidien. Vous gardez la main."
                 : "The flash diagnosis identifies 3 to 5 places where AI can fit in immediately, without disrupting your day-to-day. You keep control.",
               recommendation: isFr ? "Flash · Audit ciblé" : "Flash · Targeted",
             },
             {
               level: isFr ? "Niveau 2" : "Stage 2",
-              title: isFr ? "Premiers usages IA déjÃ  testés" : "Early AI uses already tried",
+              title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
               body: isFr
                 ? "L'audit ciblé sur un service structure ce qui marche, élimine ce qui n'en vaut pas la peine, et chiffre la suite avec un plan 6-12 mois."
                 : "The targeted audit on a service structures what works, drops what doesn't, and costs the next step with a 6-12 month plan.",
@@ -1328,12 +1328,12 @@ export default async function AuditListing({ params }: Props) {
             filenameTarget="public/illustrations/audit-closing.avif"
             caption={
               isFr
-                ? "Plan d'action remis — document éditorial relié, prêt Ã  exécuter"
+                ? "Plan d'action remis — document éditorial relié, prêt à exécuter"
                 : "Action plan handed over — bound editorial document, ready to execute"
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un plan d'action remis Ã  l'issue d'un audit Axion-IA."
+                ? "Illustration éditoriale d'un plan d'action remis à l'issue d'un audit Axion-IA."
                 : "Editorial illustration of an action plan delivered at the end of an Axion-IA audit."
             }
           />
@@ -1347,7 +1347,7 @@ export default async function AuditListing({ params }: Props) {
         titleEm={isFr ? `à ${priceFlash}` : `at ${priceFlash}`}
         description={
           isFr
-            ? "On identifie 3 Ã  5 endroits concrets où l'IA peut s'insérer dans votre entreprise et tout ce qui peut être automatisé. Si vous voulez aller plus loin, 3 niveaux d'audit plus profonds vous attendent selon votre taille et votre ambition."
+            ? "On identifie 3 à 5 endroits concrets où l'IA peut s'insérer dans votre entreprise et tout ce qui peut être automatisé. Si vous voulez aller plus loin, 3 niveaux d'audit plus profonds vous attendent selon votre taille et votre ambition."
             : "We identify 3 to 5 concrete places where AI can fit in your company and everything that can be automated. To go further, 3 deeper audit levels await based on your size and ambition."
         }
         cta={

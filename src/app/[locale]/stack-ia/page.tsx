@@ -112,7 +112,7 @@ const accentClasses: Record<
   },
 };
 
-// Maturité — pill discrète Ã  droite du nom de l'outil.
+// Maturité — pill discrète à droite du nom de l'outil.
 const maturityCopy: Record<
   StackTool["maturity"],
   { fr: string; en: string; tone: "neutral" | "rising" | "niche" }
@@ -150,8 +150,8 @@ export default async function StackIaPage({ params }: Props) {
     },
     {
       icon: RefreshCw,
-      label: isFr ? "Mise Ã  jour trimestrielle" : "Quarterly update",
-      detail: isFr ? "Et Ã  chaque sortie majeure d'éditeur" : "Plus on every major vendor release",
+      label: isFr ? "Mise à jour trimestrielle" : "Quarterly update",
+      detail: isFr ? "Et à chaque sortie majeure d'éditeur" : "Plus on every major vendor release",
     },
   ];
 
@@ -221,7 +221,7 @@ export default async function StackIaPage({ params }: Props) {
       {/* HERO — layout 2 colonnes (texte + grille monogrammes). Doctrine v3 :
           halo-warm, titleEm serif italique terracotta, padding TIGHT_X. */}
       <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
-        {/* Grille texturée fond — vignette douce (identique Ã  /interventions) */}
+        {/* Grille texturée fond — vignette douce (identique à /interventions) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-60"
@@ -250,7 +250,7 @@ export default async function StackIaPage({ params }: Props) {
               {/* H1 — display-editorial standard (cohérence cross-pages).
                   Italique court « qui tourne » (multi-mots courts, points de
                   wrap naturels) plutôt qu'« opérationnelle » (14 char unique
-                  qui débordait Ã  7rem). Sens préservé : « entreprise qui
+                  qui débordait à 7rem). Sens préservé : « entreprise qui
                   tourne » = « entreprise opérationnelle » en français vivant.
                   hyphens-auto + lang en safety-net si jamais. */}
               <h1
@@ -269,7 +269,7 @@ export default async function StackIaPage({ params }: Props) {
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Il existe plus de 2 000 outils IA en 2026. En voici une sélection des plus déterminantes pour transformer votre entreprise — par fonction métier, sans partenariat commercial, mise Ã  jour chaque trimestre."
+                  ? "Il existe plus de 2 000 outils IA en 2026. En voici une sélection des plus déterminantes pour transformer votre entreprise — par fonction métier, sans partenariat commercial, mise à jour chaque trimestre."
                   : "There are over 2,000 AI tools out there in 2026. Here's a selection of the most decisive ones to transform your business — by function, no commercial partnership, refreshed every quarter."}
               </p>
 
@@ -339,7 +339,7 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "pas un comparatif" : "not a comparison chart"}
         description={
           isFr
-            ? "Le marché ne demande plus « quel outil choisir » — il existe 200 sites qui répondent Ã  ça. Il demande comment les faire travailler ensemble. Cette page est notre réponse, en 11 outils et 5 fonctions."
+            ? "Le marché ne demande plus « quel outil choisir » — il existe 200 sites qui répondent à ça. Il demande comment les faire travailler ensemble. Cette page est notre réponse, en 11 outils et 5 fonctions."
             : "The market no longer asks 'which tool should I pick' — there are 200 sites for that. It asks how to make them work together. This page is our answer, in 11 tools and 5 functions."
         }
         contentClassName={TIGHT_X}
@@ -351,7 +351,7 @@ export default async function StackIaPage({ params }: Props) {
               titleFr: "On choisit pour vous",
               titleEn: "We pick for you",
               bodyFr:
-                "Pas une liste neutre des « 50 meilleures IA ». Onze outils qu'on connaît Ã  fond et qu'on déploie nous-mêmes — vous gagnez les heures qu'on a passées Ã  les comparer.",
+                "Pas une liste neutre des « 50 meilleures IA ». Onze outils qu'on connaît à fond et qu'on déploie nous-mêmes — vous gagnez les heures qu'on a passées à les comparer.",
               bodyEn:
                 "Not a neutral list of the '50 best AIs'. Eleven tools we know inside out and deploy ourselves — you save the hours we spent comparing them.",
             },
@@ -703,7 +703,7 @@ export default async function StackIaPage({ params }: Props) {
             },
             {
               tool: "Gemini",
-              fr: "Excellent en intégration Workspace. N'apporte rien de plus si vous êtes déjÃ  sur Microsoft 365.",
+              fr: "Excellent en intégration Workspace. N'apporte rien de plus si vous êtes déjà sur Microsoft 365.",
               en: "Excellent in Workspace integration. Adds nothing if you're already on Microsoft 365.",
             },
             {
@@ -765,7 +765,7 @@ export default async function StackIaPage({ params }: Props) {
         <Container className={TIGHT_X}>
           <p className="text-fg-muted mx-auto max-w-3xl text-center text-[13px] leading-relaxed">
             {isFr
-              ? "Axion-IA n'est partenaire commercial, affilié, ni rémunéré par aucun des éditeurs cités sur cette page. Les marques sont la propriété de leurs détenteurs respectifs. Les choix présentés reflètent l'usage terrain quotidien du cabinet et sont susceptibles d'évoluer Ã  chaque revue trimestrielle."
+              ? "Axion-IA n'est partenaire commercial, affilié, ni rémunéré par aucun des éditeurs cités sur cette page. Les marques sont la propriété de leurs détenteurs respectifs. Les choix présentés reflètent l'usage terrain quotidien du cabinet et sont susceptibles d'évoluer à chaque revue trimestrielle."
               : "Axion-IA is not a commercial partner, affiliate, or paid promoter of any vendor listed on this page. All trademarks are the property of their respective owners. The picks reflect the consultancy's daily field usage and are subject to change at each quarterly review."}
           </p>
         </Container>
@@ -780,7 +780,7 @@ export default async function StackIaPage({ params }: Props) {
             filenameTarget="public/illustrations/stack-ia-closing.avif"
             caption={
               isFr
-                ? "Atelier d'outils éditorial — stack en mouvement, prête Ã  servir"
+                ? "Atelier d'outils éditorial — stack en mouvement, prête à servir"
                 : "Editorial tool workshop — stack in motion, ready to serve"
             }
             alt={
@@ -799,7 +799,7 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "votre entreprise ?" : "your company?"}
         description={
           isFr
-            ? "30 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjÃ , ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
+            ? "30 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
             : "30 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
         }
         cta={

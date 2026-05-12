@@ -7,16 +7,21 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { ContactForm } from "@/components/forms/ContactForm";
+import {
+  InterventionRequestForm,
+  mapObjetToSubject,
+} from "@/components/forms/InterventionRequestForm";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { INTERVENTION_FORMATS } from "@/content/interventions-taxonomy";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 // ============================================================================
-// Sprint 14.10.7 (Will 2026-05-11) — page dédiée formulaire interventions.
-// Pattern miroir de /audit/demande : page indexable, formulaire en hero, pas
-// de scroll anchor. Préfill du message via `?objet=<slug>` qui matche un
-// `InterventionFormatEntry.slug` (ou un objet libre type "cadrage-formation").
+// Sprint 14.10.7 fix Will (2026-05-12) — page formulaire repensée :
+//   - Formulaire VISIBLE IMMÉDIATEMENT en hero (sans scroll)
+//   - Champs étendus : prénom, nom, société, email, téléphone+indicatif,
+//     objet (select), description
+//   - Textes / sections de réassurance déplacés SOUS le formulaire
+//   - Aucun bloc « nos coordonnées » (Will : pas besoin)
 // ============================================================================
 
 interface Props {
@@ -42,15 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-// Construit un message pré-rempli basé sur le slug `?objet=`. Si le slug
-// matche un format de la taxonomie, on utilise son label. Sinon (objets
-// génériques type « cadrage-formation-equipe »), on génère une intro neutre.
-function buildDefaultMessage(objet: string | undefined, isFr: boolean): string {
-  if (!objet) {
-    return isFr
-      ? "Bonjour,\n\nJe souhaite cadrer une intervention IA. Voici mon contexte :\n\n"
-      : "Hello,\n\nI'd like to frame an AI session. Here's my context:\n\n";
-  }
+function buildDefaultDescription(objet: string | undefined, isFr: boolean): string {
+  if (!objet) return "";
   const entry = INTERVENTION_FORMATS.find((f) => f.slug === objet);
   if (entry) {
     const label = isFr ? entry.labelFr : entry.labelEn;
@@ -58,7 +56,6 @@ function buildDefaultMessage(objet: string | undefined, isFr: boolean): string {
       ? `Bonjour,\n\nJe souhaite plus d'informations sur l'intervention « ${label} ».\n\nMon contexte (taille d'équipe, secteur, niveau IA actuel, dates envisagées) :\n\n`
       : `Hello,\n\nI'd like more info on the « ${label} » session.\n\nMy context (team size, sector, current AI level, target dates):\n\n`;
   }
-  // Objets génériques (cadrage-formation-equipe, cadrage-1-jour, etc.)
   const objetLabel = objet.replace(/-/g, " ");
   return isFr
     ? `Bonjour,\n\nJe souhaite un cadrage pour : ${objetLabel}.\n\nMon contexte :\n\n`
@@ -72,7 +69,8 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
   const loc = locale as Locale;
   const isFr = loc === "fr";
   const { objet } = await searchParams;
-  const defaultMessage = buildDefaultMessage(objet, isFr);
+  const defaultDescription = buildDefaultDescription(objet, isFr);
+  const defaultSubject = mapObjetToSubject(objet);
 
   const breadcrumbItems = [
     { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
@@ -93,24 +91,38 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
         { icon: BookOpenCheck, label: "Documented method" },
       ];
 
-  const labels = isFr
+  const formLabels = isFr
     ? {
-        name: "Nom & prénom",
+        firstName: "Prénom",
+        lastName: "Nom",
+        company: "Société",
         email: "Email professionnel",
-        company: "Entreprise (optionnel)",
-        message: "Décrivez votre besoin",
+        phoneCountryCode: "Indicatif pays",
+        phoneNumber: "Téléphone",
+        subject: "Objet de la demande",
+        subjectPlaceholder: "Sélectionnez l'intervention qui vous intéresse…",
+        description: "Décrivez votre besoin",
+        descriptionPlaceholder:
+          "Taille d'équipe, secteur d'activité, niveau IA actuel, dates envisagées, contraintes particulières…",
         consent:
           "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité.",
         submit: "Envoyer ma demande",
-        sending: "Envoi…",
+        sending: "Envoi en cours…",
         success: "Demande reçue. Nous revenons vers vous sous 48 h ouvrées.",
         failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
       }
     : {
-        name: "Full name",
+        firstName: "First name",
+        lastName: "Last name",
+        company: "Company",
         email: "Professional email",
-        company: "Company (optional)",
-        message: "Describe your need",
+        phoneCountryCode: "Country code",
+        phoneNumber: "Phone number",
+        subject: "Request subject",
+        subjectPlaceholder: "Select the session you're interested in…",
+        description: "Describe your need",
+        descriptionPlaceholder:
+          "Team size, sector, current AI level, target dates, specific constraints…",
         consent:
           "I agree to my data being used to process this request in accordance with the privacy policy.",
         submit: "Send my request",
@@ -119,7 +131,6 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
         failure: "An error occurred. Try again or email contact@axion-ia.com.",
       };
 
-  // ContactPage JSON-LD pour SEO + AEO
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
@@ -135,67 +146,122 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO court — formulaire visible immédiatement (mt-8 sous le hero) */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-12 sm:py-14 lg:py-16">
+      {/* HERO + FORMULAIRE COMPACT — Sprint 14.10.7 fix Will : formulaire
+          visible immédiatement, pas de scroll. Layout 2 colonnes desktop
+          (texte court à gauche, formulaire à droite). */}
+      <section className="bg-halo-warm relative overflow-hidden py-10 sm:py-12 lg:py-14">
         <Container className="lg:px-6 xl:px-10">
-          <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">
+            {/* Colonne gauche : intro courte + trust pills */}
+            <div>
+              <h1 className="display-editorial text-fg">
+                {isFr ? "Cadrons votre intervention " : "Let's frame your session "}
+                <span
+                  className="text-terracotta mx-1 italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "ensemble" : "together"}
+                </span>
+              </h1>
+
+              <p className="text-fg-soft mt-4 max-w-lg text-base leading-relaxed sm:text-lg">
+                {isFr
+                  ? "Décrivez votre besoin (intervention souhaitée, taille d'équipe, contexte). Nous revenons sous 48 h ouvrées avec un cadrage personnalisé."
+                  : "Describe your need (preferred session, team size, context). We get back within 48 business hours with a personalised framing."}
+              </p>
+
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {pills.map((p) => {
+                  const Icon = p.icon;
+                  return (
+                    <li
+                      key={p.label}
+                      className="bg-paper border-border text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium"
+                    >
+                      <Icon aria-hidden="true" className="text-terracotta-deep h-3.5 w-3.5" />
+                      {p.label}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* Colonne droite : FORMULAIRE en hero */}
+            <div className="bg-paper border-border shadow-card rounded-3xl border p-6 sm:p-8">
+              <InterventionRequestForm
+                labels={formLabels}
+                {...(defaultSubject ? { defaultSubject } : {})}
+                {...(defaultDescription ? { defaultDescription } : {})}
               />
-              {isFr ? "Demande d'intervention IA" : "AI session request"}
-            </p>
-
-            <h1 className="display-editorial text-fg mt-4">
-              {isFr ? "Cadrons votre intervention " : "Let's frame your session "}
-              <span
-                className="text-terracotta mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? "ensemble" : "together"}
-              </span>
-            </h1>
-
-            <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed">
-              {isFr
-                ? "Décrivez votre besoin (format souhaité, taille d'équipe, contexte). Nous revenons vers vous sous 48 h ouvrées avec un cadrage personnalisé."
-                : "Describe your need (preferred format, team size, context). We get back to you within 48 business hours with a personalised framing."}
-            </p>
-
-            {/* Trust pills */}
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {pills.map((p) => {
-                const Icon = p.icon;
-                return (
-                  <li
-                    key={p.label}
-                    className="bg-paper border-border text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium"
-                  >
-                    <Icon aria-hidden="true" className="text-terracotta-deep h-3.5 w-3.5" />
-                    {p.label}
-                  </li>
-                );
-              })}
-            </ul>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* FORMULAIRE — directement sous le hero, pas de scroll */}
+      {/* SECTION RÉASSURANCE — sous le formulaire (pas avant) */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "Formulaire" : "Form"}
-        title={isFr ? "Votre demande" : "Your request"}
-        titleEm={isFr ? "personnalisée" : "personalised"}
+        eyebrow={isFr ? "Comment ça fonctionne" : "How it works"}
+        title={isFr ? "Une réponse personnalisée" : "A personalised reply"}
+        titleEm={isFr ? "sous 48 h ouvrées" : "within 48 business hours"}
         description={
           isFr
             ? "Plus le contexte est précis, plus notre réponse sera ciblée. Nous traitons chaque demande individuellement — pas de pipeline automatique."
             : "The more precise the context, the more targeted our reply. We handle each request individually — no automated pipeline."
         }
       >
-        <Container className="max-w-2xl">
-          <ContactForm labels={labels} defaultMessage={defaultMessage} />
+        <Container className="max-w-3xl">
+          <ol className="border-border/60 border-l-2 pl-6">
+            {(isFr
+              ? [
+                  {
+                    title: "Vous remplissez le formulaire",
+                    description:
+                      "Quelques minutes : prénom, nom, société, email, téléphone, objet, description. Pas de tracking, pas de profilage.",
+                  },
+                  {
+                    title: "Nous vous appelons sous 48 h ouvrées",
+                    description:
+                      "Pour comprendre votre contexte, valider l'intervention adaptée, et chiffrer si nécessaire. Sans engagement.",
+                  },
+                  {
+                    title: "Vous pré-réservez sur le calendrier",
+                    description:
+                      "Une fois le format validé, vous choisissez votre date sur le calendrier maison. Confirmation immédiate, paiement 50 % à la réservation.",
+                  },
+                ]
+              : [
+                  {
+                    title: "You fill the form",
+                    description:
+                      "A few minutes: first name, last name, company, email, phone, subject, description. No tracking, no profiling.",
+                  },
+                  {
+                    title: "We call you within 48 business hours",
+                    description:
+                      "To understand your context, validate the right session, and quote if needed. No commitment.",
+                  },
+                  {
+                    title: "You pre-book on the calendar",
+                    description:
+                      "Once the format is validated, pick your date on our live calendar. Immediate confirmation, 50 % payment on booking.",
+                  },
+                ]
+            ).map((step, i) => (
+              <li key={i} className="relative pb-6 last:pb-0">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta ring-terracotta-soft absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-white ring-4"
+                >
+                  {i + 1}
+                </span>
+                <h3 className="text-fg text-base font-semibold">{step.title}</h3>
+                <p className="text-fg-soft mt-1 text-[14.5px] leading-relaxed">
+                  {step.description}
+                </p>
+              </li>
+            ))}
+          </ol>
         </Container>
       </Section>
 

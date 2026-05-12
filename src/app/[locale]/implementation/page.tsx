@@ -83,7 +83,7 @@ export default async function ImplementationListing({ params }: Props) {
     ? [
         { icon: Clock, label: "Devis ferme sous 48 h" },
         { icon: ShieldCheck, label: "Forfait fixe · sans abonnement" },
-        { icon: Sparkles, label: "Livraison en 2 Ã  6 semaines" },
+        { icon: Sparkles, label: "Livraison en 2 à 6 semaines" },
         { icon: Check, label: "Formation incluse · vous êtes propriétaire" },
       ]
     : [
@@ -150,7 +150,7 @@ export default async function ImplementationListing({ params }: Props) {
           eyebrow: "Idéal",
           title: "Audit d'abord",
           description:
-            "Pour cadrer votre projet et identifier les usages Ã  plus fort impact avant d'investir. Quatre niveaux d'audit, du diagnostic Flash Ã  l'audit stratégique ETI.",
+            "Pour cadrer votre projet et identifier les usages à plus fort impact avant d'investir. Quatre niveaux d'audit, du diagnostic Flash à l'audit stratégique ETI.",
           ctaLabel: "Voir les niveaux d'audit",
           ctaHref: "/audit",
         },
@@ -158,7 +158,7 @@ export default async function ImplementationListing({ params }: Props) {
           eyebrow: "Si vous savez",
           title: "Implémentation directe",
           description:
-            "Vous avez une idée précise (chatbot, devis auto, assistant commercial). On l'installe en 2 Ã  6 semaines, en forfait fixe.",
+            "Vous avez une idée précise (chatbot, devis auto, assistant commercial). On l'installe en 2 à 6 semaines, en forfait fixe.",
           ctaLabel: "Voir le catalogue",
           ctaHref: "#catalogue",
         },
@@ -166,7 +166,7 @@ export default async function ImplementationListing({ params }: Props) {
           eyebrow: "Notre engagement",
           title: "Sans abonnement",
           description:
-            "Vous payez une fois, c'est Ã  vous. Pas de maintenance mensuelle imposée. Évolutions plus tard si vous le décidez.",
+            "Vous payez une fois, c'est à vous. Pas de maintenance mensuelle imposée. Évolutions plus tard si vous le décidez.",
           ctaLabel: "Comment ça marche",
           ctaHref: "/methodologie",
         },
@@ -229,9 +229,9 @@ export default async function ImplementationListing({ params }: Props) {
               "Vous configurez tout vous-même : aucun service, aucun accompagnement",
               "Forte courbe d'apprentissage technique pour des cas avancés",
               "Plafonne vite : pas d'IA réelle, pas d'intelligence métier",
-              "Coûts qui explosent au volume (facturé Ã  la tâche)",
+              "Coûts qui explosent au volume (facturé à la tâche)",
               "Abonnement permanent — vous payez tant que ça tourne",
-              "Maintenance et corrections de pannes Ã  votre charge",
+              "Maintenance et corrections de pannes à votre charge",
             ],
             criteria: ["no", "yes", "no", "no"] as const,
             verdict:
@@ -243,12 +243,12 @@ export default async function ImplementationListing({ params }: Props) {
             price: "25 k€ â†’ 200 k€",
             highlight: false,
             pros: [
-              "Capacité Ã  traiter des sujets très complexes",
+              "Capacité à traiter des sujets très complexes",
               "Sur mesure poussé, équipe dédiée",
             ],
             cons: [
               "Devis élastiques, dépassements fréquents",
-              "Délais 3 Ã  6 mois minimum",
+              "Délais 3 à 6 mois minimum",
               "Régie au temps : vous payez les hésitations",
               "Maintenance continue souvent imposée",
             ],
@@ -264,12 +264,12 @@ export default async function ImplementationListing({ params }: Props) {
             pros: [
               "Cabinet spécialisé IA & automatisation — vous avez un partenaire, pas un outil",
               "Forfait fixe · devis ferme avant tout démarrage",
-              "Vraie IA connectée Ã  vos outils (pas juste un workflow)",
-              "Livraison en 2 Ã  6 semaines, sprints + démos hebdo",
+              "Vraie IA connectée à vos outils (pas juste un workflow)",
+              "Livraison en 2 à 6 semaines, sprints + démos hebdo",
               "Vous êtes propriétaire — code, données, accès",
               "Pas d'abonnement mensuel imposé",
               "Catalogue éprouvé (~50 automatisations) + sur mesure",
-              "S'adapte de l'artisan Ã  l'ETI · IA Custom pour les grands comptes",
+              "S'adapte de l'artisan à l'ETI · IA Custom pour les grands comptes",
             ],
             cons: ["Pas de régie continue (volontairement — vous restez libre)"],
             criteria: ["yes", "yes", "yes", "yes"] as const,
@@ -356,10 +356,10 @@ export default async function ImplementationListing({ params }: Props) {
         {
           size: "Artisan / TPE",
           industry: "Plombier, électricien, paysagiste",
-          metric: "Ã— 3 devis envoyés",
+          metric: "× 3 devis envoyés",
           before: "Avant : 30 min le soir, devis oubliés, clients qui partent.",
           after:
-            "Après : un brief vocal sur chantier, le devis sort en 30 secondes, prêt Ã  envoyer.",
+            "Après : un brief vocal sur chantier, le devis sort en 30 secondes, prêt à envoyer.",
         },
         {
           size: "Commerce / restauration",
@@ -373,7 +373,7 @@ export default async function ImplementationListing({ params }: Props) {
           size: "Cabinet libéral / TPE",
           industry: "Expert-comptable, avocat, médecin",
           metric: "âˆ’ 4 h / semaine",
-          before: "Avant : saisie de factures, comptes-rendus tapés Ã  la main, paperasse partout.",
+          before: "Avant : saisie de factures, comptes-rendus tapés à la main, paperasse partout.",
           after:
             "Après : tout est lu, classé, pré-rédigé. L'équipe se recentre sur le conseil et le diagnostic.",
         },
@@ -381,7 +381,7 @@ export default async function ImplementationListing({ params }: Props) {
           size: "PME B2B (10-50)",
           industry: "Services, SaaS, distribution spécialisée",
           metric: "+ 22 % taux de signature",
-          before: "Avant : devis envoyés et oubliés, commerciaux qui appellent Ã  l'aveugle.",
+          before: "Avant : devis envoyés et oubliés, commerciaux qui appellent à l'aveugle.",
           after:
             "Après : relances automatiques, leads scorés, commerciaux focalisés sur les chauds.",
         },
@@ -397,7 +397,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           size: "Grand groupe (500+)",
           industry: "Sièges, multi-pays, fonctions support centralisées",
-          metric: "Ã— 5 productivité support",
+          metric: "× 5 productivité support",
           before: "Avant : 50 fois la même question RH/IT/paie, équipes interrompues sans cesse.",
           after:
             "Après : chatbot interne sur vos procédures, traduction temps réel, recherche dans Drive en 5 secondes.",
@@ -407,7 +407,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           size: "Trades / micro-business",
           industry: "Plumber, electrician, landscaper",
-          metric: "3Ã— quotes sent",
+          metric: "3× quotes sent",
           before: "Before: 30 min in the evening, forgotten quotes, customers leaving.",
           after: "After: voice brief on site, quote out in 30 seconds, ready to send.",
         },
@@ -444,7 +444,7 @@ export default async function ImplementationListing({ params }: Props) {
         {
           size: "Enterprise (500+)",
           industry: "HQs, multi-country, centralized support functions",
-          metric: "5Ã— support productivity",
+          metric: "5× support productivity",
           before: "Before: same HR/IT/payroll question 50 times, teams constantly interrupted.",
           after:
             "After: internal chatbot on your procedures, real-time translation, Drive search in 5 seconds.",
@@ -473,14 +473,14 @@ export default async function ImplementationListing({ params }: Props) {
         },
         {
           id: "p4",
-          title: "Build · 2 Ã  6 semaines",
+          title: "Build · 2 à 6 semaines",
           description: "Sprints courts, démos hebdomadaires, validation continue. Pas de tunnel.",
         },
         {
           id: "p5",
           title: "Livraison + formation incluse",
           description:
-            "Demi-journée de prise en main avec vos équipes. Documentation, runbook, accès Ã  tout. C'est Ã  vous.",
+            "Demi-journée de prise en main avec vos équipes. Documentation, runbook, accès à tout. C'est à vous.",
         },
       ]
     : [
@@ -533,13 +533,13 @@ export default async function ImplementationListing({ params }: Props) {
           id: "q-abonnement",
           question: "Y a-t-il une maintenance mensuelle obligatoire ?",
           answer:
-            "Non. Vous payez une fois, c'est Ã  vous. Si plus tard vous voulez faire évoluer (nouvelles automatisations, ajustements), vous nous rappelez et on chiffre une mission complémentaire. Aucune redevance ne tourne en arrière-plan.",
+            "Non. Vous payez une fois, c'est à vous. Si plus tard vous voulez faire évoluer (nouvelles automatisations, ajustements), vous nous rappelez et on chiffre une mission complémentaire. Aucune redevance ne tourne en arrière-plan.",
         },
         {
           id: "q-delai",
           question: "Combien de temps avant que ça tourne chez moi ?",
           answer:
-            "Entre 2 et 6 semaines selon la complexité, Ã  compter de la signature du devis. Une automatisation simple (lecture de factures, chatbot site web) : 2 semaines. Un projet plus structurant (assistant commercial connecté Ã  votre CRM) : 4 Ã  6 semaines.",
+            "Entre 2 et 6 semaines selon la complexité, à compter de la signature du devis. Une automatisation simple (lecture de factures, chatbot site web) : 2 semaines. Un projet plus structurant (assistant commercial connecté à votre CRM) : 4 à 6 semaines.",
         },
         {
           id: "q-donnees",
@@ -549,26 +549,26 @@ export default async function ImplementationListing({ params }: Props) {
         },
         {
           id: "q-garantie",
-          question: "Et si je ne suis pas satisfait Ã  la livraison ?",
+          question: "Et si je ne suis pas satisfait à la livraison ?",
           answer:
-            "Sprints courts avec démos hebdomadaires : vous validez Ã  chaque étape, pas de mauvaise surprise Ã  la fin. À la livraison, 30 jours de support inclus pour ajustements. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, on la corrige sans surcoût.",
+            "Sprints courts avec démos hebdomadaires : vous validez à chaque étape, pas de mauvaise surprise à la fin. À la livraison, 30 jours de support inclus pour ajustements. Si une fonctionnalité livrée ne correspond pas au cahier des charges signé, on la corrige sans surcoût.",
         },
         {
           id: "q-prerequis",
-          question: "Faut-il déjÃ  avoir une culture IA ou une équipe data en interne ?",
+          question: "Faut-il déjà avoir une culture IA ou une équipe data en interne ?",
           answer:
-            "Non. On part de votre niveau réel — vos outils actuels, vos vraies tâches répétitives, votre quotidien. Aucune compétence technique n'est requise pour démarrer. On choisit ensemble des cas d'usage simples et tangibles, on construit la trajectoire Ã  votre rythme, et la formation incluse Ã  la livraison rend vos équipes autonomes. Si vous n'avez jamais touché Ã  l'IA, c'est même souvent plus simple — pas d'habitudes Ã  défaire.",
+            "Non. On part de votre niveau réel — vos outils actuels, vos vraies tâches répétitives, votre quotidien. Aucune compétence technique n'est requise pour démarrer. On choisit ensemble des cas d'usage simples et tangibles, on construit la trajectoire à votre rythme, et la formation incluse à la livraison rend vos équipes autonomes. Si vous n'avez jamais touché à l'IA, c'est même souvent plus simple — pas d'habitudes à défaire.",
         },
         {
           id: "q-taille",
-          question: "C'est adapté Ã  une entreprise comme la mienne ?",
+          question: "C'est adapté à une entreprise comme la mienne ?",
           answer: `Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. Notre catalogue couvre artisan (devis, suivi clients) → grand groupe (assistant juridique, agents internes). Si vous hésitez, l'audit Flash (${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}) cadre le projet en 2 jours.`,
         },
         {
           id: "q-hors-catalogue",
           question: "Mon besoin n'est pas dans le catalogue, vous le faites quand même ?",
           answer:
-            "Oui. Le catalogue représente les usages les plus demandés. Toute tâche répétitive ou processus chronophage spécifique Ã  votre métier est automatisable. Décrivez-le, on revient avec un devis ferme sous 48 h.",
+            "Oui. Le catalogue représente les usages les plus demandés. Toute tâche répétitive ou processus chronophage spécifique à votre métier est automatisable. Décrivez-le, on revient avec un devis ferme sous 48 h.",
         },
       ]
     : [
@@ -633,21 +633,21 @@ export default async function ImplementationListing({ params }: Props) {
     ? [
         { label: "Ventes", benefit: "+ CA, âˆ’ coût", accent: "primary" as const },
         { label: "Service client", benefit: "Réponse 24/7", accent: "terracotta" as const },
-        { label: "Marketing", benefit: "Visibilité 10Ã—", accent: "terracotta" as const },
+        { label: "Marketing", benefit: "Visibilité 10×", accent: "terracotta" as const },
         { label: "Données", benefit: "Décisions claires", accent: "primary" as const },
         { label: "Métier", benefit: "Chiffrer en 30 s", accent: "terracotta" as const },
         { label: "Admin", benefit: "Zéro saisie", accent: "sage" as const },
-        { label: "RH", benefit: "Recruter 5Ã— +", accent: "mocha" as const },
+        { label: "RH", benefit: "Recruter 5× +", accent: "mocha" as const },
         { label: "Com' interne", benefit: "Équipes alignées", accent: "sage" as const },
       ]
     : [
         { label: "Sales", benefit: "+ revenue, âˆ’ cost", accent: "primary" as const },
         { label: "Customer service", benefit: "24/7 answers", accent: "terracotta" as const },
-        { label: "Marketing", benefit: "10Ã— visibility", accent: "terracotta" as const },
+        { label: "Marketing", benefit: "10× visibility", accent: "terracotta" as const },
         { label: "Data", benefit: "Clear decisions", accent: "primary" as const },
         { label: "Operations", benefit: "Quote in 30 s", accent: "terracotta" as const },
         { label: "Back-office", benefit: "Zero data entry", accent: "sage" as const },
-        { label: "HR", benefit: "5Ã— faster hiring", accent: "mocha" as const },
+        { label: "HR", benefit: "5× faster hiring", accent: "mocha" as const },
         { label: "Internal comms", benefit: "Aligned teams", accent: "sage" as const },
       ];
 
@@ -699,7 +699,7 @@ export default async function ImplementationListing({ params }: Props) {
               </p>
 
               <h1 className="display-editorial text-fg mt-5">
-                {isFr ? "Vous savez déjÃ  ce qu'il vous faut ? " : "Already know what you need? "}
+                {isFr ? "Vous savez déjà ce qu'il vous faut ? " : "Already know what you need? "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -726,7 +726,7 @@ export default async function ImplementationListing({ params }: Props) {
             </div>
 
             <div className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
-              {/* Mobile / tablette < lg : grid compact 2Ã—4 — le SVG 8 satellites
+              {/* Mobile / tablette < lg : grid compact 2×4 — le SVG 8 satellites
                   serait illisible sous 1024 px. Même contenu, autre densité. */}
               <ul
                 aria-label={
@@ -854,11 +854,11 @@ export default async function ImplementationListing({ params }: Props) {
       <Section
         id="catalogue"
         eyebrow={isFr ? "Catalogue par fonction" : "Catalogue by function"}
-        title={isFr ? "Choisissez le département Ã " : "Pick the function to"}
+        title={isFr ? "Choisissez le département à" : "Pick the function to"}
         titleEm={isFr ? "automatiser" : "automate"}
         description={
           isFr
-            ? "8 fonctions d'entreprise, ~50 automatisations prêtes Ã  installer. Cliquez sur un domaine pour voir tout ce que l'on peut mettre en place — du standard téléphonique IA au chiffrage de chantier en 30 secondes."
+            ? "8 fonctions d'entreprise, ~50 automatisations prêtes à installer. Cliquez sur un domaine pour voir tout ce que l'on peut mettre en place — du standard téléphonique IA au chiffrage de chantier en 30 secondes."
             : "8 business functions, ~50 automations ready to install. Click on an area to see everything we can set up — from AI phone receptionist to 30-second project quoting."
         }
       >
@@ -1136,10 +1136,10 @@ export default async function ImplementationListing({ params }: Props) {
         tone="paper"
         eyebrow={isFr ? "Pour qui ça change tout" : "For whom it changes everything"}
         title={isFr ? "TPE, PME, ETI ou grand groupe —" : "Small, mid-market or enterprise —"}
-        titleEm={isFr ? "Ã  chacun son scénario" : "each its own scenario"}
+        titleEm={isFr ? "à chacun son scénario" : "each its own scenario"}
         description={
           isFr
-            ? "Notre cÅ“ur de cible : les TPE et PME qui veulent une IA opérationnelle vite, sans tunnel ni régie. Mais nos automatisations s'adaptent aussi Ã  l'ETI, au grand groupe et aux institutions — IA Custom dédiée pour les périmètres complexes."
+            ? "Notre cÅ“ur de cible : les TPE et PME qui veulent une IA opérationnelle vite, sans tunnel ni régie. Mais nos automatisations s'adaptent aussi à l'ETI, au grand groupe et aux institutions — IA Custom dédiée pour les périmètres complexes."
             : "Our core target: small businesses and SMBs who want operational AI fast, no tunnel, no time-and-materials. But our automations also fit mid-market, enterprise and institutions — dedicated Custom AI for complex perimeters."
         }
       >
@@ -1249,7 +1249,7 @@ export default async function ImplementationListing({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un système opérationnel livré Ã  l'issue d'une implémentation Axion-IA."
+                ? "Illustration éditoriale d'un système opérationnel livré à l'issue d'une implémentation Axion-IA."
                 : "Editorial illustration of an operational system delivered at the end of an Axion-IA implementation."
             }
           />
@@ -1257,13 +1257,13 @@ export default async function ImplementationListing({ params }: Props) {
       </Section>
 
       <CtaBlock
-        eyebrow={isFr ? "Prêt Ã  démarrer" : "Ready to start"}
+        eyebrow={isFr ? "Prêt à démarrer" : "Ready to start"}
         title={isFr ? "Vous payez une fois." : "You pay"}
-        titleEm={isFr ? "C'est Ã  vous." : "once."}
+        titleEm={isFr ? "C'est à vous." : "once."}
         titleTail={isFr ? "" : " It's yours."}
         description={
           isFr
-            ? "Forfait fixe, livraison en 2 Ã  6 semaines, formation incluse. Pas d'abonnement, pas de maintenance imposée. Réponse Ã  votre brief sous 48 h ouvrées."
+            ? "Forfait fixe, livraison en 2 à 6 semaines, formation incluse. Pas d'abonnement, pas de maintenance imposée. Réponse à votre brief sous 48 h ouvrées."
             : "Fixed fee, 2 to 6 week delivery, training included. No subscription, no imposed maintenance. Reply to your brief within 48 business hours."
         }
         cta={

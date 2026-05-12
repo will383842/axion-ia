@@ -91,7 +91,7 @@ export default async function HelpCenter({ params }: Props) {
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
-      {/* HERO 2-col — texte Ã  gauche, HelpHeroSchema (constellation 6 thématiques) Ã  droite */}
+      {/* HERO 2-col — texte à gauche, HelpHeroSchema (constellation 6 thématiques) à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">

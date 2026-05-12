@@ -81,7 +81,7 @@ export default async function Contact({ params }: Props) {
           id: "rgpd",
           question: "Comment traitez-vous les données envoyées via le formulaire ?",
           answer:
-            "Les données du formulaire sont stockées en Estonie (UE), traitées exclusivement pour répondre Ã  votre demande, et supprimées Ã  six mois si la conversation n'aboutit pas. Aucune revente, aucun outil tiers de tracking, pas de profilage. Détails dans la politique de confidentialité.",
+            "Les données du formulaire sont stockées en Estonie (UE), traitées exclusivement pour répondre à votre demande, et supprimées à six mois si la conversation n'aboutit pas. Aucune revente, aucun outil tiers de tracking, pas de profilage. Détails dans la politique de confidentialité.",
         },
         {
           id: "rdv",
@@ -162,7 +162,7 @@ export default async function Contact({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2-col — texte Ã  gauche, ContactHeroSchema (3 portes d'entrée) Ã  droite */}
+      {/* HERO 2-col — texte à gauche, ContactHeroSchema (3 portes d'entrée) à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
@@ -271,8 +271,8 @@ export default async function Contact({ params }: Props) {
                 <CardTitle>{isFr ? "Demander un audit" : "Request an audit"}</CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "4 tailles Ã— 2 modalités. Formulaire 5 étapes."
-                    : "4 sizes Ã— 2 modalities. 5-step form."}
+                    ? "4 tailles × 2 modalités. Formulaire 5 étapes."
+                    : "4 sizes × 2 modalities. 5-step form."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -330,12 +330,12 @@ export default async function Contact({ params }: Props) {
                     company: "Entreprise (optionnel)",
                     message: "Votre message",
                     consent:
-                      "J'accepte que mes données soient utilisées pour traiter cette demande conformément Ã  la politique de confidentialité.",
+                      "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité.",
                     submit: "Envoyer le message",
                     sending: "Envoi…",
                     success: "Message reçu. Nous vous répondons sous 48 h ouvrées.",
                     failure:
-                      "Une erreur est survenue. Réessayez ou écrivez Ã  contact@axion-ia.com.",
+                      "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
                   }
                 : {
                     name: "Full name",
@@ -368,7 +368,7 @@ export default async function Contact({ params }: Props) {
       />
 
       <CtaBlock
-        title={isFr ? "Prête Ã  démarrer ?" : "Ready to start?"}
+        title={isFr ? "Prête à démarrer ?" : "Ready to start?"}
         description={
           isFr
             ? "Réservez une intervention ou demandez un devis — réponse sous 48 h ouvrées."

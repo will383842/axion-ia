@@ -88,7 +88,7 @@ export default async function BlogListing({ params }: Props) {
 
   // ItemList JSON-LD — expose chaque article au crawler depuis l'index
   // (BlogPosting per article + BlogPosting JSON-LD individuel sur /blog/[slug]
-  // déjÃ  émis ailleurs).
+  // déjà émis ailleurs).
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -122,7 +122,7 @@ export default async function BlogListing({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2-col — texte Ã  gauche, BlogHeroSchema (3 articles récents) Ã  droite */}
+      {/* HERO 2-col — texte à gauche, BlogHeroSchema (3 articles récents) à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
@@ -198,7 +198,7 @@ export default async function BlogListing({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "Axion-IA n'écrit que sur des sujets éprouvés en mission. Les articles documentent une méthodologie qui a fonctionné, un cas client qui a livré du ROI, ou une décision technique tranchée par l'expérience. Pas de revue de presse, pas de hot takes IA — chaque billet a vocation Ã  rester actionnable 12 mois après publication. Si un sujet est pris dans la hype et n'a pas encore de réponse stable, on attend qu'il ait mûri avant d'en parler."
+              ? "Axion-IA n'écrit que sur des sujets éprouvés en mission. Les articles documentent une méthodologie qui a fonctionné, un cas client qui a livré du ROI, ou une décision technique tranchée par l'expérience. Pas de revue de presse, pas de hot takes IA — chaque billet a vocation à rester actionnable 12 mois après publication. Si un sujet est pris dans la hype et n'a pas encore de réponse stable, on attend qu'il ait mûri avant d'en parler."
               : "Axion-IA writes only about topics tested in the field. Articles document a methodology that worked, a client case that delivered ROI, or a technical decision settled by experience. No press review, no AI hot takes — every post is meant to remain actionable 12 months after publication. If a topic is caught in the hype and has no stable answer, we wait for it to mature before writing about it."}
           </p>
         </Container>

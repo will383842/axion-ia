@@ -183,7 +183,7 @@ export default async function Home({ params }: HomeProps) {
 
   // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
   // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
-  // l'approche s'adapte Ã  toutes les échelles (cf. valueWhy2).
+  // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
   const featuredSlugs = [
     "tpe-artisan-prospection",
     "industrie-comptabilite",
@@ -207,7 +207,7 @@ export default async function Home({ params }: HomeProps) {
     answer: f[loc].answer,
   }));
 
-  // JSON-LD homepage. Organization déjÃ  émis layout-level via
+  // JSON-LD homepage. Organization déjà émis layout-level via
   // `buildOrganizationJsonLd` (riche : sameAs + contactPoint + areaServed +
   // foundingLocation + knowsLanguage). Pas de re-émission ici (signal Google
   // "double Organization" ambigu). Le FAQ utilise `buildFaqSpeakableJsonLd`
@@ -254,11 +254,11 @@ export default async function Home({ params }: HomeProps) {
             </div>
 
             {/* Colonne droite : illustration narrative enrichie — 3 services
-                connectés Ã  votre entreprise avec courbes, sparkline, badges.
-                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carré 576Ã—576 lg+,
+                connectés à votre entreprise avec courbes, sparkline, badges.
+                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carré 576×576 lg+,
                 aligné sur les 10 autres pages (Audit, Cas-concrets, etc.) pour
                 harmonisation stricte. preserveAspectRatio="meet" letterbox
-                léger sides (~34px) pour viewBox 600Ã—680 dans box 1:1. */}
+                léger sides (~34px) pour viewBox 600×680 dans box 1:1. */}
             <div aria-hidden="true" className="hero-schema pointer-events-none hidden lg:block">
               <svg
                 viewBox="0 0 600 680"

@@ -64,7 +64,7 @@ export default async function FaqPage({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2-col custom — texte Ã  gauche, FaqHeroSchema 3 thématiques Ã  droite */}
+      {/* HERO 2-col custom — texte à gauche, FaqHeroSchema 3 thématiques à droite */}
       <section className="bg-halo-warm text-fg relative pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
         <Container className="relative">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
@@ -216,7 +216,7 @@ export default async function FaqPage({ params }: Props) {
       <CtaBlock
         title={isFr ? "Une question non listée ?" : "Question not listed?"}
         description={
-          isFr ? "Écrivez-nous Ã  contact@axion-ia.com." : "Email us at contact@axion-ia.com."
+          isFr ? "Écrivez-nous à contact@axion-ia.com." : "Email us at contact@axion-ia.com."
         }
         cta={
           <Cta href="/contact" size="lg">

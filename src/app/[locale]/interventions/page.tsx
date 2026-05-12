@@ -432,7 +432,7 @@ export default async function InterventionsListing({ params }: Props) {
   const reservationFlow = [
     {
       icon: Calendar,
-      title: isFr ? "Vous réservez sur le calendrier" : "You book on the calendar",
+      title: isFr ? "Vous pré-réservez sur le calendrier" : "You pre-book on the calendar",
       detail: isFr
         ? "Choisissez une date disponible en temps réel sur le calendrier maison. Confirmation immédiate par email."
         : "Pick an available date in real time on the in-house calendar. Instant email confirmation.",
@@ -485,29 +485,21 @@ export default async function InterventionsListing({ params }: Props) {
         <Container className={cn("relative", TIGHT_X)}>
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div className="max-w-xl">
-              <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                />
-                {isFr ? "Module 1 · Interventions" : "Module 1 · Sessions"}
-              </p>
-
               <h1 className="display-editorial text-fg mt-5">
                 {isFr ? "Formez votre entreprise à l'IA " : "Train your company on AI "}
                 <span
                   className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "à votre niveau" : "at your level"}
+                  {isFr ? "de 4 h à 3 j+" : "from 4 h to 3 d+"}
                 </span>
                 {isFr ? " — concrètement, sur site." : " — concretely, on site."}
               </h1>
 
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? `4 grandes familles d'interventions IA pour s'adapter à toute configuration : formations équipe (de 4 heures à plusieurs jours, à partir de ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international. À chaque entreprise son format.`
-                  : `4 main families of AI sessions to fit every configuration: team trainings (from 4 hours to several days, from ${essentielleEntry}), 1-on-1 individual coaching, executive strategic day, and plenary talk. France and abroad. A format for every company.`}
+                  ? "Découvrez les interventions et pré-réservez directement sur le calendrier en ligne pour un échange téléphonique."
+                  : "Discover the sessions and pre-book directly on the live calendar for a phone exchange."}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -516,12 +508,16 @@ export default async function InterventionsListing({ params }: Props) {
                   size="lg"
                   className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
                 >
-                  {isFr ? "Réserver sur le calendrier" : "Book on the calendar"}
+                  {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
-                <Cta href="/cas-concrets" variant="outline" size="lg">
-                  {isFr ? "Voir les cas concrets" : "See case studies"}
-                </Cta>
+                <a
+                  href="#familles"
+                  className="text-terracotta-deep hover:text-terracotta inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4"
+                >
+                  {isFr ? "Découvrez les interventions" : "Discover the sessions"}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4 rotate-90" />
+                </a>
               </div>
             </div>
 
@@ -563,13 +559,14 @@ export default async function InterventionsListing({ params }: Props) {
 
       {/* 4 CARDS FAMILLE — coeur de la refonte Sprint 14.10.7 */}
       <Section
-        eyebrow={isFr ? "Choisir votre famille" : "Pick your family"}
+        id="familles"
+        eyebrow={isFr ? "Choisir l'intervention que vous souhaitez" : "Pick the session you want"}
         title={isFr ? "4 familles" : "4 families"}
         titleEm={isFr ? "d'intervention IA" : "of AI sessions"}
         description={
           isFr
-            ? "Cliquez sur une famille pour voir le détail. Les formations équipe sont organisées par durée (4 h, 1 j, 2 j, 3 j+). Le coaching individuel, la journée dirigeants et la conférence sont des listes plates de formats."
-            : "Click a family to see the detail. Team trainings are organised by duration (4 h, 1 d, 2 d, 3 d+). Individual coaching, executive day and talk are flat format lists."
+            ? "Cliquez sur une famille pour voir le détail puis pré-réservez directement sur le calendrier."
+            : "Click a family to see the detail then pre-book directly on the calendar."
         }
         contentClassName={TIGHT_X}
       >
@@ -711,12 +708,12 @@ export default async function InterventionsListing({ params }: Props) {
       {/* COMMENT ÇA SE PASSE — tunnel réservation 4 étapes (inchangé) */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "Comment ça se passe" : "How it works"}
-        title={isFr ? "De la réservation" : "From booking"}
+        eyebrow={isFr ? "Comment ça fonctionne" : "How it works"}
+        title={isFr ? "De la pré-réservation" : "From pre-booking"}
         titleEm={isFr ? "à l'intervention adaptée" : "to the adapted session"}
         description={
           isFr
-            ? "Vous réservez en ligne. On vous appelle. Vous remplissez un court formulaire pour qu'on connaisse votre équipe. On adapte l'intervention à votre contexte. Quatre étapes, zéro surprise."
+            ? "Vous pré-réservez en ligne. On vous appelle. Vous remplissez un court formulaire pour qu'on connaisse votre équipe. On adapte l'intervention à votre contexte. Quatre étapes, zéro surprise."
             : "You book online. We call you. You fill a short form so we know your team. We adapt the session to your context. Four steps, zero surprises."
         }
         contentClassName={TIGHT_X}
@@ -750,7 +747,7 @@ export default async function InterventionsListing({ params }: Props) {
             href="/contact"
             className="text-fg hover:text-terracotta-deep text-sm font-medium underline underline-offset-4"
           >
-            {isFr ? "Question avant de réserver ?" : "Question before booking?"}
+            {isFr ? "Question avant de pré-réserver ?" : "Question before pre-booking?"}
           </Link>
         </div>
       </Section>
@@ -758,13 +755,13 @@ export default async function InterventionsListing({ params }: Props) {
       {/* ANTI-FEAR — 3 niveaux maturité, recos pointent maintenant vers les familles */}
       <Section
         tone="sand"
-        eyebrow={isFr ? "Concerné·e quel que soit votre niveau" : "A fit for every AI maturity"}
-        title={isFr ? "De zéro IA à équipes IA-fluentes," : "From zero AI to fluent teams,"}
-        titleEm={isFr ? "une famille pour chaque situation" : "one family per situation"}
+        eyebrow={isFr ? "Trouvez votre intervention" : "Find your session"}
+        title={isFr ? "À quel stade " : "Where are you "}
+        titleEm={isFr ? "êtes-vous ?" : "right now?"}
         description={
           isFr
-            ? "Aucune entreprise n'est trop petite ni trop grande. Aucune équipe n'est trop débutante ni trop experte. À chaque maturité IA correspond une famille — vous repartez avec un bénéfice concret."
-            : "No company is too small or too large. No team is too novice or too expert. To each AI maturity its family — you leave with a concrete benefit."
+            ? "Trois niveaux, trois bénéfices concrets. En 1 question, vous voyez ce que vos équipes vont gagner."
+            : "Three levels, three concrete benefits. In 1 question, you see what your team will gain."
         }
         contentClassName={TIGHT_X}
       >
@@ -772,31 +769,35 @@ export default async function InterventionsListing({ params }: Props) {
           {[
             {
               level: isFr ? "Niveau 1" : "Stage 1",
-              title: isFr ? "Aucun collaborateur formé à l'IA" : "No employee trained in AI yet",
+              title: isFr
+                ? "Personne n'a encore utilisé l'IA dans l'équipe"
+                : "No one on the team uses AI yet",
               body: isFr
-                ? `Démarrez par une formation équipe Essentielle ${formatAmount(essentielleEntryAmount, "fr", { compact: true })} ou une conférence 1 journée pour mettre tout le monde au même niveau.`
-                : `Start with an Essential team training ${formatAmount(essentielleEntryAmount, "en", { compact: true })} or a 1-day talk to bring everyone to the same level.`,
-              recommendation: isFr ? "Famille : Formations équipe" : "Family: Team trainings",
+                ? `Démarrage rapide en 4 heures (390 €) ou 1 journée (${formatAmount(essentielleEntryAmount, "fr", { compact: true })}). Vos équipes ressortent avec les bons outils installés et 3-5 automatisations testées.`
+                : `Quick start in 4 hours (€390) or 1 day (${formatAmount(essentielleEntryAmount, "en", { compact: true })}). Your teams leave with the right tools installed and 3-5 automations tested.`,
+              recommendation: isFr ? "Voir les formations équipe" : "See team trainings",
               href: "/interventions/collectives",
             },
             {
               level: isFr ? "Niveau 2" : "Stage 2",
-              title: isFr ? "Premiers usages IA déjà testés" : "Early AI uses already tried",
+              title: isFr
+                ? "Certains utilisent ChatGPT, sans méthode"
+                : "Some use ChatGPT, with no method",
               body: isFr
-                ? "Coaching individuel pour structurer ce qui marche chez les managers clés, ou Approfondie 2 jours pour passer toute l'équipe à l'échelle."
-                : "Individual coaching to structure what works for key managers, or 2-day Deep Dive to scale the whole team.",
-              recommendation: isFr
-                ? "Familles : Individuel · Équipe"
-                : "Families: Individual · Team",
+                ? "Coaching individuel 1-to-1 sur le poste de travail de chacun, ou Approfondie 2 jours pour passer l'équipe entière au niveau supérieur. Gains chiffrés en heures gagnées."
+                : "1-on-1 individual coaching on each workstation, or 2-day Deep Dive to take the whole team to the next level. Gains quantified in hours saved.",
+              recommendation: isFr ? "Voir les coachings individuels" : "See individual coachings",
               href: "/interventions/individuel",
             },
             {
               level: isFr ? "Niveau 3" : "Stage 3",
-              title: isFr ? "Équipes IA-fluentes en place" : "Fluent AI teams already in place",
+              title: isFr
+                ? "L'équipe est à l'aise, le dirigeant veut piloter"
+                : "Team is fluent, executive wants to steer",
               body: isFr
-                ? "Journée stratégique 1-to-1 avec le dirigeant pour structurer la gouvernance IA 12-24 mois, chiffrer les investissements prioritaires et la gestion des risques."
-                : "Strategic 1-on-1 executive day to structure 12-24 month AI governance, quantify priority investments and risk management.",
-              recommendation: isFr ? "Famille : Dirigeants" : "Family: Executives",
+                ? "Journée stratégique 1-to-1 avec le dirigeant : structuration de l'entreprise, chiffrage poste par poste des gains IA, plan d'implémentation prêt à exécuter."
+                : "Strategic 1-on-1 day with the executive: company structuring, role-by-role quantification of AI gains, ready-to-execute implementation plan.",
+              recommendation: isFr ? "Voir les offres dirigeants" : "See executives offers",
               href: "/interventions/dirigeants",
             },
           ].map((card, idx) => (
@@ -855,7 +856,9 @@ export default async function InterventionsListing({ params }: Props) {
       <CtaBlock
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
         title={
-          isFr ? "Réservez la prochaine intervention disponible" : "Book the next available session"
+          isFr
+            ? "Pré-réservez la prochaine intervention disponible"
+            : "Pre-book the next available session"
         }
         description={
           isFr

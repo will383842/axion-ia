@@ -77,7 +77,7 @@ export default async function MethodologyPage({ params }: Props) {
       ? [
           {
             name: "Identifier",
-            text: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats Ã  l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
+            text: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats à l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
           },
           {
             name: "Auditer",
@@ -117,7 +117,7 @@ export default async function MethodologyPage({ params }: Props) {
         {
           n: "01",
           h: "Identifier",
-          p: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats Ã  l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
+          p: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats à l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
         },
         {
           n: "02",
@@ -291,13 +291,13 @@ export default async function MethodologyPage({ params }: Props) {
         titleEm={isFr ? "cette méthode" : "method"}
         description={
           isFr
-            ? "Trois principes non-négociables qui guident chaque mission Axion-IA, du diagnostic flash Ã  l'audit stratégique ETI."
+            ? "Trois principes non-négociables qui guident chaque mission Axion-IA, du diagnostic flash à l'audit stratégique ETI."
             : "Three non-negotiable principles guiding every Axion-IA engagement, from flash diagnosis to strategic mid-cap audit."
         }
       >
         <Container>
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-14">
-            {/* Visuel placeholder Ã  gauche en lg, en haut en mobile */}
+            {/* Visuel placeholder à gauche en lg, en haut en mobile */}
             <Illustration
               slot="METHO-02-mid"
               aspectRatio="1:1"
@@ -314,7 +314,7 @@ export default async function MethodologyPage({ params }: Props) {
               }
               className="border-terracotta/30 bg-halo-warm shadow-subtle relative w-full overflow-hidden rounded-2xl border-2 border-dashed lg:sticky lg:top-24"
             />
-            {/* Liste des 3 principes Ã  droite */}
+            {/* Liste des 3 principes à droite */}
             <ol className="space-y-7">
               {whyMethodology.map((w, i) => (
                 <li key={w.h} className="flex gap-5">
@@ -361,7 +361,7 @@ export default async function MethodologyPage({ params }: Props) {
       </Section>
 
       <CtaBlock
-        title={isFr ? "Prêt Ã  démarrer ?" : "Ready to start?"}
+        title={isFr ? "Prêt à démarrer ?" : "Ready to start?"}
         description={
           isFr
             ? `Réservez l'Essentielle ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })} pour identifier 3-5 quick-wins en une journée.`
