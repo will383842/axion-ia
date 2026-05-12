@@ -465,7 +465,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     summary: {
       fr: {
         benefitTagline:
-          "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'automatisations pour gagner du temps dès le lendemain. Une journée de formation sur site, ressources prêtes à utiliser dès le retour au bureau.",
+          "Découvrir l'IA appliquée au quotidien — outils, usages concrets, idées d'usages IA pour gagner du temps dès le lendemain. Une journée de formation sur site, ressources prêtes à utiliser dès le retour au bureau.",
         duration: "1 journée sur site (9 h – 17 h)",
         durationDays: 1,
         price: `à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
@@ -476,7 +476,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         outcomes: [
           "Vos équipes connaissent les principaux outils IA (ChatGPT, Claude, Copilot…) et savent quand s'en servir",
           "Elles identifient 5 à 10 usages concrets sur leurs tâches : rédaction, recherche, synthèse, analyse",
-          "Elles repartent avec des idées d'automatisations applicables immédiatement à leur métier",
+          "Elles repartent avec des idées d'usages IA applicables immédiatement à leur métier",
         ],
         outline: [
           "Call de prise de contact en visio pour valider le format",
@@ -487,7 +487,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       },
       en: {
         benefitTagline:
-          "Discover AI applied to your day-to-day — tools, concrete uses, automation ideas to save time from day two. A one-day on-site training with ready-to-use takeaways from day one back at the office.",
+          "Discover AI applied to your day-to-day — tools, concrete uses, AI usage ideas to save time from day two. A one-day on-site training with ready-to-use takeaways from day one back at the office.",
         duration: "1 day on site (9 a.m. – 5 p.m.)",
         durationDays: 1,
         price: `Starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
@@ -498,7 +498,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         outcomes: [
           "Your team knows the main AI tools (ChatGPT, Claude, Copilot…) and when to use them",
           "They identify 5 to 10 concrete uses on their tasks: writing, research, synthesis, analysis",
-          "They leave with automation ideas they can apply to their domain right away",
+          "They leave with AI usage ideas they can apply to their domain right away",
         ],
         outline: [
           "Intro call by video to confirm the format",
@@ -513,7 +513,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       title: "L'intervention IA",
       titleEm: "Essentielle",
       answer:
-        "Une journée de formation IA sur site avec votre équipe (2 à 30 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'automatisations applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux.",
+        "Une journée de formation IA sur site avec votre équipe (2 à 30 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'usages IA applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux.",
       priceEur: ESSENTIELLE_BASE_PRICE_EUR,
       ctaPrimary: "Réserver une intervention",
       ctaSecondary: "Voir les cas concrets",
@@ -530,7 +530,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "Rédaction, recherche, synthèse, analyse — appliqués aux tâches réelles de chaque participant.",
         },
         {
-          title: "Idées d'automatisations applicables",
+          title: "Idées d'usages IA applicables",
           description:
             "Repérer où l'IA peut faire gagner du temps dès le lendemain, sans code et sans projet lourd.",
         },
@@ -579,7 +579,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         "Réservez la prochaine intervention disponible. Le calendrier maison affiche les créneaux en temps réel.",
       metaSeo: {
         title: `Intervention IA Essentielle · cabinet Axion-IA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
-        description: `Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'automatisations. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
+        description: `Une journée de formation IA sur site (2-8 personnes) : découverte des outils, ateliers pratiques, idées d'usages IA opérationnels. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
       },
       daySchedule: {
         title: "Déroulement de la journée",
@@ -610,7 +610,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
               { time: "15 h 00", title: "Pause café" },
               {
                 time: "15 h 15",
-                title: "Atelier 3 — Idées d'automatisations sur leurs outils",
+                title: "Atelier 3 — Idées d'usages sur leurs outils",
                 description:
                   "Repérer les tâches répétitives et imaginer comment l'IA peut faire gagner du temps.",
               },
@@ -632,7 +632,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       titleEm: "Essential",
       titleTail: " AI session",
       answer:
-        "A one-day on-site AI training with your team (2 to 30 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply automation ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels.",
+        "A one-day on-site AI training with your team (2 to 30 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply AI usage ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels.",
       priceEur: ESSENTIELLE_BASE_PRICE_EUR,
       ctaPrimary: "Book a session",
       ctaSecondary: "See case studies",
@@ -649,7 +649,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "Writing, research, synthesis, analysis — applied to each participant's real tasks.",
         },
         {
-          title: "Ready-to-apply automation ideas",
+          title: "Ready-to-apply AI usage ideas",
           description: "Spot where AI can save time the very next day, no code, no heavy project.",
         },
         {
@@ -697,7 +697,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         "Book the next available session. The on-site calendar shows live availability.",
       metaSeo: {
         title: `Essential AI session · Axion-IA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
-        description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, automation ideas. Standardised toolbox provided. All industries, all levels, starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
+        description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, AI usage ideas. Standardised toolbox provided. All industries, all levels, starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
       },
       daySchedule: {
         title: "Day-by-day breakdown",
@@ -746,7 +746,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
   },
   // Sprint 14.10.6 — Approfondie 2 jours, format équipes étendu (Will, 2026-05-08).
   // Même grille d'effectif qu'Essentielle (2-8 / 9-15 / 16-30) mais 2 jours
-  // consécutifs pour creuser : co-construction d'automatisations sur leurs
+  // consécutifs pour creuser : co-construction d'usages IA sur leurs
   // vrais cas d'usage métier + plan d'action 30 jours.
   {
     slug: "approfondie",
@@ -756,7 +756,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     summary: {
       fr: {
         benefitTagline:
-          "Deux journées consécutives sur site pour aller au fond du sujet : ateliers étendus, co-construction d'automatisations sur leurs vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.",
+          "Deux journées consécutives sur site pour aller au fond du sujet : ateliers étendus, co-construction d'usages IA sur leurs vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.",
         duration: "2 jours consécutifs sur site",
         durationDays: 2,
         price: `À partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}`,
@@ -766,19 +766,19 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         audience: "Équipes opérationnelles complètes · TPE, PME, ETI",
         outcomes: [
           "Vos équipes maîtrisent l'IA appliquée à leurs métiers — pas de théorie générique",
-          "Co-construction de 10 à 20 automatisations spécifiques sur leurs vrais outils",
+          "Co-construction de 10 à 20 méthodes opérationnelles sur leurs vrais outils",
           "Plan d'action 30 jours partagé, mesurable en gains de temps par personne",
         ],
         outline: [
           "Call de cadrage en visio pour préparer les 2 journées sur leurs vrais cas d'usage",
-          "Jour 1 · panorama outils + ateliers pratiques · Jour 2 · co-construction automatisations + plan d'action 30 jours",
-          "Ressources fournies : référentiel d'outils, prompts maison, automatisations livrées prêtes à utiliser",
+          "Jour 1 · panorama outils + ateliers pratiques · Jour 2 · co-construction d'usages IA + plan d'action 30 jours",
+          "Ressources fournies : référentiel d'outils, prompts maison, méthodes maîtrisées prêtes à utiliser",
         ],
         ctaLabel: "Découvrir l'Approfondie",
       },
       en: {
         benefitTagline:
-          "Two consecutive on-site days to go deep: extended workshops, co-built automations on their real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.",
+          "Two consecutive on-site days to go deep: extended workshops, co-built AI methods on their real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.",
         duration: "2 consecutive days on site",
         durationDays: 2,
         price: `Starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}`,
@@ -788,13 +788,13 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         audience: "Full operational teams · small to mid-market",
         outcomes: [
           "Your teams master AI applied to their domain — no generic theory",
-          "Co-build 10 to 20 specific automations on their real tools",
+          "Co-build 10 to 20 operational methods on their real tools",
           "Shared 30-day action plan, measurable in time saved per person",
         ],
         outline: [
           "Framing call by video to prep the 2 days on their real use cases",
           "Day 1 · tools panorama + hands-on workshops · Day 2 · automation co-build + 30-day action plan",
-          "Takeaways: tool reference, in-house prompts, ready-to-use delivered automations",
+          "Takeaways: tool reference, in-house prompts, ready-to-use mastered methods",
         ],
         ctaLabel: "Discover Deep Dive",
       },
@@ -804,7 +804,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Format équipes étendu · 2 jours sur site",
         title: "Approfondie",
         titleEm: "2 jours équipes",
-        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 880 / 1 420 / 2 140 € HT). Ateliers étendus, co-construction d'automatisations sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
+        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 880 / 1 420 / 2 140 € HT). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
         ctaPrimary: "Réserver l'Approfondie",
         faqIntro: "équipes",
       }),
@@ -815,9 +815,9 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "Le 2ème jour change tout : on dépasse la découverte pour entrer dans la mise en pratique réelle, l'expérimentation et la co-construction.",
         },
         {
-          title: "10 à 20 automatisations co-construites",
+          title: "10 à 20 méthodes co-construites",
           description:
-            "Pas des slides : des automatisations testées sur vos vrais outils métier, prêtes à utiliser dès le retour au bureau.",
+            "Pas des slides : des usages IA testés sur vos vrais outils métier, prêtes à utiliser dès le retour au bureau.",
         },
         {
           title: "Plan d'action 30 jours partagé",
@@ -832,7 +832,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       metrics: [
         { number: "2", suffix: "jours", label: "Format consécutif sur site" },
-        { number: "10-20", suffix: "automatisations", label: "Co-construites avec vos équipes" },
+        { number: "10-20", suffix: "usages IA", label: "Maîtrisés avec vos équipes" },
         { number: "30", suffix: "jours", label: "Plan d'action partagé après" },
       ],
       faqs: [
@@ -840,7 +840,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "vs-essentielle",
           question: "Différence avec l'Essentielle 1 jour ?",
           answer:
-            "L'Essentielle découvre, l'Approfondie creuse. 1 jour = panorama + premières automatisations. 2 jours = ateliers étendus + co-construction sur vos vrais cas d'usage + plan d'action 30 jours partagé. Pour équipes qui veulent passer à l'échelle.",
+            "L'Essentielle découvre, l'Approfondie creuse. 1 jour = panorama + premiers usages IA. 2 jours = ateliers étendus + co-construction sur vos vrais cas d'usage + plan d'action 30 jours partagé. Pour équipes qui veulent passer à l'échelle.",
         },
         {
           id: "headcount",
@@ -858,7 +858,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "deliverables",
           question: "Que reste-t-il après ?",
           answer:
-            "10 à 20 automatisations livrées prêtes à utiliser, référentiel d'outils, prompts maison + plan d'action 30 jours partagé. Suivi à 30 jours sur demande.",
+            "10 à 20 méthodes maîtrisées prêtes à utiliser, référentiel d'outils, prompts maison + plan d'action 30 jours partagé. Suivi à 30 jours sur demande.",
         },
       ],
       ctaBlockTitle: "Allez au fond du sujet en 2 jours",
@@ -880,9 +880,9 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "Day 2 changes everything: we go beyond discovery into real practice, experimentation and co-build.",
         },
         {
-          title: "10 to 20 co-built automations",
+          title: "10 to 20 co-built AI methods",
           description:
-            "No slides: automations tested on your real domain tools, ready to use back at the office.",
+            "No slides: AI usages tested on your real domain tools, ready to use back at the office.",
         },
         {
           title: "Shared 30-day action plan",
@@ -897,7 +897,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       metrics: [
         { number: "2", suffix: "days", label: "Consecutive on-site format" },
-        { number: "10-20", suffix: "automations", label: "Co-built with your teams" },
+        { number: "10-20", suffix: "AI methods", label: "Mastered with your teams" },
         { number: "30", suffix: "days", label: "Action plan shared afterwards" },
       ],
       faqs: [
@@ -905,7 +905,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "vs-essentielle",
           question: "Difference with the 1-day Essential?",
           answer:
-            "Essential discovers, Deep Dive digs. 1 day = panorama + first automations. 2 days = extended workshops + co-build on your real cases + shared 30-day action plan. For teams ready to scale.",
+            "Essential discovers, Deep Dive digs. 1 day = panorama + first AI usages. 2 days = extended workshops + co-build on your real cases + shared 30-day action plan. For teams ready to scale.",
         },
         {
           id: "headcount",
@@ -923,7 +923,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "deliverables",
           question: "What remains afterwards?",
           answer:
-            "10 to 20 ready-to-use automations, tool reference, in-house prompts + shared 30-day action plan. 30-day follow-up on request.",
+            "10 to 20 mastered methods, tool reference, in-house prompts + shared 30-day action plan. 30-day follow-up on request.",
         },
       ],
       ctaBlockTitle: "Go deep on AI in 2 days",
@@ -1186,7 +1186,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           title: "Augmenter vos marges",
           description:
-            "Leviers IA × frais de personnel (automatisations équipes), accélération commerciale, réduction des coûts cachés — chaque levier chiffré en € attendus, pas en promesses vagues.",
+            "Leviers IA × frais de personnel (gains de productivité équipes), accélération commerciale, réduction des coûts cachés — chaque levier chiffré en € attendus, pas en promesses vagues.",
         },
         {
           title: "Décider seul sur l'IA",
@@ -1254,7 +1254,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           title: "Lift your margins",
           description:
-            "AI × headcount levers (team automations), sales acceleration, hidden cost reduction — each lever quantified in expected €, not vague promises.",
+            "AI × headcount levers (team productivity gains), sales acceleration, hidden cost reduction — each lever quantified in expected €, not vague promises.",
         },
         {
           title: "Call your own AI shots",
@@ -1316,7 +1316,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
     summary: {
       fr: {
         benefitTagline:
-          "Une journée pour gagner du temps concrètement : automatisations IA sur les tâches répétitives, prompts efficaces, intégration dans le flux de travail quotidien. Vos équipes ressortent avec des heures gagnées chaque semaine.",
+          "Une journée pour gagner du temps concrètement : méthodes IA appliquées sur les tâches répétitives, prompts efficaces, intégration dans le flux de travail quotidien. Vos équipes ressortent avec des heures gagnées chaque semaine.",
         duration: "1 journée sur site",
         durationDays: 1,
         price: TEMPS_PRICE_FR,
@@ -1325,19 +1325,19 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         audience: "Équipes opérationnelles · TPE, PME, ETI",
         outcomes: [
           "Vos équipes identifient leurs tâches répétitives chronophages et y appliquent l'IA",
-          "Chaque participant repart avec 5 à 10 automatisations testées sur ses propres outils",
+          "Chaque participant repart avec 5 à 10 méthodes maîtrisées sur ses propres outils",
           "Gain mesurable dès le retour au bureau — plusieurs heures par personne et par semaine",
         ],
         outline: [
           "Call de cadrage en visio pour préparer la journée sur vos outils réels",
-          "Jour J · ateliers pratiques sur les chronophages identifiés + tests live des automatisations",
+          "Jour J · ateliers pratiques sur les chronophages identifiés + pratique en live sur les vrais cas",
           "Ressources fournies en fin de journée : prompts types, référentiel d'outils, plan d'application personnel",
         ],
         ctaLabel: "Réserver Gagner du temps",
       },
       en: {
         benefitTagline:
-          "One day to save time concretely: AI automations on repetitive tasks, effective prompts, integration into daily workflow. Your teams leave with hours saved every week.",
+          "One day to save time concretely: AI methods on repetitive tasks, effective prompts, integration into daily workflow. Your teams leave with hours saved every week.",
         duration: "1 day on site",
         durationDays: 1,
         price: TEMPS_PRICE_EN,
@@ -1346,7 +1346,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         audience: "Operational teams · small to mid-market",
         outcomes: [
           "Your teams spot their time-consuming repetitive tasks and apply AI to them",
-          "Each participant leaves with 5 to 10 automations tested on their own tools",
+          "Each participant leaves with 5 to 10 methods mastered on their own tools",
           "Measurable gains the day back at the office — hours per person, per week",
         ],
         outline: [
@@ -1362,7 +1362,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Productivité équipes · 1 journée sur site",
         title: "Gagner du temps",
         titleEm: "concrètement",
-        answer: `Une journée à ${TEMPS_PRICE_FR} sur site, dédiée à la productivité de vos équipes (2 à 20 personnes). On identifie les tâches répétitives qui mangent leurs heures, on les automatise avec l'IA, on intègre dans leur flux de travail quotidien. Vos équipes repartent avec 5 à 10 automatisations testées et un gain mesurable de plusieurs heures par semaine et par personne.`,
+        answer: `Une journée à ${TEMPS_PRICE_FR} sur site, dédiée à la productivité de vos équipes (2 à 20 personnes). On identifie les tâches répétitives qui mangent leurs heures, on apprend à les traiter avec l'IA, on intègre dans leur flux de travail quotidien. Vos équipes repartent avec 5 à 10 méthodes maîtrisées et un gain mesurable de plusieurs heures par semaine et par personne.`,
         ctaPrimary: "Réserver Gagner du temps",
         faqIntro: "équipes",
       }),
@@ -1373,9 +1373,9 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "Audit collaboratif des tâches répétitives qui mangent les heures de vos équipes — pas une formation théorique, on travaille sur leurs vraies tâches.",
         },
         {
-          title: "5 à 10 automatisations testées",
+          title: "5 à 10 méthodes maîtrisées",
           description:
-            "Chaque participant repart avec ses automatisations IA prêtes à utiliser, testées en live sur ses propres outils — pas des slides, des choses qui tournent.",
+            "Chaque participant repart avec ses méthodes IA maîtrisées à utiliser, testées en live sur ses propres outils — pas des slides, des choses qui tournent.",
         },
         {
           title: "Prompts efficaces & garde-fous",
@@ -1390,7 +1390,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       metrics: [
         { number: "990", suffix: "€ HT", label: "Tarif fixe, sans surprise" },
-        { number: "5-10", suffix: "automations", label: "Testées par participant" },
+        { number: "5-10", suffix: "AI methods", label: "Testées par participant" },
         { number: "+2", suffix: "h/jour", label: "Gain moyen par collaborateur" },
       ],
       faqs: [
@@ -1427,7 +1427,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Team productivity · 1 day on site",
         title: "Save Time",
         titleEm: "concretely",
-        answer: `A ${TEMPS_PRICE_EN} day on site, dedicated to your teams' productivity (2 to 20 people). We identify the repetitive tasks eating their hours, automate them with AI, embed them in their daily workflow. Your teams leave with 5 to 10 automations tested and a measurable gain of several hours per week and per person.`,
+        answer: `A ${TEMPS_PRICE_EN} day on site, dedicated to your teams' productivity (2 to 20 people). We identify the repetitive tasks eating their hours, learn to handle them with AI, embed them in their daily workflow. Your teams leave with 5 to 10 methods mastered and a measurable gain of several hours per week and per person.`,
         ctaPrimary: "Book Save Time",
         faqIntro: "teams",
       }),
@@ -1438,9 +1438,9 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "Collaborative audit of the repetitive tasks eating your teams' hours — no theory, we work on their actual tasks.",
         },
         {
-          title: "5 to 10 automations tested",
+          title: "5 to 10 methods mastered",
           description:
-            "Each participant leaves with their AI automations ready to use, tested live on their own tools — no slides, things that actually run.",
+            "Each participant leaves with their AI methods mastered to use, tested live on their own tools — no slides, things that actually run.",
         },
         {
           title: "Effective prompts & guardrails",
@@ -1455,7 +1455,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       metrics: [
         { number: "€990", suffix: "flat", label: "Fixed fee, no surprises" },
-        { number: "5-10", suffix: "automations", label: "Tested per participant" },
+        { number: "5-10", suffix: "AI methods", label: "Tested per participant" },
         { number: "+2", suffix: "h/day", label: "Average gain per employee" },
       ],
       faqs: [
@@ -1590,7 +1590,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "code-track",
           question: "Le volet Code est-il obligatoire ?",
           answer:
-            "Non. Si votre équipe n'est pas tech, le volet Code peut être remplacé par un approfondissement Cowork (Projects multi-fichiers, automatisations métier). Le call de cadrage adapte les 3 volets à votre contexte.",
+            "Non. Si votre équipe n'est pas tech, le volet Code peut être remplacé par un approfondissement Cowork (Projects multi-fichiers, usages IA métier avancés). Le call de cadrage adapte les 3 volets à votre contexte.",
         },
         {
           id: "level",
@@ -1657,7 +1657,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "code-track",
           question: "Is the Code track mandatory?",
           answer:
-            "No. If your team isn't tech, the Code track can be replaced with deeper Cowork (multi-file Projects, business automations). The framing call adapts the 3 tracks to your context.",
+            "No. If your team isn't tech, the Code track can be replaced with deeper Cowork (multi-file Projects, advanced business AI usages). The framing call adapts the 3 tracks to your context.",
         },
         {
           id: "level",
@@ -1785,7 +1785,7 @@ function makeFr(args: {
           rank: 3,
           name: "Experte",
           description:
-            "IA quotidienne. L'intervention pousse vers les agents, l'automatisation custom, les use cases avancés et la diffusion à toute l'organisation.",
+            "IA quotidienne. L'intervention pousse vers les agents, des usages IA avancés sur mesure, les use cases avancés et la diffusion à toute l'organisation.",
         },
       ],
     },

@@ -193,9 +193,9 @@ const TRAINING_CONFIGS: Record<CollectiveTrainingSlug, TrainingConfig> = {
     titleEmFr: "4 heures sur un cas précis",
     titleEmEn: "4 hours on a specific case",
     promiseFr:
-      "Une demi-journée (4 h) focalisée sur UN cas d'usage métier précis (rédaction commerciale, analyse de documents, automatisation reporting, traduction…). À la fin, chaque participant repart avec le cas implémenté sur son poste de travail, prêt à utiliser.",
+      "Une demi-journée (4 h) focalisée sur UN cas d'usage métier précis (rédaction commerciale, analyse de documents, structuration de reporting, traduction…). À la fin, chaque participant repart avec le cas implémenté sur son poste de travail, prêt à utiliser.",
     promiseEn:
-      "A half-day (4 h) focused on ONE specific business case (sales writing, document analysis, reporting automation, translation…). By the end, each participant leaves with the case implemented on their workstation, ready to use.",
+      "A half-day (4 h) focused on ONE specific business case (sales writing, document analysis, reporting structuring, translation…). By the end, each participant leaves with the case implemented on their workstation, ready to use.",
     chipsFr: [
       "1 cas d'usage précis",
       "Implémenté sur chaque poste",
@@ -289,7 +289,7 @@ const TRAINING_CONFIGS: Record<CollectiveTrainingSlug, TrainingConfig> = {
         qFr: "Quels cas d'usage pouvez-vous traiter ?",
         qEn: "What use cases can you handle?",
         aFr: "Rédaction commerciale et marketing, analyse de documents (contrats, CV, devis), automatisation de reporting, traduction professionnelle, synthèse de réunions, génération d'images, recherche, gestion de mails… On valide le cas en cadrage avant la séance pour s'assurer qu'il colle au format 4 h.",
-        aEn: "Sales and marketing writing, document analysis (contracts, CVs, quotes), reporting automation, professional translation, meeting synthesis, image generation, research, email management… We validate the case in framing before the session to ensure it fits the 4-h format.",
+        aEn: "Sales and marketing writing, document analysis (contracts, CVs, quotes), reporting structuring, professional translation, meeting synthesis, image generation, research, email management… We validate the case in framing before the session to ensure it fits the 4-h format.",
       },
       {
         qFr: "Et si le cas s'avère trop large pour 4 h ?",
@@ -450,47 +450,12 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
         </Container>
       </section>
 
-      {/* 4 BÉNÉFICES */}
-      <Section
-        eyebrow={isFr ? "Ce que vous obtenez" : "What you get"}
-        title={isFr ? "4 bénéfices" : "4 benefits"}
-        titleEm={isFr ? "concrets en 4 heures" : "concrete in 4 hours"}
-        description={
-          isFr
-            ? "Pas de théorie générique. À la fin de la demi-journée, voici ce qui est en place pour votre équipe."
-            : "No generic theory. By the end of the half-day, here's what's in place for your team."
-        }
-        contentClassName={TIGHT_X}
-      >
-        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
-          {config.benefits.map((b, i) => {
-            const BenefitIcon = b.icon;
-            return (
-              <article
-                key={i}
-                className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
-              >
-                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
-                  <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
-                </div>
-                <h3 className="text-fg text-lg leading-snug font-semibold">
-                  {isFr ? b.titleFr : b.titleEn}
-                </h3>
-                <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
-                  {isFr ? b.bodyFr : b.bodyEn}
-                </p>
-              </article>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* PROGRAMME DEMI-JOURNÉE */}
+      {/* PROGRAMME DEMI-JOURNÉE — JUSTE APRÈS LE HERO (Will 2026-05-12) */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "Programme type" : "Standard programme"}
-        title={isFr ? "Une demi-journée" : "A half-day"}
-        titleEm={isFr ? "structurée 9 h – 13 h" : "structured 9 a.m. – 1 p.m."}
+        eyebrow={isFr ? "Programme type · 9 h – 13 h" : "Standard programme · 9 a.m. – 1 p.m."}
+        title={isFr ? "Le détail" : "Detailed"}
+        titleEm={isFr ? "de votre demi-journée" : "half-day breakdown"}
         description={
           isFr
             ? "Programme cadré en amont par appel. La trame reste celle-ci, le contenu s'adapte à votre contexte métier."
@@ -528,6 +493,41 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
             ? "Frais de logement, repas et forfait trajet en sus, facturés au cas par cas selon la distance et la durée. Devis transparent fourni avant signature."
             : "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature."}
         </p>
+      </Section>
+
+      {/* 4 BÉNÉFICES */}
+      <Section
+        eyebrow={isFr ? "Ce que vous obtenez" : "What you get"}
+        title={isFr ? "4 bénéfices" : "4 benefits"}
+        titleEm={isFr ? "concrets en 4 heures" : "concrete in 4 hours"}
+        description={
+          isFr
+            ? "À la fin de la demi-journée, voici ce que votre équipe maîtrise."
+            : "By the end of the half-day, here's what your team masters."
+        }
+        contentClassName={TIGHT_X}
+      >
+        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
+          {config.benefits.map((b, i) => {
+            const BenefitIcon = b.icon;
+            return (
+              <article
+                key={i}
+                className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
+              >
+                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
+                  <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <h3 className="text-fg text-lg leading-snug font-semibold">
+                  {isFr ? b.titleFr : b.titleEn}
+                </h3>
+                <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
+                  {isFr ? b.bodyFr : b.bodyEn}
+                </p>
+              </article>
+            );
+          })}
+        </div>
       </Section>
 
       {/* FAQ */}

@@ -81,51 +81,47 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
     titleEmFr: "1 jour pour démarrer",
     titleEmEn: "1 day to get started",
     promiseFr:
-      "Vous arrivez à votre poste de travail le matin. Le soir, l'IA est installée, configurée et 3 à 5 automatismes tournent déjà. Concret, dès le lendemain.",
+      "Vous arrivez à votre poste de travail le matin. Le soir, vous maîtrisez les bons outils IA, vous avez appris 3 à 5 méthodes opérationnelles à appliquer immédiatement, et vous savez exactement où l'IA vous fera gagner du temps. Concret, dès le lendemain.",
     promiseEn:
-      "You arrive at your workstation in the morning. By evening, AI is installed, configured and 3 to 5 automations are already running. Concrete results from day one.",
-    chipsFr: [
-      "3 à 5 automatismes opérationnels",
-      "Outils IA installés",
-      "Plan implémentation chiffré",
-    ],
-    chipsEn: ["3-5 working automations", "AI tools installed", "Quantified implementation plan"],
+      "You arrive at your workstation in the morning. By evening, you master the right AI tools, you've learnt 3 to 5 operational methods to apply immediately, and you know exactly where AI will save you time. Concrete results from day one.",
+    chipsFr: ["3 à 5 méthodes maîtrisées", "Outils IA pris en main", "Plan d'action chiffré"],
+    chipsEn: ["3-5 methods mastered", "AI tools mastered", "Quantified action plan"],
     benefits: [
       {
         icon: Compass,
         titleFr: "Audit complet de votre poste",
         titleEn: "Full audit of your workstation",
         bodyFr:
-          "On regarde ensemble vos vrais chronophages : boîte mail, reporting, recherches, comptes-rendus, contenus. On identifie quoi est automatisable maintenant et quoi nécessite un programme dédié.",
+          "On regarde ensemble vos vrais chronophages : boîte mail, reporting, recherches, comptes-rendus, contenus. On identifie où l'IA va vous faire gagner du temps maintenant et ce qui nécessitera un accompagnement plus long.",
         bodyEn:
-          "We look at your real time-sinks together: inbox, reporting, research, meeting notes, content. We identify what can be automated now and what needs a dedicated programme.",
+          "We look at your real time-sinks together: inbox, reporting, research, meeting notes, content. We identify where AI will save you time now and what will need a longer programme.",
       },
       {
         icon: Sparkles,
-        titleFr: "Installation des outils essentiels",
-        titleEn: "Essential tools installed",
+        titleFr: "Prise en main des outils essentiels",
+        titleEn: "Hands-on with essential tools",
         bodyFr:
-          "ChatGPT / Claude, extensions navigateur, transcripteurs de réunion, intégrations bureau — installés et configurés sur votre poste, avec vos accès. Vous êtes opérationnel·le immédiatement.",
+          "ChatGPT / Claude, extensions navigateur, transcripteurs de réunion. Vous apprenez à les utiliser efficacement sur vos vraies données, vos vrais documents, votre vrai quotidien. À la sortie, vous êtes autonome.",
         bodyEn:
-          "ChatGPT / Claude, browser extensions, meeting transcribers, desktop integrations — installed and configured on your workstation with your logins. You're operational immediately.",
+          "ChatGPT / Claude, browser extensions, meeting transcribers. You learn to use them efficiently on your real data, your real documents, your real daily work. You leave autonomous.",
       },
       {
         icon: TrendingUp,
-        titleFr: "3 à 5 automatismes mis en place",
-        titleEn: "3 to 5 automations in place",
+        titleFr: "3 à 5 méthodes opérationnelles maîtrisées",
+        titleEn: "3 to 5 operational methods mastered",
         bodyFr:
-          "Pendant la journée, on fait — pas seulement on parle. Templates de prompts pour vos cas récurrents, workflows simples, intégrations entre vos outils existants. Tout testé sur vos vraies données.",
+          "Pendant la journée, on pratique — pas seulement on parle. Templates de prompts pour vos cas récurrents, méthodes de travail avec l'IA, workflows simples sur vos outils existants. Vous repartez avec les techniques maîtrisées et un cahier de prompts personnel.",
         bodyEn:
-          "During the day, we do — not just talk. Prompt templates for your recurring cases, simple workflows, integrations between your existing tools. All tested on your real data.",
+          "During the day, we practise — not just talk. Prompt templates for your recurring cases, work methods with AI, simple workflows on your existing tools. You leave with the techniques mastered and a personal prompt notebook.",
       },
       {
         icon: Target,
-        titleFr: "Plan implémentation pour aller plus loin",
-        titleEn: "Implementation plan to go further",
+        titleFr: "Plan d'action chiffré pour aller plus loin",
+        titleEn: "Quantified action plan to go further",
         bodyFr:
-          "Tout n'est pas réalisable en 1 jour. Pour les chantiers plus lourds (CRM, ERP, agents complexes), vous repartez avec un plan d'implémentation chiffré, prêt à exécuter par vos équipes ou par nous sur devis.",
+          "À l'issue de la journée, vous avez en main un plan d'action priorisé : ce que vous pouvez appliquer seul·e dès demain, et ce qui mériterait un accompagnement dédié plus tard (sur devis). Vous décidez en pleine connaissance de cause.",
         bodyEn:
-          "Not everything is doable in 1 day. For heavier projects (CRM, ERP, complex agents), you leave with a quantified implementation plan, ready to execute by your teams or by us on request.",
+          "By the end of the day, you have a prioritised action plan in hand: what you can apply on your own tomorrow, and what would deserve dedicated support later (on request). You decide with full knowledge.",
       },
     ],
     schedule: [
@@ -143,12 +139,12 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
       },
       {
         time: "11 h 00",
-        titleFr: "Installation des outils IA essentiels",
-        titleEn: "Installing essential AI tools",
+        titleFr: "Prise en main des outils IA essentiels",
+        titleEn: "Hands-on with essential AI tools",
         descriptionFr:
-          "ChatGPT / Claude, extensions, transcripteurs — installés et testés sur vos accès.",
+          "ChatGPT / Claude, extensions, transcripteurs — on apprend à les utiliser efficacement sur vos vrais cas.",
         descriptionEn:
-          "ChatGPT / Claude, extensions, transcribers — installed and tested with your logins.",
+          "ChatGPT / Claude, extensions, transcribers — we learn to use them effectively on your real cases.",
       },
       {
         time: "12 h 30",
@@ -157,12 +153,12 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
       },
       {
         time: "14 h 00",
-        titleFr: "Mise en place des 3-5 premiers automatismes",
-        titleEn: "Setting up the first 3-5 automations",
+        titleFr: "Pratique sur 3 à 5 cas concrets",
+        titleEn: "Practice on 3 to 5 real cases",
         descriptionFr:
-          "Templates prompts, workflows simples, intégrations bureau — testés sur vos vraies données.",
+          "Templates de prompts, méthodes de travail, workflows simples — pratiqués sur vos vrais documents et données.",
         descriptionEn:
-          "Prompt templates, simple workflows, desktop integrations — tested on your real data.",
+          "Prompt templates, work methods, simple workflows — practised on your real documents and data.",
       },
       {
         time: "16 h 00",
@@ -219,18 +215,18 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
         titleFr: "Audit de votre stack IA actuelle",
         titleEn: "Audit of your current AI stack",
         bodyFr:
-          "On regarde ce que vous utilisez vraiment et comment. On identifie les outils sous-exploités, les workflows manuels qui devraient être automatisés et les intégrations manquantes.",
+          "On regarde ce que vous utilisez vraiment et comment. On identifie les outils sous-exploités, les méthodes qui peuvent être améliorées avec l'IA et les fonctionnalités avancées que vous n'utilisez pas encore.",
         bodyEn:
-          "We look at what you actually use and how. We identify under-leveraged tools, manual workflows that should be automated, and missing integrations.",
+          "We look at what you actually use and how. We identify under-leveraged tools, methods that can be improved with AI, and advanced features you don't use yet.",
       },
       {
         icon: Sparkles,
         titleFr: "Workflows IA multi-outils",
         titleEn: "Multi-tool AI workflows",
         bodyFr:
-          "On crée des chaînes : Claude → vos notes → vos docs → votre CRM, ou ChatGPT → API → automation. Plus de copier-coller manuel entre 5 onglets.",
+          "Vous apprenez à enchaîner les outils IA : passer un document de Claude à vos notes, vers vos docs, vers votre CRM. Méthode complète enseignée pas-à-pas sur vos vrais cas — plus de copier-coller manuel entre 5 onglets.",
         bodyEn:
-          "We build chains: Claude → your notes → your docs → your CRM, or ChatGPT → API → automation. No more manual copy-pasting between 5 tabs.",
+          "You learn to chain AI tools: move a document from Claude to your notes, to your docs, to your CRM. Complete method taught step-by-step on your real cases — no more manual copy-pasting between 5 tabs.",
       },
       {
         icon: TrendingUp,
@@ -259,20 +255,21 @@ const COACHING_CONFIGS: Record<IndividualCoachingSlug, CoachingConfig> = {
       },
       {
         time: "9 h 30",
-        titleFr: "Diagnostic : outils sous-exploités, workflows manuels",
-        titleEn: "Diagnosis: under-leveraged tools, manual workflows",
+        titleFr: "Diagnostic : outils sous-exploités, méthodes à améliorer",
+        titleEn: "Diagnosis: under-leveraged tools, methods to improve",
         descriptionFr:
-          "On liste ce qui devrait être automatisé et ne l'est pas. Priorisation par ROI.",
-        descriptionEn: "We list what should be automated and isn't. Prioritisation by ROI.",
+          "On liste ce que l'IA peut accélérer dans votre quotidien. Priorisation par gain de temps.",
+        descriptionEn:
+          "We list where AI can accelerate your daily work. Prioritisation by time saved.",
       },
       {
         time: "11 h 00",
-        titleFr: "Mise en place de workflows multi-outils",
-        titleEn: "Setting up multi-tool workflows",
+        titleFr: "Maîtrise des workflows multi-outils",
+        titleEn: "Mastering multi-tool workflows",
         descriptionFr:
-          "Claude → notes → docs → CRM, ou ChatGPT → API → automation. Testés sur vos vrais cas.",
+          "Méthodes d'enchaînement : passer d'un outil à l'autre avec l'IA. Pratiqué sur vos vrais cas.",
         descriptionEn:
-          "Claude → notes → docs → CRM, or ChatGPT → API → automation. Tested on your real cases.",
+          "Chaining methods: moving from one tool to another with AI. Practised on your real cases.",
       },
       {
         time: "12 h 30",
@@ -451,51 +448,16 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         </Container>
       </section>
 
-      {/* 4 BÉNÉFICES */}
-      <Section
-        eyebrow={isFr ? "Ce que vous obtenez" : "What you get"}
-        title={isFr ? "4 bénéfices" : "4 benefits"}
-        titleEm={isFr ? "concrets et chiffrés" : "concrete and quantified"}
-        description={
-          isFr
-            ? "On ne parle pas dans le vide. À la fin de la journée, voici ce qui est en place sur votre poste."
-            : "We don't talk in a vacuum. By the end of the day, here's what's in place on your workstation."
-        }
-        contentClassName={TIGHT_X}
-      >
-        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
-          {config.benefits.map((b, i) => {
-            const BenefitIcon = b.icon;
-            return (
-              <article
-                key={i}
-                className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
-              >
-                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
-                  <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
-                </div>
-                <h3 className="text-fg text-lg leading-snug font-semibold">
-                  {isFr ? b.titleFr : b.titleEn}
-                </h3>
-                <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
-                  {isFr ? b.bodyFr : b.bodyEn}
-                </p>
-              </article>
-            );
-          })}
-        </div>
-      </Section>
-
-      {/* PROGRAMME JOUR */}
+      {/* PROGRAMME JOUR — JUSTE APRÈS LE HERO (Will 2026-05-12) */}
       <Section
         tone="paper"
-        eyebrow={isFr ? "Programme type" : "Standard programme"}
-        title={isFr ? "Une journée" : "One day"}
-        titleEm={isFr ? "structurée 9 h – 17 h" : "structured 9 a.m. – 5 p.m."}
+        eyebrow={isFr ? "Programme type · 9 h – 17 h" : "Standard programme · 9 a.m. – 5 p.m."}
+        title={isFr ? "Le détail" : "Detailed"}
+        titleEm={isFr ? "de votre journée" : "day breakdown"}
         description={
           isFr
-            ? "Programme adapté en début de matinée selon votre tour d'horizon. La trame reste celle-ci."
-            : "Programme adapted at the start of the morning based on your overview. The frame stays the same."
+            ? "Programme cadré en amont, adapté en début de matinée selon votre tour d'horizon."
+            : "Programme framed upstream, adapted at the start of the morning based on your overview."
         }
         contentClassName={TIGHT_X}
       >
@@ -529,6 +491,41 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
             ? "Frais de logement, repas et forfait trajet en sus, facturés au cas par cas selon la distance et la durée. Devis transparent fourni avant signature."
             : "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature."}
         </p>
+      </Section>
+
+      {/* 4 BÉNÉFICES */}
+      <Section
+        eyebrow={isFr ? "Ce que vous obtenez" : "What you get"}
+        title={isFr ? "4 bénéfices" : "4 benefits"}
+        titleEm={isFr ? "concrets et chiffrés" : "concrete and quantified"}
+        description={
+          isFr
+            ? "À la fin de la journée, voici ce que vous maîtrisez."
+            : "By the end of the day, here's what you master."
+        }
+        contentClassName={TIGHT_X}
+      >
+        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
+          {config.benefits.map((b, i) => {
+            const BenefitIcon = b.icon;
+            return (
+              <article
+                key={i}
+                className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
+              >
+                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
+                  <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <h3 className="text-fg text-lg leading-snug font-semibold">
+                  {isFr ? b.titleFr : b.titleEn}
+                </h3>
+                <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
+                  {isFr ? b.bodyFr : b.bodyEn}
+                </p>
+              </article>
+            );
+          })}
+        </div>
       </Section>
 
       {/* FAQ */}
