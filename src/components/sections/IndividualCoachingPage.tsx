@@ -9,7 +9,7 @@
 // wrapper (~25 lignes).
 
 import type { ReactNode } from "react";
-import { ArrowRight, Mail, Clock, Sparkles, Compass, Target, TrendingUp } from "lucide-react";
+import { ArrowRight, Mail, Sparkles, Compass, Target, TrendingUp } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/layout/Container";
@@ -18,6 +18,9 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { InterventionSchedule } from "@/components/sections/intervention-parts/InterventionSchedule";
+import { InterventionBenefitsGrid } from "@/components/sections/intervention-parts/InterventionBenefitsGrid";
+import { InterventionFaqList } from "@/components/sections/intervention-parts/InterventionFaqList";
 import {
   getFamily,
   INTERVENTION_FORMATS,
@@ -391,7 +394,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
       </Container>
 
       {/* HERO */}
-      <section className="bg-halo-cool text-fg relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      <section className="bg-halo-warm relative overflow-hidden py-16 sm:py-20 lg:py-24">
         <Container className={cn("relative", TIGHT_X)}>
           <div className="max-w-3xl">
             <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -436,7 +439,11 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
             </ul>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Cta href={contactHref} size="lg">
+              <Cta
+                href={contactHref}
+                size="lg"
+                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+              >
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Demander ce coaching" : "Request this coaching"}
               </Cta>
@@ -461,36 +468,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         }
         contentClassName={TIGHT_X}
       >
-        <ol className="border-border/60 mx-auto max-w-3xl border-l-2 pl-6">
-          {config.schedule.map((item, i) => (
-            <li key={i} className="relative pb-6 last:pb-0">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta ring-terracotta-soft absolute -left-[31px] mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-4"
-              >
-                <Clock aria-hidden="true" className="text-paper h-2 w-2" strokeWidth={3} />
-              </span>
-              <div className="flex flex-wrap items-baseline gap-x-3">
-                <span className="text-terracotta-deep text-[13px] font-bold tracking-wide uppercase tabular-nums">
-                  {item.time}
-                </span>
-                <span className="text-fg text-[15px] font-semibold">
-                  {isFr ? item.titleFr : item.titleEn}
-                </span>
-              </div>
-              {item.descriptionFr || item.descriptionEn ? (
-                <p className="text-fg-soft mt-1 text-[13.5px] leading-relaxed">
-                  {isFr ? item.descriptionFr : item.descriptionEn}
-                </p>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-        <p className="text-fg-muted mx-auto mt-6 max-w-3xl text-[12.5px] leading-relaxed">
-          {isFr
-            ? "Frais de logement, repas et forfait trajet en sus, facturés au cas par cas selon la distance et la durée. Devis transparent fourni avant signature."
-            : "Lodging, meals and travel allowance billed separately, calculated case by case based on distance and duration. Transparent quote provided before signature."}
-        </p>
+        <InterventionSchedule items={config.schedule} isFr={isFr} />
       </Section>
 
       {/* 4 BÉNÉFICES */}
@@ -505,27 +483,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         }
         contentClassName={TIGHT_X}
       >
-        <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
-          {config.benefits.map((b, i) => {
-            const BenefitIcon = b.icon;
-            return (
-              <article
-                key={i}
-                className="bg-paper border-border shadow-subtle rounded-2xl border p-6 sm:p-7"
-              >
-                <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
-                  <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
-                </div>
-                <h3 className="text-fg text-lg leading-snug font-semibold">
-                  {isFr ? b.titleFr : b.titleEn}
-                </h3>
-                <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
-                  {isFr ? b.bodyFr : b.bodyEn}
-                </p>
-              </article>
-            );
-          })}
-        </div>
+        <InterventionBenefitsGrid items={config.benefits} isFr={isFr} />
       </Section>
 
       {/* FAQ */}
@@ -536,27 +494,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         titleEm={isFr ? "fréquentes" : "we hear often"}
         contentClassName={TIGHT_X}
       >
-        <div className="mx-auto max-w-3xl space-y-4">
-          {config.faq.map((f, i) => (
-            <details
-              key={i}
-              className="bg-paper border-border group/faq open:shadow-subtle rounded-2xl border p-5"
-            >
-              <summary className="text-fg flex cursor-pointer items-start justify-between gap-3 text-base font-semibold">
-                <span>{isFr ? f.qFr : f.qEn}</span>
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta-soft text-terracotta-deep mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs transition-transform duration-200 group-open/faq:rotate-45"
-                >
-                  +
-                </span>
-              </summary>
-              <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
-                {isFr ? f.aFr : f.aEn}
-              </p>
-            </details>
-          ))}
-        </div>
+        <InterventionFaqList items={config.faq} isFr={isFr} />
       </Section>
 
       <CtaBlock
@@ -570,7 +508,11 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
             : "We call you, understand your context and workstation, quote. Quote within 48 business hours. No commitment before signing."
         }
         cta={
-          <Cta href={contactHref} size="lg">
+          <Cta
+            href={contactHref}
+            size="lg"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+          >
             <Mail aria-hidden="true" className="h-4 w-4" />
             {isFr ? "Demander ce coaching" : "Request this coaching"}
           </Cta>

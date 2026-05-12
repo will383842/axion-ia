@@ -44,6 +44,15 @@ export const SUBJECT_OPTIONS: ReadonlyArray<SubjectOption> = [
  */
 export function mapObjetToSubject(objet: string | undefined): string {
   if (!objet) return "";
+  // ORDRE IMPORTANT (audit 2026-05-12) : les checks spécifiques `claude-dirigeant`
+  // et `claude-implementation-individuel` doivent passer AVANT le fallback
+  // « claude → formation-equipe », sinon ils sont mal routés. De même
+  // `dirigeant` et `coaching/conference` avant les fallbacks génériques.
+  if (objet.includes("dirigeant")) return "journee-dirigeant";
+  if (objet.includes("conference")) return "conference";
+  if (objet.includes("coaching") || objet.includes("implementation-individuel")) {
+    return "coaching-individuel";
+  }
   if (
     objet.includes("formation") ||
     objet.includes("collective") ||
@@ -60,9 +69,6 @@ export function mapObjetToSubject(objet: string | undefined): string {
   ) {
     return "formation-equipe";
   }
-  if (objet.includes("coaching")) return "coaching-individuel";
-  if (objet.includes("dirigeant")) return "journee-dirigeant";
-  if (objet.includes("conference")) return "conference";
   if (objet.includes("sur-mesure") || objet.includes("devis")) return "devis-sur-mesure";
   return "";
 }

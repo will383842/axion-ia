@@ -14,7 +14,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
-import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 // ============================================================================
@@ -79,6 +79,21 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
     serviceType: "AI strategy · executives",
     priceEur: 0,
     areasServed: buildServiceAreasServed(loc),
+  });
+
+  // ItemList JSON-LD — AEO/GEO 2026 : permet aux LLMs d'énumérer la liste
+  // des 3 formats Dirigeants quand quelqu'un demande « formations IA pour
+  // dirigeant Axion-IA ». Audit 2026-05-12 P2.
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
+    name: isFr ? "Formats interventions dirigeants" : "Executive session formats",
+    items: formats.map((f, i) => ({
+      position: i + 1,
+      name: isFr ? f.labelFr : f.labelEn,
+      url: `${SITE_URL}/${loc}${loc === "fr" ? f.pathFr : f.pathEn}`,
+      description: isFr ? f.taglineFr : f.taglineEn,
+    })),
   });
 
   // 3 mini-blocs « pour qui » — alignés sur les 3 formats Dirigeants.
@@ -164,7 +179,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
               <Cta
                 href={contactHref}
                 size="lg"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
               >
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Pré-réservez une journée" : "Pre-book a day"}
@@ -254,7 +269,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
           <Cta
             href={contactHref}
             size="lg"
-            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
           >
             <Mail aria-hidden="true" className="h-4 w-4" />
             {isFr ? "Demander un cadrage" : "Request framing"}
@@ -264,6 +279,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }

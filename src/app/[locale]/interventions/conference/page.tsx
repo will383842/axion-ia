@@ -14,7 +14,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
-import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 // ============================================================================
@@ -34,9 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
+  // Path locale-aware (cohérence avec les autres wrappers — slug identique
+  // FR/EN ici, mais le pattern reste générique pour un futur split.)
+  const PATH_FR = "/interventions/conference";
+  const PATH_EN = "/interventions/conference";
   return buildProductMetadata({
     locale,
-    path: "/interventions/conference",
+    path: loc === "fr" ? PATH_FR : PATH_EN,
     title:
       loc === "fr"
         ? "Conférences IA · plénière 1 jour ou keynote 1-2 h · Axion-IA"
@@ -45,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       loc === "fr"
         ? "2 formats Conférence : plénière 1 journée immersive (séminaires, kick-off, 30-500+ personnes) ou keynote événementielle 1-2 h (soirées, afterworks, conventions). Sur devis."
         : "2 Talk formats: 1-day immersive plenary (seminars, kick-offs, 30-500+ people) or 1-2 h event keynote (evenings, afterworks, conventions). On request.",
-    alternates: { fr: "/interventions/conference", en: "/interventions/conference" },
+    alternates: { fr: PATH_FR, en: PATH_EN },
   });
 }
 
@@ -76,6 +80,19 @@ export default async function ConferenceFamilyPage({ params }: Props) {
     serviceType: "AI talk · plenary or keynote",
     priceEur: 0,
     areasServed: buildServiceAreasServed(loc),
+  });
+
+  // ItemList JSON-LD — AEO/GEO 2026 (audit 2026-05-12 P2).
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/interventions/conference",
+    name: isFr ? "Formats conférence IA" : "AI talk formats",
+    items: formats.map((f, i) => ({
+      position: i + 1,
+      name: isFr ? f.labelFr : f.labelEn,
+      url: `${SITE_URL}/${loc}${loc === "fr" ? f.pathFr : f.pathEn}`,
+      description: isFr ? f.taglineFr : f.taglineEn,
+    })),
   });
 
   // 2 mini-blocs « pour qui » — 1 par format.
@@ -151,7 +168,7 @@ export default async function ConferenceFamilyPage({ params }: Props) {
               <Cta
                 href={contactHref}
                 size="lg"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
               >
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Pré-réservez une conférence" : "Pre-book a talk"}
@@ -241,7 +258,7 @@ export default async function ConferenceFamilyPage({ params }: Props) {
           <Cta
             href={contactHref}
             size="lg"
-            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+            className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
           >
             <Mail aria-hidden="true" className="h-4 w-4" />
             {isFr ? "Demander un cadrage" : "Request framing"}
@@ -251,6 +268,7 @@ export default async function ConferenceFamilyPage({ params }: Props) {
       />
 
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={itemListJsonLd} />
     </>
   );
 }

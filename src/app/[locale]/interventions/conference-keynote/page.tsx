@@ -20,17 +20,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const c = INTERVENTION_DETAIL_CONFIGS[SLUG];
   const isFr = locale === "fr";
+  // Path locale-aware (cohérence avec les autres wrappers — slug identique
+  // FR/EN ici, mais le pattern reste générique pour un futur split.)
+  const PATH_FR = "/interventions/conference-keynote";
+  const PATH_EN = "/interventions/conference-keynote";
   return buildProductMetadata({
     locale,
-    path: "/interventions/conference-keynote",
+    path: isFr ? PATH_FR : PATH_EN,
     title: isFr
       ? "Keynote IA · événementielle · 1-2 h · soirée OK · Axion-IA"
       : "AI Keynote · event format · 1-2 h · evening OK · Axion-IA",
     description: isFr ? c.promiseFr : c.promiseEn,
-    alternates: {
-      fr: "/interventions/conference-keynote",
-      en: "/interventions/conference-keynote",
-    },
+    alternates: { fr: PATH_FR, en: PATH_EN },
   });
 }
 
