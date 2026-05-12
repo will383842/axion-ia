@@ -86,9 +86,33 @@ export const routing = defineRouting({
       fr: "/interventions/conference",
       en: "/interventions/conference",
     },
+    "/interventions/conference-pleniere": {
+      fr: "/interventions/conference-pleniere",
+      en: "/interventions/conference-plenary",
+    },
+    "/interventions/conference-keynote": {
+      fr: "/interventions/conference-keynote",
+      en: "/interventions/conference-keynote",
+    },
     "/interventions/dirigeants": {
       fr: "/interventions/dirigeants",
       en: "/interventions/executives",
+    },
+    "/interventions/dirigeant-productivite": {
+      fr: "/interventions/dirigeant-productivite",
+      en: "/interventions/executive-productivity",
+    },
+    "/interventions/dirigeant-vision-strategique": {
+      fr: "/interventions/dirigeant-vision-strategique",
+      en: "/interventions/executive-strategic-vision",
+    },
+    "/interventions/claude-dirigeant": {
+      fr: "/interventions/claude-dirigeant",
+      en: "/interventions/claude-executive",
+    },
+    "/interventions/claude-implementation-individuel": {
+      fr: "/interventions/claude-implementation-individuel",
+      en: "/interventions/claude-implementation-individual",
     },
     "/interventions/gagner-du-temps": {
       fr: "/interventions/gagner-du-temps",

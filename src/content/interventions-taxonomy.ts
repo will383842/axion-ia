@@ -155,8 +155,10 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
       "Journée(s) 1-to-1 avec le dirigeant — structurer l'entreprise, implémenter l'IA et chiffrer précisément les gains. Pour un seul dirigeant, pas un comité.",
     taglineEn:
       "1-on-1 day(s) with the executive — structure the company, implement AI and quantify precise gains. For one executive, not a committee.",
-    // V1 : pointe directement vers la page format existante (riche, Sprint 14.10).
-    // V2 quand Will ajoutera d'autres formats Dirigeants : hub famille dédié.
+    // Sprint 14.10.7 (Will 2026-05-12) — `/interventions/dirigeants` est
+    // désormais un HUB FAMILLE listant les 3 formats Dirigeants. Chaque format
+    // a sa page détail dédiée (cf. pathFr des entries `dirigeants`,
+    // `dirigeant-vision-strategique`, `claude-dirigeant`).
     pathFr: "/interventions/dirigeants",
     pathEn: "/interventions/executives",
     hasDurations: false,
@@ -176,7 +178,10 @@ export const FAMILIES: ReadonlyArray<FamilyDef> = [
       "Plénière 1 journée pour mettre toute l'entreprise au même niveau IA — séminaires, kick-off annuels, grands effectifs.",
     taglineEn:
       "1-day plenary to bring your whole company to the same AI level — seminars, annual kick-offs, large audiences.",
-    // V1 : pointe directement vers la page format existante (riche).
+    // Sprint 14.10.7 (Will 2026-05-12) — `/interventions/conference` est
+    // désormais un HUB FAMILLE listant les 2 formats Conférence. Chaque format
+    // a sa page détail dédiée (cf. pathFr des entries `conference`,
+    // `conference-keynote`).
     pathFr: "/interventions/conference",
     pathEn: "/interventions/conference",
     hasDurations: false,
@@ -416,8 +421,10 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     // une formation sur le dirigeant LUI-MÊME.
     slug: "dirigeants",
     family: "dirigeants",
-    pathFr: "/interventions/dirigeants",
-    pathEn: "/interventions/executives",
+    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée. `/interventions/dirigeants`
+    // devient le hub famille (lister les 3 formats Dirigeants).
+    pathFr: "/interventions/dirigeant-productivite",
+    pathEn: "/interventions/executive-productivity",
     labelFr: "Productivité dirigeant",
     labelEn: "Executive productivity",
     taglineFr:
@@ -442,8 +449,9 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     // l'IA, quelles automatisations en surface l'entreprise pourrait viser.
     slug: "dirigeant-vision-strategique",
     family: "dirigeants",
-    pathFr: "/interventions/demande?objet=dirigeant-vision-strategique",
-    pathEn: "/interventions/request?objet=dirigeant-vision-strategique",
+    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
+    pathFr: "/interventions/dirigeant-vision-strategique",
+    pathEn: "/interventions/executive-strategic-vision",
     labelFr: "Vision IA stratégique",
     labelEn: "Strategic AI vision",
     taglineFr:
@@ -467,8 +475,9 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     // Projects mémoire, Code CLI pour les dossiers stratégiques.
     slug: "claude-dirigeant",
     family: "dirigeants",
-    pathFr: "/interventions/demande?objet=claude-dirigeant",
-    pathEn: "/interventions/request?objet=claude-dirigeant",
+    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
+    pathFr: "/interventions/claude-dirigeant",
+    pathEn: "/interventions/claude-executive",
     labelFr: "Intervention Claude · Dirigeant",
     labelEn: "Claude Intervention · Executive",
     taglineFr:
@@ -500,8 +509,10 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   {
     slug: "conference",
     family: "conference",
-    pathFr: "/interventions/conference",
-    pathEn: "/interventions/conference",
+    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée. `/interventions/conference`
+    // devient le hub famille (lister les 2 formats Conférence).
+    pathFr: "/interventions/conference-pleniere",
+    pathEn: "/interventions/conference-plenary",
     labelFr: "Conférence plénière",
     labelEn: "Plenary talk",
     taglineFr:
@@ -526,8 +537,9 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     // où la journée pleine ne colle pas.
     slug: "conference-keynote",
     family: "conference",
-    pathFr: "/interventions/demande?objet=conference-keynote",
-    pathEn: "/interventions/request?objet=conference-keynote",
+    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
+    pathFr: "/interventions/conference-keynote",
+    pathEn: "/interventions/conference-keynote",
     labelFr: "Keynote IA · événementielle",
     labelEn: "AI Keynote · event format",
     taglineFr:
@@ -603,8 +615,9 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     // personnels Claude, workflows Claude-only adaptés à votre métier.
     slug: "claude-implementation-individuel",
     family: "individuel",
-    pathFr: "/interventions/demande?objet=claude-implementation-individuel",
-    pathEn: "/interventions/request?objet=claude-implementation-individuel",
+    // Sprint 14.10.7 (Will 2026-05-12) — page détail dédiée.
+    pathFr: "/interventions/claude-implementation-individuel",
+    pathEn: "/interventions/claude-implementation-individual",
     labelFr: "Implémentation Claude · Individuel",
     labelEn: "Claude Implementation · Individual",
     taglineFr:
