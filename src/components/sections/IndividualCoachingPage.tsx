@@ -26,7 +26,7 @@ import {
   INTERVENTION_FORMATS,
   type InterventionFormatEntry,
 } from "@/content/interventions-taxonomy";
-import { buildServiceJsonLd } from "@/lib/seo";
+import { buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 // ----------------------------------------------------------------------------
@@ -370,21 +370,15 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
     areasServed: buildServiceAreasServed(locale),
   });
 
-  // FAQPage JSON-LD pour AEO
+  // FAQPage JSON-LD pour AEO (via factory centralisée seo.ts).
   const faqJsonLd =
     config.faq.length > 0
-      ? ({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: config.faq.map((f) => ({
-            "@type": "Question",
-            name: isFr ? f.qFr : f.qEn,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: isFr ? f.aFr : f.aEn,
-            },
+      ? buildFaqJsonLd({
+          items: config.faq.map((f) => ({
+            question: isFr ? f.qFr : f.qEn,
+            answer: isFr ? f.aFr : f.aEn,
           })),
-        } as const)
+        })
       : null;
 
   return (

@@ -21,7 +21,7 @@ import {
   getFamily,
 } from "@/content/interventions-taxonomy";
 import { INTERVENTION_TIERS, formatAmount, getEntryPriceEur, getTierById } from "@/content/pricing";
-import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -151,22 +151,19 @@ export default async function CollectivesFamilyHub({ params }: Props) {
     areasServed: buildServiceAreasServed(loc),
   });
 
-  // ItemList JSON-LD — 4 items = 4 paliers durée
-  const itemListJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
+  // ItemList JSON-LD — 4 paliers durée. Factory centralisée seo.ts
+  // (audit perfection 2026-05-12).
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: loc === "fr" ? "/interventions/collectives" : "/interventions/team-trainings",
     name: isFr ? "Paliers durée — Formations équipe" : "Duration tiers — Team trainings",
-    itemListElement: durationRows.map((row, idx) => ({
-      "@type": "ListItem",
+    items: durationRows.map((row, idx) => ({
       position: idx + 1,
-      item: {
-        "@type": "Service",
-        name: isFr ? row.duration.labelFr : row.duration.labelEn,
-        url: `${SITE_URL}/${locale}${row.href}`,
-        description: isFr ? row.duration.durationDetailFr : row.duration.durationDetailEn,
-      },
+      name: isFr ? row.duration.labelFr : row.duration.labelEn,
+      url: `${SITE_URL}/${locale}${row.href}`,
+      description: isFr ? row.duration.durationDetailFr : row.duration.durationDetailEn,
     })),
-  } as const;
+  });
 
   return (
     <>

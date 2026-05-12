@@ -3,6 +3,7 @@
 // `InterventionDetailPage`, `IndividualCoachingPage`, `CollectiveTrainingPage`.
 
 import type { LucideIcon } from "lucide-react";
+import { Heading } from "@/components/typography/Heading";
 
 export interface InterventionBenefit {
   icon: LucideIcon;
@@ -15,9 +16,11 @@ export interface InterventionBenefit {
 interface Props {
   items: ReadonlyArray<InterventionBenefit>;
   isFr: boolean;
+  /** Niveau H sémantique (défaut h3 = sous-titre dans page produit). */
+  headingLevel?: 2 | 3 | 4;
 }
 
-export function InterventionBenefitsGrid({ items, isFr }: Props) {
+export function InterventionBenefitsGrid({ items, isFr, headingLevel = 3 }: Props) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:gap-7">
       {items.map((b, i) => {
@@ -30,9 +33,9 @@ export function InterventionBenefitsGrid({ items, isFr }: Props) {
             <div className="bg-terracotta-soft text-terracotta-deep mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl">
               <BenefitIcon aria-hidden="true" className="h-6 w-6" strokeWidth={1.75} />
             </div>
-            <h3 className="text-fg text-lg leading-snug font-semibold">
+            <Heading level={headingLevel} variant="sub">
               {isFr ? b.titleFr : b.titleEn}
-            </h3>
+            </Heading>
             <p className="text-fg-soft mt-3 text-[14.5px] leading-relaxed">
               {isFr ? b.bodyFr : b.bodyEn}
             </p>

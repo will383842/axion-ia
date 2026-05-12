@@ -40,7 +40,7 @@ import {
   type FamilyDef,
   type FormatAccent,
 } from "@/content/interventions-taxonomy";
-import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -381,23 +381,20 @@ export default async function InterventionsListing({ params }: Props) {
 
   const familyCards = buildFamilyCards(isFr);
 
-  // ItemList JSON-LD — 3 items = 3 familles. Le détail des formats reste
-  // exposé par chaque page famille / page durée via leur propre JSON-LD.
-  const itemListJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
+  // ItemList JSON-LD — 4 familles. Le détail des formats reste exposé par
+  // chaque page famille / page durée via leur propre JSON-LD. Factory
+  // centralisée seo.ts (audit perfection 2026-05-12).
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/interventions",
     name: isFr ? "Familles d'interventions IA" : "AI session families",
-    itemListElement: familyCards.map(({ family }, idx) => ({
-      "@type": "ListItem",
+    items: familyCards.map(({ family }, idx) => ({
       position: idx + 1,
-      item: {
-        "@type": "Service",
-        name: isFr ? family.labelFr : family.labelEn,
-        url: `${SITE_URL}/${locale}${familyPath(family, loc)}`,
-        description: isFr ? family.taglineFr : family.taglineEn,
-      },
+      name: isFr ? family.labelFr : family.labelEn,
+      url: `${SITE_URL}/${locale}${familyPath(family, loc)}`,
+      description: isFr ? family.taglineFr : family.taglineEn,
     })),
-  } as const;
+  });
 
   // Hero schema — 4 nodes famille (Sprint 14.10.7 + ajout Conférence).
   // Distribution équidistante en losange via le composant (N=4 → [-90,0,90,180]).

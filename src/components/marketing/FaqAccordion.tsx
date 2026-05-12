@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { buildFaqJsonLd } from "@/lib/seo";
 import { JsonLd } from "./JsonLd";
 
 interface FaqEntry {
@@ -37,20 +38,8 @@ export function FaqAccordion({
   permalinkBase,
   permalinkLabel = "Page dédiée",
 }: FaqAccordionProps) {
-  const jsonLd = emitJsonLd
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: items.map((item) => ({
-          "@type": "Question",
-          name: item.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: item.answer,
-          },
-        })),
-      }
-    : null;
+  // Factory centralisée seo.ts (audit perfection 2026-05-12).
+  const jsonLd = emitJsonLd ? buildFaqJsonLd({ items }) : null;
 
   return (
     <>

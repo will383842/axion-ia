@@ -25,7 +25,7 @@ import {
   getFormatsByCell,
   quoteContactPath,
 } from "@/content/interventions-taxonomy";
-import { SITE_URL } from "@/lib/seo";
+import { buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   durationId: CollectiveDuration;
@@ -55,24 +55,21 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
     },
   ];
 
-  // ItemList JSON-LD pour les formats (uniquement si liste non vide et non-devis).
+  // ItemList JSON-LD pour les formats — factory centralisée seo.ts
+  // (audit perfection 2026-05-12).
   const itemListJsonLd =
     formats.length > 0
-      ? ({
-          "@context": "https://schema.org",
-          "@type": "ItemList",
+      ? buildItemListJsonLd({
+          locale,
+          path: locale === "fr" ? duration.pathFr : duration.pathEn,
           name: isFr ? duration.labelFr : duration.labelEn,
-          itemListElement: formats.map((f, idx) => ({
-            "@type": "ListItem",
+          items: formats.map((f, idx) => ({
             position: idx + 1,
-            item: {
-              "@type": "Service",
-              name: isFr ? f.labelFr : f.labelEn,
-              url: `${SITE_URL}/${locale}${locale === "fr" ? f.pathFr : f.pathEn}`,
-              description: isFr ? f.taglineFr : f.taglineEn,
-            },
+            name: isFr ? f.labelFr : f.labelEn,
+            url: `${SITE_URL}/${locale}${locale === "fr" ? f.pathFr : f.pathEn}`,
+            description: isFr ? f.taglineFr : f.taglineEn,
           })),
-        } as const)
+        })
       : null;
 
   return (

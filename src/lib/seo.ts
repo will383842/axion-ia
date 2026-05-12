@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import type { Locale } from "@/i18n/routing";
 import { env } from "@/env";
+// Cycle d'import autorisé : `service-coverage.ts` réimporte SITE_URL d'ici, mais
+// SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
+// appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
+import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 export const SITE_URL = env.NEXT_PUBLIC_SITE_URL;
 
@@ -120,12 +124,22 @@ export function buildServiceJsonLd({
 }: ServiceJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
 
+  // Audit perfection 2026-05-12 : auto-injection `areasServed` par défaut
+  // (France + 13 régions indexable + top villes) si la page n'a rien passé
+  // explicitement. Élimine le boilerplate sur les ~25 pages services qui
+  // utilisaient `buildServiceJsonLd` sans préciser leur couverture. Pour
+  // bypass (ex. service hors France), passer explicitement `areasServed: []`.
+  // Import-time dependency : `buildServiceAreasServed` est déclaré PLUS BAS
+  // dans ce fichier pour éviter le cycle d'import avec service-coverage.ts.
+  const resolvedAreasServed =
+    areasServed === undefined ? buildServiceAreasServed(locale) : areasServed;
+
   // Schema.org : `areaServed` peut être un string OU un tableau d'objets
   // typés (Country/AdministrativeArea/City). On privilégie `areasServed`
   // (multi) et on retombe sur `area` (string legacy) seulement si non fourni.
   const areaServedNode =
-    areasServed && areasServed.length > 0
-      ? areasServed.map((a) => ({
+    resolvedAreasServed && resolvedAreasServed.length > 0
+      ? resolvedAreasServed.map((a) => ({
           "@type": a.type,
           name: a.name,
           ...(a.url ? { url: a.url } : {}),

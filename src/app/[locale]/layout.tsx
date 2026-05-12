@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope, Inconsolata, Fraunces } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -52,6 +52,23 @@ const fraunces = Fraunces({
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+// Viewport SSOT — audit perfection SEO 2026-05-12. Next 16 sépare
+// `viewport` (size, colors, scale) de `metadata` (title, OG, etc.). Déclaré
+// au root layout pour s'appliquer à toutes pages :
+//   - themeColor : signature visuelle terracotta sur iOS Safari status bar +
+//     Chrome Android URL bar + PWA splash. Doit matcher --color-terracotta
+//     défini dans globals.css. Next exige une string littérale ici (pas de
+//     CSS var possible), donc le hex est duppliqué intentionnellement.
+//   - colorScheme "light" : Axion-IA est light-only (charte ivoire/sand) — on
+//     bloque le dark auto pour préserver l'identité éditoriale
+//   - width device-width + initialScale 1 : mobile-first standard
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#c24a1b", // hex-ok: signature terracotta SSOT, dupliquée de globals.css --color-terracotta
+  colorScheme: "light",
+};
 
 interface LocaleLayoutProps {
   children: React.ReactNode;

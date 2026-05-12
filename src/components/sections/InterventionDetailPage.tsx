@@ -28,7 +28,7 @@ import {
 } from "@/content/intervention-detail-configs";
 import { getFamily } from "@/content/interventions-taxonomy";
 import { formatAmount } from "@/content/pricing";
-import { buildServiceJsonLd } from "@/lib/seo";
+import { buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -70,18 +70,12 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
 
   const faqJsonLd =
     config.faq.length > 0
-      ? ({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: config.faq.map((f) => ({
-            "@type": "Question",
-            name: isFr ? f.qFr : f.qEn,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: isFr ? f.aFr : f.aEn,
-            },
+      ? buildFaqJsonLd({
+          items: config.faq.map((f) => ({
+            question: isFr ? f.qFr : f.qEn,
+            answer: isFr ? f.aFr : f.aEn,
           })),
-        } as const)
+        })
       : null;
 
   return (
