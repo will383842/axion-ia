@@ -490,27 +490,59 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   // FAMILLE : Conférence (liste plate, pas de paliers durée)
   // Sprint 14.10.7 — extraite de Collectives/1-jour pour devenir une famille
   // à part entière. Décision Will (2026-05-11).
+  // 2 formats distincts (Will 2026-05-12) :
+  //   1. `conference` — plénière 1 journée immersive (séminaire, kick-off
+  //      annuel, formation large échelle)
+  //   2. `conference-keynote` — keynote courte 1-2 h, en soirée / afterwork
+  //      / intégrée dans un événement client. Pas de redondance avec la
+  //      plénière (durée, format, contexte différents).
   // -------------------------------------------------------------------------
   {
     slug: "conference",
     family: "conference",
     pathFr: "/interventions/conference",
     pathEn: "/interventions/conference",
-    labelFr: "Conférence 1 journée",
-    labelEn: "1-day talk",
+    labelFr: "Conférence plénière",
+    labelEn: "Plenary talk",
     taglineFr:
-      "Plénière 1 journée pour mettre toute l'entreprise au même niveau IA — séminaires, kick-off annuels, grands effectifs.",
+      "Plénière 1 journée pour mettre toute l'entreprise au même niveau IA — séminaires internes, kick-off annuels, formations grande échelle. Panorama IA 2026, démos live, Q&A, ateliers par groupes.",
     taglineEn:
-      "1-day plenary to bring your whole company to the same AI level — seminars, annual kick-offs, large audiences.",
+      "1-day plenary to bring your whole company to the same AI level — internal seminars, annual kick-offs, large-scale onboarding. 2026 AI panorama, live demos, Q&A, group workshops.",
     priceFr: "Sur devis",
     priceEn: "On request",
-    groupSizeFr: "Grands effectifs · 30+ personnes",
-    groupSizeEn: "Large audiences · 30+ people",
-    audienceFr: "Toute l'entreprise au même niveau",
-    audienceEn: "Whole company aligned",
+    groupSizeFr: "Grands effectifs · 30 à 500+ personnes",
+    groupSizeEn: "Large audiences · 30 to 500+ people",
+    audienceFr: "Toute l'entreprise au même niveau IA en 1 journée",
+    audienceEn: "Whole company at the same AI level in 1 day",
     accent: "terracotta",
-    badgeFr: "Format collectif",
-    badgeEn: "Collective format",
+    badgeFr: "Plénière · 1 journée",
+    badgeEn: "Plenary · 1 day",
+  },
+  {
+    // Sprint 14.10.7 (Will 2026-05-12) — 2ᵉ format Conférence : keynote
+    // courte 1-2 h, en soirée ou intégrée dans un événement (afterwork,
+    // soirée client, séminaire externe). Format ÉVÉNEMENTIEL — pas un
+    // remplaçant de la plénière journée, un complément pour les contextes
+    // où la journée pleine ne colle pas.
+    slug: "conference-keynote",
+    family: "conference",
+    pathFr: "/interventions/demande?objet=conference-keynote",
+    pathEn: "/interventions/request?objet=conference-keynote",
+    labelFr: "Keynote IA · événementielle",
+    labelEn: "AI Keynote · event format",
+    taglineFr:
+      "Keynote 1 à 2 heures sur l'IA opérationnelle 2026 — pour soirées clients, afterworks d'entreprise, séminaires externes, conventions, salons. Format dense, percutant, accessible à tous. Q&A live à la fin.",
+    taglineEn:
+      "1 to 2 hour keynote on operational AI 2026 — for client evenings, corporate afterworks, external seminars, conventions, trade shows. Dense, impactful, accessible to all. Live Q&A at the end.",
+    priceFr: "Sur devis",
+    priceEn: "On request",
+    groupSizeFr: "Audience événement · 20 à 500+ personnes",
+    groupSizeEn: "Event audience · 20 to 500+ people",
+    audienceFr: "Événements clients, afterworks, conventions, salons",
+    audienceEn: "Client events, afterworks, conventions, trade shows",
+    accent: "terracotta",
+    badgeFr: "Keynote · 1-2 h · soirée OK",
+    badgeEn: "Keynote · 1-2 h · evening OK",
   },
 
   // -------------------------------------------------------------------------
