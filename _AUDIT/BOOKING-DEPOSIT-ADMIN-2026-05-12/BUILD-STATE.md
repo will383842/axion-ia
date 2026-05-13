@@ -196,3 +196,26 @@ Le worktree contient des modifs non-commitées de Will (taxonomy enums, pages in
 - Branche : `feature/booking-v1` (PAS main).
 - Sprint suivant : X.1 — extensions Prisma schema selon `03-ARCHITECTURE-CIBLE.md` §5.1.
 - Commande de reprise : "continue le build V1 sprint X.1".
+
+---
+
+## ÉTAT FINAL CYCLE 2026-05-13 (Sprint X.20 clôture)
+
+**Branche `feature/booking-v1`** : 25 commits ahead de `main` (X.0 + X.1 +
+11 sprints partiels session 2026-05-13 + X.20 doc).
+
+**Tests** : 149 → 286 (+137 nouveaux)
+
+**Sprints partiellement livrés en autonomie cette session** :
+X.2 Stripe + X.4 state machine + X.4 admin actions + X.5bis parcours B
+
+- X.6 cadrage + X.7 devis + X.13 emails ciblés + X.15 self-service
+- X.16 géo + X.17 legal + X.18 funnel/UTM + X.20 doc.
+
+**Récap exhaustif** : voir `_AUDIT/CHANGELOG-V1-BOOKING.md`.
+
+**Action Will** : voir section finale du CHANGELOG pour passage en prod.
+
+- Sprint suivant prioritaire (après merge main) : X.3 DocuSeal (infra Coolify)
+  ou X.12 BullMQ workers (infra Redis).
+- Commande de reprise après merge : "continue le build V1 sprint X.3 ou X.12".
