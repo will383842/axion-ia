@@ -32,6 +32,11 @@ services:
   plausible_events:
     image: clickhouse/clickhouse-server:24.3-alpine
     restart: always
+    # Anti-OOM CPX32 (8 GB partagé avec app prod Next.js + Postgres + Redis) :
+    # ClickHouse par défaut alloue ~50% de la RAM host (~4 GB) → kill prod.
+    # Cap dur à 1.5 GB + cap interne via max_server_memory_usage (config XML).
+    mem_limit: 1536m
+    mem_reservation: 768m
     volumes:
       - plausible_events_data:/var/lib/clickhouse
       - plausible_events_logs:/var/log/clickhouse-server
@@ -57,6 +62,9 @@ services:
   plausible:
     image: ghcr.io/plausible/community-edition:v3.0.1
     restart: always
+    # Anti-OOM CPX32 — l'app Elixir/Phoenix consomme ~400-600 MB en idle.
+    mem_limit: 768m
+    mem_reservation: 384m
     command: sh -c "/entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
     depends_on:
       plausible_db:
@@ -67,7 +75,9 @@ services:
         condition: service_started
     environment:
       SERVICE_FQDN_PLAUSIBLE: ${SERVICE_FQDN_PLAUSIBLE}
-      BASE_URL: ${SERVICE_FQDN_PLAUSIBLE}
+      # BASE_URL doit inclure le protocole (https://) sinon Phoenix crash au boot.
+      # Hardcodé pour éviter ambiguïté avec la magic var SERVICE_FQDN_PLAUSIBLE.
+      BASE_URL: https://plausible.axion-ia.com
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       TOTP_VAULT_KEY: ${TOTP_VAULT_KEY}
       DATABASE_URL: postgres://plausible:${PG_PASSWORD}@plausible_db:5432/plausible_db
@@ -93,6 +103,10 @@ configs:
               <level>warning</level>
               <console>true</console>
           </logger>
+          <!-- Anti-OOM : cap interne ClickHouse ~1.3 GB (laisse marge pour
+               le mem_limit Docker à 1.5 GB, évite le SIGKILL Linux) -->
+          <max_server_memory_usage>1395864320</max_server_memory_usage>
+          <max_concurrent_queries>20</max_concurrent_queries>
           <!-- Anti-disk-fill : log rotation -->
           <query_thread_log remove="remove"/>
           <query_log remove="remove"/>
