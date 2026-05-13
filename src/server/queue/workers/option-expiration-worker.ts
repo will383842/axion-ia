@@ -9,7 +9,7 @@
 //   4. Notifie Telegram [OPTION EXPIRÉE].
 
 import { Worker } from "bullmq";
-import { getBullConnection } from "../connection";
+import { getBullConnectionOrThrow } from "../connection";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "../queues";
 import { sendTelegram } from "@/lib/telegram";
@@ -111,7 +111,7 @@ export function startOptionExpirationWorker(): Worker<OptionExpirationJobData> {
       }
       console.log(`[option-expiration] expired ${expired.length} option(s)`);
     },
-    { connection: getBullConnection(), concurrency: 1 },
+    { connection: getBullConnectionOrThrow(), concurrency: 1 },
   );
 
   worker.on("ready", () => console.log("[option-expiration-worker] ready"));

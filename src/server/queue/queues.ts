@@ -2,9 +2,12 @@
 //
 // Pattern : on declare les queues une seule fois, on les exporte pour que
 // les Server Actions puissent enqueue sans toucher a BullMQ directement.
+//
+// Toggle dev : si `BULLMQ_DISABLED=true`, toutes les queues sont `null` et
+// les helpers `enqueueEmail` / `bootRepeatableJobs` no-op proprement.
 
 import { Queue } from "bullmq";
-import { getBullConnection } from "./connection";
+import { getBullConnection, isBullmqDisabled } from "./connection";
 import type {
   EmailJobData,
   EmailJobName,
@@ -24,36 +27,39 @@ const defaultJobOptions = {
   removeOnFail: { age: 30 * 24 * 3600, count: 5000 },
 };
 
-export const emailsQueue = new Queue<EmailJobData, void, EmailJobName>("emails", {
-  connection,
-  defaultJobOptions,
-});
+export const emailsQueue: Queue<EmailJobData, void, EmailJobName> | null = connection
+  ? new Queue<EmailJobData, void, EmailJobName>("emails", { connection, defaultJobOptions })
+  : null;
 
-export const optionExpirationQueue = new Queue<OptionExpirationJobData>("option-expiration", {
-  connection,
-  defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
-});
+export const optionExpirationQueue: Queue<OptionExpirationJobData> | null = connection
+  ? new Queue<OptionExpirationJobData>("option-expiration", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
 
-export const optionReminderQueue = new Queue<OptionReminderJobData>("option-reminder", {
-  connection,
-  defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
-});
+export const optionReminderQueue: Queue<OptionReminderJobData> | null = connection
+  ? new Queue<OptionReminderJobData>("option-reminder", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
 
-export const newsletterQueue = new Queue<NewsletterCampaignJobData>("newsletter", {
-  connection,
-  defaultJobOptions,
-});
+export const newsletterQueue: Queue<NewsletterCampaignJobData> | null = connection
+  ? new Queue<NewsletterCampaignJobData>("newsletter", { connection, defaultJobOptions })
+  : null;
 
-export const searchIndexerQueue = new Queue<SearchIndexerJobData>("search-indexer", {
-  connection,
-  defaultJobOptions,
-});
+export const searchIndexerQueue: Queue<SearchIndexerJobData> | null = connection
+  ? new Queue<SearchIndexerJobData>("search-indexer", { connection, defaultJobOptions })
+  : null;
 
 // Sprint 24 / D3 — purge RGPD quotidienne (cron 03:00 UTC).
-export const retentionPurgeQueue = new Queue<RetentionPurgeJobData>("retention-purge", {
-  connection,
-  defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
-});
+export const retentionPurgeQueue: Queue<RetentionPurgeJobData> | null = connection
+  ? new Queue<RetentionPurgeJobData>("retention-purge", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
 
 // ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
@@ -66,6 +72,12 @@ export async function enqueueEmail(
   payload: Record<string, unknown>,
   options?: { delayMs?: number; marketing?: boolean },
 ): Promise<void> {
+  if (!emailsQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${to})`);
+    }
+    return;
+  }
   const data: EmailJobData = options?.marketing
     ? { template, to, locale, payload, marketing: true }
     : { template, to, locale, payload };
@@ -82,6 +94,13 @@ export async function enqueueEmail(
  * accumulent des entrees dans repeat: ZSET).
  */
 export async function bootRepeatableJobs(): Promise<void> {
+  if (!optionExpirationQueue || !optionReminderQueue || !retentionPurgeQueue) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("[bullmq] no connection, skipping bootRepeatableJobs");
+    }
+    return;
+  }
+
   // Cron 5min : libere les options 48h expirees
   await optionExpirationQueue.removeRepeatable(
     "tick",

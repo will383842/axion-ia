@@ -7,7 +7,7 @@
 // En prod → PowerMTA local sur Hetzner relai vers IP dediee.
 
 import { Worker } from "bullmq";
-import { getBullConnection } from "../connection";
+import { getBullConnectionOrThrow } from "../connection";
 import { sendEmail } from "@/lib/email/client";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import type { EmailJobData, EmailJobName } from "../types";
@@ -37,7 +37,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         ...(unsubscribeToken ? { unsubscribeToken } : {}),
       });
     },
-    { connection: getBullConnection(), concurrency: 8 },
+    { connection: getBullConnectionOrThrow(), concurrency: 8 },
   );
 
   worker.on("ready", () => console.log("[email-worker] ready"));

@@ -9,8 +9,13 @@ import { startOptionExpirationWorker } from "./workers/option-expiration-worker"
 import { startOptionReminderWorker } from "./workers/option-reminder-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { bootRepeatableJobs } from "./queues";
+import { isBullmqDisabled } from "./connection";
 
 async function main() {
+  if (isBullmqDisabled()) {
+    console.warn("→ Axion-IA · BULLMQ_DISABLED=true, worker process aborting (intentional).");
+    process.exit(0);
+  }
   console.log("→ Axion-IA · BullMQ workers booting…");
 
   const workers = [
