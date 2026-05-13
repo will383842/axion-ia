@@ -37,6 +37,14 @@ services:
     # Cap dur à 1.5 GB + cap interne via max_server_memory_usage (config XML).
     mem_limit: 1536m
     mem_reservation: 768m
+    # ClickHouse 24.x docker image auto-génère un password aléatoire pour
+    # le user `default` au 1er boot → Plausible auth fail. Override via env
+    # var pour passer un password connu (matché dans CLICKHOUSE_DATABASE_URL).
+    environment:
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: ${CH_PASSWORD}
+      CLICKHOUSE_DB: plausible_events_db
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
       - plausible_events_data:/var/lib/clickhouse
       - plausible_events_logs:/var/log/clickhouse-server
@@ -81,7 +89,7 @@ services:
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       TOTP_VAULT_KEY: ${TOTP_VAULT_KEY}
       DATABASE_URL: postgres://plausible:${PG_PASSWORD}@plausible_db:5432/plausible_db
-      CLICKHOUSE_DATABASE_URL: http://plausible_events:8123/plausible_events_db
+      CLICKHOUSE_DATABASE_URL: http://default:${CH_PASSWORD}@plausible_events:8123/plausible_events_db
       DISABLE_REGISTRATION: "invite_only"
       MAILER_EMAIL: ${MAILER_EMAIL}
       SMTP_HOST_ADDR: mail
