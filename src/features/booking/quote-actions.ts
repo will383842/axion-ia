@@ -1,24 +1,26 @@
 "use server";
-// Server Actions Quote (Sprint X.7 / Booking V1) — partiel sans DocuSeal.
+// Server Actions Quote (Sprint X.7 / Booking V1).
 //
 // SOURCE :
-//   - 04-PLAN-EXECUTION Sprint X.7
+//   - 04-PLAN-EXECUTION Sprint X.7 + Sprint X.7 final (DocuSeal wiring)
 //   - 03-ARCHITECTURE-CIBLE §5.1.7 (Quote model)
+//   - ADR 0014 — DocuSeal self-hosted vs Yousign
 //
-// SCOPE V1 livré (sans DocuSeal) :
+// SCOPE V1 final (DocuSeal wiré) :
 //   - `generateQuoteDraftAction({bookingId, amountHtCents, vatRate, vatReverseCharge, body, validUntil?})`
 //     — admin crée un Quote draft (numéro séquentiel).
 //   - `editQuoteDraftAction({quoteId, ...fields})` — édition tant que status='draft'.
-//   - `sendQuoteAction({quoteId})` — passe en 'sent', transition booking
-//     quote_required → quote_sent + email visiteur. (Pas de DocuSeal V1 :
-//     l'admin envoie le PDF en pj manuelle ou par lien.)
+//   - `sendQuoteAction({quoteId})` — passe en 'sent', crée submission DocuSeal
+//     (si configuré + `DOCUSEAL_QUOTE_TEMPLATE_ID` présent), stocke
+//     `docusealSubmissionId` + `pdfUrl=embedUrl`, transition booking
+//     quote_required → quote_sent + email visiteur (avec lien signature).
+//     Fallback gracieux si DocuSeal indisponible/non configuré.
 //   - `markQuoteSignedManuallyAction({quoteId, pdfUrl?})` — super_admin only,
 //     passe en 'accepted', transition quote_sent → quote_signed.
 //   - `markQuoteDeclinedAction({quoteId, reason?})` — passe en 'declined',
 //     transition terminal.
 //
-// HORS SCOPE V1 (Sprint X.7 final) :
-//   - Intégration DocuSeal (Sprint X.3 nécessaire) pour signature électronique
+// HORS SCOPE :
 //   - PDF auto-render (react-pdf) — V1.5
 //   - Admin UI `/admin/devis/[bookingId]` — Sprint X.8
 
@@ -29,6 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { sendTelegram } from "@/lib/telegram";
 import { applyTransition, StateMachineError } from "./state-machine";
 import { generateQuoteNumber, computeQuotePricing } from "@/lib/quote-helpers";
+import { createSubmission, isDocusealConfigured, DocusealApiError } from "@/lib/docuseal";
 
 type AdminContext = { userId: string; role: "super_admin" | "admin" | "editor" | "reader" };
 
@@ -228,32 +231,80 @@ export async function sendQuoteAction(
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
-      const q = await tx.quote.findUnique({
-        where: { id: parsed.data.quoteId },
-        select: {
-          id: true,
-          number: true,
-          status: true,
-          amountTtcCents: true,
-          validUntil: true,
-          bookingId: true,
-          booking: {
-            select: {
-              locale: true,
-              submission: { select: { contactEmail: true, contactName: true } },
-            },
+    // -- 1. Pré-fetch hors transaction (lecture longue + DocuSeal call). ----
+    const q = await prisma.quote.findUnique({
+      where: { id: parsed.data.quoteId },
+      select: {
+        id: true,
+        number: true,
+        status: true,
+        amountTtcCents: true,
+        validUntil: true,
+        bookingId: true,
+        booking: {
+          select: {
+            locale: true,
+            submission: { select: { contactEmail: true, contactName: true } },
           },
         },
-      });
-      if (!q) throw new StateMachineError("Quote introuvable", "booking_not_found");
-      if (q.status !== "draft") {
-        throw new StateMachineError("Quote déjà envoyé", "transition_duplicate");
-      }
+      },
+    });
+    if (!q) return { ok: false, error: "quote_not_found" };
+    if (q.status !== "draft") return { ok: false, error: "quote_already_sent" };
 
+    const contactEmail = q.booking.submission?.contactEmail ?? null;
+    const contactName = q.booking.submission?.contactName ?? "Client";
+
+    // -- 2. DocuSeal createSubmission (best-effort, hors tx). --------------
+    // Si DocuSeal n'est pas configuré OU si le template ID est absent OU si
+    // l'API est down → on continue sans signature électronique (l'admin
+    // pourra utiliser markQuoteSignedManuallyAction en fallback).
+    const docusealTemplateId = process.env["DOCUSEAL_QUOTE_TEMPLATE_ID"];
+    let submissionId: string | null = null;
+    let embedUrl: string | null = null;
+
+    if (isDocusealConfigured() && docusealTemplateId && contactEmail) {
+      try {
+        const result = await createSubmission({
+          templateId: docusealTemplateId,
+          signers: [{ email: contactEmail, name: contactName }],
+          fields: [
+            { name: "quote_number", default_value: q.number },
+            { name: "amount_ttc", default_value: (q.amountTtcCents / 100).toFixed(2) },
+            { name: "valid_until", default_value: q.validUntil.toISOString().slice(0, 10) },
+          ],
+          sendEmail: false, // on envoie nous-mêmes via enqueueEmail
+          metadata: {
+            bookingId: q.bookingId,
+            quoteId: q.id,
+            kind: "quote",
+          },
+        });
+        submissionId = result.submissionId;
+        embedUrl = result.embedUrl;
+      } catch (err) {
+        if (err instanceof DocusealApiError) {
+          // Log + Telegram alerte, mais on continue sans DocuSeal.
+          sendTelegram({
+            tag: "AUTO",
+            body: `⚠️ DocuSeal indisponible (status=${err.statusCode}) lors du sendQuote ${q.number}. Fallback sans signature électronique.`,
+          }).catch(() => {});
+        } else {
+          console.warn("[sendQuoteAction] DocuSeal call failed", err);
+        }
+      }
+    }
+
+    // -- 3. Transaction atomique : update Quote + Booking + transition. ----
+    await prisma.$transaction(async (tx) => {
       await tx.quote.update({
-        where: { id: parsed.data.quoteId },
-        data: { status: "sent", sentAt: new Date() },
+        where: { id: q.id },
+        data: {
+          status: "sent",
+          sentAt: new Date(),
+          ...(submissionId ? { docusealSubmissionId: submissionId } : {}),
+          ...(embedUrl ? { pdfUrl: embedUrl } : {}),
+        },
       });
       // Lien actif côté Booking.quoteId (relation BookingActiveQuote).
       await tx.booking.update({
@@ -276,19 +327,20 @@ export async function sendQuoteAction(
         // Soft warning : on continue
         console.warn(`[sendQuoteAction] transition skipped: ${e.code}`);
       }
-
-      const email = q.booking.submission?.contactEmail;
-      if (email) {
-        enqueueEmail("quote-sent", email, q.booking.locale, {
-          contactName: q.booking.submission?.contactName ?? "Client",
-          quoteNumber: q.number,
-          amountTtc: (q.amountTtcCents / 100).toFixed(2) + " € TTC",
-          validUntil: q.validUntil.toISOString().slice(0, 10),
-        }).catch(() => {});
-      }
     });
 
-    return { ok: true, quoteId: parsed.data.quoteId };
+    // -- 4. Email visiteur (hors tx, best-effort). -------------------------
+    if (contactEmail) {
+      enqueueEmail("quote-sent", contactEmail, q.booking.locale, {
+        contactName,
+        quoteNumber: q.number,
+        amountTtc: (q.amountTtcCents / 100).toFixed(2) + " € TTC",
+        validUntil: q.validUntil.toISOString().slice(0, 10),
+        ...(embedUrl ? { pdfUrl: embedUrl } : {}),
+      }).catch(() => {});
+    }
+
+    return { ok: true, quoteId: q.id };
   } catch (err) {
     if (err instanceof StateMachineError) {
       return {
