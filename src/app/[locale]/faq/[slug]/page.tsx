@@ -10,25 +10,35 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { getFaqEntry, getAllFaqIds, FAQ_GLOBAL } from "@/content/transversal";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { splitTitleEm } from "@/lib/title";
+import { listFaqs, type FaqItem } from "@/lib/knowledge/readers";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllFaqIds().flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+export async function generateStaticParams() {
+  // KB-6.3 : utilise le reader unifié (FAQ_GLOBAL en mode legacy).
+  const faqs = await listFaqs();
+  return faqs.flatMap((f) => routing.locales.map((locale) => ({ locale, slug: f.slug })));
+}
+
+function getCopy(item: FaqItem, locale: Locale): { question: string; answer: string } {
+  return {
+    question: locale === "fr" ? item.questionFr : item.questionEn,
+    answer: locale === "fr" ? item.answerFr : item.answerEn,
+  };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const entry = getFaqEntry(slug);
+  const faqs = await listFaqs();
+  const entry = faqs.find((f) => f.slug === slug);
   if (!entry) return {};
   const isFr = locale === "fr";
-  const copy = entry[locale as Locale];
+  const copy = getCopy(entry, locale as Locale);
   return buildProductMetadata({
     locale,
     path: `/faq/${slug}`,
@@ -40,12 +50,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function FaqEntryPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const entry = getFaqEntry(slug);
+  const faqs = await listFaqs();
+  const entry = faqs.find((f) => f.slug === slug);
   if (!entry) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  const copy = entry[loc];
+  const copy = getCopy(entry, loc);
 
   // QAPage Schema — direct citability for Perplexity / ChatGPT / Bing Copilot.
   const qaJsonLd = {
@@ -73,7 +84,7 @@ export default async function FaqEntryPage({ params }: Props) {
   ];
 
   // Suggested companion FAQs (4 others).
-  const others = FAQ_GLOBAL.filter((f) => f.id !== entry.id).slice(0, 4);
+  const others = faqs.filter((f) => f.slug !== entry.slug).slice(0, 4);
 
   return (
     <>
@@ -135,12 +146,12 @@ export default async function FaqEntryPage({ params }: Props) {
         <Container className="max-w-3xl">
           <ul className="border-border divide-border divide-y border-y">
             {others.map((o) => (
-              <li key={o.id}>
+              <li key={o.slug}>
                 <a
-                  href={`/${locale}/faq/${o.id}`}
+                  href={`/${locale}/faq/${o.slug}`}
                   className="text-fg hover:text-primary block py-4 text-base font-medium"
                 >
-                  {o[loc].question} →
+                  {getCopy(o, loc).question} →
                 </a>
               </li>
             ))}

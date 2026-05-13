@@ -100,23 +100,23 @@ export interface FaqItem {
 /**
  * Lit les FAQ :
  * - depuis KnowledgeEntry si KB_BACKEND_UNIFIED_FAQ ou _GLOBAL.
- * - sinon depuis la table `faqs` legacy.
+ * - sinon depuis `FAQ_GLOBAL` (SSOT hardcode dans `src/content/transversal.ts`)
+ *   qui est la source historique de `/faq/page.tsx`. La table `faqs` legacy
+ *   n'est PAS lue par le frontend public (utilisée seulement par l'admin
+ *   legacy `/admin/faq` et migrée en KB pour unifier).
  */
 export async function listFaqs(): Promise<readonly FaqItem[]> {
   if (!isKbBackendUnifiedFor("faq")) {
-    const legacy = await prisma.fAQ.findMany({
-      where: { status: "published" },
-      orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
-    });
-    return legacy.map((f) => ({
+    const { FAQ_GLOBAL } = await import("@/content/transversal");
+    return FAQ_GLOBAL.map((f) => ({
       id: f.id,
-      slug: f.slug,
-      questionFr: f.questionFr,
-      questionEn: f.questionEn,
-      answerFr: f.answerFr,
-      answerEn: f.answerEn,
-      viewCount: f.viewCount,
-      helpfulCount: f.helpfulCount,
+      slug: f.id,
+      questionFr: f.fr.question,
+      questionEn: f.en.question,
+      answerFr: f.fr.answer,
+      answerEn: f.en.answer,
+      viewCount: 0,
+      helpfulCount: 0,
     }));
   }
 
