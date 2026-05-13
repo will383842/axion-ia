@@ -1,0 +1,57 @@
+# DocuSeal self-hosted — Coolify service (Sprint X.3 — Booking V1)
+#
+# Source : ADR 0014 (DocuSeal vs Yousync)
+# Référence officielle : https://www.docuseal.com/docs/install/docker-compose
+#
+# Mode V1 : SQLite embarqué (zero-config). V2+ : migration vers Postgres
+# axion-ia-db (schéma docuseal séparé) si volume signatures > 5k/mois.
+#
+# Coolify détecte automatiquement le service grâce au label `caddy_0` ou
+# `traefik.http.routers.*` et crée la route HTTPS via Let's Encrypt.
+
+services:
+  docuseal:
+    image: docuseal/docuseal:latest
+    restart: unless-stopped
+
+    # Mémoire : DocuSeal Ruby/Sidekiq ~ 350-500 MB en idle. Cap à 768 MB
+    # pour éviter OOM sur CPX32 (8 GB total dont ~5 GB libre).
+    mem_limit: 768m
+    mem_reservation: 384m
+
+    environment:
+      # ---- DocuSeal core ----
+      # FQDN injecté par Coolify (sera `docuseal.axion-ia.com`).
+      HOST: ${SERVICE_FQDN_DOCUSEAL}
+      # Force HTTPS redirect côté DocuSeal (Coolify Traefik handle le TLS).
+      FORCE_SSL: "true"
+      # Secret pour signer les cookies session admin. Auto-généré Coolify.
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+
+      # ---- Storage local (SQLite + uploads PDF) ----
+      # Volume persistent monté sur /data — DocuSeal y stocke SQLite + PDFs.
+      WORKDIR: /data
+
+      # ---- SMTP pour notifications signataire (optionnel V1) ----
+      # V1 : DocuSeal n'envoie pas d'emails (on les enqueue côté Axion-IA
+      # via BullMQ). Donc on n'a PAS besoin de configurer SMTP DocuSeal.
+      # MULTITENANT mono-instance — pas besoin de subscription.
+
+    volumes:
+      - 'docuseal-data:/data'
+
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://127.0.0.1:3000/up']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+    # Coolify routera automatiquement via Traefik en HTTPS sur SERVICE_FQDN_DOCUSEAL.
+    # Le port 3000 est exposé en INTERNE uniquement (réseau Coolify).
+    expose:
+      - '3000'
+
+volumes:
+  docuseal-data:
+    name: docuseal-data
