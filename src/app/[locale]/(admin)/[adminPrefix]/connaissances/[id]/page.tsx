@@ -1,0 +1,68 @@
+// KB-3 — Édition d'une entrée Knowledge Base (FR minimal V1).
+//
+// V1 : édition métadonnées Entry + body FR.
+// V1.5+ (KB-4) : onglets Versions / Relations / Publication / RGPD / Médias.
+
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { getEntryAction } from "@/server/actions/knowledge/get-entry";
+import { ConnaissancesEditForm } from "./ConnaissancesEditForm";
+
+export const dynamic = "force-dynamic";
+
+interface PageProps {
+  params: Promise<{ adminPrefix: string; id: string }>;
+}
+
+export default async function ConnaissancesEditPage({ params }: PageProps) {
+  const { adminPrefix, id } = await params;
+  const session = await auth();
+  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  const entry = await getEntryAction({ id });
+  if (!entry || entry.deletedAt) notFound();
+
+  const fr = entry.translations.find((t) => t.locale === "fr");
+
+  return (
+    <section>
+      <div className="admin-dashboard-head">
+        <div>
+          <h1 className="admin-h1-large">{fr?.title ?? "(sans titre)"}</h1>
+          <p className="admin-meta">
+            {entry.type} · {entry.domain} · {entry.audience} · statut {entry.status}
+          </p>
+        </div>
+        <a href={`/fr/${adminPrefix}/connaissances`} className="admin-button-ghost">
+          ← Liste
+        </a>
+      </div>
+
+      <ConnaissancesEditForm
+        adminPrefix={adminPrefix}
+        entry={{
+          id: entry.id,
+          type: entry.type,
+          domain: entry.domain,
+          audience: entry.audience,
+          confidentiality: entry.confidentiality,
+          status: entry.status,
+          pipelineStage: entry.pipelineStage,
+          slug: entry.slug,
+          briefMarkdown: entry.briefMarkdown,
+          targetKeyword: entry.targetKeyword,
+          targetWordCount: entry.targetWordCount,
+          fr: fr
+            ? {
+                id: fr.id,
+                title: fr.title,
+                slug: fr.slug,
+                excerpt: fr.excerpt,
+                body: fr.body,
+              }
+            : null,
+        }}
+      />
+    </section>
+  );
+}
