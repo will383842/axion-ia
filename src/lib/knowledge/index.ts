@@ -22,3 +22,16 @@ export {
   mapTranslationToKnowledgeTranslationInput,
   type ArticleWithRelations,
 } from "./legacy-import-mapping";
+
+export {
+  KB_TRANSITIONS,
+  validateTransition,
+  allowedTransitionsFrom,
+  type AdminRoleString,
+  type KbTransition,
+  type KbTransitionRoleRequirement,
+  type TransitionContext,
+  type TransitionDecision,
+} from "./state-machine";
+
+export { makeEntrySnapshot, type EntrySnapshot, type EntrySnapshotInput } from "./snapshot";
