@@ -66,7 +66,16 @@ const APPROFONDIE_PRICE_TAG_EN = `Starting at €${APPROFONDIE_ENTRY_PRICE_EUR}`
 // durationDays + scheduleHint. Sprint 14.10.8 (Will 2026-05-12) : ajout
 // `audit-flash-onsite` (réservation directe depuis le hub /audit refondu).
 type InterventionOption = {
-  slug: "essentielle" | "approfondie" | "conference" | "dirigeants" | "audit-flash-onsite";
+  slug:
+    | "essentielle"
+    | "approfondie"
+    | "conference"
+    | "dirigeants"
+    | "audit-flash-onsite"
+    | "gagner-du-temps"
+    | "demarrage-ia-express"
+    | "atelier-ia-cible"
+    | "intervention-claude";
   fr: string;
   en: string;
   durationDays: 1 | 2;
@@ -117,6 +126,49 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     durationDays: 1,
     scheduleHintFr: "Journée · 9 h – 17 h · sur site · 890 € HT",
     scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €890",
+  },
+  {
+    // Will (audit /interventions 2026-05-12) — formation à prix fixe 990 €
+    // câblée sur formulaire au lieu du calendrier. Bug réparé : Gagner du
+    // temps rejoint les formats bookables direct. Enum DB `gagner_du_temps`
+    // déjà présent dans prisma/schema.prisma.
+    slug: "gagner-du-temps",
+    fr: "Gagner du temps · 990 €",
+    en: "Save Time · €990",
+    durationDays: 1,
+    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 990 € HT",
+    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €990",
+  },
+  {
+    // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe 390 €.
+    // Bug réparé : les 2 formations 4 h câblaient leurs CTAs sur /interventions/demande
+    // alors que le tarif est fixe. Promues bookables direct calendrier. Enum DB
+    // `demarrage_ia_express` ajouté via migration 20260512120000_collective_4h_enum_values.
+    slug: "demarrage-ia-express",
+    fr: "Démarrage IA Express · 4 h · 390 €",
+    en: "AI Express Kickoff · 4 h · €390",
+    durationDays: 1,
+    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 390 € HT",
+    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €390",
+  },
+  {
+    slug: "atelier-ia-cible",
+    fr: "Atelier IA ciblé · 4 h · 390 €",
+    en: "Targeted AI Workshop · 4 h · €390",
+    durationDays: 1,
+    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 390 € HT",
+    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €390",
+  },
+  {
+    // Will (audit /interventions 2026-05-12) — Formation Claude équipe passe
+    // de Sur devis à prix fixe 690 € HT pour 2 à 8 personnes, bookable
+    // direct calendrier (cf. pricing.ts intervention-claude).
+    slug: "intervention-claude",
+    fr: "Formation Claude · 2-8 pers. · 690 €",
+    en: "Claude Training · 2-8 ppl · €690",
+    durationDays: 1,
+    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 690 € HT",
+    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €690",
   },
 ];
 
@@ -183,25 +235,74 @@ const INTERVENTION_VISUAL: Record<
     previewFr: "1 journée sur site · cartographie 1 zone d'usage · démos live · rapport sous 48 h",
     previewEn: "1 day on site · map 1 use area · live demos · report within 48 h",
   },
+  "gagner-du-temps": {
+    icon: Star,
+    accentBg: "bg-terracotta-soft",
+    accentFg: "text-terracotta-deep",
+    priceFr: "990 € HT",
+    priceEn: "€990",
+    previewFr:
+      "1 journée équipe · automatisations tâches récurrentes · plusieurs heures gagnées/semaine",
+    previewEn: "1 team day · recurring task automations · hours reclaimed each week",
+  },
+  "demarrage-ia-express": {
+    icon: Sparkles,
+    accentBg: "bg-terracotta-soft",
+    accentFg: "text-terracotta-deep",
+    priceFr: "390 € HT",
+    priceEn: "€390",
+    previewFr: "Demi-journée · démystifier l'IA · panorama 2026 · 2-3 prompts opérationnels testés",
+    previewEn: "Half-day · demystify AI · 2026 panorama · 2-3 working prompts tested",
+  },
+  "atelier-ia-cible": {
+    icon: Sparkles,
+    accentBg: "bg-terracotta-soft",
+    accentFg: "text-terracotta-deep",
+    priceFr: "390 € HT",
+    priceEn: "€390",
+    previewFr: "Demi-journée · 1 cas d'usage métier · implémenté sur chaque poste",
+    previewEn: "Half-day · 1 business case · implemented on each workstation",
+  },
+  "intervention-claude": {
+    icon: Sparkles,
+    // hex-ok: brand-anthropic-claude — couleurs Anthropic imposées pour
+    // la Formation Claude (cohérent avec la card listing InterventionFormatCard).
+    accentBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
+    accentFg: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
+    priceFr: "690 € HT",
+    priceEn: "€690",
+    previewFr: "1 journée 100 % Claude · 2-8 pers. · Chat + Projects + Code CLI",
+    previewEn: "1 day 100 % Claude · 2-8 ppl · Chat + Projects + Code CLI",
+  },
 };
 
-// Essentielle uniquement : 3 tranches selon nb participants.
-// Source unique : `pricing.ts::ESSENTIELLE_SUB_TIERS` (Sprint 14.10.4).
+// Essentielle ET Approfondie : 3 tranches identiques selon nb participants.
+// Source unique : `pricing.ts::ESSENTIELLE_SUB_TIERS` + `APPROFONDIE_SUB_TIERS`.
 // Le shape local est dérivé pour garder l'URL `?tier=intimiste` stable
 // (vs id pricing.ts `essentielle-intimiste`) et conserver les noms de
 // champs `sizeFr/En`/`priceEur` historiquement utilisés dans la JSX.
+// Will (audit /interventions 2026-05-12) — étendu à Approfondie pour fixer
+// bug critique : avant ce patch, le calendrier soumettait `participantsCount=1`
+// pour Approfondie → `getInterventionPriceCents` fallback sur priceFlat=880
+// (palier 2-8). Conséquence : 25 personnes Approfondie facturées 880 € au
+// lieu de 2140 €. Manque à gagner jusqu'à 1260 €/booking.
 export type EssentielleTier = "intimiste" | "standard" | "complete";
+// Will (audit /interventions 2026-05-12) — alias plus parlant. Garde aussi
+// EssentielleTier pour la rétrocompat (export utilisé ailleurs).
+export type ParticipantsTier = EssentielleTier;
 
-const ESSENTIELLE_TIERS: ReadonlyArray<{
-  id: EssentielleTier;
+interface TierEntry {
+  id: ParticipantsTier;
   labelFr: string;
   labelEn: string;
   sizeFr: string;
   sizeEn: string;
   priceEur: number;
   isFeatured?: boolean;
-}> = ESSENTIELLE_SUB_TIERS.map((t) => {
-  const shortId = t.id.replace(/^essentielle-/, "") as EssentielleTier;
+}
+
+const ESSENTIELLE_TIERS: ReadonlyArray<TierEntry> = ESSENTIELLE_SUB_TIERS.map((t) => {
+  const shortId = t.id.replace(/^essentielle-/, "") as ParticipantsTier;
   return {
     id: shortId,
     labelFr: t.labelFr,
@@ -212,6 +313,28 @@ const ESSENTIELLE_TIERS: ReadonlyArray<{
     ...(t.isFeatured ? { isFeatured: true as const } : {}),
   };
 });
+
+const APPROFONDIE_TIERS: ReadonlyArray<TierEntry> = APPROFONDIE_SUB_TIERS.map((t) => {
+  const shortId = t.id.replace(/^approfondie-/, "") as ParticipantsTier;
+  return {
+    id: shortId,
+    labelFr: t.labelFr,
+    labelEn: t.labelEn,
+    sizeFr: t.rangeFr,
+    sizeEn: t.rangeEn,
+    priceEur: t.priceFlat,
+    ...(t.isFeatured ? { isFeatured: true as const } : {}),
+  };
+});
+
+/** Slugs qui exposent un sélecteur de paliers prix (effectif → prix). */
+const TIERED_SLUGS: ReadonlySet<string> = new Set(["essentielle", "approfondie"]);
+
+/** Retourne la liste de paliers pour un slug donné. */
+function getTiersForSlug(slug: string): ReadonlyArray<TierEntry> {
+  if (slug === "approfondie") return APPROFONDIE_TIERS;
+  return ESSENTIELLE_TIERS;
+}
 
 const SECTOR_OPTIONS = [
   "Tech / SaaS",
@@ -319,25 +442,27 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   const [selectedOpt, setSelectedOpt] = React.useState<InterventionOption>(initialOpt);
   const preselectedOpt = selectedOpt;
 
-  // Tier Essentielle (effectif → prix). Lu depuis ?tier= ou défaut "standard".
-  // Visible uniquement si selectedOpt.slug === "essentielle".
-  const tierFromUrl = searchParams.get("tier") as EssentielleTier | null;
-  const initialTier: EssentielleTier =
+  // Tier participants (effectif → prix). Lu depuis ?tier= ou défaut "standard".
+  // Visible si selectedOpt.slug ∈ TIERED_SLUGS (Essentielle, Approfondie).
+  // Will (audit /interventions 2026-05-12) — extension Approfondie. Le tier
+  // est utilisé indifféremment par les 2 formats (mêmes IDs intimiste/standard/complete).
+  const tierFromUrl = searchParams.get("tier") as ParticipantsTier | null;
+  const initialTier: ParticipantsTier =
     (tierFromUrl && ESSENTIELLE_TIERS.find((t) => t.id === tierFromUrl)?.id) || "standard";
-  const [selectedTier, setSelectedTier] = React.useState<EssentielleTier>(initialTier);
+  const [selectedTier, setSelectedTier] = React.useState<ParticipantsTier>(initialTier);
 
   // Flash titre calendrier + auto-scroll mobile. Re-déclenchés à chaque
   // pickOpt — `flashKey` change → key React re-mount → animation rejoue.
   const [flashKey, setFlashKey] = React.useState(0);
   const calendarFrameRef = React.useRef<HTMLDivElement>(null);
 
-  // Synchronisation URL ↔ state. Si on quitte Essentielle, on retire ?tier=.
+  // Synchronisation URL ↔ state. Si on quitte un slug à paliers, on retire ?tier=.
   function pickOpt(opt: InterventionOption) {
     const isChange = opt.slug !== selectedOpt.slug;
     setSelectedOpt(opt);
     const sp = new URLSearchParams(searchParams.toString());
     sp.set("intervention", opt.slug);
-    if (opt.slug !== "essentielle") {
+    if (!TIERED_SLUGS.has(opt.slug)) {
       sp.delete("tier");
     } else if (!sp.get("tier")) {
       sp.set("tier", selectedTier);
@@ -360,7 +485,7 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
     }
   }
 
-  function pickTier(t: EssentielleTier) {
+  function pickTier(t: ParticipantsTier) {
     setSelectedTier(t);
     const sp = new URLSearchParams(searchParams.toString());
     sp.set("tier", t);
@@ -698,10 +823,13 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
   // === SUBMIT — wired to createBookingAction (P0-1 fix) ===
   // Map tier → participantsCount mid-bracket :
   //   intimiste 2-8   → 5   ; standard 9-15 → 12   ; complete 16-30 → 20
-  // Pour les autres interventions (approfondie/conference/dirigeants), pas
-  // de tier sélecteur — on envoie 1 (signal LLM, on s'aligne ensuite par tel).
+  // Will (audit /interventions 2026-05-12) — étendu à Approfondie. Avant,
+  // Approfondie retombait sur `return 1` ce qui faisait facturer 880 €
+  // systématiquement (palier 1) au lieu de 880/1420/2140 € selon effectif.
+  // Pour les slugs sans paliers (conference/dirigeants/4h/gagner-du-temps/
+  // audit-flash-onsite), on envoie 1 (le prix est flat ou onQuote).
   function getParticipantsForSubmission(): number {
-    if (preselectedOpt.slug !== "essentielle") return 1;
+    if (!TIERED_SLUGS.has(preselectedOpt.slug)) return 1;
     if (selectedTier === "intimiste") return 5;
     if (selectedTier === "standard") return 12;
     return 20; // complete
@@ -1392,7 +1520,14 @@ export function BookingCalendar({ initialBookedSlots = [], locale }: BookingCale
                         setCompanySector={setCompanySector}
                         companyCity={companyCity}
                         setCompanyCity={setCompanyCity}
-                        showTierSelector={preselectedOpt.slug === "essentielle"}
+                        showTierSelector={TIERED_SLUGS.has(preselectedOpt.slug)}
+                        tierEntries={getTiersForSlug(preselectedOpt.slug)}
+                        tierFormatLabelFr={
+                          preselectedOpt.slug === "approfondie" ? "Approfondie" : "Essentielle"
+                        }
+                        tierFormatLabelEn={
+                          preselectedOpt.slug === "approfondie" ? "Deep Dive" : "Essential"
+                        }
                         selectedTier={selectedTier}
                         onPickTier={pickTier}
                       />
@@ -1584,13 +1719,20 @@ function StepCompany(props: {
   companyCity: string;
   setCompanyCity: (s: string) => void;
   showTierSelector?: boolean;
-  selectedTier?: EssentielleTier;
-  onPickTier?: (t: EssentielleTier) => void;
+  tierEntries?: ReadonlyArray<TierEntry>;
+  tierFormatLabelFr?: string;
+  tierFormatLabelEn?: string;
+  selectedTier?: ParticipantsTier;
+  onPickTier?: (t: ParticipantsTier) => void;
 }) {
   const { isFr } = props;
+  const tiers = props.tierEntries ?? ESSENTIELLE_TIERS;
+  const formatLabel = isFr
+    ? (props.tierFormatLabelFr ?? "Essentielle")
+    : (props.tierFormatLabelEn ?? "Essential");
   return (
     <div className="space-y-6">
-      {/* Sélecteur tier — visible UNIQUEMENT pour l'Essentielle.
+      {/* Sélecteur tier — visible pour les slugs à paliers (Essentielle, Approfondie).
           Détermine le prix selon le nombre de participants. */}
       {props.showTierSelector && props.selectedTier && props.onPickTier ? (
         <div className="bg-halo-warm border-terracotta/25 -mx-2 rounded-2xl border-2 p-5 sm:p-6">
@@ -1600,11 +1742,11 @@ function StepCompany(props: {
           </Label>
           <p className="text-fg-soft mb-4 text-sm leading-relaxed">
             {isFr
-              ? "Le tarif dépend de l'effectif présent à la journée Essentielle. Programme identique pour les 3 tranches."
-              : "The price depends on the headcount on the day. Same programme for all 3 tiers."}
+              ? `Le tarif dépend de l'effectif présent à la journée ${formatLabel}. Programme identique pour les 3 tranches.`
+              : `The price depends on the headcount on the day (${formatLabel}). Same programme for all 3 tiers.`}
           </p>
           <div className="grid gap-3 sm:grid-cols-3">
-            {ESSENTIELLE_TIERS.map((t) => {
+            {tiers.map((t) => {
               const isSel = t.id === props.selectedTier;
               return (
                 <button
