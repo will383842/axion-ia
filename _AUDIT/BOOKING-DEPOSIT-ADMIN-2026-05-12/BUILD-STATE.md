@@ -20,9 +20,69 @@
 - 10 décisions Q1–Q10 actées (cf. ADR 0012).
 - Aucune dépendance npm ajoutée encore (Sprint X.1+).
 
-### ⏳ EN COURS — Sprint X.1 (foundation paiements & pricing)
+### ✅ Sprint X.1 — Extensions Prisma schema (TERMINÉ session 2026-05-13)
 
-À démarrer : extensions Prisma schema (16 tables nouvelles + 22 colonnes Booking + 14 enums étendus). Voir `03-ARCHITECTURE-CIBLE.md` §5.1.
+**Fichier touché** : `prisma/schema.prisma` uniquement (de 714 → 1661 lignes).
+
+**Modèles ajoutés (15 actifs V1 + 1 hook V1.5+ documenté)** :
+
+1. `Payment` (Stripe + manuels, EUR-only, isHistorical D63)
+2. `Invoice` (numérotation AXION-2026-NNNN, legalSnapshot JSONB, archivedUntil 10 ans)
+3. `Refund` (Stripe + manuels, RefundReason enum)
+4. `StripeWebhookEvent` (idempotence event.id UNIQUE)
+5. `DocusealWebhookEvent` (idempotence HMAC-SHA256)
+6. `ContractDocument` (DocuSeal V1, versioning D62 self-FK previousVersionId)
+7. `ContractTemplate` (Tiptap JSON, defaultLegalClauses D53)
+8. `Quote` (DEVIS-2026-NNNN, semi-auto Will-A)
+9. `CadrageMeeting` (visio manual_external V1)
+10. `OnboardingDoc` — **HORS V1 (D58)** — documenté comme hook V1.5+, **non instancié** comme modèle Prisma.
+11. `CapacityWindow` (~3 interventions/semaine)
+12. `PricingConfig` (DB-managed, remplace hardcode pricing.ts — ADR 0016)
+13. `PaymentScheduleProfile` (4 profils défaut tiny/small/medium/large)
+14. `BookingPaymentSchedule` (snapshot custom + override)
+15. `SiteSetting` (clé/valeur catégorisée — distinct du `Setting` V0)
+16. `BookingTransition` (event sourcing state machine, unique partiel idempotence)
+
+**Booking — 22 colonnes ajoutées V1** (cf. `03-ARCH §5.1.3`) :
+`basePriceHtCents`, `travelFeeCents`, `accommodationFeeCents`, `mealFeeCents`,
+`additionalFeesCents`, `additionalFeesNotes`, `feesMode`, `depositAmountCents`,
+`depositPaidAt`, `balanceAmountCents`, `balancePaidAt`, `quoteRequired`,
+`ndaRequired`, `originPath`, `fromSubmissionId`, `cadrageMeetingId`, `quoteId`,
+`contractDocumentId`, `paymentScheduleProfileId`, `companyCityNormalized`,
+`companyLat`, `companyLng`, `travelBufferDays`, `companySize`, `confirmedAt`,
+`completedAt`, `cancelledAt`, `cancellationReason`, `cancellationWindow`,
+`cancelledByUserId`, `forceMajeureNotes`, `pausedAt`, `pausedUntil`,
+`pauseReason`, `overrides`, `trainingSessionId` (hook V2+ Qualiopi).
+
+**BookingStatus** : 4 valeurs V0 -> ~27 valeurs (V0 préservées + V1 complètes).
+
+**Enums ajoutés (16)** : `PaymentProvider`, `PaymentType`, `PaymentStatus`,
+`InvoiceType`, `InvoiceStatus`, `RefundStatus`, `RefundReason`, `QuoteStatus`,
+`SignatureProvider`, `ContractStatus`, `CadrageStatus`, `CadrageDecision`,
+`ValidationDecision` (alias rétro-compat), `FeesMode`, `PayerType`,
+`BookingOriginPath`, `CancellationWindow`, `TransitionTriggeredBy`,
+`ActorType` (alias rétro-compat), `SiteSettingCategory`, `CompanySize`.
+
+**Extensions V0 préservées** : `Submission` (+`bookingsFromSubmission` reverse),
+`AdminUser` (+7 reverses), `BookingOption` (+`@@index([slotId, status])`),
+`SubmissionType` (`quote_request`), `SubmissionStatus`
+(`qualifying`/`negotiating`/`converted`/`lost`), `BookingOptionStatus`
+(V1 valeurs sémantiques ajoutées).
+
+**Validation** :
+
+- `npx prisma format` -> ✅ OK (291 ms)
+- `npx prisma validate` -> ✅ OK (`The schema at prisma\schema.prisma is valid 🚀`)
+- Aucune migration appliquée (interdit ce sprint).
+
+**Préservations** :
+
+- Modèles V0 intacts, aucun champ existant supprimé.
+- `BookingStatus` V0 (`pending`, `postponed`) conservés pour mapping V0->V1 (Sprint X.4 / ADR 0020).
+- `CalendarSlotStatus` non étendu — dérivation UI (ADR 0017 Option B2).
+- Will's WIP `InterventionType` (`demarrage_ia_express`, `atelier_ia_cible`) inchangé.
+
+### ⏳ PROCHAIN — Sprint X.2 Stripe Checkout & webhook (3j)
 
 ### 📋 BACKLOG SPRINTS V1
 
