@@ -50,6 +50,11 @@ import { CadrageDeclinedEmail, cadrageDeclinedSubject } from "./cadrage-declined
 import { QuoteSentEmail, quoteSentSubject } from "./quote-sent";
 import { QuoteSignedEmail, quoteSignedSubject } from "./quote-signed";
 import { QuoteDeclinedEmail, quoteDeclinedSubject } from "./quote-declined";
+import {
+  CancellationConfirmedByUserEmail,
+  cancellationConfirmedByUserSubject,
+} from "./cancellation-confirmed-by-user";
+import { RefundIssuedEmail, refundIssuedSubject } from "./refund-issued";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -158,6 +163,14 @@ const TEMPLATES: TemplateMap = {
   "quote-declined": {
     subject: quoteDeclinedSubject,
     component: QuoteDeclinedEmail,
+  },
+  "cancellation-confirmed-by-user": {
+    subject: cancellationConfirmedByUserSubject,
+    component: CancellationConfirmedByUserEmail,
+  },
+  "refund-issued": {
+    subject: refundIssuedSubject,
+    component: RefundIssuedEmail,
   },
 };
 

@@ -149,6 +149,17 @@ export const routing = defineRouting({
       en: "/request-quote/confirmation",
     },
 
+    // Sprint X.15 (Booking V1) — self-service client via magic-link HMAC.
+    // Slug `[token]` = token signé. Pages publiques minimalistes (noindex).
+    "/booking/[token]/cancel": {
+      fr: "/booking/[token]/cancel",
+      en: "/booking/[token]/cancel",
+    },
+    "/booking/[token]/reschedule": {
+      fr: "/booking/[token]/reschedule",
+      en: "/booking/[token]/reschedule",
+    },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {

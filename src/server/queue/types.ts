@@ -41,7 +41,10 @@ export type EmailJobName =
   // Sprint X.7 — devis semi-auto
   | "quote-sent"
   | "quote-signed"
-  | "quote-declined";
+  | "quote-declined"
+  // Sprint X.15 — self-service client (magic-link)
+  | "cancellation-confirmed-by-user"
+  | "refund-issued";
 
 export interface EmailJobData {
   template: EmailJobName;
