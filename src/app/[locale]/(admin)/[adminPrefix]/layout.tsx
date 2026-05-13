@@ -50,6 +50,7 @@ function buildNav(adminPrefix: string): NavItem[] {
     // ── engagement ───────────────────────────────────────────────────────
     { href: `${base}/newsletter`, label: "Newsletter", icon: "📧", group: "engagement" },
     // ── ops & monitoring ─────────────────────────────────────────────────
+    { href: `${base}/analytics`, label: "Analytics & SEO", icon: "📊", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },
     // ── système ──────────────────────────────────────────────────────────

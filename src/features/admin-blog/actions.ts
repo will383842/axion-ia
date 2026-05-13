@@ -326,7 +326,9 @@ export async function upsertArticleAction(
       fetch(`${baseUrl}/api/indexnow`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ urls }),
+        // Le forwarder /api/indexnow accepte `urlList` (spec IndexNow). Le
+        // body { urls } historique était silencieusement rejeté en 400.
+        body: JSON.stringify({ urlList: urls }),
       }).catch((err) => {
         const cause = err instanceof Error ? err.message : String(err);
         console.error(`[admin-blog] indexnow ping failed for ${urls.join(",")}: ${cause}`);

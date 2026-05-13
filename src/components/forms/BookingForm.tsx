@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { trackEvent } from "@/components/analytics/Plausible";
 
 interface BookingFormProps {
   /** Pre-filled by the calendar selection. */
@@ -98,9 +99,27 @@ export function BookingForm({
       if (!res.ok) {
         resetTurnstile();
         setServerError(res.error || labels.failure);
+        trackEvent("Booking Failed", {
+          props: {
+            intervention: values.interventionType,
+            participants: values.participantsCount,
+            locale,
+          },
+        });
+      } else {
+        trackEvent("Booking Submitted", {
+          props: {
+            intervention: values.interventionType,
+            participants: values.participantsCount,
+            locale,
+          },
+        });
       }
     } catch {
       setServerError(labels.failure);
+      trackEvent("Booking Failed", {
+        props: { intervention: values.interventionType, locale, reason: "network" },
+      });
     }
   }
 

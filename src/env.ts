@@ -111,8 +111,18 @@ export const env = createEnv({
 
     // D3 cert 2026-05-08 — verification meta GSC + Bing Webmaster Tools.
     // Sans property vérifiée, pas de coverage report ni URL Inspection API.
+    // 2026-05-13 — Yandex Webmaster ajouté (utile pour IndexNow + couverture
+    // marchés CIS/RU si pertinent côté business).
     GOOGLE_SITE_VERIFICATION: z.string().optional(),
     BING_SITE_VERIFICATION: z.string().optional(),
+    YANDEX_SITE_VERIFICATION: z.string().optional(),
+
+    // 2026-05-13 — URL Plausible "Shared Dashboard" pour embed iframe dans
+    // l'admin (/fr/{prefix}/analytics). Format :
+    //   https://plausible.axion-ia.com/share/axion-ia.com?auth=TOKEN&embed=true&theme=light
+    // Générée depuis Plausible UI > Site Settings > Visibility > Add a shared link.
+    // Server-only (URL = token d'accès, ne doit pas leak dans le bundle public).
+    PLAUSIBLE_SHARED_LINK: z.string().url().optional(),
 
     COMPANY_NAME: z.string().optional(),
     COMPANY_REGISTRATION_NUMBER: z.string().optional(),
@@ -172,6 +182,8 @@ export const env = createEnv({
     INDEXNOW_KEY: process.env.INDEXNOW_KEY,
     GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION,
     BING_SITE_VERIFICATION: process.env.BING_SITE_VERIFICATION,
+    YANDEX_SITE_VERIFICATION: process.env.YANDEX_SITE_VERIFICATION,
+    PLAUSIBLE_SHARED_LINK: process.env.PLAUSIBLE_SHARED_LINK,
     COMPANY_NAME: process.env.COMPANY_NAME,
     COMPANY_REGISTRATION_NUMBER: process.env.COMPANY_REGISTRATION_NUMBER,
     COMPANY_VAT_NUMBER: process.env.COMPANY_VAT_NUMBER,

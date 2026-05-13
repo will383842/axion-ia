@@ -101,7 +101,9 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     // key client) + côté serveur indirect via Checkout redirect. `https://checkout.stripe.com`
     // frame-src pour 3DS challenges si on bascule un jour à Stripe Elements (V1.5+).
     "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com",
-    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com",
+    // `plausible.axion-ia.com` autorisé pour l'embed dashboard dans
+    // /fr/{prefix}/analytics (Plausible "Shared link" iframe).
+    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com",
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",
