@@ -34,7 +34,10 @@ export type EmailJobName =
   | "booking-paused-confirmation"
   | "booking-resumed-notification"
   // Sprint X.13 — A23 force majeure
-  | "force-majeure-notice";
+  | "force-majeure-notice"
+  // Sprint X.6 — cadrage manual_external
+  | "cadrage-scheduled"
+  | "cadrage-declined";
 
 export interface EmailJobData {
   template: EmailJobName;
