@@ -82,6 +82,11 @@ export const config = {
     // Special files (manifest, robots, sitemap, icons, opengraph) and
     // static asset extensions are also excluded — same rationale: no
     // locale variants.
-    "/((?!api/|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap|llms\\.txt|opengraph-image|twitter-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
+    // `.*\\.txt$` exclut TOUT fichier .txt à la racine — couvre robots.txt,
+    // llms.txt, et la clé IndexNow `/<key>.txt` (servie depuis /public/, le
+    // proto IndexNow exige racine sans préfixe locale). Sans cette
+    // exclusion, le middleware redirige `/3a5c32d22b04f1430690cc33eaec6be9.txt`
+    // → `/fr/3a5c32d22b04f1430690cc33eaec6be9.txt` → 404.
+    "/((?!api/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
   ],
 };
