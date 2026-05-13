@@ -175,29 +175,29 @@ describe("mapFaqTranslations", () => {
   it("génère 2 translations (fr + en)", () => {
     const r = mapFaqTranslations(makeFaq());
     expect(r).toHaveLength(2);
-    expect(r[0].locale).toBe("fr");
-    expect(r[1].locale).toBe("en");
+    expect(r[0]!.locale).toBe("fr");
+    expect(r[1]!.locale).toBe("en");
   });
 
   it("EN slug suffixé pour éviter collision unique (locale, slug)", () => {
     const r = mapFaqTranslations(makeFaq({ slug: "ma-question" }));
-    expect(r[0].slug).toBe("ma-question");
-    expect(r[1].slug).toBe("ma-question-en");
+    expect(r[0]!.slug).toBe("ma-question");
+    expect(r[1]!.slug).toBe("ma-question-en");
   });
 
   it("title FR = questionFr, body wrapped <p>answer</p>", () => {
     const faq = makeFaq({ questionFr: "Q?", answerFr: "A." });
     const r = mapFaqTranslations(faq);
-    expect(r[0].title).toBe("Q?");
-    expect(r[0].body).toBe("<p>A.</p>");
-    expect(r[0].bodyText).toBe("A.");
+    expect(r[0]!.title).toBe("Q?");
+    expect(r[0]!.body).toBe("<p>A.</p>");
+    expect(r[0]!.bodyText).toBe("A.");
   });
 
   it("escapeHtml : caractères dangereux dans réponse", () => {
     const faq = makeFaq({ answerFr: "<script>alert('xss')</script>" });
     const r = mapFaqTranslations(faq);
-    expect(r[0].body).not.toContain("<script>");
-    expect(r[0].body).toContain("&lt;script&gt;");
+    expect(r[0]!.body).not.toContain("<script>");
+    expect(r[0]!.body).toContain("&lt;script&gt;");
   });
 });
 
@@ -294,17 +294,17 @@ describe("GLOSSARY_TERMS_HARDCODE", () => {
 
 describe("mapGlossaryTermInput", () => {
   it("génère slug racine + 2 translations", () => {
-    const r = mapGlossaryTermInput(GLOSSARY_TERMS_HARDCODE[0]);
+    const r = mapGlossaryTermInput(GLOSSARY_TERMS_HARDCODE[0]!);
     expect(r.slug).toBe("llm");
     expect(r.translations).toHaveLength(2);
   });
 
   it("translations FR et EN ont le bon contenu", () => {
-    const r = mapGlossaryTermInput(GLOSSARY_TERMS_HARDCODE[1]); // RAG
-    expect(r.translations[0].locale).toBe("fr");
-    expect(r.translations[0].title).toBe("RAG");
-    expect(r.translations[0].body).toContain("Retrieval");
-    expect(r.translations[1].locale).toBe("en");
+    const r = mapGlossaryTermInput(GLOSSARY_TERMS_HARDCODE[1]!); // RAG
+    expect(r.translations[0]!.locale).toBe("fr");
+    expect(r.translations[0]!.title).toBe("RAG");
+    expect(r.translations[0]!.body).toContain("Retrieval");
+    expect(r.translations[1]!.locale).toBe("en");
   });
 
   it("excerpt tronqué à 200 chars", () => {
@@ -315,7 +315,7 @@ describe("mapGlossaryTermInput", () => {
       en: "b".repeat(500),
     };
     const r = mapGlossaryTermInput(longTerm);
-    expect(r.translations[0].excerpt.length).toBeLessThanOrEqual(200);
-    expect(r.translations[1].excerpt.length).toBeLessThanOrEqual(200);
+    expect(r.translations[0]!.excerpt.length).toBeLessThanOrEqual(200);
+    expect(r.translations[1]!.excerpt.length).toBeLessThanOrEqual(200);
   });
 });
