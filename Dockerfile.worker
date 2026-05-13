@@ -69,4 +69,10 @@ USER worker
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # Pas d'EXPOSE (worker ne sert pas HTTP)
-CMD ["node", "--experimental-strip-types", "src/server/queue/worker.ts"]
+#
+# Fix 2026-05-13 : `node --experimental-strip-types` exige des extensions
+# .ts/.js explicites dans tous les imports relatifs (ESM strict). Le code
+# utilise `import ./workers/email-worker` sans extension (style TS classique).
+# Solution : utiliser tsx (déjà dans node_modules) qui résout les imports
+# TypeScript naturellement comme tsc/vitest/Next.
+CMD ["node_modules/.bin/tsx", "src/server/queue/worker.ts"]
