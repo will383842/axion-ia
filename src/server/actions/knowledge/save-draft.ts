@@ -47,14 +47,40 @@ export async function saveDraftAction(input: SaveDraftInput): Promise<SaveDraftR
   const ip = await getClientIp();
   const ua = headerList.get("user-agent");
 
+  // Slug provisoire en création : génère un slug unique en cas de conflit.
+  // Unique (locale, slug) — on suffixe avec un nano-id court si collision.
+  async function generateProvisionalSlug(
+    baseSlug: string,
+    locale: typeof data.locale,
+  ): Promise<string> {
+    const candidate = `${baseSlug}-${locale}`;
+    const exists = await prisma.knowledgeTranslation.findUnique({
+      where: { locale_slug: { locale, slug: candidate } },
+      select: { id: true },
+    });
+    if (!exists) return candidate;
+    // Fallback : suffixe court basé sur l'entryId (8 premiers chars du UUID).
+    return `${candidate}-${data.entryId.slice(0, 8)}`;
+  }
+
   try {
+    const existingTranslation = await prisma.knowledgeTranslation.findUnique({
+      where: { entryId_locale: { entryId: data.entryId, locale: data.locale } },
+      select: { id: true },
+    });
+
+    let provisionalSlug: string | null = null;
+    if (!existingTranslation) {
+      provisionalSlug = await generateProvisionalSlug(entry.slug, data.locale);
+    }
+
     const translation = await prisma.knowledgeTranslation.upsert({
       where: { entryId_locale: { entryId: data.entryId, locale: data.locale } },
       create: {
         entryId: data.entryId,
         locale: data.locale,
         title: data.title || "Sans titre",
-        slug: `${entry.slug}-${data.locale}`, // slug provisoire (édité ensuite explicitement)
+        slug: provisionalSlug ?? `${entry.slug}-${data.locale}`,
         body: data.body ?? "",
         bodyText: data.bodyText ?? null,
         excerpt: data.excerpt ?? null,
