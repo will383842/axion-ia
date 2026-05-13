@@ -38,13 +38,40 @@ interface Props {
 
 const TIGHT_X = "lg:px-6 xl:px-10";
 
+// Will (audit /interventions 2026-05-12) — un format à prix fixe doit
+// rediriger sur /reserver (calendrier) plutôt que sur le formulaire de
+// demande. On garde le formulaire pour les formats Sur devis (config sans
+// priceFlatEur) où un cadrage commercial est indispensable.
+const CALENDAR_SUPPORTED_FORMAT_SLUGS: ReadonlySet<string> = new Set([
+  "essentielle",
+  "approfondie",
+  "conference",
+  "dirigeants",
+  "audit-flash-onsite",
+  "gagner-du-temps",
+  "demarrage-ia-express",
+  "atelier-ia-cible",
+  "intervention-claude",
+]);
+
 export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
   const isFr = locale === "fr";
   const config = INTERVENTION_DETAIL_CONFIGS[slug];
   const family = getFamily(config.familySlug);
   const priceFr = config.priceFlatEur ? formatAmount(config.priceFlatEur, "fr") : "Sur devis";
   const priceEn = config.priceFlatEur ? formatAmount(config.priceFlatEur, "en") : "On request";
-  const contactHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
+  const isBookable =
+    config.priceFlatEur != null && CALENDAR_SUPPORTED_FORMAT_SLUGS.has(config.formatSlug);
+  const primaryCtaHref = isBookable
+    ? `/reserver?intervention=${config.formatSlug}`
+    : `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
+  const primaryCtaLabelFr = isBookable
+    ? "Réserver sur le calendrier"
+    : "Pré-réservez cette intervention";
+  const primaryCtaLabelEn = isBookable ? "Book on the calendar" : "Pre-book this session";
+  // Pour les formats sans schedule fixe (keynote événementielle), on reste
+  // toujours sur le formulaire — c'est un cadrage personnalisé.
+  const flexibleCtaHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
 
   const breadcrumbItems = [
     { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
@@ -135,12 +162,12 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Cta
-                href={contactHref}
+                href={primaryCtaHref}
                 size="lg"
                 className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
               >
                 <Mail aria-hidden="true" className="h-4 w-4" />
-                {isFr ? "Pré-réservez cette intervention" : "Pre-book this session"}
+                {isFr ? primaryCtaLabelFr : primaryCtaLabelEn}
               </Cta>
               <Cta
                 href={(locale === "fr" ? family.pathFr : family.pathEn) as never}
@@ -192,7 +219,7 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
           <Container className="max-w-2xl">
             <div className="bg-terracotta-soft/30 border-terracotta/20 rounded-2xl border p-6 text-center sm:p-8">
               <Cta
-                href={contactHref}
+                href={flexibleCtaHref}
                 size="lg"
                 className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep"
               >
@@ -232,24 +259,28 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Pré-réservez cette intervention" : "Pre-book this session"}
+        title={isFr ? primaryCtaLabelFr : primaryCtaLabelEn}
         description={
           isFr
-            ? config.priceFlatEur
-              ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
-              : `Sur devis selon votre contexte. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
-            : config.priceFlatEur
-              ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
-              : `On request based on your context. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
+            ? isBookable
+              ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
+              : config.priceFlatEur
+                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+                : `Sur devis selon votre contexte. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+            : isBookable
+              ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`
+              : config.priceFlatEur
+                ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
+                : `On request based on your context. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
         }
         cta={
           <Cta
-            href={contactHref}
+            href={primaryCtaHref}
             size="lg"
             className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
           >
             <Mail aria-hidden="true" className="h-4 w-4" />
-            {isFr ? "Pré-réservez cette intervention" : "Pre-book this session"}
+            {isFr ? primaryCtaLabelFr : primaryCtaLabelEn}
           </Cta>
         }
         tone="dark"

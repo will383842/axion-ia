@@ -429,16 +429,23 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
+    // Will (audit /interventions 2026-05-12) — passage de Sur devis à prix
+    // fixe 690 € HT pour groupe 2 à 8 personnes. Bookable direct calendrier.
+    // (Pour groupes plus larges, Will alignera plus tard sur la grille
+    // Essentielle/Approfondie ou gardera Sur devis cas par cas.)
     id: "intervention-claude",
     labelFr: "Intervention Claude",
     labelEn: "Claude intervention",
-    onQuote: true,
+    priceFlat: 690,
     durationFr: "1 journée",
     durationEn: "1 day",
+    groupSizeFr: "2 à 8 personnes",
+    groupSizeEn: "2 to 8 people",
     descriptionFr:
-      "Une journée 100 % dédiée à Claude (Anthropic) : Chat · Cowork · Code. Tarif sur devis.",
+      "Une journée 100 % dédiée à Claude (Anthropic) : Chat · Cowork · Code. Petit groupe pour profondeur maximale.",
     descriptionEn:
-      "A full day 100 % focused on Claude (Anthropic): Chat · Cowork · Code. Quoted on demand.",
+      "A full day 100 % focused on Claude (Anthropic): Chat · Cowork · Code. Small group for maximum depth.",
+    audienceSizes: ["tpe", "pme"],
   },
   {
     id: "intervention-sur-demande",

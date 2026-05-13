@@ -103,7 +103,7 @@ export default async function FormationClaude({ params }: Props) {
         isFr={isFr}
         accent="orange"
         copy={copy}
-        ctaPrimaryHref="/contact?intervention=intervention-claude"
+        ctaPrimaryHref="/reserver?intervention=intervention-claude"
         ctaSecondaryHref="/interventions/essentielle"
         heroSchema={heroSchema}
         jsonLd={jsonLd}

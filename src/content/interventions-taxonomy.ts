@@ -362,6 +362,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     badgeEn: "Productivity",
   },
   {
+    // Will (audit /interventions 2026-05-12) — passe de Sur devis à 690 €
+    // fixe pour 2 à 8 personnes. Bookable direct calendrier.
     slug: "intervention-claude",
     family: "collectives",
     duration: "1-jour",
@@ -370,13 +372,13 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
     labelFr: "Intervention Claude",
     labelEn: "Claude intervention",
     taglineFr:
-      "1 journée 100 % dédiée à Claude (Anthropic) — Chat · Cowork · Code. Vos équipes ressortent autonomes sur l'outil de pointe IA.",
+      "1 journée 100 % dédiée à Claude (Anthropic) — Chat · Cowork · Code. Petit groupe pour profondeur maximale, vos équipes ressortent autonomes sur l'outil de pointe IA.",
     taglineEn:
-      "Full day 100 % focused on Claude (Anthropic) — Chat · Cowork · Code. Your teams leave autonomous on the cutting-edge AI tool.",
-    priceFr: "Sur devis",
-    priceEn: "On request",
-    groupSizeFr: "Selon besoin",
-    groupSizeEn: "As needed",
+      "Full day 100 % focused on Claude (Anthropic) — Chat · Cowork · Code. Small group for maximum depth, your teams leave autonomous on the cutting-edge AI tool.",
+    priceFr: formatAmount(690, "fr"),
+    priceEn: formatAmount(690, "en"),
+    groupSizeFr: "2 à 8 personnes",
+    groupSizeEn: "2 to 8 people",
     audienceFr: "Équipes qui veulent maîtriser Claude en profondeur",
     audienceEn: "Teams that want to master Claude in depth",
     accent: "claude",

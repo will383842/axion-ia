@@ -12,6 +12,22 @@ import type { Locale } from "@/i18n/routing";
 import type { FormatAccent, InterventionFormatEntry } from "@/content/interventions-taxonomy";
 import { formatPath } from "@/content/interventions-taxonomy";
 
+// Will (audit /interventions 2026-05-12) — slugs reconnus par BookingCalendar.
+// Tout autre slug renvoie au calendrier sans pré-sélection (fallback Essentielle).
+// Pour éviter ce fallback silencieux, on n'ajoute `?intervention=…` que si le
+// slug est supporté. Source de vérité : `BookingCalendar.tsx::INTERVENTION_OPTIONS`.
+const CALENDAR_SUPPORTED_SLUGS: ReadonlySet<string> = new Set([
+  "essentielle",
+  "approfondie",
+  "conference",
+  "dirigeants",
+  "audit-flash-onsite",
+  "gagner-du-temps",
+  "demarrage-ia-express",
+  "atelier-ia-cible",
+  "intervention-claude",
+]);
+
 interface Props {
   entry: InterventionFormatEntry;
   locale: Locale;
@@ -193,7 +209,11 @@ export function InterventionFormatCard({ entry, locale }: Props): ReactNode {
           </Link>
           {!href.includes("/contact") && !href.includes("/reserver") ? (
             <Link
-              href="/reserver"
+              href={
+                CALENDAR_SUPPORTED_SLUGS.has(entry.slug)
+                  ? (`/reserver?intervention=${entry.slug}` as never)
+                  : "/reserver"
+              }
               className={cn(
                 "cta-lift inline-flex items-center gap-2 rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-colors",
                 dark

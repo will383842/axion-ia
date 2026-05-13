@@ -323,7 +323,12 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
   const fourHTier = getTierById(INTERVENTION_TIERS, "intervention-4h");
   const priceFr = formatAmount(fourHTier.priceFlat!, "fr");
   const priceEn = formatAmount(fourHTier.priceFlat!, "en");
-  const contactHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
+  // Will (audit /interventions 2026-05-12) — les 2 formations 4 h à prix
+  // fixe 390 € sont bookables direct sur le calendrier (enum DB ajouté via
+  // migration 20260512120000_collective_4h_enum_values). Avant : CTAs câblées
+  // sur /interventions/demande (formulaire), incohérent avec les autres formats
+  // à prix fixe (Essentielle, Approfondie, etc.).
+  const bookingHref = `/reserver?intervention=${slug}`;
 
   // Sprint 14.10.7 fix charte couleur : tout en terracotta (orange Axion-IA).
   // L'`accent` taxonomy est toujours terracotta pour ces 2 formations 4 h
@@ -427,7 +432,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Cta
-                href={contactHref}
+                href={bookingHref}
                 size="lg"
                 className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
               >
@@ -494,7 +499,7 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
         }
         cta={
           <Cta
-            href={contactHref}
+            href={bookingHref}
             size="lg"
             className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
           >
