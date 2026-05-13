@@ -160,6 +160,9 @@ export const routing = defineRouting({
       en: "/booking/[token]/reschedule",
     },
 
+    // Sprint X.17 (Booking V1) — page transparence sous-processeurs RGPD.
+    "/sous-processeurs": { fr: "/sous-processeurs", en: "/subprocessors" },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {
