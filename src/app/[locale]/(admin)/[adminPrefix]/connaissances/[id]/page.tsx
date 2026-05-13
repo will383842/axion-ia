@@ -7,6 +7,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getEntryAction } from "@/server/actions/knowledge/get-entry";
 import { ConnaissancesEditForm } from "./ConnaissancesEditForm";
+import { WorkflowPanel } from "./WorkflowPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,8 @@ export default async function ConnaissancesEditPage({ params }: PageProps) {
   const { adminPrefix, id } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  const userRole = (session.user as { role?: string }).role ?? "reader";
 
   const entry = await getEntryAction({ id });
   if (!entry || entry.deletedAt) notFound();
@@ -33,10 +36,27 @@ export default async function ConnaissancesEditPage({ params }: PageProps) {
             {entry.type} · {entry.domain} · {entry.audience} · statut {entry.status}
           </p>
         </div>
-        <a href={`/fr/${adminPrefix}/connaissances`} className="admin-button-ghost">
-          ← Liste
-        </a>
+        <div className="admin-dashboard-actions">
+          <a
+            href={`/fr/${adminPrefix}/connaissances/${entry.id}/apercu`}
+            className="admin-button-ghost"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Aperçu ↗
+          </a>
+          <a href={`/fr/${adminPrefix}/connaissances`} className="admin-button-ghost">
+            ← Liste
+          </a>
+        </div>
       </div>
+
+      <WorkflowPanel
+        entryId={entry.id}
+        status={entry.status}
+        pipelineStage={entry.pipelineStage}
+        userRole={userRole}
+      />
 
       <ConnaissancesEditForm
         adminPrefix={adminPrefix}
