@@ -54,8 +54,8 @@ import {
 } from "./prisma-helpers";
 
 describe("KB SSOT — types", () => {
-  it("KB_TYPES exposes 16 values", () => {
-    expect(KB_TYPES).toHaveLength(16);
+  it("KB_TYPES exposes 28 values (16 V3 + 12 V4 Knowledge Factory)", () => {
+    expect(KB_TYPES).toHaveLength(28);
   });
 
   it("PUBLIC_KB_TYPES is a subset of KB_TYPES", () => {

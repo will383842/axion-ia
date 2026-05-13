@@ -27,6 +27,19 @@ export const DEFAULT_REVIEW_WINDOW_MONTHS: Record<KbType, number> = {
   competitor_card: 6,
   commercial_doc: 12,
   onboarding_step: 12,
+  // V4 — Knowledge Factory Industrielle (fenêtres adaptées à fraîcheur écosystème IA)
+  automation_recipe: 6, // Outils N8N/Zapier évoluent vite
+  tool_review: 6, // Avis outils IA — révision fréquente
+  industry_use_case: 12,
+  comparison: 6, // Comparatifs — prix/features changent
+  implementation_playbook: 12,
+  prompt_pattern: 6, // Prompts — fréquent
+  roi_calculator_template: 12,
+  intervention_module: 12,
+  competence_boost: 6,
+  secteur_brief: 12,
+  dept_brief: 12,
+  metier_brief: 12,
 };
 
 export function getReviewWindowMonths(type: KbType): number {

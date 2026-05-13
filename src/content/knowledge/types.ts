@@ -9,6 +9,7 @@
 import type { KbType } from "../../../prisma/generated/client";
 
 export const KB_TYPES: readonly KbType[] = [
+  // V3 — 16 types
   "article",
   "case_study",
   "help_article",
@@ -25,16 +26,43 @@ export const KB_TYPES: readonly KbType[] = [
   "competitor_card",
   "commercial_doc",
   "onboarding_step",
+  // V4 — 12 types Knowledge Factory Industrielle (FR uniquement V1)
+  "automation_recipe",
+  "tool_review",
+  "industry_use_case",
+  "comparison",
+  "implementation_playbook",
+  "prompt_pattern",
+  "roi_calculator_template",
+  "intervention_module",
+  "competence_boost",
+  "secteur_brief",
+  "dept_brief",
+  "metier_brief",
 ] as const;
 
 /** Types publics (URL dédiée préservée existant ou hub `/ressources/`). */
 export const PUBLIC_KB_TYPES = [
+  // V3 — URL dédiée
   "article",
   "case_study",
   "help_article",
   "faq",
   "glossary_term",
   "guide",
+  // V4 — Hub /ressources/ uniquement V1 (path type-spécifique futur)
+  "automation_recipe",
+  "tool_review",
+  "industry_use_case",
+  "comparison",
+  "implementation_playbook",
+  "prompt_pattern",
+  "roi_calculator_template",
+  "intervention_module",
+  "competence_boost",
+  "secteur_brief",
+  "dept_brief",
+  "metier_brief",
 ] as const satisfies readonly KbType[];
 
 /** Types internes (audience `team` ou `will_only` par défaut). */
@@ -60,6 +88,7 @@ export const CLIENT_KB_TYPES = [
  * Sources : Agent 6 (Public Surface) + Agent 12 (E-E-A-T) + master prompt §0.0/11.
  */
 export const KB_TYPE_TO_JSONLD: Record<KbType, string> = {
+  // V3
   article: "Article",
   case_study: "Article",
   help_article: "Article",
@@ -76,6 +105,19 @@ export const KB_TYPE_TO_JSONLD: Record<KbType, string> = {
   competitor_card: "Article",
   commercial_doc: "Article",
   onboarding_step: "HowTo",
+  // V4 — Knowledge Factory Industrielle
+  automation_recipe: "HowTo",
+  tool_review: "Review",
+  industry_use_case: "Article",
+  comparison: "Article",
+  implementation_playbook: "HowTo",
+  prompt_pattern: "Article",
+  roi_calculator_template: "Article",
+  intervention_module: "Course",
+  competence_boost: "LearningResource",
+  secteur_brief: "Article",
+  dept_brief: "Article",
+  metier_brief: "Article",
 };
 
 export type KbTypeMeta = {
@@ -186,6 +228,92 @@ export const KB_TYPE_META: Record<KbType, KbTypeMeta> = {
     labelEn: "Onboarding step",
     jsonLd: "HowTo",
     isPublic: false,
+  },
+  // V4 — Knowledge Factory Industrielle (FR uniquement V1 ; EN labels = mirroring informatif)
+  automation_recipe: {
+    value: "automation_recipe",
+    labelFr: "Recette d'automatisation",
+    labelEn: "Automation recipe",
+    jsonLd: "HowTo",
+    isPublic: true,
+  },
+  tool_review: {
+    value: "tool_review",
+    labelFr: "Avis outil IA",
+    labelEn: "AI tool review",
+    jsonLd: "Review",
+    isPublic: true,
+  },
+  industry_use_case: {
+    value: "industry_use_case",
+    labelFr: "Cas d'usage sectoriel",
+    labelEn: "Industry use case",
+    jsonLd: "Article",
+    isPublic: true,
+  },
+  comparison: {
+    value: "comparison",
+    labelFr: "Comparatif outils",
+    labelEn: "Tools comparison",
+    jsonLd: "Article",
+    isPublic: true,
+  },
+  implementation_playbook: {
+    value: "implementation_playbook",
+    labelFr: "Playbook d'implémentation",
+    labelEn: "Implementation playbook",
+    jsonLd: "HowTo",
+    isPublic: true,
+  },
+  prompt_pattern: {
+    value: "prompt_pattern",
+    labelFr: "Pattern de prompt",
+    labelEn: "Prompt pattern",
+    jsonLd: "Article",
+    isPublic: true,
+  },
+  roi_calculator_template: {
+    value: "roi_calculator_template",
+    labelFr: "Template calculateur ROI",
+    labelEn: "ROI calculator template",
+    jsonLd: "Article",
+    isPublic: true,
+  },
+  intervention_module: {
+    // Doctrine axionia-core : « intervention » jamais « training »/« formation »
+    value: "intervention_module",
+    labelFr: "Module d'intervention",
+    labelEn: "Intervention module",
+    jsonLd: "Course",
+    isPublic: true,
+  },
+  competence_boost: {
+    value: "competence_boost",
+    labelFr: "Boost de compétence",
+    labelEn: "Competence boost",
+    jsonLd: "LearningResource",
+    isPublic: true,
+  },
+  secteur_brief: {
+    value: "secteur_brief",
+    labelFr: "Brief sectoriel",
+    labelEn: "Sector brief",
+    jsonLd: "Article",
+    isPublic: true,
+  },
+  dept_brief: {
+    value: "dept_brief",
+    labelFr: "Brief département",
+    labelEn: "Department brief",
+    jsonLd: "Article",
+    isPublic: true,
+  },
+  metier_brief: {
+    value: "metier_brief",
+    labelFr: "Brief métier",
+    labelEn: "Role brief",
+    jsonLd: "Article",
+    isPublic: true,
   },
 };
 

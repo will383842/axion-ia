@@ -473,9 +473,12 @@ enum CompanySize {
 // ADR : `docs/adr/0021-knowledge-base-unifiee.md` (à créer en fin de Phase B)
 // ============================================================
 
-/// 16 types de contenu KB polymorphique (§12.1 master prompt).
+/// 28 types de contenu KB polymorphique (§12.1 master prompt V4).
 /// Stable DB — toute valeur ajoutée = migration `ALTER TYPE ADD VALUE`.
+/// V4 (Knowledge Factory Industrielle, 2026-05-14) : +12 types pour production
+/// 100 entrées/jour automatique (volume cibles annuels documentés §12.1 prompt).
 enum KbType {
+  // 16 types V3 (legacy + internes)
   article
   case_study
   help_article
@@ -492,6 +495,20 @@ enum KbType {
   competitor_card
   commercial_doc
   onboarding_step
+
+  // 12 types V4 Knowledge Factory (FR uniquement V1)
+  automation_recipe // Recette d'automatisation (N8N/Zapier/Make) — ~8000/an
+  tool_review // Avis sur outil IA pour pros — ~3000/an
+  industry_use_case // Cas d'usage IA par secteur — ~6000/an
+  comparison // Comparatif outil X vs outil Y — ~2000/an
+  implementation_playbook // Playbook d'implémentation IA — ~1500/an
+  prompt_pattern // Pattern de prompt pour métier/tâche — ~5000/an
+  roi_calculator_template // Template calculateur ROI IA — ~500/an
+  intervention_module // Module d'intervention (montée en compétence). JAMAIS « training »/« formation ». — ~2000/an
+  competence_boost // Boost compétence court (15-30 min, micro-apprentissage) — ~3000/an
+  secteur_brief // Brief sectoriel IA — ~500/an
+  dept_brief // Brief département — ~500/an
+  metier_brief // Brief métier — ~1500/an
 }
 
 /// 10 domaines (§12.2 master prompt). Borné. Une entrée = 1 domaine.
@@ -1923,8 +1940,9 @@ model KnowledgeTranslation {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  // FTS tsvector matérialisé hors-Prisma (Sprint KB-7 migration SQL).
-  // searchVector Unsupported("tsvector")? @map("search_vector")  // ← activé KB-7
+  // KB-7 FTS tsvector matérialisé via migration SQL `kb_fts_setup.sql` (GENERATED ALWAYS).
+  // Index GIN + index trigram sur title gérés hors Prisma (Unsupported types).
+  searchVector Unsupported("tsvector")? @map("search_vector")
 
   @@unique([entryId, locale])
   @@unique([locale, slug])

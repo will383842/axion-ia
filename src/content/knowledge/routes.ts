@@ -27,6 +27,20 @@ export const KB_PUBLIC_ROUTES: KbRouteMap = {
   competitor_card: null,
   commercial_doc: null,
   onboarding_step: null,
+  // V4 — Knowledge Factory : tous les types factory passent par hub /ressources/[type]/[slug] V1.
+  // Paths dédiés type-spécifiques (ex. /comparaisons-ia/, /automatisations/) = décision V2.
+  automation_recipe: null,
+  tool_review: null,
+  industry_use_case: null,
+  comparison: null,
+  implementation_playbook: null,
+  prompt_pattern: null,
+  roi_calculator_template: null,
+  intervention_module: null,
+  competence_boost: null,
+  secteur_brief: null,
+  dept_brief: null,
+  metier_brief: null,
 };
 
 /** Hub agrégateur (cross-type) — décision Will 2026-05-13. */
