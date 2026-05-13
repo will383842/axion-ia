@@ -1,15 +1,17 @@
-// Booking — Server Actions (Sprint 15 / M8).
+// Booking — Server Actions (Sprint 15 / M8 + Sprint X.4 final V1 refactor).
 //
 // 2 actions :
-//  - createBookingAction : reservation directe (sans option 48h)
+//  - createBookingAction : réservation directe parcours A (V1 deposit-gated).
+//    Le visiteur crée une pré-réservation en `option_pending` ; l'admin
+//    poursuit le cycle (cadrage → contrat → acompte → calendar validation).
 //  - postOption48hAction : pose une option 48h sur un slot (verrou pessimiste
-//    Postgres SELECT ... FOR UPDATE — doctrine doc 09b)
+//    Postgres SELECT ... FOR UPDATE — doctrine doc 09b + ADR 0017 cap).
 //
-// Le verrou pessimiste empeche la race condition « 2 visiteurs reservent
-// le meme slot en simultane » : la premiere transaction lock la ligne
-// calendar_slots, verifie status='available', insert BookingOption + flip
+// Le verrou pessimiste empêche la race condition « 2 visiteurs réservent
+// le même slot en simultané » : la première transaction lock la ligne
+// calendar_slots, vérifie status='available', insert BookingOption + flip
 // slot.status='reserved' atomiquement. La 2e transaction attend, voit
-// status='reserved' et echoue → page /reserver?error=slot_taken cote UI.
+// status='reserved' et échoue → page /reserver?error=slot_taken côté UI.
 
 "use server";
 
@@ -155,6 +157,20 @@ export async function createBookingAction(
         locale,
         pricePaidCents,
         participantsTier,
+        // Sprint X.4 refactor V1 — pré-réservation deposit-gated.
+        // L'admin poursuit le flow via admin-actions (cadrage / contract).
+        status: "option_pending",
+        originPath: "direct",
+      },
+    });
+    // Audit trail state machine (idempotent — UNIQUE bookingId/toStatus/trigger).
+    await tx.bookingTransition.create({
+      data: {
+        bookingId: b.id,
+        fromStatus: "draft",
+        toStatus: "option_pending",
+        trigger: "visitor.create_booking",
+        triggeredBy: "user",
       },
     });
     return { submission, booking: b };
