@@ -28,6 +28,7 @@ import {
 } from "./newsletter-confirm-optin";
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
+import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -84,6 +85,10 @@ const TEMPLATES: TemplateMap = {
   "gdpr-export-link": {
     subject: gdprExportLinkSubject,
     component: GdprExportLinkEmail,
+  },
+  "quote-request-received": {
+    subject: quoteRequestReceivedSubject,
+    component: QuoteRequestReceivedEmail,
   },
 };
 

@@ -21,7 +21,9 @@ export type EmailJobName =
   | "implementation-confirmed"
   | "newsletter-confirm-optin"
   | "contact-confirmed"
-  | "gdpr-export-link";
+  | "gdpr-export-link"
+  // Sprint X.5bis — parcours B (formulaire devis qualifié)
+  | "quote-request-received";
 
 export interface EmailJobData {
   template: EmailJobName;

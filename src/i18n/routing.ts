@@ -141,6 +141,14 @@ export const routing = defineRouting({
     },
     "/audit/demande": { fr: "/audit/demande", en: "/audit/request" },
 
+    // Sprint X.5bis (Booking V1) — parcours B « devis qualifié » dédié pour
+    // les formats > 5k€ HT / IA Custom / packs annuels (D44).
+    "/demande-devis": { fr: "/demande-devis", en: "/request-quote" },
+    "/demande-devis/confirmation": {
+      fr: "/demande-devis/confirmation",
+      en: "/request-quote/confirmation",
+    },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {
