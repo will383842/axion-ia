@@ -64,6 +64,10 @@ enum InterventionType {
   // Sprint 14.10.8 (Will 2026-05-12) — audit Flash sur site 890 € réservable
   // directement sur le calendrier (cf. /audit hub refondu en 2 axes).
   audit_flash_onsite
+  // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe 390 €
+  // promues bookables direct calendrier (au lieu du formulaire générique).
+  demarrage_ia_express
+  atelier_ia_cible
 }
 
 enum BookingStatus {

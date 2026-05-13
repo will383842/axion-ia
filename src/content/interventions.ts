@@ -215,6 +215,24 @@ export const ESSENTIELLE_TIERS: ReadonlyArray<EssentielleTierDef> = ESSENTIELLE_
   }),
 );
 
+// Will (audit /interventions 2026-05-12) — Approfondie a la MÊME grille
+// d'effectif qu'Essentielle (2-8 / 9-15 / 16-30) mais des prix différents
+// (880 / 1420 / 2140 €). Avant cet ajout, la page produit Approfondie
+// n'exposait aucune section paliers (vs Essentielle qui en a une), et le
+// calendrier soumettait toujours participantsCount=1 → facturation 880 €
+// systématique au lieu du palier réel.
+export const APPROFONDIE_TIERS: ReadonlyArray<EssentielleTierDef> = APPROFONDIE_SUB_TIERS.map(
+  (sub) => ({
+    id: sub.id.replace(/^approfondie-/, "") as EssentielleTier,
+    labelFr: sub.labelFr,
+    labelEn: sub.labelEn,
+    sizeFr: sub.rangeFr,
+    sizeEn: sub.rangeEn,
+    priceEur: sub.priceFlat,
+    ...(sub.isFeatured ? { isFeatured: true } : {}),
+  }),
+);
+
 // ============================================================================
 // Tunnel de réservation — UNIVERSEL pour les 5 formats. Identique partout :
 // 1) je réserve 2) call de cadrage 3) acompte 50% 4) journée 5) solde + frais.
@@ -1518,7 +1536,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Jour J · matin Chat (rédaction, analyse, synthèse) · midi Cowork (Projects, fichiers, mémoire) · après-midi Code (CLI, refactoring)",
           "Ressources fournies : prompts maison, exemples d'utilisation, intégrations recommandées",
         ],
-        ctaLabel: "Demander un devis Claude",
+        ctaLabel: "Réserver la Formation Claude",
       },
       en: {
         benefitTagline:
@@ -1539,7 +1557,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Day · morning Chat (writing, analysis, synthesis) · noon Cowork (Projects, files, memory) · afternoon Code (CLI, refactoring)",
           "Takeaways: in-house prompts, usage examples, recommended integrations",
         ],
-        ctaLabel: "Request a Claude quote",
+        ctaLabel: "Book the Claude Training",
       },
     },
     fr: {
@@ -1548,8 +1566,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         title: "Intervention Claude",
         titleEm: "Chat · Cowork · Code",
         answer:
-          "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Pour les équipes qui veulent maîtriser l'outil IA de pointe en profondeur. Tarif sur devis selon vos profils et votre contexte.",
-        ctaPrimary: "Demander un devis Claude",
+          "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Format petit groupe (2 à 8 personnes) pour profondeur maximale. Tarif fixe 690 € HT — réservation directe sur le calendrier.",
+        ctaPrimary: "Réserver la Formation Claude",
         faqIntro: "équipes Claude",
       }),
       benefits: [
@@ -1607,7 +1625,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
       ctaBlockDescription:
-        "Demandez un devis adapté à vos profils et à votre contexte — réponse sous 48 h ouvrées.",
+        "Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe 690 € HT pour 2 à 8 personnes.",
     },
     en: {
       ...makeEn({
@@ -1615,8 +1633,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         title: "Claude intervention",
         titleEm: "Chat · Cowork · Code",
         answer:
-          "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). For teams that want to master the cutting-edge AI tool in depth. Quoted on demand based on your profiles and context.",
-        ctaPrimary: "Request a Claude quote",
+          "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). Small-group format (2 to 8 people) for maximum depth. Fixed fee €690 (excl. VAT) — direct calendar booking.",
+        ctaPrimary: "Book the Claude Training",
         faqIntro: "Claude teams",
       }),
       benefits: [
@@ -1674,7 +1692,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Master Claude (Anthropic) in depth",
       ctaBlockDescription:
-        "Request a quote adapted to your profiles and context — reply within 48 business hours.",
+        "Book the next date — live calendar, instant confirmation. Fixed fee €690 (excl. VAT) for 2 to 8 people.",
     },
   },
 ];
