@@ -26,6 +26,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { slugToEnum, getInterventionPriceCents } from "@/lib/intervention-type";
 import { readUtmCookie, UTM_COOKIE_NAME, type UtmParams } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+import { countActiveOptionsForSlot, getMaxConcurrentOptionsPerSlot } from "./option-cap";
 
 /**
  * Lecture cookies funnel (UTM + referrerCity pSEO) — Sprint X.18.
@@ -222,6 +223,10 @@ export async function postOption48hAction(
   const expiresAt = new Date(Date.now() + 48 * 3600 * 1000);
 
   try {
+    // Sprint X.5 — cap multi-options (ADR 0017). Plusieurs visiteurs peuvent
+    // poser une option 48h sur le même slot jusqu'à cap (défaut 3). L'admin
+    // choisit ensuite laquelle valider ; les autres deviennent lost_other_won.
+    const cap = getMaxConcurrentOptionsPerSlot();
     // Sprint 15 fix Fork 3 W4-3 : on inclut slotDate dans le SELECT verrou
     // pour eviter un round-trip post-tx (et pour resilience si suppression).
     const result = await prisma.$transaction(async (tx) => {
@@ -236,11 +241,23 @@ export async function postOption48hAction(
       if (!slot) {
         throw new Error("slot_unavailable");
       }
+      // Slots terminaux (booked, blocked) refusés. Reserved = cap déjà atteint.
       if (slot.status !== "available") {
         throw new Error("slot_taken");
       }
 
-      // Cree l'option + flip slot.status='reserved' atomiquement
+      // Compte les options actives concurrentes (cap multi-options).
+      const activeCount = await countActiveOptionsForSlot(tx, parsed.data.slotId);
+      if (activeCount >= cap) {
+        // État incohérent (slot encore "available" mais cap atteint) → on
+        // force le flip pour cohérence future + reject ce visiteur.
+        await tx.calendarSlot.update({
+          where: { id: parsed.data.slotId },
+          data: { status: "reserved" },
+        });
+        throw new Error("slot_taken");
+      }
+
       const option = await tx.bookingOption.create({
         data: {
           slotId: parsed.data.slotId,
@@ -256,15 +273,29 @@ export async function postOption48hAction(
           expiresAt,
         },
       });
-      await tx.calendarSlot.update({
-        where: { id: parsed.data.slotId },
-        data: {
-          status: "reserved",
-          displaySector: consentDisplay ? parsed.data.companySector : null,
-          interventionType: interventionTypeEnum,
-          participantsCount: parsed.data.participantsCount,
-        },
-      });
+
+      // Premier option : on enrichit le slot avec sector/intervention/count.
+      // Options suivantes : on ne touche pas (affichage = première société
+      // qui a posé l'option, V1 simple). Admin UI X.9 affichera toutes les
+      // options concurrentes.
+      const isFirstOption = activeCount === 0;
+      const reachedCap = activeCount + 1 >= cap;
+      if (isFirstOption) {
+        await tx.calendarSlot.update({
+          where: { id: parsed.data.slotId },
+          data: {
+            ...(reachedCap ? { status: "reserved" } : {}),
+            displaySector: consentDisplay ? parsed.data.companySector : null,
+            interventionType: interventionTypeEnum,
+            participantsCount: parsed.data.participantsCount,
+          },
+        });
+      } else if (reachedCap) {
+        await tx.calendarSlot.update({
+          where: { id: parsed.data.slotId },
+          data: { status: "reserved" },
+        });
+      }
       return { option, slotDate: slot.slot_date };
     });
 
