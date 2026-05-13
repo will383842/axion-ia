@@ -31,7 +31,32 @@ import { z } from "zod";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import { applyTransition, StateMachineError, type ApplyTransitionOptions } from "./state-machine";
+
+// Helper : récupère contact + intervention type d'un booking pour les emails.
+async function getEmailPayloadBase(bookingId: string): Promise<{
+  email: string;
+  locale: "fr" | "en";
+  contactName: string;
+  interventionType: string;
+} | null> {
+  const b = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    select: {
+      interventionType: true,
+      locale: true,
+      submission: { select: { contactEmail: true, contactName: true } },
+    },
+  });
+  if (!b?.submission?.contactEmail) return null;
+  return {
+    email: b.submission.contactEmail,
+    locale: b.locale,
+    contactName: b.submission.contactName ?? "Client",
+    interventionType: b.interventionType,
+  };
+}
 
 // ============================================================
 // Helpers auth
@@ -153,9 +178,24 @@ export async function pauseBookingAction(
     });
 
     sendTelegram({
-      tag: "OPTION", // tag existant le plus proche; ajouter "BOOKING_PAUSED" dédié dans une session future
+      tag: "OPTION", // tag existant le plus proche; tag dédié BOOKING_PAUSED prévu Sprint X.13 final
       body: `Booking ${parsed.data.bookingId} mis en pause par ${admin.userId}. Raison : ${parsed.data.reason}`,
     }).catch(() => {});
+
+    // Sprint X.13 — email client confirmation pause (D61).
+    const ctx = await getEmailPayloadBase(parsed.data.bookingId);
+    if (ctx) {
+      enqueueEmail("booking-paused-confirmation", ctx.email, ctx.locale, {
+        contactName: ctx.contactName,
+        interventionType: ctx.interventionType,
+        pausedAt: new Date().toISOString().slice(0, 10),
+        ...(parsed.data.pausedUntil ? { pausedUntil: parsed.data.pausedUntil.slice(0, 10) } : {}),
+        reason: parsed.data.reason,
+        bookingId: parsed.data.bookingId,
+      }).catch(() => {
+        /* fail-soft email queue (BullMQ Redis down) */
+      });
+    }
 
     return { ok: true };
   } catch (err) {
@@ -221,6 +261,27 @@ export async function resumeBookingAction(
         });
       }
     });
+
+    // Sprint X.13 — email client confirmation reprise (D61). Récupère la
+    // nouvelle date depuis le slot si newSlotId fourni, sinon depuis l'existant.
+    const ctx = await getEmailPayloadBase(parsed.data.bookingId);
+    if (ctx) {
+      const bb = await prisma.booking.findUnique({
+        where: { id: parsed.data.bookingId },
+        select: { bookingDate: true },
+      });
+      const iso = bb?.bookingDate.toISOString() ?? new Date().toISOString();
+      enqueueEmail("booking-resumed-notification", ctx.email, ctx.locale, {
+        contactName: ctx.contactName,
+        interventionType: ctx.interventionType,
+        resumedDate: iso.slice(0, 10),
+        resumedTime: iso.slice(11, 16),
+        bookingId: parsed.data.bookingId,
+      }).catch(() => {
+        /* fail-soft */
+      });
+    }
+
     return { ok: true };
   } catch (err) {
     if (err instanceof StateMachineError) {
@@ -359,6 +420,20 @@ export async function markForceMajeureAction(
         data: { forceMajeureNotes: parsed.data.notes },
       });
     });
+
+    // Sprint X.13 — email client force majeure (refund 100% sauf override CGV).
+    const ctx = await getEmailPayloadBase(parsed.data.bookingId);
+    if (ctx) {
+      enqueueEmail("force-majeure-notice", ctx.email, ctx.locale, {
+        contactName: ctx.contactName,
+        interventionType: ctx.interventionType,
+        notes: parsed.data.notes,
+        bookingId: parsed.data.bookingId,
+      }).catch(() => {
+        /* fail-soft */
+      });
+    }
+
     return { ok: true };
   } catch (err) {
     if (err instanceof StateMachineError) {

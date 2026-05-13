@@ -29,6 +29,22 @@ import {
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
 import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
+import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
+import { PaymentReceiptEmail, paymentReceiptSubject } from "./payment-receipt";
+import { PaymentFailedEmail, paymentFailedSubject } from "./payment-failed";
+import {
+  BookingValidatedOnCalendarEmail,
+  bookingValidatedOnCalendarSubject,
+} from "./booking-validated-on-calendar";
+import {
+  BookingPausedConfirmationEmail,
+  bookingPausedConfirmationSubject,
+} from "./booking-paused-confirmation";
+import {
+  BookingResumedNotificationEmail,
+  bookingResumedNotificationSubject,
+} from "./booking-resumed-notification";
+import { ForceMajeureNoticeEmail, forceMajeureNoticeSubject } from "./force-majeure-notice";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -89,6 +105,34 @@ const TEMPLATES: TemplateMap = {
   "quote-request-received": {
     subject: quoteRequestReceivedSubject,
     component: QuoteRequestReceivedEmail,
+  },
+  "payment-link": {
+    subject: paymentLinkSubject,
+    component: PaymentLinkEmail,
+  },
+  "payment-receipt": {
+    subject: paymentReceiptSubject,
+    component: PaymentReceiptEmail,
+  },
+  "payment-failed": {
+    subject: paymentFailedSubject,
+    component: PaymentFailedEmail,
+  },
+  "booking-validated-on-calendar": {
+    subject: bookingValidatedOnCalendarSubject,
+    component: BookingValidatedOnCalendarEmail,
+  },
+  "booking-paused-confirmation": {
+    subject: bookingPausedConfirmationSubject,
+    component: BookingPausedConfirmationEmail,
+  },
+  "booking-resumed-notification": {
+    subject: bookingResumedNotificationSubject,
+    component: BookingResumedNotificationEmail,
+  },
+  "force-majeure-notice": {
+    subject: forceMajeureNoticeSubject,
+    component: ForceMajeureNoticeEmail,
   },
 };
 
