@@ -19,6 +19,11 @@ generator client {
   provider        = "prisma-client-js"
   output          = "../prisma/generated/client"
   previewFeatures = ["fullTextSearch", "postgresqlExtensions"]
+  // Fix 2026-05-13 : Alpine 3.x récent (image node:22-alpine) embarque
+  // OpenSSL 3.x sans libssl.so.1.1. Le binary Prisma `linux-musl` par
+  // défaut dépend de libssl 1.1 → fail runtime. `linux-musl-openssl-3.0.x`
+  // est la variante compatible. `native` reste pour le dev local Windows/Mac.
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
