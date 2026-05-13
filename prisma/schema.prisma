@@ -1888,6 +1888,15 @@ model KnowledgeEntry {
   reviewerAssignments KnowledgeReviewerAssignment[]
   slugHistory         KnowledgeSlugHistory[]
 
+  // KB V4 — Source tracking factory (Sprint KB-13 V4, §17.5/§17.7 prompt master).
+  // Permet audit immuable + remontée à la source en cas de problème.
+  // NULL pour les entries legacy migrées kb-2/kb-5 (pas factory-générées).
+  sourceFactoryId   String?   @map("source_factory_id") @db.VarChar(80)
+  sourcePromptId    String?   @map("source_prompt_id") @db.VarChar(120)
+  sourceModelUsed   String?   @map("source_model_used") @db.VarChar(80)
+  sourceCostCents   Int?      @map("source_cost_cents")
+  sourceGeneratedAt DateTime? @map("source_generated_at")
+
   @@index([type, status, audience])
   @@index([type, publishedAt(sort: Desc)])
   @@index([status, pipelineStage])
@@ -1900,6 +1909,7 @@ model KnowledgeEntry {
   @@index([assignedReviewerId])
   @@index([scheduledFor])
   @@index([deletedAt])
+  @@index([sourceFactoryId])
   @@map("knowledge_entries")
 }
 
