@@ -94,6 +94,18 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
+# Prisma migration runtime — schema + migrations + prisma CLI binary nécessaires
+# pour que `prisma migrate deploy` tourne au démarrage container (entrypoint).
+# Le standalone output exclut prisma/ par défaut, donc on copie explicitement.
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+
+# Entrypoint script : prisma migrate deploy puis node server.js
+COPY --chown=nextjs:nodejs scripts/docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
+
 # Sharp preinstalled dans builder, copié via standalone deps
 USER nextjs
 
@@ -106,5 +118,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api/healthz',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
 
-# server.js exposé par Next 16 standalone
-CMD ["node", "server.js"]
+# Entrypoint runs migrate deploy + starts Next standalone server.
+ENTRYPOINT ["./docker-entrypoint.sh"]
