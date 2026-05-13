@@ -35,3 +35,29 @@ export {
 } from "./state-machine";
 
 export { makeEntrySnapshot, type EntrySnapshot, type EntrySnapshotInput } from "./snapshot";
+
+export {
+  searchKnowledge,
+  type KbSearchHit,
+  type KbSearchParams,
+  type KbSearchResult,
+} from "./search-fts";
+
+export {
+  getGlossaryTerms,
+  listFaqs,
+  listPublishedArticles,
+  findArticleBySlug,
+  findCaseStudyBySlug,
+  findHelpArticleBySlug,
+  type FaqItem,
+  type ArticleSummary,
+  type GlossaryTerm,
+  type PublicEntryFacade,
+} from "./readers";
+
+export {
+  isKbBackendUnifiedGlobal,
+  isKbBackendUnifiedFor,
+  type KbBackendTarget,
+} from "./feature-flag";
