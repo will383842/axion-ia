@@ -82,7 +82,29 @@
 - `CalendarSlotStatus` non étendu — dérivation UI (ADR 0017 Option B2).
 - Will's WIP `InterventionType` (`demarrage_ia_express`, `atelier_ia_cible`) inchangé.
 
-### ⏳ PROCHAIN — Sprint X.2 Stripe Checkout & webhook (3j)
+### ⚙️ Sprint X.2 — Stripe Checkout & webhook (P0 SKELETON, partiel)
+
+**Livré session 2026-05-13** :
+
+- `pnpm add stripe@22.1.1` ✅ SDK installé.
+- `src/lib/stripe.ts` — singleton + `STRIPE_API_VERSION` figé `2026-04-22.dahlia` + helpers `isStripeConfigured()` / `getWebhookSecret()`.
+- `src/app/api/stripe/webhook/route.ts` — POST handler raw body + signature `constructEvent` + outbox `StripeWebhookEvent.create` (idempotence P2002 → 200). Dispatch BullMQ marqué TODO Sprint X.4+.
+- `src/features/payment/actions.ts` — `createStripeCheckoutSessionAction` + `cancelStripeCheckoutSessionAction` avec Zod, `requireAdminWrite`, `checkRateLimit` (5/600s), `isAllowedRedirectUrl` (anti open-redirect Agent 8 P0-6), `Idempotency-Key: ${invoiceId}-v1`.
+- `next.config.ts` — `experimental.serverActions.allowedOrigins = ['axion-ia.com', 'www.axion-ia.com']` (Agent 8 P0-4).
+- `src/lib/csp.ts` — `connect-src` += `api.stripe.com`, `frame-src` += `checkout.stripe.com`.
+- `src/lib/telegram.ts` — tags `STRIPE_EVENT` + `STRIPE_WEBHOOK_SIGNATURE_FAIL` ajoutés.
+- `.env.example` — `STRIPE_API_VERSION` aligné `2026-04-22.dahlia` (env informative, la version est dans le code).
+- `src/lib/stripe.test.ts` — 4 tests skeleton (config flags + API version pinned).
+- TS clean + 153/153 vitest verts (149 existants + 4 nouveaux).
+
+**Reste à faire X.2** :
+
+- Workers BullMQ pour les 5 events critiques (`checkout.session.completed`, `payment_intent.payment_failed`, `charge.refunded`, `charge.dispute.created`, `review.opened`). **HORS skeleton** — dépend BullMQ infrastructure Sprint X.12.
+- Tests intégration webhook avec `stripe-mock` (Sprint X.4).
+- Templates emails `payment-link`, `payment-receipt`, `payment-failed` (Sprint X.13).
+- Stripe Radar activation + ADR (P1).
+
+### ⏳ PROCHAIN — Sprint X.3 DocuSeal self-hosted (3-4j) ou X.4 State machine (4j)
 
 ### 📋 BACKLOG SPRINTS V1
 
