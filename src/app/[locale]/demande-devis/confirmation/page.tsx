@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
-  return buildProductMetadata({
+  const base = buildProductMetadata({
     locale,
     path: isFr ? "/demande-devis/confirmation" : "/request-quote/confirmation",
     title: isFr ? "Demande envoyée · Axion-IA" : "Request sent · Axion-IA",
@@ -30,6 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       en: "/request-quote/confirmation",
     },
   });
+  // Page de confirmation = ne pas indexer (pas de valeur SEO, contenu post-action).
+  // buildProductMetadata hardcode index:true; on override ici.
+  return { ...base, robots: { index: false, follow: true } };
 }
 
 export default async function ConfirmationPage({ params }: Props) {
