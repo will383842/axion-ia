@@ -43,10 +43,12 @@ export async function POST(req: Request) {
     body: JSON.stringify({
       host: body?.host ?? SITE_HOST,
       key,
-      // IndexNow spec allows any URL for keyLocation — we serve the key from a
-      // dedicated endpoint instead of `/${key}.txt` to avoid a root-level
-      // dynamic catch-all that would conflict with `[locale]` routing.
-      keyLocation: `https://${SITE_HOST}/api/indexnow/key`,
+      // IndexNow.org renvoie 422 si keyLocation ne finit pas par .txt.
+      // Depuis 2026-05-13, le fichier `/<key>.txt` est exposé via /public
+      // + matcher proxy.ts qui exclut `.*\\.txt$` du i18n redirect.
+      // L'endpoint dynamique `/api/indexnow/key` reste actif en backup
+      // (utile pour debug/curl manuel) mais n'est plus le keyLocation.
+      keyLocation: `https://${SITE_HOST}/${key}.txt`,
       urlList: urls,
     }),
   });
