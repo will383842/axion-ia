@@ -138,6 +138,9 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_DOMAIN: z.string().optional(),
     NEXT_PUBLIC_PLAUSIBLE_API_URL: z.string().url().optional(),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+    // Microsoft Clarity project ID (heatmaps + session replay). Public alphanumeric
+    // (~10 chars). No-op si non défini → composant Clarity ne rend aucun script.
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -190,6 +193,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_DOMAIN: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN,
     NEXT_PUBLIC_PLAUSIBLE_API_URL: process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
   },
   emptyStringAsUndefined: true,
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true",

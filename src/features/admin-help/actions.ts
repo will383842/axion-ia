@@ -12,6 +12,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { pingIndexNow } from "@/lib/indexnow";
 import type { PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -252,6 +253,19 @@ export async function upsertHelpArticleAction(
     revalidatePath(adminPath("fr", "help"));
     revalidatePath("/fr/centre-aide");
     revalidatePath("/en/help-center");
+
+    // IndexNow notify (Bing+Yandex+...) à la publication.
+    if (parsed.data.status === "published") {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+      pingIndexNow(
+        [
+          `${baseUrl}/fr/centre-aide/${parsed.data.fr.slug}`,
+          `${baseUrl}/en/help/${parsed.data.en.slug}`,
+        ],
+        `admin-help:${ha.id}`,
+      );
+    }
+
     return { ok: true, id: ha.id, created };
   } catch (err) {
     const msg = err instanceof Error ? err.message : "internal";

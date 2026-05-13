@@ -15,6 +15,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { pingIndexNow } from "@/lib/indexnow";
 import type { PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -310,6 +311,19 @@ export async function upsertCaseStudyAction(
     revalidatePath(adminPath("fr", "case-studies"));
     revalidatePath("/fr/cas-concrets");
     revalidatePath("/en/case-studies");
+
+    // IndexNow notify (Bing+Yandex+...) à la publication.
+    if (parsed.data.status === "published") {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+      pingIndexNow(
+        [
+          `${baseUrl}/fr/cas-concrets/${parsed.data.fr.slug}`,
+          `${baseUrl}/en/case-studies/${parsed.data.en.slug}`,
+        ],
+        `admin-case-studies:${cs.id}`,
+      );
+    }
+
     return { ok: true, id: cs.id, created };
   } catch (err) {
     const msg = err instanceof Error ? err.message : "internal";
