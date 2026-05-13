@@ -1,0 +1,120 @@
+# Plausible CE self-hosted — déployé sur axionia-web (Hetzner CPX32) via Coolify.
+#
+# Stack 4 conteneurs :
+#   plausible_db      - Postgres 16 (état app : users, sites, settings)
+#   plausible_events  - ClickHouse (events DB, columnar, ~2 GB RAM)
+#   plausible         - app Elixir Phoenix (port 8000)
+#   mail              - relay SMTP (bytemark/smtp) - peut être désactivé ensuite
+#                       en pointant Plausible vers le SMTP maison Axion-IA (PMTA)
+#
+# Image officielle : ghcr.io/plausible/community-edition (license AGPLv3).
+# Configs ClickHouse inline via `configs:` long syntax (Docker Compose 1.27+).
+#
+# Doctrine : DB et events DB ne sont PAS exposés sur le réseau host. Seul
+# `plausible` est reverse-proxy via Caddy (Coolify) sur plausible.axion-ia.com.
+
+services:
+  plausible_db:
+    image: postgres:16-alpine
+    restart: always
+    volumes:
+      - plausible_db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: plausible
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: plausible_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U plausible -d plausible_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  plausible_events:
+    image: clickhouse/clickhouse-server:24.3-alpine
+    restart: always
+    volumes:
+      - plausible_events_data:/var/lib/clickhouse
+      - plausible_events_logs:/var/log/clickhouse-server
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    configs:
+      - source: clickhouse_config
+        target: /etc/clickhouse-server/config.d/logging.xml
+      - source: clickhouse_users_config
+        target: /etc/clickhouse-server/users.d/logging.xml
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8123/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mail:
+    image: bytemark/smtp
+    restart: always
+
+  plausible:
+    image: ghcr.io/plausible/community-edition:v3.0.1
+    restart: always
+    command: sh -c "/entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    depends_on:
+      plausible_db:
+        condition: service_healthy
+      plausible_events:
+        condition: service_healthy
+      mail:
+        condition: service_started
+    environment:
+      SERVICE_FQDN_PLAUSIBLE: ${SERVICE_FQDN_PLAUSIBLE}
+      BASE_URL: ${SERVICE_FQDN_PLAUSIBLE}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      TOTP_VAULT_KEY: ${TOTP_VAULT_KEY}
+      DATABASE_URL: postgres://plausible:${PG_PASSWORD}@plausible_db:5432/plausible_db
+      CLICKHOUSE_DATABASE_URL: http://plausible_events:8123/plausible_events_db
+      DISABLE_REGISTRATION: "invite_only"
+      MAILER_EMAIL: ${MAILER_EMAIL}
+      SMTP_HOST_ADDR: mail
+      SMTP_HOST_PORT: 25
+    ports:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+configs:
+  clickhouse_config:
+    content: |
+      <clickhouse>
+          <logger>
+              <level>warning</level>
+              <console>true</console>
+          </logger>
+          <!-- Anti-disk-fill : log rotation -->
+          <query_thread_log remove="remove"/>
+          <query_log remove="remove"/>
+          <text_log remove="remove"/>
+          <trace_log remove="remove"/>
+          <metric_log remove="remove"/>
+          <asynchronous_metric_log remove="remove"/>
+          <session_log remove="remove"/>
+          <part_log remove="remove"/>
+      </clickhouse>
+  clickhouse_users_config:
+    content: |
+      <clickhouse>
+          <profiles>
+              <default>
+                  <log_queries>0</log_queries>
+                  <log_query_threads>0</log_query_threads>
+              </default>
+          </profiles>
+      </clickhouse>
+
+volumes:
+  plausible_db_data:
+  plausible_events_data:
+  plausible_events_logs:
