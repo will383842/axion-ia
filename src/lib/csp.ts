@@ -98,7 +98,9 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
     "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io",
-    "frame-src 'self' https://challenges.cloudflare.com",
+    // `plausible.axion-ia.com` autorisé pour l'embed dashboard dans
+    // /fr/{prefix}/analytics (Plausible "Shared link" iframe).
+    "frame-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com",
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",

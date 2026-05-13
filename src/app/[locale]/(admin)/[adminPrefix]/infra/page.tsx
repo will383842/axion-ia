@@ -337,11 +337,43 @@ export default async function AdminInfraPage({ params }: PageProps) {
       paid: "0 €",
     },
     {
-      name: "Search Console",
+      name: "Search Console (Google)",
       role: "Indexation Google + sitemap-index + monitoring SEO",
       externalUrl: "https://search.google.com/search-console?resource_id=sc-domain%3Aaxion-ia.com",
-      status: "unknown",
-      detail: "Aucune API key configurée — accès via UI uniquement",
+      status: process.env["GOOGLE_SITE_VERIFICATION"] ? "ok" : "not-configured",
+      detail: process.env["GOOGLE_SITE_VERIFICATION"]
+        ? "Balise meta posée — vérifier coverage report"
+        : "GOOGLE_SITE_VERIFICATION manquante (balise meta absente)",
+      paid: "0 €",
+    },
+    {
+      name: "Bing Webmaster Tools",
+      role: "Indexation Bing/Copilot + sitemap + IndexNow",
+      externalUrl: "https://www.bing.com/webmasters/home",
+      status: process.env["BING_SITE_VERIFICATION"] ? "ok" : "not-configured",
+      detail: process.env["BING_SITE_VERIFICATION"]
+        ? "Balise meta msvalidate.01 posée"
+        : "BING_SITE_VERIFICATION manquante",
+      paid: "0 €",
+    },
+    {
+      name: "Yandex Webmaster",
+      role: "Indexation Yandex + IndexNow notification",
+      externalUrl: "https://webmaster.yandex.com/sites/",
+      status: process.env["YANDEX_SITE_VERIFICATION"] ? "ok" : "not-configured",
+      detail: process.env["YANDEX_SITE_VERIFICATION"]
+        ? "Balise meta yandex-verification posée"
+        : "YANDEX_SITE_VERIFICATION manquante",
+      paid: "0 €",
+    },
+    {
+      name: "IndexNow",
+      role: "Notification instantanée Bing/Yandex/Seznam/Naver sur changement contenu",
+      externalUrl: "https://www.indexnow.org/documentation",
+      status: process.env["INDEXNOW_KEY"] ? "ok" : "not-configured",
+      detail: process.env["INDEXNOW_KEY"]
+        ? "Clé configurée · ping auto sur publication blog · ping manuel via /analytics"
+        : "INDEXNOW_KEY manquante",
       paid: "0 €",
     },
     {
