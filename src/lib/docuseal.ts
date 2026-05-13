@@ -279,11 +279,8 @@ export async function archiveSubmission(submissionId: string): Promise<void> {
 // ============================================================
 
 /**
- * Vérifie la signature HMAC-SHA256 d'un webhook DocuSeal.
- * Le secret est partagé via env `DOCUSEAL_WEBHOOK_SECRET` côté Axion-IA
- * et configuré dans DocuSeal UI > Webhooks.
- *
- * Header attendu : `X-Docuseal-Signature: <hex_digest>` (sans prefix).
+ * Vérifie HMAC-SHA256 (format DocuSeal v1.x legacy).
+ * Header : `X-Docuseal-Signature: <hex_digest>` (64 chars).
  *
  * @param rawBody Corps brut de la requête (Buffer ou string) — NE PAS reparser.
  * @param signatureHeader Valeur du header (hex SHA-256, longueur 64).
@@ -299,6 +296,34 @@ export function verifyWebhookSignature(rawBody: string, signatureHeader: string 
   } catch {
     return false;
   }
+}
+
+/**
+ * Vérifie secret en clair (format DocuSeal v2.x — utilisé en prod).
+ * Header : `X-Docuseal-Secret: <secret_brut>`.
+ */
+export function verifyWebhookSecret(secretHeader: string | null): boolean {
+  if (!secretHeader) return false;
+  const expected = getWebhookSecret();
+  if (secretHeader.length !== expected.length) return false;
+  try {
+    return timingSafeEqual(Buffer.from(secretHeader, "utf8"), Buffer.from(expected, "utf8"));
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Auth wrapper dual-mode : tente d'abord HMAC (legacy), puis secret en clair
+ * (DocuSeal v2.x). Renvoie true si au moins un des 2 schémas matche.
+ */
+export function verifyWebhookAuth(
+  rawBody: string,
+  headers: { signature: string | null; secret: string | null },
+): boolean {
+  if (headers.signature && verifyWebhookSignature(rawBody, headers.signature)) return true;
+  if (headers.secret && verifyWebhookSecret(headers.secret)) return true;
+  return false;
 }
 
 /** Event types DocuSeal qu'on traite (V1). */

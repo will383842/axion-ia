@@ -29,7 +29,10 @@ import { getClientIp } from "@/lib/client-ip";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { applyTransition, StateMachineError } from "./state-machine";
+import { computeRefundFromCancellation, type RefundCalculation } from "./refund-calc";
 import type { CancellationWindow } from "../../../prisma/generated/client";
+
+export type { RefundCalculation };
 
 export interface SelfServiceResult {
   ok: boolean;
@@ -62,25 +65,8 @@ export interface SelfServiceResult {
  *   - < J-2 → 0 % (acompte conservé)
  *   - force_majeure (déclaré par admin) → 100 %
  */
-export interface RefundCalculation {
-  cancellationWindow: CancellationWindow;
-  refundPercentage: number; // 0 | 50 | 100
-}
-
-export function computeRefundFromCancellation(opts: {
-  bookingDate: Date;
-  now: Date;
-}): RefundCalculation {
-  const diffMs = opts.bookingDate.getTime() - opts.now.getTime();
-  const diffDays = diffMs / (24 * 60 * 60 * 1000);
-  if (diffDays >= 15) {
-    return { cancellationWindow: "more_than_15d", refundPercentage: 50 };
-  }
-  if (diffDays >= 2) {
-    return { cancellationWindow: "between_15d_and_2d", refundPercentage: 0 };
-  }
-  return { cancellationWindow: "less_than_2d", refundPercentage: 0 };
-}
+// computeRefundFromCancellation + RefundCalculation extraits dans
+// `./refund-calc.ts` (Next 16 : pas d'export non-async depuis "use server").
 
 // ============================================================
 // Rate-limit shared

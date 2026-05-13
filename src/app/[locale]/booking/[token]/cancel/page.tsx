@@ -12,7 +12,7 @@ import { Container } from "@/components/layout/Container";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { verifyMagicToken } from "@/lib/magic-token";
 import { prisma } from "@/lib/prisma";
-import { computeRefundFromCancellation } from "@/features/booking/self-service-actions";
+import { computeRefundFromCancellation } from "@/features/booking/refund-calc";
 import { CancelForm } from "./CancelForm";
 
 interface Props {

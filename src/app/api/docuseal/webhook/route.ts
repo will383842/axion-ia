@@ -27,7 +27,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
   parseWebhookPayload,
-  verifyWebhookSignature,
+  verifyWebhookAuth,
   isDocusealWebhookConfigured,
   getSubmission,
   type DocusealWebhookPayload,
@@ -54,9 +54,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
 
-  // -- 3. Signature verification --------------------------------------
-  const sig = req.headers.get("x-docuseal-signature");
-  if (!verifyWebhookSignature(rawBody, sig)) {
+  // -- 3. Signature verification (dual-mode HMAC v1.x ou plaintext v2.x) -
+  const signatureHeader = req.headers.get("x-docuseal-signature");
+  const secretHeader = req.headers.get("x-docuseal-secret");
+  if (!verifyWebhookAuth(rawBody, { signature: signatureHeader, secret: secretHeader })) {
     // Pas de log détaillé pour éviter d'aider un attaquant.
     return NextResponse.json({ error: "invalid_signature" }, { status: 401 });
   }
