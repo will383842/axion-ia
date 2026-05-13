@@ -26,7 +26,12 @@ export type TelegramTag =
   | "INCIDENT"
   | "BACKUP"
   | "MONITORING"
-  | "SECURITY";
+  | "SECURITY"
+  // booking V1 tags Sprint X.2 — Stripe webhook ingestion
+  | "STRIPE_EVENT"
+  | "STRIPE_WEBHOOK_SIGNATURE_FAIL"
+  // booking V1 tags Sprint X.5bis — parcours B devis qualifié
+  | "QUOTE_REQUEST_RECEIVED";
 
 export interface TelegramMessage {
   tag: TelegramTag;

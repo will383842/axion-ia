@@ -1,19 +1,21 @@
-// Booking — Server Actions (Sprint 15 / M8).
+// Booking — Server Actions (Sprint 15 / M8 + Sprint X.4 final V1 refactor).
 //
 // 2 actions :
-//  - createBookingAction : reservation directe (sans option 48h)
+//  - createBookingAction : réservation directe parcours A (V1 deposit-gated).
+//    Le visiteur crée une pré-réservation en `option_pending` ; l'admin
+//    poursuit le cycle (cadrage → contrat → acompte → calendar validation).
 //  - postOption48hAction : pose une option 48h sur un slot (verrou pessimiste
-//    Postgres SELECT ... FOR UPDATE — doctrine doc 09b)
+//    Postgres SELECT ... FOR UPDATE — doctrine doc 09b + ADR 0017 cap).
 //
-// Le verrou pessimiste empeche la race condition « 2 visiteurs reservent
-// le meme slot en simultane » : la premiere transaction lock la ligne
-// calendar_slots, verifie status='available', insert BookingOption + flip
+// Le verrou pessimiste empêche la race condition « 2 visiteurs réservent
+// le même slot en simultané » : la première transaction lock la ligne
+// calendar_slots, vérifie status='available', insert BookingOption + flip
 // slot.status='reserved' atomiquement. La 2e transaction attend, voit
-// status='reserved' et echoue → page /reserver?error=slot_taken cote UI.
+// status='reserved' et échoue → page /reserver?error=slot_taken côté UI.
 
 "use server";
 
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { bookingSchema, option48hSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -24,6 +26,34 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { slugToEnum, getInterventionPriceCents } from "@/lib/intervention-type";
+import { readUtmCookie, UTM_COOKIE_NAME, type UtmParams } from "@/lib/utm";
+import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+import { countActiveOptionsForSlot, getMaxConcurrentOptionsPerSlot } from "./option-cap";
+
+/**
+ * Lecture cookies funnel (UTM + referrerCity pSEO) — Sprint X.18.
+ * Best-effort : si cookie absent ou corrompu, retourne objet vide (les
+ * Server Actions persistent quand même la Submission sans attribution).
+ */
+async function readFunnelAttribution(): Promise<{
+  utm?: UtmParams;
+  referrerCity?: string;
+}> {
+  try {
+    const c = await cookies();
+    const utmRaw = c.get(UTM_COOKIE_NAME)?.value;
+    const referrerCityRaw = c.get(REFERRER_CITY_COOKIE_NAME)?.value;
+    const utm = utmRaw ? readUtmCookie(utmRaw) : undefined;
+    const out: { utm?: UtmParams; referrerCity?: string } = {};
+    if (utm && Object.keys(utm).length > 0) out.utm = utm;
+    if (referrerCityRaw && referrerCityRaw.length > 0 && referrerCityRaw.length <= 120) {
+      out.referrerCity = referrerCityRaw;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
 
 export type BookingState = { ok: true; bookingId: string } | { ok: false; error: string };
 export type Option48hState =
@@ -86,6 +116,8 @@ export async function createBookingAction(
   const companySizeRaw = (formData.get("companySize") as string | null) ?? null;
   const contactRoleRaw = (formData.get("contactRole") as string | null) ?? null;
   const notesRaw = (formData.get("notes") as string | null) ?? null;
+  // Sprint X.18 — attribution funnel (UTM cookie + pSEO referrerCity).
+  const funnelAttr = await readFunnelAttribution();
   const { booking } = await prisma.$transaction(async (tx) => {
     const submission = await tx.submission.create({
       data: {
@@ -107,7 +139,11 @@ export async function createBookingAction(
           ...(companyCityRaw ? { companyCity: companyCityRaw } : {}),
           ...(companySectorRaw ? { companySector: companySectorRaw } : {}),
           ...(notesRaw ? { notes: notesRaw } : {}),
-        },
+          // Sprint X.18 — funnel attribution (UTM cookie + pSEO referrerCity).
+          ...(funnelAttr.utm || funnelAttr.referrerCity
+            ? { funnel: funnelAttr as unknown as object }
+            : {}),
+        } as object,
         ipAddress: ip,
         userAgent,
       },
@@ -121,6 +157,20 @@ export async function createBookingAction(
         locale,
         pricePaidCents,
         participantsTier,
+        // Sprint X.4 refactor V1 — pré-réservation deposit-gated.
+        // L'admin poursuit le flow via admin-actions (cadrage / contract).
+        status: "option_pending",
+        originPath: "direct",
+      },
+    });
+    // Audit trail state machine (idempotent — UNIQUE bookingId/toStatus/trigger).
+    await tx.bookingTransition.create({
+      data: {
+        bookingId: b.id,
+        fromStatus: "draft",
+        toStatus: "option_pending",
+        trigger: "visitor.create_booking",
+        triggeredBy: "user",
       },
     });
     return { submission, booking: b };
@@ -189,6 +239,10 @@ export async function postOption48hAction(
   const expiresAt = new Date(Date.now() + 48 * 3600 * 1000);
 
   try {
+    // Sprint X.5 — cap multi-options (ADR 0017). Plusieurs visiteurs peuvent
+    // poser une option 48h sur le même slot jusqu'à cap (défaut 3). L'admin
+    // choisit ensuite laquelle valider ; les autres deviennent lost_other_won.
+    const cap = getMaxConcurrentOptionsPerSlot();
     // Sprint 15 fix Fork 3 W4-3 : on inclut slotDate dans le SELECT verrou
     // pour eviter un round-trip post-tx (et pour resilience si suppression).
     const result = await prisma.$transaction(async (tx) => {
@@ -203,11 +257,23 @@ export async function postOption48hAction(
       if (!slot) {
         throw new Error("slot_unavailable");
       }
+      // Slots terminaux (booked, blocked) refusés. Reserved = cap déjà atteint.
       if (slot.status !== "available") {
         throw new Error("slot_taken");
       }
 
-      // Cree l'option + flip slot.status='reserved' atomiquement
+      // Compte les options actives concurrentes (cap multi-options).
+      const activeCount = await countActiveOptionsForSlot(tx, parsed.data.slotId);
+      if (activeCount >= cap) {
+        // État incohérent (slot encore "available" mais cap atteint) → on
+        // force le flip pour cohérence future + reject ce visiteur.
+        await tx.calendarSlot.update({
+          where: { id: parsed.data.slotId },
+          data: { status: "reserved" },
+        });
+        throw new Error("slot_taken");
+      }
+
       const option = await tx.bookingOption.create({
         data: {
           slotId: parsed.data.slotId,
@@ -223,15 +289,29 @@ export async function postOption48hAction(
           expiresAt,
         },
       });
-      await tx.calendarSlot.update({
-        where: { id: parsed.data.slotId },
-        data: {
-          status: "reserved",
-          displaySector: consentDisplay ? parsed.data.companySector : null,
-          interventionType: interventionTypeEnum,
-          participantsCount: parsed.data.participantsCount,
-        },
-      });
+
+      // Premier option : on enrichit le slot avec sector/intervention/count.
+      // Options suivantes : on ne touche pas (affichage = première société
+      // qui a posé l'option, V1 simple). Admin UI X.9 affichera toutes les
+      // options concurrentes.
+      const isFirstOption = activeCount === 0;
+      const reachedCap = activeCount + 1 >= cap;
+      if (isFirstOption) {
+        await tx.calendarSlot.update({
+          where: { id: parsed.data.slotId },
+          data: {
+            ...(reachedCap ? { status: "reserved" } : {}),
+            displaySector: consentDisplay ? parsed.data.companySector : null,
+            interventionType: interventionTypeEnum,
+            participantsCount: parsed.data.participantsCount,
+          },
+        });
+      } else if (reachedCap) {
+        await tx.calendarSlot.update({
+          where: { id: parsed.data.slotId },
+          data: { status: "reserved" },
+        });
+      }
       return { option, slotDate: slot.slot_date };
     });
 

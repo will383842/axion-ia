@@ -21,7 +21,30 @@ export type EmailJobName =
   | "implementation-confirmed"
   | "newsletter-confirm-optin"
   | "contact-confirmed"
-  | "gdpr-export-link";
+  | "gdpr-export-link"
+  // Sprint X.5bis — parcours B (formulaire devis qualifié)
+  | "quote-request-received"
+  // Sprint X.13 (Booking V1) — paiements Stripe Checkout
+  | "payment-link"
+  | "payment-receipt"
+  | "payment-failed"
+  // Sprint X.13 — clic Will 2 (X.4 validateBookingOnCalendarAction)
+  | "booking-validated-on-calendar"
+  // Sprint X.13 — D61 pause/reprise
+  | "booking-paused-confirmation"
+  | "booking-resumed-notification"
+  // Sprint X.13 — A23 force majeure
+  | "force-majeure-notice"
+  // Sprint X.6 — cadrage manual_external
+  | "cadrage-scheduled"
+  | "cadrage-declined"
+  // Sprint X.7 — devis semi-auto
+  | "quote-sent"
+  | "quote-signed"
+  | "quote-declined"
+  // Sprint X.15 — self-service client (magic-link)
+  | "cancellation-confirmed-by-user"
+  | "refund-issued";
 
 export interface EmailJobData {
   template: EmailJobName;

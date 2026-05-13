@@ -176,3 +176,50 @@ export const option48hSchema = z.object({
   }),
 });
 export type Option48hInput = z.infer<typeof option48hSchema>;
+
+// ============================================================
+// Sprint X.5bis — Parcours B (demande devis qualifiée)
+// ============================================================
+
+/**
+ * Form qualifié 10 champs. AUCUN slot calendrier réservé (D45).
+ * Submission.type='quote_request', status='new' → pipeline qualifying → negotiating
+ * → converted | lost.
+ * Cf. 04-PLAN-EXECUTION Sprint X.5bis.
+ */
+export const quoteRequestSchema = z.object({
+  // -- Entreprise
+  companyName: z.string().min(2, "Raison sociale requise.").max(255),
+  companySize: z.enum(["tpe", "pme", "eti", "grande_entreprise"], {
+    errorMap: () => ({ message: "Taille INSEE requise." }),
+  }),
+  companySector: z.string().min(2, "Secteur requis.").max(100),
+  // -- Contact
+  contactName: required,
+  contactEmail: email,
+  contactPhone: z.string().min(6, "Téléphone requis.").max(30),
+  // -- Format souhaité (slug interventions-taxonomy.ts, optionnel pour parcours B
+  // typique où le client demande une variante sur-mesure pas catalogue).
+  interventionSlug: z.string().max(80).optional(),
+  // -- Contexte business (validation min 200 chars - éviter spam et qualifier)
+  contextBusiness: z
+    .string()
+    .min(200, "Décrivez votre contexte (au moins 200 caractères).")
+    .max(5000, "5 000 caractères maximum."),
+  // -- Budget pressenti (optionnel)
+  budgetIndicative: z.string().max(80).optional(),
+  // -- Timing en semaines
+  timingWeeks: z
+    .union([z.literal("0-4"), z.literal("4-8"), z.literal("8-12"), z.literal("12+")])
+    .optional(),
+  // -- Lieu
+  city: z.string().min(2, "Ville requise.").max(120),
+  willingToTravel: z.coerce.boolean().optional(),
+  // -- Effectif estimé
+  participantsEstimate: z.coerce.number().int().min(1).max(5000).optional(),
+  // -- Consentements
+  consentTerms: z.literal(true, { errorMap: () => ({ message: "Acceptation CGV requise." }) }),
+  consentGdpr: z.literal(true, { errorMap: () => ({ message: "Consentement RGPD requis." }) }),
+});
+
+export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;

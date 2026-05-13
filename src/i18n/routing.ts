@@ -141,6 +141,28 @@ export const routing = defineRouting({
     },
     "/audit/demande": { fr: "/audit/demande", en: "/audit/request" },
 
+    // Sprint X.5bis (Booking V1) — parcours B « devis qualifié » dédié pour
+    // les formats > 5k€ HT / IA Custom / packs annuels (D44).
+    "/demande-devis": { fr: "/demande-devis", en: "/request-quote" },
+    "/demande-devis/confirmation": {
+      fr: "/demande-devis/confirmation",
+      en: "/request-quote/confirmation",
+    },
+
+    // Sprint X.15 (Booking V1) — self-service client via magic-link HMAC.
+    // Slug `[token]` = token signé. Pages publiques minimalistes (noindex).
+    "/booking/[token]/cancel": {
+      fr: "/booking/[token]/cancel",
+      en: "/booking/[token]/cancel",
+    },
+    "/booking/[token]/reschedule": {
+      fr: "/booking/[token]/reschedule",
+      en: "/booking/[token]/reschedule",
+    },
+
+    // Sprint X.17 (Booking V1) — page transparence sous-processeurs RGPD.
+    "/sous-processeurs": { fr: "/sous-processeurs", en: "/subprocessors" },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {

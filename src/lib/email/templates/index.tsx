@@ -28,6 +28,33 @@ import {
 } from "./newsletter-confirm-optin";
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
+import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
+import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
+import { PaymentReceiptEmail, paymentReceiptSubject } from "./payment-receipt";
+import { PaymentFailedEmail, paymentFailedSubject } from "./payment-failed";
+import {
+  BookingValidatedOnCalendarEmail,
+  bookingValidatedOnCalendarSubject,
+} from "./booking-validated-on-calendar";
+import {
+  BookingPausedConfirmationEmail,
+  bookingPausedConfirmationSubject,
+} from "./booking-paused-confirmation";
+import {
+  BookingResumedNotificationEmail,
+  bookingResumedNotificationSubject,
+} from "./booking-resumed-notification";
+import { ForceMajeureNoticeEmail, forceMajeureNoticeSubject } from "./force-majeure-notice";
+import { CadrageScheduledEmail, cadrageScheduledSubject } from "./cadrage-scheduled";
+import { CadrageDeclinedEmail, cadrageDeclinedSubject } from "./cadrage-declined";
+import { QuoteSentEmail, quoteSentSubject } from "./quote-sent";
+import { QuoteSignedEmail, quoteSignedSubject } from "./quote-signed";
+import { QuoteDeclinedEmail, quoteDeclinedSubject } from "./quote-declined";
+import {
+  CancellationConfirmedByUserEmail,
+  cancellationConfirmedByUserSubject,
+} from "./cancellation-confirmed-by-user";
+import { RefundIssuedEmail, refundIssuedSubject } from "./refund-issued";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -84,6 +111,66 @@ const TEMPLATES: TemplateMap = {
   "gdpr-export-link": {
     subject: gdprExportLinkSubject,
     component: GdprExportLinkEmail,
+  },
+  "quote-request-received": {
+    subject: quoteRequestReceivedSubject,
+    component: QuoteRequestReceivedEmail,
+  },
+  "payment-link": {
+    subject: paymentLinkSubject,
+    component: PaymentLinkEmail,
+  },
+  "payment-receipt": {
+    subject: paymentReceiptSubject,
+    component: PaymentReceiptEmail,
+  },
+  "payment-failed": {
+    subject: paymentFailedSubject,
+    component: PaymentFailedEmail,
+  },
+  "booking-validated-on-calendar": {
+    subject: bookingValidatedOnCalendarSubject,
+    component: BookingValidatedOnCalendarEmail,
+  },
+  "booking-paused-confirmation": {
+    subject: bookingPausedConfirmationSubject,
+    component: BookingPausedConfirmationEmail,
+  },
+  "booking-resumed-notification": {
+    subject: bookingResumedNotificationSubject,
+    component: BookingResumedNotificationEmail,
+  },
+  "force-majeure-notice": {
+    subject: forceMajeureNoticeSubject,
+    component: ForceMajeureNoticeEmail,
+  },
+  "cadrage-scheduled": {
+    subject: cadrageScheduledSubject,
+    component: CadrageScheduledEmail,
+  },
+  "cadrage-declined": {
+    subject: cadrageDeclinedSubject,
+    component: CadrageDeclinedEmail,
+  },
+  "quote-sent": {
+    subject: quoteSentSubject,
+    component: QuoteSentEmail,
+  },
+  "quote-signed": {
+    subject: quoteSignedSubject,
+    component: QuoteSignedEmail,
+  },
+  "quote-declined": {
+    subject: quoteDeclinedSubject,
+    component: QuoteDeclinedEmail,
+  },
+  "cancellation-confirmed-by-user": {
+    subject: cancellationConfirmedByUserSubject,
+    component: CancellationConfirmedByUserEmail,
+  },
+  "refund-issued": {
+    subject: refundIssuedSubject,
+    component: RefundIssuedEmail,
   },
 };
 

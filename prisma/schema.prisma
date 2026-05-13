@@ -47,13 +47,22 @@ enum SubmissionType {
   implementation
   intervention
   contact
+  /// Sprint X.1 (D44) — parcours B « devis qualifié » (formulaire `/demande-devis`).
+  quote_request
 }
 
 enum SubmissionStatus {
+  /// Statut hérité V0 (générique). Conservé pour audit/implementation/intervention/contact.
   new
   in_progress
   processed
   archived
+  /// Sprint X.1 (D44) — pipeline parcours B (quote_request) :
+  /// new → qualifying → negotiating → converted | lost | archived.
+  qualifying
+  negotiating
+  converted
+  lost
 }
 
 // Aligne sur les slugs UI (src/content/interventions.ts InterventionSlug).
@@ -75,25 +84,122 @@ enum InterventionType {
   atelier_ia_cible
 }
 
+/// Sprint X.1 — state machine V1 deposit-validation-gated.
+/// Sources : `_AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/agent-03-state-machine.md`
+/// + `03-ARCHITECTURE-CIBLE.md §5.1.2` + ADR 0018.
+/// 4 valeurs V0 (pending/confirmed/cancelled/postponed) -> ~27 valeurs V1.
+/// Les valeurs V0 sont conservées (compat existant) ; migration data via script
+/// V0->V1 Sprint X.4 (cf. ADR 0020).
 enum BookingStatus {
+  // ---------- V0 legacy (compat existant, mappées par migration) ----------
   pending
-  confirmed
-  cancelled
   postponed
+  // ---------- V1 — parcours visiteur (avant validation Will) ------------
+  /// État UI uniquement (visiteur en train de remplir). Présent dans l'enum
+  /// pour cohérence types TS ; jamais persisté DB.
+  draft
+  /// Demande d'option posée par visiteur, en attente validation Will.
+  /// Cap multi-options simultanées (cf. ADR 0017) — défaut 3.
+  option_pending
+  /// Une AUTRE option du même slot a été validée par Will -> celle-ci perd.
+  lost_other_won
+  /// Refusée par Will (raison optionnelle).
+  refused
+  /// Option expirée (durée écoulée sans validation Will). Rare car cap haute.
+  expired_no_response
+  // ---------- V1 — cadrage ---------------------------------------------
+  /// Call de cadrage planifié (lien visio manuel envoyé).
+  cadrage_scheduled
+  /// Call tenu (validationDecision saisie).
+  cadrage_held
+  /// validationDecision=not_pertinent (terminal, refund éventuel).
+  cadrage_declined
+  // ---------- V1 — devis (Will-A semi-auto) ----------------------------
+  /// Marqueur : devis semi-auto à émettre avant contrat (admin).
+  quote_required
+  /// Devis DocuSeal envoyé (signature en attente).
+  quote_sent
+  /// Devis signé.
+  quote_signed
+  /// Devis refusé / expiré.
+  quote_declined
+  // ---------- V1 — contrat + acompte (D49 + D50 + D51) -----------------
+  /// Contrat généré auto, prêt en preview admin (D55).
+  contract_pending
+  /// Contrat DocuSeal envoyé + Stripe Checkout Session active
+  /// (fusion ex-`contract_sent` + `deposit_pending`).
+  contract_payment_sent
+  /// Contrat signé DocuSeal — PAS bloquant pour la suite (D50).
+  contract_signed
+  /// D51 — acompte reçu (Stripe webhook OU virement manuel admin) ;
+  /// en attente du clic Will « Valider sur le calendrier » (D49).
+  awaiting_admin_validation
+  // ---------- V1 — confirmé + cycle de vie -----------------------------
+  /// Après clic Will « Valider sur le calendrier » (D49) — slot rouge,
+  /// intervention verrouillée.
+  confirmed
+  /// D61 — projet reporté à date ultérieure, slots libérés pendant la pause.
+  paused
+  /// Cron J-7 : rappel + facture solde émise si échéancier prévoit.
+  reminded_j7
+  /// Jour J (cron 00:00 TZ Europe/Paris).
+  in_progress
+  /// Post-intervention (cron OR admin manuel).
+  completed
+  /// Facture solde émise (si pas déjà émise en reminded_j7).
+  invoiced_balance
+  /// D59 — 1+ échéance(s) > 30j retard, escalade en cours
+  /// (cron `installment-overdue-escalation`).
+  installment_overdue
+  /// Solde réglé (terminal succès).
+  paid_balance
+  /// D59 — état terminal recouvrement hors-app par Will après escalade
+  /// J+45 sans paiement.
+  disputed
+  /// Cron retention >= 12 mois.
+  archived
+  // ---------- V1 — terminaux annulation/refund -------------------------
+  /// Annulation self-service magic-link (cancelled remplacé par
+  /// cancelled_by_user pour clarté).
+  cancelled
+  cancelled_by_user
+  cancelled_by_admin
+  /// J+1 admin, acompte conservé + invoice solde.
+  no_show
+  /// Refund total + reschedule prioritaire.
+  force_majeure
+  /// CGV 7-2j (50%).
+  refunded_partial
+  /// CGV >7j (100%) ou force majeure ou cadrage_declined.
+  refunded_full
 }
 
 enum CalendarSlotStatus {
+  /// Sprint X.1 (Will-B Option B2 / ADR 0017) — pas d'extension enum V1.
+  /// Le statut « visible visiteur » (pré-réservé / validé / cap atteint)
+  /// est dérivé en UI depuis (slot.status, count(activeOptions), activeBooking).
   available
   reserved
   blocked
 }
 
+/// Sprint X.1 — Statuts option étendus (cf. 03-ARCH §5.1.4).
+/// Les valeurs V0 (`pending`/`confirmed`/`refused`/`expired`/`converted`)
+/// sont conservées pour compat, et complétées par les sémantiques V1.
 enum BookingOptionStatus {
+  // V0 legacy
   pending
   confirmed
   refused
   expired
   converted
+  // V1 — sémantique explicite (cf. 03-ARCH §5.1.2)
+  pending_validation
+  validated
+  lost_other_won
+  expired_no_response
+  /// V1.5+ (option Will-B Option A immédiat — non utilisé V1, hook).
+  awaiting_winner_payment
 }
 
 enum PublishStatus {
@@ -160,40 +266,246 @@ enum ModuleKind {
 }
 
 // ============================================================
+// ENUMS — Sprint X.1 booking V1 (deposit-validation-gated)
+// ============================================================
+// Sources : `_AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/03-ARCHITECTURE-CIBLE.md`
+// §5.1.2 + ADR 0012 à 0020. EUR-only V1, TVA-agnostique FR/EE (ADR 0015).
+
+/// Sprint X.1 — provider Payment. `stripe` pour Checkout, `manual_*` pour
+/// saisie admin (virement, chèque, espèces) hors Stripe.
+enum PaymentProvider {
+  stripe
+  manual_wire
+  manual_check
+  manual_cash
+}
+
+/// Sprint X.1 — type Payment (échéancier déposé V1 ; pas de subscription).
+enum PaymentType {
+  deposit
+  installment_2
+  installment_3
+  balance
+  refund
+}
+
+/// Sprint X.1 — statut Payment. `cancelled` ajouté pour Checkout abandonné.
+enum PaymentStatus {
+  pending
+  processing
+  succeeded
+  failed
+  refunded
+  cancelled
+}
+
+/// Sprint X.1 — type Invoice (cf. ADR 0015 + Agent 11 P0-4/P0-5/P1-6).
+enum InvoiceType {
+  deposit
+  balance
+  installment
+  full
+  credit_note
+}
+
+/// Sprint X.1 — statut Invoice. `void` = annulée (avoir requis si déjà émise).
+enum InvoiceStatus {
+  draft
+  issued
+  paid
+  partially_paid
+  overdue
+  cancelled
+  void
+  refunded
+}
+
+/// Sprint X.1 — statut Refund (Stripe ou manuel).
+enum RefundStatus {
+  pending
+  processing
+  succeeded
+  failed
+  cancelled
+}
+
+/// Sprint X.1 — raison Refund (saisie admin obligatoire pour audit RGPD).
+enum RefundReason {
+  client_cancellation
+  force_majeure
+  admin_decision
+  dispute
+  cgv_window
+  duplicate
+  fraudulent
+  other
+}
+
+/// Sprint X.1 — statut Quote semi-auto (Will-A, cf. §5.11.1).
+enum QuoteStatus {
+  draft
+  sent
+  accepted
+  declined
+  expired
+}
+
+/// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted V1).
+/// `physical_signed` = signature papier scannée et uploadée par Will.
+enum SignatureProvider {
+  docuseal
+  manual_upload
+  physical_signed
+}
+
+/// Sprint X.1 — statut ContractDocument.
+/// `cancelled_admin` (D62) = annulé par Will avant signature pour réémission v2.
+enum ContractStatus {
+  draft
+  sent
+  signed
+  declined
+  expired
+  cancelled_admin
+}
+
+/// Sprint X.1 — statut cadrage. `missed` + `rescheduled` couvrent les cas
+/// pratiques (cf. §5.1.13).
+enum CadrageStatus {
+  scheduled
+  held
+  missed
+  rescheduled
+  cancelled
+  no_show
+}
+
+/// Sprint X.1 — décision de pertinence à l'issue du cadrage (D40+).
+enum CadrageDecision {
+  pertinent
+  not_pertinent
+  reschedule
+}
+
+/// Alias rétro-compat — `ValidationDecision` est le nom utilisé dans 03-ARCH
+/// §5.1.13. Mappé sur le même enum logique côté code (helper TS Sprint X.4).
+enum ValidationDecision {
+  pertinent
+  not_pertinent
+  reschedule
+}
+
+/// Sprint X.1 — mode de gestion frais accessoires (cf. §5.13).
+enum FeesMode {
+  real_costs
+  flat_rate_by_zone
+  included
+}
+
+/// Sprint X.1 — payeur facturé (hook V2+ OPCO/tiers).
+/// V1 : seul `client` est exposé UI.
+enum PayerType {
+  client
+  opco_v2
+  autre_v2
+  /// Variantes courtes (rétro-compat 03-ARCH §5.1.2 — `opco` / `autre`).
+  opco
+  autre
+}
+
+/// Sprint X.1 (D44) — parcours visiteur d'origine.
+/// `direct` = calendrier `/reserver` (parcours A).
+/// `quote_negotiation` = formulaire `/demande-devis` qualifié hors-app (parcours B).
+enum BookingOriginPath {
+  direct
+  quote_negotiation
+}
+
+/// Sprint X.1 — fenêtre d'annulation CGV (grille SSOT D40).
+enum CancellationWindow {
+  more_than_15d
+  between_15d_and_2d
+  less_than_2d
+  force_majeure
+}
+
+/// Sprint X.1 — origine de la transition d'état (audit BookingTransition).
+enum TransitionTriggeredBy {
+  admin
+  cron
+  webhook
+  system
+  client
+  user
+}
+
+/// Alias rétro-compat — `ActorType` utilisé dans 03-ARCH §5.1.20.
+enum ActorType {
+  admin
+  cron
+  webhook
+  user
+  system
+}
+
+/// Sprint X.1 — taxonomie SiteSetting (filtre admin).
+enum SiteSettingCategory {
+  booking
+  payment
+  signature
+  email
+  general
+  pricing
+  legal
+}
+
+/// Sprint X.1 — classification INSEE 4 tailles (snapshot Booking + filtres).
+enum CompanySize {
+  TPE
+  PME
+  ETI
+  GRANDE_ENTREPRISE
+}
+
+// ============================================================
 // 1. submissions
 // ============================================================
 
 model Submission {
-  id                  String           @id @default(uuid()) @db.Uuid
-  type                SubmissionType
-  status              SubmissionStatus @default(new)
-  locale              Locale           @default(fr)
+  id                 String           @id @default(uuid()) @db.Uuid
+  type               SubmissionType
+  status             SubmissionStatus @default(new)
+  locale             Locale           @default(fr)
   // Identité société
-  companyName         String           @map("company_name")  @db.VarChar(255)
-  registrationNumber  String?          @map("registration_number") @db.VarChar(40)
-  sector              String?          @db.VarChar(100)
-  address             String?          @db.Text
-  employeesCount      String?          @map("employees_count") @db.VarChar(20)
+  companyName        String           @map("company_name") @db.VarChar(255)
+  registrationNumber String?          @map("registration_number") @db.VarChar(40)
+  sector             String?          @db.VarChar(100)
+  address            String?          @db.Text
+  employeesCount     String?          @map("employees_count") @db.VarChar(20)
   // Contact
-  contactName         String           @map("contact_name") @db.VarChar(255)
-  contactRole         String?          @map("contact_role") @db.VarChar(100)
-  contactEmail        String           @map("contact_email") @db.Citext
-  contactPhone        String?          @map("contact_phone") @db.VarChar(30)
+  contactName        String           @map("contact_name") @db.VarChar(255)
+  contactRole        String?          @map("contact_role") @db.VarChar(100)
+  contactEmail       String           @map("contact_email") @db.Citext
+  contactPhone       String?          @map("contact_phone") @db.VarChar(30)
   // Payload form
-  details             Json
+  details            Json
   // Admin workflow
-  internalNotes       String?          @map("internal_notes") @db.Text
-  assignedTo          String?          @map("assigned_to")    @db.VarChar(100)
+  internalNotes      String?          @map("internal_notes") @db.Text
+  assignedTo         String?          @map("assigned_to") @db.VarChar(100)
   // Anti-spam / source
-  ipAddress           String?          @map("ip_address")     @db.VarChar(64)
-  userAgent           String?          @map("user_agent")     @db.Text
-  referer             String?          @db.Text
-  turnstileScore      Decimal?         @map("turnstile_score") @db.Decimal(4, 3)
+  ipAddress          String?          @map("ip_address") @db.VarChar(64)
+  userAgent          String?          @map("user_agent") @db.Text
+  referer            String?          @db.Text
+  turnstileScore     Decimal?         @map("turnstile_score") @db.Decimal(4, 3)
   // Timestamps
-  submittedAt         DateTime         @default(now()) @map("submitted_at")
-  updatedAt           DateTime         @updatedAt      @map("updated_at")
+  submittedAt        DateTime         @default(now()) @map("submitted_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
 
-  bookings            Booking[]
+  bookings               Booking[]
+  // Sprint X.1 (D44) — parcours B : Submission qualifiée -> Booking via
+  // `createBookingFromSubmissionAction`. Relation distincte de `bookings`
+  // (qui matche le legacy `submissionId`).
+  bookingsFromSubmission Booking[] @relation("BookingFromSubmission")
 
   @@index([type])
   @@index([status])
@@ -208,31 +520,130 @@ model Submission {
 // ============================================================
 
 model Booking {
-  id                 String           @id @default(uuid()) @db.Uuid
-  interventionType   InterventionType @map("intervention_type")
-  bookingDate        DateTime         @map("booking_date")
-  participantsCount  Int              @map("participants_count")
-  // Tarification (Sprint 14.10.x — pricing.ts SSOT)
-  participantsTier   String?          @map("participants_tier") @db.VarChar(40)
-  pricePaidCents     Int?             @map("price_paid_cents")
+  id                String           @id @default(uuid()) @db.Uuid
+  interventionType  InterventionType @map("intervention_type")
+  bookingDate       DateTime         @map("booking_date")
+  participantsCount Int              @map("participants_count")
+  // Tarification (Sprint 14.10.x — pricing.ts SSOT) — V0 conservé compat,
+  // Sprint X.1 ajoute snapshot `basePriceHtCents` + frais accessoires (cf. infra).
+  participantsTier  String?          @map("participants_tier") @db.VarChar(40)
+  pricePaidCents    Int?             @map("price_paid_cents")
   // Locale (langue formulaire)
-  locale             Locale           @default(fr)
-  // Liens
-  submissionId       String?          @map("submission_id") @db.Uuid
-  submission         Submission?      @relation(fields: [submissionId], references: [id], onDelete: SetNull)
-  slotId             String?          @unique @map("slot_id") @db.Uuid
-  slot               CalendarSlot?    @relation(fields: [slotId], references: [id], onDelete: SetNull)
+  locale            Locale           @default(fr)
+  // Liens existants
+  submissionId      String?          @map("submission_id") @db.Uuid
+  submission        Submission?      @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+  slotId            String?          @unique @map("slot_id") @db.Uuid
+  slot              CalendarSlot?    @relation(fields: [slotId], references: [id], onDelete: SetNull)
   // Calendrier externe (legacy Cal.com — peut rester null après migration calendrier maison)
-  calendarEventId    String?          @map("calendar_event_id") @db.VarChar(255)
-  status             BookingStatus    @default(pending)
-  internalNotes      String?          @map("internal_notes") @db.Text
-  createdAt          DateTime         @default(now()) @map("created_at")
-  updatedAt          DateTime         @updatedAt      @map("updated_at")
+  calendarEventId   String?          @map("calendar_event_id") @db.VarChar(255)
+  status            BookingStatus    @default(pending)
+  internalNotes     String?          @map("internal_notes") @db.Text
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  // ============================================================
+  // Sprint X.1 — Extensions Booking V1 (22 colonnes)
+  // Source : `_AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/03-ARCHITECTURE-CIBLE.md` §5.1.3
+  // ============================================================
+
+  // --- Pricing snapshot (PricingConfig snapshot au moment de la pré-réservation)
+  /// Sprint X.1 — base de calcul snapshot depuis `PricingConfig`.
+  basePriceHtCents      Int?     @map("base_price_ht_cents")
+  /// Sprint X.1 — frais déplacement (mode real_costs).
+  travelFeeCents        Int      @default(0) @map("travel_fee_cents")
+  accommodationFeeCents Int      @default(0) @map("accommodation_fee_cents")
+  mealFeeCents          Int      @default(0) @map("meal_fee_cents")
+  additionalFeesCents   Int      @default(0) @map("additional_fees_cents")
+  additionalFeesNotes   String?  @map("additional_fees_notes") @db.Text
+  /// Sprint X.1 — mode frais accessoires (snapshot depuis PricingConfig).
+  feesMode              FeesMode @default(real_costs) @map("fees_mode")
+
+  // --- Acompte + solde (deposit-validation-gated)
+  /// Sprint X.1 — montant acompte attendu (snapshot depuis PricingConfig).
+  depositAmountCents Int?      @map("deposit_amount_cents")
+  depositPaidAt      DateTime? @map("deposit_paid_at")
+  /// Sprint X.1 — montant solde attendu.
+  balanceAmountCents Int?      @map("balance_amount_cents")
+  balancePaidAt      DateTime? @map("balance_paid_at")
+
+  // --- Devis / NDA / contrat
+  /// Sprint X.1 — dérivé `PricingConfig.quoteRequired` (snapshot).
+  quoteRequired Boolean @default(false) @map("quote_required")
+  ndaRequired   Boolean @default(false) @map("nda_required")
+
+  // --- Parcours d'origine (D44, parcours A/B)
+  /// Sprint X.1 (D44) — parcours visiteur (direct calendrier / devis qualifié).
+  originPath       BookingOriginPath @default(direct) @map("origin_path")
+  /// Sprint X.1 (D44) — FK -> Submission (parcours B uniquement). NULL parcours A.
+  fromSubmissionId String?           @map("from_submission_id") @db.Uuid
+  fromSubmission   Submission?       @relation("BookingFromSubmission", fields: [fromSubmissionId], references: [id], onDelete: SetNull)
+
+  // --- Liens optionnels vers entités V1
+  /// Sprint X.1 — FK -> CadrageMeeting (1-1 logique, 1 cadrage par booking).
+  cadrageMeetingId         String?                 @map("cadrage_meeting_id") @db.Uuid
+  cadrageMeeting           CadrageMeeting?         @relation(fields: [cadrageMeetingId], references: [id], onDelete: SetNull)
+  /// Sprint X.1 — FK -> Quote actif (semi-auto Will-A).
+  quoteId                  String?                 @map("quote_id") @db.Uuid
+  quote                    Quote?                  @relation("BookingActiveQuote", fields: [quoteId], references: [id], onDelete: SetNull)
+  /// Sprint X.1 — FK -> ContractDocument actif (DocuSeal V1).
+  contractDocumentId       String?                 @map("contract_document_id") @db.Uuid
+  contractDocument         ContractDocument?       @relation("BookingActiveContract", fields: [contractDocumentId], references: [id], onDelete: SetNull)
+  /// Sprint X.1 — FK -> PaymentScheduleProfile (snapshot override possible).
+  paymentScheduleProfileId String?                 @map("payment_schedule_profile_id") @db.Uuid
+  paymentScheduleProfile   PaymentScheduleProfile? @relation(fields: [paymentScheduleProfileId], references: [id], onDelete: SetNull)
+
+  // --- Géo-awareness (OSM Nominatim + buffer trajet, D24)
+  /// Sprint X.1 — ville société normalisée pour géocodage.
+  companyCityNormalized String?      @map("company_city_normalized") @db.VarChar(120)
+  companyLat            Decimal?     @map("company_lat") @db.Decimal(9, 6)
+  companyLng            Decimal?     @map("company_lng") @db.Decimal(9, 6)
+  /// Sprint X.1 (D24) — buffer trajet auto (0/1/2 jours selon distance).
+  travelBufferDays      Float        @default(0) @map("travel_buffer_days")
+  /// Sprint X.1 — classification INSEE (snapshot depuis Submission.details).
+  companySize           CompanySize? @map("company_size")
+
+  // --- Sentinels cycle de vie
+  confirmedAt        DateTime?           @map("confirmed_at")
+  completedAt        DateTime?           @map("completed_at")
+  cancelledAt        DateTime?           @map("cancelled_at")
+  cancellationReason String?             @map("cancellation_reason") @db.VarChar(500)
+  cancellationWindow CancellationWindow? @map("cancellation_window")
+  cancelledByUserId  String?             @map("cancelled_by_user_id") @db.Uuid
+  cancelledByUser    AdminUser?          @relation("BookingCancelledBy", fields: [cancelledByUserId], references: [id], onDelete: SetNull)
+  forceMajeureNotes  String?             @map("force_majeure_notes") @db.Text
+
+  // --- Pause (D61)
+  /// Sprint X.1 (D61) — sentinel activation pause + slot libéré pendant la pause.
+  pausedAt    DateTime? @map("paused_at")
+  pausedUntil DateTime? @map("paused_until")
+  pauseReason String?   @map("pause_reason") @db.VarChar(500)
+
+  // --- Overrides + V2 hooks
+  /// Sprint X.1 (D64) — overrides JSON par booking (modes manuels togglables).
+  overrides         Json?   @map("overrides")
+  /// HOOK V2+ Qualiopi — pas de table V1, juste un champ FK nullable préparé.
+  trainingSessionId String? @map("training_session_id") @db.Uuid
+
+  // ============================================================
+  // Sprint X.1 — relations inverses V1
+  // ============================================================
+  payments          Payment[]
+  invoices          Invoice[]
+  contractDocuments ContractDocument[]      @relation("BookingContractDocuments")
+  quotes            Quote[]                 @relation("BookingQuotes")
+  transitions       BookingTransition[]
+  paymentSchedule   BookingPaymentSchedule?
 
   @@index([interventionType])
   @@index([bookingDate])
   @@index([status])
   @@index([locale])
+  @@index([originPath])
+  @@index([fromSubmissionId])
+  @@index([companyCityNormalized])
+  @@index([pausedUntil])
+  @@index([cancellationWindow])
   @@map("bookings")
 }
 
@@ -250,10 +661,10 @@ model CalendarSlot {
   showPublicly      Boolean            @default(true) @map("show_publicly")
   blockedReason     String?            @map("blocked_reason") @db.Text
   createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt      @map("updated_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
 
-  booking           Booking?
-  options           BookingOption[]
+  booking Booking?
+  options BookingOption[]
 
   @@unique([slotDate])
   @@index([status])
@@ -291,6 +702,8 @@ model BookingOption {
   @@index([slotId])
   @@index([status])
   @@index([expiresAt])
+  // Sprint X.1 — cap concurrent options par slot (cf. ADR 0017).
+  @@index([slotId, status])
   @@map("bookings_options")
 }
 
@@ -299,23 +712,23 @@ model BookingOption {
 // ============================================================
 
 model Article {
-  id              String              @id @default(uuid()) @db.Uuid
+  id              String        @id @default(uuid()) @db.Uuid
   // Champs structurels (mêmes pour toutes les langues)
-  authorId        String?             @map("author_id") @db.Uuid
-  author          Author?             @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  categoryId      String?             @map("category_id") @db.Uuid
-  category        Category?           @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  featuredImage   String?             @map("featured_image") @db.VarChar(512)
-  status          PublishStatus       @default(draft)
-  publishedAt     DateTime?           @map("published_at")
-  readingTime     Int?                @map("reading_time")
-  viewsCount      Int                 @default(0) @map("views_count")
-  commentsEnabled Boolean             @default(false) @map("comments_enabled")
-  createdAt       DateTime            @default(now()) @map("created_at")
-  updatedAt       DateTime            @updatedAt      @map("updated_at")
+  authorId        String?       @map("author_id") @db.Uuid
+  author          Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  categoryId      String?       @map("category_id") @db.Uuid
+  category        Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  featuredImage   String?       @map("featured_image") @db.VarChar(512)
+  status          PublishStatus @default(draft)
+  publishedAt     DateTime?     @map("published_at")
+  readingTime     Int?          @map("reading_time")
+  viewsCount      Int           @default(0) @map("views_count")
+  commentsEnabled Boolean       @default(false) @map("comments_enabled")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
 
-  translations    ArticleTranslation[]
-  tags            ArticleTagOnArticle[]
+  translations ArticleTranslation[]
+  tags         ArticleTagOnArticle[]
 
   @@index([status])
   @@index([publishedAt])
@@ -335,11 +748,11 @@ model ArticleTranslation {
   // RSS, AMP, AI summarisation). HTML reste source rendu, JSON/text derives.
   bodyJson        Json?    @map("body_json")
   bodyText        String?  @map("body_text") @db.Text
-  metaTitle       String?  @map("meta_title")       @db.VarChar(70)
+  metaTitle       String?  @map("meta_title") @db.VarChar(70)
   metaDescription String?  @map("meta_description") @db.VarChar(160)
   ogImage         String?  @map("og_image") @db.VarChar(512)
   createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt      @map("updated_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@unique([articleId, locale])
   @@unique([locale, slug])
@@ -348,24 +761,24 @@ model ArticleTranslation {
 }
 
 model ArticleTag {
-  id          String                @id @default(uuid()) @db.Uuid
-  slug        String                @unique @db.VarChar(120)
-  nameFr      String                @map("name_fr") @db.VarChar(120)
-  nameEn      String                @map("name_en") @db.VarChar(120)
-  descFr      String?               @map("desc_fr") @db.Text
-  descEn      String?               @map("desc_en") @db.Text
-  createdAt   DateTime              @default(now()) @map("created_at")
+  id        String   @id @default(uuid()) @db.Uuid
+  slug      String   @unique @db.VarChar(120)
+  nameFr    String   @map("name_fr") @db.VarChar(120)
+  nameEn    String   @map("name_en") @db.VarChar(120)
+  descFr    String?  @map("desc_fr") @db.Text
+  descEn    String?  @map("desc_en") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
 
-  articles    ArticleTagOnArticle[]
+  articles ArticleTagOnArticle[]
 
   @@map("article_tags")
 }
 
 model ArticleTagOnArticle {
   articleId String     @map("article_id") @db.Uuid
-  tagId     String     @map("tag_id")     @db.Uuid
+  tagId     String     @map("tag_id") @db.Uuid
   article   Article    @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  tag       ArticleTag @relation(fields: [tagId],     references: [id], onDelete: Cascade)
+  tag       ArticleTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([articleId, tagId])
   @@map("article_tags_on_articles")
@@ -376,18 +789,18 @@ model ArticleTagOnArticle {
 // ============================================================
 
 model Author {
-  id          String    @id @default(uuid()) @db.Uuid
-  slug        String    @unique @db.VarChar(120)
-  name        String    @db.VarChar(120)
-  email       String?   @db.Citext
-  avatarUrl   String?   @map("avatar_url") @db.VarChar(512)
-  bioFr       String?   @map("bio_fr") @db.Text
-  bioEn       String?   @map("bio_en") @db.Text
-  linkedinUrl String?   @map("linkedin_url") @db.VarChar(512)
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt      @map("updated_at")
+  id          String   @id @default(uuid()) @db.Uuid
+  slug        String   @unique @db.VarChar(120)
+  name        String   @db.VarChar(120)
+  email       String?  @db.Citext
+  avatarUrl   String?  @map("avatar_url") @db.VarChar(512)
+  bioFr       String?  @map("bio_fr") @db.Text
+  bioEn       String?  @map("bio_en") @db.Text
+  linkedinUrl String?  @map("linkedin_url") @db.VarChar(512)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  articles    Article[]
+  articles Article[]
 
   @@map("authors")
 }
@@ -400,7 +813,7 @@ model Testimonial {
   id              String            @id @default(uuid()) @db.Uuid
   slug            String            @unique @db.VarChar(160)
   firstName       String            @map("first_name") @db.VarChar(100)
-  lastName        String            @map("last_name")  @db.VarChar(100)
+  lastName        String            @map("last_name") @db.VarChar(100)
   role            String?           @db.VarChar(100)
   company         String?           @db.VarChar(255)
   sector          String?           @db.VarChar(100)
@@ -408,8 +821,8 @@ model Testimonial {
   // Quotes bilingues
   shortQuoteFr    String            @map("short_quote_fr") @db.Text
   shortQuoteEn    String            @map("short_quote_en") @db.Text
-  fullQuoteFr     String?           @map("full_quote_fr")  @db.Text
-  fullQuoteEn     String?           @map("full_quote_en")  @db.Text
+  fullQuoteFr     String?           @map("full_quote_fr") @db.Text
+  fullQuoteEn     String?           @map("full_quote_en") @db.Text
   rating          Int?
   photoUrl        String?           @map("photo_url") @db.VarChar(512)
   videoUrl        String?           @map("video_url") @db.VarChar(512)
@@ -419,9 +832,9 @@ model Testimonial {
   displayOrder    Int               @default(0) @map("display_order")
   status          TestimonialStatus @default(pending)
   createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt      @map("updated_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
 
-  caseStudies     CaseStudy[]
+  caseStudies CaseStudy[]
 
   @@index([status])
   @@index([sector])
@@ -433,23 +846,23 @@ model Testimonial {
 // ============================================================
 
 model CaseStudy {
-  id                  String                   @id @default(uuid()) @db.Uuid
+  id                String        @id @default(uuid()) @db.Uuid
   // Structurel (commun aux 2 langues)
-  sector              String                   @db.VarChar(100)
-  companySizeRange    String                   @map("company_size_range") @db.VarChar(40)
-  region              String?                  @db.VarChar(100)
-  modulesUsed         Json                     @map("modules_used")
-  resultsQuantified   Json                     @map("results_quantified")
-  durationWeeks       Int?                     @map("duration_weeks")
-  roiWeeks            Int?                     @map("roi_weeks")
-  testimonialId       String?                  @map("testimonial_id") @db.Uuid
-  testimonial         Testimonial?             @relation(fields: [testimonialId], references: [id], onDelete: SetNull)
-  status              PublishStatus            @default(draft)
-  publishedAt         DateTime?                @map("published_at")
-  createdAt           DateTime                 @default(now()) @map("created_at")
-  updatedAt           DateTime                 @updatedAt      @map("updated_at")
+  sector            String        @db.VarChar(100)
+  companySizeRange  String        @map("company_size_range") @db.VarChar(40)
+  region            String?       @db.VarChar(100)
+  modulesUsed       Json          @map("modules_used")
+  resultsQuantified Json          @map("results_quantified")
+  durationWeeks     Int?          @map("duration_weeks")
+  roiWeeks          Int?          @map("roi_weeks")
+  testimonialId     String?       @map("testimonial_id") @db.Uuid
+  testimonial       Testimonial?  @relation(fields: [testimonialId], references: [id], onDelete: SetNull)
+  status            PublishStatus @default(draft)
+  publishedAt       DateTime?     @map("published_at")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
 
-  translations        CaseStudyTranslation[]
+  translations CaseStudyTranslation[]
 
   @@index([sector])
   @@index([status])
@@ -471,10 +884,10 @@ model CaseStudyTranslation {
   problemText     String?   @map("problem_text") @db.Text
   solutionJson    Json?     @map("solution_json")
   solutionText    String?   @map("solution_text") @db.Text
-  metaTitle       String?   @map("meta_title")       @db.VarChar(70)
+  metaTitle       String?   @map("meta_title") @db.VarChar(70)
   metaDescription String?   @map("meta_description") @db.VarChar(160)
   createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt      @map("updated_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
 
   @@unique([caseStudyId, locale])
   @@unique([locale, slug])
@@ -493,14 +906,14 @@ model FAQ {
   questionEn      String        @map("question_en") @db.VarChar(500)
   answerFr        String        @map("answer_fr") @db.Text
   answerEn        String        @map("answer_en") @db.Text
-  metaTitle       String?       @map("meta_title")       @db.VarChar(70)
+  metaTitle       String?       @map("meta_title") @db.VarChar(70)
   metaDescription String?       @map("meta_description") @db.VarChar(160)
   displayOrder    Int           @default(0) @map("display_order")
   viewCount       Int           @default(0) @map("view_count")
   helpfulCount    Int           @default(0) @map("helpful_count")
   status          PublishStatus @default(draft)
   createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt      @map("updated_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
 
   @@index([category])
   @@index([status])
@@ -512,16 +925,16 @@ model FAQ {
 // ============================================================
 
 model HelpArticle {
-  id            String                   @id @default(uuid()) @db.Uuid
-  categoryId    String?                  @map("category_id") @db.Uuid
-  category      Category?                @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  isTutorial    Boolean                  @default(false) @map("is_tutorial")
-  status        PublishStatus            @default(draft)
-  publishedAt   DateTime?                @map("published_at")
-  createdAt     DateTime                 @default(now()) @map("created_at")
-  updatedAt     DateTime                 @updatedAt      @map("updated_at")
+  id          String        @id @default(uuid()) @db.Uuid
+  categoryId  String?       @map("category_id") @db.Uuid
+  category    Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  isTutorial  Boolean       @default(false) @map("is_tutorial")
+  status      PublishStatus @default(draft)
+  publishedAt DateTime?     @map("published_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
 
-  translations  HelpArticleTranslation[]
+  translations HelpArticleTranslation[]
 
   @@index([status])
   @@index([publishedAt])
@@ -540,10 +953,10 @@ model HelpArticleTranslation {
   // Sprint 24 / C4 — sources canoniques Tiptap (HTML rendu / JSON canon / text plain).
   bodyJson        Json?       @map("body_json")
   bodyText        String?     @map("body_text") @db.Text
-  metaTitle       String?     @map("meta_title")       @db.VarChar(70)
+  metaTitle       String?     @map("meta_title") @db.VarChar(70)
   metaDescription String?     @map("meta_description") @db.VarChar(160)
   createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime    @updatedAt      @map("updated_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
 
   @@unique([helpArticleId, locale])
   @@unique([locale, slug])
@@ -555,18 +968,18 @@ model HelpArticleTranslation {
 // ============================================================
 
 model Survey {
-  id           String           @id @default(uuid()) @db.Uuid
-  title        String           @db.VarChar(255)
+  id           String        @id @default(uuid()) @db.Uuid
+  title        String        @db.VarChar(255)
   questions    Json
-  displayPages Json?            @map("display_pages")
-  trigger      SurveyTrigger    @default(immediate)
-  status       SurveyStatus     @default(draft)
-  startsAt     DateTime?        @map("starts_at")
-  endsAt       DateTime?        @map("ends_at")
-  createdAt    DateTime         @default(now()) @map("created_at")
-  updatedAt    DateTime         @updatedAt      @map("updated_at")
+  displayPages Json?         @map("display_pages")
+  trigger      SurveyTrigger @default(immediate)
+  status       SurveyStatus  @default(draft)
+  startsAt     DateTime?     @map("starts_at")
+  endsAt       DateTime?     @map("ends_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
 
-  responses    SurveyResponse[]
+  responses SurveyResponse[]
 
   @@index([status])
   @@map("surveys")
@@ -578,7 +991,7 @@ model SurveyResponse {
   survey      Survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   answers     Json
   visitorId   String?  @map("visitor_id") @db.VarChar(120)
-  pageUrl     String?  @map("page_url")   @db.Text
+  pageUrl     String?  @map("page_url") @db.Text
   locale      Locale   @default(fr)
   submittedAt DateTime @default(now()) @map("submitted_at")
 
@@ -608,15 +1021,15 @@ model Category {
   status        PublishStatus @default(published)
   seoTitleFr    String?       @map("seo_title_fr") @db.VarChar(70)
   seoTitleEn    String?       @map("seo_title_en") @db.VarChar(70)
-  seoDescFr     String?       @map("seo_desc_fr")  @db.VarChar(160)
-  seoDescEn     String?       @map("seo_desc_en")  @db.VarChar(160)
+  seoDescFr     String?       @map("seo_desc_fr") @db.VarChar(160)
+  seoDescEn     String?       @map("seo_desc_en") @db.VarChar(160)
   pageContentFr String?       @map("page_content_fr") @db.Text
   pageContentEn String?       @map("page_content_en") @db.Text
   createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt      @map("updated_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
 
-  articles      Article[]
-  helpArticles  HelpArticle[]
+  articles     Article[]
+  helpArticles HelpArticle[]
 
   @@index([parentId])
   @@index([module])
@@ -628,23 +1041,31 @@ model Category {
 // ============================================================
 
 model AdminUser {
-  id                String        @id @default(uuid()) @db.Uuid
-  name              String        @db.VarChar(255)
-  email             String        @unique @db.Citext
+  id                String      @id @default(uuid()) @db.Uuid
+  name              String      @db.VarChar(255)
+  email             String      @unique @db.Citext
   // argon2id (CLAUDE.md §15 — minimum 12 chars en clair, hash argon2id côté Server Action)
-  passwordHash      String        @map("password_hash") @db.VarChar(255)
-  role              AdminRole     @default(reader)
+  passwordHash      String      @map("password_hash") @db.VarChar(255)
+  role              AdminRole   @default(reader)
   // 2FA TOTP (otplib)
-  twoFactorSecret   String?       @map("two_factor_secret") @db.VarChar(255)
-  twoFactorEnabled  Boolean       @default(false) @map("two_factor_enabled")
-  twoFactorVerified Boolean       @default(false) @map("two_factor_verified")
-  lastLoginAt       DateTime?     @map("last_login_at")
-  lastLoginIp       String?       @map("last_login_ip") @db.VarChar(64)
-  status            AdminStatus   @default(active)
-  createdAt         DateTime      @default(now()) @map("created_at")
-  updatedAt         DateTime      @updatedAt      @map("updated_at")
+  twoFactorSecret   String?     @map("two_factor_secret") @db.VarChar(255)
+  twoFactorEnabled  Boolean     @default(false) @map("two_factor_enabled")
+  twoFactorVerified Boolean     @default(false) @map("two_factor_verified")
+  lastLoginAt       DateTime?   @map("last_login_at")
+  lastLoginIp       String?     @map("last_login_ip") @db.VarChar(64)
+  status            AdminStatus @default(active)
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
 
-  activityLogs      ActivityLog[]
+  activityLogs          ActivityLog[]
+  // Sprint X.1 — relations inverses booking V1
+  bookingsCancelled     Booking[]           @relation("BookingCancelledBy")
+  paymentsRecorded      Payment[]           @relation("PaymentRecordedBy")
+  refunds               Refund[]
+  cadrageMeetingsHeld   CadrageMeeting[]    @relation("CadrageHeldBy")
+  bookingTransitions    BookingTransition[] @relation("BookingTransitionActor")
+  pricingConfigsUpdated PricingConfig[]
+  siteSettingsUpdated   SiteSetting[]
 
   @@index([role])
   @@index([status])
@@ -656,16 +1077,16 @@ model AdminUser {
 // ============================================================
 
 model ActivityLog {
-  id           String     @id @default(uuid()) @db.Uuid
-  adminUserId  String?    @map("admin_user_id") @db.Uuid
-  adminUser    AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
-  action       String     @db.VarChar(120)
-  targetType   String?    @map("target_type") @db.VarChar(80)
-  targetId     String?    @map("target_id")   @db.Uuid
-  changes      Json?
-  ipAddress    String?    @map("ip_address") @db.VarChar(64)
-  userAgent    String?    @map("user_agent") @db.Text
-  createdAt    DateTime   @default(now()) @map("created_at")
+  id          String     @id @default(uuid()) @db.Uuid
+  adminUserId String?    @map("admin_user_id") @db.Uuid
+  adminUser   AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+  action      String     @db.VarChar(120)
+  targetType  String?    @map("target_type") @db.VarChar(80)
+  targetId    String?    @map("target_id") @db.Uuid
+  changes     Json?
+  ipAddress   String?    @map("ip_address") @db.VarChar(64)
+  userAgent   String?    @map("user_agent") @db.Text
+  createdAt   DateTime   @default(now()) @map("created_at")
 
   @@index([adminUserId])
   @@index([action])
@@ -693,26 +1114,553 @@ model Setting {
 // ============================================================
 
 model NewsletterSubscriber {
-  id              String           @id @default(uuid()) @db.Uuid
-  email           String           @unique @db.Citext
-  locale          Locale           @default(fr)
-  status          NewsletterStatus @default(pending)
+  id               String           @id @default(uuid()) @db.Uuid
+  email            String           @unique @db.Citext
+  locale           Locale           @default(fr)
+  status           NewsletterStatus @default(pending)
   // Double opt-in
-  confirmToken    String?          @unique @map("confirm_token") @db.VarChar(120)
-  confirmSentAt   DateTime?        @map("confirm_sent_at")
-  confirmedAt     DateTime?        @map("confirmed_at")
-  unsubscribedAt  DateTime?        @map("unsubscribed_at")
-  unsubscribeToken String?         @unique @map("unsubscribe_token") @db.VarChar(120)
+  confirmToken     String?          @unique @map("confirm_token") @db.VarChar(120)
+  confirmSentAt    DateTime?        @map("confirm_sent_at")
+  confirmedAt      DateTime?        @map("confirmed_at")
+  unsubscribedAt   DateTime?        @map("unsubscribed_at")
+  unsubscribeToken String?          @unique @map("unsubscribe_token") @db.VarChar(120)
   // Source / marketing
-  source          String?          @db.VarChar(120)
-  ipAddress       String?          @map("ip_address") @db.VarChar(64)
+  source           String?          @db.VarChar(120)
+  ipAddress        String?          @map("ip_address") @db.VarChar(64)
   // MailWizz sync
-  mailwizzListUid String?          @map("mailwizz_list_uid") @db.VarChar(120)
-  mailwizzSubUid  String?          @map("mailwizz_sub_uid")  @db.VarChar(120)
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt      @map("updated_at")
+  mailwizzListUid  String?          @map("mailwizz_list_uid") @db.VarChar(120)
+  mailwizzSubUid   String?          @map("mailwizz_sub_uid") @db.VarChar(120)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
 
   @@index([locale])
   @@index([status])
   @@map("newsletter_subscribers")
+}
+
+// ============================================================
+// Sprint X.1 — Booking V1 (deposit-validation-gated)
+// 15 nouvelles tables instanciées V1 (+ 1 hook V1.5+ documenté ci-dessous,
+// `OnboardingDoc`, qui n'est PAS un modèle Prisma actif V1).
+// Sources : `_AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/03-ARCHITECTURE-CIBLE.md`
+// §5.1.5 → §5.1.20 + ADR 0012 à 0020.
+// ============================================================
+
+// ============================================================
+// 20. payments — Sprint X.1 §5.1.5
+// ============================================================
+
+/// Sprint X.1 — paiements Stripe + manuels (virement/chèque/espèces).
+/// EUR-only V1 ; reverse-charge B2B intra-UE EE (ADR 0015).
+model Payment {
+  id                        String          @id @default(uuid()) @db.Uuid
+  bookingId                 String          @map("booking_id") @db.Uuid
+  booking                   Booking         @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  invoiceId                 String?         @map("invoice_id") @db.Uuid
+  invoice                   Invoice?        @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  provider                  PaymentProvider
+  /// Stripe `event.id` (idempotence webhook) OU référence manuelle. NULL si
+  /// paiement manuel sans réf. fournie.
+  providerEventId           String?         @unique @map("provider_event_id") @db.VarChar(255)
+  providerCustomerId        String?         @map("provider_customer_id") @db.VarChar(120)
+  providerPaymentIntentId   String?         @map("provider_payment_intent_id") @db.VarChar(120)
+  providerCheckoutSessionId String?         @map("provider_checkout_session_id") @db.VarChar(120)
+  amountCents               Int             @map("amount_cents")
+  currency                  String          @default("EUR") @db.VarChar(3)
+  type                      PaymentType
+  status                    PaymentStatus   @default(pending)
+  paidAt                    DateTime?       @map("paid_at")
+  failedAt                  DateTime?       @map("failed_at")
+  /// Redacted, jamais le PAN.
+  failureReason             String?         @map("failure_reason") @db.VarChar(500)
+  /// Numéro virement / chèque / autre référence physique.
+  receivedReference         String?         @map("received_reference") @db.VarChar(120)
+  /// Mode bas-niveau : "card", "sepa_credit_transfer", "cheque", "cash".
+  mode                      String?         @db.VarChar(40)
+  notes                     String?         @db.Text
+  recordedByAdminId         String?         @map("recorded_by_admin_id") @db.Uuid
+  recordedByAdmin           AdminUser?      @relation("PaymentRecordedBy", fields: [recordedByAdminId], references: [id], onDelete: SetNull)
+  /// D63 — true si Payment rétrofitté par script `migrate-bookings-v0-to-v1.ts`.
+  isHistorical              Boolean         @default(false) @map("is_historical")
+  createdAt                 DateTime        @default(now()) @map("created_at")
+  updatedAt                 DateTime        @updatedAt @map("updated_at")
+  Refund                    Refund[]
+
+  @@index([bookingId, type, status])
+  @@index([providerEventId])
+  @@index([providerPaymentIntentId])
+  @@index([status, type, paidAt])
+  @@index([provider, status])
+  @@index([isHistorical])
+  @@map("payments")
+}
+
+// ============================================================
+// 21. invoices — Sprint X.1 §5.1.6
+// ============================================================
+
+/// Sprint X.1 — factures séquentielles immuables AXION-2026-NNNN.
+/// Numérotation atomique via advisory lock (cf. Agent 11 P1-6).
+/// Archivage 10 ans (D30) via `archivedUntil`. Architecture TVA-agnostique
+/// FR vs EE (ADR 0015) — snapshot CGV/mention TVA dans `legalSnapshot` JSONB.
+model Invoice {
+  id                    String        @id @default(uuid()) @db.Uuid
+  /// Format `AXION-2026-NNNN` séquentiel atomique (D29).
+  number                String        @unique @db.VarChar(40)
+  bookingId             String        @map("booking_id") @db.Uuid
+  booking               Booking       @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  type                  InvoiceType
+  installmentNumber     Int?          @map("installment_number")
+  // Pricing breakdown (snapshot PricingConfig)
+  basePriceHtCents      Int           @map("base_price_ht_cents")
+  travelFeeCents        Int           @default(0) @map("travel_fee_cents")
+  accommodationFeeCents Int           @default(0) @map("accommodation_fee_cents")
+  mealFeeCents          Int           @default(0) @map("meal_fee_cents")
+  additionalFeesCents   Int           @default(0) @map("additional_fees_cents")
+  additionalFeesNotes   String?       @map("additional_fees_notes") @db.Text
+  amountHtCents         Int           @map("amount_ht_cents")
+  /// 0.00 = EE reverse-charge / 20.00 = FR (snapshot moment d'émission).
+  vatRate               Decimal       @map("vat_rate") @db.Decimal(5, 2)
+  vatReverseCharge      Boolean       @default(false) @map("vat_reverse_charge")
+  vatMention            String?       @map("vat_mention") @db.Text
+  amountTtcCents        Int           @map("amount_ttc_cents")
+  depositExpectedCents  Int?          @map("deposit_expected_cents")
+  balanceExpectedCents  Int?          @map("balance_expected_cents")
+  /// Hetzner Storage Box signed URL OU Stripe hosted_invoice_url.
+  pdfUrl                String?       @map("pdf_url") @db.Text
+  hashSha256            String?       @map("hash_sha256") @db.VarChar(64)
+  issuedAt              DateTime      @default(now()) @map("issued_at")
+  dueAt                 DateTime?     @map("due_at")
+  paidAt                DateTime?     @map("paid_at")
+  status                InvoiceStatus @default(draft)
+  /// = issuedAt + 10 ans (archivage légal D30).
+  archivedUntil         DateTime      @map("archived_until")
+  /// V1 = `client` uniquement exposé UI ; `opco_v2`/`autre_v2` hooks V2+.
+  payerType             PayerType     @default(client) @map("payer_type")
+  payerName             String?       @map("payer_name") @db.VarChar(300)
+  payerVatNumber        String?       @map("payer_vat_number") @db.VarChar(40)
+  payerAddress          String?       @map("payer_address") @db.Text
+  payerEmail            String?       @map("payer_email") @db.Citext
+  locale                Locale        @default(fr)
+  /// Snapshot CGV + mention TVA + statut juridique au moment d'émission
+  /// (immuable, exigé Agent 11 P0-4/P0-5).
+  legalSnapshot         Json          @map("legal_snapshot")
+  /// Avoir lié à facture origine (FK self).
+  creditNoteOfId        String?       @map("credit_note_of_id") @db.Uuid
+  creditNoteOf          Invoice?      @relation("InvoiceCreditNote", fields: [creditNoteOfId], references: [id], onDelete: SetNull)
+  creditNotes           Invoice[]     @relation("InvoiceCreditNote")
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
+
+  payments Payment[]
+  refunds  Refund[]
+
+  @@index([bookingId, type, status])
+  @@index([number])
+  @@index([dueAt])
+  @@index([paidAt])
+  @@index([status, issuedAt])
+  @@index([payerEmail])
+  @@map("invoices")
+}
+
+// ============================================================
+// 22. refunds — Sprint X.1 §5.1.7
+// ============================================================
+
+/// Sprint X.1 — refunds Stripe ou manuels (cf. ADR 0013).
+model Refund {
+  id             String       @id @default(uuid()) @db.Uuid
+  invoiceId      String       @map("invoice_id") @db.Uuid
+  invoice        Invoice      @relation(fields: [invoiceId], references: [id], onDelete: Restrict)
+  paymentId      String       @map("payment_id") @db.Uuid
+  payment        Payment      @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  amountCents    Int          @map("amount_cents")
+  reason         RefundReason
+  /// "partial" | "full".
+  scope          String       @db.VarChar(20)
+  status         RefundStatus @default(pending)
+  /// re_... Stripe (NULL si refund manuel).
+  stripeRefundId String?      @unique @map("stripe_refund_id") @db.VarChar(120)
+  adminUserId    String?      @map("admin_user_id") @db.Uuid
+  adminUser      AdminUser?   @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+  notes          String?      @db.Text
+  createdAt      DateTime     @default(now()) @map("created_at")
+  processedAt    DateTime?    @map("processed_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@index([invoiceId])
+  @@index([paymentId])
+  @@index([status])
+  @@map("refunds")
+}
+
+// ============================================================
+// 23. stripe_webhook_events — Sprint X.1 §5.1.8
+// ============================================================
+
+/// Sprint X.1 — idempotence webhook Stripe (event.id UNIQUE).
+/// Insert avec `ON CONFLICT DO NOTHING` avant traitement (Agent 4 §5.2).
+model StripeWebhookEvent {
+  id             String    @id @default(uuid()) @db.Uuid
+  stripeEventId  String    @unique @map("stripe_event_id") @db.VarChar(120)
+  type           String    @db.VarChar(120)
+  livemode       Boolean   @default(false)
+  apiVersion     String?   @map("api_version") @db.VarChar(40)
+  payload        Json
+  processedAt    DateTime? @map("processed_at")
+  error          String?   @db.Text
+  retryCount     Int       @default(0) @map("retry_count")
+  nextRetryAt    DateTime? @map("next_retry_at")
+  /// event.created Unix -> Date (ordre logique).
+  eventCreatedAt DateTime  @map("event_created_at")
+  receivedAt     DateTime  @default(now()) @map("received_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@index([type, processedAt])
+  @@index([stripeEventId])
+  @@map("stripe_webhook_events")
+}
+
+// ============================================================
+// 24. docuseal_webhook_events — Sprint X.1 §5.1.9
+// ============================================================
+
+/// Sprint X.1 — idempotence webhook DocuSeal (HMAC-SHA256 vérifié).
+model DocusealWebhookEvent {
+  id              String    @id @default(uuid()) @db.Uuid
+  docusealEventId String    @unique @map("docuseal_event_id") @db.VarChar(120)
+  type            String    @db.VarChar(120)
+  payload         Json
+  processedAt     DateTime? @map("processed_at")
+  error           String?   @db.Text
+  retryCount      Int       @default(0) @map("retry_count")
+  receivedAt      DateTime  @default(now()) @map("received_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([type, processedAt])
+  @@map("docuseal_webhook_events")
+}
+
+// ============================================================
+// 25. contract_documents — Sprint X.1 §5.1.10
+// ============================================================
+
+/// Sprint X.1 — contrats DocuSeal self-hosted (ADR 0014).
+/// Versioning D62 : `previousVersionId` self-FK + `isAddendum` (avenant).
+model ContractDocument {
+  id                String             @id @default(uuid()) @db.Uuid
+  bookingId         String             @map("booking_id") @db.Uuid
+  booking           Booking            @relation("BookingContractDocuments", fields: [bookingId], references: [id], onDelete: Restrict)
+  // Lien inverse vers Booking.contractDocumentId (relation distincte).
+  activeForBookings Booking[]          @relation("BookingActiveContract")
+  provider          SignatureProvider
+  /// DocuSeal submission_id (NULL pour manual_upload / physical_signed).
+  providerId        String?            @map("provider_id") @db.VarChar(120)
+  templateId        String?            @map("template_id") @db.Uuid
+  template          ContractTemplate?  @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  /// Snapshot Tiptap JSON au moment de l'envoi (immuable légal).
+  body              Json
+  /// Valeurs des {{variables}} interpolées (snapshot).
+  variables         Json?
+  status            ContractStatus     @default(draft)
+  sentAt            DateTime?          @map("sent_at")
+  signedAt          DateTime?          @map("signed_at")
+  declinedAt        DateTime?          @map("declined_at")
+  /// Hetzner Storage Box signed URL.
+  pdfUrl            String?            @map("pdf_url") @db.Text
+  hashSha256        String?            @map("hash_sha256") @db.VarChar(64)
+  signerEmail       String?            @map("signer_email") @db.Citext
+  signerName        String?            @map("signer_name") @db.VarChar(200)
+  /// IP eIDAS-SES (audit trail).
+  ipSigner          String?            @map("ip_signer") @db.VarChar(45)
+  version           Int                @default(1)
+  /// D62 — versioning v1 -> v2 (cancel_admin) ou avenant.
+  previousVersionId String?            @map("previous_version_id") @db.Uuid
+  previousVersion   ContractDocument?  @relation("ContractDocumentVersion", fields: [previousVersionId], references: [id], onDelete: SetNull)
+  nextVersions      ContractDocument[] @relation("ContractDocumentVersion")
+  /// D62 — true si avenant post-signature (contrat principal reste immuable).
+  isAddendum        Boolean            @default(false) @map("is_addendum")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  quotes Quote[]
+
+  @@index([bookingId, status])
+  @@index([providerId])
+  @@index([previousVersionId])
+  @@map("contract_documents")
+}
+
+// ============================================================
+// 26. contract_templates — Sprint X.1 §5.1.11
+// ============================================================
+
+/// Sprint X.1 — templates contrat Tiptap éditables admin.
+/// V1 : 1 template par défaut FR + 1 EN. `defaultLegalClauses` (D53) inclut
+/// la clause résolution pour défaut de paiement (J+10).
+model ContractTemplate {
+  id                  String    @id @default(uuid()) @db.Uuid
+  name                String    @unique @db.VarChar(120)
+  slug                String    @unique @db.VarChar(80)
+  /// Tiptap JSON master avec {{variables}}.
+  body                Json
+  /// Schéma variables disponibles : [{key, label, required, type}].
+  variables           Json
+  /// D53 — clauses légales par défaut fusionnées dans chaque contrat généré.
+  defaultLegalClauses Json      @map("default_legal_clauses")
+  isDefault           Boolean   @default(false) @map("is_default")
+  version             Int       @default(1)
+  locale              Locale    @default(fr)
+  archivedAt          DateTime? @map("archived_at")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  contractDocuments ContractDocument[]
+
+  @@index([slug])
+  @@index([isDefault, archivedAt])
+  @@map("contract_templates")
+}
+
+// ============================================================
+// 27. quotes — Sprint X.1 §5.1.12
+// ============================================================
+
+/// Sprint X.1 — devis semi-auto (Will-A §5.11.1).
+/// Pré-rempli depuis PricingConfig + Booking, édité Tiptap, envoyé DocuSeal.
+model Quote {
+  id                   String            @id @default(uuid()) @db.Uuid
+  /// Format `DEVIS-2026-NNNN` séquentiel.
+  number               String            @unique @db.VarChar(40)
+  bookingId            String            @map("booking_id") @db.Uuid
+  booking              Booking           @relation("BookingQuotes", fields: [bookingId], references: [id], onDelete: Restrict)
+  // Lien inverse vers Booking.quoteId actif (relation distincte).
+  activeForBookings    Booking[]         @relation("BookingActiveQuote")
+  body                 Json
+  amountHtCents        Int               @map("amount_ht_cents")
+  vatRate              Decimal           @map("vat_rate") @db.Decimal(5, 2)
+  vatReverseCharge     Boolean           @default(false) @map("vat_reverse_charge")
+  vatMention           String?           @map("vat_mention") @db.Text
+  amountTtcCents       Int               @map("amount_ttc_cents")
+  /// = sentAt + 30j (défaut).
+  validUntil           DateTime          @map("valid_until")
+  pdfUrl               String?           @map("pdf_url") @db.Text
+  hashSha256           String?           @map("hash_sha256") @db.VarChar(64)
+  status               QuoteStatus       @default(draft)
+  sentAt               DateTime?         @map("sent_at")
+  acceptedAt           DateTime?         @map("accepted_at")
+  declinedAt           DateTime?         @map("declined_at")
+  contractDocumentId   String?           @map("contract_document_id") @db.Uuid
+  contractDocument     ContractDocument? @relation(fields: [contractDocumentId], references: [id], onDelete: SetNull)
+  /// DocuSeal submission pour signature devis.
+  docusealSubmissionId String?           @map("docuseal_submission_id") @db.VarChar(120)
+  createdAt            DateTime          @default(now()) @map("created_at")
+  updatedAt            DateTime          @updatedAt @map("updated_at")
+
+  @@index([bookingId, status])
+  @@index([number])
+  @@map("quotes")
+}
+
+// ============================================================
+// 28. cadrage_meetings — Sprint X.1 §5.1.13
+// ============================================================
+
+/// Sprint X.1 — calls de cadrage avant validation pertinence (V1 visio
+/// manuelle hors-app — Will saisit le lien).
+model CadrageMeeting {
+  id                 String              @id @default(uuid()) @db.Uuid
+  bookingId          String              @unique @map("booking_id") @db.Uuid
+  scheduledAt        DateTime            @map("scheduled_at")
+  durationMinutes    Int                 @default(30) @map("duration_minutes")
+  /// Lien manuel saisi par Will (Meet/Whereby/Jitsi). V2+ : intégration API.
+  visioUrl           String?             @map("visio_url") @db.Text
+  /// V1 : `manual_external` ; V2+ : `google_meet` / `whereby` / `jitsi`.
+  visioProvider      String              @default("manual_external") @map("visio_provider") @db.VarChar(40)
+  status             CadrageStatus       @default(scheduled)
+  heldAt             DateTime?           @map("held_at")
+  validationDecision ValidationDecision? @map("validation_decision")
+  /// CR cadrage (Tiptap simplifié recommandé).
+  notes              String?             @db.Text
+  heldByAdminId      String?             @map("held_by_admin_id") @db.Uuid
+  heldByAdmin        AdminUser?          @relation("CadrageHeldBy", fields: [heldByAdminId], references: [id], onDelete: SetNull)
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+
+  bookings Booking[]
+
+  @@index([bookingId, status])
+  @@index([scheduledAt])
+  @@map("cadrage_meetings")
+}
+
+// ============================================================
+// (29) OnboardingDoc — HORS V1 (D58)
+// ============================================================
+// Décision Will 2026-05-12 : pas de Sprint dédié onboarding-docs.
+// Géré hors-app par email pour V1. Formulaire structuré V1.5+ (cf. ADR
+// future). Schéma probable V1.5+ (champs : bookingId, type, filename,
+// storageUrl, storageKey, signedUrlExpiresAt, mimeType, sizeBytes,
+// uploadedByAdminId, uploadedAt) — NON matérialisé V1.
+// Cf. `_AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/03-ARCHITECTURE-CIBLE.md` §5.1.14.
+
+// ============================================================
+// 30. capacity_windows — Sprint X.1 §5.1.15
+// ============================================================
+
+/// Sprint X.1 — capacité hebdo Will solo (~2-3 interventions / semaine).
+/// Mis à jour via cron `capacity-recompute` (J 03:00 UTC).
+model CapacityWindow {
+  id               String   @id @default(uuid()) @db.Uuid
+  /// Lundi 00:00 TZ Europe/Paris.
+  weekStart        DateTime @unique @map("week_start") @db.Date
+  maxInterventions Int      @default(3) @map("max_interventions")
+  currentBookings  Int      @default(0) @map("current_bookings")
+  recomputedAt     DateTime @default(now()) @map("recomputed_at")
+
+  @@map("capacity_windows")
+}
+
+// ============================================================
+// 31. pricing_configs — Sprint X.1 §5.1.16 (ADR 0016)
+// ============================================================
+
+/// Sprint X.1 — pricing DB-managed (ADR 0016). Remplace hardcode `pricing.ts`.
+/// Modification admin -> trigger `revalidatePath()` sur pages publiques.
+model PricingConfig {
+  id                       String                  @id @default(uuid()) @db.Uuid
+  /// 'collective_4j' | 'individuel' | 'dirigeants' | 'conference' |
+  /// 'audit_flash_onsite' | etc. UNIQUE référence enum.
+  interventionType         String                  @unique @map("intervention_type") @db.VarChar(80)
+  format                   String?                 @db.VarChar(80)
+  basePriceHtCents         Int                     @map("base_price_ht_cents")
+  /// 30/50/100 (si profile fixe).
+  depositPercentage        Int?                    @map("deposit_percentage")
+  /// Override % si forfait fixe.
+  depositFixedAmountCents  Int?                    @map("deposit_fixed_amount_cents")
+  /// 0=EE reverse / 20=FR (ADR 0015).
+  vatRate                  Decimal                 @default(0) @map("vat_rate") @db.Decimal(5, 2)
+  vatReverseCharge         Boolean                 @default(false) @map("vat_reverse_charge")
+  vatMention               String?                 @map("vat_mention") @db.Text
+  /// > 5000 € HT ou format complexe -> devis obligatoire (snapshot Booking).
+  quoteRequired            Boolean                 @default(false) @map("quote_required")
+  feesMode                 FeesMode                @default(real_costs) @map("fees_mode")
+  /// {idfCents:0, frMetroCents:25000, domTomCents:45000} si feesMode=flat_rate_by_zone.
+  flatRateConfig           Json?                   @map("flat_rate_config")
+  /// V1 défaut 5j (D52), configurable. Override `SiteSetting.optionExpirationDaysIfNothingReceived`.
+  optionDurationDays       Int                     @default(5) @map("option_duration_days")
+  paymentScheduleProfileId String?                 @map("payment_schedule_profile_id") @db.Uuid
+  paymentScheduleProfile   PaymentScheduleProfile? @relation(fields: [paymentScheduleProfileId], references: [id], onDelete: SetNull)
+  contractTemplateId       String?                 @map("contract_template_id") @db.Uuid
+  isActive                 Boolean                 @default(true) @map("is_active")
+  updatedAt                DateTime                @updatedAt @map("updated_at")
+  updatedByAdminId         String?                 @map("updated_by_admin_id") @db.Uuid
+  updatedByAdmin           AdminUser?              @relation(fields: [updatedByAdminId], references: [id], onDelete: SetNull)
+
+  @@index([interventionType, isActive])
+  @@map("pricing_configs")
+}
+
+// ============================================================
+// 32. payment_schedule_profiles — Sprint X.1 §5.1.17
+// ============================================================
+
+/// Sprint X.1 — 4 profils par défaut V1 (tiny / small / medium / large)
+/// seedés à l'install (cf. §5.14).
+model PaymentScheduleProfile {
+  id                String    @id @default(uuid()) @db.Uuid
+  name              String    @unique @db.VarChar(120)
+  slug              String    @unique @db.VarChar(80)
+  /// [{percentage, dueOffsetDays, dueRelativeTo, description}].
+  /// dueRelativeTo: "validation" | "j-7" | "j+30".
+  installments      Json
+  thresholdMinCents Int?      @map("threshold_min_cents")
+  thresholdMaxCents Int?      @map("threshold_max_cents")
+  isDefault         Boolean   @default(false) @map("is_default")
+  archivedAt        DateTime? @map("archived_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  pricingConfigs   PricingConfig[]
+  bookings         Booking[]
+  bookingSchedules BookingPaymentSchedule[]
+
+  @@index([thresholdMinCents, thresholdMaxCents])
+  @@map("payment_schedule_profiles")
+}
+
+// ============================================================
+// 33. booking_payment_schedules — Sprint X.1 §5.1.18
+// ============================================================
+
+/// Sprint X.1 — snapshot échéancier appliqué au booking (override possible).
+model BookingPaymentSchedule {
+  id             String                  @id @default(uuid()) @db.Uuid
+  bookingId      String                  @unique @map("booking_id") @db.Uuid
+  booking        Booking                 @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  profileId      String?                 @map("profile_id") @db.Uuid
+  profile        PaymentScheduleProfile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  /// [{percentage, dueAt, status, paidAt, invoiceId}] — snapshot custom si override.
+  installments   Json
+  overrideReason String?                 @map("override_reason") @db.VarChar(500)
+  createdAt      DateTime                @default(now()) @map("created_at")
+  updatedAt      DateTime                @updatedAt @map("updated_at")
+
+  @@map("booking_payment_schedules")
+}
+
+// ============================================================
+// 34. site_settings — Sprint X.1 §5.1.19
+// ============================================================
+
+/// Sprint X.1 — clé/valeur globale catégorisée. Distinct du modèle V0
+/// `Setting` (table `settings`) conservé pour compat — `SiteSetting` ajoute
+/// `category` + `updatedByAdminId` + clés V1 dédiées booking.
+/// Clés V1 : `maxConcurrentOptionsPerSlot`, `travelMaxKmInWindow48h`,
+/// `optionExpirationDaysIfNothingReceived` (D52),
+/// `contractSignedWithoutDepositCutoffDays` (D52), etc.
+model SiteSetting {
+  key              String              @id @db.VarChar(120)
+  value            Json
+  description      String?             @db.Text
+  category         SiteSettingCategory @default(general)
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  updatedByAdminId String?             @map("updated_by_admin_id") @db.Uuid
+  updatedByAdmin   AdminUser?          @relation(fields: [updatedByAdminId], references: [id], onDelete: SetNull)
+
+  @@index([category])
+  @@map("site_settings")
+}
+
+// ============================================================
+// 35. booking_transitions — Sprint X.1 §5.1.20 (event sourcing)
+// ============================================================
+
+/// Sprint X.1 — event sourcing transitions state machine (Agent 3 R2).
+/// Idempotence transition one-shot via index unique partiel
+/// `(bookingId, toStatus, trigger)` (cf. §5.1.20).
+model BookingTransition {
+  id               String                @id @default(uuid()) @db.Uuid
+  bookingId        String                @map("booking_id") @db.Uuid
+  booking          Booking               @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fromStatus       BookingStatus?        @map("from_status")
+  toStatus         BookingStatus         @map("to_status")
+  /// 'admin.validate_option' | 'webhook.stripe.checkout_completed' |
+  /// 'cron.j7_reminder' | etc.
+  trigger          String                @db.VarChar(80)
+  triggeredBy      TransitionTriggeredBy @map("triggered_by")
+  triggeredById    String?               @map("triggered_by_id") @db.Uuid
+  triggeredByAdmin AdminUser?            @relation("BookingTransitionActor", fields: [triggeredById], references: [id], onDelete: SetNull)
+  reason           String?               @db.VarChar(500)
+  /// {before, after, fields:[...]}.
+  snapshotBefore   Json?                 @map("snapshot_before")
+  snapshotAfter    Json?                 @map("snapshot_after")
+  notes            String?               @db.Text
+  createdAt        DateTime              @default(now()) @map("created_at")
+
+  @@unique([bookingId, toStatus, trigger], map: "booking_transitions_idempotence")
+  @@index([bookingId, createdAt])
+  @@index([triggeredBy])
+  @@map("booking_transitions")
 }

@@ -103,6 +103,12 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-tabs",
       "@radix-ui/react-tooltip",
     ],
+    // Sprint X.2 (Booking V1) — Server Actions cross-origin guard (Agent 8 P0-4).
+    // Liste blanche stricte des origins autorisées à invoquer une Server Action.
+    // En dev, Next ajoute automatiquement `localhost:PORT` — pas besoin de l'ajouter ici.
+    serverActions: {
+      allowedOrigins: ["axion-ia.com", "www.axion-ia.com"],
+    },
   },
   // React Compiler deferred (PERF-004) — requires `babel-plugin-react-compiler`
   // devDep + Babel takeover that slows Turbopack builds. Re-evaluate Sprint 17
