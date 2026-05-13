@@ -24,6 +24,7 @@ import type {
   BookingStatus,
   TransitionTriggeredBy,
 } from "../../../prisma/generated/client";
+import { Prisma as PrismaRuntime } from "../../../prisma/generated/client";
 
 // ============================================================
 // Types & constantes
@@ -293,14 +294,11 @@ export async function applyTransition(
 }
 
 // ============================================================
-// Helper Prisma.JsonNull lazy (pas d'import direct car le namespace est déjà
-// importé en `type` au-dessus — `Prisma.JsonNull` est runtime, donc on le
-// require dynamiquement pour rester type-only en haut du fichier).
+// Helper Prisma.JsonNull (runtime import via `PrismaRuntime` au top du
+// fichier — l'import type-only `Prisma` ne porte pas la valeur runtime
+// `Prisma.JsonNull`, d'où le second import non-type).
 // ============================================================
 
 function Prisma_JsonNull(): Prisma.NullableJsonNullValueInput {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { Prisma: P } =
-    require("../../../prisma/generated/client") as typeof import("../../../prisma/generated/client");
-  return P.JsonNull;
+  return PrismaRuntime.JsonNull;
 }
