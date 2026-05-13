@@ -31,5 +31,16 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", ".next", "out", "build", "playwright-report", "test-results", "lhci"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "build",
+    "playwright-report",
+    "test-results",
+    "lhci",
+    "scripts/import-knowledge-from-legacy.ts",
+    "src/lib/knowledge/legacy-import-mapping.ts",
+    "src/lib/knowledge/legacy-import-mapping.test.ts"
+  ]
 }
