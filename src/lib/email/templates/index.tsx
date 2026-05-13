@@ -47,6 +47,9 @@ import {
 import { ForceMajeureNoticeEmail, forceMajeureNoticeSubject } from "./force-majeure-notice";
 import { CadrageScheduledEmail, cadrageScheduledSubject } from "./cadrage-scheduled";
 import { CadrageDeclinedEmail, cadrageDeclinedSubject } from "./cadrage-declined";
+import { QuoteSentEmail, quoteSentSubject } from "./quote-sent";
+import { QuoteSignedEmail, quoteSignedSubject } from "./quote-signed";
+import { QuoteDeclinedEmail, quoteDeclinedSubject } from "./quote-declined";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -143,6 +146,18 @@ const TEMPLATES: TemplateMap = {
   "cadrage-declined": {
     subject: cadrageDeclinedSubject,
     component: CadrageDeclinedEmail,
+  },
+  "quote-sent": {
+    subject: quoteSentSubject,
+    component: QuoteSentEmail,
+  },
+  "quote-signed": {
+    subject: quoteSignedSubject,
+    component: QuoteSignedEmail,
+  },
+  "quote-declined": {
+    subject: quoteDeclinedSubject,
+    component: QuoteDeclinedEmail,
   },
 };
 

@@ -37,7 +37,11 @@ export type EmailJobName =
   | "force-majeure-notice"
   // Sprint X.6 — cadrage manual_external
   | "cadrage-scheduled"
-  | "cadrage-declined";
+  | "cadrage-declined"
+  // Sprint X.7 — devis semi-auto
+  | "quote-sent"
+  | "quote-signed"
+  | "quote-declined";
 
 export interface EmailJobData {
   template: EmailJobName;
