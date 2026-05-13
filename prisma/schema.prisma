@@ -1935,7 +1935,8 @@ model KnowledgeTranslation {
   // Alt text (bloquant publication, assertion server-side)
   alts Json?
 
-  versions KnowledgeVersion[]
+  versions  KnowledgeVersion[]
+  embedding KnowledgeEmbedding?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -2131,4 +2132,24 @@ model KnowledgeReviewerAssignment {
   @@index([reviewerId, status])
   @@index([dueAt])
   @@map("knowledge_reviewer_assignments")
+}
+
+/// KB V4 (Sprint KB-12.5) — Embeddings pgvector pour dedup factory + recherche hybride.
+/// Pattern : 1 vecteur par translation. Indexé HNSW cosine_ops.
+/// Modèle d'embedding stocké pour permettre migrations futures (Voyage AI / OpenAI / Cohere).
+/// Vector size 1024 = Voyage AI voyage-3-lite (default V4) ; voyage-3 = 1536, à
+/// reconfigurer si bascule.
+model KnowledgeEmbedding {
+  id             String               @id @default(uuid()) @db.Uuid
+  translationId  String               @unique @map("translation_id") @db.Uuid
+  translation    KnowledgeTranslation @relation(fields: [translationId], references: [id], onDelete: Cascade)
+  // Vector dim 1024 (Voyage AI voyage-3-lite default). Index HNSW créé via SQL raw migration.
+  embedding      Unsupported("vector(1024)")
+  model          String               @db.VarChar(80)
+  modelVersion   String               @map("model_version") @db.VarChar(40)
+  dimensionality Int                  @default(1024)
+  embeddedAt     DateTime             @default(now()) @map("embedded_at")
+
+  @@index([model])
+  @@map("knowledge_embeddings")
 }
