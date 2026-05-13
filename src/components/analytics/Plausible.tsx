@@ -16,13 +16,17 @@ export function Plausible() {
   if (!domain) return null;
 
   // strategy="afterInteractive" → script chargé après hydration (n'impacte pas LCP).
-  // data-api → endpoint custom (proxy potentiel via Caddy si on veut blocker
-  // adblock — Plausible recommande proxy /api/event si tracking critique).
+  // Script étendu (ordre alphabétique requis par Plausible) :
+  //   404            — 404 error pages tracking
+  //   file-downloads — clics sur .pdf/.docx/.csv (mentions, sous-processeurs)
+  //   outbound-links — clics vers domaines externes
+  //   tagged-events  — Custom events via window.plausible(name, opts)
+  //                    Requis pour trackEvent("Booking Submitted") etc.
   return (
     <Script
       defer
       data-domain={domain}
-      src={`${apiUrl}/js/script.outbound-links.js`}
+      src={`${apiUrl}/js/script.404.file-downloads.outbound-links.tagged-events.js`}
       strategy="afterInteractive"
     />
   );
