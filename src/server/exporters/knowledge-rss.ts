@@ -126,15 +126,23 @@ export function buildJsonFeed(opts: {
     home_page_url: opts.homeUrl,
     feed_url: opts.feedUrl,
     language: opts.locale === "fr" ? "fr-FR" : "en-US",
-    items: opts.items.map((it) => ({
-      id: it.url,
-      url: it.url,
-      title: it.title,
-      summary: it.excerpt ?? "",
-      content_text: it.excerpt ?? "",
-      date_published: (it.publishedAt ?? it.updatedAt).toISOString(),
-      date_modified: it.updatedAt.toISOString(),
-      tags: [it.type],
-    })),
+    items: opts.items.map((it) => {
+      // KB-8 fix : JSON Feed 1.1 exige URLs absolues (id + url).
+      // it.url est relatif `/blog/slug`, on construit `<homeUrl>/<locale>/<path>`.
+      // homeUrl est de la forme `https://axion-ia.com/fr/ressources`, on extrait
+      // le préfixe locale + domain.
+      const homeOrigin = opts.homeUrl.replace(/\/[^/]*$/, ""); // → `https://axion-ia.com/fr`
+      const fullUrl = it.url.startsWith("http") ? it.url : `${homeOrigin}${it.url}`;
+      return {
+        id: fullUrl,
+        url: fullUrl,
+        title: it.title,
+        summary: it.excerpt ?? "",
+        content_text: it.excerpt ?? "",
+        date_published: (it.publishedAt ?? it.updatedAt).toISOString(),
+        date_modified: it.updatedAt.toISOString(),
+        tags: [it.type],
+      };
+    }),
   };
 }

@@ -19,7 +19,8 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-export const dynamic = "force-dynamic";
+// KB-8 fix : ISR cache 1h. `dynamic = "force-dynamic"` retiré (contradictoire
+// avec revalidate, force-dynamic override ISR).
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
