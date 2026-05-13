@@ -110,14 +110,13 @@ export async function generateMetadata({
     twitter: { card: "summary_large_image" },
     robots: { index: true, follow: true },
     // D3 cert 2026-05-08 — verification meta GSC + Bing Webmaster Tools.
-    // 2026-05-13 — Yandex Webmaster ajouté (couvre Bing + Yandex pour IndexNow).
-    // Sans property vérifiée, pas de coverage report ni URL Inspection API.
+    // En prod 2026-05-13 : GSC vérifié par DNS TXT, Bing par Import OAuth GSC
+    // → ces meta restent ici en fallback si on bascule en méthode meta tag.
     // Build conditionnel : meta absente si env vars non définies (dev/preview).
-    ...(env.GOOGLE_SITE_VERIFICATION || env.BING_SITE_VERIFICATION || env.YANDEX_SITE_VERIFICATION
+    ...(env.GOOGLE_SITE_VERIFICATION || env.BING_SITE_VERIFICATION
       ? {
           verification: {
             ...(env.GOOGLE_SITE_VERIFICATION ? { google: env.GOOGLE_SITE_VERIFICATION } : {}),
-            ...(env.YANDEX_SITE_VERIFICATION ? { yandex: env.YANDEX_SITE_VERIFICATION } : {}),
             ...(env.BING_SITE_VERIFICATION
               ? { other: { "msvalidate.01": env.BING_SITE_VERIFICATION } }
               : {}),

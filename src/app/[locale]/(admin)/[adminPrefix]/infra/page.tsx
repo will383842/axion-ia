@@ -357,18 +357,8 @@ export default async function AdminInfraPage({ params }: PageProps) {
       paid: "0 €",
     },
     {
-      name: "Yandex Webmaster",
-      role: "Indexation Yandex + IndexNow notification",
-      externalUrl: "https://webmaster.yandex.com/sites/",
-      status: process.env["YANDEX_SITE_VERIFICATION"] ? "ok" : "not-configured",
-      detail: process.env["YANDEX_SITE_VERIFICATION"]
-        ? "Balise meta yandex-verification posée"
-        : "YANDEX_SITE_VERIFICATION manquante",
-      paid: "0 €",
-    },
-    {
       name: "IndexNow",
-      role: "Notification instantanée Bing/Yandex/Seznam/Naver sur changement contenu",
+      role: "Notification instantanée Bing/Seznam/Naver sur changement contenu",
       externalUrl: "https://www.indexnow.org/documentation",
       status: process.env["INDEXNOW_KEY"] ? "ok" : "not-configured",
       detail: process.env["INDEXNOW_KEY"]

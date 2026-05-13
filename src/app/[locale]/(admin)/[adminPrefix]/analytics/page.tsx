@@ -2,7 +2,7 @@
 //
 // Centralise tout ce qui concerne la mesure d'audience + l'indexation moteurs :
 //  - Embed Plausible (via shared dashboard link, server-only env)
-//  - Status vérification GSC / Bing / Yandex (env vars presence check)
+//  - Status vérification GSC / Bing (env vars presence check)
 //  - IndexNow : status clé + bouton "Notifier moteurs maintenant" (Server Action)
 //  - Rappel events Plausible custom trackés côté code (trackEvent helper)
 //
@@ -81,7 +81,7 @@ async function pingIndexNowAction(): Promise<PingResult> {
       ok: res.ok,
       status: res.status,
       message: res.ok
-        ? `${urlList.length} URLs notifiées à Bing/Yandex/Seznam/Naver`
+        ? `${urlList.length} URLs notifiées à Bing (+ autres moteurs IndexNow)`
         : `HTTP ${res.status} — vérifier logs serveur`,
       urlsPinged: res.ok ? urlList.length : 0,
     };
@@ -132,16 +132,6 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       helpUrl: "https://www.bing.com/webmasters/about",
       envVar: "BING_SITE_VERIFICATION",
     },
-    {
-      name: "Yandex Webmaster",
-      status: env.YANDEX_SITE_VERIFICATION ? "ok" : "not-configured",
-      detail: env.YANDEX_SITE_VERIFICATION
-        ? "Balise meta yandex-verification posée"
-        : "Variable YANDEX_SITE_VERIFICATION absente",
-      externalUrl: "https://webmaster.yandex.com/sites/",
-      helpUrl: "https://webmaster.yandex.com",
-      envVar: "YANDEX_SITE_VERIFICATION",
-    },
   ];
 
   return (
@@ -150,8 +140,8 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
         <div>
           <h1 className="admin-h1-large">Analytics &amp; SEO</h1>
           <p className="admin-meta">
-            Audience (Plausible) + indexation moteurs (Google Search Console, Bing, Yandex,
-            IndexNow). Tout est consolidé ici — pas besoin d&apos;ouvrir 4 onglets.
+            Audience (Plausible) + indexation moteurs (Google Search Console, Bing, IndexNow).
+            Tout est consolidé ici — pas besoin d&apos;ouvrir plusieurs onglets.
           </p>
         </div>
         <div>
@@ -224,7 +214,7 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
         )}
       </div>
 
-      {/* ── Vérifications SEO (GSC / Bing / Yandex) ──────────────────────── */}
+      {/* ── Vérifications SEO (GSC / Bing) ──────────────────────────────── */}
       <div className="admin-card">
         <h2 className="admin-h2">Vérification moteurs de recherche</h2>
         <p className="admin-meta-block">
@@ -273,12 +263,12 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
 
       {/* ── IndexNow ─────────────────────────────────────────────────────── */}
       <div className="admin-card">
-        <h2 className="admin-h2">IndexNow — notification instantanée Bing/Yandex</h2>
+        <h2 className="admin-h2">IndexNow — notification instantanée Bing</h2>
         <p className="admin-meta-block">
-          Protocol IndexNow : notifie Bing, Yandex, Seznam et Naver en quelques secondes quand le
-          contenu change (vs. 6+ mois pour Bing en mode crawl passif). Le ping des articles de blog
-          est automatique à la publication. Bouton ci-dessous = ping manuel des 10 pages
-          stratégiques (utile après un push de modifications importantes).
+          Protocol IndexNow : notifie Bing (+ autres moteurs compatibles IndexNow.org) en
+          quelques secondes quand le contenu change (vs. 6+ mois en mode crawl passif). Le ping
+          des articles de blog est automatique à la publication. Bouton ci-dessous = ping
+          manuel des 10 pages stratégiques (utile après un push de modifications importantes).
         </p>
         <p className="admin-meta-block">
           {env.INDEXNOW_KEY ? statusPill("ok", "● Clé configurée") : statusPill("not-configured")} ·
