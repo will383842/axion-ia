@@ -27,6 +27,7 @@ import {
   markCompletedAction,
   markNoShowAction,
   markForceMajeureAction,
+  validateBookingOnCalendarAction,
 } from "./admin-actions";
 
 beforeEach(() => {
@@ -152,6 +153,38 @@ describe("admin-actions — Zod validation", () => {
         bookingId: "00000000-0000-0000-0000-000000000001",
         notes:
           "Catastrophe naturelle empêchant le déplacement sur site (préfecture niveau alerte rouge)",
+      });
+      expect(res.error).toBe("unauthorized");
+    });
+  });
+
+  describe("validateBookingOnCalendarAction (clic Will 2)", () => {
+    it("rejette si bookingId pas UUID", async () => {
+      const res = await validateBookingOnCalendarAction({
+        bookingId: "not-a-uuid",
+      });
+      expect(res).toEqual({ ok: false, error: "invalid_input" });
+    });
+
+    it("accepte notes optionnelles", async () => {
+      const res = await validateBookingOnCalendarAction({
+        bookingId: "00000000-0000-0000-0000-000000000001",
+      });
+      expect(res.error).not.toBe("invalid_input");
+    });
+
+    it("rejette notes > 2000 char", async () => {
+      const res = await validateBookingOnCalendarAction({
+        bookingId: "00000000-0000-0000-0000-000000000001",
+        notes: "x".repeat(2001),
+      });
+      expect(res).toEqual({ ok: false, error: "invalid_input" });
+    });
+
+    it("auth fail → unauthorized (pas de bypass via input)", async () => {
+      const res = await validateBookingOnCalendarAction({
+        bookingId: "00000000-0000-0000-0000-000000000001",
+        notes: "Acompte reçu + cadrage validé manuellement.",
       });
       expect(res.error).toBe("unauthorized");
     });

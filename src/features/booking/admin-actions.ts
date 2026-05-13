@@ -6,15 +6,15 @@
 //   - Agent 3 invariants TS1-TS20 + état D49-D51 + D59 + D61
 //
 // SCOPE V1 (livré ce sprint) :
-//   - pauseBookingAction        — A19 D61 (confirmed → paused, libère slots)
-//   - resumeBookingAction       — A20 D61 (paused → confirmed, re-bloque slots)
-//   - markCompletedAction       — in_progress → completed
-//   - markNoShowAction          — confirmed → no_show (super_admin only)
-//   - markForceMajeureAction    — * → force_majeure (super_admin only)
+//   - pauseBookingAction              — A19 D61 (confirmed → paused, libère slots)
+//   - resumeBookingAction             — A20 D61 (paused → confirmed, re-bloque slots)
+//   - markCompletedAction             — in_progress → completed
+//   - markNoShowAction                — confirmed → no_show (super_admin only)
+//   - markForceMajeureAction          — * → force_majeure (super_admin only)
+//   - validateBookingOnCalendarAction — clic Will 2 (awaiting_admin_validation → confirmed)
 //
 // HORS SCOPE V1 (dépendances externes — sprints suivants) :
 //   - sendContractAndDepositRequestAction → DocuSeal X.3 + emails X.13
-//   - validateBookingOnCalendarAction     → emails X.13
 //   - cancelBookingByAdminAction          → grille refund Stripe X.4 fin
 //   - cancelAndReissueContractAction      → DocuSeal X.3
 //   - createContractAddendumAction        → DocuSeal X.3
@@ -441,5 +441,106 @@ export async function markForceMajeureAction(
     }
     console.error("[markForceMajeureAction]", err);
     return { ok: false, error: "internal_error" };
+  }
+}
+
+// ============================================================
+// validateBookingOnCalendarAction (clic Will 2) — awaiting_admin_validation → confirmed
+// ============================================================
+//
+// Trigger : depuis admin /calendrier ou /demandes après validation manuelle
+// par Will que l'intervention peut être verrouillée (acompte reçu + cadrage OK
+// + contrat signé OU mode hybride manuel). Le slot bascule en 🔴 "reserved"
+// définitif et un email "intervention verrouillée" part au visiteur.
+//
+// Différence vs Stripe webhook auto :
+//   - Webhook deposit.paid → deposit_paid (état intermédiaire)
+//   - Workflow normal V1.5+ : deposit_paid + contract_signed + cadrage_held
+//     → applyTransition(awaiting_admin_validation, trigger=system.*)
+//   - Clic Will 2 ici : awaiting_admin_validation → confirmed
+//
+// V1 transitoire (sans DocuSeal X.3 ni cadrage workflow complet) : Will peut
+// invoquer cette action depuis n'importe quel état "en attente" via override
+// (transition_not_allowed retourné si état pas dans la whitelist).
+
+const validateOnCalendarSchema = z.object({
+  bookingId: z.string().uuid(),
+  notes: z.string().max(2000).optional(),
+});
+
+export async function validateBookingOnCalendarAction(
+  input: z.input<typeof validateOnCalendarSchema>,
+): Promise<AdminActionResult> {
+  const parsed = validateOnCalendarSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid_input" };
+
+  let admin: AdminContext;
+  try {
+    admin = await requireAdmin("admin");
+  } catch (err) {
+    return authErrorResult(err);
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      const booking = await tx.booking.findUnique({
+        where: { id: parsed.data.bookingId },
+        select: { status: true, slotId: true },
+      });
+      if (!booking) throw new StateMachineError("Booking introuvable", "booking_not_found");
+
+      const txOpts: ApplyTransitionOptions = {
+        to: "confirmed",
+        trigger: "admin.validate_on_calendar",
+        triggeredBy: "admin",
+        triggeredById: admin.userId,
+        ...(parsed.data.notes ? { notes: parsed.data.notes } : {}),
+        snapshotBefore: { status: booking.status },
+        snapshotAfter: { status: "confirmed" },
+      };
+      await applyTransition(tx, parsed.data.bookingId, txOpts);
+
+      // Slot calendrier : confirme le statut "reserved" définitif.
+      if (booking.slotId) {
+        await tx.calendarSlot.update({
+          where: { id: booking.slotId },
+          data: { status: "reserved" },
+        });
+      }
+
+      await tx.booking.update({
+        where: { id: parsed.data.bookingId },
+        data: { confirmedAt: new Date() },
+      });
+    });
+
+    sendTelegram({
+      tag: "OPTION CONFIRMÉE",
+      body: `Booking ${parsed.data.bookingId} verrouillé sur calendrier par ${admin.userId}.`,
+    }).catch(() => {});
+
+    // Sprint X.13 — email visiteur "intervention verrouillée dans le calendrier".
+    const ctx = await getEmailPayloadBase(parsed.data.bookingId);
+    if (ctx) {
+      const bb = await prisma.booking.findUnique({
+        where: { id: parsed.data.bookingId },
+        select: { bookingDate: true, participantsCount: true },
+      });
+      const iso = bb?.bookingDate.toISOString() ?? new Date().toISOString();
+      enqueueEmail("booking-validated-on-calendar", ctx.email, ctx.locale, {
+        contactName: ctx.contactName,
+        interventionType: ctx.interventionType,
+        bookingDate: iso.slice(0, 10),
+        bookingTime: iso.slice(11, 16),
+        participantsCount: bb?.participantsCount ?? 1,
+        bookingId: parsed.data.bookingId,
+      }).catch(() => {
+        /* fail-soft email queue (BullMQ Redis down) */
+      });
+    }
+
+    return { ok: true };
+  } catch (err) {
+    return stateMachineErrorResult(err, "[validateBookingOnCalendarAction]");
   }
 }
