@@ -6,7 +6,7 @@
 //
 // Cf. 04-PLAN-EXECUTION Sprint X.5bis + UX-E2E-VERIFICATION B-P0-1 à B-P0-6.
 
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { quoteRequestSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -16,6 +16,8 @@ import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
+import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
+import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 
 export type QuoteRequestState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -74,6 +76,16 @@ export async function submitQuoteRequestAction(
   const hdrs = await headers();
   const userAgent = hdrs.get("user-agent") ?? null;
   const referer = hdrs.get("referer") ?? null;
+  // Sprint X.18 — funnel attribution.
+  const c = await cookies();
+  const utm = readUtmCookie(c.get(UTM_COOKIE_NAME)?.value);
+  const refCity = c.get(REFERRER_CITY_COOKIE_NAME)?.value;
+  const funnelData: { utm?: typeof utm; referrerCity?: string } | null = (() => {
+    const out: { utm?: typeof utm; referrerCity?: string } = {};
+    if (Object.keys(utm).length > 0) out.utm = utm;
+    if (refCity && refCity.length > 0 && refCity.length <= 120) out.referrerCity = refCity;
+    return Object.keys(out).length > 0 ? out : null;
+  })();
 
   // Persistance Submission. Pipeline V1 :
   //   status='new' à la création, Will fait passer en 'qualifying' depuis admin.
@@ -98,9 +110,10 @@ export async function submitQuoteRequestAction(
         timingWeeks: parsed.data.timingWeeks ?? null,
         willingToTravel: parsed.data.willingToTravel ?? null,
         participantsEstimate: parsed.data.participantsEstimate ?? null,
-        // Tracking funnel — utm/region via referer pour X.18 (à enrichir).
+        // Sprint X.18 — funnel attribution (UTM cookie + pSEO referrerCity).
         sourceReferer: referer,
-      },
+        ...(funnelData ? { funnel: funnelData as unknown as object } : {}),
+      } as object,
       ipAddress: ip,
       userAgent,
       ...(referer ? { referer } : {}),

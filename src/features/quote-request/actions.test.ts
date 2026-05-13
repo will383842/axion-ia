@@ -31,6 +31,10 @@ vi.mock("next/headers", () => ({
     get: (k: string) =>
       k === "user-agent" ? "Mozilla/5.0 test" : k === "referer" ? "https://axion-ia.com/" : null,
   }),
+  // Sprint X.18 — cookies() mock for funnel attribution lookup.
+  cookies: vi.fn().mockResolvedValue({
+    get: (_k: string) => undefined,
+  }),
 }));
 
 import { submitQuoteRequestAction } from "./actions";

@@ -13,7 +13,7 @@
 
 "use server";
 
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { bookingSchema, option48hSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -24,6 +24,33 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { slugToEnum, getInterventionPriceCents } from "@/lib/intervention-type";
+import { readUtmCookie, UTM_COOKIE_NAME, type UtmParams } from "@/lib/utm";
+import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+
+/**
+ * Lecture cookies funnel (UTM + referrerCity pSEO) — Sprint X.18.
+ * Best-effort : si cookie absent ou corrompu, retourne objet vide (les
+ * Server Actions persistent quand même la Submission sans attribution).
+ */
+async function readFunnelAttribution(): Promise<{
+  utm?: UtmParams;
+  referrerCity?: string;
+}> {
+  try {
+    const c = await cookies();
+    const utmRaw = c.get(UTM_COOKIE_NAME)?.value;
+    const referrerCityRaw = c.get(REFERRER_CITY_COOKIE_NAME)?.value;
+    const utm = utmRaw ? readUtmCookie(utmRaw) : undefined;
+    const out: { utm?: UtmParams; referrerCity?: string } = {};
+    if (utm && Object.keys(utm).length > 0) out.utm = utm;
+    if (referrerCityRaw && referrerCityRaw.length > 0 && referrerCityRaw.length <= 120) {
+      out.referrerCity = referrerCityRaw;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
 
 export type BookingState = { ok: true; bookingId: string } | { ok: false; error: string };
 export type Option48hState =
@@ -86,6 +113,8 @@ export async function createBookingAction(
   const companySizeRaw = (formData.get("companySize") as string | null) ?? null;
   const contactRoleRaw = (formData.get("contactRole") as string | null) ?? null;
   const notesRaw = (formData.get("notes") as string | null) ?? null;
+  // Sprint X.18 — attribution funnel (UTM cookie + pSEO referrerCity).
+  const funnelAttr = await readFunnelAttribution();
   const { booking } = await prisma.$transaction(async (tx) => {
     const submission = await tx.submission.create({
       data: {
@@ -107,7 +136,11 @@ export async function createBookingAction(
           ...(companyCityRaw ? { companyCity: companyCityRaw } : {}),
           ...(companySectorRaw ? { companySector: companySectorRaw } : {}),
           ...(notesRaw ? { notes: notesRaw } : {}),
-        },
+          // Sprint X.18 — funnel attribution (UTM cookie + pSEO referrerCity).
+          ...(funnelAttr.utm || funnelAttr.referrerCity
+            ? { funnel: funnelAttr as unknown as object }
+            : {}),
+        } as object,
         ipAddress: ip,
         userAgent,
       },

@@ -5,7 +5,7 @@
 
 "use server";
 
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -15,6 +15,8 @@ import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
+import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
+import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 
 export type ContactState = { ok: true } | { ok: false; error: string };
 
@@ -46,6 +48,13 @@ export async function submitContactAction(
 
   const locale = parseLocale(formData.get("locale"));
   const userAgent = (await headers()).get("user-agent") ?? null;
+  // Sprint X.18 — funnel attribution (UTM + pSEO referrerCity).
+  const c = await cookies();
+  const utm = readUtmCookie(c.get(UTM_COOKIE_NAME)?.value);
+  const refCity = c.get(REFERRER_CITY_COOKIE_NAME)?.value;
+  const funnel: { utm?: typeof utm; referrerCity?: string } = {};
+  if (Object.keys(utm).length > 0) funnel.utm = utm;
+  if (refCity && refCity.length > 0 && refCity.length <= 120) funnel.referrerCity = refCity;
 
   const submission = await prisma.submission.create({
     data: {
@@ -54,7 +63,10 @@ export async function submitContactAction(
       companyName: parsed.data.company ?? "—",
       contactName: parsed.data.name,
       contactEmail: parsed.data.email,
-      details: { message: parsed.data.message },
+      details: {
+        message: parsed.data.message,
+        ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
+      } as object,
       ipAddress: ip,
       userAgent,
     },
