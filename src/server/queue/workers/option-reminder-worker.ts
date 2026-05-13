@@ -5,7 +5,7 @@
 // Envoie email + flag reminderSentAt.
 
 import { Worker } from "bullmq";
-import { getBullConnection } from "../connection";
+import { getBullConnectionOrThrow } from "../connection";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "../queues";
 import type { OptionReminderJobData } from "../types";
@@ -57,7 +57,7 @@ export function startOptionReminderWorker(): Worker<OptionReminderJobData> {
       }
       console.log(`[option-reminder] reminders sent for ${due.length} option(s)`);
     },
-    { connection: getBullConnection(), concurrency: 1 },
+    { connection: getBullConnectionOrThrow(), concurrency: 1 },
   );
 
   worker.on("ready", () => console.log("[option-reminder-worker] ready"));

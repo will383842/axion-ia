@@ -18,7 +18,7 @@
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
 
 import { Worker } from "bullmq";
-import { getBullConnection } from "../connection";
+import { getBullConnectionOrThrow } from "../connection";
 import { prisma } from "@/lib/prisma";
 import type { RetentionPurgeJobData } from "../types";
 
@@ -139,7 +139,7 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
           `newsletter=${counts.newsletter} bookings=${counts.bookings}`,
       );
     },
-    { connection: getBullConnection(), concurrency: 1 },
+    { connection: getBullConnectionOrThrow(), concurrency: 1 },
   );
 
   worker.on("ready", () => console.log("[retention-purge-worker] ready"));

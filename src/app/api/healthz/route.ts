@@ -45,6 +45,7 @@ async function checkRedis(): Promise<"ok" | "error" | "skipped"> {
   try {
     const { getBullConnection } = await import("@/server/queue/connection");
     const conn = getBullConnection();
+    if (!conn) return "skipped"; // BULLMQ_DISABLED toggle
     await conn.ping();
     return "ok";
   } catch {
