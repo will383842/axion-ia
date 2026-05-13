@@ -104,7 +104,57 @@
 - Templates emails `payment-link`, `payment-receipt`, `payment-failed` (Sprint X.13).
 - Stripe Radar activation + ADR (P1).
 
-### ⏳ PROCHAIN — Sprint X.3 DocuSeal self-hosted (3-4j) ou X.4 State machine (4j)
+### ⚙️ Sprint X.4 — State machine deposit-validation gated (FOUNDATIONS livré)
+
+**Livré session 2026-05-13 (suite session)** :
+
+- `src/features/booking/state-machine.ts` — helper TS pur (sans DB) :
+  - `TRANSITIONS: Record<BookingStatus, ReadonlyArray<BookingStatus>>` — whitelist
+    exhaustive 32 statuts (V0 legacy + V1 complets). Couvre tous les flows D49-D51,
+    pause/reprise D61, installment_overdue D59, force_majeure, cancellations.
+  - `TERMINAL_STATES: ReadonlySet<BookingStatus>` — 15 statuts sémantiquement
+    terminaux (incl. cancelled*\*, no_show, paid_balance, force_majeure qui
+    ont des transitions comptables vers refunded*\*/archived).
+  - `isTransitionAllowed(from, to)` — helper pur, utilisable côté admin UI pour
+    filtrer les actions disponibles.
+  - `assertTransitionAllowed(from, to)` — throw `StateMachineError('transition_not_allowed')`.
+  - `isTerminalState(status)` — helper.
+  - `applyTransition(tx, bookingId, opts)` — atomique :
+    1. Lecture du fromStatus (anti-race au minimum, caller doit idéalement
+       `SELECT … FOR UPDATE`).
+    2. Assert whitelist OK.
+    3. Insert BookingTransition (UNIQUE `(bookingId, toStatus, trigger)`
+       garantit l'idempotence — webhook Stripe rejoué = no-op si `ignoreDuplicate`).
+    4. Update Booking.status.
+  - Erreur typée `StateMachineError` avec code `transition_not_allowed |
+booking_not_found | booking_status_mismatch | transition_duplicate`.
+- `src/features/booking/state-machine.test.ts` — 21 tests purs :
+  - Transitions clés D49-D51 (option_pending → cadrage → contrat → acompte → confirmed)
+  - Skip cadrage I3 (audit_flash_onsite)
+  - Devis flow I4 (quote_required → quote_sent → quote_signed → contract_pending)
+  - Pause/reprise D61 bidirectionnel
+  - Escalade D59 (confirmed/invoiced_balance → installment_overdue → disputed)
+  - Refus transitions hors whitelist + backward
+  - Identification terminaux + invariants TS1-TS8
+- TS clean + 173/173 vitest verts (152 + 21 nouveaux).
+
+**Reste X.4 (sprints suivants ou dépendances bloquantes)** :
+
+- Server Actions admin : `sendContractAndDepositRequestAction`, `validateBookingOnCalendarAction`,
+  `markCompletedAction`, `markNoShowAction`, `markForceMajeureAction`, `pauseBookingAction`,
+  `resumeBookingAction`, `cancelAndReissueContractAction`, `createContractAddendumAction`.
+  ⟶ Dépend de templates emails (Sprint X.13) + DocuSeal (Sprint X.3) + Stripe webhook
+  workers (Sprint X.12 BullMQ).
+- Refactor Server Actions legacy : `createBookingAction → option_pending`, `postOption48hAction`,
+  `validateOptionAction → sendContractAndDepositRequestAction`, `cancelBookingAction`.
+  ⟶ Plus risqué — touche du code en prod, à faire avec migration backfill V0→V1 (D63).
+- Migration V0→V1 backfill script `scripts/migrate-bookings-v0-to-v1.ts` (D63).
+  ⟶ Bloqué tant que le code legacy n'est pas refactoré (sinon mismatch).
+- Drop legacy : `Booking.calendarEventId`, `BookingStatus.postponed`, `BookingOptionStatus.confirmed`.
+  ⟶ Migration séparée, dépendances code legacy purgé.
+- Tests intégration applyTransition() avec Prisma + concurrence admin.
+
+### ⏳ PROCHAIN — Sprint X.3 DocuSeal self-hosted (3-4j) — infra Coolify externe
 
 ### 📋 BACKLOG SPRINTS V1
 
