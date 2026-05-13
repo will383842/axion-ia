@@ -140,8 +140,8 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
         <div>
           <h1 className="admin-h1-large">Analytics &amp; SEO</h1>
           <p className="admin-meta">
-            Audience (Plausible) + indexation moteurs (Google Search Console, Bing, IndexNow).
-            Tout est consolidé ici — pas besoin d&apos;ouvrir plusieurs onglets.
+            Audience (Plausible) + indexation moteurs (Google Search Console, Bing, IndexNow). Tout
+            est consolidé ici — pas besoin d&apos;ouvrir plusieurs onglets.
           </p>
         </div>
         <div>
@@ -265,10 +265,10 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       <div className="admin-card">
         <h2 className="admin-h2">IndexNow — notification instantanée Bing</h2>
         <p className="admin-meta-block">
-          Protocol IndexNow : notifie Bing (+ autres moteurs compatibles IndexNow.org) en
-          quelques secondes quand le contenu change (vs. 6+ mois en mode crawl passif). Le ping
-          des articles de blog est automatique à la publication. Bouton ci-dessous = ping
-          manuel des 10 pages stratégiques (utile après un push de modifications importantes).
+          Protocol IndexNow : notifie Bing (+ autres moteurs compatibles IndexNow.org) en quelques
+          secondes quand le contenu change (vs. 6+ mois en mode crawl passif). Le ping des articles
+          de blog est automatique à la publication. Bouton ci-dessous = ping manuel des 10 pages
+          stratégiques (utile après un push de modifications importantes).
         </p>
         <p className="admin-meta-block">
           {env.INDEXNOW_KEY ? statusPill("ok", "● Clé configurée") : statusPill("not-configured")} ·
