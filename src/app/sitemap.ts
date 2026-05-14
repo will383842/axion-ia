@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
+import { prisma } from "@/lib/prisma";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
   getAllBlogCategorySlugs,
@@ -63,6 +64,8 @@ const SITEMAP_CHUNK_SIZE = 1000;
 type StaticSitemapId =
   | "pages"
   | "blog"
+  | "news"
+  | "faq"
   | "help"
   | "cas-concrets"
   | "comparaisons"
@@ -208,6 +211,11 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   const staticIds: StaticSitemapId[] = [
     "pages",
     "blog",
+    // Audit final P1-12 fix : split sitemap-news.xml + sitemap-faq.xml
+    // dédiés (auparavant bundled `help.xml`). Google News compatibility +
+    // QAPage Speakable distincte.
+    "news",
+    "faq",
     "help",
     "cas-concrets",
     "comparaisons",
@@ -265,6 +273,10 @@ export default async function sitemap(props: {
       return buildPagesSitemap(now);
     case "blog":
       return buildBlogSitemap(now);
+    case "news":
+      return buildNewsSitemap(now);
+    case "faq":
+      return buildFaqSitemap(now);
     case "help":
       return buildHelpSitemap(now);
     case "cas-concrets":
@@ -439,6 +451,8 @@ function buildBlogSitemap(now: Date): MetadataRoute.Sitemap {
 }
 
 function buildHelpSitemap(now: Date): MetadataRoute.Sitemap {
+  // Audit final P1-12 fix : `/faq/:slug` déplacé dans `buildFaqSitemap`
+  // (sub-sitemap dédié `sitemap-faq.xml`). Help reste centre-aide + categories.
   return buildDynamic(
     [
       {
@@ -455,6 +469,25 @@ function buildHelpSitemap(now: Date): MetadataRoute.Sitemap {
         changeFrequency: "monthly",
         priority: 0.5,
       },
+    ],
+    now,
+  );
+}
+
+/**
+ * Audit final P1-12 fix — sub-sitemap dédié FAQ (QAPage Speakable).
+ *
+ * Auparavant bundled dans `help.xml`. La séparation permet à Google /
+ * Bing AI / Perplexity d'isoler les Q/R structurées (QAPage Speakable)
+ * du centre-aide rédactionnel. Volume V1 modéré, scale 100+ Q/R post
+ * Q/R post-process auto § 29 (commit S6.1 `a2f9638`).
+ *
+ * V1 = FAQ legacy `getAllFaqIds()` depuis `@/content/transversal.ts`.
+ * V1.5+ = Q/R DB-generated tier_1_indexable seulement (filtre Prisma).
+ */
+function buildFaqSitemap(now: Date): MetadataRoute.Sitemap {
+  return buildDynamic(
+    [
       {
         fr: "/faq/:slug",
         slugs: getAllFaqIds(),
@@ -464,6 +497,66 @@ function buildHelpSitemap(now: Date): MetadataRoute.Sitemap {
     ],
     now,
   );
+}
+
+/**
+ * Audit final P1-12 fix — sub-sitemap dédié actualités RSS (NewsArticle).
+ *
+ * Émet uniquement les `Article.isNews=true` `tier_1_indexable` publiés
+ * récemment (Google News considère freshness ≤ 48h pour News carousel,
+ * on prend 90 jours pour le sitemap-news classique).
+ *
+ * URL pattern : `/fr/actualites/<slug>` (route S6.1 P0-2 fix).
+ *
+ * Bootstrap-safe : si table `articles` pas migrée OU 0 actualités,
+ * retourne array vide (sitemap-index ignore vide proprement).
+ */
+async function buildNewsSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
+  const cutoff = new Date(Date.now() - 90 * 24 * 3600_000);
+  let rows: Array<{
+    publishedAt: Date | null;
+    translations: Array<{ slug: string }>;
+  }> = [];
+  try {
+    rows = await prisma.article.findMany({
+      where: {
+        status: "published",
+        isNews: true,
+        indexationTier: "tier_1_indexable",
+        publishedAt: { gte: cutoff },
+      },
+      orderBy: { publishedAt: "desc" },
+      take: 1000,
+      select: {
+        publishedAt: true,
+        translations: {
+          where: { locale: "fr" },
+          select: { slug: true },
+          take: 1,
+        },
+      },
+    });
+  } catch {
+    // P2021 table absente (bootstrap pre-migration) — fail-soft
+    return [];
+  }
+
+  const entries: MetadataRoute.Sitemap = [];
+  for (const row of rows) {
+    const slug = row.translations[0]?.slug;
+    if (!slug) continue;
+    const frUrl = `${SITE_URL}/fr/actualites/${slug}`;
+    const enUrl = `${SITE_URL}/en/news/${slug}`;
+    const lastMod = row.publishedAt ?? now;
+    entries.push({
+      url: frUrl,
+      lastModified: lastMod,
+      changeFrequency: "daily",
+      priority: 0.8,
+      alternates: { languages: { fr: frUrl, en: enUrl, "x-default": frUrl } },
+    });
+  }
+  return entries;
 }
 
 function buildCasConcretsSitemap(now: Date): MetadataRoute.Sitemap {
