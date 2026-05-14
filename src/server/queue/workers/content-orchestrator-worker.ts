@@ -19,6 +19,10 @@ import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import {
+  computeAntiBurstSchedule,
+  msSinceStartOfDay,
+} from "@/server/content-gen/scheduler/anti-burst";
 import type {
   CompanySize,
   ContentType,
@@ -31,6 +35,8 @@ const QUEUE_NAME = "content-orchestrator";
 interface BatchSettings {
   readonly dailyBatchSize: number;
   readonly workersConcurrency: number;
+  readonly dailyTargetByType?: Partial<Record<ContentType, number>>;
+  readonly antiBurstEnabled?: boolean;
 }
 
 interface KillSwitchState {
@@ -96,11 +102,49 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     return;
   }
 
-  // Repartition equitable du daily batch entre campagnes actives
-  const perCampaignTick = Math.max(
-    1,
-    Math.floor(batchSettings.dailyBatchSize / runningCampaigns.length),
-  );
+  // Sprint 7 V2 : si dailyTargetByType configuré, on dérive `perCampaignTick`
+  // depuis les décisions anti-burst (somme des enqueueCount actuels). Sinon
+  // fallback V1 = dailyBatchSize global.
+  const perTypeTargets = batchSettings.dailyTargetByType ?? {};
+  const hasPerTypeMode = Object.values(perTypeTargets).some((v) => (v ?? 0) > 0);
+
+  let tickBudget: number;
+  let perTypeDecisions: ReadonlyArray<{ contentType: ContentType; enqueueCount: number }> = [];
+  if (hasPerTypeMode) {
+    const startOfDayUtc = new Date();
+    startOfDayUtc.setUTCHours(0, 0, 0, 0);
+    const createdTodayRaw = await prisma.contentGenJob.groupBy({
+      by: ["contentType"],
+      where: { createdAt: { gte: startOfDayUtc }, status: { not: "cancelled" } },
+      _count: { _all: true },
+    });
+    const createdTodayByType: Partial<Record<ContentType, number>> = {};
+    for (const row of createdTodayRaw) {
+      createdTodayByType[row.contentType as ContentType] = row._count._all;
+    }
+    perTypeDecisions = computeAntiBurstSchedule({
+      targetByType: perTypeTargets,
+      createdTodayByType,
+      msSinceStartOfDay: msSinceStartOfDay(),
+      antiBurstEnabled: batchSettings.antiBurstEnabled ?? true,
+    });
+    tickBudget = perTypeDecisions.reduce((sum, d) => sum + d.enqueueCount, 0);
+    if (tickBudget === 0) {
+      console.log("[orchestrator] per-type schedule says nothing to enqueue this tick");
+      return;
+    }
+  } else {
+    tickBudget = batchSettings.dailyBatchSize;
+  }
+
+  // Repartition equitable du tick budget entre campagnes actives
+  const perCampaignTick = Math.max(1, Math.floor(tickBudget / runningCampaigns.length));
+
+  // Sprint 7 V2 : compteur résiduel par type pour distribuer entre campagnes
+  const remainingByType: Partial<Record<ContentType, number>> = {};
+  for (const d of perTypeDecisions) {
+    remainingByType[d.contentType] = d.enqueueCount;
+  }
 
   let totalEnqueued = 0;
 
@@ -125,7 +169,17 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     const regionAnchors = campaign.anchorRegionSlugs;
 
     for (let i = 0; i < toEnqueue; i++) {
-      const contentType = sampleWeighted(typeDist);
+      // Sprint 7 V2 : si mode per-type actif, pick le prochain type dont
+      // le résidu > 0. Sinon fallback V1 = sampleWeighted typeDist.
+      let contentType: ContentType | null;
+      if (hasPerTypeMode) {
+        const next = Object.entries(remainingByType).find(([, count]) => (count ?? 0) > 0);
+        if (!next) break;
+        contentType = next[0] as ContentType;
+        remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
+      } else {
+        contentType = sampleWeighted(typeDist);
+      }
       if (!contentType) continue;
       const aud = sampleAudienceMix(audienceMix);
       const searchIntent = intentMix ? sampleWeighted(intentMix) : "informational";
@@ -210,7 +264,8 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   }
 
   console.log(
-    `[orchestrator] tick OK — ${totalEnqueued} jobs enqueued across ${runningCampaigns.length} campaigns`,
+    `[orchestrator] tick OK — ${totalEnqueued} jobs enqueued across ${runningCampaigns.length} campaigns ` +
+      `(mode=${hasPerTypeMode ? "per-type-antiburst" : "global-v1"}, tickBudget=${tickBudget})`,
   );
 }
 

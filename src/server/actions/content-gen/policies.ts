@@ -11,6 +11,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { ContentType } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 
@@ -18,11 +19,30 @@ import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 // /settings/batches
 // ────────────────────────────────────────────────────────────────────
 
+export const CONTENT_TYPES_ALL: ReadonlyArray<ContentType> = [
+  "landing_ville",
+  "blog_article",
+  "blog_from_rss",
+  "blog_from_keywords",
+  "blog_from_title",
+  "comparison",
+  "guide_pilier",
+  "qa_derived",
+  "faq_standalone",
+];
+
+/** Target/jour par type (Sprint 7 V2). 0 = type désactivé en mode V2. */
+export type DailyTargetByType = Partial<Record<ContentType, number>>;
+
 export interface BatchSettings {
   readonly dailyBatchSize: number;
   readonly workersConcurrency: number;
   readonly retryMaxAttempts: number;
   readonly retryBackoffMs: number;
+  /** Sprint 7 V2 : cibles/jour par type. Vide = mode V1 (dailyBatchSize global). */
+  readonly dailyTargetByType: DailyTargetByType;
+  /** Sprint 7 V2 : étalement uniforme sur 24h (vs burst d'un coup). */
+  readonly antiBurstEnabled: boolean;
 }
 
 const BATCH_DEFAULTS: BatchSettings = {
@@ -30,10 +50,20 @@ const BATCH_DEFAULTS: BatchSettings = {
   workersConcurrency: 3,
   retryMaxAttempts: 3,
   retryBackoffMs: 30_000,
+  dailyTargetByType: {},
+  antiBurstEnabled: true,
 };
 
 export async function getBatchSettings(): Promise<BatchSettings> {
-  return readContentGenConfig<BatchSettings>("batches", BATCH_DEFAULTS);
+  const raw = await readContentGenConfig<Partial<BatchSettings>>("batches", BATCH_DEFAULTS);
+  return {
+    dailyBatchSize: raw.dailyBatchSize ?? BATCH_DEFAULTS.dailyBatchSize,
+    workersConcurrency: raw.workersConcurrency ?? BATCH_DEFAULTS.workersConcurrency,
+    retryMaxAttempts: raw.retryMaxAttempts ?? BATCH_DEFAULTS.retryMaxAttempts,
+    retryBackoffMs: raw.retryBackoffMs ?? BATCH_DEFAULTS.retryBackoffMs,
+    dailyTargetByType: raw.dailyTargetByType ?? BATCH_DEFAULTS.dailyTargetByType,
+    antiBurstEnabled: raw.antiBurstEnabled ?? BATCH_DEFAULTS.antiBurstEnabled,
+  };
 }
 
 export async function updateBatchSettings(input: BatchSettings): Promise<void> {
@@ -42,6 +72,16 @@ export async function updateBatchSettings(input: BatchSettings): Promise<void> {
   if (input.workersConcurrency < 1 || input.workersConcurrency > 20)
     throw new Error("concurrency_range");
   if (input.retryMaxAttempts < 0 || input.retryMaxAttempts > 10) throw new Error("retry_range");
+
+  // Sprint 7 V2 : validation per-type targets
+  let totalByType = 0;
+  for (const [type, target] of Object.entries(input.dailyTargetByType)) {
+    if (!CONTENT_TYPES_ALL.includes(type as ContentType)) throw new Error("type_unknown");
+    if (typeof target !== "number" || target < 0 || target > 100) throw new Error("target_range");
+    totalByType += target;
+  }
+  if (totalByType > 500) throw new Error("total_per_type_too_high");
+
   await writeContentGenConfig("batches", input, session.userId, "Réglages batches & workers");
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
 }

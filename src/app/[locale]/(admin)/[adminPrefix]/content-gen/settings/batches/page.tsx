@@ -6,8 +6,14 @@
  */
 
 import { redirect } from "next/navigation";
+import type { ContentType } from "../../../../../../../../prisma/generated/client";
 import { auth } from "@/auth";
-import { getBatchSettings, updateBatchSettings } from "@/server/actions/content-gen/policies";
+import {
+  CONTENT_TYPES_ALL,
+  type DailyTargetByType,
+  getBatchSettings,
+  updateBatchSettings,
+} from "@/server/actions/content-gen/policies";
 
 export const dynamic = "force-dynamic";
 
@@ -24,11 +30,21 @@ export default async function BatchesSettingsPage({ params }: PageProps) {
 
   async function save(formData: FormData) {
     "use server";
+    const dailyTargetByType: DailyTargetByType = {};
+    for (const type of CONTENT_TYPES_ALL) {
+      const raw = formData.get(`dailyTarget_${type}`);
+      const num = Number(raw ?? 0);
+      if (Number.isFinite(num) && num > 0) {
+        dailyTargetByType[type as ContentType] = num;
+      }
+    }
     await updateBatchSettings({
       dailyBatchSize: Number(formData.get("dailyBatchSize") ?? 0),
       workersConcurrency: Number(formData.get("workersConcurrency") ?? 0),
       retryMaxAttempts: Number(formData.get("retryMaxAttempts") ?? 0),
       retryBackoffMs: Number(formData.get("retryBackoffMs") ?? 0),
+      dailyTargetByType,
+      antiBurstEnabled: formData.get("antiBurstEnabled") === "on",
     });
   }
 
@@ -106,6 +122,50 @@ export default async function BatchesSettingsPage({ params }: PageProps) {
               className="admin-input"
               required
             />
+          </div>
+        </div>
+
+        <hr style={{ margin: "2rem 0 1rem", borderColor: "var(--color-border)" }} />
+
+        <div>
+          <h2 className="admin-h2">Mode V2 — cibles/jour par type (Sprint 7)</h2>
+          <p className="admin-meta">
+            Si <strong>au moins un</strong> type a une cible &gt; 0, l&apos;orchestrator passe en
+            mode anti-burst per-type et ignore <code>dailyBatchSize</code> global. Laisser tout à 0
+            pour rester en mode V1 (global). Plage par type : 0 à 100/jour. Plafond cumulé :
+            500/jour.
+          </p>
+
+          <div className="admin-field" style={{ marginTop: "1rem" }}>
+            <label htmlFor="antiBurstEnabled" className="admin-label">
+              <input
+                type="checkbox"
+                id="antiBurstEnabled"
+                name="antiBurstEnabled"
+                defaultChecked={cfg.antiBurstEnabled}
+                style={{ marginRight: "0.5rem" }}
+              />
+              Anti-burst — étaler uniformément sur 24h (vs rattraper d&apos;un coup)
+            </label>
+          </div>
+
+          <div className="admin-filters-grid" style={{ marginTop: "1rem" }}>
+            {CONTENT_TYPES_ALL.map((type) => (
+              <div className="admin-field" key={type}>
+                <label htmlFor={`dailyTarget_${type}`} className="admin-label">
+                  {type}
+                </label>
+                <input
+                  id={`dailyTarget_${type}`}
+                  name={`dailyTarget_${type}`}
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue={cfg.dailyTargetByType[type] ?? 0}
+                  className="admin-input"
+                />
+              </div>
+            ))}
           </div>
         </div>
 

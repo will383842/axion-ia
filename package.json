@@ -42,6 +42,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
+    "content-gen:seed": "tsx prisma/seeds/content-gen/index.ts",
     "villes:import": "tsx scripts/import-insee-villes.ts",
     "posts:check": "tsx scripts/check-posts.ts",
     "i18n:check": "tsx scripts/check-i18n.ts",
