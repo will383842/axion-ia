@@ -13,26 +13,13 @@
  * dans le worker similarity-monitor existant qui appellera ce module.
  */
 
-/** Cosine similarity entre 2 vecteurs de même dimension. Retour [0,1]. */
-export function cosineSimilarity(a: ReadonlyArray<number>, b: ReadonlyArray<number>): number {
-  if (a.length !== b.length) {
-    throw new Error(`vector dim mismatch (${a.length} vs ${b.length})`);
-  }
-  if (a.length === 0) return 0;
-
-  let dot = 0;
-  let normA = 0;
-  let normB = 0;
-  for (let i = 0; i < a.length; i++) {
-    const ai = a[i]!;
-    const bi = b[i]!;
-    dot += ai * bi;
-    normA += ai * ai;
-    normB += bi * bi;
-  }
-  if (normA === 0 || normB === 0) return 0;
-  return dot / (Math.sqrt(normA) * Math.sqrt(normB));
-}
+/**
+ * Cosine similarity — réexport depuis `@/lib/knowledge/embeddings`
+ * (Sprint KB-9 a déjà la canonical implementation pour pgvector).
+ *
+ * Mes tests Sprint 12 valident à la fois le réexport et `classifyDedupVerdict`.
+ */
+export { cosineSimilarity } from "@/lib/knowledge/embeddings";
 
 export type DedupVerdict = "ok" | "similar" | "duplicate";
 

@@ -20,6 +20,8 @@ import { startIndexNowWorker } from "./workers/content-indexnow-worker";
 import { startGoogleIndexingWorker } from "./workers/content-google-indexing-worker";
 import { startContentQaExtractWorker } from "./workers/content-qa-extract-worker";
 import { startTierLifecycleWorker } from "./workers/content-tier-lifecycle-worker";
+import { startFactCheckWorker } from "./workers/content-fact-check-worker";
+import { startKeywordSyncWorker } from "./workers/content-keyword-sync-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -48,6 +50,8 @@ async function main() {
     startGoogleIndexingWorker(),
     startContentQaExtractWorker(), // Pass B fix P0-7 — Q/R post-process § 29
     startTierLifecycleWorker(), // Sprint 10 V2 — mensuel 15 06:00 UTC
+    startFactCheckWorker(), // Sprint 12.5 V2 — post-publish Perplexity claims
+    startKeywordSyncWorker(), // Sprint 12.5 V2 — cron hebdo GSC/SerpAPI
   ];
 
   await bootRepeatableJobs();

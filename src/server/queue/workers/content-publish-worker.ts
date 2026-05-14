@@ -31,6 +31,15 @@ import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 
 const QUEUE_NAME = "content-publish";
 
+let factCheckQueue: Queue | null = null;
+function getFactCheckQueue(): Queue {
+  if (factCheckQueue) return factCheckQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) throw new Error("REDIS_URL not set");
+  factCheckQueue = new Queue("content-fact-check", { connection: { url: redisUrl } });
+  return factCheckQueue;
+}
+
 export interface PublishJobPayload {
   readonly reviewQueueId: string;
   readonly promoteToTier1: boolean;
@@ -189,6 +198,22 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
       isNews,
       origin: "content-gen",
     });
+  }
+
+  // Sprint 12.5 V2 : fact-check Perplexity post-publish. Tous tiers, pas
+  // seulement tier-1 — sert aussi à scorer les tier-2 pour décider de
+  // l'auto-promote Sprint 10. Coût ~$0.005/article, idempotent.
+  try {
+    await getFactCheckQueue().add(
+      "check",
+      { articleId: article.id, contentGenJobId: cgJob.id },
+      { jobId: `fact-check-${cgJob.id}` },
+    );
+  } catch (err) {
+    console.warn(
+      `[publish] fact-check enqueue failed for article ${article.id}:`,
+      err instanceof Error ? err.message : String(err),
+    );
   }
 
   // Pass B fix P0-7 — Q/R post-process auto (§ 29 master prompt v1.7).

@@ -164,6 +164,20 @@ export const contentQaExtractQueue: Queue | null = connection
   : null;
 
 /**
+ * Fact-check Perplexity (Sprint 12.5 V2).
+ *
+ * Hook post-publish : pour chaque article publié, extrait claims chiffrés
+ * (%, montants, ratios, attributions) et appelle Perplexity Sonar pour
+ * valider/refuter. Remplit Article.factCheckScore. Coût ~$0.005/article.
+ */
+export const contentFactCheckQueue: Queue | null = connection
+  ? new Queue("content-fact-check", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 2 },
+    })
+  : null;
+
+/**
  * Tier lifecycle (Sprint 10 V2) — cron mensuel 15 du mois 06:00 UTC.
  * Scan les Articles tier-2 publiés ≥ 30j (promote candidates CTR > 5 %) +
  * tier-1 publiés ≥ 60j (demote candidates CTR < 1 %). Lit GSC API (skeleton
@@ -171,6 +185,19 @@ export const contentQaExtractQueue: Queue | null = connection
  */
 export const contentTierLifecycleQueue: Queue | null = connection
   ? new Queue("content-tier-lifecycle", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
+ * Keyword sync (Sprint 12.5 V2) — cron hebdo lundi 04:00 UTC.
+ * Query GSC API + SerpAPI pour chaque article publié ≥ 7j → upsert
+ * KeywordTracking rows (position, CTR, impressions, clicks, delta).
+ * SKELETON V1 (skip silencieux sans credentials).
+ */
+export const contentKeywordSyncQueue: Queue | null = connection
+  ? new Queue("content-keyword-sync", {
       connection,
       defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
     })
@@ -386,6 +413,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-monthly-15-0600", tick: new Date().toISOString() },
       { repeat: { pattern: "0 6 15 * *" }, jobId: "content-tier-lifecycle-cron" },
+    );
+  }
+
+  // Sprint 12.5 V2 — keyword sync hebdo (lundi 04:00 UTC).
+  if (contentKeywordSyncQueue) {
+    await contentKeywordSyncQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 4 * * 1" },
+      "content-keyword-sync-cron",
+    );
+    await contentKeywordSyncQueue.add(
+      "tick",
+      { trigger: "cron-weekly-mon-0400", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 4 * * 1" }, jobId: "content-keyword-sync-cron" },
     );
   }
 }
