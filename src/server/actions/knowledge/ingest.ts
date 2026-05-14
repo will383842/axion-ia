@@ -28,6 +28,7 @@ import {
   EMBEDDING_MODEL_NAME,
 } from "@/lib/knowledge/embeddings";
 import { DEDUP_REJECT_THRESHOLD, findSimilarEntries } from "@/lib/knowledge/dedup-check";
+import { appendAudit } from "@/lib/knowledge/audit-log";
 import { refreshSeoCacheForTranslation } from "./seo-cache";
 import type {
   KbAudience,
@@ -271,6 +272,28 @@ export async function ingestEntry(payload: IngestPayload): Promise<IngestResult>
       },
     });
 
+    // KB-17 V4 : audit log immuable (non-bloquant)
+    try {
+      await appendAudit({
+        eventKind: autoPublish ? "publish" : "ingest_accepted",
+        entryId: created.id,
+        actor: payload.source.factoryId,
+        payload: {
+          idempotencyKey: payload.idempotencyKey,
+          type: payload.type,
+          domain: payload.domain,
+          source: payload.source,
+          autoPublish,
+          slug,
+        },
+      });
+    } catch (auditErr) {
+      console.error(
+        `[kb-ingest] appendAudit failed for ${created.id}:`,
+        auditErr instanceof Error ? auditErr.message : auditErr,
+      );
+    }
+
     return {
       accepted: true,
       entryId: created.id,
@@ -295,6 +318,17 @@ async function rejectIngest(
     where: { idempotencyKey },
     data: { status, rejectReason: reason, completedAt: new Date() },
   });
+  // KB-17 V4 : trace audit non-bloquante
+  try {
+    await appendAudit({
+      eventKind: "ingest_rejected",
+      entryId: null,
+      actor: "system",
+      payload: { idempotencyKey, reason, status },
+    });
+  } catch (err) {
+    console.error("[kb-ingest] audit rejet failed:", err instanceof Error ? err.message : err);
+  }
 }
 
 async function generateUniqueSlug(title: string, idempotencyKey: string): Promise<string> {

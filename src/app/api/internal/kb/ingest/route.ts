@@ -19,6 +19,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getKbIngestSecret, verifyKbSignature } from "@/lib/knowledge/hmac";
+import { assertKillSwitchInactive, KillSwitchEngagedError } from "@/lib/knowledge/kill-switch";
 import { KB_TYPES } from "@/content/knowledge/types";
 import { KB_DOMAINS } from "@/content/knowledge/domains";
 import { KB_AUDIENCES } from "@/content/knowledge/audiences";
@@ -60,6 +61,19 @@ const IngestBodySchema = z.object({
 const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function POST(req: Request) {
+  // ----- Kill switch -----
+  try {
+    assertKillSwitchInactive();
+  } catch (err) {
+    if (err instanceof KillSwitchEngagedError) {
+      return NextResponse.json(
+        { error: "kill_switch_engaged", source: err.source, detail: err.message },
+        { status: 503, headers: { "Retry-After": "300" } },
+      );
+    }
+    throw err;
+  }
+
   // ----- HMAC auth -----
   let secret: string;
   try {

@@ -2183,6 +2183,31 @@ model KnowledgeIngestRequest {
   @@map("knowledge_ingest_requests")
 }
 
+/// KB V4 (Sprint KB-17) — Journal d'audit immuable append-only.
+/// Hash-chain SHA-256 sur (prevHash + serializedPayload) pour intégrité forensique.
+/// Aucun UPDATE/DELETE autorisé en code applicatif (enforce via policy DB optionnelle V2).
+model KnowledgeAuditLog {
+  id           BigInt   @id @default(autoincrement())
+  /// Type d'événement : ingest_accepted | ingest_rejected | publish | unpublish | edit | kill_switch_engaged | etc.
+  eventKind    String   @map("event_kind") @db.VarChar(60)
+  /// UUID translation/entry concerné (peut être NULL pour events globaux comme kill_switch)
+  entryId      String?  @map("entry_id") @db.Uuid
+  /// Acteur : factoryId | userId | "system"
+  actor        String   @db.VarChar(120)
+  /// Payload JSON sérialisé (snapshot input + résultat)
+  payloadJson  Json     @map("payload_json")
+  /// SHA-256 du précédent log entry (chain). NULL pour le tout premier event.
+  prevHash     String?  @map("prev_hash") @db.VarChar(64)
+  /// SHA-256(prevHash + canonicalPayload) — vérifiable a posteriori
+  selfHash     String   @map("self_hash") @db.VarChar(64)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([eventKind, createdAt])
+  @@index([entryId])
+  @@index([actor])
+  @@map("knowledge_audit_log")
+}
+
 /// KB V4 (Sprint KB-14) — Cache LLM auto-SEO/AEO/GEO par traduction.
 /// V1 : stub déterministe (provider="stub", providerVersion="v1"). V2 wire OpenAI/Claude.
 /// Évite re-paiement LLM sur chaque republish quand contenu inchangé (hash-based invalidation possible V2).
