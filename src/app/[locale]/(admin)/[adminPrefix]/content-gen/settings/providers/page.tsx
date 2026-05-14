@@ -6,18 +6,12 @@
  */
 
 import { redirect } from "next/navigation";
-import type { ContentType } from "../../../../../../../../prisma/generated/client";
 import { auth } from "@/auth";
 import {
   listProviders,
   resetProviderSpend,
   updateProvider,
 } from "@/server/actions/content-gen/providers";
-import {
-  CONTENT_TYPES_ALL,
-  getCompeteMode,
-  updateCompeteMode,
-} from "@/server/actions/content-gen/policies";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +25,6 @@ export default async function ProvidersSettingsPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const rows = await listProviders();
-  const compete = await getCompeteMode();
 
   async function save(formData: FormData) {
     "use server";
@@ -50,18 +43,6 @@ export default async function ProvidersSettingsPage({ params }: PageProps) {
   async function resetSpend(formData: FormData) {
     "use server";
     await resetProviderSpend(String(formData.get("id")));
-  }
-
-  async function saveCompete(formData: FormData) {
-    "use server";
-    const enabled = formData.get("competeEnabled") === "on";
-    const contentTypes: ContentType[] = [];
-    for (const type of CONTENT_TYPES_ALL) {
-      if (formData.get(`competeType_${type}`) === "on") {
-        contentTypes.push(type as ContentType);
-      }
-    }
-    await updateCompeteMode({ enabled, contentTypes });
   }
 
   return (
@@ -166,59 +147,6 @@ export default async function ProvidersSettingsPage({ params }: PageProps) {
           );
         })
       )}
-
-      <form action={saveCompete} className="admin-card" style={{ marginTop: "2rem" }}>
-        <h2 className="admin-h2">Compete mode (Sprint 11.5)</h2>
-        <p className="admin-meta" style={{ marginBottom: "1rem" }}>
-          Lance 2 LLM en parallèle (GPT-4o + Claude Sonnet 4.6) pour chaque génération et garde la
-          sortie avec le meilleur seoScore. <strong>Coût ×2 sur les types cochés</strong>, gain
-          qualité estimé +10-15 %. Hors compete : GPT-4o seul en primary, Claude Sonnet en fallback
-          automatique si GPT crash/rate-limit.
-        </p>
-
-        <div className="admin-field">
-          <label htmlFor="competeEnabled" className="admin-label">
-            <input
-              type="checkbox"
-              id="competeEnabled"
-              name="competeEnabled"
-              defaultChecked={compete.enabled}
-              style={{ marginRight: "0.5rem" }}
-            />
-            Activer le compete mode (master switch)
-          </label>
-        </div>
-
-        <div style={{ marginTop: "1rem" }}>
-          <p className="admin-meta">
-            Cocher les content types ciblés. <em>Aucun coché + master switch ON</em> = compete sur
-            tous. Recommandé : ne cocher que les types stratégiques (blog_article, guide_pilier,
-            comparison) pour minimiser le surcoût.
-          </p>
-          <div className="admin-filters-grid" style={{ marginTop: "0.5rem" }}>
-            {CONTENT_TYPES_ALL.map((type) => (
-              <div className="admin-field" key={type}>
-                <label htmlFor={`competeType_${type}`} className="admin-label">
-                  <input
-                    type="checkbox"
-                    id={`competeType_${type}`}
-                    name={`competeType_${type}`}
-                    defaultChecked={compete.contentTypes.includes(type)}
-                    style={{ marginRight: "0.5rem" }}
-                  />
-                  {type}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="admin-filters-actions">
-          <button type="submit" className="admin-button">
-            Enregistrer compete mode
-          </button>
-        </div>
-      </form>
     </section>
   );
 }

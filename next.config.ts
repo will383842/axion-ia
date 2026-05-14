@@ -40,9 +40,36 @@ const cdnHeaders = [
   },
 ];
 
+// Sprint SEO 2026-05-14 — BUILD_TIME stable pour `lastModified` sitemap.
+//
+// Sans cette injection, `new Date()` dans `app/sitemap.ts` produit un timestamp
+// différent à chaque appel (= à chaque page sitemap rendue), ce que Google
+// détecte vite (« le site signale tous ses pages comme modifiées alors
+// qu'aucun contenu ne change ») → Google arrête de faire confiance au
+// `<lastmod>` et le crawl budget se dégrade.
+//
+// Solution : un seul timestamp ISO figé au build, propagé via `next.config.ts`
+// `env`. Webpack DefinePlugin remplace `process.env.BUILD_TIME` partout dans
+// le code par la valeur littérale au build (non préfixé `NEXT_PUBLIC_` → reste
+// strictement côté serveur Node.js, pas inliné dans les bundles client).
+//
+// Ordre de fallback :
+//   1. `process.env.BUILD_TIME` set par le CI/CD (Coolify/GHActions injecte
+//      `BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)` ou hash commit timestamp)
+//   2. À défaut → `new Date().toISOString()` évalué une fois au chargement de
+//      `next.config.ts` (= une fois par build, partagé par toutes les pages
+//      sitemap du même build). Fallback safe en dev local.
+const BUILD_TIME_ISO = process.env.BUILD_TIME ?? new Date().toISOString();
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Expose BUILD_TIME au runtime serveur via DefinePlugin. Non `NEXT_PUBLIC_`,
+  // donc accessible UNIQUEMENT dans les Server Components / route handlers
+  // (sitemap.ts). N'est PAS inliné dans les bundles client.
+  env: {
+    BUILD_TIME: BUILD_TIME_ISO,
+  },
   // V1 garde compress: true (Next compresse pour `next start`). V3 passera
   // false quand Caddy 2 prendra le relais en amont (anti-double-compression).
   compress: true,

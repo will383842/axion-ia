@@ -1,8 +1,10 @@
-# PROMPT — KNOWLEDGE BASE AXION-IA 2026 — V2 PERFECTION EXTRÊME (AUDIT + BUILD INCRÉMENTAL)
+# PROMPT — KNOWLEDGE BASE AXION-IA 2026 — V4 KNOWLEDGE FACTORY INDUSTRIELLE (100% AUTO)
 
 > **V2 — 2026-05-13** : ajout des dimensions manquantes après audit complétude (accessibilité WCAG 2.2 AA, E-E-A-T, editorial pipeline, pipeline médias, multi-format output, import tooling, quality score, slug history, TOC/readability, templates éditeur, scheduled publish, notifications, annotations, collections, backup/DR, coûts chiffrés). 18 agents (vs 12 V1), 35 critères (vs 20), scoring /300 (vs /200), 22 livrables (vs 16).
 >
 > **V3 — 2026-05-13 (révision après reality check repo)** : ancrage sur les modèles Prisma **réellement existants** (`Article`, `CaseStudy`, `FAQ`, `HelpArticle`, `Category` — pas `BlogPost`/`FaqEntry` inventés en V1/V2), préservation des routes publiques FR existantes (`/blog/`, `/cas-concrets/`, `/centre-aide/`, `/glossaire/`, `/guide-ia/`, `/faq/`) avec la KB comme **backend unifié** et non remplacement, doctrine linguistique stricte (admin FR `/connaissances/`, public FR-first parity EN), **structure de dossiers cible exhaustive** (§11 nouvelle), **plan d'implémentation de bout en bout** chiffré et séquencé (§13 nouvelle), naming conventions formalisées (§14), risques + mitigations (§15).
+>
+> **V4 — 2026-05-14 (Knowledge Factory Industrielle 100% automatique)** : pivot scope majeur après confirmation Will. Cible volume = **100 entrées/jour publiées automatiquement** (~36 500/an), production assistée IA via `PROMPT-CONTENT-GENERATOR-MASTER-2026.md`, **zéro review humain V1** (workflow auto avec gates de qualité + dedup pgvector + PII scan + SEO/AEO/GEO auto-générés). Scope élargi écosystème IA en entreprise (12 nouveaux types : `automation_recipe`, `tool_review`, `industry_use_case`, `comparison`, `implementation_playbook`, `prompt_pattern`, `roi_calculator_template`, `intervention_module`, `competence_boost`, `secteur_brief`, `dept_brief`, `metier_brief`). **FR uniquement V1** (architecture multilingue préservée, EN activable V2). pgvector basculé **V1 obligatoire** (dedup + recherche à ce volume). Mot « formation » BANNI partout (doctrine `axionia-core`). Pipeline éditorial humain (KB-13/17/18) refondu en **gates automatiques + monitoring**. Voir nouvelles sections §17 (Knowledge Factory) + §18 (Décisions V4 actées).
 
 > # 🧭 MODE EN DEUX TEMPS — AUDIT-FIRST PUIS BUILD SUR GO
 >
@@ -1099,12 +1101,14 @@ axionia/
 
 ```ts
 export const KB_TYPES = [
+  // Existants migrés depuis modèles legacy
   "article", // Blog
   "case_study", // Cas concret
   "help_article", // Centre d'aide
   "faq", // Question fréquente
   "glossary_term", // Terme glossaire
   "guide", // Guide IA long-form
+  // Internes (V1)
   "methodology", // Méthodologie (interne ou publique)
   "doctrine", // Doctrine Axion-IA (interne ou cliente)
   "adr", // Architecture Decision Record (interne)
@@ -1115,8 +1119,23 @@ export const KB_TYPES = [
   "competitor_card", // Fiche concurrent (interne)
   "commercial_doc", // Document commercial (interne ou client)
   "onboarding_step", // Étape onboarding (client)
+  // V4 — Knowledge Factory Industrielle (production 100% automatique IA, FR uniquement V1)
+  "automation_recipe", // Recette d'automatisation (N8N/Zapier/Make) — cible ~8000/an
+  "tool_review", // Avis sur outil IA pour pros — ~3000/an
+  "industry_use_case", // Cas d'usage IA par secteur (santé, retail, BTP, …) — ~6000/an
+  "comparison", // Comparatif outil X vs outil Y — ~2000/an
+  "implementation_playbook", // Playbook d'implémentation IA — ~1500/an
+  "prompt_pattern", // Pattern de prompt pour métier/tâche — ~5000/an
+  "roi_calculator_template", // Template calculateur ROI IA — ~500/an
+  "intervention_module", // Module d'intervention (montée en compétence). JAMAIS « training »/« formation ». — ~2000/an
+  "competence_boost", // Boost compétence court (15-30 min, micro-apprentissage) — ~3000/an
+  "secteur_brief", // Brief sectoriel IA (santé / industrie / services / …) — ~500/an
+  "dept_brief", // Brief département (DRH / RAF / DSI / Marketing / …) — ~500/an
+  "metier_brief", // Brief métier (commercial / juriste / acheteur / …) — ~1500/an
 ] as const;
 ```
+
+> **V4 — Doctrine `axionia-core` rappel** : mot « formation » BANNI partout (code, copy, docs, slugs, JSON-LD). `intervention_module` et `competence_boost` couvrent le sujet « montée en compétence équipes » en respectant la doctrine. Lint check `scripts/check-knowledge-banned-words.ts` à créer en KB-1 pour bloquer en CI toute occurrence dans `title`/`excerpt`/`body`/`metaTitle`/`metaDescription`.
 
 ### 12.2 Enums `domain`
 
@@ -1243,34 +1262,35 @@ PHASE 7 — V2+ (chatbot, multi-tenant, etc.)      [non chiffré]
 
 ### 13.6 Phase 4 — Enrichissement
 
-| Sprint    | Titre                                                                         | Effort | Pré-requis  | Livrables                                                                                                                   | Gate                                                |
-| --------- | ----------------------------------------------------------------------------- | ------ | ----------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| **KB-11** | Pipeline médias + asset library + sharp AVIF/WebP + EXIF strip                | 5 dj   | KB-3        | `KnowledgeAsset` migration + worker `knowledge-image-process.ts` + `/connaissances/medias` + asset picker                   | Upload + variantes générées sans bloquer thread     |
-| **KB-12** | Slug history + redirects 301 + sécurité contenu (sanitization XSS + SSRF)     | 3 dj   | KB-6        | `KnowledgeSlugHistory` migration + middleware + `tiptap-sanitize.ts` durci                                                  | `slug-redirect-301.spec.ts`                         |
-| **KB-13** | Editorial pipeline + calendrier + health dashboard + quality score            | 5 dj   | KB-4, KB-11 | `pipelineStage` + `KnowledgeReviewerAssignment` + `/connaissances/calendrier` + `/connaissances/sante` + `quality-score.ts` | Quality score bloque publish si < seuil             |
-| **KB-14** | Multi-format output (PDF on-demand + opengraph dynamique + newsletter pickup) | 4 dj   | KB-13       | Worker PDF + `opengraph-image.tsx` par type + `knowledge-newsletter-digest.ts`                                              | PDF généré asynchronement + newsletter envoyée test |
-| **KB-15** | Import tooling (`_AUDIT/*.md` + Markdown Git + Notion)                        | 4 dj   | KB-3        | `src/server/importers/*` + wizard `/connaissances/imports` + transaction Prisma rollback                                    | `import-md.spec.ts` E2E                             |
-| **KB-16** | Templates éditeur + snippets + slash command + TOC + readability score        | 3 dj   | KB-3, KB-15 | `src/content/knowledge/templates/*` + extension Tiptap slash + `EntryToc` sticky                                            | Templates accessibles à la création                 |
+| Sprint                     | Titre                                                                                | Effort | Pré-requis                           | Livrables                                                                                                                                                                                                                                                                  | Gate                                                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------ | ------ | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **KB-11**                  | Pipeline médias + asset library + sharp AVIF/WebP + EXIF strip                       | 5 dj   | KB-3                                 | `KnowledgeAsset` migration + worker `knowledge-image-process.ts` + `/connaissances/medias` + asset picker                                                                                                                                                                  | Upload + variantes générées sans bloquer thread                                                       |
+| **KB-12**                  | Slug history + redirects 301 + sécurité contenu (sanitization XSS + SSRF)            | 3 dj   | KB-6                                 | `KnowledgeSlugHistory` migration + middleware + `tiptap-sanitize.ts` durci                                                                                                                                                                                                 | `slug-redirect-301.spec.ts`                                                                           |
+| **KB-12.5** ⚙️ V4 promu V1 | pgvector + embeddings + recherche hybride (basculé V1.5 → V1 obligatoire à 100/jour) | 5 dj   | KB-7 vert + bench RAM CPX32 OK       | Extension pgvector + migration `kb_10_pgvector_embeddings/` + worker `knowledge-embedding-reindex.ts` + `search-hybrid.ts` FTS + cosine RRF + budget RAM monitoré                                                                                                          | Recherche hybride bench vs FTS pure + dedup-ready pour KB-13                                          |
+| **KB-13** ⚙️ V4            | Quality gates automatiques + dedup pgvector + monitoring dashboard                   | 5 dj   | KB-4, KB-11, **KB-12.5 pgvector OK** | Heuristiques + LLM scoring (`quality-gates.ts`) + cosine similarity bloquant (`dedup-pgvector.ts`) + PII scan bloquant + Telegram alertes + `/connaissances/sante` dashboard temps-réel + kill switch `KB_AUTO_PUBLISH`                                                    | Test de charge 100 entrées/jour qualifiées en < 30 min                                                |
+| **KB-14** ⚙️ V4            | Auto-génération SEO/AEO/GEO de bout en bout                                          | 5 dj   | KB-13                                | Auto meta title + meta description (LLM cached) + JSON-LD par type + Open Graph image dynamique + hreflang structure (FR seul actif) + AEO bloc 50-80 mots auto-extrait + GEO entités auto-taggées (villes/secteurs/métiers) + auto-injection sitemap + auto-ping IndexNow | Lighthouse SEO 100/100 sur 10 entrées factory échantillonnées                                         |
+| **KB-15** ⚙️ V4            | API d'ingestion massive `/api/internal/kb/ingest` + intégration Content Generator    | 5 dj   | KB-13, KB-14                         | Endpoint POST authentifié HMAC + Zod stricte + idempotency key + queue BullMQ `knowledge-ingest` + audit log avec `source.factoryId` + rate limit 200/min + retry policy + circuit breaker                                                                                 | Test E2E ingestion 100 entrées sans perte ni doublon                                                  |
+| **KB-16** ⚙️ V4            | Auto-publication + distribution multi-format auto + admin override                   | 4 dj   | KB-14, KB-15                         | Publish auto si quality ≥ seuil sinon `audience='team'` + auto RSS/JSON Feed/llms.txt/newsletter pickup + opengraph auto + sitemap auto + admin viewer minimal `/connaissances/[id]` avec override manuel possible                                                         | Test publication chaîne complète bout-en-bout (ingestion → vérification → publication → distribution) |
 
 ### 13.7 Phase 5 — Polish + tests prod
 
-| Sprint    | Titre                                                                                | Effort | Pré-requis | Livrables                                                                                                            | Gate                              |
-| --------- | ------------------------------------------------------------------------------------ | ------ | ---------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| **KB-17** | Notifications multi-canal + reviewer assignment + scheduled publish + preview tokens | 4 dj   | KB-13      | `assign-reviewer.ts` + Telegram + email + cron `knowledge-review-expiry.ts` + JWT preview token                      | Reviewer notifié, escalade testée |
-| **KB-18** | Annotations team + bookmarks client + series/collections + pinned/featured           | 3 dj   | KB-9       | Extension Tiptap annotations + `KnowledgeBookmark` étendu + `seriesId` + tests                                       | Annotations résolvables E2E       |
-| **KB-19** | RGPD review + retention purge + backup/DR KB-specific + DR drill                     | 3 dj   | KB-11      | Cron `knowledge-retention-purge.ts` + `scripts/backup-knowledge.sh` + `scripts/restore-knowledge-test.sh` + tests DR | DR drill réussi sur staging       |
-| **KB-20** | Tests E2E complets + Lighthouse CI gate + Sentry events + Plausible goals            | 4 dj   | KB-1→KB-19 | Suite E2E complète + LHCI sur 6 routes pivot + Sentry custom events + Plausible goals                                | CI verte, LHCI ≥ budget           |
+| Sprint          | Titre                                                                     | Effort | Pré-requis   | Livrables                                                                                                                                                                                                                                                                                                                                                                                                | Gate                                                                                                      |
+| --------------- | ------------------------------------------------------------------------- | ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **KB-17** ⚙️ V4 | Observabilité factory + alerting + disaster recovery massif               | 4 dj   | KB-13, KB-16 | Sentry custom events `kb.ingest.*` / `kb.publish.*` / `kb.dedup.match` / `kb.quality.fail` + Plausible goals + dashboard `/connaissances/sante` (volume horaire/quotidien, taux quality fail, taux dedup match, latence p95 ingest→publish) + Telegram alertes volume anormal + **bouton « dépublier toutes les entrées créées entre T1 et T2 »** (disaster recovery massif si content factory déraille) | Test scénario : 1 incident simulé (entrée problématique) → détection < 5 min + rollback < 2 min           |
+| **KB-18** ⚙️ V4 | Programmatic SEO templates par type + slugs auto + canonicals             | 3 dj   | KB-14, KB-15 | Templates pSEO par type (combinatoire automatique : outil × secteur, métier × tâche, etc.) + slug auto kebab-case avec collision auto-résolue + canonical URL strict + auto-déduplication anti-doorway HCU 2024 (≥40% unique exigé Google)                                                                                                                                                               | Test : 50 entrées générées sur même template, toutes canonicalisées sans cluster cannibale Search Console |
+| **KB-19**       | RGPD review + retention purge + backup/DR KB-specific + DR drill          | 3 dj   | KB-11        | Cron `knowledge-retention-purge.ts` + `scripts/backup-knowledge.sh` + `scripts/restore-knowledge-test.sh` + tests DR                                                                                                                                                                                                                                                                                     | DR drill réussi sur staging                                                                               |
+| **KB-20**       | Tests E2E complets + Lighthouse CI gate + Sentry events + Plausible goals | 4 dj   | KB-1→KB-19   | Suite E2E complète + LHCI sur 6 routes pivot + Sentry custom events + Plausible goals                                                                                                                                                                                                                                                                                                                    | CI verte, LHCI ≥ budget                                                                                   |
 
 **🚦 BORNE V1 — Production ready** : 81 dj cumulés. Le système peut être lancé en prod publique avec confiance.
 
 ### 13.8 Phase 6 — V1.5 (IA)
 
-| Sprint    | Titre                                                   | Effort | Pré-requis     | Livrables                                                                                                                  | Gate                                                 |
-| --------- | ------------------------------------------------------- | ------ | -------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| **KB-21** | pgvector + embeddings + recherche hybride FTS + cosine  | 5 dj   | V1 prod stable | Extension pgvector + migration `kb_10_pgvector_embeddings/` + worker `knowledge-embedding-reindex.ts` + `search-hybrid.ts` | Recherche hybride bench vs FTS pure                  |
-| **KB-22** | RAG endpoint + auto-suggestions admin + auto-tagging IA | 5 dj   | KB-21          | `/api/internal/kb/rag` + suggestions « entrées similaires » + auto-tag avec threshold                                      | p95 RAG < 800 ms                                     |
-| **KB-23** | Auto-traduction FR→EN assistée + alt text IA vision     | 4 dj   | KB-22          | Bouton « traduire » + bouton « suggérer alt » + review humaine obligatoire                                                 | Review humaine bloque publication EN sans validation |
-| **KB-24** | ePub export + plagiarism check + brand voice check      | 4 dj   | KB-14, KB-22   | `knowledge-epub.ts` + plagiarism via embeddings cosine + brand voice via LLM call cached                                   | Plagiarism > seuil bloque review                     |
+| Sprint                   | Titre                                                                                  | Effort | Pré-requis                             | Livrables                                                                                                                                                                                 | Gate                                            |
+| ------------------------ | -------------------------------------------------------------------------------------- | ------ | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **KB-21** ⚙️ V4 promu V1 | RAG endpoint chatbot + auto-suggestions admin + auto-tagging                           | 5 dj   | KB-13 vert (pgvector déjà installé V1) | `/api/internal/kb/rag` (HMAC, hybrid retrieval RRF, top-K=10, reranking optionnel, latence p95 < 800 ms) + auto-tag avec threshold + suggestions « entrées similaires » dans admin viewer | Bench RAG sur 1k entrées factory simulées       |
+| **KB-22**                | Auto-amélioration continue : A/B variants + recyclage low-performers + content scoring | 5 dj   | KB-21, V1 prod ≥ 4 semaines            | Variants par entrée (title alternatif, hero alternatif) + tracking Plausible CTR/scroll/time-on-page + recyclage auto entrées CTR < seuil + score performance par entrée                  | Dashboard `/connaissances/performance`          |
+| **KB-23**                | Auto-traduction FR→EN (activation EN parity) + alt text IA vision                      | 4 dj   | KB-21, V1 EN décidé par Will           | Worker `knowledge-translate-fr-en.ts` (Claude Haiku 4.5 cached) + activation routes `/en/*` + bouton « suggérer alt » + review humaine optionnelle                                        | Test traduction 50 entrées + activation EN gate |
+| **KB-24**                | Chatbot public Axion-IA propulsé par RAG KB                                            | 5 dj   | KB-21                                  | UI chatbot frontend + endpoint `/api/public/chat` (rate limit IP) + citations obligatoires + filtre `audience='public'` + log analytics conversations                                     | Tests E2E conversation + filtres sécurité PII   |
 
 **🚦 BORNE V1.5** : 99 dj cumulés.
 
@@ -1324,6 +1344,248 @@ PHASE 7 — V2+ (chatbot, multi-tenant, etc.)      [non chiffré]
 | 10  | Embeddings exfiltrent `confidentiality=secret` à tiers                                                    | Faible      | Critique (RGPD)          | Filtre dans `embeddings.ts` : refus dur si `confidentiality IN ('confidential', 'secret')`. Test bloquant.                                                                    |
 | 11  | Search FTS lent (> 500 ms p95) sur volume 10k+ entrées                                                    | Moyenne     | Sévère (UX)              | Index GIN, `tsvector` matérialisé via trigger, `LIMIT` strict, cache court ISR.                                                                                               |
 | 12  | Conflit admin existant `/blog`, `/help`, etc. avec nouveau `/connaissances` (deux sources, double vérité) | Élevée      | Modéré                   | Marquer legacy admin dès Phase A, migration progressive en V1.5, mais conserver les deux jusqu'à validation Will. Test cross-cohérence (lectures legacy = lectures unifiées). |
+
+---
+
+## 17. KNOWLEDGE FACTORY INDUSTRIELLE (V4 — architecture 100% automatique)
+
+> **Pivot V4 du 2026-05-14** : Will confirme cible **100 entrées/jour publiées automatiquement** (~36 500/an), FR uniquement V1, écosystème IA en entreprise au-delà du cabinet, production assistée IA via `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md`. **Zéro review humain V1** (workflow auto). Cette section override les sections §0-§16 sur les points spécifiquement V4.
+
+### 17.1 Architecture d'ingestion automatique
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  CONTENT GENERATOR MASTER (axionia/_AUDIT/PROMPT-CONTENT-GENERATOR-...)  │
+│  - Sources : GPT-4 / Claude / Perplexity / Unsplash / templates pSEO     │
+│  - Output : Tiptap JSON + metadata + cover suggestion + tags             │
+└──────────────────────────────┬───────────────────────────────────────────┘
+                               │ POST /api/internal/kb/ingest
+                               │ HMAC-SHA256 signature + Zod stricte
+                               │ idempotency-key obligatoire
+                               ▼
+┌──────────────────────────────────────────────────────────────────────────┐
+│  QUEUE BullMQ `knowledge-ingest` (concurrency 4, retry 3, dead-letter)   │
+│  → Worker `knowledge-ingest-process.ts`                                  │
+└──────────────────────────────┬───────────────────────────────────────────┘
+                               ▼
+                   ┌───────────┴───────────┐
+                   │  GATES AUTOMATIQUES   │
+                   │  (séquentiel, fail    │
+                   │   = audience='team'   │
+                   │   + Telegram alerte)  │
+                   └───────────┬───────────┘
+                               │
+   ┌───────────────────────────┼───────────────────────────┐
+   ▼                           ▼                           ▼
+┌────────────┐         ┌──────────────┐          ┌────────────────┐
+│ PII SCAN   │         │ DEDUP        │          │ QUALITY SCORE  │
+│ pii-       │         │ pgvector     │          │ heuristiques + │
+│ redaction  │         │ cosine ≥ 0.92│          │ LLM scoring    │
+│ bloquant   │         │ → bloquant   │          │ → seuil /100   │
+└─────┬──────┘         └──────┬───────┘          └───────┬────────┘
+      │                       │                          │
+      └───────────────────────┼──────────────────────────┘
+                              ▼
+                   ┌──────────────────────┐
+                   │ AUTO-SEO/AEO/GEO     │
+                   │ - meta title LLM     │
+                   │ - meta desc LLM      │
+                   │ - JSON-LD par type   │
+                   │ - opengraph image    │
+                   │ - AEO bloc 50-80 mots│
+                   │ - GEO entités tags   │
+                   │ - hreflang structure │
+                   └──────────┬───────────┘
+                              ▼
+                   ┌──────────────────────┐
+                   │ AUTO-PUBLISH         │
+                   │ status='published'   │
+                   │ + revalidatePath     │
+                   │ + sitemap update     │
+                   │ + IndexNow ping      │
+                   │ + RSS regen          │
+                   │ + llms.txt regen     │
+                   │ + newsletter queue   │
+                   └──────────┬───────────┘
+                              ▼
+                   ┌──────────────────────┐
+                   │ AUDIT LOG IMMUABLE   │
+                   │ source.factoryId     │
+                   │ source.promptId      │
+                   │ source.modelUsed     │
+                   │ source.cost          │
+                   └──────────────────────┘
+```
+
+### 17.2 API d'ingestion `/api/internal/kb/ingest`
+
+**Endpoint** : `POST /api/internal/kb/ingest`
+**Auth** : HMAC-SHA256 header `X-KB-Signature` (secret `KB_INGEST_SECRET` env var)
+**Idempotency** : header `X-Idempotency-Key` obligatoire (UUID v4)
+**Rate limit** : 200 req/min/factory (Redis bucket), burst 500/min toléré
+**Concurrency worker** : 4
+**Retry** : 3 tentatives exponential backoff (1s, 4s, 16s) puis dead-letter queue
+**Circuit breaker** : 50% erreurs sur 1 min → bascule mode dégradé (queue uniquement, pas de publish)
+
+**Schema Zod input** :
+
+```ts
+const IngestBody = z.object({
+  type: KbTypeEnum,
+  title: z.string().min(10).max(200),
+  body: z.unknown(), // Tiptap JSON, validé par schema séparé
+  excerpt: z.string().min(40).max(300).optional(),
+  tags: z.array(z.string()).min(1).max(10),
+  domain: KbDomainEnum,
+  audience: KbAudienceEnum.default("public"),
+  confidentiality: KbConfidentialityEnum.default("public"),
+  source: z.object({
+    factoryId: z.string(),
+    promptId: z.string(),
+    modelUsed: z.string(),
+    cost: z.number().nonnegative(),
+    generatedAt: z.string().datetime(),
+  }),
+  coverImage: z.object({ url: z.string().url(), alt: z.string() }).optional(),
+  language: z.literal("fr"), // V1 FR uniquement, EN activable V2
+});
+```
+
+**Réponses** :
+
+- `202 Accepted` : entry queuée, `Location: /api/internal/kb/[id]/status`
+- `409 Conflict` : idempotency-key déjà utilisée (renvoie l'`id` existant)
+- `422 Unprocessable` : Zod validation failed
+- `429 Too Many Requests` : rate limit
+- `503 Service Unavailable` : circuit breaker ouvert
+
+### 17.3 Quality gates automatiques (KB-13)
+
+**Heuristiques bloquantes** (rejet immédiat → `audience='team'` + Telegram alerte) :
+
+- Mot « formation » présent dans `title`/`excerpt`/`body`/`metaTitle`/`metaDescription` → REJECT
+- Longueur body Tiptap < 300 mots (sauf `faq`, `glossary_term`) → REJECT
+- Aucun H2 dans le body → REJECT
+- ≥ 5 fautes d'orthographe FR détectées (lib `nodehun` ou équivalent) → REJECT
+- Liens externes non-https → REJECT
+- Embed YouTube/Vimeo/Loom non whitelistés → REJECT
+
+**LLM scoring** (`quality-gates.ts`) :
+
+- Claude Haiku 4.5 cached, prompt « note de 0 à 100 pour : pertinence sujet, originalité vs corpus, clarté, structure, valeur ajoutée pro »
+- Seuil par type (SSOT `quality-thresholds.ts`) : `article` ≥ 70, `automation_recipe` ≥ 60, `comparison` ≥ 65, etc.
+- Échec seuil → `audience='team'` (pas publié) + alerte Telegram + log Sentry
+
+**Dedup pgvector** :
+
+- Embedding du `title + excerpt + 500 premiers mots body` (Voyage AI ou équivalent, cached)
+- Cosine similarity contre corpus existant publié
+- Si ≥ 0.92 sur ≥ 1 entrée existante → REJECT (dedup match) + log + suggestion merge dans audit log
+- Si 0.85-0.92 → publié mais flag `dedup_warning` + revue manuelle ultérieure
+
+**PII scan** :
+
+- `pii-redaction.ts` existant en mode bloquant strict
+- Si match non whitelisté (email/téléphone/RIB/IBAN/SIREN clients) → REJECT immédiat
+- Whitelist : références publiques (URL site, email contact@axion-ia.com, SIREN Axion-IA si activé V2)
+
+### 17.4 Auto-génération SEO/AEO/GEO (KB-14)
+
+- **Meta title** : LLM cached, template par type (ex. `article` : `<title> — Axion-IA`, `case_study` : `<title> : retour d'expérience — Axion-IA`, `comparison` : `<toolA> vs <toolB> : guide 2026 — Axion-IA`). Longueur 50-60 chars.
+- **Meta description** : LLM cached, extrait + bénéfice + CTA implicite. Longueur 140-160 chars.
+- **JSON-LD** : factory par type (déjà prévue § Agent 6), strict schema.org.
+- **Open Graph image** : généré dynamiquement via `opengraph-image.tsx` par type + variant Axion-IA + titre. Pas d'appel image externe (Hetzner CPX32 OK avec sharp).
+- **AEO bloc « Réponse directe »** : 50-80 mots auto-extraits ou résumés par LLM, injectés en haut de la page, encadrés `<aside aria-label="Réponse directe">`.
+- **GEO entités** : auto-tagger LLM extrait `villes[]` + `secteurs[]` + `metiers[]` + `outils[]`, stockés en colonnes structurées + `areasServed` JSON-LD.
+- **hreflang** : structure prête (champ `language='fr'`) mais sitemap EN désactivé V1.
+- **Sitemap** : auto-injection dans `sitemap-knowledge.ts` au publish.
+- **IndexNow** : ping auto via helper centralisé existant (mémoire `axionia_session_2026-05-13_seo_email_stack`).
+
+### 17.5 Safeguards anti-dérive (CRITIQUES)
+
+À 100/jour automatique, un bug = catastrophe. **Safeguards obligatoires V1** :
+
+1. **Kill switch global** : env var `KB_AUTO_PUBLISH=false` → publications bloquées immédiatement, queue continue à accepter. Activable via Coolify en < 30s.
+2. **Volume gate** : si > 150 publications/heure → alerte Telegram + bascule `audience='team'` automatique (publication suspendue).
+3. **Quality fail rate gate** : si > 20% des entrées d'1 batch échouent quality → alerte + bascule queue en revue manuelle.
+4. **Dedup match rate gate** : si > 30% match dedup → alerte (content factory probablement déraillée).
+5. **Disaster recovery massif** : bouton admin `/connaissances/sante` → « dépublier toutes les entrées créées entre T1 et T2 » (KB-17). Action transactionnelle, log immuable.
+6. **Audit log immuable** : chaque publication enregistre `source.factoryId`, `source.promptId`, `source.modelUsed`, `source.cost`. Permet remontée à la source en cas de problème.
+7. **Sentry events** : `kb.ingest.received`, `kb.ingest.rejected`, `kb.publish.success`, `kb.dedup.match`, `kb.quality.fail`, `kb.pii.blocked`, `kb.volume.anomaly`.
+8. **Plausible goals** : `kb_view`, `kb_search`, `kb_helpful`, `kb_chatbot_query` (V1.5).
+9. **Rate limit factory** : 200 req/min/factory + circuit breaker.
+10. **Snapshot Hetzner quotidien** + DR drill mensuel (KB-19).
+
+### 17.6 Infrastructure & coûts à 100/jour
+
+| Élément                                                   | Calcul                            | Cible 12 mois    | Cible 24 mois   |
+| --------------------------------------------------------- | --------------------------------- | ---------------- | --------------- |
+| DB body Tiptap                                            | 100/j × 365 × ~100 KB             | ~3.65 GB         | ~7.3 GB         |
+| DB versions                                               | × 3 versions moy                  | ~11 GB           | ~22 GB          |
+| DB embeddings pgvector                                    | 1536 dim × 36500 × 4 bytes        | ~225 MB          | ~450 MB         |
+| Assets sharp variantes                                    | ~36500 × 200 KB moy × 4 variantes | ~30 GB           | ~60 GB          |
+| Postgres total                                            | + index + FTS                     | **~50-60 GB**    | **~100-130 GB** |
+| **CPX32 disk** (80 GB nominal)                            |                                   | **~75% saturé**  | **🔴 SATURÉ**   |
+| **CPX32 RAM** (8 GB)                                      | + pgvector + Redis + Next + Caddy | **~85% utilisé** | **🔴 SATURÉ**   |
+| **Coût Anthropic embeddings** (Voyage AI ~$0.12/M tokens) | 36500 × 1500 tokens × $0.12       | **~$7/mois**     | ~$14/mois       |
+| **Coût Anthropic quality scoring** (Haiku 4.5 cached)     | 36500 × 800 tokens × $0.25/M      | **~$8/mois**     | ~$15/mois       |
+| **Coût Anthropic auto-SEO** (Haiku cached)                | 36500 × 500 tokens × $0.25/M      | **~$5/mois**     | ~$9/mois        |
+| **Coût Anthropic GEO entities**                           | 36500 × 300 tokens × $0.25/M      | **~$3/mois**     | ~$5/mois        |
+
+**TOTAL coût IA V1 ≈ $25/mois (~€25)**. Bien sous le budget Will explicite (~€5-30/mois).
+
+**Recommandation upgrade VPS** :
+
+- À 12 mois : **CPX42** (€11/mois, 16 GB RAM, 160 GB disk) → marge confortable.
+- À 24 mois : **CPX52** (€19/mois, 32 GB RAM, 240 GB disk) ou storage box Hetzner dédié pour assets.
+- À envisager dès V1 si volume réel dépasse projection.
+
+### 17.7 Intégration Content Generator Master
+
+Le prompt `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` (mémoire `axionia_prompt_content_generator_master`) est **la source amont** de la factory KB. La KB ne génère pas le contenu — elle le reçoit, le valide, le publie.
+
+**Interface contractuelle** :
+
+- Content Generator produit du Tiptap JSON conforme au schema Zod KB.
+- Content Generator appelle `POST /api/internal/kb/ingest` avec HMAC signature + idempotency-key.
+- KB renvoie 202 + `Location` header avec lien vers status.
+- Content Generator peut poll status ou attendre webhook `kb.publish.success` (V1.5).
+- Erreurs de validation → renvoyées en 422 avec détails Zod, Content Generator doit corriger et retenter avec nouvelle idempotency-key.
+
+**SLA** : ingest → publié en < 30 minutes en condition normale, alerte si > 2h.
+
+### 17.8 Effort V4 révisé
+
+| Phase           | Sprints       | Effort V3 | Effort V4  | Delta                                   |
+| --------------- | ------------- | --------- | ---------- | --------------------------------------- |
+| Fondations      | KB-1 → KB-4   | 16 dj     | 16 dj      | 0                                       |
+| Migration data  | KB-5 → KB-6   | 10 dj     | 10 dj      | 0                                       |
+| Surfaces        | KB-7 → KB-10  | 14 dj     | 14 dj      | 0                                       |
+| Enrichissement  | KB-11 → KB-16 | 22 dj     | **25 dj**  | +3 dj (pgvector promu V1 KB-12.5)       |
+| Polish + prod   | KB-17 → KB-20 | 14 dj     | 14 dj      | 0 (sprints refondus, effort équivalent) |
+| **🚦 BORNE V1** |               | **81 dj** | **~84 dj** | +3 dj                                   |
+| V1.5 IA         | KB-21 → KB-24 | 18 dj     | 19 dj      | +1 dj (chatbot promu)                   |
+
+**Quasi iso-effort.** Le pivot V4 ne rallonge pas — il **réoriente** les sprints.
+
+---
+
+## 18. DÉCISIONS V4 ACTÉES (2026-05-14)
+
+| #   | Décision                                                                                                                         | Source                             | Statut                            |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | --------------------------------- |
+| 1   | Volume cible 100 entrées/jour publiées automatiquement (~36 500/an)                                                              | Will 2026-05-14                    | ✅ Acté                           |
+| 2   | Production 100% automatique via Content Generator Master, zéro review humain V1                                                  | Will 2026-05-14                    | ✅ Acté                           |
+| 3   | FR uniquement V1, architecture multilingue préservée, EN activable V2 (KB-23)                                                    | Will 2026-05-14                    | ✅ Acté                           |
+| 4   | Scope élargi écosystème IA en entreprise (12 nouveaux types V4)                                                                  | Will 2026-05-14                    | ✅ Acté                           |
+| 5   | pgvector basculé V1.5 → **V1 obligatoire** (dedup à 100/jour)                                                                    | Implication 2026-05-14             | ✅ Acté                           |
+| 6   | Pipeline éditorial humain (KB-13/17/18 V3) refondu en **gates automatiques + monitoring + dedup + SEO auto + ingestion API**     | Implication 2026-05-14             | ✅ Acté                           |
+| 7   | Mot « formation » BANNI partout (doctrine `axionia-core` rappelée), `intervention_module` + `competence_boost` couvrent le sujet | Doctrine `axionia-core` 2026-05-06 | ✅ Tenu V4                        |
+| 8   | Safeguards anti-dérive obligatoires V1 (kill switch + 4 gates volume/quality/dedup + DR massif + audit log immuable)             | Implication 2026-05-14             | ✅ Acté                           |
+| 9   | Upgrade VPS CPX42 prévu à 12 mois (effort/coût chiffré §17.6)                                                                    | Implication 2026-05-14             | ⚠️ À valider mois 9               |
+| 10  | Coût IA mensuel V1 ≈ €25/mois (embeddings + quality + auto-SEO + GEO)                                                            | Calcul §17.6                       | ✅ Sous budget Will (~€5-30/mois) |
+| 11  | Chatbot public Axion-IA promu en V1.5 KB-24 (RAG ready dès V1)                                                                   | Implication 2026-05-14             | ✅ Acté                           |
+| 12  | Effort total V1 révisé : 81 dj → **~84 dj** (+3 dj pgvector promu V1)                                                            | Calcul §17.8                       | ✅ Quasi iso-effort               |
 
 ---
 

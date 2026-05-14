@@ -20,6 +20,10 @@ import {
   getAllBlogCompanySizeSlugs,
   getAllBlogServiceTypeSlugs,
 } from "@/content/blog";
+import {
+  buildKnowledgeSitemapChunk,
+  countKnowledgePublicEntries,
+} from "@/server/exporters/knowledge-sitemap";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -192,9 +196,14 @@ function getVillesSitemapIds(): string[] {
   return ids;
 }
 
-// `generateSitemaps` — déclare tous les sub-sitemaps (statiques + dynamiques villes).
+// `generateSitemaps` — déclare tous les sub-sitemaps (statiques + dynamiques villes + KB).
 // Next.js 16 wrap ces IDs dans `/sitemap.xml` (sitemap-index auto) et expose
 // chaque enfant à `/sitemap/<id>.xml`.
+//
+// KB DB-aware (Sprint SEO 2026-05-14) : `knowledge-1`, `knowledge-2`, ... chunkés
+// à 1 000 entries/chunk. Le compte vient de `countKnowledgePublicEntries()` qui
+// lit la DB (audience='public', status published/deprecated, deletedAt null).
+// Bootstrap-safe : 0 chunks si table pas migrée (premier deploy KB).
 export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   const staticIds: StaticSitemapId[] = [
     "pages",
@@ -208,14 +217,47 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "services-villes-interventions",
     "services-villes-implementation",
   ];
-  return [...staticIds.map((id) => ({ id })), ...getVillesSitemapIds().map((id) => ({ id }))];
+
+  // KB : dériver le nombre de chunks depuis le count DB. Lecture unique au
+  // build (puis next-intl SSG fige). Bootstrap-safe (count=0 si P2021).
+  const kbCount = await countKnowledgePublicEntries();
+  const kbChunkCount = kbCount > 0 ? Math.ceil((kbCount * 2) / SITEMAP_CHUNK_SIZE) : 0;
+  const knowledgeIds: string[] = [];
+  for (let i = 1; i <= kbChunkCount; i++) knowledgeIds.push(`knowledge-${i}`);
+
+  return [
+    ...staticIds.map((id) => ({ id })),
+    ...getVillesSitemapIds().map((id) => ({ id })),
+    ...knowledgeIds.map((id) => ({ id })),
+  ];
+}
+
+/**
+ * `now` stable au build via `process.env.BUILD_TIME` (injecté par `next.config.ts`).
+ *
+ * Pourquoi : un `lastModified` qui change à chaque build (cf. `new Date()` runtime)
+ * est rapidement disqualifié par Google — il considère que le signal n'est pas
+ * fiable et arrête d'en tenir compte pour prioriser le crawl. Un timestamp figé
+ * au build (BUILD_TIME ISO) reflète honnêtement la dernière mise en prod, ce
+ * qui est la signification utile : « ce contenu a été reconstruit le X ».
+ *
+ * Fallback `new Date()` en dev local (BUILD_TIME absent) — pas d'impact car les
+ * sitemaps de dev ne sont pas crawlés.
+ */
+function buildTimeOrNow(): Date {
+  const iso = process.env.BUILD_TIME;
+  if (iso) {
+    const parsed = new Date(iso);
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
+  return new Date();
 }
 
 export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
   const id = await props.id;
-  const now = new Date();
+  const now = buildTimeOrNow();
 
   // Static IDs
   switch (id) {
@@ -253,7 +295,57 @@ export default async function sitemap(props: {
     return buildVillesByRegionSitemap(rest, 1, now);
   }
 
+  // KB DB-aware (Sprint SEO 2026-05-14) : `knowledge-<chunkIdx>`.
+  // Couvre les entries `audience='public'` publiées via le content-gen V1.
+  // Dédup vs slugs déjà émis par les builders TS (blog tier-1, case studies,
+  // help, faq, glossaire, guide) pour éviter doublons sitemap-index.
+  if (id.startsWith("knowledge-")) {
+    const chunkMatch = id.slice("knowledge-".length).match(/^(\d+)$/);
+    if (!chunkMatch) return [];
+    return buildKnowledgeSitemapChunk(
+      parseInt(chunkMatch[1]!, 10),
+      SITEMAP_CHUNK_SIZE,
+      buildExcludeSlugsByType(),
+    );
+  }
+
   return [];
+}
+
+/**
+ * Dédup KB DB-aware : retourne, par type KB, l'ensemble des slugs déjà émis
+ * par les builders TS. Le builder DB sautera ces slugs pour éviter qu'un même
+ * article apparaisse 2 fois dans sitemap-index (une fois via TS file, une
+ * fois via DB row).
+ *
+ * Convention : on dédupe sur le tuple (type, slug). Si un blog post tier-1
+ * existe dans `@/content/blog/posts/*.ts` ET est aussi en DB (cas migration
+ * progressive TS → DB), le builder TS gagne (contenu canonique pré-factory).
+ *
+ * IMPORTANT : tenir cette map en sync avec les builders. Tout nouveau builder
+ * TS qui émet des slugs pour un type KB doit ajouter son set ici.
+ */
+function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<string>> {
+  const map = new Map<string, Set<string>>();
+
+  // article ← @/content/blog (tier-1 only, déjà filtré par getIndexableBlogPosts)
+  map.set("article", new Set(getIndexableBlogPosts().map((p) => p.slug)));
+
+  // case_study ← @/content/case-studies
+  map.set("case_study", new Set(getAllCaseStudySlugs()));
+
+  // help_article ← @/content/transversal (centre-aide)
+  map.set("help_article", new Set(getAllHelpSlugs()));
+
+  // faq ← @/content/transversal
+  map.set("faq", new Set(getAllFaqIds()));
+
+  // glossary_term, guide : pas de fichiers TS aujourd'hui, slugs viennent
+  // uniquement de la DB → set vide = aucune exclusion.
+  map.set("glossary_term", new Set());
+  map.set("guide", new Set());
+
+  return map;
 }
 
 // ---------- builders ----------

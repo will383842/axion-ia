@@ -23,15 +23,26 @@ export const SITE_URL =
     : RAW_SITE_URL;
 
 // Build timestamp ISO — signal de fraîcheur AI Overviews 2026.
-// Résolu au cold-start (build standalone Coolify ou rebuild dev). Google /
-// Perplexity / Claude.ai privilégient le contenu frais → toute page Service
-// auto-émet `dateModified` à cette date. Sans ce signal, on rate l'opportunité
-// "Google AI Overviews répond directement" pour les requêtes locales.
+//
+// Sprint SEO perfection 2026-05-14 : aligné sur `process.env.BUILD_TIME` injecté
+// par `next.config.ts` (même source de vérité que `app/sitemap.ts`). Avant ce
+// fix, `new Date()` runtime générait un timestamp différent à chaque cold-start
+// du worker → `dateModified` Google/Perplexity/Claude.ai mentait à chaque
+// redémarrage du process (~1× par jour en prod, plus en dev).
+//
+// Maintenant : 1 seul timestamp ISO partagé entre `sitemap.xml` <lastmod> +
+// `dateModified` de TOUTES les pages metadata. Cohérence parfaite des signaux
+// de fraîcheur, ce que Google/LLMs reconnaissent comme « site activement
+// maintenu » plutôt que « site qui ment sur sa fraîcheur ».
+//
+// Ordre de fallback :
+//   1. `process.env.BUILD_TIME` (set par CI/CD Coolify, prod)
+//   2. `new Date().toISOString()` (dev local, cold-start)
 //
 // Pour override par page (article blog, cas concret), passer `dateModified`
 // explicitement aux factories. Pour services canoniques (audit, interventions),
 // la build-date est suffisante — elle marque que le site est actif et maintenu.
-export const BUILD_DATE = new Date().toISOString();
+export const BUILD_DATE = process.env.BUILD_TIME ?? new Date().toISOString();
 
 interface ProductSeoInput {
   locale: Locale;

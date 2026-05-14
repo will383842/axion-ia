@@ -26,6 +26,7 @@ import {
   REFERRER_REGION_COOKIE_NAME,
   sanitizeSlugValue,
 } from "@/lib/pseo-referrer";
+import { isNoindexStubRoute } from "@/lib/seo-noindex-routes";
 
 const COOKIE_MAX_AGE_SECONDS = 30 * 24 * 60 * 60; // 30 jours
 
@@ -121,6 +122,20 @@ export function middleware(req: NextRequest): NextResponse {
       httpOnly: true,
       path: "/",
     });
+  }
+
+  // -- 3. X-Robots-Tag HTTP pour stubs pSEO anti-doorway (HCU 2024).
+  //
+  // Doublonne le `<meta robots noindex>` posé par `generateMetadata()` côté
+  // Server Component. Le header HTTP permet à Googlebot de voir le `noindex`
+  // SANS rendre le HTML complet → divise le coût crawl budget par ~5 sur
+  // les ~17 K stubs SSG (villes sans copy, services×ville sans copy.services,
+  // Corse). Cohérent et idempotent : signal identique dans HTML + HTTP.
+  //
+  // `follow` préservé pour que le link juice traverse les stubs vers les
+  // pages pilotes (Paris) et les hubs (/implantations, /interventions).
+  if (isNoindexStubRoute(pathname)) {
+    res.headers.set("X-Robots-Tag", "noindex, follow");
   }
 
   return res;

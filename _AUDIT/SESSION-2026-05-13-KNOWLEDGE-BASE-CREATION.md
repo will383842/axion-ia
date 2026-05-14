@@ -1,6 +1,91 @@
-# SESSION 2026-05-13 — Création du système Knowledge Base Axion-IA
+# SESSION 2026-05-13 + 2026-05-14 — Création système Knowledge Base + pivot V4 Factory Industrielle
 
 > Conversation Claude Code archivée pour reprise sans perte de contexte.
+>
+> **Mise à jour 2026-05-14** : Will pivote le scope vers Knowledge Factory Industrielle (100 entrées/jour automatiques, FR uniquement, écosystème IA en entreprise). Prompt master patché V3 → V4 (1377 → 1633 lignes). Skill `axionia-connaissances` actualisé. Voir §V4 ci-dessous.
+
+---
+
+## 🔄 PIVOT V4 — 2026-05-14
+
+### Confirmation Will
+
+> « tout sera 100% automatique. avec publication automatique, génération du seo, aeo, geo, metatitle etc etc etc entirèement automatique de bout en bout. »
+> « 100 CONTENUS PAR JOUR »
+> « POur le mment aucune traduction car uniquement en francais »
+> « il ne faut pas que ca cabinet IA opérationnel mais tout ce qui se rapporte aux entreprise qui vuellent implémenter l'ia, les uaotmatisation, former leur personnel, etc etc »
+
+### Implications actées V4
+
+1. **Volume cible** : 100 entrées/jour × 365 = 36 500/an (vs 2-4/semaine initial).
+2. **Production** : 100% automatique via `PROMPT-CONTENT-GENERATOR-MASTER-2026.md`. Zéro review humain V1.
+3. **Langue** : FR uniquement V1. Architecture multilingue préservée, EN activable V2 (KB-23).
+4. **Scope élargi** : 12 nouveaux types KB pour écosystème IA en entreprise :
+   - `automation_recipe` (~8000/an)
+   - `tool_review` (~3000/an)
+   - `industry_use_case` (~6000/an)
+   - `comparison` (~2000/an)
+   - `implementation_playbook` (~1500/an)
+   - `prompt_pattern` (~5000/an)
+   - `roi_calculator_template` (~500/an)
+   - `intervention_module` (~2000/an) — **jamais « training »/« formation »** (doctrine `axionia-core`)
+   - `competence_boost` (~3000/an)
+   - `secteur_brief` (~500/an)
+   - `dept_brief` (~500/an)
+   - `metier_brief` (~1500/an)
+5. **pgvector promu V1.5 → V1 obligatoire** (sprint KB-12.5 intercalé) car indispensable pour dedup à ce volume.
+6. **Pipeline éditorial humain (KB-13/14/15/16/17/18 V3) refondu V4** :
+   - KB-13 : Quality gates automatiques (heuristiques + LLM scoring) + dedup pgvector + monitoring (vs review humain)
+   - KB-14 : Auto-génération SEO/AEO/GEO complète (meta titles, descriptions, JSON-LD, OG, AEO bloc, GEO entités)
+   - KB-15 : API ingest `/api/internal/kb/ingest` + intégration Content Generator (HMAC + idempotency + queue BullMQ)
+   - KB-16 : Auto-publish + distribution multi-format auto (RSS/JSON/llms.txt/newsletter/sitemap/IndexNow)
+   - KB-17 : Observabilité factory + alerting + **DR massif** (bouton « dépublier tout entre T1 et T2 »)
+   - KB-18 : pSEO templates par type + slugs auto + canonicals (anti-doorway HCU 2024)
+7. **V1.5 IA refondue** :
+   - KB-21 : RAG endpoint + auto-suggestions + auto-tagging (RAG ready dès V1.5)
+   - KB-22 : Auto-amélioration continue (A/B variants + recyclage low-performers)
+   - KB-23 : Auto-traduction FR→EN + activation EN parity
+   - KB-24 : **Chatbot public Axion-IA propulsé par RAG KB** (promu)
+8. **Safeguards anti-dérive (CRITIQUES V1)** :
+   - Kill switch global `KB_AUTO_PUBLISH=false` env var
+   - Volume gate (> 150/heure → bascule `audience='team'`)
+   - Quality fail rate gate (> 20% batch → revue manuelle)
+   - Dedup match rate gate (> 30% → alerte factory déraillée)
+   - PII scan bloquant strict
+   - Audit log immuable avec `source.factoryId`/`promptId`/`modelUsed`/`cost`
+   - Sentry events `kb.*`
+   - Plausible goals
+   - Rate limit 200 req/min/factory + circuit breaker
+9. **Infrastructure** :
+   - CPX32 saturé à ~12-18 mois → **upgrade CPX42 prévu** (€11/mois) à valider mois 9
+   - DB taille projetée : ~50-60 GB à 12 mois, ~100-130 GB à 24 mois
+10. **Coût IA mensuel V1 ≈ €25/mois** (embeddings Voyage AI + quality scoring Haiku + auto-SEO Haiku + GEO entities) — sous budget Will (~€5-30/mois).
+11. **Effort V1 révisé** : 81 dj → **~84 dj** (+3 dj pour pgvector promu V1 KB-12.5). Quasi iso-effort.
+
+### Sections ajoutées au prompt master
+
+- **§17 Knowledge Factory Industrielle** (architecture complète V4) :
+  - 17.1 Diagramme ASCII flux ingestion automatique
+  - 17.2 Spec API `/api/internal/kb/ingest` (HMAC, Zod, idempotency, rate limit, circuit breaker)
+  - 17.3 Quality gates automatiques (heuristiques + LLM + dedup + PII)
+  - 17.4 Auto-génération SEO/AEO/GEO de bout en bout
+  - 17.5 Safeguards anti-dérive (10 obligatoires V1)
+  - 17.6 Infrastructure & coûts chiffrés (CPX32 saturation + upgrade CPX42 + budget IA mensuel)
+  - 17.7 Intégration Content Generator Master (interface contractuelle + SLA)
+  - 17.8 Effort V4 révisé (delta vs V3)
+- **§18 Décisions V4 actées** (12 décisions tabulées avec source + statut)
+
+### État final du prompt V4
+
+- **1633 lignes** (V3 = 1377, +256 lignes)
+- **18 agents Phase A** (inchangé)
+- **25 sprints** (KB-1 à KB-24 + KB-12.5 pgvector promu V1)
+- **2 sections V4 nouvelles** (§17 + §18)
+- **35 mentions V4/Factory/automatique**
+
+---
+
+## SESSION ORIGINALE 2026-05-13 (V3)
 
 ---
 
