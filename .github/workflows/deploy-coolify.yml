@@ -129,26 +129,48 @@ jobs:
         run: |
           set -euo pipefail
           # 60 min hard ceiling. Real Coolify build for Next 16 SSG 17 500
-          # routes on CPX32 averages 18-22 min; 60 min covers tail latency
-          # (slow I/O, retries, contention with other Coolify workloads).
-          # Previous 30 min ceiling caused 1 timeout on 2026-05-10 when the
-          # build was actually finishing successfully — the post-deploy
-          # purge step was skipped, leaving CF to serve stale HTML.
+          # routes on CPX42 (rescale 2026-05-14) averages 10-15 min ; 60 min
+          # couvre la queue + tail latency. Avant CPX42 c'était 18-22 min.
           DEADLINE=$((SECONDS + 3600))
-          # Poll every 60s instead of 30s to halve API noise and reduce the
-          # risk of rate-limiting on the Coolify Sanctum token under burst.
+          # Poll every 60s to halve API noise vs 30s previously.
           POLL_INTERVAL=60
+          # 🐛 Fix 2026-05-14 : le grep '"status":"…"' | head -1 lisait
+          # `application.status` (toujours "running:healthy" car la prod
+          # tourne en parallèle) AU LIEU DU `deployment.status` top-level.
+          # Conséquence : 100 % des runs depuis 2026-05-12 timeout à 60 min
+          # même quand Coolify finissait (succès OU échec) en quelques min.
+          # Fix : `jq -r '.status'` qui ne prend QUE le champ top-level.
+          # `jq` est préinstallé sur ubuntu-latest.
           while [ $SECONDS -lt $DEADLINE ]; do
-            STATUS=$(curl -fsSL -m 15 \
+            RESPONSE=$(curl -fsSL -m 15 \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-              "${COOLIFY_URL}/api/v1/deployments/${DEPLOYMENT_UUID}" 2>/dev/null \
-              | grep -oE '"status":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+              "${COOLIFY_URL}/api/v1/deployments/${DEPLOYMENT_UUID}" 2>/dev/null || true)
+            STATUS=$(echo "${RESPONSE}" | jq -r '.status // empty' 2>/dev/null || true)
             echo "[$(date +%H:%M:%S)] deploy status: ${STATUS}"
             case "${STATUS}" in
-              finished) echo "Deployment succeeded ✓"; exit 0 ;;
-              failed|cancelled-by-user) echo "::error::Deployment ${STATUS}"; exit 1 ;;
-              "") echo "::warning::Empty status from API, retrying"; sleep $POLL_INTERVAL ;;
-              *) sleep $POLL_INTERVAL ;;
+              finished)
+                echo "Deployment succeeded ✓"
+                exit 0
+                ;;
+              failed|cancelled-by-user)
+                echo "::error::Deployment ${STATUS}"
+                # Dump les 100 dernières lignes de logs Coolify dans le
+                # log GH Actions pour debug rapide sans aller dans la UI
+                # Coolify. Les logs sont JSON-stringified dans .logs.
+                echo "──── Coolify deployment logs (last 100 entries) ────"
+                echo "${RESPONSE}" \
+                  | jq -r '.logs | fromjson? // . | if type=="array" then .[-100:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "")"' \
+                  2>/dev/null || echo "(could not parse logs)"
+                echo "──── End logs ────"
+                exit 1
+                ;;
+              "")
+                echo "::warning::Empty status from API, retrying"
+                sleep $POLL_INTERVAL
+                ;;
+              *)
+                sleep $POLL_INTERVAL
+                ;;
             esac
           done
           echo "::error::Deployment timeout (60 min)"; exit 1

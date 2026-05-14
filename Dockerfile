@@ -33,7 +33,13 @@ COPY .npmrc* ./
 # clé pnpm). Voir https://github.com/nodejs/corepack/issues/612.
 ENV COREPACK_INTEGRITY_KEYS=0
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
-RUN pnpm install --frozen-lockfile --prefer-offline
+# BuildKit cache mount sur le pnpm store : survit aux builds Coolify même
+# avec --no-cache (Coolify lance `docker build --no-cache`, ce qui invalide
+# les layers mais PAS les cache mounts). Gain ~3 min sur builds successifs
+# après le 1er. id=pnpm partagé pour qu'un autre service Coolify (worker
+# image, etc.) puisse partager le store.
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --prefer-offline
 
 # -----------------------------------------------------------------------------
 # Stage 2 : builder — compile Next 16 standalone
@@ -53,22 +59,26 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV COREPACK_INTEGRITY_KEYS=0
-# Cap Node.js heap at 4 GB for the build to avoid OOM on Hetzner CPX32
-# (8 GB RAM total, shared with Coolify host containers + Postgres + Redis).
-# Default Node heap is ~75% of host RAM = ~6 GB which leaves only ~1-2 GB
-# for Docker BuildKit's "exporting layers" phase, causing exit code 255
-# kills under cache pressure. 4 GB is enough for Next 16 SSG of 17 500
-# routes when combined with NEXT_PRIVATE_WORKER_THREADS=2 below.
-ENV NODE_OPTIONS=--max-old-space-size=4096
-# Limit Next.js Turbopack/SSG worker pool to 2 (default 3 on 4-core CPX32).
-# Each worker holds its own page-data cache (~500 MB - 1 GB), so capping
-# at 2 saves ~1 GB peak RAM during static generation. SSG total time
-# increases by ~25% (4 min instead of 3) but eliminates OOM risk.
-ENV NEXT_PRIVATE_WORKER_THREADS=2
+# Cap Node.js heap at 8 GB for the build — calibré pour Hetzner CPX42
+# (16 GB RAM total, 8 cores, rescale 2026-05-14 depuis CPX32). Avant
+# rescale on était à 4 GB pour éviter OOM sur 8 GB shared ; depuis CPX42
+# on peut remonter sans risque. Default Node heap = ~75 % du host RAM
+# ≈ 12 GB qui laisserait peu pour BuildKit ; 8 GB est un compromis sûr.
+ENV NODE_OPTIONS=--max-old-space-size=8192
+# Worker pool Next.js SSG : 4 sur les 8 cores du CPX42 (avant rescale
+# c'était 2 sur 4 cores). Gain ~25-30 % sur SSG des 17 500 routes vs
+# config CPX32. Chaque worker ~500 MB-1 GB → 4 × ~1 GB = ~4 GB peak,
+# safe avec 16 GB host et heap cappé à 8 GB.
+ENV NEXT_PRIVATE_WORKER_THREADS=4
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
 RUN pnpm prisma:generate
-RUN pnpm build
+# Cache mount sur .next/cache : Next 16 réutilise ses caches webpack +
+# SSG entre builds si la config n'a pas changé. Combiné au cache mount
+# pnpm ci-dessus, un build incrémental (pas de change de deps ni de
+# config Next) tombe à ~5-8 min au lieu de ~15 min cold.
+RUN --mount=type=cache,id=next,target=/app/.next/cache \
+    pnpm build
 
 # -----------------------------------------------------------------------------
 # Stage 3 : runner — runtime slim avec sharp + .next/standalone
