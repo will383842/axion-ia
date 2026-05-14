@@ -12,7 +12,144 @@
 
 import { prisma } from "@/lib/prisma";
 import { ProviderError } from "../providers/IProvider";
+import { sendTelegram } from "@/lib/telegram";
 import type { ProviderKey, Prisma } from "../../../../prisma/generated/client";
+
+/**
+ * Audit final P1-9 fix — gestion automatique du dépassement cost cap.
+ *
+ * Actions cascadées :
+ *  1. Désactive `ProviderConfig.enabled=false` pour ce provider (fallback
+ *     chain prendra le relais automatiquement).
+ *  2. Alerte Telegram tag MONITORING (Will sait dans la minute).
+ *  3. Si après désactivation aucun provider role=text n'est plus enabled
+ *     → activer kill switch global content-gen (`ContentGenConfig.kill_switch`).
+ *  4. Trace dans `ContentGenConfig.cost_cap_events` (audit trail
+ *     accessible dashboard admin).
+ *
+ * **Idempotent** : appeler 2× = même état final (enabled=false reste
+ * false, kill switch reste true).
+ * **Fail-soft** : si Telegram ou Prisma fail, on log et continue (l'objectif
+ * principal — throw ProviderError — n'est pas compromis).
+ */
+async function handleCostCapHit(provider: ProviderKey, spent: number, cap: number): Promise<void> {
+  try {
+    // 1. Désactive le provider
+    await prisma.providerConfig.update({
+      where: { provider },
+      data: { enabled: false },
+    });
+  } catch (err) {
+    console.warn(
+      `[cost-tracker] failed to auto-disable provider ${provider}:`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  // 2. Alerte Telegram (fail-soft)
+  try {
+    await sendTelegram({
+      tag: "MONITORING",
+      body:
+        `*Cost cap content-gen atteint*\n` +
+        `Provider : \`${provider}\`\n` +
+        `Dépensé : $${spent.toFixed(2)} / cap $${cap.toFixed(2)}\n` +
+        `Action auto : provider désactivé. Fallback chain prend le relais.\n` +
+        `Réactivation : admin /content-gen/settings/providers ou reset 1er du mois.`,
+      silent: false,
+    });
+  } catch (err) {
+    console.warn(
+      "[cost-tracker] Telegram cost-cap alert failed:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  // 3. Vérifie si plus aucun provider role=text enabled → kill switch global
+  try {
+    const remaining = await prisma.providerConfig.count({
+      where: { role: "text", enabled: true },
+    });
+    if (remaining === 0) {
+      await prisma.contentGenConfig.upsert({
+        where: { key: "kill_switch" },
+        create: {
+          key: "kill_switch",
+          value: {
+            active: true,
+            reason: `Auto-trigger : tous les providers role=text en cost cap (dernier=${provider})`,
+            triggered_at: new Date().toISOString(),
+            triggered_by: "system:cost-tracker",
+          } as never,
+          updatedBy: "system:cost-tracker",
+        },
+        update: {
+          value: {
+            active: true,
+            reason: `Auto-trigger : tous les providers role=text en cost cap (dernier=${provider})`,
+            triggered_at: new Date().toISOString(),
+            triggered_by: "system:cost-tracker",
+          } as never,
+          updatedBy: "system:cost-tracker",
+          updatedAt: new Date(),
+        },
+      });
+      try {
+        await sendTelegram({
+          tag: "INCIDENT",
+          body:
+            `*🛑 Kill switch global auto-activé*\n` +
+            `Cause : tous les providers role=text en cost cap mensuel.\n` +
+            `Dernier provider tombé : \`${provider}\`.\n` +
+            `Workers content-gen en pause. Réactivation manuelle requise après reset du mois\n` +
+            `ou augmentation cap : admin /content-gen/settings/kill-switch.`,
+          silent: false,
+        });
+      } catch {
+        // fail-soft sur 2e alerte
+      }
+    }
+  } catch (err) {
+    console.warn(
+      "[cost-tracker] failed to check remaining providers / kill-switch trigger:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  // 4. Trace audit dans ContentGenConfig.cost_cap_events (cap 50 derniers).
+  try {
+    const existing = await prisma.contentGenConfig.findUnique({
+      where: { key: "cost_cap_events" },
+    });
+    const prev =
+      (existing?.value as Array<Record<string, unknown>> | null | undefined)?.filter(
+        (e) => typeof e === "object" && e !== null,
+      ) ?? [];
+    const next = [
+      {
+        provider,
+        spent_usd: spent,
+        cap_usd: cap,
+        at: new Date().toISOString(),
+      },
+      ...prev,
+    ].slice(0, 50);
+    await prisma.contentGenConfig.upsert({
+      where: { key: "cost_cap_events" },
+      create: { key: "cost_cap_events", value: next as never, updatedBy: "system:cost-tracker" },
+      update: {
+        value: next as never,
+        updatedBy: "system:cost-tracker",
+        updatedAt: new Date(),
+      },
+    });
+  } catch (err) {
+    console.warn(
+      "[cost-tracker] failed to write cost_cap_events trace:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 export interface CostTrackingArgs {
   readonly jobId?: string;
@@ -63,6 +200,10 @@ export async function assertCostCapAvailable(
     }
     const spent = Number(config.currentMonthSpentUsd);
     if (spent + estimatedCostUsd > cap) {
+      // Audit final P1-9 fix — auto-trigger cascade : disable provider +
+      // Telegram + éventuel kill-switch global si fallback chain épuisée.
+      // Helper isolé fail-soft, ne bloque jamais le throw ci-dessous.
+      await handleCostCapHit(provider, spent, cap);
       throw new ProviderError(
         `Cost cap reached for ${provider}: $${spent.toFixed(4)}/$${cap.toFixed(2)} (+ $${estimatedCostUsd.toFixed(4)})`,
         "cost_cap_reached",
