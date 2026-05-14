@@ -2113,22 +2113,22 @@ model KnowledgeBookmark {
 /// KB V4 (Sprint KB-18) — Annotations équipe sur entries (revue collaborative).
 /// Différent des bookmarks (côté client) : ici c'est l'éditorial/SEO team qui commente.
 model KnowledgeAnnotation {
-  id          String         @id @default(uuid()) @db.Uuid
-  entryId     String         @map("entry_id") @db.Uuid
-  entry       KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
-  authorId    String         @map("author_id") @db.Uuid
+  id           String         @id @default(uuid()) @db.Uuid
+  entryId      String         @map("entry_id") @db.Uuid
+  entry        KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  authorId     String         @map("author_id") @db.Uuid
   /// Référence optionnelle à un anchor (id de heading TOC ou translationId)
-  anchorRef   String?        @map("anchor_ref") @db.VarChar(120)
-  bodyMarkdown String        @map("body_markdown") @db.Text
+  anchorRef    String?        @map("anchor_ref") @db.VarChar(120)
+  bodyMarkdown String         @map("body_markdown") @db.Text
   /// review_comment | seo_suggestion | factual_check | typo | content_request
-  kind        String         @default("review_comment") @db.VarChar(40)
+  kind         String         @default("review_comment") @db.VarChar(40)
   /// open | resolved | wont_fix
-  status      String         @default("open") @db.VarChar(20)
-  resolvedAt  DateTime?      @map("resolved_at")
-  resolvedById String?       @map("resolved_by_id") @db.Uuid
+  status       String         @default("open") @db.VarChar(20)
+  resolvedAt   DateTime?      @map("resolved_at")
+  resolvedById String?        @map("resolved_by_id") @db.Uuid
 
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([entryId, status])
   @@index([authorId, createdAt(sort: Desc)])
@@ -2138,21 +2138,21 @@ model KnowledgeAnnotation {
 /// KB V4 (Sprint KB-18) — Séries/Collections éditoriales (curation manuelle).
 /// Ex : « Parcours dirigeants : 10 articles IA fondamentaux »
 model KnowledgeCollection {
-  id          String                       @id @default(uuid()) @db.Uuid
-  slug        String                       @unique @db.VarChar(120)
-  titleFr     String                       @map("title_fr") @db.VarChar(255)
-  titleEn     String?                      @map("title_en") @db.VarChar(255)
-  descriptionFr String?                    @map("description_fr") @db.Text
-  descriptionEn String?                    @map("description_en") @db.Text
+  id            String    @id @default(uuid()) @db.Uuid
+  slug          String    @unique @db.VarChar(120)
+  titleFr       String    @map("title_fr") @db.VarChar(255)
+  titleEn       String?   @map("title_en") @db.VarChar(255)
+  descriptionFr String?   @map("description_fr") @db.Text
+  descriptionEn String?   @map("description_en") @db.Text
   /// public | unlisted | team
-  visibility  String                       @default("public") @db.VarChar(20)
-  ownerId     String?                      @map("owner_id") @db.Uuid
-  coverAssetId String?                     @map("cover_asset_id") @db.Uuid
-  publishedAt DateTime?                    @map("published_at")
-  createdAt   DateTime                     @default(now()) @map("created_at")
-  updatedAt   DateTime                     @updatedAt @map("updated_at")
+  visibility    String    @default("public") @db.VarChar(20)
+  ownerId       String?   @map("owner_id") @db.Uuid
+  coverAssetId  String?   @map("cover_asset_id") @db.Uuid
+  publishedAt   DateTime? @map("published_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  items       KnowledgeCollectionItem[]
+  items KnowledgeCollectionItem[]
 
   @@index([visibility, publishedAt])
   @@map("knowledge_collections")
@@ -2218,15 +2218,15 @@ model KnowledgeReviewerAssignment {
 /// Vector size 1024 = Voyage AI voyage-3-lite (default V4) ; voyage-3 = 1536, à
 /// reconfigurer si bascule.
 model KnowledgeEmbedding {
-  id             String               @id @default(uuid()) @db.Uuid
-  translationId  String               @unique @map("translation_id") @db.Uuid
-  translation    KnowledgeTranslation @relation(fields: [translationId], references: [id], onDelete: Cascade)
+  id             String                      @id @default(uuid()) @db.Uuid
+  translationId  String                      @unique @map("translation_id") @db.Uuid
+  translation    KnowledgeTranslation        @relation(fields: [translationId], references: [id], onDelete: Cascade)
   // Vector dim 1024 (Voyage AI voyage-3-lite default). Index HNSW créé via SQL raw migration.
   embedding      Unsupported("vector(1024)")
-  model          String               @db.VarChar(80)
-  modelVersion   String               @map("model_version") @db.VarChar(40)
-  dimensionality Int                  @default(1024)
-  embeddedAt     DateTime             @default(now()) @map("embedded_at")
+  model          String                      @db.VarChar(80)
+  modelVersion   String                      @map("model_version") @db.VarChar(40)
+  dimensionality Int                         @default(1024)
+  embeddedAt     DateTime                    @default(now()) @map("embedded_at")
 
   @@index([model])
   @@map("knowledge_embeddings")
@@ -2254,20 +2254,20 @@ model KnowledgeIngestRequest {
 /// Hash-chain SHA-256 sur (prevHash + serializedPayload) pour intégrité forensique.
 /// Aucun UPDATE/DELETE autorisé en code applicatif (enforce via policy DB optionnelle V2).
 model KnowledgeAuditLog {
-  id           BigInt   @id @default(autoincrement())
+  id          BigInt   @id @default(autoincrement())
   /// Type d'événement : ingest_accepted | ingest_rejected | publish | unpublish | edit | kill_switch_engaged | etc.
-  eventKind    String   @map("event_kind") @db.VarChar(60)
+  eventKind   String   @map("event_kind") @db.VarChar(60)
   /// UUID translation/entry concerné (peut être NULL pour events globaux comme kill_switch)
-  entryId      String?  @map("entry_id") @db.Uuid
+  entryId     String?  @map("entry_id") @db.Uuid
   /// Acteur : factoryId | userId | "system"
-  actor        String   @db.VarChar(120)
+  actor       String   @db.VarChar(120)
   /// Payload JSON sérialisé (snapshot input + résultat)
-  payloadJson  Json     @map("payload_json")
+  payloadJson Json     @map("payload_json")
   /// SHA-256 du précédent log entry (chain). NULL pour le tout premier event.
-  prevHash     String?  @map("prev_hash") @db.VarChar(64)
+  prevHash    String?  @map("prev_hash") @db.VarChar(64)
   /// SHA-256(prevHash + canonicalPayload) — vérifiable a posteriori
-  selfHash     String   @map("self_hash") @db.VarChar(64)
-  createdAt    DateTime @default(now()) @map("created_at")
+  selfHash    String   @map("self_hash") @db.VarChar(64)
+  createdAt   DateTime @default(now()) @map("created_at")
 
   @@index([eventKind, createdAt])
   @@index([entryId])
@@ -2302,4 +2302,186 @@ model KnowledgeSeoCache {
   @@unique([translationId, provider, providerVersion])
   @@index([locale, provider])
   @@map("knowledge_seo_cache")
+}
+
+// ============================================================
+// CONTENT GENERATOR — Sprint 1 (Sprint S1 Day 1 AGT-A)
+// Source : _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md (v2.5 post-S0ter)
+//          + _AUDIT/SPRINT-1-DAY-BY-DAY.md v2.5
+//          + AxionIA_Dossier_FINAL_ABSOLU_v10.1/axionia-megapack-skills/
+//            .claude/skills/axionia-content-generator/auto-pilot.md
+//
+// ⚠️ NE PAS recréer ici les enums KB (KbType, KbDomain, KbAudience, …) ou
+// `Locale` / `CompanySize` — ils existent déjà plus haut dans ce schema.
+// Le content-gen consomme la KB V4 mergée via les helpers `src/lib/knowledge/*`.
+//
+// ENUMS ci-dessous (16) : ContentType, ContentGenJobStatus, LogLevel,
+// IndexationTier, ExpansionMode, ProviderKey, ProviderRole, ReviewStatus,
+// CoverageStatus, CoverageScope, OrganisationType, SearchIntent, TrustTier,
+// WebVitalMetric, WebVitalRating. (CompanySize/Locale réutilisés existants.)
+// ============================================================
+
+/// 9 types de contenu V1 (§ 5.1 master prompt). Stable DB —
+/// ajout de valeur = `ALTER TYPE` non-destructif. À ne PAS confondre
+/// avec `KbType` (28 valeurs côté KB V4) — un `ContentType` est
+/// mappé vers un `KbType` côté factory ingest (§ 11.0 master prompt).
+enum ContentType {
+  landing_ville
+  blog_article
+  blog_from_rss
+  blog_from_keywords
+  blog_from_title
+  comparison
+  guide_pilier
+  qa_derived
+  faq_standalone
+}
+
+/// 12 statuts pipeline (§ 5.1 + § 27 boucle qualité v1.7).
+/// `quality_improving` v1.7 = passage boucle qualité auto si score 40-74.
+enum ContentGenJobStatus {
+  queued
+  running
+  generating_text
+  generating_image
+  running_qa
+  quality_improving
+  needs_review
+  approved
+  publishing
+  published
+  failed
+  cancelled
+}
+
+/// Niveaux de log applicatifs côté workers content-gen.
+enum LogLevel {
+  debug
+  info
+  warn
+  error
+}
+
+/// Pyramide d'indexation 3-tiers anti-doorway HCU 2024 (§ 6 PROMPT-CONTENT-FACTORY-SPEC).
+/// Default applicatif : `tier_2_noindex_follow` (sécurité bulk).
+enum IndexationTier {
+  tier_1_indexable
+  tier_2_noindex_follow
+  tier_3_noindex_nofollow
+}
+
+/// Modes d'expansion d'un ContentTemplate (parité SOS-Expat). 8 valeurs.
+enum ExpansionMode {
+  manual
+  all_villes
+  all_regions
+  custom_villes
+  from_keywords
+  from_questions
+  from_rss_items
+  from_csv
+}
+
+/// 5 providers IA externes pilotables depuis l'admin (toggles + cost caps).
+/// `gpt_image` réservé V2 (Q4 v2.0 acté Will : Unsplash uniquement V1).
+enum ProviderKey {
+  openai
+  anthropic
+  perplexity
+  unsplash
+  gpt_image
+}
+
+/// Rôle joué par un provider dans le routeur (§ 7.1).
+/// Un même ProviderKey peut couvrir plusieurs rôles via plusieurs ProviderConfig rows.
+enum ProviderRole {
+  text
+  image
+  data
+  stock_image
+  rerank
+}
+
+/// Statut review queue (§ 14). `promoted_t1` = passé tier-1 via Will.
+enum ReviewStatus {
+  pending
+  approved
+  rejected
+  needs_edits
+  promoted_t1
+}
+
+/// Statut campagne de couverture territoriale (§ 25.2 v1.7).
+enum CoverageStatus {
+  draft
+  queued
+  running
+  paused
+  completed
+  failed
+  cancelled
+}
+
+/// Périmètre d'une campagne (§ 25.2 v1.7).
+enum CoverageScope {
+  ville
+  departement
+  region
+  multi
+}
+
+/// 12 types d'organisation cible (§ 25 v1.7 — audience mix).
+/// `autre` = fallback explicite (jamais NULL côté `targetAudienceOrganisation`).
+enum OrganisationType {
+  entreprise_privee
+  ecole
+  universite
+  mairie
+  collectivite
+  hopital
+  association
+  comite_entreprise
+  opco
+  carsat
+  etablissement_public
+  autre
+}
+
+/// 5 intentions de recherche (§ 26 v1.7) — pilier doctrine.
+/// `navigational` dans l'enum pour exhaustivité, auto-exclu des campagnes
+/// (cf. § 26.4 — distribution par défaut 0 %).
+enum SearchIntent {
+  informational
+  commercial_investigation
+  transactional
+  navigational
+  local
+}
+
+/// 5 niveaux de confiance des sources externes (§ 9bis.5bis v2.2).
+/// Driver de pondération du `seoScore` et du JSON-LD `Article.citation[]`.
+enum TrustTier {
+  official
+  high
+  standard
+  low
+  excluded
+}
+
+/// 6 métriques Web Vitals (§ 9.10 + references/web-vitals-integration.md).
+/// Couvre Lighthouse `performance` audit (Sprint 1 Day 3 quality gate).
+enum WebVitalMetric {
+  LCP
+  INP
+  CLS
+  FCP
+  TTFB
+  TBT
+}
+
+/// Rating Web Vitals selon seuils Google CrUX (good / needs improvement / poor).
+enum WebVitalRating {
+  good
+  needs_improvement
+  poor
 }
