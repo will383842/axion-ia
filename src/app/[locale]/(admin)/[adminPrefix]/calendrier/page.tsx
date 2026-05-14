@@ -96,6 +96,13 @@ export default async function CalendarPage({ params, searchParams }: PageProps) 
             ⌂
           </a>
           <a
+            href={`/fr/${adminPrefix}/calendrier/heatmap?year=${year}&month=${month}`}
+            className="admin-button-ghost"
+            title="Heatmap géo"
+          >
+            🗺️ Heatmap
+          </a>
+          <a
             href={`/fr/${adminPrefix}/calendrier?year=${nextMonth.year}&month=${nextMonth.month}`}
             className="admin-button-ghost"
           >
