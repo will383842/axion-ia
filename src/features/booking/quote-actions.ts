@@ -31,7 +31,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { sendTelegram } from "@/lib/telegram";
 import { applyTransition, StateMachineError } from "./state-machine";
 import { generateQuoteNumber, computeQuotePricing } from "@/lib/quote-helpers";
-import { createSubmission, isDocusealConfigured, DocusealApiError } from "@/lib/docuseal";
+import { createContractSubmission, isDocusealConfigured, DocusealApiError } from "@/lib/docuseal";
 
 type AdminContext = { userId: string; role: "super_admin" | "admin" | "editor" | "reader" };
 
@@ -265,9 +265,15 @@ export async function sendQuoteAction(
 
     if (isDocusealConfigured() && docusealTemplateId && contactEmail) {
       try {
-        const result = await createSubmission({
+        // Sprint X.7 final — pattern signature séquentielle B2B
+        //   1. Client signe en 1er
+        //   2. Axion-IA contre-signe en 2e
+        // Configuré via DOCUSEAL_CONTRACT_TEMPLATE_ID env vars + le contre-
+        // signataire via AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL (fallback
+        // contact@axion-ia.com). Cf. _AUDIT/legal/DOCUSEAL-TEMPLATE-SETUP.md.
+        const result = await createContractSubmission({
           templateId: docusealTemplateId,
-          signers: [{ email: contactEmail, name: contactName }],
+          client: { email: contactEmail, name: contactName },
           fields: [
             { name: "quote_number", default_value: q.number },
             { name: "amount_ttc", default_value: (q.amountTtcCents / 100).toFixed(2) },
