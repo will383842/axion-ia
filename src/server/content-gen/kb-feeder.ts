@@ -22,14 +22,23 @@ import type { ContentType, KbType } from "../../../prisma/generated/client";
 
 /**
  * Mapping ContentType → KbType (§ 11.0 master prompt v2.5).
- * Note : `blog_from_rss` mappe vers `news_brief` mais cette valeur n'existe
- * pas dans l'enum KbType réel. Fallback temporaire : `article`. À arbitrer
- * Sprint 5 (soit ajouter enum value, soit confirmer mapping `article`).
+ *
+ * Sprint 5 (2026-05-14) — arbitrage confirmé : `blog_from_rss` → `article` (et
+ * non un nouvel enum `news_brief`). Raisons :
+ *  - Volume actualités RSS V1 reste faible (< 50/jour estimé) → pas besoin
+ *    d'un domaine KbType dédié.
+ *  - `article` est déjà l'enum legacy V3 + utilisé par blog_article/keywords/
+ *    title → cohérence.
+ *  - Tag interne `news` peut être ajouté en `tags` côté KB ingest si besoin
+ *    de filtrer ultérieurement.
+ *
+ * Si volume RSS dépasse 500/jour en V2 (industrialisation 2150 villes), un
+ * ADR dédié arbitrera l'ajout de `news_brief` à l'enum KbType.
  */
 const CONTENT_TYPE_TO_KB_TYPE: Record<ContentType, KbType> = {
   landing_ville: "industry_use_case",
   blog_article: "article",
-  blog_from_rss: "article", // TODO Sprint 5 — confirm or add "news_brief" to KbType enum
+  blog_from_rss: "article",
   blog_from_keywords: "article",
   blog_from_title: "article",
   comparison: "comparison",
