@@ -19,6 +19,7 @@ import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
+import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 
 const SYSTEM_PROMPT_BASE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
@@ -93,6 +94,10 @@ ${kbContext}
     } catch (err) {
       throw new Error(`landing-ville LLM output not valid JSON: ${String(err)}`);
     }
+
+    // Pass B fix P0-5 — sanitize HTML output LLM AVANT toute persistance.
+    // Strippe <script>/<iframe>/onerror=/javascript:/etc. Doctrine § 4.1bis.
+    parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
 
     const bodyText = parsed.bodyHtml
       .replace(/<[^>]+>/g, " ")
