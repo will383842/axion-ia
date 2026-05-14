@@ -474,6 +474,18 @@
   font-weight: 600;
   margin: 0 0 12px;
 }
+.admin-h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.admin-form-block {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: var(--color-bg);
+}
 .admin-lede {
   font-size: 14px;
   color: var(--color-fg-muted);
@@ -624,14 +636,6 @@
 .admin-kpi-link:hover {
   background-color: var(--color-bg);
   border-color: var(--color-terracotta);
-}
-.admin-link {
-  color: var(--color-terracotta);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.admin-link:hover {
-  text-decoration: none;
 }
 .admin-shell {
   display: grid;
