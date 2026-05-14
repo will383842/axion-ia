@@ -203,6 +203,20 @@ export const contentKeywordSyncQueue: Queue | null = connection
     })
   : null;
 
+/**
+ * Web Vitals monitor (audit final fix P0-3) — cron daily 02:30 UTC.
+ * Calcule p75 LCP/INP/CLS/FCP/TTFB/TBT sur fenêtre 24h depuis
+ * `WebVitalSample` table (RUM /api/vitals). Alerte Telegram tag
+ * MONITORING si dépasse budget AGENTS.md. Snapshot stocké dans
+ * ContentGenConfig.web_vitals_p75 pour dashboard admin.
+ */
+export const contentWebVitalsMonitorQueue: Queue | null = connection
+  ? new Queue("content-web-vitals-monitor", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
 // ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
@@ -427,6 +441,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-weekly-mon-0400", tick: new Date().toISOString() },
       { repeat: { pattern: "0 4 * * 1" }, jobId: "content-keyword-sync-cron" },
+    );
+  }
+
+  // Audit final fix P0-3 — Web Vitals monitor daily 02:30 UTC.
+  if (contentWebVitalsMonitorQueue) {
+    await contentWebVitalsMonitorQueue.removeRepeatable(
+      "tick",
+      { pattern: "30 2 * * *" },
+      "content-web-vitals-monitor-cron",
+    );
+    await contentWebVitalsMonitorQueue.add(
+      "tick",
+      { trigger: "cron-daily-0230", tick: new Date().toISOString() },
+      { repeat: { pattern: "30 2 * * *" }, jobId: "content-web-vitals-monitor-cron" },
     );
   }
 }
