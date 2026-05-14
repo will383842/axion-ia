@@ -1,0 +1,17 @@
+/**
+ * Content Generator — Geo batch detail.
+ *
+ * V1 = redirige vers la page campagne. Sprint 4 ajoutera burndown + pause/resume
+ * spécifiques au batch.
+ */
+
+import { redirect } from "next/navigation";
+
+interface PageProps {
+  params: Promise<{ locale: string; adminPrefix: string; id: string }>;
+}
+
+export default async function GeoBatchDetailPage({ params }: PageProps) {
+  const { locale, adminPrefix, id } = await params;
+  redirect(`/${locale}/${adminPrefix}/content-gen/coverage/${id}`);
+}

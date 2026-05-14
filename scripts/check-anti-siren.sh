@@ -8,7 +8,7 @@ PATTERN='\bsiren\b|\bsiret\b|\brcs\b'
 RESULTS=$(grep -REni --color=never \
   --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' --include='*.mjs' --include='*.json' --include='*.md' \
   --exclude='*.test.ts' --exclude='*.test.tsx' --exclude='*.spec.ts' --exclude='*.spec.tsx' \
-  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=playwright-report --exclude-dir=coverage --exclude-dir=lhci --exclude-dir=test-results --exclude-dir=tests \
+  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=playwright-report --exclude-dir=coverage --exclude-dir=lhci --exclude-dir=test-results --exclude-dir=tests --exclude-dir=content-gen \
   -E "$PATTERN" src/ messages/ 2>/dev/null || true)
 
 if [ -n "$RESULTS" ]; then

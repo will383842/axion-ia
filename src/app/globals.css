@@ -1498,3 +1498,56 @@
   overflow-y: auto;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
+
+/* Generic admin grid + KPI helpers (extension Sprint 3 admin UI). */
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.admin-kpi-card {
+  padding: 16px;
+}
+.admin-kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  margin: 0;
+}
+.admin-inline-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+.admin-inline-list > li {
+  font-size: 14px;
+}
+.admin-quick-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-quick-actions > li > a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--color-bg);
+  transition: background-color 120ms ease;
+}
+.admin-quick-actions > li > a:hover {
+  background-color: var(--color-paper);
+}
+.admin-dashboard-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
