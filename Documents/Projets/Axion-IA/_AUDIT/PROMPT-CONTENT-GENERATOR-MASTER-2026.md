@@ -217,7 +217,7 @@ Avant tout prompt IA, le builder DOIT lire en SSOT :
 | Gap | Impact | Sprint |
 |---|---|---|
 | **Aucun SDK provider IA** (OpenAI, Anthropic, Perplexity) | 0 capacité génération | S1 |
-| Aucune table `KbDocument` / `KbChunk` (Knowledge Base) | Pas de RAG | S1 |
+| ~~Tables `KbDocument` / `KbChunk`~~ → **OBSOLÈTE v2.5** : KB réelle V4 mergée (`KnowledgeEntry` + 6 modèles `Knowledge*`). content-gen lit/alimente cet existant. | KB déjà codée KB-1→KB-20 | S1 (consommation) + S5 (KB feeder) |
 | Aucune table `ContentGenJob` (job traceable DB) | Pas de tracking unifié | S1 |
 | Aucune table `RssSource` / `RssItem` | Pas de pipeline RSS | S2 |
 | Aucune table `ContentTemplate` (prompts versionnés) | Prompts hardcodés impossibles à itérer | S1 |
@@ -931,6 +931,19 @@ model ReviewQueue {
 enum ReviewStatus { pending approved rejected needs_edits promoted_t1 }
 
 // ============ KNOWLEDGE BASE (RAG) ============
+//
+// ⚠️ ⚠️ PATCH v2.5 (Sprint S0bis 2026-05-14) — LES 2 MODÈLES CI-DESSOUS SONT OBSOLÈTES
+// La KB réelle (KB V4 Knowledge Factory) est CODÉE et MERGÉE sur main depuis 2026-05-14
+// (commit `bd0f831`). Modèles réels = `KnowledgeEntry` + 6 relations `Knowledge*`
+// dans `axionia/prisma/schema.prisma:1823+`. Voir références skill content-gen :
+//   - references/kb-doctrine.md v2.0 (contrat consommation + alimentation)
+//   - references/skill-orchestration.md (frontière content-gen / KB sibling)
+//
+// NE PAS implémenter `KbDocument` ni `KbChunk` ci-dessous. Le kb-client doit utiliser
+// `prisma.knowledgeEntry` + `KnowledgeTranslation.embedding` (pgvector déjà migré
+// par migration `kb_v4_pgvector_embeddings`).
+//
+// Conservé ci-dessous pour archive uniquement — ne PAS migrer.
 
 model KbDocument {
   id                    String   @id @default(cuid())
@@ -1045,9 +1058,21 @@ enum Locale {
 // + index : CREATE INDEX "Article_indexationTier_idx" ON "Article"("indexationTier");
 ```
 
-### 5.1bis Inventaire complet des tables & enums (cross-reference v2.4)
+### 5.1bis Inventaire complet des tables & enums (cross-reference v2.4 + v2.5 KB réelle + Web Vitals)
 
-> Cette sous-section centralise les modèles et enums qui ne sont pas déclarés dans la liste « nouvelles tables » § 5.1 ci-dessus mais qui sont **partie intégrante de la migration `add_content_gen_core` Sprint 1**. Cross-ref ajouté 2026-05-14 suite audit pré-implémentation (cf. AGT-VC2).
+> Cette sous-section centralise les modèles et enums qui ne sont pas déclarés dans la liste « nouvelles tables » § 5.1 ci-dessus mais qui sont **partie intégrante de la migration `add_content_gen_core` Sprint 1**. Cross-ref ajouté 2026-05-14 suite audit pré-implémentation (cf. AGT-VC2 + Sprint S0bis 2026-05-14).
+>
+> ⚠️ **PATCH v2.5 majeur (Sprint S0bis 2026-05-14)** : la KB N'EST PLUS `KbDocument` + `KbChunk` (artefacts obsolètes pré-V4). La KB réelle V4 mergée sur main = `KnowledgeEntry` + 6 modèles `Knowledge*` (cf. `axionia/prisma/schema.prisma:1823+`). Le content-gen **consomme ET alimente** ces tables existantes — il ne crée PAS un système parallèle. Toute migration content-gen qui crée `KbDocument` ou `KbChunk` = BUG. Voir `.claude/skills/.../references/kb-doctrine.md` pour le contrat complet.
+
+**Web Vitals tables (Sprint S0bis 2026-05-14)** :
+
+| Table | Section | Sprint |
+|---|---|---|
+| `WebVitalSample` (URL, metric, value, rating, sessionId, pageType, knowledgeEntryId, idx composites) | `references/web-vitals-integration.md` | Sprint 1 |
+
+Enums associés :
+- `WebVitalMetric` : `LCP`, `INP`, `CLS`, `FCP`, `TTFB`, `TBT`
+- `WebVitalRating` : `good`, `needs_improvement`, `poor`
 
 **Tables additionnelles à inclure dans `add_content_gen_core` (Sprint 1)** :
 
@@ -3126,9 +3151,27 @@ Grille 0-100 (V1) :
 
 ---
 
-## 11. Knowledge Base — consommation (NE PAS la créer ici)
+## 11. Knowledge Base — consommation ET alimentation (v2.5 — aligné KB V4 réelle)
 
-> ⚠️ **Le content generator NE construit PAS la KB**. La KB est créée par un outil dédié spécifié dans `_AUDIT/PROMPT-KNOWLEDGE-BASE-2026.md`. Ce chapitre décrit uniquement comment **CONSOMMER** la KB depuis le content generator.
+> ⚠️⚠️ **PATCH v2.5 MAJEUR (Sprint S0bis 2026-05-14)** : tout ce chapitre référençait `KbDocument` + `KbChunk` qui sont **des artefacts obsolètes pré-V4**. La KB réelle, **codée et mergée sur main** (commit `bd0f831`), utilise `KnowledgeEntry` + 6 modèles `Knowledge*` (cf. `axionia/prisma/schema.prisma:1823+`). Toute migration content-gen qui crée `KbDocument`/`KbChunk` = BUG. La doctrine canonique est dans `.claude/skills/axionia-content-generator/references/kb-doctrine.md` (v2.0).
+>
+> ⚠️ **Le content generator CONSOMME ET ALIMENTE la KB V4** (pivot V4 Knowledge Factory Industrielle, 2026-05-14). Le content-gen génère le contenu, la KB le stocke avec audit trail factory (`sourceFactoryId`, `sourcePromptId`, `sourceModelUsed`, `sourceCostCents`, `sourceGeneratedAt`). L'admin `/connaissances/`, la RGPD, les annotations, le DR massif sont du ressort du skill jumeau `axionia-connaissances` — pas du content-gen.
+
+### 11.0 Mapping ContentType → KbType (V4)
+
+| ContentType (content-gen) | KbType (KnowledgeEntry) |
+|---|---|
+| `landing_ville` | `industry_use_case` |
+| `blog_article` | `article` |
+| `blog_from_rss` | `news_brief` |
+| `comparison` | `comparison` (V4 factory) |
+| `guide_pilier` | `implementation_playbook` (V4 factory) |
+| `faq_standalone` | `faq` |
+| `qa_derived` | `faq` |
+
+### 11.1 Contrat d'interface (read-only)
+
+> ⚠️ **Helper `kb-client.ts` v2.5** : utilise `KnowledgeEntry` + `KnowledgeTranslation.embedding` (pgvector) au lieu de `KbDocument` + `KbChunk` (obsolètes). Voir kb-doctrine.md skill pour exemple complet.
 
 ### 11.1 Contrat d'interface (read-only)
 
@@ -3517,9 +3560,12 @@ Format type **avec lien admin direct** pour chaque événement :
 | 5 jobs failed consécutifs | `[🔴 BATCH FAIL] Campagne Lyon : 5 jobs failed sur landing_ville. Pause auto. → /coverage/[id]` |
 | Nouveau contenu review | `[ℹ️ REVIEW] 3 contenus tier-2 à valider. → /publications-status` |
 | Batch terminé | `[✓ DONE] Campagne Rhône (300 contenus). Coût $124. Score moyen 76. 287 publiés, 13 failed. → /coverage/[id]` |
-| LCP dégradé | `[⚠️ PERF] LCP p75 = 2145 ms sur /fr/implantations/* (7 j). Vérifier images AVIF + preload.` |
+| LCP dégradé (legacy v1.9) | `[⚠️ PERF] LCP p75 = 2145 ms sur /fr/implantations/* (7 j). Vérifier images AVIF + preload.` |
+| **Web Vitals — LCP p75 > 2000 ms** (Sprint S0bis v2.5) | `[⚠️ WEB_VITALS_DEGRADED] LCP p75 = 2145 ms (> 2000ms cible) sur landing-ville (24h). → /content-gen/web-vitals` |
+| **Web Vitals — INP p75 > 200 ms** (Sprint S0bis v2.5) | `[⚠️ WEB_VITALS_DEGRADED] INP p75 = 245 ms (> 200ms cible) sur blog (24h). → /content-gen/web-vitals` |
+| **Web Vitals — CLS p75 > 0.1** (Sprint S0bis v2.5) | `[🔴 WEB_VITALS_DEGRADED] CLS p75 = 0.12 (> 0.1 cible) sur guide-pilier (24h). → /content-gen/web-vitals` |
 
-Chaque alerte contient un **lien admin direct** pour action immédiate sans recherche.
+**Total : 16 alertes** (13 v1.9 + 3 Web Vitals Sprint S0bis 2026-05-14). Chaque alerte contient un **lien admin direct** pour action immédiate sans recherche.
 
 ### 12.2 Dashboard global (`/content-gen`)
 
