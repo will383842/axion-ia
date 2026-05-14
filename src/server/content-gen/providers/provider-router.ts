@@ -152,6 +152,79 @@ export async function generate(req: GenerationRequest): Promise<GenerationRespon
 }
 
 /**
+ * Sprint 11 V2 — Compete mode : lance N providers en parallèle pour le rôle
+ * demandé, score chaque sortie via `scoreFn`, retourne la meilleure.
+ *
+ * Pattern :
+ *   1. Filter providers text (OpenAI + Anthropic) - circuits closed
+ *   2. Promise.allSettled → tolère 1 échec sur 2
+ *   3. Score chaque success via scoreFn (typiquement computeSeoScore)
+ *   4. Return celui avec le meilleur score
+ *
+ * Coût : 2× appels API (à activer uniquement quand Will valide budget). Les
+ * deux calls sont toujours facturés même si un seul output est utilisé.
+ *
+ * Si zéro success → throw lastError comme `generate()` standard.
+ * Si un seul success → return directement (pas de score nécessaire).
+ */
+export async function generateCompete(
+  req: GenerationRequest,
+  scoreFn: (response: GenerationResponse) => number,
+): Promise<GenerationResponse> {
+  const candidates = ROLE_TO_PROVIDERS[req.role] as ReadonlyArray<IProvider>;
+  const eligible = candidates.filter((p) => !isCircuitOpen(p.key));
+
+  if (eligible.length === 0) {
+    throw new Error(`No eligible providers for role '${req.role}' (all circuits open)`);
+  }
+  if (eligible.length === 1) {
+    // Pas de "compete" possible — fallback comportement single
+    return generate(req);
+  }
+
+  const results = await Promise.allSettled(eligible.map((p) => p.generate(req)));
+
+  const wins: Array<{ response: GenerationResponse; score: number; key: ProviderKey }> = [];
+  results.forEach((r, idx) => {
+    const provider = eligible[idx]!;
+    if (r.status === "fulfilled") {
+      recordSuccess(provider.key);
+      try {
+        wins.push({ response: r.value, score: scoreFn(r.value), key: provider.key });
+      } catch (scoreErr) {
+        // Score throws → considère ce candidat comme invalide mais ne pénalise
+        // pas le circuit breaker (le provider a répondu OK).
+        console.warn(
+          `[compete] scoreFn threw for ${provider.key}:`,
+          scoreErr instanceof Error ? scoreErr.message : String(scoreErr),
+        );
+      }
+    } else {
+      const isRetryable = r.reason instanceof ProviderError ? r.reason.retryable : true;
+      if (isRetryable) recordFailure(provider.key);
+    }
+  });
+
+  if (wins.length === 0) {
+    const firstError = results.find((r) => r.status === "rejected") as
+      | PromiseRejectedResult
+      | undefined;
+    throw firstError?.reason ?? new Error(`All providers failed in compete mode for '${req.role}'`);
+  }
+
+  wins.sort((a, b) => b.score - a.score);
+  const winner = wins[0]!;
+  console.log(
+    `[compete] winner=${winner.key} score=${winner.score} ` +
+      `(challengers=${wins.length - 1}: ${wins
+        .slice(1)
+        .map((w) => `${w.key}=${w.score}`)
+        .join(", ")})`,
+  );
+  return winner.response;
+}
+
+/**
  * Health check global — utilisé par /api/admin/content-gen/health.
  * Day 2 : cached Redis 60s par provider.
  */
