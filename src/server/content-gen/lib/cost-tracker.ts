@@ -13,6 +13,7 @@
 import { prisma } from "@/lib/prisma";
 import { ProviderError } from "../providers/IProvider";
 import { sendTelegram } from "@/lib/telegram";
+import { safeTelegramContext } from "./pii-safe";
 import type { ProviderKey, Prisma } from "../../../../prisma/generated/client";
 
 /**
@@ -46,14 +47,20 @@ async function handleCostCapHit(provider: ProviderKey, spent: number, cap: numbe
     );
   }
 
-  // 2. Alerte Telegram (fail-soft)
+  // 2. Alerte Telegram (fail-soft) — Pass B P1-7 : champs passés via
+  // safeTelegramContext() pour garantir minimisation PII (ADR 0010) même
+  // si un futur ajout introduit un email/name dans le payload alert.
   try {
+    const context = safeTelegramContext({
+      provider,
+      monthly_spent_usd: Number(spent.toFixed(2)),
+      monthly_cap_usd: Number(cap.toFixed(2)),
+    });
     await sendTelegram({
       tag: "MONITORING",
       body:
         `*Cost cap content-gen atteint*\n` +
-        `Provider : \`${provider}\`\n` +
-        `Dépensé : $${spent.toFixed(2)} / cap $${cap.toFixed(2)}\n` +
+        `${context}\n` +
         `Action auto : provider désactivé. Fallback chain prend le relais.\n` +
         `Réactivation : admin /content-gen/settings/providers ou reset 1er du mois.`,
       silent: false,

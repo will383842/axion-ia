@@ -2,3 +2,4 @@ pnpm exec lint-staged
 pnpm anti-siren:check
 pnpm anti-hex:check
 pnpm use-client:check
+pnpm typecheck

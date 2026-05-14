@@ -10,6 +10,7 @@ import { auth } from "@/auth";
 import { getEntryAction } from "@/server/actions/knowledge/get-entry";
 import { getKbTypeMeta } from "@/content/knowledge/types";
 import { getStatusLabel } from "@/content/knowledge/statuses";
+import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -56,10 +57,7 @@ export default async function ConnaissancesApercuPage({ params, searchParams }: 
         </header>
         <div
           className="admin-preview-body"
-          // KB-12 (Sprint sécurité) durcira avec @tiptap/html + whitelist nodes/marks.
-          // V1 admin-only preview, pas exposé public → risque XSS minimal (auteurs trusted).
-
-          dangerouslySetInnerHTML={{ __html: tr.body }}
+          dangerouslySetInnerHTML={{ __html: sanitizeTiptapHtml(tr.body) }}
         />
       </article>
     </section>

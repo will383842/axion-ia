@@ -23,11 +23,13 @@ export default defineConfig({
         "src/sentry.*.config.ts",
         "src/env.ts",
       ],
+      // Pass B P1-9 — bump 50 → 60 % (palier S6.2). Cible 70 % S6.3 quand la
+      // suite tests content-gen unit (P0-1) + E2E (P0-2) sera consolidée.
       thresholds: {
-        statements: 50,
-        branches: 50,
-        functions: 50,
-        lines: 50,
+        statements: 60,
+        branches: 55,
+        functions: 60,
+        lines: 60,
       },
     },
   },
