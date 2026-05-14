@@ -1,0 +1,321 @@
+/**
+ * Tests KB-5 — 4 mappings additionnels (CaseStudy / FAQ / HelpArticle / Glossary hardcode).
+ * Pure. AUCUNE I/O DB.
+ */
+
+import { describe, expect, it } from "vitest";
+import type {
+  CaseStudy,
+  CaseStudyTranslation,
+  FAQ,
+  HelpArticle,
+  HelpArticleTranslation,
+} from "../../../prisma/generated/client";
+import {
+  mapCaseStudyToEntryInput,
+  mapCaseStudyTranslationInput,
+} from "./legacy-mapping-case-study";
+import { mapFaqToEntryInput, mapFaqTranslations } from "./legacy-mapping-faq";
+import {
+  mapHelpArticleToEntryInput,
+  mapHelpArticleTranslationInput,
+} from "./legacy-mapping-help-article";
+import { GLOSSARY_TERMS_HARDCODE, mapGlossaryTermInput } from "./legacy-mapping-glossary-hardcode";
+
+// ============================================================
+// Case Study
+// ============================================================
+
+function makeCaseStudy(o: Partial<CaseStudy> = {}): CaseStudy {
+  return {
+    id: "cs-uuid-1",
+    sector: "tech",
+    companySizeRange: "PME",
+    region: null,
+    modulesUsed: {},
+    resultsQuantified: {},
+    durationWeeks: 4,
+    roiWeeks: 8,
+    testimonialId: null,
+    status: "draft",
+    publishedAt: null,
+    createdAt: new Date("2026-01-01T00:00:00Z"),
+    updatedAt: new Date("2026-01-02T00:00:00Z"),
+    ...o,
+  };
+}
+function makeCsTranslation(o: Partial<CaseStudyTranslation> = {}): CaseStudyTranslation {
+  return {
+    id: "cs-t-1",
+    caseStudyId: "cs-uuid-1",
+    locale: "fr",
+    title: "Cas exemple",
+    slug: "cas-exemple",
+    problem: "<p>Le problème</p>",
+    solution: "<p>La solution</p>",
+    problemJson: null,
+    problemText: "Le problème",
+    solutionJson: null,
+    solutionText: "La solution",
+    metaTitle: null,
+    metaDescription: null,
+    createdAt: new Date("2026-01-01T00:00:00Z"),
+    updatedAt: new Date("2026-01-02T00:00:00Z"),
+    ...o,
+  };
+}
+
+describe("mapCaseStudyToEntryInput", () => {
+  it("type='case_study' + audience='public'", () => {
+    const cs = makeCaseStudy();
+    const r = mapCaseStudyToEntryInput({ ...cs, translations: [makeCsTranslation()] });
+    expect(r.type).toBe("case_study");
+    expect(r.audience).toBe("public");
+    expect(r.domain).toBe("editorial");
+  });
+
+  it("slug racine = slug FR", () => {
+    const cs = makeCaseStudy();
+    const r = mapCaseStudyToEntryInput({
+      ...cs,
+      translations: [makeCsTranslation({ locale: "fr", slug: "mon-cas" })],
+    });
+    expect(r.slug).toBe("mon-cas");
+  });
+
+  it("fallback id si pas de translation", () => {
+    const cs = makeCaseStudy({ id: "deadbeef-1234-5678-9abc-def012345678" });
+    const r = mapCaseStudyToEntryInput({ ...cs, translations: [] });
+    expect(r.slug).toBe("legacy-case-study-deadbeef");
+  });
+
+  it("status published → pipelineStage=published", () => {
+    const cs = makeCaseStudy({ status: "published" });
+    const r = mapCaseStudyToEntryInput({ ...cs, translations: [makeCsTranslation()] });
+    expect(r.pipelineStage).toBe("published");
+  });
+});
+
+describe("mapCaseStudyTranslationInput", () => {
+  it("body = concat problem + solution HTML", () => {
+    const t = makeCsTranslation({
+      problem: "<p>P</p>",
+      solution: "<p>S</p>",
+    });
+    const r = mapCaseStudyTranslationInput(t);
+    expect(r.body).toContain("Problème");
+    expect(r.body).toContain("<p>P</p>");
+    expect(r.body).toContain("Solution");
+    expect(r.body).toContain("<p>S</p>");
+  });
+
+  it("bodyText concat plain text", () => {
+    const t = makeCsTranslation({ problemText: "PT", solutionText: "ST" });
+    const r = mapCaseStudyTranslationInput(t);
+    expect(r.bodyText).toContain("PT");
+    expect(r.bodyText).toContain("ST");
+  });
+
+  it("bodyJson construit si problemJson + solutionJson présents", () => {
+    const t = makeCsTranslation({
+      problemJson: { type: "doc", content: [{ type: "paragraph" }] },
+      solutionJson: { type: "doc", content: [{ type: "paragraph" }] },
+    });
+    const r = mapCaseStudyTranslationInput(t);
+    expect(r.bodyJson).toBeTruthy();
+    expect((r.bodyJson as { type: string }).type).toBe("doc");
+  });
+});
+
+// ============================================================
+// FAQ
+// ============================================================
+
+function makeFaq(o: Partial<FAQ> = {}): FAQ {
+  return {
+    id: "faq-1",
+    slug: "ma-question",
+    category: "general",
+    questionFr: "Question FR ?",
+    questionEn: "Question EN?",
+    answerFr: "Réponse FR.",
+    answerEn: "Answer EN.",
+    metaTitle: null,
+    metaDescription: null,
+    displayOrder: 0,
+    viewCount: 42,
+    helpfulCount: 7,
+    status: "published",
+    createdAt: new Date("2026-01-01T00:00:00Z"),
+    updatedAt: new Date("2026-01-02T00:00:00Z"),
+    ...o,
+  };
+}
+
+describe("mapFaqToEntryInput", () => {
+  it("type='faq' + audience='public'", () => {
+    const r = mapFaqToEntryInput(makeFaq());
+    expect(r.type).toBe("faq");
+    expect(r.audience).toBe("public");
+  });
+
+  it("préserve viewCount + helpfulCount legacy", () => {
+    const r = mapFaqToEntryInput(makeFaq({ viewCount: 100, helpfulCount: 25 }));
+    expect(r.viewsCount).toBe(100);
+    expect(r.helpfulUpCount).toBe(25);
+  });
+
+  it("slug racine = slug FAQ direct", () => {
+    const r = mapFaqToEntryInput(makeFaq({ slug: "comment-ca-marche" }));
+    expect(r.slug).toBe("comment-ca-marche");
+  });
+});
+
+describe("mapFaqTranslations", () => {
+  it("génère 2 translations (fr + en)", () => {
+    const r = mapFaqTranslations(makeFaq());
+    expect(r).toHaveLength(2);
+    expect(r[0]!.locale).toBe("fr");
+    expect(r[1]!.locale).toBe("en");
+  });
+
+  it("EN slug suffixé pour éviter collision unique (locale, slug)", () => {
+    const r = mapFaqTranslations(makeFaq({ slug: "ma-question" }));
+    expect(r[0]!.slug).toBe("ma-question");
+    expect(r[1]!.slug).toBe("ma-question-en");
+  });
+
+  it("title FR = questionFr, body wrapped <p>answer</p>", () => {
+    const faq = makeFaq({ questionFr: "Q?", answerFr: "A." });
+    const r = mapFaqTranslations(faq);
+    expect(r[0]!.title).toBe("Q?");
+    expect(r[0]!.body).toBe("<p>A.</p>");
+    expect(r[0]!.bodyText).toBe("A.");
+  });
+
+  it("escapeHtml : caractères dangereux dans réponse", () => {
+    const faq = makeFaq({ answerFr: "<script>alert('xss')</script>" });
+    const r = mapFaqTranslations(faq);
+    expect(r[0]!.body).not.toContain("<script>");
+    expect(r[0]!.body).toContain("&lt;script&gt;");
+  });
+});
+
+// ============================================================
+// HelpArticle
+// ============================================================
+
+function makeHelp(o: Partial<HelpArticle> = {}): HelpArticle {
+  return {
+    id: "ha-1",
+    categoryId: null,
+    isTutorial: false,
+    status: "draft",
+    publishedAt: null,
+    createdAt: new Date("2026-01-01T00:00:00Z"),
+    updatedAt: new Date("2026-01-02T00:00:00Z"),
+    ...o,
+  };
+}
+function makeHelpTrans(o: Partial<HelpArticleTranslation> = {}): HelpArticleTranslation {
+  return {
+    id: "ha-t-1",
+    helpArticleId: "ha-1",
+    locale: "fr",
+    title: "Article aide",
+    slug: "aide-1",
+    excerpt: null,
+    body: "<p>Aide</p>",
+    bodyJson: null,
+    bodyText: "Aide",
+    metaTitle: null,
+    metaDescription: null,
+    createdAt: new Date("2026-01-01T00:00:00Z"),
+    updatedAt: new Date("2026-01-02T00:00:00Z"),
+    ...o,
+  };
+}
+
+describe("mapHelpArticleToEntryInput", () => {
+  it("type='help_article' + audience='public'", () => {
+    const r = mapHelpArticleToEntryInput({ ...makeHelp(), translations: [makeHelpTrans()] });
+    expect(r.type).toBe("help_article");
+    expect(r.audience).toBe("public");
+  });
+
+  it("préserve publishedAt", () => {
+    const date = new Date("2026-03-15T10:00:00Z");
+    const r = mapHelpArticleToEntryInput({
+      ...makeHelp({ status: "published", publishedAt: date }),
+      translations: [makeHelpTrans()],
+    });
+    expect(r.publishedAt).toBe(date);
+  });
+});
+
+describe("mapHelpArticleTranslationInput", () => {
+  it("préserve body/json/text triple-source", () => {
+    const t = makeHelpTrans({
+      body: "<p>HTML</p>",
+      bodyJson: { type: "doc" },
+      bodyText: "plain",
+    });
+    const r = mapHelpArticleTranslationInput(t);
+    expect(r.body).toBe("<p>HTML</p>");
+    expect(r.bodyJson).toEqual({ type: "doc" });
+    expect(r.bodyText).toBe("plain");
+  });
+});
+
+// ============================================================
+// Glossary hardcode
+// ============================================================
+
+describe("GLOSSARY_TERMS_HARDCODE", () => {
+  it("contient 12 termes", () => {
+    expect(GLOSSARY_TERMS_HARDCODE).toHaveLength(12);
+  });
+
+  it("chaque terme a slug + term + fr + en non vides", () => {
+    for (const t of GLOSSARY_TERMS_HARDCODE) {
+      expect(t.slug).toBeTruthy();
+      expect(t.term).toBeTruthy();
+      expect(t.fr).toBeTruthy();
+      expect(t.en).toBeTruthy();
+    }
+  });
+
+  it("slugs sont uniques", () => {
+    const slugs = GLOSSARY_TERMS_HARDCODE.map((t) => t.slug);
+    const uniq = new Set(slugs);
+    expect(uniq.size).toBe(slugs.length);
+  });
+});
+
+describe("mapGlossaryTermInput", () => {
+  it("génère slug racine + 2 translations", () => {
+    const r = mapGlossaryTermInput(GLOSSARY_TERMS_HARDCODE[0]!);
+    expect(r.slug).toBe("llm");
+    expect(r.translations).toHaveLength(2);
+  });
+
+  it("translations FR et EN ont le bon contenu", () => {
+    const r = mapGlossaryTermInput(GLOSSARY_TERMS_HARDCODE[1]!); // RAG
+    expect(r.translations[0]!.locale).toBe("fr");
+    expect(r.translations[0]!.title).toBe("RAG");
+    expect(r.translations[0]!.body).toContain("Retrieval");
+    expect(r.translations[1]!.locale).toBe("en");
+  });
+
+  it("excerpt tronqué à 200 chars", () => {
+    const longTerm = {
+      slug: "long",
+      term: "Long",
+      fr: "a".repeat(500),
+      en: "b".repeat(500),
+    };
+    const r = mapGlossaryTermInput(longTerm);
+    expect(r.translations[0]!.excerpt.length).toBeLessThanOrEqual(200);
+    expect(r.translations[1]!.excerpt.length).toBeLessThanOrEqual(200);
+  });
+});

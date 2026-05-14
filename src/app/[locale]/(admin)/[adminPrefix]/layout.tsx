@@ -41,6 +41,7 @@ function buildNav(adminPrefix: string): NavItem[] {
     { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
     { href: `${base}/submissions`, label: "Soumissions", icon: "📥", group: "main" },
     // ── contenu ──────────────────────────────────────────────────────────
+    { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },

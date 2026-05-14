@@ -11,9 +11,9 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqHeroSchema } from "@/components/sections/FaqHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { FAQ_GLOBAL } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import { listFaqs } from "@/lib/knowledge/readers";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -47,10 +47,13 @@ export default async function FaqPage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const items = FAQ_GLOBAL.map((entry) => ({
-    id: entry.id,
-    question: entry[loc].question,
-    answer: entry[loc].answer,
+  // KB-6.3 : lecture via reader unifié (FAQ_GLOBAL en mode legacy, knowledge_entries
+  // si KB_BACKEND_UNIFIED_FAQ=1).
+  const faqs = await listFaqs();
+  const items = faqs.map((entry) => ({
+    id: entry.slug,
+    question: isFr ? entry.questionFr : entry.questionEn,
+    answer: isFr ? entry.answerFr : entry.answerEn,
   }));
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items });

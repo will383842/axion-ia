@@ -1,11 +1,14 @@
 // RSS 2.0 feed for FAQ entries (per locale).
+// KB-6.3 : lit via reader unifié (FAQ_GLOBAL legacy ou knowledge_entries DB).
 
-import { FAQ_GLOBAL } from "@/content/transversal";
 import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
 import { SITE_URL } from "@/lib/seo";
+import { listFaqs } from "@/lib/knowledge/readers";
 
-export const runtime = "edge";
+// runtime nodejs (au lieu de edge) car les readers utilisent Prisma
+// (incompatible avec edge runtime).
+export const runtime = "nodejs";
 
 interface RouteContext {
   params: Promise<{ locale: string }>;
@@ -19,15 +22,20 @@ export async function GET(_req: Request, { params }: RouteContext) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const items = FAQ_GLOBAL.map((f) => {
-    const link = `${SITE_URL}/${locale}/faq/${f.id}`;
-    return `    <item>
-      <title>${escapeXml(f[loc].question)}</title>
+  const faqs = await listFaqs();
+  const items = faqs
+    .map((f) => {
+      const link = `${SITE_URL}/${locale}/faq/${f.slug}`;
+      const question = loc === "fr" ? f.questionFr : f.questionEn;
+      const answer = loc === "fr" ? f.answerFr : f.answerEn;
+      return `    <item>
+      <title>${escapeXml(question)}</title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
-      <description>${escapeXml(f[loc].answer)}</description>
+      <description>${escapeXml(answer)}</description>
     </item>`;
-  }).join("\n");
+    })
+    .join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">

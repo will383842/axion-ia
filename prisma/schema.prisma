@@ -468,6 +468,153 @@ enum CompanySize {
 }
 
 // ============================================================
+// KB-1 — Knowledge Base unifiée (Sprint KB-1, branche feature/kb-foundations)
+// Source de vérité spec : `_AUDIT/KNOWLEDGE-BASE-2026/01-DATA-MODEL.md`
+// ADR : `docs/adr/0021-knowledge-base-unifiee.md` (à créer en fin de Phase B)
+// ============================================================
+
+/// 28 types de contenu KB polymorphique (§12.1 master prompt V4).
+/// Stable DB — toute valeur ajoutée = migration `ALTER TYPE ADD VALUE`.
+/// V4 (Knowledge Factory Industrielle, 2026-05-14) : +12 types pour production
+/// 100 entrées/jour automatique (volume cibles annuels documentés §12.1 prompt).
+enum KbType {
+  // 16 types V3 (legacy + internes)
+  article
+  case_study
+  help_article
+  faq
+  glossary_term
+  guide
+  methodology
+  doctrine
+  adr
+  prompt_template
+  sop
+  post_mortem
+  tool_card
+  competitor_card
+  commercial_doc
+  onboarding_step
+
+  // 12 types V4 Knowledge Factory (FR uniquement V1)
+  automation_recipe // Recette d'automatisation (N8N/Zapier/Make) — ~8000/an
+  tool_review // Avis sur outil IA pour pros — ~3000/an
+  industry_use_case // Cas d'usage IA par secteur — ~6000/an
+  comparison // Comparatif outil X vs outil Y — ~2000/an
+  implementation_playbook // Playbook d'implémentation IA — ~1500/an
+  prompt_pattern // Pattern de prompt pour métier/tâche — ~5000/an
+  roi_calculator_template // Template calculateur ROI IA — ~500/an
+  intervention_module // Module d'intervention (montée en compétence). JAMAIS « training »/« formation ». — ~2000/an
+  competence_boost // Boost compétence court (15-30 min, micro-apprentissage) — ~3000/an
+  secteur_brief // Brief sectoriel IA — ~500/an
+  dept_brief // Brief département — ~500/an
+  metier_brief // Brief métier — ~1500/an
+}
+
+/// 10 domaines (§12.2 master prompt). Borné. Une entrée = 1 domaine.
+enum KbDomain {
+  commercial
+  technical
+  legal
+  hr
+  product
+  client
+  watch
+  internal
+  editorial
+  methodology
+}
+
+/// 4 audiences (§12.3) — détermine visibilité runtime + sitemap.
+enum KbAudience {
+  public
+  client
+  team
+  will_only
+}
+
+/// 4 niveaux confidentialité — orthogonal à audience.
+/// `confidential`/`secret` interdisent envoi API tiers (filtre embeddings KB-21).
+enum KbConfidentiality {
+  public
+  internal
+  confidential
+  secret
+}
+
+/// 7 états workflow technique KB. DÉDIÉ : ne pas étendre `PublishStatus`
+/// (3 valeurs draft/published/archived, partagé par modèles legacy).
+/// Cf. SYNTHESIS §3 décision Will : enum dédié = recommandation forte.
+enum KbStatus {
+  draft
+  review
+  approved
+  scheduled
+  published
+  archived
+  deprecated
+}
+
+/// 9 étapes pipeline éditorial — orthogonal à `KbStatus`.
+/// Permet kanban éditorial sans polluer le champ technique.
+enum KbPipelineStage {
+  idea
+  brief
+  draft
+  review
+  approved
+  scheduled
+  published
+  archived
+  deprecated
+}
+
+/// 7 types de relation entry-to-entry. DAG pour replaces/supersedes/depends_on/extends ;
+/// multigraph pour related_to/cites/contradicts.
+enum KbRelationKind {
+  replaces
+  cites
+  depends_on
+  related_to
+  supersedes
+  contradicts
+  extends
+}
+
+/// 👍/👎 anonymisé public (rate-limit 1/IP/24h via Redis bucket).
+enum KbFeedbackVote {
+  up
+  down
+}
+
+/// 6 sources d'import — traçabilité provenance (Sprint KB-15+).
+enum KbImportSource {
+  audit_md
+  markdown_git
+  notion
+  csv
+  legacy_db
+  legacy_source
+}
+
+/// 5 statuts batch import.
+enum KbImportStatus {
+  pending
+  running
+  succeeded
+  failed
+  partial
+}
+
+/// 4 statuts assignation reviewer.
+enum KbReviewerAssignmentStatus {
+  pending
+  accepted
+  rejected
+  completed
+}
+
+// ============================================================
 // 1. submissions
 // ============================================================
 
@@ -800,7 +947,8 @@ model Author {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  articles Article[]
+  articles         Article[]
+  knowledgeEntries KnowledgeEntry[]
 
   @@map("authors")
 }
@@ -1663,4 +1811,495 @@ model BookingTransition {
   @@index([bookingId, createdAt])
   @@index([triggeredBy])
   @@map("booking_transitions")
+}
+
+// ============================================================
+// KB-1 — Knowledge Base unifiée (11 modèles)
+// Source : `_AUDIT/KNOWLEDGE-BASE-2026/01-DATA-MODEL.md`
+// V1.5 (différé) : `KnowledgeEmbedding` (pgvector) → Sprint KB-21
+// ============================================================
+
+/// Table racine polymorphique (16 types via `type`).
+model KnowledgeEntry {
+  id String @id @default(uuid()) @db.Uuid
+
+  // Discriminator + classification
+  type            KbType
+  domain          KbDomain
+  audience        KbAudience        @default(team)
+  confidentiality KbConfidentiality @default(internal)
+  status          KbStatus          @default(draft)
+  pipelineStage   KbPipelineStage   @default(idea)
+
+  // Présentation
+  coverImageId  String?         @map("cover_image_id") @db.Uuid
+  coverImage    KnowledgeAsset? @relation("CoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
+  heroLayout    String?         @map("hero_layout") @db.VarChar(40)
+  pinned        Boolean         @default(false)
+  featured      Boolean         @default(false)
+  featuredUntil DateTime?       @map("featured_until")
+
+  // Série / collection (V1.5 — préparé V1, nullable string)
+  seriesId String? @map("series_id") @db.Uuid
+
+  // Slug racine (locale-agnostique, identifiant stable cross-langue)
+  slug String @unique @db.VarChar(180)
+
+  // Compteurs aggregés (dénormalisés pour perf liste)
+  viewsCount       Int @default(0) @map("views_count")
+  helpfulUpCount   Int @default(0) @map("helpful_up_count")
+  helpfulDownCount Int @default(0) @map("helpful_down_count")
+
+  // Planning éditorial
+  scheduledFor DateTime? @map("scheduled_for")
+  embargoUntil DateTime? @map("embargo_until")
+  publishedAt  DateTime? @map("published_at")
+  reviewedAt   DateTime? @map("reviewed_at")
+  reviewDueAt  DateTime? @map("review_due_at")
+  expiresAt    DateTime? @map("expires_at")
+
+  // Imputation
+  createdById        String? @map("created_by_id") @db.Uuid
+  updatedById        String? @map("updated_by_id") @db.Uuid
+  reviewerId         String? @map("reviewer_id") @db.Uuid
+  assignedAuthorId   String? @map("assigned_author_id") @db.Uuid
+  assignedAuthor     Author? @relation(fields: [assignedAuthorId], references: [id], onDelete: SetNull)
+  assignedReviewerId String? @map("assigned_reviewer_id") @db.Uuid
+
+  // Brief éditorial
+  briefMarkdown   String? @map("brief_markdown") @db.Text
+  targetWordCount Int?    @map("target_word_count")
+  targetKeyword   String? @map("target_keyword") @db.VarChar(180)
+
+  // Soft-delete
+  deletedAt DateTime? @map("deleted_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  translations        KnowledgeTranslation[]
+  versions            KnowledgeVersion[]
+  tags                KnowledgeTagOnEntry[]
+  outgoingRelations   KnowledgeRelation[]           @relation("FromEntry")
+  incomingRelations   KnowledgeRelation[]           @relation("ToEntry")
+  feedback            KnowledgeFeedback[]
+  bookmarks           KnowledgeBookmark[]
+  reviewerAssignments KnowledgeReviewerAssignment[]
+  slugHistory         KnowledgeSlugHistory[]
+  annotations         KnowledgeAnnotation[]
+  collectionItems     KnowledgeCollectionItem[]
+
+  // KB V4 — Source tracking factory (Sprint KB-13 V4, §17.5/§17.7 prompt master).
+  // Permet audit immuable + remontée à la source en cas de problème.
+  // NULL pour les entries legacy migrées kb-2/kb-5 (pas factory-générées).
+  sourceFactoryId   String?   @map("source_factory_id") @db.VarChar(80)
+  sourcePromptId    String?   @map("source_prompt_id") @db.VarChar(120)
+  sourceModelUsed   String?   @map("source_model_used") @db.VarChar(80)
+  sourceCostCents   Int?      @map("source_cost_cents")
+  sourceGeneratedAt DateTime? @map("source_generated_at")
+
+  @@index([type, status, audience])
+  @@index([type, publishedAt(sort: Desc)])
+  @@index([status, pipelineStage])
+  @@index([publishedAt(sort: Desc)])
+  @@index([reviewDueAt])
+  @@index([expiresAt])
+  @@index([pinned, featured])
+  @@index([domain, status])
+  @@index([assignedAuthorId])
+  @@index([assignedReviewerId])
+  @@index([scheduledFor])
+  @@index([deletedAt])
+  @@index([sourceFactoryId])
+  @@map("knowledge_entries")
+}
+
+/// Traduction locale-scoped (pattern `ArticleTranslation`).
+/// Triple-source body (HTML + JSON + text plain) — Sprint 24 C4.
+model KnowledgeTranslation {
+  id      String         @id @default(uuid()) @db.Uuid
+  entryId String         @map("entry_id") @db.Uuid
+  entry   KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  locale  Locale
+
+  title   String  @db.VarChar(255)
+  slug    String  @db.VarChar(255)
+  excerpt String? @db.Text
+
+  // Triple-source Tiptap
+  body     String  @db.Text
+  bodyJson Json?   @map("body_json")
+  bodyText String? @map("body_text") @db.Text
+
+  // SEO meta locale-scoped
+  metaTitle       String?         @map("meta_title") @db.VarChar(70)
+  metaDescription String?         @map("meta_description") @db.VarChar(160)
+  ogImageId       String?         @map("og_image_id") @db.Uuid
+  ogImage         KnowledgeAsset? @relation("OgImage", fields: [ogImageId], references: [id], onDelete: SetNull)
+
+  // Métriques rédaction
+  readingTime      Int?   @map("reading_time")
+  wordCount        Int?   @map("word_count")
+  readabilityScore Float? @map("readability_score")
+  qualityScore     Float? @map("quality_score")
+
+  // Alt text (bloquant publication, assertion server-side)
+  alts Json?
+
+  versions  KnowledgeVersion[]
+  embedding KnowledgeEmbedding?
+  seoCache  KnowledgeSeoCache[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // KB-7 FTS tsvector matérialisé via migration SQL `kb_fts_setup.sql` (GENERATED ALWAYS).
+  // Index GIN + index trigram sur title gérés hors Prisma (Unsupported types).
+  searchVector Unsupported("tsvector")? @map("search_vector")
+
+  @@unique([entryId, locale])
+  @@unique([locale, slug])
+  @@index([slug])
+  @@index([locale, qualityScore])
+  @@map("knowledge_translations")
+}
+
+/// Versions immutables (forensique). 1 row par save (entry + translation snapshot).
+model KnowledgeVersion {
+  id            String                @id @default(uuid()) @db.Uuid
+  entryId       String                @map("entry_id") @db.Uuid
+  entry         KnowledgeEntry        @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  translationId String?               @map("translation_id") @db.Uuid
+  translation   KnowledgeTranslation? @relation(fields: [translationId], references: [id], onDelete: SetNull)
+  version       Int
+
+  snapshotJson Json @map("snapshot_json")
+
+  createdById String?  @map("created_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([entryId, translationId, version])
+  @@index([entryId, version(sort: Desc)])
+  @@index([createdAt])
+  @@map("knowledge_versions")
+}
+
+/// Tags KB (libres modérés, M2M via `KnowledgeTagOnEntry`).
+model KnowledgeTag {
+  id        String   @id @default(uuid()) @db.Uuid
+  slug      String   @unique @db.VarChar(120)
+  nameFr    String   @map("name_fr") @db.VarChar(120)
+  nameEn    String   @map("name_en") @db.VarChar(120)
+  descFr    String?  @map("desc_fr") @db.Text
+  descEn    String?  @map("desc_en") @db.Text
+  color     String?  @db.VarChar(7)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  entries KnowledgeTagOnEntry[]
+
+  @@index([slug])
+  @@map("knowledge_tags")
+}
+
+/// Table de liaison M2M tag ↔ entry (pattern `ArticleTagOnArticle`).
+model KnowledgeTagOnEntry {
+  entryId String         @map("entry_id") @db.Uuid
+  tagId   String         @map("tag_id") @db.Uuid
+  entry   KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  tag     KnowledgeTag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([entryId, tagId])
+  @@index([tagId])
+  @@map("knowledge_tags_on_entries")
+}
+
+/// Graphe typé entry-to-entry (cycle detection en server action Sprint KB-4).
+model KnowledgeRelation {
+  id          String         @id @default(uuid()) @db.Uuid
+  fromEntryId String         @map("from_entry_id") @db.Uuid
+  fromEntry   KnowledgeEntry @relation("FromEntry", fields: [fromEntryId], references: [id], onDelete: Cascade)
+  toEntryId   String         @map("to_entry_id") @db.Uuid
+  toEntry     KnowledgeEntry @relation("ToEntry", fields: [toEntryId], references: [id], onDelete: Cascade)
+  kind        KbRelationKind
+
+  createdById String?  @map("created_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([fromEntryId, toEntryId, kind])
+  @@index([toEntryId, kind])
+  @@index([fromEntryId, kind])
+  @@map("knowledge_relations")
+}
+
+/// Vote 👍/👎 anonymisé public. Rate-limit 1/IP/entry/24h via Redis bucket.
+model KnowledgeFeedback {
+  id        String         @id @default(uuid()) @db.Uuid
+  entryId   String         @map("entry_id") @db.Uuid
+  entry     KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  locale    Locale
+  vote      KbFeedbackVote
+  ipHash    String         @map("ip_hash") @db.VarChar(64)
+  sessionId String?        @map("session_id") @db.VarChar(64)
+  createdAt DateTime       @default(now()) @map("created_at")
+
+  @@index([entryId, locale, vote])
+  @@index([createdAt])
+  @@map("knowledge_feedback")
+}
+
+/// Asset library partagée (Sprint KB-11 — sharp AVIF/WebP + EXIF strip).
+model KnowledgeAsset {
+  id             String  @id @default(uuid()) @db.Uuid
+  mimeType       String  @map("mime_type") @db.VarChar(80)
+  originalPath   String  @map("original_path") @db.VarChar(512)
+  processedPaths Json?   @map("processed_paths")
+  width          Int?
+  height         Int?
+  bytes          Int
+  hash           String  @unique @db.VarChar(64)
+  altText        String? @map("alt_text") @db.Text
+  caption        String? @db.Text
+
+  uploadedById String? @map("uploaded_by_id") @db.Uuid
+  usageCount   Int     @default(0) @map("usage_count")
+
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  // Reverse relations
+  coverFor   KnowledgeEntry[]       @relation("CoverImage")
+  ogImageFor KnowledgeTranslation[] @relation("OgImage")
+
+  @@index([hash])
+  @@index([uploadedById])
+  @@index([deletedAt])
+  @@index([mimeType])
+  @@map("knowledge_assets")
+}
+
+/// Historique slug → entrée cible. Middleware Next 301 lookup O(1).
+model KnowledgeSlugHistory {
+  id        String         @id @default(uuid()) @db.Uuid
+  oldLocale Locale         @map("old_locale")
+  oldType   KbType         @map("old_type")
+  oldSlug   String         @map("old_slug") @db.VarChar(255)
+  entryId   String         @map("entry_id") @db.Uuid
+  entry     KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  changedAt DateTime       @default(now()) @map("changed_at")
+  reason    String?        @db.Text
+
+  @@unique([oldLocale, oldType, oldSlug])
+  @@index([entryId])
+  @@map("knowledge_slug_history")
+}
+
+/// Bookmark client (surface `/mes-ressources/`).
+model KnowledgeBookmark {
+  id                  String         @id @default(uuid()) @db.Uuid
+  entryId             String         @map("entry_id") @db.Uuid
+  entry               KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  clientEmail         String?        @map("client_email") @db.Citext
+  sessionId           String?        @map("session_id") @db.VarChar(64)
+  privateNoteMarkdown String?        @map("private_note_markdown") @db.Text
+  createdAt           DateTime       @default(now()) @map("created_at")
+
+  @@unique([entryId, clientEmail])
+  @@index([clientEmail, createdAt(sort: Desc)])
+  @@index([sessionId])
+  @@map("knowledge_bookmarks")
+}
+
+/// KB V4 (Sprint KB-18) — Annotations équipe sur entries (revue collaborative).
+/// Différent des bookmarks (côté client) : ici c'est l'éditorial/SEO team qui commente.
+model KnowledgeAnnotation {
+  id          String         @id @default(uuid()) @db.Uuid
+  entryId     String         @map("entry_id") @db.Uuid
+  entry       KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  authorId    String         @map("author_id") @db.Uuid
+  /// Référence optionnelle à un anchor (id de heading TOC ou translationId)
+  anchorRef   String?        @map("anchor_ref") @db.VarChar(120)
+  bodyMarkdown String        @map("body_markdown") @db.Text
+  /// review_comment | seo_suggestion | factual_check | typo | content_request
+  kind        String         @default("review_comment") @db.VarChar(40)
+  /// open | resolved | wont_fix
+  status      String         @default("open") @db.VarChar(20)
+  resolvedAt  DateTime?      @map("resolved_at")
+  resolvedById String?       @map("resolved_by_id") @db.Uuid
+
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  @@index([entryId, status])
+  @@index([authorId, createdAt(sort: Desc)])
+  @@map("knowledge_annotations")
+}
+
+/// KB V4 (Sprint KB-18) — Séries/Collections éditoriales (curation manuelle).
+/// Ex : « Parcours dirigeants : 10 articles IA fondamentaux »
+model KnowledgeCollection {
+  id          String                       @id @default(uuid()) @db.Uuid
+  slug        String                       @unique @db.VarChar(120)
+  titleFr     String                       @map("title_fr") @db.VarChar(255)
+  titleEn     String?                      @map("title_en") @db.VarChar(255)
+  descriptionFr String?                    @map("description_fr") @db.Text
+  descriptionEn String?                    @map("description_en") @db.Text
+  /// public | unlisted | team
+  visibility  String                       @default("public") @db.VarChar(20)
+  ownerId     String?                      @map("owner_id") @db.Uuid
+  coverAssetId String?                     @map("cover_asset_id") @db.Uuid
+  publishedAt DateTime?                    @map("published_at")
+  createdAt   DateTime                     @default(now()) @map("created_at")
+  updatedAt   DateTime                     @updatedAt @map("updated_at")
+
+  items       KnowledgeCollectionItem[]
+
+  @@index([visibility, publishedAt])
+  @@map("knowledge_collections")
+}
+
+/// Join collection × entry avec ordre explicite.
+model KnowledgeCollectionItem {
+  collectionId String              @map("collection_id") @db.Uuid
+  collection   KnowledgeCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  entryId      String              @map("entry_id") @db.Uuid
+  entry        KnowledgeEntry      @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  position     Int
+  noteFr       String?             @map("note_fr") @db.Text
+  noteEn       String?             @map("note_en") @db.Text
+  addedAt      DateTime            @default(now()) @map("added_at")
+
+  @@id([collectionId, entryId])
+  @@unique([collectionId, position])
+  @@index([entryId])
+  @@map("knowledge_collection_items")
+}
+
+/// Audit imports — traçabilité provenance (Sprint KB-15+).
+model KnowledgeImportBatch {
+  id           String         @id @default(uuid()) @db.Uuid
+  source       KbImportSource
+  sourceRef    String?        @map("source_ref") @db.VarChar(255)
+  importedById String?        @map("imported_by_id") @db.Uuid
+  entriesCount Int            @default(0) @map("entries_count")
+  status       KbImportStatus @default(pending)
+  errorLog     Json?          @map("error_log")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  completedAt  DateTime?      @map("completed_at")
+
+  @@index([source, status])
+  @@index([importedById])
+  @@map("knowledge_import_batches")
+}
+
+/// Assignation reviewer éditorial (Sprint KB-13 calendar + queue).
+model KnowledgeReviewerAssignment {
+  id           String                     @id @default(uuid()) @db.Uuid
+  entryId      String                     @map("entry_id") @db.Uuid
+  entry        KnowledgeEntry             @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  reviewerId   String                     @map("reviewer_id") @db.Uuid
+  assignedById String?                    @map("assigned_by_id") @db.Uuid
+  assignedAt   DateTime                   @default(now()) @map("assigned_at")
+  status       KbReviewerAssignmentStatus @default(pending)
+  dueAt        DateTime?                  @map("due_at")
+  acceptedAt   DateTime?                  @map("accepted_at")
+  completedAt  DateTime?                  @map("completed_at")
+  reviewerNote String?                    @map("reviewer_note") @db.Text
+
+  @@unique([entryId, reviewerId])
+  @@index([reviewerId, status])
+  @@index([dueAt])
+  @@map("knowledge_reviewer_assignments")
+}
+
+/// KB V4 (Sprint KB-12.5) — Embeddings pgvector pour dedup factory + recherche hybride.
+/// Pattern : 1 vecteur par translation. Indexé HNSW cosine_ops.
+/// Modèle d'embedding stocké pour permettre migrations futures (Voyage AI / OpenAI / Cohere).
+/// Vector size 1024 = Voyage AI voyage-3-lite (default V4) ; voyage-3 = 1536, à
+/// reconfigurer si bascule.
+model KnowledgeEmbedding {
+  id             String               @id @default(uuid()) @db.Uuid
+  translationId  String               @unique @map("translation_id") @db.Uuid
+  translation    KnowledgeTranslation @relation(fields: [translationId], references: [id], onDelete: Cascade)
+  // Vector dim 1024 (Voyage AI voyage-3-lite default). Index HNSW créé via SQL raw migration.
+  embedding      Unsupported("vector(1024)")
+  model          String               @db.VarChar(80)
+  modelVersion   String               @map("model_version") @db.VarChar(40)
+  dimensionality Int                  @default(1024)
+  embeddedAt     DateTime             @default(now()) @map("embedded_at")
+
+  @@index([model])
+  @@map("knowledge_embeddings")
+}
+
+/// KB V4 (Sprint KB-13) — Idempotency-key tracking pour factory ingest API.
+/// Permet de re-jouer la même requête sans créer de doublon (factory retry safe).
+model KnowledgeIngestRequest {
+  idempotencyKey String    @id @map("idempotency_key") @db.VarChar(64)
+  factoryId      String    @map("factory_id") @db.VarChar(80)
+  /// entryId créé en cas de succès (NULL si en cours / échec)
+  entryId        String?   @map("entry_id") @db.Uuid
+  /// status final : queued | processing | published | rejected | failed
+  status         String    @default("queued") @db.VarChar(40)
+  rejectReason   String?   @map("reject_reason") @db.Text
+  receivedAt     DateTime  @default(now()) @map("received_at")
+  completedAt    DateTime? @map("completed_at")
+
+  @@index([factoryId, status])
+  @@index([receivedAt])
+  @@map("knowledge_ingest_requests")
+}
+
+/// KB V4 (Sprint KB-17) — Journal d'audit immuable append-only.
+/// Hash-chain SHA-256 sur (prevHash + serializedPayload) pour intégrité forensique.
+/// Aucun UPDATE/DELETE autorisé en code applicatif (enforce via policy DB optionnelle V2).
+model KnowledgeAuditLog {
+  id           BigInt   @id @default(autoincrement())
+  /// Type d'événement : ingest_accepted | ingest_rejected | publish | unpublish | edit | kill_switch_engaged | etc.
+  eventKind    String   @map("event_kind") @db.VarChar(60)
+  /// UUID translation/entry concerné (peut être NULL pour events globaux comme kill_switch)
+  entryId      String?  @map("entry_id") @db.Uuid
+  /// Acteur : factoryId | userId | "system"
+  actor        String   @db.VarChar(120)
+  /// Payload JSON sérialisé (snapshot input + résultat)
+  payloadJson  Json     @map("payload_json")
+  /// SHA-256 du précédent log entry (chain). NULL pour le tout premier event.
+  prevHash     String?  @map("prev_hash") @db.VarChar(64)
+  /// SHA-256(prevHash + canonicalPayload) — vérifiable a posteriori
+  selfHash     String   @map("self_hash") @db.VarChar(64)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([eventKind, createdAt])
+  @@index([entryId])
+  @@index([actor])
+  @@map("knowledge_audit_log")
+}
+
+/// KB V4 (Sprint KB-14) — Cache LLM auto-SEO/AEO/GEO par traduction.
+/// V1 : stub déterministe (provider="stub", providerVersion="v1"). V2 wire OpenAI/Claude.
+/// Évite re-paiement LLM sur chaque republish quand contenu inchangé (hash-based invalidation possible V2).
+model KnowledgeSeoCache {
+  id              String               @id @default(uuid()) @db.Uuid
+  translationId   String               @map("translation_id") @db.Uuid
+  translation     KnowledgeTranslation @relation(fields: [translationId], references: [id], onDelete: Cascade)
+  locale          Locale
+  provider        String               @db.VarChar(40)
+  providerVersion String               @map("provider_version") @db.VarChar(40)
+
+  /// SEO meta — auto-générée si KnowledgeTranslation.metaTitle/metaDescription vides
+  seoTitle       String @map("seo_title") @db.VarChar(70)
+  seoDescription String @map("seo_description") @db.VarChar(200)
+
+  /// AEO — array de Q&A extraites pour FAQPage schema.org { question, answer }
+  aeoFaqJson Json @map("aeo_faq_json")
+
+  /// GEO — entités géo détectées (regions, villes) pour areaServed JSON-LD
+  geoEntitiesJson Json @map("geo_entities_json")
+
+  costCents   Int      @default(0) @map("cost_cents")
+  generatedAt DateTime @default(now()) @map("generated_at")
+
+  @@unique([translationId, provider, providerVersion])
+  @@index([locale, provider])
+  @@map("knowledge_seo_cache")
 }

@@ -5,7 +5,11 @@
 
 services:
   postgres:
-    image: postgres:16-alpine
+    # KB V4 (2026-05-14) : bascule image pgvector/pgvector officielle pour
+    # support extension `vector` (KB-12.5 dedup factory). Volume postgres_data
+    # PRÉSERVÉ (même nom = même Postgres data). À recréer en prod Coolify
+    # via image identique.
+    image: pgvector/pgvector:pg16
     container_name: axion-ia-postgres
     restart: unless-stopped
     environment:
