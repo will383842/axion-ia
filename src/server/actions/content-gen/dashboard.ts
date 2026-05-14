@@ -9,6 +9,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "./_auth";
 import { getKillSwitch } from "./kill-switch";
 
 export interface DashboardKpis {
@@ -29,6 +30,11 @@ export interface DashboardKpis {
 }
 
 export async function getDashboardKpis(): Promise<DashboardKpis> {
+  // Pass B fix P0-4 — RBAC : aucune lecture KPIs sans session admin (sinon
+  // server action POST publiquement appelable expose coûts + scores qualité +
+  // stats opérationnelles).
+  await requireAdmin();
+
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
   const [

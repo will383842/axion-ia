@@ -10,6 +10,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { REGIONS } from "@/content/regions";
+import { requireAdmin } from "./_auth";
 
 export interface RegionGeoStat {
   readonly slug: string;
@@ -22,6 +23,7 @@ export interface RegionGeoStat {
 }
 
 export async function listRegionGeoStats(): Promise<ReadonlyArray<RegionGeoStat>> {
+  await requireAdmin(); // Pass B fix P0-4
   const grouped = await prisma.contentGenJob.groupBy({
     by: ["anchorRegionSlug", "status"],
     _count: { _all: true },
@@ -80,6 +82,7 @@ export interface CostsStats {
 }
 
 export async function getCostsStats(): Promise<CostsStats> {
+  await requireAdmin(); // Pass B fix P0-4
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const startOfMonth = new Date();
@@ -135,6 +138,7 @@ export interface OrchestratorStats {
 }
 
 export async function getOrchestratorStats(): Promise<OrchestratorStats> {
+  await requireAdmin(); // Pass B fix P0-4
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const [activeCampaigns, dailyPlan] = await Promise.all([
     prisma.coverageCampaign.findMany({
@@ -161,6 +165,7 @@ export async function getOrchestratorStats(): Promise<OrchestratorStats> {
 }
 
 export async function getGlobalGeoStats(): Promise<GlobalGeoStats> {
+  await requireAdmin(); // Pass B fix P0-4
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const [published, running, failed, review, velocity] = await Promise.all([
     prisma.contentGenJob.count({ where: { status: "published" } }),
