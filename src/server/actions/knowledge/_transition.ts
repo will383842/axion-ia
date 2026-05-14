@@ -119,13 +119,13 @@ export async function executeTransition(input: TransitionInput): Promise<Transit
       },
     });
 
-    revalidateAdminKbRoutes(input.entryId);
+    await revalidateAdminKbRoutes(input.entryId);
     if (
       input.toStatus === "published" ||
       input.toStatus === "deprecated" ||
       entry.status === "published"
     ) {
-      revalidatePublicKbRoutes(entry.type);
+      await revalidatePublicKbRoutes(entry.type);
     }
 
     return {

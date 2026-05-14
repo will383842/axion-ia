@@ -110,7 +110,7 @@ export async function rollbackVersionAction(input: {
       },
     });
 
-    revalidateAdminKbRoutes(parsed.data.entryId);
+    await revalidateAdminKbRoutes(parsed.data.entryId);
 
     return { ok: true, newVersionId: result.newVersionId };
   } catch (err) {

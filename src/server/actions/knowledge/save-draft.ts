@@ -116,7 +116,7 @@ export async function saveDraftAction(input: SaveDraftInput): Promise<SaveDraftR
     });
 
     // Pas de revalidation publique (draft = pas visible publique).
-    revalidateAdminKbRoutes(data.entryId);
+    await revalidateAdminKbRoutes(data.entryId);
 
     return {
       ok: true,

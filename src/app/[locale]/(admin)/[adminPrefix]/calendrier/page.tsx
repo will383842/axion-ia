@@ -103,6 +103,13 @@ export default async function CalendarPage({ params, searchParams }: PageProps) 
             🗺️ Heatmap
           </a>
           <a
+            href={`/fr/${adminPrefix}/calendrier/reschedule?year=${year}&month=${month}`}
+            className="admin-button-ghost"
+            title="Reschedule drag-drop"
+          >
+            🔄 Reschedule
+          </a>
+          <a
             href={`/fr/${adminPrefix}/calendrier?year=${nextMonth.year}&month=${nextMonth.month}`}
             className="admin-button-ghost"
           >

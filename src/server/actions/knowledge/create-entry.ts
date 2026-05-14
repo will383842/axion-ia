@@ -98,9 +98,9 @@ export async function createEntryAction(input: CreateEntryInput): Promise<Create
       changes: { type: data.type, slug: data.slug, status: data.status },
     });
 
-    revalidateAdminKbRoutes(entry.id);
+    await revalidateAdminKbRoutes(entry.id);
     if (data.status === "published" || data.status === "deprecated") {
-      revalidatePublicKbRoutes(entry.type);
+      await revalidatePublicKbRoutes(entry.type);
     }
 
     return { ok: true, entryId: entry.id };

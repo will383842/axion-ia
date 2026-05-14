@@ -106,8 +106,8 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
       changes: { fieldsChanged: Object.keys(data).filter((k) => k !== "id") },
     });
 
-    revalidateAdminKbRoutes(data.id);
-    revalidatePublicKbRoutes((data.type ?? existing.type) as KbType);
+    await revalidateAdminKbRoutes(data.id);
+    await revalidatePublicKbRoutes((data.type ?? existing.type) as KbType);
 
     return { ok: true };
   } catch (err) {

@@ -64,9 +64,9 @@ export async function deleteEntryAction(input: DeleteEntryInput): Promise<Delete
       changes: { previousStatus: entry.status },
     });
 
-    revalidateAdminKbRoutes(parsed.data.id);
+    await revalidateAdminKbRoutes(parsed.data.id);
     if (entry.status === "published" || entry.status === "deprecated") {
-      revalidatePublicKbRoutes(entry.type);
+      await revalidatePublicKbRoutes(entry.type);
     }
 
     return { ok: true };

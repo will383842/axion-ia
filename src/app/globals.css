@@ -1288,3 +1288,116 @@
 .admin-card-inline {
   padding: 16px;
 }
+
+/* Sprint E — drag-drop calendar reschedule (D60) */
+.admin-reschedule-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 768px) {
+  .admin-reschedule-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.admin-reschedule-bookings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.admin-reschedule-booking {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-paper);
+  cursor: grab;
+  user-select: none;
+  transition:
+    background-color 120ms,
+    border-color 120ms,
+    transform 80ms;
+}
+.admin-reschedule-booking:hover {
+  border-color: var(--color-terracotta);
+  background: var(--color-bg);
+}
+.admin-reschedule-booking-dragging {
+  opacity: 0.5;
+  transform: scale(0.97);
+  cursor: grabbing;
+}
+.admin-reschedule-slots {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.admin-reschedule-slot {
+  padding: 8px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  text-align: center;
+  min-height: 56px;
+  background: var(--color-paper);
+  transition:
+    background-color 120ms,
+    border-color 120ms;
+}
+.admin-reschedule-slot-available {
+  background: var(--color-sage-soft);
+  border-color: var(--color-sage);
+}
+.admin-reschedule-slot-reserved {
+  background: var(--color-terracotta-soft);
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-deep);
+}
+.admin-reschedule-slot-blocked {
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  opacity: 0.6;
+}
+.admin-reschedule-slot-over {
+  background: var(--color-sage);
+  color: var(--color-paper);
+  border-color: var(--color-sage);
+  transform: scale(1.03);
+}
+.admin-reschedule-slot-date {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Modal generic */
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.admin-modal-close-area {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 0;
+}
+.admin-modal {
+  background: var(--color-paper);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 480px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}

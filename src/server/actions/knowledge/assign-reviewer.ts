@@ -95,7 +95,7 @@ export async function assignReviewerAction(input: {
       },
     });
 
-    revalidateAdminKbRoutes(parsed.data.entryId);
+    await revalidateAdminKbRoutes(parsed.data.entryId);
 
     return { ok: true, assignmentId: assignment.id };
   } catch (err) {

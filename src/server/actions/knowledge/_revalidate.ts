@@ -13,8 +13,9 @@ import { KB_PUBLIC_ROUTES } from "@/content/knowledge/routes";
 
 /**
  * Revalide les routes admin KB (liste + détail).
+ * `async` requis par Next 16 strict pour tout export d'un fichier `"use server"`.
  */
-export function revalidateAdminKbRoutes(entryId?: string): void {
+export async function revalidateAdminKbRoutes(entryId?: string): Promise<void> {
   revalidatePath("/fr/[adminPrefix]/connaissances", "page");
   if (entryId) {
     revalidatePath(`/fr/[adminPrefix]/connaissances/${entryId}`, "page");
@@ -24,8 +25,9 @@ export function revalidateAdminKbRoutes(entryId?: string): void {
 /**
  * Revalide les routes publiques préservées + hub `/ressources/` selon le type.
  * En KB-3 V1, on revalide systématiquement les routes connues — KB-6 affinera.
+ * `async` requis par Next 16 strict pour tout export d'un fichier `"use server"`.
  */
-export function revalidatePublicKbRoutes(type: KbType): void {
+export async function revalidatePublicKbRoutes(type: KbType): Promise<void> {
   const route = KB_PUBLIC_ROUTES[type];
   if (route) {
     revalidatePath(`/fr${route.fr}`);

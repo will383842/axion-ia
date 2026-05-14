@@ -111,8 +111,8 @@ export async function addRelationAction(input: {
       },
     });
 
-    revalidateAdminKbRoutes(parsed.data.fromEntryId);
-    revalidateAdminKbRoutes(parsed.data.toEntryId);
+    await revalidateAdminKbRoutes(parsed.data.fromEntryId);
+    await revalidateAdminKbRoutes(parsed.data.toEntryId);
 
     return { ok: true, relationId: relation.id };
   } catch (err) {
@@ -153,8 +153,8 @@ export async function removeRelationAction(input: { id: string }): Promise<Relat
       },
     });
 
-    revalidateAdminKbRoutes(relation.fromEntryId);
-    revalidateAdminKbRoutes(relation.toEntryId);
+    await revalidateAdminKbRoutes(relation.fromEntryId);
+    await revalidateAdminKbRoutes(relation.toEntryId);
 
     return { ok: true };
   } catch (err) {
