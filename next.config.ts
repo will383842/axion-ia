@@ -86,6 +86,21 @@ const nextConfig: NextConfig = {
     // boundaries before flipping. Re-evaluate Sprint 17 after server
     // actions land.
     // ppr: "incremental",
+    //
+    // Sprint 24bis (2026-05-14) — fix render-blocking-resources LHCI gate.
+    // Next 16 app-router prod : inline les CSS imports directement dans
+    // <style> dans le <head> au lieu de générer des <link rel="stylesheet">
+    // synchrones (render-blocking par défaut). Élimine la cause unique des
+    // 1-2 ressources render-blocking détectées par Lighthouse sur toutes les
+    // pages stratégiques (audit Web Vitals 2026-05-08 + run LHCI 25856318570).
+    //
+    // Trade-off : le HTML grossit (~5-10 KB de CSS inline par route SSG)
+    // mais Cloudflare Brotli compresse bien le CSS répété, et on évite 1
+    // round-trip critique (FCP/LCP gain ~50-150 ms p75 selon URL).
+    //
+    // Natif Next 16 — pas de dep externe (vs `optimizeCss` qui nécessite
+    // critters/beasties peer). App-router prod only (no-op en dev).
+    inlineCss: true,
     optimizePackageImports: [
       "lucide-react",
       "@radix-ui/react-accordion",
