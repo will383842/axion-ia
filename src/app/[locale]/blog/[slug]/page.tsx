@@ -12,16 +12,25 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
-import { BLOG_POSTS, getBlogPost, getAllBlogSlugs } from "@/content/transversal";
-import { resolveTier } from "@/content/blog";
+import { BLOG_POSTS, getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
+
+// Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
+// FS connus (generateStaticParams) puis re-validée toutes les heures. Les
+// nouveaux articles publiés en DB (Article table via content-gen factory)
+// sont rendus à la demande au premier hit puis cachés 1h.
+export const revalidate = 3600;
+export const dynamicParams = true;
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
+  // V1 : seulement les slugs FS connus. Les slugs DB sont rendus on-demand
+  // (Next 16 ISR fallback="blocking" implicite quand dynamicParams=true).
   const slugs = getAllBlogSlugs();
   return routing.locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
@@ -29,23 +38,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const post = getBlogPost(slug);
-  if (!post) return {};
-  const c = post[locale];
+  const view = await loadBlogArticleForView(slug, locale);
+  if (!view) return {};
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: `${c.title} · Axion-IA`,
-    description: c.excerpt,
+    title: `${view.title} · Axion-IA`,
+    description: view.excerpt,
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
-  // tier-1 = index follow (sitemap inclus) · tier-2 = noindex follow
+  // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow
   // (crawlable mais non indexé) · tier-3 = noindex nofollow.
-  const tier = resolveTier(post);
-  if (tier === "tier-2-noindex-follow") {
+  if (view.tier === "tier-2-noindex-follow") {
     return { ...meta, robots: { index: false, follow: true } };
   }
-  if (tier === "tier-3-noindex-nofollow") {
+  if (view.tier === "tier-3-noindex-nofollow") {
     return { ...meta, robots: { index: false, follow: false } };
   }
   return meta;
@@ -141,41 +148,41 @@ export default async function BlogArticle({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const post = getBlogPost(slug);
-  if (!post) notFound();
-  const copy = post[loc];
+  const view = await loadBlogArticleForView(slug, loc);
+  if (!view) notFound();
 
-  const wordCount = copy.body.trim().split(/\s+/).length;
+  const wordCount = view.body.trim().split(/\s+/).length;
   const articleJsonLd = buildArticleJsonLd({
     locale: loc,
     path: `/blog/${slug}`,
-    headline: copy.title,
-    description: copy.excerpt,
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt ?? post.publishedAt,
-    articleBody: copy.body,
-    authorName: post.author,
-    authorSlug: post.author.toLowerCase(),
-    keywords: post.tags,
-    articleSection: post.category,
+    headline: view.title,
+    description: view.excerpt,
+    datePublished: view.publishedAt,
+    dateModified: view.updatedAt ?? view.publishedAt,
+    articleBody: view.body,
+    authorName: view.author,
+    authorSlug: view.author.toLowerCase(),
+    keywords: view.tags,
+    articleSection: view.category,
     wordCount,
   });
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
-    { href: `/blog/${slug}`, label: copy.title },
+    { href: `/blog/${slug}`, label: view.title },
   ];
 
-  const titleParts = splitTitleEm(copy.title);
-  const blocks = parseBody(copy.body);
+  const titleParts = splitTitleEm(view.title);
+  const blocks = parseBody(view.body);
 
   // Articles connexes : priorité même catégorie, puis plus récents.
-  // Toujours 2 cards (max 2 pour ne pas surcharger la page article).
+  // Reste sourcé FS V1 (les articles DB n'ont pas encore de catégorie
+  // structurée — Sprint 9+). Toujours 2 cards max.
   const related = [...BLOG_POSTS]
     .filter((p) => p.slug !== slug)
     .sort((a, b) => {
-      const aSame = a.category === post.category ? 0 : 1;
-      const bSame = b.category === post.category ? 0 : 1;
+      const aSame = a.category === view.category ? 0 : 1;
+      const bSame = b.category === view.category ? 0 : 1;
       if (aSame !== bSame) return aSame - bSame;
       return b.publishedAt.localeCompare(a.publishedAt);
     })
@@ -189,33 +196,33 @@ export default async function BlogArticle({ params }: Props) {
 
       <Section
         titleAs="h1"
-        eyebrow={post.category}
+        eyebrow={view.category}
         title={titleParts.lead}
         titleEm={titleParts.em}
-        description={copy.excerpt}
+        description={view.excerpt}
       >
         <Container className="text-fg-muted mt-8 flex flex-wrap items-center gap-3 text-sm">
-          <Badge variant="neutral">{post.category}</Badge>
+          <Badge variant="neutral">{view.category}</Badge>
           <Link
-            href={`/blog/auteur/${post.author.toLowerCase()}` as never}
+            href={`/blog/auteur/${view.author.toLowerCase()}` as never}
             className="hover:text-terracotta-deep focus-visible:ring-terracotta rounded-sm font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            {isFr ? "Par" : "By"} {post.author}
+            {isFr ? "Par" : "By"} {view.author}
           </Link>
           <span aria-hidden="true">·</span>
-          <time dateTime={post.publishedAt} className="tabular-nums">
-            {isFr ? "Publié le" : "Published"} {post.publishedAt}
+          <time dateTime={view.publishedAt} className="tabular-nums">
+            {isFr ? "Publié le" : "Published"} {view.publishedAt}
           </time>
-          {post.updatedAt && post.updatedAt !== post.publishedAt ? (
+          {view.updatedAt && view.updatedAt !== view.publishedAt ? (
             <>
               <span aria-hidden="true">·</span>
-              <time dateTime={post.updatedAt} className="tabular-nums">
-                {isFr ? "Mis à jour le" : "Updated"} {post.updatedAt}
+              <time dateTime={view.updatedAt} className="tabular-nums">
+                {isFr ? "Mis à jour le" : "Updated"} {view.updatedAt}
               </time>
             </>
           ) : null}
           <span aria-hidden="true">·</span>
-          <span>{post.readingTime}</span>
+          <span>{view.readingTime}</span>
         </Container>
       </Section>
 

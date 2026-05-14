@@ -17,6 +17,12 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
+// Sprint 8 V2 : ISR Next 16 — pré-rendue au build, revalidée toutes les heures
+// pour que les articles DB publiés par la factory apparaissent automatiquement
+// dans la liste sans rebuild manuel. La liste DB est encore V1 FS-only (cf.
+// loadBlogIndexForView) — l'index DB-first arrive Sprint 11+.
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }
