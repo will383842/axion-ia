@@ -1,8 +1,10 @@
 "use client";
-// use-client: useActionState pour 6 actions admin booking (Sprint X.8).
+// use-client: useActionState pour 9 actions admin booking (Sprint X.8 + Sprint A).
 //
 // Actions exposées dynamiquement selon le status :
-//   - validateOnCalendarFormAction (D49 — si awaiting_admin_validation)
+//   - sendContractAndDepositRequestFormAction (D49 clic 1 — Sprint A)
+//   - validateOnCalendarFormAction (D49 clic 2 — si awaiting_admin_validation)
+//   - cancelBookingFormAction (Sprint A — annulation admin + refund)
 //   - pauseBookingFormAction (D61 — si confirmed)
 //   - resumeBookingFormAction (D61 — si paused)
 //   - markCompletedFormAction (si in_progress)
@@ -24,13 +26,36 @@ import {
   markForceMajeureFormAction,
   type BookingFormState,
 } from "@/features/booking/admin-form-actions";
-import type { BookingStatus } from "../../../../../../../prisma/generated/client";
+import {
+  sendContractAndDepositRequestFormAction,
+  cancelAndReissueContractFormAction,
+  createContractAddendumFormAction,
+  CONTRACT_FORM_INITIAL,
+  type ContractFormState,
+} from "@/features/contract/admin-form-actions";
+import {
+  cancelBookingFormAction,
+  CANCEL_BOOKING_FORM_INITIAL,
+} from "@/features/booking/refund-form-actions";
+import type { BookingStatus, ContractStatus } from "../../../../../../../prisma/generated/client";
+
+interface ActiveContract {
+  id: string;
+  status: ContractStatus;
+  version: number;
+  isAddendum: boolean;
+}
 
 interface Props {
   bookingId: string;
   status: BookingStatus;
   adminPrefix: string;
   role: string;
+  /** ContractDocument actif (si présent) — utilisé pour exposer cancel-and-reissue
+   *  ou create-addendum selon ContractStatus. */
+  activeContract?: ActiveContract | null;
+  /** True si un contrat principal (non-avenant) a été signé sur ce booking. */
+  hasSignedMainContract?: boolean;
 }
 
 const initial: BookingFormState = { ok: false };
@@ -45,7 +70,35 @@ const ACTIVE_STATUSES: BookingStatus[] = [
   "reminded_j7",
 ];
 
-export function BookingActions({ bookingId, status, adminPrefix, role }: Props) {
+const PRE_CONTRACT_STATUSES: BookingStatus[] = [
+  "option_pending",
+  "cadrage_held",
+  "quote_signed",
+  "contract_pending",
+];
+
+const CANCELLABLE_STATUSES: BookingStatus[] = [
+  "option_pending",
+  "cadrage_scheduled",
+  "cadrage_held",
+  "quote_required",
+  "quote_sent",
+  "quote_signed",
+  "contract_pending",
+  "contract_payment_sent",
+  "awaiting_admin_validation",
+  "confirmed",
+  "paused",
+];
+
+export function BookingActions({
+  bookingId,
+  status,
+  adminPrefix,
+  role,
+  activeContract,
+  hasSignedMainContract,
+}: Props) {
   const isSuperAdmin = role === "super_admin";
   const canWrite = role === "super_admin" || role === "admin";
 
@@ -57,30 +110,356 @@ export function BookingActions({ bookingId, status, adminPrefix, role }: Props) 
     );
   }
 
+  const canSendContract = PRE_CONTRACT_STATUSES.includes(status);
   const canValidate = status === "awaiting_admin_validation";
+  const canCancel = CANCELLABLE_STATUSES.includes(status);
   const canPause = status === "confirmed";
   const canResume = status === "paused";
   const canComplete = status === "in_progress";
   const canMarkNoShow = isSuperAdmin && status === "confirmed";
   const canForceMajeure = isSuperAdmin && ACTIVE_STATUSES.includes(status);
 
+  const canCancelReissueContract =
+    activeContract != null &&
+    activeContract.status !== "signed" &&
+    activeContract.status !== "cancelled_admin";
+  const canCreateAddendum = hasSignedMainContract === true;
+
   const anyActionAvailable =
-    canValidate || canPause || canResume || canComplete || canMarkNoShow || canForceMajeure;
+    canSendContract ||
+    canValidate ||
+    canCancel ||
+    canPause ||
+    canResume ||
+    canComplete ||
+    canMarkNoShow ||
+    canForceMajeure ||
+    canCancelReissueContract ||
+    canCreateAddendum;
 
   return (
     <div className="admin-form">
+      {canSendContract && (
+        <SendContractAndDepositForm bookingId={bookingId} adminPrefix={adminPrefix} />
+      )}
       {canValidate && <ValidateOnCalendarForm bookingId={bookingId} adminPrefix={adminPrefix} />}
+      {canCancel && <CancelBookingForm bookingId={bookingId} adminPrefix={adminPrefix} />}
       {canPause && <PauseForm bookingId={bookingId} adminPrefix={adminPrefix} />}
       {canResume && <ResumeForm bookingId={bookingId} adminPrefix={adminPrefix} />}
       {canComplete && <MarkCompletedForm bookingId={bookingId} adminPrefix={adminPrefix} />}
       {canMarkNoShow && <MarkNoShowForm bookingId={bookingId} adminPrefix={adminPrefix} />}
       {canForceMajeure && <MarkForceMajeureForm bookingId={bookingId} adminPrefix={adminPrefix} />}
+      {canCancelReissueContract && activeContract && (
+        <CancelAndReissueContractForm
+          contractDocumentId={activeContract.id}
+          contractVersion={activeContract.version}
+        />
+      )}
+      {canCreateAddendum && <CreateContractAddendumForm bookingId={bookingId} />}
       {!anyActionAvailable && (
         <p className="admin-meta-block">
           Aucune action admin disponible pour le statut actuel ({status}).
         </p>
       )}
     </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// SendContractAndDepositForm (D49 clic 1 — Sprint A)
+// ────────────────────────────────────────────────────────────────────
+
+function SendContractAndDepositForm({
+  bookingId,
+  adminPrefix,
+}: {
+  bookingId: string;
+  adminPrefix: string;
+}) {
+  const [state, action, pending] = useActionState(
+    sendContractAndDepositRequestFormAction,
+    CONTRACT_FORM_INITIAL,
+  );
+  const [open, setOpen] = useState(false);
+
+  if (state.ok) {
+    return (
+      <p role="status" className="admin-alert admin-alert-success">
+        ✓ {state.message}
+      </p>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        className="admin-button admin-button-validate"
+        onClick={() => setOpen(true)}
+      >
+        📤 Envoyer contrat + demander acompte (clic 1 — D49)…
+      </button>
+    );
+  }
+
+  return (
+    <form action={action} className="admin-form admin-form-block">
+      <h3 className="admin-h3">Envoi contrat + acompte (clic Will 1 D49)</h3>
+      <p className="admin-meta-block">
+        Crée la facture acompte, le ContractDocument, envoie le contrat via DocuSeal (signature
+        séquentielle client → Axion-IA), génère la session Stripe Checkout et envoie l&apos;email
+        payment-link au client. La transition booking passe à <code>contract_payment_sent</code>.
+      </p>
+      <input type="hidden" name="bookingId" value={bookingId} />
+      <input type="hidden" name="adminPrefix" value={adminPrefix} />
+
+      <div className="admin-field">
+        <label htmlFor={`sc-deposit-${bookingId}`} className="admin-label">
+          Acompte € HT (override — laisser vide pour utiliser booking.depositAmountCents)
+        </label>
+        <input
+          id={`sc-deposit-${bookingId}`}
+          name="depositAmountEur"
+          type="number"
+          step="0.01"
+          min="0"
+          className="admin-input"
+          disabled={pending}
+        />
+      </div>
+
+      <details>
+        <summary className="admin-meta" style={{ cursor: "pointer", padding: "8px 0" }}>
+          Frais accessoires (D55 — saisie obligatoire admin)
+        </summary>
+        <div className="admin-field">
+          <label htmlFor={`sc-travel-${bookingId}`} className="admin-label">
+            Frais déplacement € HT
+          </label>
+          <input
+            id={`sc-travel-${bookingId}`}
+            name="travelFeeEur"
+            type="number"
+            step="0.01"
+            min="0"
+            className="admin-input"
+            disabled={pending}
+          />
+        </div>
+        <div className="admin-field">
+          <label htmlFor={`sc-accom-${bookingId}`} className="admin-label">
+            Hébergement € HT
+          </label>
+          <input
+            id={`sc-accom-${bookingId}`}
+            name="accommodationFeeEur"
+            type="number"
+            step="0.01"
+            min="0"
+            className="admin-input"
+            disabled={pending}
+          />
+        </div>
+        <div className="admin-field">
+          <label htmlFor={`sc-meal-${bookingId}`} className="admin-label">
+            Repas € HT
+          </label>
+          <input
+            id={`sc-meal-${bookingId}`}
+            name="mealFeeEur"
+            type="number"
+            step="0.01"
+            min="0"
+            className="admin-input"
+            disabled={pending}
+          />
+        </div>
+        <div className="admin-field">
+          <label htmlFor={`sc-additional-${bookingId}`} className="admin-label">
+            Frais additionnels € HT
+          </label>
+          <input
+            id={`sc-additional-${bookingId}`}
+            name="additionalFeesEur"
+            type="number"
+            step="0.01"
+            min="0"
+            className="admin-input"
+            disabled={pending}
+          />
+        </div>
+        <div className="admin-field">
+          <label htmlFor={`sc-additional-notes-${bookingId}`} className="admin-label">
+            Notes frais additionnels (visible facture)
+          </label>
+          <input
+            id={`sc-additional-notes-${bookingId}`}
+            name="additionalFeesNotes"
+            type="text"
+            maxLength={500}
+            className="admin-input"
+            disabled={pending}
+          />
+        </div>
+      </details>
+
+      <details>
+        <summary className="admin-meta" style={{ cursor: "pointer", padding: "8px 0" }}>
+          Variables interpolées DocuSeal template (clé=valeur, une par ligne)
+        </summary>
+        <div className="admin-field">
+          <textarea
+            name="contractVariables"
+            rows={4}
+            className="admin-input admin-textarea"
+            placeholder="clientCompanyName=Acme SARL&#10;amountHt=1500.00&#10;validityDate=2026-06-15"
+            disabled={pending}
+          />
+        </div>
+      </details>
+
+      <details>
+        <summary className="admin-meta" style={{ cursor: "pointer", padding: "8px 0" }}>
+          Notes internes (D55)
+        </summary>
+        <div className="admin-field">
+          <textarea
+            name="notes"
+            rows={3}
+            maxLength={2000}
+            className="admin-input admin-textarea"
+            disabled={pending}
+          />
+        </div>
+      </details>
+
+      {state.error && (
+        <p role="alert" className="admin-alert admin-alert-error">
+          {state.error}
+        </p>
+      )}
+
+      <div className="admin-filters-actions">
+        <button type="submit" disabled={pending} className="admin-button admin-button-validate">
+          {pending ? "Envoi en cours…" : "📤 Envoyer le contrat + demander acompte"}
+        </button>
+        <button
+          type="button"
+          className="admin-button-ghost"
+          onClick={() => setOpen(false)}
+          disabled={pending}
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// CancelBookingForm (Sprint A — annulation admin avec refund)
+// ────────────────────────────────────────────────────────────────────
+
+function CancelBookingForm({ bookingId, adminPrefix }: { bookingId: string; adminPrefix: string }) {
+  const [state, action, pending] = useActionState(
+    cancelBookingFormAction,
+    CANCEL_BOOKING_FORM_INITIAL,
+  );
+  const [open, setOpen] = useState(false);
+
+  if (state.ok) {
+    return (
+      <p role="status" className="admin-alert admin-alert-success">
+        ✓ {state.message}
+      </p>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
+        ✕ Annuler le booking…
+      </button>
+    );
+  }
+
+  return (
+    <form action={action} className="admin-form admin-form-block">
+      <h3 className="admin-h3">Annulation du booking</h3>
+      <input type="hidden" name="bookingId" value={bookingId} />
+      <input type="hidden" name="adminPrefix" value={adminPrefix} />
+
+      <div className="admin-field">
+        <label htmlFor={`cb-reason-${bookingId}`} className="admin-label">
+          Motif d&apos;annulation (10-500 caractères, audit immuable)
+        </label>
+        <textarea
+          id={`cb-reason-${bookingId}`}
+          name="reason"
+          rows={3}
+          minLength={10}
+          maxLength={500}
+          required
+          className="admin-input admin-textarea"
+          disabled={pending}
+        />
+      </div>
+
+      <div className="admin-field">
+        <label htmlFor={`cb-mode-${bookingId}`} className="admin-label">
+          Décision remboursement
+        </label>
+        <select
+          id={`cb-mode-${bookingId}`}
+          name="refundDecision"
+          defaultValue="auto_cgv"
+          className="admin-input"
+          disabled={pending}
+        >
+          <option value="auto_cgv">
+            Auto grille CGV (J-15+ = 50 % / 15-2j = 0 % / &lt;2j = 0 %)
+          </option>
+          <option value="force_majeure">Force majeure (refund 100 %)</option>
+          <option value="keep_deposit">Conserver l&apos;acompte (0 %)</option>
+          <option value="custom">Montant custom (saisir ci-dessous)</option>
+        </select>
+      </div>
+
+      <div className="admin-field">
+        <label htmlFor={`cb-custom-${bookingId}`} className="admin-label">
+          Montant remboursement € TTC (uniquement si mode &quot;custom&quot;)
+        </label>
+        <input
+          id={`cb-custom-${bookingId}`}
+          name="customRefundEur"
+          type="number"
+          step="0.01"
+          min="0"
+          className="admin-input"
+          disabled={pending}
+        />
+      </div>
+
+      {state.error && (
+        <p role="alert" className="admin-alert admin-alert-error">
+          {state.error}
+        </p>
+      )}
+
+      <div className="admin-filters-actions">
+        <button type="submit" disabled={pending} className="admin-button admin-button-refuse">
+          {pending ? "Annulation…" : "✕ Annuler le booking"}
+        </button>
+        <button
+          type="button"
+          className="admin-button-ghost"
+          onClick={() => setOpen(false)}
+          disabled={pending}
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
   );
 }
 
@@ -351,6 +730,180 @@ function MarkForceMajeureForm({
       <div className="admin-filters-actions">
         <button type="submit" disabled={pending} className="admin-button admin-button-refuse">
           {pending ? "Enregistrement…" : "⚠ Déclarer force majeure"}
+        </button>
+        <button
+          type="button"
+          className="admin-button-ghost"
+          onClick={() => setOpen(false)}
+          disabled={pending}
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// CancelAndReissueContractForm (D62 — avant signature)
+// ────────────────────────────────────────────────────────────────────
+
+function ContractFormResult({ state }: { state: ContractFormState }) {
+  if (state.ok) {
+    return (
+      <p role="status" className="admin-alert admin-alert-success">
+        ✓ {state.message}
+      </p>
+    );
+  }
+  if (state.error) {
+    return (
+      <p role="alert" className="admin-alert admin-alert-error">
+        {state.error}
+      </p>
+    );
+  }
+  return null;
+}
+
+function CancelAndReissueContractForm({
+  contractDocumentId,
+  contractVersion,
+}: {
+  contractDocumentId: string;
+  contractVersion: number;
+}) {
+  const [state, action, pending] = useActionState(
+    cancelAndReissueContractFormAction,
+    CONTRACT_FORM_INITIAL,
+  );
+  const [open, setOpen] = useState(false);
+
+  if (state.ok) return <ContractFormResult state={state} />;
+  if (!open) {
+    return (
+      <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
+        ↻ Annuler & réémettre le contrat v{contractVersion} (avant signature — D62)…
+      </button>
+    );
+  }
+  return (
+    <form action={action} className="admin-form admin-form-block">
+      <h3 className="admin-h3">Annuler & réémettre contrat v{contractVersion} (D62)</h3>
+      <p className="admin-meta-block">
+        La submission DocuSeal courante sera archivée + le contrat v{contractVersion} marqué{" "}
+        <code>cancelled_admin</code>. Une nouvelle version v{contractVersion + 1} sera créée et
+        envoyée au client. Possible uniquement <strong>avant signature</strong>.
+      </p>
+      <input type="hidden" name="contractDocumentId" value={contractDocumentId} />
+      <div className="admin-field">
+        <label htmlFor={`cr-reason-${contractDocumentId}`} className="admin-label">
+          Motif (10-500 caractères, archivé immuable)
+        </label>
+        <textarea
+          id={`cr-reason-${contractDocumentId}`}
+          name="reason"
+          rows={3}
+          minLength={10}
+          maxLength={500}
+          required
+          className="admin-input admin-textarea"
+          disabled={pending}
+        />
+      </div>
+      <div className="admin-field">
+        <label htmlFor={`cr-body-${contractDocumentId}`} className="admin-label">
+          Nouveau corps Tiptap JSON (snapshot immuable)
+        </label>
+        <textarea
+          id={`cr-body-${contractDocumentId}`}
+          name="newBodyTiptap"
+          rows={6}
+          required
+          className="admin-input admin-textarea"
+          placeholder='{"type":"doc","content":[…]}'
+          disabled={pending}
+        />
+      </div>
+      <ContractFormResult state={state} />
+      <div className="admin-filters-actions">
+        <button type="submit" disabled={pending} className="admin-button admin-button-refuse">
+          {pending ? "Réémission…" : "↻ Annuler & réémettre"}
+        </button>
+        <button
+          type="button"
+          className="admin-button-ghost"
+          onClick={() => setOpen(false)}
+          disabled={pending}
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// CreateContractAddendumForm (D62 — après signature)
+// ────────────────────────────────────────────────────────────────────
+
+function CreateContractAddendumForm({ bookingId }: { bookingId: string }) {
+  const [state, action, pending] = useActionState(
+    createContractAddendumFormAction,
+    CONTRACT_FORM_INITIAL,
+  );
+  const [open, setOpen] = useState(false);
+
+  if (state.ok) return <ContractFormResult state={state} />;
+  if (!open) {
+    return (
+      <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
+        ➕ Créer un avenant au contrat signé (D62)…
+      </button>
+    );
+  }
+  return (
+    <form action={action} className="admin-form admin-form-block">
+      <h3 className="admin-h3">Avenant au contrat principal signé (D62)</h3>
+      <p className="admin-meta-block">
+        Le contrat principal signé <strong>reste immuable</strong> (légal). L&apos;avenant est un{" "}
+        <code>ContractDocument</code> séparé (<code>isAddendum=true</code>) envoyé pour signature
+        séquentielle client → Axion-IA.
+      </p>
+      <input type="hidden" name="bookingId" value={bookingId} />
+      <div className="admin-field">
+        <label htmlFor={`ad-reason-${bookingId}`} className="admin-label">
+          Motif (10-500 caractères, archivé immuable)
+        </label>
+        <textarea
+          id={`ad-reason-${bookingId}`}
+          name="reason"
+          rows={3}
+          minLength={10}
+          maxLength={500}
+          required
+          className="admin-input admin-textarea"
+          disabled={pending}
+        />
+      </div>
+      <div className="admin-field">
+        <label htmlFor={`ad-body-${bookingId}`} className="admin-label">
+          Corps Tiptap JSON de l&apos;avenant
+        </label>
+        <textarea
+          id={`ad-body-${bookingId}`}
+          name="addendumBodyTiptap"
+          rows={6}
+          required
+          className="admin-input admin-textarea"
+          placeholder='{"type":"doc","content":[…]}'
+          disabled={pending}
+        />
+      </div>
+      <ContractFormResult state={state} />
+      <div className="admin-filters-actions">
+        <button type="submit" disabled={pending} className="admin-button">
+          {pending ? "Création…" : "➕ Créer & envoyer l'avenant"}
         </button>
         <button
           type="button"

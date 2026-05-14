@@ -135,6 +135,18 @@ export default async function ReservationDetailPage({ params }: PageProps) {
       cadrageMeeting: {
         select: { id: true, scheduledAt: true, status: true, visioUrl: true, heldAt: true },
       },
+      // ContractDocument actif sur ce booking (pour exposer cancel-and-reissue
+      // ou create-addendum dans BookingActions). NULL si pas encore envoyé.
+      contractDocument: {
+        select: { id: true, status: true, version: true, isAddendum: true },
+      },
+      // Existe-t-il un contrat principal signé sur ce booking ? Si oui →
+      // l'admin peut créer un avenant (D62).
+      contractDocuments: {
+        where: { status: "signed", isAddendum: false },
+        take: 1,
+        select: { id: true },
+      },
       transitions: {
         orderBy: { createdAt: "desc" },
         take: 10,
@@ -371,6 +383,8 @@ export default async function ReservationDetailPage({ params }: PageProps) {
             status={booking.status}
             adminPrefix={adminPrefix}
             role={role}
+            activeContract={booking.contractDocument ?? null}
+            hasSignedMainContract={booking.contractDocuments.length > 0}
           />
         </div>
 
