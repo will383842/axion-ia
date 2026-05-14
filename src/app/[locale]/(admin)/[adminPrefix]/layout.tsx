@@ -39,6 +39,7 @@ function buildNav(adminPrefix: string): NavItem[] {
     { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main" },
     { href: `${base}/calendrier`, label: "Calendrier", icon: "📅", group: "main" },
     { href: `${base}/reservations`, label: "Réservations", icon: "📋", group: "main" },
+    { href: `${base}/factures`, label: "Factures", icon: "🧾", group: "main" },
     { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
     { href: `${base}/submissions`, label: "Soumissions", icon: "📥", group: "main" },
     // ── contenu ──────────────────────────────────────────────────────────
