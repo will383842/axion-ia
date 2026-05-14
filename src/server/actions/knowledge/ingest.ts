@@ -28,6 +28,7 @@ import {
   EMBEDDING_MODEL_NAME,
 } from "@/lib/knowledge/embeddings";
 import { DEDUP_REJECT_THRESHOLD, findSimilarEntries } from "@/lib/knowledge/dedup-check";
+import { refreshSeoCacheForTranslation } from "./seo-cache";
 import type {
   KbAudience,
   KbConfidentiality,
@@ -248,8 +249,18 @@ export async function ingestEntry(payload: IngestPayload): Promise<IngestResult>
         }
       }
 
-      return entry;
+      return { ...entry, translationId: translation.id };
     });
+
+    // KB-14 V4 : hook auto-SEO/AEO/GEO post-création (non-bloquant en cas d'erreur)
+    try {
+      await refreshSeoCacheForTranslation(created.translationId);
+    } catch (seoErr) {
+      console.error(
+        `[kb-ingest] refreshSeoCacheForTranslation failed for ${created.translationId}:`,
+        seoErr instanceof Error ? seoErr.message : seoErr,
+      );
+    }
 
     await prisma.knowledgeIngestRequest.update({
       where: { idempotencyKey: payload.idempotencyKey },

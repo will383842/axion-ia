@@ -1947,6 +1947,7 @@ model KnowledgeTranslation {
 
   versions  KnowledgeVersion[]
   embedding KnowledgeEmbedding?
+  seoCache  KnowledgeSeoCache[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -2180,4 +2181,33 @@ model KnowledgeIngestRequest {
   @@index([factoryId, status])
   @@index([receivedAt])
   @@map("knowledge_ingest_requests")
+}
+
+/// KB V4 (Sprint KB-14) — Cache LLM auto-SEO/AEO/GEO par traduction.
+/// V1 : stub déterministe (provider="stub", providerVersion="v1"). V2 wire OpenAI/Claude.
+/// Évite re-paiement LLM sur chaque republish quand contenu inchangé (hash-based invalidation possible V2).
+model KnowledgeSeoCache {
+  id              String               @id @default(uuid()) @db.Uuid
+  translationId   String               @map("translation_id") @db.Uuid
+  translation     KnowledgeTranslation @relation(fields: [translationId], references: [id], onDelete: Cascade)
+  locale          Locale
+  provider        String               @db.VarChar(40)
+  providerVersion String               @map("provider_version") @db.VarChar(40)
+
+  /// SEO meta — auto-générée si KnowledgeTranslation.metaTitle/metaDescription vides
+  seoTitle       String @map("seo_title") @db.VarChar(70)
+  seoDescription String @map("seo_description") @db.VarChar(200)
+
+  /// AEO — array de Q&A extraites pour FAQPage schema.org { question, answer }
+  aeoFaqJson Json @map("aeo_faq_json")
+
+  /// GEO — entités géo détectées (regions, villes) pour areaServed JSON-LD
+  geoEntitiesJson Json @map("geo_entities_json")
+
+  costCents   Int      @default(0) @map("cost_cents")
+  generatedAt DateTime @default(now()) @map("generated_at")
+
+  @@unique([translationId, provider, providerVersion])
+  @@index([locale, provider])
+  @@map("knowledge_seo_cache")
 }
