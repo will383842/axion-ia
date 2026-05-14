@@ -1,0 +1,93 @@
+template,service_label,intent,level,for_landing_variant,for_companySize,for_organisationType,priority,notes
+"audit IA {ville}",Audit IA,commercial_investigation,primary,"generale,audit","tpe,pme,eti,grande_entreprise","entreprise_privee,ecole,universite,mairie,collectivite,hopital,association,comite_entreprise,opco,carsat,etablissement_public,autre",high,Template pivot audit
+"audit IA Flash {ville}",Audit Flash 490€,transactional,primary,"audit","tpe,pme","entreprise_privee",high,Niveau 1 audit
+"audit IA Flash distance {ville}",Audit Flash distance 490€,transactional,secondary,"audit","tpe","entreprise_privee",medium,Flash distance
+"audit IA Flash sur site {ville}",Audit Flash terrain 890€,transactional,secondary,"audit","tpe,pme","entreprise_privee",medium,Flash terrain
+"audit IA Ciblé {ville}",Audit Ciblé,transactional,primary,"audit","pme","entreprise_privee",high,Niveau 2 audit
+"audit IA Stratégique {ville}",Audit Stratégique,transactional,primary,"audit","pme,eti","entreprise_privee",high,Niveau 3-4 audit
+"audit IA Stratégique PME {ville}",Audit Stratégique PME,transactional,secondary,"audit","pme","entreprise_privee",high,Strat PME
+"audit IA Stratégique ETI {ville}",Audit Stratégique ETI,transactional,secondary,"audit","eti","entreprise_privee",high,Strat ETI
+"diagnostic IA {ville}",Audit IA (variante),commercial_investigation,secondary,"generale,audit","tpe,pme,eti,grande_entreprise","entreprise_privee",medium,Variation audit
+"cartographie IA {ville}",Audit IA (variante),commercial_investigation,secondary,"audit","pme,eti","entreprise_privee",medium,Variation audit
+"intervention IA {ville}",Interventions Module 1,commercial_investigation,primary,"generale,interventions","tpe,pme,eti,grande_entreprise","entreprise_privee,ecole,universite,mairie,collectivite,hopital,association,comite_entreprise,opco,carsat,etablissement_public",high,Template pivot interventions
+"intervention IA entreprise {ville}",Interventions Module 1,commercial_investigation,primary,"interventions","tpe,pme,eti","entreprise_privee",high,Intervention entreprise
+"formation IA {ville}",Formation IA,commercial_investigation,primary,"generale,interventions","tpe,pme,eti,grande_entreprise","entreprise_privee,ecole,universite,mairie,collectivite,hopital,association,comite_entreprise,opco",high,Formation
+"formation IA entreprise {ville}",Formation IA entreprise,commercial_investigation,primary,"interventions","tpe,pme,eti","entreprise_privee",high,Formation entreprise
+"formation IA équipe {ville}",Formation IA équipe,commercial_investigation,secondary,"interventions","pme,eti","entreprise_privee",medium,Équipe
+"formation IA dirigeants {ville}",Formation dirigeants 1-to-1,transactional,primary,"interventions","pme,eti,grande_entreprise","entreprise_privee",high,Dirigeants
+"formation IA dirigeant {ville}",Formation dirigeants 1-to-1,transactional,secondary,"interventions","pme,eti,grande_entreprise","entreprise_privee",high,Singulier
+"formation IA salariés {ville}",Formation IA salariés,commercial_investigation,secondary,"interventions","pme,eti","entreprise_privee",medium,Salariés
+"atelier IA {ville}",Atelier IA ciblé,commercial_investigation,primary,"interventions","pme","entreprise_privee",high,Atelier
+"atelier IA ciblé {ville}",Atelier ciblé 4h,transactional,secondary,"interventions","pme","entreprise_privee",medium,Atelier 4h
+"démarrage IA Express {ville}",Démarrage Express 4h,transactional,secondary,"interventions","tpe,pme","entreprise_privee",medium,Express
+"intervention Essentielle IA {ville}",Essentielle 1 jour,transactional,secondary,"interventions","pme","entreprise_privee",medium,Essentielle
+"intervention Approfondie IA {ville}",Approfondie 2 jours,transactional,secondary,"interventions","pme","entreprise_privee",medium,Approfondie
+"conférence IA {ville}",Conférence plénière,commercial_investigation,primary,"interventions","pme,eti,grande_entreprise","entreprise_privee",high,Conférence
+"conférence IA entreprise {ville}",Conférence plénière entreprise,commercial_investigation,secondary,"interventions","eti,grande_entreprise","entreprise_privee",medium,Conf entreprise
+"keynote IA {ville}",Keynote IA événementielle,commercial_investigation,secondary,"interventions","eti,grande_entreprise","entreprise_privee",medium,Keynote
+"keynote IA événementielle {ville}",Keynote IA événementielle 1-2h,transactional,secondary,"interventions","eti,grande_entreprise","entreprise_privee",medium,Keynote détaillé
+"coaching IA {ville}",Coaching individuel,commercial_investigation,secondary,"interventions","tpe,pme","entreprise_privee",medium,Coaching
+"coaching IA dirigeant {ville}",Coaching dirigeant 1-to-1,transactional,primary,"interventions","pme,eti","entreprise_privee",high,Coaching dirigeant
+"coaching IA professionnel {ville}",Coaching professionnel,commercial_investigation,secondary,"interventions","tpe","entreprise_privee",medium,Coaching pro
+"productivité IA dirigeant {ville}",Productivité dirigeant 1-to-1,transactional,secondary,"interventions","pme,eti","entreprise_privee",medium,Productivité dirigeant
+"vision IA stratégique {ville}",Vision IA stratégique dirigeant,transactional,secondary,"interventions","eti,grande_entreprise","entreprise_privee",medium,Vision strat
+"formation Claude {ville}",Intervention Claude,transactional,secondary,"interventions","tpe,pme,eti","entreprise_privee",medium,Spec Claude
+"formation Claude dirigeant {ville}",Intervention Claude · Dirigeant,transactional,secondary,"interventions","pme,eti","entreprise_privee",medium,Claude dirigeant
+"formation ChatGPT {ville}",Formation ChatGPT entreprise,commercial_investigation,secondary,"interventions","tpe,pme,eti","entreprise_privee",medium,Spec ChatGPT
+"formation Microsoft Copilot {ville}",Formation Copilot 365,commercial_investigation,secondary,"interventions","pme,eti","entreprise_privee",medium,Spec Copilot
+"implémentation IA {ville}",Module 3 Implémentation,commercial_investigation,primary,"generale,implementation","pme,eti,grande_entreprise","entreprise_privee",high,Template pivot impl
+"implémentation IA entreprise {ville}",Module 3 Implémentation entreprise,commercial_investigation,primary,"implementation","pme,eti,grande_entreprise","entreprise_privee",high,Impl entreprise
+"déploiement IA {ville}",Implémentation (variante),commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Déploiement
+"installation IA {ville}",Implémentation (variante),commercial_investigation,secondary,"implementation","tpe,pme","entreprise_privee",medium,Installation
+"POC IA {ville}",POC 990-4900€,transactional,secondary,"implementation","tpe,pme","entreprise_privee",medium,POC
+"mission IA PME {ville}",Mission PME 8-25K€,transactional,primary,"implementation","pme","entreprise_privee",high,Mission PME
+"mission IA ETI {ville}",Mission ETI 25-80K€,transactional,primary,"implementation","eti","entreprise_privee",high,Mission ETI
+"IA custom {ville}",IA Custom 8-50K€,transactional,primary,"implementation","pme,eti","entreprise_privee",high,IA sur-mesure
+"IA sur mesure {ville}",IA Custom (variante),commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Sur-mesure
+"IA personnalisée {ville}",IA Custom (variante),commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Personnalisée
+"chatbot IA entreprise {ville}",Chatbot IA service client,commercial_investigation,primary,"implementation","tpe,pme,eti","entreprise_privee",high,Chatbot
+"chatbot IA {ville}",Chatbot IA,commercial_investigation,primary,"implementation","tpe,pme,eti","entreprise_privee",high,Chatbot court
+"chatbot SAV IA {ville}",Chatbot service client,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,SAV
+"voicebot IA {ville}",Voicebot entreprise,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Voicebot
+"agent IA autonome {ville}",Agent IA autonome,commercial_investigation,primary,"implementation","pme,eti","entreprise_privee",high,Agent
+"agent IA {ville}",Agent IA,commercial_investigation,primary,"implementation","pme,eti","entreprise_privee",high,Agent court
+"automatisation IA {ville}",Automatisation processus IA,commercial_investigation,primary,"implementation","tpe,pme,eti","entreprise_privee",high,Auto
+"automatisation processus {ville}",Automatisation processus IA,commercial_investigation,primary,"implementation","tpe,pme,eti","entreprise_privee",high,Auto processus
+"automatisation tâches {ville}",Automatisation tâches répétitives,commercial_investigation,secondary,"implementation","tpe,pme","entreprise_privee",medium,Auto tâches
+"automatiser factures IA {ville}",Auto factures IA,commercial_investigation,secondary,"implementation","tpe,pme","entreprise_privee",medium,Factures
+"automatiser comptabilité IA {ville}",Auto comptabilité IA,commercial_investigation,secondary,"implementation","tpe,pme","entreprise_privee,opco",medium,Compta
+"intégration IA CRM {ville}",Intégration CRM,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,CRM
+"intégration IA ERP {ville}",Intégration ERP,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,ERP
+"intégration IA Slack {ville}",Intégration Slack,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Slack
+"intégration IA Teams {ville}",Intégration Microsoft Teams,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Teams
+"analyse documentaire IA {ville}",Analyse documentaire,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Docs
+"OCR factures IA {ville}",OCR factures,commercial_investigation,secondary,"implementation","tpe,pme","entreprise_privee",medium,OCR
+"extraction PDF IA {ville}",Extraction PDF,commercial_investigation,secondary,"implementation","tpe,pme","entreprise_privee",medium,PDF
+"copilote IA {ville}",Copilote IA métier,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Copilote générique
+"copilote IA dirigeant {ville}",Copilote IA dirigeant,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Copilote dirigeant
+"cabinet IA opérationnel {ville}",Brand Axion-IA,navigational,primary,"generale","tpe,pme,eti,grande_entreprise","entreprise_privee",high,Pivot brand
+"cabinet IA {ville}",Brand Axion-IA court,navigational,primary,"generale","tpe,pme,eti,grande_entreprise","entreprise_privee",high,Brand
+"consultant IA {ville}",Consultant IA,commercial_investigation,primary,"generale,audit","tpe,pme,eti","entreprise_privee",high,Consultant
+"expert IA {ville}",Expert IA,commercial_investigation,primary,"generale","tpe,pme,eti","entreprise_privee",high,Expert
+"agence IA {ville}",NE PAS UTILISER — voir alternative,navigational,secondary,"generale","tpe,pme","entreprise_privee",low,⚠️ Doctrine Axion-IA = cabinet pas agence
+"intégrateur IA {ville}",Intégrateur IA,commercial_investigation,secondary,"generale,implementation","pme,eti","entreprise_privee",medium,Intégrateur
+"audit IA pour {audience_label}",Audit IA + audience,commercial_investigation,primary,"audit","tpe,pme","entreprise_privee,ecole,universite,mairie,collectivite,hopital,association,comite_entreprise,opco,carsat,etablissement_public",high,Template service+audience (sans ville)
+"intervention IA pour {audience_label}",Intervention IA + audience,commercial_investigation,primary,"interventions","tpe,pme,eti","entreprise_privee,ecole,universite,mairie,collectivite,hopital,association",high,Template service+audience
+"implémentation IA pour {audience_label}",Implémentation + audience,commercial_investigation,primary,"implementation","pme,eti","entreprise_privee,ecole,universite,hopital",high,Template service+audience
+"formation IA pour {audience_label}",Formation + audience,commercial_investigation,primary,"interventions","tpe,pme,eti","entreprise_privee,ecole,universite,mairie,collectivite,hopital,opco",high,Template service+audience
+"audit IA {departement_name}",Audit IA + département,commercial_investigation,secondary,"audit","tpe,pme,eti","entreprise_privee",medium,Niveau département
+"intervention IA {departement_name}",Intervention IA + dpt,commercial_investigation,secondary,"interventions","pme,eti","entreprise_privee",medium,Niveau département
+"audit IA {region_name}",Audit IA + région,commercial_investigation,secondary,"audit","pme,eti","entreprise_privee",medium,Niveau région
+"intervention IA {region_name}",Intervention IA + région,commercial_investigation,secondary,"interventions","pme,eti","entreprise_privee",medium,Niveau région
+"comment auditer IA {audience_label}",Educatif audit,informational,secondary,"audit,generale","tpe,pme,eti","entreprise_privee",medium,Informational
+"comment former équipe IA {audience_label}",Educatif formation,informational,secondary,"interventions,generale","pme,eti","entreprise_privee",medium,Informational form
+"comment implémenter IA {audience_label}",Educatif impl,informational,secondary,"implementation,generale","pme,eti","entreprise_privee",medium,Informational impl
+"combien coute audit IA {ville}",Tarif audit,commercial_investigation,secondary,"audit","tpe,pme","entreprise_privee",medium,Tarif audit
+"combien coute intervention IA {ville}",Tarif intervention,commercial_investigation,secondary,"interventions","tpe,pme","entreprise_privee",medium,Tarif intervention
+"combien coute implémentation IA {ville}",Tarif impl,commercial_investigation,secondary,"implementation","pme,eti","entreprise_privee",medium,Tarif impl
+"prix audit IA {ville}",Prix audit,commercial_investigation,secondary,"audit","tpe,pme","entreprise_privee",medium,Prix audit
+"prix formation IA {ville}",Prix formation,commercial_investigation,secondary,"interventions","tpe,pme,eti","entreprise_privee",medium,Prix formation
+"tarif intervention IA {ville}",Tarif intervention,commercial_investigation,secondary,"interventions","tpe,pme","entreprise_privee",medium,Tarif
+"ROI IA {ville}",ROI argumenté,commercial_investigation,secondary,"generale","pme,eti","entreprise_privee",medium,ROI
+"audit IA cabinet {audience_label} {ville}",Audit + secteur + ville,commercial_investigation,primary,"audit","tpe,pme","entreprise_privee",high,Cabinet vertical
+"IA pour {audience_label} {ville}",Service vertical + ville,commercial_investigation,primary,"generale","tpe,pme,eti","entreprise_privee,ecole,universite,mairie,collectivite,hopital,association,comite_entreprise,opco,carsat,etablissement_public",high,Vertical complet

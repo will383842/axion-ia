@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "description": "Profils de distribution % par type de contenu pour campagnes de couverture (§ 25 master prompt). 5 types V1 : blog_from_title, blog_from_keywords, comparison, faq_standalone, guide_pilier. Somme = 100 % strict.",
+    "version": "v1.9",
+    "totalProfiles": 4,
+    "ingestSprint": 1,
+    "table": "CoverageDistributionProfile"
+  },
+  "profiles": [
+    {
+      "slug": "mix-equilibre-2026",
+      "name": "Mixte équilibré 2026",
+      "description": "Profil par défaut V1 — distribution équilibrée tous types pour saturer une ville/département en variant les formats. Recommandé pour Will au démarrage avant d'observer la performance par type.",
+      "distribution": {
+        "blog_from_title": 30,
+        "blog_from_keywords": 25,
+        "comparison": 20,
+        "faq_standalone": 15,
+        "guide_pilier": 10
+      },
+      "isDefault": true,
+      "useCase": "Démarrage V1, pas encore de data Search Console pour optimiser. Distribution équilibrée pour explorer ce qui marche."
+    },
+    {
+      "slug": "mix-volume-seo",
+      "name": "Volume SEO (priorité long-tail)",
+      "description": "Maximise blog from keywords pour capturer trafic long-tail organique. Idéal si Will a une liste keywords mature (Google Search Console) et veut indexer massivement.",
+      "distribution": {
+        "blog_from_title": 20,
+        "blog_from_keywords": 45,
+        "comparison": 15,
+        "faq_standalone": 15,
+        "guide_pilier": 5
+      },
+      "isDefault": false,
+      "useCase": "Après 3-6 mois — Will a identifié 200+ keywords prouvés. Volume max."
+    },
+    {
+      "slug": "mix-autorite-piliers",
+      "name": "Autorité piliers (mind-share)",
+      "description": "Privilégie guides piliers + comparatifs pour construire l'autorité sectorielle Axion-IA. Moins de volume, plus de poids éditorial.",
+      "distribution": {
+        "blog_from_title": 15,
+        "blog_from_keywords": 15,
+        "comparison": 30,
+        "faq_standalone": 10,
+        "guide_pilier": 30
+      },
+      "isDefault": false,
+      "useCase": "Stratégie autorité — viser top 3 SERP sur 20-30 sujets clés. Coût par contenu plus élevé (guides longs)."
+    },
+    {
+      "slug": "mix-conversion-commercial",
+      "name": "Conversion commerciale",
+      "description": "Priorité comparatifs + FAQ ciblées pour capturer trafic en intent commerciale et transactionnelle. Pour viser conversion rapide.",
+      "distribution": {
+        "blog_from_title": 15,
+        "blog_from_keywords": 20,
+        "comparison": 40,
+        "faq_standalone": 20,
+        "guide_pilier": 5
+      },
+      "isDefault": false,
+      "useCase": "Période où Will veut prioriser conversions (audit Flash) vs notoriété. Idéal pour Pipeline 3 sur villes pilotes à forte densité économique."
+    }
+  ],
+  "_validation": {
+    "rules": [
+      "Somme distribution = 100 % strict (validé Zod à l'ingest)",
+      "Aucun type ne peut être à 0 % (sauf si désactivé explicitement par Will)",
+      "Aucun type non listé (qa_derived = post-process auto, landing_ville = Pipeline 1, blog_from_rss = Pipeline 2)",
+      "isDefault: true sur exactement 1 profil"
+    ],
+    "willActions": [
+      "1. Valider les 4 profils et leurs %",
+      "2. Ajuster les % si Axion-IA cible un mix différent (ex moins de guides, plus de FAQ)",
+      "3. Renommer si besoin (ex « Mixte équilibré » → « Default V1 »)",
+      "4. Ajouter d'autres profils si pertinent (ex « Mix industrie », « Mix tertiaire »)"
+    ]
+  }
+}

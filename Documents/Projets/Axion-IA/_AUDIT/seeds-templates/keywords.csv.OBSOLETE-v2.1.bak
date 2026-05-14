@@ -1,0 +1,537 @@
+keyword,primary_keyword,intent,category,sectors,companySizes,organisationTypes,priority,volume_estimate,difficulty_estimate,notes
+audit IA,audit ia,commercial_investigation,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,1500,55,Tête de pyramide audit
+audit IA Flash,audit ia flash,transactional,Audit IA,tous,"tpe,pme","entreprise_privee",high,300,40,Niveau Flash 490€
+audit IA Ciblé,audit ia cible,transactional,Audit IA,tous,"pme","entreprise_privee",high,200,40,Niveau Ciblé
+audit IA Stratégique,audit ia strategique,transactional,Audit IA,tous,"pme,eti","entreprise_privee",high,150,45,Niveau Stratégique
+audit IA cabinet comptable,audit ia cabinet comptable,commercial_investigation,Audit IA,comptabilite,"tpe,pme","entreprise_privee",high,400,50,Vertical comptable
+audit IA cabinet juridique,audit ia cabinet juridique,commercial_investigation,Audit IA,juridique,"tpe,pme","entreprise_privee",high,250,45,Vertical juridique
+audit IA cabinet d'expertise,audit ia cabinet expertise,commercial_investigation,Audit IA,conseil,"pme,eti","entreprise_privee",medium,180,50,Cabinets conseil
+audit IA cabinet d'avocats,audit ia avocats,commercial_investigation,Audit IA,juridique,"tpe,pme","entreprise_privee",high,200,45,Avocats
+audit IA cabinet médical,audit ia medical,commercial_investigation,Audit IA,sante,"tpe,pme","entreprise_privee,hopital",medium,150,55,Médical
+audit IA pour PME,audit ia pme,commercial_investigation,Audit IA,tous,"pme","entreprise_privee",high,800,55,Tête PME
+audit IA pour TPE,audit ia tpe,commercial_investigation,Audit IA,tous,"tpe","entreprise_privee",high,350,45,Tête TPE
+audit IA pour ETI,audit ia eti,commercial_investigation,Audit IA,tous,"eti","entreprise_privee",high,200,55,Tête ETI
+audit IA pour grande entreprise,audit ia grande entreprise,commercial_investigation,Audit IA,tous,"grande_entreprise","entreprise_privee",medium,100,65,Tête grande
+audit IA industrie,audit ia industrie,commercial_investigation,Audit IA,industrie,"pme,eti","entreprise_privee",high,300,50,Vertical industrie
+audit IA banque,audit ia banque,commercial_investigation,Audit IA,banque-finance,"pme,eti,grande_entreprise","entreprise_privee",high,250,60,Vertical banque
+audit IA retail,audit ia retail,commercial_investigation,Audit IA,retail,"pme,eti","entreprise_privee",medium,180,55,Vertical retail
+audit IA e-commerce,audit ia e-commerce,commercial_investigation,Audit IA,ecommerce,"tpe,pme,eti","entreprise_privee",high,300,55,Vertical ecom
+audit IA logistique,audit ia logistique,commercial_investigation,Audit IA,logistique,"pme,eti","entreprise_privee",medium,150,55,Vertical logistique
+audit IA agro-alimentaire,audit ia agroalimentaire,commercial_investigation,Audit IA,agro-alimentaire,"pme,eti","entreprise_privee",medium,120,50,Vertical agro
+audit IA tourisme,audit ia tourisme,commercial_investigation,Audit IA,tourisme,"tpe,pme","entreprise_privee",medium,150,45,Vertical tourisme
+audit IA education,audit ia education,commercial_investigation,Audit IA,education,"pme","ecole,universite",medium,150,50,Vertical education
+audit IA universite,audit ia universite,commercial_investigation,Audit IA,education,"grande_entreprise","universite",medium,80,55,Universités
+audit IA ecole,audit ia ecole,commercial_investigation,Audit IA,education,"pme","ecole",medium,100,45,Écoles
+audit IA mairie,audit ia mairie,commercial_investigation,Audit IA,public,"pme,eti","mairie",medium,200,40,Mairies
+audit IA collectivite,audit ia collectivite,commercial_investigation,Audit IA,public,"pme,eti","collectivite",medium,120,45,Collectivités
+audit IA hopital,audit ia hopital,commercial_investigation,Audit IA,sante,"eti,grande_entreprise","hopital",medium,150,60,Hôpitaux
+audit IA association,audit ia association,commercial_investigation,Audit IA,public,"tpe,pme","association",low,100,40,Associations
+audit IA comite d'entreprise,audit ia comite entreprise,commercial_investigation,Audit IA,public,"pme","comite_entreprise",low,80,40,CE
+audit IA OPCO,audit ia opco,commercial_investigation,Audit IA,public,"pme","opco",low,60,45,OPCO
+audit IA Paris,audit ia paris,local,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,500,60,Capitale
+audit IA Lyon,audit ia lyon,local,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,300,55,Métropole
+audit IA Marseille,audit ia marseille,local,Audit IA,tous,"tpe,pme","entreprise_privee",high,250,50,Métropole
+audit IA Bordeaux,audit ia bordeaux,local,Audit IA,tous,"tpe,pme","entreprise_privee",high,200,50,Métropole
+audit IA Toulouse,audit ia toulouse,local,Audit IA,aerospatial,"pme,eti","entreprise_privee",high,200,50,Métropole
+audit IA Lille,audit ia lille,local,Audit IA,tous,"tpe,pme","entreprise_privee",high,180,50,Métropole
+audit IA Nantes,audit ia nantes,local,Audit IA,tous,"tpe,pme","entreprise_privee",high,180,50,Métropole
+audit IA Strasbourg,audit ia strasbourg,local,Audit IA,tous,"pme,eti","entreprise_privee",high,150,50,Métropole
+audit IA Montpellier,audit ia montpellier,local,Audit IA,sante,"tpe,pme","entreprise_privee",medium,150,50,Métropole
+audit IA Rennes,audit ia rennes,local,Audit IA,tech,"tpe,pme","entreprise_privee",medium,140,50,Métropole
+audit IA Grenoble,audit ia grenoble,local,Audit IA,tech,"pme,eti","entreprise_privee",medium,130,50,Métropole
+audit IA Nice,audit ia nice,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",medium,140,50,Métropole
+audit IA Mulhouse,audit ia mulhouse,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,80,40,Industriel
+audit IA Le Havre,audit ia le havre,local,Audit IA,logistique,"pme,eti","entreprise_privee",medium,70,40,Portuaire
+intervention IA,intervention ia,commercial_investigation,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,1200,50,Module 1
+formation IA entreprise,formation ia entreprise,commercial_investigation,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,2000,60,Formation
+formation IA dirigeants,formation ia dirigeants,commercial_investigation,Interventions,tous,"pme,eti","entreprise_privee",high,500,55,Dirigeants
+formation IA équipe,formation ia equipe,commercial_investigation,Interventions,tous,"pme","entreprise_privee",high,800,55,Équipes
+formation IA Claude,formation ia claude,transactional,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,400,40,Spécialisé Claude
+atelier IA opérationnel,atelier ia operationnel,commercial_investigation,Interventions,tous,"pme","entreprise_privee",high,300,45,Atelier
+conférence IA entreprise,conference ia entreprise,commercial_investigation,Interventions,tous,"pme,eti,grande_entreprise","entreprise_privee",medium,250,50,Conférence
+keynote IA,keynote ia,commercial_investigation,Interventions,tous,"eti,grande_entreprise","entreprise_privee",medium,150,50,Keynote
+formation Claude Anthropic,formation claude anthropic,commercial_investigation,Interventions,tous,"tpe,pme","entreprise_privee",high,350,40,Claude spec
+formation ChatGPT entreprise,formation chatgpt entreprise,commercial_investigation,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,1500,65,ChatGPT
+formation Microsoft Copilot,formation microsoft copilot,commercial_investigation,Interventions,tous,"pme,eti","entreprise_privee",high,800,60,Copilot
+formation IA Paris,formation ia paris,local,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,600,55,Local Paris
+formation IA Lyon,formation ia lyon,local,Interventions,tous,"tpe,pme","entreprise_privee",high,300,50,Local Lyon
+implementation IA,implementation ia,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,500,55,Module 3
+IA custom entreprise,ia custom entreprise,commercial_investigation,Implémentation,tous,"pme,eti,grande_entreprise","entreprise_privee",high,400,55,IA sur-mesure
+agent IA autonome,agent ia autonome,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,600,60,Agents autonomes
+chatbot IA entreprise,chatbot ia entreprise,commercial_investigation,Implémentation,tous,"tpe,pme,eti","entreprise_privee",high,1200,65,Chatbots
+chatbot IA service client,chatbot ia service client,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,800,60,Service client
+automatisation processus IA,automatisation processus ia,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,700,55,Automatisation
+automatisation factures IA,automatisation factures ia,commercial_investigation,Implémentation,tous,"tpe,pme","entreprise_privee",high,400,50,Factures
+automatisation devis IA,automatisation devis ia,commercial_investigation,Implémentation,tous,"tpe,pme","entreprise_privee",high,300,45,Devis
+automatisation comptabilité IA,automatisation comptabilite ia,commercial_investigation,Implémentation,comptabilite,"tpe,pme","entreprise_privee",high,350,50,Comptabilité
+RAG entreprise,rag entreprise,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,400,55,RAG
+fine-tuning LLM,fine tuning llm,commercial_investigation,Implémentation,tous,"eti,grande_entreprise","entreprise_privee",medium,200,65,Fine-tuning
+intégration IA CRM,integration ia crm,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,300,55,CRM
+intégration IA ERP,integration ia erp,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,250,55,ERP
+intégration IA Salesforce,integration ia salesforce,commercial_investigation,Implémentation,tous,"eti,grande_entreprise","entreprise_privee",medium,150,60,Salesforce
+intégration IA HubSpot,integration ia hubspot,commercial_investigation,Implémentation,tous,"tpe,pme","entreprise_privee",medium,180,55,HubSpot
+intégration IA Slack,integration ia slack,commercial_investigation,Implémentation,tech,"pme,eti","entreprise_privee",medium,200,55,Slack
+analyse documentaire IA,analyse documentaire ia,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",high,250,50,Documents
+OCR factures IA,ocr factures ia,commercial_investigation,Implémentation,tous,"tpe,pme","entreprise_privee",medium,180,45,OCR
+extraction PDF IA,extraction pdf ia,commercial_investigation,Implémentation,tous,"tpe,pme","entreprise_privee",medium,150,45,PDF
+prédiction trésorerie IA,prediction tresorerie ia,commercial_investigation,Implémentation,banque-finance,"pme,eti","entreprise_privee",medium,100,55,Trésorerie
+scoring leads IA,scoring leads ia,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",medium,200,50,Leads
+prospection LinkedIn IA,prospection linkedin ia,commercial_investigation,Implémentation,tous,"tpe,pme","entreprise_privee",high,400,50,LinkedIn
+tri CV IA,tri cv ia,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",medium,250,50,RH
+détection churn IA,detection churn ia,commercial_investigation,Implémentation,saas,"pme,eti","entreprise_privee",medium,150,55,Churn
+veille concurrence IA,veille concurrence ia,commercial_investigation,Implémentation,tous,"pme,eti","entreprise_privee",medium,300,55,Veille
+qu'est-ce que l'IA opérationnelle,qu'est-ce que ia operationnelle,informational,Méthodologie,tous,"tous","tous",high,500,40,Définition pilier
+comment auditer son entreprise IA,comment auditer entreprise ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",high,400,45,How-to
+comment implémenter IA en entreprise,comment implementer ia entreprise,informational,Méthodologie,tous,"pme,eti","entreprise_privee",high,600,50,How-to
+combien coute un audit IA,combien coute audit ia,commercial_investigation,Tarifs,tous,"tpe,pme,eti","entreprise_privee",high,800,55,Coût
+prix audit IA cabinet,prix audit ia cabinet,commercial_investigation,Tarifs,tous,"tpe,pme","entreprise_privee",high,400,50,Prix
+tarif intervention IA,tarif intervention ia,commercial_investigation,Tarifs,tous,"tpe,pme,eti","entreprise_privee",high,300,50,Tarif
+prix formation IA,prix formation ia,commercial_investigation,Tarifs,tous,"tpe,pme,eti","entreprise_privee",high,500,55,Prix formation
+combien coute implémentation IA,combien coute implementation ia,commercial_investigation,Tarifs,tous,"pme,eti","entreprise_privee",high,300,55,Coût impl
+ROI implementation IA,roi implementation ia,commercial_investigation,Stratégie,tous,"pme,eti","entreprise_privee",high,400,55,ROI
+ROI audit IA,roi audit ia,commercial_investigation,Stratégie,tous,"pme,eti","entreprise_privee",medium,250,55,ROI audit
+3 quick wins IA,3 quick wins ia,informational,Cas d'usage,tous,"tpe,pme","entreprise_privee",medium,150,45,Quick wins
+cas usage IA PME,cas usage ia pme,informational,Cas d'usage,tous,"pme","entreprise_privee",high,500,55,Use cases
+exemples IA entreprise,exemples ia entreprise,informational,Cas d'usage,tous,"tpe,pme,eti","entreprise_privee",high,800,55,Exemples
+IA opérationnelle vs IA générative,ia operationnelle vs generative,commercial_investigation,Stratégie,tous,"pme,eti","entreprise_privee",medium,200,55,Comparatif
+cabinet IA vs SaaS,cabinet ia vs saas,commercial_investigation,Stratégie,tous,"pme,eti","entreprise_privee",high,250,55,Build vs buy
+internalisation vs externalisation IA,internalisation vs externalisation ia,commercial_investigation,Stratégie,tous,"eti,grande_entreprise","entreprise_privee",medium,150,60,Make or buy
+fine-tuning vs RAG,fine tuning vs rag,commercial_investigation,Stratégie,tous,"eti","entreprise_privee",medium,180,60,Tech choix
+Claude vs ChatGPT entreprise,claude vs chatgpt entreprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,500,60,Comparatif modèles
+Claude vs Mistral,claude vs mistral,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,250,55,Comparatif
+ChatGPT Plus vs Team vs Enterprise,chatgpt plus vs team vs enterprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,400,55,ChatGPT tiers
+Perplexity vs ChatGPT search,perplexity vs chatgpt search,commercial_investigation,Outils,tous,"pme","entreprise_privee",medium,200,55,Search
+Cursor vs GitHub Copilot,cursor vs github copilot,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",medium,300,55,IDE
+n8n vs Make vs Zapier,n8n vs make vs zapier,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,500,55,Automation tools
+Microsoft Copilot 365 avis,microsoft copilot 365 avis,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,800,60,Avis
+Granola vs Otter vs Fireflies,granola vs otter vs fireflies,commercial_investigation,Outils,tous,"pme","entreprise_privee",medium,200,55,Transcription
+v0 Vercel avis,v0 vercel avis,commercial_investigation,Outils,tech,"tpe,pme","entreprise_privee",medium,150,55,Prototypage
+Midjourney entreprise,midjourney entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",medium,250,55,Image gen
+DALL-E vs gpt-image-1,dalle vs gpt image 1,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",medium,150,55,Image
+stack IA PME,stack ia pme,commercial_investigation,Outils,tous,"pme","entreprise_privee",high,300,55,Stack
+stack IA dirigeant,stack ia dirigeant,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,150,55,Stack dirigeant
+meilleur outil IA productivité 2026,meilleur outil ia productivite 2026,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,400,60,Productivité
+RGPD IA entreprise,rgpd ia entreprise,informational,Conformité,tous,"pme,eti","entreprise_privee",high,500,55,RGPD
+AI Act application,ai act application,informational,Conformité,tous,"pme,eti","entreprise_privee",high,400,55,AI Act
+souveraineté données IA,souverainete donnees ia,informational,Conformité,tous,"eti,grande_entreprise","entreprise_privee",medium,250,55,Souveraineté
+hébergement IA UE,hebergement ia ue,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,180,55,UE
+sécurité données IA entreprise,securite donnees ia entreprise,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,200,55,Sécurité
+IA pour cabinet comptable,ia pour cabinet comptable,commercial_investigation,Cas d'usage,comptabilite,"tpe,pme","entreprise_privee",high,500,55,Comptable
+automatiser saisie comptable IA,automatiser saisie comptable ia,commercial_investigation,Cas d'usage,comptabilite,"tpe,pme","entreprise_privee",high,300,50,Saisie
+rapprochement bancaire IA,rapprochement bancaire ia,commercial_investigation,Cas d'usage,comptabilite,"tpe,pme","entreprise_privee",medium,200,50,Rapprochement
+prédiction trésorerie cabinet,prediction tresorerie cabinet,commercial_investigation,Cas d'usage,comptabilite,"pme","entreprise_privee",medium,120,55,Prédiction
+IA pour cabinet avocat,ia pour cabinet avocat,commercial_investigation,Cas d'usage,juridique,"tpe,pme","entreprise_privee",high,400,55,Avocat
+veille juridique IA,veille juridique ia,commercial_investigation,Cas d'usage,juridique,"tpe,pme","entreprise_privee",medium,200,55,Veille jur
+rédaction contrat IA,redaction contrat ia,commercial_investigation,Cas d'usage,juridique,"tpe,pme","entreprise_privee",medium,250,55,Contrats
+IA pour cabinet expert-comptable,ia pour cabinet expert comptable,commercial_investigation,Cas d'usage,comptabilite,"tpe,pme","entreprise_privee",high,350,55,Expert-comptable
+IA pour cabinet d'architecte,ia pour cabinet architecte,commercial_investigation,Cas d'usage,conseil,"tpe,pme","entreprise_privee",medium,150,50,Architectes
+IA pour PME industrielle,ia pour pme industrielle,commercial_investigation,Cas d'usage,industrie,"pme,eti","entreprise_privee",high,400,55,Industrie
+maintenance prédictive IA,maintenance predictive ia,commercial_investigation,Cas d'usage,industrie,"pme,eti","entreprise_privee",high,500,55,Maintenance
+contrôle qualité IA,controle qualite ia,commercial_investigation,Cas d'usage,industrie,"pme,eti","entreprise_privee",medium,300,55,Qualité
+IA pour e-commerce,ia pour e-commerce,commercial_investigation,Cas d'usage,ecommerce,"tpe,pme,eti","entreprise_privee",high,800,55,E-commerce
+recommandation produits IA,recommandation produits ia,commercial_investigation,Cas d'usage,ecommerce,"pme,eti","entreprise_privee",high,400,55,Reco
+fiches produits IA,fiches produits ia,commercial_investigation,Cas d'usage,ecommerce,"tpe,pme","entreprise_privee",high,300,50,Fiches
+IA pour banque,ia pour banque,commercial_investigation,Cas d'usage,banque-finance,"eti,grande_entreprise","entreprise_privee",high,500,60,Banque
+KYC automatisé IA,kyc automatise ia,commercial_investigation,Cas d'usage,banque-finance,"pme,eti","entreprise_privee",medium,250,55,KYC
+détection fraude IA banque,detection fraude ia banque,commercial_investigation,Cas d'usage,banque-finance,"eti,grande_entreprise","entreprise_privee",medium,300,60,Fraude
+IA pour cabinet médical,ia pour cabinet medical,commercial_investigation,Cas d'usage,sante,"tpe,pme","entreprise_privee,hopital",medium,250,55,Médical
+IA pour pharmacie,ia pour pharmacie,commercial_investigation,Cas d'usage,sante,"tpe,pme","entreprise_privee",medium,150,50,Pharmacie
+IA pour mairie,ia pour mairie,commercial_investigation,Cas d'usage,public,"pme,eti","mairie",medium,200,45,Mairie
+IA pour collectivité territoriale,ia pour collectivite territoriale,commercial_investigation,Cas d'usage,public,"pme,eti","collectivite",medium,180,50,Collectivité
+IA pour université,ia pour universite,commercial_investigation,Cas d'usage,education,"grande_entreprise","universite",medium,150,55,Université
+IA pour école privée,ia pour ecole privee,commercial_investigation,Cas d'usage,education,"tpe,pme","ecole",medium,120,45,École privée
+IA pour OPCO,ia pour opco,commercial_investigation,Cas d'usage,public,"pme","opco",low,60,45,OPCO
+IA pour comité d'entreprise,ia pour comite entreprise,commercial_investigation,Cas d'usage,public,"pme","comite_entreprise",low,80,40,CE
+IA pour hôpital,ia pour hopital,commercial_investigation,Cas d'usage,sante,"eti,grande_entreprise","hopital",medium,200,60,Hôpital
+IA pour CARSAT CPAM,ia pour carsat cpam,commercial_investigation,Cas d'usage,public,"eti,grande_entreprise","carsat",low,100,55,CARSAT
+IA pour association loi 1901,ia pour association loi 1901,commercial_investigation,Cas d'usage,public,"tpe,pme","association",low,100,40,Association
+IA pour startup,ia pour startup,commercial_investigation,Cas d'usage,tech,"tpe,pme","entreprise_privee",high,500,55,Startup
+IA pour SaaS,ia pour saas,commercial_investigation,Cas d'usage,saas,"tpe,pme,eti","entreprise_privee",high,400,55,SaaS
+IA pour agence marketing,ia pour agence marketing,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,400,55,Agence
+IA pour agence communication,ia pour agence communication,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",medium,300,55,Comm
+IA pour franchise,ia pour franchise,commercial_investigation,Cas d'usage,retail,"pme,eti","entreprise_privee",medium,200,50,Franchise
+IA pour restaurant,ia pour restaurant,commercial_investigation,Cas d'usage,restauration,"tpe","entreprise_privee",medium,250,45,Resto
+IA pour hôtel,ia pour hotel,commercial_investigation,Cas d'usage,tourisme,"tpe,pme","entreprise_privee",medium,300,50,Hôtel
+IA pour artisan,ia pour artisan,commercial_investigation,Cas d'usage,artisanat,"tpe","entreprise_privee",medium,200,45,Artisan
+IA pour BTP,ia pour btp,commercial_investigation,Cas d'usage,btp,"pme,eti","entreprise_privee",medium,250,55,BTP
+IA pour transport,ia pour transport,commercial_investigation,Cas d'usage,logistique,"pme,eti","entreprise_privee",medium,200,55,Transport
+IA pour immobilier,ia pour immobilier,commercial_investigation,Cas d'usage,immobilier,"tpe,pme","entreprise_privee",high,400,55,Immo
+IA pour assurance,ia pour assurance,commercial_investigation,Cas d'usage,banque-finance,"eti,grande_entreprise","entreprise_privee",medium,250,60,Assurance
+IA pour mutuelle,ia pour mutuelle,commercial_investigation,Cas d'usage,banque-finance,"eti,grande_entreprise","entreprise_privee",medium,150,55,Mutuelle
+adoption IA dirigeant,adoption ia dirigeant,informational,Stratégie,tous,"pme,eti","entreprise_privee",high,300,55,Adoption
+conduite changement IA,conduite changement ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",high,400,55,Conduite changement
+acculturation IA équipe,acculturation ia equipe,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,200,55,Acculturation
+gouvernance IA entreprise,gouvernance ia entreprise,informational,Stratégie,tous,"eti,grande_entreprise","entreprise_privee",medium,250,60,Gouvernance
+stratégie IA PME,strategie ia pme,informational,Stratégie,tous,"pme","entreprise_privee",high,400,55,Stratégie
+roadmap IA 2026,roadmap ia 2026,informational,Stratégie,tous,"pme,eti","entreprise_privee",high,500,60,Roadmap
+tendances IA 2026,tendances ia 2026,informational,Stratégie,tous,"tpe,pme,eti","entreprise_privee",high,1500,65,Tendances
+budget IA PME,budget ia pme,commercial_investigation,Tarifs,tous,"pme","entreprise_privee",high,300,55,Budget
+benchmarks IA entreprise,benchmarks ia entreprise,informational,Stratégie,tous,"pme,eti","entreprise_privee",medium,200,55,Benchmarks
+cas concret IA réussi,cas concret ia reussi,informational,Cas d'usage,tous,"pme,eti","entreprise_privee",high,400,55,Cas réussis
+échec implémentation IA,echec implementation ia,informational,Stratégie,tous,"pme,eti","entreprise_privee",medium,250,55,Échecs
+risques IA entreprise,risques ia entreprise,informational,Conformité,tous,"pme,eti","entreprise_privee",high,400,55,Risques
+formation équipe à l'IA,formation equipe ia,commercial_investigation,Interventions,tous,"pme,eti","entreprise_privee",high,800,60,Formation équipe
+upskilling IA salariés,upskilling ia salaries,commercial_investigation,Interventions,tous,"pme,eti","entreprise_privee",medium,200,55,Upskilling
+reskilling IA,reskilling ia,commercial_investigation,Interventions,tous,"pme,eti","entreprise_privee",medium,150,55,Reskilling
+plan formation IA OPCO,plan formation ia opco,commercial_investigation,Interventions,public,"pme","opco",medium,150,50,OPCO
+financement formation IA,financement formation ia,commercial_investigation,Tarifs,tous,"pme","entreprise_privee",medium,300,55,Financement
+Qualiopi formation IA,qualiopi formation ia,commercial_investigation,Conformité,tous,"pme","entreprise_privee,opco",medium,200,50,Qualiopi
+formation IA finançable,formation ia financable,commercial_investigation,Interventions,tous,"tpe,pme","entreprise_privee",medium,250,55,Finançable
+CPF formation IA,cpf formation ia,commercial_investigation,Interventions,tous,"tpe","entreprise_privee",medium,500,60,CPF
+prompt engineering formation,prompt engineering formation,commercial_investigation,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,400,55,Prompt eng
+formation prompt Claude,formation prompt claude,commercial_investigation,Interventions,tous,"tpe,pme","entreprise_privee",medium,200,45,Claude prompt
+formation prompt ChatGPT,formation prompt chatgpt,commercial_investigation,Interventions,tous,"tpe,pme,eti","entreprise_privee",high,600,60,GPT prompt
+prompt template entreprise,prompt template entreprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,250,55,Templates
+bibliothèque prompts IA,bibliotheque prompts ia,informational,Outils,tous,"pme","entreprise_privee",medium,200,55,Bibliothèque
+IA générative business,ia generative business,informational,Stratégie,tous,"pme,eti","entreprise_privee",high,600,60,Gen AI biz
+LLM entreprise,llm entreprise,commercial_investigation,Outils,tous,"pme,eti,grande_entreprise","entreprise_privee",high,500,60,LLM
+LLM open source entreprise,llm open source entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",medium,300,60,Open LLM
+LLM auto-hébergé,llm auto heberge,commercial_investigation,Outils,tech,"eti,grande_entreprise","entreprise_privee",medium,180,65,Self-hosted
+Llama 3 entreprise,llama 3 entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",medium,250,60,Llama
+Mistral entreprise,mistral entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",medium,300,60,Mistral
+Gemini entreprise,gemini entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",medium,250,60,Gemini
+embeddings entreprise,embeddings entreprise,informational,Outils,tech,"pme,eti","entreprise_privee",low,150,65,Embeddings
+vector database entreprise,vector database entreprise,informational,Outils,tech,"eti","entreprise_privee",low,100,70,VectorDB
+pgvector vs Pinecone,pgvector vs pinecone,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",low,80,65,VectorDB compare
+agent autonome n8n,agent autonome n8n,commercial_investigation,Outils,tous,"pme","entreprise_privee",medium,150,55,n8n agent
+agent autonome Make,agent autonome make,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",medium,180,55,Make
+agent autonome Zapier,agent autonome zapier,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",medium,200,55,Zapier
+LangChain entreprise,langchain entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",low,150,65,LangChain
+LlamaIndex entreprise,llamaindex entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",low,100,65,LlamaIndex
+Crew AI entreprise,crew ai entreprise,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",low,80,60,CrewAI
+audit IA Auvergne-Rhône-Alpes,audit ia auvergne rhone alpes,local,Audit IA,tous,"pme,eti","entreprise_privee",medium,200,50,Région ARA
+audit IA Île-de-France,audit ia ile de france,local,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,600,55,Région IDF
+audit IA PACA,audit ia paca,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",medium,200,50,Région PACA
+audit IA Occitanie,audit ia occitanie,local,Audit IA,aerospatial,"pme,eti","entreprise_privee",medium,180,50,Région Occ
+audit IA Nouvelle-Aquitaine,audit ia nouvelle aquitaine,local,Audit IA,vins,"tpe,pme","entreprise_privee",medium,150,50,Région NA
+audit IA Hauts-de-France,audit ia hauts de france,local,Audit IA,logistique,"pme,eti","entreprise_privee",medium,180,50,Région HDF
+audit IA Grand Est,audit ia grand est,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,160,50,Région GE
+audit IA Pays-de-la-Loire,audit ia pays de la loire,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,150,50,Région PL
+audit IA Bretagne,audit ia bretagne,local,Audit IA,agro-alimentaire,"pme","entreprise_privee",medium,140,50,Région BR
+audit IA Normandie,audit ia normandie,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,130,50,Région NO
+audit IA Bourgogne-Franche-Comté,audit ia bourgogne franche comte,local,Audit IA,industrie,"pme","entreprise_privee",medium,100,50,Région BFC
+audit IA Centre-Val-de-Loire,audit ia centre val de loire,local,Audit IA,cosmétique,"pme","entreprise_privee",medium,100,50,Région CVL
+audit IA Corse,audit ia corse,local,Audit IA,tourisme,"tpe","entreprise_privee",low,60,40,Région Corse
+implémenter IA dans CRM,implementer ia dans crm,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,400,55,CRM
+implémenter IA dans ERP,implementer ia dans erp,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,300,55,ERP
+intégrer Claude dans Slack,integrer claude dans slack,commercial_investigation,Cas d'usage,tech,"pme,eti","entreprise_privee",medium,200,55,Slack Claude
+intégrer ChatGPT dans Teams,integrer chatgpt dans teams,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Teams GPT
+copilote IA pour comptable,copilote ia pour comptable,commercial_investigation,Cas d'usage,comptabilite,"tpe,pme","entreprise_privee",high,350,50,Copilote comptable
+copilote IA pour juriste,copilote ia pour juriste,commercial_investigation,Cas d'usage,juridique,"tpe,pme","entreprise_privee",medium,200,55,Copilote juriste
+copilote IA pour commercial,copilote ia pour commercial,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,400,55,Copilote commercial
+copilote IA pour RH,copilote ia pour rh,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Copilote RH
+copilote IA pour marketing,copilote ia pour marketing,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,500,55,Copilote marketing
+copilote IA pour CEO,copilote ia pour ceo,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,300,55,Copilote CEO
+copilote IA pour CFO,copilote ia pour cfo,commercial_investigation,Cas d'usage,banque-finance,"pme,eti","entreprise_privee",medium,200,55,Copilote CFO
+copilote IA pour CMO,copilote ia pour cmo,commercial_investigation,Cas d'usage,marketing,"pme,eti","entreprise_privee",medium,150,55,Copilote CMO
+copilote IA pour COO,copilote ia pour coo,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,150,55,Copilote COO
+agents IA Anthropic SDK,agents ia anthropic sdk,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",low,150,65,Anthropic agents
+agents IA OpenAI assistants,agents ia openai assistants,commercial_investigation,Outils,tech,"pme,eti","entreprise_privee",medium,250,60,OpenAI agents
+multi-agent system,multi agent system,informational,Outils,tech,"eti","entreprise_privee",low,200,70,Multi-agent
+agent IA recherche entreprise,agent ia recherche entreprise,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,200,55,Agent recherche
+agent IA rédaction entreprise,agent ia redaction entreprise,commercial_investigation,Cas d'usage,marketing,"pme,eti","entreprise_privee",high,300,55,Agent rédaction
+agent IA analyse données,agent ia analyse donnees,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,400,55,Agent data
+plateforme IA tout-en-un,plateforme ia tout en un,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,250,60,Plateforme
+solution IA française,solution ia francaise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,400,55,FR IA
+solution IA européenne,solution ia europeenne,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,250,55,EU IA
+alternative ChatGPT entreprise,alternative chatgpt entreprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,500,60,Alt ChatGPT
+alternative Microsoft Copilot,alternative microsoft copilot,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,250,60,Alt Copilot
+IA Bordeaux conseil,ia bordeaux conseil,local,Audit IA,conseil,"tpe,pme","entreprise_privee",medium,150,50,Bordeaux conseil
+IA Lyon industrie,ia lyon industrie,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,150,50,Lyon indus
+IA Marseille tourisme,ia marseille tourisme,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",medium,120,45,Marseille tourisme
+IA Toulouse aéronautique,ia toulouse aeronautique,local,Audit IA,aerospatial,"pme,eti","entreprise_privee",medium,180,50,TLS aéro
+IA Lille logistique,ia lille logistique,local,Audit IA,logistique,"pme,eti","entreprise_privee",medium,130,50,Lille logistique
+IA Nantes naval,ia nantes naval,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,100,50,Nantes naval
+IA Strasbourg pharma,ia strasbourg pharma,local,Audit IA,sante,"pme,eti","entreprise_privee",medium,120,55,STR pharma
+IA Montpellier santé,ia montpellier sante,local,Audit IA,sante,"pme,eti","entreprise_privee,hopital",medium,140,55,MTP santé
+IA Rennes tech,ia rennes tech,local,Audit IA,tech,"tpe,pme","entreprise_privee",medium,150,55,Rennes tech
+IA Grenoble microélectronique,ia grenoble microelectronique,local,Audit IA,tech,"pme,eti","entreprise_privee",medium,100,55,Grenoble micro
+IA Nice tourisme premium,ia nice tourisme premium,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",medium,120,50,Nice tourisme
+IA Aix-en-Provence conseil,ia aix en provence conseil,local,Audit IA,conseil,"tpe,pme","entreprise_privee",medium,100,50,Aix conseil
+formation IA Nice,formation ia nice,local,Interventions,tous,"tpe,pme","entreprise_privee",medium,120,50,Local Nice
+formation IA Bordeaux,formation ia bordeaux,local,Interventions,tous,"tpe,pme","entreprise_privee",medium,150,50,Local Bdx
+formation IA Toulouse,formation ia toulouse,local,Interventions,tous,"tpe,pme,eti","entreprise_privee",medium,180,50,Local Toulouse
+formation IA Strasbourg,formation ia strasbourg,local,Interventions,tous,"pme,eti","entreprise_privee",medium,130,50,Local STR
+formation IA Rennes,formation ia rennes,local,Interventions,tous,"tpe,pme","entreprise_privee",medium,120,50,Local Rennes
+formation IA Nantes,formation ia nantes,local,Interventions,tous,"tpe,pme","entreprise_privee",medium,140,50,Local Nantes
+formation IA Montpellier,formation ia montpellier,local,Interventions,tous,"tpe,pme","entreprise_privee",medium,130,50,Local MTP
+formation IA Lille,formation ia lille,local,Interventions,tous,"tpe,pme","entreprise_privee",medium,150,50,Local Lille
+implementation IA Paris,implementation ia paris,local,Implémentation,tous,"pme,eti","entreprise_privee",high,300,55,Local Paris
+implementation IA Lyon,implementation ia lyon,local,Implémentation,tous,"pme,eti","entreprise_privee",high,200,55,Local Lyon
+ChatGPT pour PME,chatgpt pour pme,commercial_investigation,Outils,tous,"pme","entreprise_privee",high,800,60,GPT PME
+ChatGPT pour TPE,chatgpt pour tpe,commercial_investigation,Outils,tous,"tpe","entreprise_privee",high,500,55,GPT TPE
+ChatGPT pour ETI,chatgpt pour eti,commercial_investigation,Outils,tous,"eti","entreprise_privee",medium,200,55,GPT ETI
+ChatGPT Enterprise prix,chatgpt enterprise prix,commercial_investigation,Tarifs,tous,"eti,grande_entreprise","entreprise_privee",high,400,60,GPT Ent prix
+Claude pour PME,claude pour pme,commercial_investigation,Outils,tous,"pme","entreprise_privee",high,400,55,Claude PME
+Claude Pro entreprise,claude pro entreprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,500,55,Claude Pro
+Claude Team prix,claude team prix,commercial_investigation,Tarifs,tous,"pme","entreprise_privee",medium,250,55,Claude Team
+Claude Enterprise prix,claude enterprise prix,commercial_investigation,Tarifs,tous,"eti,grande_entreprise","entreprise_privee",medium,180,60,Claude Ent
+Microsoft Copilot Pro entreprise,microsoft copilot pro entreprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",high,600,60,Copilot Pro
+Microsoft 365 Copilot prix,microsoft 365 copilot prix,commercial_investigation,Tarifs,tous,"pme,eti","entreprise_privee",high,800,60,M365 Copilot prix
+Google Workspace AI prix,google workspace ai prix,commercial_investigation,Tarifs,tous,"pme","entreprise_privee",medium,400,60,Workspace AI
+Perplexity Pro prix,perplexity pro prix,commercial_investigation,Tarifs,tous,"tpe,pme","entreprise_privee",medium,250,55,Perplexity Pro
+Perplexity Enterprise,perplexity enterprise,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,180,55,Perplexity Ent
+Granola AI prix,granola ai prix,commercial_investigation,Tarifs,tous,"tpe,pme","entreprise_privee",medium,150,55,Granola prix
+Otter.ai entreprise,otter ai entreprise,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",medium,300,55,Otter
+Fireflies entreprise,fireflies entreprise,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",medium,250,55,Fireflies
+notion AI entreprise,notion ai entreprise,commercial_investigation,Outils,tous,"tpe,pme,eti","entreprise_privee",high,500,60,Notion AI
+Cursor IDE prix,cursor ide prix,commercial_investigation,Tarifs,tech,"tpe,pme","entreprise_privee",medium,300,55,Cursor prix
+GitHub Copilot prix,github copilot prix,commercial_investigation,Tarifs,tech,"tpe,pme,eti","entreprise_privee",high,800,60,GitHub Copilot prix
+Replit AI prix,replit ai prix,commercial_investigation,Tarifs,tech,"tpe,pme","entreprise_privee",low,150,55,Replit prix
+v0 Vercel prix,v0 vercel prix,commercial_investigation,Tarifs,tech,"tpe,pme","entreprise_privee",low,200,55,v0 prix
+Bolt.new vs v0,bolt new vs v0,commercial_investigation,Outils,tech,"tpe,pme","entreprise_privee",medium,250,55,Bolt vs v0
+Lovable AI prix,lovable ai prix,commercial_investigation,Tarifs,tech,"tpe,pme","entreprise_privee",low,150,55,Lovable
+n8n auto-hébergé prix,n8n auto heberge prix,commercial_investigation,Tarifs,tech,"pme,eti","entreprise_privee",medium,200,55,n8n self-hosted
+Zapier vs Make 2026,zapier vs make 2026,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,500,55,Zapier Make
+Make.com pour PME,make com pour pme,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,300,55,Make PME
+Midjourney v7 entreprise,midjourney v7 entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",medium,250,55,MJ v7
+DALL-E 3 entreprise,dall e 3 entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",medium,300,55,DALL-E 3
+gpt-image-1 OpenAI prix,gpt image 1 openai prix,commercial_investigation,Tarifs,tech,"tpe,pme","entreprise_privee",low,150,55,GPT image prix
+ElevenLabs entreprise,elevenlabs entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",medium,250,55,ElevenLabs
+HeyGen entreprise,heygen entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",medium,200,55,HeyGen
+Synthesia entreprise,synthesia entreprise,commercial_investigation,Outils,marketing,"pme,eti","entreprise_privee",medium,300,55,Synthesia
+Runway ML entreprise,runway ml entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",low,150,55,Runway
+Sora OpenAI entreprise,sora openai entreprise,commercial_investigation,Outils,marketing,"pme,eti","entreprise_privee",medium,400,55,Sora
+Veo Google entreprise,veo google entreprise,commercial_investigation,Outils,marketing,"pme,eti","entreprise_privee",low,200,55,Veo
+Pika Labs entreprise,pika labs entreprise,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",low,150,55,Pika
+Luma AI Dream Machine,luma ai dream machine,commercial_investigation,Outils,marketing,"tpe,pme","entreprise_privee",low,180,55,Luma
+prompt engineering cabinet comptable,prompt engineering cabinet comptable,commercial_investigation,Interventions,comptabilite,"tpe,pme","entreprise_privee",medium,150,50,Prompt comptable
+prompt engineering cabinet avocat,prompt engineering cabinet avocat,commercial_investigation,Interventions,juridique,"tpe,pme","entreprise_privee",medium,120,55,Prompt avocat
+IA pour TPE artisan,ia pour tpe artisan,commercial_investigation,Cas d'usage,artisanat,"tpe","entreprise_privee",medium,200,45,Artisan TPE
+IA pour TPE commerce,ia pour tpe commerce,commercial_investigation,Cas d'usage,retail,"tpe","entreprise_privee",high,400,50,Commerce TPE
+IA pour TPE service,ia pour tpe service,commercial_investigation,Cas d'usage,services,"tpe","entreprise_privee",high,500,50,Service TPE
+ia pour profession libérale,ia pour profession liberale,commercial_investigation,Cas d'usage,liberal,"tpe","entreprise_privee",high,500,50,Profession libérale
+ia pour notaire,ia pour notaire,commercial_investigation,Cas d'usage,juridique,"tpe,pme","entreprise_privee",medium,250,50,Notaire
+ia pour huissier,ia pour huissier,commercial_investigation,Cas d'usage,juridique,"tpe","entreprise_privee",low,150,45,Huissier
+ia pour avocat collaborateur,ia pour avocat collaborateur,commercial_investigation,Cas d'usage,juridique,"tpe","entreprise_privee",medium,200,50,Avocat collab
+ia pour conseiller financier,ia pour conseiller financier,commercial_investigation,Cas d'usage,banque-finance,"tpe","entreprise_privee",medium,200,50,CGP
+ia pour conseiller patrimoine,ia pour conseiller patrimoine,commercial_investigation,Cas d'usage,banque-finance,"tpe","entreprise_privee",medium,180,50,CGP patrimoine
+ia pour conseiller en gestion,ia pour conseiller gestion,commercial_investigation,Cas d'usage,conseil,"tpe","entreprise_privee",medium,150,50,Conseil gestion
+ia pour cabinet recrutement,ia pour cabinet recrutement,commercial_investigation,Cas d'usage,rh,"tpe,pme","entreprise_privee",medium,250,50,Recrutement
+ia pour cabinet conseil RH,ia pour cabinet conseil rh,commercial_investigation,Cas d'usage,rh,"tpe,pme","entreprise_privee",medium,180,50,Conseil RH
+ia pour ESN,ia pour esn,commercial_investigation,Cas d'usage,tech,"pme,eti","entreprise_privee",medium,200,55,ESN
+ia pour agence digitale,ia pour agence digitale,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,400,55,Agence digitale
+ia pour agence SEO,ia pour agence seo,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",medium,300,55,Agence SEO
+ia pour agence de pub,ia pour agence pub,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",medium,200,55,Agence pub
+ia pour studio web,ia pour studio web,commercial_investigation,Cas d'usage,tech,"tpe","entreprise_privee",medium,150,55,Studio web
+ia pour freelance,ia pour freelance,commercial_investigation,Cas d'usage,tous,"tpe","entreprise_privee",high,800,55,Freelance
+ia pour consultant indépendant,ia pour consultant independant,commercial_investigation,Cas d'usage,conseil,"tpe","entreprise_privee",high,600,55,Consultant indé
+ia pour coach professionnel,ia pour coach professionnel,commercial_investigation,Cas d'usage,formation,"tpe","entreprise_privee",medium,250,55,Coach
+ia pour formateur indépendant,ia pour formateur independant,commercial_investigation,Cas d'usage,formation,"tpe","entreprise_privee",medium,200,55,Formateur indé
+ia pour expert-comptable indépendant,ia pour expert comptable independant,commercial_investigation,Cas d'usage,comptabilite,"tpe","entreprise_privee",medium,180,50,EC indé
+ia pour avocat indépendant,ia pour avocat independant,commercial_investigation,Cas d'usage,juridique,"tpe","entreprise_privee",medium,150,50,Avocat indé
+implementation IA Marseille,implementation ia marseille,local,Implémentation,tous,"pme,eti","entreprise_privee",medium,150,55,Local MRS
+implementation IA Bordeaux,implementation ia bordeaux,local,Implémentation,tous,"pme,eti","entreprise_privee",medium,140,55,Local BDX
+implementation IA Toulouse,implementation ia toulouse,local,Implémentation,aerospatial,"pme,eti","entreprise_privee",medium,160,55,Local TLS
+implementation IA Lille,implementation ia lille,local,Implémentation,logistique,"pme,eti","entreprise_privee",medium,130,55,Local LIL
+implementation IA Nantes,implementation ia nantes,local,Implémentation,industrie,"pme,eti","entreprise_privee",medium,140,55,Local NTS
+implementation IA Strasbourg,implementation ia strasbourg,local,Implémentation,pharma,"pme,eti","entreprise_privee",medium,120,55,Local STR
+implementation IA Rennes,implementation ia rennes,local,Implémentation,tech,"tpe,pme","entreprise_privee",medium,120,55,Local RNS
+implementation IA Grenoble,implementation ia grenoble,local,Implémentation,tech,"pme,eti","entreprise_privee",medium,100,55,Local GRE
+implementation IA Nice,implementation ia nice,local,Implémentation,tourisme,"tpe,pme","entreprise_privee",medium,110,55,Local NCE
+implementation IA Montpellier,implementation ia montpellier,local,Implémentation,sante,"pme,eti","entreprise_privee",medium,110,55,Local MTP
+audit IA distance prix 490,audit ia distance prix 490,transactional,Audit IA,tous,"tpe","entreprise_privee",high,80,30,Flash distance
+audit IA terrain prix 890,audit ia terrain prix 890,transactional,Audit IA,tous,"tpe,pme","entreprise_privee",medium,60,30,Flash terrain
+audit IA Ciblé prix 1900,audit ia cible prix 1900,transactional,Audit IA,tous,"pme","entreprise_privee",medium,60,30,Ciblé solo
+audit IA Stratégique prix 4900,audit ia strategique prix 4900,transactional,Audit IA,tous,"pme","entreprise_privee",medium,60,30,Strat PME 20-50
+audit IA Stratégique prix 9900,audit ia strategique prix 9900,transactional,Audit IA,tous,"pme","entreprise_privee",medium,50,30,Strat PME 50-250
+audit IA Stratégique ETI prix 12000,audit ia strategique eti prix 12000,transactional,Audit IA,tous,"eti","entreprise_privee",medium,40,35,Strat ETI
+réserver audit IA Flash,reserver audit ia flash,transactional,Audit IA,tous,"tpe,pme","entreprise_privee",high,200,40,Réserver Flash
+réserver audit IA Ciblé,reserver audit ia cible,transactional,Audit IA,tous,"pme","entreprise_privee",high,150,40,Réserver Ciblé
+prendre RDV audit IA,prendre rdv audit ia,transactional,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,300,45,RDV
+demande devis audit IA,demande devis audit ia,transactional,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,250,45,Devis
+contacter cabinet IA,contacter cabinet ia,transactional,Audit IA,tous,"tpe,pme,eti","entreprise_privee",high,200,45,Contact
+consultant IA recommandé,consultant ia recommande,commercial_investigation,Audit IA,tous,"pme,eti","entreprise_privee",medium,250,55,Consultant
+expert IA français,expert ia francais,commercial_investigation,Audit IA,tous,"pme,eti","entreprise_privee",high,400,55,Expert FR
+Axion-IA tarifs,axion ia tarifs,navigational,Tarifs,tous,"tpe,pme,eti","entreprise_privee",medium,80,20,Brand
+Axion-IA avis,axion ia avis,navigational,Audit IA,tous,"tpe,pme,eti","entreprise_privee",medium,60,20,Brand avis
+Axion-IA Manon,axion ia manon,navigational,Brand,tous,"tpe,pme,eti","entreprise_privee",low,40,15,Auteur
+Axion-IA contact,axion ia contact,navigational,Brand,tous,"tpe,pme,eti","entreprise_privee",medium,80,20,Brand contact
+audit IA Hetzner UE,audit ia hetzner ue,informational,Conformité,tous,"pme,eti","entreprise_privee",low,80,55,Hetzner
+hébergement IA Frankfurt,hebergement ia frankfurt,informational,Conformité,tous,"pme,eti","entreprise_privee",low,100,55,Frankfurt
+IA sans transfert hors UE,ia sans transfert hors ue,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,150,55,Hors UE
+DPA IA fournisseur,dpa ia fournisseur,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,180,55,DPA
+sous-processeurs IA RGPD,sous processeurs ia rgpd,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,150,55,Sous-processeurs
+audit RGPD IA cabinet,audit rgpd ia cabinet,commercial_investigation,Conformité,juridique,"pme","entreprise_privee",medium,200,55,RGPD audit
+AI Act formation,ai act formation,commercial_investigation,Conformité,tous,"pme,eti","entreprise_privee",medium,300,55,AI Act formation
+EU AI Act conformité,eu ai act conformite,informational,Conformité,tous,"pme,eti","entreprise_privee",high,400,55,EU AI Act
+classification AI Act,classification ai act,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,250,55,Classif AI Act
+système IA haut risque,systeme ia haut risque,informational,Conformité,sante,"eti","entreprise_privee",medium,200,55,Haut risque
+biais IA entreprise,biais ia entreprise,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,180,55,Biais
+éthique IA entreprise,ethique ia entreprise,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,250,55,Éthique
+charte IA entreprise,charte ia entreprise,commercial_investigation,Conformité,tous,"pme,eti","entreprise_privee",medium,200,55,Charte
+gouvernance modèles IA,gouvernance modeles ia,informational,Conformité,tous,"eti,grande_entreprise","entreprise_privee",medium,150,60,Gouvernance modèles
+shadow IA entreprise,shadow ia entreprise,informational,Conformité,tous,"pme,eti","entreprise_privee",medium,180,55,Shadow IA
+politique usage IA collaborateurs,politique usage ia collaborateurs,commercial_investigation,Conformité,tous,"pme,eti","entreprise_privee",medium,200,55,Politique usage
+formation usage IA salariés,formation usage ia salaries,commercial_investigation,Interventions,tous,"pme,eti","entreprise_privee",medium,250,55,Formation usage
+LLM open source vs propriétaire,llm open source vs proprietaire,commercial_investigation,Stratégie,tous,"eti","entreprise_privee",medium,200,60,OSS vs propriétaire
+hébergement LLM auto-hébergé prix,hebergement llm auto heberge prix,commercial_investigation,Tarifs,tech,"eti,grande_entreprise","entreprise_privee",low,150,65,Self-hosted prix
+GPU IA entreprise,gpu ia entreprise,commercial_investigation,Outils,tech,"eti,grande_entreprise","entreprise_privee",low,200,65,GPU
+serveur IA dédié,serveur ia dedie,commercial_investigation,Outils,tech,"eti","entreprise_privee",low,150,65,Serveur dédié
+IA en local entreprise,ia en local entreprise,commercial_investigation,Outils,tech,"eti","entreprise_privee",medium,250,60,IA locale
+chatbot vente IA entreprise,chatbot vente ia entreprise,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,300,55,Chatbot vente
+chatbot RH IA,chatbot rh ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Chatbot RH
+chatbot IT IA,chatbot it ia,commercial_investigation,Cas d'usage,tech,"eti","entreprise_privee",medium,200,55,Chatbot IT
+voicebot entreprise,voicebot entreprise,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,200,60,Voicebot
+standard téléphonique IA,standard telephonique ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",medium,250,55,Standard
+réception téléphonique IA,reception telephonique ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",medium,200,55,Réception
+secrétaire IA virtuelle,secretaire ia virtuelle,commercial_investigation,Cas d'usage,tous,"tpe","entreprise_privee",medium,300,50,Secrétaire IA
+assistant IA personnel pro,assistant ia personnel pro,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,400,55,Assistant perso
+agenda IA dirigeant,agenda ia dirigeant,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,180,55,Agenda
+boîte mail IA dirigeant,boite mail ia dirigeant,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Mail
+résumé email IA,resume email ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,400,55,Résumé mail
+brouillon mail IA,brouillon mail ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,300,55,Brouillon mail
+réponse automatique mail IA,reponse automatique mail ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,500,55,Réponse auto
+compte rendu réunion IA,compte rendu reunion ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,600,55,CR réunion
+prise de notes IA,prise de notes ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,800,55,Notes
+transcription réunion IA,transcription reunion ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,500,55,Transcription
+résumé document long IA,resume document long ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,400,55,Résumé long
+synthèse document IA,synthese document ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,500,55,Synthèse
+extraction information PDF IA,extraction information pdf ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",medium,300,55,Extract PDF
+recherche sémantique entreprise,recherche semantique entreprise,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,60,Recherche sémantique
+moteur recherche interne IA,moteur recherche interne ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,300,60,Search interne
+base connaissance IA,base connaissance ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",high,400,55,KB
+documentation interne IA,documentation interne ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,300,55,Doc interne
+wiki entreprise IA,wiki entreprise ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,200,55,Wiki
+onboarding nouveaux salariés IA,onboarding nouveaux salaries ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Onboarding
+recrutement IA cabinet,recrutement ia cabinet,commercial_investigation,Cas d'usage,rh,"pme,eti","entreprise_privee",medium,300,55,Recrutement
+sourcing candidats IA,sourcing candidats ia,commercial_investigation,Cas d'usage,rh,"pme,eti","entreprise_privee",medium,250,55,Sourcing
+entretien IA candidat,entretien ia candidat,commercial_investigation,Cas d'usage,rh,"pme,eti","entreprise_privee",low,180,60,Entretien IA
+référencement Google IA,referencement google ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,600,60,SEO IA
+SEO contenu IA,seo contenu ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,800,60,SEO contenu
+génération article SEO IA,generation article seo ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,500,55,Génération SEO
+content marketing IA,content marketing ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme,eti","entreprise_privee",high,1500,65,Content marketing
+inbound marketing IA,inbound marketing ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,400,60,Inbound
+copywriting IA,copywriting ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,500,55,Copywriting
+rédaction newsletter IA,redaction newsletter ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,400,55,Newsletter
+réseaux sociaux IA,reseaux sociaux ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,800,60,Social IA
+post LinkedIn IA,post linkedin ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",high,1000,60,LinkedIn post
+post Instagram IA,post instagram ia,commercial_investigation,Cas d'usage,marketing,"tpe","entreprise_privee",high,800,60,Instagram post
+calendrier éditorial IA,calendrier editorial ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",medium,300,55,Calendrier
+analyse sentiment client IA,analyse sentiment client ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Sentiment
+analyse avis client IA,analyse avis client ia,commercial_investigation,Cas d'usage,retail,"pme,eti","entreprise_privee",medium,300,55,Avis client
+analyse appel client IA,analyse appel client ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,200,55,Appel
+NPS automatisé IA,nps automatise ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,150,55,NPS
+satisfaction client IA,satisfaction client ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Satisfaction
+réponse avis Google IA,reponse avis google ia,commercial_investigation,Cas d'usage,retail,"tpe,pme","entreprise_privee",medium,200,55,Réponse avis
+gestion réputation IA,gestion reputation ia,commercial_investigation,Cas d'usage,marketing,"pme,eti","entreprise_privee",medium,250,55,Réputation
+brand monitoring IA,brand monitoring ia,commercial_investigation,Cas d'usage,marketing,"pme,eti","entreprise_privee",medium,200,55,Brand monitoring
+analyse concurrentielle IA,analyse concurrentielle ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,300,55,Concurrence
+intelligence économique IA,intelligence economique ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,200,55,Intel éco
+appel d'offres IA,appel offres ia,commercial_investigation,Cas d'usage,public,"pme,eti","entreprise_privee",medium,250,55,AO
+réponse appel offres IA,reponse appel offres ia,commercial_investigation,Cas d'usage,public,"pme,eti","entreprise_privee",medium,200,55,Réponse AO
+marché public IA,marche public ia,commercial_investigation,Cas d'usage,public,"pme,eti","entreprise_privee,mairie",medium,200,55,Marché public
+DCE analyse IA,dce analyse ia,commercial_investigation,Cas d'usage,public,"pme,eti","entreprise_privee",low,150,55,DCE
+veille marchés publics IA,veille marches publics ia,commercial_investigation,Cas d'usage,public,"pme","entreprise_privee",medium,180,55,Veille MP
+prospection LinkedIn automatisée,prospection linkedin automatisee,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,500,60,LinkedIn prospec
+emails commerciaux IA,emails commerciaux ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,400,55,Emails commerciaux
+cold email IA,cold email ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,500,60,Cold email
+nurturing IA,nurturing ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme","entreprise_privee",medium,250,55,Nurturing
+lead generation IA,lead generation ia,commercial_investigation,Cas d'usage,marketing,"tpe,pme,eti","entreprise_privee",high,600,60,Lead gen
+funnel marketing IA,funnel marketing ia,commercial_investigation,Cas d'usage,marketing,"pme","entreprise_privee",medium,300,60,Funnel
+qualification leads IA,qualification leads ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,250,55,Qualification
+notation prospects IA,notation prospects ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,150,55,Scoring
+priorisation pipeline IA,priorisation pipeline ia,commercial_investigation,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,180,55,Pipeline
+relance commerciale IA,relance commerciale ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,400,55,Relance
+devis automatique IA,devis automatique ia,commercial_investigation,Cas d'usage,tous,"tpe,pme","entreprise_privee",high,400,50,Devis auto
+contrat automatique IA,contrat automatique ia,commercial_investigation,Cas d'usage,juridique,"tpe,pme","entreprise_privee",medium,250,55,Contrat auto
+signature électronique IA,signature electronique ia,commercial_investigation,Outils,tous,"tpe,pme,eti","entreprise_privee",medium,500,60,E-signature
+DocuSeal entreprise,docuseal entreprise,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",low,100,55,DocuSeal
+Yousign entreprise,yousign entreprise,commercial_investigation,Outils,tous,"tpe,pme,eti","entreprise_privee",medium,400,60,Yousign
+DocuSign vs Yousign,docusign vs yousign,commercial_investigation,Outils,tous,"pme,eti","entreprise_privee",medium,250,60,Compare signature
+agenda Cal.com IA,agenda cal com ia,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",low,150,55,Cal.com
+Calendly IA,calendly ia,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,500,60,Calendly
+booking automatique IA,booking automatique ia,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,400,55,Booking
+réservation rendez-vous IA,reservation rendez vous ia,commercial_investigation,Outils,tous,"tpe,pme","entreprise_privee",high,500,55,Réservation
+roadmap audit IA 6 mois,roadmap audit ia 6 mois,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,150,55,Roadmap 6 mois
+roadmap implémentation IA 12 mois,roadmap implementation ia 12 mois,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,200,55,Roadmap 12 mois
+plan adoption IA dirigeant,plan adoption ia dirigeant,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,180,55,Plan adoption
+phases audit IA,phases audit ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,200,55,Phases audit
+livrable audit IA,livrable audit ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,250,55,Livrable
+rapport audit IA exemple,rapport audit ia exemple,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,300,55,Rapport exemple
+template audit IA,template audit ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,400,55,Template
+grille audit IA,grille audit ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,200,55,Grille
+checklist audit IA,checklist audit ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,300,55,Checklist
+KPI audit IA,kpi audit ia,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,200,55,KPI audit
+ROI audit IA calcul,roi audit ia calcul,informational,Méthodologie,tous,"pme,eti","entreprise_privee",medium,250,55,Calcul ROI
+business case IA,business case ia,informational,Stratégie,tous,"eti,grande_entreprise","entreprise_privee",high,400,60,Business case
+study case IA réussi,study case ia reussi,informational,Cas d'usage,tous,"pme,eti","entreprise_privee",high,500,55,Study case
+témoignage client IA,temoignage client ia,informational,Cas d'usage,tous,"tpe,pme","entreprise_privee",medium,400,55,Témoignage
+retour expérience IA,retour experience ia,informational,Cas d'usage,tous,"pme,eti","entreprise_privee",medium,500,55,REX
+audit IA Saint-Étienne,audit ia saint etienne,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,80,40,Saint-Étienne
+audit IA Brest,audit ia brest,local,Audit IA,maritime,"tpe,pme","entreprise_privee",low,60,40,Brest
+audit IA Reims,audit ia reims,local,Audit IA,vins,"tpe,pme","entreprise_privee",low,80,40,Reims
+audit IA Orleans,audit ia orleans,local,Audit IA,logistique,"tpe,pme","entreprise_privee",low,70,40,Orléans
+audit IA Tours,audit ia tours,local,Audit IA,pharma,"tpe,pme","entreprise_privee",low,80,45,Tours
+audit IA Dijon,audit ia dijon,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,70,40,Dijon
+audit IA Clermont-Ferrand,audit ia clermont ferrand,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,70,40,Clermont
+audit IA Le Mans,audit ia le mans,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,60,40,Le Mans
+audit IA Angers,audit ia angers,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,80,40,Angers
+audit IA Nîmes,audit ia nimes,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,60,40,Nîmes
+audit IA Avignon,audit ia avignon,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,50,40,Avignon
+audit IA Perpignan,audit ia perpignan,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,40,40,Perpignan
+audit IA Calais,audit ia calais,local,Audit IA,logistique,"tpe,pme","entreprise_privee",low,40,40,Calais
+audit IA Dunkerque,audit ia dunkerque,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,50,40,Dunkerque
+audit IA La Rochelle,audit ia la rochelle,local,Audit IA,maritime,"tpe,pme","entreprise_privee",low,60,40,La Rochelle
+audit IA Pau,audit ia pau,local,Audit IA,energie,"tpe,pme","entreprise_privee",low,50,40,Pau
+audit IA Bayonne,audit ia bayonne,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,60,40,Bayonne
+audit IA Limoges,audit ia limoges,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,50,40,Limoges
+audit IA Poitiers,audit ia poitiers,local,Audit IA,education,"tpe,pme","entreprise_privee",low,60,40,Poitiers
+audit IA Niort,audit ia niort,local,Audit IA,banque-finance,"tpe,pme","entreprise_privee",low,60,40,Niort
+audit IA Caen,audit ia caen,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,70,40,Caen
+audit IA Rouen,audit ia rouen,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,90,45,Rouen
+audit IA Cherbourg,audit ia cherbourg,local,Audit IA,maritime,"tpe,pme","entreprise_privee",low,30,35,Cherbourg
+audit IA Annecy,audit ia annecy,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,80,45,Annecy
+audit IA Chambery,audit ia chambery,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,50,40,Chambéry
+audit IA Valence,audit ia valence,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,50,40,Valence
+audit IA Avignon,audit ia avignon,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,50,40,Avignon
+audit IA Cannes,audit ia cannes,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,80,45,Cannes
+audit IA Antibes,audit ia antibes,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,60,40,Antibes
+audit IA Toulon,audit ia toulon,local,Audit IA,maritime,"tpe,pme","entreprise_privee",low,80,45,Toulon
+audit IA Béziers,audit ia beziers,local,Audit IA,vins,"tpe","entreprise_privee",low,40,40,Béziers
+audit IA Sète,audit ia sete,local,Audit IA,maritime,"tpe","entreprise_privee",low,30,35,Sète
+audit IA Carcassonne,audit ia carcassonne,local,Audit IA,tourisme,"tpe","entreprise_privee",low,30,35,Carcassonne
+audit IA Albi,audit ia albi,local,Audit IA,tourisme,"tpe","entreprise_privee",low,30,35,Albi
+audit IA Cahors,audit ia cahors,local,Audit IA,vins,"tpe","entreprise_privee",low,30,35,Cahors
+audit IA Rodez,audit ia rodez,local,Audit IA,agro-alimentaire,"tpe","entreprise_privee",low,25,35,Rodez
+audit IA Mont-de-Marsan,audit ia mont de marsan,local,Audit IA,agro-alimentaire,"tpe","entreprise_privee",low,20,35,Mont-de-Marsan
+audit IA Périgueux,audit ia perigueux,local,Audit IA,tourisme,"tpe","entreprise_privee",low,30,35,Périgueux
+audit IA Bergerac,audit ia bergerac,local,Audit IA,vins,"tpe","entreprise_privee",low,20,30,Bergerac
+audit IA Agen,audit ia agen,local,Audit IA,agro-alimentaire,"tpe","entreprise_privee",low,30,35,Agen
+audit IA Saint-Nazaire,audit ia saint nazaire,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,50,40,Saint-Nazaire
+audit IA Vannes,audit ia vannes,local,Audit IA,tourisme,"tpe","entreprise_privee",low,40,40,Vannes
+audit IA Quimper,audit ia quimper,local,Audit IA,agro-alimentaire,"tpe","entreprise_privee",low,30,35,Quimper
+audit IA Lorient,audit ia lorient,local,Audit IA,maritime,"tpe","entreprise_privee",low,40,40,Lorient
+audit IA Saint-Brieuc,audit ia saint brieuc,local,Audit IA,agro-alimentaire,"tpe","entreprise_privee",low,30,35,Saint-Brieuc
+audit IA Cherbourg,audit ia cherbourg,local,Audit IA,maritime,"tpe","entreprise_privee",low,30,35,Cherbourg
+audit IA Alençon,audit ia alencon,local,Audit IA,industrie,"tpe","entreprise_privee",low,20,30,Alençon
+audit IA Evreux,audit ia evreux,local,Audit IA,industrie,"tpe","entreprise_privee",low,30,35,Évreux
+audit IA Beauvais,audit ia beauvais,local,Audit IA,industrie,"tpe","entreprise_privee",low,30,35,Beauvais
+audit IA Amiens,audit ia amiens,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,60,40,Amiens
+audit IA Compiègne,audit ia compiegne,local,Audit IA,industrie,"tpe","entreprise_privee",low,30,35,Compiègne
+audit IA Soissons,audit ia soissons,local,Audit IA,industrie,"tpe","entreprise_privee",low,20,30,Soissons
+audit IA Charleville-Mézières,audit ia charleville mezieres,local,Audit IA,industrie,"tpe","entreprise_privee",low,20,30,Charleville
+audit IA Metz,audit ia metz,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,80,45,Metz
+audit IA Nancy,audit ia nancy,local,Audit IA,industrie,"tpe,pme","entreprise_privee",low,80,45,Nancy
+audit IA Mulhouse,audit ia mulhouse,local,Audit IA,industrie,"pme,eti","entreprise_privee",medium,100,45,Mulhouse
+audit IA Colmar,audit ia colmar,local,Audit IA,vins,"tpe,pme","entreprise_privee",low,50,40,Colmar
+audit IA Belfort,audit ia belfort,local,Audit IA,industrie,"tpe","entreprise_privee",low,30,35,Belfort
+audit IA Besançon,audit ia besancon,local,Audit IA,microtechnique,"tpe,pme","entreprise_privee",low,60,40,Besançon
+audit IA Auxerre,audit ia auxerre,local,Audit IA,vins,"tpe","entreprise_privee",low,30,35,Auxerre
+audit IA Bourges,audit ia bourges,local,Audit IA,industrie,"tpe","entreprise_privee",low,30,35,Bourges
+audit IA Châteauroux,audit ia chateauroux,local,Audit IA,industrie,"tpe","entreprise_privee",low,20,30,Châteauroux
+audit IA Blois,audit ia blois,local,Audit IA,tourisme,"tpe","entreprise_privee",low,30,35,Blois
+audit IA Chartres,audit ia chartres,local,Audit IA,industrie,"tpe","entreprise_privee",low,40,40,Chartres
+audit IA Versailles,audit ia versailles,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",medium,150,50,Versailles
+audit IA Boulogne-Billancourt,audit ia boulogne billancourt,local,Audit IA,tous,"pme,eti","entreprise_privee",high,200,55,Boulogne-Billancourt
+audit IA Saint-Denis,audit ia saint denis,local,Audit IA,tous,"tpe,pme","entreprise_privee",medium,150,50,Saint-Denis
+audit IA Montreuil,audit ia montreuil,local,Audit IA,tous,"tpe,pme","entreprise_privee",medium,120,50,Montreuil
+audit IA Argenteuil,audit ia argenteuil,local,Audit IA,tous,"tpe,pme","entreprise_privee",low,100,45,Argenteuil
+audit IA Nanterre,audit ia nanterre,local,Audit IA,tous,"pme,eti","entreprise_privee",medium,180,55,Nanterre
+audit IA Créteil,audit ia creteil,local,Audit IA,tous,"tpe,pme","entreprise_privee",low,100,45,Créteil
+audit IA Aulnay-sous-Bois,audit ia aulnay sous bois,local,Audit IA,tous,"tpe","entreprise_privee",low,60,40,Aulnay
+audit IA Évry,audit ia evry,local,Audit IA,tous,"tpe,pme","entreprise_privee",low,80,40,Évry
+audit IA Cergy,audit ia cergy,local,Audit IA,tous,"tpe,pme","entreprise_privee",low,80,40,Cergy
+audit IA Marne-la-Vallée,audit ia marne la vallee,local,Audit IA,tourisme,"tpe,pme","entreprise_privee",low,80,40,Marne-la-Vallée
+audit IA Massy,audit ia massy,local,Audit IA,tech,"pme,eti","entreprise_privee",medium,100,45,Massy
+audit IA Saint-Quentin-en-Yvelines,audit ia saint quentin en yvelines,local,Audit IA,tech,"pme,eti","entreprise_privee",low,80,45,SQY

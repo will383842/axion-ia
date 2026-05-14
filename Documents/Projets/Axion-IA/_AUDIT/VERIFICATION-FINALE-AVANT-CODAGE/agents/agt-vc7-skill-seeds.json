@@ -1,0 +1,70 @@
+{
+  "agent": "AGT-VC7",
+  "scope": "Skill packagé + 10 seeds pré-remplis",
+  "executedAt": "2026-05-14T09:22:00Z",
+  "filesAudited": [
+    ".claude/skills/axionia-content-generator/ (16 fichiers)",
+    "_AUDIT/seeds-templates/ (10 seeds + 2 extras)",
+    "_AUDIT/SEEDS-PREPARATION-GUIDE.md"
+  ],
+  "findings": [
+    {
+      "id": "VC7-001",
+      "severity": "P1",
+      "title": "SKILL.md description = v2.0, titre = v1.7 (incohérence version)",
+      "description": "Frontmatter description ligne 2 dit v2.0, titre H1 ligne 6 dit v1.7. Reste du skill cohérent v1.7.",
+      "source": ".claude/skills/axionia-content-generator/SKILL.md:2,6",
+      "expected": "Versions alignées (v1.7 ou explicit v2.4)",
+      "actual": "Divergence description vs titre",
+      "fix": "Harmoniser à v1.7 ou bumper à v2.4 partout",
+      "estimatedFixEffort": "5 min"
+    },
+    {
+      "id": "VC7-002",
+      "severity": "P2",
+      "title": "keywords.csv.OBSOLETE-v2.1.bak (71 KB) traîne en _AUDIT/seeds-templates/",
+      "description": "Héritage v2.0 retiré. Doit être nettoyé avant Sprint 1.",
+      "source": "_AUDIT/seeds-templates/keywords.csv.OBSOLETE-v2.1.bak",
+      "expected": "Fichier supprimé ou déplacé hors seeds-templates",
+      "actual": "Présent",
+      "fix": "rm ou mv vers _AUDIT/archive/",
+      "estimatedFixEffort": "1 min"
+    },
+    {
+      "id": "VC7-003",
+      "severity": "INFO",
+      "title": "image-prompts.json (11.7 KB) absent du § 0.4 SEEDS-PREPARATION-GUIDE.md",
+      "description": "Fichier présent mais non listé dans la liste des 10 seeds attendus. Vraisemblablement utilisé Sprint 2 par image-prompt-builder.ts.",
+      "source": "_AUDIT/seeds-templates/image-prompts.json vs SEEDS-PREPARATION-GUIDE.md",
+      "expected": "Documenté ou retiré",
+      "actual": "Présent non documenté",
+      "fix": "Ajouter ligne dans SEEDS-PREPARATION-GUIDE.md § 0.4",
+      "estimatedFixEffort": "5 min"
+    },
+    {
+      "id": "VC7-INFO-001",
+      "severity": "INFO",
+      "title": "16 fichiers skill + 10 seeds pré-remplis = 100% présents et cohérents",
+      "description": "SKILL.md + README.md + auto-pilot.md + 6 sub-prompts (blog-article, comparatif, faq-standalone, guide-pilier, landing-ville, qa-derived) + 3 checklists (exit-v1, seo-aeo-60-items, web-vitals) + 3 references (doctrine-axionia, kb-doctrine, manon-person) + 1 template landing-ville. Tous _meta blocks remplis. Pas de TODO sauf Q13 Manon (gate humain accepté).",
+      "source": ".claude/skills/axionia-content-generator/",
+      "expected": "16 fichiers + 10 seeds",
+      "actual": "16 + 10 + 2 extras",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC7-INFO-002",
+      "severity": "INFO",
+      "title": "Seeds critiques Sprint 1 tous prêts",
+      "description": "manon-profile.md (Q13 gate), coverage-distribution-profiles.json (4 profils, somme 100%), audience-mix-profiles.json (4 profils, matrice 4×12), banned-phrases.json (52 phrases), external-references.json (56 sources trustTier), keyword-templates.csv (~80 templates v2.1 dynamiques).",
+      "source": "_AUDIT/seeds-templates/",
+      "expected": "6 seeds critiques",
+      "actual": "Tous prêts",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    }
+  ],
+  "score": 95,
+  "passBPaths": ["agt-vc1:VC1-007 (Unsplash only v2.0)", "agt-vc5:Q13 Manon"],
+  "verdict": "GO"
+}

@@ -1,0 +1,70 @@
+{
+  "agent": "AGT-VC5",
+  "scope": "Admin UI + Cockpit géo + Mode autopilote (§ 12, § 24)",
+  "executedAt": "2026-05-14T09:24:00Z",
+  "filesAudited": [
+    "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md",
+    ".claude/skills/axionia-content-generator/auto-pilot.md",
+    ".claude/skills/axionia-content-generator/SKILL.md"
+  ],
+  "findings": [
+    {
+      "id": "VC5-INFO-001",
+      "severity": "INFO",
+      "title": "12+ sections admin v1.7+v2.x exhaustivement spécifiées",
+      "description": "Toutes les routes admin documentées : dashboard, 10 sous-pages /settings/*, /author/manon, /templates, /landing-variants, /jobs/[id] SSE, /queue, /review-queue, /geo cockpit, /geo/batches, /kb-readonly, /rss, /costs, /coverage, /similarity-monitor, /publications-status kanban, /publications, /orchestrator, /aeo-tests V2, /external-references",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 12.1ter-quinquies",
+      "expected": "12+ sections",
+      "actual": "20+ sections détaillées",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC5-INFO-002",
+      "severity": "INFO",
+      "title": "Cockpit géo 4 zones + 5 modes coloriage + SSE realtime",
+      "description": "Zone 1 carte interactive react-simple-maps + GeoJSON IGN, Zone 2 KPI 7 métriques, Zone 3 progress régions, Zone 4 table drillable TanStack, side-panel drawer SSE /api/content-gen/geo-events recoloriage ≤2s, 5 modes (status, quality, cost, recency, population) + bonus sectors",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 12.1quater + § 15.1.2",
+      "expected": "4 zones + 5 modes + drawer + SSE + vue villes oubliées",
+      "actual": "Tous présents",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC5-INFO-003",
+      "severity": "INFO",
+      "title": "Autopilote 13 STOP & ASK + Q13 unique gate humain + 8 critères STOP durci",
+      "description": "Q1-Q12 défauts actés (Unsplash uniquement Q4, gpt-image-1 retiré, Indexing API V1 Q12 révisé v2.4). Q13 Manon = unique gate humain bloquant (réduit à 2 inputs : option visuelle + bio). 8 critères STOP : gate fail, cost cap 80%, 3 commits failed, provider down >30min, migration destructive, modif SSOT, suppression >100 LOC hors content-gen, Q13 manquant.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 24.2 + § 24.4 + auto-pilot.md",
+      "expected": "13 STOP avec défauts + Q13 unique + 8 critères",
+      "actual": "Tous présents et cohérents skill + autopilot + master",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC5-INFO-004",
+      "severity": "INFO",
+      "title": "13 alertes Telegram explicites avec lien admin direct (§ 12.3bis + § 13.3)",
+      "description": "Cost cap 80%/100%, provider down 5min/30min, KB not ready, 5 jobs failed, review nouveau, batch terminé, LCP dégradé, plagiarism block, soft-404, indexation stagnante, tier-3 stagnant 90j",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 12.3bis + § 13.3",
+      "expected": "13 événements explicites",
+      "actual": "13 détaillés avec lien admin",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC5-INFO-005",
+      "severity": "INFO",
+      "title": "30 réglages éditables admin (§ 12.5 hard rule)",
+      "description": "Tous les paramètres DB-driven via Setting/ProviderConfig/Template/AuthorProfile/RssSource/BannedPhrase/etc. Aucun hardcode. 30 réglages listés incluant v1.7 (distribution couverture %, audience mix %, intent %, quality loop, Q/R toggle, similarity-monitor, kanban).",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 12.5",
+      "expected": "30 réglages éditables admin",
+      "actual": "30+ listés exhaustivement",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    }
+  ],
+  "score": 92,
+  "passBPaths": ["agt-vc1:VC1-020 (auto-pilot.md vérifié exister)", "agt-vc7:Q13 Manon"],
+  "verdict": "GO"
+}

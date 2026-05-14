@@ -1,0 +1,545 @@
+{
+  "_meta": {
+    "description": "Sources externes curées — dossier centralisé pour citations (v2.2 master § 9bis.5bis). Ingéré Sprint 1 dans table Prisma ExternalReference. Permet réutilisation, audit, pondération trustTier.",
+    "version": "v2.2",
+    "totalReferences": 56,
+    "ingestSprint": 1,
+    "table": "ExternalReference",
+    "trustTiers": {
+      "official": "Sources institutionnelles (gouv.fr, INSEE, Eurostat, ONU, banques centrales, AI Act EU, ANSSI, CNIL, gouvernement)",
+      "high": "Médias économiques de référence + journaux nationaux + revues scientifiques (Le Monde, Les Échos, Reuters, Nature, AFP)",
+      "standard": "Médias tech B2B reconnus (LMI, ZDNet, JDN, Frenchweb, Siècle Digital, etc.)",
+      "low": "Blogs et contenu non vérifié — warning si cité",
+      "excluded": "Sources blacklistées — rejet automatique"
+    }
+  },
+  "references": [
+    {
+      "url": "https://www.insee.fr/fr/",
+      "title": "INSEE — Institut national de la statistique et des études économiques",
+      "publisher": "INSEE",
+      "publisherDomain": "insee.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Source officielle des données démographiques, économiques et sociales françaises. Référence absolue pour tailles INSEE (TPE/PME/ETI/grande-entreprise) et données ville/dépt/région."
+    },
+    {
+      "url": "https://geo.api.gouv.fr/",
+      "title": "API Adresse + Découpage Administratif (gouv.fr)",
+      "publisher": "DINUM",
+      "publisherDomain": "api.gouv.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "API officielle gouvernement.fr pour codes INSEE, communes, départements, régions. Utilisée pour le seed villes."
+    },
+    {
+      "url": "https://www.economie.gouv.fr/",
+      "title": "Ministère de l'Économie et des Finances",
+      "publisher": "Gouvernement.fr",
+      "publisherDomain": "economie.gouv.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Source officielle politiques économiques, aides PME/ETI, AI Act application FR."
+    },
+    {
+      "url": "https://www.cnil.fr/",
+      "title": "CNIL — Commission nationale de l'informatique et des libertés",
+      "publisher": "CNIL",
+      "publisherDomain": "cnil.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Référence RGPD France, recommandations IA + données personnelles, sanctions, jurisprudence."
+    },
+    {
+      "url": "https://www.ssi.gouv.fr/",
+      "title": "ANSSI — Agence nationale de la sécurité des systèmes d'information",
+      "publisher": "ANSSI",
+      "publisherDomain": "ssi.gouv.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Cybersécurité, recommandations IA + souveraineté numérique, hébergement."
+    },
+    {
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+      "title": "EU AI Act — Regulatory framework for AI (Commission européenne)",
+      "publisher": "European Commission",
+      "publisherDomain": "ec.europa.eu",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Texte officiel AI Act 2024-2026. Classification systèmes IA, obligations, sanctions."
+    },
+    {
+      "url": "https://www.bpifrance.fr/",
+      "title": "BPI France — Banque publique d'investissement",
+      "publisher": "BPI France",
+      "publisherDomain": "bpifrance.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Aides IA PME/ETI, prêts innovation, subventions, fonds digital + IA."
+    },
+    {
+      "url": "https://www.francenum.gouv.fr/",
+      "title": "France Num — Accompagnement numérique PME",
+      "publisher": "Gouvernement.fr",
+      "publisherDomain": "francenum.gouv.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Dispositifs publics digital + IA pour TPE/PME, chèques numériques, formations financées."
+    },
+    {
+      "url": "https://www.cma-france.fr/",
+      "title": "CMA France — Chambre des métiers et de l'artisanat",
+      "publisher": "CMA France",
+      "publisherDomain": "cma-france.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Référence artisans + TPE. Données sectorielles."
+    },
+    {
+      "url": "https://www.cci.fr/",
+      "title": "CCI France — Chambres de commerce et d'industrie",
+      "publisher": "CCI France",
+      "publisherDomain": "cci.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Tissu économique régional + accompagnement PME. Utile citations régionales."
+    },
+    {
+      "url": "https://www.lemonde.fr/",
+      "title": "Le Monde",
+      "publisher": "Le Monde",
+      "publisherDomain": "lemonde.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Journal de référence national. Couverture économique + sociétale IA."
+    },
+    {
+      "url": "https://www.lesechos.fr/",
+      "title": "Les Échos",
+      "publisher": "Les Échos",
+      "publisherDomain": "lesechos.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Quotidien économique FR de référence. Couverture transformation IA des entreprises."
+    },
+    {
+      "url": "https://www.lefigaro.fr/",
+      "title": "Le Figaro",
+      "publisher": "Le Figaro",
+      "publisherDomain": "lefigaro.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Journal national de référence."
+    },
+    {
+      "url": "https://www.latribune.fr/",
+      "title": "La Tribune",
+      "publisher": "La Tribune",
+      "publisherDomain": "latribune.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Quotidien économique. Bonne couverture régionale + business."
+    },
+    {
+      "url": "https://www.usine-digitale.fr/",
+      "title": "L'Usine Digitale",
+      "publisher": "L'Usine Nouvelle",
+      "publisherDomain": "usine-digitale.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Référence transformation digitale + IA industrie. ICP Axion-IA aligné."
+    },
+    {
+      "url": "https://www.usinenouvelle.com/",
+      "title": "L'Usine Nouvelle",
+      "publisher": "Infopro Digital",
+      "publisherDomain": "usinenouvelle.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Industrie française. Référence ETI manufacturières."
+    },
+    {
+      "url": "https://www.nature.com/",
+      "title": "Nature",
+      "publisher": "Nature Publishing Group",
+      "publisherDomain": "nature.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Revue scientifique de référence. Publications IA fondamentales."
+    },
+    {
+      "url": "https://www.reuters.com/",
+      "title": "Reuters",
+      "publisher": "Reuters",
+      "publisherDomain": "reuters.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Agence de presse internationale. Référence fiable."
+    },
+    {
+      "url": "https://www.bloomberg.com/",
+      "title": "Bloomberg",
+      "publisher": "Bloomberg",
+      "publisherDomain": "bloomberg.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Référence financière mondiale."
+    },
+    {
+      "url": "https://www.afp.com/fr",
+      "title": "AFP — Agence France-Presse",
+      "publisher": "AFP",
+      "publisherDomain": "afp.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Agence française internationale. Source primaire reprise par tous."
+    },
+    {
+      "url": "https://hbr.org/",
+      "title": "Harvard Business Review",
+      "publisher": "Harvard Business Publishing",
+      "publisherDomain": "hbr.org",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Référence management/stratégie. Publications IA business."
+    },
+    {
+      "url": "https://www.mckinsey.com/featured-insights/artificial-intelligence",
+      "title": "McKinsey — AI Insights",
+      "publisher": "McKinsey & Company",
+      "publisherDomain": "mckinsey.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Études IA business reconnues internationalement."
+    },
+    {
+      "url": "https://www.bcg.com/capabilities/artificial-intelligence",
+      "title": "BCG — Artificial Intelligence",
+      "publisher": "Boston Consulting Group",
+      "publisherDomain": "bcg.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Études IA stratégie + adoption entreprise."
+    },
+    {
+      "url": "https://www.gartner.com/en/insights/artificial-intelligence",
+      "title": "Gartner — AI Insights",
+      "publisher": "Gartner",
+      "publisherDomain": "gartner.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Référence technologies entreprise. Hype Cycle + Magic Quadrants IA."
+    },
+    {
+      "url": "https://www.forrester.com/",
+      "title": "Forrester",
+      "publisher": "Forrester Research",
+      "publisherDomain": "forrester.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Études IA + transformation digitale entreprise."
+    },
+    {
+      "url": "https://www.idc.com/",
+      "title": "IDC — International Data Corporation",
+      "publisher": "IDC",
+      "publisherDomain": "idc.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Études marchés tech + IA mondiaux."
+    },
+    {
+      "url": "https://www.lemondeinformatique.fr/",
+      "title": "Le Monde Informatique",
+      "publisher": "IT News Info",
+      "publisherDomain": "lemondeinformatique.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Référence FR DSI + actualité IT/IA B2B."
+    },
+    {
+      "url": "https://www.zdnet.fr/",
+      "title": "ZDNet France",
+      "publisher": "Red Ventures",
+      "publisherDomain": "zdnet.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Couverture tech grand public + B2B FR."
+    },
+    {
+      "url": "https://www.journaldunet.com/",
+      "title": "Journal du Net",
+      "publisher": "Le Figaro / CCM Benchmark",
+      "publisherDomain": "journaldunet.com",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Digital business + IA solutions FR."
+    },
+    {
+      "url": "https://www.frenchweb.fr/",
+      "title": "FrenchWeb",
+      "publisher": "Decode Media",
+      "publisherDomain": "frenchweb.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Écosystème startup + tech FR. Utile veille concurrentielle."
+    },
+    {
+      "url": "https://siecledigital.fr/",
+      "title": "Siècle Digital",
+      "publisher": "Siècle Digital",
+      "publisherDomain": "siecledigital.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Transformation digitale + IA. Articles d'analyse."
+    },
+    {
+      "url": "https://www.maddyness.com/",
+      "title": "Maddyness",
+      "publisher": "Maddyness Media",
+      "publisherDomain": "maddyness.com",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Écosystème innovation + startups FR."
+    },
+    {
+      "url": "https://www.lebigdata.fr/",
+      "title": "LeBigData",
+      "publisher": "LeBigData",
+      "publisherDomain": "lebigdata.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Spécialisé data + IA + ML. Couverture technique vulgarisée."
+    },
+    {
+      "url": "https://www.silicon.fr/",
+      "title": "Silicon.fr",
+      "publisher": "Silicon",
+      "publisherDomain": "silicon.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "IT enterprise + cloud + IA infrastructure."
+    },
+    {
+      "url": "https://www.lemagit.fr/",
+      "title": "LeMagIT",
+      "publisher": "TechTarget France",
+      "publisherDomain": "lemagit.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Décideurs IT + DSI. Couverture IA enterprise approfondie."
+    },
+    {
+      "url": "https://www.alliancy.fr/",
+      "title": "Alliancy",
+      "publisher": "Alliancy",
+      "publisherDomain": "alliancy.fr",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "CIO + transformation digitale FR."
+    },
+    {
+      "url": "https://www.actuia.com/",
+      "title": "ActuIA",
+      "publisher": "ActuIA",
+      "publisherDomain": "actuia.com",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Actualité IA spécialisée. Très orientée recherche."
+    },
+    {
+      "url": "https://www.anthropic.com/",
+      "title": "Anthropic",
+      "publisher": "Anthropic",
+      "publisherDomain": "anthropic.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Éditeur Claude. Source primaire pour annonces produit + recherche IA."
+    },
+    {
+      "url": "https://openai.com/",
+      "title": "OpenAI",
+      "publisher": "OpenAI",
+      "publisherDomain": "openai.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Éditeur ChatGPT / GPT. Source primaire annonces + recherche."
+    },
+    {
+      "url": "https://mistral.ai/",
+      "title": "Mistral AI",
+      "publisher": "Mistral AI",
+      "publisherDomain": "mistral.ai",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Éditeur français IA. Pertinent pour souveraineté FR."
+    },
+    {
+      "url": "https://blog.google/technology/ai/",
+      "title": "Google AI Blog",
+      "publisher": "Google",
+      "publisherDomain": "google.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Annonces Google IA (Gemini, AI Mode, Workspace AI). Source primaire."
+    },
+    {
+      "url": "https://blogs.microsoft.com/ai/",
+      "title": "Microsoft AI Blog",
+      "publisher": "Microsoft",
+      "publisherDomain": "microsoft.com",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Annonces Copilot 365 + Azure AI. Source primaire."
+    },
+    {
+      "url": "https://huggingface.co/",
+      "title": "Hugging Face",
+      "publisher": "Hugging Face",
+      "publisherDomain": "huggingface.co",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Référence modèles open source IA. Pertinent self-hosted LLM."
+    },
+    {
+      "url": "https://www.wikipedia.org/",
+      "title": "Wikipédia",
+      "publisher": "Wikimedia Foundation",
+      "publisherDomain": "wikipedia.org",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Encyclopédie en ligne. Citation OK pour définitions générales, pas pour faits précis."
+    },
+    {
+      "url": "https://www.wikidata.org/",
+      "title": "Wikidata",
+      "publisher": "Wikimedia Foundation",
+      "publisherDomain": "wikidata.org",
+      "trustTier": "standard",
+      "language": "fr",
+      "description": "Base de connaissances structurée. Référence pour sameAs entities (signal AI Mode 2026)."
+    },
+    {
+      "url": "https://arxiv.org/",
+      "title": "arXiv — Preprints",
+      "publisher": "Cornell University",
+      "publisherDomain": "arxiv.org",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Pré-publications scientifiques. Source primaire papers IA. À citer pour techniques."
+    },
+    {
+      "url": "https://hal.science/",
+      "title": "HAL — Hyper Articles en Ligne",
+      "publisher": "CCSD",
+      "publisherDomain": "hal.science",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Archive ouverte FR — recherche universitaire / CNRS / INRIA."
+    },
+    {
+      "url": "https://www.inria.fr/",
+      "title": "INRIA — Institut national de recherche en sciences et technologies du numérique",
+      "publisher": "INRIA",
+      "publisherDomain": "inria.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Recherche IA française. Source autorité pour publications."
+    },
+    {
+      "url": "https://www.cnrs.fr/",
+      "title": "CNRS — Centre national de la recherche scientifique",
+      "publisher": "CNRS",
+      "publisherDomain": "cnrs.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Recherche scientifique française. Référence académique."
+    },
+    {
+      "url": "https://www.france-info.fr/",
+      "title": "France Info",
+      "publisher": "Radio France",
+      "publisherDomain": "francetvinfo.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Service public d'information."
+    },
+    {
+      "url": "https://www.france-culture.fr/",
+      "title": "France Culture",
+      "publisher": "Radio France",
+      "publisherDomain": "radiofrance.fr",
+      "trustTier": "high",
+      "language": "fr",
+      "description": "Réflexions sociétales IA + numérique."
+    },
+    {
+      "url": "https://www.dauphine.fr/",
+      "title": "Université Paris-Dauphine — PSL",
+      "publisher": "Dauphine PSL",
+      "publisherDomain": "dauphine.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Recherche management + économie + IA business."
+    },
+    {
+      "url": "https://www.em-lyon.com/",
+      "title": "EM Lyon Business School",
+      "publisher": "EM Lyon",
+      "publisherDomain": "em-lyon.com",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Référence enseignement business + Auvergne-Rhône-Alpes (Lyon). Utile citations régionales."
+    },
+    {
+      "url": "https://www.grenoble-inp.fr/",
+      "title": "Grenoble INP — Institut national polytechnique",
+      "publisher": "Grenoble INP",
+      "publisherDomain": "grenoble-inp.fr",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Référence enseignement supérieur tech + Auvergne-Rhône-Alpes (Grenoble). MINATEC, microélectronique, IA."
+    },
+    {
+      "url": "https://www.minatec.org/",
+      "title": "MINATEC",
+      "publisher": "CEA Grenoble",
+      "publisherDomain": "minatec.org",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Pôle micro-nanotech Grenoble. Référence Auvergne-Rhône-Alpes."
+    },
+    {
+      "url": "https://www.frenchtech-grenoble.com/",
+      "title": "French Tech in the Alps",
+      "publisher": "French Tech",
+      "publisherDomain": "frenchtech-grenoble.com",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Écosystème tech Grenoble + Annecy + Chambéry. Référence régionale ARA."
+    },
+    {
+      "url": "https://www.frenchtech-saintetienne.com/",
+      "title": "French Tech Saint-Étienne",
+      "publisher": "French Tech",
+      "publisherDomain": "frenchtech-saintetienne.com",
+      "trustTier": "official",
+      "language": "fr",
+      "description": "Écosystème tech Saint-Étienne. Référence régionale ARA."
+    }
+  ],
+  "_validation": {
+    "rules": [
+      "URL unique strict (validé Zod à l'ingest)",
+      "publisherDomain extrait automatiquement de URL (normalisation)",
+      "trustTier obligatoire — pas de défaut, à attribuer explicitement",
+      "Sources blacklistées (`trustTier: excluded`) jamais utilisées en citation"
+    ],
+    "willActions": [
+      "1. Valider les 56 sources curées",
+      "2. Ajuster trustTier si nécessaire (ex Wikipedia peut passer en `low` selon ta doctrine)",
+      "3. Ajouter sources verticales (cabinets comptables CFE Network, barreau de Paris, OPCO Atlas, etc.)",
+      "4. Page admin `/[adminPrefix]/content-gen/external-references` permet CRUD continu en production"
+    ]
+  }
+}

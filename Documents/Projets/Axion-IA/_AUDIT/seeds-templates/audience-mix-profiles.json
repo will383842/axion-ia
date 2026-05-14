@@ -1,0 +1,105 @@
+{
+  "_meta": {
+    "description": "Profils de mix d'audiences (taille INSEE × type organisation) pour campagnes de couverture (§ 25.2 master). Somme = 100 % strict. Will choisit un profil à la création d'une campagne ou customise inline.",
+    "version": "v1.9",
+    "totalProfiles": 4,
+    "ingestSprint": 1,
+    "table": "AudienceMixProfile",
+    "format": "audienceKey = '{taille_insee}:{type_organisation}' — ex 'pme:entreprise_privee'"
+  },
+  "profiles": [
+    {
+      "slug": "mixte-equilibre",
+      "name": "Mixte équilibré",
+      "description": "Profil par défaut V1 — couvre les 4 tailles INSEE et les principaux types d'organisation. Idéal villes moyennes (10-100K hab) au tissu économique varié.",
+      "mix": {
+        "pme:entreprise_privee": 30,
+        "tpe:entreprise_privee": 20,
+        "eti:entreprise_privee": 15,
+        "grande_entreprise:entreprise_privee": 5,
+        "pme:ecole": 5,
+        "pme:mairie": 5,
+        "pme:comite_entreprise": 5,
+        "pme:association": 5,
+        "grande_entreprise:universite": 3,
+        "pme:hopital": 3,
+        "pme:opco": 2,
+        "pme:etablissement_public": 2
+      },
+      "isDefault": true,
+      "useCase": "Démarrage V1, ville/dpt moyens, économie diversifiée. Cible audit Flash + Ciblé en majorité."
+    },
+    {
+      "slug": "tertiaire-urbain",
+      "name": "Tertiaire urbain",
+      "description": "Métropoles à dominante services (Paris, Lyon, Toulouse, Bordeaux, Nantes). Priorité cabinets/services entreprises, finance, conseil.",
+      "mix": {
+        "pme:entreprise_privee": 35,
+        "tpe:entreprise_privee": 20,
+        "eti:entreprise_privee": 20,
+        "grande_entreprise:entreprise_privee": 10,
+        "pme:association": 5,
+        "grande_entreprise:universite": 5,
+        "pme:opco": 3,
+        "pme:carsat": 2
+      },
+      "isDefault": false,
+      "useCase": "Île-de-France, Auvergne-Rhône-Alpes (Lyon), Occitanie (Toulouse), Nouvelle-Aquitaine (Bordeaux). Cible audit Ciblé + Stratégique PME."
+    },
+    {
+      "slug": "industriel-regional",
+      "name": "Industriel régional",
+      "description": "Régions à dominante industrie/production (Hauts-de-France, Grand Est, Pays de la Loire, Auvergne-Rhône-Alpes ouest). Priorité PME et ETI industrielles.",
+      "mix": {
+        "pme:entreprise_privee": 30,
+        "eti:entreprise_privee": 25,
+        "tpe:entreprise_privee": 15,
+        "grande_entreprise:entreprise_privee": 10,
+        "pme:opco": 5,
+        "pme:comite_entreprise": 5,
+        "grande_entreprise:universite": 3,
+        "pme:association": 3,
+        "pme:mairie": 2,
+        "pme:etablissement_public": 2
+      },
+      "isDefault": false,
+      "useCase": "Mulhouse, Le Havre, Saint-Étienne, Reims, Lille, Roubaix. Cible audit Ciblé + implémentation IA custom."
+    },
+    {
+      "slug": "public-parapublic",
+      "name": "Public et parapublic",
+      "description": "Campagnes ciblées secteur public (mairies + écoles + universités + collectivités + CE + OPCO). Idéal villes préfectures, sous-préfectures, capitales régionales.",
+      "mix": {
+        "pme:mairie": 20,
+        "pme:ecole": 15,
+        "grande_entreprise:universite": 15,
+        "pme:association": 10,
+        "pme:collectivite": 10,
+        "pme:hopital": 10,
+        "pme:comite_entreprise": 5,
+        "pme:opco": 5,
+        "pme:carsat": 5,
+        "pme:etablissement_public": 5
+      },
+      "isDefault": false,
+      "useCase": "Préfectures (Marseille, Strasbourg, Lille, Rennes, Nantes), villes universitaires (Montpellier, Grenoble, Tours), capitales régionales. Cible interventions formation + audit Ciblé."
+    }
+  ],
+  "_validation": {
+    "rules": [
+      "Somme mix = 100 % strict (validé Zod à l'ingest)",
+      "Clé format strict : 'taille_insee:type_organisation' (ex 'pme:ecole', 'grande_entreprise:universite')",
+      "Tailles valides : tpe | pme | eti | grande_entreprise (4 INSEE)",
+      "Organisations valides : entreprise_privee | ecole | universite | mairie | collectivite | hopital | association | comite_entreprise | opco | carsat | etablissement_public | autre (12)",
+      "Aucune cellule à 0 % — supprimer si pas pertinent",
+      "isDefault: true sur exactement 1 profil"
+    ],
+    "matriceVisualisation": "Côté admin, une matrice 4 × 12 = 48 cellules est affichée avec sliders. Will peut éditer une cellule, l'algorithme rééquilibre les autres proportionnellement pour maintenir somme = 100 %.",
+    "willActions": [
+      "1. Valider les 4 profils et leurs poids %",
+      "2. Vérifier que les tailles INSEE correspondent au ICP Axion-IA",
+      "3. Ajuster cellules si déséquilibre détecté (ex revoir % grande_entreprise selon stratégie)",
+      "4. Ajouter d'autres profils si pertinent (ex « Côtier touristique », « Frontière belge », « Rural »)"
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "_meta": {
+    "description": "Templates de prompts pour gpt-image-1 (et fallback dall-e-3) — utilisés par src/server/content-gen/images/image-prompt-builder.ts. Ingéré Sprint 2.",
+    "version": "v1.9",
+    "totalTemplates": 15,
+    "ingestSprint": 2,
+    "doctrine": "Palette intouchable terracotta #C45A3E + crème #FAF7F2 + ink #1F1B16. Style éditorial sobre. Pas de visage photoréaliste (RGPD). Pas de logos tiers.",
+    "outputSize": "1024×1024 (carré, hero schema doctrine v3.3)",
+    "outputQuality": "high"
+  },
+  "templates": [
+    {
+      "id": "landing-ville-hero",
+      "name": "Hero landing ville",
+      "contentTypes": ["landing_ville"],
+      "slot": "hero",
+      "template": "Editorial illustration of {ville_name}, France ({region_name}). Urban architecture meets operational AI visualization: subtle data-flow lines, geometric grid suggesting algorithmic structure, blended with recognizable but stylized urban silhouette (rooftops, civic landmark if any). Style: minimalist editorial poster, flat-color, no photorealism, no human faces, no third-party logos. Color palette strictly: terracotta #C45A3E for accent, cream #FAF7F2 for background, ink #1F1B16 for outlines. Soft texture, slightly grained. Square 1024×1024. Mood: thoughtful, professional, French sober elegance.",
+      "variables": ["ville_name", "region_name"],
+      "exampleVille": "Lyon, Auvergne-Rhône-Alpes",
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "landing-ville-section-method",
+      "name": "Section méthodologie landing ville",
+      "contentTypes": ["landing_ville"],
+      "slot": "section_methodology",
+      "template": "Editorial illustration of a structured 3-step methodology process. Three connected geometric elements representing: 1) discovery (magnifying glass abstract), 2) audit (layered document stack), 3) implementation (gear meeting upward arrow). Vertical or horizontal flow. Style: minimalist editorial, flat-color, no humans, no logos. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": [],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "blog-hero-default",
+      "name": "Hero article blog (défaut)",
+      "contentTypes": ["blog_from_title", "blog_from_keywords", "blog_from_pillar"],
+      "slot": "hero",
+      "template": "Editorial illustration for an article titled « {title_short} ». Theme: {category} in operational AI for {audience_label}. Abstract conceptual visual representing the main idea: {primary_concept}. Style: minimalist editorial poster, geometric shapes, flat-color, no photorealism, no human faces, no logos. Palette strictly: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Soft grain texture. Square 1024×1024.",
+      "variables": ["title_short", "category", "audience_label", "primary_concept"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "blog-hero-cas-usage",
+      "name": "Hero article cas d'usage",
+      "contentTypes": ["blog_from_title", "blog_from_keywords"],
+      "slot": "hero",
+      "template": "Editorial illustration of a concrete use case scenario in operational AI: {use_case_label}. Visual metaphor: a workflow transforming raw input (left) into clean structured output (right) via an algorithmic process in the middle. Abstract geometric, no humans, no logos. Style: minimalist editorial. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": ["use_case_label"],
+      "estimatedCostUsd": 0.04,
+      "useWhenCategory": ["Cas d'usage"]
+    },
+    {
+      "id": "blog-hero-strategie",
+      "name": "Hero article stratégie",
+      "contentTypes": ["blog_from_title", "guide_pilier"],
+      "slot": "hero",
+      "template": "Editorial illustration representing strategic decision-making in operational AI: a fork in the road or a balance scale weighing options (e.g., RAG vs fine-tuning, internalization vs externalization, SaaS vs custom). Abstract geometric, sober, no humans, no logos. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024. Mood: thoughtful, executive-grade.",
+      "variables": [],
+      "estimatedCostUsd": 0.04,
+      "useWhenCategory": ["Stratégie"]
+    },
+    {
+      "id": "blog-hero-methodologie",
+      "name": "Hero article méthodologie",
+      "contentTypes": ["blog_from_title", "guide_pilier"],
+      "slot": "hero",
+      "template": "Editorial illustration of a structured methodology with numbered steps (3, 5 or 7 steps depending on context). Each step represented as a geometric shape in sequence (circles connected by lines, or stacked rectangles). Style: minimalist editorial flowchart, no humans, no logos. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": [],
+      "estimatedCostUsd": 0.04,
+      "useWhenCategory": ["Méthodologie"]
+    },
+    {
+      "id": "comparison-hero",
+      "name": "Hero comparatif",
+      "contentTypes": ["comparison"],
+      "slot": "hero",
+      "template": "Editorial illustration comparing 2 to 6 entities side by side. Visual: balanced scale or split-screen showing {item_a} vs {item_b} (and additional items if applicable). Each entity represented as a stylized abstract shape (different geometric form per entity). Style: minimalist editorial, sober, no humans, no third-party logos (abstract shapes only). Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": ["item_a", "item_b"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "guide-pilier-hero",
+      "name": "Hero guide pilier",
+      "contentTypes": ["guide_pilier"],
+      "slot": "hero",
+      "template": "Editorial illustration for a long-form pillar guide on « {topic} » in operational AI. Visual: an open book or layered manuscript with abstract geometric chapter markers, suggesting depth and authority. Style: minimalist editorial, executive publishing quality, no humans, no logos. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024. Mood: reference-grade, authoritative.",
+      "variables": ["topic"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "faq-standalone-hero",
+      "name": "Hero FAQ thématique",
+      "contentTypes": ["faq_standalone"],
+      "slot": "hero",
+      "template": "Editorial illustration representing a curated FAQ section on the theme « {topic} ». Visual: a clean question mark made of stacked thin geometric shapes, or a series of small horizontal lines suggesting Q&A entries. Style: minimalist editorial, sober, no humans, no logos. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": ["topic"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "news-article-hero",
+      "name": "Hero actualité RSS",
+      "contentTypes": ["blog_from_rss"],
+      "slot": "hero",
+      "template": "Editorial illustration for a news article on « {topic} » in AI sector. Visual: a stylized newspaper headline shape or a horizontal divider line with a single accent geometric element (circle or triangle) representing the news subject. Style: minimalist editorial press, sober, no humans, no logos. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024. Mood: current, factual.",
+      "variables": ["topic"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "section-illustration-default",
+      "name": "Illustration milieu de section (générique)",
+      "contentTypes": ["all"],
+      "slot": "section_mid",
+      "template": "Subtle editorial illustration to break the visual rhythm mid-article on theme « {section_theme} ». Visual: a single abstract geometric shape or small pattern (e.g., 3 dots connecting to a central node, a soft arc, an inscribed shape). Style: very minimalist, almost like a typographic ornament. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024 but designed to be visually light.",
+      "variables": ["section_theme"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "section-cas-concret",
+      "name": "Illustration cas concret anonymisé",
+      "contentTypes": ["landing_ville", "blog_from_title", "guide_pilier"],
+      "slot": "section_case_study",
+      "template": "Editorial illustration of an anonymized case study scenario: a stylized business sector ({sector_label}) at company size {size_label}, with a before/after transformation. Visual: two parallel geometric arrangements showing « before » (cluttered) and « after » (clean structured). No specific company logos, no recognizable buildings, no human faces. Style: minimalist editorial. Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": ["sector_label", "size_label"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "section-pricing-table",
+      "name": "Illustration table tarifs (visuel)",
+      "contentTypes": ["landing_ville", "comparison"],
+      "slot": "section_pricing",
+      "template": "Editorial illustration suggesting tiered pricing without showing actual numbers: three or four stacked geometric blocks of increasing size representing tier levels (Flash → Ciblé → Stratégique). Each tier has a different shade within the terracotta-cream palette. Style: minimalist editorial diagram, no text, no logos. Palette strictly: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024.",
+      "variables": [],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "qa-page-hero",
+      "name": "Hero page Q/R indexable",
+      "contentTypes": ["qa_derived"],
+      "slot": "hero_qa",
+      "template": "Small editorial illustration for an individual Q/R page on theme « {qa_question_short} ». Visual: a single stylized speech bubble made of thin geometric lines, or a compact dialog mark. Style: very minimalist, lightweight (page is short — visual should not dominate). Palette: terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16. Square 1024×1024 (cropped 16:9 at render).",
+      "variables": ["qa_question_short"],
+      "estimatedCostUsd": 0.04
+    },
+    {
+      "id": "fallback-placeholder",
+      "name": "Placeholder fallback (si gpt-image-1 down)",
+      "contentTypes": ["all"],
+      "slot": "fallback",
+      "template": "[NE PAS APPELER LLM — utiliser composant React <IllustrationPlaceholder /> existant directement dans le code. Slot ID + target filename générés. Palette terracotta + cream uniquement. Géré côté code, pas LLM.]",
+      "variables": [],
+      "estimatedCostUsd": 0.0,
+      "notes": "Pas un vrai prompt — c'est le fallback CSS/SVG du composant existant. Documenté ici pour la complétude."
+    }
+  ],
+  "_validation": {
+    "rules": [
+      "Palette stricte : terracotta #C45A3E + cream #FAF7F2 + ink #1F1B16 (rappelé dans CHAQUE prompt)",
+      "Pas de visage photoréaliste (RGPD)",
+      "Pas de logos tiers (anti-confusion brand)",
+      "Pas de bâtiment précisément reconnaissable (ex tour Eiffel évidente — risque copyright + cliché)",
+      "Format carré 1024×1024 (hero schema doctrine v3.3)",
+      "Style minimaliste éditorial, pas de photoréalisme"
+    ],
+    "willActions": [
+      "1. Tester chaque template avec 1-2 valeurs réelles avant Sprint 2",
+      "2. Ajuster les wording anglais si gpt-image-1 ne comprend pas bien (essayer FR pur)",
+      "3. Documenter les seeds qui produisent les meilleurs résultats visuels",
+      "4. Ajouter templates si nouveaux types de contenu apparaissent V2"
+    ],
+    "qualityCheck": "Après génération, vérifier visuellement : palette respectée + aucun humain + aucun logo + style cohérent doctrine v3.3 hero schema."
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "agent": "AGT-VC8",
+  "scope": "Sécurité + RGPD + observabilité",
+  "executedAt": "2026-05-14T09:42:00Z",
+  "filesAudited": [
+    "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md",
+    ".claude/skills/axionia-content-generator/references/doctrine-axionia.md",
+    "axionia/src/env.ts",
+    "axionia/src/lib/pii-redaction.ts",
+    "axionia/src/lib/observability/sentry-pii-scrub.ts",
+    "axionia/src/lib/knowledge/tiptap-sanitize.ts",
+    "axionia/src/lib/telegram.ts"
+  ],
+  "findings": [
+    {
+      "id": "VC8-001",
+      "severity": "P1",
+      "title": "DOMPurify wrapper html-sanitizer.ts à implémenter (Sprint 1)",
+      "description": "Sanitization existante (tiptap-sanitize whitelist 45 balises) n'utilise PAS isomorphic-dompurify (spec v2.0). À wrapper dans src/server/content-gen/shared/html-sanitizer.ts avec nonce CSP.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 0.5 + § 4.1bis shared/html-sanitizer",
+      "expected": "DOMPurify.sanitize avant insert DB",
+      "actual": "tiptap-sanitize whitelist regex only",
+      "fix": "npm install isomorphic-dompurify + créer wrapper Sprint 1 Day 2",
+      "estimatedFixEffort": "2 h (Sprint 1, à implémenter)"
+    },
+    {
+      "id": "VC8-002",
+      "severity": "P1",
+      "title": "Anti-SIREN check à implémenter en doctrine-check.ts (Sprint 1)",
+      "description": "Spec § 1.1 + § 1.3 SSOT exige `pnpm anti-siren:check` CI gate. Aucun helper anti-SIREN trouvé.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 1.1 + § 1.3",
+      "expected": "Module doctrine-check.ts avec regex SIREN/SIRET/RCS/Kbis bloquant",
+      "actual": "Absent",
+      "fix": "Créer src/server/content-gen/quality/doctrine-check.ts Sprint 1 Day 3",
+      "estimatedFixEffort": "2 h (Sprint 1, à implémenter)"
+    },
+    {
+      "id": "VC8-003",
+      "severity": "P1",
+      "title": "Cost cap + kill switch service (CostLedger + cron hourly) à implémenter",
+      "description": "Spec § 0.4 defaults OPENAI=200, ANTHROPIC=100, PERPLEXITY=80 USD/mois. Service tracker + cap absent.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 0.4 + § 9.11",
+      "expected": "CostLedger logging + cron hourly + kill switch auto à 100%",
+      "actual": "Spec OK, implémentation à coder",
+      "fix": "src/server/content-gen/cost/tracker.ts + cap.ts Sprint 1 Day 2",
+      "estimatedFixEffort": "3 h (Sprint 1, à implémenter)"
+    },
+    {
+      "id": "VC8-004",
+      "severity": "P1",
+      "title": "13 alertes Telegram structurées avec lien admin à implémenter",
+      "description": "Spec § 12.3bis + § 13.3 liste 13 événements. Helper telegram.ts existant générique mais sans structures 13 alertes dédiées content-gen.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 12.3bis + § 13.3 + axionia/src/lib/telegram.ts",
+      "expected": "13 helpers alertCostCap/alertProviderDown/etc. avec adminPath() lien",
+      "actual": "Telegram base présent, helpers content-gen absents",
+      "fix": "src/server/content-gen/monitoring/alerts.ts Sprint 1 Day 5",
+      "estimatedFixEffort": "3 h (Sprint 1, à implémenter)"
+    },
+    {
+      "id": "VC8-005",
+      "severity": "P1",
+      "title": "Logger centralisé JSON structured + Redis pub/sub SSE à implémenter",
+      "description": "Spec § 4.1bis v2.3 sub-folders + logger.ts. Format {ts, level, module, jobId, campaignId, context} → console + Sentry + Redis pub/sub channel job:{id}:events.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 4.1bis v2.3",
+      "expected": "Logger classe avec debug/info/warn/error + pub/sub SSE",
+      "actual": "Absent (à implémenter Day 1)",
+      "fix": "src/server/content-gen/shared/logger.ts Sprint 1 Day 1",
+      "estimatedFixEffort": "2 h (Sprint 1, à implémenter)"
+    },
+    {
+      "id": "VC8-006",
+      "severity": "P2",
+      "title": "RBAC feature checks (super_admin V1) à durcir",
+      "description": "Roles présents dans auth.config.ts mais pas de vérification par feature (content-gen-create, publish-tier-1, settings-providers, kb-ingest).",
+      "source": "axionia/src/auth.config.ts",
+      "expected": "Helper canUserAccess(user, feature)",
+      "actual": "Role field uniquement, pas de feature checks",
+      "fix": "src/lib/auth-permissions.ts + middleware checks Sprint 2",
+      "estimatedFixEffort": "2 h (Sprint 2, V1 par sécurité-via-obscurité ADMIN_URL_PREFIX accepté)"
+    },
+    {
+      "id": "VC8-007",
+      "severity": "P2",
+      "title": "Conservation prompts/logs durée à définir",
+      "description": "Spec ne spécifie pas durée retention. Recommandé : 90 jours prompts ContentGenJob.metadata, 30 jours GenerationLog.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 0.5 (silencieux)",
+      "expected": "Setting admin-editable + cron retention-purge",
+      "actual": "Non défini",
+      "fix": "Setting.key='content_gen_retention_days' + retention-purge-worker.ts Sprint 2",
+      "estimatedFixEffort": "1 h (Sprint 2)"
+    },
+    {
+      "id": "VC8-INFO-001",
+      "severity": "INFO",
+      "title": "Bases sécurité solides : env.ts Zod, PII redaction, Sentry scrub, sanitize",
+      "description": "Fondations existent : env.ts Zod robust (AUTH_SECRET, ADMIN_URL_PREFIX, BACKUP_PASSPHRASE superRefine prod), pii-redaction helpers utilisés webhooks, sentry-pii-scrub beforeSend hook complet (JWT/EMAIL/IP/PHONE), tiptap-sanitize whitelist, telegram.ts générique + alertOps + alertIncident fail-soft.",
+      "source": "axionia/src/env.ts + axionia/src/lib/pii-redaction.ts + sentry-pii-scrub.ts + tiptap-sanitize.ts + telegram.ts",
+      "expected": "Bases sécurité réutilisables",
+      "actual": "Toutes présentes et conformes RGPD",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC8-INFO-002",
+      "severity": "INFO",
+      "title": "DPA Hetzner + Cloudflare signés (infra OK)",
+      "description": "Mémoires infra confirment DPA OK. Telegram noté sous-processeur hors UE avec dérogation art. 49 + minimisation PII redactContactLine. ADR 0010 documenté.",
+      "source": "Mémoire [[axionia_session_2026-05-09_sprint_24_1]]",
+      "expected": "DPA infra signés",
+      "actual": "Conformes",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    }
+  ],
+  "score": 72,
+  "passBPaths": ["agt-vc2:VC2-INFO-001 (architecture cloisonnée)", "agt-vc6:VC6-002 (Sprint 1 implémentations)"],
+  "verdict": "GO_WITH_CONDITIONS"
+}

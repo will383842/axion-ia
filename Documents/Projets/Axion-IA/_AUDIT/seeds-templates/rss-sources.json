@@ -1,0 +1,202 @@
+{
+  "_meta": {
+    "description": "Sources RSS pré-remplies pour ingest Pipeline 2 actualités. Ingéré Sprint 5 par prisma/seeds/content-gen/rss-sources.ts. Will valide/ajuste avant Sprint 5.",
+    "version": "v1.9",
+    "totalSources": 15,
+    "totalEnabled": 10,
+    "ingestSprint": 5,
+    "docRef": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 28"
+  },
+  "sources": [
+    {
+      "url": "https://www.lemondeinformatique.fr/flux-rss/thematique/intelligence-artificielle/rss.xml",
+      "name": "Le Monde Informatique — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "entreprise"],
+      "pollIntervalMin": 60,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "high",
+      "notes": "Source de référence FR pour actualité IA B2B. Volume modéré (~5-10 articles/jour)."
+    },
+    {
+      "url": "https://www.usine-digitale.fr/rss/intelligence-artificielle.xml",
+      "name": "L'Usine Digitale — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "industrie"],
+      "pollIntervalMin": 60,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "high",
+      "notes": "Très orienté IA industrielle et adoption entreprise — pertinent pour ICP Axion-IA."
+    },
+    {
+      "url": "https://www.zdnet.fr/actualites/intelligence-artificielle/rss.xml",
+      "name": "ZDNet France — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "tech"],
+      "pollIntervalMin": 90,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "medium",
+      "notes": "Couverture IA généraliste, parfois redondante avec Le Monde Info."
+    },
+    {
+      "url": "https://www.journaldunet.com/solutions/intelligence-artificielle/rss/",
+      "name": "JournalDuNet — IA Solutions",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "solutions"],
+      "pollIntervalMin": 90,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "medium",
+      "notes": "Orienté solutions et cas usages — bon pour blog_from_rss."
+    },
+    {
+      "url": "https://www.frenchweb.fr/category/ia/feed",
+      "name": "Frenchweb — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "startup"],
+      "pollIntervalMin": 120,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "medium",
+      "notes": "Écosystème startup FR — utile pour comparatifs et veille concurrentielle."
+    },
+    {
+      "url": "https://siecledigital.fr/category/intelligence-artificielle/feed/",
+      "name": "Siècle Digital — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "transformation"],
+      "pollIntervalMin": 120,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "medium",
+      "notes": "Très orienté transformation digitale + analyse — utile pour piliers."
+    },
+    {
+      "url": "https://www.maddyness.com/category/innovation-2/intelligence-artificielle/feed/",
+      "name": "Maddyness — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "innovation"],
+      "pollIntervalMin": 180,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "low",
+      "notes": "Écosystème innovation FR."
+    },
+    {
+      "url": "https://www.lebigdata.fr/category/intelligence-artificielle/feed",
+      "name": "LeBigData — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "data"],
+      "pollIntervalMin": 120,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "medium",
+      "notes": "Couverture IA + data + ML — angle technique modéré."
+    },
+    {
+      "url": "https://www.lesechos.fr/intelligence-artificielle/rss.xml",
+      "name": "Les Échos — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "business"],
+      "pollIntervalMin": 90,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "high",
+      "notes": "Source autorité business — angle économique IA très utile pour ICP dirigeants."
+    },
+    {
+      "url": "https://www.lefigaro.fr/rss/figaro_intelligence-artificielle.xml",
+      "name": "Le Figaro — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "société"],
+      "pollIntervalMin": 180,
+      "autoPublishThreshold": 60,
+      "enabled": true,
+      "priority": "low",
+      "notes": "Couverture grand public — utile pour vulgarisation. À filtrer pour B2B."
+    },
+    {
+      "url": "https://www.lemagit.fr/rss/intelligence-artificielle",
+      "name": "LeMagIT — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "infrastructure"],
+      "pollIntervalMin": 120,
+      "autoPublishThreshold": 60,
+      "enabled": false,
+      "priority": "low",
+      "notes": "Très orienté DSI / infrastructure — moins pertinent ICP Axion-IA. Désactivé V1."
+    },
+    {
+      "url": "https://www.silicon.fr/topic/intelligence-artificielle/feed",
+      "name": "Silicon.fr — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "tech"],
+      "pollIntervalMin": 180,
+      "autoPublishThreshold": 60,
+      "enabled": false,
+      "priority": "low",
+      "notes": "Couverture IT enterprise — possible redondance avec ZDNet. Désactivé V1."
+    },
+    {
+      "url": "https://www.actuia.com/feed/",
+      "name": "ActuIA — Actualités IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "recherche"],
+      "pollIntervalMin": 120,
+      "autoPublishThreshold": 60,
+      "enabled": false,
+      "priority": "medium",
+      "notes": "Niche IA pure — bon pour articles techniques. Désactivé V1, activer si volume bas."
+    },
+    {
+      "url": "https://www.lecho.be/dossiers/intelligence-artificielle/rss.xml",
+      "name": "L'Écho (Belgique) — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "belgique"],
+      "pollIntervalMin": 240,
+      "autoPublishThreshold": 60,
+      "enabled": false,
+      "priority": "low",
+      "notes": "Source belge FR — peut être utile expansion francophonie V2. Désactivé V1."
+    },
+    {
+      "url": "https://www.alliancy.fr/category/sujets/intelligence-artificielle/feed",
+      "name": "Alliancy — IA",
+      "language": "fr",
+      "category": "actualite-ia",
+      "defaultTags": ["actualité", "ia", "dsi", "transformation"],
+      "pollIntervalMin": 180,
+      "autoPublishThreshold": 60,
+      "enabled": false,
+      "priority": "medium",
+      "notes": "Très orienté CIO / transformation. Bon pour ETI/grandes entreprises. Désactivé V1."
+    }
+  ],
+  "_validation": {
+    "willActions": [
+      "1. Vérifier que les 10 sources `enabled: true` couvrent le bon spectre IA B2B FR",
+      "2. Tester les flux RSS valides (ex curl chaque URL et vérifier XML retourné)",
+      "3. Ajuster `pollIntervalMin` selon le volume réel (plus haut volume = plus court)",
+      "4. Activer 3-5 sources additionnelles parmi les 5 `enabled: false` si volume init insuffisant",
+      "5. Retirer toute source qui ne respecte pas les conditions légales de re-traitement éditorial"
+    ],
+    "rapportLegal": "Cf. § 28.1 master prompt — citation source obligatoire `citation[]` + `isBasedOn` + `rel=\"external\"` + Jaccard < 10 % strict. Anti-plagiat fort par défaut."
+  }
+}

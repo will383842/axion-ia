@@ -1,0 +1,347 @@
+{
+  "_meta": {
+    "description": "Phrases interdites dans les contenus générés (§ 21 doctrine + corrections Will 2026-05-08). Utilisé par src/server/content-gen/quality/doctrine-check.ts pour scoring + blocage. Ingéré Sprint 1.",
+    "version": "v1.9",
+    "totalPhrases": 52,
+    "ingestSprint": 1,
+    "table": "BannedPhrase",
+    "matchMode": "case_insensitive_normalized (accents retirés, espaces normalisés)"
+  },
+  "phrases": [
+    {
+      "phrase": "SIREN",
+      "category": "legal_entity",
+      "severity": "block",
+      "reason": "Axion-IA OÜ est société estonienne — aucune mention SIREN (français). Anti-confusion entité légale.",
+      "alternative": "OÜ estonienne | société de droit estonien"
+    },
+    {
+      "phrase": "SIRET",
+      "category": "legal_entity",
+      "severity": "block",
+      "reason": "Idem SIREN — OÜ estonienne, pas d'identifiant FR.",
+      "alternative": "Numéro de registre Tallinn"
+    },
+    {
+      "phrase": "RCS",
+      "category": "legal_entity",
+      "severity": "block",
+      "reason": "Registre du Commerce et des Sociétés = FR uniquement. Axion-IA = registre estonien.",
+      "alternative": "Registre estonien"
+    },
+    {
+      "phrase": "Kbis",
+      "category": "legal_entity",
+      "severity": "block",
+      "reason": "Document FR — n'existe pas en Estonie."
+    },
+    {
+      "phrase": "basé en UE",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Tournure UE-washing évitée Will 2026-05-08 — préférer mentions concrètes (Tallinn, Hetzner Frankfurt).",
+      "alternative": "société de droit estonien · hébergement Hetzner Frankfurt"
+    },
+    {
+      "phrase": "le meilleur",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Superlatif absolu non vérifiable — anti-doctrine Axion-IA. Préférer comparaisons argumentées.",
+      "alternative": "selon {critère X} | en tête sur {dimension}"
+    },
+    {
+      "phrase": "la meilleure",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Idem « le meilleur »."
+    },
+    {
+      "phrase": "révolutionnaire",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Buzzword vide — anti-doctrine. Préférer descriptions concrètes du gain.",
+      "alternative": "nouveau · innovant · structurellement différent"
+    },
+    {
+      "phrase": "révolution",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Idem — éviter sauf citation directe d'une source externe."
+    },
+    {
+      "phrase": "unique",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Adjectif vide quand pas contextualisé. OK si « unique en {ville} » avec preuve."
+    },
+    {
+      "phrase": "extraordinaire",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Hyperbole vide.",
+      "alternative": "remarquable · efficace"
+    },
+    {
+      "phrase": "incroyable",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Hyperbole vide — anti-doctrine sobre Axion-IA."
+    },
+    {
+      "phrase": "magique",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "L'IA n'est pas magique — anti-doctrine pragmatique."
+    },
+    {
+      "phrase": "pas de plan sur-mesure",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Axion-IA propose interventions sur-mesure (Module 3) — phrase qui se contredit."
+    },
+    {
+      "phrase": "½ journée",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Axion-IA ne propose pas de demi-journée — minimum 1 journée (acté Will).",
+      "alternative": "1 journée minimum"
+    },
+    {
+      "phrase": "demi-journée",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Idem ½ journée."
+    },
+    {
+      "phrase": "abonnement",
+      "category": "service_misrepresentation",
+      "severity": "warning",
+      "reason": "Axion-IA ne propose que prestations au forfait + maintenance optionnelle 290 €/mois. Pas d'abonnement aux interventions.",
+      "alternative": "forfait · prestation · maintenance optionnelle"
+    },
+    {
+      "phrase": "tarif tout inclus",
+      "category": "service_misrepresentation",
+      "severity": "warning",
+      "reason": "Les frais de déplacement sont en sus — éviter tournures trompeuses."
+    },
+    {
+      "phrase": "frais inclus",
+      "category": "service_misrepresentation",
+      "severity": "warning",
+      "reason": "Idem — frais déplacement explicitement « en sus » dans pricing.ts."
+    },
+    {
+      "phrase": "garantie de résultat",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Aucune garantie de résultat affichée par Axion-IA (Will 2026-05-08). Préférer « ROI moyen observé sur N missions »."
+    },
+    {
+      "phrase": "résultats garantis",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Idem — éviter promesses absolues."
+    },
+    {
+      "phrase": "satisfaction garantie",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Idem."
+    },
+    {
+      "phrase": "100 % satisfaction",
+      "category": "service_misrepresentation",
+      "severity": "block",
+      "reason": "Idem."
+    },
+    {
+      "phrase": "remboursé si",
+      "category": "service_misrepresentation",
+      "severity": "warning",
+      "reason": "Pas de politique de remboursement annoncée — éviter sauf si Will confirme."
+    },
+    {
+      "phrase": "leader du marché",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Affirmation non vérifiable — anti-doctrine Axion-IA."
+    },
+    {
+      "phrase": "numéro un",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "À éviter sauf citation source vérifiable (ex « #1 SERP local Paris audit IA cabinet comptable » avec capture)."
+    },
+    {
+      "phrase": "incontournable",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Évite ce buzzword."
+    },
+    {
+      "phrase": "disruption",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Cliché startup — préférer « changement structurel » ou « rupture de paradigme » si justifié."
+    },
+    {
+      "phrase": "disruptif",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Idem disruption."
+    },
+    {
+      "phrase": "intelligence artificielle révolutionnaire",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Double buzzword."
+    },
+    {
+      "phrase": "IA dernière génération",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Datable rapidement. Préférer nommer le modèle (ex Claude Opus 4.7, GPT-4o)."
+    },
+    {
+      "phrase": "transformation digitale",
+      "category": "buzzword",
+      "severity": "warning",
+      "reason": "OK ponctuellement mais éviter d'en abuser. Préférer « adoption de l'IA » ou « automatisation des processus »."
+    },
+    {
+      "phrase": "synergie",
+      "category": "buzzword",
+      "severity": "warning",
+      "reason": "Cliché corporate vide."
+    },
+    {
+      "phrase": "ADN",
+      "category": "buzzword",
+      "severity": "warning",
+      "reason": "Métaphore éculée (« l'ADN de l'entreprise »)."
+    },
+    {
+      "phrase": "écosystème",
+      "category": "buzzword",
+      "severity": "warning",
+      "reason": "Mot fourre-tout — préférer description concrète."
+    },
+    {
+      "phrase": "game changer",
+      "category": "buzzword",
+      "severity": "block",
+      "reason": "Anglicisme + hyperbole."
+    },
+    {
+      "phrase": "best practices",
+      "category": "anglicisme",
+      "severity": "warning",
+      "reason": "Préférer « bonnes pratiques » (français).",
+      "alternative": "bonnes pratiques · méthodologie éprouvée"
+    },
+    {
+      "phrase": "deep learning",
+      "category": "anglicisme",
+      "severity": "warning",
+      "reason": "OK dans contexte technique précis, sinon préférer « apprentissage profond »."
+    },
+    {
+      "phrase": "machine learning",
+      "category": "anglicisme",
+      "severity": "warning",
+      "reason": "OK technique. Sinon « apprentissage automatique »."
+    },
+    {
+      "phrase": "scalable",
+      "category": "anglicisme",
+      "severity": "warning",
+      "reason": "Préférer « passable à l'échelle » ou « industrialisable »."
+    },
+    {
+      "phrase": "user-friendly",
+      "category": "anglicisme",
+      "severity": "block",
+      "reason": "Préférer « simple d'utilisation » ou « intuitif »."
+    },
+    {
+      "phrase": "ROI exceptionnel",
+      "category": "marketing_hype",
+      "severity": "block",
+      "reason": "Chiffrer le ROI précis ou rien."
+    },
+    {
+      "phrase": "ROI immédiat",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Souvent faux pour l'IA. Préférer « ROI mois 3-6 typique »."
+    },
+    {
+      "phrase": "facile et rapide",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Doublon hyperbole. Choisir « simple » ou « rapide » avec contexte."
+    },
+    {
+      "phrase": "clé en main",
+      "category": "marketing_hype",
+      "severity": "warning",
+      "reason": "Vague — préférer décrire ce qui est livré (rapport, plan, déploiement)."
+    },
+    {
+      "phrase": "100 % autonome",
+      "category": "service_misrepresentation",
+      "severity": "warning",
+      "reason": "L'IA reste supervisée par humains chez Axion-IA — éviter « 100 % autonome » qui suggère sans contrôle."
+    },
+    {
+      "phrase": "remplacement humain",
+      "category": "service_misrepresentation",
+      "severity": "warning",
+      "reason": "Axion-IA prône l'augmentation, pas le remplacement. Éviter sauf citation directe."
+    },
+    {
+      "phrase": "supprimer des emplois",
+      "category": "ethical",
+      "severity": "warning",
+      "reason": "Évite — préférer « libérer du temps », « réaffecter sur tâches à valeur »."
+    },
+    {
+      "phrase": "lock-in",
+      "category": "anglicisme",
+      "severity": "warning",
+      "reason": "Préférer « verrouillage technologique » ou « dépendance fournisseur »."
+    },
+    {
+      "phrase": "no-brainer",
+      "category": "anglicisme",
+      "severity": "block",
+      "reason": "Anglicisme oral inapproprié."
+    },
+    {
+      "phrase": "killer feature",
+      "category": "anglicisme",
+      "severity": "block",
+      "reason": "Idem."
+    },
+    {
+      "phrase": "agile",
+      "category": "buzzword",
+      "severity": "info",
+      "reason": "OK dans contexte méthodologique précis (Scrum, Kanban). Éviter usage cosmétique."
+    }
+  ],
+  "_validation": {
+    "severityLevels": {
+      "block": "Bloque la publication si détecté (qualityScore -10 pts + tier-3 forcé)",
+      "warning": "Log warning + qualityScore -3 pts. Will peut publier quand même.",
+      "info": "Note dans log uniquement, pas d'impact score."
+    },
+    "willActions": [
+      "1. Valider chaque phrase et sa sévérité",
+      "2. Ajouter phrases métier spécifiques détectées dans les premiers contenus générés",
+      "3. Marquer en `severity: info` les phrases acceptables dans certains contextes",
+      "4. Page admin `/settings/banned-phrases` permet édition CRUD en continu"
+    ]
+  }
+}

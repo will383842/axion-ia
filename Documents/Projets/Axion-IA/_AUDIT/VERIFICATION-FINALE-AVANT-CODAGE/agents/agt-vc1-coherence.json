@@ -1,0 +1,67 @@
+﻿{
+    "filesAudited":  [
+                         "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md"
+                     ],
+    "scope":  "Master prompt coherence interne",
+    "agent":  "AGT-VC1",
+    "verdict":  "NEAR_GO",
+    "findings":  [
+                     {
+                         "source":  "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md:6",
+                         "id":  "VC1-001",
+                         "severity":  "INFO",
+                         "description":  "Header ligne 6 confirme v2.4",
+                         "actual":  "PASS - Date: 2026-05-14 (v2.4)",
+                         "estimatedFixEffort":  "0 min",
+                         "fix":  "N/A",
+                         "title":  "Versionnage coherent v2.4 - Header OK",
+                         "expected":  "Date avec v2.4 present"
+                     },
+                     {
+                         "source":  "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md:4675 vs 4271-4673",
+                         "id":  "VC1-002",
+                         "severity":  "P1",
+                         "description":  "Section 24 physiquement apres sections 25-29 (inversion)",
+                         "actual":  "Section 24 apres 29 = INVERSION",
+                         "estimatedFixEffort":  "1 h",
+                         "fix":  "Deplacer section 24 avant 25",
+                         "title":  "Sommaire - anomalie numerotation 24 vs 25-29",
+                         "expected":  "Sections 0-29 dans l ordre"
+                     },
+                     {
+                         "source":  "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md:36-66",
+                         "id":  "VC1-003",
+                         "severity":  "INFO",
+                         "description":  "Toutes sections 0-29 listees",
+                         "actual":  "PASS - 30 sections OK",
+                         "estimatedFixEffort":  "0 min",
+                         "fix":  "N/A",
+                         "title":  "Sommaire - 30 sections OK",
+                         "expected":  "30 sections sans lacunes"
+                     },
+                     {
+                         "source":  "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md:57, 4039-4092",
+                         "id":  "VC1-004",
+                         "severity":  "P0",
+                         "description":  "Contradiction: sommaire et titre section 20 disent 12, corps enumerent 13 numeros",
+                         "actual":  "Sommaire: 12. Titre: ambigus. Corps: Q1-Q13+Q12bis",
+                         "estimatedFixEffort":  "5 min",
+                         "fix":  "Clarifier titre et sommaire a 13 questions + 1 obsolete",
+                         "title":  "Q1-Q13bis - titre dit 12 mais corps a 13",
+                         "expected":  "Coherence 12 ou 13, pas les 2"
+                     },
+                     {
+                         "source":  "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md:4796-4806",
+                         "id":  "VC1-020",
+                         "severity":  "P0",
+                         "description":  "Section 24.6 invoque .claude/skills/content-generator/SKILL.md et auto-pilot.md. Ces fichiers n existent pas ou n ont pas ete verifies. Blocage HARD de l autopilote.",
+                         "actual":  "ABSENT verifies - fichiers non consultes",
+                         "estimatedFixEffort":  "4 h creation",
+                         "fix":  "CREER .claude/skills/content-generator/SKILL.md + auto-pilot.md OR retirer references",
+                         "title":  "CRITIQUE - 24.6 reference SKILL.md et auto-pilot.md NON VERIFIES",
+                         "expected":  "SKILL.md et auto-pilot.md existent en v2.4"
+                     }
+                 ],
+    "score":  72,
+    "executedAt":  "2026-05-14T14:30:00Z"
+}

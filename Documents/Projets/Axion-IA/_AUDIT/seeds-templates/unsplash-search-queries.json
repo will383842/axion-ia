@@ -1,0 +1,287 @@
+{
+  "_meta": {
+    "description": "Templates de queries Unsplash par type de contenu et par slot — refonte v2.0 (Will 2026-05-14 : Unsplash uniquement, plus de gpt-image-1). Utilisé par src/server/content-gen/images/unsplash-client.ts. Ingéré Sprint 2.",
+    "version": "v2.0",
+    "totalTemplates": 18,
+    "ingestSprint": 2,
+    "policy": "Unsplash uniquement. Pas de génération IA d'image. Pas de personnes identifiables. Pas de logos tiers. Préférer ambiance éditoriale sobre, lumière chaude.",
+    "outputProcess": "Query → top 5 résultats → pick best match alt_description → download → sharp AVIF/WebP/JPG 320/768/1280 → store + attribution + figcaption."
+  },
+  "templates": [
+    {
+      "id": "landing-ville-hero",
+      "name": "Hero landing ville",
+      "contentTypes": ["landing_ville"],
+      "slot": "hero",
+      "queries": [
+        "{ville_name} architecture editorial",
+        "{ville_name} urban morning light",
+        "{ville_name} skyline minimalist",
+        "{region_name} France countryside",
+        "France professional workspace minimal"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high", "order_by": "relevant" },
+      "fallbackQuery": "France business modern minimal",
+      "useExamples": "Pour ville_name = Lyon → « Lyon architecture editorial » | Pour ville_name = Mulhouse → « Mulhouse urban morning light » | Si pas de résultat → fallback « France business modern minimal »"
+    },
+    {
+      "id": "landing-ville-section-method",
+      "name": "Section méthodologie landing ville",
+      "contentTypes": ["landing_ville"],
+      "slot": "section_methodology",
+      "queries": [
+        "notebook plan workflow minimal",
+        "process diagram workflow editorial",
+        "strategic planning desk warm",
+        "step by step workflow minimal"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "structured planning minimal"
+    },
+    {
+      "id": "blog-hero-default",
+      "name": "Hero article blog (défaut)",
+      "contentTypes": ["blog_from_title", "blog_from_keywords", "blog_from_pillar"],
+      "slot": "hero",
+      "queries": [
+        "{primary_concept} workspace editorial",
+        "{category_label} minimal warm",
+        "{primary_concept} professional context",
+        "office workspace minimal warm light"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "editorial workspace minimal"
+    },
+    {
+      "id": "blog-hero-cas-usage",
+      "name": "Hero article cas d'usage",
+      "contentTypes": ["blog_from_title", "blog_from_keywords"],
+      "slot": "hero",
+      "queries": [
+        "{sector} business workflow",
+        "{sector} office hands working",
+        "{sector} professional editorial",
+        "real-world business case workflow"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "business workflow editorial",
+      "useWhenCategory": ["Cas d'usage"]
+    },
+    {
+      "id": "blog-hero-strategie",
+      "name": "Hero article stratégie",
+      "contentTypes": ["blog_from_title", "guide_pilier"],
+      "slot": "hero",
+      "queries": [
+        "strategic decision crossroads editorial",
+        "executive decision balance editorial",
+        "chess board strategic minimal",
+        "thoughtful workspace decision minimal"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "executive decision editorial",
+      "useWhenCategory": ["Stratégie"]
+    },
+    {
+      "id": "blog-hero-methodologie",
+      "name": "Hero article méthodologie",
+      "contentTypes": ["blog_from_title", "guide_pilier"],
+      "slot": "hero",
+      "queries": [
+        "methodology step planning desk",
+        "structured framework notebook editorial",
+        "process flow minimal warm",
+        "ordered workflow workspace minimal"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "methodology editorial workspace",
+      "useWhenCategory": ["Méthodologie"]
+    },
+    {
+      "id": "comparison-hero",
+      "name": "Hero comparatif",
+      "contentTypes": ["comparison"],
+      "slot": "hero",
+      "queries": [
+        "comparison balance editorial",
+        "side by side decision editorial",
+        "weighing options minimal warm",
+        "two paths choice editorial"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "decision making minimal editorial"
+    },
+    {
+      "id": "guide-pilier-hero",
+      "name": "Hero guide pilier",
+      "contentTypes": ["guide_pilier"],
+      "slot": "hero",
+      "queries": [
+        "open book editorial workspace warm",
+        "in-depth research desk minimal",
+        "reference manuscript editorial",
+        "comprehensive guide desk workspace"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "reference book editorial"
+    },
+    {
+      "id": "faq-standalone-hero",
+      "name": "Hero FAQ thématique",
+      "contentTypes": ["faq_standalone"],
+      "slot": "hero",
+      "queries": [
+        "questions answers editorial minimal",
+        "thoughtful conversation editorial",
+        "asking learning minimal warm",
+        "clarifying notes desk minimal"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "questions editorial minimal"
+    },
+    {
+      "id": "news-article-hero",
+      "name": "Hero actualité RSS",
+      "contentTypes": ["blog_from_rss"],
+      "slot": "hero",
+      "queries": [
+        "{topic} news editorial",
+        "{topic} announcement editorial",
+        "newsroom desk minimal warm",
+        "tech news editorial workspace"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high", "order_by": "latest" },
+      "fallbackQuery": "tech news editorial minimal"
+    },
+    {
+      "id": "section-illustration-default",
+      "name": "Illustration milieu de section (générique)",
+      "contentTypes": ["all"],
+      "slot": "section_mid",
+      "queries": [
+        "minimal abstract texture editorial",
+        "soft warm light texture",
+        "editorial visual rhythm minimal",
+        "subtle pattern warm"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "minimal texture warm"
+    },
+    {
+      "id": "section-cas-concret",
+      "name": "Illustration cas concret anonymisé",
+      "contentTypes": ["landing_ville", "blog_from_title", "guide_pilier"],
+      "slot": "section_case_study",
+      "queries": [
+        "{sector_label} workplace editorial",
+        "{sector_label} team workflow",
+        "{sector_label} office workspace minimal",
+        "professional business {sector_label}"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "business workplace editorial minimal",
+      "notes": "Pas de visages identifiables — privilégier mains, écrans, scènes cadre large."
+    },
+    {
+      "id": "section-pricing-table",
+      "name": "Illustration table tarifs (visuel)",
+      "contentTypes": ["landing_ville", "comparison"],
+      "slot": "section_pricing",
+      "queries": [
+        "minimal pricing chart editorial",
+        "tier stacked levels visualization",
+        "structured options minimal warm",
+        "ordered choices editorial"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "structured tiers editorial minimal"
+    },
+    {
+      "id": "qa-page-hero",
+      "name": "Hero page Q/R indexable (post-process)",
+      "contentTypes": ["qa_derived"],
+      "slot": "hero_qa",
+      "queries": [
+        "question dialogue editorial minimal",
+        "{qa_topic} editorial workspace",
+        "thoughtful answer minimal warm",
+        "clarifying minimal editorial"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "Q&A editorial minimal",
+      "notes": "Page courte — visuel léger, pas un hero massif. Aspect 16:9 OK."
+    },
+    {
+      "id": "secteur-industrie",
+      "name": "Variantes secteur industrie",
+      "contentTypes": ["landing_ville", "blog_from_title", "comparison"],
+      "slot": "section",
+      "queries": [
+        "factory workshop hands working",
+        "manufacturing workflow minimal",
+        "industrial workspace minimal warm",
+        "production line editorial"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "industrial workplace minimal editorial",
+      "useWhenSector": ["industrie"]
+    },
+    {
+      "id": "secteur-comptable",
+      "name": "Variantes secteur comptable",
+      "contentTypes": ["landing_ville", "blog_from_title"],
+      "slot": "section",
+      "queries": [
+        "accounting desk paperwork minimal",
+        "spreadsheet calculator editorial",
+        "financial workspace warm light",
+        "ledger notebook editorial minimal"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "accounting workspace editorial",
+      "useWhenSector": ["comptabilite"]
+    },
+    {
+      "id": "secteur-juridique",
+      "name": "Variantes secteur juridique",
+      "contentTypes": ["landing_ville", "blog_from_title"],
+      "slot": "section",
+      "queries": [
+        "law office desk minimal warm",
+        "legal documents desk editorial",
+        "professional lawyer workspace",
+        "books desk legal editorial"
+      ],
+      "filters": { "orientation": "landscape", "content_filter": "high" },
+      "fallbackQuery": "legal workspace editorial minimal",
+      "useWhenSector": ["juridique"]
+    },
+    {
+      "id": "fallback-placeholder",
+      "name": "Placeholder fallback (si Unsplash down)",
+      "contentTypes": ["all"],
+      "slot": "fallback",
+      "queries": [],
+      "notes": "PAS D'APPEL UNSPLASH — utiliser composant React <IllustrationPlaceholder /> existant directement. SVG terracotta. Slot ID + target filename générés. Pas de visuel manquant : la page reste publiable."
+    }
+  ],
+  "_validation": {
+    "rules": [
+      "Unsplash uniquement (Will 2026-05-14)",
+      "Pas de personne identifiable",
+      "Pas de logos tiers",
+      "Ambiance éditoriale sobre, lumière chaude",
+      "Attribution photographer obligatoire (`<figcaption>Photo par X sur Unsplash</figcaption>`)",
+      "Webhook download_location déclenché (exigence API Unsplash)",
+      "Cache 30 jours par photoId (anti-redownload)",
+      "Blacklist photo après 3 utilisations sur 30 jours (anti-redondance)"
+    ],
+    "willActions": [
+      "1. Valider les 18 templates de queries",
+      "2. Tester quelques queries (ex « Lyon architecture editorial ») dans Unsplash UI pour vérifier qualité résultats",
+      "3. Demander upgrade Production tier Unsplash (gratuit) dès Sprint 1 (formulaire Unsplash)",
+      "4. Ajuster queries si résultats trop clichés ou hors style éditorial"
+    ],
+    "qualityCheck": "Après ingest 5-10 contenus pilotes, vérifier visuellement : photos cohérentes entre elles, ambiance sobre maintenue, pas de visages, pas de stock photos clichées."
+  }
+}

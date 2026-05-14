@@ -1,0 +1,332 @@
+title,category,primary_keyword,suggested_intent,suggested_audiences,suggested_anchor,status,notes
+"Comment auditer son cabinet IA en 2026 : guide pas-à-pas",Méthodologie,audit ia cabinet,informational,"pme:entreprise_privee","",pending,Pilier méthodologie
+"Audit IA Flash à 490 € : ce que vous obtenez en 1 jour",Cas d'usage,audit ia flash,commercial_investigation,"tpe:entreprise_privee","",pending,Flash distance
+"Audit IA Ciblé : 5 cas concrets sur 1 département en 3 jours",Cas d'usage,audit ia cible,commercial_investigation,"pme:entreprise_privee","",pending,Ciblé use cases
+"Audit IA Stratégique PME : la démarche en 7 étapes",Méthodologie,audit ia strategique pme,informational,"pme:entreprise_privee","",pending,Strat PME process
+"Audit IA ETI : comment cartographier 4 BU en 2 semaines",Méthodologie,audit ia eti,commercial_investigation,"eti:entreprise_privee","",pending,ETI gouvernance
+"IA pour cabinet comptable : 7 cas d'usage validés",Cas d'usage,ia pour cabinet comptable,informational,"pme:entreprise_privee","",pending,Vertical comptable
+"IA pour cabinet d'avocats : automatiser sans risquer la confidentialité",Cas d'usage,ia pour cabinet avocat,informational,"pme:entreprise_privee","",pending,Vertical avocats
+"IA pour cabinet médical : 5 usages cliniques + administratifs",Cas d'usage,ia pour cabinet medical,informational,"pme:entreprise_privee","",pending,Vertical médical
+"IA pour PME industrielle : où placer les premiers 50 K€ ?",Stratégie,ia pme industrielle,commercial_investigation,"pme:entreprise_privee","",pending,Vertical industrie
+"IA pour e-commerce : automatiser fiches produits + reco + SAV",Cas d'usage,ia e-commerce,informational,"pme:entreprise_privee","",pending,Vertical e-commerce
+"3 quick-wins IA opérationnels en 2026 (preuves chiffrées)",Cas d'usage,3 quick wins ia,informational,"pme:entreprise_privee","",pending,Pilier QW (article existant)
+"Pourquoi auditer avant d'implémenter l'IA",Méthodologie,audit avant implementation,informational,"pme:entreprise_privee","",pending,Pilier méthodo (article existant)
+"IA Custom : quand est-ce vraiment nécessaire ?",Stratégie,ia custom,informational,"pme:entreprise_privee","",pending,Pilier stratégie (article existant)
+"RAG vs Fine-tuning : quel choix pour PME en 2026 ?",Stratégie,rag vs fine tuning,commercial_investigation,"pme:entreprise_privee","",pending,Comparatif tech
+"Cabinet IA vs SaaS générique : quel ROI réel ?",Stratégie,cabinet ia vs saas,commercial_investigation,"pme:entreprise_privee","",pending,Build vs buy
+"Internaliser ou externaliser l'IA : matrice de décision",Stratégie,internalisation externalisation ia,commercial_investigation,"eti:entreprise_privee","",pending,Make or buy
+"Claude vs ChatGPT pour PME : tableau comparatif 2026",Outils,claude vs chatgpt entreprise,commercial_investigation,"pme:entreprise_privee","",pending,Compare modèles
+"ChatGPT Team vs ChatGPT Enterprise : que choisir ?",Outils,chatgpt team vs enterprise,commercial_investigation,"pme:entreprise_privee","",pending,Compare GPT tiers
+"Microsoft Copilot 365 : retour terrain après 6 mois",Outils,microsoft copilot 365 avis,commercial_investigation,"pme:entreprise_privee","",pending,Copilot review
+"Cursor vs GitHub Copilot : lequel pour vos développeurs ?",Outils,cursor vs github copilot,commercial_investigation,"pme:entreprise_privee","",pending,IDE compare
+"n8n vs Make vs Zapier : choisir son orchestrateur IA",Outils,n8n vs make vs zapier,commercial_investigation,"pme:entreprise_privee","",pending,Automation compare
+"Granola vs Otter vs Fireflies : le bon transcripteur IA",Outils,granola vs otter vs fireflies,commercial_investigation,"pme:entreprise_privee","",pending,Transcription compare
+"v0 vs Bolt vs Lovable : prototypage UI en 2026",Outils,v0 vs bolt vs lovable,commercial_investigation,"pme:entreprise_privee","",pending,Proto compare
+"Stack IA pour dirigeant : 11 outils choisis (et pourquoi)",Outils,stack ia dirigeant,informational,"pme:entreprise_privee","",pending,Pilier stack
+"Stack IA pour PME : nos 8 outils préférés en 2026",Outils,stack ia pme,informational,"pme:entreprise_privee","",pending,Stack PME
+"Combien coûte un audit IA en France en 2026 ?",Tarifs,combien coute audit ia,commercial_investigation,"pme:entreprise_privee","",pending,Coût audit
+"Combien coûte l'implémentation d'une IA custom ?",Tarifs,combien coute implementation ia,commercial_investigation,"pme:entreprise_privee","",pending,Coût impl
+"Budget IA pour PME 50 personnes : la répartition idéale",Tarifs,budget ia pme,commercial_investigation,"pme:entreprise_privee","",pending,Budget PME
+"ROI d'une implémentation IA : 12 cas chiffrés",Stratégie,roi implementation ia,commercial_investigation,"pme:entreprise_privee","",pending,ROI cas
+"Conduite du changement IA : 7 erreurs à éviter",Méthodologie,conduite changement ia,informational,"pme:entreprise_privee","",pending,Changement
+"Acculturation IA équipe : 5 ateliers en 30 jours",Méthodologie,acculturation ia equipe,commercial_investigation,"pme:entreprise_privee","",pending,Acculturation
+"Roadmap adoption IA dirigeant : 90 jours pour démarrer",Stratégie,roadmap adoption ia dirigeant,informational,"pme:entreprise_privee","",pending,Roadmap dirigeant
+"Gouvernance IA en entreprise : les règles de base 2026",Stratégie,gouvernance ia entreprise,informational,"eti:entreprise_privee","",pending,Gouvernance
+"AI Act : ce qui change pour votre PME en 2026",Conformité,ai act application,informational,"pme:entreprise_privee","",pending,AI Act
+"RGPD et IA : 10 points à vérifier avant déploiement",Conformité,rgpd ia entreprise,informational,"pme:entreprise_privee","",pending,RGPD checklist
+"Souveraineté des données IA : où héberger en 2026",Conformité,souverainete donnees ia,informational,"pme:entreprise_privee","",pending,Souveraineté
+"Charte IA en entreprise : modèle prêt à l'emploi",Conformité,charte ia entreprise,commercial_investigation,"pme:entreprise_privee","",pending,Charte modèle
+"Politique d'usage IA pour vos salariés : exemple commenté",Conformité,politique usage ia collaborateurs,commercial_investigation,"pme:entreprise_privee","",pending,Politique
+"Shadow IA : comment l'identifier et la cadrer",Conformité,shadow ia entreprise,informational,"eti:entreprise_privee","",pending,Shadow IA
+"Biais IA : 5 cas réels rencontrés en audit (et leur résolution)",Conformité,biais ia entreprise,informational,"pme:entreprise_privee","",pending,Biais
+"Éthique IA : 7 principes opérationnels pour PME",Conformité,ethique ia entreprise,informational,"pme:entreprise_privee","",pending,Éthique
+"Maintenance prédictive IA : retour terrain industrie",Cas d'usage,maintenance predictive ia,informational,"pme:entreprise_privee","",pending,Industrie
+"Contrôle qualité IA : vision par ordinateur en PME",Cas d'usage,controle qualite ia,informational,"pme:entreprise_privee","",pending,Industrie
+"KYC automatisé IA : comment x3 la rapidité d'onboarding banque",Cas d'usage,kyc automatise ia,informational,"eti:entreprise_privee","",pending,Banque
+"Détection de fraude IA en banque : approche en 4 couches",Cas d'usage,detection fraude ia banque,informational,"eti:entreprise_privee","",pending,Banque fraude
+"Recommandation produits IA en e-commerce : 5 modèles testés",Cas d'usage,recommandation produits ia,informational,"pme:entreprise_privee","",pending,E-commerce
+"Génération de fiches produits IA : workflow complet",Cas d'usage,fiches produits ia,informational,"pme:entreprise_privee","",pending,E-commerce
+"Chatbot SAV IA : combien d'incidents en moins ?",Cas d'usage,chatbot ia service client,informational,"pme:entreprise_privee","",pending,SAV chatbot
+"Voicebot pour standard téléphonique : ROI mois 3",Cas d'usage,voicebot entreprise,informational,"tpe:entreprise_privee","",pending,Voicebot
+"Compte-rendu de réunion IA : 7 outils testés",Outils,compte rendu reunion ia,commercial_investigation,"pme:entreprise_privee","",pending,CR réunion
+"Prise de notes IA : Granola vs Otter en conditions réelles",Outils,prise de notes ia,commercial_investigation,"pme:entreprise_privee","",pending,Notes IA
+"Boîte mail IA pour dirigeant : workflow et gains réels",Cas d'usage,boite mail ia dirigeant,informational,"pme:entreprise_privee","",pending,Mail dirigeant
+"Résumé d'email IA : configurer en 15 minutes",Cas d'usage,resume email ia,commercial_investigation,"tpe:entreprise_privee","",pending,Résumé mail
+"Brouillon mail IA : 5 prompts qui changent tout",Cas d'usage,brouillon mail ia,commercial_investigation,"tpe:entreprise_privee","",pending,Brouillon mail
+"Prospection LinkedIn automatisée IA : 3 frameworks éthiques",Cas d'usage,prospection linkedin ia,informational,"tpe:entreprise_privee","",pending,LinkedIn
+"Devis automatique IA : du brief à la PDF signée en 30 minutes",Cas d'usage,devis automatique ia,commercial_investigation,"tpe:entreprise_privee","",pending,Devis
+"Contrat automatique IA + signature électronique : workflow complet",Cas d'usage,contrat automatique ia,commercial_investigation,"pme:entreprise_privee","",pending,Contrat
+"Veille concurrence IA : tableau de bord en 1 journée",Cas d'usage,veille concurrence ia,commercial_investigation,"pme:entreprise_privee","",pending,Veille
+"Recherche sémantique entreprise : RAG pour 100K documents internes",Cas d'usage,recherche semantique entreprise,informational,"eti:entreprise_privee","",pending,Search interne
+"Base de connaissance IA : transformer Notion/Confluence en moteur",Cas d'usage,base connaissance ia,commercial_investigation,"pme:entreprise_privee","",pending,KB
+"Onboarding salariés IA : 30 jours sans manager présent",Cas d'usage,onboarding nouveaux salaries ia,informational,"pme:entreprise_privee","",pending,Onboarding
+"Tri de CV IA : comment éviter les biais (vraiment)",Cas d'usage,tri cv ia,informational,"pme:entreprise_privee","",pending,RH
+"Sourcing de candidats IA : 5 outils testés",Outils,sourcing candidats ia,commercial_investigation,"pme:entreprise_privee","",pending,Sourcing
+"SEO en 2026 : ce que change l'IA générative (et ce qui ne change pas)",Stratégie,seo contenu ia,informational,"pme:entreprise_privee","",pending,SEO IA
+"Génération d'articles SEO IA : éviter le piège HCU 2024",Méthodologie,generation article seo ia,informational,"tpe:entreprise_privee","",pending,SEO HCU
+"Content marketing IA : pipeline production 100 articles/mois",Méthodologie,content marketing ia,informational,"pme:entreprise_privee","",pending,Content marketing
+"Calendrier éditorial IA : workflow complet en 2026",Méthodologie,calendrier editorial ia,commercial_investigation,"tpe:entreprise_privee","",pending,Calendrier
+"Newsletter IA : rédiger 4 numéros en 2 heures",Cas d'usage,redaction newsletter ia,informational,"tpe:entreprise_privee","",pending,Newsletter
+"Posts LinkedIn IA : 5 prompts pour ne plus jamais sécher",Cas d'usage,post linkedin ia,informational,"tpe:entreprise_privee","",pending,LinkedIn posts
+"Analyse de sentiment client IA : 3 cas pratiques",Cas d'usage,analyse sentiment client ia,informational,"pme:entreprise_privee","",pending,Sentiment
+"Réponse automatique aux avis Google : workflow IA + humain",Cas d'usage,reponse avis google ia,commercial_investigation,"tpe:entreprise_privee","",pending,Avis Google
+"Réponse aux appels d'offres IA : gagner 60 % de temps",Cas d'usage,reponse appel offres ia,informational,"pme:entreprise_privee","",pending,AO
+"Veille des marchés publics IA : configurer en 1 journée",Cas d'usage,veille marches publics ia,commercial_investigation,"pme:entreprise_privee","",pending,Veille MP
+"Cold email IA : pourquoi 90 % des prompts échouent",Cas d'usage,cold email ia,informational,"tpe:entreprise_privee","",pending,Cold email
+"Lead scoring IA : modèle vs règles, lequel choisir",Cas d'usage,scoring leads ia,informational,"pme:entreprise_privee","",pending,Scoring
+"Intégrer Claude dans Slack : 4 use cases concrets",Cas d'usage,integrer claude dans slack,commercial_investigation,"pme:entreprise_privee","",pending,Slack
+"Intégrer ChatGPT dans Microsoft Teams : workflow IT-friendly",Cas d'usage,integrer chatgpt dans teams,commercial_investigation,"pme:entreprise_privee","",pending,Teams
+"Copilote IA pour comptable : journée type avant/après",Cas d'usage,copilote ia comptable,informational,"tpe:entreprise_privee","",pending,Copilote comptable
+"Copilote IA pour juriste : 4 cas validés barreau",Cas d'usage,copilote ia juriste,informational,"tpe:entreprise_privee","",pending,Copilote juriste
+"Copilote IA pour commercial : pipeline + relance + RDV",Cas d'usage,copilote ia commercial,informational,"pme:entreprise_privee","",pending,Copilote commercial
+"Copilote IA pour RH : 6 workflows testés",Cas d'usage,copilote ia rh,informational,"pme:entreprise_privee","",pending,Copilote RH
+"Copilote IA pour marketing : génération + analyse + reporting",Cas d'usage,copilote ia marketing,informational,"pme:entreprise_privee","",pending,Copilote marketing
+"Copilote IA pour CEO : 1 heure qui change la semaine",Cas d'usage,copilote ia ceo,informational,"pme:entreprise_privee","",pending,Copilote CEO
+"Copilote IA pour CFO : reporting financier en 30 minutes",Cas d'usage,copilote ia cfo,informational,"eti:entreprise_privee","",pending,Copilote CFO
+"Agent IA autonome : démystifier ce qui fonctionne en 2026",Stratégie,agent ia autonome,informational,"pme:entreprise_privee","",pending,Agents
+"Multi-agent system : utile ou hype ?",Stratégie,multi agent system,informational,"eti:entreprise_privee","",pending,Multi-agent
+"LLM open source vs propriétaire : matrice de décision",Stratégie,llm open source vs proprietaire,commercial_investigation,"eti:entreprise_privee","",pending,OSS LLM
+"LLM auto-hébergé : combien ça coûte vraiment ?",Outils,llm auto heberge,commercial_investigation,"eti:entreprise_privee","",pending,Self-hosted
+"GPU pour IA en entreprise : louer vs acheter",Outils,gpu ia entreprise,commercial_investigation,"eti:entreprise_privee","",pending,GPU
+"Llama 3 vs Mistral vs Gemini : benchmark PME 2026",Outils,llama vs mistral vs gemini,commercial_investigation,"pme:entreprise_privee","",pending,LLM compare
+"pgvector vs Pinecone vs Weaviate : choisir sa vector DB",Outils,pgvector vs pinecone,commercial_investigation,"pme:entreprise_privee","",pending,VectorDB
+"LangChain vs LlamaIndex vs CrewAI : framework agents",Outils,langchain vs llamaindex,commercial_investigation,"pme:entreprise_privee","",pending,Agents framework
+"Tendances IA 2026 : 7 prédictions argumentées",Stratégie,tendances ia 2026,informational,"pme:entreprise_privee","",pending,Tendances
+"Roadmap IA 2026 : la feuille de route PME",Stratégie,roadmap ia 2026,informational,"pme:entreprise_privee","",pending,Roadmap
+"Échec d'implémentation IA : 5 cas étudiés (et leçons)",Stratégie,echec implementation ia,informational,"pme:entreprise_privee","",pending,Échecs
+"Risques IA en entreprise : la grille d'analyse",Conformité,risques ia entreprise,informational,"pme:entreprise_privee","",pending,Risques
+"Formation équipe à l'IA : programme 5 jours",Méthodologie,formation equipe ia,commercial_investigation,"pme:entreprise_privee","",pending,Formation
+"Upskilling IA salariés : éviter les 3 pièges",Méthodologie,upskilling ia salaries,informational,"pme:entreprise_privee","",pending,Upskilling
+"Plan formation IA financé par OPCO : démarches simples",Méthodologie,plan formation ia opco,commercial_investigation,"pme:entreprise_privee","",pending,OPCO
+"CPF formation IA : ce qui est éligible en 2026",Tarifs,cpf formation ia,informational,"tpe:entreprise_privee","",pending,CPF
+"Prompt engineering : 12 patterns qui marchent",Méthodologie,prompt engineering formation,informational,"pme:entreprise_privee","",pending,Prompt eng
+"Prompts Claude pour cabinet comptable : 10 exemples opérationnels",Outils,prompts claude cabinet comptable,commercial_investigation,"tpe:entreprise_privee","",pending,Prompts comptable
+"Prompts ChatGPT pour cabinet d'avocats : 10 exemples",Outils,prompts chatgpt avocats,commercial_investigation,"tpe:entreprise_privee","",pending,Prompts avocats
+"Bibliothèque de prompts IA pour PME : 50 modèles prêts",Outils,bibliotheque prompts ia,commercial_investigation,"pme:entreprise_privee","",pending,Bibliothèque
+"Solutions IA françaises 2026 : panorama des alternatives",Outils,solution ia francaise,commercial_investigation,"pme:entreprise_privee","",pending,FR IA
+"Alternative à ChatGPT pour PME : 5 options crédibles",Outils,alternative chatgpt entreprise,commercial_investigation,"pme:entreprise_privee","",pending,Alt ChatGPT
+"Réseaux sociaux IA : automatiser sans perdre son ton",Cas d'usage,reseaux sociaux ia,informational,"tpe:entreprise_privee","",pending,Social
+"Posts Instagram IA : pipeline production hebdo",Cas d'usage,post instagram ia,informational,"tpe:entreprise_privee","",pending,Instagram
+"Brand monitoring IA : configurer en 2 heures",Cas d'usage,brand monitoring ia,commercial_investigation,"pme:entreprise_privee","",pending,Brand
+"Audit IA à Paris : 3 cas terrain dans le tertiaire",Cas d'usage,audit ia paris,local,"pme:entreprise_privee",paris,pending,Local Paris
+"Audit IA à Lyon : industrie + tertiaire en 5 jours",Cas d'usage,audit ia lyon,local,"pme:entreprise_privee",lyon,pending,Local Lyon
+"Audit IA à Marseille : 5 verticaux testés",Cas d'usage,audit ia marseille,local,"pme:entreprise_privee",marseille,pending,Local Marseille
+"Audit IA à Bordeaux : vins, conseil, immobilier",Cas d'usage,audit ia bordeaux,local,"pme:entreprise_privee",bordeaux,pending,Local Bordeaux
+"Audit IA à Toulouse : aéronautique et sous-traitance",Cas d'usage,audit ia toulouse,local,"pme:entreprise_privee",toulouse,pending,Local Toulouse
+"Audit IA à Lille : logistique et retail",Cas d'usage,audit ia lille,local,"pme:entreprise_privee",lille,pending,Local Lille
+"Audit IA à Nantes : naval et services",Cas d'usage,audit ia nantes,local,"pme:entreprise_privee",nantes,pending,Local Nantes
+"Audit IA à Strasbourg : pharma et cross-border",Cas d'usage,audit ia strasbourg,local,"pme:entreprise_privee",strasbourg,pending,Local Strasbourg
+"Audit IA à Montpellier : santé et tech",Cas d'usage,audit ia montpellier,local,"pme:entreprise_privee",montpellier,pending,Local Montpellier
+"Audit IA à Rennes : tech et agro-alimentaire",Cas d'usage,audit ia rennes,local,"pme:entreprise_privee",rennes,pending,Local Rennes
+"Audit IA à Grenoble : microélectronique + recherche",Cas d'usage,audit ia grenoble,local,"pme:entreprise_privee",grenoble,pending,Local Grenoble
+"Audit IA à Nice : tourisme premium et tech",Cas d'usage,audit ia nice,local,"pme:entreprise_privee",nice,pending,Local Nice
+"Audit IA à Mulhouse : tissu industriel transfrontalier",Cas d'usage,audit ia mulhouse,local,"pme:entreprise_privee",mulhouse,pending,Local Mulhouse
+"Audit IA au Havre : portuaire et logistique",Cas d'usage,audit ia le havre,local,"pme:entreprise_privee",le-havre,pending,Local Havre
+"Audit IA à Reims : champagne et services",Cas d'usage,audit ia reims,local,"pme:entreprise_privee",reims,pending,Local Reims
+"Implémentation IA à Paris : sprint 90 jours en cabinet",Cas d'usage,implementation ia paris,local,"pme:entreprise_privee",paris,pending,Local Paris impl
+"Implémentation IA à Lyon : industrie sur 6 mois",Cas d'usage,implementation ia lyon,local,"pme:entreprise_privee",lyon,pending,Local Lyon impl
+"Formation IA à Paris : agenda intra-entreprise",Cas d'usage,formation ia paris,local,"pme:entreprise_privee",paris,pending,Local Paris form
+"Formation IA à Bordeaux : 1 jour sur site",Cas d'usage,formation ia bordeaux,local,"pme:entreprise_privee",bordeaux,pending,Local Bdx form
+"Formation IA à Toulouse : aéro + sous-traitance",Cas d'usage,formation ia toulouse,local,"pme:entreprise_privee",toulouse,pending,Local TLS form
+"Formation IA à Strasbourg : équipes binationales",Cas d'usage,formation ia strasbourg,local,"pme:entreprise_privee",strasbourg,pending,Local STR form
+"IA pour mairie : 6 use cases acteurs publics",Cas d'usage,ia pour mairie,informational,"pme:mairie","",pending,Mairie
+"IA pour collectivité territoriale : roadmap 12 mois",Cas d'usage,ia pour collectivite territoriale,informational,"eti:collectivite","",pending,Collectivité
+"IA pour université : recherche + administration",Cas d'usage,ia pour universite,informational,"grande_entreprise:universite","",pending,Université
+"IA pour école privée : pédagogie + gestion",Cas d'usage,ia pour ecole privee,informational,"pme:ecole","",pending,École privée
+"IA pour hôpital public : 4 usages cliniques + 3 admin",Cas d'usage,ia pour hopital,informational,"eti:hopital","",pending,Hôpital
+"IA pour comité d'entreprise : automatiser sans risquer",Cas d'usage,ia pour comite entreprise,informational,"pme:comite_entreprise","",pending,CE
+"IA pour OPCO : plan formation + suivi prestataires",Cas d'usage,ia pour opco,informational,"pme:opco","",pending,OPCO
+"IA pour association loi 1901 : 5 cas concrets",Cas d'usage,ia pour association loi 1901,informational,"tpe:association","",pending,Association
+"IA pour startup early-stage : la stack minimale",Cas d'usage,ia pour startup,informational,"tpe:entreprise_privee","",pending,Startup
+"IA pour éditeur SaaS : 4 usages produit + 3 internes",Cas d'usage,ia pour saas,informational,"pme:entreprise_privee","",pending,SaaS
+"IA pour agence marketing : workflow complet client",Cas d'usage,ia pour agence marketing,informational,"tpe:entreprise_privee","",pending,Agence
+"IA pour agence SEO : pipeline production + analyse",Cas d'usage,ia pour agence seo,informational,"tpe:entreprise_privee","",pending,Agence SEO
+"IA pour franchise : déploiement multi-site cohérent",Cas d'usage,ia pour franchise,informational,"pme:entreprise_privee","",pending,Franchise
+"IA pour restaurant : prise de commande + reviews",Cas d'usage,ia pour restaurant,informational,"tpe:entreprise_privee","",pending,Resto
+"IA pour hôtel indépendant : réservation + concierge",Cas d'usage,ia pour hotel,informational,"tpe:entreprise_privee","",pending,Hôtel
+"IA pour artisan : prospection + devis + relance",Cas d'usage,ia pour artisan,informational,"tpe:entreprise_privee","",pending,Artisan
+"IA pour entreprise BTP : chiffrage + suivi chantier",Cas d'usage,ia pour btp,informational,"pme:entreprise_privee","",pending,BTP
+"IA pour entreprise de transport : tournées + maintenance",Cas d'usage,ia pour transport,informational,"pme:entreprise_privee","",pending,Transport
+"IA pour agence immobilière : annonces + matching",Cas d'usage,ia pour immobilier,informational,"tpe:entreprise_privee","",pending,Immo
+"IA pour cabinet d'assurance : devis + sinistres",Cas d'usage,ia pour assurance,informational,"pme:entreprise_privee","",pending,Assurance
+"IA pour mutuelle : remboursements + accompagnement adhérents",Cas d'usage,ia pour mutuelle,informational,"eti:entreprise_privee","",pending,Mutuelle
+"IA pour cabinet notaire : actes + recherches conformité",Cas d'usage,ia pour notaire,informational,"tpe:entreprise_privee","",pending,Notaire
+"IA pour cabinet d'huissier : recouvrement + suivi",Cas d'usage,ia pour huissier,informational,"tpe:entreprise_privee","",pending,Huissier
+"IA pour conseiller en gestion de patrimoine : 6 cas validés",Cas d'usage,ia pour conseiller patrimoine,informational,"tpe:entreprise_privee","",pending,CGP
+"IA pour expert-comptable indépendant : 8 prompts qui changent tout",Cas d'usage,ia pour expert comptable independant,informational,"tpe:entreprise_privee","",pending,EC indé
+"IA pour avocat indépendant : recherche + rédaction + facturation",Cas d'usage,ia pour avocat independant,informational,"tpe:entreprise_privee","",pending,Avocat indé
+"IA pour ESN : automatiser le delivery sans casser la qualité",Cas d'usage,ia pour esn,informational,"pme:entreprise_privee","",pending,ESN
+"IA pour studio web : du brief client à la livraison",Cas d'usage,ia pour studio web,informational,"tpe:entreprise_privee","",pending,Studio web
+"IA pour freelance : 7 outils essentiels en 2026",Outils,ia pour freelance,commercial_investigation,"tpe:entreprise_privee","",pending,Freelance
+"IA pour consultant indépendant : workflow client de A à Z",Cas d'usage,ia pour consultant independant,informational,"tpe:entreprise_privee","",pending,Consultant indé
+"IA pour coach professionnel : préparation + suivi clients",Cas d'usage,ia pour coach professionnel,informational,"tpe:entreprise_privee","",pending,Coach
+"IA pour formateur indépendant : génération supports + LMS",Cas d'usage,ia pour formateur independant,informational,"tpe:entreprise_privee","",pending,Formateur
+"Pipeline d'audit IA en cabinet comptable : J1 à J5",Méthodologie,audit ia cabinet comptable methode,informational,"pme:entreprise_privee","",pending,Pipeline audit
+"Pipeline d'implémentation IA cabinet d'avocats : 60 jours",Méthodologie,implementation cabinet avocats,informational,"pme:entreprise_privee","",pending,Pipeline impl
+"De l'audit Flash à l'implémentation : parcours 6 mois",Méthodologie,audit flash a implementation,informational,"pme:entreprise_privee","",pending,Parcours complet
+"Du POC à la production IA : franchir le « POC purgatory »",Méthodologie,poc production ia,informational,"eti:entreprise_privee","",pending,POC purgatory
+"Mesurer le ROI d'une intervention IA : 5 indicateurs",Méthodologie,roi intervention ia mesure,informational,"pme:entreprise_privee","",pending,Mesure ROI
+"Construire son business case IA : template + chiffres",Stratégie,business case ia,commercial_investigation,"eti:entreprise_privee","",pending,Business case
+"30 jours d'IA en cabinet comptable : journal de bord",Cas d'usage,30 jours ia cabinet comptable,informational,"tpe:entreprise_privee","",pending,Journal bord
+"60 jours d'IA en agence marketing : ce qui a marché",Cas d'usage,60 jours ia agence marketing,informational,"tpe:entreprise_privee","",pending,REX agence
+"90 jours d'IA en PME industrielle : 4 chantiers, 1 leçon",Cas d'usage,90 jours ia pme industrielle,informational,"pme:entreprise_privee","",pending,REX industrie
+"180 jours d'IA en ETI : ce que personne ne dit",Cas d'usage,180 jours ia eti,informational,"eti:entreprise_privee","",pending,REX ETI
+"Chatbot interne IA pour onboarding : montage en 1 semaine",Cas d'usage,chatbot interne onboarding,informational,"pme:entreprise_privee","",pending,Chatbot onboarding
+"Assistant IA pour direction RH : agenda + entretiens + suivi",Cas d'usage,assistant ia rh direction,informational,"pme:entreprise_privee","",pending,Assistant RH
+"IA pour la qualité ISO 9001 : automatiser sans bricolage",Cas d'usage,ia qualite iso 9001,informational,"pme:entreprise_privee","",pending,ISO
+"IA pour conformité ISO 27001 : monitoring continu",Cas d'usage,ia conformite iso 27001,informational,"eti:entreprise_privee","",pending,ISO27001
+"Cybersécurité IA : 5 usages défensifs + 3 offensifs",Cas d'usage,cybersecurite ia,informational,"eti:entreprise_privee","",pending,Cybersec
+"Détection d'anomalies IA en finance : pipeline + alertes",Cas d'usage,detection anomalies ia finance,informational,"eti:entreprise_privee","",pending,Anomalies
+"Prédiction de churn IA : modèle SaaS B2B vs B2C",Cas d'usage,prediction churn ia,informational,"pme:entreprise_privee","",pending,Churn
+"Pricing dynamique IA : 3 cas e-commerce testés",Cas d'usage,pricing dynamique ia,informational,"pme:entreprise_privee","",pending,Pricing dyn
+"Analyse de panier IA en retail : recommandations cross-sell",Cas d'usage,analyse panier ia retail,informational,"pme:entreprise_privee","",pending,Cross-sell
+"Optimisation stock IA : éviter ruptures + sur-stock",Cas d'usage,optimisation stock ia,informational,"pme:entreprise_privee","",pending,Stock
+"Demand forecasting IA : du B2B au retail saisonnier",Cas d'usage,demand forecasting ia,informational,"eti:entreprise_privee","",pending,Forecasting
+"Optimisation tournées IA en transport : 4 algorithmes comparés",Cas d'usage,optimisation tournees ia,informational,"pme:entreprise_privee","",pending,Tournées
+"Reconnaissance facturielle IA : OCR vs vision multimodale",Cas d'usage,reconnaissance facturielle ia,informational,"tpe:entreprise_privee","",pending,OCR facture
+"Extraction tableaux PDF IA : 5 cas réels",Cas d'usage,extraction tableaux pdf ia,informational,"pme:entreprise_privee","",pending,Tableaux PDF
+"Analyse de contrats IA : revue automatique + alertes",Cas d'usage,analyse contrats ia,informational,"pme:entreprise_privee","",pending,Contrats analyse
+"Synthèse documentaire IA pour direction juridique",Cas d'usage,synthese documentaire ia juridique,informational,"eti:entreprise_privee","",pending,Synthèse jur
+"Recherche jurisprudence IA : Doctrine + Lexbase vs IA pure",Outils,recherche jurisprudence ia,commercial_investigation,"pme:entreprise_privee","",pending,Jurisprudence
+"Rédaction d'arguments juridiques IA : workflow contrôlé",Cas d'usage,redaction arguments juridiques ia,informational,"pme:entreprise_privee","",pending,Arguments jur
+"Conformité douanière IA pour exportateur : 3 outils",Cas d'usage,conformite douaniere ia,informational,"pme:entreprise_privee","",pending,Douane
+"Réponse à un appel d'offres public IA : workflow complet",Cas d'usage,reponse ao public ia,informational,"pme:entreprise_privee","",pending,AO public
+"Veille concurrentielle européenne IA : 5 sources couvertes",Cas d'usage,veille concurrentielle europeenne ia,informational,"pme:entreprise_privee","",pending,Veille concurrence
+"Étude de marché IA en 2 jours : méthodologie complète",Méthodologie,etude marche ia,informational,"pme:entreprise_privee","",pending,Étude marché
+"Personas IA : générer + valider en 4 heures",Méthodologie,personas ia,informational,"tpe:entreprise_privee","",pending,Personas
+"User research IA : interviews à grande échelle",Méthodologie,user research ia,informational,"pme:entreprise_privee","",pending,User research
+"Customer journey mapping IA : outil-par-outil",Méthodologie,customer journey ia,informational,"pme:entreprise_privee","",pending,Journey
+"NPS et feedback client IA : pipeline d'analyse",Cas d'usage,nps automatise ia,informational,"pme:entreprise_privee","",pending,NPS
+"Réponse aux avis Trustpilot : workflow IA + humain",Cas d'usage,reponse avis trustpilot ia,informational,"tpe:entreprise_privee","",pending,Trustpilot
+"Génération d'études de cas IA depuis brief client",Cas d'usage,generation etudes cas ia,informational,"tpe:entreprise_privee","",pending,Études cas
+"Création de white papers IA : 8 étapes",Méthodologie,creation white papers ia,informational,"pme:entreprise_privee","",pending,White papers
+"Génération de scripts vidéo IA : YouTube + LinkedIn",Cas d'usage,generation scripts video ia,informational,"tpe:entreprise_privee","",pending,Vidéo scripts
+"Doublage IA voix française : 4 outils testés",Outils,doublage ia voix francaise,commercial_investigation,"tpe:entreprise_privee","",pending,Doublage
+"Sora vs Veo vs Pika : génération vidéo IA 2026",Outils,sora vs veo vs pika,commercial_investigation,"pme:entreprise_privee","",pending,Vidéo gen
+"Midjourney v7 entreprise : nouveautés + cas pratiques",Outils,midjourney v7 entreprise,commercial_investigation,"pme:entreprise_privee","",pending,MJ v7
+"DALL-E 3 vs gpt-image-1 : qualité, coût, contrôle",Outils,dalle vs gpt image 1,commercial_investigation,"tpe:entreprise_privee","",pending,Image compare
+"Production visuels marketing IA : pipeline complet",Méthodologie,production visuels marketing ia,informational,"tpe:entreprise_privee","",pending,Visuels mkt
+"Génération fiches produits e-commerce IA : 200 SKU/jour",Cas d'usage,generation fiches produits ia,informational,"pme:entreprise_privee","",pending,Fiches SKU
+"Optimisation SEO produits IA : title + meta + alt",Cas d'usage,optimisation seo produits ia,informational,"tpe:entreprise_privee","",pending,SEO produits
+"Génération de descriptions immobilières IA : 50 annonces/heure",Cas d'usage,generation descriptions immobilieres ia,informational,"tpe:entreprise_privee","",pending,Immo desc
+"Génération d'annonces emploi IA : sans biais + inclusive",Cas d'usage,generation annonces emploi ia,informational,"pme:entreprise_privee","",pending,Annonces emploi
+"Marketing emailing IA : segmentation + personnalisation",Cas d'usage,marketing emailing ia,informational,"pme:entreprise_privee","",pending,Email mkt
+"Optimisation publicités IA : Meta + Google + LinkedIn",Cas d'usage,optimisation publicites ia,informational,"pme:entreprise_privee","",pending,Ads opt
+"Génération de landing pages IA : prompt-to-deploy en 30 min",Cas d'usage,generation landing pages ia,informational,"tpe:entreprise_privee","",pending,Landing gen
+"Site internet IA : v0 + Vercel + Claude en pipeline",Outils,site internet ia,commercial_investigation,"tpe:entreprise_privee","",pending,Site IA
+"Refonte SEO IA d'un site existant : audit + plan + execution",Méthodologie,refonte seo ia site,informational,"tpe:entreprise_privee","",pending,Refonte SEO
+"Pourquoi votre IA hallucine (et comment limiter)",Stratégie,pourquoi ia hallucine,informational,"pme:entreprise_privee","",pending,Hallucinations
+"Anti-prompt-injection en entreprise : 7 défenses",Conformité,anti prompt injection,informational,"eti:entreprise_privee","",pending,Sec prompts
+"Évaluation des modèles IA en entreprise : 6 méthodes",Méthodologie,evaluation modeles ia entreprise,informational,"pme:entreprise_privee","",pending,Eval LLM
+"Coûts cachés d'une IA en production : check-list",Stratégie,couts caches ia production,informational,"pme:entreprise_privee","",pending,Coûts cachés
+"Migrer de GPT-4 à GPT-4o : sans casser la prod",Méthodologie,migrer gpt 4 vers gpt 4o,informational,"pme:entreprise_privee","",pending,Migration LLM
+"Migrer de Claude Sonnet à Opus : ROI mesuré",Méthodologie,migrer claude sonnet opus,informational,"pme:entreprise_privee","",pending,Migration Claude
+"Cache de prompts Anthropic : -70 % de coûts batch",Outils,cache prompts anthropic,informational,"pme:entreprise_privee","",pending,Prompt caching
+"Streaming LLM en production : 5 erreurs à éviter",Méthodologie,streaming llm production,informational,"pme:entreprise_privee","",pending,Streaming
+"Circuit breaker IA : architecture résiliente",Méthodologie,circuit breaker ia,informational,"eti:entreprise_privee","",pending,Circuit breaker
+"Observabilité d'un système IA : 4 dimensions à monitorer",Méthodologie,observabilite systeme ia,informational,"eti:entreprise_privee","",pending,Observability
+"Évaluation continue d'un LLM en prod : métriques + processus",Méthodologie,evaluation continue llm prod,informational,"pme:entreprise_privee","",pending,Eval continue
+"A/B testing de prompts IA : framework complet",Méthodologie,ab testing prompts ia,informational,"pme:entreprise_privee","",pending,A/B test
+"Versioning des prompts IA : git pour les prompts",Méthodologie,versioning prompts ia,informational,"pme:entreprise_privee","",pending,Versioning
+"Cache embedding IA : économie 10× sur RAG",Méthodologie,cache embedding ia,informational,"pme:entreprise_privee","",pending,Cache embedding
+"Sécuriser un agent IA en production : 8 garde-fous",Conformité,securiser agent ia production,informational,"eti:entreprise_privee","",pending,Sec agents
+"Tests automatisés pour pipelines IA : 5 niveaux",Méthodologie,tests automatises pipelines ia,informational,"pme:entreprise_privee","",pending,Tests pipelines
+"Documentation IA pour équipe non-tech : 7 livrables",Méthodologie,documentation ia equipe non tech,informational,"pme:entreprise_privee","",pending,Doc non-tech
+"Onboarding développeur sur projet IA : checklist J+30",Méthodologie,onboarding developpeur projet ia,informational,"pme:entreprise_privee","",pending,Onboarding dev
+"Recruter un AI engineer : grille de critères 2026",Stratégie,recruter ai engineer,informational,"pme:entreprise_privee","",pending,Recrutement
+"Recruter un AI product manager : compétences clés",Stratégie,recruter ai product manager,informational,"pme:entreprise_privee","",pending,Recrutement APM
+"Recruter un data scientist en 2026 : spec qui change",Stratégie,recruter data scientist 2026,informational,"pme:entreprise_privee","",pending,Recrutement DS
+"Former ses équipes au prompt engineering : programme 5 jours",Méthodologie,former equipes prompt engineering,commercial_investigation,"pme:entreprise_privee","",pending,Former prompt eng
+"Centre d'excellence IA en entreprise : monter en 90 jours",Stratégie,centre excellence ia entreprise,informational,"eti:entreprise_privee","",pending,CoE
+"DSI face à l'IA générative : 7 chantiers prioritaires",Stratégie,dsi face ia generative,informational,"eti:entreprise_privee","",pending,DSI
+"CDO et data strategy IA : 5 questions à régler",Stratégie,cdo data strategy ia,informational,"eti:entreprise_privee","",pending,CDO
+"Comité de pilotage IA : composition + rituels",Stratégie,comite pilotage ia,informational,"eti:entreprise_privee","",pending,Comité pilotage
+"Budget annuel IA pour PME 100 personnes : grille type",Tarifs,budget annuel ia pme 100,commercial_investigation,"pme:entreprise_privee","",pending,Budget PME 100
+"Budget annuel IA pour ETI 1000 personnes : grille type",Tarifs,budget annuel ia eti 1000,commercial_investigation,"eti:entreprise_privee","",pending,Budget ETI 1000
+"OPEX vs CAPEX IA : choisir son modèle",Stratégie,opex vs capex ia,commercial_investigation,"eti:entreprise_privee","",pending,Opex Capex
+"License OpenAI vs subscription Anthropic : matrice",Tarifs,license openai vs anthropic,commercial_investigation,"pme:entreprise_privee","",pending,Licensing
+"Réduire coûts API IA : 7 leviers concrets",Stratégie,reduire couts api ia,informational,"pme:entreprise_privee","",pending,Réduire coûts
+"Audit IA gratuit ou Audit Flash : que choisir ?",Tarifs,audit ia gratuit vs flash,commercial_investigation,"tpe:entreprise_privee","",pending,Gratuit vs Flash
+"Mes 5 derniers prompts qui ont changé ma semaine",Cas d'usage,prompts qui changent semaine,informational,"tpe:entreprise_privee","",pending,Prompts perso
+"Ma boîte mail IA après 3 mois : verdict honnête",Cas d'usage,boite mail ia retour 3 mois,informational,"tpe:entreprise_privee","",pending,Retour mail
+"Granola : 60 jours dans mon quotidien de rédactrice",Outils,granola 60 jours,informational,"tpe:entreprise_privee","",pending,Granola REX
+"Cursor + Claude : ma stack dev en 2026",Outils,cursor claude stack dev,informational,"tpe:entreprise_privee","",pending,Dev stack
+"Pourquoi je n'utilise pas (encore) les agents autonomes",Stratégie,pourquoi pas encore agents autonomes,informational,"pme:entreprise_privee","",pending,Tribune agents
+"Ce que ChatGPT ne sait toujours pas faire en 2026",Stratégie,chatgpt ne sait pas faire 2026,informational,"pme:entreprise_privee","",pending,Tribune limites
+"Le mythe de l'IA qui remplace les humains : 5 nuances",Stratégie,mythe ia remplace humains,informational,"pme:entreprise_privee","",pending,Tribune remplacement
+"AI Act vs RGPD : les 4 différences à connaître",Conformité,ai act vs rgpd,informational,"pme:entreprise_privee","",pending,AI Act RGPD
+"Sous-processeurs RGPD pour outil IA : grille de vérification",Conformité,sous processeurs rgpd ia,informational,"pme:entreprise_privee","",pending,Sous-traitants
+"DPA IA : modèle commenté ligne par ligne",Conformité,dpa ia modele,informational,"pme:entreprise_privee","",pending,DPA modèle
+"Hébergement IA en Europe : 5 fournisseurs comparés",Conformité,hebergement ia europe,commercial_investigation,"pme:entreprise_privee","",pending,Héberge UE
+"Pourquoi nous avons choisi Hetzner Frankfurt pour Axion-IA",Outils,hetzner frankfurt axion ia,informational,"pme:entreprise_privee","",pending,Hetzner case
+"Pourquoi nous restons en Estonie (OÜ) : 4 raisons",Stratégie,pourquoi estonie ou,informational,"pme:entreprise_privee","",pending,OÜ raisons
+"Workflow de génération de contenu IA : pipeline Axion-IA",Méthodologie,workflow generation contenu ia,informational,"pme:entreprise_privee","",pending,Pipeline content
+"Métriques de qualité contenu IA : 7 indicateurs",Méthodologie,metriques qualite contenu ia,informational,"pme:entreprise_privee","",pending,Métriques qualité
+"Anti-plagiat de contenu IA : 4 couches de défense",Méthodologie,anti plagiat contenu ia,informational,"pme:entreprise_privee","",pending,Anti-plagiat
+"Indexation Google de contenu IA : passer HCU 2024",Méthodologie,indexation google contenu ia,informational,"pme:entreprise_privee","",pending,HCU pass
+"AEO 2026 : optimiser pour ChatGPT, Perplexity et Claude",Méthodologie,aeo 2026 optimisation,informational,"pme:entreprise_privee","",pending,AEO pilier
+"GEO 2026 : faire citer son site par les LLMs",Méthodologie,geo 2026 citations llm,informational,"pme:entreprise_privee","",pending,GEO pilier
+"Speakable schema.org : la balise oubliée des AEO ninjas",Méthodologie,speakable schema org,informational,"pme:entreprise_privee","",pending,Speakable
+"llms.txt : le nouveau robots.txt 2026 ?",Outils,llms txt nouveau robots txt,informational,"pme:entreprise_privee","",pending,llms.txt
+"IndexNow + Bing Webmaster : indexer en minutes",Outils,indexnow bing webmaster,informational,"pme:entreprise_privee","",pending,IndexNow
+"Wikidata pour votre entreprise : créer sa fiche en 2 heures",Méthodologie,wikidata pour entreprise,informational,"pme:entreprise_privee","",pending,Wikidata
+"Google Business Profile + IA : optimisation pas-à-pas",Méthodologie,google business profile ia,informational,"tpe:entreprise_privee","",pending,GBP
+"FAQ Speakable : capturer Google AI Overviews en 2026",Méthodologie,faq speakable google ai overviews,informational,"pme:entreprise_privee","",pending,AI Overviews
+"Schema.org pour cabinet de conseil : 7 schémas obligatoires",Méthodologie,schema org cabinet conseil,informational,"pme:entreprise_privee","",pending,Schema cabinet
+"Migration de WordPress à Next.js : ROI réel 12 mois",Cas d'usage,migration wordpress nextjs,informational,"tpe:entreprise_privee","",pending,WP migration
+"Migration de Webflow à Next.js : ce que ça change vraiment",Cas d'usage,migration webflow nextjs,informational,"tpe:entreprise_privee","",pending,Webflow migration
+"Stack hébergement minimaliste 2026 : Hetzner + Coolify + Cloudflare",Outils,stack hebergement minimaliste,informational,"tpe:entreprise_privee","",pending,Stack hébergement
+"Coolify vs Vercel vs Netlify : matrice de choix 2026",Outils,coolify vs vercel vs netlify,commercial_investigation,"tpe:entreprise_privee","",pending,Hébergement compare
+"Self-hosted vs Managed pour LLM : 3 dimensions",Stratégie,self hosted vs managed llm,commercial_investigation,"eti:entreprise_privee","",pending,Self-hosted LLM
+"Cloudflare + Caddy + Next : architecture finale",Outils,cloudflare caddy next architecture,informational,"pme:entreprise_privee","",pending,Stack tech
+"Plausible vs Google Analytics : RGPD-first analytics 2026",Outils,plausible vs google analytics,commercial_investigation,"tpe:entreprise_privee","",pending,Analytics
+"PostHog vs Mixpanel : product analytics 2026",Outils,posthog vs mixpanel,commercial_investigation,"pme:entreprise_privee","",pending,Product analytics
+"Sentry vs Datadog pour startup : choisir son monitoring",Outils,sentry vs datadog startup,commercial_investigation,"tpe:entreprise_privee","",pending,Monitoring
+"BullMQ + Redis : queue de jobs IA en production",Outils,bullmq redis queue jobs ia,informational,"pme:entreprise_privee","",pending,Queue
+"pgvector : la vector DB sans coût supplémentaire",Outils,pgvector vector db sans cout,informational,"pme:entreprise_privee","",pending,pgvector
+"Postgres 17 pour IA : 5 features clés en 2026",Outils,postgres 17 pour ia,informational,"pme:entreprise_privee","",pending,Postgres 17
+"Prisma 5.22+ et IA : patterns ORM avancés",Outils,prisma ia patterns avances,informational,"pme:entreprise_privee","",pending,Prisma
+"Next.js 16 et IA : Server Components + Streaming",Outils,nextjs 16 ia server components,informational,"pme:entreprise_privee","",pending,Next 16
+"React 19 pour applications IA : Server Components + Suspense",Outils,react 19 applications ia,informational,"pme:entreprise_privee","",pending,React 19
+"Tailwind 4 et content factories : tokens + container queries",Outils,tailwind 4 content factories,informational,"pme:entreprise_privee","",pending,Tailwind 4
+"Radix UI 2026 : composants accessibles pour SaaS B2B",Outils,radix ui 2026 saas b2b,informational,"pme:entreprise_privee","",pending,Radix
+"Stripe + Subscription pour SaaS IA : webhooks + retry + churn",Outils,stripe subscription saas ia,informational,"tpe:entreprise_privee","",pending,Stripe SaaS
+"Vercel AI SDK : RAG en 100 lignes",Outils,vercel ai sdk rag,informational,"pme:entreprise_privee","",pending,Vercel SDK
+"Anthropic SDK Python + TypeScript : différences clés",Outils,anthropic sdk python typescript,informational,"pme:entreprise_privee","",pending,Anthropic SDK
+"OpenAI SDK v5 : nouveautés 2026 + migration",Outils,openai sdk v5 2026,informational,"pme:entreprise_privee","",pending,OpenAI SDK
+"Mistral Le Chat Enterprise : panorama 2026",Outils,mistral le chat enterprise,commercial_investigation,"pme:entreprise_privee","",pending,Mistral entreprise
+"Anthropic Claude Enterprise vs Pro : que choisir ?",Outils,anthropic claude enterprise vs pro,commercial_investigation,"pme:entreprise_privee","",pending,Claude tiers
+"OpenAI Enterprise prix réel : devis transparent",Tarifs,openai enterprise prix reel,commercial_investigation,"eti:entreprise_privee","",pending,OpenAI Ent prix
+"Comparatif modèles IA payants 2026 : ROI par dollar",Outils,comparatif modeles ia payants,commercial_investigation,"pme:entreprise_privee","",pending,Modèles compare
+"Gestion des secrets API IA : 5 patterns sécurisés",Conformité,gestion secrets api ia,informational,"pme:entreprise_privee","",pending,Secrets
+"Audit de sécurité d'un système IA : checklist OWASP",Conformité,audit securite systeme ia owasp,informational,"eti:entreprise_privee","",pending,OWASP IA
+"OWASP Top 10 pour LLM : 2026 update",Conformité,owasp top 10 llm 2026,informational,"eti:entreprise_privee","",pending,OWASP LLM
+"PII redaction dans prompts : pourquoi + comment",Conformité,pii redaction prompts,informational,"pme:entreprise_privee","",pending,PII
+"Anonymisation cas concrets pour publications : méthode",Méthodologie,anonymisation cas concrets,informational,"pme:entreprise_privee","",pending,Anonymisation
+"DPA et IA générative : 5 clauses à vérifier",Conformité,dpa ia generative,informational,"pme:entreprise_privee","",pending,DPA générative
+"Cartographie des sous-processeurs IA d'une PME-type",Conformité,cartographie sous processeurs ia pme,informational,"pme:entreprise_privee","",pending,Sous-processeurs
+"Conservation des prompts et logs LLM : durées légales",Conformité,conservation prompts logs llm,informational,"pme:entreprise_privee","",pending,Conservation
+"Droit à l'oubli appliqué à l'IA : impact pratique",Conformité,droit oubli applique ia,informational,"pme:entreprise_privee","",pending,Droit oubli
+"DPO et IA : 7 nouveaux dossiers en 2026",Conformité,dpo ia nouveaux dossiers 2026,informational,"pme:entreprise_privee","",pending,DPO 2026
+"Comment monter un dossier de subvention IA : check-list",Tarifs,monter dossier subvention ia,informational,"pme:entreprise_privee","",pending,Subvention
+"BPI France et IA : aides 2026 pour PME et ETI",Tarifs,bpi france ia aides 2026,informational,"pme:entreprise_privee","",pending,BPI France
+"Crédit d'impôt innovation IA : critères + démarches",Tarifs,credit impot innovation ia,informational,"pme:entreprise_privee","",pending,CII
+"Crédit d'impôt recherche IA : à qui ça s'applique ?",Tarifs,credit impot recherche ia,informational,"eti:entreprise_privee","",pending,CIR
+"Choisir son comptable expert pour cabinet IA : 5 critères",Tarifs,choisir comptable cabinet ia,informational,"tpe:entreprise_privee","",pending,Comptable
+"Choisir son avocat pour entreprise IA : grille",Conformité,choisir avocat entreprise ia,informational,"pme:entreprise_privee","",pending,Avocat
+"Conférence IA pour séminaire d'entreprise : programme type",Cas d'usage,conference ia seminaire entreprise,informational,"pme:entreprise_privee","",pending,Conférence
+"Keynote IA pour kick-off : format + déroulé",Cas d'usage,keynote ia kick off,informational,"eti:entreprise_privee","",pending,Keynote
+"Atelier IA équipe RH : 1 journée intensive",Cas d'usage,atelier ia equipe rh,informational,"pme:entreprise_privee","",pending,Atelier RH
+"Atelier IA équipe commerciale : 1 journée commune",Cas d'usage,atelier ia equipe commerciale,informational,"pme:entreprise_privee","",pending,Atelier commercial
+"Atelier IA équipe marketing : 1 journée production",Cas d'usage,atelier ia equipe marketing,informational,"pme:entreprise_privee","",pending,Atelier marketing
+"Atelier IA équipe juridique : 1 journée cas pratiques",Cas d'usage,atelier ia equipe juridique,informational,"pme:entreprise_privee","",pending,Atelier juridique
+"Atelier IA équipe finance : 1 journée tableurs + IA",Cas d'usage,atelier ia equipe finance,informational,"pme:entreprise_privee","",pending,Atelier finance
+"Atelier IA équipe support : 1 journée pipeline tickets",Cas d'usage,atelier ia equipe support,informational,"pme:entreprise_privee","",pending,Atelier support
+"Intervention IA pour cabinet d'expertise comptable 5-20 salariés",Cas d'usage,intervention ia cabinet expertise comptable,informational,"tpe:entreprise_privee","",pending,EC TPE
+"Intervention IA pour PME industrielle 20-100 salariés",Cas d'usage,intervention ia pme industrielle 20 100,informational,"pme:entreprise_privee","",pending,Indus PME
+"Intervention IA pour PME services 50-249 salariés",Cas d'usage,intervention ia pme services 50 249,informational,"pme:entreprise_privee","",pending,Services PME
+"Intervention IA pour ETI 250-1000 salariés multi-sites",Cas d'usage,intervention ia eti 250 1000 multi sites,informational,"eti:entreprise_privee","",pending,ETI multi-sites
+"FAQ Audit IA : 12 questions souvent posées avant signature",Méthodologie,faq audit ia 12 questions,informational,"pme:entreprise_privee","",pending,FAQ audit
+"FAQ Intervention IA : ce que les RH demandent toujours",Méthodologie,faq intervention ia rh,informational,"pme:entreprise_privee","",pending,FAQ intervention RH
+"FAQ Implémentation IA : 10 questions financières",Méthodologie,faq implementation ia financieres,informational,"pme:entreprise_privee","",pending,FAQ impl finance
+"FAQ IA opérationnelle : tout ce que les dirigeants demandent",Méthodologie,faq ia operationnelle dirigeants,informational,"pme:entreprise_privee","",pending,FAQ dirigeants

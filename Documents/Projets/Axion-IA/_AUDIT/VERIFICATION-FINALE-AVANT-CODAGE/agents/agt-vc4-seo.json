@@ -1,0 +1,93 @@
+{
+  "agent": "AGT-VC4",
+  "scope": "SEO/AEO/GEO 2026 perfection — 100+ items § 9.6/9.7/9bis/26",
+  "executedAt": "2026-05-14T09:30:00Z",
+  "filesAudited": [
+    "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md",
+    ".claude/skills/axionia-content-generator/templates/landing-ville-template.tsx.md",
+    ".claude/skills/axionia-content-generator/checklists/seo-aeo-60-items.md",
+    ".claude/skills/axionia-content-generator/references/manon-person.md"
+  ],
+  "findings": [
+    {
+      "id": "VC4-001",
+      "severity": "P0",
+      "title": "Bug pré-existant : /sitemap.xml retourne HTML 404",
+      "description": "Le sitemap principal renvoie une 404 HTML, empêchant 17 500+ routes SSG d'être crawlables. À adresser Day 0 ou Day 1 du Sprint 1, sinon Day 6 verify:all fera échouer le gate.",
+      "source": "Mémoire [[axionia_bugs_seo_preexistants_2026-05-09]] + _AUDIT/PROMPT-PRE-IMPLEMENTATION-VERIFICATION-2026.md:555",
+      "expected": "/sitemap.xml retourne XML valide, sitemap-index référençant les enfants",
+      "actual": "HTML 404",
+      "fix": "Vérifier app/sitemap.xml/route.ts existence + MIME XML + sitemap-index avec enfants",
+      "estimatedFixEffort": "2 h"
+    },
+    {
+      "id": "VC4-002",
+      "severity": "P0",
+      "title": "Bug pré-existant : og:image pointe sur localhost",
+      "description": "Les previews sociales sont cassées en prod (URL localhost dans og:image). À fixer avant la première publication tier-1.",
+      "source": "Mémoire [[axionia_bugs_seo_preexistants_2026-05-09]] + _AUDIT/PROMPT-PRE-IMPLEMENTATION-VERIFICATION-2026.md:556",
+      "expected": "og:image résout vers HTTPS prod (axion-ia.com/api/og?...)",
+      "actual": "URL localhost:3000",
+      "fix": "Vérifier baseUrl absolu dans buildOgImage() + variable NEXT_PUBLIC_SITE_URL en prod Coolify",
+      "estimatedFixEffort": "1 h"
+    },
+    {
+      "id": "VC4-003",
+      "severity": "P1",
+      "title": "Twitter handle Manon = placeholder à confirmer ou retirer",
+      "description": "@manon_axionia est un exemple. Si pas de compte Twitter réel, la balise twitter:creator doit être omise (pas laissée placeholder).",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 9.7.3",
+      "expected": "Handle réel ou balise absente",
+      "actual": "@manon_axionia placeholder",
+      "fix": "Q13 valider handle ou faire Zod schema twitterCreatorHandle optional + omit si absent",
+      "estimatedFixEffort": "30 min"
+    },
+    {
+      "id": "VC4-004",
+      "severity": "P1",
+      "title": "Google Indexing API V1 = grey-area (officiellement JobPosting/LiveBroadcast only)",
+      "description": "Spec v2.4 active immédiatement l'API mais Google ne supporte officiellement que JobPosting + LiveBroadcastEvent. Risque key revoked.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 9bis.1 v2.4",
+      "expected": "Logging robust + monitoring 4xx + fallback sitemap-only",
+      "actual": "Activation immédiate sans logging spécifique",
+      "fix": "Implémenter avec try/catch + audit trail + Search Console monitoring + kill switch",
+      "estimatedFixEffort": "3 h"
+    },
+    {
+      "id": "VC4-005",
+      "severity": "P1",
+      "title": "Anti-AI-detection 6 signaux non spécifiés en validation",
+      "description": "Spec § 9.6.6 liste 6 signaux (opinion forte, prédiction datée, chiffre interne, 1ère personne, variance phrases, listes 2-7) mais sans module de validation explicite.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 9.6.6",
+      "expected": "Module doctrine-check.ts avec validation regex + score",
+      "actual": "Liste sans implémentation",
+      "fix": "Créer doctrine-check.checkAntiAiSignals() Sprint 1 Day 2 warnings non-bloquants",
+      "estimatedFixEffort": "3 h"
+    },
+    {
+      "id": "VC4-006",
+      "severity": "P2",
+      "title": "Canonical double-signal (HTML link + HTTP Link header)",
+      "description": "Spec § 9bis.3 indique 'double signal' mais Google préfère single source. Risque conflits Search Console.",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 9bis.3",
+      "expected": "Single canonical source",
+      "actual": "Double signal HTML + HTTP header",
+      "fix": "Monitorer Search Console; si conflits → retirer header, garder HTML link",
+      "estimatedFixEffort": "monitoring uniquement"
+    },
+    {
+      "id": "VC4-INFO-001",
+      "severity": "INFO",
+      "title": "JSON-LD 24+ schemas + Speakable + Featured Snippet + Sitemap perfection OK",
+      "description": "Template landing-ville-template.tsx.md intègre les 9 schemas critiques (Person, Org, Breadcrumb, Place, LocalBusiness, Service×3, FAQ Speakable, ItemList, WebPage). Spec § 9.7.8 v2.3 complète.",
+      "source": ".claude/skills/axionia-content-generator/templates/landing-ville-template.tsx.md",
+      "expected": "Schemas conformes Schema.org",
+      "actual": "Conformes + v2.3 enrichis (wordCount, ContactPoint, OfferCatalog, GeoCircle 50km)",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    }
+  ],
+  "score": 80.5,
+  "passBPaths": ["agt-vc6:VC6-002 (bugs pré-existants)", "agt-vc7:Q13 (Twitter Manon)"],
+  "verdict": "CONDITIONAL_GO"
+}

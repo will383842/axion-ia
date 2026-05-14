@@ -1,0 +1,71 @@
+{
+  "agent": "AGT-VC2",
+  "scope": "Architecture & DB Prisma + sub-folders v2.3 + isolation-check",
+  "executedAt": "2026-05-14T09:18:00Z",
+  "filesAudited": [
+    "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md",
+    "_AUDIT/PROMPT-CONTENT-FACTORY-SPEC.md",
+    "prisma/schema.prisma",
+    "_AUDIT/seeds-templates/"
+  ],
+  "findings": [
+    {
+      "id": "VC2-001",
+      "severity": "P1",
+      "title": "5 tables non listées explicitement § 5.1",
+      "description": "CoverageCampaign / CoverageDistributionProfile / AudienceMixProfile / AuthorProfile / BannedPhrase sont décrites dans §§ 25-29 mais absentes du listing § 5.1, créant un risque d'oubli en migration Sprint 1",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 5.1 vs §§ 25-29",
+      "expected": "21 tables listées au § 5.1 (ou ré-référencées explicitement)",
+      "actual": "13 tables au § 5.1, 5 dispersées en §§ 25-29, 3 extensions Article/FAQ",
+      "fix": "Ajouter section § 5.1bis listing exhaustif ou cross-reference dans § 5.1",
+      "estimatedFixEffort": "15 min"
+    },
+    {
+      "id": "VC2-002",
+      "severity": "P1",
+      "title": "ContentGenJobStatus manque enum value `quality_improving` v1.7",
+      "description": "Spec § 27.2 introduit la valeur `quality_improving` mais l'enum § 5.1 ne l'inclut pas",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 5.1 ContentGenJobStatus vs § 27.2",
+      "expected": "Enum 12 valeurs incluant `quality_improving`",
+      "actual": "Enum 11 valeurs, `quality_improving` ajouté implicitement en § 27.2",
+      "fix": "Ajouter explicitement `quality_improving` à l'enum § 5.1",
+      "estimatedFixEffort": "5 min"
+    },
+    {
+      "id": "VC2-003",
+      "severity": "P2",
+      "title": "OrganisationType 12 valeurs partiellement listées",
+      "description": "Spec annonce 12 valeurs INSEE mais la liste explicite est fragmentaire dans le master prompt",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 5.1 OrganisationType",
+      "expected": "12 valeurs énumérées explicitement",
+      "actual": "Listing partiel (entreprise_privee, ecole, universite + [8 autres])",
+      "fix": "Énumérer les 12 valeurs explicites dans § 5.1",
+      "estimatedFixEffort": "10 min"
+    },
+    {
+      "id": "VC2-INFO-001",
+      "severity": "INFO",
+      "title": "21 tables + 16 enums + 15 sub-folders conformes",
+      "description": "Architecture cohérente avec spec, zéro conflit nommage avec schema existant (1661 LOC Prisma)",
+      "source": "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 4.1bis + § 5.1",
+      "expected": "Architecture cloisonnée + isolation-check",
+      "actual": "9 dossiers dédiés + 6 dossiers de modules + isolation script spec'd",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    },
+    {
+      "id": "VC2-INFO-002",
+      "severity": "INFO",
+      "title": "Seeds cohérents 100% (8 fichiers _AUDIT/seeds-templates/)",
+      "description": "ProviderConfig, ContentTemplate, CoverageDistributionProfile, AudienceMixProfile, AuthorProfile (Manon), BannedPhrase, RssSource, ExternalReference tous présents",
+      "source": "_AUDIT/seeds-templates/",
+      "expected": "8 seeds critiques",
+      "actual": "10 seeds + 1 extra image-prompts + 1 .bak v2.0",
+      "fix": "—",
+      "estimatedFixEffort": "—"
+    }
+  ],
+  "score": 94,
+  "passBPaths": ["agt-vc6:VC6-005 (clés API Q13 préreq)"],
+  "verdict": "GO"
+}
