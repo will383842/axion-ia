@@ -42,6 +42,7 @@ function buildNav(adminPrefix: string): NavItem[] {
     { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main" },
     { href: `${base}/factures`, label: "Factures", icon: "🧾", group: "main" },
     { href: `${base}/paiements`, label: "Paiements", icon: "💶", group: "main" },
+    { href: `${base}/echeanciers`, label: "Échéanciers", icon: "📅", group: "main" },
     { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
     { href: `${base}/submissions`, label: "Soumissions", icon: "📥", group: "main" },
     // ── contenu ──────────────────────────────────────────────────────────
