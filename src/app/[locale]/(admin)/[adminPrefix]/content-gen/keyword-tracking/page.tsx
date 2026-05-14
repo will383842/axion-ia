@@ -23,7 +23,8 @@ interface PageProps {
 }
 
 function PositionTrend({ delta }: { delta: number | null }) {
-  if (delta === null || delta === 0) return <span style={{ color: "var(--color-fg-muted)" }}>—</span>;
+  if (delta === null || delta === 0)
+    return <span style={{ color: "var(--color-fg-muted)" }}>—</span>;
   const isUp = delta < 0; // position décroissante = monte SERP
   return (
     <span
@@ -44,7 +45,8 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const sourceFilter = sp.source && ["gsc", "serpapi", "manual"].includes(sp.source) ? sp.source : null;
+  const sourceFilter =
+    sp.source && ["gsc", "serpapi", "manual"].includes(sp.source) ? sp.source : null;
   const posMin = sp.posMin ? Number(sp.posMin) : null;
   const posMax = sp.posMax ? Number(sp.posMax) : null;
 
@@ -81,8 +83,8 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
           <h1 className="admin-h1-large">Keyword tracking</h1>
           <p className="admin-meta">
             {rows.length} mot{rows.length > 1 ? "s" : ""}-clé{rows.length > 1 ? "s" : ""} suivi
-            {rows.length > 1 ? "s" : ""} · Source GSC + SerpAPI (sync hebdo cron Sprint 12.5 → activé
-            quand credentials fournis).
+            {rows.length > 1 ? "s" : ""} · Source GSC + SerpAPI (sync hebdo cron Sprint 12.5 →
+            activé quand credentials fournis).
           </p>
         </div>
       </div>
@@ -160,8 +162,8 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={9} style={{ textAlign: "center", color: "var(--color-fg-muted)" }}>
-                  Aucun mot-clé tracké. Le worker sync GSC/SerpAPI tournera dès activation
-                  Sprint 10.5/12.5.
+                  Aucun mot-clé tracké. Le worker sync GSC/SerpAPI tournera dès activation Sprint
+                  10.5/12.5.
                 </td>
               </tr>
             ) : (
@@ -172,13 +174,17 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
                   <tr key={r.id}>
                     <td>{r.keyword}</td>
                     <td>
-                      <code style={{ fontSize: "0.8rem" }}>{r.targetUrl.replace(/^https?:\/\//, "")}</code>
+                      <code style={{ fontSize: "0.8rem" }}>
+                        {r.targetUrl.replace(/^https?:\/\//, "")}
+                      </code>
                     </td>
                     <td style={{ fontVariantNumeric: "tabular-nums" }}>
                       {Number(r.position).toFixed(1)}
                     </td>
                     <td>
-                      <PositionTrend delta={r.positionDelta !== null ? Number(r.positionDelta) : null} />
+                      <PositionTrend
+                        delta={r.positionDelta !== null ? Number(r.positionDelta) : null}
+                      />
                     </td>
                     <td>{r.ctr !== null ? `${(Number(r.ctr) * 100).toFixed(2)}%` : "—"}</td>
                     <td style={{ fontVariantNumeric: "tabular-nums" }}>{r.impressions}</td>
@@ -186,7 +192,9 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
                       <span className="admin-badge">{r.source}</span>
                     </td>
                     <td>
-                      {gap ? <span className="admin-badge admin-badge-warn">opportunity</span> : null}{" "}
+                      {gap ? (
+                        <span className="admin-badge admin-badge-warn">opportunity</span>
+                      ) : null}{" "}
                       {isCanib ? (
                         <span className="admin-badge admin-badge-danger">cannibalization</span>
                       ) : null}

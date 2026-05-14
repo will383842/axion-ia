@@ -37,7 +37,13 @@ interface SyncStats {
 async function fetchTopKeywordsForUrl(
   _url: string,
   _daysWindow: number,
-): Promise<ReadonlyArray<{ keyword: string; position: number; ctr: number; impressions: number; clicks: number }> | null> {
+): Promise<ReadonlyArray<{
+  keyword: string;
+  position: number;
+  ctr: number;
+  impressions: number;
+  clicks: number;
+}> | null> {
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS || !process.env.GSC_PROPERTY) {
     return null;
   }

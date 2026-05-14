@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  computeFactCheckScore,
-  extractClaims,
-  type ClaimVerdict,
-} from "../claims-extractor";
+import { computeFactCheckScore, extractClaims, type ClaimVerdict } from "../claims-extractor";
 
 describe("extractClaims", () => {
   it("returns empty for body with no numeric claims", () => {
@@ -80,10 +76,7 @@ describe("computeFactCheckScore", () => {
   });
 
   it("returns 0 when all refuted", () => {
-    const verdicts: ClaimVerdict[] = [
-      { status: "refuted" },
-      { status: "refuted" },
-    ];
+    const verdicts: ClaimVerdict[] = [{ status: "refuted" }, { status: "refuted" }];
     expect(computeFactCheckScore(verdicts)).toBe(0);
   });
 

@@ -45,16 +45,11 @@ Règles :
 - Ne pas reformuler les claims. Pas de prose hors JSON.`;
 
 function buildUserPrompt(claims: ReadonlyArray<{ sentence: string; match: string }>): string {
-  const lines = claims.map(
-    (c, i) => `Claim ${i + 1} (match="${c.match}") : "${c.sentence}"`,
-  );
+  const lines = claims.map((c, i) => `Claim ${i + 1} (match="${c.match}") : "${c.sentence}"`);
   return `Vérifie les ${claims.length} claims suivants :\n\n${lines.join("\n")}`;
 }
 
-function parseVerdicts(
-  raw: string,
-  expectedCount: number,
-): ReadonlyArray<ClaimVerdict> {
+function parseVerdicts(raw: string, expectedCount: number): ReadonlyArray<ClaimVerdict> {
   try {
     const jsonStart = raw.indexOf("[");
     const jsonEnd = raw.lastIndexOf("]");

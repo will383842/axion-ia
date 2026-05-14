@@ -159,8 +159,8 @@ export default async function QualityDashboardPage({ params }: PageProps) {
         <div>
           <h1 className="admin-h1-large">Quality dashboard</h1>
           <p className="admin-meta">
-            Scores moyens des articles publiés sur les {WINDOW_DAYS} derniers jours.{" "}
-            {totalArticles} article{totalArticles > 1 ? "s" : ""} agrégé
+            Scores moyens des articles publiés sur les {WINDOW_DAYS} derniers jours. {totalArticles}{" "}
+            article{totalArticles > 1 ? "s" : ""} agrégé
             {totalArticles > 1 ? "s" : ""}. Bars CSS — pas de bibliothèque graphique.
           </p>
         </div>
@@ -168,7 +168,9 @@ export default async function QualityDashboardPage({ params }: PageProps) {
 
       <div className="admin-card">
         <h2 className="admin-h2">Moyenne globale (fenêtre 30j)</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}
+        >
           <ScoreBar label="SEO" value={globalAvg("avgSeo")} max={100} />
           <ScoreBar label="Quality" value={globalAvg("avgQuality")} max={100} />
           <ScoreBar label="Readability" value={globalAvg("avgReadability")} max={100} />

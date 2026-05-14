@@ -33,7 +33,7 @@ describe("cosineSimilarity", () => {
   });
 
   it("throws on dimension mismatch", () => {
-    expect(() => cosineSimilarity([1, 2], [1, 2, 3])).toThrow(/dim mismatch/);
+    expect(() => cosineSimilarity([1, 2], [1, 2, 3])).toThrow(/dimension mismatch/);
   });
 
   it("scale-invariant (magnitude doesn't change similarity)", () => {
