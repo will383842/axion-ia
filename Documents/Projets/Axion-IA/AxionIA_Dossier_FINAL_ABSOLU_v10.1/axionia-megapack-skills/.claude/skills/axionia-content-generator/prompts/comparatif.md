@@ -2,6 +2,8 @@
 
 > ContentType `comparison`. 2-6 items à comparer.
 >
+> **Patch S0ter v2.5** : KB ingest type=`comparison` (V4 factory enum). Web Vitals gate strict (LCP/INP/CLS). Tableaux non-virtuels (pas de lib JS lourde). Triple body Tiptap.
+>
 > **searchIntent imposé par défaut** : `commercial_investigation` (cf. § 26 spec maître — comparatifs = intent commercial par essence). Override possible mais argumenté.
 > **Post-process Q/R auto v1.7** : la FAQ générée déclenche 8 pages `/fr/faq/[slug]` (§ 29).
 > **Éligible boucle qualité v1.7** : si score 40-74 → repassage automatique ciblé (§ 27).

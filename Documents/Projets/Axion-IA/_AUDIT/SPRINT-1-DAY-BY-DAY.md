@@ -3,6 +3,14 @@
 > **Sprint 1 = Foundations DB + Providers + Quality core + SEO factories** (7 jours).
 > Timeline horaire détaillée + commits Conventional ordonnés + DAG dépendances inter-agents.
 > Référence master prompt § 17.
+>
+> ⚠️ **PATCH Sprint S0ter 2026-05-14** :
+> - **KB V4 codée mergée** (KB-1→KB-20, commit `bd0f831`) — content-gen consomme via `searchKnowledge()` + `generateEmbedding()` (Voyage AI dim 1024) et alimente via `POST /api/internal/kb/ingest` (HMAC + idempotency UUID v4)
+> - **NE PAS migrer** `KbDocument` ni `KbChunk` (obsolètes pré-V4). Voir master prompt § 11 v2.5 + `references/kb-doctrine.md` v2.0
+> - **WebVitalSample** table à ajouter Day 1 (cf. `references/web-vitals-integration.md`)
+> - **16 alertes Telegram** au lieu de 13 (+ 3 Web Vitals LCP/INP/CLS) cf. § 12.3bis
+> - **Hard gate KB modifié** : ≥ 50 entries publiées (pas 300 chunks)
+> - **Manon v2.1** photo IA disclosed + aiGenerated:true + photoAlt
 
 ## Vue d'ensemble
 
@@ -24,20 +32,21 @@ Vérifie présence : Prisma 5.22, BullMQ, `regions.ts`, `villes/data/*.ts`, layo
 
 Fichier : `prisma/migrations/20260601000000_add_content_gen_core/migration.sql`
 
-Tables à créer (dans cet ordre pour respecter FK) :
-1. Enums : `ContentType`, `ContentGenJobStatus`, `LogLevel`, `IndexationTier`, `Locale`, `ExpansionMode`, `ProviderKey`, `ProviderRole`, `ReviewStatus`, `KbSource`, `CoverageStatus`, `CoverageScope`, `CompanySize`, `OrganisationType`, `SearchIntent`
+Tables à créer (dans cet ordre pour respecter FK) — **v2.5 post-S0ter** :
+1. Enums : `ContentType`, `ContentGenJobStatus` (12 valeurs incl. `quality_improving`), `LogLevel`, `IndexationTier`, `Locale`, `ExpansionMode`, `ProviderKey`, `ProviderRole`, `ReviewStatus`, `CoverageStatus`, `CoverageScope`, `CompanySize`, `OrganisationType`, `SearchIntent`, `TrustTier`, **`WebVitalMetric`, `WebVitalRating`** (nouveaux S0ter)
 2. `ContentGenConfig`
 3. `ProviderConfig`
 4. `ContentTemplate` (avec ExpansionMode + variant)
-5. `KbDocument` + `KbChunk` (commentaire : alimenté par outil KB externe)
-6. `AuthorProfile` (Manon)
+5. ~~`KbDocument` + `KbChunk`~~ **❌ SUPPRIMÉ S0ter** : KB V4 codée déjà mergée (`KnowledgeEntry` + 16 modèles `Knowledge*` + 11 enums `Kb*`). Le content-gen consomme `axionia/src/lib/knowledge/*` helpers et `POST /api/internal/kb/ingest`.
+6. `AuthorProfile` (Manon, **v2.1 avec `aiGenerated Boolean @default(false)` + `photoAlt String?`**)
 7. `BannedPhrase`
 8. `CoverageDistributionProfile`
 9. `AudienceMixProfile`
 10. `CoverageCampaign`
-11. `ContentGenJob` (FK vers CoverageCampaign + ContentTemplate, searchIntent NOT NULL)
+11. `ContentGenJob` (FK CoverageCampaign + ContentTemplate, **`searchIntent SearchIntent NOT NULL`**, **`targetKnowledgeEntryId String?`** new S0ter, **`kbIngestStatus String?`** new S0ter, **`kbRejectReason String?`** new S0ter)
 12. `GenerationLog` (FK ContentGenJob)
 13. `ReviewQueue` (FK ContentGenJob)
+14. `WebVitalSample` (URL, metric, value, rating, sessionId, pageType, knowledgeEntryId, **new S0ter**) — voir `references/web-vitals-integration.md`
 14. `CostLedger`
 15. `ContentMetric`
 16. Extension `FAQ` (ALTER TABLE)
@@ -231,16 +240,23 @@ Tests : 1 recherche Unsplash réelle → vérifier 3 variantes AVIF stockées + 
 
 ### 12:00 — 13:00 — Pause
 
-### 13:00 — 16:00 — AGT-E : Embeddings + KB Health check
+### 13:00 — 16:00 — AGT-E : KB consumption (helpers existants V4) + Health check
 
-Fichier : `src/server/content-gen/kb-client.ts` (READ-ONLY strict — pas de write)
-- `retrieve(opts)` : query → embed → pgvector cosine top-K → rerank
+**v2.5 post-S0ter** : utilise les helpers KB V4 codés (mergés `bd0f831`), pas de réimplémentation.
+
+Fichier : `src/server/content-gen/kb-client.ts` (READ-ONLY wrapper)
+- Import `searchKnowledge` from `@/lib/knowledge/search-fts`
+- Import `generateEmbedding`, `EMBEDDING_MODEL_NAME`, `EMBEDDING_DIMENSION` from `@/lib/knowledge/embeddings` (Voyage AI dim 1024)
+- `retrieve(opts)` : mode `fts | vector | hybrid` (default hybrid). FTS via `searchKnowledge()`. Vector via `generateEmbedding()` + raw SQL pgvector cosine join sur `KnowledgeEmbedding`.
 - `rerank()` : heuristic boost canonical (V1) ou cross-encoder (V2)
-- `getKbHealth()` : count chunks, canonical ratio, lastIngestAt
 
-Mock KB pour tests (KB_BYPASS = true). Test du hard gate (< 300 chunks → throw `KB_NOT_READY`).
+Fichier : `src/server/content-gen/kb-health.ts`
+- `getKbHealth()` : count `KnowledgeEntry` published (status='published', deletedAt=null) + ratio audience=public + lastPublishedAt
+- Hard gate : ≥ 50 entries publiées + canonicalRatio ≥ 0.6 (V4 cible 100/jour)
 
-→ commit : `feat(content-gen): kb-client read-only + health gate + bypass mode`
+Mock KB pour tests (KB_BYPASS = true). Test du hard gate.
+
+→ commit : `feat(content-gen): kb-client read-only via V4 helpers + health gate + bypass mode`
 
 ### 16:00 — 18:00 — Doctrine extras + scripts CI
 

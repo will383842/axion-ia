@@ -1,6 +1,8 @@
 # Sub-prompt : blog article (4 sources)
 
 > **SLO** : 1 500 mots — p50 ≤ 40 s, p95 ≤ 70 s. 800 mots (gpt-4o-mini) — p50 ≤ 25 s.
+>
+> **Patch S0ter v2.5** : KB consommée via `searchKnowledge()` + `generateEmbedding()` (Voyage AI dim 1024). KB ingest via `POST /api/internal/kb/ingest` HMAC type=`article` (legacy) ou `news_brief` (RSS V4). Web Vitals gate pre-publish (LCP ≤ 1800ms / INP ≤ 150ms exception cache CF 24h / CLS = 0). Triple body Tiptap obligatoire.
 > Couvre les 4 ContentType : `blog_from_title`, `blog_from_keywords`, `blog_from_rss`, `blog_from_pillar`. System prompt commun, user prompt variant par source.
 >
 > **Contraintes pilier v1.7** :

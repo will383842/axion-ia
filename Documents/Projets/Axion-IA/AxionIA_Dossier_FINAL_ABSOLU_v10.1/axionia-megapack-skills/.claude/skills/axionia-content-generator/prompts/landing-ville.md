@@ -2,7 +2,13 @@
 
 > **SLO** : p50 ≤ 90 s bout-en-bout, p95 ≤ 150 s. Cache hit rate Anthropic ≥ 70 % en batch.
 > **Word count cible** : 4 500-5 200 mots.
-> Loaded by `src/server/content-gen/generators/landing-ville.ts` at runtime. Composes with `references/doctrine-axionia.md` + `references/manon-person.md` + KB top-K chunks. Variant injection via `ContentTemplate.variant` (cf. § 6.1bis master).
+> Loaded by `src/server/content-gen/generators/landing-ville.ts` at runtime. Composes with `references/doctrine-axionia.md` + `references/manon-person.md` (v2.1 portrait IA disclosed) + KB top-K chunks via `searchKnowledge()` (KB V4 réelle). Variant injection via `ContentTemplate.variant` (cf. § 6.1bis master).
+>
+> **Pre-publish gates Sprint 1 (v2.5 post-S0ter)** :
+> - ✅ Web Vitals lab gate (LCP ≤ 1800ms / INP ≤ 100ms / CLS = 0) via `pnpm content-gen:lighthouse` — cf. `references/web-vitals-integration.md`
+> - ✅ Quality score ≥ 75 sinon boucle qualité § 27 (max 2 passages)
+> - ✅ HMAC ingest KB via `POST /api/internal/kb/ingest` (type=`industry_use_case`, audience=`public`)
+> - ✅ Triple body Tiptap : `body` (HTML), `bodyJson` (Tiptap JSON), `bodyText` (plain)
 
 ## System prompt (cacheable prefix Anthropic)
 

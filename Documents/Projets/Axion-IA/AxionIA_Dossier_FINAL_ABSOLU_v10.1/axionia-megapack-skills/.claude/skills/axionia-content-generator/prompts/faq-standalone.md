@@ -2,6 +2,8 @@
 
 > ContentType `faq_standalone`. Insère 10-25 entrées Q/R thématiques en table `FAQ` (CRUD admin), regroupées par catégorie.
 >
+> **Patch S0ter v2.5** : KB ingest type=`faq` (legacy enum, conservé V4). Web Vitals gate strict. `<details>`/`<summary>` natifs (pas de JS accordion). Triple body Tiptap.
+>
 > **searchIntent imposé par défaut** : `informational` (cf. § 26 spec maître).
 > **Post-process Q/R auto v1.7** : chaque Q/R créée par ce générateur déclenche aussi sa page indexable `/fr/faq/[slug]` (§ 29) avec enrichissement contextuel ≥ 300 mots.
 > **Éligible boucle qualité v1.7** : si score 40-74 → repassage automatique ciblé (§ 27).

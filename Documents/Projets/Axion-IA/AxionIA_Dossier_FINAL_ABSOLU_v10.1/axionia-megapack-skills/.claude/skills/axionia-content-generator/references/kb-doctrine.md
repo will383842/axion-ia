@@ -22,92 +22,154 @@
 | `KnowledgeSlugHistory` | Sprint KB-12 redirects |
 | `KnowledgeAsset` | Images cover + assets uploadés |
 
-### Enums clés
+### Enums RÉELS (CORRIGÉS Sprint S0ter — lus depuis schema.prisma:480-610)
 
-- **`KbType`** (28 types V4) : `article`, `faq`, `case_study`, `help_article`, `glossary`, `template`, `playbook`, `policy`, `decision_record`, `runbook`, `tutorial`, `news_brief`, `interview`, `roadmap_item`, `definition`, `regulation_brief`, + **12 V4 factory** : `automation_recipe`, `tool_review`, `industry_use_case`, `comparison`, `implementation_playbook`, `prompt_pattern`, `roi_calculator_template`, `intervention_module`, `competence_boost`, `secteur_brief`, `dept_brief`, `metier_brief`
-- `KbDomain`, `KbAudience` (`team`/`customer`/`public`/`partner`/`system`)
-- `KbConfidentiality`, `KbStatus`, `KbPipelineStage`
+- **`KbType`** (28 types) :
+  - 16 legacy : `article`, `case_study`, `help_article`, `faq`, `glossary_term`, `guide`, `methodology`, `doctrine`, `adr`, `prompt_template`, `sop`, `post_mortem`, `tool_card`, `competitor_card`, `commercial_doc`, `onboarding_step`
+  - 12 V4 factory : `automation_recipe`, `tool_review`, `industry_use_case`, `comparison`, `implementation_playbook`, `prompt_pattern`, `roi_calculator_template`, `intervention_module`, `competence_boost`, `secteur_brief`, `dept_brief`, `metier_brief`
+- **`KbDomain`** (10) : `commercial`, `technical`, `legal`, `hr`, `product`, `client`, `watch`, `internal`, `editorial`, `methodology`
+- **`KbAudience`** (4) : `public`, `client`, `team`, `will_only`
+- **`KbConfidentiality`** (4) : `public`, `internal`, `confidential`, `secret`
+- **`KbStatus`** (7) : `draft`, `review`, `approved`, `scheduled`, `published`, `archived`, `deprecated`
+- **`KbPipelineStage`** (9) : `idea`, `brief`, `draft`, `review`, `approved`, `scheduled`, `published`, `archived`, `deprecated`
+- **`KbRelationKind`** (7) : `replaces`, `cites`, `depends_on`, `related_to`, `supersedes`, `contradicts`, `extends`
+- **`KbFeedbackVote`** (2) : `up`, `down`
+- **`KbImportSource`** (6) : `audit_md`, `markdown_git`, `notion`, `csv`, `legacy_db`, `legacy_source`
+- **`KbImportStatus`** (5) : `pending`, `running`, `succeeded`, `failed`, `partial`
+- **`KbReviewerAssignmentStatus`** (4) : statuts assignation reviewer
 
-### Embeddings pgvector
+→ **Mes hypothèses initiales étaient fausses** sur `KbAudience` (j'avais mis `partner/system`) et `KbConfidentiality` (j'avais mis `partner_nda/public_after_review`). **Toujours se référer au schema.prisma:480+ source de vérité.**
 
-Migration `kb_v4_pgvector_embeddings` ACTIVÉE. Extension pgvector + colonne `embedding` sur `KnowledgeTranslation` + index `ivfflat`/`hnsw` pour cosine retrieve. **NE PAS recréer**.
+### Embeddings — Voyage AI dim 1024 (CORRIGÉ Sprint S0ter)
+
+Migration `kb_v4_pgvector_embeddings` ACTIVÉE. Schema réel :
+- **Table dédiée** `KnowledgeEmbedding` (pas inline dans `KnowledgeTranslation` comme initialement supposé)
+- **Modèle** : Voyage AI `voyage-3-lite` (PAS OpenAI text-embedding-3-small)
+- **Dimension** : 1024 (PAS 512)
+- **Index** : HNSW pgvector créé via SQL raw migration
+- Helper exposé : `generateEmbedding()` dans `@/lib/knowledge/embeddings`
+- Constants : `EMBEDDING_MODEL_NAME = "voyage-3-lite"`, `EMBEDDING_DIMENSION = 1024`
+
+**NE PAS recréer**. Le content-gen utilise `generateEmbedding(text)` pour embed ses queries.
 
 ## Comment le content-generator INTERAGIT avec la KB V4
 
 ### A. Lecture (RAG) — `kb-client.ts` retrieve
 
+2 modes : helper direct (recommandé même process) ou endpoint REST.
+
+**Mode 1 : helper direct (même process server)** — recommandé pour Sprint 1 :
+
 ```ts
-// axionia/src/server/content-gen/kb-client.ts (à coder Sprint 1)
-export async function retrieve(opts: {
+// axionia/src/server/content-gen/kb-client.ts (Sprint 1 Day 2)
+import { searchKnowledge } from "@/lib/knowledge/search-fts";
+import { generateEmbedding } from "@/lib/knowledge/embeddings";
+import { prisma } from "@/lib/prisma";
+import type { KbType, KbDomain, KbAudience } from "@/prisma/generated/client";
+
+export type KbRetrieveOptions = {
   query: string;
-  language: "fr" | "en";
-  k?: number;
+  locale: "fr" | "en";       // V1 = "fr" only
+  k?: number;                 // default 8
   filters?: {
-    type?: KbType[];
-    domain?: KbDomain[];
-    audience?: KbAudience[];
-    locationTags?: string[];
+    types?: KbType[];
+    domains?: KbDomain[];
+    audiences?: KbAudience[]; // default ['public']
+    tagSlugs?: string[];
   };
-}): Promise<RetrievedChunk[]> {
-  const queryEmbedding = await embedQuery(opts.query);
+  mode?: "fts" | "vector" | "hybrid"; // default "hybrid"
+};
 
-  const results = await prisma.$queryRaw`
-    SELECT
-      ke.id, kt.title, kt.body_markdown, ke.type,
-      1 - (kt.embedding <=> ${queryEmbedding}::vector) AS similarity
-    FROM knowledge_translations kt
-    JOIN knowledge_entries ke ON ke.id = kt.entry_id
-    WHERE ke.status = 'published'
-      AND kt.locale = ${opts.language}
-      AND ke.deleted_at IS NULL
-    ORDER BY similarity DESC
-    LIMIT ${opts.k ?? 12};
-  `;
-
-  return rerank(opts.query, results);
+export async function retrieve(opts: KbRetrieveOptions) {
+  if (opts.mode === "fts") {
+    return searchKnowledge({
+      query: opts.query,
+      locale: opts.locale,
+      types: opts.filters?.types,
+      audiences: opts.filters?.audiences ?? ["public"],
+      limit: opts.k ?? 8,
+      offset: 0,
+    });
+  }
+  // mode "vector" ou "hybrid" : embed query Voyage AI dim 1024 + cosine pgvector
+  const queryEmbedding = await generateEmbedding(opts.query);
+  // RAW SQL pgvector cosine join KnowledgeEmbedding (dim 1024)
+  // Implémentation finale Sprint 1 Day 2 (cf. § 11 master prompt v2.5)
+  return [];
 }
 ```
 
-### B. Écriture (Factory feed) — content-generator ALIMENTE la KB
+**Mode 2 : endpoint REST** — pour cross-process / debug :
 
-C'est le pivot V4 majeur : chaque contenu généré tier-1 devient une `KnowledgeEntry`.
+```http
+GET /api/internal/kb/search?q=audit+IA+Lyon&locale=fr&type=industry_use_case&limit=12
+```
+audience filtrée à `["public"]` côté endpoint par défaut.
+
+### B. Écriture (Factory feed) — content-generator ALIMENTE la KB via API HMAC
+
+**Pattern obligatoire (Sprint KB-13 V4 codé)** : `POST /api/internal/kb/ingest` avec HMAC + idempotency-key. **PAS `prisma.knowledgeEntry.create()` direct** — la KB applique 4 gates autoritaires (PII, banned, quality, dedup ≥ 0.92).
 
 ```ts
-// axionia/src/server/content-gen/kb-feeder.ts (à coder Sprint 5)
-export async function publishToKB(job: ContentGenJob, content: GeneratedContent) {
-  if (content.indexationTier !== "tier_1_indexable") return;
+// axionia/src/server/content-gen/kb-feeder.ts (Sprint 5)
+import { sign } from "@/lib/knowledge/hmac";
+import { randomUUID } from "node:crypto";
+import { env } from "@/env";
 
-  await prisma.knowledgeEntry.create({
-    data: {
-      type: mapContentTypeToKbType(job.contentType),
-      domain: inferDomain(content),
-      audience: "public",
-      confidentiality: "public",
-      status: "published",
-      pipelineStage: "published",
-      slug: content.slug,
-      assignedAuthorId: MANON_AUTHOR_ID,
-      publishedAt: new Date(),
-      // V4 source tracking (immuable, audit trail)
-      sourceFactoryId: "content-gen-v1",
-      sourcePromptId: job.templateSlug,
-      sourceModelUsed: job.primaryProvider,
-      sourceCostCents: job.totalCostCents,
-      sourceGeneratedAt: job.completedAt,
-      translations: {
-        create: [{
-          locale: "fr",
-          title: content.title,
-          bodyMarkdown: content.bodyMarkdown,
-          metaDescription: content.metaDescription,
-          embedding: content.embedding,
-        }],
-      },
-      tags: { create: content.tags.map(slug => ({ tag: { connect: { slug } } })) },
+export async function publishToKB(job: ContentGenJob, content: GeneratedContent) {
+  if (content.indexationTier !== "tier_1_indexable") return { accepted: false, status: "skipped" };
+
+  const payload = {
+    type: mapContentTypeToKbType(job.contentType),   // ex: "industry_use_case"
+    title: content.title,                            // 10-200 chars
+    body: content.bodyHtml,                          // Tiptap HTML
+    bodyJson: content.bodyTiptapJson,                // Tiptap JSON
+    bodyText: content.bodyPlainText,                 // plain text
+    excerpt: content.metaDescription?.slice(0, 280), // 40-300 chars
+    tags: content.tagSlugs.slice(0, 10),             // max 10
+    domain: inferDomain(content),                    // KbDomain
+    audience: "public",
+    confidentiality: "public",
+    language: "fr",
+    source: {
+      factoryId: "content-gen-v1",
+      promptId: job.templateSlug,
+      modelUsed: job.primaryProvider,                // ex: "openai-gpt-4o"
+      cost: Math.round(job.totalCostUsd * 100),      // USD cents
+      generatedAt: job.completedAt.toISOString(),
     },
+  };
+
+  const rawBody = JSON.stringify(payload);
+  const signature = sign(rawBody, env.KB_INGEST_SECRET);
+  const idempotencyKey = randomUUID();
+
+  const res = await fetch(`${env.NEXT_PUBLIC_SITE_URL}/api/internal/kb/ingest`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-KB-Signature": signature,
+      "X-Idempotency-Key": idempotencyKey,
+    },
+    body: rawBody,
   });
+
+  if (res.status === 202) {
+    const data = await res.json();
+    return { accepted: true, entryId: data.entryId, status: data.status };
+  }
+  // 422 = quality/PII/banned/dedup gate failed (KB autoritaire)
+  return { accepted: false, status: (await res.json()).status };
 }
 ```
+
+**Gates appliqués côté KB (le content-gen ne duplique pas)** :
+1. PII scan bloquant — `detectPii()`
+2. Banned words bloquant — `checkTranslationBannedWords()`
+3. Heuristic quality gates bloquant — `runHeuristicGates()`
+4. Dedup pgvector cosine ≥ 0.92 bloquant (warning 0.85-0.92)
+
+**`KB_AUTO_PUBLISH=true`** (env var) requis pour publication immédiate sans review. Default OFF V1 → `audience='team'` (review manuel admin).
 
 ### C. Mapping `ContentType` → `KbType`
 
@@ -121,19 +183,41 @@ export async function publishToKB(job: ContentGenJob, content: GeneratedContent)
 | `faq_standalone` | `faq` |
 | `qa_derived` | `faq` |
 
-## Forbidden operations from content-gen code
+## Forbidden operations from content-gen code (CORRIGÉ Sprint S0ter)
 
 - ❌ **Ne JAMAIS créer/migrer tables `KbDocument` ou `KbChunk`** — elles N'EXISTENT PAS dans la KB V4. Si présentes dans une migration content-gen, c'est un BUG.
-- ❌ `prisma.knowledgeEntry.delete()` côté content-gen — RGPD via skill `axionia-connaissances`.
-- ❌ Réécrire les modèles `Knowledge*` — ils sont mergés et stables.
-- ❌ Bypass `pii-redaction.ts` avant publication tier-1.
+- ❌ **`prisma.knowledgeEntry.create/update/delete()` direct** depuis content-gen → utiliser API HMAC `POST /api/internal/kb/ingest` (Sprint KB-13)
+- ❌ Réécrire les modèles `Knowledge*` — ils sont mergés et stables (KB-1→KB-20).
+- ❌ Bypass HMAC ou idempotency-key sur ingest API
+- ❌ Embedding via OpenAI/Cohere/autre → la KB utilise **Voyage AI `voyage-3-lite` dim 1024** exclusivement
+- ❌ Duplication PII/banned/quality/dedup gates côté content-gen → **la KB est autoritaire** (réponse 422 = rejet définitif)
 
 ## Hard gate avant toute génération
 
 ```ts
+// axionia/src/server/content-gen/kb-health.ts (Sprint 1 Day 1)
+import { prisma } from "@/lib/prisma";
+
+export async function getKbHealth() {
+  const publishedTotal = await prisma.knowledgeEntry.count({
+    where: { status: "published", deletedAt: null },
+  });
+  const publicPublished = await prisma.knowledgeEntry.count({
+    where: { status: "published", audience: "public", deletedAt: null },
+  });
+  const canonicalRatio = publishedTotal > 0 ? publicPublished / publishedTotal : 0;
+  return {
+    publishedTotal,
+    publicPublished,
+    canonicalRatio,
+    healthy: publishedTotal >= 50 && canonicalRatio >= 0.6,
+  };
+}
+
+// Hard gate :
 const health = await getKbHealth();
-if (health.publishedEntries < 50 || health.canonicalRatio < 0.6) {
-  throw new ContentGenError("KB_NOT_READY", `Only ${health.publishedEntries} entries published`);
+if (!health.healthy) {
+  throw new ContentGenError("KB_NOT_READY", `${health.publishedTotal} entries / canonical ${(health.canonicalRatio*100).toFixed(0)}%`);
 }
 ```
 
@@ -154,6 +238,24 @@ V4 cible 100 entrées/jour publiées. Au démarrage Sprint 1, KB-1→KB-20 ont s
 ## Traceability
 
 `ContentGenJob.targetKnowledgeEntryId: string?` après publication. Si Google pénalise un contenu, on remonte à `KnowledgeEntry.sourceFactoryId` + `sourcePromptId` pour audit immuable.
+
+## Modules KB exposés (helpers utilisables par content-gen)
+
+| Helper | Module | Usage content-gen |
+|---|---|---|
+| `searchKnowledge()` | `@/lib/knowledge/search-fts` | Retrieve FTS Postgres tsvector + trigram |
+| `generateEmbedding()` | `@/lib/knowledge/embeddings` | Embed query Voyage AI dim 1024 |
+| `EMBEDDING_MODEL_NAME` / `EMBEDDING_DIMENSION` | `@/lib/knowledge/embeddings` | Constants `voyage-3-lite` / 1024 |
+| `sign()` / `verifyKbSignature()` | `@/lib/knowledge/hmac` | HMAC-SHA256 pour ingest API |
+| `assertKillSwitchInactive()` | `@/lib/knowledge/kill-switch` | Kill switch global KB V4 |
+| `detectPii()` | `@/lib/knowledge/pii-scan` | (optional pre-check côté content-gen) |
+| `KB_TYPES` / `KB_DOMAINS` / `KB_AUDIENCES` / `KB_CONFIDENTIALITIES` | `@/content/knowledge/*` | Constantes runtime (Zod enum sources) |
+
+Server actions exposées (29 actions dans `@/server/actions/knowledge/`) — **réservées au skill `axionia-connaissances`**, ne PAS appeler depuis content-gen sauf cas exceptionnel.
+
+API endpoints :
+- `POST /api/internal/kb/ingest` — HMAC + idempotency (Sprint KB-13)
+- `GET /api/internal/kb/search` — public audience-filtered
 
 ## Coordination skill jumeau `axionia-connaissances`
 

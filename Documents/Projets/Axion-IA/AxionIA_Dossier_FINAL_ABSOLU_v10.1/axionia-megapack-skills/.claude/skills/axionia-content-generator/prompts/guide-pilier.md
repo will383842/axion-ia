@@ -2,6 +2,8 @@
 
 > ContentType `guide_pilier`. Long-form 3 000-5 000 mots. STOP & ASK Will sur outline avant gen finale (Q6 OUI).
 >
+> **Patch S0ter v2.5** : KB ingest type=`implementation_playbook` (V4 factory enum). Web Vitals gate strict (attention TBT long-form). Triple body Tiptap.
+>
 > **searchIntent imposé par défaut** : `informational` (cf. § 26 spec maître — guide pilier = intent éducatif par essence).
 > **Post-process Q/R auto v1.7** : la FAQ générée déclenche 8-12 pages `/fr/faq/[slug]` (§ 29).
 > **Éligible boucle qualité v1.7** : si score 40-74 → repassage automatique ciblé (§ 27). Particulièrement utile sur les guides longs où des sections peuvent être faibles.

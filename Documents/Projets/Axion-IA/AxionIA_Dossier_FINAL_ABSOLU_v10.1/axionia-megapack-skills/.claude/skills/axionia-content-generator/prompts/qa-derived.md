@@ -2,6 +2,8 @@
 
 > ContentType `qa_derived`. **Hook automatique post-process** (§ 29 spec maître) déclenché après complétion d'un job landing/blog/comparatif/guide/faq-standalone.
 >
+> **Patch S0ter v2.5** : KB ingest type=`faq` (KB V4). ≥ 300 mots anti-thin garanti. Web Vitals gate strict. Triple body Tiptap.
+>
 > **Décision Will révisée v1.7 (modèle hybride)** :
 > - Les 8 Q/R sont d'abord **groupées en FAQ embed** dans l'article parent (Speakable JSON-LD)
 > - **ET CHAQUE Q/R devient automatiquement une page indexable `/fr/faq/[slug]`** (≥ 300 mots anti-thin via enrichissement contextuel)

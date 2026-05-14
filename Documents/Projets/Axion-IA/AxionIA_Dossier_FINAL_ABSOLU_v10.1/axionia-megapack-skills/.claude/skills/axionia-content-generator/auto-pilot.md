@@ -1,12 +1,16 @@
-# Mode autopilote — Content Generator V1
+# Mode autopilote — Content Generator V1 (v2.5 post-S0ter)
 
-> Cf. § 24 du master prompt `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md`. Ce fichier est le résumé opérationnel + référence rapide.
+> Cf. § 24 du master prompt `_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md` (v2.5). Ce fichier est le résumé opérationnel + référence rapide.
+>
+> **Patch S0ter 2026-05-14** : KB V4 codée mergée (KB-1→KB-20 commit `bd0f831`). content-gen consomme via helpers `axionia/src/lib/knowledge/*` et alimente via `POST /api/internal/kb/ingest` HMAC. Embedding Voyage AI dim 1024. Web Vitals intégré. Manon v2.1 portrait IA disclosed + zéro réseau social.
 
 ## Pré-requis fournis par Will AVANT lancement
 
-- [ ] 5 clés API en `.env.local` + Coolify : `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `PERPLEXITY_API_KEY`, `UNSPLASH_ACCESS_KEY` (`OPENAI_IMAGE_API_KEY` optionnel — réutilise OpenAI key)
-- [ ] Profil Manon (Q13) : nom à afficher, chemin photo source, bio, LinkedIn, handle Twitter (ou « pas de Twitter »)
-- [ ] KB ready (≥ 300 chunks AxionIA-canoniques) OU `KB_BYPASS=true` accepté
+- [ ] **4 clés API** en `.env.local` + Coolify : `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `PERPLEXITY_API_KEY`, `UNSPLASH_ACCESS_KEY` (`OPENAI_IMAGE_API_KEY` OBSOLÈTE v2.0)
+- [x] **Profil Manon (Q13)** ✅ RÉSOLU 2026-05-14 : Option 4 portrait IA disclosed + photo `axionia/public/auteurs/manon.png` + bio validée OK tel quel + aucun réseau social
+- [ ] **Clé `KB_INGEST_SECRET`** (HMAC ingest API factory) — env var Coolify
+- [ ] **`KB_AUTO_PUBLISH=true`** Coolify env var pour publication auto sans review
+- [ ] **KB ready** (≥ 50 entries publiées `KnowledgeEntry`) OU `KB_BYPASS=true` — KB V4 mergée bd0f831 a déjà un corpus initial
 - [ ] Accès git push origin/main OK
 - [ ] Token Coolify API valide
 
@@ -16,7 +20,7 @@
 |---|---|
 | Q1 budgets | $200 OpenAI + $100 Anthropic + $80 Perplexity + $0 Unsplash = **$380/mois** (révisé v2.0) |
 | Q2 modèle text | `gpt-4o` primaire, `gpt-4o-mini` < 800 mots |
-| Q3 embeddings | `text-embedding-3-small` 512-dim |
+| Q3 embeddings | **Voyage AI `voyage-3-lite` dim 1024** (CORRIGÉ S0ter — était OpenAI 512). Helper `@/lib/knowledge/embeddings`. |
 | Q4 images | **Unsplash uniquement** (v2.0 — pas de génération IA) |
 | Q5 STOP avant gen keywords | OUI (auto-approve 24h sans réponse) |
 | Q6 STOP avant gen pilier | OUI (auto-approve 24h sans réponse) |
@@ -25,9 +29,9 @@
 | Q9 Cron daily-target autopilot | off default |
 | Q10 Q/R groupées articles (FAQ embed) | OUI |
 | Q11 RSS sources V1 | LeMondeInfo, ZDNet FR, Usine Digitale, JournalDuNet, Frenchweb |
-| Q12 Indexing API Google | V2 |
+| Q12 Indexing API Google | **V1 (v2.4) — activé grey-area avec logging** |
 | Q12bis OPENAI_IMAGE_API_KEY | **OBSOLÈTE v2.0** (Unsplash uniquement) |
-| Q13 Profil Manon | **STOP ASK obligatoire si manquant** (v2.0 réduit à 2 inputs : choix Option visuelle 1/2/3 + validation bio draft). Pas de LinkedIn ni Twitter à fournir. |
+| Q13 Profil Manon | ✅ **RÉSOLU 2026-05-14** : Option 4 portrait IA disclosed + photo placée + bio validée + zéro réseau social. Plus de gate humain bloquant. |
 
 ### Défauts d'autorité v1.7 (nouveaux paramètres)
 
