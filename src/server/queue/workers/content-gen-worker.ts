@@ -24,6 +24,7 @@ import { getGenerator } from "@/server/content-gen/generators";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 
 interface KillSwitchState {
@@ -56,6 +57,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     active: false,
   });
   if (killSwitch.active) {
+    await logStep(contentGenJobId, "kill_switch_check", "Kill switch active — job requeued");
     throw new KillSwitchActiveError();
   }
 
@@ -66,12 +68,17 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // sans backoff inutile.
     throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} not found`);
   }
+  await logStep(contentGenJobId, "kb_retrieve", "Job found, starting pipeline", {
+    contentType,
+    targetSearchIntent,
+  });
 
   // 2. Hard gate KB ready
   try {
     await assertKbReady();
   } catch (err) {
     if (err instanceof KbNotReadyError) {
+      await logStepError(contentGenJobId, "kb_retrieve", err.message);
       await prisma.contentGenJob.update({
         where: { id: contentGenJobId },
         data: { status: "failed", errorMessage: err.message },
@@ -101,6 +108,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         : {}),
     });
     if (!dedup.passed) {
+      await logStep(contentGenJobId, "dedup_check", `Dedup blocked: ${dedup.reason ?? "unknown"}`, {
+        reason: dedup.reason,
+      });
       await prisma.contentGenJob.update({
         where: { id: contentGenJobId },
         data: {
@@ -110,6 +120,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       });
       return;
     }
+    await logStep(contentGenJobId, "dedup_check", "Dedup passed");
   }
 
   // 4. Resolve generator + generate
@@ -134,6 +145,15 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         : {}),
     });
 
+    await logStep(contentGenJobId, "llm_call", "Generator output ready", {
+      duration_ms: Date.now() - startedAt,
+      quality_score: output.qualityScore,
+      seo_score: output.seoScore,
+      readability_score: output.readabilityScore,
+      total_tokens: output.totalTokens,
+      total_cost_usd: output.totalCostUsd,
+    });
+
     // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert)
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
@@ -149,15 +169,20 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         costUsd: output.totalCostUsd,
       },
     });
+    await logStep(contentGenJobId, "validation", "Job persisted to needs_review");
 
     // 6. TODO Sprint 2 Day 6 — hook qa_extract_and_publish (8 micro-jobs)
     // 7. TODO Sprint 2 Day 7 — Telegram alert "Nouveau contenu en review"
   } catch (err) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    await logStepError(contentGenJobId, "error", errMsg, {
+      error_name: err instanceof Error ? err.name : "Unknown",
+    });
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
       data: {
         status: "failed",
-        errorMessage: err instanceof Error ? err.message : String(err),
+        errorMessage: errMsg,
         completedAt: new Date(),
       },
     });
