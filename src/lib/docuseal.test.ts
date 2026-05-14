@@ -14,7 +14,9 @@ import {
   verifyWebhookSignature,
   parseWebhookPayload,
   createSubmission,
+  createContractSubmission,
   DocusealApiError,
+  DOCUSEAL_ROLES,
 } from "./docuseal";
 
 describe("docuseal — gates de configuration", () => {
@@ -224,5 +226,149 @@ describe("docuseal — createSubmission (fetch mocké)", () => {
         signers: [{ email: "x@y.z" }],
       }),
     ).rejects.toThrow(/empty submission/);
+  });
+
+  it("default submitters_order = preserved (séquentiel)", async () => {
+    const fetchMock = vi
+      .spyOn(global, "fetch")
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify([
+            {
+              id: 1,
+              submission_id: 1,
+              embed_src: "x",
+              email: "a@b.c",
+              name: null,
+              status: "pending",
+            },
+          ]),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      );
+    await createSubmission({
+      templateId: 1,
+      signers: [{ email: "a@b.c" }, { email: "d@e.f" }],
+    });
+    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
+    expect(body.submitters_order).toBe("preserved");
+  });
+
+  it("signOrder='random' propagé tel quel", async () => {
+    const fetchMock = vi
+      .spyOn(global, "fetch")
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify([
+            {
+              id: 1,
+              submission_id: 1,
+              embed_src: "x",
+              email: "a@b.c",
+              name: null,
+              status: "pending",
+            },
+          ]),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      );
+    await createSubmission({
+      templateId: 1,
+      signOrder: "random",
+      signers: [{ email: "a@b.c" }],
+    });
+    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
+    expect(body.submitters_order).toBe("random");
+  });
+});
+
+describe("docuseal — createContractSubmission (pattern B2B client → Axion-IA)", () => {
+  const originalEnv = { ...process.env };
+
+  beforeEach(() => {
+    process.env["DOCUSEAL_BASE_URL"] = "https://docuseal.example.com";
+    process.env["DOCUSEAL_API_KEY"] = "test-key";
+    delete process.env["AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL"];
+    delete process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"];
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    process.env = { ...originalEnv };
+  });
+
+  function mockOk() {
+    return vi.spyOn(global, "fetch").mockResolvedValueOnce(
+      new Response(
+        JSON.stringify([
+          {
+            id: 1,
+            submission_id: 99,
+            embed_src: "https://docuseal.example.com/s/abc",
+            email: "client@example.com",
+            name: "John Doe",
+            status: "pending",
+          },
+        ]),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+  }
+
+  it("envoie 2 submitters dans l'ordre client (1er) → Axion-IA (2e)", async () => {
+    const fetchMock = mockOk();
+    await createContractSubmission({
+      templateId: 42,
+      client: { email: "client@example.com", name: "John Doe", phone: "+33612345678" },
+      metadata: { bookingId: "uuid-1" },
+    });
+    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
+    expect(body.submitters).toHaveLength(2);
+    expect(body.submitters[0].email).toBe("client@example.com");
+    expect(body.submitters[0].role).toBe(DOCUSEAL_ROLES.CLIENT);
+    expect(body.submitters[0].phone).toBe("+33612345678");
+    expect(body.submitters[1].email).toBe("contact@axion-ia.com");
+    expect(body.submitters[1].role).toBe(DOCUSEAL_ROLES.AXIONIA);
+    expect(body.submitters_order).toBe("preserved");
+  });
+
+  it("contre-signataire override via env AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL", async () => {
+    process.env["AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL"] = "will@axion-ia.com";
+    process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"] = "William";
+    const fetchMock = mockOk();
+    await createContractSubmission({
+      templateId: 42,
+      client: { email: "client@example.com", name: "John Doe" },
+    });
+    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
+    expect(body.submitters[1].email).toBe("will@axion-ia.com");
+    expect(body.submitters[1].name).toBe("William");
+  });
+
+  it("contre-signataire override explicite (paramètre `countersigner`)", async () => {
+    const fetchMock = mockOk();
+    await createContractSubmission({
+      templateId: 42,
+      client: { email: "client@example.com", name: "John Doe" },
+      countersigner: { email: "admin@axion-ia.com", name: "Admin Override" },
+    });
+    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
+    expect(body.submitters[1].email).toBe("admin@axion-ia.com");
+    expect(body.submitters[1].name).toBe("Admin Override");
+  });
+
+  it("fallback final = contact@axion-ia.com si aucun override", async () => {
+    const fetchMock = mockOk();
+    await createContractSubmission({
+      templateId: 42,
+      client: { email: "client@example.com", name: "John Doe" },
+    });
+    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
+    expect(body.submitters[1].email).toBe("contact@axion-ia.com");
+  });
+
+  it("rôles canoniques DOCUSEAL_ROLES restent stables", () => {
+    expect(DOCUSEAL_ROLES.CLIENT).toBe("Client");
+    expect(DOCUSEAL_ROLES.AXIONIA).toBe("Axion-IA");
   });
 });

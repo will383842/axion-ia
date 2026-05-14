@@ -75,10 +75,30 @@ function getWebhookSecret(): string {
 export interface DocusealSigner {
   email: string;
   name?: string;
+  /**
+   * Rôle DocuSeal — DOIT matcher un rôle déclaré dans le template
+   * (`Signer`, `Client`, `Axion-IA`, etc.). Sert d'ancrage pour placer
+   * les champs signature au bon endroit dans le PDF.
+   */
   role?: string;
   /** Phone E.164 (`+33...`) — facultatif (SMS notification DocuSeal). */
   phone?: string;
 }
+
+/**
+ * Ordre de signature séquentiel (B2B pattern client → Axion-IA contre-signe).
+ *
+ * - `"preserved"` (recommandé contrats B2B) : DocuSeal envoie au signer 1 ;
+ *   après sa signature, envoie au signer 2 ; etc. Status `pending` jusqu'à
+ *   ce que TOUS aient signé.
+ * - `"random"` (legacy V1 unilatéral) : tous les signers reçoivent l'email
+ *   en même temps, peuvent signer dans n'importe quel ordre.
+ *
+ * Default V1 : `"preserved"` pour matcher le pattern juridique B2B standard
+ * (le client engage le prestataire en signant en 1er, le prestataire
+ * contre-signe pour acter l'acceptation).
+ */
+export type DocusealSignOrder = "preserved" | "random";
 
 /** Field DocuSeal — valeur pré-remplie passée au template. */
 export interface DocusealField {
@@ -90,7 +110,18 @@ export interface DocusealField {
 export interface CreateSubmissionOptions {
   /** ID du `ContractTemplate.providerId` côté DocuSeal (récupéré après upload UI). */
   templateId: number | string;
+  /**
+   * Liste ordonnée des signataires. L'ordre du tableau dicte l'ordre de
+   * signature quand `signOrder === "preserved"` (signer[0] → signer[1] → …).
+   */
   signers: DocusealSigner[];
+  /**
+   * Ordre de signature DocuSeal. Default `"preserved"` (séquentiel) — convient
+   * au pattern contrat B2B client puis Axion-IA contre-signe.
+   *
+   * Si `"random"` : tous les signers reçoivent leur lien en parallèle.
+   */
+  signOrder?: DocusealSignOrder;
   /** Fields pré-remplis avec valeurs Booking (raison sociale, montant, etc.). */
   fields?: DocusealField[];
   /** Envoyer l'email automatique DocuSeal au signataire (sinon embed-only). */
@@ -192,9 +223,17 @@ export async function createSubmission(
     status: DocusealSubmissionStatus;
   }>;
 
+  // signOrder default = "preserved" (client signe d'abord, Axion-IA contre-signe).
+  // Le paramètre `submitters_order` côté DocuSeal contrôle l'ordre :
+  //   - "preserved" : séquentiel (signer[0] → signer[1] → …)
+  //   - "random"    : parallèle (legacy unilatéral)
+  // Source : https://www.docuseal.com/docs/api#create-a-submission
+  const signOrder: DocusealSignOrder = opts.signOrder ?? "preserved";
+
   const payload = {
     template_id: opts.templateId,
     send_email: opts.sendEmail ?? false,
+    submitters_order: signOrder,
     submitters: opts.signers.map((s) => ({
       email: s.email,
       ...(s.name ? { name: s.name } : {}),
@@ -222,6 +261,114 @@ export async function createSubmission(
     ...(first.audit_log_url ? { auditUrl: first.audit_log_url } : {}),
     status: first.status,
   };
+}
+
+// ============================================================
+// Helper haut niveau : signature B2B séquentielle (contrat ou devis)
+// ============================================================
+
+/**
+ * Rôles canoniques utilisés par tous les templates DocuSeal Axion-IA.
+ * MUST matcher les rôles déclarés dans le template DocuSeal côté UI
+ * (sinon les champs signature ne se placent pas).
+ */
+export const DOCUSEAL_ROLES = {
+  /** Premier signataire (engage le client en acceptant le contrat). */
+  CLIENT: "Client",
+  /** Second signataire (Axion-IA contre-signe pour acter l'acceptation). */
+  AXIONIA: "Axion-IA",
+} as const;
+
+export interface ContractSubmissionInput {
+  templateId: number | string;
+  /** Client (1er signataire — signe en premier). */
+  client: { email: string; name: string; phone?: string };
+  /**
+   * Contre-signataire Axion-IA (2e signataire — signe après le client).
+   * Si omis, lecture depuis env `AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL` ou
+   * fallback `contact@axion-ia.com`.
+   */
+  countersigner?: { email: string; name?: string };
+  /** Fields pré-remplis (raison sociale, montant, etc.). */
+  fields?: DocusealField[];
+  /** Metadata propagée au webhook (typiquement `bookingId`). */
+  metadata?: Record<string, string>;
+  /** Envoyer l'email DocuSeal auto. Default `true` pour le contrat B2B. */
+  sendEmail?: boolean;
+  /** Webhook override (sinon webhook global). */
+  webhookUrl?: string;
+}
+
+/**
+ * Résoud l'email du contre-signataire Axion-IA :
+ *   1. `countersigner.email` explicite passé en arg
+ *   2. env `AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL`
+ *   3. fallback `contact@axion-ia.com`
+ *
+ * Le nom suit le même ordre (env `AXIONIA_CONTRACT_COUNTERSIGNER_NAME` ou
+ * fallback `"Axion-IA"`).
+ */
+function resolveCountersigner(input?: { email: string; name?: string }): {
+  email: string;
+  name: string;
+} {
+  if (input?.email) {
+    return { email: input.email, name: input.name ?? "Axion-IA" };
+  }
+  const envEmail = process.env["AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL"];
+  const envName = process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"];
+  return {
+    email: envEmail && envEmail.includes("@") ? envEmail : "contact@axion-ia.com",
+    name: envName ?? "Axion-IA",
+  };
+}
+
+/**
+ * Crée une submission DocuSeal pour un contrat B2B avec pattern signature
+ * séquentielle client → Axion-IA. C'est le helper canonique à utiliser depuis
+ * les Server Actions `sendContractForSignatureAction`, `emitQuoteAction`, etc.
+ *
+ * Workflow garanti :
+ *   1. DocuSeal envoie l'email signature au CLIENT en premier
+ *   2. Status reste `pending` tant que le client n'a pas signé
+ *   3. Une fois le client signataire → DocuSeal envoie au contre-signataire
+ *      Axion-IA (Will / contact@axion-ia.com)
+ *   4. Une fois les 2 signatures collectées → webhook `form.completed`
+ *      → `Booking.status` peut transiter `contract_pending → contract_signed`
+ *
+ * Les 2 parties reçoivent le PDF final signé par DocuSeal automatiquement.
+ *
+ * Le template DocuSeal côté UI DOIT déclarer 2 rôles :
+ *   - "Client" (avec champ signature client)
+ *   - "Axion-IA" (avec champ signature contre-signature)
+ *
+ * Cf. `_AUDIT/legal/DOCUSEAL-TEMPLATE-SETUP.md` pour la procédure complète.
+ */
+export async function createContractSubmission(
+  input: ContractSubmissionInput,
+): Promise<CreateSubmissionResult> {
+  const countersigner = resolveCountersigner(input.countersigner);
+  return createSubmission({
+    templateId: input.templateId,
+    signOrder: "preserved", // client signe d'abord, Axion-IA après
+    signers: [
+      {
+        email: input.client.email,
+        name: input.client.name,
+        role: DOCUSEAL_ROLES.CLIENT,
+        ...(input.client.phone ? { phone: input.client.phone } : {}),
+      },
+      {
+        email: countersigner.email,
+        name: countersigner.name,
+        role: DOCUSEAL_ROLES.AXIONIA,
+      },
+    ],
+    sendEmail: input.sendEmail ?? true,
+    ...(input.fields ? { fields: input.fields } : {}),
+    ...(input.metadata ? { metadata: input.metadata } : {}),
+    ...(input.webhookUrl ? { webhookUrl: input.webhookUrl } : {}),
+  });
 }
 
 /**
