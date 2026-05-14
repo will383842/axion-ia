@@ -1,0 +1,24 @@
+# Documents juridiques sensibles — JAMAIS commités en git.
+# Le repo public ne doit pas exposer les PDFs DPA signés, factures, CGV signées,
+# ni les annexes contenant signatures électroniques scans/IBAN/etc.
+#
+# Seul ce .gitignore + le README + la CHECKLIST sont versionnés (instructions
+# de processus). Les artefacts juridiques restent locaux + backupés ailleurs.
+
+# Exclusion globale de tout PDF dans ce dossier
+*.pdf
+
+# Et autres formats sensibles potentiels
+*.docx
+*.doc
+*.odt
+*.eml
+*.msg
+
+# Sauf un éventuel template VIDE qui pourrait servir de base
+!template-*.pdf
+
+# Backup local SQLite / dumps occasionnels
+*.sqlite
+*.db
+*.dump
