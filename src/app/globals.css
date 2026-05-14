@@ -613,6 +613,26 @@
   font-weight: 600;
   margin: 8px 0 0;
 }
+.admin-kpi-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+.admin-kpi-link:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-terracotta);
+}
+.admin-link {
+  color: var(--color-terracotta);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.admin-link:hover {
+  text-decoration: none;
+}
 .admin-shell {
   display: grid;
   grid-template-columns: 240px 1fr;
