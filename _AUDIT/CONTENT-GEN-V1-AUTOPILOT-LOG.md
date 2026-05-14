@@ -78,7 +78,36 @@ GATE attendu :
 
 ### Sprint 1 Day 1 — 2026-05-14
 
-_Démarré — voir entrées AGT-X ci-dessous au fur et à mesure._
+| Heure     | Étape                                                                                                                                                                                                                                                                                                                                          | Statut    | Commit    |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | --------- |
+| Phase 0   | reality-check stricte + log + memory feedback push autorisé                                                                                                                                                                                                                                                                                    | ✅ PASS   | `1411357` |
+| AGT-A 1/N | 16 enums content-gen ajoutés (`ContentType`, `ContentGenJobStatus`, `LogLevel`, `IndexationTier`, `ExpansionMode`, `ProviderKey`, `ProviderRole`, `ReviewStatus`, `CoverageStatus`, `CoverageScope`, `OrganisationType`, `SearchIntent`, `TrustTier`, `WebVitalMetric`, `WebVitalRating`). `Locale` + `CompanySize` réutilisés existants.      | ✅ PASS   | `dab1918` |
+| AGT-A 2/N | **À FAIRE** — 14 modèles content-gen + extensions Article/FAQ : ContentGenConfig, ProviderConfig, ContentTemplate, AuthorProfile, BannedPhrase, CoverageDistributionProfile, AudienceMixProfile, CoverageCampaign, ContentGenJob, GenerationLog, ReviewQueue, WebVitalSample, CostLedger, ContentMetric + ExternalReference + ContentCitation. | ⏸ pending | —         |
+| AGT-A 3/N | Migration SQL + seeds idempotents (5 providers + 9 templates + 3 distribution profiles + 4 audience mix + Manon + banned phrases + RSS sources)                                                                                                                                                                                                | ⏸ pending | —         |
+| AGT-B     | SDK installs (`pnpm add openai @anthropic-ai/sdk axios isomorphic-dompurify sharp p-limit` + dev `vitest @playwright/test`) + env.ts Zod patch (8 clés API)                                                                                                                                                                                    | ⏸ pending | —         |
+| AGT-B     | Interface `IProvider` + 5 stubs providers + provider-router squelette                                                                                                                                                                                                                                                                          | ⏸ pending | —         |
+
+GATE Day 1 attendu : 4 commits Conventional sur main + Prisma migration appliquée + Prisma generate + typecheck.
+
+### État session 2026-05-14 (autopilote, fin de session)
+
+**Livré (2 commits pushés sur `main`)** :
+
+- ✅ `1411357 chore(content-gen): phase 0 reality-check ok + log Sprint 1 démarrage`
+- ✅ `dab1918 feat(content-gen): add 16 enums foundations Sprint 1 Day 1 AGT-A`
+- ✅ 622 tests Vitest existants verts à chaque commit (pre-hooks `verify:all`)
+- ✅ Coolify auto-deploy déclenché sur chaque push (workflow GitHub Actions `deploy-coolify.yml`)
+- ✅ Mémoire persistante feedback push **autorisée** (`~/.claude/projects/.../memory/feedback_commit_no_push.md`)
+- ✅ MEMORY.md index aligné sur la nouvelle autorisation
+
+**Bloqueurs Will** :
+
+- ⚠️ **Clés API IA absentes** dans `.env.local` / Coolify : `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `PERPLEXITY_API_KEY`, `UNSPLASH_ACCESS_KEY`, `VOYAGE_API_KEY` (KB embedding réel), `KB_INGEST_SECRET`, `KB_AUTO_PUBLISH`. Sans elles, le « 1 call live » Day 2 sera mocké. Le BUILD lui-même n'est pas bloqué (l'autopilote BUILD l'outil, ne RUN pas la génération avant Sprint 2 Gate).
+
+**Reprise session suivante** : invoquer la même phrase autopilote ; lire ce log ; pick up à **AGT-A 2/N** (14 modèles + extensions Article/FAQ). Effort estimé : 30-45 min focused pour pondre la suite (~400 lignes Prisma) + `prisma format / generate / typecheck` + commit + push.
+
+**Prochain commit Conventional planifié** :
+`feat(content-gen): prisma migration add_content_gen_core v1.7 — 14 models + Article/FAQ extensions`
 
 ---
 
