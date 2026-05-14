@@ -1887,6 +1887,8 @@ model KnowledgeEntry {
   bookmarks           KnowledgeBookmark[]
   reviewerAssignments KnowledgeReviewerAssignment[]
   slugHistory         KnowledgeSlugHistory[]
+  annotations         KnowledgeAnnotation[]
+  collectionItems     KnowledgeCollectionItem[]
 
   // KB V4 — Source tracking factory (Sprint KB-13 V4, §17.5/§17.7 prompt master).
   // Permet audit immuable + remontée à la source en cas de problème.
@@ -2106,6 +2108,71 @@ model KnowledgeBookmark {
   @@index([clientEmail, createdAt(sort: Desc)])
   @@index([sessionId])
   @@map("knowledge_bookmarks")
+}
+
+/// KB V4 (Sprint KB-18) — Annotations équipe sur entries (revue collaborative).
+/// Différent des bookmarks (côté client) : ici c'est l'éditorial/SEO team qui commente.
+model KnowledgeAnnotation {
+  id          String         @id @default(uuid()) @db.Uuid
+  entryId     String         @map("entry_id") @db.Uuid
+  entry       KnowledgeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  authorId    String         @map("author_id") @db.Uuid
+  /// Référence optionnelle à un anchor (id de heading TOC ou translationId)
+  anchorRef   String?        @map("anchor_ref") @db.VarChar(120)
+  bodyMarkdown String        @map("body_markdown") @db.Text
+  /// review_comment | seo_suggestion | factual_check | typo | content_request
+  kind        String         @default("review_comment") @db.VarChar(40)
+  /// open | resolved | wont_fix
+  status      String         @default("open") @db.VarChar(20)
+  resolvedAt  DateTime?      @map("resolved_at")
+  resolvedById String?       @map("resolved_by_id") @db.Uuid
+
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  @@index([entryId, status])
+  @@index([authorId, createdAt(sort: Desc)])
+  @@map("knowledge_annotations")
+}
+
+/// KB V4 (Sprint KB-18) — Séries/Collections éditoriales (curation manuelle).
+/// Ex : « Parcours dirigeants : 10 articles IA fondamentaux »
+model KnowledgeCollection {
+  id          String                       @id @default(uuid()) @db.Uuid
+  slug        String                       @unique @db.VarChar(120)
+  titleFr     String                       @map("title_fr") @db.VarChar(255)
+  titleEn     String?                      @map("title_en") @db.VarChar(255)
+  descriptionFr String?                    @map("description_fr") @db.Text
+  descriptionEn String?                    @map("description_en") @db.Text
+  /// public | unlisted | team
+  visibility  String                       @default("public") @db.VarChar(20)
+  ownerId     String?                      @map("owner_id") @db.Uuid
+  coverAssetId String?                     @map("cover_asset_id") @db.Uuid
+  publishedAt DateTime?                    @map("published_at")
+  createdAt   DateTime                     @default(now()) @map("created_at")
+  updatedAt   DateTime                     @updatedAt @map("updated_at")
+
+  items       KnowledgeCollectionItem[]
+
+  @@index([visibility, publishedAt])
+  @@map("knowledge_collections")
+}
+
+/// Join collection × entry avec ordre explicite.
+model KnowledgeCollectionItem {
+  collectionId String              @map("collection_id") @db.Uuid
+  collection   KnowledgeCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  entryId      String              @map("entry_id") @db.Uuid
+  entry        KnowledgeEntry      @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  position     Int
+  noteFr       String?             @map("note_fr") @db.Text
+  noteEn       String?             @map("note_en") @db.Text
+  addedAt      DateTime            @default(now()) @map("added_at")
+
+  @@id([collectionId, entryId])
+  @@unique([collectionId, position])
+  @@index([entryId])
+  @@map("knowledge_collection_items")
 }
 
 /// Audit imports — traçabilité provenance (Sprint KB-15+).
