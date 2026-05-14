@@ -21,41 +21,62 @@ export interface FeedItem {
 /**
  * Liste les entries publiques pour les flux RSS/JSON, filtré optionnellement par type.
  * Retourne format unifié `FeedItem`.
+ *
+ * Tolérance bootstrap (2026-05-14) : si la table `knowledge_entries` n'existe pas
+ * encore en DB (premier deploy après le merge KB, migration appliquée par
+ * `prisma migrate deploy` à l'entrypoint = APRÈS le build SSG), retourne `[]`.
+ * Sans ce guard, le SSG des routes `/[locale]/ressources` (page + feeds RSS/JSON)
+ * fail avec P2021 et bloque tout le déploiement (chicken-and-egg : la migration
+ * tourne au boot du container mais on n'arrive jamais à booter si le build fail).
+ * Au premier boot réussi, la migration crée la table ; l'ISR `revalidate=3600`
+ * de la page hub repeuplera dans l'heure, ou plus tôt via revalidatePath.
  */
 export async function listPublicEntriesForFeed(
   locale: Locale,
   type?: KbType,
 ): Promise<readonly FeedItem[]> {
-  const entries = await prisma.knowledgeEntry.findMany({
-    where: {
-      ...(type ? { type } : {}),
-      audience: "public",
-      status: { in: ["published", "deprecated"] },
-      deletedAt: null,
-    },
-    include: { translations: { where: { locale } } },
-    orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
-    take: 50,
-  });
+  try {
+    const entries = await prisma.knowledgeEntry.findMany({
+      where: {
+        ...(type ? { type } : {}),
+        audience: "public",
+        status: { in: ["published", "deprecated"] },
+        deletedAt: null,
+      },
+      include: { translations: { where: { locale } } },
+      orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
+      take: 50,
+    });
 
-  return entries
-    .map((e): FeedItem | null => {
-      const t = e.translations[0];
-      if (!t) return null;
-      const url = buildKbPublicUrl(e.type, locale, t.slug);
-      if (!url) return null;
-      return {
-        entryId: e.id,
-        type: e.type,
-        slug: t.slug,
-        title: t.title,
-        excerpt: t.excerpt,
-        url,
-        publishedAt: e.publishedAt,
-        updatedAt: t.updatedAt,
-      };
-    })
-    .filter((it): it is FeedItem => it !== null);
+    return entries
+      .map((e): FeedItem | null => {
+        const t = e.translations[0];
+        if (!t) return null;
+        const url = buildKbPublicUrl(e.type, locale, t.slug);
+        if (!url) return null;
+        return {
+          entryId: e.id,
+          type: e.type,
+          slug: t.slug,
+          title: t.title,
+          excerpt: t.excerpt,
+          url,
+          publishedAt: e.publishedAt,
+          updatedAt: t.updatedAt,
+        };
+      })
+      .filter((it): it is FeedItem => it !== null);
+  } catch (err) {
+    // P2021 = "The table does not exist in the current database" — table KB
+    // pas encore migrée (premier deploy après merge KB ; `prisma migrate deploy`
+    // tourne au boot du container, donc APRÈS le build SSG). Sans ce guard,
+    // le SSG fail avec P2021 et bloque tout le déploiement.
+    if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
+      console.warn("[KB] knowledge_entries table not migrated yet — returning empty feed");
+      return [];
+    }
+    throw err;
+  }
 }
 
 function escapeXml(s: string): string {
