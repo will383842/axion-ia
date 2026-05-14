@@ -54,6 +54,15 @@ export async function seedProviderConfig(prisma: PrismaClient): Promise<number> 
     {
       provider: "unsplash" as const,
       role: "stock_image" as const,
+      // ✅ ACTIVÉ V1 — Décision Will 2026-05-14 v3 après ré-analyse précise CGU.
+      // CGU gratuit §8 et API §12 interdisent l'usage des images "dans des
+      // ensembles de données" / "à des fins d'apprentissage automatique"
+      // (= training ML / datasets). Notre cas = AUTOMATISATION de sélection
+      // (script API → select photo → embed dans HTML article texte généré par
+      // IA) ≠ dataset ML ≠ training. Position juridique : conforme.
+      // Garde-fou : filtre strict premium=false (Unsplash+ exclu — sa clause §3
+      // est plus large "par/pour IA quelle qu'elle soit").
+      // Voir docs/content-gen/UNSPLASH-COMPLIANCE.md v3.
       enabled: true,
       primary: true,
       model: "unsplash-api-v1",

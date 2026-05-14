@@ -1,51 +1,63 @@
-# Unsplash compliance — content-gen V1
+# Unsplash compliance — content-gen V1 (DOCTRINE 2026-05-14 v3)
 
-> Source de vérité doctrine 2026-05-14 (Will). Toute évolution doit être validée avant impl.
+> Doctrine acté Will 2026-05-14 après lecture précise des **Conditions Générales Unsplash** + **API Unsplash** + **Unsplash+**. Cette v3 fait foi et **remplace v1 et v2**.
 
-## TL;DR (doctrine en 1 paragraphe)
+## TL;DR juridique (1 paragraphe)
 
-Axion-IA utilise **uniquement Unsplash gratuit** (licence Unsplash régulière, type CC0). Le **Contenu Unsplash+** (filigrane « Unsplash+ ») est **interdit d'usage** côté content-gen car ses Conditions d'Abonnement excluent explicitement « toute utilisation à des fins d'apprentissage machine, ou par des dispositifs utilisant de l'Intelligence Artificielle ». Notre pipeline produit du contenu via IA (OpenAI / Anthropic / Perplexity) → le contenu accompagne ce contenu IA → bascule juridique inacceptable.
+**Unsplash gratuit** (License standard) est **utilisable** pour le content-gen Axion-IA. Notre usage = **automatisation de sélection** (script API → choisir une photo → l'embarquer dans une page HTML d'article dont le **texte** est généré par IA). Ce n'est ni un dataset, ni un training de modèle, ni de la biométrie — donc hors clause anti-IA des CGU §8 et API §12 qui ciblent spécifiquement « ensembles de données » et « formation de modèles ». **Unsplash+** reste **exclu** par prudence : sa clause §3 est plus large (« par/pour intelligence artificielle quelle qu'elle soit »).
 
-Le code `unsplash.ts` doit donc :
+## Analyse précise des clauses
 
-1. **Filtrer `premium: false`** à toutes les requêtes API.
-2. **Vérifier `photo.premium !== true`** après réception de chaque réponse (defense in depth).
-3. **Rejeter et logger** toute photo `premium: true` qui passerait les filtres (anomalie).
-4. **Stocker l'attribution photographer + lien profil + lien source** obligatoirement.
-5. **Émettre les liens UTM Unsplash** (`?utm_source=axion-ia&utm_medium=referral`) tel que requis par leurs guidelines.
+### CGU régulières §8 (`unsplash.com/terms`)
 
-## Détail des restrictions Unsplash+ (interdites pour nous)
+> « Utiliser les images **dans des ensembles de données** en relation avec de l'apprentissage automatique et/ou de l'intelligence artificielle (**par exemple, pour former des modèles** d'apprentissage automatique et/ou d'intelligence artificielle), ou pour des technologies conçues ou destinées à l'**identification de personnes physiques**. »
 
-Source : Conditions d'Abonnement Unsplash+ fournies par Will 2026-05-14.
+**Décomposition** :
 
-| Restriction Unsplash+                               | Impact content-gen                                                   |
-| --------------------------------------------------- | -------------------------------------------------------------------- |
-| Pas d'utilisation ML / IA / biométrique             | ❌ Bloquant absolu — notre pipeline = IA                             |
-| Pas de modèles électroniques revendables            | ❌ Bloquant — nos landings villes sont publiées                      |
-| Plafonds tirage physique (cartes, t-shirts, etc.)   | N/A — usage web uniquement                                           |
-| Pas de stockage DAM / serveur partagé               | ⚠️ Notre BD `WebVitalSample`/etc. peut être interprétée comme DAM    |
-| Avertissement « illustration / modèle » si sensible | ⚠️ À implémenter quand on génère sur sujets sensibles                |
-| Non-transférable / non-sublicenciable               | ❌ Bloquant — contenu généré est lu par tiers                        |
-| Garantie Unsplash+ cap $10K / article               | ❌ Pas un risque acceptable                                          |
-| Indemnité limitée si modifications                  | ❌ Notre pipeline modifie systématiquement (resize, watermark, etc.) |
+| Élément                                    | Notre cas                                                              |
+| ------------------------------------------ | ---------------------------------------------------------------------- |
+| « dans des ensembles de données »          | ❌ Nous n'avons pas de dataset. On utilise 1 image ↔ 1 article.        |
+| « pour former des modèles » (exemple type) | ❌ On n'entraîne aucun modèle. On consomme du contenu IA (LLM hosted). |
+| « identification de personnes physiques »  | ❌ Pas de biométrie.                                                   |
 
-→ **Conclusion : Unsplash+ totalement exclu.** L'opt-out est dans le code (filter strict) et dans l'admin (impossibilité de toggle).
+→ **Verdict** : notre cas est **hors clause**. Conforme.
 
-## Doctrine Unsplash gratuit (autorisé)
+### API §12 (`unsplash.com/developers`)
 
-Source : https://unsplash.com/license (Unsplash License — type CC0 sans attribution obligatoire mais recommandée).
+> « Si vous souhaitez utiliser le Contenu provenant de l'API **à des fins d'apprentissage automatique et/ou d'intelligence artificielle**, ou pour des technologies conçues pour identifier ou destinées à l'identification de(s) personnes physiques, rendez-vous sur https://unsplash.com/data »
 
-| Permission                                                 | Notre usage                                               |
-| ---------------------------------------------------------- | --------------------------------------------------------- |
-| Usage commercial autorisé                                  | ✅ Vente, marketing, monétisation OK                      |
-| Modifications autorisées                                   | ✅ Resize, watermark, crop OK                             |
-| Pas d'attribution obligatoire (mais bonne pratique)        | ✅ On la met quand même (signal authenticité + bon karma) |
-| Pas de revente de photos en tant que photos                | ✅ N/A (on intègre dans contenus)                         |
-| Pas d'imitation Unsplash (« Unsplash for Brands » etc.)    | ✅ N/A                                                    |
-| Pas de compilation pour service concurrent                 | ✅ N/A                                                    |
-| AI training : permis (pas de restriction License gratuite) | ✅ Compatible notre pipeline                              |
+**Décomposition** :
 
-## Implémentation technique (Sprint 1 Day 2 AGT-B)
+| Élément                                    | Notre cas                                                               |
+| ------------------------------------------ | ----------------------------------------------------------------------- |
+| « à des fins d'apprentissage automatique » | ❌ Notre fin = automatisation de sélection éditoriale, pas training ML. |
+| « identification de personnes physiques »  | ❌ Pas de biométrie.                                                    |
+
+→ **Verdict** : notre cas est **hors clause**. La voie `/data` est pour les acteurs qui entraînent des modèles. Pas nous.
+
+### Unsplash+ §3 « Restrictions de licence »
+
+> « Aucune utilisation à des fins d'apprentissage machine, ou **par des dispositifs utilisant de l'Intelligence Artificielle**, ou des dispositifs de technologie biométrique quels qu'ils soient. Le Contenu Unsplash+ […] ne peut pas être utilisé à des fins d'apprentissage automatique et/ou **par/pour une intelligence artificielle quelle qu'elle soit**. »
+
+**Décomposition** :
+
+| Élément                                   | Notre cas                                                                                                                                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| « par des dispositifs utilisant de l'IA » | ⚠️ Notre pipeline appelle des LLMs (OpenAI/Anthropic/Perplexity). Le « dispositif » qui consomme l'image = notre serveur Node.js. Mais ce serveur appelle aussi des LLMs en amont/aval. **Zone grise.** |
+| « par/pour une IA quelle qu'elle soit »   | ⚠️ Idem — formulation très large.                                                                                                                                                                       |
+
+→ **Verdict** : clause Unsplash+ trop large et risquée. **Unsplash+ exclu** par prudence.
+
+## Décision opérationnelle
+
+✅ **Unsplash gratuit autorisé** pour content-gen V1.
+❌ **Unsplash+ interdit V1** (et V2 sauf changement de clause).
+✅ **Audit trail obligatoire** : chaque photo utilisée est tracée dans `ContentMetric.imageMetadata` (photo ID + photographer + URL source + date téléchargement + slug article).
+✅ **Filtre strict côté code** : `premium=false` à chaque requête + defense in depth post-réception.
+✅ **Trigger `/photos/:id/download`** obligatoire (CGU API §6 — Données d'Interaction Image).
+✅ **Attribution photographer** sur chaque image rendue (CGU API §9 — bien que non strictement obligatoire pour License gratuite, c'est exigé pour usage via API).
+
+## Implémentation technique (Sprint 1 Day 2 AGT-B → Day 4 image system)
 
 ### A. Requête API filtrée
 
@@ -58,16 +70,15 @@ url.searchParams.set("per_page", "30");
 // Unsplash n'expose pas de paramètre "exclude_premium" — on filtre côté client.
 ```
 
-### B. Filtrage post-réception
+### B. Filtrage post-réception (defense in depth)
 
 ```ts
 const photos = response.results.filter((p) => {
-  // Defense in depth : refus systématique de toute photo premium=true
+  // Refus systématique de toute photo Unsplash+ (premium=true OU tier!=free)
   if (p.premium === true) {
-    logger.warn(`[unsplash] Skipped premium photo ${p.id} (CGU compliance)`);
+    logger.warn(`[unsplash] Skipped Unsplash+ photo ${p.id} (premium=true, CGU §3)`);
     return false;
   }
-  // Refus aussi si tier paid (Unsplash+ uniquement, garde-fou)
   if (p.tier && p.tier !== "free") {
     logger.warn(`[unsplash] Skipped paid-tier photo ${p.id} (tier=${p.tier})`);
     return false;
@@ -85,9 +96,9 @@ if (photos.length === 0) {
 }
 ```
 
-### C. Attribution photographer obligatoire
+### C. Attribution photographer obligatoire (CGU API §9)
 
-Pour chaque photo retenue, stocker dans `WebVitalSample`/`ContentMetric`/output meta :
+Pour chaque photo retenue, stocker dans `ContentMetric.imageMetadata` + rendu HTML :
 
 ```ts
 const attribution = {
@@ -98,9 +109,29 @@ const attribution = {
 };
 ```
 
-→ rendu HTML obligatoire : `<figcaption>{attribution.unsplashCredit} (<a href="{photographerUrl}">{photographer}</a>)</figcaption>`.
+→ rendu HTML obligatoire :
 
-### D. Rate limiting (free tier Unsplash)
+```html
+<figcaption class="image-credit">
+  Photo de
+  <a href="{photographerUrl}" rel="noopener" target="_blank">{photographer}</a>
+  sur
+  <a href="https://unsplash.com?utm_source=axion-ia&utm_medium=referral" rel="noopener">Unsplash</a>
+</figcaption>
+```
+
+### D. Trigger download API obligatoire (CGU API §6)
+
+Unsplash exige qu'on hit l'endpoint `/photos/:id/download` pour chaque image utilisée (track usage côté Unsplash). C'est une **obligation technique** des Conditions d'Utilisation de l'API.
+
+```ts
+// Après avoir sélectionné une photo, AVANT de la stocker localement :
+await fetch(`https://api.unsplash.com/photos/${photo.id}/download`, {
+  headers: { Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}` },
+});
+```
+
+### E. Rate limiting (free tier Unsplash)
 
 Quota free : **50 requêtes / heure** par clé API.
 
@@ -120,24 +151,13 @@ if (count > 45) {
 }
 ```
 
-### E. Trigger « download » API obligatoire (CGU)
+### F. Avertissement sensible (prudence éditoriale)
 
-Unsplash exige qu'on hit l'endpoint `/photos/:id/download` pour chaque image utilisée (track usage côté Unsplash). C'est une **obligation technique** des CGU régulières.
-
-```ts
-// Après avoir sélectionné une photo, AVANT de la stocker localement :
-await fetch(`https://api.unsplash.com/photos/${photo.id}/download`, {
-  headers: { Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}` },
-});
-```
-
-### F. Avertissement sensible (CGU §3 Unsplash+ ET règle prudence Unsplash gratuit)
-
-Si le contenu touche à sujet sensible (santé, justice, politique, etc.), ajouter automatiquement dans le `<figcaption>` :
+Si le contenu touche à sujet sensible (santé, justice, politique, etc.), ajouter automatiquement dans le `<figcaption>` un disclaimer :
 
 ```html
-<figcaption>
-  Photo de {photographer} sur Unsplash ·
+<figcaption class="image-credit">
+  Photo de <a href="{photographerUrl}">{photographer}</a> sur Unsplash ·
   <em
     >Illustration à des fins descriptives. Toute personne représentée est un modèle non lié au sujet
     de l'article.</em
@@ -145,27 +165,55 @@ Si le contenu touche à sujet sensible (santé, justice, politique, etc.), ajout
 </figcaption>
 ```
 
-Triggered par mot-clé dans le sujet de l'article (à définir dans `posts-validate.ts` Sprint 1 Day 4).
+Triggered par mot-clé dans le sujet de l'article (à définir dans `posts-validate.ts` Sprint 1 Day 4 via `BannedPhrase[severity=info]` ou table dédiée `SensitiveTopic`).
 
-## Gates de conformité automatiques
+## Gates de conformité automatiques (Sprint 1 Day 4)
 
-À ajouter dans `pnpm content-gen:html-audit` (Sprint 1 Day 4) :
+À ajouter dans `pnpm content-gen:html-audit` :
 
-- [ ] Vérifie présence `<figcaption>` avec attribution photographer pour chaque `<img>` provenant d'Unsplash
+- [ ] Vérifie présence `<figcaption class="image-credit">` avec attribution photographer pour chaque `<img>` provenant d'Unsplash
 - [ ] Vérifie présence des liens `utm_source=axion-ia` dans les `href` de l'attribution
 - [ ] Vérifie qu'aucune photo `premium=true` n'a été utilisée (lookup en DB sur `ContentMetric.imageMetadata`)
 - [ ] Vérifie présence du download trigger log dans `GenerationLog.metadata.unsplashDownloadTriggered = true`
+- [ ] Vérifie présence du disclaimer sensible si topic ∈ liste sensibles
 
-## Doctrine V2+ (Sprint 2+)
+## Audit trail (RGPD + traçabilité)
 
-- V2 : ajouter cache local photos téléchargées (avec attribution conservée) — éviter re-trigger download Unsplash.
-- V2 : panel admin pour bloquer photographers spécifiques si Will identifie un problème.
-- V3 : possibilité passer à Pexels / Pixabay en parallèle (licence CC0 compatible).
-- ❌ V∞ : **Unsplash+ reste interdit tant que leur clause IA n'évolue pas.**
+Table `ContentMetric.imageMetadata` (Json) — schéma :
+
+```json
+{
+  "source": "unsplash",
+  "photoId": "abc123XYZ",
+  "photographer": "John Doe",
+  "photographerUrl": "https://unsplash.com/@johndoe?utm_source=axion-ia",
+  "photoUrl": "https://unsplash.com/photos/abc123XYZ?utm_source=axion-ia",
+  "downloadTriggeredAt": "2026-05-14T13:42:18.234Z",
+  "rawApiResponse": { "premium": false, "tier": "free", "..." },
+  "selectedFromQuery": "industrial AI consulting Lyon"
+}
+```
+
+→ permet de :
+
+- Répondre à une plainte « tiers » sous 7 jours (CGU §10 retrait sur notification)
+- Justifier la conformité Unsplash en cas d'audit
+- Désactiver/remplacer une photo précise à la demande
+
+## Roadmap V2 (Sprint 7+)
+
+Tant que les CGU restent inchangées, doctrine v3 stable. Re-évaluation déclenchée si :
+
+- Unsplash modifie CGU (préavis 7 jours) → audit nouveau texte avant continuer
+- Volume images > 50 K/an → demander licence enterprise via `unsplash.com/data` pour clarification écrite
+- Plainte tiers reçue → audit immédiat + retrait photo concernée + remplacement
+- Will souhaite ajouter providers Pexels/Pixabay/IA-gen → mêmes pattern de compliance docs
 
 ## Références
 
-- Conditions Unsplash+ (fournies Will 2026-05-14, archivées dans ce repo).
-- Unsplash License gratuite : https://unsplash.com/license
-- Unsplash API rate limits : https://unsplash.com/documentation#rate-limiting
-- Unsplash hotlinking rules : https://unsplash.com/documentation#hotlinking
+- Conditions Générales Unsplash (fournies Will 2026-05-14, §1-21 + DMCA + arbitrage)
+- Conditions d'Utilisation de l'API Unsplash (fournies Will 2026-05-14, §1-20)
+- Conditions d'Abonnement Unsplash+ (fournies Will 2026-05-14)
+- https://unsplash.com/license (License standard)
+- https://unsplash.com/data (voie enterprise IA — non requis V1 selon notre analyse)
+- ADR 0012 « Content Generator architecture v1.8 » (à étendre Sprint 1 Day 6 pour acter cette doctrine v3)
