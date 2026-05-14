@@ -17,6 +17,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateInvoicePdfBuffer } from "@/lib/invoice-pdf";
+import {
+  isR2Configured,
+  uploadToR2,
+  existsInR2,
+  getSignedUrlR2,
+  invoicePdfKey,
+} from "@/lib/r2-storage";
 import type { LegalSnapshot } from "@/lib/legal-snapshot";
 
 export const dynamic = "force-dynamic";
@@ -100,16 +107,39 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     locale: invoice.locale === "en" ? "en" : "fr",
   });
 
-  // Persist hash si pas encore stocké (idempotent — hash stable byte-for-byte)
+  // Upload R2 si configuré + persist URL signée 90j dans Invoice.pdfUrl.
+  // Idempotent : si key déjà présente avec même hash → skip upload (économie API call).
+  let pdfStorageUrl: string | null = null;
+  if (isR2Configured()) {
+    const key = invoicePdfKey(invoice.number, invoice.issuedAt);
+    try {
+      const alreadyPresent =
+        invoice.hashSha256 === result.hashSha256 && (await existsInR2(key).catch(() => false));
+      if (!alreadyPresent) {
+        await uploadToR2(key, result.buffer, "application/pdf", {
+          invoiceId: invoice.id,
+          invoiceNumber: invoice.number,
+          hashSha256: result.hashSha256,
+        });
+      }
+      pdfStorageUrl = await getSignedUrlR2(key);
+    } catch (err) {
+      console.warn("[invoice-pdf] R2 upload/sign failed (fail-soft)", err);
+    }
+  }
+
+  // Persist hash + pdfUrl si changement (idempotent)
+  const updateData: { hashSha256?: string; pdfUrl?: string } = {};
   if (!invoice.hashSha256 || invoice.hashSha256 !== result.hashSha256) {
-    await prisma.invoice
-      .update({
-        where: { id: invoice.id },
-        data: { hashSha256: result.hashSha256 },
-      })
-      .catch((err) => {
-        console.warn("[invoice-pdf] update hashSha256 failed", err);
-      });
+    updateData.hashSha256 = result.hashSha256;
+  }
+  if (pdfStorageUrl) {
+    updateData.pdfUrl = pdfStorageUrl;
+  }
+  if (Object.keys(updateData).length > 0) {
+    await prisma.invoice.update({ where: { id: invoice.id }, data: updateData }).catch((err) => {
+      console.warn("[invoice-pdf] update Invoice failed", err);
+    });
   }
 
   // Buffer → Uint8Array pour satisfaire BodyInit (Next 16 strict)
@@ -122,6 +152,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       "Content-Length": String(result.sizeBytes),
       "Cache-Control": "private, no-store",
       "X-Invoice-Hash-Sha256": result.hashSha256,
+      ...(pdfStorageUrl ? { "X-Invoice-R2-Signed-Url": pdfStorageUrl } : {}),
     },
   });
 }
