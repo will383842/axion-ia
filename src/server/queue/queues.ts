@@ -163,6 +163,19 @@ export const contentQaExtractQueue: Queue | null = connection
     })
   : null;
 
+/**
+ * Tier lifecycle (Sprint 10 V2) — cron mensuel 15 du mois 06:00 UTC.
+ * Scan les Articles tier-2 publiés ≥ 30j (promote candidates CTR > 5 %) +
+ * tier-1 publiés ≥ 60j (demote candidates CTR < 1 %). Lit GSC API (skeleton
+ * V1, activation Sprint 10.5 quand credentials JWT fournis par Will).
+ */
+export const contentTierLifecycleQueue: Queue | null = connection
+  ? new Queue("content-tier-lifecycle", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
 // ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
@@ -359,6 +372,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-daily-0500", tick: new Date().toISOString() },
       { repeat: { pattern: "0 5 * * *" }, jobId: "content-news-lifecycle-cron" },
+    );
+  }
+
+  // Sprint 10 V2 — tier-lifecycle mensuel (15 du mois 06:00 UTC).
+  if (contentTierLifecycleQueue) {
+    await contentTierLifecycleQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 6 15 * *" },
+      "content-tier-lifecycle-cron",
+    );
+    await contentTierLifecycleQueue.add(
+      "tick",
+      { trigger: "cron-monthly-15-0600", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 6 15 * *" }, jobId: "content-tier-lifecycle-cron" },
     );
   }
 }
