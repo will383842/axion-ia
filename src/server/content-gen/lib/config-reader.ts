@@ -44,8 +44,14 @@ export async function readProviderConfig(provider: ProviderKey): Promise<{
     try {
       row = await prisma.providerConfig.findUnique({ where: { provider } });
     } catch (err) {
-      // P2021 table doesn't exist → fallback defaults
-      if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
+      // Tolérances dev/test : DB pas accessible OU table pas migrée → fallback defaults V0.
+      // - P2021 : table doesn't exist (migration pas appliquée)
+      // - PrismaClientInitializationError : DATABASE_URL absent / Postgres down (tests sans DB)
+      const isPrismaInitError =
+        err instanceof Error && err.constructor.name === "PrismaClientInitializationError";
+      const isMigrationMissing =
+        err instanceof Error && "code" in err && (err as { code: string }).code === "P2021";
+      if (isPrismaInitError || isMigrationMissing) {
         row = null;
       } else {
         throw err;

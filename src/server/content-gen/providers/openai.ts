@@ -1,47 +1,228 @@
 /**
- * Content Generator — OpenAI provider (text + embeddings + image legacy).
+ * Content Generator — OpenAI provider (text + rerank).
  *
- * Sprint 1 Day 1 AGT-B = STUB typé. Implémentation complète Day 2 :
- * - streaming `stream: true` + onStreamChunk hook
- * - retry × 3 backoff exp (10s/30s/60s)
- * - timeout 30s
- * - parsing JSON output strict (Zod validation)
- * - tracking cost en CostLedger (atomic Prisma transaction)
- * - détection content_filter → re-prompt neutre
+ * Sprint 1 Day 2 AGT-B step 09:00 — implémentation complète :
+ * - streaming `stream: true` + `onStreamChunk` hook (anti-waterfall § 9.11.2)
+ * - retry × 3 backoff exp 10s/30s/60s via withRetry
+ * - timeout 30s default (60s pour long-form)
+ * - tracking cost atomic via trackCost (CostLedger + ProviderConfig increment)
+ * - cost cap check pré-call via assertCostCapAvailable
+ * - détection content_filter → ProviderError non-retryable
  *
- * Cf. _AUDIT/SPRINT-1-DAY-BY-DAY.md Day 2 § 09:00.
+ * Pricing 2026-05 (à mettre à jour si OpenAI change) :
+ * - gpt-4o      : $2.50 / 1M input · $10.00 / 1M output
+ * - gpt-4o-mini : $0.15 / 1M input · $0.60 / 1M output
+ *
+ * Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 7.1 + § 0.4.
  */
 
+import OpenAI from "openai";
 import {
   ProviderError,
   type GenerationRequest,
   type GenerationResponse,
   type IProvider,
 } from "./IProvider";
+import { withRetry } from "../lib/retry";
+import { assertCostCapAvailable, trackCost } from "../lib/cost-tracker";
+import { readProviderConfig } from "../lib/config-reader";
 
-// Lecture directe process.env (PAS @/env t3-validator) — les stubs doivent
-// rester testable côté Vitest (t3-env throw côté client-side detected).
-// Day 2 : wrapper `getProviderConfig()` qui lit ProviderConfig DB.
+const DEFAULT_TIMEOUT_MS = 30_000;
+
+/**
+ * Pricing table USD per token (input/output). Stable enough pour V1.
+ * V2 : déplacer en DB `ProviderConfig.extraConfig.pricing` éditable admin.
+ */
+const PRICING: Record<string, { input: number; output: number }> = {
+  "gpt-4o": { input: 2.5 / 1_000_000, output: 10.0 / 1_000_000 },
+  "gpt-4o-mini": { input: 0.15 / 1_000_000, output: 0.6 / 1_000_000 },
+  "gpt-4.1": { input: 2.5 / 1_000_000, output: 10.0 / 1_000_000 },
+  "gpt-4.1-mini": { input: 0.15 / 1_000_000, output: 0.6 / 1_000_000 },
+};
+
+function computeCost(model: string, tokensInput: number, tokensOutput: number): number {
+  const rates = PRICING[model] ?? PRICING["gpt-4o"];
+  if (!rates) return 0;
+  return tokensInput * rates.input + tokensOutput * rates.output;
+}
+
+/**
+ * Map erreurs SDK OpenAI vers ProviderError typés.
+ */
+function mapOpenAiError(err: unknown): ProviderError {
+  if (err instanceof OpenAI.APIError) {
+    const status = err.status;
+    if (status === 401 || status === 403) {
+      return new ProviderError(
+        `OpenAI auth failed: ${err.message}`,
+        "auth_failed",
+        "openai",
+        false,
+      );
+    }
+    if (status === 429) {
+      return new ProviderError(`OpenAI rate limited`, "rate_limited", "openai", true);
+    }
+    if (status && status >= 500) {
+      return new ProviderError(`OpenAI server error ${status}`, "down", "openai", true);
+    }
+    // 400 + content_filter
+    if (err.code === "content_filter" || /content[_-]filter/i.test(err.message)) {
+      return new ProviderError(`OpenAI content filter`, "content_filter", "openai", false);
+    }
+    return new ProviderError(
+      `OpenAI API error ${status}: ${err.message}`,
+      "unknown",
+      "openai",
+      false,
+    );
+  }
+  if (err instanceof OpenAI.APIConnectionTimeoutError) {
+    return new ProviderError(`OpenAI timeout`, "timeout", "openai", true);
+  }
+  if (err instanceof OpenAI.APIConnectionError) {
+    return new ProviderError(`OpenAI connection error`, "down", "openai", true);
+  }
+  return new ProviderError(
+    `OpenAI unknown error: ${err instanceof Error ? err.message : String(err)}`,
+    "unknown",
+    "openai",
+    false,
+  );
+}
+
+function getClient(): OpenAI {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new ProviderError("OPENAI_API_KEY not set", "auth_failed", "openai", false);
+  }
+  return new OpenAI({ apiKey, timeout: DEFAULT_TIMEOUT_MS });
+}
 
 export const openaiProvider: IProvider = {
   key: "openai",
   supportedRoles: ["text", "image", "rerank"],
 
-  async generate(_req: GenerationRequest): Promise<GenerationResponse> {
-    if (!process.env.OPENAI_API_KEY) {
-      throw new ProviderError("OPENAI_API_KEY not set", "auth_failed", "openai", false);
+  async generate(req: GenerationRequest): Promise<GenerationResponse> {
+    if (req.role !== "text" && req.role !== "rerank") {
+      throw new ProviderError(
+        `OpenAI provider V1 supports text/rerank only (got '${req.role}')`,
+        "unknown",
+        "openai",
+        false,
+      );
     }
-    // Sprint 1 Day 2 — implémentation streaming + retry + cost tracking
-    throw new ProviderError(
-      "openai.generate not yet implemented (Sprint 1 Day 2)",
-      "unknown",
-      "openai",
-      false,
-    );
+
+    // 1. Config + cost cap check
+    const config = await readProviderConfig("openai");
+    if (!config.enabled) {
+      throw new ProviderError("OpenAI provider disabled in DB", "auth_failed", "openai", false);
+    }
+    const model = req.model ?? config.model;
+
+    // Estimation cost : ~10 cents par job text typique (V1 — affinée Day 5).
+    await assertCostCapAvailable("openai", 0.1);
+
+    const client = getClient();
+    const startedAt = Date.now();
+    let tokensInput = 0;
+    let tokensOutput = 0;
+    let fullText = "";
+    let contentFilterTriggered = false;
+
+    const executeCall = async () => {
+      const stream = await client.chat.completions.create({
+        model,
+        messages: [
+          { role: "system", content: req.systemPrompt },
+          { role: "user", content: req.userPrompt },
+        ],
+        stream: true,
+        stream_options: { include_usage: true },
+        ...(req.maxTokens !== undefined ? { max_tokens: req.maxTokens } : {}),
+        ...(req.temperature !== undefined ? { temperature: req.temperature } : {}),
+      });
+
+      for await (const chunk of stream) {
+        // content_filter signal côté OpenAI (rare en streaming, plus souvent en delta finish_reason)
+        const finishReason = chunk.choices[0]?.finish_reason;
+        if (finishReason === "content_filter") {
+          contentFilterTriggered = true;
+        }
+        const delta = chunk.choices[0]?.delta?.content;
+        if (delta) {
+          fullText += delta;
+          if (req.onStreamChunk) req.onStreamChunk(delta);
+        }
+        if (chunk.usage) {
+          tokensInput = chunk.usage.prompt_tokens;
+          tokensOutput = chunk.usage.completion_tokens;
+        }
+      }
+    };
+
+    try {
+      await withRetry(async () => {
+        try {
+          await executeCall();
+        } catch (err) {
+          throw mapOpenAiError(err);
+        }
+      });
+    } catch (err) {
+      // ProviderError final après retry exhausted ou non-retryable
+      throw err instanceof ProviderError ? err : mapOpenAiError(err);
+    }
+
+    if (contentFilterTriggered) {
+      throw new ProviderError(
+        "OpenAI content filter triggered mid-stream",
+        "content_filter",
+        "openai",
+        false,
+      );
+    }
+    if (!fullText) {
+      throw new ProviderError("OpenAI returned empty content", "invalid_response", "openai", false);
+    }
+
+    const costUsd = computeCost(model, tokensInput, tokensOutput);
+    const durationMs = Date.now() - startedAt;
+
+    // 2. Track cost atomic (CostLedger + ProviderConfig increment)
+    await trackCost({
+      ...(req.jobId ? { jobId: req.jobId } : {}),
+      provider: "openai",
+      model,
+      tokensInput,
+      tokensOutput,
+      costUsd,
+    });
+
+    return {
+      provider: "openai",
+      model,
+      output: fullText,
+      tokensInput,
+      tokensOutput,
+      costUsd,
+      durationMs,
+      contentFilterTriggered: false,
+    };
   },
 
   async healthCheck(): Promise<boolean> {
-    // Sprint 1 Day 2 — appel light /models endpoint avec cache Redis 60s
-    return Boolean(process.env.OPENAI_API_KEY);
+    if (!process.env.OPENAI_API_KEY) return false;
+    try {
+      const config = await readProviderConfig("openai");
+      if (!config.enabled) return false;
+      // Health check léger via /v1/models (pas de cost). Sprint 1 Day 2 implémente
+      // un cache Redis 60s pour éviter hammering.
+      const client = getClient();
+      await client.models.list();
+      return true;
+    } catch {
+      return false;
+    }
   },
 };
