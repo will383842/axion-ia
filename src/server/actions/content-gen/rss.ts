@@ -50,3 +50,50 @@ export async function removeRssSource(url: string): Promise<void> {
   );
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
 }
+
+/**
+ * Modifie une source RSS existante (P1-3 audit opérationnel 2026-05-14).
+ *
+ * Match par `originalUrl` puis remplace la row complète avec `input`. Permet
+ * notamment de changer pollInterval, tags, autoPublish, enabled sans devoir
+ * remove+add (qui perdait le seen-cache et l'historique).
+ */
+export async function updateRssSource(originalUrl: string, input: RssSource): Promise<void> {
+  const session = await requireAdmin();
+  if (!/^https?:\/\//.test(input.url)) throw new Error("url_invalid");
+  if (input.name.length < 2) throw new Error("name_too_short");
+  if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
+    throw new Error("poll_interval_range");
+
+  const current = await listRssSources();
+  const idx = current.findIndex((s) => s.url === originalUrl);
+  if (idx === -1) throw new Error("source_not_found");
+  // Si on change l'URL et qu'une autre source a déjà cette URL → conflit.
+  if (input.url !== originalUrl && current.some((s) => s.url === input.url)) {
+    throw new Error("url_already_added");
+  }
+  const next = [...current];
+  next[idx] = input;
+  await writeContentGenConfig(KEY, next, session.userId, `RSS source updated (${input.url})`);
+  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+}
+
+/**
+ * Toggle enabled d'une source RSS (P1-3 — alias léger de updateRssSource pour
+ * 1 seul flip ON/OFF sans avoir à passer tous les champs depuis l'UI).
+ */
+export async function toggleRssSource(url: string, enabled: boolean): Promise<void> {
+  const session = await requireAdmin();
+  const current = await listRssSources();
+  const idx = current.findIndex((s) => s.url === url);
+  if (idx === -1) throw new Error("source_not_found");
+  const next = [...current];
+  next[idx] = { ...current[idx]!, enabled };
+  await writeContentGenConfig(
+    KEY,
+    next,
+    session.userId,
+    `RSS source ${enabled ? "enabled" : "disabled"} (${url})`,
+  );
+  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+}

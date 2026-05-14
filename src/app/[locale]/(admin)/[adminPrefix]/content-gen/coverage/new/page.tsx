@@ -7,7 +7,12 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { createCampaign, launchCampaign } from "@/server/actions/content-gen/coverage";
+import {
+  createCampaign,
+  estimateCampaign,
+  launchCampaign,
+  type EstimateCampaignResult,
+} from "@/server/actions/content-gen/coverage";
 import { listAudienceMixProfiles, listDistributionProfiles } from "@/server/actions/content-gen/distribution";
 import type { CoverageScope } from "../../../../../../../../prisma/generated/client";
 
@@ -15,6 +20,7 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
+  searchParams: Promise<{ dryRun?: string }>;
 }
 
 const SCOPES: ReadonlyArray<CoverageScope> = ["ville", "departement", "region", "multi"];
@@ -35,8 +41,18 @@ const DEFAULT_AUDIENCE_MIX = `{
   "PME:secteur_public": 5
 }`;
 
-export default async function NewCampaignPage({ params }: PageProps) {
+function decodeDryRun(raw: string | undefined): EstimateCampaignResult | null {
+  if (!raw) return null;
+  try {
+    return JSON.parse(Buffer.from(raw, "base64url").toString("utf8")) as EstimateCampaignResult;
+  } catch {
+    return null;
+  }
+}
+
+export default async function NewCampaignPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
+  const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -44,6 +60,7 @@ export default async function NewCampaignPage({ params }: PageProps) {
     listDistributionProfiles(),
     listAudienceMixProfiles(),
   ]);
+  const dryRunResult = decodeDryRun(sp.dryRun);
 
   async function create(formData: FormData) {
     "use server";
@@ -85,11 +102,58 @@ export default async function NewCampaignPage({ params }: PageProps) {
     redirect(`/fr/${adminPrefix}/content-gen/coverage/${id}`);
   }
 
+  async function dryRun(formData: FormData) {
+    "use server";
+    const typeDistribution = JSON.parse(
+      String(formData.get("typeDistribution") ?? "{}"),
+    ) as Record<string, number>;
+    const totalTargetCount = Number(formData.get("totalTargetCount") ?? 0);
+    const estimate = await estimateCampaign({ totalTargetCount, typeDistribution });
+    const encoded = Buffer.from(JSON.stringify(estimate)).toString("base64url");
+    redirect(`/fr/${adminPrefix}/content-gen/coverage/new?dryRun=${encoded}`);
+  }
+
   return (
     <section>
       <div className="admin-dashboard-head">
         <h1 className="admin-h1-large">Nouvelle campagne</h1>
       </div>
+
+      {dryRunResult ? (
+        <div
+          className="admin-card"
+          style={{ borderColor: "var(--color-terracotta)", marginBottom: 16 }}
+        >
+          <h2>Estimation dry-run</h2>
+          <p>
+            <strong>Coût estimé :</strong> ${dryRunResult.estimatedCostUsd.toFixed(2)} ·{" "}
+            <strong>Durée estimée :</strong> {dryRunResult.estimatedDurationMinutes} min (concurrency
+            5) · <strong>{dryRunResult.totalTargetCount}</strong> contenus.
+          </p>
+          <table className="admin-table" style={{ fontSize: 12 }}>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Volume</th>
+                <th>Coût unitaire</th>
+                <th>Durée unit. (s)</th>
+                <th>Sous-total $</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dryRunResult.breakdown.map((b) => (
+                <tr key={b.contentType}>
+                  <td>{b.contentType}</td>
+                  <td>{b.count}</td>
+                  <td>${b.unitCostUsd.toFixed(3)}</td>
+                  <td>{b.unitDurationSec}</td>
+                  <td>${(b.count * b.unitCostUsd).toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
 
       <form action={create} className="admin-card">
         <div className="admin-filters-grid">
@@ -224,6 +288,14 @@ export default async function NewCampaignPage({ params }: PageProps) {
         <div className="admin-filters-actions">
           <button type="submit" className="admin-button">
             Enregistrer
+          </button>
+          <button
+            type="submit"
+            formAction={dryRun}
+            className="admin-button-ghost"
+            title="Calcule coût + durée estimée sans insérer de campagne ni d'enqueue"
+          >
+            🧪 Dry-run (estimer)
           </button>
         </div>
       </form>

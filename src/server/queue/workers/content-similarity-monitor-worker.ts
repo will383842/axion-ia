@@ -15,7 +15,10 @@
 
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
-import { writeContentGenConfig } from "@/server/actions/content-gen/_settings";
+import {
+  readContentGenConfig,
+  writeContentGenConfig,
+} from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-similarity-monitor";
 
@@ -51,6 +54,17 @@ function jaccard(a: Set<string>, b: Set<string>): number {
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
+  // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
+  // Le similarity-monitor lit/écrit le corpus existant — neutral mais on coupe
+  // par cohérence (audit batch global Will).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log("[similarity-monitor-worker] kill switch active, skip tick");
+    return;
+  }
+
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
   const jobs = await prisma.contentGenJob.findMany({
     where: {

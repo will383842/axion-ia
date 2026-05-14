@@ -11,6 +11,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
@@ -29,6 +30,17 @@ const DEFAULTS: NewsLifecycleSettings = {
 };
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
+  // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
+  // News lifecycle = archive auto > 90j. Sans check kill_switch, l'archive
+  // continue même si Will a tout coupé suite à un incident éditorial.
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log("[news-lifecycle-worker] kill switch active, skip tick");
+    return;
+  }
+
   const settings = await readContentGenConfig<NewsLifecycleSettings>("news_lifecycle", DEFAULTS);
 
   const now = Date.now();
@@ -36,26 +48,55 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const archiveThreshold = new Date(now - settings.archiveAfterDays * 24 * 60 * 60 * 1000);
 
   // 1. Archive vieux RSS (> 90j)
+  // P1-5 fix audit opérationnel 2026-05-14 : on charge aussi la translation FR
+  // pour pouvoir revalidate /fr/actualites/<slug> + sitemap-news. Sans ces
+  // revalidations, le cache CDN sert les pages archivées comme tier-2/tier-1
+  // jusqu'à expiration TTL CF, et sitemap-news.xml ne se rafraîchit pas.
   const toArchive = await prisma.contentGenJob.findMany({
     where: {
       contentType: "blog_from_rss",
       status: "published",
       completedAt: { lt: archiveThreshold },
     },
-    select: { id: true, outputBlogPostId: true },
+    select: {
+      id: true,
+      outputBlogPostId: true,
+    },
     take: 200,
   });
 
   for (const j of toArchive) {
-    if (j.outputBlogPostId) {
-      await prisma.article
-        .update({
-          where: { id: j.outputBlogPostId },
-          data: { status: "archived" },
-        })
-        .catch(() => {
-          // article may have been deleted manually — ignore
-        });
+    if (!j.outputBlogPostId) continue;
+    try {
+      const article = await prisma.article.update({
+        where: { id: j.outputBlogPostId },
+        data: {
+          status: "archived",
+          indexationTier: "tier_3_noindex_nofollow",
+        },
+        include: { translations: { where: { locale: "fr" }, take: 1, select: { slug: true } } },
+      });
+      const t = article.translations[0];
+      if (t) {
+        try {
+          revalidatePath(`/fr/actualites/${t.slug}`);
+        } catch {
+          // worker bg — no-op si pas de request context
+        }
+      }
+    } catch {
+      // article may have been deleted manually — ignore
+    }
+  }
+
+  // Revalidate sitemap-news + index globaux après archives batch
+  if (toArchive.length > 0) {
+    try {
+      revalidatePath("/sitemap.xml");
+      revalidatePath("/sitemap-news.xml");
+      revalidatePath("/fr/actualites");
+    } catch {
+      // worker bg — no-op
     }
   }
 

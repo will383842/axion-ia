@@ -29,6 +29,26 @@ export interface DashboardKpis {
   readonly killSwitchActive: boolean;
 }
 
+/**
+ * Wrapper anti-P2021 : Prisma jette `P2021` quand la table n'existe pas
+ * (migration `add_content_gen_core` pas appliquée — bloqueur Will). Ce
+ * helper retourne `fallback` au lieu de propager l'erreur, ce qui évite que
+ * la page admin crash full-page (cf. P1-18 audit opérationnel 2026-05-14).
+ */
+async function safeCount<T>(promise: Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await promise;
+  } catch (err) {
+    if (err instanceof Error && "code" in err && (err as { code?: string }).code === "P2021") {
+      return fallback;
+    }
+    if (err instanceof Error && err.constructor.name === "PrismaClientInitializationError") {
+      return fallback;
+    }
+    throw err;
+  }
+}
+
 export async function getDashboardKpis(): Promise<DashboardKpis> {
   // Pass B fix P0-4 — RBAC : aucune lecture KPIs sans session admin (sinon
   // server action POST publiquement appelable expose coûts + scores qualité +
@@ -51,34 +71,49 @@ export async function getDashboardKpis(): Promise<DashboardKpis> {
     kbCount,
     killState,
   ] = await Promise.all([
-    prisma.contentGenJob.count({ where: { createdAt: { gte: sevenDaysAgo } } }),
-    prisma.contentGenJob.count({
-      where: { status: "published", completedAt: { gte: sevenDaysAgo } },
-    }),
-    prisma.contentGenJob.count({
-      where: { status: "failed", completedAt: { gte: sevenDaysAgo } },
-    }),
-    prisma.reviewQueue.count({ where: { status: "pending" } }),
-    prisma.costLedger.aggregate({
-      _sum: { costUsd: true },
-      where: { timestamp: { gte: sevenDaysAgo } },
-    }),
-    prisma.contentGenJob.aggregate({
-      _avg: { qualityScore: true },
-      where: { qualityScore: { not: null }, completedAt: { gte: sevenDaysAgo } },
-    }),
-    prisma.generationLog.count({
-      where: {
-        step: "plagiarism_check",
-        level: "warn",
-        timestamp: { gte: sevenDaysAgo },
-      },
-    }),
-    prisma.contentGenJob.count({ where: { status: "running" } }),
-    prisma.contentGenJob.count({ where: { status: "queued" } }),
-    prisma.contentGenJob.count({ where: { status: "failed" } }),
-    prisma.knowledgeEntry.count({ where: { status: "published" } }).catch(() => 0),
-    getKillSwitch(),
+    safeCount(prisma.contentGenJob.count({ where: { createdAt: { gte: sevenDaysAgo } } }), 0),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: { status: "published", completedAt: { gte: sevenDaysAgo } },
+      }),
+      0,
+    ),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: { status: "failed", completedAt: { gte: sevenDaysAgo } },
+      }),
+      0,
+    ),
+    safeCount(prisma.reviewQueue.count({ where: { status: "pending" } }), 0),
+    safeCount(
+      prisma.costLedger.aggregate({
+        _sum: { costUsd: true },
+        where: { timestamp: { gte: sevenDaysAgo } },
+      }),
+      { _sum: { costUsd: null as unknown as null } },
+    ),
+    safeCount(
+      prisma.contentGenJob.aggregate({
+        _avg: { qualityScore: true },
+        where: { qualityScore: { not: null }, completedAt: { gte: sevenDaysAgo } },
+      }),
+      { _avg: { qualityScore: null as unknown as null } },
+    ),
+    safeCount(
+      prisma.generationLog.count({
+        where: {
+          step: "plagiarism_check",
+          level: "warn",
+          timestamp: { gte: sevenDaysAgo },
+        },
+      }),
+      0,
+    ),
+    safeCount(prisma.contentGenJob.count({ where: { status: "running" } }), 0),
+    safeCount(prisma.contentGenJob.count({ where: { status: "queued" } }), 0),
+    safeCount(prisma.contentGenJob.count({ where: { status: "failed" } }), 0),
+    safeCount(prisma.knowledgeEntry.count({ where: { status: "published" } }), 0),
+    getKillSwitch().catch(() => ({ active: false })),
   ]);
 
   return {

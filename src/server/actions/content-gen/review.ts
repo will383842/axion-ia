@@ -115,6 +115,47 @@ export async function rejectReview(id: string, notes: string): Promise<void> {
   revalidatePath(adminBase());
 }
 
+/**
+ * Demande de modifications sur une review (P1-14 fix audit opérationnel 2026-05-14).
+ *
+ * Will fournit un commentaire (≥ 10 chars) qui sert de guidance pour le worker
+ * `content-quality-improver` au prochain pick. Bascule la review en
+ * `needs_edits` (status enum jusque-là orphelin) et le ContentGenJob en
+ * `quality_improving` (le worker picke ce statut).
+ *
+ * V1 = la guidance Will est stockée en `reviewNotes` mais pas encore
+ * re-prompted vers le LLM (skeleton). V1.5+ = le quality-improver consomme
+ * `reviewNotes` comme system prompt enrichi pour re-générer les sections.
+ */
+export async function requestEdits(id: string, comment: string): Promise<void> {
+  const session = await requireAdmin();
+  if (comment.trim().length < 10) throw new Error("comment_required");
+
+  const review = await prisma.reviewQueue.findUnique({
+    where: { id },
+    select: { jobId: true, status: true },
+  });
+  if (!review) throw new Error("review_not_found");
+  if (review.status !== "pending") throw new Error("review_not_pending");
+
+  await prisma.$transaction([
+    prisma.reviewQueue.update({
+      where: { id },
+      data: {
+        status: "needs_edits",
+        reviewedBy: session.userId,
+        reviewNotes: comment.slice(0, 5000),
+        reviewedAt: new Date(),
+      },
+    }),
+    prisma.contentGenJob.update({
+      where: { id: review.jobId },
+      data: { status: "quality_improving" },
+    }),
+  ]);
+  revalidatePath(adminBase());
+}
+
 export async function promoteToTier1(id: string): Promise<void> {
   const session = await requireAdmin();
   await prisma.reviewQueue.update({

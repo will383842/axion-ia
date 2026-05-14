@@ -5,7 +5,12 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { approveReview, promoteToTier1, rejectReview } from "@/server/actions/content-gen/review";
+import {
+  approveReview,
+  promoteToTier1,
+  rejectReview,
+  requestEdits,
+} from "@/server/actions/content-gen/review";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +40,10 @@ export default async function ReviewDetailPage({ params }: PageProps) {
   async function promote() {
     "use server";
     await promoteToTier1(id);
+  }
+  async function askEdits(formData: FormData) {
+    "use server";
+    await requestEdits(id, String(formData.get("comment") ?? ""));
   }
 
   return (
@@ -82,6 +91,27 @@ export default async function ReviewDetailPage({ params }: PageProps) {
           </p>
           <button type="submit" className="admin-button">
             🚀 Promouvoir tier-1
+          </button>
+        </form>
+
+        <form action={askEdits} style={{ marginBottom: 24 }}>
+          <div className="admin-field">
+            <label htmlFor="edits-comment" className="admin-label">
+              Demander des modifications (min 10 caractères) — guidance LLM
+            </label>
+            <textarea
+              id="edits-comment"
+              name="comment"
+              rows={4}
+              minLength={10}
+              maxLength={5000}
+              required
+              className="admin-input"
+              placeholder="Ex. « Réécrire la section H2 #2 en restant AxionIA-centric, ajouter 200 mots sur l'intervention Essentielle. »"
+            />
+          </div>
+          <button type="submit" className="admin-button-ghost">
+            ✏️ Demander des modifs (re-prompt LLM)
           </button>
         </form>
 

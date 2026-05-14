@@ -111,6 +111,16 @@ function getContentGenQueue(): Queue {
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
+  // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
+  // Sans ce check, le RSS fetch continue à crawler les sources tiers et
+  // accumuler des items "rss_items_seen" même quand Will a tout coupé.
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log("[rss-fetch-worker] kill switch active, skip tick");
+    return;
+  }
   const sources = await readContentGenConfig<ReadonlyArray<RssSource>>("rss_sources", []);
   const seenHashes = new Set(await readContentGenConfig<ReadonlyArray<string>>(SEEN_KEY, []));
 

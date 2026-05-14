@@ -34,6 +34,15 @@ interface QualityLoopSettings {
 async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const { contentGenJobId, previousScore } = job.data;
 
+  // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log(`[quality-improver-worker] kill switch active, requeue job ${contentGenJobId}`);
+    throw new Error("kill_switch_active");
+  }
+
   const settings = await readContentGenConfig<QualityLoopSettings>("quality_loop", {
     enabled: true,
     minScoreThreshold: 75,

@@ -8,6 +8,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { removeRssSource, toggleRssSource } from "@/server/actions/content-gen/rss";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 export const dynamic = "force-dynamic";
@@ -32,14 +33,26 @@ export default async function RssListPage({ params }: PageProps) {
 
   const sources = await readContentGenConfig<ReadonlyArray<RssSource>>("rss_sources", []);
 
+  async function doToggle(formData: FormData) {
+    "use server";
+    const url = String(formData.get("url") ?? "");
+    const enabled = formData.get("enabled") === "true";
+    await toggleRssSource(url, enabled);
+  }
+
+  async function doRemove(formData: FormData) {
+    "use server";
+    await removeRssSource(String(formData.get("url") ?? ""));
+  }
+
   return (
     <section>
       <div className="admin-dashboard-head">
         <div>
           <h1 className="admin-h1-large">Sources RSS</h1>
           <p className="admin-meta">
-            {sources.length} source{sources.length > 1 ? "s" : ""} · Pipeline 2 actualités (Sprint 4
-            : workers BullMQ).
+            {sources.length} source{sources.length > 1 ? "s" : ""} · Pipeline 2 actualités · poll
+            via cron `content-rss-fetch` toutes les heures.
           </p>
         </div>
         <a href={`/fr/${adminPrefix}/content-gen/rss/new`} className="admin-button">
@@ -57,12 +70,13 @@ export default async function RssListPage({ params }: PageProps) {
               <th>Poll (min)</th>
               <th>Auto-pub</th>
               <th>Actif</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {sources.length === 0 ? (
               <tr>
-                <td colSpan={6}>Aucune source RSS configurée.</td>
+                <td colSpan={7}>Aucune source RSS configurée.</td>
               </tr>
             ) : (
               sources.map((s) => (
@@ -77,6 +91,40 @@ export default async function RssListPage({ params }: PageProps) {
                   <td>{s.pollIntervalMin}</td>
                   <td>{s.autoPublish ? "✅" : "—"}</td>
                   <td>{s.enabled ? "✅" : "🚫"}</td>
+                  <td style={{ display: "flex", gap: 6 }}>
+                    <form action={doToggle}>
+                      <input type="hidden" name="url" value={s.url} />
+                      <input type="hidden" name="enabled" value={(!s.enabled).toString()} />
+                      <button
+                        type="submit"
+                        className="admin-button-ghost"
+                        style={{ fontSize: 11, padding: "2px 6px" }}
+                      >
+                        {s.enabled ? "Désactiver" : "Activer"}
+                      </button>
+                    </form>
+                    <a
+                      href={`/fr/${adminPrefix}/content-gen/rss/${encodeURIComponent(s.url)}`}
+                      className="admin-button-ghost"
+                      style={{ fontSize: 11, padding: "2px 6px" }}
+                    >
+                      Éditer
+                    </a>
+                    <form action={doRemove}>
+                      <input type="hidden" name="url" value={s.url} />
+                      <button
+                        type="submit"
+                        className="admin-button-ghost"
+                        style={{
+                          fontSize: 11,
+                          padding: "2px 6px",
+                          color: "var(--color-terracotta)",
+                        }}
+                      >
+                        Retirer
+                      </button>
+                    </form>
+                  </td>
                 </tr>
               ))
             )}

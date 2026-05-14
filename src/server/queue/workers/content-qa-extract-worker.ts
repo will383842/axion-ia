@@ -24,6 +24,7 @@
 import { Worker, type Job } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 
 const QUEUE_NAME = "content-qa-extract";
@@ -58,6 +59,17 @@ function slugifyQuestion(articleSlug: string, question: string): string {
 
 async function processJob(job: Job<QaExtractJobPayload>): Promise<void> {
   const { articleId, contentGenJobId, articleSlug, articleTitle, faqs } = job.data;
+
+  // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
+  // QA extract = effet de bord (insert FAQ DB + pages publiques /fr/faq/[slug]).
+  // Kill switch doit le stopper aussi (sinon contenu IA continue de surfaire).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log(`[qa-extract-worker] kill switch active, requeue job ${contentGenJobId}`);
+    throw new Error("kill_switch_active");
+  }
 
   if (!faqs || faqs.length === 0) {
     await logStep(contentGenJobId, "qa_extract", "No FAQs to extract — skipping");

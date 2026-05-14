@@ -7,6 +7,7 @@ import { auth } from "@/auth";
 import {
   cancelCampaign,
   getCampaign,
+  incrementCampaignTarget,
   launchCampaign,
   pauseCampaign,
   resumeCampaign,
@@ -38,9 +39,18 @@ export default async function CampaignDetailPage({ params }: PageProps) {
     "use server";
     await resumeCampaign(id);
   }
-  async function cancel() {
+  async function cancelRunningOnly() {
     "use server";
-    await cancelCampaign(id);
+    await cancelCampaign(id, "running_only");
+  }
+  async function cancelAll() {
+    "use server";
+    await cancelCampaign(id, "all");
+  }
+  async function addSlots(formData: FormData) {
+    "use server";
+    const delta = Number(formData.get("delta") ?? 50);
+    await incrementCampaignTarget(id, delta);
   }
 
   const progressPct =
@@ -81,12 +91,47 @@ export default async function CampaignDetailPage({ params }: PageProps) {
               </button>
             </form>
           ) : null}
-          {campaign.status !== "completed" && campaign.status !== "cancelled" ? (
-            <form action={cancel}>
+          {(campaign.status === "running" || campaign.status === "paused") && (
+            <form
+              action={addSlots}
+              style={{ display: "flex", gap: 4, alignItems: "center" }}
+            >
+              <input
+                type="number"
+                name="delta"
+                defaultValue={50}
+                min={1}
+                max={1000}
+                className="admin-input"
+                style={{ width: 70 }}
+              />
               <button type="submit" className="admin-button-ghost">
-                Annuler
+                + slots
               </button>
             </form>
+          )}
+          {campaign.status !== "completed" && campaign.status !== "cancelled" ? (
+            <>
+              <form action={cancelRunningOnly}>
+                <button
+                  type="submit"
+                  className="admin-button-ghost"
+                  title="Cancel les jobs queued/running uniquement — préserve les contenus déjà générés en review"
+                >
+                  Annuler (running only)
+                </button>
+              </form>
+              <form action={cancelAll}>
+                <button
+                  type="submit"
+                  className="admin-button-ghost"
+                  title="Cancel TOUS les jobs non publiés — incluant needs_review/approved"
+                  style={{ color: "var(--color-terracotta)" }}
+                >
+                  Annuler (all)
+                </button>
+              </form>
+            </>
           ) : null}
         </div>
       </div>
