@@ -27,21 +27,13 @@ import { Queue, Worker, type Job } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generators/blog-from-rss";
+import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 
 const QUEUE_NAME = "content-publish";
 
 export interface PublishJobPayload {
   readonly reviewQueueId: string;
   readonly promoteToTier1: boolean;
-}
-
-let indexNowQueue: Queue | null = null;
-function getIndexNowQueue(): Queue {
-  if (indexNowQueue) return indexNowQueue;
-  const redisUrl = process.env.REDIS_URL;
-  if (!redisUrl) throw new Error("REDIS_URL not set");
-  indexNowQueue = new Queue("content-indexnow", { connection: { url: redisUrl } });
-  return indexNowQueue;
 }
 
 let qaExtractQueue: Queue | null = null;
@@ -186,17 +178,17 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     });
   }
 
-  // IndexNow ping si tier-1 (jamais tier-2 noindex)
+  // Sprint 9 V2 : indexing ping centralisé (IndexNow + Google Indexing) si tier-1.
+  // Le helper enqueueIndexingForTier1 dédoublonne sur jobId et gate Google
+  // Indexing sur flag GOOGLE_INDEXING_API_ENABLED. Réutilisé par Sprint 10
+  // tier-lifecycle-worker (auto-promote CTR > seuil) → un seul code path indexing.
   if (promoteToTier1) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-    const articleUrl = isNews
-      ? `${siteUrl}/fr/actualites/${slugCandidate}`
-      : `${siteUrl}/fr/blog/${slugCandidate}`;
-    await getIndexNowQueue().add(
-      "ping",
-      { urls: [articleUrl], origin: "content-gen" },
-      { jobId: `indexnow-${cgJob.id}` },
-    );
+    await enqueueIndexingForTier1({
+      articleId: article.id,
+      slug: slugCandidate,
+      isNews,
+      origin: "content-gen",
+    });
   }
 
   // Pass B fix P0-7 — Q/R post-process auto (§ 29 master prompt v1.7).
@@ -269,8 +261,5 @@ export async function stopPublishWorker(): Promise<void> {
     await workerInstance.close();
     workerInstance = null;
   }
-  if (indexNowQueue) {
-    await indexNowQueue.close();
-    indexNowQueue = null;
-  }
+  // IndexNow queue cleanup déplacé dans le helper enqueue-indexing (Sprint 9).
 }
