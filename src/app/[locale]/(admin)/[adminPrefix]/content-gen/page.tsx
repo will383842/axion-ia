@@ -9,6 +9,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getDashboardKpis } from "@/server/actions/content-gen/dashboard";
+import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
+import type { ContentType, SearchIntent } from "../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +25,29 @@ export default async function ContentGenDashboardPage({ params }: PageProps) {
 
   const base = `/fr/${adminPrefix}/content-gen`;
   const kpis = await getDashboardKpis();
+
+  // Quick actions § 12.2 master prompt — 5 boutons "Générer X…" inline.
+  // Pour V1, on accepte les champs minimaux : contentType + ville/keyword/title
+  // selon le type. Le worker pickera et le generator dérivera le reste depuis
+  // la KB + searchIntent.
+  async function quickGen(formData: FormData) {
+    "use server";
+    const contentType = String(formData.get("contentType") ?? "") as ContentType;
+    const targetSearchIntent =
+      (String(formData.get("targetSearchIntent") ?? "informational") as SearchIntent) ||
+      "informational";
+    const anchorVilleSlug = String(formData.get("anchorVilleSlug") ?? "").trim();
+    const primaryKeyword = String(formData.get("primaryKeyword") ?? "").trim();
+    const title = String(formData.get("title") ?? "").trim();
+    const result = await enqueueDirectGen({
+      contentType,
+      targetSearchIntent,
+      ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
+      ...(primaryKeyword ? { primaryKeyword } : {}),
+      ...(title ? { title } : {}),
+    });
+    redirect(`/fr/${adminPrefix}/content-gen/jobs/${result.jobId}`);
+  }
 
   return (
     <section>
@@ -84,6 +109,75 @@ export default async function ContentGenDashboardPage({ params }: PageProps) {
             </a>
           </li>
         </ul>
+      </div>
+
+      <div className="admin-card">
+        <h2>Génération unitaire (§ 12.2)</h2>
+        <p className="admin-meta" style={{ marginTop: 0, marginBottom: 16 }}>
+          Lance 1 contenu pour test ou ad-hoc. Pour la production en masse, utiliser{" "}
+          <a href={`${base}/coverage/new`}>Nouvelle campagne</a>.
+        </p>
+        <div
+          className="admin-card-grid"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 12 }}
+        >
+          <QuickGenForm
+            action={quickGen}
+            contentType="landing_ville"
+            targetSearchIntent="local"
+            label="🏙️ Générer landing ville"
+            inputs={[
+              { name: "anchorVilleSlug", placeholder: "ville-slug (ex. lyon)", required: true },
+            ]}
+          />
+          <QuickGenForm
+            action={quickGen}
+            contentType="blog_from_title"
+            targetSearchIntent="informational"
+            label="📝 Générer article (depuis titre)"
+            inputs={[{ name: "title", placeholder: "Titre article", required: true }]}
+          />
+          <QuickGenForm
+            action={quickGen}
+            contentType="blog_from_keywords"
+            targetSearchIntent="informational"
+            label="🔑 Générer article (depuis mot-clé)"
+            inputs={[{ name: "primaryKeyword", placeholder: "Mot-clé principal", required: true }]}
+          />
+          <QuickGenForm
+            action={quickGen}
+            contentType="comparison"
+            targetSearchIntent="commercial_investigation"
+            label="⚖️ Générer comparatif"
+            inputs={[
+              {
+                name: "title",
+                placeholder: "Sujet comparatif (ex. Mistral vs Claude PME)",
+                required: true,
+              },
+            ]}
+          />
+          <QuickGenForm
+            action={quickGen}
+            contentType="guide_pilier"
+            targetSearchIntent="informational"
+            label="📚 Générer guide pilier"
+            inputs={[
+              {
+                name: "title",
+                placeholder: "Sujet pilier (ex. Comment auditer son IA)",
+                required: true,
+              },
+            ]}
+          />
+          <QuickGenForm
+            action={quickGen}
+            contentType="faq_standalone"
+            targetSearchIntent="informational"
+            label="❓ Générer FAQ standalone"
+            inputs={[{ name: "title", placeholder: "Thématique FAQ", required: true }]}
+          />
+        </div>
       </div>
 
       <div className="admin-card">
@@ -184,5 +278,55 @@ function KpiCard({
       <p className="admin-kpi-label">{label}</p>
       <p className="admin-kpi-value">{value}</p>
     </div>
+  );
+}
+
+function QuickGenForm({
+  action,
+  contentType,
+  targetSearchIntent,
+  label,
+  inputs,
+}: {
+  readonly action: (fd: FormData) => Promise<void>;
+  readonly contentType: ContentType;
+  readonly targetSearchIntent: SearchIntent;
+  readonly label: string;
+  readonly inputs: ReadonlyArray<{
+    readonly name: string;
+    readonly placeholder: string;
+    readonly required?: boolean;
+  }>;
+}) {
+  return (
+    <form
+      action={action}
+      style={{
+        padding: 12,
+        border: "1px solid rgba(0,0,0,0.08)",
+        borderRadius: 6,
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      <input type="hidden" name="contentType" value={contentType} />
+      <input type="hidden" name="targetSearchIntent" value={targetSearchIntent} />
+      <strong style={{ fontSize: 14 }}>{label}</strong>
+      {inputs.map((i) => (
+        <input
+          key={i.name}
+          type="text"
+          name={i.name}
+          placeholder={i.placeholder}
+          required={i.required ?? false}
+          className="admin-input"
+          style={{ fontSize: 13 }}
+        />
+      ))}
+      <button type="submit" className="admin-button" style={{ fontSize: 13 }}>
+        Lancer →
+      </button>
+    </form>
   );
 }

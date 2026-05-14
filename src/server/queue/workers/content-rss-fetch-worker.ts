@@ -16,10 +16,12 @@
 
 import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
+import { prisma } from "@/lib/prisma";
 import {
   readContentGenConfig,
   writeContentGenConfig,
 } from "@/server/actions/content-gen/_settings";
+import type { ContentGenJobPayload } from "./content-gen-worker";
 
 const QUEUE_NAME = "content-rss-fetch";
 const SEEN_KEY = "rss_items_seen";
@@ -123,22 +125,60 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       seenHashes.add(hash);
       newSeen.push(hash);
 
-      // Enqueue content-gen job (le worker primaire pickera + générera)
+      // 1. Crée une row ContentGenJob.queued AVANT enqueue BullMQ.
+      // Le worker primaire `content-gen-worker` attend `contentGenJobId` dans le
+      // payload (cf. ContentGenJobPayload). Sans cette row, le worker throw
+      // UnrecoverableError au lookup DB. Idempotency : `idempotencyKey` unique
+      // = hash(source + item) → P2002 silent skip si retry.
+      const inputPayload = {
+        rssTitle: item.title,
+        rssLink: item.link,
+        rssPubDate: item.pubDate,
+        rssDescription: item.description,
+        rssSourceName: source.name,
+        rssTags: source.tags,
+        autoPublish: source.autoPublish,
+      };
+      let contentGenJobId: string | null = null;
+      try {
+        const dbJob = await prisma.contentGenJob.create({
+          data: {
+            idempotencyKey: `rss-${hash}`,
+            contentType: "blog_from_rss",
+            status: "queued",
+            priority: 5,
+            inputPayload: inputPayload as never,
+            targetLocale: "fr",
+            // Pipeline 2 RSS = informational par défaut. Le generator
+            // blog-from-rss peut ré-évaluer si nécessaire (mais reste safe).
+            targetSearchIntent: "informational",
+            primaryProvider: "openai",
+            fallbackProvider: "anthropic",
+          },
+          select: { id: true },
+        });
+        contentGenJobId = dbJob.id;
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        if (msg.includes("Unique constraint") || msg.includes("P2002")) {
+          // Race condition rare — un autre tick a inséré entre-temps. Skip.
+          continue;
+        }
+        console.warn(`[rss-fetch-worker] DB insert ContentGenJob failed:`, msg);
+        continue;
+      }
+
+      // 2. Enqueue content-gen avec payload conforme ContentGenJobPayload.
+      const payload: ContentGenJobPayload = {
+        contentGenJobId,
+        contentType: "blog_from_rss",
+        targetSearchIntent: "informational",
+        inputPayload,
+      };
       await getContentGenQueue().add(
         "blog_from_rss",
-        {
-          contentType: "blog_from_rss",
-          inputPayload: {
-            rssTitle: item.title,
-            rssLink: item.link,
-            rssPubDate: item.pubDate,
-            rssDescription: item.description,
-            rssSourceName: source.name,
-            rssTags: source.tags,
-            autoPublish: source.autoPublish,
-          },
-        },
-        { jobId: `rss-${hash}` }, // dedup BullMQ level
+        payload,
+        { jobId: `gen-${contentGenJobId}` }, // BullMQ dedup
       );
       totalEnqueued++;
     }

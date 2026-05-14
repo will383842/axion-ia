@@ -18,7 +18,7 @@
  * Rate-limit 10/min (alignée OpenAI tier 5).
  */
 
-import { Worker, type Job, UnrecoverableError } from "bullmq";
+import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
@@ -36,7 +36,19 @@ interface KillSwitchState {
 interface PoliciesConfig {
   readonly plagiarismJaccardInternal?: number;
   readonly plagiarismJaccardRss?: number;
+  /** Score qualité minimum pour auto-publication RSS (§ 14.2 master prompt). */
+  readonly rssAutoPublishMinScore?: number;
 }
+
+interface QualityLoopConfig {
+  readonly enabled?: boolean;
+  readonly minScoreThreshold?: number;
+  readonly maxAttemptsAuto?: number;
+}
+
+const RSS_AUTOPUBLISH_MIN_SCORE_DEFAULT = 60;
+const QUALITY_LOOP_THRESHOLD_DEFAULT = 75;
+const QUALITY_LOOP_MAX_ATTEMPTS_DEFAULT = 2;
 
 const PLAGIARISM_CORPUS_SIZE = 50;
 const PLAGIARISM_THRESHOLD_DEFAULT = 0.3;
@@ -88,6 +100,26 @@ class KillSwitchActiveError extends Error {
 }
 
 const QUEUE_NAME = "content-gen";
+
+let qualityImproverQueue: Queue | null = null;
+function getQualityImproverQueue(): Queue | null {
+  if (qualityImproverQueue) return qualityImproverQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  qualityImproverQueue = new Queue("content-quality-improver", {
+    connection: { url: redisUrl },
+  });
+  return qualityImproverQueue;
+}
+
+let publishQueue: Queue | null = null;
+function getPublishQueue(): Queue | null {
+  if (publishQueue) return publishQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  publishQueue = new Queue("content-publish", { connection: { url: redisUrl } });
+  return publishQueue;
+}
 
 export interface ContentGenJobPayload {
   readonly contentGenJobId: string;
@@ -278,11 +310,45 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       plagiarismThreshold,
       plagiarismCorpusSize: corpus.size,
     };
+
+    // 5bis. Décision orchestration post-gen (§ 14 + § 27 + § 14.2 master prompt) :
+    //   - Boucle qualité (§ 27) : si score < seuil ET quality_loop.enabled ET
+    //     attempts < maxAttemptsAuto → bascule `quality_improving` + enqueue
+    //     worker dédié (re-prompt sections faibles). Skip auto-pub + skip review.
+    //   - Auto-pub RSS (§ 14.2) : si contentType=blog_from_rss ET autoPublish
+    //     ET score ≥ rssAutoPublishMinScore ET pas blockingFail → ReviewQueue
+    //     direct en `approved` + enqueue content-publish (tier-2 noindex).
+    //   - Sinon (cas par défaut) → `needs_review` + ReviewQueue.pending pour
+    //     validation humaine Will.
+    const qualityLoop = await readContentGenConfig<QualityLoopConfig>("quality_loop", {});
+    const qualityLoopEnabled = qualityLoop.enabled !== false; // default ON
+    const qualityThreshold = qualityLoop.minScoreThreshold ?? QUALITY_LOOP_THRESHOLD_DEFAULT;
+    const qualityMaxAttempts = qualityLoop.maxAttemptsAuto ?? QUALITY_LOOP_MAX_ATTEMPTS_DEFAULT;
+    const score = output.qualityScore ?? 0;
+    const eligibleQualityLoop =
+      qualityLoopEnabled &&
+      !blockingFail &&
+      score > 0 &&
+      score < qualityThreshold &&
+      dbJob.qualityImprovementAttempts < qualityMaxAttempts;
+
+    const rssAutoPublishMinScore =
+      policies.rssAutoPublishMinScore ?? RSS_AUTOPUBLISH_MIN_SCORE_DEFAULT;
+    const rssAutoPublishRequested =
+      contentType === "blog_from_rss" &&
+      inputPayload["autoPublish"] === true &&
+      !blockingFail &&
+      score >= rssAutoPublishMinScore;
+
+    let nextStatus: "quality_improving" | "approved" | "needs_review" = "needs_review";
+    if (eligibleQualityLoop) nextStatus = "quality_improving";
+    else if (rssAutoPublishRequested) nextStatus = "approved";
+
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
       data: {
-        status: "needs_review",
-        completedAt: new Date(),
+        status: nextStatus,
+        completedAt: nextStatus === "quality_improving" ? null : new Date(),
         durationMs: Date.now() - startedAt,
         qualityScore: output.qualityScore,
         seoScore: output.seoScore,
@@ -295,19 +361,58 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         outputJsonRaw: persistedOutput as never,
       },
     });
-    await logStep(contentGenJobId, "validation", "Job persisted to needs_review", {
+    await logStep(contentGenJobId, "validation", `Job persisted to ${nextStatus}`, {
       blocking_fail: blockingFail,
       final_tier: finalIndexationTier,
+      quality_score: score,
+      quality_threshold: qualityThreshold,
+      quality_loop_eligible: eligibleQualityLoop,
+      rss_auto_publish: rssAutoPublishRequested,
     });
 
-    // 6. Insert ReviewQueue row (status=pending) pour validation humaine admin.
+    if (nextStatus === "quality_improving") {
+      // Enqueue quality-improver-worker (le worker pickera, ré-évaluera ou
+      // basculera vers needs_review/failed selon cap auto). § 27 master prompt.
+      const queue = getQualityImproverQueue();
+      if (queue) {
+        await queue.add(
+          "improve",
+          { contentGenJobId, previousScore: score },
+          { jobId: `quality-${contentGenJobId}` },
+        );
+        await logStep(contentGenJobId, "quality_check", "Enqueued quality-improver", {
+          previous_score: score,
+          target_threshold: qualityThreshold,
+        });
+      } else {
+        // Redis absent — fail-soft : remet le job en needs_review pour ne pas
+        // bloquer le pipeline (Will pourra le valider manuellement).
+        await prisma.contentGenJob.update({
+          where: { id: contentGenJobId },
+          data: { status: "needs_review", completedAt: new Date() },
+        });
+        await prisma.reviewQueue
+          .create({ data: { jobId: contentGenJobId, status: "pending" } })
+          .catch(() => undefined);
+      }
+      return; // skip review-queue insert + publish
+    }
+
+    // 6. Insert ReviewQueue row (status=pending OU approved si auto-pub RSS).
     // Sans cette row, /review-queue/[id] ne trouve rien et le flow approve/promote
     // n'a pas de cible. Idempotent via unique jobId.
+    const reviewStatus = nextStatus === "approved" ? "approved" : "pending";
     try {
       await prisma.reviewQueue.create({
         data: {
           jobId: contentGenJobId,
-          status: "pending",
+          status: reviewStatus,
+          ...(nextStatus === "approved"
+            ? {
+                reviewedAt: new Date(),
+                reviewNotes: `[auto-pub RSS] score ${score} ≥ seuil ${rssAutoPublishMinScore}`,
+              }
+            : {}),
         },
       });
     } catch (err) {
@@ -317,7 +422,28 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
-    // 6. TODO Sprint 2 Day 6 — hook qa_extract_and_publish (8 micro-jobs)
+    if (nextStatus === "approved") {
+      // Auto-pub RSS : enqueue content-publish immédiat (tier-2 noindex_follow
+      // par défaut anti-doorway). Le publish-worker insert Article DB.
+      const review = await prisma.reviewQueue.findUnique({
+        where: { jobId: contentGenJobId },
+        select: { id: true },
+      });
+      const queue = getPublishQueue();
+      if (review && queue) {
+        await queue.add(
+          "publish",
+          { reviewQueueId: review.id, promoteToTier1: false },
+          { jobId: `publish-${review.id}` },
+        );
+        await logStep(contentGenJobId, "publish", "Enqueued auto-pub RSS (tier-2)", {
+          review_queue_id: review.id,
+          score,
+          threshold: rssAutoPublishMinScore,
+        });
+      }
+    }
+
     // 7. TODO Sprint 2 Day 7 — Telegram alert "Nouveau contenu en review"
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err);

@@ -10,6 +10,7 @@
 
 "use server";
 
+import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { CoverageScope, CoverageStatus } from "../../../../prisma/generated/client";
@@ -17,6 +18,15 @@ import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/coverage`;
+}
+
+let contentGenQueue: Queue | null = null;
+function getContentGenQueue(): Queue | null {
+  if (contentGenQueue) return contentGenQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  return contentGenQueue;
 }
 
 export interface CampaignRow {
@@ -173,11 +183,200 @@ export async function resumeCampaign(id: string): Promise<void> {
   revalidatePath(adminBase());
 }
 
-export async function cancelCampaign(id: string): Promise<void> {
+/**
+ * Mode d'annulation campagne (§ 12.1 master prompt).
+ *
+ * - `running_only` : seuls les jobs encore `queued` ou `running` sont cancelled.
+ *   Les jobs `needs_review`, `approved`, `publishing`, `published` restent.
+ * - `all` : tous les jobs non-published de la campagne sont cancelled. La
+ *   campagne ne pourra plus rien produire.
+ */
+export type CancelCampaignMode = "running_only" | "all";
+
+export interface CancelCampaignResult {
+  readonly campaignId: string;
+  readonly mode: CancelCampaignMode;
+  readonly cancelledJobs: number;
+  readonly removedBullJobs: number;
+}
+
+export async function cancelCampaign(
+  id: string,
+  mode: CancelCampaignMode = "running_only",
+): Promise<CancelCampaignResult> {
   await requireAdmin();
+
+  // 1. Flippe la campagne en cancelled + completedAt (terminal).
   await prisma.coverageCampaign.update({
     where: { id },
     data: { status: "cancelled", completedAt: new Date() },
   });
+
+  // 2. Identifie les jobs à cancel selon le mode. `running_only` reste safe par
+  // défaut (préserve les contenus déjà générés en attente de review). `all`
+  // est destructif (cancelle aussi les needs_review/approved non publiés).
+  const statusesToCancel =
+    mode === "all"
+      ? ["queued", "running", "needs_review", "approved", "publishing", "quality_improving"]
+      : ["queued", "running", "quality_improving"];
+
+  const jobsToCancel = await prisma.contentGenJob.findMany({
+    where: {
+      campaignId: id,
+      status: { in: statusesToCancel as never },
+    },
+    select: { id: true },
+    take: 5000, // cap raisonnable
+  });
+
+  if (jobsToCancel.length > 0) {
+    await prisma.contentGenJob.updateMany({
+      where: { id: { in: jobsToCancel.map((j) => j.id) } },
+      data: {
+        status: "cancelled",
+        errorMessage: `Campagne ${id} annulée (mode=${mode})`,
+        completedAt: new Date(),
+      },
+    });
+  }
+
+  // 3. Purge les BullMQ jobs waiting/delayed correspondants (best-effort).
+  // Les jobs `active` sont laissés terminer leur cycle (graceful shutdown du
+  // worker). Le worker re-vérifie kill_switch / campaign.status à chaque tick.
+  let removedBullJobs = 0;
+  const queue = getContentGenQueue();
+  if (queue && jobsToCancel.length > 0) {
+    for (const job of jobsToCancel) {
+      try {
+        const bullJob = await queue.getJob(`gen-${job.id}`);
+        if (bullJob) {
+          const state = await bullJob.getState();
+          if (
+            state === "waiting" ||
+            state === "delayed" ||
+            state === "waiting-children" ||
+            state === "prioritized"
+          ) {
+            await bullJob.remove();
+            removedBullJobs++;
+          }
+        }
+      } catch {
+        // Job actif ou déjà terminé — laisse le worker gérer.
+      }
+    }
+  }
+
   revalidatePath(adminBase());
+  revalidatePath(`${adminBase()}/${id}`);
+  return {
+    campaignId: id,
+    mode,
+    cancelledJobs: jobsToCancel.length,
+    removedBullJobs,
+  };
+}
+
+/**
+ * Incrémente le compteur cible d'une campagne (bouton "+50 slots" § 12.1).
+ * La campagne doit être en `running` ou `paused`. Le orchestrateur picke
+ * automatiquement les nouveaux slots au prochain tick.
+ */
+export async function incrementCampaignTarget(id: string, delta: number): Promise<void> {
+  await requireAdmin();
+  if (delta < 1 || delta > 1000) throw new Error("delta_range");
+  const campaign = await prisma.coverageCampaign.findUnique({
+    where: { id },
+    select: { status: true },
+  });
+  if (!campaign) throw new Error("campaign_not_found");
+  if (campaign.status !== "running" && campaign.status !== "paused") {
+    throw new Error("campaign_not_active");
+  }
+  await prisma.coverageCampaign.update({
+    where: { id },
+    data: { totalTargetCount: { increment: delta } },
+  });
+  revalidatePath(`${adminBase()}/${id}`);
+}
+
+/**
+ * Estimation coût/durée AVANT lancement (bouton "Dry run" § 15.2 + § 25.3).
+ *
+ * Calcul léger côté serveur (pas d'appel LLM) :
+ * - coût/contenu estimé par type via prix moyens (1500 mots ~ $0.05 OpenAI 4o
+ *   + $0.01 Anthropic + $0.005 Perplexity = $0.065/contenu défaut)
+ * - durée estimée : SLO p50 § 4 master prompt (landing ville 90s, blog 40s)
+ */
+export interface EstimateCampaignInput {
+  readonly totalTargetCount: number;
+  readonly typeDistribution: Record<string, number>;
+}
+
+export interface EstimateCampaignResult {
+  readonly totalTargetCount: number;
+  readonly estimatedCostUsd: number;
+  readonly estimatedDurationMinutes: number;
+  readonly breakdown: ReadonlyArray<{
+    readonly contentType: string;
+    readonly count: number;
+    readonly unitCostUsd: number;
+    readonly unitDurationSec: number;
+  }>;
+}
+
+const UNIT_COSTS_USD: Record<string, number> = {
+  landing_ville: 0.08,
+  blog_article: 0.07,
+  blog_from_title: 0.07,
+  blog_from_keywords: 0.07,
+  blog_from_rss: 0.04,
+  comparison: 0.09,
+  guide_pilier: 0.18,
+  faq_standalone: 0.04,
+  qa_derived: 0.01,
+};
+
+const UNIT_DURATION_SEC: Record<string, number> = {
+  landing_ville: 90,
+  blog_article: 60,
+  blog_from_title: 60,
+  blog_from_keywords: 60,
+  blog_from_rss: 40,
+  comparison: 70,
+  guide_pilier: 150,
+  faq_standalone: 30,
+  qa_derived: 10,
+};
+
+export async function estimateCampaign(
+  input: EstimateCampaignInput,
+): Promise<EstimateCampaignResult> {
+  await requireAdmin();
+  if (input.totalTargetCount < 1 || input.totalTargetCount > 10_000) {
+    throw new Error("target_count_range");
+  }
+  const sum = Object.values(input.typeDistribution).reduce((a, v) => a + v, 0);
+  if (Math.abs(sum - 100) > 0.5) throw new Error("type_distribution_must_sum_100");
+
+  const breakdown = Object.entries(input.typeDistribution).map(([type, pct]) => {
+    const count = Math.round((input.totalTargetCount * pct) / 100);
+    const unitCostUsd = UNIT_COSTS_USD[type] ?? 0.06;
+    const unitDurationSec = UNIT_DURATION_SEC[type] ?? 60;
+    return { contentType: type, count, unitCostUsd, unitDurationSec };
+  });
+
+  const estimatedCostUsd = breakdown.reduce((a, b) => a + b.count * b.unitCostUsd, 0);
+  // Durée séquentielle / concurrency (default 5 selon § 13.1). Si Will a
+  // configuré concurrency=N, on divise par N.
+  const totalSec = breakdown.reduce((a, b) => a + b.count * b.unitDurationSec, 0);
+  const concurrency = 5;
+  const estimatedDurationMinutes = Math.ceil(totalSec / concurrency / 60);
+
+  return {
+    totalTargetCount: input.totalTargetCount,
+    estimatedCostUsd: Math.round(estimatedCostUsd * 100) / 100,
+    estimatedDurationMinutes,
+    breakdown,
+  };
 }
