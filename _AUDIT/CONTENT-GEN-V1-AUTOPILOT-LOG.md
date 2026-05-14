@@ -97,7 +97,21 @@ GATE Day 1 : ≥ 4 commits Conventional + Prisma generate + typecheck + tests ve
 | Migration SQL `add_content_gen_core`        | Prisma CLI lit `.env` (pas `.env.local`) + DB locale non démarrée + DIRECT_URL absent | Will exécute `pnpm prisma migrate dev --create-only --name add_content_gen_core` après set DATABASE_URL+DIRECT_URL dans `.env`, ou via Docker compose local |
 | `pnpm content-gen:seed` script package.json | Ajouté Sprint 1 Day 4 § 16:00 selon plan                                              | Day 4                                                                                                                                                       |
 
-### Sprint 1 Days 2-7 — pending
+### Sprint 1 Day 2 — 2026-05-14 (en cours d'autopilote)
+
+| Étape                                                                                                          | Statut  | Commit                           |
+| -------------------------------------------------------------------------------------------------------------- | ------- | -------------------------------- |
+| Doctrine Unsplash compliance v1                                                                                | ✅ PASS | `d7fa2aa`                        |
+| Doctrine Unsplash v3 (post-CGU complètes Will) — gratuit OK, Unsplash+ exclu                                   | ✅ PASS | groupé v3 (cf. patch seed)       |
+| 3 helpers content-gen lib (retry / cost-tracker / config-reader) + 5 tests                                     | ✅ PASS | post-`d7fa2aa`                   |
+| OpenAI provider impl complète (streaming + retry + cost + content_filter)                                      | ✅ PASS | post-helpers                     |
+| Unsplash provider impl V1 doctrine v3 (filter premium + attribution + download trigger + rate-limit in-memory) | ✅ PASS | post-OpenAI                      |
+| Anthropic provider (prompt caching ephemeral + cache_read/write tokens trackés)                                | ✅ PASS | post-Unsplash                    |
+| Perplexity provider (citations + search_recency + AbortController timeout)                                     | ✅ PASS | post-Unsplash (groupé Anthropic) |
+| Provider router circuit breaker in-memory V0 (5 fails / 30s → open 60s + half-open re-test)                    | ✅ PASS | en cours                         |
+| Tests integration mock fallback OpenAI 503 → Claude                                                            | ⏸ Day 5 | —                                |
+
+### Sprint 1 Days 3-7 — pending
 
 | Day   | Étapes prévues                                                                                                                                                                                                      |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

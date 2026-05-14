@@ -12,12 +12,88 @@
  * Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 7.3 + § 0.4.
  */
 
-import { ProviderError, type GenerationRequest, type GenerationResponse } from "./IProvider";
+import {
+  ProviderError,
+  type GenerationRequest,
+  type GenerationResponse,
+  type IProvider,
+} from "./IProvider";
 import { openaiProvider } from "./openai";
 import { anthropicProvider } from "./anthropic";
 import { perplexityProvider } from "./perplexity";
 import { unsplashProvider } from "./unsplash";
-import type { ProviderRole } from "../../../../prisma/generated/client";
+import type { ProviderRole, ProviderKey } from "../../../../prisma/generated/client";
+
+// ============================================================
+// Circuit breaker in-memory V0 (Sprint 1 Day 2 step 16:00)
+//
+// 5 erreurs / 30 s par provider → ouvert 60 s
+// half-open (re-test 1 call autorisé)
+// Day 5 V2 : passer à Redis-shared (BullMQ ioredis client).
+// ============================================================
+
+interface CircuitState {
+  failures: ReadonlyArray<number>; // timestamps ms des 5 derniers échecs
+  openedAt: number | null;
+  halfOpen: boolean;
+}
+
+const FAILURE_WINDOW_MS = 30_000; // 30s
+const MAX_FAILURES = 5;
+const OPEN_DURATION_MS = 60_000; // 60s ouvert avant half-open
+
+const circuits = new Map<ProviderKey, CircuitState>();
+
+function getCircuit(key: ProviderKey): CircuitState {
+  let state = circuits.get(key);
+  if (!state) {
+    state = { failures: [], openedAt: null, halfOpen: false };
+    circuits.set(key, state);
+  }
+  return state;
+}
+
+function isCircuitOpen(key: ProviderKey): boolean {
+  const state = getCircuit(key);
+  if (state.openedAt === null) return false;
+  const elapsed = Date.now() - state.openedAt;
+  if (elapsed > OPEN_DURATION_MS) {
+    // Passe en half-open : autorise 1 tentative
+    state.halfOpen = true;
+    state.openedAt = null;
+    return false;
+  }
+  return true;
+}
+
+function recordFailure(key: ProviderKey): void {
+  const state = getCircuit(key);
+  const now = Date.now();
+  const recentFailures = [...state.failures, now].filter((t) => now - t < FAILURE_WINDOW_MS);
+  state.failures = recentFailures;
+  if (recentFailures.length >= MAX_FAILURES) {
+    state.openedAt = now;
+    state.halfOpen = false;
+    state.failures = [];
+    console.warn(
+      `[circuit-breaker] OPEN ${key} (${MAX_FAILURES} failures / ${FAILURE_WINDOW_MS}ms)`,
+    );
+  }
+}
+
+function recordSuccess(key: ProviderKey): void {
+  const state = getCircuit(key);
+  if (state.halfOpen) {
+    state.halfOpen = false;
+    state.failures = [];
+    console.info(`[circuit-breaker] CLOSED ${key} (half-open success)`);
+  }
+}
+
+/** Reset utilitaire (tests). */
+export function _resetCircuits(): void {
+  circuits.clear();
+}
 
 /**
  * Map role → liste de providers candidats par ordre de préférence (primary → fallback).
@@ -44,17 +120,32 @@ export async function generate(req: GenerationRequest): Promise<GenerationRespon
   const candidates = ROLE_TO_PROVIDERS[req.role];
 
   let lastError: Error | null = null;
-  for (const provider of candidates) {
+  for (const provider of candidates as ReadonlyArray<IProvider>) {
+    // Circuit breaker — skip provider si circuit ouvert
+    if (isCircuitOpen(provider.key)) {
+      lastError = new ProviderError(
+        `Circuit breaker open for ${provider.key}`,
+        "down",
+        provider.key,
+        true,
+      );
+      continue;
+    }
     try {
-      return await provider.generate(req);
+      const result = await provider.generate(req);
+      recordSuccess(provider.key);
+      return result;
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
-      // Sprint 1 Day 2 : circuit breaker open + telegram alert ici si retryable
+      const isRetryable = err instanceof ProviderError ? err.retryable : true;
+      if (isRetryable) {
+        recordFailure(provider.key);
+      }
+      // Auth failed / cost cap / content_filter → pas de fallback inutile
       if (err instanceof ProviderError && !err.retryable) {
-        // Auth failed / cost cap → pas de fallback inutile
         throw err;
       }
-      // sinon : try next provider in chain (fallback)
+      // sinon : try next provider in chain (fallback automatique)
     }
   }
   throw lastError ?? new Error(`All providers failed for role '${req.role}'`);
