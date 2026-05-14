@@ -2163,3 +2163,21 @@ model KnowledgeEmbedding {
   @@index([model])
   @@map("knowledge_embeddings")
 }
+
+/// KB V4 (Sprint KB-13) — Idempotency-key tracking pour factory ingest API.
+/// Permet de re-jouer la même requête sans créer de doublon (factory retry safe).
+model KnowledgeIngestRequest {
+  idempotencyKey String    @id @map("idempotency_key") @db.VarChar(64)
+  factoryId      String    @map("factory_id") @db.VarChar(80)
+  /// entryId créé en cas de succès (NULL si en cours / échec)
+  entryId        String?   @map("entry_id") @db.Uuid
+  /// status final : queued | processing | published | rejected | failed
+  status         String    @default("queued") @db.VarChar(40)
+  rejectReason   String?   @map("reject_reason") @db.Text
+  receivedAt     DateTime  @default(now()) @map("received_at")
+  completedAt    DateTime? @map("completed_at")
+
+  @@index([factoryId, status])
+  @@index([receivedAt])
+  @@map("knowledge_ingest_requests")
+}
