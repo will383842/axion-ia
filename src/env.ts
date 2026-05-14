@@ -139,6 +139,33 @@ export const env = createEnv({
     RETENTION_SUBS_ARCHIVE_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_NEWSLETTER_UNSUB_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_BOOKINGS_CANCELLED_MONTHS: z.coerce.number().int().min(1).optional(),
+
+    // Content Generator V1 (Sprint 1 Day 1 AGT-B) — providers IA + KB ingest.
+    // Toutes optional V1 : le BUILD continue sans elles ; seul le RUN (génération
+    // live) les exige. Mockés tant que les clés ne sont pas dans Coolify env.
+    // Cf. _AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md § 24.1 + Annexe A.
+    OPENAI_API_KEY: z.string().optional(),
+    ANTHROPIC_API_KEY: z.string().optional(),
+    PERPLEXITY_API_KEY: z.string().optional(),
+    UNSPLASH_ACCESS_KEY: z.string().optional(),
+    /// Voyage AI key pour embeddings KB V4 (`voyage-3-lite` dim 1024).
+    /// Sans clé → fallback stub déterministe SHA-256 (cf. src/lib/knowledge/embeddings.ts).
+    VOYAGE_API_KEY: z.string().optional(),
+    /// HMAC secret factory ingest API (cf. src/lib/knowledge/hmac.ts).
+    /// Min 32 chars enforcé runtime par `getKbIngestSecret()` quand utilisé.
+    KB_INGEST_SECRET: z.string().min(32).optional(),
+    /// Toggle publication immédiate KB depuis factory content-gen (V1 default OFF
+    /// → audience='team' review manuel admin /connaissances/).
+    KB_AUTO_PUBLISH: z
+      .string()
+      .optional()
+      .transform((v) => v === "true" || v === "1"),
+    /// Mode dégradé V0 transitoire : désactive hard gate KB ≥ 50 entries.
+    /// Banner rouge admin si actif. Jamais en prod.
+    KB_BYPASS: z
+      .string()
+      .optional()
+      .transform((v) => v === "true" || v === "1"),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -197,6 +224,15 @@ export const env = createEnv({
     RETENTION_SUBS_ARCHIVE_MONTHS: process.env.RETENTION_SUBS_ARCHIVE_MONTHS,
     RETENTION_NEWSLETTER_UNSUB_MONTHS: process.env.RETENTION_NEWSLETTER_UNSUB_MONTHS,
     RETENTION_BOOKINGS_CANCELLED_MONTHS: process.env.RETENTION_BOOKINGS_CANCELLED_MONTHS,
+    // Content Generator V1 (Sprint 1 Day 1 AGT-B)
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
+    UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
+    VOYAGE_API_KEY: process.env.VOYAGE_API_KEY,
+    KB_INGEST_SECRET: process.env.KB_INGEST_SECRET,
+    KB_AUTO_PUBLISH: process.env.KB_AUTO_PUBLISH,
+    KB_BYPASS: process.env.KB_BYPASS,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
