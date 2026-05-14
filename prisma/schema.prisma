@@ -2939,3 +2939,47 @@ model ContentCitation {
   @@index([jobId])
   @@map("content_citations")
 }
+
+/// Sprint 12 V2 — KeywordTracking : suivi positions + CTR par mot-clé.
+/// Alimenté par cron hebdo (GSC API + SerpAPI). Permet de détecter :
+///  - mots-clés tier-1 candidates (CTR > 5 % stable)
+///  - gaps (mots-clés rankant 11-20 → opportunité tier-1 promote article)
+///  - cannibalization (plusieurs articles sur même mot-clé)
+model KeywordTracking {
+  id              String   @id @default(cuid())
+  keyword         String   @db.VarChar(255)
+  /// URL ciblée (page qui rank). Match Article via slug ou KnowledgeEntry.
+  targetUrl       String   @db.VarChar(512)
+  /// Article.id (UUID) si la page tracked est un Article — sinon null.
+  articleId       String?  @db.Uuid
+  /// Position SERP Google (1 = top). Float pour moyenne pondérée.
+  position        Decimal  @db.Decimal(5, 2)
+  /// Variation position vs dernier sync (delta). + = recule, - = monte.
+  positionDelta   Decimal? @db.Decimal(5, 2)
+  /// CTR observé (0-1). null si pas encore d'impressions.
+  ctr             Decimal? @db.Decimal(6, 4)
+  /// Impressions sur fenêtre (default 28j GSC).
+  impressions     Int      @default(0)
+  /// Clicks sur fenêtre.
+  clicks          Int      @default(0)
+  /// Source de mesure.
+  source          KeywordTrackingSource @default(gsc)
+  /// Date du dernier sync (run du worker hebdo).
+  syncedAt        DateTime @default(now())
+  /// Date première détection de ce keyword pour cette URL.
+  firstSeenAt     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([keyword, targetUrl])
+  @@index([articleId])
+  @@index([syncedAt])
+  @@index([position])
+  @@map("keyword_tracking")
+}
+
+enum KeywordTrackingSource {
+  gsc
+  serpapi
+  manual
+}
