@@ -265,3 +265,62 @@ export async function updateSearchIntentDistribution(
     `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/search-intent-distribution`,
   );
 }
+
+// ────────────────────────────────────────────────────────────────────
+// /settings/providers — Sprint 11.5 V2 — Compete mode toggle
+// ────────────────────────────────────────────────────────────────────
+
+/**
+ * Compete mode : 2 LLM (GPT-4o + Claude Sonnet 4.6) tournent en parallèle pour
+ * chaque génération, on garde la sortie avec le meilleur seoScore. Coûte ~×2
+ * en appels API mais améliore la qualité ~+10-15 %.
+ *
+ * Granularité : on peut activer compete uniquement pour certains content types
+ * stratégiques (ex. blog_article + guide_pilier + comparison) et garder le
+ * mode single (GPT-4o seul) pour le bulk villes pSEO.
+ */
+export interface CompeteModeSettings {
+  /** Master switch : si false, compete jamais (même si types listés). */
+  readonly enabled: boolean;
+  /**
+   * Liste des content types pour lesquels compete s'applique.
+   * Liste vide ET enabled=true → compete sur TOUS les types.
+   */
+  readonly contentTypes: ReadonlyArray<ContentType>;
+}
+
+const COMPETE_DEFAULTS: CompeteModeSettings = {
+  enabled: false,
+  contentTypes: [],
+};
+
+export async function getCompeteMode(): Promise<CompeteModeSettings> {
+  const raw = await readContentGenConfig<Partial<CompeteModeSettings>>(
+    "compete_mode",
+    COMPETE_DEFAULTS,
+  );
+  return {
+    enabled: raw.enabled ?? COMPETE_DEFAULTS.enabled,
+    contentTypes: raw.contentTypes ?? COMPETE_DEFAULTS.contentTypes,
+  };
+}
+
+export async function updateCompeteMode(input: CompeteModeSettings): Promise<void> {
+  const session = await requireAdmin();
+  for (const t of input.contentTypes) {
+    if (!CONTENT_TYPES_ALL.includes(t)) throw new Error("type_unknown");
+  }
+  await writeContentGenConfig("compete_mode", input, session.userId, "Compete mode (Sprint 11.5)");
+  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
+}
+
+/**
+ * Helper backend pour les generators : décide si on doit faire compete pour
+ * un contentType donné. Lu à chaque génération (cache implicite ContentGenConfig).
+ */
+export async function shouldUseCompete(contentType: ContentType): Promise<boolean> {
+  const cfg = await getCompeteMode();
+  if (!cfg.enabled) return false;
+  if (cfg.contentTypes.length === 0) return true;
+  return cfg.contentTypes.includes(contentType);
+}

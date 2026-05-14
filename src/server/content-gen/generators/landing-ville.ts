@@ -14,7 +14,8 @@
  * axionia-content-generator/prompts/landing-ville.md (chargé Sprint 2 Day 3).
  */
 
-import { generate as routerGenerate } from "../providers/provider-router";
+import { generateForJob } from "../providers/provider-router";
+import { lightweightSeoScore } from "../providers/lightweight-score";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
@@ -68,15 +69,22 @@ ${kbContext}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
 
-    const llmResult = await routerGenerate({
-      jobId: input.jobId,
-      contentType: "landing_ville",
-      role: "text",
-      systemPrompt: SYSTEM_PROMPT_BASE,
-      userPrompt,
-      maxTokens: 4096,
-      temperature: 0.7,
-    });
+    // Sprint 11.5 V2 : route via generateForJob qui décide compete vs single
+    // selon ContentGenConfig "compete_mode" (admin UI /settings/providers).
+    // Si compete actif pour landing_ville → 2 LLM en // + best seoScore.
+    const llmResult = await generateForJob(
+      {
+        jobId: input.jobId,
+        contentType: "landing_ville",
+        role: "text",
+        systemPrompt: SYSTEM_PROMPT_BASE,
+        userPrompt,
+        maxTokens: 4096,
+        temperature: 0.7,
+      },
+      lightweightSeoScore,
+      "landing_ville",
+    );
 
     // 3. Parse output (V1 minimal — V2 Zod strict)
     let parsed: {

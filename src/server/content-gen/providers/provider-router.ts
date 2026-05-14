@@ -22,7 +22,7 @@ import { openaiProvider } from "./openai";
 import { anthropicProvider } from "./anthropic";
 import { perplexityProvider } from "./perplexity";
 import { unsplashProvider } from "./unsplash";
-import type { ProviderRole, ProviderKey } from "../../../../prisma/generated/client";
+import type { ContentType, ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
 
 // ============================================================
 // Circuit breaker in-memory V0 (Sprint 1 Day 2 step 16:00)
@@ -149,6 +149,30 @@ export async function generate(req: GenerationRequest): Promise<GenerationRespon
     }
   }
   throw lastError ?? new Error(`All providers failed for role '${req.role}'`);
+}
+
+/**
+ * Sprint 11.5 V2 — Wrapper qui décide entre `generate()` single-mode et
+ * `generateCompete()` selon la config admin `compete_mode` lue via
+ * `shouldUseCompete(contentType)`. Permet aux generators d'appeler une
+ * seule fonction sans connaître la config.
+ *
+ * Usage :
+ *   const result = await generateForJob(req, lightweightSeoScore, contentType);
+ *
+ * Si compete s'applique pour ce contentType → compete. Sinon → generate
+ * standard (GPT primary → Claude fallback).
+ */
+export async function generateForJob(
+  req: GenerationRequest,
+  scoreFn: (response: GenerationResponse) => number,
+  contentType: ContentType,
+): Promise<GenerationResponse> {
+  // Import dynamique pour éviter cycle policies.ts → providers
+  const { shouldUseCompete } = await import("@/server/actions/content-gen/policies");
+  const useCompete = await shouldUseCompete(contentType).catch(() => false);
+  if (useCompete) return generateCompete(req, scoreFn);
+  return generate(req);
 }
 
 /**
