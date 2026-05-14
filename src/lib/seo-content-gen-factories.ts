@@ -90,13 +90,19 @@ export interface ArticleJsonLdInput {
   readonly tags?: ReadonlyArray<string>;
   readonly wordCount?: number;
   readonly readingTimeMinutes?: number;
+  /**
+   * Segment d'URL : "blog" (défaut) ou "actualites" (NewsArticle RSS § 28).
+   * Aligne canonical + mainEntityOfPage sur le path public réel.
+   */
+  readonly urlSegment?: "blog" | "actualites";
 }
 
 function buildArticleBase(
   type: "Article" | "BlogPosting" | "TechArticle" | "NewsArticle",
   input: ArticleJsonLdInput,
 ): Record<string, unknown> {
-  const url = `${SITE_URL}/${input.locale}/blog/${input.slug}`;
+  const segment = input.urlSegment ?? (type === "NewsArticle" ? "actualites" : "blog");
+  const url = `${SITE_URL}/${input.locale}/${segment}/${input.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": type,
