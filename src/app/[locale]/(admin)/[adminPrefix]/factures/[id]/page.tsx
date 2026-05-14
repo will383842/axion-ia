@@ -156,6 +156,16 @@ export default async function FactureDetailPage({ params }: PageProps) {
             · émise {formatDate(invoice.issuedAt)}
           </p>
         </div>
+        <div className="admin-filters-actions">
+          <a
+            href={`/api/admin/invoices/${invoice.id}/pdf`}
+            className="admin-button-ghost"
+            target="_blank"
+            rel="noreferrer"
+          >
+            📄 Télécharger PDF
+          </a>
+        </div>
       </div>
 
       <div className="admin-detail-grid">
