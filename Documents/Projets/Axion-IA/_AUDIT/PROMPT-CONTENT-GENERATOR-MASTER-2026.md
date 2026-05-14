@@ -1837,8 +1837,8 @@ Cron hebdo `aeo-tester` :
 | 3 | `<meta name="twitter:description" content="...">` |
 | 4 | `<meta name="twitter:image" content="<og:image url>">` |
 | 5 | `<meta name="twitter:image:alt" content="...">` |
-| 6 | `<meta name="twitter:site" content="@axionia_fr">` (handle officiel à confirmer) |
-| 7 | `<meta name="twitter:creator" content="@manon_axionia">` ⚠️ **handle exemple seulement** — confirmer ou retirer via Q13 § 20. Si pas de compte → omettre la balise. |
+| 6 | `<meta name="twitter:site" content="@axionia_fr">` (handle officiel à confirmer, sinon omettre la balise) |
+| 7 | ~~`<meta name="twitter:creator">`~~ **DOCTRINE v2.1 (Will 2026-05-14) : Manon = persona transparente SANS aucun réseau social. La balise `twitter:creator` est TOUJOURS omise pour les contenus signés Manon.** |
 
 #### 9.7.4 Geo meta (uniquement landings villes)
 
@@ -2189,7 +2189,7 @@ Dans `src/lib/seo.ts` → nouvel export `buildPersonManonJsonLd()` :
 }
 ```
 
-**STOP & ASK Will (cf. Q13 § 20)** : confirmer le nom à exposer (prénom seul ou « Manon X. » ?), la photo (chemin), bio, LinkedIn URL, handle Twitter (handle `@manon_axionia` cité dans § 9.7.3 est un EXEMPLE — à remplacer par le vrai ou retirer si pas de compte), `alumniOf` et `award` éventuels.
+**STOP & ASK Will (cf. Q13 § 20) — ✅ RÉSOLU 2026-05-14** : nom = « Manon » (prénom seul, pas de nom de famille). Photo = `/auteurs/manon.png` (portrait IA disclosed, Option 4). Bio = validée OK tel quel. **LinkedIn = `null` (persona sans réseau social). Twitter/X = `null` (idem, balise `twitter:creator` toujours omise).** `alumniOf` + `award` = absents (persona fictive transparente).
 
 #### 9.8.4 Byline en haut de chaque article
 
@@ -3410,7 +3410,7 @@ model AuthorProfile {
   photoUrl256     String              // /auteurs/manon-256.avif
   photoUrl1024    String              // /auteurs/manon-1024.avif
   linkedinUrl     String?
-  twitterHandle   String?             // "@manon_axionia" ou null
+  twitterHandle   String?             // null systématique pour Manon (doctrine v2.1 — aucun réseau social)
   alumniOf        String?
   awards          String[] @default([])
   knowsAbout      String[] @default([])
@@ -4115,13 +4115,13 @@ Note v1.8 : grille étendue pour intégrer Campagnes de couverture (nouvelle cat
 - ⚠️ **Question obsolète depuis v2.0** (Unsplash uniquement, pas de génération IA d'image). `OPENAI_IMAGE_API_KEY` non requise V1. Si Will change d'avis V2 → réactiver Q12bis.
 
 **Q13. Profil canonique Manon — confirmer les valeurs avant seed Person JSON-LD** :
-- Nom à afficher : « Manon » seul, ou « Manon {Nom} » ?
-- Photo : chemin du fichier source à déposer (sera converti en 3 variantes AVIF 80/256/1024)
-- Bio 200-400 mots : Will rédige ou Claude propose un draft à valider ?
-- LinkedIn URL : à fournir (sinon retiré du `sameAs[]`)
-- Twitter/X handle (`@manon_axionia` ?) : confirmer ou retirer
-- `alumniOf`, `award`, `credentials` : à fournir ou laisser absent
-- Page `/fr/equipe/manon` : créer ou réutiliser une existante ?
+- Nom à afficher : ✅ « Manon » seul (validé 2026-05-14, pas de nom de famille)
+- Photo : ✅ `/auteurs/manon.png` (portrait IA disclosed Option 4, fournie 2026-05-14)
+- Bio 200-400 mots : ✅ validée OK tel quel (cf. seed `manon-profile.md` § 3)
+- LinkedIn URL : ✅ `null` — **doctrine v2.1 Manon n'a AUCUN réseau social** (acté Will 2026-05-14)
+- Twitter/X handle : ✅ `null` — idem, balise `twitter:creator` TOUJOURS omise pour contenus Manon
+- `alumniOf`, `award`, `credentials` : ✅ absents (persona fictive transparente)
+- Page `/fr/equipe/manon` : à créer Sprint 3 (intervention page auteur canonique avec disclaimer IA explicite)
 
 ---
 
