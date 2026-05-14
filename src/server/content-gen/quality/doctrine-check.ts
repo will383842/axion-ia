@@ -1,0 +1,169 @@
+/**
+ * Content Generator — Doctrine check (§ 10 + § 21 master prompt + glossaire § 1.1bis).
+ *
+ * Vérifie qu'un contenu généré respecte la doctrine éditoriale Axion-IA :
+ * 1. Anti-SIREN strict (regex SIREN/SIRET/RCS — block)
+ * 2. Naming Axion-IA exact (jamais « AxionIA » ou « Axion IA »)
+ * 3. Mot « formation » banni (cf. axionia-core §1)
+ * 4. Banned phrases lookup table `BannedPhrase` (severity block/warn/info)
+ * 5. Ratio ≥ 95 % AxionIA-centric (heuristic : présence systématique mots-clés
+ *    méthodologie/audit/intervention/SSOT tarifs vs données INSEE génériques)
+ */
+
+import { prisma } from "@/lib/prisma";
+
+export interface DoctrineCheckResult {
+  readonly passed: boolean;
+  readonly blockingViolations: ReadonlyArray<DoctrineViolation>;
+  readonly warnings: ReadonlyArray<DoctrineViolation>;
+  readonly infos: ReadonlyArray<DoctrineViolation>;
+  readonly axionIaCentricRatio: number;
+}
+
+export interface DoctrineViolation {
+  readonly pattern: string;
+  readonly severity: "block" | "warn" | "info";
+  readonly reason: string;
+  readonly occurrences: number;
+}
+
+const SIREN_REGEX = /\b\d{9}\b|\b\d{14}\b|RCS\s+[A-Z]/i;
+const NAMING_INCORRECT_REGEX = /\b(AxionIA|Axion\s+IA)\b/g; // doit être Axion-IA
+
+const AXIONIA_KEYWORDS = [
+  "axion-ia",
+  "méthodologie",
+  "audit",
+  "intervention",
+  "implémentation",
+  "cabinet",
+  "opérationnel",
+];
+
+const INSEE_KEYWORDS = ["population", "habitants", "insee", "pib", "communes voisines"];
+
+/**
+ * Calcule le ratio AxionIA-centric : présence/densité keywords brand vs INSEE.
+ * Cible ≥ 0.95 (doctrine § 1.2). V1 = heuristic simple word frequency.
+ */
+function computeAxionIaRatio(text: string): number {
+  const lower = text.toLowerCase();
+  let axionCount = 0;
+  let inseeCount = 0;
+  for (const kw of AXIONIA_KEYWORDS) {
+    const matches = lower.match(new RegExp(`\\b${kw}\\b`, "g"));
+    if (matches) axionCount += matches.length;
+  }
+  for (const kw of INSEE_KEYWORDS) {
+    const matches = lower.match(new RegExp(`\\b${kw}\\b`, "g"));
+    if (matches) inseeCount += matches.length;
+  }
+  const total = axionCount + inseeCount;
+  return total === 0 ? 1 : axionCount / total;
+}
+
+/**
+ * Lance le doctrine-check complet sur un texte.
+ * Lit BannedPhrase DB si disponible (fallback hardcoded list si P2021).
+ */
+export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> {
+  const blocking: DoctrineViolation[] = [];
+  const warnings: DoctrineViolation[] = [];
+  const infos: DoctrineViolation[] = [];
+
+  // 1. Anti-SIREN
+  const sirenMatches = text.match(SIREN_REGEX);
+  if (sirenMatches) {
+    blocking.push({
+      pattern: "SIREN/SIRET/RCS",
+      severity: "block",
+      reason: "OÜ estonienne — pas de numéro français autorisé",
+      occurrences: sirenMatches.length,
+    });
+  }
+
+  // 2. Naming Axion-IA strict
+  const namingMatches = text.match(NAMING_INCORRECT_REGEX);
+  if (namingMatches) {
+    blocking.push({
+      pattern: "AxionIA / Axion IA",
+      severity: "block",
+      reason: "Naming brand : utiliser 'Axion-IA' exactement (avec tiret)",
+      occurrences: namingMatches.length,
+    });
+  }
+
+  // 3. Banned phrases (DB ou fallback)
+  let bannedPhrases: ReadonlyArray<{
+    pattern: string;
+    reason: string | null;
+    severity: string;
+  }> = [];
+  try {
+    bannedPhrases = await prisma.bannedPhrase.findMany({
+      where: { isActive: true },
+      select: { pattern: true, reason: true, severity: true },
+    });
+  } catch (err) {
+    // P2021 / PrismaClientInitializationError → fallback liste hardcoded minimale
+    if (
+      err instanceof Error &&
+      (("code" in err && (err as { code: string }).code === "P2021") ||
+        err.constructor.name === "PrismaClientInitializationError")
+    ) {
+      bannedPhrases = [
+        { pattern: "formation", reason: "Mot BANNI doctrine §1", severity: "block" },
+        { pattern: "le meilleur", reason: "Marketing-hype", severity: "warn" },
+        { pattern: "révolutionnaire", reason: "Marketing-hype", severity: "warn" },
+      ];
+    } else {
+      throw err;
+    }
+  }
+
+  const lower = text.toLowerCase();
+  for (const phrase of bannedPhrases) {
+    const re = new RegExp(
+      `\\b${phrase.pattern.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
+      "g",
+    );
+    const matches = lower.match(re);
+    if (matches) {
+      const violation: DoctrineViolation = {
+        pattern: phrase.pattern,
+        severity: phrase.severity as "block" | "warn" | "info",
+        reason: phrase.reason ?? "Phrase doctrine",
+        occurrences: matches.length,
+      };
+      if (phrase.severity === "block") blocking.push(violation);
+      else if (phrase.severity === "warn") warnings.push(violation);
+      else infos.push(violation);
+    }
+  }
+
+  // 4. Ratio AxionIA-centric
+  const ratio = computeAxionIaRatio(text);
+  if (ratio < 0.6) {
+    blocking.push({
+      pattern: "axionia_centric_ratio",
+      severity: "block",
+      reason: `Ratio AxionIA-centric ${(ratio * 100).toFixed(0)}% < 60% — contenu trop INSEE-centric (doctrine § 1.2 anti-doorway)`,
+      occurrences: 1,
+    });
+  } else if (ratio < 0.95) {
+    warnings.push({
+      pattern: "axionia_centric_ratio",
+      severity: "warn",
+      reason: `Ratio AxionIA-centric ${(ratio * 100).toFixed(0)}% < 95% cible`,
+      occurrences: 1,
+    });
+  }
+
+  return {
+    passed: blocking.length === 0,
+    blockingViolations: blocking,
+    warnings,
+    infos,
+    axionIaCentricRatio: ratio,
+  };
+}
