@@ -55,6 +55,28 @@ import {
   cancellationConfirmedByUserSubject,
 } from "./cancellation-confirmed-by-user";
 import { RefundIssuedEmail, refundIssuedSubject } from "./refund-issued";
+// Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
+import {
+  contractVersionUpdated,
+  contractSent,
+  contractSigned,
+  contractRefused,
+  contractReminder,
+  cadrageJ1Reminder,
+  cadrageH2Reminder,
+  paymentReminderJ7,
+  paymentOverdueJ1,
+  paymentOverdueJ15,
+  paymentOverdueJ30,
+  installmentOverdueSoft,
+  installmentOverdueFirm,
+  disputedNotice,
+  bookingRescheduledByAdmin,
+  bookingJ1Reminder,
+  bookingCompletedThanks,
+  quoteReminder,
+  quoteExpired,
+} from "./_pending-templates";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -172,6 +194,26 @@ const TEMPLATES: TemplateMap = {
     subject: refundIssuedSubject,
     component: RefundIssuedEmail,
   },
+  // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
+  "contract-version-updated": contractVersionUpdated,
+  "contract-sent": contractSent,
+  "contract-signed": contractSigned,
+  "contract-refused": contractRefused,
+  "contract-reminder": contractReminder,
+  "cadrage-j1-reminder": cadrageJ1Reminder,
+  "cadrage-h2-reminder": cadrageH2Reminder,
+  "payment-reminder-j7": paymentReminderJ7,
+  "payment-overdue-j1": paymentOverdueJ1,
+  "payment-overdue-j15": paymentOverdueJ15,
+  "payment-overdue-j30": paymentOverdueJ30,
+  "installment-overdue-soft": installmentOverdueSoft,
+  "installment-overdue-firm": installmentOverdueFirm,
+  "disputed-notice": disputedNotice,
+  "booking-rescheduled-by-admin": bookingRescheduledByAdmin,
+  "booking-j1-reminder": bookingJ1Reminder,
+  "booking-completed-thanks": bookingCompletedThanks,
+  "quote-reminder": quoteReminder,
+  "quote-expired": quoteExpired,
 };
 
 export interface RenderedEmail {

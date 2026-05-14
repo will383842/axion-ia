@@ -44,7 +44,33 @@ export type EmailJobName =
   | "quote-declined"
   // Sprint X.15 — self-service client (magic-link)
   | "cancellation-confirmed-by-user"
-  | "refund-issued";
+  | "refund-issued"
+  // Sprint X.3 — versioning contrat D62
+  | "contract-version-updated"
+  // Sprint X.3 / X.13 — workflow contrat
+  | "contract-sent"
+  | "contract-signed"
+  | "contract-refused"
+  | "contract-reminder"
+  // Sprint X.13 — relances paiement
+  | "payment-reminder-j7"
+  | "payment-overdue-j1"
+  | "payment-overdue-j15"
+  | "payment-overdue-j30"
+  // Sprint X.13 — cadrage reminders
+  | "cadrage-j1-reminder"
+  | "cadrage-h2-reminder"
+  // Sprint X.13 — booking lifecycle
+  | "booking-rescheduled-by-admin"
+  | "booking-j1-reminder"
+  | "booking-completed-thanks"
+  // Sprint X.13 — installments overdue (D59)
+  | "installment-overdue-soft"
+  | "installment-overdue-firm"
+  | "disputed-notice"
+  // Sprint X.13 — quote lifecycle
+  | "quote-reminder"
+  | "quote-expired";
 
 export interface EmailJobData {
   template: EmailJobName;
