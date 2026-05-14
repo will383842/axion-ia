@@ -16,6 +16,8 @@ import type {
   NewsletterCampaignJobData,
   SearchIndexerJobData,
   RetentionPurgeJobData,
+  BookingCronJobData,
+  BookingCronJobType,
 } from "./types";
 
 const connection = getBullConnection();
@@ -60,6 +62,17 @@ export const retentionPurgeQueue: Queue<RetentionPurgeJobData> | null = connecti
       defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
     })
   : null;
+
+// Sprint X.12 — Booking V1 crons (relances paiement, J-7/J-1 reminders, etc.).
+// 1 seule queue qui dispatche par `type`. `attempts: 3` — fail-soft sur DB
+// temporaire mais pas d'accumulation infinie.
+export const bookingCronsQueue: Queue<BookingCronJobData, void, BookingCronJobType> | null =
+  connection
+    ? new Queue<BookingCronJobData, void, BookingCronJobType>("booking-crons", {
+        connection,
+        defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
+      })
+    : null;
 
 // ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
@@ -136,4 +149,61 @@ export async function bootRepeatableJobs(): Promise<void> {
     { tick: new Date().toISOString() },
     { repeat: { pattern: "0 3 * * *" }, jobId: "retention-purge-cron" },
   );
+
+  // Sprint X.12 — Booking V1 crons.
+  if (bookingCronsQueue) {
+    // Liste des cron jobs Booking V1 — pattern, jobId, type.
+    // Most jobs run daily 09:00 (Europe/Paris ≈ 07:00-08:00 UTC selon DST).
+    // Cadrage-h2-reminder = hourly.
+    const bookingCronSchedule: Array<{
+      type: BookingCronJobType;
+      pattern: string;
+      jobId: string;
+    }> = [
+      { type: "payment-overdue-scan", pattern: "0 8 * * *", jobId: "payment-overdue-scan-cron" },
+      { type: "booking-j7-reminder", pattern: "0 8 * * *", jobId: "booking-j7-reminder-cron" },
+      { type: "booking-j1-reminder", pattern: "0 8 * * *", jobId: "booking-j1-reminder-cron" },
+      { type: "cadrage-j1-reminder", pattern: "0 8 * * *", jobId: "cadrage-j1-reminder-cron" },
+      { type: "cadrage-h2-reminder", pattern: "0 * * * *", jobId: "cadrage-h2-reminder-cron" },
+      {
+        type: "contract-pending-reminder",
+        pattern: "30 8 * * *",
+        jobId: "contract-pending-reminder-cron",
+      },
+      {
+        type: "quote-pending-reminder",
+        pattern: "30 8 * * *",
+        jobId: "quote-pending-reminder-cron",
+      },
+      {
+        type: "quote-expiration-check",
+        pattern: "30 8 * * *",
+        jobId: "quote-expiration-check-cron",
+      },
+      {
+        type: "contract-signed-without-deposit-cutoff",
+        pattern: "30 8 * * *",
+        jobId: "contract-signed-without-deposit-cutoff-cron",
+      },
+      {
+        type: "booking-paused-resume-reminder",
+        pattern: "0 9 * * *",
+        jobId: "booking-paused-resume-reminder-cron",
+      },
+      {
+        type: "booking-completed-thanks-sweep",
+        pattern: "0 18 * * *",
+        jobId: "booking-completed-thanks-sweep-cron",
+      },
+    ];
+
+    for (const { type, pattern, jobId } of bookingCronSchedule) {
+      await bookingCronsQueue.removeRepeatable(type, { pattern }, jobId);
+      await bookingCronsQueue.add(
+        type,
+        { type, tick: new Date().toISOString() },
+        { repeat: { pattern }, jobId },
+      );
+    }
+  }
 }

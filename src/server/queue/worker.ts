@@ -8,6 +8,7 @@ import { startEmailWorker } from "./workers/email-worker";
 import { startOptionExpirationWorker } from "./workers/option-expiration-worker";
 import { startOptionReminderWorker } from "./workers/option-reminder-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
+import { startBookingCronsWorker } from "./workers/booking-crons-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -23,6 +24,7 @@ async function main() {
     startOptionExpirationWorker(),
     startOptionReminderWorker(),
     startRetentionPurgeWorker(),
+    startBookingCronsWorker(),
   ];
 
   await bootRepeatableJobs();

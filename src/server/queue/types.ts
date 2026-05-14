@@ -125,3 +125,39 @@ export interface SearchIndexerJobData {
 export interface RetentionPurgeJobData {
   tick: string;
 }
+
+// ============================================================
+// Queue: booking-crons (Sprint X.12 — Booking V1)
+// ============================================================
+//
+// Une queue unique qui dispatche vers des handlers spécialisés selon
+// le `type` du job. Permet de mutualiser la connection Redis + le worker.
+
+export type BookingCronJobType =
+  /** Daily 09:00 — relances paiement J+1/J+15/J+30 sur invoices issued/partially_paid en retard. */
+  | "payment-overdue-scan"
+  /** Daily 09:00 — find bookings J-7 → invoice solde + email payment-reminder-j7. */
+  | "booking-j7-reminder"
+  /** Daily 09:00 — find bookings J-1 confirmed → email booking-j1-reminder. */
+  | "booking-j1-reminder"
+  /** Daily 09:00 — find cadrageMeetings J-1 → email cadrage-j1-reminder. */
+  | "cadrage-j1-reminder"
+  /** Hourly — find cadrageMeetings dans [now+2h, now+3h] → email cadrage-h2-reminder. */
+  | "cadrage-h2-reminder"
+  /** Daily 09:00 — contracts sent depuis >3j sans signature → email contract-reminder. */
+  | "contract-pending-reminder"
+  /** Daily 09:00 — quotes sent depuis >3j sans réponse → email quote-reminder. */
+  | "quote-pending-reminder"
+  /** Daily 09:00 — quotes validUntil dépassé → markQuoteDeclined + email quote-expired. */
+  | "quote-expiration-check"
+  /** Daily 09:00 — contract_payment_sent depuis 10j+ sans acompte → cancel (D52). */
+  | "contract-signed-without-deposit-cutoff"
+  /** Daily 09:00 — bookings paused dont pausedUntil approche → telegram Will (D61). */
+  | "booking-paused-resume-reminder"
+  /** Daily 09:00 — sweep bookings completed > 0h pour envoyer thanks. */
+  | "booking-completed-thanks-sweep";
+
+export interface BookingCronJobData {
+  type: BookingCronJobType;
+  tick: string;
+}
