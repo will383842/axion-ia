@@ -28,6 +28,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generators/blog-from-rss";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
+import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 
 const QUEUE_NAME = "content-publish";
 
@@ -111,6 +112,15 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   // Article + Translation insert (transaction)
   const indexationTier = promoteToTier1 ? "tier_1_indexable" : "tier_2_noindex_follow";
 
+  await logStep(cgJob.id, "publish", "Publish pipeline start", {
+    review_queue_id: reviewQueueId,
+    promote_to_tier_1: promoteToTier1,
+    content_type: cgJob.contentType,
+    target_search_intent: cgJob.targetSearchIntent,
+    is_news: isNews,
+    slug_candidate: slugCandidate,
+  });
+
   const article = await prisma.$transaction(async (tx) => {
     const a = await tx.article.create({
       data: {
@@ -162,6 +172,13 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     return a;
   });
 
+  await logStep(cgJob.id, "article_insert", "Article + ArticleTranslation FR inserted", {
+    article_id: article.id,
+    tier: indexationTier,
+    slug: slugCandidate,
+    is_news: isNews,
+  });
+
   // JSON-LD NewsArticle (Sprint 5 wire) — stocké pour usage downstream
   if (isNews && rssSourceUrl && rssSourceName) {
     const jsonLd = enrichOutputWithNewsArticleJsonLd({
@@ -176,15 +193,12 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     });
     // V1 : log JSON-LD prêt — la page Article publique (V1.5+) le lit via
     // helper côté generateMetadata(). V1 = stocké dans GenerationLog audit trail.
-    await prisma.generationLog.create({
-      data: {
-        jobId: cgJob.id,
-        level: "info",
-        step: "json_ld_news_article",
-        message: "NewsArticle JSON-LD prêt pour injection <head>",
-        metadata: jsonLd as never,
-      },
-    });
+    await logStep(
+      cgJob.id,
+      "json_ld_news_article",
+      "NewsArticle JSON-LD prêt pour injection <head>",
+      jsonLd as Record<string, unknown>,
+    );
   }
 
   // Sprint 9 V2 : indexing ping centralisé (IndexNow + Google Indexing) si tier-1.
@@ -198,6 +212,11 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
       isNews,
       origin: "content-gen",
     });
+    await logStep(cgJob.id, "indexnow_ping", "Indexing enqueued (IndexNow + Google Indexing)", {
+      article_id: article.id,
+      slug: slugCandidate,
+      is_news: isNews,
+    });
   }
 
   // Sprint 12.5 V2 : fact-check Perplexity post-publish. Tous tiers, pas
@@ -209,11 +228,15 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
       { articleId: article.id, contentGenJobId: cgJob.id },
       { jobId: `fact-check-${cgJob.id}` },
     );
+    await logStep(cgJob.id, "fact_check_enqueue", "Fact-check Perplexity enqueued", {
+      article_id: article.id,
+    });
   } catch (err) {
-    console.warn(
-      `[publish] fact-check enqueue failed for article ${article.id}:`,
-      err instanceof Error ? err.message : String(err),
-    );
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[publish] fact-check enqueue failed for article ${article.id}:`, msg);
+    await logStepError(cgJob.id, "fact_check_enqueue", `Enqueue failed: ${msg}`, {
+      article_id: article.id,
+    });
   }
 
   // Pass B fix P0-7 — Q/R post-process auto (§ 29 master prompt v1.7).
@@ -225,6 +248,13 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     ? (faqJson as Array<{ question: string; answer: string }>)
     : null;
   if (faqList && faqList.length > 0) {
+    const cleanFaqs = faqList.filter(
+      (f) =>
+        typeof f === "object" &&
+        f !== null &&
+        typeof f.question === "string" &&
+        typeof f.answer === "string",
+    );
     await getQaExtractQueue().add(
       "extract",
       {
@@ -234,16 +264,14 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
         articleTitle: title,
         ...(cgJob.anchorVilleSlug ? { anchorVilleSlug: cgJob.anchorVilleSlug } : {}),
         ...(cgJob.anchorRegionSlug ? { anchorRegionSlug: cgJob.anchorRegionSlug } : {}),
-        faqs: faqList.filter(
-          (f) =>
-            typeof f === "object" &&
-            f !== null &&
-            typeof f.question === "string" &&
-            typeof f.answer === "string",
-        ),
+        faqs: cleanFaqs,
       },
       { jobId: `qa-extract-${cgJob.id}` },
     );
+    await logStep(cgJob.id, "qa_extract", "Q/R extraction enqueued post-publish", {
+      article_id: article.id,
+      faq_count: cleanFaqs.length,
+    });
   }
 
   // Revalidate Next 16 ISR
@@ -252,10 +280,24 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     if (isNews) revalidatePath(`/fr/actualites/${slugCandidate}`);
     revalidatePath("/fr/blog");
     revalidatePath("/sitemap.xml");
+    await logStep(cgJob.id, "revalidate_path", "Next 16 ISR paths revalidated", {
+      paths: [
+        `/fr/blog/${slugCandidate}`,
+        ...(isNews ? [`/fr/actualites/${slugCandidate}`] : []),
+        "/fr/blog",
+        "/sitemap.xml",
+      ],
+    });
   } catch {
     // revalidatePath nécessite request context — ici worker bg → no-op silencieux
   }
 
+  await logStep(cgJob.id, "publish", "Publish pipeline complete", {
+    article_id: article.id,
+    tier: indexationTier,
+    slug: slugCandidate,
+    is_news: isNews,
+  });
   console.log(
     `[publish] article ${article.id} published (tier=${indexationTier}, slug=${slugCandidate}, isNews=${isNews})`,
   );
