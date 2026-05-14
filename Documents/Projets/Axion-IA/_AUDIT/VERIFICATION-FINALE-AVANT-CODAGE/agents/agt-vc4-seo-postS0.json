@@ -1,0 +1,26 @@
+{
+  "agent": "AGT-VC4 POST-S0",
+  "scope": "Re-vérification SEO/AEO/GEO après Sprint S0",
+  "executedAt": "2026-05-14T10:30:00Z",
+  "filesAudited": [
+    "axionia/next.config.ts",
+    "axionia/src/app/sitemap.ts",
+    "axionia/src/app/robots.ts",
+    "axionia/src/lib/seo.ts",
+    "_AUDIT/PROMPT-CONTENT-GENERATOR-MASTER-2026.md (post patches)",
+    "_AUDIT/seeds-templates/manon-profile.md"
+  ],
+  "findings": [
+    {"id": "VC4-PostS0-001", "severity": "INFO", "title": "/sitemap.xml 404 → redirect 301 vers /sitemap-index.xml CONFIRMÉ", "source": "axionia/next.config.ts:129-139", "status": "FIXED"},
+    {"id": "VC4-PostS0-002", "severity": "INFO", "title": "og:image SITE_URL force prod fallback CONFIRMÉ", "source": "axionia/src/lib/seo.ts:19-23", "status": "FIXED"},
+    {"id": "VC4-PostS0-003", "severity": "INFO", "title": "Twitter handle Manon retiré 4 ancrages doctrine v2.1", "source": "master prompt lignes 1841, 2192, 3413, 4122", "status": "DONE"},
+    {"id": "VC4-PostS0-004", "severity": "INFO", "title": "Photo Manon IA disclosed + 4 disclaimers documentés", "source": "_AUDIT/seeds-templates/manon-profile.md § 2", "status": "DONE"},
+    {"id": "VC4-PostS0-INFO-1", "severity": "P1", "title": "buildPersonJsonLd() lacks explicit Manon sameAs:[] guard", "source": "axionia/src/lib/seo.ts:405-441", "fix": "Sprint 1 Day 2 — add `if (slug==='manon') return {...base, sameAs:[]}`", "estimatedFixEffort": "2 h"},
+    {"id": "VC4-PostS0-INFO-2", "severity": "P2", "title": "pnpm sitemap:validate XSD script absent", "fix": "Sprint 5 ajouter validator npm + script package.json", "estimatedFixEffort": "1 h"},
+    {"id": "VC4-PostS0-INFO-4", "severity": "P1", "title": "Photo Manon disclaimers à câbler UI", "fix": "Sprint 1 Day 1 — AuthorByline + AuthorCard + /equipe/manon page intègrent personaDisclaimer + photoAlt", "estimatedFixEffort": "2 h"},
+    {"id": "VC4-PostS0-INFO-5", "severity": "P2", "title": "Twitter doctrine data-driven, pas code-enforced", "fix": "Optionnel V2 — DB CHECK constraint", "estimatedFixEffort": "30 min"}
+  ],
+  "score": 87,
+  "passBPaths": ["agt-vc6-postS0:VC6-PostS0-001"],
+  "verdict": "GO"
+}
