@@ -10,7 +10,8 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
+import { buildQAPageJsonLd } from "@/lib/seo-content-gen-factories";
 import { splitTitleEm } from "@/lib/title";
 import { listFaqs, type FaqItem } from "@/lib/knowledge/readers";
 
@@ -59,22 +60,17 @@ export default async function FaqEntryPage({ params }: Props) {
   const copy = getCopy(entry, loc);
 
   // QAPage Schema — direct citability for Perplexity / ChatGPT / Bing Copilot.
-  const qaJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "QAPage",
-    mainEntity: {
-      "@type": "Question",
-      name: copy.question,
-      text: copy.question,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: copy.answer,
-        url: `${SITE_URL}/${locale}/faq/${slug}`,
-        author: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
-      },
-    },
-  } as const;
+  // Audit final P1-8 fix : `buildQAPageJsonLd` factory inclut Speakable
+  // `cssSelector: [".faq-answer", '[data-aeo="answer"]']` qui permet aux LLMs
+  // d'isoler la réponse pour lecture vocale (Google Assistant, Bing AI).
+  // Voir master prompt § 9bis.11B.
+  const qaJsonLd = buildQAPageJsonLd({
+    question: copy.question,
+    answerHtml: copy.answer,
+    slug,
+    locale: loc,
+    publishedAt: new Date(),
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -138,7 +134,10 @@ export default async function FaqEntryPage({ params }: Props) {
 
       <Section>
         <Container className="max-w-3xl">
-          <p className="text-fg text-lg leading-relaxed">{copy.answer}</p>
+          {/* data-aeo="answer" + .faq-answer = cssSelector Speakable JSON-LD */}
+          <p className="text-fg faq-answer text-lg leading-relaxed" data-aeo="answer">
+            {copy.answer}
+          </p>
         </Container>
       </Section>
 
