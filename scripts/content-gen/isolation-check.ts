@@ -27,6 +27,7 @@ import path from "node:path";
 
 const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/content-gen\//,
+  /^src\/server\/actions\/content-gen\//,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/content-gen\//,
   /^src\/components\/admin\/content-gen\//,
   /^src\/server\/queue\/workers\/content-.*-worker\.ts$/,
@@ -45,6 +46,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // dans des commentaires explicatifs (pré-existant Sprint S0bis).
   /^src\/app\/sitemap\.ts$/,
   /^src\/server\/exporters\/knowledge-sitemap\.ts$/,
+  // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
+  /^scripts\/check-anti-siren\.sh$/,
 ];
 
 /**
