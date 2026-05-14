@@ -37,6 +37,11 @@ import {
   cancelBookingFormAction,
   CANCEL_BOOKING_FORM_INITIAL,
 } from "@/features/booking/refund-form-actions";
+import {
+  overrideBookingScheduleFormAction,
+  SCHEDULE_FORM_INITIAL,
+  type ScheduleFormState,
+} from "@/features/payment-schedule/admin-form-actions";
 import type { BookingStatus, ContractStatus } from "../../../../../../../prisma/generated/client";
 
 interface ActiveContract {
@@ -156,6 +161,8 @@ export function BookingActions({
         />
       )}
       {canCreateAddendum && <CreateContractAddendumForm bookingId={bookingId} />}
+      <CreateQuoteLink bookingId={bookingId} adminPrefix={adminPrefix} />
+      <OverrideScheduleForm bookingId={bookingId} />
       {!anyActionAvailable && (
         <p className="admin-meta-block">
           Aucune action admin disponible pour le statut actuel ({status}).
@@ -846,6 +853,110 @@ function CancelAndReissueContractForm({
 // ────────────────────────────────────────────────────────────────────
 // CreateContractAddendumForm (D62 — après signature)
 // ────────────────────────────────────────────────────────────────────
+
+// ────────────────────────────────────────────────────────────────────
+// CreateQuoteLink — lien vers /devis/new?bookingId=… (Sprint A patch)
+// ────────────────────────────────────────────────────────────────────
+
+function CreateQuoteLink({ bookingId, adminPrefix }: { bookingId: string; adminPrefix: string }) {
+  return (
+    <a href={`/fr/${adminPrefix}/devis/new?bookingId=${bookingId}`} className="admin-button-ghost">
+      📄 Créer un devis pour ce booking…
+    </a>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────
+// OverrideScheduleForm — échéancier custom par booking (Sprint A patch / C3)
+// ────────────────────────────────────────────────────────────────────
+
+function ScheduleResult({ state }: { state: ScheduleFormState }) {
+  if (state.ok) {
+    return (
+      <p role="status" className="admin-alert admin-alert-success">
+        ✓ {state.message}
+      </p>
+    );
+  }
+  if (state.error) {
+    return (
+      <p role="alert" className="admin-alert admin-alert-error">
+        {state.error}
+      </p>
+    );
+  }
+  return null;
+}
+
+function OverrideScheduleForm({ bookingId }: { bookingId: string }) {
+  const [state, action, pending] = useActionState(
+    overrideBookingScheduleFormAction,
+    SCHEDULE_FORM_INITIAL,
+  );
+  const [open, setOpen] = useState(false);
+
+  if (state.ok) return <ScheduleResult state={state} />;
+  if (!open) {
+    return (
+      <button type="button" className="admin-button-ghost" onClick={() => setOpen(true)}>
+        📅 Override échéancier custom pour ce booking…
+      </button>
+    );
+  }
+  return (
+    <form action={action} className="admin-form admin-form-block">
+      <h3 className="admin-h3">Échéancier custom (override profile par défaut)</h3>
+      <p className="admin-meta-block">
+        Définit un échéancier sur-mesure pour ce booking uniquement. Bypass le profile
+        auto-sélectionné selon le seuil HT. Snapshot immuable côté BookingPaymentSchedule.
+      </p>
+      <input type="hidden" name="bookingId" value={bookingId} />
+      <div className="admin-field">
+        <label htmlFor={`os-reason-${bookingId}`} className="admin-label">
+          Motif (10-500 caractères, archivé immuable)
+        </label>
+        <textarea
+          id={`os-reason-${bookingId}`}
+          name="reason"
+          rows={3}
+          minLength={10}
+          maxLength={500}
+          required
+          className="admin-input admin-textarea"
+          disabled={pending}
+        />
+      </div>
+      <div className="admin-field">
+        <label htmlFor={`os-installments-${bookingId}`} className="admin-label">
+          Installments JSON (somme percentage = 100)
+        </label>
+        <textarea
+          id={`os-installments-${bookingId}`}
+          name="customInstallmentsJson"
+          rows={8}
+          required
+          className="admin-input admin-textarea"
+          placeholder='[{"percentage":40,"dueOffsetDays":7,"dueRelativeTo":"validation","description":"Acompte 40 %"},{"percentage":60,"dueOffsetDays":-7,"dueRelativeTo":"booking_date","description":"Solde J-7"}]'
+          disabled={pending}
+        />
+      </div>
+      <ScheduleResult state={state} />
+      <div className="admin-filters-actions">
+        <button type="submit" disabled={pending} className="admin-button admin-button-validate">
+          {pending ? "Application…" : "💾 Appliquer l'échéancier custom"}
+        </button>
+        <button
+          type="button"
+          className="admin-button-ghost"
+          onClick={() => setOpen(false)}
+          disabled={pending}
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  );
+}
 
 function CreateContractAddendumForm({ bookingId }: { bookingId: string }) {
   const [state, action, pending] = useActionState(

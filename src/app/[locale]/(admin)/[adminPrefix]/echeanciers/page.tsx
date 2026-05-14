@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ScheduleProfileForm } from "./ScheduleProfileForm";
+import { ArchiveProfileButton } from "./ArchiveProfileButton";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,7 @@ export default async function EcheanciersPage({ params }: PageProps) {
                   <th>Seuil max HT</th>
                   <th>Par défaut</th>
                   <th>Mise à jour</th>
+                  {role === "super_admin" && <th>Action</th>}
                 </tr>
               </thead>
               <tbody>
@@ -110,6 +112,11 @@ export default async function EcheanciersPage({ params }: PageProps) {
                       <td>{formatEur(p.thresholdMaxCents)}</td>
                       <td>{p.isDefault ? "✓" : ""}</td>
                       <td>{p.updatedAt.toISOString().slice(0, 10)}</td>
+                      {role === "super_admin" && (
+                        <td>
+                          <ArchiveProfileButton profileId={p.id} />
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
