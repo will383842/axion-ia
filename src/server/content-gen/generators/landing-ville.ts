@@ -14,13 +14,13 @@
  * axionia-content-generator/prompts/landing-ville.md (chargé Sprint 2 Day 3).
  */
 
-import { generateForJob } from "../providers/provider-router";
-import { lightweightSeoScore } from "../providers/lightweight-score";
+import { generate as routerGenerate } from "../providers/provider-router";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
+import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 
 const SYSTEM_PROMPT_BASE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
@@ -58,10 +58,22 @@ export const landingVilleGenerator: Generator = {
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
 
-    const userPrompt = `Génère une landing page Axion-IA pour la ville "${input.anchorVilleSlug}".
-Audience : ${input.targetAudienceSize ?? "PME"} × ${input.targetAudienceOrganisation ?? "entreprise_privee"}.
-Intent : ${input.targetSearchIntent}.
-Primary keyword : ${input.primaryKeyword ?? "cabinet IA"}.
+    // Pass B P1-3 — escape inputs avant interpolation dans template prompt
+    // (anti prompt-injection : backticks, role markers, newlines, etc.).
+    const safeVilleSlug = escapeSlugInput(input.anchorVilleSlug);
+    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeOrgType = escapeLlmInput(input.targetAudienceOrganisation ?? "entreprise_privee", {
+      maxLen: 40,
+    });
+    const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
+    const safePrimaryKeyword = escapeLlmInput(input.primaryKeyword ?? "cabinet IA", {
+      maxLen: 100,
+    });
+
+    const userPrompt = `Génère une landing page Axion-IA pour la ville "${safeVilleSlug}".
+Audience : ${safeAudienceSize} × ${safeOrgType}.
+Intent : ${safeIntent}.
+Primary keyword : ${safePrimaryKeyword}.
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
@@ -69,22 +81,15 @@ ${kbContext}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
 
-    // Sprint 11.5 V2 : route via generateForJob qui décide compete vs single
-    // selon ContentGenConfig "compete_mode" (admin UI /settings/providers).
-    // Si compete actif pour landing_ville → 2 LLM en // + best seoScore.
-    const llmResult = await generateForJob(
-      {
-        jobId: input.jobId,
-        contentType: "landing_ville",
-        role: "text",
-        systemPrompt: SYSTEM_PROMPT_BASE,
-        userPrompt,
-        maxTokens: 4096,
-        temperature: 0.7,
-      },
-      lightweightSeoScore,
-      "landing_ville",
-    );
+    const llmResult = await routerGenerate({
+      jobId: input.jobId,
+      contentType: "landing_ville",
+      role: "text",
+      systemPrompt: SYSTEM_PROMPT_BASE,
+      userPrompt,
+      maxTokens: 4096,
+      temperature: 0.7,
+    });
 
     // 3. Parse output (V1 minimal — V2 Zod strict)
     let parsed: {
