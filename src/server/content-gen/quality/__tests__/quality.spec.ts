@@ -72,7 +72,7 @@ describe("SEO score — déterministe /100", () => {
         "audit IA cabinet comptable audit IA cabinet comptable audit IA cabinet comptable. " +
         "lorem ipsum ".repeat(500),
       directAnswer:
-        "L'audit IA en cabinet comptable identifie en 5 jours les workflows à fort potentiel d'automatisation : saisie OCR, rapprochement bancaire, génération de fiches client, prédiction de trésorerie. AxionIA livre un plan d'attaque chiffré dès 490 € HT, avec ROI moyen documenté de 30 à 50 %.",
+        "L'audit IA en cabinet comptable identifie en 5 jours les workflows à fort potentiel d'automatisation : saisie OCR, rapprochement bancaire, génération de fiches client, prédiction de trésorerie. Axion-IA livre un plan d'attaque chiffré dès 490 € HT, avec ROI moyen documenté de 30 à 50 %.",
       faqCount: 6,
       internalLinkCount: 4,
       imageCount: 2,

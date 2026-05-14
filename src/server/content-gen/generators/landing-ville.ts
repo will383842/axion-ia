@@ -23,7 +23,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 
 const SYSTEM_PROMPT_BASE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
-- AxionIA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
+- Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
 - ≤ 5 % données INSEE (population, secteurs dominants)
 - Anti-doorway HCU 2024 : angle unique par ville
 - Pas de SIREN/SIRET/RCS (OÜ estonienne)
@@ -61,7 +61,7 @@ Audience : ${input.targetAudienceSize ?? "PME"} × ${input.targetAudienceOrganis
 Intent : ${input.targetSearchIntent}.
 Primary keyword : ${input.primaryKeyword ?? "cabinet IA"}.
 
-## Contexte AxionIA — sources internes prioritaires
+## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
 
 ## Output attendu (JSON)

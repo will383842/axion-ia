@@ -30,7 +30,7 @@ export default async function ContentGenDashboardPage({ params }: PageProps) {
         <div>
           <h1 className="admin-h1-large">Générateur de contenus</h1>
           <p className="admin-meta">
-            Console pilotage Will · doctrine AxionIA ≥ 95 % · FR uniquement · auteur Manon
+            Console pilotage Will · doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon
             {kpis.killSwitchActive ? (
               <strong style={{ marginLeft: 12, color: "var(--color-terracotta)" }}>
                 🛑 Kill switch ACTIF — toutes générations stoppées

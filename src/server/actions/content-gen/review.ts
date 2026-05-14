@@ -9,6 +9,7 @@
 
 "use server";
 
+import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { ReviewStatus } from "../../../../prisma/generated/client";
@@ -16,6 +17,32 @@ import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/review-queue`;
+}
+
+let publishQueue: Queue | null = null;
+function getPublishQueue(): Queue | null {
+  if (publishQueue) return publishQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  publishQueue = new Queue("content-publish", { connection: { url: redisUrl } });
+  return publishQueue;
+}
+
+async function enqueuePublish(reviewQueueId: string, promoteToTier1: boolean): Promise<void> {
+  const queue = getPublishQueue();
+  if (!queue) {
+    // Dev sans Redis : on log et on continue (l'opération admin reste atomique
+    // côté DB ; le worker pickera quand Redis sera up).
+    console.warn(
+      `[review] publish queue indisponible (REDIS_URL absent) — review ${reviewQueueId} promote=${promoteToTier1} non enqueued.`,
+    );
+    return;
+  }
+  await queue.add(
+    "publish",
+    { reviewQueueId, promoteToTier1 },
+    { jobId: `publish-${reviewQueueId}` },
+  );
 }
 
 export interface ReviewRow {
@@ -68,6 +95,8 @@ export async function approveReview(id: string, notes?: string): Promise<void> {
       reviewedAt: new Date(),
     },
   });
+  // Enqueue publish-worker (tier-2 noindex_follow par défaut).
+  await enqueuePublish(id, false);
   revalidatePath(adminBase());
 }
 
@@ -91,20 +120,22 @@ export async function promoteToTier1(id: string): Promise<void> {
   await prisma.reviewQueue.update({
     where: { id },
     data: {
-      status: "approved",
+      status: "promoted_t1",
       reviewedBy: session.userId,
       reviewedAt: new Date(),
       promotedToTier1At: new Date(),
     },
   });
-  // Mise à jour du job → tier-1 indexable (l'article downstream sera mis à jour
-  // par content-publish-worker Sprint 4).
+  // Bascule ContentGenJob → status `publishing` (transitionnel — le worker
+  // publish met à jour `published` une fois l'Article inséré DB).
   const review = await prisma.reviewQueue.findUnique({ where: { id }, select: { jobId: true } });
   if (review) {
     await prisma.contentGenJob.update({
       where: { id: review.jobId },
-      data: { status: "published" },
+      data: { status: "publishing" },
     });
   }
+  // Enqueue publish-worker en mode tier-1 indexable.
+  await enqueuePublish(id, true);
   revalidatePath(adminBase());
 }

@@ -18,12 +18,24 @@
  * Rate-limit 10/min (alignée OpenAI tier 5).
  */
 
-import { Worker, type Job } from "bullmq";
+import { Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
+
+interface KillSwitchState {
+  readonly active: boolean;
+}
+
+class KillSwitchActiveError extends Error {
+  constructor() {
+    super("Kill switch content-gen actif — job requeue");
+    this.name = "KillSwitchActiveError";
+  }
+}
 
 const QUEUE_NAME = "content-gen";
 
@@ -37,10 +49,22 @@ export interface ContentGenJobPayload {
 async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
   const { contentGenJobId, contentType, targetSearchIntent, inputPayload } = job.data;
 
+  // 0. Kill switch hard-gate (§ 12 master prompt) — checked AVANT lookup DB
+  // pour économiser les queries quand le switch est ON. Le worker BullMQ
+  // requeue le job avec backoff exponentiel quand on throw — pas de fail.
+  const killSwitch = await readContentGenConfig<KillSwitchState>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    throw new KillSwitchActiveError();
+  }
+
   // 1. Lookup ContentGenJob DB
   const dbJob = await prisma.contentGenJob.findUnique({ where: { id: contentGenJobId } });
   if (!dbJob) {
-    throw new Error(`ContentGenJob ${contentGenJobId} not found`);
+    // Pas de retry sur job introuvable — UnrecoverableError marque le job fail
+    // sans backoff inutile.
+    throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} not found`);
   }
 
   // 2. Hard gate KB ready

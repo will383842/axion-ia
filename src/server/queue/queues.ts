@@ -75,6 +75,80 @@ export const bookingCronsQueue: Queue<BookingCronJobData, void, BookingCronJobTy
     : null;
 
 // ============================================================
+// Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
+// ============================================================
+//
+// Toutes les queues content-gen utilisent `attempts: 3` par défaut (fail-soft
+// sur API IA / Redis temporairement indisponible). Les workers correspondants
+// vivent sous `src/server/queue/workers/content-*-worker.ts` et leurs
+// `startXxxWorker()` doivent être appelés depuis `src/server/queue/worker.ts`
+// au démarrage du process worker.
+
+/** Worker primaire — pick ContentGenJob, lance generator, écrit ReviewQueue. */
+export const contentGenQueue: Queue | null = connection
+  ? new Queue("content-gen", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
+    })
+  : null;
+
+/** Orchestrateur — pick CoverageCampaign running, crée ContentGenJob rows. */
+export const contentOrchestratorQueue: Queue | null = connection
+  ? new Queue("content-orchestrator", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/** Boucle qualité — re-prompt sections sous-score (§ 27 v1.7). */
+export const contentQualityImproverQueue: Queue | null = connection
+  ? new Queue("content-quality-improver", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 2 },
+    })
+  : null;
+
+/** RSS fetch — poll sources RSS configurées (§ 28 v1.7). */
+export const contentRssFetchQueue: Queue | null = connection
+  ? new Queue("content-rss-fetch", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/** Similarity monitor — cron quotidien Jaccard scan (§ 25.5 v1.7). */
+export const contentSimilarityMonitorQueue: Queue | null = connection
+  ? new Queue("content-similarity-monitor", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/** News lifecycle — cron quotidien archive RSS > 90j (§ 28.1 v1.7). */
+export const contentNewsLifecycleQueue: Queue | null = connection
+  ? new Queue("content-news-lifecycle", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/** Publish — insère Article DB après review approuvée (§ 14.1 v1.7). */
+export const contentPublishQueue: Queue | null = connection
+  ? new Queue("content-publish", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
+    })
+  : null;
+
+/** IndexNow — POST api.indexnow.org à chaque publication tier-1 (§ 9bis.1). */
+export const contentIndexNowQueue: Queue | null = connection
+  ? new Queue("content-indexnow", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 2 },
+    })
+  : null;
+
+// ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
 
@@ -205,5 +279,71 @@ export async function bootRepeatableJobs(): Promise<void> {
         { repeat: { pattern }, jobId },
       );
     }
+  }
+
+  // ============================================================
+  // Content Generator V1 — crons content-gen (§ 13.2 master prompt v1.7)
+  // ============================================================
+  //
+  // 5 crons content-gen :
+  //  - orchestrator : toutes les 15 min — pick CoverageCampaign running, enqueue ContentGenJob
+  //  - rss-fetch : toutes les heures — poll sources RSS
+  //  - similarity-monitor : quotidien 04:30 UTC — Jaccard scan top 100 pairs
+  //  - news-lifecycle : quotidien 05:00 UTC — archive RSS > 90j
+  //
+  // Le worker primaire (`content-gen`) + publish + quality-improver + indexnow
+  // sont event-driven (pas de cron — déclenchés via enqueue depuis Server Actions
+  // ou autres workers).
+
+  if (contentOrchestratorQueue) {
+    await contentOrchestratorQueue.removeRepeatable(
+      "tick",
+      { pattern: "*/15 * * * *" },
+      "content-orchestrator-cron",
+    );
+    await contentOrchestratorQueue.add(
+      "tick",
+      { trigger: "cron-15min", tick: new Date().toISOString() },
+      { repeat: { pattern: "*/15 * * * *" }, jobId: "content-orchestrator-cron" },
+    );
+  }
+
+  if (contentRssFetchQueue) {
+    await contentRssFetchQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 * * * *" },
+      "content-rss-fetch-cron",
+    );
+    await contentRssFetchQueue.add(
+      "tick",
+      { trigger: "cron-hourly", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 * * * *" }, jobId: "content-rss-fetch-cron" },
+    );
+  }
+
+  if (contentSimilarityMonitorQueue) {
+    await contentSimilarityMonitorQueue.removeRepeatable(
+      "tick",
+      { pattern: "30 4 * * *" },
+      "content-similarity-monitor-cron",
+    );
+    await contentSimilarityMonitorQueue.add(
+      "tick",
+      { trigger: "cron-daily-0430", tick: new Date().toISOString() },
+      { repeat: { pattern: "30 4 * * *" }, jobId: "content-similarity-monitor-cron" },
+    );
+  }
+
+  if (contentNewsLifecycleQueue) {
+    await contentNewsLifecycleQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 5 * * *" },
+      "content-news-lifecycle-cron",
+    );
+    await contentNewsLifecycleQueue.add(
+      "tick",
+      { trigger: "cron-daily-0500", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 5 * * *" }, jobId: "content-news-lifecycle-cron" },
+    );
   }
 }

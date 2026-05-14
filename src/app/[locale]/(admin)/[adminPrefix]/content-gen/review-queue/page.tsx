@@ -14,7 +14,13 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const STATUSES: ReadonlyArray<ReviewStatus> = ["pending", "approved", "rejected", "needs_edits"];
+const STATUSES: ReadonlyArray<ReviewStatus> = [
+  "pending",
+  "approved",
+  "rejected",
+  "needs_edits",
+  "promoted_t1",
+];
 
 export default async function ReviewQueuePage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;

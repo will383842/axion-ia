@@ -9,6 +9,15 @@ import { startOptionExpirationWorker } from "./workers/option-expiration-worker"
 import { startOptionReminderWorker } from "./workers/option-reminder-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { startBookingCronsWorker } from "./workers/booking-crons-worker";
+import { startContentGenWorker } from "./workers/content-gen-worker";
+import { startOrchestratorWorker } from "./workers/content-orchestrator-worker";
+import { startQualityImproverWorker } from "./workers/content-quality-improver-worker";
+import { startRssFetchWorker } from "./workers/content-rss-fetch-worker";
+import { startSimilarityMonitorWorker } from "./workers/content-similarity-monitor-worker";
+import { startNewsLifecycleWorker } from "./workers/content-news-lifecycle-worker";
+import { startPublishWorker } from "./workers/content-publish-worker";
+import { startIndexNowWorker } from "./workers/content-indexnow-worker";
+import { startGoogleIndexingWorker } from "./workers/content-google-indexing-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -25,6 +34,16 @@ async function main() {
     startOptionReminderWorker(),
     startRetentionPurgeWorker(),
     startBookingCronsWorker(),
+    // Content Generator V1 — 9 workers (§ 13 master prompt v1.7)
+    startContentGenWorker(),
+    startOrchestratorWorker(),
+    startQualityImproverWorker(),
+    startRssFetchWorker(),
+    startSimilarityMonitorWorker(),
+    startNewsLifecycleWorker(),
+    startPublishWorker(),
+    startIndexNowWorker(),
+    startGoogleIndexingWorker(),
   ];
 
   await bootRepeatableJobs();

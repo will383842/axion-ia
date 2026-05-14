@@ -48,6 +48,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/exporters\/knowledge-sitemap\.ts$/,
   // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
   /^scripts\/check-anti-siren\.sh$/,
+  // Queue manager + worker entry — orchestrent les queues content-gen
+  // (Sprint 6 audit correctif : content-orchestrator + content-publish wirés).
+  /^src\/server\/queue\/queues\.ts$/,
+  /^src\/server\/queue\/worker\.ts$/,
 ];
 
 /**
