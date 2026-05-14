@@ -44,6 +44,15 @@ function getIndexNowQueue(): Queue {
   return indexNowQueue;
 }
 
+let qaExtractQueue: Queue | null = null;
+function getQaExtractQueue(): Queue {
+  if (qaExtractQueue) return qaExtractQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) throw new Error("REDIS_URL not set");
+  qaExtractQueue = new Queue("content-qa-extract", { connection: { url: redisUrl } });
+  return qaExtractQueue;
+}
+
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -187,6 +196,36 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
       "ping",
       { urls: [articleUrl], origin: "content-gen" },
       { jobId: `indexnow-${cgJob.id}` },
+    );
+  }
+
+  // Pass B fix P0-7 — Q/R post-process auto (§ 29 master prompt v1.7).
+  // Pour chaque article publié qui contient des Q/R extraites (faqJson),
+  // enqueue un job d'extraction qui crée une FAQ row par Q/R sous
+  // /fr/faq/<slug>. Idempotent (upsert). Skeleton V1 — enrichment ≥ 300
+  // mots V1.5+.
+  const faqList = Array.isArray(faqJson)
+    ? (faqJson as Array<{ question: string; answer: string }>)
+    : null;
+  if (faqList && faqList.length > 0) {
+    await getQaExtractQueue().add(
+      "extract",
+      {
+        articleId: article.id,
+        contentGenJobId: cgJob.id,
+        articleSlug: slugCandidate,
+        articleTitle: title,
+        ...(cgJob.anchorVilleSlug ? { anchorVilleSlug: cgJob.anchorVilleSlug } : {}),
+        ...(cgJob.anchorRegionSlug ? { anchorRegionSlug: cgJob.anchorRegionSlug } : {}),
+        faqs: faqList.filter(
+          (f) =>
+            typeof f === "object" &&
+            f !== null &&
+            typeof f.question === "string" &&
+            typeof f.answer === "string",
+        ),
+      },
+      { jobId: `qa-extract-${cgJob.id}` },
     );
   }
 

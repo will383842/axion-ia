@@ -18,6 +18,7 @@ import { startNewsLifecycleWorker } from "./workers/content-news-lifecycle-worke
 import { startPublishWorker } from "./workers/content-publish-worker";
 import { startIndexNowWorker } from "./workers/content-indexnow-worker";
 import { startGoogleIndexingWorker } from "./workers/content-google-indexing-worker";
+import { startContentQaExtractWorker } from "./workers/content-qa-extract-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -34,7 +35,7 @@ async function main() {
     startOptionReminderWorker(),
     startRetentionPurgeWorker(),
     startBookingCronsWorker(),
-    // Content Generator V1 — 9 workers (§ 13 master prompt v1.7)
+    // Content Generator V1 — 10 workers (§ 13 master prompt v1.7 + Pass B P0-7)
     startContentGenWorker(),
     startOrchestratorWorker(),
     startQualityImproverWorker(),
@@ -44,6 +45,7 @@ async function main() {
     startPublishWorker(),
     startIndexNowWorker(),
     startGoogleIndexingWorker(),
+    startContentQaExtractWorker(), // Pass B fix P0-7 — Q/R post-process § 29
   ];
 
   await bootRepeatableJobs();
