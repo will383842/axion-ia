@@ -121,6 +121,14 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
     }
   }
 
+  // Exceptions doctrinaires SEO légitimes (Pass B P1-1) — patterns banned-phrases
+  // tolérés dans des contextes anti-doorway HCU explicites.
+  // Ex: "angle unique par ville" justifie le mot « unique » (différenciation
+  // sémantique pour échapper aux doorway pages massivement clonées).
+  const DOCTRINE_EXCEPTIONS: ReadonlyArray<{ pattern: string; allowedRegex: RegExp }> = [
+    { pattern: "unique", allowedRegex: /\bangle\s+unique\s+par\s+ville\b/i },
+  ];
+
   const lower = text.toLowerCase();
   for (const phrase of bannedPhrases) {
     const re = new RegExp(
@@ -128,17 +136,28 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       "g",
     );
     const matches = lower.match(re);
-    if (matches) {
-      const violation: DoctrineViolation = {
-        pattern: phrase.pattern,
-        severity: phrase.severity as "block" | "warn" | "info",
-        reason: phrase.reason ?? "Phrase doctrine",
-        occurrences: matches.length,
-      };
-      if (phrase.severity === "block") blocking.push(violation);
-      else if (phrase.severity === "warn") warnings.push(violation);
-      else infos.push(violation);
+    if (!matches) continue;
+
+    // Soustraction des occurrences couvertes par une exception doctrinaire.
+    let occurrences = matches.length;
+    const exception = DOCTRINE_EXCEPTIONS.find(
+      (e) => e.pattern.toLowerCase() === phrase.pattern.toLowerCase(),
+    );
+    if (exception) {
+      const exemptMatches = text.match(new RegExp(exception.allowedRegex.source, "gi"));
+      if (exemptMatches) occurrences = Math.max(0, occurrences - exemptMatches.length);
     }
+    if (occurrences === 0) continue;
+
+    const violation: DoctrineViolation = {
+      pattern: phrase.pattern,
+      severity: phrase.severity as "block" | "warn" | "info",
+      reason: phrase.reason ?? "Phrase doctrine",
+      occurrences,
+    };
+    if (phrase.severity === "block") blocking.push(violation);
+    else if (phrase.severity === "warn") warnings.push(violation);
+    else infos.push(violation);
   }
 
   // 4. Ratio AxionIA-centric

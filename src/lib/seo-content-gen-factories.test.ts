@@ -139,8 +139,30 @@ describe("buildArticleJsonLd — urlSegment blog default", () => {
 
 describe("buildPersonManonJsonLd — doctrine v2.1 (zéro réseau social)", () => {
   it("émet Person sans sameAs (doctrine intouchable § 21)", () => {
-    const out = buildPersonManonJsonLd({ slug: "manon" });
+    const out = buildPersonManonJsonLd({
+      slug: "manon",
+      displayName: "Manon",
+      jobTitle: "Plume éditoriale Axion-IA",
+      photoUrl1024: "/auteurs/manon.png",
+      photoAlt: null,
+      knowsAbout: ["IA opérationnelle", "RAG"],
+      personaDisclaimer: null,
+    });
     expect(out["@type"]).toBe("Person");
     expect("sameAs" in out).toBe(false);
+  });
+
+  it("throw si slug !== manon (garde-fou v2.1)", () => {
+    expect(() =>
+      buildPersonManonJsonLd({
+        slug: "other",
+        displayName: "Other",
+        jobTitle: "X",
+        photoUrl1024: "/x.png",
+        photoAlt: null,
+        knowsAbout: [],
+        personaDisclaimer: null,
+      }),
+    ).toThrow(/non-manon slug/);
   });
 });

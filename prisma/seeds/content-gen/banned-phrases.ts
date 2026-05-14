@@ -72,13 +72,16 @@ const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
     severity: "warn",
   },
 
-  // ===== WARN — Marketing-hype interdit doctrine § 1.1 =====
-  { pattern: "unique", reason: "Marketing-hype interdit (doctrine § 1.1)", severity: "warn" },
-  { pattern: "le meilleur", reason: "Marketing-hype interdit (doctrine § 1.1)", severity: "warn" },
+  // ===== BLOCK — Phrases-hype interdites doctrine § 21 (Pass B P1-1) =====
+  // « unique » est BLOCK avec exception SEO doctrinaire « angle unique par
+  // ville » (cf. landing-ville.ts:28 — anti-doorway HCU sémantique). Le
+  // doctrine-check applique l'exception via regex.
+  { pattern: "unique", reason: "Marketing-hype interdit (doctrine § 21)", severity: "block" },
+  { pattern: "le meilleur", reason: "Marketing-hype interdit (doctrine § 21)", severity: "block" },
   {
     pattern: "révolutionnaire",
-    reason: "Marketing-hype interdit (doctrine § 1.1)",
-    severity: "warn",
+    reason: "Marketing-hype interdit (doctrine § 21)",
+    severity: "block",
   },
   { pattern: "incontournable", reason: "Marketing-hype interdit", severity: "warn" },
   { pattern: "leader", reason: "Marketing-hype non vérifiable", severity: "warn" },
