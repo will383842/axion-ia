@@ -6,7 +6,21 @@ import { env } from "@/env";
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
-export const SITE_URL = env.NEXT_PUBLIC_SITE_URL;
+// SITE_URL — résolu via env validé (`src/env.ts`).
+//
+// Fallback safety net en prod : si `NEXT_PUBLIC_SITE_URL` n'est pas défini
+// au build (env Coolify manquant), `env.NEXT_PUBLIC_SITE_URL` fallback sur
+// `http://localhost:3000` ce qui casse `metadataBase` (og:image avec hôte
+// localhost dans les SSG). Pour le canonique de prod, on force le bon
+// domaine quand l'env var est manifestement le default localhost et qu'on
+// est en build de prod (NODE_ENV=production).
+//
+// La source de vérité reste l'env var — c'est juste un filet de sécurité.
+const RAW_SITE_URL = env.NEXT_PUBLIC_SITE_URL;
+export const SITE_URL =
+  process.env.NODE_ENV === "production" && RAW_SITE_URL.startsWith("http://localhost")
+    ? "https://axion-ia.com"
+    : RAW_SITE_URL;
 
 // Build timestamp ISO — signal de fraîcheur AI Overviews 2026.
 // Résolu au cold-start (build standalone Coolify ou rebuild dev). Google /

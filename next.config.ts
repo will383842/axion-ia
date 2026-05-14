@@ -126,6 +126,17 @@ const nextConfig: NextConfig = {
         destination: "/:locale/audit/cible",
         permanent: true,
       },
+      // /sitemap.xml → /sitemap-index.xml (Sprint X bugs SEO 2026-05-14).
+      // Next 16 réserve `/sitemap.xml` à la convention metadata `app/sitemap.ts`
+      // qui ne génère que `/sitemap/<id>.xml` (pas d'index racine). On expose
+      // l'index à `/sitemap-index.xml` et on redirige 301 le chemin canonique
+      // pour les outils qui sondent encore /sitemap.xml par habitude
+      // (Bing, vieux crawlers, scripts externes).
+      {
+        source: "/sitemap.xml",
+        destination: "/sitemap-index.xml",
+        permanent: true,
+      },
     ];
   },
   async headers() {
