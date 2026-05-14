@@ -17,6 +17,7 @@ import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import type { Locale } from "@/i18n/routing";
+import { AdminCommandPalette } from "./AdminCommandPalette";
 
 export const dynamic = "force-dynamic";
 
@@ -103,8 +104,11 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       <header className="admin-header">
         <div className="admin-header-inner">
           <strong className="admin-brand">Axion-IA · Admin</strong>
-          {showSidebar && session?.user?.email && (
-            <span className="admin-tagline">{session.user.email}</span>
+          {showSidebar && (
+            <div className="admin-header-actions">
+              <AdminCommandPalette adminPrefix={adminPrefix} />
+              {session?.user?.email && <span className="admin-tagline">{session.user.email}</span>}
+            </div>
           )}
         </div>
       </header>

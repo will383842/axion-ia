@@ -1391,6 +1391,103 @@
   cursor: pointer;
   z-index: 0;
 }
+
+/* Sprint F — Cmd+K palette */
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.admin-cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-paper);
+  color: var(--color-fg-muted);
+  cursor: pointer;
+}
+.admin-cmdk-trigger:hover {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta);
+}
+.admin-cmdk-dialog {
+  position: fixed;
+  top: 15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(640px, 90vw);
+  max-height: 70vh;
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.admin-cmdk-input {
+  padding: 14px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 15px;
+  outline: none;
+  background: transparent;
+  color: var(--color-fg);
+  font-family: inherit;
+}
+.admin-cmdk-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+}
+.admin-cmdk-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-fg-muted);
+  font-size: 13px;
+}
+.admin-cmdk-group {
+  margin-bottom: 6px;
+}
+.admin-cmdk-group [cmdk-group-heading] {
+  padding: 6px 12px 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+  font-weight: 700;
+}
+.admin-cmdk-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.admin-cmdk-item[data-selected="true"],
+.admin-cmdk-item:hover {
+  background: var(--color-bg);
+  color: var(--color-terracotta);
+}
+.admin-cmdk-icon {
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.admin-cmdk-hint {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-fg-muted);
+}
 .admin-modal {
   background: var(--color-paper);
   border-radius: 8px;
