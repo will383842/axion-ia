@@ -4,6 +4,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { cancelJob, getJob, retryJob } from "@/server/actions/content-gen/jobs";
 
 export const dynamic = "force-dynamic";
@@ -139,12 +140,14 @@ export default async function JobDetailPage({ params }: PageProps) {
       ) : null}
 
       <div className="admin-card">
-        <h2>Logs récents ({job.logs.length})</h2>
+        <h2>Live stream</h2>
+        <JobLogStream jobId={job.id} />
+      </div>
+
+      <div className="admin-card">
+        <h2>Logs persistés ({job.logs.length})</h2>
         {job.logs.length === 0 ? (
-          <p>
-            Aucun log persisté. Les logs SSE temps réel sont disponibles via
-            /api/content-gen/jobs/[id]/stream (Sprint 4).
-          </p>
+          <p>Aucun log persisté.</p>
         ) : (
           <table className="admin-table">
             <thead>

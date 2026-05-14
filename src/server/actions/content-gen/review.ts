@@ -100,6 +100,77 @@ export async function approveReview(id: string, notes?: string): Promise<void> {
   revalidatePath(adminBase());
 }
 
+/**
+ * Bulk approve reviews (P1-12 fix audit opérationnel 2026-05-14).
+ *
+ * § 12.1 master prompt v1.8 — "Bulk approve : score >= 75 (modifiable admin)".
+ * Approuve toutes les reviews pending dont le qualityScore associé au job
+ * dépasse `minScore` (défaut 75). Enqueue publish-worker en cascade pour
+ * chacune.
+ */
+export async function bulkApproveReviews(
+  minScore: number = 75,
+  limit: number = 100,
+): Promise<{ approved: number }> {
+  const session = await requireAdmin();
+  if (minScore < 0 || minScore > 100) throw new Error("score_range");
+  if (limit < 1 || limit > 500) throw new Error("limit_range");
+  const candidates = await prisma.reviewQueue.findMany({
+    where: {
+      status: "pending",
+      job: { qualityScore: { gte: minScore } },
+    },
+    include: { job: { select: { id: true } } },
+    take: limit,
+  });
+  for (const r of candidates) {
+    await prisma.reviewQueue.update({
+      where: { id: r.id },
+      data: {
+        status: "approved",
+        reviewedBy: session.userId,
+        reviewNotes: `[bulk approve] score >= ${minScore}`,
+        reviewedAt: new Date(),
+      },
+    });
+    await enqueuePublish(r.id, false);
+  }
+  revalidatePath(adminBase());
+  return { approved: candidates.length };
+}
+
+/**
+ * Bulk reject reviews (P1-12) — score < maxScore.
+ */
+export async function bulkRejectReviews(
+  maxScore: number = 50,
+  limit: number = 100,
+): Promise<{ rejected: number }> {
+  const session = await requireAdmin();
+  if (maxScore < 0 || maxScore > 100) throw new Error("score_range");
+  if (limit < 1 || limit > 500) throw new Error("limit_range");
+  const candidates = await prisma.reviewQueue.findMany({
+    where: {
+      status: "pending",
+      job: { qualityScore: { lt: maxScore } },
+    },
+    take: limit,
+    select: { id: true },
+  });
+  if (candidates.length === 0) return { rejected: 0 };
+  await prisma.reviewQueue.updateMany({
+    where: { id: { in: candidates.map((c) => c.id) } },
+    data: {
+      status: "rejected",
+      reviewedBy: session.userId,
+      reviewNotes: `[bulk reject] score < ${maxScore}`,
+      reviewedAt: new Date(),
+    },
+  });
+  revalidatePath(adminBase());
+  return { rejected: candidates.length };
+}
+
 export async function rejectReview(id: string, notes: string): Promise<void> {
   const session = await requireAdmin();
   if (notes.trim().length < 5) throw new Error("notes_required");

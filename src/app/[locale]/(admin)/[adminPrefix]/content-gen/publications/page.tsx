@@ -71,6 +71,16 @@ export default async function PublicationsPage({ params, searchParams }: PagePro
             {where.indexationTier ? ` · ${where.indexationTier}` : ""}
           </p>
         </div>
+        <div className="admin-dashboard-actions">
+          {}
+          <a
+            href={`/api/content-gen/export?type=articles${sp.status ? `&status=${sp.status}` : ""}${sp.tier ? `&tier=${sp.tier}` : ""}`}
+            className="admin-button-ghost"
+            title="Export CSV avec filtres actifs"
+          >
+            📥 Export CSV
+          </a>
+        </div>
       </div>
 
       <form className="admin-card admin-filters">

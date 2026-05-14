@@ -17,15 +17,16 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
+// 8 statuts effectivement écrits par les workers V1.0.2 (cf. audit
+// opérationnel 2026-05-14 § 2.1). Les 4 orphelins (`generating_text`,
+// `generating_image`, `running_qa`, `approved`) restent dans l'enum Prisma
+// pour compatibilité V1.5+ mais sont retirés du sélecteur UI pour éviter
+// de présenter des filtres qui retournent toujours 0 lignes.
 const STATUSES: ReadonlyArray<ContentGenJobStatus> = [
   "queued",
   "running",
-  "generating_text",
-  "generating_image",
-  "running_qa",
   "quality_improving",
   "needs_review",
-  "approved",
   "publishing",
   "published",
   "failed",
