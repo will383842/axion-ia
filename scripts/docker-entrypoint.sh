@@ -32,13 +32,26 @@ else
   echo "[entrypoint] Running prisma migrate deploy…"
   # Run in subshell with 'set +e' so prisma failure doesn't abort container.
   # We log + continue boot — migration can be fixed/retried manually.
+  MIGRATE_OK=0
   if ( set +e; node_modules/.bin/prisma migrate deploy --schema=./prisma/schema.prisma ); then
-    echo "[entrypoint] Migrations applied successfully."
+    echo "[entrypoint] Migrations applied successfully (local prisma CLI)."
+    MIGRATE_OK=1
   else
-    echo "[entrypoint] WARNING: prisma migrate deploy failed (probable: @prisma/engines missing in slim runtime)."
-    echo "[entrypoint] Container will boot anyway. Apply migrations manually:"
-    echo "[entrypoint]   docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'"
+    # Fallback : slim runtime perd parfois @prisma/engines (binaire query-engine).
+    # npx télécharge prisma + engines à la volée — lent au cold-start (~30 s)
+    # mais garanti idempotent et n'aborte pas le container si fail.
+    echo "[entrypoint] Local prisma failed (probable: @prisma/engines missing in slim runtime)."
+    echo "[entrypoint] Retrying via npx --yes prisma@5.22.0 migrate deploy…"
+    if ( set +e; npx --yes prisma@5.22.0 migrate deploy --schema=./prisma/schema.prisma ); then
+      echo "[entrypoint] Migrations applied successfully (npx fallback)."
+      MIGRATE_OK=1
+    else
+      echo "[entrypoint] WARNING: prisma migrate deploy failed via npx too."
+      echo "[entrypoint] Container will boot anyway. Apply migrations manually:"
+      echo "[entrypoint]   docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'"
+    fi
   fi
+  unset MIGRATE_OK
 fi
 
 echo "[entrypoint] Starting Next.js server on port ${PORT:-3000}…"
