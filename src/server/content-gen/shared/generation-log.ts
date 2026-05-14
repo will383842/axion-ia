@@ -33,6 +33,7 @@ export type GenerationLogStep =
   | "publish"
   | "quality_check"
   | "plagiarism_check"
+  | "intent_check"
   | "doctrine_check"
   | "kill_switch_check"
   | "dedup_check"
@@ -42,6 +43,17 @@ export type GenerationLogStep =
   | "google_indexing_ping"
   | "rss_fetch"
   | "qa_extract"
+  | "json_ld_news_article"
+  | "json_ld_qa_page"
+  | "fact_check_enqueue"
+  | "revalidate_path"
+  | "article_insert"
+  | "translation_insert"
+  | "faq_upsert"
+  | "web_vital_sample"
+  | "web_vital_alert"
+  | "cost_cap_check"
+  | "auto_kill_switch"
   | "error";
 
 export interface LogGenerationArgs {

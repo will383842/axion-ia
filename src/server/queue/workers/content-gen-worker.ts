@@ -23,12 +23,61 @@ import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup } from "@/server/content-gen/quality/dedup-guard";
+import { checkPlagiarism } from "@/server/content-gen/quality/plagiarism";
+import { validateIntentAlignment } from "@/server/content-gen/quality/search-intent-validator";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 
 interface KillSwitchState {
   readonly active: boolean;
+}
+
+interface PoliciesConfig {
+  readonly plagiarismJaccardInternal?: number;
+  readonly plagiarismJaccardRss?: number;
+}
+
+const PLAGIARISM_CORPUS_SIZE = 50;
+const PLAGIARISM_THRESHOLD_DEFAULT = 0.3;
+const PLAGIARISM_THRESHOLD_RSS_DEFAULT = 0.1;
+
+/**
+ * Charge le corpus des derniers articles publiés (tier-1 + tier-2) pour
+ * comparaison plagiarism shingling Jaccard. Limite hardcodée à 50 articles
+ * pour cap latence (5-gram shingles × 50 articles ≈ 50ms en local).
+ *
+ * Doctrine § 10.1 master prompt — anti-plagiat 3 couches.
+ */
+async function loadPlagiarismCorpus(): Promise<Map<string, string>> {
+  const rows = await prisma.article.findMany({
+    where: {
+      status: "published",
+      indexationTier: { in: ["tier_1_indexable", "tier_2_noindex_follow"] },
+    },
+    orderBy: { publishedAt: "desc" },
+    take: PLAGIARISM_CORPUS_SIZE,
+    include: {
+      translations: {
+        where: { locale: "fr" },
+        select: { slug: true, bodyText: true, body: true },
+        take: 1,
+      },
+    },
+  });
+  const corpus = new Map<string, string>();
+  for (const row of rows) {
+    const tr = row.translations[0];
+    if (!tr) continue;
+    const text =
+      tr.bodyText ??
+      tr.body
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    if (text.length > 100) corpus.set(tr.slug, text);
+  }
+  return corpus;
 }
 
 class KillSwitchActiveError extends Error {
@@ -154,7 +203,81 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       total_cost_usd: output.totalCostUsd,
     });
 
-    // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert)
+    // 4bis. Anti-plagiarism shingling Jaccard (§ 10.1 master prompt v1.7).
+    // Comparaison vs top 50 articles publiés récents. Seuils DB-managed via
+    // ContentGenConfig.policies (plagiat 0.30 interne / 0.10 RSS).
+    const policies = await readContentGenConfig<PoliciesConfig>("policies", {});
+    const plagiarismThreshold =
+      contentType === "blog_from_rss"
+        ? (policies.plagiarismJaccardRss ?? PLAGIARISM_THRESHOLD_RSS_DEFAULT)
+        : (policies.plagiarismJaccardInternal ?? PLAGIARISM_THRESHOLD_DEFAULT);
+    const corpus = await loadPlagiarismCorpus();
+    const plagiarism = checkPlagiarism(output.bodyText, corpus, plagiarismThreshold);
+    await logStep(
+      contentGenJobId,
+      "plagiarism_check",
+      plagiarism.passed
+        ? `Plagiarism OK (max=${plagiarism.maxSimilarity.toFixed(3)} < ${plagiarismThreshold})`
+        : `Plagiarism BLOCKED (max=${plagiarism.maxSimilarity.toFixed(3)} ≥ ${plagiarismThreshold})`,
+      {
+        max_similarity: plagiarism.maxSimilarity,
+        threshold: plagiarismThreshold,
+        passed: plagiarism.passed,
+        top_matches: plagiarism.topMatches.map((m) => ({
+          corpus_id: m.corpusId,
+          similarity: m.similarity,
+        })),
+        corpus_size: corpus.size,
+      },
+    );
+
+    // 4ter. Intent alignment validator (§ 26.3 master prompt v1.7).
+    // hardFails downgrade tier → tier_3_noindex_nofollow. Warnings = info only.
+    const intent = validateIntentAlignment({
+      intent: targetSearchIntent,
+      slug: output.slug,
+      title: output.title,
+      metaDescription: output.metaDescription,
+      bodyHtml: output.bodyHtml,
+      hasLocalBusinessJsonLd: targetSearchIntent === "local" && Boolean(dbJob.anchorVilleSlug),
+      hasGeoMeta: Boolean(dbJob.anchorVilleSlug || dbJob.anchorRegionSlug),
+      hasComparisonTable: /<table[\s>]/i.test(output.bodyHtml),
+      hasPrimaryCta: /(href=["'][^"']*reserver|<button|cta-primary)/i.test(output.bodyHtml),
+      citationCount: output.citations.length,
+    });
+    await logStep(
+      contentGenJobId,
+      "intent_check",
+      intent.aligned
+        ? `Intent aligned (${intent.warnings.length} warnings)`
+        : `Intent MISALIGNED (${intent.hardFails.length} hardFails)`,
+      {
+        aligned: intent.aligned,
+        intent: targetSearchIntent,
+        warnings: intent.warnings,
+        hard_fails: intent.hardFails,
+      },
+    );
+
+    // Tier final : downgrade tier_3 si plagiat OR intent hardFails.
+    // Sinon on garde l'indexationTier issu du generator (tier_2 default).
+    const blockingFail = !plagiarism.passed || !intent.aligned;
+    const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
+
+    // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert).
+    // `outputJsonRaw` est la source de vérité que `content-publish-worker.ts`
+    // lit pour créer la row Article. Sans ça, la publication throwait
+    // « ContentGenJob has no outputJsonRaw » en prod.
+    const persistedOutput = {
+      ...output,
+      finalIndexationTier,
+      intentAligned: intent.aligned,
+      intentWarnings: intent.warnings,
+      intentHardFails: intent.hardFails,
+      plagiarismMaxSimilarity: plagiarism.maxSimilarity,
+      plagiarismThreshold,
+      plagiarismCorpusSize: corpus.size,
+    };
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
       data: {
@@ -164,12 +287,35 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         qualityScore: output.qualityScore,
         seoScore: output.seoScore,
         readabilityScore: output.readabilityScore,
+        plagiarismScore: plagiarism.maxSimilarity,
+        doctrineCheckPassed: !blockingFail,
         tokensInput: 0, // détaillé via CostLedger
         tokensOutput: output.totalTokens,
         costUsd: output.totalCostUsd,
+        outputJsonRaw: persistedOutput as never,
       },
     });
-    await logStep(contentGenJobId, "validation", "Job persisted to needs_review");
+    await logStep(contentGenJobId, "validation", "Job persisted to needs_review", {
+      blocking_fail: blockingFail,
+      final_tier: finalIndexationTier,
+    });
+
+    // 6. Insert ReviewQueue row (status=pending) pour validation humaine admin.
+    // Sans cette row, /review-queue/[id] ne trouve rien et le flow approve/promote
+    // n'a pas de cible. Idempotent via unique jobId.
+    try {
+      await prisma.reviewQueue.create({
+        data: {
+          jobId: contentGenJobId,
+          status: "pending",
+        },
+      });
+    } catch (err) {
+      // P2002 unique conflict = déjà créé (retry idempotent), no-op
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(`[content-gen-worker] reviewQueue create skipped (likely retry):`, err);
+      }
+    }
 
     // 6. TODO Sprint 2 Day 6 — hook qa_extract_and_publish (8 micro-jobs)
     // 7. TODO Sprint 2 Day 7 — Telegram alert "Nouveau contenu en review"
