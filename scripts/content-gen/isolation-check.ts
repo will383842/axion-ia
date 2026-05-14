@@ -38,10 +38,19 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^docs\/content-gen\//,
   /^public\/illustrations\/generated\/content-gen\//,
   // Exceptions explicites (extensions de fichiers SSOT existants)
-  /^src\/lib\/seo-content-gen-factories(\.ts|\.spec\.ts)$/,
+  /^src\/lib\/seo-content-gen-factories(\.ts|\.spec\.ts|\.test\.ts)$/,
   /^src\/lib\/__tests__\/seo-content-gen-factories\.spec\.ts$/,
   // Admin layout — nav admin doit pouvoir référencer /content-gen.
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/layout\.tsx$/,
+  // Routes publiques générées/consommées par content-gen (Pass B P0-2 + V1.0.1 + Sprint 8).
+  // - /fr/actualites/[slug]   : NewsArticle RSS (§ 28)
+  // - /fr/blog/[slug]         : Article DB-driven (Sprint 8 V2)
+  // - /fr/equipe/[slug]       : Person Manon canonical (audit V1.0.1)
+  // - /fr/faq/[slug]          : Q/R post-process auto (§ 29 Pass B P0-7)
+  /^src\/app\/\[locale\]\/actualites\//,
+  /^src\/app\/\[locale\]\/blog\//,
+  /^src\/app\/\[locale\]\/equipe\//,
+  /^src\/app\/\[locale\]\/faq\//,
   // Sitemap principal + exporter KB — référencent content-gen comme consommateur
   // dans des commentaires explicatifs (pré-existant Sprint S0bis).
   /^src\/app\/sitemap\.ts$/,
@@ -52,6 +61,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // (Sprint 6 audit correctif : content-orchestrator + content-publish wirés).
   /^src\/server\/queue\/queues\.ts$/,
   /^src\/server\/queue\/worker\.ts$/,
+  // package.json — npm scripts content-gen:seed / content-gen:isolation-check
+  /^package\.json$/,
 ];
 
 /**
