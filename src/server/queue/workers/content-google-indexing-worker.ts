@@ -15,6 +15,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-google-indexing";
 const ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish";
@@ -26,6 +27,16 @@ export interface GoogleIndexingJobPayload {
 
 async function processJob(job: Job<GoogleIndexingJobPayload>): Promise<void> {
   const { url, type } = job.data;
+
+  // Audit 2026-05-15 P1-8 — kill-switch check (cohérence avec indexnow worker).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log(`[google-indexing] kill switch active, skip ${url} type=${type}`);
+    return;
+  }
+
   const enabled = process.env.GOOGLE_INDEXING_API_ENABLED === "true";
   const credentials = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 

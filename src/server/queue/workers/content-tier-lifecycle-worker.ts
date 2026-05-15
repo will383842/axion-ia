@@ -24,6 +24,7 @@ import {
 import { fetchSearchConsoleCtr } from "@/server/content-gen/lifecycle/analytics-clients";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-tier-lifecycle";
 const PROMOTE_AGE_DAYS = DEFAULT_TIER_THRESHOLDS.promoteAgeDaysMin;
@@ -119,6 +120,16 @@ async function processArticles(
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
+  // Audit 2026-05-15 P1-8 — kill-switch check (modifie indexationTier sur
+  // articles publiés, important d'arrêter avant promote/demote en masse).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log("[tier-lifecycle] kill switch active, skip run");
+    return;
+  }
+
   const stats: RunStats = { scanned: 0, promoted: 0, demoted: 0, noop: 0, noData: 0 };
   const now = Date.now();
   const promoteThreshold = new Date(now - PROMOTE_AGE_DAYS * 86_400_000);

@@ -36,7 +36,7 @@ export default auth((req) => {
   // 2. Run intl (locale resolution + rewrites)
   const response = handleI18nRouting(req as unknown as NextRequest);
 
-  // 3. Securite headers (CSP per-path + COEP toujours).
+  // 3. Securite headers (CSP per-path + COEP toujours + X-* OWASP).
   if (response) {
     const strict = isStrictCspPath(req.nextUrl.pathname);
     response.headers.set("Content-Security-Policy", buildCspHeader({ nonce, strict }));
@@ -49,6 +49,19 @@ export default auth((req) => {
     // `credentialless` garde l'isolation (SharedArrayBuffer, COOP cross-origin)
     // sans casser le chargement des assets externes.
     response.headers.set("Cross-Origin-Embedder-Policy", "credentialless");
+    // Audit 2026-05-15 P1-16 — X-* OWASP headers explicites en defense-in-depth.
+    // CSP `frame-ancestors 'none'` couvre déjà le clickjacking côté navigateurs
+    // modernes, mais X-Frame-Options: DENY garantit le comportement sur les
+    // browsers legacy + scanners de sécurité (OWASP ZAP) qui le checkent.
+    response.headers.set("X-Content-Type-Options", "nosniff");
+    response.headers.set("X-Frame-Options", "DENY");
+    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    // Permissions-Policy minimaliste : on bloque les capabilities qu'on n'utilise
+    // pas pour réduire la surface d'attaque + les warnings Lighthouse.
+    response.headers.set(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(self), usb=(), magnetometer=(), accelerometer=(), gyroscope=()",
+    );
     // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
     response.headers.set("x-nonce", nonce);
   }

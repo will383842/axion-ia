@@ -29,6 +29,7 @@ import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generato
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-publish";
 
@@ -67,6 +68,17 @@ function slugify(s: string): string {
 
 async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   const { reviewQueueId, promoteToTier1 } = job.data;
+
+  // Audit 2026-05-15 P1-8 — kill-switch hard-gate avant publish
+  // (publish a un blast radius le plus élevé : Article inséré + IndexNow + ISR
+  // revalidate + fact-check enqueue. Pause Will doit l'arrêter immédiatement).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log(`[content-publish-worker] kill switch active, requeue review ${reviewQueueId}`);
+    throw new Error("kill_switch_active");
+  }
 
   const review = await prisma.reviewQueue.findUnique({
     where: { id: reviewQueueId },

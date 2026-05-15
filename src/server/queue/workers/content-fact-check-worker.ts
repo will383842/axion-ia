@@ -27,6 +27,7 @@ import {
   extractClaims,
 } from "@/server/content-gen/fact-check/claims-extractor";
 import { perplexityProvider } from "@/server/content-gen/providers/perplexity";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-fact-check";
 
@@ -77,6 +78,16 @@ function parseVerdicts(raw: string, expectedCount: number): ReadonlyArray<ClaimV
 
 async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
   const { articleId, contentGenJobId } = job.data;
+
+  // Audit 2026-05-15 P1-8 — kill-switch check (Perplexity coût ~$0.005/article,
+  // critique de pouvoir stopper la cascade post-publish quand Will pause).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log(`[fact-check] kill switch active, skip article ${articleId}`);
+    return;
+  }
 
   const article = await prisma.article.findUnique({
     where: { id: articleId },

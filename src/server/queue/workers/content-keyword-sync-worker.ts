@@ -19,6 +19,7 @@
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-keyword-sync";
 const RECENT_DAYS_MIN = 7;
@@ -52,6 +53,16 @@ async function fetchTopKeywordsForUrl(
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
+  // Audit 2026-05-15 P1-8 — kill-switch check (GSC/SerpAPI quota+coût, évite
+  // de gaspiller pendant pause Will).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log("[keyword-sync] kill switch active, skip run");
+    return;
+  }
+
   const stats: SyncStats = { articlesScanned: 0, keywordsUpserted: 0, apiSkipped: 0 };
   const recentThreshold = new Date(Date.now() - RECENT_DAYS_MIN * 86_400_000);
 

@@ -18,6 +18,7 @@
 
 import { Worker, type Job } from "bullmq";
 import { buildIndexNowPayload } from "@/lib/seo-content-gen-factories";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-indexnow";
 const ENDPOINT = "https://api.indexnow.org/indexnow";
@@ -29,6 +30,19 @@ export interface IndexNowJobPayload {
 
 async function processJob(job: Job<IndexNowJobPayload>): Promise<void> {
   const { urls, origin } = job.data;
+
+  // Audit 2026-05-15 P1-8 — kill-switch check (évite ping IndexNow sur
+  // contenus que Will a paused, propage le signal de pause aux moteurs).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log(
+      `[indexnow-worker] kill switch active, skip ${urls.length} urls (origin=${origin})`,
+    );
+    return;
+  }
+
   const key = process.env.INDEXNOW_KEY;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 

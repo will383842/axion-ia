@@ -26,6 +26,7 @@
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 /**
  * Worker-side upsert ContentGenConfig (sans requireAdmin — worker BullMQ
@@ -87,6 +88,16 @@ function p75(values: number[]): number {
 }
 
 async function processJob(_job: Job<WebVitalsMonitorTick>): Promise<void> {
+  // Audit 2026-05-15 P1-8 — kill-switch check (monitoring read-only mais
+  // Telegram alerts peuvent saturer pendant maintenance, on respecte la pause).
+  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
+    active: false,
+  });
+  if (killSwitch.active) {
+    console.log("[content-web-vitals-monitor] kill switch active, skip tick");
+    return;
+  }
+
   const since = new Date(Date.now() - WINDOW_HOURS * 3600_000);
 
   // Read all samples 24h window. Limit prudence 50k (cap mémoire ~3 MB).

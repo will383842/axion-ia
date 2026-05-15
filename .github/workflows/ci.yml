@@ -65,6 +65,14 @@ jobs:
         run: pnpm anti-hex:check
       - name: use-client justified
         run: pnpm use-client:check
+      # Audit 2026-05-15 P1-22 — content-gen module isolation gate (§ 4.1bis
+      # master prompt). Garantit qu'aucun fichier hors zones whitelisted
+      # (src/server/content-gen/**, src/app/[locale]/(admin)/[adminPrefix]/
+      # content-gen/**, src/components/admin/content-gen/**, etc.) ne mentionne
+      # le marqueur `content-gen` — protège la séparation modulaire qui permet
+      # le rollback chirurgical V1 → V2 sans casser le reste du frontend.
+      - name: Content-gen isolation check
+        run: pnpm content-gen:isolation-check
       - name: Zod schemas have tests
         run: pnpm zod:check
       - name: gitleaks
