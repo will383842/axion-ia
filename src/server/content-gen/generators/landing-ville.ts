@@ -22,16 +22,7 @@ import { checkDoctrine } from "../quality/doctrine-check";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
-
-const SYSTEM_PROMPT_BASE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
-Cabinet IA opérationnel français. Doctrine v2.5 stricte :
-- Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
-- ≤ 5 % données INSEE (population, secteurs dominants)
-- Anti-doorway HCU 2024 : angle unique par ville
-- Pas de SIREN/SIRET/RCS (OÜ estonienne)
-- Mot "formation" BANNI (utiliser "intervention")
-- FR uniquement (FR-FR + x-default)
-- Sub-prompt complet : prompts/landing-ville.md megapack`;
+import { resolveLandingVilleVariant } from "./landing-ville-templates";
 
 export const landingVilleGenerator: Generator = {
   contentType: "landing_ville",
@@ -70,13 +61,25 @@ export const landingVilleGenerator: Generator = {
       maxLen: 100,
     });
 
+    // Batch 3.B audit 2026-05-15 — Résout le variant landing-ville
+    // (default / focus_audit / focus_interventions / focus_implementation)
+    // selon `input.templateVariant`. Fallback `default` si null/unknown.
+    const variant = resolveLandingVilleVariant(input.templateVariant);
+
     const userPrompt = `Génère une landing page Axion-IA pour la ville "${safeVilleSlug}".
 Audience : ${safeAudienceSize} × ${safeOrgType}.
 Intent : ${safeIntent}.
 Primary keyword : ${safePrimaryKeyword}.
+Variant : ${variant.slug} (${variant.label}).
+
+${variant.userPromptFocusSection}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
+
+## CTA recommandé pour ce variant
+href : ${variant.recommendedCtaHref}
+label : ${variant.recommendedCtaLabel}
 
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
@@ -85,7 +88,7 @@ ${kbContext}
       jobId: input.jobId,
       contentType: "landing_ville",
       role: "text",
-      systemPrompt: SYSTEM_PROMPT_BASE,
+      systemPrompt: variant.systemPromptOverride,
       userPrompt,
       maxTokens: 4096,
       temperature: 0.7,
