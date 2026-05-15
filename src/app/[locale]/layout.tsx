@@ -26,10 +26,18 @@ const manrope = Manrope({
   weight: ["400", "600"],
 });
 
+// P3-35 (audit re-run 2026-05-15 AGENT 6) — Inconsolata preload:false.
+// Inconsolata est utilisée uniquement pour `<code>` et numbers tabulaires
+// (~5 % du contenu). next/font preload par défaut = waste LCP budget sur
+// 90 %+ des pages publiques qui n'affichent jamais de Inconsolata above-fold.
+// `preload: false` retire le `<link rel="preload">` mais garde le swap CSS
+// — les pages qui utilisent vraiment Inconsolata chargeront le font dans
+// la cascade normale (~150-300ms après FCP, invisible UX).
 const inconsolata = Inconsolata({
   subsets: ["latin"],
   variable: "--font-inconsolata",
   display: "swap",
+  preload: false,
 });
 
 // Fraunces = serif éditorial premium (style Anthropic/Mistral).
@@ -154,6 +162,35 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const organizationJsonLd = buildOrganizationJsonLd(organizationJsonLdInput);
   const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
 
+  // P1-14 (audit re-run 2026-05-15 AGENT 5) — Resource Hints preconnect.
+  // Réduit le TBT initial de ~60-150 ms p75 en pré-établissant les
+  // connexions TCP+TLS vers les origines tierces critiques avant que les
+  // scripts ne les appellent. React 19 hoist automatiquement `<link>` au
+  // `<head>` du document.
+  //
+  // Ordre de priorité :
+  //   1. Plausible self-hosted (`afterInteractive` script, chargé sur toutes
+  //      pages) — preconnect dès que NEXT_PUBLIC_PLAUSIBLE_DOMAIN est set.
+  //   2. Sentry ingest (errors fire-and-forget) — preconnect uniquement si
+  //      DSN défini (sinon dns-prefetch est suffisant).
+  //   3. Cloudflare Turnstile (`/reserver` booking form) — preconnect si
+  //      la clé site est définie. `crossOrigin` requis (iframe + cookie).
+  //   4. Google Fonts API (next/font self-host les fichiers woff2 mais
+  //      le manifest CSS reste hébergé Google) — dns-prefetch léger.
+  const plausibleDomain = env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
+  const sentryDsn = env.NEXT_PUBLIC_SENTRY_DSN;
+  // Extract Sentry ingest origin from DSN (format https://<key>@<id>.ingest.sentry.io/<project>).
+  let sentryIngestOrigin: string | null = null;
+  if (sentryDsn) {
+    try {
+      const u = new URL(sentryDsn);
+      sentryIngestOrigin = `${u.protocol}//${u.host}`;
+    } catch {
+      sentryIngestOrigin = null;
+    }
+  }
+  const turnstileEnabled = !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
   return (
     <html
       lang={locale}
@@ -161,6 +198,16 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       className={`${manrope.variable} ${inconsolata.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="bg-bg text-fg flex min-h-full flex-col font-sans">
+        {/* P1-14 Resource Hints — React 19 hoist automatique vers <head>. */}
+        {plausibleDomain ? (
+          <link rel="preconnect" href={`https://${plausibleDomain}`} crossOrigin="anonymous" />
+        ) : null}
+        {sentryIngestOrigin ? (
+          <link rel="preconnect" href={sentryIngestOrigin} crossOrigin="anonymous" />
+        ) : null}
+        {turnstileEnabled ? (
+          <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
+        ) : null}
         <SkipToContent />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <Header />

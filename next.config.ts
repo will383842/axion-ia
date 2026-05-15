@@ -70,9 +70,13 @@ const nextConfig: NextConfig = {
   env: {
     BUILD_TIME: BUILD_TIME_ISO,
   },
-  // V1 garde compress: true (Next compresse pour `next start`). V3 passera
-  // false quand Caddy 2 prendra le relais en amont (anti-double-compression).
-  compress: true,
+  // P1-22 (audit re-run 2026-05-15 AGENT 7) — compress: false.
+  // Caddy 2 compresse avec brotli 9 + zstd + gzip 6 en amont (Caddyfile
+  // `encode { zstd ; br 9 ; gzip 6 ; minimum_length 4096 }`). Garder Next
+  // compress: true = double compression CPU-coûteuse (Next re-gzip → Caddy
+  // décompresse + re-compresse en brotli). Le passage à false économise
+  // ~5-8 % CPU avg 24h selon AGENT 7 §7.11 P1-3.
+  compress: false,
   // P-508 — explicite (déjà default false en Next 16, mais clarté config).
   productionBrowserSourceMaps: false,
   // P-302 — build artifact léger pour Docker Hetzner standalone.
