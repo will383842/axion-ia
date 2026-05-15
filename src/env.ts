@@ -72,6 +72,94 @@ export const env = createEnv({
 
     TURNSTILE_SECRET_KEY: z.string().optional(),
 
+    // ────────────────────────────────────────────────────────────────
+    // Stripe Checkout V1 (Sprint X.2 — Booking V1) + ADR 0013.
+    // Cert plateforme 2026-05-16 — fail-fast au boot prod si une clé manque
+    // (avant fix : throw lazy au premier appel SDK = revenu perdu sans alerte).
+    // ────────────────────────────────────────────────────────────────
+    /// Secret Stripe (server-only). Format `sk_(live|test)_*`. Required en prod.
+    /// Si `STRIPE_LIVE_MODE=true` → DOIT être `sk_live_*` (refuse `sk_test_*`).
+    STRIPE_SECRET_KEY: z
+      .string()
+      .regex(/^sk_(live|test)_/, "STRIPE_SECRET_KEY must start with sk_live_ or sk_test_")
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "STRIPE_SECRET_KEY is required in production (Booking V1 Stripe Checkout)",
+          });
+          return;
+        }
+        if (process.env.STRIPE_LIVE_MODE === "true" && val.startsWith("sk_test_")) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "STRIPE_SECRET_KEY must be sk_live_* when STRIPE_LIVE_MODE=true",
+          });
+        }
+      }),
+    /// Clé publishable Stripe (server-validée mais exposable client via prop).
+    /// Format `pk_(live|test)_*`. Required en prod.
+    STRIPE_PUBLISHABLE_KEY: z
+      .string()
+      .regex(/^pk_(live|test)_/, "STRIPE_PUBLISHABLE_KEY must start with pk_live_ or pk_test_")
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "STRIPE_PUBLISHABLE_KEY is required in production",
+          });
+          return;
+        }
+        if (process.env.STRIPE_LIVE_MODE === "true" && val.startsWith("pk_test_")) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "STRIPE_PUBLISHABLE_KEY must be pk_live_* when STRIPE_LIVE_MODE=true",
+          });
+        }
+      }),
+    /// Secret webhook Stripe (HMAC `constructEvent`). Format `whsec_*`. Required prod.
+    STRIPE_WEBHOOK_SECRET: z
+      .string()
+      .regex(/^whsec_/, "STRIPE_WEBHOOK_SECRET must start with whsec_")
+      .min(20)
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "STRIPE_WEBHOOK_SECRET is required in production",
+          });
+        }
+      }),
+    /// Toggle mode LIVE vs TEST. Si `true` → keys doivent être `sk_live_` + `pk_live_`.
+    STRIPE_LIVE_MODE: z
+      .string()
+      .optional()
+      .transform((v) => v === "true" || v === "1"),
+    /// Version API Stripe pinnée (ex. `2024-11-20.acacia`). Optional — fallback SDK default.
+    STRIPE_API_VERSION: z.string().optional(),
+
+    // ────────────────────────────────────────────────────────────────
+    // DocuSeal self-hosted (Sprint X.3 — Booking V1) + ADR 0014.
+    // Cert plateforme 2026-05-16 — clés optionnelles par design (fallback mode
+    // dégradé hybride manuel admin upload PDF). Mais si une seule est définie,
+    // toutes doivent l'être : superRefine cohérence trio URL+API+webhook.
+    // ────────────────────────────────────────────────────────────────
+    /// URL base DocuSeal self-hosted (ex. `https://signature.axion-ia.com`).
+    DOCUSEAL_BASE_URL: z.string().url().optional(),
+    /// Token X-Auth-Token DocuSeal API.
+    DOCUSEAL_API_KEY: z.string().min(16).optional(),
+    /// HMAC secret webhook DocuSeal (header `X-Docuseal-Signature`).
+    DOCUSEAL_WEBHOOK_SECRET: z.string().min(16).optional(),
+    /// IDs templates DocuSeal — devis + contrat. Optionnels (skip flow auto si absents).
+    DOCUSEAL_QUOTE_TEMPLATE_ID: z.string().optional(),
+    DOCUSEAL_CONTRACT_TEMPLATE_ID: z.string().optional(),
+
     HETZNER_STORAGE_ENDPOINT: z.string().optional(),
     HETZNER_STORAGE_BUCKET: z.string().optional(),
     HETZNER_STORAGE_KEY: z.string().optional(),
@@ -272,6 +360,18 @@ export const env = createEnv({
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
+    // Stripe Checkout V1 (Booking V1 — ADR 0013)
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_LIVE_MODE: process.env.STRIPE_LIVE_MODE,
+    STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
+    // DocuSeal self-hosted (Booking V1 — ADR 0014)
+    DOCUSEAL_BASE_URL: process.env.DOCUSEAL_BASE_URL,
+    DOCUSEAL_API_KEY: process.env.DOCUSEAL_API_KEY,
+    DOCUSEAL_WEBHOOK_SECRET: process.env.DOCUSEAL_WEBHOOK_SECRET,
+    DOCUSEAL_QUOTE_TEMPLATE_ID: process.env.DOCUSEAL_QUOTE_TEMPLATE_ID,
+    DOCUSEAL_CONTRACT_TEMPLATE_ID: process.env.DOCUSEAL_CONTRACT_TEMPLATE_ID,
     HETZNER_STORAGE_ENDPOINT: process.env.HETZNER_STORAGE_ENDPOINT,
     HETZNER_STORAGE_BUCKET: process.env.HETZNER_STORAGE_BUCKET,
     HETZNER_STORAGE_KEY: process.env.HETZNER_STORAGE_KEY,
