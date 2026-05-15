@@ -109,7 +109,7 @@
     "isomorphic-dompurify": "^3.12.0",
     "lucide-react": "^1.14.0",
     "motion": "^11.18.2",
-    "next": "16.2.4",
+    "next": "16.2.6",
     "next-auth": "5.0.0-beta.31",
     "next-intl": "^4.11.0",
     "nodemailer": "^8.0.7",
@@ -219,6 +219,10 @@
       "prisma",
       "@tailwindcss/oxide",
       "sharp"
-    ]
+    ],
+    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. esbuild/tmp/vite restent devDeps (moderate dev-only), couverts par dependabot weekly. Override vite >=6.4.2 incompatible vitest 2.x SSR — reporté V1.5 (upgrade vitest 3.x).",
+    "overrides": {
+      "postcss": ">=8.5.10"
+    }
   }
 }
