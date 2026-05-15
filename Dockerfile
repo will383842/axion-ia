@@ -20,7 +20,9 @@
 # Stage 1 : deps — résoud les deps via pnpm cached layer
 # -----------------------------------------------------------------------------
 FROM node:22-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# `openssl` requis aussi côté deps stage car `prisma generate` peut se déclencher
+# pendant `pnpm install` via postinstall hook.
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Copy lockfile + package.json pour cache Docker layer
@@ -45,7 +47,12 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 # Stage 2 : builder — compile Next 16 standalone
 # -----------------------------------------------------------------------------
 FROM node:22-alpine AS builder
-RUN apk add --no-cache libc6-compat
+# `openssl` CLI requis pour que Prisma 5.x détecte la version OpenSSL et choisisse
+# le bon binaire query-engine (`linux-musl-openssl-3.0.x.so.node` au lieu du
+# legacy `linux-musl.so.node` qui dépend de libssl 1.1, absente d'Alpine 3.x).
+# Sans ça : `prisma:warn Prisma failed to detect libssl/openssl, Defaulting to
+# "openssl-1.1.x"` puis crash au SSG (Failed to collect page data /sitemap/...).
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Build env vars publiques (clientside) — fournies via --build-arg
