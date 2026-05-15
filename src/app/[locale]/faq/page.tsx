@@ -35,7 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ...meta,
     alternates: {
       ...meta.alternates,
-      types: { "application/rss+xml": `/${locale}/faq/feed.xml` },
+      // URL absolue pour éviter résolution contre metadataBase qui inclut déjà
+      // le locale → double prefix `/fr/fr/faq/feed.xml` (audit 2026-05-15 AGENT 6).
+      types: {
+        "application/rss+xml": `https://axion-ia.com/${locale}/faq/feed.xml`,
+      },
     },
   };
 }

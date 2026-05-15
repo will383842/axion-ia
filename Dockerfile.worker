@@ -18,7 +18,10 @@
 # Node 22+ requis pour `--experimental-strip-types` (CMD finale du runner stage).
 # Stripped TS execution arrivée en stable Node 22.6.
 FROM node:22-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# `openssl` requis runtime par le binary Prisma `linux-musl-openssl-3.0.x`
+# (cf. prisma/schema.prisma binaryTargets). Sans lui : worker crash loop
+# « libquery_engine-linux-musl.so.node refuse de charger » (audit 2026-05-15).
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -32,7 +35,7 @@ RUN pnpm install --frozen-lockfile --prefer-offline
 # Stage 2 : builder — generate Prisma client + transpile TS
 # -----------------------------------------------------------------------------
 FROM node:22-alpine AS builder
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -46,7 +49,9 @@ RUN pnpm prisma:generate
 # Stage 3 : runner — slim worker runtime
 # -----------------------------------------------------------------------------
 FROM node:22-alpine AS runner
-RUN apk add --no-cache libc6-compat tini
+# Runner stage (CRITIQUE) : sans `openssl`, Prisma client crash au premier
+# import dans n'importe quel worker BullMQ (audit 2026-05-15 AGENT 9).
+RUN apk add --no-cache libc6-compat openssl tini
 WORKDIR /app
 
 ENV NODE_ENV=production
