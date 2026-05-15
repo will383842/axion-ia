@@ -57,6 +57,12 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
     return;
   }
 
+  // P1-11 (audit re-run 2026-05-15 AGENT 4) — keyLocation canonique `/{key}.txt`.
+  // Avant : `/api/indexnow/key` faisait IndexNow.org renvoyer 422 (la spec
+  // exige une URL terminant par `.txt`). Aligné avec `app/api/indexnow/route.ts:51`
+  // qui pointe déjà vers `/{key}.txt` (exposé via /public depuis 2026-05-13,
+  // matcher proxy.ts exclut `.*\\.txt$` du i18n redirect).
+  //
   // Fire-and-forget : on n'await pas. Mais on attache un catch pour logger
   // les erreurs réseau dans Sentry/console (sans bloquer l'admin).
   void fetch(ENDPOINT, {
@@ -65,7 +71,7 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
     body: JSON.stringify({
       host,
       key,
-      keyLocation: `https://${host}/api/indexnow/key`,
+      keyLocation: `https://${host}/${key}.txt`,
       urlList: valid,
     }),
   })

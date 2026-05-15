@@ -20,6 +20,7 @@ import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { gscTopKeywordsForUrl } from "@/server/content-gen/seo/gsc-client";
 
 const QUEUE_NAME = "content-keyword-sync";
 const RECENT_DAYS_MIN = 7;
@@ -31,13 +32,20 @@ interface SyncStats {
 }
 
 /**
- * Skeleton query GSC : tant que GOOGLE_APPLICATION_CREDENTIALS + GSC_PROPERTY
- * pas set + googleapis SDK pas installé, retourne `null` → skip article.
- * Activation Sprint 10.5 : décommenter implementation complète.
+ * Pull top keywords GSC pour une URL via OAuth refresh_token flow.
+ *
+ * V1 activée 2026-05-15 — wire vers `gsc-client` qui gère :
+ *   - OAuth refresh access_token (cache 55min)
+ *   - searchAnalytics.query avec filter `page=targetUrl`
+ *   - Skip silencieux si credentials absents (graceful degrade dev/preview)
+ *
+ * Retourne null si credentials absents ou erreur API (worker continue avec
+ * apiSkipped++). Retourne array vide si la page n'a aucun keyword GSC dans la
+ * fenêtre (page trop neuve ou pas de trafic).
  */
 async function fetchTopKeywordsForUrl(
-  _url: string,
-  _daysWindow: number,
+  url: string,
+  daysWindow: number,
 ): Promise<ReadonlyArray<{
   keyword: string;
   position: number;
@@ -45,11 +53,7 @@ async function fetchTopKeywordsForUrl(
   impressions: number;
   clicks: number;
 }> | null> {
-  if (!process.env.GOOGLE_APPLICATION_CREDENTIALS || !process.env.GSC_PROPERTY) {
-    return null;
-  }
-  // V1 skeleton — SDK absent. Activation = Sprint 10.5.
-  return null;
+  return gscTopKeywordsForUrl(url, daysWindow, 10);
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {

@@ -10,45 +10,40 @@
 
 "use server";
 
-import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { IndexationTier, PublishStatus } from "../../../../prisma/generated/client";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
+import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`;
 }
 
-let indexNowQueue: Queue | null = null;
-function getIndexNowQueue(): Queue | null {
-  if (indexNowQueue) return indexNowQueue;
-  const redisUrl = process.env.REDIS_URL;
-  if (!redisUrl) return null;
-  indexNowQueue = new Queue("content-indexnow", { connection: { url: redisUrl } });
-  return indexNowQueue;
-}
-
 /**
- * Ping IndexNow pour signaler à Bing/Yandex/Seznam un changement sur une URL
- * publique. Fire-and-forget — n'échoue pas si Redis absent.
+ * P1-10 (audit re-run 2026-05-15 AGENT 4) — délègue à `enqueueIndexingForTier1`
+ * (SSOT dispatcher Sprint 9 V2). Avant : shadow local `pingIndexNow` + Queue
+ * BullMQ direct → 6 implémentations IndexNow distinctes, divergence URL
+ * builder, pas de Google Indexing API en parallèle, jobId timestamp non
+ * idempotent.
+ *
+ * Maintenant : tous les admin actions (update/demote/archive/delete/rollback)
+ * passent par le SSOT qui couvre :
+ *   - URL via `buildArticleUrl()` SSOT
+ *   - IndexNow enqueue si INDEXNOW_KEY set
+ *   - Google Indexing API enqueue si GOOGLE_INDEXING_API_ENABLED=true
+ *   - jobId déterministe (`indexnow-${articleId}` + `google-indexing-${articleId}`)
+ *     → BullMQ dédoublonne automatiquement si re-enqueued rapidement
+ *
+ * Fire-and-forget, n'échoue jamais (déjà géré dans `enqueueIndexingForTier1`).
  */
-async function pingIndexNow(slug: string, isNews: boolean): Promise<void> {
-  const queue = getIndexNowQueue();
-  if (!queue) return;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!siteUrl) return;
-  const path = isNews ? `/fr/actualites/${slug}` : `/fr/blog/${slug}`;
+async function pingIndexing(articleId: string, slug: string, isNews: boolean): Promise<void> {
   try {
-    await queue.add(
-      "ping",
-      { urls: [`${siteUrl}${path}`], origin: "manual" as const },
-      { jobId: `indexnow-${slug}-${Date.now()}` },
-    );
+    await enqueueIndexingForTier1({ articleId, slug, isNews, origin: "manual" });
   } catch {
-    // best-effort
+    // best-effort — le helper ne devrait pas throw, mais double-guard.
   }
 }
 
@@ -172,7 +167,7 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
   revalidatePath(`${adminBase()}/publications`);
 
   if (article.status === "published" && article.indexationTier === "tier_1_indexable") {
-    await pingIndexNow(newSlug, article.isNews);
+    await pingIndexing(article.id, newSlug, article.isNews);
   }
   await logActivity({
     session,
@@ -217,7 +212,7 @@ export async function demoteArticle(articleId: string): Promise<void> {
     revalidatePath("/sitemap.xml");
     // IndexNow signal "URL_DELETED" via simple ping (Bing détectera noindex à
     // la prochaine visite). Pas de delta sémantique au-delà du re-ping.
-    await pingIndexNow(t.slug, article.isNews);
+    await pingIndexing(article.id, t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
@@ -255,7 +250,7 @@ export async function archiveArticle(articleId: string): Promise<void> {
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    await pingIndexNow(t.slug, article.isNews);
+    await pingIndexing(article.id, t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
@@ -330,7 +325,7 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    await pingIndexNow(t.slug, article.isNews);
+    await pingIndexing(article.id, t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
@@ -377,7 +372,7 @@ export async function rollbackArticle(articleId: string): Promise<void> {
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    await pingIndexNow(t.slug, article.isNews);
+    await pingIndexing(article.id, t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
