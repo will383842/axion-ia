@@ -84,9 +84,18 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   "/sections",
   "/desabonnement",
   "/mes-donnees",
+  // Audit méta-cert 2026-05-15 AGENT 13 P1-1 — `/mes-donnees/export` exposait
+  // un statut HTML `robots:noindex` mais figurait dans `sitemap/pages.xml`
+  // (incohérence Search Console "noindexed URL in sitemap"). Comme la version
+  // EN `/my-data/export` partage le même endpoint, on exclut la clé canonique.
+  "/mes-donnees/export",
   "/confirmation",
   "/recherche",
   "/preferences-cookies",
+  // Audit méta-cert 2026-05-15 AGENT 13 P1-2 — `/reserver` est `Disallow:` dans
+  // `robots.ts` (formulaire deposit-gated, pas pertinent SERP). On le retire
+  // aussi du sitemap pour cohérence (sinon GSC affiche "no description").
+  "/reserver",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {

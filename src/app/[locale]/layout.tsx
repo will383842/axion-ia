@@ -10,7 +10,6 @@ import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { Plausible } from "@/components/analytics/Plausible";
 import { RefererTracker } from "@/components/analytics/RefererTracker";
-import { Clarity } from "@/components/analytics/Clarity";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
@@ -227,10 +226,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               14 sources canoniques (google/bing/qwant/perplexity/chatgpt/claude…)
               pour mesurer l'AEO/GEO ROI Plausible. No-op si Plausible absent. */}
           <RefererTracker />
-          {/* Microsoft Clarity (2026-05-13) — heatmaps + session replay gratuits.
-              Complète Plausible : Plausible = quoi/combien, Clarity = comment.
-              No-op si NEXT_PUBLIC_CLARITY_PROJECT_ID absent. afterInteractive. */}
-          <Clarity />
         </NextIntlClientProvider>
         <script
           type="application/ld+json"

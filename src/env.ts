@@ -176,6 +176,42 @@ export const env = createEnv({
       .string()
       .optional()
       .transform((v) => v === "true" || v === "1"),
+
+    // ────────────────────────────────────────────────────────────────
+    // Image Bank (Sprint M? — axionia-image-bank skill v1.0).
+    // Cf. `.claude/skills/axionia-image-bank/SKILL.md` + spec maître
+    // `_AUDIT/PROMPT-IMAGE-BANK-MASTER-2026.md` § 9.
+    // ────────────────────────────────────────────────────────────────
+    /// Salt SHA-256 pour hash IP RGPD (`ImageUsageLog.ip_hash`).
+    /// Required ≥ 32 chars en prod (superRefine). Fallback dev gracieux
+    /// pour `pnpm dev` sans secret (warn log + salt non-secret prévisible).
+    IP_HASH_SALT: z
+      .string()
+      .min(32)
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "IP_HASH_SALT is required in production (image-bank RGPD)",
+          });
+          return;
+        }
+        if (val.startsWith("dev_") || val.startsWith("dev-") || val === "dev-insecure-salt") {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "IP_HASH_SALT must not use the dev fallback in production",
+          });
+        }
+      }),
+    /// Auto-publish image translations dès SEO score ≥ ce seuil (worker enrich).
+    /// Default 999 = jamais auto-publish (review admin manuel). En prod recommandé
+    /// 80 pour pipeline FR-only fluide, 999 pour gate humain strict.
+    IMAGE_AUTO_PUBLISH_SCORE: z.coerce.number().int().min(0).max(100).optional(),
+    /// Rétention image_usage_logs en mois (worker `retention-purge-worker`).
+    /// Default 12 mois si non défini.
+    RETENTION_IMAGE_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -185,9 +221,6 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_DOMAIN: z.string().optional(),
     NEXT_PUBLIC_PLAUSIBLE_API_URL: z.string().url().optional(),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
-    // Microsoft Clarity project ID (heatmaps + session replay). Public alphanumeric
-    // (~10 chars). No-op si non défini → composant Clarity ne rend aucun script.
-    NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -247,6 +280,10 @@ export const env = createEnv({
     KB_INGEST_SECRET: process.env.KB_INGEST_SECRET,
     KB_AUTO_PUBLISH: process.env.KB_AUTO_PUBLISH,
     KB_BYPASS: process.env.KB_BYPASS,
+    // Image Bank (Sprint M? — axionia-image-bank skill v1.0)
+    IP_HASH_SALT: process.env.IP_HASH_SALT,
+    IMAGE_AUTO_PUBLISH_SCORE: process.env.IMAGE_AUTO_PUBLISH_SCORE,
+    RETENTION_IMAGE_LOGS_MONTHS: process.env.RETENTION_IMAGE_LOGS_MONTHS,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
@@ -254,7 +291,6 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_DOMAIN: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN,
     NEXT_PUBLIC_PLAUSIBLE_API_URL: process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
   },
   emptyStringAsUndefined: true,
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true",

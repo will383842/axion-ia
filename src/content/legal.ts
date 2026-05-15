@@ -223,7 +223,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hébergement et transferts",
-          body: "Toutes les données sont hébergées dans l'UE (Hetzner Frankfurt). Aucun transfert hors UE sauf consentement explicite (ex : appel à un modèle IA tiers américain pour une démonstration, signalé en amont).",
+          body: "Hébergement principal dans l'UE (Hetzner Frankfurt, Allemagne) et services edge Cloudflare (présence UE prioritaire). Les seuls transferts hors UE concernent les sous-processeurs IA américains (OpenAI, Anthropic, Perplexity) lorsqu'un contenu éditorial est généré ou un fact-check effectué — encadrés par les Clauses Contractuelles Types (SCC) de la Commission européenne et listés exhaustivement sur /sous-processeurs avec leur cadre de transfert international (SCC + DPF le cas échéant). Aucune donnée personnelle de visiteur n'est transmise à ces modèles (helper `pii-safe` + hard gate code).",
         },
         {
           title: "Sous-processeurs et destinataires des données",
@@ -272,7 +272,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hosting and transfers",
-          body: "All data is hosted in the EU (Hetzner Frankfurt). No transfers outside the EU except with explicit consent (e.g., calling a third-party US AI model for a demo, flagged in advance).",
+          body: "Primary hosting in the EU (Hetzner Frankfurt, Germany) and Cloudflare edge services (EU presence prioritized). The only transfers outside the EU concern US AI sub-processors (OpenAI, Anthropic, Perplexity) when editorial content is generated or fact-checked — covered by the European Commission Standard Contractual Clauses (SCC) and listed exhaustively on /subprocessors with their international transfer framework (SCC + DPF where applicable). No visitor personal data is sent to these models (`pii-safe` helper + code-level hard gate).",
         },
         {
           title: "Sub-processors and data recipients",
