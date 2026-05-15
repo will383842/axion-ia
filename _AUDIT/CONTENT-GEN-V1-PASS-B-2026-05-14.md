@@ -80,9 +80,9 @@ est nécessaire avant cutover production et avant industrialisation V2 sur
 - **Impact** : `pnpm prisma migrate deploy` ne crée rien, les workers crashent
   au premier `prisma.contentGenJob.create()`.
 - **Confusion** : L'EXIT-V1-CHECKLIST liste « migration appliquée prod » comme
-  bloqueur Will (DIRECT_URL + DB locale), mais omet qu'**à la racine la
+  bloqueur Will (DIRECT*URL + DB locale), mais omet qu'**à la racine la
   migration n'existe pas encore en code**. Will doit `prisma migrate dev` pour
-  la générer, _puis_ l'appliquer.
+  la générer, \_puis* l'appliquer.
 - **Fix** : `pnpm prisma migrate dev --name add_content_gen_core` (en dev local
   avec DIRECT_URL) + commit + `pnpm prisma migrate deploy` en prod.
 - **Effort** : 30 min Will + 30 min revue auto.

@@ -74,7 +74,7 @@ Après tous les fixes : `pnpm verify:all` + `pnpm test` + push branche.
 
 ### P0-5 DOMPurify HTML sanitizer — ✅ commit `e3c190c`
 
-- Nouveau module `src/server/content-gen/shared/html-sanitizer.ts` : whitelist tags éditoriaux + attrs + FORBID_TAGS strict (script/iframe/object/embed/form/input/style/svg) + ALLOWED_URI_REGEXP (http/https/mailto/tel) + post-process rel="noopener noreferrer" sur target=_blank.
+- Nouveau module `src/server/content-gen/shared/html-sanitizer.ts` : whitelist tags éditoriaux + attrs + FORBID_TAGS strict (script/iframe/object/embed/form/input/style/svg) + ALLOWED_URI_REGEXP (http/https/mailto/tel) + post-process rel="noopener noreferrer" sur target=\_blank.
 - Tests : `html-sanitizer.test.ts` 14 tests verts couvrant OWASP top-10 XSS (script, iframe, onerror/onclick/onload, javascript:, data:text/html, svg onload, object/embed, style CSS injection).
 - Wire `landing-ville.ts:99` : `parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml)` post-JSON.parse. Autres generators délèguent (ADR 0021) → couverture complète V1.
 
@@ -117,23 +117,22 @@ La session Sprint 7 V2 (autopilote configurable daily_target + anti-burst) a liv
 
 ## Score Pass B estimé post-S6.1
 
-| Catégorie | Pré-S6.1 | Post-S6.1 | Delta |
-| --- | --- | --- | --- |
-| Architecture & DB | 14 | 17 | +3 (doc migration claire) |
-| Providers & routing | 16 | 16 | — |
-| Generators + Intention | 20 | 23 | +3 (DOMPurify + Q/R post-process + Speakable verrouillé) |
-| KB / RAG | 10 | 10 | — |
-| Quality gates + boucle | 18 | 20 | +2 (banned-phrases block) |
-| SEO/AEO/GEO | 15 | 18 | +3 (route actualites + Speakable + urlSegment) |
-| Campagnes couverture | 13 | 13 | — |
-| Admin UI | 17 | 18 | +1 (RBAC) |
-| Queue & monitoring | 11 | 15 | +4 (GenerationLog + Q/R worker) |
-| Tests & verify | 10 | 13 | +3 (24 nouveaux tests) |
-| Docs & ADR | 9 | 10 | +1 (README migration + log S6.1) |
-| Sécurité & RGPD | 4 | 9 | +5 (DPA + DOMPurify + RBAC + audit log) |
-| **TOTAL /200** | **157 (78,5 %)** | **182 (91 %)** | **+25** |
+| Catégorie              | Pré-S6.1         | Post-S6.1      | Delta                                                    |
+| ---------------------- | ---------------- | -------------- | -------------------------------------------------------- |
+| Architecture & DB      | 14               | 17             | +3 (doc migration claire)                                |
+| Providers & routing    | 16               | 16             | —                                                        |
+| Generators + Intention | 20               | 23             | +3 (DOMPurify + Q/R post-process + Speakable verrouillé) |
+| KB / RAG               | 10               | 10             | —                                                        |
+| Quality gates + boucle | 18               | 20             | +2 (banned-phrases block)                                |
+| SEO/AEO/GEO            | 15               | 18             | +3 (route actualites + Speakable + urlSegment)           |
+| Campagnes couverture   | 13               | 13             | —                                                        |
+| Admin UI               | 17               | 18             | +1 (RBAC)                                                |
+| Queue & monitoring     | 11               | 15             | +4 (GenerationLog + Q/R worker)                          |
+| Tests & verify         | 10               | 13             | +3 (24 nouveaux tests)                                   |
+| Docs & ADR             | 9                | 10             | +1 (README migration + log S6.1)                         |
+| Sécurité & RGPD        | 4                | 9              | +5 (DPA + DOMPurify + RBAC + audit log)                  |
+| **TOTAL /200**         | **157 (78,5 %)** | **182 (91 %)** | **+25**                                                  |
 
 → **Verdict post-S6.1 : 🟢 GO PROD** (cible ≥ 175/200 atteinte, **182 ≥ 175**).
 
 Reste P0-1 bloqueur infra Will (migration SQL) à exécuter avant cutover réel.
-

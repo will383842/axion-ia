@@ -229,23 +229,21 @@ describe("docuseal — createSubmission (fetch mocké)", () => {
   });
 
   it("default submitters_order = preserved (séquentiel)", async () => {
-    const fetchMock = vi
-      .spyOn(global, "fetch")
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify([
-            {
-              id: 1,
-              submission_id: 1,
-              embed_src: "x",
-              email: "a@b.c",
-              name: null,
-              status: "pending",
-            },
-          ]),
-          { status: 200, headers: { "content-type": "application/json" } },
-        ),
-      );
+    const fetchMock = vi.spyOn(global, "fetch").mockResolvedValueOnce(
+      new Response(
+        JSON.stringify([
+          {
+            id: 1,
+            submission_id: 1,
+            embed_src: "x",
+            email: "a@b.c",
+            name: null,
+            status: "pending",
+          },
+        ]),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
     await createSubmission({
       templateId: 1,
       signers: [{ email: "a@b.c" }, { email: "d@e.f" }],
@@ -255,23 +253,21 @@ describe("docuseal — createSubmission (fetch mocké)", () => {
   });
 
   it("signOrder='random' propagé tel quel", async () => {
-    const fetchMock = vi
-      .spyOn(global, "fetch")
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify([
-            {
-              id: 1,
-              submission_id: 1,
-              embed_src: "x",
-              email: "a@b.c",
-              name: null,
-              status: "pending",
-            },
-          ]),
-          { status: 200, headers: { "content-type": "application/json" } },
-        ),
-      );
+    const fetchMock = vi.spyOn(global, "fetch").mockResolvedValueOnce(
+      new Response(
+        JSON.stringify([
+          {
+            id: 1,
+            submission_id: 1,
+            embed_src: "x",
+            email: "a@b.c",
+            name: null,
+            status: "pending",
+          },
+        ]),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
     await createSubmission({
       templateId: 1,
       signOrder: "random",
