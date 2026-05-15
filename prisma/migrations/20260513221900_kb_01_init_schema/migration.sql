@@ -32,31 +32,35 @@ CREATE TYPE "KbImportStatus" AS ENUM ('pending', 'running', 'succeeded', 'failed
 CREATE TYPE "KbReviewerAssignmentStatus" AS ENUM ('pending', 'accepted', 'rejected', 'completed');
 
 -- DropIndex
-DROP INDEX "article_translations_search_idx";
+-- Audit recovery 2026-05-16 : 6 DROP INDEX + 3 DROP COLUMN rendus idempotents
+-- car ces indexes/colonnes FTS étaient gérés via `prisma/migrations_fts/`
+-- (parallel folder) jamais appliqué en prod. Sans IF EXISTS, prisma migrate
+-- deploy fail P3018 sur premier index inexistant.
+DROP INDEX IF EXISTS "article_translations_search_idx";
 
 -- DropIndex
-DROP INDEX "bookings_options_email_trgm_idx";
+DROP INDEX IF EXISTS "bookings_options_email_trgm_idx";
 
 -- DropIndex
-DROP INDEX "case_study_translations_search_idx";
+DROP INDEX IF EXISTS "case_study_translations_search_idx";
 
 -- DropIndex
-DROP INDEX "help_article_translations_search_idx";
+DROP INDEX IF EXISTS "help_article_translations_search_idx";
 
 -- DropIndex
-DROP INDEX "submissions_email_trgm_idx";
+DROP INDEX IF EXISTS "submissions_email_trgm_idx";
 
 -- DropIndex
-DROP INDEX "testimonials_company_trgm_idx";
+DROP INDEX IF EXISTS "testimonials_company_trgm_idx";
 
 -- AlterTable
-ALTER TABLE "article_translations" DROP COLUMN "search_vector";
+ALTER TABLE "article_translations" DROP COLUMN IF EXISTS "search_vector";
 
 -- AlterTable
-ALTER TABLE "case_study_translations" DROP COLUMN "search_vector";
+ALTER TABLE "case_study_translations" DROP COLUMN IF EXISTS "search_vector";
 
 -- AlterTable
-ALTER TABLE "help_article_translations" DROP COLUMN "search_vector";
+ALTER TABLE "help_article_translations" DROP COLUMN IF EXISTS "search_vector";
 
 -- CreateTable
 CREATE TABLE "knowledge_entries" (
