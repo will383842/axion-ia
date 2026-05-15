@@ -22,6 +22,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { redactContactLine } from "@/lib/pii-redaction";
+import { encryptPii } from "@/lib/pii-crypto";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -137,6 +138,10 @@ export async function createBookingAction(
   // Sprint X.18 — attribution funnel (UTM cookie + pSEO referrerCity).
   const funnelAttr = await readFunnelAttribution();
   const { booking } = await prisma.$transaction(async (tx) => {
+    // Méta-cert 2026-05-15 AGENT 12 P0 OWASP A02 — PII at-rest encryption.
+    // `encryptPii` est passe-through en dev sans clé (warn log) + idempotent
+    // (rows déjà chiffrées ne sont pas re-chiffrées). Format `enc:v1:iv:ct:tag`
+    // détecté par `decryptPii` aux read sites (booking-crons-worker etc.).
     const submission = await tx.submission.create({
       data: {
         type: "intervention",
@@ -146,10 +151,10 @@ export async function createBookingAction(
         sector: companySectorRaw,
         address: companyCityRaw,
         employeesCount: companySizeRaw,
-        contactName: parsed.data.contact,
+        contactName: encryptPii(parsed.data.contact),
         contactRole: contactRoleRaw,
-        contactEmail: parsed.data.email,
-        contactPhone: parsed.data.phone ?? null,
+        contactEmail: encryptPii(parsed.data.email) as string,
+        contactPhone: encryptPii(parsed.data.phone) ?? null,
         details: {
           interventionType: interventionTypeEnum,
           bookingDate: parsed.data.date,

@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { auditSchema, auditRequestSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { encryptPii } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
 import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -55,9 +56,9 @@ export async function submitAuditAction(
       locale,
       // Sprint 15 fix Fork 2 C4-2 : utilise companyName si fourni
       companyName: parsed.data.companyName ?? parsed.data.contact,
-      contactName: parsed.data.contact,
-      contactEmail: parsed.data.email,
-      contactPhone: parsed.data.phone ?? null,
+      contactName: encryptPii(parsed.data.contact),
+      contactEmail: encryptPii(parsed.data.email),
+      contactPhone: encryptPii(parsed.data.phone) ?? null,
       sector: parsed.data.industry,
       employeesCount: parsed.data.size,
       details: {
@@ -129,9 +130,9 @@ export async function submitAuditRequestAction(
       type: "audit",
       locale,
       companyName: parsed.data.companyName ?? parsed.data.contact,
-      contactName: parsed.data.contact,
-      contactEmail: parsed.data.email,
-      contactPhone: parsed.data.phone ?? null,
+      contactName: encryptPii(parsed.data.contact),
+      contactEmail: encryptPii(parsed.data.email),
+      contactPhone: encryptPii(parsed.data.phone) ?? null,
       contactRole: parsed.data.role ?? null,
       sector: parsed.data.industry,
       employeesCount: parsed.data.size,

@@ -212,6 +212,29 @@ export const env = createEnv({
     /// Rétention image_usage_logs en mois (worker `retention-purge-worker`).
     /// Default 12 mois si non défini.
     RETENTION_IMAGE_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
+
+    // ────────────────────────────────────────────────────────────────
+    // PII at-rest encryption — Méta-cert 2026-05-15 AGENT 12 P0 OWASP A02.
+    // Cf. `src/lib/pii-crypto.ts` + ADR 0025.
+    // ────────────────────────────────────────────────────────────────
+    /// Clé AES-256-GCM hex 64 chars (32 bytes) pour chiffrement application-level
+    /// des champs PII Submission (contactEmail/Name/Phone). En dev sans clé →
+    /// pass-through clear text (fallback gracieux + warn log). En prod sans clé
+    /// → fail-fast au boot (superRefine).
+    /// Génération : `openssl rand -hex 32` (à archiver 1Password + papier).
+    PII_ENCRYPTION_KEY: z
+      .string()
+      .regex(/^[0-9a-fA-F]{64}$/, "PII_ENCRYPTION_KEY must be 64 hex chars (32 bytes)")
+      .optional()
+      .superRefine((val, ctx) => {
+        if (process.env.NODE_ENV !== "production") return;
+        if (!val) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "PII_ENCRYPTION_KEY is required in production (Submission PII at-rest)",
+          });
+        }
+      }),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -290,6 +313,8 @@ export const env = createEnv({
     IP_HASH_SALT: process.env.IP_HASH_SALT,
     IMAGE_AUTO_PUBLISH_SCORE: process.env.IMAGE_AUTO_PUBLISH_SCORE,
     RETENTION_IMAGE_LOGS_MONTHS: process.env.RETENTION_IMAGE_LOGS_MONTHS,
+    // PII at-rest (Méta-cert 2026-05-15 AGENT 12 P0)
+    PII_ENCRYPTION_KEY: process.env.PII_ENCRYPTION_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
     NEXT_PUBLIC_DEFAULT_LOCALE: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,

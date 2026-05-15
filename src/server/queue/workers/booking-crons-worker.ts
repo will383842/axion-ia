@@ -15,6 +15,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "../queues";
+import { decryptPii } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
 import { applyTransition, StateMachineError } from "@/features/booking/state-machine";
 import type { BookingCronJobData, BookingCronJobType, EmailJobName } from "../types";
@@ -48,7 +49,18 @@ async function enqueueClientEmail(
   },
 ): Promise<void> {
   if (!payload.contactEmail) return;
-  await enqueueEmail(template, payload.contactEmail, payload.locale, payload.data).catch(() => {
+  // Méta-cert 2026-05-15 AGENT 12 P0 OWASP A02 — décrypter contactEmail avant
+  // envoi email. Les rows écrites post-PII_ENCRYPTION_KEY set sont au format
+  // `enc:v1:...`. `decryptPii` passe-through si cleartext legacy ou si la clé
+  // est absente (dev). Idem `decryptPii` sur contactName dans payload.data.
+  const recipient = decryptPii(payload.contactEmail);
+  if (payload.data && typeof payload.data === "object" && "contactName" in payload.data) {
+    const name = (payload.data as Record<string, unknown>).contactName;
+    if (typeof name === "string") {
+      (payload.data as Record<string, unknown>).contactName = decryptPii(name);
+    }
+  }
+  await enqueueEmail(template, recipient, payload.locale, payload.data).catch(() => {
     /* fail-soft */
   });
 }

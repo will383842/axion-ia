@@ -13,6 +13,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
 import { redactContactLine } from "@/lib/pii-redaction";
+import { encryptPii } from "@/lib/pii-crypto";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
@@ -98,9 +99,9 @@ export async function submitQuoteRequestAction(
       sector: parsed.data.companySector,
       address: parsed.data.city,
       employeesCount: parsed.data.companySize,
-      contactName: parsed.data.contactName,
-      contactEmail: parsed.data.contactEmail,
-      contactPhone: parsed.data.contactPhone,
+      contactName: encryptPii(parsed.data.contactName),
+      contactEmail: encryptPii(parsed.data.contactEmail),
+      contactPhone: encryptPii(parsed.data.contactPhone),
       // Le payload est rangé dans `details` JSONB pour conserver la requête
       // brute (audit + qualification ultérieure par Will).
       details: {

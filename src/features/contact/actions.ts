@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { encryptPii } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
 import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -61,8 +62,8 @@ export async function submitContactAction(
       type: "contact",
       locale,
       companyName: parsed.data.company ?? "—",
-      contactName: parsed.data.name,
-      contactEmail: parsed.data.email,
+      contactName: encryptPii(parsed.data.name),
+      contactEmail: encryptPii(parsed.data.email),
       details: {
         message: parsed.data.message,
         ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
