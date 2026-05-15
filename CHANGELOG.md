@@ -40,6 +40,90 @@ Format inspiré de [Keep a Changelog 1.1](https://keepachangelog.com/en/1.1.0/) 
 
 - ADR 0008 — Vocabulaire : « formation » → « intervention coaching » (`axionia/docs/adr/0008-vocabulary-intervention-coaching.md`). Sweep résiduel sur `src/content/*.ts` + `messages/*.json` à programmer Sprint 15+.
 
+### Sprints 14.10 → 14.10.8 (2026-05-08 → 2026-05-12)
+
+- **Sprint 14.10** — `pricing.ts` SSOT centralisation tarifs + sous-tiers Essentielle/Approfondie.
+- **Sprint 14.10.5** — pricing zéro hardcode (8 helpers `formatAmount`/`getEntryLabel`, 30 fichiers migrés, ADR pricing).
+- **Sprint 14.10.7** — refonte taxonomique `/interventions` en 4 familles (Collectives × 4 paliers durée / Individuel / Dirigeants / Conférence). SSOT `interventions-taxonomy.ts`. ADR 0011.
+- **Sprint 14.10.8** — slug `/audit/cible` remplace `/audit/process`, 301 redirect.
+
+### Sprints 15-23 (M8 backend + M9 admin + M10 tests + M11 deploy) — 2026-05-09
+
+- **M8 backend** (Sprints 15-19) — DB Postgres + Prisma 5 + auth.js v5 + workers BullMQ + 8 Server Actions.
+- **M9 admin** — 14 sections admin Tiptap + AdminCommandPalette + roles RBAC.
+- **M10 tests** — vitest unit + Playwright E2E 5 projects cross-browser + axe-core a11y CI guard.
+- **M11 deploy** — Coolify + Caddy 2 + Hetzner CPX32 → CPX42 rescale (2026-05-14) + GitHub Actions auto-deploy via API Coolify.
+
+### Sprint 24 (RGPD + OWASP) — 2026-05-09
+
+- 10 P1 fixés (3 OWASP + 3 RGPD code + 3 INTEGRATION) en 5 commits.
+- Feature annulation booking complète, helper `adminPath()`, Tiptap JSON+text, CSP nonce/COEP/JWT revocation, sous-processeurs FR+EN, RGPD erase actions + `/api/gdpr-export` + retention-purge cron.
+
+### Sprint 24.1 — 2026-05-09
+
+- PII minimisation Telegram (ADR 0010 Option A) + helper `pii-redaction.ts` + 14 sites Telegram patchés (118 → 127 tests).
+- 6 artefacts cutover prêts : DPA-REGISTER + CHECKLIST-CUTOVER (28 cases / 9 phases) + generate-prod-secrets.sh + 4 templates DPO.
+
+### Cloudflare Phase 5 — 2026-05-09
+
+- DNS orange, SSL Full strict, HSTS 12mo preload, HTTP/3, Brotli auto, 5 Cache Rules, Bot Fight ON + AI Scrapers OFF (AEO/GEO friendly).
+- +25 pts reliability. DNSSEC reporté.
+
+### Stabilisation prod — 2026-05-09
+
+- CSP soft mode (drop nonce+strict-dynamic), sitemap pivot vers sitemap-index, fix REDIS_URL typo, purge buildkit 51 GB, purge cache Cloudflare.
+- Site 100 % UP, healthcheck `redis: ok`.
+
+### KB V4 (Sprints KB-1 → KB-20) — 2026-05-13 → 2026-05-14
+
+- 8 migrations Prisma bundle KB V4 : init schema + factory types + pgvector embeddings + source tracking + ingest requests + seo cache + audit_log + annotations/collections.
+- Skill content-gen migré megapack + master prompt v2.5 (KbDocument/KbChunk obsolètes → KnowledgeEntry réel) + WebVitalSample + 3 alertes Telegram.
+
+### Booking V1 (Sprint X.1 → X.20) — 2026-05-13
+
+- 22 colonnes étendues sur Booking + tables auxiliaires (BookingTransition, BookingOption, etc.).
+- Stripe + state-machine + parcours B devis qualifié + cadrage + devis/NDA + emails + self-service magic-link + géo OSM + legal RGPD + funnel UTM.
+- 11 sprints partiels — branch `feature/booking-v1` (non mergée main, DocuSeal X.3 + BullMQ X.12 + admin UI X.8-X.14 manquent).
+- Tests 149 → 286.
+
+### Sprint S0 + S0bis — 2026-05-14
+
+- **S0** : Audit pré-implémentation 173/200 NEAR-GO → post-S0 ~182/200 GO. Q13 Manon résolu (option 4 portrait IA disclosed).
+- **S0bis** : Harmonisation skill content-gen V4 KB ; master prompt v2.5.
+
+### Tag v1.0.3-content-gen — 2026-05-14
+
+- 7 commits + tag pushé. Audit 328 → 354/410 🟢 GO PROD CONDITIONAL.
+- Fixes : plagiarism + intent validator wirés + GenerationLog publish + Speakable FAQ + Web Vitals monitor worker + AdminCommandPalette + sitemap split news/faq + auto kill-switch cost cap cascade. 818 tests verts.
+
+### Audit méta-certification finale — 2026-05-15
+
+- 22 agents / 6 phases / 24 livrables `_AUDIT/META-CERT-2026-05-15/` (10 190 lignes).
+- Score factuel 1255.5/1600 (78.5 %) 🟠 NO-GO transitoire ; projeté post-correctif 1392.5/1600 (87 %) 🟡 GO CONDITIONAL.
+
+### Sprint correctif méta-cert (12 batches) — 2026-05-15
+
+- **Batch 1** `0f68a2b` — Clarity removal (initial) + legal.ts transferts hors-UE clarifiés + sitemap exclusions `/mes-donnees/export` + `/reserver` + lint gsc-smoke fix.
+- **Batch 2** `363cbbe` (mergé Google Indexing) — composant `AiContentDisclaimer` sur 4 routes factory + page `/transparence` + ADR 0024 AI Act classification + JSON-LD AI Act fields (creator + disambiguatingDescription + usageInfo + speakable).
+- **Batch 3** `1897050` — Mitigation SSRF (`ssrf-safe-fetch.ts` helper + 2 callers kb-ingest + rss-fetch). Allowlist IP privée RFC 1918 + loopback 127/8 + AWS metadata 169.254/16 + IPv4-mapped IPv6 + ULA fc00::/7. `redirect: "manual"` + cap profondeur 5.
+- **Batch 5** `e570928` — Sentry release tracking explicite 3 inits + `alertTier3Stagnant` câblée dans `content-tier-lifecycle-worker`.
+- **Batch 6** `519d190` — Drop 4 deps prod unused (motion, p-limit, axios, zustand) + README sync.
+- **Batch 7** `9bf1a5c` — Clarity compliance complète via CMP banner consent (`CookieConsent` + `Clarity` gated, `useAnalyticsConsent` via `useSyncExternalStore` pattern React 19) + entry sous-processeurs + legal.ts § cookies enrichi + DPA-REGISTER ligne 15 Microsoft.
+- **Batch 8** `9146546` — Idempotency booking submit (OWASP A04) — migration `Booking.idempotencyKey @unique` partiel + UUID v4 client-side au mount BookingForm + check server action.
+- **Batch 9** `54163fa` — PII at-rest AES-256-GCM (OWASP A02) — helper `pii-crypto.ts` + env var `PII_ENCRYPTION_KEY` + wrapping 6 sites Submission.create + decryptPii dans `enqueueClientEmail` + ADR 0025.
+- **Batch 10** `b8bb684` — Content-monitoring worker câble 3 alertes Telegram ready-to-call (alertQueueStuck via Redis snapshots + alertSoft404Detected via HEAD sampling + alertIndexationStagnant via KeywordTracking heuristique). Cron horaire xx:15.
+- **Batch 11** `4d9efc3` — DOWN.md 14 migrations (couverture 12.5 % → 100 %) + HEALTHCHECK Docker.worker (pgrep tsx + interval 30s + retries 3).
+- **Batch 12** (en cours) — CHANGELOG 17 sprints retard rattrapés (ce commit).
+
+### Action humaines pending (post-batches)
+
+- Will signe DPA Microsoft online (Clarity)
+- Will set `PII_ENCRYPTION_KEY` Coolify env + archive 1Password
+- Will set `BACKUP_ENCRYPTION_PASSPHRASE` 1Password + papier
+- Will exécute DR drill R22 SSH
+- Will signe 5+3 DPA (Hetzner papier, CF online, OpenAI ZDR, Anthropic, Perplexity, Unsplash, Voyage, Stripe)
+- Will complète `CRON-VPS-INVENTORY.md` via SSH `crontab -l`
+
 ---
 
 ## Sprints 0-14 (récapitulatif)
