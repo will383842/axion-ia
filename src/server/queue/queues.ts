@@ -217,6 +217,19 @@ export const contentWebVitalsMonitorQueue: Queue | null = connection
     })
   : null;
 
+/**
+ * P2-29 (audit re-run 2026-05-15 AGENT 8) — PSI weekly monitor.
+ * Cron Monday 03:00 UTC. Query PSI mobile sur 15 URLs stratégiques, persiste
+ * dans WebVitalSample (navigationType=psi-lab), alerte Telegram si
+ * Δ p75 PSI vs RUM > 50 %.
+ */
+export const contentPsiMonitorQueue: Queue | null = connection
+  ? new Queue("content-psi-monitor", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
 // ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
@@ -455,6 +468,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-daily-0230", tick: new Date().toISOString() },
       { repeat: { pattern: "30 2 * * *" }, jobId: "content-web-vitals-monitor-cron" },
+    );
+  }
+
+  // P2-29 (audit re-run 2026-05-15) — PSI monitor weekly Monday 03:00 UTC.
+  if (contentPsiMonitorQueue) {
+    await contentPsiMonitorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 3 * * 1" },
+      "content-psi-monitor-cron",
+    );
+    await contentPsiMonitorQueue.add(
+      "tick",
+      { trigger: "cron-weekly-mon-0300", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 3 * * 1" }, jobId: "content-psi-monitor-cron" },
     );
   }
 }

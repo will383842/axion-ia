@@ -117,6 +117,12 @@ export const env = createEnv({
     GOOGLE_SITE_VERIFICATION: z.string().optional(),
     BING_SITE_VERIFICATION: z.string().optional(),
 
+    // P2-29 (audit re-run 2026-05-15) — PageSpeed Insights API key (gratuit
+    // illimité avec clé, throttled 1 req/60s sans clé). Server-only car la
+    // clé peut être restrictée par referrer côté GCP Console. Si absent,
+    // le worker `content-psi-monitor-worker` skip silencieusement.
+    GOOGLE_PSI_API_KEY: z.string().optional(),
+
     // 2026-05-13 — URL Plausible "Shared Dashboard" pour embed iframe dans
     // l'admin (/fr/{prefix}/analytics). Format :
     //   https://plausible.axion-ia.com/share/axion-ia.com?auth=TOKEN&embed=true&theme=light
@@ -215,6 +221,7 @@ export const env = createEnv({
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     INDEXNOW_KEY: process.env.INDEXNOW_KEY,
     GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION,
+    GOOGLE_PSI_API_KEY: process.env.GOOGLE_PSI_API_KEY,
     BING_SITE_VERIFICATION: process.env.BING_SITE_VERIFICATION,
     PLAUSIBLE_SHARED_LINK: process.env.PLAUSIBLE_SHARED_LINK,
     COMPANY_NAME: process.env.COMPANY_NAME,

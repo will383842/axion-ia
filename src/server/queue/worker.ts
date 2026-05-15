@@ -23,6 +23,7 @@ import { startTierLifecycleWorker } from "./workers/content-tier-lifecycle-worke
 import { startFactCheckWorker } from "./workers/content-fact-check-worker";
 import { startKeywordSyncWorker } from "./workers/content-keyword-sync-worker";
 import { startContentWebVitalsMonitorWorker } from "./workers/content-web-vitals-monitor-worker";
+import { startContentPsiMonitorWorker } from "./workers/content-psi-monitor-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -55,6 +56,7 @@ async function main() {
     startFactCheckWorker(), // Sprint 12.5 V2 — post-publish Perplexity claims
     startKeywordSyncWorker(), // Sprint 12.5 V2 — cron hebdo GSC/SerpAPI
     startContentWebVitalsMonitorWorker(), // Audit final P0-3 — daily 02:30 UTC
+    startContentPsiMonitorWorker(), // P2-29 audit 2026-05-15 — weekly Mon 03:00 UTC
   ];
 
   await bootRepeatableJobs();
