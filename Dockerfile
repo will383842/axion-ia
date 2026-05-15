@@ -19,7 +19,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1 : deps — résoud les deps via pnpm cached layer
 # -----------------------------------------------------------------------------
-FROM node:20.18.0-alpine AS deps
+FROM node:24-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -44,7 +44,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
 # -----------------------------------------------------------------------------
 # Stage 2 : builder — compile Next 16 standalone
 # -----------------------------------------------------------------------------
-FROM node:20.18.0-alpine AS builder
+FROM node:24-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -83,7 +83,7 @@ RUN --mount=type=cache,id=next,target=/app/.next/cache \
 # -----------------------------------------------------------------------------
 # Stage 3 : runner — runtime slim avec sharp + .next/standalone
 # -----------------------------------------------------------------------------
-FROM node:20.18.0-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
