@@ -211,6 +211,13 @@ export default async function BlogArticle({ params }: Props) {
 
   return (
     <>
+      {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
+      <link
+        rel="alternate"
+        type="text/markdown"
+        href={`/api/markdown/blog/${slug}`}
+        title={`${view.title} (markdown)`}
+      />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>

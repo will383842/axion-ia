@@ -83,6 +83,34 @@ async function loadNewsArticle(slug: string) {
   return translation;
 }
 
+/**
+ * P1-18 (audit re-run 2026-05-15 AGENT 3) — charge les ContentCitation
+ * persistées pour un article + leur ExternalReference associée.
+ *
+ * Query séparée (pas via Article.include) car le model Article n'expose
+ * pas la relation inverse `citations` côté Prisma. ContentCitation a
+ * `articleId` nullable + relation `externalReference`. Skippe les
+ * références mortes (`isAlive=false`) signalées par le link-checker cron V2.
+ */
+async function loadArticleCitations(
+  articleId: string,
+): Promise<
+  ReadonlyArray<{ url: string; title: string; publisher?: string; publishedAt?: string }>
+> {
+  const rows = await prisma.contentCitation.findMany({
+    where: { articleId, externalReference: { isAlive: true } },
+    include: { externalReference: true },
+  });
+  return rows.map((c) => ({
+    url: c.externalReference.url,
+    title: c.externalReference.title,
+    ...(c.externalReference.publisher ? { publisher: c.externalReference.publisher } : {}),
+    ...(c.externalReference.publishedAt
+      ? { publishedAt: c.externalReference.publishedAt.toISOString() }
+      : {}),
+  }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
@@ -131,6 +159,10 @@ export default async function NewsArticlePage({ params }: Props) {
     : undefined;
   const section = article.newsCategory ?? article.category?.id ?? undefined;
 
+  // P1-18 — Article.citation[] array depuis les ContentCitation persistées.
+  // Query séparée car Article n'expose pas la relation inverse Prisma.
+  const citations = await loadArticleCitations(article.id);
+
   const newsJsonLd =
     sourceUrl && sourceName
       ? buildNewsArticleJsonLd({
@@ -148,6 +180,7 @@ export default async function NewsArticlePage({ params }: Props) {
           ...(authorIdRef ? { authorIdRef } : {}),
           ...(section ? { section } : {}),
           ...(article.publishedAtDateline ? { dateline: article.publishedAtDateline } : {}),
+          ...(citations.length > 0 ? { citations } : {}),
         })
       : null;
 
@@ -175,6 +208,14 @@ export default async function NewsArticlePage({ params }: Props) {
 
   return (
     <>
+      {/* P1-17 — alternate format markdown brut pour LLM ingestion (Cursor /
+          Claude Code / Perplexity Spaces). React 19 hoist auto vers <head>. */}
+      <link
+        rel="alternate"
+        type="text/markdown"
+        href={`/api/markdown/actualites/${slug}`}
+        title={`${t.title} (markdown)`}
+      />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>

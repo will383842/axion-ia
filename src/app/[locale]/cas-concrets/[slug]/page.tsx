@@ -105,6 +105,8 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <>
+      {/* P1-17 — alternate format markdown brut pour LLM ingestion. */}
+      <link rel="alternate" type="text/markdown" href={`/api/markdown/cas-concrets/${slug}`} />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
