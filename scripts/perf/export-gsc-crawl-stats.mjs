@@ -8,30 +8,30 @@
  *  - les types de fichiers Googlebot priorise (HTML / JS / CSS / IMG)
  *  - les codes HTTP rencontrés par Googlebot (3xx / 4xx / 5xx → fix priority)
  *
- * Données de fond : GSC Crawl Stats API (gratuit, illimité, key OAuth).
- * Endpoint : POST https://searchconsole.googleapis.com/v1/sites/{siteUrl}/searchAnalytics/query
- * Doc officielle : https://developers.google.com/webmaster-tools/search-console-api-original
+ * Auth : **OAuth refresh_token flow**, aligné avec `src/server/content-gen/seo/gsc-client.ts`
+ * (commit f2ba3ec — worker keyword-sync). Réutilise les 3 credentials OAuth
+ * Desktop client + refresh long-lived setup dans la conv parallèle GCP.
  *
- * Auth requise : OAuth service account avec rôle « Propriétaire » ou « Lecteur
- * complet » sur la propriété GSC `sc-domain:axion-ia.com`. Setup Will côté
- * Google Cloud Console — variables d'env :
- *   - GOOGLE_APPLICATION_CREDENTIALS : path vers le JSON key file
- *   - GSC_SITE_URL : "sc-domain:axion-ia.com" ou "https://axion-ia.com/"
+ * Env vars requises (GH secrets) :
+ *  - `GSC_OAUTH_CLIENT_ID`
+ *  - `GSC_OAUTH_CLIENT_SECRET`
+ *  - `GSC_OAUTH_REFRESH_TOKEN`
+ *  - `GSC_PROPERTY_URL` (ex: `sc-domain:axion-ia.com`) — GH variable
  *
- * Fail-soft : si OAuth absent / token expiré / quota épuisé → log warn et
- * skip le CSV (le workflow GH Actions marquera success pour ne pas spammer).
+ * Fail-soft : si credentials absents / token refresh expire / quota épuisé →
+ * log warn et skip CSV (workflow GH Actions marque success pour ne pas spammer).
  *
- * Usage :
- *   GOOGLE_APPLICATION_CREDENTIALS=./gsc-sa.json \
- *   GSC_SITE_URL="sc-domain:axion-ia.com" \
+ * Usage local :
+ *   set -a && source ../.secrets/api-tokens.env && set +a
  *   node scripts/perf/export-gsc-crawl-stats.mjs
+ *
+ * Doc API : https://developers.google.com/webmaster-tools/v1/searchanalytics/query
  */
 
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-const SITE_URL = process.env.GSC_SITE_URL ?? "sc-domain:axion-ia.com";
-const CREDS = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const PROPERTY_URL = process.env.GSC_PROPERTY_URL ?? "sc-domain:axion-ia.com";
 
 /**
  * Convertit Date → semaine ISO 8601 (e.g. "2026-W20").
@@ -47,57 +47,43 @@ function isoWeek(d = new Date()) {
 }
 
 /**
- * Récupère un access_token OAuth via le JWT service account.
- * Implémentation minimale sans dep googleapis (économise ~10 MB).
+ * Refresh access_token via OAuth refresh_token flow.
+ * Pattern identique à `src/server/content-gen/seo/gsc-client.ts` (cohérence
+ * stack auth GSC end-to-end).
  */
 async function getAccessToken() {
-  if (!CREDS) {
-    throw new Error("GOOGLE_APPLICATION_CREDENTIALS non défini");
+  const clientId = process.env.GSC_OAUTH_CLIENT_ID;
+  const clientSecret = process.env.GSC_OAUTH_CLIENT_SECRET;
+  const refreshToken = process.env.GSC_OAUTH_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) {
+    throw new Error(
+      "GSC OAuth credentials missing — set GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET, GSC_OAUTH_REFRESH_TOKEN",
+    );
   }
-  const raw = await fs.readFile(CREDS, "utf8");
-  const sa = JSON.parse(raw);
 
-  // JWT manuel : header + claim + signature RSA-SHA256.
-  const crypto = await import("node:crypto");
-  const header = { alg: "RS256", typ: "JWT" };
-  const iat = Math.floor(Date.now() / 1000);
-  const claim = {
-    iss: sa.client_email,
-    scope: "https://www.googleapis.com/auth/webmasters.readonly",
-    aud: "https://oauth2.googleapis.com/token",
-    iat,
-    exp: iat + 3600,
-  };
-  const b64url = (obj) =>
-    Buffer.from(JSON.stringify(obj))
-      .toString("base64")
-      .replace(/=/g, "")
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_");
-  const signedInput = `${b64url(header)}.${b64url(claim)}`;
-  const sign = crypto.createSign("RSA-SHA256");
-  sign.update(signedInput);
-  const signature = sign
-    .sign(sa.private_key, "base64")
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-  const jwt = `${signedInput}.${signature}`;
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+  });
 
-  // Échange JWT contre access token
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      assertion: jwt,
-    }).toString(),
+    body: body.toString(),
   });
+
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`OAuth token exchange failed: ${res.status} ${text}`);
+    const text = await res.text().catch(() => "");
+    throw new Error(`GSC OAuth refresh failed: ${res.status} ${text.slice(0, 200)}`);
   }
+
   const data = await res.json();
+  if (!data.access_token) {
+    throw new Error("GSC OAuth response missing access_token");
+  }
   return data.access_token;
 }
 
@@ -109,7 +95,7 @@ async function fetchTopPages(token) {
   const start = new Date(end.getTime() - 7 * 86400_000);
   const fmt = (d) => d.toISOString().slice(0, 10);
   const res = await fetch(
-    `https://searchconsole.googleapis.com/v1/sites/${encodeURIComponent(SITE_URL)}/searchAnalytics/query`,
+    `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(PROPERTY_URL)}/searchAnalytics/query`,
     {
       method: "POST",
       headers: {
@@ -150,8 +136,14 @@ function rowsToCsv(rows) {
 }
 
 async function main() {
-  if (!CREDS) {
-    console.warn("[gsc-crawl-stats] GOOGLE_APPLICATION_CREDENTIALS absent — skip (fail-soft)");
+  if (
+    !process.env.GSC_OAUTH_CLIENT_ID ||
+    !process.env.GSC_OAUTH_CLIENT_SECRET ||
+    !process.env.GSC_OAUTH_REFRESH_TOKEN
+  ) {
+    console.warn(
+      "[gsc-crawl-stats] GSC_OAUTH_* credentials absent — skip (fail-soft). Set GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET, GSC_OAUTH_REFRESH_TOKEN.",
+    );
     return;
   }
   try {
@@ -167,7 +159,7 @@ async function main() {
     console.log(`[gsc-crawl-stats] export OK → ${outFile} (${rows.length} rows)`);
   } catch (err) {
     console.error("[gsc-crawl-stats] error:", err?.message ?? err);
-    // Exit 0 pour fail-soft côté workflow (warning visible mais workflow vert).
+    // Exit 0 pour fail-soft côté workflow.
     process.exit(0);
   }
 }

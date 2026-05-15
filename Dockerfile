@@ -66,17 +66,17 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV COREPACK_INTEGRITY_KEYS=0
-# Cap Node.js heap at 8 GB for the build — calibré pour Hetzner CPX42
-# (16 GB RAM total, 8 cores, rescale 2026-05-14 depuis CPX32). Avant
-# rescale on était à 4 GB pour éviter OOM sur 8 GB shared ; depuis CPX42
-# on peut remonter sans risque. Default Node heap = ~75 % du host RAM
-# ≈ 12 GB qui laisserait peu pour BuildKit ; 8 GB est un compromis sûr.
-ENV NODE_OPTIONS=--max-old-space-size=8192
-# Worker pool Next.js SSG : 4 sur les 8 cores du CPX42 (avant rescale
-# c'était 2 sur 4 cores). Gain ~25-30 % sur SSG des 17 500 routes vs
-# config CPX32. Chaque worker ~500 MB-1 GB → 4 × ~1 GB = ~4 GB peak,
-# safe avec 16 GB host et heap cappé à 8 GB.
-ENV NEXT_PRIVATE_WORKER_THREADS=4
+# Audit 2026-05-15 incident OOM swap pendant export layers Docker.
+# Constat : heap 8 GB + 4 workers + Postgres + Redis + Coolify (~3-4 GB
+# baseline) + BuildKit overlay2 = ~15+ GB peak demand sur 16 GB total.
+# Le swap se déclenche, le build ralentit, l'export layers timeout
+# à 14 min avec exit 255 (container killed par buildkit).
+#
+# Fix : heap 8 GB → 6 GB et workers 4 → 2. Build estimé ~14 min vs 10 min
+# (+ 30 %) mais ne dépasse plus 12 GB total → pas de swap → finit
+# proprement. À ré-évaluer après rescale CPX52 (32 GB RAM) si besoin.
+ENV NODE_OPTIONS=--max-old-space-size=6144
+ENV NEXT_PRIVATE_WORKER_THREADS=2
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
 RUN pnpm prisma:generate
