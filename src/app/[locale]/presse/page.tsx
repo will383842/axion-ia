@@ -13,6 +13,7 @@ import { Illustration } from "@/components/visual/Illustration";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { PressFacts } from "@/components/sections/PressFacts";
 import { PressKit } from "@/components/sections/PressKit";
+import { PressImageBank } from "@/components/sections/PressImageBank";
 import { PressReleases } from "@/components/sections/PressReleases";
 import { MediaCoverage } from "@/components/sections/MediaCoverage";
 import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
@@ -289,6 +290,46 @@ export default async function PressePage({ params }: Props) {
           labels={{
             download: t("kitDownload"),
             comingSoon: t("kitComingSoon"),
+          }}
+        />
+      </Section>
+
+      {/* BANQUE D'IMAGES — promo galerie CC BY 4.0 (axionia-image-bank skill v1.0).
+         Lien interne sitewide vers /galerie depuis l'espace presse : boost autorité
+         topique galerie + maillage Googlebot. */}
+      <Section
+        id="banque-images"
+        tone="canvas"
+        eyebrow={t("imageBankEyebrow")}
+        title={t("imageBankTitle")}
+        titleEm={t("imageBankTitleEm")}
+        titleTail={t("imageBankTitleTail")}
+        description={t("imageBankDescription")}
+      >
+        <PressImageBank
+          labels={{
+            primaryCta: t("imageBankCta"),
+            licenseNote: t("imageBankLicenseNote"),
+            categories: [
+              {
+                id: "ia-operationnelle",
+                iconKind: "image",
+                title: t("imageBankCat1Title"),
+                description: t("imageBankCat1Description"),
+              },
+              {
+                id: "equipe",
+                iconKind: "camera",
+                title: t("imageBankCat2Title"),
+                description: t("imageBankCat2Description"),
+              },
+              {
+                id: "cas-concrets",
+                iconKind: "scanline",
+                title: t("imageBankCat3Title"),
+                description: t("imageBankCat3Description"),
+              },
+            ],
           }}
         />
       </Section>

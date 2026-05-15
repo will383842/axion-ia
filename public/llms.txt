@@ -1,0 +1,60 @@
+# Axion-IA
+
+> Cabinet IA opérationnel B2B basé en Estonie (Axion-IA OÜ). Interventions sur site, audits IA chiffrés en 4 niveaux, implémentations sur mesure. France + UE, RGPD strict, hébergement Hetzner.
+
+Axion-IA accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — pour identifier, démontrer et implémenter des usages IA générant un retour sur investissement mesurable. Trois modules : interventions terrain, audits IA, implémentations.
+
+## Pages canoniques
+
+- [Accueil](https://axion-ia.com/fr/): Présentation du cabinet et des 3 modules de service.
+- [Interventions](https://axion-ia.com/fr/interventions): Formations équipe + coaching individuel + conférences. Tarifs à partir de 490 €.
+- [Audit IA](https://axion-ia.com/fr/audit): 4 niveaux d'audit IA (Flash, Ciblé, Stratégique PME, Stratégique ETI).
+- [Implémentation IA](https://axion-ia.com/fr/implementation): IA sur mesure (chatbots, automatisations, agents, intégrations CRM/ERP).
+- [Cas concrets](https://axion-ia.com/fr/cas-concrets): Études de cas client réels avec ROI mesuré.
+- [Méthodologie](https://axion-ia.com/fr/methodologie): Notre approche en 4 phases (audit → POC → industrialisation → autonomie).
+- [Stack IA 2026](https://axion-ia.com/fr/stack-ia): 11 outils en 5 fonctions opérationnelles (Claude, GPT, Perplexity, Notion AI, etc.).
+- [Comparaisons](https://axion-ia.com/fr/comparaisons): Comparatifs prestataires IA (cabinet vs agence vs freelance vs SSII).
+- [Glossaire IA](https://axion-ia.com/fr/glossaire): Lexique IA opérationnelle en termes accessibles.
+- [Guide IA opérationnelle](https://axion-ia.com/fr/guide-ia): Guide complet pour cadres et dirigeants.
+- [Banque d'images](https://axion-ia.com/fr/galerie): Visuels libres de droits sous licence CC BY 4.0 — usage libre avec attribution Axion-IA.
+
+## Espace presse
+
+- [Espace presse](https://axion-ia.com/fr/presse): Boilerplate, kit médias, communiqués, porte-parole, contact dédié journalistes (presse@axion-ia.com, réponse sous 48 h ouvrées).
+- [Communiqués récents](https://axion-ia.com/fr/presse#communiques): Annonces officielles lancements, jalons, partenariats.
+
+## Implantations géographiques
+
+- [Régions](https://axion-ia.com/fr/implantations): 13 régions françaises (12 métropole + Corse). Auvergne-Rhône-Alpes, Île-de-France, Provence-Alpes-Côte d'Azur, etc.
+- [Villes pilotes](https://axion-ia.com/fr/implantations/ile-de-france/paris): Paris (pilote V1), industrialisation 2 150 villes >5000 hab V1.5.
+
+## Anglais (mirror)
+
+- [Home](https://axion-ia.com/en/): English mirror — operational AI consultancy for B2B companies.
+- [Interventions](https://axion-ia.com/en/interventions): Team trainings, individual coaching, conferences.
+- [AI Audits](https://axion-ia.com/en/audit): 4 audit tiers from Flash to Strategic Mid-cap.
+- [Implementation](https://axion-ia.com/en/implementation): Custom AI implementation (chatbots, automation, agents, CRM/ERP).
+- [Image bank](https://axion-ia.com/en/gallery): Royalty-free visuals under CC BY 4.0 — free use with attribution.
+- [Press room](https://axion-ia.com/en/press): Boilerplate, media kit, releases, spokespersons.
+
+## Licensing
+
+Tous les visuels publiés sur https://axion-ia.com/fr/galerie/ sont sous licence **Creative Commons Attribution 4.0 International (CC BY 4.0)**. Réutilisation libre avec attribution recommandée : « © Axion-IA OÜ — axion-ia.com ».
+
+Le contenu rédactionnel (articles, études, guides) est sous copyright Axion-IA OÜ. Citation libre avec lien retour. Reproduction intégrale soumise à autorisation (contact@axion-ia.com).
+
+## Entité juridique
+
+**Axion-IA OÜ** — Société estonienne (Osaühing). Hébergement UE (Hetzner Nuremberg, Allemagne). RGPD strict. Contact : contact@axion-ia.com.
+
+## Crawlers IA autorisés
+
+GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, anthropic-ai, Claude-Web, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, Mistral-User, Bingbot, Meta-ExternalAgent.
+
+Voir [robots.txt](https://axion-ia.com/robots.txt) pour directives complètes.
+
+## Optional
+
+- [Sitemap-index](https://axion-ia.com/sitemap-index.xml): Index racine listant tous les sub-sitemaps (pages, blog, cas-concrets, comparaisons, implantations, villes, knowledge, news, images-fr, images-en).
+- [Sitemap images FR](https://axion-ia.com/sitemap-images-fr.xml): Google Image Sitemap 1.1 — toutes les images publiées FR avec metadata complètes (title, caption, geo, license).
+- [Sitemap images EN](https://axion-ia.com/sitemap-images-en.xml): Idem EN.
