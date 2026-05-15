@@ -6,16 +6,11 @@ import {
   archivePaymentScheduleProfileAction,
   overrideBookingPaymentScheduleAction,
 } from "./admin-actions";
+import type { ScheduleFormState } from "./admin-form-state";
 
-export interface ScheduleFormState {
-  ok: boolean;
-  error?: string;
-  message?: string;
-  profileId?: string;
-  slug?: string;
-}
-
-export const SCHEDULE_FORM_INITIAL: ScheduleFormState = { ok: false };
+// `ScheduleFormState` + `SCHEDULE_FORM_INITIAL` exportés depuis
+// `admin-form-state.ts` (Next 16 "use server" interdit les exports
+// non-async function).
 
 export async function upsertProfileFormAction(
   _prev: ScheduleFormState,

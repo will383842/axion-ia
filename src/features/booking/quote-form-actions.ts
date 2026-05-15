@@ -11,16 +11,10 @@ import {
   markQuoteSignedManuallyAction,
   markQuoteDeclinedAction,
 } from "./quote-actions";
+import type { QuoteFormState } from "./quote-form-state";
 
-export interface QuoteFormState {
-  ok: boolean;
-  error?: string;
-  message?: string;
-  quoteId?: string;
-  number?: string;
-}
-
-export const QUOTE_FORM_INITIAL: QuoteFormState = { ok: false };
+// `QuoteFormState` + `QUOTE_FORM_INITIAL` exportés depuis `quote-form-state.ts`
+// (Next 16 "use server" interdit les exports non-async function).
 
 function parseBody(raw: FormDataEntryValue | null): object | undefined {
   if (typeof raw !== "string" || !raw.trim()) return undefined;

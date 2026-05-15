@@ -13,19 +13,12 @@ import {
   sendContractAndDepositRequestAction,
   cancelAndReissueContractAction,
   createContractAddendumAction,
-  type ContractActionErrorCode,
 } from "./admin-actions";
+import type { ContractFormState } from "./admin-form-state";
 
-export interface ContractFormState {
-  ok: boolean;
-  error?: ContractActionErrorCode | "invalid_amount" | "invalid_body";
-  message?: string;
-  contractDocumentId?: string;
-  submissionId?: string;
-  invoiceId?: string;
-}
-
-export const CONTRACT_FORM_INITIAL: ContractFormState = { ok: false };
+// `ContractFormState` + `CONTRACT_FORM_INITIAL` exportés depuis
+// `admin-form-state.ts` (Next 16 "use server" interdit les exports
+// non-async function).
 
 function parseTiptapJson(raw: FormDataEntryValue | null): object | undefined {
   if (typeof raw !== "string" || !raw.trim()) return undefined;

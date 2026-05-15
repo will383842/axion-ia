@@ -6,11 +6,8 @@
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import {
-  generateQuoteDraftFormAction,
-  QUOTE_FORM_INITIAL,
-  type QuoteFormState,
-} from "@/features/booking/quote-form-actions";
+import { generateQuoteDraftFormAction } from "@/features/booking/quote-form-actions";
+import { QUOTE_FORM_INITIAL, type QuoteFormState } from "@/features/booking/quote-form-state";
 
 interface Props {
   bookingId: string;

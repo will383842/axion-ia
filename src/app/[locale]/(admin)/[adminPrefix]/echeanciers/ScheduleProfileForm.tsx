@@ -2,11 +2,11 @@
 // use-client: useActionState pour upsert profile échéancier (Sprint C).
 
 import { useActionState } from "react";
+import { upsertProfileFormAction } from "@/features/payment-schedule/admin-form-actions";
 import {
-  upsertProfileFormAction,
   SCHEDULE_FORM_INITIAL,
   type ScheduleFormState,
-} from "@/features/payment-schedule/admin-form-actions";
+} from "@/features/payment-schedule/admin-form-state";
 
 function FormResult({ state }: { state: ScheduleFormState }) {
   if (state.ok) {

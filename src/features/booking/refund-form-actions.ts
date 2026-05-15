@@ -4,16 +4,11 @@
 // Pont entre `refund-actions.ts` (signature canonique) et useActionState.
 
 import { cancelBookingByAdminAction } from "./refund-actions";
+import type { CancelBookingFormState } from "./refund-form-state";
 
-export interface CancelBookingFormState {
-  ok: boolean;
-  error?: string;
-  message?: string;
-  refundAmountCents?: number;
-  stripeRefundId?: string | null;
-}
-
-export const CANCEL_BOOKING_FORM_INITIAL: CancelBookingFormState = { ok: false };
+// `CancelBookingFormState` + `CANCEL_BOOKING_FORM_INITIAL` exportés depuis
+// `refund-form-state.ts` (Next 16 "use server" interdit les exports
+// non-async function).
 
 export async function cancelBookingFormAction(
   _prev: CancelBookingFormState,

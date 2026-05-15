@@ -8,10 +8,8 @@
 
 import { useActionState, useState } from "react";
 import { DndContext, useDraggable, useDroppable, type DragEndEvent } from "@dnd-kit/core";
-import {
-  rescheduleBookingFormAction,
-  RESCHEDULE_FORM_INITIAL,
-} from "@/features/booking/reschedule-form-actions";
+import { rescheduleBookingFormAction } from "@/features/booking/reschedule-form-actions";
+import { RESCHEDULE_FORM_INITIAL } from "@/features/booking/reschedule-form-state";
 
 interface BookingItem {
   id: string;

@@ -4,10 +4,8 @@
 // Bouton inline dans le tableau /echeanciers pour soft-delete un profile.
 
 import { useActionState } from "react";
-import {
-  archiveProfileFormAction,
-  SCHEDULE_FORM_INITIAL,
-} from "@/features/payment-schedule/admin-form-actions";
+import { archiveProfileFormAction } from "@/features/payment-schedule/admin-form-actions";
+import { SCHEDULE_FORM_INITIAL } from "@/features/payment-schedule/admin-form-state";
 
 export function ArchiveProfileButton({ profileId }: { profileId: string }) {
   const [state, action, pending] = useActionState(archiveProfileFormAction, SCHEDULE_FORM_INITIAL);

@@ -15,9 +15,8 @@ import {
   sendQuoteFormAction,
   markQuoteSignedManuallyFormAction,
   markQuoteDeclinedFormAction,
-  QUOTE_FORM_INITIAL,
-  type QuoteFormState,
 } from "@/features/booking/quote-form-actions";
+import { QUOTE_FORM_INITIAL, type QuoteFormState } from "@/features/booking/quote-form-state";
 import type { QuoteStatus } from "../../../../../../../prisma/generated/client";
 
 interface Props {

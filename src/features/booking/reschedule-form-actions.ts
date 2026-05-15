@@ -2,15 +2,11 @@
 // Form Action wrapper — reschedule (Sprint E).
 
 import { rescheduleBookingByAdminAction } from "./reschedule-actions";
+import type { RescheduleFormState } from "./reschedule-form-state";
 
-export interface RescheduleFormState {
-  ok: boolean;
-  error?: string;
-  message?: string;
-  newBookingDate?: string;
-}
-
-export const RESCHEDULE_FORM_INITIAL: RescheduleFormState = { ok: false };
+// `RescheduleFormState` + `RESCHEDULE_FORM_INITIAL` exportés depuis
+// `reschedule-form-state.ts` (Next 16 "use server" interdit les exports
+// non-async function).
 
 export async function rescheduleBookingFormAction(
   _prev: RescheduleFormState,
