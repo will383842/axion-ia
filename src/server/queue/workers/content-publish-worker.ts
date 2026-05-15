@@ -24,9 +24,9 @@
  */
 
 import { Queue, Worker, type Job } from "bullmq";
-import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generators/blog-from-rss";
+import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 
@@ -274,23 +274,21 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     });
   }
 
-  // Revalidate Next 16 ISR
-  try {
-    revalidatePath(`/fr/blog/${slugCandidate}`);
-    if (isNews) revalidatePath(`/fr/actualites/${slugCandidate}`);
-    revalidatePath("/fr/blog");
-    revalidatePath("/sitemap.xml");
-    await logStep(cgJob.id, "revalidate_path", "Next 16 ISR paths revalidated", {
-      paths: [
-        `/fr/blog/${slugCandidate}`,
-        ...(isNews ? [`/fr/actualites/${slugCandidate}`] : []),
-        "/fr/blog",
-        "/sitemap.xml",
-      ],
-    });
-  } catch {
-    // revalidatePath nécessite request context — ici worker bg → no-op silencieux
-  }
+  // P1-16 fix audit opérationnel 2026-05-14 — revalidate via API interne au
+  // lieu de `revalidatePath()` direct (qui no-op silencieusement en worker bg
+  // sans request context). Le helper revalidateContent POST sur
+  // /api/internal/revalidate qui exécute le revalidate avec contexte valide.
+  const paths = [
+    `/fr/blog/${slugCandidate}`,
+    ...(isNews ? [`/fr/actualites/${slugCandidate}`, "/fr/actualites"] : []),
+    "/fr/blog",
+    "/sitemap.xml",
+    ...(isNews ? ["/sitemap-news.xml"] : []),
+  ];
+  await revalidateContent({ paths });
+  await logStep(cgJob.id, "revalidate_path", "Revalidate paths via internal API", {
+    paths,
+  });
 
   await logStep(cgJob.id, "publish", "Publish pipeline complete", {
     article_id: article.id,

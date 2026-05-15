@@ -55,8 +55,8 @@
 | R25                                     | Migration upgrade Next 16 → 17                 | Quand stable (ADR dédié futur)                                     |
 | [R26](./R26-retention-tier3-cleanup.md) | Cleanup retention tier-3 (90j+)                | Quotidien cron 03:00                                               |
 | [R27](./R27-postgres-vacuum.md)         | Vacuum analyze Postgres                        | Mensuel                                                            |
-| R28                                     | Renouvellement DPA providers IA                | Annuel (action contractuelle Will)                                 |
-| R29                                     | Audit RGPD sous-processeurs                    | Annuel (cf. `legal.ts` + ADR 0010)                                 |
+| [R28](./R28-dpa-renewal.md)             | Renouvellement DPA providers IA + infra        | Annuel T1 (cycles 12-24 mois selon provider)                       |
+| [R29](./R29-rgpd-subprocessor-audit.md) | Audit RGPD sous-processeurs                    | Annuel T2 (cohérence legal.ts ↔ actif ↔ DPA signé)                 |
 | [R30](./R30-lighthouse-weekly.md)       | Lighthouse CI prod hebdo                       | Hebdo (lundi 04:00)                                                |
 | [R31](./R31-disaster-region-down.md)    | Disaster total région Hetzner (Nuremberg down) | Sur incident très rare — bascule Falkenstein/Helsinki via snapshot |
 

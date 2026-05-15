@@ -23,6 +23,7 @@ import {
   computeAntiBurstSchedule,
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
+import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import type {
   CompanySize,
   ContentType,
@@ -155,6 +156,31 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
         where: { id: campaign.id },
         data: { status: "completed", completedAt: new Date() },
       });
+      // P1-17 fix audit opérationnel — alerte Telegram "Campagne terminée".
+      try {
+        const stats = await prisma.contentGenJob.aggregate({
+          where: { campaignId: campaign.id },
+          _sum: { costUsd: true },
+          _avg: { qualityScore: true },
+        });
+        const published = await prisma.contentGenJob.count({
+          where: { campaignId: campaign.id, status: "published" },
+        });
+        const failed = await prisma.contentGenJob.count({
+          where: { campaignId: campaign.id, status: "failed" },
+        });
+        void alertCampaignDone(
+          campaign.name,
+          campaign.id,
+          campaign.totalTargetCount,
+          Number(stats._sum.costUsd ?? 0),
+          Number(stats._avg.qualityScore ?? 0),
+          published,
+          failed,
+        ).catch(() => undefined);
+      } catch {
+        // best-effort
+      }
       continue;
     }
     const toEnqueue = Math.min(perCampaignTick, remaining);

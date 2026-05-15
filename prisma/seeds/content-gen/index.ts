@@ -24,6 +24,7 @@ import { seedAudienceMixProfiles } from "./audience-mix-profiles";
 import { seedAuthorProfile } from "./author-profile";
 import { seedBannedPhrases } from "./banned-phrases";
 import { seedContentTemplates } from "./content-templates";
+import { seedContentGenConfig } from "./content-gen-config";
 
 const prisma = new PrismaClient();
 
@@ -49,6 +50,9 @@ async function main() {
 
   const templatesCount = await seedContentTemplates(prisma);
   console.log(`  ✓ ContentTemplate : ${templatesCount} rows upserted`);
+
+  const configCount = await seedContentGenConfig(prisma);
+  console.log(`  ✓ ContentGenConfig : ${configCount} keys upserted`);
 
   console.log("[content-gen seed] done.");
 }

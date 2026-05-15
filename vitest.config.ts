@@ -3,6 +3,15 @@ import path from "node:path";
 
 export default defineConfig({
   test: {
+    // Audit A7 follow-up (2026-05-15) — pool=forks workaround l'incompat
+    // Vitest 2.1.x ↔ Node 24+ qui casse le SSR transform par threads
+    // (`ReferenceError: __vite_ssr_exportName__ is not defined`). Bug
+    // upstream connu : https://github.com/vitest-dev/vitest/issues/6661
+    // À retirer après upgrade Vitest 3.x (qui supporte Node 24 nativement
+    // sans workaround). Forks reste ~10-15 % plus lent que threads mais
+    // c'est acceptable pour débloquer l'audit A1 NODE_VERSION=24 + A7 CI
+    // gate-d. Tests : 818 verts confirmés post-workaround.
+    pool: "forks",
     environment: "jsdom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],

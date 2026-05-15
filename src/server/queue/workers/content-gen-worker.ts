@@ -27,6 +27,11 @@ import { checkPlagiarism } from "@/server/content-gen/quality/plagiarism";
 import { validateIntentAlignment } from "@/server/content-gen/quality/search-intent-validator";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
+import {
+  alertBatchFail,
+  alertKbNotReady,
+  alertNewReview,
+} from "@/server/content-gen/shared/content-gen-alerts";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 
 interface KillSwitchState {
@@ -164,6 +169,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         where: { id: contentGenJobId },
         data: { status: "failed", errorMessage: err.message },
       });
+      // P1-17 fix audit opérationnel : alerte Telegram KB pas prête.
+      // Champs minChunks/canonicalRatio approximatifs (audit/log précis dans
+      // generationLog). Throttle implicite côté Telegram (rate-limit BullMQ).
+      void alertKbNotReady(0, 50, 0).catch(() => undefined);
       return;
     }
     throw err;
@@ -444,7 +453,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
-    // 7. TODO Sprint 2 Day 7 — Telegram alert "Nouveau contenu en review"
+    // P1-17 fix audit opérationnel — Telegram alert "Nouveau contenu en review".
+    // Seuil 5 (anti-spam) : on n'alerte que si pendingCount == multiple de 5.
+    if (nextStatus === "needs_review") {
+      const pendingCount = await prisma.reviewQueue.count({ where: { status: "pending" } });
+      if (pendingCount > 0 && pendingCount % 5 === 0) {
+        void alertNewReview(contentType, pendingCount).catch(() => undefined);
+      }
+    }
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : String(err);
     await logStepError(contentGenJobId, "error", errMsg, {
@@ -458,6 +474,23 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         completedAt: new Date(),
       },
     });
+    // P1-17 — alerte batch fail : si 5 jobs failed consécutifs sur même type
+    // (5 dernières heures), trigger Telegram pour pause manuelle Will.
+    try {
+      const fiveHoursAgo = new Date(Date.now() - 5 * 60 * 60 * 1000);
+      const recentFails = await prisma.contentGenJob.count({
+        where: {
+          contentType,
+          status: "failed",
+          completedAt: { gte: fiveHoursAgo },
+        },
+      });
+      if (recentFails >= 5 && recentFails % 5 === 0) {
+        void alertBatchFail(contentType, dbJob.campaignId, recentFails).catch(() => undefined);
+      }
+    } catch {
+      // best-effort
+    }
     throw err;
   }
 }

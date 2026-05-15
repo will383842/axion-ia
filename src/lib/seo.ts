@@ -413,6 +413,18 @@ interface PersonJsonLdInput {
 // `Organization` and gets cited less often in answer-mode SERPs.
 //
 // Used at /a-propos page-level + /blog/auteur/[slug] for blog post bylines.
+//
+// Sprint S6.3 P1-3 (2026-05-15) — anti-fuite Manon : la doctrine v2.1 impose
+// que les personas IA n'aient AUCUN réseau social. Cette factory utilise le
+// LinkedIn de Will en default — si un appelant lui passe `slug:"manon"` (ou
+// tout autre persona AuthorProfile.isPersona:true), il leak le LinkedIn de
+// Will sur la persona IA. On throw plutôt que de leak silencieusement : les
+// personas DOIVENT passer par `buildPersonManonJsonLd` (factory dédiée DB-
+// driven). Garde-fou défense-en-profondeur : la page `/blog/auteur/manon`
+// 404 déjà côté `getAllBlogAuthorSlugs()`, mais cette garde anticipe une
+// promotion Manon vers une page auteure DB-managée (Sprint 14+).
+const PERSONA_SLUGS = new Set(["manon"]);
+
 export function buildPersonJsonLd({
   locale,
   slug = "will",
@@ -421,6 +433,12 @@ export function buildPersonJsonLd({
   image,
   sameAs = ["https://www.linkedin.com/in/will-axion-ia"],
 }: PersonJsonLdInput) {
+  if (PERSONA_SLUGS.has(slug)) {
+    throw new Error(
+      `buildPersonJsonLd refuse le slug persona '${slug}' (doctrine v2.1 — zéro réseau social). ` +
+        `Utiliser buildPersonManonJsonLd depuis @/lib/seo-content-gen-factories avec AuthorProfile DB.`,
+    );
+  }
   const isFr = locale === "fr";
   const resolvedJobTitle =
     jobTitle ?? (isFr ? "Fondateur · lead consultant IA" : "Founder · lead AI consultant");

@@ -83,7 +83,7 @@ async function fetchSource(source: RssSource): Promise<ReadonlyArray<ParsedRssIt
   const timeout = setTimeout(() => controller.abort(), 30_000);
   try {
     const res = await fetch(source.url, {
-      headers: { "User-Agent": "AxionIA-content-gen/1.0 (+https://axion-ia.com)" },
+      headers: { "User-Agent": "Axion-IA-content-gen/1.0 (+https://axion-ia.com)" },
       signal: controller.signal,
     });
     if (!res.ok) {

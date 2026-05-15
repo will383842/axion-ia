@@ -43,9 +43,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+// Sprint S6.3 P1-3 (2026-05-15) — denylist personas IA. Manon (et tout futur
+// persona AuthorProfile.isPersona:true) doit utiliser sa page dédiée
+// `/equipe/<slug>` qui consomme `buildPersonManonJsonLd` DB-driven, et JAMAIS
+// `/blog/auteur/<slug>` qui leak le sameAs LinkedIn de Will via le default
+// de `buildPersonJsonLd`. Défense-en-profondeur : `buildPersonJsonLd` throw
+// déjà sur ces slugs, mais on 404 ici pour ne pas dépendre d'un throw.
+const PERSONA_AUTHOR_SLUGS = new Set(["manon"]);
+
 export default async function BlogAuthorPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
+  if (PERSONA_AUTHOR_SLUGS.has(slug)) notFound();
   const author = getBlogAuthorLabel(slug);
   if (!author) notFound();
   setRequestLocale(locale);

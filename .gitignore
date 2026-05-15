@@ -8,6 +8,10 @@
 !.yarn/releases
 !.yarn/versions
 
+# Sprint S6.3 P0-1 (2026-05-15) — bloque création accidentelle d'un
+# package-lock.json (npm) qui doublonnerait pnpm-lock.yaml.
+package-lock.json
+
 # testing
 /coverage
 /playwright-report

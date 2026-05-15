@@ -10,6 +10,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
 const VALID_SEVERITY = new Set(["warn", "block"]);
@@ -42,21 +43,29 @@ export async function createBannedPhrase(input: {
   reason?: string;
   severity: string;
 }): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   const pattern = input.pattern.trim();
   if (pattern.length < 2 || pattern.length > 200) throw new Error("pattern_length_invalid");
   if (!VALID_SEVERITY.has(input.severity)) throw new Error("severity_invalid");
-  await prisma.bannedPhrase.create({
+  const row = await prisma.bannedPhrase.create({
     data: {
       pattern,
       reason: input.reason?.trim() || null,
       severity: input.severity,
       isActive: true,
     },
+    select: { id: true },
   });
   revalidatePath(
     `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
   );
+  await logActivity({
+    session,
+    action: "content-gen.banned-phrase.create",
+    targetType: "BannedPhrase",
+    targetId: row.id,
+    changes: { pattern, severity: input.severity },
+  });
 }
 
 export async function toggleBannedPhrase(id: string, isActive: boolean): Promise<void> {
@@ -76,4 +85,79 @@ export async function deleteBannedPhrase(id: string): Promise<void> {
   revalidatePath(
     `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
   );
+}
+
+/**
+ * Scan rétroactif d'Article publiés contenant une phrase interdite (P2-E fix
+ * audit opérationnel 2026-05-15).
+ *
+ * Quand Will ajoute une phrase au banned-list, les Articles déjà publiés
+ * passent sous le radar (doctrine-check ne tourne qu'à la génération). Cette
+ * action retourne la liste des articles potentiellement contaminés pour
+ * permettre un retraitement manuel (edit / demote / archive).
+ *
+ * Limite 200 résultats. Match case-insensitive sur ArticleTranslation.body
+ * + .title + .metaTitle + .metaDescription. Locale FR uniquement.
+ */
+export interface PhraseScanHit {
+  readonly articleId: string;
+  readonly slug: string;
+  readonly title: string;
+  readonly publishedAt: Date | null;
+  readonly indexationTier: string;
+  readonly matchedIn: ReadonlyArray<"title" | "body" | "metaTitle" | "metaDescription">;
+}
+
+export async function scanArticlesForPhrase(phrase: string): Promise<{
+  readonly phrase: string;
+  readonly hits: ReadonlyArray<PhraseScanHit>;
+  readonly capped: boolean;
+}> {
+  await requireAdmin();
+  const needle = phrase.trim();
+  if (needle.length < 2 || needle.length > 200) throw new Error("phrase_length_invalid");
+
+  const LIMIT = 200;
+  const rows = await prisma.articleTranslation.findMany({
+    where: {
+      locale: "fr",
+      article: { status: "published" },
+      OR: [
+        { title: { contains: needle, mode: "insensitive" } },
+        { body: { contains: needle, mode: "insensitive" } },
+        { metaTitle: { contains: needle, mode: "insensitive" } },
+        { metaDescription: { contains: needle, mode: "insensitive" } },
+      ],
+    },
+    include: {
+      article: {
+        select: { id: true, publishedAt: true, indexationTier: true },
+      },
+    },
+    orderBy: { article: { publishedAt: "desc" } },
+    take: LIMIT + 1,
+  });
+
+  const hits: PhraseScanHit[] = rows.slice(0, LIMIT).map((t) => {
+    const matchedIn: PhraseScanHit["matchedIn"][number][] = [];
+    const lc = needle.toLowerCase();
+    if (t.title.toLowerCase().includes(lc)) matchedIn.push("title");
+    if (t.body.toLowerCase().includes(lc)) matchedIn.push("body");
+    if (t.metaTitle?.toLowerCase().includes(lc)) matchedIn.push("metaTitle");
+    if (t.metaDescription?.toLowerCase().includes(lc)) matchedIn.push("metaDescription");
+    return {
+      articleId: t.article.id,
+      slug: t.slug,
+      title: t.title,
+      publishedAt: t.article.publishedAt,
+      indexationTier: t.article.indexationTier,
+      matchedIn,
+    };
+  });
+
+  return {
+    phrase: needle,
+    hits,
+    capped: rows.length > LIMIT,
+  };
 }

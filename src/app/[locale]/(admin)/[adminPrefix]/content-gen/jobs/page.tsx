@@ -5,6 +5,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
+import { listTemplates } from "@/server/actions/content-gen/templates";
 import type {
   ContentGenJobStatus,
   ContentType,
@@ -52,13 +53,18 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const page = sp.page ? parseInt(sp.page, 10) : 1;
-  const result = await listJobs({
-    ...(sp.status ? { status: sp.status as ContentGenJobStatus } : {}),
-    ...(sp.contentType ? { contentType: sp.contentType as ContentType } : {}),
-    ...(sp.anchorVilleSlug ? { anchorVilleSlug: sp.anchorVilleSlug } : {}),
-    ...(sp.search ? { search: sp.search } : {}),
-    page,
-  });
+  const [result, templates] = await Promise.all([
+    listJobs({
+      ...(sp.status ? { status: sp.status as ContentGenJobStatus } : {}),
+      ...(sp.contentType ? { contentType: sp.contentType as ContentType } : {}),
+      ...(sp.templateId ? { templateId: sp.templateId } : {}),
+      ...(sp.anchorVilleSlug ? { anchorVilleSlug: sp.anchorVilleSlug } : {}),
+      ...(sp.search ? { search: sp.search } : {}),
+      page,
+    }),
+    // P2-C fix audit 2026-05-15 — expose select templateId dans filtres /jobs.
+    listTemplates({ isActive: true }),
+  ]);
 
   const base = `/fr/${adminPrefix}/content-gen/jobs`;
 
@@ -117,6 +123,24 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
               {TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="admin-field">
+            <label htmlFor="templateId" className="admin-label">
+              Template
+            </label>
+            <select
+              id="templateId"
+              name="templateId"
+              defaultValue={sp.templateId ?? ""}
+              className="admin-input"
+            >
+              <option value="">Tous</option>
+              {templates.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name} (v{t.version})
                 </option>
               ))}
             </select>

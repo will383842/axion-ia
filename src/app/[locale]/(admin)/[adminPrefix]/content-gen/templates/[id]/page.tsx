@@ -5,8 +5,14 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { TemplateForm } from "@/components/admin/content-gen/TemplateForm";
+import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
+import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import { getTemplate, upsertTemplate } from "@/server/actions/content-gen/templates";
-import type { ContentType, ExpansionMode } from "../../../../../../../../prisma/generated/client";
+import type {
+  ContentType,
+  ExpansionMode,
+  SearchIntent,
+} from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 
@@ -56,6 +62,20 @@ export default async function EditTemplatePage({ params }: PageProps) {
     });
   }
 
+  // P2-F fix audit 2026-05-15 — bouton "Tester ce template" (§ 12.1 master prompt).
+  // Enqueue 1 job de génération qui réutilise ce template (idempotency 60s slot).
+  async function testTemplate(formData: FormData) {
+    "use server";
+    const intent = (formData.get("intent") as SearchIntent | null) ?? "informational";
+    const ville = formData.get("ville") ? String(formData.get("ville")).trim() : "";
+    await enqueueDirectGen({
+      contentType: template!.contentType,
+      targetSearchIntent: intent,
+      templateId: id,
+      ...(ville ? { anchorVilleSlug: ville } : {}),
+    });
+  }
+
   return (
     <section>
       <div className="admin-dashboard-head">
@@ -68,6 +88,54 @@ export default async function EditTemplatePage({ params }: PageProps) {
           </p>
         </div>
       </div>
+
+      <div className="admin-card" style={{ marginBottom: "1rem" }}>
+        <h2 className="admin-h2">Tester avec ce template</h2>
+        <p className="admin-meta">
+          Lance 1 job de génération qui réutilise ce template. Anti-doublon 60 s.
+        </p>
+        <form action={testTemplate} className="admin-filters-grid">
+          <div className="admin-field">
+            <label htmlFor="test-intent" className="admin-label">
+              Intention
+            </label>
+            <select
+              id="test-intent"
+              name="intent"
+              defaultValue="informational"
+              className="admin-input"
+            >
+              <option value="informational">informational</option>
+              <option value="commercial_investigation">commercial_investigation</option>
+              <option value="transactional">transactional</option>
+              <option value="navigational">navigational</option>
+              <option value="local">local</option>
+            </select>
+          </div>
+          <div className="admin-field">
+            <label htmlFor="test-ville" className="admin-label">
+              Ville (slug, optionnel)
+            </label>
+            <input
+              id="test-ville"
+              name="ville"
+              type="text"
+              placeholder="ex: lyon"
+              className="admin-input"
+            />
+          </div>
+          <div className="admin-filters-actions">
+            <SubmitButton
+              variant="primary"
+              pendingLabel="Enqueue…"
+              ariaLabel="Lancer un test de ce template"
+            >
+              Tester avec ce template
+            </SubmitButton>
+          </div>
+        </form>
+      </div>
+
       <TemplateForm initial={template} action={save} />
     </section>
   );

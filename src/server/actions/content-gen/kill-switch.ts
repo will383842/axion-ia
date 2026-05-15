@@ -13,6 +13,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 
@@ -42,6 +43,13 @@ export async function activateKillSwitch(reason: string): Promise<void> {
   );
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`);
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/kill-switch`);
+  await logActivity({
+    session,
+    action: "content-gen.kill-switch.activate",
+    targetType: "ContentGenConfig",
+    targetId: KEY,
+    changes: { reason: reason.slice(0, 280) },
+  });
 }
 
 export async function deactivateKillSwitch(): Promise<void> {
@@ -54,4 +62,10 @@ export async function deactivateKillSwitch(): Promise<void> {
   );
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`);
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/kill-switch`);
+  await logActivity({
+    session,
+    action: "content-gen.kill-switch.deactivate",
+    targetType: "ContentGenConfig",
+    targetId: KEY,
+  });
 }

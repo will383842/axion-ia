@@ -43,11 +43,7 @@ export async function listRegionGeoStats(): Promise<ReadonlyArray<RegionGeoStat>
       name: r.nameFr,
       publicationPhase: r.publicationPhase,
       publishedJobs: stats.published ?? 0,
-      runningJobs:
-        (stats.running ?? 0) +
-        (stats.queued ?? 0) +
-        (stats.generating_text ?? 0) +
-        (stats.generating_image ?? 0),
+      runningJobs: (stats.running ?? 0) + (stats.queued ?? 0) + (stats.quality_improving ?? 0),
       failedJobs: stats.failed ?? 0,
       pendingReviewJobs: stats.needs_review ?? 0,
     };
@@ -171,7 +167,7 @@ export async function getGlobalGeoStats(): Promise<GlobalGeoStats> {
     prisma.contentGenJob.count({ where: { status: "published" } }),
     prisma.contentGenJob.count({
       where: {
-        status: { in: ["running", "queued", "generating_text", "generating_image"] },
+        status: { in: ["running", "queued", "quality_improving"] },
       },
     }),
     prisma.contentGenJob.count({ where: { status: "failed" } }),

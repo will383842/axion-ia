@@ -15,6 +15,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { IndexationTier, PublishStatus } from "../../../../prisma/generated/client";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
@@ -123,7 +124,7 @@ export interface UpdateArticleInput {
 }
 
 export async function updateArticle(input: UpdateArticleInput): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   if (input.title.length < 3 || input.title.length > 255) throw new Error("title_length");
   if (input.body.length < 50) throw new Error("body_too_short");
   if (input.metaTitle && input.metaTitle.length > 70) throw new Error("meta_title_length");
@@ -173,6 +174,17 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
   if (article.status === "published" && article.indexationTier === "tier_1_indexable") {
     await pingIndexNow(newSlug, article.isNews);
   }
+  await logActivity({
+    session,
+    action: "content-gen.article.update",
+    targetType: "Article",
+    targetId: input.articleId,
+    changes: {
+      titleChanged: input.title !== t.title,
+      slugChanged: newSlug !== t.slug,
+      bodyLen: cleanBody.length,
+    },
+  });
 }
 
 // ============================================================
@@ -180,7 +192,7 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
 // ============================================================
 
 export async function demoteArticle(articleId: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -208,6 +220,13 @@ export async function demoteArticle(articleId: string): Promise<void> {
     await pingIndexNow(t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
+  await logActivity({
+    session,
+    action: "content-gen.article.demote",
+    targetType: "Article",
+    targetId: articleId,
+    changes: { transition: "tier_1→tier_2" },
+  });
 }
 
 // ============================================================
@@ -215,7 +234,7 @@ export async function demoteArticle(articleId: string): Promise<void> {
 // ============================================================
 
 export async function archiveArticle(articleId: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -239,6 +258,13 @@ export async function archiveArticle(articleId: string): Promise<void> {
     await pingIndexNow(t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
+  await logActivity({
+    session,
+    action: "content-gen.article.archive",
+    targetType: "Article",
+    targetId: articleId,
+    changes: { transition: "published→archived+tier_3" },
+  });
 }
 
 // ============================================================
@@ -246,7 +272,7 @@ export async function archiveArticle(articleId: string): Promise<void> {
 // ============================================================
 
 export async function unarchiveArticle(articleId: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -269,6 +295,13 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
     revalidatePath("/sitemap.xml");
   }
   revalidatePath(`${adminBase()}/publications`);
+  await logActivity({
+    session,
+    action: "content-gen.article.unarchive",
+    targetType: "Article",
+    targetId: articleId,
+    changes: { transition: "archived→published+tier_2" },
+  });
 }
 
 // ============================================================
@@ -276,7 +309,7 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
 // ============================================================
 
 export async function deleteArticle(articleId: string, confirmation: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   // Anti-clic accidentel : impose une chaîne de confirmation côté UI.
   if (confirmation !== "DELETE") throw new Error("confirmation_required");
 
@@ -300,6 +333,13 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
     await pingIndexNow(t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
+  await logActivity({
+    session,
+    action: "content-gen.article.delete",
+    targetType: "Article",
+    targetId: articleId,
+    changes: { destructive: true, isNews: article.isNews },
+  });
 }
 
 // ============================================================
@@ -315,7 +355,7 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
  * inchangé (sert d'audit trail) mais `status='draft'` + `tier_3`.
  */
 export async function rollbackArticle(articleId: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -340,4 +380,11 @@ export async function rollbackArticle(articleId: string): Promise<void> {
     await pingIndexNow(t.slug, article.isNews);
   }
   revalidatePath(`${adminBase()}/publications`);
+  await logActivity({
+    session,
+    action: "content-gen.article.rollback",
+    targetType: "Article",
+    targetId: articleId,
+    changes: { transition: "published→draft+tier_3" },
+  });
 }

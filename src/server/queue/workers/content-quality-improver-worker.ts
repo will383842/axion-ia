@@ -14,9 +14,54 @@
 
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
-import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import {
+  readContentGenConfig,
+  writeContentGenConfig,
+} from "@/server/actions/content-gen/_settings";
 
 const QUEUE_NAME = "content-quality-improver";
+
+interface QualityLoopMonthSpent {
+  readonly usd: number;
+  readonly month: string; // "YYYY-MM"
+}
+
+/** Clé ContentGenConfig pour tracker les coûts mensuels du quality_loop. */
+const QUALITY_LOOP_SPENT_KEY = "quality_loop_month_spent";
+
+function currentMonthKey(): string {
+  const now = new Date();
+  return `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+/**
+ * Audit 2026-05-15 P1-13 : enforcement monthlyBudgetCapUsd quality_loop.
+ *
+ * Lit les coûts mensuels accumulés du quality_loop dans `ContentGenConfig`.
+ * Si reset mensuel détecté, remet à 0. Retourne le total USD du mois courant.
+ *
+ * V1 : value reste à 0 (pas de LLM call dans quality-improver V1, juste
+ * increment counter). V2 incrémente cette clé à chaque re-prompt LLM.
+ * Le check actuel sert de garde-fou défensif pour V2 sans casser V1.
+ */
+async function getQualityLoopMonthSpent(): Promise<number> {
+  const month = currentMonthKey();
+  const stored = await readContentGenConfig<QualityLoopMonthSpent>(QUALITY_LOOP_SPENT_KEY, {
+    usd: 0,
+    month,
+  });
+  // Reset mensuel automatique si on change de mois
+  if (stored.month !== month) {
+    await writeContentGenConfig(
+      QUALITY_LOOP_SPENT_KEY,
+      { usd: 0, month },
+      "system",
+      "Reset mensuel automatique quality_loop spent",
+    );
+    return 0;
+  }
+  return stored.usd;
+}
 
 export interface QualityImproveJobPayload {
   readonly contentGenJobId: string;
@@ -55,6 +100,25 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
       data: { status: "needs_review" },
+    });
+    return;
+  }
+
+  // Audit 2026-05-15 P1-13 : enforcement monthlyBudgetCapUsd.
+  // Si le cap mensuel est atteint, bascule needs_review au lieu de re-tenter.
+  const monthSpentUsd = await getQualityLoopMonthSpent();
+  if (monthSpentUsd >= settings.monthlyBudgetCapUsd) {
+    await prisma.contentGenJob.update({
+      where: { id: contentGenJobId },
+      data: { status: "needs_review" },
+    });
+    await prisma.generationLog.create({
+      data: {
+        jobId: contentGenJobId,
+        level: "warn",
+        step: "quality_loop_budget_cap_reached",
+        message: `Quality loop budget cap atteint (${monthSpentUsd.toFixed(2)}/${settings.monthlyBudgetCapUsd} USD ce mois). Manual review requise.`,
+      },
     });
     return;
   }

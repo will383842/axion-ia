@@ -206,6 +206,23 @@ export async function assertCostCapAvailable(
       return;
     }
     const spent = Number(config.currentMonthSpentUsd);
+    // P1-17 fix audit opérationnel 2026-05-14 — warning à 80% pour anticiper
+    // le hit 100%. Throttle : on n'alerte qu'au passage de seuil (spent
+    // pre-call < 80%, post-call >= 80%) pour éviter spam Telegram.
+    const threshold80 = cap * 0.8;
+    if (spent < threshold80 && spent + estimatedCostUsd >= threshold80) {
+      void (async () => {
+        try {
+          const { alertCostCap80 } = await import("@/server/content-gen/shared/content-gen-alerts");
+          const queuedJobs = await prisma.contentGenJob.count({
+            where: { status: "queued" },
+          });
+          await alertCostCap80(provider, spent + estimatedCostUsd, cap, queuedJobs);
+        } catch {
+          // best-effort
+        }
+      })();
+    }
     if (spent + estimatedCostUsd > cap) {
       // Audit final P1-9 fix — auto-trigger cascade : disable provider +
       // Telegram + éventuel kill-switch global si fallback chain épuisée.

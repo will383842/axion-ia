@@ -43,17 +43,30 @@ CREATE TYPE "WebVitalMetric" AS ENUM ('LCP', 'INP', 'CLS', 'FCP', 'TTFB', 'TBT')
 -- CreateEnum
 CREATE TYPE "WebVitalRating" AS ENUM ('good', 'needs_improvement', 'poor');
 
--- CreateEnum
-CREATE TYPE "KeywordTrackingSource" AS ENUM ('gsc', 'serpapi', 'manual');
+-- Audit A7 patch (2026-05-15) : `CREATE TYPE "KeywordTrackingSource"` retiré.
+-- L'enum est déjà créé par la migration plus précoce
+-- `20260514100000_add_keyword_tracking/migration.sql:5`. Le diff Prisma a
+-- regénéré l'enum ici car le shadow DB de génération n'avait pas appliqué
+-- `100000` au moment de `prisma migrate diff`. Sans ce retrait,
+-- `prisma migrate deploy` failait SQLSTATE 42710 ("type already exists").
+-- Référence : `_AUDIT/CONTENT-GEN-AUDIT-A7-MIGRATION-2026-05-15.md` § 9 P0-1.
 
 -- DropIndex
-DROP INDEX "knowledge_embeddings_hnsw_cosine_idx";
-
--- DropIndex
-DROP INDEX "knowledge_translations_search_idx";
-
--- DropIndex
-DROP INDEX "knowledge_translations_title_trgm_idx";
+-- Audit A2 patch (2026-05-15) : 3 DROP INDEX commentés.
+-- Ces index sont créés par des migrations raw SQL hors-Prisma (pgvector + FTS) :
+--  - `knowledge_embeddings_hnsw_cosine_idx` : créé par
+--    `prisma/migrations/20260514020000_kb_v4_pgvector_embeddings/migration.sql:33`
+--    (`CREATE INDEX IF NOT EXISTS ... USING hnsw (embedding vector_cosine_ops)`)
+--    backbone de la recherche vectorielle KB via `kb-client.ts`.
+--  - `knowledge_translations_search_idx` + `knowledge_translations_title_trgm_idx` :
+--    créés par `prisma/migrations_fts/kb_fts_setup.sql:23,27` (FTS GIN + trgm).
+-- Prisma ne tracke pas les index pgvector/GIN custom → drift apparent.
+-- Les laisser dropper ici = perte significative de perf recherche vectorielle
+-- + FTS en prod (cf. Audit A2 R2). Pas d'impact fonctionnel à commenter
+-- (les CREATE INDEX IF NOT EXISTS originaux restent appliqués).
+-- DROP INDEX "knowledge_embeddings_hnsw_cosine_idx";
+-- DROP INDEX "knowledge_translations_search_idx";
+-- DROP INDEX "knowledge_translations_title_trgm_idx";
 
 -- AlterTable
 ALTER TABLE "articles" ADD COLUMN     "direct_answer" TEXT,
@@ -87,6 +100,14 @@ ADD COLUMN     "quality_score" INTEGER,
 ADD COLUMN     "search_console_ctr" DECIMAL(6,4);
 
 -- AlterTable
+-- Audit A2 note (2026-05-15) R4 : les 3 ALTER COLUMN id DROP DEFAULT ci-dessous
+-- sont INTENTIONNELS — alignement Prisma drift avec schema.prisma.
+-- Les migrations KB d'origine (kb_v4_*) ont créé ces colonnes avec
+-- `DEFAULT gen_random_uuid()` côté DB. schema.prisma déclare `@default(uuid())`
+-- ce qui signifie « générer côté client Prisma, pas côté DB ».
+-- Impact : les INSERT effectués via `prisma.client.X.create()` continuent de
+-- fonctionner (Prisma fournit l'id). Les INSERT raw psql qui OMETTENT id
+-- échoueront — vérifier qu'aucun outil tiers ne dépend du DEFAULT côté DB.
 ALTER TABLE "knowledge_annotations" ALTER COLUMN "id" DROP DEFAULT;
 
 -- AlterTable
@@ -422,25 +443,9 @@ CREATE TABLE "content_citations" (
     CONSTRAINT "content_citations_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "keyword_tracking" (
-    "id" TEXT NOT NULL,
-    "keyword" VARCHAR(255) NOT NULL,
-    "targetUrl" VARCHAR(512) NOT NULL,
-    "articleId" UUID,
-    "position" DECIMAL(5,2) NOT NULL,
-    "positionDelta" DECIMAL(5,2),
-    "ctr" DECIMAL(6,4),
-    "impressions" INTEGER NOT NULL DEFAULT 0,
-    "clicks" INTEGER NOT NULL DEFAULT 0,
-    "source" "KeywordTrackingSource" NOT NULL DEFAULT 'gsc',
-    "syncedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "firstSeenAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "keyword_tracking_pkey" PRIMARY KEY ("id")
-);
+-- Audit A7 patch (2026-05-15) : `CREATE TABLE "keyword_tracking"` retiré.
+-- La table est déjà créée par la migration plus précoce
+-- `20260514100000_add_keyword_tracking/migration.sql:8-25`. Voir P0-1 § ci-dessus.
 
 -- CreateIndex
 CREATE UNIQUE INDEX "content_gen_config_key_key" ON "content_gen_config"("key");
@@ -526,17 +531,9 @@ CREATE INDEX "content_citations_externalReferenceId_idx" ON "content_citations"(
 -- CreateIndex
 CREATE INDEX "content_citations_jobId_idx" ON "content_citations"("jobId");
 
--- CreateIndex
-CREATE INDEX "keyword_tracking_articleId_idx" ON "keyword_tracking"("articleId");
-
--- CreateIndex
-CREATE INDEX "keyword_tracking_syncedAt_idx" ON "keyword_tracking"("syncedAt");
-
--- CreateIndex
-CREATE INDEX "keyword_tracking_position_idx" ON "keyword_tracking"("position");
-
--- CreateIndex
-CREATE UNIQUE INDEX "keyword_tracking_keyword_targetUrl_key" ON "keyword_tracking"("keyword", "targetUrl");
+-- Audit A7 patch (2026-05-15) : 4 `CREATE INDEX keyword_tracking_*` retirés.
+-- Indexes déjà créés par la migration plus précoce
+-- `20260514100000_add_keyword_tracking/migration.sql:28-37`.
 
 -- CreateIndex
 CREATE INDEX "articles_indexation_tier_status_idx" ON "articles"("indexation_tier", "status");

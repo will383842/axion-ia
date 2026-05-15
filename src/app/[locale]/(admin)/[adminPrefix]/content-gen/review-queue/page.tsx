@@ -4,7 +4,12 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { approveReview, listReview, rejectReview } from "@/server/actions/content-gen/review";
+import {
+  approveReview,
+  listReviewPaginated,
+  rejectReview,
+} from "@/server/actions/content-gen/review";
+import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
 import type { ReviewStatus } from "../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -29,8 +34,11 @@ export default async function ReviewQueuePage({ params, searchParams }: PageProp
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const status = (sp.status as ReviewStatus | undefined) || "pending";
-  const rows = await listReview(status);
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  // P1-B fix audit 2026-05-15 — swap listReview() take:200 → listReviewPaginated 50/page.
+  const { rows, total, totalPages } = await listReviewPaginated(status, page);
   const base = `/fr/${adminPrefix}/content-gen/review-queue`;
+  const pageHref = (p: number) => `${base}?status=${status}&page=${p}`;
 
   async function approve(formData: FormData) {
     "use server";
@@ -50,7 +58,8 @@ export default async function ReviewQueuePage({ params, searchParams }: PageProp
         <div>
           <h1 className="admin-h1-large">Review queue</h1>
           <p className="admin-meta">
-            {rows.length} contenu{rows.length > 1 ? "s" : ""} en statut <code>{status}</code>
+            {total} contenu{total > 1 ? "s" : ""} en statut <code>{status}</code> — page {page}/
+            {totalPages}
           </p>
         </div>
       </div>
@@ -112,16 +121,24 @@ export default async function ReviewQueuePage({ params, searchParams }: PageProp
                       <>
                         <form action={approve} style={{ display: "inline" }}>
                           <input type="hidden" name="id" value={r.id} />
-                          <button type="submit" className="admin-button-ghost">
+                          <SubmitButton
+                            variant="ghost"
+                            pendingLabel="✅ …"
+                            ariaLabel={`Approuver la review ${r.id}`}
+                          >
                             ✅ Approuver
-                          </button>
+                          </SubmitButton>
                         </form>{" "}
                         <form action={reject} style={{ display: "inline" }}>
                           <input type="hidden" name="id" value={r.id} />
                           <input type="hidden" name="notes" value="Rejet rapide via liste" />
-                          <button type="submit" className="admin-button-ghost">
+                          <SubmitButton
+                            variant="ghost"
+                            pendingLabel="❌ …"
+                            ariaLabel={`Rejeter la review ${r.id}`}
+                          >
                             ❌ Rejeter
-                          </button>
+                          </SubmitButton>
                         </form>
                       </>
                     ) : null}
@@ -132,6 +149,32 @@ export default async function ReviewQueuePage({ params, searchParams }: PageProp
           </tbody>
         </table>
       </div>
+
+      {totalPages > 1 ? (
+        <nav className="admin-pagination" aria-label="Pagination review queue">
+          {page > 1 ? (
+            <a href={pageHref(page - 1)} className="admin-button-ghost" rel="prev">
+              ← Précédent
+            </a>
+          ) : (
+            <span className="admin-button-ghost admin-button-disabled" aria-disabled="true">
+              ← Précédent
+            </span>
+          )}
+          <span className="admin-meta" aria-live="polite">
+            Page {page}/{totalPages}
+          </span>
+          {page < totalPages ? (
+            <a href={pageHref(page + 1)} className="admin-button-ghost" rel="next">
+              Suivant →
+            </a>
+          ) : (
+            <span className="admin-button-ghost admin-button-disabled" aria-disabled="true">
+              Suivant →
+            </span>
+          )}
+        </nav>
+      ) : null}
     </section>
   );
 }

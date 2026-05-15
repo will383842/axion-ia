@@ -11,7 +11,10 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 20.18.0
+  # Audit A1 P2-4 (2026-05-15) — harmonisation Node 24 (LTS Iron oct 2025)
+  # avec nightly.yml + deploy-coolify.yml + prod CPX42. Auparavant 20.18.0,
+  # ce qui pouvait masquer des incompatibilités runtime entre CI et prod.
+  NODE_VERSION: "24"
   PNPM_VERSION: 10.33.4
 
 jobs:
@@ -41,8 +44,19 @@ jobs:
         run: pnpm lint
       - name: Prettier
         run: pnpm format:check
-      - name: Vitest
-        run: pnpm test
+      # Sprint S6.3 P1-7 (2026-05-15) — coverage activé en CI (thresholds
+      # vitest.config.ts:37-43 statements/branches/functions/lines 60/55/60/60).
+      # Bloque la PR si la couverture descend sous les seuils. ~+20s overhead V8
+      # vs `vitest run` sec, acceptable pour gate-a (~15min budget total).
+      - name: Vitest (with coverage)
+        run: pnpm test:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ github.run_id }}
+          path: coverage/
+          retention-days: 7
       - name: i18n parity
         run: pnpm i18n:check
       - name: Anti-SIREN grep
@@ -204,3 +218,108 @@ jobs:
         run: |
           docker rm -f axion-ia-smoke 2>/dev/null || true
           docker rm -f redis-smoke 2>/dev/null || true
+
+  gate-d-migration:
+    # Audit A7 (2026-05-15) follow-up P1-1 : applique séquentiellement TOUTES les
+    # migrations Prisma sur un Postgres pgvector ephemère pour attraper les
+    # régressions DDL avant prod (duplicate CREATE TYPE/TABLE, FK orpheline,
+    # type cast incompat, RENAME index sur source manquante, etc.).
+    #
+    # Aurait attrapé le P0-1 duplicate KeywordTracking dans `add_content_gen_core`
+    # qui restait dormant jusqu'au 1er `migrate deploy` Coolify.
+    #
+    # Image `pgvector/pgvector:pg16` requise pour la migration
+    # `20260514020000_kb_v4_pgvector_embeddings` (`CREATE EXTENSION vector`).
+    # FTS raw SQL (`prisma/migrations_fts/`) appliqué après migrate deploy pour
+    # détecter aussi les régressions FTS GIN + trgm.
+    name: Gate D · Prisma migrate deploy (DB fresh)
+    needs: gate-a
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: axion_ia_ci
+          POSTGRES_PASSWORD: ci_password_dummy
+          POSTGRES_DB: axion_ia_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U axion_ia_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
+      DIRECT_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Wait for Postgres ready
+        run: |
+          for i in $(seq 1 30); do
+            if pg_isready -h localhost -p 5432 -U axion_ia_ci >/dev/null 2>&1; then
+              echo "postgres ready after ${i}s"; exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::postgres not ready after 30s"; exit 1
+      - name: Verify pgvector extension available
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -c "SELECT default_version FROM pg_available_extensions WHERE name = 'vector';" \
+            | grep -E "[0-9]+\.[0-9]+" || (echo "::error::pgvector not available"; exit 1)
+      - name: Apply all Prisma migrations (fresh DB)
+        run: pnpm prisma migrate deploy
+      - name: Apply FTS raw migrations post Prisma
+        run: |
+          set -e
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -f prisma/migrations_fts/0002_fts_setup.sql
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -f prisma/migrations_fts/kb_fts_setup.sql
+      - name: Verify _prisma_migrations table healthy
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -c "SELECT migration_name, finished_at IS NOT NULL AS finished, rolled_back_at IS NULL AS not_rolled_back FROM _prisma_migrations ORDER BY started_at;"
+          ROLLED=$(PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci -tAc "SELECT COUNT(*) FROM _prisma_migrations WHERE rolled_back_at IS NOT NULL;")
+          if [ "$ROLLED" != "0" ]; then
+            echo "::error::at least one migration rolled back ($ROLLED)"; exit 1
+          fi
+          UNFINISHED=$(PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci -tAc "SELECT COUNT(*) FROM _prisma_migrations WHERE finished_at IS NULL;")
+          if [ "$UNFINISHED" != "0" ]; then
+            echo "::error::at least one migration unfinished ($UNFINISHED)"; exit 1
+          fi
+      - name: Sanity smoke — schema reachable via Prisma client
+        env:
+          NODE_ENV: production
+        run: |
+          node --experimental-vm-modules -e "
+          const { PrismaClient } = require('./prisma/generated/client');
+          const p = new PrismaClient();
+          (async () => {
+            await p.\$queryRaw\`SELECT 1\`;
+            const counts = await Promise.all([
+              p.contentGenJob.count(),
+              p.coverageCampaign.count(),
+              p.providerConfig.count(),
+              p.authorProfile.count(),
+              p.keywordTracking.count(),
+              p.knowledgeEntry.count(),
+            ]);
+            console.log('counts (should all be 0 on fresh DB):', counts);
+            const allZero = counts.every(n => n === 0);
+            if (!allZero) { console.error('::error::expected zero rows on fresh DB'); process.exit(1); }
+            await p.\$disconnect();
+          })().catch(err => { console.error('::error::', err.message); process.exit(1); });
+          "

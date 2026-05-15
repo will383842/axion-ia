@@ -208,6 +208,74 @@ export const WEB_VITAL_RATING_VARIANT: Record<string, "success" | "warning" | "d
 };
 
 // ────────────────────────────────────────────────────────────────────────────
+// OrganisationType (audit 2026-05-15 P2-25)
+// ────────────────────────────────────────────────────────────────────────────
+
+export const ORGANISATION_TYPE_LABELS_FR: Record<string, string> = {
+  entreprise_privee: "Entreprise privée",
+  ecole: "École",
+  universite: "Université",
+  mairie: "Mairie",
+  collectivite: "Collectivité",
+  hopital: "Hôpital",
+  association: "Association",
+  comite_entreprise: "Comité d'entreprise",
+  opco: "OPCO",
+  carsat: "CARSAT",
+  etablissement_public: "Établissement public",
+  autre: "Autre",
+};
+
+// ────────────────────────────────────────────────────────────────────────────
+// CompanySize (INSEE — audit 2026-05-15 P2-25)
+// ────────────────────────────────────────────────────────────────────────────
+
+export const COMPANY_SIZE_LABELS_FR: Record<string, string> = {
+  TPE: "TPE (1-9 salariés)",
+  PME: "PME (10-249 salariés)",
+  ETI: "ETI (250-4 999 salariés)",
+  GRANDE_ENTREPRISE: "Grande entreprise (≥ 5 000 salariés)",
+};
+
+// ────────────────────────────────────────────────────────────────────────────
+// TrustTier (citations §9bis.5bis — audit 2026-05-15 P2-25)
+// ────────────────────────────────────────────────────────────────────────────
+
+export const TRUST_TIER_LABELS_FR: Record<string, string> = {
+  official: "Officielle (.gouv, .fr ETS publics)",
+  high: "Haute (presse établie, recherche académique)",
+  standard: "Standard (médias spécialisés, blogs experts)",
+  low: "Faible (forum, blog perso)",
+  excluded: "Exclue (banlist)",
+};
+
+export const TRUST_TIER_VARIANT: Record<string, "success" | "neutral" | "warning" | "danger"> = {
+  official: "success",
+  high: "success",
+  standard: "neutral",
+  low: "warning",
+  excluded: "danger",
+};
+
+// ────────────────────────────────────────────────────────────────────────────
+// LogLevel (GenerationLog — audit 2026-05-15 P2-25)
+// ────────────────────────────────────────────────────────────────────────────
+
+export const LOG_LEVEL_LABELS_FR: Record<string, string> = {
+  debug: "Debug",
+  info: "Info",
+  warn: "Warning",
+  error: "Erreur",
+};
+
+export const LOG_LEVEL_VARIANT: Record<string, "neutral" | "running" | "warning" | "danger"> = {
+  debug: "neutral",
+  info: "running",
+  warn: "warning",
+  error: "danger",
+};
+
+// ────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ────────────────────────────────────────────────────────────────────────────
 

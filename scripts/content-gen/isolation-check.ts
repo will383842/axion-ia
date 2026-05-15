@@ -29,12 +29,14 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/content-gen\//,
   /^src\/server\/actions\/content-gen\//,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/content-gen\//,
+  /^src\/app\/api\/content-gen\//,
   /^src\/components\/admin\/content-gen\//,
   /^src\/server\/queue\/workers\/content-.*-worker\.ts$/,
   /^prisma\/seeds\/content-gen\//,
   /^prisma\/migrations\/\d+_(add_)?content_gen_/,
   /^scripts\/content-gen\//,
   /^tests\/content-gen\//,
+  /^tests\/e2e\/content-gen\//,
   /^docs\/content-gen\//,
   /^public\/illustrations\/generated\/content-gen\//,
   // Exceptions explicites (extensions de fichiers SSOT existants)
@@ -63,6 +65,31 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/queue\/worker\.ts$/,
   // package.json — npm scripts content-gen:seed / content-gen:isolation-check
   /^package\.json$/,
+  // AdminCommandPalette ⌘K — référence des routes /content-gen pour navigation
+  // rapide admin (Audit final P0-4, commit `24e050e`).
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
+  // KB readers — content-gen consomme la KB via getKnowledgeReadersForContentGen()
+  // (lecture seule, Sprint 11.5 KB ingest URLs externes).
+  /^src\/lib\/knowledge\/readers\.ts$/,
+  // vitest.config — include/exclude patterns pour les tests content-gen
+  // (séparation suites unit vs integration content-gen).
+  /^vitest\.config\.ts$/,
+  // RGPD / retention transverses (audit B5 commit `3b326a9`) — content-gen
+  // est consommé en aval (purge + export DSAR + sous-processeurs IA). Sprint
+  // S6.3 P1-4 (2026-05-15) : ces fichiers référencent explicitement les
+  // tables content-gen dans un contexte conformité, pas violation isolation.
+  /^src\/content\/subprocessors\.ts$/,
+  /^src\/app\/api\/gdpr-export\/route\.ts$/,
+  /^src\/server\/queue\/workers\/retention-purge-worker\.ts$/,
+  /^scripts\/restore-postgres-test-r2\.sh$/,
+  // seo.ts contient un garde-fou anti-fuite Manon (doctrine v2.1 — persona IA
+  // n'a aucun réseau social). Le commentaire mentionne "content-gen" comme
+  // contexte d'origine. Pas violation : c'est une exception explicite de
+  // l'extension SSOT seo.ts (cf. seo-content-gen-factories.ts déjà whitelist).
+  /^src\/lib\/seo\.ts$/,
+  // Internal revalidate API (P1-E fix audit 2026-05-15) — endpoint appelé par
+  // workers content-gen pour revalidatePath en contexte Next 16 valide.
+  /^src\/app\/api\/internal\/revalidate\/route\.ts$/,
 ];
 
 /**

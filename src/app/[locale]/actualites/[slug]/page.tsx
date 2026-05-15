@@ -33,8 +33,12 @@ import { buildProductMetadata } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
+// ISR pure : revalidate toutes les heures + on-demand generation au premier
+// hit pour les nouveaux slugs (audit 2026-05-15 P1-15 fix). `force-static`
+// retiré car contradictoire avec ISR sans `generateStaticParams` — provoquait
+// 404 sur le premier article post-deploy jusqu'à la fenêtre revalidate.
 export const revalidate = 3600;
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;

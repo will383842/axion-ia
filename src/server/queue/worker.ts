@@ -39,7 +39,8 @@ async function main() {
     startOptionReminderWorker(),
     startRetentionPurgeWorker(),
     startBookingCronsWorker(),
-    // Content Generator V1 — 10 workers (§ 13 master prompt v1.7 + Pass B P0-7)
+    // Content Generator V1 — 14 workers (§ 13 master prompt v1.7 + Pass B P0-7
+    // + Sprints 9-12.5 V2 + Audit final P0-3 + Sprint S6.3 doc-sync P3-15)
     startContentGenWorker(),
     startOrchestratorWorker(),
     startQualityImproverWorker(),

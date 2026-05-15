@@ -13,6 +13,7 @@ import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { ReviewStatus } from "../../../../prisma/generated/client";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
@@ -60,6 +61,59 @@ export interface ReviewRow {
   readonly jobSeoScore: number | null;
 }
 
+/**
+ * Pagine la review queue (Fix P2-2 audit opérationnel 2026-05-14).
+ *
+ * `take=200` historique limitait l'overview. On garde le default mais avec
+ * skip/total pour permettre une pagination côté UI. Sans param `page`,
+ * comportement identique à V1 (premiers 200).
+ */
+export interface ListReviewResult {
+  readonly rows: ReadonlyArray<ReviewRow>;
+  readonly total: number;
+  readonly page: number;
+  readonly totalPages: number;
+}
+
+const REVIEW_PAGE_SIZE = 50;
+
+export async function listReviewPaginated(
+  status?: ReviewStatus,
+  page: number = 1,
+): Promise<ListReviewResult> {
+  const where = status ? { status } : {};
+  const p = Math.max(1, page);
+  const [total, rows] = await Promise.all([
+    prisma.reviewQueue.count({ where }),
+    prisma.reviewQueue.findMany({
+      where,
+      include: { job: true },
+      orderBy: { createdAt: "desc" },
+      skip: (p - 1) * REVIEW_PAGE_SIZE,
+      take: REVIEW_PAGE_SIZE,
+    }),
+  ]);
+  return {
+    total,
+    page: p,
+    totalPages: Math.max(1, Math.ceil(total / REVIEW_PAGE_SIZE)),
+    rows: rows.map((r) => ({
+      id: r.id,
+      jobId: r.jobId,
+      status: r.status,
+      reviewedBy: r.reviewedBy,
+      reviewNotes: r.reviewNotes,
+      reviewedAt: r.reviewedAt,
+      promotedToTier1At: r.promotedToTier1At,
+      createdAt: r.createdAt,
+      jobContentType: r.job.contentType,
+      jobAnchorVille: r.job.anchorVilleSlug,
+      jobQualityScore: r.job.qualityScore,
+      jobSeoScore: r.job.seoScore,
+    })),
+  };
+}
+
 export async function listReview(status?: ReviewStatus): Promise<ReadonlyArray<ReviewRow>> {
   const where = status ? { status } : {};
   const rows = await prisma.reviewQueue.findMany({
@@ -84,10 +138,36 @@ export async function listReview(status?: ReviewStatus): Promise<ReadonlyArray<R
   }));
 }
 
+/**
+ * Erreur transition review déjà appliquée (race multi-admin).
+ *
+ * Throw quand Will A et Will B (ou Will + onglet dupliqué) cliquent
+ * "Approuver" simultanément. L'`updateMany` atomique avec where status='pending'
+ * garantit qu'un seul winner update la row → l'autre obtient count=0 et
+ * récupère cette exception pour afficher un toast "déjà traité".
+ */
+export class ReviewAlreadyTransitionedError extends Error {
+  readonly code = "review_already_transitioned";
+  constructor(public readonly currentStatus?: ReviewStatus) {
+    super("review_already_transitioned");
+    this.name = "ReviewAlreadyTransitionedError";
+  }
+}
+
+async function readReviewStatus(id: string): Promise<ReviewStatus | undefined> {
+  const row = await prisma.reviewQueue.findUnique({
+    where: { id },
+    select: { status: true },
+  });
+  return row?.status;
+}
+
 export async function approveReview(id: string, notes?: string): Promise<void> {
   const session = await requireAdmin();
-  await prisma.reviewQueue.update({
-    where: { id },
+  // P1-C fix audit 2026-05-15 — `updateMany` atomique avec status='pending'
+  // évite l'override d'une review déjà-approuvée par un autre admin (race).
+  const result = await prisma.reviewQueue.updateMany({
+    where: { id, status: "pending" },
     data: {
       status: "approved",
       reviewedBy: session.userId,
@@ -95,8 +175,18 @@ export async function approveReview(id: string, notes?: string): Promise<void> {
       reviewedAt: new Date(),
     },
   });
+  if (result.count === 0) {
+    throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+  }
   // Enqueue publish-worker (tier-2 noindex_follow par défaut).
   await enqueuePublish(id, false);
+  await logActivity({
+    session,
+    action: "content-gen.review.approve",
+    targetType: "ReviewQueue",
+    targetId: id,
+    changes: { transition: "pending→approved", notes: notes ?? null },
+  });
   revalidatePath(adminBase());
 }
 
@@ -135,6 +225,12 @@ export async function bulkApproveReviews(
     });
     await enqueuePublish(r.id, false);
   }
+  await logActivity({
+    session,
+    action: "content-gen.review.bulk-approve",
+    targetType: "ReviewQueue",
+    changes: { minScore, count: candidates.length },
+  });
   revalidatePath(adminBase());
   return { approved: candidates.length };
 }
@@ -167,6 +263,12 @@ export async function bulkRejectReviews(
       reviewedAt: new Date(),
     },
   });
+  await logActivity({
+    session,
+    action: "content-gen.review.bulk-reject",
+    targetType: "ReviewQueue",
+    changes: { maxScore, count: candidates.length },
+  });
   revalidatePath(adminBase());
   return { rejected: candidates.length };
 }
@@ -174,14 +276,25 @@ export async function bulkRejectReviews(
 export async function rejectReview(id: string, notes: string): Promise<void> {
   const session = await requireAdmin();
   if (notes.trim().length < 5) throw new Error("notes_required");
-  await prisma.reviewQueue.update({
-    where: { id },
+  // P1-C fix audit 2026-05-15 — race atomique (idem approveReview).
+  const result = await prisma.reviewQueue.updateMany({
+    where: { id, status: "pending" },
     data: {
       status: "rejected",
       reviewedBy: session.userId,
       reviewNotes: notes,
       reviewedAt: new Date(),
     },
+  });
+  if (result.count === 0) {
+    throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+  }
+  await logActivity({
+    session,
+    action: "content-gen.review.reject",
+    targetType: "ReviewQueue",
+    targetId: id,
+    changes: { transition: "pending→rejected", notesLen: notes.length },
   });
   revalidatePath(adminBase());
 }
@@ -224,13 +337,23 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
       data: { status: "quality_improving" },
     }),
   ]);
+  await logActivity({
+    session,
+    action: "content-gen.review.request-edits",
+    targetType: "ReviewQueue",
+    targetId: id,
+    changes: { transition: "pending→needs_edits", commentLen: comment.length },
+  });
   revalidatePath(adminBase());
 }
 
 export async function promoteToTier1(id: string): Promise<void> {
   const session = await requireAdmin();
-  await prisma.reviewQueue.update({
-    where: { id },
+  // P1-C fix audit 2026-05-15 — promote autorisé depuis `pending` (skip approve)
+  // ou `approved` (déjà passé par tier-2). Ne pas autoriser depuis rejected /
+  // needs_edits / promoted_t1.
+  const result = await prisma.reviewQueue.updateMany({
+    where: { id, status: { in: ["pending", "approved"] } },
     data: {
       status: "promoted_t1",
       reviewedBy: session.userId,
@@ -238,6 +361,9 @@ export async function promoteToTier1(id: string): Promise<void> {
       promotedToTier1At: new Date(),
     },
   });
+  if (result.count === 0) {
+    throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+  }
   // Bascule ContentGenJob → status `publishing` (transitionnel — le worker
   // publish met à jour `published` une fois l'Article inséré DB).
   const review = await prisma.reviewQueue.findUnique({ where: { id }, select: { jobId: true } });
@@ -249,5 +375,12 @@ export async function promoteToTier1(id: string): Promise<void> {
   }
   // Enqueue publish-worker en mode tier-1 indexable.
   await enqueuePublish(id, true);
+  await logActivity({
+    session,
+    action: "content-gen.review.promote-tier1",
+    targetType: "ReviewQueue",
+    targetId: id,
+    changes: { promoted: true },
+  });
   revalidatePath(adminBase());
 }

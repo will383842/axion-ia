@@ -12,6 +12,7 @@ import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { ContentGenJobStatus, ContentType } from "../../../../prisma/generated/client";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
@@ -159,7 +160,7 @@ export async function getJob(id: string) {
 }
 
 export async function retryJob(id: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   await prisma.contentGenJob.update({
     where: { id },
     data: {
@@ -175,10 +176,16 @@ export async function retryJob(id: string): Promise<void> {
   await enqueueGenJob(id);
   revalidatePath(adminBase());
   revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.job.retry",
+    targetType: "ContentGenJob",
+    targetId: id,
+  });
 }
 
 export async function cancelJob(id: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   await prisma.contentGenJob.update({
     where: { id },
     data: {
@@ -199,10 +206,16 @@ export async function cancelJob(id: string): Promise<void> {
   }
   revalidatePath(adminBase());
   revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.job.cancel",
+    targetType: "ContentGenJob",
+    targetId: id,
+  });
 }
 
 export async function retryAllFailed(): Promise<number> {
-  await requireAdmin();
+  const session = await requireAdmin();
   const failed = await prisma.contentGenJob.findMany({
     where: { status: "failed" },
     select: { id: true },
@@ -228,5 +241,11 @@ export async function retryAllFailed(): Promise<number> {
     await enqueueGenJob(f.id);
   }
   revalidatePath(adminBase());
+  await logActivity({
+    session,
+    action: "content-gen.job.retry-bulk",
+    targetType: "ContentGenJob",
+    changes: { count: failed.length },
+  });
   return failed.length;
 }

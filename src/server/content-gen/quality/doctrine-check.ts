@@ -111,10 +111,36 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       (("code" in err && (err as { code: string }).code === "P2021") ||
         err.constructor.name === "PrismaClientInitializationError")
     ) {
+      // Audit 2026-05-15 P1-18 : fallback étendu ≥10 phrases pour tenir la
+      // doctrine §21 même quand DB indisponible (premier deploy avant seed,
+      // ou panne Postgres). Mirrors a representative subset of the seed
+      // BannedPhrase corpus (54 phrases prod) avec les bloquants critiques.
       bannedPhrases = [
+        // Bloquants doctrine §1 + §21
         { pattern: "formation", reason: "Mot BANNI doctrine §1", severity: "block" },
+        { pattern: "formations", reason: "Mot BANNI doctrine §1", severity: "block" },
+        { pattern: "formateur", reason: "Mot BANNI doctrine §1", severity: "block" },
+        { pattern: "formatrice", reason: "Mot BANNI doctrine §1", severity: "block" },
+        { pattern: "former", reason: "Mot BANNI doctrine §1 (verbe)", severity: "block" },
+        // Marketing-hype §21 (warn)
         { pattern: "le meilleur", reason: "Marketing-hype", severity: "warn" },
+        { pattern: "la meilleure", reason: "Marketing-hype", severity: "warn" },
         { pattern: "révolutionnaire", reason: "Marketing-hype", severity: "warn" },
+        { pattern: "révolutionner", reason: "Marketing-hype", severity: "warn" },
+        { pattern: "incroyable", reason: "Marketing-hype", severity: "warn" },
+        { pattern: "exceptionnel", reason: "Marketing-hype", severity: "warn" },
+        {
+          pattern: "unique",
+          reason: "Marketing-hype (sauf 'angle unique par ville')",
+          severity: "warn",
+        },
+        { pattern: "garanti", reason: "Marketing-hype (promesse non tenable)", severity: "warn" },
+        {
+          pattern: "sans risque",
+          reason: "Marketing-hype (promesse non tenable)",
+          severity: "warn",
+        },
+        { pattern: "instantané", reason: "Marketing-hype (promesse temporelle)", severity: "warn" },
       ];
     } else {
       throw err;

@@ -11,6 +11,7 @@ import {
   rejectReview,
   requestEdits,
 } from "@/server/actions/content-gen/review";
+import { createPreviewToken } from "@/server/content-gen/shared/preview-token";
 
 export const dynamic = "force-dynamic";
 
@@ -63,11 +64,36 @@ export default async function ReviewDetailPage({ params }: PageProps) {
       </div>
 
       <div className="admin-card">
-        <h2>Aperçu (texte brut)</h2>
-        <pre style={{ whiteSpace: "pre-wrap", fontSize: 13, maxHeight: 400, overflow: "auto" }}>
+        <h2>Aperçu rendu (iframe sandbox, token signé 10 min)</h2>
+        {review.job.outputJsonRaw ? (
+          <iframe
+            // P1-13 fix audit opérationnel 2026-05-14 — preview HTML rendu
+            // via route signée /api/content-gen/preview/[jobId]?t=<token>.
+            // Le token HMAC-SHA256 expire 10 min (anti-leak).
+            src={`/api/content-gen/preview/${review.jobId}?t=${createPreviewToken(review.jobId)}`}
+            sandbox="allow-same-origin"
+            title="Aperçu contenu"
+            style={{
+              width: "100%",
+              height: 600,
+              border: "1px solid rgba(0,0,0,0.08)",
+              borderRadius: 4,
+              background: "var(--color-paper, white)",
+            }}
+          />
+        ) : (
+          <p className="admin-meta">Output non disponible (job pas encore complété).</p>
+        )}
+      </div>
+
+      <details className="admin-card">
+        <summary style={{ cursor: "pointer", fontWeight: "bold" }}>
+          Voir le JSON brut (debug)
+        </summary>
+        <pre style={{ whiteSpace: "pre-wrap", fontSize: 12, maxHeight: 300, overflow: "auto" }}>
           {JSON.stringify(review.job.outputJsonRaw ?? {}, null, 2)}
         </pre>
-      </div>
+      </details>
 
       <div className="admin-card">
         <h2>Actions de revue</h2>

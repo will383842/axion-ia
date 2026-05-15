@@ -14,6 +14,7 @@ import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { CoverageScope, CoverageStatus } from "../../../../prisma/generated/client";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
@@ -152,35 +153,97 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
     },
   });
   revalidatePath(adminBase());
+  await logActivity({
+    session,
+    action: "content-gen.campaign.create",
+    targetType: "CoverageCampaign",
+    targetId: r.id,
+    changes: {
+      name: input.name,
+      scope: input.scope,
+      targetCount: input.totalTargetCount,
+    },
+  });
   return r.id;
 }
 
 export async function launchCampaign(id: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   await prisma.coverageCampaign.update({
     where: { id },
     data: { status: "running", startedAt: new Date() },
   });
   revalidatePath(adminBase());
   revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.launch",
+    targetType: "CoverageCampaign",
+    targetId: id,
+  });
 }
 
 export async function pauseCampaign(id: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   await prisma.coverageCampaign.update({
     where: { id },
     data: { status: "paused", pausedAt: new Date() },
   });
   revalidatePath(adminBase());
+  await logActivity({
+    session,
+    action: "content-gen.campaign.pause",
+    targetType: "CoverageCampaign",
+    targetId: id,
+  });
 }
 
 export async function resumeCampaign(id: string): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
+  // P2-9 fix audit opérationnel 2026-05-14 — archiver l'historique pausedAt
+  // dans ContentGenConfig pour audit trail au lieu de NULL silencieux.
+  const campaign = await prisma.coverageCampaign.findUnique({
+    where: { id },
+    select: { pausedAt: true },
+  });
+  if (campaign?.pausedAt) {
+    try {
+      const existing = await prisma.contentGenConfig.findUnique({
+        where: { key: "campaign_pause_history" },
+      });
+      const prev = (existing?.value as Array<Record<string, unknown>> | null | undefined) ?? [];
+      const next = [
+        {
+          campaignId: id,
+          pausedAt: campaign.pausedAt.toISOString(),
+          resumedAt: new Date().toISOString(),
+        },
+        ...prev,
+      ].slice(0, 200);
+      await prisma.contentGenConfig.upsert({
+        where: { key: "campaign_pause_history" },
+        create: {
+          key: "campaign_pause_history",
+          value: next as never,
+          updatedBy: "system:resume-campaign",
+        },
+        update: { value: next as never, updatedBy: "system:resume-campaign" },
+      });
+    } catch {
+      // best-effort
+    }
+  }
   await prisma.coverageCampaign.update({
     where: { id },
     data: { status: "running", pausedAt: null },
   });
   revalidatePath(adminBase());
+  await logActivity({
+    session,
+    action: "content-gen.campaign.resume",
+    targetType: "CoverageCampaign",
+    targetId: id,
+  });
 }
 
 /**
@@ -204,7 +267,7 @@ export async function cancelCampaign(
   id: string,
   mode: CancelCampaignMode = "running_only",
 ): Promise<CancelCampaignResult> {
-  await requireAdmin();
+  const session = await requireAdmin();
 
   // 1. Flippe la campagne en cancelled + completedAt (terminal).
   await prisma.coverageCampaign.update({
@@ -269,6 +332,17 @@ export async function cancelCampaign(
 
   revalidatePath(adminBase());
   revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.cancel",
+    targetType: "CoverageCampaign",
+    targetId: id,
+    changes: {
+      mode,
+      cancelledJobs: jobsToCancel.length,
+      removedBullJobs,
+    },
+  });
   return {
     campaignId: id,
     mode,
@@ -283,7 +357,7 @@ export async function cancelCampaign(
  * automatiquement les nouveaux slots au prochain tick.
  */
 export async function incrementCampaignTarget(id: string, delta: number): Promise<void> {
-  await requireAdmin();
+  const session = await requireAdmin();
   if (delta < 1 || delta > 1000) throw new Error("delta_range");
   const campaign = await prisma.coverageCampaign.findUnique({
     where: { id },
@@ -298,6 +372,13 @@ export async function incrementCampaignTarget(id: string, delta: number): Promis
     data: { totalTargetCount: { increment: delta } },
   });
   revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.add-slots",
+    targetType: "CoverageCampaign",
+    targetId: id,
+    changes: { delta },
+  });
 }
 
 /**

@@ -8,6 +8,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
 import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
 
 export const dynamic = "force-dynamic";
@@ -48,6 +49,8 @@ export default async function GeoCockpitPage({ params }: PageProps) {
           </a>
         </div>
       </div>
+
+      <GeoEventsBanner />
 
       <div className="admin-card-grid" style={{ marginBottom: 24 }}>
         <KpiCard
