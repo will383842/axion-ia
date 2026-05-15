@@ -19,8 +19,8 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 - **i18n** : `next-intl@3` (FR canonique, EN miroir)
 - **Forms** : `react-hook-form` + `zod`
 - **DB** : Postgres 16 + `prisma@5` (Sprint 15)
-- **State** : `@tanstack/react-query` · `zustand`
-- **Animation** : `motion@11` (`prefers-reduced-motion` strict)
+- **State** : `@tanstack/react-query`
+- **Animation** : `IntersectionObserver` natif + CSS transitions (`FadeInOnView`, ~0 KB shipped) — `prefers-reduced-motion` strict via `globals.css`
 - **Auth** : Auth.js v5 (`next-auth@beta`) + 2FA TOTP + WebAuthn (Sprint 16)
 - **Email** : `nodemailer` + `@react-email` → PowerMTA + MailWizz self-hosted (Sprint 19) — **Resend interdit**
 - **Queue** : `bullmq` + `ioredis` (Sprint 18)
