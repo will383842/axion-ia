@@ -14,7 +14,7 @@ exports[`<AnswerCard> > matches snapshot (FR, question + source link) 1`] = `
     >
       <span
         aria-label="Réponse en bref"
-        class="text-terracotta-deep text-base leading-none font-medium italic tracking-tight sm:text-lg"
+        class="text-terracotta-deep text-base leading-none font-medium tracking-tight italic sm:text-lg"
         style="font-family: var(--font-serif);"
       >
         TL;DR
