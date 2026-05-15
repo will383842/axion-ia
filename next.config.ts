@@ -92,6 +92,12 @@ const nextConfig: NextConfig = {
     "pino",
     "@react-email/render",
     "nodemailer",
+    // isomorphic-dompurify dépend de jsdom qui charge des assets statiques
+    // (browser/default-stylesheet.css). Si bundlé par webpack, ces assets
+    // ne sont pas copiés dans `.next/standalone` → ENOENT au build SSG.
+    // Externaliser → Node loader natif depuis node_modules → assets résolus.
+    "isomorphic-dompurify",
+    "jsdom",
   ],
   images: {
     formats: ["image/avif", "image/webp"],
