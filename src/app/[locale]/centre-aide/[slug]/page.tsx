@@ -10,9 +10,11 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getHelpArticle, getAllHelpSlugs, HELP_ARTICLES, slugify } from "@/content/transversal";
-import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
+import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { splitTitleEm } from "@/lib/title";
 
 interface Props {
@@ -69,24 +71,20 @@ export default async function HelpArticlePage({ params }: Props) {
   // datePublished + dateModified ajoutés (audit AEO/GEO 2026-05-15 §3.4) :
   // signal fraîcheur AEO Google + Perplexity. `BUILD_DATE` est stable par build
   // (vs new Date() runtime qui mentirait sur chaque cold-start worker).
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: copy.title,
+  //
+  // Méta-cert 2026-05-15 AGENT 20 P0 — passage par `buildArticleJsonLd` factory
+  // pour injecter creator + disambiguatingDescription + usageInfo + speakable
+  // (AI Act EU art. 50 machine-readable disclosure).
+  const articleJsonLd = buildArticleJsonLd({
+    title: copy.title,
     description: copy.excerpt,
-    inLanguage: locale,
-    url: `${SITE_URL}/${locale}/centre-aide/${slug}`,
-    datePublished: BUILD_DATE,
-    dateModified: BUILD_DATE,
-    author: { "@type": "Person", name: "Manon", url: `${SITE_URL}/fr/equipe/manon` },
-    isPartOf: {
-      "@type": "WebSite",
-      name: "Axion-IA",
-      url: SITE_URL,
-    },
-    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
-    articleSection: article.category,
-  } as const;
+    slug,
+    locale: loc,
+    publishedAt: BUILD_DATE,
+    updatedAt: BUILD_DATE,
+    urlSegment: "centre-aide",
+    section: article.category,
+  });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -174,6 +172,12 @@ export default async function HelpArticlePage({ params }: Props) {
                 <p key={`b-${i}`}>{p}</p>
               ))}
           </div>
+        </Container>
+      </Section>
+
+      <Section>
+        <Container className="max-w-3xl">
+          <AiContentDisclaimer locale={loc} />
         </Container>
       </Section>
 

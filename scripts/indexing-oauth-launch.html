@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Axion-IA — OAuth Indexing API consent</title>
+    <style>
+      body {
+        font-family: -apple-system, system-ui, sans-serif;
+        max-width: 720px;
+        margin: 4rem auto;
+        padding: 0 1.5rem;
+        line-height: 1.5;
+      }
+      a.btn {
+        display: inline-block;
+        background: #c24a1b;
+        color: white;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 1.5rem 0;
+      }
+      a.btn:hover {
+        background: #a8401a;
+      }
+      .small {
+        font-size: 0.85rem;
+        color: #666;
+      }
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+        font-size: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔐 OAuth Indexing API consent</h1>
+    <p>
+      Clique sur le bouton ci-dessous pour autoriser Axion-IA à appeler l'API Google Indexing
+      au nom de ton compte <strong>williamsjullin@gmail.com</strong>.
+    </p>
+    <p>
+      <strong>Pré-requis :</strong> Indexing API doit être activée dans GCP. Si tu vois
+      une erreur API non activée, va d'abord ici :
+      <a
+        href="https://console.cloud.google.com/apis/library/indexing.googleapis.com?project=815301890396"
+        target="_blank"
+        >Activer Indexing API</a
+      >.
+    </p>
+
+    <p>
+      <a
+        class="btn"
+        href="https://accounts.google.com/o/oauth2/v2/auth?client_id=815301890396-2h7qd1a2pojfdndisr0d1sdn0s0v1o6e.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8765&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Findexing&access_type=offline&prompt=consent&include_granted_scopes=true"
+      >
+        ✓ Autoriser Indexing API
+      </a>
+    </p>
+
+    <p class="small">
+      Si l'écran « Application non vérifiée » apparaît :<br />
+      → Cliquer <em>« Paramètres avancés »</em><br />
+      → Cliquer <em>« Accéder à Axion-IA (non sécurisé) »</em><br />
+      C'est normal et attendu (app non soumise à vérification Google).
+    </p>
+
+    <hr style="margin-top: 3rem" />
+
+    <p class="small">
+      <strong>URL OAuth complète</strong> (debug uniquement) :
+    </p>
+    <pre>https://accounts.google.com/o/oauth2/v2/auth?client_id=815301890396-2h7qd1a2pojfdndisr0d1sdn0s0v1o6e.apps.googleusercontent.com&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8765&amp;response_type=code&amp;scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Findexing&amp;access_type=offline&amp;prompt=consent&amp;include_granted_scopes=true</pre>
+  </body>
+</html>

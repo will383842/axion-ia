@@ -10,6 +10,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
@@ -323,6 +324,12 @@ export default async function BlogArticle({ params }: Props) {
             }
             return <p key={`b-${idx}`}>{block.text}</p>;
           })}
+        </Container>
+      </Section>
+
+      <Section>
+        <Container className="max-w-3xl">
+          <AiContentDisclaimer locale={loc} />
         </Container>
       </Section>
 

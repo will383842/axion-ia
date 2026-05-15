@@ -163,6 +163,10 @@ export const routing = defineRouting({
     // Sprint X.17 (Booking V1) — page transparence sous-processeurs RGPD.
     "/sous-processeurs": { fr: "/sous-processeurs", en: "/subprocessors" },
 
+    // Méta-cert 2026-05-15 AGENT 20 P0-2 — hub transparence IA Act EU 2026.
+    // Consolide /equipe/manon (persona) + /politique-confidentialite §IA + /sous-processeurs.
+    "/transparence": { fr: "/transparence", en: "/transparency" },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {
@@ -211,6 +215,11 @@ export const routing = defineRouting({
     // détaille un notFound() pour locale !== "fr").
     "/actualites": { fr: "/actualites", en: "/actualites" },
     "/actualites/[slug]": { fr: "/actualites/[slug]", en: "/actualites/[slug]" },
+    // P1-18 audit E2E NAV+CTA 2026-05-15 — KB V4 publique (hub + détail).
+    // Filtres triple-strict côté server : status=published + audience=public
+    // + confidentiality=public. FR-only par doctrine v1.2 (KB V1 = FR only).
+    "/connaissances": { fr: "/connaissances", en: "/connaissances" },
+    "/connaissances/[slug]": { fr: "/connaissances/[slug]", en: "/connaissances/[slug]" },
     "/blog/categorie/[slug]": { fr: "/blog/categorie/[slug]", en: "/blog/category/[slug]" },
     "/blog/tag/[slug]": "/blog/tag/[slug]",
     "/blog/auteur/[slug]": { fr: "/blog/auteur/[slug]", en: "/blog/author/[slug]" },

@@ -22,10 +22,11 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
-import { buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
+import { buildProductMetadata } from "@/lib/seo";
+import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
@@ -67,9 +68,10 @@ export default async function GuidePiliersPage({ params }: Props) {
   if (!guide) notFound();
   setRequestLocale(locale);
 
-  const url = `${SITE_URL}/${locale}/guides/${slug}`;
-
   // JSON-LD : HowTo si steps fiables (≥ 2 extraites), sinon Article fallback.
+  // Méta-cert 2026-05-15 AGENT 20 P0 — le fallback Article passe désormais par
+  // `buildArticleJsonLd` factory pour injecter creator + disambiguatingDescription
+  // + usageInfo + speakable (AI Act EU art. 50 machine-readable).
   const jsonLd = guide.hasStructuredSteps
     ? buildHowToJsonLd({
         name: guide.title,
@@ -81,19 +83,15 @@ export default async function GuidePiliersPage({ params }: Props) {
         totalTimeMinutes: guide.readingTimeMinutes,
         steps: guide.steps.map((s) => ({ name: s.name, text: s.text })),
       })
-    : ({
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "@id": `${url}#article`,
-        headline: guide.title,
+    : buildArticleJsonLd({
+        title: guide.title,
         description: guide.excerpt,
-        url,
-        inLanguage: "fr-FR",
-        datePublished: guide.publishedAt.toISOString(),
-        dateModified: guide.updatedAt.toISOString(),
-        author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
-        publisher: { "@id": `${SITE_URL}/#organization` },
-      } as const);
+        slug,
+        locale: "fr",
+        publishedAt: guide.publishedAt,
+        updatedAt: guide.updatedAt,
+        urlSegment: "guides",
+      });
 
   const breadcrumbItems = [
     { href: "/guides", label: "Guides" },
@@ -154,6 +152,8 @@ export default async function GuidePiliersPage({ params }: Props) {
                   </p>
                 ))}
           </div>
+
+          <AiContentDisclaimer locale="fr" className="mt-10" />
         </Container>
       </Section>
 

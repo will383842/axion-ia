@@ -96,10 +96,11 @@ export interface ArticleJsonLdInput {
   readonly wordCount?: number;
   readonly readingTimeMinutes?: number;
   /**
-   * Segment d'URL : "blog" (défaut) ou "actualites" (NewsArticle RSS § 28).
+   * Segment d'URL : "blog" (défaut), "actualites" (NewsArticle RSS § 28),
+   * "centre-aide" (HelpArticle factory), "guides" (guide pilier fallback).
    * Aligne canonical + mainEntityOfPage sur le path public réel.
    */
-  readonly urlSegment?: "blog" | "actualites";
+  readonly urlSegment?: "blog" | "actualites" | "centre-aide" | "guides";
   /**
    * P1-18 (audit re-run 2026-05-15 AGENT 3) — citations externes pour
    * `Article.citation[]`. Émet un array `CreativeWork` (factory
