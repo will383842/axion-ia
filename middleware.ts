@@ -166,6 +166,6 @@ export const config = {
      *   - icon* (Next 13+ icon convention)
      *   - apple-icon (PWA)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.*\\.xml|robots\\.txt|llms.*\\.txt|icon.*|apple-icon|manifest.webmanifest).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.*\\.xml|robots\\.txt|llms.*\\.txt|ai\\.txt|icon.*|apple-icon|manifest.webmanifest).*)",
   ],
 };
