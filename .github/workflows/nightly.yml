@@ -156,21 +156,26 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - name: Pull latest Postgres backup (R2 or Hetzner storage)
+      - name: Install aws-cli (R2 S3-compatible)
+        run: aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
+      - name: Pull latest Postgres backup from Cloudflare R2 + drill restore
         env:
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
           R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
           BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
-        # `scripts/restore-postgres-test.sh` pull le backup le plus récent
-        # depuis R2/Hetzner, le déchiffre, et le restore dans la DB postgres
-        # service ci-dessus. Le script doit corriger `bookings_simple` →
-        # `bookings` (audit E2E P1-DB-05). Si pas implémenté → fail.
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        # 2026-05-15 fix audit D5+D6 (P0-2) : on bascule sur le script R2 dédié.
+        # `restore-postgres-test.sh` (variante SSH Storage Box) reste pour le
+        # drill manuel mensuel sur le VPS. Voir _AUDIT/CI-SECRETS-REQUIRED.md
+        # pour la liste des 7 secrets requis (R2_*, BACKUP_ENCRYPTION_PASSPHRASE,
+        # TELEGRAM_*) — sans eux, fail attendu avec message explicite.
         run: |
-          chmod +x scripts/restore-postgres-test.sh
+          chmod +x scripts/restore-postgres-test-r2.sh
           DATABASE_URL_TEST=postgresql://axionia_drill:drill@localhost:5432/axionia_drill \
-            bash scripts/restore-postgres-test.sh
+            bash scripts/restore-postgres-test-r2.sh
 
   lighthouse-history:
     name: Lighthouse history (5 URLs)

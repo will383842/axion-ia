@@ -1,12 +1,20 @@
 name: Release · Gate E
 
+# 2026-05-15 fix audit D5+D6 P2-16 : aligné sur API Sanctum Coolify (au lieu
+# du webhook GitHub App legacy COOLIFY_PRODUCTION_WEBHOOK qui était cassé,
+# cf. mémoire `axionia_session_2026-05-09_cloudflare_postdeploy_incident`).
+# Le tag push sur v* déclenche un deploy via la même API que `deploy-coolify.yml`.
+
 on:
   push:
     tags: ["v*"]
 
+permissions:
+  contents: read
+
 jobs:
   release:
-    name: Production release
+    name: Production release (tagged)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment:
@@ -26,20 +34,41 @@ jobs:
           node-version: "24"
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Build production
+      - name: Build production (smoke)
         run: pnpm build
-      - name: Trigger Coolify production webhook
-        if: ${{ secrets.COOLIFY_PRODUCTION_WEBHOOK != '' }}
+      - name: POST /api/v1/deploy (tag-driven)
+        id: deploy
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
-          curl -fsS -X POST "${{ secrets.COOLIFY_PRODUCTION_WEBHOOK }}" \
-            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{"ref": "${{ github.ref_name }}"}'
-      - name: Smoke prod
-        run: echo "Prod smoke stub — Sprint 22."
-      - name: Notify Telegram
-        if: ${{ secrets.TELEGRAM_BOT_TOKEN != '' }}
+          set -euo pipefail
+          if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ] || [ -z "${COOLIFY_APP_UUID:-}" ]; then
+            echo "::error::Missing required secrets (COOLIFY_API_TOKEN, COOLIFY_URL, COOLIFY_APP_UUID)."
+            exit 1
+          fi
+          echo "Triggering tagged release deploy on Coolify (tag ${{ github.ref_name }})…"
+          response=$(curl -fsSL -G \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify response: ${response}"
+          deployment_uuid=$(echo "${response}" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+          echo "deployment_uuid=${deployment_uuid}" >> "$GITHUB_OUTPUT"
+      - name: Notify Telegram (release tagged)
+        if: success()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          curl -fsS -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d "text=Axion-IA release ${{ github.ref_name }} deployed"
+          if [ -z "${TELEGRAM_BOT_TOKEN:-}" ]; then
+            echo "::warning::No TELEGRAM_BOT_TOKEN — skipping notif"
+            exit 0
+          fi
+          curl -fsS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=🚀 [RELEASE] Axion-IA tag ${{ github.ref_name }} deployment triggered (deployment ${{ steps.deploy.outputs.deployment_uuid }})"

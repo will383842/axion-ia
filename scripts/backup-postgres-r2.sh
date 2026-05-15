@@ -70,7 +70,33 @@ esac
 require_var() {
   local name="$1"
   if [ -z "${!name:-}" ]; then
-    echo "❌ Variable requise manquante : ${name}"; exit 1
+    echo "❌ Variable requise manquante : ${name}"
+    record_fail "missing_var:${name}"
+    exit 1
+  fi
+}
+
+# ─── Anti-spam fail consécutifs (cf. audit D5+D6 P1-9) ──────────────────────
+FAIL_COUNT_FILE="${FAIL_COUNT_FILE:-/var/log/backup-fails-r2-count.log}"
+
+record_fail() {
+  local reason="$1"
+  mkdir -p "$(dirname "${FAIL_COUNT_FILE}")" 2>/dev/null || true
+  local count=$(cat "${FAIL_COUNT_FILE}" 2>/dev/null || echo 0)
+  count=$((count + 1))
+  echo "${count}" > "${FAIL_COUNT_FILE}"
+  if [ "${count}" -ge 2 ]; then
+    notify_telegram "🔴🔴 [BACKUP-R2] CASCADING FAIL — ${count} backups R2 consécutifs échoués (raison : ${reason})"
+  fi
+}
+
+record_success() {
+  if [ -f "${FAIL_COUNT_FILE}" ]; then
+    local count=$(cat "${FAIL_COUNT_FILE}" 2>/dev/null || echo 0)
+    if [ "${count}" -ge 1 ]; then
+      notify_telegram "🟢 [BACKUP-R2] Recovery OK après ${count} échecs consécutifs"
+    fi
+    rm -f "${FAIL_COUNT_FILE}"
   fi
 }
 
@@ -171,5 +197,6 @@ while IFS= read -r KEY; do
   fi
 done <<< "${ALL}"
 
+record_success
 echo "✅ Backup OK : ${REMOTE_KEY} (${SIZE_HUMAN})"
 notify_telegram "✅ Backup ${BACKUP_TYPE} OK · ${SIZE_HUMAN} · ${BACKUP_NAME}"

@@ -64,7 +64,34 @@ require_env() {
   if [[ -z "${!var:-}" ]]; then
     echo "❌ Variable d'environnement requise : ${var}"
     notify_telegram "Backup KO : ${var} manquante" "🔴"
+    record_fail "missing_env:${var}"
     exit 1
+  fi
+}
+
+# ─── Anti-spam fail consécutifs (cf. audit D5+D6 P1-9) ──────────────────────
+# Compte fails consécutifs pour escalader alerte si ≥ 2 (=> 🔴 CASCADING).
+# Reset compteur sur succès (record_success).
+FAIL_COUNT_FILE="${FAIL_COUNT_FILE:-/var/log/backup-fails-count.log}"
+
+record_fail() {
+  local reason="$1"
+  mkdir -p "$(dirname "${FAIL_COUNT_FILE}")" 2>/dev/null || true
+  local count=$(cat "${FAIL_COUNT_FILE}" 2>/dev/null || echo 0)
+  count=$((count + 1))
+  echo "${count}" > "${FAIL_COUNT_FILE}"
+  if [ "${count}" -ge 2 ]; then
+    notify_telegram "🔴🔴 CASCADING FAIL — ${count} backups consécutifs échoués (dernière raison : ${reason}). Investigation prio P0 requise." "🔴"
+  fi
+}
+
+record_success() {
+  if [ -f "${FAIL_COUNT_FILE}" ]; then
+    local count=$(cat "${FAIL_COUNT_FILE}" 2>/dev/null || echo 0)
+    if [ "${count}" -ge 1 ]; then
+      notify_telegram "🟢 [BACKUP] Recovery OK après ${count} échecs consécutifs" "🟢"
+    fi
+    rm -f "${FAIL_COUNT_FILE}"
   fi
 }
 
@@ -141,6 +168,7 @@ REMOTE_SIZE=$(ssh "${HETZNER_STORAGE_USER}@${HETZNER_STORAGE_HOST}" "stat -c%s $
 if [[ "${LOCAL_SIZE}" != "${REMOTE_SIZE}" ]]; then
   echo "❌ Taille remote ≠ local (${LOCAL_SIZE} vs ${REMOTE_SIZE})"
   notify_telegram "Backup ${BACKUP_TYPE} CORRUPTION transit (${LOCAL_SIZE}≠${REMOTE_SIZE})" "🔴"
+  record_fail "size_mismatch:${LOCAL_SIZE}!=${REMOTE_SIZE}"
   exit 1
 fi
 
@@ -154,6 +182,7 @@ ssh "${HETZNER_STORAGE_USER}@${HETZNER_STORAGE_HOST}" "
 # 5. Cleanup local (on n'a besoin que sur remote)
 rm -f "${BACKUP_PATH}"
 
-# 6. Telegram OK
+# 6. Telegram OK + reset compteur fails consécutifs
+record_success
 notify_telegram "Backup ${BACKUP_TYPE} OK : ${SIZE_HUMAN} en ${DURATION}s → ${REMOTE_PATH}" "🟢"
 echo "✅ Backup terminé."
