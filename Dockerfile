@@ -80,12 +80,18 @@ ENV NEXT_PRIVATE_WORKER_THREADS=4
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
 RUN pnpm prisma:generate
+# BUILD_TIME injecté au build (ISO 8601 UTC) — utilisé par `next.config.ts`
+# pour figer `dateModified` + sitemap `lastModified`. Avant ce patch, fallback
+# `new Date().toISOString()` au runtime worker → mensonge fraîcheur à chaque
+# cold start. Audit 2026-05-15 — wire défini par seo.ts + sitemap.ts existant.
+ARG BUILD_TIME
+ENV BUILD_TIME=${BUILD_TIME}
 # Cache mount sur .next/cache : Next 16 réutilise ses caches webpack +
 # SSG entre builds si la config n'a pas changé. Combiné au cache mount
 # pnpm ci-dessus, un build incrémental (pas de change de deps ni de
 # config Next) tombe à ~5-8 min au lieu de ~15 min cold.
 RUN --mount=type=cache,id=next,target=/app/.next/cache \
-    pnpm build
+    BUILD_TIME="${BUILD_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}" pnpm build
 
 # -----------------------------------------------------------------------------
 # Stage 3 : runner — runtime slim avec sharp + .next/standalone
