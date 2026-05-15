@@ -7,13 +7,37 @@ import Link from "next/link";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
-// metadataBase explicite : ce fichier est hors `[locale]/layout.tsx` donc
-// n'hérite pas du `metadataBase` localisé. Sans ça, Next.js fallback sur
-// `http://localhost:3000` côté og:image (résolu via `app/opengraph-image.tsx`),
-// ce qui casse les previews sociales si quelqu'un partage une URL 404.
+// metadataBase + og:image absolus explicites pour les 404 globales.
+//
+// Ce fichier est hors `[locale]/layout.tsx` donc n'hérite pas du `metadataBase`
+// localisé. Audit 2026-05-15 (AGENT 2) a observé `og:image=http://localhost:3000/...`
+// servi en prod sur les 404 malgré le `metadataBase: new URL(SITE_URL)` ci-dessous,
+// vraisemblablement parce que le SSG du root not-found.tsx résout `SITE_URL`
+// avant que le filet de sécurité prod (`seo.ts` §20-23) ne soit déclenché.
+//
+// Fix : hardcoder les og/twitter images en URLs absolues `https://axion-ia.com`
+// pour ce fichier précis. SITE_URL reste utilisé pour `metadataBase` afin de
+// préserver la résolution canonique relative ailleurs si besoin.
+const PROD_ORIGIN = "https://axion-ia.com" as const;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(SITE_URL.startsWith("http://localhost") ? PROD_ORIGIN : SITE_URL),
   robots: { index: false, follow: false },
+  openGraph: {
+    images: [
+      {
+        url: `${PROD_ORIGIN}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Axion-IA — Cabinet IA opérationnel B2B",
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [`${PROD_ORIGIN}/opengraph-image`],
+  },
 };
 
 export default function RootNotFound() {

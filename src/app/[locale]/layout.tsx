@@ -201,6 +201,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             type="speculationrules"
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
+                // `/reserver` exclu : page lourde côté client (calendar
+                // Stripe + state-machine booking) — prerender = exécution JS
+                // anticipée + risque side-effects (analytics doublonnés,
+                // session tokens). Voir doctrine §5.2 audit 2026-05-15.
                 prerender: [
                   {
                     source: "document",
@@ -219,7 +223,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                         `/${locale}/implantations`,
                         `/${locale}/implantations/ile-de-france`,
                         `/${locale}/implantations/ile-de-france/paris`,
-                        `/${locale}/reserver`,
                         `/${locale}/contact`,
                       ],
                     },

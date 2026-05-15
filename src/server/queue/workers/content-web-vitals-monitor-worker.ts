@@ -123,7 +123,7 @@ async function processJob(_job: Job<WebVitalsMonitorTick>): Promise<void> {
   // Groupe par (url, metric)
   const groups = new Map<string, number[]>();
   for (const s of samples) {
-    const key = `${s.url}${s.metric}`;
+    const key = `${s.url}\u001f${s.metric}`;
     const arr = groups.get(key) ?? [];
     arr.push(s.value);
     groups.set(key, arr);
@@ -132,7 +132,7 @@ async function processJob(_job: Job<WebVitalsMonitorTick>): Promise<void> {
   const aggregates: AggregateRow[] = [];
   for (const [key, values] of groups) {
     if (values.length < MIN_SAMPLES) continue;
-    const sepIdx = key.indexOf("");
+    const sepIdx = key.indexOf("\u001f");
     const url = key.slice(0, sepIdx);
     const metric = key.slice(sepIdx + 1);
     const budget = BUDGETS[metric] ?? Number.POSITIVE_INFINITY;

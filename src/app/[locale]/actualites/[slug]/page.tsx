@@ -34,11 +34,12 @@ import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
-// hit pour les nouveaux slugs (audit 2026-05-15 P1-15 fix). `force-static`
-// retiré car contradictoire avec ISR sans `generateStaticParams` — provoquait
-// 404 sur le premier article post-deploy jusqu'à la fenêtre revalidate.
+// hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
+// params sans generateStaticParams → 404 post-deploy) ni `force-dynamic`
+// (annule silencieusement `revalidate` → SSR pur, perte cache CDN + ISR).
+// `dynamicParams = true` est le défaut Next 16 ; explicité pour clarté.
 export const revalidate = 3600;
-export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;

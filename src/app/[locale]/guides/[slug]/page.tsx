@@ -28,9 +28,10 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 
+// ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
+// pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
 export const revalidate = 3600;
 export const dynamicParams = true;
-export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
