@@ -29,6 +29,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 12  | Stripe Payments Europe Ltd | Paiements (Checkout + Radar)         | Irlande (UE) + USA      | online | SCC + EU-US DPF            | 🟡 à accepter   |
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
 | 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 
 > ⚠️ **Backblaze N'EST PAS utilisé**. Le code utilise Hetzner Storage Box uniquement
 > (`HETZNER_STORAGE_*` env vars). La mention Backblaze dans `src/content/legal.ts`
@@ -50,6 +51,15 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 >   (page publique `/sous-processeurs`) mais oubliés du registre interne art. 30.
 >   La SSOT publique unique est désormais `src/content/subprocessors.ts` ; ce
 >   registre interne lui correspond ligne à ligne (RGPD art. 30 + 28).
+
+> 🆕 **Ligne 15 ajoutée 2026-05-15** (Méta-cert AGENT 21 P0-C — Microsoft
+> Clarity remis en service en mode compliant). Le composant `Clarity` est
+> désormais gaté sur consent CMP explicite (`CookieConsent` banner) avec
+> stockage `localStorage` 13 mois (recommandation CNIL). Cookies `_clck` +
+> `_clsk` déposés uniquement post-accept visiteur. Will doit signer le DPA
+> Microsoft online (lien `documentationUrl` dans `subprocessors.ts`).
+> Sans DPA signé, le statut `activationStatus` reste `pending_activation`
+> dans la SSOT publique malgré la présence du code.
 
 ---
 

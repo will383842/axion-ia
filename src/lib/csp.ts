@@ -73,6 +73,11 @@ export interface BuildCspOptions {
  * commentaire en tête de fichier).
  */
 export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
+  // Microsoft Clarity (NEXT_PUBLIC_CLARITY_PROJECT_ID + consent CMP gated).
+  // Domaines : www.clarity.ms (tag loader) + *.clarity.ms (collecteurs régionaux,
+  // c.clarity.ms ingest, b.clarity.ms beacon). Sans whitelist explicite, le script
+  // est bloqué CSP même en mode soft. Le composant `Clarity` (use client) ne
+  // déclenche un fetch que post-consent visiteur (`CookieConsent` banner).
   const scriptSrc = strict
     ? [
         "script-src",
@@ -81,6 +86,8 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
         "'strict-dynamic'",
         "https://challenges.cloudflare.com",
         "https://plausible.axion-ia.com",
+        "https://www.clarity.ms",
+        "https://*.clarity.ms",
       ].join(" ")
     : [
         "script-src",
@@ -89,6 +96,8 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
         "'unsafe-eval'",
         "https://challenges.cloudflare.com",
         "https://plausible.axion-ia.com",
+        "https://www.clarity.ms",
+        "https://*.clarity.ms",
       ].join(" ");
 
   return [
@@ -100,7 +109,7 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     // Sprint X.2 — `https://api.stripe.com` requis pour Stripe.js (publishable
     // key client) + côté serveur indirect via Checkout redirect. `https://checkout.stripe.com`
     // frame-src pour 3DS challenges si on bascule un jour à Stripe Elements (V1.5+).
-    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com",
+    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms",
     // `plausible.axion-ia.com` autorisé pour l'embed dashboard dans
     // /fr/{prefix}/analytics (Plausible "Shared link" iframe).
     "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com",

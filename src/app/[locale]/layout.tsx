@@ -10,6 +10,8 @@ import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { Plausible } from "@/components/analytics/Plausible";
 import { RefererTracker } from "@/components/analytics/RefererTracker";
+import { CookieConsent } from "@/components/analytics/CookieConsent";
+import { Clarity } from "@/components/analytics/Clarity";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
@@ -226,6 +228,13 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               14 sources canoniques (google/bing/qwant/perplexity/chatgpt/claude…)
               pour mesurer l'AEO/GEO ROI Plausible. No-op si Plausible absent. */}
           <RefererTracker />
+          {/* Méta-cert 2026-05-15 AGENT 21 — Microsoft Clarity gated sur consent
+              CMP. `CookieConsent` banner sticky bottom (lazy display) → si
+              accept, `Clarity` charge le script (afterInteractive) + dépose
+              cookies `_clck` / `_clsk`. Si decline ou pas de choix → null.
+              Plausible (anonyme, EU, cookie-less) reste toujours actif. */}
+          <CookieConsent />
+          <Clarity />
         </NextIntlClientProvider>
         <script
           type="application/ld+json"

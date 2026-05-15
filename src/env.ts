@@ -221,6 +221,12 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_DOMAIN: z.string().optional(),
     NEXT_PUBLIC_PLAUSIBLE_API_URL: z.string().url().optional(),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+    // Microsoft Clarity project ID (heatmaps + session replay + frustration signals).
+    // Public alphanumeric (~10 chars). Méta-cert 2026-05-15 AGENT 21 — Clarity
+    // est désormais GATÉ sur consent CMP (`src/components/analytics/CookieConsent.tsx`)
+    // donc cookies déposés uniquement post-accept visiteur. No-op si non défini.
+    // DPA Microsoft à signer côté Will + entry dans `subprocessors.ts` (déclarée).
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -291,6 +297,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_DOMAIN: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN,
     NEXT_PUBLIC_PLAUSIBLE_API_URL: process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
   },
   emptyStringAsUndefined: true,
   skipValidation: process.env.SKIP_ENV_VALIDATION === "true",

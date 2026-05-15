@@ -209,6 +209,26 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     category: "analytics_obs",
     activationStatus: "active",
   },
+  {
+    name: "Microsoft Clarity (Microsoft Corporation)",
+    location: "Redmond, Washington, USA",
+    serversLocation: "USA (Azure global)",
+    purposeFr:
+      "Analytics qualitatifs UX — heatmaps clics/scroll, session replay anonymisé (masquage automatique des champs de formulaire), détection de frustration (rage clicks, dead clicks, quick backs). Gating consent CMP obligatoire (`CookieConsent` banner). Plausible self-hosted couvre l'analytics quantitatif sans cookie en parallèle.",
+    purposeEn:
+      "Qualitative UX analytics — click/scroll heatmaps, anonymised session replay (automatic form field masking), frustration detection (rage clicks, dead clicks, quick backs). Mandatory CMP consent gating (`CookieConsent` banner). Plausible self-hosted handles quantitative cookie-less analytics in parallel.",
+    dataCategoriesFr:
+      "Cookies `_clck` (1 an, identifiant visiteur unique) + `_clsk` (1 jour, identifiant session). Adresse IP, user-agent, URL visitées, comportement de navigation (clics, scroll, mouvement souris, focus formulaire avec masquage des valeurs). Pas de PII en clair grâce au masquage Clarity par défaut.",
+    dataCategoriesEn:
+      "Cookies `_clck` (1 year, unique visitor ID) + `_clsk` (1 day, session ID). IP address, user-agent, URLs visited, navigation behavior (clicks, scroll, mouse movement, form focus with value masking). No cleartext PII thanks to Clarity default masking.",
+    legalBasis: "6.1.a_consent",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "analytics_obs",
+    activationStatus: "pending_activation",
+    documentationUrl:
+      "https://www.microsoft.com/licensing/docs/view/Microsoft-Products-and-Services-Data-Protection-Addendum-DPA",
+  },
   // ───────────────────────────── content-gen IA (audit B5 2026-05-15)
   // Code intégré (`src/server/content-gen/providers/*.ts`) — clés API non
   // encore présentes dans Coolify env → `pending_activation` jusqu'à

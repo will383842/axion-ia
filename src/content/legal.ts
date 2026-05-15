@@ -305,7 +305,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Statistiques anonymes",
-          body: "Plausible self-hosted, sans cookie persistant, sans empreinte numérique, conforme à l'avis CNIL/AKI 2022. Aucun consentement requis car aucune donnée personnelle.",
+          body: "Plausible self-hosted (Hetzner Frankfurt, UE), sans cookie persistant, sans empreinte numérique, conforme à l'avis CNIL/AKI 2022. Aucun consentement requis car aucune donnée personnelle.",
+        },
+        {
+          title: "Analytics qualitatifs avec consentement (Microsoft Clarity)",
+          body: "Microsoft Clarity est proposé en complément de Plausible pour les heatmaps de clic/scroll et le session replay anonymisé (masquage automatique des champs de formulaire). Il dépose 2 cookies : `_clck` (1 an, identifiant visiteur) et `_clsk` (1 jour, identifiant session). Le transfert UE → USA est encadré par les Clauses Contractuelles Types (SCC). Aucun cookie déposé sans votre consentement explicite via le bandeau cookies (CNIL art. 82 + RGPD art. 7) ; vous pouvez refuser ou retirer votre consentement à tout moment depuis /preferences-cookies. Durée de conservation du choix : 13 mois maximum (recommandation CNIL).",
         },
         {
           title: "Cookies tiers",
@@ -313,7 +317,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Gérer vos cookies",
-          body: "Tous les navigateurs modernes permettent de bloquer les cookies. Le blocage des cookies strictement nécessaires peut empêcher l'usage de la console admin.",
+          body: "Le bandeau cookies vous permet d'accepter ou refuser les analytics Microsoft Clarity. Votre choix est conservé 13 mois maximum (recommandation CNIL). Tous les navigateurs modernes permettent en plus de bloquer les cookies globalement — le blocage des cookies strictement nécessaires peut empêcher l'usage de la console admin.",
         },
       ],
       metaSeo: {
@@ -333,7 +337,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Anonymous statistics",
-          body: "Self-hosted Plausible, without persistent cookies, without digital fingerprinting, compliant with the 2022 CNIL/AKI guidance. No consent required as no personal data.",
+          body: "Self-hosted Plausible (Hetzner Frankfurt, EU), without persistent cookies, without digital fingerprinting, compliant with the 2022 CNIL/AKI guidance. No consent required as no personal data.",
+        },
+        {
+          title: "Consent-gated qualitative analytics (Microsoft Clarity)",
+          body: "Microsoft Clarity is offered alongside Plausible for click/scroll heatmaps and anonymised session replay (automatic form field masking). It drops 2 cookies: `_clck` (1 year, visitor identifier) and `_clsk` (1 day, session identifier). The EU → US transfer is covered by Standard Contractual Clauses (SCC). No cookie is dropped without your explicit consent via the cookie banner (CNIL art. 82 + GDPR art. 7); you may decline or withdraw your consent at any time from /cookie-preferences. Consent retention: 13 months maximum (CNIL recommendation).",
         },
         {
           title: "Third-party cookies",
@@ -341,7 +349,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Manage your cookies",
-          body: "All modern browsers allow blocking cookies. Blocking strictly necessary cookies may prevent use of the admin console.",
+          body: "The cookie banner lets you accept or decline Microsoft Clarity analytics. Your choice is kept for 13 months maximum (CNIL recommendation). All modern browsers additionally allow blocking cookies globally — blocking strictly necessary cookies may prevent use of the admin console.",
         },
       ],
       metaSeo: {
