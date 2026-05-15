@@ -188,8 +188,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: LHCI collect + upload temp storage
+        # Audit A1 P2-5 (2026-05-15) — `pnpm exec lhci` au lieu de
+        # `npx --yes @lhci/cli@0.15`. @lhci/cli est en devDependencies
+        # (^0.15.1) et résolu par le `pnpm install --frozen-lockfile`
+        # ci-dessus, donc plus de download supply-chain runtime.
         run: |
-          npx --yes @lhci/cli@0.15 collect \
+          pnpm exec lhci collect \
             --url=https://axion-ia.com/fr \
             --url=https://axion-ia.com/en \
             --url=https://axion-ia.com/fr/audit \
@@ -197,10 +201,10 @@ jobs:
             --url=https://axion-ia.com/fr/implantations/ile-de-france/paris \
             --numberOfRuns=3 \
             --settings.preset=desktop
-          npx --yes @lhci/cli@0.15 upload --target=temporary-public-storage
+          pnpm exec lhci upload --target=temporary-public-storage
           # Assertions soft pour le history nocturne : on log, on fail pas
           # (les hard fails se font dans deploy-coolify.yml).
-          npx --yes @lhci/cli@0.15 assert || echo "::warning::LHCI assertions failed (history mode)"
+          pnpm exec lhci assert || echo "::warning::LHCI assertions failed (history mode)"
 
   notify-failure:
     name: Notify nightly failure

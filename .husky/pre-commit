@@ -3,3 +3,14 @@ pnpm anti-siren:check
 pnpm anti-hex:check
 pnpm use-client:check
 pnpm typecheck
+
+# Audit A1 P1-3 (2026-05-15) — gitleaks local secret scan sur fichiers staged.
+# Bloque le commit si un secret est détecté avant qu'il n'arrive au push CI.
+# Skipped if gitleaks binary not installed (CI gate-a couvre quand même).
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --no-banner || {
+    echo "🚨 gitleaks: secret détecté dans les fichiers staged"
+    echo "   → revoir les modifs ou ajuster axionia/.gitleaks.toml allowlist"
+    exit 1
+  }
+fi

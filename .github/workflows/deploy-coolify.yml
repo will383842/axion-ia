@@ -237,10 +237,13 @@ jobs:
       - name: Run lhci collect + assert (prod URLs)
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
+        # Audit A1 P2-5 (2026-05-15) — `pnpm exec lhci` au lieu de
+        # `npx --yes @lhci/cli@0.15`. @lhci/cli déjà installé via
+        # `pnpm install --frozen-lockfile --filter . --prod=false` ci-dessus.
         run: |
           set -euo pipefail
           # Hit la prod live (déploiement validé par steps deploy précédent).
-          npx --yes @lhci/cli@0.15 collect \
+          pnpm exec lhci collect \
             --url=https://axion-ia.com/fr \
             --url=https://axion-ia.com/en \
             --url=https://axion-ia.com/fr/audit \
@@ -249,4 +252,4 @@ jobs:
             --numberOfRuns=2 \
             --settings.preset=desktop \
             --settings.throttlingMethod=devtools
-          npx --yes @lhci/cli@0.15 assert
+          pnpm exec lhci assert

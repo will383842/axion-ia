@@ -2,3 +2,14 @@ pnpm typecheck
 pnpm i18n:check
 pnpm zod:check
 pnpm test
+
+# Audit A1 P2-6 (2026-05-15) — pnpm audit avant push : attrape les
+# new high/critical CVE introduites localement avant que la nightly
+# (cron 03:00 UTC) ne les signale jusqu'à 24h plus tard. --audit-level
+# high pour rester silencieux sur les moderate/low (déjà couverts par
+# dependabot weekly).
+pnpm audit --prod --audit-level high || {
+  echo "🚨 pnpm audit: CVE high/critical détectée — push bloqué"
+  echo "   → résoudre via pnpm.overrides ou upgrade du package coupable"
+  exit 1
+}
