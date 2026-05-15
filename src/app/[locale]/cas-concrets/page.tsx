@@ -15,7 +15,6 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { CaseStudyCard } from "@/components/marketing/CaseStudyCard";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { CaseStudiesHeroSchema } from "@/components/sections/CaseStudiesHeroSchema";
@@ -25,10 +24,20 @@ import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import {
+  CaseStudiesFilteredGrid,
+  CaseStudiesFilterPills,
+  type CaseDescriptor,
+} from "./CaseStudiesFilteredGrid";
+
+// ISR public — la page est purement statique côté serveur, le filtre joue
+// uniquement côté client (cf. CaseStudiesFilteredGrid). Cache CDN-friendly :
+// `Cache-Control: public, max-age=..., s-maxage=86400, must-revalidate`.
+// Audit Edge 2026-05-15 AGENT 5 §5.7.
+export const revalidate = 86400;
 
 interface Props {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ industry?: string; size?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -49,32 +58,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function CaseStudiesListing({ params, searchParams }: Props) {
+export default async function CaseStudiesListing({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  const sp = await searchParams;
 
-  // URL-driven filters — no client state.
-  const filterIndustry = sp.industry?.toLowerCase();
-  const filterSize = sp.size?.toLowerCase();
-
-  const filtered = CASE_STUDIES.filter((c) => {
-    if (
-      filterIndustry &&
-      c.industry.toLowerCase() !== filterIndustry &&
-      c.industryEn.toLowerCase() !== filterIndustry
-    )
-      return false;
-    if (filterSize && c.size !== filterSize) return false;
-    return true;
-  });
-
+  // Toutes les cas concrets — exposés côté serveur + au Client Component pour
+  // filtrage CSS. Server ne consomme PLUS `searchParams` (qui forçait la page
+  // en dynamic SSR `Cache-Control: private`). Audit Edge 2026-05-15 §5.7.
   const allIndustries = Array.from(
     new Set(CASE_STUDIES.map((c) => (isFr ? c.industry : c.industryEn))),
   );
+
+  // Descripteurs sérialisables pour le Client Component (1 fois en payload
+  // JSON inline ; excerpt + meta seulement, pas le body complet du cas).
+  const caseDescriptors: ReadonlyArray<CaseDescriptor> = CASE_STUDIES.map((c) => {
+    const copy = c[loc];
+    return {
+      slug: c.slug,
+      title: copy.title,
+      excerpt: copy.excerpt,
+      industry: isFr ? c.industry : c.industryEn,
+      industryKey: c.industry.toLowerCase(),
+      industryKeyEn: c.industryEn.toLowerCase(),
+      size: c.size,
+      metric: c.metric,
+    };
+  });
   const allSizes: ReadonlyArray<{ key: string; label: string }> = [
     { key: "tpe", label: isFr ? "TPE" : "Small" },
     { key: "pme", label: "PME" },
@@ -263,110 +275,19 @@ export default async function CaseStudiesListing({ params, searchParams }: Props
       </Section>
 
       <Section id="cas" eyebrow={isFr ? "Filtres" : "Filters"}>
-        <Container className="space-y-4">
-          <div>
-            <p className="text-fg mb-2 text-xs font-semibold tracking-wide uppercase">
-              {isFr ? "Industrie" : "Industry"}
-            </p>
-            <ul className="flex flex-wrap gap-2">
-              <li>
-                <a
-                  href={`/${loc}/cas-concrets`}
-                  className={`rounded-sm border px-3 py-1.5 text-sm ${
-                    !filterIndustry
-                      ? "border-primary bg-primary text-primary-fg"
-                      : "border-border text-fg hover:border-border-hover"
-                  }`}
-                >
-                  {isFr ? "Toutes" : "All"}
-                </a>
-              </li>
-              {allIndustries.map((ind) => (
-                <li key={ind}>
-                  <a
-                    href={`/${loc}/cas-concrets?industry=${encodeURIComponent(ind.toLowerCase())}`}
-                    className={`rounded-sm border px-3 py-1.5 text-sm ${
-                      filterIndustry === ind.toLowerCase()
-                        ? "border-primary bg-primary text-primary-fg"
-                        : "border-border text-fg hover:border-border-hover"
-                    }`}
-                  >
-                    {ind}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="text-fg mb-2 text-xs font-semibold tracking-wide uppercase">
-              {isFr ? "Taille" : "Size"}
-            </p>
-            <ul className="flex flex-wrap gap-2">
-              <li>
-                <a
-                  href={`/${loc}/cas-concrets`}
-                  className={`rounded-sm border px-3 py-1.5 text-sm ${
-                    !filterSize
-                      ? "border-primary bg-primary text-primary-fg"
-                      : "border-border text-fg hover:border-border-hover"
-                  }`}
-                >
-                  {isFr ? "Toutes" : "All"}
-                </a>
-              </li>
-              {allSizes.map((s) => (
-                <li key={s.key}>
-                  <a
-                    href={`/${loc}/cas-concrets?size=${s.key}`}
-                    className={`rounded-sm border px-3 py-1.5 text-sm ${
-                      filterSize === s.key
-                        ? "border-primary bg-primary text-primary-fg"
-                        : "border-border text-fg hover:border-border-hover"
-                    }`}
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Container>
+        <CaseStudiesFilterPills
+          locale={loc}
+          industries={allIndustries.map((ind) => ({ value: ind.toLowerCase(), label: ind }))}
+          sizes={allSizes.map((s) => ({ value: s.key, label: s.label }))}
+        />
       </Section>
 
-      <Section
-        eyebrow={
-          filtered.length === CASE_STUDIES.length
-            ? isFr
-              ? "Tous les cas"
-              : "All cases"
-            : isFr
-              ? `${filtered.length} cas`
-              : `${filtered.length} case(s)`
-        }
-      >
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.length === 0 ? (
-            <li className="text-fg-soft col-span-full text-center">
-              {isFr ? "Aucun cas ne correspond à ces filtres." : "No case matches these filters."}
-            </li>
-          ) : (
-            filtered.map((c) => {
-              const copy = c[loc];
-              return (
-                <li key={c.slug}>
-                  <CaseStudyCard
-                    href={`/cas-concrets/${c.slug}`}
-                    title={copy.title}
-                    excerpt={copy.excerpt}
-                    industry={isFr ? c.industry : c.industryEn}
-                    metric={c.metric}
-                  />
-                </li>
-              );
-            })
-          )}
-        </ul>
-      </Section>
+      <CaseStudiesFilteredGrid
+        locale={loc}
+        cases={caseDescriptors}
+        totalCount={CASE_STUDIES.length}
+      />
+
 
       {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">

@@ -14,22 +14,14 @@ import { revalidatePath } from "next/cache";
 import type { ContentType } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
+import { CONTENT_TYPES_ALL } from "./policies-constants";
 
 // ────────────────────────────────────────────────────────────────────
 // /settings/batches
 // ────────────────────────────────────────────────────────────────────
 
-export const CONTENT_TYPES_ALL: ReadonlyArray<ContentType> = [
-  "landing_ville",
-  "blog_article",
-  "blog_from_rss",
-  "blog_from_keywords",
-  "blog_from_title",
-  "comparison",
-  "guide_pilier",
-  "qa_derived",
-  "faq_standalone",
-];
+// `CONTENT_TYPES_ALL` déplacée dans `./policies-constants.ts` car Next.js 16+
+// interdit l'export de symboles non-async dans "use server".
 
 /** Target/jour par type (Sprint 7 V2). 0 = type désactivé en mode V2. */
 export type DailyTargetByType = Partial<Record<ContentType, number>>;

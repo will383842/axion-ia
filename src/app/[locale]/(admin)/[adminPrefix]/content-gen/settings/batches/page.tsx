@@ -9,11 +9,11 @@ import { redirect } from "next/navigation";
 import type { ContentType } from "../../../../../../../../prisma/generated/client";
 import { auth } from "@/auth";
 import {
-  CONTENT_TYPES_ALL,
   type DailyTargetByType,
   getBatchSettings,
   updateBatchSettings,
 } from "@/server/actions/content-gen/policies";
+import { CONTENT_TYPES_ALL } from "@/server/actions/content-gen/policies-constants";
 
 export const dynamic = "force-dynamic";
 
