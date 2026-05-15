@@ -288,7 +288,6 @@ export default async function CaseStudiesListing({ params }: Props) {
         totalCount={CASE_STUDIES.length}
       />
 
-
       {/* CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 */}
       <Section tone="canvas">
         <Container className="max-w-3xl">

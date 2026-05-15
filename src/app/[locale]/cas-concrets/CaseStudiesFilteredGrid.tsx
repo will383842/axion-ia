@@ -93,10 +93,7 @@ function FilterPillsInner({ locale, industries, sizes }: CaseStudiesFilterPillsP
           </li>
           {sizes.map((s) => (
             <li key={s.value}>
-              <a
-                href={`${basePath}?size=${s.value}`}
-                className={pillClass(filterSize === s.value)}
-              >
+              <a href={`${basePath}?size=${s.value}`} className={pillClass(filterSize === s.value)}>
                 {s.label}
               </a>
             </li>
@@ -123,7 +120,8 @@ function FilterPillsFallback({ locale, industries, sizes }: CaseStudiesFilterPil
   // Pills sans surlignage actif (rendu SSR initial). Liens fonctionnels.
   const isFr = locale === "fr";
   const basePath = `/${locale}/cas-concrets`;
-  const inactive = "rounded-sm border border-border text-fg hover:border-border-hover px-3 py-1.5 text-sm";
+  const inactive =
+    "rounded-sm border border-border text-fg hover:border-border-hover px-3 py-1.5 text-sm";
   return (
     <Container className="space-y-4">
       <div>
@@ -207,11 +205,7 @@ function InnerGrid({ locale, cases, totalCount }: CaseStudiesFilteredGridProps) 
 
   // Match prédicat — exécuté côté navigateur uniquement.
   const matches = (c: CaseDescriptor) => {
-    if (
-      filterIndustry &&
-      c.industryKey !== filterIndustry &&
-      c.industryKeyEn !== filterIndustry
-    ) {
+    if (filterIndustry && c.industryKey !== filterIndustry && c.industryKeyEn !== filterIndustry) {
       return false;
     }
     if (filterSize && c.size !== filterSize) {
