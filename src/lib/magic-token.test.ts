@@ -58,8 +58,12 @@ describe("magic-token", () => {
   it("rejette signature tampered", async () => {
     const token = await signMagicToken({ scope: "cancel", resourceId: "abc" });
     const [p, s] = token.split(".") as [string, string];
-    // Flip 1 char dans la signature
-    const tampered = `${p}.${s.slice(0, -1)}${s.slice(-1) === "a" ? "b" : "a"}`;
+    // Flip 1 char au DÉBUT de la signature (chaque char base64url encode 6 bits
+    // significatifs sauf le dernier, qui en encode 4 + 2 bits "padding" ignorés
+    // au décodage. Flipper le dernier char peut tomber sur une collision base64
+    // → mêmes bytes décodés → signature reste valide. Le 1er char ne souffre
+    // pas de cette ambiguïté.).
+    const tampered = `${p}.${s[0] === "a" ? "b" : "a"}${s.slice(1)}`;
     const v = await verifyMagicToken(tampered);
     expect(v.ok).toBe(false);
     if (!v.ok) expect(v.reason).toBe("invalid_signature");
