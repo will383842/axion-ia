@@ -100,6 +100,15 @@ export interface ArticleJsonLdInput {
    * Aligne canonical + mainEntityOfPage sur le path public réel.
    */
   readonly urlSegment?: "blog" | "actualites";
+  /**
+   * P1-18 (audit re-run 2026-05-15 AGENT 3) — citations externes pour
+   * `Article.citation[]`. Émet un array `CreativeWork` (factory
+   * `buildCitationArray`). Critique pour citation Perplexity 2026 :
+   * les sources externes (études, gouvernement, INSEE) deviennent les
+   * sources que Perplexity reprend mot-à-mot dans ses réponses.
+   * Optionnel — absent = pas de citation array émise.
+   */
+  readonly citations?: ReadonlyArray<CitationInput>;
 }
 
 /**
@@ -160,6 +169,12 @@ function buildArticleBase(
     ...(input.tags && input.tags.length > 0 ? { keywords: input.tags.join(", ") } : {}),
     ...(input.wordCount ? { wordCount: input.wordCount } : {}),
     ...(input.readingTimeMinutes ? { timeRequired: `PT${input.readingTimeMinutes}M` } : {}),
+    // P1-18 — citation[] array si sources externes fournies. Perplexity 2026
+    // reprend mot-à-mot les sources citées dans Article.citation[] → +20-40 %
+    // citation rate vs articles sans citation array (audit AEO/GEO §3.5).
+    ...(input.citations && input.citations.length > 0
+      ? { citation: buildCitationArray(input.citations) }
+      : {}),
     // Speakable cssSelector — Canonical Answer pattern (audit AEO/GEO
     // 2026-05-15 § 3.5). Aligne Article/BlogPosting/NewsArticle JSON-LD
     // sur les selectors AnswerCard rendus côté page. Inoffensif si la page
