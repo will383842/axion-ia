@@ -17,6 +17,7 @@
 import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 import {
   readContentGenConfig,
   writeContentGenConfig,
@@ -82,7 +83,9 @@ async function fetchSource(source: RssSource): Promise<ReadonlyArray<ParsedRssIt
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30_000);
   try {
-    const res = await fetch(source.url, {
+    // Méta-cert 2026-05-15 AGENT 12 P0 OWASP A10 — SSRF mitigation via
+    // `ssrfSafeFetch` (DNS lookup + IP privée refusée + redirects validés).
+    const res = await ssrfSafeFetch(source.url, {
       headers: { "User-Agent": "Axion-IA-content-gen/1.0 (+https://axion-ia.com)" },
       signal: controller.signal,
     });

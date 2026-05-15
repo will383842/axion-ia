@@ -12,7 +12,18 @@
  *
  * Pour 90 % des sites WordPress / Ghost / Webflow, cette stratégie suffit.
  * Cas pathologiques (SPA full JS) → Readability + jsdom Sprint 11.6.
+ *
+ * Méta-cert 2026-05-15 AGENT 12 P0 OWASP A10 — SSRF mitigation : passage
+ * de `fetch()` natif à `ssrfSafeFetch()` qui :
+ *   - Refuse les IP privées RFC 1918 / loopback / metadata cloud (169.254/16)
+ *   - Resolve le DNS avant chaque hop et valide chaque redirect
+ *   - Cap profondeur redirects (5)
+ * Cf. `src/lib/ssrf-safe-fetch.ts`. L'input URL provient de l'admin
+ * KB ingest qui est trusted, mais le helper protège contre erreurs Will +
+ * abus futurs si endpoint exposé public.
  */
+
+import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 
 const FETCH_TIMEOUT_MS = 8_000;
 const USER_AGENT = "Mozilla/5.0 (compatible; Axion-IA-KB-Ingest/1.0; +https://axion-ia.com/bot)";
@@ -92,10 +103,9 @@ export async function extractArticleFromUrl(url: string): Promise<ExtractedArtic
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
   try {
-    const resp = await fetch(url, {
+    const resp = await ssrfSafeFetch(url, {
       headers: { "User-Agent": USER_AGENT, Accept: "text/html,application/xhtml+xml" },
       signal: controller.signal,
-      redirect: "follow",
     });
     if (!resp.ok) return null;
 
