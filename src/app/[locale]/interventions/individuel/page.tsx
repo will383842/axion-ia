@@ -62,7 +62,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
   const formats = getFormatsByFamily("individuel");
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
+    { href: "/interventions", label: isFr ? "Interventions entreprise" : "Corporate AI sessions" },
     {
       href: "/interventions/individuel",
       label: isFr ? family.labelFr : family.labelEn,

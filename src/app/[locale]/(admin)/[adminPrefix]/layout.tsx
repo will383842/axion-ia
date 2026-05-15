@@ -17,6 +17,7 @@ import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import type { Locale } from "@/i18n/routing";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,9 @@ interface AdminLayoutProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
+// P2-25 audit E2E NAV+CTA 2026-05-15 — markup sidebar extrait dans
+// `components/admin/AdminSidebar.tsx` (client component pour aria-current
+// dynamique). Le layout reste serveur + propage la nav via prop.
 interface NavItem {
   href: string;
   label: string;
@@ -70,14 +74,6 @@ function buildNav(adminPrefix: string): NavItem[] {
   ];
 }
 
-const groupLabels: Record<NavItem["group"], string> = {
-  main: "Activité quotidienne",
-  content: "Contenu",
-  engagement: "Engagement",
-  ops: "Ops & monitoring",
-  system: "Système",
-};
-
 export default async function AdminLayout({ children, params }: AdminLayoutProps) {
   const { locale, adminPrefix } = await params;
   const expectedPrefix = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
@@ -99,7 +95,6 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const session = await auth();
   const showSidebar = Boolean(session?.user);
   const nav = buildNav(adminPrefix);
-  const groups: NavItem["group"][] = ["main", "content", "engagement", "ops", "system"];
 
   return (
     <div className="admin-layout">
@@ -115,29 +110,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
         </div>
       </header>
       <div className={showSidebar ? "admin-shell" : "admin-shell admin-shell-noaside"}>
-        {showSidebar && (
-          <aside className="admin-sidebar" aria-label="Navigation admin">
-            {groups.map((g) => (
-              <div key={g} className="admin-nav-group">
-                <p className="admin-nav-group-label">{groupLabels[g]}</p>
-                <ul className="admin-nav-list">
-                  {nav
-                    .filter((item) => item.group === g)
-                    .map((item) => (
-                      <li key={item.href}>
-                        <a href={item.href} className="admin-nav-link">
-                          <span className="admin-nav-icon" aria-hidden="true">
-                            {item.icon}
-                          </span>
-                          <span>{item.label}</span>
-                        </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            ))}
-          </aside>
-        )}
+        {showSidebar && <AdminSidebar nav={nav} />}
         <main className="admin-main">{children}</main>
       </div>
     </div>

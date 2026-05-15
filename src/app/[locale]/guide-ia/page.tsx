@@ -201,6 +201,78 @@ export default async function AiGuidePage({ params }: Props) {
         </Container>
       </Section>
 
+      {/* P1-15 audit E2E NAV+CTA 2026-05-15 — sources externes E-E-A-T 2026.
+          Booste signal AEO/GEO (citations Claude.ai/Perplexity/SGE) en pointant
+          vers sources autoritaires INSEE/gouv.fr/EU AI Act. Tous les liens
+          externes ont `rel="noopener noreferrer"` + `target="_blank"`
+          (sécurité tabnabbing). Aucun lien vers concurrents directs. */}
+      <Section
+        tone="sand"
+        eyebrow={isFr ? "Sources & références" : "Sources & references"}
+        title={isFr ? "Lectures complémentaires" : "Further reading"}
+      >
+        <Container className="max-w-3xl">
+          <ul className="text-fg-soft space-y-3 text-base leading-relaxed">
+            <li>
+              <a
+                href="https://artificialintelligenceact.eu/"
+                target="_blank"
+                rel="noopener noreferrer external"
+                className="text-primary hover:underline"
+              >
+                EU AI Act — Texte officiel
+              </a>
+              {" — "}
+              {isFr
+                ? "obligations de transparence + classification des risques (entré en vigueur 2024, applicable progressivement 2025-2026)."
+                : "transparency requirements + risk classification (in force 2024, phased rollout 2025-2026)."}
+            </li>
+            <li>
+              <a
+                href="https://www.insee.fr/fr/statistiques/8244185"
+                target="_blank"
+                rel="noopener noreferrer external"
+                className="text-primary hover:underline"
+              >
+                INSEE — Tissu entrepreneurial français
+              </a>
+              {" — "}
+              {isFr
+                ? "données officielles PME/ETI référencées par toutes nos pages pSEO villes/régions."
+                : "official SME / mid-market data referenced by all our city/region pSEO pages."}
+            </li>
+            <li>
+              <a
+                href="https://www.economie.gouv.fr/intelligence-artificielle"
+                target="_blank"
+                rel="noopener noreferrer external"
+                className="text-primary hover:underline"
+              >
+                Ministère de l&apos;Économie — Plan France IA
+              </a>
+              {" — "}
+              {isFr
+                ? "feuille de route gouvernementale française 2024-2030."
+                : "French government roadmap 2024-2030."}
+            </li>
+            <li>
+              <a
+                href="https://docs.anthropic.com/"
+                target="_blank"
+                rel="noopener noreferrer external"
+                className="text-primary hover:underline"
+              >
+                Anthropic — Documentation Claude
+              </a>
+              {" — "}
+              {isFr
+                ? "stack technique LLM que nous déployons en priorité (Claude Sonnet 4.6 / Opus 4.7)."
+                : "the LLM technical stack we deploy first (Claude Sonnet 4.6 / Opus 4.7)."}
+            </li>
+          </ul>
+        </Container>
+      </Section>
+
       <Section tone="canvas">
         <Container className="max-w-3xl">
           <Illustration

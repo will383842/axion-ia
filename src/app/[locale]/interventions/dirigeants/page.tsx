@@ -60,7 +60,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   const formats = getFormatsByFamily("dirigeants");
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
+    { href: "/interventions", label: isFr ? "Interventions entreprise" : "Corporate AI sessions" },
     {
       href: "/interventions/dirigeants",
       label: isFr ? family.labelFr : family.labelEn,

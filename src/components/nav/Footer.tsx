@@ -40,9 +40,15 @@ export async function Footer() {
     // P0-5 audit E2E NAV+CTA 2026-05-15 — hub actualités factory V1.0.3 livré
     // (`src/app/[locale]/actualites/page.tsx`). FR-only par doctrine v1.2.
     ...(isFr ? [{ href: "/actualites" as const, label: "Actualités IA" }] : []),
+    // P1-18 audit E2E NAV+CTA 2026-05-15 — KB V4 publique livrée
+    // (`src/app/[locale]/connaissances/page.tsx`). Triple-filter strict.
+    ...(isFr ? [{ href: "/connaissances" as const, label: "Connaissances IA" }] : []),
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/faq", label: "FAQ" },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
+    // P0-11 audit E2E NAV+CTA 2026-05-15 — `/recherche` rendue découvrable
+    // (était orpheline depuis Sprint 15 placeholder).
+    { href: "/recherche", label: isFr ? "Recherche" : "Search" },
     // /galerie retiré P0-10 audit E2E NAV+CTA 2026-05-15 — route absente
     // (`src/app/[locale]/galerie/` non livrée). Sera ré-ajouté quand le skill
     // image-bank v1.1 expose le hub public. Entrée routing.ts conservée pour

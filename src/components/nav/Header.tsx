@@ -7,6 +7,7 @@ import { INTERVENTION_TIERS, formatPrice, getEntryTier } from "@/content/pricing
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
+import { InterventionsMegaMenu } from "./InterventionsMegaMenu";
 
 // Server Component. 4 items desktop + ZERO dropdown (CLAUDE.md v6 §9.2 —
 // révision §9.2-bis acceptée en bloc 2026-05-07 mais Sprint 15 différé).
@@ -94,14 +95,18 @@ export async function Header() {
 
           {/* Desktop nav — 2 premiers items, poussés à droite (près du CTA).
               P2-26 audit E2E NAV+CTA 2026-05-15 — `aria-label="Accueil"` n'était
-              pas sémantique ; remplacé par « Navigation principale ». */}
+              pas sémantique ; remplacé par « Navigation principale ».
+              P0-4 audit E2E NAV+CTA 2026-05-15 — premier item Interventions
+              instancié via `InterventionsMegaMenu` (override doctrine §9.2 sur
+              demande Will). Récupère 7 pages money desktop (4 familles + 3
+              pages best-seller) absentes avant. Audit page reste accessible
+              par le lien trigger du mega-menu. */}
           <nav
             aria-label={t("nav.primaryLabel")}
             className="hidden items-center gap-6 lg:flex lg:justify-end xl:gap-8"
           >
-            {navLeft.map((item) => (
-              <NavLink key={item.href} href={item.href} label={item.label} />
-            ))}
+            <InterventionsMegaMenu isFr={isFr} triggerLabel={t("nav.interventions")} />
+            <NavLink href="/audit" label={t("nav.audit")} />
           </nav>
         </div>
 

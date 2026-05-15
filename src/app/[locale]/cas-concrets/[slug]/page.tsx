@@ -95,9 +95,12 @@ export default async function CaseStudyPage({ params }: Props) {
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
+  // P1-14 audit E2E NAV+CTA 2026-05-15 — fallback breadcrumbName court (≤35c)
+  // pour éviter les titres très longs (« Industriel · -32% temps administratif
+  // comptable » = 61 caractères) qui cassent la lisibilité du fil d'Ariane.
   const breadcrumbItems = [
     { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
-    { href: `/cas-concrets/${slug}`, label: copy.title },
+    { href: `/cas-concrets/${slug}`, label: copy.breadcrumbName ?? copy.title },
   ];
 
   // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).

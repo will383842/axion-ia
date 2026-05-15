@@ -63,7 +63,7 @@ export default async function ConferenceFamilyPage({ params }: Props) {
   const formats = getFormatsByFamily("conference");
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
+    { href: "/interventions", label: isFr ? "Interventions entreprise" : "Corporate AI sessions" },
     {
       href: "/interventions/conference",
       label: isFr ? family.labelFr : family.labelEn,

@@ -7,7 +7,9 @@ import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { Link } from "@/i18n/navigation";
 import { buildProductMetadata } from "@/lib/seo";
+import { searchKnowledge } from "@/lib/knowledge/search-fts";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -23,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: locale === "fr" ? "Recherche · Axion-IA" : "Search · Axion-IA",
     description:
       locale === "fr"
-        ? "Recherche full-text sur le contenu Axion-IA — interventions, audit, blog, FAQ, aide."
-        : "Full-text search across Axion-IA content — sessions, audit, blog, FAQ, help.",
+        ? "Recherche full-text sur la base de connaissances Axion-IA (KB V4)."
+        : "Full-text search across Axion-IA knowledge base (KB V4).",
     alternates: { fr: "/recherche", en: "/search" },
   });
   return { ...meta, robots: { index: false, follow: true } };
@@ -38,12 +40,20 @@ export default async function SearchPage({ params, searchParams }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // P0-11 audit E2E NAV+CTA 2026-05-15 — `SearchAction` JSON-LD retiré : signal
-  // trompeur Google tant que Sprint 15 (moteur Postgres FTS / Pagefind) n'est
-  // pas branché. À rétablir le jour où la searchbox renvoie de vrais résultats.
+  // P0-11 audit E2E NAV+CTA 2026-05-15 — branchement moteur KB-7 FTS Postgres
+  // (`searchKnowledge`). Portée V1 limitée à `knowledge_*` (KB V4 publique :
+  // articles, méthodologies, comparatifs, playbooks, glossaire). Marketing
+  // pages + pSEO villes seront indexées en V1.5 (RRF FTS + pgvector).
+  // Filtre audience `public` appliqué côté SQL — aucune fuite KB team/internal.
+  const trimmed = q?.trim() ?? "";
+  const searchResults = trimmed
+    ? await searchKnowledge({
+        query: trimmed,
+        locale: loc,
+        limit: 20,
+      })
+    : null;
 
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/recherche", label: isFr ? "Recherche" : "Search" }];
 
   return (
@@ -54,12 +64,12 @@ export default async function SearchPage({ params, searchParams }: Props) {
       <Section
         titleAs="h1"
         eyebrow={isFr ? "Recherche" : "Search"}
-        title={isFr ? "Trouver dans" : "Search"}
-        titleEm={isFr ? "Axion-IA" : "Axion-IA"}
+        title={isFr ? "Trouver dans la" : "Search the"}
+        titleEm={isFr ? "base de connaissances" : "knowledge base"}
         description={
           isFr
-            ? "Recherche cross-content (blog, FAQ, aide, cas concrets, glossaire). Sprint 15 connecte Postgres FTS — pour l'instant le moteur est en cours de construction."
-            : "Cross-content search (blog, FAQ, help, case studies, glossary). Sprint 15 wires Postgres FTS — engine under construction for now."
+            ? "Recherche full-text sur la base de connaissances Axion-IA (articles, méthodologies, comparatifs, playbooks). L'extension cross-content (marketing, villes pSEO) arrive en V1.5."
+            : "Full-text search across the Axion-IA knowledge base (articles, methodologies, comparisons, playbooks). Cross-content (marketing, city pSEO) coming in V1.5."
         }
       />
       <Section>
@@ -86,35 +96,67 @@ export default async function SearchPage({ params, searchParams }: Props) {
             </button>
           </form>
 
-          {q ? (
+          {searchResults ? (
             <div className="mt-10 space-y-4">
-              <p className="text-fg-soft text-base">
+              <p className="text-fg-muted text-sm">
                 {isFr
-                  ? `Résultats pour « ${q} » — moteur Sprint 15. En attendant, essayez :`
-                  : `Results for "${q}" — Sprint 15 engine. Meanwhile, try:`}
+                  ? `${searchResults.total} résultat${searchResults.total > 1 ? "s" : ""} pour « ${trimmed} »`
+                  : `${searchResults.total} result${searchResults.total > 1 ? "s" : ""} for "${trimmed}"`}
               </p>
-              <ul className="space-y-2 text-base">
-                <li>
-                  <a className="text-primary hover:underline" href={`/${locale}/blog`}>
-                    → Blog
-                  </a>
-                </li>
-                <li>
-                  <a className="text-primary hover:underline" href={`/${locale}/faq`}>
-                    → FAQ
-                  </a>
-                </li>
-                <li>
-                  <a className="text-primary hover:underline" href={`/${locale}/glossaire`}>
-                    → {isFr ? "Glossaire" : "Glossary"}
-                  </a>
-                </li>
-                <li>
-                  <a className="text-primary hover:underline" href={`/${locale}/centre-aide`}>
-                    → {isFr ? "Centre d'aide" : "Help center"}
-                  </a>
-                </li>
-              </ul>
+              {searchResults.hits.length === 0 ? (
+                <div className="space-y-4">
+                  <p className="text-fg-soft text-base">
+                    {isFr
+                      ? "Aucun résultat dans la base de connaissances. Essayez aussi :"
+                      : "No results in the knowledge base. Try also:"}
+                  </p>
+                  <ul className="space-y-2 text-base">
+                    <li>
+                      <Link className="text-primary hover:underline" href="/blog">
+                        → Blog
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="text-primary hover:underline" href="/faq">
+                        → FAQ
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="text-primary hover:underline" href="/glossaire">
+                        → {isFr ? "Glossaire" : "Glossary"}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="text-primary hover:underline" href="/centre-aide">
+                        → {isFr ? "Centre d'aide" : "Help center"}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              ) : (
+                <ul className="divide-border divide-y">
+                  {searchResults.hits.map((hit) => (
+                    <li key={hit.translationId} className="py-4">
+                      <Link
+                        href={`/connaissances/${hit.slug}` as never}
+                        className="block focus-visible:outline-none"
+                      >
+                        <p className="text-fg-muted mb-1 text-xs tracking-[0.16em] uppercase">
+                          {String(hit.type).replaceAll("_", " ")}
+                        </p>
+                        <h2 className="text-fg group-hover:text-primary text-lg font-semibold">
+                          {hit.title}
+                        </h2>
+                        {hit.excerpt ? (
+                          <p className="text-fg-soft mt-2 line-clamp-3 text-sm leading-relaxed">
+                            {hit.excerpt}
+                          </p>
+                        ) : null}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ) : null}
 

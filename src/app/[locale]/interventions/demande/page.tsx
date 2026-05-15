@@ -71,7 +71,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
   const defaultSubject = mapObjetToSubject(objet);
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
+    { href: "/interventions", label: isFr ? "Interventions entreprise" : "Corporate AI sessions" },
     { href: "/interventions/demande", label: isFr ? "Demande" : "Request" },
   ];
 

@@ -22,6 +22,12 @@ export interface CaseStudy {
 
 interface CaseCopy {
   title: string;
+  /**
+   * Label court (≤35c) utilisé en breadcrumb dernier item. Si absent, fallback
+   * sur `title` (peut dépasser 35c et casser la lisibilité du fil d'Ariane).
+   * P1-14 audit E2E NAV+CTA 2026-05-15.
+   */
+  breadcrumbName?: string;
   excerpt: string;
   context: string;
   problem: string;
@@ -41,6 +47,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     metric: "-32% admin",
     fr: {
       title: "Industriel · -32% temps administratif comptable",
+      breadcrumbName: "Industrie · −32 % admin",
       excerpt: "Implémentation IA sur les flux comptables et fournisseurs en 6 semaines.",
       context:
         "PME industrielle 80 personnes, 2 sites. Flux fournisseurs manuel : 4 ETP affectés au tri, validation et saisie de 1500 factures/mois.",
@@ -57,6 +64,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     },
     en: {
       title: "Industrial · -32% accounting admin time",
+      breadcrumbName: "Industry · −32% admin",
       excerpt: "AI implementation on supplier accounting flows in 6 weeks.",
       context:
         "80-person industrial SME, 2 sites. Manual supplier flow: 4 FTEs allocated to sorting, validation and entry of 1500 invoices/month.",
@@ -77,6 +85,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     metric: "+18% productivity",
     fr: {
       title: "Cabinet juridique · +18 % productivité par associé",
+      breadcrumbName: "Juridique · +18 %",
       excerpt: "Automatisation des comptes-rendus de réunions et de la veille juridique.",
       context:
         "Cabinet d'avocats 12 associés. Production manuelle de comptes-rendus de RDV clients (~ 30 min/CR) et veille juridique chronophage.",
@@ -92,6 +101,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     },
     en: {
       title: "Law firm · +18% productivity per partner",
+      breadcrumbName: "Law firm · +18%",
       excerpt: "Automated meeting minutes and legal intelligence pipeline.",
       context:
         "Law firm with 12 partners. Manual production of client meeting minutes (~30 min each) and time-consuming legal monitoring.",
@@ -114,6 +124,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     metric: "-45% SAV time",
     fr: {
       title: "Retail · -45 % temps de traitement SAV",
+      breadcrumbName: "Retail · −45 % SAV",
       excerpt: "Triage IA des tickets clients sur 6 semaines.",
       context:
         "Enseigne de prêt-à-porter, 35 magasins, ~ 800 tickets SAV/jour entre boutiques et e-commerce.",
@@ -129,6 +140,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     },
     en: {
       title: "Retail · -45% customer-service handling time",
+      breadcrumbName: "Retail · −45% CS",
       excerpt: "AI ticket triage in 6 weeks.",
       context:
         "Apparel retailer, 35 stores, ~800 customer-service tickets/day across stores and e-commerce.",
@@ -149,6 +161,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     metric: "x3 onboarding speed",
     fr: {
       title: "Banque · onboarding KYC accéléré 3×",
+      breadcrumbName: "Banque · KYC ×3",
       excerpt: "Lecture IA des documents KYC + scoring automatique pour les conseillers.",
       context:
         "Banque privée régionale. Onboarding KYC manuel : 4-7 jours, 30+ documents par dossier.",
@@ -163,6 +176,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     },
     en: {
       title: "Bank · 3× faster KYC onboarding",
+      breadcrumbName: "Bank · KYC ×3",
       excerpt: "AI reading of KYC documents + auto scoring for advisors.",
       context: "Regional private bank. Manual KYC onboarding: 4-7 days, 30+ documents per file.",
       problem: "Lead time too long, customer drop-off, saturated compliance team on peaks.",
@@ -182,6 +196,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     metric: "+5 RDV/sem",
     fr: {
       title: "Artisan plombier · +5 RDV qualifiés / semaine",
+      breadcrumbName: "Artisan · +5 RDV/sem",
       excerpt: "Agent IA de prospection LinkedIn et qualification de leads entrants.",
       context:
         "Artisan plombier 6 personnes, dépendant des annuaires en ligne. Marge faible, faible visibilité B2B.",
@@ -197,6 +212,7 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     },
     en: {
       title: "Tradesperson · +5 qualified meetings/week",
+      breadcrumbName: "Trade · +5 meets/wk",
       excerpt: "LinkedIn prospecting AI agent and inbound lead qualification.",
       context:
         "6-person plumber business, dependent on online directories. Low margin, low B2B visibility.",

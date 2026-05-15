@@ -25,6 +25,7 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Illustration } from "@/components/visual/Illustration";
 import { InterventionsHeroSchema } from "@/components/sections/InterventionsHeroSchema";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -924,6 +925,20 @@ export default async function InterventionsListing({ params }: Props) {
           </Cta>
         }
         tone="dark"
+      />
+
+      {/* P1-17 audit E2E NAV+CTA 2026-05-15 — sticky mobile CTA pour hubs
+          services tier-1 (parité /audit et /implementation). Pousse vers le
+          format entry (4 h) qui correspond au prix d'entrée 390 €. */}
+      <StickyMobileCta
+        href="/reserver"
+        label={
+          isFr
+            ? `Réserver · à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}`
+            : `Book · from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}`
+        }
+        track="interventions-hub-sticky"
+        threshold={500}
       />
 
       <JsonLd data={serviceJsonLd} />

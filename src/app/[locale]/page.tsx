@@ -239,6 +239,8 @@ export default async function Home({ params }: HomeProps) {
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
                   href="/interventions"
+                  data-cta="home-hero-primary"
+                  data-cta-tracking="home_hero_primary_click"
                   className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {t("heroCtaPrimary", { price: interventionEntryPrice })}
@@ -246,6 +248,8 @@ export default async function Home({ params }: HomeProps) {
                 </Link>
                 <Link
                   href="/cas-concrets"
+                  data-cta="home-hero-secondary"
+                  data-cta-tracking="home_hero_secondary_click"
                   className="text-fg border-border-strong cta-lift bg-paper/60 focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold backdrop-blur focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {t("heroCtaSecondary")}
