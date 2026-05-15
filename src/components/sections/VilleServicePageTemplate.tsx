@@ -17,7 +17,7 @@ import { fmtPopulation } from "@/lib/intl";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -316,12 +316,6 @@ export async function renderVilleServicePage({
 
   return (
     <>
-      <JsonLd data={serviceJsonLd} />
-      <JsonLd data={localBusinessJsonLd} />
-      <JsonLd data={breadcrumbJsonLd} />
-      {faqSpeakableJsonLd ? <JsonLd data={faqSpeakableJsonLd} /> : null}
-      {nearbyItemList ? <JsonLd data={nearbyItemList} /> : null}
-
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
@@ -548,6 +542,19 @@ export async function renderVilleServicePage({
             </Cta>
           </div>
         }
+      />
+
+      {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 5
+          schemas combinés en 1 script @graph pour ne pas bloquer le parsing
+          du contenu visible. Cumul ~3 services × 2 150 villes = ~12 900 SSG. */}
+      <JsonLdGraph
+        schemas={[
+          serviceJsonLd,
+          localBusinessJsonLd,
+          breadcrumbJsonLd,
+          faqSpeakableJsonLd ?? null,
+          nearbyItemList ?? null,
+        ]}
       />
     </>
   );

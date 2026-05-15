@@ -20,7 +20,7 @@ import { fmtPopulation } from "@/lib/intl";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
+import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -202,11 +202,6 @@ export default async function VillePage({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={localBusinessJsonLd} />
-      <JsonLd data={placeJsonLd} />
-      {faqSpeakableJsonLd ? <JsonLd data={faqSpeakableJsonLd} /> : null}
-      {nearbyItemList ? <JsonLd data={nearbyItemList} /> : null}
-
       {/* 1. HERO localisé — Section h1 custom layout 2-cols (parity /interventions) */}
       <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
         <Container>
@@ -830,6 +825,18 @@ export default async function VillePage({ params }: Props) {
             </Cta>
           </div>
         }
+      />
+
+      {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 5+
+          schemas combinés en 1 seul script @graph pour ne pas bloquer le
+          parsing du contenu visible. Google + Bing supportent @graph. */}
+      <JsonLdGraph
+        schemas={[
+          localBusinessJsonLd,
+          placeJsonLd,
+          faqSpeakableJsonLd ?? null,
+          nearbyItemList ?? null,
+        ]}
       />
     </>
   );
