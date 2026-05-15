@@ -227,13 +227,17 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Sous-processeurs et destinataires des données",
-          body: "Conformément à l'article 13.1.e du RGPD, voici la liste des sous-processeurs auxquels Axion-IA OÜ recourt : Hetzner Online GmbH (hébergement VPS + Storage Box pour les backups offsite chiffrés AES-256, Allemagne Frankfurt — DPA signé, ISO 27001) ; Cloudflare, Inc. (CDN + protection DDoS + Turnstile captcha, États-Unis avec transferts encadrés par SCC + EU-US Data Privacy Framework — DPA online + clauses contractuelles types) ; Telegram FZ-LLC (notifications administratives via Bot API à destination du gérant, Émirats Arabes Unis — pas de DPA standard, minimisation PII appliquée : identifiants partiels uniquement) ; OpenAI, LLC (génération de contenu éditorial via GPT-4o, États-Unis — SCC + EU-US DPF + DPA signé, prompts éditoriaux sans PII client, option Zero Data Retention activée) ; Anthropic PBC (génération de contenu éditorial via Claude, États-Unis — SCC + EU-US DPF + Commercial DPA signé, opt-out training par défaut) ; Perplexity AI, Inc. (recherche temps-réel et citations sources via Sonar API pour fact-checking et veille RSS, États-Unis — SCC + EU-US DPF + DPA signé). Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+          body: "Conformément à l'article 13.1.e du RGPD, Axion-IA OÜ tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : infrastructure principale, paiements & contrats, communications, analytics & observabilité, génération de contenu IA). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+        },
+        {
+          title: "IA générative et transparence (AI Act EU)",
+          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés avec l'assistance de modèles d'IA générative (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar pour le fact-checking) puis supervisés par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
         },
       ],
       metaSeo: {
         title: "Politique de confidentialité · Axion-IA",
         description:
-          "RGPD, données personnelles, droits, AKI estonienne. Hébergement UE Hetzner Frankfurt + sous-processeurs déclarés.",
+          "RGPD + AI Act, données personnelles, droits, AKI estonienne. Hébergement UE Hetzner Frankfurt + sous-processeurs publiés.",
       },
     },
     en: {
@@ -272,13 +276,17 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Sub-processors and data recipients",
-          body: "In accordance with GDPR article 13.1.e, the sub-processors used by Axion-IA OÜ are: Hetzner Online GmbH (VPS hosting + Storage Box for AES-256 encrypted offsite backups, Germany Frankfurt — DPA signed, ISO 27001); Cloudflare, Inc. (CDN + DDoS protection + Turnstile captcha, United States with transfers framed by SCC + EU-US Data Privacy Framework — online DPA + standard contractual clauses); Telegram FZ-LLC (admin notifications via Bot API to the manager, United Arab Emirates — no standard DPA, PII minimisation applied: partial identifiers only); OpenAI, LLC (editorial content generation via GPT-4o, United States — SCC + EU-US DPF + signed DPA, editorial prompts with no client PII, Zero Data Retention enabled); Anthropic PBC (editorial content generation via Claude, United States — SCC + EU-US DPF + Commercial DPA signed, opt-out training by default); Perplexity AI, Inc. (real-time search and source citations via Sonar API for fact-checking and RSS curation, United States — SCC + EU-US DPF + signed DPA). No data is ever sold or shared for advertising purposes.",
+          body: "In accordance with GDPR article 13.1.e, Axion-IA OÜ maintains an exhaustive public list of its sub-processors at /subprocessors (categories: core infrastructure, payments & contracts, communications, analytics & observability, AI content generation). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
+        },
+        {
+          title: "Generative AI and transparency (EU AI Act)",
+          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is drafted with the assistance of generative AI models (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar for fact-checking) and then supervised by the Axion-IA team before publication. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
         },
       ],
       metaSeo: {
         title: "Privacy policy · Axion-IA",
         description:
-          "GDPR, personal data, rights, Estonian AKI. EU Hetzner Frankfurt hosting + declared sub-processors.",
+          "GDPR + AI Act, personal data, rights, Estonian AKI. EU Hetzner Frankfurt hosting + published sub-processors.",
       },
     },
   },

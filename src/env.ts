@@ -139,6 +139,10 @@ export const env = createEnv({
     RETENTION_SUBS_ARCHIVE_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_NEWSLETTER_UNSUB_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_BOOKINGS_CANCELLED_MONTHS: z.coerce.number().int().min(1).optional(),
+    // Audit B5 P0-7 — extension purge content-gen / cost ledger / RUM.
+    RETENTION_GENERATION_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
+    RETENTION_COST_LEDGER_MONTHS: z.coerce.number().int().min(1).optional(),
+    RETENTION_WEB_VITALS_MONTHS: z.coerce.number().int().min(1).optional(),
 
     // Content Generator V1 (Sprint 1 Day 1 AGT-B) — providers IA + KB ingest.
     // Toutes optional V1 : le BUILD continue sans elles ; seul le RUN (génération
@@ -224,6 +228,9 @@ export const env = createEnv({
     RETENTION_SUBS_ARCHIVE_MONTHS: process.env.RETENTION_SUBS_ARCHIVE_MONTHS,
     RETENTION_NEWSLETTER_UNSUB_MONTHS: process.env.RETENTION_NEWSLETTER_UNSUB_MONTHS,
     RETENTION_BOOKINGS_CANCELLED_MONTHS: process.env.RETENTION_BOOKINGS_CANCELLED_MONTHS,
+    RETENTION_GENERATION_LOGS_MONTHS: process.env.RETENTION_GENERATION_LOGS_MONTHS,
+    RETENTION_COST_LEDGER_MONTHS: process.env.RETENTION_COST_LEDGER_MONTHS,
+    RETENTION_WEB_VITALS_MONTHS: process.env.RETENTION_WEB_VITALS_MONTHS,
     // Content Generator V1 (Sprint 1 Day 1 AGT-B)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,

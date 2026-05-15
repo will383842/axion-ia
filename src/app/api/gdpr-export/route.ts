@@ -1,4 +1,4 @@
-// API /api/gdpr-export — RGPD self-service export (Sprint 24 / D2).
+// API /api/gdpr-export — RGPD self-service export (Sprint 24 / D2 + audit B5 2026-05-15).
 //
 // POST { email, token } : valide token signé HMAC-SHA256 (lib gdpr-token),
 // vérifie que l'email du token = l'email du body (anti-replay), rate-limit
@@ -6,6 +6,19 @@
 //   - submissions: tous les Submission où contactEmail = email
 //   - newsletter: ligne NewsletterSubscriber si elle existe
 //   - bookings: les Booking liés via Submission (interventions ferme + cancelled)
+//
+// **Tables explicitement EXCLUES de l'export (logs techniques RGPD art. 23) :**
+//   - generation_logs : audit trail content-gen (provider, model, tokens).
+//     Lié à un `job_id` éditorial, jamais à un email visiteur. PII visiteur
+//     impossible : les prompts content-gen sont éditoriaux (titres,
+//     intent SEO, ville) et passent par le helper `pii-safe` côté Telegram.
+//     Cf. politique-confidentialite § « IA générative et transparence ».
+//   - cost_ledger : montants USD provider IA + tokens. Aucune PII.
+//   - web_vital_samples : RUM agrégé, sessionId anonyme client.
+//   - content_gen_jobs : pipeline interne, lié à templates éditoriaux.
+//
+// Ces tables sont purgées automatiquement par `retention-purge-worker.ts`
+// (durées dans `_AUDIT/DPA-REGISTER.md` + politique-confidentialite).
 //
 // Le token est obtenu via POST /api/gdpr-export/request {email} qui envoie
 // le lien par email (cf. request/route.ts).
@@ -119,5 +132,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     email,
     submissions,
     newsletter,
+    notice: {
+      excludedTables: [
+        "generation_logs (audit trail technique content-gen, sans PII visiteur)",
+        "cost_ledger (montants USD provider IA, sans PII)",
+        "web_vital_samples (RUM agrégé, sessionId client anonyme)",
+        "content_gen_jobs (pipeline interne éditorial)",
+      ],
+      excludedReason:
+        "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
+      contactDpo: "contact@axion-ia.com",
+    },
   });
 }

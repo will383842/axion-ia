@@ -13,17 +13,22 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 
 ## 1. Synthèse — sous-processeurs déclarés
 
-| #   | Sous-processeur           | Finalité                            | Localisation            | DPA    | Base légale transfert      | Statut         |
-| --- | ------------------------- | ----------------------------------- | ----------------------- | ------ | -------------------------- | -------------- |
-| 1   | Hetzner Online GmbH       | VPS + Storage Box backups offsite   | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer    |
-| 2   | Cloudflare, Inc.          | CDN + DDoS + Turnstile captcha      | États-Unis              | online | SCC + EU-US DPF            | 🟡 à accepter  |
-| 3   | Telegram FZ-LLC           | Notifications admin (Bot API)       | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010    |
-| 4   | Sentry (self-hosted)      | Crash reporting + traces            | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted |
-| 5   | Plausible (self-hosted)   | Analytics anonymes                  | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted |
-| 6   | Uptime Kuma (self-hosted) | Monitoring uptime                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted |
-| 7   | OpenAI, LLC               | LLM contenus (GPT-4o) — content-gen | États-Unis              | online | SCC + EU-US DPF + ZDR      | 🟡 à signer    |
-| 8   | Anthropic PBC             | LLM contenus (Claude) — content-gen | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer    |
-| 9   | Perplexity AI, Inc.       | Recherche temps-réel — content-gen  | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer    |
+| #   | Sous-processeur            | Finalité                             | Localisation            | DPA    | Base légale transfert      | Statut          |
+| --- | -------------------------- | ------------------------------------ | ----------------------- | ------ | -------------------------- | --------------- |
+| 1   | Hetzner Online GmbH        | VPS + Storage Box backups offsite    | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer     |
+| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha       | États-Unis              | online | SCC + EU-US DPF            | 🟡 à accepter   |
+| 3   | Telegram FZ-LLC            | Notifications admin (Bot API)        | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010     |
+| 4   | Sentry (self-hosted)       | Crash reporting + traces             | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 5   | Plausible (self-hosted)    | Analytics anonymes                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 6   | Uptime Kuma (self-hosted)  | Monitoring uptime                    | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 7   | OpenAI, LLC                | LLM contenus (GPT-4o) — content-gen  | États-Unis              | online | SCC + EU-US DPF + ZDR      | 🟡 à signer     |
+| 8   | Anthropic PBC              | LLM contenus (Claude) — content-gen  | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer     |
+| 9   | Perplexity AI, Inc.        | Recherche temps-réel — content-gen   | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer     |
+| 10  | Unsplash Inc.              | Recherche images stock — content-gen | Canada                  | online | Décision d'adéquation UE   | 🟡 à signer     |
+| 11  | Voyage AI, Inc.            | Embeddings KB (voyage-3-lite)        | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer     |
+| 12  | Stripe Payments Europe Ltd | Paiements (Checkout + Radar)         | Irlande (UE) + USA      | online | SCC + EU-US DPF            | 🟡 à accepter   |
+| 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
+| 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 
 > ⚠️ **Backblaze N'EST PAS utilisé**. Le code utilise Hetzner Storage Box uniquement
 > (`HETZNER_STORAGE_*` env vars). La mention Backblaze dans `src/content/legal.ts`
@@ -34,6 +39,17 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > ne sont pas encore en Coolify env vars. Les DPA doivent être signés/acceptés
 > avant que Will n'active `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`,
 > `PERPLEXITY_API_KEY` en production.
+
+> 🆕 **Lignes 10-14 ajoutées 2026-05-15** (Audit B5 fix P0-2/P0-3/P0-5).
+> Cinq sous-processeurs supplémentaires ajoutés au registre RGPD art. 30 :
+>
+> - **Unsplash** (content-gen actif, DPA non signé → bloquant cutover).
+> - **Voyage AI** (V1 = stub déterministe ; activation Sprint KB-13 lorsque
+>   `VOYAGE_API_KEY` est ajoutée à Coolify env — DPA à signer avant).
+> - **Stripe / OSM / DocuSeal** : déjà déclarés dans `src/content/subprocessors.ts`
+>   (page publique `/sous-processeurs`) mais oubliés du registre interne art. 30.
+>   La SSOT publique unique est désormais `src/content/subprocessors.ts` ; ce
+>   registre interne lui correspond ligne à ligne (RGPD art. 30 + 28).
 
 ---
 
@@ -152,6 +168,99 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 
 ---
 
+## 7bis. Unsplash Inc. (content-gen — priorité 2 avant cutover RUN)
+
+| Champ                     | Valeur                                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | Unsplash Inc.                                                                                                           |
+| **Adresse**               | 400 Atlantic Avenue, Suite 200, Montréal, QC H2Y 1H1, Canada                                                            |
+| **Finalité**              | Recherche d'images stock libres de droits (attribution photographe) pour illustrations Articles content-gen             |
+| **Données traitées**      | Mots-clés de recherche image (FR/EN) — **aucune donnée visiteur**                                                       |
+| **Localisation physique** | Canada + USA (CDN global)                                                                                               |
+| **Garanties**             | DPA standard + Décision d'adéquation UE-Canada (2001) couvrant le traitement principal                                  |
+| **DPA**                   | Online — à signer depuis le dashboard Unsplash for Business / API                                                       |
+| **Lien**                  | https://unsplash.com/privacy                                                                                            |
+| **Procédure**             | Demander DPA via `https://unsplash.com/data-request` (contact `privacy@unsplash.com`)                                   |
+| **Durée conservation**    | Logs API : 90 j                                                                                                         |
+| **Statut**                | 🟡 **À SIGNER** par Will avant cutover RUN (avant que `UNSPLASH_ACCESS_KEY` ne soit ajouté en Coolify prod)             |
+| **Date signature**        | _(à compléter)_                                                                                                         |
+| **Référence interne**     | _(à compléter — ID compte Unsplash)_                                                                                    |
+| **Risk note**             | Risque RGPD très faible (aucune PII visiteur transmise). DPA principalement formel pour conformité art. 28 du registre. |
+
+---
+
+## 7ter. Voyage AI, Inc. (content-gen — embeddings KB, activation différée)
+
+| Champ                     | Valeur                                                                                                                                                                                              |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | Voyage AI, Inc.                                                                                                                                                                                     |
+| **Adresse**               | Palo Alto, CA, États-Unis                                                                                                                                                                           |
+| **Finalité**              | Embeddings vectoriels (`voyage-3-lite`, 1024 dim) pour la base de connaissances éditoriale (recherche hybride dedup factory)                                                                        |
+| **Données traitées**      | Texte éditorial **public uniquement** (hard gate code `EmbeddingConfidentialityRefusal` : entrées `confidential`/`secret` refusées)                                                                 |
+| **Localisation physique** | États-Unis                                                                                                                                                                                          |
+| **Garanties**             | DPA standard + SCC + EU-US Data Privacy Framework                                                                                                                                                   |
+| **DPA**                   | Online — Voyage Console > Settings > Compliance                                                                                                                                                     |
+| **Lien**                  | https://www.voyageai.com/privacy                                                                                                                                                                    |
+| **Procédure**             | Console Voyage AI → Account → Sign DPA. Activer ZDR si proposé en option Enterprise.                                                                                                                |
+| **Durée conservation**    | Embeddings : ne sont pas conservés par Voyage (computed-and-returned). Logs API : 30-60 j.                                                                                                          |
+| **Statut**                | 🟡 **À SIGNER** par Will avant que `VOYAGE_API_KEY` ne soit ajouté en Coolify env (V1 = stub déterministe SHA-256, aucun appel sortant aujourd'hui — cf. `src/lib/knowledge/embeddings.ts` L21-55). |
+| **Date signature**        | _(à compléter)_                                                                                                                                                                                     |
+| **Référence interne**     | _(à compléter — ID compte Voyage AI)_                                                                                                                                                               |
+| **Risk note**             | Risque RGPD nul tant que la clé n'est pas en Coolify env. **Bloquant cutover Sprint KB-13** (activation embeddings live).                                                                           |
+
+---
+
+## 7quater. Stripe Payments Europe Ltd
+
+| Champ                     | Valeur                                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **Nom légal**             | Stripe Payments Europe Ltd                                                                                         |
+| **Adresse**               | 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irlande (UE)                                                 |
+| **Finalité**              | Traitement des paiements (Checkout, webhooks), Stripe Radar anti-fraude, gestion des remboursements                |
+| **Données traitées**      | Email, nom, montants facturés/payés, n° de facture, métadonnées booking. **Aucun numéro de carte** (Stripe-hosted) |
+| **Localisation physique** | UE (Dublin, Frankfurt) avec réplication USA pour Radar                                                             |
+| **Garanties**             | DPA standard + SCC + EU-US Data Privacy Framework (Stripe US inscrit DPF list)                                     |
+| **DPA**                   | Online — Stripe Dashboard > Settings > Privacy & Compliance                                                        |
+| **Lien**                  | https://stripe.com/legal/dpa                                                                                       |
+| **Procédure**             | Dashboard Stripe → Settings → Privacy → Accept Data Processing Agreement                                           |
+| **Statut**                | 🟡 **À ACCEPTER** depuis Stripe Dashboard (déclaratif côté Will)                                                   |
+| **Date signature**        | _(à compléter)_                                                                                                    |
+
+---
+
+## 7quinquies. OpenStreetMap Foundation (Nominatim)
+
+| Champ                     | Valeur                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | OpenStreetMap Foundation                                                                                 |
+| **Adresse**               | St John's Innovation Centre, Cowley Road, Cambridge, CB4 0WS, Royaume-Uni                                |
+| **Finalité**              | Géocodage des villes saisies par les visiteurs (calcul buffer trajet Booking) — usage **public anonyme** |
+| **Données traitées**      | Nom de ville en clair + code pays. **Aucune IP visiteur transmise** (proxy serveur).                     |
+| **Localisation physique** | UE + Royaume-Uni                                                                                         |
+| **Garanties**             | Royaume-Uni : décision d'adéquation UE-UK active. Politique de confidentialité OSM Foundation publique.  |
+| **DPA**                   | NA — usage de l'API publique gratuite, pas de contrat commercial                                         |
+| **Lien**                  | https://wiki.osmfoundation.org/wiki/Privacy_Policy                                                       |
+| **Procédure mitigation**  | Cache local 30 j côté Axion-IA pour réduire les appels. Respect quota OSM (1 req/s).                     |
+| **Statut**                | ✅ **CONFORME** (usage public anonyme + décision adéquation)                                             |
+
+---
+
+## 7sexies. DocuSeal Community (self-hosted)
+
+| Champ                     | Valeur                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                |
+| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié Axion-IA OÜ)                                                    |
+| **Finalité**              | Signature électronique des contrats et devis (Sprint X.3+)                                               |
+| **Données traitées**      | Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF             |
+| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                            |
+| **Garanties**             | Pas de tiers extérieur (Axion-IA OÜ seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box. |
+| **DPA**                   | NA — pas de sous-traitant externe                                                                        |
+| **Lien**                  | https://www.docuseal.com                                                                                 |
+| **Statut**                | ✅ **CONFORME** (self-hosted UE)                                                                         |
+
+---
+
 ## 8. Action correctif Backblaze (clarification legal.ts)
 
 `src/content/legal.ts` Sprint 24/A1 mentionne Backblaze comme sous-processeur.
@@ -197,14 +306,19 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 
 ## 11. Historique
 
-| Date       | Événement                                                                                    |
-| ---------- | -------------------------------------------------------------------------------------------- |
-| 2026-05-09 | Création du registre (Sprint 24.1). 4 lignes à signer/accepter avant cutover.                |
-| 2026-05-09 | ADR 0010 acté (minimisation PII Telegram Option A).                                          |
-| 2026-05-14 | Pass B fix P0-3 : ajout OpenAI / Anthropic / Perplexity (3 sous-processeurs IA content-gen). |
-| _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                             |
-| _(date)_   | DPA Cloudflare accepté (Will).                                                               |
-| _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                 |
-| _(date)_   | DPA Anthropic signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                           |
-| _(date)_   | DPA Perplexity signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                          |
-| _(date)_   | Audit AKI annuel (rappel : prévoir Q4 2026).                                                 |
+| Date       | Événement                                                                                                                                                |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-05-09 | Création du registre (Sprint 24.1). 4 lignes à signer/accepter avant cutover.                                                                            |
+| 2026-05-09 | ADR 0010 acté (minimisation PII Telegram Option A).                                                                                                      |
+| 2026-05-14 | Pass B fix P0-3 : ajout OpenAI / Anthropic / Perplexity (3 sous-processeurs IA content-gen).                                                             |
+| 2026-05-15 | Audit B5 fix P0-2/P0-3/P0-5 : ajout Unsplash / Voyage AI / Stripe / OSM / DocuSeal (5 lignes). SSOT publique unifiée sur `src/content/subprocessors.ts`. |
+| _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
+| _(date)_   | DPA Cloudflare accepté (Will).                                                                                                                           |
+| _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |
+| _(date)_   | DPA Anthropic signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                       |
+| _(date)_   | DPA Perplexity signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                      |
+| _(date)_   | DPA Unsplash signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                        |
+| _(date)_   | DPA Voyage AI signé (Will) — avant ajout `VOYAGE_API_KEY` à Coolify env.                                                                                 |
+| _(date)_   | DPA Stripe accepté (Will) — Stripe Dashboard.                                                                                                            |
+| _(date)_   | Audit AKI annuel (rappel : prévoir Q4 2026).                                                                                                             |
+| _(date)_   | Renouvellement annuel DPA (rappel : revue trimestrielle minimum, signature ré-évaluée 1× /an).                                                           |

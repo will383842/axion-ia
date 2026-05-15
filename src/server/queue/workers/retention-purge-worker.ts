@@ -1,4 +1,4 @@
-// Worker BullMQ — purge RGPD quotidienne (Sprint 24 / D3).
+// Worker BullMQ — purge RGPD quotidienne (Sprint 24 / D3 + audit B5 2026-05-15).
 //
 // Cron 03:00 UTC. Pour chaque table cible :
 //   - activity_logs : suppression hard si created_at > N mois (default 12).
@@ -8,12 +8,25 @@
 //                              (handle propre RGPD art. 17 droit à l'oubli +
 //                              audit trail nominatif).
 //   - bookings      : suppression hard si status='cancelled' ET updated_at > N mois (default 12).
+//   - generation_logs (audit B5 P0-7) : logs techniques content-gen — purge à N mois
+//                              (default 12). Ces logs sont append-only et lient les
+//                              prompts content-gen à un job_id non-PII. Pas d'export
+//                              RGPD utilisateur (cf. politique-confidentialite §
+//                              IA générative — logs techniques exclus art. 23 RGPD).
+//   - cost_ledger (audit B5 P0-7) : ledger atomique provider IA — purge à N mois
+//                              (default 24, alignée obligation comptable estonienne).
+//                              Aucun PII (provider key + montant USD seulement).
+//   - web_vital_samples (audit B5 P0-7) : RUM agrégé Web Vitals — purge à N mois
+//                              (default 6). Pas de PII (sessionId anonyme client).
 //
 // Variables env :
 //   RETENTION_LOGS_MONTHS=12
 //   RETENTION_SUBS_ARCHIVE_MONTHS=24
 //   RETENTION_NEWSLETTER_UNSUB_MONTHS=36
 //   RETENTION_BOOKINGS_CANCELLED_MONTHS=12
+//   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
+//   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — compta estonienne)
+//   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
 
@@ -27,6 +40,9 @@ const DEFAULTS = {
   submissionsArchived: 24,
   newsletterUnsub: 36,
   bookingsCancelled: 12,
+  generationLogs: 12,
+  costLedger: 24,
+  webVitals: 6,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -55,7 +71,15 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
   const worker = new Worker<RetentionPurgeJobData>(
     "retention-purge",
     async () => {
-      const counts = { logs: 0, submissions: 0, newsletter: 0, bookings: 0 };
+      const counts = {
+        logs: 0,
+        submissions: 0,
+        newsletter: 0,
+        bookings: 0,
+        generationLogs: 0,
+        costLedger: 0,
+        webVitals: 0,
+      };
 
       // 1) activity_logs ancients
       const logsMonths = readMonths("RETENTION_LOGS_MONTHS", DEFAULTS.logs);
@@ -134,9 +158,38 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       });
       counts.bookings = cancelledBookings.count;
 
+      // 5) generation_logs anciens (content-gen audit trail technique, audit B5 P0-7).
+      // GenerationLog.timestamp = createdAt — pas de updatedAt (table append-only).
+      const genLogsMonths = readMonths("RETENTION_GENERATION_LOGS_MONTHS", DEFAULTS.generationLogs);
+      const genLogsResult = await prisma.generationLog.deleteMany({
+        where: { timestamp: { lt: monthsAgo(genLogsMonths) } },
+      });
+      counts.generationLogs = genLogsResult.count;
+
+      // 6) cost_ledger ancien (atomique provider IA, audit B5 P0-7).
+      // Aucune PII, juste provider + model + tokens + costUsd. 24 mois alignés
+      // obligation comptable estonienne (la table comptable principale reste
+      // les invoices Stripe — ce ledger est observabilité interne).
+      const costLedgerMonths = readMonths("RETENTION_COST_LEDGER_MONTHS", DEFAULTS.costLedger);
+      const costLedgerResult = await prisma.costLedger.deleteMany({
+        where: { timestamp: { lt: monthsAgo(costLedgerMonths) } },
+      });
+      counts.costLedger = costLedgerResult.count;
+
+      // 7) web_vital_samples anciens (RUM, audit B5 P0-7).
+      // sessionId est généré client (anonyme). userAgent peut être quasi-identifiant
+      // → purge agressive 6 mois par défaut (alignée pratique RUM industrielle).
+      const webVitalsMonths = readMonths("RETENTION_WEB_VITALS_MONTHS", DEFAULTS.webVitals);
+      const webVitalsResult = await prisma.webVitalSample.deleteMany({
+        where: { createdAt: { lt: monthsAgo(webVitalsMonths) } },
+      });
+      counts.webVitals = webVitalsResult.count;
+
       console.log(
         `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
-          `newsletter=${counts.newsletter} bookings=${counts.bookings}`,
+          `newsletter=${counts.newsletter} bookings=${counts.bookings} ` +
+          `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
+          `webVitals=${counts.webVitals}`,
       );
     },
     { connection: getBullConnectionOrThrow(), concurrency: 1 },

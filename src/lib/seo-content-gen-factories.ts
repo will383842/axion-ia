@@ -65,6 +65,11 @@ export function buildPersonManonJsonLd(
       caption,
     },
     description,
+    // Audit B5 P1-3 — machine-readable AI Act art. 50 transparence persona.
+    // `disambiguatingDescription` est lu par les crawlers AEO/GEO 2026 +
+    // sert de bandeau Speakable potentiel.
+    disambiguatingDescription:
+      "Persona éditoriale Axion-IA. Portrait généré par IA, contenus IA-assistés supervisés par l'équipe Axion-IA (AI Act EU art. 50).",
     knowsAbout: profile.knowsAbout,
     knowsLanguage: ["fr-FR"],
     worksFor: { "@id": `${SITE_URL}/#organization` },
@@ -97,12 +102,32 @@ export interface ArticleJsonLdInput {
   readonly urlSegment?: "blog" | "actualites";
 }
 
+/**
+ * Disclaimer machine-readable AI Act EU art. 50 (audit B5 P1-3).
+ *
+ * Injecté dans tous les Article JSON-LD (Article / BlogPosting / TechArticle /
+ * NewsArticle) produits par le content generator. Permet aux crawlers de
+ * machine-lire que le contenu est IA-assisté et supervisé.
+ *
+ * `Article.creator` pointe vers la persona Manon (`@id` Person) qui porte
+ * elle-même `aiGenerated=true` (AuthorProfile.aiGenerated) et le disclaimer
+ * humain visible côté UX (cf. `/equipe/manon`). `disambiguatingDescription`
+ * = phrase courte AEO-friendly. `usageInfo` pointe vers la politique
+ * confidentialité section IA générative pour traçabilité réglementaire.
+ */
+const AI_DISCLAIMER_FR =
+  "Contenu éditorial rédigé avec assistance d'IA générative (OpenAI / Anthropic / Perplexity) et supervisé par l'équipe Axion-IA avant publication. Voir /equipe/manon pour la transparence IA complète (AI Act EU art. 50).";
+const AI_DISCLAIMER_EN =
+  "Editorial content drafted with generative AI assistance (OpenAI / Anthropic / Perplexity) and supervised by the Axion-IA team prior to publication. See /equipe/manon for full AI transparency (EU AI Act art. 50).";
+
 function buildArticleBase(
   type: "Article" | "BlogPosting" | "TechArticle" | "NewsArticle",
   input: ArticleJsonLdInput,
 ): Record<string, unknown> {
   const segment = input.urlSegment ?? (type === "NewsArticle" ? "actualites" : "blog");
   const url = `${SITE_URL}/${input.locale}/${segment}/${input.slug}`;
+  const aiDisclaimer = input.locale === "fr" ? AI_DISCLAIMER_FR : AI_DISCLAIMER_EN;
+  const transparencyUrl = `${SITE_URL}/${input.locale}/equipe/manon`;
   return {
     "@context": "https://schema.org",
     "@type": type,
@@ -117,6 +142,10 @@ function buildArticleBase(
     author: {
       "@id": input.authorIdRef ?? `${SITE_URL}/fr/equipe/manon#person`,
     },
+    // Audit B5 P1-3 — AI Act art. 50 machine-readable disclosure.
+    creator: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
+    disambiguatingDescription: aiDisclaimer,
+    usageInfo: transparencyUrl,
     publisher: { "@id": `${SITE_URL}/#organization` },
     ...(input.imageUrl
       ? {

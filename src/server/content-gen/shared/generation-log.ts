@@ -1,5 +1,5 @@
 /**
- * Content Generator — Audit trail immuable (Pass B fix P0-8).
+ * Content Generator — Audit trail immuable (Pass B fix P0-8 + audit B5 P1-1).
  *
  * Helper centralisé pour écrire dans `GenerationLog` (table Prisma définie
  * schema.prisma:2808). L'audit interne du 14-mai avait noté la table comme
@@ -16,12 +16,19 @@
  *   purge RGPD explicite.
  * - Metadata Json : duration_ms, tokens_used, cost_usd, kb_chunk_ids, etc.
  *
+ * **PII redaction filet (audit B5 P1-1)** : tout `metadata` passe par
+ * `redactGenerationMetadata()` avant insert DB. Whitelist + redaction des
+ * champs PII connus (`email`, `name`, `phone` etc.). Sans cost runtime
+ * significatif (Object.entries sur ~20 clés). Filet de sécurité :
+ * l'appelant reste responsable de ne pas y mettre du PII en clair.
+ *
  * **Erreurs swallowées** : le log audit ne doit JAMAIS faire échouer la
  * pipeline de génération (si Prisma down ou table absente, on log console
  * et continue). C'est observable, pas critique.
  */
 
 import { prisma } from "@/lib/prisma";
+import { redactGenerationMetadata } from "@/server/content-gen/lib/pii-safe";
 
 export type GenerationLogLevel = "debug" | "info" | "warn" | "error";
 
@@ -69,6 +76,11 @@ export interface LogGenerationArgs {
  * Append-only, swallow errors (observable pas critique).
  */
 export async function logGeneration(args: LogGenerationArgs): Promise<void> {
+  // Audit B5 P1-1 — PII redaction filet : tout metadata passe par
+  // redactGenerationMetadata() avant insert DB. Cheap (whitelist Object.entries)
+  // et idempotent : si l'appelant n'a pas mis de PII, le résultat est identique.
+  const safeMetadata =
+    args.metadata !== undefined ? redactGenerationMetadata(args.metadata) : undefined;
   try {
     await prisma.generationLog.create({
       data: {
@@ -76,7 +88,7 @@ export async function logGeneration(args: LogGenerationArgs): Promise<void> {
         level: args.level,
         step: args.step,
         message: args.message.slice(0, 5000), // hard cap message size
-        ...(args.metadata !== undefined ? { metadata: args.metadata as never } : {}),
+        ...(safeMetadata !== undefined ? { metadata: safeMetadata as never } : {}),
       },
     });
   } catch (err) {

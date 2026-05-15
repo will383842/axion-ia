@@ -1,15 +1,31 @@
-// SSOT sous-processeurs RGPD — Sprint X.17 / Booking V1.
+// SSOT sous-processeurs RGPD — Sprint X.17 / Booking V1 + Audit B5 RGPD 2026-05-15.
 //
-// Tableau public de transparence (RGPD art. 28). Liste exhaustive des
-// sous-traitants ayant accès à des données personnelles ou techniques de
-// l'app Axion-IA.
+// Tableau public de transparence (RGPD art. 28 + 30 + 13.1.e). Liste exhaustive
+// des sous-traitants ayant accès à des données personnelles, techniques OU
+// éditoriales (content-gen prompts + KB chunks publics) de l'app Axion-IA.
 //
 // Critères inclusion : tout tiers qui PROCESSE des données client (PII ou
-// pseudonymisées) côté infrastructure ou logique applicative.
+// pseudonymisées) OU des données éditoriales (prompts content-gen, queries
+// research) côté infrastructure ou logique applicative.
 //
-// Auto-hébergés (DocuSeal, Mailwizz/PowerMTA, Plausible) : pas des
-// sous-traitants externes au sens RGPD (Axion-IA OÜ est seul responsable),
+// Auto-hébergés (DocuSeal, Mailwizz/PowerMTA, Plausible, Uptime Kuma) : pas
+// des sous-traitants externes au sens RGPD (Axion-IA OÜ est seul responsable),
 // mais référencés en transparence (Hetzner DE = hébergement physique).
+//
+// Cette SSOT est la SOURCE UNIQUE de vérité publique sous-processeurs. La page
+// `politique-confidentialite` (`src/content/legal.ts`) en cite seulement un
+// résumé court avec un lien vers `/sous-processeurs` — fin de la divergence
+// historique entre les 2 sources (audit B5 P0-1).
+//
+// Pour le registre interne RGPD art. 30 avec statut signature DPA, voir
+// `axionia/_AUDIT/DPA-REGISTER.md`.
+
+/**
+ * Date de dernière mise à jour de la SSOT sous-processeurs (RGPD art. 13.1.e
+ * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
+ * Update à chaque ajout/modification d'entrée.
+ */
+export const SUBPROCESSORS_LAST_UPDATED = "2026-05-15" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -32,11 +48,25 @@ export interface Subprocessor {
   dpaStatus: "signed" | "auto_signable_dashboard" | "self_hosted_no_dpa" | "pending";
   /** Cadre transfert international. */
   transferFramework: TransferFramework;
+  /**
+   * Catégorie fonctionnelle. Affichée en regroupement visuel sur la page
+   * publique pour distinguer infrastructure CORE vs services applicatifs vs
+   * content-gen IA.
+   */
+  category: "core_infra" | "payments" | "communications" | "analytics_obs" | "content_gen_ai";
+  /**
+   * Statut d'activation effectif en prod. `active` = le code envoie
+   * effectivement des données au provider aujourd'hui. `pending_activation` =
+   * intégration codée mais clé API absente de Coolify env → aucun flux data
+   * réel (cas content-gen IA tant que Will n'a pas signé les DPA).
+   */
+  activationStatus: "active" | "pending_activation";
   /** Lien DPO / documentation publique du sous-processeur. */
   documentationUrl?: string;
 }
 
 export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
+  // ───────────────────────────── core infrastructure
   {
     name: "Hetzner Online GmbH",
     location: "Gunzenhausen, Allemagne (UE)",
@@ -52,6 +82,8 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     legalBasis: "6.1.b_contract",
     dpaStatus: "signed",
     transferFramework: "intra_eu",
+    category: "core_infra",
+    activationStatus: "active",
     documentationUrl: "https://www.hetzner.com/legal/data-privacy-faq",
   },
   {
@@ -66,8 +98,11 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "auto_signable_dashboard",
     transferFramework: "scc",
+    category: "core_infra",
+    activationStatus: "active",
     documentationUrl: "https://www.cloudflare.com/cloudflare-customer-dpa/",
   },
+  // ───────────────────────────── paiements & contrats
   {
     name: "Stripe Payments Europe Ltd",
     location: "Dublin, Irlande (UE)",
@@ -82,50 +117,9 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     legalBasis: "6.1.b_contract",
     dpaStatus: "auto_signable_dashboard",
     transferFramework: "scc",
+    category: "payments",
+    activationStatus: "active",
     documentationUrl: "https://stripe.com/legal/dpa",
-  },
-  {
-    name: "Sentry (Functional Software Inc.)",
-    location: "San Francisco, USA",
-    serversLocation: "UE (Frankfurt) — option configurée",
-    purposeFr:
-      "Surveillance technique des erreurs applicatives (PII scrubbing actif côté serveur).",
-    purposeEn: "Application error monitoring (server-side PII scrubbing active).",
-    dataCategoriesFr:
-      "Stack traces, URLs, identifiants techniques (pseudonymisés). Emails et corps de requête masqués.",
-    dataCategoriesEn:
-      "Stack traces, URLs, technical identifiers (pseudonymised). Emails and request bodies redacted.",
-    legalBasis: "6.1.f_legitimate_interest",
-    dpaStatus: "auto_signable_dashboard",
-    transferFramework: "scc",
-    documentationUrl: "https://sentry.io/legal/dpa/",
-  },
-  {
-    name: "OpenStreetMap Foundation (Nominatim)",
-    location: "Cambridge, Royaume-Uni",
-    serversLocation: "UE et Royaume-Uni",
-    purposeFr: "Géocodage des villes saisies par les visiteurs pour calcul buffer trajet.",
-    purposeEn: "City geocoding submitted by visitors, used to compute travel buffer.",
-    dataCategoriesFr: "Nom de ville en clair + code pays (pas d'IP visiteur transmise).",
-    dataCategoriesEn: "City name in plain text + country code (no visitor IP transmitted).",
-    legalBasis: "6.1.f_legitimate_interest",
-    dpaStatus: "self_hosted_no_dpa",
-    transferFramework: "adequacy_decision",
-    documentationUrl: "https://wiki.osmfoundation.org/wiki/Privacy_Policy",
-  },
-  {
-    name: "Plausible Community (self-hosted)",
-    location: "Hébergement Hetzner Allemagne (UE)",
-    serversLocation: "Frankfurt, Allemagne (UE)",
-    purposeFr:
-      "Analytics agrégés sans cookie. Pas de tracking individuel. Auto-hébergé sur notre infrastructure.",
-    purposeEn:
-      "Aggregate analytics without cookies. No individual tracking. Self-hosted on our infra.",
-    dataCategoriesFr: "Vues de pages anonymisées, referrers, navigateur agrégé.",
-    dataCategoriesEn: "Anonymous page views, referrers, aggregated browser stats.",
-    legalBasis: "6.1.f_legitimate_interest",
-    dpaStatus: "self_hosted_no_dpa",
-    transferFramework: "self_hosted_eu",
   },
   {
     name: "DocuSeal Community (self-hosted)",
@@ -142,6 +136,171 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     legalBasis: "6.1.b_contract",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "self_hosted_eu",
+    category: "payments",
+    activationStatus: "active",
     documentationUrl: "https://www.docuseal.com",
+  },
+  // ───────────────────────────── communications & géo
+  {
+    name: "Telegram FZ-LLC",
+    location: "Dubaï, Émirats Arabes Unis (hors UE)",
+    serversLocation: "Émirats Arabes Unis + edge global",
+    purposeFr:
+      "Notifications administratives via Bot API à destination du gérant (alertes opérations).",
+    purposeEn: "Admin notifications via Bot API to the manager (operations alerts).",
+    dataCategoriesFr:
+      "PII minimisée (cf. ADR 0010) : email partiel `j****@acme.com`, initiales `J. D.`, téléphone partiel, sociétés en clair, dates/prix/IDs UUID.",
+    dataCategoriesEn:
+      "Minimised PII (ADR 0010): partial email `j****@acme.com`, initials `J. D.`, partial phone, company names in clear, dates/prices/UUIDs.",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "self_hosted_no_dpa",
+    transferFramework: "scc",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://telegram.org/privacy",
+  },
+  {
+    name: "OpenStreetMap Foundation (Nominatim)",
+    location: "Cambridge, Royaume-Uni",
+    serversLocation: "UE et Royaume-Uni",
+    purposeFr: "Géocodage des villes saisies par les visiteurs pour calcul buffer trajet.",
+    purposeEn: "City geocoding submitted by visitors, used to compute travel buffer.",
+    dataCategoriesFr: "Nom de ville en clair + code pays (pas d'IP visiteur transmise).",
+    dataCategoriesEn: "City name in plain text + country code (no visitor IP transmitted).",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "self_hosted_no_dpa",
+    transferFramework: "adequacy_decision",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://wiki.osmfoundation.org/wiki/Privacy_Policy",
+  },
+  // ───────────────────────────── analytics & observabilité
+  {
+    name: "Sentry (Functional Software Inc.)",
+    location: "San Francisco, USA",
+    serversLocation: "UE (Frankfurt) — option configurée",
+    purposeFr:
+      "Surveillance technique des erreurs applicatives (PII scrubbing actif côté serveur).",
+    purposeEn: "Application error monitoring (server-side PII scrubbing active).",
+    dataCategoriesFr:
+      "Stack traces, URLs, identifiants techniques (pseudonymisés). Emails et corps de requête masqués.",
+    dataCategoriesEn:
+      "Stack traces, URLs, technical identifiers (pseudonymised). Emails and request bodies redacted.",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "auto_signable_dashboard",
+    transferFramework: "scc",
+    category: "analytics_obs",
+    activationStatus: "active",
+    documentationUrl: "https://sentry.io/legal/dpa/",
+  },
+  {
+    name: "Plausible Community (self-hosted)",
+    location: "Hébergement Hetzner Allemagne (UE)",
+    serversLocation: "Frankfurt, Allemagne (UE)",
+    purposeFr:
+      "Analytics agrégés sans cookie. Pas de tracking individuel. Auto-hébergé sur notre infrastructure.",
+    purposeEn:
+      "Aggregate analytics without cookies. No individual tracking. Self-hosted on our infra.",
+    dataCategoriesFr: "Vues de pages anonymisées, referrers, navigateur agrégé.",
+    dataCategoriesEn: "Anonymous page views, referrers, aggregated browser stats.",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "self_hosted_no_dpa",
+    transferFramework: "self_hosted_eu",
+    category: "analytics_obs",
+    activationStatus: "active",
+  },
+  // ───────────────────────────── content-gen IA (audit B5 2026-05-15)
+  // Code intégré (`src/server/content-gen/providers/*.ts`) — clés API non
+  // encore présentes dans Coolify env → `pending_activation` jusqu'à
+  // signature DPA + ajout `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` /
+  // `PERPLEXITY_API_KEY` / `UNSPLASH_ACCESS_KEY` / `VOYAGE_API_KEY`.
+  {
+    name: "OpenAI, LLC",
+    location: "San Francisco, USA",
+    serversLocation: "USA (option EU data residency Tier 4+ Enterprise)",
+    purposeFr:
+      "Génération de contenu éditorial (GPT-4o text + GPT-image-1 V2) pour les Articles signés Manon. Prompts éditoriaux uniquement — aucune donnée client n'est transmise dans les prompts (cf. doctrine § 0.5 master prompt content-gen + helper `pii-safe.ts`). Option Zero Data Retention (ZDR) activée en prod.",
+    purposeEn:
+      "Editorial content generation (GPT-4o text + GPT-image-1 V2) for articles signed by Manon. Editorial prompts only — no client data sent in prompts (master prompt § 0.5 + `pii-safe.ts` helper). Zero Data Retention (ZDR) enabled in prod.",
+    dataCategoriesFr:
+      "Prompts éditoriaux (titre, intent SEO, ville/région cible) + chunks KB `public` uniquement. Refus dur sur chunks `confidential`/`secret` (`EmbeddingConfidentialityRefusal`).",
+    dataCategoriesEn:
+      "Editorial prompts (title, SEO intent, target city/region) + `public` KB chunks only. Hard refusal on `confidential`/`secret` chunks.",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://openai.com/policies/data-processing-addendum",
+  },
+  {
+    name: "Anthropic PBC",
+    location: "San Francisco, USA",
+    serversLocation: "USA (option AWS Bedrock EU `eu-central-1` à l'étude)",
+    purposeFr:
+      "Génération de contenu éditorial via Claude (Sonnet/Opus/Haiku) — fallback OpenAI + multi-modèles V2 + prompt caching. Opt-out training par défaut (Commercial DPA).",
+    purposeEn:
+      "Editorial content generation via Claude (Sonnet/Opus/Haiku) — fallback OpenAI + multi-model V2 + prompt caching. Default opt-out training (Commercial DPA).",
+    dataCategoriesFr:
+      "Idem OpenAI : prompts éditoriaux uniquement, pas de PII client. Chunks KB `public` only.",
+    dataCategoriesEn:
+      "Same as OpenAI: editorial prompts only, no client PII. `public` KB chunks only.",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://www.anthropic.com/legal/commercial-dpa",
+  },
+  {
+    name: "Perplexity AI, Inc.",
+    location: "San Francisco, USA",
+    serversLocation: "USA",
+    purposeFr:
+      "Recherche temps-réel et citations sources via Sonar API pour fact-checking et veille RSS éditoriale (sans PII visiteur).",
+    purposeEn:
+      "Real-time search and source citations via Sonar API for fact-checking and editorial RSS curation (no visitor PII).",
+    dataCategoriesFr: "Queries de recherche éditoriales (villes, secteurs, intent SEO).",
+    dataCategoriesEn: "Editorial search queries (cities, sectors, SEO intent).",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://www.perplexity.ai/hub/legal/data-processing-addendum",
+  },
+  {
+    name: "Unsplash Inc.",
+    location: "Montréal, Canada",
+    serversLocation: "Canada + USA (CDN global)",
+    purposeFr:
+      "Recherche d'images stock libres de droits (attribution photographe) pour illustrations Articles. Aucune donnée visiteur transmise — uniquement les mots-clés de recherche image.",
+    purposeEn:
+      "Royalty-free stock image search (photographer attribution) for article illustrations. No visitor data transmitted — only image search keywords.",
+    dataCategoriesFr: "Mots-clés de recherche image (FR/EN).",
+    dataCategoriesEn: "Image search keywords (FR/EN).",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "pending",
+    transferFramework: "adequacy_decision", // Canada : décision d'adéquation UE 2001
+    category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://unsplash.com/privacy",
+  },
+  {
+    name: "Voyage AI, Inc.",
+    location: "Palo Alto, USA",
+    serversLocation: "USA",
+    purposeFr:
+      "Embeddings vectoriels (`voyage-3-lite`, 1024 dim) pour la base de connaissances éditoriale Axion-IA (recherche hybride dedup factory). Hard gate code : seules les entrées `public` sont envoyées — refus dur sur `confidential`/`secret`.",
+    purposeEn:
+      "Vector embeddings (`voyage-3-lite`, 1024 dim) for the Axion-IA editorial knowledge base (hybrid dedup factory search). Code hard gate: only `public` entries are sent — hard refusal on `confidential`/`secret`.",
+    dataCategoriesFr: "Texte éditorial public à embedder (jamais de PII client, hard gate).",
+    dataCategoriesEn: "Public editorial text to embed (never client PII, hard gate).",
+    legalBasis: "6.1.f_legitimate_interest",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://www.voyageai.com/privacy",
   },
 ];
