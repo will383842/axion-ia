@@ -281,6 +281,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                     eagerness: "moderate",
                   },
                 ],
+                // P1-20 audit E2E NAV+CTA 2026-05-15 — `eager` (×15 routes)
+                // saturait la 4G mobile à l'hydratation initiale. Bascule en
+                // `moderate` : prefetch déclenché au survol/scroll, pas dès le
+                // chargement. Couverture identique, latence INP préservée.
                 prefetch: [
                   {
                     source: "document",
@@ -303,7 +307,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                         `/${locale}/contact`,
                       ],
                     },
-                    eagerness: "eager",
+                    eagerness: "moderate",
                   },
                   {
                     source: "document",

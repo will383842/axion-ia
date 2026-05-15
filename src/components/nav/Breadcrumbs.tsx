@@ -29,7 +29,7 @@ export async function Breadcrumbs({ items }: BreadcrumbsProps) {
 
   return (
     <>
-      <nav aria-label="breadcrumb" className="text-fg-muted text-xs">
+      <nav aria-label={t("ariaLabel")} className="text-fg-muted text-xs">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
           {fullItems.map((item, idx) => {
             const isLast = idx === fullItems.length - 1;

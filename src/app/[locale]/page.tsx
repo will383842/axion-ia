@@ -238,7 +238,7 @@ export default async function Home({ params }: HomeProps) {
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
-                  href="/interventions/essentielle"
+                  href="/interventions"
                   className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {t("heroCtaPrimary", { price: interventionEntryPrice })}

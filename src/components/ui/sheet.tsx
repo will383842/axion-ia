@@ -5,6 +5,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export const Sheet = DialogPrimitive.Root;
@@ -52,6 +53,10 @@ export const SheetContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   SheetContentProps
 >(function SheetContent({ side, className, children, ...rest }, ref) {
+  // P1-23 audit E2E NAV+CTA 2026-05-15 — label `aria-label` du bouton fermeture
+  // i18né (FR/EN) au lieu du « Close » hardcoded anglais. Impact UX screen
+  // reader francophone (lecteur d'écran annonçait « Close » sur un site FR).
+  const t = useTranslations("common");
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -62,7 +67,7 @@ export const SheetContent = React.forwardRef<
       >
         {children}
         <DialogPrimitive.Close
-          aria-label="Close"
+          aria-label={t("closeMenu")}
           className="text-fg hover:bg-border/40 absolute right-3 top-3 inline-flex h-11 w-11 items-center justify-center rounded-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
         >
           <X className="h-4 w-4" aria-hidden="true" />

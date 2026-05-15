@@ -37,9 +37,17 @@ export async function Footer() {
     { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
     { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
     { href: "/blog", label: t("nav.blog") },
+    // P0-5 audit E2E NAV+CTA 2026-05-15 — hub actualités factory V1.0.3 livré
+    // (`src/app/[locale]/actualites/page.tsx`). FR-only par doctrine v1.2.
+    ...(isFr ? [{ href: "/actualites" as const, label: "Actualités IA" }] : []),
     { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/faq", label: "FAQ" },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
+    // /galerie retiré P0-10 audit E2E NAV+CTA 2026-05-15 — route absente
+    // (`src/app/[locale]/galerie/` non livrée). Sera ré-ajouté quand le skill
+    // image-bank v1.1 expose le hub public. Entrée routing.ts conservée pour
+    // `PressImageBank.tsx` et `presse/page.tsx` qui linkent déjà /galerie en
+    // anticipation de la livraison.
   ];
   const company = [
     { href: "/a-propos", label: t("nav.about") },
@@ -54,6 +62,14 @@ export async function Footer() {
     { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
     { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
     { href: "/cookies", label: "Cookies" },
+    // P0-9 audit E2E NAV+CTA 2026-05-15 — obligation RGPD : exposer la liste
+    // des sous-processeurs + politique de déplacement (livrées Sprint 24.1
+    // mais jamais linkées Footer → invisibles).
+    { href: "/sous-processeurs", label: isFr ? "Sous-processeurs" : "Sub-processors" },
+    {
+      href: "/politique-deplacement",
+      label: isFr ? "Politique de déplacement" : "Travel policy",
+    },
   ];
   // 5e zone Implantations — ajoutée Sprint 14.9 (pSEO villes/régions, ADR 0006).
   // Top 6 régions par PIB + lien hub + villes pilotes (V1 = Paris seul).
@@ -138,14 +154,18 @@ export async function Footer() {
               className="text-mocha-fg/85 max-w-xs text-sm leading-snug"
               style={{ fontFamily: "var(--font-serif)" }}
             >
+              {/* P1-12 audit E2E NAV+CTA 2026-05-15 — naming doctrine
+                  `axionia_naming_cabinet`: utiliser le `BRAND.taglineFr/En`
+                  SSOT (« cabinet IA opérationnel » / « operational AI consultancy »)
+                  plutôt qu'une variante locale. */}
               {isFr ? (
                 <>
-                  Le cabinet IA{" "}
+                  Le {BRAND.taglineFr}{" "}
                   <span className="text-terracotta-soft italic">qui vous fait gagner</span>.
                 </>
               ) : (
                 <>
-                  The AI consultancy{" "}
+                  The {BRAND.taglineEn}{" "}
                   <span className="text-terracotta-soft italic">that makes you win</span>.
                 </>
               )}
@@ -155,14 +175,19 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* 5 link columns — flex-1 to fill remaining space, equal-width grid */}
-          <div className="grid flex-1 grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 lg:gap-y-0">
+          {/* 5 link columns — flex-1 to fill remaining space, equal-width grid.
+              P1-22 audit E2E NAV+CTA 2026-05-15 — wrapper <nav aria-label="Footer">
+              pour SR (manquait avant ; le <footer> tag seul ne suffit pas). */}
+          <nav
+            aria-label={t("nav.footerLabel")}
+            className="grid flex-1 grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 lg:gap-y-0"
+          >
             <FooterColumn title={t("footer.services")} items={services} />
             <FooterColumn title={t("footer.resources")} items={resources} />
             <FooterColumn title={t("footer.company")} items={company} />
             <FooterColumn title={t("nav.implantations")} items={implantationsLinks} />
             <FooterColumn title={t("footer.legal")} items={legal} />
-          </div>
+          </nav>
         </div>
 
         {/* Slim bottom strip — single line on desktop */}
@@ -286,7 +311,7 @@ function SocialLinks() {
             target="_blank"
             rel="noopener noreferrer external"
             aria-label={label}
-            className="text-mocha-fg/70 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-8 w-8 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-mocha-fg/70 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-11 w-11 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Icon className="h-[18px] w-[18px]" />
           </a>

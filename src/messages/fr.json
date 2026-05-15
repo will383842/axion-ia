@@ -16,7 +16,10 @@
     "implantations": "Implantations",
     "blog": "Blog",
     "about": "À propos",
-    "contact": "Contact"
+    "contact": "Contact",
+    "primaryLabel": "Navigation principale",
+    "footerLabel": "Liens du pied de page",
+    "breadcrumbLabel": "Fil d'Ariane"
   },
   "cta": {
     "bookIntervention": "Réserver une intervention",
@@ -169,7 +172,8 @@
     "backHome": "Retour à l'accueil"
   },
   "breadcrumb": {
-    "home": "Accueil"
+    "home": "Accueil",
+    "ariaLabel": "Fil d'Ariane"
   },
   "press": {
     "metaTitle": "Espace presse · Axion-IA",
@@ -194,6 +198,19 @@
     "kitDescription": "Tous les éléments graphiques et textuels validés pour publication, prêts à télécharger.",
     "kitDownload": "Télécharger",
     "kitComingSoon": "Bientôt disponible",
+    "imageBankEyebrow": "Banque d'images",
+    "imageBankTitle": "Visuels libres de droits ",
+    "imageBankTitleEm": "CC BY 4.0",
+    "imageBankTitleTail": ".",
+    "imageBankDescription": "Tous nos visuels sont publiés sous licence Creative Commons Attribution 4.0 — réutilisables librement, y compris en couverture d'article ou en publication LinkedIn, avec attribution claire à Axion-IA.",
+    "imageBankCta": "Voir la banque d'images",
+    "imageBankLicenseNote": "Licence CC BY 4.0 — usage libre avec attribution. Mention recommandée : « © Axion-IA OÜ — axion-ia.com ».",
+    "imageBankCat1Title": "IA opérationnelle B2B",
+    "imageBankCat1Description": "Visuels métier — workflows, audits, séances de travail. Pour illustrer des articles sectoriels ou des études de cas.",
+    "imageBankCat2Title": "Équipe & porte-parole",
+    "imageBankCat2Description": "Portraits officiels de l'équipe et photos de plateau. Pour interviews, podcasts vidéo et papiers de fond.",
+    "imageBankCat3Title": "Cas concrets & schémas",
+    "imageBankCat3Description": "Captures d'écran, schémas d'architecture et infographies pédagogiques sur l'IA générative en entreprise.",
     "releasesEyebrow": "Communiqués",
     "releasesTitle": "Communiqués",
     "releasesTitleEm": "récents",

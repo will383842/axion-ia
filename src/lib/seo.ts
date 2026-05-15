@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { Locale } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { env } from "@/env";
 // Cycle d'import autorisé : `service-coverage.ts` réimporte SITE_URL d'ici, mais
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
@@ -62,6 +62,42 @@ interface ProductSeoInput {
   ogAccent?: "primary" | "purple" | "orange" | "green";
 }
 
+/**
+ * P0-7 audit E2E NAV+CTA 2026-05-15 — résout le slug localisé à partir du
+ * chemin FR canonical en consultant `routing.pathnames` (next-intl). Match
+ * exact + pattern matching pour les routes `[slug]` dynamiques. Si aucun
+ * mapping trouvé, retourne le `path` inchangé (legacy behaviour).
+ *
+ * Avant ce helper, `buildProductMetadata` réutilisait le slug FR pour
+ * l'alternate EN ⇒ ~40 pages annonçaient un `<link hreflang="en" href="...">`
+ * pointant vers une URL EN inexistante (e.g. `/en/interventions/collectives`
+ * au lieu de `/en/interventions/team-trainings`).
+ */
+function resolveLocalizedPath(path: string, locale: Locale): string {
+  const pathnames = routing.pathnames as Record<string, string | Record<Locale, string>>;
+  // 1) Match exact (cas fréquent : pages statiques non dynamiques)
+  const exact = pathnames[path];
+  if (exact !== undefined) {
+    return typeof exact === "string" ? exact : exact[locale];
+  }
+  // 2) Pattern match (routes dynamiques `[slug]`, `[region]`, etc.). Compare
+  //    segment par segment : un segment de la clé qui commence par `[` matche
+  //    n'importe quel segment du chemin réel.
+  const pathSegs = path.split("/").filter(Boolean);
+  for (const [key, value] of Object.entries(pathnames)) {
+    const keySegs = key.split("/").filter(Boolean);
+    if (keySegs.length !== pathSegs.length) continue;
+    const matches = keySegs.every((seg, i) => seg.startsWith("[") || seg === pathSegs[i]);
+    if (!matches) continue;
+    const template = typeof value === "string" ? value : value[locale];
+    const tmplSegs = template.split("/").filter(Boolean);
+    // Réinjecte les valeurs réelles aux positions des paramètres dynamiques
+    return "/" + tmplSegs.map((seg, i) => (seg.startsWith("[") ? pathSegs[i] : seg)).join("/");
+  }
+  // 3) Fallback : path inchangé
+  return path;
+}
+
 export function buildProductMetadata({
   locale,
   path,
@@ -71,8 +107,8 @@ export function buildProductMetadata({
   ogImage,
   ogAccent,
 }: ProductSeoInput): Metadata {
-  const fr = alternates?.fr ?? path;
-  const en = alternates?.en ?? path;
+  const fr = alternates?.fr ?? resolveLocalizedPath(path, "fr");
+  const en = alternates?.en ?? resolveLocalizedPath(path, "en");
   // Default OG image : dynamic `/api/og` with title + optional accent.
   // For pages that need a custom static OG (homepage), pass `ogImage`.
   const resolvedOgImage =
@@ -275,9 +311,18 @@ interface BreadcrumbJsonLdInput {
 }
 
 export function buildBreadcrumbJsonLd({ locale, items }: BreadcrumbJsonLdInput) {
+  // P2-24 audit E2E NAV+CTA 2026-05-15 — `@id` ajouté pour relier ce
+  // BreadcrumbList aux schemas WebPage/Article via `isPartOf` (bonus AEO/GEO
+  // 2026 : citations Claude.ai / Perplexity / SGE). L'id pointe sur l'URL
+  // de la feuille (dernier item) + ancre `#breadcrumb`.
+  const leafItem = items[items.length - 1];
+  const leafUrl = leafItem
+    ? `${SITE_URL}/${locale}${leafItem.href === "/" ? "" : leafItem.href}`
+    : `${SITE_URL}/${locale}`;
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${leafUrl}#breadcrumb`,
     itemListElement: items.map((item, idx) => ({
       "@type": "ListItem",
       position: idx + 1,

@@ -92,9 +92,11 @@ export async function Header() {
             </span>
           </Link>
 
-          {/* Desktop nav — 2 premiers items, poussés à droite (près du CTA) */}
+          {/* Desktop nav — 2 premiers items, poussés à droite (près du CTA).
+              P2-26 audit E2E NAV+CTA 2026-05-15 — `aria-label="Accueil"` n'était
+              pas sémantique ; remplacé par « Navigation principale ». */}
           <nav
-            aria-label={t("nav.home")}
+            aria-label={t("nav.primaryLabel")}
             className="hidden items-center gap-6 lg:flex lg:justify-end xl:gap-8"
           >
             {navLeft.map((item) => (
@@ -124,8 +126,9 @@ export async function Header() {
         {/* DROITE : Nav 3+4+5 + Locale */}
         <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-8">
           <nav
-            aria-label={`${t("nav.home")} 2`}
+            aria-label={t("nav.primaryLabel")}
             className="hidden items-center gap-6 lg:flex lg:justify-start xl:gap-8"
+            data-nav-section="secondary"
           >
             {navRight.map((item) => (
               <NavLink key={item.href} href={item.href} label={item.label} />

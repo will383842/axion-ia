@@ -6,9 +6,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -39,17 +38,9 @@ export default async function SearchPage({ params, searchParams }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  // SearchAction Schema — Sprint 15 wires Postgres FTS for actual results.
-  const searchActionJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    url: `${SITE_URL}/${locale}`,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_URL}/${locale}/recherche?q={query}`,
-      "query-input": "required name=query",
-    },
-  } as const;
+  // P0-11 audit E2E NAV+CTA 2026-05-15 — `SearchAction` JSON-LD retiré : signal
+  // trompeur Google tant que Sprint 15 (moteur Postgres FTS / Pagefind) n'est
+  // pas branché. À rétablir le jour où la searchbox renvoie de vrais résultats.
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -134,7 +125,6 @@ export default async function SearchPage({ params, searchParams }: Props) {
           </div>
         </Container>
       </Section>
-      <JsonLd data={searchActionJsonLd} />
     </>
   );
 }

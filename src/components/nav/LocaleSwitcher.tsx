@@ -47,7 +47,10 @@ export function LocaleSwitcher() {
             locale={locale}
             aria-current={active ? "true" : undefined}
             className={cn(
-              "rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em] uppercase transition",
+              // P2-28 audit E2E NAV+CTA 2026-05-15 — `py-1` (~22px) sous WCAG
+              // 2.5.8 AA (24×24 mini). Passage `py-1.5` (≈ 26-28px) + min
+              // tactile sur le parent pour rester pill design v3.
+              "inline-flex min-h-[28px] items-center rounded-full px-2.5 py-1.5 text-[11px] font-semibold tracking-[0.12em] uppercase transition",
               active
                 ? "bg-sand text-fg [[data-tone=dark]_&]:bg-mocha-fg [[data-tone=dark]_&]:text-mocha [[data-tone=terracotta]_&]:bg-mocha-fg [[data-tone=terracotta]_&]:text-terracotta"
                 : "text-fg-muted hover:text-fg [[data-tone=dark]_&]:text-mocha-fg/70 [[data-tone=dark]_&]:hover:text-mocha-fg [[data-tone=terracotta]_&]:text-mocha-fg/75 [[data-tone=terracotta]_&]:hover:text-mocha-fg",

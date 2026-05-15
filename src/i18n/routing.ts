@@ -205,6 +205,12 @@ export const routing = defineRouting({
     "/presse": { fr: "/presse", en: "/press" },
     "/blog": "/blog",
     "/blog/[slug]": "/blog/[slug]",
+    // Sprint actualités factory (P0-5 audit E2E 2026-05-15) — FR-only par
+    // doctrine v1.2 (contenus content-gen). Slug EN conservé identique pour
+    // que LocaleSwitcher route correctement vers le 404 attendu (la page
+    // détaille un notFound() pour locale !== "fr").
+    "/actualites": { fr: "/actualites", en: "/actualites" },
+    "/actualites/[slug]": { fr: "/actualites/[slug]", en: "/actualites/[slug]" },
     "/blog/categorie/[slug]": { fr: "/blog/categorie/[slug]", en: "/blog/category/[slug]" },
     "/blog/tag/[slug]": "/blog/tag/[slug]",
     "/blog/auteur/[slug]": { fr: "/blog/auteur/[slug]", en: "/blog/author/[slug]" },
@@ -232,6 +238,18 @@ export const routing = defineRouting({
     "/glossaire": { fr: "/glossaire", en: "/glossary" },
     "/comparaisons": { fr: "/comparaisons", en: "/comparisons" },
     "/comparaisons/[slug]": { fr: "/comparaisons/[slug]", en: "/comparisons/[slug]" },
+
+    // Banque d'images / Image bank (Sprint M? — axionia-image-bank skill v1.0).
+    // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement
+    // ici ; routes admin sont sous `(admin)/[adminPrefix]/image-bank/*` et non
+    // déclarées dans pathnames (slug `[adminPrefix]` random + accès role-gated).
+    "/galerie": { fr: "/galerie", en: "/gallery" },
+    "/galerie/[slug]": { fr: "/galerie/[slug]", en: "/gallery/[slug]" },
+    "/galerie/[slug]/telecharger": {
+      fr: "/galerie/[slug]/telecharger",
+      en: "/gallery/[slug]/download",
+    },
+
     "/confirmation": { fr: "/confirmation", en: "/confirmation" },
     "/desabonnement": { fr: "/desabonnement", en: "/unsubscribe" },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },

@@ -16,7 +16,10 @@
     "implantations": "Locations",
     "blog": "Blog",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "primaryLabel": "Primary navigation",
+    "footerLabel": "Footer links",
+    "breadcrumbLabel": "Breadcrumb"
   },
   "cta": {
     "bookIntervention": "Book a session",
@@ -169,7 +172,8 @@
     "backHome": "Back to home"
   },
   "breadcrumb": {
-    "home": "Home"
+    "home": "Home",
+    "ariaLabel": "Breadcrumb"
   },
   "press": {
     "metaTitle": "Press room · Axion-IA",
@@ -194,6 +198,19 @@
     "kitDescription": "Every graphic and textual asset cleared for publication, ready to download.",
     "kitDownload": "Download",
     "kitComingSoon": "Coming soon",
+    "imageBankEyebrow": "Image bank",
+    "imageBankTitle": "Royalty-free visuals under ",
+    "imageBankTitleEm": "CC BY 4.0",
+    "imageBankTitleTail": ".",
+    "imageBankDescription": "All our visuals are published under the Creative Commons Attribution 4.0 licence — freely reusable in article covers, LinkedIn posts and editorial features, with clear attribution to Axion-IA.",
+    "imageBankCta": "Open the image bank",
+    "imageBankLicenseNote": "CC BY 4.0 — free use with attribution. Recommended credit: \"© Axion-IA OÜ — axion-ia.com\".",
+    "imageBankCat1Title": "Operational B2B AI",
+    "imageBankCat1Description": "Business visuals — workflows, audits, on-site working sessions. For sector pieces and case studies.",
+    "imageBankCat2Title": "Team & spokespeople",
+    "imageBankCat2Description": "Official team portraits and on-set photos. For interviews, video podcasts and feature articles.",
+    "imageBankCat3Title": "Case studies & diagrams",
+    "imageBankCat3Description": "Screenshots, architecture diagrams and pedagogical infographics on generative AI in enterprise.",
     "releasesEyebrow": "Releases",
     "releasesTitle": "Recent",
     "releasesTitleEm": "releases",
