@@ -201,16 +201,57 @@ export async function alertCampaignDone(
 }
 
 /**
- * 9. LCP dégradé p75 (legacy v1.9 + Web Vitals Sprint S0bis). Runbook : R30.
+ * Helpers Web Vitals 9-11 — invariants (audit 2026-05-15 P0 monitoring fix).
+ *
+ * Signature objet pour transporter URL exacte (utile pour le runbook R30 :
+ * lien direct PageSpeed Insights de la route fautive) + budget AGENTS.md de
+ * référence (LCP 1800 / INP 100 / CLS 0,1 cible interne ; Google "good" est
+ * 2500 / 200 / 0,1) + count d'échantillons p75 (fiabilité < 5 = N/A).
+ *
+ * Le worker `content-web-vitals-monitor-worker` appelle ces helpers une fois
+ * par breach (avec bulk message ailleurs si > 5 breaches d'un coup).
  */
-export async function alertLcpDegraded(p75ms: number, pageType: string): Promise<void> {
+
+/** Param transporté par les 3 helpers Web Vitals. */
+export interface WebVitalBreachInput {
+  /** Pathname canonique de la route (ex. `/fr/interventions`). */
+  readonly url: string;
+  /** Valeur p75 mesurée (ms pour LCP/INP, unitless pour CLS). */
+  readonly p75: number;
+  /** Budget AGENTS.md cible interne. */
+  readonly budget: number;
+  /** Nombre d'échantillons RUM dans la fenêtre 24h (≥ MIN_SAMPLES). */
+  readonly count: number;
+}
+
+/** Format value selon metric (CLS = 3 décimales, ms entiers sinon). */
+function fmtVitalMs(ms: number): string {
+  return `${Math.round(ms)} ms`;
+}
+function fmtCls(v: number): string {
+  return v.toFixed(3);
+}
+
+/** Lien PageSpeed Insights direct route fautive (signal utile runbook R30). */
+function psiUrl(routePath: string): string {
+  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const full = site ? `${site}${routePath}` : routePath;
+  return `https://pagespeed.web.dev/analysis?url=${encodeURIComponent(full)}`;
+}
+
+/**
+ * 9. LCP dégradé p75 (cible interne 1 800 ms, Google good 2 500). Runbook : R30.
+ */
+export async function alertLcpDegraded(input: WebVitalBreachInput): Promise<void> {
   try {
     await sendTelegram({
       tag: "MONITORING",
       silent: true,
       body:
-        `*[⚠️ WEB_VITALS_DEGRADED]* LCP p75 = ${p75ms} ms (> 2000ms cible) sur ${pageType} (24h).\n` +
+        `*[⚠️ WEB_VITALS_DEGRADED]* LCP p75 = ${fmtVitalMs(input.p75)} ` +
+        `(budget ${fmtVitalMs(input.budget)}, n=${input.count}) sur \`${input.url}\`.\n` +
         `→ ${adminUrl("/web-vitals")}\n` +
+        `→ PSI : ${psiUrl(input.url)}\n` +
         `Runbook : \`R30\` (docs/runbooks/R30-lighthouse-weekly.md)`,
     });
   } catch {
@@ -219,16 +260,18 @@ export async function alertLcpDegraded(p75ms: number, pageType: string): Promise
 }
 
 /**
- * 10. INP dégradé p75. Runbook : R30.
+ * 10. INP dégradé p75 (cible interne 100 ms, Google good 200). Runbook : R30.
  */
-export async function alertInpDegraded(p75ms: number, pageType: string): Promise<void> {
+export async function alertInpDegraded(input: WebVitalBreachInput): Promise<void> {
   try {
     await sendTelegram({
       tag: "MONITORING",
       silent: true,
       body:
-        `*[⚠️ WEB_VITALS_DEGRADED]* INP p75 = ${p75ms} ms (> 200ms cible) sur ${pageType} (24h).\n` +
+        `*[⚠️ WEB_VITALS_DEGRADED]* INP p75 = ${fmtVitalMs(input.p75)} ` +
+        `(budget ${fmtVitalMs(input.budget)}, n=${input.count}) sur \`${input.url}\`.\n` +
         `→ ${adminUrl("/web-vitals")}\n` +
+        `→ PSI : ${psiUrl(input.url)}\n` +
         `Runbook : \`R30\` (docs/runbooks/R30-lighthouse-weekly.md)`,
     });
   } catch {
@@ -237,15 +280,46 @@ export async function alertInpDegraded(p75ms: number, pageType: string): Promise
 }
 
 /**
- * 11. CLS dégradé p75 (critical). Runbook : R30.
+ * 11. CLS dégradé p75 (cible interne 0 strict, Google good 0,1 — critical). Runbook : R30.
  */
-export async function alertClsDegraded(p75: number, pageType: string): Promise<void> {
+export async function alertClsDegraded(input: WebVitalBreachInput): Promise<void> {
   try {
     await sendTelegram({
       tag: "MONITORING",
       body:
-        `*[🔴 WEB_VITALS_DEGRADED]* CLS p75 = ${p75.toFixed(2)} (> 0.1 cible) sur ${pageType} (24h).\n` +
+        `*[🔴 WEB_VITALS_DEGRADED]* CLS p75 = ${fmtCls(input.p75)} ` +
+        `(budget ${fmtCls(input.budget)}, n=${input.count}) sur \`${input.url}\`.\n` +
         `→ ${adminUrl("/web-vitals")}\n` +
+        `→ PSI : ${psiUrl(input.url)}\n` +
+        `Runbook : \`R30\` (docs/runbooks/R30-lighthouse-weekly.md)`,
+    });
+  } catch {
+    // best-effort
+  }
+}
+
+/**
+ * 11bis. Bulk Web Vitals alert — agrège top 5 breaches quand > 5 d'un coup
+ * (évite spam Telegram). Format conservant la doctrine R30. Runbook : R30.
+ */
+export async function alertWebVitalsBulk(
+  topBreaches: readonly (WebVitalBreachInput & { readonly metric: string })[],
+  totalBreaches: number,
+  windowHours: number,
+): Promise<void> {
+  if (topBreaches.length === 0) return;
+  try {
+    const lines = topBreaches.map((b) => {
+      const fmt = b.metric === "CLS" ? fmtCls : fmtVitalMs;
+      return `• ${b.metric} \`${b.url}\` p75=${fmt(b.p75)} (budget ${fmt(b.budget)}, n=${b.count})`;
+    });
+    await sendTelegram({
+      tag: "MONITORING",
+      body:
+        `*[⚠️ WEB_VITALS_DEGRADED bulk]* ${totalBreaches} breaches sur ${windowHours}h.\n` +
+        `Top ${topBreaches.length} :\n` +
+        lines.join("\n") +
+        `\n→ ${adminUrl("/web-vitals")}\n` +
         `Runbook : \`R30\` (docs/runbooks/R30-lighthouse-weekly.md)`,
     });
   } catch {

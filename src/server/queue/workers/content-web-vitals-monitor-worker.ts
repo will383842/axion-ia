@@ -12,8 +12,12 @@
  *   - TTFB > 600 ms (cible interne)
  *
  * Stocke un snapshot agrégé dans `ContentGenConfig.web_vitals_p75` (key/value
- * JSON) lu par le dashboard admin `/content-gen` (next iteration). Pas de FK
- * vers ContentGenJob — la table WebVitalSample est indépendante.
+ * JSON) lu par le dashboard admin `/admin/web-vitals` (audit P0 2026-05-15).
+ * Pas de FK vers ContentGenJob — la table WebVitalSample est indépendante.
+ *
+ * Telegram alerts : helpers SSOT `alertLcpDegraded/Inp/Cls` (+ bulk) depuis
+ * `src/server/content-gen/shared/content-gen-alerts.ts`. Format uniformisé
+ * runbook R30 + lien PSI direct. Audit 2026-05-15 §8.4 / §8.7.
  *
  * **Idempotence** : 1 tick par jour, l'aggregate écrase le précédent.
  * **Fail-soft** : si pas de samples → log info, pas d'alerte (normal en
@@ -25,7 +29,12 @@
 
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
-import { sendTelegram } from "@/lib/telegram";
+import {
+  alertLcpDegraded,
+  alertInpDegraded,
+  alertClsDegraded,
+  alertWebVitalsBulk,
+} from "@/server/content-gen/shared/content-gen-alerts";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 
 /**
@@ -165,33 +174,65 @@ async function processJob(_job: Job<WebVitalsMonitorTick>): Promise<void> {
 
   if (breaches.length === 0) return;
 
-  // Alerte Telegram tag MONITORING. Format compact (Telegram limite 4096 chars,
-  // on prend top 10 breaches triés par dépassement relatif).
-  const ranked = [...breaches].sort((a, b) => b.p75 / b.budget - a.p75 / a.budget).slice(0, 10);
-  const lines = ranked.map((b) => {
-    const fmt = (v: number) =>
-      b.metric === "CLS"
-        ? v.toFixed(3)
-        : `${Math.round(v)}${b.metric === "INP" || b.metric === "LCP" || b.metric === "FCP" || b.metric === "TTFB" || b.metric === "TBT" ? "ms" : ""}`;
-    return `• ${b.metric} \`${b.url}\` p75=${fmt(b.p75)} (budget ${fmt(b.budget)}, n=${b.count})`;
-  });
-  const body =
-    `*Web Vitals dépassement budget*\n` +
-    `Fenêtre : ${WINDOW_HOURS}h · ${samples.length} samples\n` +
-    `Top ${ranked.length}/${breaches.length} breaches :\n` +
-    lines.join("\n");
+  // Tri par dépassement relatif (p75/budget) — top breaches en premier.
+  const ranked = [...breaches].sort((a, b) => b.p75 / b.budget - a.p75 / a.budget);
 
-  try {
-    await sendTelegram({ tag: "MONITORING", body, silent: false });
-  } catch (err) {
-    console.warn(
-      "[content-web-vitals-monitor] Telegram alert failed:",
-      err instanceof Error ? err.message : String(err),
+  // Audit 2026-05-15 P0 monitoring : helpers SSOT content-gen-alerts.ts.
+  // Format Telegram + runbook R30 + lien PSI uniformisés via les helpers
+  // (au lieu d'un sendTelegram inline avec format divergent).
+  //
+  // Stratégie :
+  //  - ≤ 5 breaches : 1 helper par breach (alertLcpDegraded / Inp / Cls)
+  //    pour LCP/INP/CLS. Les metrics non-core (FCP/TTFB/TBT) restent dans
+  //    le bulk pour limiter le bruit Telegram (pas dans budgets critiques
+  //    Web Vitals 2026).
+  //  - > 5 breaches : 1 alerte bulk avec top 5.
+  const BULK_THRESHOLD = 5;
+
+  if (ranked.length > BULK_THRESHOLD) {
+    await alertWebVitalsBulk(
+      ranked.slice(0, BULK_THRESHOLD).map((b) => ({
+        url: b.url,
+        metric: b.metric,
+        p75: b.p75,
+        budget: b.budget,
+        count: b.count,
+      })),
+      ranked.length,
+      WINDOW_HOURS,
     );
+  } else {
+    // Helpers dédiés par metric core. Les metrics non-LCP/INP/CLS sont
+    // listées en bulk single-call (pas critiques pour cible 2026).
+    const nonCoreBreaches: typeof ranked = [];
+    for (const b of ranked) {
+      const input = { url: b.url, p75: b.p75, budget: b.budget, count: b.count };
+      if (b.metric === "LCP") {
+        await alertLcpDegraded(input);
+      } else if (b.metric === "INP") {
+        await alertInpDegraded(input);
+      } else if (b.metric === "CLS") {
+        await alertClsDegraded(input);
+      } else {
+        nonCoreBreaches.push(b);
+      }
+    }
+    if (nonCoreBreaches.length > 0) {
+      await alertWebVitalsBulk(
+        nonCoreBreaches.map((b) => ({
+          url: b.url,
+          metric: b.metric,
+          p75: b.p75,
+          budget: b.budget,
+          count: b.count,
+        })),
+        nonCoreBreaches.length,
+        WINDOW_HOURS,
+      );
+    }
   }
 
-  // Annule un éventuel snapshot pour `web_vitals_alert` info de réception alerte
-  // (utile pour audit trail système, pas lié à un job content-gen).
+  // Snapshot DB pour audit trail système (dashboard /admin/web-vitals lit ça).
   await workerWriteConfig("web_vitals_last_alert", {
     sent_at: new Date().toISOString(),
     breach_count: breaches.length,

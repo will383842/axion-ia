@@ -22,11 +22,15 @@ export function Plausible() {
   //   outbound-links — clics vers domaines externes
   //   tagged-events  — Custom events via window.plausible(name, opts)
   //                    Requis pour trackEvent("Booking Submitted") etc.
+  //   web-vitals     — Active la collecte LCP/INP/CLS côté Plausible (Audit
+  //                    2026-05-15 P0 §8.8). Émet un event "Web Vital" custom
+  //                    auto + accepte les emit manuels via WebVitals.tsx.
+  //                    Permet un dashboard Plausible séparé du RUM /api/vitals.
   return (
     <Script
       defer
       data-domain={domain}
-      src={`${apiUrl}/js/script.404.file-downloads.outbound-links.tagged-events.js`}
+      src={`${apiUrl}/js/script.404.file-downloads.outbound-links.tagged-events.web-vitals.js`}
       strategy="afterInteractive"
     />
   );

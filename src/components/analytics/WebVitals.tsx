@@ -36,6 +36,35 @@ interface NavigatorWithExtras extends Navigator {
   deviceMemory?: number;
 }
 
+/**
+ * Plausible Web Vitals plugin emission (audit 2026-05-15 P0 monitoring §8.8).
+ *
+ * Le script Plausible étend l'API `window.plausible(name, opts)` quand on
+ * inclut `.web-vitals.js` (cf. `Plausible.tsx`). On émet un event canonique
+ * "Web Vital" avec props ajustés pour pouvoir agréger en custom dashboard
+ * Plausible (filter par metric, rating, page).
+ *
+ * Fail-soft : si `window.plausible` absent (script bloqué adblock, env dev
+ * sans NEXT_PUBLIC_PLAUSIBLE_DOMAIN), on swallow silencieusement.
+ */
+interface PlausibleVitalProps {
+  readonly metric: string;
+  readonly value: number;
+  readonly rating: string;
+  readonly page: string;
+}
+
+function emitPlausibleVital(props: PlausibleVitalProps): void {
+  if (typeof window === "undefined") return;
+  const fn = (window as unknown as { plausible?: (n: string, o?: unknown) => void }).plausible;
+  if (typeof fn !== "function") return;
+  try {
+    fn("Web Vital", { props });
+  } catch {
+    // swallow — analytics ne doit jamais affecter l'UX
+  }
+}
+
 // Reports CLS / LCP / INP / FCP / TTFB to /api/vitals (Node.js runtime —
 // Hetzner self-hosted, cf. P-303). Uses sendBeacon when available so payload
 // survives page unload, falls back to fetch keepalive otherwise. Fail-silent
@@ -63,17 +92,27 @@ export function WebVitals() {
       if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
         const blob = new Blob([body], { type: "application/json" });
         navigator.sendBeacon(VITALS_ENDPOINT, blob);
-        return;
+      } else {
+        void fetch(VITALS_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+          keepalive: true,
+        });
       }
-      void fetch(VITALS_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body,
-        keepalive: true,
-      });
     } catch {
       // Swallow — beacon failures must never affect UX.
     }
+
+    // Plausible Web Vitals plugin — émet "Web Vital" en parallèle du POST
+    // /api/vitals. Pas bloquant : si window.plausible absent (adblock, env
+    // dev sans plugin), swallow. Round value pour limiter cardinalité.
+    emitPlausibleVital({
+      metric: metric.name,
+      value: Math.round(metric.value),
+      rating: metric.rating,
+      page: pathname ?? "",
+    });
   });
   return null;
 }
