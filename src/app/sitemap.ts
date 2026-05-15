@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
-import { prisma } from "@/lib/prisma";
 import { getAllSlugs as getAllCaseStudySlugs, getAllIndustrySlugs } from "@/content/case-studies";
 import {
   getAllBlogCategorySlugs,
@@ -64,7 +63,6 @@ const SITEMAP_CHUNK_SIZE = 1000;
 type StaticSitemapId =
   | "pages"
   | "blog"
-  | "news"
   | "faq"
   | "help"
   | "cas-concrets"
@@ -211,10 +209,15 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
   const staticIds: StaticSitemapId[] = [
     "pages",
     "blog",
-    // Audit final P1-12 fix : split sitemap-news.xml + sitemap-faq.xml
-    // dédiés (auparavant bundled `help.xml`). Google News compatibility +
-    // QAPage Speakable distincte.
-    "news",
+    // Audit final P1-12 fix : split sitemap-faq.xml dédié (auparavant bundled
+    // `help.xml`). QAPage Speakable distincte.
+    //
+    // Audit Sitemap+IndexNow 2026-05-15 (AGENT 4 §4.1.3 P0-3) : "news" RETIRÉ
+    // d'ici car la convention `MetadataRoute.Sitemap` Next 16 ne supporte pas
+    // le namespace `xmlns:news` requis par Google News. Le sitemap-news vit
+    // désormais dans `app/sitemap-news.xml/route.ts` (Route Handler XML brut
+    // conforme spec, fenêtre 48h stricte, max 1000 URLs). Référencé dans
+    // `app/sitemap-index.xml/route.ts` manuellement.
     "faq",
     "help",
     "cas-concrets",
@@ -273,8 +276,6 @@ export default async function sitemap(props: {
       return buildPagesSitemap(now);
     case "blog":
       return buildBlogSitemap(now);
-    case "news":
-      return buildNewsSitemap(now);
     case "faq":
       return buildFaqSitemap(now);
     case "help":
@@ -499,65 +500,11 @@ function buildFaqSitemap(now: Date): MetadataRoute.Sitemap {
   );
 }
 
-/**
- * Audit final P1-12 fix — sub-sitemap dédié actualités RSS (NewsArticle).
- *
- * Émet uniquement les `Article.isNews=true` `tier_1_indexable` publiés
- * récemment (Google News considère freshness ≤ 48h pour News carousel,
- * on prend 90 jours pour le sitemap-news classique).
- *
- * URL pattern : `/fr/actualites/<slug>` (route S6.1 P0-2 fix).
- *
- * Bootstrap-safe : si table `articles` pas migrée OU 0 actualités,
- * retourne array vide (sitemap-index ignore vide proprement).
- */
-async function buildNewsSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
-  const cutoff = new Date(Date.now() - 90 * 24 * 3600_000);
-  let rows: Array<{
-    publishedAt: Date | null;
-    translations: Array<{ slug: string }>;
-  }> = [];
-  try {
-    rows = await prisma.article.findMany({
-      where: {
-        status: "published",
-        isNews: true,
-        indexationTier: "tier_1_indexable",
-        publishedAt: { gte: cutoff },
-      },
-      orderBy: { publishedAt: "desc" },
-      take: 1000,
-      select: {
-        publishedAt: true,
-        translations: {
-          where: { locale: "fr" },
-          select: { slug: true },
-          take: 1,
-        },
-      },
-    });
-  } catch {
-    // P2021 table absente (bootstrap pre-migration) — fail-soft
-    return [];
-  }
-
-  const entries: MetadataRoute.Sitemap = [];
-  for (const row of rows) {
-    const slug = row.translations[0]?.slug;
-    if (!slug) continue;
-    const frUrl = `${SITE_URL}/fr/actualites/${slug}`;
-    const enUrl = `${SITE_URL}/en/news/${slug}`;
-    const lastMod = row.publishedAt ?? now;
-    entries.push({
-      url: frUrl,
-      lastModified: lastMod,
-      changeFrequency: "daily",
-      priority: 0.8,
-      alternates: { languages: { fr: frUrl, en: enUrl, "x-default": frUrl } },
-    });
-  }
-  return entries;
-}
+// NB : `buildNewsSitemap` retiré 2026-05-15 (audit Sitemap+IndexNow §4.1.3 P0-3).
+// Le sitemap-news vit désormais à `src/app/sitemap-news.xml/route.ts` (Route
+// Handler XML brut conforme Google News : namespace `xmlns:news`, fenêtre 48h
+// stricte, max 1000 URLs). La convention `MetadataRoute.Sitemap` de Next 16 ne
+// supporte pas le namespace requis par Google News.
 
 function buildCasConcretsSitemap(now: Date): MetadataRoute.Sitemap {
   return buildDynamic(
