@@ -19,6 +19,7 @@
 
 import { PrismaClient } from "./generated/client";
 import { hashPassword } from "../src/lib/auth-password";
+import { seedAuthorProfile } from "./seeds/content-gen/author-profile";
 
 const prisma = new PrismaClient();
 
@@ -1022,6 +1023,10 @@ async function main() {
   await seedCaseStudies();
   await seedFAQs();
   await seedHelpArticles();
+  // AuthorProfile Manon — débloque /fr/equipe/manon (404 sinon, AI Act art. 50).
+  // Audit AEO/GEO 2026-05-15 §3.4 P0-3.
+  const manon = await seedAuthorProfile(prisma);
+  console.log(`✓ AuthorProfile seeded (slug=${manon.slug}, aiGenerated=${manon.aiGenerated})`);
   console.log("✓ Seed complete.");
 }
 

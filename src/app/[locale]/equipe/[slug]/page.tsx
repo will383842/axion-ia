@@ -23,7 +23,11 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 
-export const dynamic = "force-dynamic";
+// ISR 24h : bio Manon ne change quasiment jamais (édition via admin
+// /content-gen/author/manon) → cache CDN agressif justifié. `force-dynamic`
+// retiré (audit Web Vitals 2026-05-15 — annulait silencieusement le cache).
+export const revalidate = 86400;
+export const dynamicParams = true;
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;

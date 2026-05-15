@@ -10,7 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
 import { buildQAPageJsonLd } from "@/lib/seo-content-gen-factories";
 import { splitTitleEm } from "@/lib/title";
 import { listFaqs, type FaqItem } from "@/lib/knowledge/readers";
@@ -64,12 +64,17 @@ export default async function FaqEntryPage({ params }: Props) {
   // `cssSelector: [".faq-answer", '[data-aeo="answer"]']` qui permet aux LLMs
   // d'isoler la réponse pour lecture vocale (Google Assistant, Bing AI).
   // Voir master prompt § 9bis.11B.
+  // datePublished + dateModified : on utilise `BUILD_DATE` (timestamp ISO
+  // stable injecté par CI/CD à chaque build prod) plutôt que `new Date()`
+  // qui change à chaque cold start worker → mensonge fraîcheur. Audit
+  // AEO/GEO 2026-05-15 §3.4.
   const qaJsonLd = buildQAPageJsonLd({
     question: copy.question,
     answerHtml: copy.answer,
     slug,
     locale: loc,
-    publishedAt: new Date(),
+    publishedAt: BUILD_DATE,
+    dateModified: BUILD_DATE,
   });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"

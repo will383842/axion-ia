@@ -214,6 +214,13 @@ export interface QAPageJsonLdInput {
   readonly slug: string;
   readonly locale: "fr" | "en";
   readonly publishedAt: Date | string;
+  /**
+   * Date de dernière modification — signal fraîcheur AEO/GEO 2026.
+   * Sans `dateModified`, Google Search Console + Perplexity peuvent considérer
+   * la page comme stale (audit 2026-05-15 §3.4 P0). Defaults à `publishedAt`
+   * si absent.
+   */
+  readonly dateModified?: Date | string;
   readonly parentArticleUrl?: string;
   readonly upvoteCount?: number;
   readonly speakableCssSelectors?: ReadonlyArray<string>;
@@ -222,6 +229,7 @@ export interface QAPageJsonLdInput {
 export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unknown> {
   const url = `${SITE_URL}/${input.locale}/faq/${input.slug}`;
   const speakable = input.speakableCssSelectors ?? [".faq-answer", '[data-aeo="answer"]'];
+  const dateModifiedIso = new Date(input.dateModified ?? input.publishedAt).toISOString();
   return {
     "@context": "https://schema.org",
     "@type": "QAPage",
@@ -229,6 +237,7 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
     url,
     inLanguage: input.locale === "fr" ? "fr-FR" : "en-US",
     datePublished: new Date(input.publishedAt).toISOString(),
+    dateModified: dateModifiedIso,
     mainEntity: {
       "@type": "Question",
       name: input.question,

@@ -11,7 +11,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getHelpArticle, getAllHelpSlugs, HELP_ARTICLES, slugify } from "@/content/transversal";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
 import { splitTitleEm } from "@/lib/title";
 
 interface Props {
@@ -48,6 +48,9 @@ export default async function HelpArticlePage({ params }: Props) {
   const copy = article[loc];
 
   // Article Schema — generic help article (HowTo would be possible if step-based).
+  // datePublished + dateModified ajoutés (audit AEO/GEO 2026-05-15 §3.4) :
+  // signal fraîcheur AEO Google + Perplexity. `BUILD_DATE` est stable par build
+  // (vs new Date() runtime qui mentirait sur chaque cold-start worker).
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -55,6 +58,9 @@ export default async function HelpArticlePage({ params }: Props) {
     description: copy.excerpt,
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/centre-aide/${slug}`,
+    datePublished: BUILD_DATE,
+    dateModified: BUILD_DATE,
+    author: { "@type": "Person", name: "Manon", url: `${SITE_URL}/fr/equipe/manon` },
     isPartOf: {
       "@type": "WebSite",
       name: "Axion-IA",
