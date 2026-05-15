@@ -25,6 +25,7 @@ import { fetchSearchConsoleCtr } from "@/server/content-gen/lifecycle/analytics-
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { alertTier3Stagnant } from "@/server/content-gen/shared/content-gen-alerts";
 
 const QUEUE_NAME = "content-tier-lifecycle";
 const PROMOTE_AGE_DAYS = DEFAULT_TIER_THRESHOLDS.promoteAgeDaysMin;
@@ -138,9 +139,31 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   await processArticles("tier_2_noindex_follow", promoteThreshold, PROMOTE_WINDOW_DAYS, stats);
   await processArticles("tier_1_indexable", demoteThreshold, DEMOTE_WINDOW_DAYS, stats);
 
+  // Méta-cert 2026-05-15 AGENT 19 P1 — câbler alertTier3Stagnant (helper
+  // ready-to-call déclaré mais jamais invoqué). Trigger info avant purge auto.
+  const STAGNANT_THRESHOLD_DAYS = 90;
+  const stagnantBefore = new Date(now - STAGNANT_THRESHOLD_DAYS * 86_400_000);
+  const stagnantTier3 = await prisma.article.findMany({
+    where: {
+      status: "published",
+      indexationTier: "tier_3_noindex_nofollow" as IndexationTier,
+      publishedAt: { lte: stagnantBefore },
+    },
+    select: { publishedAt: true },
+    orderBy: { publishedAt: "asc" },
+  });
+  if (stagnantTier3.length > 0) {
+    const oldest = stagnantTier3[0]?.publishedAt;
+    const oldestAgeDays = oldest
+      ? Math.floor((now - oldest.getTime()) / 86_400_000)
+      : STAGNANT_THRESHOLD_DAYS;
+    await alertTier3Stagnant(stagnantTier3.length, oldestAgeDays);
+  }
+
   console.log(
     `[tier-lifecycle] run done — scanned=${stats.scanned} promoted=${stats.promoted} ` +
-      `demoted=${stats.demoted} noop=${stats.noop} no_data=${stats.noData}`,
+      `demoted=${stats.demoted} noop=${stats.noop} no_data=${stats.noData} ` +
+      `tier3_stagnant=${stagnantTier3.length}`,
   );
 }
 

@@ -55,6 +55,13 @@ async function initSentryLazy(): Promise<SentryModule | null> {
       ],
       tracesSampleRate: 0,
       environment: process.env["NEXT_PUBLIC_APP_ENV"] ?? "development",
+      // Méta-cert 2026-05-15 AGENT 17 P1 — release tracking explicite cohérent
+      // avec sentry.{server,edge}.config.ts. NEXT_PUBLIC_SENTRY_RELEASE pour le
+      // client (lisible côté browser), fallback SENTRY_RELEASE puis npm version.
+      release:
+        process.env["NEXT_PUBLIC_SENTRY_RELEASE"] ??
+        process.env["SENTRY_RELEASE"] ??
+        process.env["npm_package_version"],
       replaysSessionSampleRate: 0,
       replaysOnErrorSampleRate: 0,
       sendDefaultPii: false,
