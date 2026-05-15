@@ -1,0 +1,40 @@
+link_section	label	href	http_status	rel	target	notes
+Brand	(brand logo)	/fr	N/A			
+Social	LinkedIn	https://www.linkedin.com/company/axion-ia	N/A	noopener noreferrer external	_blank	rel+target OK
+Social	Facebook	https://www.facebook.com/axionia	N/A	noopener noreferrer external	_blank	rel+target OK
+Services	Essentielle 390 EUR	/fr/interventions/essentielle	200			
+Services	Interventions entreprise	/fr/interventions	200			
+Services	Audit IA	/fr/audit	200			
+Services	Implementation IA	/fr/implementation	200			
+Resources	Stack IA 2026	/fr/stack-ia	200			
+Resources	Comparaisons	/fr/comparaisons	200			
+Resources	Guide IA operationnelle	/fr/guide-ia	503			503 origin (prod-side, hors footer)
+Resources	Glossaire	/fr/glossaire	200			
+Resources	Blog	/fr/blog	200			
+Resources	Cas concrets	/fr/cas-concrets	200			
+Resources	FAQ	/fr/faq	200			
+Resources	Centre d aide	/fr/centre-aide	200			
+Company	A propos	/fr/a-propos	200			
+Company	Methodologie	/fr/methodologie	200			
+Company	Contact	/fr/contact	200			
+Company	Simulateur ROI	/fr/roi	503			503 origin (prod-side, hors footer)
+Company	Presse	/fr/presse	503			503 origin (prod-side, hors footer)
+Implantations	Toutes les regions	/fr/implantations	200			
+Implantations	Ile-de-France	/fr/implantations/ile-de-france	200			
+Implantations	Auvergne-Rhone-Alpes	/fr/implantations/auvergne-rhone-alpes	200			
+Implantations	Occitanie	/fr/implantations/occitanie	503			503 origin (prod-side, hors footer)
+Implantations	Nouvelle-Aquitaine	/fr/implantations/nouvelle-aquitaine	200			
+Implantations	PACA	/fr/implantations/provence-alpes-cote-d-azur	503			503 origin (prod-side, hors footer)
+Implantations	Hauts-de-France	/fr/implantations/hauts-de-france	503			503 origin (prod-side, hors footer)
+Implantations	Paris pilote	/fr/implantations/ile-de-france/paris	200			
+Implantations	Audit IA Paris	/fr/audit/par-ville/paris	503			503 origin (prod-side, hors footer)
+Implantations	Interventions IA Paris	/fr/interventions/par-ville/paris	503			503 origin (prod-side, hors footer)
+Implantations	Implementation IA Paris	/fr/implementation/par-ville/paris	503			503 origin (prod-side, hors footer)
+Legal	Mentions legales	/fr/mentions-legales	503			503 origin (prod-side, hors footer)
+Legal	CGV	/fr/conditions-generales	503			503 origin (prod-side, hors footer)
+Legal	Confidentialite	/fr/politique-confidentialite	503			503 origin (prod-side, hors footer)
+Legal	Accessibilite	/fr/accessibilite	503			503 origin (prod-side, hors footer)
+Legal	Cookies	/fr/cookies	503			503 origin (prod-side, hors footer)
+BottomStrip	Plan du site	/sitemap.xml	503			503 origin (prod-side, hors footer)
+BottomStrip	RGPD	/fr/rgpd	503			503 origin (prod-side, hors footer)
+LocaleSwitcher_FR_to_EN	en	/en	N/A			

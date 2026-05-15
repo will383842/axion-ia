@@ -1,0 +1,101 @@
+ville	region	cta_count	liens_voisines	liens_services	notes
+# Sample stratifié 50 villes × 13 régions INSEE (5 par région) — analyse CODE-FIRST (templates partagés)
+# Tous les sample appellent les MÊMES templates SSG, donc le verdict est uniforme (par template).
+# Templates audités : src/app/[locale]/implantations/[region]/[ville]/page.tsx + src/components/sections/VilleServicePageTemplate.tsx
+#
+# === SECTION A — Template /implantations/[region]/[ville] (page mère gold standard) ===
+# Pour Paris (seule ville pilote avec copy.services complet) : rendu 100% gold (9 sections + 5 schemas).
+# Pour les ~2156 autres villes (sans copy) : VilleStub minimal noindex follow (anti-doorway HCU 2024) — 2 CTAs.
+#
+# Paris (pilote — copy.services complet)
+paris	ile-de-france	4	8	3	GOLD: hero+/reserver?ville=paris (track ville_cta_book), /audit, services x3 (/audit /interventions /implementation), nearbyVilles cap=8 (≤10 OK), CtaBlock final /reserver+/contact. 5 schemas JSON-LD. INDEXABLE.
+#
+# Échantillon stubs (mêmes CTAs : Voir région + Réserver). 49 villes représentées par régression équivalente.
+# Ile-de-France stubs
+versailles	ile-de-france	2	0	0	STUB noindex. 2 CTA: voir region + /reserver?ville=versailles. PAS de liens services par ville (copy.services absent).
+boulogne-billancourt	ile-de-france	2	0	0	STUB noindex idem. Anti-doorway OK.
+saint-denis	ile-de-france	2	0	0	STUB noindex idem.
+montreuil	ile-de-france	2	0	0	STUB noindex idem.
+# Auvergne-Rhone-Alpes stubs
+lyon	auvergne-rhone-alpes	2	0	0	STUB noindex (copy absent — Will différé industrialisation pSEO 2280 villes).
+grenoble	auvergne-rhone-alpes	2	0	0	STUB noindex idem.
+clermont-ferrand	auvergne-rhone-alpes	2	0	0	STUB noindex idem.
+saint-etienne	auvergne-rhone-alpes	2	0	0	STUB noindex idem.
+annecy	auvergne-rhone-alpes	2	0	0	STUB noindex idem.
+# Provence-Alpes-Cote-d-Azur stubs
+marseille	provence-alpes-cote-d-azur	2	0	0	STUB noindex idem.
+nice	provence-alpes-cote-d-azur	2	0	0	STUB noindex idem.
+toulon	provence-alpes-cote-d-azur	2	0	0	STUB noindex idem.
+aix-en-provence	provence-alpes-cote-d-azur	2	0	0	STUB noindex idem.
+avignon	provence-alpes-cote-d-azur	2	0	0	STUB noindex idem.
+# Nouvelle-Aquitaine stubs
+bordeaux	nouvelle-aquitaine	2	0	0	STUB noindex idem.
+limoges	nouvelle-aquitaine	2	0	0	STUB noindex idem.
+poitiers	nouvelle-aquitaine	2	0	0	STUB noindex idem.
+la-rochelle	nouvelle-aquitaine	2	0	0	STUB noindex idem.
+pau	nouvelle-aquitaine	2	0	0	STUB noindex idem.
+# Occitanie stubs
+toulouse	occitanie	2	0	0	STUB noindex idem.
+montpellier	occitanie	2	0	0	STUB noindex idem.
+nimes	occitanie	2	0	0	STUB noindex idem.
+perpignan	occitanie	2	0	0	STUB noindex idem.
+beziers	occitanie	2	0	0	STUB noindex idem.
+# Hauts-de-France stubs
+lille	hauts-de-france	2	0	0	STUB noindex idem.
+amiens	hauts-de-france	2	0	0	STUB noindex idem.
+roubaix	hauts-de-france	2	0	0	STUB noindex idem.
+tourcoing	hauts-de-france	2	0	0	STUB noindex idem.
+dunkerque	hauts-de-france	2	0	0	STUB noindex idem.
+# Grand-Est stubs
+strasbourg	grand-est	2	0	0	STUB noindex idem.
+reims	grand-est	2	0	0	STUB noindex idem.
+metz	grand-est	2	0	0	STUB noindex idem.
+nancy	grand-est	2	0	0	STUB noindex idem.
+mulhouse	grand-est	2	0	0	STUB noindex idem.
+# Pays-de-la-Loire stubs
+nantes	pays-de-la-loire	2	0	0	STUB noindex idem.
+angers	pays-de-la-loire	2	0	0	STUB noindex idem.
+le-mans	pays-de-la-loire	2	0	0	STUB noindex idem.
+saint-nazaire	pays-de-la-loire	2	0	0	STUB noindex idem.
+cholet	pays-de-la-loire	2	0	0	STUB noindex idem.
+# Bretagne stubs
+rennes	bretagne	2	0	0	STUB noindex idem.
+brest	bretagne	2	0	0	STUB noindex idem.
+quimper	bretagne	2	0	0	STUB noindex idem.
+lorient	bretagne	2	0	0	STUB noindex idem.
+vannes	bretagne	2	0	0	STUB noindex idem.
+# Normandie stubs
+rouen	normandie	2	0	0	STUB noindex idem.
+le-havre	normandie	2	0	0	STUB noindex idem.
+caen	normandie	2	0	0	STUB noindex idem.
+cherbourg-en-cotentin	normandie	2	0	0	STUB noindex idem.
+evreux	normandie	2	0	0	STUB noindex idem.
+# Bourgogne-Franche-Comte stubs
+dijon	bourgogne-franche-comte	2	0	0	STUB noindex idem.
+besancon	bourgogne-franche-comte	2	0	0	STUB noindex idem.
+# Centre-Val-de-Loire stubs
+tours	centre-val-de-loire	2	0	0	STUB noindex idem.
+orleans	centre-val-de-loire	2	0	0	STUB noindex idem.
+# Corse stubs
+ajaccio	corse	2	0	0	STUB noindex idem.
+#
+# === SECTION B — Templates /audit|interventions|implementation/par-ville/[ville] ===
+# Source de vérité unique: src/components/sections/VilleServicePageTemplate.tsx
+# Paris (seul pilote avec copy.services.<svc>) : rendu gold (hero + service + FAQ + cross-services + 6 villes proches + CtaBlock final)
+# Toutes autres villes : VilleStub minimal noindex (2 CTAs vers canonical /audit + /implantations/<region>/<ville>)
+#
+# Verdict CTA template Paris (PILOTE) : 5 CTAs primaires (hero /reserver?ville=paris&service=X + /<canonical> + cross-services 2 cards + CtaBlock final /reserver +contact). NEARBY VILLES cap=6 (≤10 OK ANTI-DOORWAY). Liens cross-services présents pour service ≠ courant.
+# Verdict CTA template autres (STUB) : 2 CTAs (hero /reserver?ville=<slug>&service=<svc> + /<canonical>). PAS de nearbyVilles. PAS de cross-services.
+#
+# ========== AGGRÉGATS ==========
+# Total villes échantillonnées 50 (5 × 10 régions échantillon ; Bourgogne/Centre/Corse <5 villes >5k hab pertinentes)
+# Villes GOLD (copy.services complet) : 1 / 50 (2 %) → toutes routes Paris × 4 templates ✅
+# Villes STUB noindex : 49 / 50 (98 %) → routes générées SSG mais noindex robots — anti-doorway HCU 2024 OK
+# CTA conversion sur 100 % des pages : ≥2 (/reserver?ville=<slug> + back-region OU canonical service)
+# Liens voisines > 10 sur 0/50 pages → ANTI-DOORWAY HCU 2024 ✅
+# CTAs cassés ROUGE 0/50 → aucune ville sans CTA conversion ✅
+#
+# ===== GAPS P1 =====
+# G1 — 2156/2157 villes STUB sans nearbyVilles ni cross-services (anti-doorway respecté MAIS maillage 0 vers voisines)
+# G2 — Stub n'expose pas le lien direct vers les 4 sous-templates /audit|interventions|implementation/par-ville/<slug> (existent mais aussi en stub donc inutile)
+# G3 — Liens services par ville (ville_service_*) tracking présent uniquement page mère Paris (services pas affichés sur stub)

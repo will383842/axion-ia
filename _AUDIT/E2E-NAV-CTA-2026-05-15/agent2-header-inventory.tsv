@@ -1,0 +1,75 @@
+page	section	label	href	http_status	notes
+https://axion-ia.com/fr	locale_switcher	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr	nav_left	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr	locale_switcher	fr	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr	locale_switcher	en	https://axion-ia.com/en	200	
+https://axion-ia.com/en	locale_switcher	Axion - IA	https://axion-ia.com/en	200	
+https://axion-ia.com/en	nav_left	Corporate AI sessions	https://axion-ia.com/en/interventions	200	
+https://axion-ia.com/en	nav_left	AI audit	https://axion-ia.com/en/audit	200	
+https://axion-ia.com/en	cta_central	Book an AI session or audit Starting at 390 €	https://axion-ia.com/en/book	503	
+https://axion-ia.com/en	nav_right	AI implementation	https://axion-ia.com/en/implementation	200	
+https://axion-ia.com/en	nav_right	Case studies	https://axion-ia.com/en/case-studies	503	
+https://axion-ia.com/en	nav_right	Locations	https://axion-ia.com/en/locations	503	
+https://axion-ia.com/en	locale_switcher	fr	https://axion-ia.com/fr	200	
+https://axion-ia.com/en	locale_switcher	en	https://axion-ia.com/en	200	
+https://axion-ia.com/fr/interventions	logo	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr/interventions	locale_switcher	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/interventions	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr/interventions	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr/interventions	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr/interventions	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr/interventions	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr/interventions	locale_switcher	fr	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/interventions	locale_switcher	en	https://axion-ia.com/en/interventions	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	logo	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	nav_left	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr/implantations/ile-de-france/paris	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	locale_switcher	fr	https://axion-ia.com/fr/implantations/ile-de-france/paris	200	
+https://axion-ia.com/fr/implantations/ile-de-france/paris	locale_switcher	en	https://axion-ia.com/en/locations/ile-de-france/paris	503	
+https://axion-ia.com/fr/actualites	logo	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr/actualites	nav_left	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/actualites	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr/actualites	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr/actualites	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr/actualites	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr/actualites	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr/actualites	locale_switcher	fr	https://axion-ia.com/fr/actualites	200	
+https://axion-ia.com/fr/actualites	locale_switcher	en	https://axion-ia.com/en/actualites	503	
+https://axion-ia.com/fr/faq	logo	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr/faq	nav_left	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/faq	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr/faq	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr/faq	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr/faq	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr/faq	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr/faq	locale_switcher	fr	https://axion-ia.com/fr/faq	200	
+https://axion-ia.com/fr/faq	locale_switcher	en	https://axion-ia.com/en/faq	503	
+https://axion-ia.com/fr/reserver	header	503_BYPASS	-	503	cloudflare bypass / origin down
+https://axion-ia.com/fr/contact	logo	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr/contact	nav_left	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/contact	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr/contact	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr/contact	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr/contact	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr/contact	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr/contact	locale_switcher	fr	https://axion-ia.com/fr/contact	200	
+https://axion-ia.com/fr/contact	locale_switcher	en	https://axion-ia.com/en/contact	200	
+https://axion-ia.com/fr/url-inexistante-test-404	header	503_BYPASS	-	503	cloudflare bypass / origin down
+https://axion-ia.com/fr/centre-aide	logo	Axion - IA	https://axion-ia.com/fr	200	
+https://axion-ia.com/fr/centre-aide	nav_left	Interventions entreprise	https://axion-ia.com/fr/interventions	200	
+https://axion-ia.com/fr/centre-aide	nav_left	Audit IA	https://axion-ia.com/fr/audit	200	
+https://axion-ia.com/fr/centre-aide	cta_central	Réserver une intervention ou un audit IA À partir de 390 €	https://axion-ia.com/fr/reserver	503	CTA verbeux (>50 char) — OK ARIA mais visual long
+https://axion-ia.com/fr/centre-aide	nav_right	Implémentation IA	https://axion-ia.com/fr/implementation	200	
+https://axion-ia.com/fr/centre-aide	nav_right	Cas concrets	https://axion-ia.com/fr/cas-concrets	200	
+https://axion-ia.com/fr/centre-aide	nav_right	Implantations	https://axion-ia.com/fr/implantations	200	
+https://axion-ia.com/fr/centre-aide	locale_switcher	fr	https://axion-ia.com/fr/centre-aide	200	
+https://axion-ia.com/fr/centre-aide	locale_switcher	en	https://axion-ia.com/en/help	503	

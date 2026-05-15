@@ -1,0 +1,105 @@
+{
+  "audited": 27,
+  "pages_ok": 14,
+  "pages_failed": [
+    {
+      "url": "https://axion-ia.com/fr/blog/pourquoi-auditer-avant-implementer",
+      "status": 503,
+      "type": "article",
+      "note": "blog fallback"
+    },
+    {
+      "url": "https://axion-ia.com/fr/cas-concrets/cabinet-juridique-comptes-rendus",
+      "status": 503,
+      "type": "case-study",
+      "note": ""
+    },
+    {
+      "url": "https://axion-ia.com/fr/cas-concrets/tpe-artisan-prospection",
+      "status": 503,
+      "type": "case-study",
+      "note": ""
+    },
+    {
+      "url": "https://axion-ia.com/fr/faq/modules",
+      "status": 503,
+      "type": "faq",
+      "note": ""
+    },
+    {
+      "url": "https://axion-ia.com/fr/faq/tools",
+      "status": 503,
+      "type": "faq",
+      "note": ""
+    },
+    {
+      "url": "https://axion-ia.com/fr/connaissances/definition",
+      "status": 503,
+      "type": "kb",
+      "note": "route publique non implémentée"
+    },
+    {
+      "url": "https://axion-ia.com/fr/connaissances/modules",
+      "status": 503,
+      "type": "kb",
+      "note": "route publique non implémentée"
+    },
+    {
+      "url": "https://axion-ia.com/fr/connaissances/data-security",
+      "status": 503,
+      "type": "kb",
+      "note": "route publique non implémentée"
+    },
+    {
+      "url": "https://axion-ia.com/fr/connaissances/tools",
+      "status": 503,
+      "type": "kb",
+      "note": "route publique non implémentée"
+    },
+    {
+      "url": "https://axion-ia.com/fr/connaissances/billing",
+      "status": 503,
+      "type": "kb",
+      "note": "route publique non implémentée"
+    },
+    {
+      "url": "https://axion-ia.com/fr/interventions/par-ville/toulouse",
+      "status": 503,
+      "type": "pseo-city",
+      "note": ""
+    },
+    {
+      "url": "https://axion-ia.com/fr/implementation/par-ville/bordeaux",
+      "status": 503,
+      "type": "pseo-city",
+      "note": ""
+    },
+    {
+      "url": "https://axion-ia.com/fr/guide-ia",
+      "status": 503,
+      "type": "guide",
+      "note": ""
+    }
+  ],
+  "gate_rouge_counts": {
+    "fetch-failed": 13,
+    "zero-link-to-tier1-service": 0,
+    "click-here-found": 0,
+    "external-without-noopener": 0,
+    "broken-anchor-id": 0
+  },
+  "gate_orange_counts": {
+    "identical-anchor-text-30pct+": 0,
+    "competitor-external-link": 0
+  },
+  "totals": {
+    "total_internal_links": 66,
+    "total_external_links": 0,
+    "total_tier1_targets": 28,
+    "total_click_here": 0,
+    "total_weak": 0,
+    "total_noopener_missing": 0,
+    "total_broken_anchors": 0,
+    "total_competitor_links": 0
+  }
+}

@@ -1,0 +1,127 @@
+page	cta_type	label	href	above_fold	http_status	notes
+/fr	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER NAV — TARGET CASSÉ "no available server"
+/fr	primary	Démarrer · 390 €	/fr/interventions/essentielle	yes	200	DRIFT prix : label promet 390 € mais essentielle = 490 €
+/fr	secondary	Voir des cas concrets	/fr/cas-concrets	yes	200	OK
+/fr	primary	Intervenir auprès de vos équipes	/fr/interventions	no	200	OK
+/fr	primary	Auditer votre entreprise	/fr/audit	no	200	OK
+/fr	primary	Implémenter dans votre entreprise	/fr/implementation	no	200	OK
+/fr	secondary	Lire le cas (Artisan)	/fr/cas-concrets/tpe-artisan-prospection	no	503	TARGET CASSÉ
+/fr	secondary	Lire le cas (Industrie)	/fr/cas-concrets/industrie-comptabilite	no	200	OK
+/fr	secondary	Lire le cas (Banque)	/fr/cas-concrets/banque-onboarding	no	200	OK
+/fr	primary	Lancer le simulateur	/fr/roi	no	503	TARGET CASSÉ
+/fr	primary	Voir l'Essentielle	/fr/interventions/essentielle	no	200	OK
+/fr	primary	Parler à un intervenant	/fr/contact	no	200	OK
+/fr/interventions	primary	Pré-réservez sur le calendrier	/fr/reserver	yes	503	TARGET CASSÉ
+/fr/interventions	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/interventions	primary	Ouvrir le calendrier	/fr/reserver	no	503	TARGET CASSÉ
+/fr/interventions	secondary	Voir les interventions équipes	/fr/interventions/collectives	no	200	OK
+/fr/interventions	secondary	Voir les coachings individuels	/fr/interventions/individuel	no	503	TARGET CASSÉ
+/fr/interventions	secondary	Voir les offres dirigeants	/fr/interventions/dirigeants	no	503	TARGET CASSÉ
+/fr/interventions	secondary	Voir les conférences	/fr/interventions/conference	no	503	TARGET CASSÉ
+/fr/interventions	secondary	Question avant de pré-réserver ?	/fr/contact	no	200	OK
+/fr/interventions	secondary	Auditer d'abord →	/fr/audit	no	200	OK
+/fr/interventions	secondary	Implémenter l'IA →	/fr/implementation	no	200	OK
+/fr/interventions/collectives	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/interventions/collectives	primary	Pré-réservez sur le calendrier	/fr/reserver	yes	503	TARGET CASSÉ
+/fr/interventions/collectives	secondary	Voir les formations (4h)	/fr/interventions/collectives/4h	no	200	OK
+/fr/interventions/collectives	secondary	Voir les formations (1j)	/fr/interventions/collectives/1-jour	no	200	OK
+/fr/interventions/collectives	secondary	Voir les formations (2j)	/fr/interventions/collectives/2-jours	no	200	OK
+/fr/interventions/collectives	secondary	Demander un devis	/fr/interventions/demande?objet=formation-collective-sur-mesure	no	?	probable 200 (page /interventions/demande)
+/fr/interventions/collectives	secondary	Demander un appel →	/fr/interventions/demande?objet=cadrage-formation-equipe	no	?	probable 200
+/fr/interventions/individuel	-	-	-	-	503	PAGE ELLE-MÊME EN 503 — INVENTAIRE IMPOSSIBLE
+/fr/interventions/dirigeants	-	-	-	-	503	PAGE ELLE-MÊME EN 503 — INVENTAIRE IMPOSSIBLE
+/fr/interventions/conference	-	-	-	-	503	PAGE ELLE-MÊME EN 503 — INVENTAIRE IMPOSSIBLE
+/fr/interventions/essentielle	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	TARGET CASSÉ
+/fr/interventions/essentielle	primary	Réserver une intervention	/fr/reserver?intervention=essentielle	yes	503	TARGET CASSÉ (×2 hero + booking)
+/fr/interventions/essentielle	secondary	Voir les cas concrets	/fr/cas-concrets	yes	200	OK
+/fr/interventions/essentielle	primary	Réserver à ce tarif (Intimiste)	/fr/reserver?intervention=essentielle&tier=intimiste	no	503	TARGET CASSÉ
+/fr/interventions/essentielle	primary	Réserver à ce tarif (Standard)	/fr/reserver?intervention=essentielle&tier=standard	no	503	TARGET CASSÉ
+/fr/interventions/essentielle	primary	Réserver à ce tarif (Complète)	/fr/reserver?intervention=essentielle&tier=complete	no	503	TARGET CASSÉ
+/fr/interventions/approfondie	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/interventions/gagner-du-temps	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/interventions/dirigeant-productivite	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/interventions/dirigeant-vision-strategique	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/interventions/conference-pleniere	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/interventions/coaching-decouverte	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/audit	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/audit	primary	Réserver un Flash terrain · 890 €	/fr/reserver?intervention=audit-flash-onsite	yes	503	TARGET CASSÉ — prix OK vs SSOT (890 €)
+/fr/audit	secondary	Demander un cadrage	/fr/audit/demande	yes	?	probable 200
+/fr/audit	secondary	Voir le format (Flash)	/fr/audit/flash	no	200	OK
+/fr/audit	secondary	Voir le format (Stratégique PME)	/fr/audit/strategique-pme	no	503	TARGET CASSÉ
+/fr/audit	secondary	Voir le format (Stratégique ETI)	/fr/audit/strategique-eti	no	503	TARGET CASSÉ
+/fr/audit/flash	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/audit/flash	primary	Essentielle · 390 €	/fr/interventions/essentielle	no	200	DRIFT prix : label 390 € mais target Essentielle = 490 €
+/fr/audit/flash	primary	Pré-réserver cette mission	/fr/audit/demande?objet=audit-flash-distance	no	?	probable 200
+/fr/audit/flash	primary	Réserver sur le calendrier	/fr/reserver?intervention=audit-flash-onsite	no	503	TARGET CASSÉ
+/fr/audit/flash	primary	Choisir un format Flash	/fr/audit/demande?objet=audit-flash-distance	no	?	probable 200
+/fr/audit/approfondie	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/audit/ciblee	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/audit/strategique-pme	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/audit/strategique-eti	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/implementation	primary	Décrire mon besoin · réponse 48 h	/fr/contact	yes	200	OK (apparait 3×)
+/fr/implementation	primary	Commencer par un audit	/fr/audit	yes	200	OK
+/fr/implementation	primary	Réserver une intervention ou un audit IA	/fr/reserver	no	503	HEADER — TARGET CASSÉ
+/fr/implementation	secondary	Voir les niveaux d'audit	/fr/audit	no	200	OK
+/fr/implementation	secondary	Voir le catalogue	#catalogue	no	-	anchor
+/fr/implementation	secondary	Approche par technologie	/fr/implementation/par-techno	no	?	non testé
+/fr/implementation	secondary	Demander un devis pour mon cas	/fr/contact	no	200	OK
+/fr/implementation/ia-custom	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/reserver	-	-	-	-	503	PAGE CALENDRIER COEUR REVENU EN 503 (body: "no available server")
+/fr/demande-devis	-	-	-	-	503	PAGE DEMANDE DEVIS EN 503
+/fr/contact	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/contact	primary	Voir l'Essentielle 490 €	/fr/interventions/essentielle	no	200	OK — pricing cohérent SSOT
+/fr/contact	primary	Envoyer un message	-	yes	-	form submit
+/fr/contact	secondary	Voir les audits →	/fr/audit	no	200	OK
+/fr/contact	secondary	Voir les prestations →	/fr/implementation	no	200	OK
+/fr/comparaisons	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/comparaisons	primary	Voir l'Essentielle (390-490 €)	/fr/interventions/essentielle	no	200	OK
+/fr/methodologie	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/methodologie	primary	Voir l'Essentielle 490 €	/fr/interventions/essentielle	no	200	OK
+/fr/methodologie	secondary	Voir les 4 niveaux d'audit	/fr/audit	no	200	OK
+/fr/methodologie	secondary	Voir les cas concrets	/fr/cas-concrets	no	200	OK
+/fr/cas-concrets	primary	Réserver une intervention ou un audit IA	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/cas-concrets	primary	Parcourir les cas	#cas	yes	-	anchor
+/fr/cas-concrets	primary	Demander un audit	/fr/audit	no	200	OK
+/fr/cas-concrets	primary	Voir l'Essentielle	/fr/interventions/essentielle	no	200	OK
+/fr/cas-concrets/industrie-comptabilite	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/cas-concrets/industrie-comptabilite	secondary	Interventions entreprise	/fr/interventions	no	200	OK
+/fr/cas-concrets/industrie-comptabilite	secondary	Audit IA	/fr/audit	no	200	OK
+/fr/cas-concrets/industrie-comptabilite	secondary	Implémentation IA	/fr/implementation	no	200	OK
+/fr/cas-concrets/industrie-comptabilite	secondary	Contact →	/fr/contact	no	200	OK
+/fr/cas-concrets/tpe-artisan-prospection	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/cas-concrets/cabinet-juridique-comptes-rendus	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/cas-concrets/retail-tickets-sav	-	-	-	-	200	non auditée détail
+/fr/cas-concrets/banque-onboarding	-	-	-	-	200	non auditée détail
+/fr/faq	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/faq/definition	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/faq/definition	secondary	Interventions entreprise	/fr/interventions	no	200	OK
+/fr/faq/definition	secondary	Audit IA	/fr/audit	no	200	OK
+/fr/faq/definition	secondary	Implémentation IA	/fr/implementation	no	200	OK
+/fr/faq/training	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/faq/methodology	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/connaissances	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/connaissances/rag-vs-fine-tuning	-	-	-	-	503	PAGE ELLE-MÊME EN 503
+/fr/actualites	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/actualites/ia-pme-2026	-	-	-	-	503	PAGE ARTICLE EN 503
+/fr/implantations/ile-de-france/paris	primary	Demander un audit Flash · 490 €	/fr/reserver?ville=paris&service=audit	yes	503	TARGET CASSÉ — prix OK
+/fr/implantations/ile-de-france/paris	primary	Voir le calendrier · 490 €	/fr/reserver?ville=paris&service=interventions	yes	503	TARGET CASSÉ — DRIFT prix : interventions = 390 € (4h) ou 490 € (essentielle)
+/fr/implantations/ile-de-france/paris	primary	Discuter d'un projet	/fr/reserver?ville=paris&service=implementation	yes	503	TARGET CASSÉ
+/fr/implantations/ile-de-france/paris	primary	Réserver à Paris · 490 €	/fr/reserver?ville=paris	yes	503	TARGET CASSÉ
+/fr/implantations/ile-de-france/paris	secondary	Voir tout sur Audit IA	/fr/audit	no	200	OK
+/fr/implantations/ile-de-france/paris	secondary	Voir tout sur Interventions IA	/fr/interventions	no	200	OK
+/fr/implantations/ile-de-france/paris	secondary	Voir tout sur Implémentation IA	/fr/implementation	no	200	OK
+/fr/implantations/ile-de-france/paris	secondary	Parler à un consultant	/fr/contact	no	200	OK
+/fr/audit/par-ville/lyon	primary	Réserver une intervention ou un audit IA · À partir de 390 €	/fr/reserver	yes	503	TARGET CASSÉ — page elle-même partielle "page locale en préparation"
+/fr/audit/par-ville/lyon	primary	Voir l'Essentielle 490 €	/fr/interventions/essentielle	no	200	OK
+/fr/interventions/par-ville/marseille	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	TARGET CASSÉ — page partielle
+/fr/audit/par-ville/marseille	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	TARGET CASSÉ — page partielle
+/fr/stack-ia	primary	Réserver une intervention ou un audit IA · 390 €	/fr/reserver	yes	503	HEADER — TARGET CASSÉ
+/fr/stack-ia	primary	Démarrer avec l'Essentielle · 490 €	/fr/interventions/essentielle	no	200	OK — utilise SSOT formatAmount
+/fr/roi	-	-	-	-	503	PAGE SIMULATEUR ROI EN 503 — CTA HOME pointe ici depuis "Lancer le simulateur"
+/fr/guide-ia	-	-	-	-	503	PAGE GUIDE EN 503
+/fr/url-test-inexistante	-	-	-	-	503	404 NEXT.JS RETOURNE 503 — pas de not-found.tsx servi par Coolify
+/fr/non-existent-page	-	-	-	-	503	idem
+/fr/sitemap.xml	-	-	-	-	503	SITEMAP EN 503 — IMPACT SEO MAJEUR
+/en	primary	Book an intervention or AI audit	/en/reserver?	yes	200	site EN entièrement UP
+/en/interventions	-	-	-	-	200	OK
+/en/audit	-	-	-	-	200	OK

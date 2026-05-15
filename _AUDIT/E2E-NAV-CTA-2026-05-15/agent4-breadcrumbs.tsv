@@ -1,0 +1,31 @@
+page_url	present	jsonld_present	jsonld_valid	items_count	current_clickable	notes
+https://axion-ia.com/fr	NO	NO	N/A	0	N/A	OK — home FR sans breadcrumb (attendu)
+https://axion-ia.com/en	NO	NO	N/A	0	N/A	OK — home EN sans breadcrumb (attendu)
+https://axion-ia.com/fr/interventions	YES	YES	YES	2	NO	Label "Interventions en entreprise" (long)
+https://axion-ia.com/fr/audit	YES	YES	YES	2	NO	Label "Audit IA"
+https://axion-ia.com/fr/implementation	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/blog	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/cas-concrets	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/centre-aide	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/faq	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/comparaisons	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/implantations	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/interventions/collectives	YES	YES	YES	3	NO	Parent label = "Interventions" (court) — diverge de la version hub "Interventions en entreprise"
+https://axion-ia.com/fr/audit/flash	YES	YES	YES	3	NO	Parent label = "Audit" (court) — diverge du hub "Audit IA"
+https://axion-ia.com/fr/implementation/ia-custom	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin (no available server) — code review montre Breadcrumbs présent
+https://axion-ia.com/fr/cas-concrets/industrie-comptabilite	YES	YES	YES	3	NO	OK — label leaf très long "Industriel · -32% temps administratif comptable" (>80c, sub-optimal mais valide)
+https://axion-ia.com/fr/comparaisons/cabinet-ia-vs-saas-generique	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin transient
+https://axion-ia.com/fr/interventions/collectives/1-jour	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin — code review CollectiveDurationListing.tsx confirme Breadcrumbs présent
+https://axion-ia.com/fr/implantations/ile-de-france	YES	YES	YES	3	NO	OK
+https://axion-ia.com/fr/implantations/ile-de-france/paris	YES	YES	YES	4	NO	OK — breadcrumb canonique parfait
+https://axion-ia.com/fr/audit/par-ville/lyon	YES	YES	YES	3	NO	Parent label "Audit IA" + current "Audit IA à Lyon"
+https://axion-ia.com/fr/interventions/par-ville/marseille	YES	YES	YES	3	NO	Parent label "Interventions IA en entreprise" + current "Interventions IA en entreprise à Marseille" — diverge HUB
+https://axion-ia.com/fr/implementation/par-ville/toulouse	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin
+https://axion-ia.com/fr/stack-ia	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/methodologie	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/glossaire	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/a-propos	YES	YES	YES	2	NO	OK
+https://axion-ia.com/fr/presse	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin — code review confirme Breadcrumbs présent
+https://axion-ia.com/fr/guide-ia	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin — code review confirme Breadcrumbs présent
+https://axion-ia.com/en/audit	YES	YES	YES	2	NO	OK — labels traduits ("Home" / "AI audit")
+https://axion-ia.com/en/about	UNKNOWN	UNKNOWN	UNKNOWN	?	?	503 origin transient

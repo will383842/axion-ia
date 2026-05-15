@@ -1,0 +1,11 @@
+en_url	en_status	fr_switcher_href	fr_status	back_to_en_switcher_href	back_ok	hreflang_fr	hreflang_match	notes
+/en	200	/fr	200	/en	YES	/fr	YES	
+/en/interventions	200	/fr/interventions	200	/en/interventions	YES	/fr/interventions	YES	
+/en/audit	200	/fr/audit	200	/en/audit	YES	/fr/audit	YES	
+/en/implementation	200	/fr/implementation	200	/en/implementation	YES	/fr/implementation	YES	
+/en/blog	200	/fr/blog	200	/en/blog	YES	/fr/blog	YES	
+/en/contact	200	/fr/contact	200	/en/contact	YES	/fr/contact	YES	
+/en/about	503	-	-	-	-	-	-	EN_origin_503
+/en/methodology	503	-	-	-	-	-	-	EN_origin_503
+/en/news	503	-	-	-	-	-	-	EN_origin_503
+/en/ai-stack	503	-	-	-	-	-	-	EN_origin_503

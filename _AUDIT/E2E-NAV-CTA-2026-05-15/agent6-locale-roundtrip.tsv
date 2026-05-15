@@ -1,0 +1,35 @@
+fr_url	en_expected	en_switcher_href	en_status	roundtrip_fr_href	roundtrip_ok	hreflang_en	hreflang_match	notes
+/fr	/en	/en	200	/fr	YES	/en	YES	
+/fr/interventions	/en/interventions	/en/interventions	200	/fr/interventions	YES	/en/interventions	YES	
+/fr/interventions/collectives	/en/interventions/team-trainings	/en/interventions/team-trainings	503	-	-	/en/interventions/collectives	MISMATCH	EN_origin_503
+/fr/interventions/individuel	/en/interventions/individual	FR_503	-	-	-	-	-	FR_origin_503
+/fr/interventions/dirigeants	/en/interventions/executives	FR_503	-	-	-	-	-	FR_origin_503
+/fr/interventions/conference	/en/interventions/conference	FR_503	-	-	-	-	-	FR_origin_503
+/fr/interventions/essentielle	/en/interventions/essential	/en/interventions/essential	503	-	-	/en/interventions/essential	YES	EN_origin_503
+/fr/interventions/approfondie	/en/interventions/deep-dive	FR_503	-	-	-	-	-	FR_origin_503
+/fr/interventions/gagner-du-temps	/en/interventions/save-time	FR_503	-	-	-	-	-	FR_origin_503
+/fr/audit	/en/audit	/en/audit	200	/fr/audit	YES	/en/audit	YES	
+/fr/audit/flash	/en/audit/flash	/en/audit/flash	503	-	-	/en/audit/flash	YES	EN_origin_503
+/fr/audit/cible	/en/audit/targeted	FR_503	-	-	-	-	-	FR_origin_503
+/fr/audit/strategique-pme	/en/audit/strategic-pme	FR_503	-	-	-	-	-	FR_origin_503
+/fr/implementation	/en/implementation	/en/implementation	200	/fr/implementation	YES	/en/implementation	YES	
+/fr/implementation/ia-custom	/en/implementation/custom-ai	FR_503	-	-	-	-	-	FR_origin_503
+/fr/implementation/processus	/en/implementation/processes	FR_503	-	-	-	-	-	FR_origin_503
+/fr/actualites	MISSING_IN_ROUTING_TS	/en/actualites	503	-	-	/en	MISMATCH	route_not_in_routing.ts_pathnames; EN_origin_503
+/fr/blog	/en/blog	/en/blog	200	/fr/blog	YES	/en/blog	YES	
+/fr/blog/3-quick-wins-2026	/en/blog/3-quick-wins-2026	/en/blog/3-quick-wins-2026	503	-	-	/en/blog/3-quick-wins-2026	YES	EN_origin_503
+/fr/cas-concrets	/en/case-studies	/en/case-studies	503	-	-	/en/case-studies	YES	EN_origin_503
+/fr/centre-aide	/en/help	/en/help	503	-	-	/en/help	YES	EN_origin_503
+/fr/faq	/en/faq	/en/faq	503	-	-	/en/faq	YES	EN_origin_503
+/fr/faq/billing	/en/faq/billing	/en/faq/billing	503	-	-	/en/faq/billing	YES	EN_origin_503
+/fr/comparaisons	/en/comparisons	/en/comparisons	503	-	-	/en/comparisons	YES	EN_origin_503
+/fr/guides	MISSING_IN_ROUTING_TS	FR_503	-	-	-	-	-	FR_origin_503
+/fr/connaissances	MISSING_IN_ROUTING_TS	/en/connaissances	503	-	-	/en	MISMATCH	route_not_in_routing.ts_pathnames; EN_origin_503
+/fr/implantations	/en/locations	/en/locations	503	-	-	/en/locations	YES	EN_origin_503
+/fr/implantations/ile-de-france/paris	/en/locations/ile-de-france/paris	/en/locations/ile-de-france/paris	503	-	-	/en/locations/ile-de-france/paris	YES	EN_origin_503
+/fr/a-propos	/en/about	/en/about	503	-	-	/en/about	YES	EN_origin_503
+/fr/contact	/en/contact	/en/contact	200	/fr/contact	YES	/en/contact	YES	
+/fr/reserver	/en/book	FR_503	-	-	-	-	-	FR_origin_503
+/fr/recherche	/en/search	FR_503	-	-	-	-	-	FR_origin_503
+/fr/methodologie	/en/methodology	/en/methodology	503	-	-	/en/methodology	YES	EN_origin_503
+/fr/stack-ia	/en/ai-stack	/en/ai-stack	503	-	-	/en/ai-stack	YES	EN_origin_503
