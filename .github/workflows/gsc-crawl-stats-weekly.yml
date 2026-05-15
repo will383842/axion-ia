@@ -1,0 +1,105 @@
+name: GSC Crawl Stats weekly export
+
+# P2-28 (audit re-run 2026-05-15 AGENT 7) — export hebdo automatique des
+# Google Search Console crawl stats dans `_AUDIT/crawl-stats-YYYY-WW.csv`.
+# Permet de mesurer le gate « crawl budget < 30 % factory output » au prochain
+# audit, et de tracker les régressions Googlebot dans la durée.
+#
+# Schedule : lundi 08:00 UTC (créneau low-traffic + GSC API stable, données
+# de la semaine N-1 finalisées).
+#
+# Auth GCP : Will doit (one-time) :
+#   1. Créer un projet GCP `axion-ia-monitoring` (si absent)
+#   2. Activer l'API Search Console (searchconsole.googleapis.com)
+#   3. Créer un service account → générer JSON key
+#   4. Ajouter le service account email comme « Propriétaire » de la propriété
+#      GSC `sc-domain:axion-ia.com` (Search Console → Settings → Users)
+#   5. Stocker le JSON dans GH secret `GSC_SA_KEY_JSON` (base64 ou raw)
+#   6. Stocker le site URL dans GH var `GSC_SITE_URL`
+#
+# Si secrets absents → script `export-gsc-crawl-stats.mjs` fail-soft → workflow
+# vert avec warning visible.
+#
+# Output : commit + push automatique sur `main` du CSV généré (gitignored si
+# `_AUDIT/crawl-stats-*.csv` n'est pas dans .gitignore — vérifier au setup).
+
+on:
+  schedule:
+    # Tous les lundis 08:00 UTC (09h CEST été / 10h CET hiver).
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (no commit/push)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    name: GSC export → _AUDIT/crawl-stats-*.csv
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Permet le commit + push si le script génère un CSV nouveau.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Decode GSC service account key
+        if: ${{ env.GSC_SA_KEY_JSON != '' }}
+        env:
+          GSC_SA_KEY_JSON: ${{ secrets.GSC_SA_KEY_JSON }}
+        run: |
+          set -euo pipefail
+          # Le secret peut être base64 ou raw JSON — détecte et décode.
+          echo "$GSC_SA_KEY_JSON" > /tmp/gsc-raw.txt
+          if jq empty /tmp/gsc-raw.txt 2>/dev/null; then
+            mv /tmp/gsc-raw.txt /tmp/gsc-sa.json
+          else
+            base64 -d /tmp/gsc-raw.txt > /tmp/gsc-sa.json
+          fi
+          jq empty /tmp/gsc-sa.json # validate
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gsc-sa.json" >> "$GITHUB_ENV"
+
+      - name: Run export
+        env:
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
+            echo "::warning::GSC_SA_KEY_JSON secret absent — skipping export"
+            exit 0
+          fi
+          if [ -z "${GSC_SITE_URL:-}" ]; then
+            echo "::warning::GSC_SITE_URL var absent — defaulting to sc-domain:axion-ia.com"
+          fi
+          node scripts/perf/export-gsc-crawl-stats.mjs
+
+      - name: Commit CSV if changed
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          set -euo pipefail
+          git config user.name "axion-ia-bot"
+          git config user.email "bot@axion-ia.com"
+          if [ -n "$(git status --porcelain _AUDIT/crawl-stats-*.csv)" ]; then
+            week=$(date -u +%G-W%V)
+            git add _AUDIT/crawl-stats-*.csv
+            git commit -m "chore(audit): gsc crawl stats export $week"
+            git push
+          else
+            echo "No CSV change — skip commit"
+          fi
