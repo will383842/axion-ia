@@ -75,6 +75,19 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 # Pas d'EXPOSE (worker ne sert pas HTTP)
 #
+# Méta-cert 2026-05-15 AGENT 14 P1 — HEALTHCHECK Docker.
+# Le worker ne sert pas HTTP donc on check via `pgrep` que le process tsx
+# principal est encore vivant. Si SIGKILLED (OOM, crash silencieux, fuite
+# mémoire BullMQ → 30 s hang) → Docker marque container `unhealthy` et
+# Coolify peut auto-restart.
+#
+#  - interval=30s : pas trop agressif (chaque check spawn pgrep)
+#  - timeout=10s : pgrep est rapide mais on garde marge
+#  - start-period=60s : laisser le worker boot (Prisma generate + Redis connect)
+#  - retries=3 : 3 fails consécutifs = unhealthy
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD pgrep -f "tsx src/server/queue/worker" >/dev/null || exit 1
+#
 # Fix 2026-05-13 : `node --experimental-strip-types` exige des extensions
 # .ts/.js explicites dans tous les imports relatifs (ESM strict). Le code
 # utilise `import ./workers/email-worker` sans extension (style TS classique).
