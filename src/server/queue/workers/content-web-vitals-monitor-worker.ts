@@ -272,4 +272,18 @@ export async function stopContentWebVitalsMonitorWorker(): Promise<void> {
   }
 }
 
+/**
+ * P3-32 (audit re-run 2026-05-15) — Test E2E hook. Permet de jouer un tick
+ * complet sans démarrer BullMQ Worker (qui exigerait Redis live). Le test
+ * mock prisma + helpers alertes + readContentGenConfig puis appelle ce
+ * wrapper. Identique à processJob avec un Job stub minimaliste.
+ */
+export async function runMonitorTickForTest(trigger: string = "test"): Promise<void> {
+  const stub = {
+    id: `test-${Date.now()}`,
+    data: { trigger, tick: new Date().toISOString() },
+  } as unknown as Job<WebVitalsMonitorTick>;
+  await processJob(stub);
+}
+
 export const _internals = { p75, BUDGETS, WINDOW_HOURS, MIN_SAMPLES };
