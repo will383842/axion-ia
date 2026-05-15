@@ -230,6 +230,23 @@ export const contentPsiMonitorQueue: Queue | null = connection
     })
   : null;
 
+/**
+ * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
+ * Câble les helpers Telegram ready-to-call non-câblés :
+ *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
+ *  - `alertSoft404Detected` (link-checker tier-1 HEAD samples)
+ *  - `alertIndexationStagnant` (Article tier_1 sans `indexedAt` > 30 j)
+ *
+ * Cron pattern : `15 * * * *` (xx:15 every hour, décalé pour ne pas
+ * coïncider avec content-orchestrator-cron à xx:00 / xx:15 / xx:30 / xx:45.
+ */
+export const contentMonitoringQueue: Queue | null = connection
+  ? new Queue("content-monitoring", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
 // ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
@@ -482,6 +499,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-weekly-mon-0300", tick: new Date().toISOString() },
       { repeat: { pattern: "0 3 * * 1" }, jobId: "content-psi-monitor-cron" },
+    );
+  }
+
+  // Méta-cert 2026-05-15 AGENT 19 — content-monitoring hourly @ xx:15.
+  // Câble alertQueueStuck + alertSoft404Detected + alertIndexationStagnant.
+  if (contentMonitoringQueue) {
+    await contentMonitoringQueue.removeRepeatable(
+      "tick",
+      { pattern: "15 * * * *" },
+      "content-monitoring-cron",
+    );
+    await contentMonitoringQueue.add(
+      "tick",
+      { trigger: "cron-hourly-xx15", tick: new Date().toISOString() },
+      { repeat: { pattern: "15 * * * *" }, jobId: "content-monitoring-cron" },
     );
   }
 }
