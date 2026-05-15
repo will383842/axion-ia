@@ -904,6 +904,8 @@ model Article {
   tags         ArticleTagOnArticle[]
   /// Q/R post-process auto rattachées (§ 29 v1.7)
   childFaqs    FAQ[]                 @relation("FaqParentArticle")
+  /// P0-5 audit indexation 2026-05-15 — historique slug pour redirect 301
+  slugHistory  ArticleSlugHistory[]
 
   @@index([status])
   @@index([publishedAt])
@@ -936,6 +938,30 @@ model ArticleTranslation {
   @@unique([locale, slug])
   @@index([slug])
   @@map("article_translations")
+}
+
+/// P0-5 audit indexation 2026-05-15 — historique slug Article pour redirect 301.
+///
+/// À chaque rename slug (`updateArticle` / `updateArticleAction` /
+/// `upsertCaseStudyAction` / `upsertHelpArticleAction`), on crée une ligne ici.
+/// Les pages publiques `/fr/blog/[slug]` et `/fr/actualites/[slug]` consultent
+/// cette table en fallback notFound() avant Tombstone → `redirect(301)` vers le
+/// slug courant. Évite la perte SEO accumulée à chaque rename.
+///
+/// Ping IndexNow : à chaque création d'une ligne ici, on ping ANCIEN URL en
+/// `URL_DELETED` + NOUVEAU URL en `URL_UPDATED` (helper enqueueIndexingForUrls).
+model ArticleSlugHistory {
+  id        String   @id @default(uuid()) @db.Uuid
+  articleId String   @map("article_id") @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  oldLocale Locale   @map("old_locale")
+  oldSlug   String   @map("old_slug") @db.VarChar(255)
+  changedAt DateTime @default(now()) @map("changed_at")
+  reason    String?  @db.Text
+
+  @@unique([oldLocale, oldSlug])
+  @@index([articleId])
+  @@map("article_slug_history")
 }
 
 model ArticleTag {

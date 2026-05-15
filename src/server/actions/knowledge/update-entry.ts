@@ -10,6 +10,8 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { buildKbPublicUrl } from "@/content/knowledge/routes";
+import { enqueueIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
 import { requireAdminWrite } from "./_guards";
 import { logKbActivity } from "./_audit";
 import { revalidateAdminKbRoutes, revalidatePublicKbRoutes } from "./_revalidate";
@@ -22,6 +24,12 @@ import type {
   KbStatus,
   KbType,
 } from "../../../../prisma/generated/client";
+
+const KB_DEFAULT_SITE_URL = "https://axion-ia.com";
+function kbAbsoluteUrl(path: string): string {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? KB_DEFAULT_SITE_URL).replace(/\/$/, "");
+  return `${base}${path}`;
+}
 
 export interface UpdateEntryResult {
   readonly ok: boolean;
@@ -41,7 +49,14 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
   // Vérifier existence + soft-delete
   const existing = await prisma.knowledgeEntry.findUnique({
     where: { id: data.id },
-    select: { id: true, type: true, slug: true, deletedAt: true },
+    select: {
+      id: true,
+      type: true,
+      slug: true,
+      deletedAt: true,
+      status: true,
+      translations: { select: { locale: true, slug: true } },
+    },
   });
   if (!existing || existing.deletedAt) {
     return { ok: false, error: "not_found" };
@@ -107,7 +122,49 @@ export async function updateEntryAction(input: UpdateEntryInput): Promise<Update
     });
 
     await revalidateAdminKbRoutes(data.id);
-    await revalidatePublicKbRoutes((data.type ?? existing.type) as KbType);
+    const newType = (data.type ?? existing.type) as KbType;
+    await revalidatePublicKbRoutes(newType);
+
+    // Audit indexation 2026-05-15 P0-4 — ping IndexNow + Google Indexing si l'entry
+    // est published. Si slug a changé, ping ancien URL en `delete` + nouveau URL
+    // en `update` (perfection slug rename = perte SEO zéro).
+    if (existing.status === "published" || existing.status === "deprecated") {
+      const slugChanged = !!(data.slug && data.slug !== existing.slug);
+      const urlsUpdate: string[] = [];
+      const urlsDeleted: string[] = [];
+      for (const t of existing.translations) {
+        if (t.locale !== "fr" && t.locale !== "en") continue;
+        const oldPath = buildKbPublicUrl(existing.type, t.locale, t.slug);
+        if (oldPath) {
+          if (slugChanged) urlsDeleted.push(kbAbsoluteUrl(oldPath));
+        }
+        // Pour le nouveau URL : si la translation locale FR a son slug Entry-level
+        // renommé, on construit avec data.slug ; sinon on garde l'existant.
+        const newSlug = slugChanged && t.locale === "fr" ? (data.slug as string) : t.slug;
+        const newPath = buildKbPublicUrl(newType, t.locale, newSlug);
+        if (newPath) urlsUpdate.push(kbAbsoluteUrl(newPath));
+      }
+      try {
+        if (urlsDeleted.length > 0) {
+          await enqueueIndexingForUrls({
+            entityId: `${data.id}-old`,
+            urls: urlsDeleted,
+            origin: "manual",
+            lifecycleEvent: "delete",
+          });
+        }
+        if (urlsUpdate.length > 0) {
+          await enqueueIndexingForUrls({
+            entityId: data.id,
+            urls: urlsUpdate,
+            origin: "manual",
+            lifecycleEvent: "update",
+          });
+        }
+      } catch {
+        // best-effort
+      }
+    }
 
     return { ok: true };
   } catch (err) {

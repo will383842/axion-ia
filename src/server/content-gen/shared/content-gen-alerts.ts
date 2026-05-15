@@ -411,6 +411,34 @@ export async function alertIndexationStagnant(
 }
 
 /**
+ * 16. IndexNow fail ≥3 consécutifs (audit indexation 2026-05-15 P0-10).
+ *
+ * Trigger : compteur Redis incrémenté à chaque fail upstream IndexNow + alerte
+ * Telegram si ≥3 fails consécutifs dans une fenêtre 1h. Sans cette alerte, un
+ * IndexNow down 24-72h reste invisible — toute la chaîne d'indexation Bing/
+ * Yandex passe alors par la découverte naturelle (~7-14j vs 24-48h ping).
+ */
+export async function alertIndexNowFailStreak(
+  consecutiveFails: number,
+  lastError: string,
+): Promise<void> {
+  try {
+    await sendTelegram({
+      tag: "INCIDENT",
+      body:
+        `*[🔴 INDEXNOW FAIL]* ${consecutiveFails} échecs consécutifs sur api.indexnow.org.\n` +
+        `Dernier message : ${lastError}.\n` +
+        `Impact : Bing/Yandex/Naver/Seznam ne reçoivent plus les pings — découverte naturelle ~7-14j.\n` +
+        `Vérifier connectivité origin + status api.indexnow.org.\n` +
+        `→ ${adminUrl("/jobs?queue=content-indexnow&status=failed")}\n` +
+        `Runbook : \`R14\` (docs/runbooks/R14-indexnow-down.md si présent)`,
+    });
+  } catch {
+    // best-effort
+  }
+}
+
+/**
  * 15. Tier-3 stagnant 90 j (info, auto-purge prévue). Runbook : R26.
  *
  * Trigger : cron quotidien retention (peut être appelé depuis content-tier-lifecycle-worker

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -17,6 +17,9 @@ import { BLOG_POSTS, getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
+import { findArticleTombstone } from "@/server/content-gen/tombstone";
+import { Tombstone } from "@/components/content-gen/Tombstone";
+import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -40,7 +43,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const view = await loadBlogArticleForView(slug, locale);
-  if (!view) return {};
+  if (!view) {
+    // Audit indexation 2026-05-15 P0-7 — soft-410 tombstone metadata.
+    if (locale === "fr") {
+      const tombstone = await findArticleTombstone(slug);
+      if (tombstone) {
+        return {
+          title: `${tombstone.title} · Ressource retirée · Axion-IA`,
+          robots: { index: false, follow: false },
+        };
+      }
+    }
+    return {};
+  }
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
@@ -167,7 +182,34 @@ export default async function BlogArticle({ params }: Props) {
   const isFr = loc === "fr";
 
   const view = await loadBlogArticleForView(slug, loc);
-  if (!view) notFound();
+  if (!view) {
+    // Audit indexation 2026-05-15 P0-5 — redirect 301 via ArticleSlugHistory si
+    // rename slug. Préserve SEO accumulé (avant patch : 404 immédiat = perte
+    // totale du link juice). FR + EN supportés.
+    const redirectInfo = await findArticleSlugRedirect(slug, loc as "fr" | "en");
+    if (redirectInfo && !redirectInfo.isNews) {
+      redirect(`/${loc}/blog/${redirectInfo.newSlug}`);
+    }
+
+    // Audit indexation 2026-05-15 P0-7 — soft-410 si Article archived/draft.
+    // Tombstone signal `<meta robots noindex,nofollow>` permet à Google de
+    // déréférencer en ~24h (vs ~6 mois en 404 silent). IndexNow URL_DELETED
+    // ping déjà envoyé par archiveArticle()/deleteArticle() côté server action.
+    if (isFr) {
+      const tombstone = await findArticleTombstone(slug);
+      if (tombstone) {
+        return (
+          <Tombstone
+            title={tombstone.title}
+            reason={tombstone.reason}
+            backHref="/blog"
+            backLabel="Voir tous les articles"
+          />
+        );
+      }
+    }
+    notFound();
+  }
 
   const wordCount = view.body.trim().split(/\s+/).length;
   const articleJsonLd = buildArticleJsonLd({

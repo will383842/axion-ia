@@ -61,10 +61,13 @@ describe("enqueueIndexingForTier1", () => {
     expect(result.googleEnqueued).toBe(false);
     expect(result.url).toBe("https://axion-ia.com/fr/blog/my-post");
     expect(addMock).toHaveBeenCalledOnce();
+    // Audit indexation 2026-05-15 P0-6 — jobId suffixé `-${event}` (event défaut
+    // = "publish") pour permettre re-ping si lifecycle change rapidement
+    // (publish → delete dans la même fenêtre BullMQ).
     expect(addMock).toHaveBeenCalledWith(
       "ping",
       { urls: ["https://axion-ia.com/fr/blog/my-post"], origin: "content-gen" },
-      { jobId: "indexnow-a-2" },
+      { jobId: "indexnow-a-2-publish" },
     );
   });
 
@@ -87,13 +90,39 @@ describe("enqueueIndexingForTier1", () => {
       1,
       "ping",
       { urls: ["https://axion-ia.com/fr/actualites/news-item"], origin: "tier-promote" },
-      { jobId: "indexnow-a-3" },
+      { jobId: "indexnow-a-3-publish" },
     );
     expect(addMock).toHaveBeenNthCalledWith(
       2,
       "ping",
       { url: "https://axion-ia.com/fr/actualites/news-item", type: "URL_UPDATED" },
-      { jobId: "google-indexing-a-3" },
+      { jobId: "google-indexing-a-3-publish" },
+    );
+  });
+
+  it("passes lifecycleEvent=delete → URL_DELETED + jobId suffix", async () => {
+    process.env.INDEXNOW_KEY = "key123";
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+
+    await enqueueIndexingForTier1({
+      articleId: "a-7",
+      slug: "archived-post",
+      isNews: false,
+      origin: "manual",
+      lifecycleEvent: "delete",
+    });
+
+    expect(addMock).toHaveBeenNthCalledWith(
+      1,
+      "ping",
+      expect.objectContaining({ urls: ["https://axion-ia.com/fr/blog/archived-post"] }),
+      { jobId: "indexnow-a-7-delete" },
+    );
+    expect(addMock).toHaveBeenNthCalledWith(
+      2,
+      "ping",
+      { url: "https://axion-ia.com/fr/blog/archived-post", type: "URL_DELETED" },
+      { jobId: "google-indexing-a-7-delete" },
     );
   });
 
@@ -154,13 +183,13 @@ describe("enqueueIndexingForTier1", () => {
       1,
       expect.anything(),
       expect.anything(),
-      expect.objectContaining({ jobId: "indexnow-stable-id" }),
+      expect.objectContaining({ jobId: "indexnow-stable-id-publish" }),
     );
     expect(addMock).toHaveBeenNthCalledWith(
       2,
       expect.anything(),
       expect.anything(),
-      expect.objectContaining({ jobId: "google-indexing-stable-id" }),
+      expect.objectContaining({ jobId: "google-indexing-stable-id-publish" }),
     );
   });
 });

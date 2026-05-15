@@ -17,7 +17,8 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { pingIndexNow } from "@/lib/indexnow";
-import type { PublishStatus } from "../../../prisma/generated/client";
+import { enqueueIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
+import type { Locale, PublishStatus } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
   const session = await auth();
@@ -249,10 +250,43 @@ export async function upsertArticleAction(
 
   try {
     const created = !parsed.data.id;
+    // Audit indexation 2026-05-15 P0-5 — capturer les anciens slugs AVANT upsert
+    // pour pouvoir détecter un rename et créer ArticleSlugHistory + ping IndexNow.
+    const oldSlugs: { fr?: string; en?: string } = {};
+    if (parsed.data.id) {
+      const existing = await prisma.articleTranslation.findMany({
+        where: { articleId: parsed.data.id },
+        select: { locale: true, slug: true },
+      });
+      for (const e of existing) {
+        if (e.locale === "fr") oldSlugs.fr = e.slug;
+        if (e.locale === "en") oldSlugs.en = e.slug;
+      }
+    }
     const article = await prisma.$transaction(async (tx) => {
       const a = parsed.data.id
         ? await tx.article.update({ where: { id: parsed.data.id }, data: articleData })
         : await tx.article.create({ data: articleData });
+
+      // Audit indexation 2026-05-15 P0-5 — créer slug history avant l'upsert
+      // de la translation, par locale, si rename détecté.
+      const renames: Array<{ locale: Locale; oldSlug: string }> = [];
+      if (oldSlugs.fr && oldSlugs.fr !== parsed.data.fr.slug) {
+        renames.push({ locale: "fr" as Locale, oldSlug: oldSlugs.fr });
+      }
+      if (oldSlugs.en && oldSlugs.en !== parsed.data.en.slug) {
+        renames.push({ locale: "en" as Locale, oldSlug: oldSlugs.en });
+      }
+      for (const r of renames) {
+        await tx.articleSlugHistory.create({
+          data: {
+            articleId: a.id,
+            oldSlug: r.oldSlug,
+            oldLocale: r.locale,
+            reason: `rename_via_admin_blog:${session.userId}`,
+          },
+        });
+      }
 
       // Upsert translations (1 par locale)
       for (const tr of [parsed.data.fr, parsed.data.en]) {
@@ -322,6 +356,30 @@ export async function upsertArticleAction(
         [`${baseUrl}/fr/blog/${parsed.data.fr.slug}`, `${baseUrl}/en/blog/${parsed.data.en.slug}`],
         `admin-blog:${article.id}`,
       );
+
+      // Audit indexation 2026-05-15 P0-5/P0-6 — si slug a changé, signaler
+      // l'ancien URL à Google en `URL_DELETED` + ping IndexNow (Bing/Yandex)
+      // pour désindexation rapide en parallèle du redirect 301 que les pages
+      // publiques rendent via lookup ArticleSlugHistory.
+      const oldUrls: string[] = [];
+      if (oldSlugs.fr && oldSlugs.fr !== parsed.data.fr.slug) {
+        oldUrls.push(`${baseUrl}/fr/blog/${oldSlugs.fr}`);
+      }
+      if (oldSlugs.en && oldSlugs.en !== parsed.data.en.slug) {
+        oldUrls.push(`${baseUrl}/en/blog/${oldSlugs.en}`);
+      }
+      if (oldUrls.length > 0) {
+        try {
+          await enqueueIndexingForUrls({
+            entityId: `${article.id}-old`,
+            urls: oldUrls,
+            origin: "manual",
+            lifecycleEvent: "delete",
+          });
+        } catch {
+          // best-effort
+        }
+      }
     }
 
     return { ok: true, id: article.id, created };
@@ -354,6 +412,15 @@ export async function archiveArticleAction(
   if (typeof id !== "string" || !z.string().uuid().safeParse(id).success) {
     return { ok: false, error: "ID invalide." };
   }
+
+  // Audit indexation 2026-05-15 P0-8 — capturer slugs FR + EN AVANT archive
+  // pour pinger IndexNow URL_DELETED + Google URL_DELETED (signal Google ~24h
+  // vs 6 mois en 404 silent).
+  const translations = await prisma.articleTranslation.findMany({
+    where: { articleId: id },
+    select: { locale: true, slug: true },
+  });
+
   await prisma.$transaction([
     prisma.article.update({ where: { id }, data: { status: "archived" } }),
     prisma.activityLog.create({
@@ -369,5 +436,24 @@ export async function archiveArticleAction(
   revalidatePath(adminPath("fr", "blog"));
   revalidatePath("/fr/blog");
   revalidatePath("/en/blog");
+
+  // Audit indexation 2026-05-15 P0-8 — ping IndexNow + Google `URL_DELETED`
+  // pour chaque URL devenue archivée. Sans ce ping, Bing/Yandex continuaient à
+  // crawler ~30j avant détection naturelle.
+  if (translations.length > 0) {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+    const urls = translations.map((t) => `${baseUrl}/${t.locale}/blog/${t.slug}`);
+    try {
+      await enqueueIndexingForUrls({
+        entityId: id,
+        urls,
+        origin: "manual",
+        lifecycleEvent: "delete",
+      });
+    } catch {
+      // best-effort
+    }
+  }
+
   return { ok: true };
 }

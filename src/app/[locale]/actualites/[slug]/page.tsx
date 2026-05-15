@@ -33,6 +33,9 @@ import { prisma } from "@/lib/prisma";
 import { buildProductMetadata } from "@/lib/seo";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { findArticleTombstone } from "@/server/content-gen/tombstone";
+import { Tombstone } from "@/components/content-gen/Tombstone";
+import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -116,7 +119,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   if (locale !== "fr") return {};
   const t = await loadNewsArticle(slug);
-  if (!t) return {};
+  if (!t) {
+    // Audit indexation 2026-05-15 P0-7 — si l'article est archivé/rollback, on
+    // émet une metadata "tombstone" avec robots noindex,nofollow pour signaler
+    // la disparition à Google (soft-410). Cf. `server/content-gen/tombstone.ts`.
+    const tombstone = await findArticleTombstone(slug);
+    if (tombstone) {
+      return {
+        title: `${tombstone.title} · Ressource retirée · Axion-IA`,
+        robots: { index: false, follow: false },
+      };
+    }
+    return {};
+  }
 
   const meta = buildProductMetadata({
     locale,
@@ -144,7 +159,33 @@ export default async function NewsArticlePage({ params }: Props) {
   setRequestLocale(locale);
 
   const t = await loadNewsArticle(slug);
-  if (!t) notFound();
+  if (!t) {
+    // Audit indexation 2026-05-15 P0-5 — chercher dans ArticleSlugHistory avant
+    // de rendre Tombstone/404. Si rename slug, redirect 301 vers le slug courant
+    // (préserve SEO accumulé). Doit être avant le tombstone (slug renommé peut
+    // toujours être published).
+    const redirectInfo = await findArticleSlugRedirect(slug, "fr");
+    if (redirectInfo && redirectInfo.isNews) {
+      redirect(`/fr/actualites/${redirectInfo.newSlug}`);
+    }
+
+    // Audit indexation 2026-05-15 P0-7 — soft-410 si l'article est archived ou
+    // rolled-back en draft. Render un Tombstone avec noindex,nofollow plutôt
+    // qu'un 404 silent. IndexNow URL_DELETED ping déjà envoyé par
+    // archiveArticle()/deleteArticle() côté server action.
+    const tombstone = await findArticleTombstone(slug);
+    if (tombstone) {
+      return (
+        <Tombstone
+          title={tombstone.title}
+          reason={tombstone.reason}
+          backHref="/actualites"
+          backLabel="Voir les actualités récentes"
+        />
+      );
+    }
+    notFound();
+  }
 
   const article = t.article;
   const wordCount = (t.bodyText ?? t.body).trim().split(/\s+/).length;

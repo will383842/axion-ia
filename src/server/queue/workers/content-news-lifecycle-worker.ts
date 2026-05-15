@@ -14,6 +14,7 @@ import { Worker, type Job } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 
 const QUEUE_NAME = "content-news-lifecycle";
 
@@ -82,6 +83,21 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
           revalidatePath(`/fr/actualites/${t.slug}`);
         } catch {
           // worker bg — no-op si pas de request context
+        }
+        // Audit indexation 2026-05-15 P0-8 — signal Google `URL_DELETED` + ping
+        // IndexNow Bing/Yandex pour chaque URL archivée. Avant ce patch, 200
+        // articles archivés/jour disparaissaient silencieusement du sitemap,
+        // Bing continuait à crawler ~30j sans signal.
+        try {
+          await enqueueIndexingForTier1({
+            articleId: article.id,
+            slug: t.slug,
+            isNews: true,
+            origin: "cron",
+            lifecycleEvent: "delete",
+          });
+        } catch {
+          // best-effort — n'échoue jamais le batch d'archive
         }
       }
     } catch {

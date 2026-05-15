@@ -13,6 +13,22 @@ import { SITE_URL } from "@/lib/seo";
 const COMMON_DISALLOW = [
   "/api/",
   "/_next/",
+  // P1-15 audit indexation 2026-05-15 — hygiène robots.txt
+  // Surfaces privées / utilisateur authentifié : pas d'indexation.
+  "/mes-donnees/",
+  "/fr/mes-donnees/",
+  "/en/my-data/",
+  // Funnel booking : UTM tracking + état tunnel utilisateur, hors indexation
+  "/reserver/",
+  "/fr/reserver/",
+  "/en/booking/",
+  // Espace admin obfuscé par ADMIN_URL_PREFIX, mais wildcard `/admin*`
+  // bloque les conventions usuelles (admin / fr/admin / en/admin) au cas où
+  // un ancien path serait découvert via cache externe.
+  "/admin/",
+  "/fr/admin/",
+  "/en/admin/",
+  // Pages design system / preview
   "/design",
   "/fr/design",
   "/en/design",
@@ -55,7 +71,18 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: COMMON_DISALLOW,
       },
-      ...AI_BOTS_ALLOWED.map((userAgent) => ({
+      // P1-16 audit indexation 2026-05-15 — Bingbot Crawl-delay 1 s.
+      // Bingbot est historiquement 10× plus agressif que Googlebot. Sur ~13K
+      // routes pSEO villes + factory 100/jour, sans throttle, il peut écraser
+      // l'origin Coolify (cache MISS prolongé observé prod). Le delay 1s reste
+      // safe pour le ranking (Bing tolère jusqu'à 30s).
+      {
+        userAgent: "Bingbot",
+        allow: "/",
+        disallow: COMMON_DISALLOW,
+        crawlDelay: 1,
+      },
+      ...AI_BOTS_ALLOWED.filter((u) => u !== "Bingbot").map((userAgent) => ({
         userAgent,
         allow: "/",
         disallow: COMMON_DISALLOW,

@@ -24,6 +24,7 @@ import {
   buildKnowledgeSitemapChunk,
   countKnowledgePublicEntries,
 } from "@/server/exporters/knowledge-sitemap";
+import { prisma } from "@/lib/prisma";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -388,14 +389,57 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
 // accurate lastmod (signal not gameable, used for crawl prioritization).
 // Categories / tags / authors stay on `now` (the listing page changes when
 // a new post enters the corpus).
-function buildBlogSitemap(now: Date): MetadataRoute.Sitemap {
+async function buildBlogSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
   // Anti-doorway HCU 2024 (Sprint 14.10) : seuls les articles tier-1 (validés
   // qualité + score ≥ 70 + body ≥ 800 mots + faq ≥ 4 + directAnswer 40-80 mots)
   // entrent dans le sitemap. Tier-2 (bulk en attente review) et tier-3 (drafts)
   // restent crawlable mais hors sitemap → crawl budget Google concentré.
-  const indexable = getIndexableBlogPosts();
-  const indexableSlugs = indexable.map((p) => p.slug);
-  const datesBySlug = new Map(indexable.map((p) => [p.slug, p.publishedAt]));
+  //
+  // Audit indexation 2026-05-15 P1-11 — DB-aware : on lit aussi les Article
+  // tier-1 indexable publiés via la factory content-gen (table Article) +
+  // dédup sur les slugs FS (FS hardcodé prioritaire car contenu éditorial
+  // original, DB factory secondaire). Avant ce patch, les articles factory
+  // n'apparaissaient PAS dans sitemap-blog si KB_BACKEND_UNIFIED_ARTICLE=false
+  // → invisibles pour Googlebot/Bingbot via discovery.
+  const fsIndexable = getIndexableBlogPosts();
+  const fsSlugs = new Set(fsIndexable.map((p) => p.slug));
+  const datesBySlug = new Map<string, string>(fsIndexable.map((p) => [p.slug, p.publishedAt]));
+
+  let dbArticles: Array<{ slug: string; updatedAt: Date | null; publishedAt: Date | null }> = [];
+  try {
+    const rows = await prisma.article.findMany({
+      where: {
+        status: "published",
+        indexationTier: "tier_1_indexable",
+        isNews: false,
+      },
+      select: {
+        publishedAt: true,
+        updatedAt: true,
+        translations: { where: { locale: "fr" }, take: 1, select: { slug: true } },
+      },
+      take: 5000,
+    });
+    dbArticles = rows
+      .map((r) => {
+        const t = r.translations[0];
+        if (!t) return null;
+        return { slug: t.slug, updatedAt: r.updatedAt, publishedAt: r.publishedAt };
+      })
+      .filter((r): r is { slug: string; updatedAt: Date; publishedAt: Date | null } => r !== null);
+  } catch {
+    // best-effort — DB peut être down au build SSG
+    dbArticles = [];
+  }
+
+  // Inject DB slugs not already in FS
+  for (const a of dbArticles) {
+    if (fsSlugs.has(a.slug)) continue;
+    const isoDate = (a.updatedAt ?? a.publishedAt ?? now).toISOString().slice(0, 10);
+    datesBySlug.set(a.slug, isoDate);
+  }
+
+  const indexableSlugs = Array.from(datesBySlug.keys());
   return buildDynamic(
     [
       {

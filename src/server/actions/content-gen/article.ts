@@ -15,7 +15,17 @@ import { prisma } from "@/lib/prisma";
 import type { IndexationTier, PublishStatus } from "../../../../prisma/generated/client";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
-import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
+import {
+  enqueueIndexingForTier1,
+  enqueueIndexingForUrls,
+  type IndexingLifecycleEvent,
+} from "@/server/content-gen/indexing/enqueue";
+import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
+// Note : audit indexation 2026-05-15 P0-5 — `recordArticleSlugChange` helper
+// existe (slug-history.ts) pour les callers qui n'ont pas accès à une tx
+// Prisma (futur admin-case-studies/admin-help). Ici on utilise directement
+// `tx.articleSlugHistory.create` dans la transaction `updateArticle` ci-dessous
+// pour atomicité avec l'update slug.
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
@@ -39,9 +49,20 @@ function adminBase(): string {
  *
  * Fire-and-forget, n'échoue jamais (déjà géré dans `enqueueIndexingForTier1`).
  */
-async function pingIndexing(articleId: string, slug: string, isNews: boolean): Promise<void> {
+async function pingIndexing(
+  articleId: string,
+  slug: string,
+  isNews: boolean,
+  lifecycleEvent: IndexingLifecycleEvent = "update",
+): Promise<void> {
   try {
-    await enqueueIndexingForTier1({ articleId, slug, isNews, origin: "manual" });
+    await enqueueIndexingForTier1({
+      articleId,
+      slug,
+      isNews,
+      origin: "manual",
+      lifecycleEvent,
+    });
   } catch {
     // best-effort — le helper ne devrait pas throw, mais double-guard.
   }
@@ -138,8 +159,21 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
   if (!t) throw new Error("translation_fr_not_found");
 
   const newSlug = input.slug && input.slug.length > 0 ? input.slug : t.slug;
-  await prisma.$transaction([
-    prisma.articleTranslation.update({
+  const slugChanged = newSlug !== t.slug;
+  await prisma.$transaction(async (tx) => {
+    // Audit indexation 2026-05-15 P0-5 — créer l'historique slug AVANT update
+    // pour préserver l'ancien slug (rename perte SEO zéro). FR-only V1.
+    if (slugChanged) {
+      await tx.articleSlugHistory.create({
+        data: {
+          articleId: input.articleId,
+          oldSlug: t.slug,
+          oldLocale: "fr",
+          reason: `rename_via_updateArticle:${session.userId}`,
+        },
+      });
+    }
+    await tx.articleTranslation.update({
       where: { id: t.id },
       data: {
         title: input.title,
@@ -149,25 +183,41 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
         metaTitle: input.metaTitle ?? null,
         metaDescription: input.metaDescription ?? null,
       },
-    }),
-    prisma.article.update({
+    });
+    await tx.article.update({
       where: { id: input.articleId },
       data: { updatedAt: new Date() },
-    }),
-  ]);
+    });
+  });
 
   // Revalidate paths impactés + IndexNow ping si tier-1 indexable
   revalidatePath(`/fr/blog/${t.slug}`);
-  if (newSlug !== t.slug) revalidatePath(`/fr/blog/${newSlug}`);
+  if (slugChanged) revalidatePath(`/fr/blog/${newSlug}`);
   if (article.isNews) {
     revalidatePath(`/fr/actualites/${t.slug}`);
-    if (newSlug !== t.slug) revalidatePath(`/fr/actualites/${newSlug}`);
+    if (slugChanged) revalidatePath(`/fr/actualites/${newSlug}`);
   }
   revalidatePath("/sitemap.xml");
   revalidatePath(`${adminBase()}/publications`);
 
   if (article.status === "published" && article.indexationTier === "tier_1_indexable") {
-    await pingIndexing(article.id, newSlug, article.isNews);
+    // Audit indexation 2026-05-15 P0-5/P0-6 — ping nouveau URL en `update` +
+    // ancien URL en `delete` si rename (signal Google URL_DELETED → désindexe
+    // l'ancien slug en ~24h tout en faisant remonter le nouveau via redirect 301).
+    await pingIndexing(article.id, newSlug, article.isNews, "update");
+    if (slugChanged) {
+      const oldUrl = buildArticleUrl({ slug: t.slug, isNews: article.isNews, locale: "fr" });
+      try {
+        await enqueueIndexingForUrls({
+          entityId: `${article.id}-old`,
+          urls: [oldUrl],
+          origin: "manual",
+          lifecycleEvent: "delete",
+        });
+      } catch {
+        // best-effort
+      }
+    }
   }
   await logActivity({
     session,
@@ -210,9 +260,10 @@ export async function demoteArticle(articleId: string): Promise<void> {
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    // IndexNow signal "URL_DELETED" via simple ping (Bing détectera noindex à
-    // la prochaine visite). Pas de delta sémantique au-delà du re-ping.
-    await pingIndexing(article.id, t.slug, article.isNews);
+    // Audit indexation 2026-05-15 P0-6 — demote tier-1 → tier-2 = page sort du
+    // sitemap indexable. Signal Google `URL_DELETED` pour désindexation rapide
+    // (~24h vs ~6 mois en attente naturelle).
+    await pingIndexing(article.id, t.slug, article.isNews, "delete");
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
@@ -250,7 +301,9 @@ export async function archiveArticle(articleId: string): Promise<void> {
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    await pingIndexing(article.id, t.slug, article.isNews);
+    // Audit indexation 2026-05-15 P0-6 — archive → URL retirée du sitemap +
+    // status=archived → 410 Gone côté route handler. Signal Google `URL_DELETED`.
+    await pingIndexing(article.id, t.slug, article.isNews, "delete");
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
@@ -325,7 +378,10 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    await pingIndexing(article.id, t.slug, article.isNews);
+    // Audit indexation 2026-05-15 P0-6 — delete = disparition définitive. Signal
+    // Google `URL_DELETED` pour désindexation rapide (la table DB est purgée,
+    // la page renvoie 404 ; les pages archived renvoient 410, cf. P0-7).
+    await pingIndexing(article.id, t.slug, article.isNews, "delete");
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({
@@ -372,7 +428,9 @@ export async function rollbackArticle(articleId: string): Promise<void> {
     revalidatePath(`/fr/blog/${t.slug}`);
     if (article.isNews) revalidatePath(`/fr/actualites/${t.slug}`);
     revalidatePath("/sitemap.xml");
-    await pingIndexing(article.id, t.slug, article.isNews);
+    // Audit indexation 2026-05-15 P0-6 — rollback published→draft+tier_3 = page
+    // sort du sitemap indexable. Signal Google `URL_DELETED`.
+    await pingIndexing(article.id, t.slug, article.isNews, "delete");
   }
   revalidatePath(`${adminBase()}/publications`);
   await logActivity({

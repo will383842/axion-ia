@@ -30,6 +30,7 @@ import { revalidateContent } from "@/server/content-gen/shared/revalidate-conten
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { sendTelegram } from "@/lib/telegram";
 
 const QUEUE_NAME = "content-publish";
 
@@ -326,6 +327,26 @@ export function startPublishWorker(): Worker<PublishJobPayload> {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-publish-worker] job ${job?.id} failed:`, err);
+    // P1-12 audit indexation 2026-05-15 — alerte Telegram sur publish failed.
+    // Publish a le blast radius le plus élevé du pipeline content-gen (Article
+    // inséré + IndexNow + ISR revalidate + fact-check enqueue). Avant ce patch,
+    // un échec restait silencieux (console.error seul). Pattern aligné sur
+    // content-gen-worker / content-orchestrator-worker.
+    const reviewId =
+      (job?.data as { readonly reviewQueueId?: string } | undefined)?.reviewQueueId ?? "?";
+    const errMsg = err instanceof Error ? err.message : String(err);
+    if (errMsg !== "kill_switch_active") {
+      void sendTelegram({
+        tag: "INCIDENT",
+        body:
+          `*[🔴 PUBLISH FAILED]* content-publish job \`${job?.id ?? "?"}\` ` +
+          `(reviewQueueId=\`${reviewId}\`).\n` +
+          `Erreur : ${errMsg}.\n` +
+          `Article potentiellement inséré partiellement — vérifier prisma.article + GenerationLog.`,
+      }).catch(() => {
+        // best-effort
+      });
+    }
   });
   workerInstance.on("completed", (job) => {
     console.log(`[content-publish-worker] job ${job.id} OK`);

@@ -9,6 +9,7 @@ import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
 import { Plausible } from "@/components/analytics/Plausible";
+import { RefererTracker } from "@/components/analytics/RefererTracker";
 import { Clarity } from "@/components/analytics/Clarity";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { env } from "@/env";
@@ -222,6 +223,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               NEXT_PUBLIC_PLAUSIBLE_DOMAIN absent. afterInteractive donc
               n'impacte pas LCP. */}
           <Plausible />
+          {/* Audit indexation 2026-05-15 P1-19 — track document.referrer dans
+              14 sources canoniques (google/bing/qwant/perplexity/chatgpt/claude…)
+              pour mesurer l'AEO/GEO ROI Plausible. No-op si Plausible absent. */}
+          <RefererTracker />
           {/* Microsoft Clarity (2026-05-13) — heatmaps + session replay gratuits.
               Complète Plausible : Plausible = quoi/combien, Clarity = comment.
               No-op si NEXT_PUBLIC_CLARITY_PROJECT_ID absent. afterInteractive. */}

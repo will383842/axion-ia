@@ -8,8 +8,10 @@
  *
  * Le worker ici reste pour future-proof : si Google ouvre l'API à plus de
  * types (request submitted via GSC programmatically), on l'active en flippant
- * une feature flag `GOOGLE_INDEXING_API_ENABLED=true` + JWT credentials
- * GOOGLE_APPLICATION_CREDENTIALS pointant vers une service account.
+ * une feature flag `GOOGLE_INDEXING_API_ENABLED=true` + JWT service account
+ * inline JSON dans `GOOGLE_INDEXING_SA_JSON` (single-line, escape \n). SSOT
+ * env var aligné audit indexation 2026-05-15 P0-9 — `.env.example` ligne 114,
+ * `scripts/content-gen/check-prod-env.sh:39`, runbook R15.
  *
  * V1 sans credentials → no-op silencieux + log warn.
  */
@@ -38,11 +40,11 @@ async function processJob(job: Job<GoogleIndexingJobPayload>): Promise<void> {
   }
 
   const enabled = process.env.GOOGLE_INDEXING_API_ENABLED === "true";
-  const credentials = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  const credentials = process.env.GOOGLE_INDEXING_SA_JSON;
 
   if (!enabled || !credentials) {
     console.warn(
-      `[google-indexing] skipped (url=${url}, type=${type}) — flag GOOGLE_INDEXING_API_ENABLED ou GOOGLE_APPLICATION_CREDENTIALS manquant. IndexNow couvre déjà Bing/Yandex (cf. content-indexnow-worker).`,
+      `[google-indexing] skipped (url=${url}, type=${type}) — flag GOOGLE_INDEXING_API_ENABLED ou GOOGLE_INDEXING_SA_JSON manquant. IndexNow couvre déjà Bing/Yandex (cf. content-indexnow-worker).`,
     );
     return;
   }

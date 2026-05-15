@@ -19,9 +19,43 @@
 import { Worker, type Job } from "bullmq";
 import { buildIndexNowPayload } from "@/lib/seo-content-gen-factories";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { redis } from "@/lib/redis";
+import { alertIndexNowFailStreak } from "@/server/content-gen/shared/content-gen-alerts";
 
 const QUEUE_NAME = "content-indexnow";
 const ENDPOINT = "https://api.indexnow.org/indexnow";
+
+// Audit indexation 2026-05-15 P0-10 — compteur Redis fail streak.
+// Clé : `indexnow:fail-streak` (TTL 1h). À chaque fail upstream → INCR + TTL refresh.
+// Sur succès → DEL. Alerte Telegram déclenchée à 3, 10, 30 fails (escalade).
+const FAIL_STREAK_KEY = "indexnow:fail-streak";
+const FAIL_STREAK_TTL_SEC = 3600;
+const FAIL_STREAK_ALERT_THRESHOLDS = new Set<number>([3, 10, 30]);
+
+async function recordIndexNowFail(reason: string): Promise<void> {
+  try {
+    const count = await redis.incr(FAIL_STREAK_KEY);
+    if (count === 1) {
+      await redis.expire(FAIL_STREAK_KEY, FAIL_STREAK_TTL_SEC);
+    }
+    if (FAIL_STREAK_ALERT_THRESHOLDS.has(count)) {
+      await alertIndexNowFailStreak(count, reason);
+    }
+  } catch (err) {
+    console.warn(
+      "[indexnow-worker] recordIndexNowFail redis op failed:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+async function resetIndexNowFailStreak(): Promise<void> {
+  try {
+    await redis.del(FAIL_STREAK_KEY);
+  } catch {
+    // best-effort
+  }
+}
 
 export interface IndexNowJobPayload {
   readonly urls: ReadonlyArray<string>;
@@ -80,15 +114,22 @@ async function processJob(job: Job<IndexNowJobPayload>): Promise<void> {
       signal: controller.signal,
     });
     if (!res.ok && res.status !== 202) {
-      console.warn(`[indexnow-worker] HTTP ${res.status} on ${validUrls.length} urls`);
+      const reason = `HTTP ${res.status} on ${validUrls.length} urls`;
+      console.warn(`[indexnow-worker] ${reason}`);
+      // Audit indexation 2026-05-15 P0-10 — track fail streak + alerte Telegram.
+      await recordIndexNowFail(reason);
       return;
     }
     console.log(
       `[indexnow-worker] OK ${validUrls.length} urls pinged (origin=${origin}, status=${res.status})`,
     );
+    // Succès → reset le streak counter
+    await resetIndexNowFailStreak();
   } catch (err) {
     // IndexNow down ne doit pas faire échouer une publication
+    const reason = err instanceof Error ? err.message : String(err);
     console.warn(`[indexnow-worker] error:`, err);
+    await recordIndexNowFail(reason);
   } finally {
     clearTimeout(timeout);
   }

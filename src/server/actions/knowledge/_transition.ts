@@ -11,8 +11,20 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { makeEntrySnapshot } from "@/lib/knowledge/snapshot";
 import { validateTransition, type TransitionContext } from "@/lib/knowledge/state-machine";
+import { buildKbPublicUrl } from "@/content/knowledge/routes";
+import {
+  enqueueIndexingForUrls,
+  type IndexingLifecycleEvent,
+} from "@/server/content-gen/indexing/enqueue";
 import { logKbActivity, type KbActivityAction } from "./_audit";
 import { revalidateAdminKbRoutes, revalidatePublicKbRoutes } from "./_revalidate";
+
+const DEFAULT_SITE_URL = "https://axion-ia.com";
+
+function absoluteUrl(path: string): string {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).replace(/\/$/, "");
+  return `${base}${path}`;
+}
 
 export interface TransitionResult {
   readonly ok: boolean;
@@ -120,12 +132,48 @@ export async function executeTransition(input: TransitionInput): Promise<Transit
     });
 
     await revalidateAdminKbRoutes(input.entryId);
-    if (
-      input.toStatus === "published" ||
-      input.toStatus === "deprecated" ||
-      entry.status === "published"
-    ) {
+    const wasPublished = entry.status === "published";
+    const willBePublished = input.toStatus === "published";
+    const willBeDeprecated = input.toStatus === "deprecated";
+    if (willBePublished || willBeDeprecated || wasPublished) {
       await revalidatePublicKbRoutes(entry.type);
+
+      // Audit indexation 2026-05-15 P0-4 — KB V4 lifecycle ping IndexNow + Google
+      // Indexing pour chaque traduction publique (FR canonique + EN miroir si
+      // présent). Avant ce patch, la KB factory ne signalait JAMAIS ses URLs
+      // aux moteurs → délai d'indexation ~7-14j vs 24-48h avec ping.
+      //
+      // Mapping lifecycleEvent :
+      //   draft/review → published         → "publish"  (URL apparaît)
+      //   published    → published (edit)  → "update"   (URL existante mise à jour)
+      //   published    → deprecated/archive → "delete"  (URL sort du sitemap indexable)
+      let lifecycleEvent: IndexingLifecycleEvent;
+      if (willBePublished && !wasPublished) {
+        lifecycleEvent = "publish";
+      } else if (willBePublished && wasPublished) {
+        lifecycleEvent = "update";
+      } else {
+        lifecycleEvent = "delete";
+      }
+
+      const urls: string[] = [];
+      for (const t of entry.translations) {
+        if (t.locale !== "fr" && t.locale !== "en") continue;
+        const path = buildKbPublicUrl(entry.type, t.locale, t.slug);
+        if (path) urls.push(absoluteUrl(path));
+      }
+      if (urls.length > 0) {
+        try {
+          await enqueueIndexingForUrls({
+            entityId: input.entryId,
+            urls,
+            origin: "manual",
+            lifecycleEvent,
+          });
+        } catch {
+          // best-effort — n'échoue jamais une transition pour un échec d'indexation
+        }
+      }
     }
 
     return {

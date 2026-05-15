@@ -28,31 +28,109 @@
 
 import { generateSitemaps } from "../sitemap";
 import { SITE_URL } from "@/lib/seo";
+import { prisma } from "@/lib/prisma";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
+//
+// - `/sitemap-news.xml`        : Google News (namespace `xmlns:news`, fenêtre 48h)
+//
+// Image Sitemap 1.1 (FR/EN) retiré audit indexation FR 2026-05-15 P0-3 :
+// référencés mais Route Handlers inexistants → 404 systématique côté Googlebot.
+// Réintroduire QUAND la banque d'images V2 (PROMPT-IMAGE-BANK-MASTER-2026)
+// livrera les builders correspondants.
 const CUSTOM_SITEMAPS: ReadonlyArray<string> = ["/sitemap-news.xml"];
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
+const FALLBACK_LASTMOD = new Date().toISOString();
+
+/**
+ * Audit indexation 2026-05-15 P1-14 — lastmod différencié par catégorie.
+ *
+ * Avant ce patch : un seul `new Date().toISOString()` partagé par TOUS les
+ * sub-sitemaps → Google ignore le signal `lastmod` (tous identiques = suspect).
+ *
+ * Maintenant : on lit la `MAX(updatedAt)` réelle par source DB. Fail-soft :
+ * si la query échoue (P2021 / DB down), on retombe sur `FALLBACK_LASTMOD`.
+ */
+async function getDifferentiatedLastmod(): Promise<{
+  news: string;
+  knowledge: string;
+  blog: string;
+  fallback: string;
+}> {
+  const result = {
+    news: FALLBACK_LASTMOD,
+    knowledge: FALLBACK_LASTMOD,
+    blog: FALLBACK_LASTMOD,
+    fallback: FALLBACK_LASTMOD,
+  };
+  try {
+    const newsMax = await prisma.article.findFirst({
+      where: { isNews: true, status: "published" },
+      orderBy: { updatedAt: "desc" },
+      select: { updatedAt: true },
+    });
+    if (newsMax?.updatedAt) result.news = newsMax.updatedAt.toISOString();
+  } catch {
+    // best-effort
+  }
+  try {
+    const blogMax = await prisma.article.findFirst({
+      where: { isNews: false, status: "published" },
+      orderBy: { updatedAt: "desc" },
+      select: { updatedAt: true },
+    });
+    if (blogMax?.updatedAt) result.blog = blogMax.updatedAt.toISOString();
+  } catch {
+    // best-effort
+  }
+  try {
+    const kbMax = await prisma.knowledgeEntry.findFirst({
+      where: { status: { in: ["published", "deprecated"] }, deletedAt: null },
+      orderBy: { updatedAt: "desc" },
+      select: { updatedAt: true },
+    });
+    if (kbMax?.updatedAt) result.knowledge = kbMax.updatedAt.toISOString();
+  } catch {
+    // best-effort
+  }
+  return result;
+}
+
+function lastmodForGeneratedId(
+  id: string,
+  lastmods: Awaited<ReturnType<typeof getDifferentiatedLastmod>>,
+): string {
+  if (id === "blog") return lastmods.blog;
+  if (id.startsWith("knowledge-")) return lastmods.knowledge;
+  // pages / faq / help / cas-concrets / villes-* / interventions / services-villes-*
+  // → BUILD_TIME (les routes pSEO/statiques bougent au déploiement, pas en runtime).
+  return lastmods.fallback;
+}
+
 export async function GET(): Promise<Response> {
   const sitemaps = await generateSitemaps();
-  const lastmod = new Date().toISOString();
+  const lastmods = await getDifferentiatedLastmod();
 
-  const generatedBlocks = sitemaps.map(
-    ({ id }) => `  <sitemap>
+  const generatedBlocks = sitemaps.map(({ id }) => {
+    const lm = lastmodForGeneratedId(id, lastmods);
+    return `  <sitemap>
     <loc>${SITE_URL}/sitemap/${id}.xml</loc>
-    <lastmod>${lastmod}</lastmod>
-  </sitemap>`,
-  );
+    <lastmod>${lm}</lastmod>
+  </sitemap>`;
+  });
 
-  const customBlocks = CUSTOM_SITEMAPS.map(
-    (path) => `  <sitemap>
+  const customBlocks = CUSTOM_SITEMAPS.map((path) => {
+    // sitemap-news.xml lastmod = max(publishedAt) Article isNews
+    const lm = path === "/sitemap-news.xml" ? lastmods.news : lastmods.fallback;
+    return `  <sitemap>
     <loc>${SITE_URL}${path}</loc>
-    <lastmod>${lastmod}</lastmod>
-  </sitemap>`,
-  );
+    <lastmod>${lm}</lastmod>
+  </sitemap>`;
+  });
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

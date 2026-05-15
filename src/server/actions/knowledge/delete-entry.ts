@@ -12,10 +12,18 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { buildKbPublicUrl } from "@/content/knowledge/routes";
+import { enqueueIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
 import { requireAdminDelete } from "./_guards";
 import { logKbActivity } from "./_audit";
 import { revalidateAdminKbRoutes, revalidatePublicKbRoutes } from "./_revalidate";
 import { deleteEntryInputSchema, type DeleteEntryInput } from "./_zod-schemas";
+
+const KB_DELETE_DEFAULT_SITE_URL = "https://axion-ia.com";
+function kbDeleteAbsoluteUrl(path: string): string {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? KB_DELETE_DEFAULT_SITE_URL).replace(/\/$/, "");
+  return `${base}${path}`;
+}
 
 export interface DeleteEntryResult {
   readonly ok: boolean;
@@ -32,7 +40,13 @@ export async function deleteEntryAction(input: DeleteEntryInput): Promise<Delete
 
   const entry = await prisma.knowledgeEntry.findUnique({
     where: { id: parsed.data.id },
-    select: { id: true, type: true, deletedAt: true, status: true },
+    select: {
+      id: true,
+      type: true,
+      deletedAt: true,
+      status: true,
+      translations: { select: { locale: true, slug: true } },
+    },
   });
 
   if (!entry) {
@@ -67,6 +81,28 @@ export async function deleteEntryAction(input: DeleteEntryInput): Promise<Delete
     await revalidateAdminKbRoutes(parsed.data.id);
     if (entry.status === "published" || entry.status === "deprecated") {
       await revalidatePublicKbRoutes(entry.type);
+
+      // Audit indexation 2026-05-15 P0-4 — soft-delete d'une entry indexée =
+      // signal Google `URL_DELETED` pour désindexation rapide (~24h vs ~6 mois
+      // de découverte naturelle).
+      const urls: string[] = [];
+      for (const t of entry.translations) {
+        if (t.locale !== "fr" && t.locale !== "en") continue;
+        const path = buildKbPublicUrl(entry.type, t.locale, t.slug);
+        if (path) urls.push(kbDeleteAbsoluteUrl(path));
+      }
+      if (urls.length > 0) {
+        try {
+          await enqueueIndexingForUrls({
+            entityId: parsed.data.id,
+            urls,
+            origin: "manual",
+            lifecycleEvent: "delete",
+          });
+        } catch {
+          // best-effort
+        }
+      }
     }
 
     return { ok: true };

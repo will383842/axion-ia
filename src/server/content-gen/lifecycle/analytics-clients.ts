@@ -3,8 +3,14 @@
  *
  * Stubs réseau pour Google Search Console + Plausible. V1 = noop si credentials
  * absents (mode skeleton). Activation prod = Will fournit :
- *   - `GOOGLE_APPLICATION_CREDENTIALS` (JWT service account JSON path) + `GSC_PROPERTY`
+ *   - `GOOGLE_INDEXING_SA_JSON` (JWT service account inline JSON) + `GSC_PROPERTY_URL`
  *   - `PLAUSIBLE_API_KEY` + `PLAUSIBLE_SITE_ID`
+ *
+ * SSOT env vars aligné audit indexation 2026-05-15 P0-9 :
+ *   - Google Indexing JWT inline = `GOOGLE_INDEXING_SA_JSON` (cohérent .env.example,
+ *     content-google-indexing-worker.ts, runbook R15, scripts/check-prod-env.sh)
+ *   - GSC property = `GSC_PROPERTY_URL` (cohérent gsc-client.ts, scripts/*.mjs,
+ *     .github/workflows/gsc-crawl-stats-weekly.yml)
  *
  * Sans credentials → retourne `null`, le décideur de lifecycle skip l'article.
  * Avec credentials → utilise les SDK officiels (`googleapis` + fetch direct).
@@ -34,18 +40,18 @@ export interface PageviewMetrics {
  *
  * Activation Sprint 10.5 (quand Will fournira credentials + SDK) :
  *   1. `pnpm add googleapis` (ou client REST custom + google-auth-library)
- *   2. Setter Coolify env vars : `GOOGLE_APPLICATION_CREDENTIALS` (path JWT) +
- *      `GSC_PROPERTY` (ex `sc-domain:axion-ia.com`)
- *   3. Décommenter le bloc `if (credentialsPath && property)` ci-dessous et
+ *   2. Setter Coolify env vars : `GOOGLE_INDEXING_SA_JSON` (JWT inline) +
+ *      `GSC_PROPERTY_URL` (ex `sc-domain:axion-ia.com`)
+ *   3. Décommenter le bloc `if (credentials && property)` ci-dessous et
  *      remplacer par l'appel SDK réel.
  */
 export async function fetchSearchConsoleCtr(
   _url: string,
   _daysWindow: number,
 ): Promise<CtrMetrics | null> {
-  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  const property = process.env.GSC_PROPERTY;
-  if (!credentialsPath || !property) {
+  const credentials = process.env.GOOGLE_INDEXING_SA_JSON;
+  const property = process.env.GSC_PROPERTY_URL;
+  if (!credentials || !property) {
     return null; // skeleton mode V1
   }
   // V1 : pas de SDK installé → retourne null même si credentials présents.

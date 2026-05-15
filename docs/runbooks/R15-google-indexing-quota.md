@@ -14,9 +14,11 @@
 
 ## Prérequis (V1.5+)
 
-- Service account JSON dans Coolify env `GOOGLE_INDEXING_SA_KEY`.
+- Service account JSON inline (single-line, escape `\n`) dans Coolify env `GOOGLE_INDEXING_SA_JSON`.
 - Project ID Google Cloud `axion-ia-indexing`.
 - Indexing API enabled sur le projet.
+- SSOT env vars aligné audit indexation 2026-05-15 P0-9 — voir `.env.example:114`,
+  `content-google-indexing-worker.ts:41`, `scripts/content-gen/check-prod-env.sh:39`.
 
 ## Étapes V1.5+
 
