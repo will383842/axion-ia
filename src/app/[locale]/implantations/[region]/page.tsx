@@ -32,6 +32,10 @@ export function generateStaticParams(): Array<{ region: string }> {
   return REGIONS.map((r) => ({ region: r.slug }));
 }
 
+// P1-13 (audit re-run 2026-05-15) — ISR sur hub régions pSEO.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, region: regionSlug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};

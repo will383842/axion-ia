@@ -14,6 +14,14 @@ interface Props {
 
 export const generateStaticParams = buildStaticParams;
 
+// P1-13 (audit re-run 2026-05-15) — ISR sur pSEO villes ~2150 routes SSG.
+// `revalidate = 86400` (24h) permet à Next 16 de regénérer une page sans
+// full rebuild si la copy `copy/<slug>.ts` ou les données INSEE évoluent.
+// `dynamicParams = true` permet à de nouvelles villes ajoutées post-build
+// (via DB ou enrichissement copy) d'être servies via on-demand SSG.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata(props: Props): Promise<Metadata> {
   return buildPageMetadata("audit", props);
 }

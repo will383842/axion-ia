@@ -57,6 +57,10 @@ export function generateStaticParams(): Array<{ region: string; ville: string }>
   return VILLES.map((v) => ({ region: v.region, ville: v.slug }));
 }
 
+// P1-13 (audit re-run 2026-05-15) — ISR sur pages villes pSEO (~2150 routes).
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, region: regionSlug, ville: villeSlug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};

@@ -11,6 +11,10 @@ interface Props {
 
 export const generateStaticParams = buildStaticParams;
 
+// P1-13 (audit re-run 2026-05-15) — ISR sur pSEO villes.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata(props: Props): Promise<Metadata> {
   return buildPageMetadata("interventions", props);
 }
