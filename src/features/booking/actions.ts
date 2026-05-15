@@ -78,6 +78,24 @@ export async function createBookingAction(
 
   if (formData.get("website")) return { ok: true, bookingId: "" };
 
+  // Méta-cert 2026-05-15 AGENT 12 P0 OWASP A04 — idempotency anti double-submit.
+  // Le client génère un UUID v4 au mount du formulaire (`BookingForm`).
+  // Si un Booking existe déjà avec cette clé → retourne l'existant SANS recréer
+  // (zéro double email, zéro double Telegram, zéro double Stripe). Si la clé
+  // est absente (compat legacy / requête manuelle) → flow normal.
+  const rawIdempotencyKey = formData.get("idempotencyKey");
+  const idempotencyKey =
+    typeof rawIdempotencyKey === "string" && rawIdempotencyKey.length > 0
+      ? rawIdempotencyKey.slice(0, 64)
+      : null;
+  if (idempotencyKey) {
+    const existing = await prisma.booking.findUnique({
+      where: { idempotencyKey },
+      select: { id: true },
+    });
+    if (existing) return { ok: true, bookingId: existing.id };
+  }
+
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
   if (!(await verifyTurnstile(turnstileToken, ip))) {
     return { ok: false, error: "Captcha échoué." };
@@ -123,6 +141,7 @@ export async function createBookingAction(
       data: {
         type: "intervention",
         locale,
+        ...(idempotencyKey ? { idempotencyKey } : {}),
         companyName: companyNameRaw,
         sector: companySectorRaw,
         address: companyCityRaw,
@@ -157,6 +176,7 @@ export async function createBookingAction(
         locale,
         pricePaidCents,
         participantsTier,
+        ...(idempotencyKey ? { idempotencyKey } : {}),
         // Sprint X.4 refactor V1 — pré-réservation deposit-gated.
         // L'admin poursuit le flow via admin-actions (cadrage / contract).
         status: "option_pending",

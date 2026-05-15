@@ -71,6 +71,17 @@ export function BookingForm({
     reset: resetTurnstile,
   } = useTurnstileToken("booking");
   const [serverError, setServerError] = React.useState<string | null>(null);
+  // Méta-cert 2026-05-15 AGENT 12 P0 OWASP A04 — UUID v4 stable au mount
+  // pour neutraliser double-submit (clic rapide / retry réseau / prefetch).
+  // Le Server Action `createBookingAction` check unicité avant insert :
+  // si Booking existe déjà avec cette clé → retourne l'existant sans recréer.
+  // `crypto.randomUUID()` est natif browser (Chrome 92+, Firefox 95+, Safari 15.4+) —
+  // pas de dépendance externe.
+  const idempotencyKey = React.useRef<string>(
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `fallback-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+  );
 
   // Keep date/time in sync if the parent re-selects.
   React.useEffect(() => {
@@ -93,6 +104,7 @@ export function BookingForm({
       formData.set("interventionType", values.interventionType);
       formData.set("participantsCount", String(values.participantsCount));
       formData.set("locale", locale);
+      formData.set("idempotencyKey", idempotencyKey.current);
       if (turnstileToken) formData.set("cf-turnstile-response", turnstileToken);
 
       const res = await createBookingAction({ ok: false, error: "" }, formData);

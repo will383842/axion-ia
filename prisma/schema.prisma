@@ -620,6 +620,11 @@ enum KbReviewerAssignmentStatus {
 
 model Submission {
   id                 String           @id @default(uuid()) @db.Uuid
+  /// Méta-cert 2026-05-15 — UUID v4 client-side anti double-submit (OWASP A04).
+  /// Partagée avec Booking si Submission créée dans la même tx (cas
+  /// `createBookingAction`). Nullable car les Submissions historiques + autres
+  /// types (`contact`, `audit`) n'utilisent pas encore d'idempotency key.
+  idempotencyKey     String?          @unique @map("idempotency_key") @db.VarChar(64)
   type               SubmissionType
   status             SubmissionStatus @default(new)
   locale             Locale           @default(fr)
@@ -668,6 +673,9 @@ model Submission {
 
 model Booking {
   id                String           @id @default(uuid()) @db.Uuid
+  /// Méta-cert 2026-05-15 — UUID v4 généré côté client au mount du formulaire,
+  /// utilisé par `createBookingAction` pour neutraliser double-submits (OWASP A04).
+  idempotencyKey    String?          @unique @map("idempotency_key") @db.VarChar(64)
   interventionType  InterventionType @map("intervention_type")
   bookingDate       DateTime         @map("booking_date")
   participantsCount Int              @map("participants_count")
