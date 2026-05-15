@@ -40,16 +40,19 @@
  */
 
 import * as crypto from "node:crypto";
-import { env } from "@/env";
 
 const ALGORITHM = "aes-256-gcm";
 const IV_BYTES = 12;
 const TAG_BYTES = 16;
 const PREFIX_V1 = "enc:v1:";
 
+// Lecture directe `process.env` (pas via `env` t3-validator) pour rester
+// compatible Vitest (t3-env throw "client-side detected" en test sans
+// NEXT_RUNTIME set). La validation production-strict est faite côté
+// `env.ts` superRefine au boot — ce helper s'en fie pour les invariants.
 function getKey(): Buffer | null {
-  const hex = env.PII_ENCRYPTION_KEY;
-  if (!hex) return null;
+  const hex = process.env["PII_ENCRYPTION_KEY"];
+  if (!hex || !/^[0-9a-fA-F]{64}$/.test(hex)) return null;
   return Buffer.from(hex, "hex");
 }
 
