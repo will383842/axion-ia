@@ -15,6 +15,7 @@ import { prisma } from "@/lib/prisma";
 import type { ReviewStatus } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
+import { ReviewAlreadyTransitionedError } from "./review-errors";
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/review-queue`;
@@ -138,21 +139,8 @@ export async function listReview(status?: ReviewStatus): Promise<ReadonlyArray<R
   }));
 }
 
-/**
- * Erreur transition review déjà appliquée (race multi-admin).
- *
- * Throw quand Will A et Will B (ou Will + onglet dupliqué) cliquent
- * "Approuver" simultanément. L'`updateMany` atomique avec where status='pending'
- * garantit qu'un seul winner update la row → l'autre obtient count=0 et
- * récupère cette exception pour afficher un toast "déjà traité".
- */
-export class ReviewAlreadyTransitionedError extends Error {
-  readonly code = "review_already_transitioned";
-  constructor(public readonly currentStatus?: ReviewStatus) {
-    super("review_already_transitioned");
-    this.name = "ReviewAlreadyTransitionedError";
-  }
-}
+// `ReviewAlreadyTransitionedError` déplacée dans `./review-errors.ts` car
+// Next.js 16+ interdit l'export de symboles non-async dans "use server".
 
 async function readReviewStatus(id: string): Promise<ReviewStatus | undefined> {
   const row = await prisma.reviewQueue.findUnique({
