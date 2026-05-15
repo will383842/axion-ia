@@ -83,6 +83,17 @@ on:
 permissions:
   contents: read
 
+# Audit 2026-05-15 P0-01 : 8 deploys consécutifs ÉCHEC observés ce matin
+# (`cancelled-by-user via API`). Cause : chaque push trigger POST Coolify
+# /api/v1/deploy ; Coolify cancel le deploy précédent en cours. Avec
+# `cancel-in-progress: false`, GH Actions queue les workflows successifs
+# — chaque workflow attend que le précédent ait fini (deploy + CF purge
+# + LHCI) avant de démarrer. Coolify ne reçoit qu'un POST à la fois →
+# pas de cascade de cancellations.
+concurrency:
+  group: deploy-coolify
+  cancel-in-progress: false
+
 jobs:
   deploy:
     name: Trigger Coolify deploy
