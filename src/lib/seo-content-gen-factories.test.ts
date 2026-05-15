@@ -24,9 +24,11 @@ describe("buildQAPageJsonLd — speakable (Pass B P0-6)", () => {
       publishedAt: FIXED_DATE,
     });
 
+    // Audit AEO/GEO 2026-05-15 §3.5 — la liste par défaut a été étendue à
+    // 4 sélecteurs pour couvrir AnswerCard / Canonical Answer pattern.
     expect(out["speakable"]).toEqual({
       "@type": "SpeakableSpecification",
-      cssSelector: [".faq-answer", '[data-aeo="answer"]'],
+      cssSelector: [".faq-answer", '[data-aeo="answer"]', ".tldr-answer", '[data-aeo="tldr"]'],
     });
   });
 

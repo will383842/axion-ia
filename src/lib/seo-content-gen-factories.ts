@@ -160,6 +160,15 @@ function buildArticleBase(
     ...(input.tags && input.tags.length > 0 ? { keywords: input.tags.join(", ") } : {}),
     ...(input.wordCount ? { wordCount: input.wordCount } : {}),
     ...(input.readingTimeMinutes ? { timeRequired: `PT${input.readingTimeMinutes}M` } : {}),
+    // Speakable cssSelector — Canonical Answer pattern (audit AEO/GEO
+    // 2026-05-15 § 3.5). Aligne Article/BlogPosting/NewsArticle JSON-LD
+    // sur les selectors AnswerCard rendus côté page. Inoffensif si la page
+    // n'a pas (encore) d'AnswerCard — le sélecteur ne matche simplement
+    // rien et Google ignore silencieusement.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+    },
   };
 }
 
@@ -228,7 +237,18 @@ export interface QAPageJsonLdInput {
 
 export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unknown> {
   const url = `${SITE_URL}/${input.locale}/faq/${input.slug}`;
-  const speakable = input.speakableCssSelectors ?? [".faq-answer", '[data-aeo="answer"]'];
+  // Speakable cssSelector défaut — couvre les 3 patterns AEO 2026 :
+  //  - `.faq-answer` + `[data-aeo="answer"]` : réponse FAQ longue (page /faq/[slug])
+  //  - `.tldr-answer` + `[data-aeo="tldr"]` : Canonical Answer / AnswerCard
+  //    (audit AEO/GEO 2026-05-15 §3.5 — placé sur blog/actu/centre-aide/cas-concrets)
+  // Google Assistant + Alexa + Bing AI valorisent toute occurrence — pas de
+  // pénalité à inclure les 4 sélecteurs même si certaines pages n'en ont qu'un.
+  const speakable = input.speakableCssSelectors ?? [
+    ".faq-answer",
+    '[data-aeo="answer"]',
+    ".tldr-answer",
+    '[data-aeo="tldr"]',
+  ];
   const dateModifiedIso = new Date(input.dateModified ?? input.publishedAt).toISOString();
   return {
     "@context": "https://schema.org",

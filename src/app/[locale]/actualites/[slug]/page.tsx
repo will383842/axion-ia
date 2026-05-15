@@ -26,6 +26,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
@@ -43,6 +44,24 @@ export const dynamicParams = true;
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
+}
+
+/**
+ * Dérive le texte TL;DR (Canonical Answer pattern AEO/GEO 2026 § 3.5).
+ * Priorité : `excerpt` (champ Prisma curé éditorialement) → fallback 2
+ * premières phrases du body. Retourne `null` si rien d'exploitable
+ * (AnswerCard alors omise).
+ */
+function deriveTldr(excerpt: string | null | undefined, body: string): string | null {
+  const trimmed = (excerpt ?? "").trim();
+  if (trimmed.length > 0) return trimmed;
+  const sentences = body
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÔÎÊ])/)
+    .filter((s) => s.length > 0)
+    .slice(0, 2)
+    .join(" ");
+  return sentences.length > 0 ? sentences : null;
 }
 
 async function loadNewsArticle(slug: string) {
@@ -142,6 +161,11 @@ export default async function NewsArticlePage({ params }: Props) {
     .map((p) => p.trim())
     .filter((p) => p.length > 0);
 
+  // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5) — source = excerpt
+  // si présent, sinon les 2 premières phrases du body (fallback). null si rien
+  // d'exploitable → AnswerCard pas rendu.
+  const tldrText = deriveTldr(t.excerpt, t.bodyText ?? t.body);
+
   const tierBadge =
     article.indexationTier === "tier_1_indexable"
       ? "Actualité vérifiée"
@@ -201,6 +225,20 @@ export default async function NewsArticlePage({ params }: Props) {
           ) : null}
         </Container>
       </Section>
+
+      {tldrText ? (
+        <Section>
+          <Container className="max-w-3xl">
+            <AnswerCard
+              locale="fr"
+              {...(sourceName ? { sourceLabel: sourceName } : {})}
+              {...(sourceUrl ? { sourceUrl } : {})}
+            >
+              {tldrText}
+            </AnswerCard>
+          </Container>
+        </Section>
+      ) : null}
 
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">

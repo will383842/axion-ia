@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<AnswerCard> > matches snapshot (FR, question + source link) 1`] = `
+<aside
+  class="bg-halo-warm border-terracotta tldr-answer relative my-8 rounded-2xl border-l-4 px-6 py-5 sm:px-7 sm:py-6"
+  data-aeo="tldr"
+  role="doc-tip"
+>
+  <div
+    class="flex flex-col gap-3"
+  >
+    <div
+      class="flex items-baseline gap-3"
+    >
+      <span
+        aria-label="Réponse en bref"
+        class="text-terracotta-deep text-base leading-none font-medium italic tracking-tight sm:text-lg"
+        style="font-family: var(--font-serif);"
+      >
+        TL;DR
+      </span>
+      <span
+        class="text-fg-muted text-xs font-medium tracking-wide uppercase"
+      >
+        Question
+      </span>
+    </div>
+    <p
+      class="text-fg text-[15px] leading-snug font-semibold tracking-tight"
+    >
+      Quel est le tarif d'une Essentielle ?
+    </p>
+    <div
+      class="text-fg text-[15px] leading-relaxed sm:text-base"
+    >
+      À partir de 
+      <strong>
+        490 € HT
+      </strong>
+       (TPE 1-19 salariés). 790 € (PME) ou 1 190 € (ETI). Inclut diagnostic, plan d'action chiffré, accompagnement 30 jours.
+    </div>
+    <p
+      class="text-fg-muted mt-1 text-xs"
+    >
+      <span
+        aria-hidden="true"
+      >
+        ↳ 
+      </span>
+      Source
+       :
+       
+      <a
+        class="hover:text-terracotta-deep focus-visible:ring-terracotta rounded-sm underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        href="https://axion-ia.com/fr/tarifs"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Doctrine Axion-IA
+      </a>
+    </p>
+  </div>
+</aside>
+`;

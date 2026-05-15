@@ -9,6 +9,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
@@ -66,6 +67,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // 2. Sinon on italicise les 2 derniers mots si le titre fait 4+ mots,
 //    sinon le dernier mot. Cela donne une accroche sobre cohérente avec
 //    le pattern /blog index `display-editorial` + serif italique.
+/**
+ * Dérive le texte TL;DR (Canonical Answer pattern AEO/GEO 2026 § 3.5).
+ * Priorité : `excerpt` (champ Prisma curé éditorialement) → fallback 2
+ * premières phrases du body. Retourne `null` si rien d'exploitable.
+ */
+function deriveTldr(excerpt: string | null | undefined, body: string): string | null {
+  const trimmed = (excerpt ?? "").trim();
+  if (trimmed.length > 0) return trimmed;
+  const sentences = body
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÔÎÊ])/)
+    .filter((s) => s.length > 0)
+    .slice(0, 2)
+    .join(" ");
+  return sentences.length > 0 ? sentences : null;
+}
+
 function splitTitleEm(title: string): { lead: string; em: string } {
   const colonFr = title.indexOf(" : ");
   if (colonFr > 0) {
@@ -175,6 +193,9 @@ export default async function BlogArticle({ params }: Props) {
   const titleParts = splitTitleEm(view.title);
   const blocks = parseBody(view.body);
 
+  // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
+  const tldrText = deriveTldr(view.excerpt, view.body);
+
   // Articles connexes : priorité même catégorie, puis plus récents.
   // Reste sourcé FS V1 (les articles DB n'ont pas encore de catégorie
   // structurée — Sprint 9+). Toujours 2 cards max.
@@ -225,6 +246,14 @@ export default async function BlogArticle({ params }: Props) {
           <span>{view.readingTime}</span>
         </Container>
       </Section>
+
+      {tldrText ? (
+        <Section>
+          <Container className="max-w-3xl">
+            <AnswerCard locale={loc}>{tldrText}</AnswerCard>
+          </Container>
+        </Section>
+      ) : null}
 
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">

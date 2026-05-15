@@ -10,6 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { TestimonialCard } from "@/components/marketing/TestimonialCard";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Badge } from "@/components/ui/badge";
 import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -19,6 +20,23 @@ import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
+}
+
+/**
+ * Dérive le texte TL;DR (Canonical Answer pattern AEO/GEO 2026 § 3.5).
+ * Pour les case studies, l'excerpt est toujours présent (champ requis du
+ * type CaseStudy). Fallback sur les 2 premières phrases du contexte.
+ */
+function deriveTldr(excerpt: string | null | undefined, fallback: string): string | null {
+  const trimmed = (excerpt ?? "").trim();
+  if (trimmed.length > 0) return trimmed;
+  const sentences = fallback
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÔÎÊ])/)
+    .filter((s) => s.length > 0)
+    .slice(0, 2)
+    .join(" ");
+  return sentences.length > 0 ? sentences : null;
 }
 
 export async function generateStaticParams() {
@@ -82,6 +100,9 @@ export default async function CaseStudyPage({ params }: Props) {
     { href: `/cas-concrets/${slug}`, label: copy.title },
   ];
 
+  // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
+  const tldrText = deriveTldr(copy.excerpt, copy.context);
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -129,6 +150,14 @@ export default async function CaseStudyPage({ params }: Props) {
           </Section>
         );
       })()}
+
+      {tldrText ? (
+        <Section>
+          <Container className="max-w-3xl">
+            <AnswerCard locale={loc}>{tldrText}</AnswerCard>
+          </Container>
+        </Section>
+      ) : null}
 
       <Section eyebrow={isFr ? "Contexte" : "Context"}>
         <Container className="text-fg max-w-3xl text-lg leading-relaxed">{copy.context}</Container>

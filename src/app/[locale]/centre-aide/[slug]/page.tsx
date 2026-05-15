@@ -9,6 +9,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getHelpArticle, getAllHelpSlugs, HELP_ARTICLES, slugify } from "@/content/transversal";
 import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
@@ -16,6 +17,23 @@ import { splitTitleEm } from "@/lib/title";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
+}
+
+/**
+ * Dérive le texte TL;DR (Canonical Answer pattern AEO/GEO 2026 § 3.5).
+ * Priorité : `excerpt` (curé éditorialement) → fallback 2 premières phrases
+ * du body. Retourne `null` si rien d'exploitable.
+ */
+function deriveTldr(excerpt: string | null | undefined, body: string): string | null {
+  const trimmed = (excerpt ?? "").trim();
+  if (trimmed.length > 0) return trimmed;
+  const sentences = body
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-ZÀÉÈÔÎÊ])/)
+    .filter((s) => s.length > 0)
+    .slice(0, 2)
+    .join(" ");
+  return sentences.length > 0 ? sentences : null;
 }
 
 export function generateStaticParams() {
@@ -82,6 +100,9 @@ export default async function HelpArticlePage({ params }: Props) {
     .sort((a) => (slugify(a.category) === slugify(article.category) ? -1 : 1))
     .slice(0, 4);
 
+  // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
+  const tldrText = deriveTldr(copy.excerpt, copy.body);
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -127,6 +148,16 @@ export default async function HelpArticlePage({ params }: Props) {
           </Section>
         );
       })()}
+
+      {tldrText ? (
+        <Section>
+          <Container className="max-w-3xl">
+            <AnswerCard locale={loc} question={copy.title}>
+              {tldrText}
+            </AnswerCard>
+          </Container>
+        </Section>
+      ) : null}
 
       <Section>
         <Container className="max-w-3xl">
