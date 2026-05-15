@@ -106,7 +106,7 @@ URL : ${SITE_URL}/fr/methodologie
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400, stale-if-error=604800",
     },
   });
 }

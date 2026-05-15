@@ -121,7 +121,7 @@ ${urlBlocks.join("\n")}
   return new Response(body, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      "Cache-Control": "public, max-age=300, stale-while-revalidate=600, stale-if-error=604800",
     },
   });
 }

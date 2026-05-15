@@ -53,7 +53,7 @@ ${items}
     status: 200,
     headers: {
       "Content-Type": "application/rss+xml; charset=utf-8",
-      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400, stale-if-error=604800",
     },
   });
 }
