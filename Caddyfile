@@ -43,12 +43,17 @@ axion-ia.com, www.axion-ia.com {
 	@www host www.axion-ia.com
 	redir @www https://axion-ia.com{uri} permanent
 
-	# Brotli (préféré) + Gzip fallback. Niveau 6 (équilibre CPU/ratio).
+	# Brotli (préféré) + Gzip fallback.
+	# Audit Web Vitals 2026-05-15 §1.5 — niveau 6 → 9 : ratio ~+3-7 % sur les
+	# HTML/JSON longs (gain LCP -50 à -120 ms sur HTML pSEO villes ~80-150 KB),
+	# CPU runtime acceptable (level 9 ~2-3× level 6, level 11 ~10× — éliminé).
+	# `minimum_length 4096` évite de compresser les petits assets où le gain
+	# est négatif (overhead du header > économie). HTML pSEO villes > 4 KB.
 	encode {
 		zstd
-		br 6
+		br 9
 		gzip 6
-		minimum_length 1024
+		minimum_length 4096
 	}
 
 	# Headers de sécurité supplémentaires (en complément Next.config.ts).

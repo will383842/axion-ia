@@ -1,0 +1,144 @@
+name: Disk Cleanup Prod (Hetzner CPX42)
+
+# Prévention saturation disque Hetzner CPX42 — runbook R20.
+#
+# Audit 2026-05-15 a révélé que les deploys Coolify échouaient avec
+# `No space left on device` (320 GB plein). Ce workflow exécute le script
+# `scripts/ops/disk-cleanup.sh` via l'API Coolify chaque nuit à 02h00 UTC
+# (avant le Gate D nightly qui consomme du build cache).
+#
+# Le workflow utilise l'API Coolify v1 `/applications/{uuid}/execute` pour
+# lancer le script sur l'host (pas dans le container app). Le script lui
+# fait `docker system prune` + `docker builder prune` + cleanup deployments
+# artifacts > 7 jours.
+#
+# Trigger manuel : `gh workflow run disk-cleanup-prod.yml`
+#
+# Secrets requis (GitHub repo → Settings → Secrets → Actions) :
+#   - COOLIFY_API_TOKEN
+#   - COOLIFY_URL (ex: http://178.105.55.15:8000)
+#   - COOLIFY_APP_UUID
+#
+# Variables optionnelles :
+#   - DISK_WARN_PCT (défaut 85)
+#   - DISK_WARN_FREE_GB (défaut 10)
+
+on:
+  schedule:
+    # 02:00 UTC daily — 1h avant Gate D nightly
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry-run (df only, pas de prune)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: disk-cleanup-prod
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    name: Docker system prune + builds prune
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Mesure disque avant
+        id: before
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          response=$(curl -sX POST \
+            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
+            -d '{"command":"df -BG / | awk '"'"'NR==2 {print $3,$4,$5}'"'"'"}')
+          echo "before<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$response" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "Disk before: $response"
+
+      - name: Docker system prune (skip if dry_run)
+        if: ${{ inputs.dry_run != 'true' }}
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          # Prune images + build cache + volumes orphelins.
+          # NOTE : ne touche PAS aux containers running ni leurs volumes attachés.
+          curl -sX POST \
+            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
+            -d '{"command":"docker system prune -a -f --volumes 2>&1 | tail -5"}' \
+            | tee prune-out.txt
+
+          curl -sX POST \
+            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
+            -d '{"command":"docker builder prune -a -f 2>&1 | tail -3"}' \
+            | tee builder-prune-out.txt
+
+      - name: Coolify deployments artifacts > 7 jours
+        if: ${{ inputs.dry_run != 'true' }}
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          curl -sX POST \
+            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
+            -d '{"command":"find /data/coolify/applications/*/builds -maxdepth 1 -type d -mtime +7 2>/dev/null | tail -n +6 | xargs -r rm -rf"}'
+
+      - name: Mesure disque après + alerte si seuil dépassé
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          WARN_PCT: ${{ vars.DISK_WARN_PCT || '85' }}
+          WARN_FREE_GB: ${{ vars.DISK_WARN_FREE_GB || '10' }}
+        run: |
+          after=$(curl -sX POST \
+            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
+            -d '{"command":"df -BG / | awk '"'"'NR==2 {gsub(\"G\",\"\",$3); gsub(\"G\",\"\",$4); gsub(\"%\",\"\",$5); print $3\",\"$4\",\"$5}'"'"'"}')
+          echo "Disk after: $after"
+
+          # Parse usage/free
+          used=$(echo "$after" | grep -oE '[0-9]+' | sed -n '1p')
+          free=$(echo "$after" | grep -oE '[0-9]+' | sed -n '2p')
+          pct=$(echo "$after" | grep -oE '[0-9]+' | sed -n '3p')
+
+          if [ -n "$pct" ] && [ "$pct" -gt "$WARN_PCT" ]; then
+            echo "::warning::Disk usage ${pct}% > ${WARN_PCT}% threshold"
+            if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+              curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                -d "chat_id=${TELEGRAM_CHAT_ID}" \
+                -d "text=*[⚠️ INCIDENT]* Disque Hetzner CPX42 ${pct}% (free ${free} GB) — cleanup n'a pas suffi. Voir runbook R20." \
+                -d "parse_mode=Markdown"
+            fi
+            exit 1
+          fi
+          if [ -n "$free" ] && [ "$free" -lt "$WARN_FREE_GB" ]; then
+            echo "::warning::Free disk ${free} GB < ${WARN_FREE_GB} GB threshold"
+            exit 1
+          fi
+          echo "Disk OK: ${pct}% used, ${free} GB free"
