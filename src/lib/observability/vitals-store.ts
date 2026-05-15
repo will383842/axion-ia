@@ -35,6 +35,11 @@ interface VitalsRecord {
   locale?: string | undefined;
   effectiveType?: string | null | undefined;
   deviceMemory?: number | null | undefined;
+  // P2-30 (audit re-run 2026-05-15) — enrichissement client.
+  deviceType?: "mobile" | "tablet" | "desktop" | null | undefined;
+  userAgent?: string | null | undefined;
+  sessionId?: string | null | undefined;
+  pageType?: string | null | undefined;
 }
 
 function todayUtcSlug(): string {
@@ -102,8 +107,11 @@ async function writeWebVitalSample(record: VitalsRecord): Promise<void> {
         value: record.value,
         rating,
         navigationType: record.navigationType ?? null,
-        // deviceType / userAgent / sessionId / pageType : enrichissement
-        // V2 (Sprint 20) — exige côté client une collecte additionnelle.
+        // P2-30 (2026-05-15) — enrichissement client livré (WebVitals.tsx).
+        deviceType: record.deviceType ?? null,
+        userAgent: record.userAgent ?? null,
+        sessionId: record.sessionId ?? null,
+        pageType: record.pageType ?? null,
       },
     });
   } catch {

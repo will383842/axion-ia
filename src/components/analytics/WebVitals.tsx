@@ -26,6 +26,92 @@ interface VitalsPayload {
   locale: string;
   effectiveType: string | null;
   deviceMemory: number | null;
+  // P2-30 (audit re-run 2026-05-15 AGENT 8) — enrichissement client.
+  // Permet au dashboard /admin/web-vitals d'agréger p75 par device
+  // (mobile vs desktop vs tablet), par session anonyme (regrouper les samples
+  // d'un même utilisateur sans cookie tracker), et par pageType (template
+  // de page : "blog", "ville", "audit", "home" etc.). Tous optionnels —
+  // backward-compatible avec les anciens clients en cache.
+  deviceType: string | null;
+  userAgent: string | null;
+  sessionId: string | null;
+  pageType: string | null;
+}
+
+/**
+ * P2-30 — Classification simple device type via matchMedia + UA hints.
+ * Cohérent avec les conventions Google CrUX `formFactor` (PHONE / TABLET / DESKTOP).
+ */
+function detectDeviceType(): "mobile" | "tablet" | "desktop" {
+  if (typeof window === "undefined") return "desktop";
+  // matchMedia hover/pointer = signal le plus fiable mobile-first.
+  // - coarse pointer + no-hover = touch device (mobile/tablet)
+  // - fine pointer = mouse (desktop) OU stylet tablet (cas rare ignoré)
+  const coarsePointer = window.matchMedia("(pointer:coarse)").matches;
+  const noHover = window.matchMedia("(hover:none)").matches;
+  if (coarsePointer && noHover) {
+    // Tablet vs mobile : largeur écran. 768px breakpoint Tailwind `md`.
+    return window.innerWidth >= 768 ? "tablet" : "mobile";
+  }
+  return "desktop";
+}
+
+/**
+ * P2-30 — Session ID éphémère (sessionStorage UUID v4). Permet d'agréger
+ * les Web Vitals d'un même utilisateur dans le dashboard sans cookie tracker
+ * (RGPD-friendly). Reset à chaque nouvelle tab/window.
+ */
+function getOrCreateSessionId(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const KEY = "_axion_wv_sid";
+    let id = window.sessionStorage.getItem(KEY);
+    if (!id) {
+      // crypto.randomUUID disponible Chrome 92+/Safari 15.4+/FF 95+ (~98% trafic).
+      const fallback = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+      id =
+        typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : fallback;
+      window.sessionStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch {
+    // sessionStorage peut throw (mode privé Safari historique, quotas).
+    return null;
+  }
+}
+
+/**
+ * P2-30 — Classification pageType depuis le pathname Next 16. Cohérent
+ * avec les sections de doctrine et utilisé pour agrégation dashboard p75
+ * par type de template (mesure les régressions perf par template, pas par
+ * page individuelle).
+ */
+function inferPageType(pathname: string): string {
+  if (!pathname || pathname === "/" || /^\/(fr|en)\/?$/.test(pathname)) return "home";
+  const segments = pathname
+    .replace(/^\/(fr|en)\//, "")
+    .split("/")
+    .filter(Boolean);
+  if (segments.length === 0) return "home";
+  const head = segments[0] ?? "other";
+  // Templates pSEO villes — distincts pour mesurer la régression sur 12 942 routes.
+  if (head === "implantations") return "pseo-ville";
+  if (["audit", "interventions", "implementation"].includes(head) && segments[1] === "par-ville") {
+    return `pseo-${head}`;
+  }
+  // Templates content factory.
+  if (head === "blog") return "blog";
+  if (head === "actualites") return "news";
+  if (head === "cas-concrets") return "case-study";
+  if (head === "faq") return "faq";
+  if (head === "aide" || head === "centre-aide") return "help";
+  if (head === "connaissances") return "knowledge";
+  if (head === "equipe") return "team";
+  if (head === "tarifs") return "pricing";
+  if (head === "reserver") return "booking";
+  return head;
 }
 
 // `Network Information API` shape — non typé par lib.dom.d.ts en 2026
@@ -90,6 +176,14 @@ function observeFrameDegradations(
   if (typeof PerformanceObserver === "undefined") return () => {};
 
   const observers: PerformanceObserver[] = [];
+  // P2-30 — enrichissement client réutilisé entre observers.
+  const deviceType = detectDeviceType();
+  const ua =
+    typeof navigator !== "undefined" && typeof navigator.userAgent === "string"
+      ? navigator.userAgent.slice(0, 200)
+      : null;
+  const sessionId = getOrCreateSessionId();
+  const pageType = inferPageType(pathname);
 
   // LoAF (Chrome 123+). Test via supportedEntryTypes pour éviter throw.
   if (PerformanceObserver.supportedEntryTypes.includes("long-animation-frame")) {
@@ -109,6 +203,10 @@ function observeFrameDegradations(
             locale,
             effectiveType: null,
             deviceMemory: null,
+            deviceType,
+            userAgent: ua,
+            sessionId,
+            pageType,
           });
         }
       });
@@ -135,6 +233,10 @@ function observeFrameDegradations(
             locale,
             effectiveType: null,
             deviceMemory: null,
+            deviceType,
+            userAgent: ua,
+            sessionId,
+            pageType,
           });
         }
       });
@@ -175,6 +277,8 @@ export function WebVitals() {
           (attribution as { interactionTarget?: string }).interactionTarget ?? null;
         const interactionType =
           (attribution as { interactionType?: string }).interactionType ?? null;
+        const ua =
+          typeof navigator.userAgent === "string" ? navigator.userAgent.slice(0, 200) : null;
         const payload: VitalsPayload = {
           id: metric.id,
           name: "INP-attribution",
@@ -187,6 +291,11 @@ export function WebVitals() {
           locale,
           effectiveType: nav.connection?.effectiveType ?? null,
           deviceMemory: nav.deviceMemory ?? null,
+          // P2-30 — enrichissement client.
+          deviceType: detectDeviceType(),
+          userAgent: ua,
+          sessionId: getOrCreateSessionId(),
+          pageType: inferPageType(pathname ?? ""),
         };
         // Ajoute interactionTarget/Type comme suffix dans `id` pour
         // que /api/vitals route handler les capte sans changer le contrat.
@@ -243,6 +352,10 @@ export function WebVitals() {
 
   useReportWebVitals((metric) => {
     const nav = typeof navigator !== "undefined" ? (navigator as NavigatorWithExtras) : null;
+    const ua =
+      typeof navigator !== "undefined" && typeof navigator.userAgent === "string"
+        ? navigator.userAgent.slice(0, 200)
+        : null;
     const payload: VitalsPayload = {
       id: metric.id,
       name: metric.name,
@@ -255,6 +368,11 @@ export function WebVitals() {
       locale,
       effectiveType: nav?.connection?.effectiveType ?? null,
       deviceMemory: nav?.deviceMemory ?? null,
+      // P2-30 — enrichissement client.
+      deviceType: typeof window !== "undefined" ? detectDeviceType() : null,
+      userAgent: ua,
+      sessionId: getOrCreateSessionId(),
+      pageType: inferPageType(pathname ?? ""),
     };
     const body = JSON.stringify(payload);
     try {

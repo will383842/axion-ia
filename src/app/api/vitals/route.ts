@@ -11,8 +11,10 @@ import { z } from "zod";
 import { appendVitalsRecord } from "@/lib/observability/vitals-store";
 
 const VitalsSchema = z.object({
-  id: z.string().min(1).max(120),
-  name: z.enum(["CLS", "FCP", "FID", "INP", "LCP", "TTFB"]),
+  id: z.string().min(1).max(200), // 200 pour accepter les ID INP-attribution + LoAF suffixés
+  // P1-20 — étendu pour accepter LoAF + LongTask + INP-attribution (additions
+  // au standard CLS/FCP/FID/INP/LCP/TTFB qui restent supportés).
+  name: z.enum(["CLS", "FCP", "FID", "INP", "LCP", "TTFB", "INP-attribution", "LoAF", "LongTask"]),
   value: z.number().finite(),
   rating: z.enum(["good", "needs-improvement", "poor"]).optional(),
   delta: z.number().finite().optional(),
@@ -22,6 +24,13 @@ const VitalsSchema = z.object({
   locale: z.string().max(10).optional(),
   effectiveType: z.string().max(10).nullable().optional(),
   deviceMemory: z.number().finite().nullable().optional(),
+  // P2-30 (audit re-run 2026-05-15 AGENT 8) — enrichissement client.
+  // Permet l'agrégation p75 par device + session + pageType dans le
+  // dashboard /admin/web-vitals. Tous optionnels — backward-compatible.
+  deviceType: z.enum(["mobile", "tablet", "desktop"]).nullable().optional(),
+  userAgent: z.string().max(200).nullable().optional(),
+  sessionId: z.string().max(64).nullable().optional(),
+  pageType: z.string().max(40).nullable().optional(),
 });
 
 export async function POST(req: NextRequest): Promise<Response> {
