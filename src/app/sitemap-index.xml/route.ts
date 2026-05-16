@@ -39,7 +39,13 @@ import { prisma } from "@/lib/prisma";
 // référencés mais Route Handlers inexistants → 404 systématique côté Googlebot.
 // Réintroduire QUAND la banque d'images V2 (PROMPT-IMAGE-BANK-MASTER-2026)
 // livrera les builders correspondants.
-const CUSTOM_SITEMAPS: ReadonlyArray<string> = ["/sitemap-news.xml"];
+const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
+  "/sitemap-news.xml",
+  // Image Sitemap 1.1 — image-bank V1 (réintroduit Sprint 4 V1 2026-05-16,
+  // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
+  "/sitemaps/images-fr.xml",
+  "/sitemaps/images-en.xml",
+];
 
 export const dynamic = "force-static";
 export const revalidate = 3600;

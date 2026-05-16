@@ -64,6 +64,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
   // Sitemap principal — référence sub-sitemaps images-*.xml
   /^src\/app\/sitemap\.ts$/,
+  // Sitemap-index racine — référence sub-sitemaps images-{fr,en}.xml
+  /^src\/app\/sitemap-index\.xml\/route\.ts$/,
   // Routing i18n — déclare pathnames /galerie et /gallery
   /^src\/i18n\/routing\.ts$/,
   // Footer — lien "Banque d'images" / "Image bank"
