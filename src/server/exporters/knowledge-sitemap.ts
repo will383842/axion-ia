@@ -51,6 +51,10 @@ export interface KnowledgeSitemapEntry {
 export async function listKnowledgeSitemapEntries(
   excludeSlugsByType: ReadonlyMap<string, ReadonlySet<string>> = new Map(),
 ): Promise<readonly KnowledgeSitemapEntry[]> {
+  // Build-time short-circuit : voir knowledge-rss.ts.
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
+    return [];
+  }
   try {
     const entries = await prisma.knowledgeEntry.findMany({
       where: {
@@ -106,9 +110,19 @@ export async function listKnowledgeSitemapEntries(
     }
     return out;
   } catch (err) {
-    // P2021 = table inexistante (premier deploy post-merge KB) → bootstrap-safe.
-    if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
-      console.warn("[KB sitemap] knowledge_entries table not migrated yet — returning empty");
+    // P2021 = table inexistante (premier deploy post-merge KB).
+    // P1001/P1012 = DB unreachable. ECONNREFUSED/ENOTFOUND = host invalide.
+    // Tous → bootstrap-safe + DB-stub-safe.
+    const code =
+      err instanceof Error && "code" in err ? ((err as { code: string }).code ?? "") : "";
+    if (
+      code === "P2021" ||
+      code === "P1001" ||
+      code === "P1012" ||
+      code === "ECONNREFUSED" ||
+      code === "ENOTFOUND"
+    ) {
+      console.warn(`[KB sitemap] DB unavailable (${code}) — returning empty`);
       return [];
     }
     throw err;
@@ -206,6 +220,10 @@ export async function buildKnowledgeSitemapChunk(
  * DB sera readable depuis le runner).
  */
 export async function countKnowledgePublicEntries(): Promise<number> {
+  // Build-time short-circuit : voir knowledge-rss.ts pour rationale.
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
+    return 0;
+  }
   try {
     return await prisma.knowledgeEntry.count({
       where: {

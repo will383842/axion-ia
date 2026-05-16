@@ -39,7 +39,33 @@ function createRedis(): Redis {
   return client;
 }
 
-export const redis = globalForRedis.redis ?? createRedis();
+// Build-time stub (option F.1 recovery 2026-05-16) : si REDIS_URL pointe
+// vers le stub `stub.invalid` (GH Actions build), retourne un Proxy qui
+// short-circuit toutes les commandes vers null/0/""/[]/no-op. Évite les
+// retries getaddrinfo ENOTFOUND × N pages SSG. Le runtime container
+// Coolify aura le vrai REDIS_URL injecté via env var [RUN].
+function createStubRedis(): Redis {
+  const noop = async () => null;
+  const stub = new Proxy(
+    {},
+    {
+      get(_t, prop: string) {
+        if (prop === "on" || prop === "off" || prop === "removeListener") return () => stub;
+        if (prop === "quit" || prop === "disconnect") return noop;
+        if (prop === "status") return "end";
+        // Commands typical : get/set/del/exists/expire/incr/decr/hget/hset
+        // /lpush/rpush/lpop/rpop/sadd/srem/zadd/zrem/zrange/keys/scan/ping
+        // /publish/subscribe/multi/exec → tous résolvent à null.
+        return noop;
+      },
+    },
+  ) as Redis;
+  return stub;
+}
+
+const isBuildStub = REDIS_URL.includes("stub.invalid");
+
+export const redis = globalForRedis.redis ?? (isBuildStub ? createStubRedis() : createRedis());
 
 if (process.env.NODE_ENV !== "production") globalForRedis.redis = redis;
 

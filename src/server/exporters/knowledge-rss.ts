@@ -35,6 +35,13 @@ export async function listPublicEntriesForFeed(
   locale: Locale,
   type?: KbType,
 ): Promise<readonly FeedItem[]> {
+  // Build-time short-circuit : si DATABASE_URL pointe vers le stub GH Actions
+  // (`stub.invalid`), on ne tente même pas la connexion. Évite ~45s de
+  // retries Prisma × N pages SSG. La page se rend avec 0 entries, l'ISR
+  // revalidate=3600 repopulera dès que la DB sera up au runtime.
+  if (process.env.DATABASE_URL?.includes("stub.invalid")) {
+    return [];
+  }
   try {
     const entries = await prisma.knowledgeEntry.findMany({
       where: {
@@ -67,12 +74,22 @@ export async function listPublicEntriesForFeed(
       })
       .filter((it): it is FeedItem => it !== null);
   } catch (err) {
-    // P2021 = "The table does not exist in the current database" — table KB
-    // pas encore migrée (premier deploy après merge KB ; `prisma migrate deploy`
-    // tourne au boot du container, donc APRÈS le build SSG). Sans ce guard,
-    // le SSG fail avec P2021 et bloque tout le déploiement.
-    if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
-      console.warn("[KB] knowledge_entries table not migrated yet — returning empty feed");
+    // P2021 = table missing (bootstrap). P1001/P1012 = DB unreachable (GH
+    // Actions build avec stub DATABASE_URL, ou DB down au runtime).
+    // ECONNREFUSED + getaddrinfo ENOTFOUND = host inaccessible. Tous gérés
+    // par fallback gracieux à `[]` : la page se rend avec 0 entries plutôt
+    // que de bloquer tout le SSG. ISR revalidate=3600 repopulera quand la
+    // DB sera up.
+    const code =
+      err instanceof Error && "code" in err ? ((err as { code: string }).code ?? "") : "";
+    if (
+      code === "P2021" ||
+      code === "P1001" ||
+      code === "P1012" ||
+      code === "ECONNREFUSED" ||
+      code === "ENOTFOUND"
+    ) {
+      console.warn(`[KB] DB unavailable (${code}) — returning empty feed`);
       return [];
     }
     throw err;

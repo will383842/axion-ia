@@ -89,6 +89,11 @@ ARG REDIS_URL
 ENV DATABASE_URL=${DATABASE_URL:-postgresql://stub:stub@stub.invalid:5432/stub}
 ENV REDIS_URL=${REDIS_URL:-redis://stub.invalid:6379}
 
+# BullMQ : pas de queue/worker au build. Le worker permanent tourne dans
+# un container séparé sur le VPS (Dockerfile.worker). Au runtime du
+# container web, BullMQ s'active normalement (env [RUN] Coolify).
+ENV BULLMQ_DISABLED=true
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
