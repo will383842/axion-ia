@@ -10,8 +10,7 @@
  * Volume attendu : ~249 lignes (états ONU + dépendances reconnues).
  */
 
-import type { PrismaClient } from "@prisma/client";
-import { PrismaClient as RealPrismaClient } from "../../generated/client";
+import { PrismaClient } from "../../generated/client";
 
 type CountryApiRow = {
   cca2: string;
@@ -75,7 +74,7 @@ export async function seedCountries(client: PrismaClient): Promise<number> {
 
 // Standalone execution (pnpm tsx prisma/seeds/image-bank/seed-countries.ts)
 if (require.main === module) {
-  const prisma = new RealPrismaClient();
+  const prisma = new PrismaClient();
   seedCountries(prisma as unknown as PrismaClient)
     .then((count) => {
       console.log(`[image-bank seed] ✓ ${count} countries upserted`);
