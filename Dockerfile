@@ -72,10 +72,11 @@ ENV COREPACK_INTEGRITY_KEYS=0
 # Le swap se déclenche, le build ralentit, l'export layers timeout
 # à 14 min avec exit 255 (container killed par buildkit).
 #
-# Fix : heap 8 GB → 6 GB et workers 4 → 2. Build estimé ~14 min vs 10 min
-# (+ 30 %) mais ne dépasse plus 12 GB total → pas de swap → finit
-# proprement. À ré-évaluer après rescale CPX52 (32 GB RAM) si besoin.
-ENV NODE_OPTIONS=--max-old-space-size=6144
+# Heap 10 GB (was 6 GB) — 2026-05-16 recovery : 17629 routes SSG + collect
+# build traces dépassait 6 GB → OOM kill exit 255 à #19 final stage.
+# CPX42 16 GB RAM : 10 GB heap + ~2 GB worker BullMQ + ~2 GB postgres/redis
+# + ~1 GB system = 15 GB, marge 1 GB. Workers 2 maintenu (parallélisme SSG).
+ENV NODE_OPTIONS=--max-old-space-size=10240
 ENV NEXT_PRIVATE_WORKER_THREADS=2
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
