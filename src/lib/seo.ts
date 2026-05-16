@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { routing, type Locale } from "@/i18n/routing";
 import { env } from "@/env";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // Cycle d'import autorisé : `service-coverage.ts` réimporte SITE_URL d'ici, mais
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
@@ -114,16 +115,23 @@ export function buildProductMetadata({
   const resolvedOgImage =
     ogImage ??
     `${SITE_URL}/api/og?title=${encodeURIComponent(title)}${ogAccent ? `&accent=${ogAccent}` : ""}`;
+  // EN locale désactivé (2026-05-16) → omettre hreflang="en" pour ne pas
+  // signaler à Google une alternate EN qui répond 301. Quand EN sera
+  // réactivé (EN_LOCALE_ENABLED=true), hreflang="en" revient automatique.
+  const enDisabled = isEnLocaleDisabled();
+  const languages: Record<string, string> = {
+    fr: `/fr${fr}`,
+    "x-default": `/fr${fr}`,
+  };
+  if (!enDisabled) {
+    languages.en = `/en${en}`;
+  }
   return {
     title,
     description,
     alternates: {
       canonical: `/${locale}${path}`,
-      languages: {
-        fr: `/fr${fr}`,
-        en: `/en${en}`,
-        "x-default": `/fr${fr}`,
-      },
+      languages,
     },
     openGraph: {
       type: "website",

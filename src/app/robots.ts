@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 
 // Doctrine AI bots 2026 (cert C1+C2+C6 2026-05-08) :
 // - ALLOW les LLM bots de search/answer (visibilité AEO/GEO + citations)
@@ -64,12 +65,16 @@ const AI_BOTS_DISALLOWED = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
+  // EN locale désactivé (2026-05-16) → bloquer /en/* globalement pour
+  // empêcher Googlebot/Bingbot de crawler les 301s (waste crawl budget).
+  // Désactiver automatiquement quand EN_LOCALE_ENABLED=true à nouveau.
+  const dynamicDisallow = isEnLocaleDisabled() ? [...COMMON_DISALLOW, "/en/"] : COMMON_DISALLOW;
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: COMMON_DISALLOW,
+        disallow: dynamicDisallow,
       },
       // P1-16 audit indexation 2026-05-15 — Bingbot Crawl-delay 1 s.
       // Bingbot est historiquement 10× plus agressif que Googlebot. Sur ~13K
@@ -79,13 +84,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "Bingbot",
         allow: "/",
-        disallow: COMMON_DISALLOW,
+        disallow: dynamicDisallow,
         crawlDelay: 1,
       },
       ...AI_BOTS_ALLOWED.filter((u) => u !== "Bingbot").map((userAgent) => ({
         userAgent,
         allow: "/",
-        disallow: COMMON_DISALLOW,
+        disallow: dynamicDisallow,
       })),
       ...AI_BOTS_DISALLOWED.map((userAgent) => ({
         userAgent,

@@ -108,11 +108,20 @@ function localizedHref(key: PathnameKey, locale: (typeof routing.locales)[number
   return (def as Record<string, string>)[locale] ?? (def as Record<string, string>).fr ?? key;
 }
 
+// EN locale désactivé (2026-05-16) → on filtre les EN URLs hors du sitemap
+// pour ne pas dépenser de crawl budget Google sur des 301s. Quand EN sera
+// réactivé (EN_LOCALE_ENABLED=true), les URLs EN reviennent automatiquement.
+// Import dynamique pour éviter import circulaire/Edge runtime issues.
+const EN_LOCALE_DISABLED = process.env.EN_LOCALE_ENABLED !== "true";
+const effectiveLocales = EN_LOCALE_DISABLED
+  ? routing.locales.filter((l) => l !== "en")
+  : [...routing.locales];
+
 function alternateLanguages(
   key: PathnameKey,
 ): Record<(typeof routing.locales)[number] | "x-default", string> {
   const map = Object.fromEntries(
-    routing.locales.map((alt) => [alt, `${SITE_URL}/${alt}${localizedHref(key, alt)}`]),
+    effectiveLocales.map((alt) => [alt, `${SITE_URL}/${alt}${localizedHref(key, alt)}`]),
   ) as Record<(typeof routing.locales)[number], string>;
   return {
     ...map,
@@ -274,6 +283,26 @@ function buildTimeOrNow(): Date {
   return new Date();
 }
 
+/**
+ * Filtre les entries EN si locale EN désactivé (env EN_LOCALE_ENABLED!=true).
+ * Élimine les URLs /en/* du sitemap pour éviter que Googlebot crawle des 301s.
+ * Nettoie aussi les `alternates.languages.en` qui pointeraient vers 301.
+ */
+function filterEnIfDisabled(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  if (!EN_LOCALE_DISABLED) return entries;
+  return entries
+    .filter((e) => !e.url.includes("/en/") && !e.url.endsWith("/en"))
+    .map((e) => {
+      const langs = e.alternates?.languages;
+      if (!langs) return e;
+      const cleaned: Record<string, string> = {};
+      for (const [k, v] of Object.entries(langs)) {
+        if (k !== "en" && typeof v === "string") cleaned[k] = v;
+      }
+      return { ...e, alternates: { languages: cleaned } };
+    });
+}
+
 export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
@@ -283,27 +312,27 @@ export default async function sitemap(props: {
   // Static IDs
   switch (id) {
     case "pages":
-      return buildPagesSitemap(now);
+      return filterEnIfDisabled(buildPagesSitemap(now));
     case "blog":
-      return buildBlogSitemap(now);
+      return filterEnIfDisabled(await buildBlogSitemap(now));
     case "faq":
-      return buildFaqSitemap(now);
+      return filterEnIfDisabled(buildFaqSitemap(now));
     case "help":
-      return buildHelpSitemap(now);
+      return filterEnIfDisabled(buildHelpSitemap(now));
     case "cas-concrets":
-      return buildCasConcretsSitemap(now);
+      return filterEnIfDisabled(buildCasConcretsSitemap(now));
     case "comparaisons":
-      return buildComparaisonsSitemap(now);
+      return filterEnIfDisabled(buildComparaisonsSitemap(now));
     case "implementation":
-      return buildImplementationSitemap(now);
+      return filterEnIfDisabled(buildImplementationSitemap(now));
     case "implantations":
-      return buildImplantationsHubSitemap(now);
+      return filterEnIfDisabled(buildImplantationsHubSitemap(now));
     case "services-villes-audit":
-      return buildServicesVillesSitemap(now, "audit");
+      return filterEnIfDisabled(buildServicesVillesSitemap(now, "audit"));
     case "services-villes-interventions":
-      return buildServicesVillesSitemap(now, "interventions");
+      return filterEnIfDisabled(buildServicesVillesSitemap(now, "interventions"));
     case "services-villes-implementation":
-      return buildServicesVillesSitemap(now, "implementation");
+      return filterEnIfDisabled(buildServicesVillesSitemap(now, "implementation"));
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -313,9 +342,11 @@ export default async function sitemap(props: {
     const rest = id.slice("villes-".length);
     const trailMatch = rest.match(/^(.+)-(\d+)$/);
     if (trailMatch) {
-      return buildVillesByRegionSitemap(trailMatch[1]!, parseInt(trailMatch[2]!, 10), now);
+      return filterEnIfDisabled(
+        buildVillesByRegionSitemap(trailMatch[1]!, parseInt(trailMatch[2]!, 10), now),
+      );
     }
-    return buildVillesByRegionSitemap(rest, 1, now);
+    return filterEnIfDisabled(buildVillesByRegionSitemap(rest, 1, now));
   }
 
   // KB DB-aware (Sprint SEO 2026-05-14) : `knowledge-<chunkIdx>`.
@@ -325,10 +356,12 @@ export default async function sitemap(props: {
   if (id.startsWith("knowledge-")) {
     const chunkMatch = id.slice("knowledge-".length).match(/^(\d+)$/);
     if (!chunkMatch) return [];
-    return buildKnowledgeSitemapChunk(
-      parseInt(chunkMatch[1]!, 10),
-      SITEMAP_CHUNK_SIZE,
-      buildExcludeSlugsByType(),
+    return filterEnIfDisabled(
+      await buildKnowledgeSitemapChunk(
+        parseInt(chunkMatch[1]!, 10),
+        SITEMAP_CHUNK_SIZE,
+        buildExcludeSlugsByType(),
+      ),
     );
   }
 
@@ -380,7 +413,7 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
-    for (const locale of routing.locales) {
+    for (const locale of effectiveLocales) {
       const url = `${SITE_URL}/${locale}${localizedHref(key, locale)}`;
       entries.push({
         url,
