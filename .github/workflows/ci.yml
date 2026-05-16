@@ -113,12 +113,27 @@ jobs:
       # au build SSG de fonctionner sans secrets production réels (audit V1
       # image-bank 2026-05-16 — fix Gate B après ajout validations Zod prod
       # IP_HASH_SALT + PII_ENCRYPTION_KEY récentes).
+      #
+      # Dummy values fournies pour les env vars que le code lit avec
+      # `.startsWith()` ou autres opérations (Stripe key prefix check, etc.).
+      # SKIP_ENV_VALIDATION bypass uniquement Zod, pas les accès directs au
+      # `process.env` dans le code.
       - name: Build
         env:
           SKIP_ENV_VALIDATION: "true"
           BULLMQ_DISABLED: "true"
           DATABASE_URL: "postgresql://stub:stub@stub.invalid:5432/stub"
           REDIS_URL: "redis://stub.invalid:6379"
+          AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
+          ADMIN_URL_PREFIX: "admin-ci-build"
+          STRIPE_SECRET_KEY: "sk_test_ci_dummy_not_used_in_build"
+          STRIPE_PUBLISHABLE_KEY: "pk_test_ci_dummy_not_used_in_build"
+          STRIPE_WEBHOOK_SECRET: "whsec_ci_dummy_not_used_in_build"
+          BACKUP_ENCRYPTION_PASSPHRASE: "ci-dummy-backup-pass-not-used-in-build"
+          IP_HASH_SALT: "ci-dummy-ip-hash-salt-not-used-in-build-32chars"
+          PII_ENCRYPTION_KEY: "ci-dummy-pii-encryption-key-not-used-in-build-32"
+          NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
+          NEXT_PUBLIC_APP_ENV: "production"
         run: pnpm build
       - name: Bundle size
         run: pnpm bundle:check
