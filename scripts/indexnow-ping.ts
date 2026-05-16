@@ -63,6 +63,12 @@ async function main(): Promise<void> {
     `${siteUrl}/en${p === "/" ? "" : p}`,
   ]);
 
+  // Image-bank Sprint 4 V1 — append URLs des images publiées (FR + EN).
+  // Lecture DB best-effort : si Prisma indisponible (stub.invalid / no DB),
+  // on continue sans bloquer le ping des STRATEGIC_PATHS.
+  const imageBankUrls = await collectImageBankUrls(siteUrl);
+  urlList.push(...imageBankUrls);
+
   const payload = { host, key, keyLocation, urlList };
 
   try {
@@ -81,6 +87,39 @@ async function main(): Promise<void> {
     }
   } catch (err) {
     console.warn(`[indexnow-ping] error :`, err instanceof Error ? err.message : err);
+  }
+}
+
+async function collectImageBankUrls(siteUrl: string): Promise<string[]> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return [];
+  }
+  try {
+    const { prisma } = await import("../src/lib/prisma");
+    const translations = await prisma.imageAssetTranslation.findMany({
+      where: {
+        isPublished: true,
+        image: {
+          deletedAt: null,
+          isActive: true,
+          publishedAt: { not: null },
+        },
+      },
+      select: { slug: true, languageCode: true },
+      take: 1000,
+    });
+    const urls: string[] = [];
+    for (const t of translations) {
+      const segment = t.languageCode === "fr" ? "galerie" : "gallery";
+      urls.push(`${siteUrl}/${t.languageCode}/${segment}/${t.slug}`);
+    }
+    return urls;
+  } catch (err) {
+    console.warn(
+      `[indexnow-ping] image-bank URLs skipped :`,
+      err instanceof Error ? err.message : err,
+    );
+    return [];
   }
 }
 

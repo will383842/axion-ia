@@ -67,9 +67,7 @@ export default async function TransparencePage({ params }: Props) {
     },
   ];
 
-  const headline = isFr
-    ? "Transparence IA générative"
-    : "Generative AI transparency";
+  const headline = isFr ? "Transparence IA générative" : "Generative AI transparency";
   const tagline = isFr
     ? "Conforme à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689)."
     : "Compliant with article 50 of the EU AI Act (Regulation 2024/1689).";
@@ -84,7 +82,9 @@ export default async function TransparencePage({ params }: Props) {
       links: [
         {
           href: "/equipe/manon",
-          label: isFr ? "Persona Manon (portrait IA disclosed)" : "Manon persona (AI-disclosed portrait)",
+          label: isFr
+            ? "Persona Manon (portrait IA disclosed)"
+            : "Manon persona (AI-disclosed portrait)",
         },
       ],
     },
@@ -172,9 +172,7 @@ export default async function TransparencePage({ params }: Props) {
                   <h2 className="text-fg text-xl font-semibold tracking-tight sm:text-2xl">
                     {s.title}
                   </h2>
-                  <p className="text-fg-soft text-[15px] leading-relaxed sm:text-base">
-                    {s.body}
-                  </p>
+                  <p className="text-fg-soft text-[15px] leading-relaxed sm:text-base">{s.body}</p>
                   {s.links.length > 0 ? (
                     <ul className="mt-1 flex flex-col gap-1.5">
                       {s.links.map((l) => (

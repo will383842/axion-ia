@@ -3039,3 +3039,310 @@ enum KeywordTrackingSource {
   serpapi
   manual
 }
+
+// ============================================================
+// IMAGE BANK V1 (Sprint 1 — feat/image-bank-v1)
+// ============================================================
+// Doctrine :
+//   - FR canonique, EN miroir (PAS 9 langues comme SOS-Expat)
+//   - Stockage local dev (public/image-bank/) ou S3/Hetzner (prod) — PAS de hotlinks
+//   - License par défaut CC BY 4.0 (enum éditable admin)
+//   - Geo-targeting via ISO codes (target_countries jsonb)
+//   - Copyright holder = Axion-IA OÜ (estonienne, 0 SIREN)
+//   - 10 tables : Country (prérequis) + 8 image-bank core + ImageDownloadLog + ImageImportBatch
+// Refs :
+//   - .claude/skills/axionia-image-bank/references/prisma-schema.md
+//   - .claude/skills/axionia-image-bank/prompts/stop-and-ask-decisions.md
+// ============================================================
+
+/// Country (PRÉREQUIS image-bank) — seedé depuis REST Countries API (~249 lignes).
+/// Utilisé par image-country-detector.service.ts pour résoudre nom → ISO code.
+model Country {
+  isoCode    String   @id @map("iso_code") @db.VarChar(2)
+  iso3       String?  @unique @db.VarChar(3)
+  nameFr     String   @map("name_fr") @db.VarChar(100)
+  nameEn     String   @map("name_en") @db.VarChar(100)
+  slugFr     String   @map("slug_fr") @db.VarChar(100)
+  slugEn     String   @map("slug_en") @db.VarChar(100)
+  continent  String?  @db.VarChar(20)
+  flagEmoji  String?  @map("flag_emoji") @db.VarChar(8)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([nameFr])
+  @@index([nameEn])
+  @@index([slugFr])
+  @@index([slugEn])
+  @@map("countries")
+}
+
+model ImageAsset {
+  id                String   @id @default(uuid()) @db.Uuid
+  categoryId        String?  @map("category_id") @db.Uuid
+
+  // File data
+  filePath          String   @map("file_path") @db.VarChar(500)
+  thumbnailPath     String?  @map("thumbnail_path") @db.VarChar(500)
+  avifPath          String?  @map("avif_path") @db.VarChar(500)
+  lqipDataUri       String?  @map("lqip_data_uri") @db.Text
+  fileFormat        String   @default("webp") @map("file_format") @db.VarChar(10)
+  fileSize          Int      @default(0) @map("file_size")
+  width             Int
+  height            Int
+  orientation       String   @db.VarChar(20)
+  aspectRatio       String?  @map("aspect_ratio") @db.VarChar(10)
+  srcset            String?  @db.Text
+  fileHash          String?  @map("file_hash") @db.VarChar(64)
+
+  // SEO core
+  // Slug strategy (audit V1 verification 2026-05-16 P1-10) :
+  //   - ImageAsset.slug    = identifiant CANONIQUE language-neutral (unique global),
+  //                          dérivé du title FR à la création (slugifyAscii), sert
+  //                          aux chemins fichier storage `image-bank/<id>/...`.
+  //   - ImageAssetTranslation.slug = slug PER-LANG (unique via [imageId, languageCode]),
+  //                                  sert au routing public `/galerie/<slug-fr>` ou
+  //                                  `/gallery/<slug-en>`. Calculé par le worker
+  //                                  translate (Claude Sonnet 4.6 vision) avec retour
+  //                                  à slugifyAscii(title traduit) si null.
+  slug              String   @unique @db.VarChar(255)
+  keywordsPrimary   String?  @map("keywords_primary") @db.VarChar(255)
+  keywordsSecondary Json?    @map("keywords_secondary")
+  seoScore          Int      @default(0) @map("seo_score") @db.SmallInt
+
+  // Geo targeting (monde ISO, PAS regions.ts France)
+  targetCountries   Json?    @map("target_countries")
+  targetLanguages   Json?    @map("target_languages")
+  geoRegion         String?  @map("geo_region") @db.VarChar(10)
+  geoPlacename      String?  @map("geo_placename") @db.VarChar(255)
+  geoPosition       String?  @map("geo_position") @db.VarChar(50)
+
+  // License (CC BY 4.0 par défaut)
+  licenseType       String   @default("cc-by-4.0") @map("license_type") @db.VarChar(50)
+  licenseUrl        String?  @default("https://creativecommons.org/licenses/by/4.0/") @map("license_url") @db.VarChar(500)
+  copyrightHolder   String   @default("Axion-IA OÜ") @map("copyright_holder") @db.VarChar(255)
+  photographerName  String?  @map("photographer_name") @db.VarChar(255)
+  photographerUrl   String?  @map("photographer_url") @db.VarChar(500)
+
+  // Source (origin tracking)
+  sourceUrl         String?  @map("source_url") @db.Text
+  sourceType        String   @default("photo") @map("source_type") @db.VarChar(20)
+  aiModel           String?  @map("ai_model") @db.VarChar(60)
+
+  // Tracking
+  viewCount         Int      @default(0) @map("view_count")
+  downloadCount     Int      @default(0) @map("download_count")
+  embedCount        Int      @default(0) @map("embed_count")
+
+  // State
+  isActive          Boolean  @default(true) @map("is_active")
+  isFeatured        Boolean  @default(false) @map("is_featured")
+  sortOrder         Int      @default(0) @map("sort_order")
+  publishedAt       DateTime? @map("published_at")
+
+  // V1.1 — Taxonomie métier (SSOT @/server/image-bank/taxonomy.ts)
+  module            String?  @map("module") @db.VarChar(20)
+  subModule         String?  @map("sub_module") @db.VarChar(60)
+  targetEntity      String?  @map("target_entity") @db.VarChar(120)
+  targetCity        String?  @map("target_city") @db.VarChar(80)
+  targetRegion      String?  @map("target_region") @db.VarChar(60)
+  targetSize        String?  @map("target_size") @db.VarChar(20)
+  targetPersona     String?  @map("target_persona") @db.VarChar(40)
+  targetSector      String?  @map("target_sector") @db.VarChar(40)
+  targetTechno      String?  @map("target_techno") @db.VarChar(30)
+  targetFormat      String?  @map("target_format") @db.VarChar(20)
+  targetDuration    String?  @map("target_duration") @db.VarChar(30)
+
+  // V1.1 — Cross-référence page métier canonique
+  subjectOfUrl      String?  @map("subject_of_url") @db.VarChar(500)
+  subjectOfType     String?  @map("subject_of_type") @db.VarChar(30)
+
+  // V1.1 — Flags qualité + AI + watermark
+  isAiGenerated         Boolean @default(false) @map("is_ai_generated")
+  requiresHumanReview   Boolean @default(false) @map("requires_human_review")
+  requiresHumanTaxonomy Boolean @default(false) @map("requires_human_taxonomy")
+  watermarkEnabled      Boolean @default(false) @map("watermark_enabled")
+
+  // V1.5 — pHash + custom XMP namespace
+  pHash             String?  @map("p_hash") @db.VarChar(32)
+  customXmpData     Json?    @map("custom_xmp_data")
+
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  category          ImageCategory? @relation(fields: [categoryId], references: [id])
+  translations      ImageAssetTranslation[]
+  tags              ImageAssetTag[]
+  usageLogs         ImageUsageLog[]
+  downloadLogs      ImageDownloadLog[]
+
+  @@index([isActive, categoryId, sortOrder])
+  @@index([isActive, publishedAt])
+  @@index([sourceType])
+  @@index([fileHash])
+  @@index([module, subModule])
+  @@index([module, targetCity])
+  @@index([module, targetRegion])
+  @@index([subjectOfType])
+  @@index([requiresHumanReview])
+  @@index([requiresHumanTaxonomy])
+  @@index([pHash])
+  @@map("image_assets")
+}
+
+model ImageAssetTranslation {
+  id              Int       @id @default(autoincrement())
+  imageId         String    @map("image_id") @db.Uuid
+  languageCode    String    @map("language_code") @db.VarChar(5)
+
+  title           String    @db.VarChar(255)
+  slug            String    @db.VarChar(255)
+  alt             String    @db.VarChar(255)
+  caption         String?   @db.VarChar(500)
+  description     String?   @db.Text
+
+  metaTitle       String?   @map("meta_title") @db.VarChar(255)
+  metaDescription String?   @map("meta_description") @db.VarChar(255)
+  ogTitle         String?   @map("og_title") @db.VarChar(255)
+  ogDescription   String?   @map("og_description") @db.VarChar(255)
+
+  aiSummary       String?   @map("ai_summary") @db.Text
+  embedTitle      String?   @map("embed_title") @db.VarChar(255)
+
+  isPublished     Boolean   @default(false) @map("is_published")
+  publishedAt     DateTime? @map("published_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  image           ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@unique([imageId, languageCode])
+  @@index([languageCode, slug])
+  @@index([languageCode, isPublished])
+  @@map("image_asset_translations")
+}
+
+model ImageCategory {
+  id           String   @id @default(uuid()) @db.Uuid
+  slug         String   @unique @db.VarChar(100)
+  isActive     Boolean  @default(true) @map("is_active")
+  sortOrder    Int      @default(0) @map("sort_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  translations ImageCategoryTranslation[]
+  images       ImageAsset[]
+
+  @@map("image_categories")
+}
+
+model ImageCategoryTranslation {
+  id              Int      @id @default(autoincrement())
+  categoryId      String   @map("category_id") @db.Uuid
+  languageCode    String   @map("language_code") @db.VarChar(5)
+  name            String   @db.VarChar(255)
+  slug            String   @db.VarChar(255)
+  description     String?  @db.Text
+  metaTitle       String?  @map("meta_title") @db.VarChar(255)
+  metaDescription String?  @map("meta_description") @db.Text
+  // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  category        ImageCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, languageCode])
+  @@index([languageCode, slug])
+  @@map("image_category_translations")
+}
+
+model ImageTag {
+  id           Int      @id @default(autoincrement())
+  slug         String   @unique @db.VarChar(100)
+  // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  translations ImageTagTranslation[]
+  images       ImageAssetTag[]
+
+  @@map("image_tags")
+}
+
+model ImageTagTranslation {
+  id           Int      @id @default(autoincrement())
+  tagId        Int      @map("tag_id")
+  languageCode String   @map("language_code") @db.VarChar(5)
+  name         String   @db.VarChar(255)
+  slug         String   @db.VarChar(255)
+  // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  tag          ImageTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([tagId, languageCode])
+  @@map("image_tag_translations")
+}
+
+model ImageAssetTag {
+  imageId String @map("image_id") @db.Uuid
+  tagId   Int    @map("tag_id")
+
+  image   ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  tag     ImageTag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([imageId, tagId])
+  @@map("image_asset_tags")
+}
+
+model ImageUsageLog {
+  id          BigInt   @id @default(autoincrement())
+  imageId     String   @map("image_id") @db.Uuid
+  action      String   @db.VarChar(20)
+  referrerUrl String?  @map("referrer_url") @db.VarChar(500)
+  userAgent   String?  @map("user_agent") @db.VarChar(500)
+  ipHash      String?  @map("ip_hash") @db.VarChar(64)
+  language    String?  @db.VarChar(5)
+  countryCode String?  @map("country_code") @db.VarChar(5)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  image       ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@index([imageId, action])
+  @@index([action, createdAt])
+  @@map("image_usage_logs")
+}
+
+model ImageDownloadLog {
+  id            BigInt   @id @default(autoincrement())
+  imageId       String   @map("image_id") @db.Uuid
+  variant       String   @db.VarChar(20)
+  ipHash        String?  @map("ip_hash") @db.VarChar(64)
+  userAgent     String?  @map("user_agent") @db.VarChar(500)
+  referrerUrl   String?  @map("referrer_url") @db.VarChar(500)
+  downloadedAt  DateTime @default(now()) @map("downloaded_at")
+
+  image         ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@index([imageId, downloadedAt])
+  @@index([downloadedAt])
+  @@map("image_download_logs")
+}
+
+model ImageImportBatch {
+  id              String   @id @default(uuid()) @db.Uuid
+  filename        String   @db.VarChar(255)
+  totalRows       Int      @default(0) @map("total_rows")
+  successCount    Int      @default(0) @map("success_count")
+  errorCount      Int      @default(0) @map("error_count")
+  errors          Json?
+  status          String   @default("pending") @db.VarChar(20)
+  createdBy       String   @map("created_by") @db.VarChar(255)
+  createdAt       DateTime @default(now()) @map("created_at")
+  completedAt     DateTime? @map("completed_at")
+
+  @@index([createdBy, createdAt])
+  @@index([status, createdAt])
+  @@map("image_import_batches")
+}

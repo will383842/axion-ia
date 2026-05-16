@@ -25,6 +25,10 @@ import { startKeywordSyncWorker } from "./workers/content-keyword-sync-worker";
 import { startContentWebVitalsMonitorWorker } from "./workers/content-web-vitals-monitor-worker";
 import { startContentPsiMonitorWorker } from "./workers/content-psi-monitor-worker";
 import { startContentMonitoringWorker } from "./workers/content-monitoring-worker";
+import { startImageBankEnrichWorker } from "./workers/image-bank-enrich-worker";
+import { startImageBankImportWorker } from "./workers/image-bank-import-worker";
+import { startImageBankTranslateWorker } from "./workers/image-bank-translate-worker";
+import { startImageBankCronsWorker } from "./workers/image-bank-crons-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -59,6 +63,13 @@ async function main() {
     startContentWebVitalsMonitorWorker(), // Audit final P0-3 — daily 02:30 UTC
     startContentPsiMonitorWorker(), // P2-29 audit 2026-05-15 — weekly Mon 03:00 UTC
     startContentMonitoringWorker(), // Méta-cert 2026-05-15 AGENT 19 — hourly xx:15
+    // Image Bank V1 (Sprint 1-7 feat/image-bank-v1) — 4 workers
+    // Patch post-audit 2026-05-16 P1-2 (activation prod). Sans QA staging
+    // initial, désactivable par opérateur via BULLMQ_DISABLED=true.
+    startImageBankEnrichWorker(),
+    startImageBankImportWorker(),
+    startImageBankTranslateWorker(),
+    startImageBankCronsWorker(),
   ];
 
   await bootRepeatableJobs();

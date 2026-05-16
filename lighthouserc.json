@@ -17,7 +17,9 @@
         "http://localhost:3000/fr/blog",
         "http://localhost:3000/en/blog",
         "http://localhost:3000/fr/contact",
-        "http://localhost:3000/en/contact"
+        "http://localhost:3000/en/contact",
+        "http://localhost:3000/fr/galerie",
+        "http://localhost:3000/en/gallery"
       ],
       "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready",

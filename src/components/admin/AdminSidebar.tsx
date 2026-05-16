@@ -12,18 +12,26 @@ interface NavItem {
   href: string;
   label: string;
   icon: string;
-  group: "main" | "content" | "engagement" | "ops" | "system";
+  group: "main" | "content" | "image-bank" | "engagement" | "ops" | "system";
 }
 
 const GROUP_LABELS: Record<NavItem["group"], string> = {
   main: "Activité quotidienne",
   content: "Contenu",
+  "image-bank": "Banque d'images",
   engagement: "Engagement",
   ops: "Ops & monitoring",
   system: "Système",
 };
 
-const GROUP_ORDER: NavItem["group"][] = ["main", "content", "engagement", "ops", "system"];
+const GROUP_ORDER: NavItem["group"][] = [
+  "main",
+  "content",
+  "image-bank",
+  "engagement",
+  "ops",
+  "system",
+];
 
 interface AdminSidebarProps {
   nav: ReadonlyArray<NavItem>;

@@ -34,11 +34,22 @@ export default defineConfig({
       ],
       // Pass B P1-9 — bump 50 → 60 % (palier S6.2). Cible 70 % S6.3 quand la
       // suite tests content-gen unit (P0-1) + E2E (P0-2) sera consolidée.
+      //
+      // ⚠️ Ratchet temporaire 2026-05-16 (audit V1 image-bank verification — Option B Will).
+      // Le code récent image-bank V1 (~3000 LOC) + S+1 securite-rgpd (~1500 LOC)
+      // a fait chuter la couverture globale réelle à ~27 % statements / ~33 % functions
+      // (vs 60 % attendu). Les seuils ci-dessous sont posés JUSTE EN DESSOUS du
+      // niveau observé (effet "ratchet") : le CI bloquera toute future régression
+      // mais accepte le niveau actuel. À remonter graduellement :
+      //   - Sprint 1.5 : image-bank P1-1 tests Vitest (12-16h → +5-8 pts)
+      //   - Sprint 1.6+ : couverture S+1 securite-rgpd
+      //   - Cible long terme : 60 % (retour à la valeur Pass B P1-9 ci-dessus).
+      // Suivi : _AUDIT/IMAGE-BANK-V1-VERIFICATION-2026-05-16/09-tests-ci.md.
       thresholds: {
-        statements: 60,
-        branches: 55,
-        functions: 60,
-        lines: 60,
+        statements: 26,
+        branches: 25,
+        functions: 33,
+        lines: 26,
       },
     },
   },

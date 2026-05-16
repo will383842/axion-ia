@@ -19,6 +19,10 @@ import type {
   BookingCronJobData,
   BookingCronJobType,
 } from "./types";
+import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
+import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
+import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-worker";
+import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 
 const connection = getBullConnection();
 
@@ -248,8 +252,94 @@ export const contentMonitoringQueue: Queue | null = connection
   : null;
 
 // ============================================================
+// Image Bank V1 (Sprint 1-7 feat/image-bank-v1) — 4 queues
+// Patch post-audit 2026-05-16 P1-2 + P1-4 (activation + retry/backoff).
+// Constants : src/server/image-bank/constants.ts (ENRICH_ATTEMPTS=3,
+// ENRICH_BACKOFF_DELAY_MS=5000).
+// ============================================================
+
+const IMAGE_BANK_JOB_OPTIONS = {
+  ...defaultJobOptions,
+  attempts: 3,
+  backoff: { type: "exponential" as const, delay: 5_000 },
+};
+
+export const imageBankEnrichQueue: Queue<ImageBankEnrichJobData, void, string> | null = connection
+  ? new Queue<ImageBankEnrichJobData, void, string>("image-bank-enrich", {
+      connection,
+      defaultJobOptions: IMAGE_BANK_JOB_OPTIONS,
+    })
+  : null;
+
+export const imageBankImportQueue: Queue<ImageBankImportJobData, void, string> | null = connection
+  ? new Queue<ImageBankImportJobData, void, string>("image-bank-import", {
+      connection,
+      defaultJobOptions: { ...IMAGE_BANK_JOB_OPTIONS, attempts: 2 },
+    })
+  : null;
+
+export const imageBankTranslateQueue: Queue<ImageBankTranslateJobData, void, string> | null =
+  connection
+    ? new Queue<ImageBankTranslateJobData, void, string>("image-bank-translate", {
+        connection,
+        defaultJobOptions: IMAGE_BANK_JOB_OPTIONS,
+      })
+    : null;
+
+export const imageBankCronsQueue: Queue<ImageBankCronJobData, void, ImageBankCronJobType> | null =
+  connection
+    ? new Queue<ImageBankCronJobData, void, ImageBankCronJobType>("image-bank-crons", {
+        connection,
+        defaultJobOptions: { ...IMAGE_BANK_JOB_OPTIONS, attempts: 1 },
+      })
+    : null;
+
+// ============================================================
 // Helpers d'enqueue typés (utilises par Server Actions)
 // ============================================================
+
+/**
+ * Image Bank V1 — enqueue helpers (Server Actions / workers internal).
+ *
+ * No-op proprement si BullMQ désactivé ou pas de connection Redis (build
+ * GH Actions avec REDIS_URL=stub.invalid). Pattern aligné sur `enqueueEmail`.
+ */
+export async function enqueueImageBankEnrich(data: ImageBankEnrichJobData): Promise<void> {
+  if (!imageBankEnrichQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(`[bullmq] no connection, skipping enqueueImageBankEnrich(${data.imageId})`);
+    }
+    return;
+  }
+  await imageBankEnrichQueue.add(`enrich-${data.imageId}`, data);
+}
+
+export async function enqueueImageBankImport(data: ImageBankImportJobData): Promise<void> {
+  if (!imageBankImportQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(
+        `[bullmq] no connection, skipping enqueueImageBankImport(${data.originalFilename})`,
+      );
+    }
+    return;
+  }
+  await imageBankImportQueue.add(`import-${data.batchId ?? "single"}-${Date.now()}`, data);
+}
+
+export async function enqueueImageBankTranslate(data: ImageBankTranslateJobData): Promise<void> {
+  if (!imageBankTranslateQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(
+        `[bullmq] no connection, skipping enqueueImageBankTranslate(${data.imageId} ${data.sourceLang}→${data.targetLang})`,
+      );
+    }
+    return;
+  }
+  await imageBankTranslateQueue.add(
+    `translate-${data.imageId}-${data.sourceLang}-${data.targetLang}`,
+    data,
+  );
+}
 
 export async function enqueueEmail(
   template: EmailJobName,

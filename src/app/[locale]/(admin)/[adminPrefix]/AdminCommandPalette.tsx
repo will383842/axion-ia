@@ -193,6 +193,61 @@ function buildItems(base: string): CommandItem[] {
       href: `${base}/content-gen/onboarding`,
       group: "Content Gen",
     },
+    // ── image-bank (Sprint 1-7 V1) ──
+    {
+      label: "Image bank — Overview",
+      icon: "🖼️",
+      href: `${base}/image-bank`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Library",
+      icon: "📚",
+      href: `${base}/image-bank/library`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Upload",
+      icon: "⬆️",
+      href: `${base}/image-bank/upload`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Bulk import CSV",
+      icon: "📥",
+      href: `${base}/image-bank/bulk-import`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Quality queue",
+      icon: "✅",
+      href: `${base}/image-bank/quality`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Analytics",
+      icon: "📈",
+      href: `${base}/image-bank/analytics`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Categories",
+      icon: "🗂️",
+      href: `${base}/image-bank/categories`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Tags",
+      icon: "🏷️",
+      href: `${base}/image-bank/tags`,
+      group: "Image bank",
+    },
+    {
+      label: "Image bank — Settings",
+      icon: "⚙️",
+      href: `${base}/image-bank/settings`,
+      group: "Image bank",
+    },
     // ── ops ──
     { label: "Analytics & SEO", icon: "📊", href: `${base}/analytics`, group: "Ops" },
     { label: "Infra & outils", icon: "🔧", href: `${base}/infra`, group: "Ops" },
