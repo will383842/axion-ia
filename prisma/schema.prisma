@@ -645,7 +645,12 @@ model Submission {
   internalNotes      String?          @map("internal_notes") @db.Text
   assignedTo         String?          @map("assigned_to") @db.VarChar(100)
   // Anti-spam / source
+  /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — DEPRECATED, à drop S+2 après
+  /// backfill `prisma/scripts/backfill-ip-hash-2026-05-16.ts`. Lecture seule.
   ipAddress          String?          @map("ip_address") @db.VarChar(64)
+  /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — SHA-256(salt::ip) 16 hex.
+  /// Helper `src/lib/security/ip-hash.ts`. Doctrine RGPD art. 4-1.
+  ipHash             String?          @map("ip_hash") @db.VarChar(64)
   userAgent          String?          @map("user_agent") @db.Text
   referer            String?          @db.Text
   turnstileScore     Decimal?         @map("turnstile_score") @db.Decimal(4, 3)
@@ -1357,7 +1362,10 @@ model NewsletterSubscriber {
   unsubscribeToken String?          @unique @map("unsubscribe_token") @db.VarChar(120)
   // Source / marketing
   source           String?          @db.VarChar(120)
+  /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — DEPRECATED, à drop S+2.
   ipAddress        String?          @map("ip_address") @db.VarChar(64)
+  /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — SHA-256(salt::ip) 16 hex.
+  ipHash           String?          @map("ip_hash") @db.VarChar(64)
   // MailWizz sync
   mailwizzListUid  String?          @map("mailwizz_list_uid") @db.VarChar(120)
   mailwizzSubUid   String?          @map("mailwizz_sub_uid") @db.VarChar(120)

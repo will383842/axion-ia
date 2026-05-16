@@ -17,6 +17,7 @@ import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
+import { hashIp } from "@/lib/security/ip-hash";
 
 export type AuditState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -66,6 +67,7 @@ export async function submitAuditAction(
         goals: parsed.data.goals,
       },
       ipAddress: ip,
+      ipHash: hashIp(ip),
       userAgent: (await headers()).get("user-agent") ?? null,
     },
   });
@@ -148,6 +150,7 @@ export async function submitAuditRequestAction(
         toolsOther: parsed.data.toolsOther,
       },
       ipAddress: ip,
+      ipHash: hashIp(ip),
       userAgent: (await headers()).get("user-agent") ?? null,
     },
   });

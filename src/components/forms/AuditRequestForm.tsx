@@ -214,6 +214,12 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Sprint Correctif S+1 (P0-S1-4 2026-05-16) — Honeypot anti-bot pour ce
+  // 6-step wizard custom (pas de tag <form> natif). La valeur est lue via ref
+  // à la submission et ajoutée à FormData. submitAuditRequestAction vérifie
+  // déjà `formData.get("website")` truthy → reject silencieux (200 ok stub).
+  const honeypotRef = React.useRef<HTMLInputElement>(null);
+
   // Pré-remplissage via ?type=slug OU ?objet=<subTierId>
   // (Sprint 14.10.8 — Will 2026-05-12 : les pages détail audit utilisent
   // `?objet=audit-cible-solo` etc., on doit remapper vers AuditTypeKey).
@@ -308,6 +314,8 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
     setSubmittingState("submitting");
     try {
       const fd = new FormData();
+      // Honeypot S+1 P0-S1-4 — toujours envoyé (server check sur truthy)
+      fd.set("website", honeypotRef.current?.value ?? "");
       if (auditType) fd.set("auditType", auditType);
       // Granularité sous-tier (Sprint 14.10.8) — préservée dans la submission
       // si le visiteur vient d'une carte sous-tier (?objet=audit-cible-solo).
@@ -400,6 +408,16 @@ export function AuditRequestForm({ labels, locale }: AuditRequestFormProps) {
 
   return (
     <div className="bg-paper border-border shadow-subtle mx-auto max-w-4xl rounded-3xl border-2 p-6 sm:p-8 lg:p-10">
+      {/* Honeypot anti-bot (P0-S1-4) — input caché ref-lié, lu via ref dans handleSubmit */}
+      <input
+        ref={honeypotRef}
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+      />
       {/* Bandeau prix persistent — visible sur les 6 steps. Le user voit
           en permanence ce qu'il s'engage à payer. Disparaît avant la
           sélection du type au step 1 (auditType null). */}
