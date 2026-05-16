@@ -62,6 +62,17 @@ ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_PUBLIC_APP_ENV=${NEXT_PUBLIC_APP_ENV:-production}
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Bypass Zod env.ts validation au build (option F.1 recovery 2026-05-16).
+# @t3-oss/env-nextjs supporte SKIP_ENV_VALIDATION=true pour permettre le build
+# sans les secrets prod (AUTH_SECRET, STRIPE_*, PII_ENCRYPTION_KEY, etc.).
+# Les vraies valeurs sont injectées au RUNTIME par Coolify (66 env vars de
+# l'app sont [RUN] mode, donc absentes du build GH Actions). La validation
+# Zod s'exécute normalement au démarrage du container (server.js boot) avec
+# les vraies valeurs Coolify. Si une valeur manque → crash startup, pas un
+# faux positif au build.
+ARG SKIP_ENV_VALIDATION
+ENV SKIP_ENV_VALIDATION=${SKIP_ENV_VALIDATION:-false}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

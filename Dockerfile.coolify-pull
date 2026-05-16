@@ -1,0 +1,23 @@
+# Dockerfile minimaliste pour Coolify — Option F.1 recovery 2026-05-16.
+#
+# Cette image est pré-buildée par GitHub Actions (.github/workflows/deploy-coolify.yml)
+# et pushée sur GHCR. Coolify se contente de la pull au lieu de la rebuild,
+# ce qui élimine le pic de 117 GB de disque sur le VPS CPX42 (saturait
+# pendant le SSG Next.js 17 629 routes).
+#
+# Architecture :
+#   git push main → GH Actions build avec ./Dockerfile (multi-stage complet)
+#                 → push ghcr.io/will383842/axion-ia:latest
+#                 → GH Actions appelle Coolify API /deploy
+#                 → Coolify build avec ce fichier (./Dockerfile.coolify-pull)
+#                 → docker pull GHCR image (~10 GB, ~2 min)
+#                 → container démarre
+#
+# Tous les ENTRYPOINT, EXPOSE, HEALTHCHECK, USER, ENV NODE_ENV=production etc.
+# sont hérités de l'image GHCR (définis dans le stage `runner` du Dockerfile
+# multi-stage). Aucune surcharge nécessaire ici.
+#
+# Coolify doit être configuré pour pointer dockerfile_location=/Dockerfile.coolify-pull
+# (PATCH /api/v1/applications/{uuid}). Configuration appliquée 2026-05-16.
+
+FROM ghcr.io/will383842/axion-ia:latest
