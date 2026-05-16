@@ -2,6 +2,8 @@
 
 > Cartographie complète : (a) ce qui peut être réutilisé sans modification, (b) ce qui est partiellement présent à enrichir, (c) ce qui est à coder from scratch.
 
+> **Note source images (clarif Will 2026-05-16)** : la pipeline image-bank V1+V1.5 traite **exclusivement des uploads humains** (Will fournit les images). Pas de générateur IA intégré. Cf. `02-decisions-default.md` §"Décision #6". Aucun impact sur l'estimation effort 255-400h (le scope code reste identique — c'est de l'infra de gestion, pas de création).
+
 ## Catégorie A — ✅ Réutilisable sans modification (8 éléments)
 
 | Élément                      | Path                                                     | Réutilisation Phase X                                                                                   |

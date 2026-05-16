@@ -97,6 +97,30 @@
 
 **Réversible** : trivial — chaque feature est un module indépendant.
 
+## Décision #6 — Source des images = uploads humains (clarification Will 2026-05-16)
+
+**Question implicite** : la pipeline image-bank doit-elle inclure un générateur d'images IA (GPT-image, Midjourney, DALL-E) ou exclusivement gérer des uploads humains ?
+
+**Décision** : ✅ **V1 + V1.5 = uploads humains exclusivement** (Will fournit les images via admin UI ou bulk-import CSV).
+
+**Justification** :
+
+- Confirmé par Will : « les images ne seront pas à créer mais c'est moi qui donnerait les images »
+- Pas d'intégration API génération (économie ~5-10h dev + ~$100-300/mois budget API)
+- Pas de logique "AI-generated upload" particulière en V1 — la colonne `isAiGenerated: boolean` + `aiModel: string?` reste utile : Will marque manuellement par image si elle vient d'une IA (Midjourney/Dall-E/etc.) pour émettre `JSON-LD ImageObject.isBasedOn: SoftwareApplication`. Transparence Google 2026 préservée.
+
+**Workflow attendu V1** :
+
+1. Will uploade N images via `/admin/image-bank/upload` (drag&drop) ou bulk-import CSV
+2. Pipeline sync génère variants Sharp (thumb/sm/md/lg/xl webp + md/lg avif + og.webp + square.webp + LQIP)
+3. Worker async `image-bank-enrich` : auto-translate FR↔EN (Claude vision), auto-`aiSummary` (1 phrase AEO ≤280 char), auto-détecte module/subModule/targetCity (taxonomy detector + fallback Claude), recalcule seoScore
+4. Will valide + édite manuellement (taxonomy fine, persona, secteur, techno, photographe) → publish
+5. Image apparaît galerie publique + sitemap-images.xml + IndexNow ping Bing/Yandex
+
+**Impact estimation effort** : aucun changement (255-400h restent dus). Le pipeline était déjà conçu pour uploads humains — la spec « génération AI auto » n'a jamais été dans le scope V1.
+
+**Réversible** : oui — ajout futur d'un générateur IA possible en V2 sans toucher la pipeline existante.
+
 ## Sommaire décisions
 
 5 défauts pris en autopilote, tous **réversibles** sans coût élevé. Tracés ici pour audit ultérieur Will. Si une décision est à infirmer : éditer ce fichier + ouvrir une issue/ADR dédiée.
