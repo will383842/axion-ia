@@ -204,6 +204,14 @@
         "!.next/static/chunks/app/**/reserver/**"
       ],
       "limit": "75 KB"
+    },
+    {
+      "name": "Routes /galerie (image-bank V1) — page chunks ≤ 75 KB gz",
+      "path": [
+        ".next/static/chunks/app/**/galerie/**/page-*.js",
+        ".next/static/chunks/app/**/gallery/**/page-*.js"
+      ],
+      "limit": "75 KB"
     }
   ],
   "pnpm": {
