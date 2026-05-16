@@ -45,6 +45,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/api\/image-bank\//,
   /^src\/app\/sitemaps\/images-/,
   /^src\/components\/admin\/image-bank\//,
+  /^src\/components\/galerie\//,
   /^src\/server\/queue\/workers\/image-bank-.*-worker\.ts$/,
   /^prisma\/seeds\/image-bank\//,
   /^prisma\/migrations\/\d+_(add_)?image_bank_/,
