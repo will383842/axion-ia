@@ -2685,18 +2685,34 @@ model BannedPhrase {
   @@map("banned_phrases")
 }
 
+/// Secteur métier Axion-IA (§ 25.3 — 3 piliers cabinet).
+/// `interventions_formations` fusionne interventions opérationnelles + formations
+/// (cibles audience similaires : opérateurs terrain + montée en compétence équipe).
+/// `audits` = diagnostics flash/essentiel/approfondi. `implementations` = projets
+/// IA custom + intégrations. `landing_ville` et `blog_from_rss` ne portent PAS
+/// de secteur (pipelines indépendants).
+enum ServiceSector {
+  interventions_formations
+  audits
+  implementations
+}
+
 /// Profil distribution % par ContentType pour campagnes (§ 25.2 v1.7).
 /// distribution Json validé Zod somme = 100 %.
+/// `serviceSector` optionnel : si renseigné, profil dédié à 1 secteur (utilisé
+/// par le seeder pour pré-équiper interventions/audits/implementations).
 model CoverageDistributionProfile {
-  id           String   @id @default(cuid())
-  slug         String   @unique // "mix-premium-2026" / "mix-industrie" / "mix-tertiaire"
-  name         String
-  description  String?
-  distribution Json // { blog_from_title: 30, blog_from_keywords: 25, … } somme = 100
-  isDefault    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String         @id @default(cuid())
+  slug          String         @unique // "mix-premium-2026" / "mix-industrie" / "mix-tertiaire"
+  name          String
+  description   String?
+  distribution  Json // { blog_from_title: 30, blog_from_keywords: 25, … } somme = 100
+  isDefault     Boolean        @default(false)
+  serviceSector ServiceSector?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
+  @@index([serviceSector])
   @@map("coverage_distribution_profiles")
 }
 
@@ -2722,6 +2738,11 @@ model CoverageCampaign {
   name                     String
   status                   CoverageStatus @default(draft)
   scope                    CoverageScope
+  // Secteur métier (interventions_formations / audits / implementations) —
+  // optionnel pour rétro-compat des campagnes pré-2026-05-16. Les nouvelles
+  // campagnes éditoriales DOIVENT renseigner le secteur (validé Server Action).
+  // Les campagnes landing_ville pures peuvent rester NULL.
+  serviceSector            ServiceSector?
   anchorVilleSlugs         String[]       @default([])
   anchorDepartementCodes   String[]       @default([])
   anchorRegionSlugs        String[]       @default([])
@@ -2744,6 +2765,7 @@ model CoverageCampaign {
   jobs ContentGenJob[]
 
   @@index([status, createdAt(sort: Desc)])
+  @@index([serviceSector, status])
   @@map("coverage_campaigns")
 }
 

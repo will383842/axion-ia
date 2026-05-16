@@ -25,6 +25,7 @@ import { seedAuthorProfile } from "./author-profile";
 import { seedBannedPhrases } from "./banned-phrases";
 import { seedContentTemplates } from "./content-templates";
 import { seedContentGenConfig } from "./content-gen-config";
+import { seedSectorCampaigns } from "./sector-campaigns";
 
 const prisma = new PrismaClient();
 
@@ -53,6 +54,9 @@ async function main() {
 
   const configCount = await seedContentGenConfig(prisma);
   console.log(`  ✓ ContentGenConfig : ${configCount} keys upserted`);
+
+  const sectorCount = await seedSectorCampaigns(prisma);
+  console.log(`  ✓ CoverageCampaign (sectorielles, draft) : ${sectorCount} rows upserted`);
 
   console.log("[content-gen seed] done.");
 }

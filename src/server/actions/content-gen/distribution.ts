@@ -9,19 +9,20 @@
 
 "use server";
 
+// NOTE : "use server" interdit les exports non-async (Next 16). Les constantes
+// (SERVICE_SECTORS, BANNED_FROM_EDITORIAL_MIX, SERVICE_SECTOR_LABELS) et les
+// pure validators (assertEditorialKeys, assertSum100) vivent dans
+// @/server/content-gen/shared/editorial-mix-rules (importable depuis les pages
+// client/server sans constraint).
+
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import type { ServiceSector } from "../../../../prisma/generated/client";
+import { assertEditorialKeys, assertSum100 } from "@/server/content-gen/shared/editorial-mix-rules";
 import { requireAdmin } from "./_auth";
 
 function adminPath(suffix: string): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/${suffix}`;
-}
-
-function assertSum100(record: Record<string, number>, label: string): void {
-  const sum = Object.values(record).reduce((acc, v) => acc + v, 0);
-  if (Math.abs(sum - 100) > 0.5) {
-    throw new Error(`${label}_sum_must_be_100 (got ${sum.toFixed(2)})`);
-  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -35,11 +36,15 @@ export interface DistributionRow {
   readonly description: string | null;
   readonly distribution: Record<string, number>;
   readonly isDefault: boolean;
+  readonly serviceSector: ServiceSector | null;
   readonly updatedAt: Date;
 }
 
-export async function listDistributionProfiles(): Promise<ReadonlyArray<DistributionRow>> {
+export async function listDistributionProfiles(filters?: {
+  readonly serviceSector?: ServiceSector;
+}): Promise<ReadonlyArray<DistributionRow>> {
   const rows = await prisma.coverageDistributionProfile.findMany({
+    where: filters?.serviceSector ? { serviceSector: filters.serviceSector } : {},
     orderBy: [{ isDefault: "desc" }, { slug: "asc" }],
   });
   return rows.map((r) => ({
@@ -49,6 +54,7 @@ export async function listDistributionProfiles(): Promise<ReadonlyArray<Distribu
     description: r.description,
     distribution: r.distribution as Record<string, number>,
     isDefault: r.isDefault,
+    serviceSector: r.serviceSector,
     updatedAt: r.updatedAt,
   }));
 }
@@ -59,9 +65,11 @@ export async function upsertDistributionProfile(input: {
   description?: string;
   distribution: Record<string, number>;
   isDefault?: boolean;
+  serviceSector?: ServiceSector | null;
 }): Promise<void> {
   await requireAdmin();
   if (input.slug.length < 2 || input.slug.length > 80) throw new Error("slug_length");
+  assertEditorialKeys(input.distribution, "distribution");
   assertSum100(input.distribution, "distribution");
   await prisma.$transaction(async (tx) => {
     if (input.isDefault) {
@@ -78,12 +86,14 @@ export async function upsertDistributionProfile(input: {
         description: input.description ?? null,
         distribution: input.distribution as never,
         isDefault: input.isDefault ?? false,
+        serviceSector: input.serviceSector ?? null,
       },
       update: {
         name: input.name,
         description: input.description ?? null,
         distribution: input.distribution as never,
         isDefault: input.isDefault ?? false,
+        serviceSector: input.serviceSector ?? null,
       },
     });
   });

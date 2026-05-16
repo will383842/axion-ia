@@ -13,8 +13,13 @@
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import type { CoverageScope, CoverageStatus } from "../../../../prisma/generated/client";
+import type {
+  CoverageScope,
+  CoverageStatus,
+  ServiceSector,
+} from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
+import { BANNED_FROM_EDITORIAL_MIX } from "@/server/content-gen/shared/editorial-mix-rules";
 import { requireAdmin } from "./_auth";
 
 function adminBase(): string {
@@ -35,6 +40,7 @@ export interface CampaignRow {
   readonly name: string;
   readonly status: CoverageStatus;
   readonly scope: CoverageScope;
+  readonly serviceSector: ServiceSector | null;
   readonly totalTargetCount: number;
   readonly generatedCount: number;
   readonly publishedCount: number;
@@ -56,9 +62,15 @@ export interface CampaignDetail extends CampaignRow {
   readonly estimatedDurationMinutes: number | null;
 }
 
-export async function listCampaigns(status?: CoverageStatus): Promise<ReadonlyArray<CampaignRow>> {
+export async function listCampaigns(
+  status?: CoverageStatus,
+  serviceSector?: ServiceSector,
+): Promise<ReadonlyArray<CampaignRow>> {
   const rows = await prisma.coverageCampaign.findMany({
-    where: status ? { status } : {},
+    where: {
+      ...(status ? { status } : {}),
+      ...(serviceSector ? { serviceSector } : {}),
+    },
     orderBy: { createdAt: "desc" },
   });
   return rows.map(toRow);
@@ -84,6 +96,7 @@ function toRow(r: {
   name: string;
   status: CoverageStatus;
   scope: CoverageScope;
+  serviceSector: ServiceSector | null;
   totalTargetCount: number;
   generatedCount: number;
   publishedCount: number;
@@ -99,6 +112,7 @@ function toRow(r: {
     name: r.name,
     status: r.status,
     scope: r.scope,
+    serviceSector: r.serviceSector,
     totalTargetCount: r.totalTargetCount,
     generatedCount: r.generatedCount,
     publishedCount: r.publishedCount,
@@ -114,6 +128,7 @@ function toRow(r: {
 export interface CreateCampaignInput {
   readonly name: string;
   readonly scope: CoverageScope;
+  readonly serviceSector?: ServiceSector | null;
   readonly anchorVilleSlugs?: ReadonlyArray<string>;
   readonly anchorDepartementCodes?: ReadonlyArray<string>;
   readonly anchorRegionSlugs?: ReadonlyArray<string>;
@@ -130,6 +145,18 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
   if (input.name.length < 3) throw new Error("name_too_short");
   if (input.totalTargetCount < 1 || input.totalTargetCount > 10_000)
     throw new Error("target_count_range");
+  // § 25.3 — Si campagne éditoriale (serviceSector défini), les types
+  // `landing_ville` et `blog_from_rss` sont interdits dans la distribution.
+  // Ils ont leur propre pipeline (coverage villes / RSS worker).
+  if (input.serviceSector) {
+    for (const key of Object.keys(input.typeDistribution)) {
+      if ((BANNED_FROM_EDITORIAL_MIX as ReadonlyArray<string>).includes(key)) {
+        throw new Error(
+          `editorial_distribution_banned_type:${key} (landing_ville et blog_from_rss ont leur propre pipeline)`,
+        );
+      }
+    }
+  }
   const typeSum = Object.values(input.typeDistribution).reduce((a, v) => a + v, 0);
   if (Math.abs(typeSum - 100) > 0.5) throw new Error("type_distribution_must_sum_100");
   const audSum = Object.values(input.audienceMix).reduce((a, v) => a + v, 0);
@@ -140,6 +167,7 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
       name: input.name,
       status: "draft",
       scope: input.scope,
+      serviceSector: input.serviceSector ?? null,
       anchorVilleSlugs: input.anchorVilleSlugs ? [...input.anchorVilleSlugs] : [],
       anchorDepartementCodes: input.anchorDepartementCodes ? [...input.anchorDepartementCodes] : [],
       anchorRegionSlugs: input.anchorRegionSlugs ? [...input.anchorRegionSlugs] : [],
@@ -161,6 +189,7 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
     changes: {
       name: input.name,
       scope: input.scope,
+      serviceSector: input.serviceSector ?? null,
       targetCount: input.totalTargetCount,
     },
   });

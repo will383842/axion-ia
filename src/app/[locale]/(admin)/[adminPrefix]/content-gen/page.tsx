@@ -8,7 +8,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getDashboardKpis } from "@/server/actions/content-gen/dashboard";
+import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import type { ContentType, SearchIntent } from "../../../../../../prisma/generated/client";
 
@@ -24,7 +24,10 @@ export default async function ContentGenDashboardPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const base = `/fr/${adminPrefix}/content-gen`;
-  const kpis = await getDashboardKpis();
+  const [kpis, sectorBreakdown] = await Promise.all([
+    getDashboardKpis(),
+    getSectorBreakdownToday(),
+  ]);
 
   // Quick actions § 12.2 master prompt — 5 boutons "Générer X…" inline.
   // Pour V1, on accepte les champs minimaux : contentType + ville/keyword/title
@@ -70,6 +73,52 @@ export default async function ContentGenDashboardPage({ params }: PageProps) {
           <a href={`${base}/settings/kill-switch`} className="admin-button-ghost">
             Kill switch
           </a>
+        </div>
+      </div>
+
+      <div className="admin-card" style={{ marginBottom: 24 }}>
+        <h2>Rollup aujourd&apos;hui — secteurs &amp; pipelines indépendants</h2>
+        <p className="admin-meta" style={{ marginTop: 0, marginBottom: 12 }}>
+          3 secteurs éditoriaux (campagnes ciblées) + 2 pipelines indépendants (landing villes,
+          RSS). Fenêtre depuis minuit UTC.
+        </p>
+        <div
+          className="admin-card-grid"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 }}
+        >
+          {sectorBreakdown.cards.map((c) => {
+            const href =
+              c.key === "landing_ville" || c.key === "blog_from_rss"
+                ? `${base}/jobs?contentType=${c.key}`
+                : `${base}/jobs?serviceSector=${c.key}`;
+            return (
+              <a
+                key={c.key}
+                href={href}
+                className="admin-card admin-kpi-card"
+                style={{ textDecoration: "none", color: "inherit", display: "block" }}
+              >
+                <p className="admin-kpi-label" style={{ fontSize: 12 }}>
+                  {c.label}
+                </p>
+                <p className="admin-kpi-value" style={{ fontSize: 24 }}>
+                  {c.publishedToday}
+                  <span style={{ fontSize: 14, opacity: 0.6 }}> / {c.generatedToday}</span>
+                </p>
+                <p className="admin-meta" style={{ fontSize: 11, marginTop: 4 }}>
+                  publiés / générés
+                  {c.failedToday > 0 ? (
+                    <span style={{ color: "var(--color-terracotta)" }}>
+                      {" "}
+                      {/* hex-ok: pas de fallback hex (token toujours dispo) */} · {c.failedToday}{" "}
+                      fail
+                    </span>
+                  ) : null}
+                  {c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}
+                </p>
+              </a>
+            );
+          })}
         </div>
       </div>
 

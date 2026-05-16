@@ -6,9 +6,14 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
 import { listTemplates } from "@/server/actions/content-gen/templates";
+import {
+  SERVICE_SECTOR_LABELS,
+  SERVICE_SECTORS,
+} from "@/server/content-gen/shared/editorial-mix-rules";
 import type {
   ContentGenJobStatus,
   ContentType,
+  ServiceSector,
 } from "../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -58,6 +63,7 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
       ...(sp.status ? { status: sp.status as ContentGenJobStatus } : {}),
       ...(sp.contentType ? { contentType: sp.contentType as ContentType } : {}),
       ...(sp.templateId ? { templateId: sp.templateId } : {}),
+      ...(sp.serviceSector ? { serviceSector: sp.serviceSector as ServiceSector } : {}),
       ...(sp.anchorVilleSlug ? { anchorVilleSlug: sp.anchorVilleSlug } : {}),
       ...(sp.search ? { search: sp.search } : {}),
       page,
@@ -146,6 +152,24 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
             </select>
           </div>
           <div className="admin-field">
+            <label htmlFor="serviceSector" className="admin-label">
+              Secteur
+            </label>
+            <select
+              id="serviceSector"
+              name="serviceSector"
+              defaultValue={sp.serviceSector ?? ""}
+              className="admin-input"
+            >
+              <option value="">Tous</option>
+              {SERVICE_SECTORS.map((s) => (
+                <option key={s} value={s}>
+                  {SERVICE_SECTOR_LABELS[s]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="admin-field">
             <label htmlFor="anchorVilleSlug" className="admin-label">
               Ville (slug)
             </label>
@@ -184,6 +208,7 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
             <tr>
               <th>Date</th>
               <th>Type</th>
+              <th>Secteur</th>
               <th>Statut</th>
               <th>Ville</th>
               <th>Score</th>
@@ -195,7 +220,7 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
           <tbody>
             {result.rows.length === 0 ? (
               <tr>
-                <td colSpan={8}>Aucun job — lancez une génération depuis le dashboard.</td>
+                <td colSpan={9}>Aucun job — lancez une génération depuis le dashboard.</td>
               </tr>
             ) : (
               result.rows.map((r) => (
@@ -204,6 +229,15 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
                     <a href={`${base}/${r.id}`}>{r.createdAt.toISOString().slice(0, 16)}</a>
                   </td>
                   <td>{r.contentType}</td>
+                  <td>
+                    {r.serviceSector ? (
+                      <span style={{ fontSize: 11, opacity: 0.85 }}>
+                        {SERVICE_SECTOR_LABELS[r.serviceSector]}
+                      </span>
+                    ) : (
+                      <span className="admin-meta">—</span>
+                    )}
+                  </td>
                   <td>{r.status}</td>
                   <td>{r.anchorVilleSlug ?? "—"}</td>
                   <td>{r.qualityScore ?? "—"}</td>

@@ -13,8 +13,18 @@ import {
   launchCampaign,
   type EstimateCampaignResult,
 } from "@/server/actions/content-gen/coverage";
-import { listAudienceMixProfiles, listDistributionProfiles } from "@/server/actions/content-gen/distribution";
-import type { CoverageScope } from "../../../../../../../../prisma/generated/client";
+import {
+  listAudienceMixProfiles,
+  listDistributionProfiles,
+} from "@/server/actions/content-gen/distribution";
+import {
+  SERVICE_SECTOR_LABELS,
+  SERVICE_SECTORS,
+} from "@/server/content-gen/shared/editorial-mix-rules";
+import type {
+  CoverageScope,
+  ServiceSector,
+} from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 
@@ -25,13 +35,14 @@ interface PageProps {
 
 const SCOPES: ReadonlyArray<CoverageScope> = ["ville", "departement", "region", "multi"];
 
+// § 25.3 — Distribution éditoriale uniquement. `landing_ville` et `blog_from_rss`
+// ont leurs propres pipelines (coverage villes / RSS worker).
 const DEFAULT_TYPE_DIST = `{
-  "landing_ville": 25,
-  "blog_from_title": 25,
-  "blog_from_keywords": 20,
-  "comparison": 15,
-  "guide_pilier": 10,
-  "faq_standalone": 5
+  "blog_from_title": 30,
+  "blog_from_keywords": 25,
+  "comparison": 20,
+  "guide_pilier": 15,
+  "faq_standalone": 10
 }`;
 const DEFAULT_AUDIENCE_MIX = `{
   "TPE:entreprise_privee": 25,
@@ -84,9 +95,15 @@ export default async function NewCampaignPage({ params, searchParams }: PageProp
     const estimatedDurationMinutes = formData.get("estimatedDurationMinutes")
       ? Number(formData.get("estimatedDurationMinutes"))
       : undefined;
+    const rawSector = String(formData.get("serviceSector") ?? "");
+    const serviceSector =
+      rawSector && (SERVICE_SECTORS as ReadonlyArray<string>).includes(rawSector)
+        ? (rawSector as ServiceSector)
+        : null;
     const id = await createCampaign({
       name: String(formData.get("name") ?? ""),
       scope: String(formData.get("scope")) as CoverageScope,
+      serviceSector,
       anchorVilleSlugs: csv("anchorVilleSlugs"),
       anchorDepartementCodes: csv("anchorDepartementCodes"),
       anchorRegionSlugs: csv("anchorRegionSlugs"),
@@ -176,6 +193,24 @@ export default async function NewCampaignPage({ params, searchParams }: PageProp
             </select>
           </div>
           <div className="admin-field">
+            <label htmlFor="serviceSector" className="admin-label">
+              Secteur (campagne éditoriale)
+            </label>
+            <select
+              id="serviceSector"
+              name="serviceSector"
+              defaultValue=""
+              className="admin-input"
+            >
+              <option value="">— Aucun (campagne legacy multi-types) —</option>
+              {SERVICE_SECTORS.map((s) => (
+                <option key={s} value={s}>
+                  {SERVICE_SECTOR_LABELS[s]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="admin-field">
             <label htmlFor="totalTargetCount" className="admin-label">
               Volume cible
             </label>
@@ -224,6 +259,15 @@ export default async function NewCampaignPage({ params, searchParams }: PageProp
               ? "aucun"
               : distProfiles.map((p) => p.slug).join(", ")}
           </label>
+          <p
+            className="admin-meta"
+            style={{ marginTop: -4, marginBottom: 8, fontSize: 12 }}
+          >
+            ⚠️ Si un <strong>secteur</strong> est sélectionné ci-dessus, les types{" "}
+            <code>landing_ville</code> et <code>blog_from_rss</code> sont interdits
+            (pipelines indépendants : cf. /content-gen/coverage scope=ville &amp;{" "}
+            /content-gen/rss).
+          </p>
           <textarea
             id="typeDistribution"
             name="typeDistribution"

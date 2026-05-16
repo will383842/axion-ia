@@ -9,6 +9,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import type { ServiceSector } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 import { getKillSwitch } from "./kill-switch";
 
@@ -128,4 +129,181 @@ export async function getDashboardKpis(): Promise<DashboardKpis> {
     kbHealth: { chunks: kbCount, lastIngestAgoDays: null },
     killSwitchActive: killState.active,
   };
+}
+
+/**
+ * Rollup ContentGenJob aujourd'hui par secteur cabinet + landing + RSS
+ * (§ 25.3 — 2026-05-16). Affiché en tête du dashboard pour piloter le mix
+ * d'un coup d'œil. Fenêtre = depuis minuit (heure serveur UTC).
+ */
+export interface SectorTodayCard {
+  readonly key:
+    | "interventions_formations"
+    | "audits"
+    | "implementations"
+    | "landing_ville"
+    | "blog_from_rss";
+  readonly label: string;
+  readonly generatedToday: number;
+  readonly publishedToday: number;
+  readonly failedToday: number;
+  readonly campaignsActive: number;
+}
+
+export interface SectorBreakdownResult {
+  readonly cards: ReadonlyArray<SectorTodayCard>;
+  readonly windowStart: Date;
+}
+
+export async function getSectorBreakdownToday(): Promise<SectorBreakdownResult> {
+  await requireAdmin();
+
+  const start = new Date();
+  start.setUTCHours(0, 0, 0, 0);
+
+  const sectors: ReadonlyArray<ServiceSector> = [
+    "interventions_formations",
+    "audits",
+    "implementations",
+  ];
+  const sectorLabels: Record<ServiceSector, string> = {
+    interventions_formations: "Interventions & Formations",
+    audits: "Audits",
+    implementations: "Implementations",
+  };
+
+  // Pour chaque secteur, on compte les jobs via campaign.serviceSector.
+  // Pour landing_ville et blog_from_rss, on compte directement contentType.
+  const editorialCards = await Promise.all(
+    sectors.map(async (s): Promise<SectorTodayCard> => {
+      const [gen, pub, fail, camps] = await Promise.all([
+        safeCount(
+          prisma.contentGenJob.count({
+            where: {
+              createdAt: { gte: start },
+              campaign: { is: { serviceSector: s } },
+            },
+          }),
+          0,
+        ),
+        safeCount(
+          prisma.contentGenJob.count({
+            where: {
+              status: "published",
+              completedAt: { gte: start },
+              campaign: { is: { serviceSector: s } },
+            },
+          }),
+          0,
+        ),
+        safeCount(
+          prisma.contentGenJob.count({
+            where: {
+              status: "failed",
+              completedAt: { gte: start },
+              campaign: { is: { serviceSector: s } },
+            },
+          }),
+          0,
+        ),
+        safeCount(
+          prisma.coverageCampaign.count({
+            where: { serviceSector: s, status: "running" },
+          }),
+          0,
+        ),
+      ]);
+      return {
+        key: s,
+        label: sectorLabels[s],
+        generatedToday: gen,
+        publishedToday: pub,
+        failedToday: fail,
+        campaignsActive: camps,
+      };
+    }),
+  );
+
+  // Landing villes (pipeline indépendant — campaign peut être null ou non, on
+  // compte par contentType=landing_ville).
+  const [landingGen, landingPub, landingFail] = await Promise.all([
+    safeCount(
+      prisma.contentGenJob.count({
+        where: { contentType: "landing_ville", createdAt: { gte: start } },
+      }),
+      0,
+    ),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: {
+          contentType: "landing_ville",
+          status: "published",
+          completedAt: { gte: start },
+        },
+      }),
+      0,
+    ),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: {
+          contentType: "landing_ville",
+          status: "failed",
+          completedAt: { gte: start },
+        },
+      }),
+      0,
+    ),
+  ]);
+
+  // RSS (pipeline indépendant — campaign typiquement null).
+  const [rssGen, rssPub, rssFail] = await Promise.all([
+    safeCount(
+      prisma.contentGenJob.count({
+        where: { contentType: "blog_from_rss", createdAt: { gte: start } },
+      }),
+      0,
+    ),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: {
+          contentType: "blog_from_rss",
+          status: "published",
+          completedAt: { gte: start },
+        },
+      }),
+      0,
+    ),
+    safeCount(
+      prisma.contentGenJob.count({
+        where: {
+          contentType: "blog_from_rss",
+          status: "failed",
+          completedAt: { gte: start },
+        },
+      }),
+      0,
+    ),
+  ]);
+
+  const cards: ReadonlyArray<SectorTodayCard> = [
+    ...editorialCards,
+    {
+      key: "landing_ville",
+      label: "Landing villes (pipeline indép.)",
+      generatedToday: landingGen,
+      publishedToday: landingPub,
+      failedToday: landingFail,
+      campaignsActive: 0,
+    },
+    {
+      key: "blog_from_rss",
+      label: "Actualités RSS (pipeline indép.)",
+      generatedToday: rssGen,
+      publishedToday: rssPub,
+      failedToday: rssFail,
+      campaignsActive: 0,
+    },
+  ];
+
+  return { cards, windowStart: start };
 }

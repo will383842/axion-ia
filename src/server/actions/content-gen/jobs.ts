@@ -11,7 +11,11 @@
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import type { ContentGenJobStatus, ContentType } from "../../../../prisma/generated/client";
+import type {
+  ContentGenJobStatus,
+  ContentType,
+  ServiceSector,
+} from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
@@ -67,6 +71,7 @@ export interface JobsListFilters {
   readonly contentType?: ContentType;
   readonly templateId?: string;
   readonly campaignId?: string;
+  readonly serviceSector?: ServiceSector;
   readonly anchorVilleSlug?: string;
   readonly search?: string;
   readonly page?: number;
@@ -81,6 +86,7 @@ export interface JobRow {
   readonly anchorRegionSlug: string | null;
   readonly templateId: string | null;
   readonly campaignId: string | null;
+  readonly serviceSector: ServiceSector | null;
   readonly qualityScore: number | null;
   readonly seoScore: number | null;
   readonly costUsd: string | null;
@@ -105,6 +111,11 @@ export async function listJobs(filters: JobsListFilters = {}): Promise<JobsListR
     ...(filters.contentType ? { contentType: filters.contentType } : {}),
     ...(filters.templateId ? { templateId: filters.templateId } : {}),
     ...(filters.campaignId ? { campaignId: filters.campaignId } : {}),
+    // Filtre secteur indirect via la relation campaign. Jobs orphelins
+    // (landing direct ou RSS) sont exclus quand un secteur est filtré.
+    ...(filters.serviceSector
+      ? { campaign: { is: { serviceSector: filters.serviceSector } } }
+      : {}),
     ...(filters.anchorVilleSlug ? { anchorVilleSlug: filters.anchorVilleSlug } : {}),
     ...(filters.search
       ? {
@@ -122,6 +133,7 @@ export async function listJobs(filters: JobsListFilters = {}): Promise<JobsListR
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
+      include: { campaign: { select: { serviceSector: true } } },
     }),
   ]);
   return {
@@ -137,6 +149,7 @@ export async function listJobs(filters: JobsListFilters = {}): Promise<JobsListR
       anchorRegionSlug: r.anchorRegionSlug,
       templateId: r.templateId,
       campaignId: r.campaignId,
+      serviceSector: r.campaign?.serviceSector ?? null,
       qualityScore: r.qualityScore,
       seoScore: r.seoScore,
       costUsd: r.costUsd ? r.costUsd.toString() : null,
