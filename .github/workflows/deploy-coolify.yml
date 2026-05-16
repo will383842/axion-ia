@@ -359,9 +359,14 @@ jobs:
         run: |
           set -euo pipefail
           # Hit la prod live (déploiement validé par steps deploy précédent).
+          # `/en` retiré 2026-05-16 : EN locale désactivé (cf. AGENTS.md
+          # "EN re-enable procedure"), `/en` répond 301 → /fr, ce qui faisait
+          # fail le LHCI gate (SEO penalty pour URL testée qui redirect).
+          # Remplacé par `/fr/interventions` = page produit stratégique.
+          # Quand EN sera réactivé, restore `--url=https://axion-ia.com/en`.
           pnpm exec lhci collect \
             --url=https://axion-ia.com/fr \
-            --url=https://axion-ia.com/en \
+            --url=https://axion-ia.com/fr/interventions \
             --url=https://axion-ia.com/fr/audit \
             --url=https://axion-ia.com/fr/reserver \
             --url=https://axion-ia.com/fr/implantations/ile-de-france/paris \
