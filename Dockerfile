@@ -35,13 +35,11 @@ COPY .npmrc* ./
 # clé pnpm). Voir https://github.com/nodejs/corepack/issues/612.
 ENV COREPACK_INTEGRITY_KEYS=0
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
-# BuildKit cache mount sur le pnpm store : survit aux builds Coolify même
-# avec --no-cache (Coolify lance `docker build --no-cache`, ce qui invalide
-# les layers mais PAS les cache mounts). Gain ~3 min sur builds successifs
-# après le 1er. id=pnpm partagé pour qu'un autre service Coolify (worker
-# image, etc.) puisse partager le store.
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile --prefer-offline
+# Sprint recovery 2026-05-16 build #5 : cache mount pnpm retiré pour
+# limiter le peak disque GH Actions (no space left on device sur runner
+# ubuntu-latest même avec cleanup). Coût : +1-2 min sur builds successifs
+# (pas de cache pnpm), gain : ~3-5 GB de peak BuildKit.
+RUN pnpm install --frozen-lockfile --prefer-offline
 
 # -----------------------------------------------------------------------------
 # Stage 2 : builder — compile Next 16 standalone
@@ -121,12 +119,12 @@ RUN pnpm prisma:generate
 # cold start. Audit 2026-05-15 — wire défini par seo.ts + sitemap.ts existant.
 ARG BUILD_TIME
 ENV BUILD_TIME=${BUILD_TIME}
-# Cache mount sur .next/cache : Next 16 réutilise ses caches webpack +
-# SSG entre builds si la config n'a pas changé. Combiné au cache mount
-# pnpm ci-dessus, un build incrémental (pas de change de deps ni de
-# config Next) tombe à ~5-8 min au lieu de ~15 min cold.
-RUN --mount=type=cache,id=next,target=/app/.next/cache \
-    BUILD_TIME="${BUILD_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}" pnpm build
+# Sprint recovery 2026-05-16 build #5 : cache mount .next/cache retiré
+# pour limiter le peak disque GH Actions. Coût : +2-3 min sur builds
+# successifs (webpack rebuild from scratch), gain : ~10-15 GB de peak
+# BuildKit. Le BUILD_TIME reste injecté via ARG, BUILD_TIME stable dans
+# next.config.ts pour figer lastModified sitemap/dateModified.
+RUN BUILD_TIME="${BUILD_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}" pnpm build
 
 # -----------------------------------------------------------------------------
 # Stage 3 : runner — runtime slim avec sharp + .next/standalone

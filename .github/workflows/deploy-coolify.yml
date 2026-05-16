@@ -92,17 +92,44 @@ jobs:
       image_digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Free disk space (max headroom)
-        # Ubuntu-latest démarre avec ~30 GB free. On libère ~40 GB
-        # supplémentaires en supprimant les SDK pré-installés inutiles
-        # (dotnet, android, ghc, codeql) → ~70 GB free total.
-        # Critique : peak Docker BuildKit du build axion-ia ≈ 50-60 GB
-        # (sans les copies entre stages parallèles qui n'existent que sur
-        # le VPS où le runtime tourne en concurrent).
+        # Ubuntu-latest démarre avec ~30 GB free. Sprint recovery 2026-05-16
+        # build #5 : cleanup TRÈS agressif après échec « no space left on
+        # device » sur build #4 (~38 min). On vise > 75 GB free total.
         run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-            /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
+          set -x
+          df -h /
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /opt/hostedtoolcache/Python \
+            /opt/hostedtoolcache/PyPy \
+            /opt/hostedtoolcache/Ruby \
+            /opt/hostedtoolcache/go \
+            /usr/local/share/boost \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell \
+            /usr/lib/jvm \
+            /usr/lib/google-cloud-sdk \
+            /usr/lib/firefox \
+            /opt/az \
+            /opt/microsoft \
+            /opt/google \
+            /opt/pipx \
             "$AGENT_TOOLSDIRECTORY" || true
-          sudo docker image prune --all --force || true
+          sudo docker system prune --all --force --volumes || true
+          sudo apt-get autoremove -y --purge \
+            azure-cli \
+            firefox \
+            google-chrome-stable \
+            microsoft-edge-stable \
+            mongodb-* \
+            mysql-* \
+            postgresql-* \
+            mono-* \
+            powershell || true
+          sudo apt-get clean
           df -h /
 
       - name: Checkout
@@ -151,8 +178,13 @@ jobs:
             DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
             REDIS_URL=redis://stub.invalid:6379
           # Cache GH Actions natif (gratuit, plus rapide que registry cache).
+          # Sprint recovery 2026-05-16 : cache-to mode=min (au lieu de max)
+          # pour limiter le peak disque pendant l'export du cache (~10-20 GB
+          # économisés). Trade-off : builds successifs moins rapides (mode
+          # min cache que les layers finaux). Quand le pipeline est stable,
+          # repasser à mode=max.
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=min
           # Désactive le provenance attestation (génère 50 MB extra de
           # metadata SLSA inutile pour notre cas).
           provenance: false
