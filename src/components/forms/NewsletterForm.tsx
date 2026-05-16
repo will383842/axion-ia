@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { HoneypotField } from "@/components/forms/HoneypotField";
 
 interface NewsletterFormProps {
   labels: {
@@ -86,6 +87,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
       noValidate
       className={inline ? "flex flex-col gap-3 sm:flex-row sm:items-end" : "space-y-4"}
     >
+      <HoneypotField />
       <div className="grid flex-1 gap-2">
         <Label htmlFor="newsletter-email">{labels.email}</Label>
         <Input

@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { HoneypotField } from "@/components/forms/HoneypotField";
 import { trackEvent } from "@/components/analytics/Plausible";
 
 interface BookingFormProps {
@@ -145,6 +146,7 @@ export function BookingForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+      <HoneypotField />
       <p className="text-fg text-sm font-medium" aria-live="polite">
         {labels.headerPrefix} <span className="tabular-nums">{date}</span>{" "}
         <span className="tabular-nums">{time}</span>

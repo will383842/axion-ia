@@ -22,6 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { HoneypotField } from "@/components/forms/HoneypotField";
 
 const SCHEMAS = [
   implementationStep1Schema,
@@ -166,6 +167,7 @@ export function ImplementationForm({ initialType, labels }: ImplementationFormPr
       </ol>
 
       <form onSubmit={handleSubmit(onNext)} noValidate className="space-y-6">
+        <HoneypotField />
         {step === 0 ? (
           <fieldset className="space-y-3">
             <legend className="text-fg text-base font-semibold">{labels.typeQuestion}</legend>
