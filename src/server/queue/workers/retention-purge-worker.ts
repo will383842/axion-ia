@@ -43,6 +43,7 @@ const DEFAULTS = {
   generationLogs: 12,
   costLedger: 24,
   webVitals: 6,
+  imageLogs: 12,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -79,6 +80,8 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         generationLogs: 0,
         costLedger: 0,
         webVitals: 0,
+        imageUsageLogs: 0,
+        imageDownloadLogs: 0,
       };
 
       // 1) activity_logs ancients
@@ -185,11 +188,25 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       });
       counts.webVitals = webVitalsResult.count;
 
+      // 8) image_usage_logs + image_download_logs (image-bank Sprint 7 V1).
+      // ip_hash SHA-256 + IP_HASH_SALT — non réversible mais quasi-identifiant
+      // longue durée. Purge 12 mois par défaut (RGPD art. 5.1.e minimisation).
+      const imageLogsMonths = readMonths("RETENTION_IMAGE_LOGS_MONTHS", DEFAULTS.imageLogs);
+      const imageUsageResult = await prisma.imageUsageLog.deleteMany({
+        where: { createdAt: { lt: monthsAgo(imageLogsMonths) } },
+      });
+      const imageDownloadResult = await prisma.imageDownloadLog.deleteMany({
+        where: { downloadedAt: { lt: monthsAgo(imageLogsMonths) } },
+      });
+      counts.imageUsageLogs = imageUsageResult.count;
+      counts.imageDownloadLogs = imageDownloadResult.count;
+
       console.log(
         `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
           `newsletter=${counts.newsletter} bookings=${counts.bookings} ` +
           `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
-          `webVitals=${counts.webVitals}`,
+          `webVitals=${counts.webVitals} ` +
+          `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs}`,
       );
     },
     { connection: getBullConnectionOrThrow(), concurrency: 1 },
