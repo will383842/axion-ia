@@ -42,6 +42,12 @@ interface ImageRow {
 }
 
 async function fetchPublishedImages(): Promise<ImageRow[]> {
+  // P2-SITEMAP-1 audit V1 verification 2026-05-16 — early-exit explicite
+  // cohérence doctrine AGENTS.md / ADR 0026 (pattern knowledge-rss.ts).
+  // Le Proxy Prisma couvre déjà `findMany` au build, on l'évite tout court.
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return [];
+  }
   try {
     return await prisma.imageAsset.findMany({
       where: {

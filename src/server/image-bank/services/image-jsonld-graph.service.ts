@@ -54,6 +54,12 @@ export type GalleryHubGraphArgs = {
 // ──────────────────────────────────────────────────────────
 
 function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): SchemaOrgNode {
+  // LinkedIn vanity URL utilise le slug officiel `axion-ia` (avec tiret).
+  // X/Twitter ne supportant pas les tirets dans les handles, on conserve
+  // la graphie camelCase `AxionIA` — exception documentée vs doctrine
+  // brand "Axion-IA" (cf. mémoire axionia_naming_brand_vs_project 2026-05-08).
+  // STOP & ASK : si le handle X officiel devient `@axionia` ou `@axion_ia`,
+  // mettre à jour ici + dans image-seo-enrichment.service.ts User-Agent.
   const sameAs: string[] = ["https://www.linkedin.com/company/axion-ia", "https://x.com/AxionIA"];
   if (args.wikidataQid) sameAs.push(`https://www.wikidata.org/wiki/${args.wikidataQid}`);
 

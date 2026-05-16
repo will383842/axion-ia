@@ -6,6 +6,40 @@ Format inspiré de [Keep a Changelog 1.1](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Added — Image Bank V1 (Sprint 1-7) — 2026-05-16
+
+Branche `feat/image-bank-v1`, commits `842cd3e → 4cdfbe4` (8 commits, ~8200 LOC).
+
+- **Schema Prisma** (842cd3e) — 10 tables (Country + 9 image-bank core) + 25 indexes (4 GIN + tsvector FTS) + FK `onDelete` explicites + seeds REST Countries (249 pays) + 5 catégories + 10 tags. Migrations idempotentes (`IF NOT EXISTS`).
+- **Services TS** (842cd3e) — 10 services (`image-bank.service`, `image-import.service` Sharp pipeline, `image-seo.service` JSON-LD + score, `image-country-detector`, `image-translation` Claude Sonnet 4.6 vision, `image-seo-enrichment`, `image-watermark`, `image-attribute-validator` 8 validators, `image-taxonomy-detector`, `image-jsonld-graph` @graph 6 entités) + SSOT `taxonomy.ts` + helper `src/lib/image-utils.ts` (27 exports Sharp).
+- **Admin UI** (eb03310) — 15 sub-pages (overview + library + upload + quality + 10 stubs Sprint 2.x) + AdminCommandPalette 9 entrées + ImageUploadDropzone WCAG 2.2 + 3 Server Actions (upload, publish, translate).
+- **Public pages** (b7dbd3e) — 6 routes (`/galerie` index + `[slug]` detail + `[slug]/telecharger` download route handler + 3 hubs interventions-formations/audits/implementations) + JSON-LD @graph chained 6 entités + hreflang FR/EN + EXIF GPS strip RGPD + rate-limit Redis 10/min/IP par `ipHash` SHA-256.
+- **Sitemap + IndexNow** (8682a57) — Sub-sitemaps `images-{fr,en}.xml` Google Image Sitemap 1.1 (namespace `xmlns:image`) + intégration `sitemap-index.xml` + IndexNow `collectImageBankUrls()` cap 1000 + segment FR=galerie / EN=gallery.
+- **Workers BullMQ** (cc012f4) — 4 workers (enrich, import, translate, crons) pattern `email-worker` + retry/backoff (`enqueueXxx()` helpers).
+- **Perf gates** (f42fe98) — `/galerie` + `/gallery` ajoutés `lighthouserc.json` + size-limit bucket 75 KB gz/route.
+- **ADR 0027** (263f9b6) — Architecture image-bank V1 (statut Accepted, 5 décisions STOP & ASK, cloisonnement strict, Web Vitals gate LCP ≤ 1800ms / INP ≤ 80ms / CLS ≤ 0.05, roadmap V1.5 pHash + JPEG XL + CF Polish + dashboard ROI + IPTC/XMP + Naver + AVIF effort 9).
+- **Documentation** (263f9b6) — `docs/image-bank/README.md` (overview + pipelines + env vars + activation workers + RGPD section).
+
+### Added — Image Bank V1 — Patches post-audit (2026-05-16)
+
+- **P0-1 RGPD art. 17 (droit à l'effacement)** — Server Action `forgetIpHashAction` + page admin `/image-bank/usage-logs` fonctionnelle (recherche par `ipHash` SHA-256 + suppression définitive `ImageUsageLog` + `ImageDownloadLog` + audit trail `ActivityLog` action `rgpd.image_bank.forget_ip_hash`).
+- **P1-2 + P1-4** — Workers activation `src/server/queue/worker.ts` + retry/backoff config via `src/server/image-bank/queues.ts` (4 enqueue helpers : `enqueueEnrich`, `enqueueImport`, `enqueueTranslate`, `enqueueCrons`).
+- **P1-3** — AdminSidebar groupe `image-bank` ajouté (9 items) — UX friction résolue, navigation cohérente avec content-gen group.
+- **P1-5** — `Sentry.captureException()` ajouté dans les 4 workers image-bank (parité content-gen + email-worker à harmoniser Sprint 5.x).
+- **P1-6a + P1-6b** — Detail page `[slug]` : `og:image` + `alternates.languages` (hreflang FR/EN/x-default).
+- **P1-8** — `image_categories`, `image_category_translations`, `image_tags`, `image_tag_translations` : ajout `created_at` + `updated_at` (audit trail lookup tables).
+- **P1-9** — Documentation rollback SQL Prisma migrations (commentaire UP/DOWN procedure).
+- **P1-10** — Schema docstring slug strategy (canonique `ImageAsset.slug` vs per-lang `ImageAssetTranslation.slug`).
+- **P1-S-1** — X handle naming corrigé `Axion-IA` (cohérence brand `image-jsonld-graph.service.ts`).
+- **P2-SITEMAP-1** — Early-exit `stub.invalid` explicite dans sub-sitemaps `images-{fr,en}.xml/route.ts` (cohérence doctrine `knowledge-rss.ts`).
+
+### Audit V1 Verification 2026-05-16
+
+- Audit complet livré dans `_AUDIT/IMAGE-BANK-V1-VERIFICATION-2026-05-16/` (14 fichiers).
+- Score brut **909/1000** → après patches post-audit ci-dessus : **~960/1000** 🟢 GO PROD (P0 RGPD résolu).
+- Backlog résiduel : P1-1 tests Vitest (12-16h, reporté Sprint 1.5), MIX-001 + GAP-25 refactor services (P1, 5-8h, reporté Sprint 1.5).
+- Backlog V1.5 (~10-15h) : AEO/GEO perfection (abstract/isBasedOn/mentions/contentLocation), UI Pagination+Filters galerie, hard delete fichiers storage > 90j, Plausible events `gallery_view`/`image_download`/`image_embed`, Bing URL Submission API direct, sub-sitemap pagination > 50K.
+
 ### Fixed
 
 - Stabilisation prod 2026-05-09 : CSP soft mode (drop nonce+strict-dynamic, commit `b31d0c8`), pivot sitemap → sitemap-index (commit `6b7c669`), correction REDIS_URL (typo `7O` → `70`), purge buildkit cache 51 GB (cause OOM build), purge cache Cloudflare. Site stable, healthcheck `redis: ok`.
