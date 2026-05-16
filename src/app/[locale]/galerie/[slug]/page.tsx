@@ -21,22 +21,62 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale, slug } = await params;
   const tr = await prisma.imageAssetTranslation.findFirst({
     where: { slug, languageCode: locale, isPublished: true },
-    include: { image: true },
+    include: {
+      image: {
+        include: {
+          translations: {
+            where: { isPublished: true },
+            select: { languageCode: true, slug: true },
+          },
+        },
+      },
+    },
   });
-  if (!tr) return { robots: { index: false } };
+  if (!tr || !tr.image) return { robots: { index: false } };
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const cdnUrl = process.env.IMAGE_BANK_CDN_URL ?? siteUrl;
   const segment = locale === "fr" ? "galerie" : "gallery";
+
+  // P1-6a — hreflang alternates (FR/EN/x-default). Patch post-audit 2026-05-16.
+  const otherLocale: "fr" | "en" = locale === "fr" ? "en" : "fr";
+  const otherTr = tr.image.translations.find((t) => t.languageCode === otherLocale);
+  const otherSlug = otherTr?.slug ?? tr.slug;
+
+  // P1-6b — og:image variant lg.webp (1200×630 OG ratio). Patch post-audit 2026-05-16.
+  const ogImageUrl = `${cdnUrl}/image-bank/${tr.image.id}/og.webp`;
+
   return {
     title: tr.metaTitle ?? `${tr.title} | Axion-IA`,
     description: tr.metaDescription ?? tr.caption ?? tr.alt,
     alternates: {
       canonical: `${siteUrl}/${locale}/${segment}/${tr.slug}`,
+      languages: {
+        "fr-FR": `${siteUrl}/fr/galerie/${locale === "fr" ? tr.slug : otherSlug}`,
+        "en-US": `${siteUrl}/en/gallery/${locale === "en" ? tr.slug : otherSlug}`,
+        "x-default": `${siteUrl}/fr/galerie/${locale === "fr" ? tr.slug : otherSlug}`,
+      },
     },
     openGraph: {
       title: tr.ogTitle ?? tr.title,
       description: tr.ogDescription ?? tr.caption ?? tr.alt,
       type: "article",
+      locale: locale === "fr" ? "fr_FR" : "en_US",
+      url: `${siteUrl}/${locale}/${segment}/${tr.slug}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: tr.alt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: tr.ogTitle ?? tr.title,
+      description: tr.ogDescription ?? tr.caption ?? tr.alt,
+      images: [ogImageUrl],
     },
     robots: { index: true, follow: true },
   };
