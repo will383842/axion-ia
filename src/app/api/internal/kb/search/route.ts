@@ -15,6 +15,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { searchKnowledge } from "@/lib/knowledge/search-fts";
+import { checkRateLimit } from "@/lib/rate-limit";
 import type { KbType, Locale } from "../../../../../../prisma/generated/client";
 import { KB_TYPES } from "@/content/knowledge/types";
 
@@ -29,7 +30,26 @@ const querySchema = z.object({
   offset: z.coerce.number().int().min(0).default(0),
 });
 
+function getClientIp(req: Request): string {
+  return (
+    req.headers.get("cf-connecting-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    "unknown"
+  );
+}
+
 export async function GET(req: Request) {
+  // Sprint Correctif S+1 (P0-S1-5) : rate-limit anti-DoS FTS.
+  // 30 req/min/IP — search FTS Postgres est coûteux + chemin GET cacheable côté CF.
+  const ip = getClientIp(req);
+  const rl = await checkRateLimit(`kb:search:${ip}`, { limit: 30, windowSec: 60 });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": "60" } },
+    );
+  }
+
   const url = new URL(req.url);
   const params = querySchema.safeParse(Object.fromEntries(url.searchParams));
   if (!params.success) {

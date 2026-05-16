@@ -2,6 +2,16 @@
 // Forwards the URL list to https://api.indexnow.org/indexnow with the site
 // key declared in the INDEXNOW_KEY environment variable (32-128 char hex).
 // Spec: https://www.indexnow.org/documentation
+//
+// Sprint Correctif S+1 (P0-S1-5 2026-05-16) — Auth HMAC obligatoire :
+//   Header `X-Axion-Indexnow-Signature: <hex SHA-256(secret, body)>` requis.
+//   Secret env `INDEXNOW_INTERNAL_HMAC_SECRET` (≥ 32 chars).
+//
+// **Note** : la majorité du pipeline IndexNow utilise `src/lib/indexnow.ts`
+// qui appelle directement `api.indexnow.org` (bypass de cette route, voir
+// commentaire dans le helper). Cette route reste exposée pour usage manuel
+// debug + tests. La signature HMAC empêche un tiers d'abuser de NOTRE
+// INDEXNOW_KEY pour spammer Bing avec des URLs malveillantes.
 
 export const runtime = "edge";
 
@@ -18,10 +28,46 @@ const SITE_HOST = (process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com"
   "",
 );
 
+const ENCODER = new TextEncoder();
+
+async function verifyHmac(rawBody: string, signatureHex: string | null): Promise<boolean> {
+  if (!signatureHex) return false;
+  if (signatureHex.length !== 64) return false;
+  const secret = process.env["INDEXNOW_INTERNAL_HMAC_SECRET"];
+  if (!secret || secret.length < 32) return false;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    ENCODER.encode(secret) as BufferSource,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const sig = new Uint8Array(
+    await crypto.subtle.sign("HMAC", key, ENCODER.encode(rawBody) as BufferSource),
+  );
+  const expected = Array.from(sig)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  // Constant-time comparison
+  if (expected.length !== signatureHex.length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) {
+    diff |= expected.charCodeAt(i) ^ signatureHex.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
 export async function POST(req: Request) {
+  const rawBody = await req.text();
+  const signature = req.headers.get("x-axion-indexnow-signature");
+  const valid = await verifyHmac(rawBody, signature);
+  if (!valid) {
+    return new Response(null, { status: 401 });
+  }
+
   let body: IndexNowPayload | null = null;
   try {
-    body = (await req.json()) as IndexNowPayload;
+    body = JSON.parse(rawBody) as IndexNowPayload;
   } catch {
     return new Response(null, { status: 400 });
   }

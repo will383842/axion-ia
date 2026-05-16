@@ -9,6 +9,7 @@
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { appendVitalsRecord } from "@/lib/observability/vitals-store";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const VitalsSchema = z.object({
   id: z.string().min(1).max(200), // 200 pour accepter les ID INP-attribution + LoAF suffixés
@@ -33,7 +34,23 @@ const VitalsSchema = z.object({
   pageType: z.string().max(40).nullable().optional(),
 });
 
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get("cf-connecting-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    "unknown"
+  );
+}
+
 export async function POST(req: NextRequest): Promise<Response> {
+  // Sprint Correctif S+1 (P0-S1-5) : rate-limit anti-saturation ndjson.
+  // 60 req/min/IP — Web Vitals = max 1 sample par metric × 7 metrics × ~3 nav/min.
+  const ip = getClientIp(req);
+  const rl = await checkRateLimit(`vitals:${ip}`, { limit: 60, windowSec: 60 });
+  if (!rl.allowed) {
+    return new Response(null, { status: 429 });
+  }
+
   let raw: unknown;
   try {
     raw = await req.json();
