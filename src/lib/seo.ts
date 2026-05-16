@@ -546,6 +546,39 @@ interface ArticleJsonLdInput {
   articleSection?: string;
   /** Word count for AEO depth signal. */
   wordCount?: number;
+  /**
+   * Short summary (< 200 chars). schema.org `abstract` — utilisé par Perplexity
+   * et Claude.ai pour résumé court dans les Overviews. Si absent, `description`
+   * sert de fallback mais `abstract` est plus précis (formulation answer-ready).
+   */
+  abstract?: string;
+  /**
+   * Sources externes citées dans l'article (études, articles, rapports).
+   * schema.org `citation` array — Perplexity 2026 cite 80% des sources passées
+   * en citation. Boost AEO majeur.
+   */
+  citations?: ReadonlyArray<{ name: string; url: string; author?: string; datePublished?: string }>;
+  /**
+   * Sources sur lesquelles l'article est BASÉ (étude principale, rapport
+   * gouv, INSEE, etc.). schema.org `isBasedOn` — différent de `citation`
+   * (qui sont des références ponctuelles). Signal d'autorité plus fort
+   * pour Claude/Perplexity (« cet article s'appuie sur X »).
+   */
+  isBasedOn?: ReadonlyArray<{
+    name: string;
+    url: string;
+    type?: "Report" | "Article" | "Dataset" | "ScholarlyArticle";
+  }>;
+  /**
+   * Entités/concepts mentionnés (Things, technologies, entreprises). schema.org
+   * `mentions` array — enrichit le Knowledge Graph Google et aide les LLMs à
+   * comprendre les associations entité→sujet.
+   */
+  mentions?: ReadonlyArray<{
+    name: string;
+    url?: string;
+    type?: "Thing" | "Organization" | "Product" | "Person" | "Place";
+  }>;
 }
 
 // Article JSON-LD — full AEO/GEO 2026 spec :
@@ -571,6 +604,10 @@ export function buildArticleJsonLd({
   keywords,
   articleSection,
   wordCount,
+  abstract,
+  citations,
+  isBasedOn,
+  mentions,
 }: ArticleJsonLdInput) {
   const isFr = locale === "fr";
   const url = `${SITE_URL}/${locale}${path}`;
@@ -603,6 +640,36 @@ export function buildArticleJsonLd({
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),
     ...(articleSection ? { articleSection } : {}),
     ...(typeof wordCount === "number" ? { wordCount } : {}),
+    ...(abstract ? { abstract } : {}),
+    ...(citations && citations.length
+      ? {
+          citation: citations.map((c) => ({
+            "@type": "CreativeWork",
+            name: c.name,
+            url: c.url,
+            ...(c.author ? { author: { "@type": "Person", name: c.author } } : {}),
+            ...(c.datePublished ? { datePublished: c.datePublished } : {}),
+          })),
+        }
+      : {}),
+    ...(isBasedOn && isBasedOn.length
+      ? {
+          isBasedOn: isBasedOn.map((b) => ({
+            "@type": b.type ?? "CreativeWork",
+            name: b.name,
+            url: b.url,
+          })),
+        }
+      : {}),
+    ...(mentions && mentions.length
+      ? {
+          mentions: mentions.map((m) => ({
+            "@type": m.type ?? "Thing",
+            name: m.name,
+            ...(m.url ? { url: m.url } : {}),
+          })),
+        }
+      : {}),
   } as const;
 }
 
