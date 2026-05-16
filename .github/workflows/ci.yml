@@ -23,7 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # fetch-depth: 0 requis pour gitleaks (diff commit^..HEAD).
+      # Sans full history, gitleaks fail avec "ambiguous argument" sur les
+      # PRs dont le premier commit a un parent absent du shallow clone
+      # (audit V1 image-bank 2026-05-16 PR #14).
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
