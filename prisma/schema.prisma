@@ -3073,6 +3073,15 @@ model ImageAsset {
   fileHash          String?  @map("file_hash") @db.VarChar(64)
 
   // SEO core
+  // Slug strategy (audit V1 verification 2026-05-16 P1-10) :
+  //   - ImageAsset.slug    = identifiant CANONIQUE language-neutral (unique global),
+  //                          dérivé du title FR à la création (slugifyAscii), sert
+  //                          aux chemins fichier storage `image-bank/<id>/...`.
+  //   - ImageAssetTranslation.slug = slug PER-LANG (unique via [imageId, languageCode]),
+  //                                  sert au routing public `/galerie/<slug-fr>` ou
+  //                                  `/gallery/<slug-en>`. Calculé par le worker
+  //                                  translate (Claude Sonnet 4.6 vision) avec retour
+  //                                  à slugifyAscii(title traduit) si null.
   slug              String   @unique @db.VarChar(255)
   keywordsPrimary   String?  @map("keywords_primary") @db.VarChar(255)
   keywordsSecondary Json?    @map("keywords_secondary")
@@ -3214,6 +3223,9 @@ model ImageCategoryTranslation {
   description     String?  @db.Text
   metaTitle       String?  @map("meta_title") @db.VarChar(255)
   metaDescription String?  @map("meta_description") @db.Text
+  // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   category        ImageCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
@@ -3225,6 +3237,9 @@ model ImageCategoryTranslation {
 model ImageTag {
   id           Int      @id @default(autoincrement())
   slug         String   @unique @db.VarChar(100)
+  // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   translations ImageTagTranslation[]
   images       ImageAssetTag[]
@@ -3238,6 +3253,9 @@ model ImageTagTranslation {
   languageCode String   @map("language_code") @db.VarChar(5)
   name         String   @db.VarChar(255)
   slug         String   @db.VarChar(255)
+  // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   tag          ImageTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
