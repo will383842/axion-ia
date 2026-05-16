@@ -137,10 +137,15 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# curl for orchestrator healthchecks (Coolify falls back to wget busybox
-# which is unreliable; with curl present the same path /api/healthz works
-# the same way locally, in Coolify, and in CI smoke tests).
-RUN apk add --no-cache curl
+# curl pour healthchecks orchestrator + libc6-compat + openssl REQUIS pour
+# Prisma runtime. Sans openssl au runner stage, Prisma détecte "no openssl"
+# au boot → cherche binary "linux-musl" alors que pnpm prisma:generate
+# (builder stage avec openssl) a produit "linux-musl-openssl-3.0.x" →
+# `Prisma Client could not locate the Query Engine for runtime "linux-musl"`
+# → tout call DB crash 500 (admin login, sitemap, queries SSG, etc.).
+# Bug confirmé sur prod 2026-05-16 sur admin POST /login. Pattern aligné
+# Dockerfile.worker qui a déjà ce fix depuis audit 2026-05-15 AGENT 9.
+RUN apk add --no-cache curl libc6-compat openssl
 
 # User non-root pour sécurité
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
