@@ -1,67 +1,44 @@
-name: Deploy · Coolify (axion-ia.com)
+name: Build & Deploy · GHCR + Coolify (axion-ia.com)
 
-# Triggers a Coolify deploy via REST API on every push to `main`.
-# Sprint 14.10.7 fix (2026-05-12) : auparavant via workflow_run après CI Gates
-# A + B success, mais workflow_run ne firait jamais (bug GitHub Actions).
-# Bascule sur push direct — la qualité est garantie en amont par les hooks
-# pre-push (typecheck + lint + 149 tests). Le CI Gates A + B continue de
-# tourner en parallèle pour signaler tout problème.
-# Replaces the broken GitHub App webhook flow: we POST directly to Coolify
-# with a long-lived API token stored in repo secrets, so there is no HMAC
-# secret to keep in sync.
+# Pipeline 2026-05-16 — Option F.1 (image publique GHCR).
 #
-# ───── BUILDKIT CACHE WARNING (READ THIS) ─────
-# Coolify rebuilds the entire Next.js 16 SSG bundle (17 500 routes, ~6 GB
-# RAM peak) on each deploy. Docker BuildKit accumulates ~1-2 GB of layer
-# cache per build. On Hetzner CPX32 (8 GB RAM, shared with Postgres,
-# Redis, Coolify-helper containers), the cache must be pruned regularly
-# or the host will OOM-kill the build during `exporting layers` (exit
-# code 255, no clear error in Coolify UI).
+# Sprint recovery 2026-05-16 : 9 deploys Coolify ont échoué la nuit du
+# 2026-05-15 → 16 à cause de la saturation disque CPX42 (peak ~117 GB
+# pour build SSG 17 629 routes). On bascule le build sur GitHub Actions
+# (runners gratuits, ~84 GB disque) qui push l'image sur GHCR public.
+# Coolify ne fait plus que pull l'image (~10 GB) → deploy ~2 min au lieu
+# de 25, plus de saturation VPS.
 #
-# REQUIRED ON VPS (one-time setup, idempotent — safe to re-run):
+# Flow :
+#   git push main
+#       ↓
+#   GH Actions job `build` : build + push ghcr.io/<owner>/axion-ia:{sha,latest}
+#       ↓
+#   GH Actions job `deploy` (needs build) : POST Coolify /api/v1/deploy
+#       ↓
+#   Coolify pull ghcr.io/<owner>/axion-ia:latest + redeploy
+#       ↓
+#   GH Actions job `purge` : Cloudflare cache purge
+#       ↓
+#   GH Actions job `lhci` : Lighthouse CI gate post-deploy
 #
-#   # 1. Weekly buildkit cache prune (Sunday 04:00 UTC):
-#   ( crontab -l 2>/dev/null | grep -v "docker builder prune"; \
-#     echo "0 4 * * 0 /usr/bin/docker builder prune -af >> /var/log/docker-builder-prune.log 2>&1" \
-#   ) | crontab -
+# Action humaine OneTime requise :
+#   1. Après 1er push réussi, rendre l'image GHCR PUBLIQUE :
+#        github.com/users/<owner>/packages/container/axion-ia/settings
+#        → "Change visibility" → Public
+#      (Sinon Coolify ne peut pas pull sans creds.)
+#   2. Reconfigurer Coolify : Application → Source → "Docker Image" type,
+#      image = `ghcr.io/<owner>/axion-ia:latest`, Pull on deploy = ON.
 #
-#   # 2. Cap BuildKit cache at 5 GB so it never grows beyond what CPX32
-#   #    can handle during `exporting layers`. Without this cap, the cache
-#   #    grows to 30-50 GB after a few weeks and can kill builds even with
-#   #    the weekly prune above.
-#   sudo mkdir -p /etc/buildkit
-#   sudo tee /etc/buildkit/buildkitd.toml >/dev/null <<'TOML'
-#   [worker.oci]
-#     gc = true
-#     gckeepstorage = "5GB"
-#   TOML
-#   # Reload buildkit (only needed once after writing the file):
-#   sudo docker builder prune -af
-#
-# Schedule: weekly Sunday 04:00 UTC (low-traffic window). Previous
-# config was monthly which is too rare during active development —
-# 30+ commits/week saturates the cache in days.
-#
-# Required repo secrets (set via `gh secret set <NAME>`):
-#   COOLIFY_API_TOKEN     Sanctum token, format `<id>|<plaintext>` from
-#                         Coolify → Keys & Tokens → Create new token (scope
-#                         write+deploy).
-#   COOLIFY_URL           e.g. `http://178.105.55.15:8000` (no trailing slash).
-#   COOLIFY_APP_UUID      The application UUID, e.g. `mqbmlz1bcwsdwi3t9fxsllqt`
-#                         (Coolify → application → URL contains it).
-#   CLOUDFLARE_API_TOKEN  Cloudflare zone token with Cache:Purge permission.
+# Required repo secrets :
+#   COOLIFY_API_TOKEN     Sanctum token format `<id>|<plaintext>`.
+#   COOLIFY_URL           e.g. `http://178.105.55.15:8000`.
+#   COOLIFY_APP_UUID      Application UUID.
+#   CLOUDFLARE_API_TOKEN  Zone token with Cache:Purge permission.
 #   CLOUDFLARE_ZONE_ID    Zone ID for axion-ia.com.
+#   (GITHUB_TOKEN auto-injected pour push GHCR.)
 #
-# Pipeline: trigger deploy → wait for it to finish → purge Cloudflare cache.
-# The CF purge step is critical: without it, edge nodes serve stale HTML
-# with old Server Action IDs that don't match the new deployed code, causing
-# `UnrecognizedActionError: Server Action … was not found on the server`
-# on POST forms (most painful on /admin/login). The CF Cache Rule "Admin
-# bypass cache" already prevents admin caching, but public pages with
-# Server Actions (e.g. /reserver, /contact) can also see this if cached
-# pre-deploy. Full purge_everything is heavy-handed but bulletproof.
-#
-# Manual trigger: workflow_dispatch (Actions tab → Run workflow).
+# Manual trigger : workflow_dispatch (Actions tab → Run workflow).
 
 on:
   # Sprint 14.10.7 fix Will (2026-05-12) : le trigger `workflow_run` ne
@@ -79,9 +56,15 @@ on:
       - "_AUDIT/**"
       - ".gitignore"
   workflow_dispatch:
+    inputs:
+      skip_deploy:
+        description: 'Build & push image only — skip Coolify deploy + CF purge + LHCI (use for first run before Coolify reconfig)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
+  packages: write
 
 # Audit 2026-05-15 P0-01 : 8 deploys consécutifs ÉCHEC observés ce matin
 # (`cancelled-by-user via API`). Cause : chaque push trigger POST Coolify
@@ -95,8 +78,93 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ───────────────────────────────────────────────────────────────────────
+  # Build image Docker sur GitHub Actions + push GHCR.
+  # Sprint recovery 2026-05-16 : externalise le build hors du VPS CPX42
+  # qui saturait à 117 GB peak disque sur SSG 17 629 routes.
+  # ───────────────────────────────────────────────────────────────────────
+  build:
+    name: Build & push image to GHCR
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      image_tag: ${{ steps.meta.outputs.version }}
+      image_digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Free disk space (max headroom)
+        # Ubuntu-latest démarre avec ~30 GB free. On libère ~40 GB
+        # supplémentaires en supprimant les SDK pré-installés inutiles
+        # (dotnet, android, ghc, codeql) → ~70 GB free total.
+        # Critique : peak Docker BuildKit du build axion-ia ≈ 50-60 GB
+        # (sans les copies entre stages parallèles qui n'existent que sur
+        # le VPS où le runtime tourne en concurrent).
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
+            "$AGENT_TOOLSDIRECTORY" || true
+          sudo docker image prune --all --force || true
+          df -h /
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Lowercase forcé (GHCR rejette le mixed-case).
+          images: ghcr.io/${{ github.repository_owner }}/axion-ia
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-,format=short
+            type=ref,event=branch
+            type=ref,event=tag
+
+      - name: Compute BUILD_TIME (ISO 8601 UTC)
+        id: build_time
+        run: echo "value=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
+      - name: Build & push image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=https://axion-ia.com
+            NEXT_PUBLIC_APP_ENV=production
+            BUILD_TIME=${{ steps.build_time.outputs.value }}
+          # Cache GH Actions natif (gratuit, plus rapide que registry cache).
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # Désactive le provenance attestation (génère 50 MB extra de
+          # metadata SLSA inutile pour notre cas).
+          provenance: false
+
+      - name: Print image ref
+        run: |
+          echo "::notice::Image pushed : ghcr.io/${{ github.repository_owner }}/axion-ia:${{ steps.meta.outputs.version }}"
+          echo "::notice::Digest : ${{ steps.build.outputs.digest }}"
+
   deploy:
     name: Trigger Coolify deploy
+    needs: build
+    # Skip deploy si workflow_dispatch + input skip_deploy=true (1er run avant
+    # reconfiguration Coolify en mode "Docker Image").
+    if: github.event_name != 'workflow_dispatch' || inputs.skip_deploy != true
     runs-on: ubuntu-latest
     steps:
       - name: POST /api/v1/deploy
@@ -224,7 +292,9 @@ jobs:
   lhci:
     name: Lighthouse CI post-deploy gate
     needs: deploy
-    if: success()
+    # Skip explicitement si deploy a été skip (workflow_dispatch + skip_deploy=true).
+    # `if: success()` ne suffit pas car skipped est considéré comme success.
+    if: needs.deploy.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
