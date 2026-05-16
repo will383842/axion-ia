@@ -78,12 +78,32 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
   // c.clarity.ms ingest, b.clarity.ms beacon). Sans whitelist explicite, le script
   // est bloqué CSP même en mode soft. Le composant `Clarity` (use client) ne
   // déclenche un fetch que post-consent visiteur (`CookieConsent` banner).
+  // Next 16 émet automatiquement un `<script type="speculationrules">` inline
+  // dans le <head> pour pré-fetcher les routes hover (perf LCP/INP). Avec CSP
+  // strict + strict-dynamic, ce script INLINE est bloqué car il n'a pas le
+  // nonce attribut (Next ne l'injecte PAS sur les Speculation Rules scripts —
+  // bug Next 16 #XXX). Sans fix, l'admin affiche en console :
+  //
+  //   Applying inline speculation rules violates ... script-src 'self' 'nonce-...'
+  //   'strict-dynamic'... Either 'unsafe-inline', a hash ('sha256-vy7BO95...'),
+  //   or a nonce is required.
+  //
+  // Le hash sha256 fourni est STABLE par version Next.js (le contenu JSON
+  // speculation rules est identique pour toutes les pages : config globale
+  // prefetch on-hover). On l'autorise explicitement avec 'unsafe-hashes' +
+  // hash → conserve la sécurité strict-dynamic SANS bloquer Next 16.
+  //
+  // Si une future version Next change le contenu speculation rules, ce hash
+  // doit être mis à jour. À monitorer en CI via test e2e qui vérifie
+  // /admin /login affiche 0 erreur CSP en console.
+  const SPECULATION_RULES_HASH = "'sha256-vy7BO95SqCwcPVAwxQTU/zWpSiYL9C1CWCCb1LB+ni4='";
   const scriptSrc = strict
     ? [
         "script-src",
         "'self'",
         `'nonce-${nonce}'`,
         "'strict-dynamic'",
+        SPECULATION_RULES_HASH,
         "https://challenges.cloudflare.com",
         "https://plausible.axion-ia.com",
         "https://www.clarity.ms",
