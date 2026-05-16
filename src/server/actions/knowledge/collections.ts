@@ -3,11 +3,15 @@
  *
  * Collection = série curatée d'entries (ex : « Parcours dirigeants IA »).
  * Visibility public/unlisted/team. Items ordonnés via `position` (unique).
+ *
+ * Sprint Correctif S+1 (2026-05-16) — P0-S1-1 RBAC : `ownerId` dérivé de la
+ * session admin ; toutes les mutations (create/add/remove/publish) gardées.
  */
 
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdminPublish, requireAdminWrite } from "./_guards";
 
 export type CollectionVisibility = "public" | "unlisted" | "team";
 
@@ -18,10 +22,10 @@ export interface CreateCollectionInput {
   readonly descriptionFr?: string | null;
   readonly descriptionEn?: string | null;
   readonly visibility?: CollectionVisibility;
-  readonly ownerId?: string | null;
 }
 
 export async function createCollection(input: CreateCollectionInput) {
+  const session = await requireAdminWrite();
   if (input.titleFr.trim().length < 3) {
     throw new Error("Title FR trop court (min 3 chars)");
   }
@@ -33,7 +37,7 @@ export async function createCollection(input: CreateCollectionInput) {
       descriptionFr: input.descriptionFr ?? null,
       descriptionEn: input.descriptionEn ?? null,
       visibility: input.visibility ?? "team",
-      ownerId: input.ownerId ?? null,
+      ownerId: session.userId,
     },
     select: { id: true, slug: true, titleFr: true, visibility: true },
   });
@@ -45,6 +49,7 @@ export async function addItemToCollection(
   position?: number,
   noteFr?: string | null,
 ) {
+  await requireAdminWrite();
   // Si position non précisée, on ajoute en fin
   let targetPosition = position;
   if (targetPosition === undefined) {
@@ -67,6 +72,7 @@ export async function addItemToCollection(
 }
 
 export async function removeItemFromCollection(collectionId: string, entryId: string) {
+  await requireAdminWrite();
   return prisma.knowledgeCollectionItem.delete({
     where: { collectionId_entryId: { collectionId, entryId } },
   });
@@ -112,6 +118,7 @@ export async function getCollectionBySlug(slug: string, viewerCanSeeTeam: boolea
 }
 
 export async function publishCollection(collectionId: string) {
+  await requireAdminPublish();
   return prisma.knowledgeCollection.update({
     where: { id: collectionId },
     data: { publishedAt: new Date(), visibility: "public" },

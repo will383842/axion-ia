@@ -463,12 +463,18 @@ export function verifyWebhookSecret(secretHeader: string | null): boolean {
 /**
  * Auth wrapper dual-mode : tente d'abord HMAC (legacy), puis secret en clair
  * (DocuSeal v2.x). Renvoie true si au moins un des 2 schémas matche.
+ *
+ * Sprint Correctif S+1 (P0-S1-5 2026-05-16) — env flag `DOCUSEAL_STRICT_HMAC=true`
+ * désactive le fallback plaintext (force HMAC v1.x). Doctrine prod hardened :
+ * activer le flag dès que DocuSeal v1.x est confirmé OU IP-allow-list configurée
+ * côté Caddy/Cloudflare. Audit 2.D : plaintext forge si secret leak.
  */
 export function verifyWebhookAuth(
   rawBody: string,
   headers: { signature: string | null; secret: string | null },
 ): boolean {
   if (headers.signature && verifyWebhookSignature(rawBody, headers.signature)) return true;
+  if (process.env.DOCUSEAL_STRICT_HMAC === "true") return false;
   if (headers.secret && verifyWebhookSecret(headers.secret)) return true;
   return false;
 }

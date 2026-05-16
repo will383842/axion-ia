@@ -12,9 +12,12 @@
  *
  * V1 minimal : pas de BullMQ queue, synchrone. Sprint KB-13 v2 ajoutera la queue
  * pour gérer le throughput 100/jour (~4/heure peak).
+ *
+ * Sprint Correctif S+1 (2026-05-16) — P0-S1-1 : retrait `"use server"` —
+ * cette fonction n'est plus exposée comme Server Action (callable depuis n'importe
+ * quel client). Seul caller légitime : `src/app/api/internal/kb/ingest/route.ts`
+ * (HMAC-protected). Défense en profondeur.
  */
-
-"use server";
 
 import { prisma } from "@/lib/prisma";
 import { detectPii } from "@/lib/knowledge/pii-scan";

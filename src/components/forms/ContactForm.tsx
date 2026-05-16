@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
+import { HoneypotField } from "@/components/forms/HoneypotField";
 
 interface ContactFormProps {
   labels: {
@@ -95,6 +96,7 @@ export function ContactForm({ labels, defaultMessage }: ContactFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+      <HoneypotField />
       <div className="grid gap-2">
         <Label htmlFor="contact-name">{labels.name}</Label>
         <Input id="contact-name" {...register("name")} aria-invalid={!!errors.name} />

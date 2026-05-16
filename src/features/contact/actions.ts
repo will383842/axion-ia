@@ -11,6 +11,7 @@ import { contactSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
+import { hashIp } from "@/lib/security/ip-hash";
 import { sendTelegram } from "@/lib/telegram";
 import { redactContactLine } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -69,6 +70,7 @@ export async function submitContactAction(
         ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
       } as object,
       ipAddress: ip,
+      ipHash: hashIp(ip),
       userAgent,
     },
   });

@@ -17,6 +17,7 @@
 
 import { headers, cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { hashIp } from "@/lib/security/ip-hash";
 import { bookingSchema, option48hSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -169,6 +170,7 @@ export async function createBookingAction(
             : {}),
         } as object,
         ipAddress: ip,
+        ipHash: hashIp(ip),
         userAgent,
       },
     });

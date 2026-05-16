@@ -28,6 +28,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -110,6 +111,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     },
   });
 
+  // Sprint Correctif S+1 (P0-S1-2) : KB data RGPD art. 15 (bookmarks).
+  const kb = await exportKbDataForEmail(email);
+
   // Activity log RGPD : tracé de l'export self-service
   await prisma.activityLog.create({
     data: {
@@ -121,6 +125,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         email,
         submissionsCount: submissions.length,
         newsletterPresent: !!newsletter,
+        kbBookmarksCount: kb.bookmarks.length,
       },
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
@@ -132,6 +137,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     email,
     submissions,
     newsletter,
+    kb,
     notice: {
       excludedTables: [
         "generation_logs (audit trail technique content-gen, sans PII visiteur)",
