@@ -4,15 +4,11 @@
  * Annotation = commentaire d'équipe sur un entry (review_comment, seo_suggestion,
  * factual_check, typo, content_request). Différent de KnowledgeBookmark
  * (côté client). Workflow open → resolved | wont_fix.
- *
- * Sprint Correctif S+1 (2026-05-16) — P0-S1-1 RBAC : `authorId` / `resolverId`
- * dérivés de la session admin (plus de spoofing form-data).
  */
 
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite } from "./_guards";
 
 export type AnnotationKind =
   | "review_comment"
@@ -24,20 +20,20 @@ export type AnnotationStatus = "open" | "resolved" | "wont_fix";
 
 export interface CreateAnnotationInput {
   readonly entryId: string;
+  readonly authorId: string;
   readonly bodyMarkdown: string;
   readonly anchorRef?: string | null;
   readonly kind?: AnnotationKind;
 }
 
 export async function createAnnotation(input: CreateAnnotationInput) {
-  const session = await requireAdminWrite();
   if (input.bodyMarkdown.trim().length < 3) {
     throw new Error("Annotation body trop court (min 3 chars)");
   }
   return prisma.knowledgeAnnotation.create({
     data: {
       entryId: input.entryId,
-      authorId: session.userId,
+      authorId: input.authorId,
       bodyMarkdown: input.bodyMarkdown.trim(),
       anchorRef: input.anchorRef ?? null,
       kind: input.kind ?? "review_comment",
@@ -49,15 +45,15 @@ export async function createAnnotation(input: CreateAnnotationInput) {
 
 export async function resolveAnnotation(
   annotationId: string,
+  resolverId: string,
   status: "resolved" | "wont_fix" = "resolved",
 ) {
-  const session = await requireAdminWrite();
   return prisma.knowledgeAnnotation.update({
     where: { id: annotationId },
     data: {
       status,
       resolvedAt: new Date(),
-      resolvedById: session.userId,
+      resolvedById: resolverId,
     },
     select: { id: true, status: true, resolvedAt: true },
   });
