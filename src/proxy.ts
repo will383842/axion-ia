@@ -118,6 +118,10 @@ export const config = {
     // proto IndexNow exige racine sans préfixe locale). Sans cette
     // exclusion, le middleware redirige `/3a5c32d22b04f1430690cc33eaec6be9.txt`
     // → `/fr/3a5c32d22b04f1430690cc33eaec6be9.txt` → 404.
-    "/((?!api/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
+    // `\.well-known/` exclu : RFC 9116 security.txt, ai-policy.json (2026
+    // emerging), futurs `.well-known/*` doivent rester ROOT (pas de prefix
+    // locale). Sans cette exclusion, middleware rewrite `/.well-known/x` →
+    // `/fr/.well-known/x` → 404 (pas de route locale variant).
+    "/((?!api/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff)$).*)",
   ],
 };
