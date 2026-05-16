@@ -36,7 +36,9 @@ export function AiContentDisclaimer({ locale, className }: AiContentDisclaimerPr
   const body = isFr
     ? "Cet article a été rédigé avec l'assistance de modèles d'IA générative (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar) puis supervisé par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689)."
     : "This article was drafted with the assistance of generative AI models (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar) and then supervised by the Axion-IA team prior to publication. In accordance with article 50 of the EU AI Act (2024/1689).";
-  const linkLabel = isFr ? "En savoir plus sur la transparence IA →" : "Learn more about AI transparency →";
+  const linkLabel = isFr
+    ? "En savoir plus sur la transparence IA →"
+    : "Learn more about AI transparency →";
 
   return (
     <aside

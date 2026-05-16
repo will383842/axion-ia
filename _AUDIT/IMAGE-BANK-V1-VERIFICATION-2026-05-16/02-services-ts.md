@@ -119,7 +119,7 @@
 - 8 validators × 4-6 checks = 40+ rules
 - `validateAlt()`, `validateCaption()`, `validateDescription()`, `validateMetaTitle/Description()`, `validateOgTitle/Description()`, `validateAiSummary()` ✅
 - `buildRerollPromptCorrection()` Claude instructions ✅
-- Regex banks : PLEONASM*FR_RE, PLEONASM_EN_RE, SUPERLATIVE*_, ANGLICISM\__, FRENCH_IN_EN_RE ✅
+- Regex banks : PLEONASM*FR_RE, PLEONASM_EN_RE, SUPERLATIVE*\_, ANGLICISM\_\_, FRENCH_IN_EN_RE ✅
 
 ### 9️⃣ ImageTaxonomyDetectorService
 
