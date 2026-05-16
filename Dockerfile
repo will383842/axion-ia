@@ -73,6 +73,22 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ARG SKIP_ENV_VALIDATION
 ENV SKIP_ENV_VALIDATION=${SKIP_ENV_VALIDATION:-false}
 
+# DATABASE_URL + REDIS_URL stubs au build (option F.1 recovery 2026-05-16).
+# Prisma 5 SCHEMA validation exige que DATABASE_URL existe au build pour
+# instancier `new PrismaClient()`. Sans URL → error P1012 "Environment
+# variable not found: DATABASE_URL" même si on n'exécute aucune query.
+# Stub vers un host invalide : init OK, queries fail à la connexion →
+# catch dans sitemap.ts + knowledge-sitemap.ts → fallback gracieux
+# (sitemap.xml généré sans chunks knowledge-*). DB réelle injectée par
+# Coolify au runtime via env vars [RUN].
+#
+# Idem REDIS_URL : modules importés au SSG peuvent essayer d'instancier
+# ioredis. Stub évite le ECONNREFUSED localhost:6381 inutile.
+ARG DATABASE_URL
+ARG REDIS_URL
+ENV DATABASE_URL=${DATABASE_URL:-postgresql://stub:stub@stub.invalid:5432/stub}
+ENV REDIS_URL=${REDIS_URL:-redis://stub.invalid:6379}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

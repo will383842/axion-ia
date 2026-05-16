@@ -199,7 +199,11 @@ export async function buildKnowledgeSitemapChunk(
 
 /**
  * Compte le nombre total d'entries publiques (utilisé par `generateSitemaps`
- * pour dériver le nombre de chunks). Bootstrap-safe (P2021 → 0).
+ * pour dériver le nombre de chunks). Bootstrap-safe (P2021 → 0, P1001/P1012/
+ * ECONNREFUSED → 0). Couvre aussi le SSG GH Actions où la DB n'est pas
+ * accessible au build — generateSitemaps tourne quand même mais ne déclare
+ * pas de chunk knowledge-* (ils seront créés au prochain deploy quand la
+ * DB sera readable depuis le runner).
  */
 export async function countKnowledgePublicEntries(): Promise<number> {
   try {
@@ -210,10 +214,7 @@ export async function countKnowledgePublicEntries(): Promise<number> {
         deletedAt: null,
       },
     });
-  } catch (err) {
-    if (err instanceof Error && "code" in err && (err as { code: string }).code === "P2021") {
-      return 0;
-    }
-    throw err;
+  } catch {
+    return 0;
   }
 }

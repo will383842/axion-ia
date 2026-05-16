@@ -148,6 +148,8 @@ jobs:
             NEXT_PUBLIC_APP_ENV=production
             BUILD_TIME=${{ steps.build_time.outputs.value }}
             SKIP_ENV_VALIDATION=true
+            DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
+            REDIS_URL=redis://stub.invalid:6379
           # Cache GH Actions natif (gratuit, plus rapide que registry cache).
           cache-from: type=gha
           cache-to: type=gha,mode=max
