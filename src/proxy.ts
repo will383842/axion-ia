@@ -15,15 +15,33 @@
 
 import NextAuth from "next-auth";
 import createIntlMiddleware from "next-intl/middleware";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath } from "./lib/csp";
+import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
+  // 0. EN locale disabled (2026-05-16) — 301 redirect /en/* → /fr/équivalent.
+  //    Toggle via Coolify env var `EN_LOCALE_ENABLED=true` pour réactiver.
+  //    Voir AGENTS.md « EN re-enable procedure ».
+  //
+  //    Pourquoi ce check est en tête : on évite que next-intl middleware
+  //    traite la requête /en/* (qui déclenche un bug 307 self-loop avec
+  //    pathnames mappés FR↔EN — voir issue interne 2026-05-16). Le redirect
+  //    301 prend précédence sur tout le reste.
+  if (isEnLocaleDisabled()) {
+    const path = req.nextUrl.pathname;
+    if (path === "/en" || path.startsWith("/en/")) {
+      const frPath = mapEnToFr(path);
+      const dest = new URL(frPath + req.nextUrl.search, req.url);
+      return NextResponse.redirect(dest, 301);
+    }
+  }
+
   // 1. Génère un nonce et l'expose à la requête via `x-nonce` AVANT que
   //    next-intl process la requête, pour que les Server Components qui
   //    appellent `cspNonce()` voient le bon header.

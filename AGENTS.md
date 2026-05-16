@@ -78,3 +78,49 @@ En outre, `src/server/exporters/knowledge-rss.ts` + `knowledge-sitemap.ts` font 
 - `build_pack` : `dockerfile` (inchangé)
 - `dockerfile_location` : `/Dockerfile.coolify-pull` (set via API PATCH 2026-05-16)
 - ⚠️ Si quelqu'un change `dockerfile_location` via Coolify UI → retour mode build local sur VPS → re-saturation disque CPX42. Surveiller.
+
+## EN locale désactivé (2026-05-16) — procédure de re-enable
+
+Le 2026-05-16, le locale EN a été désactivé suite à un bug pré-existant next-intl v4.11 / Next.js 16.2 (boucle 307 self-redirect sur les routes EN ayant un `pathnames` mapping FR≠EN). Le bug était masqué par CF Managed Challenge ; après désactivation du challenge, il est devenu visible.
+
+**État actuel** :
+
+- `routing.ts` déclare toujours `locales: ["fr", "en"]` + tous les `pathnames` mappings (rien retiré)
+- Tous les messages EN (`messages/en.json`) restent en place
+- Toutes les pages SSG continuent à pré-renderer en FR + EN
+- Mais `src/proxy.ts` intercepte tout `/en/*` au runtime et émet un **301** vers l'équivalent FR via `mapEnToFr()` (cf. `src/lib/i18n/en-to-fr-redirect.ts`)
+
+**Pour réactiver EN (quand le bug next-intl sera fixé)** :
+
+1. Set env var Coolify `EN_LOCALE_ENABLED=true` (Application → Env vars → New → key `EN_LOCALE_ENABLED`, value `true`, scope RUN)
+2. Restart container (Coolify → Restart)
+3. ✅ EN re-actif. Vérifier `/en/about` → 200 (au lieu de 301 vers `/fr/a-propos`)
+
+**Si tu veux purger les EN URLs de Google Search Console** (recommandé après ≥4 semaines de 301) :
+
+1. GSC → Indexing → Pages → filter par /en/\*
+2. Mark as resolved (les 301 vers FR feront le boulot SEO long-terme)
+
+**Si tu veux RETIRER complètement EN du code** (pas recommandé sauf décision définitive) :
+
+1. `routing.ts` : `locales: ["fr"]`
+2. Supprimer toutes les entrées `en:` dans `pathnames`
+3. Supprimer `messages/en.json`
+4. Retirer hreflang `en` des metadata (`src/lib/seo.ts`)
+5. Retirer les sub-sitemaps EN de `app/sitemap.ts`
+6. Retirer le proxy.ts redirect block
+
+Effort de retrait complet : ~4-6 h. **Mieux vaut garder la toggle env-flag** sauf raison forte de simplifier le code.
+
+### Bug pré-existant next-intl à fixer avant ré-activation
+
+Le bug 307 self-loop apparaît quand :
+
+- next-intl v4.11+ + Next.js 16.2+
+- `localePrefix: "always"`
+- Route a un `pathnames` mapping avec `fr ≠ en`
+- Locale non-default (en) demandé
+
+Symptôme : `/en/about` retourne `307 → /en/about` (loop infini) avec `x-middleware-rewrite: /en/a-propos` (la rewrite interne marche, mais Next émet aussi un 307 vers la même URL).
+
+Fix probable : upgrade next-intl ou downgrade Next, OU patch custom dans le middleware. À investiguer en Sprint dédié quand re-activation EN devient prioritaire.
