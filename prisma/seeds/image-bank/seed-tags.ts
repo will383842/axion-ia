@@ -3,7 +3,7 @@
  * Idempotent via upsert.
  */
 
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "../../generated/client";
 
 type TagSeed = { slug: string; name: { fr: string; en: string } };
 
