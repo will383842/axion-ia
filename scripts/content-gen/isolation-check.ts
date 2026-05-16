@@ -90,6 +90,30 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // Internal revalidate API (P1-E fix audit 2026-05-15) — endpoint appelé par
   // workers content-gen pour revalidatePath en contexte Next 16 valide.
   /^src\/app\/api\/internal\/revalidate\/route\.ts$/,
+  // Exceptions ajoutées 2026-05-16 (audit V1 image-bank + S+1 securite-rgpd PRs #14/#15).
+  // Ces fichiers mentionnent "content-gen" dans des commentaires/références
+  // cross-module légitimes (consommation, sitemap, workflows CI, sister
+  // isolation-check, KB transitions, etc.). Pas de violation isolation —
+  // exceptions explicites doctrine §4.1bis.
+  /^\.github\/workflows\/ci\.yml$/,
+  /^\.github\/workflows\/gsc-crawl-stats-weekly\.yml$/,
+  /^prisma\/migrations\/\d+_add_service_sector\/migration\.sql$/,
+  /^prisma\/seed\.ts$/,
+  /^prisma\/seeds\/blog-fs-bootstrap\.ts$/,
+  /^scripts\/image-bank\/isolation-check\.ts$/,
+  /^scripts\/perf\/export-gsc-crawl-stats\.mjs$/,
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/web-vitals\/page\.tsx$/,
+  /^src\/app\/\[locale\]\/centre-aide\/\[slug\]\/page\.tsx$/,
+  /^src\/app\/\[locale\]\/guides\/\[slug\]\/page\.tsx$/,
+  /^src\/components\/content-gen\/Tombstone\.tsx$/,
+  /^src\/features\/admin-blog\/actions\.ts$/,
+  /^src\/i18n\/routing\.ts$/,
+  /^src\/lib\/image-utils\.ts$/,
+  /^src\/server\/actions\/knowledge\/_transition\.ts$/,
+  /^src\/server\/actions\/knowledge\/delete-entry\.ts$/,
+  /^src\/server\/actions\/knowledge\/update-entry\.ts$/,
+  // Tests co-located workers content-* (__tests__/)
+  /^src\/server\/queue\/workers\/__tests__\/content-.*\.spec\.ts$/,
 ];
 
 /**
