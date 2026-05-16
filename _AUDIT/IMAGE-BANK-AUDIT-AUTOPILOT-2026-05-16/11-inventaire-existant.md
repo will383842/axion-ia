@@ -2,7 +2,17 @@
 
 > Cartographie complète : (a) ce qui peut être réutilisé sans modification, (b) ce qui est partiellement présent à enrichir, (c) ce qui est à coder from scratch.
 
-> **Note source images (clarif Will 2026-05-16)** : la pipeline image-bank V1+V1.5 traite **exclusivement des uploads humains** (Will fournit les images). Pas de générateur IA intégré. Cf. `02-decisions-default.md` §"Décision #6". Aucun impact sur l'estimation effort 255-400h (le scope code reste identique — c'est de l'infra de gestion, pas de création).
+> **Note source images (clarif Will 2026-05-16)** : la pipeline image-bank V1+V1.5 traite **exclusivement des uploads humains** (Will fournit les images). Pas de générateur IA intégré. Cf. `02-decisions-default.md` §"Décision #6".
+
+> **MISE À JOUR 2026-05-16 (post-inspection skill)** : inspection complète du skill `.claude/skills/axionia-image-bank/` révèle que **~95% des templates sont prêts** (vs 30% estimés initialement). Estimation effort révisée : **~95-115h** (vs 255-400h initialement). Voir `99-rapport-final.md` §"Estimation effort révisée" pour le détail Sprint par Sprint.
+
+> **Compléments livrés cette session** (Section A+B+C+D) :
+>
+> - 7 nouveaux templates code (validators, taxonomy detector, jsonld @graph, 2 workers, image-utils helpers, GalleryGrid)
+> - 2 nouveaux prompts (inputs-will-required, stop-and-ask-decisions)
+> - 5 nouveaux references (migration-data-plan, monitoring-alerts-spec, cron-retention-spec, rollback-runbook, pre-launch-checklist)
+> - 3 nouvelles fixtures tests (mock-claude-vision-responses + 2 snapshots JSON-LD)
+> - 2 nouveaux README + 1 exemple admin-pages + public-pages (squelettes 70-90% prêts à coller)
 
 ## Catégorie A — ✅ Réutilisable sans modification (8 éléments)
 

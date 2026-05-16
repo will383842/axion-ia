@@ -1,0 +1,167 @@
+{
+  "_comment": "Snapshot JSON-LD ImageObject page détail — module=audits, subModule=flash, locale=fr. Utilisé par tests/image-bank/integration/jsonld.spec.ts pour vérifier non-régression.",
+  "_lastValidated": "2026-05-16",
+  "_validatedVia": "https://search.google.com/test/rich-results",
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://axion-ia.com/#organization",
+      "name": "Axion-IA",
+      "legalName": "Axion-IA OÜ",
+      "url": "https://axion-ia.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://axion-ia.com/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "description": "Cabinet IA opérationnel B2B — audits, interventions, implémentations Claude pour PME et ETI.",
+      "sameAs": ["https://www.linkedin.com/company/axion-ia", "https://x.com/AxionIA"],
+      "foundingDate": "2024",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "contact@axion-ia.com",
+        "areaServed": "FR",
+        "availableLanguage": ["fr-FR", "en-US"]
+      },
+      "knowsAbout": [
+        "Intelligence Artificielle",
+        "Audit IA",
+        "Claude Anthropic",
+        "Operational AI consulting"
+      ],
+      "areaServed": { "@type": "Country", "name": "France" },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "EE",
+        "addressLocality": "Tallinn"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://axion-ia.com/#website",
+      "name": "Axion-IA",
+      "url": "https://axion-ia.com",
+      "publisher": { "@id": "https://axion-ia.com/#organization" },
+      "inLanguage": ["fr-FR", "en-US"]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#webpage",
+      "url": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon",
+      "name": "Audit IA flash PME industrielle — Lyon | Axion-IA",
+      "description": "Audit IA flash en 1 jour pour PME et ETI à Lyon : diagnostic opérationnel par Axion-IA.",
+      "isPartOf": { "@id": "https://axion-ia.com/#website" },
+      "primaryImageOfPage": {
+        "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#image"
+      },
+      "inLanguage": "fr-FR",
+      "breadcrumb": { "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#breadcrumb" },
+      "mainEntity": { "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#image" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://axion-ia.com/fr"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Banque d'images",
+          "item": "https://axion-ia.com/fr/galerie"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Audit IA flash PME industrielle Lyon",
+          "item": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon"
+        }
+      ]
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#image",
+      "contentUrl": "https://axion-ia.com/image-bank/uuid-abc123/image-lg.webp",
+      "url": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon",
+      "name": "Audit IA flash PME industrielle Lyon",
+      "alternateName": "Équipe d'auditeurs Axion-IA en mission audit IA flash chez une PME industrielle lyonnaise",
+      "caption": "Audit IA flash chez Métallerie Dupont à Lyon — équipe Axion-IA en immersion 1 jour avec la direction et les opérationnels.",
+      "description": "**Audit IA flash** chez une PME industrielle lyonnaise. L'équipe Axion-IA rencontre direction et opérationnels sur 1 jour pour identifier 3 processus prioritaires d'IA.",
+      "abstract": "Axion-IA accompagne une PME industrielle lyonnaise lors d'un audit IA flash d'une journée, identifiant trois processus prioritaires pour une automatisation Claude opérationnelle sous 30 jours.",
+      "width": { "@type": "QuantitativeValue", "value": 1920, "unitCode": "E37" },
+      "height": { "@type": "QuantitativeValue", "value": 1280, "unitCode": "E37" },
+      "encodingFormat": "image/webp",
+      "contentSize": "187432B",
+      "inLanguage": "fr-FR",
+      "representativeOfPage": true,
+      "isFamilyFriendly": true,
+      "isAccessibleForFree": true,
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "acquireLicensePage": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon",
+      "copyrightHolder": { "@type": "Organization", "name": "Axion-IA OÜ" },
+      "copyrightYear": 2026,
+      "copyrightNotice": "© 2026 Axion-IA OÜ. Licensed under CC BY 4.0 — axion-ia.com",
+      "creditText": "Axion-IA",
+      "accessibilityFeature": ["alternativeText", "structuralNavigation"],
+      "accessibilityHazard": "none",
+      "accessibilityControl": ["fullKeyboardControl", "fullMouseControl"],
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", "figcaption", ".image-description"]
+      },
+      "contentLocation": {
+        "@type": "Place",
+        "name": "Lyon",
+        "geo": { "@type": "GeoCoordinates", "latitude": 45.764, "longitude": 4.8357 },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lyon",
+          "addressRegion": "Auvergne-Rhône-Alpes",
+          "addressCountry": "FR"
+        }
+      },
+      "additionalProperty": [
+        { "@type": "PropertyValue", "propertyID": "targetCountries", "value": "FR" },
+        { "@type": "PropertyValue", "propertyID": "module", "value": "audits" },
+        { "@type": "PropertyValue", "propertyID": "subModule", "value": "flash" },
+        { "@type": "PropertyValue", "propertyID": "targetEntity", "value": "flash" },
+        { "@type": "PropertyValue", "propertyID": "targetCity", "value": "lyon" },
+        { "@type": "PropertyValue", "propertyID": "targetRegion", "value": "auvergne-rhone-alpes" },
+        { "@type": "PropertyValue", "propertyID": "targetSize", "value": "pme" },
+        { "@type": "PropertyValue", "propertyID": "targetPersona", "value": "operationnel" },
+        { "@type": "PropertyValue", "propertyID": "targetSector", "value": "industrie" },
+        { "@type": "PropertyValue", "propertyID": "targetTechno", "value": "claude" },
+        { "@type": "PropertyValue", "propertyID": "targetFormat", "value": "presentiel" }
+      ],
+      "keywords": "audit ia flash pme lyon, audit intelligence artificielle, diagnostic IA opérationnel",
+      "thumbnail": {
+        "@type": "ImageObject",
+        "url": "https://axion-ia.com/image-bank/uuid-abc123/image-thumb.webp",
+        "width": 300,
+        "height": 200
+      },
+      "datePublished": "2026-05-16T10:00:00.000Z",
+      "uploadDate": "2026-05-16T09:45:00.000Z",
+      "dateModified": "2026-05-16T10:00:00.000Z"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://axion-ia.com/fr/audit/flash#service",
+      "name": "Audit IA flash",
+      "description": "Diagnostic IA opérationnel en 1 jour pour PME et ETI.",
+      "url": "https://axion-ia.com/fr/audit/flash",
+      "inLanguage": "fr-FR",
+      "image": { "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#image" },
+      "serviceType": "AI audit",
+      "provider": { "@id": "https://axion-ia.com/#organization" },
+      "areaServed": { "@type": "City", "name": "Lyon" }
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_comment": "Mocks Claude Sonnet 4.6 vision pour tests sans appels API. Utilisé par image-translation.service + image-taxonomy-detector + image-seo-enrichment tests.",
+  "_lastUpdated": "2026-05-16",
+  "fixtures": [
+    {
+      "_imageContext": "Équipe Axion-IA en audit IA flash, PME industrielle Lyon",
+      "_module": "audits",
+      "_subModule": "flash",
+      "translateFrToEn": {
+        "title": "Axion-IA team during a flash AI audit at a Lyon industrial SME",
+        "alt": "Axion-IA auditors on-site during a flash AI audit at a Lyon-based industrial SME",
+        "caption": "Flash AI audit at Métallerie Dupont in Lyon — Axion-IA team in 1-day immersion with management and operations.",
+        "description": "**Flash AI audit** at a Lyon industrial SME. Axion-IA auditors meet management and operations for 1 day to identify 3 prioritized AI processes. Deliverable within 30 days. [Discover the flash audit offering](https://axion-ia.com/en/audit/flash).",
+        "metaTitle": "Flash AI audit — industrial SME Lyon | Axion-IA",
+        "metaDescription": "Flash AI audit in 1 day for SMEs and mid-market in Lyon: operational diagnostic by Axion-IA, AI recommendations tailored to your business.",
+        "ogTitle": "Flash AI audit — operational diagnostic in 1 day — Axion-IA",
+        "ogDescription": "Axion-IA accompanies industrial SMEs in Lyon for a 1-day flash AI audit, identifying 3 priority processes for Claude operational automation within 30 days.",
+        "aiSummary": "Axion-IA conducts a 1-day flash AI audit at a Lyon-based industrial SME, identifying three priority processes for Claude operational automation within 30 days.",
+        "keywords": ["flash AI audit", "SME Lyon", "Claude operational", "industrial sector"]
+      },
+      "taxonomyDetection": {
+        "module": "audits",
+        "subModule": "flash",
+        "targetPersona": "operationnel",
+        "targetSector": "industrie",
+        "targetTechno": "claude",
+        "targetFormat": "presentiel",
+        "confidence": 0.92,
+        "reasoning": "Image shows on-site team with audit clipboard, factory background. Clear flash audit context."
+      },
+      "aiSummary": "Axion-IA accompagne une PME industrielle lyonnaise lors d'un audit IA flash d'une journée, identifiant trois processus prioritaires pour une automatisation Claude opérationnelle sous 30 jours."
+    },
+    {
+      "_imageContext": "Atelier IA opérationnelle Claude, formation 12 cadres ETI",
+      "_module": "interventions",
+      "_subModule": "atelier-ia-cible",
+      "translateFrToEn": {
+        "title": "Operational AI Claude workshop — collective training for 12 mid-market executives",
+        "alt": "Operational AI Claude workshop — Axion-IA collective training for 12 mid-market executives",
+        "caption": "Operational AI Claude workshop — 2-day collective training for 12 mid-market executives at a Lyon company.",
+        "metaTitle": "Operational AI Claude workshop — mid-market | Axion-IA",
+        "metaDescription": "2-day operational AI Claude workshop for mid-market executives: hands-on training by Axion-IA, immediate ROI.",
+        "aiSummary": "Axion-IA delivers a 2-day operational AI Claude workshop to twelve mid-market executives, focused on immediate productivity gains and concrete automation use cases.",
+        "keywords": ["AI workshop", "Claude training", "mid-market", "executive training"]
+      },
+      "taxonomyDetection": {
+        "module": "interventions",
+        "subModule": "atelier-ia-cible",
+        "targetPersona": "dirigeant",
+        "targetSector": "b2b-generique",
+        "targetTechno": "claude",
+        "targetFormat": "presentiel",
+        "confidence": 0.88,
+        "reasoning": "Image shows trainer with whiteboard, 12 attendees seated. Clear workshop atelier context."
+      },
+      "aiSummary": "Axion-IA délivre un atelier IA opérationnelle Claude de deux jours à douze cadres dirigeants d'ETI lyonnaise, axé sur les gains de productivité immédiats et cas concrets d'automatisation."
+    },
+    {
+      "_imageContext": "Implémentation chatbot Claude pour direction marketing",
+      "_module": "implementations",
+      "_subModule": "chatbot",
+      "translateFrToEn": {
+        "title": "Claude chatbot implementation for marketing direction",
+        "alt": "Claude chatbot implementation by Axion-IA for a marketing director, B2B services company",
+        "caption": "Claude chatbot implementation for B2B services marketing direction — Axion-IA deployment in 4 weeks.",
+        "metaTitle": "Claude chatbot implementation marketing | Axion-IA",
+        "metaDescription": "Claude chatbot implementation for marketing direction: 4-week deployment by Axion-IA, B2B services tailored.",
+        "aiSummary": "Axion-IA implements a Claude chatbot for a B2B services marketing direction, deployed in four weeks with custom prompts and CRM integration.",
+        "keywords": ["Claude chatbot", "marketing AI", "B2B implementation", "AI deployment"]
+      },
+      "taxonomyDetection": {
+        "module": "implementations",
+        "subModule": "chatbot",
+        "targetPersona": "direction-marketing",
+        "targetSector": "services",
+        "targetTechno": "claude",
+        "targetFormat": "hybride",
+        "confidence": 0.85,
+        "reasoning": "Image shows screen with chatbot UI, marketing dashboard context. Clear implementation context."
+      },
+      "aiSummary": "Axion-IA implémente un chatbot Claude pour une direction marketing services B2B, déployé en quatre semaines avec prompts custom et intégration CRM."
+    },
+    {
+      "_imageContext": "Audit stratégique ETI 5 jours",
+      "_module": "audits",
+      "_subModule": "strategique-eti",
+      "taxonomyDetection": {
+        "module": "audits",
+        "subModule": "strategique-eti",
+        "targetPersona": "dirigeant",
+        "targetSector": "b2b-generique",
+        "targetFormat": "presentiel",
+        "confidence": 0.8,
+        "reasoning": "Roundtable executives + multiple monitors with org charts. ETI strategic context."
+      },
+      "aiSummary": "Axion-IA réalise un audit stratégique IA de cinq jours pour une ETI lyonnaise, livrant une cartographie des cas d'usage prioritaires sur 18 mois."
+    },
+    {
+      "_imageContext": "Conférence keynote IA opérationnelle",
+      "_module": "interventions",
+      "_subModule": "conference-keynote",
+      "taxonomyDetection": {
+        "module": "interventions",
+        "subModule": "conference-keynote",
+        "targetPersona": "dirigeant",
+        "targetSector": "b2b-generique",
+        "targetTechno": "agnostic",
+        "targetFormat": "presentiel",
+        "confidence": 0.95,
+        "reasoning": "Speaker on stage with large audience, large screen. Clear keynote conference context."
+      },
+      "aiSummary": "Axion-IA délivre une conférence keynote sur l'IA opérationnelle devant 300 dirigeants lors d'un salon professionnel parisien."
+    },
+    {
+      "_imageContext": "Coaching individuel dirigeant Claude",
+      "_module": "interventions",
+      "_subModule": "claude-dirigeant",
+      "taxonomyDetection": {
+        "module": "interventions",
+        "subModule": "claude-dirigeant",
+        "targetPersona": "dirigeant",
+        "targetTechno": "claude",
+        "targetFormat": "distanciel",
+        "confidence": 0.78,
+        "reasoning": "1-1 video call setup with Claude interface visible. Individual coaching context."
+      },
+      "aiSummary": "Axion-IA accompagne un dirigeant de PME en coaching individuel Claude sur trois mois pour transformer ses pratiques d'analyse stratégique quotidienne."
+    },
+    {
+      "_imageContext": "Pas de match — image trop générique (équipe en réunion sans contexte)",
+      "_lowConfidence": true,
+      "taxonomyDetection": {
+        "module": null,
+        "subModule": null,
+        "targetPersona": "equipe",
+        "targetSector": null,
+        "targetTechno": null,
+        "targetFormat": null,
+        "confidence": 0.45,
+        "reasoning": "Generic meeting room with people. No clear AI/audit/training visual cues. Requires human taxonomy assignment."
+      }
+    },
+    {
+      "_imageContext": "Schema technique architecture IA",
+      "_sourceType": "schema",
+      "translateFrToEn": {
+        "title": "Operational AI architecture diagram — Claude integration pattern",
+        "alt": "Operational AI architecture diagram showing Claude integration pattern with CRM and internal tools",
+        "metaTitle": "Operational AI architecture diagram | Axion-IA",
+        "aiSummary": "Axion-IA architecture diagram illustrating Claude integration patterns with CRM, internal tools, and human review workflow."
+      },
+      "taxonomyDetection": {
+        "module": "implementations",
+        "subModule": "ia-custom",
+        "targetTechno": "claude",
+        "confidence": 0.9,
+        "reasoning": "Schema diagram with API connections labeled. Clear technical architecture context."
+      },
+      "aiSummary": "Schéma d'architecture Axion-IA illustrant les patterns d'intégration Claude avec CRM, outils internes et workflow de revue humaine."
+    }
+  ]
+}

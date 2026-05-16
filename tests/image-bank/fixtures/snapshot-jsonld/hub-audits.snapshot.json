@@ -1,0 +1,89 @@
+{
+  "_comment": "Snapshot JSON-LD page hub `/fr/galerie/audits/` — CollectionPage + ItemList.",
+  "_lastValidated": "2026-05-16",
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://axion-ia.com/#organization",
+      "name": "Axion-IA",
+      "legalName": "Axion-IA OÜ",
+      "url": "https://axion-ia.com"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://axion-ia.com/#website",
+      "name": "Axion-IA",
+      "url": "https://axion-ia.com",
+      "publisher": { "@id": "https://axion-ia.com/#organization" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://axion-ia.com/fr/galerie/audits#webpage",
+      "url": "https://axion-ia.com/fr/galerie/audits",
+      "name": "Audits IA",
+      "description": "Banque d'images Audits IA d'Axion-IA — 12 images sous licence CC BY 4.0.",
+      "isPartOf": { "@id": "https://axion-ia.com/#website" },
+      "inLanguage": "fr-FR",
+      "primaryImageOfPage": { "@id": "https://axion-ia.com/fr/galerie/audits#collection" },
+      "mainEntity": { "@id": "https://axion-ia.com/fr/galerie/audits#itemlist" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://axion-ia.com/fr/galerie/audits#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://axion-ia.com/fr"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Banque d'images",
+          "item": "https://axion-ia.com/fr/galerie"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Audits IA",
+          "item": "https://axion-ia.com/fr/galerie/audits"
+        }
+      ]
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://axion-ia.com/fr/galerie/audits#collection",
+      "url": "https://axion-ia.com/fr/galerie/audits",
+      "name": "Audits IA",
+      "inLanguage": "fr-FR",
+      "about": {
+        "@type": "Service",
+        "@id": "https://axion-ia.com/fr/audits#service",
+        "name": "Audits IA",
+        "provider": { "@id": "https://axion-ia.com/#organization" }
+      },
+      "mainEntity": { "@id": "https://axion-ia.com/fr/galerie/audits#itemlist" }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://axion-ia.com/fr/galerie/audits#itemlist",
+      "numberOfItems": 12,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "ImageObject",
+            "@id": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon#image",
+            "url": "https://axion-ia.com/fr/galerie/audit-ia-flash-pme-lyon",
+            "contentUrl": "https://axion-ia.com/image-bank/uuid-abc123/image-md.webp",
+            "width": 1920,
+            "height": 1280
+          }
+        }
+      ]
+    }
+  ]
+}
