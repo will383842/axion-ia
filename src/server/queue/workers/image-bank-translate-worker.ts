@@ -4,6 +4,7 @@
 // traduit FR ↔ EN les metadata d'une ImageAsset.
 
 import { Worker } from "bullmq";
+import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 
@@ -34,9 +35,19 @@ export function startImageBankTranslateWorker(): Worker<ImageBankTranslateJobDat
       `[image-bank-translate-worker] done: ${job.data.imageId} ${job.data.sourceLang}→${job.data.targetLang}`,
     ),
   );
-  worker.on("failed", (job, err) =>
-    console.error(`[image-bank-translate-worker] failed: ${job?.data?.imageId}: ${err.message}`),
-  );
+  worker.on("failed", (job, err) => {
+    console.error(`[image-bank-translate-worker] failed: ${job?.data?.imageId}: ${err.message}`);
+    Sentry.captureException(err, {
+      tags: { worker: "image-bank-translate" },
+      extra: {
+        jobId: job?.id,
+        imageId: job?.data?.imageId,
+        sourceLang: job?.data?.sourceLang,
+        targetLang: job?.data?.targetLang,
+        attemptsMade: job?.attemptsMade,
+      },
+    });
+  });
 
   return worker;
 }

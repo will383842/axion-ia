@@ -5,6 +5,7 @@
 // Pattern aligné sur email-worker (singleton via startXxxWorker()).
 
 import { Worker } from "bullmq";
+import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 
@@ -50,9 +51,17 @@ export function startImageBankEnrichWorker(): Worker<ImageBankEnrichJobData, voi
   worker.on("completed", (job) =>
     console.log(`[image-bank-enrich-worker] done: ${job.data.imageId}`),
   );
-  worker.on("failed", (job, err) =>
-    console.error(`[image-bank-enrich-worker] failed: ${job?.data?.imageId}: ${err.message}`),
-  );
+  worker.on("failed", (job, err) => {
+    console.error(`[image-bank-enrich-worker] failed: ${job?.data?.imageId}: ${err.message}`);
+    Sentry.captureException(err, {
+      tags: { worker: "image-bank-enrich" },
+      extra: {
+        jobId: job?.id,
+        imageId: job?.data?.imageId,
+        attemptsMade: job?.attemptsMade,
+      },
+    });
+  });
 
   return worker;
 }

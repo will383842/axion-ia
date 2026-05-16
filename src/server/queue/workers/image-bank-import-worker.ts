@@ -7,6 +7,7 @@
 import fs from "node:fs/promises";
 
 import { Worker } from "bullmq";
+import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 import { prisma } from "@/lib/prisma";
@@ -104,11 +105,20 @@ export function startImageBankImportWorker(): Worker<ImageBankImportJobData, voi
   worker.on("completed", (job) =>
     console.log(`[image-bank-import-worker] done: ${job.data.originalFilename}`),
   );
-  worker.on("failed", (job, err) =>
+  worker.on("failed", (job, err) => {
     console.error(
       `[image-bank-import-worker] failed: ${job?.data?.originalFilename}: ${err.message}`,
-    ),
-  );
+    );
+    Sentry.captureException(err, {
+      tags: { worker: "image-bank-import" },
+      extra: {
+        jobId: job?.id,
+        originalFilename: job?.data?.originalFilename,
+        batchId: job?.data?.batchId,
+        attemptsMade: job?.attemptsMade,
+      },
+    });
+  });
 
   return worker;
 }

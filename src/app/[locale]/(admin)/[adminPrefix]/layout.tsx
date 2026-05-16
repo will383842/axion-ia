@@ -34,7 +34,7 @@ interface NavItem {
   href: string;
   label: string;
   icon: string;
-  group: "main" | "content" | "engagement" | "ops" | "system";
+  group: "main" | "content" | "image-bank" | "engagement" | "ops" | "system";
 }
 
 function buildNav(adminPrefix: string): NavItem[] {
@@ -59,6 +59,47 @@ function buildNav(adminPrefix: string): NavItem[] {
     { href: `${base}/testimonials`, label: "Témoignages", icon: "💬", group: "content" },
     { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
     { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
+    // ── banque d'images (image-bank V1) ──────────────────────────────────
+    { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
+    { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },
+    { href: `${base}/image-bank/upload`, label: "Upload", icon: "⬆️", group: "image-bank" },
+    {
+      href: `${base}/image-bank/bulk-import`,
+      label: "Bulk import CSV",
+      icon: "📦",
+      group: "image-bank",
+    },
+    {
+      href: `${base}/image-bank/quality`,
+      label: "Quality queue",
+      icon: "🔍",
+      group: "image-bank",
+    },
+    {
+      href: `${base}/image-bank/analytics`,
+      label: "Analytics",
+      icon: "📊",
+      group: "image-bank",
+    },
+    {
+      href: `${base}/image-bank/categories`,
+      label: "Categories",
+      icon: "🏷️",
+      group: "image-bank",
+    },
+    { href: `${base}/image-bank/tags`, label: "Tags", icon: "🔖", group: "image-bank" },
+    {
+      href: `${base}/image-bank/usage-logs`,
+      label: "Usage logs (RGPD)",
+      icon: "🛡️",
+      group: "image-bank",
+    },
+    {
+      href: `${base}/image-bank/settings`,
+      label: "Settings",
+      icon: "⚙️",
+      group: "image-bank",
+    },
     // ── engagement ───────────────────────────────────────────────────────
     { href: `${base}/newsletter`, label: "Newsletter", icon: "📧", group: "engagement" },
     // ── ops & monitoring ─────────────────────────────────────────────────

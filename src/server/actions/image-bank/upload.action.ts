@@ -21,7 +21,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { imageImportService } from "@/server/image-bank/services/image-import.service";
 import { imageBankService } from "@/server/image-bank/services/image-bank.service";
-// import { imageBankEnrichQueue } from "@/server/queue/workers/image-bank-enrich-worker";
+import { enqueueImageBankEnrich } from "@/server/queue/queues";
 
 const UploadSchema = z.object({
   file: z.instanceof(File, { message: "Fichier requis" }),
@@ -113,10 +113,12 @@ export async function uploadImageAction(formData: FormData): Promise<UploadActio
     );
 
     // 6) Enqueue enrich worker (translate EN + country detect + SEO score)
-    // await imageBankEnrichQueue?.add(
-    //   "enrich",
-    //   { imageId: created.id, generateEnglish: true, autoCountryDetect: true, autoEnrichSeo: true },
-    // );
+    //    Patch post-audit 2026-05-16 P1-2 — enqueue wired (était TODO).
+    //    No-op proprement si BullMQ désactivé (build GH Actions stub).
+    await enqueueImageBankEnrich({
+      imageId: created.id,
+      generateEnglish: true,
+    });
 
     revalidateTag("image-bank", "default");
     revalidateTag("image-bank:fr", "default");

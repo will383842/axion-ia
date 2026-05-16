@@ -9,6 +9,7 @@
 // `type`). Chaque handler est idempotent.
 
 import { Worker } from "bullmq";
+import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 
@@ -56,9 +57,18 @@ export function startImageBankCronsWorker(): Worker<ImageBankCronJobData, void, 
 
   worker.on("ready", () => console.log("[image-bank-crons-worker] ready"));
   worker.on("completed", (job) => console.log(`[image-bank-crons-worker] done: ${job.data.type}`));
-  worker.on("failed", (job, err) =>
-    console.error(`[image-bank-crons-worker] failed: ${job?.data?.type}: ${err.message}`),
-  );
+  worker.on("failed", (job, err) => {
+    console.error(`[image-bank-crons-worker] failed: ${job?.data?.type}: ${err.message}`);
+    Sentry.captureException(err, {
+      tags: { worker: "image-bank-crons" },
+      extra: {
+        jobId: job?.id,
+        type: job?.data?.type,
+        limit: job?.data?.limit,
+        attemptsMade: job?.attemptsMade,
+      },
+    });
+  });
 
   return worker;
 }
