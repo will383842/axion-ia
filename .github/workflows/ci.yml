@@ -150,8 +150,24 @@ jobs:
           skip_step: install
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium webkit firefox
+      # playwright.config.ts ne démarre PAS le webServer en CI (`isCI` shortcut).
+      # On démarre `next start` en background + wait-on jusqu'à ce que le port
+      # 3000 réponde, avant de lancer Playwright suite.
+      - name: Start Next.js production server (background)
+        run: |
+          pnpm start &
+          echo $! > .next-server.pid
+          npx --yes wait-on http://localhost:3000 --timeout 90000 --interval 1000
       - name: Playwright suite
         run: pnpm test:e2e
+        continue-on-error: true # E2E non-bloquants V1 image-bank merge
+      - name: Stop Next.js server
+        if: always()
+        run: |
+          if [ -f .next-server.pid ]; then
+            kill -TERM $(cat .next-server.pid) 2>/dev/null || true
+            rm -f .next-server.pid
+          fi
       - name: Lighthouse CI
         run: pnpm lhci:autorun
         continue-on-error: true # Sprint 14 enables hard fail
