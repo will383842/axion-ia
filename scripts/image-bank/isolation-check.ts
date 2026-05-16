@@ -91,6 +91,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^\.size-limit\.json$/,
   // Content-gen consomme image-bank en lecture seule
   /^src\/server\/content-gen\/images\/image-optimizer\.ts$/,
+  // Shared Sharp helpers (extracted to lib for content-gen + image-bank reuse)
+  /^src\/lib\/image-utils\.ts$/,
   // Page presse — section "Banque d'images" (lien promotion héritage SOS-Expat)
   /^src\/app\/\[locale\]\/presse\/page\.tsx$/,
   /^src\/components\/sections\/PressImageBank\.tsx$/,
