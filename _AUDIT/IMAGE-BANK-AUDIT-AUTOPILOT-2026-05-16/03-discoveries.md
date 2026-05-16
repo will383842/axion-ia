@@ -59,18 +59,26 @@
 
 **Niveau** : 🟢 Opportunité refactor (gain DRY).
 
-## GAP-26 — Skill `.claude/skills/axionia-image-bank/SKILL.md` introuvable filesystem
+## ~~GAP-26~~ — Skill INVALIDÉ : trouvé au path projet (et non user)
 
-**Détection** : le skill `axionia-image-bank` est listé dans les available-skills du system prompt mais le path `C:\Users\willi\.claude\skills\` n'existe pas. Le path `.claude/skills/axionia-image-bank/SKILL.md` référencé §0 du prompt v1.1 est inaccessible.
+**Statut révisé 2026-05-16 (post-Phase 1)** : ✅ Skill **bien présent** au path **projet** `C:/Users/willi/Documents/Projets/Axion-IA/.claude/skills/axionia-image-bank/` :
 
-**Hypothèse** : skill stocké sous une forme non-filesystem (DB Claude Code interne ? plugin) sur cet environnement Windows.
+- `SKILL.md` ✅
+- `FEATURES.md` ✅
+- `IMPLEMENTATION-PLAN.md` ✅
+- `references/` (10 fichiers dont `axionia-stack-validated.md`, `architecture-overview.md`, `prisma-schema.md`, `jsonld-imageobject.md`, `responsive-variants.md`, `caching-strategy.md`, `exif-xmp-copyright.md`, `geo-targeting.md`, `indexnow-integration.md`, `portability-other-stacks.md`)
+- `prompts/`, `templates/`, `checklists/` (sous-dossiers)
 
-**Implication** :
+**Erreur initiale Phase 0** : j'ai cherché sous `~/.claude/skills/` (path user) qui n'existe pas — alors que le skill est au path **projet** `.claude/skills/` (dans le repo Axion-IA). Path projet a la priorité pour les skills Claude Code.
 
-- Phase 0 reality-check s'appuie sur `_AUDIT/PROMPT-IMAGE-BANK-MASTER-2026.md` v1.0 + `_AUDIT/PROMPT-IMAGE-BANK-AUDIT-AUTOPILOT-2026.md` v1.1 comme spec
-- Phase 7 « skill bump » → ne peut pas écrire fichier au path référencé. À clarifier avec Will quel mécanisme de stockage est attendu (skill file ailleurs ? plugin ? skill géré côté Claude Code app sans fichier exposé ?).
+**Confirmation** : ma décision défaut #6 (source images = uploads humains) répond directement au **STOP & ASK officiel #5 du SKILL v1.1** (« AI-generated images autorisées + tag `sourceType: 'ai_generated'` »). Compatibilité validée.
 
-**Niveau** : 🟠 P1 (bloquant pour livrable Phase 7 « skill bumped v1.2 »).
+**Implication révisée** :
+
+- Phase 0 reality-check **demeure valide** (mes findings 1-20 GAPs s'alignent avec le SKILL — confirmé après lecture)
+- Phase 7 « skill bump v1.2 » → faisable au path projet sans clarification supplémentaire
+
+**Niveau** : 🟢 Résolu.
 
 ## GAP-27 — Conflit Web Vitals AGENTS.md vs lighthouserc.json (≡ GAP-05 promu)
 
@@ -90,13 +98,13 @@ Promu de GAP-05 P2 → identifié comme ADR Will requis avant Phase 2. Détail d
 
 ## Sommaire GAPs émergents
 
-| #                                        | Niveau | Action requise       |
-| ---------------------------------------- | ------ | -------------------- |
-| GAP-21 Env vars orphelines               | 🟢     | Consommer Phase 2    |
-| GAP-22 Routing dead-links                | 🟡 P2  | Créer pages Phase 4  |
-| GAP-23 PressImageBank cible cassée       | 🟡 P2  | Idem GAP-22          |
-| GAP-24 Footer désactivé P0-10            | 🟢     | Ré-activer Phase 4   |
-| GAP-25 image-optimizer.ts réutilisable   | 🟢     | Refactor pré-Phase 2 |
-| GAP-26 Skill SKILL.md introuvable        | 🟠 P1  | Clarifier Will       |
-| GAP-27 Conflit Web Vitals (≡GAP-05)      | 🟠 P1  | ADR Phase 1          |
-| GAP-28 Sub-sitemaps pattern réutilisable | 🟢     | Copier Phase 5       |
+| #                                        | Niveau | Action requise          |
+| ---------------------------------------- | ------ | ----------------------- |
+| GAP-21 Env vars orphelines               | 🟢     | Consommer Phase 2       |
+| GAP-22 Routing dead-links                | 🟡 P2  | Créer pages Phase 4     |
+| GAP-23 PressImageBank cible cassée       | 🟡 P2  | Idem GAP-22             |
+| GAP-24 Footer désactivé P0-10            | 🟢     | Ré-activer Phase 4      |
+| GAP-25 image-optimizer.ts réutilisable   | 🟢     | Refactor pré-Phase 2    |
+| ~~GAP-26~~ Skill SKILL.md (résolu)       | 🟢     | Trouvé path projet — OK |
+| GAP-27 Conflit Web Vitals (≡GAP-05)      | 🟠 P1  | ADR Phase 1             |
+| GAP-28 Sub-sitemaps pattern réutilisable | 🟢     | Copier Phase 5          |

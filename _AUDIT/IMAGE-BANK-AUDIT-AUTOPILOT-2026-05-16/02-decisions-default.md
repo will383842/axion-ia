@@ -121,6 +121,8 @@
 
 **Réversible** : oui — ajout futur d'un générateur IA possible en V2 sans toucher la pipeline existante.
 
+**Alignement skill v1.1** : cette décision #6 répond directement au **STOP & ASK officiel #5 du SKILL v1.1** (`.claude/skills/axionia-image-bank/SKILL.md` ligne 41 : « AI-generated images autorisées + tag `sourceType: 'ai_generated'` »). Cohérence vérifiée — pas d'override nécessaire.
+
 ## Sommaire décisions
 
 5 défauts pris en autopilote, tous **réversibles** sans coût élevé. Tracés ici pour audit ultérieur Will. Si une décision est à infirmer : éditer ce fichier + ouvrir une issue/ADR dédiée.
