@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listTestimonialsAction } from "@/features/admin-testimonials/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { TestimonialsV2 } from "./_v2/TestimonialsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +37,19 @@ export default async function TestimonialsListPage({ params, searchParams }: Pag
     search: sp.search,
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <TestimonialsV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+      />
+    );
+  }
 
   return (
     <section>

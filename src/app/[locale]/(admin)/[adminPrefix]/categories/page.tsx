@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listCategoriesAction } from "@/features/admin-categories/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CategoriesV2 } from "./_v2/CategoriesV2";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +36,19 @@ export default async function CategoriesListPage({ params, searchParams }: PageP
     search: sp.search,
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <CategoriesV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+      />
+    );
+  }
 
   return (
     <section>

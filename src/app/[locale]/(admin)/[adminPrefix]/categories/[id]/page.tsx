@@ -7,6 +7,8 @@ import {
   listPotentialParentsAction,
 } from "@/features/admin-categories/actions";
 import { CategoryForm } from "../CategoryForm";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CategoriesEditV2 } from "./_v2/CategoriesEditV2";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +26,39 @@ export default async function EditCategoryPage({ params }: PageProps) {
     listPotentialParentsAction(id),
   ]);
   if (!cat) notFound();
+
+  const initialPayload = {
+    id: cat.id,
+    slug: cat.slug,
+    nameFr: cat.nameFr,
+    nameEn: cat.nameEn,
+    descriptionFr: cat.descriptionFr,
+    descriptionEn: cat.descriptionEn,
+    parentId: cat.parentId,
+    module: cat.module,
+    icon: cat.icon,
+    colorAccent: cat.colorAccent,
+    displayOrder: cat.displayOrder,
+    status: cat.status,
+    seoTitleFr: cat.seoTitleFr,
+    seoTitleEn: cat.seoTitleEn,
+    seoDescFr: cat.seoDescFr,
+    seoDescEn: cat.seoDescEn,
+    pageContentFr: cat.pageContentFr,
+    pageContentEn: cat.pageContentEn,
+  };
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <CategoriesEditV2
+        adminPrefix={adminPrefix}
+        parents={parents}
+        initial={initialPayload}
+        title={cat.nameFr}
+        updatedAtIso={cat.updatedAt.toISOString().slice(0, 10)}
+      />
+    );
+  }
 
   return (
     <section>

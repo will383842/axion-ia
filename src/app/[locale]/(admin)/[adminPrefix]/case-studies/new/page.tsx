@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listCandidateTestimonialsAction } from "@/features/admin-case-studies/actions";
 import { CaseStudyForm } from "../CaseStudyForm";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CaseStudyNewV2 } from "./_v2/CaseStudyNewV2";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +19,10 @@ export default async function NewCaseStudyPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const testimonials = await listCandidateTestimonialsAction();
+
+  if (await isAdminV2Enabled()) {
+    return <CaseStudyNewV2 adminPrefix={adminPrefix} testimonials={testimonials} />;
+  }
 
   return (
     <section>

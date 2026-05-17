@@ -8,6 +8,8 @@ import {
   listAllTagsAction,
 } from "@/features/admin-blog/actions";
 import { BlogForm } from "../BlogForm";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { BlogNewV2 } from "./_v2/BlogNewV2";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +33,12 @@ export default async function NewBlogPage({ params }: PageProps) {
     slug: c.slug,
     name: c.nameFr,
   }));
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <BlogNewV2 adminPrefix={adminPrefix} authors={authors} categories={categories} tags={tags} />
+    );
+  }
 
   return (
     <section>

@@ -10,6 +10,8 @@ import { KB_DOMAINS } from "@/content/knowledge/domains";
 import { KB_AUDIENCES } from "@/content/knowledge/audiences";
 import { KB_STATUSES, getStatusLabel } from "@/content/knowledge/statuses";
 import { getKbTypeMeta } from "@/content/knowledge/types";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ConnaissancesV2 } from "./_v2/ConnaissancesV2";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +34,19 @@ export default async function ConnaissancesListPage({ params, searchParams }: Pa
     search: sp.search,
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ConnaissancesV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+      />
+    );
+  }
 
   return (
     <section>

@@ -7,6 +7,8 @@ import {
   listHelpCategoriesAction,
 } from "@/features/admin-help/actions";
 import { HelpForm } from "../HelpForm";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { HelpEditV2 } from "./_v2/HelpEditV2";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +29,42 @@ export default async function EditHelpPage({ params }: PageProps) {
 
   const fr = ha.translations.find((t) => t.locale === "fr");
   const en = ha.translations.find((t) => t.locale === "en");
+
+  const initialPayload = {
+    id: ha.id,
+    categoryId: ha.categoryId,
+    isTutorial: ha.isTutorial,
+    status: ha.status,
+    publishedAt: ha.publishedAt,
+    fr: {
+      title: fr?.title ?? "",
+      slug: fr?.slug ?? "",
+      excerpt: fr?.excerpt ?? null,
+      body: fr?.body ?? "",
+      metaTitle: fr?.metaTitle ?? null,
+      metaDescription: fr?.metaDescription ?? null,
+    },
+    en: {
+      title: en?.title ?? "",
+      slug: en?.slug ?? "",
+      excerpt: en?.excerpt ?? null,
+      body: en?.body ?? "",
+      metaTitle: en?.metaTitle ?? null,
+      metaDescription: en?.metaDescription ?? null,
+    },
+  };
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <HelpEditV2
+        adminPrefix={adminPrefix}
+        categories={categories}
+        initial={initialPayload}
+        title={fr?.title ?? "(sans titre)"}
+        updatedAtIso={ha.updatedAt.toISOString().slice(0, 10)}
+      />
+    );
+  }
 
   return (
     <section>

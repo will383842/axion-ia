@@ -6,6 +6,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { ConnaissancesNouvelleForm } from "./ConnaissancesNouvelleForm";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ConnaissancesNouvelleV2 } from "./_v2/ConnaissancesNouvelleV2";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +19,10 @@ export default async function ConnaissancesNouvellePage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <ConnaissancesNouvelleV2 adminPrefix={adminPrefix} />;
+  }
 
   return (
     <section>

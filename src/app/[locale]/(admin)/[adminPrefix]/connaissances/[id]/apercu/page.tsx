@@ -11,6 +11,8 @@ import { getEntryAction } from "@/server/actions/knowledge/get-entry";
 import { getKbTypeMeta } from "@/content/knowledge/types";
 import { getStatusLabel } from "@/content/knowledge/statuses";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ConnaissancesApercuV2 } from "./_v2/ConnaissancesApercuV2";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +38,22 @@ export default async function ConnaissancesApercuPage({ params, searchParams }: 
 
   const tr = entry.translations.find((t) => t.locale === previewLocale) ?? entry.translations[0];
   if (!tr) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ConnaissancesApercuV2
+        adminPrefix={adminPrefix}
+        entryId={entry.id}
+        typeLabel={getKbTypeMeta(entry.type).labelFr}
+        statusLabel={getStatusLabel(entry.status, "fr")}
+        title={tr.title}
+        slug={tr.slug}
+        locale={tr.locale}
+        excerpt={tr.excerpt}
+        sanitizedBodyHtml={sanitizeTiptapHtml(tr.body)}
+      />
+    );
+  }
 
   return (
     <section className="admin-preview">

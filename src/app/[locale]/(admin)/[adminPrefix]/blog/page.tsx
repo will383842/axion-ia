@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listArticlesAction } from "@/features/admin-blog/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { BlogV2 } from "./_v2/BlogV2";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,19 @@ export default async function BlogListPage({ params, searchParams }: PageProps) 
     search: sp.search,
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <BlogV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+      />
+    );
+  }
 
   return (
     <section>

@@ -6,6 +6,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listFAQsAction } from "@/features/admin-faq/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { FaqV2 } from "./_v2/FaqV2";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +42,19 @@ export default async function FAQListPage({ params, searchParams }: PageProps) {
     search: sp.search,
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <FaqV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+      />
+    );
+  }
 
   return (
     <section>

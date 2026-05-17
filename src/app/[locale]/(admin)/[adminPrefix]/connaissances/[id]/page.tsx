@@ -8,6 +8,8 @@ import { auth } from "@/auth";
 import { getEntryAction } from "@/server/actions/knowledge/get-entry";
 import { ConnaissancesEditForm } from "./ConnaissancesEditForm";
 import { WorkflowPanel } from "./WorkflowPanel";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ConnaissancesEditV2 } from "./_v2/ConnaissancesEditV2";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,46 @@ export default async function ConnaissancesEditPage({ params }: PageProps) {
   if (!entry || entry.deletedAt) notFound();
 
   const fr = entry.translations.find((t) => t.locale === "fr");
+
+  const entrySnapshot = {
+    id: entry.id,
+    type: entry.type,
+    domain: entry.domain,
+    audience: entry.audience,
+    confidentiality: entry.confidentiality,
+    status: entry.status,
+    pipelineStage: entry.pipelineStage,
+    slug: entry.slug,
+    briefMarkdown: entry.briefMarkdown,
+    targetKeyword: entry.targetKeyword,
+    targetWordCount: entry.targetWordCount,
+    fr: fr
+      ? {
+          id: fr.id,
+          title: fr.title,
+          slug: fr.slug,
+          excerpt: fr.excerpt,
+          body: fr.body,
+        }
+      : null,
+  };
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ConnaissancesEditV2
+        adminPrefix={adminPrefix}
+        entry={entrySnapshot}
+        entryId={entry.id}
+        status={entry.status}
+        pipelineStage={entry.pipelineStage}
+        userRole={userRole}
+        title={fr?.title ?? "(sans titre)"}
+        type={entry.type}
+        domain={entry.domain}
+        audience={entry.audience}
+      />
+    );
+  }
 
   return (
     <section>
