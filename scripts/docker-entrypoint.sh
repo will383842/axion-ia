@@ -8,15 +8,18 @@
 #        log warning et continue le boot du serveur. La migration peut être
 #        lancée manuellement via Coolify Terminal :
 #          docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'
-#      → SI prisma fail pour autre raison : abort (vraie erreur de migration).
+#      → SI prisma fail pour autre raison : log warning + continue (best-effort).
 #   2. Démarre Next.js standalone (`node server.js`).
 #
 # Variables d'env requises côté Coolify : DATABASE_URL, DIRECT_URL.
 #
 # Override sécurité : si SKIP_MIGRATE=1 → bypass la migration (utile pour
 # rollback ou debug, mais à éviter en deploy normal).
-
-set -e
+#
+# Sprint Prisma path fix 2026-05-17 — retiré `set -e` global pour éviter que
+# une erreur dans les blocs subshell ne propage exit code à Coolify
+# (qui marque alors deploy "failed" alors que le container démarre OK).
+# Le `exec node server.js` à la fin = success implicite si serveur démarre.
 
 echo "[entrypoint] Axion-IA container starting…"
 
