@@ -8,6 +8,18 @@
     "pnpm": ">=10.0.0"
   },
   "packageManager": "pnpm@10.33.4",
+  "browserslist": [
+    "Chrome >= 109",
+    "Edge >= 109",
+    "Firefox >= 115",
+    "Safari >= 16.4",
+    "ChromeAndroid >= 109",
+    "iOS >= 16.4",
+    "not dead",
+    "supports es6-module",
+    "supports es6-module-dynamic-import"
+  ],
+  "_browserslist_doctrine": "Sprint Web Vitals fix 2026-05-17 — modern-only targets pour KILLER les polyfills legacy générés par Next 16 / SWC (fix Lighthouse `legacy-javascript-insight` score 0.5 → 1.0). Baseline = navigators ≥ 2 ans (~98% du trafic prod CrUX). Si un visiteur Safari 15 ou Edge Legacy arrive, fallback graceful HTML statique (SSG). Aligné `transform-runtime` cible es2022+.",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
