@@ -127,41 +127,39 @@ jobs:
       # steps that import @prisma/client / generated types.
       - name: Generate Prisma client
         run: pnpm prisma:generate
-      # Build : utilise les env vars job-level définies plus haut
-      # (SKIP_ENV_VALIDATION + stubs DATABASE/REDIS + dummy secrets prod).
+      # Sprint E2E gates re-activation 2026-05-17 — ordre nouveau :
+      #   1. Install Playwright browsers EN PREMIER (résout chrome dep
+      #      requise par puppeteer-core de size-limit pour mesurer DevTools).
+      #   2. Build (utilise env vars job-level + stubs DATABASE/REDIS).
+      #   3. Bundle size + delta (chrome est dispo, plus de timeout systemic).
+      #   4. Playwright suite (continue-on-error true tant que bugs UI réels
+      #      pas fixés — strict mode getByLabel password, hreflang fr-FR
+      #      landing ville, admin prefix 404 attendu. P1-2 Sprint dédié).
+      #   5. Lighthouse CI (continue-on-error vs prod via lhci config).
+      #
+      # `continue-on-error: true` = step tourne + logue les fails dans PR
+      # sans bloquer le merge. Stratégie de re-activation progressive :
+      # on voit les régressions, on les fixe progressivement, puis on retire
+      # continue-on-error gate par gate quand stable.
+      - name: Install Playwright browsers (avant build pour chrome dep)
+        run: pnpm exec playwright install --with-deps chromium
       - name: Build
         run: pnpm build
-      # Bundle size + bundle delta : SKIPPED pour merge V1 image-bank
-      # (audit 2026-05-16). Le step utilise puppeteer-core/Chrome headless
-      # qui n'est pas installé avant `Install Playwright browsers` plus
-      # bas — timeout systémique. continue-on-error step level n'aide pas
-      # (job marqué fail quand même). Skip complet via `if: false`.
-      # Ré-activer Sprint follow-up : soit ré-ordonner Playwright install
-      # avant ces steps, soit migrer vers @size-limit/preset-app sans
-      # `time` plugin (qui require Chrome).
       - name: Bundle size
-        if: false
         run: pnpm bundle:check
+        continue-on-error: true
       - name: Bundle delta vs main
-        if: false
         uses: andresz1/size-limit-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           skip_step: install
-      # Playwright + Lighthouse SKIPPED pour merge V1 image-bank (audit
-      # 2026-05-16). Les tests E2E ont des vrais bugs UI (strict mode
-      # violation getByLabel password, hreflang fr-FR missing sur landing
-      # ville, admin prefix 404 attendu vs 200) — sortie scope autopilot.
-      # À ré-activer Sprint follow-up dédié E2E après triage bugs UI.
-      - name: Install Playwright browsers
-        if: false
-        run: pnpm exec playwright install --with-deps chromium webkit firefox
-      - name: Playwright suite
-        if: false
-        run: pnpm test:e2e
+        continue-on-error: true
+      - name: Playwright suite (continue-on-error tant que P1-2 bugs UI non fixés)
+        run: pnpm test:e2e --project=chromium
+        continue-on-error: true
       - name: Lighthouse CI
-        if: false
         run: pnpm lhci:autorun
+        continue-on-error: true
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
