@@ -7,6 +7,8 @@ import {
   listAdminUsersOptionsAction,
   getActivityLogStatsAction,
 } from "@/features/admin-activity-logs/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ActivityLogsV2 } from "./_v2/ActivityLogsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +36,21 @@ export default async function ActivityLogsPage({ params, searchParams }: PagePro
     listAdminUsersOptionsAction(),
     getActivityLogStatsAction(),
   ]);
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ActivityLogsV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+        users={users}
+        stats={stats}
+      />
+    );
+  }
 
   return (
     <section>

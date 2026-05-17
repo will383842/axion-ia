@@ -24,6 +24,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { contentWebVitalsMonitorQueue } from "@/server/queue/queues";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { WebVitalsV2 } from "./_v2/WebVitalsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -230,6 +232,28 @@ export default async function AdminWebVitalsPage({ params }: PageProps) {
 
   const breachCount = aggregates.filter((a) => a.breach).length;
   const routeCount = new Set(aggregates.map((a) => a.url)).size;
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <WebVitalsV2
+        adminPrefix={adminPrefix}
+        totalSamples={totalSamples}
+        routeCount={routeCount}
+        breachCount={breachCount}
+        isLive={isLive}
+        computedAt={computedAt}
+        display={display}
+        aggregatesLength={aggregates.length}
+        lastAlertSentAt={lastAlert.sent_at}
+        lastAlertBreachCount={lastAlert.breach_count}
+        recomputeEnabled={Boolean(contentWebVitalsMonitorQueue)}
+        triggerRecomputeAction={async () => {
+          "use server";
+          await triggerRecomputeAction();
+        }}
+      />
+    );
+  }
 
   return (
     <section>

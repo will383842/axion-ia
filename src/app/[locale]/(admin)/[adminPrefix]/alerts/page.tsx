@@ -14,6 +14,8 @@
 // Auth requise : redirect login si pas de session admin. Force-dynamic.
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AlertsV2 } from "./_v2/AlertsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -277,6 +279,23 @@ export default async function AdminAlertsPage({ params }: PageProps) {
     warning: allAlerts.filter((a) => a.severity === "warning").length,
     info: allAlerts.filter((a) => a.severity === "info").length,
   };
+
+  const unconfiguredV2 = [
+    ...(uptime.configured ? [] : [{ name: "UptimeRobot", err: uptime.err ?? "unknown" }]),
+    ...(coolify.configured ? [] : [{ name: "Coolify", err: coolify.err ?? "unknown" }]),
+    ...(sentry.configured ? [] : [{ name: "Sentry", err: sentry.err ?? "unknown" }]),
+  ];
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <AlertsV2
+        adminPrefix={adminPrefix}
+        allAlerts={allAlerts}
+        counts={counts}
+        unconfigured={unconfiguredV2}
+      />
+    );
+  }
 
   return (
     <section>

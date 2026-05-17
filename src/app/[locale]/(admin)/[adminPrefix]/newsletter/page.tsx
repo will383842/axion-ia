@@ -6,6 +6,8 @@ import {
   listSubscribersAction,
   getNewsletterStatsAction,
 } from "@/features/admin-newsletter/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { NewsletterV2 } from "./_v2/NewsletterV2";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +47,21 @@ export default async function NewsletterListPage({ params, searchParams }: PageP
     ...(sp.locale ? { locale: sp.locale } : {}),
     ...(sp.source ? { source: sp.source } : {}),
   }).toString()}`;
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <NewsletterV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+        stats={stats}
+        csvUrl={csvUrl}
+      />
+    );
+  }
 
   return (
     <section>

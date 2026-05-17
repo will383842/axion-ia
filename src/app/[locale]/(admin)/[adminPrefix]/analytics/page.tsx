@@ -13,6 +13,8 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { env } from "@/env";
 import { SITE_URL } from "@/lib/seo";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AnalyticsV2 } from "./_v2/AnalyticsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -110,6 +112,46 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
   const plausibleShared = env.PLAUSIBLE_SHARED_LINK;
   const plausibleDomain = env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   const plausibleApi = env.NEXT_PUBLIC_PLAUSIBLE_API_URL ?? "https://plausible.axion-ia.com";
+
+  if (await isAdminV2Enabled()) {
+    const verificationsV2: VerificationCard[] = [
+      {
+        name: "Google Search Console",
+        status: env.GOOGLE_SITE_VERIFICATION ? "ok" : "not-configured",
+        detail: env.GOOGLE_SITE_VERIFICATION
+          ? "Balise meta posée — vérifie « Domain property » dans GSC"
+          : "Variable GOOGLE_SITE_VERIFICATION absente",
+        externalUrl:
+          "https://search.google.com/search-console?resource_id=sc-domain%3Aaxion-ia.com",
+        helpUrl: "https://search.google.com/search-console/welcome",
+        envVar: "GOOGLE_SITE_VERIFICATION",
+      },
+      {
+        name: "Bing Webmaster Tools",
+        status: env.BING_SITE_VERIFICATION ? "ok" : "not-configured",
+        detail: env.BING_SITE_VERIFICATION
+          ? "Balise meta msvalidate.01 posée"
+          : "Variable BING_SITE_VERIFICATION absente",
+        externalUrl: "https://www.bing.com/webmasters/home",
+        helpUrl: "https://www.bing.com/webmasters/about",
+        envVar: "BING_SITE_VERIFICATION",
+      },
+    ];
+    return (
+      <AnalyticsV2
+        adminPrefix={adminPrefix}
+        plausibleShared={plausibleShared}
+        plausibleDomain={plausibleDomain}
+        plausibleApi={plausibleApi}
+        verifications={verificationsV2}
+        indexNowConfigured={Boolean(env.INDEXNOW_KEY)}
+        pingAction={async () => {
+          "use server";
+          await pingIndexNowAction();
+        }}
+      />
+    );
+  }
 
   const verifications: VerificationCard[] = [
     {

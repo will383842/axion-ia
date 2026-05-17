@@ -214,3 +214,35 @@ Voir `EXEC-SUMMARY-WILL.md` + `LISTE-COMMITS-LOCAUX-PRETS.md` pour le détail.
 - **47 V1 modifiés** : injection import + early return (1-2 lignes par fichier).
 - **1 JOURNAL.md** mis à jour.
 - **Total** : ~96 fichiers, ~5450 LOC ajoutés, ~28 LOC modifiés.
+
+---
+
+## 2026-05-17 (soir) — Reprise + PR 10 (ops) + PR 11 (système) — réconciliation 12 fichiers locaux
+
+### Contexte
+
+- Session précédente : agents parallèles dans `.claude/worktrees/agent-a12c0af826d838534` + `agent-ae17b3d52b6d24ddd` ont produit 12 fichiers V2 ops/système non commités, plus 12 page.tsx racines patchées (early-return V2). Working tree montre `M` sur 12 page.tsx + `??` sur 12 dossiers `_v2/` correspondants.
+- Tag `admin-refonte-pr8-start` existait déjà mais aucun commit PR 8 sur main → tag orphelin (le travail PR 8 image-bank n'avait pas démarré côté commit).
+- Décision : réconcilier d'abord PR 10 + PR 11 (puisque les V2 ops/système sont déjà écrites et passent les gates A), puis enchaîner PR 8 → PR 9 → PR 12 → PR 13/14 closure.
+
+### Étape 0 — Audit local
+
+- `git status` : 12 modifications + 12 dossiers `_v2/` untracked correspondants.
+- `git diff` page.tsx : pattern uniforme PR 6/7 confirmé sur les 12 (import + early-return `if (await isAdminV2Enabled()) return <PageV2 ... />`).
+- Pas de modification autre que additive (aucune Server Action touchée, aucune Prisma query touchée).
+- 12/12 V2 utilisent `AdminPageShell` + `AdminPageHeader` + primitives PR 2-4.
+- Cross-checks §C verts :
+  - `grep Sentry.` dans 12 V2 = 0 hit.
+  - `grep logActivity|ActivityLog.create` dans 12 V2 = 0 hit.
+  - `grep "use server"` dans 12 V2 = 0 hit (V2 consomment Server Actions V1 via props).
+  - `grep <style|<script|dangerouslySetInnerHTML` dans 12 V2 = 0 hit (CSP nonce intact).
+  - `grep force-dynamic` dans 12 page.tsx diff = inchangé.
+- Gates A :
+  - `npx tsc --noEmit` = 0 erreur.
+  - `npx eslint <12 V2> + <12 page.tsx>` = 2 warnings (unused eslint-disable-next-line `@next/next/no-html-link-for-pages` sur `AnalyticsV2` + `NewsletterV2`) → fixés (suppression directive inutile).
+  - `npx vitest run` = 937/937 verts (+ 2 skipped) = baseline PR 7 maintenue.
+- Verdict Étape 0 : 12 fichiers acceptés tels quels. Pas de reset.
+
+### Tags
+
+- Tag start : `admin-refonte-pr10-start` (HEAD = `59edcb9` PR 7).
