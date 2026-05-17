@@ -190,7 +190,7 @@ function observeFrameDegradations(
     try {
       const obs = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (entry.duration <= 100) continue; // threshold UX
+          if (entry.duration <= 250) continue;
           ship({
             id: `loaf-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
             name: "LoAF",
@@ -220,7 +220,7 @@ function observeFrameDegradations(
     try {
       const obs = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (entry.duration <= 100) continue;
+          if (entry.duration <= 250) continue;
           ship({
             id: `longtask-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
             name: "LongTask",
@@ -256,9 +256,21 @@ function observeFrameDegradations(
 // Hetzner self-hosted, cf. P-303). Uses sendBeacon when available so payload
 // survives page unload, falls back to fetch keepalive otherwise. Fail-silent
 // — no UI surface, no console noise.
+//
+// Sprint Web Vitals fix 2026-05-17 — skip routes admin (`/admin/*` quelle
+// que soit la locale) car la console admin n'a pas besoin de RUM publique
+// (private app, déjà loguée Sentry), génère du bruit /api/vitals 429
+// (re-renders fréquents tables/forms → LoAF observer spam) et pollue la
+// console DevTools utilisateur admin (vu incident Will 2026-05-17).
+function isAdminRoute(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return /^\/(fr|en)?\/?[^/]*admin/i.test(pathname);
+}
+
 export function WebVitals() {
   const pathname = usePathname();
   const locale = useLocale();
+  const adminRoute = isAdminRoute(pathname);
 
   // P1-21 (audit re-run 2026-05-15) — INP attribution Chrome 124+.
   // `useReportWebVitals` ne supporte pas la prop `attribution` ; on appelle
@@ -269,6 +281,7 @@ export function WebVitals() {
   // agréger les INP > 200 ms par élément pour diagnostic ciblé.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (adminRoute) return; // skip admin
     onINP(
       (metric) => {
         const nav = navigator as NavigatorWithExtras;
@@ -324,11 +337,12 @@ export function WebVitals() {
       },
       { reportAllChanges: false },
     );
-  }, [pathname, locale]);
+  }, [pathname, locale, adminRoute]);
 
   // P1-20 — LoAF + Long Tasks observation post-mount.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (adminRoute) return; // skip admin
     const ship = (payload: VitalsPayload) => {
       const body = JSON.stringify(payload);
       try {
@@ -348,9 +362,10 @@ export function WebVitals() {
       }
     };
     return observeFrameDegradations(pathname ?? "", locale, ship);
-  }, [pathname, locale]);
+  }, [pathname, locale, adminRoute]);
 
   useReportWebVitals((metric) => {
+    if (adminRoute) return; // skip admin
     const nav = typeof navigator !== "undefined" ? (navigator as NavigatorWithExtras) : null;
     const ua =
       typeof navigator !== "undefined" && typeof navigator.userAgent === "string"

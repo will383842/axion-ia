@@ -43,10 +43,15 @@ function getClientIp(req: NextRequest): string {
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
-  // Sprint Correctif S+1 (P0-S1-5) : rate-limit anti-saturation ndjson.
-  // 60 req/min/IP — Web Vitals = max 1 sample par metric × 7 metrics × ~3 nav/min.
+  // Sprint Web Vitals fix 2026-05-17 : rate-limit anti-saturation ndjson.
+  // 300 req/min/IP (était 60). Justif : Web Vitals utilisateur réel peut
+  // émettre 6 metrics × N nav + LoAF/LongTask × interactions. Sur console
+  // admin avec tables/forms qui re-render, le seuil 60 était saturé en <2 min
+  // (cf. incident Will 2026-05-17 console admin 429 retry visible DevTools).
+  // 300 ≈ 5/s moyenne = couvre admin lourde + visiteurs publics. Au-delà,
+  // probable bot/script malveillant, 429 légitime.
   const ip = getClientIp(req);
-  const rl = await checkRateLimit(`vitals:${ip}`, { limit: 60, windowSec: 60 });
+  const rl = await checkRateLimit(`vitals:${ip}`, { limit: 300, windowSec: 60 });
   if (!rl.allowed) {
     return new Response(null, { status: 429 });
   }
