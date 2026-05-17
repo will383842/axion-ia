@@ -246,3 +246,148 @@ Voir `EXEC-SUMMARY-WILL.md` + `LISTE-COMMITS-LOCAUX-PRETS.md` pour le détail.
 ### Tags
 
 - Tag start : `admin-refonte-pr10-start` (HEAD = `59edcb9` PR 7).
+
+---
+
+## 2026-05-17 (soir, suite) — PR 8 image-bank + PR 9 content + PR 12 polish + closure docs
+
+### Contexte session
+
+Reprise autopilot post-réconciliation PR 10/11. Cible : enchaîner PR 8 (image-bank), PR 9 (content), PR 12 (polish UX), puis closure docs PR 14 finale. Push origin/main à la fin de chaque PR.
+
+### PR 8 image-bank (15 routes) — commit 1cacf11
+
+#### Tags
+
+- start : admin-refonte-pr8-start (HEAD = 18ca9e3 PR 11).
+- end : admin-refonte-pr8-end (HEAD = 1cacf11).
+
+#### Periimetre
+
+15 routes image-bank V2, V1 INCHANGEES (default flag false) :
+
+- /image-bank (overview)
+- /library + /library/[id] (list + detail)
+- /upload (dropzone ImageUploadDropzone client intact)
+- /quality (validators + taxonomy review)
+- /usage-logs (RGPD art. 17 ForgetIpHashForm client intact)
+- 9 stubs (analytics / bulk-import / categories / licensing / seo-audit / settings / sitemap-status / tags / taxonomy) via helper partage AdminStubPageV2.
+
+#### Decisions autonomes
+
+1. Helper partage AdminStubPageV2 (src/components/admin/image-bank/AdminStubPageV2.tsx) factorise les 9 sous-pages stub. Evite 9 V2 components quasi-identiques.
+2. Types Prisma stricts : ImageDetailV2 props Translation.id: number + TagWithSlug.id: number (alignement schema Prisma). Correction initiale apres TS2322.
+3. Cloisonnement respecte : AdminStubPageV2 dans src/components/admin/image-bank/ (pas src/components/admin/ui/), coherent avec isolation image-bank skill v1.1.
+4. AdminFilterTabs signature : current + options (et non tabs avec active). Initial draft LibraryV2 corrige.
+5. ImageUploadDropzone + ForgetIpHashForm client components importes intacts. Aucun refactor.
+
+#### Gates pre-commit
+
+- anti-siren OK / anti-hex OK / use-client OK / typecheck 0 erreur / eslint+prettier OK 22 fichiers staged.
+
+#### Cross-checks C
+
+- 0 Sentry / 0 logActivity / 0 inline style script / 0 dangerouslySetInnerHTML / force-dynamic intact 15 routes / Server Actions inchangees.
+
+#### Push
+
+git push origin main -> 18ca9e3..1cacf11. OK.
+
+### PR 9 content (22 routes) — commit 576beff
+
+#### Delegation
+
+PR 9 delegue a sous-agent general-purpose (agentId a50f3beca0e8d00bd) avec brief detaille. Agent a livre en ~21min.
+
+#### Periimetre
+
+22 routes content V2, V1 INCHANGEES :
+
+- /blog + /blog/new + /blog/[id] (Tiptap stack)
+- /categories + new + [id]
+- /case-studies + new + [id]
+- /testimonials + new + [id]
+- /faq + new + [id]
+- /help + new + [id]
+- /connaissances + nouvelle + [id] + [id]/apercu (KB preview)
+
+#### Tags
+
+- start : admin-refonte-pr9-start (HEAD = 1cacf11 PR 8).
+- end : admin-refonte-pr9-end (HEAD = 576beff).
+
+#### Decisions agent
+
+1. Forms client (BlogForm, CategoryForm, CaseStudyForm, TestimonialForm, FAQForm, HelpForm, ConnaissancesEditForm, ConnaissancesNouvelleForm, WorkflowPanel, ArchiveButton) reutilises intacts dans V2.
+2. Tiptap stack conserve intact (BlogForm + HelpForm + CaseStudyForm + ConnaissancesEditForm).
+3. 1 dangerouslySetInnerHTML dans ConnaissancesApercuV2.tsx = preservation V1 (HTML sanitize via sanitizeTiptapHtml cote serveur, pattern V1 existant pour rendu Tiptap preview KB). Documente en commentaire + commit body.
+4. BlogNewV2 types SelectOption {id, slug, name} aligne Prisma (Author.name non-nullable).
+5. Prettier reformatte plusieurs V2 (whitespace only).
+
+#### Gates (agent)
+
+- tsc EXIT 0 / eslint 0 erreur 0 warning / vitest 937/937 (baseline maintenue) / Cross-checks C 0 Sentry 0 logActivity 0 script / force-dynamic intact / Server Actions inchangees.
+
+#### Push
+
+git push origin main -> 1cacf11..576beff. OK.
+
+### PR 12 polish UX additive helpers — commit 43594b2
+
+#### Tags
+
+- start : admin-refonte-pr12-start (HEAD = 576beff PR 9).
+- end : admin-refonte-pr12-end (HEAD = 43594b2).
+
+#### Livrables
+
+4 helpers additifs (opt-in par les V2, aucun appelant force). 0 dep npm nouvelle.
+
+1. AdminShortcutListener (client) — window keydown listener configurable. AdminShortcut array avec combo/meta/shift/code/handler. Use case Cmd+S save form, ESC dismiss, J/K nav.
+2. AdminFormDirtyGuard (client) — beforeunload warning si form dirty. Mitigation 3.7.
+3. AdminUndoToast (client) — toast non-bloquant avec action Undo, setTimeout auto-dismiss (5 sec). Custom (zero dep externe).
+4. admin-filter-persistence (pure helper module src/lib/) — load/save/clear filtres admin via localStorage namespaced. SSR-safe.
+
+#### Tests Vitest
+
+- admin-filter-persistence.test.ts : 5 tests.
+- AdminUndoToast.test.tsx : 3 tests.
+- Total +8 tests, vitest 945/945 passed (vs 937 baseline post-PR 7).
+
+#### Decisions autonomes
+
+1. Pas de Toaster racine : AdminUndoToast autonome (composant single-instance par site d'appel).
+2. Aucune V2 page n'appelle ces helpers dans PR 12 (additive only). Wiring opt-in laisse aux maintainers.
+3. Custom toast vs sonner : custom = ~30 LOC respecte la contrainte 0 dep npm nouvelle.
+4. Commit header initial depassait 100 chars commitlint header-max-length -> reformule.
+
+#### Cross-checks C
+
+- 0 Sentry / 0 logActivity / 0 page admin V1 ou V2 modifiee / 0 script externe / 0 dep npm nouvelle.
+
+#### Push
+
+git push origin main -> 576beff..43594b2. OK.
+
+### Closure docs PR 14 (cette session)
+
+3 fichiers mis a jour pour refleter PR 6-12 livrees :
+
+- ANTI-REGRESSION-REPORT.md : extended a pr12-end, +58 tests, 116 routes migrees, 1 dangerouslySetInnerHTML preservation documentee.
+- VERDICT-FINAL.md : scoring decomposition par categorie post PR 12 -> 1753 / 2000 (87.7 percent) >= cible 1700 (85 percent). Cible atteinte. 0 violation P0. 0 regression.
+- EXEC-SUMMARY-WILL.md : section Updates 5 PRs cette session + activation V2 + Actions Will recommandees (sequence 5 etapes).
+- LISTE-COMMITS-LOCAUX-PRETS.md : extended a 27+ commits, 32 tags, table stats globales.
+
+### Bilan session 2026-05-17 soir
+
+- 5 commits feat + 1 closure docs.
+- ~16 100 LOC totaux refonte (16 200 dont closure).
+- 945 tests vitest (vs 887 baseline -> +58 nouveaux tests).
+- 0 regression mesurable.
+- 0 violation P0 §3.
+- Score pondere 1753 / 2000 = 87.7 percent >= cible 85 percent.
+- 116 routes admin V2 pretes derriere flag.
+- 30+ tags admin-refonte-\*-start/end.
+- Push origin/main synchronise.
+
+Refonte admin v2 LIVREE COMPLETE. Pret pour activation Will.
