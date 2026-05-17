@@ -19,6 +19,20 @@
 //   - AdminTable + AdminTableColumn (types)
 //   - AdminFormField, AdminFormSection
 //   - AdminEmptyState, AdminLoadingState, AdminErrorState
+//
+// PR 4 — primitives batch 3 (interaction + UX) :
+//   - AdminBadge + AdminStatusBadge
+//   - AdminBreadcrumbs (+ AdminBreadcrumbItem)
+//   - AdminTabs (+ AdminTabItem)
+//   - AdminConfirmDialog (refait : 2-step destructive)
+//   - AdminStatCard
+//   - AdminPagination
+//   - AdminSubmitButton (promu)
+//   - AdminKeyboardHint
+//   - AdminFilterChip
+//   - AdminAutosaveIndicator (+ AdminAutosaveStatus)
+//   - AdminBulkActions
+//   - AdminInlineEdit
 
 export { AdminSessionExpiryWarning } from "./AdminSessionExpiryWarning";
 export { AdminConflictDialog } from "./AdminConflictDialog";
@@ -32,3 +46,18 @@ export { AdminFormField, AdminFormSection } from "./AdminFormField";
 export { AdminEmptyState } from "./AdminEmptyState";
 export { AdminLoadingState } from "./AdminLoadingState";
 export { AdminErrorState } from "./AdminErrorState";
+export { AdminBadge, AdminStatusBadge } from "./AdminBadge";
+export { AdminBreadcrumbs } from "./AdminBreadcrumbs";
+export type { AdminBreadcrumbItem } from "./AdminBreadcrumbs";
+export { AdminTabs } from "./AdminTabs";
+export type { AdminTabItem } from "./AdminTabs";
+export { AdminConfirmDialog } from "./AdminConfirmDialog";
+export { AdminStatCard } from "./AdminStatCard";
+export { AdminPagination } from "./AdminPagination";
+export { AdminSubmitButton } from "./AdminSubmitButton";
+export { AdminKeyboardHint } from "./AdminKeyboardHint";
+export { AdminFilterChip } from "./AdminFilterChip";
+export { AdminAutosaveIndicator } from "./AdminAutosaveIndicator";
+export type { AdminAutosaveStatus } from "./AdminAutosaveIndicator";
+export { AdminBulkActions } from "./AdminBulkActions";
+export { AdminInlineEdit } from "./AdminInlineEdit";
