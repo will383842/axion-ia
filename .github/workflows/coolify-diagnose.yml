@@ -1,0 +1,141 @@
+name: Coolify Diagnose & Recover (autopilot)
+
+# Workflow utilitaire workflow_dispatch only.
+# Créé dans le cadre du runbook deploy recovery 2026-05-17.
+# Permet de diagnostiquer et de débloquer la file Coolify quand
+# un déploiement reste `queued` ou `in_progress` au-delà du raisonnable
+# (bug Coolify upstream : finished_at set mais status="in_progress"
+# bloquant le dispatcher Horizon — cf. _AUDIT/DEPLOY-RECOVERY-2026-05-17/).
+#
+# Toutes les sorties JSON sont masquées par les filtres de secret GH
+# Actions (le token Bearer est utilisé en header, jamais loggé).
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'list-deployments | dump-state | cancel-stuck | restart-app | cancel-uuid'
+        required: true
+        default: 'dump-state'
+        type: choice
+        options:
+          - dump-state
+          - list-deployments
+          - cancel-stuck
+          - restart-app
+          - cancel-uuid
+      target_uuid:
+        description: 'UUID cible (pour cancel-uuid). Optionnel pour les autres actions.'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -e
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing required secret: $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK."
+
+      - name: Run requested action
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          ACTION: ${{ inputs.action }}
+          TARGET: ${{ inputs.target_uuid }}
+        run: |
+          set -euo pipefail
+          AUTH="Authorization: Bearer ${COOLIFY_API_TOKEN}"
+
+          case "$ACTION" in
+            dump-state)
+              echo "==================== APPLICATIONS ===================="
+              curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/applications" \
+                | jq '[.[] | {uuid, name, status, fqdn, git_branch, build_pack, dockerfile_location, docker_registry_image_name}]'
+              echo ""
+              echo "==================== DEPLOYMENTS (last 15) ===================="
+              curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments" \
+                | jq '[.[0:15] | .[] | {uuid: (.deployment_uuid // .uuid), status, created_at, finished_at, application_uuid, application_name}]'
+              echo ""
+              echo "==================== SERVERS ===================="
+              curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/servers" \
+                | jq '[.[] | {uuid, name, ip, is_reachable, is_usable}]'
+              echo ""
+              echo "==================== TEAMS (token perms) ===================="
+              curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/teams" \
+                | jq '[.[] | {id, name, personal_team}]' || true
+              ;;
+
+            list-deployments)
+              echo "==================== DEPLOYMENTS (last 30) ===================="
+              curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments" \
+                | jq '[.[0:30] | .[] | {uuid: (.deployment_uuid // .uuid), status, created_at, finished_at}]'
+              ;;
+
+            cancel-stuck)
+              echo "==================== STUCK DEPLOYMENTS ===================="
+              # Cancel ALL queued + in_progress deployments. The Horizon dispatcher
+              # only pickups 1 in_progress per app — if a zombie is stuck, all queued
+              # ones below it never advance. Aggressively cancel everything so the
+              # next manual deploy starts on a clean queue.
+              STUCK_JSON=$(curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments" \
+                | jq -c '[.[] | select(.status == "in_progress" or .status == "queued") | {uuid: (.deployment_uuid // .uuid), status, created_at, application_uuid}]')
+              echo "Found stuck: $STUCK_JSON"
+              COUNT=$(echo "$STUCK_JSON" | jq 'length')
+              if [ "$COUNT" -eq 0 ]; then
+                echo "::notice::No stuck deployments — queue is clean."
+                exit 0
+              fi
+              echo "::warning::Cancelling $COUNT stuck deployment(s)…"
+              for uuid in $(echo "$STUCK_JSON" | jq -r '.[].uuid'); do
+                echo "→ Cancel $uuid"
+                # Coolify v4 endpoint accepts cancel via deployment_uuid path.
+                RESP=$(curl -sS -m 30 -X GET -H "$AUTH" \
+                  "${COOLIFY_URL}/api/v1/deployments/${uuid}/cancel" || true)
+                echo "  Response: $RESP"
+              done
+              echo ""
+              echo "==================== POST-CANCEL STATE ===================="
+              sleep 5
+              curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments" \
+                | jq '[.[0:10] | .[] | {uuid: (.deployment_uuid // .uuid), status, created_at, finished_at}]'
+              ;;
+
+            restart-app)
+              UUID="${TARGET:-$COOLIFY_APP_UUID}"
+              echo "Restarting application $UUID"
+              curl -sS -m 30 -H "$AUTH" \
+                "${COOLIFY_URL}/api/v1/applications/${UUID}/restart" | jq '.'
+              ;;
+
+            cancel-uuid)
+              if [ -z "$TARGET" ]; then
+                echo "::error::cancel-uuid requires target_uuid input"
+                exit 1
+              fi
+              echo "Cancelling deployment $TARGET"
+              curl -sS -m 30 -H "$AUTH" \
+                "${COOLIFY_URL}/api/v1/deployments/${TARGET}/cancel" | jq '.'
+              ;;
+
+            *)
+              echo "::error::Unknown action: $ACTION"
+              exit 1
+              ;;
+          esac

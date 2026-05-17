@@ -55,6 +55,9 @@ on:
       - "docs/**"
       - "_AUDIT/**"
       - ".gitignore"
+      - ".github/workflows/coolify-diagnose.yml"
+      - ".github/workflows/coolify-zombie-cleanup.yml"
+      - ".claude/**"
   workflow_dispatch:
     inputs:
       skip_deploy:
