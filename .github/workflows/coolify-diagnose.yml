@@ -106,8 +106,9 @@ jobs:
               echo "::warning::Cancelling $COUNT stuck deployment(s)…"
               for uuid in $(echo "$STUCK_JSON" | jq -r '.[].uuid'); do
                 echo "→ Cancel $uuid"
-                # Coolify v4 endpoint accepts cancel via deployment_uuid path.
-                RESP=$(curl -sS -m 30 -X GET -H "$AUTH" \
+                # Coolify v4 endpoint : POST (pas GET) — vérifié 2026-05-17 via
+                # `php artisan route:list` direct sur container coolify.
+                RESP=$(curl -sS -m 30 -X POST -H "$AUTH" \
                   "${COOLIFY_URL}/api/v1/deployments/${uuid}/cancel" || true)
                 echo "  Response: $RESP"
               done
@@ -131,7 +132,7 @@ jobs:
                 exit 1
               fi
               echo "Cancelling deployment $TARGET"
-              curl -sS -m 30 -H "$AUTH" \
+              curl -sS -m 30 -X POST -H "$AUTH" \
                 "${COOLIFY_URL}/api/v1/deployments/${TARGET}/cancel" | jq '.'
               ;;
 
