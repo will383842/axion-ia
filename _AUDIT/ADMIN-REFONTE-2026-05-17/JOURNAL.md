@@ -24,11 +24,11 @@
 
 ### Commits livrés (atomiques, sur `main` local)
 
-À renseigner après commit (SHA + sujet) :
+- `e900bc4` — `docs(admin-refonte): scaffolding _AUDIT/ADMIN-REFONTE-2026-05-17/`
+- `568d92e` — `feat(feature-flags): add ADMIN_V2_ENABLED toggle for admin refonte`
+- `67c57df` — `test(e2e): admin baseline screenshots (@baseline gated, 12 pages)`
 
-- `<sha>` — `docs(admin-refonte): scaffolding _AUDIT/ADMIN-REFONTE-2026-05-17/ + README + journal`
-- `<sha>` — `feat(feature-flags): add ADMIN_V2_ENABLED toggle for admin v2 migration`
-- `<sha>` — `test(e2e): admin baseline screenshots (@baseline gated, 12 pages)`
+Tous gates pre-commit verts (lint-staged, anti-siren, anti-hex, use-client:check, typecheck `tsc --noEmit` 0 erreur). Prettier a légèrement reformaté `README.md` (blank lines après headings) et `admin-baseline-screenshots.spec.ts` (wrap long array item) — pas de changement sémantique.
 
 ### Tags locaux créés
 
