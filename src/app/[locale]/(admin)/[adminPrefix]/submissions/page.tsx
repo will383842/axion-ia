@@ -5,6 +5,8 @@
 
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
 import { SubmissionFilters } from "./SubmissionFilters";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { SubmissionsV2 } from "./_v2/SubmissionsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +31,11 @@ const STATUS_LABELS: Record<string, string> = {
 export default async function SubmissionsListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
+
+  if (await isAdminV2Enabled()) {
+    return <SubmissionsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
+
   const result = await listSubmissionsAction({
     type: sp.type as never,
     status: sp.status as never,

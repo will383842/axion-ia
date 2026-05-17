@@ -9,6 +9,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { EcheanciersV2 } from "./_v2/EcheanciersV2";
 import { ScheduleProfileForm } from "./ScheduleProfileForm";
 import { ArchiveProfileButton } from "./ArchiveProfileButton";
 
@@ -33,6 +35,10 @@ export default async function EcheanciersPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const role = (session.user as { role?: string }).role ?? "reader";
+
+  if (await isAdminV2Enabled()) {
+    return <EcheanciersV2 adminPrefix={adminPrefix} role={role} />;
+  }
 
   const profiles = await prisma.paymentScheduleProfile.findMany({
     where: { archivedAt: null },

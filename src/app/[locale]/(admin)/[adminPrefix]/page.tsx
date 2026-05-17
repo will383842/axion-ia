@@ -18,6 +18,8 @@ import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { DashboardV2Wrapper } from "./_v2/DashboardV2Wrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -96,6 +98,19 @@ export default async function AdminDashboardPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) {
     redirect(`/fr/${adminPrefix}/login`);
+  }
+
+  // Refonte admin mai 2026 — bascule V2 derrière flag ADMIN_V2_ENABLED
+  // (ou cookie admin_v2=1 per-session). V1 par défaut.
+  if (await isAdminV2Enabled()) {
+    const role = (session.user as { role?: string }).role ?? "—";
+    return (
+      <DashboardV2Wrapper
+        adminPrefix={adminPrefix}
+        email={session.user.email ?? null}
+        role={role}
+      />
+    );
   }
 
   const now = new Date();

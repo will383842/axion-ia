@@ -20,6 +20,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ReservationsV2 } from "./_v2/ReservationsV2";
 import type { BookingStatus } from "../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -109,6 +111,10 @@ export default async function ReservationsListPage({ params, searchParams }: Pag
 
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <ReservationsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const rawStatus = sp.status ?? "active";
   const page = Math.max(1, parseInt(sp.page ?? "1", 10) || 1);

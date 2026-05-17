@@ -18,6 +18,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { PaiementsV2 } from "./_v2/PaiementsV2";
 import type {
   PaymentProvider,
   PaymentStatus,
@@ -87,6 +89,10 @@ export default async function PaiementsPage({ params, searchParams }: PageProps)
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <PaiementsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const status = sp.status as PaymentStatus | undefined;
   const provider = sp.provider as PaymentProvider | undefined;

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { DevisV2 } from "./_v2/DevisV2";
 import type { QuoteStatus } from "../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +59,10 @@ export default async function DevisListPage({ params, searchParams }: PageProps)
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <DevisV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const status = (sp.status ?? "all") as QuoteStatus | "all";
   const page = Math.max(1, parseInt(sp.page ?? "1", 10) || 1);

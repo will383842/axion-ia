@@ -4,6 +4,8 @@
 // croissant pour mettre les plus urgentes en haut. Affiche countdown 48h.
 
 import { listOptionsAction } from "@/features/admin-options/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { OptionsV2 } from "./_v2/OptionsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +45,11 @@ function expiryUrgency(expiresAt: Date, status: string): string {
 export default async function OptionsListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
+
+  if (await isAdminV2Enabled()) {
+    return <OptionsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
+
   const result = await listOptionsAction({
     status: sp.status as never,
     page: sp.page ? parseInt(sp.page, 10) : 1,

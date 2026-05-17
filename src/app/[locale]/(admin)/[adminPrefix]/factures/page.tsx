@@ -19,6 +19,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { FacturesV2 } from "./_v2/FacturesV2";
 import type { InvoiceStatus, InvoiceType } from "../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -83,6 +85,10 @@ export default async function FacturesListPage({ params, searchParams }: PagePro
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <FacturesV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const status = (sp.status ?? "all") as InvoiceStatus | "all";
   const type = sp.type as InvoiceType | undefined;
