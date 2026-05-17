@@ -9,12 +9,15 @@
 //   Les primitives publiques restent dans `src/components/ui/**`
 //   (extensibles uniquement, jamais modifiées).
 //
-// PR 1 — primitives livrées :
-//   - AdminSessionExpiryWarning (§3.6 mitigation)
-//   - AdminConflictDialog       (§3.7 mitigation)
+// PR 1 — mitigations §3.6 + §3.7 :
+//   - AdminSessionExpiryWarning, AdminConflictDialog
 //
-// PRs 2-4 ajouteront ~23 primitives supplémentaires
-// (AdminPageHeader, AdminTable, AdminFormField, …).
+// PR 2 — primitives batch 1 (layout + présentation) :
+//   - AdminPageShell, AdminPageHeader, AdminToolbar, AdminCard
 
 export { AdminSessionExpiryWarning } from "./AdminSessionExpiryWarning";
 export { AdminConflictDialog } from "./AdminConflictDialog";
+export { AdminPageShell } from "./AdminPageShell";
+export { AdminPageHeader } from "./AdminPageHeader";
+export { AdminToolbar } from "./AdminToolbar";
+export { AdminCard } from "./AdminCard";
