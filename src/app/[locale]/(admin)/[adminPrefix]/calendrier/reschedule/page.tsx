@@ -12,6 +12,8 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ReschedulePanel } from "./ReschedulePanel";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { RescheduleV2 } from "./_v2/RescheduleV2";
 import type { BookingStatus } from "../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -88,6 +90,32 @@ export default async function CalendarReschedulePage({ params, searchParams }: P
       },
     }),
   ]);
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <RescheduleV2
+        adminPrefix={adminPrefix}
+        year={year}
+        month={month}
+        periodStart={periodStart}
+        bookings={bookings.map((b) => ({
+          id: b.id,
+          bookingDate: b.bookingDate.toISOString(),
+          status: b.status,
+          interventionType: b.interventionType,
+          slotId: b.slotId,
+          companyName: b.fromSubmission?.companyName ?? b.submission?.companyName ?? "—",
+        }))}
+        slots={slots.map((s) => ({
+          id: s.id,
+          slotDate: s.slotDate.toISOString(),
+          status: s.status,
+          interventionType: s.interventionType,
+          blockedReason: s.blockedReason,
+        }))}
+      />
+    );
+  }
 
   const monthLabel = new Intl.DateTimeFormat("fr-FR", {
     month: "long",

@@ -16,6 +16,8 @@
 // modifier un outil → cliquer le lien externe et utiliser sa propre UI.
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { InfraV2 } from "./_v2/InfraV2";
 
 export const dynamic = "force-dynamic";
 
@@ -383,6 +385,10 @@ export default async function AdminInfraPage({ params }: PageProps) {
       paid: "0 € (managed by Coolify sur VPS)",
     },
   ];
+
+  if (await isAdminV2Enabled()) {
+    return <InfraV2 adminPrefix={adminPrefix} cards={cards} />;
+  }
 
   return (
     <section>

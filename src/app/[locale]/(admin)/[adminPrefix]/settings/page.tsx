@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listSettingsAction } from "@/features/admin-settings/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { SettingsListV2 } from "./_v2/SettingsListV2";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,10 @@ export default async function SettingsListPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const settings = await listSettingsAction();
+
+  if (await isAdminV2Enabled()) {
+    return <SettingsListV2 adminPrefix={adminPrefix} settings={settings} />;
+  }
 
   return (
     <section>

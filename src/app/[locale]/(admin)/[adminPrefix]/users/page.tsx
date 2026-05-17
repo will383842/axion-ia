@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listAdminUsersAction } from "@/features/admin-users/actions";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { UsersV2 } from "./_v2/UsersV2";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +38,20 @@ export default async function UsersListPage({ params, searchParams }: PageProps)
     search: sp.search,
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <UsersV2
+        adminPrefix={adminPrefix}
+        searchParams={sp}
+        items={result.items}
+        total={result.total}
+        page={result.page}
+        totalPages={result.totalPages}
+        isSuperAdmin={isSuperAdmin}
+      />
+    );
+  }
 
   return (
     <section>

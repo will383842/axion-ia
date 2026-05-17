@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getCalendarMonthAction } from "@/features/admin-calendar/actions";
 import { CalendarBlockPanel } from "./CalendarBlockPanel";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CalendrierV2 } from "./_v2/CalendrierV2";
 
 export const dynamic = "force-dynamic";
 
@@ -61,15 +63,28 @@ export default async function CalendarPage({ params, searchParams }: PageProps) 
   const month = sp.month ? parseInt(sp.month, 10) : now.getUTCMonth() + 1;
 
   const slots = await getCalendarMonthAction(year, month);
+
+  const role = (session.user as { role?: string }).role;
+  const canAct = role === "super_admin" || role === "admin";
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <CalendrierV2
+        adminPrefix={adminPrefix}
+        year={year}
+        month={month}
+        slots={slots}
+        canAct={canAct}
+      />
+    );
+  }
+
   const slotByDate = new Map(slots.map((s) => [s.date, s]));
 
   const grid = buildMonthGrid(year, month);
   const monthLabel = `${MONTH_LABELS[month - 1]} ${year}`;
   const prevMonth = month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
   const nextMonth = month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 };
-
-  const role = (session.user as { role?: string }).role;
-  const canAct = role === "super_admin" || role === "admin";
 
   return (
     <section>

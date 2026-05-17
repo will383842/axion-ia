@@ -21,6 +21,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { distanceAndBufferFromHub, distanceKm } from "@/lib/haversine";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { HeatmapV2 } from "./_v2/HeatmapV2";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +86,18 @@ export default async function CalendarHeatmapPage({ params, searchParams }: Page
       fromSubmission: { select: { companyName: true } },
     },
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <HeatmapV2
+        adminPrefix={adminPrefix}
+        year={year}
+        month={month}
+        periodStart={periodStart}
+        bookings={bookings}
+      />
+    );
+  }
 
   // Groupage par ville
   const byCity = new Map<

@@ -10,6 +10,8 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { setup2FAStartAction } from "@/features/admin-auth/actions";
 import { Setup2FAForm } from "./Setup2FAForm";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { Setup2FAV2 } from "./_v2/Setup2FAV2";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,10 @@ export default async function AdminSetup2FAPage({ params }: PageProps) {
   }
 
   const start = await setup2FAStartAction();
+
+  if (await isAdminV2Enabled()) {
+    return <Setup2FAV2 start={start} />;
+  }
 
   return (
     <section className="admin-2fa-section">
