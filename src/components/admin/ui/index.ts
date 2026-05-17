@@ -72,3 +72,9 @@ export type { AdminNotificationItem } from "./AdminNotificationsDropdown";
 // PR 6 — helper consumer migrations pages main
 export { AdminFilterTabs } from "./AdminFilterTabs";
 export type { AdminFilterTabOption } from "./AdminFilterTabs";
+
+// PR 12 — polish UX (additive only, opt-in par les V2)
+export { AdminShortcutListener } from "./AdminShortcutListener";
+export type { AdminShortcut } from "./AdminShortcutListener";
+export { AdminFormDirtyGuard } from "./AdminFormDirtyGuard";
+export { AdminUndoToast } from "./AdminUndoToast";
