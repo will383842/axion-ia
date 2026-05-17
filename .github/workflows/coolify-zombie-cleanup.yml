@@ -1,0 +1,83 @@
+name: Coolify Zombie Deploy Cleanup
+
+# Cron daily — cancel les déploiements Coolify restés `in_progress`
+# pendant plus de 30 minutes (signe certain de zombie : bug upstream
+# Coolify où finished_at est set mais status reste in_progress,
+# bloquant le dispatcher Horizon — voir _AUDIT/DEPLOY-RECOVERY-2026-05-17/
+# 02-root-cause.md cause #2).
+#
+# Programmé 03:30 UTC juste après disk-cleanup-prod.yml (03:00 UTC)
+# pour traiter dans l'ordre : disque libéré → queue libérée.
+
+on:
+  schedule:
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Lister les zombies sans les canceller (debug)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+        run: |
+          set -e
+          for v in COOLIFY_API_TOKEN COOLIFY_URL; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing required secret: $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK."
+
+      - name: Cancel stuck in_progress deployments > 30 min
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          AUTH="Authorization: Bearer ${COOLIFY_API_TOKEN}"
+          NOW=$(date -u +%s)
+          THRESHOLD=$((NOW - 1800))
+          echo "Now (UTC epoch): $NOW"
+          echo "Threshold (now - 30 min): $THRESHOLD"
+
+          STUCK=$(curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments" \
+            | jq -r --argjson th "$THRESHOLD" \
+                '[.[] | select(.status == "in_progress" and ((.created_at // "1970-01-01T00:00:00Z") | fromdateiso8601) < $th) | (.deployment_uuid // .uuid)]
+                  | .[]')
+
+          if [ -z "${STUCK}" ]; then
+            echo "::notice::No zombies found (queue clean)"
+            exit 0
+          fi
+
+          COUNT=$(echo "${STUCK}" | wc -l)
+          echo "::warning::Found ${COUNT} zombie deployment(s) older than 30 min"
+
+          if [ "${DRY_RUN:-false}" = "true" ]; then
+            echo "::notice::DRY RUN mode — listing only, no cancel"
+            echo "${STUCK}"
+            exit 0
+          fi
+
+          for uuid in ${STUCK}; do
+            echo "→ Cancelling zombie ${uuid}"
+            curl -sS -m 30 -X GET -H "$AUTH" \
+              "${COOLIFY_URL}/api/v1/deployments/${uuid}/cancel" \
+              | jq -c '. // {}' || true
+          done
+
+          echo "::notice::Cleanup pass complete — ${COUNT} zombies cancelled"

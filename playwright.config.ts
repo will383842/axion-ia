@@ -24,14 +24,21 @@ export default defineConfig({
     { name: "mobile-chrome", use: { ...devices["Pixel 7"] } },
     { name: "mobile-safari", use: { ...devices["iPhone 14 Pro"] } },
   ],
-  ...(isCI
+  // Phase 8.bis Point 4 — webServer CI-aware (runbook deploy recovery
+  // 2026-05-17). Local : `pnpm dev` (HMR, vitest watch-friendly).
+  // CI : `pnpm start` après `pnpm build` (réalité prod) — nécessite
+  // que le job CI fasse un build préalable (gate-b step "Build").
+  // Override via E2E_BASE_URL (déjà lu par `use.baseURL`) — skip
+  // l'attribut webServer entièrement plutôt que le set à undefined
+  // (exactOptionalPropertyTypes true).
+  ...(process.env["E2E_BASE_URL"]
     ? {}
     : {
         webServer: {
-          command: "pnpm dev",
+          command: isCI ? "pnpm start" : "pnpm dev",
           port: 3000,
-          reuseExistingServer: true,
-          timeout: 120_000,
+          reuseExistingServer: !isCI,
+          timeout: 180_000,
         },
       }),
 });

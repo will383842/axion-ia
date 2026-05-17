@@ -38,6 +38,15 @@ const cdnHeaders = [
     key: "Vary",
     value: "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding",
   },
+  // Phase 8.bis bonus — runbook deploy recovery 2026-05-17 §15.3.
+  // Header `x-axion-build-sha` exposé sur toutes les routes pour permettre
+  // l'assertion `prod SHA === HEAD main` post-deploy (smoke 30+ routes).
+  // BUILD_SHA est injecté via build-arg dans le Dockerfile depuis github.sha
+  // dans deploy-coolify.yml. Fallback `dev` en local sans build prod.
+  {
+    key: "x-axion-build-sha",
+    value: process.env["BUILD_SHA"] ?? "dev",
+  },
 ];
 
 // Sprint SEO 2026-05-14 — BUILD_TIME stable pour `lastModified` sitemap.

@@ -119,6 +119,12 @@ RUN pnpm prisma:generate
 # cold start. Audit 2026-05-15 — wire défini par seo.ts + sitemap.ts existant.
 ARG BUILD_TIME
 ENV BUILD_TIME=${BUILD_TIME}
+# Phase 8.bis bonus — runbook deploy recovery 2026-05-17 §15.3.
+# BUILD_SHA = github.sha propagé via deploy-coolify.yml build-args.
+# Utilisé par next.config.ts headers pour exposer `x-axion-build-sha`
+# (assertion prod SHA === HEAD main au smoke 30+ routes).
+ARG BUILD_SHA
+ENV BUILD_SHA=${BUILD_SHA:-dev}
 # Sprint recovery 2026-05-16 build #5 : cache mount .next/cache retiré
 # pour limiter le peak disque GH Actions. Coût : +2-3 min sur builds
 # successifs (webpack rebuild from scratch), gain : ~10-15 GB de peak

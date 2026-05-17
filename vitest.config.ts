@@ -23,7 +23,9 @@ export default defineConfig({
     exclude: ["node_modules", ".next", "tests/e2e/**", "tests/integration/**"],
     coverage: {
       provider: "v8",
-      reporter: ["text", "html", "lcov"],
+      // json-summary requis par scripts/ci/coverage-ratchet.ts
+      // (Phase 8.bis Point 1 — runbook deploy recovery 2026-05-17).
+      reporter: ["text", "html", "lcov", "json-summary"],
       include: ["src/**/*.{ts,tsx}"],
       exclude: [
         "src/**/*.{test,spec}.{ts,tsx}",
