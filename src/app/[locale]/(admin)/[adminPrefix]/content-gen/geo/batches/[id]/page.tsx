@@ -7,6 +7,8 @@
 
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; id: string }>;
 }

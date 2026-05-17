@@ -114,6 +114,19 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/actions\/knowledge\/update-entry\.ts$/,
   // Tests co-located workers content-* (__tests__/)
   /^src\/server\/queue\/workers\/__tests__\/content-.*\.spec\.ts$/,
+  // Exceptions ajoutées 2026-05-18 (audit verif-fix-deploy refonte admin V2).
+  // Ces fichiers mentionnent "content-gen" uniquement comme group/label dans
+  // la nav SSOT v2 (`src/lib/admin-nav.ts` PR 9) ou comme placeholder loading
+  // skeleton générique. Pas de couplage code réel — refs UI/screenshot/test
+  // baseline uniquement.
+  /^src\/lib\/admin-nav\.ts$/,
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/loading\.tsx$/,
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/web-vitals\/_v2\/WebVitalsV2\.tsx$/,
+  /^src\/components\/admin\/ui\/AdminPageShell\.tsx$/,
+  /^src\/components\/admin\/ui\/AdminSessionExpiryWarning\.tsx$/,
+  /^src\/components\/admin\/ui\/AdminStatCard\.tsx$/,
+  /^src\/components\/admin\/ui\/AdminSubmitButton\.tsx$/,
+  /^tests\/e2e\/admin-baseline-screenshots\.spec\.ts$/,
 ];
 
 /**

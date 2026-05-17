@@ -103,6 +103,16 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/components\/sections\/PressImageBank\.tsx$/,
   // GH Actions workflow — peut mentionner image-bank (build commits, etc.)
   /^\.github\/workflows\//,
+  // Exceptions ajoutées 2026-05-18 (audit verif-fix-deploy refonte admin V2).
+  // Nav SSOT v2 (`src/lib/admin-nav.ts` PR 9) référence le groupe "image-bank"
+  // comme label, loading.tsx skeleton générique, .env.ci.example liste env vars,
+  // tests baseline screenshots, et le sister isolation-check content-gen.
+  // Pas de couplage code réel.
+  /^src\/lib\/admin-nav\.ts$/,
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/loading\.tsx$/,
+  /^\.env\.ci\.example$/,
+  /^scripts\/content-gen\/isolation-check\.ts$/,
+  /^tests\/e2e\/admin-baseline-screenshots\.spec\.ts$/,
 ];
 
 const IMAGE_BANK_MARKERS: ReadonlyArray<string> = [

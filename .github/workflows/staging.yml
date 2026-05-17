@@ -16,10 +16,15 @@ jobs:
     environment:
       name: staging
       url: https://staging.axion-ia.com
+    env:
+      # Audit verif-fix-deploy 2026-05-18 — GitHub Actions interdit la référence
+      # directe d'un secret dans une condition `if:` (parser rejette tout le
+      # workflow). On bascule la présence du secret via une env var step-level.
+      HAS_COOLIFY_STAGING_WEBHOOK: ${{ secrets.COOLIFY_STAGING_WEBHOOK != '' && 'yes' || 'no' }}
     steps:
       - uses: actions/checkout@v4
       - name: Trigger Coolify webhook
-        if: ${{ secrets.COOLIFY_STAGING_WEBHOOK != '' }}
+        if: env.HAS_COOLIFY_STAGING_WEBHOOK == 'yes'
         run: |
           curl -fsS -X POST "${{ secrets.COOLIFY_STAGING_WEBHOOK }}" \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
