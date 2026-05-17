@@ -119,24 +119,33 @@ export function buildProductMetadata({
   // signaler à Google une alternate EN qui répond 301. Quand EN sera
   // réactivé (EN_LOCALE_ENABLED=true), hreflang="en" revient automatique.
   const enDisabled = isEnLocaleDisabled();
+  // Sprint Web Vitals fix 2026-05-17 — normalize canonical (strip trailing
+  // slash sauf root pour éviter Lighthouse `canonical` audit fail).
+  // Next.js 16 defaults trailingSlash=false : `/fr/` doit pointer canonical
+  // `/fr` (sans slash) pour matcher la canonical URL servie. Sinon Lighthouse
+  // détecte un mismatch entre URL testée (sans slash) et canonical (avec).
+  const normalizePath = (p: string): string => (p === "/" ? "" : p.replace(/\/+$/, ""));
+  const frNorm = normalizePath(fr);
+  const enNorm = normalizePath(en);
+  const pathNorm = normalizePath(path);
   const languages: Record<string, string> = {
-    fr: `/fr${fr}`,
-    "x-default": `/fr${fr}`,
+    fr: `/fr${frNorm}`,
+    "x-default": `/fr${frNorm}`,
   };
   if (!enDisabled) {
-    languages.en = `/en${en}`;
+    languages.en = `/en${enNorm}`;
   }
   return {
     title,
     description,
     alternates: {
-      canonical: `/${locale}${path}`,
+      canonical: `/${locale}${pathNorm}`,
       languages,
     },
     openGraph: {
       type: "website",
       locale: locale === "fr" ? "fr_FR" : "en_US",
-      url: `${SITE_URL}/${locale}${path}`,
+      url: `${SITE_URL}/${locale}${pathNorm}`,
       title,
       description,
       siteName: "Axion-IA",
