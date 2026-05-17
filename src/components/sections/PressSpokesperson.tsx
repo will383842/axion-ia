@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 interface SpokespersonCard {
@@ -40,10 +41,16 @@ export function PressSpokesperson({ spokespersons, labels }: PressSpokespersonPr
           className="border-border bg-paper flex flex-col rounded-xl border p-7 sm:p-8"
         >
           <div className="flex items-center gap-5">
-            <div className="bg-sand text-fg-muted border-border flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border">
+            <div className="bg-sand text-fg-muted border-border relative flex aspect-square h-20 w-20 items-center justify-center overflow-hidden rounded-full border">
               {p.photoUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.photoUrl} alt={p.name} className="h-full w-full object-cover" />
+                <Image
+                  src={p.photoUrl}
+                  alt={p.name}
+                  width={80}
+                  height={80}
+                  sizes="80px"
+                  className="h-full w-full object-cover"
+                />
               ) : (
                 <span className="text-2xl font-medium" style={{ fontFamily: "var(--font-serif)" }}>
                   {p.name.charAt(0)}

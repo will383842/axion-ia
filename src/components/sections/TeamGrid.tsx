@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface TeamMember {
@@ -21,12 +22,17 @@ export function TeamGrid({ members, className }: TeamGridProps) {
     <ul className={cn("grid gap-10 sm:grid-cols-2 lg:grid-cols-3", className)}>
       {members.map((member) => (
         <li key={member.id} className="border-border-strong flex flex-col gap-5 border-t pt-6">
-          <div className="bg-sand text-fg-muted border-border flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border">
+          {/* aspect-square + dimensions explicites = anti-CLS (Lighthouse audit 2026-05-17). */}
+          <div className="bg-sand text-fg-muted border-border relative flex aspect-square h-20 w-20 items-center justify-center overflow-hidden rounded-full border">
             {member.photoUrl ? (
-              // Plain <img> — Sprint 5 swaps to next/image once we have
-              // real photos and a CDN policy in place.
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={member.photoUrl} alt={member.name} className="h-full w-full object-cover" />
+              <Image
+                src={member.photoUrl}
+                alt={member.name}
+                width={80}
+                height={80}
+                sizes="80px"
+                className="h-full w-full object-cover"
+              />
             ) : (
               <span className="text-2xl font-medium" style={{ fontFamily: "var(--font-serif)" }}>
                 {member.name.charAt(0)}

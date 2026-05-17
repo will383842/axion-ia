@@ -36,20 +36,32 @@ export type ConsentValue = "accepted" | "declined" | "unknown";
 
 export function readAnalyticsConsent(): ConsentValue {
   if (typeof window === "undefined") return "unknown";
-  const stored = window.localStorage.getItem(ANALYTICS_CONSENT_KEY);
-  const ts = Number(window.localStorage.getItem(ANALYTICS_CONSENT_TS_KEY) ?? "0");
-  if (!stored) return "unknown";
-  if (ts && Date.now() - ts > ANALYTICS_CONSENT_EXPIRY_MS) {
-    // Consent expiré CNIL — re-demander.
+  try {
+    const stored = window.localStorage.getItem(ANALYTICS_CONSENT_KEY);
+    const ts = Number(window.localStorage.getItem(ANALYTICS_CONSENT_TS_KEY) ?? "0");
+    if (!stored) return "unknown";
+    if (ts && Date.now() - ts > ANALYTICS_CONSENT_EXPIRY_MS) {
+      // Consent expiré CNIL — re-demander.
+      return "unknown";
+    }
+    return stored === "accepted" ? "accepted" : "declined";
+  } catch {
+    // Sprint A11y 2026-05-17 — localStorage peut throw en mode privé
+    // Safari historique ou si quota dépassé. Fail-soft = "unknown" pour
+    // éviter erreurs console (Lighthouse errors-in-console audit).
     return "unknown";
   }
-  return stored === "accepted" ? "accepted" : "declined";
 }
 
 function writeConsent(value: "accepted" | "declined"): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
-  window.localStorage.setItem(ANALYTICS_CONSENT_TS_KEY, String(Date.now()));
+  try {
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+    window.localStorage.setItem(ANALYTICS_CONSENT_TS_KEY, String(Date.now()));
+  } catch {
+    // Sprint A11y 2026-05-17 — fail-soft (mode privé / quota).
+    return;
+  }
   // Dispatch un événement custom (le `storage` natif ne fire que sur les
   // AUTRES onglets — il faut un custom event sur l'onglet courant pour
   // que `useSyncExternalStore` resubscribe re-render immédiatement).

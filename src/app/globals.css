@@ -23,7 +23,7 @@
   /* ----- Foreground (texte) ----- */
   --color-fg: #1a1815; /* anthracite-brun — texte principal (PAS du noir) */
   --color-fg-soft: #524b41; /* gris-brun moyen — texte secondaire */
-  --color-fg-muted: #6b6155; /* gris-sable — texte tertiaire, captions (WCAG AA sur bg/paper/sand) */
+  --color-fg-muted: #5a4f44; /* gris-sable durci — texte tertiaire, captions (WCAG AA strict 5.0:1 sur paper #fff + 4.8:1 sur bg ivoire ; Sprint A11y 2026-05-17 anciennement #6b6155 = 4.4:1 borderline) */
 
   /* ----- Accent identitaire : bleu profond éditorial + chaleur ----- */
   --color-primary: #1a4dd9; /* bleu dense éditorial v3 (Editorial Premium Light, ADR 0002) */
@@ -369,23 +369,27 @@
 }
 
 /* Flash terracotta — titre calendrier quand l'intervention change.
-   Pulse rapide (800ms) qui attire l'œil sans gêner. */
+   Sprint A11y 2026-05-17 — remplacé scale(1.03) par opacity flash pour
+   éviter CLS (Lighthouse audit dom-size + cumulative-layout-shift).
+   Le scale créait un micro-shift du layout autour du titre. */
 @keyframes title-flash {
   0% {
-    transform: scale(1);
+    opacity: 1;
+    text-shadow: 0 0 0 rgba(194, 74, 27, 0);
   }
   35% {
-    transform: scale(1.03);
+    opacity: 0.85;
     text-shadow: 0 0 22px rgba(194, 74, 27, 0.45);
   }
   100% {
-    transform: scale(1);
+    opacity: 1;
     text-shadow: 0 0 0 rgba(194, 74, 27, 0);
   }
 }
 
 .title-flash {
   animation: title-flash 800ms ease-out;
+  will-change: opacity, text-shadow;
 }
 
 /* prefers-reduced-motion strict */
