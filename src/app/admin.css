@@ -1,0 +1,140 @@
+/* =============================================================
+ * Axion-IA · Admin Design System tokens v1 (Mai 2026)
+ *
+ * Refonte admin mai 2026 — ADR 0028 + _AUDIT/ADMIN-REFONTE-2026-05-17/
+ *
+ * IMPORTANT :
+ *  - Ce fichier est importé UNIQUEMENT par
+ *    src/app/[locale]/(admin)/[adminPrefix]/layout.tsx (cloisonnement strict).
+ *  - Tokens préfixés `--*-admin-*` pour éviter tout conflit avec globals.css.
+ *  - Les hex codes sont autorisés ici (le linter anti-hex exclut les .css).
+ *  - JAMAIS modifier globals.css `@theme` (intouchable, doctrine ADR 0028).
+ *  - JAMAIS importer ce fichier hors du layout admin (gate isolation-check).
+ *
+ * Doctrine visuelle : « console métier dense, productive, sobre »
+ * Références : Linear, Vercel Dashboard, Stripe Dashboard.
+ * Light only (pas de dark mode admin).
+ * =============================================================*/
+
+@layer admin-tokens {
+  :where(.admin-layout, .admin-v2) {
+    /* ----- Surfaces ----- */
+    --color-admin-bg: #f7f5f0; /* canvas admin légèrement plus froid que public */
+    --color-admin-paper: #ffffff; /* surface cards/tables */
+    --color-admin-paper-alt: #faf8f3; /* alt rows tables, équivalent --color-bg public */
+    --color-admin-surface-hover: #f0e9da; /* hover rows = --color-sand public */
+    --color-admin-border: #e5ddc8; /* = --color-border public */
+    --color-admin-border-strong: #c8bda0; /* dividers marqués */
+
+    /* ----- Foreground ----- */
+    --color-admin-fg: #1a1815; /* anthracite-brun = --color-fg public */
+    --color-admin-fg-soft: #524b41; /* gris-brun moyen = --color-fg-soft */
+    --color-admin-fg-muted: #5a4f44; /* tertiaire = --color-fg-muted */
+    --color-admin-fg-disabled: #a89e8d; /* WCAG 3:1 sur paper */
+
+    /* ----- Status (étend Design.md sans conflit public) ----- */
+    --color-admin-success: #2f7d3a; /* vert plus saturé que --color-sage pour distinction badges */
+    --color-admin-success-soft: #e6f1e2;
+    --color-admin-success-fg: #1a4720;
+
+    --color-admin-warning: #a8651b; /* ambré pour distinguer de terracotta éditoriale */
+    --color-admin-warning-soft: #fbeed4;
+    --color-admin-warning-fg: #5c3408;
+
+    --color-admin-destructive: #b13a2b; /* rouge-brique destructive (vs --color-error site) */
+    --color-admin-destructive-soft: #f7e1dd;
+    --color-admin-destructive-fg: #6a1c10;
+
+    --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
+    --color-admin-info-soft: #e8efff; /* = --color-primary-soft */
+    --color-admin-info-fg: #ffffff;
+
+    --color-admin-neutral: #6b6155;
+    --color-admin-neutral-soft: #ede8db;
+
+    /* ----- Spacing dense (4-12 prioritaire admin, vs public 8-64) ----- */
+    --space-admin-1: 2px;
+    --space-admin-2: 4px;
+    --space-admin-3: 6px;
+    --space-admin-4: 8px;
+    --space-admin-5: 12px;
+    --space-admin-6: 16px;
+    --space-admin-7: 24px;
+    --space-admin-8: 32px;
+    --space-admin-9: 48px;
+
+    /* ----- Typography (11-14 dominants vs public 14-18) ----- */
+    --text-admin-xs: 11px;
+    --text-admin-sm: 12px;
+    --text-admin-md: 13px;
+    --text-admin-base: 14px;
+    --text-admin-lg: 16px;
+    --text-admin-xl: 20px;
+    --text-admin-2xl: 24px;
+    --lh-admin-tight: 1.35;
+    --lh-admin-body: 1.5;
+    --lh-admin-loose: 1.65;
+
+    /* ----- Border radius (4-12 max vs public 12-16) ----- */
+    --radius-admin-sm: 4px;
+    --radius-admin-md: 6px;
+    --radius-admin-lg: 8px;
+    --radius-admin-xl: 12px;
+
+    /* ----- Shadows (elevation 1-4, subtles, pas de gros shadow) ----- */
+    --shadow-admin-1: 0 1px 0 rgb(0 0 0 / 0.04);
+    --shadow-admin-2: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
+    --shadow-admin-3: 0 4px 10px rgb(0 0 0 / 0.06), 0 2px 4px rgb(0 0 0 / 0.04);
+    --shadow-admin-4: 0 12px 24px rgb(0 0 0 / 0.1), 0 4px 8px rgb(0 0 0 / 0.06);
+
+    /* ----- Z-index ----- */
+    --z-admin-base: 0;
+    --z-admin-sticky: 10;
+    --z-admin-dropdown: 50;
+    --z-admin-modal: 100;
+    --z-admin-toast: 500;
+
+    /* ----- Targets size (WCAG 2.2 §2.5.8) ----- */
+    --target-admin-min-desktop: 24px;
+    --target-admin-min-mobile: 44px;
+
+    /* ----- Transition timings ----- */
+    --duration-admin-fast: 80ms;
+    --duration-admin-base: 160ms;
+    --duration-admin-slow: 240ms;
+    --easing-admin: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* =============================================================
+ * Fix P0 audit Phase 1 — sidebar active link CSS (A1 finding #1).
+ * `aria-current="page"` est injecté côté client (AdminSidebar.tsx:58)
+ * mais sans styling associé jusqu'à PR 1. Patch minimal ici.
+ * =============================================================*/
+@layer admin-fixes {
+  .admin-nav-link[aria-current="page"] {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-weight: 500;
+    border-left: 3px solid var(--color-primary);
+    padding-left: 7px;
+  }
+
+  /* Fix P0 audit A5 #4 — target size WCAG 2.2 §2.5.8 sur .admin-nav-link */
+  .admin-nav-link {
+    min-height: 32px; /* 32px desktop, dépasse les 24px requis */
+  }
+}
+
+/* =============================================================
+ * Reduced motion strict (audit A5 critère 8 — déjà conforme globals.css
+ * mais on étend explicitement aux composants admin v2).
+ * =============================================================*/
+@media (prefers-reduced-motion: reduce) {
+  :where(.admin-v2) *,
+  :where(.admin-v2) *::before,
+  :where(.admin-v2) *::after {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}

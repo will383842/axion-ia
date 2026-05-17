@@ -1,0 +1,95 @@
+/* =============================================================
+ * Axion-IA · Admin print styles (Mai 2026)
+ *
+ * Refonte admin mai 2026 — ADR 0028 §7.
+ *
+ * Importé UNIQUEMENT par
+ *   src/app/[locale]/(admin)/[adminPrefix]/layout.tsx
+ *
+ * Objectif : permettre l'impression propre (Cmd+P) des pages admin
+ * critiques — factures, devis, échéanciers — en masquant la chrome
+ * (header, sidebar, actions) et en passant les montants en monospace.
+ *
+ * Audit Phase 1 #5 confirmation : 0 occurrence `@media print` dans
+ * src/ → factures/devis cassés à l'impression jusqu'à PR 1.
+ *
+ * Tests manuels recommandés : Cmd+P sur 3 pages représentatives :
+ *   /<adminPrefix>/factures/[id]
+ *   /<adminPrefix>/devis/[id]
+ *   /<adminPrefix>/echeanciers
+ * =============================================================*/
+
+@media print {
+  /* Masquer la chrome admin */
+  .admin-header,
+  .admin-sidebar,
+  .admin-cmdk-trigger,
+  .admin-cmdk-dialog,
+  .admin-bulk-actions,
+  .admin-no-print,
+  [data-admin-no-print],
+  nav[aria-label="Navigation admin"] {
+    display: none !important;
+  }
+
+  /* Layout pleine page */
+  .admin-shell,
+  .admin-layout {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .admin-main,
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Lisibilité texte impression */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  /* Monospace pour montants (facture / devis / échéancier) */
+  .admin-invoice-amount,
+  .admin-quote-amount,
+  .admin-payment-amount,
+  .currency,
+  [data-admin-amount],
+  .admin-table td.amount {
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Évite les page breaks au milieu des sections critiques */
+  .admin-invoice-block,
+  .admin-quote-block,
+  .admin-section-no-break,
+  table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Liens : afficher l'URL après le texte (utile pour PDF/papier) */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555555;
+  }
+
+  /* Mais pas pour liens internes ancrés */
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+
+  /* Page setup */
+  @page {
+    margin: 1.5cm;
+  }
+}

@@ -13,12 +13,24 @@
 // affichée que pour les utilisateurs authentifiés (la page /login affiche
 // son propre layout simplifié via children).
 
+// Refonte admin mai 2026 — PR 1 (ADR 0028) :
+//   - Import admin.css (tokens préfixés --color-admin-* etc., cloisonné admin).
+//   - Import print.css (mediaquery print pour factures/devis/échéanciers).
+//   - buildNav extrait vers src/lib/admin-nav.ts (SSOT, audit A1 finding #4).
+//   - Mount AdminSessionExpiryWarning (mitigation §3.6 — heartbeat 5min).
+// V1 visuel intact ; les ajouts sont passifs jusqu'à la PR 5/6.
+
 import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import type { Locale } from "@/i18n/routing";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminSessionExpiryWarning } from "@/components/admin/ui";
+import { buildAdminNav } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
+
+import "@/app/admin.css";
+import "@/app/print.css";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +42,10 @@ interface AdminLayoutProps {
 // P2-25 audit E2E NAV+CTA 2026-05-15 — markup sidebar extrait dans
 // `components/admin/AdminSidebar.tsx` (client component pour aria-current
 // dynamique). Le layout reste serveur + propage la nav via prop.
+//
+// Refonte admin mai 2026 PR 1 — buildNav() relocalisé dans
+// src/lib/admin-nav.ts (SSOT, consommé aussi par AdminCommandPalette
+// après PR 5). Le wrapper local préserve la signature historique.
 interface NavItem {
   href: string;
   label: string;
@@ -38,81 +54,9 @@ interface NavItem {
 }
 
 function buildNav(adminPrefix: string): NavItem[] {
-  const base = `/fr/${adminPrefix}`;
-  return [
-    // ── main ─────────────────────────────────────────────────────────────
-    { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main" },
-    { href: `${base}/calendrier`, label: "Calendrier", icon: "📅", group: "main" },
-    { href: `${base}/reservations`, label: "Réservations", icon: "📋", group: "main" },
-    { href: `${base}/devis`, label: "Devis", icon: "📄", group: "main" },
-    { href: `${base}/factures`, label: "Factures", icon: "🧾", group: "main" },
-    { href: `${base}/paiements`, label: "Paiements", icon: "💶", group: "main" },
-    { href: `${base}/echeanciers`, label: "Échéanciers", icon: "📅", group: "main" },
-    { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
-    { href: `${base}/submissions`, label: "Soumissions", icon: "📥", group: "main" },
-    // ── contenu ──────────────────────────────────────────────────────────
-    { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
-    { href: `${base}/content-gen`, label: "Générateur contenus", icon: "🧠", group: "content" },
-    { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
-    { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
-    { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },
-    { href: `${base}/testimonials`, label: "Témoignages", icon: "💬", group: "content" },
-    { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
-    { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
-    // ── banque d'images (image-bank V1) ──────────────────────────────────
-    { href: `${base}/image-bank`, label: "Overview", icon: "🖼️", group: "image-bank" },
-    { href: `${base}/image-bank/library`, label: "Library", icon: "📚", group: "image-bank" },
-    { href: `${base}/image-bank/upload`, label: "Upload", icon: "⬆️", group: "image-bank" },
-    {
-      href: `${base}/image-bank/bulk-import`,
-      label: "Bulk import CSV",
-      icon: "📦",
-      group: "image-bank",
-    },
-    {
-      href: `${base}/image-bank/quality`,
-      label: "Quality queue",
-      icon: "🔍",
-      group: "image-bank",
-    },
-    {
-      href: `${base}/image-bank/analytics`,
-      label: "Analytics",
-      icon: "📊",
-      group: "image-bank",
-    },
-    {
-      href: `${base}/image-bank/categories`,
-      label: "Categories",
-      icon: "🏷️",
-      group: "image-bank",
-    },
-    { href: `${base}/image-bank/tags`, label: "Tags", icon: "🔖", group: "image-bank" },
-    {
-      href: `${base}/image-bank/usage-logs`,
-      label: "Usage logs (RGPD)",
-      icon: "🛡️",
-      group: "image-bank",
-    },
-    {
-      href: `${base}/image-bank/settings`,
-      label: "Settings",
-      icon: "⚙️",
-      group: "image-bank",
-    },
-    // ── engagement ───────────────────────────────────────────────────────
-    { href: `${base}/newsletter`, label: "Newsletter", icon: "📧", group: "engagement" },
-    // ── ops & monitoring ─────────────────────────────────────────────────
-    { href: `${base}/analytics`, label: "Analytics & SEO", icon: "📊", group: "ops" },
-    { href: `${base}/web-vitals`, label: "Web Vitals", icon: "📈", group: "ops" },
-    { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
-    { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },
-    // ── système ──────────────────────────────────────────────────────────
-    { href: `${base}/users`, label: "Utilisateurs", icon: "👥", group: "system" },
-    { href: `${base}/activity-logs`, label: "Activity logs", icon: "📜", group: "system" },
-    { href: `${base}/settings`, label: "Paramètres", icon: "⚙️", group: "system" },
-    { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "🔐", group: "system" },
-  ];
+  // Délègue à la SSOT (src/lib/admin-nav.ts) pour éviter le drift avec
+  // AdminCommandPalette qui consommera la même source en PR 5.
+  return buildAdminNav(adminPrefix) as NavItem[];
 }
 
 export default async function AdminLayout({ children, params }: AdminLayoutProps) {
@@ -154,6 +98,10 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
         {showSidebar && <AdminSidebar nav={nav} />}
         <main className="admin-main">{children}</main>
       </div>
+      {/* Refonte PR 1 — mitigation §3.6 : heartbeat session 5min, modal
+          non-bloquante si expiration imminente. Mount uniquement quand
+          authentifié (économise un fetch sur /login). */}
+      {showSidebar && <AdminSessionExpiryWarning />}
     </div>
   );
 }
