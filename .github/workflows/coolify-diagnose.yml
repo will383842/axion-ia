@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'list-deployments | dump-state | cancel-stuck | restart-app | cancel-uuid'
+        description: 'list-deployments | dump-state | cancel-stuck | restart-app | cancel-uuid | deployment-logs'
         required: true
         default: 'dump-state'
         type: choice
@@ -24,6 +24,7 @@ on:
           - cancel-stuck
           - restart-app
           - cancel-uuid
+          - deployment-logs
       target_uuid:
         description: 'UUID cible (pour cancel-uuid). Optionnel pour les autres actions.'
         required: false
@@ -132,6 +133,25 @@ jobs:
               echo "Cancelling deployment $TARGET"
               curl -sS -m 30 -H "$AUTH" \
                 "${COOLIFY_URL}/api/v1/deployments/${TARGET}/cancel" | jq '.'
+              ;;
+
+            deployment-logs)
+              UUID="${TARGET}"
+              if [ -z "$UUID" ]; then
+                # Fall back to most recent deployment if no UUID provided.
+                UUID=$(curl -fsSL -m 15 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments" \
+                  | jq -r '.[0].deployment_uuid // .[0].uuid // empty')
+              fi
+              if [ -z "$UUID" ]; then
+                echo "::error::No deployment UUID available"
+                exit 1
+              fi
+              echo "==================== DEPLOYMENT ${UUID} ===================="
+              FULL=$(curl -fsSL -m 30 -H "$AUTH" "${COOLIFY_URL}/api/v1/deployments/${UUID}")
+              echo "$FULL" | jq '{deployment_uuid: (.deployment_uuid // .uuid), status, created_at, finished_at, commit, current_process_id}'
+              echo ""
+              echo "==================== LOGS (last 200 entries) ===================="
+              echo "$FULL" | jq -r '.logs | fromjson? // . | if type=="array" then .[-200:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "")"' 2>/dev/null || echo "(could not parse logs)"
               ;;
 
             *)
