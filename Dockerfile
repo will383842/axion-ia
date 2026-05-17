@@ -161,13 +161,32 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Prisma migration runtime — schema + migrations + prisma CLI binary nécessaires
-# pour que `prisma migrate deploy` tourne au démarrage container (entrypoint).
-# Le standalone output exclut prisma/ par défaut, donc on copie explicitement.
+# Prisma migration runtime — schema + migrations sont copiés depuis builder.
+# Le standalone Next exclut prisma/ par défaut.
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+
+# Sprint Prisma path fix 2026-05-17 — install prisma CLI standalone via npm
+# au lieu de copier les symlinks pnpm. Cause root :
+#   - pnpm utilise des symlinks node_modules/prisma → .pnpm/prisma@X.Y.Z/...
+#   - Quand Docker COPY résout le symlink, il copie le contenu MAIS pas la
+#     structure .pnpm/ avec les transitives (@prisma/get-platform, engines, etc.).
+#   - Résultat : prisma/build/index.js tente require('@prisma/get-platform')
+#     → MODULE_NOT_FOUND → migrate deploy fail → exit code non-zero
+#     → Coolify lit le exit code du build.sh → marque deploy "failed"
+#     ALORS QUE le container démarre quand même (entrypoint catch + continue).
+#   - npx --yes prisma@X fallback aussi fail (probable network/timeout au cold).
+#
+# Fix : npm install prisma + @prisma/client (npm = pas de symlinks, structure
+# NPM-style résout toutes les transitives proprement). +~50 MB image mais fix
+# définitif. Note : on garde la copie standalone Next pour @prisma/client
+# côté Next.js app (déjà tree-shaken), npm install ici sert UNIQUEMENT au CLI.
+USER root
+RUN cd /app && \
+    echo '{"name":"prisma-runtime","version":"0.0.0","private":true}' > package.json && \
+    npm install --omit=dev --no-package-lock --no-fund --no-audit \
+      prisma@5.22.0 && \
+    rm -f /app/package.json && \
+    chown -R nextjs:nodejs /app/node_modules /app/prisma
 
 # Entrypoint script : prisma migrate deploy puis node server.js
 COPY --chown=nextjs:nodejs scripts/docker-entrypoint.sh ./docker-entrypoint.sh
