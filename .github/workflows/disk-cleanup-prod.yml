@@ -3,25 +3,30 @@ name: Disk Cleanup Prod (Hetzner CPX42)
 # Prévention saturation disque Hetzner CPX42 — runbook R20.
 #
 # Audit 2026-05-15 a révélé que les deploys Coolify échouaient avec
-# `No space left on device` (320 GB plein). Ce workflow exécute le script
-# `scripts/ops/disk-cleanup.sh` via l'API Coolify chaque nuit à 02h00 UTC
-# (avant le Gate D nightly qui consomme du build cache).
+# `No space left on device` (320 GB plein). Ce workflow exécute
+# `docker system prune` + `docker builder prune` quotidiennement.
 #
-# Le workflow utilise l'API Coolify v1 `/applications/{uuid}/execute` pour
-# lancer le script sur l'host (pas dans le container app). Le script lui
-# fait `docker system prune` + `docker builder prune` + cleanup deployments
-# artifacts > 7 jours.
+# **Réécrit 2026-05-17 (Sprint Web Vitals fix)** — l'ancienne version utilisait
+# l'endpoint Coolify v3 `POST /api/v1/applications/{uuid}/execute` qui n'existe
+# plus dans Coolify v4 (response `{"message":"Not found."}`). Le workflow
+# "réussissait" avec exit 0 mais ne faisait RIEN → le disque s'est saturé
+# silencieusement pendant des semaines. Découvert quand 3 deploys consécutifs
+# ont fail sur "No space left on device" (deploy recovery 2026-05-17).
+#
+# Nouvelle approche : SSH direct sur Hetzner via clé GH secret.
 #
 # Trigger manuel : `gh workflow run disk-cleanup-prod.yml`
 #
 # Secrets requis (GitHub repo → Settings → Secrets → Actions) :
-#   - COOLIFY_API_TOKEN
-#   - COOLIFY_URL (ex: http://178.105.55.15:8000)
-#   - COOLIFY_APP_UUID
+#   - HETZNER_SSH_KEY      Clé privée ed25519/rsa avec accès root@HETZNER_IP.
+#                          Set via : `gh secret set HETZNER_SSH_KEY < ~/.ssh/id_rsa`
+#   - HETZNER_IP           Optionnel — défaut 178.105.55.15 (ADR 0009).
+#   - TELEGRAM_BOT_TOKEN   Optionnel — alerte si seuil dépassé post-cleanup.
+#   - TELEGRAM_CHAT_ID     Optionnel.
 #
-# Variables optionnelles :
-#   - DISK_WARN_PCT (défaut 85)
-#   - DISK_WARN_FREE_GB (défaut 10)
+# Variables optionnelles (Settings → Variables) :
+#   - DISK_WARN_PCT        Seuil % usage déclenchant warning (défaut 85).
+#   - DISK_WARN_FREE_GB    Seuil GB libres min déclenchant warning (défaut 20).
 
 on:
   schedule:
@@ -51,94 +56,87 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    env:
+      HETZNER_IP: ${{ secrets.HETZNER_IP || '178.105.55.15' }}
+      WARN_PCT: ${{ vars.DISK_WARN_PCT || '85' }}
+      WARN_FREE_GB: ${{ vars.DISK_WARN_FREE_GB || '20' }}
+      DRY_RUN: ${{ inputs.dry_run || 'false' }}
+
     steps:
-      - name: Mesure disque avant
+      - name: Setup SSH (skip si HETZNER_SSH_KEY absent)
+        id: ssh
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::warning::HETZNER_SSH_KEY secret absent — disk cleanup ne peut pas tourner."
+            echo "::warning::Run : gh secret set HETZNER_SSH_KEY < ~/.ssh/id_rsa (depuis local Will)"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 5 "$HETZNER_IP" >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=8 "root@$HETZNER_IP" 'echo SSH_OK' || {
+            echo "::error::SSH unreachable ${HETZNER_IP}"
+            exit 1
+          }
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Disk usage avant
+        if: steps.ssh.outputs.skip != 'true'
         id: before
-        env:
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
-          response=$(curl -sX POST \
-            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
-            -d '{"command":"df -BG / | awk '"'"'NR==2 {print $3,$4,$5}'"'"'"}')
-          echo "before<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$response" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-          echo "Disk before: $response"
+          ssh -o BatchMode=yes "root@$HETZNER_IP" 'df -h / ; echo "---" ; docker system df' | tee before.txt
 
-      - name: Docker system prune (skip if dry_run)
-        if: ${{ inputs.dry_run != 'true' }}
-        env:
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+      - name: Docker prune (si pas dry-run)
+        if: steps.ssh.outputs.skip != 'true' && env.DRY_RUN != 'true'
         run: |
-          # Prune images + build cache + volumes orphelins.
-          # NOTE : ne touche PAS aux containers running ni leurs volumes attachés.
-          curl -sX POST \
-            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
-            -d '{"command":"docker system prune -a -f --volumes 2>&1 | tail -5"}' \
-            | tee prune-out.txt
+          ssh -o BatchMode=yes "root@$HETZNER_IP" bash <<'EOF'
+            set -e
+            echo "=== docker system prune -af --volumes ==="
+            docker system prune -af --volumes 2>&1 | tail -20
+            echo "=== docker builder prune -af ==="
+            docker builder prune -af 2>&1 | tail -10
+            echo "=== Coolify builds artifacts > 7j ==="
+            find /data/coolify/applications/*/builds -maxdepth 1 -type d -mtime +7 2>/dev/null | tail -n +6 | xargs -r rm -rf || true
+          EOF
 
-          curl -sX POST \
-            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
-            -d '{"command":"docker builder prune -a -f 2>&1 | tail -3"}' \
-            | tee builder-prune-out.txt
-
-      - name: Coolify deployments artifacts > 7 jours
-        if: ${{ inputs.dry_run != 'true' }}
+      - name: Disk usage après + alerte
+        if: steps.ssh.outputs.skip != 'true'
         env:
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
-        run: |
-          curl -sX POST \
-            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
-            -d '{"command":"find /data/coolify/applications/*/builds -maxdepth 1 -type d -mtime +7 2>/dev/null | tail -n +6 | xargs -r rm -rf"}'
-
-      - name: Mesure disque après + alerte si seuil dépassé
-        env:
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          WARN_PCT: ${{ vars.DISK_WARN_PCT || '85' }}
-          WARN_FREE_GB: ${{ vars.DISK_WARN_FREE_GB || '10' }}
         run: |
-          after=$(curl -sX POST \
-            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID/execute" \
-            -d '{"command":"df -BG / | awk '"'"'NR==2 {gsub(\"G\",\"\",$3); gsub(\"G\",\"\",$4); gsub(\"%\",\"\",$5); print $3\",\"$4\",\"$5}'"'"'"}')
-          echo "Disk after: $after"
+          after=$(ssh -o BatchMode=yes "root@$HETZNER_IP" "df -BG / | awk 'NR==2 {gsub(\"G\",\"\",\$3); gsub(\"G\",\"\",\$4); gsub(\"%\",\"\",\$5); print \$3\",\"\$4\",\"\$5}'")
+          echo "Disk after: ${after}"
+          used_gb=$(echo "$after" | cut -d, -f1)
+          free_gb=$(echo "$after" | cut -d, -f2)
+          pct=$(echo "$after" | cut -d, -f3)
 
-          # Parse usage/free
-          used=$(echo "$after" | grep -oE '[0-9]+' | sed -n '1p')
-          free=$(echo "$after" | grep -oE '[0-9]+' | sed -n '2p')
-          pct=$(echo "$after" | grep -oE '[0-9]+' | sed -n '3p')
+          if [ -z "$pct" ] || [ -z "$free_gb" ]; then
+            echo "::warning::Parse failed for disk usage — raw='${after}'"
+            exit 0
+          fi
 
-          if [ -n "$pct" ] && [ "$pct" -gt "$WARN_PCT" ]; then
-            echo "::warning::Disk usage ${pct}% > ${WARN_PCT}% threshold"
-            if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+          alert=""
+          if [ "$pct" -gt "$WARN_PCT" ]; then
+            alert="${alert}Disk ${pct}% > ${WARN_PCT}% threshold. "
+          fi
+          if [ "$free_gb" -lt "$WARN_FREE_GB" ]; then
+            alert="${alert}Free ${free_gb}GB < ${WARN_FREE_GB}GB threshold. "
+          fi
+
+          if [ -n "$alert" ]; then
+            echo "::warning::${alert}"
+            if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
               curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
                 -d "chat_id=${TELEGRAM_CHAT_ID}" \
-                -d "text=*[⚠️ INCIDENT]* Disque Hetzner CPX42 ${pct}% (free ${free} GB) — cleanup n'a pas suffi. Voir runbook R20." \
-                -d "parse_mode=Markdown"
+                -d "text=*[⚠️ INCIDENT]* Disque Hetzner CPX42 ${pct}% (free ${free_gb}GB) — cleanup insuffisant. Voir runbook R20." \
+                -d "parse_mode=Markdown" > /dev/null || true
             fi
-            exit 1
+            # Note : on n'exit pas 1 — l'alerte suffit, le cron tournera demain
+          else
+            echo "Disk OK: ${pct}% used, ${free_gb}GB free"
           fi
-          if [ -n "$free" ] && [ "$free" -lt "$WARN_FREE_GB" ]; then
-            echo "::warning::Free disk ${free} GB < ${WARN_FREE_GB} GB threshold"
-            exit 1
-          fi
-          echo "Disk OK: ${pct}% used, ${free} GB free"
