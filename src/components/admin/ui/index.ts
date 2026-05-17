@@ -14,6 +14,11 @@
 //
 // PR 2 — primitives batch 1 (layout + présentation) :
 //   - AdminPageShell, AdminPageHeader, AdminToolbar, AdminCard
+//
+// PR 3 — primitives batch 2 (données + états) :
+//   - AdminTable + AdminTableColumn (types)
+//   - AdminFormField, AdminFormSection
+//   - AdminEmptyState, AdminLoadingState, AdminErrorState
 
 export { AdminSessionExpiryWarning } from "./AdminSessionExpiryWarning";
 export { AdminConflictDialog } from "./AdminConflictDialog";
@@ -21,3 +26,9 @@ export { AdminPageShell } from "./AdminPageShell";
 export { AdminPageHeader } from "./AdminPageHeader";
 export { AdminToolbar } from "./AdminToolbar";
 export { AdminCard } from "./AdminCard";
+export { AdminTable } from "./AdminTable";
+export type { AdminTableColumn } from "./AdminTable";
+export { AdminFormField, AdminFormSection } from "./AdminFormField";
+export { AdminEmptyState } from "./AdminEmptyState";
+export { AdminLoadingState } from "./AdminLoadingState";
+export { AdminErrorState } from "./AdminErrorState";
