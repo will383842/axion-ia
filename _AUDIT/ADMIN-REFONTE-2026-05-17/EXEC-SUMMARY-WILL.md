@@ -1,9 +1,21 @@
 # EXEC SUMMARY FINAL — Refonte admin mai 2026
 
 > **Pour Will** — bilan de la session autopilote complète refonte console admin.
-> **Statut** : Phases 0-2 + PRs 0/1/2/3/4/5/13/14-docs livrées. PRs 6-12 (migrations per-page) reportées.
-> **Mode** : 17 commits sur `main` LOCAL, **0 push origin** (règle dure §1 brief).
+> **Statut** : Phases 0-2 + PRs 0/1/2/3/4/5/6/13/14-docs livrées. PRs 7-12 (migrations per-page restantes) reportées.
+> **Mode** : 18+ commits sur `main` LOCAL, **0 push origin** (règle dure §1 brief).
 > **Date** : 2026-05-17.
+
+## ⚡ Update PR 6 livrée
+
+**PR 6 (migration 8 pages main V2 derrière flag)** ajoutée à la session.
+
+- Dashboard `/` + 7 listes (reservations, devis, factures, paiements, echeanciers, options, submissions) ont leur version V2 prête.
+- Pattern : `page.tsx` root garde V1 intact + early return V2 si `isAdminV2Enabled()` true.
+- V2 components dans `_v2/PageV2.tsx` sub-folders — composants Server Components autonomes refetch Prisma identique V1.
+- Helper `AdminFilterTabs` + `_v2/AdminListScaffold` factorisent le pattern liste.
+
+**Skip calendrier** (vue month grid complexe — PR ulterieure dédiée si besoin).
+**PRs 7-12 reportées** : 48 routes content-gen (SSE/Tiptap sensible), 15 image-bank, 7 content, 5 ops, 4 système, polish.
 
 ## TL;DR
 
