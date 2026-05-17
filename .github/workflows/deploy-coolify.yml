@@ -237,61 +237,100 @@ jobs:
           fi
         id: deploy
 
-      - name: Wait for Coolify deployment to finish (max 60 min)
+      - name: Wait for Coolify deployment to finish (max 25 min + early-fail)
         if: steps.deploy.outputs.deployment_uuid != ''
-        timeout-minutes: 65
+        timeout-minutes: 30
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           DEPLOYMENT_UUID: ${{ steps.deploy.outputs.deployment_uuid }}
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
         run: |
           set -euo pipefail
-          # 60 min hard ceiling. Real Coolify build for Next 16 SSG 17 500
-          # routes on CPX42 (rescale 2026-05-14) averages 10-15 min ; 60 min
-          # couvre la queue + tail latency. Avant CPX42 c'était 18-22 min.
-          DEADLINE=$((SECONDS + 3600))
-          # Poll every 60s to halve API noise vs 30s previously.
-          POLL_INTERVAL=60
-          # 🐛 Fix 2026-05-14 : le grep '"status":"…"' | head -1 lisait
-          # `application.status` (toujours "running:healthy" car la prod
-          # tourne en parallèle) AU LIEU DU `deployment.status` top-level.
-          # Conséquence : 100 % des runs depuis 2026-05-12 timeout à 60 min
-          # même quand Coolify finissait (succès OU échec) en quelques min.
-          # Fix : `jq -r '.status'` qui ne prend QUE le champ top-level.
-          # `jq` est préinstallé sur ubuntu-latest.
+          # Sprint Web Vitals fix 2026-05-17 — réduction timeout 60→25 min :
+          # ADR 0026 cible "deploy ~2 min" (pull image GHCR + restart). Sur
+          # disque sain (>20 GB free) + GHCR non throttlé, c'est < 10 min.
+          # 25 min couvre une marge généreuse + permet early-fail rapide en
+          # cas de zombie (vs 60 min précédent qui masquait le problème 1h).
+          #
+          # Bonus durcissement §7.6 du runbook deploy recovery :
+          #   - Early-fail si status `queued` > 5 min consécutives (signe
+          #     certain de queue gelée Coolify Horizon dispatcher)
+          #   - Dump logs détaillé sur ANY failure mode (vs ancien : seulement
+          #     sur `failed|cancelled-by-user`)
+          #   - SSH dump disk+docker Hetzner si HETZNER_SSH_KEY présent
+          DEADLINE=$((SECONDS + 1500))  # 25 min
+          POLL_INTERVAL=30  # poll plus rapide pour early-fail efficace
+          QUEUED_STREAK=0
+          QUEUED_MAX=10  # 10 polls × 30s = 5 min queued = considéré gelé
+
+          dump_failure_logs() {
+            local response="$1"
+            local reason="$2"
+            echo "::error::Deployment ${reason}"
+            echo "──── Coolify deployment logs (last 200 entries) ────"
+            echo "${response}" \
+              | jq -r '.logs | fromjson? // . | if type=="array" then .[-200:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "")"' \
+              2>/dev/null || echo "(could not parse logs)"
+            echo "──── End logs ────"
+            # SSH dump si HETZNER_SSH_KEY accessible (même job depuis Setup SSH)
+            if [ -n "${HETZNER_SSH_KEY:-}" ]; then
+              echo "──── Hetzner state SSH dump ────"
+              mkdir -p ~/.ssh
+              echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+              chmod 600 ~/.ssh/id_rsa
+              ssh-keyscan -H -T 5 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+              ssh -o BatchMode=yes -o ConnectTimeout=8 root@178.105.55.15 'echo "=== DISK ===" ; df -h / ; echo "=== DOCKER PS ===" ; docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}" | head -25 ; echo "=== DOCKER DF ===" ; docker system df ; echo "=== AXION CONTAINER LOGS (last 80) ===" ; docker ps -a --format "{{.Names}}" | grep -i axion | head -3 | xargs -I {} docker logs --tail 30 {} 2>&1' 2>&1 | tail -80 || echo "(ssh failed)"
+              echo "──── End SSH dump ────"
+            else
+              echo "(HETZNER_SSH_KEY absent — pas de SSH dump. set via: gh secret set HETZNER_SSH_KEY < ~/.ssh/id_rsa)"
+            fi
+          }
+
           while [ $SECONDS -lt $DEADLINE ]; do
             RESPONSE=$(curl -fsSL -m 15 \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
               "${COOLIFY_URL}/api/v1/deployments/${DEPLOYMENT_UUID}" 2>/dev/null || true)
             STATUS=$(echo "${RESPONSE}" | jq -r '.status // empty' 2>/dev/null || true)
-            echo "[$(date +%H:%M:%S)] deploy status: ${STATUS}"
+            CREATED=$(echo "${RESPONSE}" | jq -r '.created_at // empty' 2>/dev/null || true)
+            FINISHED=$(echo "${RESPONSE}" | jq -r '.finished_at // empty' 2>/dev/null || true)
+            echo "[$(date +%H:%M:%S)] status=${STATUS} created=${CREATED} finished=${FINISHED} (poll=${SECONDS}s/${POLL_INTERVAL}s interval, deadline=$((DEADLINE - SECONDS))s remaining)"
             case "${STATUS}" in
               finished)
-                echo "Deployment succeeded ✓"
+                echo "Deployment succeeded ✓ (durée totale: ${SECONDS}s)"
                 exit 0
                 ;;
-              failed|cancelled-by-user)
-                echo "::error::Deployment ${STATUS}"
-                # Dump les 100 dernières lignes de logs Coolify dans le
-                # log GH Actions pour debug rapide sans aller dans la UI
-                # Coolify. Les logs sont JSON-stringified dans .logs.
-                echo "──── Coolify deployment logs (last 100 entries) ────"
-                echo "${RESPONSE}" \
-                  | jq -r '.logs | fromjson? // . | if type=="array" then .[-100:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "")"' \
-                  2>/dev/null || echo "(could not parse logs)"
-                echo "──── End logs ────"
+              failed|cancelled-by-user|cancelled)
+                dump_failure_logs "${RESPONSE}" "${STATUS}"
                 exit 1
                 ;;
+              queued)
+                QUEUED_STREAK=$((QUEUED_STREAK + 1))
+                if [ $QUEUED_STREAK -ge $QUEUED_MAX ]; then
+                  echo "::error::Deployment stuck `queued` ${QUEUED_STREAK} polls consécutives (~5 min) — Coolify queue gelée probable (cause #2 §1.5 runbook)."
+                  dump_failure_logs "${RESPONSE}" "queue-stuck-5min"
+                  echo "::error::Action recommandée : gh workflow run coolify-diagnose.yml -f action=cancel-stuck"
+                  exit 1
+                fi
+                sleep $POLL_INTERVAL
+                ;;
+              in_progress)
+                QUEUED_STREAK=0  # reset si on a vu un in_progress
+                sleep $POLL_INTERVAL
+                ;;
               "")
-                echo "::warning::Empty status from API, retrying"
+                echo "::warning::Empty status from API (retrying)"
                 sleep $POLL_INTERVAL
                 ;;
               *)
+                echo "::warning::Unknown status '${STATUS}' (retrying)"
                 sleep $POLL_INTERVAL
                 ;;
             esac
           done
-          echo "::error::Deployment timeout (60 min)"; exit 1
+          echo "::error::Deployment timeout (25 min)"
+          dump_failure_logs "${RESPONSE:-{}}" "timeout-25min"
+          exit 1
 
       - name: Purge Cloudflare cache (post-deploy)
         if: success()
