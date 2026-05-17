@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { ImageUploadDropzone } from "@/components/admin/image-bank/ImageUploadDropzone";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { UploadV2 } from "./_v2/UploadV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -23,6 +25,10 @@ export default async function UploadPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user || session.user.role !== "admin") {
     redirect(`/${locale}/${adminPrefix}/login`);
+  }
+
+  if (await isAdminV2Enabled()) {
+    return <UploadV2 locale={locale} />;
   }
 
   return (

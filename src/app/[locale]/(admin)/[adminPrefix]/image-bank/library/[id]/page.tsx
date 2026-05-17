@@ -8,6 +8,8 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ImageDetailV2 } from "./_v2/ImageDetailV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -39,6 +41,43 @@ export default async function ImageDetailPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}/image-bank`;
   const tr = image.translations.find((t) => t.languageCode === locale) ?? image.translations[0];
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ImageDetailV2
+        base={base}
+        titleDisplay={tr?.title ?? image.slug}
+        image={{
+          id: image.id,
+          slug: image.slug,
+          fileFormat: image.fileFormat,
+          width: image.width,
+          height: image.height,
+          licenseType: image.licenseType,
+          copyrightHolder: image.copyrightHolder,
+          sourceType: image.sourceType,
+          aiModel: image.aiModel,
+          module: image.module,
+          subModule: image.subModule,
+          seoScore: image.seoScore,
+          requiresHumanReview: image.requiresHumanReview,
+          publishedAt: image.publishedAt,
+          translations: image.translations.map((t) => ({
+            id: t.id,
+            languageCode: t.languageCode,
+            title: t.title,
+            alt: t.alt,
+            isPublished: t.isPublished,
+          })),
+          tags: image.tags.map(({ tag }) => ({
+            id: tag.id,
+            slug: tag.slug,
+            name: tag.translations.find((tt) => tt.languageCode === locale)?.name ?? tag.slug,
+          })),
+        }}
+      />
+    );
+  }
 
   return (
     <main className="space-y-6 p-8">

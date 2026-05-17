@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { AdminStubPage } from "@/components/admin/image-bank/AdminStubPage";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -19,6 +21,16 @@ export default async function categoriesPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user || session.user.role !== "admin") {
     redirect(`/${locale}/${adminPrefix}/login`);
+  }
+  if (await isAdminV2Enabled()) {
+    return (
+      <AdminStubPageV2
+        title="categories"
+        description="Section categories (image-bank V1)."
+        back={`/${locale}/${adminPrefix}/image-bank`}
+        sprint="Sprint 2.x"
+      />
+    );
   }
   return (
     <AdminStubPage

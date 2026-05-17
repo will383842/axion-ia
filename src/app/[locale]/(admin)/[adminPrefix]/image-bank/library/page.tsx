@@ -8,6 +8,8 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { LibraryV2 } from "./_v2/LibraryV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -42,6 +44,24 @@ export default async function LibraryPage({ params, searchParams }: PageProps) {
     take: 60,
     include: { translations: { where: { languageCode: locale } } },
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <LibraryV2
+        base={base}
+        status={sp.status}
+        module={sp.module}
+        images={images.map((img) => ({
+          id: img.id,
+          slug: img.slug,
+          module: img.module,
+          seoScore: img.seoScore,
+          publishedAt: img.publishedAt,
+          translations: img.translations.map((t) => ({ title: t.title })),
+        }))}
+      />
+    );
+  }
 
   return (
     <main className="space-y-6 p-8">

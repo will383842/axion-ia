@@ -17,6 +17,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { ForgetIpHashForm } from "@/components/admin/image-bank/ForgetIpHashForm";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { UsageLogsV2 } from "./_v2/UsageLogsV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -73,6 +75,17 @@ export default async function UsageLogsPage({ params, searchParams }: PageProps)
     imageId: r.imageId,
     downloadedAt: r.downloadedAt.toISOString(),
   }));
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <UsageLogsV2
+        {...(ipHash ? { ipHash } : { ipHash: undefined })}
+        resultsLimit={RESULTS_LIMIT}
+        usageLogs={usageLogs}
+        downloadLogs={downloadLogs}
+      />
+    );
+  }
 
   return (
     <main className="space-y-6 p-8">

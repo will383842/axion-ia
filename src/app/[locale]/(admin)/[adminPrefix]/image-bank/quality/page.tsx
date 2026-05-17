@@ -8,6 +8,8 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { QualityV2 } from "./_v2/QualityV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -35,6 +37,22 @@ export default async function QualityPage({ params }: PageProps) {
     orderBy: { createdAt: "desc" },
     include: { translations: { where: { languageCode: locale } } },
   });
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <QualityV2
+        base={base}
+        images={images.map((img) => ({
+          id: img.id,
+          slug: img.slug,
+          seoScore: img.seoScore,
+          requiresHumanReview: img.requiresHumanReview,
+          requiresHumanTaxonomy: img.requiresHumanTaxonomy,
+          translations: img.translations.map((t) => ({ title: t.title })),
+        }))}
+      />
+    );
+  }
 
   return (
     <main className="space-y-6 p-8">

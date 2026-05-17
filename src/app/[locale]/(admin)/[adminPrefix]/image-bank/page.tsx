@@ -9,6 +9,8 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { OverviewV2 } from "./_v2/OverviewV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -50,6 +52,38 @@ export default async function ImageBankOverviewPage({ params }: PageProps) {
         include: { translations: { where: { languageCode: locale } } },
       }),
     ]);
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <OverviewV2
+        locale={locale}
+        adminPrefix={adminPrefix}
+        base={base}
+        totalCount={totalCount}
+        publishedCount={publishedCount}
+        pendingReviewCount={pendingReviewCount}
+        avgSeoScore={Math.round(avgSeoScore._avg.seoScore ?? 0)}
+        recentImages={recentImages.map((img) => ({
+          id: img.id,
+          slug: img.slug,
+          module: img.module,
+          seoScore: img.seoScore,
+          embedCount: img.embedCount,
+          downloadCount: img.downloadCount,
+          translations: img.translations.map((t) => ({ title: t.title })),
+        }))}
+        topEmbedded={topEmbedded.map((img) => ({
+          id: img.id,
+          slug: img.slug,
+          module: img.module,
+          seoScore: img.seoScore,
+          embedCount: img.embedCount,
+          downloadCount: img.downloadCount,
+          translations: img.translations.map((t) => ({ title: t.title })),
+        }))}
+      />
+    );
+  }
 
   return (
     <main className="space-y-8 p-8">
