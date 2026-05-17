@@ -68,3 +68,7 @@ export { AdminTopbar } from "./AdminTopbar";
 export { AdminUserMenu } from "./AdminUserMenu";
 export { AdminNotificationsDropdown } from "./AdminNotificationsDropdown";
 export type { AdminNotificationItem } from "./AdminNotificationsDropdown";
+
+// PR 6 — helper consumer migrations pages main
+export { AdminFilterTabs } from "./AdminFilterTabs";
+export type { AdminFilterTabOption } from "./AdminFilterTabs";
