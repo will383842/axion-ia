@@ -10,6 +10,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { removeRssSource, toggleRssSource } from "@/server/actions/content-gen/rss";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { RssListV2 } from "./_v2/RssListV2";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,10 @@ export default async function RssListPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <RssListV2 adminPrefix={adminPrefix} />;
+  }
 
   const sources = await readContentGenConfig<ReadonlyArray<RssSource>>("rss_sources", []);
 

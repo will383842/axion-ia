@@ -8,6 +8,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { GeoVilleGenerateV2 } from "./_v2/GeoVilleGenerateV2";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,10 @@ export default async function GeoVilleGeneratePage({ params }: PageProps) {
   const { adminPrefix, villeSlug } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <GeoVilleGenerateV2 adminPrefix={adminPrefix} villeSlug={villeSlug} />;
+  }
 
   const recentJobs = await prisma.contentGenJob.findMany({
     where: { anchorVilleSlug: villeSlug },

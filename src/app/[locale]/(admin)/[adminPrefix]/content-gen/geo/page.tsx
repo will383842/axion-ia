@@ -10,6 +10,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
 import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { GeoCockpitV2 } from "./_v2/GeoCockpitV2";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +23,10 @@ export default async function GeoCockpitPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <GeoCockpitV2 adminPrefix={adminPrefix} />;
+  }
 
   const [global, regions] = await Promise.all([getGlobalGeoStats(), listRegionGeoStats()]);
 

@@ -5,6 +5,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { addRssSource } from "@/server/actions/content-gen/rss";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { RssNewV2 } from "./_v2/RssNewV2";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,10 @@ export default async function NewRssPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <RssNewV2 adminPrefix={adminPrefix} />;
+  }
 
   async function add(formData: FormData) {
     "use server";

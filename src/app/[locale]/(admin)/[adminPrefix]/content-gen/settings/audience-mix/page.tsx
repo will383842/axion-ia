@@ -12,6 +12,8 @@ import {
   listAudienceMixProfiles,
   upsertAudienceMixProfile,
 } from "@/server/actions/content-gen/distribution";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AudienceMixV2 } from "./_v2/AudienceMixV2";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +38,10 @@ export default async function AudienceMixPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const rows = await listAudienceMixProfiles();
+
+  if (await isAdminV2Enabled()) {
+    return <AudienceMixV2 rows={rows} />;
+  }
 
   async function upsert(formData: FormData) {
     "use server";

@@ -10,6 +10,8 @@ import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
 } from "@/server/content-gen/shared/editorial-mix-rules";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { JobsListV2 } from "./_v2/JobsListV2";
 import type {
   ContentGenJobStatus,
   ContentType,
@@ -56,6 +58,10 @@ export default async function JobsListPage({ params, searchParams }: PageProps) 
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <JobsListV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const page = sp.page ? parseInt(sp.page, 10) : 1;
   const [result, templates] = await Promise.all([

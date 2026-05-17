@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getOrchestratorStats } from "@/server/actions/content-gen/geo";
 import { getBatchSettings } from "@/server/actions/content-gen/policies";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { OrchestratorV2 } from "./_v2/OrchestratorV2";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,10 @@ export default async function OrchestratorPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <OrchestratorV2 adminPrefix={adminPrefix} />;
+  }
 
   const [stats, batches] = await Promise.all([getOrchestratorStats(), getBatchSettings()]);
 

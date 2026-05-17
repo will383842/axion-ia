@@ -16,6 +16,8 @@ import {
   getArticleDetail,
   updateArticle,
 } from "@/server/actions/content-gen/article";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { PublicationEditV2 } from "./_v2/PublicationEditV2";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +34,30 @@ export default async function ArticleEditPage({ params }: PageProps) {
   if (!article) notFound();
   const t = article.translation;
   if (!t) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <PublicationEditV2
+        adminPrefix={adminPrefix}
+        article={{
+          id: article.id,
+          indexationTier: article.indexationTier,
+          status: article.status,
+          qualityScore: article.qualityScore,
+          seoScore: article.seoScore,
+          isNews: article.isNews,
+          translation: {
+            title: t.title,
+            slug: t.slug,
+            excerpt: t.excerpt,
+            metaTitle: t.metaTitle,
+            metaDescription: t.metaDescription,
+            body: t.body,
+          },
+        }}
+      />
+    );
+  }
 
   async function save(formData: FormData) {
     "use server";

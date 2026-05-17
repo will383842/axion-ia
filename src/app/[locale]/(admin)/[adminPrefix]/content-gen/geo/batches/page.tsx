@@ -8,6 +8,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { GeoBatchesV2 } from "./_v2/GeoBatchesV2";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,10 @@ export default async function GeoBatchesPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <GeoBatchesV2 adminPrefix={adminPrefix} />;
+  }
 
   const batches = await prisma.coverageCampaign.findMany({
     where: { scope: { in: ["region", "departement", "multi"] } },

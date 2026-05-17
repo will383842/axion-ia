@@ -5,6 +5,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getQaPolicies, updateQaPolicies } from "@/server/actions/content-gen/policies";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { QaPoliciesV2 } from "./_v2/QaPoliciesV2";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +20,10 @@ export default async function QaPoliciesPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const cfg = await getQaPolicies();
+
+  if (await isAdminV2Enabled()) {
+    return <QaPoliciesV2 cfg={cfg} />;
+  }
 
   async function save(formData: FormData) {
     "use server";

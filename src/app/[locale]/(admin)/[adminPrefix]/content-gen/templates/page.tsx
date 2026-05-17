@@ -8,6 +8,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listTemplates, toggleTemplate } from "@/server/actions/content-gen/templates";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { TemplatesListV2 } from "./_v2/TemplatesListV2";
 import type { ContentType } from "../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +36,10 @@ export default async function TemplatesListPage({ params, searchParams }: PagePr
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <TemplatesListV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const rows = await listTemplates({
     ...(sp.contentType ? { contentType: sp.contentType as ContentType } : {}),

@@ -19,6 +19,8 @@ import {
   ingestKbFromSitemap,
   ingestKbFromUrl,
 } from "@/server/actions/content-gen/kb-ingest-external";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { KbIngestV2 } from "./_v2/KbIngestV2";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,10 @@ export default async function KbIngestExternalPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <KbIngestV2 />;
+  }
 
   async function submitUrl(formData: FormData) {
     "use server";

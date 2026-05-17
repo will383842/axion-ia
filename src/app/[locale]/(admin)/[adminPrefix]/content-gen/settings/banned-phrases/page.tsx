@@ -10,6 +10,8 @@ import {
   listBannedPhrases,
   toggleBannedPhrase,
 } from "@/server/actions/content-gen/banned-phrases";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { BannedPhrasesV2 } from "./_v2/BannedPhrasesV2";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +25,10 @@ export default async function BannedPhrasesPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const rows = await listBannedPhrases();
+
+  if (await isAdminV2Enabled()) {
+    return <BannedPhrasesV2 rows={rows} />;
+  }
 
   async function create(formData: FormData) {
     "use server";

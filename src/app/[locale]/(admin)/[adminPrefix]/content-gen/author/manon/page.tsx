@@ -9,6 +9,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getAuthor, updateAuthor } from "@/server/actions/content-gen/author";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AuthorManonV2 } from "./_v2/AuthorManonV2";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,10 @@ export default async function AuthorManonPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const author = await getAuthor("manon");
+
+  if (author && (await isAdminV2Enabled())) {
+    return <AuthorManonV2 author={author} />;
+  }
 
   if (!author) {
     return (

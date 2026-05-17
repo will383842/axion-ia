@@ -13,6 +13,8 @@ import {
   writeContentGenConfig,
 } from "@/server/actions/content-gen/_settings";
 import { requireAdmin } from "@/server/actions/content-gen/_auth";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { OnboardingV2 } from "./_v2/OnboardingV2";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +26,10 @@ export default async function OnboardingPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <OnboardingV2 adminPrefix={adminPrefix} />;
+  }
 
   const [onboarded, providersConfigured, manon, distribProfiles] = await Promise.all([
     readContentGenConfig<boolean>("onboarded", false),

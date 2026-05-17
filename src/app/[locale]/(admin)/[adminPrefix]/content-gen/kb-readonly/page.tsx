@@ -9,6 +9,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { KbReadonlyV2 } from "./_v2/KbReadonlyV2";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,10 @@ export default async function KbReadonlyPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <KbReadonlyV2 adminPrefix={adminPrefix} />;
+  }
 
   const [totalPublished, byType, recent] = await Promise.all([
     prisma.knowledgeEntry.count({ where: { status: "published" } }),

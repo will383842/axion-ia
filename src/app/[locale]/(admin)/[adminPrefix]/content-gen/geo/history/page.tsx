@@ -7,6 +7,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { GeoHistoryV2 } from "./_v2/GeoHistoryV2";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +20,10 @@ export default async function GeoHistoryPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <GeoHistoryV2 adminPrefix={adminPrefix} />;
+  }
 
   const recentCampaigns = await prisma.coverageCampaign.findMany({
     orderBy: { createdAt: "desc" },

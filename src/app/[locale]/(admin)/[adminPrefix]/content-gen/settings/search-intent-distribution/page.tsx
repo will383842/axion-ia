@@ -8,6 +8,8 @@ import {
   getSearchIntentDistribution,
   updateSearchIntentDistribution,
 } from "@/server/actions/content-gen/policies";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { SearchIntentDistributionV2 } from "./_v2/SearchIntentDistributionV2";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +23,10 @@ export default async function SearchIntentDistributionPage({ params }: PageProps
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const cfg = await getSearchIntentDistribution();
+
+  if (await isAdminV2Enabled()) {
+    return <SearchIntentDistributionV2 cfg={cfg} />;
+  }
 
   async function save(formData: FormData) {
     "use server";

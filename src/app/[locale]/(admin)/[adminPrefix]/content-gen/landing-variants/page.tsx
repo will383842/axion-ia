@@ -9,6 +9,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { LandingVariantsV2 } from "./_v2/LandingVariantsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +31,10 @@ export default async function LandingVariantsPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <LandingVariantsV2 adminPrefix={adminPrefix} />;
+  }
 
   const active = await readContentGenConfig<ReadonlyArray<string>>("landing_variants_active", [
     "default",

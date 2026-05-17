@@ -14,6 +14,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { KeywordTrackingV2 } from "./_v2/KeywordTrackingV2";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +46,10 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <KeywordTrackingV2 searchParams={sp} />;
+  }
 
   const sourceFilter =
     sp.source && ["gsc", "serpapi", "manual"].includes(sp.source) ? sp.source : null;

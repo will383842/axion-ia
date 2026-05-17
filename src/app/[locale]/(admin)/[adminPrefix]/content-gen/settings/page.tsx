@@ -8,6 +8,8 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { SettingsIndexV2 } from "./_v2/SettingsIndexV2";
 
 export const dynamic = "force-dynamic";
 
@@ -73,6 +75,11 @@ export default async function SettingsIndexPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <SettingsIndexV2 adminPrefix={adminPrefix} />;
+  }
+
   const base = `/fr/${adminPrefix}/content-gen/settings`;
 
   return (

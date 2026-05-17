@@ -15,6 +15,8 @@ import {
   rollbackArticle,
   unarchiveArticle,
 } from "@/server/actions/content-gen/article";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { PublicationsV2 } from "./_v2/PublicationsV2";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,10 @@ export default async function PublicationsPage({ params, searchParams }: PagePro
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <PublicationsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const where: {
     generatedByJobId?: { not: null };

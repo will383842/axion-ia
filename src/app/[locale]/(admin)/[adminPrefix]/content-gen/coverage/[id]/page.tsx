@@ -12,6 +12,8 @@ import {
   pauseCampaign,
   resumeCampaign,
 } from "@/server/actions/content-gen/coverage";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CoverageDetailV2 } from "./_v2/CoverageDetailV2";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,10 @@ export default async function CampaignDetailPage({ params }: PageProps) {
 
   const campaign = await getCampaign(id);
   if (!campaign) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return <CoverageDetailV2 campaign={campaign} />;
+  }
 
   async function launch() {
     "use server";

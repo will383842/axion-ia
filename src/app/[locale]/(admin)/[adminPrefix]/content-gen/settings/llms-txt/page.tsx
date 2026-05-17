@@ -9,6 +9,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getLlmsTxt, updateLlmsTxt } from "@/server/actions/content-gen/policies";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { LlmsTxtV2 } from "./_v2/LlmsTxtV2";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,10 @@ export default async function LlmsTxtPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const content = await getLlmsTxt();
+
+  if (await isAdminV2Enabled()) {
+    return <LlmsTxtV2 content={content} />;
+  }
 
   async function save(formData: FormData) {
     "use server";

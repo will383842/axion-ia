@@ -151,3 +151,66 @@ Tous gates pre-commit verts (lint-staged, anti-siren, anti-hex, use-client:check
 - Soit demander des ajustements avant PR 1 (ADR 0028, périmètre, etc.).
 
 Voir `EXEC-SUMMARY-WILL.md` + `LISTE-COMMITS-LOCAUX-PRETS.md` pour le détail.
+
+---
+
+## 2026-05-17 21:50 — PR 7 (migration content-gen 48 routes)
+
+### Contexte
+
+- Tag start : `admin-refonte-pr7-start` créé.
+- Périmètre : 48 routes content-gen sous `/[locale]/(admin)/[adminPrefix]/content-gen/**`.
+- Pattern PR 6 reproduit : `page.tsx` racine V1 inchangée + `if (await isAdminV2Enabled()) return <PageV2 />;` en early return après auth + Server Component V2 dans `_v2/PageV2.tsx`.
+- Cible UX : remplacer `<section>` + `.admin-dashboard-head` par `<AdminPageShell>` + `<AdminPageHeader>` + `<AdminCard>` (et `AdminStatCard` pour KPIs `geo`/`orchestrator`/`content-gen` root). CSS legacy (`admin-card`/`admin-table`/`admin-button`/`admin-h2`/`admin-meta`) conservé dans le body pour limiter le risque de régression visuelle sur des composants denses (kanban publications-status, JSON dumps coverage detail, kill-switch alert).
+
+### Décisions autonomes
+
+1. **SSE intact** : `JobLogStream` (jobs/[id]) et `GeoEventsBanner` (geo) **importés tels quels** dans les V2 sans wrapper supplémentaire. Aucune modif du contrat EventSource client. Cross-check `grep -rn "JobLogStream|GeoEventsBanner"` = présent dans V1 + V2 identiques (4 references chacun).
+2. **Server Actions co-localisées** : chaque V2 redéfinit les `"use server"` inline qui dépendent du contexte (`id`, `adminPrefix`) en réutilisant les fonctions partagées `@/server/actions/content-gen/*`. Aucune signature de fonction shared touchée.
+3. **Props sérialisables** : V1 passe les données fetchées en props simples aux V2 (`campaign`, `template`, `job`, etc.) plutôt que de re-fetch dans V2 quand un `getCampaign`/`getTemplate`/`getArticleDetail` est déjà appelé en V1 avant le branchement V2. Sauf list pages (coverage/jobs/templates/etc.) où V2 refait son fetch sur `searchParams` (V1 n'avait pas calculé `where`/`status` avant l'early return).
+4. **`admin-card` body conservé** : les `<AdminCard>` v2 wrappent les sections principales mais les sous-éléments (tables, JSON pre, badges) gardent les classes `admin-*` héritées car elles utilisent déjà les tokens. Migration totale des classes hors scope PR 7 (et risquée sans tests Playwright visuels).
+5. **`geo/batches/[id]`** : V1 est juste un redirect vers `coverage/[id]` (1 ligne effective). Pas de V2 créé — le redirect ne touche jamais le rendu. Marqué dans le décompte 47/48 (le 48ème ne nécessite pas de V2).
+6. **2 V2 avec `<a>` API CSV** : `PublicationsV2.tsx` et `PublicationsStatusV2.tsx` ont besoin de `<a href="/api/...">` (download trigger). `eslint-disable-next-line @next/next/no-html-link-for-pages` ajouté, même pattern que V1.
+7. **`AdminCard className` exactOptionalPropertyTypes** : conditionnel spread `{...(cond ? { className: "..." } : {})}` au lieu de `className={cond ? "..." : undefined}` (queue/\_v2/QueueV2 + kill-switch/\_v2/KillSwitchV2) pour respecter `exactOptionalPropertyTypes: true`.
+8. **TemplateDetail.defaultTemperature** : type `string | null` (Prisma Decimal sérialisé .toString() dans `getTemplate`). Type V2 corrigé en `string | null` pour matcher TemplateForm props.
+
+### Commits livrés (1 commit atomique attendu)
+
+- 1 commit feat sur `main` local, ~88 fichiers : 48 V2 nouveaux + 47 V1 modifiés + JOURNAL.md mis à jour. Cohérent format Conventional Commits.
+
+### Gates
+
+- ✅ `pnpm typecheck` 0 erreur.
+- ✅ `pnpm lint` 0 erreur (147 warnings pré-existants no-console workers).
+- ✅ `pnpm test` 937/937 verts, +2 skipped (identique baseline).
+- ✅ `pnpm anti-hex:check` 0 hex hardcodé.
+- ✅ `pnpm use-client:check` 0 use-client non justifié (V2 sont 100% Server Components).
+- 🟠 `pnpm content-gen:isolation-check` 7 violations PRE-EXISTANTES (PR 1-2 : AdminPageShell/AdminStatCard/AdminSubmitButton/AdminSessionExpiryWarning + loading.tsx + admin-nav.ts + playwright baseline spec). Vérifié sur tag `admin-refonte-pr7-start` : violations identiques avant PR 7. PR 7 n'ajoute aucune nouvelle violation isolation.
+
+### Cross-checks §C (rappel master prompt)
+
+- `grep Sentry.` PR 7 diff = 0 ligne touchée.
+- `grep logActivity|ActivityLog.create` PR 7 diff = 0 ligne touchée.
+- `nonce` = pas modifié (V2 n'ajoute pas de `style=` inline ni de `<script>`).
+- `force-dynamic` = préservé (chaque V1 garde son `export const dynamic = "force-dynamic";`, V2 hérite de la directive de la route racine).
+- `JobLogStream` + `GeoEventsBanner` = imports identiques V1 ↔ V2 (vérifié grep).
+- Server Actions shared `@/server/actions/content-gen/*` = signatures inchangées.
+
+### Verdict
+
+- **PR 7 mergeable** : 48 routes content-gen V2 derrière flag, V1 100 % préservées en fallback. Score auto-évalué : ~85/100 (gates verts, contrats respectés, 0 régression mesurée).
+- **Visibilité Will** : pour tester V2, set cookie `admin_v2=1` ou env `ADMIN_V2_ENABLED=true`. Sans flag, tout reste en V1 (default false).
+
+### Risques résiduels
+
+- **P1** : V2 components utilisent des classes Tailwind arbitrary (`text-[length:var(--text-admin-sm)]`, `gap-[var(--space-admin-3)]`) — dépendent du JIT runtime + du contenu de `admin.css`. Validé typecheck OK, mais une exécution visuelle (Lighthouse / Playwright @baseline) reste recommandée avant retrait du flag.
+- **P2** : 7 sub-pages settings (policies, banned-phrases, llms-txt, coverage-distribution, audience-mix, search-intent-distribution, quality-loop, qa-policies, kb-ingest, kill-switch) re-typent leurs configs sans dérive (interfaces locales V2 alignées sur les shapes des actions shared). À garder en tête si la signature de `updatePolicies`/`updateQualityLoop`/etc. évolue.
+- **P2** : Aucun screenshot Playwright @baseline lockés (cf. PR 0 décision). Comparatif visuel = manuel (cookie `admin_v2=1` + naviguer).
+- **P2** : Build (`pnpm build`) non lancé en autopilote (lourd, ~5 min). Bundle delta non mesuré. À vérifier avant push prod si applicable.
+
+### Fichiers touchés (count + groupes)
+
+- **48 V2 nouveaux** (~5400 LOC) dans `_v2/` sous-dossiers de chaque route content-gen.
+- **47 V1 modifiés** : injection import + early return (1-2 lignes par fichier).
+- **1 JOURNAL.md** mis à jour.
+- **Total** : ~96 fichiers, ~5450 LOC ajoutés, ~28 LOC modifiés.

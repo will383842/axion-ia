@@ -10,6 +10,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { bulkApproveReviews, bulkRejectReviews } from "@/server/actions/content-gen/review";
 import { retryAllFailed } from "@/server/actions/content-gen/jobs";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { PublicationsStatusV2 } from "./_v2/PublicationsStatusV2";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +23,10 @@ export default async function PublicationsStatusPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <PublicationsStatusV2 adminPrefix={adminPrefix} />;
+  }
 
   const [draft, review, approved, published, rejected] = await Promise.all([
     prisma.contentGenJob.findMany({

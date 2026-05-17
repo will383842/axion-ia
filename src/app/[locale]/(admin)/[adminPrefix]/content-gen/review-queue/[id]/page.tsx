@@ -12,6 +12,8 @@ import {
   requestEdits,
 } from "@/server/actions/content-gen/review";
 import { createPreviewToken } from "@/server/content-gen/shared/preview-token";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ReviewDetailV2 } from "./_v2/ReviewDetailV2";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +31,25 @@ export default async function ReviewDetailPage({ params }: PageProps) {
     include: { job: true },
   });
   if (!review) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ReviewDetailV2
+        review={{
+          id: review.id,
+          jobId: review.jobId,
+          status: review.status,
+          job: {
+            contentType: review.job.contentType,
+            anchorVilleSlug: review.job.anchorVilleSlug,
+            qualityScore: review.job.qualityScore,
+            seoScore: review.job.seoScore,
+            outputJsonRaw: review.job.outputJsonRaw,
+          },
+        }}
+      />
+    );
+  }
 
   async function approve(formData: FormData) {
     "use server";

@@ -8,6 +8,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { LandingVariantDetailV2 } from "./_v2/LandingVariantDetailV2";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,10 @@ export default async function LandingVariantDetailPage({ params }: PageProps) {
   const { adminPrefix, variant } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <LandingVariantDetailV2 adminPrefix={adminPrefix} variant={variant} />;
+  }
 
   const [templates, jobsCount] = await Promise.all([
     prisma.contentTemplate.findMany({

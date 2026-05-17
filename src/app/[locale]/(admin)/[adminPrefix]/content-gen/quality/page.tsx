@@ -11,6 +11,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { QualityV2 } from "./_v2/QualityV2";
 
 export const dynamic = "force-dynamic";
 
@@ -138,6 +140,10 @@ export default async function QualityDashboardPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <QualityV2 />;
+  }
 
   const dailyScores = await loadDailyScores();
   const totalArticles = dailyScores.reduce((s, d) => s + d.count, 0);

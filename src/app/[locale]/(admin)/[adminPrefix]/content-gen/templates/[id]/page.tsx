@@ -8,6 +8,8 @@ import { TemplateForm } from "@/components/admin/content-gen/TemplateForm";
 import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import { getTemplate, upsertTemplate } from "@/server/actions/content-gen/templates";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { TemplatesEditV2 } from "./_v2/TemplatesEditV2";
 import type {
   ContentType,
   ExpansionMode,
@@ -27,6 +29,10 @@ export default async function EditTemplatePage({ params }: PageProps) {
 
   const template = await getTemplate(id);
   if (!template) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return <TemplatesEditV2 template={template} />;
+  }
 
   async function save(formData: FormData) {
     "use server";

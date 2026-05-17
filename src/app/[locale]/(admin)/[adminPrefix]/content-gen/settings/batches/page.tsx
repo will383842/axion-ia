@@ -14,6 +14,8 @@ import {
   updateBatchSettings,
 } from "@/server/actions/content-gen/policies";
 import { CONTENT_TYPES_ALL } from "@/server/actions/content-gen/policies-constants";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { BatchesV2 } from "./_v2/BatchesV2";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +29,10 @@ export default async function BatchesSettingsPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const cfg = await getBatchSettings();
+
+  if (await isAdminV2Enabled()) {
+    return <BatchesV2 cfg={cfg} />;
+  }
 
   async function save(formData: FormData) {
     "use server";

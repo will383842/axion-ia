@@ -9,6 +9,8 @@ import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
 } from "@/server/content-gen/shared/editorial-mix-rules";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CoverageListV2 } from "./_v2/CoverageListV2";
 import type {
   CoverageStatus,
   ServiceSector,
@@ -38,6 +40,10 @@ export default async function CoverageListPage({ params, searchParams }: PagePro
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <CoverageListV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const status = (sp.status as CoverageStatus | undefined) || undefined;
   const sector = (sp.serviceSector as ServiceSector | undefined) || undefined;

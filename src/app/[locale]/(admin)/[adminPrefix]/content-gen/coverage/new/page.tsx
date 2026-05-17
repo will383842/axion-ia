@@ -21,6 +21,8 @@ import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
 } from "@/server/content-gen/shared/editorial-mix-rules";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CoverageNewV2 } from "./_v2/CoverageNewV2";
 import type {
   CoverageScope,
   ServiceSector,
@@ -66,6 +68,10 @@ export default async function NewCampaignPage({ params, searchParams }: PageProp
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <CoverageNewV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const [distProfiles, audProfiles] = await Promise.all([
     listDistributionProfiles(),

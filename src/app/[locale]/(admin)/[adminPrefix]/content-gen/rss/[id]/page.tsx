@@ -8,6 +8,8 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listRssSources, removeRssSource } from "@/server/actions/content-gen/rss";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { RssDetailV2 } from "./_v2/RssDetailV2";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +26,10 @@ export default async function RssDetailPage({ params }: PageProps) {
   const sources = await listRssSources();
   const source = sources.find((s) => s.url === url);
   if (!source) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return <RssDetailV2 adminPrefix={adminPrefix} source={source} />;
+  }
 
   async function remove() {
     "use server";

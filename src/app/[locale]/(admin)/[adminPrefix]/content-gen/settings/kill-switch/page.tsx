@@ -12,6 +12,8 @@ import {
   deactivateKillSwitch,
   getKillSwitch,
 } from "@/server/actions/content-gen/kill-switch";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { KillSwitchV2 } from "./_v2/KillSwitchV2";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,18 @@ export default async function KillSwitchPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const state = await getKillSwitch();
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <KillSwitchV2
+        state={{
+          active: state.active,
+          activatedAt: state.activatedAt ?? null,
+          reason: state.reason ?? null,
+        }}
+      />
+    );
+  }
 
   async function activate(formData: FormData) {
     "use server";

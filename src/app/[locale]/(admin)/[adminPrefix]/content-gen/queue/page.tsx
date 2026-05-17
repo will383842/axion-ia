@@ -8,6 +8,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { QueueV2 } from "./_v2/QueueV2";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,10 @@ export default async function QueuePage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <QueueV2 adminPrefix={adminPrefix} />;
+  }
 
   const [running, waiting, failed] = await Promise.all([
     listJobs({ status: "running" }),

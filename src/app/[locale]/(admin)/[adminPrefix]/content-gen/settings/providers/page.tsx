@@ -12,6 +12,8 @@ import {
   resetProviderSpend,
   updateProvider,
 } from "@/server/actions/content-gen/providers";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ProvidersV2 } from "./_v2/ProvidersV2";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,24 @@ export default async function ProvidersSettingsPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const rows = await listProviders();
+
+  if (await isAdminV2Enabled()) {
+    return (
+      <ProvidersV2
+        rows={rows.map((r) => ({
+          id: r.id,
+          provider: r.provider,
+          role: r.role,
+          apiKeyEnvVar: r.apiKeyEnvVar,
+          enabled: r.enabled,
+          model: r.model,
+          monthlyCapUsd: Number(r.monthlyCapUsd),
+          rateLimitRpm: r.rateLimitRpm,
+          currentMonthSpentUsd: Number(r.currentMonthSpentUsd),
+        }))}
+      />
+    );
+  }
 
   async function save(formData: FormData) {
     "use server";

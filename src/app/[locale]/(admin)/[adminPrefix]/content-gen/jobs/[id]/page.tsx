@@ -6,6 +6,8 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { cancelJob, getJob, retryJob } from "@/server/actions/content-gen/jobs";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { JobDetailV2 } from "./_v2/JobDetailV2";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,10 @@ export default async function JobDetailPage({ params }: PageProps) {
 
   const job = await getJob(id);
   if (!job) notFound();
+
+  if (await isAdminV2Enabled()) {
+    return <JobDetailV2 job={job} />;
+  }
 
   async function retry() {
     "use server";

@@ -13,6 +13,8 @@ import {
   listDistributionProfiles,
   upsertDistributionProfile,
 } from "@/server/actions/content-gen/distribution";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { CoverageDistributionV2 } from "./_v2/CoverageDistributionV2";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,10 @@ export default async function CoverageDistributionPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const rows = await listDistributionProfiles();
+
+  if (await isAdminV2Enabled()) {
+    return <CoverageDistributionV2 rows={rows} />;
+  }
 
   async function upsert(formData: FormData) {
     "use server";

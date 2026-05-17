@@ -10,6 +10,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ContentGenDashboardV2 } from "./_v2/ContentGenDashboardV2";
 import type { ContentType, SearchIntent } from "../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +24,10 @@ export default async function ContentGenDashboardPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <ContentGenDashboardV2 adminPrefix={adminPrefix} />;
+  }
 
   const base = `/fr/${adminPrefix}/content-gen`;
   const [kpis, sectorBreakdown] = await Promise.all([

@@ -10,6 +10,8 @@ import {
   rejectReview,
 } from "@/server/actions/content-gen/review";
 import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { ReviewQueueListV2 } from "./_v2/ReviewQueueListV2";
 import type { ReviewStatus } from "../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +34,10 @@ export default async function ReviewQueuePage({ params, searchParams }: PageProp
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  if (await isAdminV2Enabled()) {
+    return <ReviewQueueListV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  }
 
   const status = (sp.status as ReviewStatus | undefined) || "pending";
   const page = Math.max(1, Number(sp.page ?? "1") || 1);

@@ -5,6 +5,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getQualityLoop, updateQualityLoop } from "@/server/actions/content-gen/policies";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { QualityLoopV2 } from "./_v2/QualityLoopV2";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +20,10 @@ export default async function QualityLoopSettingsPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const cfg = await getQualityLoop();
+
+  if (await isAdminV2Enabled()) {
+    return <QualityLoopV2 cfg={cfg} />;
+  }
 
   async function save(formData: FormData) {
     "use server";
