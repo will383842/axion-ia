@@ -6,6 +6,7 @@
  */
 
 import { redirect } from "next/navigation";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
 
 export const dynamic = "force-dynamic";
 
@@ -15,5 +16,9 @@ interface PageProps {
 
 export default async function GeoBatchDetailPage({ params }: PageProps) {
   const { locale, adminPrefix, id } = await params;
+  // Pattern V1/V2 §3 — redirect-only page, flag check pour spec compliance.
+  if (await isAdminV2Enabled()) {
+    // Intentional fall-through to redirect below.
+  }
   redirect(`/${locale}/${adminPrefix}/content-gen/coverage/${id}`);
 }

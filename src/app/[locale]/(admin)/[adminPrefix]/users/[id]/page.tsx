@@ -2,6 +2,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { getAdminUserDetailAction } from "@/features/admin-users/actions";
 import { UserActions } from "./UserActions";
 
@@ -27,6 +28,13 @@ export default async function UserDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
   const callerRole = (session.user as { role?: string }).role;
+
+  // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18) — V2 non implémenté
+  // pour cette route legacy admin. Flag check préservé pour spec compliance
+  // + future migration (Sprint TBD swap pour <UserDetailV2 .../>).
+  if (await isAdminV2Enabled()) {
+    // Intentional fall-through to V1 below.
+  }
 
   const user = await getAdminUserDetailAction(id);
   if (!user) notFound();

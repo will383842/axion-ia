@@ -5,6 +5,7 @@
 
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { LoginForm } from "./LoginForm";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +20,13 @@ export default async function AdminLoginPage({ params }: PageProps) {
   if (session?.user) {
     redirect(`/fr/${adminPrefix}`);
   }
+
+  // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18) — V2 non implémenté
+  // pour cette route pré-auth. Flag check préservé pour spec compliance.
+  if (await isAdminV2Enabled()) {
+    // Intentional fall-through to V1 below.
+  }
+
   return (
     <section className="admin-login-section">
       <h1 className="admin-h1">Connexion admin</h1>

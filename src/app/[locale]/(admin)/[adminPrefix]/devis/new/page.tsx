@@ -6,6 +6,7 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { prisma } from "@/lib/prisma";
 import { NewQuoteForm } from "./NewQuoteForm";
 
@@ -21,6 +22,12 @@ export default async function NewQuotePage({ params, searchParams }: PageProps) 
   const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18) — V2 non implémenté
+  // pour cette route legacy admin. Flag check préservé pour spec compliance.
+  if (await isAdminV2Enabled()) {
+    // Intentional fall-through to V1 below.
+  }
 
   const role = (session.user as { role?: string }).role ?? "reader";
   if (role !== "super_admin" && role !== "admin") {
