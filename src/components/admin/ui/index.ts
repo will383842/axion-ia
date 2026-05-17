@@ -61,3 +61,10 @@ export { AdminAutosaveIndicator } from "./AdminAutosaveIndicator";
 export type { AdminAutosaveStatus } from "./AdminAutosaveIndicator";
 export { AdminBulkActions } from "./AdminBulkActions";
 export { AdminInlineEdit } from "./AdminInlineEdit";
+
+// PR 5 — sidebar v2 + topbar + user menu + notifications
+export { AdminSidebarNav } from "./AdminSidebarNav";
+export { AdminTopbar } from "./AdminTopbar";
+export { AdminUserMenu } from "./AdminUserMenu";
+export { AdminNotificationsDropdown } from "./AdminNotificationsDropdown";
+export type { AdminNotificationItem } from "./AdminNotificationsDropdown";
