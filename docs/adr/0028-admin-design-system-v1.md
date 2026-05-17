@@ -1,6 +1,6 @@
 # ADR 0028 — Design System admin v1 (Mai 2026)
 
-- **Statut** : Accepted (autopilote — décision unilatérale documentée).
+- **Statut** : Accepted — Foundation **Implemented** 2026-05-17 (PRs 0-5 + 13 livrées sur `main` local, 0 push). Migrations per-page (PR 6-11) + polish (PR 12) restent incrémentales.
 - **Date** : 2026-05-17
 - **Spec maître** : `_AUDIT/PROMPT-ADMIN-FRONTEND-REFONTE-2026.md`
 - **Audit Phase 1** : `_AUDIT/ADMIN-REFONTE-2026-05-17/SYNTHESE-PHASE-1.md` (531.7/1000 baseline)
