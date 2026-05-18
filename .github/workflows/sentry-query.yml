@@ -1,0 +1,106 @@
+name: Sentry query · fetch issue events (autopilot diagnostic)
+
+# Workflow utilitaire workflow_dispatch — query Sentry SaaS API pour
+# fetch les détails d'une issue + ses events + breadcrumbs.
+#
+# Usage Claude :
+#   gh workflow run sentry-query.yml -f action=list-recent
+#   gh workflow run sentry-query.yml -f action=issue-detail -f issue_id=118951810
+#   gh workflow run sentry-query.yml -f action=event-detail -f issue_id=118951810
+#   gh workflow run sentry-query.yml -f action=issues-by-tag -f query='tags[route]:admin'
+#
+# Output dump dans les step logs (gh run view --log).
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'list-recent | issue-detail | event-detail | issues-by-tag'
+        required: true
+        default: 'list-recent'
+        type: choice
+        options:
+          - list-recent
+          - issue-detail
+          - event-detail
+          - issues-by-tag
+      issue_id:
+        description: 'Sentry issue ID (numeric, requis pour issue-detail / event-detail)'
+        required: false
+        default: ''
+        type: string
+      query:
+        description: 'Query string Sentry (ex: "tags[route]:admin" pour issues-by-tag)'
+        required: false
+        default: ''
+        type: string
+      stats_period:
+        description: 'Période (24h, 7d, 14d, 30d)'
+        required: false
+        default: '24h'
+        type: choice
+        options:
+          - '24h'
+          - '7d'
+          - '14d'
+          - '30d'
+
+permissions:
+  contents: read
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate secrets
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          if [ -z "${SENTRY_AUTH_TOKEN:-}" ]; then
+            echo "::error::Missing SENTRY_AUTH_TOKEN secret. Run: gh secret set SENTRY_AUTH_TOKEN"
+            exit 1
+          fi
+          echo "Token OK ($(echo -n $SENTRY_AUTH_TOKEN | wc -c) chars)"
+
+      - name: Sentry query
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG_SLUG }}
+          ACTION: ${{ inputs.action }}
+          ISSUE_ID: ${{ inputs.issue_id }}
+          QUERY: ${{ inputs.query }}
+          STATS_PERIOD: ${{ inputs.stats_period }}
+        run: |
+          set -euo pipefail
+          ORG="${SENTRY_ORG:-world-expat}"
+          PROJECT="axion-ia"
+          BASE="https://sentry.io/api/0"
+          AUTH="Authorization: Bearer ${SENTRY_AUTH_TOKEN}"
+
+          case "$ACTION" in
+            list-recent)
+              echo "──── Recent issues (period=$STATS_PERIOD) ────"
+              curl -s -H "$AUTH" "$BASE/projects/$ORG/$PROJECT/issues/?statsPeriod=$STATS_PERIOD&limit=20" \
+                | jq -r '.[] | "\(.id) [\(.level)] count=\(.count) lastSeen=\(.lastSeen[0:19]) | \(.title[0:120])"'
+              ;;
+            issue-detail)
+              if [ -z "$ISSUE_ID" ]; then echo "::error::issue_id required"; exit 1; fi
+              echo "──── Issue $ISSUE_ID details ────"
+              curl -s -H "$AUTH" "$BASE/issues/$ISSUE_ID/" \
+                | jq '{id, title, culprit, type, permalink, count, userCount, firstSeen, lastSeen, level, isPublic, status, statusDetails, platform, project: .project.slug, metadata, tags: ([.tags[]? | {key, value}] | .[0:20])}'
+              ;;
+            event-detail)
+              if [ -z "$ISSUE_ID" ]; then echo "::error::issue_id required"; exit 1; fi
+              echo "──── Latest event of issue $ISSUE_ID ────"
+              curl -s -H "$AUTH" "$BASE/issues/$ISSUE_ID/events/latest/" \
+                | jq '{eventID, dateCreated, message: .title, platform, sdk, tags, contexts: {browser: .contexts.browser, runtime: .contexts.runtime, trace: .contexts.trace, request: {url: .request.url, method: .request.method}}, breadcrumbs: ([.entries[] | select(.type == "breadcrumbs") | .data.values[]] | .[-30:] | map({timestamp, type, category, level, message: (.message // ""), data: (.data // {})})), exception: ([.entries[] | select(.type == "exception") | .data.values[0]] | first)}'
+              ;;
+            issues-by-tag)
+              if [ -z "$QUERY" ]; then echo "::error::query required"; exit 1; fi
+              echo "──── Issues matching: $QUERY ────"
+              ENC_QUERY=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$QUERY")
+              curl -s -H "$AUTH" "$BASE/projects/$ORG/$PROJECT/issues/?query=$ENC_QUERY&statsPeriod=$STATS_PERIOD&limit=20" \
+                | jq -r '.[] | "\(.id) [\(.level)] count=\(.count) lastSeen=\(.lastSeen[0:19]) | \(.title[0:120])"'
+              ;;
+          esac
