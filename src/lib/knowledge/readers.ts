@@ -13,7 +13,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { isKbBackendUnifiedFor, type KbBackendTarget } from "./feature-flag";
-import { GLOSSARY_TERMS_HARDCODE } from "./legacy-mapping-glossary-hardcode";
+import { ALL_GLOSSARY_TERMS_EXTENDED } from "@/content/glossary-extension";
 import type { Locale } from "../../../prisma/generated/client";
 
 /**
@@ -49,11 +49,29 @@ export interface GlossaryTerm {
 /**
  * Lit les termes glossaire :
  * - depuis KnowledgeEntry si KB_BACKEND_UNIFIED_GLOSSARY ou _GLOBAL.
- * - sinon depuis le SSOT hardcode `GLOSSARY_TERMS_HARDCODE`.
+ * - sinon depuis le SSOT enrichi `ALL_GLOSSARY_TERMS_EXTENDED` (60 termes).
+ *
+ * Sprint S+4-A 2026-05-18 (audit P1-19) : la source par défaut est désormais
+ * la version étendue (60 termes IA opérationnel : foundational + agents + rag
+ * + models + infra + security + evaluation). Le SSOT historique de 12 termes
+ * (`GLOSSARY_TERMS_HARDCODE`) reste intouché — sert encore aux tests legacy
+ * et au mapping `KnowledgeEntry` (seeders). `ALL_GLOSSARY_TERMS_EXTENDED` le
+ * réutilise puis y ajoute 48 entrées + catégories/aliases/related/examples.
+ *
+ * La structure renvoyée (`GlossaryTerm`) reste minimale (slug/term/fr/en)
+ * pour rétro-compat — les consumers riches (`/glossaire/[slug]`) utilisent
+ * directement `getGlossaryTermBySlug()` du module `glossary-extension`.
  */
 export async function getGlossaryTerms(): Promise<readonly GlossaryTerm[]> {
   if (!isKbBackendUnifiedFor("glossary_term")) {
-    return GLOSSARY_TERMS_HARDCODE;
+    // Audit P1-19 — passage 12 → 60 termes via vue enrichie SSOT.
+    // Shape minimale identique → zéro breaking change pour `/glossaire/page.tsx`.
+    return ALL_GLOSSARY_TERMS_EXTENDED.map((t) => ({
+      slug: t.slug,
+      term: t.term,
+      fr: t.fr,
+      en: t.en,
+    }));
   }
 
   const entries = await prisma.knowledgeEntry.findMany({
@@ -67,7 +85,10 @@ export async function getGlossaryTerms(): Promise<readonly GlossaryTerm[]> {
     orderBy: { slug: "asc" },
   });
 
-  return entries
+  // Fallback fail-soft : si DB vide (pas encore seedé) ou query échoue
+  // côté backend unifié, on retombe sur la vue étendue pour ne pas servir
+  // un /glossaire vide à Will. Cohérent avec doctrine `help-articles/reader.ts`.
+  const mapped = entries
     .map((e) => {
       const fr = e.translations.find((t) => t.locale === "fr");
       const en = e.translations.find((t) => t.locale === "en");
@@ -80,6 +101,25 @@ export async function getGlossaryTerms(): Promise<readonly GlossaryTerm[]> {
       };
     })
     .filter((t): t is GlossaryTerm => t !== null);
+
+  if (mapped.length === 0) {
+    return ALL_GLOSSARY_TERMS_EXTENDED.map((t) => ({
+      slug: t.slug,
+      term: t.term,
+      fr: t.fr,
+      en: t.en,
+    }));
+  }
+  return mapped;
+}
+
+/**
+ * Liste les slugs de termes glossaire publiés (pour `generateStaticParams`).
+ * Sprint S+4-A 2026-05-18 — anti soft-404 SSG (`dynamicParams = false`).
+ */
+export async function listGlossaryTermSlugs(): Promise<readonly string[]> {
+  const terms = await getGlossaryTerms();
+  return terms.map((t) => t.slug);
 }
 
 // ============================================================

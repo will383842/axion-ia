@@ -32,6 +32,7 @@ import {
   alertKbNotReady,
   alertNewReview,
 } from "@/server/content-gen/shared/content-gen-alerts";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 
 interface KillSwitchState {
@@ -557,6 +558,15 @@ export function startContentGenWorker(): Worker<ContentGenJobPayload> {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-gen-worker] job ${job?.id} failed:`, err);
+    // Sprint S+4-C (audit content-gen deep 2026-05-18 P1-7) — Sentry capture
+    // additif. Kill-switch est volontairement skip (équivalent business pause,
+    // pas un bug). KbNotReady déjà Telegram-alerted via alertKbNotReady — on
+    // capture quand même côté Sentry pour suivi groupé (fréquence vs cause).
+    const errMsg = err instanceof Error ? err.message : String(err);
+    const errName = err instanceof Error ? err.name : "Error";
+    if (errName !== "KillSwitchActiveError" && errMsg !== "Kill switch content-gen actif — job requeue") {
+      captureWorkerError("gen", QUEUE_NAME, job, err);
+    }
   });
   workerInstance.on("completed", (job) => {
     console.log(`[content-gen-worker] job ${job.id} completed`);

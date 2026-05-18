@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Le Monde - Actualités</title>
+    <link>https://www.lemonde.fr</link>
+    <description>Actualités, informations en continu</description>
+    <language>fr-FR</language>
+    <item>
+      <title>L'IA générative bouleverse l'enseignement supérieur</title>
+      <link>https://www.lemonde.fr/article-1</link>
+      <guid isPermaLink="false">lemonde-2026-05-18-001</guid>
+      <pubDate>Sun, 18 May 2026 08:30:00 +0200</pubDate>
+      <description>Les universités françaises adoptent l'IA à marche forcée.</description>
+      <content:encoded><![CDATA[<p>Article complet avec <strong>HTML formatté</strong>.</p><p>Second paragraphe.</p>]]></content:encoded>
+      <dc:creator>Marie Dupont</dc:creator>
+      <category>Éducation</category>
+      <category>IA</category>
+    </item>
+    <item>
+      <title><![CDATA[Article avec CDATA dans le titre]]></title>
+      <link>https://www.lemonde.fr/article-2</link>
+      <guid>lemonde-2026-05-18-002</guid>
+      <pubDate>Sun, 18 May 2026 09:15:00 +0200</pubDate>
+      <description><![CDATA[Description avec <em>balises HTML</em>.]]></description>
+    </item>
+    <item>
+      <title>Article sans guid ni date</title>
+      <link>https://www.lemonde.fr/article-3</link>
+      <description>Description simple.</description>
+    </item>
+  </channel>
+</rss>

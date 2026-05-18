@@ -21,6 +21,10 @@ import type {
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { BANNED_FROM_EDITORIAL_MIX } from "@/server/content-gen/shared/editorial-mix-rules";
 import { requireAdmin } from "./_auth";
+// Sprint S+4-F 2026-05-18 (audit 06-CROISEMENTS §8.9 P1-1) — chokepoint settings
+// avec rate-limit (60/min/admin/key) + audit log SOC2 diff (oldValue → newValue).
+// Avant : `prisma.contentGenConfig.upsert(...)` direct → bypass rate-limit + audit.
+import { writeContentGenConfig } from "./_settings";
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/coverage`;
@@ -236,6 +240,14 @@ export async function resumeCampaign(id: string): Promise<void> {
     select: { pausedAt: true },
   });
   if (campaign?.pausedAt) {
+    // Sprint S+4-F 2026-05-18 (audit 06-CROISEMENTS §8.9 P1-1) — bypass corrigé :
+    // l'historique `campaign_pause_history` passe désormais par le chokepoint
+    // `writeContentGenConfig` qui empile rate-limit (60/min/admin/key) + audit
+    // log SOC2 (diff oldValue → newValue + actorUserId/email/ip/ua tracés).
+    // Avant : `prisma.contentGenConfig.upsert(...)` direct → 0 trace SOC2 + 0
+    // protection abus loop (un admin malveillant pouvait spammer resume sur N
+    // campagnes pour pourrir l'historique). La lecture-merge reste côté caller
+    // pour éviter d'introduire un pattern read-modify-write dans le chokepoint.
     try {
       const existing = await prisma.contentGenConfig.findUnique({
         where: { key: "campaign_pause_history" },
@@ -249,17 +261,17 @@ export async function resumeCampaign(id: string): Promise<void> {
         },
         ...prev,
       ].slice(0, 200);
-      await prisma.contentGenConfig.upsert({
-        where: { key: "campaign_pause_history" },
-        create: {
-          key: "campaign_pause_history",
-          value: next as never,
-          updatedBy: "system:resume-campaign",
-        },
-        update: { value: next as never, updatedBy: "system:resume-campaign" },
-      });
+      // `updatedBy` = email admin réel (vs ancien "system:resume-campaign"
+      // anonymisé) — cohérence audit log + traçabilité SOC2.
+      await writeContentGenConfig(
+        "campaign_pause_history",
+        next,
+        session.email,
+        `Resume campagne ${id}`,
+      );
     } catch {
-      // best-effort
+      // best-effort — un échec rate-limit ou audit log ne doit pas bloquer le
+      // resume de la campagne (priorité métier : reprendre la prod).
     }
   }
   await prisma.coverageCampaign.update({

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Axion-IA Substack</title>
+  <link href="https://axion-ia.substack.com/" rel="alternate"/>
+  <link href="https://axion-ia.substack.com/feed" rel="self"/>
+  <id>https://axion-ia.substack.com/feed</id>
+  <updated>2026-05-18T10:00:00Z</updated>
+  <entry>
+    <title>Pourquoi 90 % des projets IA échouent en production</title>
+    <link href="https://axion-ia.substack.com/p/pourquoi-90-pourcent-echouent" rel="alternate"/>
+    <id>tag:substack.com,2026:/post/123456</id>
+    <published>2026-05-18T08:00:00Z</published>
+    <updated>2026-05-18T09:30:00Z</updated>
+    <summary>Retour d'expérience sur 47 missions IA B2B.</summary>
+    <content type="html"><![CDATA[<p>L'écart entre POC et production reste massif.</p><p>Voici 5 patterns observés.</p>]]></content>
+    <author>
+      <name>Will Jullin</name>
+      <email>will@axion-ia.com</email>
+    </author>
+    <category term="ia" scheme="https://axion-ia.com/tags"/>
+    <category term="production" scheme="https://axion-ia.com/tags"/>
+  </entry>
+  <entry>
+    <title>Atom entry sans summary ni content</title>
+    <link href="https://axion-ia.substack.com/p/minimal" rel="alternate"/>
+    <id>tag:substack.com,2026:/post/123457</id>
+    <published>2026-05-17T12:00:00Z</published>
+  </entry>
+  <entry>
+    <title>Entry avec multiple links</title>
+    <link href="https://axion-ia.substack.com/p/multi-link.json" rel="enclosure" type="application/json"/>
+    <link href="https://axion-ia.substack.com/p/multi-link" rel="alternate"/>
+    <id>tag:substack.com,2026:/post/123458</id>
+    <published>2026-05-16T15:30:00Z</published>
+    <summary>Le parser doit choisir le link rel="alternate".</summary>
+  </entry>
+</feed>

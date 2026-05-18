@@ -28,8 +28,16 @@
 
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo";
+// Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sitemap-news fusionne
+// désormais les Articles `isNews=true` (RSS pipeline) ET les `PRESS_RELEASES`
+// (communiqués éditoriaux fixtures TS). Avant ce patch, les communiqués publiés
+// dans la fenêtre 48h glissante n'apparaissaient PAS dans sitemap-news → Google
+// News + Top Stories les ignoraient (perte signal lancement / annonce produit).
+import { PRESS_RELEASES } from "@/content/press";
 
-// Cap dur imposé par Google News (pas par sitemaps.org 50K)
+// Cap dur imposé par Google News (pas par sitemaps.org 50K) — cap GLOBAL
+// (DB Article isNews + PRESS_RELEASES additionnés). Si l'un des deux flux
+// suffit à atteindre 1000, l'autre est tronqué après merge & sort.
 const NEWS_SITEMAP_MAX_URLS = 1000;
 // Fenêtre stricte Google News (publications > 48h = retirer)
 const NEWS_FRESHNESS_WINDOW_MS = 48 * 60 * 60 * 1000;
@@ -55,6 +63,20 @@ function escapeXml(input: string): string {
 interface NewsRow {
   publishedAt: Date | null;
   translations: Array<{ slug: string; title: string }>;
+}
+
+/**
+ * Unified shape pour merge des 2 sources (DB Article isNews + PRESS_RELEASES
+ * fixtures TS). Permet de trier par fraîcheur puis de tronquer au cap Google
+ * News (1000 URLs) sans biaiser vers une source au détriment de l'autre.
+ */
+interface NewsEntry {
+  /** URL canonique FR (Google News index seulement FR sur axion-ia.com). */
+  readonly loc: string;
+  /** ISO 8601 date publication (`publication_date` Google News). */
+  readonly pubDate: string;
+  /** Titre brut (sera XML-escapé au render). */
+  readonly title: string;
 }
 
 async function fetchRecentNewsRows(): Promise<NewsRow[]> {
@@ -84,28 +106,68 @@ async function fetchRecentNewsRows(): Promise<NewsRow[]> {
   }
 }
 
+/**
+ * Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — extrait les
+ * `PRESS_RELEASES` publiés dans la fenêtre 48h glissante. `publishedAt` est
+ * `YYYY-MM-DD` (date au sens calendaire) → on l'élargit à minuit UTC pour
+ * comparaison vs cutoff. Les communiqués éditoriaux Axion-IA sont émis
+ * rarement (~1-2/mois) donc ce flux apporte 0-1 URL en moyenne.
+ */
+function getRecentPressReleases(): NewsEntry[] {
+  const cutoff = Date.now() - NEWS_FRESHNESS_WINDOW_MS;
+  const out: NewsEntry[] = [];
+  for (const release of PRESS_RELEASES) {
+    // `publishedAt` = `YYYY-MM-DD` → Date au début du jour UTC.
+    const ts = Date.parse(`${release.publishedAt}T00:00:00.000Z`);
+    if (!Number.isFinite(ts)) continue;
+    if (ts < cutoff) continue;
+    out.push({
+      loc: `${SITE_URL}/fr/presse/${release.slug}`,
+      pubDate: new Date(ts).toISOString(),
+      title: release.fr.title,
+    });
+  }
+  return out;
+}
+
 export async function GET(): Promise<Response> {
   const rows = await fetchRecentNewsRows();
 
-  const urlBlocks: string[] = [];
+  // Source 1 : DB Article isNews (pipeline RSS).
+  const dbEntries: NewsEntry[] = [];
   for (const row of rows) {
     const t = row.translations[0];
     if (!t || !t.slug) continue;
     if (!row.publishedAt) continue;
+    dbEntries.push({
+      loc: `${SITE_URL}/fr/actualites/${t.slug}`,
+      pubDate: row.publishedAt.toISOString(),
+      title: t.title,
+    });
+  }
 
-    const loc = `${SITE_URL}/fr/actualites/${t.slug}`;
-    const pubDate = row.publishedAt.toISOString();
-    const title = escapeXml(t.title);
+  // Source 2 : PRESS_RELEASES éditoriaux (Sprint S+4-D).
+  const pressEntries = getRecentPressReleases();
 
+  // Merge + sort desc par publication_date + tronque au cap Google News.
+  // Tri stable (Array.prototype.sort en V8 est stable depuis Node 12) garantit
+  // ordre déterministe entre deux items partageant la même date (rare).
+  const merged: NewsEntry[] = [...dbEntries, ...pressEntries]
+    .sort((a, b) => (a.pubDate < b.pubDate ? 1 : a.pubDate > b.pubDate ? -1 : 0))
+    .slice(0, NEWS_SITEMAP_MAX_URLS);
+
+  const urlBlocks: string[] = [];
+  for (const entry of merged) {
+    const title = escapeXml(entry.title);
     urlBlocks.push(
       `  <url>
-    <loc>${loc}</loc>
+    <loc>${entry.loc}</loc>
     <news:news>
       <news:publication>
         <news:name>Axion-IA</news:name>
         <news:language>fr</news:language>
       </news:publication>
-      <news:publication_date>${pubDate}</news:publication_date>
+      <news:publication_date>${entry.pubDate}</news:publication_date>
       <news:title>${title}</news:title>
     </news:news>
   </url>`,

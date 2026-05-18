@@ -25,6 +25,14 @@ import {
   countKnowledgePublicEntries,
 } from "@/server/exporters/knowledge-sitemap";
 import { prisma } from "@/lib/prisma";
+// Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
+import { listGlossaryTermSlugs } from "@/content/glossary-extension";
+// Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
+import { getAllStackToolSlugs } from "@/content/stack-ia-details";
+// Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sub-sitemap dédié
+// communiqués de presse (`/presse/[slug]` × N locales). Source = PRESS_RELEASES
+// (fixtures éditoriales `src/content/press.ts`, lastmod = `publishedAt`).
+import { PRESS_RELEASES } from "@/content/press";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -72,13 +80,26 @@ type StaticSitemapId =
   // Les guides individuels restent émis via sub-sitemap `blog` (continuité Articles).
   // Le sub-sitemap `guides` ne contient que le hub lui-même (lastmod = BUILD_TIME).
   | "guides"
+  // Sprint S+4-A 2026-05-18 (audit 22-TYPE-11) — sub-sitemap dédié glossaire
+  // (hub /glossaire + 60 termes /glossaire/[slug]).
+  | "glossaire"
+  // Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sub-sitemap dédié
+  // communiqués de presse (`/presse/[slug]` × N locales). Le hub `/presse`
+  // reste émis via `pages.xml` (statique routing.pathnames).
+  | "presse"
   | "implementation"
   | "implantations"
   | "services-villes-audit"
   | "services-villes-interventions"
   | "services-villes-implementation"
   // Sprint S+2 City Domination — 4e verticale `un-a-un` × villes (~2150 routes).
-  | "services-villes-un-a-un";
+  | "services-villes-un-a-un"
+  // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
+  // sub-sitemap dédié pour les 11 pages détail outils `/stack-ia/[tool]`.
+  // ~22 URLs V1 (11 outils × 2 locales). Sub-sitemap propre pour isoler le
+  // diagnostic Product JSON-LD côté Search Console. Scale prête pour +5
+  // outils/trimestre sans refactor.
+  | "stack-ia-tools";
 
 type ServiceVillesKey = "audit" | "interventions" | "implementation" | "un-a-un";
 
@@ -249,6 +270,11 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "comparaisons",
     // Sprint S+3 P0-7 (audit 18-TYPE-7) — sub-sitemap dédié hub /guides.
     "guides",
+    // Sprint S+4-A 2026-05-18 (audit 22-TYPE-11) — sub-sitemap glossaire (hub + 60 termes).
+    "glossaire",
+    // Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sub-sitemap presse
+    // (`/presse/[slug]` × N locales, lastmod = `publishedAt` réel par release).
+    "presse",
     "implementation",
     "implantations",
     "services-villes-audit",
@@ -256,6 +282,9 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "services-villes-implementation",
     // Sprint S+2 City Domination — 4e verticale industrialisation Phase 1.
     "services-villes-un-a-un",
+    // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
+    // ~22 URLs V1 (11 outils × 2 locales). Statique.
+    "stack-ia-tools",
   ];
 
   // KB : dériver le nombre de chunks depuis le count DB. Lecture unique au
@@ -335,6 +364,10 @@ export default async function sitemap(props: {
       return filterEnIfDisabled(buildComparaisonsSitemap(now));
     case "guides":
       return filterEnIfDisabled(buildGuidesHubSitemap(now));
+    case "glossaire":
+      return filterEnIfDisabled(buildGlossarySitemap(now));
+    case "presse":
+      return filterEnIfDisabled(buildPresseSitemap(now));
     case "implementation":
       return filterEnIfDisabled(buildImplementationSitemap(now));
     case "implantations":
@@ -348,6 +381,9 @@ export default async function sitemap(props: {
     // Sprint S+2 City Domination — 4e verticale un-a-un sitemap dédié.
     case "services-villes-un-a-un":
       return filterEnIfDisabled(buildServicesVillesSitemap(now, "un-a-un"));
+    // Sprint S+4-B City Domination 2026-05-18 — pages détail outils stack-ia.
+    case "stack-ia-tools":
+      return filterEnIfDisabled(buildStackIaToolsSitemap(now));
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -671,6 +707,121 @@ function buildGuidesHubSitemap(now: Date): MetadataRoute.Sitemap {
   return entries;
 }
 
+/**
+ * Sub-sitemap `glossaire` — Sprint S+4-A 2026-05-18 (audit 22-TYPE-11 P1-19).
+ *
+ * Contient :
+ *   - le hub `/glossaire` (1 URL × locales effectives) — déjà émis aussi via
+ *     `pages.xml` (mapping `routing.pathnames`) mais on le re-déclare ici pour
+ *     que Search Console groupe le hub avec ses termes (UX diagnostique).
+ *   - 60 termes `/glossaire/[slug]` × locales effectives = ~60 URLs en mode
+ *     FR-only (cohérence EN désactivé prod 2026-05-16) ou ~120 URLs si EN réactivé.
+ *
+ * `lastModified = BUILD_TIME` — un terme glossaire évolue rarement, et même
+ * une mise à jour de définition est captée par le BUILD_TIME (chaque deploy
+ * regénère le sitemap). Pas de DB-aware ici car la SSOT vit en TS hardcode
+ * (`src/content/glossary-extension.ts`).
+ *
+ * Priority 0.6 (sous les pages stratégiques 0.8, au-dessus des taxonomies 0.4-0.5).
+ * ChangeFrequency `monthly` — alignement réaliste avec la cadence d'enrichissement
+ * du glossaire (Will valide périodiquement les ajouts).
+ */
+function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+
+  // 1) Le hub /glossaire (FR canonique + EN miroir si activé).
+  const hubKey = "/glossaire" as PathnameKey;
+  for (const locale of effectiveLocales) {
+    const url = `${SITE_URL}/${locale}${localizedHref(hubKey, locale)}`;
+    entries.push({
+      url,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: alternateLanguages(hubKey) },
+    });
+  }
+
+  // 2) Chaque terme /glossaire/[slug] (FR canonique + EN miroir si activé).
+  // Slugs identiques en FR et EN (les termes IA sont des sigles anglo-saxons
+  // ou des concepts internationaux — pas de translation des slugs).
+  const slugs = listGlossaryTermSlugs();
+  for (const slug of slugs) {
+    const frUrl = `${SITE_URL}/fr/glossaire/${slug}`;
+    const enUrl = `${SITE_URL}/en/glossary/${slug}`;
+    const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
+    entries.push({
+      url: frUrl,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: { languages: langs },
+    });
+    if (!EN_LOCALE_DISABLED) {
+      entries.push({
+        url: enUrl,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.6,
+        alternates: { languages: langs },
+      });
+    }
+  }
+
+  return entries;
+}
+
+/**
+ * Sub-sitemap `presse` — Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18).
+ *
+ * Contient les pages détail communiqués `/presse/[slug]` × locales effectives.
+ * Le hub `/presse` est déjà émis via `pages.xml` (mapping statique `routing.pathnames`).
+ *
+ * Source de vérité = `PRESS_RELEASES` (fixtures éditoriales TS). `lastModified`
+ * = `publishedAt` réel (ISO `YYYY-MM-DD`) → signal de fraîcheur honnête pour
+ * Google Discover + Top Stories + AI Overviews citations. Pas de DB-aware
+ * V1 (les communiqués sont curated humain, faible volume ~3-30 en V1+V2).
+ *
+ * Priority 0.7 — entre les pages stratégiques (0.8) et le contenu éditorial
+ * récurrent (0.5). Un communiqué annonce un événement précis (lancement,
+ * jalon) qui mérite découverte prioritaire les premières semaines.
+ * ChangeFrequency `monthly` (un communiqué change rarement après publication,
+ * fixes mineurs ratrappés par BUILD_TIME dans `pages.xml`).
+ *
+ * Slugs FR/EN identiques (les slugs de communiqués sont des identifiants
+ * canoniques typés `lancement-plateforme-axion-ia-2026` non traduits — la
+ * traduction est dans le titre + body, pas l'URL).
+ */
+function buildPresseSitemap(_now: Date): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+  for (const release of PRESS_RELEASES) {
+    const slug = release.slug;
+    // ISO date string accepté tel quel par MetadataRoute.Sitemap (Next 16
+    // sérialise en lastmod ISO 8601). `publishedAt` est `YYYY-MM-DD`.
+    const lastMod = release.publishedAt;
+    const frUrl = `${SITE_URL}/fr/presse/${slug}`;
+    const enUrl = `${SITE_URL}/en/press/${slug}`;
+    const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
+    entries.push({
+      url: frUrl,
+      lastModified: lastMod,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: { languages: langs },
+    });
+    if (!EN_LOCALE_DISABLED) {
+      entries.push({
+        url: enUrl,
+        lastModified: lastMod,
+        changeFrequency: "monthly",
+        priority: 0.7,
+        alternates: { languages: langs },
+      });
+    }
+  }
+  return entries;
+}
+
 function buildImplementationSitemap(now: Date): MetadataRoute.Sitemap {
   return buildDynamic(
     [
@@ -679,6 +830,33 @@ function buildImplementationSitemap(now: Date): MetadataRoute.Sitemap {
         en: "/implementation/by-function/:slug",
         slugs: AUTOMATISATION_SLUGS_FR,
         slugsEn: AUTOMATISATION_SLUGS_EN,
+        changeFrequency: "monthly",
+        priority: 0.6,
+      },
+    ],
+    now,
+  );
+}
+
+/**
+ * Sub-sitemap `stack-ia-tools` — Sprint S+4-B City Domination 2026-05-18
+ * (audit P1-17 `_AUDIT/CONTENT-GEN-DEEP-AUDIT-2026-05-18/20-TYPE-9-STACK-IA.md`).
+ *
+ * Émet les 11 pages détail outils `/stack-ia/[tool]` (FR) +
+ * `/ai-stack/[tool]` (EN miroir). Volume V1 ~22 URLs (11 × 2 locales) ;
+ * `effectiveLocales` filtre auto EN si désactivé (`EN_LOCALE_ENABLED!=true`).
+ *
+ * `lastModified` = `BUILD_TIME` (les fiches outils bougent peu — révisées
+ * 1-2 fois/trimestre lors des revues stack). `priority` = 0.6 (depth ≥ 3,
+ * mais valeur éditoriale supérieure aux pages techniques `/components` etc).
+ */
+function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
+  return buildDynamic(
+    [
+      {
+        fr: "/stack-ia/:slug",
+        en: "/ai-stack/:slug",
+        slugs: getAllStackToolSlugs(),
         changeFrequency: "monthly",
         priority: 0.6,
       },

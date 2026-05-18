@@ -1,0 +1,109 @@
+/**
+ * Content Generator — Helper Sentry capture transverse pour workers BullMQ.
+ *
+ * Sprint S+4 action C (audit content-gen deep 2026-05-18 — gap P1-7) :
+ * « 0/16 Sentry capture dans workers BullMQ — toute observabilité erreur passe
+ * console.error + Telegram tag INCIDENT (business uniquement, pas stack traces). »
+ *
+ * Pattern DRY pour les 4 workers chokepoint :
+ *   - `content-publish-worker` (queue `content-publish`)
+ *   - `content-gen-worker` (queue `content-gen`)
+ *   - `content-orchestrator-worker` (queue `content-orchestrator`)
+ *   - `content-indexnow-worker` (queue `content-indexnow`)
+ *
+ * Usage cible dans le worker :
+ *
+ * ```ts
+ * import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+ *
+ * workerInstance.on("failed", (job, err) => {
+ *   console.error(`[content-publish-worker] job ${job?.id} failed:`, err);
+ *   captureWorkerError("publish", "content-publish", job, err);
+ *   // Telegram alertIncident inchangé en-dessous (orthogonal)
+ * });
+ * ```
+ *
+ * Propriétés clés :
+ *   - Fail-soft : un crash interne Sentry NE DOIT PAS faire crasher le worker
+ *     (try/catch global → log warn, continue). Le worker.on("failed") est
+ *     déjà un gestionnaire d'erreur, pas le moment de cascader.
+ *   - PII safe : `sanitizeJobData()` est appelé sur `job.data` avant injection
+ *     dans `extra` (cf. RGPD art. 32 + ADR 0010 Sentry SaaS US).
+ *   - Fingerprint déterministe : `[workerName, errorName, errorMessage.slice(0,100)]`
+ *     pour grouper les erreurs récurrentes (le worker chokepoint génère
+ *     potentiellement plusieurs centaines d'occurrences/jour sur même cause).
+ *   - Préserve console.error / Telegram existants (additif, pas remplacement).
+ *
+ * NB : volontairement pas d'export `Sentry` direct — les callers utilisent
+ * @sentry/nextjs pour autre chose (custom spans, breadcrumbs) sans passer ici.
+ */
+
+import * as Sentry from "@sentry/nextjs";
+import type { Job } from "bullmq";
+
+import { sanitizeJobData } from "./sanitize-job-data";
+
+/**
+ * Identifiants courts/canoniques des workers content-gen monitored.
+ * Match les tags Sentry pour groupage cohérent dashboards.
+ */
+export type WorkerName = "publish" | "gen" | "orchestrator" | "indexnow";
+
+/**
+ * Capture une exception worker dans Sentry avec tags + extras PII-safe.
+ *
+ * Appelé depuis `worker.on("failed", (job, err) => ...)`. Fail-soft :
+ * si Sentry est down ou la DSN absente, log warn + continue (le worker
+ * BullMQ ne doit pas crasher sur un échec d'observabilité).
+ *
+ * @param workerName Nom court canonique (cf. {@link WorkerName})
+ * @param queueName Nom complet de la queue BullMQ (utilisé en tag pour
+ *   corréler avec les dashboards Redis/BullMQ board admin)
+ * @param job Le job BullMQ qui a failed (undefined si erreur pré-pickup)
+ * @param error L'erreur capturée par BullMQ
+ */
+export function captureWorkerError(
+  workerName: WorkerName,
+  queueName: string,
+  job: Job | undefined,
+  error: Error | unknown,
+): void {
+  try {
+    const err = error instanceof Error ? error : new Error(String(error));
+    const errName = err.name || "Error";
+    const errMsg = (err.message ?? "unknown").slice(0, 100);
+
+    const tags: Record<string, string> = {
+      worker: workerName,
+      queue: queueName,
+    };
+    if (job?.id !== undefined && job.id !== null) {
+      tags["jobId"] = String(job.id);
+    }
+    if (job?.name) {
+      tags["jobName"] = job.name;
+    }
+
+    Sentry.captureException(err, {
+      tags,
+      extra: {
+        jobId: job?.id ?? null,
+        jobName: job?.name ?? null,
+        jobData: job?.data ? sanitizeJobData(job.data) : null,
+        attemptsMade: job?.attemptsMade ?? 0,
+        failedReason: job?.failedReason ?? null,
+        timestamp: job?.timestamp ?? null,
+        queueName,
+      },
+      fingerprint: [workerName, errName, errMsg],
+    });
+  } catch (sentryErr) {
+    // Fail-soft : ne pas cascader. Log warn seulement.
+    // (Le worker.on("failed") est lui-même un handler d'erreur — surfacer une
+    // 2e erreur ici masquerait la cause racine.)
+    console.warn(
+      `[sentry-worker] capture failed for ${workerName}/${queueName}:`,
+      sentryErr instanceof Error ? sentryErr.message : String(sentryErr),
+    );
+  }
+}

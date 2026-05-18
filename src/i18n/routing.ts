@@ -232,6 +232,10 @@ export const routing = defineRouting({
     "/a-propos": { fr: "/a-propos", en: "/about" },
     "/contact": { fr: "/contact", en: "/contact" },
     "/presse": { fr: "/presse", en: "/press" },
+    // Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — page détail
+    // communiqué de presse. Slug = `PressRelease.slug` côté `src/content/press.ts`.
+    // FR canonique `/presse/[slug]`, EN miroir `/press/[slug]` (cohérence /presse).
+    "/presse/[slug]": { fr: "/presse/[slug]", en: "/press/[slug]" },
     "/blog": "/blog",
     "/blog/[slug]": "/blog/[slug]",
     // Sprint actualités factory (P0-5 audit E2E 2026-05-15) — FR-only par
@@ -269,7 +273,16 @@ export const routing = defineRouting({
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },
     "/stack-ia": { fr: "/stack-ia", en: "/ai-stack" },
+    // Sprint S+4-B City Domination 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) —
+    // pages détail par outil (`claude`, `chatgpt`, `cursor`, ...). 11 slugs
+    // statiques fournis par STACK_TOOLS. EN miroir `/ai-stack/[tool]` aligné
+    // avec la convention hub (`/stack-ia → /ai-stack`).
+    "/stack-ia/[tool]": { fr: "/stack-ia/[tool]", en: "/ai-stack/[tool]" },
     "/glossaire": { fr: "/glossaire", en: "/glossary" },
+    // Sprint S+4-A 2026-05-18 (audit 22-TYPE-11 P1-19) — pages détail terme
+    // glossaire (60 slugs au 2026-05-18, source `glossary-extension.ts`).
+    // EN miroir `/glossary/[slug]` aligné avec la convention hub.
+    "/glossaire/[slug]": { fr: "/glossaire/[slug]", en: "/glossary/[slug]" },
     "/comparaisons": { fr: "/comparaisons", en: "/comparisons" },
     "/comparaisons/[slug]": { fr: "/comparaisons/[slug]", en: "/comparisons/[slug]" },
 

@@ -22,6 +22,7 @@ import {
   readContentGenConfig,
   writeContentGenConfig,
 } from "@/server/actions/content-gen/_settings";
+import { parseFeed, type FeedItem } from "@/server/queue/lib/feed-parser";
 import type { ContentGenJobPayload } from "./content-gen-worker";
 
 const QUEUE_NAME = "content-rss-fetch";
@@ -37,48 +38,11 @@ interface RssSource {
   readonly enabled: boolean;
 }
 
-interface ParsedRssItem {
-  readonly title: string;
-  readonly link: string;
-  readonly pubDate?: string;
-  readonly description?: string;
-}
-
 function hashItem(url: string, title: string): string {
   return crypto.createHash("sha256").update(`${url}::${title}`).digest("hex").slice(0, 16);
 }
 
-/**
- * Parse RSS XML minimal V1 (regex naïf — V1.5 ajoutera `fast-xml-parser`).
- * Volontairement minimal pour éviter dépendance npm supplémentaire en V1.
- */
-function parseRssXml(xml: string): ReadonlyArray<ParsedRssItem> {
-  const items: ParsedRssItem[] = [];
-  const itemRegex = /<item[^>]*>([\s\S]*?)<\/item>/gi;
-  const titleRegex = /<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i;
-  const linkRegex = /<link[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/i;
-  const dateRegex = /<pubDate[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/pubDate>/i;
-  const descRegex = /<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/i;
-
-  let match: RegExpExecArray | null;
-  while ((match = itemRegex.exec(xml)) !== null) {
-    const body = match[1] ?? "";
-    const t = titleRegex.exec(body);
-    const l = linkRegex.exec(body);
-    const d = dateRegex.exec(body);
-    const desc = descRegex.exec(body);
-    if (!t?.[1] || !l?.[1]) continue;
-    items.push({
-      title: t[1].trim(),
-      link: l[1].trim(),
-      ...(d?.[1] ? { pubDate: d[1].trim() } : {}),
-      ...(desc?.[1] ? { description: desc[1].trim() } : {}),
-    });
-  }
-  return items;
-}
-
-async function fetchSource(source: RssSource): Promise<ReadonlyArray<ParsedRssItem>> {
+async function fetchSource(source: RssSource): Promise<ReadonlyArray<FeedItem>> {
   if (!source.enabled) return [];
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30_000);
@@ -94,7 +58,10 @@ async function fetchSource(source: RssSource): Promise<ReadonlyArray<ParsedRssIt
       return [];
     }
     const xml = await res.text();
-    return parseRssXml(xml);
+    // Sprint S+4-E (P1-21) — parser universel RSS 2.0 / Atom 1.0 / RDF via
+    // `fast-xml-parser`. Remplace l'ancien parser regex naïf qui ignorait
+    // silencieusement les sources Atom (Substack, Ghost, Hugo, etc.).
+    return parseFeed(xml);
   } catch (err) {
     console.warn(`[rss-fetch] ${source.url} error:`, err);
     return [];
@@ -143,14 +110,26 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       // payload (cf. ContentGenJobPayload). Sans cette row, le worker throw
       // UnrecoverableError au lookup DB. Idempotency : `idempotencyKey` unique
       // = hash(source + item) → P2002 silent skip si retry.
+      // Sprint S+4-E — Le generator `blog_from_rss` reçoit toujours les mêmes
+      // 4 champs canoniques (rssTitle/rssLink/rssPubDate/rssDescription) pour
+      // rétro-compat ; les nouveaux champs Atom (author, tags, content riche,
+      // updated) sont exposés en extra et exploitables par les versions
+      // ultérieures du generator sans casser l'existant.
       const inputPayload = {
         rssTitle: item.title,
         rssLink: item.link,
-        rssPubDate: item.pubDate,
-        rssDescription: item.description,
+        rssPubDate: item.published?.toISOString(),
+        rssDescription: item.summary,
         rssSourceName: source.name,
         rssTags: source.tags,
         autoPublish: source.autoPublish,
+        // Champs étendus (Atom + RSS riche) — optionnels, ignorés si generator
+        // ancienne version. Permettent meilleur enrichissement éditorial.
+        rssGuid: item.id,
+        ...(item.content ? { rssContent: item.content } : {}),
+        ...(item.author ? { rssAuthor: item.author } : {}),
+        ...(item.updated ? { rssUpdated: item.updated.toISOString() } : {}),
+        ...(item.tags && item.tags.length > 0 ? { rssItemTags: item.tags } : {}),
       };
       let contentGenJobId: string | null = null;
       try {

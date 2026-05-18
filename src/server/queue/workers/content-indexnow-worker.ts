@@ -21,6 +21,7 @@ import { buildIndexNowPayload } from "@/lib/seo-content-gen-factories";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { redis } from "@/lib/redis";
 import { alertIndexNowFailStreak } from "@/server/content-gen/shared/content-gen-alerts";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-indexnow";
 const ENDPOINT = "https://api.indexnow.org/indexnow";
@@ -153,6 +154,13 @@ export function startIndexNowWorker(): Worker<IndexNowJobPayload> {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-indexnow-worker] job ${job?.id} failed:`, err);
+    // Sprint S+4-C (audit content-gen deep 2026-05-18 P1-7) — Sentry capture.
+    // Le worker absorbe déjà la majorité des fails upstream via try/catch
+    // interne (recordIndexNowFail + alertIndexNowFailStreak Telegram), mais
+    // les exceptions hors-pipeline (kill switch read, payload malformed,
+    // BullMQ retry exhausted) tombent ici. Sentry permet de séparer ces
+    // causes infra des fails IndexNow fonctionnels (déjà tracés Redis).
+    captureWorkerError("indexnow", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

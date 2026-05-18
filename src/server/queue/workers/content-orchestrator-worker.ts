@@ -24,6 +24,7 @@ import {
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type {
   CompanySize,
   ContentType,
@@ -307,6 +308,10 @@ export function startOrchestratorWorker(): Worker {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-orchestrator-worker] job ${job?.id} failed:`, err);
+    // Sprint S+4-C (audit content-gen deep 2026-05-18 P1-7) — Sentry capture
+    // pour observer les fails du tick orchestrator (campaign scan + enqueue).
+    // Volume tick = 1 toutes les 15 min → low cardinality, fingerprint stable.
+    captureWorkerError("orchestrator", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

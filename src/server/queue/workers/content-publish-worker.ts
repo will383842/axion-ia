@@ -31,6 +31,7 @@ import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { sendTelegram } from "@/lib/telegram";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-publish";
 
@@ -364,6 +365,15 @@ export function startPublishWorker(): Worker<PublishJobPayload> {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-publish-worker] job ${job?.id} failed:`, err);
+    // Sprint S+4-C (audit content-gen deep 2026-05-18 P1-7) — Sentry capture
+    // additif à console.error + Telegram. Stack traces + tags + extras
+    // PII-safe (sanitizeJobData) → fingerprint déterministe pour groupage
+    // dashboard. NB : skip Sentry sur kill_switch_active (volontaire, pas un
+    // bug — équivalent business pause par Will).
+    const errMsg = err instanceof Error ? err.message : String(err);
+    if (errMsg !== "kill_switch_active") {
+      captureWorkerError("publish", QUEUE_NAME, job, err);
+    }
     // P1-12 audit indexation 2026-05-15 — alerte Telegram sur publish failed.
     // Publish a le blast radius le plus élevé du pipeline content-gen (Article
     // inséré + IndexNow + ISR revalidate + fact-check enqueue). Avant ce patch,
@@ -371,7 +381,6 @@ export function startPublishWorker(): Worker<PublishJobPayload> {
     // content-gen-worker / content-orchestrator-worker.
     const reviewId =
       (job?.data as { readonly reviewQueueId?: string } | undefined)?.reviewQueueId ?? "?";
-    const errMsg = err instanceof Error ? err.message : String(err);
     if (errMsg !== "kill_switch_active") {
       void sendTelegram({
         tag: "INCIDENT",
