@@ -150,3 +150,69 @@ export async function loadGuideForView(
     readingTimeMinutes: estimateReadingTime(body),
   };
 }
+
+/** Vue résumée d'un guide pour le hub `/guides`. */
+export interface GuideSummaryView {
+  readonly slug: string;
+  readonly title: string;
+  readonly excerpt: string;
+  readonly publishedAt: Date;
+  readonly updatedAt: Date;
+  readonly readingTimeMinutes: number;
+}
+
+/**
+ * Liste tous les guides piliers publiés (tier_1_indexable + tier_2 follow),
+ * triés par `publishedAt DESC`. Lit `Article.templateVariant` matchant
+ * `guide-pilier` / `guide_pilier` (legacy prefix `_` accepté) OU slug
+ * commençant par `guide-` / `guide_`.
+ *
+ * Build-time safe : si Prisma stub.invalid (build GH Actions) ou DB down,
+ * retourne `[]` — le hub affichera son empty state premium.
+ *
+ * FR uniquement V1 (doctrine v1.2 — contenus content-gen FR-only).
+ */
+export async function loadGuidesIndexForView(
+  locale: Locale,
+  options: { readonly limit?: number } = {},
+): Promise<ReadonlyArray<GuideSummaryView>> {
+  if (locale !== "fr") return [];
+  const limit = Math.min(options.limit ?? 50, 200);
+
+  try {
+    const rows = await prisma.article.findMany({
+      where: {
+        status: "published",
+        OR: [
+          { templateVariant: { contains: "guide", mode: "insensitive" } },
+          { translations: { some: { locale: "fr", slug: { startsWith: "guide-" } } } },
+        ],
+      },
+      include: {
+        translations: { where: { locale: "fr" }, take: 1 },
+      },
+      orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
+      take: limit,
+    });
+
+    const views: GuideSummaryView[] = [];
+    for (const a of rows) {
+      const t = a.translations[0];
+      if (!t) continue;
+      if (!isGuideArticle(a.templateVariant, t.slug)) continue;
+      const bodyForReadingTime = t.body || t.bodyText || "";
+      views.push({
+        slug: t.slug,
+        title: t.title,
+        excerpt: t.metaDescription ?? "",
+        publishedAt: a.publishedAt ?? a.createdAt,
+        updatedAt: t.updatedAt,
+        readingTimeMinutes: estimateReadingTime(bodyForReadingTime),
+      });
+    }
+    return views;
+  } catch {
+    // Build SSG sans DB (stub.invalid) ou DB down — empty state premium.
+    return [];
+  }
+}

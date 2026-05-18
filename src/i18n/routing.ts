@@ -273,6 +273,16 @@ export const routing = defineRouting({
     "/comparaisons": { fr: "/comparaisons", en: "/comparisons" },
     "/comparaisons/[slug]": { fr: "/comparaisons/[slug]", en: "/comparisons/[slug]" },
 
+    // Sprint S+3 P0-7 (audit 18-TYPE-7) — hub + détail guides piliers.
+    // Le hub `/guides` liste les Articles `templateVariant="guide-pilier"`
+    // publiés (DB-driven, FR-only doctrine v1.2). Détail `/guides/[slug]` =
+    // page rendue par `loadGuideForView` (HowTo JSON-LD si steps fiables).
+    // Les guides individuels apparaissent aussi dans le sub-sitemap `blog`
+    // (continuité éditoriale Articles) ; le hub a son propre sub-sitemap
+    // `guides` (1 URL : le hub lui-même).
+    "/guides": { fr: "/guides", en: "/guides" },
+    "/guides/[slug]": { fr: "/guides/[slug]", en: "/guides/[slug]" },
+
     // Banque d'images / Image bank (Sprint M? — axionia-image-bank skill v1.0).
     // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement
     // ici ; routes admin sont sous `(admin)/[adminPrefix]/image-bank/*` et non

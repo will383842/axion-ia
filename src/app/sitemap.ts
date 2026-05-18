@@ -68,6 +68,10 @@ type StaticSitemapId =
   | "help"
   | "cas-concrets"
   | "comparaisons"
+  // Sprint S+3 P0-7 (audit 18-TYPE-7) — hub `/guides` dans son propre sub-sitemap.
+  // Les guides individuels restent émis via sub-sitemap `blog` (continuité Articles).
+  // Le sub-sitemap `guides` ne contient que le hub lui-même (lastmod = BUILD_TIME).
+  | "guides"
   | "implementation"
   | "implantations"
   | "services-villes-audit"
@@ -243,6 +247,8 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "help",
     "cas-concrets",
     "comparaisons",
+    // Sprint S+3 P0-7 (audit 18-TYPE-7) — sub-sitemap dédié hub /guides.
+    "guides",
     "implementation",
     "implantations",
     "services-villes-audit",
@@ -327,6 +333,8 @@ export default async function sitemap(props: {
       return filterEnIfDisabled(buildCasConcretsSitemap(now));
     case "comparaisons":
       return filterEnIfDisabled(buildComparaisonsSitemap(now));
+    case "guides":
+      return filterEnIfDisabled(buildGuidesHubSitemap(now));
     case "implementation":
       return filterEnIfDisabled(buildImplementationSitemap(now));
     case "implantations":
@@ -632,6 +640,35 @@ function buildComparaisonsSitemap(now: Date): MetadataRoute.Sitemap {
     ],
     now,
   );
+}
+
+/**
+ * Sub-sitemap `guides` — Sprint S+3 P0-7 (audit 18-TYPE-7-COMPARAISONS-GUIDES §8).
+ *
+ * Contient UNIQUEMENT le hub `/guides` (1 URL × N locales). Les guides
+ * individuels (`/guides/[slug]`) sont déjà émis via le sub-sitemap `blog`
+ * (continuité éditoriale Articles : un guide pilier est un Article avec
+ * `templateVariant="guide-pilier"`, indexé tier-1 via `buildBlogSitemap`).
+ *
+ * `lastModified` = max(`publishedAt`) des guides DB ou `BUILD_TIME` fallback —
+ * permet à Google de comprendre que le hub change quand un nouveau guide est
+ * publié (signal de fraîcheur). Best-effort : si DB down ou stub.invalid au
+ * build, fallback `now` propre.
+ */
+function buildGuidesHubSitemap(now: Date): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+  const hubKey = "/guides" as const;
+  for (const locale of effectiveLocales) {
+    const url = `${SITE_URL}/${locale}/guides`;
+    entries.push({
+      url,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+      alternates: { languages: alternateLanguages(hubKey) },
+    });
+  }
+  return entries;
 }
 
 function buildImplementationSitemap(now: Date): MetadataRoute.Sitemap {

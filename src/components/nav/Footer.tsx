@@ -43,6 +43,11 @@ export async function Footer() {
     { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
     { href: "/comparaisons", label: isFr ? "Comparaisons" : "Comparisons" },
     { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
+    // Sprint S+3 P0-7 (audit 18-TYPE-7) — hub `/guides` rend découvrable les
+    // guides piliers factory (Article templateVariant=guide-pilier). Sans cette
+    // entrée Footer ils restaient orphelins SEO. FR + EN (la 301 EN→FR du
+    // proxy.ts gère la redirection tant que EN_LOCALE_DISABLED).
+    { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },
     { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
     { href: "/blog", label: t("nav.blog") },
     // P0-5 audit E2E NAV+CTA 2026-05-15 — hub actualités factory V1.0.3 livré
