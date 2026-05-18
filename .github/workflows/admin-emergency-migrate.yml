@@ -64,18 +64,22 @@ jobs:
 
       - name: Find axion-ia web container
         id: find_container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set -euo pipefail
-          # Coolify nomme les containers <service>-<app_uuid>-<random>. Le service
-          # web est typiquement le seul qui matche "axion" sans suffixe -worker.
+          if [ -z "${COOLIFY_APP_UUID:-}" ]; then
+            echo "::error::Missing secret COOLIFY_APP_UUID."
+            exit 1
+          fi
+          # Coolify nomme les containers <APP_UUID>-<random_id>. On match par préfixe.
           CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}|{{.Image}}|{{.Status}}"' 2>&1)
           echo "── All containers ──"
           echo "$CONTAINERS"
           echo "──────"
-          # Prend le premier container qui contient "axion" et pas "worker"
-          NAME=$(echo "$CONTAINERS" | grep -i axion | grep -vi worker | head -1 | cut -d'|' -f1)
+          NAME=$(echo "$CONTAINERS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
           if [ -z "$NAME" ]; then
-            echo "::error::No axion-ia web container found via docker ps grep"
+            echo "::error::No container matching COOLIFY_APP_UUID prefix found."
             exit 1
           fi
           echo "Selected container: $NAME"
