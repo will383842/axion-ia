@@ -18,6 +18,12 @@ package-lock.json
 /test-results
 /lhci
 
+# Claude Code agent worktrees + session state (locaux, jamais commités)
+# Sans cette ligne, les agents qui créent des git worktrees sous
+# `.claude/worktrees/` polluent `git status` et déclenchent 4370 faux
+# positifs ESLint. Cf. `_AUDIT/LINT-AUDIT-2026-05-18/`.
+.claude/
+
 # next.js
 /.next/
 /out/

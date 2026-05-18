@@ -60,23 +60,16 @@ function buildNav(adminPrefix: string): NavItem[] {
 }
 
 export default async function AdminLayout({ children, params }: AdminLayoutProps) {
-  // Audit deploy-unstuck 2026-05-18 — verbose server logs autour des étapes
-  // critiques pour identifier la cause du crash admin post-deploy. À retirer.
-  console.log("[ADMIN LAYOUT] entering");
   const { locale, adminPrefix } = await params;
-  console.log("[ADMIN LAYOUT] params resolved", { locale, adminPrefix });
   const expectedPrefix = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
-  console.log("[ADMIN LAYOUT] expectedPrefix env present:", Boolean(process.env.ADMIN_URL_PREFIX));
 
   // 1. Valide segment URL contre env (404 silencieux sinon — pas de fingerprint)
   if (adminPrefix !== expectedPrefix) {
-    console.log("[ADMIN LAYOUT] prefix mismatch -> notFound()");
     notFound();
   }
 
   // 2. Force FR (CLAUDE.md §14 admin doctrine FR uniquement)
   if (locale !== "fr") {
-    console.log("[ADMIN LAYOUT] locale not FR -> redirect /fr");
     redirect(`/fr/${expectedPrefix}`);
   }
 
@@ -85,25 +78,9 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // Sidebar n'apparaît que pour les sessions authentifiées (la page /login a sa
   // propre UI via children — sans session, pas de sidebar).
   type AdminSession = { user?: { email?: string | null } | null } | null;
-  let session: AdminSession = null;
-  try {
-    console.log("[ADMIN LAYOUT] calling auth()...");
-    session = (await auth()) as AdminSession;
-    console.log("[ADMIN LAYOUT] auth() resolved, user present:", Boolean(session?.user));
-  } catch (e) {
-    console.error("[ADMIN LAYOUT] auth() THREW:", e);
-    throw e;
-  }
+  const session = (await auth()) as AdminSession;
   const showSidebar = Boolean(session?.user);
-  let nav: NavItem[] = [];
-  try {
-    console.log("[ADMIN LAYOUT] calling buildNav()...");
-    nav = buildNav(adminPrefix);
-    console.log("[ADMIN LAYOUT] buildNav OK, item count:", nav.length);
-  } catch (e) {
-    console.error("[ADMIN LAYOUT] buildNav() THREW:", e);
-    throw e;
-  }
+  const nav: NavItem[] = buildNav(adminPrefix);
 
   return (
     <div className="admin-layout">

@@ -23,15 +23,7 @@ import { adminSegment } from "@/lib/admin-path";
 export type SignInState = { ok: true } | { ok: false; error: string; requires2FA?: boolean };
 
 export async function signInAction(_prev: SignInState, formData: FormData): Promise<SignInState> {
-  // Audit deploy-unstuck 2026-05-18 — verbose log entry pour identifier
-  // crash admin post-deploy. À retirer après debug.
-  console.log("[signInAction] entering");
-  try {
-    return await _signInActionInner(_prev, formData);
-  } catch (e) {
-    console.error("[signInAction] UNCAUGHT EXCEPTION:", e);
-    throw e;
-  }
+  return _signInActionInner(_prev, formData);
 }
 
 async function _signInActionInner(_prev: SignInState, formData: FormData): Promise<SignInState> {

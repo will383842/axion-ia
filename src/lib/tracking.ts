@@ -7,7 +7,7 @@
 //   - 04-PLAN-EXECUTION Sprint X.18 § Plausible/PostHog events
 //   - Doctrine privacy-first : pas de PII dans les props (juste IDs/buckets)
 
-import { trackEvent } from "@/components/analytics/Plausible";
+import { trackEvent } from "@/lib/analytics/plausible-tracker";
 
 /**
  * Événements funnel V1. Tout nouvel événement DOIT être ajouté ici (et pas

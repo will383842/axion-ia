@@ -15,7 +15,6 @@
  *
  * Idempotent : utilise `upsert` partout. Run: `pnpm db:seed`.
  */
-/* eslint-disable no-console */
 
 import { PrismaClient } from "./generated/client";
 import { hashPassword } from "../src/lib/auth-password";

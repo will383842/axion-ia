@@ -86,7 +86,7 @@ function recordSuccess(key: ProviderKey): void {
   if (state.halfOpen) {
     state.halfOpen = false;
     state.failures = [];
-    console.info(`[circuit-breaker] CLOSED ${key} (half-open success)`);
+    console.warn(`[circuit-breaker] CLOSED ${key} (half-open success)`);
   }
 }
 

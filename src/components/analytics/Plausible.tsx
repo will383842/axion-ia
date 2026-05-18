@@ -9,6 +9,10 @@
 import Script from "next/script";
 import { env } from "@/env";
 
+// Re-export pour préserver l'API publique historique. La SSOT est dans
+// `src/lib/analytics/plausible-tracker.ts` (helper pur). Voir A3.2.
+export { trackEvent } from "@/lib/analytics/plausible-tracker";
+
 export function Plausible() {
   const domain = env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   const apiUrl = env.NEXT_PUBLIC_PLAUSIBLE_API_URL ?? "https://plausible.axion-ia.com";
@@ -34,20 +38,4 @@ export function Plausible() {
       strategy="afterInteractive"
     />
   );
-}
-
-/**
- * Track event custom Plausible côté client.
- * Usage : await trackEvent("Booking Submitted", { props: { intervention: "audit" } });
- */
-export function trackEvent(
-  name: string,
-  options?: { props?: Record<string, string | number> },
-): void {
-  if (typeof window === "undefined") return;
-  const plausible = (window as unknown as { plausible?: (n: string, o?: unknown) => void })
-    .plausible;
-  if (typeof plausible === "function") {
-    plausible(name, options);
-  }
 }

@@ -3,11 +3,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { priceBucketFromCents, trackFunnel } from "./tracking";
 
-vi.mock("@/components/analytics/Plausible", () => ({
+vi.mock("@/lib/analytics/plausible-tracker", () => ({
   trackEvent: vi.fn(),
 }));
 
-import { trackEvent } from "@/components/analytics/Plausible";
+import { trackEvent } from "@/lib/analytics/plausible-tracker";
 
 beforeEach(() => {
   vi.clearAllMocks();
