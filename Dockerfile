@@ -92,6 +92,15 @@ ENV REDIS_URL=${REDIS_URL:-redis://stub.invalid:6379}
 # container web, BullMQ s'active normalement (env [RUN] Coolify).
 ENV BULLMQ_DISABLED=true
 
+# Audit deploy-unstuck 2026-05-18 (D4-QW1) — réduction SSG villes au build.
+# Quand =true, generateStaticParams villes/services retourne uniquement les
+# villes indexables (copy.services présent, ~1 ville = Paris). Les autres
+# sont servies via ISR runtime (dynamicParams=true + revalidate=86400).
+# Permet build OK sur runner ubuntu-latest 16 GB (au lieu de OOM ~38 min).
+# Cohérent SEO : villes sans copy sont déjà `noindex` côté metadata.
+ARG BUILD_SSG_VILLES_INDEXABLE_ONLY
+ENV BUILD_SSG_VILLES_INDEXABLE_ONLY=${BUILD_SSG_VILLES_INDEXABLE_ONLY:-false}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

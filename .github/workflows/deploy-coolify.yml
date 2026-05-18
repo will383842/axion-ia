@@ -91,9 +91,12 @@ jobs:
     # Audit deploy-unstuck 2026-05-18 : streak 12+ deploys ratés depuis fea4b2e
     # (last green 2026-05-17 13:40 UTC) avec pattern OOM-kill silencieux à ~38 min
     # sur ubuntu-latest 16 GB. Diagnostic D2/D3/D4 confirme peak RAM 14.8-16.2 GB
-    # (next build SSG ~9 535 routes dont 6 450 villes). Upgrade vers larger runner
-    # 32 GB = marge ~16 GB sur peak prévu. Coût ~$3-4/build × ≤ 10 builds ≤ $50.
-    runs-on: ubuntu-latest-large
+    # (next build SSG ~9 535 routes dont 6 450 villes).
+    # Cycle 5 (ubuntu-latest-large 32 GB) testé : runner non-disponible sur ce
+    # compte (run resté queued 10 min sans assignment). Pivot Cycle 6 sous-cas C :
+    # garder ubuntu-latest + réduire SSG villes via env var BUILD_SSG_VILLES_INDEXABLE_ONLY=true
+    # (cf. src/components/sections/VilleServicePageTemplate.tsx D4-QW1).
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     outputs:
       image_tag: ${{ steps.meta.outputs.version }}
@@ -206,6 +209,7 @@ jobs:
             SKIP_ENV_VALIDATION=true
             DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
             REDIS_URL=redis://stub.invalid:6379
+            BUILD_SSG_VILLES_INDEXABLE_ONLY=true
           # Cache GH Actions natif (gratuit, plus rapide que registry cache).
           # Sprint recovery 2026-05-16 : cache-to mode=min (au lieu de max)
           # pour limiter le peak disque pendant l'export du cache (~10-20 GB

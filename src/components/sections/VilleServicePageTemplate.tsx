@@ -25,7 +25,7 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDetailSection";
 
 import { getRegion } from "@/content/regions";
-import { VILLES, getVille } from "@/content/villes";
+import { VILLES, getIndexableVilles, getVille } from "@/content/villes";
 import { getNearbyVilles } from "@/lib/geo";
 import {
   AUDIT_TIERS,
@@ -96,11 +96,21 @@ interface PageProps {
 }
 
 /**
- * `generateStaticParams` partagé par les 3 services. Retourne TOUTES les
- * villes (anti-doorway géré par `noindex` côté metadata si copy absent).
+ * `generateStaticParams` partagé par les 3 services.
+ *
+ * Audit deploy-unstuck 2026-05-18 (D4-QW1) — quand `BUILD_SSG_VILLES_INDEXABLE_ONLY=true`
+ * (set au build GH Actions runner ubuntu-latest 16 GB), retourne uniquement
+ * les villes avec `copy.services.<svc>` (Paris seul pour l'instant). Les autres
+ * villes restent accessibles via `dynamicParams=true` + `revalidate=86400` ISR
+ * (premier hit slow puis cached 24h). Cohérent SEO : les villes sans copy sont
+ * déjà `noindex` côté metadata (anti-doorway HCU 2024), donc pas de perte
+ * d'indexation. Réduit ~6 450 pages SSG (3 × 2 150) → peak RAM build divisé
+ * par ~2. À retirer quand pipeline stable + larger runners activés.
  */
 export function buildStaticParams(): Array<{ ville: string }> {
-  return VILLES.map((v) => ({ ville: v.slug }));
+  const indexableOnly = process.env.BUILD_SSG_VILLES_INDEXABLE_ONLY === "true";
+  const source = indexableOnly ? getIndexableVilles() : VILLES;
+  return source.map((v) => ({ ville: v.slug }));
 }
 
 export async function buildPageMetadata(
