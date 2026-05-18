@@ -16,6 +16,7 @@
 
 import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { isAdminV2Enabled } from "@/lib/feature-flags";
@@ -97,6 +98,17 @@ export default async function AdminDashboardPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) {
+    // Audit deploy-unstuck 2026-05-18 — fix admin crash "An unexpected
+    // response was received from the server". Next 16 RSC client auto-prefetch
+    // le parent route depuis la page login. redirect() server-side renvoie
+    // 302 Found (pas du RSC), ce qui fait throw RSC client.
+    // Solution : detecter le prefetch (header `Next-Router-Prefetch: 1` ou
+    // `RSC: 1`) et retourner null au lieu de redirect. Le browser navigation
+    // normale (sans header RSC) continue de recevoir le redirect 302.
+    const hdrs = await headers();
+    if (hdrs.get("next-router-prefetch") === "1" || hdrs.get("rsc") === "1") {
+      return null;
+    }
     redirect(`/fr/${adminPrefix}/login`);
   }
 
