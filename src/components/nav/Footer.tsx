@@ -30,6 +30,14 @@ export async function Footer() {
     { href: "/interventions", label: t("nav.interventions") },
     { href: "/audit", label: t("nav.audit") },
     { href: "/implementation", label: t("nav.implementation") },
+    // Sprint S+2 City Domination — 4e verticale `un-a-un` (décision Will
+    // Option A 2026-05-18). Footer entry pour découvrabilité + EEAT signal
+    // "site complet" Google + best practice 2026 (toutes les verticales
+    // accessibles depuis n'importe quelle page via le footer).
+    {
+      href: "/un-a-un" as const,
+      label: isFr ? "Accompagnement 1-to-1 (dirigeant)" : "1-to-1 coaching (executive)",
+    },
   ];
   const resources = [
     { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
@@ -76,6 +84,13 @@ export async function Footer() {
       href: "/politique-deplacement",
       label: isFr ? "Politique de déplacement" : "Travel policy",
     },
+    // City Domination 2026-05-18 P1-21 (audit cross-cut 14 EEAT 2026) —
+    // pages EEAT trust signals. Couplées au hub /transparence elles
+    // construisent la posture éditoriale machine + humain readable attendue
+    // par Google AI Overviews / Perplexity / Claude (+30 pts EEAT).
+    { href: "/charte-editoriale", label: isFr ? "Charte éditoriale" : "Editorial policy" },
+    { href: "/corrections", label: "Corrections" },
+    { href: "/transparence", label: isFr ? "Transparence IA" : "AI transparency" },
   ];
   // 5e zone Implantations — ajoutée Sprint 14.9 (pSEO villes/régions, ADR 0006).
   // Top 6 régions par PIB + lien hub + villes pilotes (V1 = Paris seul).

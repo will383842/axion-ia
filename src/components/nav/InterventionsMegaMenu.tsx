@@ -62,6 +62,17 @@ const FAMILIES: ReadonlyArray<MenuItem> = [
     hintFr: "Plénière ou keynote",
     hintEn: "Plenary or keynote",
   },
+  // Sprint S+2 City Domination — 4e verticale canonique `un-a-un`
+  // (décision Will Option A 2026-05-18). Présence dans le mega-menu
+  // Interventions pour découvrabilité + best practice 2026 (toutes les
+  // verticales accessibles ≤ 2 clics depuis n'importe quelle page).
+  {
+    href: "/un-a-un",
+    labelFr: "Accompagnement 1-to-1",
+    labelEn: "1-to-1 coaching",
+    hintFr: "Journée dirigeant 990 € HT (1-to-1)",
+    hintEn: "Executive day €990 ex. VAT (1-on-1)",
+  },
 ];
 
 const MONEY_PAGES: ReadonlyArray<MenuItem> = [

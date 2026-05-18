@@ -102,6 +102,22 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   const metaDescription = typeof output.metaDescription === "string" ? output.metaDescription : "";
   const bodyHtml = typeof output.bodyHtml === "string" ? output.bodyHtml : "";
   const bodyText = typeof output.bodyText === "string" ? output.bodyText : "";
+
+  // Sprint S+2 City Domination — Phase C strat ville (audit profond hotfix
+  // 2026-05-18) : extraction sécurisée du champ `mentionedCities` produit
+  // par les generators (landing-ville.ts:188+). Audit indépendant a relevé
+  // que le worker omettait ce field à l'insert → articles factory avaient
+  // `mentioned_cities=[]` même quand le generator avait correctement extrait
+  // les villes. Conséquence : hub ville `getBlogArticlesByVille` retournait
+  // [] → Phase C autotag inopérante côté DB. Fix : extraction typée tolérante
+  // (string[] uniquement, items string non-vides), max 20 (cap anti-spam SEO
+  // cohérent avec extractMentionedCitiesFromText:maxCities default).
+  const mentionedCitiesRaw = output["mentionedCities"];
+  const mentionedCities: string[] = Array.isArray(mentionedCitiesRaw)
+    ? mentionedCitiesRaw
+        .filter((s): s is string => typeof s === "string" && s.length > 0)
+        .slice(0, 20)
+    : [];
   const directAnswer = typeof output.directAnswer === "string" ? output.directAnswer : null;
   const faqJson = output.faqJson ?? output.faq ?? null;
   const slugCandidate =
@@ -154,6 +170,15 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
         isNews,
         ...(isNews && rssSourceUrl ? { newsSourceUrl: rssSourceUrl } : {}),
         ...(isNews && rssSourceName ? { newsSourceName: rssSourceName } : {}),
+        // Sprint S+2 City Domination — Phase C strat ville (hotfix audit
+        // 2026-05-18). Sans ce spread, l'Article était inséré avec
+        // mentioned_cities=[] (default Prisma) → hub ville getBlogArticlesByVille
+        // retournait [] même pour villes explicitement mentionnées par le
+        // generator (forceInclude=anchorVilleSlug landing-ville). Désormais
+        // câblé : les villes extraites/forcées sont persistées en DB et
+        // l'index GIN articles_mentioned_cities_idx permet le filter
+        // performant côté hub ville.
+        ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
       },
     });
 
