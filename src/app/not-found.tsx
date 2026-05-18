@@ -24,11 +24,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL.startsWith("http://localhost") ? PROD_ORIGIN : SITE_URL),
   robots: { index: false, follow: false },
   openGraph: {
+    // Audit GSC 2026-05-18 — cohérence dimensions avec `src/app/opengraph-image.tsx`
+    // qui génère 1200×675 (Google Discover hard floor, vs 1200×630 standard OG).
+    // Sans alignement, l'OG meta annonce 630 mais l'image réelle servie est 675.
     images: [
       {
         url: `${PROD_ORIGIN}/opengraph-image`,
         width: 1200,
-        height: 630,
+        height: 675,
         alt: "Axion-IA — Cabinet IA opérationnel B2B",
         type: "image/png",
       },

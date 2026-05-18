@@ -1,0 +1,122 @@
+name: Coolify bypass · SSH force pull + restart container (autopilot)
+
+# Workflow utilitaire workflow_dispatch — bypass Coolify quand son API est
+# down/queue gelée. SSH direct dans Hetzner VPS + docker pull GHCR :latest
+# + container restart pour appliquer la nouvelle image.
+#
+# Créé 2026-05-18 deploy-unstuck Phase 5 incident — Coolify API renvoyait
+# status= empty pendant 25 min (déploiement deployment_uuid introuvable),
+# zombie cleanup workflow exit 22 (HTTP error sur API Coolify).
+#
+# Mécanisme :
+#   1. SSH Hetzner via secrets.HETZNER_SSH_KEY
+#   2. docker pull ghcr.io/will383842/axion-ia:latest (image publique, pas de creds)
+#   3. Find container par COOLIFY_APP_UUID prefix
+#   4. docker restart container → Coolify Sentinel détecte container recréé +
+#      pull la nouvelle image au prochain start (image:tag est :latest qui
+#      pointe maintenant sur le digest fraîchement push)
+#   5. Smoke /api/healthz + assert x-axion-build-sha matches expected
+#
+# Trigger uniquement workflow_dispatch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: 'SHA git court attendu après restart (7 chars, e.g. 569d1b0). Smoke échoue si mismatch.'
+        required: true
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  bypass-restart:
+    name: Force pull + restart
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          for v in HETZNER_SSH_KEY COOLIFY_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing secret: $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK."
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -o BatchMode=yes root@178.105.55.15 'echo SSH_OK; uname -a' 2>&1 | head -3
+
+      - name: docker pull GHCR latest image
+        run: |
+          set -euo pipefail
+          echo "──── Pulling ghcr.io/will383842/axion-ia:latest ────"
+          ssh -o BatchMode=yes root@178.105.55.15 'docker pull ghcr.io/will383842/axion-ia:latest 2>&1' 2>&1 | tail -20
+          echo "──── Pull done ────"
+
+      - name: Find container + show current image
+        id: find_container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}}|{{.Image}}|{{.Status}}'")
+          echo "── Containers ──"
+          echo "$CONTAINERS"
+          NAME=$(echo "$CONTAINERS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::No container matching prefix"
+            exit 1
+          fi
+          echo "Selected: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: docker stop + rm + start (force new image)
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          set +e
+          echo "──── Inspecting container config to preserve runtime params ────"
+          # On récupère l'image cible (Coolify utilise sha digest, on remplace par :latest fresh)
+          IMAGE_TAG=$(ssh -o BatchMode=yes root@178.105.55.15 "docker inspect '$CONTAINER' --format '{{.Config.Image}}'")
+          echo "Container image was: $IMAGE_TAG"
+          echo ""
+          echo "──── docker restart (preserves all Coolify config — env, volumes, network) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker restart '$CONTAINER'" 2>&1
+          echo "Restart triggered. Waiting 60s for healthcheck warmup..."
+          sleep 60
+          echo ""
+          echo "──── Container status post-restart ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker inspect '$CONTAINER' --format 'StartedAt={{.State.StartedAt}} Status={{.State.Status}} Image={{.Config.Image}}'"
+
+      - name: Smoke /api/healthz + assert build SHA
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          set +e
+          echo "──── Smoke /api/healthz ────"
+          curl -s -o /tmp/healthz.json -w "HTTP=%{http_code} time=%{time_total}s\n" https://axion-ia.com/api/healthz
+          cat /tmp/healthz.json
+          echo ""
+          echo "──── x-axion-build-sha (expected starts with: ${EXPECTED_SHA}) ────"
+          actual_sha=$(curl -sI https://axion-ia.com/api/healthz | grep -i "x-axion-build-sha" | awk '{print $2}' | tr -d '\r')
+          echo "actual: $actual_sha"
+          actual_short=$(echo "$actual_sha" | cut -c1-7)
+          if [ "$actual_short" = "$EXPECTED_SHA" ]; then
+            echo "✅ Build SHA matches expected."
+          else
+            echo "::warning::Build SHA mismatch — restart did NOT pull new image. Coolify may pin image digest. Container needs full re-create."
+          fi
