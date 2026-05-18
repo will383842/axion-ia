@@ -18,20 +18,68 @@
 // Mapping prefixes — ordre = MATCH LE PLUS LONG D'ABORD (sinon `/en/case-studies/foo`
 // matcherait `/en/case-studies` mais perdrait le slug). On déclare donc le
 // suffixe `/` avant la version sans slash pour chaque entrée parameterized.
+//
+// Audit GSC 5xx 2026-05-18 — extension exhaustive : tout slug FR ≠ EN doit avoir
+// son mapping explicite. Sans cela, le fallback simple `/en → /fr` enverrait vers
+// une URL FR inexistante (ex: `/en/audit/strategic-pme` → `/fr/audit/strategic-pme`
+// qui n'existe pas, la canonique est `strategique-pme`). Conséquence : chaîne
+// 301 → 307/404 → catchall soft 404. Le mapping exhaustif émet un seul 301 vers
+// la canonique FR, économisant 1 hop + transmettant 100% du link juice.
 const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   // pSEO par-ville (templates services-villes)
   ["/en/audit/by-city/", "/fr/audit/par-ville/"],
   ["/en/interventions/by-city/", "/fr/interventions/par-ville/"],
   ["/en/implementation/by-city/", "/fr/implementation/par-ville/"],
 
-  // Sous-routes audit
+  // Interventions — formations collectives (4 paliers, slugs FR ≠ EN)
+  ["/en/interventions/team-trainings/1-day", "/fr/interventions/collectives/1-jour"],
+  ["/en/interventions/team-trainings/2-days", "/fr/interventions/collectives/2-jours"],
+  ["/en/interventions/team-trainings/3-days-plus", "/fr/interventions/collectives/3-jours-plus"],
+  ["/en/interventions/team-trainings/", "/fr/interventions/collectives/"],
+  ["/en/interventions/team-trainings", "/fr/interventions/collectives"],
+
+  // Interventions — coaching individuel + autres slugs FR ≠ EN
+  ["/en/interventions/ai-express-kickoff", "/fr/interventions/demarrage-ia-express"],
+  ["/en/interventions/targeted-ai-workshop", "/fr/interventions/atelier-ia-cible"],
+  ["/en/interventions/request", "/fr/interventions/demande"],
+  ["/en/interventions/individual", "/fr/interventions/individuel"],
+  ["/en/interventions/discovery-coaching", "/fr/interventions/coaching-decouverte"],
+  ["/en/interventions/advanced-coaching", "/fr/interventions/coaching-avance"],
+  ["/en/interventions/essential", "/fr/interventions/essentielle"],
+  ["/en/interventions/deep-dive", "/fr/interventions/approfondie"],
+  ["/en/interventions/conference-plenary", "/fr/interventions/conference-pleniere"],
+  ["/en/interventions/executive-productivity", "/fr/interventions/dirigeant-productivite"],
+  [
+    "/en/interventions/executive-strategic-vision",
+    "/fr/interventions/dirigeant-vision-strategique",
+  ],
+  ["/en/interventions/executives", "/fr/interventions/dirigeants"],
+  ["/en/interventions/claude-executive", "/fr/interventions/claude-dirigeant"],
+  [
+    "/en/interventions/claude-implementation-individual",
+    "/fr/interventions/claude-implementation-individuel",
+  ],
+  ["/en/interventions/save-time", "/fr/interventions/gagner-du-temps"],
+
+  // Audit — sous-routes (cible/strategique-pme/strategique-eti/demande)
   ["/en/audit/targeted", "/fr/audit/cible"],
+  ["/en/audit/strategic-pme", "/fr/audit/strategique-pme"],
+  ["/en/audit/strategic-eti", "/fr/audit/strategique-eti"],
   ["/en/audit/request", "/fr/audit/demande"],
+
+  // Implementation — slugs FR ≠ EN
+  ["/en/implementation/custom-ai", "/fr/implementation/ia-custom"],
+  ["/en/implementation/processes", "/fr/implementation/processus"],
+  ["/en/implementation/structuring", "/fr/implementation/structuration"],
+  ["/en/implementation/by-technology", "/fr/implementation/par-techno"],
+  ["/en/implementation/by-function/", "/fr/implementation/par-fonction/"],
 
   // Routes mappées (FR ≠ EN dans pathnames)
   ["/en/request-quote", "/fr/demande-devis"],
   ["/en/subprocessors", "/fr/sous-processeurs"],
   ["/en/transparency", "/fr/transparence"],
+  // Important: /industry/ AVANT /case-studies/ pour matcher la sous-route en premier.
+  ["/en/case-studies/industry/", "/fr/cas-concrets/secteur/"],
   ["/en/case-studies/", "/fr/cas-concrets/"],
   ["/en/case-studies", "/fr/cas-concrets"],
   ["/en/about", "/fr/a-propos"],
@@ -40,6 +88,8 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/blog/author/", "/fr/blog/auteur/"],
   ["/en/blog/sector/", "/fr/blog/secteur/"],
   ["/en/blog/size/", "/fr/blog/taille/"],
+  // Important: /category/ AVANT /help/ pour matcher la sous-route en premier.
+  ["/en/help/category/", "/fr/centre-aide/categorie/"],
   ["/en/help/", "/fr/centre-aide/"],
   ["/en/help", "/fr/centre-aide"],
   ["/en/book", "/fr/reserver"],
