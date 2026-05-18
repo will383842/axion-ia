@@ -7,6 +7,14 @@
 // + Ressources + Aide). Cible AEO : Claude.ai / ChatGPT Search / Perplexity
 // / Bing Copilot indexent les URLs listées en priorité — manquer une section
 // = perdre la visibilité de cette catégorie de contenu côté LLMs.
+//
+// Vérification prod 2026-05-18 — bug GHA Docker layer cache : edge runtime
+// chunk reused stale despite source file modified. Le commit suivant invalide
+// le hash via cette ligne pour forcer rebuild fresh du chunk au prochain
+// deploy (sans changement comportement, juste cache-busting).
+// Source de vérité = ce fichier, build expected sections = Modules,
+// Preuve & méthode, Connaissances & contenu, Implantations géographiques,
+// Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { SITE_URL } from "@/lib/seo";
