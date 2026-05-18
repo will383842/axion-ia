@@ -72,9 +72,11 @@ type StaticSitemapId =
   | "implantations"
   | "services-villes-audit"
   | "services-villes-interventions"
-  | "services-villes-implementation";
+  | "services-villes-implementation"
+  // Sprint S+2 City Domination — 4e verticale `un-a-un` × villes (~2150 routes).
+  | "services-villes-un-a-un";
 
-type ServiceVillesKey = "audit" | "interventions" | "implementation";
+type ServiceVillesKey = "audit" | "interventions" | "implementation" | "un-a-un";
 
 type PathnameKey = keyof typeof routing.pathnames;
 
@@ -246,6 +248,8 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "services-villes-audit",
     "services-villes-interventions",
     "services-villes-implementation",
+    // Sprint S+2 City Domination — 4e verticale industrialisation Phase 1.
+    "services-villes-un-a-un",
   ];
 
   // KB : dériver le nombre de chunks depuis le count DB. Lecture unique au
@@ -333,6 +337,9 @@ export default async function sitemap(props: {
       return filterEnIfDisabled(buildServicesVillesSitemap(now, "interventions"));
     case "services-villes-implementation":
       return filterEnIfDisabled(buildServicesVillesSitemap(now, "implementation"));
+    // Sprint S+2 City Domination — 4e verticale un-a-un sitemap dédié.
+    case "services-villes-un-a-un":
+      return filterEnIfDisabled(buildServicesVillesSitemap(now, "un-a-un"));
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -751,6 +758,8 @@ const SERVICE_VILLES_PATHS: Record<ServiceVillesKey, { pathFr: string; pathEn: s
   audit: { pathFr: "/audit/par-ville", pathEn: "/audit/by-city" },
   interventions: { pathFr: "/interventions/par-ville", pathEn: "/interventions/by-city" },
   implementation: { pathFr: "/implementation/par-ville", pathEn: "/implementation/by-city" },
+  // Sprint S+2 City Domination — 4e verticale `un-a-un`.
+  "un-a-un": { pathFr: "/un-a-un/par-ville", pathEn: "/one-to-one/by-city" },
 };
 
 function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): MetadataRoute.Sitemap {
@@ -758,7 +767,11 @@ function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): Metad
   const { pathFr, pathEn } = SERVICE_VILLES_PATHS[service];
 
   for (const ville of getIndexableVilles()) {
-    if (!ville.copy?.services?.[service]) continue;
+    // Mapping ServiceKey → copy property (cf VilleServicePageTemplate).
+    // `un-a-un` est stocké sous `services.unAUn` (camelCase TS).
+    const hasCopy =
+      service === "un-a-un" ? !!ville.copy?.services?.unAUn : !!ville.copy?.services?.[service];
+    if (!hasCopy) continue;
     const frUrl = `${SITE_URL}/fr${pathFr}/${ville.slug}`;
     const enUrl = `${SITE_URL}/en${pathEn}/${ville.slug}`;
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };

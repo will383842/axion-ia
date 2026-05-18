@@ -460,6 +460,32 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
 ];
 
 // ============================================================================
+// UN-A-UN (coaching 1-to-1) — Sprint S+2 City Domination Phase 1
+// ============================================================================
+//
+// Décision Will Option A 2026-05-18 : naming brand canonique `un-a-un` (URL +
+// breadcrumb) mais sémantique "coaching dirigeant 1-to-1" cohérente avec le
+// tier existant `intervention-dirigeants` (déjà 990 € HT). On EXPOSE ce tier
+// sous le nom `UN_A_UN_TIERS` pour qu'il alimente la 4e card hub ville +
+// VilleServicePageTemplate sans dupliquer la définition.
+//
+// V1 : 1 seul palier (990 € HT, 1 journée 1-to-1 avec le dirigeant). Sprint
+// S+3 pourra étendre avec d'autres formats (½ journée, journée + suivi 1 mois,
+// programme 3 mois multi-sessions) sans casser la signature `Service` JSON-LD.
+
+const INTERVENTION_DIRIGEANTS_TIER = INTERVENTION_TIERS.find(
+  (t) => t.id === "intervention-dirigeants",
+);
+
+if (!INTERVENTION_DIRIGEANTS_TIER) {
+  throw new Error(
+    "pricing.ts invariant violation: intervention-dirigeants tier missing in INTERVENTION_TIERS",
+  );
+}
+
+export const UN_A_UN_TIERS: ReadonlyArray<PricingTier> = [INTERVENTION_DIRIGEANTS_TIER];
+
+// ============================================================================
 // IMPLÉMENTATION IA — paliers
 // ============================================================================
 

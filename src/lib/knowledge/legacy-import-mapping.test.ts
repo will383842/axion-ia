@@ -51,6 +51,10 @@ function makeArticle(overrides: Partial<Article> = {}): Article {
     // City Domination 2026-05-18 P1-6 — topic fingerprint SimHash (nullable
     // legacy, calculé progressivement par computeTopicFingerprint).
     topicFingerprint: null,
+    // Sprint S+2 Phase C — mentionedCities auto-tag villes ([] par défaut
+    // pour les fixtures legacy ; les nouveaux articles peuplent via le
+    // helper extractMentionedCitiesFromText au publish).
+    mentionedCities: [] as string[],
     ...overrides,
   };
 }

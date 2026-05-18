@@ -24,6 +24,7 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { resolveLandingVilleVariant } from "./landing-ville-templates";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 export const landingVilleGenerator: Generator = {
   contentType: "landing_ville",
@@ -167,6 +168,16 @@ label : ${variant.recommendedCtaLabel}
         ? "tier_2_noindex_follow"
         : "tier_3_noindex_nofollow";
 
+    // Sprint S+2 City Domination — Phase C strat ville.
+    // Extraction automatique des villes mentionnées dans le body. Pour
+    // landing-ville, on inclut toujours l'anchorVilleSlug (forceInclude) +
+    // les villes citées dans le contenu (utile pour les pages comparatives
+    // "Paris vs Lyon" ou les mentions cross-ville dans le copy services).
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, {
+      forceInclude: input.anchorVilleSlug,
+      maxCities: 10,
+    });
+
     return {
       title: parsed.title,
       metaTitle: parsed.metaTitle,
@@ -186,6 +197,7 @@ label : ${variant.recommendedCtaLabel}
       totalTokens: llmResult.tokensInput + llmResult.tokensOutput,
       totalCostUsd: llmResult.costUsd,
       citations: llmResult.citations ?? [],
+      mentionedCities,
     };
   },
 };

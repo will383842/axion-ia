@@ -31,6 +31,7 @@ import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
   IMPLEMENTATION_TIERS,
+  UN_A_UN_TIERS,
   formatPrice,
   getEntryPriceEur,
   getEntryTier,
@@ -46,7 +47,11 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 
-type ServiceKey = "audit" | "interventions" | "implementation";
+// Sprint S+2 City Domination — 4e verticale `un-a-un` (décision Will Option A
+// 2026-05-18). Naming brand "un-a-un" en URL canonique ; sémantique = coaching
+// dirigeant 1-to-1, tarif d'entrée 990 € HT (tier intervention-dirigeants
+// réutilisé via UN_A_UN_TIERS).
+type ServiceKey = "audit" | "interventions" | "implementation" | "un-a-un";
 
 // Tarifs centralisés dans `src/content/pricing.ts` (source de vérité unique).
 // `priceEur` n'est pas hardcodé ici — il est dérivé du tier d'entrée via
@@ -89,7 +94,48 @@ const SERVICE_META = {
     accent: "sage" as const,
     tiers: IMPLEMENTATION_TIERS,
   },
+  // Sprint S+2 City Domination — 4e verticale.
+  // Naming canonique "un-a-un" décision Will Option A 2026-05-18.
+  // Sémantique brand : "Accompagnement IA 1-to-1 dirigeant". Le mot "formation"
+  // est autorisé en copy descriptif (P1-2 lever ban), mais le nom canonique
+  // reste "intervention/accompagnement". Cohérent avec UN_A_UN_TIERS
+  // (tier intervention-dirigeants 990 € HT réutilisé).
+  "un-a-un": {
+    canonical: "/un-a-un",
+    pathFr: "/un-a-un/par-ville",
+    pathEn: "/one-to-one/by-city",
+    nameFr: "Accompagnement IA 1-to-1 dirigeant",
+    nameEn: "1-to-1 AI coaching for executives",
+    eyebrowFr: "Accompagnement IA 1-to-1 (dirigeant)",
+    eyebrowEn: "1-to-1 AI coaching (executive)",
+    icon: Users,
+    accent: "mocha" as const,
+    tiers: UN_A_UN_TIERS,
+  },
 } as const;
+
+/**
+ * Sprint S+2 — mapping ServiceKey → propriété de `ville.copy?.services`.
+ * Nécessaire car ServiceKey contient "un-a-un" (tiret) qui ne peut pas
+ * matcher directement la propriété TS `unAUn` (camelCase). Pour les 3
+ * verticales historiques, la clé est identique.
+ */
+function getVilleServiceCopy(
+  ville: {
+    copy?: {
+      services?: {
+        audit?: unknown;
+        interventions?: unknown;
+        implementation?: unknown;
+        unAUn?: unknown;
+      };
+    };
+  },
+  service: ServiceKey,
+) {
+  if (service === "un-a-un") return ville.copy?.services?.unAUn;
+  return ville.copy?.services?.[service];
+}
 
 interface PageProps {
   params: Promise<{ locale: string; ville: string }>;
@@ -123,7 +169,7 @@ export async function buildPageMetadata(
   if (!ville) return {};
   const meta = SERVICE_META[service];
   const isFr = locale === "fr";
-  const hasCopy = !!ville.copy?.services?.[service];
+  const hasCopy = !!getVilleServiceCopy(ville, service);
 
   const title = hasCopy
     ? isFr
@@ -133,7 +179,9 @@ export async function buildPageMetadata(
       ? `${meta.nameFr} à ${ville.nameFr} — disponible sur devis`
       : `${meta.nameEn} in ${ville.nameFr} — available on quote`;
 
-  const serviceCopy = ville.copy?.services?.[service];
+  const serviceCopy = getVilleServiceCopy(ville, service) as
+    | { fr: { hero: string }; en: { hero: string } }
+    | undefined;
   const description = serviceCopy
     ? isFr
       ? serviceCopy.fr.hero.slice(0, 200)
@@ -180,7 +228,7 @@ export async function renderVilleServicePage({
   const loc = locale as Locale;
   const isFr = loc === "fr";
   const meta = SERVICE_META[service];
-  const hasCopy = !!ville.copy?.services?.[service];
+  const hasCopy = !!getVilleServiceCopy(ville, service);
   const entryPriceEur = getEntryPriceEur(meta.tiers);
   const entryTier: PricingTier = getEntryTier(meta.tiers);
   const formattedEntryPrice = formatPrice(entryTier, isFr ? "fr" : "en");
@@ -234,7 +282,12 @@ export async function renderVilleServicePage({
   }
 
   // ---- RENDU GOLD STANDARD pour villes avec copy substantiel ----
-  const serviceCopy = ville.copy!.services![service]!;
+  // Type cast via VilleServicesLong["audit"] (signature identique pour les
+  // 4 verticales : { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale })
+  const serviceCopy = getVilleServiceCopy(ville, service) as
+    | NonNullable<NonNullable<typeof ville.copy>["services"]>["audit"]
+    | undefined;
+  if (!serviceCopy) notFound();
   const localeCopy = serviceCopy[loc];
   const nearbyVilles = getNearbyVilles(ville.geo, 6, {
     excludeSlug: ville.slug,
@@ -379,16 +432,23 @@ export async function renderVilleServicePage({
         </div>
       </Section>
 
-      {/* Section détaillée du service à la ville (réutilise composant) */}
-      <VilleServiceDetailSection
-        isFr={isFr}
-        service={service}
-        villeNameFr={ville.nameFr}
-        villeSlug={ville.slug}
-        regionSlug={ville.region}
-        copy={localeCopy}
-        tone="paper"
-      />
+      {/* Section détaillée du service à la ville (réutilise composant).
+          NB : `VilleServiceDetailSection` n'a été câblé que pour les 3
+          verticales historiques (audit/interventions/implementation).
+          Pour `un-a-un` (4e verticale Phase 1), on skip — la section
+          détaillée sera rendue via un composant dédié ou un fallback
+          inline. À étendre Sprint S+3 si besoin parité visuelle. */}
+      {service !== "un-a-un" ? (
+        <VilleServiceDetailSection
+          isFr={isFr}
+          service={service as "audit" | "interventions" | "implementation"}
+          villeNameFr={ville.nameFr}
+          villeSlug={ville.slug}
+          regionSlug={ville.region}
+          copy={localeCopy}
+          tone="paper"
+        />
+      ) : null}
 
       {/* FAQ embed Speakable JSON-LD émise séparément ci-dessus */}
       {localeCopy.faq.length > 0 ? (
@@ -416,13 +476,21 @@ export async function renderVilleServicePage({
         />
       ) : null}
 
-      {/* Cross-services à la même ville — maillage 3 services × ville
-          (audit / interventions / implementation) — patch C4 cert 2026-05-08.
-          Renforce maillage interne sans avoir à parcourir 4 niveaux depuis home. */}
+      {/* Cross-services à la même ville — maillage 4 services × ville
+          (audit / interventions / implementation / un-a-un) — patch C4
+          cert 2026-05-08 + extension Sprint S+2 City Domination (4e verticale).
+          Renforce maillage interne sans avoir à parcourir 4 niveaux depuis home.
+          NB : on lit le copy ville pour audit/interventions/implementation
+          (clés alignées) et `unAUn` pour la 4e (mapping séparé car ServiceKey
+          contient un tiret invalide en propriété TS littérale). */}
       {(() => {
         const otherServices: ServiceKey[] = (
-          ["audit", "interventions", "implementation"] as const
-        ).filter((s) => s !== service && !!ville.copy?.services?.[s]);
+          ["audit", "interventions", "implementation", "un-a-un"] as const
+        ).filter((s) => {
+          if (s === service) return false;
+          if (s === "un-a-un") return !!ville.copy?.services?.unAUn;
+          return !!ville.copy?.services?.[s];
+        });
         if (otherServices.length === 0) return null;
         return (
           <Section

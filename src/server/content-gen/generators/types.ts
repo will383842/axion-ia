@@ -60,6 +60,16 @@ export interface GeneratorOutput {
   readonly totalCostUsd: number;
   /** Citations Perplexity ou autres sources externes. */
   readonly citations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }>;
+  /**
+   * Sprint S+2 City Domination — Phase C strat ville.
+   * Slugs des villes mentionnées dans le body (extraction auto via helper
+   * `extractMentionedCitiesFromText`). Le content-publish-worker lit ce
+   * field et le persiste dans `Article.mentionedCities` au moment de l'insert.
+   *
+   * Optionnel : V1 generators peuvent l'omettre → Article.mentionedCities = []
+   * (article reste indexable, n'apparaît dans aucun hub ville).
+   */
+  readonly mentionedCities?: ReadonlyArray<string>;
 }
 
 export interface Generator<TInput extends GeneratorBaseInput = GeneratorBaseInput> {

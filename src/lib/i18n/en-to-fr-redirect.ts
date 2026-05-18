@@ -115,6 +115,11 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/travel-policy", "/fr/politique-deplacement"],
   // City Domination 2026-05-18 P1-21 — EEAT pages (cross-cut 14)
   ["/en/editorial-policy", "/fr/charte-editoriale"],
+  // Sprint S+2 City Domination — 4e verticale un-a-un
+  ["/en/one-to-one/by-city/", "/fr/un-a-un/par-ville/"],
+  ["/en/one-to-one/by-city", "/fr/un-a-un/par-ville"],
+  ["/en/one-to-one/", "/fr/un-a-un/"],
+  ["/en/one-to-one", "/fr/un-a-un"],
 ];
 
 /**

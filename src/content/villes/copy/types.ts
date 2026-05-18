@@ -125,6 +125,14 @@ export interface VilleServicesLong {
   audit?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
   interventions?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
   implementation?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
+  /**
+   * Sprint S+2 City Domination — 4e verticale `un-a-un` (décision Will Option A
+   * 2026-05-18). Coaching/accompagnement individuel 1-to-1 — naming brand
+   * "un-a-un" en URL, mais le mot "formation" peut apparaître en copy
+   * (lever ban P1-2). Tarif d'entrée 990 € HT (pricing.ts tier
+   * `intervention-dirigeants`).
+   */
+  unAUn?: { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale };
 }
 
 export interface VilleCopy {

@@ -929,11 +929,29 @@ model Article {
   /// quand Voyage AI key activée prod).
   topicFingerprint String? @map("topic_fingerprint") @db.VarChar(64)
 
+  /// Sprint S+2 City Domination — auto-tagging géographique (Phase C strat ville).
+  /// Slugs des villes mentionnées dans le body article (détection via helper
+  /// `extractMentionedCitiesFromText`). Permet au hub ville de filtrer les
+  /// articles blog pertinents (`getBlogPostsByVille(villeSlug, n)`).
+  ///
+  /// Population :
+  ///  - Au publish via `extractMentionedCitiesFromText(body)` (scan VILLES array)
+  ///  - Pour landing-ville generator : minimum = [anchorVilleSlug]
+  ///  - Pour blog-* generators : extracted from final body post-LLM
+  ///  - Retroactive scan worker possible Sprint S+3 si besoin backfill historique
+  ///
+  /// Default [] (empty) → article reste indexable mais n'apparaît dans aucun
+  /// hub ville (générique).
+  mentionedCities String[] @default([]) @map("mentioned_cities")
+
   @@index([status])
   @@index([publishedAt])
   @@index([indexationTier, status])
   @@index([isNews, publishedAt(sort: Desc)])
   @@index([generatedByJobId])
+  /// Index GIN sur mentioned_cities pour filter `getBlogPostsByVille` performant
+  /// (~10K articles cible, requête `WHERE 'paris' = ANY(mentioned_cities)`).
+  @@index([mentionedCities], type: Gin)
   @@map("articles")
 }
 

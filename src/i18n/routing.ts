@@ -182,6 +182,16 @@ export const routing = defineRouting({
     "/charte-editoriale": { fr: "/charte-editoriale", en: "/editorial-policy" },
     "/corrections": "/corrections",
 
+    // Sprint S+2 City Domination — 4e verticale `un-a-un` (décision Will
+    // Option A 2026-05-18). Naming brand canonique `un-a-un` (URL +
+    // breadcrumb), sémantique = coaching 1-to-1 dirigeant. EN miroir
+    // `/one-to-one` aligné convention (`/a-propos → /about`).
+    "/un-a-un": { fr: "/un-a-un", en: "/one-to-one" },
+    "/un-a-un/par-ville/[ville]": {
+      fr: "/un-a-un/par-ville/[ville]",
+      en: "/one-to-one/by-city/[ville]",
+    },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {
