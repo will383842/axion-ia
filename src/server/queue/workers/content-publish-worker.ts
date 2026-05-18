@@ -291,11 +291,18 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   // lieu de `revalidatePath()` direct (qui no-op silencieusement en worker bg
   // sans request context). Le helper revalidateContent POST sur
   // /api/internal/revalidate qui exécute le revalidate avec contexte valide.
+  // Audit indexation 2026-05-18 P0-8 — ajout `/sitemap-index.xml` (route handler
+  // custom dans `app/sitemap-index.xml/route.ts`, référencé par robots.txt). Sans
+  // ce path explicite, l'index racine ISR pouvait servir un cache 1h obsolète
+  // après publish d'un Article tier-1. `/sitemap.xml` (Next 16 metadata convention)
+  // est aussi revalidé pour la propagation côté Googlebot qui peut découvrir les
+  // deux (cf. audit AGENT-01-SITEMAP-INDEX §1.1).
   const paths = [
     `/fr/blog/${slugCandidate}`,
     ...(isNews ? [`/fr/actualites/${slugCandidate}`, "/fr/actualites"] : []),
     "/fr/blog",
     "/sitemap.xml",
+    "/sitemap-index.xml",
     ...(isNews ? ["/sitemap-news.xml"] : []),
   ];
   await revalidateContent({ paths });

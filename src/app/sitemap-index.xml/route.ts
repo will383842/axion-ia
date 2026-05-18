@@ -50,8 +50,6 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
-const FALLBACK_LASTMOD = new Date().toISOString();
-
 /**
  * Audit indexation 2026-05-15 P1-14 — lastmod différencié par catégorie.
  *
@@ -59,19 +57,40 @@ const FALLBACK_LASTMOD = new Date().toISOString();
  * sub-sitemaps → Google ignore le signal `lastmod` (tous identiques = suspect).
  *
  * Maintenant : on lit la `MAX(updatedAt)` réelle par source DB. Fail-soft :
- * si la query échoue (P2021 / DB down), on retombe sur `FALLBACK_LASTMOD`.
+ * si la query échoue (P2021 / DB down), on retombe sur un fallback déterministe.
+ *
+ * Audit indexation 2026-05-18 P0-2 — le fallback était `const FALLBACK_LASTMOD =
+ * new Date().toISOString()` figé au module-load → tous les sub-sitemaps non-DB
+ * partageaient le `worker boot time`, identique pendant toute la durée de vie
+ * du worker Node (live confirmé : 13/15 sub-sitemaps avec lastmod identique
+ * `2026-05-17T18:03:57.644Z`). Google détecte le pattern uniforme → désactive
+ * le signal lastmod pour ce site → crawl prioritization aléatoire.
+ *
+ * Fix : utiliser `BUILD_TIME` (signal honnête « contenu reconstruit le X »,
+ * pattern cohérent avec `sitemap.ts buildTimeOrNow()`), fallback `new Date()`
+ * recalculé à chaque ISR cycle (revalidate=3600s) si BUILD_TIME absent.
  */
+function getFallbackLastmod(): string {
+  const iso = process.env.BUILD_TIME;
+  if (iso) {
+    const parsed = new Date(iso);
+    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString();
+  }
+  return new Date().toISOString();
+}
+
 async function getDifferentiatedLastmod(): Promise<{
   news: string;
   knowledge: string;
   blog: string;
   fallback: string;
 }> {
+  const fallback = getFallbackLastmod();
   const result = {
-    news: FALLBACK_LASTMOD,
-    knowledge: FALLBACK_LASTMOD,
-    blog: FALLBACK_LASTMOD,
-    fallback: FALLBACK_LASTMOD,
+    news: fallback,
+    knowledge: fallback,
+    blog: fallback,
+    fallback,
   };
   try {
     const newsMax = await prisma.article.findFirst({
