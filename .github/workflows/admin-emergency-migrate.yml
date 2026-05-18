@@ -85,13 +85,17 @@ jobs:
           echo "Selected container: $NAME"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
-      - name: Dump container recent logs (80 lines)
+      - name: Dump container recent logs (300 lines)
         env:
           CONTAINER: ${{ steps.find_container.outputs.name }}
         run: |
-          echo "──── Container $CONTAINER recent logs ────"
-          ssh -o BatchMode=yes root@178.105.55.15 "docker logs --tail 80 '$CONTAINER' 2>&1" 2>&1 | tail -100
+          echo "──── Container $CONTAINER recent logs (300 lines) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker logs --tail 300 '$CONTAINER' 2>&1" 2>&1 | tail -300
           echo "──── End logs ────"
+          echo ""
+          echo "──── Filtered errors (case-insensitive Error/Prisma/Sentry/PrismaClient/FATAL/RangeError) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker logs --tail 500 '$CONTAINER' 2>&1 | grep -iE '(error|prisma|sentry|fatal|exception|unhandled|warn|throw|stack)' || echo '(no error lines found)'" 2>&1 | tail -80
+          echo "──── End filtered ────"
 
       # Le binaire local @app/node_modules/.bin/prisma a des symlinks pnpm
       # brises (cf. AGENTS.md "Note 2026-05-17" : @prisma/engines manque).
