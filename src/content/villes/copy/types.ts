@@ -42,6 +42,12 @@ export interface VilleServicesContext {
   audit?: { fr: string; en: string };
   interventions?: { fr: string; en: string };
   implementation?: { fr: string; en: string };
+  /**
+   * Sprint S+2 City Domination — 4e verticale `un-a-un` (décision Will
+   * Option A 2026-05-18). Contexte 30-50 mots utilisé par la card hub ville
+   * (fallback générique si non renseigné).
+   */
+  unAUn?: { fr: string; en: string };
 }
 
 /**

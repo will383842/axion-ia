@@ -35,6 +35,7 @@ import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
   IMPLEMENTATION_TIERS,
+  UN_A_UN_TIERS,
   formatPrice,
   formatAmount,
   getEntryTier,
@@ -319,7 +320,10 @@ export default async function VillePage({ params }: Props) {
         }
         tone="paper"
       >
-        <ul className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Sprint S+2 City Domination — passage grid 3-cols → 4-cols car
+            4e verticale `un-a-un` ajoutée (décision Will Option A 2026-05-18).
+            Sur lg+ : 4 colonnes; md : 2 cols; mobile : stack. */}
+        <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
             {
               href: "/audit" as const,
@@ -374,6 +378,30 @@ export default async function VillePage({ params }: Props) {
                   : `Operational AI implementation in ${ville.nameFr}: agents, back-office automation, CRM/ERP integration, custom AI. Fixed fee, no subscription.`),
               ctaFr: "Discuter d'un projet",
               ctaEn: "Discuss a project",
+            },
+            // Sprint S+2 City Domination — 4e verticale `un-a-un` (décision
+            // Will Option A 2026-05-18). Card cohérente avec les 3 autres,
+            // CTA dirigé vers /un-a-un (hub canonique). Si la ville a
+            // `copy.services.unAUn` (Tier-1 enrichi Phase B S+3+), la page
+            // par-ville /un-a-un/par-ville/[ville] sera Tier-1 indexable.
+            // Sinon : stub noindex auto (cf VilleServicePageTemplate soft-404).
+            {
+              href: "/un-a-un" as const,
+              icon: Users,
+              h3Fr: `Accompagnement 1-to-1 à ${ville.nameFr}`,
+              h3En: `1-to-1 coaching in ${ville.nameFr}`,
+              priceTier: getEntryTier(UN_A_UN_TIERS),
+              tagline: isFr
+                ? "Journée 1-to-1 avec le dirigeant : feuille de route 90 jours chiffrée."
+                : "1-on-1 day with the executive: costed 90-day roadmap.",
+              accent: "primary" as const,
+              context:
+                copy.servicesContext?.unAUn?.[isFr ? "fr" : "en"] ??
+                (isFr
+                  ? `Accompagnement IA 1-to-1 du dirigeant à ${ville.nameFr}. Cartographie processus, 3 chantiers IA prioritaires chiffrés, sans engagement.`
+                  : `1-on-1 AI executive coaching in ${ville.nameFr}. Process mapping, 3 priority AI projects costed, no commitment.`),
+              ctaFr: "Réserver une journée",
+              ctaEn: "Book a day",
             },
           ].map(
             ({
