@@ -12,7 +12,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { HelpHeroSchema } from "@/components/sections/HelpHeroSchema";
-import { HELP_ARTICLES, slugify } from "@/content/transversal";
+import { slugify } from "@/content/transversal";
+import { listHelpArticles } from "@/lib/help-articles/reader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
@@ -46,13 +47,18 @@ export default async function HelpCenter({ params }: Props) {
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" }];
 
+  // P0-5 2026-05-18 — reader unifié (flag `HELP_BACKEND_UNIFIED`) qui lit DB
+  // Prisma `HelpArticle` si activé, fallback `HELP_ARTICLES` hardcode sinon.
+  // Comportement prod actuel inchangé tant que Will n'active pas la flag.
+  const helpArticles = await listHelpArticles();
+
   // Group articles by category — each category becomes a clickable card
   // pointing to /centre-aide/categorie/{slug} (which already exists).
   const categoriesMap = new Map<
     string,
-    { label: string; slug: string; articles: typeof HELP_ARTICLES }
+    { label: string; slug: string; articles: typeof helpArticles }
   >();
-  for (const article of HELP_ARTICLES) {
+  for (const article of helpArticles) {
     const catSlug = slugify(article.category);
     const existing = categoriesMap.get(catSlug);
     if (existing) {
@@ -78,7 +84,7 @@ export default async function HelpCenter({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: isFr ? "Articles d'aide Axion-IA" : "Axion-IA help articles",
-    itemListElement: HELP_ARTICLES.map((article, index) => ({
+    itemListElement: helpArticles.map((article, index) => ({
       "@type": "ListItem",
       position: index + 1,
       url: `${SITE_URL}/${locale}${articleBase}/${article.slug}`,
@@ -198,7 +204,7 @@ export default async function HelpCenter({ params }: Props) {
       <Section eyebrow={isFr ? "Tous les articles" : "All articles"} tone="paper">
         <Container>
           <ul className="border-border divide-border divide-y border-y">
-            {HELP_ARTICLES.map((article) => (
+            {helpArticles.map((article) => (
               <li key={article.slug}>
                 <a
                   href={`/${locale}${articleBase}/${article.slug}`}

@@ -11,10 +11,10 @@ import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
-  getAllHelpCategorySlugs,
-  getHelpArticlesByCategory,
+  listHelpCategorySlugs,
+  listHelpArticlesByCategory,
   getHelpCategoryLabel,
-} from "@/content/transversal";
+} from "@/lib/help-articles/reader";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 
 interface Props {
@@ -22,18 +22,18 @@ interface Props {
 }
 
 // Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+// P0-5 2026-05-18 — slugs viennent du reader unifié (DB ou fallback hardcode).
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return getAllHelpCategorySlugs().flatMap((slug) =>
-    routing.locales.map((locale) => ({ locale, slug })),
-  );
+export async function generateStaticParams() {
+  const slugs = await listHelpCategorySlugs();
+  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const label = getHelpCategoryLabel(slug);
+  const label = await getHelpCategoryLabel(slug);
   if (!label) return {};
   return buildProductMetadata({
     locale,
@@ -53,12 +53,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HelpCategoryPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const label = getHelpCategoryLabel(slug);
+  const label = await getHelpCategoryLabel(slug);
   if (!label) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  const articles = getHelpArticlesByCategory(slug);
+  const articles = await listHelpArticlesByCategory(slug);
 
   const collectionJsonLd = {
     "@context": "https://schema.org",
