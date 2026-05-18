@@ -140,6 +140,32 @@ jobs:
           fi
           exit 0
 
+      - name: Cleanup duplicate ADMIN_V2_ENABLED entries
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set +e
+          response=$(curl -fsSL -m 15 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          # Garder le 1er match, supprimer les autres.
+          uuids=$(echo "$response" | jq -r '[.[] | select(.key == "ADMIN_V2_ENABLED") | .uuid] | .[1:][]')
+          if [ -n "$uuids" ]; then
+            echo "Found duplicate ADMIN_V2_ENABLED entries — cleaning up extras."
+            for uuid in $uuids; do
+              echo "Deleting env var uuid=$uuid"
+              curl -sS -m 15 -X DELETE \
+                -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+                -w "HTTP=%{http_code}\n" \
+                "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs/$uuid"
+            done
+          else
+            echo "No duplicates to clean."
+          fi
+          exit 0
+
       - name: Restart container (deploy redeploy)
         if: inputs.restart == 'true'
         env:
@@ -162,9 +188,36 @@ jobs:
             echo "Deployment queued: ${deployment_uuid}"
             echo "Track at ${COOLIFY_URL}/deployment/${deployment_uuid}"
           fi
-          echo "Waiting 45s for container to come back up..."
-          sleep 45
+          echo "Waiting 60s for container to come back up..."
+          sleep 60
           echo "──── Smoke /api/healthz ────"
           curl -s -o /tmp/healthz.json -w "HTTP=%{http_code} time=%{time_total}s\n" https://axion-ia.com/api/healthz
           cat /tmp/healthz.json
           echo ""
+
+      - name: SSH verify ADMIN_V2_ENABLED in container
+        if: inputs.restart == 'true'
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set +e
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::warning::HETZNER_SSH_KEY not set — skip SSH verify."
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+          # Find container by COOLIFY_APP_UUID prefix
+          CONTAINER=$(ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}}' | awk -v uuid=\"$COOLIFY_APP_UUID\" '\$1 ~ \"^\"uuid {print \$1; exit}'")
+          if [ -z "$CONTAINER" ]; then
+            echo "::warning::No container matching COOLIFY_APP_UUID prefix found."
+            exit 0
+          fi
+          echo "──── docker exec $CONTAINER printenv | grep -i admin_v2 ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' printenv | grep -i admin_v2 || echo '(ADMIN_V2_ENABLED not set in container env)'"
+          echo "──── Container started_at ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker inspect '$CONTAINER' --format '{{.State.StartedAt}}'"
+          exit 0
