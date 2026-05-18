@@ -93,12 +93,24 @@ jobs:
           ssh -o BatchMode=yes root@178.105.55.15 "docker logs --tail 80 '$CONTAINER' 2>&1" 2>&1 | tail -100
           echo "──── End logs ────"
 
+      # Le binaire local @app/node_modules/.bin/prisma a des symlinks pnpm
+      # brises (cf. AGENTS.md "Note 2026-05-17" : @prisma/engines manque).
+      # Fallback npx echoue aussi car npx detecte le prisma local d'abord.
+      # Solution : install prisma + engines en FRESH dans /tmp/prisma-fresh/.
+      - name: Install fresh prisma + engines in /tmp/prisma-fresh
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "──── Fresh prisma install in /tmp/prisma-fresh ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'mkdir -p /tmp/prisma-fresh && cd /tmp/prisma-fresh && rm -rf node_modules package*.json && npm init -y >/dev/null 2>&1 && npm install --no-save --no-audit --no-fund --prefer-offline prisma@5.22.0 @prisma/engines@5.22.0 2>&1 | tail -10 && ls node_modules/.bin/prisma && node_modules/.bin/prisma --version 2>&1'" 2>&1 | tail -30
+          echo "──── End fresh install ────"
+
       - name: Dump Prisma migrate status (before)
         env:
           CONTAINER: ${{ steps.find_container.outputs.name }}
         run: |
-          echo "──── Prisma migrate status BEFORE ────"
-          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'node_modules/.bin/prisma migrate status --schema=./prisma/schema.prisma 2>&1 || npx --yes prisma@5.22.0 migrate status --schema=./prisma/schema.prisma 2>&1'" 2>&1 | tail -60
+          echo "──── Prisma migrate status BEFORE (fresh binary) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c '/tmp/prisma-fresh/node_modules/.bin/prisma migrate status --schema=/app/prisma/schema.prisma 2>&1'" 2>&1 | tail -60
           echo "──── End status ────"
 
       - name: Run prisma migrate deploy
@@ -106,8 +118,8 @@ jobs:
         env:
           CONTAINER: ${{ steps.find_container.outputs.name }}
         run: |
-          echo "──── Prisma migrate deploy ────"
-          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'node_modules/.bin/prisma migrate deploy --schema=./prisma/schema.prisma 2>&1 || npx --yes prisma@5.22.0 migrate deploy --schema=./prisma/schema.prisma 2>&1'" 2>&1 | tail -100
+          echo "──── Prisma migrate deploy (fresh binary) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c '/tmp/prisma-fresh/node_modules/.bin/prisma migrate deploy --schema=/app/prisma/schema.prisma 2>&1'" 2>&1 | tail -100
           echo "──── End migrate ────"
 
       - name: Dump Prisma migrate status (after)
@@ -115,8 +127,8 @@ jobs:
         env:
           CONTAINER: ${{ steps.find_container.outputs.name }}
         run: |
-          echo "──── Prisma migrate status AFTER ────"
-          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'node_modules/.bin/prisma migrate status --schema=./prisma/schema.prisma 2>&1 || npx --yes prisma@5.22.0 migrate status --schema=./prisma/schema.prisma 2>&1'" 2>&1 | tail -60
+          echo "──── Prisma migrate status AFTER (fresh binary) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c '/tmp/prisma-fresh/node_modules/.bin/prisma migrate status --schema=/app/prisma/schema.prisma 2>&1'" 2>&1 | tail -60
           echo "──── End status ────"
 
       - name: Restart container + smoke
