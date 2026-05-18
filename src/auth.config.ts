@@ -42,7 +42,8 @@ export const authConfig = {
      *
      * URL pattern : /{fr|en}/{ADMIN_URL_PREFIX}/...
      */
-    authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth, request }) {
+      const { nextUrl, headers } = request;
       const isLoggedIn = !!auth?.user;
       const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
       const adminRegex = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`);
@@ -52,10 +53,27 @@ export const authConfig = {
       const loginRegex = new RegExp(`^/(fr|en)/${adminSegment}/login/?$`);
       const isOnAuthPage = loginRegex.test(nextUrl.pathname);
 
+      // Audit deploy-unstuck 2026-05-18 — fix admin crash "An unexpected
+      // response was received from the server". Next 16 RSC client auto-prefetch
+      // les routes admin depuis la page login. Le middleware redirect()
+      // renvoie 302 HTML (pas du RSC) -> React fire l'erreur.
+      // Solution : pour les RSC prefetch (headers `RSC: 1` ou
+      // `Next-Router-Prefetch: 1`), retourner 200 avec body vide au lieu de
+      // redirect. La navigation browser normale (sans ces headers) continue
+      // a recevoir le redirect 302.
+      const isRscPrefetch =
+        headers.get("rsc") === "1" || headers.get("next-router-prefetch") === "1";
+
       // Page login accessible meme deconnecte
       if (isOnAuthPage) {
         if (isLoggedIn) {
           // User deja connecte → renvoie vers le dashboard FR
+          if (isRscPrefetch) {
+            return new Response(null, {
+              status: 200,
+              headers: { "content-type": "text/x-component" },
+            });
+          }
           return Response.redirect(new URL(`/fr/${adminSegment}`, nextUrl));
         }
         return true;
@@ -63,6 +81,12 @@ export const authConfig = {
 
       // Toute autre page admin (incluant /2fa/setup, /, sub-routes) exige login
       if (!isLoggedIn) {
+        if (isRscPrefetch) {
+          return new Response(null, {
+            status: 200,
+            headers: { "content-type": "text/x-component" },
+          });
+        }
         return Response.redirect(new URL(`/fr/${adminSegment}/login`, nextUrl));
       }
       return true;
