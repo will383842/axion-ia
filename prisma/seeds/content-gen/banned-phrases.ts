@@ -2,11 +2,19 @@
  * Seed BannedPhrase — doctrine éditoriale § 21 + § 25 master prompt + glossaire jargon § 1.1bis.
  *
  * 3 sévérités :
- * - `block` : doctrine-check rejette le contenu (SIREN/SIRET/RCS, formation, etc.)
+ * - `block` : doctrine-check rejette le contenu (SIREN/SIRET/RCS, etc.)
  * - `warn`  : doctrine-check log warning + applique pénalité qualityScore -5/phrase
  * - `info`  : warning UI admin uniquement (jargon non expliqué, à reformuler)
  *
  * Will peut éditer + ajouter via `/admin/content-gen/settings/banned-phrases`.
+ *
+ * City Domination 2026-05-18 P1-2 (décision Will Option A) — Lecture allégée
+ * du lexique : "formation" / "formateur" / "former" passent de `block` à `warn`
+ * (signal qualité éditoriale, pas rejet absolu). Le positionnement brand reste
+ * "intervention" / "cabinet IA opérationnel" mais le LLM peut utiliser
+ * "formation" en copy quand pertinent (descriptif sessions interventions
+ * collectives). Schema.org `Course` activé sur `/interventions/collectives/*`
+ * pour citation AEO "formation IA" sans dilution naming.
  */
 
 import type { PrismaClient } from "../../generated/client";
@@ -25,17 +33,30 @@ const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
   },
   { pattern: "URSSAF", reason: "Cotisations FR — pas applicable OÜ estonienne", severity: "block" },
 
-  // ===== BLOCK — Doctrine lexicale (mots bannis projet — cf. axionia-core) =====
+  // ===== WARN — Doctrine lexicale assouplie 2026-05-18 P1-2 =====
+  // Avant 2026-05-18 : `block` strict (le LLM ne pouvait pas écrire "formation").
+  // Après : `warn` — le mot est autorisé en copy quand pertinent (sessions
+  // interventions collectives = formations dans le fond), mais le naming brand
+  // canonique reste "intervention". Le warn applique pénalité -5/occurrence
+  // au qualityScore → décourage la sur-utilisation sans bloquer la sémantique.
+  // Cohérent avec Course schema activé sur /interventions/collectives/* pour
+  // citation AEO "formation IA".
   {
     pattern: "formation",
-    reason: "Mot BANNI partout (cf. axionia-core §1). Utiliser 'intervention'",
-    severity: "block",
+    reason:
+      "Naming canonique = 'intervention'. Tolérer en copy descriptif, mais préférer 'intervention'",
+    severity: "warn",
   },
-  { pattern: "formateur", reason: "Mot BANNI. Utiliser 'intervenant'", severity: "block" },
+  {
+    pattern: "formateur",
+    reason:
+      "Naming canonique = 'intervenant'. Tolérer en copy descriptif, mais préférer 'intervenant'",
+    severity: "warn",
+  },
   {
     pattern: "former",
-    reason: "Mot BANNI. Utiliser 'accompagner' / 'faire monter en compétence'",
-    severity: "block",
+    reason: "Préférer 'accompagner' / 'faire monter en compétence' ; tolérer en copy descriptif",
+    severity: "warn",
   },
 
   // ===== BLOCK — Phrases interdites doctrine § 21 master prompt =====

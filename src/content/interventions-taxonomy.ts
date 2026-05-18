@@ -77,6 +77,12 @@ export interface DurationDef {
   isQuoteOnly?: boolean;
   /** Contact `objet` pré-rempli pour les paliers sur devis. */
   contactObject?: string;
+  /**
+   * City Domination 2026-05-18 P1-2 — Durée ISO 8601 pour `Course.hasCourseInstance.courseWorkload`.
+   * Format Schema.org : `PT4H` (4 h), `PT7H` (1 jour ≈ 7 h sur site), `P2D` (2 jours).
+   * Absent sur isQuoteOnly (durée variable sur devis).
+   */
+  iso8601Duration?: string;
 }
 
 export interface InterventionFormatEntry {
@@ -207,6 +213,7 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
     durationDetailEn: "Half-day (≈ 4 h)",
     pathFr: "/interventions/collectives/4h",
     pathEn: "/interventions/team-trainings/4h",
+    iso8601Duration: "PT4H",
   },
   {
     id: "1-jour",
@@ -219,6 +226,7 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
     durationDetailEn: "1 day (≈ 7 h on site)",
     pathFr: "/interventions/collectives/1-jour",
     pathEn: "/interventions/team-trainings/1-day",
+    iso8601Duration: "PT7H",
   },
   {
     id: "2-jours",
@@ -231,6 +239,7 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
     durationDetailEn: "2 consecutive days",
     pathFr: "/interventions/collectives/2-jours",
     pathEn: "/interventions/team-trainings/2-days",
+    iso8601Duration: "P2D",
   },
   {
     id: "3-jours-plus",

@@ -19,6 +19,7 @@ import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
+import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
@@ -142,6 +143,30 @@ label : ${variant.recommendedCtaLabel}
       ? Math.round((seo.score + readability.score) / 2)
       : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
 
+    // City Domination 2026-05-18 P1-5 (audit A7 P1) — Soft-404 word count gate
+    // anti-doorway HCU 2024-2026. Si le LLM produit < 350 mots (ou < 280 avec
+    // richesse JSON-LD compensante), force tier-3 noindex nofollow pour éviter
+    // pénalité Spam Brain Google sur stubs thin content.
+    //
+    // Le generator landing-ville V1 ne produit pas systématiquement JSON-LD
+    // LocalBusiness ni cas concret local en sortie (faits côté
+    // VilleServicePageTemplate render). On considère ici les bonus à false par
+    // défaut — la page render-time peut être plus riche, mais on prend la
+    // décision tier au stade plus pessimiste (anti-leak HCU). Le bonus FAQ
+    // count est en revanche disponible directement.
+    const soft404 = evaluateSoft404({
+      wordCount,
+      hasFullLocalBusinessJsonLd: false,
+      hasLocalCase: false,
+      faqCount: parsed.faq.length,
+    });
+
+    const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
+      ? "tier_3_noindex_nofollow"
+      : doctrine.passed && qualityScore >= 70
+        ? "tier_2_noindex_follow"
+        : "tier_3_noindex_nofollow";
+
     return {
       title: parsed.title,
       metaTitle: parsed.metaTitle,
@@ -152,8 +177,7 @@ label : ${variant.recommendedCtaLabel}
       bodyText,
       faq: parsed.faq.map((q) => ({ question: q.q, answer: q.a })),
       tags: parsed.tags,
-      indexationTier:
-        doctrine.passed && qualityScore >= 70 ? "tier_2_noindex_follow" : "tier_3_noindex_nofollow",
+      indexationTier,
       qualityScore,
       seoScore: seo.score,
       readabilityScore: readability.score,

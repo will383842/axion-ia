@@ -25,7 +25,7 @@ import {
   getFormatsByCell,
   quoteContactPath,
 } from "@/content/interventions-taxonomy";
-import { buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { buildCourseJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   durationId: CollectiveDuration;
@@ -71,6 +71,32 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           })),
         })
       : null;
+
+  // City Domination 2026-05-18 P1-2 (audit A4 P1) — Course JSON-LD activé
+  // pour citation AEO "formation IA" par Google AI Overviews / Perplexity /
+  // Claude. Le naming brand reste "intervention" en URL et copy, mais le
+  // schema déclare la sémantique formative pour ne pas rater l'opportunité
+  // AEO sur les requêtes "formation IA 1 jour", "formation ChatGPT entreprise",
+  // etc. Non émis sur les paliers `isQuoteOnly` (3-jours-plus) qui sont
+  // sur-mesure (pas de prix fixe → Course Offer incohérent).
+  const courseJsonLd = !isQuote
+    ? buildCourseJsonLd({
+        locale,
+        path: locale === "fr" ? duration.pathFr : duration.pathEn,
+        name: isFr
+          ? `Intervention IA opérationnelle ${duration.labelFr}`
+          : `Operational AI session — ${duration.labelEn}`,
+        description: isFr
+          ? `Intervention IA opérationnelle sur ${duration.labelFr.toLowerCase()} pour décideurs, managers et équipes. Format intervention Axion-IA (cabinet IA opérationnel français, OÜ estonienne). De 2 à 30+ personnes selon le format choisi.`
+          : `Operational AI engagement over ${duration.labelEn.toLowerCase()} for decision-makers, managers and teams. Axion-IA intervention format (operational AI consultancy, Estonian OÜ). From 2 to 30+ people depending on chosen format.`,
+        courseMode: ["Onsite"],
+        ...(duration.iso8601Duration ? { duration: duration.iso8601Duration } : {}),
+        audienceType: isFr
+          ? "Décideurs, managers, équipes opérationnelles (B2B)"
+          : "Decision-makers, managers, operational teams (B2B)",
+        about: "IA opérationnelle (ChatGPT, Claude, Mistral, agents IA, automatisations)",
+      })
+    : null;
 
   return (
     <>
@@ -270,6 +296,7 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
       />
 
       {itemListJsonLd ? <JsonLd data={itemListJsonLd} /> : null}
+      {courseJsonLd ? <JsonLd data={courseJsonLd} /> : null}
     </>
   );
 }

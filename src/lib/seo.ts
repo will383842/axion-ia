@@ -1037,6 +1037,111 @@ export function buildHowToJsonLd({
   } as const;
 }
 
+// ============================================================
+// Course JSON-LD (City Domination 2026-05-18 P1-2 + audit A4 P1)
+// ============================================================
+//
+// Schema.org `Course` activé sur les pages /interventions/collectives/*
+// (sessions 4h, 1-jour, 2-jours, 3-jours-plus). Le naming brand reste
+// "intervention" en URL et copy canonique, mais le schema déclare la
+// sémantique formative pour permettre la citation AEO "formation IA" par
+// Google AI Overviews / Perplexity / Claude.
+//
+// Doctrine 2026 : `Course` doit avoir au moins 1 `CourseInstance` pour
+// être éligible aux rich results. On émet `Onsite` par défaut (interventions
+// sur site client), modes additionnels possibles (`Hybrid`, `Online`) selon
+// l'offre.
+
+export interface CourseJsonLdInput {
+  /** Locale "fr" | "en" (path canonical). */
+  readonly locale: string;
+  /** Path canonical (ex. "/interventions/collectives/1-jour"). */
+  readonly path: string;
+  /** Nom canonique (ex. "Intervention collective 1 jour IA opérationnelle"). */
+  readonly name: string;
+  /** Description longue éligible rich results (≥ 50 caractères). */
+  readonly description: string;
+  /**
+   * Mode pédagogique : `Onsite` (par défaut intervention sur site client),
+   * `Hybrid` (partiel distanciel), `Online` (full distanciel). Schema.org
+   * accepte plusieurs.
+   */
+  readonly courseMode?: ReadonlyArray<"Onsite" | "Hybrid" | "Online">;
+  /** Durée ISO 8601 (ex. "PT8H" pour 1 jour, "PT4H" pour 4h). */
+  readonly duration?: string;
+  /** Niveau éducatif (par défaut "Professional" — public B2B Axion-IA). */
+  readonly educationalLevel?: string;
+  /**
+   * Audience cible textuelle (ex. "Décideurs, managers, équipes opérationnelles").
+   * Schema.org `BusinessAudience.audienceType`.
+   */
+  readonly audienceType?: string;
+  /** Prix offre (HT — Axion-IA OÜ EU régime TVA UE). */
+  readonly priceEurHt?: number;
+  /**
+   * Catégorie pédagogique (ex. "IA opérationnelle", "ChatGPT entreprise").
+   * Schema.org `Course.about`.
+   */
+  readonly about?: string;
+}
+
+export function buildCourseJsonLd(input: CourseJsonLdInput) {
+  const url = `${SITE_URL}/${input.locale}${input.path}`;
+  const courseMode = input.courseMode ?? ["Onsite"];
+  const educationalLevel = input.educationalLevel ?? "Professional";
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "@id": `${url}#course`,
+    name: input.name,
+    description: input.description,
+    url,
+    inLanguage: input.locale === "fr" ? "fr-FR" : "en-US",
+    provider: { "@id": `${SITE_URL}/#organization` },
+    educationalLevel,
+    ...(input.about ? { about: input.about } : {}),
+    ...(input.audienceType
+      ? {
+          audience: {
+            "@type": "BusinessAudience",
+            audienceType: input.audienceType,
+          },
+        }
+      : {}),
+    hasCourseInstance: courseMode.map((mode) => ({
+      "@type": "CourseInstance",
+      courseMode: mode,
+      ...(input.duration ? { courseWorkload: input.duration } : {}),
+      // Onsite : on indique France comme area (sans adresse fixe — Axion-IA
+      // intervient chez le client, pas dans un local Axion-IA).
+      ...(mode === "Onsite"
+        ? {
+            location: {
+              "@type": "Place",
+              name: "Sur site client (France métropolitaine)",
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: "FR",
+              },
+            },
+          }
+        : {}),
+    })),
+    ...(typeof input.priceEurHt === "number"
+      ? {
+          offers: {
+            "@type": "Offer",
+            url,
+            price: input.priceEurHt.toString(),
+            priceCurrency: "EUR",
+            availability: "https://schema.org/InStock",
+            category: "Professional training",
+          },
+        }
+      : {}),
+  } as const;
+}
+
 interface ReviewJsonLdInput {
   /** Author name (client / role / company anonymized). */
   authorName: string;

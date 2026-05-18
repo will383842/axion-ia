@@ -39,13 +39,25 @@ interface LandingVilleVariant {
 }
 
 // Doctrine commune §21 + §1 — identique aux 4 variants. Différenciation = focus.
+//
+// City Domination 2026-05-18 P1-2 (audit A4 P1 + décision Will Option A) —
+// Levée du ban absolu du mot "formation" : le mot est désormais AUTORISÉ en
+// copy quand pertinent (description sessions interventions collectives qui
+// SONT des formations dans le fond), mais le positionnement brand/URL reste
+// "intervention" / "cabinet IA opérationnel". Schema.org `Course` activé sur
+// les pages `/interventions/collectives/[duration]` pour citation AEO
+// "formation IA" sans dilution du naming.
+//
+// Le mot reste contrôlé éditorialement (pas de spam) via banned-phrases côté
+// quality-loop si fréquence anormale détectée.
 const DOCTRINE_INTOUCHABLE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
 - ≤ 5 % données INSEE (population, secteurs dominants)
 - Anti-doorway HCU 2024 : angle unique par ville
 - Pas de SIREN/SIRET/RCS (OÜ estonienne)
-- Mot "formation" BANNI (utiliser "intervention")
+- Positionnement brand : "cabinet IA opérationnel" + "interventions" (ne pas dire "agence de formation")
+- Le mot "formation" est autorisé en copy quand pertinent (descriptif sessions interventions collectives), mais "intervention" reste le naming canonique
 - FR uniquement (FR-FR + x-default)`;
 
 export const LANDING_VILLE_VARIANTS: Record<LandingVilleVariantSlug, LandingVilleVariant> = {
