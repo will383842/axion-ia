@@ -20,6 +20,13 @@ export default function AdminErrorBoundary({
   reset: () => void;
 }): React.ReactElement {
   useEffect(() => {
+    // Audit deploy-unstuck 2026-05-18 — verbose console pour debug admin crash
+    // post-deploy. À retirer quand la cause root sera identifiée.
+    console.error("[ADMIN ERROR BOUNDARY] message:", error.message);
+    console.error("[ADMIN ERROR BOUNDARY] stack:", error.stack);
+    console.error("[ADMIN ERROR BOUNDARY] digest:", error.digest);
+    console.error("[ADMIN ERROR BOUNDARY] name:", error.name);
+    console.error("[ADMIN ERROR BOUNDARY] cause:", error.cause);
     // Sentry capture côté client — préserve l'instrumentation existante.
     Sentry.captureException(error, {
       tags: { route: "admin", boundary: "adminPrefix-root" },
@@ -27,10 +34,9 @@ export default function AdminErrorBoundary({
     });
   }, [error]);
 
-  const detailString =
-    process.env.NODE_ENV !== "production"
-      ? `${error.message}\n${error.stack ?? ""}\n${error.digest ? `digest: ${error.digest}` : ""}`
-      : null;
+  // Audit deploy-unstuck 2026-05-18 — affichage détail en prod aussi
+  // (temporaire). À retirer ASAP.
+  const detailString = `${error.message}\n${error.stack ?? ""}\n${error.digest ? `digest: ${error.digest}` : ""}`;
 
   return (
     <AdminErrorState

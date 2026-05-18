@@ -23,6 +23,18 @@ import { adminSegment } from "@/lib/admin-path";
 export type SignInState = { ok: true } | { ok: false; error: string; requires2FA?: boolean };
 
 export async function signInAction(_prev: SignInState, formData: FormData): Promise<SignInState> {
+  // Audit deploy-unstuck 2026-05-18 — verbose log entry pour identifier
+  // crash admin post-deploy. À retirer après debug.
+  console.log("[signInAction] entering");
+  try {
+    return await _signInActionInner(_prev, formData);
+  } catch (e) {
+    console.error("[signInAction] UNCAUGHT EXCEPTION:", e);
+    throw e;
+  }
+}
+
+async function _signInActionInner(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const ip = await getClientIp();
   // Rate-limit composite IP+email — relaxé 2026-05-10 pendant phase
   // stabilisation (Will + Claude debug). Original Sprint 15: IP=10/15min,
