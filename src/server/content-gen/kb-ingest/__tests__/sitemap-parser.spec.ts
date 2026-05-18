@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { parseSitemap } from "../sitemap-parser";
+import { _clearRobotsCache, _seedRobotsCache } from "../robots-respect";
 
 function mockFetchSequence(responses: Array<{ url?: string; xml: string; status?: number }>) {
   let callIndex = 0;
@@ -14,6 +15,18 @@ function mockFetchSequence(responses: Array<{ url?: string; xml: string; status?
     } as unknown as Response);
   });
 }
+
+// P0-12 (2026-05-18) — sitemap-parser maintenant check `checkUrlAllowed` qui
+// utilise `getRobotsRules` (cache TTL 10 min). Pour ne pas consommer les
+// mocks fetch destinés au sitemap, on pré-remplit le cache avec des rules
+// vides pour tous les origins utilisés dans ce fichier de test.
+const SEEDED_ORIGINS = ["https://example.com", "https://example.test"];
+const EMPTY_ROBOTS_RULES = {
+  disallow: [] as ReadonlyArray<string>,
+  allow: [] as ReadonlyArray<string>,
+  crawlDelayMs: 0,
+  aiOptedOut: false,
+};
 
 const SIMPLE_SITEMAP = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -46,10 +59,15 @@ describe("parseSitemap", () => {
 
   beforeEach(() => {
     originalFetch = globalThis.fetch;
+    _clearRobotsCache();
+    for (const origin of SEEDED_ORIGINS) {
+      _seedRobotsCache(origin, EMPTY_ROBOTS_RULES);
+    }
   });
 
   afterEach(() => {
     globalThis.fetch = originalFetch;
+    _clearRobotsCache();
   });
 
   it("parses a simple sitemap with 3 URLs", async () => {

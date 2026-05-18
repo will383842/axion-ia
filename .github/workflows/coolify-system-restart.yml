@@ -1,0 +1,87 @@
+name: Coolify system restart · unfreeze Horizon queue (autopilot)
+
+# Workflow utilitaire workflow_dispatch — restart le container Coolify lui-même
+# pour débloquer le worker Laravel Horizon quand sa queue est gelée
+# (deployments restent en `queued` indéfiniment, cf. cause #2 runbook deploy
+# recovery 2026-05-17).
+#
+# Symptômes observés 2026-05-18 :
+#   - Plusieurs deploys consécutifs timeout 25 min, status="queued" pendant
+#     toute la durée (jamais "in_progress")
+#   - coolify-diagnose -f action=cancel-stuck retourne success mais ne
+#     débloque pas la queue
+#   - Disk cleanup ne suffit pas (queue déjà gelée avant)
+#
+# Action : `docker restart coolify` réinitialise les workers Horizon.
+# Coolify se restart proprement (~10s downtime UI Coolify, ZERO downtime
+# pour les apps déployées qui tournent dans des containers indépendants).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  restart-coolify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Missing HETZNER_SSH_KEY"
+            exit 1
+          fi
+          echo "OK"
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Disk state + Coolify containers list
+        run: |
+          set +e
+          echo "──── Disk ────"
+          ssh -o BatchMode=yes root@178.105.55.15 'df -h /'
+          echo ""
+          echo "──── Coolify containers ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}} {{.Status}} {{.Image}}' | grep -i coolify"
+
+      - name: Restart Coolify container + dependencies
+        run: |
+          set +e
+          echo "──── Restart coolify ────"
+          ssh -o BatchMode=yes root@178.105.55.15 'docker restart coolify' 2>&1
+          echo "Waiting 20s for Horizon workers to bootstrap..."
+          sleep 20
+          echo ""
+          echo "──── Post-restart status ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}} {{.Status}}' | grep -i coolify"
+
+      - name: Verify Coolify API responsive
+        env:
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+        run: |
+          set +e
+          echo "──── Coolify API GET /api/v1/applications ────"
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/applications")
+            echo "Attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "✅ Coolify API back up."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::warning::Coolify API didn't return 200 after 5 attempts. Manual check needed."

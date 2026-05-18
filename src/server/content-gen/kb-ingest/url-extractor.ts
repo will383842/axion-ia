@@ -21,9 +21,16 @@
  * Cf. `src/lib/ssrf-safe-fetch.ts`. L'input URL provient de l'admin
  * KB ingest qui est trusted, mais le helper protège contre erreurs Will +
  * abus futurs si endpoint exposé public.
+ *
+ * City Domination 2026-05-18 P0-12 — A13 audit : ajout du respect des
+ * directives `robots.txt` Disallow/Crawl-Delay et `ai.txt` opt-out des sources
+ * externes avant chaque fetch. Réduit risque légal + bloc IP + pénalité Spam
+ * Brain Google sur notre IP Hetzner CPX42.
+ * Cf. `robots-respect.ts`.
  */
 
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
+import { checkUrlAllowed } from "./robots-respect";
 
 const FETCH_TIMEOUT_MS = 8_000;
 const USER_AGENT = "Mozilla/5.0 (compatible; Axion-IA-KB-Ingest/1.0; +https://axion-ia.com/bot)";
@@ -98,6 +105,20 @@ export async function extractArticleFromUrl(url: string): Promise<ExtractedArtic
     return null;
   }
   if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") return null;
+
+  // P0-12 (2026-05-18) — Respect robots.txt / ai.txt avant fetch.
+  // En cas d'erreur réseau sur le fetch robots.txt, `checkUrlAllowed` retombe
+  // sur "allowed: true" (cf. fetchTextSoft swallow + EMPTY_RULES) — fail-soft.
+  const robotsCheck = await checkUrlAllowed(url);
+  if (!robotsCheck.allowed) {
+    return null;
+  }
+  // Si Crawl-Delay est défini, on respecte le delay avant le fetch éditorial.
+  // Le cache 10 min de getRobotsRules évite qu'un sitemap de 50K URLs n'introduit
+  // 50K × delay_total — chaque appel de checkUrlAllowed ne lit le delay qu'une fois.
+  if (robotsCheck.crawlDelayMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, robotsCheck.crawlDelayMs));
+  }
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);

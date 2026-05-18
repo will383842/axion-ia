@@ -12,7 +12,15 @@
  *
  * Pas de dépendance externe (XML parsing simple via regex — pas de cas
  * pathologiques type CDATA imbriqué dans nos sitemaps cibles).
+ *
+ * City Domination 2026-05-18 P0-12 — A13 audit : ajout du respect des
+ * directives `robots.txt` Disallow/Crawl-Delay et `ai.txt` opt-out avant fetch.
+ * Pas de migration `fetch()` → `ssrfSafeFetch` ici : l'URL est admin-fournie
+ * (trusted) et sitemap.xml ne pose pas de risque SSRF (vs URL article qui peut
+ * être user-submitted via futur endpoint public). Cf. `robots-respect.ts`.
  */
+
+import { checkUrlAllowed } from "./robots-respect";
 
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_URLS_PER_SITEMAP = 50_000;
@@ -27,6 +35,16 @@ export interface SitemapUrl {
 }
 
 async function fetchSitemap(url: string): Promise<string | null> {
+  // P0-12 (2026-05-18) — Respect robots.txt / ai.txt avant fetch sitemap.
+  // Certains sites bloquent /sitemap.xml pour les bots non-référencés.
+  // fail-soft (cf. checkUrlAllowed retour `allowed: true` si robots.txt
+  // absent ou erreur réseau).
+  const robotsCheck = await checkUrlAllowed(url);
+  if (!robotsCheck.allowed) return null;
+  if (robotsCheck.crawlDelayMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, robotsCheck.crawlDelayMs));
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
