@@ -108,7 +108,15 @@ ENV COREPACK_INTEGRITY_KEYS=0
 # pression mémoire pour donner du headroom à BuildKit qui ré-encode
 # tous les layers. CPX42 16 GB : 8 heap + 2 worker + 2 pg + 0.5 redis
 # + 1 system + 2 BuildKit = 15.5 GB, marge 0.5 GB. Build ~25 min vs 20.
-ENV NODE_OPTIONS=--max-old-space-size=8192
+#
+# Audit verif-fix-deploy 2026-05-18 : streak 8+ deploys ratés depuis PR 7
+# (2026-05-17 soir), pattern OOM-kill silencieux à ~38 min sur ubuntu-latest
+# 16 GB. Post-refonte admin V2 (~24k LOC), pression mémoire dépasse seuil.
+# Heap réduit 8192 → 6144 (libère 2 GB pour BuildKit + OS). Trade-off :
+# si webpack compile peak > 6 GB, fail clean "JavaScript heap out of memory"
+# au lieu d'OOM silencieux → diagnostic facilité. À ajuster (ou switch
+# ubuntu-latest-large) selon résultat run #4.
+ENV NODE_OPTIONS=--max-old-space-size=6144
 ENV NEXT_PRIVATE_WORKER_THREADS=1
 RUN corepack enable && corepack prepare pnpm@10.33.4 --activate
 # Generate Prisma client + build
