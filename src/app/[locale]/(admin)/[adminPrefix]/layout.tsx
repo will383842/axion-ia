@@ -25,8 +25,14 @@ import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import type { Locale } from "@/i18n/routing";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminSessionExpiryWarning } from "@/components/admin/ui";
+import {
+  AdminSessionExpiryWarning,
+  AdminSidebarNav,
+  AdminTopbar,
+  AdminUserMenu,
+} from "@/components/admin/ui";
 import { buildAdminNav } from "@/lib/admin-nav";
+import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 
 import "@/app/admin.css";
@@ -81,6 +87,32 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const session = (await auth()) as AdminSession;
   const showSidebar = Boolean(session?.user);
   const nav: NavItem[] = buildNav(adminPrefix);
+  const v2 = showSidebar ? await isAdminV2Enabled() : false;
+  const adminBase = `/fr/${adminPrefix}`;
+
+  if (v2 && session?.user) {
+    // Le logout reste exposé par le dashboard root V2 (form action signOut).
+    // L'AdminUserMenu n'a pas de logoutHref ici — éviterait un GET → 405 sur
+    // /api/auth/signout (Auth.js v5 attend un POST).
+    return (
+      <div className="admin-layout-v2 min-h-screen bg-[color:var(--color-admin-bg)]">
+        <AdminTopbar
+          brand={<strong className="admin-brand">Axion-IA · Admin</strong>}
+          commandPalette={<AdminCommandPalette adminPrefix={adminPrefix} />}
+          userMenu={
+            session.user.email ? (
+              <AdminUserMenu email={session.user.email} adminBase={adminBase} />
+            ) : undefined
+          }
+        />
+        <div className="flex">
+          <AdminSidebarNav items={nav} />
+          <main className="admin-main min-w-0 flex-1">{children}</main>
+        </div>
+        <AdminSessionExpiryWarning />
+      </div>
+    );
+  }
 
   return (
     <div className="admin-layout">
