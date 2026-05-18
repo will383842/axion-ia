@@ -88,7 +88,12 @@ jobs:
   # ───────────────────────────────────────────────────────────────────────
   build:
     name: Build & push image to GHCR
-    runs-on: ubuntu-latest
+    # Audit deploy-unstuck 2026-05-18 : streak 12+ deploys ratés depuis fea4b2e
+    # (last green 2026-05-17 13:40 UTC) avec pattern OOM-kill silencieux à ~38 min
+    # sur ubuntu-latest 16 GB. Diagnostic D2/D3/D4 confirme peak RAM 14.8-16.2 GB
+    # (next build SSG ~9 535 routes dont 6 450 villes). Upgrade vers larger runner
+    # 32 GB = marge ~16 GB sur peak prévu. Coût ~$3-4/build × ≤ 10 builds ≤ $50.
+    runs-on: ubuntu-latest-large
     timeout-minutes: 60
     outputs:
       image_tag: ${{ steps.meta.outputs.version }}
@@ -134,6 +139,26 @@ jobs:
             powershell || true
           sudo apt-get clean
           df -h /
+
+      # Audit deploy-unstuck 2026-05-18 (S10 instrumentation) — background
+      # monitor RAM + disk + load + CPU toutes les 30s. Crucial pour
+      # diagnostiquer si build OOM-kill silencieusement (pattern observé sur
+      # ubuntu-latest 16 GB). Log dumpé en fin de job (success ou failure).
+      - name: Background memory + disk monitor (S10 instrumentation)
+        run: |
+          set +e
+          mkdir -p /tmp
+          ( while true; do
+              ts=$(date -u +%H:%M:%SZ)
+              mem=$(free -m | awk '/Mem:/ {printf "RAM total=%dMB used=%dMB free=%dMB available=%dMB", $2, $3, $4, $7}')
+              disk=$(df -m / | awk 'NR==2 {printf "Disk used=%dMB avail=%dMB", $3, $4}')
+              load=$(uptime | sed -E 's/.*load average: //')
+              cpu=$(top -bn1 -d 0.5 | awk '/Cpu\(s\)/ {print $0; exit}')
+              echo "[$ts] $mem | $disk | load=$load | $cpu"
+              sleep 30
+            done ) > /tmp/build-monitor.log 2>&1 &
+          echo "MONITOR_PID=$!" >> "$GITHUB_ENV"
+          echo "Monitor started (PID $!)"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -204,6 +229,23 @@ jobs:
         run: |
           echo "::notice::Image pushed : ghcr.io/${{ github.repository_owner }}/axion-ia:${{ steps.meta.outputs.version }}"
           echo "::notice::Digest : ${{ steps.build.outputs.digest }}"
+
+      # Audit deploy-unstuck 2026-05-18 (S10 always-run) — dump du monitor
+      # log même si build a fail (récupère l'historique RAM/disk avant OOM-kill).
+      - name: Print monitor log (S10 always run)
+        if: always()
+        run: |
+          if [ -n "${MONITOR_PID:-}" ]; then
+            kill "$MONITOR_PID" 2>/dev/null || true
+          fi
+          echo "=== BUILD MONITOR LOG (last 200 lines) ==="
+          tail -200 /tmp/build-monitor.log 2>/dev/null || echo "(no monitor log)"
+          echo "=== FINAL STATE ==="
+          free -h || true
+          df -h / || true
+          echo "=== CPU INFO ==="
+          nproc || true
+          grep -c "^processor" /proc/cpuinfo || true
 
   deploy:
     name: Trigger Coolify deploy
