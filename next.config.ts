@@ -205,13 +205,27 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: [...securityHeaders, ...cdnHeaders] },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
       // revalide à chaque hit (sitemap-index 9 fichiers + OG images statiques).
+      //
+      // Audit indexation 2026-05-18 P1-13 — `s-maxage=600` (10 min) au lieu de
+      // 86400 (24h) pour refresh CDN rapide après publish. Sub-sitemaps (Next 16
+      // metadata) gardent ce header car ils sont SSG (changent au build).
       {
         source: "/sitemap.xml",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" }],
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=300, s-maxage=600, stale-while-revalidate=3600",
+          },
+        ],
       },
       {
         source: "/sitemap/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" }],
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=300, s-maxage=600, stale-while-revalidate=3600",
+          },
+        ],
       },
       {
         source: "/opengraph-image",

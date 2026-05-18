@@ -166,7 +166,13 @@ ${[...generatedBlocks, ...customBlocks].join("\n")}
   return new Response(body, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=3600, s-maxage=86400",
+      // Audit indexation 2026-05-18 P1-13 — réduction `s-maxage=86400` (24h)
+      // → `s-maxage=600` (10 min). Avant : Cloudflare cachait l'index 24h ce qui
+      // masquait les nouvelles URLs jusqu'à 24h après publish. Maintenant : CDN
+      // refresh sous 10 min après publish d'un Article tier-1 ou promotion ville.
+      // Charge origin négligeable car ISR Next 16 (`revalidate=3600`) sert depuis
+      // memory cache du worker.
+      "Cache-Control": "public, max-age=300, s-maxage=600, stale-while-revalidate=3600",
     },
   });
 }

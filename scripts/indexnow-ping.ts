@@ -1,3 +1,7 @@
+// Marker ES module — isolation namespace vs autres scripts dossier `scripts/`
+// (avoid duplicate `INDEXNOW_ENDPOINT` global redecl with daily-indexnow-resubmit.ts).
+export {};
+
 // IndexNow ping post-build — patch C1+C6 cert 2026-05-08.
 //
 // Critère 5.2 audit C6 : « IndexNow endpoint passif sans caller » → résolu.

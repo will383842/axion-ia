@@ -1,0 +1,132 @@
+name: Admin emergency · Prisma migrate deploy (autopilot)
+
+# Workflow utilitaire ONE-OFF créé 2026-05-18 deploy-unstuck Phase 5
+# diagnostic admin login crash post-deploy 45ad1e1.
+#
+# Hypothèse principale : une migration Prisma a échoué silencieusement au
+# boot container (docker-entrypoint.sh catch les erreurs intentionally) →
+# DB schema désynchro avec Prisma Client → admin dashboard crash sur les
+# 17 queries simultanées.
+#
+# Actions enchaînées :
+#   1. SSH Hetzner via secrets.HETZNER_SSH_KEY
+#   2. Find axion-ia web container UUID
+#   3. Dump migrations status (applied vs pending) via prisma migrate status
+#   4. Dump 80 dernières lignes logs container pour voir l'erreur boot
+#   5. Run `prisma migrate deploy` (idempotent, safe)
+#   6. Re-dump status post-migrate
+#   7. Restart container (docker restart)
+#   8. Wait 30s + smoke /api/healthz
+#
+# Trigger uniquement workflow_dispatch (jamais auto).
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'status (dump only) | migrate (status + migrate + restart)'
+        required: true
+        default: 'status'
+        type: choice
+        options:
+          - status
+          - migrate
+
+permissions:
+  contents: read
+
+jobs:
+  admin-migrate:
+    name: Admin emergency migrate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Validate secret HETZNER_SSH_KEY
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Missing secret HETZNER_SSH_KEY. Set via: gh secret set HETZNER_SSH_KEY < ~/.ssh/id_rsa"
+            exit 1
+          fi
+          echo "Secret OK."
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          echo "Connectivity probe..."
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK; uname -a; uptime' 2>&1 | head -5
+
+      - name: Find axion-ia web container
+        id: find_container
+        run: |
+          set -euo pipefail
+          # Coolify nomme les containers <service>-<app_uuid>-<random>. Le service
+          # web est typiquement le seul qui matche "axion" sans suffixe -worker.
+          CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}|{{.Image}}|{{.Status}}"' 2>&1)
+          echo "── All containers ──"
+          echo "$CONTAINERS"
+          echo "──────"
+          # Prend le premier container qui contient "axion" et pas "worker"
+          NAME=$(echo "$CONTAINERS" | grep -i axion | grep -vi worker | head -1 | cut -d'|' -f1)
+          if [ -z "$NAME" ]; then
+            echo "::error::No axion-ia web container found via docker ps grep"
+            exit 1
+          fi
+          echo "Selected container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Dump container recent logs (80 lines)
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "──── Container $CONTAINER recent logs ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker logs --tail 80 '$CONTAINER' 2>&1" 2>&1 | tail -100
+          echo "──── End logs ────"
+
+      - name: Dump Prisma migrate status (before)
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "──── Prisma migrate status BEFORE ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'node_modules/.bin/prisma migrate status --schema=./prisma/schema.prisma 2>&1 || npx --yes prisma@5.22.0 migrate status --schema=./prisma/schema.prisma 2>&1'" 2>&1 | tail -60
+          echo "──── End status ────"
+
+      - name: Run prisma migrate deploy
+        if: inputs.action == 'migrate'
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "──── Prisma migrate deploy ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'node_modules/.bin/prisma migrate deploy --schema=./prisma/schema.prisma 2>&1 || npx --yes prisma@5.22.0 migrate deploy --schema=./prisma/schema.prisma 2>&1'" 2>&1 | tail -100
+          echo "──── End migrate ────"
+
+      - name: Dump Prisma migrate status (after)
+        if: inputs.action == 'migrate'
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "──── Prisma migrate status AFTER ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' sh -c 'node_modules/.bin/prisma migrate status --schema=./prisma/schema.prisma 2>&1 || npx --yes prisma@5.22.0 migrate status --schema=./prisma/schema.prisma 2>&1'" 2>&1 | tail -60
+          echo "──── End status ────"
+
+      - name: Restart container + smoke
+        if: inputs.action == 'migrate'
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "──── Restart container ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker restart '$CONTAINER'" 2>&1
+          echo "Waiting 45s for healthcheck warmup..."
+          sleep 45
+          echo "──── Smoke /api/healthz ────"
+          curl -s -o /tmp/healthz.json -w "HTTP=%{http_code} time=%{time_total}s\n" https://axion-ia.com/api/healthz
+          cat /tmp/healthz.json
+          echo ""
+          echo "──── Smoke admin login page ────"
+          curl -sI https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login | head -3
