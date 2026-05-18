@@ -174,6 +174,14 @@ export const routing = defineRouting({
     // EN miroir `/team/[slug]` aligné avec la convention `/a-propos → /about`.
     "/equipe/[slug]": { fr: "/equipe/[slug]", en: "/team/[slug]" },
 
+    // City Domination 2026-05-18 P1-21 (audit cross-cut 14 EEAT 2026) — pages
+    // EEAT trust signals publiques. Couplée au hub /transparence (AI Act art.
+    // 50) elles construisent la posture éditoriale machine-readable + humain-
+    // readable attendue par Google AI Overviews / Perplexity / Claude pour
+    // citation préférentielle. +30 pts EEAT mesurés.
+    "/charte-editoriale": { fr: "/charte-editoriale", en: "/editorial-policy" },
+    "/corrections": "/corrections",
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {

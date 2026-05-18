@@ -113,6 +113,8 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/terms", "/fr/conditions-generales"],
   ["/en/privacy-policy", "/fr/politique-confidentialite"],
   ["/en/travel-policy", "/fr/politique-deplacement"],
+  // City Domination 2026-05-18 P1-21 — EEAT pages (cross-cut 14)
+  ["/en/editorial-policy", "/fr/charte-editoriale"],
 ];
 
 /**
