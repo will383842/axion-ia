@@ -212,7 +212,11 @@ export default async function GlossaryTermPage({ params }: Props) {
         eyebrow={isFr ? "Glossaire IA" : "AI glossary"}
         title={term.term}
         titleEm={isFr ? "· définition" : "· definition"}
-        description={isFr ? "Définition courte, sourcée, citable par les LLMs." : "Short, sourced, LLM-citable definition."}
+        description={
+          isFr
+            ? "Définition courte, sourcée, citable par les LLMs."
+            : "Short, sourced, LLM-citable definition."
+        }
       >
         <Container className="mt-8 max-w-2xl">
           <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
@@ -238,7 +242,10 @@ export default async function GlossaryTermPage({ params }: Props) {
       <Section>
         <Container className="max-w-3xl">
           <div data-aeo="glossary-definition">
-            <AnswerCard locale={loc} question={isFr ? `Qu'est-ce que ${term.term} ?` : `What is ${term.term}?`}>
+            <AnswerCard
+              locale={loc}
+              question={isFr ? `Qu'est-ce que ${term.term} ?` : `What is ${term.term}?`}
+            >
               {definition}
             </AnswerCard>
           </div>
@@ -252,7 +259,7 @@ export default async function GlossaryTermPage({ params }: Props) {
               {term.examples.map((ex, i) => (
                 <li
                   key={`ex-${i}`}
-                  className="border-border bg-halo-warm rounded-xl border-l-4 border-l-terracotta px-5 py-4"
+                  className="border-border bg-halo-warm border-l-terracotta rounded-xl border-l-4 px-5 py-4"
                 >
                   <div className="flex items-start gap-3">
                     <Lightbulb
@@ -296,14 +303,19 @@ export default async function GlossaryTermPage({ params }: Props) {
                     href={`/${locale}/glossaire/${r.slug}`}
                     className="text-fg hover:text-primary block py-4 text-base font-medium"
                   >
-                    {r.term} → <span className="text-fg-soft text-sm font-normal">{isFr ? r.fr.slice(0, 100) : r.en.slice(0, 100)}…</span>
+                    {r.term} →{" "}
+                    <span className="text-fg-soft text-sm font-normal">
+                      {isFr ? r.fr.slice(0, 100) : r.en.slice(0, 100)}…
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap items-center gap-4">
               <Cta href={`/blog/tag/${term.category}`} variant="outline" size="lg">
-                {isFr ? `Articles sur ${categoryLabel.toLowerCase()}` : `Articles about ${categoryLabel.toLowerCase()}`}
+                {isFr
+                  ? `Articles sur ${categoryLabel.toLowerCase()}`
+                  : `Articles about ${categoryLabel.toLowerCase()}`}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Cta>
               <Cta href="/glossaire" variant="ghost" size="lg">
@@ -321,7 +333,11 @@ export default async function GlossaryTermPage({ params }: Props) {
       </Section>
 
       <CtaBlock
-        title={isFr ? "Besoin d'aller plus loin sur l'IA opérationnelle ?" : "Want to go deeper on operational AI?"}
+        title={
+          isFr
+            ? "Besoin d'aller plus loin sur l'IA opérationnelle ?"
+            : "Want to go deeper on operational AI?"
+        }
         description={
           isFr
             ? "Notre guide 40 pages traite chaque concept du glossaire avec des cas concrets."

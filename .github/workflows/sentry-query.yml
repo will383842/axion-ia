@@ -86,15 +86,37 @@ jobs:
               ;;
             issue-detail)
               if [ -z "$ISSUE_ID" ]; then echo "::error::issue_id required"; exit 1; fi
-              echo "──── Issue $ISSUE_ID details ────"
-              curl -s -H "$AUTH" "$BASE/issues/$ISSUE_ID/" \
-                | jq '{id, title, culprit, type, permalink, count, userCount, firstSeen, lastSeen, level, isPublic, status, statusDetails, platform, project: .project.slug, metadata, tags: ([.tags[]? | {key, value}] | .[0:20])}'
+              echo "──── Issue $ISSUE_ID — HTTP status ────"
+              curl -s -o /tmp/issue.json -w "HTTP %{http_code}\n" -H "$AUTH" "$BASE/issues/$ISSUE_ID/"
+              echo "──── Issue $ISSUE_ID — RAW (first 4000 chars) ────"
+              head -c 4000 /tmp/issue.json
+              echo ""
+              echo "──── Issue $ISSUE_ID — top-level keys ────"
+              jq 'keys' /tmp/issue.json || echo "(not JSON or jq failed)"
+              echo "──── Issue $ISSUE_ID — summary ────"
+              jq -r '. as $r | "id=\($r.id // "null") shortId=\($r.shortId // "null") title=\($r.title // "null") culprit=\($r.culprit // "null") count=\($r.count // "null") userCount=\($r.userCount // "null") level=\($r.level // "null") lastSeen=\($r.lastSeen // "null") status=\($r.status // "null") platform=\($r.platform // "null")"' /tmp/issue.json || true
               ;;
             event-detail)
               if [ -z "$ISSUE_ID" ]; then echo "::error::issue_id required"; exit 1; fi
-              echo "──── Latest event of issue $ISSUE_ID ────"
-              curl -s -H "$AUTH" "$BASE/issues/$ISSUE_ID/events/latest/" \
-                | jq '{eventID, dateCreated, message: .title, platform, sdk, tags, contexts: {browser: .contexts.browser, runtime: .contexts.runtime, trace: .contexts.trace, request: {url: .request.url, method: .request.method}}, breadcrumbs: ([.entries[] | select(.type == "breadcrumbs") | .data.values[]] | .[-30:] | map({timestamp, type, category, level, message: (.message // ""), data: (.data // {})})), exception: ([.entries[] | select(.type == "exception") | .data.values[0]] | first)}'
+              echo "──── Latest event of issue $ISSUE_ID — HTTP status ────"
+              curl -s -o /tmp/event.json -w "HTTP %{http_code}\n" -H "$AUTH" "$BASE/issues/$ISSUE_ID/events/latest/"
+              echo "──── Latest event — top-level keys ────"
+              jq 'keys' /tmp/event.json || echo "(not JSON or jq failed)"
+              echo "──── Latest event — basic context ────"
+              jq '{eventID, dateCreated, title, message, platform, culprit, location: .location, sdk: .sdk, tags: ([.tags[]? | {key, value}])}' /tmp/event.json || true
+              echo "──── Latest event — request/contexts ────"
+              jq '{contexts, request, user, environment}' /tmp/event.json || true
+              echo "──── Latest event — entry types ────"
+              jq -r '[.entries[]? | .type] | join(", ")' /tmp/event.json || true
+              echo "──── Latest event — exception (first) ────"
+              jq '[.entries[]? | select(.type == "exception") | .data.values[0]] | first' /tmp/event.json || true
+              echo "──── Latest event — breadcrumbs (last 30) ────"
+              jq '[.entries[]? | select(.type == "breadcrumbs") | .data.values[]?] | .[-30:] | map({timestamp, type, category, level, message: (.message // ""), data: (.data // {})})' /tmp/event.json || true
+              echo "──── Latest event — request entry ────"
+              jq '[.entries[]? | select(.type == "request") | .data] | first' /tmp/event.json || true
+              echo "──── Latest event — RAW (first 8000 chars, fallback) ────"
+              head -c 8000 /tmp/event.json
+              echo ""
               ;;
             issues-by-tag)
               if [ -z "$QUERY" ]; then echo "::error::query required"; exit 1; fi

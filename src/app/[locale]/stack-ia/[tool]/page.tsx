@@ -306,8 +306,7 @@ export default async function StackToolPage({ params }: Props) {
                 </span>
                 <div>
                   <p className="text-fg-muted text-[12px] font-medium tracking-[0.16em] uppercase">
-                    {isFr ? "Fiche outil" : "Tool sheet"} ·{" "}
-                    {category ? category[loc].title : ""}
+                    {isFr ? "Fiche outil" : "Tool sheet"} · {category ? category[loc].title : ""}
                   </p>
                   <h1 className="text-fg mt-1 text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">
                     {tool.name}
@@ -499,11 +498,7 @@ export default async function StackToolPage({ params }: Props) {
             {comparables.map(({ tool: cmpTool, detail: cmpDetail }) => (
               <Link
                 key={cmpTool.id}
-                href={
-                  (isFr
-                    ? `/stack-ia/${cmpTool.id}`
-                    : `/ai-stack/${cmpTool.id}`) as never
-                }
+                href={(isFr ? `/stack-ia/${cmpTool.id}` : `/ai-stack/${cmpTool.id}`) as never}
                 className={cn(
                   "shadow-subtle bg-paper hover:shadow-card border-border hover:border-terracotta block rounded-2xl border p-5 transition-shadow",
                 )}
@@ -568,9 +563,7 @@ export default async function StackToolPage({ params }: Props) {
       <CtaBlock
         eyebrow={isFr ? "Mettre la stack en mouvement" : "Put the stack in motion"}
         title={isFr ? `Besoin d'évaluer` : "Need to evaluate"}
-        titleEm={
-          isFr ? ` ${tool.name} dans votre contexte ?` : ` ${tool.name} in your context?`
-        }
+        titleEm={isFr ? ` ${tool.name} dans votre contexte ?` : ` ${tool.name} in your context?`}
         description={
           isFr
             ? "30 minutes en visio, gratuit. On regarde ensemble si l'outil mérite sa place dans votre stack — et avec quoi on le pairerait."

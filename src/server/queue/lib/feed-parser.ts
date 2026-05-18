@@ -88,9 +88,7 @@ export function parseFeed(xml: string): ReadonlyArray<FeedItem> {
   if (isRecord(doc.rss)) {
     const channel = doc.rss.channel;
     if (isRecord(channel) && Array.isArray(channel.item)) {
-      return channel.item
-        .map((it) => parseRssItem(it))
-        .filter((it): it is FeedItem => it !== null);
+      return channel.item.map((it) => parseRssItem(it)).filter((it): it is FeedItem => it !== null);
     }
   }
 
@@ -105,9 +103,7 @@ export function parseFeed(xml: string): ReadonlyArray<FeedItem> {
   if (isRecord(doc.RDF)) {
     const items = doc.RDF.item;
     if (Array.isArray(items)) {
-      return items
-        .map((it) => parseRssItem(it))
-        .filter((it): it is FeedItem => it !== null);
+      return items.map((it) => parseRssItem(it)).filter((it): it is FeedItem => it !== null);
     }
   }
 
@@ -258,7 +254,10 @@ function textOf(value: unknown): string {
     const cdata = value["#cdata"];
     if (typeof cdata === "string" && cdata.trim().length > 0) return cdata.trim();
     if (Array.isArray(cdata)) {
-      const joined = cdata.filter((c) => typeof c === "string").join("").trim();
+      const joined = cdata
+        .filter((c) => typeof c === "string")
+        .join("")
+        .trim();
       if (joined) return joined;
     }
     const text = value["#text"];

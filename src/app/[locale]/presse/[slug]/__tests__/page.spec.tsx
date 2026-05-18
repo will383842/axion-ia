@@ -44,21 +44,17 @@ import { PRESS_RELEASES, getAllPressReleaseSlugs } from "@/content/press";
 import { routing } from "@/i18n/routing";
 
 describe("/presse/[slug] · generateStaticParams contract", () => {
-  it(
-    "matérialise tous les slugs PRESS_RELEASES × toutes les locales",
-    async () => {
-      // Import dynamique du module page (lazy) — Vitest applique les vi.mock() avant.
-      // Note : le premier import est lent (cold cache lib/seo + service-coverage transitifs).
-      const mod = await import("../page");
-      const params = await mod.generateStaticParams();
-      const slugs = getAllPressReleaseSlugs();
-      expect(params.length).toBe(slugs.length * routing.locales.length);
-      const firstSlug = slugs[0]!;
-      expect(params).toContainEqual({ locale: "fr", slug: firstSlug });
-      expect(params).toContainEqual({ locale: "en", slug: firstSlug });
-    },
-    15_000,
-  );
+  it("matérialise tous les slugs PRESS_RELEASES × toutes les locales", async () => {
+    // Import dynamique du module page (lazy) — Vitest applique les vi.mock() avant.
+    // Note : le premier import est lent (cold cache lib/seo + service-coverage transitifs).
+    const mod = await import("../page");
+    const params = await mod.generateStaticParams();
+    const slugs = getAllPressReleaseSlugs();
+    expect(params.length).toBe(slugs.length * routing.locales.length);
+    const firstSlug = slugs[0]!;
+    expect(params).toContainEqual({ locale: "fr", slug: firstSlug });
+    expect(params).toContainEqual({ locale: "en", slug: firstSlug });
+  }, 15_000);
 
   it("inclut le slug seed 'lancement-plateforme-axion-ia-2026' (fixture canonique)", async () => {
     const mod = await import("../page");

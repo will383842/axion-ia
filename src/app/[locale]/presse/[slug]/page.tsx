@@ -116,7 +116,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale: loc,
     path: `/presse/${slug}`,
-    title: isFr ? `${copy.title} · Communiqué · Axion-IA` : `${copy.title} · Press release · Axion-IA`,
+    title: isFr
+      ? `${copy.title} · Communiqué · Axion-IA`
+      : `${copy.title} · Press release · Axion-IA`,
     description: desc,
     alternates: { fr: `/presse/${slug}`, en: `/press/${slug}` },
   });
@@ -263,12 +265,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
       </Container>
 
       {/* HERO — eyebrow tag + h1 + métadonnées (date) */}
-      <Section
-        titleAs="h1"
-        eyebrow={tagLabel}
-        title={copy.title}
-        description={copy.dek}
-      >
+      <Section titleAs="h1" eyebrow={tagLabel} title={copy.title} description={copy.dek}>
         <Container className="text-fg-muted mt-8 flex flex-wrap items-center gap-4 text-sm">
           <span className="bg-terracotta-soft text-terracotta-deep rounded-full px-3 py-1 text-[11px] font-semibold tracking-wider uppercase">
             {tagLabel}
@@ -285,9 +282,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
           {isThin ? (
             <>
               <span aria-hidden="true">·</span>
-              <span className="italic">
-                {isFr ? "Brève — non indexée" : "Brief — not indexed"}
-              </span>
+              <span className="italic">{isFr ? "Brève — non indexée" : "Brief — not indexed"}</span>
             </>
           ) : null}
         </Container>

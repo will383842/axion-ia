@@ -64,7 +64,10 @@ describe("glossary-extension · structure", () => {
       expect(t.term.trim().length, `term vide pour ${t.slug}`).toBeGreaterThan(0);
       expect(t.fr.trim().length, `fr vide pour ${t.slug}`).toBeGreaterThan(0);
       expect(t.en.trim().length, `en vide pour ${t.slug}`).toBeGreaterThan(0);
-      expect(VALID_CATEGORIES.has(t.category), `category invalide pour ${t.slug}: ${t.category}`).toBe(true);
+      expect(
+        VALID_CATEGORIES.has(t.category),
+        `category invalide pour ${t.slug}: ${t.category}`,
+      ).toBe(true);
     }
   });
 

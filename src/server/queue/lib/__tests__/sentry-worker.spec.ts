@@ -240,7 +240,9 @@ describe("captureWorkerError", () => {
       captureWorkerError("orchestrator", "content-orchestrator", undefined, new Error("inner"));
     }).not.toThrow();
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining("[sentry-worker] capture failed for orchestrator/content-orchestrator"),
+      expect.stringContaining(
+        "[sentry-worker] capture failed for orchestrator/content-orchestrator",
+      ),
       expect.any(String),
     );
     warnSpy.mockRestore();

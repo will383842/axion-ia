@@ -50,13 +50,13 @@ const {
       remaining: 59,
       resetAt: Date.now() + 60_000,
     })),
-    campaignFindUniqueMock: vi.fn<
-      (args: unknown) => Promise<{ pausedAt: Date | null } | null>
-    >(async () => ({ pausedAt: new Date("2026-05-17T10:00:00.000Z") })),
+    campaignFindUniqueMock: vi.fn<(args: unknown) => Promise<{ pausedAt: Date | null } | null>>(
+      async () => ({ pausedAt: new Date("2026-05-17T10:00:00.000Z") }),
+    ),
     campaignUpdateMock: vi.fn(async (_args: unknown) => ({ id: "campaign-1" })),
-    contentGenConfigFindUniqueMock: vi.fn<
-      (args: unknown) => Promise<{ value: unknown } | null>
-    >(async () => null),
+    contentGenConfigFindUniqueMock: vi.fn<(args: unknown) => Promise<{ value: unknown } | null>>(
+      async () => null,
+    ),
     contentGenConfigUpsertMock: vi.fn(async (_args: unknown) => ({ key: "k" })),
     auditLogCreateMock: vi.fn(async (_args: unknown) => ({ id: "audit-1" })),
     activityLogCreateMock: vi.fn(async (_args: unknown) => ({ id: "activity-1" })),

@@ -564,7 +564,10 @@ export function startContentGenWorker(): Worker<ContentGenJobPayload> {
     // capture quand même côté Sentry pour suivi groupé (fréquence vs cause).
     const errMsg = err instanceof Error ? err.message : String(err);
     const errName = err instanceof Error ? err.name : "Error";
-    if (errName !== "KillSwitchActiveError" && errMsg !== "Kill switch content-gen actif — job requeue") {
+    if (
+      errName !== "KillSwitchActiveError" &&
+      errMsg !== "Kill switch content-gen actif — job requeue"
+    ) {
       captureWorkerError("gen", QUEUE_NAME, job, err);
     }
   });
