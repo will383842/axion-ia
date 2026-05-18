@@ -187,8 +187,15 @@ jobs:
           # économisés). Trade-off : builds successifs moins rapides (mode
           # min cache que les layers finaux). Quand le pipeline est stable,
           # repasser à mode=max.
+          #
+          # Audit verif-fix-deploy 2026-05-18 : 8 deploys consécutifs failed
+          # depuis fea4b2e (last success 2026-05-17 13:40 UTC). Build die at
+          # ~38 min sans log flush sur step 8 = pattern OOM kill runner.
+          # Hypothèse : cache restore + cache export pendant le build saturent
+          # le runner 16 GB RAM. Désactivation temporaire pour valider.
+          # Si succès → re-activer cache-from puis cache-to en validation.
           cache-from: type=gha
-          cache-to: type=gha,mode=min
+          # cache-to disabled — fix verif-fix-deploy 2026-05-18 OOM-kill investigation
           # Désactive le provenance attestation (génère 50 MB extra de
           # metadata SLSA inutile pour notre cas).
           provenance: false
