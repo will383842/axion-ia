@@ -189,3 +189,92 @@ export async function gscTopKeywordsForUrl(
 export function getGscCachedToken(): CachedAccessToken | null {
   return cachedToken;
 }
+
+/**
+ * Audit indexation 2026-05-18 P1-10 — URL Inspection API.
+ *
+ * Endpoint : `POST https://searchconsole.googleapis.com/v1/urlInspection/index:inspect`
+ * Quota : 2 000 req/jour, 600 req/min (read-only, n'utilise PAS le quota Indexing API).
+ *
+ * Permet d'auditer l'état Google d'une URL individuelle (canonicalUrl,
+ * coverageState, indexingState, lastCrawlTime, mobileUsability) sans CSV
+ * export manuel. Outil clé pour observabilité indexation au quotidien.
+ *
+ * Skip silencieux + return null si credentials absents (V1 graceful degrade).
+ *
+ * @param inspectedUrl URL canonique à inspecter (ex: https://axion-ia.com/fr/blog/abc)
+ * @param languageCode  BCP-47 (ex: "fr-FR"), optional ; aide Google pour rendre la page
+ *
+ * Doc : <https://developers.google.com/webmaster-tools/v1/urlInspection.index/inspect>
+ */
+export interface GscUrlInspectionResult {
+  readonly inspectionResultLink?: string;
+  readonly indexStatusResult?: {
+    readonly verdict?: string;
+    readonly coverageState?: string;
+    readonly robotsTxtState?: string;
+    readonly indexingState?: string;
+    readonly lastCrawlTime?: string;
+    readonly pageFetchState?: string;
+    readonly googleCanonical?: string;
+    readonly userCanonical?: string;
+    readonly sitemap?: ReadonlyArray<string>;
+    readonly referringUrls?: ReadonlyArray<string>;
+    readonly crawledAs?: string;
+  };
+  readonly mobileUsabilityResult?: {
+    readonly verdict?: string;
+    readonly issues?: ReadonlyArray<{ readonly issueType?: string; readonly severity?: string }>;
+  };
+  readonly richResultsResult?: {
+    readonly verdict?: string;
+    readonly detectedItems?: ReadonlyArray<{ readonly richResultType?: string }>;
+  };
+}
+
+export async function gscInspectUrl(
+  inspectedUrl: string,
+  languageCode = "fr-FR",
+): Promise<GscUrlInspectionResult | null> {
+  const propertyUrl = process.env["GSC_PROPERTY_URL"];
+  if (!propertyUrl) return null;
+  if (
+    !process.env["GSC_OAUTH_CLIENT_ID"] ||
+    !process.env["GSC_OAUTH_CLIENT_SECRET"] ||
+    !process.env["GSC_OAUTH_REFRESH_TOKEN"]
+  ) {
+    return null;
+  }
+
+  let accessToken: string;
+  try {
+    accessToken = await getAccessToken();
+  } catch (err) {
+    console.error("[gsc-client] OAuth refresh failed:", err);
+    return null;
+  }
+
+  const res = await fetch("https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inspectionUrl: inspectedUrl,
+      siteUrl: propertyUrl,
+      languageCode,
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error(
+      `[gsc-client] urlInspect failed for ${inspectedUrl}: ${res.status} ${text.slice(0, 200)}`,
+    );
+    return null;
+  }
+
+  const data = (await res.json()) as { inspectionResult?: GscUrlInspectionResult };
+  return data.inspectionResult ?? null;
+}

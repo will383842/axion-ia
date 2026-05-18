@@ -21,6 +21,8 @@
  * Doc : <https://developers.google.com/search/apis/indexing-api/v3/quickstart>
  */
 
+import * as Sentry from "@sentry/nextjs";
+
 interface CachedAccessToken {
   readonly token: string;
   readonly expiresAt: number;
@@ -115,6 +117,17 @@ export async function indexingPublishUrl(
     console.error(
       `[indexing-client] publish failed for ${url}: ${res.status} ${text.slice(0, 200)}`,
     );
+    // Audit indexation 2026-05-18 P1-20 — capture Sentry sur 400/403/410 pour
+    // détecter changement politique Google Indexing API (limite officielle =
+    // JobPosting + BroadcastEvent ; usage articles toléré mais non garanti).
+    // 5xx ignoré (transient, retry inutile). 401 = OAuth issue → géré séparément.
+    if (res.status === 400 || res.status === 403 || res.status === 410) {
+      Sentry.captureMessage(`Google Indexing API ${res.status} for ${type}`, {
+        level: "warning",
+        tags: { component: "indexing-client", status: String(res.status) },
+        extra: { url, type, responseBody: text.slice(0, 500) },
+      });
+    }
     return false;
   }
 
