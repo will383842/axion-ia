@@ -8,11 +8,21 @@
 // `/api/og?title=...&accent=...` (cf. `src/app/api/og/route.tsx`).
 
 import { ImageResponse } from "next/og";
-import { BRAND } from "@/lib/brand";
 
+// Audit GSC 5xx 2026-05-18 — fix `/opengraph-image` retournant 502 Bad Gateway.
+//
+// Cause racine : import `@/lib/brand` → import `@/env` (Zod schema validation
+// au module load). En edge runtime + standalone Coolify, l'init Zod throw
+// (server-only env vars non disponibles ou validation stricte). Le module
+// crashe à l'import → Next renvoie 5xx → CF passe 502.
+//
+// Fix : inline le brand name au lieu d'importer BRAND. Le seul usage était
+// l'alt text. SSOT préservée côté UI (Header, JSON-LD) qui restent en nodejs
+// runtime. Précédent : `/api/og/route.tsx` édge runtime aussi mais sans BRAND
+// import → fonctionne en prod (curl 200, image/png).
 export const runtime = "edge";
 
-export const alt = `${BRAND.name} — Cabinet IA opérationnel B2B`;
+export const alt = "Axion-IA — Cabinet IA opérationnel B2B";
 
 // P2-29 audit indexation 2026-05-18 — Google Discover hard floor = 1200×675 px
 // (OG image < 1200×675 = pas éligible Discover surface Android/iOS Chrome).
