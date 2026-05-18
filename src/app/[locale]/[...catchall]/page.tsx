@@ -19,7 +19,18 @@ import { notFound } from "next/navigation";
  * `notFound()` propage `NEXT_NOT_FOUND` qui est convertie en 404 + render
  * de `[locale]/not-found.tsx`, exactement le comportement Search Console
  * attendu.
+ *
+ * Audit indexation 2026-05-18 P0-7 — `dynamic = "force-dynamic"` requis.
+ * Sans cela, Next 16 marque le rendering comme static (la fonction n'a pas
+ * de params dependents) et le cache forever (live observé `x-nextjs-cache:
+ * HIT` + `Cache-Control: s-maxage=31536000` 1 AN). Conséquence : status 200
+ * servi indéfiniment pour toute URL inexistante → soft 404 site-wide. Le
+ * mode `force-dynamic` force l'exécution per-request → `notFound()` lance
+ * `NEXT_NOT_FOUND` à chaque hit → status 404 réel propagé.
  */
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function CatchAllNotFound(): never {
   notFound();
 }

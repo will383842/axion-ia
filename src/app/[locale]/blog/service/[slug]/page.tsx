@@ -25,6 +25,9 @@ interface Props {
 
 // Sprint 14.10 (2026-05-08) — page taxonomie service (3 services).
 
+// Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllBlogServiceTypeSlugs().flatMap((slug) =>
     routing.locales.map((locale) => ({ locale, slug })),

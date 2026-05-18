@@ -28,6 +28,9 @@ interface Props {
 // Anti-doorway HCU 2024 : tier-2/3 articles affichés en lien interne mais
 // CollectionPage JSON-LD ne contient que tier-1 (signal qualité Google).
 
+// Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllBlogSectorSlugs().flatMap((slug) =>
     routing.locales.map((locale) => ({ locale, slug })),

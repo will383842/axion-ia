@@ -39,6 +39,9 @@ function deriveTldr(excerpt: string | null | undefined, fallback: string): strin
   return sentences.length > 0 ? sentences : null;
 }
 
+// Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const slugs = getAllSlugs();
   return routing.locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));

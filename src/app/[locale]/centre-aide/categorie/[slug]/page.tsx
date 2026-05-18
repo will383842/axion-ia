@@ -21,6 +21,9 @@ interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+// Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllHelpCategorySlugs().flatMap((slug) =>
     routing.locales.map((locale) => ({ locale, slug })),

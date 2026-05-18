@@ -19,6 +19,9 @@ interface Props {
 // Slugs traduits par locale : EN utilise `customer-service` au lieu de
 // `service-client` (cf. `automatisations.ts` `pathEn`). On émet ici les
 // params correspondant au slug DE LA LOCALE, pas le slug FR canonique.
+// Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return AUTOMATISATIONS.flatMap((cat) =>
     routing.locales.map((locale) => ({

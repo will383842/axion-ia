@@ -22,6 +22,12 @@ interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+// Audit indexation 2026-05-18 P0-7 — dynamicParams=false force Next 16 à 404
+// les slugs inconnus sans exécuter la page function (vs default `true` qui
+// rendait la page on-demand avec status 200 + meta noindex = soft 404 GSC).
+// Safe ici car generateStaticParams retourne TOUS les slugs valides FS.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllBlogCategorySlugs().flatMap((slug) =>
     routing.locales.map((locale) => ({ locale, slug })),
