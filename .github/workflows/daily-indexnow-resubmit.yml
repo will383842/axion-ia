@@ -1,0 +1,66 @@
+name: Daily IndexNow re-submit
+
+# P1-12 (audit indexation 2026-05-18) — re-ping IndexNow toutes les URLs
+# publiées dans les 7 derniers jours. Insurance contre non-réception aléatoire
+# Bing + Yandex (idempotent, coût zéro).
+#
+# Schedule : daily 02:00 UTC (créneau low-traffic + après cron CRM-Pro 3h UTC
+# pour éviter conflit Storage Box backup).
+#
+# Auth : aucune (script utilise IndexNow universal endpoint api.indexnow.org
+# avec INDEXNOW_KEY déjà set comme secret GH).
+#
+# GH secret requis : INDEXNOW_KEY (32+ chars, set 2026-05-13 mémoire).
+# Si secret absent → script fail-soft → workflow vert avec warning.
+#
+# Output : log seulement (pas de commit/push). Voir GH Actions logs pour
+# le compte URLs pinged.
+
+on:
+  schedule:
+    # Tous les jours 02:00 UTC (03h CEST été / 04h CET hiver).
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (skip ping, log only)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  resubmit:
+    name: Daily IndexNow re-submit recent URLs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Run re-submit
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://axion-ia.com' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${INDEXNOW_KEY:-}" ]; then
+            echo "::warning::INDEXNOW_KEY secret absent — skipping re-submit"
+            exit 0
+          fi
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "::notice::DRY_RUN mode — INDEXNOW_KEY unset to log-only"
+            unset INDEXNOW_KEY
+          fi
+          npx tsx scripts/daily-indexnow-resubmit.ts
