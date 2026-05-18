@@ -77,6 +77,9 @@ export default async function CorrectionsPage({ params }: Props) {
     publisher: { "@id": `${SITE_URL}/#organization` },
     datePublished: "2026-05-18",
     dateModified: LAST_REVIEWED,
+    // P1-21 verification fix 2026-05-18 — cohérence avec /charte-editoriale
+    // (audit indépendant agent Explore a relevé l'absence sur cette page).
+    mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [".tldr-answer", '[data-aeo="tldr"]'],
