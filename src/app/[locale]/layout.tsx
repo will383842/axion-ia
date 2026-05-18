@@ -251,8 +251,18 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             Désormais : eager seulement sur les pages que 80 % des visiteurs
             visitent, moderate (hover/viewport) sur le reste.
             Browsers sans support ignorent silencieusement.
-            Production-only : `next dev` sature Turbopack si on `eager`. */}
-        {process.env.NODE_ENV === "production" && (
+            Production-only : `next dev` sature Turbopack si on `eager`.
+
+            Audit deploy-unstuck 2026-05-18 — DÉSACTIVÉ temporairement.
+            Chrome warning "Inline speculation rules cannot currently be
+            modified after they are processed" + crash admin error boundary
+            "An unexpected response was received from the server" (RSC stream).
+            Hypothèse : conflit avec les speculation rules auto-générées par
+            Next 16. Le warning persistait, les pages admin crashaient sur
+            l'error boundary client. À ré-activer après diagnostic ciblé
+            (probablement isoler le custom aux routes publiques seulement,
+            pas le mettre dans le root [locale]/layout). */}
+        {false && process.env.NODE_ENV === "production" && (
           <script
             type="speculationrules"
             dangerouslySetInnerHTML={{
