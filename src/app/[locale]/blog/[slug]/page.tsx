@@ -284,16 +284,38 @@ export default async function BlogArticle({ params }: Props) {
           <time dateTime={view.publishedAt} className="tabular-nums">
             {isFr ? "Publié le" : "Published"} {view.publishedAt}
           </time>
-          {view.updatedAt && view.updatedAt !== view.publishedAt ? (
-            <>
-              <span aria-hidden="true">·</span>
-              <time dateTime={view.updatedAt} className="tabular-nums">
-                {isFr ? "Mis à jour le" : "Updated"} {view.updatedAt}
-              </time>
-            </>
-          ) : null}
           <span aria-hidden="true">·</span>
           <span>{view.readingTime}</span>
+        </Container>
+        {/* City Domination 2026-05-18 P1-22 (audit cross-cut 14 EEAT) —
+            "Dernière révision" banner visible. Toujours affiché (publishedAt
+            par défaut si pas d'updatedAt). Signal freshness EEAT pour Google +
+            LLMs (Article.dateModified JSON-LD déjà émis côté schema). Cohérent
+            avec doctrine cite-friendly 2026. */}
+        <Container className="mt-4 max-w-3xl">
+          <div className="border-border bg-sand-50 text-fg-muted flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
+            <svg
+              aria-hidden="true"
+              className="text-terracotta-deep h-4 w-4 shrink-0"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.477-9.817a.75.75 0 0 1 1.053-.143Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>
+              {isFr ? "Dernière révision : " : "Last reviewed: "}
+              <time dateTime={view.updatedAt ?? view.publishedAt} className="tabular-nums">
+                {view.updatedAt ?? view.publishedAt}
+              </time>
+              {view.updatedAt && view.updatedAt !== view.publishedAt ? (
+                <span className="text-fg-muted ml-1">{isFr ? "(mis à jour)" : "(updated)"}</span>
+              ) : null}
+            </span>
+          </div>
         </Container>
       </Section>
 

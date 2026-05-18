@@ -167,6 +167,13 @@ export const routing = defineRouting({
     // Consolide /equipe/manon (persona) + /politique-confidentialite §IA + /sous-processeurs.
     "/transparence": { fr: "/transparence", en: "/transparency" },
 
+    // City Domination 2026-05-18 P1-14 (audit A11 P0) — déclaration explicite
+    // de /equipe/[slug] dans pathnames. La page existe (`src/app/[locale]/
+    // equipe/[slug]/page.tsx`) mais sans entry routing.ts, les Link<typedRoutes>
+    // côté layout/footer/JSON-LD ne typechecknet pas et tombent en `as never`.
+    // EN miroir `/team/[slug]` aligné avec la convention `/a-propos → /about`.
+    "/equipe/[slug]": { fr: "/equipe/[slug]", en: "/team/[slug]" },
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {

@@ -69,6 +69,12 @@ const AI_BOTS_ALLOWED = [
   "Mistral-User", // Mistral chat
   "Bingbot", // Bing + Copilot
   "Meta-ExternalAgent", // Meta AI
+  // City Domination 2026-05-18 P1-3 (audit A6 P1-B) — visibilité YandexGPT +
+  // Yandex Neuro Europe Est. Yandex couvre ~50 M users russophones (Russie,
+  // Biélorussie, Kazakhstan, francophone Europe Est). Couverture wildcard `*`
+  // y donnait déjà accès, mais déclaration explicite cohérente avec doctrine
+  // « ALLOW search + answer engines ».
+  "YandexBot",
 ];
 
 const AI_BOTS_DISALLOWED = [

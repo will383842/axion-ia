@@ -81,6 +81,24 @@ export function GET() {
 - Axion-IA OÜ — régime TVA UE, facturation EUR.
 - Pas de mensualité, pas d'engagement, devis fixe.
 - Hébergement Hetzner Nuremberg (UE) — pas de Stripe payment, pas de Resend, pas de Vercel.
+
+## Optional
+
+- [Verbose llms.txt](${SITE_URL}/llms-full.txt) — version étendue avec contenus inline.
+- [Sitemap-index racine](${SITE_URL}/sitemap-index.xml) — listing complet des sub-sitemaps (~17 500 URLs).
+- [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
+- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, miroir EN.
+- [Google News Sitemap](${SITE_URL}/sitemap-news.xml) — actualités fenêtre 48 h glissante.
+- [Plan du site humain](${SITE_URL}/fr/plan-du-site) — navigation hiérarchique.
+
+## Excluded
+
+- \`/admin/*\` — espace privé staff Axion-IA (Auth.js JWT + 2FA TOTP).
+- \`/fr/mes-donnees\` — espace utilisateur authentifié (RGPD self-service).
+- \`/fr/reserver\` — funnel booking entreprise (UTM tracking + état tunnel).
+- \`/fr/design\`, \`/fr/components\`, \`/fr/sections\` — pages design system / preview internes.
+- \`/api/*\` (sauf \`/api/og\`) — endpoints serveur (auth, admin, GDPR, webhooks).
+- \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
 `;
 
   return new Response(body, {

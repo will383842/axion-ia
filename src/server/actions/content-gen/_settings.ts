@@ -14,7 +14,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "./_auth";
+import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
 /**
  * `readContentGenConfig` est volontairement **non-guardé** par requireAdmin.
@@ -44,7 +44,13 @@ export async function writeContentGenConfig(
   updatedBy: string,
   description?: string,
 ): Promise<void> {
-  await requireAdmin(); // Pass B fix P0-4 — défense en profondeur
+  // Pass B fix P0-4 — défense en profondeur (auth admin).
+  // City Domination 2026-05-18 P1-30 (audit A10) — rate-limit 60 writes/min/admin
+  // sur le chokepoint settings. `key` est inclus dans actionId pour permettre
+  // qu'un admin écrive sur plusieurs settings différents en parallèle sans se
+  // bloquer (60/min PAR setting), tout en cappant les abus boucle script-like
+  // sur un seul setting.
+  await requireAdminWriteRateLimited(`writeContentGenConfig:${key}`);
   await prisma.contentGenConfig.upsert({
     where: { key },
     create: {

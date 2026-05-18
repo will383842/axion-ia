@@ -97,6 +97,23 @@ export const ABOUT_TEAM = [
       bio: "10 years in digital transformation, hands-on field practice.",
     },
   },
+  // City Domination 2026-05-18 P1-13 (audit A11 P0) — Manon EN bio.
+  // Persona éditoriale IA d'Axion-IA, transparence AI Act EU art. 50.
+  // Doctrine v2.1 : zéro réseau social, supervision humaine, contenus IA-assistés.
+  // Cf. /equipe/manon (FR) + /team/manon (EN) + AiContentDisclaimer composant.
+  {
+    id: "manon",
+    fr: {
+      name: "Manon",
+      role: "Plume éditoriale IA · supervision humaine",
+      bio: "Persona éditoriale IA d'Axion-IA. Rédige les contenus éditoriaux avec assistance d'IA générative (OpenAI, Anthropic, Perplexity), supervisée par l'équipe Axion-IA avant publication. Transparence AI Act EU art. 50.",
+    },
+    en: {
+      name: "Manon",
+      role: "AI editorial author · human supervision",
+      bio: "Axion-IA's AI editorial persona. Drafts editorial content with generative AI assistance (OpenAI, Anthropic, Perplexity), supervised by the Axion-IA team before publication. EU AI Act art. 50 transparency.",
+    },
+  },
 ] as const;
 
 export interface FaqEntry {
