@@ -1,0 +1,106 @@
+name: Coolify force re-create container (autopilot)
+
+# Workflow utilitaire workflow_dispatch — force la re-création complète
+# du container Coolify quand un docker restart simple ne re-pull pas
+# la nouvelle image (Coolify pin image digest dans sa config).
+#
+# Étapes :
+#   1. SSH Hetzner
+#   2. docker stop + docker rm le container actuel
+#   3. POST Coolify /api/v1/deploy → Coolify recrée from scratch + pull :latest
+#   4. Attente 60s pour healthcheck
+#   5. Smoke /api/healthz + assert x-axion-build-sha
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: 'SHA git court attendu après recreate (7 chars)'
+        required: true
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  recreate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Validate secrets
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+        run: |
+          for v in HETZNER_SSH_KEY COOLIFY_APP_UUID COOLIFY_API_TOKEN COOLIFY_URL; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing $v"
+              exit 1
+            fi
+          done
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Stop + Remove current container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set +e
+          CONTAINER=$(ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}}' | awk -v uuid=\"$COOLIFY_APP_UUID\" '\$1 ~ \"^\"uuid {print \$1; exit}'")
+          if [ -z "$CONTAINER" ]; then
+            echo "::warning::No container found by COOLIFY_APP_UUID prefix"
+            exit 0
+          fi
+          echo "Stopping + Removing container: $CONTAINER"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' printenv BUILD_SHA 2>/dev/null || echo '(BUILD_SHA not in env)'"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker stop '$CONTAINER' && docker rm '$CONTAINER'"
+          echo "Container removed."
+
+      - name: Trigger Coolify deploy (recreate)
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          response=$(curl -fsSL -G \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify response: ${response}"
+
+      - name: Wait + verify
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set +e
+          echo "Waiting 90s for Coolify to recreate container..."
+          sleep 90
+          for i in 1 2 3 4 5 6; do
+            sha=$(curl -sI https://axion-ia.com/api/healthz 2>/dev/null | grep -i "x-axion-build-sha" | awk '{print $2}' | tr -d '\r' | cut -c1-7)
+            healthz_code=$(curl -s -o /dev/null -w "%{http_code}" https://axion-ia.com/api/healthz)
+            echo "Attempt $i: healthz=$healthz_code prod_sha=$sha expected=$EXPECTED_SHA"
+            if [ "$sha" = "$EXPECTED_SHA" ]; then
+              echo "✅ Prod serves expected SHA"
+              # Bonus: container env check via SSH
+              CONTAINER=$(ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}}' | awk -v uuid=\"$COOLIFY_APP_UUID\" '\$1 ~ \"^\"uuid {print \$1; exit}'")
+              ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' printenv BUILD_SHA"
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "::warning::Prod SHA did not match expected within 5 min."
