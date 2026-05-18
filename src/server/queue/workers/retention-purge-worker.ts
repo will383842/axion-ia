@@ -209,7 +209,15 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
           `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs}`,
       );
     },
-    { connection: getBullConnectionOrThrow(), concurrency: 1 },
+    {
+      connection: getBullConnectionOrThrow(),
+      concurrency: 1,
+      // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
+      // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
+      // Évite saturation Redis long-terme sur high-volume workers.
+      removeOnComplete: { count: 1000 },
+      removeOnFail: { count: 5000 },
+    },
   );
 
   worker.on("ready", () => console.log("[retention-purge-worker] ready"));

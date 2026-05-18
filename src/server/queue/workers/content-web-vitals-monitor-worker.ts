@@ -255,6 +255,11 @@ export function startContentWebVitalsMonitorWorker(): Worker<WebVitalsMonitorTic
     connection: { url: redisUrl },
     concurrency: 1,
     limiter: { max: 4, duration: 3600_000 }, // 4/h cap (cron daily mais safety)
+    // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
+    // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
+    // Évite saturation Redis long-terme sur high-volume workers.
+    removeOnComplete: { count: 1000 },
+    removeOnFail: { count: 5000 },
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-web-vitals-monitor] job ${job?.id} failed:`, err);

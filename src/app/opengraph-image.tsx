@@ -14,9 +14,13 @@ export const runtime = "edge";
 
 export const alt = `${BRAND.name} — Cabinet IA opérationnel B2B`;
 
+// P2-29 audit indexation 2026-05-18 — Google Discover hard floor = 1200×675 px
+// (OG image < 1200×675 = pas éligible Discover surface Android/iOS Chrome).
+// 1200×630 = standard OG Facebook/Twitter, mais 45px court Discover floor.
+// 1200×675 = compatible Discover ET OG/Twitter (les viewports ignorent ratio).
 export const size = {
   width: 1200,
-  height: 630,
+  height: 675,
 };
 
 export const contentType = "image/png";

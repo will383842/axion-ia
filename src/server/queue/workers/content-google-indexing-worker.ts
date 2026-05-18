@@ -68,6 +68,11 @@ export function startGoogleIndexingWorker(): Worker<GoogleIndexingJobPayload> {
     connection: { url: redisUrl },
     concurrency: 1,
     limiter: { max: 200, duration: 24 * 60 * 60 * 1000 }, // quota Google 200/jour gratuit
+    // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
+    // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
+    // Évite saturation Redis long-terme sur high-volume workers.
+    removeOnComplete: { count: 1000 },
+    removeOnFail: { count: 5000 },
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-google-indexing-worker] job ${job?.id} failed:`, err);

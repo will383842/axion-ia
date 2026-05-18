@@ -37,7 +37,15 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         ...(unsubscribeToken ? { unsubscribeToken } : {}),
       });
     },
-    { connection: getBullConnectionOrThrow(), concurrency: 8 },
+    {
+      connection: getBullConnectionOrThrow(),
+      concurrency: 8,
+      // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
+      // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
+      // Évite saturation Redis long-terme sur high-volume workers.
+      removeOnComplete: { count: 1000 },
+      removeOnFail: { count: 5000 },
+    },
   );
 
   worker.on("ready", () => console.log("[email-worker] ready"));

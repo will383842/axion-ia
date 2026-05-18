@@ -511,6 +511,11 @@ export function startContentGenWorker(): Worker<ContentGenJobPayload> {
     connection: { url: redisUrl },
     concurrency: 5,
     limiter: { max: 10, duration: 60_000 }, // 10/min — alignée OpenAI tier 5
+    // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
+    // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
+    // Évite saturation Redis long-terme sur high-volume workers.
+    removeOnComplete: { count: 1000 },
+    removeOnFail: { count: 5000 },
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-gen-worker] job ${job?.id} failed:`, err);

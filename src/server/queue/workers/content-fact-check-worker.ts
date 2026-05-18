@@ -157,6 +157,11 @@ export function startFactCheckWorker(): Worker<FactCheckJobPayload> {
     connection: { url: redisUrl },
     concurrency: 2,
     limiter: { max: 60, duration: 60_000 },
+    // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
+    // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
+    // Évite saturation Redis long-terme sur high-volume workers.
+    removeOnComplete: { count: 1000 },
+    removeOnFail: { count: 5000 },
   });
   workerInstance.on("failed", (j, err) => {
     console.error(`[content-fact-check-worker] job ${j?.id} failed:`, err);
