@@ -54,40 +54,64 @@ export const authConfig = {
       const isOnAuthPage = loginRegex.test(nextUrl.pathname);
 
       // Audit deploy-unstuck 2026-05-18 — fix admin crash "An unexpected
-      // response was received from the server". Next 16 RSC client auto-prefetch
-      // les routes admin depuis la page login. Le middleware redirect()
-      // renvoie 302 HTML (pas du RSC) -> React fire l'erreur.
-      // Solution : pour les RSC prefetch (headers `RSC: 1` ou
-      // `Next-Router-Prefetch: 1`), retourner 200 avec body vide au lieu de
-      // redirect. La navigation browser normale (sans ces headers) continue
-      // a recevoir le redirect 302.
+      // response was received from the server" (Next.js E394).
+      // Audit profond 4 sub-agents confirme : Next.js issue #65394 OPEN.
+      // Cause : Server Action POST se fait rediriger par middleware → réponse
+      // 302 HTML au lieu de RSC payload → React fetchServerAction throw E394.
+      //
+      // 2 cas à gérer :
+      //   - RSC prefetch GET (auto-prefetch Next 16 depuis page parent) :
+      //     headers `RSC: 1` ou `Next-Router-Prefetch: 1`
+      //     → return 200 vide (avoid 302 HTML)
+      //   - Server Action POST (form submission, useActionState) :
+      //     headers `Accept: text/x-component` + `Next-Action: <id>`
+      //     → return 303 + `x-action-redirect` header (pattern officiel #65394)
+      //
+      // La navigation browser normale (HTML GET) continue à recevoir 302.
+      const acceptHeader = headers.get("accept") ?? "";
       const isRscPrefetch =
         headers.get("rsc") === "1" || headers.get("next-router-prefetch") === "1";
+      const isServerAction =
+        !!headers.get("next-action") || acceptHeader.includes("text/x-component");
 
       // Page login accessible meme deconnecte
       if (isOnAuthPage) {
         if (isLoggedIn) {
+          const target = new URL(`/fr/${adminSegment}`, nextUrl).toString();
           // User deja connecte → renvoie vers le dashboard FR
+          if (isServerAction) {
+            return new Response(null, {
+              status: 303,
+              headers: { "x-action-redirect": target },
+            });
+          }
           if (isRscPrefetch) {
             return new Response(null, {
               status: 200,
               headers: { "content-type": "text/x-component" },
             });
           }
-          return Response.redirect(new URL(`/fr/${adminSegment}`, nextUrl));
+          return Response.redirect(target);
         }
         return true;
       }
 
       // Toute autre page admin (incluant /2fa/setup, /, sub-routes) exige login
       if (!isLoggedIn) {
+        const target = new URL(`/fr/${adminSegment}/login`, nextUrl).toString();
+        if (isServerAction) {
+          return new Response(null, {
+            status: 303,
+            headers: { "x-action-redirect": target },
+          });
+        }
         if (isRscPrefetch) {
           return new Response(null, {
             status: 200,
             headers: { "content-type": "text/x-component" },
           });
         }
-        return Response.redirect(new URL(`/fr/${adminSegment}/login`, nextUrl));
+        return Response.redirect(target);
       }
       return true;
     },
