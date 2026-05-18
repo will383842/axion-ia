@@ -125,6 +125,43 @@ describe("buildArticleJsonLd — urlSegment blog default", () => {
     expect(out["url"]).toMatch(/\/fr\/blog\/s$/);
   });
 
+  it("émet aiGenerated:true + additionalType (P0-5 AI Act art. 50 — deadline 2026-08-02)", () => {
+    const out = buildArticleJsonLd({
+      title: "T",
+      description: "D",
+      slug: "s",
+      locale: "fr",
+      publishedAt: FIXED_DATE,
+      updatedAt: FIXED_DATE,
+    });
+    expect(out["aiGenerated"]).toBe(true);
+    expect(out["additionalType"]).toBe("https://schema.org/AIGeneratedContent");
+    // disambiguatingDescription doit rester (signal human-readable historique)
+    expect(out["disambiguatingDescription"]).toMatch(/AI Act EU art\. 50/);
+    expect(out["creator"]).toEqual({ "@id": expect.stringMatching(/equipe\/manon#person$/) });
+  });
+
+  it("émet aiGenerated:true sur les 4 variants (Article/BlogPosting/TechArticle/NewsArticle)", () => {
+    const base = {
+      title: "T",
+      description: "D",
+      slug: "s",
+      locale: "fr" as const,
+      publishedAt: FIXED_DATE,
+      updatedAt: FIXED_DATE,
+    };
+    const article = buildArticleJsonLd(base);
+    const news = buildNewsArticleJsonLd({
+      ...base,
+      sourceUrl: "https://example.com/src",
+      sourceName: "Example",
+    });
+    expect(article["aiGenerated"]).toBe(true);
+    expect(news["aiGenerated"]).toBe(true);
+    expect(article["@type"]).toBe("Article");
+    expect(news["@type"]).toBe("NewsArticle");
+  });
+
   it("respecte urlSegment 'actualites' si forcé en input", () => {
     const out = buildArticleJsonLd({
       title: "T",
@@ -152,6 +189,20 @@ describe("buildPersonManonJsonLd — doctrine v2.1 (zéro réseau social)", () =
     });
     expect(out["@type"]).toBe("Person");
     expect("sameAs" in out).toBe(false);
+  });
+
+  it("émet aiGenerated: true + additionalType AIGeneratedContent (P0-5 AI Act art. 50)", () => {
+    const out = buildPersonManonJsonLd({
+      slug: "manon",
+      displayName: "Manon",
+      jobTitle: "Plume éditoriale Axion-IA",
+      photoUrl1024: "/auteurs/manon.png",
+      photoAlt: null,
+      knowsAbout: [],
+      personaDisclaimer: null,
+    });
+    expect(out["aiGenerated"]).toBe(true);
+    expect(out["additionalType"]).toBe("https://schema.org/AIGeneratedContent");
   });
 
   it("throw si slug !== manon (garde-fou v2.1)", () => {

@@ -41,6 +41,20 @@ const COMMON_DISALLOW = [
   "/en/sections",
 ];
 
+// Audit GSC 2026-05-18 — "Bloquée par robots.txt" sur `/api/og?title=...`.
+//
+// Les OG images dynamiques (`/api/og/route.tsx`, edge runtime) sont émises par
+// les pages qui n'ont pas d'OG image fixe. Sans Allow explicite, le wildcard
+// `Disallow: /api/` bloquait Googlebot-Image de fetch ces images → dégrade
+// Google Discover, Google Images, et les rich previews SERP qui dépendent
+// d'une image fetchable. Allow plus spécifique (longest-match) emporte sur
+// Disallow ; les autres routes /api/* (auth, admin, GDPR, webhooks) restent
+// disallowed correctement.
+//
+// `/opengraph-image` (root, file convention Next 16) n'est pas concerné — il
+// est déjà sous `Allow: /` par défaut (pas dans COMMON_DISALLOW).
+const COMMON_ALLOW = ["/", "/api/og"];
+
 const AI_BOTS_ALLOWED = [
   "GPTBot", // OpenAI training
   "OAI-SearchBot", // ChatGPT Search
@@ -73,7 +87,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        allow: COMMON_ALLOW,
         disallow: dynamicDisallow,
       },
       // P1-16 audit indexation 2026-05-15 — Bingbot Crawl-delay 1 s.
@@ -83,13 +97,13 @@ export default function robots(): MetadataRoute.Robots {
       // safe pour le ranking (Bing tolère jusqu'à 30s).
       {
         userAgent: "Bingbot",
-        allow: "/",
+        allow: COMMON_ALLOW,
         disallow: dynamicDisallow,
         crawlDelay: 1,
       },
       ...AI_BOTS_ALLOWED.filter((u) => u !== "Bingbot").map((userAgent) => ({
         userAgent,
-        allow: "/",
+        allow: COMMON_ALLOW,
         disallow: dynamicDisallow,
       })),
       ...AI_BOTS_DISALLOWED.map((userAgent) => ({

@@ -70,6 +70,11 @@ export function buildPersonManonJsonLd(
     // sert de bandeau Speakable potentiel.
     disambiguatingDescription:
       "Persona éditoriale Axion-IA. Portrait généré par IA, contenus IA-assistés supervisés par l'équipe Axion-IA (AI Act EU art. 50).",
+    // City Domination 2026-05-18 P0-5 — flag machine-readable cohérent avec
+    // celui émis sur tous les Article créés par Manon. Forward-compat
+    // Schema.org draft 2026 (AIGeneratedContent).
+    aiGenerated: true,
+    additionalType: "https://schema.org/AIGeneratedContent",
     knowsAbout: profile.knowsAbout,
     knowsLanguage: ["fr-FR"],
     worksFor: { "@id": `${SITE_URL}/#organization` },
@@ -154,6 +159,15 @@ function buildArticleBase(
     },
     // Audit B5 P1-3 — AI Act art. 50 machine-readable disclosure.
     creator: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
+    // City Domination 2026-05-18 P0-5 — AI Act art. 50 (applicable 2026-08-02) :
+    // ajout du flag machine-readable `aiGenerated: true` + `additionalType`
+    // forward-compat Schema.org draft 2026 (AIGeneratedContent), au-delà du
+    // `disambiguatingDescription` humain-readable déjà émis depuis Pass B P1-3.
+    // Google AI Overviews, Perplexity et Anthropic Claude consomment ce flag
+    // pour catégoriser le contenu IA-assisté (sans pénalité ranking — c'est
+    // un signal de transparence, pas un signal qualité).
+    aiGenerated: true,
+    additionalType: "https://schema.org/AIGeneratedContent",
     disambiguatingDescription: aiDisclaimer,
     usageInfo: transparencyUrl,
     publisher: { "@id": `${SITE_URL}/#organization` },
