@@ -51,20 +51,37 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
 
-      - name: Stop + Remove current container
+      - name: Pull fresh + remove cached Coolify tag + stop container
         env:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set +e
+          # 1. Pull fresh :latest from GHCR
+          echo "──── docker pull ghcr.io/will383842/axion-ia:latest ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker pull ghcr.io/will383842/axion-ia:latest" 2>&1 | tail -5
+
+          # 2. Find current container
           CONTAINER=$(ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}}' | awk -v uuid=\"$COOLIFY_APP_UUID\" '\$1 ~ \"^\"uuid {print \$1; exit}'")
           if [ -z "$CONTAINER" ]; then
-            echo "::warning::No container found by COOLIFY_APP_UUID prefix"
+            echo "::warning::No container found, fallback Coolify deploy only"
             exit 0
           fi
-          echo "Stopping + Removing container: $CONTAINER"
-          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' printenv BUILD_SHA 2>/dev/null || echo '(BUILD_SHA not in env)'"
+
+          # 3. Show current state for debug
+          echo "──── Container state ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker inspect '$CONTAINER' --format 'Image={{.Config.Image}}'"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' printenv BUILD_SHA 2>/dev/null || echo 'BUILD_SHA=unset'"
+
+          # 4. AGGRESSIVE — remove ALL local Coolify tags for this app
+          # This forces Coolify to rebuild from scratch from GHCR :latest
+          echo "──── Remove cached Coolify tags for this app ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker images --format '{{.Repository}}:{{.Tag}}' | grep -E '^${COOLIFY_APP_UUID}:' | head -20" 2>&1
+          ssh -o BatchMode=yes root@178.105.55.15 "docker images --format '{{.Repository}}:{{.Tag}}' | grep -E '^${COOLIFY_APP_UUID}:' | xargs -r docker rmi -f" 2>&1 | tail -10 || true
+
+          # 5. Stop + Remove container
+          echo "──── docker stop + rm $CONTAINER ────"
           ssh -o BatchMode=yes root@178.105.55.15 "docker stop '$CONTAINER' && docker rm '$CONTAINER'"
-          echo "Container removed."
+          echo "Container + cached images removed."
 
       - name: Trigger Coolify deploy (recreate)
         env:

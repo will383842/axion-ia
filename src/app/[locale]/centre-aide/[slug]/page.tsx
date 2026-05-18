@@ -12,7 +12,12 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { getHelpArticle, getAllHelpSlugs, HELP_ARTICLES, slugify } from "@/content/transversal";
+import { slugify } from "@/content/transversal";
+import {
+  getHelpArticleBySlug,
+  listHelpArticleSlugs,
+  listHelpArticles,
+} from "@/lib/help-articles/reader";
 import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
 import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { splitTitleEm } from "@/lib/title";
@@ -39,16 +44,18 @@ function deriveTldr(excerpt: string | null | undefined, body: string): string | 
 }
 
 // Audit indexation 2026-05-18 P0-7 — anti-soft 404 (slugs FS-only).
+// P0-5 2026-05-18 — slugs viennent du reader unifié (DB ou fallback hardcode).
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  return getAllHelpSlugs().flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
+export async function generateStaticParams() {
+  const slugs = await listHelpArticleSlugs();
+  return slugs.flatMap((slug) => routing.locales.map((locale) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const article = getHelpArticle(slug);
+  const article = await getHelpArticleBySlug(slug, locale as Locale);
   if (!article) return {};
   const copy = article[locale as Locale];
   return buildProductMetadata({
@@ -63,10 +70,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HelpArticlePage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const article = getHelpArticle(slug);
+  const loc = locale as Locale;
+  const article = await getHelpArticleBySlug(slug, loc);
   if (!article) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
   const isFr = loc === "fr";
   const copy = article[loc];
 
@@ -97,7 +104,9 @@ export default async function HelpArticlePage({ params }: Props) {
   ];
 
   // Suggested neighbours — same category first.
-  const others = HELP_ARTICLES.filter((a) => a.slug !== article.slug)
+  const all = await listHelpArticles();
+  const others = all
+    .filter((a) => a.slug !== article.slug)
     .sort((a) => (slugify(a.category) === slugify(article.category) ? -1 : 1))
     .slice(0, 4);
 
@@ -171,7 +180,7 @@ export default async function HelpArticlePage({ params }: Props) {
               .trim()
               .split(/(?<=\.)\s+(?=[A-ZÀÉÈÔÎ])/)
               .filter(Boolean)
-              .map((p, i) => (
+              .map((p: string, i: number) => (
                 <p key={`b-${i}`}>{p}</p>
               ))}
           </div>
@@ -193,7 +202,7 @@ export default async function HelpArticlePage({ params }: Props) {
                   href={`/${locale}/centre-aide/${o.slug}`}
                   className="text-fg hover:text-primary block py-4 text-base font-medium"
                 >
-                  {o[loc].title} →
+                  {(o as unknown as Record<string, { title: string }>)[loc]?.title} →
                 </a>
               </li>
             ))}
