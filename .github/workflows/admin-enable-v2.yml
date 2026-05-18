@@ -1,0 +1,170 @@
+name: Admin · enable/disable V2 globally (autopilot)
+
+# Workflow utilitaire workflow_dispatch — flip ADMIN_V2_ENABLED côté Coolify
+# (env var prod) + restart container. Permet à Will d'activer/désactiver
+# globalement la refonte admin V2 sans toucher Coolify UI.
+#
+# Référence : src/lib/feature-flags.ts — fallback chain :
+#   1. cookie admin_v2=1 (override per-user, géré client-side)
+#   2. env var ADMIN_V2_ENABLED (bascule globale prod, ce workflow)
+#   3. default false (legacy V1)
+#
+# Sécurité : workflow_dispatch only, requires manual trigger.
+#
+# Référence Coolify API : https://coolify.io/docs/api-reference/applications/
+
+on:
+  workflow_dispatch:
+    inputs:
+      value:
+        description: 'Valeur ADMIN_V2_ENABLED (true = V2 visible, false = V1 legacy)'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      restart:
+        description: 'Restart container après set env var (true recommandé pour appliquer immédiatement)'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  contents: read
+
+jobs:
+  enable-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing secret: $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK."
+
+      - name: List current env vars
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          echo "──── Current ADMIN_V2_ENABLED state ────"
+          response=$(curl -fsSL -m 15 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          echo "$response" | jq -r '.[] | select(.key == "ADMIN_V2_ENABLED") | "Found: key=\(.key) value=\(.value) uuid=\(.uuid // "?")"' || echo "(ADMIN_V2_ENABLED not currently set)"
+          echo "──── End ────"
+
+      - name: Upsert ADMIN_V2_ENABLED env var
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          NEW_VALUE: ${{ inputs.value }}
+        run: |
+          set -euo pipefail
+          payload=$(jq -nc --arg key "ADMIN_V2_ENABLED" --arg value "$NEW_VALUE" '{
+            key: $key,
+            value: $value,
+            is_preview: false,
+            is_build_time: false,
+            is_literal: false,
+            is_multiline: false,
+            is_shown_once: false
+          }')
+          echo "──── PATCH attempt (update existing env var) ────"
+          patch_response=$(curl -sS -m 15 -X PATCH \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            -w "\nHTTP=%{http_code}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          echo "$patch_response"
+          patch_code=$(echo "$patch_response" | tail -1 | sed 's/HTTP=//')
+          if [ "$patch_code" = "200" ] || [ "$patch_code" = "201" ]; then
+            echo "✅ PATCH success (env var updated)."
+          elif [ "$patch_code" = "404" ] || [ "$patch_code" = "422" ]; then
+            echo "──── PATCH failed (env var not exists), trying POST ────"
+            post_response=$(curl -sS -m 15 -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "$payload" \
+              -w "\nHTTP=%{http_code}" \
+              "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+            echo "$post_response"
+            post_code=$(echo "$post_response" | tail -1 | sed 's/HTTP=//')
+            if [ "$post_code" = "200" ] || [ "$post_code" = "201" ]; then
+              echo "✅ POST success (env var created)."
+            else
+              echo "::error::POST failed with HTTP $post_code"
+              exit 1
+            fi
+          else
+            echo "::error::Unexpected PATCH response: HTTP $patch_code"
+            exit 1
+          fi
+
+      - name: Verify env var set
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          EXPECTED_VALUE: ${{ inputs.value }}
+        run: |
+          set -euo pipefail
+          echo "──── Verify ADMIN_V2_ENABLED state ────"
+          response=$(curl -fsSL -m 15 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          actual=$(echo "$response" | jq -r '.[] | select(.key == "ADMIN_V2_ENABLED") | .value' || echo "")
+          echo "Expected: $EXPECTED_VALUE"
+          echo "Actual:   $actual"
+          if [ "$actual" = "$EXPECTED_VALUE" ]; then
+            echo "✅ Env var correctly set."
+          else
+            echo "::error::Verification failed."
+            exit 1
+          fi
+
+      - name: Restart container (deploy redeploy)
+        if: inputs.restart == 'true'
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          echo "──── Triggering Coolify redeploy ────"
+          response=$(curl -fsSL -G \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify response: ${response}"
+          deployment_uuid=$(echo "${response}" | jq -r '.deployments[0].deployment_uuid // .deployment_uuid // empty')
+          if [ -n "$deployment_uuid" ]; then
+            echo "Deployment queued: ${deployment_uuid}"
+            echo "Track at ${COOLIFY_URL}/deployment/${deployment_uuid}"
+          fi
+          echo "Waiting 45s for container to come back up..."
+          sleep 45
+          echo "──── Smoke /api/healthz ────"
+          curl -s -o /tmp/healthz.json -w "HTTP=%{http_code} time=%{time_total}s\n" https://axion-ia.com/api/healthz
+          cat /tmp/healthz.json
+          echo ""
