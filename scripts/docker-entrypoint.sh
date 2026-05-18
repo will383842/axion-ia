@@ -4,11 +4,12 @@
 # Container startup script Axion-IA :
 #   1. Tente d'appliquer les migrations Prisma au boot.
 #      → idempotent : si déjà à jour, no-op.
-#      → SI prisma CLI introuvable (pnpm symlinks cassés dans runtime stage) :
-#        log warning et continue le boot du serveur. La migration peut être
-#        lancée manuellement via Coolify Terminal :
-#          docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'
-#      → SI prisma fail pour autre raison : log warning + continue (best-effort).
+#      → Priorise /app/prisma-cli/node_modules/.bin/prisma (fresh install via
+#        npm au builder stage, cf. Dockerfile audit deploy-unstuck 2026-05-18)
+#        car node_modules/.bin/prisma local a des symlinks pnpm brisés
+#        (@prisma/engines introuvable dans le standalone slim runtime).
+#      → Fallback npx puis ./node_modules/.bin/prisma si /app/prisma-cli absent.
+#      → SI tout fail : log warning + continue (best-effort), boot Next.js.
 #   2. Démarre Next.js standalone (`node server.js`).
 #
 # Variables d'env requises côté Coolify : DATABASE_URL, DIRECT_URL.
@@ -23,35 +24,45 @@
 
 echo "[entrypoint] Axion-IA container starting…"
 
+# Audit deploy-unstuck 2026-05-18 — sélection binaire prisma fonctionnel.
+# Préférence : fresh CLI installé via npm au builder stage > local pnpm
+# (symlinks brisés) > npx en dernier recours.
+if [ -x "/app/prisma-cli/node_modules/.bin/prisma" ]; then
+  PRISMA_BIN="/app/prisma-cli/node_modules/.bin/prisma"
+  PRISMA_BIN_KIND="fresh-npm /app/prisma-cli"
+elif [ -x "./node_modules/.bin/prisma" ]; then
+  PRISMA_BIN="./node_modules/.bin/prisma"
+  PRISMA_BIN_KIND="pnpm local (may fail due to broken symlinks)"
+else
+  PRISMA_BIN=""
+  PRISMA_BIN_KIND="(none)"
+fi
+echo "[entrypoint] Prisma binary selection: $PRISMA_BIN_KIND"
+
 if [ "${SKIP_MIGRATE:-0}" = "1" ]; then
   echo "[entrypoint] SKIP_MIGRATE=1 → skipping prisma migrate deploy"
 elif [ ! -d "./prisma/migrations" ] || [ -z "$(ls -A ./prisma/migrations 2>/dev/null)" ]; then
   echo "[entrypoint] WARNING: no prisma/migrations folder found in image — skipping migrate deploy."
-elif [ ! -x "./node_modules/.bin/prisma" ]; then
-  echo "[entrypoint] WARNING: prisma CLI not found in image (./node_modules/.bin/prisma)."
-  echo "[entrypoint] Skipping auto-migrate. Run manually via Coolify Terminal:"
-  echo "[entrypoint]   docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'"
+elif [ -z "$PRISMA_BIN" ]; then
+  echo "[entrypoint] WARNING: no prisma CLI available. Skipping auto-migrate."
+  echo "[entrypoint] Trigger manually: gh workflow run admin-emergency-migrate.yml -f action=migrate"
 else
-  echo "[entrypoint] Running prisma migrate deploy…"
+  echo "[entrypoint] Running prisma migrate deploy via $PRISMA_BIN…"
   # Run in subshell with 'set +e' so prisma failure doesn't abort container.
-  # We log + continue boot — migration can be fixed/retried manually.
   MIGRATE_OK=0
-  if ( set +e; node_modules/.bin/prisma migrate deploy --schema=./prisma/schema.prisma ); then
-    echo "[entrypoint] Migrations applied successfully (local prisma CLI)."
+  if ( set +e; "$PRISMA_BIN" migrate deploy --schema=./prisma/schema.prisma ); then
+    echo "[entrypoint] Migrations applied successfully ($PRISMA_BIN_KIND)."
     MIGRATE_OK=1
   else
-    # Fallback : slim runtime perd parfois @prisma/engines (binaire query-engine).
-    # npx télécharge prisma + engines à la volée — lent au cold-start (~30 s)
-    # mais garanti idempotent et n'aborte pas le container si fail.
-    echo "[entrypoint] Local prisma failed (probable: @prisma/engines missing in slim runtime)."
-    echo "[entrypoint] Retrying via npx --yes prisma@5.22.0 migrate deploy…"
+    # Fallback npx — télécharge prisma + engines à la volée (~30s cold-start).
+    echo "[entrypoint] Primary prisma failed. Retrying via npx --yes prisma@5.22.0…"
     if ( set +e; npx --yes prisma@5.22.0 migrate deploy --schema=./prisma/schema.prisma ); then
       echo "[entrypoint] Migrations applied successfully (npx fallback)."
       MIGRATE_OK=1
     else
-      echo "[entrypoint] WARNING: prisma migrate deploy failed via npx too."
+      echo "[entrypoint] WARNING: prisma migrate deploy failed via $PRISMA_BIN_KIND AND npx."
       echo "[entrypoint] Container will boot anyway. Apply migrations manually:"
-      echo "[entrypoint]   docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'"
+      echo "[entrypoint]   gh workflow run admin-emergency-migrate.yml -f action=migrate"
     fi
   fi
   unset MIGRATE_OK

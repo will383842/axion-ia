@@ -150,6 +150,32 @@ ENV BUILD_SHA=${BUILD_SHA:-dev}
 RUN BUILD_TIME="${BUILD_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}" pnpm build
 
 # -----------------------------------------------------------------------------
+# Audit deploy-unstuck 2026-05-18 — fresh Prisma CLI standalone install.
+#
+# Problème historique : pnpm content-addressed store (.pnpm/) crée des
+# symlinks dans node_modules/@prisma/. Quand le Dockerfile copie
+# node_modules/@prisma au runner stage, les symlinks pointent vers .pnpm/
+# qui n'a PAS été copié → @prisma/engines introuvable au runtime →
+# `prisma migrate deploy` au boot fail silencieusement (entrypoint catch).
+# Conséquence : drift DB schema invisible jusqu'au crash admin (queries
+# Prisma sur nouvelles tables/colonnes manquantes).
+#
+# Solution chirurgicale : installer prisma + engines via npm dans un dossier
+# dédié /tmp/prisma-cli/, totalement séparé de pnpm node_modules.
+# npm install crée des dossiers réels (pas de symlinks), donc le COPY vers
+# runner stage préserve un binaire fonctionnel.
+#
+# Coût : ~200 MB image, ~30s build. Réversible : supprimer ces 2 blocs +
+# revert l'entrypoint check /app/prisma-cli/.
+# -----------------------------------------------------------------------------
+RUN mkdir -p /tmp/prisma-cli && \
+    cd /tmp/prisma-cli && \
+    npm init -y > /dev/null 2>&1 && \
+    npm install --no-save --no-audit --no-fund --prefer-offline \
+      prisma@5.22.0 @prisma/engines@5.22.0 2>&1 | tail -5 && \
+    /tmp/prisma-cli/node_modules/.bin/prisma --version 2>&1 | head -5
+
+# -----------------------------------------------------------------------------
 # Stage 3 : runner — runtime slim avec sharp + .next/standalone
 # -----------------------------------------------------------------------------
 FROM node:22-alpine AS runner
@@ -178,22 +204,27 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Prisma migration runtime — schema + migrations + prisma CLI binary nécessaires
-# pour que `prisma migrate deploy` tourne au démarrage container (entrypoint).
+# Prisma migration runtime — schema + migrations + prisma CLI binary.
 # Le standalone output exclut prisma/ par défaut, donc on copie explicitement.
 #
-# Note 2026-05-17 : tentative `npm install prisma@X` au runner stage testée
-# (commit 82d094b) → cache buildx GHA saturé "No space left on device" sur
-# runner Ubuntu. Revert. Le pnpm symlinks broken empêche prisma migrate de
-# tourner au boot, mais ce n'est PAS bloquant : l'entrypoint catch l'erreur
-# et démarre Next.js quand même. Migration appliquée via Coolify Terminal :
-#   docker exec <web-uuid> sh -c 'npx --yes prisma@5.22.0 migrate deploy'
-# OU set SKIP_MIGRATE=1 dans Coolify env vars pour bypass propre.
-# Fix complet : refactor pnpm deploy ou base Docker plus large, futur Sprint.
+# Historique 2026-05-17 : tentative `npm install prisma@X` au runner stage
+# (commit 82d094b) → fail disque GHA → revert. pnpm symlinks broken empêchait
+# `prisma migrate deploy` au boot ; entrypoint catch l'erreur silencieusement
+# → drift DB invisible jusqu'au crash admin (incident 2026-05-18).
+# Fix 2026-05-18 (audit deploy-unstuck) : install fresh prisma + engines via
+# npm dans /tmp/prisma-cli au BUILDER stage (toolchain dispo), puis COPY
+# au runner stage. Entrypoint priorise /app/prisma-cli/node_modules/.bin/prisma.
+# Les 3 COPY ci-dessous gardés en fallback (Prisma Client runtime via NEXT_…).
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+
+# Audit deploy-unstuck 2026-05-18 — Fresh Prisma CLI standalone copy.
+# Permet à l'entrypoint d'exécuter `prisma migrate deploy` au boot avec un
+# binaire fonctionnel (vs node_modules/.bin/prisma qui a des symlinks pnpm
+# brisés). Cf. block builder stage qui installe via npm dans /tmp/prisma-cli/.
+COPY --from=builder --chown=nextjs:nodejs /tmp/prisma-cli /app/prisma-cli
 
 # Entrypoint script : prisma migrate deploy puis node server.js
 COPY --chown=nextjs:nodejs scripts/docker-entrypoint.sh ./docker-entrypoint.sh
