@@ -920,6 +920,15 @@ model Article {
   /// P0-5 audit indexation 2026-05-15 — historique slug pour redirect 301
   slugHistory  ArticleSlugHistory[]
 
+  /// City Domination 2026-05-18 P1-6 — Topic fingerprint (SimHash 64-bit hex)
+  /// pour dedup sémantique au-delà de Levenshtein/MinHash texte brut. Calculé
+  /// à partir des embeddings Voyage AI (cf A13 KB pipeline). Nullable :
+  /// migration additive sans backfill, le helper `computeTopicFingerprint()`
+  /// le remplit progressivement à chaque nouveau publish + cron retro-fill.
+  /// Activation dedup côté similarity-monitor = feature flag (Sprint suivant
+  /// quand Voyage AI key activée prod).
+  topicFingerprint String? @map("topic_fingerprint") @db.VarChar(64)
+
   @@index([status])
   @@index([publishedAt])
   @@index([indexationTier, status])
@@ -1990,6 +1999,13 @@ model KnowledgeEntry {
   sourceCostCents   Int?      @map("source_cost_cents")
   sourceGeneratedAt DateTime? @map("source_generated_at")
 
+  /// City Domination 2026-05-18 P1-6 — Topic fingerprint SimHash 64-bit hex
+  /// pour dedup sémantique cross-entry. Voir model Article même champ.
+  /// Cohérence : permet `topic_fingerprint` matching à la fois sur Article
+  /// (blog) et KnowledgeEntry (KB V4) → bloque la republication thématique
+  /// quasi-identique entre les deux pipelines.
+  topicFingerprint String? @map("topic_fingerprint") @db.VarChar(64)
+
   @@index([type, status, audience])
   @@index([type, publishedAt(sort: Desc)])
   @@index([status, pipelineStage])
@@ -2597,6 +2613,44 @@ model ContentGenConfig {
   @@map("content_gen_config")
 }
 
+/// City Domination 2026-05-18 P1-9 (audit A10) — Audit trail SOC2 immuable
+/// pour toute modification de ContentGenConfig + autres settings admin
+/// content-gen. Append-only : pas d'UPDATE/DELETE exposés via le helper
+/// `writeContentGenConfig`. Chaque écriture de setting déclenche une ligne
+/// avec diff oldValue → newValue.
+///
+/// Conservation : append-only sans purge automatique (legal hold SOC2).
+/// Si volume devient critique (≥ 1M rows), purge cron par retention-purge-
+/// worker.ts (à brancher Phase 2 si besoin).
+model ContentGenAuditLog {
+  id          String   @id @default(cuid())
+  /// Action canonique : "writeContentGenConfig" | "updateBatchSettings" | "..."
+  action      String   @db.VarChar(64)
+  /// Clé du setting modifié (correspond à ContentGenConfig.key). Nullable
+  /// pour les actions qui ne ciblent pas un setting unique.
+  settingKey  String?  @map("setting_key") @db.VarChar(128)
+  /// Valeur avant modification (NULL si création initiale).
+  oldValue    Json?    @map("old_value")
+  /// Valeur après modification (NULL si suppression — futur).
+  newValue    Json?    @map("new_value")
+  /// ID admin qui a déclenché l'action (NULL si action système / worker).
+  actorUserId String?  @map("actor_user_id") @db.Uuid
+  /// Email admin pour audit forensique (dénormalisé pour lecture rapide).
+  actorEmail  String?  @map("actor_email") @db.VarChar(255)
+  /// IP source pour audit forensique (hashée si IP_HASH_SALT actif).
+  actorIp     String?  @map("actor_ip") @db.VarChar(64)
+  /// User-Agent source pour audit forensique (tronqué 500c).
+  actorUa     String?  @map("actor_ua") @db.VarChar(500)
+  /// Description libre éditoriale (optional, propagé depuis writeContentGenConfig).
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([settingKey, createdAt(sort: Desc)])
+  @@index([actorUserId, createdAt(sort: Desc)])
+  @@index([action, createdAt(sort: Desc)])
+  @@map("content_gen_audit_log")
+}
+
 /// 1 row par provider IA (toggles, modèles, cost caps, fallback). Pilotable admin.
 model ProviderConfig {
   id                   String       @id @default(cuid())
@@ -3010,30 +3064,30 @@ model ContentCitation {
 ///  - gaps (mots-clés rankant 11-20 → opportunité tier-1 promote article)
 ///  - cannibalization (plusieurs articles sur même mot-clé)
 model KeywordTracking {
-  id              String   @id @default(cuid())
-  keyword         String   @db.VarChar(255)
+  id            String                @id @default(cuid())
+  keyword       String                @db.VarChar(255)
   /// URL ciblée (page qui rank). Match Article via slug ou KnowledgeEntry.
-  targetUrl       String   @db.VarChar(512)
+  targetUrl     String                @db.VarChar(512)
   /// Article.id (UUID) si la page tracked est un Article — sinon null.
-  articleId       String?  @db.Uuid
+  articleId     String?               @db.Uuid
   /// Position SERP Google (1 = top). Float pour moyenne pondérée.
-  position        Decimal  @db.Decimal(5, 2)
+  position      Decimal               @db.Decimal(5, 2)
   /// Variation position vs dernier sync (delta). + = recule, - = monte.
-  positionDelta   Decimal? @db.Decimal(5, 2)
+  positionDelta Decimal?              @db.Decimal(5, 2)
   /// CTR observé (0-1). null si pas encore d'impressions.
-  ctr             Decimal? @db.Decimal(6, 4)
+  ctr           Decimal?              @db.Decimal(6, 4)
   /// Impressions sur fenêtre (default 28j GSC).
-  impressions     Int      @default(0)
+  impressions   Int                   @default(0)
   /// Clicks sur fenêtre.
-  clicks          Int      @default(0)
+  clicks        Int                   @default(0)
   /// Source de mesure.
-  source          KeywordTrackingSource @default(gsc)
+  source        KeywordTrackingSource @default(gsc)
   /// Date du dernier sync (run du worker hebdo).
-  syncedAt        DateTime @default(now())
+  syncedAt      DateTime              @default(now())
   /// Date première détection de ce keyword pour cette URL.
-  firstSeenAt     DateTime @default(now())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  firstSeenAt   DateTime              @default(now())
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
 
   @@unique([keyword, targetUrl])
   @@index([articleId])
@@ -3066,16 +3120,16 @@ enum KeywordTrackingSource {
 /// Country (PRÉREQUIS image-bank) — seedé depuis REST Countries API (~249 lignes).
 /// Utilisé par image-country-detector.service.ts pour résoudre nom → ISO code.
 model Country {
-  isoCode    String   @id @map("iso_code") @db.VarChar(2)
-  iso3       String?  @unique @db.VarChar(3)
-  nameFr     String   @map("name_fr") @db.VarChar(100)
-  nameEn     String   @map("name_en") @db.VarChar(100)
-  slugFr     String   @map("slug_fr") @db.VarChar(100)
-  slugEn     String   @map("slug_en") @db.VarChar(100)
-  continent  String?  @db.VarChar(20)
-  flagEmoji  String?  @map("flag_emoji") @db.VarChar(8)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  isoCode   String   @id @map("iso_code") @db.VarChar(2)
+  iso3      String?  @unique @db.VarChar(3)
+  nameFr    String   @map("name_fr") @db.VarChar(100)
+  nameEn    String   @map("name_en") @db.VarChar(100)
+  slugFr    String   @map("slug_fr") @db.VarChar(100)
+  slugEn    String   @map("slug_en") @db.VarChar(100)
+  continent String?  @db.VarChar(20)
+  flagEmoji String?  @map("flag_emoji") @db.VarChar(8)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([nameFr])
   @@index([nameEn])
@@ -3085,22 +3139,22 @@ model Country {
 }
 
 model ImageAsset {
-  id                String   @id @default(uuid()) @db.Uuid
-  categoryId        String?  @map("category_id") @db.Uuid
+  id         String  @id @default(uuid()) @db.Uuid
+  categoryId String? @map("category_id") @db.Uuid
 
   // File data
-  filePath          String   @map("file_path") @db.VarChar(500)
-  thumbnailPath     String?  @map("thumbnail_path") @db.VarChar(500)
-  avifPath          String?  @map("avif_path") @db.VarChar(500)
-  lqipDataUri       String?  @map("lqip_data_uri") @db.Text
-  fileFormat        String   @default("webp") @map("file_format") @db.VarChar(10)
-  fileSize          Int      @default(0) @map("file_size")
-  width             Int
-  height            Int
-  orientation       String   @db.VarChar(20)
-  aspectRatio       String?  @map("aspect_ratio") @db.VarChar(10)
-  srcset            String?  @db.Text
-  fileHash          String?  @map("file_hash") @db.VarChar(64)
+  filePath      String  @map("file_path") @db.VarChar(500)
+  thumbnailPath String? @map("thumbnail_path") @db.VarChar(500)
+  avifPath      String? @map("avif_path") @db.VarChar(500)
+  lqipDataUri   String? @map("lqip_data_uri") @db.Text
+  fileFormat    String  @default("webp") @map("file_format") @db.VarChar(10)
+  fileSize      Int     @default(0) @map("file_size")
+  width         Int
+  height        Int
+  orientation   String  @db.VarChar(20)
+  aspectRatio   String? @map("aspect_ratio") @db.VarChar(10)
+  srcset        String? @db.Text
+  fileHash      String? @map("file_hash") @db.VarChar(64)
 
   // SEO core
   // Slug strategy (audit V1 verification 2026-05-16 P1-10) :
@@ -3112,57 +3166,57 @@ model ImageAsset {
   //                                  `/gallery/<slug-en>`. Calculé par le worker
   //                                  translate (Claude Sonnet 4.6 vision) avec retour
   //                                  à slugifyAscii(title traduit) si null.
-  slug              String   @unique @db.VarChar(255)
-  keywordsPrimary   String?  @map("keywords_primary") @db.VarChar(255)
-  keywordsSecondary Json?    @map("keywords_secondary")
-  seoScore          Int      @default(0) @map("seo_score") @db.SmallInt
+  slug              String  @unique @db.VarChar(255)
+  keywordsPrimary   String? @map("keywords_primary") @db.VarChar(255)
+  keywordsSecondary Json?   @map("keywords_secondary")
+  seoScore          Int     @default(0) @map("seo_score") @db.SmallInt
 
   // Geo targeting (monde ISO, PAS regions.ts France)
-  targetCountries   Json?    @map("target_countries")
-  targetLanguages   Json?    @map("target_languages")
-  geoRegion         String?  @map("geo_region") @db.VarChar(10)
-  geoPlacename      String?  @map("geo_placename") @db.VarChar(255)
-  geoPosition       String?  @map("geo_position") @db.VarChar(50)
+  targetCountries Json?   @map("target_countries")
+  targetLanguages Json?   @map("target_languages")
+  geoRegion       String? @map("geo_region") @db.VarChar(10)
+  geoPlacename    String? @map("geo_placename") @db.VarChar(255)
+  geoPosition     String? @map("geo_position") @db.VarChar(50)
 
   // License (CC BY 4.0 par défaut)
-  licenseType       String   @default("cc-by-4.0") @map("license_type") @db.VarChar(50)
-  licenseUrl        String?  @default("https://creativecommons.org/licenses/by/4.0/") @map("license_url") @db.VarChar(500)
-  copyrightHolder   String   @default("Axion-IA OÜ") @map("copyright_holder") @db.VarChar(255)
-  photographerName  String?  @map("photographer_name") @db.VarChar(255)
-  photographerUrl   String?  @map("photographer_url") @db.VarChar(500)
+  licenseType      String  @default("cc-by-4.0") @map("license_type") @db.VarChar(50)
+  licenseUrl       String? @default("https://creativecommons.org/licenses/by/4.0/") @map("license_url") @db.VarChar(500)
+  copyrightHolder  String  @default("Axion-IA OÜ") @map("copyright_holder") @db.VarChar(255)
+  photographerName String? @map("photographer_name") @db.VarChar(255)
+  photographerUrl  String? @map("photographer_url") @db.VarChar(500)
 
   // Source (origin tracking)
-  sourceUrl         String?  @map("source_url") @db.Text
-  sourceType        String   @default("photo") @map("source_type") @db.VarChar(20)
-  aiModel           String?  @map("ai_model") @db.VarChar(60)
+  sourceUrl  String? @map("source_url") @db.Text
+  sourceType String  @default("photo") @map("source_type") @db.VarChar(20)
+  aiModel    String? @map("ai_model") @db.VarChar(60)
 
   // Tracking
-  viewCount         Int      @default(0) @map("view_count")
-  downloadCount     Int      @default(0) @map("download_count")
-  embedCount        Int      @default(0) @map("embed_count")
+  viewCount     Int @default(0) @map("view_count")
+  downloadCount Int @default(0) @map("download_count")
+  embedCount    Int @default(0) @map("embed_count")
 
   // State
-  isActive          Boolean  @default(true) @map("is_active")
-  isFeatured        Boolean  @default(false) @map("is_featured")
-  sortOrder         Int      @default(0) @map("sort_order")
-  publishedAt       DateTime? @map("published_at")
+  isActive    Boolean   @default(true) @map("is_active")
+  isFeatured  Boolean   @default(false) @map("is_featured")
+  sortOrder   Int       @default(0) @map("sort_order")
+  publishedAt DateTime? @map("published_at")
 
   // V1.1 — Taxonomie métier (SSOT @/server/image-bank/taxonomy.ts)
-  module            String?  @map("module") @db.VarChar(20)
-  subModule         String?  @map("sub_module") @db.VarChar(60)
-  targetEntity      String?  @map("target_entity") @db.VarChar(120)
-  targetCity        String?  @map("target_city") @db.VarChar(80)
-  targetRegion      String?  @map("target_region") @db.VarChar(60)
-  targetSize        String?  @map("target_size") @db.VarChar(20)
-  targetPersona     String?  @map("target_persona") @db.VarChar(40)
-  targetSector      String?  @map("target_sector") @db.VarChar(40)
-  targetTechno      String?  @map("target_techno") @db.VarChar(30)
-  targetFormat      String?  @map("target_format") @db.VarChar(20)
-  targetDuration    String?  @map("target_duration") @db.VarChar(30)
+  module         String? @map("module") @db.VarChar(20)
+  subModule      String? @map("sub_module") @db.VarChar(60)
+  targetEntity   String? @map("target_entity") @db.VarChar(120)
+  targetCity     String? @map("target_city") @db.VarChar(80)
+  targetRegion   String? @map("target_region") @db.VarChar(60)
+  targetSize     String? @map("target_size") @db.VarChar(20)
+  targetPersona  String? @map("target_persona") @db.VarChar(40)
+  targetSector   String? @map("target_sector") @db.VarChar(40)
+  targetTechno   String? @map("target_techno") @db.VarChar(30)
+  targetFormat   String? @map("target_format") @db.VarChar(20)
+  targetDuration String? @map("target_duration") @db.VarChar(30)
 
   // V1.1 — Cross-référence page métier canonique
-  subjectOfUrl      String?  @map("subject_of_url") @db.VarChar(500)
-  subjectOfType     String?  @map("subject_of_type") @db.VarChar(30)
+  subjectOfUrl  String? @map("subject_of_url") @db.VarChar(500)
+  subjectOfType String? @map("subject_of_type") @db.VarChar(30)
 
   // V1.1 — Flags qualité + AI + watermark
   isAiGenerated         Boolean @default(false) @map("is_ai_generated")
@@ -3171,18 +3225,18 @@ model ImageAsset {
   watermarkEnabled      Boolean @default(false) @map("watermark_enabled")
 
   // V1.5 — pHash + custom XMP namespace
-  pHash             String?  @map("p_hash") @db.VarChar(32)
-  customXmpData     Json?    @map("custom_xmp_data")
+  pHash         String? @map("p_hash") @db.VarChar(32)
+  customXmpData Json?   @map("custom_xmp_data")
 
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-  deletedAt         DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
-  category          ImageCategory? @relation(fields: [categoryId], references: [id])
-  translations      ImageAssetTranslation[]
-  tags              ImageAssetTag[]
-  usageLogs         ImageUsageLog[]
-  downloadLogs      ImageDownloadLog[]
+  category     ImageCategory?          @relation(fields: [categoryId], references: [id])
+  translations ImageAssetTranslation[]
+  tags         ImageAssetTag[]
+  usageLogs    ImageUsageLog[]
+  downloadLogs ImageDownloadLog[]
 
   @@index([isActive, categoryId, sortOrder])
   @@index([isActive, publishedAt])
@@ -3199,30 +3253,30 @@ model ImageAsset {
 }
 
 model ImageAssetTranslation {
-  id              Int       @id @default(autoincrement())
-  imageId         String    @map("image_id") @db.Uuid
-  languageCode    String    @map("language_code") @db.VarChar(5)
+  id           Int    @id @default(autoincrement())
+  imageId      String @map("image_id") @db.Uuid
+  languageCode String @map("language_code") @db.VarChar(5)
 
-  title           String    @db.VarChar(255)
-  slug            String    @db.VarChar(255)
-  alt             String    @db.VarChar(255)
-  caption         String?   @db.VarChar(500)
-  description     String?   @db.Text
+  title       String  @db.VarChar(255)
+  slug        String  @db.VarChar(255)
+  alt         String  @db.VarChar(255)
+  caption     String? @db.VarChar(500)
+  description String? @db.Text
 
-  metaTitle       String?   @map("meta_title") @db.VarChar(255)
-  metaDescription String?   @map("meta_description") @db.VarChar(255)
-  ogTitle         String?   @map("og_title") @db.VarChar(255)
-  ogDescription   String?   @map("og_description") @db.VarChar(255)
+  metaTitle       String? @map("meta_title") @db.VarChar(255)
+  metaDescription String? @map("meta_description") @db.VarChar(255)
+  ogTitle         String? @map("og_title") @db.VarChar(255)
+  ogDescription   String? @map("og_description") @db.VarChar(255)
 
-  aiSummary       String?   @map("ai_summary") @db.Text
-  embedTitle      String?   @map("embed_title") @db.VarChar(255)
+  aiSummary  String? @map("ai_summary") @db.Text
+  embedTitle String? @map("embed_title") @db.VarChar(255)
 
-  isPublished     Boolean   @default(false) @map("is_published")
-  publishedAt     DateTime? @map("published_at")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  image           ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  image ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
 
   @@unique([imageId, languageCode])
   @@index([languageCode, slug])
@@ -3231,12 +3285,12 @@ model ImageAssetTranslation {
 }
 
 model ImageCategory {
-  id           String   @id @default(uuid()) @db.Uuid
-  slug         String   @unique @db.VarChar(100)
-  isActive     Boolean  @default(true) @map("is_active")
-  sortOrder    Int      @default(0) @map("sort_order")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(uuid()) @db.Uuid
+  slug      String   @unique @db.VarChar(100)
+  isActive  Boolean  @default(true) @map("is_active")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   translations ImageCategoryTranslation[]
   images       ImageAsset[]
@@ -3257,7 +3311,7 @@ model ImageCategoryTranslation {
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
-  category        ImageCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category ImageCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([categoryId, languageCode])
   @@index([languageCode, slug])
@@ -3265,11 +3319,11 @@ model ImageCategoryTranslation {
 }
 
 model ImageTag {
-  id           Int      @id @default(autoincrement())
-  slug         String   @unique @db.VarChar(100)
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique @db.VarChar(100)
   // P1-8 audit V1 verification 2026-05-16 — audit trail lookup table.
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   translations ImageTagTranslation[]
   images       ImageAssetTag[]
@@ -3287,7 +3341,7 @@ model ImageTagTranslation {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  tag          ImageTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tag ImageTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@unique([tagId, languageCode])
   @@map("image_tag_translations")
@@ -3297,8 +3351,8 @@ model ImageAssetTag {
   imageId String @map("image_id") @db.Uuid
   tagId   Int    @map("tag_id")
 
-  image   ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
-  tag     ImageTag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  image ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  tag   ImageTag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([imageId, tagId])
   @@map("image_asset_tags")
@@ -3315,7 +3369,7 @@ model ImageUsageLog {
   countryCode String?  @map("country_code") @db.VarChar(5)
   createdAt   DateTime @default(now()) @map("created_at")
 
-  image       ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  image ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
 
   @@index([imageId, action])
   @@index([action, createdAt])
@@ -3323,15 +3377,15 @@ model ImageUsageLog {
 }
 
 model ImageDownloadLog {
-  id            BigInt   @id @default(autoincrement())
-  imageId       String   @map("image_id") @db.Uuid
-  variant       String   @db.VarChar(20)
-  ipHash        String?  @map("ip_hash") @db.VarChar(64)
-  userAgent     String?  @map("user_agent") @db.VarChar(500)
-  referrerUrl   String?  @map("referrer_url") @db.VarChar(500)
-  downloadedAt  DateTime @default(now()) @map("downloaded_at")
+  id           BigInt   @id @default(autoincrement())
+  imageId      String   @map("image_id") @db.Uuid
+  variant      String   @db.VarChar(20)
+  ipHash       String?  @map("ip_hash") @db.VarChar(64)
+  userAgent    String?  @map("user_agent") @db.VarChar(500)
+  referrerUrl  String?  @map("referrer_url") @db.VarChar(500)
+  downloadedAt DateTime @default(now()) @map("downloaded_at")
 
-  image         ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  image ImageAsset @relation(fields: [imageId], references: [id], onDelete: Cascade)
 
   @@index([imageId, downloadedAt])
   @@index([downloadedAt])
@@ -3339,16 +3393,16 @@ model ImageDownloadLog {
 }
 
 model ImageImportBatch {
-  id              String   @id @default(uuid()) @db.Uuid
-  filename        String   @db.VarChar(255)
-  totalRows       Int      @default(0) @map("total_rows")
-  successCount    Int      @default(0) @map("success_count")
-  errorCount      Int      @default(0) @map("error_count")
-  errors          Json?
-  status          String   @default("pending") @db.VarChar(20)
-  createdBy       String   @map("created_by") @db.VarChar(255)
-  createdAt       DateTime @default(now()) @map("created_at")
-  completedAt     DateTime? @map("completed_at")
+  id           String    @id @default(uuid()) @db.Uuid
+  filename     String    @db.VarChar(255)
+  totalRows    Int       @default(0) @map("total_rows")
+  successCount Int       @default(0) @map("success_count")
+  errorCount   Int       @default(0) @map("error_count")
+  errors       Json?
+  status       String    @default("pending") @db.VarChar(20)
+  createdBy    String    @map("created_by") @db.VarChar(255)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  completedAt  DateTime? @map("completed_at")
 
   @@index([createdBy, createdAt])
   @@index([status, createdAt])

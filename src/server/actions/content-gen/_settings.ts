@@ -14,6 +14,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { writeAuditLog } from "@/server/content-gen/audit-log";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
 /**
@@ -50,7 +51,18 @@ export async function writeContentGenConfig(
   // qu'un admin écrive sur plusieurs settings différents en parallèle sans se
   // bloquer (60/min PAR setting), tout en cappant les abus boucle script-like
   // sur un seul setting.
-  await requireAdminWriteRateLimited(`writeContentGenConfig:${key}`);
+  const session = await requireAdminWriteRateLimited(`writeContentGenConfig:${key}`);
+
+  // City Domination 2026-05-18 P1-9 (audit A10) — SOC2 audit trail diff.
+  // On lit la valeur EXISTANTE avant l'upsert pour capturer le delta. Read
+  // d'abord puis upsert n'est pas atomique vs. lecture concurrente, mais
+  // l'audit trail tolère la course (rare en pratique côté admin UI human-paced).
+  const existing = await prisma.contentGenConfig.findUnique({
+    where: { key },
+    select: { value: true },
+  });
+  const oldValue = existing?.value ?? null;
+
   await prisma.contentGenConfig.upsert({
     where: { key },
     create: {
@@ -64,6 +76,17 @@ export async function writeContentGenConfig(
       ...(description !== undefined ? { description } : {}),
       updatedBy,
     },
+  });
+
+  // Append audit log best-effort (échec n'invalide pas l'upsert ci-dessus).
+  await writeAuditLog({
+    action: "writeContentGenConfig",
+    settingKey: key,
+    oldValue,
+    newValue: value,
+    actorUserId: session.userId,
+    actorEmail: session.email,
+    ...(description !== undefined ? { description } : {}),
   });
 }
 

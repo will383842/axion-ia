@@ -48,6 +48,9 @@ function makeArticle(overrides: Partial<Article> = {}): Article {
     newsSourceName: null,
     newsCategory: null,
     publishedAtDateline: null,
+    // City Domination 2026-05-18 P1-6 — topic fingerprint SimHash (nullable
+    // legacy, calculé progressivement par computeTopicFingerprint).
+    topicFingerprint: null,
     ...overrides,
   };
 }
