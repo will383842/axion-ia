@@ -43,6 +43,17 @@ interface PoliciesConfig {
   readonly plagiarismJaccardRss?: number;
   /** Score qualité minimum pour auto-publication RSS (§ 14.2 master prompt). */
   readonly rssAutoPublishMinScore?: number;
+  /**
+   * Audit indexation 2026-05-18 — auto-publish étendu blog_article + landing_ville.
+   * Default false (safe). Active via admin policies pour scale 500/jour.
+   */
+  readonly factoryAutoPublishAllBlogTypes?: boolean;
+  /**
+   * Audit indexation 2026-05-18 — promotion tier-1 DIRECTE si score >= seuil.
+   * Default 75. Articles factory >= 75 → publish direct tier_1_indexable
+   * (sitemap immédiat + IndexNow + Google Indexing ping). 999 pour désactiver.
+   */
+  readonly factoryAutoPromoteTier1MinScore?: number;
 }
 
 interface QualityLoopConfig {
@@ -349,9 +360,20 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       !blockingFail &&
       score >= rssAutoPublishMinScore;
 
+    // Audit indexation 2026-05-18 — auto-publish étendu blog_article + landing_ville
+    // quand policy `factoryAutoPublishAllBlogTypes=true`. Scale 500 articles/jour.
+    const allBlogAutoPublishEnabled = policies.factoryAutoPublishAllBlogTypes === true;
+    const isBlogType = contentType === "blog_article" || contentType === "landing_ville";
+    const blogAutoPublishRequested =
+      allBlogAutoPublishEnabled &&
+      isBlogType &&
+      inputPayload["autoPublish"] === true &&
+      !blockingFail &&
+      score >= rssAutoPublishMinScore;
+
     let nextStatus: "quality_improving" | "approved" | "needs_review" = "needs_review";
     if (eligibleQualityLoop) nextStatus = "quality_improving";
-    else if (rssAutoPublishRequested) nextStatus = "approved";
+    else if (rssAutoPublishRequested || blogAutoPublishRequested) nextStatus = "approved";
 
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
@@ -432,8 +454,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     }
 
     if (nextStatus === "approved") {
-      // Auto-pub RSS : enqueue content-publish immédiat (tier-2 noindex_follow
-      // par défaut anti-doorway). Le publish-worker insert Article DB.
+      // Audit indexation 2026-05-18 — auto-pub avec promotion conditionnelle :
+      //   score >= factoryAutoPromoteTier1MinScore (default 75)
+      //     → publish DIRECT tier_1_indexable (sitemap immédiat + IndexNow ping)
+      //   sinon → tier_2_noindex_follow (hors sitemap, attente tier-lifecycle CTR)
+      const autoPromoteTier1MinScore =
+        policies.factoryAutoPromoteTier1MinScore ?? QUALITY_LOOP_THRESHOLD_DEFAULT;
+      const shouldPromoteTier1 = score >= autoPromoteTier1MinScore;
+
       const review = await prisma.reviewQueue.findUnique({
         where: { jobId: contentGenJobId },
         select: { id: true },
@@ -442,14 +470,24 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       if (review && queue) {
         await queue.add(
           "publish",
-          { reviewQueueId: review.id, promoteToTier1: false },
+          { reviewQueueId: review.id, promoteToTier1: shouldPromoteTier1 },
           { jobId: `publish-${review.id}` },
         );
-        await logStep(contentGenJobId, "publish", "Enqueued auto-pub RSS (tier-2)", {
-          review_queue_id: review.id,
-          score,
-          threshold: rssAutoPublishMinScore,
-        });
+        await logStep(
+          contentGenJobId,
+          "publish",
+          shouldPromoteTier1
+            ? `Enqueued auto-pub direct tier-1 (score ${score} >= ${autoPromoteTier1MinScore})`
+            : `Enqueued auto-pub tier-2 (score ${score} < ${autoPromoteTier1MinScore})`,
+          {
+            review_queue_id: review.id,
+            score,
+            threshold_publish: rssAutoPublishMinScore,
+            threshold_tier1: autoPromoteTier1MinScore,
+            promote_to_tier_1: shouldPromoteTier1,
+            content_type: contentType,
+          },
+        );
       }
     }
 

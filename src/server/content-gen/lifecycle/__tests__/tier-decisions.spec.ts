@@ -47,30 +47,30 @@ describe("computeTierDecision — noop conditions", () => {
 });
 
 describe("computeTierDecision — tier-2 promote logic", () => {
-  it("promotes tier-2 when ctr > 5% AND age > 30d AND impressions > 100", () => {
+  it("promotes tier-2 when ctr > 3% AND age > 14d AND impressions > 100", () => {
     const result = computeTierDecision(baseTier2);
     expect(result.action).toBe("promote");
     expect(result.nextTier).toBe("tier_1_indexable");
     expect(result.reason).toContain("8.00%");
   });
 
-  it("noop on tier-2 when article is immature (< 30d)", () => {
-    const result = computeTierDecision({ ...baseTier2, ageDays: 15 });
+  it("noop on tier-2 when article is immature (< 14d)", () => {
+    const result = computeTierDecision({ ...baseTier2, ageDays: 10 });
     expect(result.action).toBe("noop");
     expect(result.reason).toContain("immature");
   });
 
-  it("noop on tier-2 when ctr exactly at threshold (5%)", () => {
-    const result = computeTierDecision({ ...baseTier2, ctr: 0.05 });
+  it("noop on tier-2 when ctr exactly at threshold (3%)", () => {
+    const result = computeTierDecision({ ...baseTier2, ctr: 0.03 });
     expect(result.action).toBe("noop");
   });
 
   it("promotes when ctr just above threshold", () => {
-    const result = computeTierDecision({ ...baseTier2, ctr: 0.0501 });
+    const result = computeTierDecision({ ...baseTier2, ctr: 0.0301 });
     expect(result.action).toBe("promote");
   });
 
-  it("noop on tier-2 when ctr < 5%", () => {
+  it("noop on tier-2 when ctr < 3%", () => {
     const result = computeTierDecision({ ...baseTier2, ctr: 0.02 });
     expect(result.action).toBe("noop");
     expect(result.reason).toContain("below promote threshold");
@@ -78,7 +78,7 @@ describe("computeTierDecision — tier-2 promote logic", () => {
 });
 
 describe("computeTierDecision — tier-1 demote logic", () => {
-  it("demotes tier-1 when ctr < 1% AND age > 60d", () => {
+  it("demotes tier-1 when ctr < 1% AND age > 30d", () => {
     const result = computeTierDecision(baseTier1);
     expect(result.action).toBe("demote");
     expect(result.nextTier).toBe("tier_2_noindex_follow");
@@ -90,8 +90,8 @@ describe("computeTierDecision — tier-1 demote logic", () => {
     expect(result.reason).toContain("above demote threshold");
   });
 
-  it("noop on tier-1 when article recently promoted (< 60d)", () => {
-    const result = computeTierDecision({ ...baseTier1, ageDays: 30 });
+  it("noop on tier-1 when article recently promoted (< 30d)", () => {
+    const result = computeTierDecision({ ...baseTier1, ageDays: 20 });
     expect(result.action).toBe("noop");
     expect(result.reason).toContain("recently promoted");
   });

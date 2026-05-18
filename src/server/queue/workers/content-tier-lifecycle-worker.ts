@@ -30,9 +30,13 @@ import { alertTier3Stagnant } from "@/server/content-gen/shared/content-gen-aler
 const QUEUE_NAME = "content-tier-lifecycle";
 const PROMOTE_AGE_DAYS = DEFAULT_TIER_THRESHOLDS.promoteAgeDaysMin;
 const DEMOTE_AGE_DAYS = DEFAULT_TIER_THRESHOLDS.demoteAgeDaysMin;
-const PROMOTE_WINDOW_DAYS = 30;
-const DEMOTE_WINDOW_DAYS = 60;
-const MAX_BATCH_PER_RUN = 200;
+// Audit indexation 2026-05-18 — fenêtres CTR alignées sur nouveaux seuils
+// promoteAgeDaysMin=14 + demoteAgeDaysMin=30 (cf. tier-decisions.ts).
+const PROMOTE_WINDOW_DAYS = 14;
+const DEMOTE_WINDOW_DAYS = 30;
+// Audit indexation 2026-05-18 — batch ×5 (200 → 1000) pour daily cron.
+// À 500/jour publié, pool tier-2 = 15K/mois → scan complet ~2 semaines.
+const MAX_BATCH_PER_RUN = 1000;
 
 interface RunStats {
   scanned: number;

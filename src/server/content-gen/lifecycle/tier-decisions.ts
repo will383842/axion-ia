@@ -56,11 +56,17 @@ export interface TierDecisionThresholds {
   readonly respectManualPromote: boolean;
 }
 
+// Audit indexation 2026-05-18 — seuils relâchés pour scale 500 articles/jour :
+//   - promoteAgeDaysMin 30 → 14 (articles éligibles plus tôt)
+//   - promoteCtrMin 5% → 3% (pool éligible élargi)
+//   - demoteAgeDaysMin 60 → 30 (demote plus rapide, garde sitemap propre)
+// Cible volume 1500-3000 promus/mois via tier-lifecycle daily.
+// Risque HCU 2024 mitigé par quality gate factory strict (70+ + 800 mots).
 export const DEFAULT_TIER_THRESHOLDS: TierDecisionThresholds = {
-  promoteCtrMin: 0.05,
+  promoteCtrMin: 0.03,
   demoteCtrMax: 0.01,
-  promoteAgeDaysMin: 30,
-  demoteAgeDaysMin: 60,
+  promoteAgeDaysMin: 14,
+  demoteAgeDaysMin: 30,
   impressionsMinForDecision: 100,
   respectManualPromote: true,
 };

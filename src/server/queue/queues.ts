@@ -536,17 +536,24 @@ export async function bootRepeatableJobs(): Promise<void> {
     );
   }
 
-  // Sprint 10 V2 — tier-lifecycle mensuel (15 du mois 06:00 UTC).
+  // Sprint 10 V2 — tier-lifecycle daily (06:00 UTC).
+  // Audit indexation 2026-05-18 — pattern mensuel → daily pour scale
+  // 500 articles/jour. removeRepeatable des 2 patterns idempotence migration.
   if (contentTierLifecycleQueue) {
     await contentTierLifecycleQueue.removeRepeatable(
       "tick",
       { pattern: "0 6 15 * *" },
       "content-tier-lifecycle-cron",
     );
+    await contentTierLifecycleQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 6 * * *" },
+      "content-tier-lifecycle-cron",
+    );
     await contentTierLifecycleQueue.add(
       "tick",
-      { trigger: "cron-monthly-15-0600", tick: new Date().toISOString() },
-      { repeat: { pattern: "0 6 15 * *" }, jobId: "content-tier-lifecycle-cron" },
+      { trigger: "cron-daily-0600", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 6 * * *" }, jobId: "content-tier-lifecycle-cron" },
     );
   }
 
