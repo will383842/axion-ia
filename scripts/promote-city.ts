@@ -54,6 +54,7 @@ function parseArgs(): Args {
     const m = a.match(/^--([^=]+)=(.*)$/);
     if (!m) continue;
     const [, key, val] = m;
+    if (!val) continue;
     if (key === "ville") opts.ville = val;
     else if (key === "region") opts.region = val;
     else if (
