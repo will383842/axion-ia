@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
@@ -73,24 +74,20 @@ export async function Header() {
       <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-3 lg:px-12 xl:gap-4 xl:px-16">
         {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2 */}
         <div className="flex flex-1 items-center justify-between gap-6 lg:gap-8">
-          {/* Logo dans badge ivoire — fait ressortir "Axion-IA" sur fond terracotta. */}
+          {/* Logo image — badge ivoire pour ressortir sur fond terracotta. */}
           <Link
             href={ROUTES.home}
             aria-label={BRAND.name}
-            className="bg-paper text-fg shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center gap-1 rounded-xl px-4 py-2 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="bg-paper shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center rounded-xl px-3 py-1.5 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <span
-              className="text-2xl leading-none font-medium tracking-tight"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Axion
-              <span aria-hidden="true" className="text-fg/70 mx-0.5">
-                -
-              </span>
-              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
-                IA
-              </span>
-            </span>
+            <Image
+              src="/images/logo.webp"
+              alt={BRAND.name}
+              width={400}
+              height={225}
+              className="h-11 w-auto lg:h-12"
+              priority
+            />
           </Link>
 
           {/* Desktop nav — 2 premiers items, poussés à droite (près du CTA).
