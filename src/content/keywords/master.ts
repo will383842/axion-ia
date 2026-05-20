@@ -5,8 +5,7 @@
 // Modifier via admin console /admin/content-gen/keyword-engine
 // ou éditer les fichiers g1-g6 / h-notoriete / j-presse / m-positionnements / i-geo puis relancer ce fichier.
 //
-// FILTRE APPLIQUÉ : seeds contenant OPCO / Qualiopi / CPF exclus
-// (Axion-IA non certifié — ne pas induire les visiteurs en erreur)
+// FILTRE APPLIQUÉ : seeds hors-positionnement exclus (certifications formation, outils tiers)
 
 import type { KeywordSeed } from "./types";
 
@@ -27,7 +26,7 @@ import { KW_SECTEURS_G7C } from "./g7c-secteurs-conso-culture";
 import { KW_AUDIENCES_G8 } from "./g8-audiences-manquantes";
 
 // Termes à filtrer :
-// 1. Financements certifiés (Axion-IA non Qualiopi)
+// 1. Certifications et financements formation hors-positionnement
 // 2. Outils tiers (Axion-IA ne se positionne pas sur ces outils spécifiques)
 const BANNED_TERMS = [
   "OPCO",
