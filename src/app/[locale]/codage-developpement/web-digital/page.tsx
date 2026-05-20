@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Plateforme web IA-native ou site augmenté | Axion-IA"
       : "AI-native web platform or site augmentation | Axion-IA",
     description: isFr
-      ? "Axion-IA conçoit des plateformes web sur mesure IA-native (Next.js, Laravel, Postgres) ou greffe l'IA sur votre existant. Chatbot RAG, search sémantique, automatisations. Devis 48 h."
-      : "Axion-IA builds AI-native custom platforms (Next.js, Laravel, Postgres) or grafts AI onto your existing stack. RAG chatbot, semantic search, automations. Quote in 48 h.",
+      ? "Axion-IA conçoit des plateformes web sur mesure IA-native ou greffe l'IA sur votre existant. Toute stack moderne — chatbot RAG, search sémantique, automatisations. Devis 48 h."
+      : "Axion-IA builds AI-native custom platforms or grafts AI onto your existing stack. Any modern tech stack — RAG chatbot, semantic search, automations. Quote in 48 h.",
   });
 }
 
@@ -56,13 +56,13 @@ export default async function WebDigitalPage({ params }: Props) {
     ? [
         { icon: Clock, label: "Livraison 3 à 6 semaines" },
         { icon: ShieldCheck, label: "Build IA-native ou augmentation de l'existant" },
-        { icon: Code2, label: "Next.js, Laravel, Postgres, MySQL, Vite" },
+        { icon: Code2, label: "Toute stack moderne — on s'adapte à votre env" },
         { icon: Sparkles, label: "Données hébergées en UE · RGPD natif" },
       ]
     : [
         { icon: Clock, label: "Delivery 3 to 6 weeks" },
         { icon: ShieldCheck, label: "AI-native build or augmentation of existing stack" },
-        { icon: Code2, label: "Next.js, Laravel, Postgres, MySQL, Vite" },
+        { icon: Code2, label: "Toute stack moderne — on s'adapte à votre env" },
         { icon: Sparkles, label: "EU hosting · GDPR by design" },
       ];
 
@@ -281,7 +281,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-stack",
           question: "Vous travaillez sur quelles technologies ?",
           answer:
-            "On développe sur Next.js, Laravel, Postgres, MySQL, Vite et toute stack moderne. Pour les augmentations, on intervient sur n'importe quelle application avec une API accessible — REST, GraphQL ou webhook.",
+            "On travaille sur toute stack moderne : Next.js, Laravel, Django, Rails, Symfony, Vue, React, Angular, Postgres, MySQL, MongoDB — la liste n'est pas exhaustive. Pour les augmentations : toute application avec une API REST, GraphQL ou webhook.",
         },
         {
           id: "q-donnees",
@@ -319,7 +319,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-stack",
           question: "Which technologies do you work with?",
           answer:
-            "We develop on Next.js, Laravel, Postgres, MySQL, Vite and any modern stack. For augmentations, we work on any application with an accessible API — REST, GraphQL or webhook.",
+            "We work on any modern stack: Next.js, Laravel, Django, Rails, Symfony, Vue, React, Angular, Postgres, MySQL, MongoDB — the list is not exhaustive. For augmentations: any application with a REST, GraphQL or webhook API.",
         },
         {
           id: "q-data",
@@ -354,8 +354,8 @@ export default async function WebDigitalPage({ params }: Props) {
       ? "Web & Digital augmentés par l'IA · Axion-IA"
       : "AI-augmented web & digital · Axion-IA",
     description: isFr
-      ? "Conception de plateformes web sur mesure IA-native (Next.js, Laravel, Postgres) ou intégration de briques IA sur plateforme existante : chatbot RAG, recherche sémantique, agents, automatisations. Devis ferme 48 h."
-      : "Custom AI-native web platform design (Next.js, Laravel, Postgres) or AI brick integration on existing platforms: RAG chatbot, semantic search, agents, automations. Firm quote in 48 h.",
+      ? "Conception de plateformes web sur mesure IA-native ou intégration de briques IA sur plateforme existante. Toute stack moderne. Chatbot RAG, search sémantique, agents, automatisations. Devis ferme 48 h."
+      : "AI-native custom web platform design or AI brick integration on existing platforms. Any modern stack. RAG chatbot, semantic search, agents, automations. Firm quote in 48 h.",
     serviceType: "AI web integration",
   });
 
@@ -405,8 +405,8 @@ export default async function WebDigitalPage({ params }: Props) {
 
           <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
             {isFr
-              ? "On construit votre plateforme sur mesure (Next.js, Laravel, Postgres) avec l'IA et les automatisations intégrées dès la conception. Ou on augmente votre plateforme existante — chatbot RAG, search sémantique, agents — sans tout refaire."
-              : "We build your custom platform (Next.js, Laravel, Postgres) with AI and automations built in from day one. Or we augment your existing platform — RAG chatbot, semantic search, agents — without a full rebuild."}
+              ? "On construit votre plateforme sur mesure avec l'IA et les automatisations intégrées dès la conception — toute stack, on s'adapte à votre contexte. Ou on augmente votre plateforme existante — chatbot RAG, search sémantique, agents — sans tout refaire."
+              : "We build your custom platform with AI and automations built in from day one — any stack, we adapt to your context. Or we augment your existing platform — RAG chatbot, semantic search, agents — without a full rebuild."}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -453,7 +453,7 @@ export default async function WebDigitalPage({ params }: Props) {
                   tag: "Vous partez de zéro",
                   title: "Plateforme sur mesure IA-native",
                   description:
-                    "On conçoit et développe votre plateforme (Next.js, Laravel, Postgres) avec l'IA intégrée dès la conception : agents, automatisations, search sémantique, chatbot. Vous recevez une plateforme qui pense et agit.",
+                    "On conçoit et développe votre plateforme sur mesure avec l'IA intégrée dès la conception : agents, automatisations, search sémantique, chatbot. Toute stack — on s'adapte à votre contexte et vos contraintes.",
                   cta: "Décrire mon projet",
                   accent: true,
                 },
@@ -471,7 +471,7 @@ export default async function WebDigitalPage({ params }: Props) {
                   tag: "Starting from scratch",
                   title: "AI-native custom platform",
                   description:
-                    "We design and build your platform (Next.js, Laravel, Postgres) with AI integrated from day one: agents, automations, semantic search, chatbot. You get a platform that thinks and acts.",
+                    "We design and build your custom platform with AI integrated from day one: agents, automations, semantic search, chatbot. Any stack — we adapt to your context and constraints.",
                   cta: "Describe my project",
                   accent: true,
                 },
