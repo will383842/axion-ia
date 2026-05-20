@@ -60,7 +60,7 @@ function slugToTitle(slug: string): string {
 
 const MODULE_LABELS: Record<string, string> = {
   audit: "Audit IA",
-  interventions_formations: "Formation IA",
+  interventions: "Formation IA",
   implementations: "Automatisation IA",
   "un-a-un": "Accompagnement 1-to-1",
   graphique: "Graphique / Dataviz",
@@ -174,77 +174,77 @@ const IMAGE_ENTRIES: ImageEntry[] = [
   // ── FORMATION (15) ────────────────────────────────────────────────────────
   {
     slug: "axion-ia-formation-ia-1-jour-sur-mesure-generique-reserver-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA 1 jour sur mesure",
   },
   {
     slug: "axion-ia-intervention-ia-rapide-resultats-concrets-entreprise-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "intervention IA résultats concrets",
   },
   {
     slug: "axion-ia-formation-ia-comprendre-creer-transformer-humaine-augmentee-banniere",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA comprendre créer transformer",
   },
   {
     slug: "axion-ia-intervention-ia-france-toutes-regions-photo-banniere",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "intervention IA France toutes régions",
   },
   {
     slug: "axion-ia-formation-acculturation-ia-tpe-pme-eti-2026-photo-banniere",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation acculturation IA TPE PME ETI 2026",
   },
   {
     slug: "axion-ia-citation-intelligence-artificielle-valeur-impact-editorial",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "citation IA valeur impact",
   },
   {
     slug: "axion-ia-citation-ia-ne-remplace-pas-humain-revele-potentiel-editorial",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "citation IA humain potentiel",
   },
   {
     slug: "axion-ia-formation-ia-vous-gagnez-concretement-5-benefices-banniere",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA 5 bénéfices concrets",
   },
   {
     slug: "axion-ia-citation-investir-connaissance-liberte-demain-editorial",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "citation investir connaissance liberté",
   },
   {
     slug: "axion-ia-formation-ia-benefices-premier-jour-formateur-photo-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA bénéfices premier jour",
   },
   {
     slug: "axion-ia-formation-ia-avant-apres-une-journee-resultats-photo-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA avant après résultats",
   },
   {
     slug: "axion-ia-formation-ia-moins-stress-clarte-une-journee-photo-banniere",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA stress clarté",
   },
   {
     slug: "axion-ia-formation-equipe-ia-40-pourcent-productivite-100-mesure-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation équipe IA productivité 40%",
   },
   {
     slug: "axion-ia-formation-1-jour-progresser-sur-mesure-generique-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA 1 jour progresser",
   },
   {
     slug: "axion-ia-formation-ia-1-jour-reserver-session-carre",
-    module: "interventions_formations",
+    module: "interventions",
     keywordsPrimary: "formation IA 1 jour réserver",
   },
   // ── AUTOMATISATION (4) ────────────────────────────────────────────────────
