@@ -220,16 +220,22 @@ export function buildVilleServiceJsonLdGraph(
 
   // ── 4. FAQPage + Speakable ─────────────────────────────────────────────────
   // cssSelector cible les éléments HTML balisés dans VilleServicePageTemplate :
-  //   #axion-direct-answer → réponse directe (bloc p balisé)
+  //   #axion-direct-answer → réponse directe (rendu uniquement si directAnswer fourni)
   //   #axion-faq           → wrapper div autour de <FaqBlock>
-  // Ces deux sélecteurs pointent vers du contenu réellement présent dans le DOM.
+  // Le selector #axion-direct-answer est conditionnel pour éviter le drift
+  // JSON-LD / DOM (P2-2 Sprint S+5) : VilleServicePageTemplate ne rend ce bloc
+  // que si `ville.copy?.directAnswerFr` est défini.
+  const speakableSelectors: string[] = [
+    ...(directAnswer ? ["#axion-direct-answer"] : []),
+    "#axion-faq",
+  ];
   if (faqItems.length > 0) {
     schemas.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
       speakable: {
         "@type": "SpeakableSpecification",
-        cssSelector: ["#axion-direct-answer", "#axion-faq"],
+        cssSelector: speakableSelectors,
       },
       mainEntity: faqItems.map((item, idx) => ({
         "@type": "Question",
@@ -317,9 +323,10 @@ export function buildVilleServiceJsonLdGraph(
       { "@type": "Service", name: isFr ? serviceNameFr : serviceNameEn },
     ],
     // Speakable cible le bloc directAnswer + FAQ pour voice search (SGE, Bixby, Google Assistant)
+    // Selector #axion-direct-answer conditionnel (P2-2 Sprint S+5 — drift JSON-LD/DOM fix).
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["#axion-direct-answer", "#axion-faq"],
+      cssSelector: speakableSelectors,
     },
     breadcrumb: { "@id": `${url}#breadcrumb` },
     potentialAction: {

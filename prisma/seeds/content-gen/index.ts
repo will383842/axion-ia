@@ -26,6 +26,8 @@ import { seedBannedPhrases } from "./banned-phrases";
 import { seedContentTemplates } from "./content-templates";
 import { seedContentGenConfig } from "./content-gen-config";
 import { seedSectorCampaigns } from "./sector-campaigns";
+import { seedRssSources } from "./rss-sources";
+import { seedCaseStudies } from "./case-studies";
 
 const prisma = new PrismaClient();
 
@@ -57,6 +59,16 @@ async function main() {
 
   const sectorCount = await seedSectorCampaigns(prisma);
   console.log(`  ✓ CoverageCampaign (sectorielles, draft) : ${sectorCount} rows upserted`);
+
+  // Sprint S+5 P2-3 — Migration RSS sources legacy ContentGenConfig → RssSource.
+  const rssCount = await seedRssSources(prisma);
+  console.log(`  ✓ RssSource : ${rssCount} rows upserted (migration legacy ContentGenConfig)`);
+
+  // Sprint S+5 P2-5 — CaseStudy (5 fixtures TS → DB, idempotent).
+  const caseStudies = await seedCaseStudies(prisma);
+  console.log(
+    `  ✓ CaseStudy : ${caseStudies.created} created, ${caseStudies.updated} updated, ${caseStudies.skipped} translations skipped`,
+  );
 
   console.log("[content-gen seed] done.");
 }

@@ -18,6 +18,7 @@ import {
   readContentGenConfig,
   writeContentGenConfig,
 } from "@/server/actions/content-gen/_settings";
+import { logGeneration, logStep } from "@/server/content-gen/shared/generation-log";
 
 const QUEUE_NAME = "content-quality-improver";
 
@@ -112,13 +113,11 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       where: { id: contentGenJobId },
       data: { status: "needs_review" },
     });
-    await prisma.generationLog.create({
-      data: {
-        jobId: contentGenJobId,
-        level: "warn",
-        step: "quality_loop_budget_cap_reached",
-        message: `Quality loop budget cap atteint (${monthSpentUsd.toFixed(2)}/${settings.monthlyBudgetCapUsd} USD ce mois). Manual review requise.`,
-      },
+    await logGeneration({
+      jobId: contentGenJobId,
+      level: "warn",
+      step: "quality_loop_budget_cap_reached",
+      message: `Quality loop budget cap atteint (${monthSpentUsd.toFixed(2)}/${settings.monthlyBudgetCapUsd} USD ce mois). Manual review requise.`,
     });
     return;
   }
@@ -132,13 +131,11 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       where: { id: contentGenJobId },
       data: { status: "needs_review" },
     });
-    await prisma.generationLog.create({
-      data: {
-        jobId: contentGenJobId,
-        level: "warn",
-        step: "quality_loop_cap_reached",
-        message: `Cap auto ${settings.maxAttemptsAuto} atteint (score ${previousScore}). Manual review.`,
-      },
+    await logGeneration({
+      jobId: contentGenJobId,
+      level: "warn",
+      step: "quality_loop_cap_reached",
+      message: `Cap auto ${settings.maxAttemptsAuto} atteint (score ${previousScore}). Manual review.`,
     });
     return;
   }
@@ -152,14 +149,11 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       qualityImprovementAttempts: { increment: 1 },
     },
   });
-  await prisma.generationLog.create({
-    data: {
-      jobId: contentGenJobId,
-      level: "info",
-      step: "quality_loop_pass",
-      message: `Pass quality loop ${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto}, ancien score ${previousScore}`,
-    },
-  });
+  await logStep(
+    contentGenJobId,
+    "quality_loop_pass",
+    `Pass quality loop ${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto}, ancien score ${previousScore}`,
+  );
 }
 
 let workerInstance: Worker<QualityImproveJobPayload> | null = null;

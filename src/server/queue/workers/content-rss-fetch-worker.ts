@@ -1,9 +1,14 @@
 /**
  * Content Generator — RSS fetch worker (§ 28 v1.7 pipeline 2 actualités).
  *
- * V1 = skeleton functional. Polls les sources RSS configurées en
- * ContentGenConfig.key="rss_sources" (V1 storage transitoire — V1.5 = tables
- * dédiées RssSource + RssItem). Pour chaque item nouveau :
+ * Sprint S+5 P2-3 (2026-05-20) — Migration storage :
+ *   - V1.5 (actif)    : lit depuis table dédiée `RssSource` (Prisma model).
+ *   - V1 (fallback)   : si la table `RssSource` est vide, fallback transitoire
+ *                       sur `ContentGenConfig.key="rss_sources"` (JSON inline)
+ *                       + warning log « DEPRECATED ». Sera retiré au prochain
+ *                       sprint (1 release de grâce).
+ *
+ * Pour chaque item nouveau :
  *
  * 1. Vérifie dedup via hash(url + title) → ContentGenJob.idempotencyKey
  * 2. Enqueue job content-gen `contentType=blog_from_rss` avec inputPayload
@@ -29,13 +34,20 @@ const QUEUE_NAME = "content-rss-fetch";
 const SEEN_KEY = "rss_items_seen";
 const MAX_SEEN = 5000; // capping pour éviter explosion ContentGenConfig.value
 
+/**
+ * Forme runtime d'une source RSS — alignée sur les champs nécessaires au
+ * worker (sous-ensemble du modèle Prisma `RssSource` + champs legacy
+ * ContentGenConfig pour rétro-compat fallback).
+ */
 interface RssSource {
+  readonly id?: string;
   readonly url: string;
   readonly name: string;
   readonly tags: ReadonlyArray<string>;
   readonly pollIntervalMin: number;
   readonly autoPublish: boolean;
   readonly enabled: boolean;
+  readonly verticale?: string | null;
 }
 
 function hashItem(url: string, title: string): string {
@@ -80,6 +92,80 @@ function getContentGenQueue(): Queue {
   return contentGenQueue;
 }
 
+/**
+ * Charge les sources RSS depuis la table dédiée `RssSource` (V1.5 storage).
+ *
+ * Fallback rétro-compat (1 release de grâce) : si la table est vide ET que
+ * `ContentGenConfig.key="rss_sources"` contient des entrées, log un warning
+ * `DEPRECATED` et utilise le JSON inline. Ce fallback sera retiré au sprint
+ * S+6 (cf. P2-3 audit S+5 2026-05-20).
+ *
+ * Met aussi à jour `lastFetchedAt` après le tick (voir processJob) pour
+ * tracer l'activité par source.
+ */
+async function loadRssSources(): Promise<ReadonlyArray<RssSource>> {
+  // Stub-aware (ADR 0026) : si DATABASE_URL contient "stub.invalid" (build SSG
+  // GH Actions sans DB), le Proxy Prisma retourne []. Aucun traitement runtime
+  // ne devrait passer par cette branche, mais on garde le fallback gracieux.
+  let dbRows: ReadonlyArray<{
+    id: string;
+    url: string;
+    name: string;
+    enabled: boolean;
+    verticale: string | null;
+    tags: unknown;
+    pollIntervalMin: number;
+    autoPublish: boolean;
+  }> = [];
+  try {
+    dbRows = await prisma.rssSource.findMany({
+      where: { enabled: true },
+      select: {
+        id: true,
+        url: true,
+        name: true,
+        enabled: true,
+        verticale: true,
+        tags: true,
+        pollIntervalMin: true,
+        autoPublish: true,
+      },
+    });
+  } catch (err) {
+    // Table possiblement absente (migration pas encore appliquée) — on tombe
+    // dans le fallback ContentGenConfig.
+    console.warn(
+      `[rss-fetch-worker] prisma.rssSource.findMany failed (table missing?): ${
+        err instanceof Error ? err.message : String(err)
+      }`,
+    );
+  }
+
+  if (dbRows.length > 0) {
+    return dbRows.map((r) => ({
+      id: r.id,
+      url: r.url,
+      name: r.name,
+      tags: Array.isArray(r.tags) ? (r.tags as ReadonlyArray<string>) : [],
+      pollIntervalMin: r.pollIntervalMin,
+      autoPublish: r.autoPublish,
+      enabled: r.enabled,
+      verticale: r.verticale,
+    }));
+  }
+
+  // Fallback transitoire ContentGenConfig (DEPRECATED — retrait sprint S+6).
+  const legacy = await readContentGenConfig<ReadonlyArray<RssSource>>("rss_sources", []);
+  if (legacy.length > 0) {
+    console.warn(
+      `[rss-fetch-worker] DEPRECATED — lecture RSS depuis ContentGenConfig.key="rss_sources" (V1 JSON inline). ` +
+        `Migrer les ${legacy.length} sources vers la table RssSource (run \`pnpm tsx prisma/seeds/rss-sources.ts\`). ` +
+        `Ce fallback sera retiré sprint S+6.`,
+    );
+  }
+  return legacy;
+}
+
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
   // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
   // Sans ce check, le RSS fetch continue à crawler les sources tiers et
@@ -91,7 +177,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     console.log("[rss-fetch-worker] kill switch active, skip tick");
     return;
   }
-  const sources = await readContentGenConfig<ReadonlyArray<RssSource>>("rss_sources", []);
+  const sources = await loadRssSources();
   const seenHashes = new Set(await readContentGenConfig<ReadonlyArray<string>>(SEEN_KEY, []));
 
   let totalEnqueued = 0;
@@ -99,6 +185,28 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
 
   for (const source of sources) {
     const items = await fetchSource(source);
+    // P2-3 — tracking santé par source : si le fetch a renvoyé au moins 1 item
+    // ou si la source est joignable (parseFeed n'a pas throw), on marque
+    // lastSuccessAt + reset failureCount. Sinon increment failureCount.
+    // Best-effort : ne pas bloquer le tick si l'update échoue.
+    if (source.id) {
+      try {
+        const now = new Date();
+        if (items.length > 0) {
+          await prisma.rssSource.update({
+            where: { id: source.id },
+            data: { lastFetchedAt: now, lastSuccessAt: now, failureCount: 0 },
+          });
+        } else {
+          await prisma.rssSource.update({
+            where: { id: source.id },
+            data: { lastFetchedAt: now, failureCount: { increment: 1 } },
+          });
+        }
+      } catch {
+        // Pas de table (legacy fallback ContentGenConfig) ou row supprimée — no-op.
+      }
+    }
     for (const item of items) {
       const hash = hashItem(item.link, item.title);
       if (seenHashes.has(hash)) continue;

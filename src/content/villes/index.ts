@@ -13,6 +13,7 @@ import type { VilleData } from "./data/types";
 import type { VilleCopy } from "./copy/types";
 import type { VilleEconomicData } from "./economic-data/types";
 import { getVilleEconomicData } from "./economic-data";
+import { REGIONS, type Region } from "@/content/regions";
 
 import { VILLES_ILE_DE_FRANCE } from "./data/ile-de-france";
 import { VILLES_AUVERGNE_RHONE_ALPES } from "./data/auvergne-rhone-alpes";
@@ -101,4 +102,25 @@ export function getVillesByRegion(regionSlug: string): ReadonlyArray<Ville> {
  */
 export function getIndexableVilles(): ReadonlyArray<Ville> {
   return VILLES.filter((v) => !!v.copy);
+}
+
+/**
+ * Toutes les villes d'un département donné (code INSEE 2 ou 3 caractères :
+ * "75", "13", "2A", "2B", "974" pour l'historique DROM, etc.).
+ * Retourne un tableau vide si le code est inconnu (pas d'erreur).
+ * P2-4 Sprint S+5 — utilisé par les pages /implantations/[region]/[dept] et
+ * par les helpers content-gen quand un cas concret cible un département.
+ */
+export function getVillesByDepartement(code: string): ReadonlyArray<Ville> {
+  return VILLES.filter((v) => v.departement === code);
+}
+
+/**
+ * Retourne la région métropolitaine contenant le code département fourni,
+ * ou undefined si le code n'appartient à aucune région connue (DROM hors V1).
+ * P2-4 Sprint S+5 — utilisé pour réconcilier un cas concret département-only
+ * vers sa région parente sans relire VILLES.
+ */
+export function getRegionByDepartement(code: string): Region | undefined {
+  return REGIONS.find((r) => r.departements.includes(code));
 }

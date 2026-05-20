@@ -14,8 +14,23 @@ export interface CaseStudy {
    * compromise, le slug et la ville restent suffisants côté SEO.
    */
   geo?: { lat: number; lon: number };
+  /**
+   * Slug géographique canonique (Sprint S+5 P2-6). Référence un slug ville
+   * existant dans `src/content/villes/data/*.ts` (ex. "paris",
+   * "boulogne-billancourt") OU `"france"` pour un cas national/transverse.
+   * Sert de FK conceptuelle vers la KB villes pour cross-linking SEO/GEO
+   * et alimente le seeder `prisma/seeds/case-studies.ts` (mapping → champ
+   * `CaseStudy.region` Prisma).
+   */
+  geoSlug?: string;
   /** Ville d'intervention publique (label affiché, ex. "Boulogne-Billancourt (92)"). */
   cityLabel?: string;
+  /**
+   * Date de publication ISO 8601 (YYYY-MM-DD). Sprint S+5 P2-7 — unique
+   * par cas (pas de doublons sur 2 fixtures différentes). Sert au seeder
+   * → champ `CaseStudy.publishedAt` Prisma + JSON-LD `datePublished`.
+   */
+  datePublished?: string;
   fr: CaseCopy;
   en: CaseCopy;
 }
@@ -45,6 +60,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     industryEn: "Industry",
     size: "pme",
     metric: "-32% admin",
+    geoSlug: "boulogne-billancourt",
+    datePublished: "2025-09-15",
     fr: {
       title: "Industriel · -32% temps administratif comptable",
       breadcrumbName: "Industrie · −32 % admin",
@@ -83,6 +100,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     industryEn: "Legal",
     size: "pme",
     metric: "+18% productivity",
+    geoSlug: "paris",
+    datePublished: "2025-11-03",
     fr: {
       title: "Cabinet juridique · +18 % productivité par associé",
       breadcrumbName: "Juridique · +18 %",
@@ -122,6 +141,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     industryEn: "Retail",
     size: "mid",
     metric: "-45% SAV time",
+    geoSlug: "france",
+    datePublished: "2026-01-22",
     fr: {
       title: "Retail · -45 % temps de traitement SAV",
       breadcrumbName: "Retail · −45 % SAV",
@@ -159,6 +180,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     industryEn: "Banking",
     size: "enterprise",
     metric: "x3 onboarding speed",
+    geoSlug: "saint-denis",
+    datePublished: "2026-03-10",
     fr: {
       title: "Banque · onboarding KYC accéléré 3×",
       breadcrumbName: "Banque · KYC ×3",
@@ -194,6 +217,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
     industryEn: "Trades",
     size: "tpe",
     metric: "+5 RDV/sem",
+    geoSlug: "montreuil",
+    datePublished: "2026-04-28",
     fr: {
       title: "Artisan plombier · +5 RDV qualifiés / semaine",
       breadcrumbName: "Artisan · +5 RDV/sem",
