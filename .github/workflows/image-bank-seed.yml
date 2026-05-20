@@ -1,29 +1,27 @@
 name: Image Bank · Seed + Enrich (SEO/AEO/GEO)
 
 # Pipeline image-bank post-deploy :
-#   1. Cleanup disque Hetzner (prune containers/images stoppés — safe)
-#   2. Install tsx dans /tmp du container (HOME=/tmp évite ENOSPC /home)
-#   3. Seed DB (upsert 133 ImageAssets + translations squelette)
-#   4. Enrichissement Claude Vision FR (alt, metaTitle, metaDescription,
-#      ogTitle, ogDescription, aiSummary, embeddedText, keywords)
+#   1. Disk prune Hetzner (containers/images stoppés — safe)
+#   2. Seed DB 133 ImageAssets via tsx (TypeScript)
+#   3. Enrichissement via enrich-images.cjs (Node.js pur, fetch natif, 0 npm install)
 #
 # Déclenchements :
 #   - Automatique : après chaque deploy réussi de deploy-coolify.yml
-#   - Manuel      : GitHub Actions → Run workflow (avec options)
+#   - Manuel : GitHub Actions → Run workflow
 #
-# Idempotent : seed upsert par slug, enrich skip les images avec metaTitle.
+# Idempotent : seed upsert par slug, enrich skip images avec metaTitle existant.
 
 on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Dry run — affiche le plan sans écrire en DB"
+        description: "Dry run (affiche plan, pas d'écriture DB)"
         required: false
         default: "false"
         type: choice
         options: ["false", "true"]
       skip_enrich:
-        description: "Skip enrichissement Claude Vision (seed seul)"
+        description: "Skip enrichissement (seed seul)"
         required: false
         default: "false"
         type: choice
@@ -35,7 +33,6 @@ on:
         type: choice
         options: ["false", "true"]
 
-  # Trigger automatique après deploy réussi.
   workflow_run:
     workflows: ["Build & Deploy · GHCR + Coolify (axion-ia.com)"]
     types: [completed]
@@ -48,9 +45,8 @@ jobs:
   seed-and-enrich:
     name: Seed image bank + Enrich SEO/AEO/GEO
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 55   # seed ~2min + tsx install ~2min + 133×17s enrich ~38min + buffer
 
-    # Ne tourne que si le deploy a réussi (ou si déclenché manuellement).
     if: >
       github.event_name == 'workflow_dispatch' ||
       github.event.workflow_run.conclusion == 'success'
@@ -59,7 +55,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ── Setup SSH ────────────────────────────────────────────────────────────
+      # ── SSH ──────────────────────────────────────────────────────────────────
 
       - name: Setup SSH
         env:
@@ -75,8 +71,6 @@ jobs:
           ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
           ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
 
-      # ── Wait for container restart (workflow_run uniquement) ─────────────────
-
       - name: Wait for container restart after deploy
         if: github.event_name == 'workflow_run'
         run: |
@@ -84,22 +78,19 @@ jobs:
           sleep 180
           echo "✓ Prêt."
 
-      # ── Cleanup disque Hetzner (SAFE — ne touche pas les containers running) ──
+      # ── Disk cleanup ─────────────────────────────────────────────────────────
 
       - name: Libérer espace disque Hetzner
         run: |
           ssh -o BatchMode=yes root@178.105.55.15 bash <<'ENDSSH'
-            echo "=== Disk avant ==="
-            df -h / | tail -1
-            echo "=== Prune containers/images/builder stoppés (running containers préservés) ==="
-            docker container prune -f 2>&1 | tail -3 || true
-            docker image prune -f 2>&1 | tail -3 || true
-            docker builder prune -f 2>&1 | tail -3 || true
-            echo "=== Disk après ==="
-            df -h / | tail -1
+            echo "=== Disk avant ===" && df -h / | tail -1
+            docker container prune -f 2>&1 | tail -2 || true
+            docker image prune -f 2>&1 | tail -2 || true
+            docker builder prune -f 2>&1 | tail -2 || true
+            echo "=== Disk après ===" && df -h / | tail -1
           ENDSSH
 
-      # ── Find container ───────────────────────────────────────────────────────
+      # ── Find container ────────────────────────────────────────────────────────
 
       - name: Find axion-ia container
         id: container
@@ -113,13 +104,12 @@ jobs:
             '$1 ~ "^"uuid {print $1; exit}')
           if [ -z "$NAME" ]; then
             echo "::error::Container $COOLIFY_APP_UUID introuvable."
-            echo "$ROWS"
-            exit 1
+            echo "$ROWS"; exit 1
           fi
           echo "✓ Container: $NAME"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
-      # ── Pre-check DB ─────────────────────────────────────────────────────────
+      # ── Pre-check DB ──────────────────────────────────────────────────────────
 
       - name: Pre-check DB counts
         env:
@@ -128,44 +118,45 @@ jobs:
           echo "── Counts avant seed ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' node -e \
-            \"const {PrismaClient}=require('/app/node_modules/@prisma/client');
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
             const p=new PrismaClient();
-            Promise.all([
-              p.imageAsset.count(),
+            Promise.all([p.imageAsset.count(),
               p.imageAssetTranslation.count({where:{metaTitle:{not:null}}})
             ]).then(([a,e])=>{console.log('imageAsset:',a,'enrichies:',e);process.exit(0)})
-            .catch(()=>process.exit(0))\"" 2>&1 || true
+            .catch(()=>process.exit(0));}
+            catch(e){console.log('pre-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true
 
-      # ── Installer tsx dans /tmp du container ──────────────────────────────────
-      # Le container prod est un standalone Next.js slim : pas de tsx ni pnpm.
-      # HOME=/tmp → npm cache dans /tmp/.npm (évite ENOSPC sur /home/nextjs).
+      # ── [DRY RUN] ─────────────────────────────────────────────────────────────
 
       - name: "[DRY RUN] Afficher le plan"
         if: inputs.dry_run == 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
-          echo "::notice::DRY_RUN — 133 images à seeder, enrichissement FR à venir"
+          echo "::notice::DRY_RUN — 133 images à seeder + enrichissement FR"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' ls /app/prisma/seeds/image-bank/ 2>/dev/null" 2>&1 || true
 
-      - name: Installer tsx + @anthropic-ai/sdk dans /tmp/tsx-cli
+      # ── Step 1 : Seed (tsx) ───────────────────────────────────────────────────
+      # tsx est absent du container prod (standalone slim).
+      # Installation fresh dans /tmp/tsx-cli avec npm cache dans /tmp/.npm.
+      # Le seed est déjà dans le container (/app/prisma copié au build)
+      # mais on copie la dernière version depuis le repo pour garantir 133 entrées.
+
+      - name: Installer tsx dans /tmp du container
         if: inputs.dry_run != 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
           set -euo pipefail
-          echo "── Install tsx + sdk (HOME=/tmp pour éviter ENOSPC /home/nextjs) ──"
+          echo "── Install tsx (HOME=/tmp évite ENOSPC /home/nextjs) ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' sh -c \
-            'rm -rf /tmp/tsx-cli && mkdir -p /tmp/tsx-cli && cd /tmp/tsx-cli && \
+            'rm -rf /tmp/tsx-cli /tmp/.npm && mkdir -p /tmp/tsx-cli && cd /tmp/tsx-cli && \
              HOME=/tmp npm init -y 2>/dev/null && \
-             HOME=/tmp npm install --no-save --no-audit --no-fund tsx @anthropic-ai/sdk 2>&1 | tail -8 && \
-             ln -sfn /app/prisma /tmp/prisma && \
-             echo SETUP_OK'" 2>&1
-          echo "✓ tsx + @anthropic-ai/sdk installés, symlink /tmp/prisma → /app/prisma"
-
-      # ── Step 1 : Seed ─────────────────────────────────────────────────────────
+             HOME=/tmp npm install --no-save --no-audit --no-fund tsx 2>&1 | tail -5 && \
+             echo TSX_READY'" 2>&1
+          echo "✓ tsx installé dans /tmp/tsx-cli"
 
       - name: Copier seed-images.ts → container
         if: inputs.dry_run != 'true'
@@ -193,43 +184,40 @@ jobs:
              prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
           echo "── Seed terminé ──"
 
-      # ── Step 2 : Enrich ───────────────────────────────────────────────────────
+      # ── Step 2 : Enrich (node CJS pur — pas de tsx) ───────────────────────────
+      # enrich-images.cjs = CommonJS pur :
+      #   - fetch() natif Node.js 22 (pas @anthropic-ai/sdk)
+      #   - require('/app/prisma/generated/client') (pas d'import ESM)
+      # Zéro npm install → disque pas touché → fiable à chaque run.
 
-      - name: Copier enrich-seeded-images.mts → /tmp/tsx-cli container
+      - name: Copier enrich-images.cjs → container
         if: inputs.dry_run != 'true' && inputs.skip_enrich != 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
           set -euo pipefail
-          # Copier dans /tmp/tsx-cli/ (à côté de node_modules) :
-          #   - @anthropic-ai/sdk résolu via ./node_modules/
-          #   - ../prisma/generated/client résolu via symlink /tmp/prisma → /app/prisma
           scp -o BatchMode=yes -o StrictHostKeyChecking=no \
-            scripts/enrich-seeded-images.mts \
-            root@178.105.55.15:/tmp/enrich-seeded-images.mts
+            scripts/enrich-images.cjs \
+            root@178.105.55.15:/tmp/enrich-images.cjs
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker cp /tmp/enrich-seeded-images.mts \
-             '$CONTAINER':/tmp/tsx-cli/enrich-seeded-images.mts"
-          echo "✓ enrich-seeded-images.mts copié dans /tmp/tsx-cli du container"
+            "docker cp /tmp/enrich-images.cjs '$CONTAINER':/tmp/enrich-images.cjs"
+          echo "✓ enrich-images.cjs copié dans /tmp du container"
 
       - name: Enrichissement SEO/AEO/GEO via Claude Vision (FR)
         if: inputs.dry_run != 'true' && inputs.skip_enrich != 'true'
-        timeout-minutes: 20
+        timeout-minutes: 45
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
           FORCE_FLAG: ${{ inputs.force_enrich == 'true' && '--force' || '' }}
         run: |
           set -euo pipefail
-          echo "── Enrichissement Claude Vision (skip images déjà enrichies) ──"
-          # Depuis /tmp/tsx-cli/ : node_modules/.bin/tsx + @anthropic-ai/sdk résolu
-          # Symlink /tmp/prisma → /app/prisma résout l'import ../prisma/generated/client
+          echo "── Enrichissement Claude Vision — node /tmp/enrich-images.cjs ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec -e ENRICH_DELAY_MS=2000 '$CONTAINER' sh -c \
-            'cd /tmp/tsx-cli && ./node_modules/.bin/tsx \
-             enrich-seeded-images.mts $FORCE_FLAG 2>&1'" 2>&1
+            "docker exec -e ENRICH_DELAY_MS=1500 '$CONTAINER' sh -c \
+            'cd /app && node /tmp/enrich-images.cjs $FORCE_FLAG 2>&1'" 2>&1
           echo "── Enrichissement terminé ──"
 
-      # ── Post-check ───────────────────────────────────────────────────────────
+      # ── Post-check ────────────────────────────────────────────────────────────
 
       - name: Post-check DB counts
         if: always()
@@ -239,13 +227,13 @@ jobs:
           echo "── Counts après seed + enrich ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' node -e \
-            \"const {PrismaClient}=require('/app/node_modules/@prisma/client');
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
             const p=new PrismaClient();
-            Promise.all([
-              p.imageAsset.count(),
+            Promise.all([p.imageAsset.count(),
               p.imageAssetTranslation.count({where:{languageCode:'fr'}}),
               p.imageAssetTranslation.count({where:{languageCode:'fr',metaTitle:{not:null}}})
             ]).then(([a,t,e])=>{
-              console.log('imageAsset:',a,'trFr:',t,'enrichies:',e);
+              console.log('imageAsset:',a,'| trFr:',t,'| enrichies:',e);
               process.exit(0);
-            }).catch(()=>process.exit(0))\"" 2>&1 || true
+            }).catch(()=>process.exit(0));}
+            catch(e){console.log('post-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true
