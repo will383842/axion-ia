@@ -137,6 +137,32 @@ jobs:
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' ls /app/prisma/seeds/image-bank/ 2>/dev/null" 2>&1 || true
 
+      # ── Wait for DB ready ─────────────────────────────────────────────────────
+      # Après un deploy, Postgres peut être en recovery pendant ~30-90s.
+      # On poll jusqu'à ce que la DB réponde avant de seeder.
+
+      - name: Attendre que la DB soit prête
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "⏳ Poll DB (max 3 min)…"
+          for i in $(seq 1 18); do
+            READY=$(ssh -o BatchMode=yes root@178.105.55.15 \
+              "docker exec '$CONTAINER' node -e \
+              \"const {PrismaClient}=require('/app/prisma/generated/client');
+              const p=new PrismaClient();
+              p.imageAsset.count()
+                .then(()=>{console.log('READY');process.exit(0)})
+                .catch(()=>process.exit(1))\"" 2>/dev/null || true)
+            if [ "$READY" = "READY" ]; then
+              echo "✓ DB prête (tentative $i)"
+              break
+            fi
+            echo "  [$i/18] DB pas encore prête, attente 10s…"
+            sleep 10
+          done
+
       # ── Step 1 : Seed (node CJS pur — pas de tsx) ────────────────────────────
       # seed-images.cjs = CommonJS pur, require('/app/prisma/generated/client').
       # Zéro npm install, zéro tsx. Fiable sur disque plein.
