@@ -141,6 +141,7 @@ export interface SectorTodayCard {
     | "interventions_formations"
     | "audits"
     | "implementations"
+    | "un_a_un"
     | "landing_ville"
     | "blog_from_rss";
   readonly label: string;
@@ -170,6 +171,7 @@ export async function getSectorBreakdownToday(): Promise<SectorBreakdownResult> 
     interventions_formations: "Interventions & Formations",
     audits: "Audits",
     implementations: "Implementations",
+    un_a_un: "Coaching 1-to-1",
   };
 
   // Pour chaque secteur, on compte les jobs via campaign.serviceSector.

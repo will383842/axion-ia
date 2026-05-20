@@ -29,12 +29,14 @@ export const SERVICE_SECTORS = [
   "interventions_formations",
   "audits",
   "implementations",
+  "un_a_un",
 ] as const satisfies ReadonlyArray<ServiceSector>;
 
 export const SERVICE_SECTOR_LABELS: Record<ServiceSector, string> = {
   interventions_formations: "Interventions & Formations",
   audits: "Audits",
   implementations: "Implementations",
+  un_a_un: "Accompagnement 1-to-1",
 };
 
 /**

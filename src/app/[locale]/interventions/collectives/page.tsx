@@ -49,8 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/interventions/collectives",
     title:
       loc === "fr"
-        ? "Formations IA équipe · 4 durées · de 4 heures à 3 jours+"
-        : "Team AI trainings · 4 durations · from 4 hours to 3 days+",
+        ? "Formation IA pour équipes PME · 4 formats · sur site · Axion-IA"
+        : "AI team training for SMEs · 4 formats · on site · Axion-IA",
     description:
       loc === "fr"
         ? `Formations IA opérationnelles pour vos équipes sur site, organisées en 4 paliers durée : 4 heures, 1 jour (dès ${essentiellePrice}), 2 jours, 3 jours et plus (sur devis). 2 à 30+ personnes.`

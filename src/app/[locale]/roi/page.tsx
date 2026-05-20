@@ -11,7 +11,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { RoiSimulator } from "@/components/roi/RoiSimulator";
 import { Illustration } from "@/components/visual/Illustration";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, buildFaqJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/marketing/JsonLd";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -182,6 +183,57 @@ export default async function RoiPage({ params }: Props) {
           </Cta>
         }
         tone="dark"
+      />
+
+      <JsonLd
+        data={buildFaqJsonLd({
+          items: isFr
+            ? [
+                {
+                  question: "Combien d'heures par jour l'IA peut-elle libérer dans mon équipe ?",
+                  answer:
+                    "Axion-IA observe en moyenne 1 à 3 heures libérées par personne et par jour suite à une formation IA, selon les profils et les tâches automatisées. Chiffres issus du suivi de 38 entreprises après une session Essentielle.",
+                },
+                {
+                  question: "Comment calculer le ROI d'une formation IA pour une PME ?",
+                  answer:
+                    "Le simulateur Axion-IA utilise 2 paramètres : taille de l'équipe et heures quotidiennes sur tâches répétitives. Il calcule les heures gagnées par jour, les jours libérés par mois et le nombre d'emails rédigés sans effort — gains directement convertibles en équivalent-temps-plein récupéré.",
+                },
+                {
+                  question:
+                    "En combien de temps les résultats sont-ils visibles après une formation IA ?",
+                  answer:
+                    "Les résultats opérationnels sont visibles dès les premières 72 heures : les participants appliquent immédiatement les workflows appris sur leurs cas réels. L'impact mesurable sur la productivité se confirme sur 4 à 8 semaines de pratique régulière.",
+                },
+                {
+                  question: "Le simulateur ROI Axion-IA donne-t-il des chiffres exacts ?",
+                  answer:
+                    "Le simulateur fournit des estimations basées sur des observations terrain (38 entreprises suivies). Les résultats réels dépendent du niveau d'adoption interne, des outils retenus et du profil des équipes. Pour un chiffrage personnalisé, l'audit Axion-IA mesure le ROI sur vos process réels.",
+                },
+              ]
+            : [
+                {
+                  question: "How many hours per day can AI free up in my team?",
+                  answer:
+                    "Axion-IA observes an average of 1 to 3 hours freed per person per day after AI training, depending on profiles and automated tasks. Figures from tracking 38 companies after an Essential session.",
+                },
+                {
+                  question: "How do you calculate the ROI of AI training for an SME?",
+                  answer:
+                    "The Axion-IA simulator takes 2 parameters: team size and daily hours on repetitive tasks. It calculates hours saved per day, days freed per month and emails written effortlessly — gains directly convertible into recovered full-time equivalent.",
+                },
+                {
+                  question: "How quickly are results visible after AI training?",
+                  answer:
+                    "Operational results are visible within the first 72 hours: participants immediately apply learned workflows to their real cases. The measurable impact on productivity is confirmed over 4 to 8 weeks of regular practice.",
+                },
+                {
+                  question: "Does the Axion-IA ROI simulator give exact figures?",
+                  answer:
+                    "The simulator provides estimates based on field observations (38 companies tracked). Actual results depend on internal adoption levels, tools chosen and team profiles. For personalised figures, the Axion-IA audit measures ROI on your actual processes.",
+                },
+              ],
+        })}
       />
     </>
   );

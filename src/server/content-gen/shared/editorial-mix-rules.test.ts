@@ -11,8 +11,13 @@ import {
 } from "./editorial-mix-rules";
 
 describe("editorial-mix-rules — constantes", () => {
-  it("3 secteurs cabinet exactement (interventions_formations / audits / implementations)", () => {
-    expect(SERVICE_SECTORS).toEqual(["interventions_formations", "audits", "implementations"]);
+  it("4 secteurs cabinet exactement (interventions_formations / audits / implementations / un_a_un)", () => {
+    expect(SERVICE_SECTORS).toEqual([
+      "interventions_formations",
+      "audits",
+      "implementations",
+      "un_a_un",
+    ]);
   });
 
   it("label fourni pour chaque secteur", () => {

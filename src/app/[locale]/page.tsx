@@ -41,8 +41,8 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     locale,
     path: "/",
     title: isFr
-      ? "Cabinet IA opérationnel · ROI mesurable · Axion-IA"
-      : "Operational AI consultancy · Measurable ROI · Axion-IA",
+      ? "Formation & Audit IA pour entreprises · Cabinet opérationnel · Axion-IA"
+      : "AI Training & Audit for companies · Operational consultancy · Axion-IA",
     description: isFr
       ? `Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
       : `On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,

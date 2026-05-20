@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA OÜ — cabinet IA opérationnel pour entreprises. Mission, équipe, valeurs, parcours."
-        : "Axion-IA OÜ — operational AI consultancy for companies. Mission, team, values, timeline.",
+        ? "Axion-IA — cabinet IA opérationnel pour entreprises. Mission, équipe, valeurs, parcours."
+        : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
 }
@@ -92,7 +92,7 @@ export default async function About({ params }: Props) {
               {/* Pills réassurance */}
               <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2.5">
                 {[
-                  { icon: Building2, label: "Axion-IA OÜ · Tallinn" },
+                  { icon: Building2, label: isFr ? "Axion-IA · Europe" : "Axion-IA · Europe" },
                   { icon: ShieldCheck, label: isFr ? "Hébergement UE" : "EU hosting" },
                   { icon: Calendar, label: isFr ? "Fondé 2024" : "Founded 2024" },
                   { icon: Globe2, label: isFr ? "FR · EN · UE" : "FR · EN · EU" },

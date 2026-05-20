@@ -2775,6 +2775,7 @@ enum ServiceSector {
   interventions_formations
   audits
   implementations
+  un_a_un
 }
 
 /// Profil distribution % par ContentType pour campagnes (§ 25.2 v1.7).

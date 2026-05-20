@@ -58,6 +58,17 @@ const CAMPAIGNS: ReadonlyArray<SectorCampaignSeed> = [
       faq_standalone: 5,
     },
   },
+  {
+    name: "Éditorial · Accompagnement 1-to-1",
+    serviceSector: "un_a_un",
+    distribution: {
+      blog_article: 30,
+      qa_derived: 25,
+      guide_pilier: 20,
+      faq_standalone: 15,
+      blog_from_keywords: 10,
+    },
+  },
 ];
 
 // Audience mix par défaut : majorité PME/ETI privés (cible cabinet B2B).

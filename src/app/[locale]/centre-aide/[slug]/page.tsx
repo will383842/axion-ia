@@ -18,7 +18,7 @@ import {
   listHelpArticleSlugs,
   listHelpArticles,
 } from "@/lib/help-articles/reader";
-import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
+import { buildProductMetadata, BUILD_DATE, buildQAPageJsonLd } from "@/lib/seo";
 import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { splitTitleEm } from "@/lib/title";
 
@@ -94,6 +94,13 @@ export default async function HelpArticlePage({ params }: Props) {
     updatedAt: BUILD_DATE,
     urlSegment: "centre-aide",
     section: article.category,
+  });
+
+  const qaJsonLd = buildQAPageJsonLd({
+    locale: loc,
+    path: `/centre-aide/${slug}`,
+    question: copy.title,
+    acceptedAnswer: { text: copy.excerpt || copy.body.slice(0, 300) },
   });
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
@@ -225,6 +232,7 @@ export default async function HelpArticlePage({ params }: Props) {
       />
 
       <JsonLd data={articleJsonLd} />
+      <JsonLd data={qaJsonLd} />
     </>
   );
 }

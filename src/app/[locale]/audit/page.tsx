@@ -67,8 +67,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/audit",
     title:
       loc === "fr"
-        ? `Audit IA · 4 niveaux · Flash dès ${flash} · Axion-IA`
-        : `AI audit · 4 levels · Flash from ${flash} · Axion-IA`,
+        ? `Audit IA PME & ETI · 4 niveaux · Flash dès ${flash} · Axion-IA`
+        : `AI audit for SMEs & mid-caps · 4 levels · from ${flash} · Axion-IA`,
     description:
       loc === "fr"
         ? `4 niveaux d'audit IA : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. Choisissez selon votre taille ou votre situation.`
@@ -144,8 +144,8 @@ export default async function AuditHub({ params }: Props) {
                 className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
               {isFr
-                ? "Audit IA · 4 niveaux · 2 portes d'entrée"
-                : "AI audit · 4 levels · 2 entry doors"}
+                ? "Audit IA PME & ETI · 4 niveaux · 2 portes d'entrée"
+                : "AI audit for SMEs & mid-caps · 4 levels · 2 entry doors"}
             </p>
 
             <h1 className="display-editorial text-fg mt-5">
@@ -267,7 +267,7 @@ export default async function AuditHub({ params }: Props) {
                   id: "eu-jurisdiction",
                   question: "Axion-IA peut-elle facturer en France ?",
                   answer:
-                    "Oui. Axion-IA OÜ est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
+                    "Oui. Axion-IA est une société européenne dûment enregistrée, opérant en libre prestation de services dans toute l'UE (incluant France). Facturation HT, paiement par virement SEPA ou carte. Données hébergées exclusivement en UE (Hetzner Frankfurt). Conformité RGPD complète.",
                 },
                 {
                   id: "starting-point",
@@ -305,7 +305,7 @@ export default async function AuditHub({ params }: Props) {
                   id: "eu-jurisdiction",
                   question: "Can Axion-IA invoice in France?",
                   answer:
-                    "Yes. Axion-IA OÜ is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
+                    "Yes. Axion-IA is a duly registered European company, operating under EU free-services-provision (including France). Excl. VAT invoicing, SEPA transfer or card payment. Data hosted exclusively in the EU (Hetzner Frankfurt). Full GDPR compliance.",
                 },
                 {
                   id: "starting-point",

@@ -51,7 +51,8 @@ export function GET() {
 
   const body = `# Axion-IA — full content for AI crawlers
 
-> Cabinet IA opérationnel B2B pour entreprises. Axion-IA OÜ.
+> Cabinet IA opérationnel B2B pour entreprises. Fondé en France, implanté en Europe.
+> ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
 > Site officiel : ${SITE_URL}
 > Langues : FR canonique, EN miroir.
 > Hébergement : Hetzner CPX32 Frankfurt (UE).
@@ -96,7 +97,7 @@ URL : ${SITE_URL}/fr/methodologie
 
 - Mobile-first absolu, accessible WCAG 2.2 AA.
 - Hébergement UE (Hetzner Frankfurt), pas de Stripe, pas de Resend.
-- Axion-IA OÜ, régime TVA UE.
+- Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.
 - 30 jours de support post-livraison inclus.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted).

@@ -52,6 +52,9 @@ export const ROUTES = {
   auditStrategiqueEti: "/audit/strategique-eti",
   auditDemande: "/audit/demande",
 
+  // Module 4 — Accompagnement 1-to-1
+  unAUn: "/un-a-un",
+
   // Module 3 — Implémentation
   implementation: "/implementation",
   implementationIaCustom: "/implementation/ia-custom",

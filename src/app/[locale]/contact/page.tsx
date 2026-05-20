@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Contact · Axion-IA · 48 business-hour reply",
     description:
       locale === "fr"
-        ? "Demandez un devis ou réservez une intervention. Réponse sous 48 h ouvrées. Axion-IA OÜ — cabinet IA opérationnel."
-        : "Request a quote or book a session. Reply within 48 business hours. Axion-IA OÜ — operational AI consultancy.",
+        ? "Demandez un devis ou réservez une intervention. Réponse sous 48 h ouvrées. Cabinet IA opérationnel Axion-IA."
+        : "Request a quote or book a session. Reply within 48 business hours. Axion-IA operational AI consultancy.",
   });
 }
 
@@ -303,7 +303,7 @@ export default async function Contact({ params }: Props) {
       <Section eyebrow={isFr ? "Coordonnées" : "Details"}>
         <Container className="text-fg max-w-2xl space-y-2 text-base leading-relaxed">
           <p>
-            <strong>{isFr ? "Société" : "Company"} :</strong> Axion-IA OÜ
+            <strong>{isFr ? "Société" : "Company"} :</strong> Axion-IA
           </p>
           <p>
             <strong>Email :</strong>{" "}

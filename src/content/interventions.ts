@@ -1626,6 +1626,11 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
       ctaBlockDescription:
         "Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe 690 € HT pour 2 à 8 personnes.",
+      metaSeo: {
+        title: "Expert Claude (Anthropic) · Formation IA outil-spécifique · Axion-IA",
+        description:
+          "Formation sur site dédiée à Claude (Anthropic) : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (CLI). Groupe 2-8 personnes. Tarif fixe.",
+      },
     },
     en: {
       ...makeEn({
@@ -1693,6 +1698,11 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ctaBlockTitle: "Master Claude (Anthropic) in depth",
       ctaBlockDescription:
         "Book the next date — live calendar, instant confirmation. Fixed fee €690 (excl. VAT) for 2 to 8 people.",
+      metaSeo: {
+        title: "Claude (Anthropic) Expert Training · AI Tool-specific Session · Axion-IA",
+        description:
+          "On-site training dedicated to Claude (Anthropic): Chat (writing, analysis), Cowork (Projects, files, memory) and Code (CLI). Groups of 2-8 people. Fixed fee.",
+      },
     },
   },
 ];
