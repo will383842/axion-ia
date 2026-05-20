@@ -219,10 +219,32 @@ jobs:
           FORCE_FLAG: ${{ inputs.force_enrich == 'true' && '--force' || '' }}
         run: |
           set -euo pipefail
-          echo "── Enrichissement Claude Vision — node /tmp/enrich-images.cjs ──"
-          ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec -e ENRICH_DELAY_MS=1500 '$CONTAINER' sh -c \
-            'cd /app && node /tmp/enrich-images.cjs $FORCE_FLAG 2>&1'" 2>&1
+          echo "── Enrichissement Claude Vision (micro-batches de 10 images) ──"
+          # Micro-batches : chaque run node est indépendant (mémoire réinitialisée).
+          # Le script est idempotent : skip les images déjà enrichies.
+          # --max-old-space-size=96 → GC agressif, compatible avec container slim.
+          BATCH=0
+          while true; do
+            BATCH=$((BATCH+1))
+            echo "  [Batch $BATCH] Enrichissement..."
+            OUTPUT=$(ssh -o BatchMode=yes root@178.105.55.15 \
+              "docker exec -e ENRICH_DELAY_MS=1200 '$CONTAINER' sh -c \
+              'cd /app && node --max-old-space-size=96 /tmp/enrich-images.cjs \
+               $FORCE_FLAG --limit 10 2>&1'" 2>&1)
+            echo "$OUTPUT"
+            # Si "Toutes les images sont déjà enrichies" → terminé
+            if echo "$OUTPUT" | grep -q "déjà enrichies\|0 image"; then
+              echo "✅ Toutes les images enrichies."
+              break
+            fi
+            # Si "0 enrichis" sans nouvelles images → terminé
+            if echo "$OUTPUT" | grep -qE "📸  0 image"; then
+              echo "✅ Plus d'images à enrichir."
+              break
+            fi
+            # Pause entre batches (laisse le container GC)
+            sleep 5
+          done
           echo "── Enrichissement terminé ──"
 
       # ── Post-check ────────────────────────────────────────────────────────────
