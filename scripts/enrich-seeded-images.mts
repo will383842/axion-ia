@@ -57,8 +57,6 @@ Contraintes strictes :
 - embed_title : ≤ 60 char (Pinterest, widget, embed).
 - keywords_primary   : 1-4 mots séparés par virgule.
 - keywords_secondary : tableau JSON de 5-10 mots ou expressions courtes.
-- embedded_text_caption : TRANSCRIPTION EXACTE de tout le texte visible dans l'image (titres, chiffres, statistiques, URL, CTA, légendes). Si aucun texte visible : "".
-
 Retourne UNIQUEMENT un objet JSON valide, sans backticks, sans commentaire :
 {
   "alt": "...",
@@ -71,8 +69,7 @@ Retourne UNIQUEMENT un objet JSON valide, sans backticks, sans commentaire :
   "ai_summary": "...",
   "embed_title": "...",
   "keywords_primary": "...",
-  "keywords_secondary": ["...", "..."],
-  "embedded_text_caption": "..."
+  "keywords_secondary": ["...", "..."]
 }`;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -89,7 +86,6 @@ interface RawClaude {
   embed_title?: unknown;
   keywords_primary?: unknown;
   keywords_secondary?: unknown;
-  embedded_text_caption?: unknown;
 }
 
 interface EnrichResult {
@@ -104,7 +100,6 @@ interface EnrichResult {
   embedTitle: string;
   keywordsPrimary: string;
   keywordsSecondary: string[];
-  embeddedText: string;
 }
 
 // ─── Core enrichment ──────────────────────────────────────────────────────────
@@ -188,7 +183,6 @@ async function enrichOne(asset: {
     embedTitle: str(raw.embed_title, 60),
     keywordsPrimary: str(raw.keywords_primary, 120),
     keywordsSecondary: arr(raw.keywords_secondary),
-    embeddedText: str(raw.embedded_text_caption, 2000),
   };
 }
 
@@ -211,7 +205,6 @@ async function saveEnriched(imageId: string, slug: string, e: EnrichResult): Pro
         ogDescription: e.ogDescription || null,
         aiSummary: e.aiSummary || null,
         embedTitle: e.embedTitle || null,
-        ...(e.embeddedText ? { embeddedText: e.embeddedText } : {}),
       },
       create: {
         imageId,
@@ -227,7 +220,6 @@ async function saveEnriched(imageId: string, slug: string, e: EnrichResult): Pro
         ogDescription: e.ogDescription || null,
         aiSummary: e.aiSummary || null,
         embedTitle: e.embedTitle || null,
-        ...(e.embeddedText ? { embeddedText: e.embeddedText } : {}),
         isPublished: true,
         publishedAt: new Date(),
       },
