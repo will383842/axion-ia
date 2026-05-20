@@ -127,6 +127,22 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/components\/admin\/ui\/AdminStatCard\.tsx$/,
   /^src\/components\/admin\/ui\/AdminSubmitButton\.tsx$/,
   /^tests\/e2e\/admin-baseline-screenshots\.spec\.ts$/,
+  // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
+  // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
+  // ou des commentaires de code (référence à un consommateur, contexte audit, URL
+  // admin console) — aucun couplage code réel. Pas de violation isolation §4.1bis.
+  /^src\/content\/villes\/index\.ts$/,
+  /^src\/content\/glossary-extension\.ts$/,
+  /^src\/content\/keywords\/master\.ts$/,
+  /^src\/content\/keywords\/types\.ts$/,
+  /^src\/lib\/geo\.ts$/,
+  /^src\/lib\/same-origin\.ts$/,
+  /^src\/server\/queue\/lib\/sanitize-job-data\.ts$/,
+  /^src\/server\/queue\/lib\/sentry-worker\.ts$/,
+  /^src\/server\/queue\/lib\/__tests__\/sentry-worker\.spec\.ts$/,
+  /^src\/app\/\[locale\]\/guides\/page\.tsx$/,
+  /^prisma\/migrations\/\d+_p1_audit_topic_fingerprint_and_audit_log\/migration\.sql$/,
+  /^prisma\/migrations\/\d+_add_rss_source_table\/migration\.sql$/,
 ];
 
 /**
