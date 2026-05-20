@@ -487,6 +487,32 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Generic AI training presents tools theoretically. An Axion-IA session is 100% practical: the trainer works directly on your emails, documents, data and real processes. You leave with operational workflows for your specific case, not generic concepts.",
     },
   },
+  {
+    id: "site-web-augmente-ia",
+    fr: {
+      question: "Qu'est-ce qu'un site web augmenté par l'IA ?",
+      answer:
+        "Un site web augmenté par l'IA intègre des fonctions d'intelligence artificielle directement dans votre interface : recherche sémantique, chatbot métier personnalisé, génération de contenu automatisé, recommandation de produits ou services, et analyse des comportements visiteurs. Axion-IA conçoit et implémente ces couches IA sur votre site existant (WordPress, Next.js, Webflow…) sans refonte complète.",
+    },
+    en: {
+      question: "What is an AI-augmented website?",
+      answer:
+        "An AI-augmented website integrates artificial intelligence features directly into your interface: semantic search, custom business chatbot, automated content generation, product or service recommendations, and visitor behaviour analytics. Axion-IA designs and implements these AI layers on your existing site (WordPress, Next.js, Webflow…) without a complete rebuild.",
+    },
+  },
+  {
+    id: "coaching-1-to-1-dirigeant",
+    fr: {
+      question: "À quoi sert le coaching 1-to-1 IA pour les dirigeants ?",
+      answer:
+        "Le coaching 1-to-1 Axion-IA est un accompagnement individuel pour les dirigeants, DG, DRH ou directeurs de service. En 3 à 5 séances, vous apprenez à intégrer l'IA dans votre propre pratique quotidienne : préparation de réunions, analyse de données, rédaction stratégique, veille sectorielle automatisée. L'objectif : gagner 5 à 10 heures par semaine et prendre de meilleures décisions plus vite.",
+    },
+    en: {
+      question: "What is the 1-to-1 AI coaching for executives?",
+      answer:
+        "Axion-IA 1-to-1 coaching is individual support for CEOs, managing directors, HRDs or department heads. In 3 to 5 sessions, you learn to integrate AI into your own daily practice: meeting preparation, data analysis, strategic writing, automated sector monitoring. The goal: save 5 to 10 hours per week and make better decisions faster.",
+    },
+  },
 ];
 
 // Blog : split Sprint 14.10 (2026-05-08) — `BlogPost` + données + helpers

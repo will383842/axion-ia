@@ -285,7 +285,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
 
   // ── PME — D4 AEO ─────────────────────────────────────────────────────────
   {
-    keyword: "combien de temps pour implémenter l'IA en PME",
+    keyword: "combien de temps pour implémenter l'IA en PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "implementation",
@@ -305,7 +305,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
     note: "Schema.org FAQPage. Phrase exacte pour Answer Box / AI Overviews.",
   },
   {
-    keyword: "quelle IA choisir pour une PME en 2026",
+    keyword: "quelle IA choisir pour une PME en 2026 ?",
     intent: "aeo",
     kbType: "comparison",
     module: "implementation",
@@ -323,7 +323,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
     source: "manuel",
   },
   {
-    keyword: "est-ce qu'une PME peut se permettre l'IA",
+    keyword: "est-ce qu'une PME peut se permettre l'IA ?",
     intent: "aeo",
     kbType: "faq",
     module: "implementation",
@@ -494,7 +494,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
 
   // ── ETI — D4 AEO ─────────────────────────────────────────────────────────
   {
-    keyword: "combien coûte un projet IA pour une ETI",
+    keyword: "combien coûte un projet IA pour une ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "implementation",
@@ -513,7 +513,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
     note: "Schema.org FAQPage. Answer Box cible.",
   },
   {
-    keyword: "délai ROI IA entreprise taille intermédiaire",
+    keyword: "délai ROI IA entreprise taille intermédiaire ?",
     intent: "aeo",
     kbType: "faq",
     module: "implementation",
@@ -680,7 +680,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
 
   // ── Startup/Scaleup — D4 AEO ─────────────────────────────────────────────
   {
-    keyword: "quelle IA intégrer dans un produit SaaS en 2026",
+    keyword: "quelle IA intégrer dans un produit SaaS en 2026 ?",
     intent: "aeo",
     kbType: "comparison",
     module: "implementation",
@@ -699,7 +699,7 @@ export const KW_IMPLEMENTATION_G3: KeywordSeed[] = [
     note: "Schema.org FAQPage + HowTo. Maillage vers /fr/codage-developpement/.",
   },
   {
-    keyword: "combien de temps pour intégrer IA dans un produit SaaS",
+    keyword: "combien de temps pour intégrer IA dans un produit SaaS ?",
     intent: "aeo",
     kbType: "faq",
     module: "implementation",
@@ -1024,7 +1024,7 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
 
   // ── Codage — AEO ─────────────────────────────────────────────────────────
   {
-    keyword: "combien de temps pour développer une solution IA sur mesure",
+    keyword: "combien de temps pour développer une solution IA sur mesure ?",
     intent: "aeo",
     kbType: "faq",
     module: "codage-developpement",
@@ -1043,7 +1043,7 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
     note: "Schema.org FAQPage. Phrase question exacte → Answer Box.",
   },
   {
-    keyword: "peut-on intégrer l'IA dans un ERP existant sans refonte",
+    keyword: "peut-on intégrer l'IA dans un ERP existant sans refonte ?",
     intent: "aeo",
     kbType: "faq",
     module: "codage-developpement",
@@ -1061,7 +1061,7 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
     source: "manuel",
   },
   {
-    keyword: "quelle différence entre développeur IA et cabinet IA",
+    keyword: "quelle différence entre développeur IA et cabinet IA ?",
     intent: "aeo",
     kbType: "faq",
     module: "codage-developpement",

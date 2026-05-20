@@ -105,6 +105,15 @@ export const KB_SECTOR_TAGS: ReadonlyArray<KbSectorTag> = [
     descEn: "Advertising agencies, broadcast media, PR, B2B marketing.",
     categorie: "tertiaire",
   },
+  {
+    slug: "juridique",
+    labelFr: "Juridique & Notariat",
+    labelEn: "Legal & Notarial",
+    descFr:
+      "Cabinets d'avocats, notaires, huissiers, LegalTech et conseil juridique en entreprise.",
+    descEn: "Law firms, notaries, bailiffs, LegalTech and in-house legal counsel.",
+    categorie: "tertiaire",
+  },
 
   // ─── Industrie ──────────────────────────────────────────────────────
   {
@@ -298,9 +307,7 @@ export const KB_SECTOR_TAGS: ReadonlyArray<KbSectorTag> = [
 ] as const;
 
 /** Set des slugs valides (pour validation runtime kbSectorTags). */
-export const KB_SECTOR_TAG_SLUGS: ReadonlySet<string> = new Set(
-  KB_SECTOR_TAGS.map((t) => t.slug),
-);
+export const KB_SECTOR_TAG_SLUGS: ReadonlySet<string> = new Set(KB_SECTOR_TAGS.map((t) => t.slug));
 
 export function getSectorTag(slug: string): KbSectorTag | undefined {
   return KB_SECTOR_TAGS.find((t) => t.slug === slug);

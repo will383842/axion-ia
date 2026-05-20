@@ -149,12 +149,12 @@ export default async function AuditHub({ params }: Props) {
             </p>
 
             <h1 className="display-editorial text-fg mt-5">
-              {isFr ? "Choisissez votre audit IA " : "Choose your AI audit "}
+              {isFr ? "Audit IA pour PME & ETI " : "AI Audit for SMEs & mid-caps "}
               <span
                 className="text-terracotta-deep mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "en 30 secondes" : "in 30 seconds"}
+                {isFr ? "dès 490 €" : "from €490"}
               </span>
             </h1>
 

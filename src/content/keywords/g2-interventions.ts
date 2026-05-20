@@ -244,7 +244,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "est-ce que l'IA peut vraiment aider une TPE de 3 personnes",
+    keyword: "est-ce que l'IA peut vraiment aider une TPE de 3 personnes ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -276,7 +276,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "combien coûte une formation IA pour une TPE",
+    keyword: "combien coûte une formation IA pour une TPE ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -536,7 +536,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "quelle durée de formation IA est efficace pour une PME",
+    keyword: "quelle durée de formation IA est efficace pour une PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -764,7 +764,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "est-il rentable de former toute son ETI à l'IA",
+    keyword: "est-il rentable de former toute son ETI à l'IA ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -960,7 +960,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "comment une école privée peut intégrer l'IA sans fraude académique",
+    keyword: "comment une école privée peut intégrer l'IA sans fraude académique ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -992,7 +992,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "quel tarif pour un conférencier IA en école de commerce",
+    keyword: "quel tarif pour un conférencier IA en école de commerce ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1220,7 +1220,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "l'IA peut-elle remplacer les formateurs humains dans un OF",
+    keyword: "l'IA peut-elle remplacer les formateurs humains dans un OF ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1252,7 +1252,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "comment intégrer l'IA dans un programme de formation accrédité RNCP",
+    keyword: "comment intégrer l'IA dans un programme de formation accrédité RNCP ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1445,7 +1445,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "quelle différence entre formation IA et audit IA",
+    keyword: "quelle différence entre formation IA et audit IA ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1477,7 +1477,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "combien de temps faut-il pour former une équipe à l'IA",
+    keyword: "combien de temps faut-il pour former une équipe à l'IA ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1509,7 +1509,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "formation IA en présentiel vs formation IA en ligne laquelle choisir",
+    keyword: "formation IA en présentiel vs formation IA en ligne laquelle choisir ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1801,7 +1801,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "la formation IA peut-elle être financée pour une TPE de moins de 10 salariés",
+    keyword: "la formation IA peut-elle être financée pour une TPE de moins de 10 salariés ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -1896,7 +1896,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     urlCible: "/fr/interventions-formations/pme",
     canonicalParent: "/fr/interventions-formations/",
-    secteur: "industrie-manufacturing",
+    secteur: "industrie-manufacturiere",
     source: "manuel",
     note: "D1 transactionnel sectoriel · industrie manufacturière PME · angle terrain",
   },
@@ -2029,13 +2029,13 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     urlCible: "/fr/interventions-formations/eti",
     canonicalParent: "/fr/interventions-formations/",
-    secteur: "services-conseil",
+    secteur: "conseil-affaires",
     source: "manuel",
     note: "D2 bénéfice · étude de cas sectorielle ETI services · social proof fort",
   },
 
   {
-    keyword: "quel budget formation IA pour 100 personnes en ETI",
+    keyword: "quel budget formation IA pour 100 personnes en ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -2094,7 +2094,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     urlCible: "/fr/interventions-formations/eti",
     canonicalParent: "/fr/interventions-formations/",
-    secteur: "banque-assurance",
+    secteur: "banque-finance",
     source: "manuel",
     note: "D1 transactionnel sectoriel · ETI fintech/assurance · AI Act angle fort",
   },
@@ -2131,7 +2131,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     urlCible: "/fr/interventions-formations/ecoles",
     canonicalParent: "/fr/interventions-formations/",
-    secteur: "design-creatif",
+    secteur: "arts-creatif-design",
     source: "manuel",
     note: "D1 transactionnel sectoriel · école design · IA générative créative",
   },
@@ -2164,7 +2164,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     urlCible: "/fr/interventions-formations/ecoles",
     canonicalParent: "/fr/interventions-formations/",
-    secteur: "juridique-legaltech",
     source: "manuel",
     note: "D1 transactionnel sectoriel · école droit · AI Act pédagogique",
   },
@@ -2197,13 +2196,13 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     },
     urlCible: "/fr/blog/ia-marketing-digital-ecole-guide-pedagogique",
     canonicalParent: "/fr/interventions-formations/ecoles",
-    secteur: "marketing-digital",
+    secteur: "communication-medias",
     source: "manuel",
     note: "D3 informationnel · blog · audience responsables pédagogiques · long-form",
   },
 
   {
-    keyword: "pourquoi une école privée doit former ses étudiants à l'IA dès 2026",
+    keyword: "pourquoi une école privée doit former ses étudiants à l'IA dès 2026 ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",
@@ -2335,7 +2334,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   },
 
   {
-    keyword: "quel est le coût d'une formation IA pour les formateurs d'un OF",
+    keyword: "quel est le coût d'une formation IA pour les formateurs d'un OF ?",
     intent: "aeo",
     kbType: "faq",
     module: "interventions-formations",

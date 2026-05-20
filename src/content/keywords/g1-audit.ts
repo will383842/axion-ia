@@ -636,7 +636,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   // ── TPE — D4 AEO / QUESTIONS ─────────────────────────────────────────────
 
   {
-    keyword: "faut-il un audit IA avant d'acheter un outil pour sa TPE",
+    keyword: "faut-il un audit IA avant d'acheter un outil pour sa TPE ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -667,7 +667,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "combien coûte un audit IA pour une petite entreprise",
+    keyword: "combien coûte un audit IA pour une petite entreprise ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -697,7 +697,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "est-ce que l'IA peut vraiment aider une très petite entreprise",
+    keyword: "est-ce que l'IA peut vraiment aider une très petite entreprise ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -727,7 +727,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "quelle différence entre audit IA et formation IA pour une TPE",
+    keyword: "quelle différence entre audit IA et formation IA pour une TPE ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -758,7 +758,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "en combien de temps un audit IA TPE est livré",
+    keyword: "en combien de temps un audit IA TPE est livré ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -788,7 +788,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "peut-on financer un audit IA TPE avec une aide publique",
+    keyword: "peut-on financer un audit IA TPE avec une aide publique ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -1428,7 +1428,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   // ── PME — D4 AEO / QUESTIONS ─────────────────────────────────────────────
 
   {
-    keyword: "quel est le ROI d'un audit IA pour une PME",
+    keyword: "quel est le ROI d'un audit IA pour une PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -1459,7 +1459,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "combien d'employés faut-il pour justifier un audit IA PME",
+    keyword: "combien d'employés faut-il pour justifier un audit IA PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -1489,7 +1489,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "faut-il un DSI pour lancer l'IA dans une PME",
+    keyword: "faut-il un DSI pour lancer l'IA dans une PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -1519,7 +1519,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "quelle différence entre cabinet IA et agence digitale pour une PME",
+    keyword: "quelle différence entre cabinet IA et agence digitale pour une PME ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -1550,7 +1550,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "peut-on auditer l'IA d'une PME en une seule journée",
+    keyword: "peut-on auditer l'IA d'une PME en une seule journée ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -1580,7 +1580,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "comment choisir son cabinet IA pour une PME en France",
+    keyword: "comment choisir son cabinet IA pour une PME en France ?",
     intent: "aeo",
     kbType: "guide",
     module: "audit",
@@ -2221,7 +2221,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   // ── ETI — D4 AEO / QUESTIONS ─────────────────────────────────────────────
 
   {
-    keyword: "quelle différence entre audit IA PME et audit IA ETI",
+    keyword: "quelle différence entre audit IA PME et audit IA ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -2251,7 +2251,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "combien coûte un audit IA pour une ETI",
+    keyword: "combien coûte un audit IA pour une ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -2281,7 +2281,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "faut-il un Chief AI Officer dans une ETI",
+    keyword: "faut-il un Chief AI Officer dans une ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -2311,7 +2311,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "comment mesurer la maturité IA d'une ETI",
+    keyword: "comment mesurer la maturité IA d'une ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -2341,7 +2341,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "combien de temps dure un audit IA stratégique pour une ETI",
+    keyword: "combien de temps dure un audit IA stratégique pour une ETI ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
@@ -2371,7 +2371,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
   },
 
   {
-    keyword: "est-ce qu'une ETI peut exiger des garanties de résultats à un cabinet IA",
+    keyword: "est-ce qu'une ETI peut exiger des garanties de résultats à un cabinet IA ?",
     intent: "aeo",
     kbType: "faq",
     module: "audit",
