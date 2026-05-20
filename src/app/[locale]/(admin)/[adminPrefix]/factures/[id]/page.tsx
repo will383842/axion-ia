@@ -72,7 +72,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-
   const invoice = await prisma.invoice.findUnique({
     where: { id },
     select: {
@@ -177,9 +176,7 @@ export default async function FactureDetailPage({ params }: PageProps) {
             <dt className="admin-dt">Reverse charge</dt>
             <dd className="admin-dd">{invoice.vatReverseCharge ? "Oui (UE)" : "Non"}</dd>
             <dt className="admin-dt">Archivage légal</dt>
-            <dd className="admin-dd">
-              jusqu&apos;au {formatDate(invoice.archivedUntil)} (10 ans)
-            </dd>
+            <dd className="admin-dd">jusqu&apos;au {formatDate(invoice.archivedUntil)} (10 ans)</dd>
           </dl>
         </div>
         <div className="admin-card">
@@ -346,4 +343,3 @@ export default async function FactureDetailPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-

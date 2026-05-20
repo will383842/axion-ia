@@ -52,4 +52,3 @@ export default async function ConnaissancesApercuPage({ params, searchParams }: 
     />
   );
 }
-

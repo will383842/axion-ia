@@ -13,6 +13,7 @@ import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -31,6 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: isFr
       ? "Axion-IA conçoit des plateformes web sur mesure IA-native ou greffe l'IA sur votre existant. Toute stack moderne — chatbot RAG, search sémantique, automatisations. Devis 48 h."
       : "Axion-IA builds AI-native custom platforms or grafts AI onto your existing stack. Any modern tech stack — RAG chatbot, semantic search, automations. Quote in 48 h.",
+    alternates: {
+      fr: "/codage-developpement/web-digital",
+      en: "/codage-developpement/web-digital",
+    },
   });
 }
 
@@ -357,6 +362,7 @@ export default async function WebDigitalPage({ params }: Props) {
       ? "Conception de plateformes web sur mesure IA-native ou intégration de briques IA sur plateforme existante. Toute stack moderne. Chatbot RAG, search sémantique, agents, automatisations. Devis ferme 48 h."
       : "AI-native custom web platform design or AI brick integration on existing platforms. Any modern stack. RAG chatbot, semantic search, agents, automations. Firm quote in 48 h.",
     serviceType: "AI web integration",
+    areasServed: buildServiceAreasServed(loc),
   });
 
   const faqJsonLd = buildFaqJsonLd({ items: faqs });

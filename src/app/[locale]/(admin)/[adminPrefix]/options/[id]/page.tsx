@@ -28,7 +28,6 @@ export default async function OptionDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-
   const opt = await getOptionDetailAction(id);
   if (!opt) notFound();
 
@@ -134,4 +133,3 @@ export default async function OptionDetailPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-

@@ -97,8 +97,8 @@ export default async function NewQuotePage({ params, searchParams }: PageProps) 
         <h2 className="admin-h2">Données du devis</h2>
         <p className="admin-meta-block">
           Le numéro <code>DEVIS-2026-NNNN</code> sera attribué atomiquement. Le devis sera
-          d&apos;abord en <code>draft</code> ; tu pourras l&apos;envoyer ensuite via DocuSeal
-          depuis sa fiche détail.
+          d&apos;abord en <code>draft</code> ; tu pourras l&apos;envoyer ensuite via DocuSeal depuis
+          sa fiche détail.
         </p>
         <NewQuoteForm bookingId={booking.id} defaultAmountHtCents={booking.basePriceHtCents} />
       </div>

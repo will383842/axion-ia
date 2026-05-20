@@ -49,7 +49,6 @@ export default async function DevisDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-
   const quote = await prisma.quote.findUnique({
     where: { id },
     select: {
@@ -211,4 +210,3 @@ export default async function DevisDetailPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-

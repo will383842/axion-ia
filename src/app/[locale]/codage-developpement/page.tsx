@@ -9,7 +9,9 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -28,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: isFr
       ? "Axion-IA conçoit des plateformes web sur mesure IA-natives ou augmente vos applications existantes. Toute stack moderne. Agents, automatisations, chatbot RAG, search sémantique."
       : "Axion-IA builds AI-native custom web platforms or augments your existing applications. Any modern stack. Agents, automations, RAG chatbot, semantic search.",
+    alternates: { fr: "/codage-developpement", en: "/codage-developpement" },
   });
 }
 
@@ -105,6 +108,73 @@ export default async function CodageDeveloppementHub({ params }: Props) {
         { icon: ArrowRight, label: "Fixed fee · firm quote 48 h" },
       ];
 
+  const faqs = isFr
+    ? [
+        {
+          id: "q-build-ou-augment",
+          question:
+            "Comment choisir entre une nouvelle plateforme et l'augmentation de l'existant ?",
+          answer:
+            "Si votre plateforme actuelle a plus de 5 ans, est difficile à faire évoluer ou ne supporte pas d'API, repartir sur une base IA-native est souvent plus rentable à 18 mois. Si elle fonctionne bien et expose une API, l'augmentation est plus rapide et moins coûteuse. On vous aide à trancher lors du premier appel.",
+        },
+        {
+          id: "q-stack",
+          question: "Vous travaillez avec quelle stack technique ?",
+          answer:
+            "On maîtrise Next.js, Laravel, Django, Rails, Symfony, Vue, React, Angular, Postgres, MySQL, MongoDB et toute stack exposant une API REST ou GraphQL. On s'adapte à votre environnement existant — pas l'inverse.",
+        },
+        {
+          id: "q-ia-dans-plateforme",
+          question: "Qu'est-ce que ça veut dire concrètement une plateforme IA-native ?",
+          answer:
+            "L'IA n'est pas un module ajouté en fin de projet. Elle est intégrée dès la conception : agents autonomes capables d'agir, automatisations des processus métier répétitifs, search sémantique, chatbot RAG formé sur vos données. Résultat : une plateforme qui fait des choses sans qu'un humain ait à les déclencher.",
+        },
+        {
+          id: "q-delai-cout",
+          question: "Combien de temps et quel budget prévoir ?",
+          answer:
+            "Un chatbot RAG greffé sur une plateforme existante : 3 semaines, à partir de 2 000 €. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement.",
+        },
+        {
+          id: "q-proprio",
+          question: "Qui est propriétaire du code et des données ?",
+          answer:
+            "Vous. Intégralement. Code source, bases de données, modèles IA, configurations — tout est livré dans votre infrastructure. Aucun abonnement mensuel imposé. Si vous nous quittez, la plateforme continue de fonctionner.",
+        },
+      ]
+    : [
+        {
+          id: "q-build-or-augment",
+          question: "How do I choose between a new platform and augmenting the existing one?",
+          answer:
+            "If your current platform is over 5 years old, hard to evolve or doesn't support an API, an AI-native rebuild is often more cost-effective at 18 months. If it works well and exposes an API, augmentation is faster and cheaper. We help you decide on the first call.",
+        },
+        {
+          id: "q-stack",
+          question: "Which tech stack do you work with?",
+          answer:
+            "We master Next.js, Laravel, Django, Rails, Symfony, Vue, React, Angular, Postgres, MySQL, MongoDB and any stack exposing a REST or GraphQL API. We adapt to your existing environment — not the other way around.",
+        },
+        {
+          id: "q-ai-native",
+          question: "What does AI-native platform actually mean?",
+          answer:
+            "AI is not a module added at the end of the project. It is integrated from day one: autonomous agents capable of acting, automation of repetitive business processes, semantic search, RAG chatbot trained on your data. Result: a platform that does things without a human having to trigger them.",
+        },
+        {
+          id: "q-time-cost",
+          question: "How long and what budget should I plan for?",
+          answer:
+            "A RAG chatbot grafted onto an existing platform: 3 weeks, from €2,000. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns.",
+        },
+        {
+          id: "q-owner",
+          question: "Who owns the code and data?",
+          answer:
+            "You do. Entirely. Source code, databases, AI models, configurations — everything delivered into your infrastructure. No imposed monthly subscription. If you leave us, the platform keeps running.",
+        },
+      ];
+
   const serviceJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/codage-developpement",
@@ -115,11 +185,15 @@ export default async function CodageDeveloppementHub({ params }: Props) {
       ? "Conception de plateformes web sur mesure IA-natives et augmentation de plateformes existantes. Agents, automatisations, chatbot RAG, search sémantique. Toute stack moderne."
       : "AI-native custom web platform design and augmentation of existing platforms. Agents, automations, RAG chatbot, semantic search. Any modern stack.",
     serviceType: "AI web platform development",
+    areasServed: buildServiceAreasServed(loc),
   });
+
+  const faqJsonLd = buildFaqJsonLd({ items: faqs });
 
   return (
     <>
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={faqJsonLd} />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
@@ -260,6 +334,16 @@ export default async function CodageDeveloppementHub({ params }: Props) {
             );
           })}
         </ul>
+      </Section>
+
+      {/* FAQ AEO */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Vos questions" : "Your questions"}
+        title={isFr ? "Réponses" : "Straight"}
+        titleEm={isFr ? "directes" : "answers"}
+      >
+        <FaqAccordion items={faqs} className="mx-auto max-w-3xl" />
       </Section>
 
       {/* CTA FINAL */}

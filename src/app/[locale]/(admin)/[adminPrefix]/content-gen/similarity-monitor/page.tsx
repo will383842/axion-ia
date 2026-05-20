@@ -22,4 +22,3 @@ export default async function SimilarityMonitorPage({ params }: PageProps) {
 
   return <SimilarityMonitorV2 />;
 }
-

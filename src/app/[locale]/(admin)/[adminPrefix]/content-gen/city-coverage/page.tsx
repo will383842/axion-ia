@@ -25,4 +25,3 @@ export default async function CityCoveragePage({ params }: PageProps) {
 
   return <CityCoverageV2 adminPrefix={adminPrefix} />;
 }
-
