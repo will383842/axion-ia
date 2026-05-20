@@ -24,6 +24,7 @@ import { KW_GEO_I } from "./i-geo";
 import { KW_SUPPLEMENTS_X } from "./x-supplements";
 import { KW_SECTEURS_G7C } from "./g7c-secteurs-conso-culture";
 import { KW_AUDIENCES_G8 } from "./g8-audiences-manquantes";
+import { KW_WEB_DIGITAL_G3B } from "./g3b-web-digital-augmente";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -56,6 +57,7 @@ export const KW_TRANSACTIONNEL: KeywordSeed[] = [
   ...KW_INTERVENTIONS_G2,
   ...KW_IMPLEMENTATION_G3,
   ...KW_CODAGE_G3,
+  ...KW_WEB_DIGITAL_G3B,
   ...KW_SECTORIELS_G6,
   ...KW_COACHING_G6,
   ...KW_SECTEURS_G7A,
@@ -71,6 +73,7 @@ export const KW_BENEFICE: KeywordSeed[] = [
   ...KW_INTERVENTIONS_G2,
   ...KW_IMPLEMENTATION_G3,
   ...KW_CODAGE_G3,
+  ...KW_WEB_DIGITAL_G3B,
   ...KW_SECTEURS_G7A,
   ...KW_SECTEURS_G7B,
   ...KW_NOTORIETE_H,
@@ -83,6 +86,7 @@ export const KW_INFORMATIONNEL: KeywordSeed[] = [
   ...KW_INTERVENTIONS_G2,
   ...KW_IMPLEMENTATION_G3,
   ...KW_CODAGE_G3,
+  ...KW_WEB_DIGITAL_G3B,
   ...KW_SECTORIELS_G6,
   ...KW_NOTORIETE_H,
   ...KW_PRESSE_J,
@@ -94,6 +98,7 @@ export const KW_AEO: KeywordSeed[] = [
   ...KW_AEO_G4,
   ...KW_AUDIT_G1,
   ...KW_INTERVENTIONS_G2,
+  ...KW_WEB_DIGITAL_G3B,
   ...KW_SECTORIELS_G6,
   ...KW_SECTEURS_G7A,
   ...KW_SECTEURS_G7B,
