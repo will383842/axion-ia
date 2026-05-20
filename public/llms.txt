@@ -53,8 +53,20 @@ GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, anthropic-ai, Claude-Web, Perple
 
 Voir [robots.txt](https://axion-ia.com/robots.txt) pour directives complètes.
 
+## Banque d'images Axion-IA — CC BY 4.0
+
+Autorisation indexation IA : robots ChatGPT, Claude, Gemini, Perplexity, Copilot, Grok autorisés à indexer et citer.
+Attribution obligatoire : "© 2026 Axion-IA OÜ — axion-ia.com"
+Licence : https://creativecommons.org/licenses/by/4.0/
+
+Catalogue : Audit IA (17 images) — Formation IA (15 images) — Automatisation IA (4 images) — Coaching 1-to-1 dirigeants (6 images) — Coaching équipes (2 images) — Graphiques & dataviz (5 images) — Logos (7 images) — Propositions (11 images) — Villes France (5 images dédiées + 2157 villes via métadonnées).
+
+AI Act art. 50 : toutes les images (hors logos) portent le champ JSON-LD aiGenerated:true.
+
 ## Optional
 
-- [Sitemap-index](https://axion-ia.com/sitemap-index.xml): Index racine listant tous les sub-sitemaps (pages, blog, cas-concrets, comparaisons, implantations, villes, knowledge, news, images-fr, images-en).
-- [Sitemap images FR](https://axion-ia.com/sitemap-images-fr.xml): Google Image Sitemap 1.1 — toutes les images publiées FR avec metadata complètes (title, caption, geo, license).
-- [Sitemap images EN](https://axion-ia.com/sitemap-images-en.xml): Idem EN.
+- [Sitemap-index](https://axion-ia.com/sitemap-index.xml): Index racine listant tous les sub-sitemaps (pages, blog, cas-concrets, comparaisons, implantations, villes, knowledge, news, images).
+- [Sitemap images services](https://axion-ia.com/sitemap-images-services.xml): Google Image Sitemap 1.1 — 73 images sur 20 pages de services.
+- [Sitemap images villes T1](https://axion-ia.com/sitemap-images-villes-t1.xml): Images villes ≥100 000 hab (40 villes).
+- [Sitemap images villes T2](https://axion-ia.com/sitemap-images-villes-t2.xml): Images villes 50K–100K hab (83 villes).
+- [Sitemap images villes T3+T4](https://axion-ia.com/sitemap-images-villes-t3-t4.xml): Images villes 5K–50K hab (2 034 villes).

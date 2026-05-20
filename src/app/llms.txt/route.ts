@@ -67,7 +67,7 @@ export function GET() {
 
 ## Galerie & ressources
 
-- [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA OÜ". Toutes générées par IA (DALL-E) — aiGenerated:true conforme AI Act art. 50 août 2026. Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
+- [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA OÜ". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
 - [Centre d'aide](${SITE_URL}/fr/centre-aide) — articles support classés par catégorie.
 - [Plan du site](${SITE_URL}/fr/plan-du-site) — sitemap humain navigable.
 
@@ -91,7 +91,7 @@ export function GET() {
 - [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
 - [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, miroir EN.
 - [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
-- [Image Sitemap Villes T1](${SITE_URL}/sitemap-images-villes-t1.xml) — villes ≥ 100 000 hab (images DALL-E dédiées).
+- [Image Sitemap Villes T1](${SITE_URL}/sitemap-images-villes-t1.xml) — villes ≥ 100 000 hab (images dédiées).
 - [Image Sitemap Villes T2](${SITE_URL}/sitemap-images-villes-t2.xml) — villes 50K–100K hab (template Sharp auto).
 - [Image Sitemap Villes T3/T4](${SITE_URL}/sitemap-images-villes-t3-t4.xml) — 2 034 villes 5K–50K hab.
 - [Google News Sitemap](${SITE_URL}/sitemap-news.xml) — actualités fenêtre 48 h glissante.

@@ -61,6 +61,9 @@ export type GenerationLogStep =
   | "web_vital_alert"
   | "cost_cap_check"
   | "auto_kill_switch"
+  | "quality_loop_pass"
+  | "quality_loop_cap_reached"
+  | "quality_loop_budget_cap_reached"
   | "error";
 
 export interface LogGenerationArgs {

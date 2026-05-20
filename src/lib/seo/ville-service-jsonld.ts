@@ -157,7 +157,7 @@ export function buildVilleServiceJsonLdGraph(
 
   // ── 2. LocalBusiness / ProfessionalService (2026 perfection) ──────────────
   // @id stable pour Knowledge Graph linking.
-  // telephone + email requis pour le local pack Google Maps.
+  // email requis pour le local pack Google Maps (telephone volontairement absent).
   // sameAs ville → Wikipedia = corroboration entité externe pour AI Overviews.
   schemas.push({
     "@context": "https://schema.org",
@@ -168,7 +168,6 @@ export function buildVilleServiceJsonLdGraph(
       : `Axion-IA · ${serviceNameEn} in ${ville.nameFr}`,
     description: hero,
     url,
-    telephone: "+33-9-87-06-XX-XX",
     email: "contact@axion-ia.com",
     image: `${SITE_URL}/opengraph-image`,
     priceRange,
