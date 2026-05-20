@@ -17,7 +17,12 @@
  * =============================================================*/
 
 @layer admin-tokens {
-  :where(.admin-layout, .admin-v2) {
+  /* `.admin-layout-v2` est la classe portée par le shell V2 (cf.
+     `[locale]/(admin)/[adminPrefix]/layout.tsx` quand `isAdminV2Enabled()` est
+     vrai). Sans ce sélecteur, toutes les variables `--*-admin-*` sont
+     `undefined` dans le sous-arbre V2 → cartes sans bordures, sidebar
+     minuscule, espacement nul (rendu "HTML brut"). */
+  :where(.admin-layout, .admin-v2, .admin-layout-v2) {
     /* ----- Surfaces ----- */
     --color-admin-bg: #f7f5f0; /* canvas admin légèrement plus froid que public */
     --color-admin-paper: #ffffff; /* surface cards/tables */
@@ -131,9 +136,9 @@
  * mais on étend explicitement aux composants admin v2).
  * =============================================================*/
 @media (prefers-reduced-motion: reduce) {
-  :where(.admin-v2) *,
-  :where(.admin-v2) *::before,
-  :where(.admin-v2) *::after {
+  :where(.admin-v2, .admin-layout-v2) *,
+  :where(.admin-v2, .admin-layout-v2) *::before,
+  :where(.admin-v2, .admin-layout-v2) *::after {
     animation-duration: 0ms !important;
     transition-duration: 0ms !important;
   }

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Inconsolata, Fraunces } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
@@ -144,6 +145,15 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // Détecte si la requête courante cible une route admin via le header
+  // `x-admin-route` posé par `src/proxy.ts`. Le shell admin V2 a déjà sa
+  // propre topbar/sidebar — on doit donc retirer ici le `<Header />` /
+  // `<Footer />` publics, les analytics (privé), le JSON-LD SEO et le
+  // `<SkipToContent />` (admin a sa propre a11y). Le secret
+  // `ADMIN_URL_PREFIX` reste côté Edge runtime grâce à ce signal.
+  const headersList = await headers();
+  const isAdminRoute = headersList.get("x-admin-route") === "1";
+
   // JSON-LD: Organization + WebSite (axionia-seo-aeo). Built via factories
   // in `lib/seo.ts` so the same Organization entity is reused on landing
   // pages (régions, villes, IA tools) without copy-paste drift.
@@ -153,6 +163,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   // quand présents pour LLMs disambiguation Wikidata).
   // Build conditionnel pour exactOptionalPropertyTypes — on n'assigne la
   // prop que si la valeur est definie (Sprint 15 fix typecheck strict).
+  // Skip sur admin (private console, noindex).
   const organizationJsonLdInput: {
     locale: Locale;
     vatID?: string;
@@ -161,8 +172,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   if (env.COMPANY_VAT_NUMBER) organizationJsonLdInput.vatID = env.COMPANY_VAT_NUMBER;
   if (env.COMPANY_REGISTRATION_NUMBER)
     organizationJsonLdInput.registrikood = env.COMPANY_REGISTRATION_NUMBER;
-  const organizationJsonLd = buildOrganizationJsonLd(organizationJsonLdInput);
-  const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
+  const organizationJsonLd = isAdminRoute ? null : buildOrganizationJsonLd(organizationJsonLdInput);
+  const websiteJsonLd = isAdminRoute ? null : buildWebsiteJsonLd({ locale: locale as Locale });
 
   // P1-14 (audit re-run 2026-05-15 AGENT 5) — Resource Hints preconnect.
   // Réduit le TBT initial de ~60-150 ms p75 en pré-établissant les
@@ -200,50 +211,69 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       className={`${manrope.variable} ${inconsolata.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="bg-bg text-fg flex min-h-full flex-col font-sans">
-        {/* P1-14 Resource Hints — React 19 hoist automatique vers <head>. */}
-        {plausibleDomain ? (
+        {/* P1-14 Resource Hints — React 19 hoist automatique vers <head>.
+            Skip sur admin : Plausible/Clarity/Turnstile pas mountés en admin
+            (console privée, pas d'analytics, pas de captcha booking). */}
+        {!isAdminRoute && plausibleDomain ? (
           <link rel="preconnect" href={`https://${plausibleDomain}`} crossOrigin="anonymous" />
         ) : null}
         {sentryIngestOrigin ? (
           <link rel="preconnect" href={sentryIngestOrigin} crossOrigin="anonymous" />
         ) : null}
-        {turnstileEnabled ? (
+        {!isAdminRoute && turnstileEnabled ? (
           <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
         ) : null}
-        <SkipToContent />
+        {!isAdminRoute && <SkipToContent />}
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <Header />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          {/* P-304 — WebVitals dépend de `useLocale()` next-intl, doit donc
-              être enfant du provider sinon prerender throw. */}
-          <WebVitals />
-          {/* Plausible Analytics self-hosted (Sprint 23 / M11) — no-op si
-              NEXT_PUBLIC_PLAUSIBLE_DOMAIN absent. afterInteractive donc
-              n'impacte pas LCP. */}
-          <Plausible />
-          {/* Audit indexation 2026-05-15 P1-19 — track document.referrer dans
-              14 sources canoniques (google/bing/qwant/perplexity/chatgpt/claude…)
-              pour mesurer l'AEO/GEO ROI Plausible. No-op si Plausible absent. */}
-          <RefererTracker />
-          {/* Méta-cert 2026-05-15 AGENT 21 — Microsoft Clarity gated sur consent
-              CMP. `CookieConsent` banner sticky bottom (lazy display) → si
-              accept, `Clarity` charge le script (afterInteractive) + dépose
-              cookies `_clck` / `_clsk`. Si decline ou pas de choix → null.
-              Plausible (anonyme, EU, cookie-less) reste toujours actif. */}
-          <CookieConsent />
-          <Clarity />
+          {isAdminRoute ? (
+            // Routes admin : pas de Header public marketing ni de Footer.
+            // Le layout admin `(admin)/[adminPrefix]/layout.tsx` rend son
+            // propre shell (AdminTopbar + AdminSidebarNav). Pas non plus de
+            // `<main id="main">` wrapper — l'admin V2 utilise sa propre
+            // `<main className="admin-main">` interne.
+            children
+          ) : (
+            <>
+              <Header />
+              <main id="main" className="flex-1">
+                {children}
+              </main>
+              <Footer />
+              {/* P-304 — WebVitals dépend de `useLocale()` next-intl, doit donc
+                  être enfant du provider sinon prerender throw. */}
+              <WebVitals />
+              {/* Plausible Analytics self-hosted (Sprint 23 / M11) — no-op si
+                  NEXT_PUBLIC_PLAUSIBLE_DOMAIN absent. afterInteractive donc
+                  n'impacte pas LCP. */}
+              <Plausible />
+              {/* Audit indexation 2026-05-15 P1-19 — track document.referrer dans
+                  14 sources canoniques (google/bing/qwant/perplexity/chatgpt/claude…)
+                  pour mesurer l'AEO/GEO ROI Plausible. No-op si Plausible absent. */}
+              <RefererTracker />
+              {/* Méta-cert 2026-05-15 AGENT 21 — Microsoft Clarity gated sur consent
+                  CMP. `CookieConsent` banner sticky bottom (lazy display) → si
+                  accept, `Clarity` charge le script (afterInteractive) + dépose
+                  cookies `_clck` / `_clsk`. Si decline ou pas de choix → null.
+                  Plausible (anonyme, EU, cookie-less) reste toujours actif. */}
+              <CookieConsent />
+              <Clarity />
+            </>
+          )}
         </NextIntlClientProvider>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
+        {/* JSON-LD Organization + WebSite : SEO public uniquement. Admin
+            est noindex (cf. robots.ts) — pas besoin d'injecter. */}
+        {!isAdminRoute && organizationJsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          />
+        ) : null}
+        {!isAdminRoute && websiteJsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          />
+        ) : null}
         {/* Speculation Rules — P-013 cible Top 15 stratégiques en `eager` +
             fallback `moderate` sur le reste du locale. Avant ce patch, `eager`
             tournait sur 4 562 SSG → consommation bandwidth Cloudflare massive

@@ -51,6 +51,20 @@ export default auth((req) => {
   // les headers explicitement.
   req.headers.set("x-nonce", nonce);
 
+  // 1bis. Signal "route admin" pour le layout `[locale]/layout.tsx`.
+  //    Le shell admin V2 a déjà son propre header/sidebar (AdminTopbar +
+  //    AdminSidebarNav). Sans ce header, le layout racine rendait le Header
+  //    public marketing (orange) AU-DESSUS de la console admin — pollution
+  //    visuelle confirmée sur prod 2026-05-20.
+  //    Le secret `ADMIN_URL_PREFIX` reste côté Edge runtime (jamais exposé
+  //    au bundle client), donc utiliser un header propagé est la seule
+  //    approche compatible.
+  const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
+  const adminPathRegex = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`);
+  if (adminPathRegex.test(req.nextUrl.pathname)) {
+    req.headers.set("x-admin-route", "1");
+  }
+
   // 2. Run intl (locale resolution + rewrites)
   const response = handleI18nRouting(req as unknown as NextRequest);
 
