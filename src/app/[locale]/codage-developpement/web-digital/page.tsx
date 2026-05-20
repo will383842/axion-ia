@@ -147,56 +147,59 @@ export default async function WebDigitalPage({ params }: Props) {
   const scenarios = isFr
     ? [
         {
-          type: "E-commerce",
-          stack: "Shopify / WooCommerce / custom",
-          before:
-            "Visiteurs qui ne trouvent pas le bon produit, quittent sans acheter, posent les mêmes questions SAV.",
+          type: "Plateforme SaaS B2B",
+          stack: "Next.js + Laravel + Postgres · construite par Axion-IA",
+          before: "Client qui veut lancer une plateforme métier mais sans savoir intégrer l'IA.",
           after:
-            "Search IA qui comprend l'intention, chatbot SAV intégré, recommandations produit. Conversion mesurée semaine 1.",
-          metric: "+18 % conversion",
+            "Plateforme livrée avec agents IA, automatisations métier, search sémantique et chatbot intégrés dès le premier sprint.",
+          metric: "IA-native dès J+1",
         },
         {
-          type: "Site vitrine / institutionnel",
-          stack: "Webflow, Next.js, site custom ou toute stack avec API",
-          before: "Visiteurs qui quittent sans convertir, formulaires de contact peu remplis.",
-          after:
-            "Chatbot IA qui qualifie et guide chaque visiteur vers le bon service, disponible 24h/7j.",
-          metric: "−60 % tickets support",
-        },
-        {
-          type: "Application web B2B",
-          stack: "SaaS / plateforme métier / ERP web",
+          type: "Application web existante",
+          stack: "Next.js, Laravel ou toute stack avec API",
           before:
-            "Utilisateurs qui cherchent dans la doc, ouvrent des tickets pour des questions simples.",
+            "Plateforme fonctionnelle mais sans IA — utilisateurs qui cherchent dans la doc, ouvrent des tickets pour des questions simples.",
           after:
-            "Assistant IA contextuel intégré à l'interface, recherche documentaire sémantique, aide inline.",
+            "Assistant IA contextuel greffé dans l'interface, recherche documentaire sémantique, automatisations ajoutées sans refonte.",
           metric: "−40 % tickets niveau 1",
+        },
+        {
+          type: "Portail client / espace membre",
+          stack: "Stack custom ou Webflow + API",
+          before:
+            "Clients qui ne trouvent pas l'information, support surchargé, relances manuelles chronophages.",
+          after:
+            "Chatbot RAG formé sur vos contenus, relances automatiques, personnalisation par profil client. Support allégé de 60 %.",
+          metric: "−60 % charge support",
         },
       ]
     : [
         {
-          type: "E-commerce",
-          stack: "Shopify / WooCommerce / custom",
+          type: "B2B SaaS platform",
+          stack: "Next.js + Laravel + Postgres · built by Axion-IA",
           before:
-            "Visitors who can't find the right product, leave without buying, ask the same SAV questions.",
+            "Client wants to launch a business platform but doesn't know how to integrate AI.",
           after:
-            "AI search that understands intent, integrated support chatbot, product recommendations. Conversion measured week 1.",
-          metric: "+18% conversion",
+            "Platform delivered with AI agents, business automations, semantic search and chatbot integrated from the first sprint.",
+          metric: "AI-native from day 1",
         },
         {
-          type: "Showcase / institutional site",
-          stack: "Webflow, Next.js, custom site or any API-enabled stack",
-          before: "Visitors who leave without converting, contact forms rarely filled.",
-          after: "AI chatbot qualifying and guiding each visitor to the right service, 24/7.",
-          metric: "−60% support tickets",
-        },
-        {
-          type: "B2B web application",
-          stack: "SaaS / business platform / web ERP",
-          before: "Users searching docs, opening tickets for simple questions.",
+          type: "Existing web application",
+          stack: "Next.js, Laravel or any API-enabled stack",
+          before:
+            "Working platform but no AI — users searching docs, opening tickets for simple questions.",
           after:
-            "Contextual AI assistant embedded in the interface, semantic doc search, inline help.",
+            "Contextual AI assistant grafted into the interface, semantic doc search, automations added without a rebuild.",
           metric: "−40% L1 tickets",
+        },
+        {
+          type: "Client portal / member area",
+          stack: "Custom stack or Webflow + API",
+          before:
+            "Clients can't find information, support overwhelmed, manual follow-ups time-consuming.",
+          after:
+            "RAG chatbot trained on your content, automatic follow-ups, personalization by client profile. Support reduced by 60%.",
+          metric: "−60% support load",
         },
       ];
 
@@ -278,7 +281,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-stack",
           question: "Vous travaillez sur quelles technologies ?",
           answer:
-            "WordPress, Webflow, Shopify, WooCommerce, sites custom (React, Vue, Next.js), et toute application avec une API accessible. Si votre stack a une API ou accepte du JS externe, on peut y greffer l'IA.",
+            "On développe sur Next.js, Laravel, Postgres, MySQL, Vite et toute stack moderne. Pour les augmentations, on intervient sur n'importe quelle application avec une API accessible — REST, GraphQL ou webhook.",
         },
         {
           id: "q-donnees",
@@ -290,7 +293,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-delai",
           question: "En combien de temps est-ce opérationnel ?",
           answer:
-            "Un chatbot FAQ simple est en ligne en 3 semaines. Un moteur de recommandation e-commerce avec personnalisation : 5-6 semaines. On livre par modules, vous voyez les résultats avant la fin du projet.",
+            "Un chatbot RAG opérationnel : 3 semaines. Une plateforme sur mesure avec IA intégrée : 6 à 12 semaines selon le périmètre. On livre par modules, vous voyez les résultats avant la fin du projet.",
         },
         {
           id: "q-cout",
@@ -316,7 +319,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-stack",
           question: "Which technologies do you work with?",
           answer:
-            "WordPress, Webflow, Shopify, WooCommerce, custom sites (React, Vue, Next.js), and any application with an accessible API. If your stack has an API or accepts external JS, we can graft AI onto it.",
+            "We develop on Next.js, Laravel, Postgres, MySQL, Vite and any modern stack. For augmentations, we work on any application with an accessible API — REST, GraphQL or webhook.",
         },
         {
           id: "q-data",
@@ -391,24 +394,24 @@ export default async function WebDigitalPage({ params }: Props) {
           </p>
 
           <h1 className="display-editorial text-fg mt-5">
-            {isFr ? "Votre site web existant," : "Your existing website,"}
+            {isFr ? "Plateforme web sur mesure," : "Custom web platform,"}
             <span
               className="text-terracotta mx-2 italic"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "boosté par l'IA." : "boosted by AI."}
+              {isFr ? "IA intégrée par défaut." : "AI built in by default."}
             </span>
           </h1>
 
           <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
             {isFr
-              ? "On ne refait pas votre site — on y greffe les briques IA qui convertissent : chatbot RAG, recherche sémantique, recommandations produit, personnalisation. Compatible WordPress, Shopify, WooCommerce, sites custom."
-              : "We don't rebuild your site — we graft the AI bricks that convert: RAG chatbot, semantic search, product recommendations, personalization. Compatible with WordPress, Shopify, WooCommerce, custom sites."}
+              ? "On construit votre plateforme sur mesure (Next.js, Laravel, Postgres) avec l'IA et les automatisations intégrées dès la conception. Ou on augmente votre plateforme existante — chatbot RAG, search sémantique, agents — sans tout refaire."
+              : "We build your custom platform (Next.js, Laravel, Postgres) with AI and automations built in from day one. Or we augment your existing platform — RAG chatbot, semantic search, agents — without a full rebuild."}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Cta href="/contact" size="lg" track="web-digital-hero-primary">
-              {isFr ? "Décrire mon site · devis 48 h" : "Describe my site · quote 48 h"}
+              {isFr ? "Décrire mon projet · devis 48 h" : "Describe my project · quote 48 h"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Cta href="/audit" variant="outline" size="lg" track="web-digital-hero-audit">
@@ -437,15 +440,99 @@ export default async function WebDigitalPage({ params }: Props) {
         </Container>
       </section>
 
+      {/* DEUX APPROCHES */}
+      <Section
+        eyebrow={isFr ? "Deux points d'entrée" : "Two entry points"}
+        title={isFr ? "Nouvelle plateforme ou" : "New platform or"}
+        titleEm={isFr ? "existante — on s'adapte" : "existing — we adapt"}
+      >
+        <ul className="grid gap-6 md:grid-cols-2">
+          {(isFr
+            ? [
+                {
+                  tag: "Vous partez de zéro",
+                  title: "Plateforme sur mesure IA-native",
+                  description:
+                    "On conçoit et développe votre plateforme (Next.js, Laravel, Postgres) avec l'IA intégrée dès la conception : agents, automatisations, search sémantique, chatbot. Vous recevez une plateforme qui pense et agit.",
+                  cta: "Décrire mon projet",
+                  accent: true,
+                },
+                {
+                  tag: "Vous avez déjà une plateforme",
+                  title: "Augmentation IA sans refonte",
+                  description:
+                    "On greffe les briques IA sur votre existant : chatbot RAG, recherche sémantique, automatisations, personnalisation. Compatible Next.js, Laravel, toute stack avec API. Zéro downtime.",
+                  cta: "Décrire ma plateforme",
+                  accent: false,
+                },
+              ]
+            : [
+                {
+                  tag: "Starting from scratch",
+                  title: "AI-native custom platform",
+                  description:
+                    "We design and build your platform (Next.js, Laravel, Postgres) with AI integrated from day one: agents, automations, semantic search, chatbot. You get a platform that thinks and acts.",
+                  cta: "Describe my project",
+                  accent: true,
+                },
+                {
+                  tag: "You already have a platform",
+                  title: "AI augmentation without rebuild",
+                  description:
+                    "We graft AI bricks onto your existing platform: RAG chatbot, semantic search, automations, personalization. Compatible with Next.js, Laravel, any API-enabled stack. Zero downtime.",
+                  cta: "Describe my platform",
+                  accent: false,
+                },
+              ]
+          ).map((item) => (
+            <li
+              key={item.title}
+              className={
+                item.accent
+                  ? "border-terracotta bg-paper ring-terracotta/20 flex flex-col gap-4 rounded-2xl border-2 p-7 ring-4 sm:p-8"
+                  : "border-border bg-paper flex flex-col gap-4 rounded-2xl border p-7 sm:p-8"
+              }
+            >
+              <p className="text-fg-muted text-[12px] font-medium tracking-[0.16em] uppercase">
+                {item.tag}
+              </p>
+              <h3
+                className={
+                  item.accent
+                    ? "text-terracotta-deep text-2xl leading-tight font-medium"
+                    : "text-fg text-2xl leading-tight font-medium"
+                }
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {item.title}
+              </h3>
+              <p className="text-fg-soft text-base leading-relaxed">{item.description}</p>
+              <div className="mt-auto pt-2">
+                <Cta
+                  href="/contact"
+                  size="sm"
+                  variant={item.accent ? "primary" : "outline"}
+                  track={item.accent ? "web-digital-new" : "web-digital-existing"}
+                >
+                  {item.cta}
+                  <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
+                </Cta>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       {/* MODULES IA */}
       <Section
-        eyebrow={isFr ? "4 briques à greffer" : "4 bricks to graft"}
-        title={isFr ? "L'IA qui s'intègre," : "AI that integrates,"}
-        titleEm={isFr ? "pas qui remplace" : "doesn't replace"}
+        tone="paper"
+        eyebrow={isFr ? "4 briques IA" : "4 AI bricks"}
+        title={isFr ? "L'IA au cœur," : "AI at the core,"}
+        titleEm={isFr ? "pas en option" : "not optional"}
         description={
           isFr
-            ? "Chaque module est indépendant. On démarre par celui qui a le meilleur ROI pour votre contexte — chatbot ou search — puis on complète au rythme qui vous convient."
-            : "Each module is independent. We start with the highest ROI for your context — chatbot or search — then complete at your pace."
+            ? "Que ce soit sur une nouvelle plateforme ou une existante, ces 4 modules sont les plus demandés et les plus rentables pour vos clients."
+            : "Whether on a new or existing platform, these 4 modules are the most requested and most profitable for your clients."
         }
       >
         <ul className="grid gap-6 sm:grid-cols-2">
