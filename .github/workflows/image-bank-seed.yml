@@ -1,0 +1,100 @@
+name: Image Bank · Seed DB (one-shot)
+
+# Workflow one-shot pour peupler les 72 ImageAssets en production.
+# SSH Hetzner → docker exec container → npx tsx prisma/seeds/image-bank/seed-images.ts
+# Idempotent (upsert par slug) — safe à relancer.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (affiche plan mais ne seed pas)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed image bank prod DB
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Missing secret HETZNER_SSH_KEY."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK' 2>&1
+
+      - name: Find axion-ia container
+        id: find_container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$CONTAINERS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" \
+            '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container $COOLIFY_APP_UUID introuvable."
+            exit 1
+          fi
+          echo "Container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Check image_asset table exists
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "── Vérification table image_asset ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'node -e \"const {PrismaClient}=require(\\\"./node_modules/@prisma/client\\\");const p=new PrismaClient();p.imageAsset.count().then(n=>console.log(\\\"image_asset rows:\\\",n)).catch(e=>{console.error(e.message);process.exit(1)}).finally(()=>p.\\\$disconnect())\"'" 2>&1 || true
+
+      - name: Run seed (dry-run check)
+        if: inputs.dry_run == 'true'
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "::notice::DRY_RUN — affichage des 72 slugs à seeder (pas d'écriture DB)"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'ls /app/prisma/seeds/image-bank/ 2>/dev/null || echo \"seed file not in container yet\"'" 2>&1
+
+      - name: Run seed (production)
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          set -euo pipefail
+          echo "── Exécution seed image bank ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && npx tsx prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
+          echo "── Seed terminé ──"
+
+      - name: Verify row count
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          echo "── Rows après seed ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'node -e \"const {PrismaClient}=require(\\\"./node_modules/@prisma/client\\\");const p=new PrismaClient();Promise.all([p.imageAsset.count(),p.imageAssetTranslation.count()]).then(([a,t])=>console.log(\\\"imageAsset:\\\",a,\\\"translations:\\\",t)).finally(()=>p.\\\$disconnect())\"'" 2>&1 || true

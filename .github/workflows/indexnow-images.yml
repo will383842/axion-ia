@@ -1,0 +1,140 @@
+name: IndexNow · Ping sitemaps images
+
+# Ping IndexNow pour les 4 sitemaps images + 20 pages de services.
+# Lit INDEXNOW_KEY depuis le container prod (Coolify env var).
+# Idempotent — safe à relancer.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (log URLs, pas de ping réel)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    name: IndexNow image sitemaps ping
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Missing secret HETZNER_SSH_KEY."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK' 2>&1
+
+      - name: Find axion-ia container
+        id: find_container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$CONTAINERS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" \
+            '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container introuvable."
+            exit 1
+          fi
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Get INDEXNOW_KEY from container
+        id: get_key
+        env:
+          CONTAINER: ${{ steps.find_container.outputs.name }}
+        run: |
+          KEY=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' printenv INDEXNOW_KEY" 2>&1 | tr -d '[:space:]')
+          if [ -z "$KEY" ] || [ "$KEY" = "dev-indexnow-key-32chars-xxxxxxxx" ]; then
+            echo "::error::INDEXNOW_KEY absent ou valeur dev dans le container."
+            exit 1
+          fi
+          echo "Clé trouvée (${#KEY} chars)"
+          echo "key=$KEY" >> "$GITHUB_OUTPUT"
+
+      - name: Ping IndexNow (dry-run)
+        if: inputs.dry_run == 'true'
+        run: |
+          echo "::notice::DRY_RUN — URLs qui seraient pingées :"
+          cat << 'EOF'
+          https://axion-ia.com/sitemap-images-services.xml
+          https://axion-ia.com/sitemap-images-villes-t1.xml
+          https://axion-ia.com/sitemap-images-villes-t2.xml
+          https://axion-ia.com/sitemap-images-villes-t3-t4.xml
+          https://axion-ia.com/fr/audit-ia
+          https://axion-ia.com/fr/formations-ia
+          https://axion-ia.com/fr/interventions-ia
+          https://axion-ia.com/fr/automatisation-ia
+          https://axion-ia.com/fr/accompagnement-dirigeants
+          https://axion-ia.com/fr/solutions-ia
+          https://axion-ia.com/fr/galerie
+          https://axion-ia.com/fr/
+          EOF
+
+      - name: Ping IndexNow (production)
+        if: inputs.dry_run != 'true'
+        env:
+          INDEXNOW_KEY: ${{ steps.get_key.outputs.key }}
+          SITE: "https://axion-ia.com"
+        run: |
+          set -euo pipefail
+          PAYLOAD=$(cat << EOF
+          {
+            "host": "axion-ia.com",
+            "key": "${INDEXNOW_KEY}",
+            "keyLocation": "${SITE}/${INDEXNOW_KEY}.txt",
+            "urlList": [
+              "${SITE}/sitemap-images-services.xml",
+              "${SITE}/sitemap-images-villes-t1.xml",
+              "${SITE}/sitemap-images-villes-t2.xml",
+              "${SITE}/sitemap-images-villes-t3-t4.xml",
+              "${SITE}/fr/audit-ia",
+              "${SITE}/fr/formations-ia",
+              "${SITE}/fr/interventions-ia",
+              "${SITE}/fr/automatisation-ia",
+              "${SITE}/fr/accompagnement-dirigeants",
+              "${SITE}/fr/solutions-ia",
+              "${SITE}/fr/galerie",
+              "${SITE}/fr/"
+            ]
+          }
+          EOF
+          )
+
+          echo "── Ping api.indexnow.org ──"
+          HTTP=$(curl -s -o /tmp/indexnow_resp.json -w "%{http_code}" \
+            -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+          echo "HTTP: $HTTP"
+          cat /tmp/indexnow_resp.json || true
+          echo ""
+
+          echo "── Ping www.bing.com ──"
+          HTTP_BING=$(curl -s -o /tmp/bing_resp.json -w "%{http_code}" \
+            -X POST "https://www.bing.com/indexnow" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+          echo "HTTP Bing: $HTTP_BING"
+          cat /tmp/bing_resp.json || true
+
+          if [ "$HTTP" != "200" ] && [ "$HTTP" != "202" ]; then
+            echo "::warning::IndexNow response $HTTP (attendu 200/202)"
+          fi
