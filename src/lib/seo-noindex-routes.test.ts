@@ -41,8 +41,8 @@ describe("seo-noindex-routes — sync vs content datas", () => {
 
 describe("isNoindexStubRoute — logique", () => {
   it("retourne true pour ville stub sans copy", () => {
-    expect(isNoindexStubRoute("/fr/implantations/auvergne-rhone-alpes/lyon")).toBe(true);
-    expect(isNoindexStubRoute("/en/locations/auvergne-rhone-alpes/lyon")).toBe(true);
+    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/compiegne")).toBe(true);
+    expect(isNoindexStubRoute("/en/locations/hauts-de-france/compiegne")).toBe(true);
   });
 
   it("retourne false pour ville pilote (Paris)", () => {
@@ -60,9 +60,9 @@ describe("isNoindexStubRoute — logique", () => {
   });
 
   it("retourne true pour service×ville stub", () => {
-    expect(isNoindexStubRoute("/fr/audit/par-ville/lyon")).toBe(true);
-    expect(isNoindexStubRoute("/fr/interventions/par-ville/marseille")).toBe(true);
-    expect(isNoindexStubRoute("/en/implementation/by-city/lyon")).toBe(true);
+    expect(isNoindexStubRoute("/fr/audit/par-ville/compiegne")).toBe(true);
+    expect(isNoindexStubRoute("/fr/interventions/par-ville/pau")).toBe(true);
+    expect(isNoindexStubRoute("/en/implementation/by-city/compiegne")).toBe(true);
   });
 
   it("retourne false pour service×ville pilote (Paris)", () => {

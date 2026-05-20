@@ -29,7 +29,45 @@ import { VILLES_BOURGOGNE_FRANCHE_COMTE } from "./data/bourgogne-franche-comte";
 import { VILLES_CENTRE_VAL_DE_LOIRE } from "./data/centre-val-de-loire";
 import { VILLES_CORSE } from "./data/corse";
 
+import { AIX_EN_PROVENCE_COPY } from "./copy/aix-en-provence";
+import { AMIENS_COPY } from "./copy/amiens";
+import { ANGERS_COPY } from "./copy/angers";
+import { ANNECY_COPY } from "./copy/annecy";
+import { ARGENTEUIL_COPY } from "./copy/argenteuil";
+import { BESANCON_COPY } from "./copy/besancon";
+import { BORDEAUX_COPY } from "./copy/bordeaux";
+import { BOULOGNE_BILLANCOURT_COPY } from "./copy/boulogne-billancourt";
+import { BREST_COPY } from "./copy/brest";
+import { CAEN_COPY } from "./copy/caen";
+import { CLERMONT_FERRAND_COPY } from "./copy/clermont-ferrand";
+import { DIJON_COPY } from "./copy/dijon";
+import { GRENOBLE_COPY } from "./copy/grenoble";
+import { LE_HAVRE_COPY } from "./copy/le-havre";
+import { LE_MANS_COPY } from "./copy/le-mans";
+import { LILLE_COPY } from "./copy/lille";
+import { LIMOGES_COPY } from "./copy/limoges";
+import { LYON_COPY } from "./copy/lyon";
+import { MARSEILLE_COPY } from "./copy/marseille";
+import { METZ_COPY } from "./copy/metz";
+import { MONTPELLIER_COPY } from "./copy/montpellier";
+import { MONTREUIL_COPY } from "./copy/montreuil";
+import { MULHOUSE_COPY } from "./copy/mulhouse";
+import { NANCY_COPY } from "./copy/nancy";
+import { NANTES_COPY } from "./copy/nantes";
+import { NICE_COPY } from "./copy/nice";
+import { NIMES_COPY } from "./copy/nimes";
+import { ORLEANS_COPY } from "./copy/orleans";
 import { PARIS_COPY } from "./copy/paris";
+import { PERPIGNAN_COPY } from "./copy/perpignan";
+import { REIMS_COPY } from "./copy/reims";
+import { RENNES_COPY } from "./copy/rennes";
+import { ROUEN_COPY } from "./copy/rouen";
+import { SAINT_ETIENNE_COPY } from "./copy/saint-etienne";
+import { STRASBOURG_COPY } from "./copy/strasbourg";
+import { TOULON_COPY } from "./copy/toulon";
+import { TOULOUSE_COPY } from "./copy/toulouse";
+import { TOURS_COPY } from "./copy/tours";
+import { VILLEURBANNE_COPY } from "./copy/villeurbanne";
 
 export type { VilleData } from "./data/types";
 export type { VilleCopy, VilleFaq } from "./copy/types";
@@ -49,7 +87,45 @@ export interface Ville extends VilleData {
 // Lookup slug → contenu éditorial. Étendu manuellement à mesure que les
 // pages villes gold standard sont produites (Paris d'abord, puis 50 top, etc.).
 const COPY_BY_SLUG: Record<string, VilleCopy> = {
+  "aix-en-provence": AIX_EN_PROVENCE_COPY,
+  amiens: AMIENS_COPY,
+  angers: ANGERS_COPY,
+  annecy: ANNECY_COPY,
+  argenteuil: ARGENTEUIL_COPY,
+  besancon: BESANCON_COPY,
+  bordeaux: BORDEAUX_COPY,
+  "boulogne-billancourt": BOULOGNE_BILLANCOURT_COPY,
+  brest: BREST_COPY,
+  caen: CAEN_COPY,
+  "clermont-ferrand": CLERMONT_FERRAND_COPY,
+  dijon: DIJON_COPY,
+  grenoble: GRENOBLE_COPY,
+  "le-havre": LE_HAVRE_COPY,
+  "le-mans": LE_MANS_COPY,
+  lille: LILLE_COPY,
+  limoges: LIMOGES_COPY,
+  lyon: LYON_COPY,
+  marseille: MARSEILLE_COPY,
+  metz: METZ_COPY,
+  montpellier: MONTPELLIER_COPY,
+  montreuil: MONTREUIL_COPY,
+  mulhouse: MULHOUSE_COPY,
+  nancy: NANCY_COPY,
+  nantes: NANTES_COPY,
+  nice: NICE_COPY,
+  nimes: NIMES_COPY,
+  orleans: ORLEANS_COPY,
   paris: PARIS_COPY,
+  perpignan: PERPIGNAN_COPY,
+  reims: REIMS_COPY,
+  rennes: RENNES_COPY,
+  rouen: ROUEN_COPY,
+  "saint-etienne": SAINT_ETIENNE_COPY,
+  strasbourg: STRASBOURG_COPY,
+  toulon: TOULON_COPY,
+  toulouse: TOULOUSE_COPY,
+  tours: TOURS_COPY,
+  villeurbanne: VILLEURBANNE_COPY,
 };
 
 const RAW_VILLES: ReadonlyArray<VilleData> = [

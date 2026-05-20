@@ -69,49 +69,34 @@ jobs:
           echo "  https://axion-ia.com/sitemap-images-villes-t2.xml"
           echo "  https://axion-ia.com/sitemap-images-villes-t3-t4.xml"
 
-      - name: List GSC properties (detect URL-prefix property)
+      - name: Add URL-prefix property + submit sitemaps
         if: inputs.dry_run != 'true'
-        id: list_sites
         env:
           ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
+          TARGET_SITE: "https://axion-ia.com/"
         run: |
           set -euo pipefail
-          echo "── Sites enregistrés dans GSC ──"
-          SITES=$(curl -s \
-            "https://www.googleapis.com/webmasters/v3/sites" \
+          SITE_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('${TARGET_SITE}', safe=''))")
+          BASE_SITES="https://www.googleapis.com/webmasters/v3/sites"
+
+          # Étape 1 : ajouter la URL-prefix property si elle n'existe pas
+          # (auto-vérifiée par Google car sc-domain:axion-ia.com est déjà vérifié)
+          echo "── Ajout property URL-prefix: ${TARGET_SITE} ──"
+          HTTP_ADD=$(curl -s -o /tmp/add_resp.json -w "%{http_code}" \
+            -X PUT "${BASE_SITES}/${SITE_ENCODED}" \
             -H "Authorization: Bearer ${ACCESS_TOKEN}")
-          echo "$SITES"
-          # Chercher une URL-prefix property pour axion-ia.com
-          URL_PROP=$(echo "$SITES" | python3 -c "
-          import sys, json
-          d = json.load(sys.stdin)
-          entries = d.get('siteEntry', [])
-          for e in entries:
-              url = e.get('siteUrl', '')
-              if 'axion-ia.com' in url and not url.startswith('sc-domain'):
-                  print(url)
-                  break
-          " 2>/dev/null || true)
-          echo "URL-prefix property found: '${URL_PROP:-none}'"
-          echo "url_property=${URL_PROP}" >> "$GITHUB_OUTPUT"
-
-      - name: Submit sitemaps to GSC
-        if: inputs.dry_run != 'true'
-        env:
-          ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
-          URL_PROPERTY: ${{ steps.list_sites.outputs.url_property }}
-        run: |
-          set -euo pipefail
-          # L'API sitemaps ne supporte que les URL-prefix properties (pas sc-domain:)
-          if [ -z "${URL_PROPERTY:-}" ]; then
-            echo "::error::Aucune URL-prefix property pour axion-ia.com dans GSC."
-            echo "::error::Solution : ajouter 'https://axion-ia.com/' dans GSC > Propriétés, puis relancer."
-            echo "::error::Note : la propriété sc-domain: n'est pas supportée par l'API sitemaps."
-            exit 1
+          echo "HTTP add: $HTTP_ADD"
+          cat /tmp/add_resp.json 2>/dev/null || true
+          echo ""
+          if [ "$HTTP_ADD" = "204" ] || [ "$HTTP_ADD" = "200" ]; then
+            echo "::notice::✅ Property ajoutée : ${TARGET_SITE}"
+          elif [ "$HTTP_ADD" = "400" ]; then
+            echo "::notice::Property déjà existante ou token insuffisant — tentative soumission quand même"
+          else
+            echo "::warning::Add property HTTP $HTTP_ADD — on tente quand même"
           fi
-          SITE_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('${URL_PROPERTY}', safe=''))")
-          BASE="https://www.googleapis.com/webmasters/v3/sites/${SITE_ENCODED}/sitemaps"
 
+          # Étape 2 : soumettre les 4 sitemaps
           SITEMAPS=(
             "https://axion-ia.com/sitemap-images-services.xml"
             "https://axion-ia.com/sitemap-images-villes-t1.xml"
@@ -121,24 +106,27 @@ jobs:
 
           ALL_OK=true
           for SITEMAP in "${SITEMAPS[@]}"; do
-            ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$SITEMAP', safe=''))")
+            SM_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$SITEMAP', safe=''))")
             echo "── Submitting: $SITEMAP ──"
             HTTP=$(curl -s -o /tmp/gsc_resp.json -w "%{http_code}" \
-              -X POST "${BASE}/${ENCODED}" \
+              -X POST "${BASE_SITES}/${SITE_ENCODED}/sitemaps/${SM_ENCODED}" \
               -H "Authorization: Bearer ${ACCESS_TOKEN}" \
               -H "Content-Type: application/json")
             echo "HTTP: $HTTP"
             cat /tmp/gsc_resp.json 2>/dev/null || true
             echo ""
-            if [ "$HTTP" != "200" ] && [ "$HTTP" != "204" ]; then
+            if [ "$HTTP" = "200" ] || [ "$HTTP" = "204" ]; then
+              echo "::notice::✅ Submitted: $SITEMAP"
+            else
               echo "::warning::GSC response $HTTP for $SITEMAP"
               ALL_OK=false
-            else
-              echo "::notice::✅ Submitted: $SITEMAP"
             fi
           done
 
           if [ "$ALL_OK" = "false" ]; then
+            echo "::error::Au moins une soumission a échoué."
+            echo "::error::Si HTTP 403 : le token n'a que le scope readonly."
+            echo "::error::Solution : régénérer GSC_OAUTH_REFRESH_TOKEN avec scope 'webmasters' (pas readonly)."
             exit 1
           fi
           echo "── Toutes les soumissions réussies ──"

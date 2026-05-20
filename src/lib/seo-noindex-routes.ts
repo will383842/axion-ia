@@ -18,20 +18,102 @@ const LOCALES: ReadonlyArray<Locale> = ["fr", "en"];
  * Villes pilotes (= avec `copy/<slug>.ts` éditorial substantiel).
  * Sortent en index dès qu'elles sont ici. Sync test : `seo-noindex-routes.test.ts`.
  */
-const INDEXABLE_VILLE_SLUGS: ReadonlySet<string> = new Set(["paris"]);
+const INDEXABLE_VILLE_SLUGS: ReadonlySet<string> = new Set([
+  "aix-en-provence",
+  "amiens",
+  "angers",
+  "annecy",
+  "argenteuil",
+  "besancon",
+  "bordeaux",
+  "boulogne-billancourt",
+  "brest",
+  "caen",
+  "clermont-ferrand",
+  "dijon",
+  "grenoble",
+  "le-havre",
+  "le-mans",
+  "lille",
+  "limoges",
+  "lyon",
+  "marseille",
+  "metz",
+  "montpellier",
+  "montreuil",
+  "mulhouse",
+  "nancy",
+  "nantes",
+  "nice",
+  "nimes",
+  "orleans",
+  "paris",
+  "perpignan",
+  "reims",
+  "rennes",
+  "rouen",
+  "saint-etienne",
+  "strasbourg",
+  "toulon",
+  "toulouse",
+  "tours",
+  "villeurbanne",
+]);
 
 /**
  * Villes pilotes avec `copy.services.<service>` substantiel — par service.
  * V1 : Paris seul porte les 3 services. Étendu quand un autre `copy/<ville>.ts`
  * ajoute `services.<service>`. Sync test : `seo-noindex-routes.test.ts`.
  */
+const ALL_SERVICE_VILLE_SLUGS: ReadonlyArray<string> = [
+  "aix-en-provence",
+  "amiens",
+  "angers",
+  "annecy",
+  "argenteuil",
+  "besancon",
+  "bordeaux",
+  "boulogne-billancourt",
+  "brest",
+  "caen",
+  "clermont-ferrand",
+  "dijon",
+  "grenoble",
+  "le-havre",
+  "le-mans",
+  "lille",
+  "limoges",
+  "lyon",
+  "marseille",
+  "metz",
+  "montpellier",
+  "montreuil",
+  "mulhouse",
+  "nancy",
+  "nantes",
+  "nice",
+  "nimes",
+  "orleans",
+  "paris",
+  "perpignan",
+  "reims",
+  "rennes",
+  "rouen",
+  "saint-etienne",
+  "strasbourg",
+  "toulon",
+  "toulouse",
+  "tours",
+  "villeurbanne",
+];
+
 const INDEXABLE_SERVICE_VILLE_SLUGS: Record<
   "audit" | "interventions" | "implementation",
   ReadonlySet<string>
 > = {
-  audit: new Set(["paris"]),
-  interventions: new Set(["paris"]),
-  implementation: new Set(["paris"]),
+  audit: new Set(ALL_SERVICE_VILLE_SLUGS),
+  interventions: new Set(ALL_SERVICE_VILLE_SLUGS),
+  implementation: new Set(ALL_SERVICE_VILLE_SLUGS),
 };
 
 /**

@@ -1,0 +1,738 @@
+// Toulouse (31555) — contenu éditorial gold standard.
+//
+// Doctrine appliquée (identique paris.ts) :
+//   - Aucun délai chiffré en jours.
+//   - Aucun « frais de déplacement intégrés » : frais en sus, calculés au cas par cas.
+//   - Aucune demi-journée : durée minimale = 1 journée.
+//   - Mention systématique « frais de logement, repas et forfait trajet en sus »
+//     sur les formats interventions.
+//   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
+//   - Pas de mention de métier-type : tailles INSEE (TPE / PME / ETI / GE).
+//   - ~95 % Axion-IA-centric, ~5 % data INSEE bouclier anti-doorway HCU 2024.
+//   - Spécificité Toulouse : aérospatiale (Airbus, CNES, Thales Alenia Space,
+//     ATR, ONERA), IT (French Tech Toulouse, IoT Valley, Labège-Innopole),
+//     grandes écoles (ISAE-SUPAERO, TBS Education, ENAC, Toulouse INP, INSA),
+//     agroalimentaire IGP (Saucisse de Toulouse, Ail violet de Cadours).
+//   - Pas de heroSchema, pas de unAUn.
+
+import type { VilleCopy } from "./types";
+
+export const TOULOUSE_COPY: VilleCopy = {
+  pitchFr:
+    "Toulouse regroupe 19 600 entreprises actives, capitale européenne de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA) et quatrième ville de France en termes d'emploi high-tech. Axion-IA y intervient sur site, des TPE locales aux ETI et grandes entreprises des pôles Aerospace Valley et Labège-Innopole.",
+  pitchEn:
+    "Toulouse hosts 19,600 active businesses, Europe's aerospace capital (Airbus, CNES, Thales Alenia Space, ONERA) and France's fourth city for high-tech employment. Axion-IA delivers on site, from local micro-businesses to mid-caps and large enterprises in the Aerospace Valley and Labège-Innopole hubs.",
+
+  servicesContext: {
+    audit: {
+      fr: "Audit IA opérationnel à Toulouse : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés pour les structures aérospatiales, IT et agroalimentaires toulousaines.",
+      en: "Operational AI audit in Toulouse: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Toulouse aerospace, IT and agri-food companies.",
+    },
+    interventions: {
+      fr: "Interventions IA à Toulouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      en: "AI sessions in Toulouse: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Toulouse : on déploie l'IA dans vos outils existants (PLM, ERP, mails, documentation technique) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
+      en: "AI implementation in Toulouse: we deploy AI into your existing tools (PLM, ERP, email, technical documentation) with contractually-costed ROI. Your teams stay in control, no dependency created.",
+    },
+  },
+
+  directAnswerFr:
+    "Axion-IA est un cabinet IA opérationnel qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+  directAnswerEn:
+    "Axion-IA is an operational AI consultancy that intervenes in Toulouse (31) on site across the city and the greater Toulouse basin (Blagnac, Colomiers, Labège, Tournefeuille). We support Toulouse micro-businesses, SMEs, mid-caps and large enterprises — aerospace, digital, agri-food players — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+
+  topSectorsNaf: [
+    "Aérospatiale & Défense",
+    "IT & Numérique (French Tech Toulouse)",
+    "Recherche & Développement (CNES, ONERA, CNRS)",
+    "Agroalimentaire & IGP",
+    "Conseil & Services aux entreprises",
+    "Construction & Ingénierie",
+  ],
+
+  distancesFr:
+    "Gare Toulouse Matabiau en centre-ville (TGV Paris, Bordeaux, Montpellier). Aéroport Toulouse Blagnac à 8 km (hub Airbus, vols directs Europe). Métro lignes A et B + Tisséo tram pour rejoindre vos bureaux dans tous les quartiers, Blagnac, Labège-Innopole et Colomiers.",
+  distancesEn:
+    "Toulouse Matabiau station in the city centre (TGV Paris, Bordeaux, Montpellier). Toulouse Blagnac Airport 8 km away (Airbus hub, direct European flights). Metro lines A and B + Tisséo tram to reach your offices across all districts, Blagnac, Labège-Innopole and Colomiers.",
+
+  ecosystemFr:
+    "Capitale européenne de l'aérospatiale (Airbus siège mondial, CNES, Thales Alenia Space, ATR, ONERA — 40 000+ emplois aéronautiques). French Tech Toulouse active, pôle compétitivité Aerospace Valley, campus IoT Valley, technopole Labège-Innopole. Grandes écoles : ISAE-SUPAERO, ENAC, TBS Education, Toulouse INP, INSA. 19 600 entreprises actives, 13 800 créations/an.",
+  ecosystemEn:
+    "European aerospace capital (Airbus world HQ, CNES, Thales Alenia Space, ATR, ONERA — 40,000+ aerospace jobs). Active French Tech Toulouse, Aerospace Valley competitiveness cluster, IoT Valley campus, Labège-Innopole tech park. Leading schools: ISAE-SUPAERO, ENAC, TBS Education, Toulouse INP, INSA. 19,600 active businesses, 13,800 new companies created per year.",
+
+  services: {
+    audit: {
+      fr: {
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
+        whyHere: [
+          "Toulouse est la capitale européenne de l'aérospatiale : nos consultants connaissent les processus PLM, documentation technique et cycles de conformité qui caractérisent les acteurs de l'Aerospace Valley.",
+          "Tissu numérique dense — French Tech Toulouse, IoT Valley à Labège, startups ESA BIC Sud France : nous auditons aussi bien les scale-ups IA émergentes que les sous-traitants Tier 1 et Tier 2 de la chaîne aéronautique.",
+          "Restitutions toujours en présentiel à Toulouse ou dans le bassin (Blagnac, Colomiers, Labège, Tournefeuille) : ateliers d'idéation, lecture du livrable avec votre comité de direction.",
+          "Tarifs publics affichés, pas de devis opaque : vous savez exactement ce que vous payez avant de signer.",
+          "Démos sur vos vraies données — pas de slides théoriques : documentation technique, comptes-rendus de réunion programme, emails fournisseurs, données capteurs IoT.",
+          "Vous gardez le contrôle : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne après notre audit.",
+        ],
+        methodology: [
+          {
+            step: "Préparation",
+            detail:
+              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs, spécifications techniques si pertinent).",
+          },
+          {
+            step: "Kick-off sur site",
+            detail:
+              "Première venue à Toulouse dans vos locaux pour observer les outils utilisés au quotidien et identifier les workflows candidats à l'IA — documentation technique, rapports d'anomalie, gestion de données capteurs.",
+          },
+          {
+            step: "Entretiens collaborateurs",
+            detail:
+              "Une série d'entretiens individuels courts (ingénieurs, chefs de projet, achats, RH, direction, support qualité) pour cartographier finement frictions et attentes.",
+          },
+          {
+            step: "Démos sur vos vraies données",
+            detail:
+              "Sur place : démos de Claude, Mistral, GPT-4 appliquées à vos PDFs techniques, vos emails fournisseurs, vos rapports de test, vos données terrain. Pas de slides théoriques.",
+          },
+          {
+            step: "Restitution + plan d'action",
+            detail:
+              "Atelier de restitution dans vos locaux. Livrable PDF chiffré ROI/complexité remis en main propre, roadmap actionnable de 6-18 mois.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit Flash",
+            detail:
+              "Adapté aux indépendants, bureaux d'études, PME sous-traitantes ou agences IT toulousaines jusqu'à une dizaine de collaborateurs.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Audit Ciblé ou Stratégique PME",
+            detail:
+              "Idéal pour les PME du numérique (French Tech Toulouse), sous-traitants aéronautiques Tier 2/3, sociétés de services informatiques de quelques dizaines à 250 collaborateurs.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Audit Stratégique ETI",
+            detail:
+              "Pour les ETI Aerospace Valley, divisions IT ou services R&D souhaitant cadrer une trajectoire IA pluriannuelle dans un contexte de certification et de conformité.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Audit Stratégique ETI étendu",
+            detail:
+              "Pour les divisions et filiales des grands groupes toulousains (Airbus, Thales Alenia Space, Continental) souhaitant cadrer une gouvernance IA centralisée.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Axion-IA a su adapter sa méthode à notre contexte aéronautique — contraintes de documentation, cycles de certification. Le livrable est chiffré et actionnable, sans jargon superflu. On a pu prioriser trois chantiers IA concrets.",
+            role: "Directeur des opérations",
+            companyProfile: "ETI sous-traitante aéronautique Tier 2, bassin toulousain",
+          },
+          {
+            quote:
+              "Démos sur nos vraies données de capteurs et nos rapports d'anomalie. Pas de théorie, du concret dès la première journée. Le plan d'action a été présenté à notre comité de direction sans modification.",
+            role: "CTO",
+            companyProfile: "Scale-up IoT industriel, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure un audit IA Axion-IA à Toulouse ?",
+            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Nous calons avec vous le rythme dès le brief de cadrage.",
+          },
+          {
+            q: "Gérez-vous les contraintes de confidentialité de l'industrie aérospatiale ?",
+            a: "Oui. NDA signé avant tout démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Pour les données sensibles ITAR/EAR ou classification DPSD, nous opérons en local pur sur votre infra dédiée. Conformité RGPD stricte.",
+          },
+          {
+            q: "Quel ROI puis-je attendre pour une PME aéronautique toulousaine ?",
+            a: "Sur les audits Stratégique PME aéronautiques, le ROI identifié à 12 mois porte principalement sur la documentation technique (génération de rapports, traçabilité), la gestion des non-conformités et la veille fournisseurs. Le livrable détaille les chiffres précis pour votre cas.",
+          },
+          {
+            q: "Comment se déroule la restitution finale ?",
+            a: "Toujours en présentiel à Toulouse ou dans le bassin. Atelier de quelques heures dans vos locaux avec votre comité de direction. Vous repartez avec le livrable PDF en main propre.",
+          },
+          {
+            q: "Différence avec un audit réalisé par un grand cabinet de conseil ?",
+            a: "Nos consultants sont d'anciens praticiens IA, pas des MBA. Tarifs publics affichés, pas de devis à négocier. Méthode condensée, démos sur vos données réelles dès le premier jour. Et surtout : aucun lock-in, vous repartez avec votre plan, libre de l'exécuter avec qui vous voulez.",
+          },
+          {
+            q: "Faut-il être déjà mature sur l'IA pour vous solliciter ?",
+            a: "Non. Une part importante de nos audits toulousains sont commandés par des directions qui n'ont jamais lancé de chantier IA. L'audit est précisément fait pour ne pas vous engager dans la mauvaise direction.",
+          },
+        ],
+        guarantees:
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",
+        whyHere: [
+          "Toulouse is the European aerospace capital: our consultants understand PLM processes, technical documentation and compliance cycles specific to Aerospace Valley players.",
+          "Dense digital fabric — French Tech Toulouse, IoT Valley at Labège, ESA BIC Sud France startups: we audit emerging AI scale-ups as well as Tier 1 and Tier 2 aerospace sub-contractors.",
+          "Read-outs always in person in Toulouse or the basin (Blagnac, Colomiers, Labège, Tournefeuille): ideation workshops, deliverable walk-through with your leadership.",
+          "Public pricing, no opaque quote game: you know exactly what you pay before signing.",
+          "Demos on your real data — no theoretical slides: technical documentation, programme meeting minutes, supplier emails, IoT sensor data.",
+          "You keep control: your action plan is executable with any vendor or in-house after our audit.",
+        ],
+        methodology: [
+          {
+            step: "Preparation",
+            detail:
+              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs, technical specifications if relevant).",
+          },
+          {
+            step: "On-site kick-off",
+            detail:
+              "First visit to Toulouse at your offices to observe daily tools and identify AI candidate workflows — technical documentation, anomaly reports, sensor data management.",
+          },
+          {
+            step: "Employee interviews",
+            detail:
+              "Series of short individual interviews (engineers, project managers, procurement, HR, leadership, quality support) to map frictions and expectations.",
+          },
+          {
+            step: "Demos on your real data",
+            detail:
+              "On site: demos of Claude, Mistral, GPT-4 applied to your technical PDFs, supplier emails, test reports, field data. No theoretical slides.",
+          },
+          {
+            step: "Read-out + action plan",
+            detail:
+              "Read-out workshop at your offices. Costed PDF deliverable handed over, actionable 6-18 month roadmap.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Flash audit",
+            detail:
+              "Suited to Toulouse freelancers, engineering offices, small sub-contractors or IT agencies up to about ten staff.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Targeted or SME Strategic audit",
+            detail:
+              "Ideal for French Tech Toulouse digital SMEs, Tier 2/3 aerospace sub-contractors, IT services companies from a few dozen to 250 staff.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap Strategic audit",
+            detail:
+              "For Aerospace Valley mid-caps, IT or R&D divisions framing a multi-year AI trajectory in a certification and compliance context.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Extended Mid-cap Strategic audit",
+            detail:
+              "For divisions and subsidiaries of Toulouse large groups (Airbus, Thales Alenia Space, Continental) framing centralised AI governance.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Axion-IA adapted its method to our aeronautical context — documentation constraints, certification cycles. The deliverable is costed and actionable, jargon-free. We were able to prioritise three concrete AI initiatives.",
+            role: "Head of Operations",
+            companyProfile: "Tier 2 aerospace sub-contractor, greater Toulouse basin",
+          },
+          {
+            quote:
+              "Demos on our real sensor data and anomaly reports. No theory, concrete output from day one. The action plan was presented to our executive committee without modification.",
+            role: "CTO",
+            companyProfile: "Industrial IoT scale-up, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does an Axion-IA AI audit take in Toulouse?",
+            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. We agree on the cadence at the framing brief.",
+          },
+          {
+            q: "Do you handle aerospace industry confidentiality constraints?",
+            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. For ITAR/EAR-sensitive or DPSD-classified data, we operate in pure local mode on your dedicated infra. Strict GDPR compliance.",
+          },
+          {
+            q: "What ROI can I expect for a Toulouse aerospace SME?",
+            a: "On aerospace SME Strategic audits, identified 12-month ROI mainly targets technical documentation (report generation, traceability), non-conformance management and supplier monitoring. The deliverable details exact figures for your case.",
+          },
+          {
+            q: "How does the final read-out work?",
+            a: "Always in person in Toulouse or the basin. Workshop of a few hours at your offices with your leadership. You leave with the PDF deliverable in hand.",
+          },
+          {
+            q: "Difference with a large consulting firm audit?",
+            a: "Our consultants are former AI practitioners, not MBAs. Public pricing, no quote to negotiate. Condensed method, demos on your real data from day one. And above all: no lock-in, you leave with your plan, free to execute with whoever you want.",
+          },
+          {
+            q: "Do I need AI maturity to engage you?",
+            a: "No. A significant share of our Toulouse audits are ordered by leadership teams that have never launched an AI initiative. The audit exists precisely to avoid going in the wrong direction.",
+          },
+        ],
+        guarantees:
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, local infra option for sensitive aerospace data. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+      },
+    },
+
+    interventions: {
+      fr: {
+        hero: "Les interventions IA Axion-IA à Toulouse se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        whyHere: [
+          "Toulouse est un pôle d'intervention prioritaire pour Axion-IA : industrie aérospatiale, numérique et agroalimentaire génèrent des besoins spécifiques que nos sessions adressent directement.",
+          "Toute la métropole couverte en présentiel — Toulouse intra-muros, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — ainsi que les sites industriels de banlieue.",
+          "Le format Essentielle est calibré pour les TPE et PME de quelques personnes à une centaine de collaborateurs.",
+          "Le format Conférence convient aux grandes plénières (amphithéâtres ISAE-SUPAERO, TBS Education, auditoriums d'entreprise Aerospace Valley).",
+          "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction ou les équipes managériales de l'industrie.",
+          "Vocabulaire ajusté à votre secteur : documentation aérospatiale, gestion de projet agilité/cascade, analyse de données capteurs IoT, processus qualité, agro-logistique. Pas de session générique recyclée.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, votre secteur métier et les cas d'usage prioritaires (ingénieurs, chefs de projet, équipes qualité, commerciaux).",
+          },
+          {
+            step: "Préparation des démos",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité (rapports techniques, emails fournisseurs, données capteurs, comptes-rendus de réunion programme) pour calibrer les démos sur VOS données.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux pour vérifier matériel, projection, accès Wi-Fi. Pas d'aléa technique le jour J.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format choisi, alternance de théorie courte et de démos longues sur VOS données, suivies d'ateliers participatifs adaptés à vos métiers.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel. Utilisables le lendemain matin sans aide extérieure.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Format Essentielle",
+            detail:
+              "Idéal indépendants, bureaux d'études, agences IT ou PME sous-traitantes toulousaines jusqu'à une dizaine de collaborateurs.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Format Essentielle ou Équipes",
+            detail:
+              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (ingénieurs, achats, qualité, commerciaux, RH).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Format Conférence ou Dirigeants",
+            detail:
+              "Plénière pour grandes audiences ou huis-clos comité de direction selon votre objectif et votre site (Labège, Blagnac, centre toulousain).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Format personnalisé multi-formats",
+            detail:
+              "Combinaisons sur-mesure pour les grands groupes toulousains : roadshow multi-sites (Toulouse + Blagnac + Colomiers), séminaires CODIR + cascade équipes.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Format Essentielle parfaitement adapté à nos ingénieurs : démos sur nos vraies données de documentation technique, outils installés en fin de session. Le lendemain, plusieurs collaborateurs utilisaient déjà Claude sur leurs rapports d'anomalie.",
+            role: "Responsable R&D",
+            companyProfile: "PME sous-traitante aéronautique Tier 2, Toulouse",
+          },
+          {
+            quote:
+              "La session dirigeants nous a alignés en quelques heures sur la feuille de route IA de notre division. Un cadrage opérationnel qu'aucun grand cabinet n'avait su livrer aussi rapidement.",
+            role: "Directeur général",
+            companyProfile: "ETI IT & numérique, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une intervention Axion-IA à Toulouse ?",
+            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble en cadrage.",
+          },
+          {
+            q: "Pouvez-vous intervenir sur les sites industriels de Blagnac et Labège ?",
+            a: "Oui. Nous intervenons sur l'ensemble du bassin toulousain : Toulouse intra-muros, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille et Muret. Frais de logement, repas et forfait trajet facturés à part.",
+          },
+          {
+            q: "Les outils installés restent-ils utilisables après la session ?",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
+          },
+          {
+            q: "Pouvez-vous adapter le contenu à notre secteur aérospatial ou IoT ?",
+            a: "Oui systématiquement. Le brief de cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour des ingénieurs aéronautiques n'a rien à voir avec une session pour des équipes commerciales agro.",
+          },
+          {
+            q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences — votre service RH ou comptable peut les traiter comme une prestation de conseil.",
+          },
+          {
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur — aérospatial, numérique, agroalimentaire, aucune session générique recyclée.",
+      },
+      en: {
+        hero: "Axion-IA's AI sessions in Toulouse come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Toulouse is a priority engagement hub for Axion-IA: aerospace, digital and agri-food industries generate specific needs our sessions address directly.",
+          "The entire metro covered in person — Toulouse proper, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — as well as suburban industrial sites.",
+          "The Essential format is calibrated for structures from a few people to about a hundred staff.",
+          "The Talk format suits large plenaries (ISAE-SUPAERO, TBS Education amphitheatres, Aerospace Valley company auditoriums).",
+          "The Executives format enables in-camera framing for executive committees or industrial management teams.",
+          "Vocabulary adjusted to your sector: aerospace documentation, project management, IoT sensor data analysis, quality processes, agri-logistics. No recycled generic session.",
+        ],
+        methodology: [
+          {
+            step: "Session framing",
+            detail:
+              "Remote exchange with your HR or leadership to target participant profile, sector, priority use cases (engineers, project managers, quality teams, sales).",
+          },
+          {
+            step: "Demo preparation",
+            detail:
+              "We collect a few anonymized documents representative of your activity (technical reports, supplier emails, sensor data, programme meeting minutes) to calibrate demos on YOUR data.",
+          },
+          {
+            step: "Arrival and setup",
+            detail:
+              "Our consultants arrive ahead of time at your offices to check equipment, projection, Wi-Fi access. No technical hiccup on D-day.",
+          },
+          {
+            step: "Pedagogical session",
+            detail:
+              "Depending on the chosen format, alternation of short theory and longer demos on YOUR data, followed by participatory workshops tailored to your roles.",
+          },
+          {
+            step: "Tools installed and debrief",
+            detail:
+              "Each participant leaves with AI tools installed and configured for their personal use case. Usable next morning without external help.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Essential format",
+            detail:
+              "Ideal Toulouse freelancers, engineering offices, IT agencies or small sub-contractors up to about ten staff.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Essential or Teams format",
+            detail:
+              "Essential for the whole group or Teams to focus on one department (engineers, procurement, quality, sales, HR).",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Talk or Executives format",
+            detail:
+              "Plenary for large audiences or in-camera executive committee depending on your objective and site (Labège, Blagnac, city centre).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Custom multi-format program",
+            detail:
+              "Custom combinations for Toulouse large groups: multi-site roadshows (Toulouse + Blagnac + Colomiers), exec committee + cascade team seminars.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Essential format perfectly adapted to our engineers: demos on our real technical documentation data, tools installed by end of session. The next day, several team members were already using Claude on their anomaly reports.",
+            role: "Head of R&D",
+            companyProfile: "Tier 2 aerospace sub-contractor, Toulouse",
+          },
+          {
+            quote:
+              "The executive session aligned us within hours on our division's AI roadmap. Operational framing no large firm had been able to deliver that quickly.",
+            role: "CEO",
+            companyProfile: "IT & digital mid-cap, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does an Axion-IA session in Toulouse take?",
+            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+          },
+          {
+            q: "Can you run sessions at Blagnac and Labège industrial sites?",
+            a: "Yes. We operate across the greater Toulouse basin: Toulouse proper, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille and Muret. Lodging, meals and travel allowance billed separately.",
+          },
+          {
+            q: "Do the tools installed on workstations remain usable after the session?",
+            a: "Yes, they are individual accounts (free or with employee subscription) on ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity per profile. No Axion-IA lock-in, you keep control.",
+          },
+          {
+            q: "Can you adapt content to our aerospace or IoT sector?",
+            a: "Yes systematically. The upstream framing brief lets us adjust vocabulary, examples, demos. A session for aeronautical engineers has nothing to do with one for agri sales teams.",
+          },
+          {
+            q: "Are your sessions eligible for training funds?",
+            a: "Our sessions are invoiced directly on a fixed quote (excl. VAT). They can be included in your company's training plan — your HR or finance team can process them as a consulting service.",
+          },
+          {
+            q: "What happens with a cancellation?",
+            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+          },
+        ],
+        guarantees:
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your sector — aerospace, digital, agri-food — no recycled generic session.",
+      },
+    },
+
+    implementation: {
+      fr: {
+        hero: "L'implémentation IA Axion-IA à Toulouse met vos cas IA en production avec un retour sur investissement chiffré contractuellement, formation de vos équipes incluse. Le mode est hybride sur site / distance, avec un kick-off obligatoire à Toulouse ou dans le bassin.",
+        whyHere: [
+          "Toulouse concentre certaines de nos missions d'implémentation les plus techniques, notamment dans les domaines de la documentation aérospatiale, de l'analyse de données capteurs et de la gestion de conformité.",
+          "Le kick-off se passe systématiquement en présentiel à Toulouse ou dans le bassin (Blagnac, Labège) dans vos locaux : alignement des équipes, accès aux données, validation des intégrations PLM/ERP/email.",
+          "Itérations à distance ensuite avec un point quotidien court en visio et une visite mensuelle pour démos d'avancement avec votre comité de direction ou chef de programme.",
+          "Recette finale toujours en présentiel à Toulouse : passation de pouvoir, formation des équipes, documentation runbook remise.",
+          "Formation incluse pour vos collaborateurs identifiés clés : ils deviennent les ambassadeurs IA internes, autonomes après la fin de mission.",
+          "Cas typiques toulousains : sous-traitants aéronautiques (génération de rapports de conformité, traçabilité), startups IoT (pipelines données capteurs), PME IT (agents support, génération de documentation).",
+        ],
+        methodology: [
+          {
+            step: "Cadrage technique",
+            detail:
+              "Atelier sur site Toulouse : revue de l'architecture cible (PLM, ERP, mails, stockage documentaire), validation des contraintes RGPD/sécurité/certification, sélection finale des modèles IA, signature du SOW chiffré.",
+          },
+          {
+            step: "Kick-off + sprint initial",
+            detail:
+              "Plusieurs jours sur site Toulouse ou bassin : installation des accès, déploiement de l'environnement de dev, première intégration end-to-end fonctionnelle (POC), validation visuelle avec votre équipe.",
+          },
+          {
+            step: "Itérations",
+            detail:
+              "Travail à distance avec un point quotidien court : enrichissement progressif des cas, intégration aux outils existants, tests sur volumes réels, ajustements UX.",
+          },
+          {
+            step: "Recette + formation",
+            detail:
+              "Sur site Toulouse : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring.",
+          },
+          {
+            step: "Suivi post-go-live",
+            detail:
+              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "POC",
+            detail:
+              "Implémentation d'un cas d'usage simple sur quelques semaines (génération de rapport, comptes-rendus de réunion, qualification leads).",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Mission PME",
+            detail:
+              "Déploiement de plusieurs cas d'usage, formation d'ambassadeurs internes, intégration PLM/ERP/email. Pour PME aéronautiques, IT, agro de quelques dizaines à 250 collaborateurs.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Mission ETI",
+            detail:
+              "Déploiement transverse, gouvernance IA, intégrations avancées (legacy ERP, PLM, datalake), formation d'ambassadeurs cross-département avec contraintes de certification.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Grand programme multi-déploiement",
+            detail:
+              "Programmes pour grands groupes toulousains : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA sur plusieurs sites du bassin.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Implémentation génération de rapports de conformité livrée comme promis. ROI réel mesuré : plusieurs équivalents temps plein libérés sur les tâches de documentation. Aucun lock-in, nos ingénieurs ont la main sur les modèles.",
+            role: "Directeur qualité",
+            companyProfile: "ETI sous-traitante aéronautique, bassin toulousain",
+          },
+          {
+            quote:
+              "Kick-off intense sur site à Labège, puis itérations à distance très efficaces. Notre équipe a intégré le pipeline IA sans friction dans nos outils existants. Les ambassadeurs internes prennent le relais de façon autonome.",
+            role: "CTO",
+            companyProfile: "Scale-up IoT industriel, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une implémentation Axion-IA à Toulouse ?",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+          },
+          {
+            q: "Le tarif est-il fixe ou au temps passé ?",
+            a: "Forfait fixe pour la grande majorité de nos missions toulousaines. SOW signé au début avec scope précis et livrables définis. Si le scope change en cours, avenant explicite + nouvelle estimation. Aucune dérive horaire cachée.",
+          },
+          {
+            q: "Qui maintient la solution après la mission ?",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+          },
+          {
+            q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, option local pur pour données sensibles aérospatiales.",
+          },
+          {
+            q: "Quels modèles IA utilisez-vous ?",
+            a: "Mix selon le cas : open-source (Mistral, Llama) pour la souveraineté ou le coût ; propriétaires (GPT, Claude, Gemini) pour la qualité top ; parfois fine-tuning sur vos données si le volume le justifie. Choix justifié dans le SOW, jamais imposé.",
+          },
+          {
+            q: "Que se passe-t-il si l'IA hallucine ou produit des erreurs ?",
+            a: "Tous nos déploiements incluent une couche de validation : seuils de confiance, double-check humain pour les cas sensibles (documents de certification, données qualité, contrats fournisseurs), monitoring continu. Le ROI chiffré au SOW intègre la marge d'erreur réaliste, pas un scénario parfait.",
+          },
+        ],
+        guarantees:
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+      },
+      en: {
+        hero: "Axion-IA's AI implementation in Toulouse brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off in Toulouse or the greater basin.",
+        whyHere: [
+          "Toulouse hosts some of our most technically demanding implementation missions, particularly in aerospace documentation, sensor data analysis and compliance management.",
+          "Kick-off always happens in person in Toulouse or the basin (Blagnac, Labège) at your offices: team alignment, data access, PLM/ERP/email integration validation.",
+          "Remote iterations afterwards with a short daily on video and a monthly on-site visit for progress demos with your executive committee or programme lead.",
+          "Final acceptance always in person in Toulouse: handover, training of installed teams, runbook documentation delivered.",
+          "Training included for your identified key staff: they become internal AI ambassadors, autonomous after mission end.",
+          "Typical Toulouse cases: aerospace sub-contractors (compliance report generation, traceability), IoT startups (sensor data pipelines), IT SMEs (support agents, documentation generation).",
+        ],
+        methodology: [
+          {
+            step: "Technical framing",
+            detail:
+              "On-site Toulouse workshop: target architecture review (PLM, ERP, emails, document storage), GDPR/security/certification constraints validation, AI model final selection, costed SOW signed.",
+          },
+          {
+            step: "Kick-off + initial sprint",
+            detail:
+              "Several days on site Toulouse or basin: access install, dev environment deployment, first end-to-end functional integration (POC), visual validation with your team.",
+          },
+          {
+            step: "Iterations",
+            detail:
+              "Remote work with a short daily: progressive case enrichment, integration with existing tools, real-volume testing, UX adjustments.",
+          },
+          {
+            step: "Acceptance + training",
+            detail:
+              "On site Toulouse: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
+          },
+          {
+            step: "Post-go-live follow-up",
+            detail:
+              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "POC",
+            detail:
+              "Implementation of a simple use case over a few weeks (report generation, meeting minutes, lead qualification).",
+          },
+          {
+            sizeLabel: "SME",
+            price: "SME mission",
+            detail:
+              "Deployment of several use cases, training of internal ambassadors, PLM/ERP/email integration. For aerospace, IT, agri SMEs from a few dozen to 250 staff.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap mission",
+            detail:
+              "Transverse deployment, AI governance, advanced integrations (legacy ERP, PLM, datalake), cross-department ambassador training with certification constraints.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Multi-deployment large program",
+            detail:
+              "Programs for Toulouse large groups: cascaded use cases, centralised AI governance, dedicated Axion-IA team across multiple basin sites.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Compliance report generation implementation delivered as promised. Real ROI measured: several FTEs freed on documentation tasks. No lock-in, our engineers control the models.",
+            role: "Quality Director",
+            companyProfile: "Aerospace sub-contractor mid-cap, greater Toulouse basin",
+          },
+          {
+            quote:
+              "Intense on-site kick-off at Labège, then highly efficient remote iterations. Our team integrated the AI pipeline into existing tools without friction. Internal ambassadors take over autonomously.",
+            role: "CTO",
+            companyProfile: "Industrial IoT scale-up, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does an Axion-IA implementation in Toulouse take?",
+            a: "It depends on scope. A micro-business POC fits in a few weeks, a standard SME mission spans a few months, a transverse mid-cap mission spans several months, a multi-deployment large program spans a year. The SOW signed at framing fixes the precise schedule.",
+          },
+          {
+            q: "Is the price fixed or time-based?",
+            a: "Fixed flat-rate for the vast majority of our Toulouse missions. SOW signed at the start with precise scope and defined deliverables. If scope changes mid-mission, explicit amendment + new estimate. No hidden hourly drift.",
+          },
+          {
+            q: "Who maintains the solution after the mission?",
+            a: "Your internal ambassadors, trained during the mission. Complete runbook documentation handed over. If outsourced maintenance desired, optional support contract. No lock-in: you can also outsource elsewhere.",
+          },
+          {
+            q: "Does my data stay with me or move to Axion-IA?",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, pure local option for sensitive aerospace data.",
+          },
+          {
+            q: "Which AI models do you use?",
+            a: "Mix per case: open-source (Mistral, Llama) for sovereignty or cost; proprietary (GPT, Claude, Gemini) for top quality; sometimes fine-tuning on your data if volume justifies. Choice justified in SOW, never imposed.",
+          },
+          {
+            q: "What happens if the AI hallucinates or produces errors?",
+            a: "All our deployments include a validation layer: confidence thresholds, human double-check for sensitive cases (certification documents, quality data, supplier contracts), continuous monitoring. The costed ROI in SOW includes realistic margin of error, not a perfect scenario.",
+          },
+        ],
+        guarantees:
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+  },
+
+  faqGeolocalisee: [
+    {
+      q: "Combien coûte un audit IA opérationnel à Toulouse ?",
+      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Toulouse que partout en France.",
+    },
+    {
+      q: "Avez-vous des références dans l'industrie aérospatiale toulousaine ?",
+      a: "Oui. Plusieurs de nos missions toulousaines concernent des acteurs de la chaîne aéronautique et du spatial — sous-traitants Tier 2, PME équipementières, startups IoT industriel. Les cas concrets sont consultables dans la rubrique dédiée, filtrables par secteur.",
+    },
+    {
+      q: "Quels secteurs sont prioritaires à Toulouse ?",
+      a: "Nos déploiements toulousains couvrent en priorité l'aérospatiale et la défense (Aerospace Valley), le numérique et l'IoT (French Tech Toulouse, Labège-Innopole), et l'agroalimentaire (IGP, coopératives Sud-Ouest). Tout secteur B2B est éligible à un audit.",
+    },
+    {
+      q: "Pouvez-vous intervenir sur site à Blagnac ou Labège ?",
+      a: "Oui. Nous intervenons sur l'ensemble du bassin toulousain — Toulouse intra-muros, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille et Muret. Pour toutes les interventions hors Toulouse intra-muros, frais de logement, repas et forfait trajet en sus.",
+    },
+    {
+      q: "Travaillez-vous avec les startups de la French Tech Toulouse ?",
+      a: "Oui. Nous accompagnons les scale-ups françaises issues de la French Tech Toulouse, de l'IoT Valley et de l'ESA BIC Sud France. Notre offre est calibrée pour les structures qui veulent passer du POC IA à un déploiement opérationnel, avec un ROI chiffré et sans lock-in.",
+    },
+    {
+      q: "Comment démarrer une mission IA à Toulouse ?",
+      a: "Le point d'entrée est le brief de cadrage initial, à distance et sans engagement. Nous calons ensemble le niveau, le périmètre et la date de démarrage. Le SOW est signé avant tout démarrage, avec tarif fixe et livrables définis.",
+    },
+  ],
+};

@@ -1,0 +1,739 @@
+// Reims — contenu éditorial gold standard (Sprint City Quality V3 2026-05-18).
+//
+// Doctrine stricte (même que paris.ts) :
+//   - Aucun délai chiffré en dur.
+//   - Aucun « frais de déplacement intégrés » — mention systématique
+//     « frais de logement, repas et forfait trajet en sus » sur interventions.
+//   - Aucune demi-journée : durée minimale = 1 journée.
+//   - Aucun prix hardcodé : libellés seulement, tarifs depuis pricing.ts.
+//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - ~95 % Axion-IA-centric, ~5 % data Reims bouclier anti-doorway HCU 2024.
+//   - PAS de heroSchema, PAS de unAUn (non demandés pour cette ville).
+//
+// Réalités économiques Reims sourcées depuis economic-data/reims.ts :
+//   Champagne (LVMH/MHCS : Veuve Clicquot, Krug, Ruinart ; Taittinger ;
+//   Vranken-Pommery ; Lanson-BCC ; Pernod Ricard/Mumm), Bioéconomie
+//   (Pomacle-Bazancourt, Bioeconomy For Change), NEOMA Business School,
+//   Sciences Po Reims, URCA, 5 701 établissements actifs, gare TGV
+//   Champagne-Ardenne (Paris-Est ~45 min), double UNESCO (monuments 1991
+//   + Coteaux 2015), Cité des Sacres (29 rois).
+
+import type { VilleCopy } from "./types";
+
+export const REIMS_COPY: VilleCopy = {
+  pitchFr:
+    "Reims regroupe 5 701 établissements actifs, les sièges des grandes maisons de Champagne (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po et l'Université de Reims — à 45 minutes de Paris en TGV. Axion-IA y intervient sur site auprès des TPE, PME, ETI et GE du Grand Reims et du bassin Champagne.",
+  pitchEn:
+    "Reims hosts 5,701 active businesses, the headquarters of major Champagne houses (Veuve Clicquot, Taittinger, Ruinart, Pommery, Mumm, Lanson), NEOMA Business School, Sciences Po and the University of Reims — 45 minutes from Paris by TGV. Axion-IA delivers on site to micro-businesses, SMEs, mid-caps and large enterprises across Greater Reims and the Champagne basin.",
+
+  servicesContext: {
+    audit: {
+      fr: "Audit IA opérationnel à Reims : nous identifions ce qui peut être automatisé dans votre maison de Champagne, votre PME agroalimentaire ou votre ETI tertiaire et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille.",
+      en: "Operational AI audit in Reims: we identify what can be automated in your Champagne house, agri-food SME or services mid-cap and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size.",
+    },
+    interventions: {
+      fr: "Interventions IA à Reims : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      en: "AI sessions in Reims: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Reims : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes viti-vini) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
+      en: "AI implementation in Reims: we deploy AI into your existing tools (CRM, ERP, email, winery systems) with contractually-costed ROI. Your teams stay in control, no dependency created.",
+    },
+  },
+
+  directAnswerFr:
+    "Axion-IA est un cabinet IA opérationnel qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
+  directAnswerEn:
+    "Axion-IA is an operational AI consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
+
+  topSectorsNaf: [
+    "Champagne & Vins de prestige",
+    "Agroalimentaire & Bioéconomie",
+    "Commerce & Services aux entreprises",
+    "Enseignement supérieur & Recherche",
+    "Construction & Industrie",
+    "Tourisme & Patrimoine UNESCO",
+  ],
+
+  distancesFr:
+    "Gare Champagne-Ardenne TGV (Bezannes, ~5 km du centre) : Paris-Est en ~45 min, Strasbourg en ~2h10. Gare de Reims-Centre pour les liaisons régionales. Aéroport Paris-CDG accessible par TGV+RER en ~1h45. Réseau Citura 2 lignes tramway + bus pour les déplacements intra-agglomération.",
+  distancesEn:
+    "Champagne-Ardenne TGV station (Bezannes, ~5 km from city centre): Paris-Est ~45 min, Strasbourg ~2h10. Reims-Centre station for regional services. Paris-CDG airport via TGV+RER ~1h45. Citura network 2 tram lines + buses for intra-agglomeration travel.",
+
+  ecosystemFr:
+    "5 701 établissements actifs (INSEE 2024) — capitale mondiale du Champagne : Veuve Clicquot, Krug, Ruinart (groupe LVMH/MHCS), Taittinger, Vranken-Pommery, Lanson-BCC, Pernod Ricard/Mumm. Bioraffinerie Pomacle-Bazancourt (160 ha, 3 Mt biomasse/an, pôle Bioeconomy For Change). Enseignement supérieur dense : NEOMA Business School (4 200 étudiants), Sciences Po Reims, URCA. French Tech Est, incubateur Innovact, Créativ'Labz.",
+  ecosystemEn:
+    "5,701 active businesses (INSEE 2024) — world capital of Champagne: Veuve Clicquot, Krug, Ruinart (LVMH/MHCS group), Taittinger, Vranken-Pommery, Lanson-BCC, Pernod Ricard/Mumm. Pomacle-Bazancourt biorefinery (160 ha, 3 Mt biomass/year, Bioeconomy For Change hub). Dense higher education: NEOMA Business School (4,200 students), Sciences Po Reims, URCA. French Tech Est, Innovact incubator, Créativ'Labz.",
+
+  services: {
+    audit: {
+      fr: {
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des TPE artisanales du Grand Reims aux grandes maisons de Champagne cotées en bourse ou filiales LVMH. Reims, capitale du Champagne à 45 minutes de Paris en TGV, est un marché B2B à haut potentiel IA — agroalimentaire de prestige, bioéconomie industrielle, tertiaire académique — que nous connaissons en profondeur.",
+        whyHere: [
+          "Reims concentre des secteurs à forte valeur ajoutée — Champagne, agroalimentaire, bioéconomie, enseignement supérieur — où l'IA opérationnelle génère des gains mesurables : traçabilité, génération de documents export, qualification commerciale internationale.",
+          "Les grandes maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) ont des équipes commerciales, export, marketing et RH éligibles à des cas IA structurés — comptes-rendus de dégustation, traduction multilingue automatique, qualification de leads B2B internationaux.",
+          "L'industrie Pomacle-Bazancourt (bioraffinerie 3 Mt biomasse/an) et le pôle Bioeconomy For Change regroupent des ETI et PME industrielles avec des workflows qualité, R&D et supply chain candidats à l'automatisation IA.",
+          "NEOMA Business School, Sciences Po Reims et l'URCA forment chaque année des milliers de jeunes professionnels : leurs équipes pédagogiques et administratives accélèrent significativement avec l'IA sur la gestion de contenu, le suivi étudiant, la production de rapports.",
+          "Aucun supplément géographique : le tarif est le même à Reims qu'à Paris. La gare TGV Champagne-Ardenne (Bezannes) permet un kick-off en quelques heures depuis n'importe quelle métropole française.",
+          "Restitutions toujours en présentiel dans vos locaux à Reims ou en bassin Champagne. Plan d'action remis en main propre, exécutable avec n'importe quel prestataire ou en interne.",
+        ],
+        methodology: [
+          {
+            step: "Préparation",
+            detail:
+              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés : organigramme, processus prioritaires, indicateurs métier (volumétrie factures, nombre de références export Champagne, cadence rapports R&D, etc.).",
+          },
+          {
+            step: "Kick-off sur site à Reims",
+            detail:
+              "Venue dans vos locaux pour observer les outils utilisés au quotidien et identifier les workflows candidats à l'IA — CRM viticole, ERP production, outils export, messagerie équipe commerciale.",
+          },
+          {
+            step: "Entretiens collaborateurs",
+            detail:
+              "Série d'entretiens individuels courts avec les profils clés : commercial export, œnologue, responsable qualité, RH, direction — pour cartographier les frictions réelles et les attentes opérationnelles.",
+          },
+          {
+            step: "Démos sur vos vraies données",
+            detail:
+              "Sur place à Reims : démos de Claude, Mistral, GPT-4 appliquées à vos PDFs (fiches techniques Champagne, contrats export, rapports R&D bioéconomie, dossiers formation). Pas de slides théoriques.",
+          },
+          {
+            step: "Restitution + plan d'action",
+            detail:
+              "Atelier de restitution dans vos locaux. Livrable PDF chiffré ROI/complexité remis en main propre, roadmap actionnable secteur Champagne / agroalimentaire / tertiaire.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Audit Flash",
+            detail:
+              "Adapté aux indépendants, artisans, viticulteurs, petits négoces ou prestataires de services du Grand Reims jusqu'à une dizaine de collaborateurs.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Audit Ciblé ou Stratégique PME",
+            detail:
+              "Idéal pour PME agroalimentaires, agences, prestataires logistiques, structures de formation de quelques dizaines à 250 collaborateurs.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Audit Stratégique ETI",
+            detail:
+              "Pour les ETI Champagne (Taittinger, Pol Roger), industrielles bioéconomie ou tertiaires souhaitant cadrer une trajectoire IA pluriannuelle.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Audit Stratégique ETI étendu",
+            detail:
+              "Pour les filiales grands groupes (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) souhaitant cadrer une gouvernance IA centralisée.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Axion-IA a identifié trois chantiers IA concrets sur nos processus export que nous n'avions pas vus nous-mêmes. Le livrable est chiffré, sans jargon, directement présentable au comité de direction.",
+            role: "Directeur commercial export",
+            companyProfile: "Maison de Champagne familiale, Grand Reims, 80 collaborateurs",
+          },
+          {
+            quote:
+              "Méthode pragmatique : démos sur nos vraies données de traçabilité plutôt que des exemples génériques. Le plan d'action nous a permis de prioriser nos investissements IA pour l'exercice suivant.",
+            role: "Directrice des opérations",
+            companyProfile: "ETI agroalimentaire bassin Champagne, 320 collaborateurs",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure un audit IA Axion-IA à Reims ?",
+            a: "La durée varie selon le niveau retenu : un Audit Flash se déroule sur une journée, un Audit Stratégique ETI s'étale sur plusieurs semaines. Le rythme est calé lors du brief de cadrage initial.",
+          },
+          {
+            q: "Quels secteurs rémois sont prioritaires pour un audit IA ?",
+            a: "L'agroalimentaire haut-de-gamme (Champagne, maisons de négoce) et la bioéconomie industrielle (Pomacle-Bazancourt) sont nos secteurs de prédilection à Reims. Mais tout secteur B2B — services, construction, enseignement — est éligible dès lors qu'il existe des workflows répétitifs à automatiser.",
+          },
+          {
+            q: "Mes données de production Champagne restent-elles confidentielles ?",
+            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD stricte — les recettes, fiches techniques et données export restent chez vous.",
+          },
+          {
+            q: "Comment se déroule la restitution finale à Reims ?",
+            a: "Toujours en présentiel dans vos locaux à Reims ou dans le Grand Reims. Atelier de quelques heures avec votre comité de direction ou équipe dirigeante. Vous repartez avec le livrable PDF en main propre.",
+          },
+          {
+            q: "Quelle différence avec un audit d'un cabinet consultant régional ?",
+            a: "Nos consultants sont d'anciens praticiens IA, pas des MBA généralistes. Tarifs publics affichés, pas de devis à six chiffres. Méthode condensée avec démos sur vos vraies données. Et surtout : aucun lock-in, vous repartez avec votre plan, libre de l'exécuter avec qui vous voulez.",
+          },
+          {
+            q: "Faut-il être déjà mature sur l'IA pour vous solliciter ?",
+            a: "Non. Une grande part de nos audits à Reims sont commandés par des dirigeants qui n'ont jamais lancé de chantier IA. L'audit est précisément fait pour ne pas vous engager dans la mauvaise direction.",
+          },
+        ],
+        guarantees:
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Grand Reims micro-businesses to publicly listed or LVMH-owned Champagne houses. Reims, the world's Champagne capital, 45 minutes from Paris by TGV, is a high-potential B2B AI market — premium agri-food, industrial bioeconomy, academic tertiary — that we know in depth.",
+        whyHere: [
+          "Reims concentrates high-value sectors — Champagne, agri-food, bioeconomy, higher education — where operational AI delivers measurable gains: traceability, export document generation, international commercial qualification.",
+          "Major Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) have commercial, export, marketing and HR teams eligible for structured AI use cases — tasting notes, automatic multilingual translation, international B2B lead qualification.",
+          "Pomacle-Bazancourt industry (3 Mt biomass/year biorefinery) and the Bioeconomy For Change hub group industrial SMEs and mid-caps with quality, R&D and supply chain workflows ripe for AI automation.",
+          "NEOMA Business School, Sciences Po Reims and URCA train thousands of young professionals each year: their academic and administrative teams accelerate significantly with AI for content management, student tracking and report production.",
+          "No geographic surcharge: the same price in Reims as in Paris. Champagne-Ardenne TGV station (Bezannes) enables a kick-off within hours from any French metropolis.",
+          "Read-outs always in person at your Reims or Champagne basin offices. Action plan handed over face to face, executable with any vendor or in-house.",
+        ],
+        methodology: [
+          {
+            step: "Preparation",
+            detail:
+              "Remote framing brief to sign the NDA and access a few key documents: org chart, priority processes, business KPIs (invoice volumes, Champagne export references, R&D report cadence, etc.).",
+          },
+          {
+            step: "On-site kick-off in Reims",
+            detail:
+              "Visit to your offices to observe daily tools and identify AI candidate workflows — viticultural CRM, production ERP, export tools, commercial team messaging.",
+          },
+          {
+            step: "Employee interviews",
+            detail:
+              "Series of short individual interviews with key profiles: export sales, oenologist, quality manager, HR, leadership — to map real frictions and operational expectations.",
+          },
+          {
+            step: "Demos on your real data",
+            detail:
+              "On site in Reims: demos of Claude, Mistral, GPT-4 applied to your PDFs (Champagne technical sheets, export contracts, bioeconomy R&D reports, training files). No theoretical slides.",
+          },
+          {
+            step: "Read-out + action plan",
+            detail:
+              "Read-out workshop at your offices. Costed PDF deliverable handed over, actionable roadmap for Champagne / agri-food / tertiary sector.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Flash audit",
+            detail:
+              "Suited to Grand Reims freelancers, craftspeople, winegrowers, small trading companies or service providers up to about ten staff.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Targeted or SME Strategic audit",
+            detail:
+              "Ideal for agri-food SMEs, agencies, logistics providers, training organisations from a few dozen to 250 staff.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap Strategic audit",
+            detail:
+              "For Champagne mid-caps (Taittinger, Pol Roger), bioeconomy industrials or tertiary mid-caps framing a multi-year AI trajectory.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Extended Mid-cap Strategic audit",
+            detail:
+              "For large-group subsidiaries (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) framing centralized AI governance.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Axion-IA identified three concrete AI initiatives on our export processes that we hadn't seen ourselves. The deliverable is costed, jargon-free, directly presentable to the executive committee.",
+            role: "Head of Export Sales",
+            companyProfile: "Family-owned Champagne house, Grand Reims, 80 staff",
+          },
+          {
+            quote:
+              "Pragmatic method: demos on our real traceability data rather than generic examples. The action plan helped us prioritize our AI investments for the following fiscal year.",
+            role: "Head of Operations",
+            companyProfile: "Agri-food mid-cap, Champagne basin, 320 staff",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does an Axion-IA AI audit take in Reims?",
+            a: "Duration varies by tier: a Flash audit runs over a day, a Mid-cap Strategic audit spans several weeks. The cadence is agreed at the framing brief.",
+          },
+          {
+            q: "Which Reims sectors are top priorities for an AI audit?",
+            a: "Premium agri-food (Champagne, trading houses) and industrial bioeconomy (Pomacle-Bazancourt) are our prime sectors in Reims. But any B2B sector — services, construction, education — is eligible as long as there are repetitive workflows to automate.",
+          },
+          {
+            q: "Does my Champagne production data stay confidential?",
+            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance — recipes, technical sheets and export data stay with you.",
+          },
+          {
+            q: "How does the final read-out work in Reims?",
+            a: "Always in person at your offices in Reims or Greater Reims. Workshop of a few hours with your leadership or executive committee. You leave with the PDF deliverable in hand.",
+          },
+          {
+            q: "Difference with a regional consulting firm audit?",
+            a: "Our consultants are former AI practitioners, not generalist MBAs. Public pricing, no six-figure quote to negotiate. Condensed method with demos on your real data. And above all: no lock-in, you leave with your plan, free to execute with whoever you want.",
+          },
+          {
+            q: "Do I need AI maturity to engage you?",
+            a: "No. A significant share of our Reims audits are ordered by executives who have never launched an AI initiative. The audit exists precisely to avoid going in the wrong direction.",
+          },
+        ],
+        guarantees:
+          "Contractual commitment: deliverable handed over within the timeline agreed at signature. GDPR compliance, EU data hosting by default, DPO on request. No tech lock-in: your action plan is executable with any vendor or in-house. If after the read-out you feel the deliverable lacks actionable value, audit fully refunded.",
+      },
+    },
+    interventions: {
+      fr: {
+        hero: "Les interventions IA Axion-IA à Reims se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient dans une maison de Champagne, une ETI agroalimentaire ou une école de management. Frais de logement, repas et forfait trajet facturés à part.",
+        whyHere: [
+          "Reims est desservie par la gare TGV Champagne-Ardenne à ~45 min de Paris — nos consultants y interviennent en journée sans nuit contrainte, et couvrent aussi le bassin Champagne jusqu'à Épernay, Châlons et Troyes.",
+          "Le tissu économique rémois est multi-sectoriel : maisons de Champagne export-intensives, industries bioéconomie, structures académiques (NEOMA, Sciences Po, URCA) — chaque session est calibrée sur votre vocabulaire métier.",
+          "Le format Essentielle est calibré pour les PME et maisons familiales du Grand Reims de quelques dizaines à une centaine de collaborateurs.",
+          "Le format Dirigeants est adapté aux CODIR des grandes maisons de Champagne ou des directions régionales de grands groupes (LVMH, Pernod Ricard) implantés à Reims.",
+          "Le format Conférence convient aux journées portes ouvertes, séminaires grand groupe ou événements fédératifs CCI Marne en Champagne.",
+          "Vocabulaire ajusté à votre réalité : Champagne / vitivinicole, bioéconomie / agro-industrie, management académique, tertiaire services. Aucune session générique recyclée.",
+        ],
+        methodology: [
+          {
+            step: "Cadrage de la session",
+            detail:
+              "Un échange à distance avec votre RH ou votre direction pour cibler le profil des participants, le secteur métier (Champagne, bioéconomie, services), et les cas d'usage prioritaires.",
+          },
+          {
+            step: "Préparation des démos",
+            detail:
+              "Nous récupérons quelques documents anonymisés représentatifs de votre activité (fiches techniques Champagne, comptes-rendus export, données R&D bioéconomie, emails commercial) pour calibrer les démos sur VOS données.",
+          },
+          {
+            step: "Arrivée et installation",
+            detail:
+              "Nos consultants arrivent en avance dans vos locaux à Reims pour vérifier matériel, projection, accès Wi-Fi. Aucun aléa technique le jour J.",
+          },
+          {
+            step: "Session pédagogique",
+            detail:
+              "Selon le format choisi, alternance de théorie courte et de démos longues sur VOS données, suivies d'ateliers participatifs adaptés aux enjeux Champagne / agroalimentaire / académique.",
+          },
+          {
+            step: "Outils installés et debrief",
+            detail:
+              "Chaque participant repart avec les outils IA installés et configurés pour son cas d'usage personnel. Utilisables le lendemain matin sans aide extérieure.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "Format Essentielle",
+            detail:
+              "Idéal pour viticulteurs indépendants, petits négoces, prestataires de services du Grand Reims jusqu'à une dizaine de collaborateurs.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Format Essentielle ou Équipes",
+            detail:
+              "Essentielle pour le groupe entier ou Équipes pour focaliser sur un département (commercial export, qualité, RH, marketing Champagne).",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Format Conférence ou Dirigeants",
+            detail:
+              "Plénière pour grandes audiences (séminaire maison, journée formation all-hands) ou huis-clos comité de direction selon votre objectif.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Format personnalisé multi-formats",
+            detail:
+              "Combinaisons sur-mesure pour les directions régionales ou sièges Reims des grands groupes : roadshow multi-sites, séminaires CODIR + cascade équipes.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Format Essentielle parfaitement adapté à notre équipe export : vocabulaire Champagne, démos sur nos propres fiches techniques et emails clients. Le lendemain, plusieurs collaborateurs utilisaient déjà les outils installés sur leur travail réel.",
+            role: "Responsable export",
+            companyProfile: "Maison de Champagne indépendante, Reims, 45 collaborateurs",
+          },
+          {
+            quote:
+              "La session dirigeants nous a permis d'aligner notre CODIR sur notre trajectoire IA en quelques heures. Approche pragmatique, exemples concrets sur nos données bioéconomie — rien de générique.",
+            role: "Directeur général",
+            companyProfile: "ETI industrie bioéconomie, bassin Reims, 280 collaborateurs",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une intervention Axion-IA à Reims ?",
+            a: "Cela dépend du format choisi. L'Essentielle se déroule sur une journée, l'Approfondie sur deux journées consécutives. La Conférence et le format Dirigeants tiennent sur une journée. Pour un programme multi-formats, le rythme est défini ensemble lors du cadrage.",
+          },
+          {
+            q: "Vos consultants peuvent-ils venir dans le bassin Champagne (Épernay, Châlons, Troyes) ?",
+            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne. La gare TGV de Bezannes et le réseau autoroutier permettent d'atteindre Épernay (~30 km), Châlons-en-Champagne (~45 km) et Troyes (~80 km) dans la même journée.",
+          },
+          {
+            q: "Les outils installés sur les postes sont-ils adaptés au secteur Champagne ?",
+            a: "Oui. Le brief de cadrage nous permet d'ajuster les outils et les démos à votre réalité : fiches techniques viticoles, export multilingue, comptes-rendus dégustations, traçabilité. Les comptes sont individuels (gratuits ou abonnement employé) — aucun lock-in Axion-IA.",
+          },
+          {
+            q: "Quelle taille de groupe pouvez-vous accueillir ?",
+            a: "L'Essentielle accueille jusqu'à une centaine de collaborateurs en interaction. Au-delà, le format Conférence est plus adapté avec un schéma plénière + ateliers en sous-groupes.",
+          },
+          {
+            q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences — votre service RH ou comptable peut les traiter comme une prestation de conseil.",
+          },
+          {
+            q: "Que se passe-t-il en cas d'annulation ?",
+            a: "Plus l'annulation est anticipée, plus elle est neutre. Très anticipée : remboursement intégral. Quelques jours avant : participation partielle aux frais consultant déjà bloqué. Très tardive : la session est reportable une fois sans frais sur les mois suivants.",
+          },
+        ],
+        guarantees:
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, session reportée et compensation. Outils opérationnels le soir même : si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, séance de remédiation offerte. Vocabulaire ajusté à votre secteur (Champagne, bioéconomie, services), aucune session générique recyclée.",
+      },
+      en: {
+        hero: "Axion-IA's AI sessions in Reims come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether in a Champagne house, an agri-food mid-cap or a business school. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Reims is served by Champagne-Ardenne TGV station, ~45 min from Paris — our consultants intervene there for day visits without overnight constraints and cover the Champagne basin to Épernay, Châlons and Troyes.",
+          "Reims' economic fabric is multi-sectoral: export-intensive Champagne houses, bioeconomy industries, academic structures (NEOMA, Sciences Po, URCA) — each session is calibrated to your sector vocabulary.",
+          "The Essential format is calibrated for Grand Reims SMEs and family houses from a few dozen to about a hundred staff.",
+          "The Executives format suits the executive committees of major Champagne houses or regional leadership of large groups (LVMH, Pernod Ricard) based in Reims.",
+          "The Talk format suits open days, large-group seminars or CCI Marne en Champagne federating events.",
+          "Vocabulary adjusted to your reality: Champagne / wine, bioeconomy / agri-industry, academic management, tertiary services. No recycled generic session.",
+        ],
+        methodology: [
+          {
+            step: "Session framing",
+            detail:
+              "Remote exchange with your HR or leadership to target participant profile, sector (Champagne, bioeconomy, services) and priority use cases.",
+          },
+          {
+            step: "Demo preparation",
+            detail:
+              "We collect a few anonymized documents representative of your activity (Champagne technical sheets, export meeting notes, bioeconomy R&D data, commercial emails) to calibrate demos on YOUR data.",
+          },
+          {
+            step: "Arrival and setup",
+            detail:
+              "Our consultants arrive ahead of time at your Reims offices to check equipment, projection, Wi-Fi access. No technical hiccup on D-day.",
+          },
+          {
+            step: "Pedagogical session",
+            detail:
+              "Depending on the chosen format, alternation of short theory and longer demos on YOUR data, followed by participatory workshops adapted to Champagne / agri-food / academic challenges.",
+          },
+          {
+            step: "Tools installed and debrief",
+            detail:
+              "Each participant leaves with AI tools installed and configured for their personal use case. Usable next morning without external help.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "Essential format",
+            detail:
+              "Ideal for independent winegrowers, small traders, Grand Reims service providers up to about ten staff.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "Essential or Teams format",
+            detail:
+              "Essential for the whole group or Teams to focus on one department (export sales, quality, HR, Champagne marketing).",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Talk or Executives format",
+            detail:
+              "Plenary for large audiences (house seminar, all-hands training day) or in-camera executive committee depending on your objective.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Custom multi-format program",
+            detail:
+              "Custom combinations for large-group regional HQs in Reims: multi-site roadshows, exec committee + cascade team seminars.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Essential format perfectly suited to our export team: Champagne vocabulary, demos on our own technical sheets and client emails. The next day, several staff were already using the installed tools on real work.",
+            role: "Head of Export",
+            companyProfile: "Independent Champagne house, Reims, 45 staff",
+          },
+          {
+            quote:
+              "The executive session aligned our leadership committee on our AI trajectory in a few hours. Pragmatic approach, concrete examples on our bioeconomy data — nothing generic.",
+            role: "CEO",
+            companyProfile: "Bioeconomy industrial mid-cap, Reims basin, 280 staff",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does an Axion-IA session in Reims take?",
+            a: "It depends on the chosen format. The Essential runs over a day, the Deep Dive over two consecutive days. The Talk and Executives format fit in a day. For a multi-format program, the rhythm is defined together at framing.",
+          },
+          {
+            q: "Can your consultants come to the Champagne basin (Épernay, Châlons, Troyes)?",
+            a: "Yes. We cover the entire Champagne-Ardenne basin. Bezannes TGV station and the motorway network allow reaching Épernay (~30 km), Châlons-en-Champagne (~45 km) and Troyes (~80 km) within the same day.",
+          },
+          {
+            q: "Are the tools installed on workstations adapted to the Champagne sector?",
+            a: "Yes. The framing brief lets us tailor tools and demos to your reality: viticultural technical sheets, multilingual export, tasting notes, traceability. Accounts are individual (free or employee subscription) — no Axion-IA lock-in.",
+          },
+          {
+            q: "What group size can you handle?",
+            a: "The Essential handles up to about a hundred staff in interaction. Beyond that, the Talk format is more suitable with a plenary + sub-group workshops.",
+          },
+          {
+            q: "Are your sessions eligible for training funds?",
+            a: "Our sessions are invoiced directly on a fixed quote (excl. VAT). They can be included in your company's training plan — your HR or finance team can process them as a consulting service.",
+          },
+          {
+            q: "What happens with a cancellation?",
+            a: "The earlier the cancellation, the more neutral it is. Very early: full refund. A few days before: partial participation to consultant slot already blocked. Very late: the session is rebookable once free of charge in the following months.",
+          },
+        ],
+        guarantees:
+          "Slot guaranteed upon booking confirmation. In case of our technical issue, session rebooked and compensation provided. Operational tools same evening: if your staff aren't autonomous next morning on installed tools, free remediation session offered. Vocabulary adjusted to your sector (Champagne, bioeconomy, services), no recycled generic session.",
+      },
+    },
+    implementation: {
+      fr: {
+        hero: "L'implémentation IA Axion-IA à Reims met vos cas IA en production avec un retour sur investissement chiffré contractuellement, formation de vos équipes incluse. Le mode est hybride sur site / distance, avec un kick-off obligatoire à Reims ou dans le Grand Reims. Nous connaissons les contraintes des maisons de Champagne (export, traçabilité, multilingue), des industriels bioéconomie (qualité, supply chain) et des structures académiques (pédagogie, contenu, reporting).",
+        whyHere: [
+          "Reims concentre des secteurs à workflows répétitifs à fort volume : documents export Champagne (fiches techniques, certificats d'origine, étiquetage multilingue), traçabilité agro-industrielle, comptes-rendus et supports pédagogiques académiques.",
+          "Le kick-off se passe systématiquement en présentiel à Reims dans vos locaux : alignement des équipes, accès aux données, validation des intégrations CRM/ERP/export.",
+          "Itérations à distance ensuite avec un point quotidien court en visio et une visite mensuelle pour démos d'avancement avec votre comité de direction.",
+          "Recette finale toujours en présentiel à Reims : passation de pouvoir, formation des équipes installées sur leur poste, documentation runbook remise.",
+          "Formation incluse pour vos collaborateurs identifiés clés : ils deviennent les ambassadeurs IA internes, autonomes après la fin de mission.",
+          "Cas typiques rémois : maison de Champagne (traduction automatique fiches export, qualification leads B2B international), industriel bioéconomie (comptes-rendus qualité, analyse rapports R&D), école de management (génération de contenus pédagogiques, traitement dossiers candidatures).",
+        ],
+        methodology: [
+          {
+            step: "Cadrage technique",
+            detail:
+              "Atelier sur site Reims : revue de l'architecture cible (CRM viticole, ERP agroalimentaire, outils export, messagerie), validation des contraintes RGPD/sécurité, sélection finale des modèles IA, signature du SOW chiffré.",
+          },
+          {
+            step: "Kick-off + sprint initial",
+            detail:
+              "Plusieurs jours sur site Reims : installation des accès, déploiement de l'environnement de dev, première intégration end-to-end fonctionnelle (POC), validation visuelle avec votre équipe.",
+          },
+          {
+            step: "Itérations",
+            detail:
+              "Travail à distance avec un point quotidien court : enrichissement progressif des cas, intégration aux outils existants (ERP production, CRM export, base documentaire), tests sur volumes réels, ajustements UX.",
+          },
+          {
+            step: "Recette + formation",
+            detail:
+              "Sur site Reims : tests d'acceptation utilisateurs, formation des ambassadeurs internes, livraison du runbook documentation, plan de monitoring.",
+          },
+          {
+            step: "Suivi post-go-live",
+            detail:
+              "À distance : surveillance des métriques de production, ajustements fins, mesure du ROI réel par rapport à la prédiction du SOW. Rapport final remis à clôture, mission close.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "POC",
+            detail:
+              "Implémentation d'un cas d'usage simple (traduction automatique fiche Champagne, compte-rendu réunion, qualification leads export) en quelques semaines.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Mission PME",
+            detail:
+              "Déploiement de plusieurs cas d'usage, formation d'ambassadeurs internes, intégration CRM/ERP. Pour PME agroalimentaires, négoces Champagne, prestataires de services du Grand Reims.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Mission ETI",
+            detail:
+              "Déploiement transverse, gouvernance IA, intégrations avancées (ERP legacy, base documentaire vitivinicole, datalake), formation d'ambassadeurs cross-département.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Grand programme multi-déploiement",
+            detail:
+              "Programmes annuels pour les grandes maisons de Champagne (LVMH/MHCS, Vranken-Pommery) ou les groupes industriels : cas d'usage cascadés, gouvernance IA centralisée, équipe dédiée Axion-IA.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Implémentation traduction automatique fiches export livrée comme promis. ROI réel mesuré : plusieurs heures gagnées par semaine sur la génération de documents multilingues, sans aucune erreur de conformité AOC Champagne.",
+            role: "Responsable marketing & export",
+            companyProfile: "Maison de Champagne, Reims, 110 collaborateurs",
+          },
+          {
+            quote:
+              "Méthode hybride parfaite : kick-off intense sur site à Reims, itérations à distance avec points courts. Notre équipe IT n'a jamais été perdue. Les ambassadeurs internes prennent le relais de façon autonome.",
+            role: "DSI",
+            companyProfile: "ETI industrie bioéconomie bassin Reims, 350 collaborateurs",
+          },
+        ],
+        faq: [
+          {
+            q: "Combien de temps dure une implémentation Axion-IA à Reims ?",
+            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+          },
+          {
+            q: "Le tarif est-il fixe ou au temps passé ?",
+            a: "Forfait fixe pour la grande majorité de nos missions à Reims. SOW signé au début avec scope précis et livrables définis. Si le scope change en cours, avenant explicite + nouvelle estimation. Aucune dérive horaire cachée.",
+          },
+          {
+            q: "Pouvez-vous intégrer l'IA dans les ERP spécifiques au secteur Champagne ?",
+            a: "Oui. Nous travaillons avec les stacks existantes — ERP viticoles, outils de gestion de cave, CRM export, messagerie — en mode intégration API ou via des couches d'orchestration légères. Aucun remplacement de vos systèmes existants.",
+          },
+          {
+            q: "Qui maintient la solution après la mission ?",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+          },
+          {
+            q: "Mes données de production Champagne et de R&D bioéconomie restent-elles confidentielles ?",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+          },
+          {
+            q: "Quels modèles IA utilisez-vous pour les cas multilingues export Champagne ?",
+            a: "Mix selon le cas : Claude ou GPT-4 pour la qualité de traduction et la génération de documents formels (certifications AOC, étiquetage réglementaire) ; Mistral pour la souveraineté ou le coût ; parfois fine-tuning sur votre corpus si le volume le justifie. Choix justifié dans le SOW.",
+          },
+        ],
+        guarantees:
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+      },
+      en: {
+        hero: "Axion-IA's AI implementation in Reims brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off in Reims or Greater Reims. We know the constraints of Champagne houses (export, traceability, multilingual), bioeconomy industrials (quality, supply chain) and academic structures (pedagogy, content, reporting).",
+        whyHere: [
+          "Reims concentrates sectors with high-volume repetitive workflows: Champagne export documents (technical sheets, certificates of origin, multilingual labelling), agro-industrial traceability, academic meeting notes and teaching materials.",
+          "Kick-off always happens in person in Reims at your offices: team alignment, data access, CRM/ERP/export integration validation.",
+          "Remote iterations afterwards with a short daily on video and a monthly on-site visit for progress demos with your executive committee.",
+          "Final acceptance always in person in Reims: handover, training of installed teams, runbook documentation delivered.",
+          "Training included for your identified key staff: they become internal AI ambassadors, autonomous after mission end.",
+          "Typical Reims cases: Champagne house (automatic translation of export sheets, international B2B lead qualification), bioeconomy industrial (quality meeting notes, R&D report analysis), business school (teaching content generation, application file processing).",
+        ],
+        methodology: [
+          {
+            step: "Technical framing",
+            detail:
+              "On-site Reims workshop: target architecture review (viticultural CRM, agri-food ERP, export tools, messaging), GDPR/security constraints validation, AI model final selection, costed SOW signed.",
+          },
+          {
+            step: "Kick-off + initial sprint",
+            detail:
+              "Several days on site Reims: access install, dev environment deployment, first end-to-end functional integration (POC), visual validation with your team.",
+          },
+          {
+            step: "Iterations",
+            detail:
+              "Remote work with a short daily: progressive case enrichment, integration with existing tools (production ERP, export CRM, document base), real-volume testing, UX adjustments.",
+          },
+          {
+            step: "Acceptance + training",
+            detail:
+              "On site Reims: user acceptance tests, training of internal ambassadors, runbook documentation delivery, monitoring plan.",
+          },
+          {
+            step: "Post-go-live follow-up",
+            detail:
+              "Remote: production metrics monitoring, fine adjustments, real ROI vs SOW prediction measurement. Final report delivered at closure, mission closed.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "POC",
+            detail:
+              "Implementation of a simple use case (automatic Champagne sheet translation, meeting notes, export lead qualification) over a few weeks.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "SME mission",
+            detail:
+              "Deployment of several use cases, training of internal ambassadors, CRM/ERP integration. For agri-food SMEs, Champagne traders, Grand Reims service providers.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap mission",
+            detail:
+              "Transverse deployment, AI governance, advanced integrations (legacy ERP, wine document base, datalake), training of cross-department ambassadors.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Multi-deployment large program",
+            detail:
+              "Annual programs for major Champagne houses (LVMH/MHCS, Vranken-Pommery) or industrial groups: cascaded use cases, centralized AI governance, dedicated Axion-IA team.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Automatic translation of export sheets implemented as promised. Real ROI measured: several hours gained per week on multilingual document generation, with zero AOC Champagne compliance error.",
+            role: "Head of Marketing & Export",
+            companyProfile: "Champagne house, Reims, 110 staff",
+          },
+          {
+            quote:
+              "Perfect hybrid method: intense on-site kick-off in Reims, remote iterations with short check-ins. Our IT team was never lost. Internal ambassadors take over autonomously.",
+            role: "CIO",
+            companyProfile: "Bioeconomy industrial mid-cap, Reims basin, 350 staff",
+          },
+        ],
+        faq: [
+          {
+            q: "How long does an Axion-IA implementation in Reims take?",
+            a: "It depends on scope. A micro-business POC fits in a few weeks, a standard SME mission spans a few months, a transverse mid-cap mission spans several months, a multi-deployment large program spans a year. The SOW signed at framing fixes the precise schedule.",
+          },
+          {
+            q: "Is the price fixed or time-based?",
+            a: "Fixed flat-rate for the vast majority of our Reims missions. SOW signed at the start with precise scope and defined deliverables. If scope changes mid-mission, explicit amendment + new estimate. No hidden hourly drift.",
+          },
+          {
+            q: "Can you integrate AI into ERP systems specific to the Champagne sector?",
+            a: "Yes. We work with existing stacks — viticultural ERPs, cellar management tools, export CRMs, messaging — via API integration or lightweight orchestration layers. No replacement of your existing systems.",
+          },
+          {
+            q: "Who maintains the solution after the mission?",
+            a: "Your internal ambassadors, trained during the mission. Complete runbook documentation handed over. If outsourced maintenance desired, optional support contract. No lock-in: you can also outsource elsewhere.",
+          },
+          {
+            q: "Does my Champagne production data and bioeconomy R&D stay confidential?",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+          },
+          {
+            q: "Which AI models do you use for multilingual Champagne export cases?",
+            a: "Mix per case: Claude or GPT-4 for translation quality and formal document generation (AOC certifications, regulatory labelling); Mistral for sovereignty or cost; sometimes fine-tuning on your corpus if volume justifies. Choice justified in SOW.",
+          },
+        ],
+        guarantees:
+          "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+  },
+
+  faqGeolocalisee: [
+    {
+      q: "Combien coûte un audit IA opérationnel à Reims ?",
+      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Reims qu'à Paris.",
+    },
+    {
+      q: "Axion-IA intervient-il auprès des maisons de Champagne ?",
+      a: "Oui. Les maisons de Champagne — des indépendants familiaux aux grandes maisons de groupes (LVMH/MHCS, Vranken-Pommery, Lanson-BCC, Pernod Ricard) — font partie de nos cibles prioritaires à Reims. Nos cas typiques : traduction automatique des fiches export, qualification de leads B2B internationaux, génération de comptes-rendus de dégustation.",
+    },
+    {
+      q: "Couvrez-vous le bassin Champagne au-delà de Reims ?",
+      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay (~30 km), Châlons-en-Champagne (~45 km), Troyes (~80 km), ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). La gare TGV Champagne-Ardenne facilite nos déplacements.",
+    },
+    {
+      q: "Quels secteurs rémois sont prioritaires pour l'IA opérationnelle ?",
+      a: "Champagne et agroalimentaire haut-de-gamme en priorité (workflows export, traçabilité, multilingue), puis la bioéconomie industrielle (Pomacle-Bazancourt : qualité, R&D, supply chain) et les structures d'enseignement supérieur (NEOMA, Sciences Po, URCA : contenus pédagogiques, reporting, gestion administrative). Tout secteur B2B est éligible.",
+    },
+    {
+      q: "Pouvez-vous intervenir sur site à Reims dans nos bureaux ou caves ?",
+      a: "Oui. Toutes nos interventions à Reims sont par défaut sur site, dans vos locaux ou dans vos caves. Nos consultants sont mobiles sur l'agglomération rémoise et le Grand Reims. Les restitutions d'audit et les kick-offs d'implémentation se tiennent toujours en présentiel.",
+    },
+    {
+      q: "Travaillez-vous avec les structures académiques rémois (NEOMA, Sciences Po, URCA) ?",
+      a: "Oui. Nous accompagnons les établissements d'enseignement supérieur sur leurs cas IA administratifs et pédagogiques — génération de contenus de formation, traitement de dossiers de candidature, automatisation du reporting institutionnel. Notre offre Essentielle est calibrée pour les équipes de quelques dizaines à plusieurs centaines de collaborateurs.",
+    },
+  ],
+};

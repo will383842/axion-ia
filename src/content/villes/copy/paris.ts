@@ -43,6 +43,10 @@ export const PARIS_COPY: VilleCopy = {
       fr: "Implémentation IA à Paris : on déploie l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, on ne crée pas de dépendance.",
       en: "AI implementation in Paris: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
+    unAUn: {
+      fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business. Frais de logement, repas et forfait trajet en sus.",
+      en: "Individual AI coaching in Paris: 1-to-1 sessions on site at your Paris office or by video. Executives, managers and entrepreneurs across all 20 arrondissements and La Défense who want to build AI competence at their own pace, on their own business cases. Lodging, meals and travel allowance billed separately.",
+    },
   },
 
   directAnswerFr:
@@ -725,6 +729,220 @@ export const PARIS_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "L'accompagnement 1-to-1 Axion-IA à Paris est conçu pour les dirigeants, managers et entrepreneurs qui veulent progresser sur l'IA à leur propre rythme, sur leurs vrais cas business — pas sur des exercices génériques. Sessions sur site dans vos bureaux (Station F, PME 8e/9e, ETI La Défense, startups Sentier) ou en visio selon vos contraintes. Aucun lock-in, aucun jargon, résultats applicables le lendemain. Frais de logement, repas et forfait trajet en sus pour les sessions présentielles.",
+        whyHere: [
+          "Paris est l'épicentre décisionnel français : dirigeants de PME du 8e, DG de startups du Sentier, CEOs d'ETI à La Défense — tous nos profils 1-to-1 y sont surreprésentés.",
+          "Tissu B2B parisien multi-sectoriel sans équivalent : chaque session est calibrée sur votre secteur réel (finance, conseil, tech, mode, retail) et vos propres données.",
+          "Déplacements intra-muros ou visio selon votre agenda : nos consultants se rendent directement dans vos bureaux, sans que vous ayez à vous déplacer.",
+          "Aucun lock-in d'aucune sorte : pas de suite logicielle imposée, pas de contrat récurrent obligatoire — vous avancez au rythme que vous décidez.",
+          "Cas réels uniquement : on travaille sur vos emails, vos documents, vos processus métier du moment, pas sur des cas d'école.",
+          "Ecosystème IA parisien à portée de main : Station F, Mistral AI, Hugging Face — nous vous aidons aussi à vous y positionner stratégiquement.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Un entretien de cadrage à distance pour cerner votre niveau de maturité IA, vos cas d'usage prioritaires et vos objectifs business concrets. On part de là où vous en êtes, sans présupposé.",
+          },
+          {
+            step: "Sessions sur cas réels",
+            detail:
+              "Chaque session travaille sur un cas business que vous apportez : un email à rédiger, un contrat à analyser, un rapport à synthétiser, un process à automatiser. Apprentissage immédiatement transférable.",
+          },
+          {
+            step: "Outillage IA personnalisé",
+            detail:
+              "Nous sélectionnons avec vous les outils les mieux adaptés à votre profil et votre secteur (Claude, ChatGPT, Mistral, Perplexity, Notion AI…) et les configurons pour votre usage réel.",
+          },
+          {
+            step: "Plan d'autonomie",
+            detail:
+              "À mi-parcours, nous posons un plan structuré de montée en compétence : quels outils maîtriser en priorité, quels cas d'usage adresser dans les semaines suivantes, comment ancrer les bonnes pratiques.",
+          },
+          {
+            step: "Suivi optionnel",
+            detail:
+              "Après les sessions principales, un suivi léger est disponible sur demande : relecture de vos prompts, ajustement de vos workflows, questions ponctuelles entre sessions. Sans engagement récurrent.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Pour les indépendants, consultants et dirigeants de micro-entreprises parisiennes souhaitant gagner en efficacité IA sur leurs tâches quotidiennes.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Forfait PME 1-to-1",
+            detail:
+              "Pour les dirigeants et managers de PME (quelques dizaines à 250 collaborateurs) des arrondissements 8e/9e/16e ou Sentier souhaitant cadrer leur stratégie IA personnelle avant de la déployer en équipe.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Forfait ETI Dirigeants",
+            detail:
+              "Pour les membres de comité de direction d'ETI ou les responsables de transformation IA souhaitant monter en compétence avant de piloter un déploiement transverse.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Forfait Grande entreprise sur mesure",
+            detail:
+              "Pour les DG, CDO ou Chief AI Officers de grands groupes parisiens (La Défense, 8e) souhaitant un accompagnement personnalisé en parallèle d'un programme IA interne.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "On a travaillé sur mes vrais emails clients et mes devis. En deux sessions, j'avais un workflow IA opérationnel. Rien à voir avec les formations génériques que j'avais essayées avant.",
+            role: "Dirigeant",
+            companyProfile: "PME conseil, 8e arrondissement",
+          },
+          {
+            quote:
+              "Session en visio, très dense, on est allé directement sur mes cas business. J'ai appris plus en trois heures qu'en plusieurs semaines de tuto en ligne.",
+            role: "DG",
+            companyProfile: "Startup B2B SaaS, Sentier",
+          },
+        ],
+        faq: [
+          {
+            q: "Les sessions se déroulent-elles en présentiel ou en visio ?",
+            a: "Les deux formats sont disponibles. En présentiel, nous nous déplaçons dans vos bureaux parisiens (tous arrondissements, La Défense, première couronne) — frais de logement, repas et forfait trajet facturés en sus. En visio, aucun frais annexe. Le choix dépend de votre préférence et de votre type de cas.",
+          },
+          {
+            q: "À quelle fréquence se déroulent les sessions ?",
+            a: "La fréquence est définie avec vous selon votre agenda et vos objectifs. Certains dirigeants préfèrent une session intensive par semaine sur quelques semaines ; d'autres espacent davantage pour intégrer entre chaque session. Aucune cadence imposée.",
+          },
+          {
+            q: "Quelle est la différence avec une formation IA collective ?",
+            a: "Dans une formation collective, le contenu est mutualisé et forcément générique. En 1-to-1, on travaille uniquement sur vos cas, votre secteur, vos contraintes. Le temps est dense, sans concession à des niveaux différents dans le groupe. La progression est habituellement beaucoup plus rapide.",
+          },
+          {
+            q: "Dans quels secteurs intervenez-vous en 1-to-1 à Paris ?",
+            a: "Tous les secteurs B2B parisiens : finance (asset management, banque, conseil), tech (SaaS, édition logicielle), mode et luxe, retail, services aux entreprises, juridique, communication. Le 1-to-1 s'adapte à n'importe quel métier car on part de vos propres documents et processus.",
+          },
+          {
+            q: "Comment la confidentialité est-elle garantie ?",
+            a: "NDA signé avant le démarrage des sessions. Les documents que vous partagez ne quittent pas le périmètre de la session. Nous ne conservons aucun contenu métier après la fin de la mission. Aucune mention de votre identité ou de votre entreprise sans autorisation explicite.",
+          },
+          {
+            q: "En quoi est-ce différent d'un audit IA ou d'une implémentation ?",
+            a: "L'audit IA cartographie ce qui peut être automatisé chez vous et produit un livrable PDF chiffré ROI. L'implémentation met des cas IA en production dans vos outils. Le 1-to-1 est différent : c'est vous qui montez en compétence personnellement, sur vos propres cas, pour devenir autonome. Les trois formats sont complémentaires, pas substituables.",
+          },
+        ],
+        guarantees:
+          "Aucun lock-in : pas de contrat récurrent imposé, vous pouvez stopper après chaque session. Confidentialité stricte avec NDA signé avant le démarrage. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, session remboursée. Frais de logement, repas et forfait trajet facturés en sus pour les sessions présentielles.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Paris is designed for executives, managers and entrepreneurs who want to progress on AI at their own pace, on their real business cases — not on generic exercises. Sessions on site at your Paris offices (Station F, 8th/9th SMEs, La Défense mid-caps, Sentier startups) or by video depending on your schedule. No lock-in, no jargon, results applicable the next day. Lodging, meals and travel allowance billed separately for on-site sessions.",
+        whyHere: [
+          "Paris is France's decision-making epicentre: 8th-arrondissement SME executives, Sentier startup CEOs, La Défense mid-cap leaders — all our 1-to-1 profiles are over-represented there.",
+          "Unmatched multi-sector Paris B2B fabric: every session is calibrated to your real sector (finance, consulting, tech, fashion, retail) and your own data.",
+          "Intra-city travel or video depending on your schedule: our consultants come directly to your offices, no commute required on your side.",
+          "No lock-in of any kind: no imposed software suite, no compulsory recurring contract — you advance at the pace you decide.",
+          "Real cases only: we work on your actual emails, documents and business processes, not textbook exercises.",
+          "Paris AI ecosystem at your fingertips: Station F, Mistral AI, Hugging Face — we also help you position yourself strategically within this landscape.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "A remote framing interview to assess your AI maturity, priority use cases and concrete business objectives. We start from where you are, with no assumptions.",
+          },
+          {
+            step: "Sessions on real cases",
+            detail:
+              "Each session works on a business case you bring: an email to draft, a contract to analyse, a report to summarise, a process to automate. Immediately transferable learning.",
+          },
+          {
+            step: "Personalised AI tooling",
+            detail:
+              "We select with you the tools best suited to your profile and sector (Claude, ChatGPT, Mistral, Perplexity, Notion AI…) and configure them for your real use.",
+          },
+          {
+            step: "Autonomy plan",
+            detail:
+              "At mid-course we establish a structured competence-building plan: which tools to master first, which use cases to address in the coming weeks, how to anchor best practices.",
+          },
+          {
+            step: "Optional follow-up",
+            detail:
+              "After the main sessions, lightweight follow-up is available on request: prompt review, workflow adjustment, ad-hoc questions between sessions. No recurring commitment.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From €990 excl. VAT",
+            detail:
+              "For Paris freelancers, consultants and micro-business owners who want to gain AI efficiency on their daily tasks.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "SME 1-to-1 package",
+            detail:
+              "For SME executives and managers (a few dozen to 250 staff) in the 8th/9th/16th arrondissements or Sentier who want to frame their personal AI strategy before rolling it out team-wide.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap Executives package",
+            detail:
+              "For executive committee members or AI transformation leads who want to build competence before steering a transverse deployment.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Large enterprise bespoke package",
+            detail:
+              "For CEOs, CDOs or Chief AI Officers at Paris large groups (La Défense, 8th) seeking personalised coaching alongside an internal AI programme.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "We worked on my real client emails and quotes. Within two sessions I had an operational AI workflow. Nothing like the generic training courses I had tried before.",
+            role: "Managing Director",
+            companyProfile: "Consulting SME, 8th arrondissement",
+          },
+          {
+            quote:
+              "Video session, very dense, we went straight to my business cases. I learned more in three hours than in several weeks of online tutorials.",
+            role: "CEO",
+            companyProfile: "B2B SaaS startup, Sentier",
+          },
+        ],
+        faq: [
+          {
+            q: "Do sessions take place in person or by video?",
+            a: "Both formats are available. In person, we travel to your Paris offices (all arrondissements, La Défense, inner suburbs) — lodging, meals and travel allowance billed separately. By video, no ancillary costs. The choice depends on your preference and the type of case.",
+          },
+          {
+            q: "How often do sessions take place?",
+            a: "Frequency is agreed with you based on your schedule and objectives. Some executives prefer one intensive session per week over a few weeks; others space them out to integrate between sessions. No imposed cadence.",
+          },
+          {
+            q: "What is the difference with a group AI training?",
+            a: "In a group training, content is pooled and necessarily generic. In 1-to-1, we work exclusively on your cases, your sector, your constraints. Time is dense, with no concession to different levels within the group. Progress is usually much faster.",
+          },
+          {
+            q: "Which sectors do you cover in 1-to-1 sessions in Paris?",
+            a: "All Paris B2B sectors: finance (asset management, banking, consulting), tech (SaaS, software publishing), fashion and luxury, retail, business services, legal, communications. The 1-to-1 adapts to any profession because we start from your own documents and processes.",
+          },
+          {
+            q: "How is confidentiality guaranteed?",
+            a: "NDA signed before sessions begin. Documents you share do not leave the session perimeter. We retain no business content after the mission ends. No mention of your identity or company without explicit consent.",
+          },
+          {
+            q: "How is this different from an AI audit or an implementation?",
+            a: "The AI audit maps what can be automated at your company and produces a costed PDF deliverable. The implementation brings AI cases to production in your tools. The 1-to-1 is different: it is you who build personal competence, on your own cases, to become autonomous. The three formats are complementary, not substitutes.",
+          },
+        ],
+        guarantees:
+          "No lock-in: no imposed recurring contract, you can stop after each session. Strict confidentiality with NDA signed before kick-off. Results-oriented sessions with immediate applicability: if after the first session you feel you have nothing directly usable, session fully refunded. Lodging, meals and travel allowance billed separately for on-site sessions.",
       },
     },
   },
