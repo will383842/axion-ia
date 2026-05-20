@@ -1,16 +1,17 @@
 name: Image Bank · Seed + Enrich (SEO/AEO/GEO)
 
 # Pipeline image-bank post-deploy :
-#   1. Seed DB (upsert 133 ImageAssets + translations squelette)
-#   2. Enrichissement Claude Vision (alt, metaTitle, metaDescription, ogTitle,
-#      ogDescription, aiSummary, embeddedText, keywords) — skip déjà enrichies.
+#   1. Cleanup disque Hetzner (prune containers/images stoppés — safe)
+#   2. Install tsx dans /tmp du container (HOME=/tmp évite ENOSPC /home)
+#   3. Seed DB (upsert 133 ImageAssets + translations squelette)
+#   4. Enrichissement Claude Vision FR (alt, metaTitle, metaDescription,
+#      ogTitle, ogDescription, aiSummary, embeddedText, keywords)
 #
 # Déclenchements :
 #   - Automatique : après chaque deploy réussi de deploy-coolify.yml
-#   - Manuel      : GitHub Actions → Run workflow (avec option dry_run)
+#   - Manuel      : GitHub Actions → Run workflow (avec options)
 #
 # Idempotent : seed upsert par slug, enrich skip les images avec metaTitle.
-# Coût Anthropic ~133 × $0.003 = ~$0.40 (run initial). Subsequent runs = ~$0.
 
 on:
   workflow_dispatch:
@@ -20,25 +21,19 @@ on:
         required: false
         default: "false"
         type: choice
-        options:
-          - "false"
-          - "true"
+        options: ["false", "true"]
       skip_enrich:
         description: "Skip enrichissement Claude Vision (seed seul)"
         required: false
         default: "false"
         type: choice
-        options:
-          - "false"
-          - "true"
+        options: ["false", "true"]
       force_enrich:
         description: "Force re-enrichissement de toutes les images"
         required: false
         default: "false"
         type: choice
-        options:
-          - "false"
-          - "true"
+        options: ["false", "true"]
 
   # Trigger automatique après deploy réussi.
   workflow_run:
@@ -53,7 +48,7 @@ jobs:
   seed-and-enrich:
     name: Seed image bank + Enrich SEO/AEO/GEO
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     # Ne tourne que si le deploy a réussi (ou si déclenché manuellement).
     if: >
@@ -89,6 +84,21 @@ jobs:
           sleep 180
           echo "✓ Prêt."
 
+      # ── Cleanup disque Hetzner (SAFE — ne touche pas les containers running) ──
+
+      - name: Libérer espace disque Hetzner
+        run: |
+          ssh -o BatchMode=yes root@178.105.55.15 bash <<'ENDSSH'
+            echo "=== Disk avant ==="
+            df -h / | tail -1
+            echo "=== Prune containers/images/builder stoppés (running containers préservés) ==="
+            docker container prune -f 2>&1 | tail -3 || true
+            docker image prune -f 2>&1 | tail -3 || true
+            docker builder prune -f 2>&1 | tail -3 || true
+            echo "=== Disk après ==="
+            df -h / | tail -1
+          ENDSSH
+
       # ── Find container ───────────────────────────────────────────────────────
 
       - name: Find axion-ia container
@@ -109,7 +119,7 @@ jobs:
           echo "✓ Container: $NAME"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
-      # ── Pre-check ────────────────────────────────────────────────────────────
+      # ── Pre-check DB ─────────────────────────────────────────────────────────
 
       - name: Pre-check DB counts
         env:
@@ -126,16 +136,35 @@ jobs:
             ]).then(([a,e])=>{console.log('imageAsset:',a,'enrichies:',e);process.exit(0)})
             .catch(()=>process.exit(0))\"" 2>&1 || true
 
-      # ── Step 1 : Seed ─────────────────────────────────────────────────────────
+      # ── Installer tsx dans /tmp du container ──────────────────────────────────
+      # Le container prod est un standalone Next.js slim : pas de tsx ni pnpm.
+      # HOME=/tmp → npm cache dans /tmp/.npm (évite ENOSPC sur /home/nextjs).
 
-      - name: "[DRY RUN] Afficher le plan seed"
+      - name: "[DRY RUN] Afficher le plan"
         if: inputs.dry_run == 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
-          echo "::notice::DRY_RUN — 133 images à seeder (aucune écriture DB)"
+          echo "::notice::DRY_RUN — 133 images à seeder, enrichissement FR à venir"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' ls /app/prisma/seeds/image-bank/ 2>/dev/null" 2>&1 || true
+
+      - name: Installer tsx dans /tmp du container
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          set -euo pipefail
+          echo "── Install tsx (HOME=/tmp pour éviter ENOSPC /home/nextjs) ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'rm -rf /tmp/tsx-cli && mkdir -p /tmp/tsx-cli && cd /tmp/tsx-cli && \
+             HOME=/tmp npm init -y 2>/dev/null && \
+             HOME=/tmp npm install --no-save --no-audit --no-fund tsx 2>&1 | tail -6 && \
+             echo TSX_VERSION: $(/tmp/tsx-cli/node_modules/.bin/tsx --version 2>&1)'" 2>&1
+          echo "✓ tsx installé dans /tmp/tsx-cli"
+
+      # ── Step 1 : Seed ─────────────────────────────────────────────────────────
 
       - name: Copier seed-images.ts → container
         if: inputs.dry_run != 'true'
@@ -156,10 +185,11 @@ jobs:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
           set -euo pipefail
-          echo "── Seed 133 ImageAssets (idempotent) ──"
+          echo "── Seed 133 ImageAssets (upsert idempotent) ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' sh -c \
-            'cd /app && ./node_modules/.bin/tsx prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
+            'cd /app && /tmp/tsx-cli/node_modules/.bin/tsx \
+             prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
           echo "── Seed terminé ──"
 
       # ── Step 2 : Enrich ───────────────────────────────────────────────────────
@@ -170,28 +200,28 @@ jobs:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
           set -euo pipefail
-          ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec '$CONTAINER' mkdir -p /app/scripts"
           scp -o BatchMode=yes -o StrictHostKeyChecking=no \
             scripts/enrich-seeded-images.mts \
             root@178.105.55.15:/tmp/enrich-seeded-images.mts
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker cp /tmp/enrich-seeded-images.mts \
-            '$CONTAINER':/app/scripts/enrich-seeded-images.mts"
+            "docker exec '$CONTAINER' sh -c 'mkdir -p /app/scripts' && \
+             docker cp /tmp/enrich-seeded-images.mts \
+             '$CONTAINER':/app/scripts/enrich-seeded-images.mts"
           echo "✓ enrich-seeded-images.mts copié"
 
       - name: Enrichissement SEO/AEO/GEO via Claude Vision (FR)
         if: inputs.dry_run != 'true' && inputs.skip_enrich != 'true'
+        timeout-minutes: 20
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
           FORCE_FLAG: ${{ inputs.force_enrich == 'true' && '--force' || '' }}
         run: |
           set -euo pipefail
           echo "── Enrichissement Claude Vision (skip images déjà enrichies) ──"
-          # ENRICH_DELAY_MS=2000 → ~133×2s = ~4.5 min (dans le timeout 25min)
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec -e ENRICH_DELAY_MS=2000 '$CONTAINER' sh -c \
-            'cd /app && ./node_modules/.bin/tsx scripts/enrich-seeded-images.mts $FORCE_FLAG 2>&1'" 2>&1
+            'cd /app && /tmp/tsx-cli/node_modules/.bin/tsx \
+             scripts/enrich-seeded-images.mts $FORCE_FLAG 2>&1'" 2>&1
           echo "── Enrichissement terminé ──"
 
       # ── Post-check ───────────────────────────────────────────────────────────
@@ -210,7 +240,7 @@ jobs:
               p.imageAsset.count(),
               p.imageAssetTranslation.count({where:{languageCode:'fr'}}),
               p.imageAssetTranslation.count({where:{languageCode:'fr',metaTitle:{not:null}}})
-            ]).then(([assets,trFr,enriched])=>{
-              console.log('imageAsset:',assets,'trFr:',trFr,'enrichies:',enriched);
+            ]).then(([a,t,e])=>{
+              console.log('imageAsset:',a,'trFr:',t,'enrichies:',e);
               process.exit(0);
             }).catch(()=>process.exit(0))\"" 2>&1 || true
