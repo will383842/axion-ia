@@ -137,39 +137,22 @@ jobs:
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' ls /app/prisma/seeds/image-bank/ 2>/dev/null" 2>&1 || true
 
-      # ── Step 1 : Seed (tsx) ───────────────────────────────────────────────────
-      # tsx est absent du container prod (standalone slim).
-      # Installation fresh dans /tmp/tsx-cli avec npm cache dans /tmp/.npm.
-      # Le seed est déjà dans le container (/app/prisma copié au build)
-      # mais on copie la dernière version depuis le repo pour garantir 133 entrées.
+      # ── Step 1 : Seed (node CJS pur — pas de tsx) ────────────────────────────
+      # seed-images.cjs = CommonJS pur, require('/app/prisma/generated/client').
+      # Zéro npm install, zéro tsx. Fiable sur disque plein.
 
-      - name: Installer tsx dans /tmp du container
-        if: inputs.dry_run != 'true'
-        env:
-          CONTAINER: ${{ steps.container.outputs.name }}
-        run: |
-          set -euo pipefail
-          echo "── Install tsx (HOME=/tmp évite ENOSPC /home/nextjs) ──"
-          ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec '$CONTAINER' sh -c \
-            'rm -rf /tmp/tsx-cli /tmp/.npm && mkdir -p /tmp/tsx-cli && cd /tmp/tsx-cli && \
-             HOME=/tmp npm init -y 2>/dev/null && \
-             HOME=/tmp npm install --no-save --no-audit --no-fund tsx 2>&1 | tail -5 && \
-             echo TSX_READY'" 2>&1
-          echo "✓ tsx installé dans /tmp/tsx-cli"
-
-      - name: Copier seed-images.ts → container
+      - name: Copier seed-images.cjs → container
         if: inputs.dry_run != 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
           set -euo pipefail
           scp -o BatchMode=yes -o StrictHostKeyChecking=no \
-            prisma/seeds/image-bank/seed-images.ts \
-            root@178.105.55.15:/tmp/seed-images.ts
+            scripts/seed-images.cjs \
+            root@178.105.55.15:/tmp/seed-images.cjs
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker cp /tmp/seed-images.ts '$CONTAINER':/app/prisma/seeds/image-bank/seed-images.ts"
-          echo "✓ seed-images.ts copié"
+            "docker cp /tmp/seed-images.cjs '$CONTAINER':/tmp/seed-images.cjs"
+          echo "✓ seed-images.cjs copié"
 
       - name: Exécuter seed (133 ImageAssets)
         if: inputs.dry_run != 'true'
@@ -177,11 +160,10 @@ jobs:
           CONTAINER: ${{ steps.container.outputs.name }}
         run: |
           set -euo pipefail
-          echo "── Seed 133 ImageAssets (upsert idempotent) ──"
+          echo "── Seed 133 ImageAssets (upsert idempotent, node pur) ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' sh -c \
-            'cd /app && /tmp/tsx-cli/node_modules/.bin/tsx \
-             prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
+            'node /tmp/seed-images.cjs 2>&1'" 2>&1
           echo "── Seed terminé ──"
 
       # ── Step 2 : Enrich (node CJS pur — pas de tsx) ───────────────────────────
