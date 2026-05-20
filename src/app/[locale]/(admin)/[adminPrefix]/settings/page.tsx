@@ -20,4 +20,3 @@ export default async function SettingsListPage({ params }: PageProps) {
 
   return <SettingsListV2 adminPrefix={adminPrefix} settings={settings} />;
 }
-

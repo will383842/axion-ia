@@ -32,4 +32,3 @@ export default async function NewSettingPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-

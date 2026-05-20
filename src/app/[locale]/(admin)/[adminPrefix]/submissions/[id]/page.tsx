@@ -27,7 +27,6 @@ export default async function SubmissionDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-
   const submission = await getSubmissionDetailAction(id);
   if (!submission) notFound();
 
@@ -162,7 +161,6 @@ export default async function SubmissionDetailPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-
 
 function DT({ children }: { children: React.ReactNode }) {
   return <dt className="admin-dt">{children}</dt>;

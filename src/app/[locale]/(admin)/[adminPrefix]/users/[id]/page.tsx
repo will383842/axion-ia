@@ -29,7 +29,6 @@ export default async function UserDetailPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
   const callerRole = (session.user as { role?: string }).role;
 
-
   const user = await getAdminUserDetailAction(id);
   if (!user) notFound();
 
@@ -128,4 +127,3 @@ export default async function UserDetailPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-

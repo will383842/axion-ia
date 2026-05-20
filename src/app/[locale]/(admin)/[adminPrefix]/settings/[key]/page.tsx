@@ -17,7 +17,6 @@ export default async function EditSettingPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-
   const decodedKey = decodeURIComponent(key);
   const setting = await getSettingAction(decodedKey);
   if (!setting) notFound();
@@ -45,4 +44,3 @@ export default async function EditSettingPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-
