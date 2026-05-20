@@ -383,6 +383,7 @@ export function buildOrganizationJsonLd({
   const resolvedContactType = contactType ?? (isFr ? "Service client" : "Customer service");
   return {
     "@context": "https://schema.org",
+    "@id": `${SITE_URL}/#organization`,
     "@type": "Organization",
     name: "Axion-IA",
     legalName: "Axion-IA OÜ",
@@ -432,6 +433,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
   const isFr = locale === "fr";
   return {
     "@context": "https://schema.org",
+    "@id": `${SITE_URL}/#website`,
     "@type": "WebSite",
     name: "Axion-IA",
     url: `${SITE_URL}/${locale}`,

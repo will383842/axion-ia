@@ -30,9 +30,24 @@ import type {
   ContentType,
   OrganisationType,
   SearchIntent,
+  ServiceSector,
 } from "../../../../prisma/generated/client";
 
 const QUEUE_NAME = "content-orchestrator";
+
+function deriveBlogKeyword(
+  serviceSector: ServiceSector | null | undefined,
+  anchorVilleSlug?: string,
+): string {
+  const base =
+    serviceSector === "audits"
+      ? "audit IA"
+      : serviceSector === "implementations"
+        ? "implémentation IA"
+        : "formation intelligence artificielle";
+  const ville = anchorVilleSlug ? ` ${anchorVilleSlug.replace(/-/g, " ")}` : "";
+  return `${base}${ville}`;
+}
 
 interface BatchSettings {
   readonly dailyBatchSize: number;
@@ -251,6 +266,11 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
             inputPayload: {
               campaignName: campaign.name,
               slotIndex,
+              ...(contentType === "blog_from_keywords"
+                ? {
+                    primaryKeyword: deriveBlogKeyword(campaign.serviceSector, anchorVilleSlug),
+                  }
+                : {}),
             },
             targetLocale: "fr",
             ...(anchorVilleSlug ? { anchorVilleSlug } : {}),

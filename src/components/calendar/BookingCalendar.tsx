@@ -2254,13 +2254,16 @@ function Field({
   children: React.ReactNode;
   required?: boolean;
 }) {
+  const fieldId = React.useId();
   return (
     <div>
-      <Label className="text-fg mb-2.5 block text-base font-bold sm:text-lg">
+      <Label htmlFor={fieldId} className="text-fg mb-2.5 block text-base font-bold sm:text-lg">
         {label}
         {required ? <span className="text-terracotta-deep ml-1.5 font-bold">*</span> : null}
       </Label>
-      {children}
+      {React.isValidElement(children)
+        ? React.cloneElement(children as React.ReactElement<{ id?: string }>, { id: fieldId })
+        : children}
     </div>
   );
 }
