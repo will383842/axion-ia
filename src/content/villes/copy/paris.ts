@@ -397,7 +397,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Vos interventions sont-elles éligibles aux fonds de formation ?",
-            a: "Pas en V1 : nous ne sommes pas encore certifiés Qualiopi (instruction en cours). Les sessions sont facturables sur OPCO via votre fonds de formation continue selon votre branche, devis détaillé disponible.",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences — votre service RH ou comptable peut les traiter comme une prestation de conseil.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
@@ -502,7 +502,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Are your sessions eligible for training funds?",
-            a: "Not in V1: we are not yet Qualiopi-certified (under review). Sessions are billable to OPCO via your continuing education fund per your sector, detailed quote available.",
+            a: "Our sessions are invoiced directly on a fixed quote (excl. VAT). They can be included in your company's training plan — your HR or finance team can process them as a consulting service.",
           },
           {
             q: "What happens with a cancellation?",

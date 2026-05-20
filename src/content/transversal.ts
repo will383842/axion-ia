@@ -278,19 +278,6 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "formation-opco",
-    fr: {
-      question: "La formation IA est-elle finançable par les OPCO ?",
-      answer:
-        "Actuellement, Axion-IA ne dispose pas de la certification Qualiopi, qui conditionne le financement OPCO des formations. Les sessions Axion-IA sont facturées en direct (devis HT). La démarche Qualiopi est en cours d'étude pour permettre le financement OPCO à l'avenir.",
-    },
-    en: {
-      question: "Can AI training be funded by OPCO (French training funds)?",
-      answer:
-        "Currently, Axion-IA does not hold the Qualiopi certification, which is required for OPCO-funded training in France. Axion-IA sessions are invoiced directly (excl. VAT quote). The Qualiopi process is under review to enable OPCO funding in the future.",
-    },
-  },
-  {
     id: "chatgpt-vs-claude",
     fr: {
       question: "Quelle est la différence entre ChatGPT et Claude ?",
