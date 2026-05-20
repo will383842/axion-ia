@@ -27,6 +27,7 @@ export interface KbSearchParams {
   readonly locale: Locale;
   readonly types?: readonly KbType[];
   readonly audiences?: readonly KbAudience[];
+  readonly sectorTagSlugs?: readonly string[];
   readonly limit?: number;
   readonly offset?: number;
 }
@@ -72,6 +73,11 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
   // On utilise ARRAY[...]::"KbAudience"[] pour binder l'array.
   const audienceArr = audiences;
   const typesArr = types ?? [];
+  const sectorTagSlugsArr = params.sectorTagSlugs ? [...params.sectorTagSlugs] : [];
+  // Numérotation des paramètres positionnels :
+  //   $1=tsConfig $2=q $3=locale $4=audienceArr
+  //   $5=typesArr (si présent) puis $5 ou $6 pour sectorTagSlugsArr.
+  const sectorTagParamIdx = typesArr.length > 0 ? 6 : 5;
 
   // Hits + ranking
   const hits = await prisma.$queryRawUnsafe<RawRow[]>(
@@ -101,6 +107,17 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       AND ke.status IN ('published', 'deprecated')
       AND ke.audience = ANY($4::"KbAudience"[])
       ${typesArr.length > 0 ? `AND ke.type = ANY($5::"KbType"[])` : ""}
+      ${
+        sectorTagSlugsArr.length > 0
+          ? `
+      AND EXISTS (
+        SELECT 1 FROM knowledge_tags_on_entries ktoe2
+        JOIN knowledge_tags kt2 ON kt2.id = ktoe2.tag_id
+        WHERE ktoe2.entry_id = ke.id
+          AND kt2.slug = ANY($${sectorTagParamIdx}::text[])
+      )`
+          : ""
+      }
       AND kt.search_vector @@ websearch_to_tsquery($1, $2)
     ORDER BY "rank" DESC, ke.published_at DESC NULLS LAST
     LIMIT ${limit} OFFSET ${offset};
@@ -110,6 +127,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
     params.locale,
     audienceArr,
     ...(typesArr.length > 0 ? [typesArr] : []),
+    ...(sectorTagSlugsArr.length > 0 ? [sectorTagSlugsArr] : []),
   );
 
   // Count total (sans LIMIT)
@@ -123,6 +141,17 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       AND ke.status IN ('published', 'deprecated')
       AND ke.audience = ANY($4::"KbAudience"[])
       ${typesArr.length > 0 ? `AND ke.type = ANY($5::"KbType"[])` : ""}
+      ${
+        sectorTagSlugsArr.length > 0
+          ? `
+      AND EXISTS (
+        SELECT 1 FROM knowledge_tags_on_entries ktoe2
+        JOIN knowledge_tags kt2 ON kt2.id = ktoe2.tag_id
+        WHERE ktoe2.entry_id = ke.id
+          AND kt2.slug = ANY($${sectorTagParamIdx}::text[])
+      )`
+          : ""
+      }
       AND kt.search_vector @@ websearch_to_tsquery($1, $2);
     `,
     tsConfig,
@@ -130,6 +159,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
     params.locale,
     audienceArr,
     ...(typesArr.length > 0 ? [typesArr] : []),
+    ...(sectorTagSlugsArr.length > 0 ? [sectorTagSlugsArr] : []),
   );
 
   const total = countRows[0] ? Number(countRows[0].count) : 0;

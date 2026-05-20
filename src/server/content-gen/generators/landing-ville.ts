@@ -25,6 +25,7 @@ import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { resolveLandingVilleVariant } from "./landing-ville-templates";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
+import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 
 export const landingVilleGenerator: Generator = {
   contentType: "landing_ville",
@@ -33,6 +34,9 @@ export const landingVilleGenerator: Generator = {
     if (!input.anchorVilleSlug) {
       throw new Error("landing_ville requires anchorVilleSlug");
     }
+
+    const economicData = ECONOMIC_DATA_BY_SLUG[input.anchorVilleSlug];
+    const sectorTagSlugs = input.kbSectorTagSlugs ?? economicData?.kbSectorTags ?? [];
 
     // 1. KB retrieve (RAG)
     const kbChunks = await kbRetrieve({
@@ -43,6 +47,7 @@ export const landingVilleGenerator: Generator = {
         audiences: ["public"],
         types: ["industry_use_case", "case_study", "methodology", "doctrine"],
       },
+      ...(sectorTagSlugs.length > 0 ? { sectorTagSlugs } : {}),
       mode: "hybrid",
     });
 
@@ -50,6 +55,34 @@ export const landingVilleGenerator: Generator = {
     const kbContext = kbChunks
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
+
+    // Phase C RAG — Contexte économique local injecté dans le prompt LLM.
+    // Données vérifiées issues de economic-data/<slug>.ts (ZÉRO INVENTION).
+    let localEconomicContext = "";
+    if (economicData) {
+      const sectors = economicData.topSectorsNaf
+        ?.slice(0, 3)
+        .map((s) => s.label)
+        .join(", ");
+      const groups = economicData.grandsGroupesImplantes
+        ?.slice(0, 4)
+        .map((g) => g.nom)
+        .join(", ");
+      const poles = economicData.polesCompetitivite
+        ?.slice(0, 2)
+        .map((p) => p.nom)
+        .join(", ");
+      const tags = sectorTagSlugs.slice(0, 3).join(", ");
+      // safeVilleSlug n'est pas encore construit ici — on utilise
+      // anchorVilleSlug directement (slug interne, pas interpolé par LLM).
+      localEconomicContext = `
+## Contexte économique local — ${input.anchorVilleSlug} (données vérifiées)
+${sectors ? `Secteurs dominants : ${sectors}.` : ""}
+${groups ? `Grands groupes implantés : ${groups}.` : ""}
+${poles ? `Pôles de compétitivité : ${poles}.` : ""}
+${tags ? `Tags sectoriels Axion-IA : ${tags}.` : ""}
+Consigne : ancrer le contenu sur ces réalités locales pour différencier de pages génériques.`;
+    }
 
     // Pass B P1-3 — escape inputs avant interpolation dans template prompt
     // (anti prompt-injection : backticks, role markers, newlines, etc.).
@@ -78,6 +111,7 @@ ${variant.userPromptFocusSection}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
+${localEconomicContext}
 
 ## CTA recommandé pour ce variant
 href : ${variant.recommendedCtaHref}

@@ -52,6 +52,7 @@ const eslintConfig = defineConfig([
     // src/lib, src/hooks où la règle reste active).
     files: [
       "scripts/**/*.{ts,js,mjs,cjs}",
+      "src/scripts/**/*.{ts,js,mjs,cjs}",
       "prisma/**/*.{ts,js,mjs}",
       "src/server/queue/worker.ts",
       "src/server/queue/workers/**/*.{ts,js}",

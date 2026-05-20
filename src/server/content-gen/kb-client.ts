@@ -25,6 +25,7 @@ export interface KbRetrieveOptions {
     readonly types?: ReadonlyArray<KbType>;
     readonly audiences?: ReadonlyArray<KbAudience>;
   };
+  readonly sectorTagSlugs?: ReadonlyArray<string>;
   readonly mode?: "fts" | "vector" | "hybrid";
 }
 
@@ -59,6 +60,7 @@ export async function retrieve(opts: KbRetrieveOptions): Promise<KbRetrievedChun
       ...(filters.types && filters.types.length > 0 ? { types: [...filters.types] } : {}),
       audiences:
         filters.audiences && filters.audiences.length > 0 ? [...filters.audiences] : ["public"],
+      ...(opts.sectorTagSlugs ? { sectorTagSlugs: [...opts.sectorTagSlugs] } : {}),
       limit: k,
       offset: 0,
     });

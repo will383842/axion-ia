@@ -37,15 +37,8 @@ import {
   getEntryTier,
   type PricingTier,
 } from "@/content/pricing";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildLocalBusinessJsonLd,
-  buildBreadcrumbJsonLd,
-  buildFaqSpeakableJsonLd,
-  buildItemListJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { buildProductMetadata } from "@/lib/seo";
+import { buildVilleServiceJsonLdGraph } from "@/lib/seo/ville-service-jsonld";
 
 // Sprint S+2 City Domination — 4e verticale `un-a-un` (décision Will Option A
 // 2026-05-18). Naming brand "un-a-un" en URL canonique ; sémantique = coaching
@@ -184,8 +177,8 @@ export async function buildPageMetadata(
     | undefined;
   const description = serviceCopy
     ? isFr
-      ? serviceCopy.fr.hero.slice(0, 200)
-      : serviceCopy.en.hero.slice(0, 200)
+      ? serviceCopy.fr.hero.slice(0, 157) + (serviceCopy.fr.hero.length > 157 ? "…" : "")
+      : serviceCopy.en.hero.slice(0, 157) + (serviceCopy.en.hero.length > 157 ? "…" : "")
     : isFr
       ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données.`
       : `Axion-IA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Public pricing displayed, real-time calendar, you keep control of your data.`;
@@ -205,7 +198,14 @@ export async function buildPageMetadata(
   if (!hasCopy) {
     return { ...result, robots: { index: false, follow: true } };
   }
-  return result;
+  return {
+    ...result,
+    other: {
+      abstract: isFr
+        ? (serviceCopy?.fr.hero.slice(0, 155) ?? description)
+        : (serviceCopy?.en.hero.slice(0, 155) ?? description),
+    },
+  };
 }
 
 interface RenderProps {
@@ -294,94 +294,57 @@ export async function renderVilleServicePage({
     sameRegion: ville.region,
   });
 
-  // === JSON-LD stack (4 schemas + BreadcrumbList auto via Breadcrumbs) ===
-
-  // 1. Service JSON-LD avec areaServed City précis
-  const serviceJsonLd = buildServiceJsonLd({
+  // === JSON-LD stack — Phase C 2026-05-20 (centralisé via buildVilleServiceJsonLdGraph) ===
+  // Les 5 variables individuelles ont été remplacées par le graph builder centralisé
+  // (`src/lib/seo/ville-service-jsonld.ts`) qui émet 7 schémas :
+  //   1. Service  2. LocalBusiness/ProfessionalService  3. BreadcrumbList
+  //   4. FAQPage + Speakable  5. HowTo  6. Person (Manon E-E-A-T)  7. ItemList villes proches
+  const jsonLdSchemas = buildVilleServiceJsonLdGraph({
     locale: loc,
-    path: `${meta.pathFr}/${ville.slug}`,
-    name: isFr
-      ? `${meta.nameFr} à ${ville.nameFr} · Axion-IA`
-      : `${meta.nameEn} in ${ville.nameFr} · Axion-IA`,
-    description: localeCopy.hero,
-    serviceType: meta.nameEn,
-    ...(typeof entryPriceEur === "number" ? { priceEur: entryPriceEur } : {}),
-    areasServed: [
-      {
-        type: "City",
-        name: ville.nameFr,
-        url: `${SITE_URL}/${loc}/implantations/${ville.region}/${ville.slug}`,
-      },
-      {
-        type: "AdministrativeArea",
-        name: region.nameFr,
-        url: `${SITE_URL}/${loc}/${isFr ? "implantations" : "locations"}/${region.slug}`,
-      },
-      { type: "Country", name: "France" },
-    ],
-  });
-
-  // 2. LocalBusiness JSON-LD avec address spécifique ville
-  const localBusinessJsonLd = buildLocalBusinessJsonLd({
-    locale: loc,
-    path: `${meta.pathFr}/${ville.slug}`,
-    name: isFr
-      ? `Axion-IA · ${meta.nameFr} à ${ville.nameFr}`
-      : `Axion-IA · ${meta.nameEn} in ${ville.nameFr}`,
-    description: localeCopy.hero,
-    areaServed: { type: "City", name: ville.nameFr },
-    address: {
-      city: ville.nameFr,
-      region: region.nameFr,
-      country: "FR",
+    isFr,
+    service,
+    serviceNameFr: meta.nameFr,
+    serviceNameEn: meta.nameEn,
+    serviceCanonical: meta.canonical,
+    servicePathFr: meta.pathFr,
+    ville: {
+      nameFr: ville.nameFr,
+      slug: ville.slug,
       ...(ville.postalCode ? { postalCode: ville.postalCode } : {}),
+      geo: { lat: ville.geo.lat, lon: ville.geo.lon },
+      region: ville.region,
     },
-    geo: { latitude: ville.geo.lat, longitude: ville.geo.lon },
+    region: { nameFr: region.nameFr, slug: region.slug },
+    hero: localeCopy.hero,
+    ...(ville.copy?.directAnswerFr ? { directAnswer: ville.copy.directAnswerFr } : {}),
+    faqItems: localeCopy.faq.map((f) => ({ question: f.q, answer: f.a })),
+    methodologySteps: localeCopy.methodology,
+    nearbyVilles,
+    ...(typeof entryPriceEur === "number" ? { priceEur: entryPriceEur } : {}),
     priceRange: typeof entryPriceEur === "number" && entryPriceEur >= 1000 ? "€€€" : "€€",
   });
-
-  // 3. BreadcrumbList JSON-LD (4 niveaux)
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd({
-    locale: loc,
-    items: [
-      { name: isFr ? "Accueil" : "Home", href: "/" },
-      { name: isFr ? meta.nameFr : meta.nameEn, href: meta.canonical },
-      {
-        name: isFr ? `${meta.nameFr} à ${ville.nameFr}` : `${meta.nameEn} in ${ville.nameFr}`,
-        href: `${meta.pathFr}/${ville.slug}` as never,
-      },
-    ],
-  });
-
-  // 4. FAQPage Speakable JSON-LD (FAQ ville × service)
-  const faqSpeakableJsonLd = localeCopy.faq.length
-    ? buildFaqSpeakableJsonLd({
-        items: localeCopy.faq.map((f) => ({ question: f.q, answer: f.a })),
-      })
-    : null;
-
-  // 5. ItemList JSON-LD villes proches même service
-  const nearbyItemList =
-    nearbyVilles.length > 0
-      ? buildItemListJsonLd({
-          locale: loc,
-          path: `${meta.pathFr}/${ville.slug}`,
-          name: isFr
-            ? `Villes proches couvertes pour ${meta.nameFr.toLowerCase()}`
-            : `Nearby cities covered for ${meta.nameEn.toLowerCase()}`,
-          items: nearbyVilles.map(({ ville: v }, idx) => ({
-            position: idx + 1,
-            name: v.nameFr,
-            url: `${SITE_URL}/${loc}${meta.pathFr}/${v.slug}`,
-          })),
-        })
-      : null;
 
   return (
     <>
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
+
+      {/* Direct-answer AEO : citable verbatim par Perplexity / Claude / Google AI Overviews.
+          id="axion-direct-answer" = cible du Speakable JSON-LD. */}
+      {(ville.copy?.directAnswerFr ?? null) ? (
+        <div className="border-border bg-paper border-b">
+          <Container className="max-w-3xl py-5">
+            <p
+              id="axion-direct-answer"
+              className="text-fg-soft text-sm leading-relaxed"
+              aria-label={isFr ? "Réponse directe" : "Direct answer"}
+            >
+              {ville.copy!.directAnswerFr}
+            </p>
+          </Container>
+        </div>
+      ) : null}
 
       {/* Hero compact spécifique ville × service */}
       <Section
@@ -432,6 +395,19 @@ export async function renderVilleServicePage({
         </div>
       </Section>
 
+      {/* Contexte économique local — signal GEO (entités nommées secteurs/groupes locaux).
+          Renforce la pertinence topique pour les requêtes "IA à [Ville]" dans les LLMs. */}
+      {ville.copy?.ecosystemFr ? (
+        <div className="bg-paper border-border border-b">
+          <Container className="max-w-3xl py-4">
+            <p className="text-fg-muted text-xs leading-relaxed italic">
+              {isFr ? "Contexte local · " : "Local context · "}
+              <span data-ecosystem="true">{ville.copy.ecosystemFr}</span>
+            </p>
+          </Container>
+        </div>
+      ) : null}
+
       {/* Section détaillée du service à la ville — 4 verticales. */}
       <VilleServiceDetailSection
         isFr={isFr}
@@ -443,30 +419,34 @@ export async function renderVilleServicePage({
         tone="paper"
       />
 
-      {/* FAQ embed Speakable JSON-LD émise séparément ci-dessus */}
+      {/* FAQ embed Speakable JSON-LD émise séparément ci-dessus.
+          id="axion-faq-wrapper" = backup Speakable cssSelector (#axion-faq est
+          sur le <section> interne de FaqBlock — Phase C 2026-05-20). */}
       {localeCopy.faq.length > 0 ? (
-        <FaqBlock
-          eyebrow={
-            isFr ? `FAQ · ${meta.nameFr} ${ville.nameFr}` : `FAQ · ${meta.nameEn} ${ville.nameFr}`
-          }
-          title={
-            isFr
-              ? `Questions fréquentes — ${meta.nameFr.toLowerCase()} à ${ville.nameFr}`
-              : `Frequently asked questions — ${meta.nameEn.toLowerCase()} in ${ville.nameFr}`
-          }
-          description={
-            isFr
-              ? "Réponses précises calibrées à votre ville et à votre type d'entreprise (TPE, PME, ETI, grande entreprise)."
-              : "Precise answers calibrated to your city and company size (micro, SME, mid-cap, large enterprise)."
-          }
-          items={localeCopy.faq.map((f, idx) => ({
-            id: `${ville.slug}-${service}-${idx}`,
-            question: f.q,
-            answer: f.a,
-          }))}
-          emitJsonLd={false}
-          tone="sand"
-        />
+        <div id="axion-faq-wrapper">
+          <FaqBlock
+            eyebrow={
+              isFr ? `FAQ · ${meta.nameFr} ${ville.nameFr}` : `FAQ · ${meta.nameEn} ${ville.nameFr}`
+            }
+            title={
+              isFr
+                ? `Questions fréquentes — ${meta.nameFr.toLowerCase()} à ${ville.nameFr}`
+                : `Frequently asked questions — ${meta.nameEn.toLowerCase()} in ${ville.nameFr}`
+            }
+            description={
+              isFr
+                ? "Réponses précises calibrées à votre ville et à votre type d'entreprise (TPE, PME, ETI, grande entreprise)."
+                : "Precise answers calibrated to your city and company size (micro, SME, mid-cap, large enterprise)."
+            }
+            items={localeCopy.faq.map((f, idx) => ({
+              id: `${ville.slug}-${service}-${idx}`,
+              question: f.q,
+              answer: f.a,
+            }))}
+            emitJsonLd={false}
+            tone="sand"
+          />
+        </div>
       ) : null}
 
       {/* Cross-services à la même ville — maillage 4 services × ville
@@ -576,6 +556,45 @@ export async function renderVilleServicePage({
         </Section>
       ) : null}
 
+      {/* Maillage thématique interne — autorité topique GEO/AEO.
+          Liens vers glossaire, guides, stack pour reinforcer le Knowledge Graph Axion-IA. */}
+      <div className="border-border bg-paper border-y py-8">
+        <Container className="max-w-3xl">
+          <p className="text-fg-muted mb-4 text-xs font-medium tracking-widest uppercase">
+            {isFr ? "Pour aller plus loin" : "Further reading"}
+          </p>
+          <ul className="flex flex-wrap gap-3">
+            <li>
+              <Link
+                href="/guides"
+                className="text-terracotta-deep text-sm hover:underline"
+                data-cta-tracking="ville_service_thematic_guides"
+              >
+                {isFr ? "→ Guides IA 2026" : "→ AI guides 2026"}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/glossaire"
+                className="text-terracotta-deep text-sm hover:underline"
+                data-cta-tracking="ville_service_thematic_glossaire"
+              >
+                {isFr ? "→ Glossaire IA" : "→ AI glossary"}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/stack-ia"
+                className="text-terracotta-deep text-sm hover:underline"
+                data-cta-tracking="ville_service_thematic_stack"
+              >
+                {isFr ? "→ Stack outils IA" : "→ AI tools stack"}
+              </Link>
+            </li>
+          </ul>
+        </Container>
+      </div>
+
       {/* CTA final pré-rempli ville × service */}
       <CtaBlock
         eyebrow={isFr ? "Démarrer concrètement" : "Start concretely"}
@@ -615,18 +634,11 @@ export async function renderVilleServicePage({
         }
       />
 
-      {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 5
-          schemas combinés en 1 script @graph pour ne pas bloquer le parsing
-          du contenu visible. Cumul ~3 services × 2 150 villes = ~12 900 SSG. */}
-      <JsonLdGraph
-        schemas={[
-          serviceJsonLd,
-          localBusinessJsonLd,
-          breadcrumbJsonLd,
-          faqSpeakableJsonLd ?? null,
-          nearbyItemList ?? null,
-        ]}
-      />
+      {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — Phase C
+          2026-05-20 : 7 schémas combinés (Service + LocalBusiness + BreadcrumbList
+          + FAQPage Speakable + HowTo + Person E-E-A-T + ItemList villes proches)
+          via buildVilleServiceJsonLdGraph. Cumul ~4 services × 2 150 villes = ~17 200 SSG. */}
+      <JsonLdGraph schemas={jsonLdSchemas} />
     </>
   );
 }

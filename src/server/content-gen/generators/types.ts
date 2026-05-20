@@ -27,6 +27,8 @@ export interface GeneratorBaseInput {
   readonly primaryKeyword?: string;
   readonly secondaryKeywords?: ReadonlyArray<string>;
   readonly templateVariant?: string;
+  /** Tags sectoriels pour filtrage RAG (cf. economic-data kbSectorTags). */
+  readonly kbSectorTagSlugs?: ReadonlyArray<string>;
   /** Liste d'IDs KnowledgeEntry consommés par RAG retrieve (audit trail). */
   readonly kbEntryIds?: ReadonlyArray<string>;
 }

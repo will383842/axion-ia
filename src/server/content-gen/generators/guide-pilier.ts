@@ -43,6 +43,7 @@ import { checkDoctrine } from "../quality/doctrine-check";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
+import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 
 const SYSTEM_PROMPT_OUTLINE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
@@ -115,6 +116,12 @@ export const guidePilierGenerator: Generator = {
 
   async generate(input: GeneratorBaseInput): Promise<GeneratorOutput> {
     // 1. KB retrieve — contexte partagé pour outline + sections
+    const economicData = input.anchorVilleSlug
+      ? ECONOMIC_DATA_BY_SLUG[input.anchorVilleSlug]
+      : undefined;
+    const sectorTagSlugs: ReadonlyArray<string> =
+      input.kbSectorTagSlugs ?? economicData?.kbSectorTags ?? [];
+
     const kbChunks = await kbRetrieve({
       query: `guide pilier ${input.primaryKeyword ?? ""} ${input.anchorVilleSlug ?? ""}`,
       locale: "fr",
@@ -123,11 +130,38 @@ export const guidePilierGenerator: Generator = {
         audiences: ["public"],
         types: ["industry_use_case", "case_study", "methodology", "doctrine"],
       },
+      ...(sectorTagSlugs.length > 0 ? { sectorTagSlugs } : {}),
       mode: "hybrid",
     });
     const kbContext = kbChunks
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
+
+    // Phase C RAG — Contexte économique local injecté dans le prompt LLM.
+    // Données vérifiées issues de economic-data/<slug>.ts (ZÉRO INVENTION).
+    let localEconomicContext = "";
+    if (economicData && input.anchorVilleSlug) {
+      const sectors = economicData.topSectorsNaf
+        ?.slice(0, 3)
+        .map((s) => s.label)
+        .join(", ");
+      const groups = economicData.grandsGroupesImplantes
+        ?.slice(0, 4)
+        .map((g) => g.nom)
+        .join(", ");
+      const poles = economicData.polesCompetitivite
+        ?.slice(0, 2)
+        .map((p) => p.nom)
+        .join(", ");
+      const tags = sectorTagSlugs.slice(0, 3).join(", ");
+      localEconomicContext = `
+## Contexte économique local — ${input.anchorVilleSlug} (données vérifiées)
+${sectors ? `Secteurs dominants : ${sectors}.` : ""}
+${groups ? `Grands groupes implantés : ${groups}.` : ""}
+${poles ? `Pôles de compétitivité : ${poles}.` : ""}
+${tags ? `Tags sectoriels Axion-IA : ${tags}.` : ""}
+Consigne : ancrer le contenu sur ces réalités locales pour différencier de pages génériques.`;
+    }
 
     const safeKeyword = escapeLlmInput(input.primaryKeyword ?? "IA en entreprise", {
       maxLen: 100,
@@ -147,6 +181,7 @@ Intent : ${safeIntent}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
+${localEconomicContext}
 
 Rappel : 8-15 sections, output JSON strict (cf. system prompt).`;
 

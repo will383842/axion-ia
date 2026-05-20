@@ -43,7 +43,7 @@ export function FaqBlock({
   permalinkLabel,
 }: FaqBlockProps) {
   return (
-    <section className={cn("py-24 sm:py-28 lg:py-36", toneClasses[tone])}>
+    <section id="axion-faq" className={cn("py-24 sm:py-28 lg:py-36", toneClasses[tone])}>
       <Container className="max-w-3xl">
         {eyebrow ? (
           <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">

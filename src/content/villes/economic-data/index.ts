@@ -53,7 +53,7 @@ import { NANCY_ECONOMIC_DATA } from "./nancy";
  * Lookup slug → data économique. 39 villes pilote (top démographique France
  * métropolitaine). Sprint 2026-05-18 terminé : 39/39 villes branchées.
  */
-const ECONOMIC_DATA_BY_SLUG: Record<string, VilleEconomicData> = {
+export const ECONOMIC_DATA_BY_SLUG: Record<string, VilleEconomicData> = {
   paris: PARIS_ECONOMIC_DATA,
   marseille: MARSEILLE_ECONOMIC_DATA,
   lyon: LYON_ECONOMIC_DATA,

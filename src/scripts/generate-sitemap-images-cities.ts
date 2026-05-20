@@ -45,7 +45,7 @@ const TIER2_MAX = 100_000;
 const TIER3_MIN = 10_000;
 const TIER3_MAX = 50_000;
 const TIER4_MIN = 5_000;
-const TIER4_MAX = 10_000;
+const _TIER4_MAX = 10_000;
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -57,19 +57,19 @@ const PUBLIC_DIR = path.join(__dirname, "../../public");
 // ─── Helpers image ────────────────────────────────────────────────────────────
 
 const REGION_IMAGE_SLUG: Record<string, string> = {
-  "ile-de-france":              "axion-ia-ile-de-france-formation-ia-banniere",
-  "auvergne-rhone-alpes":       "axion-ia-auvergne-rhone-alpes-formation-ia-banniere",
+  "ile-de-france": "axion-ia-ile-de-france-formation-ia-banniere",
+  "auvergne-rhone-alpes": "axion-ia-auvergne-rhone-alpes-formation-ia-banniere",
   "provence-alpes-cote-d-azur": "axion-ia-provence-alpes-cote-d-azur-formation-ia-banniere",
-  "occitanie":                  "axion-ia-occitanie-formation-ia-banniere",
-  "nouvelle-aquitaine":         "axion-ia-nouvelle-aquitaine-formation-ia-banniere",
-  "hauts-de-france":            "axion-ia-hauts-de-france-formation-ia-banniere",
-  "grand-est":                  "axion-ia-grand-est-formation-ia-banniere",
-  "pays-de-la-loire":           "axion-ia-pays-de-la-loire-formation-ia-banniere",
-  "bretagne":                   "axion-ia-bretagne-formation-ia-banniere",
-  "normandie":                  "axion-ia-normandie-formation-ia-banniere",
-  "bourgogne-franche-comte":    "axion-ia-bourgogne-franche-comte-formation-ia-banniere",
-  "centre-val-de-loire":        "axion-ia-centre-val-de-loire-formation-ia-banniere",
-  "corse":                      "axion-ia-corse-formation-ia-banniere",
+  occitanie: "axion-ia-occitanie-formation-ia-banniere",
+  "nouvelle-aquitaine": "axion-ia-nouvelle-aquitaine-formation-ia-banniere",
+  "hauts-de-france": "axion-ia-hauts-de-france-formation-ia-banniere",
+  "grand-est": "axion-ia-grand-est-formation-ia-banniere",
+  "pays-de-la-loire": "axion-ia-pays-de-la-loire-formation-ia-banniere",
+  bretagne: "axion-ia-bretagne-formation-ia-banniere",
+  normandie: "axion-ia-normandie-formation-ia-banniere",
+  "bourgogne-franche-comte": "axion-ia-bourgogne-franche-comte-formation-ia-banniere",
+  "centre-val-de-loire": "axion-ia-centre-val-de-loire-formation-ia-banniere",
+  corse: "axion-ia-corse-formation-ia-banniere",
 };
 const NATIONAL_FALLBACK_SLUG = "axion-ia-france-formation-ia-banniere";
 
@@ -112,7 +112,8 @@ interface UrlEntry {
 }
 
 function buildXml(entries: UrlEntry[]): string {
-  const urls = entries.map((e) => `  <url>
+  const urls = entries.map(
+    (e) => `  <url>
     <loc>${escapeXml(e.loc)}</loc>
     <changefreq>${e.changefreq}</changefreq>
     <priority>${e.priority}</priority>
@@ -122,7 +123,8 @@ function buildXml(entries: UrlEntry[]): string {
       <image:caption>${escapeXml(e.imageCaption)}</image:caption>
       <image:geo_location>${escapeXml(e.geoLocation)}</image:geo_location>
     </image:image>
-  </url>`);
+  </url>`,
+  );
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
@@ -200,15 +202,17 @@ async function main() {
     .sort((a, b) => b.population - a.population);
 
   console.log(`[sitemap-images-cities] T1 (>= ${TIER1_MIN / 1000}K):   ${t1.length} villes`);
-  console.log(`[sitemap-images-cities] T2 (${TIER2_MIN / 1000}K–${TIER2_MAX / 1000}K): ${t2.length} villes`);
-  console.log(`[sitemap-images-cities] T3+T4 (${TIER4_MIN / 1000}K–${TIER3_MAX / 1000}K): ${t3t4.length} villes\n`);
+  console.log(
+    `[sitemap-images-cities] T2 (${TIER2_MIN / 1000}K–${TIER2_MAX / 1000}K): ${t2.length} villes`,
+  );
+  console.log(
+    `[sitemap-images-cities] T3+T4 (${TIER4_MIN / 1000}K–${TIER3_MAX / 1000}K): ${t3t4.length} villes\n`,
+  );
 
   // Build XML
   const xmlT1 = buildXml(t1.map((v) => villeToEntry(v, 1)));
   const xmlT2 = buildXml(t2.map((v) => villeToEntry(v, 2)));
-  const xmlT3T4 = buildXml(
-    t3t4.map((v) => villeToEntry(v, v.population >= TIER3_MIN ? 3 : 4)),
-  );
+  const xmlT3T4 = buildXml(t3t4.map((v) => villeToEntry(v, v.population >= TIER3_MIN ? 3 : 4)));
 
   // Write
   await fs.mkdir(PUBLIC_DIR, { recursive: true });
