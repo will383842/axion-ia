@@ -153,7 +153,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Utile pour les PME du BTP et de la logistique avec des workflows de chantier ou de distribution à cartographier.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Utile pour les PME du BTP et de la logistique avec des workflows de chantier ou de distribution à cartographier.",
           },
           {
             step: "Kick-off sur site",
@@ -227,7 +227,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Mes données commerciales ou de chantier restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Nous n'exportons aucun document métier hors de vos systèmes sans accord explicite.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Nous n'exportons aucun document métier hors de vos systèmes sans accord explicite.",
           },
           {
             q: "Comment se déroule la restitution finale à Argenteuil ?",
@@ -259,7 +259,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Useful for construction and logistics SMEs with site or distribution workflows to map.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Useful for construction and logistics SMEs with site or distribution workflows to map.",
           },
           {
             step: "On-site kick-off",
@@ -333,7 +333,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Does my commercial or site data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. We export no business documents outside your systems without explicit agreement.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. We export no business documents outside your systems without explicit agreement.",
           },
           {
             q: "How does the final read-out work in Argenteuil?",

@@ -157,7 +157,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles mulhousiennes avec des workflows complexes multi-sites (production, ingénierie, supply chain transfrontalière).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles mulhousiennes avec des workflows complexes multi-sites (production, ingénierie, supply chain transfrontalière).",
           },
           {
             step: "Kick-off sur site",
@@ -231,7 +231,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou transfrontalières restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les entreprises mulhousiennes avec des flux France-Suisse-Allemagne, nous appliquons dès la sélection des modèles IA les contraintes souveraineté et les exigences RGPD transfrontalières.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les entreprises mulhousiennes avec des flux France-Suisse-Allemagne, nous appliquons dès la sélection des modèles IA les contraintes souveraineté et les exigences RGPD transfrontalières.",
           },
           {
             q: "Comment se déroule la restitution finale à Mulhouse ?",
@@ -263,7 +263,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for Mulhouse industrial mid-caps with complex multi-site workflows (production, engineering, cross-border supply chain).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for Mulhouse industrial mid-caps with complex multi-site workflows (production, engineering, cross-border supply chain).",
           },
           {
             step: "On-site kick-off",
@@ -337,7 +337,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or cross-border data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For Mulhouse businesses with France-Switzerland-Germany flows, we apply sovereignty constraints and cross-border GDPR requirements at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For Mulhouse businesses with France-Switzerland-Germany flows, we apply sovereignty constraints and cross-border GDPR requirements at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Mulhouse?",
@@ -792,7 +792,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           "Format flexible : séances en présentiel à Mulhouse (vos locaux, Parc des Collines, Bourtzwiller) ou à distance selon votre agenda et vos déplacements transfrontaliers.",
           "Programme structuré autour de VOS cas : pas de curriculum générique, chaque séance part de vos questions, vos projets, vos équipes et vos contraintes spécifiques.",
           "Accès à notre réseau de praticiens IA sectoriels : retours d'expérience automobile, industrie 4.0 et numérique du bassin rhénan directement mobilisables dans votre programme.",
-          "Confidentialité totale : NDA, aucune donnée partagée hors périmètre, aucun conflit d'intérêt avec vos concurrents directs.",
+          "Confidentialité totale : Confidentialité stricte, aucune donnée partagée hors périmètre, aucun conflit d'intérêt avec vos concurrents directs.",
           "Aucun lock-in : le programme se clôture quand vos objectifs sont atteints, avec une documentation de synthèse que vous conservez intégralement.",
         ],
         methodology: [
@@ -877,7 +877,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
           {
             q: "La confidentialité est-elle garantie, notamment pour la dimension transfrontalière ?",
-            a: "Absolument. NDA signé avant le démarrage, aucune information échangée hors du périmètre convenu, aucun conflit d'intérêt avec vos concurrents directs mulhousiens ou transfrontaliers.",
+            a: "Absolument. Confidentialité stricte dès le démarrage, aucune information échangée hors du périmètre convenu, aucun conflit d'intérêt avec vos concurrents directs mulhousiens ou transfrontaliers.",
           },
           {
             q: "Puis-je impliquer d'autres membres de mon comité de direction ?",
@@ -889,7 +889,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité contractuelle totale : NDA, données exclusivement dans le périmètre convenu, aucun conflit d'intérêt avec vos concurrents. Programme ajustable en cours de route sans frais de renégociation. Livrables documentés remis à chaque étape clé — vous repartez avec un capital intellectuel structuré que vous possédez intégralement. Aucun lock-in : le programme se termine quand vos objectifs sont atteints.",
+          "Confidentialité contractuelle totale : Confidentialité stricte, données exclusivement dans le périmètre convenu, aucun conflit d'intérêt avec vos concurrents. Programme ajustable en cours de route sans frais de renégociation. Livrables documentés remis à chaque étape clé — vous repartez avec un capital intellectuel structuré que vous possédez intégralement. Aucun lock-in : le programme se termine quand vos objectifs sont atteints.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 program in Mulhouse supports executives and managers from the Haut-Rhin basin in building their personal AI strategy — in person in Mulhouse, remotely or in hybrid format depending on your schedule. An individualised approach calibrated for decision-makers in the Mulhouse industrial fabric: automotive, engineering, chemicals, digital.",
@@ -898,7 +898,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           "Flexible format: in-person sessions in Mulhouse (your offices, Parc des Collines, Bourtzwiller) or remote depending on your schedule and cross-border travel.",
           "Programme structured around YOUR cases: no generic curriculum, each session starts from your questions, your projects, your teams and your specific constraints.",
           "Access to our sectoral AI practitioner network: automotive, Industry 4.0 and digital feedback from the Rhine basin directly mobilisable in your programme.",
-          "Total confidentiality: NDA, no data shared outside the agreed scope, no conflict of interest with your direct competitors.",
+          "Total confidentiality: Strict confidentiality, no data shared outside the agreed scope, no conflict of interest with your direct competitors.",
           "No lock-in: the programme closes when your objectives are reached, with a synthesis document you retain in full.",
         ],
         methodology: [
@@ -983,7 +983,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
           {
             q: "Is confidentiality guaranteed, including for the cross-border dimension?",
-            a: "Absolutely. NDA signed before kick-off, no information exchanged outside the agreed scope, no conflict of interest with your direct Mulhouse or cross-border competitors.",
+            a: "Absolutely. Confidentiality ensured from kick-off, no information exchanged outside the agreed scope, no conflict of interest with your direct Mulhouse or cross-border competitors.",
           },
           {
             q: "Can I involve other members of my executive committee?",
@@ -995,7 +995,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Total contractual confidentiality: NDA, data exclusively within the agreed scope, no conflict of interest with your competitors. Programme adjustable during delivery without renegotiation fees. Documented deliverables handed over at each key milestone — you leave with structured intellectual capital you own in full. No lock-in: the programme ends when your objectives are reached.",
+          "Total contractual confidentiality: Strict confidentiality, data exclusively within the agreed scope, no conflict of interest with your competitors. Programme adjustable during delivery without renegotiation fees. Documented deliverables handed over at each key milestone — you leave with structured intellectual capital you own in full. No lock-in: the programme ends when your objectives are reached.",
       },
     },
   },

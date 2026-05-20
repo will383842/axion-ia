@@ -86,7 +86,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Brief de cadrage à distance : signature NDA, accès aux documents clés (organigramme, processus, indicateurs de production ou de service selon votre activité).",
+              "Brief de cadrage à distance : signature Confidentialité assurée, accès aux documents clés (organigramme, processus, indicateurs de production ou de service selon votre activité).",
           },
           {
             step: "Kick-off sur site",
@@ -160,7 +160,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage. Données traitées exclusivement sur vos infrastructures ou sur infra dédiée UE, jamais extraites vers nos serveurs. Conformité RGPD, modèles testés en local si souveraineté requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage. Données traitées exclusivement sur vos infrastructures ou sur infra dédiée UE, jamais extraites vers nos serveurs. Conformité RGPD, modèles testés en local si souveraineté requise.",
           },
           {
             q: "Comment se déroule la restitution finale ?",
@@ -192,7 +192,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief: NDA signed, access to key documents (org chart, processes, production or service KPIs depending on your activity).",
+              "Remote framing brief: Strict confidentiality ensured, access to key documents (org chart, processes, production or service KPIs depending on your activity).",
           },
           {
             step: "On-site kick-off",
@@ -266,7 +266,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off. Data processed exclusively on your infrastructure or dedicated EU infra, never extracted to our servers. GDPR compliance, models tested locally if sovereignty required.",
+            a: "Yes. Confidentiality ensured from kick-off. Data processed exclusively on your infrastructure or dedicated EU infra, never extracted to our servers. GDPR compliance, models tested locally if sovereignty required.",
           },
           {
             q: "How does the final read-out work?",
@@ -594,7 +594,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles chez moi ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE. NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE. Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous pour des contextes industriels ?",
@@ -700,7 +700,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay with me?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra. NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra. Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use for industrial contexts?",

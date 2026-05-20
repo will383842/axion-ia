@@ -100,7 +100,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les grands groupes boulonnais avec des workflows complexes multi-équipes.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les grands groupes boulonnais avec des workflows complexes multi-équipes.",
           },
           {
             step: "Kick-off sur site",
@@ -174,7 +174,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs audiovisuel, automobile et financier boulonnais, nous appliquons les contraintes de confidentialité et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs audiovisuel, automobile et financier boulonnais, nous appliquons les contraintes de confidentialité et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Boulogne-Billancourt ?",
@@ -206,7 +206,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for Boulogne large groups with complex multi-team workflows.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for Boulogne large groups with complex multi-team workflows.",
           },
           {
             step: "On-site kick-off",
@@ -280,7 +280,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For Boulogne's media, automotive and financial sectors, we apply confidentiality and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For Boulogne's media, automotive and financial sectors, we apply confidentiality and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Boulogne-Billancourt?",
@@ -734,7 +734,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           "Boulogne-Billancourt concentre un tissu dense de dirigeants et managers de grands groupes (Renault, TF1, Boursorama) et de PME conseil qui cherchent à monter en compétence IA de façon personnalisée.",
           "Nos consultants s'adaptent à votre agenda : sessions en présentiel au Trapèze, au Quai du Point-du-Jour ou dans vos bureaux, ou en visio selon vos contraintes.",
           "Le parcours couvre votre outil de travail réel : vos emails, vos présentations, vos reportings, vos supports de négociation, vos documents contractuels — rien de générique.",
-          "Confidentialité maximale : format 1-to-1, aucun partage avec d'autres participants, NDA signé dès la première session.",
+          "Confidentialité maximale : format 1-to-1, aucun partage avec d'autres participants, confidentialité stricte assurée dès la première session.",
           "Progression mesurée : après chaque session, vous identifiez les cas d'usage que vous maîtrisez et ceux à approfondir. Pas de formation pour la formation.",
           "Disponibilité flexible : sessions ponctuelles ou programme régulier selon votre besoin — d'une session de cadrage à un accompagnement mensuel sur plusieurs mois.",
         ],
@@ -820,7 +820,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Mes échanges et données restent-ils strictement confidentiels ?",
-            a: "Oui. NDA signé dès le démarrage, aucun partage avec d'autres participants ou clients. Le format 1-to-1 garantit une confidentialité totale sur vos cas, vos données et vos enjeux stratégiques.",
+            a: "Oui. Confidentialité stricte dès le démarrage, aucun partage avec d'autres participants ou clients. Le format 1-to-1 garantit une confidentialité totale sur vos cas, vos données et vos enjeux stratégiques.",
           },
           {
             q: "Ce format est-il adapté à quelqu'un qui n'a jamais utilisé l'IA ?",
@@ -832,7 +832,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sessions au rythme qui vous convient, sans engagement de volume minimum. Confidentialité totale : NDA, format 1-to-1, aucun partage. Outils opérationnels dès la première session : vous pratiquez sur vos vrais cas, pas des exercices fictifs. Si après la première session vous estimez que le format ne vous correspond pas, remboursement intégral.",
+          "Sessions au rythme qui vous convient, sans engagement de volume minimum. Confidentialité totale : Confidentialité stricte, format 1-to-1, aucun partage. Outils opérationnels dès la première session : vous pratiquez sur vos vrais cas, pas des exercices fictifs. Si après la première session vous estimez que le format ne vous correspond pas, remboursement intégral.",
       },
       en: {
         hero: "Axion-IA's individual coaching in Boulogne-Billancourt targets executives, managers and consultants who want to embed AI into their daily professional practice — no group session, no standard programme. Each journey is built around YOUR real use cases, in person at your Boulogne offices or over video, at the pace that suits you.",
@@ -840,7 +840,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           "Boulogne-Billancourt hosts a dense fabric of executives and managers from large groups (Renault, TF1, Boursorama) and consulting SMEs who want to build AI skills in a personalised way.",
           "Our consultants adapt to your schedule: in-person sessions at Trapèze, Quai du Point-du-Jour or your offices, or over video per your constraints.",
           "The journey covers your real work tools: your emails, presentations, reports, negotiation materials, contractual documents — nothing generic.",
-          "Maximum confidentiality: 1-to-1 format, no sharing with other participants, NDA signed from the first session.",
+          "Maximum confidentiality: 1-to-1 format, no sharing with other participants, Strict confidentiality from the first session.",
           "Measured progression: after each session you identify use cases you have mastered and those to deepen. No training for the sake of training.",
           "Flexible availability: ad-hoc sessions or a regular programme per your need — from a single framing session to monthly coaching over several months.",
         ],
@@ -926,7 +926,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
           {
             q: "Do my exchanges and data remain strictly confidential?",
-            a: "Yes. NDA signed from the start, no sharing with other participants or clients. The 1-to-1 format guarantees total confidentiality on your use cases, your data and your strategic context.",
+            a: "Yes. Strict confidentiality from the start, no sharing with other participants or clients. The 1-to-1 format guarantees total confidentiality on your use cases, your data and your strategic context.",
           },
           {
             q: "Is this format suitable for someone who has never used AI?",
@@ -938,7 +938,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sessions at the pace that suits you, no minimum volume commitment. Total confidentiality: NDA, 1-to-1 format, no sharing. Operational tools from the first session: you practise on your real cases, not fictitious exercises. If after the first session you feel the format is not right for you, full refund.",
+          "Sessions at the pace that suits you, no minimum volume commitment. Total confidentiality: Strict confidentiality, 1-to-1 format, no sharing. Operational tools from the first session: you practise on your real cases, not fictitious exercises. If after the first session you feel the format is not right for you, full refund.",
       },
     },
   },

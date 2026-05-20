@@ -87,7 +87,7 @@ export const LYON_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles lyonnaises avec des workflows complexes.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles lyonnaises avec des workflows complexes.",
           },
           {
             step: "Kick-off sur site",
@@ -161,7 +161,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou médicales restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs pharmaceutique et médical (Gerland, Lyonbiopôle), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs pharmaceutique et médical (Gerland, Lyonbiopôle), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Lyon ?",
@@ -193,7 +193,7 @@ export const LYON_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for Lyon industrial mid-caps with complex workflows.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for Lyon industrial mid-caps with complex workflows.",
           },
           {
             step: "On-site kick-off",
@@ -267,7 +267,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or medical data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For pharmaceutical and medical sectors (Gerland, Lyonbiopôle), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For pharmaceutical and medical sectors (Gerland, Lyonbiopôle), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Lyon?",
@@ -811,7 +811,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "La confidentialité est-elle garantie ?",
-            a: "Absolument. NDA signé avant la première session. Aucun compte-rendu ne sort de nos échanges, aucune référence à votre identité ou à votre entreprise n'est publiée sans votre accord explicite écrit. Cette confidentialité est la condition sine qua non du travail en profondeur.",
+            a: "Absolument. Confidentialité stricte dès la première session. Aucun compte-rendu ne sort de nos échanges, aucune référence à votre identité ou à votre entreprise n'est publiée sans votre accord explicite écrit. Cette confidentialité est la condition sine qua non du travail en profondeur.",
           },
           {
             q: "Quelle est la différence entre un coaching 1-to-1 et un audit IA Axion-IA ?",
@@ -819,7 +819,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun lock-in : vous pouvez arrêter le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité contractuelle : NDA signé, aucune référence publiée sans accord écrit. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, session de diagnostic offerte pour recadrer le parcours. Frais de logement, repas et forfait trajet en sus pour les sessions présentiel hors Lyon intra-muros.",
+          "Aucun lock-in : vous pouvez arrêter le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité stricte, aucune référence publiée sans accord écrit. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, session de diagnostic offerte pour recadrer le parcours. Frais de logement, repas et forfait trajet en sus pour les sessions présentiel hors Lyon intra-muros.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Lyon is designed for executives and managers steering a transformation, restructuring or AI skills upgrade without wanting to expose their questions in a group setting. Confidential sessions at your Lyon offices — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — or remote depending on your schedule. We work on your real practice: your emails, your reports, your decisions, your relationship with your teams. The goal is not a certification: it is that you are operational with AI as a leadership lever within your first 90 days. No lock-in, no follow-up imposed beyond what you validate. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
@@ -917,7 +917,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Is confidentiality guaranteed?",
-            a: "Absolutely. NDA signed before the first session. No notes leave our exchanges, no reference to your identity or your company is published without your explicit written consent. This confidentiality is the sine qua non condition for deep work.",
+            a: "Absolutely. Strict confidentiality ensured before the first session. No notes leave our exchanges, no reference to your identity or your company is published without your explicit written consent. This confidentiality is the sine qua non condition for deep work.",
           },
           {
             q: "What is the difference between 1-to-1 coaching and an Axion-IA AI audit?",
@@ -925,7 +925,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: you can stop the programme at any time without penalty beyond sessions already completed. Contractual confidentiality: NDA signed, no reference published without written consent. Practice-oriented results: if after three sessions you have not noticed a concrete gain in your daily practice, a diagnostic session is offered to reframe the programme. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
+          "No lock-in: you can stop the programme at any time without penalty beyond sessions already completed. Contractual confidentiality: Strict confidentiality, no reference published without written consent. Practice-oriented results: if after three sessions you have not noticed a concrete gain in your daily practice, a diagnostic session is offered to reframe the programme. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
       },
     },
   },

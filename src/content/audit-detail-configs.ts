@@ -130,9 +130,9 @@ const FLASH_BENEFITS: ReadonlyArray<AuditBenefit> = [
     titleFr: "Confidentialité totale",
     titleEn: "Total confidentiality",
     bodyFr:
-      "Vos données restent les vôtres. Aucune utilisation pour entraîner les modèles (comptes Anthropic Team / Enterprise). NDA fourni sur demande avant le rendez-vous.",
+      "Vos données restent les vôtres. Aucune utilisation pour entraîner les modèles (comptes Anthropic Team / Enterprise). Confidentialité contractuelle garantie avant tout échange.",
     bodyEn:
-      "Your data stays yours. No training use (Anthropic Team / Enterprise accounts). NDA provided on request before the meeting.",
+      "Your data stays yours. No training use (Anthropic Team / Enterprise accounts). Contractual confidentiality guaranteed before any exchange.",
   },
 ];
 

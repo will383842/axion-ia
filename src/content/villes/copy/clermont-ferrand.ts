@@ -88,7 +88,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA, accéder aux documents clés (organigramme, processus, indicateurs) et qualifier votre secteur dominant — industrie, agro, services, biotech ou santé.",
+              "Un brief de cadrage à distance pour signer le Confidentialité assurée, accéder aux documents clés (organigramme, processus, indicateurs) et qualifier votre secteur dominant — industrie, agro, services, biotech ou santé.",
           },
           {
             step: "Kick-off sur site",
@@ -158,7 +158,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local si la souveraineté est requise — enjeu particulièrement sensible pour les sous-traitants Michelin ou Airbus-Safran.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local si la souveraineté est requise — enjeu particulièrement sensible pour les sous-traitants Michelin ou Airbus-Safran.",
           },
           {
             q: "Quel ROI peut-on attendre pour une PME industrielle du bassin ?",
@@ -194,7 +194,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA, access key documents and qualify your dominant sector — manufacturing, agri-food, services, biotech or healthcare.",
+              "Remote framing brief to sign the Confidentiality ensured, access key documents and qualify your dominant sector — manufacturing, agri-food, services, biotech or healthcare.",
           },
           {
             step: "On-site kick-off",
@@ -264,7 +264,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally if sovereignty is required — a particularly sensitive point for Michelin or Airbus-Safran sub-contractors.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally if sovereignty is required — a particularly sensitive point for Michelin or Airbus-Safran sub-contractors.",
           },
           {
             q: "What ROI can a Clermont basin industrial SME expect?",
@@ -596,7 +596,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles sur mon infra ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande — enjeu critique pour les sous-traitants Michelin/Airbus.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande — enjeu critique pour les sous-traitants Michelin/Airbus.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -702,7 +702,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay on my infra?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request — critical for Michelin/Airbus sub-contractors.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request — critical for Michelin/Airbus sub-contractors.",
           },
           {
             q: "Which AI models do you use?",

@@ -85,7 +85,7 @@ export const ORLEANS_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI cosmétiques et pharmaceutiques avec des workflows réglementés (BPF, dossiers AMM, cahiers de laboratoire).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI cosmétiques et pharmaceutiques avec des workflows réglementés (BPF, dossiers AMM, cahiers de laboratoire).",
           },
           {
             step: "Kick-off sur site",
@@ -159,7 +159,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Mes données de formulation ou données cliniques restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs cosmétique, pharmaceutique et géosciences (BRGM, INRAE), nous appliquons les contraintes de souveraineté et de conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs cosmétique, pharmaceutique et géosciences (BRGM, INRAE), nous appliquons les contraintes de souveraineté et de conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Orléans ?",
@@ -191,7 +191,7 @@ export const ORLEANS_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for cosmetics and pharma mid-caps with regulated workflows (GMP, marketing authorisation files, lab notebooks).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for cosmetics and pharma mid-caps with regulated workflows (GMP, marketing authorisation files, lab notebooks).",
           },
           {
             step: "On-site kick-off",
@@ -265,7 +265,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Does my formulation or clinical data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For cosmetics, pharma and geoscience sectors (BRGM, INRAE), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For cosmetics, pharma and geoscience sectors (BRGM, INRAE), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Orléans?",
@@ -805,7 +805,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Mes échanges et données restent-ils confidentiels ?",
-            a: "Oui. NDA signé dès la première séance, aucune donnée partagée avec des tiers, aucune réutilisation de vos cas d'usage dans des formations collectives.",
+            a: "Oui. Confidentialité stricte dès la première séance, aucune donnée partagée avec des tiers, aucune réutilisation de vos cas d'usage dans des formations collectives.",
           },
           {
             q: "Puis-je associer un accompagnement 1-to-1 à un audit ou une implémentation ?",
@@ -817,7 +817,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité absolue : NDA dès la première séance, données et échanges jamais partagés. Si après la première séance vous estimez que l'accompagnement n'est pas adapté à votre situation, remboursement intégral. Outils opérationnels sur votre poste à l'issue de chaque séance d'installation. Aucun engagement de durée : vous pilotez votre rythme.",
+          "Confidentialité absolue : Confidentialité stricte dès la première séance, données et échanges jamais partagés. Si après la première séance vous estimez que l'accompagnement n'est pas adapté à votre situation, remboursement intégral. Outils opérationnels sur votre poste à l'issue de chaque séance d'installation. Aucun engagement de durée : vous pilotez votre rythme.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 individual coaching in Orléans is aimed at executives, managers and experts who want to master AI in their own practice — at their own pace, on their real subjects. On-site or hybrid format depending on your schedule. Lodging, meals and travel allowance billed separately.",
@@ -911,7 +911,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
           {
             q: "Does my information and data remain confidential?",
-            a: "Yes. NDA signed at the first session, no data shared with third parties, no reuse of your use cases in group training.",
+            a: "Yes. Strict confidentiality from the first session, no data shared with third parties, no reuse of your use cases in group training.",
           },
           {
             q: "Can I combine 1-to-1 coaching with an audit or implementation?",
@@ -923,7 +923,7 @@ export const ORLEANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Absolute confidentiality: NDA at the first session, data and exchanges never shared. If after the first session you feel the coaching doesn't fit your situation, full refund. Operational tools on your workstation at the end of each installation session. No duration commitment: you set your own pace.",
+          "Absolute confidentiality: Strict confidentiality from the first session, data and exchanges never shared. If after the first session you feel the coaching doesn't fit your situation, full refund. Operational tools on your workstation at the end of each installation session. No duration commitment: you set your own pace.",
       },
     },
   },

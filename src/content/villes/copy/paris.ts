@@ -105,7 +105,7 @@ export const PARIS_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs).",
           },
           {
             step: "Kick-off sur site",
@@ -181,7 +181,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
             q: "Comment se déroule la restitution finale ?",
@@ -213,7 +213,7 @@ export const PARIS_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs).",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs).",
           },
           {
             step: "On-site kick-off",
@@ -285,7 +285,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
             q: "How does the final read-out work?",
@@ -610,7 +610,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -716,7 +716,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use?",
@@ -828,7 +828,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Comment la confidentialité est-elle garantie ?",
-            a: "NDA signé avant le démarrage des sessions. Les documents que vous partagez ne quittent pas le périmètre de la session. Nous ne conservons aucun contenu métier après la fin de la mission. Aucune mention de votre identité ou de votre entreprise sans autorisation explicite.",
+            a: "Confidentialité stricte dès le démarrage des sessions. Les documents que vous partagez ne quittent pas le périmètre de la session. Nous ne conservons aucun contenu métier après la fin de la mission. Aucune mention de votre identité ou de votre entreprise sans autorisation explicite.",
           },
           {
             q: "En quoi est-ce différent d'un audit IA ou d'une implémentation ?",
@@ -836,7 +836,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun lock-in : pas de contrat récurrent imposé, vous pouvez stopper après chaque session. Confidentialité stricte avec NDA signé avant le démarrage. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, session remboursée. Frais de logement, repas et forfait trajet facturés en sus pour les sessions présentielles.",
+          "Aucun lock-in : pas de contrat récurrent imposé, vous pouvez stopper après chaque session. Confidentialité stricte avec Confidentialité stricte dès le démarrage. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, session remboursée. Frais de logement, repas et forfait trajet facturés en sus pour les sessions présentielles.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Paris is designed for executives, managers and entrepreneurs who want to progress on AI at their own pace, on their real business cases — not on generic exercises. Sessions on site at your Paris offices (Station F, 8th/9th SMEs, La Défense mid-caps, Sentier startups) or by video depending on your schedule. No lock-in, no jargon, results applicable the next day. Lodging, meals and travel allowance billed separately for on-site sessions.",
@@ -934,7 +934,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "How is confidentiality guaranteed?",
-            a: "NDA signed before sessions begin. Documents you share do not leave the session perimeter. We retain no business content after the mission ends. No mention of your identity or company without explicit consent.",
+            a: "Strict confidentiality ensured before sessions begin. Documents you share do not leave the session perimeter. We retain no business content after the mission ends. No mention of your identity or company without explicit consent.",
           },
           {
             q: "How is this different from an AI audit or an implementation?",
@@ -942,7 +942,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "No lock-in: no imposed recurring contract, you can stop after each session. Strict confidentiality with NDA signed before kick-off. Results-oriented sessions with immediate applicability: if after the first session you feel you have nothing directly usable, session fully refunded. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          "No lock-in: no imposed recurring contract, you can stop after each session. Strict confidentiality ensured from kick-off. Results-oriented sessions with immediate applicability: if after the first session you feel you have nothing directly usable, session fully refunded. Lodging, meals and travel allowance billed separately for on-site sessions.",
       },
     },
   },

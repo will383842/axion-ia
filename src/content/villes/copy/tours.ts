@@ -82,7 +82,7 @@ export const TOURS_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs métier — process industriels, flux ERP, données commerciales).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs métier — process industriels, flux ERP, données commerciales).",
           },
           {
             step: "Kick-off sur site",
@@ -156,7 +156,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée si la souveraineté industrielle est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée si la souveraineté industrielle est requise.",
           },
           {
             q: "Comment se déroule la restitution finale à Tours ?",
@@ -188,7 +188,7 @@ export const TOURS_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs — industrial flows, ERP data, commercial metrics).",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs — industrial flows, ERP data, commercial metrics).",
           },
           {
             step: "On-site kick-off",
@@ -262,7 +262,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if industrial sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if industrial sovereignty is required.",
           },
           {
             q: "How does the final read-out work in Tours?",
@@ -592,7 +592,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles chez moi ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, confidentialité industrielle garantie.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, confidentialité industrielle garantie.",
           },
           {
             q: "Que se passe-t-il si l'IA produit des erreurs sur des données industrielles critiques ?",
@@ -698,7 +698,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay with me?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, industrial confidentiality guaranteed.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, industrial confidentiality guaranteed.",
           },
           {
             q: "What happens if the AI produces errors on critical industrial data?",

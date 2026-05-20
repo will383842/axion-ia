@@ -287,10 +287,10 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Prix d'une formation IA pour TPE : fourchette et ce qui est inclus",
       metaTitle: "Tarif formation IA TPE — fourchette réelle 2026",
       metaDescription:
-        "Une demi-journée de formation IA sur site pour TPE coûte entre X et Y €. Découvrez ce qui est inclus, les aides CPF/OPCO et le calcul ROI.",
+        "Une demi-journée de formation IA sur site pour TPE coûte entre X et Y €. Découvrez ce qui est inclus et le calcul ROI.",
       h2Variants: [
         "Fourchette de prix selon le format (4h, 1j, 2j)",
-        "Financement : CPF, OPCO, aides régionales disponibles",
+        "Options de financement disponibles",
         "Calcul ROI : quand la formation est-elle remboursée ?",
       ],
     },
@@ -843,7 +843,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Module IA clé en main pour intégrer l'IA dans votre programme Grande École",
       metaTitle: "Module IA programme Grande École — Axion-IA",
       metaDescription:
-        "Axion-IA co-conçoit le module IA de votre programme d'ingénieurs ou de management : contenus, exercices, évaluations. Accréditable RNCP/Qualiopi.",
+        "Axion-IA co-conçoit le module IA de votre programme d'ingénieurs ou de management : contenus, exercices, évaluations. Accréditable RNCP.",
       h2Variants: [
         "Structure type d'un module IA de 15h pour une grande école",
         "Compétences visées et référentiel pédagogique 2026",
@@ -1028,38 +1028,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
   // ─────────────────────────────────────────────
 
   {
-    keyword: "formation IA pour organismes de formation Qualiopi",
-    intent: "transactionnel",
-    kbType: "intervention_module",
-    module: "interventions-formations",
-    cible: "organisme-formation",
-    priorite: 1,
-    niveau: 2,
-    injection: {
-      h1: "Formez vos formateurs à l'IA — compatible contexte Qualiopi",
-      metaTitle: "Formation IA organismes de formation Qualiopi",
-      metaDescription:
-        "Axion-IA forme les formateurs et équipes pédagogiques des OF : outils IA pour concevoir, animer et évaluer. Contenus documentables pour audit Qualiopi.",
-      h2Variants: [
-        "Pourquoi les organismes de formation doivent maîtriser l'IA en 2026",
-        "Ce que nos formateurs IA apportent à vos équipes pédagogiques",
-        "Documentation fournie pour vos audits qualité (Qualiopi/RNCP)",
-      ],
-    },
-    variables: {
-      process: "formation formateurs à l'IA + documentation qualité",
-      resultat: "–40 % de temps de conception de cours grâce à l'IA",
-      chiffre: "40",
-      unite: "%",
-      delai: "dès les premières semaines",
-    },
-    urlCible: "/fr/interventions-formations/",
-    canonicalParent: "/fr/interventions-formations/",
-    source: "manuel",
-    note: "BODY · cible dirigeant/responsable pédagogique OF · Qualiopi angle fort",
-  },
-
-  {
     keyword: "automatiser la conception de formations avec l'IA",
     intent: "transactionnel",
     kbType: "automation_recipe",
@@ -1185,38 +1153,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     canonicalParent: "/fr/interventions-formations/",
     source: "manuel",
     note: "D3 informationnel · long-form · cible ingénieur pédagogique OF",
-  },
-
-  {
-    keyword: "intelligence artificielle et normes qualité formation Qualiopi",
-    intent: "informationnel",
-    kbType: "guide",
-    module: "interventions-formations",
-    cible: "organisme-formation",
-    priorite: 2,
-    niveau: 3,
-    injection: {
-      h1: "IA et certification Qualiopi : ce que les OF doivent savoir en 2026",
-      metaTitle: "IA et Qualiopi — guide OF 2026",
-      metaDescription:
-        "L'IA dans un OF certifié Qualiopi : quels documents produire, comment tracer les usages IA, que vérifier lors d'un audit. Guide pratique 2026.",
-      h2Variants: [
-        "Qualiopi et IA : les indicateurs concernés en 2026",
-        "Comment documenter l'usage de l'IA pour un audit qualité",
-        "Les OF pionniers sur IA + Qualiopi : retours d'expérience",
-      ],
-    },
-    variables: {
-      process: "documentation IA pour audits Qualiopi",
-      resultat: "dossier qualité IA-conforme en 2 semaines",
-      chiffre: "2",
-      unite: "semaines",
-      delai: "dossier prêt en 2 semaines",
-    },
-    urlCible: "/fr/blog/ia-qualiopi-organismes-formation",
-    canonicalParent: "/fr/interventions-formations/",
-    source: "manuel",
-    note: "D3 informationnel · angle réglementaire fort · très recherché en 2026",
   },
 
   {
@@ -1361,23 +1297,23 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Agence IA spécialisée formation professionnelle continue : Axion-IA",
       metaTitle: "Agence IA formation pro continue — Axion-IA",
       metaDescription:
-        "Axion-IA propose des formations IA continues pour les équipes d'entreprise : sessions sur site, financement OPCO, résultats mesurés. Devis 24h.",
+        "Axion-IA propose des formations IA continues pour les équipes d'entreprise : sessions sur site, résultats mesurés. Devis 24h.",
       h2Variants: [
         "Formation IA éligible au plan de développement des compétences",
-        "Financement OPCO : comment faire prendre en charge votre formation IA",
+        "Comment financer votre formation IA",
         "Nos programmes de formation IA par secteur et par cible",
       ],
     },
     variables: {
-      process: "formation continue IA financée OPCO",
-      resultat: "formation prise en charge à 100 % via OPCO dans 80 % des cas",
+      process: "formation continue IA pour entreprises",
+      resultat: "équipes opérationnelles sur les outils IA ciblés",
       chiffre: "80",
       unite: "% des cas",
-      delai: "dès le premier dossier OPCO",
+      delai: "dès la première session",
     },
     urlCible: "/fr/interventions-formations/",
     source: "manuel",
-    note: "BODY · angle financement OPCO fort pour TPE/PME · priorite 2 niveau 2 OK",
+    note: "BODY · angle formation continue TPE/PME · priorite 2 niveau 2 OK",
   },
 
   {
@@ -1410,38 +1346,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     canonicalParent: "/fr/interventions-formations/",
     source: "manuel",
     note: "D3 informationnel · comparatif formats · passerelle vers toutes pages cible",
-  },
-
-  {
-    keyword: "financement OPCO formation IA entreprise 2026",
-    intent: "informationnel",
-    kbType: "guide",
-    module: "interventions-formations",
-    cible: "toutes-cibles",
-    priorite: 1,
-    niveau: 3,
-    injection: {
-      h1: "Financer votre formation IA via l'OPCO en 2026 — guide complet",
-      metaTitle: "Financement OPCO formation IA 2026 — guide",
-      metaDescription:
-        "Votre formation IA peut être financée à 100 % par votre OPCO. Guide 2026 : démarches, délais, justificatifs, liste des OPCO finançant la formation IA.",
-      h2Variants: [
-        "Quels OPCO financent les formations IA en 2026 ?",
-        "Comment monter votre dossier OPCO pour une formation IA",
-        "Délais et montants : ce à quoi s'attendre selon votre OPCO",
-      ],
-    },
-    variables: {
-      process: "financement formation IA via OPCO",
-      resultat: "formation IA financée à 100 % dans 80 % des cas",
-      chiffre: "100",
-      unite: "%",
-      delai: "dossier OPCO accepté sous 3-4 semaines",
-    },
-    urlCible: "/fr/blog/financement-opco-formation-ia-2026",
-    canonicalParent: "/fr/interventions-formations/",
-    source: "manuel",
-    note: "D3 informationnel · très recherché PME/ETI · priorite 1 niveau 3 OK · passerelle CPF",
   },
 
   {
@@ -1812,19 +1716,19 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Financement formation IA pour TPE de moins de 10 salariés : oui, c'est possible",
       metaTitle: "Financement formation IA TPE < 10 salariés — FAQ",
       metaDescription:
-        "Les TPE de moins de 10 salariés peuvent financer leur formation IA via l'OPCO ou le CPF. Conditions, démarches et montants disponibles en 2026.",
+        "Les TPE de moins de 10 salariés peuvent financer leur formation IA via différents dispositifs. Conditions, démarches et montants disponibles en 2026.",
       h2Variants: [
-        "OPCO et TPE : quel opérateur vous couvre et pour quel montant ?",
-        "CPF individuel : comment vos salariés financent leur formation IA",
+        "Dispositifs de financement disponibles pour les TPE",
+        "Comment vos salariés financent leur formation IA",
         "Aide régionale complémentaire : ce que certaines régions proposent",
       ],
     },
     variables: {
-      process: "financement formation IA TPE via OPCO/CPF",
+      process: "financement formation IA TPE",
       resultat: "formation financée à 100 % pour les TPE éligibles",
       chiffre: "100",
       unite: "%",
-      delai: "après validation dossier OPCO (4-6 semaines)",
+      delai: "après validation du dossier de financement",
     },
     urlCible: "/fr/faq/financement-formation-ia-tpe-moins-10-salaries",
     canonicalParent: "/fr/interventions-formations/tpe",
@@ -2046,10 +1950,10 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Budget formation IA pour 100 collaborateurs en ETI : fourchette réelle",
       metaTitle: "Budget formation IA 100 personnes ETI — 2026",
       metaDescription:
-        "Former 100 collaborateurs à l'IA en ETI : fourchette budgétaire, options de financement OPCO, coût par personne et ROI attendu. Réponse chiffrée 2026.",
+        "Former 100 collaborateurs à l'IA en ETI : fourchette budgétaire, coût par personne et ROI attendu. Réponse chiffrée 2026.",
       h2Variants: [
         "Fourchette de coût pour former 100 personnes à l'IA",
-        "Financement OPCO pour les ETI : montants et conditions",
+        "Options de financement pour les ETI",
         "À quel budget allouer pour une transformation IA durable en ETI",
       ],
     },
@@ -2345,10 +2249,10 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Former les formateurs d'un OF à l'IA : quel investissement en 2026 ?",
       metaTitle: "Coût formation IA formateurs OF — réponse 2026",
       metaDescription:
-        "Former 5 à 20 formateurs à l'IA : fourchette de coût, financement possible (OPCO, Qualiopi), et ROI attendu sur la conception pédagogique. Réponse directe.",
+        "Former 5 à 20 formateurs à l'IA : fourchette de coût et ROI attendu sur la conception pédagogique. Réponse directe.",
       h2Variants: [
         "Fourchette de tarifs pour former une équipe de formateurs à l'IA",
-        "Financement possible via votre propre OPCO en tant qu'OF employeur",
+        "Options de financement pour les organismes de formation",
         "Calcul ROI : combien économise un OF en formant ses formateurs à l'IA ?",
       ],
     },
@@ -2362,6 +2266,6 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
     urlCible: "/fr/faq/cout-formation-ia-formateurs-of",
     canonicalParent: "/fr/interventions-formations/",
     source: "manuel",
-    note: "D4 AEO · question coût OF · schema.org FAQPage · financement OPCO angle",
+    note: "D4 AEO · question coût OF · schema.org FAQPage · financement angle",
   },
 ];

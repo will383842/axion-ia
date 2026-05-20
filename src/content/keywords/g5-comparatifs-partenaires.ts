@@ -509,20 +509,20 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     priorite: 2,
     niveau: 2,
     injection: {
-      h1: "Cabinet IA ou organisme de formation certifié : ce que Qualiopi ne garantit pas",
+      h1: "Cabinet IA ou organisme de formation : deux approches, deux garanties",
       metaTitle: "Cabinet IA vs organisme formation IA — Comparatif 2026",
       metaDescription:
-        "Certification Qualiopi, financement OPCO et résultats terrain : ce que les organismes de formation ne peuvent pas promettre.",
+        "Résultats terrain, suivi opérationnel et responsabilité : ce que les organismes de formation ne peuvent pas promettre.",
       h2Variants: [
-        "Qualiopi : le label qui rassure, pas celui qui garantit les résultats",
-        "Ce que le financement OPCO implique (et ce qu'il ne couvre pas)",
+        "Certification de formation : le label qui rassure, pas celui qui garantit les résultats",
+        "Ce que le financement de formation implique (et ce qu'il ne couvre pas)",
         "Cabinet de conseil IA : responsabilité sur les résultats, pas seulement le contenu",
       ],
     },
     urlCible: "/fr/comparaisons/cabinet-ia-vs-organisme-formation",
     canonicalParent: "/fr/comparaisons",
     source: "manuel",
-    note: "Angle différenciateur fort vs concurrents Qualiopi (Mister-IA, Eleven Labs) ; ne pas attaquer la certification, valoriser le suivi résultats",
+    note: "Angle différenciateur fort vs concurrents certifiés (Mister-IA, Eleven Labs) ; ne pas attaquer les certifications, valoriser le suivi résultats",
   },
 
   {
@@ -664,17 +664,17 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
       h1: "Formation IA CPF éligible ou non : ce que le financement change vraiment",
       metaTitle: "Formation IA CPF éligible vs non éligible | Axion-IA",
       metaDescription:
-        "CPF, OPCO, plan de formation : comprendre les modalités de financement IA et pourquoi l'éligibilité n'est pas le seul critère.",
+        "Plan de formation et résultats terrain : comprendre les modalités de financement IA et pourquoi l'éligibilité n'est pas le seul critère.",
       h2Variants: [
-        "Ce que le CPF finance et ses limites sur les formations IA avancées",
-        "OPCO et plan de développement des compétences : l'alternative B2B",
-        "Qualité de formation vs éligibilité CPF : notre position claire",
+        "Dispositifs de financement et leurs limites sur les formations IA avancées",
+        "Plan de développement des compétences : l'alternative B2B",
+        "Qualité de formation vs éligibilité : notre position claire",
       ],
     },
     urlCible: "/fr/comparaisons/formation-ia-cpf-vs-non-cpf",
     canonicalParent: "/fr/comparaisons",
     source: "autocomplete",
-    note: "Axion-IA non Qualiopi → page doit être honnête, différencier sur qualité plutôt qu'éligibilité",
+    note: "Axion-IA non certifié formation → page doit être honnête, différencier sur qualité plutôt qu'éligibilité",
   },
 
   {

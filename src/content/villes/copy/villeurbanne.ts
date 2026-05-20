@@ -108,7 +108,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA travaille-t-il avec FORVIA MATERI'ACT ou les ETI industrielles de Villeurbanne ?",
-      a: "Nous accompagnons les ETI industrielles et les grands groupes implantés à Villeurbanne sur leurs cas IA opérationnels : automatisation rapports qualité, analyse données matériaux, documentation réglementaire, gestion fournisseurs. NDA systématique avant démarrage, données traitées sur votre infrastructure.",
+      a: "Nous accompagnons les ETI industrielles et les grands groupes implantés à Villeurbanne sur leurs cas IA opérationnels : automatisation rapports qualité, analyse données matériaux, documentation réglementaire, gestion fournisseurs. Confidentialité stricte dès le démarrage, données traitées sur votre infrastructure.",
     },
     {
       q: "Vos interventions sont-elles éligibles aux aides French Tech One Lyon-St-Étienne ?",
@@ -134,7 +134,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les équipes R&D et ingénierie du campus Doua dont les workflows sont fortement documentés.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les équipes R&D et ingénierie du campus Doua dont les workflows sont fortement documentés.",
           },
           {
             step: "Kick-off sur site",
@@ -208,7 +208,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Mes données R&D ou industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs de l'ingénierie avancée et des matériaux (campus Doua, FORVIA MATERI'ACT), nous appliquons les contraintes de souveraineté et confidentialité dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs de l'ingénierie avancée et des matériaux (campus Doua, FORVIA MATERI'ACT), nous appliquons les contraintes de souveraineté et confidentialité dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Villeurbanne ?",
@@ -240,7 +240,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for R&D and engineering teams at campus Doua with heavily documented workflows.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for R&D and engineering teams at campus Doua with heavily documented workflows.",
           },
           {
             step: "On-site kick-off",
@@ -314,7 +314,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Does my R&D or industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For advanced engineering and materials sectors (campus Doua, FORVIA MATERI'ACT), we apply sovereignty and confidentiality constraints at AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For advanced engineering and materials sectors (campus Doua, FORVIA MATERI'ACT), we apply sovereignty and confidentiality constraints at AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Villeurbanne?",
@@ -825,7 +825,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Programme C-level sur mesure",
             detail:
-              "Pour les C-level de grands groupes villeurbannais ou Métropole — programme entièrement personnalisé, NDA renforcé, sessions sur site ou hybrides selon agenda.",
+              "Pour les C-level de grands groupes villeurbannais ou Métropole — programme entièrement personnalisé, accord de confidentialité renforcé, sessions sur site ou hybrides selon agenda.",
           },
         ],
         testimonials: [
@@ -861,15 +861,15 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Ce programme est-il confidentiel ?",
-            a: "Oui. NDA systématique avant démarrage. Vos projets, vos données et le contenu de nos sessions restent strictement confidentiels. Particulièrement important pour les fondateurs tech en phase de développement de produit.",
+            a: "Oui. Confidentialité stricte dès le démarrage. Vos projets, vos données et le contenu de nos sessions restent strictement confidentiels. Particulièrement important pour les fondateurs tech en phase de développement de produit.",
           },
           {
             q: "Peut-on démarrer rapidement à Villeurbanne ?",
-            a: "Oui. Un premier échange de cadrage peut se tenir dans les jours suivant votre demande. Le programme démarre dès que le brief initial est validé et le NDA signé.",
+            a: "Oui. Un premier échange de cadrage peut se tenir dans les jours suivant votre demande. Le programme démarre dès que le brief initial est validé et la confidentialité assurée.",
           },
         ],
         guarantees:
-          "Programme calibré à votre rythme et vos objectifs — pas de contenu recyclé générique. Confidentialité garantie (NDA systématique). Outils opérationnels après chaque session : vous repartez avec des habitudes et une stack IA installée. Si après le diagnostic initial vous estimez que le programme ne correspond pas à vos besoins, remboursement intégral de la session diagnostique.",
+          "Programme calibré à votre rythme et vos objectifs — pas de contenu recyclé générique. Confidentialité garantie (Confidentialité stricte). Outils opérationnels après chaque session : vous repartez avec des habitudes et une stack IA installée. Si après le diagnostic initial vous estimez que le programme ne correspond pas à vos besoins, remboursement intégral de la session diagnostique.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Villeurbanne (69100) targets executives, tech founders, researcher-entrepreneurs and IT managers who want to accelerate their AI skills at their own pace. 1-to-1 sessions on site or hybrid, tailored to your role, your Villeurbanne sector (IT, engineering, R&D, industry) and your real use cases.",
@@ -931,7 +931,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Bespoke C-level programme",
             detail:
-              "For C-level at Villeurbanne or Métropole large accounts — fully personalised programme, enhanced NDA, on-site or hybrid sessions per schedule.",
+              "For C-level at Villeurbanne or Métropole large accounts — fully personalised programme, enhanced Strict confidentiality, on-site or hybrid sessions per schedule.",
           },
         ],
         testimonials: [
@@ -967,15 +967,15 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Is this programme confidential?",
-            a: "Yes. NDA systematically signed before kick-off. Your projects, your data and our session content remain strictly confidential. Particularly important for tech founders in product development phase.",
+            a: "Yes. Strict confidentiality ensured from kick-off. Your projects, your data and our session content remain strictly confidential. Particularly important for tech founders in product development phase.",
           },
           {
             q: "Can we start quickly in Villeurbanne?",
-            a: "Yes. A first framing exchange can take place within days of your request. The programme starts as soon as the initial brief is validated and the NDA signed.",
+            a: "Yes. A first framing exchange can take place within days of your request. The programme starts as soon as the initial brief is validated and the Strict confidentiality ensured.",
           },
         ],
         guarantees:
-          "Programme calibrated to your pace and objectives — no recycled generic content. Confidentiality guaranteed (NDA systematic). Operational tools after each session: you leave with habits and an installed AI stack. If after the initial diagnostic you feel the programme does not match your needs, full refund of the diagnostic session.",
+          "Programme calibrated to your pace and objectives — no recycled generic content. Confidentiality guaranteed (Strict confidentiality). Operational tools after each session: you leave with habits and an installed AI stack. If after the initial diagnostic you feel the programme does not match your needs, full refund of the diagnostic session.",
       },
     },
   },

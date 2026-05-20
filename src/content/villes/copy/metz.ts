@@ -112,7 +112,7 @@ export const METZ_COPY: VilleCopy = {
           {
             step: "PrÃ©paration",
             detail:
-              "Un brief de cadrage Ã  distance pour signer le NDA et accÃ©der aux documents clÃ©s. Utile pour les ETI industrielles de l'EuromÃ©tropole avec des workflows complexes â€” automobile, sidÃ©rurgie, logistique.",
+              "Un brief de cadrage Ã  distance pour accÃ©der en toute confidentialitÃ© aux documents clÃ©s. Utile pour les ETI industrielles de l'EuromÃ©tropole avec des workflows complexes â€” automobile, sidÃ©rurgie, logistique.",
           },
           {
             step: "Kick-off sur site",
@@ -186,7 +186,7 @@ export const METZ_COPY: VilleCopy = {
           },
           {
             q: "Mes donnÃ©es industrielles ou bancaires restent-elles confidentielles ?",
-            a: "Oui. NDA signÃ© avant le dÃ©marrage, donnÃ©es traitÃ©es exclusivement sur vos infrastructures. Pour les secteurs automobile, bancaire et les entreprises en environnement transfrontalier Metz-Luxembourg, nous appliquons les contraintes souverainetÃ© et conformitÃ© dÃ¨s la sÃ©lection des modÃ¨les IA.",
+            a: "Oui. ConfidentialitÃ© stricte dÃ¨s le dÃ©marrage, donnÃ©es traitÃ©es exclusivement sur vos infrastructures. Pour les secteurs automobile, bancaire et les entreprises en environnement transfrontalier Metz-Luxembourg, nous appliquons les contraintes souverainetÃ© et conformitÃ© dÃ¨s la sÃ©lection des modÃ¨les IA.",
           },
           {
             q: "Comment se dÃ©roule la restitution finale Ã  Metz ?",
@@ -218,7 +218,7 @@ export const METZ_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents. Particularly relevant for EuromÃ©tropole industrial mid-caps with complex workflows â€” automotive, steel, logistics.",
+              "Remote framing brief to access under full confidentiality key documents. Particularly relevant for EuromÃ©tropole industrial mid-caps with complex workflows â€” automotive, steel, logistics.",
           },
           {
             step: "On-site kick-off",
@@ -292,7 +292,7 @@ export const METZ_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or banking data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For automotive, banking and cross-border Metz-Luxembourg operators, we apply sovereignty and compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For automotive, banking and cross-border Metz-Luxembourg operators, we apply sovereignty and compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Metz?",

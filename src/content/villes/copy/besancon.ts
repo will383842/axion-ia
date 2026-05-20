@@ -150,7 +150,7 @@ export const BESANCON_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI microtechniques avec des workflows de précision et des contraintes réglementaires.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI microtechniques avec des workflows de précision et des contraintes réglementaires.",
           },
           {
             step: "Kick-off sur site",
@@ -224,7 +224,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Mes données techniques ou médicales restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs médicaux et dispositifs médicaux (TEMIS Santé, CHRU), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs médicaux et dispositifs médicaux (TEMIS Santé, CHRU), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Besançon ?",
@@ -256,7 +256,7 @@ export const BESANCON_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for precision-tech mid-caps with complex workflows and regulatory constraints.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for precision-tech mid-caps with complex workflows and regulatory constraints.",
           },
           {
             step: "On-site kick-off",
@@ -330,7 +330,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Does my technical or medical data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For medical and medical device sectors (TEMIS Santé, CHRU), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For medical and medical device sectors (TEMIS Santé, CHRU), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Besançon?",
@@ -785,7 +785,7 @@ export const BESANCON_COPY: VilleCopy = {
           "L'accompagnement individuel est adapté aux profils techniques bisontins : ingénieurs devenus DG, directeurs R&D souhaitant cadrer leur stratégie IA, responsables médicaux évaluant les outils cliniques.",
           "Chaque session est calibrée sur votre réalité professionnelle bisontine : vos outils existants, vos données, vos contraintes réglementaires sectorielles.",
           "Format flexible : sessions à Besançon dans vos locaux (TEMIS, centre-ville, commune Grand Besançon) ou à distance selon votre agenda.",
-          "Approche confidentielle : NDA systématique, aucun partage de vos données ou stratégie IA avec des tiers.",
+          "Approche confidentielle : Confidentialité stricte, aucun partage de vos données ou stratégie IA avec des tiers.",
           "À l'issue de l'accompagnement, vous disposez d'un plan IA personnel actionnable, de vos propres prompts et workflows configurés, d'une autonomie réelle.",
         ],
         methodology: [
@@ -866,7 +866,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Mes échanges et données restent-ils confidentiels ?",
-            a: "Oui. NDA signé avant le démarrage. Aucun partage de vos informations stratégiques, de vos données ou de vos prompts avec des tiers. Confidentialité absolue.",
+            a: "Oui. Confidentialité stricte dès le démarrage. Aucun partage de vos informations stratégiques, de vos données ou de vos prompts avec des tiers. Confidentialité absolue.",
           },
           {
             q: "Puis-je utiliser l'accompagnement pour préparer un projet IA en entreprise ?",
@@ -882,7 +882,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité absolue : NDA systématique, aucun partage de vos données ou stratégie. Contenu 100 % personnalisé sur vos cas d'usage bisontins réels — aucune session générique. Si après la première session vous estimez que le format ne vous convient pas, remboursement des sessions non réalisées. Vos outils et prompts vous appartiennent à l'issue de l'accompagnement.",
+          "Confidentialité absolue : Confidentialité stricte, aucun partage de vos données ou stratégie. Contenu 100 % personnalisé sur vos cas d'usage bisontins réels — aucune session générique. Si après la première session vous estimez que le format ne vous convient pas, remboursement des sessions non réalisées. Vos outils et prompts vous appartiennent à l'issue de l'accompagnement.",
       },
       en: {
         hero: "Axion-IA's one-to-one AI coaching in Besançon is for executives, decision-makers and experts who want to build their personal AI strategy and move to action — precision industry, medical, research, B2B services. Bespoke sessions at your pace, in person at your Besançon offices or remotely. Lodging, meals and travel allowance billed separately for on-site sessions.",
@@ -891,7 +891,7 @@ export const BESANCON_COPY: VilleCopy = {
           "One-to-one coaching is suited to Besançon technical profiles: engineers turned CEOs, R&D directors framing their AI strategy, medical managers evaluating clinical AI tools.",
           "Each session is calibrated on your Besançon professional reality: your existing tools, your data, your sector regulatory constraints.",
           "Flexible format: sessions in Besançon at your offices (TEMIS, city centre, Grand Besançon commune) or remotely according to your schedule.",
-          "Confidential approach: systematic NDA, no sharing of your data or AI strategy with third parties.",
+          "Confidential approach: systematic Strict confidentiality, no sharing of your data or AI strategy with third parties.",
           "After coaching, you have an actionable personal AI plan, your own prompts and configured workflows, and genuine autonomy.",
         ],
         methodology: [
@@ -972,7 +972,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
           {
             q: "Do my exchanges and data remain confidential?",
-            a: "Yes. NDA signed before kick-off. No sharing of your strategic information, data or prompts with third parties. Absolute confidentiality.",
+            a: "Yes. Confidentiality ensured from kick-off. No sharing of your strategic information, data or prompts with third parties. Absolute confidentiality.",
           },
           {
             q: "Can I use coaching to prepare a company AI project?",
@@ -988,7 +988,7 @@ export const BESANCON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Absolute confidentiality: systematic NDA, no sharing of your data or strategy. 100% personalised content on your real Besançon use cases — no generic session. If after the first session you feel the format doesn't suit you, refund of unrealised sessions. Your tools and prompts belong to you after coaching.",
+          "Absolute confidentiality: systematic Strict confidentiality, no sharing of your data or strategy. 100% personalised content on your real Besançon use cases — no generic session. If after the first session you feel the format doesn't suit you, refund of unrealised sessions. Your tools and prompts belong to you after coaching.",
       },
     },
   },

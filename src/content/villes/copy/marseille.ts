@@ -80,7 +80,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Brief de cadrage à distance : signature du NDA, accès aux quelques documents clés (organigramme, processus métier, indicateurs, logiciels utilisés). Identification des périmètres sensibles (portuaire, logistique, médical) pour adapter la confidentialité.",
+              "Brief de cadrage à distance : signature du Confidentialité assurée, accès aux quelques documents clés (organigramme, processus métier, indicateurs, logiciels utilisés). Identification des périmètres sensibles (portuaire, logistique, médical) pour adapter la confidentialité.",
           },
           {
             step: "Kick-off sur site",
@@ -154,7 +154,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données portuaires ou médicales restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous pour les données sensibles (dossiers médicaux, contrats shipper).",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous pour les données sensibles (dossiers médicaux, contrats shipper).",
           },
           {
             q: "Comment se déroule la restitution finale à Marseille ?",
@@ -186,7 +186,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief: NDA signing, access to a few key documents (org chart, business processes, KPIs, tools in use). Identification of sensitive perimeters (port, logistics, medical) to tailor confidentiality.",
+              "Remote framing brief: Confidentiality ensured, access to a few key documents (org chart, business processes, KPIs, tools in use). Identification of sensitive perimeters (port, logistics, medical) to tailor confidentiality.",
           },
           {
             step: "On-site kick-off",
@@ -260,7 +260,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
           {
             q: "Does my port or medical data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises for sensitive data (medical files, shipper contracts).",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises for sensitive data (medical files, shipper contracts).",
           },
           {
             q: "How does the final read-out work in Marseille?",
@@ -588,7 +588,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -694,7 +694,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use?",
@@ -815,7 +815,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Première session pilote : si après cette session vous estimez que le format ne correspond pas à vos attentes, remboursement intégral sans condition. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale : NDA signé avant le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Aucun lock-in : tout ce que vous construisez en session (prompts, workflows, fiches méthode) vous appartient. Après la dernière session, vous êtes autonome.",
+          "Première session pilote : si après cette session vous estimez que le format ne correspond pas à vos attentes, remboursement intégral sans condition. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale : Confidentialité stricte dès le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Aucun lock-in : tout ce que vous construisez en session (prompts, workflows, fiches méthode) vous appartient. Après la dernière session, vous êtes autonome.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Marseille is a tailored individual programme designed for executives, managers and entrepreneurs in the Marseille business ecosystem — Euroméditerranée maritime mid-caps, Joliette logistics SMEs, Centrale Méditerranée and AMU leadership, Luminy health professionals. Sessions in person at your offices or by video depending on your schedule. Entry price from 990 € excl. VAT. You progress at your own pace, on your own real business cases. Lodging, meals and travel allowance billed separately for on-site sessions.",
@@ -921,7 +921,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "First pilot session: if after this session you feel the format doesn't meet your expectations, full refund no questions asked. Multi-session programme: fixed flat-rate quote at signature, no drift. Full confidentiality: NDA signed before kick-off, your business cases, data and documents handled in session never leave our perimeter. No lock-in: everything you build in session (prompts, workflows, method sheets) belongs to you. After the final session, you are autonomous.",
+          "First pilot session: if after this session you feel the format doesn't meet your expectations, full refund no questions asked. Multi-session programme: fixed flat-rate quote at signature, no drift. Full confidentiality: Confidentiality ensured from kick-off, your business cases, data and documents handled in session never leave our perimeter. No lock-in: everything you build in session (prompts, workflows, method sheets) belongs to you. After the final session, you are autonomous.",
       },
     },
   },

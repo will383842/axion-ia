@@ -95,7 +95,7 @@ Rapport structuré en deux volets :
 - Établissement 500–5 000 personnes (banque de réseau mid-size) : **25 à 40 jours·consultant**
 - Grand groupe bancaire (> 5 000 personnes, périmètre partiel) : **40 à 80 jours·consultant** selon profondeur
 
-L'intervention combine des entretiens semi-directifs avec les équipes métier et techniques, une revue documentaire, et des tests techniques sur échantillons de données (si accès accordé sous NDA).
+L'intervention combine des entretiens semi-directifs avec les équipes métier et techniques, une revue documentaire, et des tests techniques sur échantillons de données (si accès accordé sous accord de confidentialité contractuel).
 `,
     sources: [
       "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000049117468",

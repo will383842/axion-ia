@@ -78,7 +78,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs, spécifications techniques si pertinent).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs, spécifications techniques si pertinent).",
           },
           {
             step: "Kick-off sur site",
@@ -148,7 +148,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Gérez-vous les contraintes de confidentialité de l'industrie aérospatiale ?",
-            a: "Oui. NDA signé avant tout démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Pour les données sensibles ITAR/EAR ou classification DPSD, nous opérons en local pur sur votre infra dédiée. Conformité RGPD stricte.",
+            a: "Oui. Confidentialité stricte assurée dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Pour les données sensibles ITAR/EAR ou classification DPSD, nous opérons en local pur sur votre infra dédiée. Conformité RGPD stricte.",
           },
           {
             q: "Quel ROI puis-je attendre pour une PME aéronautique toulousaine ?",
@@ -184,7 +184,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs, technical specifications if relevant).",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs, technical specifications if relevant).",
           },
           {
             step: "On-site kick-off",
@@ -254,7 +254,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Do you handle aerospace industry confidentiality constraints?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. For ITAR/EAR-sensitive or DPSD-classified data, we operate in pure local mode on your dedicated infra. Strict GDPR compliance.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. For ITAR/EAR-sensitive or DPSD-classified data, we operate in pure local mode on your dedicated infra. Strict GDPR compliance.",
           },
           {
             q: "What ROI can I expect for a Toulouse aerospace SME?",
@@ -586,7 +586,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, option local pur pour données sensibles aérospatiales.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, option local pur pour données sensibles aérospatiales.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -692,7 +692,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, pure local option for sensitive aerospace data.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, pure local option for sensitive aerospace data.",
           },
           {
             q: "Which AI models do you use?",

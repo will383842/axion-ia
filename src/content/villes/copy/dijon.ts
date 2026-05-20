@@ -83,7 +83,7 @@ export const DIJON_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs). Ajustement du périmètre à votre secteur dijonnais dominant (agroalimentaire, pharma, viticulture, services B2B).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs). Ajustement du périmètre à votre secteur dijonnais dominant (agroalimentaire, pharma, viticulture, services B2B).",
           },
           {
             step: "Kick-off sur site à Dijon",
@@ -157,7 +157,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures ou sur infra dédiée en UE, pas d'extraction vers nos serveurs. Conformité RGPD, DPO disponible sur demande.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures ou sur infra dédiée en UE, pas d'extraction vers nos serveurs. Conformité RGPD, DPO disponible sur demande.",
           },
           {
             q: "Comment se déroule la restitution finale à Dijon ?",
@@ -189,7 +189,7 @@ export const DIJON_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs). Scope adjusted to your dominant Dijon sector (agri-food, pharma, viticulture, B2B services).",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs). Scope adjusted to your dominant Dijon sector (agri-food, pharma, viticulture, B2B services).",
           },
           {
             step: "On-site kick-off in Dijon",
@@ -263,7 +263,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure or on dedicated EU infra, no extraction to our servers. GDPR compliance, DPO available on request.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure or on dedicated EU infra, no extraction to our servers. GDPR compliance, DPO available on request.",
           },
           {
             q: "How does the final read-out work in Dijon?",
@@ -597,7 +597,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise) ou sur infra dédiée en UE si vous préférez. NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise) ou sur infra dédiée en UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous pour les secteurs spécifiques à Dijon ?",
@@ -703,7 +703,7 @@ export const DIJON_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use for Dijon's specific sectors?",

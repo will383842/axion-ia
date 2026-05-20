@@ -85,7 +85,7 @@ export const NICE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs). Identification des périmètres prioritaires selon votre secteur dominant (tourisme, IT, santé, services).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs). Identification des périmètres prioritaires selon votre secteur dominant (tourisme, IT, santé, services).",
           },
           {
             step: "Kick-off sur site",
@@ -159,7 +159,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
             q: "Couvrez-vous le bassin Sophia Antipolis depuis Nice ?",
@@ -191,7 +191,7 @@ export const NICE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs). Priority scope identified per your dominant sector (hospitality, IT, health, B2B services).",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs). Priority scope identified per your dominant sector (hospitality, IT, health, B2B services).",
           },
           {
             step: "On-site kick-off",
@@ -264,7 +264,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
             q: "Do you cover the Sophia Antipolis basin from Nice?",
@@ -590,7 +590,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -696,7 +696,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use?",
@@ -804,7 +804,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Mes données et mes dossiers restent-ils confidentiels pendant le coaching ?",
-            a: "Oui. NDA signé avant la première séance. Les documents partagés pendant les ateliers sont traités exclusivement dans l'environnement de la séance, jamais stockés ni réutilisés. Conformité RGPD, modèles testés sur infra dédiée si souveraineté requise.",
+            a: "Oui. Confidentialité stricte dès la première séance. Les documents partagés pendant les ateliers sont traités exclusivement dans l'environnement de la séance, jamais stockés ni réutilisés. Conformité RGPD, modèles testés sur infra dédiée si souveraineté requise.",
           },
           {
             q: "Peut-on faire le coaching en anglais à Sophia Antipolis ?",
@@ -816,7 +816,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tarif d'entrée fixe à 990 € HT pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. NDA systématique avant démarrage. Frais de déplacement pour le présentiel présentés en sus, jamais fondus dans le tarif. Aucun lock-in : à l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire.",
+          "Tarif d'entrée fixe à 990 € HT pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage. Frais de déplacement pour le présentiel présentés en sus, jamais fondus dans le tarif. Aucun lock-in : à l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. On-site travel expenses billed separately. Entry rate from €990 excl. VAT.",
@@ -910,7 +910,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Does my data and my files remain confidential during coaching?",
-            a: "Yes. NDA signed before the first session. Documents shared during workshops are processed exclusively within the session environment, never stored or reused. GDPR compliance, models tested on dedicated infra if sovereignty is required.",
+            a: "Yes. Strict confidentiality ensured before the first session. Documents shared during workshops are processed exclusively within the session environment, never stored or reused. GDPR compliance, models tested on dedicated infra if sovereignty is required.",
           },
           {
             q: "Can coaching be done in English at Sophia Antipolis?",
@@ -922,7 +922,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed entry rate at €990 excl. VAT for the discovery session: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. NDA systematically signed before kick-off. On-site travel expenses presented separately, never bundled in the rate. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
+          "Fixed entry rate at €990 excl. VAT for the discovery session: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. On-site travel expenses presented separately, never bundled in the rate. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
       },
     },
   },

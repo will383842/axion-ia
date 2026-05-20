@@ -152,7 +152,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI logistiques et agroalimentaires avec des workflows de traçabilité ou de gestion des flux complexes.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI logistiques et agroalimentaires avec des workflows de traçabilité ou de gestion des flux complexes.",
           },
           {
             step: "Kick-off sur site",
@@ -226,7 +226,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Mes données logistiques ou agroalimentaires restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs sous certification INAO/AOP ou sous contraintes douanières transfrontalières, nous appliquons les exigences souveraineté et conformité dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs sous certification INAO/AOP ou sous contraintes douanières transfrontalières, nous appliquons les exigences souveraineté et conformité dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Perpignan ?",
@@ -258,7 +258,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for logistics and agri-food mid-caps with complex traceability or flow management workflows.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for logistics and agri-food mid-caps with complex traceability or flow management workflows.",
           },
           {
             step: "On-site kick-off",
@@ -332,7 +332,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Does my logistics or agri-food data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For sectors under INAO/AOP certification or cross-border customs constraints, we apply sovereignty and compliance requirements at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For sectors under INAO/AOP certification or cross-border customs constraints, we apply sovereignty and compliance requirements at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Perpignan?",
@@ -787,7 +787,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           "La dimension transfrontalière France-Espagne est prise en compte : nous travaillons les cas d'usage bilingues FR/ES et les contextes de business development Eurorégion Pyrénées-Méditerranée.",
           "Programme entièrement adapté à votre emploi du temps de dirigeant perpignanais : séances courtes, à votre bureau ou à distance, sans contrainte de groupe.",
           "Aucun prérequis technique : que vous partiez de zéro ou ayez déjà testé des outils IA, nous adaptons le niveau et les cas à votre point de départ réel.",
-          "Confidentialité totale : NDA signé, vos données et stratégies restent strictement entre vous et votre consultant dédié.",
+          "Confidentialité totale, vos données et stratégies restent strictement entre vous et votre consultant dédié.",
           "Résultats tangibles dès la première séance : vous repartez avec des outils configurés sur vos propres cas métier perpignanais, pas des exemples génériques.",
         ],
         methodology: [
@@ -872,7 +872,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Mes informations stratégiques sont-elles confidentielles ?",
-            a: "Absolument. NDA signé avant la première séance. Toutes les informations partagées restent strictement confidentielles — votre consultant dédié ne divulgue ni vos données ni votre stratégie.",
+            a: "Absolument. Confidentialité stricte dès la première séance. Toutes les informations partagées restent strictement confidentielles — votre consultant dédié ne divulgue ni vos données ni votre stratégie.",
           },
           {
             q: "Pouvez-vous travailler avec des cas d'usage transfrontaliers France-Espagne ?",
@@ -884,7 +884,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme entièrement sur mesure : aucun contenu standard recyclé. NDA signé, confidentialité totale de vos données et de votre stratégie. Outils configurés sur vos cas réels dès la première séance. Si après la première séance le programme ne correspond pas à vos attentes, remboursement intégral. Aucun engagement de durée : vous maîtrisez le rythme et la fin du programme.",
+          "Programme entièrement sur mesure : aucun contenu standard recyclé. Confidentialité totale de vos données et de votre stratégie. Outils configurés sur vos cas réels dès la première séance. Si après la première séance le programme ne correspond pas à vos attentes, remboursement intégral. Aucun engagement de durée : vous maîtrisez le rythme et la fin du programme.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 programme in Perpignan is an individual coaching for executives and independents who want to build AI skills at their own pace. On-site sessions in Perpignan or remote, calibrated to your business reality — Saint-Charles trader, Roussillon wine grower, France-Spain cross-border entrepreneur, healthcare professional or independent consultant.",
@@ -893,7 +893,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           "France-Spain cross-border dimension taken into account: we work on bilingual FR/ES use cases and Eurorégion Pyrénées-Méditerranée business development contexts.",
           "Programme entirely adapted to your schedule as a Perpignan executive: short sessions, at your office or remote, no group constraints.",
           "No technical prerequisites: whether you start from zero or have already tested AI tools, we adapt the level and cases to your real starting point.",
-          "Total confidentiality: NDA signed, your data and strategies stay strictly between you and your dedicated consultant.",
+          "Total confidentiality: Strict confidentiality ensured, your data and strategies stay strictly between you and your dedicated consultant.",
           "Tangible results from the first session: you leave with tools configured for your own Perpignan business use cases, not generic examples.",
         ],
         methodology: [
@@ -978,7 +978,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
           {
             q: "Is my strategic information confidential?",
-            a: "Absolutely. NDA signed before the first session. All shared information remains strictly confidential — your dedicated consultant does not disclose your data or strategy.",
+            a: "Absolutely. Strict confidentiality ensured before the first session. All shared information remains strictly confidential — your dedicated consultant does not disclose your data or strategy.",
           },
           {
             q: "Can you work on France-Spain cross-border use cases?",
@@ -990,7 +990,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entirely tailored programme: no recycled standard content. NDA signed, total confidentiality of your data and strategy. Tools configured on your real use cases from the first session. If after the first session the programme does not match your expectations, full refund. No duration commitment: you control the pace and end of the programme.",
+          "Entirely tailored programme: no recycled standard content. Strict confidentiality ensured, total confidentiality of your data and strategy. Tools configured on your real use cases from the first session. If after the first session the programme does not match your expectations, full refund. No duration commitment: you control the pace and end of the programme.",
       },
     },
   },

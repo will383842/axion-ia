@@ -84,7 +84,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés — organigramme, processus, indicateurs, contraintes sectorielles (HDS pour la santé, conformité réglementaire pour l'agroalimentaire).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés — organigramme, processus, indicateurs, contraintes sectorielles (HDS pour la santé, conformité réglementaire pour l'agroalimentaire).",
           },
           {
             step: "Kick-off sur site",
@@ -158,7 +158,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
             q: "Comment se déroule la restitution finale ?",
@@ -190,7 +190,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents — org chart, processes, KPIs, sector constraints (HDS for healthcare, regulatory compliance for agri-food).",
+              "Remote framing brief to access under full confidentiality a few key documents — org chart, processes, KPIs, sector constraints (HDS for healthcare, regulatory compliance for agri-food).",
           },
           {
             step: "On-site kick-off",
@@ -264,7 +264,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
             q: "How does the final read-out work?",
@@ -738,7 +738,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
     },
     {
       q: "Gérez-vous les données de recherche agronomique sensibles pour les interventions à Agropolis ?",
-      a: "Oui. Nos déploiements dans les organismes de recherche (CIRAD, INRAE, IRD, Institut Agro) respectent les protocoles de confidentialité des données de recherche. NDA spécifique signé en cadrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs.",
+      a: "Oui. Nos déploiements dans les organismes de recherche (CIRAD, INRAE, IRD, Institut Agro) respectent les protocoles de confidentialité des données de recherche. Confidentialité stricte assurée en cadrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs.",
     },
   ],
 };

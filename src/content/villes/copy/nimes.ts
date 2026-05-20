@@ -78,7 +78,7 @@ export const NIMES_COPY: VilleCopy = {
           {
             step: "Cadrage à distance",
             detail:
-              "Brief initial visio ou téléphonique pour signer le NDA, aligner le périmètre (secteur, nombre de collaborateurs, process ciblés) et recueillir quelques documents de cadrage.",
+              "Brief initial visio ou téléphonique pour signer le Confidentialité assurée, aligner le périmètre (secteur, nombre de collaborateurs, process ciblés) et recueillir quelques documents de cadrage.",
           },
           {
             step: "Kick-off sur site à Nîmes",
@@ -152,7 +152,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant démarrage, données traitées exclusivement sur vos infrastructures ou sur environnement dédié si la souveraineté est requise. Conformité RGPD, hébergement UE, DPO disponible sur demande.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures ou sur environnement dédié si la souveraineté est requise. Conformité RGPD, hébergement UE, DPO disponible sur demande.",
           },
           {
             q: "Comment se déroule la restitution finale à Nîmes ?",
@@ -184,7 +184,7 @@ export const NIMES_COPY: VilleCopy = {
           {
             step: "Remote framing",
             detail:
-              "Initial video or phone brief to sign the NDA, align the scope (sector, headcount, targeted processes) and collect a few framing documents.",
+              "Initial video or phone brief to sign the Confidentiality ensured, align the scope (sector, headcount, targeted processes) and collect a few framing documents.",
           },
           {
             step: "On-site kick-off in Nîmes",
@@ -258,7 +258,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure or dedicated environment if sovereignty is required. GDPR compliance, EU hosting, DPO available on request.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure or dedicated environment if sovereignty is required. GDPR compliance, EU hosting, DPO available on request.",
           },
           {
             q: "How does the final read-out work in Nîmes?",
@@ -586,7 +586,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous pour les entreprises nîmoises ?",
@@ -692,7 +692,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use for Nîmes businesses?",

@@ -17,7 +17,7 @@
  *   - metaTitle ≤ 60 chars / metaDescription ≤ 155 chars
  *   - urlCible conforme Section 7 du prompt master
  *   - Aucune mention "N°1 France" sans preuve — formulé comme objectif ou requête informationnelle
- *   - Pas de "OÜ", pas de "Qualiopi/CPF/OPCO", pas de "Made in France"
+ *   - Pas de "OÜ", pas de certifications de formation, pas de "Made in France"
  *   - "franco-européen" ou "fondé par des experts français" à la place de "Made in France"
  */
 
@@ -154,7 +154,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     variables: { resultat: "équipes autonomes sur les outils IA ciblés", delai: "dès J+30" },
     urlCible: "/fr/cas-concrets/formation-ia-entreprise",
     source: "manuel",
-    note: "Cibler requêtes de validation formation — pas de mention OPCO/CPF/Qualiopi",
+    note: "Cibler requêtes de validation formation — pas de mention financement certifié",
   },
 
   // ── H2 — Autorité / Classement ──────────────────────────────────────────
@@ -674,7 +674,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     variables: { resultat: "équipes autonomes sur 3 outils IA ciblés", delai: "en 4 semaines" },
     urlCible: "/fr/cas-concrets/formation-ia-entreprise",
     source: "manuel",
-    note: "Longue traîne preuve sociale — pas de mention OPCO/Qualiopi/CPF",
+    note: "Longue traîne preuve sociale — pas de mention financement certifié",
   },
 
   {

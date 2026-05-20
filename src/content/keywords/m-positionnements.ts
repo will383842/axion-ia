@@ -7,7 +7,7 @@
  *   - Positionnement "cabinet IA" ET "agence IA" (les deux valides)
  *   - PAS "Made in France" → "franco-européen", "expertise française", "données en Europe"
  *   - PAS "OÜ" visible dans aucun champ
- *   - PAS Qualiopi / OPCO / CPF
+ *   - PAS certifications de formation / financements certifiés
  *   - "N°1 France" = objectif → formuler "référence", "reconnu", "opérationnel"
  *   - niveau 1 → priorite ≥ 2 (règle anti-cannibalisation HEAD)
  *   - H1 : bénéfice, jamais keyword brut (règle R5)

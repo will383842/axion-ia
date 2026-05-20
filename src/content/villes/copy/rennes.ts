@@ -91,7 +91,7 @@ export const RENNES_COPY: VilleCopy = {
           {
             step: "Brief de cadrage",
             detail:
-              "Un échange à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs). Identification de votre secteur dominant et des cas candidats prioritaires.",
+              "Un échange à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs). Identification de votre secteur dominant et des cas candidats prioritaires.",
           },
           {
             step: "Kick-off sur site Rennes",
@@ -161,7 +161,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou agroalimentaires restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD stricte. Pour les secteurs avec contraintes réglementaires spécifiques (agroalimentaire, santé), nous adaptons le protocole.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD stricte. Pour les secteurs avec contraintes réglementaires spécifiques (agroalimentaire, santé), nous adaptons le protocole.",
           },
           {
             q: "Quel ROI puis-je attendre pour une PME numérique à Rennes Atalante ?",
@@ -197,7 +197,7 @@ export const RENNES_COPY: VilleCopy = {
           {
             step: "Framing brief",
             detail:
-              "Remote exchange to sign the NDA and access a few key documents (org chart, processes, KPIs). Identification of your dominant sector and priority candidate use cases.",
+              "Remote exchange to access under full confidentiality a few key documents (org chart, processes, KPIs). Identification of your dominant sector and priority candidate use cases.",
           },
           {
             step: "On-site kick-off Rennes",
@@ -267,7 +267,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or agri-food data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance. For sectors with specific regulatory constraints (agri-food, health), we adapt the protocol.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance. For sectors with specific regulatory constraints (agri-food, health), we adapt the protocol.",
           },
           {
             q: "What ROI can I expect for a digital SME at Rennes Atalante?",
@@ -599,7 +599,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou agronomiques restent-elles dans mon SI ?",
-            a: "Toujours dans votre périmètre. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande. Conformité sectorielle (IFS Food, ISO 27001, etc.) prise en compte dès le cadrage.",
+            a: "Toujours dans votre périmètre. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande. Conformité sectorielle (IFS Food, ISO 27001, etc.) prise en compte dès le cadrage.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -705,7 +705,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or agronomic data stay within my IS?",
-            a: "Always within your perimeter. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request. Sector compliance (IFS Food, ISO 27001, etc.) taken into account from framing.",
+            a: "Always within your perimeter. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request. Sector compliance (IFS Food, ISO 27001, etc.) taken into account from framing.",
           },
           {
             q: "Which AI models do you use?",

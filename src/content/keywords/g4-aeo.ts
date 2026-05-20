@@ -169,11 +169,11 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prix d'un audit IA entreprise en France en 2026",
       metaTitle: "Prix audit IA entreprise 2026 | Axion-IA",
       metaDescription:
-        "Un audit IA coûte entre 490 € (Flash 1 jour) et 12 000 € (Stratégique ETI). Le marché pratique 1 500 à 25 000 € ; Axion-IA est positionné PME avec des formats finançables OPCO.",
+        "Un audit IA coûte entre 490 € (Flash 1 jour) et 12 000 € (Stratégique ETI). Le marché pratique 1 500 à 25 000 € ; Axion-IA est positionné PME avec des formats accessibles.",
       h2Variants: [
         "Tableau des tarifs audit IA Axion-IA",
         "Marché des prix : comparatif cabinets IA",
-        "Financement OPCO pour l'audit IA",
+        "Options de financement disponibles",
       ],
     },
     variables: { resultat: "490 € à 12 000 €", delai: "selon taille entreprise" },
@@ -231,31 +231,6 @@ export const KW_AEO_G4: KeywordSeed[] = [
     canonicalParent: "/fr/audit",
     source: "manuel",
     note: "QAPage schema + HowTo eligible (5 étapes). Aligne avec HELP_ARTICLES preparer-une-intervention.",
-  },
-
-  {
-    keyword: "l'audit IA est-il finançable par les OPCO ?",
-    intent: "aeo",
-    kbType: "faq",
-    module: "audit",
-    cible: "pme",
-    priorite: 1,
-    niveau: 3,
-    injection: {
-      h1: "Financer un audit IA avec les OPCO : ce qui est possible",
-      metaTitle: "Audit IA finançable OPCO ? | Axion-IA",
-      metaDescription:
-        "Oui, sous condition : la partie formation de l'audit est éligible OPCO (CPF, FNE-Formation). La partie conseil pure est hors dispositifs. Nous montons les dossiers avec vous.",
-      h2Variants: [
-        "Quelles parties de l'audit sont éligibles OPCO ?",
-        "CPF et FNE-Formation : ce qui s'applique",
-        "Comment monter un dossier OPCO pour un audit IA ?",
-      ],
-    },
-    urlCible: "/fr/faq/audit-ia-financement-opco",
-    canonicalParent: "/fr/audit",
-    source: "manuel",
-    note: "QAPage schema. Urgence : OPCO = débloqueur achat clé. Croiser avec /fr/faq/formation-ia-financement-opco.",
   },
 
   {
@@ -544,31 +519,6 @@ export const KW_AEO_G4: KeywordSeed[] = [
   },
 
   {
-    keyword: "est-ce que la formation IA est finançable via l'OPCO ?",
-    intent: "aeo",
-    kbType: "faq",
-    module: "interventions-formations",
-    cible: "pme",
-    priorite: 1,
-    niveau: 2,
-    injection: {
-      h1: "Formation IA finançable OPCO : guide pratique 2026",
-      metaTitle: "Formation IA OPCO finançable 2026 | Axion-IA",
-      metaDescription:
-        "Oui : nos formations sont éligibles OPCO (CPF, FNE-Formation, plan de développement compétences). Nous sommes déclarés organisme de formation. Nous montons le dossier avec vous sous 48h.",
-      h2Variants: [
-        "Les dispositifs OPCO applicables à la formation IA",
-        "Comment monter un dossier OPCO en 48h",
-        "Plafonds et conditions de prise en charge",
-      ],
-    },
-    urlCible: "/fr/faq/formation-ia-financement-opco",
-    canonicalParent: "/fr/interventions",
-    source: "manuel",
-    note: "QAPage schema. Débloqueur achat critique. P0 business.",
-  },
-
-  {
     keyword: "quelle est la différence entre une intervention et une formation IA ?",
     intent: "aeo",
     kbType: "comparison",
@@ -605,11 +555,11 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Prix d'une journée de formation IA collective en 2026",
       metaTitle: "Tarif journée formation IA entreprise | Axion-IA",
       metaDescription:
-        "Le marché pratique 400 à 2 000 € par personne par jour. En format collectif B2B sur site, notre journée couvre 5 à 20 personnes avec un tarif groupe. Financement OPCO disponible.",
+        "Le marché pratique 400 à 2 000 € par personne par jour. En format collectif B2B sur site, notre journée couvre 5 à 20 personnes avec un tarif groupe.",
       h2Variants: [
         "Tarif groupe vs individuel : la différence",
         "Ce qui justifie le prix d'une formation IA",
-        "Financement OPCO : réduire le reste à charge à 0",
+        "Options de financement disponibles",
       ],
     },
     urlCible: "/fr/faq/prix-journee-formation-ia-entreprise",

@@ -87,7 +87,7 @@ export const ANNECY_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Brief de cadrage à distance : signature du NDA, accès aux quelques documents clés (organigramme, cartographie des processus, indicateurs opérationnels). Identification des workflows candidats à l'IA propres à votre activité.",
+              "Brief de cadrage à distance : signature du Confidentialité assurée, accès aux quelques documents clés (organigramme, cartographie des processus, indicateurs opérationnels). Identification des workflows candidats à l'IA propres à votre activité.",
           },
           {
             step: "Kick-off sur site",
@@ -161,7 +161,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée si la souveraineté est requise — particulièrement pertinent pour les entreprises à capitaux suisses.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée si la souveraineté est requise — particulièrement pertinent pour les entreprises à capitaux suisses.",
           },
           {
             q: "Comment se déroule la restitution finale ?",
@@ -193,7 +193,7 @@ export const ANNECY_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief: NDA signing, access to a few key documents (org chart, process map, operational KPIs). Identification of AI candidate workflows specific to your activity.",
+              "Remote framing brief: Confidentiality ensured, access to a few key documents (org chart, process map, operational KPIs). Identification of AI candidate workflows specific to your activity.",
           },
           {
             step: "On-site kick-off",
@@ -267,7 +267,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if sovereignty is required — particularly relevant for Swiss-capital companies.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if sovereignty is required — particularly relevant for Swiss-capital companies.",
           },
           {
             q: "How does the final read-out work?",
@@ -595,7 +595,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée en UE si vous préférez. NDA signé en cadrage, RGPD strict, DPO sur demande. Particulièrement adapté aux entreprises à enjeux de souveraineté franco-suisse.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée en UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande. Particulièrement adapté aux entreprises à enjeux de souveraineté franco-suisse.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -701,7 +701,7 @@ export const ANNECY_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, DPO on request. Particularly suitable for companies with Franco-Swiss data sovereignty concerns.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, DPO on request. Particularly suitable for companies with Franco-Swiss data sovereignty concerns.",
           },
           {
             q: "Which AI models do you use?",

@@ -90,7 +90,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs). Pour les organisations soumises au droit européen ou à des contraintes réglementaires spécifiques (RGPD renforcé, dispositifs médicaux, données cliniques), nous documentons en amont les contraintes de souveraineté.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs). Pour les organisations soumises au droit européen ou à des contraintes réglementaires spécifiques (RGPD renforcé, dispositifs médicaux, données cliniques), nous documentons en amont les contraintes de souveraineté.",
           },
           {
             step: "Kick-off sur site",
@@ -160,7 +160,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous auditer une organisation soumise au droit européen ou à des données réglementées ?",
-            a: "Oui. Nous gérons les contraintes RGPD renforcé, les données cliniques (dispositifs médicaux, pharma), les environnements bilingues FR/DE/EN et la souveraineté des données pour les organisations transfrontalières. Le NDA et les modalités de traitement sont documentés en amont.",
+            a: "Oui. Nous gérons les contraintes RGPD renforcé, les données cliniques (dispositifs médicaux, pharma), les environnements bilingues FR/DE/EN et la souveraineté des données pour les organisations transfrontalières. La confidentialité et les modalités de traitement sont documentées en amont.",
           },
           {
             q: "Intervenez-vous aussi dans les communes de l'Eurométropole (Illkirch, Schiltigheim, Ostwald) ?",
@@ -168,7 +168,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise — particulièrement important pour les organisations biotech et institutionnelles strasbourgeoises.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise — particulièrement important pour les organisations biotech et institutionnelles strasbourgeoises.",
           },
           {
             q: "Différence avec un audit de conseil traditionnel ou une ESN locale ?",
@@ -196,7 +196,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs). For organisations subject to European law or specific regulatory constraints (enhanced GDPR, medical devices, clinical data), we document sovereignty requirements upfront.",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs). For organisations subject to European law or specific regulatory constraints (enhanced GDPR, medical devices, clinical data), we document sovereignty requirements upfront.",
           },
           {
             step: "On-site kick-off",
@@ -266,7 +266,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Can you audit an organisation subject to European law or regulated data?",
-            a: "Yes. We handle enhanced GDPR constraints, clinical data (medical devices, pharma), FR/DE/EN multilingual environments and data sovereignty for cross-border organisations. The NDA and data processing terms are documented upfront.",
+            a: "Yes. We handle enhanced GDPR constraints, clinical data (medical devices, pharma), FR/DE/EN multilingual environments and data sovereignty for cross-border organisations. The Data processing terms and confidentiality are documented upfront.",
           },
           {
             q: "Do you cover Eurométropole communes (Illkirch, Schiltigheim, Ostwald)?",
@@ -274,7 +274,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, EU data hosting by default, DPO on request — particularly important for Strasbourg biotech and institutional organisations.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, EU data hosting by default, DPO on request — particularly important for Strasbourg biotech and institutional organisations.",
           },
           {
             q: "Difference with traditional consulting or a local IT services firm?",
@@ -589,7 +589,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous gérer la conformité RGPD et DSGVO pour une structure transfrontalière ?",
-            a: "Oui. Nos implémentations pour les organisations franco-allemandes respectent à la fois le RGPD européen et les exigences du DSGVO (équivalent allemand). NDA bilatéral, hébergement données en UE, documentation livrable bilingue sur demande.",
+            a: "Oui. Nos implémentations pour les organisations franco-allemandes respectent à la fois le RGPD européen et les exigences du DSGVO (équivalent allemand). Confidentialité contractuelle, hébergement données en UE, documentation livrable bilingue sur demande.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -605,7 +605,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. NDA signé en cadrage, RGPD/DSGVO strict, DPO sur demande — particulièrement important pour les organisations biotech, institutionnelles et transfrontalières strasbourgeoises.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD/DSGVO strict, DPO sur demande — particulièrement important pour les organisations biotech, institutionnelles et transfrontalières strasbourgeoises.",
           },
         ],
         guarantees:
@@ -695,7 +695,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Can you handle GDPR and DSGVO compliance for a cross-border structure?",
-            a: "Yes. Our implementations for Franco-German organisations comply with both European GDPR and DSGVO (German equivalent). Bilateral NDA, EU data hosting, bilingual deliverable documentation on request.",
+            a: "Yes. Our implementations for Franco-German organisations comply with both European GDPR and DSGVO (German equivalent). Bilateral Contractual confidentiality, EU data hosting, bilingual deliverable documentation on request.",
           },
           {
             q: "Is the price fixed or time-based?",
@@ -711,7 +711,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR/DSGVO, DPO on request — particularly important for Strasbourg biotech, institutional and cross-border organisations.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR/DSGVO, DPO on request — particularly important for Strasbourg biotech, institutional and cross-border organisations.",
           },
         ],
         guarantees:

@@ -88,7 +88,7 @@ export const LILLE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs). Prise en compte des spécificités de votre secteur lillois (retail, logistique, IT, agroalimentaire).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs). Prise en compte des spécificités de votre secteur lillois (retail, logistique, IT, agroalimentaire).",
           },
           {
             step: "Kick-off sur site",
@@ -162,7 +162,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, pas d'extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
             q: "Comment se déroule la restitution finale à Lille ?",
@@ -194,7 +194,7 @@ export const LILLE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs). Your Lille sector specificities (retail, logistics, IT, agri-food) taken into account upfront.",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs). Your Lille sector specificities (retail, logistics, IT, agri-food) taken into account upfront.",
           },
           {
             step: "On-site kick-off",
@@ -268,7 +268,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty is required.",
           },
           {
             q: "How does the final read-out work in Lille?",
@@ -600,7 +600,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur OVHcloud dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur OVHcloud dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Que se passe-t-il si l'IA produit des erreurs ou hallucine ?",
@@ -706,7 +706,7 @@ export const LILLE_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated OVHcloud server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated OVHcloud server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "What happens if the AI produces errors or hallucinates?",

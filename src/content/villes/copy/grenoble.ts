@@ -80,7 +80,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA, accéder aux documents clés (organigramme, processus, indicateurs) et délimiter le périmètre — R&D, production, fonctions support ou mix.",
+              "Un brief de cadrage à distance pour signer le Confidentialité assurée, accéder aux documents clés (organigramme, processus, indicateurs) et délimiter le périmètre — R&D, production, fonctions support ou mix.",
           },
           {
             step: "Kick-off sur site",
@@ -154,7 +154,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données techniques restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, zéro extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté des données industrielles est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, zéro extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté des données industrielles est requise.",
           },
           {
             q: "Comment se déroule la restitution finale ?",
@@ -186,7 +186,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA, access key documents (org chart, processes, KPIs) and scope the perimeter — R&D, production, support functions or a mix.",
+              "Remote framing brief to sign the Confidentiality ensured, access key documents (org chart, processes, KPIs) and scope the perimeter — R&D, production, support functions or a mix.",
           },
           {
             step: "On-site kick-off",
@@ -260,7 +260,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
           {
             q: "Does my technical data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if industrial data sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if industrial data sovereignty is required.",
           },
           {
             q: "How does the final read-out work?",
@@ -586,7 +586,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles chez moi ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande. Sensibilité données industrielles traitée avec la même rigueur que dans les laboratoires CEA.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande. Sensibilité données industrielles traitée avec la même rigueur que dans les laboratoires CEA.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -692,7 +692,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay with me?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request. Industrial data sensitivity handled with the same rigour as in CEA laboratories.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request. Industrial data sensitivity handled with the same rigour as in CEA laboratories.",
           },
           {
             q: "Which AI models do you use?",

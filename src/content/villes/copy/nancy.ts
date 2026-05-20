@@ -100,7 +100,7 @@ export const NANCY_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Pour les organisations de santé (CHRU, dispositifs médicaux) et les industriels du bassin lorrain, nous documentons en amont les contraintes de souveraineté et de réglementation sectorielle.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Pour les organisations de santé (CHRU, dispositifs médicaux) et les industriels du bassin lorrain, nous documentons en amont les contraintes de souveraineté et de réglementation sectorielle.",
           },
           {
             step: "Kick-off sur site",
@@ -174,7 +174,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Mes données cliniques ou industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs santé (CHRU, dispositifs médicaux) et industrie (Materalia), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs santé (CHRU, dispositifs médicaux) et industrie (Materalia), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Nancy ?",
@@ -206,7 +206,7 @@ export const NANCY_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). For health organisations (CHRU, medical devices) and Lorraine basin industrials, we document sovereignty and sector-specific regulatory constraints upfront.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). For health organisations (CHRU, medical devices) and Lorraine basin industrials, we document sovereignty and sector-specific regulatory constraints upfront.",
           },
           {
             step: "On-site kick-off",
@@ -280,7 +280,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Does my clinical or industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For health (CHRU, medical devices) and industry (Materalia) sectors, we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For health (CHRU, medical devices) and industry (Materalia) sectors, we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Nancy?",
@@ -820,7 +820,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Mes échanges et données sont-ils confidentiels ?",
-            a: "Totalement. NDA signé au démarrage. Vos documents de travail, vos cas d'usage et vos échanges restent strictement confidentiels. Aucune data transmise à des tiers.",
+            a: "Totalement. Confidentialité stricte dès le démarrage. Vos documents de travail, vos cas d'usage et vos échanges restent strictement confidentiels. Aucune data transmise à des tiers.",
           },
           {
             q: "Puis-je continuer à utiliser les outils après la fin du coaching ?",
@@ -832,7 +832,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme construit sur mesure dès le bilan d'entrée : aucun module générique. Confidentialité totale (NDA). Chaque séance produit un livrable utilisable immédiatement. Si après les deux premières séances vous estimez que le coaching ne correspond pas à vos attentes, remboursement intégral des séances restantes. Aucun lock-in : vos acquis, vos prompts, vos workflows vous appartiennent entièrement.",
+          "Programme construit sur mesure dès le bilan d'entrée : aucun module générique. Confidentialité totale. Chaque séance produit un livrable utilisable immédiatement. Si après les deux premières séances vous estimez que le coaching ne correspond pas à vos attentes, remboursement intégral des séances restantes. Aucun lock-in : vos acquis, vos prompts, vos workflows vous appartiennent entièrement.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Nancy is an intensive 1-to-1 for executives, managers and researchers in the Nancy basin who want to move from AI discovery to real operational mastery. Each session is grounded in your concrete cases — Brabois Technopole, Artem campus, Lorraine industry, business services. No lock-in, your learnings stay yours.",
@@ -926,7 +926,7 @@ export const NANCY_COPY: VilleCopy = {
           },
           {
             q: "Are my exchanges and data confidential?",
-            a: "Completely. NDA signed at kick-off. Your working documents, use cases and exchanges remain strictly confidential. No data passed to third parties.",
+            a: "Completely. Strict confidentiality at kick-off. Your working documents, use cases and exchanges remain strictly confidential. No data passed to third parties.",
           },
           {
             q: "Can I keep using the tools after coaching ends?",
@@ -938,7 +938,7 @@ export const NANCY_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme built on entry assessment: no generic modules. Full confidentiality (NDA). Each session produces an immediately usable deliverable. If after the first two sessions you feel the coaching does not meet your expectations, full refund of remaining sessions. No lock-in: your achievements, prompts and workflows belong entirely to you.",
+          "Programme built on entry assessment: no generic modules. Full confidentiality. Each session produces an immediately usable deliverable. If after the first two sessions you feel the coaching does not meet your expectations, full refund of remaining sessions. No lock-in: your achievements, prompts and workflows belong entirely to you.",
       },
     },
   },

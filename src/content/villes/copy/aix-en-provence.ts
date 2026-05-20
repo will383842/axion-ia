@@ -86,7 +86,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Identification des workflows candidats à l'IA selon votre secteur (aérospatial, énergie, services, industrie).",
+              "Brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Identification des workflows candidats à l'IA selon votre secteur (aérospatial, énergie, services, industrie).",
           },
           {
             step: "Kick-off sur site",
@@ -160,7 +160,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Mes données techniques (plans, données R&D) restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant tout démarrage, données traitées exclusivement sur vos infrastructures ou en local, aucune extraction vers nos serveurs. Conformité RGPD, possibilité de modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise — particulièrement important pour les acteurs défense et nucléaire.",
+            a: "Oui. Confidentialité stricte assurée dès le démarrage, données traitées exclusivement sur vos infrastructures ou en local, aucune extraction vers nos serveurs. Conformité RGPD, possibilité de modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise — particulièrement important pour les acteurs défense et nucléaire.",
           },
           {
             q: "Pouvez-vous intervenir à Marignane, Rousset ou dans le bassin ?",
@@ -192,7 +192,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). AI-candidate workflow identification per your sector (aerospace, energy, services, industry).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). AI-candidate workflow identification per your sector (aerospace, energy, services, industry).",
           },
           {
             step: "On-site kick-off",
@@ -267,7 +267,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Does my technical data (plans, R&D data) stay confidential during the audit?",
-            a: "Yes. NDA signed before any start, data processed exclusively on your infrastructure or locally, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if sovereignty is required — particularly important for defence and nuclear players.",
+            a: "Yes. Confidentiality ensured before any start, data processed exclusively on your infrastructure or locally, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if sovereignty is required — particularly important for defence and nuclear players.",
           },
           {
             q: "Can you intervene at Marignane, Rousset or elsewhere in the basin?",
@@ -592,7 +592,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Mes données (techniques, industrielles, commerciales) restent-elles chez moi ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée en UE si vous préférez. NDA signé en cadrage, RGPD strict, possibilité infra souveraine pour les acteurs sensibles (défense, nucléaire, aérospatial).",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée en UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, possibilité infra souveraine pour les acteurs sensibles (défense, nucléaire, aérospatial).",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -699,7 +699,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
           {
             q: "Does my data (technical, industrial, commercial) stay with me?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, sovereign infra option available for sensitive players (defence, nuclear, aerospace).",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, sovereign infra option available for sensitive players (defence, nuclear, aerospace).",
           },
           {
             q: "Which AI models do you use?",
@@ -735,7 +735,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous travailler avec des entreprises proches du CEA Cadarache ou d'ITER ?",
-      a: "Oui. Nous intervenons pour des structures du bassin proches de ces centres de recherche d'envergure mondiale (Saint-Paul-lez-Durance, Manosque, nord du bassin Aix). La gestion des contraintes de confidentialité et de sécurité est intégrée au cadrage (NDA, infra souveraine, modèles on-premise).",
+      a: "Oui. Nous intervenons pour des structures du bassin proches de ces centres de recherche d'envergure mondiale (Saint-Paul-lez-Durance, Manosque, nord du bassin Aix). La gestion des contraintes de confidentialité et de sécurité est intégrée au cadrage (Confidentialité stricte, infra souveraine, modèles on-premise).",
     },
     {
       q: "Travaillez-vous avec les startups de la French Tech Aix-Marseille ?",

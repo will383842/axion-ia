@@ -837,7 +837,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
         {
           title: "Assistant juridique et conformité",
           benefit:
-            "Contrats vérifiés en 30 secondes. RGPD, CGV, baux, NDA — toutes vos pièces juridiques relues par l'IA avant signature.",
+            "Contrats vérifiés en 30 secondes. RGPD, CGV, baux, accords de confidentialité — toutes vos pièces juridiques relues par l'IA avant signature.",
           audience: "PME, cabinets, professions libérales",
         },
         {
@@ -898,7 +898,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
         {
           title: "Legal & compliance assistant",
           benefit:
-            "Contracts checked in 30 seconds. GDPR, T&Cs, leases, NDAs — every legal doc reviewed by AI before signing.",
+            "Contracts checked in 30 seconds. GDPR, T&Cs, leases, confidentiality agreements — every legal doc reviewed by AI before signing.",
           audience: "SMB, professional services",
         },
         {

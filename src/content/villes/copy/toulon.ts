@@ -82,7 +82,7 @@ export const TOULON_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA, accéder aux documents clés (organigramme, processus, indicateurs) et valider les contraintes de confidentialité spécifiques à votre secteur (défense, maritime, santé, tourisme).",
+              "Un brief de cadrage à distance pour signer le Confidentialité assurée, accéder aux documents clés (organigramme, processus, indicateurs) et valider les contraintes de confidentialité spécifiques à votre secteur (défense, maritime, santé, tourisme).",
           },
           {
             step: "Kick-off sur site à Toulon",
@@ -152,7 +152,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous auditer des entreprises soumises à des contraintes de confidentialité défense ?",
-            a: "Oui. NDA signé avant démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Pour les structures soumises à des contraintes de souveraineté, nous travaillons avec des modèles IA déployables en local ou sur infra dédiée chez vous.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Pour les structures soumises à des contraintes de souveraineté, nous travaillons avec des modèles IA déployables en local ou sur infra dédiée chez vous.",
           },
           {
             q: "Quels secteurs toulonnais couvrez-vous prioritairement ?",
@@ -188,7 +188,7 @@ export const TOULON_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA, access key documents (org chart, processes, KPIs) and validate confidentiality constraints specific to your sector (defence, maritime, health, tourism).",
+              "Remote framing brief to sign the Confidentiality ensured, access key documents (org chart, processes, KPIs) and validate confidentiality constraints specific to your sector (defence, maritime, health, tourism).",
           },
           {
             step: "On-site kick-off in Toulon",
@@ -258,7 +258,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Can you audit companies subject to defence confidentiality constraints?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. For structures subject to sovereignty constraints, we work with AI models deployable locally or on dedicated infra at your premises.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. For structures subject to sovereignty constraints, we work with AI models deployable locally or on dedicated infra at your premises.",
           },
           {
             q: "Which Toulon sectors do you cover as a priority?",
@@ -806,7 +806,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Le coaching IA 1-to-1 est-il adapté aux contraintes de confidentialité défense ?",
-            a: "Oui. NDA signé avant la première séance, aucun document sensible extrait vers nos serveurs. Pour les profils issus de la défense maritime, nous travaillons sur des exemples fictifs ou anonymisés représentatifs de votre activité, et recommandons uniquement des outils compatibles avec vos politiques de sécurité.",
+            a: "Oui. Confidentialité stricte dès la première séance, aucun document sensible extrait vers nos serveurs. Pour les profils issus de la défense maritime, nous travaillons sur des exemples fictifs ou anonymisés représentatifs de votre activité, et recommandons uniquement des outils compatibles avec vos politiques de sécurité.",
           },
           {
             q: "Puis-je solliciter un coaching pour plusieurs membres de mon équipe ?",
@@ -912,7 +912,7 @@ export const TOULON_COPY: VilleCopy = {
           },
           {
             q: "Is 1-to-1 AI coaching suited to defence confidentiality constraints?",
-            a: "Yes. NDA signed before the first session, no sensitive document extracted to our servers. For profiles from maritime defence, we work on fictional or anonymised representative examples and only recommend tools compatible with your security policies.",
+            a: "Yes. Strict confidentiality ensured before the first session, no sensitive document extracted to our servers. For profiles from maritime defence, we work on fictional or anonymised representative examples and only recommend tools compatible with your security policies.",
           },
           {
             q: "Can I request coaching for several members of my team?",
@@ -932,7 +932,7 @@ export const TOULON_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA peut-il intervenir auprès des entreprises de défense maritime à Toulon ?",
-      a: "Oui. Nous maîtrisons les contraintes spécifiques de confidentialité et de souveraineté des données propres à la défense maritime et à l'ingénierie navale. NDA renforcé, déploiement IA possible sur infra on-premise ou cloud souverain UE, aucune donnée sensible extraite vers nos serveurs.",
+      a: "Oui. Nous maîtrisons les contraintes spécifiques de confidentialité et de souveraineté des données propres à la défense maritime et à l'ingénierie navale. accord de confidentialité renforcé, déploiement IA possible sur infra on-premise ou cloud souverain UE, aucune donnée sensible extraite vers nos serveurs.",
     },
     {
       q: "Quels secteurs toulonnais couvrez-vous prioritairement ?",

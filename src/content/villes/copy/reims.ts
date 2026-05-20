@@ -81,7 +81,7 @@ export const REIMS_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés : organigramme, processus prioritaires, indicateurs métier (volumétrie factures, nombre de références export Champagne, cadence rapports R&D, etc.).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés : organigramme, processus prioritaires, indicateurs métier (volumétrie factures, nombre de références export Champagne, cadence rapports R&D, etc.).",
           },
           {
             step: "Kick-off sur site à Reims",
@@ -155,7 +155,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Mes données de production Champagne restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD stricte — les recettes, fiches techniques et données export restent chez vous.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD stricte — les recettes, fiches techniques et données export restent chez vous.",
           },
           {
             q: "Comment se déroule la restitution finale à Reims ?",
@@ -187,7 +187,7 @@ export const REIMS_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents: org chart, priority processes, business KPIs (invoice volumes, Champagne export references, R&D report cadence, etc.).",
+              "Remote framing brief to access under full confidentiality a few key documents: org chart, priority processes, business KPIs (invoice volumes, Champagne export references, R&D report cadence, etc.).",
           },
           {
             step: "On-site kick-off in Reims",
@@ -261,7 +261,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Does my Champagne production data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance — recipes, technical sheets and export data stay with you.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance — recipes, technical sheets and export data stay with you.",
           },
           {
             q: "How does the final read-out work in Reims?",
@@ -591,7 +591,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Mes données de production Champagne et de R&D bioéconomie restent-elles confidentielles ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée si vous préférez (souveraineté UE). Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous pour les cas multilingues export Champagne ?",
@@ -697,7 +697,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Does my Champagne production data and bioeconomy R&D stay confidential?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated infra if you prefer (EU sovereignty). Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use for multilingual Champagne export cases?",

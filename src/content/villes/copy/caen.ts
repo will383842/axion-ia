@@ -151,7 +151,7 @@ export const CAEN_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles du bassin avec des workflows de production ou de R&D complexes.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles du bassin avec des workflows de production ou de R&D complexes.",
           },
           {
             step: "Kick-off sur site",
@@ -225,7 +225,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou médicales restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs réglementés (électronique automobile, CHU, recherche médicale GANIL), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs réglementés (électronique automobile, CHU, recherche médicale GANIL), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Caen ?",
@@ -257,7 +257,7 @@ export const CAEN_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for Caen la Mer industrial mid-caps with complex production or R&D workflows.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for Caen la Mer industrial mid-caps with complex production or R&D workflows.",
           },
           {
             step: "On-site kick-off",
@@ -331,7 +331,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or medical data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For regulated sectors (automotive electronics, CHU, medical research at GANIL), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For regulated sectors (automotive electronics, CHU, medical research at GANIL), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Caen?",
@@ -787,7 +787,7 @@ export const CAEN_COPY: VilleCopy = {
           "Sessions disponibles à Caen intra-muros et dans toutes les communes du bassin Caen la Mer — EffiScience, plateau Nord, Mondeville, Colombelles, Hérouville-Saint-Clair.",
           "Programme personnalisé dès le premier échange : vos outils, votre secteur, vos cas d'usage prioritaires — aucun syllabus générique imposé.",
           "Progression mesurée à chaque séance : vous repartez avec des livrables concrets (prompt library, workflow automatisé, guide usage interne) utilisables immédiatement.",
-          "Confidentialité totale : NDA systématique, vos projets et données restent dans le périmètre de la session.",
+          "Confidentialité totale : Confidentialité stricte, vos projets et données restent dans le périmètre de la session.",
         ],
         methodology: [
           {
@@ -871,7 +871,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Mes projets et données restent-ils confidentiels ?",
-            a: "Oui. NDA signé avant la première séance. Vos documents, projets et données restent dans le périmètre strict de la session et ne sont jamais réutilisés.",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos documents, projets et données restent dans le périmètre strict de la session et ne sont jamais réutilisés.",
           },
           {
             q: "Puis-je ensuite cascader les compétences à mon équipe ?",
@@ -883,7 +883,7 @@ export const CAEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme calibré sur vos objectifs dès le diagnostic initial. Si après la première séance le format ne vous convient pas, session remboursée intégralement. NDA systématique, confidentialité absolue. Livrables concrets à chaque séance : vous ne repartez jamais les mains vides. Aucun lock-in Axion-IA — les outils et workflows livrés vous appartiennent.",
+          "Programme calibré sur vos objectifs dès le diagnostic initial. Si après la première séance le format ne vous convient pas, session remboursée intégralement. Confidentialité stricte, confidentialité absolue. Livrables concrets à chaque séance : vous ne repartez jamais les mains vides. Aucun lock-in Axion-IA — les outils et workflows livrés vous appartiennent.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Caen supports executives, managers and experts who want to build AI skills at their own pace. Sessions on site at your Caen offices or remote, use cases built around your sector reality — electronics, automotive, health, research, equine industry. Lodging, meals and travel allowance billed separately for in-person sessions.",
@@ -893,7 +893,7 @@ export const CAEN_COPY: VilleCopy = {
           "Sessions available in Caen proper and across all Caen la Mer communes — EffiScience, Plateau Nord, Mondeville, Colombelles, Hérouville-Saint-Clair.",
           "Personalised programme from the very first exchange: your tools, your sector, your priority use cases — no imposed generic syllabus.",
           "Measurable progress each session: you leave with concrete deliverables (prompt library, automated workflow, internal usage guide) immediately usable.",
-          "Full confidentiality: systematic NDA, your projects and data remain within the session perimeter.",
+          "Full confidentiality: strict confidentiality policy, your projects and data remain within the session perimeter.",
         ],
         methodology: [
           {
@@ -977,7 +977,7 @@ export const CAEN_COPY: VilleCopy = {
           },
           {
             q: "Do my projects and data stay confidential?",
-            a: "Yes. NDA signed before the first session. Your documents, projects and data remain within the strict session perimeter and are never reused.",
+            a: "Yes. Strict confidentiality ensured before the first session. Your documents, projects and data remain within the strict session perimeter and are never reused.",
           },
           {
             q: "Can I cascade skills to my team afterwards?",
@@ -989,7 +989,7 @@ export const CAEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme calibrated to your goals at the initial diagnostic. If after the first session the format doesn't suit you, session fully refunded. Systematic NDA, absolute confidentiality. Concrete deliverables each session: you never leave empty-handed. No Axion-IA lock-in — the tools and workflows delivered are yours.",
+          "Programme calibrated to your goals at the initial diagnostic. If after the first session the format doesn't suit you, session fully refunded. Systematic Strict confidentiality. Concrete deliverables each session: you never leave empty-handed. No Axion-IA lock-in — the tools and workflows delivered are yours.",
       },
     },
   },

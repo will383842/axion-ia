@@ -125,7 +125,7 @@ export const ROUEN_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles rouennaises avec des workflows complexes (logistique portuaire, chimie, automobile).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles rouennaises avec des workflows complexes (logistique portuaire, chimie, automobile).",
           },
           {
             step: "Kick-off sur site",
@@ -199,7 +199,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou portuaires restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs réglementés (pharmaceutique, chimie, maritime), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs réglementés (pharmaceutique, chimie, maritime), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Rouen ?",
@@ -231,7 +231,7 @@ export const ROUEN_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for Rouen industrial mid-caps with complex workflows (port logistics, chemicals, automotive).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for Rouen industrial mid-caps with complex workflows (port logistics, chemicals, automotive).",
           },
           {
             step: "On-site kick-off",
@@ -305,7 +305,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or port data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For regulated sectors (pharma, chemicals, maritime), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For regulated sectors (pharma, chemicals, maritime), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Rouen?",
@@ -760,7 +760,7 @@ export const ROUEN_COPY: VilleCopy = {
           "Format 1-to-1 : vous progressez à votre rythme, sans vous adapter à un groupe. Les sessions s'organisent selon vos disponibilités, en présentiel à Rouen ou à distance.",
           "Démos 100 % sur vos données réelles : vos emails, vos rapports, vos documents métier — pas d'exemples génériques déconnectés de votre quotidien rouennais.",
           "Applicable dès le lendemain : chaque session se conclut par un plan d'action personnel concret, exécutable sans aide extérieure.",
-          "Confidentiel et NDA : vos cas métier, vos données et vos pratiques restent strictement privés.",
+          "Confidentiel et Confidentialité stricte : vos cas métier, vos données et vos pratiques restent strictement privés.",
           "Aucun engagement de durée : vous décidez du nombre de sessions selon votre progression et vos besoins.",
         ],
         methodology: [
@@ -841,7 +841,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Mes données et mes pratiques resteront-elles confidentielles ?",
-            a: "Oui. NDA signé avant toute session. Vos documents, vos données et vos pratiques métier restent strictement privés — aucun exemple issu de vos sessions ne sera utilisé dans d'autres contextes.",
+            a: "Oui. Confidentialité stricte avant toute session. Vos documents, vos données et vos pratiques métier restent strictement privés — aucun exemple issu de vos sessions ne sera utilisé dans d'autres contextes.",
           },
           {
             q: "Peut-on adapter le coaching à mon secteur spécifique (logistique, pharma, assurance) ?",
@@ -857,7 +857,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité garantie par NDA dès la première session. Aucun engagement de durée : vous choisissez le nombre de sessions selon votre rythme et vos besoins. Outils opérationnels dès la première session : si vous ne repartez pas avec au moins un outil configuré sur vos données, session remboursée. Coaching ancré dans votre secteur rouennais — logistique, pharma, assurance, numérique, industrie — aucune session générique.",
+          "Confidentialité garantie par Confidentialité stricte dès la première session. Aucun engagement de durée : vous choisissez le nombre de sessions selon votre rythme et vos besoins. Outils opérationnels dès la première session : si vous ne repartez pas avec au moins un outil configuré sur vos données, session remboursée. Coaching ancré dans votre secteur rouennais — logistique, pharma, assurance, numérique, industrie — aucune session générique.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Rouen is a 1-to-1 engagement on your personal business cases — logistics mid-cap executive, pharma manager, insurance director or digital manager. Flexible format, pace set to your Rouen constraints, demos on your own data. Lodging, meals and travel allowance billed separately for in-person sessions.",
@@ -866,7 +866,7 @@ export const ROUEN_COPY: VilleCopy = {
           "1-to-1 format: you progress at your own pace, without adapting to a group. Sessions are scheduled to your availability, in person in Rouen or remotely.",
           "Demos 100% on your real data: your emails, reports, business documents — no generic examples disconnected from your daily Rouen work.",
           "Applicable from the next day: each session ends with a concrete personal action plan, executable without external help.",
-          "Confidential with NDA: your business cases, data and practices remain strictly private.",
+          "Confidential with Strict confidentiality: your business cases, data and practices remain strictly private.",
           "No duration commitment: you decide the number of sessions based on your progress and needs.",
         ],
         methodology: [
@@ -947,7 +947,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Will my data and practices remain confidential?",
-            a: "Yes. NDA signed before any session. Your documents, data and business practices remain strictly private — no example from your sessions will be used in any other context.",
+            a: "Yes. Strict confidentiality before any session. Your documents, data and business practices remain strictly private — no example from your sessions will be used in any other context.",
           },
           {
             q: "Can the coaching be adapted to my specific sector (logistics, pharma, insurance)?",
@@ -963,7 +963,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentiality guaranteed by NDA from the first session. No duration commitment: you choose the number of sessions at your own pace and based on your needs. Operational tools from the first session: if you do not leave with at least one tool configured on your data, session refunded. Coaching grounded in your Rouen sector — logistics, pharma, insurance, digital, industry — no generic session.",
+          "Strict confidentiality guaranteed from the first session. No duration commitment: you choose the number of sessions at your own pace and based on your needs. Operational tools from the first session: if you do not leave with at least one tool configured on your data, session refunded. Coaching grounded in your Rouen sector — logistics, pharma, insurance, digital, industry — no generic session.",
       },
     },
   },

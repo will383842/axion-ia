@@ -84,7 +84,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus métier, indicateurs opérationnels). Pour les sites de défense ou les entreprises à données sensibles, accord de confidentialité renforcé disponible.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus métier, indicateurs opérationnels). Pour les sites de défense ou les entreprises à données sensibles, accord de confidentialité renforcé disponible.",
           },
           {
             step: "Kick-off sur site",
@@ -154,7 +154,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous auditer des sites industriels soumis à des contraintes de confidentialité élevées ?",
-            a: "Oui. Nous signons un NDA renforcé avant démarrage. Les données sont traitées exclusivement sur vos infrastructures, sans extraction vers nos serveurs. Pour les sites de défense ou certifiés EN 9100, nous adaptons le protocole d'accès aux exigences de sécurité du site.",
+            a: "Oui. Nous signons un accord de confidentialité renforcé avant démarrage. Les données sont traitées exclusivement sur vos infrastructures, sans extraction vers nos serveurs. Pour les sites de défense ou certifiés EN 9100, nous adaptons le protocole d'accès aux exigences de sécurité du site.",
           },
           {
             q: "Votre audit couvre-t-il les outils métier spécifiques à la filière viti-vinicole ou aéronautique ?",
@@ -190,7 +190,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, business processes, operational KPIs). For defence sites or companies with sensitive data, enhanced confidentiality agreement available.",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, business processes, operational KPIs). For defence sites or companies with sensitive data, enhanced confidentiality agreement available.",
           },
           {
             step: "On-site kick-off",
@@ -260,7 +260,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
           {
             q: "Can you audit industrial sites subject to high confidentiality constraints?",
-            a: "Yes. We sign an enhanced NDA before kick-off. Data is processed exclusively on your infrastructure, with no extraction to our servers. For defence sites or EN 9100-certified facilities, we adapt the access protocol to the site's security requirements.",
+            a: "Yes. We sign an enhanced confidentiality agreement before kick-off. Data is processed exclusively on your infrastructure, with no extraction to our servers. For defence sites or EN 9100-certified facilities, we adapt the access protocol to the site's security requirements.",
           },
           {
             q: "Does your audit cover sector-specific tools in wine or aerospace?",
@@ -590,7 +590,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. NDA signé en cadrage, RGPD strict, DPO sur demande. Pour les sites de défense, hébergement on-premise exclusif disponible.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande. Pour les sites de défense, hébergement on-premise exclusif disponible.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -696,7 +696,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
           {
             q: "Does my data stay with me or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, DPO on request. For defence sites, exclusive on-premise hosting available.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, DPO on request. For defence sites, exclusive on-premise hosting available.",
           },
           {
             q: "Which AI models do you use?",

@@ -89,7 +89,7 @@ export const BREST_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux quelques documents clés (organigramme, processus, indicateurs métier). Pour les structures soumises à contraintes défense, accord sur le périmètre confidentiel avant toute collecte.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux quelques documents clés (organigramme, processus, indicateurs métier). Pour les structures soumises à contraintes défense, accord sur le périmètre confidentiel avant toute collecte.",
           },
           {
             step: "Kick-off sur site",
@@ -159,7 +159,7 @@ export const BREST_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous travailler avec des données soumises à confidentialité défense ?",
-            a: "Oui. Nous adaptons le périmètre de collecte en accord avec vos contraintes (données anonymisées, travail exclusivement sur vos infrastructures, NDA renforcé sur demande). Aucune extraction vers nos serveurs. Pour les niveaux de classification les plus élevés, le périmètre est défini ensemble en amont du cadrage.",
+            a: "Oui. Nous adaptons le périmètre de collecte en accord avec vos contraintes (données anonymisées, travail exclusivement sur vos infrastructures, accord de confidentialité renforcé sur demande). Aucune extraction vers nos serveurs. Pour les niveaux de classification les plus élevés, le périmètre est défini ensemble en amont du cadrage.",
           },
           {
             q: "Quel ROI puis-je attendre d'un audit pour une PME brestoise ?",
@@ -195,7 +195,7 @@ export const BREST_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access a few key documents (org chart, processes, KPIs). For organisations subject to defence constraints, agreement on confidential perimeter before any data collection.",
+              "Remote framing brief to access under full confidentiality a few key documents (org chart, processes, KPIs). For organisations subject to defence constraints, agreement on confidential perimeter before any data collection.",
           },
           {
             step: "On-site kick-off",
@@ -265,7 +265,7 @@ export const BREST_COPY: VilleCopy = {
           },
           {
             q: "Can you work with data subject to defence confidentiality?",
-            a: "Yes. We adapt the collection perimeter to your constraints (anonymised data, work exclusively on your infrastructure, enhanced NDA on request). No extraction to our servers. For the highest classification levels, the perimeter is agreed together before framing.",
+            a: "Yes. We adapt the collection perimeter to your constraints (anonymised data, work exclusively on your infrastructure, enhanced confidentiality agreement on request). No extraction to our servers. For the highest classification levels, the perimeter is agreed together before framing.",
           },
           {
             q: "What ROI can I expect for a Brest SME?",
@@ -735,7 +735,7 @@ export const BREST_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous travailler avec des organisations soumises à confidentialité défense ?",
-      a: "Oui. Nous adaptons systématiquement notre méthode aux contraintes de confidentialité — périmètre de collecte défini en amont, NDA renforcé, travail exclusivement sur vos infrastructures, déploiement on-premise si nécessaire. Nous accompagnons des sous-traitants navals et des ETI du bassin brestois sur des périmètres sensibles.",
+      a: "Oui. Nous adaptons systématiquement notre méthode aux contraintes de confidentialité — périmètre de collecte défini en amont, accord de confidentialité renforcé, travail exclusivement sur vos infrastructures, déploiement on-premise si nécessaire. Nous accompagnons des sous-traitants navals et des ETI du bassin brestois sur des périmètres sensibles.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Brest ?",

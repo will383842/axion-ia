@@ -90,7 +90,7 @@ export const ANGERS_COPY: VilleCopy = {
           {
             step: "Cadrage à distance",
             detail:
-              "Échange préliminaire pour signer le NDA, définir le périmètre (filière végétale, industriel, tertiaire, digital), accéder aux quelques documents clés (organigramme, processus, indicateurs).",
+              "Échange préliminaire pour signer le Confidentialité assurée, définir le périmètre (filière végétale, industriel, tertiaire, digital), accéder aux quelques documents clés (organigramme, processus, indicateurs).",
           },
           {
             step: "Kick-off sur site Angers",
@@ -164,7 +164,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
           {
             q: "Mes données de production ou de R&D restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée si la souveraineté est requise — important pour les acteurs de défense (Thales) ou de R&D industrielle.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée si la souveraineté est requise — important pour les acteurs de défense (Thales) ou de R&D industrielle.",
           },
           {
             q: "Intervenez-vous aussi sur les communes autour d'Angers ?",
@@ -196,7 +196,7 @@ export const ANGERS_COPY: VilleCopy = {
           {
             step: "Remote framing",
             detail:
-              "Preliminary exchange to sign the NDA, define scope (plant industry, manufacturing, services, digital), access key documents (org chart, processes, KPIs).",
+              "Preliminary exchange to sign the Confidentiality ensured, define scope (plant industry, manufacturing, services, digital), access key documents (org chart, processes, KPIs).",
           },
           {
             step: "On-site kick-off in Angers",
@@ -270,7 +270,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
           {
             q: "Does my production or R&D data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if sovereignty is required — key for defence players (Thales) or industrial R&D.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra if sovereignty is required — key for defence players (Thales) or industrial R&D.",
           },
           {
             q: "Do you also cover the municipalities around Angers?",
@@ -602,7 +602,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou de R&D restent-elles chez moi ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. NDA signé en cadrage, RGPD strict, DPO sur demande. Particulièrement important pour les acteurs de défense (Thales) ou de R&D végétale sensible.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande. Particulièrement important pour les acteurs de défense (Thales) ou de R&D végétale sensible.",
           },
           {
             q: "Que se passe-t-il si l'IA produit des erreurs sur des données critiques ?",
@@ -708,7 +708,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or R&D data stay with me?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, DPO on request. Particularly important for defence players (Thales) or sensitive plant R&D.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, DPO on request. Particularly important for defence players (Thales) or sensitive plant R&D.",
           },
           {
             q: "What happens if AI produces errors on critical data?",

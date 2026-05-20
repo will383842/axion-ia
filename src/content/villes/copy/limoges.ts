@@ -150,7 +150,7 @@ export const LIMOGES_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles limougeaudes avec des workflows complexes (Legrand, Texelis, manufactures porcelaine).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement utile pour les ETI industrielles limougeaudes avec des workflows complexes (Legrand, Texelis, manufactures porcelaine).",
           },
           {
             step: "Kick-off sur site",
@@ -224,7 +224,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles ou de manufacture restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs réglementés limougeauds (industrie électrique, agroalimentaire, santé CHU), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs réglementés limougeauds (industrie électrique, agroalimentaire, santé CHU), nous appliquons les contraintes souveraineté et conformité réglementaire dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Limoges ?",
@@ -256,7 +256,7 @@ export const LIMOGES_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly relevant for Limoges industrial mid-caps with complex workflows (Legrand, Texelis, porcelain manufacturers).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly relevant for Limoges industrial mid-caps with complex workflows (Legrand, Texelis, porcelain manufacturers).",
           },
           {
             step: "On-site kick-off",
@@ -330,7 +330,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial or manufacturing data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For Limoges regulated sectors (electrical industry, agri-food, CHU health), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For Limoges regulated sectors (electrical industry, agri-food, CHU health), we apply sovereignty and regulatory compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Limoges?",
@@ -865,7 +865,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             q: "Le coaching est-il confidentiel ?",
-            a: "Oui, entièrement. NDA signé avant le démarrage, aucun cas client nommé ni partagé avec des tiers. Format individuel par définition — personne d'autre dans la salle ou dans le call.",
+            a: "Oui, entièrement. Confidentialité stricte dès le démarrage, aucun cas client nommé ni partagé avec des tiers. Format individuel par définition — personne d'autre dans la salle ou dans le call.",
           },
           {
             q: "Puis-je faire le coaching à distance depuis Limoges ?",
@@ -885,7 +885,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité totale garantie par NDA. Contenu 100 % sur mesure pour votre contexte limougeaud — aucun module générique recyclé. Si après la première séance vous estimez que le coaching ne correspond pas à vos attentes, remboursement intégral. Aucun engagement de durée minimale imposé.",
+          "Confidentialité totale garantie. Contenu 100 % sur mesure pour votre contexte limougeaud — aucun module générique recyclé. Si après la première séance vous estimez que le coaching ne correspond pas à vos attentes, remboursement intégral. Aucun engagement de durée minimale imposé.",
       },
       en: {
         hero: "Axion-IA's individual AI coaching in Limoges supports executives, managers and experts one-on-one on their personal AI challenges. Confidential and bespoke format — tailored to manufacture managers, Legrand executives, ESTER R&D managers or French Tech Limoges entrepreneurs. Lodging, meals and travel allowance billed separately.",
@@ -971,7 +971,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
           {
             q: "Is the coaching confidential?",
-            a: "Yes, entirely. NDA signed before kick-off, no named client case shared with third parties. Individual format by definition — nobody else in the room or on the call.",
+            a: "Yes, entirely. Confidentiality ensured from kick-off, no named client case shared with third parties. Individual format by definition — nobody else in the room or on the call.",
           },
           {
             q: "Can I do coaching remotely from Limoges?",
@@ -991,7 +991,7 @@ export const LIMOGES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Full confidentiality guaranteed by NDA. Content 100% bespoke for your Limoges context — no recycled generic module. If after the first session you feel the coaching does not meet your expectations, full refund. No minimum engagement imposed.",
+          "Full confidentiality guaranteed. Content 100% bespoke for your Limoges context — no recycled generic module. If after the first session you feel the coaching does not meet your expectations, full refund. No minimum engagement imposed.",
       },
     },
   },

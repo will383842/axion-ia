@@ -85,7 +85,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Identification préalable des cas IA probables selon votre secteur havrais (logistique portuaire, industrie, services).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Identification préalable des cas IA probables selon votre secteur havrais (logistique portuaire, industrie, services).",
           },
           {
             step: "Kick-off sur site",
@@ -159,7 +159,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles confidentielles pendant l'audit ?",
-            a: "Oui. NDA signé avant tout démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si souveraineté ou secret industriel requis.",
+            a: "Oui. Confidentialité stricte assurée dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si souveraineté ou secret industriel requis.",
           },
           {
             q: "Pouvez-vous auditer des cas IA spécifiques à la logistique maritime ?",
@@ -191,7 +191,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Prior identification of probable AI cases per your Le Havre sector (port logistics, industry, services).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Prior identification of probable AI cases per your Le Havre sector (port logistics, industry, services).",
           },
           {
             step: "On-site kick-off",
@@ -265,7 +265,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay confidential during the audit?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty or trade secret is required.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure, no extraction to our servers. GDPR compliance, models tested locally or on dedicated infra at your premises if sovereignty or trade secret is required.",
           },
           {
             q: "Can you audit AI cases specific to maritime logistics?",
@@ -593,7 +593,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles chez nous ou partent-elles chez Axion-IA ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. NDA signé en cadrage, RGPD strict, confidentialité industrielle garantie, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, confidentialité industrielle garantie, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -699,7 +699,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay with us or move to Axion-IA?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, industrial confidentiality guaranteed, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, industrial confidentiality guaranteed, DPO on request.",
           },
           {
             q: "Which AI models do you use?",

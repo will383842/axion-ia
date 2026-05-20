@@ -92,7 +92,7 @@ export const NANTES_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus métier, indicateurs de production ou de gestion).",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus métier, indicateurs de production ou de gestion).",
           },
           {
             step: "Kick-off sur site Nantes",
@@ -166,7 +166,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage. Les données sont traitées exclusivement sur vos infrastructures, sans extraction vers nos serveurs. Conformité RGPD stricte, modèles testés en local ou sur infra dédiée chez vous si la souveraineté industrielle est requise.",
+            a: "Oui. Confidentialité stricte dès le démarrage. Les données sont traitées exclusivement sur vos infrastructures, sans extraction vers nos serveurs. Conformité RGPD stricte, modèles testés en local ou sur infra dédiée chez vous si la souveraineté industrielle est requise.",
           },
           {
             q: "Comment se déroule la restitution finale ?",
@@ -198,7 +198,7 @@ export const NANTES_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, business processes, production or management KPIs).",
+              "Remote framing brief to access under full confidentiality key documents (org chart, business processes, production or management KPIs).",
           },
           {
             step: "On-site kick-off Nantes",
@@ -272,7 +272,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay confidential?",
-            a: "Yes. NDA signed before kick-off. Data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance, models tested locally or on dedicated infra at your premises if industrial sovereignty is required.",
+            a: "Yes. Confidentiality ensured from kick-off. Data processed exclusively on your infrastructure, no extraction to our servers. Strict GDPR compliance, models tested locally or on dedicated infra at your premises if industrial sovereignty is required.",
           },
           {
             q: "How does the final read-out work?",
@@ -606,7 +606,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Mes données industrielles restent-elles chez moi ?",
-            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. NDA signé en cadrage, RGPD strict, DPO sur demande.",
+            a: "Toujours chez vous. Modèles IA déployés sur votre infra (cloud privé, on-premise, serveur dédié) ou sur infra dédiée UE si vous préférez. Confidentialité assurée dès le cadrage, RGPD strict, DPO sur demande.",
           },
           {
             q: "Quels modèles IA utilisez-vous ?",
@@ -712,7 +712,7 @@ export const NANTES_COPY: VilleCopy = {
           },
           {
             q: "Does my industrial data stay with me?",
-            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. NDA signed at framing, strict GDPR, DPO on request.",
+            a: "Always with you. AI models deployed on your infra (private cloud, on-premise, dedicated server) or on dedicated EU infra if you prefer. Strict confidentiality at framing, strict GDPR, DPO on request.",
           },
           {
             q: "Which AI models do you use?",

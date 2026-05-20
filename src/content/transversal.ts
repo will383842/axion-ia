@@ -426,12 +426,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment garantir la confidentialité des données lors d'un projet IA ?",
       answer:
-        "Axion-IA signe un accord de confidentialité (NDA) avant toute intervention. Les données client ne quittent jamais votre infrastructure sans accord explicite. Les échantillons utilisés pour les démos sont systématiquement anonymisés. Hébergement des modèles et données exclusivement en UE (Hetzner Frankfurt).",
+        "Axion-IA signe un accord de confidentialité contractuel avant toute intervention. Les données client ne quittent jamais votre infrastructure sans accord explicite. Les échantillons utilisés pour les démos sont systématiquement anonymisés. Hébergement des modèles et données exclusivement en UE (Hetzner Frankfurt).",
     },
     en: {
       question: "How do you guarantee data confidentiality in an AI project?",
       answer:
-        "Axion-IA signs a confidentiality agreement (NDA) before any engagement. Client data never leaves your infrastructure without explicit consent. Samples used for demos are systematically anonymised. Models and data hosted exclusively in the EU (Hetzner Frankfurt).",
+        "Axion-IA signs a contractual confidentiality agreement before any engagement. Client data never leaves your infrastructure without explicit consent. Samples used for demos are systematically anonymised. Models and data hosted exclusively in the EU (Hetzner Frankfurt).",
     },
   },
   {

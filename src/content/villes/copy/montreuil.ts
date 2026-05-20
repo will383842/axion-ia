@@ -127,7 +127,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           {
             step: "Préparation",
             detail:
-              "Un brief de cadrage à distance pour signer le NDA et accéder aux documents clés (organigramme, processus, indicateurs). Particulièrement structurant pour les grandes directions IT ou financières dont les workflows sont documentés dans des systèmes CRM ou ERP.",
+              "Un brief de cadrage à distance pour accéder en toute confidentialité aux documents clés (organigramme, processus, indicateurs). Particulièrement structurant pour les grandes directions IT ou financières dont les workflows sont documentés dans des systèmes CRM ou ERP.",
           },
           {
             step: "Kick-off sur site",
@@ -201,7 +201,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Mes données financières ou métier restent-elles confidentielles ?",
-            a: "Oui. NDA signé avant le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs financiers et réglementés, nous appliquons les contraintes de souveraineté et de conformité dès la sélection des modèles IA.",
+            a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures. Pour les secteurs financiers et réglementés, nous appliquons les contraintes de souveraineté et de conformité dès la sélection des modèles IA.",
           },
           {
             q: "Comment se déroule la restitution finale à Montreuil ?",
@@ -233,7 +233,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           {
             step: "Preparation",
             detail:
-              "Remote framing brief to sign the NDA and access key documents (org chart, processes, KPIs). Particularly structured for large IT or financial departments whose workflows are documented in CRM or ERP systems.",
+              "Remote framing brief to access under full confidentiality key documents (org chart, processes, KPIs). Particularly structured for large IT or financial departments whose workflows are documented in CRM or ERP systems.",
           },
           {
             step: "On-site kick-off",
@@ -307,7 +307,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Does my financial or business data stay confidential?",
-            a: "Yes. NDA signed before kick-off, data processed exclusively on your infrastructure. For financial and regulated sectors, we apply sovereignty and compliance constraints at the AI model selection stage.",
+            a: "Yes. Confidentiality ensured from kick-off, data processed exclusively on your infrastructure. For financial and regulated sectors, we apply sovereignty and compliance constraints at the AI model selection stage.",
           },
           {
             q: "How does the final read-out work in Montreuil?",
@@ -759,7 +759,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         hero: "L'accompagnement 1-to-1 Axion-IA à Montreuil est conçu pour les dirigeants, managers et experts qui veulent maîtriser l'IA sur leurs cas d'usage réels — sans passer par un dispositif collectif. Sessions individuelles sur site à Montreuil ou à distance, rythme et profondeur adaptés à votre agenda et à votre secteur : jeu vidéo, finance, numérique, ESS.",
         whyHere: [
           "Montreuil concentre des profils dirigeants et managers aux profils très variés — studio jeu vidéo, direction financière, équipe IT, ESS — pour lesquels un format individuel est souvent plus efficace qu'un collectif.",
-          "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. NDA signé avant chaque accompagnement.",
+          "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
           "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
           "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence. Frais de logement, repas et forfait trajet en sus si présentiel souhaité.",
@@ -843,7 +843,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Les sessions sont-elles confidentielles ?",
-            a: "Totalement. NDA signé avant chaque parcours. Vos données, vos projets et vos enjeux stratégiques ne sortent pas du cadre de la session. Aucune référence commerciale ne sera faite sans votre accord explicite.",
+            a: "Totalement. Confidentialité stricte avant chaque parcours. Vos données, vos projets et vos enjeux stratégiques ne sortent pas du cadre de la session. Aucune référence commerciale ne sera faite sans votre accord explicite.",
           },
           {
             q: "Peut-on faire les sessions en présentiel à Montreuil ou à distance ?",
@@ -859,13 +859,13 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Confidentialité totale garantie par NDA avant chaque parcours. Sessions opérationnelles : vous repartez avec des outils actifs sur votre poste dès la première session. Pas de contenu générique recyclé : chaque session travaille sur vos vrais documents et vos vrais projets. Si l'IA ne vous apporte pas de valeur concrète après la première session, pas de facturation pour la suite.",
+          "Confidentialité totale garantie par Confidentialité assurée à chaque parcours. Sessions opérationnelles : vous repartez avec des outils actifs sur votre poste dès la première session. Pas de contenu générique recyclé : chaque session travaille sur vos vrais documents et vos vrais projets. Si l'IA ne vous apporte pas de valeur concrète après la première session, pas de facturation pour la suite.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 coaching in Montreuil is designed for executives, managers and experts who want to master AI on their real use cases — without going through a group format. Individual sessions on site in Montreuil or remote, pace and depth adapted to your schedule and sector: gaming, finance, digital, social economy.",
         whyHere: [
           "Montreuil concentrates executives and managers with very diverse profiles — gaming studio, financial directorate, IT team, social economy — for whom an individual format is often more effective than a group one.",
-          "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. NDA signed before each engagement.",
+          "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
           "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
           "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference. Lodging, meals and travel allowance billed separately if in-person preferred.",
@@ -949,7 +949,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
           {
             q: "Are sessions confidential?",
-            a: "Fully. NDA signed before each pathway. Your data, your projects and your strategic issues do not leave the session framework. No commercial reference will be made without your explicit agreement.",
+            a: "Fully. Strict confidentiality before each pathway. Your data, your projects and your strategic issues do not leave the session framework. No commercial reference will be made without your explicit agreement.",
           },
           {
             q: "Can sessions be in-person in Montreuil or remote?",
@@ -965,7 +965,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Full confidentiality guaranteed by NDA before each pathway. Operational sessions: you leave with active tools on your workstation from the first session. No recycled generic content: each session works on your real documents and real projects. If AI brings no concrete value after the first session, no charge for the rest.",
+          "Full confidentiality guaranteed by Strict confidentiality before each pathway. Operational sessions: you leave with active tools on your workstation from the first session. No recycled generic content: each session works on your real documents and real projects. If AI brings no concrete value after the first session, no charge for the rest.",
       },
     },
   },
