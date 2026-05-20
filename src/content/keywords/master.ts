@@ -1,5 +1,5 @@
 // src/content/keywords/master.ts
-// AUTO-GENERATED — Mode G (6 phases) + Mode H (notoriété) + Mode J (presse) + Mode M (positionnements) + Mode I (GEO) — 2026-05-20
+// AUTO-GENERATED — Mode G (6 phases + G7A + G7B + G7C + G8) + Mode H + Mode J + Mode M + Mode I — 2026-05-20
 // Généré par Claude Sonnet 4.6 depuis PROMPT-KEYWORD-STRATEGY-MASTER-V1.md v1.2
 //
 // Modifier via admin console /admin/content-gen/keyword-engine
@@ -16,11 +16,15 @@ import { KW_IMPLEMENTATION_G3, KW_CODAGE_G3 } from "./g3-implementation-codage";
 import { KW_AEO_G4 } from "./g4-aeo";
 import { KW_COMPARATIFS_G5, KW_PARTENAIRES_G5 } from "./g5-comparatifs-partenaires";
 import { KW_SECTORIELS_G6, KW_COACHING_G6 } from "./g6-sectoriels-coaching";
+import { KW_SECTEURS_G7A } from "./g7a-secteurs-tertiaire";
+import { KW_SECTEURS_G7B } from "./g7b-secteurs-industrie";
 import { KW_NOTORIETE_H } from "./h-notoriete";
 import { KW_PRESSE_J } from "./j-presse";
 import { KW_POSITIONNEMENTS_M } from "./m-positionnements";
 import { KW_GEO_I } from "./i-geo";
 import { KW_SUPPLEMENTS_X } from "./x-supplements";
+import { KW_SECTEURS_G7C } from "./g7c-secteurs-conso-culture";
+import { KW_AUDIENCES_G8 } from "./g8-audiences-manquantes";
 
 // Termes à filtrer :
 // 1. Financements certifiés (Axion-IA non Qualiopi)
@@ -55,9 +59,12 @@ export const KW_TRANSACTIONNEL: KeywordSeed[] = [
   ...KW_CODAGE_G3,
   ...KW_SECTORIELS_G6,
   ...KW_COACHING_G6,
+  ...KW_SECTEURS_G7A,
+  ...KW_SECTEURS_G7B,
   ...KW_NOTORIETE_H,
   ...KW_POSITIONNEMENTS_M,
   ...KW_SUPPLEMENTS_X,
+  ...KW_AUDIENCES_G8,
 ].filter((s) => s.intent === "transactionnel" && isClean(s));
 
 export const KW_BENEFICE: KeywordSeed[] = [
@@ -65,6 +72,8 @@ export const KW_BENEFICE: KeywordSeed[] = [
   ...KW_INTERVENTIONS_G2,
   ...KW_IMPLEMENTATION_G3,
   ...KW_CODAGE_G3,
+  ...KW_SECTEURS_G7A,
+  ...KW_SECTEURS_G7B,
   ...KW_NOTORIETE_H,
   ...KW_POSITIONNEMENTS_M,
   ...KW_SUPPLEMENTS_X,
@@ -87,7 +96,11 @@ export const KW_AEO: KeywordSeed[] = [
   ...KW_AUDIT_G1,
   ...KW_INTERVENTIONS_G2,
   ...KW_SECTORIELS_G6,
+  ...KW_SECTEURS_G7A,
+  ...KW_SECTEURS_G7B,
+  ...KW_SECTEURS_G7C,
   ...KW_GEO_I,
+  ...KW_AUDIENCES_G8,
 ].filter((s) => s.intent === "aeo" && isClean(s));
 
 export const KW_COMPARATIF: KeywordSeed[] = [
@@ -102,6 +115,9 @@ export const KW_PARTENAIRE: KeywordSeed[] = [...KW_PARTENAIRES_G5].filter(
 
 export const KW_SECTORIEL: KeywordSeed[] = [
   ...KW_SECTORIELS_G6,
+  ...KW_SECTEURS_G7A,
+  ...KW_SECTEURS_G7B,
+  ...KW_SECTEURS_G7C,
   ...KW_AUDIT_G1,
   ...KW_INTERVENTIONS_G2,
   ...KW_IMPLEMENTATION_G3,
