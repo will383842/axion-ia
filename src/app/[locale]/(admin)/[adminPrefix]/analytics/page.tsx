@@ -92,13 +92,6 @@ async function pingIndexNowAction(): Promise<PingResult> {
   }
 }
 
-// ─── UI helpers ─────────────────────────────────────────────────────────────
-
-function statusPill(status: Status, label?: string) {
-  const text = label ?? (status === "ok" ? "● Configuré" : "○ Non configuré");
-  return <span className={`admin-status-pill admin-status-${status}`}>{text}</span>;
-}
-
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default async function AdminAnalyticsPage({ params }: PageProps) {
@@ -119,8 +112,7 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       detail: env.GOOGLE_SITE_VERIFICATION
         ? "Balise meta posée — vérifie « Domain property » dans GSC"
         : "Variable GOOGLE_SITE_VERIFICATION absente",
-      externalUrl:
-        "https://search.google.com/search-console?resource_id=sc-domain%3Aaxion-ia.com",
+      externalUrl: "https://search.google.com/search-console?resource_id=sc-domain%3Aaxion-ia.com",
       helpUrl: "https://search.google.com/search-console/welcome",
       envVar: "GOOGLE_SITE_VERIFICATION",
     },
@@ -150,4 +142,3 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
     />
   );
 }
-

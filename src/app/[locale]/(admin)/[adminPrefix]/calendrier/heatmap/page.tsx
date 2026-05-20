@@ -16,11 +16,9 @@
 //   - Drag-drop reschedule depuis carte (D60)
 //   - Override hub depuis SiteSetting
 
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { distanceAndBufferFromHub, distanceKm } from "@/lib/haversine";
 import { HeatmapV2 } from "./_v2/HeatmapV2";
 
 export const dynamic = "force-dynamic";
@@ -42,17 +40,6 @@ function endOfMonth(d: Date): Date {
   r.setMilliseconds(-1);
   return r;
 }
-
-function formatDate(d: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(d);
-}
-
-const CONFLICT_THRESHOLD_KM = 600;
-const WARN_THRESHOLD_KM = 300;
 
 export default async function CalendarHeatmapPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
@@ -96,4 +83,3 @@ export default async function CalendarHeatmapPage({ params, searchParams }: Page
     />
   );
 }
-

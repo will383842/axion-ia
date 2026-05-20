@@ -5,13 +5,6 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import {
-  approveReview,
-  promoteToTier1,
-  rejectReview,
-  requestEdits,
-} from "@/server/actions/content-gen/review";
-import { createPreviewToken } from "@/server/content-gen/shared/preview-token";
 import { ReviewDetailV2 } from "./_v2/ReviewDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -48,4 +41,3 @@ export default async function ReviewDetailPage({ params }: PageProps) {
     />
   );
 }
-

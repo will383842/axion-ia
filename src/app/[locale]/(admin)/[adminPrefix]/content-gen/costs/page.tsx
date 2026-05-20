@@ -4,7 +4,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getCostsStats } from "@/server/actions/content-gen/geo";
 import { CostsV2 } from "./_v2/CostsV2";
 
 export const dynamic = "force-dynamic";
@@ -20,4 +19,3 @@ export default async function CostsPage({ params }: PageProps) {
 
   return <CostsV2 />;
 }
-

@@ -12,17 +12,6 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  draft: "Brouillon",
-  published: "Publié",
-  archived: "Archivé",
-};
-const MODULE_LABELS: Record<string, string> = {
-  intervention: "Intervention",
-  implementation: "Implémentation",
-  audit: "Audit",
-};
-
 export default async function CategoriesListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -47,4 +36,3 @@ export default async function CategoriesListPage({ params, searchParams }: PageP
     />
   );
 }
-

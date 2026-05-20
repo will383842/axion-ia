@@ -4,8 +4,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
-import { cancelJob, getJob, retryJob } from "@/server/actions/content-gen/jobs";
+import { getJob } from "@/server/actions/content-gen/jobs";
 import { JobDetailV2 } from "./_v2/JobDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -24,4 +23,3 @@ export default async function JobDetailPage({ params }: PageProps) {
 
   return <JobDetailV2 job={job} />;
 }
-

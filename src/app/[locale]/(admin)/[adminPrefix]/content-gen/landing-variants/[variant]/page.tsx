@@ -7,7 +7,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { LandingVariantDetailV2 } from "./_v2/LandingVariantDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -23,4 +22,3 @@ export default async function LandingVariantDetailPage({ params }: PageProps) {
 
   return <LandingVariantDetailV2 adminPrefix={adminPrefix} variant={variant} />;
 }
-

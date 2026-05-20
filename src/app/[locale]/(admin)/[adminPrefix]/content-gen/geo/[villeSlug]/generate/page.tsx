@@ -7,7 +7,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { GeoVilleGenerateV2 } from "./_v2/GeoVilleGenerateV2";
 
 export const dynamic = "force-dynamic";
@@ -23,4 +22,3 @@ export default async function GeoVilleGeneratePage({ params }: PageProps) {
 
   return <GeoVilleGenerateV2 adminPrefix={adminPrefix} villeSlug={villeSlug} />;
 }
-

@@ -7,7 +7,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { listRssSources, removeRssSource } from "@/server/actions/content-gen/rss";
+import { listRssSources } from "@/server/actions/content-gen/rss";
 import { RssDetailV2 } from "./_v2/RssDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -28,4 +28,3 @@ export default async function RssDetailPage({ params }: PageProps) {
 
   return <RssDetailV2 adminPrefix={adminPrefix} source={source} />;
 }
-

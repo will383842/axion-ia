@@ -8,10 +8,8 @@
 // → rescheduleBookingByAdminAction côté serveur.
 
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ReschedulePanel } from "./ReschedulePanel";
 import { RescheduleV2 } from "./_v2/RescheduleV2";
 import type { BookingStatus } from "../../../../../../../prisma/generated/client";
 
@@ -114,4 +112,3 @@ export default async function CalendarReschedulePage({ params, searchParams }: P
     />
   );
 }
-

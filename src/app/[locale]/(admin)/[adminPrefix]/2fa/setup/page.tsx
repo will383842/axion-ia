@@ -9,7 +9,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { setup2FAStartAction } from "@/features/admin-auth/actions";
-import { Setup2FAForm } from "./Setup2FAForm";
 import { Setup2FAV2 } from "./_v2/Setup2FAV2";
 
 export const dynamic = "force-dynamic";
@@ -29,4 +28,3 @@ export default async function AdminSetup2FAPage({ params }: PageProps) {
 
   return <Setup2FAV2 start={start} />;
 }
-

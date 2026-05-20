@@ -8,23 +8,12 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { removeRssSource, toggleRssSource } from "@/server/actions/content-gen/rss";
-import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { RssListV2 } from "./_v2/RssListV2";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-}
-
-interface RssSource {
-  readonly url: string;
-  readonly name: string;
-  readonly tags: ReadonlyArray<string>;
-  readonly pollIntervalMin: number;
-  readonly autoPublish: boolean;
-  readonly enabled: boolean;
 }
 
 export default async function RssListPage({ params }: PageProps) {
@@ -34,4 +23,3 @@ export default async function RssListPage({ params }: PageProps) {
 
   return <RssListV2 adminPrefix={adminPrefix} />;
 }
-

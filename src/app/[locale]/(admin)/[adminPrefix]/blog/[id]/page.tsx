@@ -8,7 +8,6 @@ import {
   listBlogCategoriesAction,
   listAllTagsAction,
 } from "@/features/admin-blog/actions";
-import { BlogForm } from "../BlogForm";
 import { BlogEditV2 } from "./_v2/BlogEditV2";
 
 export const dynamic = "force-dynamic";
@@ -77,4 +76,3 @@ export default async function EditBlogPage({ params }: PageProps) {
     />
   );
 }
-

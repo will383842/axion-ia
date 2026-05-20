@@ -6,7 +6,6 @@ import {
   getCaseStudyDetailAction,
   listCandidateTestimonialsAction,
 } from "@/features/admin-case-studies/actions";
-import { CaseStudyForm } from "../CaseStudyForm";
 import { CaseStudyEditV2 } from "./_v2/CaseStudyEditV2";
 
 export const dynamic = "force-dynamic";
@@ -74,4 +73,3 @@ export default async function EditCaseStudyPage({ params }: PageProps) {
     />
   );
 }
-

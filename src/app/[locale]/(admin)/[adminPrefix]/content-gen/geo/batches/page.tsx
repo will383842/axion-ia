@@ -7,7 +7,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { GeoBatchesV2 } from "./_v2/GeoBatchesV2";
 
 export const dynamic = "force-dynamic";
@@ -23,4 +22,3 @@ export default async function GeoBatchesPage({ params }: PageProps) {
 
   return <GeoBatchesV2 adminPrefix={adminPrefix} />;
 }
-

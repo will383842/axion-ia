@@ -7,12 +7,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import {
-  readContentGenConfig,
-  writeContentGenConfig,
-} from "@/server/actions/content-gen/_settings";
-import { requireAdmin } from "@/server/actions/content-gen/_auth";
 import { OnboardingV2 } from "./_v2/OnboardingV2";
 
 export const dynamic = "force-dynamic";
@@ -28,4 +22,3 @@ export default async function OnboardingPage({ params }: PageProps) {
 
   return <OnboardingV2 adminPrefix={adminPrefix} />;
 }
-

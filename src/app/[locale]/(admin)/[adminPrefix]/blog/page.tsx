@@ -12,12 +12,6 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  draft: "Brouillon",
-  published: "Publié",
-  archived: "Archivé",
-};
-
 export default async function BlogListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -41,4 +35,3 @@ export default async function BlogListPage({ params, searchParams }: PageProps) 
     />
   );
 }
-

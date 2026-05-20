@@ -13,7 +13,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { KeywordTrackingV2 } from "./_v2/KeywordTrackingV2";
 
 export const dynamic = "force-dynamic";
@@ -21,23 +20,6 @@ export const dynamic = "force-dynamic";
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
   searchParams: Promise<{ source?: string; posMin?: string; posMax?: string }>;
-}
-
-function PositionTrend({ delta }: { delta: number | null }) {
-  if (delta === null || delta === 0)
-    return <span style={{ color: "var(--color-fg-muted)" }}>—</span>;
-  const isUp = delta < 0; // position décroissante = monte SERP
-  return (
-    <span
-      style={{
-        color: isUp ? "var(--color-success, currentColor)" : "var(--color-danger, currentColor)",
-        fontWeight: 600,
-      }}
-      aria-label={isUp ? "monte" : "recule"}
-    >
-      {isUp ? "▲" : "▼"} {Math.abs(delta).toFixed(1)}
-    </span>
-  );
 }
 
 export default async function KeywordTrackingPage({ params, searchParams }: PageProps) {
@@ -48,4 +30,3 @@ export default async function KeywordTrackingPage({ params, searchParams }: Page
 
   return <KeywordTrackingV2 searchParams={sp} />;
 }
-

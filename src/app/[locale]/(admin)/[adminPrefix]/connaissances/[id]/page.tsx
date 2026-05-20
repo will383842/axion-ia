@@ -6,8 +6,6 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getEntryAction } from "@/server/actions/knowledge/get-entry";
-import { ConnaissancesEditForm } from "./ConnaissancesEditForm";
-import { WorkflowPanel } from "./WorkflowPanel";
 import { ConnaissancesEditV2 } from "./_v2/ConnaissancesEditV2";
 
 export const dynamic = "force-dynamic";
@@ -66,4 +64,3 @@ export default async function ConnaissancesEditPage({ params }: PageProps) {
     />
   );
 }
-

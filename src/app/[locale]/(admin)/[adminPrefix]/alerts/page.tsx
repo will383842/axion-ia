@@ -197,57 +197,6 @@ async function fetchSentryAlerts(): Promise<{
   }
 }
 
-// ─── UI helpers ─────────────────────────────────────────────────────────────
-
-function severityPill(severity: Alert["severity"]) {
-  const labels: Record<Alert["severity"], string> = {
-    critical: "● Critique",
-    warning: "● Warning",
-    info: "● Info",
-  };
-  return <span className={`admin-status-pill admin-severity-${severity}`}>{labels[severity]}</span>;
-}
-
-function sourceLabel(source: Alert["source"]): string {
-  switch (source) {
-    case "sentry":
-      return "Sentry";
-    case "uptimerobot":
-      return "UptimeRobot";
-    case "coolify":
-      return "Coolify";
-  }
-}
-
-function AlertCard({ alert }: { alert: Alert }) {
-  const content = (
-    <>
-      <div className="admin-infra-card-head">
-        <strong>
-          [{sourceLabel(alert.source)}] {alert.title}
-        </strong>
-        {severityPill(alert.severity)}
-      </div>
-      <p className="admin-meta-block">{alert.detail}</p>
-      {alert.createdAt && (
-        <p className="admin-meta">{new Date(alert.createdAt).toLocaleString("fr-FR")}</p>
-      )}
-    </>
-  );
-  return alert.url ? (
-    <a
-      href={alert.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="admin-card admin-infra-card"
-    >
-      {content}
-    </a>
-  ) : (
-    <div className="admin-card admin-infra-card">{content}</div>
-  );
-}
-
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default async function AdminAlertsPage({ params }: PageProps) {
@@ -294,4 +243,3 @@ export default async function AdminAlertsPage({ params }: PageProps) {
     />
   );
 }
-

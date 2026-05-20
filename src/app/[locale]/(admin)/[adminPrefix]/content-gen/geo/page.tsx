@@ -8,8 +8,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
-import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
 import { GeoCockpitV2 } from "./_v2/GeoCockpitV2";
 
 export const dynamic = "force-dynamic";
@@ -24,25 +22,4 @@ export default async function GeoCockpitPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   return <GeoCockpitV2 adminPrefix={adminPrefix} />;
-}
-
-
-function KpiCard({
-  label,
-  value,
-  tone,
-}: {
-  readonly label: string;
-  readonly value: string | number;
-  readonly tone?: "warn" | undefined;
-}) {
-  return (
-    <div
-      className="admin-card admin-kpi-card"
-      style={tone === "warn" ? { borderColor: "var(--color-terracotta)" } : undefined}
-    >
-      <p className="admin-kpi-label">{label}</p>
-      <p className="admin-kpi-value">{value}</p>
-    </div>
-  );
 }

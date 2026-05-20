@@ -6,14 +6,8 @@
  */
 
 import { redirect } from "next/navigation";
-import type { ContentType } from "../../../../../../../../prisma/generated/client";
 import { auth } from "@/auth";
-import {
-  type DailyTargetByType,
-  getBatchSettings,
-  updateBatchSettings,
-} from "@/server/actions/content-gen/policies";
-import { CONTENT_TYPES_ALL } from "@/server/actions/content-gen/policies-constants";
+import { getBatchSettings } from "@/server/actions/content-gen/policies";
 import { BatchesV2 } from "./_v2/BatchesV2";
 
 export const dynamic = "force-dynamic";
@@ -31,4 +25,3 @@ export default async function BatchesSettingsPage({ params }: PageProps) {
 
   return <BatchesV2 cfg={cfg} />;
 }
-

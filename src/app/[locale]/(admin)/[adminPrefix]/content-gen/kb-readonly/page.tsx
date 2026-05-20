@@ -8,7 +8,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { KbReadonlyV2 } from "./_v2/KbReadonlyV2";
 
 export const dynamic = "force-dynamic";
@@ -24,4 +23,3 @@ export default async function KbReadonlyPage({ params }: PageProps) {
 
   return <KbReadonlyV2 adminPrefix={adminPrefix} />;
 }
-

@@ -7,7 +7,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { REGIONS } from "@/content/regions";
 import { GeoBatchesNewV2 } from "./_v2/GeoBatchesNewV2";
 
 export const dynamic = "force-dynamic";
@@ -27,4 +26,3 @@ export default async function NewBatchPage({ params, searchParams }: PageProps) 
 
   return <GeoBatchesNewV2 adminPrefix={adminPrefix} preselected={preselected} />;
 }
-

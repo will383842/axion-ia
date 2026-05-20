@@ -8,11 +8,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  deleteDistributionProfile,
-  listDistributionProfiles,
-  upsertDistributionProfile,
-} from "@/server/actions/content-gen/distribution";
+import { listDistributionProfiles } from "@/server/actions/content-gen/distribution";
 import { CoverageDistributionV2 } from "./_v2/CoverageDistributionV2";
 
 export const dynamic = "force-dynamic";
@@ -30,4 +26,3 @@ export default async function CoverageDistributionPage({ params }: PageProps) {
 
   return <CoverageDistributionV2 rows={rows} />;
 }
-

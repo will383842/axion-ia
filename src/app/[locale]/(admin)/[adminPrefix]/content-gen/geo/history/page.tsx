@@ -6,7 +6,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { GeoHistoryV2 } from "./_v2/GeoHistoryV2";
 
 export const dynamic = "force-dynamic";
@@ -22,4 +21,3 @@ export default async function GeoHistoryPage({ params }: PageProps) {
 
   return <GeoHistoryV2 adminPrefix={adminPrefix} />;
 }
-

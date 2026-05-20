@@ -11,11 +11,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  deleteArticle,
-  getArticleDetail,
-  updateArticle,
-} from "@/server/actions/content-gen/article";
+import { getArticleDetail } from "@/server/actions/content-gen/article";
 import { PublicationEditV2 } from "./_v2/PublicationEditV2";
 
 export const dynamic = "force-dynamic";
@@ -56,4 +52,3 @@ export default async function ArticleEditPage({ params }: PageProps) {
     />
   );
 }
-

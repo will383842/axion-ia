@@ -5,11 +5,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listEntriesAction } from "@/server/actions/knowledge/list-entries";
-import { KB_TYPES } from "@/content/knowledge/types";
-import { KB_DOMAINS } from "@/content/knowledge/domains";
-import { KB_AUDIENCES } from "@/content/knowledge/audiences";
-import { KB_STATUSES, getStatusLabel } from "@/content/knowledge/statuses";
-import { getKbTypeMeta } from "@/content/knowledge/types";
 import { ConnaissancesV2 } from "./_v2/ConnaissancesV2";
 
 export const dynamic = "force-dynamic";
@@ -45,4 +40,3 @@ export default async function ConnaissancesListPage({ params, searchParams }: Pa
     />
   );
 }
-

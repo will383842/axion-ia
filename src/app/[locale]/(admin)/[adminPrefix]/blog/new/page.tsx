@@ -7,7 +7,6 @@ import {
   listBlogCategoriesAction,
   listAllTagsAction,
 } from "@/features/admin-blog/actions";
-import { BlogForm } from "../BlogForm";
 import { BlogNewV2 } from "./_v2/BlogNewV2";
 
 export const dynamic = "force-dynamic";
@@ -37,4 +36,3 @@ export default async function NewBlogPage({ params }: PageProps) {
     <BlogNewV2 adminPrefix={adminPrefix} authors={authors} categories={categories} tags={tags} />
   );
 }
-

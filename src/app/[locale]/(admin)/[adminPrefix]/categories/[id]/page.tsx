@@ -6,7 +6,6 @@ import {
   getCategoryDetailAction,
   listPotentialParentsAction,
 } from "@/features/admin-categories/actions";
-import { CategoryForm } from "../CategoryForm";
 import { CategoriesEditV2 } from "./_v2/CategoriesEditV2";
 
 export const dynamic = "force-dynamic";
@@ -57,4 +56,3 @@ export default async function EditCategoryPage({ params }: PageProps) {
     />
   );
 }
-

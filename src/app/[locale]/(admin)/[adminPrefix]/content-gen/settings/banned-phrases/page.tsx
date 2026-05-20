@@ -4,12 +4,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  createBannedPhrase,
-  deleteBannedPhrase,
-  listBannedPhrases,
-  toggleBannedPhrase,
-} from "@/server/actions/content-gen/banned-phrases";
+import { listBannedPhrases } from "@/server/actions/content-gen/banned-phrases";
 import { BannedPhrasesV2 } from "./_v2/BannedPhrasesV2";
 
 export const dynamic = "force-dynamic";
@@ -27,4 +22,3 @@ export default async function BannedPhrasesPage({ params }: PageProps) {
 
   return <BannedPhrasesV2 rows={rows} />;
 }
-
