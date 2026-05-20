@@ -7,7 +7,6 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { ImageUploadDropzone } from "@/components/admin/image-bank/ImageUploadDropzone";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { UploadV2 } from "./_v2/UploadV2";
 
 export const dynamic = "force-dynamic";
@@ -27,53 +26,6 @@ export default async function UploadPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  if (await isAdminV2Enabled()) {
-    return <UploadV2 locale={locale} />;
-  }
-
-  return (
-    <main className="space-y-6 p-8">
-      <header>
-        <h1 className="text-3xl font-bold">Upload image</h1>
-        <p className="text-fg-muted">
-          Glisser-déposer une image (PNG, JPEG, WebP, AVIF, HEIC) ≤ 5 MB pour upload synchrone.
-          Au-delà, pipeline async via worker.
-        </p>
-      </header>
-
-      <ImageUploadDropzone
-        labels={
-          locale === "fr"
-            ? {
-                dropzoneTitle: "Glisser-déposer ou cliquer pour uploader",
-                dropzoneSubtitle: "PNG, JPEG, WebP, AVIF, HEIC · max 5 MB sync",
-                submit: "Uploader",
-                submitting: "Upload en cours…",
-                titleField: "Titre",
-                altField: "Alt text FR (optionnel — Claude Vision le génère)",
-                captionField: "Légende",
-                descriptionField: "Description",
-                sourceFolderField: "Dossier source",
-                targetCityField: "Ville",
-                successMessage: "Image uploadée avec succès",
-                errorPrefix: "Erreur",
-              }
-            : {
-                dropzoneTitle: "Drag & drop or click to upload",
-                dropzoneSubtitle: "PNG, JPEG, WebP, AVIF, HEIC · max 5 MB sync",
-                submit: "Upload",
-                submitting: "Uploading…",
-                titleField: "Title",
-                altField: "Alt text FR (optional — Claude Vision generates it)",
-                captionField: "Caption",
-                descriptionField: "Description",
-                sourceFolderField: "Source folder",
-                targetCityField: "City",
-                successMessage: "Image uploaded successfully",
-                errorPrefix: "Error",
-              }
-        }
-      />
-    </main>
-  );
+  return <UploadV2 locale={locale} />;
 }
+

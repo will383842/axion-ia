@@ -24,7 +24,6 @@ import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import type { Locale } from "@/i18n/routing";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import {
   AdminSessionExpiryWarning,
   AdminSidebarNav,
@@ -32,7 +31,6 @@ import {
   AdminUserMenu,
 } from "@/components/admin/ui";
 import { buildAdminNav } from "@/lib/admin-nav";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 
 import "@/app/admin.css";
@@ -87,7 +85,6 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const session = (await auth()) as AdminSession;
   const showSidebar = Boolean(session?.user);
   const nav: NavItem[] = buildNav(adminPrefix);
-  const v2 = showSidebar ? await isAdminV2Enabled() : false;
   const adminBase = `/fr/${adminPrefix}`;
 
   // CSS injecté côté admin (force-dynamic) pour masquer le Header/Footer publics
@@ -105,7 +102,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     body:has(.admin-layout) #main { display: contents; }
   `.trim();
 
-  if (v2 && session?.user) {
+  if (showSidebar && session?.user) {
+    // V2 shell permanent — feature flag supprimé 2026-05-20.
     // Le logout reste exposé par le dashboard root V2 (form action signOut).
     // L'AdminUserMenu n'a pas de logoutHref ici — éviterait un GET → 405 sur
     // /api/auth/signout (Auth.js v5 attend un POST).
@@ -131,29 +129,12 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     );
   }
 
+  // Pas de session — page /login (children gère son propre rendu).
   return (
     <div className="admin-layout">
       {}
       <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
-      <header className="admin-header">
-        <div className="admin-header-inner">
-          <strong className="admin-brand">Axion-IA · Admin</strong>
-          {showSidebar && (
-            <div className="admin-header-actions">
-              <AdminCommandPalette adminPrefix={adminPrefix} />
-              {session?.user?.email && <span className="admin-tagline">{session.user.email}</span>}
-            </div>
-          )}
-        </div>
-      </header>
-      <div className={showSidebar ? "admin-shell" : "admin-shell admin-shell-noaside"}>
-        {showSidebar && <AdminSidebar nav={nav} />}
-        <main className="admin-main">{children}</main>
-      </div>
-      {/* Refonte PR 1 — mitigation §3.6 : heartbeat session 5min, modal
-          non-bloquante si expiration imminente. Mount uniquement quand
-          authentifié (économise un fetch sur /login). */}
-      {showSidebar && <AdminSessionExpiryWarning />}
+      <main className="admin-main">{children}</main>
     </div>
   );
 }

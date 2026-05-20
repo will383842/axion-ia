@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { AdminStubPage } from "@/components/admin/image-bank/AdminStubPage";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
@@ -22,18 +21,8 @@ export default async function settingsPage({ params }: PageProps) {
   if (!session?.user || session.user.role !== "admin") {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
-  if (await isAdminV2Enabled()) {
-    return (
-      <AdminStubPageV2
-        title="settings"
-        description="Section settings (image-bank V1)."
-        back={`/${locale}/${adminPrefix}/image-bank`}
-        sprint="Sprint 2.x"
-      />
-    );
-  }
   return (
-    <AdminStubPage
+    <AdminStubPageV2
       title="settings"
       description="Section settings (image-bank V1)."
       back={`/${locale}/${adminPrefix}/image-bank`}
@@ -41,3 +30,4 @@ export default async function settingsPage({ params }: PageProps) {
     />
   );
 }
+

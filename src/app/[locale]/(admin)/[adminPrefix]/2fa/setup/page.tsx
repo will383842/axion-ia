@@ -10,7 +10,6 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { setup2FAStartAction } from "@/features/admin-auth/actions";
 import { Setup2FAForm } from "./Setup2FAForm";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { Setup2FAV2 } from "./_v2/Setup2FAV2";
 
 export const dynamic = "force-dynamic";
@@ -28,33 +27,6 @@ export default async function AdminSetup2FAPage({ params }: PageProps) {
 
   const start = await setup2FAStartAction();
 
-  if (await isAdminV2Enabled()) {
-    return <Setup2FAV2 start={start} />;
-  }
-
-  return (
-    <section className="admin-2fa-section">
-      <h1 className="admin-h1">Activer la double authentification (2FA)</h1>
-      <p className="admin-lede">
-        Scannez ce secret avec Google Authenticator, Authy, 1Password ou Bitwarden, puis entrez le
-        premier code généré pour finaliser.
-      </p>
-
-      {!start.ok ? (
-        <div className="admin-alert admin-alert-error">{start.error}</div>
-      ) : (
-        <>
-          <div className="admin-card admin-2fa-secret-card">
-            <p className="admin-card-label">Secret TOTP (à scanner manuellement)</p>
-            <code className="admin-2fa-code">{start.secret}</code>
-            <p className="admin-2fa-uri-hint">
-              URI otpauth (compatible générateur QR externe) :{" "}
-              <code className="admin-2fa-uri">{start.otpauthUrl}</code>
-            </p>
-          </div>
-          <Setup2FAForm />
-        </>
-      )}
-    </section>
-  );
+  return <Setup2FAV2 start={start} />;
 }
+

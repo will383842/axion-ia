@@ -6,7 +6,6 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { InvoiceActions } from "./InvoiceActions";
@@ -73,7 +72,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const v2 = await isAdminV2Enabled();
 
   const invoice = await prisma.invoice.findUnique({
     where: { id },
@@ -142,244 +140,32 @@ export default async function FactureDetailPage({ params }: PageProps) {
     .reduce((acc, p) => acc + p.amountCents, 0);
   const remaining = Math.max(0, invoice.amountTtcCents - paidTotal);
 
-  if (v2) {
-    return (
-      <AdminPageShell>
-        <AdminPageHeader
-          title={invoice.number}
-          description={`${TYPE_LABELS[invoice.type]} · émise ${formatDate(invoice.issuedAt)}`}
-          breadcrumbs={
-            <Link href={`/fr/${adminPrefix}/factures`} className="admin-link admin-back">
-              ← Factures
-            </Link>
-          }
-          meta={
-            <span className={`admin-badge admin-badge-${invoice.status}`}>
-              {STATUS_LABELS[invoice.status]}
-            </span>
-          }
-          actions={
-            <a
-              href={`/api/admin/invoices/${invoice.id}/pdf`}
-              className="admin-button-ghost"
-              target="_blank"
-              rel="noreferrer"
-            >
-              📄 PDF
-            </a>
-          }
-        />
-        <div className="admin-detail-grid">
-          <div className="admin-card">
-            <h2 className="admin-h2">Émetteur · Conformité légale</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Mention TVA</dt>
-              <dd className="admin-dd">{invoice.vatMention ?? "—"}</dd>
-              <dt className="admin-dt">Taux TVA</dt>
-              <dd className="admin-dd">{Number(invoice.vatRate).toFixed(2)} %</dd>
-              <dt className="admin-dt">Reverse charge</dt>
-              <dd className="admin-dd">{invoice.vatReverseCharge ? "Oui (UE)" : "Non"}</dd>
-              <dt className="admin-dt">Archivage légal</dt>
-              <dd className="admin-dd">
-                jusqu&apos;au {formatDate(invoice.archivedUntil)} (10 ans)
-              </dd>
-            </dl>
-          </div>
-          <div className="admin-card">
-            <h2 className="admin-h2">Client (payeur)</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Type</dt>
-              <dd className="admin-dd">{invoice.payerType}</dd>
-              <dt className="admin-dt">Nom</dt>
-              <dd className="admin-dd">{invoice.payerName ?? "—"}</dd>
-              <dt className="admin-dt">Email</dt>
-              <dd className="admin-dd">
-                {invoice.payerEmail ? (
-                  <a href={`mailto:${invoice.payerEmail}`} className="admin-link">
-                    {invoice.payerEmail}
-                  </a>
-                ) : (
-                  "—"
-                )}
-              </dd>
-              <dt className="admin-dt">Adresse</dt>
-              <dd className="admin-dd">{invoice.payerAddress ?? "—"}</dd>
-              <dt className="admin-dt">N° TVA intra</dt>
-              <dd className="admin-dd">{invoice.payerVatNumber ?? "—"}</dd>
-            </dl>
-          </div>
-          <div className="admin-card">
-            <h2 className="admin-h2">Montants</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Base HT</dt>
-              <dd className="admin-dd">{formatEur(invoice.basePriceHtCents)}</dd>
-              <dt className="admin-dt">Frais trajet</dt>
-              <dd className="admin-dd">{formatEur(invoice.travelFeeCents)}</dd>
-              <dt className="admin-dt">Hébergement</dt>
-              <dd className="admin-dd">{formatEur(invoice.accommodationFeeCents)}</dd>
-              <dt className="admin-dt">Repas</dt>
-              <dd className="admin-dd">{formatEur(invoice.mealFeeCents)}</dd>
-              <dt className="admin-dt">Frais additionnels</dt>
-              <dd className="admin-dd">
-                {formatEur(invoice.additionalFeesCents)}
-                {invoice.additionalFeesNotes ? ` · ${invoice.additionalFeesNotes}` : ""}
-              </dd>
-              <dt className="admin-dt">Montant HT</dt>
-              <dd className="admin-dd">
-                <strong>{formatEur(invoice.amountHtCents)}</strong>
-              </dd>
-              <dt className="admin-dt">Montant TTC</dt>
-              <dd className="admin-dd">
-                <strong>{formatEur(invoice.amountTtcCents)}</strong>
-              </dd>
-            </dl>
-          </div>
-          <div className="admin-card">
-            <h2 className="admin-h2">Échéancier</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Émise le</dt>
-              <dd className="admin-dd">{formatDate(invoice.issuedAt)}</dd>
-              <dt className="admin-dt">Échéance</dt>
-              <dd className="admin-dd">{formatDate(invoice.dueAt)}</dd>
-              <dt className="admin-dt">Payée le</dt>
-              <dd className="admin-dd">{formatDate(invoice.paidAt)}</dd>
-              <dt className="admin-dt">Encaissé</dt>
-              <dd className="admin-dd">{formatEur(paidTotal)}</dd>
-              <dt className="admin-dt">Reste dû</dt>
-              <dd className="admin-dd">
-                <strong>{formatEur(remaining)}</strong>
-              </dd>
-            </dl>
-          </div>
-          {invoice.booking && (
-            <div className="admin-card">
-              <h2 className="admin-h2">Booking lié</h2>
-              <dl className="admin-dl">
-                <dt className="admin-dt">Intervention</dt>
-                <dd className="admin-dd">{invoice.booking.interventionType}</dd>
-                <dt className="admin-dt">Date</dt>
-                <dd className="admin-dd">{formatDate(invoice.booking.bookingDate)}</dd>
-                <dt className="admin-dt">Status</dt>
-                <dd className="admin-dd">{invoice.booking.status}</dd>
-                <dt className="admin-dt">Fiche</dt>
-                <dd className="admin-dd">
-                  <Link
-                    href={`/fr/${adminPrefix}/reservations/${invoice.booking.id}`}
-                    className="admin-link"
-                  >
-                    Ouvrir la réservation →
-                  </Link>
-                </dd>
-              </dl>
-            </div>
-          )}
-          {invoice.creditNoteOf && (
-            <div className="admin-card">
-              <h2 className="admin-h2">Avoir lié à</h2>
-              <p className="admin-meta-block">
-                Facture origine :{" "}
-                <Link
-                  href={`/fr/${adminPrefix}/factures/${invoice.creditNoteOf.id}`}
-                  className="admin-link"
-                >
-                  <code>{invoice.creditNoteOf.number}</code>
-                </Link>
-              </p>
-            </div>
-          )}
-          {invoice.creditNotes.length > 0 && (
-            <div className="admin-card">
-              <h2 className="admin-h2">Avoirs émis sur cette facture</h2>
-              <ul className="admin-meta-block">
-                {invoice.creditNotes.map((cn) => (
-                  <li key={cn.id}>
-                    <Link href={`/fr/${adminPrefix}/factures/${cn.id}`} className="admin-link">
-                      <code>{cn.number}</code>
-                    </Link>{" "}
-                    · {formatEur(cn.amountTtcCents)} · émis {formatDate(cn.issuedAt)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <div className="admin-card admin-card-wide">
-            <h2 className="admin-h2">Paiements enregistrés</h2>
-            {invoice.payments.length === 0 ? (
-              <p className="admin-meta-block">Aucun paiement enregistré.</p>
-            ) : (
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Provider</th>
-                    <th>Mode</th>
-                    <th>Référence</th>
-                    <th>Montant</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoice.payments.map((p) => (
-                    <tr key={p.id}>
-                      <td>{formatDate(p.paidAt)}</td>
-                      <td>{PROVIDER_LABELS[p.provider]}</td>
-                      <td>{p.mode ?? "—"}</td>
-                      <td>{p.receivedReference ?? "—"}</td>
-                      <td>{formatEur(p.amountCents)}</td>
-                      <td>{p.status}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-          <div className="admin-card admin-card-wide">
-            <h2 className="admin-h2">Actions admin</h2>
-            <InvoiceActions
-              invoiceId={invoice.id}
-              invoiceNumber={invoice.number}
-              status={invoice.status}
-              type={invoice.type}
-              remainingCents={remaining}
-              role={role}
-              adminPrefix={adminPrefix}
-            />
-          </div>
-        </div>
-      </AdminPageShell>
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
+    <AdminPageShell>
+      <AdminPageHeader
+        title={invoice.number}
+        description={`${TYPE_LABELS[invoice.type]} · émise ${formatDate(invoice.issuedAt)}`}
+        breadcrumbs={
           <Link href={`/fr/${adminPrefix}/factures`} className="admin-link admin-back">
             ← Factures
           </Link>
-          <h1 className="admin-h1-large">
-            <code>{invoice.number}</code>
-          </h1>
-          <p className="admin-meta">
-            {TYPE_LABELS[invoice.type]} ·{" "}
-            <span className={`admin-badge admin-badge-${invoice.status}`}>
-              {STATUS_LABELS[invoice.status]}
-            </span>{" "}
-            · émise {formatDate(invoice.issuedAt)}
-          </p>
-        </div>
-        <div className="admin-filters-actions">
+        }
+        meta={
+          <span className={`admin-badge admin-badge-${invoice.status}`}>
+            {STATUS_LABELS[invoice.status]}
+          </span>
+        }
+        actions={
           <a
             href={`/api/admin/invoices/${invoice.id}/pdf`}
             className="admin-button-ghost"
             target="_blank"
             rel="noreferrer"
           >
-            📄 Télécharger PDF
+            📄 PDF
           </a>
-        </div>
-      </div>
-
+        }
+      />
       <div className="admin-detail-grid">
         <div className="admin-card">
           <h2 className="admin-h2">Émetteur · Conformité légale</h2>
@@ -391,10 +177,11 @@ export default async function FactureDetailPage({ params }: PageProps) {
             <dt className="admin-dt">Reverse charge</dt>
             <dd className="admin-dd">{invoice.vatReverseCharge ? "Oui (UE)" : "Non"}</dd>
             <dt className="admin-dt">Archivage légal</dt>
-            <dd className="admin-dd">jusqu&apos;au {formatDate(invoice.archivedUntil)} (10 ans)</dd>
+            <dd className="admin-dd">
+              jusqu&apos;au {formatDate(invoice.archivedUntil)} (10 ans)
+            </dd>
           </dl>
         </div>
-
         <div className="admin-card">
           <h2 className="admin-h2">Client (payeur)</h2>
           <dl className="admin-dl">
@@ -418,7 +205,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             <dd className="admin-dd">{invoice.payerVatNumber ?? "—"}</dd>
           </dl>
         </div>
-
         <div className="admin-card">
           <h2 className="admin-h2">Montants</h2>
           <dl className="admin-dl">
@@ -445,7 +231,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             </dd>
           </dl>
         </div>
-
         <div className="admin-card">
           <h2 className="admin-h2">Échéancier</h2>
           <dl className="admin-dl">
@@ -463,7 +248,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             </dd>
           </dl>
         </div>
-
         {invoice.booking && (
           <div className="admin-card">
             <h2 className="admin-h2">Booking lié</h2>
@@ -486,7 +270,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             </dl>
           </div>
         )}
-
         {invoice.creditNoteOf && (
           <div className="admin-card">
             <h2 className="admin-h2">Avoir lié à</h2>
@@ -501,7 +284,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             </p>
           </div>
         )}
-
         {invoice.creditNotes.length > 0 && (
           <div className="admin-card">
             <h2 className="admin-h2">Avoirs émis sur cette facture</h2>
@@ -517,7 +299,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             </ul>
           </div>
         )}
-
         <div className="admin-card admin-card-wide">
           <h2 className="admin-h2">Paiements enregistrés</h2>
           {invoice.payments.length === 0 ? (
@@ -549,7 +330,6 @@ export default async function FactureDetailPage({ params }: PageProps) {
             </table>
           )}
         </div>
-
         <div className="admin-card admin-card-wide">
           <h2 className="admin-h2">Actions admin</h2>
           <InvoiceActions
@@ -563,6 +343,7 @@ export default async function FactureDetailPage({ params }: PageProps) {
           />
         </div>
       </div>
-    </section>
+    </AdminPageShell>
   );
 }
+

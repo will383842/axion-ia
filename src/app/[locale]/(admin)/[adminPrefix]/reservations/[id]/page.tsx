@@ -9,7 +9,6 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { BookingActions } from "./BookingActions";
@@ -77,7 +76,6 @@ export default async function ReservationDetailPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18).
-  const v2 = await isAdminV2Enabled();
 
   const booking = await prisma.booking.findUnique({
     where: { id },
@@ -173,267 +171,24 @@ export default async function ReservationDetailPage({ params }: PageProps) {
   const submission = booking.fromSubmission ?? booking.submission ?? null;
   const company = submission?.companyName ?? "Société inconnue";
 
-  if (v2) {
-    return (
-      <AdminPageShell>
-        <AdminPageHeader
-          title={`Réservation · ${booking.id.slice(0, 8)}`}
-          description={
-            booking.submission?.companyName ?? booking.fromSubmission?.companyName ?? "—"
-          }
-          breadcrumbs={
-            <Link href={`/fr/${adminPrefix}/reservations`} className="admin-link admin-back">
-              ← Réservations
-            </Link>
-          }
-          meta={
-            <span className={`admin-badge admin-badge-${booking.status}`}>
-              {STATUS_LABELS[booking.status] ?? booking.status}
-            </span>
-          }
-        />
-
-        <div className="admin-detail-grid">
-          <div className="admin-card">
-            <h2 className="admin-h2">Société</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Raison sociale</dt>
-              <dd className="admin-dd">{submission?.companyName ?? "—"}</dd>
-              <dt className="admin-dt">Secteur</dt>
-              <dd className="admin-dd">{submission?.sector ?? "—"}</dd>
-              <dt className="admin-dt">Taille (INSEE)</dt>
-              <dd className="admin-dd">{booking.companySize ?? "—"}</dd>
-              <dt className="admin-dt">Ville</dt>
-              <dd className="admin-dd">{booking.companyCityNormalized ?? "—"}</dd>
-            </dl>
-          </div>
-
-          <div className="admin-card">
-            <h2 className="admin-h2">Contact</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Nom</dt>
-              <dd className="admin-dd">{submission?.contactName ?? "—"}</dd>
-              <dt className="admin-dt">Rôle</dt>
-              <dd className="admin-dd">{submission?.contactRole ?? "—"}</dd>
-              <dt className="admin-dt">Email</dt>
-              <dd className="admin-dd">
-                {submission?.contactEmail ? (
-                  <a href={`mailto:${submission.contactEmail}`} className="admin-link">
-                    {submission.contactEmail}
-                  </a>
-                ) : (
-                  "—"
-                )}
-              </dd>
-              <dt className="admin-dt">Téléphone</dt>
-              <dd className="admin-dd">{submission?.contactPhone ?? "—"}</dd>
-            </dl>
-          </div>
-
-          <div className="admin-card">
-            <h2 className="admin-h2">Intervention</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Type</dt>
-              <dd className="admin-dd">{booking.interventionType}</dd>
-              <dt className="admin-dt">Date</dt>
-              <dd className="admin-dd">{formatDate(booking.bookingDate)}</dd>
-              <dt className="admin-dt">Participants</dt>
-              <dd className="admin-dd">
-                {booking.participantsCount}
-                {booking.participantsTier ? ` · tier ${booking.participantsTier}` : ""}
-              </dd>
-              <dt className="admin-dt">Buffer trajet</dt>
-              <dd className="admin-dd">{booking.travelBufferDays} j</dd>
-              <dt className="admin-dt">Slot calendrier</dt>
-              <dd className="admin-dd">
-                {booking.slot ? (
-                  <>
-                    {formatDate(booking.slot.slotDate)} · {booking.slot.status}
-                  </>
-                ) : (
-                  "—"
-                )}
-              </dd>
-            </dl>
-          </div>
-
-          <div className="admin-card">
-            <h2 className="admin-h2">Tarification</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Base HT</dt>
-              <dd className="admin-dd">{formatEur(booking.basePriceHtCents)}</dd>
-              <dt className="admin-dt">Acompte attendu</dt>
-              <dd className="admin-dd">
-                {formatEur(booking.depositAmountCents)}
-                {booking.depositPaidAt
-                  ? ` · payé le ${formatDate(booking.depositPaidAt)}`
-                  : booking.depositAmountCents
-                    ? " · non payé"
-                    : ""}
-              </dd>
-              <dt className="admin-dt">Solde attendu</dt>
-              <dd className="admin-dd">
-                {formatEur(booking.balanceAmountCents)}
-                {booking.balancePaidAt ? ` · payé le ${formatDate(booking.balancePaidAt)}` : ""}
-              </dd>
-              <dt className="admin-dt">Frais trajet</dt>
-              <dd className="admin-dd">{formatEur(booking.travelFeeCents)}</dd>
-              <dt className="admin-dt">Hébergement</dt>
-              <dd className="admin-dd">{formatEur(booking.accommodationFeeCents)}</dd>
-              <dt className="admin-dt">Repas</dt>
-              <dd className="admin-dd">{formatEur(booking.mealFeeCents)}</dd>
-              <dt className="admin-dt">Frais additionnels</dt>
-              <dd className="admin-dd">
-                {formatEur(booking.additionalFeesCents)}
-                {booking.additionalFeesNotes ? ` · ${booking.additionalFeesNotes}` : ""}
-              </dd>
-            </dl>
-          </div>
-
-          {booking.cadrageMeeting && (
-            <div className="admin-card">
-              <h2 className="admin-h2">Cadrage</h2>
-              <dl className="admin-dl">
-                <dt className="admin-dt">Planifié</dt>
-                <dd className="admin-dd">{formatDate(booking.cadrageMeeting.scheduledAt)}</dd>
-                <dt className="admin-dt">Status</dt>
-                <dd className="admin-dd">{booking.cadrageMeeting.status}</dd>
-                {booking.cadrageMeeting.visioUrl && (
-                  <>
-                    <dt className="admin-dt">Lien visio</dt>
-                    <dd className="admin-dd">
-                      <a
-                        href={booking.cadrageMeeting.visioUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="admin-link"
-                      >
-                        Ouvrir →
-                      </a>
-                    </dd>
-                  </>
-                )}
-                {booking.cadrageMeeting.heldAt && (
-                  <>
-                    <dt className="admin-dt">Tenu</dt>
-                    <dd className="admin-dd">{formatDate(booking.cadrageMeeting.heldAt)}</dd>
-                  </>
-                )}
-              </dl>
-            </div>
-          )}
-
-          {(booking.pausedAt || booking.pausedUntil || booking.pauseReason) && (
-            <div className="admin-card">
-              <h2 className="admin-h2">Pause active</h2>
-              <dl className="admin-dl">
-                <dt className="admin-dt">Mise en pause</dt>
-                <dd className="admin-dd">{formatDate(booking.pausedAt)}</dd>
-                <dt className="admin-dt">Reprise prévue</dt>
-                <dd className="admin-dd">{formatDate(booking.pausedUntil)}</dd>
-                <dt className="admin-dt">Motif</dt>
-                <dd className="admin-dd">{booking.pauseReason ?? "—"}</dd>
-              </dl>
-            </div>
-          )}
-
-          {(booking.cancelledAt || booking.cancellationReason) && (
-            <div className="admin-card">
-              <h2 className="admin-h2">Annulation</h2>
-              <dl className="admin-dl">
-                <dt className="admin-dt">Date</dt>
-                <dd className="admin-dd">{formatDate(booking.cancelledAt)}</dd>
-                <dt className="admin-dt">Fenêtre</dt>
-                <dd className="admin-dd">{booking.cancellationWindow ?? "—"}</dd>
-                <dt className="admin-dt">Motif</dt>
-                <dd className="admin-dd">{booking.cancellationReason ?? "—"}</dd>
-              </dl>
-            </div>
-          )}
-
-          <div className="admin-card">
-            <h2 className="admin-h2">Cycle de vie</h2>
-            <dl className="admin-dl">
-              <dt className="admin-dt">Créée</dt>
-              <dd className="admin-dd">{formatDate(booking.createdAt)}</dd>
-              <dt className="admin-dt">Mise à jour</dt>
-              <dd className="admin-dd">{formatDate(booking.updatedAt)}</dd>
-              {booking.confirmedAt && (
-                <>
-                  <dt className="admin-dt">Confirmée</dt>
-                  <dd className="admin-dd">{formatDate(booking.confirmedAt)}</dd>
-                </>
-              )}
-              {booking.completedAt && (
-                <>
-                  <dt className="admin-dt">Terminée</dt>
-                  <dd className="admin-dd">{formatDate(booking.completedAt)}</dd>
-                </>
-              )}
-            </dl>
-          </div>
-
-          {booking.internalNotes && (
-            <div className="admin-card admin-card-wide">
-              <h2 className="admin-h2">Notes internes</h2>
-              <p>{booking.internalNotes}</p>
-            </div>
-          )}
-
-          <div className="admin-card admin-card-wide">
-            <h2 className="admin-h2">Décision admin</h2>
-            <BookingActions
-              bookingId={booking.id}
-              status={booking.status}
-              adminPrefix={adminPrefix}
-              role={role}
-              activeContract={booking.contractDocument ?? null}
-              hasSignedMainContract={booking.contractDocuments.length > 0}
-            />
-          </div>
-
-          <div className="admin-card admin-card-wide">
-            <h2 className="admin-h2">Transitions récentes</h2>
-            {booking.transitions.length === 0 ? (
-              <p className="admin-meta-block">Aucune transition enregistrée.</p>
-            ) : (
-              <ul className="admin-meta-block">
-                {booking.transitions.map((t) => (
-                  <li key={t.id}>
-                    <strong>
-                      {t.fromStatus ?? "—"} → {t.toStatus}
-                    </strong>{" "}
-                    · {t.trigger} ({t.triggeredBy}) · {formatDate(t.createdAt)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      </AdminPageShell>
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
+    <AdminPageShell>
+      <AdminPageHeader
+        title={`Réservation · ${booking.id.slice(0, 8)}`}
+        description={
+          booking.submission?.companyName ?? booking.fromSubmission?.companyName ?? "—"
+        }
+        breadcrumbs={
           <Link href={`/fr/${adminPrefix}/reservations`} className="admin-link admin-back">
             ← Réservations
           </Link>
-          <h1 className="admin-h1-large">{company}</h1>
-          <p className="admin-meta">
-            Booking {booking.id.slice(0, 8)} ·{" "}
-            <span className={`admin-badge admin-badge-${booking.status}`}>
-              {STATUS_LABELS[booking.status] ?? booking.status}
-            </span>{" "}
-            ·{" "}
-            {booking.originPath === "quote_negotiation"
-              ? "Parcours B (devis)"
-              : "Parcours A (calendrier)"}
-          </p>
-        </div>
-      </div>
+        }
+        meta={
+          <span className={`admin-badge admin-badge-${booking.status}`}>
+            {STATUS_LABELS[booking.status] ?? booking.status}
+          </span>
+        }
+      />
 
       <div className="admin-detail-grid">
         <div className="admin-card">
@@ -652,6 +407,7 @@ export default async function ReservationDetailPage({ params }: PageProps) {
           )}
         </div>
       </div>
-    </section>
+    </AdminPageShell>
   );
 }
+

@@ -11,7 +11,6 @@ import { getEntryAction } from "@/server/actions/knowledge/get-entry";
 import { getKbTypeMeta } from "@/content/knowledge/types";
 import { getStatusLabel } from "@/content/knowledge/statuses";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { ConnaissancesApercuV2 } from "./_v2/ConnaissancesApercuV2";
 
 export const dynamic = "force-dynamic";
@@ -39,45 +38,18 @@ export default async function ConnaissancesApercuPage({ params, searchParams }: 
   const tr = entry.translations.find((t) => t.locale === previewLocale) ?? entry.translations[0];
   if (!tr) notFound();
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <ConnaissancesApercuV2
-        adminPrefix={adminPrefix}
-        entryId={entry.id}
-        typeLabel={getKbTypeMeta(entry.type).labelFr}
-        statusLabel={getStatusLabel(entry.status, "fr")}
-        title={tr.title}
-        slug={tr.slug}
-        locale={tr.locale}
-        excerpt={tr.excerpt}
-        sanitizedBodyHtml={sanitizeTiptapHtml(tr.body)}
-      />
-    );
-  }
-
   return (
-    <section className="admin-preview">
-      <div className="admin-preview-banner" role="status">
-        <strong>Aperçu (brouillon)</strong> — non indexé. {getKbTypeMeta(entry.type).labelFr} ·{" "}
-        {getStatusLabel(entry.status, "fr")} ·{" "}
-        <a href={`/fr/${adminPrefix}/connaissances/${entry.id}`} className="admin-link">
-          ← Retour édition
-        </a>
-      </div>
-
-      <article className="admin-preview-content">
-        <header>
-          <h1>{tr.title}</h1>
-          {tr.excerpt ? <p className="admin-preview-excerpt">{tr.excerpt}</p> : null}
-          <p className="admin-meta">
-            Slug : <code>{tr.slug}</code> · Locale : {tr.locale}
-          </p>
-        </header>
-        <div
-          className="admin-preview-body"
-          dangerouslySetInnerHTML={{ __html: sanitizeTiptapHtml(tr.body) }}
-        />
-      </article>
-    </section>
+    <ConnaissancesApercuV2
+      adminPrefix={adminPrefix}
+      entryId={entry.id}
+      typeLabel={getKbTypeMeta(entry.type).labelFr}
+      statusLabel={getStatusLabel(entry.status, "fr")}
+      title={tr.title}
+      slug={tr.slug}
+      locale={tr.locale}
+      excerpt={tr.excerpt}
+      sanitizedBodyHtml={sanitizeTiptapHtml(tr.body)}
+    />
   );
 }
+

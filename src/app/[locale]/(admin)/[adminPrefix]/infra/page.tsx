@@ -16,7 +16,6 @@
 // modifier un outil → cliquer le lien externe et utiliser sa propre UI.
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { InfraV2 } from "./_v2/InfraV2";
 
 export const dynamic = "force-dynamic";
@@ -386,33 +385,6 @@ export default async function AdminInfraPage({ params }: PageProps) {
     },
   ];
 
-  if (await isAdminV2Enabled()) {
-    return <InfraV2 adminPrefix={adminPrefix} cards={cards} />;
-  }
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Infrastructure &amp; outils</h1>
-          <p className="admin-meta">
-            Centralise les liens vers chaque outil tiers + statut live (best-effort). Pas
-            d&apos;action write depuis ici — chaque card pointe vers la console externe
-            correspondante.
-          </p>
-        </div>
-        <div>
-          <a href={`/fr/${adminPrefix}`} className="admin-link">
-            ← Retour au tableau de bord
-          </a>
-        </div>
-      </div>
-
-      <div className="admin-kpi-grid">
-        {cards.map((card) => (
-          <CardItem key={card.name} card={card} />
-        ))}
-      </div>
-    </section>
-  );
+  return <InfraV2 adminPrefix={adminPrefix} cards={cards} />;
 }
+

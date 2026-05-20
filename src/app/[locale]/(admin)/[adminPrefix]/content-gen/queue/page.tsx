@@ -8,7 +8,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { QueueV2 } from "./_v2/QueueV2";
 
 export const dynamic = "force-dynamic";
@@ -22,55 +21,9 @@ export default async function QueuePage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  if (await isAdminV2Enabled()) {
-    return <QueueV2 adminPrefix={adminPrefix} />;
-  }
-
-  const [running, waiting, failed] = await Promise.all([
-    listJobs({ status: "running" }),
-    listJobs({ status: "queued" }),
-    listJobs({ status: "failed" }),
-  ]);
-
-  async function retryAll() {
-    "use server";
-    await retryAllFailed();
-  }
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Queue BullMQ</h1>
-          <p className="admin-meta">Inspection rapide. La vraie vue Redis arrivera Sprint 6.</p>
-        </div>
-        <form action={retryAll}>
-          <button type="submit" className="admin-button">
-            Retry all failed ({failed.total})
-          </button>
-        </form>
-      </div>
-
-      <div className="admin-card">
-        <h2>En cours ({running.total})</h2>
-        <JobMini rows={running.rows} adminPrefix={adminPrefix} />
-      </div>
-
-      <div className="admin-card">
-        <h2>En attente ({waiting.total})</h2>
-        <JobMini rows={waiting.rows} adminPrefix={adminPrefix} />
-      </div>
-
-      <div
-        className="admin-card"
-        style={{ borderColor: failed.total > 0 ? "var(--color-terracotta)" : undefined }}
-      >
-        <h2>Failed ({failed.total})</h2>
-        <JobMini rows={failed.rows} adminPrefix={adminPrefix} />
-      </div>
-    </section>
-  );
+  return <QueueV2 adminPrefix={adminPrefix} />;
 }
+
 
 function JobMini({
   rows,

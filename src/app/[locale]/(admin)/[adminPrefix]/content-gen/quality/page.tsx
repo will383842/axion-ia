@@ -11,7 +11,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { QualityV2 } from "./_v2/QualityV2";
 
 export const dynamic = "force-dynamic";
@@ -141,87 +140,6 @@ export default async function QualityDashboardPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  if (await isAdminV2Enabled()) {
-    return <QualityV2 />;
-  }
-
-  const dailyScores = await loadDailyScores();
-  const totalArticles = dailyScores.reduce((s, d) => s + d.count, 0);
-
-  // Agrégat global (moyenne pondérée par count)
-  const globalAvg = (key: keyof DailyScore): number => {
-    if (totalArticles === 0) return 0;
-    let weighted = 0;
-    for (const d of dailyScores) {
-      const v = d[key];
-      if (typeof v === "number") weighted += v * d.count;
-    }
-    return Math.round(weighted / totalArticles);
-  };
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Quality dashboard</h1>
-          <p className="admin-meta">
-            Scores moyens des articles publiés sur les {WINDOW_DAYS} derniers jours. {totalArticles}{" "}
-            article{totalArticles > 1 ? "s" : ""} agrégé
-            {totalArticles > 1 ? "s" : ""}. Bars CSS — pas de bibliothèque graphique.
-          </p>
-        </div>
-      </div>
-
-      <div className="admin-card">
-        <h2 className="admin-h2">Moyenne globale (fenêtre 30j)</h2>
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1rem" }}
-        >
-          <ScoreBar label="SEO" value={globalAvg("avgSeo")} max={100} />
-          <ScoreBar label="Quality" value={globalAvg("avgQuality")} max={100} />
-          <ScoreBar label="Readability" value={globalAvg("avgReadability")} max={100} />
-          <ScoreBar label="Fact-check" value={globalAvg("avgFactCheck")} max={100} />
-          <ScoreBar label="Editorial" value={globalAvg("avgEditorial")} max={100} />
-        </div>
-      </div>
-
-      <div className="admin-card admin-table-wrapper" style={{ marginTop: "1.5rem" }}>
-        <h2 className="admin-h2">Détail par jour</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Jour</th>
-              <th>Articles</th>
-              <th>SEO</th>
-              <th>Quality</th>
-              <th>Readability</th>
-              <th>Fact-check</th>
-              <th>Editorial</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dailyScores.length === 0 ? (
-              <tr>
-                <td colSpan={7} style={{ textAlign: "center", color: "var(--color-fg-muted)" }}>
-                  Aucun article publié sur les {WINDOW_DAYS} derniers jours.
-                </td>
-              </tr>
-            ) : (
-              dailyScores.map((d) => (
-                <tr key={d.day}>
-                  <td style={{ fontVariantNumeric: "tabular-nums" }}>{d.day}</td>
-                  <td>{d.count}</td>
-                  <td>{d.avgSeo || "—"}</td>
-                  <td>{d.avgQuality || "—"}</td>
-                  <td>{d.avgReadability || "—"}</td>
-                  <td>{d.avgFactCheck || "—"}</td>
-                  <td>{d.avgEditorial || "—"}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  );
+  return <QualityV2 />;
 }
+

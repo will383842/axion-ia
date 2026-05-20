@@ -7,7 +7,6 @@ import {
   listPotentialParentsAction,
 } from "@/features/admin-categories/actions";
 import { CategoryForm } from "../CategoryForm";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { CategoriesEditV2 } from "./_v2/CategoriesEditV2";
 
 export const dynamic = "force-dynamic";
@@ -48,54 +47,14 @@ export default async function EditCategoryPage({ params }: PageProps) {
     pageContentEn: cat.pageContentEn,
   };
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <CategoriesEditV2
-        adminPrefix={adminPrefix}
-        parents={parents}
-        initial={initialPayload}
-        title={cat.nameFr}
-        updatedAtIso={cat.updatedAt.toISOString().slice(0, 10)}
-      />
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <a href={`/fr/${adminPrefix}/categories`} className="admin-link admin-back">
-            ← Catégories
-          </a>
-          <h1 className="admin-h1-large">Éditer : {cat.nameFr}</h1>
-          <p className="admin-meta">Mise à jour : {cat.updatedAt.toISOString().slice(0, 10)}</p>
-        </div>
-      </div>
-      <div className="admin-card admin-card-wide">
-        <CategoryForm
-          parents={parents}
-          initial={{
-            id: cat.id,
-            slug: cat.slug,
-            nameFr: cat.nameFr,
-            nameEn: cat.nameEn,
-            descriptionFr: cat.descriptionFr,
-            descriptionEn: cat.descriptionEn,
-            parentId: cat.parentId,
-            module: cat.module,
-            icon: cat.icon,
-            colorAccent: cat.colorAccent,
-            displayOrder: cat.displayOrder,
-            status: cat.status,
-            seoTitleFr: cat.seoTitleFr,
-            seoTitleEn: cat.seoTitleEn,
-            seoDescFr: cat.seoDescFr,
-            seoDescEn: cat.seoDescEn,
-            pageContentFr: cat.pageContentFr,
-            pageContentEn: cat.pageContentEn,
-          }}
-        />
-      </div>
-    </section>
+    <CategoriesEditV2
+      adminPrefix={adminPrefix}
+      parents={parents}
+      initial={initialPayload}
+      title={cat.nameFr}
+      updatedAtIso={cat.updatedAt.toISOString().slice(0, 10)}
+    />
   );
 }
+

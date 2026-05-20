@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listArticlesAction } from "@/features/admin-blog/actions";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { BlogV2 } from "./_v2/BlogV2";
 
 export const dynamic = "force-dynamic";
@@ -31,126 +30,15 @@ export default async function BlogListPage({ params, searchParams }: PageProps) 
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <BlogV2
-        adminPrefix={adminPrefix}
-        searchParams={sp}
-        items={result.items}
-        total={result.total}
-        page={result.page}
-        totalPages={result.totalPages}
-      />
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Blog</h1>
-          <p className="admin-meta">
-            {result.total} article{result.total > 1 ? "s" : ""} • page {result.page}/
-            {result.totalPages}
-          </p>
-        </div>
-        <a href={`/fr/${adminPrefix}/blog/new`} className="admin-button">
-          + Nouvel article
-        </a>
-      </div>
-
-      <div className="admin-card admin-filters">
-        <form className="admin-filters-grid">
-          <div className="admin-field">
-            <label htmlFor="status" className="admin-label">
-              Statut
-            </label>
-            <select
-              id="status"
-              name="status"
-              defaultValue={sp.status ?? "all"}
-              className="admin-input"
-            >
-              <option value="all">Tous</option>
-              {Object.entries(STATUS_LABELS).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="admin-field">
-            <label htmlFor="search" className="admin-label">
-              Recherche (titre)
-            </label>
-            <input
-              id="search"
-              name="search"
-              type="text"
-              defaultValue={sp.search ?? ""}
-              className="admin-input"
-              placeholder="Min 2 caractères"
-            />
-          </div>
-        </form>
-        <div className="admin-filters-actions">
-          <button type="submit" className="admin-button">
-            Appliquer
-          </button>
-          <a href={`/fr/${adminPrefix}/blog`} className="admin-button-ghost">
-            Réinitialiser
-          </a>
-        </div>
-      </div>
-
-      <div className="admin-card admin-table-wrapper">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Date publi</th>
-              <th>Titre (FR)</th>
-              <th>Slug</th>
-              <th>Catégorie</th>
-              <th>Auteur</th>
-              <th>Statut</th>
-              <th>Vues</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.items.length === 0 ? (
-              <tr>
-                <td colSpan={8} className="admin-table-empty">
-                  Aucun article trouvé.
-                </td>
-              </tr>
-            ) : (
-              result.items.map((a) => (
-                <tr key={a.id}>
-                  <td>{a.publishedAt ? a.publishedAt.toISOString().slice(0, 10) : "—"}</td>
-                  <td>{a.translations[0]?.title ?? "(sans titre)"}</td>
-                  <td>
-                    <code className="admin-meta-small">{a.translations[0]?.slug ?? "—"}</code>
-                  </td>
-                  <td>{a.category?.nameFr ?? "—"}</td>
-                  <td>{a.author?.name ?? "—"}</td>
-                  <td>
-                    <span className={`admin-badge admin-badge-${a.status}`}>
-                      {STATUS_LABELS[a.status] ?? a.status}
-                    </span>
-                  </td>
-                  <td>{a.viewsCount}</td>
-                  <td>
-                    <a href={`/fr/${adminPrefix}/blog/${a.id}`} className="admin-link">
-                      Éditer →
-                    </a>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <BlogV2
+      adminPrefix={adminPrefix}
+      searchParams={sp}
+      items={result.items}
+      total={result.total}
+      page={result.page}
+      totalPages={result.totalPages}
+    />
   );
 }
+

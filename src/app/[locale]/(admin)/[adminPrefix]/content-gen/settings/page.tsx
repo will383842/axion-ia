@@ -8,7 +8,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { SettingsIndexV2 } from "./_v2/SettingsIndexV2";
 
 export const dynamic = "force-dynamic";
@@ -76,35 +75,6 @@ export default async function SettingsIndexPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  if (await isAdminV2Enabled()) {
-    return <SettingsIndexV2 adminPrefix={adminPrefix} />;
-  }
-
-  const base = `/fr/${adminPrefix}/content-gen/settings`;
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Réglages content-gen</h1>
-          <p className="admin-meta">
-            30 réglages éditables admin · 0 hardcoded. Doctrine § 12.5 master prompt.
-          </p>
-        </div>
-      </div>
-
-      <div className="admin-card">
-        <ul className="admin-quick-actions">
-          {SECTIONS.map((s) => (
-            <li key={s.href}>
-              <a href={`${base}/${s.href}`}>
-                <strong>{s.label}</strong>
-                <span className="admin-meta"> — {s.description}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
+  return <SettingsIndexV2 adminPrefix={adminPrefix} />;
 }
+

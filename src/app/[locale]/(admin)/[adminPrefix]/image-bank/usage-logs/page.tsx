@@ -17,7 +17,6 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { ForgetIpHashForm } from "@/components/admin/image-bank/ForgetIpHashForm";
 import { prisma } from "@/lib/prisma";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { UsageLogsV2 } from "./_v2/UsageLogsV2";
 
 export const dynamic = "force-dynamic";
@@ -76,43 +75,13 @@ export default async function UsageLogsPage({ params, searchParams }: PageProps)
     downloadedAt: r.downloadedAt.toISOString(),
   }));
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <UsageLogsV2
-        {...(ipHash ? { ipHash } : { ipHash: undefined })}
-        resultsLimit={RESULTS_LIMIT}
-        usageLogs={usageLogs}
-        downloadLogs={downloadLogs}
-      />
-    );
-  }
-
   return (
-    <main className="space-y-6 p-8">
-      <Link
-        href={`/${locale}/${adminPrefix}/image-bank`}
-        className="text-fg-muted text-sm hover:underline"
-      >
-        ← Retour image-bank overview
-      </Link>
-
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold">Usage logs — RGPD art. 17</h1>
-        <p className="text-fg-muted">
-          Recherche et effacement définitif des traces (ImageUsageLog + ImageDownloadLog) associées
-          à un <code className="font-mono text-sm">ipHash</code> SHA-256.
-        </p>
-        <p className="text-fg-muted text-xs">
-          Cap : {RESULTS_LIMIT} entrées max par requête. Audit trail conservé dans{" "}
-          <code>activity_logs</code> (action <code>rgpd.image_bank.forget_ip_hash</code>).
-        </p>
-      </header>
-
-      <ForgetIpHashForm
-        {...(ipHash ? { initialIpHash: ipHash } : {})}
-        usageLogs={usageLogs}
-        downloadLogs={downloadLogs}
-      />
-    </main>
+    <UsageLogsV2
+      {...(ipHash ? { ipHash } : { ipHash: undefined })}
+      resultsLimit={RESULTS_LIMIT}
+      usageLogs={usageLogs}
+      downloadLogs={downloadLogs}
+    />
   );
 }
+

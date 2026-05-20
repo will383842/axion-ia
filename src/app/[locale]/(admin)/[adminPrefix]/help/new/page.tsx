@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listHelpCategoriesAction } from "@/features/admin-help/actions";
 import { HelpForm } from "../HelpForm";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { HelpNewV2 } from "./_v2/HelpNewV2";
 
 export const dynamic = "force-dynamic";
@@ -19,23 +18,6 @@ export default async function NewHelpPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
   const categories = await listHelpCategoriesAction();
 
-  if (await isAdminV2Enabled()) {
-    return <HelpNewV2 adminPrefix={adminPrefix} categories={categories} />;
-  }
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <a href={`/fr/${adminPrefix}/help`} className="admin-link admin-back">
-            ← Centre d&apos;aide
-          </a>
-          <h1 className="admin-h1-large">Nouvel article</h1>
-        </div>
-      </div>
-      <div className="admin-card admin-card-wide">
-        <HelpForm categories={categories} />
-      </div>
-    </section>
-  );
+  return <HelpNewV2 adminPrefix={adminPrefix} categories={categories} />;
 }
+

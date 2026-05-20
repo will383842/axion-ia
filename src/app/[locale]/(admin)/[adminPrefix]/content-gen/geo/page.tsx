@@ -10,7 +10,6 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
 import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { GeoCockpitV2 } from "./_v2/GeoCockpitV2";
 
 export const dynamic = "force-dynamic";
@@ -24,100 +23,9 @@ export default async function GeoCockpitPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  if (await isAdminV2Enabled()) {
-    return <GeoCockpitV2 adminPrefix={adminPrefix} />;
-  }
-
-  const [global, regions] = await Promise.all([getGlobalGeoStats(), listRegionGeoStats()]);
-
-  const base = `/fr/${adminPrefix}/content-gen/geo`;
-  const totalPublished = regions.reduce((a, r) => a + r.publishedJobs, 0);
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Cockpit géographique</h1>
-          <p className="admin-meta">
-            13 régions métropole · {totalPublished} contenu{totalPublished > 1 ? "s" : ""} publié
-            {totalPublished > 1 ? "s" : ""} · vélocité 7 j : {global.velocity7dJobs}
-          </p>
-        </div>
-        <div className="admin-dashboard-actions">
-          <a href={`${base}/batches/new`} className="admin-button">
-            + Nouveau batch
-          </a>
-          <a href={`${base}/batches`} className="admin-button-ghost">
-            Batches
-          </a>
-          <a href={`${base}/history`} className="admin-button-ghost">
-            Historique
-          </a>
-        </div>
-      </div>
-
-      <GeoEventsBanner />
-
-      <div className="admin-card-grid" style={{ marginBottom: 24 }}>
-        <KpiCard
-          label="Régions actives"
-          value={regions.filter((r) => r.publicationPhase === 1).length}
-        />
-        <KpiCard label="Publiés total" value={global.publishedJobs} />
-        <KpiCard label="En cours" value={global.runningJobs} />
-        <KpiCard
-          label="Failed"
-          value={global.failedJobs}
-          tone={global.failedJobs > 0 ? "warn" : undefined}
-        />
-        <KpiCard label="En revue" value={global.pendingReviewJobs} />
-        <KpiCard label="Vélocité 7 j" value={global.velocity7dJobs} />
-      </div>
-
-      <div className="admin-card admin-table-wrapper">
-        <h2>Progression par région</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Région</th>
-              <th>Phase</th>
-              <th>Publié</th>
-              <th>En cours</th>
-              <th>Failed</th>
-              <th>Review</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {regions.map((r) => (
-              <tr key={r.slug}>
-                <td>{r.name}</td>
-                <td>{r.publicationPhase}</td>
-                <td>{r.publishedJobs}</td>
-                <td>{r.runningJobs}</td>
-                <td>{r.failedJobs}</td>
-                <td>{r.pendingReviewJobs}</td>
-                <td>
-                  <a href={`${base}/batches/new?region=${r.slug}`} className="admin-button-ghost">
-                    Batch
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="admin-card">
-        <h2>Carte interactive</h2>
-        <p>
-          La carte React `react-simple-maps` + SSE temps réel arrive Sprint 4 (composant lourd, ~50
-          KB gz). V1 = table ci-dessus.
-        </p>
-      </div>
-    </section>
-  );
+  return <GeoCockpitV2 adminPrefix={adminPrefix} />;
 }
+
 
 function KpiCard({
   label,

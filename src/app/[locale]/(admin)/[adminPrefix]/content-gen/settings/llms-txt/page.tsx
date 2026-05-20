@@ -9,7 +9,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getLlmsTxt, updateLlmsTxt } from "@/server/actions/content-gen/policies";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { LlmsTxtV2 } from "./_v2/LlmsTxtV2";
 
 export const dynamic = "force-dynamic";
@@ -25,48 +24,6 @@ export default async function LlmsTxtPage({ params }: PageProps) {
 
   const content = await getLlmsTxt();
 
-  if (await isAdminV2Enabled()) {
-    return <LlmsTxtV2 content={content} />;
-  }
-
-  async function save(formData: FormData) {
-    "use server";
-    await updateLlmsTxt(String(formData.get("content") ?? ""));
-  }
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">llms.txt</h1>
-          <p className="admin-meta">
-            Édition manuelle du fichier servi à <code>/llms.txt</code> (indexation LLM).
-          </p>
-        </div>
-      </div>
-
-      <form action={save} className="admin-card">
-        <div className="admin-field">
-          <label htmlFor="content" className="admin-label">
-            Contenu (Markdown, max 50 000 caractères)
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            rows={28}
-            className="admin-input"
-            style={{ fontFamily: "ui-monospace, monospace", fontSize: 13 }}
-            defaultValue={content}
-            maxLength={50_000}
-            required
-          />
-        </div>
-        <div className="admin-filters-actions">
-          <button type="submit" className="admin-button">
-            Enregistrer + revalidate /llms.txt
-          </button>
-        </div>
-      </form>
-    </section>
-  );
+  return <LlmsTxtV2 content={content} />;
 }
+

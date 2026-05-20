@@ -8,7 +8,6 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listRssSources, removeRssSource } from "@/server/actions/content-gen/rss";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { RssDetailV2 } from "./_v2/RssDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -27,48 +26,6 @@ export default async function RssDetailPage({ params }: PageProps) {
   const source = sources.find((s) => s.url === url);
   if (!source) notFound();
 
-  if (await isAdminV2Enabled()) {
-    return <RssDetailV2 adminPrefix={adminPrefix} source={source} />;
-  }
-
-  async function remove() {
-    "use server";
-    await removeRssSource(url);
-    redirect(`/fr/${adminPrefix}/content-gen/rss`);
-  }
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">{source.name}</h1>
-          <p className="admin-meta">
-            <a href={source.url} target="_blank" rel="noopener">
-              <code>{source.url}</code>
-            </a>
-          </p>
-        </div>
-        <form action={remove}>
-          <button type="submit" className="admin-button-ghost">
-            Supprimer
-          </button>
-        </form>
-      </div>
-
-      <div className="admin-card">
-        <h2>Configuration</h2>
-        <ul className="admin-inline-list">
-          <li>Intervalle : {source.pollIntervalMin} min</li>
-          <li>Tags : {source.tags.join(", ") || "—"}</li>
-          <li>Auto-publish : {source.autoPublish ? "✅" : "🚫"}</li>
-          <li>Actif : {source.enabled ? "✅" : "🚫"}</li>
-        </ul>
-      </div>
-
-      <div className="admin-card">
-        <h2>Items récents</h2>
-        <p>Pipeline 2 RSS (table RssItem) arrive Sprint 4.</p>
-      </div>
-    </section>
-  );
+  return <RssDetailV2 adminPrefix={adminPrefix} source={source} />;
 }
+

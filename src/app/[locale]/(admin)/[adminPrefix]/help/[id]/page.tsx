@@ -7,7 +7,6 @@ import {
   listHelpCategoriesAction,
 } from "@/features/admin-help/actions";
 import { HelpForm } from "../HelpForm";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { HelpEditV2 } from "./_v2/HelpEditV2";
 
 export const dynamic = "force-dynamic";
@@ -54,57 +53,14 @@ export default async function EditHelpPage({ params }: PageProps) {
     },
   };
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <HelpEditV2
-        adminPrefix={adminPrefix}
-        categories={categories}
-        initial={initialPayload}
-        title={fr?.title ?? "(sans titre)"}
-        updatedAtIso={ha.updatedAt.toISOString().slice(0, 10)}
-      />
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <a href={`/fr/${adminPrefix}/help`} className="admin-link admin-back">
-            ← Centre d&apos;aide
-          </a>
-          <h1 className="admin-h1-large">Éditer : {fr?.title ?? "(sans titre)"}</h1>
-          <p className="admin-meta">Mise à jour : {ha.updatedAt.toISOString().slice(0, 10)}</p>
-        </div>
-      </div>
-      <div className="admin-card admin-card-wide">
-        <HelpForm
-          categories={categories}
-          initial={{
-            id: ha.id,
-            categoryId: ha.categoryId,
-            isTutorial: ha.isTutorial,
-            status: ha.status,
-            publishedAt: ha.publishedAt,
-            fr: {
-              title: fr?.title ?? "",
-              slug: fr?.slug ?? "",
-              excerpt: fr?.excerpt ?? null,
-              body: fr?.body ?? "",
-              metaTitle: fr?.metaTitle ?? null,
-              metaDescription: fr?.metaDescription ?? null,
-            },
-            en: {
-              title: en?.title ?? "",
-              slug: en?.slug ?? "",
-              excerpt: en?.excerpt ?? null,
-              body: en?.body ?? "",
-              metaTitle: en?.metaTitle ?? null,
-              metaDescription: en?.metaDescription ?? null,
-            },
-          }}
-        />
-      </div>
-    </section>
+    <HelpEditV2
+      adminPrefix={adminPrefix}
+      categories={categories}
+      initial={initialPayload}
+      title={fr?.title ?? "(sans titre)"}
+      updatedAtIso={ha.updatedAt.toISOString().slice(0, 10)}
+    />
   );
 }
+

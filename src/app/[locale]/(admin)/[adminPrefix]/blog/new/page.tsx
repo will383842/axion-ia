@@ -8,7 +8,6 @@ import {
   listAllTagsAction,
 } from "@/features/admin-blog/actions";
 import { BlogForm } from "../BlogForm";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { BlogNewV2 } from "./_v2/BlogNewV2";
 
 export const dynamic = "force-dynamic";
@@ -34,25 +33,8 @@ export default async function NewBlogPage({ params }: PageProps) {
     name: c.nameFr,
   }));
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <BlogNewV2 adminPrefix={adminPrefix} authors={authors} categories={categories} tags={tags} />
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <a href={`/fr/${adminPrefix}/blog`} className="admin-link admin-back">
-            ← Blog
-          </a>
-          <h1 className="admin-h1-large">Nouvel article</h1>
-        </div>
-      </div>
-      <div className="admin-card admin-card-wide">
-        <BlogForm authors={authors} categories={categories} tags={tags} />
-      </div>
-    </section>
+    <BlogNewV2 adminPrefix={adminPrefix} authors={authors} categories={categories} tags={tags} />
   );
 }
+

@@ -8,7 +8,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { LandingVariantDetailV2 } from "./_v2/LandingVariantDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -22,75 +21,6 @@ export default async function LandingVariantDetailPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  if (await isAdminV2Enabled()) {
-    return <LandingVariantDetailV2 adminPrefix={adminPrefix} variant={variant} />;
-  }
-
-  const [templates, jobsCount] = await Promise.all([
-    prisma.contentTemplate.findMany({
-      where: { contentType: "landing_ville", variant },
-      orderBy: { version: "desc" },
-    }),
-    prisma.contentGenJob.count({
-      where: {
-        contentType: "landing_ville",
-        inputPayload: { path: ["variant"], equals: variant },
-      },
-    }),
-  ]);
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">
-            Variant <code>{variant}</code>
-          </h1>
-          <p className="admin-meta">
-            {templates.length} template{templates.length > 1 ? "s" : ""} · {jobsCount} job
-            {jobsCount > 1 ? "s" : ""} générés
-          </p>
-        </div>
-      </div>
-
-      <div className="admin-card admin-table-wrapper">
-        <h2>Templates ciblant ce variant</h2>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Slug</th>
-              <th>Version</th>
-              <th>Actif</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {templates.length === 0 ? (
-              <tr>
-                <td colSpan={4}>Aucun template — créez-en un.</td>
-              </tr>
-            ) : (
-              templates.map((t) => (
-                <tr key={t.id}>
-                  <td>
-                    <code>{t.slug}</code>
-                  </td>
-                  <td>v{t.version}</td>
-                  <td>{t.isActive ? "✅" : "🚫"}</td>
-                  <td>
-                    <a
-                      href={`/fr/${adminPrefix}/content-gen/templates/${t.id}`}
-                      className="admin-button-ghost"
-                    >
-                      Éditer
-                    </a>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  );
+  return <LandingVariantDetailV2 adminPrefix={adminPrefix} variant={variant} />;
 }
+

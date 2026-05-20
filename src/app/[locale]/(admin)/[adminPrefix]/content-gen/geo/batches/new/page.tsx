@@ -8,7 +8,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { REGIONS } from "@/content/regions";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { GeoBatchesNewV2 } from "./_v2/GeoBatchesNewV2";
 
 export const dynamic = "force-dynamic";
@@ -26,46 +25,6 @@ export default async function NewBatchPage({ params, searchParams }: PageProps) 
 
   const preselected = sp.region;
 
-  if (await isAdminV2Enabled()) {
-    return <GeoBatchesNewV2 adminPrefix={adminPrefix} preselected={preselected} />;
-  }
-
-  return (
-    <section>
-      <div className="admin-dashboard-head">
-        <h1 className="admin-h1-large">Nouveau batch géographique</h1>
-      </div>
-
-      <div className="admin-card">
-        <p>
-          Le batch builder complet (modes d&apos;ordre, drag&amp;drop, skip filters) arrive V1.5.
-          Pour V1, créez une campagne depuis le formulaire campagne avec scope <code>region</code>{" "}
-          ou <code>departement</code>.
-        </p>
-        <p>
-          <a
-            href={`/fr/${adminPrefix}/content-gen/coverage/new${
-              preselected ? `?region=${preselected}` : ""
-            }`}
-            className="admin-button"
-          >
-            → Aller au formulaire campagne
-          </a>
-        </p>
-      </div>
-
-      <div className="admin-card">
-        <h2>Régions disponibles (phase 1)</h2>
-        <ul className="admin-quick-actions">
-          {REGIONS.filter((r) => r.publicationPhase === 1).map((r) => (
-            <li key={r.slug}>
-              <a href={`/fr/${adminPrefix}/content-gen/coverage/new?region=${r.slug}`}>
-                {r.nameFr} ({r.inseeCode})
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
+  return <GeoBatchesNewV2 adminPrefix={adminPrefix} preselected={preselected} />;
 }
+

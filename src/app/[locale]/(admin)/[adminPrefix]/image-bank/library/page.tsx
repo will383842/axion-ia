@@ -8,7 +8,6 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { LibraryV2 } from "./_v2/LibraryV2";
 
 export const dynamic = "force-dynamic";
@@ -45,79 +44,23 @@ export default async function LibraryPage({ params, searchParams }: PageProps) {
     include: { translations: { where: { languageCode: locale } } },
   });
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <LibraryV2
-        base={base}
-        status={sp.status}
-        module={sp.module}
-        images={images.map((img) => ({
-          id: img.id,
-          slug: img.slug,
-          module: img.module,
-          seoScore: img.seoScore,
-          publishedAt: img.publishedAt,
-          translations: img.translations.map((t) => ({ title: t.title })),
-        }))}
-      />
-    );
-  }
-
   return (
-    <main className="space-y-6 p-8">
-      <header className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Library</h1>
-        <Link
-          href={`${base}/upload`}
-          className="bg-terracotta rounded px-4 py-2 text-white hover:opacity-90"
-        >
-          + Upload
-        </Link>
-      </header>
-
-      <nav className="flex gap-2 text-sm">
-        <FilterLink href={`${base}/library`} label="Tous" active={!sp.status && !sp.module} />
-        <FilterLink
-          href={`${base}/library?status=published`}
-          label="Publiés"
-          active={sp.status === "published"}
-        />
-        <FilterLink
-          href={`${base}/library?status=draft`}
-          label="Brouillons"
-          active={sp.status === "draft"}
-        />
-      </nav>
-
-      {images.length === 0 ? (
-        <p className="text-fg-muted rounded border border-dashed border-gray-300 p-12 text-center">
-          Aucune image dans la bibliothèque pour ces critères.
-        </p>
-      ) : (
-        <ul className="grid grid-cols-4 gap-4">
-          {images.map((img) => {
-            const tr = img.translations[0];
-            return (
-              <li key={img.id}>
-                <Link
-                  href={`${base}/library/${img.id}`}
-                  className="block rounded border p-3 hover:shadow"
-                >
-                  <div className="mb-2 aspect-video bg-gray-100" />
-                  <p className="truncate text-sm font-medium">{tr?.title ?? img.slug}</p>
-                  <p className="text-fg-muted text-xs">
-                    {img.module ?? "—"} · score {img.seoScore ?? 0} ·{" "}
-                    {img.publishedAt ? "publié" : "brouillon"}
-                  </p>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </main>
+    <LibraryV2
+      base={base}
+      status={sp.status}
+      module={sp.module}
+      images={images.map((img) => ({
+        id: img.id,
+        slug: img.slug,
+        module: img.module,
+        seoScore: img.seoScore,
+        publishedAt: img.publishedAt,
+        translations: img.translations.map((t) => ({ title: t.title })),
+      }))}
+    />
   );
 }
+
 
 function FilterLink({ href, label, active }: { href: string; label: string; active: boolean }) {
   return (

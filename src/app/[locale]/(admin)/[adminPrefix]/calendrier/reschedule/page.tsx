@@ -12,7 +12,6 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ReschedulePanel } from "./ReschedulePanel";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { RescheduleV2 } from "./_v2/RescheduleV2";
 import type { BookingStatus } from "../../../../../../../prisma/generated/client";
 
@@ -91,97 +90,28 @@ export default async function CalendarReschedulePage({ params, searchParams }: P
     }),
   ]);
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <RescheduleV2
-        adminPrefix={adminPrefix}
-        year={year}
-        month={month}
-        periodStart={periodStart}
-        bookings={bookings.map((b) => ({
-          id: b.id,
-          bookingDate: b.bookingDate.toISOString(),
-          status: b.status,
-          interventionType: b.interventionType,
-          slotId: b.slotId,
-          companyName: b.fromSubmission?.companyName ?? b.submission?.companyName ?? "—",
-        }))}
-        slots={slots.map((s) => ({
-          id: s.id,
-          slotDate: s.slotDate.toISOString(),
-          status: s.status,
-          interventionType: s.interventionType,
-          blockedReason: s.blockedReason,
-        }))}
-      />
-    );
-  }
-
-  const monthLabel = new Intl.DateTimeFormat("fr-FR", {
-    month: "long",
-    year: "numeric",
-  }).format(periodStart);
-
-  const prevMonth = month === 1 ? { y: year - 1, m: 12 } : { y: year, m: month - 1 };
-  const nextMonth = month === 12 ? { y: year + 1, m: 1 } : { y: year, m: month + 1 };
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <Link href={`/fr/${adminPrefix}/calendrier`} className="admin-link admin-back">
-            ← Calendrier
-          </Link>
-          <h1 className="admin-h1-large">Reprogrammer (D60) — {monthLabel}</h1>
-          <p className="admin-meta">
-            {bookings.length} booking{bookings.length > 1 ? "s" : ""} reschedulable
-            {bookings.length > 1 ? "s" : ""} ·{" "}
-            {slots.filter((s) => s.status === "available").length} slot
-            {slots.filter((s) => s.status === "available").length > 1 ? "s" : ""} disponible
-            {slots.filter((s) => s.status === "available").length > 1 ? "s" : ""}
-          </p>
-        </div>
-        <div className="admin-filters-actions">
-          <Link
-            href={`/fr/${adminPrefix}/calendrier/reschedule?year=${prevMonth.y}&month=${prevMonth.m}`}
-            className="admin-button-ghost"
-          >
-            ← mois préc.
-          </Link>
-          <Link
-            href={`/fr/${adminPrefix}/calendrier/reschedule?year=${nextMonth.y}&month=${nextMonth.m}`}
-            className="admin-button-ghost"
-          >
-            mois suiv. →
-          </Link>
-        </div>
-      </div>
-
-      <div className="admin-card">
-        <p className="admin-meta-block">
-          Glisse-dépose un booking de la colonne gauche sur un slot vert (disponible) de la grille
-          pour reprogrammer. Une modal s&apos;ouvrira pour saisir le motif puis confirmer (email
-          auto au client).
-        </p>
-      </div>
-
-      <ReschedulePanel
-        bookings={bookings.map((b) => ({
-          id: b.id,
-          bookingDate: b.bookingDate.toISOString(),
-          status: b.status,
-          interventionType: b.interventionType,
-          slotId: b.slotId,
-          companyName: b.fromSubmission?.companyName ?? b.submission?.companyName ?? "—",
-        }))}
-        slots={slots.map((s) => ({
-          id: s.id,
-          slotDate: s.slotDate.toISOString(),
-          status: s.status,
-          interventionType: s.interventionType,
-          blockedReason: s.blockedReason,
-        }))}
-      />
-    </section>
+    <RescheduleV2
+      adminPrefix={adminPrefix}
+      year={year}
+      month={month}
+      periodStart={periodStart}
+      bookings={bookings.map((b) => ({
+        id: b.id,
+        bookingDate: b.bookingDate.toISOString(),
+        status: b.status,
+        interventionType: b.interventionType,
+        slotId: b.slotId,
+        companyName: b.fromSubmission?.companyName ?? b.submission?.companyName ?? "—",
+      }))}
+      slots={slots.map((s) => ({
+        id: s.id,
+        slotDate: s.slotDate.toISOString(),
+        status: s.status,
+        interventionType: s.interventionType,
+        blockedReason: s.blockedReason,
+      }))}
+    />
   );
 }
+

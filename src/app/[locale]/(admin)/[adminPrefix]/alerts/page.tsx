@@ -14,7 +14,6 @@
 // Auth requise : redirect login si pas de session admin. Force-dynamic.
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { AlertsV2 } from "./_v2/AlertsV2";
 
 export const dynamic = "force-dynamic";
@@ -286,79 +285,13 @@ export default async function AdminAlertsPage({ params }: PageProps) {
     ...(sentry.configured ? [] : [{ name: "Sentry", err: sentry.err ?? "unknown" }]),
   ];
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <AlertsV2
-        adminPrefix={adminPrefix}
-        allAlerts={allAlerts}
-        counts={counts}
-        unconfigured={unconfiguredV2}
-      />
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Alertes ops</h1>
-          <p className="admin-meta">
-            Vue agrégée des alertes (Sentry · UptimeRobot · Coolify). Email Sentry reste actif pour
-            notif push — cette page = consultation pull à toi de venir.
-          </p>
-        </div>
-        <div>
-          <a href={`/fr/${adminPrefix}`} className="admin-link">
-            ← Retour au tableau de bord
-          </a>
-        </div>
-      </div>
-
-      <div className="admin-kpi-grid">
-        <div className="admin-card">
-          <p className="admin-card-label">Critiques</p>
-          <p className="admin-kpi-value admin-severity-critical">{counts.critical}</p>
-        </div>
-        <div className="admin-card">
-          <p className="admin-card-label">Warnings</p>
-          <p className="admin-kpi-value admin-severity-warning">{counts.warning}</p>
-        </div>
-        <div className="admin-card">
-          <p className="admin-card-label">Info</p>
-          <p className="admin-kpi-value admin-severity-info">{counts.info}</p>
-        </div>
-        <div className="admin-card">
-          <p className="admin-card-label">Total</p>
-          <p className="admin-kpi-value">{allAlerts.length}</p>
-        </div>
-      </div>
-
-      {(!uptime.configured || !coolify.configured || !sentry.configured) && (
-        <div className="admin-card">
-          <h2 className="admin-h2">Sources non configurées</h2>
-          <ul className="admin-meta-block">
-            {!uptime.configured && <li>UptimeRobot — {uptime.err}</li>}
-            {!coolify.configured && <li>Coolify — {coolify.err}</li>}
-            {!sentry.configured && <li>Sentry — {sentry.err}</li>}
-          </ul>
-        </div>
-      )}
-
-      {allAlerts.length === 0 ? (
-        <div className="admin-card">
-          <h2 className="admin-h2">Aucune alerte active</h2>
-          <p className="admin-meta-block">
-            Tout va bien. Les sources configurées ne remontent aucun problème dans la fenêtre
-            récente (24h Sentry, 7j Coolify, statut courant UptimeRobot).
-          </p>
-        </div>
-      ) : (
-        <div className="admin-kpi-grid">
-          {allAlerts.map((alert, idx) => (
-            <AlertCard key={`${alert.source}-${idx}`} alert={alert} />
-          ))}
-        </div>
-      )}
-    </section>
+    <AlertsV2
+      adminPrefix={adminPrefix}
+      allAlerts={allAlerts}
+      counts={counts}
+      unconfigured={unconfiguredV2}
+    />
   );
 }
+

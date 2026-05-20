@@ -12,7 +12,6 @@ import {
   deactivateKillSwitch,
   getKillSwitch,
 } from "@/server/actions/content-gen/kill-switch";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { KillSwitchV2 } from "./_v2/KillSwitchV2";
 
 export const dynamic = "force-dynamic";
@@ -28,88 +27,14 @@ export default async function KillSwitchPage({ params }: PageProps) {
 
   const state = await getKillSwitch();
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <KillSwitchV2
-        state={{
-          active: state.active,
-          activatedAt: state.activatedAt ?? null,
-          reason: state.reason ?? null,
-        }}
-      />
-    );
-  }
-
-  async function activate(formData: FormData) {
-    "use server";
-    const reason = String(formData.get("reason") ?? "").trim();
-    if (reason.length < 3) throw new Error("reason_required");
-    await activateKillSwitch(reason);
-  }
-
-  async function deactivate() {
-    "use server";
-    await deactivateKillSwitch();
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Kill switch</h1>
-          <p className="admin-meta">
-            Stop immédiat de toutes les générations content-gen. Les workers rejetent les jobs au
-            pick tant que l&apos;interrupteur est actif.
-          </p>
-        </div>
-      </div>
-
-      <div
-        className="admin-card"
-        style={{ borderColor: state.active ? "var(--color-terracotta)" : undefined }}
-      >
-        <h2>{state.active ? "🛑 Kill switch ACTIF" : "✅ Kill switch INACTIF"}</h2>
-        {state.active ? (
-          <>
-            <p>
-              <strong>Activé le :</strong> {state.activatedAt}
-            </p>
-            <p>
-              <strong>Raison :</strong> {state.reason ?? "—"}
-            </p>
-            <form action={deactivate}>
-              <button type="submit" className="admin-button">
-                Désactiver le kill switch
-              </button>
-            </form>
-          </>
-        ) : (
-          <form action={activate}>
-            <div className="admin-field">
-              <label htmlFor="reason" className="admin-label">
-                Raison (min 3 caractères, max 280)
-              </label>
-              <textarea
-                id="reason"
-                name="reason"
-                className="admin-input"
-                rows={3}
-                required
-                minLength={3}
-                maxLength={280}
-                placeholder="Ex. incident provider — pause d'urgence"
-              />
-            </div>
-            <button
-              type="submit"
-              className="admin-button"
-              style={{ background: "var(--color-terracotta)", color: "var(--color-paper)" }}
-            >
-              🛑 Activer le kill switch
-            </button>
-          </form>
-        )}
-      </div>
-    </section>
+    <KillSwitchV2
+      state={{
+        active: state.active,
+        activatedAt: state.activatedAt ?? null,
+        reason: state.reason ?? null,
+      }}
+    />
   );
 }
+

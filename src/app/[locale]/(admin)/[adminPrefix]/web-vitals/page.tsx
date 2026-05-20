@@ -24,7 +24,6 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { contentWebVitalsMonitorQueue } from "@/server/queue/queues";
-import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { WebVitalsV2 } from "./_v2/WebVitalsV2";
 
 export const dynamic = "force-dynamic";
@@ -233,223 +232,24 @@ export default async function AdminWebVitalsPage({ params }: PageProps) {
   const breachCount = aggregates.filter((a) => a.breach).length;
   const routeCount = new Set(aggregates.map((a) => a.url)).size;
 
-  if (await isAdminV2Enabled()) {
-    return (
-      <WebVitalsV2
-        adminPrefix={adminPrefix}
-        totalSamples={totalSamples}
-        routeCount={routeCount}
-        breachCount={breachCount}
-        isLive={isLive}
-        computedAt={computedAt}
-        display={display}
-        aggregatesLength={aggregates.length}
-        lastAlertSentAt={lastAlert.sent_at}
-        lastAlertBreachCount={lastAlert.breach_count}
-        recomputeEnabled={Boolean(contentWebVitalsMonitorQueue)}
-        triggerRecomputeAction={async () => {
-          "use server";
-          await triggerRecomputeAction();
-        }}
-      />
-    );
-  }
-
   return (
-    <section>
-      <div className="admin-dashboard-head">
-        <div>
-          <h1 className="admin-h1-large">Web Vitals — RUM 24h</h1>
-          <p className="admin-meta">
-            Mesures réelles (Real User Monitoring) consolidées sur la fenêtre {WINDOW_HOURS}h. p75
-            calculé par (route × métrique) — minimum {MIN_SAMPLES} samples requis pour fiabilité.
-            Budget AGENTS.md = cible interne plus stricte que Google « good » (CrUX).
-          </p>
-        </div>
-        <div>
-          <a href={`/fr/${adminPrefix}`} className="admin-link">
-            ← Retour au tableau de bord
-          </a>
-        </div>
-      </div>
-
-      {/* ── KPI grid ──────────────────────────────────────────────────────── */}
-      <div className="admin-kpi-grid">
-        <div className="admin-card">
-          <p className="admin-card-label">Samples 24h</p>
-          <p className="admin-kpi-value">{totalSamples.toLocaleString("fr-FR")}</p>
-        </div>
-        <div className="admin-card">
-          <p className="admin-card-label">Routes mesurées</p>
-          <p className="admin-kpi-value">{routeCount}</p>
-        </div>
-        <div className="admin-card">
-          <p className="admin-card-label">Lignes hors budget</p>
-          <p
-            className={`admin-kpi-value ${breachCount > 0 ? "admin-severity-critical" : "admin-severity-info"}`}
-          >
-            {breachCount}
-          </p>
-        </div>
-        <div className="admin-card">
-          <p className="admin-card-label">Source</p>
-          <p className="admin-meta-block" style={{ fontSize: "13px", marginTop: "8px" }}>
-            {isLive ? "Live (DB)" : "Snapshot worker"}
-            <br />
-            <span className="admin-meta-small">
-              {computedAt ? new Date(computedAt).toLocaleString("fr-FR") : "—"}
-            </span>
-          </p>
-        </div>
-      </div>
-
-      {/* ── Budgets référence ────────────────────────────────────────────── */}
-      <div className="admin-card">
-        <h2 className="admin-h2">Budgets référence (AGENTS.md)</h2>
-        <p className="admin-meta-block">
-          Cible interne stricte (Web Vitals 2026 — voir{" "}
-          <code>_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md</code>) : LCP ≤ 1 800 ms · INP ≤ 100 ms ·
-          CLS = 0 (epsilon 0,01) · FCP ≤ 1 000 ms · TTFB ≤ 600 ms · TBT ≤ 150 ms. Google « good »
-          plus laxiste (LCP 2 500 / INP 200 / CLS 0,1) — Axion-IA vise la perfection. Alerte
-          Telegram tag <code>MONITORING</code> émise via helpers SSOT{" "}
-          <code>content-gen-alerts.ts</code> par breach (runbook <code>R30</code>).
-        </p>
-      </div>
-
-      {/* ── Actions ──────────────────────────────────────────────────────── */}
-      <div className="admin-card">
-        <h2 className="admin-h2">Actions</h2>
-        <form
-          action={async () => {
-            "use server";
-            await triggerRecomputeAction();
-          }}
-        >
-          <button
-            type="submit"
-            className="admin-button"
-            disabled={!contentWebVitalsMonitorQueue}
-            title={
-              contentWebVitalsMonitorQueue
-                ? "Enqueue un tick worker pour recalculer immédiatement (sinon cron nightly 02:30 UTC)"
-                : "BULLMQ_DISABLED — worker non disponible (probablement env dev)"
-            }
-          >
-            ⚙️ Forcer un recompute
-          </button>
-        </form>
-        <p className="admin-meta-small" style={{ marginTop: "8px" }}>
-          Le cron nightly écrit le snapshot toutes les nuits 02:30 UTC. Bouton utile pour vérifier
-          immédiatement après un patch perf.
-        </p>
-        {lastAlert.sent_at && (
-          <p className="admin-meta-block" style={{ marginTop: "12px" }}>
-            <strong>Dernière alerte Telegram :</strong>{" "}
-            {new Date(lastAlert.sent_at).toLocaleString("fr-FR")} ({lastAlert.breach_count ?? 0}{" "}
-            breaches notifiées)
-          </p>
-        )}
-      </div>
-
-      {/* ── Tableau (route × metric) ─────────────────────────────────────── */}
-      <div className="admin-card">
-        <h2 className="admin-h2">
-          Détail (route × métrique) — top {Math.min(TABLE_CAP, aggregates.length)}
-        </h2>
-        {display.length === 0 ? (
-          <p className="admin-meta-block">
-            Aucune ligne fiable dans la fenêtre {WINDOW_HOURS}h (chaque combinaison requiert ≥{" "}
-            {MIN_SAMPLES} samples). C&apos;est normal en faible trafic — patientez 24-48h après mise
-            en production pour des données stables.
-          </p>
-        ) : (
-          <div style={{ overflowX: "auto", marginTop: "12px" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid var(--color-border)", textAlign: "left" }}>
-                  <th style={{ padding: "8px 6px" }}>Route</th>
-                  <th style={{ padding: "8px 6px" }}>Métrique</th>
-                  <th style={{ padding: "8px 6px", fontFamily: "var(--font-inconsolata)" }}>p75</th>
-                  <th style={{ padding: "8px 6px", fontFamily: "var(--font-inconsolata)" }}>
-                    Budget
-                  </th>
-                  <th style={{ padding: "8px 6px" }}>n</th>
-                  <th style={{ padding: "8px 6px" }}>Statut</th>
-                  <th style={{ padding: "8px 6px" }}>Rating CrUX</th>
-                  <th style={{ padding: "8px 6px" }}>PSI</th>
-                </tr>
-              </thead>
-              <tbody>
-                {display.map((row, idx) => {
-                  const rating = classifyRating(row.metric, row.p75);
-                  return (
-                    <tr
-                      key={`${row.url}-${row.metric}-${idx}`}
-                      style={{ borderBottom: "1px solid var(--color-border-faint)" }}
-                    >
-                      <td style={{ padding: "6px", wordBreak: "break-all" }}>
-                        <code>{row.url}</code>
-                      </td>
-                      <td style={{ padding: "6px" }}>
-                        <strong>{row.metric}</strong>
-                      </td>
-                      <td
-                        style={{
-                          padding: "6px",
-                          fontFamily: "var(--font-inconsolata)",
-                          fontWeight: row.breach ? 700 : 400,
-                        }}
-                      >
-                        {fmtValue(row.metric, row.p75)}
-                      </td>
-                      <td style={{ padding: "6px", fontFamily: "var(--font-inconsolata)" }}>
-                        {fmtValue(row.metric, row.budget)}
-                      </td>
-                      <td style={{ padding: "6px" }}>{row.count}</td>
-                      <td style={{ padding: "6px" }}>{budgetPill(row.breach)}</td>
-                      <td style={{ padding: "6px" }}>{ratingPill(rating)}</td>
-                      <td style={{ padding: "6px" }}>
-                        <a
-                          href={psiUrl(row.url)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="admin-link"
-                        >
-                          ↗
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      {/* ── Doc rapide ──────────────────────────────────────────────────── */}
-      <div className="admin-card">
-        <h2 className="admin-h2">Lecture rapide</h2>
-        <ul className="admin-meta-block">
-          <li>
-            <strong>Hors budget</strong> = p75 dépasse la cible interne AGENTS.md (plus stricte que
-            Google CrUX « good »). Alerte Telegram déjà envoyée — voir <code>/alerts</code>.
-          </li>
-          <li>
-            <strong>Rating CrUX</strong> = classification Google standard pour comparaison externe
-            (Search Console, PSI). Indicatif user-side.
-          </li>
-          <li>
-            <strong>PSI ↗</strong> = lance un audit Lighthouse labo direct sur cette route. Utile
-            quand le RUM agrège différents devices/réseaux et que tu veux voir une mesure contrôlée.
-          </li>
-          <li>
-            <strong>Stack RUM</strong> : <code>WebVitals.tsx</code> (next/web-vitals) →{" "}
-            <code>/api/vitals</code> (sendBeacon) → <code>WebVitalSample</code> Prisma. Worker
-            agrège p75 nuitamment + alerte Telegram via helpers SSOT.
-          </li>
-        </ul>
-      </div>
-    </section>
+    <WebVitalsV2
+      adminPrefix={adminPrefix}
+      totalSamples={totalSamples}
+      routeCount={routeCount}
+      breachCount={breachCount}
+      isLive={isLive}
+      computedAt={computedAt}
+      display={display}
+      aggregatesLength={aggregates.length}
+      lastAlertSentAt={lastAlert.sent_at}
+      lastAlertBreachCount={lastAlert.breach_count}
+      recomputeEnabled={Boolean(contentWebVitalsMonitorQueue)}
+      triggerRecomputeAction={async () => {
+        "use server";
+        await triggerRecomputeAction();
+      }}
+    />
   );
 }
+
