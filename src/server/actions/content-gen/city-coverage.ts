@@ -22,8 +22,6 @@
  *   8. kb_sectorielle      : kb_sector_tags (1)
  */
 
-"use server";
-
 import { getVille, VILLES } from "@/content/villes";
 import type { EconomicDataDimension } from "@/content/villes/economic-data/types";
 
@@ -500,6 +498,7 @@ export interface CityCoverageSummary {
 }
 
 export async function getCityCoverage(): Promise<CityCoverageSummary> {
+  "use server";
   const rows = (
     await Promise.all(PILOT_CITY_SLUGS.map((slug) => computeCityCoverage(slug)))
   ).filter((r): r is CityCoverageRow => r !== null);
