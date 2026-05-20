@@ -38,11 +38,12 @@ export function GET() {
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
 
-## Modules — 3 prestations
+## Modules — 4 prestations
 
 - [Interventions entreprise](${SITE_URL}/fr/interventions) — formats opérationnels sur site, page phare ${SITE_URL}/fr/interventions/essentielle (${essentiellePrice}).
 - [Audit & optimisation IA](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
 - [Implémentation IA](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
+- [Coaching IA individuel 1-to-1](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de 990 € HT.
 
 ## Preuve & méthode
 

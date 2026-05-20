@@ -432,23 +432,16 @@ export async function renderVilleServicePage({
         </div>
       </Section>
 
-      {/* Section détaillée du service à la ville (réutilise composant).
-          NB : `VilleServiceDetailSection` n'a été câblé que pour les 3
-          verticales historiques (audit/interventions/implementation).
-          Pour `un-a-un` (4e verticale Phase 1), on skip — la section
-          détaillée sera rendue via un composant dédié ou un fallback
-          inline. À étendre Sprint S+3 si besoin parité visuelle. */}
-      {service !== "un-a-un" ? (
-        <VilleServiceDetailSection
-          isFr={isFr}
-          service={service as "audit" | "interventions" | "implementation"}
-          villeNameFr={ville.nameFr}
-          villeSlug={ville.slug}
-          regionSlug={ville.region}
-          copy={localeCopy}
-          tone="paper"
-        />
-      ) : null}
+      {/* Section détaillée du service à la ville — 4 verticales. */}
+      <VilleServiceDetailSection
+        isFr={isFr}
+        service={service}
+        villeNameFr={ville.nameFr}
+        villeSlug={ville.slug}
+        regionSlug={ville.region}
+        copy={localeCopy}
+        tone="paper"
+      />
 
       {/* FAQ embed Speakable JSON-LD émise séparément ci-dessus */}
       {localeCopy.faq.length > 0 ? (

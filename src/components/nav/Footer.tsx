@@ -62,11 +62,7 @@ export async function Footer() {
     // P0-11 audit E2E NAV+CTA 2026-05-15 — `/recherche` rendue découvrable
     // (était orpheline depuis Sprint 15 placeholder).
     { href: "/recherche", label: isFr ? "Recherche" : "Search" },
-    // /galerie retiré P0-10 audit E2E NAV+CTA 2026-05-15 — route absente
-    // (`src/app/[locale]/galerie/` non livrée). Sera ré-ajouté quand le skill
-    // image-bank v1.1 expose le hub public. Entrée routing.ts conservée pour
-    // `PressImageBank.tsx` et `presse/page.tsx` qui linkent déjà /galerie en
-    // anticipation de la livraison.
+    { href: "/galerie", label: isFr ? "Banque d'images" : "Image bank" },
   ];
   const company = [
     { href: "/a-propos", label: t("nav.about") },

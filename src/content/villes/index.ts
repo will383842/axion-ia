@@ -11,6 +11,8 @@
 
 import type { VilleData } from "./data/types";
 import type { VilleCopy } from "./copy/types";
+import type { VilleEconomicData } from "./economic-data/types";
+import { getVilleEconomicData } from "./economic-data";
 
 import { VILLES_ILE_DE_FRANCE } from "./data/ile-de-france";
 import { VILLES_AUVERGNE_RHONE_ALPES } from "./data/auvergne-rhone-alpes";
@@ -35,6 +37,12 @@ export type { VilleCopy, VilleFaq } from "./copy/types";
 export interface Ville extends VilleData {
   /** Contenu éditorial gold standard. Présent ⇒ page indexable. */
   copy?: VilleCopy;
+  /**
+   * Data économique enrichie (secteurs NAF, pôles, distances, KB tags…)
+   * sourcée. Consommée par ContentGen RAG + dashboard /content-gen/city-coverage.
+   * Sprint City Quality 2026-05-18 — contrat zéro invention.
+   */
+  economicData?: VilleEconomicData;
 }
 
 // Lookup slug → contenu éditorial. Étendu manuellement à mesure que les
@@ -61,7 +69,11 @@ const RAW_VILLES: ReadonlyArray<VilleData> = [
 
 export const VILLES: ReadonlyArray<Ville> = RAW_VILLES.map((v) => {
   const copy = COPY_BY_SLUG[v.slug];
-  return copy ? { ...v, copy } : { ...v };
+  const economicData = getVilleEconomicData(v.slug);
+  const base: Ville = { ...v };
+  if (copy) base.copy = copy;
+  if (economicData) base.economicData = economicData;
+  return base;
 });
 
 const SLUG_INDEX = new Map(VILLES.map((v) => [v.slug, v] as const));

@@ -62,7 +62,7 @@ export function GET() {
 
 Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
-## 3 modules
+## 4 modules
 
 ### Module 1 — Interventions entreprise (à partir de ${interventionsEntry})
 Format opérationnel sur site (ou distance). 1 journée d'intervention = diagnostic terrain + démos appliquées sur vos données + plan d'action chiffré priorisé. Page phare : l'Essentielle ${interventionsCompact}.
@@ -75,6 +75,10 @@ URL : ${SITE_URL}/fr/audit
 ### Module 3 — Implémentation IA (${implEntry})
 Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement, support 30 j inclus. 9 prestations dont l'IA Custom premium (jusqu'à ${iaCustomMax}).
 URL : ${SITE_URL}/fr/implementation
+
+### Module 4 — Coaching IA individuel 1-to-1 (à partir de 990 € HT)
+1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 30 min gratuit, progression mesurable à chaque étape.
+URL : ${SITE_URL}/fr/un-a-un
 
 ## FAQ
 

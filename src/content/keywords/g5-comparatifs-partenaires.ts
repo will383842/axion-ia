@@ -249,7 +249,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 2,
     injection: {
       h1: "ChatGPT ou Microsoft Copilot pour votre PME : le comparatif qui évite les pièges",
-      metaTitle: "ChatGPT vs Copilot Microsoft PME — Quel outil choisir en 2026 ?",
+      metaTitle: "ChatGPT vs Copilot Microsoft PME | Axion-IA",
       metaDescription:
         "Intégration Office 365, coût par siège, cas d'usage réels : comparez ChatGPT Enterprise et Microsoft Copilot 365 pour PME.",
       h2Variants: [
@@ -380,7 +380,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Audit IA ou POC IA : par lequel commencer selon votre maturité ?",
-      metaTitle: "Audit IA vs POC IA — Quelle différence et par lequel commencer ?",
+      metaTitle: "Audit IA vs POC IA — différences & guide | Axion-IA",
       metaDescription:
         "L'audit cartographie vos opportunités IA. Le POC valide une solution. Découvrez lequel lancer en premier selon votre contexte.",
       h2Variants: [
@@ -459,7 +459,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Formation IA 1 jour ou 2 jours : ce qui change vraiment dans les résultats",
-      metaTitle: "Formation IA 1 jour vs 2 jours — Quel format pour votre équipe ?",
+      metaTitle: "Formation IA 1 jour vs 2 jours | Axion-IA",
       metaDescription:
         "Immersion, pratique, suivi post-formation : comparez les formats 1 et 2 jours pour choisir selon vos objectifs et contraintes agenda.",
       h2Variants: [
@@ -587,7 +587,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Coaching IA individuel ou formation collective : quel format accélère vraiment ?",
-      metaTitle: "Accompagnement IA individuel vs formation collective — Comparatif",
+      metaTitle: "Accompagnement IA individuel vs collectif | Axion-IA",
       metaDescription:
         "Progression personnalisée vs économie d'échelle : comparez les deux formats pour choisir ce qui correspond à vos enjeux RH.",
       h2Variants: [
@@ -612,7 +612,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Implémenter l'IA en interne ou avec un cabinet : le comparatif de coût réel",
-      metaTitle: "Coût implémentation IA interne vs cabinet — Chiffres réels 2026",
+      metaTitle: "Coût IA interne vs cabinet — chiffres réels | Axion-IA",
       metaDescription:
         "Développement interne, temps perdu, erreurs d'architecture : découvrez pourquoi l'accompagnement cabinet est souvent moins cher.",
       h2Variants: [
@@ -662,7 +662,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 2,
     injection: {
       h1: "Formation IA CPF éligible ou non : ce que le financement change vraiment",
-      metaTitle: "Formation IA CPF éligible vs non éligible — Ce qui compte vraiment",
+      metaTitle: "Formation IA CPF éligible vs non éligible | Axion-IA",
       metaDescription:
         "CPF, OPCO, plan de formation : comprendre les modalités de financement IA et pourquoi l'éligibilité n'est pas le seul critère.",
       h2Variants: [
@@ -687,7 +687,7 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "IA on-premise ou cloud : l'arbitrage stratégique pour les ETI sensibles aux données",
-      metaTitle: "IA on-premise vs cloud entreprise — Comparatif sécurité & coût",
+      metaTitle: "IA on-premise vs cloud entreprise | Axion-IA",
       metaDescription:
         "Souveraineté des données, latence, coûts d'infrastructure : notre comparatif on-premise vs cloud IA pour ETI sous contrainte RGPD.",
       h2Variants: [
@@ -919,7 +919,7 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
     niveau: 2,
     injection: {
       h1: "Programme partenaires Axion-IA : co-vendez l'IA auprès de vos clients B2B",
-      metaTitle: "Programme partenaires IA B2B — Commission & co-vente Axion-IA",
+      metaTitle: "Programme partenaires IA B2B | Axion-IA",
       metaDescription:
         "Apporteurs, revendeurs, intégrateurs : notre programme partenaires B2B avec commission sur chaque mission signée.",
       h2Variants: [
@@ -1141,7 +1141,7 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Syndicats patronaux : proposez la formation IA comme avantage différenciant à vos adhérents",
-      metaTitle: "Syndicat patronal formation IA adhérents — Partenariat Axion-IA",
+      metaTitle: "Formation IA syndicats patronaux | Axion-IA",
       metaDescription:
         "MEDEF, CPME, U2P et fédérations sectorielles : construisez une offre de formation IA pour vos adhérents avec Axion-IA.",
       h2Variants: [
@@ -1242,7 +1242,7 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Consultant n8n pour PME françaises : automatisation open-source et agents IA",
-      metaTitle: "Consultant n8n PME France — Expert automatisation IA Axion-IA",
+      metaTitle: "Consultant n8n PME France | Axion-IA",
       metaDescription:
         "Déployez n8n dans votre PME avec des consultants qui connaissent les limites et les forces de l'outil dans des contextes réels.",
       h2Variants: [

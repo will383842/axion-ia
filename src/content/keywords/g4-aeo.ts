@@ -1687,7 +1687,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Équipe réticente à l'IA : comment lever les freins",
-      metaTitle: "Collaborateurs réticents à l'IA : gérer les freins | Axion-IA",
+      metaTitle: "Collaborateurs réticents à l'IA — gérer les freins",
       metaDescription:
         "3 approches : montrer un gain concret sur leur propre tâche (pas une démo abstraite), commencer par les volontaires, nommer un ambassadeur IA interne. La résistance vient toujours de la peur du remplacement, pas de l'outil.",
       h2Variants: [

@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { buildAdminNav, ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 36 items (snapshot count)", () => {
+  it("returns 37 items (snapshot count)", () => {
     const items = buildAdminNav("admin-test-prefix");
-    expect(items.length).toBe(36);
+    expect(items.length).toBe(37);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

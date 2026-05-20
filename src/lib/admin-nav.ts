@@ -75,6 +75,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
     { href: `${base}/content-gen`, label: "Générateur contenus", icon: "🧠", group: "content" },
+    {
+      href: `${base}/content-gen/city-coverage`,
+      label: "Couverture villes",
+      icon: "🏙️",
+      group: "content",
+    },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },

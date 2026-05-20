@@ -797,7 +797,7 @@ const KW_BTP: KeywordSeed[] = [
     niveau: 2,
     injection: {
       h1: "Intelligence artificielle et construction en France : état des lieux 2026",
-      metaTitle: "Intelligence artificielle construction France 2026 — Axion-IA",
+      metaTitle: "IA construction BTP France 2026 | Axion-IA",
       metaDescription:
         "Panorama complet de l'IA dans le BTP français : maturité, cas d'usage, acteurs, réglementation et perspectives 2026-2028. Guide Axion-IA.",
       h2Variants: [

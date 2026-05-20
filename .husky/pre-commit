@@ -1,3 +1,4 @@
+#!/bin/sh
 pnpm exec lint-staged
 pnpm anti-siren:check
 pnpm anti-hex:check

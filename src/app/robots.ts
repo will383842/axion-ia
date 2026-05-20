@@ -75,6 +75,10 @@ const AI_BOTS_ALLOWED = [
   // y donnait déjà accès, mais déclaration explicite cohérente avec doctrine
   // « ALLOW search + answer engines ».
   "YandexBot",
+  // Audit GEO/AEO 2026-05-20 — déclaration explicite Googlebot-Image pour indexation
+  // des images marketing (visibilité Google Images). Déjà couvert par la règle `*`
+  // mais explicite pour cohérence avec la doctrine AI bots.
+  "Googlebot-Image",
 ];
 
 const AI_BOTS_DISALLOWED = [

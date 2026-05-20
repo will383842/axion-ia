@@ -21,7 +21,9 @@ import {
   AUDIT_TIERS,
   INTERVENTION_FEES_NOTE,
   INTERVENTION_TIERS,
+  UN_A_UN_TIERS,
   formatAmount,
+  getEntryTier,
   getTierById,
 } from "@/content/pricing";
 
@@ -29,7 +31,7 @@ export interface VilleServiceDetailSectionProps {
   /** Locale courante. */
   isFr: boolean;
   /** Type de service — pilote l'accent visuel + libellés. */
-  service: "audit" | "interventions" | "implementation";
+  service: "audit" | "interventions" | "implementation" | "un-a-un";
   /** Nom de la ville (h2 + JSON-LD). */
   villeNameFr: string;
   /** Slug ville pour data-attributes tracking. */
@@ -48,6 +50,7 @@ const interventionEssentielleAmount = getTierById(
   INTERVENTION_TIERS,
   "intervention-essentielle",
 ).priceFlat!;
+const unAUnAmount = getEntryTier(UN_A_UN_TIERS).priceFlat!;
 
 const SERVICE_META = {
   audit: {
@@ -80,6 +83,16 @@ const SERVICE_META = {
     ctaFr: "Discuter d'un projet",
     ctaEn: "Discuss a project",
   },
+  "un-a-un": {
+    accent: "terracotta" as const,
+    href: "/un-a-un" as const,
+    labelFr: "Coaching IA 1-to-1",
+    labelEn: "1-to-1 AI coaching",
+    eyebrowFr: "Coaching IA individuel",
+    eyebrowEn: "Individual AI coaching",
+    ctaFr: `Démarrer mon accompagnement · ${formatAmount(unAUnAmount, "fr", { compact: true })}`,
+    ctaEn: `Start my coaching · ${formatAmount(unAUnAmount, "en", { compact: true })}`,
+  },
 } as const;
 
 const ACCENT_BG: Record<"primary" | "terracotta" | "sage", string> = {
@@ -103,7 +116,7 @@ export function VilleServiceDetailSection({
   copy,
   tone = "paper",
 }: VilleServiceDetailSectionProps): ReactNode {
-  const meta = SERVICE_META[service];
+  const meta = SERVICE_META[service as keyof typeof SERVICE_META];
   const eyebrow = isFr ? meta.eyebrowFr : meta.eyebrowEn;
   const labelService = isFr ? meta.labelFr : meta.labelEn;
 

@@ -45,6 +45,12 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // builders `app/sitemaps/images-{fr,en}.xml/route.ts` livrés).
   "/sitemaps/images-fr.xml",
   "/sitemaps/images-en.xml",
+  // Image Sitemap — services (73 images marketing) + villes France (2 157 communes).
+  // image-bank-complet audit 2026-05-20.
+  "/sitemap-images-services.xml",
+  "/sitemap-images-villes-t1.xml",
+  "/sitemap-images-villes-t2.xml",
+  "/sitemap-images-villes-t3-t4.xml",
 ];
 
 export const dynamic = "force-static";
