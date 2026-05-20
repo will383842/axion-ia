@@ -89,7 +89,7 @@ export class ImageBankService {
     image: CreateImageInput,
     initialTranslation: Omit<CreateTranslationInput, "imageId">,
   ): Promise<ImageAsset & { translations: ImageAssetTranslation[] }> {
-    return prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx) => {
       const created = await tx.imageAsset.create({
         data: {
           ...image,
@@ -116,6 +116,20 @@ export class ImageBankService {
 
       return { ...created, translations: [tr] };
     });
+
+    // Auto-enrichissement SEO/AEO/GEO FR via BullMQ (fire-and-forget, non-bloquant).
+    // Déclenché pour toute image importée via admin ou API.
+    // Le worker image-bank-enrich lit l'image depuis NEXT_PUBLIC_SITE_URL + filePath.
+    void (async () => {
+      try {
+        const { enqueueImageBankEnrich } = await import("@/server/queue/queues");
+        await enqueueImageBankEnrich({ imageId: result.id });
+      } catch {
+        // Non-bloquant — enrichissement relançable via scripts/enrich-seeded-images.mts
+      }
+    })();
+
+    return result;
   }
 
   async update(id: string, data: Partial<Omit<CreateImageInput, "fileHash">>) {
