@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isAdminV2Enabled } from "@/lib/feature-flags";
 import { getAdminUserDetailAction } from "@/features/admin-users/actions";
+import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { UserActions } from "./UserActions";
 
 export const dynamic = "force-dynamic";
@@ -29,12 +30,7 @@ export default async function UserDetailPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
   const callerRole = (session.user as { role?: string }).role;
 
-  // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18) — V2 non implémenté
-  // pour cette route legacy admin. Flag check préservé pour spec compliance
-  // + future migration (Sprint TBD swap pour <UserDetailV2 .../>).
-  if (await isAdminV2Enabled()) {
-    // Intentional fall-through to V1 below.
-  }
+  const v2 = await isAdminV2Enabled();
 
   const user = await getAdminUserDetailAction(id);
   if (!user) notFound();
@@ -42,6 +38,99 @@ export default async function UserDetailPage({ params }: PageProps) {
   const isSelf = id === session.user.id;
   const canManage = callerRole === "super_admin" || callerRole === "admin";
   const isSuperAdmin = callerRole === "super_admin";
+
+  if (v2) {
+    return (
+      <AdminPageShell>
+        <AdminPageHeader
+          title={user.name}
+          description={`${user.email} · créé le ${user.createdAt.toISOString().slice(0, 10)}${isSelf ? " · (c'est vous)" : ""}`}
+          breadcrumbs={
+            <a href={`/fr/${adminPrefix}/users`} className="admin-link admin-back">
+              ← Utilisateurs
+            </a>
+          }
+          meta={
+            <>
+              <span className={`admin-badge admin-badge-${user.role}`}>
+                {ROLE_LABELS[user.role] ?? user.role}
+              </span>
+              <span className={`admin-badge admin-badge-${user.status}`}>
+                {STATUS_LABELS[user.status] ?? user.status}
+              </span>
+            </>
+          }
+        />
+        <div className="admin-detail-grid">
+          <div className="admin-card">
+            <h2 className="admin-h2">Identité</h2>
+            <dl className="admin-dl">
+              <dt className="admin-dt">Nom</dt>
+              <dd className="admin-dd">{user.name}</dd>
+              <dt className="admin-dt">Email</dt>
+              <dd className="admin-dd">{user.email}</dd>
+              <dt className="admin-dt">Rôle</dt>
+              <dd className="admin-dd">
+                <span className={`admin-badge admin-badge-${user.role}`}>
+                  {ROLE_LABELS[user.role] ?? user.role}
+                </span>
+              </dd>
+              <dt className="admin-dt">Statut</dt>
+              <dd className="admin-dd">
+                <span className={`admin-badge admin-badge-${user.status}`}>
+                  {STATUS_LABELS[user.status] ?? user.status}
+                </span>
+              </dd>
+            </dl>
+          </div>
+          <div className="admin-card">
+            <h2 className="admin-h2">Sécurité</h2>
+            <dl className="admin-dl">
+              <dt className="admin-dt">2FA TOTP</dt>
+              <dd className="admin-dd">{user.twoFactorEnabled ? "✓ Activée" : "✗ Non activée"}</dd>
+              <dt className="admin-dt">Dernier login</dt>
+              <dd className="admin-dd">
+                {user.lastLoginAt ? user.lastLoginAt.toISOString() : "Jamais connecté"}
+              </dd>
+              {user.lastLoginIp && (
+                <>
+                  <dt className="admin-dt">IP dernier login</dt>
+                  <dd className="admin-dd admin-meta-small">{user.lastLoginIp}</dd>
+                </>
+              )}
+              <dt className="admin-dt">Mise à jour</dt>
+              <dd className="admin-dd">{user.updatedAt.toISOString().slice(0, 10)}</dd>
+            </dl>
+          </div>
+          {canManage && !isSelf && (
+            <div className="admin-card admin-card-wide">
+              <h2 className="admin-h2">Actions admin</h2>
+              <UserActions
+                userId={user.id}
+                userName={user.name}
+                currentRole={user.role}
+                currentStatus={user.status}
+                twoFactorEnabled={user.twoFactorEnabled}
+                isSuperAdmin={isSuperAdmin}
+              />
+            </div>
+          )}
+          {isSelf && (
+            <div className="admin-card admin-card-wide">
+              <p className="admin-meta">
+                Vous ne pouvez pas modifier votre propre compte ici. Pour activer/désactiver votre
+                propre 2FA, utilisez{" "}
+                <a href={`/fr/${adminPrefix}/2fa/setup`} className="admin-link">
+                  /2fa/setup
+                </a>
+                .
+              </p>
+            </div>
+          )}
+        </div>
+      </AdminPageShell>
+    );
+  }
 
   return (
     <section>

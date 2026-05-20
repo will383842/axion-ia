@@ -3,6 +3,7 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { getSettingAction } from "@/features/admin-settings/actions";
 import { SettingForm } from "../SettingForm";
 
@@ -17,15 +18,36 @@ export default async function EditSettingPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18) — V2 non implémenté
-  // pour cette route legacy admin. Flag check préservé pour spec compliance.
-  if (await isAdminV2Enabled()) {
-    // Intentional fall-through to V1 below.
-  }
+  const v2 = await isAdminV2Enabled();
 
   const decodedKey = decodeURIComponent(key);
   const setting = await getSettingAction(decodedKey);
   if (!setting) notFound();
+
+  if (v2) {
+    return (
+      <AdminPageShell width="narrow">
+        <AdminPageHeader
+          title={`Éditer : ${setting.key}`}
+          description={`Mise à jour : ${setting.updatedAt.toISOString().slice(0, 10)}`}
+          breadcrumbs={
+            <a href={`/fr/${adminPrefix}/settings`} className="admin-link admin-back">
+              ← Paramètres
+            </a>
+          }
+        />
+        <div className="admin-card admin-card-wide">
+          <SettingForm
+            initial={{
+              key: setting.key,
+              value: setting.value,
+              description: setting.description,
+            }}
+          />
+        </div>
+      </AdminPageShell>
+    );
+  }
 
   return (
     <section>

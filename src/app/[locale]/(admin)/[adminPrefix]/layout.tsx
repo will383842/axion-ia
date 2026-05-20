@@ -90,12 +90,29 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const v2 = showSidebar ? await isAdminV2Enabled() : false;
   const adminBase = `/fr/${adminPrefix}`;
 
+  // CSS injecté côté admin (force-dynamic) pour masquer le Header/Footer publics
+  // rendus par [locale]/layout.tsx. Cette approche remplace l'ancienne lecture
+  // headers() dans le root layout qui forçait TOUTES les pages en dynamic (no-store),
+  // cassant le BF-cache et dégradant le score Lighthouse best-practices des pages SSG.
+  // bg-terracotta = classe racine unique du Header public.
+  // bg-mocha-rich  = classe racine unique du Footer public.
+  const adminHidePublicShellCss = `
+    body:has(.admin-layout-v2) header.bg-terracotta,
+    body:has(.admin-layout-v2) footer.bg-mocha-rich,
+    body:has(.admin-layout) header.bg-terracotta,
+    body:has(.admin-layout) footer.bg-mocha-rich { display: none !important; }
+    body:has(.admin-layout-v2) #main,
+    body:has(.admin-layout) #main { display: contents; }
+  `.trim();
+
   if (v2 && session?.user) {
     // Le logout reste exposé par le dashboard root V2 (form action signOut).
     // L'AdminUserMenu n'a pas de logoutHref ici — éviterait un GET → 405 sur
     // /api/auth/signout (Auth.js v5 attend un POST).
     return (
       <div className="admin-layout-v2 min-h-screen bg-[color:var(--color-admin-bg)]">
+        {}
+        <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
         <AdminTopbar
           brand={<strong className="admin-brand">Axion-IA · Admin</strong>}
           commandPalette={<AdminCommandPalette adminPrefix={adminPrefix} />}
@@ -116,6 +133,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
 
   return (
     <div className="admin-layout">
+      {}
+      <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
       <header className="admin-header">
         <div className="admin-header-inner">
           <strong className="admin-brand">Axion-IA · Admin</strong>

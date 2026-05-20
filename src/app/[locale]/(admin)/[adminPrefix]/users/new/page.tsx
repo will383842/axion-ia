@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isAdminV2Enabled } from "@/lib/feature-flags";
+import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { CreateUserForm } from "./CreateUserForm";
 
 export const dynamic = "force-dynamic";
@@ -18,10 +19,24 @@ export default async function NewUserPage({ params }: PageProps) {
   const role = (session.user as { role?: string }).role;
   if (role !== "super_admin") redirect(`/fr/${adminPrefix}/users`);
 
-  // Pattern V1/V2 §3 (audit verif-fix-deploy 2026-05-18) — V2 non implémenté
-  // pour cette route legacy admin. Flag check préservé pour spec compliance.
-  if (await isAdminV2Enabled()) {
-    // Intentional fall-through to V1 below.
+  const v2 = await isAdminV2Enabled();
+  if (v2) {
+    return (
+      <AdminPageShell width="narrow">
+        <AdminPageHeader
+          title="Nouvel utilisateur admin"
+          description="Réservé au super-admin. Communiquer le mot de passe initial via gestionnaire de mots de passe."
+          breadcrumbs={
+            <a href={`/fr/${adminPrefix}/users`} className="admin-link admin-back">
+              ← Utilisateurs
+            </a>
+          }
+        />
+        <div className="admin-card admin-card-wide">
+          <CreateUserForm />
+        </div>
+      </AdminPageShell>
+    );
   }
 
   return (
