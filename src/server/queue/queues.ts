@@ -23,6 +23,8 @@ import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker"
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
 import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-worker";
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
+import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
+import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 
 const connection = getBullConnection();
 
@@ -278,6 +280,17 @@ export const imageBankImportQueue: Queue<ImageBankImportJobData, void, string> |
     })
   : null;
 
+export const imageBankAutoConvertQueue: Queue<
+  ImageBankAutoConvertJobData,
+  { lqipBase64: string; slug: string },
+  string
+> | null = connection
+  ? new Queue<ImageBankAutoConvertJobData, { lqipBase64: string; slug: string }, string>(
+      AUTO_CONVERT_QUEUE_NAME,
+      { connection, defaultJobOptions: { ...IMAGE_BANK_JOB_OPTIONS, attempts: 3 } },
+    )
+  : null;
+
 export const imageBankTranslateQueue: Queue<ImageBankTranslateJobData, void, string> | null =
   connection
     ? new Queue<ImageBankTranslateJobData, void, string>("image-bank-translate", {
@@ -339,6 +352,22 @@ export async function enqueueImageBankTranslate(data: ImageBankTranslateJobData)
     `translate-${data.imageId}-${data.sourceLang}-${data.targetLang}`,
     data,
   );
+}
+
+export async function enqueueImageBankAutoConvert(
+  data: ImageBankAutoConvertJobData,
+): Promise<void> {
+  if (!imageBankAutoConvertQueue) {
+    if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
+      console.warn(
+        `[bullmq] no connection, skipping enqueueImageBankAutoConvert(${data.targetSlug})`,
+      );
+    }
+    return;
+  }
+  await imageBankAutoConvertQueue.add(`convert-${data.targetSlug}`, data, {
+    jobId: data.targetSlug,
+  });
 }
 
 export async function enqueueEmail(

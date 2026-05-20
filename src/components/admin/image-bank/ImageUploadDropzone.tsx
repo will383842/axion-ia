@@ -24,6 +24,18 @@ import {
   type UploadActionResult,
 } from "@/server/actions/image-bank/upload.action";
 
+const SOURCE_FOLDERS = [
+  "Audit",
+  "Formations & Interventions",
+  "Automatisations et implémentations",
+  "Dirigeant 1 TO 1",
+  "Membre d'équipe 1 TO 1",
+  "Logos",
+  "Graphiques et courbes",
+  "Tous types de propositions",
+  "Villes",
+] as const;
+
 interface ImageUploadDropzoneProps {
   labels: {
     dropzoneTitle: string;
@@ -34,6 +46,8 @@ interface ImageUploadDropzoneProps {
     altField: string;
     captionField: string;
     descriptionField: string;
+    sourceFolderField: string;
+    targetCityField: string;
     successMessage: string;
     errorPrefix: string;
   };
@@ -43,6 +57,7 @@ export function ImageUploadDropzone({ labels }: ImageUploadDropzoneProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [result, setResult] = useState<UploadActionResult | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<string>("");
 
   async function handleSubmit(formData: FormData) {
     setResult(null);
@@ -93,8 +108,49 @@ export function ImageUploadDropzone({ labels }: ImageUploadDropzoneProps) {
 
       {/* Metadata fields */}
       <div className="grid gap-4 sm:grid-cols-2">
+        {/* Dossier source — détermine automatiquement le module (Audit, Formation, etc.) */}
+        <div>
+          <label
+            htmlFor="image-bank-source_folder"
+            className="text-fg-soft mb-1 block text-sm font-medium"
+          >
+            {labels.sourceFolderField}{" "}
+            <span aria-hidden="true" className="text-error ml-1">
+              *
+            </span>
+          </label>
+          <select
+            id="image-bank-source_folder"
+            name="source_folder"
+            required
+            value={selectedFolder}
+            onChange={(e) => setSelectedFolder(e.target.value)}
+            className="border-border-strong bg-paper text-fg focus:border-terracotta focus:ring-terracotta w-full rounded-lg border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
+          >
+            <option value="" disabled>
+              — Choisir un dossier —
+            </option>
+            {SOURCE_FOLDERS.map((f) => (
+              <option key={f} value={f}>
+                {f}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Ville cible — obligatoire si dossier = Villes */}
+        {selectedFolder === "Villes" && (
+          <Field
+            name="target_city"
+            label={labels.targetCityField}
+            required
+            maxLength={80}
+            placeholder="Ex: Lyon"
+          />
+        )}
+
         <Field name="title" label={labels.titleField} required maxLength={255} minLength={3} />
-        <Field name="alt" label={labels.altField} required maxLength={125} minLength={30} />
+        <Field name="alt" label={labels.altField} maxLength={125} minLength={30} />
         <Field
           name="caption"
           label={labels.captionField}
@@ -136,6 +192,7 @@ function Field({
   minLength,
   textarea,
   className,
+  placeholder,
 }: {
   name: string;
   label: string;
@@ -144,6 +201,7 @@ function Field({
   minLength?: number;
   textarea?: boolean;
   className?: string;
+  placeholder?: string;
 }) {
   const sharedProps = {
     id: `image-bank-${name}`,
@@ -151,6 +209,7 @@ function Field({
     required,
     maxLength,
     minLength,
+    placeholder,
     className:
       "border-border-strong bg-paper text-fg focus:border-terracotta focus:ring-terracotta w-full rounded-lg border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none",
   };

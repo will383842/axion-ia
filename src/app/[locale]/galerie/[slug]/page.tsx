@@ -78,7 +78,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: tr.ogDescription ?? tr.caption ?? tr.alt,
       images: [ogImageUrl],
     },
-    robots: { index: true, follow: true },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   };
 }
 

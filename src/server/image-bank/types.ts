@@ -75,6 +75,8 @@ export interface EnrichResult {
   embedTitle: string;
   metaTitle: string;
   metaDescription: string;
+  /** Texte OCR exact visible dans l'image — signal Google Vision 2026. */
+  embeddedTextCaption?: string;
 }
 
 // ─── Watermark ──────────────────────────────────────────────────────────────

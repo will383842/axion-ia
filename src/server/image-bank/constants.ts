@@ -124,6 +124,8 @@ export const STORAGE_URL_PREFIX = "/image-bank";
 
 export const ENRICH_QUEUE_NAME = "image-bank-enrich";
 export const VARIANTS_QUEUE_NAME = "image-bank-variants";
+/** Queue de conversion slug-based PNG/JPG → WebP/AVIF (public/images/). */
+export const AUTO_CONVERT_QUEUE_NAME = "image-bank-convert";
 /** Concurrency worker enrich — respecte Anthropic Tier 2 ~50 req/min. */
 export const ENRICH_CONCURRENCY = 5;
 export const ENRICH_ATTEMPTS = 3;

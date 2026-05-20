@@ -19,30 +19,13 @@ export function startImageBankEnrichWorker(): Worker<ImageBankEnrichJobData, voi
   const worker = new Worker<ImageBankEnrichJobData, void, string>(
     "image-bank-enrich",
     async (job) => {
-      const { imageId, generateEnglish = true } = job.data;
-
-      // Taxonomy detection deferred (function-based API → wiring V1.5,
-      // see image-taxonomy-detector.service.ts detectTaxonomy()).
+      const { imageId } = job.data;
+      // Marché FR uniquement — pas de génération EN automatique.
 
       const { ImageSeoEnrichmentService } =
         await import("@/server/image-bank/services/image-seo-enrichment.service");
       const enricher = new ImageSeoEnrichmentService();
       await enricher.enrichAndSave({ imageId, lang: "fr", mode: "regenerate" });
-
-      if (generateEnglish) {
-        try {
-          const { ImageTranslationService } =
-            await import("@/server/image-bank/services/image-translation.service");
-          const translator = new ImageTranslationService();
-          await translator.translateAndSave({
-            imageId,
-            sourceLang: "fr",
-            targetLang: "en",
-          });
-        } catch (err) {
-          console.error(`[image-bank-enrich] EN translate failed:`, err);
-        }
-      }
     },
     {
       connection: getBullConnectionOrThrow(),

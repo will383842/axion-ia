@@ -59,7 +59,9 @@ Contraintes techniques :
 
 Si tu reconnais un lieu identifiable, précise-le dans geo_placename.
 
-Retourne UNIQUEMENT un JSON valide avec : alt, caption, description, keywords_primary, keywords_secondary, geo_placename, geo_region, ai_summary, embed_title, meta_title, meta_description.`;
+Transcris dans embedded_text_caption TOUT le texte visible dans l'image (titres, sous-titres, statistiques, URL, CTA) — Google Vision lit ce texte pour la pertinence. Si l'image ne contient pas de texte lisible, retourne "".
+
+Retourne UNIQUEMENT un JSON valide avec : alt, caption, description, keywords_primary, keywords_secondary, geo_placename, geo_region, ai_summary, embed_title, meta_title, meta_description, embedded_text_caption.`;
 
 export class ImageSeoEnrichmentService {
   async enrich(input: EnrichInput): Promise<EnrichResult> {
@@ -126,6 +128,9 @@ export class ImageSeoEnrichmentService {
       embedTitle: String(claude.embed_title ?? ""),
       metaTitle: String(claude.meta_title ?? ""),
       metaDescription: String(claude.meta_description ?? ""),
+      ...(claude.embedded_text_caption
+        ? { embeddedTextCaption: String(claude.embedded_text_caption) }
+        : {}),
     };
 
     this.validate(result);
@@ -154,6 +159,7 @@ export class ImageSeoEnrichmentService {
           embedTitle: enriched.embedTitle,
           metaTitle: enriched.metaTitle,
           metaDescription: enriched.metaDescription,
+          ...(enriched.embeddedTextCaption ? { embeddedText: enriched.embeddedTextCaption } : {}),
         },
         create: {
           imageId: input.imageId,
@@ -167,6 +173,7 @@ export class ImageSeoEnrichmentService {
           embedTitle: enriched.embedTitle,
           metaTitle: enriched.metaTitle,
           metaDescription: enriched.metaDescription,
+          ...(enriched.embeddedTextCaption ? { embeddedText: enriched.embeddedTextCaption } : {}),
           isPublished: false,
         },
       });

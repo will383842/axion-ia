@@ -12,6 +12,7 @@ import type {
 } from "../../../../prisma/generated/client";
 
 import { prisma } from "@/lib/prisma";
+import { contentIndexNowQueue } from "@/server/queue/queues";
 
 import {
   CACHE_TAGS,
@@ -56,6 +57,10 @@ export interface CreateImageInput {
   sourceUrl?: string;
   sourceType?: SourceType;
   aiModel?: string;
+  isAiGenerated?: boolean;
+  module?: string;
+  targetPersona?: string;
+  targetCity?: string;
 }
 
 export interface CreateTranslationInput {
@@ -63,6 +68,7 @@ export interface CreateTranslationInput {
   languageCode: ImageBankLocale;
   title: string;
   slug: string;
+  /** Alt text FR. Peut être vide "" — Claude Vision le génère via enrich worker. */
   alt: string;
   caption?: string;
   description?: string;
@@ -151,6 +157,18 @@ export class ImageBankService {
     revalidateTag(CACHE_TAGS.byLang(lang), "default");
     revalidateTag(CACHE_TAGS.galleryByLang(lang), "default");
     revalidateTag(CACHE_TAGS.sitemap, "default");
+
+    // IndexNow — ping Bing/Yandex immédiatement après publication.
+    // Fail silencieux : IndexNow down ne doit jamais bloquer une publication.
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+    const segment = lang === "fr" ? "galerie" : "gallery";
+    const imageUrl = `${siteUrl}/${lang}/${segment}/${tr.slug}`;
+    if (contentIndexNowQueue) {
+      await contentIndexNowQueue
+        .add(`indexnow-image-${tr.slug}`, { urls: [imageUrl], origin: "image-bank-publish" })
+        .catch((err) => console.warn("[image-bank.publish] IndexNow enqueue failed:", err));
+    }
+
     return tr;
   }
 

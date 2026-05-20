@@ -88,6 +88,7 @@ export async function generateMetadata({
       index: true,
       follow: true,
       "max-image-preview": "large",
+      "max-snippet": -1,
     },
   };
 }

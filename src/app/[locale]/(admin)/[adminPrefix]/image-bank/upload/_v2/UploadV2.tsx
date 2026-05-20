@@ -25,11 +25,14 @@ export function UploadV2({ locale }: Props): React.ReactElement {
                   dropzoneSubtitle: "PNG, JPEG, WebP, AVIF, HEIC · max 5 MB sync",
                   submit: "Uploader",
                   submitting: "Upload en cours…",
-                  titleField: "Titre",
-                  altField: "Texte alternatif (alt)",
-                  captionField: "Légende",
-                  descriptionField: "Description",
-                  successMessage: "Image uploadée avec succès",
+                  titleField: "Titre (slug auto-généré)",
+                  altField: "Alt text FR (optionnel — Claude Vision le génère automatiquement)",
+                  captionField: "Légende (optionnel)",
+                  descriptionField: "Description (optionnel)",
+                  sourceFolderField: "Dossier source (service automatiquement détecté)",
+                  targetCityField: "Ville (ex: Lyon)",
+                  successMessage:
+                    "Image uploadée avec succès — enrichissement Claude Vision en cours",
                   errorPrefix: "Erreur",
                 }
               : {
@@ -37,11 +40,13 @@ export function UploadV2({ locale }: Props): React.ReactElement {
                   dropzoneSubtitle: "PNG, JPEG, WebP, AVIF, HEIC · max 5 MB sync",
                   submit: "Upload",
                   submitting: "Uploading…",
-                  titleField: "Title",
-                  altField: "Alt text",
-                  captionField: "Caption",
-                  descriptionField: "Description",
-                  successMessage: "Image uploaded successfully",
+                  titleField: "Title (slug auto-generated)",
+                  altField: "Alt text FR (optional — Claude Vision generates it)",
+                  captionField: "Caption (optional)",
+                  descriptionField: "Description (optional)",
+                  sourceFolderField: "Source folder (service auto-detected)",
+                  targetCityField: "City (e.g. Lyon)",
+                  successMessage: "Image uploaded — Claude Vision enrichment in progress",
                   errorPrefix: "Error",
                 }
           }

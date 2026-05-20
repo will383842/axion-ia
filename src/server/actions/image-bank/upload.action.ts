@@ -23,18 +23,44 @@ import { imageImportService } from "@/server/image-bank/services/image-import.se
 import { imageBankService } from "@/server/image-bank/services/image-bank.service";
 import { enqueueImageBankEnrich } from "@/server/queue/queues";
 
+// Dossiers sources Axion-IA → module DB auto-détecté
+const SOURCE_FOLDERS = [
+  "Audit",
+  "Formations & Interventions",
+  "Automatisations et implémentations",
+  "Dirigeant 1 TO 1",
+  "Membre d'équipe 1 TO 1",
+  "Logos",
+  "Graphiques et courbes",
+  "Tous types de propositions",
+  "Villes",
+] as const;
+
+type SourceFolder = (typeof SOURCE_FOLDERS)[number];
+
+const FOLDER_MODULE_MAP: Record<SourceFolder, string> = {
+  Audit: "audit",
+  "Formations & Interventions": "interventions_formations",
+  "Automatisations et implémentations": "implementations",
+  "Dirigeant 1 TO 1": "un-a-un",
+  "Membre d'équipe 1 TO 1": "un-a-un",
+  Logos: "logo",
+  "Graphiques et courbes": "graphique",
+  "Tous types de propositions": "proposition",
+  Villes: "ville",
+};
+
 const UploadSchema = z.object({
   file: z.instanceof(File, { message: "Fichier requis" }),
   categoryId: z.string().uuid().optional(),
   title: z.string().min(3).max(255),
-  alt: z.string().min(30).max(125),
+  alt: z.string().min(30).max(125).optional(),
   caption: z.string().max(500).optional(),
   description: z.string().max(2000).optional(),
   keywordsPrimary: z.string().max(255).optional(),
-  photographerName: z.string().max(255).optional(),
-  photographerUrl: z.string().url().optional().or(z.literal("")),
+  source_folder: z.enum(SOURCE_FOLDERS).optional(),
+  target_city: z.string().max(80).optional(),
   sourceType: z.enum(["local", "upload", "ai_generated"]).default("upload"),
-  aiModel: z.string().max(50).optional(),
 });
 
 export type UploadActionResult =
@@ -61,6 +87,9 @@ export async function uploadImageAction(formData: FormData): Promise<UploadActio
 
   const { file, ...meta } = parsed.data;
 
+  // Résolution module depuis le dossier source
+  const resolvedModule = meta.source_folder ? FOLDER_MODULE_MAP[meta.source_folder] : undefined;
+
   try {
     // 3) Sharp pipeline (variants + LQIP)
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -80,6 +109,7 @@ export async function uploadImageAction(formData: FormData): Promise<UploadActio
     }
 
     // 5) DB insert (transaction)
+    const isLogo = resolvedModule === "logo";
     const created = await imageBankService.create(
       {
         filePath: imported.filePath,
@@ -96,29 +126,29 @@ export async function uploadImageAction(formData: FormData): Promise<UploadActio
         fileHash: imported.fileHash,
         slug: slugifyAscii(meta.title),
         ...(meta.keywordsPrimary ? { keywordsPrimary: meta.keywordsPrimary } : {}),
-        ...(meta.photographerName ? { photographerName: meta.photographerName } : {}),
-        ...(meta.photographerUrl ? { photographerUrl: meta.photographerUrl } : {}),
-        sourceType: meta.sourceType,
-        ...(meta.aiModel ? { aiModel: meta.aiModel } : {}),
+        sourceType: isLogo ? "local" : meta.sourceType,
+        isAiGenerated: meta.sourceType === "ai_generated",
         ...(meta.categoryId ? { categoryId: meta.categoryId } : {}),
+        ...(resolvedModule ? { module: resolvedModule } : {}),
+        ...(meta.source_folder === "Dirigeant 1 TO 1" ? { targetPersona: "dirigeant" } : {}),
+        ...(meta.source_folder === "Membre d'équipe 1 TO 1" ? { targetPersona: "equipe" } : {}),
+        ...(meta.target_city
+          ? { targetCity: meta.target_city, geoPlacename: meta.target_city, geoRegion: "FR" }
+          : {}),
       },
       {
         languageCode: "fr",
         title: meta.title,
         slug: slugifyAscii(meta.title),
-        alt: meta.alt,
+        // alt vide si non fourni — Claude Vision le génère via enrich worker
+        alt: meta.alt ?? "",
         ...(meta.caption ? { caption: meta.caption } : {}),
         ...(meta.description ? { description: meta.description } : {}),
       },
     );
 
-    // 6) Enqueue enrich worker (translate EN + country detect + SEO score)
-    //    Patch post-audit 2026-05-16 P1-2 — enqueue wired (était TODO).
-    //    No-op proprement si BullMQ désactivé (build GH Actions stub).
-    await enqueueImageBankEnrich({
-      imageId: created.id,
-      generateEnglish: true,
-    });
+    // 6) Enqueue enrich worker FR uniquement (marché francophone)
+    await enqueueImageBankEnrich({ imageId: created.id });
 
     revalidateTag("image-bank", "default");
     revalidateTag("image-bank:fr", "default");
