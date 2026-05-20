@@ -65,6 +65,30 @@ export const TOULON_COPY: VilleCopy = {
   ecosystemEn:
     "Economy anchored in maritime defence (Naval Group, Thales Underwater Systems, Marine nationale — France's 1st military port) and the world-class Pôle Mer Méditerranée cluster. Active French Tech Toulon Var chapter, TVT Innovation incubator, Maison du Numérique (Chalucet), UTLN, SeaTech, ISEN Méditerranée, KEDGE, LIS-CNRS (AI/systems) — 14,921 active businesses with 2,951 annual creations.",
 
+  heroSchema: {
+    centerSubLabel: "14 921 établissements actifs",
+    satellites: [
+      {
+        label: "Naval Group",
+        detail: "4 200+ emplois · 1er port militaire EU",
+        accent: "terracotta",
+      },
+      { label: "TVT Innovation", detail: "Incubateur Var · French Tech Toulon", accent: "primary" },
+      { label: "UTLN / SeaTech", detail: "Université & LIS-CNRS IA", accent: "mocha" },
+      {
+        label: "Pôle Mer Méditerranée",
+        detail: "Nautisme · énergies marines · robotique",
+        accent: "primary",
+      },
+      { label: "Var Agglomération", detail: "TPM · La Seyne · La Garde · Hyères", accent: "sage" },
+      {
+        label: "Port militaire",
+        detail: "Thales Underwater · Marine nationale",
+        accent: "terracotta",
+      },
+    ],
+  },
+
   // === SERVICES LONG-FORM TOULON ===
   services: {
     audit: {

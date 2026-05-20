@@ -45,6 +45,10 @@ export const RENNES_COPY: VilleCopy = {
       fr: "Implémentation IA à Rennes : on déploie l'IA dans vos outils existants (CRM, ERP, plateformes agronomiques, MES industriel) avec ROI chiffré contractuel. Kick-off sur site obligatoire, itérations à distance ensuite. Vos équipes gardent la main.",
       en: "AI implementation in Rennes: we deploy AI into your existing tools (CRM, ERP, agronomy platforms, industrial MES) with contractually-costed ROI. Mandatory on-site kick-off, remote iterations thereafter. Your teams stay in control.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+    },
   },
 
   directAnswerFr:
@@ -718,6 +722,221 @@ export const RENNES_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause and offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Rennes est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux ingénieurs, managers et dirigeants des secteurs numérique, agroalimentaire, industrie et télécoms du bassin rennais. Frais de logement, repas et forfait trajet en sus.",
+        whyHere: [
+          "Rennes concentre des profils très spécialisés — développeur ou chef de projet à Atalante, directrice qualité chez Valorial, responsable de produit dans une scale-up French Tech — qui ont besoin d'un coaching ancré dans leurs contraintes sectorielles précises, pas d'un cours généraliste.",
+          "L'écosystème IRISA/Inria produit des profils deep-tech qui veulent maîtriser les intégrations avancées (fine-tuning, RAG, agents) : le 1-to-1 adapte le niveau de complexité séance par séance.",
+          "Les scale-ups French Tech Rennes Saint-Malo ont des roadmaps produit serrées : le coaching calé sur votre backlog réel produit des gains opérationnels immédiats sans perturber votre sprint.",
+          "Les industries en reconversion à La Janais (Safran) et dans l'agroalimentaire (Valorial, SPACE) ont des référents IA à former en priorité avant toute cascade équipe : le 1-to-1 est la voie la plus rapide.",
+          "Séances sur site dans vos locaux rennais (Atalante, ViaSilva, La Janais, centre-ville) ou à distance selon votre disponibilité — rythme calé à la signature.",
+          "Confidentialité sans accord de confidentialité imposé : vos données, vos codes, vos données agronomiques ou industrielles restent dans votre environnement.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Un entretien de cadrage approfondi pour identifier votre niveau IA actuel, vos cas métier prioritaires (numérique, agro, industrie, télécoms) et l'objectif précis du coaching.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Construction d'un plan séance par séance calé sur vos outils (Claude, Mistral, GPT-4, outils dev), vos livrables réels et les réalités du bassin rennais.",
+          },
+          {
+            step: "Séances pratiques sur vos vrais cas",
+            detail:
+              "Chaque séance travaille directement sur vos documents, vos prompts, votre workflow : documentation technique, analyse qualité agroalimentaire, qualification de leads, rapports industriels.",
+          },
+          {
+            step: "Exercices entre séances",
+            detail:
+              "Micro-missions à réaliser en autonomie entre deux séances pour ancrer les apprentissages dans votre contexte rennais réel et accélérer la progression.",
+          },
+          {
+            step: "Bilan + feuille de route autonomie",
+            detail:
+              "En fin de coaching, un bilan chiffré de vos gains et une feuille de route pour continuer à progresser sans dépendance envers Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Entrée coaching 1-to-1 — indépendant, développeur, consultant ou dirigeant TPE du numérique ou de l'agro rennais.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme multi-séances pour référents IA ou managers de PME numériques (Atalante), agroalimentaires (Valorial) ou de services du bassin rennais.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement cadres dirigeants ETI rennaises (industrie La Janais, Arkéa, Canon CRF) — programme structuré avec bilan intermédiaire.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching des profils pilotes d'un grand groupe implanté à Rennes (Orange Innovation, Stellantis/Safran) avant déploiement large.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de maîtriser les agents IA sur nos cas de documentation technique Atalante en quelques séances. Niveau de complexité ajusté à ma réalité de CTO. Je suis pleinement autonome.",
+            role: "CTO",
+            companyProfile: "Scale-up SaaS, French Tech Rennes Saint-Malo",
+          },
+          {
+            quote:
+              "En tant que directrice qualité dans l'agroalimentaire, mes cas étaient très spécifiques (IFS Food, traçabilité). Le coaching 1-to-1 a travaillé sur mes vrais documents dès la première séance. Résultat immédiat et mesurable.",
+            role: "Directrice qualité",
+            companyProfile: "ETI agroalimentaire, filière Valorial, bassin rennais",
+          },
+        ],
+        faq: [
+          {
+            q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Rennes ?",
+            a: "Le format collectif forme tout un groupe sur les mêmes cas. Le 1-to-1 travaille exclusivement sur VOS cas, votre vitesse, vos contraintes rennaises (deep-tech, agro, industrie, banque). Gains opérationnels mesurables dès la première séance.",
+          },
+          {
+            q: "Combien de séances faut-il pour être autonome sur l'IA à Rennes ?",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un développeur Atalante atteint une autonomie avancée en quelques séances. Un manager ETI cherchant à maîtriser des workflows industriels complexes aura un programme plus étendu. Le plan est cadré à la première séance.",
+          },
+          {
+            q: "Le coaching peut-il se tenir dans mes locaux rennais ?",
+            a: "Oui. Séances sur site dans vos locaux (Atalante, ViaSilva, La Janais, centre-ville) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+          },
+          {
+            q: "Mes données industrielles ou agronomiques restent-elles confidentielles ?",
+            a: "Oui. Confidentialité stricte dès le démarrage : vos données, vos prompts, vos cas restent dans votre environnement. Aucune extraction vers nos serveurs. Conformité RGPD stricte.",
+          },
+          {
+            q: "Puis-je commencer sans aucune base IA ?",
+            a: "Oui. Le diagnostic initial évalue votre niveau réel et calibre le plan en conséquence. Beaucoup de profils rennais débutent sans avoir jamais utilisé Claude ou GPT de façon professionnelle.",
+          },
+          {
+            q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+          },
+        ],
+        guarantees:
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur (IFS Food, ISO 27001 sur demande). Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Rennes brings together highly specialised profiles — a developer or project manager at Atalante, a quality director at Valorial, a product manager at a French Tech scale-up — who need coaching rooted in their precise sector constraints, not a generic course.",
+          "The IRISA/Inria ecosystem produces deep-tech profiles seeking to master advanced integrations (fine-tuning, RAG, agents): 1-to-1 adapts the complexity level session by session.",
+          "French Tech Rennes Saint-Malo scale-ups have tight product roadmaps: coaching aligned with your real backlog produces immediate operational gains without disrupting your sprint.",
+          "Industries transitioning at La Janais (Safran) and in agri-food (Valorial, SPACE) have AI champions to train before any team cascade: 1-to-1 is the fastest route.",
+          "Sessions on site at your Rennes offices (Atalante, ViaSilva, La Janais, city centre) or remote depending on availability — cadence agreed at sign-up.",
+          "Confidentiality without imposed accord de confidentialité: your data, code, agronomic or industrial data stays in your environment.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "An in-depth framing interview to identify your AI level, priority business cases (digital, agri-food, industry, telecoms) and the precise coaching objective.",
+          },
+          {
+            step: "Personalized progression plan",
+            detail:
+              "Building a session-by-session plan aligned with your tools (Claude, Mistral, GPT-4, dev tools), your real deliverables and the realities of the Rennes basin.",
+          },
+          {
+            step: "Practical sessions on your real cases",
+            detail:
+              "Each session works directly on your documents, prompts, workflow: technical documentation, agri-food quality analysis, lead qualification, industrial reports.",
+          },
+          {
+            step: "Between-session exercises",
+            detail:
+              "Micro-missions to complete autonomously between sessions to embed learnings in your real Rennes context and accelerate progress.",
+          },
+          {
+            step: "Debrief + autonomy roadmap",
+            detail:
+              "At coaching end, a costed gains summary and an autonomy roadmap to keep progressing without dependence on Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From €990 excl. VAT",
+            detail:
+              "Entry-level 1-to-1 coaching — freelancer, developer, consultant or Rennes digital or agri-food micro-business executive.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Multi-session programme for AI champions or managers of Rennes digital (Atalante), agri-food (Valorial) or service SMEs.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Executive coaching for Rennes mid-cap managers (La Janais industry, Arkéa, Canon CRF) — structured programme with interim review.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Coaching of pilot profiles at a major Rennes-based group (Orange Innovation, Stellantis/Safran) before broad rollout.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching let me master AI agents on our Atalante technical documentation cases within a few sessions. Complexity level adjusted to my CTO reality. Fully autonomous.",
+            role: "CTO",
+            companyProfile: "SaaS scale-up, French Tech Rennes Saint-Malo",
+          },
+          {
+            quote:
+              "As quality director in agri-food, my cases were very specific (IFS Food, traceability). The 1-to-1 coaching worked on my real documents from the first session. Immediate and measurable result.",
+            role: "Quality Director",
+            companyProfile: "Agri-food mid-cap, Valorial sector, Rennes basin",
+          },
+        ],
+        faq: [
+          {
+            q: "How does 1-to-1 coaching differ from a group session in Rennes?",
+            a: "Group format trains a whole team on the same cases. 1-to-1 works exclusively on YOUR cases, your pace, your Rennes constraints (deep-tech, agri-food, industry, banking). Measurable operational gains from the first session.",
+          },
+          {
+            q: "How many sessions are needed to become AI-autonomous in Rennes?",
+            a: "It depends on your starting level and objectives. An Atalante developer reaches advanced autonomy in a few sessions. A mid-cap manager seeking to master complex industrial workflows will have a longer programme. The plan is framed in the first session.",
+          },
+          {
+            q: "Can coaching sessions be held at my Rennes premises?",
+            a: "Yes. On-site sessions at your offices (Atalante, ViaSilva, La Janais, city centre) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "Does my industrial or agronomic data stay confidential?",
+            a: "Yes. Strict confidentiality from day one: your data, prompts and cases stay in your environment. No extraction to our servers. Strict GDPR compliance.",
+          },
+          {
+            q: "Can I start with no AI background?",
+            a: "Yes. The initial diagnostic assesses your real level and calibrates the plan accordingly. Many Rennes profiles start without ever having used Claude or GPT professionally.",
+          },
+          {
+            q: "Is there a minimum duration or session commitment?",
+            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+          },
+        ],
+        guarantees:
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance and sector (IFS Food, ISO 27001 on request). Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
   },

@@ -44,6 +44,10 @@ export const LE_MANS_COPY: VilleCopy = {
       fr: "Implémentation IA au Mans : déploiement dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Secteurs prioritaires : assurance, automobile, industrie, recherche. Aucun lock-in, vos équipes gardent la main.",
       en: "AI implementation in Le Mans: deployment into your existing tools (CRM, ERP, email) with contractually-costed ROI. Priority sectors: insurance, automotive, manufacturing, research. No lock-in, your teams stay in control.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel au Mans — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux manceaux : gestionnaire sinistres, responsable de production automobile, dirigeant de PME sarthoise ou manager Novaxis qui veut progresser seul, sur ses propres données et contraintes métier.",
+      en: "Individual AI coaching in Le Mans — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Le Mans premises: claims manager, automotive production lead, Sarthe SME executive or Novaxis manager who wants to progress alone, on their own data and business constraints.",
+    },
   },
 
   directAnswerFr:
@@ -710,6 +714,221 @@ export const LE_MANS_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause and offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA individuel Axion-IA au Mans s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux manceaux — Novaxis, sites industriels ou PME sarthoises. Frais de logement, repas et forfait trajet facturés en sus.",
+        whyHere: [
+          "Le Mans concentre des dirigeants de PME et ETI assurance (MMA/Covéa, courtiers régionaux) dont la confidentialité des données sinistres et contrats rend le format collectif inadapté — le coaching individuel est la seule option viable.",
+          "Les responsables techniques et ingénieurs de la filière automobile (Renault ACI, fournisseurs iD4CAR) traitent des données de production propriétaires (bons de commande, PPAP, données qualité) trop sensibles pour un cadre collectif.",
+          "Les directeurs transformation digitale de l'écosystème Novaxis bénéficient d'un accompagnement individuel centré sur leurs systèmes existants (CRM assurance, ERP industriel) — pas sur des exemples génériques.",
+          "Aucun minimum de participants, aucune date imposée : vous choisissez le créneau dans vos locaux manceaux selon vos contraintes opérationnelles.",
+          "Les chercheurs du LAUM CNRS et enseignants-chercheurs de Le Mans Université ont des besoins IA très spécifiques (traitement de données acoustiques, bibliographie automatisée) qui ne correspondent pas à une formation collective.",
+          "À la fin de la session, vous repartez avec des outils IA configurés sur vos propres cas sarthois — traitement de sinistres, génération de comptes-rendus qualité, qualification de leads.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Entretien de cadrage dédié (30-45 min) pour cerner votre profil, votre secteur dominant (assurance, automobile, industrie, services, recherche), vos priorités et contraintes de confidentialité.",
+          },
+          {
+            step: "Préparation sur-mesure",
+            detail:
+              "Le consultant prépare un programme individuel : outils sélectionnés pour votre cas, démos construites sur vos documents représentatifs (sinistres, bons de commande, rapports de production, devis).",
+          },
+          {
+            step: "Session intensive sur site",
+            detail:
+              "Journée dans vos locaux manceaux (Le Mans centre, Novaxis, zone sud, communes limitrophes) : théorie ciblée, démos live sur vos données réelles, manipulation directe des outils.",
+          },
+          {
+            step: "Cas pratiques sur vos documents réels",
+            detail:
+              "Vous travaillez sur vos propres fichiers : sinistres, bons de commande, emails, devis, comptes-rendus de réunion. Aucun exercice déconnecté de votre réalité sarthoise.",
+          },
+          {
+            step: "Plan d'action personnel",
+            detail:
+              "En fin de session, remise d'un plan d'action individuel : outils à déployer, cas d'usage prioritaires pour votre poste, ressources pour continuer en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Coaching individuel entrée pour dirigeants TPE, artisans, indépendants et petits cabinets sarthois — une journée, un consultant dédié.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme individuel sur-mesure pour manager, responsable opérationnel ou dirigeant de PME assurance, automobile ou services du bassin manceau.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Coaching individuel pour directeurs techniques, DSI ou membres du comité de direction d'ETI assurance ou industrielles de la Sarthe.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour cadres dirigeants des sièges Novaxis (MMA/Covéa) et sites industriels grands-comptes souhaitant une montée en compétences IA confidentielle.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "J'avais besoin d'explorer l'IA sur mes propres dossiers sinistres et contrats assurance. En une journée avec un consultant dédié, on a travaillé sur mes vraies données. Résultat : des outils opérationnels le soir même et un plan clair pour mon équipe.",
+            role: "Responsable gestion",
+            companyProfile: "ETI assurance mutualiste, Le Mans",
+          },
+          {
+            quote:
+              "Format coaching individuel parfait pour un responsable technique automobile : confidentialité totale sur nos données de production, niveau adapté, démos sur nos vrais bons de commande et fiches qualité.",
+            role: "Responsable technique",
+            companyProfile: "PME équipementier automobile, bassin manceau",
+          },
+        ],
+        faq: [
+          {
+            q: "Qu'est-ce que le coaching IA individuel Axion-IA au Mans ?",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux manceaux. Un consultant senior vous accompagne sur vos propres cas métier (assurance, automobile, industrie, services) pendant une journée entière. À partir de 990 € HT.",
+          },
+          {
+            q: "Pourquoi choisir le coaching individuel plutôt qu'une formation collective au Mans ?",
+            a: "Dans un coaching individuel, 100 % du temps est consacré à votre niveau, votre secteur et vos données sarthoises. Idéal pour les données sensibles (sinistres assurance, process automobile, contrats Covéa) ou les profils experts ne souhaitant pas un format nivellement par le bas.",
+          },
+          {
+            q: "La session est-elle confidentielle ?",
+            a: "Totalement. Confidentialité stricte dès le cadrage, vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun partage avec d'autres clients.",
+          },
+          {
+            q: "Faut-il avoir de l'expérience IA pour commencer un coaching ?",
+            a: "Non. Le coaching s'adapte à votre niveau — débutant ou praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
+          },
+          {
+            q: "Les frais de déplacement sont-ils inclus ?",
+            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
+          },
+          {
+            q: "Peut-on organiser plusieurs coachings individuels pour différents managers ?",
+            a: "Oui. Certaines ETI sarthoises organisent plusieurs sessions individuelles pour leurs managers ou responsables clés plutôt qu'une formation collective. Tarif dégressif possible selon le volume — à préciser en cadrage.",
+          },
+        ],
+        guarantees:
+          "Confidentialité stricte : vos données assurance, automobile ou industrielles ne quittent pas vos locaux manceaux. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
+      },
+      en: {
+        hero: "Axion-IA's individual AI coaching in Le Mans is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Le Mans premises — Novaxis, industrial sites or Sarthe SMEs. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Le Mans hosts insurance SME and mid-cap executives (MMA/Covéa, regional brokers) whose claims and contract data confidentiality makes the collective format unsuitable — individual coaching is the only viable option.",
+          "Technical managers and engineers in the automotive sector (Renault ACI, iD4CAR suppliers) handle proprietary production data (purchase orders, PPAP, quality data) too sensitive for a group setting.",
+          "Digital transformation directors at the Novaxis ecosystem benefit from individual coaching focused on their existing systems (insurance CRM, industrial ERP) — not generic examples.",
+          "No minimum participants, no imposed date: you choose the slot at your Le Mans premises within your operational constraints.",
+          "LAUM CNRS researchers and Le Mans University academics have very specific AI needs (acoustic data processing, automated bibliography) that don't fit a group training.",
+          "At session end, you leave with AI tools configured on your own Sarthe cases — claims processing, quality meeting minute generation, lead qualification.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "Dedicated framing interview (30-45 min) to understand your profile, dominant sector (insurance, automotive, manufacturing, services, research), priorities and confidentiality constraints.",
+          },
+          {
+            step: "Bespoke preparation",
+            detail:
+              "The consultant prepares an individual programme: tools selected for your case, demos built on your representative documents (claims, purchase orders, production reports, quotes).",
+          },
+          {
+            step: "Intensive on-site session",
+            detail:
+              "Full day at your Le Mans premises (city centre, Novaxis, south zone, nearby communes): targeted theory, live demos on your real data, direct tool use.",
+          },
+          {
+            step: "Practical exercises on your real documents",
+            detail:
+              "You work on your own files: claims, purchase orders, emails, quotes, meeting minutes. No exercises disconnected from your Sarthe reality.",
+          },
+          {
+            step: "Personal action plan",
+            detail:
+              "At session end, handover of an individual action plan: tools to deploy, priority use cases for your role, resources to keep progressing autonomously.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry individual coaching for Sarthe micro-business executives, artisans, freelancers and small practices — one day, one dedicated consultant.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On request",
+            detail:
+              "Bespoke individual programme for managers, operational leads or directors of Le Mans basin insurance, automotive or services SMEs.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On request",
+            detail:
+              "Individual coaching for technical directors, CIOs or executive committee members of Sarthe insurance or industrial mid-caps.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On request",
+            detail:
+              "Individual coaching for senior managers at Novaxis HQs (MMA/Covéa) and large industrial sites seeking confidential AI skills development.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "I needed to explore AI on my own insurance claims and contract files. In one day with a dedicated consultant, we worked on my real data. Result: operational tools the same evening and a clear plan for my team.",
+            role: "Claims Manager",
+            companyProfile: "Mutual insurance mid-cap, Le Mans",
+          },
+          {
+            quote:
+              "Perfect individual coaching format for an automotive technical manager: total confidentiality on our production data, adapted level, demos on our real purchase orders and quality sheets.",
+            role: "Technical Manager",
+            companyProfile: "Automotive parts SME, Le Mans basin",
+          },
+        ],
+        faq: [
+          {
+            q: "What is Axion-IA's individual AI coaching in Le Mans?",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Le Mans premises. A senior consultant accompanies you on your own business cases (insurance, automotive, manufacturing, services) for a full day. From 990 € excl. VAT.",
+          },
+          {
+            q: "Why choose individual coaching over a group training in Le Mans?",
+            a: "In individual coaching, 100% of the time is dedicated to your level, your sector and your Sarthe data. Ideal for sensitive data (insurance claims, automotive processes, Covéa contracts) or expert profiles who don't want a levelled-down format.",
+          },
+          {
+            q: "Is the session confidential?",
+            a: "Completely. Strict confidentiality from framing, your insurance, automotive or industrial data does not leave your Le Mans premises. No sharing with other clients.",
+          },
+          {
+            q: "Do I need AI experience to start coaching?",
+            a: "No. Coaching adapts to your level — beginner or advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
+          },
+          {
+            q: "Are travel costs included?",
+            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+          },
+          {
+            q: "Can we organise several individual coachings for different managers?",
+            a: "Yes. Some Sarthe mid-caps organise several individual sessions for their key managers or leads rather than a group training. Volume discount possible — to be specified at framing.",
+          },
+        ],
+        guarantees:
+          "Strict confidentiality: your insurance, automotive or industrial data does not leave your Le Mans premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
       },
     },
   },

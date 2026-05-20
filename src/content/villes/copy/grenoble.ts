@@ -35,6 +35,10 @@ export const GRENOBLE_COPY: VilleCopy = {
       fr: "Implémentation IA à Grenoble : déploiement de cas d'usage IA dans vos outils existants (PLM, ERP, outils R&D, SI métier) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance fournisseur.",
       en: "AI implementation in Grenoble: deployment of AI use cases in your existing tools (PLM, ERP, R&D toolchains, business IT) with contractually-costed ROI. Your teams stay in control, no vendor dependency.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Grenoble — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux de la Presqu'île scientifique, d'Inovallée ou du bassin grenoblois : ingénieur deeptech, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser seul, sur ses propres données et contraintes.",
+      en: "Individual AI coaching in Grenoble — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Science Peninsula, Inovallée or Grenoble basin premises: deep-tech engineer, researcher, R&D director or spin-off founder who wants to progress alone, on their own data and constraints.",
+    },
   },
 
   directAnswerFr:
@@ -705,6 +709,221 @@ export const GRENOBLE_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal AI ambassadors are fully autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA individuel Axion-IA à Grenoble s'adresse à l'ingénieur, chercheur, directeur R&D ou fondateur de spin-off qui veut progresser sur l'IA à son rythme, sur ses propres données techniques — sans session collective. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux de la Presqu'île scientifique, d'Inovallée, de Meylan ou du bassin grenoblois. Frais de logement, repas et forfait trajet facturés en sus.",
+        whyHere: [
+          "Grenoble héberge une forte densité d'ingénieurs et chercheurs (CEA-Leti, Ensimag, Phelma, Inria) dont le niveau technique est trop élevé pour une session collective standardisée — le coaching individuel est calibré sur leur expertise.",
+          "Les spin-offs de la Presqu'île scientifique et de Minalogic traitent souvent des données industrielles propriétaires (spécifications semi-conducteurs, brevets, rapports ESRF) trop sensibles pour un cadre collectif.",
+          "Les directeurs R&D et DSI d'ETI deeptech (Soitec, Poma, Petzl) bénéficient d'un accompagnement individuel centré sur leurs contraintes PLM/ERP et leur gouvernance IA en construction.",
+          "Aucun minimum de participants, aucune date imposée : le créneau s'adapte à votre emploi du temps chargé de chercheur ou d'entrepreneur deeptech grenoblois.",
+          "La French Tech in the Alps (~450 membres) compte de nombreux fondateurs en phase seed ou série A dont les besoins IA sont très spécifiques et ne correspondent pas à un programme de groupe.",
+          "À la fin de la session, vous avez des outils IA intégrés à vos workflows R&D réels — pas des démos déconnectées de votre contexte technique.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Entretien de cadrage dédié (30-45 min) pour cerner votre profil technique, votre secteur (semi-conducteurs, énergie, logiciel, matériaux, outdoor), vos priorités et contraintes de confidentialité.",
+          },
+          {
+            step: "Préparation sur-mesure",
+            detail:
+              "Le consultant prépare un programme individuel : outils sélectionnés pour votre cas technique, démos construites sur vos données représentatives (rapports d'analyse, spécifications, code, emails).",
+          },
+          {
+            step: "Session intensive sur site",
+            detail:
+              "Journée dans vos locaux grenoblois (Presqu'île, Inovallée, Meylan, Échirolles, Crolles) : théorie ciblée, démos live sur vos données réelles, manipulation directe. Rythme ajusté à votre niveau technique.",
+          },
+          {
+            step: "Cas pratiques sur vos documents et données réels",
+            detail:
+              "Vous travaillez sur vos propres fichiers : rapports d'analyse, PDFs techniques, code existant, données de production. Aucun exercice déconnecté de votre réalité R&D grenoble.",
+          },
+          {
+            step: "Plan d'action personnel",
+            detail:
+              "En fin de session, remise d'un plan d'action individuel : outils à déployer dans vos workflows R&D, cas d'usage prioritaires, ressources pour continuer en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Coaching individuel entrée pour spin-offs, start-ups Minalogic et indépendants du bassin grenoblois — une journée, un consultant dédié.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme individuel sur-mesure pour ingénieur senior, responsable R&D ou directeur de PME deeptech ou d'éditeur logiciel d'Inovallée.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Coaching individuel pour directeurs R&D, DSI ou membres du comité de direction d'ETI deeptech grenobloises (Soitec, Poma, Petzl et leurs fournisseurs).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour cadres dirigeants et experts de grands groupes grenoblois (STMicroelectronics, Schneider Electric, Atos) cherchant une montée en compétences IA confidentielle.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "J'avais besoin d'explorer l'IA appliquée à l'analyse de rapports ESRF et à la gestion documentaire de ma spin-off. En une journée avec un consultant dédié, on a travaillé sur mes vraies données. J'ai un plan clair et des outils en production dès le lendemain.",
+            role: "Directeur scientifique",
+            companyProfile: "Spin-off deeptech, Presqu'île scientifique de Grenoble",
+          },
+          {
+            quote:
+              "Format coaching individuel parfait pour un directeur R&D : niveau technique sans concession, démos sur nos spécifications semi-conducteurs. J'ai pu explorer des cas sensibles sans exposer nos brevets. Plan d'action remis en main propre.",
+            role: "Directeur R&D",
+            companyProfile: "PME électronique embarquée, bassin Meylan-Inovallée",
+          },
+        ],
+        faq: [
+          {
+            q: "Qu'est-ce que le coaching IA individuel Axion-IA à Grenoble ?",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne dans vos locaux grenoblois. Un consultant senior vous accompagne sur vos propres cas techniques ou business — spin-off, PME deeptech, ETI industrielle — pendant une journée entière. À partir de 990 € HT.",
+          },
+          {
+            q: "Pourquoi un format individuel pour un ingénieur ou chercheur grenoblois ?",
+            a: "Le niveau technique à Grenoble (Ensimag, CEA-Leti, Phelma, Inria) est trop élevé pour une session collective standardisée. Le coaching individuel s'adapte à votre expertise : modèles avancés, intégration PLM/ERP, fine-tuning, sécurité des données industrielles.",
+          },
+          {
+            q: "La session est-elle confidentielle ?",
+            a: "Totalement. Vos données techniques, brevets ou résultats de recherche ne quittent pas vos locaux. Confidentialité stricte dès le cadrage. Sensibilité données traitée avec la même rigueur que dans les laboratoires CEA.",
+          },
+          {
+            q: "Faut-il déjà utiliser des outils IA pour bénéficier du coaching ?",
+            a: "Non. Le coaching s'adapte à votre niveau — du débutant au praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
+          },
+          {
+            q: "Les frais de déplacement sont-ils inclus ?",
+            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, selon la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
+          },
+          {
+            q: "Peut-on organiser plusieurs coachings individuels pour une équipe R&D ?",
+            a: "Oui. Certaines ETI et spin-offs grenobloises organisent plusieurs sessions individuelles pour leurs ingénieurs ou chercheurs clés plutôt qu'une session collective. Tarif dégressif selon le volume — à préciser en cadrage.",
+          },
+        ],
+        guarantees:
+          "Confidentialité stricte : vos données techniques et enjeux stratégiques ne quittent pas vos locaux grenoblois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions grenobloises).",
+      },
+      en: {
+        hero: "Axion-IA's individual AI coaching in Grenoble is for the engineer, researcher, R&D director or spin-off founder who wants to progress on AI at their own pace, on their own technical data — without a group session. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Science Peninsula, Inovallée, Meylan or Grenoble basin premises. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Grenoble hosts a high density of engineers and researchers (CEA-Leti, Ensimag, Phelma, Inria) whose technical level is too high for a standardised group session — individual coaching is calibrated to their expertise.",
+          "Science Peninsula and Minalogic spin-offs often handle proprietary industrial data (semiconductor specifications, patents, ESRF reports) too sensitive for a group setting.",
+          "R&D directors and CIOs at deep-tech mid-caps (Soitec, Poma, Petzl) benefit from individual coaching focused on their PLM/ERP constraints and their AI governance in progress.",
+          "No minimum participants, no imposed date: the slot adapts to your busy researcher or Grenoble deep-tech entrepreneur schedule.",
+          "French Tech in the Alps (~450 members) includes many seed or Series A founders whose AI needs are highly specific and don't fit a group programme.",
+          "At session end, you have AI tools integrated into your real R&D workflows — not demos disconnected from your technical context.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "Dedicated framing interview (30-45 min) to understand your technical profile, sector (semiconductors, energy, software, materials, outdoor), priorities and confidentiality constraints.",
+          },
+          {
+            step: "Bespoke preparation",
+            detail:
+              "The consultant prepares an individual programme: tools selected for your technical case, demos built on your representative data (analysis reports, specifications, code, emails).",
+          },
+          {
+            step: "Intensive on-site session",
+            detail:
+              "Full day at your Grenoble premises (Science Peninsula, Inovallée, Meylan, Échirolles, Crolles): targeted theory, live demos on your real data, direct tool use. Pace adjusted to your technical level.",
+          },
+          {
+            step: "Practical exercises on your real documents and data",
+            detail:
+              "You work on your own files: analysis reports, technical PDFs, existing code, production data. No exercises disconnected from your Grenoble R&D reality.",
+          },
+          {
+            step: "Personal action plan",
+            detail:
+              "At session end, handover of an individual action plan: tools to deploy in your R&D workflows, priority use cases, resources to keep progressing autonomously.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry individual coaching for Grenoble basin spin-offs, Minalogic start-ups and independents — one day, one dedicated consultant.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On request",
+            detail:
+              "Bespoke individual programme for senior engineers, R&D managers or directors of deep-tech SMEs or Inovallée software editors.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On request",
+            detail:
+              "Individual coaching for R&D directors, CIOs or executive committee members of Grenoble deep-tech mid-caps (Soitec, Poma, Petzl and their suppliers).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On request",
+            detail:
+              "Individual coaching for senior managers and experts at Grenoble large groups (STMicroelectronics, Schneider Electric, Atos) seeking confidential AI skills development.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "I needed to explore AI applied to ESRF report analysis and documentary management for my spin-off. In one day with a dedicated consultant, we worked on my real data. I have a clear plan and tools in production from the next day.",
+            role: "Scientific Director",
+            companyProfile: "Deep-tech spin-off, Grenoble Science Peninsula",
+          },
+          {
+            quote:
+              "Perfect individual coaching format for an R&D director: uncompromising technical level, demos on our semiconductor specifications. I could explore sensitive cases without exposing our patents. Action plan handed over face to face.",
+            role: "R&D Director",
+            companyProfile: "Embedded electronics SME, Meylan-Inovallée basin",
+          },
+        ],
+        faq: [
+          {
+            q: "What is Axion-IA's individual AI coaching in Grenoble?",
+            a: "It is a bespoke AI session dedicated to one person at your Grenoble premises. A senior consultant accompanies you on your own technical or business cases — spin-off, deep-tech SME, industrial mid-cap — for a full day. From 990 € excl. VAT.",
+          },
+          {
+            q: "Why an individual format for a Grenoble engineer or researcher?",
+            a: "The technical level in Grenoble (Ensimag, CEA-Leti, Phelma, Inria) is too high for a standardised group session. Individual coaching adapts to your expertise: advanced models, PLM/ERP integration, fine-tuning, industrial data security.",
+          },
+          {
+            q: "Is the session confidential?",
+            a: "Completely. Your technical data, patents or research results do not leave your premises. Strict confidentiality from framing. Data sensitivity handled with the same rigour as in CEA laboratories.",
+          },
+          {
+            q: "Do I need to already use AI tools to benefit from coaching?",
+            a: "No. Coaching adapts to your level — from beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
+          },
+          {
+            q: "Are travel costs included?",
+            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+          },
+          {
+            q: "Can we organise several individual coachings for an R&D team?",
+            a: "Yes. Some Grenoble mid-caps and spin-offs organise several individual sessions for their key engineers or researchers rather than a group session. Volume discount possible — to be specified at framing.",
+          },
+        ],
+        guarantees:
+          "Strict confidentiality: your technical data and strategic challenges do not leave your Grenoble premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Grenoble missions).",
       },
     },
   },

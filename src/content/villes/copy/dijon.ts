@@ -37,6 +37,10 @@ export const DIJON_COPY: VilleCopy = {
       fr: "Implémentation IA à Dijon : déploiement dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance créée.",
       en: "AI implementation in Dijon: deployment into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Dijon — à partir de 990 € HT. Un consultant senior entièrement dédié à votre cas, dans vos locaux dijonnais : dirigeant de domaine viticole, responsable agroalimentaire, manager de cabinet ou directeur de PME Côte-d'Or qui veut progresser seul, à son rythme.",
+      en: "Individual AI coaching in Dijon — from 990 € excl. VAT. A senior consultant entirely dedicated to your case, at your Dijon premises: wine estate executive, agri-food manager, practice leader or Côte-d'Or SME director who wants to progress alone, at their own pace.",
+    },
   },
 
   directAnswerFr:
@@ -716,6 +720,221 @@ export const DIJON_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA individuel Axion-IA à Dijon s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres cas métier, sans partager sa session avec un groupe. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux dijonnais — domaine viticole, cabinet de conseil, PME agroalimentaire ou ETI de Côte-d'Or. Frais de logement, repas et forfait trajet en sus.",
+        whyHere: [
+          "Dijon compte de nombreux dirigeants de domaines viticoles, coopératives agroalimentaires et cabinets de conseil qui préfèrent une montée en compétences IA privée, ancrée dans leurs propres données (fiches cuvées, notes de dégustation, spécifications produit).",
+          "Les responsables de PME pharma-santé (URGO-type) et d'ETI industrielles de Côte-d'Or bénéficient d'un accompagnement individuel calibré sur leurs contraintes réglementaires et de confidentialité — sans partager leurs enjeux avec un groupe.",
+          "La format individuel permet d'aborder des sujets stratégiques sensibles : positionnement tarifaire viticulture, données de formulation agroalimentaire, processus qualité pharma.",
+          "Aucun minimum de participants, aucune date imposée : vous choisissez le créneau dans vos locaux dijonnais ou en distanciel si nécessaire.",
+          "La French Tech BFC labellisée 2023 (~450 membres) compte de nombreux fondateurs dont l'emploi du temps ne correspond pas à un format de groupe collectif.",
+          "À la fin de la session, vous repartez avec des outils IA configurés sur vos propres cas dijonnais — fiches produit, emails fournisseurs, tableaux de bord — pas sur des exemples génériques.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Entretien de cadrage dédié (30-45 min) pour cerner votre profil, votre secteur dominant (viticulture, agro, pharma, services B2B), vos priorités et vos contraintes de confidentialité.",
+          },
+          {
+            step: "Préparation sur-mesure",
+            detail:
+              "Le consultant prépare un programme individuel : outils sélectionnés pour votre cas, démos construites sur vos documents représentatifs (notes de dégustation, fiches cuvée, bons de commande, emails).",
+          },
+          {
+            step: "Session intensive sur site",
+            detail:
+              "Journée dans vos locaux à Dijon ou dans le bassin (Chenôve, Longvic, Quetigny) : théorie ciblée, démos live sur vos données réelles, manipulation directe des outils. Rythme adapté à votre niveau.",
+          },
+          {
+            step: "Cas pratiques sur vos documents réels",
+            detail:
+              "Vous travaillez sur vos propres fichiers : fiches cuvées, dossiers réglementaires, emails clients, rapports qualité. Aucun exercice déconnecté de votre réalité dijonnaise.",
+          },
+          {
+            step: "Plan d'action personnel",
+            detail:
+              "En fin de session, remise d'un plan d'action individuel : outils à déployer, cas d'usage prioritaires pour votre poste, ressources pour continuer en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Coaching individuel entrée pour dirigeants TPE, artisans, indépendants et petits domaines viticoles de la métropole dijonnaise — une journée, un consultant dédié.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme individuel sur-mesure pour manager, responsable opérationnel ou directeur de PME agroalimentaire, pharma ou services de Côte-d'Or.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Coaching individuel pour directeurs techniques, DSI ou membres du comité de direction d'ETI industrielles ou de services dijonnaises.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour cadres dirigeants de grands groupes implantés à Dijon (URGO, Amora, SEB bassin) souhaitant une montée en compétences IA confidentielle.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "J'avais besoin d'explorer l'IA appliquée à la rédaction de fiches cuvées et au scoring de mes parcelles. En une journée avec un consultant dédié, on a testé sur mes vraies données. Résultat : j'ai un plan concret et des outils opérationnels pour ma prochaine vendange.",
+            role: "Propriétaire-récoltant",
+            companyProfile: "Domaine viticole AOC Côte de Nuits, Bourgogne",
+          },
+          {
+            quote:
+              "Format coaching individuel idéal pour un directeur qualité en ETI pharma : confidentialité totale, niveau technique adapté, démos sur nos propres spécifications produit. Je suis reparti avec des outils installés et un plan d'action pour mon équipe.",
+            role: "Directrice qualité",
+            companyProfile: "ETI santé-pharma, Dijon métropole",
+          },
+        ],
+        faq: [
+          {
+            q: "Qu'est-ce que le coaching IA individuel Axion-IA à Dijon ?",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux dijonnais. Un consultant senior vous accompagne sur vos cas métier (viticulture, agro, pharma, services) pendant une journée entière. À partir de 990 € HT.",
+          },
+          {
+            q: "Pourquoi choisir le coaching individuel plutôt qu'une session collective à Dijon ?",
+            a: "Dans un coaching individuel, 100 % du temps est consacré à votre niveau, votre secteur et vos données. Aucune concession pédagogique. Idéal pour les sujets sensibles (données viticoles, formules agroalimentaires, dossiers réglementaires pharma) ou les profils experts.",
+          },
+          {
+            q: "La session est-elle totalement confidentielle ?",
+            a: "Oui. Confidentialité stricte dès le cadrage, vos données ne quittent pas vos locaux dijonnais, aucun partage avec d'autres clients. Vos données de dégustation, formules ou données clients restent chez vous.",
+          },
+          {
+            q: "Faut-il une expérience préalable en IA ?",
+            a: "Non. Le coaching s'adapte à votre niveau — débutant ou praticien avancé. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
+          },
+          {
+            q: "Les frais de déplacement sont-ils inclus dans le tarif de 990 € HT ?",
+            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, selon la doctrine tarifaire Axion-IA. Ces frais sont détaillés sur devis préalable à la confirmation.",
+          },
+          {
+            q: "Puis-je organiser plusieurs coachings individuels pour différents managers ?",
+            a: "Oui. Certaines ETI dijonnaises organisent plusieurs sessions individuelles pour leurs directeurs ou responsables clés plutôt qu'une session collective. Tarif dégressif selon le volume — à préciser en cadrage.",
+          },
+        ],
+        guarantees:
+          "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux dijonnais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour).",
+      },
+      en: {
+        hero: "Axion-IA's individual AI coaching in Dijon is for the executive, manager or expert who wants to progress on AI at their own pace, on their own business cases, without sharing the session with a group. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Dijon premises — wine estate, consulting firm, agri-food SME or Côte-d'Or mid-cap. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Dijon has many wine estate owners, agri-food co-op managers and consulting firm directors who prefer private AI skills development focused on their own data (cuvée sheets, tasting notes, product specifications).",
+          "Pharma-healthcare SME managers (URGO-type) and Côte-d'Or industrial mid-cap executives benefit from individual coaching calibrated to their regulatory and confidentiality constraints — without sharing their challenges with a group.",
+          "The individual format allows tackling sensitive strategic topics: viticulture pricing positioning, agri-food formulation data, pharma quality processes.",
+          "No minimum participants, no imposed date: you choose the slot at your Dijon premises or remotely if needed.",
+          "The 2023-labelled French Tech BFC (~450 members) includes many founders whose schedule is incompatible with a group format.",
+          "At session end, you leave with AI tools configured on your own Dijon cases — product sheets, supplier emails, dashboards — not generic examples.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "Dedicated framing interview (30-45 min) to understand your profile, dominant sector (viticulture, agri-food, pharma, B2B services), priorities and confidentiality constraints.",
+          },
+          {
+            step: "Bespoke preparation",
+            detail:
+              "The consultant prepares an individual programme: tools selected for your case, demos built on your representative documents (tasting notes, cuvée sheets, purchase orders, emails).",
+          },
+          {
+            step: "Intensive on-site session",
+            detail:
+              "Full day at your Dijon or basin premises (Chenôve, Longvic, Quetigny): targeted theory, live demos on your real data, direct tool use. Pace adapted to your level.",
+          },
+          {
+            step: "Practical exercises on your real documents",
+            detail:
+              "You work on your own files: cuvée sheets, regulatory dossiers, client emails, quality reports. No exercises disconnected from your Dijon reality.",
+          },
+          {
+            step: "Personal action plan",
+            detail:
+              "At session end, handover of an individual action plan: tools to deploy, priority use cases for your role, resources to keep progressing autonomously.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry individual coaching for Dijon metropolitan micro-business executives, artisans, freelancers and small wine estates — one day, one dedicated consultant.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On request",
+            detail:
+              "Bespoke individual programme for managers, operational leads or directors of Côte-d'Or agri-food, pharma or services SMEs.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On request",
+            detail:
+              "Individual coaching for technical directors, CIOs or executive committee members of Dijon industrial or services mid-caps.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On request",
+            detail:
+              "Individual coaching for senior managers at large groups based in Dijon (URGO, Amora, SEB basin) seeking confidential AI skills development.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "I needed to explore AI applied to writing cuvée sheets and scoring my plots. In one day with a dedicated consultant, we tested on my real data. Result: I have a concrete plan and operational tools for my next harvest.",
+            role: "Owner-producer",
+            companyProfile: "AOC wine estate, Côte de Nuits, Burgundy",
+          },
+          {
+            quote:
+              "Ideal individual coaching format for a quality director at a pharma mid-cap: total confidentiality, adapted technical level, demos on our own product specifications. I left with tools installed and an action plan for my team.",
+            role: "Quality Director",
+            companyProfile: "Healthcare-pharma mid-cap, Dijon metropolitan area",
+          },
+        ],
+        faq: [
+          {
+            q: "What is Axion-IA's individual AI coaching in Dijon?",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Dijon premises. A senior consultant accompanies you on your business cases (viticulture, agri-food, pharma, services) for a full day. From 990 € excl. VAT.",
+          },
+          {
+            q: "Why choose individual coaching over a group session in Dijon?",
+            a: "In individual coaching, 100% of the time is dedicated to your level, your sector and your data. No pedagogical compromise. Ideal for sensitive topics (wine data, agri-food formulas, pharma regulatory dossiers) or expert profiles.",
+          },
+          {
+            q: "Is the session completely confidential?",
+            a: "Yes. Strict confidentiality from framing, your data does not leave your Dijon premises, no sharing with other clients. Your tasting data, formulas or client data remain with you.",
+          },
+          {
+            q: "Do I need prior AI experience?",
+            a: "No. Coaching adapts to your level — beginner or advanced practitioner. The initial framing brief allows adjusting the programme before the session.",
+          },
+          {
+            q: "Are travel costs included in the 990 € excl. VAT price?",
+            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are detailed on a prior quote before confirmation.",
+          },
+          {
+            q: "Can I organise several individual coachings for different managers?",
+            a: "Yes. Some Dijon mid-caps organise several individual sessions for their key directors or managers rather than a group session. Volume discount possible — to be specified at framing.",
+          },
+        ],
+        guarantees:
+          "Strict confidentiality: your data and your challenges do not leave your Dijon premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date).",
       },
     },
   },

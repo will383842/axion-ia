@@ -44,6 +44,10 @@ export const BREST_COPY: VilleCopy = {
       fr: "Implémentation IA à Brest : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes de gestion) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Brest: we deploy AI into your existing tools (CRM, ERP, email, management systems) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel 1-to-1 à Brest : séances sur mesure pour dirigeants et cadres des technologies marines, du Technopôle Brest-Iroise et des PME du Finistère. Ancré sur l'écosystème Naval Group, IFREMER et l'économie maritime brestoise. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+      en: "1-to-1 AI coaching in Brest: bespoke sessions for executives and managers in marine technologies, Technopôle Brest-Iroise and Finistère SMEs. Grounded in the Naval Group, IFREMER and Brest maritime economy ecosystem. Lodging, meals and travel allowance billed separately for on-site sessions.",
+    },
   },
 
   directAnswerFr:
@@ -716,6 +720,220 @@ export const BREST_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. On-premise deployment available for organisations subject to defence confidentiality.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Brest accompagne individuellement les dirigeants et cadres des technologies marines, de la défense maritime, du Technopôle Brest-Iroise et des PME du Finistère. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — documentation technique maritime, traitement de données océaniques, reporting de bureau d'études ou gestion commerciale de PME brestoise. Vous progressez à votre rythme, sans théorie superflue.",
+        whyHere: [
+          "Brest concentre des ingénieurs et cadres de la défense maritime (Naval Group, Thales Underwater Systems, Marine nationale) avec des besoins IA précis et des contraintes de confidentialité fortes — le coaching 1-to-1 s'adapte à leurs contraintes réglementaires.",
+          "Les chercheurs et cadres d'IFREMER, du Lab-STICC et du Technopôle Brest-Iroise ont des besoins IA spécifiques sur le traitement de données scientifiques marines, la veille bibliographique et la valorisation de données — le coaching individuel cible ces enjeux précisément.",
+          "Les PME du tissu brestois (services informatiques, ingénierie, BTP, commerce) n'ont pas toujours de DSI interne : le coaching 1-to-1 leur permet d'intégrer l'IA en toute sécurité, à leur rythme.",
+          "Les fondateurs et managers de la French Tech Brest+ qui veulent intégrer l'IA dans leur produit ou service trouvent dans le coaching individuel un accélérateur adapté à leur stade.",
+          "Séances flexibles : 100 % visio ou présentiel dans vos locaux à Brest, Plouzané, Guipavas, Technopôle Brest-Iroise. Aucun déplacement imposé.",
+          "Aucun lock-in : vous repartez avec votre plan d'action personnalisé et votre autonomie — sans dépendance vis-à-vis d'Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Séance d'ouverture pour cartographier votre maturité IA, vos cas d'usage prioritaires (défense, sciences marines, logistique portuaire, BTP, services) et vos outils existants dans le contexte brestois.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Co-construction d'un programme calé sur votre agenda et votre secteur (défense maritime, océanographie, numérique, services B2B). Chaque séance a un objectif actionnable précis.",
+          },
+          {
+            step: "Séances pratiques sur vos vraies données",
+            detail:
+              "Chaque session travaille directement sur vos documents réels — rapports techniques, données de capteurs, emails commerciaux, devis, fiches de maintenance. L'IA est appliquée à votre réalité, pas à des exemples fictifs.",
+          },
+          {
+            step: "Ancrage et mise en pratique",
+            detail:
+              "Entre les séances, vous expérimentez les outils sur vos cas réels. La séance suivante débute par un debriefing et un ajustement du plan selon vos retours terrain.",
+          },
+          {
+            step: "Bilan et feuille de route",
+            detail:
+              "En fin de programme, restitution d'une feuille de route personnalisée : cas d'usage priorisés, outils retenus, prochaines étapes pour votre structure brestoise. Vous repartez pleinement autonome.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans, indépendants et petites structures du Finistère souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme sur mesure pour dirigeants et cadres des PME industrielles, numériques et de services de la Brest Métropole et du Finistère.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour DG, directeurs techniques, DSI ou directeurs R&D des ETI brestoises (défense, technologies marines, ingénierie) souhaitant piloter leur trajectoire IA.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de cadres dirigeants et managers des grands groupes brestois (Naval Group, Thales Underwater Systems, IFREMER) pour des besoins d'acculturation IA individualisés.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de comprendre comment utiliser l'IA pour accélérer mon traitement de données océanographiques. On a travaillé sur mes vrais jeux de données dès la première séance. Les gains sur ma productivité ont été immédiats.",
+            role: "Chef de projet R&D",
+            companyProfile: "PME ingénierie marine, Technopôle Brest-Iroise",
+          },
+          {
+            quote:
+              "Format idéal pour un dirigeant de PME brestoise sans DSI : séances courtes, 100 % focalisées sur mon contexte et mes enjeux réels. L'IA est maintenant intégrée dans ma gestion commerciale et mon reporting.",
+            role: "Gérant",
+            companyProfile: "PME services aux entreprises, Brest Métropole",
+          },
+        ],
+        faq: [
+          {
+            q: "Quel est le format des séances de coaching 1-to-1 à Brest ?",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Brest, Plouzané, Guipavas ou au Technopôle Brest-Iroise. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+          },
+          {
+            q: "Quelle est la fréquence des séances ?",
+            a: "La fréquence est définie ensemble lors du diagnostic initial selon votre rythme et vos objectifs — hebdomadaire, bimensuelle ou mensuelle. Aucun rythme imposé.",
+          },
+          {
+            q: "Le coaching est-il adapté aux acteurs de la défense maritime brestoise ?",
+            a: "Oui. Le coaching 1-to-1 respecte les contraintes de confidentialité des acteurs de la défense et des technologies maritimes. Les séances sont structurées pour ne pas exposer de données sensibles. accord de confidentialité systématique disponible.",
+          },
+          {
+            q: "Quels secteurs sont concernés à Brest ?",
+            a: "Tous les secteurs B2B de la métropole : défense maritime, sciences de la mer, numérique, logistique portuaire, BTP, services aux entreprises, santé. Le coaching s'adapte à votre contexte et vos cas d'usage réels.",
+          },
+          {
+            q: "Mes données et échanges sont-ils confidentiels ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos données, documents et informations métier ne sortent jamais de la session. Conformité RGPD, possibilité de séances en local sans transmission vers des serveurs externes.",
+          },
+          {
+            q: "Quelle différence entre le coaching 1-to-1 et une intervention collective à Brest ?",
+            a: "L'intervention collective forme votre équipe en une journée sur des outils IA généraux. Le coaching 1-to-1 vous accompagne individuellement sur la durée, sur vos cas précis, à votre rythme — vous gagnez en autonomie décisionnelle.",
+          },
+        ],
+        guarantees:
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Brest individually supports executives and managers in marine technologies, maritime defence, Technopôle Brest-Iroise and Finistère SMEs. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — maritime technical documentation, oceanic data processing, engineering bureau reporting or commercial management for a Brest SME. You progress at your own pace, without superfluous theory.",
+        whyHere: [
+          "Brest concentrates engineers and managers in maritime defence (Naval Group, Thales Underwater Systems, French Navy) with precise AI needs and strong confidentiality constraints — 1-to-1 coaching adapts to their regulatory requirements.",
+          "Researchers and managers at IFREMER, Lab-STICC and Technopôle Brest-Iroise have specific AI needs around marine scientific data processing, bibliographic monitoring and data valorisation — individual coaching targets these challenges precisely.",
+          "Brest's SME fabric (IT services, engineering, construction, trade) often lacks an internal IT manager: 1-to-1 coaching allows them to integrate AI safely, at their own pace.",
+          "French Tech Brest+ founders and managers wanting to integrate AI into their product or service find in individual coaching an accelerator suited to their stage.",
+          "Flexible sessions: 100% video or in person at your offices in Brest, Plouzané, Guipavas, Technopôle Brest-Iroise. No imposed travel.",
+          "No lock-in: you leave with your personalised action plan and full autonomy — no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "Opening session to map your AI maturity, priority use cases (defence, marine science, port logistics, construction, services) and existing tools in the Brest context.",
+          },
+          {
+            step: "Personalised progression plan",
+            detail:
+              "Co-build a programme fitted to your agenda and sector (maritime defence, oceanography, digital, B2B services). Each session has a precise actionable objective.",
+          },
+          {
+            step: "Practical sessions on your real data",
+            detail:
+              "Each session works directly on your real documents — technical reports, sensor data, commercial emails, quotes, maintenance sheets. AI is applied to your reality, not fictional examples.",
+          },
+          {
+            step: "Anchoring and practice",
+            detail:
+              "Between sessions, you experiment with tools on your real cases. The next session starts with a debrief and plan adjustment based on your field feedback.",
+          },
+          {
+            step: "Review and roadmap",
+            detail:
+              "At programme end, a personalised roadmap is delivered: prioritised use cases, retained tools, next steps for your Brest organisation. You leave fully autonomous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, craft firms, freelancers and small Finistère structures wishing to integrate AI into their daily activity.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Bespoke programme for executives and managers at industrial, digital and service SMEs in Brest Métropole and Finistère.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Individual support for CEOs, technical directors, CIOs or R&D directors of Brest mid-caps (defence, marine technologies, engineering) wishing to steer their AI trajectory.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Executive coaching for senior managers at major Brest groups (Naval Group, Thales Underwater Systems, IFREMER) requiring individualised AI acculturation.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching helped me understand how to use AI to speed up my oceanographic data processing. We worked on my real datasets from the first session. Productivity gains were immediate.",
+            role: "R&D Project Manager",
+            companyProfile: "Marine engineering SME, Technopôle Brest-Iroise",
+          },
+          {
+            quote:
+              "Ideal format for a Brest SME owner with no IT manager: short sessions, 100% focused on my context and real challenges. AI is now integrated into my commercial management and reporting.",
+            role: "Managing Director",
+            companyProfile: "B2B services SME, Brest Métropole",
+          },
+        ],
+        faq: [
+          {
+            q: "What is the format of 1-to-1 coaching sessions in Brest?",
+            a: "Sessions take place by video or in person at your offices in Brest, Plouzané, Guipavas or Technopôle Brest-Iroise. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "How often are the sessions?",
+            a: "Frequency is defined together at the initial diagnostic according to your rhythm and objectives — weekly, fortnightly or monthly. No imposed schedule.",
+          },
+          {
+            q: "Is coaching adapted to Brest maritime defence players?",
+            a: "Yes. 1-to-1 coaching respects the confidentiality constraints of defence and maritime technology players. Sessions are structured to avoid exposing sensitive data. accord de confidentialité systematically available.",
+          },
+          {
+            q: "Which sectors are covered in Brest?",
+            a: "All B2B sectors in the metropolitan area: maritime defence, marine science, digital, port logistics, construction, business services, health. Coaching adapts to your context and real use cases.",
+          },
+          {
+            q: "Are my data and exchanges kept confidential?",
+            a: "Yes. Strict confidentiality from the first session. Your data, documents and business information never leave the session. GDPR compliant, local session option available without data transmission to external servers.",
+          },
+          {
+            q: "What is the difference between 1-to-1 coaching and a group session in Brest?",
+            a: "A group session trains your team in one day on general AI tools. 1-to-1 coaching supports you individually over time, on your specific cases, at your own pace — you gain decision-making autonomy.",
+          },
+        ],
+        guarantees:
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
   },

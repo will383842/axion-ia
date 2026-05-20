@@ -37,6 +37,10 @@ export const AMIENS_COPY: VilleCopy = {
       fr: "Implémentation IA à Amiens : on déploie l'IA dans vos outils existants (CRM, ERP, mails, GMAO) avec ROI chiffré contractuel. Cas typiques amiénois : automatisation qualité sur lignes de production, gestion fournisseurs industriels, support R&D nutrition animale. Vos équipes gardent la main.",
       en: "AI implementation in Amiens: we deploy AI into your existing tools (CRM, ERP, email, CMMS) with contractually-costed ROI. Typical Amiens use cases: quality automation on production lines, industrial supplier management, pet nutrition R&D support. Your teams stay in control.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel 1-to-1 à Amiens : séances sur mesure pour dirigeants et cadres du tissu industriel, agroalimentaire et tertiaire de la Somme et des Hauts-de-France. Adapté aux PME manufacturières, à la logistique et aux ETI du bassin. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+      en: "1-to-1 AI coaching in Amiens: bespoke sessions for executives and managers in manufacturing, agri-food and services businesses across the Somme and Hauts-de-France. Tailored to manufacturing SMEs, logistics and mid-caps in the basin. Lodging, meals and travel allowance billed separately for on-site sessions.",
+    },
   },
 
   directAnswerFr:
@@ -706,6 +710,220 @@ export const AMIENS_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Amiens accompagne individuellement les dirigeants et cadres des PME industrielles, des entreprises logistiques et du tissu tertiaire des Hauts-de-France. À partir de 990 € HT pour les TPE, chaque programme cible vos cas d'usage réels — gestion de production, documentation fournisseurs, reporting, R&D agroalimentaire. Vous progressez à votre rythme sans lâcher votre activité.",
+        whyHere: [
+          "Amiens est un bassin industriel où les dirigeants de PME manufacturières (équipement, sous-traitance, agroalimentaire) ont des agendas très chargés : le coaching 1-to-1 s'adapte à leur rythme, en visio ou en présentiel à Amiens.",
+          "Le tissu logistique (Longueau, Camon, Glisy) concentre des responsables d'exploitation confrontés à des cas IA concrets : traçabilité, préparation de commandes, reporting automatisé. Le coaching individuel ancre ces sujets dans leur réalité quotidienne.",
+          "Les cadres des sites R&D (Nestlé Purina PetCare Center) et du pôle Bioeconomy For Change ont des besoins IA très précis sur la documentation scientifique — le 1-to-1 cible exactement ces enjeux.",
+          "Les dirigeants de TPE et PME de services amiénoises (conseil, juridique, formation) qui n'ont pas de DSI bénéficient d'un accompagnement individuel pour intégrer l'IA sans risque dans leurs outils existants.",
+          "Séances 100 % flexibles : visio depuis votre bureau ou présentiel dans vos locaux amiénois, centre-ville, Pôle Jules Verne ou zones d'activités.",
+          "Aucun lock-in : vous repartez avec votre plan d'action, vos outils installés et votre autonomie — sans dépendance vis-à-vis d'Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Séance d'ouverture pour évaluer votre maturité IA, identifier vos cas d'usage prioritaires (production, reporting, commercial, RH, achats) et vos outils existants dans le contexte amiénois.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Co-construction d'un programme de séances calé sur votre agenda : fréquence (hebdo, bimensuel ou mensuel), format (visio ou présentiel Amiens), sujets et objectifs précis par séance.",
+          },
+          {
+            step: "Séances pratiques sur vos vraies données",
+            detail:
+              "Chaque session travaille sur vos documents réels — bons de commande, rapports qualité, emails fournisseurs, fiches produit. L'IA est mise en œuvre sur vos fichiers, pas sur des exemples fictifs.",
+          },
+          {
+            step: "Ancrage et mise en pratique",
+            detail:
+              "Entre les séances, vous expérimentez les outils sur vos cas réels. La séance suivante débute par un debriefing et un ajustement du plan selon vos retours terrain.",
+          },
+          {
+            step: "Bilan et feuille de route",
+            detail:
+              "En fin de programme, vous recevez une feuille de route personnalisée : cas d'usage priorisés, outils retenus, prochaines étapes pour votre structure amiénoise. Vous repartez pleinement autonome.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans et indépendants du bassin amiénois souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme personnalisé pour dirigeants et cadres des PME industrielles, logistiques et de services du bassin amiénois.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour DG, directeurs opérationnels ou DSI des ETI du bassin Somme souhaitant piloter leur trajectoire IA en connaissance de cause.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de cadres dirigeants et managers des grands sites amiénois (P&G, Valeo, Nestlé Purina) pour des besoins d'acculturation IA individualisés.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis d'identifier concrètement comment l'IA pouvait m'aider sur la gestion documentaire fournisseurs. On a travaillé sur mes vrais fichiers dès la première séance. Résultat concret en quelques semaines.",
+            role: "Directeur des achats",
+            companyProfile: "PME sous-traitant industriel, zone nord Amiens",
+          },
+          {
+            quote:
+              "Format idéal pour un dirigeant sans DSI : les séances sont courtes, focalisées sur mon contexte, et j'ai pu poser toutes mes questions sans filtre. L'autonomie acquise vaut bien plus que la formation.",
+            role: "Gérant",
+            companyProfile: "TPE services aux entreprises, Amiens centre",
+          },
+        ],
+        faq: [
+          {
+            q: "Quel est le format des séances 1-to-1 à Amiens ?",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Amiens (centre-ville, Pôle Jules Verne, zones industrielles). Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+          },
+          {
+            q: "À quelle fréquence se déroulent les séances ?",
+            a: "La fréquence est définie ensemble lors du diagnostic initial selon votre rythme et vos objectifs. Hebdomadaire, bimensuelle ou mensuelle — aucun rythme imposé.",
+          },
+          {
+            q: "Le coaching en présentiel est-il possible sur les zones industrielles d'Amiens ?",
+            a: "Oui. Nous intervenons sur l'ensemble du bassin amiénois : centre-ville, zone industrielle nord, Pôle Jules Verne, Longueau, Camon, Glisy, Rivery. Frais de trajet facturés en sus.",
+          },
+          {
+            q: "Quels secteurs sont les plus adaptés au coaching 1-to-1 à Amiens ?",
+            a: "Tous les secteurs B2B du bassin : industrie manufacturière, logistique, agroalimentaire, R&D, commerce de gros, services aux entreprises. Le coaching s'adapte à votre secteur et à vos cas d'usage réels.",
+          },
+          {
+            q: "Mes informations et données sont-elles confidentielles ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos données et documents métier ne sortent jamais de la session. Conformité RGPD.",
+          },
+          {
+            q: "Quelle différence entre le coaching 1-to-1 et une intervention collective à Amiens ?",
+            a: "L'intervention collective forme une équipe en une journée sur des outils IA généraux. Le coaching 1-to-1 vous accompagne individuellement sur la durée : vous montez en compétence sur vos cas précis et prenez vos décisions IA en toute autonomie.",
+          },
+        ],
+        guarantees:
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Amiens individually supports executives and managers at manufacturing SMEs, logistics companies and service firms across Hauts-de-France. Starting from 990 € excl. VAT for micro-businesses, each programme targets your real use cases — production management, supplier documentation, reporting, agri-food R&D. You progress at your own pace without halting your operations.",
+        whyHere: [
+          "Amiens is an industrial basin where manufacturing SME executives have very busy agendas: 1-to-1 coaching adapts to their rhythm, by video or in person in Amiens.",
+          "The logistics cluster (Longueau, Camon, Glisy) concentrates operations managers facing concrete AI use cases: traceability, order preparation, automated reporting. Individual coaching anchors these topics in their daily reality.",
+          "R&D managers at sites such as Nestlé Purina PetCare Center and the Bioeconomy For Change cluster have very specific AI needs around scientific documentation — 1-to-1 coaching targets these challenges precisely.",
+          "Amiens micro-business and SME service owners with no IT manager benefit from individual coaching to safely integrate AI into their existing tools.",
+          "100% flexible sessions: video from your desk or in person at your Amiens offices, city centre, Pôle Jules Verne or business parks.",
+          "No lock-in: you leave with your action plan, installed tools and full autonomy — no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "Opening session to assess your AI maturity, identify priority use cases (production, reporting, sales, HR, procurement) and existing tools in the Amiens context.",
+          },
+          {
+            step: "Personalised progression plan",
+            detail:
+              "Co-build a session programme fitted to your agenda: frequency (weekly, fortnightly or monthly), format (video or on-site Amiens), topics and precise objectives per session.",
+          },
+          {
+            step: "Practical sessions on your real data",
+            detail:
+              "Each session works on your real documents — purchase orders, quality reports, supplier emails, product sheets. AI is applied to your files, not fictional examples.",
+          },
+          {
+            step: "Anchoring and practice",
+            detail:
+              "Between sessions, you experiment with tools on your real cases. The next session starts with a debrief and plan adjustment based on your field feedback.",
+          },
+          {
+            step: "Review and roadmap",
+            detail:
+              "At programme end, you receive a personalised roadmap: prioritised use cases, retained tools, next steps for your Amiens organisation. You leave fully autonomous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, craft firms and freelancers in the Amiens basin wishing to integrate AI into their daily activity.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Bespoke programme for executives and managers at industrial, logistics and service SMEs in the Amiens basin.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Individual support for CEOs, operations directors and CIOs of Somme mid-caps wishing to steer their AI trajectory with full knowledge.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Executive coaching for senior managers at major Amiens sites (P&G, Valeo, Nestlé Purina) requiring individualised AI acculturation.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching helped me identify concretely how AI could help with supplier document management. We worked on my real files from the first session. Concrete results within a few weeks.",
+            role: "Procurement Director",
+            companyProfile: "Industrial subcontractor SME, northern Amiens",
+          },
+          {
+            quote:
+              "Ideal format for a CEO with no IT manager: short sessions, focused on my context, and I could ask every question without filter. The autonomy gained is worth far more than the training.",
+            role: "Managing Director",
+            companyProfile: "Micro-business B2B services, Amiens city centre",
+          },
+        ],
+        faq: [
+          {
+            q: "What is the format of 1-to-1 sessions in Amiens?",
+            a: "Sessions take place by video or in person at your offices in Amiens (city centre, Pôle Jules Verne, industrial zones). Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "How often are the sessions?",
+            a: "Frequency is defined together at the initial diagnostic according to your rhythm and objectives. Weekly, fortnightly or monthly — no imposed schedule.",
+          },
+          {
+            q: "Is on-site coaching possible at Amiens industrial zones?",
+            a: "Yes. We cover the full Amiens basin: city centre, northern industrial zone, Pôle Jules Verne, Longueau, Camon, Glisy, Rivery. Travel costs billed separately.",
+          },
+          {
+            q: "Which sectors are best suited to 1-to-1 coaching in Amiens?",
+            a: "All B2B sectors in the basin: manufacturing, logistics, agri-food, R&D, wholesale trade, business services. Coaching adapts to your sector and real use cases.",
+          },
+          {
+            q: "Are my information and data kept confidential?",
+            a: "Yes. Strict confidentiality from the first session. Your data and business documents never leave the session. GDPR compliant.",
+          },
+          {
+            q: "What is the difference between 1-to-1 coaching and a group session in Amiens?",
+            a: "A group session trains a team in one day on general AI tools. 1-to-1 coaching supports you individually over time: you build competency on your specific cases and make AI decisions with full autonomy.",
+          },
+        ],
+        guarantees:
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your action plans and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
   },

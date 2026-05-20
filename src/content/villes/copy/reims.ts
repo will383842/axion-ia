@@ -39,6 +39,10 @@ export const REIMS_COPY: VilleCopy = {
       fr: "Implémentation IA à Reims : on déploie l'IA dans vos outils existants (CRM, ERP, mails, systèmes viti-vini) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Reims: we deploy AI into your existing tools (CRM, ERP, email, winery systems) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Reims : accompagnement 1-to-1 ancré dans votre réalité — Champagne, bioéconomie, agroalimentaire ou tertiaire académique. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      en: "Individual AI coaching in Reims: 1-to-1 support rooted in your reality — Champagne, bioeconomy, agri-food or academic tertiary. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+    },
   },
 
   directAnswerFr:
@@ -706,6 +710,221 @@ export const REIMS_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Reims est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants de maisons de Champagne, experts bioéconomie, managers agroalimentaires et responsables académiques du bassin rémois. Frais de logement, repas et forfait trajet en sus.",
+        whyHere: [
+          "Reims concentre des profils très spécialisés — responsable export d'une maison de Champagne, directeur qualité en bioéconomie (Pomacle-Bazancourt), directeur de programme à NEOMA — qui ont besoin d'un coaching ancré dans leurs contraintes sectorielles précises.",
+          "Le secteur Champagne impose des workflows multilingues (fiches export, étiquetage AOC, certificats d'origine) que seul un coaching individuel permet d'intégrer dans chaque exercice pratique.",
+          "Les maisons de Champagne familiales ont souvent un ou deux dirigeants à former en priorité avant toute cascade équipe : le 1-to-1 est la voie la plus rapide pour structurer la montée en compétence.",
+          "Les industriels bioéconomie (Pomacle-Bazancourt, Bioeconomy For Change) ont des workflows qualité et R&D très spécifiques que le coaching peut cibler dès la première séance.",
+          "Séances sur site dans vos locaux rémois ou dans le bassin Champagne (Épernay, Châlons, Troyes) ou à distance — rythme calé à la signature.",
+          "Confidentialité sans accord de confidentialité imposé : vos données, vos recettes, vos fiches techniques restent dans votre environnement.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Un entretien de cadrage approfondi pour identifier votre niveau IA, vos cas métier prioritaires (export Champagne, bioéconomie, enseignement supérieur) et l'objectif précis du coaching.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Construction d'un plan séance par séance calé sur vos outils (Claude, Mistral, GPT-4), vos livrables réels (fiches export, rapports R&D, contenus pédagogiques) et les contraintes sectorielles de Reims.",
+          },
+          {
+            step: "Séances pratiques sur vos vrais cas",
+            detail:
+              "Chaque séance travaille directement sur vos documents : traduction automatique de fiches Champagne, qualification de leads B2B internationaux, comptes-rendus de dégustation, rapports qualité bioéconomie.",
+          },
+          {
+            step: "Exercices entre séances",
+            detail:
+              "Micro-missions à réaliser en autonomie entre deux séances pour ancrer les apprentissages dans votre réalité rémoise et accélérer la progression.",
+          },
+          {
+            step: "Bilan + feuille de route autonomie",
+            detail:
+              "En fin de coaching, un bilan chiffré de vos gains et une feuille de route pour continuer à progresser sans dépendance envers Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Entrée coaching 1-to-1 — viticulteur indépendant, artisan, dirigeant TPE de services ou négoce du Grand Reims.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme multi-séances pour responsables export ou référents IA de PME agroalimentaires, maisons de Champagne familiales ou agences du bassin rémois.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement cadres dirigeants ETI Champagne (Taittinger, Pol Roger) ou industriels bioéconomie — programme structuré avec bilan intermédiaire.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching des profils pilotes d'un grand groupe (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) avant déploiement large.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de maîtriser la traduction automatique de nos fiches export Champagne en quelques séances. Adapté à nos contraintes AOC, multilingue, confidentialité des recettes. Je suis autonome.",
+            role: "Directeur commercial export",
+            companyProfile: "Maison de Champagne familiale, Reims, 60 collaborateurs",
+          },
+          {
+            quote:
+              "En tant que directrice R&D dans la bioéconomie, mes cas étaient très spécifiques. Le coaching 1-to-1 a travaillé sur mes vrais rapports qualité et données de process dès la première séance. Résultat mesurable immédiatement.",
+            role: "Directrice R&D",
+            companyProfile: "ETI bioéconomie, bassin Pomacle-Bazancourt",
+          },
+        ],
+        faq: [
+          {
+            q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Reims ?",
+            a: "Le format collectif forme tout un groupe sur les mêmes cas. Le 1-to-1 travaille exclusivement sur VOS cas, votre vitesse, vos contraintes rémois (export Champagne multilingue, bioéconomie, académique). Gains opérationnels mesurables dès la première séance.",
+          },
+          {
+            q: "Combien de séances faut-il pour être autonome sur l'IA à Reims ?",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant TPE viticulteur atteint une autonomie confortable en quelques séances. Un manager ETI Champagne cherchant à maîtriser le multilingue export aura un programme plus étendu. Le plan est cadré à la première séance.",
+          },
+          {
+            q: "Le coaching peut-il se tenir dans mes locaux rémois ou dans le bassin Champagne ?",
+            a: "Oui. Séances sur site à Reims ou dans le bassin Champagne (Épernay, Châlons, Troyes) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+          },
+          {
+            q: "Mes données et fiches techniques Champagne restent-elles confidentielles ?",
+            a: "Oui. Confidentialité stricte dès le démarrage : vos recettes, fiches techniques, données export restent dans votre environnement. Aucune extraction vers nos serveurs. Conformité RGPD stricte.",
+          },
+          {
+            q: "Puis-je commencer sans aucune base IA ?",
+            a: "Oui. Le diagnostic initial évalue votre niveau réel et calibre le plan en conséquence. La plupart des profils rémois débutent sans avoir jamais utilisé Claude ou GPT de façon professionnelle.",
+          },
+          {
+            q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+          },
+        ],
+        guarantees:
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données, recettes et fiches techniques restent dans votre environnement. Conformité RGPD. Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Reims is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to Champagne house executives, bioeconomy experts, agri-food managers and academic leaders across the Reims basin. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Reims brings together highly specialised profiles — export manager at a Champagne house, quality director in bioeconomy (Pomacle-Bazancourt), programme director at NEOMA — who need coaching rooted in their precise sector constraints.",
+          "The Champagne sector imposes multilingual workflows (export sheets, AOC labelling, certificates of origin) that only individual coaching can integrate into each practical exercise.",
+          "Family Champagne houses often have one or two priority executives to train before any team cascade: 1-to-1 is the fastest route to structure the skills build.",
+          "Bioeconomy industrials (Pomacle-Bazancourt, Bioeconomy For Change) have very specific quality and R&D workflows that coaching can target from the first session.",
+          "Sessions on site at your Reims offices or in the Champagne basin (Épernay, Châlons, Troyes) or remote — cadence agreed at sign-up.",
+          "Confidentiality without imposed accord de confidentialité: your data, recipes and technical sheets stay in your environment.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "An in-depth framing interview to identify your AI level, priority business cases (Champagne export, bioeconomy, higher education) and the precise coaching objective.",
+          },
+          {
+            step: "Personalized progression plan",
+            detail:
+              "Building a session-by-session plan aligned with your tools (Claude, Mistral, GPT-4), your real deliverables (export sheets, R&D reports, teaching content) and Reims sector constraints.",
+          },
+          {
+            step: "Practical sessions on your real cases",
+            detail:
+              "Each session works directly on your documents: automatic Champagne sheet translation, international B2B lead qualification, tasting notes, bioeconomy quality reports.",
+          },
+          {
+            step: "Between-session exercises",
+            detail:
+              "Micro-missions to complete autonomously between sessions to embed learnings in your real Reims context and accelerate progress.",
+          },
+          {
+            step: "Debrief + autonomy roadmap",
+            detail:
+              "At coaching end, a costed gains summary and an autonomy roadmap to keep progressing without dependence on Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From €990 excl. VAT",
+            detail:
+              "Entry-level 1-to-1 coaching — independent winegrower, artisan, service or trading micro-business executive in Grand Reims.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Multi-session programme for export managers or AI champions of agri-food SMEs, family Champagne houses or agencies in the Reims basin.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Executive coaching for Champagne mid-cap managers (Taittinger, Pol Roger) or bioeconomy industrials — structured programme with interim review.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Coaching of pilot profiles at a major group (LVMH/MHCS, Pernod Ricard, Vranken-Pommery) before broad rollout.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching let me master automatic translation of our Champagne export sheets within a few sessions. Adapted to our AOC constraints, multilingual, recipe confidentiality preserved. I am autonomous.",
+            role: "Head of Export Sales",
+            companyProfile: "Family Champagne house, Reims, 60 staff",
+          },
+          {
+            quote:
+              "As R&D Director in bioeconomy, my cases were very specific. The 1-to-1 coaching worked on my real quality reports and process data from the first session. Measurable result immediately.",
+            role: "R&D Director",
+            companyProfile: "Bioeconomy mid-cap, Pomacle-Bazancourt basin",
+          },
+        ],
+        faq: [
+          {
+            q: "How does 1-to-1 coaching differ from a group session in Reims?",
+            a: "Group format trains a whole team on the same cases. 1-to-1 works exclusively on YOUR cases, your pace, your Reims constraints (multilingual Champagne export, bioeconomy, academic). Measurable operational gains from the first session.",
+          },
+          {
+            q: "How many sessions are needed to become AI-autonomous in Reims?",
+            a: "It depends on your starting level and objectives. A micro-business winegrower executive reaches comfortable autonomy in a few sessions. A Champagne mid-cap manager seeking to master multilingual export will have a longer programme. The plan is framed in the first session.",
+          },
+          {
+            q: "Can coaching sessions be held at my Reims premises or in the Champagne basin?",
+            a: "Yes. On-site sessions in Reims or the Champagne basin (Épernay, Châlons, Troyes) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "Does my Champagne data and technical sheets stay confidential?",
+            a: "Yes. Strict confidentiality from day one: your recipes, technical sheets and export data stay in your environment. No extraction to our servers. Strict GDPR compliance.",
+          },
+          {
+            q: "Can I start with no AI background?",
+            a: "Yes. The initial diagnostic assesses your real level and calibrates the plan accordingly. Most Reims profiles start without ever having used Claude or GPT professionally.",
+          },
+          {
+            q: "Is there a minimum duration or session commitment?",
+            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+          },
+        ],
+        guarantees:
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data, recipes and technical sheets stay in your environment. GDPR compliance. Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
   },

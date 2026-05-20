@@ -42,6 +42,10 @@ export const BORDEAUX_COPY: VilleCopy = {
       fr: "Implémentation IA à Bordeaux : on déploie l'IA dans vos outils existants (ERP, CRM, mails, outil de gestion viticole, logiciels métier aéronautique) avec un ROI chiffré contractuellement. Aucune dépendance créée, vos équipes gardent la main.",
       en: "AI implementation in Bordeaux: we deploy AI into your existing tools (ERP, CRM, email, viticulture management software, aerospace-specific systems) with contractually-costed ROI. No dependency created, your teams stay in control.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel 1-to-1 à Bordeaux : séances sur mesure pour dirigeants et cadres de l'aéronautique/spatial, du viti-vinicole, de la French Tech Bordeaux et des ETI de Gironde. Ancré sur les réalités des filières aéronautique (Aerospace Valley), viticole et numérique. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+      en: "1-to-1 AI coaching in Bordeaux: bespoke sessions for executives and managers in aerospace/space, wine, French Tech Bordeaux and Gironde mid-caps. Grounded in the realities of Bordeaux's aerospace (Aerospace Valley), viticulture and digital sectors. Lodging, meals and travel allowance billed separately for on-site sessions.",
+    },
   },
 
   directAnswerFr:
@@ -709,6 +713,220 @@ export const BORDEAUX_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause and offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Bordeaux accompagne individuellement les dirigeants et cadres de l'aéronautique/spatial (Aerospace Valley), du négoce viticole, de la French Tech Bordeaux et des ETI de Gironde. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — qualification d'appels d'offres aéronautiques, documentation viti-vinicole, développement produit numérique, pilotage commercial ETI. Vous progressez à votre rythme, sans théorie superflue.",
+        whyHere: [
+          "Bordeaux concentre des ingénieurs et cadres de l'aéronautique (Dassault, Thales, Safran, ArianeGroup) avec des agendas très contraints et des besoins IA précis (documentation technique, qualification AO, reporting). Le coaching 1-to-1 s'adapte à leur réalité sans passer par des formations collectives.",
+          "Le tissu viti-vinicole bordelais (négociants, châteaux, coopératives, courtiers) a des besoins IA spécifiques — génération de fiches techniques, gestion des clients export, marketing digital. Le coaching individuel cible ces enjeux précisément.",
+          "La French Tech Bordeaux et le hub H7 concentrent des fondateurs et managers qui veulent intégrer l'IA dans leur produit ou service numérique — le coaching 1-to-1 est plus efficace que toute formation collective à ce stade.",
+          "Les cadres des ETI de Gironde (Euratlantique, Bordeaux Aéroparc, Cité Numérique Bègles) souhaitant piloter leur montée en compétence IA individuellement trouvent dans ce format un accompagnement adapté à leurs contraintes d'agenda.",
+          "Séances flexibles : 100 % visio ou présentiel dans vos locaux bordelais (Mérignac, Pessac, Bègles, Euratlantique, Cité Numérique). Aucun déplacement imposé.",
+          "Aucun lock-in : vous repartez avec votre plan d'action et votre autonomie — sans dépendance vis-à-vis d'Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Séance d'ouverture pour cartographier votre maturité IA, vos cas d'usage prioritaires (aéronautique, viticole, numérique, services) et vos outils existants dans le contexte bordelais.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Co-construction d'un programme calé sur votre agenda et votre secteur (aéronautique/défense, viticole, numérique, services B2B). Chaque séance a un objectif actionnable précis.",
+          },
+          {
+            step: "Séances pratiques sur vos vraies données",
+            detail:
+              "Chaque session travaille directement sur vos documents réels — dossiers techniques, fiches de dégustation, propositions commerciales, rapports de production. L'IA est appliquée à votre réalité, pas à des exemples fictifs.",
+          },
+          {
+            step: "Ancrage et mise en pratique",
+            detail:
+              "Entre les séances, vous expérimentez les outils sur vos cas réels. La séance suivante débute par un debriefing et un ajustement du plan selon vos retours terrain.",
+          },
+          {
+            step: "Bilan et feuille de route",
+            detail:
+              "En fin de programme, restitution d'une feuille de route personnalisée : cas d'usage priorisés, outils retenus, prochaines étapes pour votre structure bordelaise. Vous repartez pleinement autonome.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans viticoles, indépendants et startups de la French Tech Bordeaux souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme sur mesure pour dirigeants et cadres des PME aéronautiques, viticoles, numériques et de services de Gironde.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour DG, directeurs industriels, DSI ou directeurs commerciaux des ETI bordelaises (aéronautique, agri-agro, services, numérique).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de cadres dirigeants et managers des grands groupes bordelais (Dassault, Thales, Safran, ArianeGroup) pour des besoins d'acculturation IA individualisés.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de comprendre concrètement comment utiliser l'IA pour qualifier nos appels d'offres aéronautiques. On a travaillé sur nos vrais dossiers techniques dès la première séance. Gain de temps immédiat sur mes process.",
+            role: "Directeur des ventes",
+            companyProfile: "PME sous-traitant aéronautique, Mérignac – Gironde",
+          },
+          {
+            quote:
+              "Format idéal pour un négociant en vins avec un agenda serré : séances courtes, focalisées sur mes enjeux export et ma communication digitale. L'IA est maintenant intégrée dans ma prospection internationale.",
+            role: "Directeur général",
+            companyProfile: "PME négoce viticole, Bordeaux Métropole",
+          },
+        ],
+        faq: [
+          {
+            q: "Quel est le format des séances de coaching 1-to-1 à Bordeaux ?",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Bordeaux, Mérignac, Pessac, Bègles, Euratlantique ou ailleurs dans la Métropole bordelaise. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+          },
+          {
+            q: "Quelle est la fréquence des séances ?",
+            a: "La fréquence est définie ensemble lors du diagnostic initial selon votre rythme et vos objectifs — hebdomadaire, bimensuelle ou mensuelle. Aucun rythme imposé.",
+          },
+          {
+            q: "Le coaching est-il adapté aux acteurs de l'aéronautique bordelaise ?",
+            a: "Oui. Le coaching 1-to-1 est particulièrement adapté aux cadres de l'aéronautique/spatial : qualification d'appels d'offres, génération de documentation technique, suivi de projet, reporting. Le vocabulaire et les cas d'usage sont calés sur vos réalités sectorielles.",
+          },
+          {
+            q: "Quels secteurs sont concernés à Bordeaux ?",
+            a: "Tous les secteurs B2B de la métropole : aéronautique/spatial/défense, viti-vinicole, numérique (French Tech, Inria), santé, commerce de gros, services aux entreprises. Le coaching s'adapte à votre contexte précis.",
+          },
+          {
+            q: "Mes données et échanges sont-ils confidentiels ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos données, documents et informations métier ne sortent jamais de la session. Conformité RGPD.",
+          },
+          {
+            q: "Quelle différence entre le coaching 1-to-1 et une intervention collective à Bordeaux ?",
+            a: "L'intervention collective forme votre équipe en une journée sur des outils IA généraux. Le coaching 1-to-1 vous accompagne individuellement sur la durée, sur vos cas précis, à votre rythme — vous gagnez en autonomie décisionnelle.",
+          },
+        ],
+        guarantees:
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Bordeaux individually supports executives and managers in aerospace/space (Aerospace Valley), wine trade, French Tech Bordeaux and Gironde mid-caps. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — aerospace RFP qualification, wine-sector documentation, digital product development, mid-cap commercial management. You progress at your own pace, without superfluous theory.",
+        whyHere: [
+          "Bordeaux concentrates aerospace engineers and managers (Dassault, Thales, Safran, ArianeGroup) with very constrained agendas and precise AI needs (technical documentation, RFP qualification, reporting). 1-to-1 coaching adapts to their reality without group training.",
+          "The Bordeaux wine trade (négociants, châteaux, cooperatives, brokers) has specific AI needs — technical sheet generation, export client management, digital marketing. Individual coaching targets these challenges precisely.",
+          "French Tech Bordeaux and the H7 hub concentrate founders and managers wanting to integrate AI into their digital product or service — 1-to-1 coaching is more effective than any group training at this stage.",
+          "Gironde mid-cap managers (Euratlantique, Bordeaux Aéroparc, Cité Numérique Bègles) wishing to individually steer their AI upskilling find in this format an accompaniment suited to their agenda constraints.",
+          "Flexible sessions: 100% video or in person at your Bordeaux offices (Mérignac, Pessac, Bègles, Euratlantique, Cité Numérique). No imposed travel.",
+          "No lock-in: you leave with your action plan and full autonomy — no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "Opening session to map your AI maturity, priority use cases (aerospace, viticulture, digital, services) and existing tools in the Bordeaux context.",
+          },
+          {
+            step: "Personalised progression plan",
+            detail:
+              "Co-build a programme fitted to your agenda and sector (aerospace/defence, wine trade, digital, B2B services). Each session has a precise actionable objective.",
+          },
+          {
+            step: "Practical sessions on your real data",
+            detail:
+              "Each session works directly on your real documents — technical dossiers, tasting sheets, commercial proposals, production reports. AI is applied to your reality, not fictional examples.",
+          },
+          {
+            step: "Anchoring and practice",
+            detail:
+              "Between sessions, you experiment with tools on your real cases. The next session starts with a debrief and plan adjustment based on your field feedback.",
+          },
+          {
+            step: "Review and roadmap",
+            detail:
+              "At programme end, a personalised roadmap is delivered: prioritised use cases, retained tools, next steps for your Bordeaux organisation. You leave fully autonomous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, wine-sector craftspeople, freelancers and French Tech Bordeaux startups wishing to integrate AI into their daily activity.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Bespoke programme for executives and managers at aerospace, viticulture, digital and service SMEs in Gironde.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Individual support for CEOs, industrial directors, CIOs or commercial directors of Bordeaux mid-caps (aerospace, agri-food, services, digital).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Executive coaching for senior managers at major Bordeaux groups (Dassault, Thales, Safran, ArianeGroup) requiring individualised AI acculturation.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching helped me understand concretely how to use AI for qualifying our aerospace RFPs. We worked on our real technical dossiers from the first session. Immediate time saving on my processes.",
+            role: "Sales Director",
+            companyProfile: "Aerospace subcontractor SME, Mérignac – Gironde",
+          },
+          {
+            quote:
+              "Ideal format for a wine merchant with a tight schedule: short sessions focused on my export challenges and digital communication. AI is now integrated into my international prospecting.",
+            role: "Managing Director",
+            companyProfile: "Wine trade SME, Bordeaux Métropole",
+          },
+        ],
+        faq: [
+          {
+            q: "What is the format of 1-to-1 coaching sessions in Bordeaux?",
+            a: "Sessions take place by video or in person at your offices in Bordeaux, Mérignac, Pessac, Bègles, Euratlantique or elsewhere in the Bordeaux Métropole. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "How often are the sessions?",
+            a: "Frequency is defined together at the initial diagnostic according to your rhythm and objectives — weekly, fortnightly or monthly. No imposed schedule.",
+          },
+          {
+            q: "Is coaching adapted to Bordeaux aerospace players?",
+            a: "Yes. 1-to-1 coaching is particularly suited to aerospace/space managers: RFP qualification, technical documentation generation, project tracking, reporting. Vocabulary and use cases are calibrated to your sector reality.",
+          },
+          {
+            q: "Which sectors are covered in Bordeaux?",
+            a: "All B2B sectors in the metropolitan area: aerospace/space/defence, wine trade, digital (French Tech, Inria), health, wholesale trade, business services. Coaching adapts to your specific context.",
+          },
+          {
+            q: "Are my data and exchanges kept confidential?",
+            a: "Yes. Strict confidentiality from the first session. Your data, documents and business information never leave the session. GDPR compliant.",
+          },
+          {
+            q: "What is the difference between 1-to-1 coaching and a group session in Bordeaux?",
+            a: "A group session trains your team in one day on general AI tools. 1-to-1 coaching supports you individually over time, on your specific cases, at your own pace — you gain decision-making autonomy.",
+          },
+        ],
+        guarantees:
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
   },

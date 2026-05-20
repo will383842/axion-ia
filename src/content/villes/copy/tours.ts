@@ -40,6 +40,10 @@ export const TOURS_COPY: VilleCopy = {
       fr: "Implémentation IA à Tours : on déploie l'IA dans vos outils existants (CRM, ERP, mails, GMAO) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance externe créée.",
       en: "AI implementation in Tours: we deploy AI into your existing tools (CRM, ERP, email, CMMS) with contractually-costed ROI. Your teams stay in control, no external dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA 1-to-1 à Tours : accompagnement individuel pour dirigeants et cadres des ETI industrielles (STMicro, SKF, Michelin, Hutchinson), des PME du pôle S2E2 et de l'écosystème Mame. Sessions sur site à Tours Métropole ou à distance. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus hors Tours intra-muros.",
+      en: "1-to-1 AI coaching in Tours: individual coaching for executives and managers at industrial mid-caps (STMicro, SKF, Michelin, Hutchinson), S2E2 pole SMEs and the Mame ecosystem. On-site sessions across Tours Métropole or remote. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Tours.",
+    },
   },
 
   directAnswerFr:
@@ -707,6 +711,220 @@ export const TOURS_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Tours s'adresse aux dirigeants, cadres et ingénieurs des ETI industrielles (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson), des PME et start-ups de l'écosystème Mame et Village by CA, et des entreprises du pôle S2E2 (Smart Electricity). Pas de groupe, pas de programme générique : chaque séance est construite autour de vos enjeux réels, votre secteur et votre rythme de dirigeant. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel hors Tours intra-muros.",
+        whyHere: [
+          "Tours concentre des ETI industrielles de premier rang (STMicro, SKF, Michelin, Hutchinson) dont les cadres techniques et managers ont besoin d'intégrer l'IA dans leur pratique quotidienne — documentation technique, processus qualité, gestion de production — sans passer par une formation collective inadaptée.",
+          "Le pôle S2E2 (Smart Electricity) et son tissu de PME spécialisées en réseaux intelligents et efficacité énergétique génèrent des profils techniques et des dirigeants pour qui une montée en compétence IA personnalisée est stratégique.",
+          "L'écosystème Mame Cité de la Création, Village by CA Touraine et French Tech Loire Valley produit des fondateurs et dirigeants de PME innovantes qui veulent aller plus vite que ne le permet un programme collectif.",
+          "L'Université François-Rabelais, Polytech Tours et l'ESCEM forment chaque année des cadres qui, une fois en poste dans les ETI du bassin, cherchent à approfondir leur pratique IA de façon concrète et personnalisée.",
+          "Format accessible depuis tout Tours Métropole : Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours, Saint-Avertin — présentiel ou distanciel selon votre agenda.",
+          "Aucun group dynamics : vous progressez sur vos vraies questions industrielles ou tertiaires, sans vous adapter à un niveau collectif qui n'est pas le vôtre.",
+        ],
+        methodology: [
+          {
+            step: "Entretien de positionnement",
+            detail:
+              "Un premier échange (45 min à distance ou en présentiel à Tours) pour cartographier votre niveau IA actuel, vos objectifs prioritaires, votre secteur (industrie, énergie, services, agri) et vos cas d'usage cibles. Pour les profils industriels, nous précisons en amont les contraintes de confidentialité industrielle applicables.",
+          },
+          {
+            step: "Séances sur mesure dans votre contexte",
+            detail:
+              "Chaque séance part de VOS documents et de VOS décisions réelles : bons de commande, rapports de maintenance, données ERP/GMAO, comptes-rendus de réunion, analyses de non-conformités. Démos en direct sur Claude, Mistral, GPT-4 appliquées à votre réalité industrielle, énergétique ou de services.",
+          },
+          {
+            step: "Ancrage pratique entre les séances",
+            detail:
+              "Exercices ciblés sur vos tâches quotidiennes réelles : rédaction de rapports techniques, analyse de données de capteurs, qualification de leads B2B, préparation de comités de direction. Pas de devoirs théoriques déconnectés de votre activité tourangelle.",
+          },
+          {
+            step: "Suivi de progression",
+            detail:
+              "Bilan intermédiaire à mi-parcours : ce qui est ancré, ce qui reste à consolider, ajustement du programme selon l'évolution de vos priorités. Souplesse totale — vous pouvez changer de focus entre deux séances.",
+          },
+          {
+            step: "Synthèse finale et autonomie",
+            detail:
+              "En fin de parcours, synthèse personnelle de vos cas d'usage IA maîtrisés, guide de ressources sélectionnées pour votre secteur et recommandations de veille IA. Vous êtes autonome — aucune dépendance au coaching créée.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "à partir de 990 € HT",
+            detail:
+              "Pour indépendants, artisans et dirigeants de TPE tourangelles. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires (facturation, comptes-rendus, qualification leads). Frais de logement, repas et forfait trajet en sus hors Tours intra-muros.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Parcours PME — sur devis",
+            detail:
+              "Pour dirigeants et managers de PME tourangelles (services, Mame, sous-traitants industriels). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes, reporting, gestion de projet IA. Frais de logement, repas et forfait trajet en sus hors Tours intra-muros.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Parcours ETI — sur devis",
+            detail:
+              "Pour DG, DAF, DRH et directeurs industriels des ETI de Tours Métropole (mécanique, semi-conducteurs, énergie, caoutchouc). Travail sur la gouvernance IA, la communication interne, la conduite du changement et l'intégration IA dans les process industriels.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Parcours grands comptes — sur devis",
+            detail:
+              "Pour cadres dirigeants et directeurs de sites des grands groupes tourangeaux (STMicroelectronics, SKF, Michelin, Hutchinson). Format confidentiel haut niveau, agenda adapté aux contraintes de direction de site industriel. Frais en sus.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "En tant que responsable de production dans une ETI industrielle, j'avais besoin d'un accompagnement ancré sur mes vraies contraintes ERP et GMAO. Le coaching 1-to-1 a travaillé directement sur mes données réelles. En quelques séances, j'intègre l'IA dans mes process qualité et ma gestion de non-conformités.",
+            role: "Responsable de production",
+            companyProfile: "ETI équipementier automobile, Tours Métropole",
+          },
+          {
+            quote:
+              "Format parfait pour un dirigeant de PME avec un agenda chargé. Les séances à distance calées sur mon emploi du temps m'ont permis de monter en compétence IA sur mes vrais dossiers commerciaux. ROI mesurable dès la deuxième séance.",
+            role: "DG",
+            companyProfile: "PME services B2B, Tours centre",
+          },
+        ],
+        faq: [
+          {
+            q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Tours ?",
+            a: "À tout dirigeant, cadre ou manager de Tours Métropole souhaitant monter en compétence IA de façon personnalisée : ingénieurs et responsables des ETI industrielles (STMicro, SKF, Michelin, Hutchinson), dirigeants de PME et startups Mame, responsables du pôle S2E2, professions libérales, commerce. Tout profil B2B est éligible.",
+          },
+          {
+            q: "Le coaching est-il adapté aux contextes industriels (ERP, GMAO, process manufacturing) ?",
+            a: "Oui. Une part significative de nos coachings tourangeaux porte sur des profils industriels. Chaque séance est construite autour de VOS outils et de VOS données réelles — ERP, GMAO, bons de commande, rapports qualité. Nous ne faisons pas de démos sur des cas fictifs.",
+          },
+          {
+            q: "Quel est le tarif d'entrée et comment est facturé le coaching ?",
+            a: "Le tarif d'entrée est de 990 € HT pour un parcours court. Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Tours intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
+          },
+          {
+            q: "Les séances se déroulent-elles en présentiel à Tours ou à distance ?",
+            a: "Les deux sont possibles selon vos préférences. Présentiel dans vos locaux (Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours) ou à distance en visio. Frais de logement, repas et forfait trajet en sus pour le présentiel hors Tours intra-muros.",
+          },
+          {
+            q: "La confidentialité de mes données industrielles est-elle garantie ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Pour les profils industriels, nous travaillons exclusivement dans l'environnement de la séance, aucune donnée n'est stockée ou extraite vers nos serveurs. Conformité RGPD, modèles testés sur infra dédiée si souveraineté industrielle requise.",
+          },
+          {
+            q: "Quelle différence avec une formation collective IA à Tours ?",
+            a: "Dans une formation collective, le rythme est calé sur la moyenne du groupe et les cas traités sont génériques. En coaching 1-to-1, chaque séance travaille sur VOS données industrielles réelles, VOS processus, VOS décisions. L'investissement est plus ciblé, le retour opérationnel est immédiat.",
+          },
+        ],
+        guarantees:
+          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Frais de logement, repas et forfait trajet facturés en sus et validés avec vous avant chaque séance en présentiel hors Tours intra-muros. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Tours is for executives, managers and engineers at industrial mid-caps (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson), S2E2 Smart Electricity SMEs and the Mame and Village by CA innovation ecosystem. No group programme: each session is built around your real challenges, your sector and your executive pace. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Tours.",
+        whyHere: [
+          "Tours concentrates top-tier industrial mid-caps (STMicro, SKF, Michelin, Hutchinson) whose technical managers and engineers need to integrate AI into their daily practice — technical documentation, quality processes, production management — without going through group training ill-suited to their level.",
+          "The S2E2 Smart Electricity pole and its cluster of specialist smart grid and energy efficiency SMEs generate technical profiles and executives for whom personalised AI upskilling is strategic.",
+          "The Mame Cité de la Création, Village by CA Touraine and French Tech Loire Valley ecosystem produces SME founders and managers who want to move faster than a group programme allows.",
+          "Université François-Rabelais, Polytech Tours and ESCEM train managers who, once in post at Tours basin mid-caps, seek to deepen their AI practice concretely and individually.",
+          "Accessible across Tours Métropole: Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours, Saint-Avertin — on-site or remote per your agenda.",
+          "No group dynamics: you progress on your real industrial or service questions, without adapting to a collective level that is not yours.",
+        ],
+        methodology: [
+          {
+            step: "Positioning interview",
+            detail:
+              "A first exchange (45 min remote or on site in Tours) to map your current AI level, priority objectives, sector (industry, energy, services, agri) and target use cases. For industrial profiles, we clarify applicable industrial confidentiality constraints upfront.",
+          },
+          {
+            step: "Tailored sessions in your context",
+            detail:
+              "Each session starts from YOUR documents and YOUR real decisions: purchase orders, maintenance reports, ERP/CMMS data, meeting minutes, non-conformity analyses. Live demos on Claude, Mistral, GPT-4 applied to your industrial, energy or services reality.",
+          },
+          {
+            step: "Practical anchoring between sessions",
+            detail:
+              "Targeted exercises on your real daily tasks: technical report writing, sensor data analysis, B2B lead qualification, executive committee preparation. No disconnected theoretical homework.",
+          },
+          {
+            step: "Progress monitoring",
+            detail:
+              "Mid-programme review: what is anchored, what still needs consolidation, programme adjustment if priorities have shifted. Full flexibility — you can change focus between sessions.",
+          },
+          {
+            step: "Final synthesis and autonomy",
+            detail:
+              "At the end of the programme, a personal summary of your mastered AI use cases, a curated resource guide for your sector and AI monitoring recommendations. You are autonomous — no coaching dependency created.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "from €990 excl. VAT",
+            detail:
+              "For Tours freelancers, tradespeople and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases (invoicing, meeting minutes, lead qualification). Lodging, meals and travel allowance billed separately outside central Tours.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "SME programme — on quote",
+            detail:
+              "For Tours SME managers and executives (services, Mame, industrial sub-contractors). Programme calibrated over several months: decision-making, team management, reporting, AI project governance. Lodging, meals and travel allowance billed separately outside central Tours.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap programme — on quote",
+            detail:
+              "For CEOs, CFOs, CHROs and industrial directors at Tours Métropole mid-caps (mechanics, semiconductors, energy, rubber). Work on AI governance, internal communication, change management and AI integration into industrial processes.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Large accounts programme — on quote",
+            detail:
+              "For senior executives and site directors at Tours large-group sites (STMicroelectronics, SKF, Michelin, Hutchinson). Confidential senior format, schedule adapted to industrial site leadership constraints. Expenses billed separately.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "As a production manager at an industrial mid-cap, I needed coaching grounded in my real ERP and CMMS constraints. The 1-to-1 coaching worked directly on my actual data. Within a few sessions, I integrate AI into my quality processes and non-conformance management.",
+            role: "Production Manager",
+            companyProfile: "Automotive supplier mid-cap, Tours Métropole",
+          },
+          {
+            quote:
+              "Perfect format for an SME director with a full agenda. Remote sessions fitted around my schedule let me build AI skills on my real commercial files. Measurable ROI from the second session.",
+            role: "CEO",
+            companyProfile: "B2B services SME, Tours city centre",
+          },
+        ],
+        faq: [
+          {
+            q: "Who is Axion-IA's 1-to-1 AI coaching in Tours for?",
+            a: "For any executive, manager or engineer in Tours Métropole wanting personalised AI upskilling: industrial mid-cap engineers and managers (STMicro, SKF, Michelin, Hutchinson), Mame SME and startup founders, S2E2 pole managers, independent professionals, trade. Any B2B profile is eligible.",
+          },
+          {
+            q: "Is coaching suited to industrial contexts (ERP, CMMS, process manufacturing)?",
+            a: "Yes. A significant share of our Tours coaching sessions cover industrial profiles. Each session is built around YOUR tools and YOUR real data — ERP, CMMS, purchase orders, quality reports. We never use fictional demo cases.",
+          },
+          {
+            q: "What is the entry rate and how is coaching invoiced?",
+            a: "The entry rate is €990 excl. VAT for a short programme. Lodging, meals and travel allowance are billed separately for on-site sessions outside central Tours. The full programme is defined after the positioning interview, no blind commitment.",
+          },
+          {
+            q: "Are sessions on-site in Tours or remote?",
+            a: "Both are available per your preferences. On-site at your Tours Métropole premises (Tours centre, Joué-lès-Tours, Saint-Pierre-des-Corps, Chambray-lès-Tours) or remote by video. Lodging, meals and travel allowance billed separately outside central Tours.",
+          },
+          {
+            q: "Is my industrial data confidentiality guaranteed?",
+            a: "Yes. Strict confidentiality ensured before the first session. For industrial profiles, we work exclusively within the session environment, no data is stored or extracted to our servers. GDPR compliance, models tested on dedicated infra if industrial sovereignty is required.",
+          },
+          {
+            q: "What is the difference from group AI training in Tours?",
+            a: "In group training, the pace is set to the group average and cases are generic. In 1-to-1 coaching, every session works on YOUR real industrial data, YOUR processes, YOUR decisions. The investment is more targeted, the operational return is immediate.",
+          },
+        ],
+        guarantees:
+          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Strict confidentiality from the outset, no reference published without written consent. Lodging, meals and travel allowance billed separately and validated before each on-site session outside central Tours. No lock-in: skills acquired are usable in full autonomy.",
       },
     },
   },

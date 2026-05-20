@@ -44,6 +44,10 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
       fr: "Implémentation IA à Aix-en-Provence : nous déployons l'IA dans vos outils existants (CRM, ERP, mails) avec ROI chiffré contractuellement. Vos équipes gardent la main, aucun lock-in technologique.",
       en: "AI implementation in Aix-en-Provence: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel 1-to-1 à Aix-en-Provence : séances sur mesure pour dirigeants et cadres des PME industrielles, cabinets d'ingénierie et ETI du bassin Aix-Marseille. Axe technopôle Aix-Marseille, Aix-en-Provence Tech et grandes entreprises du pays d'Aix. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+      en: "1-to-1 AI coaching in Aix-en-Provence: bespoke sessions for executives and managers at industrial SMEs, engineering firms and mid-caps across the Aix-Marseille basin. Lodging, meals and travel allowance billed separately for on-site sessions.",
+    },
   },
 
   directAnswerFr:
@@ -712,6 +716,221 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Aix-en-Provence accompagne individuellement les dirigeants et cadres dirigeants des PME industrielles, ETI aérospatiales et cabinets de conseil du bassin Aix-Marseille. À partir de 990 € HT pour les TPE, chaque programme est construit autour de votre réalité métier — technopôle Arbois, Les Milles, Marignane, Rousset. Vous accélérez votre montée en compétence IA sans perdre de temps sur du théorique non applicable.",
+        whyHere: [
+          "Le bassin Aix-Marseille concentre des dirigeants d'ETI aérospatiales, énergétiques et industrielles avec des agendas très contraints : le coaching 1-to-1 s'adapte à leurs plages disponibles, y compris en visio depuis leur bureau ou en présentiel dans leurs locaux.",
+          "Les cabinets d'ingénierie et sociétés de conseil du Technopôle Arbois et de Les Milles ont des cas d'usage IA très précis (qualification d'appels d'offres, rédaction de rapports techniques) — le coaching individuel cible exactement leurs enjeux réels.",
+          "Pour les dirigeants de PME aixoises exposés aux écosystèmes deeptech (Capenergies, ITER, STMicro), le 1-to-1 permet de comprendre l'IA sans filtre et de bâtir une feuille de route personnalisée.",
+          "La French Tech Aix-Marseille Région Sud et Angers Technopole regroupent des fondateurs et managers qui veulent intégrer l'IA dans leur produit — le coaching individuel est plus efficace qu'une formation collective à ce stade.",
+          "Séances flexibles : 100 % en visio ou hybride visio + présentiel Aix/bassin. Aucun déplacement imposé, aucun groupe à synchroniser.",
+          "Aucun lock-in : vous repartez avec vos notes, vos plans d'action et votre autonomie — sans dépendance vis-à-vis d'Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Séance d'ouverture pour cartographier votre maturité IA, vos cas d'usage prioritaires (rédaction, analyse, automatisation, décision) et vos outils existants dans le contexte du bassin Aix-Marseille.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Nous co-construisons un plan de séances calé sur votre agenda : fréquence, sujets, format (visio ou présentiel à Aix, Arbois, Les Milles ou dans le bassin). Chaque séance a un objectif actionnable précis.",
+          },
+          {
+            step: "Séances pratiques sur vos vraies données",
+            detail:
+              "Chaque session travaille directement sur vos documents, emails, propositions commerciales ou données métier. Vous voyez l'IA appliquée à votre réalité, pas à des exemples génériques.",
+          },
+          {
+            step: "Ancrage et mise en pratique",
+            detail:
+              "Entre les séances, vous expérimentez les outils installés sur vos cas réels. La séance suivante démarre par un debriefing de ce qui a fonctionné ou bloqué — ajustement du plan en continu.",
+          },
+          {
+            step: "Bilan et feuille de route",
+            detail:
+              "En fin de programme, restitution d'une feuille de route personnalisée : cas d'usage prioritaires, outils retenus, prochaines étapes pour votre structure. Vous repartez autonome.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Programme d'entrée pour les indépendants, gérants de TPE et fondateurs de startups de la French Tech Aix-Marseille souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme sur mesure pour les dirigeants et cadres des PME industrielles, cabinets d'ingénierie et sociétés de services du bassin Aix-Marseille.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour DG, DGA, DSI ou directeurs métiers des ETI aérospatiales, énergétiques ou de conseil implantées dans le pays d'Aix.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de cadres dirigeants et membres CODIR des grands groupes du bassin (Airbus Helicopters, CEA Cadarache, STMicroelectronics) souhaitant un accompagnement individualisé.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de passer de zéro à opérationnel sur l'IA en quelques séances. On a travaillé directement sur mes dossiers techniques, pas sur des cas fictifs. J'aurais perdu des mois à tâtonner seul.",
+            role: "Directeur général",
+            companyProfile: "PME d'ingénierie aérospatiale, bassin de Marignane",
+          },
+          {
+            quote:
+              "Format idéal pour un agenda de DG : séances courtes, 100 % focalisées sur mon contexte business. Axion-IA a su adapter le discours au contexte industriel de notre site du Technopôle Arbois.",
+            role: "Directrice générale",
+            companyProfile: "ETI conseil et services B2B, Technopôle Arbois Aix-en-Provence",
+          },
+        ],
+        faq: [
+          {
+            q: "Quel est le format des séances de coaching 1-to-1 à Aix-en-Provence ?",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Aix-en-Provence, au Technopôle Arbois, à Les Milles ou dans le bassin selon votre préférence. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+          },
+          {
+            q: "Quelle est la fréquence des séances ?",
+            a: "La fréquence est définie ensemble lors du diagnostic initial selon votre rythme et vos objectifs. Elle peut être hebdomadaire, bimensuelle ou mensuelle. Aucun calendrier imposé.",
+          },
+          {
+            q: "Le coaching en présentiel est-il possible à Marignane ou Rousset ?",
+            a: "Oui. Nous intervenons dans l'ensemble du bassin Aix-Marseille : Aix centre, Technopôle Arbois, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. Frais de trajet facturés en sus selon la distance.",
+          },
+          {
+            q: "Quels secteurs sont concernés par le coaching 1-to-1 à Aix ?",
+            a: "Tous les secteurs B2B du bassin : aérospatial, énergie, microélectronique, ingénierie, conseil, services numériques, agroalimentaire. Le coaching s'adapte à votre secteur dominant et à vos cas d'usage réels.",
+          },
+          {
+            q: "Mes échanges et données sont-ils confidentiels ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos données, documents et informations métier ne sortent jamais de la session. Conformité RGPD.",
+          },
+          {
+            q: "Quelle est la différence entre le coaching 1-to-1 et un audit IA ?",
+            a: "L'audit IA cartographie votre organisation et produit un livrable collectif avec un plan d'action. Le coaching 1-to-1 vous forme et vous accompagne individuellement sur la durée : vous montez en compétence et vous prenez les décisions IA par vous-même, en autonomie croissante.",
+          },
+        ],
+        guarantees:
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour le présentiel. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Aix-en-Provence individually supports executives and senior managers at industrial SMEs, aerospace mid-caps and consulting firms across the Aix-Marseille basin. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your specific business reality — Arbois technopole, Les Milles, Marignane, Rousset. You accelerate your AI proficiency without wasting time on non-applicable theory.",
+        whyHere: [
+          "The Aix-Marseille basin concentrates aerospace, energy and industrial mid-cap executives with highly constrained agendas: 1-to-1 coaching adapts to their available slots, including by video from their desk or in person at their premises.",
+          "Engineering firms and consulting companies at Arbois technopole and Les Milles have very specific AI use cases (RFP qualification, technical report writing) — individual coaching targets their actual challenges precisely.",
+          "For Aix SME executives exposed to deeptech ecosystems (Capenergies, ITER, STMicro), 1-to-1 coaching enables unfiltered AI understanding and a personalised roadmap.",
+          "French Tech Aix-Marseille Région Sud founders and managers wanting to integrate AI into their product find individual coaching more effective than group training at this stage.",
+          "Flexible sessions: 100% video or hybrid video + on-site Aix/basin. No imposed travel, no group to synchronise.",
+          "No lock-in: you leave with your notes, action plans and full autonomy — no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "Opening session to map your AI maturity, priority use cases (writing, analysis, automation, decision-making) and existing tools in the context of the Aix-Marseille basin.",
+          },
+          {
+            step: "Personalised progression plan",
+            detail:
+              "We co-build a session plan fitted to your agenda: frequency, topics, format (video or on-site in Aix, Arbois, Les Milles or across the basin). Each session has a precise actionable objective.",
+          },
+          {
+            step: "Practical sessions on your real data",
+            detail:
+              "Each session works directly on your documents, emails, proposals or business data. You see AI applied to your reality, not generic examples.",
+          },
+          {
+            step: "Anchoring and practice",
+            detail:
+              "Between sessions, you experiment with installed tools on your real cases. The next session starts with a debrief of what worked or blocked — continuous plan adjustment.",
+          },
+          {
+            step: "Review and roadmap",
+            detail:
+              "At programme end, a personalised roadmap is delivered: priority use cases, retained tools, next steps for your organisation. You leave autonomous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry programme for freelancers, micro-business owners and French Tech Aix-Marseille startup founders wishing to integrate AI into their daily work.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Bespoke programme for executives and managers at industrial SMEs, engineering firms and service companies across the Aix-Marseille basin.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Individual coaching for CEOs, deputy CEOs, CIOs or business directors of aerospace, energy or consulting mid-caps established in the Aix area.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Executive coaching for senior managers and board members at large-group basin sites (Airbus Helicopters, CEA Cadarache, STMicroelectronics) seeking individualised support.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching took me from zero to operational on AI in a few sessions. We worked directly on my technical files, not fictional examples. I would have wasted months figuring it out alone.",
+            role: "CEO",
+            companyProfile: "Aerospace engineering SME, Marignane basin",
+          },
+          {
+            quote:
+              "Ideal format for a CEO schedule: short sessions, 100% focused on my business context. Axion-IA adapted the approach to our industrial setting at Arbois Technopole.",
+            role: "Managing Director",
+            companyProfile:
+              "B2B consulting and services mid-cap, Arbois Technopole Aix-en-Provence",
+          },
+        ],
+        faq: [
+          {
+            q: "What is the format of 1-to-1 coaching sessions in Aix-en-Provence?",
+            a: "Sessions take place by video or in person at your premises in Aix-en-Provence, Arbois technopole, Les Milles or across the basin depending on your preference. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "How often are the sessions?",
+            a: "Frequency is defined together at the initial diagnostic according to your rhythm and objectives. It can be weekly, fortnightly or monthly. No imposed schedule.",
+          },
+          {
+            q: "Is on-site coaching possible at Marignane or Rousset?",
+            a: "Yes. We cover the entire Aix-Marseille basin: Aix centre, Arbois technopole, Les Milles, Marignane, Vitrolles, Rousset, Bouc-Bel-Air. Travel costs billed separately based on distance.",
+          },
+          {
+            q: "Which sectors does 1-to-1 coaching cover in the Aix area?",
+            a: "All B2B sectors in the basin: aerospace, energy, microelectronics, engineering, consulting, digital services, agri-food. Coaching adapts to your dominant sector and real use cases.",
+          },
+          {
+            q: "Are my exchanges and data kept confidential?",
+            a: "Yes. Strict confidentiality from the first session. Your data, documents and business information never leave the session. GDPR compliant.",
+          },
+          {
+            q: "What is the difference between 1-to-1 coaching and an AI audit?",
+            a: "An AI audit maps your organisation and produces a collective deliverable with an action plan. 1-to-1 coaching trains and supports you individually over time: you build AI competency and make AI decisions yourself, with growing autonomy.",
+          },
+        ],
+        guarantees:
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your action plans and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
   },

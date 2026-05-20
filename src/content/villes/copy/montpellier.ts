@@ -37,6 +37,10 @@ export const MONTPELLIER_COPY: VilleCopy = {
       fr: "Implémentation IA à Montpellier : on intègre l'IA dans vos outils existants (CRM, ERP, mails, outils métier santé/biotech/IT) avec ROI chiffré contractuel. Vos équipes gardent la main — aucune dépendance créée.",
       en: "AI implementation in Montpellier: we integrate AI into your existing tools (CRM, ERP, email, health/biotech/IT business tools) with contractually-costed ROI. Your teams stay in control — no dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Montpellier : accompagnement 1-to-1 ancré dans votre réalité — santé/biotech, IT, jeux vidéo ou agroalimentaire. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      en: "Individual AI coaching in Montpellier: 1-to-1 support rooted in your reality — health/biotech, IT, video games or agri-food. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+    },
   },
 
   directAnswerFr:
@@ -711,6 +715,221 @@ export const MONTPELLIER_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal AI ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Montpellier est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants, managers et experts des secteurs santé-biotech, IT, jeux vidéo et agronomie du bassin montpelliérain. Frais de logement, repas et forfait trajet en sus.",
+        whyHere: [
+          "Montpellier concentre des profils très différents — médecin ou data scientist chez Sanofi, studio director chez Ubisoft, directeur technique dans une PME Cap Omega — qui n'ont ni le même rythme ni les mêmes cas d'usage : le 1-to-1 est la seule formule qui s'adapte à chacun.",
+          "L'écosystème santé d'Euromédecine impose des contraintes réglementaires (HDS, RGPD santé, MDR) que seul un accompagnement individuel peut intégrer dans chaque exercice pratique.",
+          "Les studios jeux vidéo (Ubisoft Montpellier) et les startups French Tech Méditerranée ont des roadmaps produit très précises : le coaching calé sur votre backlog réel produit des gains immédiats.",
+          "Les ETI industrielles de l'Hérault (Dell France, IBM, CIRAD) ont souvent un ou deux profils « référents IA » à former en priorité avant toute cascade équipe : le 1-to-1 est la voie la plus rapide.",
+          "Séances sur site dans vos locaux montpelliérains (Cap Omega, Euromédecine, Agropolis, vos bureaux) ou à distance selon votre disponibilité — rythme calé à la signature.",
+          "Confidentialité sans accord de confidentialité imposé : vos données, vos cas, votre contexte. Aucun document ne quitte votre environnement.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Un entretien de cadrage approfondi pour identifier votre niveau IA actuel, vos cas métier prioritaires (santé, IT, jeux vidéo, agro) et l'objectif précis du coaching.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Construction d'un plan séance par séance calé sur vos outils (Claude, Mistral, GPT-4, outils métier), vos livrables réels et vos contraintes sectorielles montpelliéraines.",
+          },
+          {
+            step: "Séances pratiques sur vos vrais cas",
+            detail:
+              "Chaque séance travaille directement sur vos documents, vos prompts, votre workflow : rédaction médicale, documentation technique, génération de contenus jeux vidéo, analyse agronomique.",
+          },
+          {
+            step: "Exercices entre séances",
+            detail:
+              "Micro-missions à réaliser en autonomie entre deux séances pour ancrer les apprentissages dans votre contexte réel et accélérer la progression.",
+          },
+          {
+            step: "Bilan + feuille de route autonomie",
+            detail:
+              "En fin de coaching, un bilan chiffré de vos gains et une feuille de route d'autonomie pour continuer à progresser sans dépendance envers Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Entrée coaching 1-to-1 — dirigeant, indépendant ou expert TPE numérique, biotech ou agronomie du bassin montpelliérain.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme multi-séances pour référents IA ou managers de PME santé-biotech, studios jeux vidéo ou agences IT de Montpellier.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement cadres dirigeants ETI (Dell France, IBM, CIRAD, Sanofi R&D) — programme structuré sur plusieurs mois avec bilan intermédiaire.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de la cellule IA ou des profils pilotes d'un grand groupe implanté à Montpellier, avant déploiement large en cascade équipes.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de configurer l'IA sur mes vrais dossiers de dispositifs médicaux en quelques séances. Vocabulaire médical respecté, cas HDS intégrés. Je suis autonome sur mes rédactions réglementaires.",
+            role: "Directeur médical",
+            companyProfile: "PME dispositifs médicaux, Euromédecine Montpellier",
+          },
+          {
+            quote:
+              "En tant que studio director, j'avais besoin d'un coaching calé sur la production jeux vidéo — pas un cours générique. Axion-IA a travaillé directement sur notre pipeline contenu Ubisoft-like. Résultat immédiat.",
+            role: "Directeur de studio",
+            companyProfile: "Studio jeux vidéo indépendant, Montpellier",
+          },
+        ],
+        faq: [
+          {
+            q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Montpellier ?",
+            a: "Le format collectif forme tout un groupe sur les mêmes cas. Le 1-to-1 travaille exclusivement sur VOS cas, votre vitesse, vos contraintes sectorielles (HDS, données cliniques, pipeline jeux vidéo, données agronomiques). Résultat : gains opérationnels mesurables dès la première séance.",
+          },
+          {
+            q: "Combien de séances faut-il pour être autonome sur l'IA à Montpellier ?",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un dirigeant TPE numérique atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations avancées (HDS, pipelines agro) aura un programme plus étendu. Le plan est cadré à la première séance.",
+          },
+          {
+            q: "Le coaching peut-il se tenir dans mes locaux montpelliérains ?",
+            a: "Oui. Séances sur site dans vos locaux (Cap Omega, Euromédecine, Agropolis, vos bureaux) ou en visio selon votre disponibilité. Le choix est fait au cadrage. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+          },
+          {
+            q: "Mes données et documents restent-ils confidentiels pendant le coaching ?",
+            a: "Oui. Confidentialité stricte dès le démarrage : vos données, vos prompts, vos cas restent dans votre environnement. Aucune extraction vers nos serveurs. Conformité RGPD et secteur santé (HDS sur demande).",
+          },
+          {
+            q: "Puis-je commencer sans aucune base IA ?",
+            a: "Oui. Le diagnostic initial évalue votre niveau réel et calibre le plan de progression en conséquence. Beaucoup de profils débutent sans avoir jamais utilisé Claude ou GPT de façon professionnelle.",
+          },
+          {
+            q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression et vos besoins.",
+          },
+        ],
+        guarantees:
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur santé (HDS sur demande). Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Montpellier is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to executives, managers and experts in health-biotech, IT, video games and agronomy across the Montpellier basin. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Montpellier brings together very diverse profiles — a physician or data scientist at Sanofi, a studio director at Ubisoft, a technical lead at a Cap Omega SME — who have different paces and use cases: 1-to-1 is the only format that adapts to each.",
+          "The Euromédecine health ecosystem imposes regulatory constraints (HDS, health GDPR, MDR) that only individual coaching can integrate into each practical exercise.",
+          "Video-game studios (Ubisoft Montpellier) and French Tech Méditerranée startups have precise product roadmaps: coaching aligned with your real backlog produces immediate gains.",
+          "Hérault industrial mid-caps (Dell France, IBM, CIRAD) often have one or two priority 'AI champions' to train before any team cascade: 1-to-1 is the fastest route.",
+          "Sessions on site at your Montpellier offices (Cap Omega, Euromédecine, Agropolis, your offices) or remote depending on availability — cadence agreed at sign-up.",
+          "Confidentiality without imposed accord de confidentialité: your data, your cases, your context. No document leaves your environment.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "An in-depth framing interview to identify your current AI level, priority business cases (health, IT, video games, agro) and the precise coaching objective.",
+          },
+          {
+            step: "Personalized progression plan",
+            detail:
+              "Building a session-by-session plan aligned with your tools (Claude, Mistral, GPT-4, business tools), your real deliverables and your Montpellier sector constraints.",
+          },
+          {
+            step: "Practical sessions on your real cases",
+            detail:
+              "Each session works directly on your documents, prompts, workflow: medical writing, technical documentation, video-game content generation, agronomic analysis.",
+          },
+          {
+            step: "Between-session exercises",
+            detail:
+              "Micro-missions to complete autonomously between sessions to embed learnings in your real context and accelerate progress.",
+          },
+          {
+            step: "Debrief + autonomy roadmap",
+            detail:
+              "At coaching end, a costed gains summary and an autonomy roadmap to keep progressing without dependence on Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From €990 excl. VAT",
+            detail:
+              "Entry-level 1-to-1 coaching — executive, freelancer or expert in a digital, biotech or agronomy micro-business in the Montpellier basin.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Multi-session programme for AI champions or managers of Montpellier health-biotech SMEs, video-game studios or IT agencies.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Executive coaching for mid-cap managers (Dell France, IBM, CIRAD, Sanofi R&D) — structured multi-month programme with interim review.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Coaching of the AI cell or pilot profiles of a large group based in Montpellier, before broad team cascade rollout.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching let me configure AI on my real medical device files within a few sessions. Medical vocabulary respected, HDS cases integrated. I am autonomous on my regulatory writing.",
+            role: "Medical Director",
+            companyProfile: "Medical device SME, Euromédecine Montpellier",
+          },
+          {
+            quote:
+              "As a studio director, I needed coaching aligned with video-game production — not a generic course. Axion-IA worked directly on our Ubisoft-like content pipeline. Immediate results.",
+            role: "Studio Director",
+            companyProfile: "Independent video-game studio, Montpellier",
+          },
+        ],
+        faq: [
+          {
+            q: "How does 1-to-1 coaching differ from a group session in Montpellier?",
+            a: "Group format trains a whole team on the same cases. 1-to-1 works exclusively on YOUR cases, your pace, your sector constraints (HDS, clinical data, video-game pipeline, agronomic data). Result: measurable operational gains from the first session.",
+          },
+          {
+            q: "How many sessions are needed to become AI-autonomous in Montpellier?",
+            a: "It depends on your starting level and objectives. A digital micro-business executive reaches comfortable autonomy in a few sessions. A mid-cap manager seeking advanced integrations (HDS, agro pipelines) will have a longer programme. The plan is framed in the first session.",
+          },
+          {
+            q: "Can coaching sessions be held at my Montpellier premises?",
+            a: "Yes. On-site sessions at your offices (Cap Omega, Euromédecine, Agropolis, your offices) or via video depending on availability. The choice is made at framing. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "Does my data stay confidential during coaching?",
+            a: "Yes. Strict confidentiality from day one: your data, prompts and cases stay in your environment. No extraction to our servers. GDPR compliance and health sector (HDS on request).",
+          },
+          {
+            q: "Can I start with no AI background?",
+            a: "Yes. The initial diagnostic assesses your real level and calibrates the progression plan accordingly. Many profiles start without ever having used Claude or GPT professionally.",
+          },
+          {
+            q: "Is there a minimum duration or session commitment?",
+            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress and needs.",
+          },
+        ],
+        guarantees:
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data stays in your environment. GDPR compliance and health sector (HDS on request). Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
   },

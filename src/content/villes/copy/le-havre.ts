@@ -42,6 +42,10 @@ export const LE_HAVRE_COPY: VilleCopy = {
       fr: "Implémentation IA au Havre : on intègre l'IA dans vos outils existants (ERP industriel, TMS, CRM, emails) avec ROI chiffré contractuel. Vos équipes gardent la main, sans dépendance technologique.",
       en: "AI implementation in Le Havre: we integrate AI into your existing tools (industrial ERP, TMS, CRM, emails) with contractually-costed ROI. Your teams stay in control, no tech dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel au Havre — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux havrais ou de la ZIP : dirigeant logistique, directeur technique industriel ou responsable de PME portuaire qui veut progresser seul, sur ses propres données et contraintes métier.",
+      en: "Individual AI coaching in Le Havre — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Le Havre or ZIP premises: logistics executive, industrial technical director or port SME manager who wants to progress alone, on their own data and business constraints.",
+    },
   },
 
   directAnswerFr:
@@ -712,6 +716,221 @@ export const LE_HAVRE_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA individuel Axion-IA au Havre s'adresse au dirigeant, directeur technique ou responsable logistique qui veut progresser sur l'IA à son rythme, sur ses propres données portuaires et industrielles — sans session collective. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux havrais ou de la Zone Industrialo-Portuaire. Frais de logement, repas et forfait trajet facturés en sus.",
+        whyHere: [
+          "Le Havre concentre des dirigeants et directeurs techniques d'ETI industrielles (logistique, pétrochimie, aéronautique) dont les contraintes de confidentialité (secret industriel, données de fret, contrats d'affrètement) rendent le format collectif inadapté.",
+          "Les responsables de PME logistiques portuaires (Nov@log, commissionnaires de transport) traitent des données propriétaires — manifestes de cargaison, liasses douanières, CMR — qui ne peuvent pas être partagées dans un cadre collectif.",
+          "Les directeurs transformation digitale et DSI de la ZIP bénéficient d'un coaching individuel centré sur leurs systèmes existants (TMS, ERP industriel, WMS) — pas sur des exemples génériques déconnectés du port.",
+          "Aucun minimum de participants, aucune date imposée : vous choisissez le créneau dans vos locaux havrais ou de la ZIP, selon vos contraintes opérationnelles.",
+          "La French Tech Normandie et les membres de Nov@log comptent des fondateurs et dirigeants dont les besoins IA sont très spécifiques (logistique maritime, supply chain multi-modal) et ne correspondent pas à une formation collective.",
+          "À la fin de la session, vous repartez avec des outils IA configurés sur vos propres cas portuaires — traitement de documents CMR, génération d'offres de fret, synthèse de rapports de maintenance.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Entretien de cadrage dédié (30-45 min) pour cerner votre profil, votre secteur dominant (logistique maritime, pétrochimie, aéronautique, services B2B), vos priorités et contraintes de confidentialité.",
+          },
+          {
+            step: "Préparation sur-mesure",
+            detail:
+              "Le consultant prépare un programme individuel : outils sélectionnés pour votre cas, démos construites sur vos documents représentatifs (bons de livraison, CMR, manifestes, rapports de maintenance).",
+          },
+          {
+            step: "Session intensive sur site",
+            detail:
+              "Journée dans vos locaux havrais (ville du Havre ou ZIP, Gonfreville-l'Orcher, Montivilliers, Harfleur) : théorie ciblée, démos live sur vos données réelles, manipulation directe des outils.",
+          },
+          {
+            step: "Cas pratiques sur vos documents réels",
+            detail:
+              "Vous travaillez sur vos propres fichiers : liasses douanières, manifestes, contrats d'affrètement, rapports de maintenance, offres commerciales. Aucun exercice déconnecté de votre réalité portuaire.",
+          },
+          {
+            step: "Plan d'action personnel",
+            detail:
+              "En fin de session, remise d'un plan d'action individuel : outils à déployer, cas d'usage prioritaires pour votre poste, ressources pour continuer en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Coaching individuel entrée pour dirigeants TPE, commissionnaires indépendants et petits prestataires portuaires havrais — une journée, un consultant dédié.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme individuel sur-mesure pour responsable logistique, directeur commercial ou dirigeant de PME logistique et de services du bassin Seine Estuaire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Coaching individuel pour directeurs techniques, DSI ou membres du comité de direction d'ETI industrielles et de services de la ZIP havraise.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour cadres dirigeants et experts de grands groupes havrais (TotalEnergies, Safran, Renault, CMA CGM, Sidel) souhaitant une montée en compétences IA confidentielle.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "J'avais besoin d'explorer l'IA sur mes propres documents de transport maritime — CMR, manifestes, offres de fret. En une journée avec un consultant dédié, on a testé sur mes vraies données. Je suis reparti avec des outils opérationnels et un plan clair.",
+            role: "Directeur des opérations",
+            companyProfile: "PME logistique portuaire, Le Havre, 60 collaborateurs",
+          },
+          {
+            quote:
+              "Format idéal pour un directeur technique en ETI industrielle : confidentialité totale sur nos process, niveau adapté, démos sur nos propres rapports de maintenance. Plan d'action remis en main propre.",
+            role: "Directeur technique",
+            companyProfile: "ETI industrie lourde, Zone Industrialo-Portuaire du Havre",
+          },
+        ],
+        faq: [
+          {
+            q: "Qu'est-ce que le coaching IA individuel Axion-IA au Havre ?",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, directeur technique ou responsable logistique — dans vos locaux havrais ou de la ZIP. Un consultant senior vous accompagne sur vos propres cas métier (logistique maritime, industrie, services) pendant une journée entière. À partir de 990 € HT.",
+          },
+          {
+            q: "Pourquoi choisir un coaching individuel plutôt qu'une session collective au Havre ?",
+            a: "Dans un coaching individuel, 100 % du temps est consacré à votre niveau, votre secteur et vos données. Idéal pour les données sensibles (CMR, contrats d'affrètement, données de maintenance industrielle) ou les profils experts qui ne veulent pas d'un format nivellement par le bas.",
+          },
+          {
+            q: "La session est-elle confidentielle ?",
+            a: "Totalement. Confidentialité stricte dès le cadrage, vos données portuaires et industrielles ne quittent pas vos locaux, aucun partage avec d'autres clients. Particulièrement important pour les sous-traitants de grands groupes industriels de la ZIP.",
+          },
+          {
+            q: "Faut-il être déjà avancé sur l'IA pour commander un coaching ?",
+            a: "Non. Le coaching s'adapte à votre niveau — du débutant au praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
+          },
+          {
+            q: "Les frais de déplacement sont-ils inclus ?",
+            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
+          },
+          {
+            q: "Peut-on organiser plusieurs coachings pour différents managers d'une même ETI havraise ?",
+            a: "Oui. Certaines ETI de la ZIP organisent plusieurs sessions individuelles pour leurs directeurs ou responsables clés. Tarif dégressif possible selon le volume — à préciser en cadrage.",
+          },
+        ],
+        guarantees:
+          "Confidentialité stricte : vos données industrielles et portuaires ne quittent pas vos locaux havrais. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions Normandie).",
+      },
+      en: {
+        hero: "Axion-IA's individual AI coaching in Le Havre is for the executive, technical director or logistics manager who wants to progress on AI at their own pace, on their own port and industrial data — without a group session. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Le Havre or Port Industrial Zone premises. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Le Havre hosts industrial mid-cap executives and technical directors (logistics, petrochemicals, aeronautics) whose confidentiality constraints (trade secrets, freight data, charter contracts) make the collective format unsuitable.",
+          "Port logistics SME managers (Nov@log members, freight forwarders) handle proprietary data — cargo manifests, customs dossiers, CMR — that cannot be shared in a group setting.",
+          "Digital transformation directors and CIOs in the ZIP benefit from individual coaching focused on their existing systems (TMS, industrial ERP, WMS) — not generic examples disconnected from the port.",
+          "No minimum participants, no imposed date: you choose the slot at your Le Havre or ZIP premises, within your operational constraints.",
+          "French Tech Normandie and Nov@log members include founders and executives with very specific AI needs (maritime logistics, multimodal supply chain) that don't fit a collective training.",
+          "At session end, you leave with AI tools configured on your own port cases — CMR document processing, freight offer generation, maintenance report synthesis.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "Dedicated framing interview (30-45 min) to understand your profile, dominant sector (maritime logistics, petrochemicals, aeronautics, B2B services), priorities and confidentiality constraints.",
+          },
+          {
+            step: "Bespoke preparation",
+            detail:
+              "The consultant prepares an individual programme: tools selected for your case, demos built on your representative documents (delivery notes, CMR, manifests, maintenance reports).",
+          },
+          {
+            step: "Intensive on-site session",
+            detail:
+              "Full day at your Le Havre premises (city or ZIP, Gonfreville-l'Orcher, Montivilliers, Harfleur): targeted theory, live demos on your real data, direct tool use.",
+          },
+          {
+            step: "Practical exercises on your real documents",
+            detail:
+              "You work on your own files: customs dossiers, manifests, charter contracts, maintenance reports, commercial offers. No exercises disconnected from your port reality.",
+          },
+          {
+            step: "Personal action plan",
+            detail:
+              "At session end, handover of an individual action plan: tools to deploy, priority use cases for your role, resources to keep progressing autonomously.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry individual coaching for Le Havre micro-business executives, independent freight forwarders and small port service providers — one day, one dedicated consultant.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On request",
+            detail:
+              "Bespoke individual programme for logistics managers, commercial directors or SME executives in the Seine Estuaire basin.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On request",
+            detail:
+              "Individual coaching for technical directors, CIOs or executive committee members of Le Havre ZIP industrial and services mid-caps.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On request",
+            detail:
+              "Individual coaching for senior managers and experts at Le Havre large groups (TotalEnergies, Safran, Renault, CMA CGM, Sidel) seeking confidential AI skills development.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "I needed to explore AI on my own maritime transport documents — CMR, manifests, freight offers. In one day with a dedicated consultant, we tested on my real data. I left with operational tools and a clear plan.",
+            role: "Head of Operations",
+            companyProfile: "Port logistics SME, Le Havre, 60 staff",
+          },
+          {
+            quote:
+              "Ideal format for a technical director at an industrial mid-cap: total confidentiality on our processes, adapted level, demos on our own maintenance reports. Action plan handed over face to face.",
+            role: "Technical Director",
+            companyProfile: "Heavy industry mid-cap, Le Havre Port Industrial Zone",
+          },
+        ],
+        faq: [
+          {
+            q: "What is Axion-IA's individual AI coaching in Le Havre?",
+            a: "It is a bespoke AI session dedicated to one person — executive, technical director or logistics manager — at your Le Havre or ZIP premises. A senior consultant accompanies you on your own business cases (maritime logistics, manufacturing, services) for a full day. From 990 € excl. VAT.",
+          },
+          {
+            q: "Why choose individual coaching over a group session in Le Havre?",
+            a: "In individual coaching, 100% of the time is dedicated to your level, your sector and your data. Ideal for sensitive data (CMR, charter contracts, industrial maintenance data) or expert profiles who don't want a levelled-down format.",
+          },
+          {
+            q: "Is the session confidential?",
+            a: "Completely. Strict confidentiality from framing, your port and industrial data does not leave your premises, no sharing with other clients. Particularly important for sub-contractors of ZIP large industrial groups.",
+          },
+          {
+            q: "Do I need prior AI experience to book individual coaching?",
+            a: "No. Coaching adapts to your level — from beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
+          },
+          {
+            q: "Are travel costs included?",
+            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+          },
+          {
+            q: "Can we organise several coachings for different managers at the same Le Havre mid-cap?",
+            a: "Yes. Some ZIP mid-caps organise several individual sessions for their key directors or managers. Volume discount possible — to be specified at framing.",
+          },
+        ],
+        guarantees:
+          "Strict confidentiality: your industrial and port data does not leave your Le Havre premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Normandy missions).",
       },
     },
   },

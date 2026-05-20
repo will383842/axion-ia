@@ -44,6 +44,10 @@ export const LILLE_COPY: VilleCopy = {
       fr: "Implémentation IA à Lille : on déploie l'IA dans vos outils existants (CRM, ERP, mails, e-commerce) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
       en: "AI implementation in Lille: we deploy AI into your existing tools (CRM, ERP, email, e-commerce) with contractually-costed ROI. Your teams stay in control, no Axion-IA dependency.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Lille — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux lillois ou de la métropole : directeur retail, responsable supply chain, fondateur EuraTechnologies ou manager d'un siège grand groupe qui veut progresser seul, sur ses propres données et enjeux.",
+      en: "Individual AI coaching in Lille — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Lille or metropolitan premises: retail director, supply chain manager, EuraTechnologies founder or large-group HQ manager who wants to progress alone, on their own data and challenges.",
+    },
   },
 
   directAnswerFr:
@@ -715,6 +719,221 @@ export const LILLE_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA individuel Axion-IA à Lille s'adresse au dirigeant, manager ou expert qui veut progresser sur l'IA à son rythme, sur ses propres données et enjeux métier, sans partager sa session avec un groupe. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux lillois — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq ou siège d'un grand groupe de la métropole. Frais de logement, repas et forfait trajet facturés en sus.",
+        whyHere: [
+          "Lille concentre des dirigeants et directeurs de grands groupes retail (Decathlon, Auchan, La Redoute, Boulanger) dont les données stratégiques (catalogues, pricing, supply chain) sont trop sensibles pour un cadre collectif — le coaching individuel est la seule option viable.",
+          "Les fondateurs et directeurs de startups EuraTechnologies ont des besoins IA très spécifiques (intégration produit, stack technique) et un emploi du temps incompatible avec un programme de groupe.",
+          "Les directeurs supply chain et DSI d'ETI logistiques (Villeneuve-d'Ascq, Lesquin) bénéficient d'un accompagnement individuel centré sur leurs systèmes existants (WMS, ERP, plateforme e-commerce) — pas sur des exemples génériques.",
+          "Aucun minimum de participants, aucune date imposée : vous choisissez le créneau dans vos locaux lillois selon vos contraintes opérationnelles.",
+          "Les managers de fonctions transverses (RH, finance, communication, juridique) des sièges d'Euralille bénéficient d'un coaching individuel centré sur leurs workflows propres — non dilué dans une session pluridisciplinaire.",
+          "À la fin de la session, vous repartez avec des outils IA configurés sur vos propres cas lillois — génération de fiches produits, optimisation emails, synthèse de données supply chain.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Entretien de cadrage dédié (30-45 min) pour cerner votre profil, votre secteur dominant (retail, e-commerce, logistique, IT, agroalimentaire), vos priorités et contraintes de confidentialité.",
+          },
+          {
+            step: "Préparation sur-mesure",
+            detail:
+              "Le consultant prépare un programme individuel : outils sélectionnés pour votre cas, démos construites sur vos documents représentatifs (bons de commande, fiches produit, emails, données supply chain).",
+          },
+          {
+            step: "Session intensive sur site",
+            detail:
+              "Journée dans vos locaux lillois (Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq, Marcq-en-Barœul) : théorie ciblée, démos live sur vos données réelles, manipulation directe des outils.",
+          },
+          {
+            step: "Cas pratiques sur vos documents réels",
+            detail:
+              "Vous travaillez sur vos propres fichiers : catalogues e-commerce, bons de commande, emails fournisseurs, tableaux de bord supply chain. Aucun exercice déconnecté de votre réalité lilloise.",
+          },
+          {
+            step: "Plan d'action personnel",
+            detail:
+              "En fin de session, remise d'un plan d'action individuel : outils à déployer, cas d'usage prioritaires pour votre poste, ressources pour continuer en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Coaching individuel entrée pour dirigeants TPE, fondateurs de startups EuraTechnologies et indépendants lillois — une journée, un consultant dédié.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme individuel sur-mesure pour manager, responsable opérationnel ou directeur de PME retail, e-commerce ou logistique de la métropole lilloise.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Coaching individuel pour directeurs supply chain, DSI ou membres du comité de direction d'ETI lilloise souhaitant progresser en profondeur sur l'IA.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour cadres dirigeants des sièges grands groupes lillois (Decathlon, Auchan, La Redoute, OVHcloud, Bonduelle) souhaitant une montée en compétences IA confidentielle.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "J'avais besoin d'explorer l'IA appliquée à notre catalogue e-commerce et à la personnalisation de nos offres. En une journée avec un consultant dédié, on a travaillé sur nos vraies données. Je suis reparti avec des outils opérationnels et un plan clair pour mon équipe produit.",
+            role: "Directrice e-commerce",
+            companyProfile: "PME e-commerce, Roubaix, 60 collaborateurs",
+          },
+          {
+            quote:
+              "Format coaching individuel parfait pour un directeur supply chain en ETI : confidentialité totale sur nos données logistiques, niveau adapté à mon expertise, démos sur notre vrai WMS. Plan d'action remis en fin de journée.",
+            role: "Directeur supply chain",
+            companyProfile: "ETI logistique, Villeneuve-d'Ascq, 400 collaborateurs",
+          },
+        ],
+        faq: [
+          {
+            q: "Qu'est-ce que le coaching IA individuel Axion-IA à Lille ?",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux lillois. Un consultant senior vous accompagne sur vos propres cas métier (retail, e-commerce, logistique, IT) pendant une journée entière. À partir de 990 € HT.",
+          },
+          {
+            q: "Pourquoi choisir le coaching individuel plutôt qu'une session collective à Lille ?",
+            a: "Dans un coaching individuel, 100 % du temps est consacré à votre niveau, votre secteur et vos données. Idéal pour les données stratégiques sensibles (catalogues retail, pricing, données supply chain) ou les profils experts ne souhaitant pas un format générique.",
+          },
+          {
+            q: "La session est-elle confidentielle ?",
+            a: "Totalement. Confidentialité stricte dès le cadrage, vos données commerciales et stratégiques ne quittent pas vos locaux lillois. Aucun partage avec d'autres clients. Particulièrement important pour les sièges de grands groupes retail.",
+          },
+          {
+            q: "Faut-il être déjà avancé sur l'IA pour commander un coaching ?",
+            a: "Non. Le coaching s'adapte à votre niveau — débutant ou praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
+          },
+          {
+            q: "Les frais de déplacement sont-ils inclus ?",
+            a: "Non. Frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable à la confirmation.",
+          },
+          {
+            q: "Peut-on organiser plusieurs coachings individuels pour différents managers d'un même groupe lillois ?",
+            a: "Oui. Certains sièges lillois organisent plusieurs sessions individuelles pour leurs directeurs ou responsables de BU plutôt qu'une formation collective. Tarif dégressif possible selon le volume — à préciser en cadrage.",
+          },
+        ],
+        guarantees:
+          "Confidentialité stricte : vos données commerciales et stratégiques ne quittent pas vos locaux lillois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée à ce jour sur nos missions lilloise).",
+      },
+      en: {
+        hero: "Axion-IA's individual AI coaching in Lille is for the executive, manager or expert who wants to progress on AI at their own pace, on their own data and business challenges, without sharing the session with a group. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Lille premises — Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq or a metropolitan large-group HQ. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Lille hosts directors and executives at major retail groups (Decathlon, Auchan, La Redoute, Boulanger) whose strategic data (catalogues, pricing, supply chain) is too sensitive for a group setting — individual coaching is the only viable option.",
+          "EuraTechnologies founders and directors have very specific AI needs (product integration, technical stack) and schedules incompatible with a group programme.",
+          "Supply chain directors and CIOs at logistics mid-caps (Villeneuve-d'Ascq, Lesquin) benefit from individual coaching focused on their existing systems (WMS, ERP, e-commerce platform) — not generic examples.",
+          "No minimum participants, no imposed date: you choose the slot at your Lille premises within your operational constraints.",
+          "Managers of cross-functional roles (HR, finance, communications, legal) at Euralille HQs benefit from individual coaching focused on their own workflows — not diluted in a multi-disciplinary session.",
+          "At session end, you leave with AI tools configured on your own Lille cases — product sheet generation, email optimisation, supply chain data synthesis.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "Dedicated framing interview (30-45 min) to understand your profile, dominant sector (retail, e-commerce, logistics, IT, agri-food), priorities and confidentiality constraints.",
+          },
+          {
+            step: "Bespoke preparation",
+            detail:
+              "The consultant prepares an individual programme: tools selected for your case, demos built on your representative documents (purchase orders, product sheets, emails, supply chain data).",
+          },
+          {
+            step: "Intensive on-site session",
+            detail:
+              "Full day at your Lille premises (Euralille, EuraTechnologies, Roubaix, Villeneuve-d'Ascq, Marcq-en-Barœul): targeted theory, live demos on your real data, direct tool use.",
+          },
+          {
+            step: "Practical exercises on your real documents",
+            detail:
+              "You work on your own files: e-commerce catalogues, purchase orders, supplier emails, supply chain dashboards. No exercises disconnected from your Lille reality.",
+          },
+          {
+            step: "Personal action plan",
+            detail:
+              "At session end, handover of an individual action plan: tools to deploy, priority use cases for your role, resources to keep progressing autonomously.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry individual coaching for Lille micro-business executives, EuraTechnologies start-up founders and freelancers — one day, one dedicated consultant.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On request",
+            detail:
+              "Bespoke individual programme for managers, operational leads or directors of Lille metropolitan retail, e-commerce or logistics SMEs.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On request",
+            detail:
+              "Individual coaching for supply chain directors, CIOs or executive committee members of Lille mid-caps wishing to progress in depth on AI.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On request",
+            detail:
+              "Individual coaching for senior managers at Lille large-group HQs (Decathlon, Auchan, La Redoute, OVHcloud, Bonduelle) seeking confidential AI skills development.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "I needed to explore AI applied to our e-commerce catalogue and offer personalisation. In one day with a dedicated consultant, we worked on our real data. I left with operational tools and a clear plan for my product team.",
+            role: "Head of E-commerce",
+            companyProfile: "E-commerce SME, Roubaix, 60 staff",
+          },
+          {
+            quote:
+              "Perfect individual coaching format for a supply chain director at a mid-cap: total confidentiality on our logistics data, level adapted to my expertise, demos on our real WMS. Action plan handed over at day's end.",
+            role: "Supply Chain Director",
+            companyProfile: "Logistics mid-cap, Villeneuve-d'Ascq, 400 staff",
+          },
+        ],
+        faq: [
+          {
+            q: "What is Axion-IA's individual AI coaching in Lille?",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Lille premises. A senior consultant accompanies you on your own business cases (retail, e-commerce, logistics, IT) for a full day. From 990 € excl. VAT.",
+          },
+          {
+            q: "Why choose individual coaching over a group session in Lille?",
+            a: "In individual coaching, 100% of the time is dedicated to your level, your sector and your data. Ideal for sensitive strategic data (retail catalogues, pricing, supply chain data) or expert profiles who don't want a generic format.",
+          },
+          {
+            q: "Is the session confidential?",
+            a: "Completely. Strict confidentiality from framing, your commercial and strategic data does not leave your Lille premises. No sharing with other clients. Particularly important for large retail group HQs.",
+          },
+          {
+            q: "Do I need prior AI experience to book coaching?",
+            a: "No. Coaching adapts to your level — beginner or advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
+          },
+          {
+            q: "Are travel costs included?",
+            a: "No. Lodging, meals and travel allowance are billed separately, per Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+          },
+          {
+            q: "Can we organise several individual coachings for different managers at the same Lille group?",
+            a: "Yes. Some Lille HQs organise several individual sessions for their directors or BU managers rather than a group training. Volume discount possible — to be specified at framing.",
+          },
+        ],
+        guarantees:
+          "Strict confidentiality: your commercial and strategic data does not leave your Lille premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered to date on our Lille missions).",
       },
     },
   },

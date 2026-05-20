@@ -44,6 +44,10 @@ export const ANNECY_COPY: VilleCopy = {
       fr: "Implémentation IA à Annecy : déploiement de l'IA dans vos outils existants (ERP industriel, CRM, qualité, logistique) avec ROI chiffré contractuel. Vos équipes gardent la main, aucun lock-in technologique.",
       en: "AI implementation in Annecy: deploying AI into your existing tools (industrial ERP, CRM, quality, logistics) with contractually-costed ROI. Your teams stay in control, no tech lock-in.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel 1-to-1 à Annecy : séances sur mesure pour dirigeants et cadres de l'outdoor/sport, de la mécanique de précision, des PME de Haute-Savoie et du bassin lémanique. Ancré sur le tissu industriel annécien, Outdoor Sports Valley et la proximité Genève. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+      en: "1-to-1 AI coaching in Annecy: bespoke sessions for executives and managers in outdoor/sport, precision mechanics, Haute-Savoie SMEs and the Lake Geneva basin. Grounded in Annecy's industrial fabric, Outdoor Sports Valley and Geneva proximity. Lodging, meals and travel allowance billed separately for on-site sessions.",
+    },
   },
 
   directAnswerFr:
@@ -714,6 +718,220 @@ export const ANNECY_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Annecy accompagne individuellement les dirigeants et cadres des PME outdoor/sport, de la mécanique de précision et du tissu industriel de Haute-Savoie. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — gestion de catalogues produits outdoor, documentation technique de précision, développement commercial grand compte ou pilotage RH en PME. Vous progressez à votre rythme, sans théorie superflue.",
+        whyHere: [
+          "Annecy concentre des PME et ETI industrielles de précision (décolletage, mécatronique) dont les dirigeants ont des agendas très contraints : le coaching 1-to-1 s'adapte à leur rythme, en visio ou en présentiel à Annecy ou dans la Vallée de l'Arve.",
+          "Les acteurs du cluster Outdoor Sports Valley (Salomon, Mavic, sous-traitants) ont des besoins IA spécifiques sur la documentation produit, la gestion supply chain et le marketing B2B à l'international — le coaching individuel cible ces enjeux précisément.",
+          "La proximité de Genève (40 km) attire des cadres franco-suisses qui bénéficient d'un coaching 1-to-1 flexible en français ou en anglais, adapté aux contraintes du bassin transfrontalier.",
+          "Les fondateurs et managers de la French Tech in The Alps - Annecy qui intègrent l'IA dans leur produit ou leur service trouvent dans le coaching individuel un accélérateur adapté à leur stade de croissance.",
+          "Séances 100 % flexibles : visio depuis votre bureau ou présentiel dans vos locaux à Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet ou dans la Vallée de l'Arve.",
+          "Aucun lock-in : vous repartez avec votre plan d'action personnalisé et votre autonomie — sans dépendance vis-à-vis d'Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Séance d'ouverture pour cartographier votre maturité IA, vos cas d'usage prioritaires (production, commercial, R&D, RH, gestion) et vos outils existants dans le contexte industriel annécien.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Co-construction d'un programme calé sur votre agenda et votre secteur (outdoor, mécanique de précision, services B2B, numérique). Chaque séance a un objectif actionnable précis.",
+          },
+          {
+            step: "Séances pratiques sur vos vraies données",
+            detail:
+              "Chaque session travaille directement sur vos documents réels — fiches techniques, devis, catalogues produits, emails B2B, données de production. L'IA est appliquée à votre réalité, pas à des exemples fictifs.",
+          },
+          {
+            step: "Ancrage et mise en pratique",
+            detail:
+              "Entre les séances, vous expérimentez les outils sur vos cas réels. La séance suivante débute par un debriefing et un ajustement du plan selon vos retours terrain.",
+          },
+          {
+            step: "Bilan et feuille de route",
+            detail:
+              "En fin de programme, restitution d'une feuille de route personnalisée : cas d'usage priorisés, outils retenus, prochaines étapes pour votre structure. Vous repartez pleinement autonome.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans et indépendants du bassin annécien souhaitant intégrer l'IA dans leur activité quotidienne.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme sur mesure pour dirigeants et cadres des PME industrielles, outdoor, logistiques et de services de Haute-Savoie.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour DG, directeurs industriels ou DSI des ETI annéciennes (décolletage, mécatronique, équipements outdoor, services) souhaitant piloter leur trajectoire IA.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de cadres dirigeants et managers des grands sites du bassin (Salomon, Schneider Electric, Tefal/SEB à Rumilly) pour des besoins d'acculturation IA individualisés.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de comprendre concrètement comment l'IA pouvait m'aider sur la documentation technique de nos pièces de précision. On a travaillé sur mes vrais fichiers CAO et fiches produit. Résultat opérationnel en quelques séances.",
+            role: "Dirigeant",
+            companyProfile: "PME mécanique de précision, Vallée de l'Arve – Haute-Savoie",
+          },
+          {
+            quote:
+              "Format parfait pour un dirigeant de PME outdoor avec un agenda chargé : séances courtes, 100 % centrées sur mes enjeux commerciaux à l'international. J'ai intégré l'IA dans ma prospection B2B en quelques semaines.",
+            role: "Directeur commercial",
+            companyProfile: "PME équipements outdoor, bassin annécien",
+          },
+        ],
+        faq: [
+          {
+            q: "Quel est le format des séances de coaching 1-to-1 à Annecy ?",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet ou dans la Vallée de l'Arve. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+          },
+          {
+            q: "Quelle est la fréquence des séances ?",
+            a: "La fréquence est définie ensemble lors du diagnostic initial selon votre rythme et vos objectifs — hebdomadaire, bimensuelle ou mensuelle. Aucun rythme imposé.",
+          },
+          {
+            q: "Le coaching est-il adapté aux PME industrielles de précision de Haute-Savoie ?",
+            a: "Oui. Le coaching 1-to-1 est particulièrement adapté aux dirigeants de PME du décolletage, de la mécatronique et de la mécanique de précision : documentation technique, gestion des données de production, qualification de fournisseurs, reporting export. Le vocabulaire et les cas d'usage sont calés sur vos réalités sectorielles.",
+          },
+          {
+            q: "Puis-je bénéficier du coaching si je travaille dans le bassin transfrontalier avec la Suisse ?",
+            a: "Oui. Les séances en visio s'adaptent parfaitement aux contraintes du bassin franco-suisse. Le coaching est disponible en français et en anglais selon votre préférence.",
+          },
+          {
+            q: "Mes données et échanges sont-ils confidentiels ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos données, documents et informations métier ne sortent jamais de la session. Conformité RGPD.",
+          },
+          {
+            q: "Quelle différence entre le coaching 1-to-1 et une intervention collective à Annecy ?",
+            a: "L'intervention collective forme votre équipe en une journée sur des outils IA généraux. Le coaching 1-to-1 vous accompagne individuellement sur la durée, sur vos cas précis, à votre rythme — vous gagnez en autonomie décisionnelle.",
+          },
+        ],
+        guarantees:
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Annecy individually supports executives and managers at outdoor/sport SMEs, precision mechanics firms and the industrial fabric of Haute-Savoie. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — outdoor product catalogue management, precision technical documentation, key-account business development or HR management in an SME. You progress at your own pace, without superfluous theory.",
+        whyHere: [
+          "Annecy concentrates precision industrial SMEs and mid-caps (machining, mechatronics) whose executives have very constrained agendas: 1-to-1 coaching adapts to their rhythm, by video or in person in Annecy or the Arve Valley.",
+          "Outdoor Sports Valley cluster players (Salomon, Mavic, subcontractors) have specific AI needs around product documentation, supply-chain management and international B2B marketing — individual coaching targets these challenges precisely.",
+          "Geneva proximity (40 km) attracts Franco-Swiss managers who benefit from flexible 1-to-1 coaching in French or English, adapted to cross-border basin constraints.",
+          "French Tech in The Alps - Annecy founders and managers integrating AI into their product or service find in individual coaching an accelerator suited to their growth stage.",
+          "100% flexible sessions: video from your desk or in person at your offices in Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet or the Arve Valley.",
+          "No lock-in: you leave with your personalised action plan and full autonomy — no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "Opening session to map your AI maturity, priority use cases (production, sales, R&D, HR, management) and existing tools in the Annecy industrial context.",
+          },
+          {
+            step: "Personalised progression plan",
+            detail:
+              "Co-build a programme fitted to your agenda and sector (outdoor, precision mechanics, B2B services, digital). Each session has a precise actionable objective.",
+          },
+          {
+            step: "Practical sessions on your real data",
+            detail:
+              "Each session works directly on your real documents — technical sheets, quotes, product catalogues, B2B emails, production data. AI is applied to your reality, not fictional examples.",
+          },
+          {
+            step: "Anchoring and practice",
+            detail:
+              "Between sessions, you experiment with tools on your real cases. The next session starts with a debrief and plan adjustment based on your field feedback.",
+          },
+          {
+            step: "Review and roadmap",
+            detail:
+              "At programme end, a personalised roadmap is delivered: prioritised use cases, retained tools, next steps for your organisation. You leave fully autonomous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, craft firms and freelancers in the Annecy basin wishing to integrate AI into their daily activity.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Bespoke programme for executives and managers at industrial, outdoor, logistics and service SMEs in Haute-Savoie.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Individual support for CEOs, industrial directors or CIOs of Annecy mid-caps (machining, mechatronics, outdoor equipment, services) wishing to steer their AI trajectory.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Executive coaching for senior managers at major basin sites (Salomon, Schneider Electric, Tefal/SEB in Rumilly) requiring individualised AI acculturation.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching helped me understand concretely how AI could help with our precision parts technical documentation. We worked on my real CAD files and product sheets. Operational result within a few sessions.",
+            role: "Business Owner",
+            companyProfile: "Precision mechanics SME, Arve Valley – Haute-Savoie",
+          },
+          {
+            quote:
+              "Perfect format for an outdoor SME executive with a busy schedule: short sessions, 100% centred on my international B2B challenges. I integrated AI into my prospecting within a few weeks.",
+            role: "Sales Director",
+            companyProfile: "Outdoor equipment SME, Annecy basin",
+          },
+        ],
+        faq: [
+          {
+            q: "What is the format of 1-to-1 coaching sessions in Annecy?",
+            a: "Sessions take place by video or in person at your offices in Annecy, Annecy-le-Vieux, Cran-Gevrier, Meythet or the Arve Valley. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "How often are the sessions?",
+            a: "Frequency is defined together at the initial diagnostic according to your rhythm and objectives — weekly, fortnightly or monthly. No imposed schedule.",
+          },
+          {
+            q: "Is coaching adapted to Haute-Savoie precision industrial SMEs?",
+            a: "Yes. 1-to-1 coaching is particularly suited to executives of machining, mechatronics and precision mechanics SMEs: technical documentation, production data management, supplier qualification, export reporting. Vocabulary and use cases are calibrated to your sector reality.",
+          },
+          {
+            q: "Can I benefit from coaching if I work in the Franco-Swiss cross-border basin?",
+            a: "Yes. Video sessions adapt perfectly to cross-border basin constraints. Coaching is available in French and English depending on your preference.",
+          },
+          {
+            q: "Are my data and exchanges kept confidential?",
+            a: "Yes. Strict confidentiality from the first session. Your data, documents and business information never leave the session. GDPR compliant.",
+          },
+          {
+            q: "What is the difference between 1-to-1 coaching and a group session in Annecy?",
+            a: "A group session trains your team in one day on general AI tools. 1-to-1 coaching supports you individually over time, on your specific cases, at your own pace — you gain decision-making autonomy.",
+          },
+        ],
+        guarantees:
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
   },

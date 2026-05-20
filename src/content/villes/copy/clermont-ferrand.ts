@@ -43,6 +43,10 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       fr: "Implémentation IA à Clermont-Ferrand : on déploie l'IA dans vos outils existants (ERP industrie, CRM, emails, GPAO) avec ROI chiffré contractuel. Vos équipes gardent la main, aucun lock-in.",
       en: "AI implementation in Clermont-Ferrand: we deploy AI into your existing tools (industrial ERP, CRM, emails, GPAO) with contractually-costed ROI. Your teams stay in control, no lock-in.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Clermont-Ferrand — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux du Technopôle La Pardieu ou d'un site industriel du bassin : dirigeant, manager ou expert technique qui veut progresser seul, à son rythme, sur sa réalité métier.",
+      en: "Individual AI coaching in Clermont-Ferrand — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Technopôle La Pardieu or industrial basin premises: executive, manager or technical expert who wants to progress alone, at their pace, on their real business context.",
+    },
   },
 
   directAnswerFr:
@@ -715,6 +719,221 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA individuel Axion-IA à Clermont-Ferrand s'adresse au dirigeant, manager ou expert technique qui veut progresser sur l'IA à son rythme, sur ses propres cas métier — sans partager sa session avec d'autres participants. À partir de 990 € HT, un consultant senior est entièrement dédié à vous dans vos locaux du Technopôle La Pardieu, d'un site industriel ou d'un cabinet du bassin clermontois. Frais de logement, repas et forfait trajet facturés en sus.",
+        whyHere: [
+          "Clermont-Ferrand compte de nombreux dirigeants de PME et ETI (sous-traitance Michelin, agroalimentaire AOP, biotech) qui préfèrent une montée en compétences privée, centrée sur leurs propres données et processus industriels, sans exposer leurs enjeux stratégiques à un groupe.",
+          "Les ingénieurs et responsables R&D du campus des Cézeaux et du Biopôle Clermont-Limagne bénéficient d'un accompagnement individuel calibré sur leur niveau technique élevé — loin d'une session pédagogique standardisée.",
+          "Le format individuel permet d'aborder des sujets confidentiels : cahiers des charges donneurs d'ordres Michelin, procédés de fabrication brevetés, données de recherche sensibles.",
+          "Aucun minimum de participants, aucune date imposée : le créneau et le rythme sont ceux du participant, dans ses locaux clermontois ou à distance si nécessaire.",
+          "La French Tech Clermont Auvergne réunit des fondateurs et dirigeants de startups pour lesquels le format individuel est le seul compatible avec leur emploi du temps et leurs besoins spécifiques.",
+          "Résultat immédiat : à la fin de la session, vous repartez avec des outils IA installés et configurés sur vos propres cas industriels ou de services — pas sur des exemples génériques.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Un entretien de cadrage dédié (30-45 min) pour cerner votre profil, votre secteur dominant (industrie, agro, biotech, services), vos priorités et vos contraintes de confidentialité dans le bassin clermontois.",
+          },
+          {
+            step: "Préparation sur-mesure",
+            detail:
+              "Le consultant prépare un programme individuel : outils sélectionnés pour votre cas, démos construites à partir de documents représentatifs de votre activité clermontoise.",
+          },
+          {
+            step: "Session intensive sur site",
+            detail:
+              "Journée (ou demi-journée si POC) dans vos locaux à Clermont-Ferrand : alternance de théorie ultra-ciblée, démos live sur vos données réelles, manipulation directe des outils. Rythme adapté à votre niveau de départ.",
+          },
+          {
+            step: "Cas pratiques sur vos documents réels",
+            detail:
+              "Vous travaillez sur vos propres fichiers : cahiers des charges, gammes techniques, données de contrôle qualité, rapports R&D, emails stratégiques. Aucun exercice théorique déconnecté de votre réalité.",
+          },
+          {
+            step: "Plan d'action personnel",
+            detail:
+              "En fin de session, remise d'un plan d'action individuel : outils à déployer, cas d'usage prioritaires pour votre poste, ressources pour continuer à progresser en autonomie.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Coaching individuel entrée pour dirigeants TPE, artisans et indépendants du bassin clermontois — une journée, un consultant dédié.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme individuel sur-mesure pour manager, responsable opérationnel ou directeur de PME clermontoise souhaitant progresser en profondeur.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour directeurs techniques, DSI ou membres du comité de direction d'ETI industrielles ou agroalimentaires du bassin.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching individuel pour cadres dirigeants et experts de grands groupes clermontois (Michelin, Limagrain, Safran…) souhaitant une montée en compétences IA confidentielle.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "J'avais besoin de comprendre l'IA en lien avec mes propres contraintes de sous-traitant Michelin — cahiers des charges, PPAP, traçabilité. En une journée, le consultant a utilisé mes vrais documents. J'ai appris dix fois plus qu'en deux jours de formation collective.",
+            role: "Directeur général",
+            companyProfile: "TPE sous-traitante automobile, bassin clermontois",
+          },
+          {
+            quote:
+              "Format idéal pour un directeur technique en ETI : pas de nivellement par le bas, pas de sujets déjà connus. Le consultant a ajusté le niveau en temps réel. Je suis reparti avec un plan d'action concret pour mon équipe R&D.",
+            role: "Directeur technique",
+            companyProfile: "ETI équipementière industrielle, agglomération Clermont-Ferrand",
+          },
+        ],
+        faq: [
+          {
+            q: "Qu'est-ce que le coaching IA individuel Axion-IA à Clermont-Ferrand ?",
+            a: "C'est une session IA sur-mesure dédiée à une seule personne — dirigeant, manager ou expert — dans vos locaux clermontois. Un consultant senior vous accompagne sur vos propres cas métier (industrie, agro, biotech, services) pendant une journée entière. À partir de 990 € HT.",
+          },
+          {
+            q: "En quoi le coaching individuel diffère-t-il d'une intervention collective ?",
+            a: "Dans une session collective, le contenu est calibré pour un groupe : il y a inévitablement des sujets trop basiques ou trop avancés. Dans le coaching individuel, 100 % du temps est consacré à votre niveau, votre secteur et vos données clermontoise. Aucun compromis pédagogique.",
+          },
+          {
+            q: "Le coaching est-il confidentiel ?",
+            a: "Totalement. Confidentialité stricte dès le cadrage, vos données industrielles ou stratégiques ne quittent pas vos locaux, aucun partage avec d'autres clients. Particulièrement important pour les sous-traitants Michelin ou Airbus dont les process sont protégés.",
+          },
+          {
+            q: "Faut-il être déjà expérimenté sur l'IA pour commander un coaching ?",
+            a: "Non. Le coaching s'adapte à votre niveau, du débutant absolu au praticien avancé souhaitant aller plus loin. Le brief de cadrage initial permet d'ajuster le programme avant la session.",
+          },
+          {
+            q: "Les frais de déplacement sont-ils inclus ?",
+            a: "Non. Les frais de logement, repas et forfait trajet sont facturés en sus, conformément à la doctrine tarifaire Axion-IA. Ces frais sont communiqués sur devis préalable avant la confirmation.",
+          },
+          {
+            q: "Puis-je organiser plusieurs sessions individuelles pour différents collaborateurs ?",
+            a: "Oui. Certaines entreprises clérmontoise organisent plusieurs coachings individuels successifs pour leurs managers ou experts clés plutôt qu'une session collective. Tarif dégressif possible selon le volume — à préciser en cadrage.",
+          },
+        ],
+        guarantees:
+          "Confidentialité stricte : vos données et vos enjeux ne quittent pas vos locaux clermontois. Aucun lock-in : les outils installés sont vos comptes personnels, aucune dépendance Axion-IA après la session. Frais de logement, repas et forfait trajet facturés en sus sur devis préalable. Si la session ne vous apporte pas de valeur actionnable immédiate, remboursement intégral (clause disponible, jamais activée).",
+      },
+      en: {
+        hero: "Axion-IA's individual AI coaching in Clermont-Ferrand is for the executive, manager or technical expert who wants to progress on AI at their own pace, on their own business cases — without sharing the session with other participants. From 990 € excl. VAT, a senior consultant is entirely dedicated to you at your Technopôle La Pardieu, industrial basin or practice premises. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Clermont-Ferrand has many SME and mid-cap executives (Michelin subcontracting, AOP agri-food, biotech) who prefer private skills development, focused on their own data and industrial processes, without exposing their strategic challenges to a group.",
+          "R&D engineers and managers at campus des Cézeaux and Biopôle Clermont-Limagne benefit from individual coaching calibrated to their high technical level — far from a standardised pedagogical session.",
+          "The individual format allows tackling confidential subjects: Michelin customer tender documents, patented manufacturing processes, sensitive research data.",
+          "No minimum participants, no imposed date: the slot and rhythm are the participant's, at their Clermont premises or remotely if needed.",
+          "French Tech Clermont Auvergne brings together founders and executives for whom the individual format is the only one compatible with their schedule and specific needs.",
+          "Immediate result: at session end, you leave with AI tools installed and configured on your own industrial or service cases — not generic examples.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnosis",
+            detail:
+              "Dedicated framing interview (30-45 min) to understand your profile, dominant sector (manufacturing, agri-food, biotech, services), priorities and confidentiality constraints in the Clermont basin.",
+          },
+          {
+            step: "Bespoke preparation",
+            detail:
+              "The consultant prepares an individual programme: tools selected for your case, demos built from documents representative of your Clermont activity.",
+          },
+          {
+            step: "Intensive on-site session",
+            detail:
+              "Full day at your Clermont-Ferrand premises: alternation of highly targeted theory, live demos on your real data, direct tool use. Pace adapted to your starting level.",
+          },
+          {
+            step: "Practical exercises on your real documents",
+            detail:
+              "You work on your own files: tender specs, technical specs, quality control data, R&D reports, strategic emails. No theoretical exercises disconnected from your reality.",
+          },
+          {
+            step: "Personal action plan",
+            detail:
+              "At session end, handover of an individual action plan: tools to deploy, priority use cases for your role, resources to keep progressing autonomously.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry individual coaching for Clermont basin micro-business executives, craftspeople and freelancers — one day, one dedicated consultant.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On request",
+            detail:
+              "Bespoke individual programme for Clermont SME managers, operational leads or directors wishing to progress in depth.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On request",
+            detail:
+              "Individual coaching for technical directors, CIOs or executive committee members of industrial or agri-food mid-caps in the basin.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On request",
+            detail:
+              "Individual coaching for senior managers and experts at Clermont large groups (Michelin, Limagrain, Safran…) seeking confidential AI skills development.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "I needed to understand AI in relation to my own Michelin sub-contracting constraints — tender documents, PPAP, traceability. In one day, the consultant used my real documents. I learned ten times more than in two days of group training.",
+            role: "CEO",
+            companyProfile: "Automotive sub-contracting micro-business, Clermont basin",
+          },
+          {
+            quote:
+              "Perfect format for a technical director at a mid-cap: no levelling down, no already-known topics. The consultant adjusted the level in real time. I left with a concrete action plan for my R&D team.",
+            role: "Technical Director",
+            companyProfile: "Industrial equipment mid-cap, Clermont-Ferrand area",
+          },
+        ],
+        faq: [
+          {
+            q: "What is Axion-IA's individual AI coaching in Clermont-Ferrand?",
+            a: "It is a bespoke AI session dedicated to one person — executive, manager or expert — at your Clermont premises. A senior consultant accompanies you on your own business cases (manufacturing, agri-food, biotech, services) for a full day. From 990 € excl. VAT.",
+          },
+          {
+            q: "How does individual coaching differ from a group session?",
+            a: "In a group session, content is calibrated for the average: there are inevitably topics too basic or too advanced. In individual coaching, 100% of the time is dedicated to your level, your sector and your Clermont data. No pedagogical compromise.",
+          },
+          {
+            q: "Is coaching confidential?",
+            a: "Completely. Strict confidentiality from framing, your industrial or strategic data does not leave your premises, no sharing with other clients. Particularly important for Michelin or Airbus sub-contractors whose processes are protected.",
+          },
+          {
+            q: "Do I need prior AI experience to book individual coaching?",
+            a: "No. Coaching adapts to your level, from absolute beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
+          },
+          {
+            q: "Are travel costs included?",
+            a: "No. Lodging, meals and travel allowance are billed separately, in line with Axion-IA's pricing doctrine. These costs are communicated on a prior quote before confirmation.",
+          },
+          {
+            q: "Can I organise several individual sessions for different staff members?",
+            a: "Yes. Some Clermont companies organise several successive individual coachings for their key managers or experts rather than a group session. Volume discount possible — to be specified at framing.",
+          },
+        ],
+        guarantees:
+          "Strict confidentiality: your data and your challenges do not leave your Clermont premises. No lock-in: installed tools are your personal accounts, no Axion-IA dependency after the session. Lodging, meals and travel allowance billed separately on prior quote. If the session does not bring you immediate actionable value, full refund (clause available, never triggered).",
       },
     },
   },

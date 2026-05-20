@@ -45,6 +45,10 @@ export const ANGERS_COPY: VilleCopy = {
       fr: "Implémentation IA à Angers : on déploie l'IA dans vos outils existants (ERP, CRM, PLM, mails) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Angers: we deploy AI into your existing tools (ERP, CRM, PLM, email) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel 1-to-1 à Angers : séances sur mesure pour dirigeants et cadres de la filière végétale, des PME industrielles et du tissu tertiaire Maine-et-Loire. Axe Végépolys, Quartz technopôle et PME Anjou. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
+      en: "1-to-1 AI coaching in Angers: bespoke sessions for executives and managers in the plant industry, industrial SMEs and service businesses across Maine-et-Loire. Focused on Vegepolys Valley, Quartz technopole and Anjou SMEs. Lodging, meals and travel allowance billed separately for on-site sessions.",
+    },
   },
 
   directAnswerFr:
@@ -717,6 +721,220 @@ export const ANGERS_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Angers accompagne individuellement les dirigeants et cadres de la filière végétale, de l'industrie (Scania, Eviden/Atos, Thales), de l'agroalimentaire (Cointreau) et des startups de la French Tech Angers. À partir de 990 € HT pour les TPE, chaque programme est bâti autour de vos cas d'usage réels — rapports R&D végétal, données industrielles, gestion commerciale Anjou. Vous progressez à votre rythme, sans théorie superflue.",
+        whyHere: [
+          "Angers est un écosystème plurisectoriel unique : ingénieurs R&D Vegepolys Valley, techniciens Scania/Eviden/Thales, fondateurs French Tech Angers, viticulteurs Anjou. Le coaching 1-to-1 est le seul format qui s'adapte précisément à chacun de ces profils très différents.",
+          "Les dirigeants de PME de la filière végétale (semenciers, producteurs, prestataires phytosanitaires) ont des besoins IA très spécifiques — documentation réglementaire, suivi R&D, reporting export. Le coaching individuel cible ces enjeux directement.",
+          "Les cadres de Scania, Eviden/Atos et Thales Angers qui souhaitent comprendre l'IA appliquée à leur rôle précis (production, ingénierie, support) bénéficient d'un accompagnement individualisé sans passer par leur hiérarchie.",
+          "Les fondateurs de la French Tech Angers et d'Angers Technopole (IoT, numérique) qui veulent intégrer l'IA dans leur produit ou service trouvent dans le coaching 1-to-1 un levier d'accélération adapté à leur stade.",
+          "Séances flexibles : 100 % visio ou présentiel dans vos locaux angevins (Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé). Aucun déplacement imposé.",
+          "Aucun lock-in : vous repartez avec votre plan d'action personnalisé et vos outils maîtrisés, sans dépendance vis-à-vis d'Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Séance d'ouverture pour cartographier votre maturité IA, vos cas d'usage prioritaires (R&D végétal, production industrielle, commercial, numérique) et vos outils existants dans le contexte de la métropole angevine.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Co-construction d'un programme de séances calé sur votre agenda et votre secteur métier (végétal, industriel, agroalimentaire, tertiaire, numérique). Chaque séance a un objectif actionnable précis.",
+          },
+          {
+            step: "Séances pratiques sur vos vraies données",
+            detail:
+              "Chaque session travaille sur vos fichiers réels — rapports R&D, fiches techniques végétales, données de production industrielle, emails commerciaux. L'IA est appliquée à votre réalité, pas à des exemples génériques.",
+          },
+          {
+            step: "Ancrage et mise en pratique",
+            detail:
+              "Entre les séances, vous expérimentez les outils sur vos cas réels. La séance suivante démarre par un debriefing de ce qui a fonctionné ou bloqué, et le plan est ajusté en continu.",
+          },
+          {
+            step: "Bilan et feuille de route",
+            detail:
+              "En fin de programme, restitution d'une feuille de route personnalisée : cas d'usage priorisés, outils retenus, prochaines étapes pour votre structure angevine. Vous repartez pleinement autonome.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Programme d'entrée pour les gérants de TPE, artisans, startups French Tech Angers et indépendants de la filière végétale ou du tertiaire angevin.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme personnalisé pour dirigeants et cadres des PME industrielles, végétales, agroalimentaires et de services du Maine-et-Loire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement individuel pour DG, directeurs R&D, DSI ou directeurs industriels des ETI angevines (Vegepolys Valley, sous-traitants, négoce vins Anjou).",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching de cadres dirigeants et managers des grands sites angevins (Scania, Eviden/Atos, Thales, Cointreau) pour des besoins d'acculturation IA individualisés.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de comprendre concrètement comment l'IA pouvait accélérer mes rapports R&D en filière végétale. On a travaillé directement sur mes fichiers de recherche dès la première séance. Résultat immédiatement actionnable.",
+            role: "Directrice R&D",
+            companyProfile: "PME filière végétale, Angers Loire Métropole",
+          },
+          {
+            quote:
+              "Format parfait pour un fondateur de startup : séances courtes, focalisées sur mon produit numérique, zéro théorie inutile. J'ai pu poser mes questions les plus pointues sans filtre et construire ma roadmap IA en quelques semaines.",
+            role: "Co-fondateur",
+            companyProfile: "Startup French Tech Angers, Angers Technopole",
+          },
+        ],
+        faq: [
+          {
+            q: "Quel est le format des séances de coaching 1-to-1 à Angers ?",
+            a: "Les séances se déroulent en visio ou en présentiel dans vos locaux à Angers (centre-ville, Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé). Frais de logement, repas et forfait trajet en sus pour les séances en présentiel.",
+          },
+          {
+            q: "Quelle est la fréquence des séances ?",
+            a: "La fréquence est définie ensemble lors du diagnostic initial selon votre rythme et vos objectifs — hebdomadaire, bimensuelle ou mensuelle. Aucun rythme imposé.",
+          },
+          {
+            q: "Le coaching est-il adapté à la filière végétale Vegepolys Valley ?",
+            a: "Oui. Le coaching 1-to-1 est particulièrement adapté aux dirigeants et cadres de la filière végétale angevine : rapports R&D, documentation phytosanitaire, gestion de données d'expérimentation, reporting export. Le vocabulaire et les cas d'usage sont calés sur vos réalités sectorielles.",
+          },
+          {
+            q: "Quels secteurs sont concernés à Angers ?",
+            a: "Tous les secteurs B2B de la métropole : végétal, industrie (Scania, sous-traitants), informatique (Eviden/Atos), défense (Thales), agroalimentaire (Cointreau), viticulture Anjou, numérique (French Tech), services. Le coaching s'adapte à votre contexte.",
+          },
+          {
+            q: "Mes données de R&D ou industrielles sont-elles confidentielles ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Vos données, documents et informations métier ne sortent jamais de la session. Conformité RGPD.",
+          },
+          {
+            q: "Quelle différence entre le coaching 1-to-1 et un audit IA à Angers ?",
+            a: "L'audit IA produit un livrable collectif avec un plan d'action pour votre organisation. Le coaching 1-to-1 vous forme et vous accompagne individuellement sur la durée : vous montez en compétence sur vos cas précis et décidez en autonomie croissante.",
+          },
+        ],
+        guarantees:
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Frais de logement, repas et forfait trajet en sus pour les séances en présentiel. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Angers individually supports executives and managers in the plant industry, manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau) and French Tech Angers startups. Starting from 990 € excl. VAT for micro-businesses, each programme is built around your real use cases — plant R&D reports, industrial data, Anjou commercial management. You progress at your own pace, without superfluous theory.",
+        whyHere: [
+          "Angers is a unique multi-sector ecosystem: Vegepolys Valley R&D engineers, Scania/Eviden/Thales technicians, French Tech Angers founders, Anjou wine growers. 1-to-1 coaching is the only format that precisely adapts to each of these very different profiles.",
+          "Plant-sector SME executives (seed companies, producers, phytosanitary providers) have highly specific AI needs — regulatory documentation, R&D tracking, export reporting. Individual coaching targets these challenges directly.",
+          "Scania, Eviden/Atos and Thales Angers managers wanting to understand AI applied to their specific role (production, engineering, support) benefit from individualised support without going through their hierarchy.",
+          "French Tech Angers and Angers Technopole founders (IoT, digital) wanting to integrate AI into their product or service find in 1-to-1 coaching an acceleration lever suited to their stage.",
+          "Flexible sessions: 100% video or in person at your Angers offices (Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé). No imposed travel.",
+          "No lock-in: you leave with your personalised action plan and mastered tools, with no dependency on Axion-IA.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "Opening session to map your AI maturity, priority use cases (plant R&D, industrial production, sales, digital) and existing tools in the Angers metropolitan context.",
+          },
+          {
+            step: "Personalised progression plan",
+            detail:
+              "Co-build a session programme fitted to your agenda and sector (plant, industrial, agri-food, services, digital). Each session has a precise actionable objective.",
+          },
+          {
+            step: "Practical sessions on your real data",
+            detail:
+              "Each session works on your real files — R&D reports, plant technical sheets, industrial production data, commercial emails. AI is applied to your reality, not generic examples.",
+          },
+          {
+            step: "Anchoring and practice",
+            detail:
+              "Between sessions, you experiment with tools on your real cases. The next session starts with a debrief of what worked or blocked, with continuous plan adjustment.",
+          },
+          {
+            step: "Review and roadmap",
+            detail:
+              "At programme end, a personalised roadmap is delivered: prioritised use cases, retained tools, next steps for your Angers organisation. You leave fully autonomous.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From 990 € excl. VAT",
+            detail:
+              "Entry programme for micro-business owners, craft firms, French Tech Angers startups and freelancers in the plant sector or Angers services.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Bespoke programme for executives and managers at industrial, plant, agri-food and service SMEs in Maine-et-Loire.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Individual support for CEOs, R&D directors, CIOs or industrial directors of Angers mid-caps (Vegepolys Valley, subcontractors, Anjou wine trade).",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Executive coaching for senior managers at major Angers sites (Scania, Eviden/Atos, Thales, Cointreau) requiring individualised AI acculturation.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching helped me understand concretely how AI could accelerate my plant R&D reports. We worked directly on my research files from the first session. Immediately actionable result.",
+            role: "R&D Director",
+            companyProfile: "Plant-industry SME, Angers Loire Métropole",
+          },
+          {
+            quote:
+              "Perfect format for a startup founder: short sessions, focused on my digital product, zero useless theory. I could ask my sharpest questions without filter and build my AI roadmap within a few weeks.",
+            role: "Co-founder",
+            companyProfile: "French Tech Angers startup, Angers Technopole",
+          },
+        ],
+        faq: [
+          {
+            q: "What is the format of 1-to-1 coaching sessions in Angers?",
+            a: "Sessions take place by video or in person at your offices in Angers (city centre, Belle-Beille, Saint-Barthélemy-d'Anjou, Beaucouzé, Avrillé). Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "How often are the sessions?",
+            a: "Frequency is defined together at the initial diagnostic according to your rhythm and objectives — weekly, fortnightly or monthly. No imposed schedule.",
+          },
+          {
+            q: "Is coaching adapted to the Vegepolys Valley plant industry?",
+            a: "Yes. 1-to-1 coaching is particularly suited to executives and managers in Angers' plant sector: R&D reports, phytosanitary documentation, experimental data management, export reporting. Vocabulary and use cases are calibrated to your sector reality.",
+          },
+          {
+            q: "Which sectors are covered in Angers?",
+            a: "All B2B sectors in the metropolitan area: plant, manufacturing (Scania, subcontractors), computing (Eviden/Atos), defence (Thales), agri-food (Cointreau), Anjou viticulture, digital (French Tech), services. Coaching adapts to your context.",
+          },
+          {
+            q: "Is my R&D or industrial data kept confidential?",
+            a: "Yes. Strict confidentiality from the first session. Your data, documents and business information never leave the session. GDPR compliant.",
+          },
+          {
+            q: "What is the difference between 1-to-1 coaching and an AI audit in Angers?",
+            a: "An AI audit produces a collective deliverable with an action plan for your organisation. 1-to-1 coaching trains and supports you individually over time: you build competency on your specific cases and decide with growing autonomy.",
+          },
+        ],
+        guarantees:
+          "No minimum commitment: you drive the programme session by session. Strict confidentiality. Lodging, meals and travel allowance billed separately for on-site sessions. No lock-in: you leave with your personalised roadmap and full autonomy. If the first session delivers no concrete value, it is fully refunded.",
       },
     },
   },

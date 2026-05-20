@@ -43,6 +43,10 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
       fr: "Implémentation IA à Saint-Étienne : on intègre l'IA dans vos outils existants (ERP industriel, CRM, mails, GMAO) avec un ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Saint-Étienne: we integrate AI into your existing tools (industrial ERP, CRM, email, CMMS) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
+      en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
+    },
   },
 
   directAnswerFr:
@@ -713,6 +717,221 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Saint-Étienne est un accompagnement individuel sur mesure : vous progressez à votre rythme, sur vos propres cas métier, avec un consultant dédié. À partir de 990 € HT. Adapté aux dirigeants industriels, designers, responsables textile médical et managers de distribution de la Loire. Frais de logement, repas et forfait trajet en sus.",
+        whyHere: [
+          "Saint-Étienne est la seule ville française UNESCO Creative City en design : les profils sont très spécialisés — ingénieur mécanique, designer industriel, responsable qualité textile médical — et ont besoin d'un coaching ancré dans leur réalité métier, pas d'un cours générique.",
+          "Le tissu industriel stéphanois (mécanique de précision, aciers spéciaux, textile médical) génère des workflows documentaires denses (plans techniques, fiches qualité, bons de commande) : chaque séance travaille directement sur vos vrais documents.",
+          "Les profils de la Cité du Design et de l'ESADSE ont des besoins spécifiques en génération de briefs créatifs, documentation de concept et veille tendance : le coaching adapte les outils IA à ces usages créatifs.",
+          "Casino Guichard-Perrachon et les ETI de distribution stéphanoises ont des référents IA à former en priorité avant toute cascade équipe : le 1-to-1 est la voie la plus rapide.",
+          "Séances sur site dans vos locaux stéphanois (Châteaucreux, Cité du Design, Technopôle) ou à distance selon votre disponibilité — rythme calé à la signature.",
+          "Confidentialité sans accord de confidentialité imposé : vos données, plans techniques, fiches qualité restent dans votre environnement.",
+        ],
+        methodology: [
+          {
+            step: "Diagnostic individuel",
+            detail:
+              "Un entretien de cadrage pour identifier votre niveau IA, vos cas métier prioritaires (industrie, design, textile médical, distribution) et l'objectif précis du coaching.",
+          },
+          {
+            step: "Plan de progression personnalisé",
+            detail:
+              "Construction d'un plan séance par séance calé sur vos outils (Claude, Mistral, GPT-4), vos livrables réels et les contraintes sectorielles de Saint-Étienne.",
+          },
+          {
+            step: "Séances pratiques sur vos vrais cas",
+            detail:
+              "Chaque séance travaille directement sur vos documents : bons de commande industriels, fiches qualité, briefs créatifs design, comptes-rendus de réunion, devis techniques.",
+          },
+          {
+            step: "Exercices entre séances",
+            detail:
+              "Micro-missions à réaliser en autonomie entre deux séances pour ancrer les apprentissages dans votre contexte stéphanois réel.",
+          },
+          {
+            step: "Bilan + feuille de route autonomie",
+            detail:
+              "En fin de coaching, un bilan chiffré de vos gains et une feuille de route pour continuer à progresser sans dépendance envers Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "À partir de 990 € HT",
+            detail:
+              "Entrée coaching 1-to-1 — artisan, designer indépendant, dirigeant TPE industrielle ou de services stéphanois.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Sur devis",
+            detail:
+              "Programme multi-séances pour référents IA ou managers de PME industrielles, agences design ou cabinets de services de la Loire.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Sur devis",
+            detail:
+              "Accompagnement cadres dirigeants ETI stéphanoises (textile médical, mécanique, distribution) — programme structuré avec bilan intermédiaire.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Sur devis",
+            detail:
+              "Coaching des profils pilotes d'un grand groupe siège stéphanois (Casino, Aubert & Duval) avant déploiement large.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "Le coaching 1-to-1 m'a permis de maîtriser l'IA sur mes vrais dossiers de mécanique de précision en quelques séances. Plans techniques, bons de commande, fiches qualité — tout y est passé. Je suis autonome.",
+            role: "Directeur technique",
+            companyProfile: "PME mécanique de précision, Loire",
+          },
+          {
+            quote:
+              "En tant que designer à la Cité du Design, j'avais besoin d'un coaching sur la génération de briefs créatifs et la veille tendance. Le 1-to-1 a tout adapté à mon métier. Résultat immédiat sur mes livrables clients.",
+            role: "Designer senior",
+            companyProfile: "Agence design, Saint-Étienne Cité du Design",
+          },
+        ],
+        faq: [
+          {
+            q: "En quoi le coaching 1-to-1 diffère-t-il d'une intervention collective à Saint-Étienne ?",
+            a: "Le format collectif forme tout un groupe sur les mêmes cas. Le 1-to-1 travaille exclusivement sur VOS cas, votre vitesse, vos contraintes stéphanoises (industrie, design, textile médical, distribution). Gains opérationnels mesurables dès la première séance.",
+          },
+          {
+            q: "Combien de séances faut-il pour être autonome sur l'IA à Saint-Étienne ?",
+            a: "Cela dépend de votre niveau de départ et de vos objectifs. Un artisan ou designer atteint une autonomie confortable en quelques séances. Un manager ETI cherchant à maîtriser des intégrations ERP industrielles aura un programme plus étendu. Le plan est cadré à la première séance.",
+          },
+          {
+            q: "Le coaching peut-il se tenir dans mes locaux stéphanois ?",
+            a: "Oui. Séances sur site dans vos locaux (Châteaucreux, Cité du Design, Technopôle, Molina-La-Chazotte) ou en visio selon votre disponibilité. Frais de logement, repas et forfait trajet en sus pour les séances sur site.",
+          },
+          {
+            q: "Mes données industrielles et plans techniques restent-ils confidentiels ?",
+            a: "Oui. Confidentialité stricte dès le démarrage : vos données, plans techniques, fiches qualité restent dans votre environnement. Aucune extraction vers nos serveurs. Conformité RGPD.",
+          },
+          {
+            q: "Puis-je commencer sans aucune base IA ?",
+            a: "Oui. Le diagnostic initial évalue votre niveau réel et calibre le plan en conséquence. La grande majorité des profils stéphanois débutent sans avoir jamais utilisé Claude ou GPT de façon professionnelle.",
+          },
+          {
+            q: "Y a-t-il un engagement minimum de durée ou de nombre de séances ?",
+            a: "Non. Pas de lock-in, pas de contrat d'abonnement. Vous commencez par la première séance à 990 € HT. La suite se décide à l'issue de chaque séance selon votre progression.",
+          },
+        ],
+        guarantees:
+          "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données et plans techniques restent dans votre environnement. Conformité RGPD. Frais de logement, repas et forfait trajet en sus pour les séances sur site. Si à l'issue de la première séance vous estimez que le coaching ne correspond pas à vos attentes, première séance remboursée.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Saint-Étienne is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to industrial executives, designers, medical textile managers and distribution leaders in the Loire. Lodging, meals and travel allowance billed separately.",
+        whyHere: [
+          "Saint-Étienne is France's only UNESCO Creative City for design: profiles are highly specialised — mechanical engineer, industrial designer, medical textile quality manager — and need coaching rooted in their real work, not a generic course.",
+          "Saint-Étienne's industrial fabric (precision mechanics, specialty steels, medical textiles) generates dense document workflows (technical drawings, quality records, purchase orders): each session works directly on your real documents.",
+          "Cité du Design and ESADSE profiles have specific needs in creative brief generation, concept documentation and trend monitoring: coaching adapts AI tools to these creative uses.",
+          "Casino Guichard-Perrachon and Saint-Étienne distribution mid-caps have AI champions to train before any team cascade: 1-to-1 is the fastest route.",
+          "Sessions on site at your Saint-Étienne offices (Châteaucreux, Cité du Design, Technopôle) or remote depending on availability — cadence agreed at sign-up.",
+          "Confidentiality without imposed accord de confidentialité: your data, technical drawings and quality records stay in your environment.",
+        ],
+        methodology: [
+          {
+            step: "Individual diagnostic",
+            detail:
+              "A framing interview to identify your AI level, priority business cases (manufacturing, design, medical textiles, distribution) and the precise coaching objective.",
+          },
+          {
+            step: "Personalized progression plan",
+            detail:
+              "Building a session-by-session plan aligned with your tools (Claude, Mistral, GPT-4), your real deliverables and Saint-Étienne sector constraints.",
+          },
+          {
+            step: "Practical sessions on your real cases",
+            detail:
+              "Each session works directly on your documents: industrial purchase orders, quality records, design creative briefs, meeting minutes, technical quotes.",
+          },
+          {
+            step: "Between-session exercises",
+            detail:
+              "Micro-missions to complete autonomously between sessions to embed learnings in your real Saint-Étienne context.",
+          },
+          {
+            step: "Debrief + autonomy roadmap",
+            detail:
+              "At coaching end, a costed gains summary and an autonomy roadmap to keep progressing without dependence on Axion-IA.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "From €990 excl. VAT",
+            detail:
+              "Entry-level 1-to-1 coaching — Saint-Étienne artisan, independent designer, industrial or service micro-business executive.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "On quote",
+            detail:
+              "Multi-session programme for AI champions or managers of Loire industrial SMEs, design agencies or service firms.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "On quote",
+            detail:
+              "Executive coaching for Saint-Étienne mid-cap managers (medical textiles, mechanics, distribution) — structured programme with interim review.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "On quote",
+            detail:
+              "Coaching of pilot profiles at a major Saint-Étienne HQ group (Casino, Aubert & Duval) before broad rollout.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "The 1-to-1 coaching let me master AI on my real precision mechanics files within a few sessions. Technical drawings, purchase orders, quality records — all covered. I am fully autonomous.",
+            role: "Technical Director",
+            companyProfile: "Precision mechanics SME, Loire",
+          },
+          {
+            quote:
+              "As a designer at Cité du Design, I needed coaching on creative brief generation and trend monitoring. The 1-to-1 adapted everything to my profession. Immediate results on my client deliverables.",
+            role: "Senior Designer",
+            companyProfile: "Design agency, Saint-Étienne Cité du Design",
+          },
+        ],
+        faq: [
+          {
+            q: "How does 1-to-1 coaching differ from a group session in Saint-Étienne?",
+            a: "Group format trains a whole team on the same cases. 1-to-1 works exclusively on YOUR cases, your pace, your Saint-Étienne constraints (manufacturing, design, medical textiles, distribution). Measurable operational gains from the first session.",
+          },
+          {
+            q: "How many sessions are needed to become AI-autonomous in Saint-Étienne?",
+            a: "It depends on your starting level and objectives. An artisan or designer reaches comfortable autonomy in a few sessions. A mid-cap manager seeking to master industrial ERP integrations will have a longer programme. The plan is framed in the first session.",
+          },
+          {
+            q: "Can coaching sessions be held at my Saint-Étienne premises?",
+            a: "Yes. On-site sessions at your offices (Châteaucreux, Cité du Design, Technopôle, Molina-La-Chazotte) or via video depending on availability. Lodging, meals and travel allowance billed separately for on-site sessions.",
+          },
+          {
+            q: "Does my industrial data and technical drawings stay confidential?",
+            a: "Yes. Strict confidentiality from day one: your data, technical drawings and quality records stay in your environment. No extraction to our servers. GDPR compliance.",
+          },
+          {
+            q: "Can I start with no AI background?",
+            a: "Yes. The initial diagnostic assesses your real level and calibrates the plan accordingly. The vast majority of Saint-Étienne profiles start without ever having used Claude or GPT professionally.",
+          },
+          {
+            q: "Is there a minimum duration or session commitment?",
+            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+          },
+        ],
+        guarantees:
+          "No lock-in: no imposed duration commitment. Strict confidentiality without required accord de confidentialité — your data and technical drawings stay in your environment. GDPR compliance. Lodging, meals and travel allowance billed separately for on-site sessions. If after the first session you feel the coaching does not meet your expectations, first session fully refunded.",
       },
     },
   },

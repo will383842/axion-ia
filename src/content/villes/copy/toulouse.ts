@@ -36,6 +36,10 @@ export const TOULOUSE_COPY: VilleCopy = {
       fr: "Implémentation IA à Toulouse : on déploie l'IA dans vos outils existants (PLM, ERP, mails, documentation technique) avec ROI chiffré contractuel. Vos équipes gardent la main, aucune dépendance créée.",
       en: "AI implementation in Toulouse: we deploy AI into your existing tools (PLM, ERP, email, technical documentation) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
+    unAUn: {
+      fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
+      en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
+    },
   },
 
   directAnswerFr:
@@ -705,6 +709,220 @@ export const TOULOUSE_COPY: VilleCopy = {
         ],
         guarantees:
           "Fixed flat-rate on SOW: no hidden hourly drift. Delivery within the timeline agreed at signature, with contractual compensation in case of our delay. Contractual costed ROI: if after a year of production the real measured ROI stays significantly below the SOW prediction, free audit to identify the cause + offered deployment adjustment. No tech lock-in: your models, your data, your runbook. Your trained internal ambassadors are autonomous after go-live.",
+      },
+    },
+    unAUn: {
+      fr: {
+        hero: "Le coaching IA 1-to-1 Axion-IA à Toulouse s'adresse aux dirigeants, ingénieurs et managers de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA), aux cadres des PME et ETI de l'Aerospace Valley, aux responsables des scale-ups French Tech Toulouse et aux dirigeants du tissu industriel toulousain. Pas de programme collectif : chaque séance part de vos vrais dossiers, vos vraies décisions, votre réalité métier. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
+        whyHere: [
+          "Toulouse concentre une densité exceptionnelle d'ingénieurs et de managers techniques dans l'aérospatiale (Airbus, CNES, Thales Alenia Space, ATR, ONERA) qui ont besoin d'intégrer l'IA dans leur pratique sans passer par une formation collective inadaptée à leur niveau.",
+          "L'écosystème French Tech Toulouse et IoT Valley à Labège-Innopole génère des dirigeants de scale-ups et des fondateurs techniques pour qui une montée en compétence IA rapide et personnalisée est souvent plus pertinente qu'un programme de groupe.",
+          "ISAE-SUPAERO, ENAC, TBS Education, Toulouse INP forment chaque année des profils d'excellence qui, une fois en poste, cherchent à approfondir leur pratique IA de façon autonome — le coaching 1-to-1 est le format idéal.",
+          "Les cadres de la chaîne aéronautique Tier 1 et Tier 2 (sous-traitants Airbus, ATR) ont des contraintes de confidentialité ITAR/EAR et DPSD spécifiques que nous maîtrisons — séances adaptées à ces profils sensibles.",
+          "Format accessible depuis tout le bassin toulousain : Toulouse centre, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — présentiels ou distanciels selon votre agenda.",
+          "Aucun group dynamics : vous progressez sur vos vraies questions techniques et managériales, sans vous adapter à un niveau collectif qui n'est pas le vôtre.",
+        ],
+        methodology: [
+          {
+            step: "Entretien de positionnement",
+            detail:
+              "Un premier échange (45 min à distance ou sur site à Toulouse) pour cartographier votre niveau IA actuel, vos objectifs prioritaires, votre secteur (aérospatiale, IoT, agroalimentaire, services) et vos cas d'usage cibles. Pour les profils aérospatiaux, nous précisons en amont les contraintes de confidentialité applicables.",
+          },
+          {
+            step: "Séances sur mesure dans votre contexte",
+            detail:
+              "Chaque séance part de VOS documents et de VOS décisions du moment : documentation technique, rapports d'anomalie, comptes-rendus de réunion programme, emails fournisseurs. Démos en direct sur Claude, Mistral, GPT-4 appliquées à votre réalité aérospatiale, IoT ou industrielle.",
+          },
+          {
+            step: "Ancrage pratique entre les séances",
+            detail:
+              "Exercices ciblés sur vos tâches quotidiennes réelles : rédaction de spécifications techniques, gestion de non-conformités, qualification de fournisseurs, préparation de revues de programme. Pas de devoirs théoriques déconnectés de votre activité.",
+          },
+          {
+            step: "Suivi de progression",
+            detail:
+              "Bilan intermédiaire à mi-parcours : ce qui est ancré, ce qui reste à consolider, ajustement du programme selon l'évolution de vos priorités. Souplesse totale — vous pouvez changer de focus entre deux séances.",
+          },
+          {
+            step: "Synthèse finale et autonomie",
+            detail:
+              "En fin de parcours, synthèse personnelle de vos cas d'usage IA maîtrisés, guide de ressources sélectionnées pour votre secteur et recommandations de veille IA. Vous êtes autonome — aucune dépendance au coaching créée.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "TPE",
+            price: "à partir de 990 € HT",
+            detail:
+              "Pour indépendants, bureaux d'études et dirigeants de TPE du bassin toulousain. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
+          },
+          {
+            sizeLabel: "PME",
+            price: "Parcours PME — sur devis",
+            detail:
+              "Pour dirigeants et managers de PME aéronautiques, IT et agro toulousaines (quelques dizaines à 250 collaborateurs). Parcours calibré : prise de décision, management d'ingénieurs, reporting technique, gestion de projet IA sous contraintes de certification.",
+          },
+          {
+            sizeLabel: "ETI",
+            price: "Parcours ETI — sur devis",
+            detail:
+              "Pour DG, DAF, DRH et directeurs techniques d'ETI Aerospace Valley ou IT Labège. Travail sur la gouvernance IA, la communication programme, la relation donneurs d'ordres et la conduite du changement dans les équipes d'ingénieurs.",
+          },
+          {
+            sizeLabel: "Grande entreprise",
+            price: "Parcours grands comptes — sur devis",
+            detail:
+              "Pour directeurs de divisions et cadres de direction des grands groupes toulousains (Airbus, Thales Alenia Space, Continental, CNES). Format confidentiel haut niveau, agenda adapté aux contraintes de direction opérationnelle. Frais en sus.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "En tant qu'ingénieur en chef dans l'aérospatiale, j'avais besoin d'un accompagnement discret et technique sur l'IA — pas une formation généraliste. Le coaching 1-to-1 a travaillé directement sur mes vrais documents de programme. En quelques séances, j'intègre l'IA dans mes revues de conception et mes rapports d'anomalie.",
+            role: "Ingénieur en chef",
+            companyProfile: "ETI sous-traitante aéronautique Tier 1, bassin toulousain",
+          },
+          {
+            quote:
+              "Format idéal pour un fondateur technique toujours entre deux réunions programme. Les séances à distance calées sur mon agenda ont transformé ma façon de rédiger des specs et de qualifier nos fournisseurs. ROI immédiat dès la première séance.",
+            role: "CTO fondateur",
+            companyProfile: "Scale-up IoT industriel, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "À qui s'adresse le coaching IA 1-to-1 Axion-IA à Toulouse ?",
+            a: "À tout dirigeant, ingénieur ou manager du bassin toulousain souhaitant monter en compétence IA de façon personnalisée : cadres aérospatiaux (Airbus, CNES, Thales, ATR), fondateurs French Tech Toulouse, responsables de PME sous-traitantes, directeurs d'ETI IT ou agro. Tout profil B2B est éligible, quel que soit le niveau de départ.",
+          },
+          {
+            q: "Le coaching 1-to-1 est-il adapté aux contraintes de confidentialité aérospatiale (ITAR/EAR) ?",
+            a: "Oui. Confidentialité stricte dès la première séance. Pour les profils soumis à des contraintes ITAR/EAR ou DPSD, nous travaillons sur des exemples anonymisés représentatifs de votre activité et recommandons uniquement des outils compatibles avec vos politiques de sécurité. Aucun document sensible ne quitte la session.",
+          },
+          {
+            q: "Quel est le tarif d'entrée et comment est facturé le coaching ?",
+            a: "Le tarif d'entrée est de 990 € HT pour un parcours court (2-3 séances). Les frais de logement, repas et forfait trajet sont facturés en sus pour les séances en présentiel hors Toulouse intra-muros. Le programme complet est défini après l'entretien de positionnement, pas d'engagement à l'aveugle.",
+          },
+          {
+            q: "Les séances se déroulent-elles en présentiel à Toulouse ou à distance ?",
+            a: "Les deux sont possibles selon vos préférences. Présentiel dans vos locaux (Toulouse centre, Blagnac, Labège, Colomiers) ou à distance en visio. Frais de logement, repas et forfait trajet en sus pour le présentiel hors Toulouse intra-muros.",
+          },
+          {
+            q: "Quelle différence avec une formation collective IA à Toulouse ?",
+            a: "Dans une formation collective, le rythme est calé sur la moyenne du groupe et les cas traités sont génériques. En coaching 1-to-1, chaque séance travaille sur VOS fichiers techniques, VOS rapports, VOS dossiers réels. L'investissement est plus ciblé, le retour opérationnel est immédiat.",
+          },
+          {
+            q: "Puis-je solliciter un coaching pour plusieurs membres de mon équipe dirigeante ?",
+            a: "Oui. Plusieurs séances individuelles coordonnées pour les membres d'un même CODIR ou équipe de direction (ETI Aerospace Valley, division Airbus) permettent d'aligner la vision IA au niveau managérial. Tarif dégressif à partir de 3 bénéficiaires, sur devis.",
+          },
+        ],
+        guarantees:
+          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Frais de logement, repas et forfait trajet facturés en sus et validés avec vous avant chaque séance en présentiel hors intra-muros. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
+      },
+      en: {
+        hero: "Axion-IA's 1-to-1 AI coaching in Toulouse is for executives, engineers and managers in aerospace (Airbus, CNES, Thales Alenia Space, ONERA), Aerospace Valley SMEs and mid-caps, French Tech Toulouse scale-up leaders and Toulouse industrial firms. No group programme: each session starts from your real files, your real decisions, your actual business reality. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
+        whyHere: [
+          "Toulouse concentrates an exceptional density of aerospace engineers and technical managers (Airbus, CNES, Thales Alenia Space, ATR, ONERA) who need to integrate AI into their practice without going through group training unsuited to their level.",
+          "The French Tech Toulouse and IoT Valley at Labège-Innopole ecosystem generates scale-up founders and technical leaders for whom fast, personalised AI upskilling is often more relevant than a group programme.",
+          "ISAE-SUPAERO, ENAC, TBS Education, Toulouse INP train high-calibre profiles who, once in post, seek to deepen their AI practice autonomously — 1-to-1 coaching is the ideal format.",
+          "Tier 1 and Tier 2 aerospace chain managers (Airbus, ATR sub-contractors) have specific ITAR/EAR and DPSD confidentiality constraints that we understand — sessions adapted for sensitive profiles.",
+          "Accessible across the Toulouse basin: Toulouse centre, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — on-site or remote per your agenda.",
+          "No group dynamics: you progress on your real technical and managerial questions, without adapting to a collective level that is not yours.",
+        ],
+        methodology: [
+          {
+            step: "Positioning interview",
+            detail:
+              "A first exchange (45 min remote or on site in Toulouse) to map your current AI level, priority objectives, sector (aerospace, IoT, agri-food, services) and target use cases. For aerospace profiles, we clarify applicable confidentiality constraints upfront.",
+          },
+          {
+            step: "Tailored sessions in your context",
+            detail:
+              "Each session starts from YOUR documents and YOUR current decisions: technical documentation, anomaly reports, programme meeting minutes, supplier emails. Live demos on Claude, Mistral, GPT-4 applied to your aerospace, IoT or industrial reality.",
+          },
+          {
+            step: "Practical anchoring between sessions",
+            detail:
+              "Targeted exercises on your real daily tasks: technical specification writing, non-conformance management, supplier qualification, programme review preparation. No disconnected theoretical homework.",
+          },
+          {
+            step: "Progress monitoring",
+            detail:
+              "Mid-programme review: what is anchored, what still needs consolidation, programme adjustment if priorities have shifted. Full flexibility — you can change focus between sessions.",
+          },
+          {
+            step: "Final synthesis and autonomy",
+            detail:
+              "At the end of the programme, a personal summary of your mastered AI use cases, a curated resource guide for your sector and AI monitoring recommendations. You are autonomous — no coaching dependency created.",
+          },
+        ],
+        pricing: [
+          {
+            sizeLabel: "Micro-business",
+            price: "from €990 excl. VAT",
+            detail:
+              "For Toulouse freelancers, engineering offices and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases. Lodging, meals and travel allowance billed separately outside central Toulouse.",
+          },
+          {
+            sizeLabel: "SME",
+            price: "SME programme — on quote",
+            detail:
+              "For Toulouse aerospace, IT and agri SME managers and directors (a few dozen to 250 staff). Programme calibrated for: decision-making, engineer management, technical reporting, AI project management under certification constraints.",
+          },
+          {
+            sizeLabel: "Mid-cap",
+            price: "Mid-cap programme — on quote",
+            detail:
+              "For CEOs, CFOs, CHROs and technical directors of Aerospace Valley or Labège IT mid-caps. Work on AI governance, programme communication, prime contractor relationship and change management in engineering teams.",
+          },
+          {
+            sizeLabel: "Large enterprise",
+            price: "Large accounts programme — on quote",
+            detail:
+              "For division directors and senior executives at Toulouse large groups (Airbus, Thales Alenia Space, Continental, CNES). Confidential senior format, schedule adapted to operational leadership constraints. Expenses billed separately.",
+          },
+        ],
+        testimonials: [
+          {
+            quote:
+              "As a chief engineer in aerospace, I needed discreet, technical AI coaching — not generic training. The 1-to-1 coaching worked directly on my real programme documents. Within a few sessions, I integrate AI into my design reviews and anomaly reports.",
+            role: "Chief Engineer",
+            companyProfile: "Tier 1 aerospace sub-contractor mid-cap, greater Toulouse basin",
+          },
+          {
+            quote:
+              "Ideal format for a technical founder always between two programme meetings. Remote sessions fitted around my agenda transformed how I write specs and qualify suppliers. Immediate ROI from the first session.",
+            role: "CTO Founder",
+            companyProfile: "Industrial IoT scale-up, Labège-Innopole",
+          },
+        ],
+        faq: [
+          {
+            q: "Who is Axion-IA's 1-to-1 AI coaching in Toulouse for?",
+            a: "For any executive, engineer or manager in the Toulouse basin wanting personalised AI upskilling: aerospace managers (Airbus, CNES, Thales, ATR), French Tech Toulouse founders, sub-contractor SME leaders, IT or agri mid-cap directors. Any B2B profile is eligible, regardless of starting level.",
+          },
+          {
+            q: "Is 1-to-1 coaching suited to aerospace confidentiality constraints (ITAR/EAR)?",
+            a: "Yes. Strict confidentiality ensured before the first session. For profiles subject to ITAR/EAR or DPSD constraints, we work on anonymised representative examples and only recommend tools compatible with your security policies. No sensitive document leaves the session.",
+          },
+          {
+            q: "What is the entry rate and how is coaching invoiced?",
+            a: "The entry rate is €990 excl. VAT for a short programme (2-3 sessions). Lodging, meals and travel allowance are billed separately for on-site sessions outside central Toulouse. The full programme is defined after the positioning interview, no blind commitment.",
+          },
+          {
+            q: "Are sessions on-site in Toulouse or remote?",
+            a: "Both are available per your preferences. On-site at your offices (Toulouse centre, Blagnac, Labège, Colomiers) or remote by video. Lodging, meals and travel allowance billed separately for on-site sessions outside central Toulouse.",
+          },
+          {
+            q: "What is the difference from group AI training in Toulouse?",
+            a: "In group training, the pace is set to the group average and cases are generic. In 1-to-1 coaching, every session works on YOUR technical files, YOUR reports, YOUR real documents. The investment is more targeted, the operational return is immediate.",
+          },
+          {
+            q: "Can I request coaching for several members of my leadership team?",
+            a: "Yes. Several coordinated individual sessions for members of the same executive committee (Aerospace Valley mid-cap, Airbus division) align AI vision at managerial level. Decreasing rate from 3 beneficiaries onwards, on quote.",
+          },
+        ],
+        guarantees:
+          "Positioning interview included without commitment: if coaching does not match your needs, no charge. Sessions invoiced at a flat rate, not by the hour — you know exactly what you pay. Strict confidentiality from the outset, no reference published without written consent. Lodging, meals and travel allowance billed separately and validated before each on-site session outside centre. No lock-in: skills acquired are usable in full autonomy.",
       },
     },
   },
