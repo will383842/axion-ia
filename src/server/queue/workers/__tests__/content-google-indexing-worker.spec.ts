@@ -18,25 +18,23 @@
 
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
-const {
-  readConfigMock,
-  isReadyMock,
-  publishUrlMock,
-  capturedProcessor,
-  workerOnMock,
-} = vi.hoisted(() => ({
-  readConfigMock: vi.fn().mockResolvedValue({ active: false }),
-  isReadyMock: vi.fn().mockReturnValue(true),
-  publishUrlMock: vi.fn().mockResolvedValue(true),
-  workerOnMock: vi.fn(),
-  capturedProcessor: { current: null as null | ((job: unknown) => Promise<void>) },
-}));
+const { readConfigMock, isReadyMock, publishUrlMock, capturedProcessor, workerOnMock } = vi.hoisted(
+  () => ({
+    readConfigMock: vi.fn().mockResolvedValue({ active: false }),
+    isReadyMock: vi.fn().mockReturnValue(true),
+    publishUrlMock: vi.fn().mockResolvedValue(true),
+    workerOnMock: vi.fn(),
+    capturedProcessor: { current: null as null | ((job: unknown) => Promise<void>) },
+  }),
+);
 
 vi.mock("bullmq", () => ({
-  Worker: vi.fn().mockImplementation((_name: string, processor: (job: unknown) => Promise<void>) => {
-    capturedProcessor.current = processor;
-    return { on: workerOnMock, close: vi.fn() };
-  }),
+  Worker: vi
+    .fn()
+    .mockImplementation((_name: string, processor: (job: unknown) => Promise<void>) => {
+      capturedProcessor.current = processor;
+      return { on: workerOnMock, close: vi.fn() };
+    }),
 }));
 
 vi.mock("@/server/actions/content-gen/_settings", () => ({
@@ -48,7 +46,10 @@ vi.mock("@/server/content-gen/seo/indexing-client", () => ({
   indexingPublishUrl: publishUrlMock,
 }));
 
-async function loadAndRun(jobData: { url: string; type: "URL_UPDATED" | "URL_DELETED" }): Promise<void> {
+async function loadAndRun(jobData: {
+  url: string;
+  type: "URL_UPDATED" | "URL_DELETED";
+}): Promise<void> {
   const mod = await import("../content-google-indexing-worker");
   process.env.REDIS_URL = "redis://stub.invalid:6379";
   mod.startGoogleIndexingWorker();
@@ -96,9 +97,7 @@ describe("content-google-indexing-worker — Sub-agent D Sprint S+5 P2-10", () =
     expect(publishUrlMock).toHaveBeenCalledTimes(1);
     // Doctrine worker : pas de retry exponentiel sur 4xx (cf. commentaire L52-54).
     // On vérifie qu'aucun throw n'a eu lieu (loadAndRun resolves).
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining("publish failed for"),
-    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("publish failed for"));
     warnSpy.mockRestore();
   });
 

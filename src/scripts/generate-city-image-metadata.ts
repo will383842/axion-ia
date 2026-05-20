@@ -64,19 +64,19 @@ const TIER4_MAX = 10_000;
 // public/images/. Si elles sont absentes, le fallback national s'applique.
 
 const REGION_IMAGE_SLUG: Record<string, string> = {
-  "ile-de-france":            "axion-ia-ile-de-france-formation-ia-banniere",
-  "auvergne-rhone-alpes":     "axion-ia-auvergne-rhone-alpes-formation-ia-banniere",
+  "ile-de-france": "axion-ia-ile-de-france-formation-ia-banniere",
+  "auvergne-rhone-alpes": "axion-ia-auvergne-rhone-alpes-formation-ia-banniere",
   "provence-alpes-cote-d-azur": "axion-ia-provence-alpes-cote-d-azur-formation-ia-banniere",
-  "occitanie":                "axion-ia-occitanie-formation-ia-banniere",
-  "nouvelle-aquitaine":       "axion-ia-nouvelle-aquitaine-formation-ia-banniere",
-  "hauts-de-france":          "axion-ia-hauts-de-france-formation-ia-banniere",
-  "grand-est":                "axion-ia-grand-est-formation-ia-banniere",
-  "pays-de-la-loire":         "axion-ia-pays-de-la-loire-formation-ia-banniere",
-  "bretagne":                 "axion-ia-bretagne-formation-ia-banniere",
-  "normandie":                "axion-ia-normandie-formation-ia-banniere",
-  "bourgogne-franche-comte":  "axion-ia-bourgogne-franche-comte-formation-ia-banniere",
-  "centre-val-de-loire":      "axion-ia-centre-val-de-loire-formation-ia-banniere",
-  "corse":                    "axion-ia-corse-formation-ia-banniere",
+  occitanie: "axion-ia-occitanie-formation-ia-banniere",
+  "nouvelle-aquitaine": "axion-ia-nouvelle-aquitaine-formation-ia-banniere",
+  "hauts-de-france": "axion-ia-hauts-de-france-formation-ia-banniere",
+  "grand-est": "axion-ia-grand-est-formation-ia-banniere",
+  "pays-de-la-loire": "axion-ia-pays-de-la-loire-formation-ia-banniere",
+  bretagne: "axion-ia-bretagne-formation-ia-banniere",
+  normandie: "axion-ia-normandie-formation-ia-banniere",
+  "bourgogne-franche-comte": "axion-ia-bourgogne-franche-comte-formation-ia-banniere",
+  "centre-val-de-loire": "axion-ia-centre-val-de-loire-formation-ia-banniere",
+  corse: "axion-ia-corse-formation-ia-banniere",
 };
 
 const NATIONAL_FALLBACK_SLUG = "axion-ia-france-formation-ia-banniere";
@@ -144,15 +144,15 @@ async function main() {
 
   const allVilles = await loadAllVilles();
 
-  const t3 = allVilles.filter(
-    (v) => v.population >= TIER3_MIN && v.population < TIER3_MAX,
-  );
-  const t4 = allVilles.filter(
-    (v) => v.population >= TIER4_MIN && v.population < TIER4_MAX,
-  );
+  const t3 = allVilles.filter((v) => v.population >= TIER3_MIN && v.population < TIER3_MAX);
+  const t4 = allVilles.filter((v) => v.population >= TIER4_MIN && v.population < TIER4_MAX);
 
-  console.log(`[city-image-metadata] T3 (${TIER3_MIN / 1000}K–${TIER3_MAX / 1000}K): ${t3.length} villes`);
-  console.log(`[city-image-metadata] T4 (${TIER4_MIN / 1000}K–${TIER4_MAX / 1000}K): ${t4.length} villes`);
+  console.log(
+    `[city-image-metadata] T3 (${TIER3_MIN / 1000}K–${TIER3_MAX / 1000}K): ${t3.length} villes`,
+  );
+  console.log(
+    `[city-image-metadata] T4 (${TIER4_MIN / 1000}K–${TIER4_MAX / 1000}K): ${t4.length} villes`,
+  );
 
   const villesMeta: VilleImageMetadata[] = [];
 
@@ -187,9 +187,7 @@ async function main() {
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, JSON.stringify(output, null, 2), "utf-8");
 
-  console.log(
-    `[city-image-metadata] ${villesMeta.length} entrées écrites → ${outputPath}`,
-  );
+  console.log(`[city-image-metadata] ${villesMeta.length} entrées écrites → ${outputPath}`);
 }
 
 main().catch((err) => {

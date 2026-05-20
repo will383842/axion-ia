@@ -80,7 +80,10 @@ export function sanitizeFaqAnswer(answer: string | null | undefined): FaqSanitiz
   // P2-9 — Détection placeholder AVANT sanitization (les patterns peuvent
   // contenir des chars `<`/`>` strippés sinon). Strip les balises HTML pour
   // la détection pure-texte.
-  const plainText = answer.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const plainText = answer
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   for (const pattern of PLACEHOLDER_PATTERNS) {
     if (pattern.test(plainText)) {
       return {

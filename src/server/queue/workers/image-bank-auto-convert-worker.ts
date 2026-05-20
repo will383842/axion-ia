@@ -70,26 +70,27 @@ interface VariantDef {
 }
 
 const VARIANTS: ReadonlyArray<VariantDef> = [
-  { suffix: "",        format: "webp", quality: 85, width: null, height: null  },
-  { suffix: "",        format: "avif", quality: 70, width: null, height: null  },
-  { suffix: "-og",     format: "webp", quality: 90, width: 1200, height: 630   },
-  { suffix: "-square", format: "webp", quality: 90, width: 1080, height: 1080  },
-  { suffix: "-thumb",  format: "webp", quality: 80, width: 400,  height: 300   },
-  { suffix: "-md",     format: "webp", quality: 85, width: 768,  height: null  },
-  { suffix: "-sm",     format: "webp", quality: 80, width: 384,  height: null  },
+  { suffix: "", format: "webp", quality: 85, width: null, height: null },
+  { suffix: "", format: "avif", quality: 70, width: null, height: null },
+  { suffix: "-og", format: "webp", quality: 90, width: 1200, height: 630 },
+  { suffix: "-square", format: "webp", quality: 90, width: 1080, height: 1080 },
+  { suffix: "-thumb", format: "webp", quality: 80, width: 400, height: 300 },
+  { suffix: "-md", format: "webp", quality: 85, width: 768, height: null },
+  { suffix: "-sm", format: "webp", quality: 80, width: 384, height: null },
 ] as const;
 
 /** Positions de recadrage selon le type visuel. */
-const CROP_CONFIG: Record<ImageType, { ogPosition: sharp.Gravity; squarePosition: sharp.Gravity }> = {
-  banniere:    { ogPosition: "centre",    squarePosition: "attention" },
-  carre:       { ogPosition: "centre",    squarePosition: "centre"    },
-  affiche:     { ogPosition: "west",      squarePosition: "attention" },
-  infographie: { ogPosition: "north",     squarePosition: "north"     },
-  editorial:   { ogPosition: "centre",    squarePosition: "centre"    },
-  photo:       { ogPosition: "attention", squarePosition: "attention" },
-  dataviz:     { ogPosition: "centre",    squarePosition: "centre"    },
-  logo:        { ogPosition: "centre",    squarePosition: "centre"    },
-};
+const CROP_CONFIG: Record<ImageType, { ogPosition: sharp.Gravity; squarePosition: sharp.Gravity }> =
+  {
+    banniere: { ogPosition: "centre", squarePosition: "attention" },
+    carre: { ogPosition: "centre", squarePosition: "centre" },
+    affiche: { ogPosition: "west", squarePosition: "attention" },
+    infographie: { ogPosition: "north", squarePosition: "north" },
+    editorial: { ogPosition: "centre", squarePosition: "centre" },
+    photo: { ogPosition: "attention", squarePosition: "attention" },
+    dataviz: { ogPosition: "centre", squarePosition: "centre" },
+    logo: { ogPosition: "centre", squarePosition: "centre" },
+  };
 
 /** Types qui doivent utiliser `fit: 'contain'` (fond blanc) plutôt que `cover`. */
 const CONTAIN_TYPES: ReadonlySet<ImageType> = new Set(["carre", "dataviz", "logo"]);
@@ -109,9 +110,9 @@ async function runConvert(data: ImageBankAutoConvertJobData): Promise<ImageBankA
   // Upscale si largeur < 1200 px (gate Google Discover recommandé).
   let input: Buffer = sourceBuffer;
   if (meta.width < 1200) {
-    input = await sharp(sourceBuffer, SHARP_LIMITS)
+    input = (await sharp(sourceBuffer, SHARP_LIMITS)
       .resize(1200, null, { kernel: "lanczos3", withoutEnlargement: false })
-      .toBuffer() as Buffer;
+      .toBuffer()) as Buffer;
   }
 
   const outputDir = path.join(process.cwd(), "public", "images");
@@ -145,14 +146,16 @@ async function runConvert(data: ImageBankAutoConvertJobData): Promise<ImageBankA
     pipe = pipe.withMetadata({
       exif: {
         IFD0: {
-          Copyright:            "© 2026 Axion-IA OÜ — CC BY 4.0",
-          Artist:               "Axion-IA",
-          ImageDescription:     targetSlug,
-          Software:             "Axion-IA image pipeline (Sharp)",
-          ...(data.geoLat && data.geoLon ? {
-            GPSLatitude:  data.geoLat.toString(),
-            GPSLongitude: data.geoLon.toString(),
-          } : {}),
+          Copyright: "© 2026 Axion-IA OÜ — CC BY 4.0",
+          Artist: "Axion-IA",
+          ImageDescription: targetSlug,
+          Software: "Axion-IA image pipeline (Sharp)",
+          ...(data.geoLat && data.geoLon
+            ? {
+                GPSLatitude: data.geoLat.toString(),
+                GPSLongitude: data.geoLon.toString(),
+              }
+            : {}),
         },
       },
     });

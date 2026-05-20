@@ -73,7 +73,10 @@ async function loadAllVilles(): Promise<VilleData[]> {
 // ─── Génération bannière ──────────────────────────────────────────────────────
 
 const OUTPUT_DIR = path.join(__dirname, "../../public/images");
-const TEMPLATE_PATH = path.join(__dirname, "../../public/images/templates/city-banner-template.webp");
+const TEMPLATE_PATH = path.join(
+  __dirname,
+  "../../public/images/templates/city-banner-template.webp",
+);
 const BANNER_W = 1920;
 const BANNER_H = 1080;
 
@@ -126,9 +129,7 @@ async function generateBanner(ville: VilleData, dryRun: boolean): Promise<string
   try {
     baseBuffer = await fs.readFile(TEMPLATE_PATH);
   } catch {
-    console.warn(
-      `[city-images-tier2] Template absent (${TEMPLATE_PATH}) — utilisation fond uni`,
-    );
+    console.warn(`[city-images-tier2] Template absent (${TEMPLATE_PATH}) — utilisation fond uni`);
     baseBuffer = await buildFallbackBackground();
   }
 
@@ -158,9 +159,7 @@ async function main() {
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
   const allVilles = await loadAllVilles();
-  let tier2 = allVilles.filter(
-    (v) => v.population >= TIER2_MIN && v.population <= TIER2_MAX,
-  );
+  let tier2 = allVilles.filter((v) => v.population >= TIER2_MIN && v.population <= TIER2_MAX);
 
   if (slugFilter) {
     tier2 = tier2.filter((v) => v.slug === slugFilter);
@@ -184,7 +183,10 @@ async function main() {
   for (const ville of tier2) {
     try {
       const slug = await generateBanner(ville, dryRun);
-      if (!dryRun) console.log(`✓ ${ville.nameFr} (pop. ${ville.population.toLocaleString("fr-FR")}) → ${slug}.webp`);
+      if (!dryRun)
+        console.log(
+          `✓ ${ville.nameFr} (pop. ${ville.population.toLocaleString("fr-FR")}) → ${slug}.webp`,
+        );
       success++;
     } catch (err) {
       console.error(`✗ ${ville.nameFr}: ${err instanceof Error ? err.message : String(err)}`);
@@ -193,9 +195,7 @@ async function main() {
     }
   }
 
-  console.log(
-    `\n[city-images-tier2] Terminé — ${success} succès, ${errors} erreur(s)`,
-  );
+  console.log(`\n[city-images-tier2] Terminé — ${success} succès, ${errors} erreur(s)`);
   if (failedSlugs.length > 0) {
     console.log(`[city-images-tier2] Échecs : ${failedSlugs.join(", ")}`);
   }

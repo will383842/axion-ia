@@ -175,8 +175,7 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
               </span>
               <span aria-hidden="true">·</span>
               <span>
-                Data INSEE (auto-générée) :{" "}
-                <code>src/content/villes/data/&lt;region&gt;.ts</code>
+                Data INSEE (auto-générée) : <code>src/content/villes/data/&lt;region&gt;.ts</code>
               </span>
             </div>
           </AdminCard>
@@ -200,9 +199,9 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
             rayonnement local (2), infrastructure transport (2), KB sectorielle (1).
           </li>
           <li>
-            <strong>Multi-taille TPE/PME/ETI/GE</strong> : chaque taille d&apos;entreprise trouve
-            au moins 2 champs qui lui parlent directement (EPV pour TPE/artisans, zones
-            d&apos;activité pour PME, grandes écoles pour ETI, grands groupes pour GE).
+            <strong>Multi-taille TPE/PME/ETI/GE</strong> : chaque taille d&apos;entreprise trouve au
+            moins 2 champs qui lui parlent directement (EPV pour TPE/artisans, zones d&apos;activité
+            pour PME, grandes écoles pour ETI, grands groupes pour GE).
           </li>
           <li>
             <strong>Indexable Google</strong> = secteurs NAF sourcés présents (matière métier
@@ -210,8 +209,8 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
           </li>
           <li>
             <strong>Contrat zéro invention</strong> : chaque entrée data doit avoir un champ{" "}
-            <code>source</code> (URL INSEE, competitivite.gouv.fr, CCI locale, Wikipédia,
-            site officiel pôle). Sans source → champ vide. Le badge 🔗 indique sourcé.
+            <code>source</code> (URL INSEE, competitivite.gouv.fr, CCI locale, Wikipédia, site
+            officiel pôle). Sans source → champ vide. Le badge 🔗 indique sourcé.
           </li>
           <li>
             <strong>Fond avant forme</strong> : on remplit la matière (data + KB sectorielles)

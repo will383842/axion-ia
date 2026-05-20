@@ -107,9 +107,7 @@ describe("content-news-lifecycle-worker — Sprint S+5 P2-10 sub-agent C", () =>
       if (key === "news_lifecycle") return defaultValue;
       return defaultValue;
     });
-    findManyMock.mockResolvedValue([
-      { id: "cg-job-old-1", outputBlogPostId: "article-old-1" },
-    ]);
+    findManyMock.mockResolvedValue([{ id: "cg-job-old-1", outputBlogPostId: "article-old-1" }]);
     articleUpdateMock.mockResolvedValue({
       id: "article-old-1",
       translations: [{ slug: "audit-rgpd-2024" }],
@@ -146,9 +144,7 @@ describe("content-news-lifecycle-worker — Sprint S+5 P2-10 sub-agent C", () =>
       if (key === "news_lifecycle") return defaultValue;
       return defaultValue;
     });
-    findManyMock.mockResolvedValue([
-      { id: "cg-job-ghost", outputBlogPostId: "article-ghost" },
-    ]);
+    findManyMock.mockResolvedValue([{ id: "cg-job-ghost", outputBlogPostId: "article-ghost" }]);
     articleUpdateMock.mockRejectedValue(new Error("Record not found"));
     countMock.mockResolvedValue(0);
 

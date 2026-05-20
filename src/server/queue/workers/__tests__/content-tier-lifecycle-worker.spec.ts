@@ -32,7 +32,9 @@ const {
 } = vi.hoisted(() => ({
   articleFindManyMock: vi.fn(),
   articleUpdateMock: vi.fn().mockResolvedValue({}),
-  enqueueIndexingMock: vi.fn().mockResolvedValue({ url: "x", indexnowEnqueued: true, googleEnqueued: false }),
+  enqueueIndexingMock: vi
+    .fn()
+    .mockResolvedValue({ url: "x", indexnowEnqueued: true, googleEnqueued: false }),
   fetchCtrMock: vi.fn(),
   readConfigMock: vi.fn().mockResolvedValue({ active: false }),
   alertTier3Mock: vi.fn().mockResolvedValue(undefined),
@@ -41,10 +43,12 @@ const {
 }));
 
 vi.mock("bullmq", () => ({
-  Worker: vi.fn().mockImplementation((_name: string, processor: (job: unknown) => Promise<void>) => {
-    capturedProcessor.current = processor;
-    return { on: workerOnMock, close: vi.fn() };
-  }),
+  Worker: vi
+    .fn()
+    .mockImplementation((_name: string, processor: (job: unknown) => Promise<void>) => {
+      capturedProcessor.current = processor;
+      return { on: workerOnMock, close: vi.fn() };
+    }),
 }));
 
 vi.mock("@/lib/prisma", () => ({

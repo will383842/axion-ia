@@ -16,28 +16,23 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Job } from "bullmq";
 
-const {
-  findManyMock,
-  readConfigMock,
-  writeConfigMock,
-  workerCtorMock,
-  capturedProcessor,
-} = vi.hoisted(() => {
-  const captured: { fn: ((job: Job) => Promise<void>) | null } = { fn: null };
-  return {
-    findManyMock: vi.fn(),
-    readConfigMock: vi.fn(),
-    writeConfigMock: vi.fn().mockResolvedValue(undefined),
-    workerCtorMock: vi.fn((_name: string, fn: (job: Job) => Promise<void>) => {
-      captured.fn = fn;
-      return {
-        on: vi.fn(),
-        close: vi.fn().mockResolvedValue(undefined),
-      };
-    }),
-    capturedProcessor: captured,
-  };
-});
+const { findManyMock, readConfigMock, writeConfigMock, workerCtorMock, capturedProcessor } =
+  vi.hoisted(() => {
+    const captured: { fn: ((job: Job) => Promise<void>) | null } = { fn: null };
+    return {
+      findManyMock: vi.fn(),
+      readConfigMock: vi.fn(),
+      writeConfigMock: vi.fn().mockResolvedValue(undefined),
+      workerCtorMock: vi.fn((_name: string, fn: (job: Job) => Promise<void>) => {
+        captured.fn = fn;
+        return {
+          on: vi.fn(),
+          close: vi.fn().mockResolvedValue(undefined),
+        };
+      }),
+      capturedProcessor: captured,
+    };
+  });
 
 vi.mock("bullmq", () => ({
   Worker: workerCtorMock,

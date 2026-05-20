@@ -36,10 +36,12 @@ const {
 }));
 
 vi.mock("bullmq", () => ({
-  Worker: vi.fn().mockImplementation((_name: string, processor: (job: unknown) => Promise<void>) => {
-    capturedProcessor.current = processor;
-    return { on: workerOnMock, close: vi.fn() };
-  }),
+  Worker: vi
+    .fn()
+    .mockImplementation((_name: string, processor: (job: unknown) => Promise<void>) => {
+      capturedProcessor.current = processor;
+      return { on: workerOnMock, close: vi.fn() };
+    }),
 }));
 
 vi.mock("@/lib/prisma", () => ({

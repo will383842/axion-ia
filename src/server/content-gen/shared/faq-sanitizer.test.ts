@@ -13,8 +13,7 @@ import { sanitizeFaqAnswer, sanitizeFaqQuestion } from "./faq-sanitizer";
 
 describe("sanitizeFaqAnswer — whitelist FAQ stricte P2-8", () => {
   it("conserve les tags FAQ autorisés (p, strong, em, a, ul/ol/li, br)", () => {
-    const html =
-      "<p>Texte <strong>fort</strong> et <em>italique</em></p><ul><li>item</li></ul>";
+    const html = "<p>Texte <strong>fort</strong> et <em>italique</em></p><ul><li>item</li></ul>";
     const r = sanitizeFaqAnswer(html);
     expect(r.skip).toBe(false);
     expect(r.html).toContain("<strong>");

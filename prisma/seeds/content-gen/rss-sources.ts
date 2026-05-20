@@ -61,7 +61,7 @@ export async function seedRssSources(prisma: PrismaClient): Promise<number> {
 
   if (!legacyConfig?.value) {
     console.log(
-      "[rss-sources seed] no legacy ContentGenConfig.key=\"rss_sources\" found — skipping (table will be populated via admin UI).",
+      '[rss-sources seed] no legacy ContentGenConfig.key="rss_sources" found — skipping (table will be populated via admin UI).',
     );
     // TODO : si Will fournit une liste de seed minimal (3-5 feeds sectoriels),
     // l'inscrire ici en upsert. V1 = seeder vide intentionnel.

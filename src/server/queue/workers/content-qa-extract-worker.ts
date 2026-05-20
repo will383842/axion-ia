@@ -26,10 +26,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
-import {
-  sanitizeFaqAnswer,
-  sanitizeFaqQuestion,
-} from "@/server/content-gen/shared/faq-sanitizer";
+import { sanitizeFaqAnswer, sanitizeFaqQuestion } from "@/server/content-gen/shared/faq-sanitizer";
 
 const QUEUE_NAME = "content-qa-extract";
 

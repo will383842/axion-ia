@@ -17,11 +17,7 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 
-const {
-  webVitalCreateMock,
-  webVitalFindManyMock,
-  alertBulkMock,
-} = vi.hoisted(() => ({
+const { webVitalCreateMock, webVitalFindManyMock, alertBulkMock } = vi.hoisted(() => ({
   webVitalCreateMock: vi.fn().mockResolvedValue({}),
   webVitalFindManyMock: vi.fn().mockResolvedValue([]),
   alertBulkMock: vi.fn().mockResolvedValue(undefined),
@@ -114,9 +110,7 @@ describe("content-psi-monitor-worker — Sub-agent D Sprint S+5 P2-10", () => {
     expect(fetchMock).not.toHaveBeenCalled();
     expect(webVitalCreateMock).not.toHaveBeenCalled();
     expect(alertBulkMock).not.toHaveBeenCalled();
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining("GOOGLE_PSI_API_KEY absent"),
-    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("GOOGLE_PSI_API_KEY absent"));
     warnSpy.mockRestore();
     vi.unstubAllGlobals();
   });
