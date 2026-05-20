@@ -557,12 +557,16 @@ async function main() {
           title: titleFr,
           alt: `${titleFr}`,
           caption: `${labelFr} — ${slugToTitle(entry.slug)}`,
+          isPublished: true,
+          publishedAt: new Date(),
         },
         update: {
           slug: entry.slug,
           title: titleFr,
           alt: `${titleFr}`,
           caption: `${labelFr} — ${slugToTitle(entry.slug)}`,
+          isPublished: true,
+          publishedAt: new Date(),
         },
       });
 
