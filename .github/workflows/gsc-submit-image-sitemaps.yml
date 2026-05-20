@@ -1,0 +1,111 @@
+name: GSC · Submit image sitemaps
+
+# Soumet les 4 sitemaps images à Google Search Console via API OAuth2.
+# Réutilise les credentials GSC déjà configurés (GSC_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN).
+# Idempotent — safe à relancer.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (log URLs, pas de soumission GSC)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    name: Submit 4 image sitemaps to GSC
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+        run: |
+          for v in GSC_OAUTH_CLIENT_ID GSC_OAUTH_CLIENT_SECRET GSC_OAUTH_REFRESH_TOKEN; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing secret $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK"
+
+      - name: Get OAuth2 access token
+        id: token
+        env:
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+        run: |
+          set -euo pipefail
+          RESP=$(curl -s -X POST "https://oauth2.googleapis.com/token" \
+            -d "client_id=${GSC_OAUTH_CLIENT_ID}" \
+            -d "client_secret=${GSC_OAUTH_CLIENT_SECRET}" \
+            -d "refresh_token=${GSC_OAUTH_REFRESH_TOKEN}" \
+            -d "grant_type=refresh_token")
+          ACCESS_TOKEN=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+          if [ -z "$ACCESS_TOKEN" ]; then
+            echo "::error::Failed to get access token. Response: $RESP"
+            exit 1
+          fi
+          echo "Access token OK (${#ACCESS_TOKEN} chars)"
+          echo "access_token=$ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Submit sitemaps (dry-run)
+        if: inputs.dry_run == 'true'
+        run: |
+          echo "::notice::DRY_RUN — sitemaps qui seraient soumis :"
+          echo "  https://axion-ia.com/sitemap-images-services.xml"
+          echo "  https://axion-ia.com/sitemap-images-villes-t1.xml"
+          echo "  https://axion-ia.com/sitemap-images-villes-t2.xml"
+          echo "  https://axion-ia.com/sitemap-images-villes-t3-t4.xml"
+
+      - name: Submit sitemaps to GSC
+        if: inputs.dry_run != 'true'
+        env:
+          ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
+          SITE_URL_ENCODED: "sc-domain%3Aaxion-ia.com"
+        run: |
+          set -euo pipefail
+          BASE="https://www.googleapis.com/webmasters/v3/sites/${SITE_URL_ENCODED}/sitemaps"
+
+          SITEMAPS=(
+            "https://axion-ia.com/sitemap-images-services.xml"
+            "https://axion-ia.com/sitemap-images-villes-t1.xml"
+            "https://axion-ia.com/sitemap-images-villes-t2.xml"
+            "https://axion-ia.com/sitemap-images-villes-t3-t4.xml"
+          )
+
+          ALL_OK=true
+          for SITEMAP in "${SITEMAPS[@]}"; do
+            ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$SITEMAP', safe=''))")
+            echo "── Submitting: $SITEMAP ──"
+            HTTP=$(curl -s -o /tmp/gsc_resp.json -w "%{http_code}" \
+              -X POST "${BASE}/${ENCODED}" \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              -H "Content-Type: application/json")
+            echo "HTTP: $HTTP"
+            cat /tmp/gsc_resp.json 2>/dev/null || true
+            echo ""
+            if [ "$HTTP" != "200" ] && [ "$HTTP" != "204" ]; then
+              echo "::warning::GSC response $HTTP for $SITEMAP (attendu 200/204)"
+              ALL_OK=false
+            else
+              echo "::notice::✅ Submitted: $SITEMAP"
+            fi
+          done
+
+          if [ "$ALL_OK" = "false" ]; then
+            echo "::warning::Au moins une soumission a échoué — vérifier les logs ci-dessus"
+            exit 1
+          fi
+          echo "── Toutes les soumissions réussies ──"
