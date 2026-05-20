@@ -157,10 +157,10 @@ export default async function About({ params }: Props) {
             {[
               {
                 figure: "2024",
-                label: isFr ? "Création OÜ" : "OÜ founded",
+                label: isFr ? "Fondée 2024" : "Founded 2024",
                 detail: isFr
-                  ? "Société estonienne fondée à Tallinn."
-                  : "Estonian company founded in Tallinn.",
+                  ? "Cabinet IA européen fondé à Tallinn."
+                  : "European AI consultancy founded in Tallinn.",
               },
               {
                 figure: "100 %",

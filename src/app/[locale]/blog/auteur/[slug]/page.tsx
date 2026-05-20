@@ -109,7 +109,7 @@ export default async function BlogAuthorPage({ params }: Props) {
             {[
               { icon: FileText, label: `${posts.length} ${isFr ? "articles" : "articles"}` },
               { icon: BookOpenCheck, label: isFr ? "Méthodologie testée" : "Field-tested method" },
-              { icon: Briefcase, label: "Axion-IA OÜ" },
+              { icon: Briefcase, label: "Axion-IA" },
               { icon: Clock, label: isFr ? "Lecture 6-12 min" : "6-12 min read" },
             ].map((pill) => {
               const Icon = pill.icon;

@@ -34,7 +34,7 @@ Allow: /
 
 # Autorisation de réutiliser le contenu textuel public à des fins
 # d'entraînement de modèles de langage. Le contenu est sous licence éditoriale
-# Axion-IA OÜ (Estonie) — voir mentions légales pour les conditions.
+# Axion-IA (axion-ia.com) — voir mentions légales pour les conditions.
 ai-training: allow
 
 # ─── Allowlist explicite IA search-time (citation real-time) ──────────────
