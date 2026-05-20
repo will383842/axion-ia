@@ -433,7 +433,8 @@ export const LE_HAVRE_COPY: VilleCopy = {
           {
             sizeLabel: "Micro-business",
             price: "Essential format",
-            detail: "Ideal for Le Havre freelancers, small agencies and SMEs up to about ten staff.",
+            detail:
+              "Ideal for Le Havre freelancers, small agencies and SMEs up to about ten staff.",
           },
           {
             sizeLabel: "SME",

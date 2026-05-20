@@ -252,7 +252,8 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
             quote:
               "Very pragmatic method, demos on our real technical documents rather than generic slides. We were able to prioritise our AI use cases with full confidence.",
             role: "Head of Operations",
-            companyProfile: "B2B consulting and services mid-cap, Arbois Technopole Aix-en-Provence",
+            companyProfile:
+              "B2B consulting and services mid-cap, Arbois Technopole Aix-en-Provence",
           },
         ],
         faq: [
@@ -433,8 +434,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           {
             sizeLabel: "Micro-business",
             price: "Essential format",
-            detail:
-              "Ideal for Aix freelancers, firms and agencies up to about ten staff.",
+            detail: "Ideal for Aix freelancers, firms and agencies up to about ten staff.",
           },
           {
             sizeLabel: "SME",
@@ -680,7 +680,8 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
             quote:
               "Perfect hybrid method for our multi-site Aix-Marseille organisation. Intense on-site kick-off, then efficient remote iterations. Internal ambassadors took over with no dependency on Axion-IA.",
             role: "CIO",
-            companyProfile: "B2B services group, headquartered at Arbois Technopole Aix-en-Provence",
+            companyProfile:
+              "B2B services group, headquartered at Arbois Technopole Aix-en-Provence",
           },
         ],
         faq: [

@@ -438,8 +438,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           {
             sizeLabel: "Micro-business",
             price: "Essential format",
-            detail:
-              "Ideal for Strasbourg freelancers, firms and startups up to about ten staff.",
+            detail: "Ideal for Strasbourg freelancers, firms and startups up to about ten staff.",
           },
           {
             sizeLabel: "SME",

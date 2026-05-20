@@ -218,8 +218,7 @@ export const NICE_COPY: VilleCopy = {
           {
             sizeLabel: "Micro-business",
             price: "Flash audit",
-            detail:
-              "Suited to Nice freelancers, micro-firms and practices up to about ten staff.",
+            detail: "Suited to Nice freelancers, micro-firms and practices up to about ten staff.",
           },
           {
             sizeLabel: "SME",

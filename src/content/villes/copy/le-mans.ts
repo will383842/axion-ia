@@ -433,8 +433,7 @@ export const LE_MANS_COPY: VilleCopy = {
           {
             sizeLabel: "Micro-business",
             price: "Essential format",
-            detail:
-              "Ideal for Sarthe freelancers, practices and small SMEs up to about ten staff.",
+            detail: "Ideal for Sarthe freelancers, practices and small SMEs up to about ten staff.",
           },
           {
             sizeLabel: "SME",
