@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { ImageUploadDropzone } from "@/components/admin/image-bank/ImageUploadDropzone";
 import { UploadV2 } from "./_v2/UploadV2";
 
 export const dynamic = "force-dynamic";
@@ -28,4 +27,3 @@ export default async function UploadPage({ params }: PageProps) {
 
   return <UploadV2 locale={locale} />;
 }
-

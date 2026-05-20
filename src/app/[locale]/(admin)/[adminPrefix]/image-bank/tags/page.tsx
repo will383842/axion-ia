@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { AdminStubPage } from "@/components/admin/image-bank/AdminStubPage";
 import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
@@ -30,4 +29,3 @@ export default async function tagsPage({ params }: PageProps) {
     />
   );
 }
-

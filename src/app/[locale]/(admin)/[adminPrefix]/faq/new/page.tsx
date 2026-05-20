@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { FAQForm } from "../FAQForm";
 import { FaqNewV2 } from "./_v2/FaqNewV2";
 
 export const dynamic = "force-dynamic";
@@ -18,4 +17,3 @@ export default async function NewFAQPage({ params }: PageProps) {
 
   return <FaqNewV2 adminPrefix={adminPrefix} />;
 }
-

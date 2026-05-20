@@ -7,11 +7,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  listProviders,
-  resetProviderSpend,
-  updateProvider,
-} from "@/server/actions/content-gen/providers";
+import { listProviders } from "@/server/actions/content-gen/providers";
 import { ProvidersV2 } from "./_v2/ProvidersV2";
 
 export const dynamic = "force-dynamic";
@@ -43,4 +39,3 @@ export default async function ProvidersSettingsPage({ params }: PageProps) {
     />
   );
 }
-

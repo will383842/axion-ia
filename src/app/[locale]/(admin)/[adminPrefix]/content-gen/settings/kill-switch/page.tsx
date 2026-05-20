@@ -7,11 +7,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  activateKillSwitch,
-  deactivateKillSwitch,
-  getKillSwitch,
-} from "@/server/actions/content-gen/kill-switch";
+import { getKillSwitch } from "@/server/actions/content-gen/kill-switch";
 import { KillSwitchV2 } from "./_v2/KillSwitchV2";
 
 export const dynamic = "force-dynamic";
@@ -37,4 +33,3 @@ export default async function KillSwitchPage({ params }: PageProps) {
     />
   );
 }
-

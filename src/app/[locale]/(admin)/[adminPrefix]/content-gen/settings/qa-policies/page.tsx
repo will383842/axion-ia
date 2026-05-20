@@ -4,7 +4,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getQaPolicies, updateQaPolicies } from "@/server/actions/content-gen/policies";
+import { getQaPolicies } from "@/server/actions/content-gen/policies";
 import { QaPoliciesV2 } from "./_v2/QaPoliciesV2";
 
 export const dynamic = "force-dynamic";
@@ -22,4 +22,3 @@ export default async function QaPoliciesPage({ params }: PageProps) {
 
   return <QaPoliciesV2 cfg={cfg} />;
 }
-

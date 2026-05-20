@@ -4,10 +4,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { TemplateForm } from "@/components/admin/content-gen/TemplateForm";
-import { upsertTemplate } from "@/server/actions/content-gen/templates";
 import { TemplatesNewV2 } from "./_v2/TemplatesNewV2";
-import type { ContentType, ExpansionMode } from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 
@@ -22,4 +19,3 @@ export default async function NewTemplatePage({ params }: PageProps) {
 
   return <TemplatesNewV2 adminPrefix={adminPrefix} />;
 }
-

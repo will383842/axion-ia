@@ -4,10 +4,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  getSearchIntentDistribution,
-  updateSearchIntentDistribution,
-} from "@/server/actions/content-gen/policies";
+import { getSearchIntentDistribution } from "@/server/actions/content-gen/policies";
 import { SearchIntentDistributionV2 } from "./_v2/SearchIntentDistributionV2";
 
 export const dynamic = "force-dynamic";
@@ -25,4 +22,3 @@ export default async function SearchIntentDistributionPage({ params }: PageProps
 
   return <SearchIntentDistributionV2 cfg={cfg} />;
 }
-

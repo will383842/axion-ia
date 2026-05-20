@@ -4,8 +4,6 @@
 
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
-
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ImageDetailV2 } from "./_v2/ImageDetailV2";
@@ -74,15 +72,5 @@ export default async function ImageDetailPage({ params }: PageProps) {
         })),
       }}
     />
-  );
-}
-
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between gap-4">
-      <dt className="text-fg-muted">{label}</dt>
-      <dd className="font-mono text-xs">{value}</dd>
-    </div>
   );
 }

@@ -16,60 +16,6 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
-const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string }> = [
-  {
-    href: "providers",
-    label: "Providers IA",
-    description: "Toggles, modèles, cost caps, rate-limits",
-  },
-  {
-    href: "batches",
-    label: "Batches & workers",
-    description: "Daily batch size, concurrency, retry policy",
-  },
-  {
-    href: "policies",
-    label: "Policies",
-    description: "Skip-existing, plagiat, retention tier-3, RSS auto-publish",
-  },
-  {
-    href: "banned-phrases",
-    label: "Phrases interdites",
-    description: "CRUD doctrine (warn / block)",
-  },
-  {
-    href: "llms-txt",
-    label: "llms.txt",
-    description: "Édition manuelle du fichier servi à la racine",
-  },
-  {
-    href: "coverage-distribution",
-    label: "Distribution 5 types",
-    description: "Profils nommés CRUD, somme 100 %",
-  },
-  {
-    href: "audience-mix",
-    label: "Mix audiences",
-    description: "Matrice taille INSEE × organisation, somme 100 %",
-  },
-  {
-    href: "search-intent-distribution",
-    label: "Intentions de recherche",
-    description: "5 intentions, somme 100 %",
-  },
-  {
-    href: "quality-loop",
-    label: "Boucle qualité",
-    description: "Toggle + seuils + budget mensuel",
-  },
-  {
-    href: "qa-policies",
-    label: "Q/R post-process",
-    description: "Auto-create pages, seuil mots, CTR promotion",
-  },
-  { href: "kill-switch", label: "Kill switch", description: "Stop all generations en 1 clic" },
-];
-
 export default async function SettingsIndexPage({ params }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
@@ -77,4 +23,3 @@ export default async function SettingsIndexPage({ params }: PageProps) {
 
   return <SettingsIndexV2 adminPrefix={adminPrefix} />;
 }
-

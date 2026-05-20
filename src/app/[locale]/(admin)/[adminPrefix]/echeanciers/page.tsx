@@ -8,24 +8,12 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { EcheanciersV2 } from "./_v2/EcheanciersV2";
-import { ScheduleProfileForm } from "./ScheduleProfileForm";
-import { ArchiveProfileButton } from "./ArchiveProfileButton";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
-}
-
-function formatEur(cents: number | null | undefined): string {
-  if (cents == null) return "—";
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
 }
 
 export default async function EcheanciersPage({ params }: PageProps) {
@@ -37,4 +25,3 @@ export default async function EcheanciersPage({ params }: PageProps) {
 
   return <EcheanciersV2 adminPrefix={adminPrefix} role={role} />;
 }
-

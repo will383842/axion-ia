@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listHelpCategoriesAction } from "@/features/admin-help/actions";
-import { HelpForm } from "../HelpForm";
 import { HelpNewV2 } from "./_v2/HelpNewV2";
 
 export const dynamic = "force-dynamic";
@@ -20,4 +19,3 @@ export default async function NewHelpPage({ params }: PageProps) {
 
   return <HelpNewV2 adminPrefix={adminPrefix} categories={categories} />;
 }
-

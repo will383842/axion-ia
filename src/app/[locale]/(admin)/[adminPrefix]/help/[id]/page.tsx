@@ -6,7 +6,6 @@ import {
   getHelpArticleDetailAction,
   listHelpCategoriesAction,
 } from "@/features/admin-help/actions";
-import { HelpForm } from "../HelpForm";
 import { HelpEditV2 } from "./_v2/HelpEditV2";
 
 export const dynamic = "force-dynamic";
@@ -63,4 +62,3 @@ export default async function EditHelpPage({ params }: PageProps) {
     />
   );
 }
-

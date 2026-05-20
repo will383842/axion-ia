@@ -3,7 +3,6 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getTestimonialDetailAction } from "@/features/admin-testimonials/actions";
-import { TestimonialForm } from "../TestimonialForm";
 import { TestimonialEditV2 } from "./_v2/TestimonialEditV2";
 
 export const dynamic = "force-dynamic";
@@ -50,4 +49,3 @@ export default async function EditTestimonialPage({ params }: PageProps) {
     />
   );
 }
-

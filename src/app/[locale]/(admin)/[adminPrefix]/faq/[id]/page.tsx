@@ -3,8 +3,6 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getFAQDetailAction, archiveFAQAction } from "@/features/admin-faq/actions";
-import { FAQForm } from "../FAQForm";
-import { ArchiveButton } from "./ArchiveButton";
 import { FaqEditV2 } from "./_v2/FaqEditV2";
 
 export const dynamic = "force-dynamic";
@@ -46,7 +44,6 @@ export default async function EditFAQPage({ params }: PageProps) {
     />
   );
 }
-
 
 // Helper export
 export { archiveFAQAction };

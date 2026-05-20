@@ -12,17 +12,6 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  super_admin: "Super Admin",
-  admin: "Admin",
-  editor: "Éditeur",
-  reader: "Lecteur",
-};
-const STATUS_LABELS: Record<string, string> = {
-  active: "Actif",
-  suspended: "Suspendu",
-};
-
 export default async function UsersListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -50,4 +39,3 @@ export default async function UsersListPage({ params, searchParams }: PageProps)
     />
   );
 }
-

@@ -15,13 +15,6 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  pending: "En attente",
-  confirmed: "Confirmé",
-  unsubscribed: "Désabonné",
-  bounced: "Bounce",
-};
-
 export default async function NewsletterListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -60,4 +53,3 @@ export default async function NewsletterListPage({ params, searchParams }: PageP
     />
   );
 }
-

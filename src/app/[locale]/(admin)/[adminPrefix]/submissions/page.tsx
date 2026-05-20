@@ -3,8 +3,6 @@
 // Filtres URL params : ?type=&status=&locale=&search=&dateFrom=&dateTo=&page=
 // SubmissionFilters (client) navigate via useRouter.push pour preserver l'URL.
 
-import { listSubmissionsAction } from "@/features/admin-submissions/actions";
-import { SubmissionFilters } from "./SubmissionFilters";
 import { SubmissionsV2 } from "./_v2/SubmissionsV2";
 
 export const dynamic = "force-dynamic";
@@ -14,36 +12,9 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const TYPE_LABELS: Record<string, string> = {
-  audit: "Audit",
-  implementation: "Implémentation",
-  intervention: "Intervention",
-  contact: "Contact",
-};
-const STATUS_LABELS: Record<string, string> = {
-  new: "Nouveau",
-  in_progress: "En cours",
-  processed: "Traité",
-  archived: "Archivé",
-};
-
 export default async function SubmissionsListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
 
   return <SubmissionsV2 adminPrefix={adminPrefix} searchParams={sp} />;
-}
-
-
-function buildPageUrl(
-  adminPrefix: string,
-  sp: Record<string, string | undefined>,
-  page: number,
-): string {
-  const params = new URLSearchParams();
-  for (const [k, v] of Object.entries(sp)) {
-    if (v && k !== "page") params.set(k, v);
-  }
-  params.set("page", String(page));
-  return `/fr/${adminPrefix}/submissions?${params.toString()}`;
 }

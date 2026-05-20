@@ -4,16 +4,8 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { TemplateForm } from "@/components/admin/content-gen/TemplateForm";
-import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
-import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
-import { getTemplate, upsertTemplate } from "@/server/actions/content-gen/templates";
+import { getTemplate } from "@/server/actions/content-gen/templates";
 import { TemplatesEditV2 } from "./_v2/TemplatesEditV2";
-import type {
-  ContentType,
-  ExpansionMode,
-  SearchIntent,
-} from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 
@@ -31,4 +23,3 @@ export default async function EditTemplatePage({ params }: PageProps) {
 
   return <TemplatesEditV2 template={template} />;
 }
-

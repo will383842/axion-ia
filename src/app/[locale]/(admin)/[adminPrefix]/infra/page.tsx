@@ -192,40 +192,6 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   }
 }
 
-// ─── UI helpers ─────────────────────────────────────────────────────────────
-
-function statusPill(status: Status) {
-  const labels: Record<Status, string> = {
-    ok: "● UP",
-    degraded: "● Dégradé",
-    down: "● DOWN",
-    "not-configured": "○ Non configuré",
-    unknown: "? Inconnu",
-  };
-  return <span className={`admin-status-pill admin-status-${status}`}>{labels[status]}</span>;
-}
-
-function CardItem({ card }: { card: Card }) {
-  return (
-    <a
-      href={card.externalUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="admin-card admin-infra-card"
-    >
-      <div className="admin-infra-card-head">
-        <strong>{card.name}</strong>
-        {statusPill(card.status)}
-      </div>
-      <p className="admin-meta-block">{card.role}</p>
-      {card.detail && <p className="admin-meta">{card.detail}</p>}
-      <p className="admin-meta">
-        <em>{card.paid}</em>
-      </p>
-    </a>
-  );
-}
-
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default async function AdminInfraPage({ params }: PageProps) {
@@ -387,4 +353,3 @@ export default async function AdminInfraPage({ params }: PageProps) {
 
   return <InfraV2 adminPrefix={adminPrefix} cards={cards} />;
 }
-

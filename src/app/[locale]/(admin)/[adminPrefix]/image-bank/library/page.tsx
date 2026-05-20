@@ -4,7 +4,6 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -58,17 +57,5 @@ export default async function LibraryPage({ params, searchParams }: PageProps) {
         translations: img.translations.map((t) => ({ title: t.title })),
       }))}
     />
-  );
-}
-
-
-function FilterLink({ href, label, active }: { href: string; label: string; active: boolean }) {
-  return (
-    <Link
-      href={href}
-      className={`rounded px-3 py-1.5 ${active ? "bg-fg text-white" : "border border-gray-300 hover:bg-gray-50"}`}
-    >
-      {label}
-    </Link>
   );
 }

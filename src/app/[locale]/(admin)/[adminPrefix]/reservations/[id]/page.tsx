@@ -169,15 +169,12 @@ export default async function ReservationDetailPage({ params }: PageProps) {
 
   const role = (session.user as { role?: string }).role ?? "reader";
   const submission = booking.fromSubmission ?? booking.submission ?? null;
-  const company = submission?.companyName ?? "Société inconnue";
 
   return (
     <AdminPageShell>
       <AdminPageHeader
         title={`Réservation · ${booking.id.slice(0, 8)}`}
-        description={
-          booking.submission?.companyName ?? booking.fromSubmission?.companyName ?? "—"
-        }
+        description={booking.submission?.companyName ?? booking.fromSubmission?.companyName ?? "—"}
         breadcrumbs={
           <Link href={`/fr/${adminPrefix}/reservations`} className="admin-link admin-back">
             ← Réservations
@@ -410,4 +407,3 @@ export default async function ReservationDetailPage({ params }: PageProps) {
     </AdminPageShell>
   );
 }
-

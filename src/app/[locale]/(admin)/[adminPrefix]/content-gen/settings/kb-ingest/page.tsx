@@ -15,10 +15,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import {
-  ingestKbFromSitemap,
-  ingestKbFromUrl,
-} from "@/server/actions/content-gen/kb-ingest-external";
 import { KbIngestV2 } from "./_v2/KbIngestV2";
 
 export const dynamic = "force-dynamic";
@@ -34,4 +30,3 @@ export default async function KbIngestExternalPage({ params }: PageProps) {
 
   return <KbIngestV2 />;
 }
-

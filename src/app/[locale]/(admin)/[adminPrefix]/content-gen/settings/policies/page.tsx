@@ -4,7 +4,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getPolicies, updatePolicies } from "@/server/actions/content-gen/policies";
+import { getPolicies } from "@/server/actions/content-gen/policies";
 import { PoliciesV2 } from "./_v2/PoliciesV2";
 
 export const dynamic = "force-dynamic";
@@ -22,4 +22,3 @@ export default async function PoliciesSettingsPage({ params }: PageProps) {
 
   return <PoliciesV2 cfg={cfg} />;
 }
-

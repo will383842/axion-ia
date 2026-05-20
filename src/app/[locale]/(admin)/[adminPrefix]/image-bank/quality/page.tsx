@@ -4,7 +4,6 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -51,4 +50,3 @@ export default async function QualityPage({ params }: PageProps) {
     />
   );
 }
-

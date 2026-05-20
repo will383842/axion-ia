@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { TestimonialForm } from "../TestimonialForm";
 import { TestimonialNewV2 } from "./_v2/TestimonialNewV2";
 
 export const dynamic = "force-dynamic";
@@ -18,4 +17,3 @@ export default async function NewTestimonialPage({ params }: PageProps) {
 
   return <TestimonialNewV2 adminPrefix={adminPrefix} />;
 }
-

@@ -15,20 +15,6 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  general: "Général",
-  interventions: "Interventions",
-  implementation: "Implémentation",
-  audit: "Audit",
-  pricing: "Tarifs",
-  process: "Processus",
-};
-const STATUS_LABELS: Record<string, string> = {
-  draft: "Brouillon",
-  published: "Publié",
-  archived: "Archivé",
-};
-
 export default async function FAQListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -53,4 +39,3 @@ export default async function FAQListPage({ params, searchParams }: PageProps) {
     />
   );
 }
-

@@ -8,7 +8,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getLlmsTxt, updateLlmsTxt } from "@/server/actions/content-gen/policies";
+import { getLlmsTxt } from "@/server/actions/content-gen/policies";
 import { LlmsTxtV2 } from "./_v2/LlmsTxtV2";
 
 export const dynamic = "force-dynamic";
@@ -26,4 +26,3 @@ export default async function LlmsTxtPage({ params }: PageProps) {
 
   return <LlmsTxtV2 content={content} />;
 }
-

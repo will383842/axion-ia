@@ -4,7 +4,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getQualityLoop, updateQualityLoop } from "@/server/actions/content-gen/policies";
+import { getQualityLoop } from "@/server/actions/content-gen/policies";
 import { QualityLoopV2 } from "./_v2/QualityLoopV2";
 
 export const dynamic = "force-dynamic";
@@ -22,4 +22,3 @@ export default async function QualityLoopSettingsPage({ params }: PageProps) {
 
   return <QualityLoopV2 cfg={cfg} />;
 }
-

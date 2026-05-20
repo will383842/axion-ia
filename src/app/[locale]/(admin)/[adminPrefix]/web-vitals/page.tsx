@@ -134,61 +134,6 @@ async function computeLive(): Promise<{
   return { aggregates, totalSamples: samples.length, computedAt: new Date().toISOString() };
 }
 
-// ─── UI helpers ─────────────────────────────────────────────────────────────
-
-function fmtValue(metric: string, v: number): string {
-  if (metric === "CLS") return v.toFixed(3);
-  return `${Math.round(v)} ms`;
-}
-
-function classifyRating(metric: string, value: number): "good" | "needs_improvement" | "poor" {
-  // Seuils Google CrUX (référence stricte — pas budget AGENTS.md interne).
-  // Used uniquement pour le pill UI (statut indicatif user-side).
-  const seuils: Record<string, { good: number; poor: number }> = {
-    LCP: { good: 2500, poor: 4000 },
-    INP: { good: 200, poor: 500 },
-    CLS: { good: 0.1, poor: 0.25 },
-    FCP: { good: 1800, poor: 3000 },
-    TTFB: { good: 800, poor: 1800 },
-    TBT: { good: 200, poor: 600 },
-  };
-  const t = seuils[metric];
-  if (!t) return "good";
-  if (value <= t.good) return "good";
-  if (value <= t.poor) return "needs_improvement";
-  return "poor";
-}
-
-function ratingPill(rating: "good" | "needs_improvement" | "poor") {
-  const labels = {
-    good: "● Good",
-    needs_improvement: "● Needs improvement",
-    poor: "● Poor",
-  };
-  const cls = {
-    good: "admin-severity-info", // sage (info color = vert/neutre)
-    needs_improvement: "admin-severity-warning",
-    poor: "admin-severity-critical",
-  };
-  return <span className={`admin-status-pill ${cls[rating]}`}>{labels[rating]}</span>;
-}
-
-function budgetPill(breach: boolean) {
-  return (
-    <span
-      className={`admin-status-pill ${breach ? "admin-severity-critical" : "admin-severity-info"}`}
-    >
-      {breach ? "● Hors budget" : "● Budget OK"}
-    </span>
-  );
-}
-
-function psiUrl(routePath: string): string {
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const full = `${site}${routePath}`;
-  return `https://pagespeed.web.dev/analysis?url=${encodeURIComponent(full)}`;
-}
-
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default async function AdminWebVitalsPage({ params }: PageProps) {
@@ -252,4 +197,3 @@ export default async function AdminWebVitalsPage({ params }: PageProps) {
     />
   );
 }
-

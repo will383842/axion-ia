@@ -12,18 +12,6 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  pending: "En attente",
-  published: "Publié",
-  refused: "Refusé",
-  archived: "Archivé",
-};
-const MODULE_LABELS: Record<string, string> = {
-  intervention: "Intervention",
-  implementation: "Implémentation",
-  audit: "Audit",
-};
-
 export default async function TestimonialsListPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -48,4 +36,3 @@ export default async function TestimonialsListPage({ params, searchParams }: Pag
     />
   );
 }
-
