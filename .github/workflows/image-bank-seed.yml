@@ -123,9 +123,8 @@ jobs:
             Promise.all([
               p.imageAsset.count(),
               p.imageAssetTranslation.count({where:{metaTitle:{not:null}}})
-            ]).then(([a,e])=>console.log('imageAsset:',a,'enrichies:',e))
-            .catch(e=>console.error(e.message))
-            .finally(()=>p.\$disconnect())\"" 2>&1 || true
+            ]).then(([a,e])=>{console.log('imageAsset:',a,'enrichies:',e);process.exit(0)})
+            .catch(()=>process.exit(0))\"" 2>&1 || true
 
       # ── Step 1 : Seed ─────────────────────────────────────────────────────────
 
@@ -160,7 +159,7 @@ jobs:
           echo "── Seed 133 ImageAssets (idempotent) ──"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' sh -c \
-            'cd /app && npx tsx prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
+            'cd /app && ./node_modules/.bin/tsx prisma/seeds/image-bank/seed-images.ts 2>&1'" 2>&1
           echo "── Seed terminé ──"
 
       # ── Step 2 : Enrich ───────────────────────────────────────────────────────
@@ -192,7 +191,7 @@ jobs:
           # ENRICH_DELAY_MS=2000 → ~133×2s = ~4.5 min (dans le timeout 25min)
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec -e ENRICH_DELAY_MS=2000 '$CONTAINER' sh -c \
-            'cd /app && npx tsx scripts/enrich-seeded-images.mts ${FORCE_FLAG} 2>&1'" 2>&1
+            'cd /app && ./node_modules/.bin/tsx scripts/enrich-seeded-images.mts $FORCE_FLAG 2>&1'" 2>&1
           echo "── Enrichissement terminé ──"
 
       # ── Post-check ───────────────────────────────────────────────────────────
@@ -211,7 +210,7 @@ jobs:
               p.imageAsset.count(),
               p.imageAssetTranslation.count({where:{languageCode:'fr'}}),
               p.imageAssetTranslation.count({where:{languageCode:'fr',metaTitle:{not:null}}})
-            ]).then(([assets,trFr,enriched])=>
-              console.log('imageAsset:',assets,'| translations FR:',trFr,'| enrichies:',enriched)
-            ).catch(e=>console.error(e.message))
-            .finally(()=>p.\$disconnect())\"" 2>&1 || true
+            ]).then(([assets,trFr,enriched])=>{
+              console.log('imageAsset:',assets,'trFr:',trFr,'enrichies:',enriched);
+              process.exit(0);
+            }).catch(()=>process.exit(0))\"" 2>&1 || true
