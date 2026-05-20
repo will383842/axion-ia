@@ -20,6 +20,10 @@ export async function Footer() {
     { href: "/audit", label: t("nav.audit") },
     { href: "/implementation", label: t("nav.implementation") },
     {
+      href: "/codage-developpement" as const,
+      label: isFr ? "Web & Digital IA" : "AI Web & Digital",
+    },
+    {
       href: "/un-a-un" as const,
       label: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching",
     },
