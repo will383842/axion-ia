@@ -69,14 +69,48 @@ jobs:
           echo "  https://axion-ia.com/sitemap-images-villes-t2.xml"
           echo "  https://axion-ia.com/sitemap-images-villes-t3-t4.xml"
 
+      - name: List GSC properties (detect URL-prefix property)
+        if: inputs.dry_run != 'true'
+        id: list_sites
+        env:
+          ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
+        run: |
+          set -euo pipefail
+          echo "── Sites enregistrés dans GSC ──"
+          SITES=$(curl -s \
+            "https://www.googleapis.com/webmasters/v3/sites" \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}")
+          echo "$SITES"
+          # Chercher une URL-prefix property pour axion-ia.com
+          URL_PROP=$(echo "$SITES" | python3 -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          entries = d.get('siteEntry', [])
+          for e in entries:
+              url = e.get('siteUrl', '')
+              if 'axion-ia.com' in url and not url.startswith('sc-domain'):
+                  print(url)
+                  break
+          " 2>/dev/null || true)
+          echo "URL-prefix property found: '${URL_PROP:-none}'"
+          echo "url_property=${URL_PROP}" >> "$GITHUB_OUTPUT"
+
       - name: Submit sitemaps to GSC
         if: inputs.dry_run != 'true'
         env:
           ACCESS_TOKEN: ${{ steps.token.outputs.access_token }}
-          SITE_URL_ENCODED: "sc-domain%3Aaxion-ia.com"
+          URL_PROPERTY: ${{ steps.list_sites.outputs.url_property }}
         run: |
           set -euo pipefail
-          BASE="https://www.googleapis.com/webmasters/v3/sites/${SITE_URL_ENCODED}/sitemaps"
+          # L'API sitemaps ne supporte que les URL-prefix properties (pas sc-domain:)
+          if [ -z "${URL_PROPERTY:-}" ]; then
+            echo "::error::Aucune URL-prefix property pour axion-ia.com dans GSC."
+            echo "::error::Solution : ajouter 'https://axion-ia.com/' dans GSC > Propriétés, puis relancer."
+            echo "::error::Note : la propriété sc-domain: n'est pas supportée par l'API sitemaps."
+            exit 1
+          fi
+          SITE_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('${URL_PROPERTY}', safe=''))")
+          BASE="https://www.googleapis.com/webmasters/v3/sites/${SITE_ENCODED}/sitemaps"
 
           SITEMAPS=(
             "https://axion-ia.com/sitemap-images-services.xml"
@@ -97,7 +131,7 @@ jobs:
             cat /tmp/gsc_resp.json 2>/dev/null || true
             echo ""
             if [ "$HTTP" != "200" ] && [ "$HTTP" != "204" ]; then
-              echo "::warning::GSC response $HTTP for $SITEMAP (attendu 200/204)"
+              echo "::warning::GSC response $HTTP for $SITEMAP"
               ALL_OK=false
             else
               echo "::notice::✅ Submitted: $SITEMAP"
@@ -105,7 +139,6 @@ jobs:
           done
 
           if [ "$ALL_OK" = "false" ]; then
-            echo "::warning::Au moins une soumission a échoué — vérifier les logs ci-dessus"
             exit 1
           fi
           echo "── Toutes les soumissions réussies ──"
