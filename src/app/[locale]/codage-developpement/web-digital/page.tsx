@@ -12,7 +12,13 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildHowToJsonLd,
+  buildItemListJsonLd,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
@@ -369,10 +375,111 @@ export default async function WebDigitalPage({ params }: Props) {
 
   const faqJsonLd = buildFaqJsonLd({ items: faqs });
 
+  const howToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/codage-developpement/web-digital",
+    name: isFr
+      ? "Comment intégrer l'IA dans votre site ou application web"
+      : "How to integrate AI into your website or web application",
+    description: isFr
+      ? "Les 5 étapes d'Axion-IA pour greffer l'IA sur une plateforme web existante ou en construire une nouvelle IA-native."
+      : "Axion-IA's 5 steps to graft AI onto an existing web platform or build a new AI-native one.",
+    totalTime: "P6W",
+    steps: isFr
+      ? [
+          {
+            name: "Audit de votre existant",
+            text: "Analyse de votre stack, de vos données disponibles et des 2-3 briques IA à plus fort ROI.",
+          },
+          {
+            name: "Devis ferme sous 48 h",
+            text: "Périmètre exact, modules IA choisis, prix fixe garanti. Pas d'ambiguïté avant signature.",
+          },
+          {
+            name: "Intégration sans refonte",
+            text: "On greffe l'IA sur votre existant via API, widget JS ou plugin. Zéro migration, zéro downtime.",
+          },
+          {
+            name: "Tests et validation",
+            text: "Démos hebdomadaires, corrections en continu. Vous validez chaque module avant mise en ligne.",
+          },
+          {
+            name: "Livraison et formation",
+            text: "Code dans votre infra, formation de vos équipes en 2h, documentation complète. C'est à vous.",
+          },
+        ]
+      : [
+          {
+            name: "Audit of your setup",
+            text: "Analysis of your stack, available data and the 2-3 highest-ROI AI bricks.",
+          },
+          {
+            name: "Firm quote within 48 h",
+            text: "Exact scope, chosen AI modules, guaranteed fixed price. No ambiguity before signing.",
+          },
+          {
+            name: "Integration without rebuild",
+            text: "We graft AI via API, JS widget or plugin. Zero migration, zero downtime.",
+          },
+          {
+            name: "Tests and validation",
+            text: "Weekly demos, continuous fixes. You validate each module before going live.",
+          },
+          {
+            name: "Delivery and training",
+            text: "Code in your infra, 2h team training, full documentation. It's yours.",
+          },
+        ],
+  });
+
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/codage-developpement/web-digital",
+    name: isFr
+      ? "4 modules IA pour votre plateforme web — Axion-IA"
+      : "4 AI modules for your web platform — Axion-IA",
+    items: [
+      {
+        position: 1,
+        name: isFr ? "Chatbot IA sur mesure" : "Custom AI chatbot",
+        url: `${isFr ? "/fr" : "/en"}/codage-developpement/web-digital`,
+        description: isFr
+          ? "Formé sur vos données, disponible 24h/7j. 80 % des questions traitées automatiquement."
+          : "Trained on your data, available 24/7. 80% of questions handled automatically.",
+      },
+      {
+        position: 2,
+        name: isFr ? "Recherche sémantique IA" : "AI semantic search",
+        url: `${isFr ? "/fr" : "/en"}/codage-developpement/web-digital`,
+        description: isFr
+          ? "L'IA comprend l'intention, pas juste les mots. +40 % de requêtes résolues précisément."
+          : "AI understands intent, not just words. +40% of queries resolved precisely.",
+      },
+      {
+        position: 3,
+        name: isFr ? "Suggestions intelligentes IA" : "AI smart suggestions",
+        url: `${isFr ? "/fr" : "/en"}/codage-developpement/web-digital`,
+        description: isFr
+          ? "Suggestions de contenu et fonctionnalités adaptées au comportement de chaque utilisateur."
+          : "Content and feature suggestions adapted to each user's behaviour.",
+      },
+      {
+        position: 4,
+        name: isFr ? "Personnalisation dynamique" : "Dynamic personalization",
+        url: `${isFr ? "/fr" : "/en"}/codage-developpement/web-digital`,
+        description: isFr
+          ? "Contenu et CTAs adaptés au profil visiteur. Sans cookie tiers — RGPD strict."
+          : "Content and CTAs adapted to visitor profile. No third-party cookie — strict GDPR.",
+      },
+    ],
+  });
+
   return (
     <>
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={howToJsonLd} />
+      <JsonLd data={itemListJsonLd} />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />

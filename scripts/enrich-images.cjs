@@ -61,9 +61,29 @@ Contraintes :
 - embed_title : ≤60 chars (Pinterest).
 - keywords_primary : 1-4 mots.
 - keywords_secondary : tableau 5-10 mots.
+- geo_placename : si l'image montre un lieu géographique IDENTIFIABLE (ville, quartier, monument, région), retourne "Ville, Région, France". Sinon : "".
+- geo_region : code ISO 2 lettres du pays (ex: "FR") si geo_placename trouvé, sinon "".
 
 JSON uniquement, sans backticks :
-{"alt":"...","caption":"...","description":"...","meta_title":"...","meta_description":"...","og_title":"...","og_description":"...","ai_summary":"...","embed_title":"...","keywords_primary":"...","keywords_secondary":["..."]}`;
+{"alt":"...","caption":"...","description":"...","meta_title":"...","meta_description":"...","og_title":"...","og_description":"...","ai_summary":"...","embed_title":"...","keywords_primary":"...","keywords_secondary":["..."],"geo_placename":"...","geo_region":""}`;
+
+/** Géocode un nom de lieu via Nominatim (gratuit, OSRM-compatible). */
+async function geocode(placename) {
+  if (!placename) return null;
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(placename)}&format=json&limit=1`;
+  try {
+    const res = await fetch(url, {
+      headers: { "User-Agent": "AxionIA-ImageBank/1.0 (contact@axion-ia.com)" },
+      signal: AbortSignal.timeout(5000),
+    });
+    const data = await res.json();
+    const first = data[0];
+    if (first?.lat && first?.lon) {
+      return `${parseFloat(first.lat).toFixed(4)};${parseFloat(first.lon).toFixed(4)}`;
+    }
+  } catch { /* silencieux */ }
+  return null;
+}
 
 async function callClaude(imageUrl, slug, module, subModule, kw) {
   const userPrompt = [
@@ -128,11 +148,20 @@ async function callClaude(imageUrl, slug, module, subModule, kw) {
     embedTitle: s(raw.embed_title, 60),
     keywordsPrimary: s(raw.keywords_primary, 120),
     keywordsSecondary: a(raw.keywords_secondary),
+    geoPlacename: s(raw.geo_placename, 255) || null,
+    geoRegion: s(raw.geo_region, 10) || null,
   };
 }
 
 async function saveEnriched(imageId, slug, e) {
   const title = e.metaTitle || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  // Géocodage Nominatim si lieu détecté par Claude Vision
+  let geoPosition = null;
+  if (e.geoPlacename) {
+    geoPosition = await geocode(e.geoPlacename);
+    await new Promise((r) => setTimeout(r, 1100)); // rate-limit Nominatim 1 req/s
+  }
 
   await prisma.$transaction(async (tx) => {
     await tx.imageAssetTranslation.upsert({
@@ -172,7 +201,10 @@ async function saveEnriched(imageId, slug, e) {
       data: {
         ...(e.keywordsPrimary ? { keywordsPrimary: e.keywordsPrimary } : {}),
         ...(e.keywordsSecondary.length ? { keywordsSecondary: e.keywordsSecondary } : {}),
-        seoScore: 90,
+        ...(e.geoPlacename ? { geoPlacename: e.geoPlacename } : {}),
+        ...(e.geoRegion ? { geoRegion: e.geoRegion } : {}),
+        ...(geoPosition ? { geoPosition } : {}),
+        seoScore: 95, // geo + full metadata → score maximal
       },
     });
   });

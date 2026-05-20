@@ -9,7 +9,13 @@ import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildServiceJsonLd,
+  buildFaqJsonLd,
+  buildHowToJsonLd,
+  buildItemListJsonLd,
+} from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -192,10 +198,97 @@ export default async function CodageDeveloppementHub({ params }: Props) {
 
   const faqJsonLd = buildFaqJsonLd({ items: faqs });
 
+  const howToJsonLd = buildHowToJsonLd({
+    locale: loc,
+    path: "/codage-developpement",
+    name: isFr
+      ? "Comment lancer un projet de plateforme web augmentée par l'IA"
+      : "How to launch an AI-augmented web platform project",
+    description: isFr
+      ? "Les 5 étapes d'Axion-IA pour construire ou augmenter une plateforme web avec l'IA intégrée."
+      : "Axion-IA's 5 steps to build or augment a web platform with integrated AI.",
+    totalTime: "P6W",
+    steps: isFr
+      ? [
+          {
+            name: "Décrire votre besoin",
+            text: "Formulaire ou appel rapide. On creuse le contexte, la stack existante et les objectifs.",
+          },
+          {
+            name: "Devis ferme sous 48 h",
+            text: "Périmètre précis, modules IA choisis, prix fixe, délai garanti. Sans engagement avant signature.",
+          },
+          {
+            name: "Cadrage technique",
+            text: "Validation de la stack, connexion aux APIs existantes, alignement avec vos équipes.",
+          },
+          {
+            name: "Build par sprints",
+            text: "Sprints de 1-2 semaines, démos hebdomadaires, validation continue. Pas de tunnel.",
+          },
+          {
+            name: "Livraison + formation incluse",
+            text: "Code livré dans votre infra, formation de vos équipes, documentation complète. C'est à vous.",
+          },
+        ]
+      : [
+          {
+            name: "Describe your need",
+            text: "Form or quick call. We dig into context, existing stack and objectives.",
+          },
+          {
+            name: "Firm quote within 48 h",
+            text: "Precise scope, chosen AI modules, fixed price, guaranteed timeline. No commitment before signing.",
+          },
+          {
+            name: "Technical framing",
+            text: "Stack validation, API connections, alignment with your teams.",
+          },
+          {
+            name: "Sprint-based build",
+            text: "1-2 week sprints, weekly demos, continuous validation. No black box.",
+          },
+          {
+            name: "Delivery + included training",
+            text: "Code delivered into your infra, team training, full documentation. It's yours.",
+          },
+        ],
+  });
+
+  const itemListJsonLd = buildItemListJsonLd({
+    locale: loc,
+    path: "/codage-developpement",
+    name: isFr
+      ? "Services web & digital augmentés par l'IA — Axion-IA"
+      : "AI-augmented web & digital services — Axion-IA",
+    items: [
+      {
+        position: 1,
+        name: isFr ? "Plateforme sur mesure IA-native" : "AI-native custom platform",
+        url: `${isFr ? "/fr" : "/en"}/codage-developpement/web-digital`,
+        description: isFr
+          ? "Conception et développement d'une plateforme web sur mesure avec l'IA intégrée dès la conception."
+          : "Design and development of a custom web platform with AI integrated from day one.",
+      },
+      {
+        position: 2,
+        name: isFr
+          ? "Augmentation IA de plateforme existante"
+          : "AI augmentation of existing platform",
+        url: `${isFr ? "/fr" : "/en"}/codage-developpement/web-digital`,
+        description: isFr
+          ? "Intégration de briques IA (chatbot RAG, search sémantique, agents) sur votre plateforme existante sans refonte."
+          : "Integration of AI bricks (RAG chatbot, semantic search, agents) onto your existing platform without a rebuild.",
+      },
+    ],
+  });
+
   return (
     <>
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={howToJsonLd} />
+      <JsonLd data={itemListJsonLd} />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
