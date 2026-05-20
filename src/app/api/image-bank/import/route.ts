@@ -52,16 +52,48 @@ const IMAGE_TYPES = [
   "logo",
 ] as const;
 
+// Mapping dossiers source → module DB + persona optionnelle.
+// Correspond exactement à l'arborescence "Images Axion-IA/" de l'opérateur.
+const FOLDER_TO_MODULE: Record<
+  string,
+  { module: string; targetPersona?: string; targetCity?: string }
+> = {
+  Audit: { module: "audit" },
+  "Formations & Interventions": { module: "interventions_formations" },
+  "Automatisations et implémentations": { module: "implementations" },
+  "1 TO 1/Dirigeant 1 TO 1": { module: "un-a-un", targetPersona: "dirigeant" },
+  "Dirigeant 1 TO 1": { module: "un-a-un", targetPersona: "dirigeant" },
+  "1 TO 1/Membre d'équipe 1 TO 1": { module: "un-a-un", targetPersona: "equipe" },
+  "Membre d'équipe 1 TO 1": { module: "un-a-un", targetPersona: "equipe" },
+  Logos: { module: "logo" },
+  "Graphiques et courbes": { module: "graphique" },
+  "Tous types de propositions": { module: "proposition" },
+  Villes: { module: "ville" },
+};
+
+function resolveModuleFromFolder(sourceFolder?: string): {
+  module?: string;
+  targetPersona?: string;
+  targetCity?: string;
+} {
+  if (!sourceFolder) return {};
+  const villeMatch = sourceFolder.match(/^Villes\/(.+)$/);
+  if (villeMatch && villeMatch[1]) return { module: "ville", targetCity: villeMatch[1] };
+  return FOLDER_TO_MODULE[sourceFolder] ?? {};
+}
+
 const metaSchema = z.object({
   slug_fr: z
     .string()
     .regex(/^[a-z0-9-]+$/, "Slug doit être kebab-case ASCII")
     .min(5)
     .max(120),
-  category: z.string().min(1).max(80),
+  // source_folder détecte automatiquement le module depuis le dossier.
+  // Si absent, category est utilisé en fallback.
+  source_folder: z.string().max(120).optional(),
+  category: z.string().max(80).optional(),
   image_type: z.enum(IMAGE_TYPES),
-  alt_fr: z.string().min(5).max(500),
-  alt_en: z.string().max(500).optional(),
+  alt_fr: z.string().min(5).max(500).optional(),
 });
 
 // ─── Handler ─────────────────────────────────────────────────────────────────
@@ -113,10 +145,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // 4) Validation métadonnées
   const rawMeta = {
     slug_fr: formData.get("slug_fr"),
-    category: formData.get("category"),
+    source_folder: formData.get("source_folder") ?? undefined,
+    category: formData.get("category") ?? undefined,
     image_type: formData.get("image_type"),
-    alt_fr: formData.get("alt_fr"),
-    alt_en: formData.get("alt_en") ?? undefined,
+    alt_fr: formData.get("alt_fr") ?? undefined,
   };
   const parsedMeta = metaSchema.safeParse(rawMeta);
   if (!parsedMeta.success) {
@@ -125,9 +157,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 422 },
     );
   }
-  // alt_en est parsé pour validation mais stocké non-utilisé ici — la traduction
-  // EN est déléguée au worker image-bank-translate (triggerEnrich: true).
-  const { slug_fr, category, image_type, alt_fr } = parsedMeta.data;
+  const { slug_fr, source_folder, category, image_type, alt_fr } = parsedMeta.data;
+
+  // Résolution automatique du module depuis le dossier source.
+  // Ex. : "Audit" → module="audit", "Villes/Lyon" → module="ville" + city="Lyon"
+  const folderMeta = resolveModuleFromFolder(source_folder);
+  const _resolvedModule = folderMeta.module ?? category ?? "proposition";
 
   // 5) Écriture /tmp sécurisé
   const uuid = randomUUID();
@@ -174,10 +209,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     triggerEnrich: true,
     initialMetadata: {
       slug: slug_fr,
-      altFr: alt_fr,
-      // alt_en sera synchronisé plus tard par le worker image-bank-translate
-      // (FR → EN) déclenché en cascade par triggerEnrich: true.
-      sourceType: image_type === "logo" ? "illustration" : "ai_generated",
+      sourceType: image_type === "logo" ? "illustration" : "photo",
+      ...(alt_fr ? { altFr: alt_fr } : {}),
+      ...(folderMeta.targetCity ? { geoPlacename: folderMeta.targetCity, geoRegion: "FR" } : {}),
     },
   });
 

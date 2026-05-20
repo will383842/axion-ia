@@ -166,6 +166,7 @@ export async function getSectorBreakdownToday(): Promise<SectorBreakdownResult> 
     "interventions_formations",
     "audits",
     "implementations",
+    "un_a_un",
   ];
   const sectorLabels: Record<ServiceSector, string> = {
     interventions_formations: "Interventions & Formations",
