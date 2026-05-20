@@ -178,7 +178,7 @@ function scoreSourcedList<T extends { source: string }>(
  * Calcule la couverture data enrichie d'une ville pilote.
  * Pure — pas d'I/O DB, lit uniquement les fichiers TS curatés.
  */
-export function computeCityCoverage(slug: PilotCitySlug): CityCoverageRow | null {
+export async function computeCityCoverage(slug: PilotCitySlug): Promise<CityCoverageRow | null> {
   const ville = getVille(slug);
   if (!ville) return null;
   const eco = ville.economicData;
@@ -500,9 +500,9 @@ export interface CityCoverageSummary {
 }
 
 export async function getCityCoverage(): Promise<CityCoverageSummary> {
-  const rows = PILOT_CITY_SLUGS.map((slug) => computeCityCoverage(slug)).filter(
-    (r): r is CityCoverageRow => r !== null,
-  );
+  const rows = (
+    await Promise.all(PILOT_CITY_SLUGS.map((slug) => computeCityCoverage(slug)))
+  ).filter((r): r is CityCoverageRow => r !== null);
 
   const indexableCities = rows.filter((r) => r.indexable).length;
   const perfectCities = rows.filter((r) => r.greenCount === r.totalCriteria).length;

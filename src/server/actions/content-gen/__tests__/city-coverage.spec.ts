@@ -14,7 +14,7 @@ import {
 } from "../city-coverage";
 
 describe("city-coverage — PILOT_CITY_SLUGS", () => {
-  it("contient 39 villes pilote (top démo France métropolitaine)", () => {
+  it("contient 39 villes pilote (top démo France métropolitaine)", async () => {
     expect(PILOT_CITY_SLUGS.length).toBe(39);
     expect(PILOT_CITY_SLUGS[0]).toBe("paris");
     expect(PILOT_CITY_SLUGS).toContain("lille");
@@ -24,8 +24,8 @@ describe("city-coverage — PILOT_CITY_SLUGS", () => {
 });
 
 describe("city-coverage — notApplicableFields", () => {
-  it("paris exempte produitsIgpAop et vignoblesProches du scoring", () => {
-    const row = computeCityCoverage("paris")!;
+  it("paris exempte produitsIgpAop et vignoblesProches du scoring", async () => {
+    const row = (await computeCityCoverage("paris"))!;
     const igp = row.dimensions
       .find((d) => d.id === "patrimoine_terroir")!
       .criteria.find((c) => c.id === "produits_igp_aop")!;
@@ -36,16 +36,16 @@ describe("city-coverage — notApplicableFields", () => {
     expect(vignobles.notApplicable).toBe(true);
   });
 
-  it("paris : score patrimoine_terroir = 100% (2 critères N/A exclus, 2 verts)", () => {
-    const row = computeCityCoverage("paris")!;
+  it("paris : score patrimoine_terroir = 100% (2 critères N/A exclus, 2 verts)", async () => {
+    const row = (await computeCityCoverage("paris"))!;
     const patrimoine = row.dimensions.find((d) => d.id === "patrimoine_terroir")!;
     expect(patrimoine.scorePct).toBe(100);
   });
 });
 
 describe("computeCityCoverage — structure 8 dim × 18 critères", () => {
-  it("retourne 8 dimensions par ville", () => {
-    const row = computeCityCoverage("paris")!;
+  it("retourne 8 dimensions par ville", async () => {
+    const row = (await computeCityCoverage("paris"))!;
     expect(row.dimensions.length).toBe(8);
     expect(row.dimensions.map((d) => d.id)).toEqual([
       "identite",
@@ -59,45 +59,45 @@ describe("computeCityCoverage — structure 8 dim × 18 critères", () => {
     ]);
   });
 
-  it.skip("retourne 18 critères éligibles par défaut (sans N/A configuré)", () => {
-    const row = computeCityCoverage("lille")!;
+  it.skip("retourne 18 critères éligibles par défaut (sans N/A configuré)", async () => {
+    const row = (await computeCityCoverage("lille"))!;
     expect(row.totalCriteria).toBe(18);
   });
 
-  it("paris : 16 critères éligibles (2 N/A : IGP + vignobles)", () => {
-    const row = computeCityCoverage("paris")!;
+  it("paris : 16 critères éligibles (2 N/A : IGP + vignobles)", async () => {
+    const row = (await computeCityCoverage("paris"))!;
     expect(row.totalCriteria).toBe(16);
   });
 });
 
 describe("computeCityCoverage — villes sans economicData", () => {
-  it.skip("lille : indexable = false (secteurs NAF absents)", () => {
-    const row = computeCityCoverage("lille")!;
+  it.skip("lille : indexable = false (secteurs NAF absents)", async () => {
+    const row = (await computeCityCoverage("lille"))!;
     expect(row.indexable).toBe(false);
   });
 
-  it.skip("lille : greenCount = 1 (seulement identité INSEE)", () => {
+  it.skip("lille : greenCount = 1 (seulement identité INSEE)", async () => {
     // skip 2026-05-18 — Manon a peuplé economicData Lille (P0-5+ S+3), tests stale.
     // À ré-activer après update fixtures avec nouvelles data Lille.
-    const row = computeCityCoverage("lille")!;
+    const row = (await computeCityCoverage("lille"))!;
     expect(row.greenCount).toBe(1);
   });
 
-  it.skip("lille : globalScorePct = 12.5% (1/8 dim au vert)", () => {
-    const row = computeCityCoverage("lille")!;
+  it.skip("lille : globalScorePct = 12.5% (1/8 dim au vert)", async () => {
+    const row = (await computeCityCoverage("lille"))!;
     expect(row.globalScorePct).toBe(12.5);
   });
 
-  it.skip("lille : lastReviewedOn null tant que data pas vérifiée", () => {
-    const row = computeCityCoverage("lille")!;
+  it.skip("lille : lastReviewedOn null tant que data pas vérifiée", async () => {
+    const row = (await computeCityCoverage("lille"))!;
     expect(row.lastReviewedOn).toBeNull();
   });
 });
 
 describe("computeCityCoverage — slug inexistant", () => {
-  it("retourne null pour slug bidon", () => {
+  it("retourne null pour slug bidon", async () => {
     // @ts-expect-error — runtime test
-    const row = computeCityCoverage("ville-imaginaire-xyz");
+    const row = await computeCityCoverage("ville-imaginaire-xyz");
     expect(row).toBeNull();
   });
 });
@@ -128,18 +128,18 @@ describe("getCityCoverage — summary", () => {
 });
 
 describe("city-coverage — _internal helpers", () => {
-  it("statusScore : green=1, yellow=0.5, red=0", () => {
+  it("statusScore : green=1, yellow=0.5, red=0", async () => {
     expect(_internal.statusScore("green")).toBe(1);
     expect(_internal.statusScore("yellow")).toBe(0.5);
     expect(_internal.statusScore("red")).toBe(0);
   });
 
-  it("avg : moyenne arithmétique stable", () => {
+  it("avg : moyenne arithmétique stable", async () => {
     expect(_internal.avg([1, 2, 3])).toBe(2);
     expect(_internal.avg([])).toBe(0);
   });
 
-  it("8 dimensions canoniques exposées", () => {
+  it("8 dimensions canoniques exposées", async () => {
     expect(_internal.ALL_DIMENSION_IDS).toEqual([
       "identite",
       "economie",
@@ -152,7 +152,7 @@ describe("city-coverage — _internal helpers", () => {
     ]);
   });
 
-  it("scoreSourcedList : 0 item = red, 1 < min = yellow, ≥ min sourcés = green", () => {
+  it("scoreSourcedList : 0 item = red, 1 < min = yellow, ≥ min sourcés = green", async () => {
     const empty = _internal.scoreSourcedList([], 3);
     expect(empty.status).toBe("red");
     const partial = _internal.scoreSourcedList([{ source: "https://x" }], 3);
