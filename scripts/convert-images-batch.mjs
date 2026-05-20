@@ -4,9 +4,9 @@
  * Usage : node scripts/convert-images-batch.mjs
  */
 import sharp from "sharp";
-import { readdir, copyFile } from "fs/promises";
-import { existsSync, mkdirSync } from "fs";
-import { join, basename, extname } from "path";
+import { readdir } from "fs/promises";
+import { mkdirSync } from "fs";
+import { join, basename } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
@@ -17,20 +17,13 @@ const OG_DIR = join(PROJECT_ROOT, "public/og");
 
 /** Détermine les dimensions cibles selon le suffixe du slug */
 function getDimensions(slug) {
-  if (slug.endsWith("-banniere") || slug.includes("-banniere-"))
-    return { w: 1920, h: 1080 };
-  if (slug.endsWith("-carre") || slug.includes("-carre-"))
-    return { w: 1200, h: 1200 };
-  if (slug.endsWith("-affiche"))
-    return { w: 1080, h: 1920 };
-  if (slug.endsWith("-infographie"))
-    return { w: 1200, h: 1600 };
-  if (slug.endsWith("-editorial"))
-    return { w: 1200, h: 800 };
-  if (slug.endsWith("-dataviz"))
-    return { w: 1200, h: 900 };
-  if (slug.includes("-logo-") || slug.includes("-icone-"))
-    return { w: 500, h: 200 };
+  if (slug.endsWith("-banniere") || slug.includes("-banniere-")) return { w: 1920, h: 1080 };
+  if (slug.endsWith("-carre") || slug.includes("-carre-")) return { w: 1200, h: 1200 };
+  if (slug.endsWith("-affiche")) return { w: 1080, h: 1920 };
+  if (slug.endsWith("-infographie")) return { w: 1200, h: 1600 };
+  if (slug.endsWith("-editorial")) return { w: 1200, h: 800 };
+  if (slug.endsWith("-dataviz")) return { w: 1200, h: 900 };
+  if (slug.includes("-logo-") || slug.includes("-icone-")) return { w: 500, h: 200 };
   return { w: 1920, h: 1080 }; // fallback banniere
 }
 
@@ -50,10 +43,7 @@ async function convertImage(srcPath, slug) {
   await img.clone().webp({ quality: 85 }).toFile(webpPath);
   await img.clone().avif({ quality: 60 }).toFile(avifPath);
   // Thumbnail 400px large
-  await sharp(srcPath)
-    .resize(400, null, { fit: "inside" })
-    .webp({ quality: 75 })
-    .toFile(thumbPath);
+  await sharp(srcPath).resize(400, null, { fit: "inside" }).webp({ quality: 75 }).toFile(thumbPath);
 
   return { webpPath, avifPath, thumbPath };
 }
@@ -132,10 +122,7 @@ async function createOGImage() {
         fill="#999">axion-ia.com/fr/galerie</text>
 </svg>`;
 
-  await sharp(Buffer.from(svg))
-    .resize(1200, 630)
-    .webp({ quality: 90 })
-    .toFile(outPath);
+  await sharp(Buffer.from(svg)).resize(1200, 630).webp({ quality: 90 }).toFile(outPath);
 
   console.log("✅ OG image créée :", outPath);
 }
@@ -151,13 +138,12 @@ async function main() {
   // 2. Conversion des 61 nouvelles images
   console.log("\n── Conversion PNG → WebP + AVIF ──────────────");
   const files = await readdir(SOURCE_DIR);
-  const pngFiles = files.filter(
-    (f) => f.startsWith("axion-ia-") && f.endsWith(".png")
-  );
+  const pngFiles = files.filter((f) => f.startsWith("axion-ia-") && f.endsWith(".png"));
 
   console.log(`${pngFiles.length} fichiers PNG à convertir…\n`);
 
-  let ok = 0, failed = 0;
+  let ok = 0,
+    failed = 0;
   for (const file of pngFiles) {
     const slug = basename(file, ".png");
     const srcPath = join(SOURCE_DIR, file);
