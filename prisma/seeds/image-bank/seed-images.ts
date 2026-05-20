@@ -1,5 +1,5 @@
 /**
- * Seeder image bank — 72 ImageAssets + translations FR
+ * Seeder image bank — 133 ImageAssets + translations FR
  * Usage (depuis /app dans le container) :
  *   npx tsx prisma/seeds/image-bank/seed-images.ts
  * Idempotent (upsert par slug).
@@ -493,10 +493,412 @@ const IMAGE_ENTRIES: ImageEntry[] = [
     geoPlacename: "Lyon, Auvergne-Rhône-Alpes, France",
     keywordsPrimary: "formation IA Lyon Presqu'île Fourvière",
   },
+
+  // ── IMPLÉMENTATIONS — Devis & Commercial (4) ─────────────────────────────
+  {
+    slug: "axion-ia-devis-automatise-30-secondes-envoi-gain-temps-banniere",
+    module: "implementations",
+    subModule: "devis-auto",
+    keywordsPrimary: "devis automatisé 30 secondes envoi IA PME",
+  },
+  {
+    slug: "axion-ia-devis-envoye-28-secondes-avant-raccrochage-client-affiche",
+    module: "implementations",
+    subModule: "devis-auto",
+    keywordsPrimary: "devis envoyé 28 secondes avant raccrochage client IA",
+  },
+  {
+    slug: "axion-ia-transformation-chaos-devis-rentabilite-croissance-banniere",
+    module: "implementations",
+    subModule: "devis-auto",
+    keywordsPrimary: "transformation chaos devis rentabilité croissance IA",
+  },
+  {
+    slug: "axion-ia-5-heures-saisie-supprimees-gain-temps-entreprise-ia-banniere",
+    module: "implementations",
+    subModule: "saisie-auto",
+    keywordsPrimary: "5 heures saisie supprimées gain temps entreprise IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Facturation & Comptabilité (4) ─────────────────────
+  {
+    slug: "axion-ia-facturation-automatique-flux-ia-tva-zero-saisie-infographie",
+    module: "implementations",
+    subModule: "facturation-auto",
+    keywordsPrimary: "facturation automatique IA TVA zéro saisie manuelle",
+  },
+  {
+    slug: "axion-ia-flux-facturation-ia-zero-saisie-manuelle-infographie",
+    module: "implementations",
+    subModule: "facturation-auto",
+    keywordsPrimary: "flux facturation IA zéro saisie manuelle mission encaissement",
+  },
+  {
+    slug: "axion-ia-gestion-factures-comptabilite-capture-extraction-validation-ia-banniere",
+    module: "implementations",
+    subModule: "comptabilite-auto",
+    keywordsPrimary: "gestion factures comptabilité capture extraction validation IA",
+  },
+  {
+    slug: "axion-ia-validation-document-tampon-comptabilite-controle-ia-carre",
+    module: "implementations",
+    subModule: "comptabilite-auto",
+    keywordsPrimary: "validation document tampon comptabilité contrôle IA automatique",
+  },
+
+  // ── IMPLÉMENTATIONS — Gestion Emails & Messagerie (5) ────────────────────
+  {
+    slug: "axion-ia-tri-emails-847-recus-1-compte-ia-carre",
+    module: "implementations",
+    subModule: "gestion-emails",
+    keywordsPrimary: "tri emails 847 reçus 1 compte IA automatique",
+  },
+  {
+    slug: "axion-ia-inondation-emails-mur-brisant-automatisation-ia-banniere",
+    module: "implementations",
+    subModule: "gestion-emails",
+    keywordsPrimary: "inondation emails mur automatisation IA protection",
+  },
+  {
+    slug: "axion-ia-tri-emails-inbox-3h-a-20min-entonnoir-ia-banniere",
+    module: "implementations",
+    subModule: "gestion-emails",
+    keywordsPrimary: "tri emails inbox 3h à 20min entonnoir IA automatique",
+  },
+  {
+    slug: "axion-ia-boite-mail-liberte-automatisation-emails-ia-affiche",
+    module: "implementations",
+    subModule: "gestion-emails",
+    keywordsPrimary: "boîte mail liberté automatisation emails IA",
+  },
+  {
+    slug: "axion-ia-envoi-message-numerique-automatique-campagne-email-affiche",
+    module: "implementations",
+    subModule: "email-auto",
+    keywordsPrimary: "envoi message numérique automatique campagne email IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Courrier & Documents (2) ───────────────────────────
+  {
+    slug: "axion-ia-traitement-courrier-intelligent-ia-3h-a-20min-affiche",
+    module: "implementations",
+    subModule: "gestion-courrier",
+    keywordsPrimary: "traitement courrier intelligent IA 3h à 20min automatique",
+  },
+  {
+    slug: "axion-ia-tampon-validation-encre-terracotta-automatisation-documents-banniere",
+    module: "implementations",
+    subModule: "gestion-courrier",
+    keywordsPrimary: "tampon validation document automatisation IA terracotta",
+  },
+
+  // ── IMPLÉMENTATIONS — Relance & CRM Client (5) ───────────────────────────
+  {
+    slug: "axion-ia-relance-clients-zero-manuel-100-pourcent-automatique-carre",
+    module: "implementations",
+    subModule: "relance-client",
+    keywordsPrimary: "relance clients zéro manuel 100% automatique IA",
+  },
+  {
+    slug: "axion-ia-accueil-client-vip-automatique-onboarding-crm-banniere",
+    module: "implementations",
+    subModule: "crm-client",
+    keywordsPrimary: "accueil client VIP automatique onboarding CRM IA",
+  },
+  {
+    slug: "axion-ia-relance-clients-nuit-virement-3200-euros-ia-carre",
+    module: "implementations",
+    subModule: "relance-client",
+    keywordsPrimary: "relance clients nuit virement 3200€ IA automatique",
+  },
+  {
+    slug: "axion-ia-relance-clients-boutique-sms-anniversaire-fidelisation-ia-carre",
+    module: "implementations",
+    subModule: "relance-client",
+    keywordsPrimary: "relance clients boutique SMS anniversaire fidélisation IA",
+  },
+  {
+    slug: "axion-ia-crm-boutique-12-clients-absents-34-pourcent-retour-relance-carre",
+    module: "implementations",
+    subModule: "crm-boutique",
+    keywordsPrimary: "CRM boutique 12 clients absents 34% retour relance IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Réunions & Compte-Rendus (5) ───────────────────────
+  {
+    slug: "axion-ia-reunion-chaos-ia-clarifie-contexte-decision-actions-affiche",
+    module: "implementations",
+    subModule: "compte-rendu-ia",
+    keywordsPrimary: "réunion chaos IA clarifié contexte décision actions automatisé",
+  },
+  {
+    slug: "axion-ia-reunion-1-heure-compte-rendu-4-minutes-ia-sablier-banniere",
+    module: "implementations",
+    subModule: "compte-rendu-ia",
+    keywordsPrimary: "réunion 1 heure compte-rendu 4 minutes IA sablier",
+  },
+  {
+    slug: "axion-ia-reunion-compte-rendu-ia-vue-aerienne-table-carre",
+    module: "implementations",
+    subModule: "compte-rendu-ia",
+    keywordsPrimary: "réunion compte-rendu IA automatique vue aérienne table",
+  },
+  {
+    slug: "axion-ia-compte-rendu-reunion-ecrit-automatiquement-equipe-bureau-banniere",
+    module: "implementations",
+    subModule: "compte-rendu-ia",
+    keywordsPrimary: "compte-rendu réunion écrit automatiquement équipe bureau IA",
+  },
+  {
+    slug: "axion-ia-transcription-reunion-microphone-60min-a-5min-ia-banniere",
+    module: "implementations",
+    subModule: "compte-rendu-ia",
+    keywordsPrimary: "transcription réunion microphone 60min à 5min IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Transcription & Analyse (2) ────────────────────────
+  {
+    slug: "axion-ia-transcription-audio-flux-donnees-ia-automatique-carre",
+    module: "implementations",
+    subModule: "transcription-ia",
+    keywordsPrimary: "transcription audio flux données IA automatique",
+  },
+  {
+    slug: "axion-ia-cerveau-ia-analyse-donnees-60-min-a-4-min-carre",
+    module: "implementations",
+    subModule: "analyse-ia",
+    keywordsPrimary: "cerveau IA analyse données 60 minutes à 4 minutes",
+  },
+
+  // ── IMPLÉMENTATIONS — Commandes Fournisseurs (3) ─────────────────────────
+  {
+    slug: "axion-ia-commande-fournisseur-45min-a-0min-automatique-boulangerie-carre",
+    module: "implementations",
+    subModule: "commande-fournisseur",
+    keywordsPrimary: "commande fournisseur 45min à 0min automatique boulangerie IA",
+  },
+  {
+    slug: "axion-ia-commande-farine-boulangerie-automatique-sans-saisie-carre",
+    module: "implementations",
+    subModule: "commande-fournisseur",
+    keywordsPrimary: "commande farine boulangerie automatique sans saisie IA",
+  },
+  {
+    slug: "axion-ia-commande-fournisseur-5-etapes-ventes-stock-boulangerie-carre",
+    module: "implementations",
+    subModule: "commande-fournisseur",
+    keywordsPrimary: "commande fournisseur 5 étapes ventes stock boulangerie IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Stocks & Boucherie (5) ─────────────────────────────
+  {
+    slug: "axion-ia-gestion-stocks-boucherie-zero-rupture-zero-surstock-ia-carre",
+    module: "implementations",
+    subModule: "gestion-stocks",
+    keywordsPrimary: "gestion stocks boucherie zéro rupture zéro surstock IA",
+  },
+  {
+    slug: "axion-ia-optimisation-vente-viande-boucherie-flux-ia-carre",
+    module: "implementations",
+    subModule: "gestion-stocks",
+    keywordsPrimary: "optimisation vente viande boucherie flux IA automatisé",
+  },
+  {
+    slug: "axion-ia-reduction-dechets-viande-300-a-47-euros-reassort-ia-carre",
+    module: "implementations",
+    subModule: "gestion-stocks",
+    keywordsPrimary: "réduction déchets viande 300€ à 47€ réassort automatique IA",
+  },
+  {
+    slug: "axion-ia-tableau-bord-boucherie-zero-invendu-zero-rupture-zero-calcul-carre",
+    module: "implementations",
+    subModule: "gestion-stocks",
+    keywordsPrimary: "tableau bord boucherie zéro invendu zéro rupture zéro calcul IA",
+  },
+  {
+    slug: "axion-ia-gestion-stocks-prevision-j45-commandes-automatiques-ia-infographie",
+    module: "implementations",
+    subModule: "gestion-stocks",
+    keywordsPrimary: "gestion stocks prévision J+45 commandes automatiques IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Recrutement & RH (6) ───────────────────────────────
+  {
+    slug: "axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere",
+    module: "implementations",
+    subModule: "recrutement-auto",
+    keywordsPrimary: "recrutement IA 8 semaines à 3 semaines 80% automatisé",
+  },
+  {
+    slug: "axion-ia-onboarding-rh-j-5-j90-90-pourcent-automatise-collaborateur-banniere",
+    module: "implementations",
+    subModule: "onboarding-rh",
+    keywordsPrimary: "onboarding RH J-5 à J+90 90% automatisé collaborateur IA",
+  },
+  {
+    slug: "axion-ia-selection-cv-200-candidatures-3-minutes-entonnoir-ia-banniere",
+    module: "implementations",
+    subModule: "recrutement-auto",
+    keywordsPrimary: "sélection CV 200 candidatures 3 minutes entonnoir IA",
+  },
+  {
+    slug: "axion-ia-meilleur-candidat-etoile-or-parmi-200-cv-3-min-banniere",
+    module: "implementations",
+    subModule: "recrutement-auto",
+    keywordsPrimary: "meilleur candidat étoile or parmi 200 CV 3 minutes IA",
+  },
+  {
+    slug: "axion-ia-selection-meilleur-candidat-pyramide-cv-ia-affiche",
+    module: "implementations",
+    subModule: "recrutement-auto",
+    keywordsPrimary: "sélection meilleur candidat pyramide CV le bon trouvé IA",
+  },
+  {
+    slug: "axion-ia-detection-profil-ideal-foule-ia-ne-cherche-pas-elle-trouve-carre",
+    module: "implementations",
+    subModule: "recrutement-auto",
+    keywordsPrimary: "détection profil idéal foule IA ne cherche pas elle trouve",
+  },
+
+  // ── IMPLÉMENTATIONS — Support Client & Réclamations (2) ──────────────────
+  {
+    slug: "axion-ia-traitement-reclamations-312-semaine-4-minutes-ia-banniere",
+    module: "implementations",
+    subModule: "support-client",
+    keywordsPrimary: "traitement réclamations 312 par semaine 4 minutes IA",
+  },
+  {
+    slug: "axion-ia-support-client-reclamation-reponse-ia-34-secondes-affiche",
+    module: "implementations",
+    subModule: "support-client",
+    keywordsPrimary: "support client réclamation réponse IA 34 secondes automatique",
+  },
+
+  // ── IMPLÉMENTATIONS — Analyse Contrats (1) ───────────────────────────────
+  {
+    slug: "axion-ia-analyse-contrat-clauses-risque-68-pages-2-minutes-ia-banniere",
+    module: "implementations",
+    subModule: "analyse-contrats",
+    keywordsPrimary: "analyse contrat clauses risque 68 pages 2 minutes IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Lead & Marketing Automation (3) ────────────────────
+  {
+    slug: "axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere",
+    module: "implementations",
+    subModule: "lead-scoring",
+    keywordsPrimary: "pipeline lead IA zéro intervention humaine 7 étapes automatique",
+  },
+  {
+    slug: "axion-ia-pipeline-marketing-lead-qualifie-scoring-crm-ia-banniere",
+    module: "implementations",
+    subModule: "marketing-auto",
+    keywordsPrimary: "pipeline marketing lead qualifié scoring CRM IA",
+  },
+  {
+    slug: "axion-ia-crm-scoring-contacts-action-automatique-bon-moment-banniere",
+    module: "implementations",
+    subModule: "crm-scoring",
+    keywordsPrimary: "CRM scoring contacts action automatique bon moment IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Reporting & Tableaux de Bord (4) ───────────────────
+  {
+    slug: "axion-ia-rapport-performance-hebdomadaire-automatique-lundi-matin-banniere",
+    module: "implementations",
+    subModule: "reporting-auto",
+    keywordsPrimary: "rapport performance hebdomadaire automatique lundi matin IA",
+  },
+  {
+    slug: "axion-ia-reporting-executif-ca-1248000-euros-marge-leads-ia-banniere",
+    module: "implementations",
+    subModule: "reporting-executif",
+    keywordsPrimary: "reporting exécutif CA 1.248.000€ marge brute leads IA",
+  },
+  {
+    slug: "axion-ia-prevision-tresorerie-90-jours-zero-saisie-zero-surprise-banniere",
+    module: "implementations",
+    subModule: "tresorerie-ia",
+    keywordsPrimary: "prévision trésorerie 90 jours zéro saisie zéro surprise IA",
+  },
+  {
+    slug: "axion-ia-gain-productivite-45-pourcent-bureau-implementation-ia-banniere",
+    module: "implementations",
+    subModule: "productivite",
+    keywordsPrimary: "gain productivité 45% bureau implémentation IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Veille & Marchés Publics (3) ───────────────────────
+  {
+    slug: "axion-ia-veille-concurrentielle-847-sources-12-signaux-ia-banniere",
+    module: "implementations",
+    subModule: "veille-concurrentielle",
+    keywordsPrimary: "veille concurrentielle 847 sources 12 signaux détectés IA",
+  },
+  {
+    slug: "axion-ia-veille-marches-publics-47000-sources-opportunites-ia-banniere",
+    module: "implementations",
+    subModule: "marches-publics",
+    keywordsPrimary: "veille marchés publics 47000 sources opportunités IA",
+  },
+  {
+    slug: "axion-ia-marches-publics-score-opportunites-dossier-prepare-ia-banniere",
+    module: "implementations",
+    subModule: "marches-publics",
+    keywordsPrimary: "marchés publics score opportunités dossier préparé IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Dispatch & Planning Chantier (2) ───────────────────
+  {
+    slug: "axion-ia-dispatch-interventions-carte-technicien-bon-endroit-ia-banniere",
+    module: "implementations",
+    subModule: "dispatch-interventions",
+    keywordsPrimary: "dispatch interventions carte technicien bon endroit IA automatique",
+  },
+  {
+    slug: "axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere",
+    module: "implementations",
+    subModule: "planification-chantier",
+    keywordsPrimary: "planning chantier Gantt IA conflits détectés temps réel",
+  },
+
+  // ── IMPLÉMENTATIONS — Web & Personnalisation (1) ─────────────────────────
+  {
+    slug: "axion-ia-personnalisation-temps-reel-2847-visiteurs-experience-unique-ia-banniere",
+    module: "implementations",
+    subModule: "personnalisation-web",
+    keywordsPrimary: "personnalisation temps réel 2847 visiteurs expérience unique IA",
+  },
+
+  // ── IMPLÉMENTATIONS — Contenu, Process & Architecture (4) ────────────────
+  {
+    slug: "axion-ia-generation-contenu-6-formats-4-minutes-brief-ia-infographie",
+    module: "implementations",
+    subModule: "generation-contenu",
+    keywordsPrimary: "génération contenu 6 formats 4 minutes brief IA automatique",
+  },
+  {
+    slug: "axion-ia-equilibre-moins-effort-plus-resultats-optimisation-ia-carre",
+    module: "implementations",
+    subModule: "optimisation-processus",
+    keywordsPrimary: "équilibre moins effort plus résultats optimisation IA",
+  },
+  {
+    slug: "axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie",
+    module: "implementations",
+    subModule: "comparaison-ia",
+    keywordsPrimary: "comparatif actions humaines vs automatisation IA 7 étapes",
+  },
+  {
+    slug: "axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere",
+    module: "implementations",
+    subModule: "consolidation-groupe",
+    keywordsPrimary: "architecture groupe international consolidation financière RH IA",
+  },
 ];
 
 async function main() {
-  console.log("🌱 Axion-IA Image Bank — Seeder 72 images\n");
+  console.log("🌱 Axion-IA Image Bank — Seeder 133 images\n");
   let upserted = 0;
   let errors = 0;
 
