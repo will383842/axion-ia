@@ -192,6 +192,9 @@ export const routing = defineRouting({
       en: "/one-to-one/by-city/[ville]",
     },
 
+    // Module 3B — Web & Digital augmentés par l'IA (G3B)
+    "/codage-developpement/web-digital": "/codage-developpement/web-digital",
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {
