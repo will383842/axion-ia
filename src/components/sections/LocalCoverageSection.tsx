@@ -28,7 +28,7 @@ export interface LocalCoverageSectionProps {
   serviceLabelFr: string;
   serviceLabelEn: string;
   /** Slug du service pour les data-attributes (ex "audit", "interventions"). */
-  serviceSlug: "audit" | "interventions" | "implementation";
+  serviceSlug: "audit" | "interventions" | "implementation" | "codage-developpement" | "un-a-un";
   /** Tone éditorial — `paper` (clair) ou `sand` (ivoire chaud). */
   tone?: "paper" | "sand";
 }

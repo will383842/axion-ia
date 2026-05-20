@@ -12,6 +12,8 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -335,6 +337,18 @@ export default async function CodageDeveloppementHub({ params }: Props) {
           })}
         </ul>
       </Section>
+
+      {/* COUVERTURE NATIONALE */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="Le développement web & digital IA"
+        serviceLabelEn="AI web & digital development"
+        serviceSlug="codage-developpement"
+        tone="sand"
+      />
+
+      {/* FAQ GÉOLOCALISÉE GEO */}
+      <LocalGeoFaqSection isFr={isFr} service="codage-developpement" tone="paper" />
 
       {/* FAQ AEO */}
       <Section

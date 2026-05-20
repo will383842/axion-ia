@@ -14,6 +14,8 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -717,6 +719,18 @@ export default async function WebDigitalPage({ params }: Props) {
           </div>
         </div>
       </Section>
+
+      {/* COUVERTURE NATIONALE */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="Le développement web & digital IA"
+        serviceLabelEn="AI web & digital development"
+        serviceSlug="codage-developpement"
+        tone="paper"
+      />
+
+      {/* FAQ GEO */}
+      <LocalGeoFaqSection isFr={isFr} service="codage-developpement" tone="sand" />
 
       {/* FAQ */}
       <Section
