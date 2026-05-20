@@ -31,7 +31,7 @@ const KW_WEB_DIGITAL_TRANSACTIONNEL: KeywordSeed[] = [
       h1: "Intégrer l'IA dans votre site web PME — chatbot, search, personnalisation",
       metaTitle: "Intégrer l'IA dans votre site web PME | Axion-IA",
       metaDescription:
-        "Axion-IA greffe l'IA sur votre site existant : chatbot RAG, recherche sémantique, personnalisation. Livraison 3-6 semaines, sans refonte.",
+        "Axion-IA greffe l'IA sur votre site ou application : chatbot RAG, recherche sémantique, personnalisation. Next.js, Laravel, Shopify. Livraison 3-6 semaines.",
       h2Variants: [
         "Pourquoi augmenter votre site avec l'IA plutôt que le refaire ?",
         "3 briques IA à greffer sur n'importe quel site web PME",
@@ -372,7 +372,7 @@ const KW_WEB_DIGITAL_INFO_AEO: KeywordSeed[] = [
     note: "AEO PAA fort. schema.org FAQPage.",
   },
   {
-    keyword: "intégrer IA dans WordPress sans refonte",
+    keyword: "intégrer IA dans application Next.js Laravel existante",
     intent: "informationnel",
     kbType: "guide",
     module: "codage-developpement",
@@ -380,12 +380,12 @@ const KW_WEB_DIGITAL_INFO_AEO: KeywordSeed[] = [
     priorite: 2,
     niveau: 3,
     injection: {
-      h1: "Intégrer l'IA dans un site WordPress sans tout refaire — guide 2026",
-      metaTitle: "Intégrer IA WordPress sans refonte — guide Axion-IA",
+      h1: "Intégrer l'IA dans une application Next.js ou Laravel — guide technique 2026",
+      metaTitle: "Intégrer IA Next.js Laravel application — Axion-IA",
       metaDescription:
-        "Chatbot, search sémantique, génération de contenu : 3 façons d'ajouter l'IA à un site WordPress existant sans migration ni refonte. Guide Axion-IA.",
+        "Chatbot RAG, search sémantique, assistant LLM : 3 façons d'ajouter l'IA dans une application Next.js ou Laravel sans tout refaire. Guide Axion-IA.",
     },
-    urlCible: "/fr/blog/integrer-ia-wordpress-sans-refonte",
+    urlCible: "/fr/blog/integrer-ia-application-nextjs-laravel",
     canonicalParent: "/fr/codage-developpement/web-digital",
     source: "manuel",
   },

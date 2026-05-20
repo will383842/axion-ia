@@ -56,13 +56,13 @@ export default async function WebDigitalPage({ params }: Props) {
     ? [
         { icon: Clock, label: "Livraison 3 à 6 semaines" },
         { icon: ShieldCheck, label: "Pas de refonte — on greffe sur l'existant" },
-        { icon: Code2, label: "Compatible WordPress, Shopify, custom" },
+        { icon: Code2, label: "Next.js, Laravel, Shopify, toute stack avec API" },
         { icon: Sparkles, label: "Données hébergées en UE · RGPD natif" },
       ]
     : [
         { icon: Clock, label: "Delivery 3 to 6 weeks" },
         { icon: ShieldCheck, label: "No redesign — we graft onto what exists" },
-        { icon: Code2, label: "Compatible WordPress, Shopify, custom" },
+        { icon: Code2, label: "Next.js, Laravel, Shopify, any API-enabled stack" },
         { icon: Sparkles, label: "EU hosting · GDPR by design" },
       ];
 
@@ -101,7 +101,7 @@ export default async function WebDigitalPage({ params }: Props) {
           description:
             "Contenu, CTAs et offres adaptés au profil de chaque visiteur (secteur, historique, source). Sans cookie tiers — IA côté serveur, RGPD strict.",
           metric: "−30 %",
-          metricLabel: "abandon de panier",
+          metricLabel: "visiteurs perdus sans action",
           delay: "6 semaines",
         },
       ]
@@ -139,7 +139,7 @@ export default async function WebDigitalPage({ params }: Props) {
           description:
             "Content, CTAs and offers adapted to each visitor's profile (sector, history, source). No third-party cookie — server-side AI, strict GDPR.",
           metric: "−30%",
-          metricLabel: "cart abandonment",
+          metricLabel: "visitors lost without action",
           delay: "6 weeks",
         },
       ];
@@ -150,14 +150,14 @@ export default async function WebDigitalPage({ params }: Props) {
           type: "E-commerce",
           stack: "Shopify / WooCommerce / custom",
           before:
-            "Visiteurs qui cherchent mal, abandonnent le panier, posent les mêmes questions SAV.",
+            "Visiteurs qui ne trouvent pas le bon produit, quittent sans acheter, posent les mêmes questions SAV.",
           after:
-            "Search IA qui comprend, chatbot SAV intégré, recommandations produit. Conversion mesurée semaine 1.",
+            "Search IA qui comprend l'intention, chatbot SAV intégré, recommandations produit. Conversion mesurée semaine 1.",
           metric: "+18 % conversion",
         },
         {
-          type: "Site vitrine / CMS",
-          stack: "WordPress / Webflow / Drupal",
+          type: "Site vitrine / institutionnel",
+          stack: "Webflow, Next.js, site custom ou toute stack avec API",
           before: "Visiteurs qui quittent sans convertir, formulaires de contact peu remplis.",
           after:
             "Chatbot IA qui qualifie et guide chaque visiteur vers le bon service, disponible 24h/7j.",
@@ -177,14 +177,15 @@ export default async function WebDigitalPage({ params }: Props) {
         {
           type: "E-commerce",
           stack: "Shopify / WooCommerce / custom",
-          before: "Visitors who search poorly, abandon carts, ask the same support questions.",
+          before:
+            "Visitors who can't find the right product, leave without buying, ask the same SAV questions.",
           after:
-            "AI search that understands, integrated support chatbot, product recommendations. Conversion measured week 1.",
+            "AI search that understands intent, integrated support chatbot, product recommendations. Conversion measured week 1.",
           metric: "+18% conversion",
         },
         {
-          type: "Showcase / CMS site",
-          stack: "WordPress / Webflow / Drupal",
+          type: "Showcase / institutional site",
+          stack: "Webflow, Next.js, custom site or any API-enabled stack",
           before: "Visitors who leave without converting, contact forms rarely filled.",
           after: "AI chatbot qualifying and guiding each visitor to the right service, 24/7.",
           metric: "−60% support tickets",
@@ -599,17 +600,15 @@ export default async function WebDigitalPage({ params }: Props) {
             <ul className="space-y-2.5">
               {(isFr
                 ? [
-                    "Refonte ou création de site web from scratch",
+                    "Création de site web from scratch",
                     "Design UX/UI, charte graphique",
                     "Développement mobile natif (iOS/Android)",
-                    "Certification Shopify Partner",
                     "Hébergement web ou infra généraliste",
                   ]
                 : [
-                    "Website redesign or creation from scratch",
+                    "Website creation from scratch",
                     "UX/UI design, visual identity",
                     "Native mobile development (iOS/Android)",
-                    "Shopify Partner certification",
                     "Web hosting or general infrastructure",
                   ]
               ).map((item) => (
