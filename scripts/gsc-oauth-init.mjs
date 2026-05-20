@@ -19,7 +19,7 @@ const CLIENT_JSON = path.join(ROOT, ".secrets", "gsc-oauth-client.json");
 const ENV_FILE = path.join(ROOT, ".secrets", "api-tokens.env");
 const PORT = 8765;
 const REDIRECT_URI = `http://localhost:${PORT}`;
-const SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
+const SCOPE = "https://www.googleapis.com/auth/webmasters"; // read+write requis pour sitemaps.submit
 
 function log(msg) {
   process.stdout.write(`[gsc-oauth-init] ${msg}\n`);
