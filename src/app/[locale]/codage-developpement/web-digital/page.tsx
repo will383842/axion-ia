@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/codage-developpement/web-digital",
     title: isFr
-      ? "Intégrer l'IA dans votre site web PME | Axion-IA"
-      : "Add AI to your website | Axion-IA",
+      ? "Plateforme web IA-native ou site augmenté | Axion-IA"
+      : "AI-native web platform or site augmentation | Axion-IA",
     description: isFr
-      ? "Axion-IA greffe l'IA sur votre site existant : chatbot RAG, recherche sémantique, personnalisation. Livraison 3-6 semaines, sans refonte."
-      : "Axion-IA adds AI to your existing website: RAG chatbot, semantic search, personalization. 3-6 week delivery, no redesign needed.",
+      ? "Axion-IA conçoit des plateformes web sur mesure IA-native (Next.js, Laravel, Postgres) ou greffe l'IA sur votre existant. Chatbot RAG, search sémantique, automatisations. Devis 48 h."
+      : "Axion-IA builds AI-native custom platforms (Next.js, Laravel, Postgres) or grafts AI onto your existing stack. RAG chatbot, semantic search, automations. Quote in 48 h.",
   });
 }
 
@@ -55,14 +55,14 @@ export default async function WebDigitalPage({ params }: Props) {
   const trustItems = isFr
     ? [
         { icon: Clock, label: "Livraison 3 à 6 semaines" },
-        { icon: ShieldCheck, label: "Pas de refonte — on greffe sur l'existant" },
-        { icon: Code2, label: "Next.js, Laravel, Shopify, toute stack avec API" },
+        { icon: ShieldCheck, label: "Build IA-native ou augmentation de l'existant" },
+        { icon: Code2, label: "Next.js, Laravel, Postgres, MySQL, Vite" },
         { icon: Sparkles, label: "Données hébergées en UE · RGPD natif" },
       ]
     : [
         { icon: Clock, label: "Delivery 3 to 6 weeks" },
-        { icon: ShieldCheck, label: "No redesign — we graft onto what exists" },
-        { icon: Code2, label: "Next.js, Laravel, Shopify, any API-enabled stack" },
+        { icon: ShieldCheck, label: "AI-native build or augmentation of existing stack" },
+        { icon: Code2, label: "Next.js, Laravel, Postgres, MySQL, Vite" },
         { icon: Sparkles, label: "EU hosting · GDPR by design" },
       ];
 
@@ -81,18 +81,18 @@ export default async function WebDigitalPage({ params }: Props) {
           icon: "🔍",
           title: "Recherche sémantique",
           description:
-            "L'IA comprend l'intention derrière la requête, pas juste les mots. Résultats pertinents même avec des fautes ou des synonymes. +25 % de clics vers panier.",
-          metric: "+25 %",
-          metricLabel: "clics vers panier",
+            "L'IA comprend l'intention derrière la requête, pas juste les mots. Résultats pertinents même avec des formulations approximatives ou des synonymes métier.",
+          metric: "+40 %",
+          metricLabel: "requêtes résolues précisément",
           delay: "2 semaines",
         },
         {
           icon: "⭐",
-          title: "Recommandations produit",
+          title: "Suggestions intelligentes",
           description:
-            "Moteur IA qui analyse le comportement visiteur et suggère les produits les plus pertinents. Compatible WooCommerce, Shopify et catalogues custom.",
+            "Moteur IA qui analyse le comportement de chaque utilisateur et suggère le contenu, la fonctionnalité ou la ressource la plus pertinente à l'instant T.",
           metric: "+18 %",
-          metricLabel: "taux de conversion",
+          metricLabel: "taux d'engagement",
           delay: "4 semaines",
         },
         {
@@ -119,18 +119,18 @@ export default async function WebDigitalPage({ params }: Props) {
           icon: "🔍",
           title: "Semantic search",
           description:
-            "AI understands the intent behind the query, not just the words. Relevant results even with typos or synonyms. +25% more cart clicks.",
-          metric: "+25%",
-          metricLabel: "cart click increase",
+            "AI understands the intent behind the query, not just the words. Relevant results even with approximate phrasing or business-specific synonyms.",
+          metric: "+40%",
+          metricLabel: "queries resolved precisely",
           delay: "2 weeks",
         },
         {
           icon: "⭐",
-          title: "Product recommendations",
+          title: "Smart suggestions",
           description:
-            "AI engine that analyzes visitor behaviour and suggests the most relevant products. Compatible with WooCommerce, Shopify and custom catalogues.",
+            "AI engine that analyses each user's behaviour and suggests the most relevant content, feature or resource at the right moment.",
           metric: "+18%",
-          metricLabel: "conversion rate",
+          metricLabel: "engagement rate",
           delay: "4 weeks",
         },
         {
@@ -299,7 +299,7 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-cout",
           question: "Combien ça coûte d'intégrer l'IA dans un site web ?",
           answer:
-            "De 2 000 € (chatbot simple sur une FAQ) à 15 000-25 000 € (search + recommandations + personnalisation sur un e-commerce). Toujours en forfait fixe, devis ferme avant démarrage.",
+            "De 2 000 € (chatbot RAG sur une base documentaire) à 30 000 €+ (plateforme sur mesure complète avec IA intégrée). Toujours en forfait fixe, devis ferme avant démarrage.",
         },
         {
           id: "q-proprio",
@@ -331,13 +331,13 @@ export default async function WebDigitalPage({ params }: Props) {
           id: "q-time",
           question: "How fast is it operational?",
           answer:
-            "A simple FAQ chatbot is live in 3 weeks. An e-commerce recommendation engine with personalization: 5-6 weeks. We deliver module by module, you see results before the end of the project.",
+            "A RAG chatbot is operational in 3 weeks. A full custom platform with integrated AI: 6 to 12 weeks depending on scope. We deliver module by module, you see results before the end of the project.",
         },
         {
           id: "q-cost",
           question: "How much does it cost to add AI to a website?",
           answer:
-            "From €2,000 (simple chatbot on a FAQ) to €15,000-25,000 (search + recommendations + personalization on an e-commerce). Always fixed fee, firm quote before kick-off.",
+            "From €2,000 (RAG chatbot on a knowledge base) to €30,000+ (full custom platform with integrated AI). Always fixed fee, firm quote before kick-off.",
         },
         {
           id: "q-owner",
@@ -354,8 +354,8 @@ export default async function WebDigitalPage({ params }: Props) {
       ? "Web & Digital augmentés par l'IA · Axion-IA"
       : "AI-augmented web & digital · Axion-IA",
     description: isFr
-      ? "Intégration de briques IA sur vos sites et applications existants : chatbot RAG, recherche sémantique, recommandations produit, personnalisation dynamique. Compatible WordPress, Shopify, custom. Livraison 3 à 6 semaines."
-      : "AI brick integration on your existing sites and apps: RAG chatbot, semantic search, product recommendations, dynamic personalization. WordPress, Shopify, custom compatible. 3 to 6 week delivery.",
+      ? "Conception de plateformes web sur mesure IA-native (Next.js, Laravel, Postgres) ou intégration de briques IA sur plateforme existante : chatbot RAG, recherche sémantique, agents, automatisations. Devis ferme 48 h."
+      : "Custom AI-native web platform design (Next.js, Laravel, Postgres) or AI brick integration on existing platforms: RAG chatbot, semantic search, agents, automations. Firm quote in 48 h.",
     serviceType: "AI web integration",
   });
 
@@ -578,8 +578,8 @@ export default async function WebDigitalPage({ params }: Props) {
         titleEm={isFr ? "stack" : "stack"}
         description={
           isFr
-            ? "L'approche est la même : on part de l'existant, on greffe l'IA, on mesure le résultat."
-            : "The approach is the same: we start from what exists, graft AI, measure the result."
+            ? "Nouvelle plateforme ou existante — l'IA est au cœur, les automatisations sont intégrées, les résultats sont mesurés."
+            : "New platform or existing one — AI is at the core, automations are built in, results are measured."
         }
       >
         <ul className="grid gap-5 lg:grid-cols-3">
@@ -630,11 +630,11 @@ export default async function WebDigitalPage({ params }: Props) {
       <Section
         eyebrow={isFr ? "Comment ça se passe" : "How it runs"}
         title={isFr ? "5 étapes," : "5 steps,"}
-        titleEm={isFr ? "sans refonte" : "no redesign"}
+        titleEm={isFr ? "nouvelle ou existante" : "new or existing"}
         description={
           isFr
-            ? "On s'intègre à votre environnement existant. Pas de migration, pas de downtime, pas de surprise."
-            : "We integrate into your existing environment. No migration, no downtime, no surprise."
+            ? "Même process pour un build from scratch ou une augmentation de l'existant. Sprints courts, démos hebdomadaires, zéro tunnel."
+            : "Same process for a new build or an existing augmentation. Short sprints, weekly demos, zero tunnel effect."
         }
       >
         <ProcessSteps steps={processSteps} />
@@ -687,15 +687,15 @@ export default async function WebDigitalPage({ params }: Props) {
             <ul className="space-y-2.5">
               {(isFr
                 ? [
-                    "Création de site web from scratch",
                     "Design UX/UI, charte graphique",
                     "Développement mobile natif (iOS/Android)",
+                    "Maintenance mensuelle imposée sans accord",
                     "Hébergement web ou infra généraliste",
                   ]
                 : [
-                    "Website creation from scratch",
                     "UX/UI design, visual identity",
                     "Native mobile development (iOS/Android)",
+                    "Imposed monthly maintenance without agreement",
                     "Web hosting or general infrastructure",
                   ]
               ).map((item) => (
@@ -725,17 +725,17 @@ export default async function WebDigitalPage({ params }: Props) {
       {/* CTA FINAL */}
       <CtaBlock
         eyebrow={isFr ? "Prêt à démarrer" : "Ready to start"}
-        title={isFr ? "Votre site existant vaut" : "Your existing site is worth"}
-        titleEm={isFr ? "plus avec l'IA." : "more with AI."}
+        title={isFr ? "Nouvelle plateforme ou existante —" : "New platform or existing —"}
+        titleEm={isFr ? "l'IA dedans par défaut." : "AI inside by default."}
         description={
           isFr
-            ? "Pas de refonte, pas de migration. On greffe l'IA sur ce que vous avez déjà. Devis ferme en 48 h, livraison en 3 à 6 semaines."
-            : "No redesign, no migration. We graft AI onto what you already have. Firm quote in 48 h, delivery in 3 to 6 weeks."
+            ? "On construit votre plateforme sur mesure IA-native, ou on augmente l'existant. Devis ferme en 48 h, forfait fixe, vous êtes propriétaire du code."
+            : "We build your AI-native custom platform, or we augment what you have. Firm quote in 48 h, fixed fee, you own the code."
         }
         cta={
           <>
             <Cta href="/contact" size="lg" track="web-digital-final-primary">
-              {isFr ? "Décrire mon site · devis 48 h" : "Describe my site · quote 48 h"}
+              {isFr ? "Décrire mon projet · devis 48 h" : "Describe my project · quote 48 h"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Cta href="/implementation" size="lg" variant="outline" track="web-digital-final-impl">
