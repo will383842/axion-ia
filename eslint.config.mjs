@@ -62,6 +62,16 @@ const eslintConfig = defineConfig([
     },
   },
   {
+    // scripts/*.cjs = CommonJS purs (seed-images.cjs, enrich-images.cjs).
+    // Ces fichiers tournent dans le container prod via `node /tmp/*.cjs` —
+    // pas de bundler, pas de tsx, `require()` est l'API légitime.
+    // `@typescript-eslint/no-require-imports` est désactivé uniquement ici.
+    files: ["scripts/**/*.cjs", "src/scripts/**/*.cjs"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
     // react-hook-form `useForm()` retourne des fonctions non-stables ;
     // le compiler React 19 (`react-hooks/incompatible-library`) le flagge
     // systématiquement alors que c'est l'API attendue. Faux positif connu
