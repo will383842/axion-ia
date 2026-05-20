@@ -525,6 +525,7 @@ async function main() {
       aiModel: null,
       isAiGenerated,
       isActive: true,
+      publishedAt: new Date(),
       isFeatured: false,
       module: entry.module,
       subModule: entry.subModule ?? null,
