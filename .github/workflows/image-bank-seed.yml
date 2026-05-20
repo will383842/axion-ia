@@ -232,13 +232,13 @@ jobs:
               'cd /app && node --max-old-space-size=96 /tmp/enrich-images.cjs \
                $FORCE_FLAG --limit 10 2>&1'" 2>&1)
             echo "$OUTPUT"
-            # Si "Toutes les images sont déjà enrichies" → terminé
-            if echo "$OUTPUT" | grep -q "déjà enrichies\|0 image"; then
+            # Si script indique plus rien à enrichir → terminé
+            # Note: "déjà enrichies" = 0 restantes, "📸  0 " = 0 images (avec espace)
+            if echo "$OUTPUT" | grep -q "déjà enrichies"; then
               echo "✅ Toutes les images enrichies."
               break
             fi
-            # Si "0 enrichis" sans nouvelles images → terminé
-            if echo "$OUTPUT" | grep -qE "📸  0 image"; then
+            if echo "$OUTPUT" | grep -qF "📸  0 image"; then
               echo "✅ Plus d'images à enrichir."
               break
             fi
