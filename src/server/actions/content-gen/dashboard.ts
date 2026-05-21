@@ -142,6 +142,7 @@ export interface SectorTodayCard {
     | "audits"
     | "implementations"
     | "un_a_un"
+    | "sites_web_augmentes"
     | "landing_ville"
     | "blog_from_rss";
   readonly label: string;
@@ -167,12 +168,14 @@ export async function getSectorBreakdownToday(): Promise<SectorBreakdownResult> 
     "audits",
     "implementations",
     "un_a_un",
+    "sites_web_augmentes",
   ];
   const sectorLabels: Record<ServiceSector, string> = {
     interventions_formations: "Interventions & Formations",
     audits: "Audits",
     implementations: "Implementations",
     un_a_un: "Coaching 1-to-1",
+    sites_web_augmentes: "Sites web augmentes",
   };
 
   // Pour chaque secteur, on compte les jobs via campaign.serviceSector.

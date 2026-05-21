@@ -196,6 +196,9 @@ export const routing = defineRouting({
     "/codage-developpement": "/codage-developpement",
     "/codage-developpement/web-digital": "/codage-developpement/web-digital",
 
+    // Module 3C — Sites web augmentés par l'IA (ServiceSector: sites_web_augmentes)
+    "/sites-web-augmentes": "/sites-web-augmentes",
+
     // Module 3 — Implémentation IA
     "/implementation": { fr: "/implementation", en: "/implementation" },
     "/implementation/ia-custom": {
