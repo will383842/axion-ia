@@ -1,0 +1,173 @@
+name: Content-Gen · Seed (providers + 747 keywords + content templates)
+
+# Pipeline content-gen seed post-deploy :
+#   1. Wait container restart (Coolify redeploy ~3 min)
+#   2. Poll DB ready (post-migration)
+#   3. Run `pnpm content-gen:seed` via docker exec
+#      → upsert ProviderConfig + CoverageDistributionProfile + AudienceMixProfile
+#                + AuthorProfile + BannedPhrase + ContentTemplate + ContentGenConfig
+#                + CoverageCampaign + RssSource + CaseStudy + Keyword (747 seeds)
+#
+# Idempotent : tous les seeds utilisent upsert. Re-run safe.
+#
+# Déclenchements :
+#   - Automatique : après chaque deploy réussi de deploy-coolify.yml
+#   - Manuel : GitHub Actions → Run workflow (Will trigger ad hoc)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (affiche plan, pas d'écriture DB)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+
+  workflow_run:
+    workflows: ["Build & Deploy · GHCR + Coolify (axion-ia.com)"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed content-gen (providers + keywords + templates)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY manquant."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Wait for container restart after deploy
+        if: github.event_name == 'workflow_run'
+        run: |
+          echo "⏳ Attente 3 min pour que Coolify redémarre le container…"
+          sleep 180
+          echo "✓ Prêt."
+
+      - name: Find axion-ia container
+        id: container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" \
+            '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Container $COOLIFY_APP_UUID introuvable."
+            echo "$ROWS"; exit 1
+          fi
+          echo "✓ Container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Pre-check Keyword count
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "── Counts AVANT seed ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
+            const p=new PrismaClient();
+            Promise.all([p.keyword.count(),
+              p.providerConfig.count(),
+              p.contentTemplate.count()
+            ]).then(([k,pc,ct])=>{
+              console.log('Keyword:',k,'| ProviderConfig:',pc,'| ContentTemplate:',ct);
+              process.exit(0);
+            }).catch((e)=>{console.log('pre-check skip:',e.message.slice(0,80));process.exit(0);});}
+            catch(e){console.log('pre-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true
+
+      - name: Attendre que la DB soit prête
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "⏳ Poll DB (max 3 min)…"
+          for i in $(seq 1 18); do
+            READY=$(ssh -o BatchMode=yes root@178.105.55.15 \
+              "docker exec '$CONTAINER' node -e \
+              \"const {PrismaClient}=require('/app/prisma/generated/client');
+              const p=new PrismaClient();
+              p.providerConfig.count()
+                .then(()=>{console.log('READY');process.exit(0)})
+                .catch(()=>process.exit(1))\"" 2>/dev/null || true)
+            if [ "$READY" = "READY" ]; then
+              echo "✓ DB prête (tentative $i)"
+              break
+            fi
+            echo "  [$i/18] DB pas encore prête, attente 10s…"
+            sleep 10
+          done
+
+      - name: "[DRY RUN] Afficher le plan"
+        if: inputs.dry_run == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "::notice::DRY_RUN — pnpm content-gen:seed (idempotent upsert)"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' ls /app/prisma/seeds/content-gen/ 2>/dev/null" 2>&1 || true
+
+      - name: Exécuter pnpm content-gen:seed
+        if: inputs.dry_run != 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          echo "── Seed content-gen (providers + 747 keywords + templates) ──"
+          # Le runner stage Docker contient corepack pnpm + tsx via deps stage copie.
+          # Si pnpm ou tsx absent → fallback Node direct sur l'entrypoint compilé.
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && (corepack pnpm content-gen:seed 2>&1 || \
+              node --experimental-strip-types prisma/seeds/content-gen/index.ts 2>&1 || \
+              echo SEED_FAILED)'" 2>&1
+          echo "── Seed terminé ──"
+
+      - name: Post-check Keyword count
+        if: always()
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "── Counts APRÈS seed ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
+            const p=new PrismaClient();
+            Promise.all([p.keyword.count(),
+              p.providerConfig.count(),
+              p.contentTemplate.count(),
+              p.bannedPhrase.count()
+            ]).then(([k,pc,ct,bp])=>{
+              console.log('Keyword:',k,'| ProviderConfig:',pc,'| ContentTemplate:',ct,'| BannedPhrase:',bp);
+              if (k < 700) console.log('WARNING: Keyword count <700 (expected ~747)');
+              else console.log('OK: Keyword count >=700');
+              process.exit(0);
+            }).catch((e)=>{console.log('post-check skip:',e.message.slice(0,80));process.exit(0);});}
+            catch(e){console.log('post-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true

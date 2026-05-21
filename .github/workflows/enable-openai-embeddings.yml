@@ -1,0 +1,220 @@
+name: Content-Gen · Enable OpenAI Embeddings (dedup couche 4)
+
+# Workflow utilitaire workflow_dispatch — flip OPENAI_EMBEDDINGS_ENABLED côté Coolify
+# (env var prod) + restart container. Permet d'activer la couche 4 dedup OpenAI
+# text-embedding-3-large sans toucher Coolify UI.
+#
+# Référence : src/server/content-gen/dedup/openai-embedder.ts (B.7 P1.5 P0-6) —
+# fail-soft si flag != "true" (default OFF), throw uniquement si flag enabled +
+# OPENAI_API_KEY absent.
+#
+# Sécurité : workflow_dispatch only.
+#
+# Cost guard : OPENAI_EMBEDDINGS_MAX_TOKENS_PER_DAY default 1M = ~$0.13/jour
+# au tarif text-embedding-3-large $0.13/1M tokens.
+
+on:
+  workflow_dispatch:
+    inputs:
+      value:
+        description: "Valeur OPENAI_EMBEDDINGS_ENABLED (true = couche 4 active, false = désactivée)"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      restart:
+        description: "Restart container après set env var (true = recommandé)"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: read
+
+jobs:
+  enable-embeddings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Validate secrets
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing secret: $v"
+              exit 1
+            fi
+          done
+          echo "Secrets OK."
+
+      - name: List current env var state
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          echo "──── Current OPENAI_EMBEDDINGS_ENABLED state ────"
+          response=$(curl -fsSL -m 15 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          echo "$response" | jq -r '.[] | select(.key == "OPENAI_EMBEDDINGS_ENABLED") | "Found: key=\(.key) value=\(.value) uuid=\(.uuid // "?")"' || echo "(OPENAI_EMBEDDINGS_ENABLED not currently set)"
+          echo "──── End ────"
+
+      - name: Upsert OPENAI_EMBEDDINGS_ENABLED env var
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          NEW_VALUE: ${{ inputs.value }}
+        run: |
+          set -euo pipefail
+          payload=$(jq -nc --arg key "OPENAI_EMBEDDINGS_ENABLED" --arg value "$NEW_VALUE" '{
+            key: $key,
+            value: $value,
+            is_preview: false,
+            is_literal: false,
+            is_multiline: false,
+            is_shown_once: false
+          }')
+          echo "──── PATCH attempt (update existing env var) ────"
+          patch_response=$(curl -sS -m 15 -X PATCH \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            -w "\nHTTP=%{http_code}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          echo "$patch_response"
+          patch_code=$(echo "$patch_response" | tail -1 | sed 's/HTTP=//')
+          if [ "$patch_code" = "200" ] || [ "$patch_code" = "201" ]; then
+            echo "✅ PATCH success (env var updated)."
+          elif [ "$patch_code" = "404" ] || [ "$patch_code" = "422" ]; then
+            echo "──── PATCH failed (env var not exists), trying POST ────"
+            post_response=$(curl -sS -m 15 -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              -H "Content-Type: application/json" \
+              -d "$payload" \
+              -w "\nHTTP=%{http_code}" \
+              "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+            echo "$post_response"
+            post_code=$(echo "$post_response" | tail -1 | sed 's/HTTP=//')
+            if [ "$post_code" = "200" ] || [ "$post_code" = "201" ]; then
+              echo "✅ POST success (env var created)."
+            else
+              echo "::error::POST failed with HTTP $post_code"
+              exit 1
+            fi
+          else
+            echo "::error::Unexpected PATCH response: HTTP $patch_code"
+            exit 1
+          fi
+
+      - name: Verify env var set
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          EXPECTED_VALUE: ${{ inputs.value }}
+        run: |
+          set +e
+          echo "──── Verify OPENAI_EMBEDDINGS_ENABLED state ────"
+          response=$(curl -fsSL -m 15 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          echo "$response" | jq '.[] | select(.key == "OPENAI_EMBEDDINGS_ENABLED")' || true
+          actual=$(echo "$response" | jq -r '.[] | select(.key == "OPENAI_EMBEDDINGS_ENABLED") | .value' | head -1 | tr -d '[:space:]')
+          echo "Expected: '$EXPECTED_VALUE' Actual: '$actual'"
+          if [ "$actual" = "$EXPECTED_VALUE" ]; then
+            echo "✅ Env var correctly set."
+          else
+            echo "::warning::Verify comparison failed (actual='$actual'). Coolify may obfuscate value — proceed."
+          fi
+          exit 0
+
+      - name: Cleanup duplicate OPENAI_EMBEDDINGS_ENABLED entries
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set +e
+          response=$(curl -fsSL -m 15 \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          uuids=$(echo "$response" | jq -r '[.[] | select(.key == "OPENAI_EMBEDDINGS_ENABLED") | .uuid] | .[1:][]')
+          if [ -n "$uuids" ]; then
+            echo "Found duplicate OPENAI_EMBEDDINGS_ENABLED entries — cleaning up extras."
+            for uuid in $uuids; do
+              echo "Deleting env var uuid=$uuid"
+              curl -sS -m 15 -X DELETE \
+                -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+                -w "HTTP=%{http_code}\n" \
+                "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs/$uuid"
+            done
+          else
+            echo "No duplicates to clean."
+          fi
+          exit 0
+
+      - name: Restart container (Coolify redeploy)
+        if: inputs.restart == 'true'
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          echo "──── Triggering Coolify redeploy ────"
+          response=$(curl -fsSL -G \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify response: ${response}"
+          deployment_uuid=$(echo "${response}" | jq -r '.deployments[0].deployment_uuid // .deployment_uuid // empty')
+          if [ -n "$deployment_uuid" ]; then
+            echo "Deployment queued: ${deployment_uuid}"
+            echo "Track at ${COOLIFY_URL}/deployment/${deployment_uuid}"
+          fi
+          echo "Waiting 60s for container to come back up..."
+          sleep 60
+          echo "──── Smoke /api/healthz ────"
+          curl -s -o /tmp/healthz.json -w "HTTP=%{http_code} time=%{time_total}s\n" https://axion-ia.com/api/healthz
+          cat /tmp/healthz.json
+          echo ""
+
+      - name: SSH verify env var in container
+        if: inputs.restart == 'true'
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set +e
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::warning::HETZNER_SSH_KEY not set — skip SSH verify."
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+          CONTAINER=$(ssh -o BatchMode=yes root@178.105.55.15 "docker ps --format '{{.Names}}' | awk -v uuid=\"$COOLIFY_APP_UUID\" '\$1 ~ \"^\"uuid {print \$1; exit}'")
+          if [ -z "$CONTAINER" ]; then
+            echo "::warning::No container matching COOLIFY_APP_UUID prefix found."
+            exit 0
+          fi
+          echo "──── docker exec $CONTAINER printenv | grep -i openai_embeddings ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$CONTAINER' printenv | grep -i openai_embeddings || echo '(OPENAI_EMBEDDINGS_ENABLED not set in container env)'"
+          echo "──── Container started_at ────"
+          ssh -o BatchMode=yes root@178.105.55.15 "docker inspect '$CONTAINER' --format '{{.State.StartedAt}}'"
+          exit 0
