@@ -246,7 +246,13 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         typeof (dbJob as Record<string, unknown>)["campaignSector"] === "string"
           ? ((dbJob as Record<string, unknown>)["campaignSector"] as string)
           : "transversal";
-      const selected = await selectKeyword({ vertical: campaignSector, contentType });
+      // P1-8 — Passer campaignId pour log structuré keyword_select_exhausted
+      // et préparer l'isolation future des pools par campagne.
+      const selected = await selectKeyword({
+        vertical: campaignSector,
+        contentType,
+        campaignId: dbJob.campaignId ?? undefined,
+      });
       if (selected) {
         resolvedKeyword = selected;
         await logStep(contentGenJobId, "keyword_select", `Keyword selected: ${selected}`, {
