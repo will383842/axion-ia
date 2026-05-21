@@ -79,6 +79,28 @@ export async function updateBatchSettings(input: BatchSettings): Promise<void> {
 }
 
 // ────────────────────────────────────────────────────────────────────
+// MAX_PUBLISH_PER_DAY — cap global publications/jour (D-P5-5 Sprint P5)
+// ────────────────────────────────────────────────────────────────────
+
+export async function getMaxPublishPerDay(): Promise<number> {
+  return readContentGenConfig<number>("MAX_PUBLISH_PER_DAY", 30);
+}
+
+export async function updateMaxPublishPerDay(value: number): Promise<void> {
+  const session = await requireAdmin();
+  if (!Number.isInteger(value) || value < 1 || value > 1000) {
+    throw new Error("max_publish_range");
+  }
+  await writeContentGenConfig(
+    "MAX_PUBLISH_PER_DAY",
+    value,
+    session.userId,
+    `Cap articles/jour mis à jour : ${value}`,
+  );
+  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
+}
+
+// ────────────────────────────────────────────────────────────────────
 // /settings/policies — skip-existing, RSS auto-publish, plagiat, retention
 // ────────────────────────────────────────────────────────────────────
 

@@ -204,89 +204,89 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         </div>
       </AdminCard>
 
-      <AdminCard className="mb-[var(--space-admin-6)]">
-        <h2 className="admin-h2">Pilotage rapide</h2>
-        <ul className="admin-quick-actions">
-          <li>
-            <Link href={`${base}/coverage`}>📦 Campagnes de couverture</Link>
-          </li>
-          <li>
-            <Link href={`${base}/geo`}>🗺️ Cockpit géographique</Link>
-          </li>
-          <li>
-            <Link href={`${base}/jobs`}>🛠️ Jobs &amp; logs</Link>
-          </li>
-          <li>
-            <Link href={`${base}/review-queue`}>👀 Review queue ({kpis.pendingReview})</Link>
-          </li>
-          <li>
-            <Link href={`${base}/publications-status`}>📋 Statut publications (kanban)</Link>
-          </li>
-          <li>
-            <Link href={`${base}/templates`}>📝 Templates de prompts</Link>
-          </li>
-          <li>
-            <Link href={`${base}/rss`}>📡 Sources RSS</Link>
-          </li>
-          <li>
-            <Link href={`${base}/similarity-monitor`}>🧬 Anti-doublon</Link>
-          </li>
-          <li>
-            <Link href={`${base}/orchestrator`}>🎼 Orchestrateur</Link>
-          </li>
-          <li>
-            <Link href={`${base}/costs`}>💸 Coûts &amp; budget</Link>
-          </li>
-          <li>
-            <Link href={`${base}/author/manon`}>✍️ Profil auteur Manon</Link>
-          </li>
-          <li>
-            <Link href={`${base}/kb-readonly`}>📚 KB (lecture seule)</Link>
-          </li>
-        </ul>
-      </AdminCard>
+      {/* P0-5 Sprint P5 — 4 sections sémantiques */}
+      <div className="grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
+        <AdminCard>
+          <h2 className="admin-h2">🎯 Pilotage</h2>
+          <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
+            <li>
+              <Link href={`${base}/coverage`}>📦 Campagnes</Link>
+            </li>
+            <li>
+              <Link href={`${base}/costs`}>💸 Coûts &amp; budget</Link>
+            </li>
+            <li>
+              <Link href={`${base}/quality`}>📊 Qualité</Link>
+            </li>
+            <li>
+              <Link href={`${base}/geo`}>🗺️ Cockpit géo</Link>
+            </li>
+          </ul>
+        </AdminCard>
 
-      <AdminCard>
-        <h2 className="admin-h2">Réglages</h2>
-        <ul className="admin-quick-actions">
-          <li>
-            <Link href={`${base}/settings/providers`}>Providers IA &amp; cost caps</Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/batches`}>Batches &amp; workers</Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/policies`}>Policies (skip, plagiat, retention)</Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/coverage-distribution`}>
-              Distribution 5 types contenu
-            </Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/audience-mix`}>
-              Mix audiences (taille × organisation)
-            </Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/search-intent-distribution`}>
-              Distribution intentions
-            </Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/quality-loop`}>Boucle qualité</Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/qa-policies`}>Q/R post-process</Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/banned-phrases`}>Phrases interdites</Link>
-          </li>
-          <li>
-            <Link href={`${base}/settings/llms-txt`}>llms.txt édition</Link>
-          </li>
-        </ul>
-      </AdminCard>
+        <AdminCard>
+          <h2 className="admin-h2">🛠️ Sources</h2>
+          <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
+            <li>
+              <Link href={`${base}/rss`}>📡 Sources RSS</Link>
+            </li>
+            <li>
+              <Link href={`${base}/keyword-tracking`}>🔑 Keyword tracking</Link>
+            </li>
+            <li>
+              <Link href={`${base}/kb-readonly`}>📚 KB (lecture seule)</Link>
+            </li>
+            <li>
+              <Link href={`${base}/coverage/presets`}>📋 Presets campagnes</Link>
+            </li>
+            <li>
+              <Link href={`${base}/templates`}>📝 Templates prompts</Link>
+            </li>
+          </ul>
+        </AdminCard>
+
+        <AdminCard>
+          <h2 className="admin-h2">📊 Suivi</h2>
+          <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
+            <li>
+              <Link href={`${base}/jobs`}>🛠️ Jobs &amp; logs</Link>
+            </li>
+            <li>
+              <Link href={`${base}/review-queue`}>👀 Review queue ({kpis.pendingReview})</Link>
+            </li>
+            <li>
+              <Link href={`${base}/city-coverage`}>🏙️ Villes couvertes</Link>
+            </li>
+            <li>
+              <Link href={`${base}/geo/coverage-table`}>🔢 Tableau croisé</Link>
+            </li>
+            <li>
+              <Link href={`${base}/similarity-monitor`}>🧬 Anti-doublon</Link>
+            </li>
+          </ul>
+        </AdminCard>
+
+        <AdminCard>
+          <h2 className="admin-h2">⚙️ Réglages</h2>
+          <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
+            <li>
+              <Link href={`${base}/settings/providers`}>Providers IA</Link>
+            </li>
+            <li>
+              <Link href={`${base}/settings/batches`}>Batches &amp; workers</Link>
+            </li>
+            <li>
+              <Link href={`${base}/settings/quality-loop`}>Boucle qualité</Link>
+            </li>
+            <li>
+              <Link href={`${base}/settings/kill-switch`}>🛑 Kill switch</Link>
+            </li>
+            <li>
+              <Link href={`${base}/settings`}>Tous les réglages →</Link>
+            </li>
+          </ul>
+        </AdminCard>
+      </div>
     </AdminPageShell>
   );
 }

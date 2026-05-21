@@ -36,6 +36,7 @@ export default async function ReviewDetailPage({ params }: PageProps) {
           qualityScore: review.job.qualityScore,
           seoScore: review.job.seoScore,
           outputJsonRaw: review.job.outputJsonRaw,
+          qualityImprovementAttempts: review.job.qualityImprovementAttempts,
         },
       }}
     />

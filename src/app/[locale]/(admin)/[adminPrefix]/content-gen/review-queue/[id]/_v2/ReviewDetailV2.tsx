@@ -1,6 +1,5 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
-//
-// Review detail V2 — AdminPageShell + AdminPageHeader + AdminCard.
+// P0-2 Sprint P5 — QualityIterationsBadge + qualityImprovementAttempts field.
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import {
@@ -21,11 +20,29 @@ interface ReviewData {
     qualityScore: number | null;
     seoScore: number | null;
     outputJsonRaw: unknown;
+    qualityImprovementAttempts: number;
   };
 }
 
 interface Props {
   review: ReviewData;
+}
+
+function QualityIterationsBadge({ attempts }: { attempts: number }): React.ReactElement {
+  const color =
+    attempts === 0
+      ? "var(--color-admin-success)"
+      : attempts === 1
+        ? "var(--color-admin-warning)"
+        : "var(--color-admin-danger)";
+  return (
+    <span
+      style={{ color, fontWeight: 600 }}
+      title={`${attempts} itération${attempts > 1 ? "s" : ""} qualité boucle LLM`}
+    >
+      {attempts}x
+    </span>
+  );
 }
 
 export function ReviewDetailV2({ review }: Props): React.ReactElement {
@@ -57,6 +74,10 @@ export function ReviewDetailV2({ review }: Props): React.ReactElement {
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Aperçu rendu (iframe sandbox, token signé 10 min)</h2>
+        <p className="admin-meta-block">
+          Itérations boucle qualité :{" "}
+          <QualityIterationsBadge attempts={review.job.qualityImprovementAttempts} />
+        </p>
         {review.job.outputJsonRaw ? (
           <iframe
             src={`/api/content-gen/preview/${review.jobId}?t=${createPreviewToken(review.jobId)}`}

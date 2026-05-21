@@ -7,7 +7,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getBatchSettings } from "@/server/actions/content-gen/policies";
+import { getBatchSettings, getMaxPublishPerDay } from "@/server/actions/content-gen/policies";
 import { BatchesV2 } from "./_v2/BatchesV2";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +21,7 @@ export default async function BatchesSettingsPage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const cfg = await getBatchSettings();
+  const [cfg, maxPublishPerDay] = await Promise.all([getBatchSettings(), getMaxPublishPerDay()]);
 
-  return <BatchesV2 cfg={cfg} />;
+  return <BatchesV2 cfg={{ ...cfg, maxPublishPerDay }} />;
 }

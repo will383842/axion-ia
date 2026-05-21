@@ -1,10 +1,12 @@
-// Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
-//
-// Batches settings V2 — AdminPageShell + AdminPageHeader + AdminCard.
+// Refonte admin mai 2026 — PR 7 (ADR 0028). P0-3 Sprint P5 — MAX_PUBLISH_PER_DAY.
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import type { ContentType } from "../../../../../../../../../prisma/generated/client";
-import { type DailyTargetByType, updateBatchSettings } from "@/server/actions/content-gen/policies";
+import {
+  type DailyTargetByType,
+  updateBatchSettings,
+  updateMaxPublishPerDay,
+} from "@/server/actions/content-gen/policies";
 import { CONTENT_TYPES_ALL } from "@/server/actions/content-gen/policies-constants";
 
 interface BatchConfig {
@@ -14,6 +16,7 @@ interface BatchConfig {
   retryBackoffMs: number;
   dailyTargetByType: Partial<Record<ContentType, number>>;
   antiBurstEnabled: boolean;
+  maxPublishPerDay: number;
 }
 
 interface Props {
@@ -21,6 +24,11 @@ interface Props {
 }
 
 export function BatchesV2({ cfg }: Props): React.ReactElement {
+  async function saveMaxPublish(formData: FormData) {
+    "use server";
+    await updateMaxPublishPerDay(Number(formData.get("maxPublishPerDay") ?? 30));
+  }
+
   async function save(formData: FormData) {
     "use server";
     const dailyTargetByType: DailyTargetByType = {};
@@ -43,10 +51,36 @@ export function BatchesV2({ cfg }: Props): React.ReactElement {
 
   return (
     <AdminPageShell>
-      <AdminPageHeader
-        title="Batches & workers"
-        description="Réglages BullMQ + scheduling. Le worker lit ces valeurs au démarrage et à chaque nouveau batch."
-      />
+      <AdminPageHeader title="Batches & workers" description="Réglages BullMQ + scheduling." />
+
+      <AdminCard className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Cap global articles/jour</h2>
+        <p className="admin-meta-block">
+          Limite publications/jour (8h–22h CET). Valeur actuelle :{" "}
+          <strong>{cfg.maxPublishPerDay}</strong> art/jour.
+        </p>
+        <form action={saveMaxPublish} className="flex items-end gap-[var(--space-admin-4)]">
+          <div className="admin-field">
+            <label htmlFor="maxPublishPerDay" className="admin-label">
+              Cap articles/jour
+            </label>
+            <input
+              id="maxPublishPerDay"
+              name="maxPublishPerDay"
+              type="number"
+              min="1"
+              max="1000"
+              step="10"
+              defaultValue={cfg.maxPublishPerDay}
+              className="admin-input w-32"
+              required
+            />
+          </div>
+          <button type="submit" className="admin-button mb-[var(--space-admin-1)]">
+            Mettre à jour
+          </button>
+        </form>
+      </AdminCard>
 
       <AdminCard>
         <form action={save}>
@@ -119,10 +153,8 @@ export function BatchesV2({ cfg }: Props): React.ReactElement {
           <div>
             <h2 className="admin-h2">Mode V2 — cibles/jour par type (Sprint 7)</h2>
             <p className="admin-meta-block">
-              Si <strong>au moins un</strong> type a une cible &gt; 0, l&apos;orchestrator passe en
-              mode anti-burst per-type et ignore <code>dailyBatchSize</code> global. Laisser tout à
-              0 pour rester en mode V1 (global). Plage par type : 0 à 100/jour. Plafond cumulé :
-              500/jour.
+              Si <strong>au moins un</strong> type a une cible &gt; 0, mode anti-burst per-type.
+              Plage par type : 0 à 100/jour. Plafond cumulé : 500/jour.
             </p>
 
             <div className="admin-field mt-[var(--space-admin-4)]">
@@ -134,7 +166,7 @@ export function BatchesV2({ cfg }: Props): React.ReactElement {
                   defaultChecked={cfg.antiBurstEnabled}
                   className="mr-[var(--space-admin-2)]"
                 />
-                Anti-burst — étaler uniformément sur 24h (vs rattraper d&apos;un coup)
+                Anti-burst — étaler uniformément sur 24h
               </label>
             </div>
 
