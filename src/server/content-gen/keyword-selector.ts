@@ -67,6 +67,17 @@ export interface SelectKeywordOptions {
   readonly vertical: string;
   /** ContentType hint pour affiner la selection (optionnel). */
   readonly contentType?: string;
+  /**
+   * P1-8 — ID de la campagne appelante (ContentGenJob.campaignId).
+   * Utilise pour le log structure keyword_select_exhausted et reserve
+   * pour un futur filtre SQL quand la table `keywords` aura un campaign_id.
+   *
+   * TODO(P1-8): Une fois la colonne keywords.campaign_id ajoutee via migration,
+   * activer le filtre AND campaign_id = <campaignId> dans la requete SKIP LOCKED
+   * pour isoler les pools entre campagnes de meme vertical (ex: Paris x formation
+   * vs Lyon x formation ne partagent plus le meme pool).
+   */
+  readonly campaignId?: string;
 }
 
 interface AtomicSelectResult {
@@ -84,7 +95,7 @@ interface AtomicSelectResult {
  * Fire-and-forget safe : les erreurs DB sont absorbees, fallback in-memory.
  */
 export async function selectKeyword(options: SelectKeywordOptions): Promise<string | null> {
-  const { vertical } = options;
+  const { vertical, campaignId } = options;
 
   // 1. Tentative DB mode avec lock atomique (Postgres-only).
   try {
@@ -109,7 +120,22 @@ export async function selectKeyword(options: SelectKeywordOptions): Promise<stri
   }
 
   // 2. Fallback in-memory depuis les seeds 747.
-  return selectFromMemory(vertical);
+  const memTerm = selectFromMemory(vertical);
+
+  // P2-4 — Log structure si tous les keywords sont epuises (DB vide + seeds vides).
+  if (memTerm === null) {
+    console.warn(
+      JSON.stringify({
+        event: "keyword_select_exhausted",
+        campaignId: campaignId ?? null,
+        vertical,
+        timestamp: new Date().toISOString(),
+        message: "Tous les keywords de cette campagne sont epuises ou verrouilles",
+      }),
+    );
+  }
+
+  return memTerm;
 }
 
 /**

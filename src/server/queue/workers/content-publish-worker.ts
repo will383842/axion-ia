@@ -25,6 +25,7 @@
 
 import { Queue, Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
 import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generators/blog-from-rss";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
@@ -74,6 +75,27 @@ function slugify(s: string): string {
 // MAX_PUBLISH_PER_DAY : cap journalier publications. Env override possible.
 // Drip window : 8h-22h CET (Europe/Paris). Publie uniquement pendant les
 // heures ouvrées → signal humain, réduit risque HCU Google.
+//
+// P1-6 — Rampe progressive 30→500 si env var non définie.
+// Paliers basés sur le volume d'articles publiés cumulés :
+//   <  60 articles publiés → cap 30/jour  (phase démarrage)
+//   < 300 articles publiés → cap 100/jour (phase croissance)
+//   < 600 articles publiés → cap 200/jour (phase scale)
+//   ≥ 600 articles publiés → cap 500/jour (régime croisière)
+// Si MAX_PUBLISH_PER_DAY env var définie → override direct (compatibilité).
+async function getEffectivePublishCap(): Promise<number> {
+  const envCap = process.env.MAX_PUBLISH_PER_DAY;
+  if (envCap !== undefined && envCap !== "") {
+    return parseInt(envCap, 10);
+  }
+  const totalPublished = await prisma.article.count({ where: { status: "published" } });
+  if (totalPublished < 60) return 30;
+  if (totalPublished < 300) return 100;
+  if (totalPublished < 600) return 200;
+  return 500;
+}
+
+// Valeur statique conservée pour les usages non-async (worker options, logs).
 const MAX_PUBLISH_PER_DAY = parseInt(process.env.MAX_PUBLISH_PER_DAY ?? "30", 10);
 const DRIP_HOUR_START_CET = 8;
 const DRIP_HOUR_END_CET = 22;
@@ -130,22 +152,34 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     return;
   }
 
-  // P1.5 QW-2 — Daily cap check (MAX_PUBLISH_PER_DAY env-overridable).
-  // Compte les articles publiés depuis minuit UTC. Si cap atteint → delay
-  // au prochain 8h CET (jour suivant). Évite le scaled content abuse signal.
-  const todayUtcStart = new Date();
-  todayUtcStart.setUTCHours(0, 0, 0, 0);
-  const publishedToday = await prisma.article.count({
-    where: { publishedAt: { gte: todayUtcStart }, status: "published" },
-  });
-  if (publishedToday >= MAX_PUBLISH_PER_DAY) {
+  // P0-4 — Daily cap check atomique via Redis INCR (P1.5 QW-2).
+  // Remplace l'ancien prisma.article.count() séquentiel (race condition possible
+  // avec concurrency=3 : 3 workers pouvaient lire publishedToday=29 simultanément
+  // et tous publier, dépassant le cap). Redis INCR est atomique : un seul worker
+  // peut décrocher le slot n°30, les autres obtiennent 31+ et reculez.
+  // TTL calé sur minuit UTC pour auto-reset quotidien.
+  const maxPublishPerDay = await getEffectivePublishCap();
+  const today = new Date().toISOString().split("T")[0]; // "2026-05-21"
+  const redisKey = `axion:pub:${today}`;
+  const countAfterIncr = await redis.incr(redisKey);
+  if (countAfterIncr === 1) {
+    // Premier incr du jour : poser le TTL jusqu'à minuit UTC
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setUTCHours(24, 0, 0, 0);
+    const ttl = Math.floor((midnight.getTime() - now.getTime()) / 1000);
+    await redis.expire(redisKey, ttl);
+  }
+  if (countAfterIncr > maxPublishPerDay) {
+    // Annuler l'incr pour ne pas fausser le compteur (ce job ne publiera pas)
+    await redis.decr(redisKey);
     const nextWindowTs = msUntilDripStart();
     console.log(
       JSON.stringify({
         event: "publish_throttled",
         reason: "max_daily",
-        publishedToday,
-        cap: MAX_PUBLISH_PER_DAY,
+        countAfterIncr: countAfterIncr - 1,
+        cap: maxPublishPerDay,
         nextRetry: new Date(nextWindowTs).toISOString(),
         reviewQueueId,
       }),
@@ -358,18 +392,31 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   // Le helper enqueueIndexingForTier1 dédoublonne sur jobId et gate Google
   // Indexing sur flag GOOGLE_INDEXING_API_ENABLED. Réutilisé par Sprint 10
   // tier-lifecycle-worker (auto-promote CTR > seuil) → un seul code path indexing.
+  //
+  // P0-10 — best-effort post-transaction : l'article est déjà en DB et publié.
+  // Un échec de l'enqueue d'indexation NE doit PAS rollback ni masquer la publication.
+  // On log via console.warn + logStepError pour visibilité sans blast radius.
   if (promoteToTier1) {
-    await enqueueIndexingForTier1({
-      articleId: article.id,
-      slug: slugCandidate,
-      isNews,
-      origin: "content-gen",
-    });
-    await logStep(cgJob.id, "indexnow_ping", "Indexing enqueued (IndexNow + Google Indexing)", {
-      article_id: article.id,
-      slug: slugCandidate,
-      is_news: isNews,
-    });
+    try {
+      await enqueueIndexingForTier1({
+        articleId: article.id,
+        slug: slugCandidate,
+        isNews,
+        origin: "content-gen",
+      });
+      await logStep(cgJob.id, "indexnow_ping", "Indexing enqueued (IndexNow + Google Indexing)", {
+        article_id: article.id,
+        slug: slugCandidate,
+        is_news: isNews,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`[publish] enqueueIndexingForTier1 failed (best-effort) for article ${article.id}:`, msg);
+      await logStepError(cgJob.id, "indexnow_ping", `enqueueIndexingForTier1 failed (best-effort): ${msg}`, {
+        article_id: article.id,
+        slug: slugCandidate,
+      });
+    }
   }
 
   // Sprint 12.5 V2 : fact-check Perplexity post-publish. Tous tiers, pas
@@ -437,6 +484,10 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   // après publish d'un Article tier-1. `/sitemap.xml` (Next 16 metadata convention)
   // est aussi revalidé pour la propagation côté Googlebot qui peut découvrir les
   // deux (cf. audit AGENT-01-SITEMAP-INDEX §1.1).
+  //
+  // P0-10 — best-effort post-transaction : un échec revalidate NE doit PAS
+  // masquer la publication. L'article reste publié et sera servi via ISR 1h
+  // naturellement même si le revalidate échoue.
   const paths = [
     `/fr/blog/${slugCandidate}`,
     ...(isNews ? [`/fr/actualites/${slugCandidate}`, "/fr/actualites"] : []),
@@ -445,10 +496,19 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     "/sitemap-index.xml",
     ...(isNews ? ["/sitemap-news.xml"] : []),
   ];
-  await revalidateContent({ paths });
-  await logStep(cgJob.id, "revalidate_path", "Revalidate paths via internal API", {
-    paths,
-  });
+  try {
+    await revalidateContent({ paths });
+    await logStep(cgJob.id, "revalidate_path", "Revalidate paths via internal API", {
+      paths,
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[publish] revalidateContent failed (best-effort) for article ${article.id}:`, msg);
+    await logStepError(cgJob.id, "revalidate_path", `revalidateContent failed (best-effort): ${msg}`, {
+      article_id: article.id,
+      paths,
+    });
+  }
 
   await logStep(cgJob.id, "publish", "Publish pipeline complete", {
     article_id: article.id,

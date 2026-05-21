@@ -33,6 +33,12 @@ export interface PublicEntryFacade {
   readonly locale: Locale;
   readonly publishedAt: Date | null;
   readonly updatedAt: Date;
+  /**
+   * P2-3 — URL de l'image hero (Article.featuredImage DB String?).
+   * Optionnel : absent pour KnowledgeEntry et les autres types de contenu.
+   * La page /blog/[slug] l'utilise pour le rendu <Image priority> LCP.
+   */
+  readonly featuredImage?: string | null;
 }
 
 // ============================================================
@@ -356,6 +362,8 @@ export async function findArticleBySlug(
       locale: translation.locale,
       publishedAt: translation.article.publishedAt,
       updatedAt: translation.updatedAt,
+      // P2-3 — Image hero article (Article.featuredImage DB String?).
+      featuredImage: translation.article.featuredImage ?? null,
     };
   }
 

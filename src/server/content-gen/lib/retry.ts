@@ -1,7 +1,8 @@
 /**
  * Content Generator — Retry exponentiel backoff (§ 0.4 master prompt).
  *
- * 3 tentatives avec délais 10s / 30s / 60s. Échec définitif → throw.
+ * 3 tentatives avec délais 10s / 30s / 60s + jitter ±20% pour éviter
+ * le thundering herd sur retries simultanés. Échec définitif → throw.
  * Respecte la flag `retryable` de ProviderError (auth_failed → no retry).
  */
 
@@ -17,6 +18,17 @@ export interface RetryOptions {
 }
 
 const DEFAULT_DELAYS_MS: ReadonlyArray<number> = [10_000, 30_000, 60_000];
+
+/**
+ * Applique un jitter multiplicatif aléatoire dans [0.8, 1.2] au délai fourni,
+ * cappé à 60 000ms. Évite le thundering herd sur des retries simultanés.
+ *
+ * P1-1 — Retry exponentiel avec jitter (audit content-gen PERFECTION 2026).
+ */
+export function applyJitter(delayMs: number): number {
+  const factor = 0.8 + Math.random() * 0.4; // [0.8, 1.2]
+  return Math.min(Math.round(delayMs * factor), 60_000);
+}
 
 /**
  * Exécute `fn` avec retry exponentiel sur erreur retryable.
@@ -39,7 +51,8 @@ export async function withRetry<T>(fn: () => Promise<T>, opts: RetryOptions = {}
       if (attempt >= maxAttempts) {
         break;
       }
-      const delayMs = delays[attempt - 1] ?? delays[delays.length - 1] ?? 60_000;
+      const baseDelayMs = delays[attempt - 1] ?? delays[delays.length - 1] ?? 60_000;
+      const delayMs = applyJitter(baseDelayMs);
       if (opts.onRetry) opts.onRetry(attempt, lastError, delayMs);
       await sleep(delayMs);
     }

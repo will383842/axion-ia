@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound, redirect } from "next/navigation";
+import Image from "next/image";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -326,6 +327,25 @@ export default async function BlogArticle({ params }: Props) {
           </div>
         </Container>
       </Section>
+
+      {/* P2-3 — Image hero article (LCP critique : priority obligatoire).
+          Rendu uniquement si Article.featuredImage est renseigné en DB.
+          Les articles FS (hardcodés) retournent null → bloc non rendu.
+          Ratio 16/9 standard, object-cover pour éviter CLS. */}
+      {view.featuredImage ? (
+        <Container className="max-w-4xl">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+            <Image
+              src={view.featuredImage}
+              alt={view.title}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              className="object-cover"
+            />
+          </div>
+        </Container>
+      ) : null}
 
       {tldrText ? (
         <Section>

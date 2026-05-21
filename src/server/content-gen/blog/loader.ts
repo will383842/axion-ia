@@ -31,6 +31,12 @@ export interface BlogArticleView {
   readonly tags: ReadonlyArray<string>;
   readonly tier: "tier-1-indexable" | "tier-2-noindex-follow" | "tier-3-noindex-nofollow";
   readonly source: "db" | "fs";
+  /**
+   * P2-3 — URL de l'image hero (Article.featuredImage DB String? ou null pour FS).
+   * Utilisée par /blog/[slug] pour le rendu <Image priority> (LCP critique).
+   * null = pas d'image hero disponible (articles FS ou articles DB sans image).
+   */
+  readonly featuredImage: string | null;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
 }
@@ -50,6 +56,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     tags: post.tags,
     tier: resolveTier(post),
     source: "fs",
+    // P2-3 — Les articles FS (hardcodés) n'ont pas d'image hero.
+    featuredImage: null,
     fsPost: post,
   };
 }
@@ -82,6 +90,8 @@ export async function loadBlogArticleForView(
       tags: [],
       tier: "tier-2-noindex-follow",
       source: "db",
+      // P2-3 — Image hero DB article (Article.featuredImage String?).
+      featuredImage: dbArticle.featuredImage ?? null,
       fsPost: null,
     };
   }
@@ -118,6 +128,8 @@ export async function loadBlogIndexForView(
     tags: [],
     tier: "tier-2-noindex-follow",
     source: "db",
+    // P2-3 — Index n'expose pas featuredImage (non sélectionné dans listPublishedArticles).
+    featuredImage: null,
     fsPost: null,
   }));
 

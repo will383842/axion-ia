@@ -23,6 +23,9 @@ const {
   workerCtorMock,
   queueCtorMock,
   capturedProcessor,
+  redisIncrMock,
+  redisDecrMock,
+  redisExpireMock,
 } = vi.hoisted(() => {
   const captured: { fn: ((job: Job) => Promise<void>) | null } = { fn: null };
   return {
@@ -39,6 +42,9 @@ const {
     }),
     queueCtorMock: vi.fn(() => ({ add: vi.fn().mockResolvedValue(undefined) })),
     capturedProcessor: captured,
+    redisIncrMock: vi.fn().mockResolvedValue(1),
+    redisDecrMock: vi.fn().mockResolvedValue(0),
+    redisExpireMock: vi.fn().mockResolvedValue(1),
   };
 });
 
@@ -85,6 +91,14 @@ vi.mock("@/server/content-gen/generators/blog-from-rss", () => ({
   enrichOutputWithNewsArticleJsonLd: vi.fn().mockReturnValue({}),
 }));
 
+vi.mock("@/lib/redis", () => ({
+  redis: {
+    incr: redisIncrMock,
+    decr: redisDecrMock,
+    expire: redisExpireMock,
+  },
+}));
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 type PublishJobData = { reviewQueueId: string; promoteToTier1: boolean };
@@ -120,6 +134,14 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
     readConfigMock.mockResolvedValue({ active: false });
     logStepMock.mockClear();
     workerCtorMock.mockClear();
+    redisIncrMock.mockReset();
+    redisDecrMock.mockReset();
+    redisExpireMock.mockReset();
+    redisIncrMock.mockResolvedValue(1);
+    redisDecrMock.mockResolvedValue(0);
+    redisExpireMock.mockResolvedValue(1);
+    // Forcer cap fixe via env pour éviter d'appeler prisma.article.count dans getEffectivePublishCap
+    process.env.MAX_PUBLISH_PER_DAY = "30";
   });
 
   afterEach(() => {
@@ -154,13 +176,15 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
     // 10h Paris en mai = 8h UTC
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-05-21T08:00:00.000Z"));
-    articleCountMock.mockResolvedValue(30); // cap atteint
+    // Redis INCR retourne 31 → cap (30) dépassé → moveToDelayed
+    redisIncrMock.mockResolvedValue(31);
 
     const processor = await getProcessor();
     const job = fakeJob(JOB_DATA);
     await processor(job);
 
-    expect(articleCountMock).toHaveBeenCalledOnce();
+    expect(redisIncrMock).toHaveBeenCalledOnce();
+    expect(redisDecrMock).toHaveBeenCalledOnce(); // annule l'incrément
     expect(job.moveToDelayed).toHaveBeenCalledOnce();
     const [delayTs] = (job.moveToDelayed as ReturnType<typeof vi.fn>).mock.calls[0] as [number];
     expect(delayTs).toBeGreaterThan(new Date("2026-05-21T08:00:00.000Z").getTime());
@@ -170,7 +194,8 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
     // 10h Paris = 8h UTC — dans la fenêtre + cap non atteint
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-05-21T08:00:00.000Z"));
-    articleCountMock.mockResolvedValue(10); // sous le cap (30)
+    // Redis INCR retourne 10 → sous le cap (30) → passe le gate
+    redisIncrMock.mockResolvedValue(10);
     // Simule ReviewQueue not found (throw) pour arrêter processJob après le gate
     reviewFindMock.mockResolvedValue(null);
 
@@ -180,7 +205,8 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
     await expect(processor(job)).rejects.toThrow("ReviewQueue rq-abc not found");
 
     expect(job.moveToDelayed).not.toHaveBeenCalled();
-    expect(articleCountMock).toHaveBeenCalledOnce();
+    expect(redisIncrMock).toHaveBeenCalledOnce();
+    expect(redisDecrMock).not.toHaveBeenCalled();
     expect(reviewFindMock).toHaveBeenCalledOnce();
   });
 });
