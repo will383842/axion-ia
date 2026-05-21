@@ -17,12 +17,14 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
+import { injectBrandVoice } from "../brand/brand-voice";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 3;
 const BUDGET_CAP_USD = 0.15;
 
-const SYSTEM_PROMPT = `Tu es l'expert contenu d'Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+const SYSTEM_PROMPT =
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
 Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues :
 - 100 % centré Axion-IA : chaque paragraphe ancre une valeur ou preuve concrète.
 - Angle opérationnel : cas d'usage réels, bénéfices mesurables, retour terrain.
@@ -30,8 +32,9 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Anti-doorway HCU 2024 : minimum 600 mots de contenu substantiel.
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
+- Le keyword principal DOIT apparaître textuellement dans le H1. Sans cela l'article sera rejeté.
 - Inclure OBLIGATOIREMENT ≥ 2 liens externes vers des sources d'autorité FR (INSEE, DARES, BPI France, France Num, rapport McKinsey, Stanford AI Index, etc.) avec rel="noopener noreferrer". Les AI Overviews Google et Perplexity citent prioritairement les articles sourcés.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`;
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
 
 function synthesizeTopic(input: GeneratorBaseInput): string {
   if (input.primaryKeyword) return input.primaryKeyword;

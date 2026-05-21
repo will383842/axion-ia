@@ -208,6 +208,23 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   const bodyHtml = typeof output.bodyHtml === "string" ? output.bodyHtml : "";
   const bodyText = typeof output.bodyText === "string" ? output.bodyText : "";
 
+  // P1-3 P4 Sprint — Vérifier que metaTitle contient le keyword principal.
+  const inputPayloadRaw = cgJob.inputPayload as Record<string, unknown> | null;
+  const primaryKeyword =
+    typeof inputPayloadRaw?.primaryKeyword === "string" ? inputPayloadRaw.primaryKeyword : null;
+  if (primaryKeyword && !metaTitle.toLowerCase().includes(primaryKeyword.toLowerCase())) {
+    await logStep(
+      cgJob.id,
+      "validation",
+      `metaTitle manque keyword "${primaryKeyword}" — seoTitleNotOptimized`,
+      {
+        meta_title: metaTitle,
+        primary_keyword: primaryKeyword,
+        seo_title_not_optimized: true,
+      },
+    );
+  }
+
   // Sprint S+2 City Domination — Phase C strat ville (audit profond hotfix
   // 2026-05-18) : extraction sécurisée du champ `mentionedCities` produit
   // par les generators (landing-ville.ts:188+). Audit indépendant a relevé

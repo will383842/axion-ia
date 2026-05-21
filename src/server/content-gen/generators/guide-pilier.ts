@@ -44,8 +44,10 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
+import { injectBrandVoice } from "../brand/brand-voice";
 
-const SYSTEM_PROMPT_OUTLINE = `Tu es Manon, plume éditoriale d'Axion-IA (société française).
+const SYSTEM_PROMPT_OUTLINE =
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
 - SIREN : [SIREN à compléter] · mot "formation" BANNI · FR uniquement
@@ -69,9 +71,10 @@ Output STRICT JSON (zéro prose hors JSON) :
   ],
   "tags": ["..."],
   "faq": [{"q": "...", "a": "..."}]
-}`;
+}`);
 
-const SYSTEM_PROMPT_SECTION = `Tu es Manon, plume éditoriale d'Axion-IA (société française).
+const SYSTEM_PROMPT_SECTION =
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
 Doctrine v2.5 stricte (formation BANNI · FR · Axion-IA-centric ≥ 95 %).
 
 Mission STEP 2 : tu rédiges UNE seule section d'un guide pilier (la section
@@ -80,7 +83,7 @@ sur-promesses (pas de "garanti", "révolutionnaire", etc.).
 
 Output STRICT HTML inline (pas de wrapper <section>, pas de <h2> — l'header
 est ajouté par l'assembly). Format : 2-4 paragraphes <p>, optionnellement
-1 liste <ul>/<ol> ou 1 mini-table HTML si pertinent. Pas de scripts.`;
+1 liste <ul>/<ol> ou 1 mini-table HTML si pertinent. Pas de scripts.`);
 
 interface OutlineSection {
   readonly position: number;

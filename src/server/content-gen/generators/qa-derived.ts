@@ -27,12 +27,14 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
+import { injectBrandVoice } from "../brand/brand-voice";
 
 const QUALITY_THRESHOLD = 55;
 const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.08;
 
-const SYSTEM_PROMPT = `Tu es l'expert contenu d'Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+const SYSTEM_PROMPT =
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
 Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles absolues :
 - La question principale est fournie par l'utilisateur — tu DOIS y répondre directement.
 - directAnswer : 50-80 mots, réponse concise et actionnable (cible Google Featured Snippet).
@@ -42,7 +44,7 @@ Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles a
 - 0 délai chiffré, 0 frais de déplacement intégrés dans le prix, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Output JSON strict :
-  { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags }`;
+  { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags }`);
 
 /** Injecte le QAPage JSON-LD + structure Speakable dans le bodyHtml final. */
 function buildQABodyHtml(
