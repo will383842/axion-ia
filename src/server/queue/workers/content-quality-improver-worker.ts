@@ -12,7 +12,7 @@
  * pour identifier patterns de re-prompt utiles.
  */
 
-import { Worker, type Job } from "bullmq";
+import { Queue, Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import {
   readContentGenConfig,
@@ -21,8 +21,40 @@ import {
 import { logGeneration, logStep } from "@/server/content-gen/shared/generation-log";
 // B.8 P1.5 P0-3 — LLM-as-judge (Claude Sonnet reviewer multi-dim).
 import { reviewArticle, type JudgeResult } from "@/server/content-gen/reviewer/llm-judge";
+import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 
 const QUEUE_NAME = "content-quality-improver";
+
+let contentGenQueue: Queue | null = null;
+function getContentGenQueue(): Queue | null {
+  if (contentGenQueue) return contentGenQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  return contentGenQueue;
+}
+
+/** Formate les issues du LLM-judge en feedback lisible pour le re-prompt. */
+function formatJudgeFeedback(judge: JudgeResult): string {
+  const p0 = judge.issues.filter((i) => i.severity === "P0");
+  const p1 = judge.issues.filter((i) => i.severity === "P1");
+  const lines: string[] = [`Score global : ${judge.globalScore.toFixed(1)}/10`];
+  if (p0.length > 0) {
+    lines.push(`Issues P0 critiques :`);
+    p0.forEach((i) => lines.push(`  - [${i.section}] ${i.issue} → ${i.suggestedFix}`));
+  }
+  if (p1.length > 0) {
+    lines.push(`Issues P1 à corriger :`);
+    p1.forEach((i) => lines.push(`  - [${i.section}] ${i.issue} → ${i.suggestedFix}`));
+  }
+  const weakDims = Object.entries(judge.dimensions)
+    .filter(([, d]) => d.score < 7)
+    .map(([k, d]) => `${k} (${d.score}/10 — ${d.comment})`);
+  if (weakDims.length > 0) {
+    lines.push(`Dimensions faibles : ${weakDims.join(" ; ")}`);
+  }
+  return lines.join("\n");
+}
 
 interface QualityLoopMonthSpent {
   readonly usd: number;
@@ -194,10 +226,20 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const editorialScoreInt = judge ? Math.round(judge.globalScore * 10) : null; // /100
   const verdict = judge?.verdict ?? "improve";
   const reachedCap = dbJob.qualityImprovementAttempts + 1 >= settings.maxAttemptsAuto;
+  const shouldRegenerate = verdict === "improve" && !reachedCap && judge !== null;
 
-  // V2 = re-prompt loop : si verdict=improve ET pas cap → re-queue improve.
-  // Sinon → needs_review (publish, reject, ou improve mais cap atteint).
-  const nextStatus = verdict === "improve" && !reachedCap ? "quality_improving" : "needs_review";
+  // V2 re-prompt loop : si verdict=improve ET cap non atteint → persiste le
+  // feedback judge dans outputJsonRaw + re-enqueue content-gen pour re-générer
+  // avec le feedback ciblé. Sinon → needs_review (décision manuelle Will).
+  const nextStatus = shouldRegenerate ? "quality_improving" : "needs_review";
+
+  // Persiste le feedback judge dans outputJsonRaw.judgeIssues pour que le
+  // content-gen-worker puisse l'injecter dans le prompt de re-génération.
+  const judgeFeedback = judge ? formatJudgeFeedback(judge) : null;
+  const existingOutput = (dbJob.outputJsonRaw as Record<string, unknown> | null) ?? {};
+  const updatedOutput = judgeFeedback
+    ? { ...existingOutput, judgeIssues: judgeFeedback }
+    : existingOutput;
 
   await prisma.contentGenJob.update({
     where: { id: contentGenJobId },
@@ -205,12 +247,14 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       status: nextStatus,
       qualityImprovementAttempts: { increment: 1 },
       ...(editorialScoreInt !== null ? { editorialScore: editorialScoreInt } : {}),
+      ...(judgeFeedback ? { outputJsonRaw: updatedOutput as never } : {}),
     },
   });
+
   await logStep(
     contentGenJobId,
     "quality_loop_pass",
-    `Judge verdict=${verdict} globalScore=${judge?.globalScore ?? "n/a"} attempt=${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto} → ${nextStatus}`,
+    `Judge verdict=${verdict} globalScore=${judge?.globalScore ?? "n/a"} attempt=${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto} → ${nextStatus}${shouldRegenerate ? " (re-enqueue content-gen)" : ""}`,
     judge
       ? {
           verdict: judge.verdict,
@@ -219,9 +263,37 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
           issues_count: judge.issues.length,
           p0_issues: judge.issues.filter((i) => i.severity === "P0").length,
           previous_score: previousScore,
+          should_regenerate: shouldRegenerate,
         }
       : { previous_score: previousScore, judge_skipped: true },
   );
+
+  if (shouldRegenerate) {
+    // Re-enqueue content-gen avec le même payload + feedback judge intégré.
+    // Le content-gen-worker lira outputJsonRaw.judgeIssues et l'injectera
+    // comme improvementFeedback dans le generator.
+    const queue = getContentGenQueue();
+    if (queue) {
+      const ip = dbJob.inputPayload as Record<string, unknown> | null;
+      const attempt = dbJob.qualityImprovementAttempts + 1;
+      await queue.add(
+        "generate",
+        {
+          contentGenJobId,
+          contentType: dbJob.contentType as ContentType,
+          targetSearchIntent: dbJob.targetSearchIntent as SearchIntent,
+          inputPayload: ip ?? {},
+        },
+        { jobId: `content-gen-improve-${attempt}-${contentGenJobId}` },
+      );
+    } else {
+      // Redis absent — fail-soft : needs_review sans re-génération.
+      await prisma.contentGenJob.update({
+        where: { id: contentGenJobId },
+        data: { status: "needs_review" },
+      });
+    }
+  }
 }
 
 let workerInstance: Worker<QualityImproveJobPayload> | null = null;
