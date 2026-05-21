@@ -95,8 +95,6 @@ async function getEffectivePublishCap(): Promise<number> {
   return 500;
 }
 
-// Valeur statique conservée pour les usages non-async (worker options, logs).
-const MAX_PUBLISH_PER_DAY = parseInt(process.env.MAX_PUBLISH_PER_DAY ?? "30", 10);
 const DRIP_HOUR_START_CET = 8;
 const DRIP_HOUR_END_CET = 22;
 
@@ -411,11 +409,19 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      console.warn(`[publish] enqueueIndexingForTier1 failed (best-effort) for article ${article.id}:`, msg);
-      await logStepError(cgJob.id, "indexnow_ping", `enqueueIndexingForTier1 failed (best-effort): ${msg}`, {
-        article_id: article.id,
-        slug: slugCandidate,
-      });
+      console.warn(
+        `[publish] enqueueIndexingForTier1 failed (best-effort) for article ${article.id}:`,
+        msg,
+      );
+      await logStepError(
+        cgJob.id,
+        "indexnow_ping",
+        `enqueueIndexingForTier1 failed (best-effort): ${msg}`,
+        {
+          article_id: article.id,
+          slug: slugCandidate,
+        },
+      );
     }
   }
 
@@ -503,11 +509,19 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    console.warn(`[publish] revalidateContent failed (best-effort) for article ${article.id}:`, msg);
-    await logStepError(cgJob.id, "revalidate_path", `revalidateContent failed (best-effort): ${msg}`, {
-      article_id: article.id,
-      paths,
-    });
+    console.warn(
+      `[publish] revalidateContent failed (best-effort) for article ${article.id}:`,
+      msg,
+    );
+    await logStepError(
+      cgJob.id,
+      "revalidate_path",
+      `revalidateContent failed (best-effort): ${msg}`,
+      {
+        article_id: article.id,
+        paths,
+      },
+    );
   }
 
   await logStep(cgJob.id, "publish", "Publish pipeline complete", {
