@@ -9,10 +9,17 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { GalleryGrid } from "@/components/galerie/GalleryGrid";
 import { buildGalleryHubGraph } from "@/server/image-bank/services/image-jsonld-graph.service";
-import { type Module, isValidModule, getModuleLabel } from "@/server/image-bank/taxonomy";
+import {
+  type Module,
+  isValidModule,
+  getModuleLabel,
+  MODULE_LABELS_FR,
+  MODULE_LABELS_EN,
+} from "@/server/image-bank/taxonomy";
 
 type Filters = {
   module?: string;
@@ -169,26 +176,35 @@ export default async function GalleryIndexPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
 
-      <header className="mb-12">
-        <h1 className="mb-4 text-4xl font-bold">
+      <header className="mb-8">
+        <h1 className="mb-2 text-3xl font-bold text-gray-900">
           {locale === "fr" ? "Banque d'images Axion-IA" : "Axion-IA Image Bank"}
         </h1>
-        <p className="max-w-prose text-lg text-gray-600">
+        <p className="text-sm text-gray-500">
           {locale === "fr"
-            ? `${total} images Axion-IA — IA opérationnelle, audits, implémentations. Toutes sous licence CC BY 4.0.`
-            : `${total} Axion-IA images — operational AI, audits, implementations. All under CC BY 4.0 license.`}
+            ? `${total} image${total > 1 ? "s" : ""} libres de droits · CC BY 4.0`
+            : `${total} royalty-free image${total > 1 ? "s" : ""} · CC BY 4.0`}
         </p>
       </header>
 
-      {/* TODO: filters component — see public-pages/README.md GalleryFilters */}
-      {/* <GalleryFilters currentFilters={filters} locale={locale} /> */}
+      {/* Filtres par catégorie */}
+      <GalleryFilters locale={locale} currentModule={filters.module ?? ""} />
 
       <GalleryGrid images={images} locale={locale} />
 
-      {/* TODO: pagination component */}
+      {/* Pagination */}
       {total > PAGE_SIZE && (
         <nav aria-label="Pagination" className="mt-12 flex justify-center gap-2">
-          {/* Pagination links */}
+          {Array.from({ length: Math.ceil(total / PAGE_SIZE) }, (_, i) => i + 1).map((p) => (
+            <Link
+              key={p}
+              href={`/${locale}/galerie?${new URLSearchParams({ ...(filters.module ? { module: filters.module } : {}), page: String(p) })}`}
+              className={`flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors ${pageNum === p ? "border-terracotta bg-terracotta text-white" : "hover:border-terracotta hover:text-terracotta border-gray-200 bg-white text-gray-700"}`}
+              aria-current={pageNum === p ? "page" : undefined}
+            >
+              {p}
+            </Link>
+          ))}
         </nav>
       )}
     </main>
@@ -215,4 +231,51 @@ function capitalizeCity(slug: string): string {
     .split("-")
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join(" ");
+}
+
+// Filtres visuels par catégorie — liens URL (SSR, SEO-friendly, 0 JS)
+const FILTER_MODULES = [
+  "audits",
+  "implementations",
+  "interventions",
+  "un-a-un",
+  "graphique",
+  "logo",
+  "proposition",
+] as const;
+
+function GalleryFilters({ locale, currentModule }: { locale: "fr" | "en"; currentModule: string }) {
+  const labels = locale === "fr" ? MODULE_LABELS_FR : MODULE_LABELS_EN;
+  const base = `/${locale}/galerie`;
+
+  const pillCn = (active: boolean) =>
+    `inline-flex items-center rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors whitespace-nowrap ${
+      active
+        ? "border-terracotta bg-terracotta text-white"
+        : "border-gray-200 bg-white text-gray-600 hover:border-terracotta hover:text-terracotta"
+    }`;
+
+  return (
+    <nav
+      aria-label={locale === "fr" ? "Filtrer par catégorie" : "Filter by category"}
+      className="mb-8 flex flex-wrap gap-2"
+    >
+      <Link href={base} className={pillCn(!currentModule)}>
+        {locale === "fr" ? "Toutes" : "All"}
+      </Link>
+      {FILTER_MODULES.map((mod) => {
+        const label = isValidModule(mod) ? labels[mod as Module] : mod;
+        return (
+          <Link
+            key={mod}
+            href={`${base}?module=${mod}`}
+            className={pillCn(currentModule === mod)}
+            aria-current={currentModule === mod ? "true" : undefined}
+          >
+            {label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
 }

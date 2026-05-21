@@ -51,7 +51,7 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
 
   return (
     <ul
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
       aria-label={locale === "fr" ? "Galerie d'images" : "Image gallery"}
     >
       {images.map((img, idx) => {
@@ -91,25 +91,15 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
                 </figure>
 
                 {/* Texte */}
-                <div className="p-4">
-                  <p className="line-clamp-2 text-sm leading-snug font-semibold text-gray-900">
+                <div className="p-2.5">
+                  <p className="line-clamp-2 text-xs leading-snug font-semibold text-gray-900">
                     {t.title}
                   </p>
-                  {(t.caption || t.description) && (
-                    <p className="mt-1 line-clamp-2 text-xs text-gray-500">
-                      {t.caption ?? t.description}
-                    </p>
+                  {img.module && (
+                    <span className="bg-bg mt-1 inline-block rounded-full border border-gray-100 px-2 py-0.5 text-[10px] text-gray-500">
+                      {img.module}
+                    </span>
                   )}
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    {img.module && (
-                      <span className="bg-bg rounded-full border border-gray-200 px-2.5 py-0.5 text-[11px] text-gray-600">
-                        {img.module}
-                      </span>
-                    )}
-                    {img.targetCity && (
-                      <span className="text-[11px] text-gray-400">· {img.targetCity}</span>
-                    )}
-                  </div>
                 </div>
               </article>
             </Link>
