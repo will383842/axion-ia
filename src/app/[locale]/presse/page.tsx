@@ -127,12 +127,12 @@ export default async function PressePage({ params }: Props) {
     about: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA OÜ",
+      name: "Axion-IA",
       url: SITE_URL,
       foundingDate: "2024",
       address: {
         "@type": "PostalAddress",
-        addressCountry: "EE",
+        addressCountry: "FR",
       },
       contactPoint: [
         {
@@ -161,7 +161,7 @@ export default async function PressePage({ params }: Props) {
     sameAs: [p.linkedinUrl],
     knowsAbout: [...p.knowsAbout],
     knowsLanguage: p.languages.map((l) => (l === "fr" ? "French" : "English")),
-    worksFor: { "@type": "Organization", name: "Axion-IA OÜ", url: SITE_URL },
+    worksFor: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
   }));
 
   const releasesItemList =
@@ -183,8 +183,8 @@ export default async function PressePage({ params }: Props) {
               datePublished: r.publishedAt,
               dateModified: r.publishedAt,
               inLanguage: loc,
-              author: { "@type": "Organization", name: "Axion-IA OÜ" },
-              publisher: { "@type": "Organization", name: "Axion-IA OÜ", url: SITE_URL },
+              author: { "@type": "Organization", name: "Axion-IA" },
+              publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
               image: `${SITE_URL}/api/og?title=${encodeURIComponent(r.title)}&accent=primary`,
             },
           })),

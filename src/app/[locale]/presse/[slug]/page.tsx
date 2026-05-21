@@ -15,7 +15,7 @@
  *   - `generateStaticParams` pour tous les slugs PRESS_RELEASES (3 au 2026-05-18)
  *   - Metadata bilingue FR canonique + EN miroir via routing.pathnames
  *   - JSON-LD `NewsArticle` (headline, datePublished, articleBody, author,
- *     publisher Axion-IA OÜ, image OG dynamique, mainEntityOfPage)
+ *     publisher Axion-IA, image OG dynamique, mainEntityOfPage)
  *   - JSON-LD `BreadcrumbList` via `<Breadcrumbs>` (Home → Espace presse → Titre)
  *   - JSON-LD `WebPage` + `Speakable` cssSelector `[data-aeo="press-release-tldr"]`
  *   - Anti-doorway HCU 2024 : `robots: noindex` si body < 250 mots
@@ -184,7 +184,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
   const isThin = wordCount < MIN_BODY_WORDS;
 
   // NewsArticle JSON-LD — signal Google News + Top Stories + AI Overviews
-  // citation. Publisher = Axion-IA OÜ (cohérence avec /presse/page.tsx +
+  // citation. Publisher = Axion-IA (cohérence avec /presse/page.tsx +
   // buildOrganizationJsonLd layout). Pas de `author Person` car les
   // communiqués sont émis par l'organisation, pas un journaliste individuel
   // (doctrine PR : `author = publisher` quand la corp parle d'elle-même).
@@ -203,13 +203,13 @@ export default async function PressReleaseDetailPage({ params }: Props) {
     author: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA OÜ",
+      name: "Axion-IA",
       url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA OÜ",
+      name: "Axion-IA",
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
@@ -328,8 +328,8 @@ export default async function PressReleaseDetailPage({ params }: Props) {
           labels={{
             primaryCta: isFr ? "Voir la banque d'images" : "View the image bank",
             licenseNote: isFr
-              ? "Licence CC BY 4.0 — usage libre avec attribution. Mention recommandée : « © Axion-IA OÜ — axion-ia.com »."
-              : "CC BY 4.0 licence — free use with attribution. Recommended credit: « © Axion-IA OÜ — axion-ia.com ».",
+              ? "Licence CC BY 4.0 — usage libre avec attribution. Mention recommandée : « © Axion-IA — axion-ia.com »."
+              : "CC BY 4.0 licence — free use with attribution. Recommended credit: « © Axion-IA — axion-ia.com ».",
             categories: [
               {
                 id: "ia-operationnelle",

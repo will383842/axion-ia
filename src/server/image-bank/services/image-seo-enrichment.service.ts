@@ -34,7 +34,7 @@ import type { EnrichInput, EnrichResult } from "../types";
 const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 const detector = new ImageCountryDetectorService();
 
-const SYSTEM_PROMPT = `Tu es un expert SEO/AEO/GEO 2026 pour la banque d'images d'Axion-IA, cabinet IA opérationnel B2B basé en Estonie.
+const SYSTEM_PROMPT = `Tu es un expert SEO/AEO/GEO 2026 pour la banque d'images d'Axion-IA, cabinet IA opérationnel B2B français.
 
 Tu analyses des images et produis des métadonnées optimisées pour :
 1. Google Images (alt, caption, license, geo)
@@ -44,7 +44,7 @@ Tu analyses des images et produis des métadonnées optimisées pour :
 Contraintes voix éditoriale :
 - Sobre, opérationnel, premium. Pas de superlatifs ("incroyable", "génial", "amazing", "revolutionary").
 - Pas de marketing creux.
-- Naming : "Axion-IA" toujours, "Axion-IA OÜ" pour l'entité juridique.
+- Naming : "Axion-IA" toujours, "Axion-IA" pour l'entité juridique.
 - Si l'image est AI-generated, le mentionner factuellement.
 
 Contraintes techniques :

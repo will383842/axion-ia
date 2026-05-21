@@ -90,8 +90,8 @@ export function NewQuoteForm({ bookingId, defaultAmountHtCents }: Props) {
 
       <div className="admin-field">
         <label className="admin-label">
-          <input type="checkbox" name="vatReverseCharge" defaultChecked disabled={pending} /> TVA
-          reverse charge (Axion-IA OÜ Estonie — UE intra)
+          <input type="checkbox" name="vatReverseCharge" defaultChecked disabled={pending} /> TVA 20
+          % (Axion-IA France)
         </label>
       </div>
 

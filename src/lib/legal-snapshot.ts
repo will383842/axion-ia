@@ -5,9 +5,8 @@
 // + clauses CGV applicables au moment de l'émission. Stocké dans le champ
 // JSONB `Invoice.legalSnapshot` (cf. schema.prisma).
 //
-// Objectif : si Will bascule de OÜ Estonie vers SARL France (ou inversement),
-// les factures déjà émises restent juridiquement valides avec les anciennes
-// mentions. Pas de retro-activité fiscale.
+// Objectif : les factures déjà émises restent juridiquement valides avec les
+// anciennes mentions. Pas de retro-activité fiscale.
 //
 // SOURCE :
 //   - 04-PLAN-EXECUTION Sprint X.17
@@ -29,13 +28,13 @@ export interface LegalSnapshot {
   vatRate: number;
   /** Reverse-charge actif ? */
   vatReverseCharge: boolean;
-  /** Loi applicable (« droit estonien » / « droit français »). */
+  /** Loi applicable (« droit français »). */
   loiApplicable: string;
-  /** Juridiction compétente (« tribunaux Tallinn / Paris »). */
+  /** Juridiction compétente (« tribunaux compétents en France »). */
   juridiction: string;
-  /** Forme juridique (« OÜ » / « SARL »). */
+  /** Forme juridique (« [forme juridique à préciser] » / « SARL »). */
   companyLegalForm: string;
-  /** Numéro d'enregistrement société (registrikood EE / immatriculation FR). */
+  /** Numéro d'enregistrement société (SIREN/RCS FR — ou registrikood EE pour snapshots legacy OÜ). */
   companyRegistrationNumber: string;
   /** Numéro TVA intracommunautaire (EE / FR). */
   companyVatNumber: string | null;
@@ -46,8 +45,8 @@ export interface LegalSnapshot {
 }
 
 /**
- * Snapshot par défaut OÜ Estonie (actuel V1).
- * Surchargeable via SiteSetting si Will bascule en cours d'exploitation.
+ * Snapshot legacy OÜ Estonie (rétrocompatibilité factures passées — NE PAS MODIFIER).
+ * Utilisé uniquement pour les anciennes factures EE_OU. Non surchargeable.
  */
 const DEFAULT_OU_SNAPSHOT: Omit<LegalSnapshot, "capturedAt"> = {
   version: 1,
@@ -70,8 +69,8 @@ const DEFAULT_FR_SNAPSHOT: Omit<LegalSnapshot, "capturedAt"> = {
   vatReverseCharge: false,
   vatMention: "TVA 20,00 %",
   loiApplicable: "Droit français",
-  juridiction: "Tribunaux compétents en France (Tribunal de commerce de Paris)",
-  companyLegalForm: "SARL",
+  juridiction: "Tribunaux compétents en France",
+  companyLegalForm: "[forme juridique à préciser]",
   companyRegistrationNumber: "(immatriculation communiquée sur demande)",
   companyVatNumber: null,
   forceMajeureArticle: "Code civil français, art. 1218",
@@ -79,7 +78,7 @@ const DEFAULT_FR_SNAPSHOT: Omit<LegalSnapshot, "capturedAt"> = {
 
 /**
  * Lit le régime fiscal actuel depuis SiteSetting (clé `fiscal_regime`).
- * Défaut V1 : `EE_OU` (Axion-IA OÜ Estonie).
+ * Défaut V1 : FR_SARL (Axion-IA France).
  */
 async function readFiscalRegime(): Promise<FiscalRegime> {
   try {
@@ -100,9 +99,9 @@ async function readFiscalRegime(): Promise<FiscalRegime> {
       const r = (raw as { regime: string }).regime;
       if (r === "EE_OU" || r === "FR_SARL") return r;
     }
-    return "EE_OU";
+    return "FR_SARL";
   } catch {
-    return "EE_OU";
+    return "FR_SARL";
   }
 }
 
@@ -140,7 +139,7 @@ export async function captureLegalSnapshot(): Promise<LegalSnapshot> {
 /**
  * Helper synchrone pour tests + cas où on veut snapshot sans hit DB.
  */
-export function captureLegalSnapshotSync(regime: FiscalRegime = "EE_OU"): LegalSnapshot {
+export function captureLegalSnapshotSync(regime: FiscalRegime = "FR_SARL"): LegalSnapshot {
   const base = regime === "FR_SARL" ? DEFAULT_FR_SNAPSHOT : DEFAULT_OU_SNAPSHOT;
   return {
     ...base,

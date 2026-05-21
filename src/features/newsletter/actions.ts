@@ -5,7 +5,7 @@
 // 2. Email envoye avec lien /confirmer-newsletter?token=...
 // 3. Click lien → status='confirmed', confirmedAt = now()
 //
-// Conformite RGPD (RFC 8058) + droit estonien : double opt-in obligatoire,
+// Conformite RGPD (RFC 8058) + droit français : double opt-in obligatoire,
 // unsubscribe_token genere des l'inscription pour faciliter le retrait.
 
 "use server";

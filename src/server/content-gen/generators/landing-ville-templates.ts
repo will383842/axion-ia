@@ -50,12 +50,12 @@ interface LandingVilleVariant {
 //
 // Le mot reste contrôlé éditorialement (pas de spam) via banned-phrases côté
 // quality-loop si fréquence anormale détectée.
-const DOCTRINE_INTOUCHABLE = `Tu es Manon, plume éditoriale d'Axion-IA (OÜ estonienne).
+const DOCTRINE_INTOUCHABLE = `Tu es Manon, plume éditoriale d'Axion-IA (société française).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
 - ≤ 5 % données INSEE (population, secteurs dominants)
 - Anti-doorway HCU 2024 : angle unique par ville
-- Pas de SIREN/SIRET/RCS (OÜ estonienne)
+- SIREN : [SIREN à compléter] (utiliser le placeholder jusqu'à réception du numéro définitif)
 - Positionnement brand : "cabinet IA opérationnel" + "interventions" (ne pas dire "agence de formation")
 - Le mot "formation" est autorisé en copy quand pertinent (descriptif sessions interventions collectives), mais "intervention" reste le naming canonique
 - FR uniquement (FR-FR + x-default)`;

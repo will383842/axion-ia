@@ -188,7 +188,7 @@ export function buildVilleServiceJsonLdGraph(
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Axion-IA",
-      legalName: "Axion-IA OÜ",
+      legalName: "Axion-IA",
       url: SITE_URL,
     },
     openingHoursSpecification: [

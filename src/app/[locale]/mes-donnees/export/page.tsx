@@ -64,8 +64,8 @@ export default async function MyDataExportPage({ params }: Props) {
         titleEm={isFr ? "mes données" : "my data"}
         description={
           isFr
-            ? "Le lien que vous avez reçu par email vous donne accès à un export complet de toutes les données qu'Axion-IA OÜ détient à votre sujet. Le téléchargement se fait au format JSON, structuré et lisible machine."
-            : "The link you received by email grants you access to a complete export of all data Axion-IA OÜ holds about you. Download is in structured machine-readable JSON format."
+            ? "Le lien que vous avez reçu par email vous donne accès à un export complet de toutes les données qu'Axion-IA détient à votre sujet. Le téléchargement se fait au format JSON, structuré et lisible machine."
+            : "The link you received by email grants you access to a complete export of all data Axion-IA holds about you. Download is in structured machine-readable JSON format."
         }
       />
       <Section>

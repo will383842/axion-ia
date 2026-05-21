@@ -77,7 +77,8 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
     blocking.push({
       pattern: "SIREN/SIRET/RCS",
       severity: "block",
-      reason: "OÜ estonienne — pas de numéro français autorisé",
+      reason:
+        "SIREN non encore disponible — utiliser le placeholder [SIREN à compléter] jusqu'à réception du numéro définitif",
       occurrences: sirenMatches.length,
     });
   }

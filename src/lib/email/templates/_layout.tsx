@@ -91,22 +91,22 @@ export interface EmailLayoutProps {
   title: string;
   children: ReactNode;
   cta?: { label: string; href: string };
-  /** Footer bilingue. Affiche "OÜ", "axion-ia.com", date, lien unsubscribe optionnel. */
+  /** Footer bilingue. Affiche "axion-ia.com", date, lien unsubscribe optionnel. */
   unsubscribeHref?: string;
   locale: "fr" | "en";
 }
 
 const FOOTER_TEXT = {
   fr: {
-    company: "Axion-IA OÜ · cabinet IA opérationnel",
-    address: "Estonie (UE)",
+    company: "Axion-IA · cabinet IA opérationnel",
+    address: "France (UE)",
     contact: "Contact :",
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
   },
   en: {
-    company: "Axion-IA OÜ · operational AI consultancy",
-    address: "Estonia (EU)",
+    company: "Axion-IA · operational AI consultancy",
+    address: "France (EU)",
     contact: "Contact:",
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
@@ -148,7 +148,7 @@ export function EmailLayout({
             <Link href={`${BASE_URL}/contact`} style={{ color: COLORS.accent }}>
               {BASE_URL.replace(/^https?:\/\//, "")}
             </Link>
-            <br />© {new Date().getFullYear()} Axion-IA OÜ — {t.rights}
+            <br />© {new Date().getFullYear()} Axion-IA — {t.rights}
             {unsubscribeHref && (
               <>
                 <br />

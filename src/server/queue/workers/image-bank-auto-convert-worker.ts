@@ -146,7 +146,7 @@ async function runConvert(data: ImageBankAutoConvertJobData): Promise<ImageBankA
     pipe = pipe.withMetadata({
       exif: {
         IFD0: {
-          Copyright: "© 2026 Axion-IA OÜ — CC BY 4.0",
+          Copyright: "© 2026 Axion-IA — CC BY 4.0",
           Artist: "Axion-IA",
           ImageDescription: targetSlug,
           Software: "Axion-IA image pipeline (Sharp)",

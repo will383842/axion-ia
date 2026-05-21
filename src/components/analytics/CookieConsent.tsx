@@ -8,7 +8,7 @@
 //
 // Architecture :
 //  - Plausible self-hosted EU (sans cookie) reste TOUJOURS actif — pas de
-//    consent requis (avis CNIL/AKI 2022 sur les analytics anonymisés).
+//    consent requis (avis CNIL 2022 sur les analytics anonymisés).
 //  - Microsoft Clarity (US, cookies persistants) est GATÉ sur consent :
 //    le composant `Clarity` ne charge le script qu'après `accepted`.
 //  - Stockage : `localStorage.axion-cookie-consent-v1` = "accepted" | "declined"

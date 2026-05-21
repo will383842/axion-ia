@@ -26,7 +26,7 @@ import type { TranslateInput, TranslateResult } from "../types";
 
 const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 
-const SYSTEM_PROMPT = `Tu es un traducteur expert SEO/AEO pour la banque d'images d'Axion-IA (cabinet IA opérationnel B2B basé en Estonie).
+const SYSTEM_PROMPT = `Tu es un traducteur expert SEO/AEO pour la banque d'images d'Axion-IA (cabinet IA opérationnel B2B français).
 
 Contraintes :
 1. Traduis FR ↔ EN.

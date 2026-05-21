@@ -105,16 +105,16 @@ export default async function TransparencePage({ params }: Props) {
       icon: ShieldCheck,
       title: isFr ? "Classification AI Act" : "AI Act classification",
       body: isFr
-        ? "Axion-IA OÜ opère un usage marketing B2B de l'IA générative — pas un système à haut risque au sens de l'art. 52 AI Act EU. Position downstream user de modèles à usage général (art. 53). Aucune décision automatisée affectant des droits fondamentaux (art. 26 FRIA non applicable). Documentation complète : ADR 0024."
-        : "Axion-IA OÜ operates a B2B marketing use of generative AI — not a high-risk system under EU AI Act art. 52. Downstream user position of general-purpose AI models (art. 53). No automated decision-making affecting fundamental rights (art. 26 FRIA not applicable). Full documentation: ADR 0024.",
+        ? "Axion-IA opère un usage marketing B2B de l'IA générative — pas un système à haut risque au sens de l'art. 52 AI Act EU. Position downstream user de modèles à usage général (art. 53). Aucune décision automatisée affectant des droits fondamentaux (art. 26 FRIA non applicable). Documentation complète : ADR 0024."
+        : "Axion-IA operates a B2B marketing use of generative AI — not a high-risk system under EU AI Act art. 52. Downstream user position of general-purpose AI models (art. 53). No automated decision-making affecting fundamental rights (art. 26 FRIA not applicable). Full documentation: ADR 0024.",
       links: [],
     },
     {
       icon: FileText,
       title: isFr ? "Vos droits RGPD" : "Your GDPR rights",
       body: isFr
-        ? "Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com. Les prompts envoyés aux modèles ne contiennent aucune donnée personnelle de visiteur. Droits d'accès, rectification, effacement, opposition, portabilité, limitation garantis — autorité de contrôle compétente : AKI (Estonie)."
-        : "You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com. Prompts sent to models contain no visitor personal data. Rights of access, rectification, erasure, objection, portability, restriction guaranteed — competent supervisory authority: AKI (Estonia).",
+        ? "Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com. Les prompts envoyés aux modèles ne contiennent aucune donnée personnelle de visiteur. Droits d'accès, rectification, effacement, opposition, portabilité, limitation garantis — autorité de contrôle compétente : CNIL (France)."
+        : "You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com. Prompts sent to models contain no visitor personal data. Rights of access, rectification, erasure, objection, portability, restriction guaranteed — competent supervisory authority: CNIL (France).",
       links: [
         {
           href: "/politique-confidentialite",

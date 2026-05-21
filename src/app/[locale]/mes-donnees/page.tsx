@@ -73,8 +73,8 @@ export default async function MyDataPage({ params }: Props) {
         titleEm={isFr ? "RGPD" : "GDPR data"}
         description={
           isFr
-            ? "Axion-IA OÜ traite vos données conformément au RGPD UE 2016/679. Voici comment exercer vos droits."
-            : "Axion-IA OÜ processes your data in accordance with EU GDPR 2016/679. Here's how to exercise your rights."
+            ? "Axion-IA traite vos données conformément au RGPD UE 2016/679. Voici comment exercer vos droits."
+            : "Axion-IA processes your data in accordance with EU GDPR 2016/679. Here's how to exercise your rights."
         }
       />
       <Section>
@@ -99,8 +99,8 @@ export default async function MyDataPage({ params }: Props) {
             </p>
             <p>
               {isFr
-                ? "En cas de réponse insatisfaisante, vous pouvez saisir l'autorité de protection des données compétente (Andmekaitse Inspektsioon · AKI) ou l'autorité équivalente de votre État membre UE (CNIL en France)."
-                : "If the response is unsatisfactory, you can file a complaint with the competent Data Protection Authority (Andmekaitse Inspektsioon · AKI) or the equivalent authority in your EU member state (CNIL in France)."}
+                ? "En cas de réponse insatisfaisante, vous pouvez saisir la CNIL (Commission Nationale de l'Informatique et des Libertés — www.cnil.fr) ou l'autorité équivalente de votre État membre UE."
+                : "If the response is unsatisfactory, you can file a complaint with the CNIL (Commission Nationale de l'Informatique et des Libertés — www.cnil.fr) or the equivalent authority in your EU member state."}
             </p>
             <Cta href="/rgpd" variant="outline">
               {isFr ? "Voir la politique RGPD complète" : "See full GDPR policy"} →

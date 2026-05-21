@@ -90,7 +90,7 @@ export function buildVillesSitemapXml(
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- ${comment} — ${villes.length} URLs -->
-  <!-- CC BY 4.0 — © 2026 Axion-IA OÜ -->
+  <!-- CC BY 4.0 — © 2026 Axion-IA -->
 ${urlBlocks.join("\n")}
 </urlset>
 `;

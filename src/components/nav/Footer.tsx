@@ -144,7 +144,7 @@ export async function Footer() {
             <Dot />
             <span>{isFr ? "Hébergé en UE" : "Hosted in EU"}</span>
             <Dot />
-            <span>OÜ {isFr ? "· Estonie" : "· Estonia"}</span>
+            <span>France</span>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
             <Link href="/charte-editoriale" className={linkCn}>

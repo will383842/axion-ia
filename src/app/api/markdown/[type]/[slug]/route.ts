@@ -175,7 +175,7 @@ Source: ${canonicalUrl}
 Last modified: ${lastMod}
 Format: text/markdown (alternate). Canonical HTML at the Source URL above.
 Type: ${type}
-Provider: Axion-IA OÜ (Estonia, EU)
+Provider: Axion-IA (France, EU)
 `;
 }
 

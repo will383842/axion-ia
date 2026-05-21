@@ -30,11 +30,9 @@ describe("Plagiarism — shingling + Jaccard", () => {
   });
 
   it("checkPlagiarism flags duplicate vs corpus", () => {
-    const corpus = new Map([
-      ["doc-1", "Axion-IA est un cabinet IA opérationnel français basé en Estonie."],
-    ]);
+    const corpus = new Map([["doc-1", "Axion-IA est un cabinet IA opérationnel français."]]);
     const result = checkPlagiarism(
-      "Axion-IA est un cabinet IA opérationnel français basé en Estonie aujourd'hui.",
+      "Axion-IA est un cabinet IA opérationnel français aujourd'hui.",
       corpus,
       0.3,
     );

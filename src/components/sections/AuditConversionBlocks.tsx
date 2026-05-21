@@ -40,7 +40,7 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: MapPin,
           label: "Cabinet européen",
-          detail: "Axion-IA OÜ · facturation HT",
+          detail: "Axion-IA · facturation HT",
         },
         {
           icon: ShieldCheck,
@@ -62,7 +62,7 @@ export function TrustBadges({ isFr }: { isFr: boolean }): ReactNode {
         {
           icon: MapPin,
           label: "European consultancy",
-          detail: "Axion-IA OÜ · excl. VAT invoicing",
+          detail: "Axion-IA · excl. VAT invoicing",
         },
         {
           icon: ShieldCheck,

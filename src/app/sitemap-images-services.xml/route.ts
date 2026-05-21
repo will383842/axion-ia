@@ -44,7 +44,7 @@ export function GET(): Response {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- ${SERVICE_SITEMAP_PAGES.length} pages de services — ${totalImages} images -->
-  <!-- CC BY 4.0 — © 2026 Axion-IA OÜ — aiGenerated:true (AI Act art. 50) -->
+  <!-- CC BY 4.0 — © 2026 Axion-IA — aiGenerated:true (AI Act art. 50) -->
 ${urlBlocks.join("\n")}
 </urlset>
 `;

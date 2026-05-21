@@ -6,7 +6,7 @@
  * Règles mémoire (décisions Will 2026-05-19) :
  *   - Positionnement "cabinet IA" ET "agence IA" (les deux valides)
  *   - PAS "Made in France" → "franco-européen", "expertise française", "données en Europe"
- *   - PAS "OÜ" visible dans aucun champ
+ *   - PAS "OÜ" ni mentions Estonia/Estonie dans aucun champ
  *   - PAS certifications de formation / financements certifiés
  *   - "N°1 France" = objectif → formuler "référence", "reconnu", "opérationnel"
  *   - niveau 1 → priorite ≥ 2 (règle anti-cannibalisation HEAD)
@@ -727,7 +727,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
     urlCible: "/fr/cabinet-ia-reference-france",
     canonicalParent: "/fr/",
     source: "manuel",
-    note: "P5. Jamais 'Made in France' (siège Estonie). Jamais 'OÜ'. Lier vers /fr/blog/ia-souveraine-rgpd-europe.",
+    note: "P5. Jamais 'Made in France' (au sens Qualiopi/certification). Lier vers /fr/blog/ia-souveraine-rgpd-europe.",
   },
 
   {
@@ -755,7 +755,7 @@ export const KW_POSITIONNEMENTS_M: KeywordSeed[] = [
     urlCible: "/fr/blog/expertise-ia-française-entreprise",
     canonicalParent: "/fr/blog/",
     source: "manuel",
-    note: "P5. Contenu TOFU crédibilité. Jamais 'Made in France'. Jamais 'OÜ'. schema.org Article.",
+    note: "P5. Contenu TOFU crédibilité. Jamais 'Made in France' (au sens Qualiopi/certification). schema.org Article.",
   },
 
   {

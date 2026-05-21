@@ -4,15 +4,15 @@ import { describe, it, expect } from "vitest";
 import { captureLegalSnapshotSync, type LegalSnapshot } from "./legal-snapshot";
 
 describe("captureLegalSnapshotSync", () => {
-  it("régime EE_OU par défaut", () => {
+  it("régime FR_SARL par défaut", () => {
     const s = captureLegalSnapshotSync();
-    expect(s.fiscalRegime).toBe("EE_OU");
-    expect(s.vatRate).toBe(0);
-    expect(s.vatReverseCharge).toBe(true);
-    expect(s.vatMention).toContain("art. 196");
-    expect(s.loiApplicable).toContain("estonien");
-    expect(s.companyLegalForm).toBe("OÜ");
-    expect(s.forceMajeureArticle).toContain("Võlaõigusseadus");
+    expect(s.fiscalRegime).toBe("FR_SARL");
+    expect(s.vatRate).toBe(20);
+    expect(s.vatReverseCharge).toBe(false);
+    expect(s.vatMention).toContain("20");
+    expect(s.loiApplicable).toContain("français");
+    expect(s.companyLegalForm).toBe("[forme juridique à préciser]");
+    expect(s.forceMajeureArticle).toContain("1218");
     expect(s.version).toBe(1);
   });
 
@@ -23,7 +23,7 @@ describe("captureLegalSnapshotSync", () => {
     expect(s.vatReverseCharge).toBe(false);
     expect(s.vatMention).toContain("20");
     expect(s.loiApplicable).toContain("français");
-    expect(s.companyLegalForm).toBe("SARL");
+    expect(s.companyLegalForm).toContain("forme juridique");
     expect(s.forceMajeureArticle).toContain("1218");
   });
 

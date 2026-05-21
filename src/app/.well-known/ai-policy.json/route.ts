@@ -6,7 +6,7 @@
 
 const AI_POLICY = {
   version: "1.0",
-  publisher: "Axion-IA OÜ",
+  publisher: "Axion-IA",
   publisher_url: "https://axion-ia.com",
   contact: "contact@axion-ia.com",
   license: "CC-BY-4.0",

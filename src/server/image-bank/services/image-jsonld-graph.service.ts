@@ -2,7 +2,7 @@
  * image-jsonld-graph.service.ts — GAP-12 perfection 2026
  *
  * Construit le JSON-LD `@graph` chained sur chaque page image-bank :
- *   - Organization (Axion-IA OÜ)
+ *   - Organization (Axion-IA)
  *   - WebSite (search action)
  *   - WebPage (mainEntity = image)
  *   - BreadcrumbList
@@ -67,7 +67,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     "@type": "Organization",
     "@id": ORG_ID,
     name: SITE_NAME,
-    legalName: "Axion-IA OÜ",
+    legalName: "Axion-IA",
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",
@@ -99,8 +99,8 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     areaServed: { "@type": "Country", name: "France" },
     address: {
       "@type": "PostalAddress",
-      addressCountry: "EE",
-      addressLocality: "Tallinn",
+      addressCountry: "FR",
+      addressLocality: "[Ville — France]",
     },
   };
 }

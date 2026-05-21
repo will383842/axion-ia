@@ -41,9 +41,9 @@ function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `Axion-IA OÜ, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé ${cibleMin} à ${cibleMax}, Stratégique PME ${pmeMin} à ${pmeMax}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash ${flash}, Ciblé ${cibleMin} à ${cibleMax}, Stratégique PME ${pmeMin} à ${pmeMax}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
   }
-  return `Axion-IA OÜ, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted ${cibleMin} to ${cibleMax}, Strategic SME ${pmeMin} to ${pmeMax}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash ${flash}, Targeted ${cibleMin} to ${cibleMax}, Strategic SME ${pmeMin} to ${pmeMax}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
 }
 
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";
@@ -118,13 +118,13 @@ export const PRESS_PITCH: { fr: PressPitchLocale; en: PressPitchLocale } = {
     eyebrow: "Espace presse",
     short: pressPitchShort("fr"),
     boilerplate:
-      "Axion-IA OÜ est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
+      "Axion-IA est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans l'identification, la démonstration et l'implémentation d'usages d'intelligence artificielle générant un retour sur investissement mesurable. Méthode : démos sur données réelles, plan d'action chiffré, hébergement UE. Contact presse : presse@axion-ia.com.",
   },
   en: {
     eyebrow: "Press room",
     short: pressPitchShort("en"),
     boilerplate:
-      "Axion-IA OÜ is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
+      "Axion-IA is an operational AI consultancy founded in 2024. The firm helps companies of all sizes — from sole traders to mid-caps — identify, demonstrate and implement artificial intelligence use cases that deliver measurable return on investment. Method: demos on real data, costed action plan, EU hosting. Press contact: presse@axion-ia.com.",
   },
 };
 
@@ -361,12 +361,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Quelle est la structure juridique d'Axion-IA ?",
       answer:
-        "Axion-IA OÜ est une société de droit européen. La facturation est émise selon le régime TVA UE applicable à la résidence du client (autoliquidation B2B intracommunautaire avec n° TVA valide).",
+        "Axion-IA est une société française ([forme juridique à préciser]). La facturation est émise en euros HT avec TVA française (20 %) appliquée selon la résidence du client.",
     },
     en: {
       question: "What is Axion-IA's legal structure?",
       answer:
-        "Axion-IA OÜ is a European-law company. Invoicing is issued under the EU VAT regime applicable to the client's residence (intracommunity B2B reverse charge with valid VAT number).",
+        "Axion-IA is a French company ([legal form to be specified]). Invoicing is in euros (excl. VAT) with French VAT (20%) applied according to the client's residence.",
     },
   },
   {

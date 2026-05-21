@@ -9,7 +9,7 @@
 // research) côté infrastructure ou logique applicative.
 //
 // Auto-hébergés (DocuSeal, Mailwizz/PowerMTA, Plausible, Uptime Kuma) : pas
-// des sous-traitants externes au sens RGPD (Axion-IA OÜ est seul responsable),
+// des sous-traitants externes au sens RGPD (Axion-IA est seule responsable),
 // mais référencés en transparence (Hetzner DE = hébergement physique).
 //
 // Cette SSOT est la SOURCE UNIQUE de vérité publique sous-processeurs. La page

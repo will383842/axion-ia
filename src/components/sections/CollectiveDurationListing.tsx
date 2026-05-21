@@ -87,8 +87,8 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
           ? `Intervention IA opérationnelle ${duration.labelFr}`
           : `Operational AI session — ${duration.labelEn}`,
         description: isFr
-          ? `Intervention IA opérationnelle sur ${duration.labelFr.toLowerCase()} pour décideurs, managers et équipes. Format intervention Axion-IA (cabinet IA opérationnel français, OÜ estonienne). De 2 à 30+ personnes selon le format choisi.`
-          : `Operational AI engagement over ${duration.labelEn.toLowerCase()} for decision-makers, managers and teams. Axion-IA intervention format (operational AI consultancy, Estonian OÜ). From 2 to 30+ people depending on chosen format.`,
+          ? `Intervention IA opérationnelle sur ${duration.labelFr.toLowerCase()} pour décideurs, managers et équipes. Format intervention Axion-IA (cabinet IA opérationnel français). De 2 à 30+ personnes selon le format choisi.`
+          : `Operational AI engagement over ${duration.labelEn.toLowerCase()} for decision-makers, managers and teams. Axion-IA intervention format (operational AI consultancy, France). From 2 to 30+ people depending on chosen format.`,
         courseMode: ["Onsite"],
         ...(duration.iso8601Duration ? { duration: duration.iso8601Duration } : {}),
         audienceType: isFr

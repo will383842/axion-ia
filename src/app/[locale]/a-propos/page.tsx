@@ -144,8 +144,8 @@ export default async function About({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? "Le marché de l'IA d'entreprise en 2026 est saturé de promesses non tenues. Pilotes qui ne passent jamais en production. Démos époustouflantes sur des données fabriquées. Factures longues comme un bras pour des outils sans ROI mesurable. Axion-IA prend le contre-pied : aucune intervention sans démonstration sur vos données réelles, aucun devis sans plan d'action chiffré priorisé, aucun déploiement sans support post-livraison. Cabinet IA opérationnel signifie : on travaille dans vos process, pas à côté. Tallinn, Estonie : siège choisi pour la stabilité juridique UE et l'agilité fiscale, opérations 100 % à distance pour la France et l'UE."
-              : "The enterprise AI market in 2026 is saturated with broken promises. Pilots that never reach production. Stunning demos on fabricated data. Long invoices for tools without measurable ROI. Axion-IA takes the opposite stance: no engagement without a live demo on your real data, no quote without a costed prioritised action plan, no deployment without post-delivery support. Operational AI consultancy means: we work inside your processes, not next to them. Tallinn, Estonia: HQ chosen for EU legal stability and fiscal agility, 100% remote operations for France and the EU."}
+              ? "Le marché de l'IA d'entreprise en 2026 est saturé de promesses non tenues. Pilotes qui ne passent jamais en production. Démos époustouflantes sur des données fabriquées. Factures longues comme un bras pour des outils sans ROI mesurable. Axion-IA prend le contre-pied : aucune intervention sans démonstration sur vos données réelles, aucun devis sans plan d'action chiffré priorisé, aucun déploiement sans support post-livraison. Cabinet IA opérationnel signifie : on travaille dans vos process, pas à côté. France : siège choisi pour la stabilité juridique et la proximité avec les entreprises françaises et européennes."
+              : "The enterprise AI market in 2026 is saturated with broken promises. Pilots that never reach production. Stunning demos on fabricated data. Long invoices for tools without measurable ROI. Axion-IA takes the opposite stance: no engagement without a live demo on your real data, no quote without a costed prioritised action plan, no deployment without post-delivery support. Operational AI consultancy means: we work inside your processes, not next to them. France: HQ chosen for legal stability and proximity to French and European companies."}
           </p>
         </Container>
       </Section>
@@ -159,8 +159,8 @@ export default async function About({ params }: Props) {
                 figure: "2024",
                 label: isFr ? "Fondée 2024" : "Founded 2024",
                 detail: isFr
-                  ? "Cabinet IA européen fondé à Tallinn."
-                  : "European AI consultancy founded in Tallinn.",
+                  ? "Cabinet IA français fondé en 2024."
+                  : "French AI consultancy founded in 2024.",
               },
               {
                 figure: "100 %",

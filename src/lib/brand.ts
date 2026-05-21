@@ -12,12 +12,16 @@ import { env } from "@/env";
 export const BRAND = {
   /** Nom canonique customer-facing (logo, header, JSON-LD `name`, OG, titles). */
   name: "Axion-IA",
-  /** Raison sociale juridique pour mentions légales / OÜ Estonia. */
-  legalName: "Axion-IA OÜ",
-  /** Tagline FR utilisée dans subtitles, hero descriptions, OG, JSON-LD `description`. */
+  /** Raison sociale juridique pour mentions légales. */
+  legalName: "Axion-IA",
+  /** Tagline courte FR — sous-titre, JSON-LD `description`, OG. */
   taglineFr: "cabinet IA opérationnel",
-  /** Tagline EN équivalent. */
+  /** Tagline courte EN. */
   taglineEn: "operational AI consultancy",
+  /** Slogan long FR — hero principal, meta descriptions, pitch commercial. */
+  sloganFr: "De l'idée à l'impact. Un seul partenaire IA.",
+  /** Slogan long EN. */
+  sloganEn: "From idea to impact. One AI partner.",
   /** URL canonique du site (déduite de env, jamais hardcodée). */
   url: env.NEXT_PUBLIC_SITE_URL,
   /**

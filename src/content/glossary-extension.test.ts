@@ -13,7 +13,7 @@
  *   - Lookup `getGlossaryTermBySlug` (hit + miss)
  *   - `getRelatedGlossaryTerms` (3-5 résultats, sans crash sur slug fantôme)
  *   - Categories ∈ enum déclaré (anti typo string)
- *   - Pas de SIREN/SIRET (anti-hex doctrine OÜ estonienne)
+ *   - Pas de SIREN/SIRET dans les définitions (les numéros légaux vivent dans legal.ts, pas dans le glossaire)
  */
 
 import { describe, it, expect } from "vitest";
@@ -71,7 +71,7 @@ describe("glossary-extension · structure", () => {
     }
   });
 
-  it("aucune mention SIREN/SIRET (doctrine OÜ estonienne)", () => {
+  it("aucune mention SIREN/SIRET dans les définitions du glossaire (ces données appartiennent à legal.ts)", () => {
     const blob = JSON.stringify(ALL_GLOSSARY_TERMS_EXTENDED);
     expect(blob).not.toMatch(/\bSIREN\b|\bSIRET\b|\bRCS\b/i);
   });

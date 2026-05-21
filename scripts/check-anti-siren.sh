@@ -1,20 +1,24 @@
 #!/usr/bin/env bash
-# AxionIA est OÜ estonienne — aucun SIREN/SIRET/RCS français autorisé.
-# CLAUDE.md v6 §1 + §22.
+# Axion-IA est une société française — SIREN/SIRET/RCS sont attendus.
+# Ce hook vérifie qu'aucun vrai numéro SIREN n'est hardcodé hors URL
+# avant l'immatriculation officielle. Utiliser le placeholder [SIREN à compléter].
+# Un SIREN réel = mot-clé "SIREN" ou "SIRET" suivi de 9 ou 14 chiffres.
 set -e
 
-PATTERN='\bsiren\b|\bsiret\b|\brcs\b'
+# Cherche "SIREN 123456789" ou "SIRET 12345678901234" (hors URL, hors placeholder)
+PATTERN='(SIREN|SIRET)\s+[0-9]{9,14}'
 
-RESULTS=$(grep -REni --color=never \
-  --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' --include='*.mjs' --include='*.json' --include='*.md' \
+RESULTS=$(grep -REn --color=never \
+  --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' --include='*.mjs' \
   --exclude='*.test.ts' --exclude='*.test.tsx' --exclude='*.spec.ts' --exclude='*.spec.tsx' \
-  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=playwright-report --exclude-dir=coverage --exclude-dir=lhci --exclude-dir=test-results --exclude-dir=tests --exclude-dir=content-gen \
-  -E "$PATTERN" src/ messages/ 2>/dev/null || true)
+  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=playwright-report \
+  --exclude-dir=coverage --exclude-dir=lhci --exclude-dir=test-results \
+  -E "$PATTERN" src/ 2>/dev/null || true)
 
 if [ -n "$RESULTS" ]; then
-  echo "[anti-siren] FR-only legal terms found — AxionIA is OÜ estonienne"
+  echo "[anti-siren] Vrai SIREN/SIRET hardcode detecte — utiliser placeholder [SIREN a completer]"
   echo "$RESULTS"
   exit 1
 fi
 
-echo "[anti-siren] OK — 0 occurrence"
+echo "[anti-siren] OK — 0 SIREN hardcode"

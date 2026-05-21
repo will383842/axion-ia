@@ -53,8 +53,8 @@ export const GALLERY_LABEL = { fr: "Galerie", en: "Gallery" } as const;
 
 export const DEFAULT_LICENSE_TYPE = "cc-by-4.0";
 export const DEFAULT_LICENSE_URL = "https://creativecommons.org/licenses/by/4.0/";
-/** Entité juridique estonienne (registry EE, doctrine CLAUDE.md §22). */
-export const DEFAULT_COPYRIGHT_HOLDER = "Axion-IA OÜ";
+/** Entité juridique française. */
+export const DEFAULT_COPYRIGHT_HOLDER = "Axion-IA";
 /** Credit text (CC BY 4.0 attribution short form). */
 export const DEFAULT_CREDIT_TEXT = "Axion-IA";
 

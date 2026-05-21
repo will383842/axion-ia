@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Sous-processeurs · transparence RGPD · Axion-IA"
       : "Subprocessors · GDPR transparency · Axion-IA",
     description: isFr
-      ? "Liste exhaustive des sous-traitants ayant accès aux données traitées par Axion-IA OÜ. Conformité RGPD art. 28."
-      : "Exhaustive list of subprocessors accessing data handled by Axion-IA OÜ. GDPR art. 28 compliance.",
+      ? "Liste exhaustive des sous-traitants ayant accès aux données traitées par Axion-IA. Conformité RGPD art. 28."
+      : "Exhaustive list of subprocessors accessing data handled by Axion-IA. GDPR art. 28 compliance.",
     alternates: { fr: "/sous-processeurs", en: "/subprocessors" },
   });
 }
@@ -153,13 +153,13 @@ export default async function SubprocessorsPage({ params }: Props) {
                 className="text-terracotta-deep mx-2 italic"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "Axion-IA OÜ" : "Axion-IA OÜ"}
+                {isFr ? "Axion-IA" : "Axion-IA"}
               </span>
             </h1>
             <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
               {isFr
-                ? "Liste exhaustive et tenue à jour des sous-traitants ayant accès aux données traitées par Axion-IA OÜ dans le cadre de ses prestations. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet."
-                : "Exhaustive and up-to-date list of subprocessors with access to data handled by Axion-IA OÜ as part of its services. Any change is notified by email to active clients at least 30 days before taking effect."}
+                ? "Liste exhaustive et tenue à jour des sous-traitants ayant accès aux données traitées par Axion-IA dans le cadre de ses prestations. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet."
+                : "Exhaustive and up-to-date list of subprocessors with access to data handled by Axion-IA as part of its services. Any change is notified by email to active clients at least 30 days before taking effect."}
             </p>
             <p className="text-fg-muted mt-4 text-sm">
               {isFr ? "Dernière mise à jour" : "Last updated"} :{" "}

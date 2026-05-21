@@ -17,7 +17,7 @@
  *   - metaTitle ≤ 60 chars / metaDescription ≤ 155 chars
  *   - urlCible conforme Section 7 du prompt master
  *   - Aucune mention "N°1 France" sans preuve — formulé comme objectif ou requête informationnelle
- *   - Pas de "OÜ", pas de certifications de formation, pas de "Made in France"
+ *   - Pas de "Made in France", pas de certifications de formation
  *   - "franco-européen" ou "fondé par des experts français" à la place de "Made in France"
  */
 
@@ -129,7 +129,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     },
     urlCible: "/fr/a-propos/",
     source: "manuel",
-    note: "Page À propos — insister sur 'franco-européen', jamais 'OÜ' ni 'Made in France'",
+    note: "Page À propos — insister sur 'cabinet français', jamais 'Made in France' (au sens marketing Qualiopi/certification)",
   },
 
   {
@@ -985,6 +985,6 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     },
     urlCible: "/fr/a-propos/",
     source: "manuel",
-    note: "Brand — insister sur 'franco-européen' et 'experts français', jamais 'Made in France' ni 'OÜ'",
+    note: "Brand — insister sur 'cabinet français' et 'experts français', jamais 'Made in France' (au sens marketing Qualiopi/certification)",
   },
 ];

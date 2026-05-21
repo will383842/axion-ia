@@ -1,6 +1,6 @@
-// Legal content — 6 pages (Sprint 10). Estonian OÜ jurisdiction.
+// Legal content — 6 pages (Sprint 10). Droit français.
 // CLAUDE.md v6 §1 + §5 + §22. Source: docs 28 + 31.
-// registrikood + EU VAT : will fournit plus tard, communiqués sur demande
+// SIREN/SIRET + TVA FR : will fournit plus tard, communiqués sur demande
 // dans l'intervalle (cf. /mentions-legales section "Éditeur").
 
 export type LegalSlug =
@@ -37,11 +37,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Mentions",
       titleEm: "légales",
       intro:
-        "Informations légales relatives au site axion-ia.com et à la société Axion-IA OÜ, conformes au droit estonien.",
+        "Informations légales relatives au site axion-ia.com et à la société Axion-IA, conformes au droit français.",
       sections: [
         {
           title: "Éditeur",
-          body: "Axion-IA OÜ · société à responsabilité limitée de droit estonien (Eesti). Siège social : Tallinn, Estonie. Numéro d'enregistrement (registrikood) et numéro de TVA EE communiqués sur demande à contact@axion-ia.com.",
+          body: "Axion-IA · société française ([forme juridique à préciser]). Siège social : [Ville — France]. RCS [Ville — France], SIREN [SIREN à compléter]. Numéro de TVA FR communiqué sur demande à contact@axion-ia.com.",
         },
         {
           title: "Directeur de publication",
@@ -53,28 +53,27 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Propriété intellectuelle",
-          body: "L'ensemble des contenus du site (textes, marques, logos, mises en page) est la propriété d'Axion-IA OÜ. Toute reproduction non autorisée est interdite.",
+          body: "L'ensemble des contenus du site (textes, marques, logos, mises en page) est la propriété d'Axion-IA. Toute reproduction non autorisée est interdite.",
         },
         {
           title: "Loi applicable",
-          body: "Le présent site est régi par le droit estonien. Tout litige relève de la compétence des tribunaux compétents en Estonie.",
+          body: "Le présent site est régi par le droit français. Tout litige relève de la compétence des tribunaux compétents en France.",
         },
       ],
       metaSeo: {
-        title: "Mentions légales · Axion-IA OÜ",
+        title: "Mentions légales · Axion-IA",
         description:
-          "Mentions légales d'Axion-IA OÜ (société de droit estonien). Hébergement Hetzner Frankfurt UE.",
+          "Mentions légales d'Axion-IA (société de droit français). Hébergement Hetzner Frankfurt UE.",
       },
     },
     en: {
       title: "Legal",
       titleEm: "notice",
-      intro:
-        "Legal information about axion-ia.com and Axion-IA OÜ, in accordance with Estonian law.",
+      intro: "Legal information about axion-ia.com and Axion-IA, in accordance with French law.",
       sections: [
         {
           title: "Publisher",
-          body: "Axion-IA OÜ · Estonian limited liability company. Registered office: Tallinn, Estonia. Registration code (registrikood) and EU VAT number available on request at contact@axion-ia.com.",
+          body: "Axion-IA · French company ([forme juridique à préciser]). Registered office: [Ville — France]. RCS [Ville — France], SIREN [SIREN à compléter]. French VAT number available on request at contact@axion-ia.com.",
         },
         {
           title: "Publication director",
@@ -86,17 +85,16 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Intellectual property",
-          body: "All content on the site (text, marks, logos, layouts) is the property of Axion-IA OÜ. Any unauthorized reproduction is prohibited.",
+          body: "All content on the site (text, marks, logos, layouts) is the property of Axion-IA. Any unauthorized reproduction is prohibited.",
         },
         {
           title: "Applicable law",
-          body: "This site is governed by Estonian law. Any dispute falls within the jurisdiction of the competent courts in Estonia.",
+          body: "This site is governed by French law. Any dispute falls within the jurisdiction of the competent courts in France.",
         },
       ],
       metaSeo: {
-        title: "Legal notice · Axion-IA OÜ",
-        description:
-          "Legal notice for Axion-IA OÜ (Estonian company). Hetzner Frankfurt EU hosting.",
+        title: "Legal notice · Axion-IA",
+        description: "Legal notice for Axion-IA (French company). Hetzner Frankfurt EU hosting.",
       },
     },
   },
@@ -112,7 +110,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Objet",
-          body: "Les présentes conditions régissent la vente et la prestation des services Axion-IA OÜ : interventions sur site, audits IA, implémentations IA. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
+          body: "Les présentes conditions régissent la vente et la prestation des services Axion-IA : interventions sur site, audits IA, implémentations IA. Toute commande implique l'acceptation pleine et entière des présentes conditions.",
         },
         {
           title: "Devis et commande",
@@ -120,7 +118,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Tarifs et paiement",
-          body: "Les prix sont indiqués en euros HT. La TVA estonienne (EE) est appliquée selon la résidence du client (B2B intracommunautaire ou TVA EE). Paiement par virement bancaire à la commande pour les prestations < 5 000 € ; échelonnement possible au-delà.",
+          body: "Les prix sont indiqués en euros HT. La TVA française (20 %) est appliquée selon la résidence du client (B2B intracommunautaire avec n° TVA valide ou TVA FR). Paiement par virement bancaire à la commande pour les prestations < 5 000 € ; échelonnement possible au-delà.",
         },
         {
           title: "Livraison",
@@ -136,13 +134,13 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Loi applicable et juridiction",
-          body: "Les présentes conditions sont régies par le droit estonien. Tout litige relève des tribunaux compétents en Estonie.",
+          body: "Les présentes conditions sont régies par le droit français. Tout litige relève des tribunaux compétents en France.",
         },
       ],
       metaSeo: {
         title: "Conditions générales · Axion-IA",
         description:
-          "CGV et CGU Axion-IA OÜ : devis, paiement, livraison, garanties. Droit estonien applicable.",
+          "CGV et CGU Axion-IA : devis, paiement, livraison, garanties. Droit français applicable.",
       },
     },
     en: {
@@ -153,7 +151,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Purpose",
-          body: "These terms govern the sale and provision of Axion-IA OÜ services: on-site sessions, AI audits, AI implementations. Any order implies full acceptance of these terms.",
+          body: "These terms govern the sale and provision of Axion-IA services: on-site sessions, AI audits, AI implementations. Any order implies full acceptance of these terms.",
         },
         {
           title: "Quote and order",
@@ -161,7 +159,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Pricing and payment",
-          body: "Prices are in euros (excl. VAT). Estonian VAT (EE) is applied according to client residence (intra-EU B2B or EE VAT). Bank transfer at order time for services < €5,000; staged payment possible above.",
+          body: "Prices are in euros (excl. VAT). French VAT (20%) is applied according to client residence (intra-EU B2B with valid VAT number or FR VAT). Bank transfer at order time for services < €5,000; staged payment possible above.",
         },
         {
           title: "Delivery",
@@ -177,13 +175,12 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Applicable law and jurisdiction",
-          body: "These terms are governed by Estonian law. Any dispute falls within the jurisdiction of competent courts in Estonia.",
+          body: "These terms are governed by French law. Any dispute falls within the jurisdiction of competent courts in France.",
         },
       ],
       metaSeo: {
         title: "Terms & conditions · Axion-IA",
-        description:
-          "Axion-IA OÜ T&Cs: quotes, payment, delivery, warranties. Estonian law applies.",
+        description: "Axion-IA T&Cs: quotes, payment, delivery, warranties. French law applies.",
       },
     },
   },
@@ -195,11 +192,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Politique de",
       titleEm: "confidentialité",
       intro:
-        "Comment Axion-IA OÜ collecte, traite et protège vos données personnelles, conformément au RGPD (UE) 2016/679.",
+        "Comment Axion-IA collecte, traite et protège vos données personnelles, conformément au RGPD (UE) 2016/679.",
       sections: [
         {
           title: "Responsable du traitement",
-          body: "Axion-IA OÜ, société de droit estonien. Email DPO : contact@axion-ia.com. Autorité de contrôle compétente : AKI (Andmekaitse Inspektsioon, autorité estonienne de protection des données).",
+          body: "Axion-IA, société française. Email DPO : contact@axion-ia.com. Autorité de contrôle compétente : CNIL (Commission Nationale de l'Informatique et des Libertés).",
         },
         {
           title: "Données collectées",
@@ -215,11 +212,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Durée de conservation",
-          body: "Données clients : 5 ans après fin de prestation (obligation comptable estonienne). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum.",
+          body: "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum.",
         },
         {
           title: "Vos droits",
-          body: "Accès, rectification, effacement, opposition, portabilité, limitation. Contactez contact@axion-ia.com. Vous avez également le droit d'introduire une réclamation auprès de l'AKI.",
+          body: "Accès, rectification, effacement, opposition, portabilité, limitation. Contactez contact@axion-ia.com. Vous avez également le droit d'introduire une réclamation auprès de la CNIL.",
         },
         {
           title: "Hébergement et transferts",
@@ -227,7 +224,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Sous-processeurs et destinataires des données",
-          body: "Conformément à l'article 13.1.e du RGPD, Axion-IA OÜ tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : infrastructure principale, paiements & contrats, communications, analytics & observabilité, génération de contenu IA). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+          body: "Conformément à l'article 13.1.e du RGPD, Axion-IA tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : infrastructure principale, paiements & contrats, communications, analytics & observabilité, génération de contenu IA). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
         },
         {
           title: "IA générative et transparence (AI Act EU)",
@@ -237,18 +234,18 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       metaSeo: {
         title: "Politique de confidentialité · Axion-IA",
         description:
-          "RGPD + AI Act, données personnelles, droits, AKI estonienne. Hébergement UE Hetzner Frankfurt + sous-processeurs publiés.",
+          "RGPD + AI Act, données personnelles, droits, CNIL. Hébergement UE Hetzner Frankfurt + sous-processeurs publiés.",
       },
     },
     en: {
       title: "Privacy",
       titleEm: "policy",
       intro:
-        "How Axion-IA OÜ collects, processes and protects your personal data under GDPR (EU) 2016/679.",
+        "How Axion-IA collects, processes and protects your personal data under GDPR (EU) 2016/679.",
       sections: [
         {
           title: "Data controller",
-          body: "Axion-IA OÜ, Estonian company. DPO email: contact@axion-ia.com. Competent supervisory authority: AKI (Andmekaitse Inspektsioon, Estonian data protection authority).",
+          body: "Axion-IA, French company. DPO email: contact@axion-ia.com. Competent supervisory authority: CNIL (Commission Nationale de l'Informatique et des Libertés).",
         },
         {
           title: "Data collected",
@@ -264,11 +261,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Retention period",
-          body: "Client data: 5 years after end of service (Estonian accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum.",
+          body: "Client data: 5 years after end of service (French accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum.",
         },
         {
           title: "Your rights",
-          body: "Access, rectification, erasure, objection, portability, limitation. Contact contact@axion-ia.com. You also have the right to lodge a complaint with AKI.",
+          body: "Access, rectification, erasure, objection, portability, limitation. Contact contact@axion-ia.com. You also have the right to lodge a complaint with the CNIL.",
         },
         {
           title: "Hosting and transfers",
@@ -276,7 +273,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Sub-processors and data recipients",
-          body: "In accordance with GDPR article 13.1.e, Axion-IA OÜ maintains an exhaustive public list of its sub-processors at /subprocessors (categories: core infrastructure, payments & contracts, communications, analytics & observability, AI content generation). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
+          body: "In accordance with GDPR article 13.1.e, Axion-IA maintains an exhaustive public list of its sub-processors at /subprocessors (categories: core infrastructure, payments & contracts, communications, analytics & observability, AI content generation). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
         },
         {
           title: "Generative AI and transparency (EU AI Act)",
@@ -286,7 +283,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       metaSeo: {
         title: "Privacy policy · Axion-IA",
         description:
-          "GDPR + AI Act, personal data, rights, Estonian AKI. EU Hetzner Frankfurt hosting + published sub-processors.",
+          "GDPR + AI Act, personal data, rights, CNIL. EU Hetzner Frankfurt hosting + published sub-processors.",
       },
     },
   },
@@ -305,7 +302,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Statistiques anonymes",
-          body: "Plausible self-hosted (Hetzner Frankfurt, UE), sans cookie persistant, sans empreinte numérique, conforme à l'avis CNIL/AKI 2022. Aucun consentement requis car aucune donnée personnelle.",
+          body: "Plausible self-hosted (Hetzner Frankfurt, UE), sans cookie persistant, sans empreinte numérique, conforme à l'avis CNIL 2022. Aucun consentement requis car aucune donnée personnelle.",
         },
         {
           title: "Analytics qualitatifs avec consentement (Microsoft Clarity)",
@@ -337,7 +334,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Anonymous statistics",
-          body: "Self-hosted Plausible (Hetzner Frankfurt, EU), without persistent cookies, without digital fingerprinting, compliant with the 2022 CNIL/AKI guidance. No consent required as no personal data.",
+          body: "Self-hosted Plausible (Hetzner Frankfurt, EU), without persistent cookies, without digital fingerprinting, compliant with the 2022 CNIL guidance. No consent required as no personal data.",
         },
         {
           title: "Consent-gated qualitative analytics (Microsoft Clarity)",
@@ -366,7 +363,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
     fr: {
       title: "RGPD · droits utilisateurs",
       intro:
-        "Récapitulatif de vos droits RGPD applicables aux données traitées par Axion-IA OÜ. Réponse sous 30 jours par notre DPO.",
+        "Récapitulatif de vos droits RGPD applicables aux données traitées par Axion-IA. Réponse sous 30 jours par notre DPO.",
       sections: [
         {
           title: "Droit d'accès (art. 15)",
@@ -394,19 +391,19 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Comment exercer vos droits",
-          body: "Email : contact@axion-ia.com. Réponse sous 30 jours. En cas d'insatisfaction, vous pouvez saisir l'AKI (autorité estonienne de protection des données) — www.aki.ee.",
+          body: "Email : contact@axion-ia.com. Réponse sous 30 jours. En cas d'insatisfaction, vous pouvez saisir la CNIL (Commission Nationale de l'Informatique et des Libertés) — www.cnil.fr.",
         },
       ],
       metaSeo: {
         title: "RGPD · droits utilisateurs · Axion-IA",
         description:
-          "Vos 6 droits RGPD chez Axion-IA OÜ : accès, rectification, effacement, opposition, portabilité, limitation.",
+          "Vos 6 droits RGPD chez Axion-IA : accès, rectification, effacement, opposition, portabilité, limitation.",
       },
     },
     en: {
       title: "GDPR · user rights",
       intro:
-        "Summary of your GDPR rights applicable to data processed by Axion-IA OÜ. DPO reply within 30 days.",
+        "Summary of your GDPR rights applicable to data processed by Axion-IA. DPO reply within 30 days.",
       sections: [
         {
           title: "Right of access (art. 15)",
@@ -434,13 +431,13 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "How to exercise your rights",
-          body: "Email: contact@axion-ia.com. Reply within 30 days. If unsatisfied, you may file a complaint with AKI (Estonian DPA) — www.aki.ee.",
+          body: "Email: contact@axion-ia.com. Reply within 30 days. If unsatisfied, you may file a complaint with the CNIL (French DPA) — www.cnil.fr.",
         },
       ],
       metaSeo: {
         title: "GDPR · user rights · Axion-IA",
         description:
-          "Your 6 GDPR rights at Axion-IA OÜ: access, rectification, erasure, objection, portability, restriction.",
+          "Your 6 GDPR rights at Axion-IA: access, rectification, erasure, objection, portability, restriction.",
       },
     },
   },

@@ -355,10 +355,10 @@ interface OrganizationJsonLdInput {
   contactEmail?: string;
   /** Override default contact type label. Defaults to FR/EN customer service. */
   contactType?: string;
-  /** Estonian VAT number, e.g. `EE-XXXXXXXXX`. Will fournit plus tard. */
+  /** Numéro TVA FR (FR-TVA). Will fournit plus tard. */
   vatID?: string;
-  /** Estonian commercial registry code (registrikood). Will fournit plus tard. */
-  registrikood?: string;
+  /** Numéro d'immatriculation RCS / SIREN. Will fournit plus tard. */
+  registrationNumber?: string;
 }
 
 // Layout-level Organization JSON-LD — single source of truth for AEO/GEO 2026
@@ -369,15 +369,15 @@ interface OrganizationJsonLdInput {
 // AI consultancies). `sameAs` provides external corroboration, `foundingLocation`
 // + `areaServed` ground geography, `contactPoint` makes it actionable.
 //
-// `vatID` + `identifier (registrikood)` are optional — once Will transmits the
-// Estonia legal references, pass them in from the call site without rewriting
+// `vatID` + `identifier (immatriculation RCS / SIREN)` are optional — once Will transmits the
+// French legal references (SIREN / RCS), pass them in from the call site without rewriting
 // this helper.
 export function buildOrganizationJsonLd({
   locale,
   contactEmail = "presse@axion-ia.com",
   contactType,
   vatID,
-  registrikood,
+  registrationNumber,
 }: OrganizationJsonLdInput) {
   const isFr = locale === "fr";
   const resolvedContactType = contactType ?? (isFr ? "Service client" : "Customer service");
@@ -386,7 +386,7 @@ export function buildOrganizationJsonLd({
     "@id": `${SITE_URL}/#organization`,
     "@type": "Organization",
     name: "Axion-IA",
-    legalName: "Axion-IA OÜ",
+    legalName: "Axion-IA",
     url: SITE_URL,
     logo: `${SITE_URL}/opengraph-image`,
     description: isFr
@@ -398,8 +398,8 @@ export function buildOrganizationJsonLd({
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        addressCountry: "EE",
-        addressLocality: "Tallinn",
+        addressCountry: "FR",
+        addressLocality: "[Ville — France]",
       },
     },
     areaServed: ["FR", "EU"],
@@ -411,12 +411,12 @@ export function buildOrganizationJsonLd({
       availableLanguage: ["French", "English"],
     },
     ...(vatID ? { vatID } : {}),
-    ...(registrikood
+    ...(registrationNumber
       ? {
           identifier: {
             "@type": "PropertyValue",
-            propertyID: "registrikood",
-            value: registrikood,
+            propertyID: "immatriculation RCS",
+            value: registrationNumber,
           },
         }
       : {}),
@@ -518,7 +518,7 @@ export function buildPersonJsonLd({
     worksFor: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA OÜ",
+      legalName: "Axion-IA",
       url: SITE_URL,
     },
     knowsAbout: [
@@ -639,7 +639,7 @@ export function buildArticleJsonLd({
     publisher: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA OÜ",
+      legalName: "Axion-IA",
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/opengraph-image`,
@@ -784,7 +784,7 @@ export function buildLocalBusinessJsonLd({
     parentOrganization: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA OÜ",
+      legalName: "Axion-IA",
       url: SITE_URL,
     },
     areaServed: {
@@ -1078,7 +1078,7 @@ export interface CourseJsonLdInput {
    * Schema.org `BusinessAudience.audienceType`.
    */
   readonly audienceType?: string;
-  /** Prix offre (HT — Axion-IA OÜ EU régime TVA UE). */
+  /** Prix offre (HT — Axion-IA FR régime TVA FR). */
   readonly priceEurHt?: number;
   /**
    * Catégorie pédagogique (ex. "IA opérationnelle", "ChatGPT entreprise").
@@ -1277,7 +1277,7 @@ export function buildDatasetJsonLd({
     creator: {
       "@type": "Organization",
       name: "Axion-IA",
-      legalName: "Axion-IA OÜ",
+      legalName: "Axion-IA",
       url: SITE_URL,
     },
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),

@@ -14,7 +14,7 @@
 //                              RGPD utilisateur (cf. politique-confidentialite §
 //                              IA générative — logs techniques exclus art. 23 RGPD).
 //   - cost_ledger (audit B5 P0-7) : ledger atomique provider IA — purge à N mois
-//                              (default 24, alignée obligation comptable estonienne).
+//                              (default 24, alignée obligation comptable française).
 //                              Aucun PII (provider key + montant USD seulement).
 //   - web_vital_samples (audit B5 P0-7) : RUM agrégé Web Vitals — purge à N mois
 //                              (default 6). Pas de PII (sessionId anonyme client).
@@ -25,7 +25,7 @@
 //   RETENTION_NEWSLETTER_UNSUB_MONTHS=36
 //   RETENTION_BOOKINGS_CANCELLED_MONTHS=12
 //   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
-//   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — compta estonienne)
+//   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
 //   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
@@ -171,7 +171,7 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
 
       // 6) cost_ledger ancien (atomique provider IA, audit B5 P0-7).
       // Aucune PII, juste provider + model + tokens + costUsd. 24 mois alignés
-      // obligation comptable estonienne (la table comptable principale reste
+      // obligation comptable française (la table comptable principale reste
       // les invoices Stripe — ce ledger est observabilité interne).
       const costLedgerMonths = readMonths("RETENTION_COST_LEDGER_MONTHS", DEFAULTS.costLedger);
       const costLedgerResult = await prisma.costLedger.deleteMany({

@@ -81,7 +81,7 @@ export default async function Contact({ params }: Props) {
           id: "rgpd",
           question: "Comment traitez-vous les données envoyées via le formulaire ?",
           answer:
-            "Les données du formulaire sont stockées en Estonie (UE), traitées exclusivement pour répondre à votre demande, et supprimées à six mois si la conversation n'aboutit pas. Aucune revente, aucun outil tiers de tracking, pas de profilage. Détails dans la politique de confidentialité.",
+            "Les données du formulaire sont hébergées en Allemagne (Hetzner Frankfurt, UE), traitées exclusivement pour répondre à votre demande, et supprimées à six mois si la conversation n'aboutit pas. Aucune revente, aucun outil tiers de tracking, pas de profilage. Détails dans la politique de confidentialité.",
         },
         {
           id: "rdv",
@@ -111,7 +111,7 @@ export default async function Contact({ params }: Props) {
           id: "rgpd",
           question: "How is data submitted through the form handled?",
           answer:
-            "Form data is stored in Estonia (EU), used solely to reply to your request, and deleted after six months if the conversation does not lead anywhere. No resale, no third-party tracking, no profiling. Details in the privacy policy.",
+            "Form data is hosted in Germany (Hetzner Frankfurt, EU), used solely to reply to your request, and deleted after six months if the conversation does not lead anywhere. No resale, no third-party tracking, no profiling. Details in the privacy policy.",
         },
         {
           id: "rdv",
