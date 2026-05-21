@@ -210,6 +210,10 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
       ? (output["heroImageFilePath"] as string)
       : null;
 
+  // B.7 P0-6 P1.5 — Outline SimHash propage depuis content-gen-worker.
+  const outlineSimhash =
+    typeof output["outlineSimhash"] === "string" ? (output["outlineSimhash"] as string) : null;
+
   const isNews = cgJob.contentType === "blog_from_rss";
   const rssSourceUrl =
     typeof (cgJob.inputPayload as Record<string, unknown>)?.rssLink === "string"
@@ -263,6 +267,8 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
         ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
         // B.6 P0-4 — Hero image image-bank (URL filePath ou null si pas de match).
         ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
+        // B.7 P0-6 — Outline SimHash (couche dedup 3, persiste pour future comparaison).
+        ...(outlineSimhash ? { outlineSimhash } : {}),
       },
     });
 

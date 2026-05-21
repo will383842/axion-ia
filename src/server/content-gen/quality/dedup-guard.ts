@@ -16,6 +16,13 @@
 
 import { prisma } from "@/lib/prisma";
 import type { CompanySize, OrganisationType } from "../../../../prisma/generated/client";
+// B.7 P0-6 P1.5 — Couche A.3 outline SimHash dedup.
+import {
+  computeOutlineSimhash,
+  outlineHammingDistance,
+  classifyOutlineDedup,
+  OUTLINE_DEDUP_THRESHOLDS,
+} from "../dedup/outline-simhash";
 
 export interface DedupGuardInput {
   readonly title: string;
@@ -166,12 +173,12 @@ export async function checkDedup(input: DedupGuardInput): Promise<DedupGuardResu
       }
     }
 
-    // Couche A.3 — topic fingerprint (V1 minimal — V2 enrichi via NLP)
+    // Couche A.3 — topic fingerprint pre-IA (V1 minimal, no-op block —
+    // la dedup outline reelle est faite POST-IA via checkOutlineDedup()
+    // appele par content-gen-worker. Pre-IA on log seulement pour audit.)
     if (input.topicKeywords && input.topicKeywords.length >= 5) {
       const fingerprint = topicFingerprint(input.topicKeywords);
-      // V1 stockerait dans ContentGenJob.outputJsonRaw.topicFingerprint
-      // V2 query DB plus efficace. Pour V1, fingerprint reste audit-only.
-      // No-op block ici, mais on log fingerprint pour future query.
+      // Audit-only : fingerprint utilise pour future analyse retro corpus.
       void fingerprint;
     }
 
@@ -186,5 +193,109 @@ export async function checkDedup(input: DedupGuardInput): Promise<DedupGuardResu
       return { passed: true };
     }
     throw err;
+  }
+}
+
+// ─── B.7 P0-6 P1.5 — Couche A.3 reelle (post-IA, pre-publish) ────────────────
+
+export interface OutlineDedupCheckInput {
+  readonly bodyHtml: string;
+  /** Limite corpus a comparer (default 1000 derniers publies). */
+  readonly corpusLimit?: number;
+  /** Lookback window jours (default 365). */
+  readonly windowDays?: number;
+}
+
+export interface OutlineDedupCheckResult {
+  readonly verdict: "ok" | "similar" | "duplicate_template" | "skipped";
+  readonly outlineSimhash: string | null;
+  readonly minDistance: number;
+  readonly matchedArticleId: string | null;
+  readonly reason: string;
+}
+
+/**
+ * Couche A.3 POST-IA : compare le outline d'un article candidat vs le corpus
+ * publie. Utilise en pre-publish dans content-gen-worker.
+ *
+ * Skipped si :
+ *  - bodyHtml ne contient pas de h2/h3 (article trop court)
+ *  - DB unavailable (build SSG, tests)
+ *
+ * Verdict :
+ *  - duplicate_template : Hamming <= 4 → BLOCK (flag pour review humain)
+ *  - similar : Hamming 5-8 → WARN (publish autorise, signale dans logs)
+ *  - ok : Hamming > 8 → pass
+ */
+export async function checkOutlineDedup(
+  input: OutlineDedupCheckInput,
+): Promise<OutlineDedupCheckResult> {
+  const candidateSimhash = computeOutlineSimhash(input.bodyHtml);
+  if (!candidateSimhash) {
+    return {
+      verdict: "skipped",
+      outlineSimhash: null,
+      minDistance: -1,
+      matchedArticleId: null,
+      reason: "no h2/h3 outline detected — outline dedup skipped",
+    };
+  }
+
+  const windowDays = input.windowDays ?? 365;
+  const cutoff = new Date(Date.now() - windowDays * 24 * 3600 * 1000);
+  const corpusLimit = input.corpusLimit ?? 1000;
+
+  try {
+    const corpus = await prisma.article.findMany({
+      where: {
+        status: "published",
+        publishedAt: { gte: cutoff },
+        outlineSimhash: { not: null },
+      },
+      orderBy: { publishedAt: "desc" },
+      take: corpusLimit,
+      select: { id: true, outlineSimhash: true },
+    });
+
+    let minDistance = 64;
+    let matchedId: string | null = null;
+    for (const article of corpus) {
+      if (!article.outlineSimhash) continue;
+      const d = outlineHammingDistance(candidateSimhash, article.outlineSimhash);
+      if (d >= 0 && d < minDistance) {
+        minDistance = d;
+        matchedId = article.id;
+        // Early exit si dejas duplicate strict.
+        if (d <= OUTLINE_DEDUP_THRESHOLDS.DUPLICATE) break;
+      }
+    }
+
+    if (minDistance === 64) {
+      return {
+        verdict: "ok",
+        outlineSimhash: candidateSimhash,
+        minDistance: 64,
+        matchedArticleId: null,
+        reason: "no comparable corpus or all distances = 64 (totally distinct)",
+      };
+    }
+
+    const verdict = classifyOutlineDedup(minDistance);
+    return {
+      verdict: verdict.verdict,
+      outlineSimhash: candidateSimhash,
+      minDistance,
+      matchedArticleId: matchedId,
+      reason: verdict.reason,
+    };
+  } catch (err) {
+    // DB unavailable → skip silent.
+    return {
+      verdict: "skipped",
+      outlineSimhash: candidateSimhash,
+      minDistance: -1,
+      matchedArticleId: null,
+      reason: `DB error: ${err instanceof Error ? err.message : "unknown"}`,
+    };
   }
 }

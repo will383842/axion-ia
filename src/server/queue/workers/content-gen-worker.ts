@@ -38,6 +38,8 @@ import type { ContentType, SearchIntent } from "../../../../prisma/generated/cli
 import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyword-selector";
 // B.6 P1.5 P0-4 — Assignment hero image depuis image-bank (read-only).
 import { assignHeroImage } from "@/server/content-gen/images/assign-hero-image";
+// B.7 P1.5 P0-6 — Outline SimHash dedup (couche A.3 post-IA).
+import { checkOutlineDedup } from "@/server/content-gen/quality/dedup-guard";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -382,9 +384,29 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       },
     );
 
-    // Tier final : downgrade tier_3 si plagiat OR intent hardFails.
+    // B.7 P0-6 — Couche A.3 outline SimHash dedup (post-IA pre-publish).
+    // Compare outline (sequence h2/h3) vs corpus 1000 derniers publies sur 365j.
+    // Verdict duplicate_template (Hamming <= 4) → flag pour review humain
+    // (downgrade tier_3 + status pending). Similar (5-8) → publish OK + log warn.
+    const outlineDedup = await checkOutlineDedup({ bodyHtml: output.bodyHtml });
+    await logStep(
+      contentGenJobId,
+      "dedup_check",
+      outlineDedup.verdict === "duplicate_template"
+        ? `Outline DUPLICATE (Hamming ${outlineDedup.minDistance} vs ${outlineDedup.matchedArticleId})`
+        : `Outline ${outlineDedup.verdict} (Hamming ${outlineDedup.minDistance})`,
+      {
+        verdict: outlineDedup.verdict,
+        outline_simhash: outlineDedup.outlineSimhash,
+        min_distance: outlineDedup.minDistance,
+        matched_article_id: outlineDedup.matchedArticleId,
+      },
+    );
+    const outlineBlockingFail = outlineDedup.verdict === "duplicate_template";
+
+    // Tier final : downgrade tier_3 si plagiat OR intent hardFails OR outline dup.
     // Sinon on garde l'indexationTier issu du generator (tier_2 default).
-    const blockingFail = !plagiarism.passed || !intent.aligned;
+    const blockingFail = !plagiarism.passed || !intent.aligned || outlineBlockingFail;
     const finalIndexationTier = blockingFail ? "tier_3_noindex_nofollow" : output.indexationTier;
 
     // 5. Update job + persist outputs (Sprint 2 Day 5 — Article DB row insert).
@@ -405,6 +427,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       heroImageAssetId: hero?.assetId ?? null,
       heroImageFilePath: hero?.filePath ?? null,
       heroImageAlt: hero?.alt ?? null,
+      // B.7 P0-6 — Outline SimHash + verdict dedup.
+      outlineSimhash: outlineDedup.outlineSimhash,
+      outlineDedupVerdict: outlineDedup.verdict,
+      outlineDedupMatchedArticleId: outlineDedup.matchedArticleId,
     };
 
     // 5bis. Décision orchestration post-gen (§ 14 + § 27 + § 14.2 master prompt) :

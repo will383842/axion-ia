@@ -929,6 +929,21 @@ model Article {
   /// quand Voyage AI key activée prod).
   topicFingerprint String? @map("topic_fingerprint") @db.VarChar(64)
 
+  /// B.7 P1.5 P0-6 — Couche 3 dedup : SimHash 64-bit hex sur la sequence
+  /// `h2 > h3` extraite du body HTML. Permet detection de templates editoriaux
+  /// repetes (meme structure narrative meme avec mots differents). Distance
+  /// Hamming <= 4 vs corpus publie = flag `duplicate_template`. Nullable :
+  /// migration additive, retrofill via cron embedding-fill-worker.
+  outlineSimhash String? @map("outline_simhash") @db.VarChar(16)
+
+  /// B.7 P1.5 P0-6 — Couche 4 dedup : embedding OpenAI text-embedding-3-large
+  /// (3072 dim, decision Will D-W4 2026-05-21). pgvector extension active
+  /// (cf migration 20260514020000_kb_v4_pgvector_embeddings). HNSW index pour
+  /// cosine top-K rapide. Pre-publish : si top-1 cosine > 0.85 vs corpus
+  /// publie => flag duplicate_semantic. Feature flag `OPENAI_EMBEDDINGS_ENABLED`
+  /// gere l'activation prod (cle OPENAI_API_KEY deja en env Coolify).
+  embedding Unsupported("vector(3072)")?
+
   /// Sprint S+2 City Domination — auto-tagging géographique (Phase C strat ville).
   /// Slugs des villes mentionnées dans le body article (détection via helper
   /// `extractMentionedCitiesFromText`). Permet au hub ville de filtrer les

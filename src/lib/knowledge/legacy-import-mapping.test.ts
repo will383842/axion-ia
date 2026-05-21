@@ -55,6 +55,9 @@ function makeArticle(overrides: Partial<Article> = {}): Article {
     // pour les fixtures legacy ; les nouveaux articles peuplent via le
     // helper extractMentionedCitiesFromText au publish).
     mentionedCities: [] as string[],
+    // B.7 P1.5 P0-6 — Outline SimHash (nullable legacy). `embedding` est
+    // Unsupported('vector(3072)') donc absent du type Prisma genere.
+    outlineSimhash: null,
     ...overrides,
   };
 }
