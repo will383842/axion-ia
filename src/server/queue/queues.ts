@@ -237,6 +237,18 @@ export const contentPsiMonitorQueue: Queue | null = connection
   : null;
 
 /**
+ * Sprint A 2026-05-21 D-P5-3 — Rapport qualité hebdomadaire content-gen.
+ * Cron lundi 7h00 UTC (≈ 8h CET). KPIs publiés/rejetés/coût/villes/anomalies.
+ * Destinataire : WEEKLY_REPORT_EMAIL env var (défaut williamsjullin@gmail.com).
+ */
+export const contentWeeklyReportQueue: Queue | null = connection
+  ? new Queue("content-weekly-report", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 2 },
+    })
+  : null;
+
+/**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
@@ -640,6 +652,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-hourly-xx15", tick: new Date().toISOString() },
       { repeat: { pattern: "15 * * * *" }, jobId: "content-monitoring-cron" },
+    );
+  }
+
+  // Sprint A 2026-05-21 D-P5-3 — rapport qualité hebdomadaire lundi 7h00 UTC (≈ 8h CET).
+  if (contentWeeklyReportQueue) {
+    await contentWeeklyReportQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 7 * * 1" },
+      "content-weekly-report-cron",
+    );
+    await contentWeeklyReportQueue.add(
+      "tick",
+      { trigger: "cron-weekly-mon-0700", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 7 * * 1" }, jobId: "content-weekly-report-cron" },
     );
   }
 }

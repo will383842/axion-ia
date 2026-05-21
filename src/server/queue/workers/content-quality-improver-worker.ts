@@ -24,6 +24,7 @@ import { reviewArticle, type JudgeResult } from "@/server/content-gen/reviewer/l
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // P1-3 — Sentry capture pour observabilité prod (audit S+4-C).
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { sendTelegram } from "@/lib/telegram";
 
 const QUEUE_NAME = "content-quality-improver";
 
@@ -271,7 +272,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
     },
   });
 
-  // P0-7 — Log escalade REJECT distinct du cap-reached.
+  // P0-7 — Log + Telegram escalade REJECT distinct du cap-reached.
   if (isHardReject && judge) {
     const p0Issues = judge.issues.filter((i) => i.severity === "P0");
     await logGeneration({
@@ -280,6 +281,13 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       step: "quality_loop_hard_reject",
       message: `LLM-judge HARD REJECT — ${p0Issues.length} P0 issue(s) critiques. Escalade manuelle requise. Score: ${judge.globalScore.toFixed(1)}/10`,
     });
+    void sendTelegram({
+      tag: "INCIDENT",
+      body:
+        `*[🚨 REJECT-P0]* LLM-judge hard reject job \`${contentGenJobId}\`.\n` +
+        `Score: ${judge.globalScore.toFixed(1)}/10 — ${p0Issues.length} P0 issue(s).\n` +
+        p0Issues.map((i) => `• [${i.section}] ${i.issue}`).join("\n"),
+    }).catch(() => {});
   }
 
   await logStep(

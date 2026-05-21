@@ -53,7 +53,8 @@ export type WorkerName =
   | "orchestrator"
   | "indexnow"
   | "quality-improver"
-  | "fact-check";
+  | "fact-check"
+  | "weekly-report";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
