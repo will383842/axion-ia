@@ -31,7 +31,7 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{ dryRun?: string }>;
+  searchParams: Promise<{ dryRun?: string; preset?: string }>;
 }
 
 const SCOPES: ReadonlyArray<CoverageScope> = ["ville", "departement", "region", "multi"];

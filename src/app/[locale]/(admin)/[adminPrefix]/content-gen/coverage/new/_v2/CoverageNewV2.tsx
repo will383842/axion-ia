@@ -11,6 +11,7 @@ import {
   launchCampaign,
   type EstimateCampaignResult,
 } from "@/server/actions/content-gen/coverage";
+import { prisma } from "@/lib/prisma";
 import {
   listAudienceMixProfiles,
   listDistributionProfiles,
@@ -52,7 +53,7 @@ function decodeDryRun(raw: string | undefined): EstimateCampaignResult | null {
 
 interface Props {
   adminPrefix: string;
-  searchParams: { dryRun?: string };
+  searchParams: { dryRun?: string; preset?: string };
 }
 
 export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): Promise<React.ReactElement> {
@@ -61,6 +62,15 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
     listAudienceMixProfiles(),
   ]);
   const dryRunResult = decodeDryRun(sp.dryRun);
+
+  let presetData: { name: string; config: Record<string, unknown> } | null = null;
+  if (sp.preset) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tmpl = await (prisma as any).campaignTemplate.findUnique({ where: { slug: sp.preset } });
+      if (tmpl) presetData = { name: tmpl.name as string, config: tmpl.config as Record<string, unknown> };
+    } catch { /* DB not seeded yet */ }
+  }
 
   async function create(formData: FormData) {
     "use server";
@@ -122,6 +132,12 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
   return (
     <AdminPageShell>
       <AdminPageHeader title="Nouvelle campagne" />
+
+      {presetData ? (
+        <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface-soft)] px-[var(--space-admin-5)] py-[var(--space-admin-3)]">
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">Preset actif : <strong>{presetData.name}</strong>.</p>
+        </div>
+      ) : null}
 
       {dryRunResult ? (
         <AdminCard className="mb-[var(--space-admin-4)] border-l-4 border-l-[color:var(--color-admin-warning)]">

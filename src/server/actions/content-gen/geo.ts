@@ -185,3 +185,29 @@ export async function getGlobalGeoStats(): Promise<GlobalGeoStats> {
     velocity7dJobs: velocity,
   };
 }
+export interface VilleSectorRow {
+  readonly anchorVilleSlug: string;
+  readonly status: string;
+  readonly count: number;
+  readonly avgQuality: number | null;
+}
+
+export async function getJobsVilleSectorDetail(
+  limit = 200,
+): Promise<ReadonlyArray<VilleSectorRow>> {
+  await requireAdmin();
+  const grouped = await prisma.contentGenJob.groupBy({
+    by: ["anchorVilleSlug", "status"],
+    _count: { anchorVilleSlug: true },
+    _avg: { qualityScore: true },
+    where: { anchorVilleSlug: { not: null } },
+    orderBy: { _count: { anchorVilleSlug: "desc" } },
+    take: limit,
+  });
+  return grouped.map((row) => ({
+    anchorVilleSlug: row.anchorVilleSlug ?? "",
+    status: row.status,
+    count: row._count.anchorVilleSlug,
+    avgQuality: row._avg.qualityScore ?? null,
+  }));
+}

@@ -960,6 +960,7 @@ model Article {
 
   generationProvenances GenerationProvenance[]
   factCheckClaims       FactCheckClaim[]
+  feedback              ArticleFeedback[]
 
   @@index([status])
   @@index([publishedAt])
@@ -3559,4 +3560,39 @@ model ImageImportBatch {
   @@index([createdBy, createdAt])
   @@index([status, createdAt])
   @@map("image_import_batches")
+}
+
+// P1-1 Sprint P5
+
+model CampaignTemplate {
+  id          String   @id @default(cuid())
+  slug        String   @unique @db.VarChar(120)
+  name        String   @db.VarChar(120)
+  description String   @db.Text
+  config      Json
+  isSystem    Boolean  @default(true) @map("is_system")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@index([isActive])
+  @@map("campaign_templates")
+}
+
+// P1-4 Sprint P5
+
+model ArticleFeedback {
+  id        String   @id @default(cuid())
+  articleId String   @map("article_id") @db.Uuid
+  userId    String   @map("user_id") @db.VarChar(255)
+  type      String   @db.VarChar(10)
+  comment   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@index([userId])
+  @@map("article_feedback")
 }

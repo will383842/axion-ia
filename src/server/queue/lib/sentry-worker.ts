@@ -47,7 +47,13 @@ import { sanitizeJobData } from "./sanitize-job-data";
  * Identifiants courts/canoniques des workers content-gen monitored.
  * Match les tags Sentry pour groupage cohérent dashboards.
  */
-export type WorkerName = "publish" | "gen" | "orchestrator" | "indexnow";
+export type WorkerName =
+  | "publish"
+  | "gen"
+  | "orchestrator"
+  | "indexnow"
+  | "quality-improver"
+  | "fact-check";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
