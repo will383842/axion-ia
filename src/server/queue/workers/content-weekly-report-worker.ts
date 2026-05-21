@@ -19,7 +19,7 @@ import { sendEmail } from "@/lib/email/client";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-weekly-report";
-const REPORT_TO = process.env.WEEKLY_REPORT_EMAIL ?? "williamsjullin@gmail.com";
+const REPORT_TO = process.env.WEEKLY_REPORT_EMAIL ?? "contact@axion-ia.com";
 
 async function collectWeeklyStats(since: Date): Promise<{
   published: number;
