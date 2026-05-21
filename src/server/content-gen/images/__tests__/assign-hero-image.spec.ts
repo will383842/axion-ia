@@ -65,7 +65,7 @@ describe("assignHeroImage — selection", () => {
       isActive: true,
       isAiGenerated: false,
       deletedAt: null,
-      module: "audit",
+      module: "audits",
     });
   });
 
@@ -80,7 +80,7 @@ describe("assignHeroImage — scoring", () => {
   it("picks asset with module match (+10) over generic", async () => {
     findManyMock.mockResolvedValueOnce([
       makeAsset({ id: "no-module", module: null }),
-      makeAsset({ id: "match-audit", module: "audit" }),
+      makeAsset({ id: "match-audit", module: "audits" }),
     ]);
     const result = await assignHeroImage({
       vertical: "audits",
@@ -91,8 +91,8 @@ describe("assignHeroImage — scoring", () => {
 
   it("boosts city match (+5)", async () => {
     findManyMock.mockResolvedValueOnce([
-      makeAsset({ id: "no-city", module: "audit", targetCity: null }),
-      makeAsset({ id: "match-city", module: "audit", targetCity: "paris" }),
+      makeAsset({ id: "no-city", module: "audits", targetCity: null }),
+      makeAsset({ id: "match-city", module: "audits", targetCity: "paris" }),
     ]);
     const result = await assignHeroImage({
       vertical: "audits",
@@ -104,8 +104,8 @@ describe("assignHeroImage — scoring", () => {
 
   it("boosts keyword overlap (+3)", async () => {
     findManyMock.mockResolvedValueOnce([
-      makeAsset({ id: "no-kw", module: "audit", keywordsPrimary: "voiture autonome" }),
-      makeAsset({ id: "match-kw", module: "audit", keywordsPrimary: "conformite RGPD" }),
+      makeAsset({ id: "no-kw", module: "audits", keywordsPrimary: "voiture autonome" }),
+      makeAsset({ id: "match-kw", module: "audits", keywordsPrimary: "conformite RGPD" }),
     ]);
     const result = await assignHeroImage({
       vertical: "audits",
@@ -127,7 +127,7 @@ describe("assignHeroImage — scoring", () => {
     findManyMock.mockResolvedValueOnce([
       makeAsset({
         id: "with-alt",
-        module: "audit",
+        module: "audits",
         translations: [{ alt: "Photo audit IA dans bureau", title: "Audit IA" }],
       }),
     ]);
@@ -142,7 +142,7 @@ describe("assignHeroImage — scoring", () => {
     findManyMock.mockResolvedValueOnce([
       makeAsset({
         id: "no-alt",
-        module: "audit",
+        module: "audits",
         translations: [{ alt: null, title: "Titre image audit" }],
       }),
     ]);
@@ -157,7 +157,7 @@ describe("assignHeroImage — scoring", () => {
     findManyMock.mockResolvedValueOnce([
       makeAsset({
         id: "no-trans",
-        module: "audit",
+        module: "audits",
         slug: "audit-pme-bureau",
         translations: [],
       }),
@@ -171,12 +171,12 @@ describe("assignHeroImage — scoring", () => {
 });
 
 describe("VERTICAL_TO_IMAGE_MODULE mapping", () => {
-  it("maps ServiceSector values to KeywordModule slugs", () => {
+  it("maps ServiceSector values to image-bank module slugs (seed-images.ts)", () => {
     const m = __testInternals.VERTICAL_TO_IMAGE_MODULE;
-    expect(m.audits).toBe("audit");
-    expect(m.interventions_formations).toBe("interventions-formations");
-    expect(m.implementations).toBe("implementation");
-    expect(m.un_a_un).toBe("coaching-1-to-1");
+    expect(m.audits).toBe("audits");
+    expect(m.interventions_formations).toBe("interventions");
+    expect(m.implementations).toBe("implementations");
+    expect(m.un_a_un).toBe("un-a-un");
     expect(m.sites_web_augmentes).toBe("codage-developpement");
   });
 });

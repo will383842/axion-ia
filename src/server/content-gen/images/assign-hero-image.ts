@@ -27,15 +27,15 @@ import { prisma } from "@/lib/prisma";
 
 // ── Mapping vertical (ServiceSector) → ImageAsset.module ────────────────────
 //
-// L'image-bank stocke le module au format KeywordModule slug (audit,
-// interventions-formations, ...). Le worker fournit vertical au format
-// ServiceSector enum (audits, interventions_formations, ...). On mappe.
+// Valeurs correspondant EXACTEMENT aux champs `module` du seed image-bank
+// (prisma/seeds/image-bank/seed-images.ts). Toute divergence → 0 image hero.
+// Le worker fournit vertical au format ServiceSector enum.
 
 const VERTICAL_TO_IMAGE_MODULE: Record<string, string> = {
-  audits: "audit",
-  interventions_formations: "interventions-formations",
-  implementations: "implementation",
-  un_a_un: "coaching-1-to-1",
+  audits: "audits",
+  interventions_formations: "interventions",
+  implementations: "implementations",
+  un_a_un: "un-a-un",
   sites_web_augmentes: "codage-developpement",
   // transversal/aucun → on n'applique pas de filtre module.
 };
