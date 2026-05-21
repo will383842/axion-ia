@@ -275,6 +275,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 
     // ─── Quality checks ──────────────────────────────────────────────────
+    const internalLinkCount = (assembledBody.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
@@ -284,6 +285,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       bodyText,
       directAnswer: outline.directAnswer,
       faqCount: outline.faq?.length ?? 0,
+      internalLinkCount,
       ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
       searchIntent: input.targetSearchIntent,
       contentKind: "guide",

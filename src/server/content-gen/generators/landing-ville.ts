@@ -159,6 +159,7 @@ label : ${variant.recommendedCtaLabel}
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 
     // 4. Quality checks
+    const internalLinkCount = (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
@@ -168,6 +169,7 @@ label : ${variant.recommendedCtaLabel}
       bodyText,
       directAnswer: parsed.directAnswer,
       faqCount: parsed.faq.length,
+      internalLinkCount,
       ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
       searchIntent: input.targetSearchIntent,
       contentKind: "landing",

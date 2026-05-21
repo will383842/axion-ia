@@ -151,6 +151,7 @@ ${feedbackSection}
         .replace(/\s+/g, " ")
         .trim();
       const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
+      const internalLinkCount = ((parsed.bodyHtml ?? "").match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
       const readability = computeReadabilityFr(bodyText);
       const seo = computeSeoScore({
         title: parsed.title ?? "",
@@ -159,6 +160,7 @@ ${feedbackSection}
         bodyText,
         directAnswer: parsed.directAnswer,
         faqCount: (parsed.faq ?? []).length,
+        internalLinkCount,
         primaryKeyword: input.primaryKeyword ?? topic,
         searchIntent: input.targetSearchIntent,
         contentKind: "article",
@@ -206,6 +208,7 @@ ${feedbackSection}
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    const finalInternalLinkCount = (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
@@ -215,6 +218,7 @@ ${feedbackSection}
       bodyText,
       directAnswer: parsed.directAnswer,
       faqCount: (parsed.faq ?? []).length,
+      internalLinkCount: finalInternalLinkCount,
       primaryKeyword: input.primaryKeyword ?? topic,
       searchIntent: input.targetSearchIntent,
       contentKind: "article",

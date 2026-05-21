@@ -125,6 +125,50 @@ describe("Dedup guard — Levenshtein + topic fingerprint", () => {
   });
 });
 
+describe("SEO score — internalLinkCount réel (B.1 P0-5)", () => {
+  it("article avec 5 liens internes markdown score internalLinkCount=5", () => {
+    const bodyWithLinks = [
+      "[Guide IA](/guides/guide-ia)",
+      "[Audit IA](/audits/audit-ia)",
+      "[Formation IA](/interventions/formation-ia)",
+      "[Cabinet IA Paris](/cabinet-ia/paris)",
+      "[Contact](/contact)",
+    ].join(" lorem ipsum ");
+
+    // La regex compte les liens markdown [text](/path)
+    const count = (bodyWithLinks.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    expect(count).toBe(5);
+
+    const result = computeSeoScore({
+      title: "Audit IA pour PME : 5 cas d'usage 2026",
+      metaDescription:
+        "Découvrez 5 cas d'audit IA validés pour les PME françaises avec Axion-IA cabinet conseil.",
+      bodyHtml: "<h1>Audit IA PME</h1><h2>A</h2><h2>B</h2><h2>C</h2>",
+      bodyText: bodyWithLinks,
+      internalLinkCount: count,
+      contentKind: "article",
+    });
+    // scoreInternalLinks: count=5 >= 3 → got=6 (max 6)
+    const linkRow = result.breakdown.find((r) => r.criterion === "Internal links 3+");
+    expect(linkRow).toBeDefined();
+    expect(linkRow?.got).toBe(6);
+    expect(linkRow?.reason).toBeUndefined(); // plein score, pas de reason
+  });
+
+  it("article sans liens internes markdown score internalLinkCount=0 → got=0", () => {
+    const result = computeSeoScore({
+      title: "Audit IA",
+      metaDescription: "desc",
+      bodyHtml: "<p>texte sans liens</p>",
+      bodyText: "texte sans liens",
+      internalLinkCount: 0,
+      contentKind: "article",
+    });
+    const linkRow = result.breakdown.find((r) => r.criterion === "Internal links 3+");
+    expect(linkRow?.got).toBe(0);
+  });
+});
+
 describe("Search intent validator — alignement structurel", () => {
   it("transactional sans CTA hardFails", () => {
     const r = validateIntentAlignment({
