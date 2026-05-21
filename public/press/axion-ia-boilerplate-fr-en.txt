@@ -1,0 +1,33 @@
+BOILERPLATE AXION-IA — Usage libre pour publication (presse, articles, depêches)
+=============================================================================
+
+--- FRANÇAIS ---
+
+Axion-IA est un cabinet de conseil IA opérationnel fondé en 2024. Le cabinet
+accompagne les entreprises de toutes tailles — de l'artisan à l'ETI — dans
+l'identification, la démonstration et l'implémentation d'usages d'intelligence
+artificielle générant un retour sur investissement mesurable. Méthode : démos
+sur données réelles, plan d'action chiffré, hébergement UE.
+
+Services : interventions & formations IA, audits IA, implémentations sur mesure,
+accompagnement 1-to-1, création de sites web & outils IA.
+
+Contact presse : presse@axion-ia.com
+Site : https://axion-ia.com
+
+--- ENGLISH ---
+
+Axion-IA is an operational AI consultancy founded in 2024. The firm helps
+companies of all sizes — from sole traders to mid-caps — identify, demonstrate
+and implement artificial intelligence use cases that deliver measurable return
+on investment. Method: demos on real data, costed action plan, EU hosting.
+
+Services: AI workshops & training, AI audits, custom AI implementations,
+1-to-1 AI coaching, AI-powered web & digital solutions.
+
+Press contact: presse@axion-ia.com
+Website: https://axion-ia.com
+
+=============================================================================
+Licence : texte libre de droits pour citation et reproduction presse.
+Attribution souhaitée : "Axion-IA" ou "cabinet IA Axion-IA".

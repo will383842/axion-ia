@@ -239,7 +239,7 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
   {
     id: "founder-photo",
     kind: "photo",
-    fileUrl: null,
+    fileUrl: "/images/axion-ia-fondateur-williams-jullin-portrait-professionnel.jpg",
     format: "JPG",
     fr: {
       title: "Photo fondateur",
@@ -253,7 +253,7 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
   {
     id: "boilerplate",
     kind: "boilerplate",
-    fileUrl: null,
+    fileUrl: "/press/axion-ia-boilerplate-fr-en.txt",
     format: "TXT",
     fr: {
       title: "Boilerplate FR + EN",
