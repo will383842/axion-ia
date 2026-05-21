@@ -17,12 +17,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { env } from "@/env";
-import {
-  MODULES,
-  SUB_MODULES_BY_MODULE,
-  type Module,
-  type SubModule,
-} from "@/server/image-bank/taxonomy";
+import { SUB_MODULES_BY_MODULE, type Module } from "@/server/image-bank/taxonomy";
 import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/generated/client";
 
 // ──────────────────────────────────────────────────────────
