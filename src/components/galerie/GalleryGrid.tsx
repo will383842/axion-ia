@@ -61,7 +61,6 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
         const detailUrl = `/${locale}/${segment}/${t.slug}`;
         const imgSrc = resolveImgSrc(img, baseUrl);
         const lqipDataUrl = img.lqipDataUri ?? undefined;
-        const aspectRatio = img.width && img.height ? img.height / img.width : 9 / 16;
 
         return (
           <li key={img.id}>
@@ -71,19 +70,18 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
               aria-label={t.alt ?? t.title ?? "Image"}
             >
               <article className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-md">
-                {/* Image + badge CC BY */}
-                <figure className="bg-bg relative overflow-hidden">
+                {/* Image + badge CC BY — aspect-[4/3] fixe pour uniformité des cartes */}
+                <figure className="bg-bg relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={imgSrc}
                     alt={t.alt ?? t.title ?? ""}
-                    width={640}
-                    height={Math.round(640 * aspectRatio)}
+                    fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     placeholder={lqipDataUrl ? "blur" : "empty"}
                     {...(lqipDataUrl ? { blurDataURL: lqipDataUrl } : {})}
                     priority={idx === 0}
                     {...(idx === 0 ? { fetchPriority: "high" as const } : {})}
-                    className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+                    className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                   />
                   {/* Badge CC BY 4.0 */}
                   <span className="absolute right-2 bottom-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white">
