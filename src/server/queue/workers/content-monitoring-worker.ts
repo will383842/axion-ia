@@ -210,9 +210,132 @@ async function checkIndexationStagnant(): Promise<void> {
   }
 }
 
+// P0-3 Sprint P5 follow-up — Anomaly detection business (D-P5-7 A5-07).
+// 3 checks business lancés toutes les 15 min via cron content-monitoring.
+// Fail-soft : erreur Prisma n'interrompt pas les autres checks.
+async function checkAnomalies(): Promise<void> {
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+
+  // Check 1 : chute score qualite > 15 pts sur 1h vs heure precedente
+  const [recentQ, prevQ] = await Promise.all([
+    prisma.contentGenJob
+      .aggregate({
+        _avg: { qualityScore: true },
+        where: { qualityScore: { not: null }, completedAt: { gte: oneHourAgo } },
+      })
+      .catch(() => ({ _avg: { qualityScore: null } })),
+    prisma.contentGenJob
+      .aggregate({
+        _avg: { qualityScore: true },
+        where: { qualityScore: { not: null }, completedAt: { gte: twoHoursAgo, lt: oneHourAgo } },
+      })
+      .catch(() => ({ _avg: { qualityScore: null } })),
+  ]);
+  if (recentQ._avg.qualityScore != null && prevQ._avg.qualityScore != null) {
+    const drop = prevQ._avg.qualityScore - recentQ._avg.qualityScore;
+    if (drop > 15) {
+      await prisma.contentGenConfig
+        .upsert({
+          where: { key: "alert_quality_drop" },
+          create: {
+            key: "alert_quality_drop",
+            value: {
+              value: drop,
+              detectedAt: new Date().toISOString(),
+              message: `Chute qualite : -${drop.toFixed(1)} pts sur 1h`,
+            },
+            updatedBy: "content-monitoring-worker",
+          },
+          update: {
+            value: {
+              value: drop,
+              detectedAt: new Date().toISOString(),
+              message: `Chute qualite : -${drop.toFixed(1)} pts sur 1h`,
+            },
+            updatedBy: "content-monitoring-worker",
+          },
+        })
+        .catch(() => {});
+      console.warn(`[content-monitoring] ALERT quality_drop=${drop.toFixed(1)}`);
+    }
+  }
+
+  // Check 2 : taux rejet > 50% sur 1h
+  const [totalRecent, failedRecent] = await Promise.all([
+    prisma.contentGenJob.count({ where: { completedAt: { gte: oneHourAgo } } }).catch(() => 0),
+    prisma.contentGenJob
+      .count({ where: { status: "failed", completedAt: { gte: oneHourAgo } } })
+      .catch(() => 0),
+  ]);
+  if (totalRecent > 5 && failedRecent / totalRecent > 0.5) {
+    const pct = Math.round((failedRecent / totalRecent) * 100);
+    await prisma.contentGenConfig
+      .upsert({
+        where: { key: "alert_reject_spike" },
+        create: {
+          key: "alert_reject_spike",
+          value: {
+            value: pct,
+            detectedAt: new Date().toISOString(),
+            message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
+          },
+          updatedBy: "content-monitoring-worker",
+        },
+        update: {
+          value: {
+            value: pct,
+            detectedAt: new Date().toISOString(),
+            message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
+          },
+          updatedBy: "content-monitoring-worker",
+        },
+      })
+      .catch(() => {});
+    console.warn(`[content-monitoring] ALERT reject_spike=${failedRecent}/${totalRecent}`);
+  }
+
+  // Check 3 : 0 jobs crees depuis 4h sur campagne running
+  const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
+  const [runningCampaigns, recentJobs] = await Promise.all([
+    prisma.coverageCampaign.count({ where: { status: "running" } }).catch(() => 0),
+    prisma.contentGenJob.count({ where: { createdAt: { gte: fourHoursAgo } } }).catch(() => 0),
+  ]);
+  if (runningCampaigns > 0 && recentJobs === 0) {
+    await prisma.contentGenConfig
+      .upsert({
+        where: { key: "alert_pipeline_stall" },
+        create: {
+          key: "alert_pipeline_stall",
+          value: {
+            runningCampaigns,
+            detectedAt: new Date().toISOString(),
+            message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
+          },
+          updatedBy: "content-monitoring-worker",
+        },
+        update: {
+          value: {
+            runningCampaigns,
+            detectedAt: new Date().toISOString(),
+            message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
+          },
+          updatedBy: "content-monitoring-worker",
+        },
+      })
+      .catch(() => {});
+    console.warn(`[content-monitoring] ALERT pipeline_stall campaigns=${runningCampaigns}`);
+  }
+}
+
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
-  // 3 checks en parallèle (Promise.allSettled pour ne pas qu'un fail bloque les autres).
-  await Promise.allSettled([checkQueueStuck(), checkSoft404(), checkIndexationStagnant()]);
+  // 4 checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
+  await Promise.allSettled([
+    checkQueueStuck(),
+    checkSoft404(),
+    checkIndexationStagnant(),
+    checkAnomalies(),
+  ]);
 }
 
 let workerInstance: Worker | null = null;

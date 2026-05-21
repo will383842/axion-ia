@@ -85,9 +85,10 @@ function slugify(s: string): string {
 // Si MAX_PUBLISH_PER_DAY env var définie → override direct (compatibilité).
 async function getEffectivePublishCap(): Promise<number> {
   const envCap = process.env.MAX_PUBLISH_PER_DAY;
-  if (envCap !== undefined && envCap !== "") {
-    return parseInt(envCap, 10);
-  }
+  if (envCap !== undefined && envCap !== "") return parseInt(envCap, 10);
+  // D-P5-5 follow-up: lire depuis ContentGenConfig (priorite 2, avant rampe)
+  const dbCap = await readContentGenConfig<number>("MAX_PUBLISH_PER_DAY", 0);
+  if (dbCap > 0) return dbCap;
   const totalPublished = await prisma.article.count({ where: { status: "published" } });
   if (totalPublished < 60) return 30;
   if (totalPublished < 300) return 100;

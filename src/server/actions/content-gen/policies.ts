@@ -182,8 +182,8 @@ export interface QualityLoopSettings {
 
 const QUALITY_LOOP_DEFAULTS: QualityLoopSettings = {
   enabled: true,
-  minScoreThreshold: 75,
-  targetScore: 85,
+  minScoreThreshold: 60, // D-P5-2 Sprint P5 follow-up : 60/100 conforme décision Will
+  targetScore: 80,
   maxAttemptsAuto: 2,
   monthlyBudgetCapUsd: 100,
 };

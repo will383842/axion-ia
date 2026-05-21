@@ -72,6 +72,34 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
     } catch { /* DB not seeded yet */ }
   }
 
+  // P0-4 Sprint P5 follow-up — Calcul defaultValues depuis preset config
+  const presetDefaults = presetData
+    ? {
+        name: `Campagne ${presetData.name}`,
+        serviceSector: Array.isArray(presetData.config.verticals)
+          ? String((presetData.config.verticals as string[])[0] ?? "")
+          : "",
+        totalTargetCount: String(
+          typeof presetData.config.batchSize === "number" ? presetData.config.batchSize : 100,
+        ),
+        anchorVilleSlugs: typeof presetData.config.anchorVilleSlug === "string"
+          ? presetData.config.anchorVilleSlug
+          : "",
+        typeDistribution: Array.isArray(presetData.config.types) && (presetData.config.types as string[]).length > 0
+          ? JSON.stringify(
+              Object.fromEntries(
+                (presetData.config.types as string[]).map((t) => [
+                  t,
+                  Math.floor(100 / (presetData.config.types as string[]).length),
+                ]),
+              ),
+              null,
+              2,
+            )
+          : DEFAULT_TYPE_DIST,
+      }
+    : null;
+
   async function create(formData: FormData) {
     "use server";
     const csv = (key: string): ReadonlyArray<string> =>
@@ -135,7 +163,14 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
 
       {presetData ? (
         <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface-soft)] px-[var(--space-admin-5)] py-[var(--space-admin-3)]">
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">Preset actif : <strong>{presetData.name}</strong>.</p>
+          <div className="flex items-center justify-between">
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Preset actif : <strong>{presetData.name}</strong>. Modifiez les champs ci-dessous.
+            </p>
+            <a href="?" className="admin-button-ghost text-[length:var(--text-admin-xs)]">
+              Retirer preset
+            </a>
+          </div>
         </div>
       ) : null}
 
@@ -179,7 +214,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="name" className="admin-label">Nom</label>
-              <input id="name" name="name" required minLength={3} className="admin-input" />
+              <input id="name" name="name" required minLength={3} className="admin-input" defaultValue={presetDefaults?.name ?? ""} />
             </div>
             <div className="admin-field">
               <label htmlFor="scope" className="admin-label">Scope</label>
@@ -189,7 +224,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
             </div>
             <div className="admin-field">
               <label htmlFor="serviceSector" className="admin-label">Secteur (campagne éditoriale)</label>
-              <select id="serviceSector" name="serviceSector" defaultValue="" className="admin-input">
+              <select id="serviceSector" name="serviceSector" defaultValue={presetDefaults?.serviceSector ?? ""} className="admin-input">
                 <option value="">— Aucun (campagne legacy multi-types) —</option>
                 {SERVICE_SECTORS.map((s) => (
                   <option key={s} value={s}>{SERVICE_SECTOR_LABELS[s]}</option>
@@ -204,7 +239,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
                 type="number"
                 min="1"
                 max="10000"
-                defaultValue="100"
+                defaultValue={presetDefaults?.totalTargetCount ?? "100"}
                 required
                 className="admin-input"
               />
@@ -214,7 +249,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="anchorVilleSlugs" className="admin-label">Villes (CSV slugs)</label>
-              <input id="anchorVilleSlugs" name="anchorVilleSlugs" className="admin-input" />
+              <input id="anchorVilleSlugs" name="anchorVilleSlugs" className="admin-input" defaultValue={presetDefaults?.anchorVilleSlugs ?? ""} />
             </div>
             <div className="admin-field">
               <label htmlFor="anchorDepartementCodes" className="admin-label">Départements (CSV codes)</label>
@@ -240,7 +275,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
               id="typeDistribution"
               name="typeDistribution"
               rows={10}
-              defaultValue={DEFAULT_TYPE_DIST}
+              defaultValue={presetDefaults?.typeDistribution ?? DEFAULT_TYPE_DIST}
               className="admin-input font-mono text-[length:var(--text-admin-sm)]"
               required
             />
