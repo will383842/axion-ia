@@ -944,6 +944,8 @@ model Article {
   /// hub ville (générique).
   mentionedCities String[] @default([]) @map("mentioned_cities")
 
+  generationProvenances GenerationProvenance[]
+
   @@index([status])
   @@index([publishedAt])
   @@index([indexationTier, status])
@@ -953,6 +955,32 @@ model Article {
   /// (~10K articles cible, requête `WHERE 'paris' = ANY(mentioned_cities)`).
   @@index([mentionedCities], type: Gin)
   @@map("articles")
+}
+
+/// B.4 P1.5 — Traçabilité provenance IA par article (AI Act art. 50 + SOC2).
+/// Chaque appel LLM impliqué dans la génération d'un article est tracé :
+/// provider, modèle, tokens, coût, hash chaîné pour audit trail.
+model GenerationProvenance {
+  id                   String   @id @default(cuid())
+  articleId            String   @map("article_id") @db.Uuid
+  article              Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  step                 String   @db.VarChar(80)
+  provider             String   @db.VarChar(40)
+  model                String   @db.VarChar(80)
+  modelVersion         String?  @map("model_version") @db.VarChar(40)
+  promptHash           String   @map("prompt_hash") @db.VarChar(64)
+  inputTokens          Int      @map("input_tokens")
+  outputTokens         Int      @map("output_tokens")
+  cacheReadInputTokens Int      @default(0) @map("cache_read_input_tokens")
+  cost                 Decimal  @db.Decimal(10, 6)
+  regulationVersion    String   @default("AI-Act-2024/1689") @map("regulation_version") @db.VarChar(40)
+  previousHash         String?  @map("previous_hash") @db.VarChar(64)
+  hash                 String   @db.VarChar(64)
+  timestamp            DateTime @default(now())
+
+  @@index([articleId])
+  @@index([timestamp])
+  @@map("generation_provenance")
 }
 
 model ArticleTranslation {

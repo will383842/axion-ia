@@ -32,6 +32,8 @@ import { logStep, logStepError } from "@/server/content-gen/shared/generation-lo
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { sendTelegram } from "@/lib/telegram";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+// B.4 P1.5 — Traçabilite provenance LLM (AI Act art. 50).
+import { logProvenance, hashPrompt } from "@/server/content-gen/provenance/provenance-logger";
 
 const QUEUE_NAME = "content-publish";
 
@@ -287,6 +289,31 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     slug: slugCandidate,
     is_news: isNews,
   });
+
+  // B.4 P1.5 — Log provenance LLM pour conformite AI Act art. 50.
+  // Fire-and-forget : echec non-bloquant.
+  {
+    const totalCostUsd = typeof output.totalCostUsd === "number" ? output.totalCostUsd : 0;
+    const totalTokens = typeof output.totalTokens === "number" ? output.totalTokens : 0;
+    // Approximation input/output : LLM typique ~30% output / 70% input.
+    const inputTokens = Math.round(totalTokens * 0.7);
+    const outputTokens = totalTokens - inputTokens;
+    const providerKey = typeof output.providerKey === "string" ? output.providerKey : "openai";
+    const modelId = typeof output.modelId === "string" ? output.modelId : cgJob.contentType;
+    // Prompt hash derive du contentType + jobId (pas le prompt complet — PII).
+    const promptHash = hashPrompt(`${cgJob.contentType}:${cgJob.id}:${article.id}`);
+    await logProvenance({
+      articleId: article.id,
+      step: "publish",
+      provider: providerKey,
+      model: modelId,
+      promptHash,
+      inputTokens,
+      outputTokens,
+      cacheReadInputTokens: 0,
+      costUsd: totalCostUsd,
+    });
+  }
 
   // JSON-LD NewsArticle (Sprint 5 wire) — stocké pour usage downstream
   if (isNews && rssSourceUrl && rssSourceName) {
