@@ -1,4 +1,4 @@
--- B.5 P1.5 — Table keywords (seeds pipeline content-gen).
+-- B.5 P1.5 — Table keywords (seeds rotation pipeline article generation).
 CREATE TABLE IF NOT EXISTS "keywords" (
     "id"               TEXT NOT NULL,
     "term"             VARCHAR(255) NOT NULL,

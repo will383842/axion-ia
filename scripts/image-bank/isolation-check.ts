@@ -96,6 +96,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^\.size-limit\.json$/,
   // Content-gen consomme image-bank en lecture seule
   /^src\/server\/content-gen\/images\/image-optimizer\.ts$/,
+  // B.6 P0-4 P1.5 — Content-gen pick hero image depuis image-bank (read-only via prisma).
+  /^src\/server\/content-gen\/images\/assign-hero-image\.ts$/,
+  /^src\/server\/content-gen\/images\/__tests__\/assign-hero-image\.spec\.ts$/,
+  // B.6 P0-4 P1.5 — Workers content-gen/publish consomment hero image-bank en read-only.
+  /^src\/server\/queue\/workers\/content-gen-worker\.ts$/,
+  /^src\/server\/queue\/workers\/content-publish-worker\.ts$/,
   // Shared Sharp helpers (extracted to lib for content-gen + image-bank reuse)
   /^src\/lib\/image-utils\.ts$/,
   // Page presse — section "Banque d'images" (lien promotion héritage SOS-Expat)

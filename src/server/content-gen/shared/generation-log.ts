@@ -66,6 +66,8 @@ export type GenerationLogStep =
   | "quality_loop_budget_cap_reached"
   | "keyword_select"
   | "keyword_validation"
+  | "hero_image_assigned"
+  | "hero_image_pending"
   | "error";
 
 export interface LogGenerationArgs {

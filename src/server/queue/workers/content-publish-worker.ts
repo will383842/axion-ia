@@ -201,6 +201,15 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   const readingTimeMinutes =
     typeof output.readingTimeMinutes === "number" ? output.readingTimeMinutes : null;
 
+  // B.6 P0-4 P1.5 — Hero image assignment depuis image-bank.
+  // content-gen-worker pose heroImageFilePath sur outputJsonRaw quand un match
+  // image-bank existe. On le propage dans Article.featuredImage (string URL).
+  // Si null → Article.featuredImage reste undefined (Will assigne via admin).
+  const heroImageFilePath =
+    typeof output["heroImageFilePath"] === "string"
+      ? (output["heroImageFilePath"] as string)
+      : null;
+
   const isNews = cgJob.contentType === "blog_from_rss";
   const rssSourceUrl =
     typeof (cgJob.inputPayload as Record<string, unknown>)?.rssLink === "string"
@@ -252,6 +261,8 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
         // l'index GIN articles_mentioned_cities_idx permet le filter
         // performant côté hub ville.
         ...(mentionedCities.length > 0 ? { mentionedCities } : {}),
+        // B.6 P0-4 — Hero image image-bank (URL filePath ou null si pas de match).
+        ...(heroImageFilePath ? { featuredImage: heroImageFilePath } : {}),
       },
     });
 

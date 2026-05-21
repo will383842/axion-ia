@@ -36,6 +36,8 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 // B.5 P1.5 — Rotation 747 keyword seeds.
 import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyword-selector";
+// B.6 P1.5 P0-4 — Assignment hero image depuis image-bank (read-only).
+import { assignHeroImage } from "@/server/content-gen/images/assign-hero-image";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -282,6 +284,39 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     }
 
+    // B.6 P0-4 — Assignment hero image depuis image-bank (doctrine 0 IA generative).
+    // Pour blog_from_rss, on conserve la hero image RSS si presente (heroImageUrl).
+    // Pour les autres contentTypes, on selectionne dans l'image-bank par module/city/keyword.
+    const heroFromRss = contentType === "blog_from_rss" && Boolean(output.heroImage);
+    const campaignSectorForHero =
+      typeof (dbJob as Record<string, unknown>)["campaignSector"] === "string"
+        ? ((dbJob as Record<string, unknown>)["campaignSector"] as string)
+        : undefined;
+    const hero =
+      heroFromRss || !resolvedKeyword
+        ? null
+        : await assignHeroImage({
+            ...(campaignSectorForHero ? { vertical: campaignSectorForHero } : {}),
+            primaryKeyword: resolvedKeyword,
+            ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
+            ...(dbJob.anchorRegionSlug ? { anchorRegionSlug: dbJob.anchorRegionSlug } : {}),
+          });
+    if (hero) {
+      await logStep(contentGenJobId, "hero_image_assigned", `Hero image from image-bank`, {
+        asset_id: hero.assetId,
+        slug: hero.slug,
+        width: hero.width,
+        height: hero.height,
+      });
+    } else if (!heroFromRss) {
+      await logStep(
+        contentGenJobId,
+        "hero_image_pending",
+        "Aucune image-bank match — Article.featuredImage restera null (Will assigne via admin)",
+        { vertical: campaignSectorForHero ?? null },
+      );
+    }
+
     await logStep(contentGenJobId, "llm_call", "Generator output ready", {
       duration_ms: Date.now() - startedAt,
       quality_score: output.qualityScore,
@@ -365,6 +400,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       plagiarismMaxSimilarity: plagiarism.maxSimilarity,
       plagiarismThreshold,
       plagiarismCorpusSize: corpus.size,
+      // B.6 P0-4 — Hero image assignee depuis image-bank (null si pas de match).
+      // content-publish-worker lit ces champs et les persiste dans Article.featuredImage.
+      heroImageAssetId: hero?.assetId ?? null,
+      heroImageFilePath: hero?.filePath ?? null,
+      heroImageAlt: hero?.alt ?? null,
     };
 
     // 5bis. Décision orchestration post-gen (§ 14 + § 27 + § 14.2 master prompt) :
