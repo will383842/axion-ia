@@ -12,11 +12,13 @@ import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
+import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/ArticleTOC";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { BLOG_POSTS, getAllBlogSlugs } from "@/content/transversal";
-import { buildProductMetadata, buildArticleJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
@@ -214,6 +216,9 @@ export default async function BlogArticle({ params }: Props) {
   }
 
   const wordCount = view.body.trim().split(/\s+/).length;
+  // P3 QW — TOC Featured Snippets : extrait headings du bodyHtml pour articles DB longs.
+  const tocItems: TocItem[] = wordCount > 1500 ? extractTocItems(view.body) : [];
+  const pageUrl = `${SITE_URL}/${loc}/blog/${slug}`;
   // P1.5 QW-1 — AI Act art. 50 (deadline 2026-08-02) : flag machine-readable
   // obligatoire sur tout contenu IA-assisté. `buildArticleJsonLd` (seo.ts générique)
   // n'émet pas `aiGenerated` — spread explicite ici pour les articles DB (Manon)
@@ -326,6 +331,16 @@ export default async function BlogArticle({ params }: Props) {
             </span>
           </div>
         </Container>
+        {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
+        <Container className="mt-2 max-w-3xl">
+          <AuthorByline
+            authorName={view.author}
+            authorSlug={view.author.toLowerCase()}
+            publishedAt={view.publishedAt ? new Date(view.publishedAt) : null}
+            lastReviewedAt={view.updatedAt ? new Date(view.updatedAt) : null}
+            locale={loc}
+          />
+        </Container>
       </Section>
 
       {/* P2-3 — Image hero article (LCP critique : priority obligatoire).
@@ -354,6 +369,13 @@ export default async function BlogArticle({ params }: Props) {
           </Container>
         </Section>
       ) : null}
+
+      {/* P3 TOC Featured Snippets — rendu si article > 1500 mots et headings détectés. */}
+      {tocItems.length >= 2 && (
+        <Container className="max-w-3xl">
+          <ArticleTOC items={tocItems} pageUrl={pageUrl} locale={loc} />
+        </Container>
+      )}
 
       <Section>
         <Container className="text-fg max-w-3xl space-y-6 text-lg leading-relaxed">
