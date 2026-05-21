@@ -68,6 +68,34 @@ function slugify(s: string): string {
     .slice(0, 80);
 }
 
+// P1.5 QW-2 — Google Scaled Content Policy + AI Act compliance.
+// MAX_PUBLISH_PER_DAY : cap journalier publications. Env override possible.
+// Drip window : 8h-22h CET (Europe/Paris). Publie uniquement pendant les
+// heures ouvrées → signal humain, réduit risque HCU Google.
+const MAX_PUBLISH_PER_DAY = parseInt(process.env.MAX_PUBLISH_PER_DAY ?? "30", 10);
+const DRIP_HOUR_START_CET = 8;
+const DRIP_HOUR_END_CET = 22;
+
+function getCetHour(): number {
+  const parts = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    hour: "numeric",
+    hour12: false,
+  }).formatToParts(new Date());
+  return parseInt(parts.find((p) => p.type === "hour")?.value ?? "0", 10);
+}
+
+/** Absolute timestamp (ms epoch) for the next 8h CET drip window start. */
+function msUntilDripStart(): number {
+  const now = new Date();
+  const cetHour = getCetHour();
+  const hoursUntil =
+    cetHour < DRIP_HOUR_START_CET
+      ? DRIP_HOUR_START_CET - cetHour
+      : 24 - cetHour + DRIP_HOUR_START_CET;
+  return now.getTime() + hoursUntil * 60 * 60 * 1000;
+}
+
 async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   const { reviewQueueId, promoteToTier1 } = job.data;
 
@@ -80,6 +108,48 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   if (killSwitch.active) {
     console.log(`[content-publish-worker] kill switch active, requeue review ${reviewQueueId}`);
     throw new Error("kill_switch_active");
+  }
+
+  // P1.5 QW-2 — Drip window check (8h-22h CET, Europe/Paris).
+  // Hors fenêtre → job retardé au prochain 8h CET. Signal publication humain.
+  const cetHour = getCetHour();
+  if (cetHour < DRIP_HOUR_START_CET || cetHour >= DRIP_HOUR_END_CET) {
+    const nextWindowTs = msUntilDripStart();
+    console.log(
+      JSON.stringify({
+        event: "publish_throttled",
+        reason: "out_of_window",
+        cetHour,
+        nextRetry: new Date(nextWindowTs).toISOString(),
+        reviewQueueId,
+      }),
+    );
+    await job.moveToDelayed(nextWindowTs, job.token);
+    return;
+  }
+
+  // P1.5 QW-2 — Daily cap check (MAX_PUBLISH_PER_DAY env-overridable).
+  // Compte les articles publiés depuis minuit UTC. Si cap atteint → delay
+  // au prochain 8h CET (jour suivant). Évite le scaled content abuse signal.
+  const todayUtcStart = new Date();
+  todayUtcStart.setUTCHours(0, 0, 0, 0);
+  const publishedToday = await prisma.article.count({
+    where: { publishedAt: { gte: todayUtcStart }, status: "published" },
+  });
+  if (publishedToday >= MAX_PUBLISH_PER_DAY) {
+    const nextWindowTs = msUntilDripStart();
+    console.log(
+      JSON.stringify({
+        event: "publish_throttled",
+        reason: "max_daily",
+        publishedToday,
+        cap: MAX_PUBLISH_PER_DAY,
+        nextRetry: new Date(nextWindowTs).toISOString(),
+        reviewQueueId,
+      }),
+    );
+    await job.moveToDelayed(nextWindowTs, job.token);
+    return;
   }
 
   const review = await prisma.reviewQueue.findUnique({

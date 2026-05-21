@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/lib/seo";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { splitTitleEm } from "@/lib/title";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
@@ -74,15 +75,20 @@ export default async function CaseStudyPage({ params }: Props) {
 
   // Article JSON-LD spec AEO/GEO 2026 — factory unifiée (Person author + dateModified
   // + mainEntityOfPage + image dynamique + keywords + section + wordCount).
-  const articleJsonLd = buildArticleJsonLd({
-    locale: loc,
-    path: `/cas-concrets/${slug}`,
-    headline: copy.title,
-    description: copy.excerpt,
-    datePublished: "2026-05-01",
-    articleSection: isFr ? cs.industry : cs.industryEn,
-    keywords: [cs.industry, cs.industryEn, cs.size ?? ""].filter(Boolean),
-  });
+  // P1.5 QW-1/QW-6 — AI Act art. 50 : spread aiGenerated flag (IA-assisté).
+  const articleJsonLd = {
+    ...buildArticleJsonLd({
+      locale: loc,
+      path: `/cas-concrets/${slug}`,
+      headline: copy.title,
+      description: copy.excerpt,
+      datePublished: "2026-05-01",
+      articleSection: isFr ? cs.industry : cs.industryEn,
+      keywords: [cs.industry, cs.industryEn, cs.size ?? ""].filter(Boolean),
+    }),
+    aiGenerated: true,
+    additionalType: "https://schema.org/AIGeneratedContent",
+  };
 
   // Review JSON-LD via factory — star rating Google SERP rich results.
   const reviewJsonLd = buildReviewJsonLd({
@@ -194,6 +200,13 @@ export default async function CaseStudyPage({ params }: Props) {
             author={copy.testimonialAuthor}
             role={copy.testimonialRole}
           />
+        </Container>
+      </Section>
+
+      {/* P1.5 QW-6 — AI Act art. 50 disclosure visible (bandeau IA-assisté). */}
+      <Section>
+        <Container className="max-w-3xl">
+          <AiContentDisclaimer locale={loc} />
         </Container>
       </Section>
 

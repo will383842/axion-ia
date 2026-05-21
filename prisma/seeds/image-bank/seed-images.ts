@@ -906,7 +906,10 @@ async function main() {
     const imageType = detectType(entry.slug);
     const dims = DIMENSIONS[imageType];
     const isLogo = entry.module === "logo";
-    const isAiGenerated = entry.isAiGenerated !== undefined ? entry.isAiGenerated : !isLogo;
+    // P1.5 QW-7 — doctrine 0 IA générative : fallback false (les images sont des
+    // créations Will/photos réelles, pas des images IA générées). L'ancien fallback
+    // `!isLogo` marquait à tort 126 images non-logo comme isAiGenerated=true.
+    const isAiGenerated = entry.isAiGenerated !== undefined ? entry.isAiGenerated : false;
     const sourceType = entry.sourceType ?? (isLogo ? "original" : "imported");
 
     const assetData = {

@@ -213,20 +213,28 @@ export default async function BlogArticle({ params }: Props) {
   }
 
   const wordCount = view.body.trim().split(/\s+/).length;
-  const articleJsonLd = buildArticleJsonLd({
-    locale: loc,
-    path: `/blog/${slug}`,
-    headline: view.title,
-    description: view.excerpt,
-    datePublished: view.publishedAt,
-    dateModified: view.updatedAt ?? view.publishedAt,
-    articleBody: view.body,
-    authorName: view.author,
-    authorSlug: view.author.toLowerCase(),
-    keywords: view.tags,
-    articleSection: view.category,
-    wordCount,
-  });
+  // P1.5 QW-1 — AI Act art. 50 (deadline 2026-08-02) : flag machine-readable
+  // obligatoire sur tout contenu IA-assisté. `buildArticleJsonLd` (seo.ts générique)
+  // n'émet pas `aiGenerated` — spread explicite ici pour les articles DB (Manon)
+  // et FS (auteur humain : flag reste vrai car pipeline IA-assisté).
+  const articleJsonLd = {
+    ...buildArticleJsonLd({
+      locale: loc,
+      path: `/blog/${slug}`,
+      headline: view.title,
+      description: view.excerpt,
+      datePublished: view.publishedAt,
+      dateModified: view.updatedAt ?? view.publishedAt,
+      articleBody: view.body,
+      authorName: view.author,
+      authorSlug: view.author.toLowerCase(),
+      keywords: view.tags,
+      articleSection: view.category,
+      wordCount,
+    }),
+    aiGenerated: true,
+    additionalType: "https://schema.org/AIGeneratedContent",
+  };
 
   const breadcrumbItems = [
     { href: "/blog", label: "Blog" },
