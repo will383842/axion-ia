@@ -19,6 +19,8 @@ import {
   writeContentGenConfig,
 } from "@/server/actions/content-gen/_settings";
 import { logGeneration, logStep } from "@/server/content-gen/shared/generation-log";
+// B.8 P1.5 P0-3 — LLM-as-judge (Claude Sonnet reviewer multi-dim).
+import { reviewArticle, type JudgeResult } from "@/server/content-gen/reviewer/llm-judge";
 
 const QUEUE_NAME = "content-quality-improver";
 
@@ -140,19 +142,85 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
     return;
   }
 
-  // V1 = increment attempts + log. V2 = re-prompt LLM avec system prompt
-  // enrichi (sections sous-score identifiées via heuristique on body).
+  // B.8 P0-3 P1.5 — LLM-as-judge review (V2).
+  // Lit l'output du job, appelle reviewArticle() Claude Sonnet, persiste le
+  // editorialScore + verdict. Selon verdict :
+  //  - publish : status=needs_review (review queue humain final)
+  //  - improve : increment attempts, re-queue jusqu'a maxAttemptsAuto
+  //  - reject : status=needs_review (escalate Will) + log P0 issues
+  const output = dbJob.outputJsonRaw as Record<string, unknown> | null;
+  let judge: JudgeResult | null = null;
+  if (output && typeof output["title"] === "string" && typeof output["bodyHtml"] === "string") {
+    try {
+      judge = await reviewArticle({
+        title: output["title"] as string,
+        ...(typeof output["metaTitle"] === "string"
+          ? { metaTitle: output["metaTitle"] as string }
+          : {}),
+        ...(typeof output["metaDescription"] === "string"
+          ? { metaDescription: output["metaDescription"] as string }
+          : {}),
+        bodyHtml: output["bodyHtml"] as string,
+        ...(typeof output["bodyText"] === "string"
+          ? { bodyText: output["bodyText"] as string }
+          : {}),
+        ...(Array.isArray(output["faq"])
+          ? {
+              faq: (output["faq"] as ReadonlyArray<Record<string, unknown>>)
+                .filter(
+                  (q): q is { question: string; answer: string } =>
+                    typeof q["question"] === "string" && typeof q["answer"] === "string",
+                )
+                .map((q) => ({ question: q.question, answer: q.answer })),
+            }
+          : {}),
+        ...((): { primaryKeyword?: string } => {
+          const ip = dbJob.inputPayload as Record<string, unknown> | null;
+          const pk = ip && typeof ip["primaryKeyword"] === "string" ? ip["primaryKeyword"] : null;
+          return pk ? { primaryKeyword: pk } : {};
+        })(),
+        jobId: contentGenJobId,
+      });
+    } catch (err) {
+      await logGeneration({
+        jobId: contentGenJobId,
+        level: "error",
+        step: "quality_loop_pass",
+        message: `LLM-judge failed: ${err instanceof Error ? err.message : "unknown"}`,
+      });
+    }
+  }
+
+  const editorialScoreInt = judge ? Math.round(judge.globalScore * 10) : null; // /100
+  const verdict = judge?.verdict ?? "improve";
+  const reachedCap = dbJob.qualityImprovementAttempts + 1 >= settings.maxAttemptsAuto;
+
+  // V2 = re-prompt loop : si verdict=improve ET pas cap → re-queue improve.
+  // Sinon → needs_review (publish, reject, ou improve mais cap atteint).
+  const nextStatus = verdict === "improve" && !reachedCap ? "quality_improving" : "needs_review";
+
   await prisma.contentGenJob.update({
     where: { id: contentGenJobId },
     data: {
-      status: "needs_review",
+      status: nextStatus,
       qualityImprovementAttempts: { increment: 1 },
+      ...(editorialScoreInt !== null ? { editorialScore: editorialScoreInt } : {}),
     },
   });
   await logStep(
     contentGenJobId,
     "quality_loop_pass",
-    `Pass quality loop ${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto}, ancien score ${previousScore}`,
+    `Judge verdict=${verdict} globalScore=${judge?.globalScore ?? "n/a"} attempt=${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto} → ${nextStatus}`,
+    judge
+      ? {
+          verdict: judge.verdict,
+          global_score: judge.globalScore,
+          dimensions: judge.dimensions,
+          issues_count: judge.issues.length,
+          p0_issues: judge.issues.filter((i) => i.severity === "P0").length,
+          previous_score: previousScore,
+        }
+      : { previous_score: previousScore, judge_skipped: true },
   );
 }
 
