@@ -85,6 +85,11 @@ export interface GeneratorOutput {
    * (article reste indexable, n'apparaît dans aucun hub ville).
    */
   readonly mentionedCities?: ReadonlyArray<string>;
+  /**
+   * P0-3 AI Act art. 50 — Hash SHA-256 du prompt LLM réel (SYSTEM_PROMPT + userPrompt).
+   * Calculé par chaque generator via `hashPrompt()`. Absent = articles antérieurs au fix.
+   */
+  readonly promptHash?: string;
 }
 
 export interface Generator<TInput extends GeneratorBaseInput = GeneratorBaseInput> {

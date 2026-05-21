@@ -15,6 +15,7 @@
  */
 
 import { generate as routerGenerate } from "../providers/provider-router";
+import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
@@ -123,6 +124,8 @@ label : ${variant.recommendedCtaLabel}
 
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
+
+    const lastPromptHash = hashPrompt(variant.systemPromptOverride + userPrompt); // P0-3 AI Act art. 50
 
     const llmResult = await routerGenerate({
       jobId: input.jobId,
@@ -241,6 +244,7 @@ label : ${variant.recommendedCtaLabel}
       totalTokens: llmResult.tokensInput + llmResult.tokensOutput,
       totalCostUsd: llmResult.costUsd,
       citations: llmResult.citations ?? [],
+      promptHash: lastPromptHash,
       mentionedCities,
     };
   },

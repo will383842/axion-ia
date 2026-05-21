@@ -135,10 +135,41 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
   }
 
   const score = computeFactCheckScore(verdicts);
+
+  // P0-6 — Persistance individuelle des claims + gate quarantaine.
+  if (claims.length > 0) {
+    await prisma.factCheckClaim
+      .createMany({
+        data: claims.map((claim, i) => ({
+          articleId,
+          claim: claim.sentence,
+          status:
+            verdicts[i]?.status === "validated"
+              ? "verified"
+              : verdicts[i]?.status === "refuted"
+                ? "contradicted"
+                : "unverified",
+          confidence:
+            verdicts[i]?.status === "validated" ? 0.85 : verdicts[i]?.status === "refuted" ? 0.1 : 0.4,
+        })),
+        skipDuplicates: true,
+      })
+      .catch((err: unknown) => {
+        console.warn(`[fact-check] claims insert failed:`, err instanceof Error ? err.message : String(err));
+      });
+  }
+
   await prisma.article.update({
     where: { id: articleId },
     data: { factCheckScore: score },
   });
+
+  if (score < 50) {
+    await prisma.contentGenJob
+      .update({ where: { id: contentGenJobId }, data: { status: "quarantined_factcheck" } })
+      .catch(() => undefined);
+    console.warn(`[fact-check] article=${articleId} score=${score} < 50 → quarantined_factcheck`);
+  }
 
   console.log(
     `[fact-check] article=${articleId} claims=${claims.length} verdicts=${verdicts

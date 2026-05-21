@@ -29,6 +29,7 @@ import { seedSectorCampaigns } from "./sector-campaigns";
 import { seedRssSources } from "./rss-sources";
 import { seedCaseStudies } from "./case-studies";
 import { seedKeywords } from "./seed-keywords";
+import { seedKbFacts } from "./seed-kb-facts";
 
 const prisma = new PrismaClient();
 
@@ -74,6 +75,10 @@ async function main() {
   // P1.5 B.5 P0-7 — 747 keyword seeds (rotation atomique pipeline content-gen).
   const keywordCount = await seedKeywords(prisma);
   console.log(`  ✓ Keyword : ${keywordCount} rows upserted (rotation pipeline content-gen)`);
+
+  // P4 Sprint — KB facts sectoriels (verticale audits pilote, 10 facts vérifiés).
+  const kbFactsCount = await seedKbFacts(prisma);
+  console.log(`  ✓ KbFacts (audits) : ${kbFactsCount} entries upserted (KnowledgeEntry + Translation FR)`);
 
   console.log("[content-gen seed] done.");
 }

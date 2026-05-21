@@ -22,6 +22,8 @@ import { logGeneration, logStep } from "@/server/content-gen/shared/generation-l
 // B.8 P1.5 P0-3 — LLM-as-judge (Claude Sonnet reviewer multi-dim).
 import { reviewArticle, type JudgeResult } from "@/server/content-gen/reviewer/llm-judge";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
+// P1-3 — Sentry capture pour observabilité prod (audit S+4-C).
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-quality-improver";
 
@@ -339,14 +341,16 @@ export function startQualityImproverWorker(): Worker<QualityImproveJobPayload> {
     connection: { url: redisUrl },
     concurrency: 2,
     limiter: { max: 5, duration: 60_000 },
-    // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
-    // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
-    // Évite saturation Redis long-terme sur high-volume workers.
+    // P0-2 — lockDuration 2min : reviewArticle() (Claude Sonnet) peut dépasser 30s.
+    // Sans lockDuration, BullMQ marque le job stalled → double review possible.
+    lockDuration: 120_000,
+    // P2-23 — bornage retention Redis.
     removeOnComplete: { count: 1000 },
     removeOnFail: { count: 5000 },
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-quality-improver-worker] job ${job?.id} failed:`, err);
+    captureWorkerError("quality-improver", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

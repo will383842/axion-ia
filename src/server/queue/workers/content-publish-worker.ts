@@ -298,6 +298,8 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
         ...(cgJob.plagiarismScore !== null ? { plagiarismScore: cgJob.plagiarismScore } : {}),
         ...(promoteToTier1 ? { promotedAt: new Date() } : {}),
         generatedByJobId: cgJob.id,
+        // P0-6 — Traçabilité directe campagne → article.
+        ...(cgJob.campaignId ? { campaignId: cgJob.campaignId } : {}),
         ...(directAnswer ? { directAnswer } : {}),
         ...(faqJson ? { faqJson: faqJson as never } : {}),
         templateVariant: cgJob.templateId ?? null,
@@ -366,8 +368,13 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     const outputTokens = totalTokens - inputTokens;
     const providerKey = typeof output.providerKey === "string" ? output.providerKey : "openai";
     const modelId = typeof output.modelId === "string" ? output.modelId : cgJob.contentType;
-    // Prompt hash derive du contentType + jobId (pas le prompt complet — PII).
-    const promptHash = hashPrompt(`${cgJob.contentType}:${cgJob.id}:${article.id}`);
+    // P0-3 AI Act art. 50 — Hash réel du prompt LLM (via GeneratorOutput.promptHash).
+    // Fallback sur hash technique pour articles antérieurs au fix (rétrocompat).
+    const rawPromptHash = (cgJob.outputJsonRaw as Record<string, unknown> | null)?.promptHash;
+    const promptHash =
+      typeof rawPromptHash === "string" && rawPromptHash.length === 64
+        ? rawPromptHash
+        : hashPrompt(`${cgJob.contentType}:${cgJob.id}:${article.id}`);
     await logProvenance({
       articleId: article.id,
       step: "publish",

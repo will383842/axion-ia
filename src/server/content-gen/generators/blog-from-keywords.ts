@@ -16,6 +16,7 @@
  */
 
 import { generate as routerGenerate } from "../providers/provider-router";
+import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
@@ -93,6 +94,7 @@ export const blogFromKeywordsGenerator: Generator = {
     let lastTokensOutput = 0;
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
     let prevFeedback = input.improvementFeedback ?? "";
+    let lastPromptHash = ""; // P0-3 AI Act art. 50
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -111,6 +113,8 @@ ${feedbackSection}
 
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
+
+      lastPromptHash = hashPrompt(SYSTEM_PROMPT + userPrompt);
 
       const llmResult = await routerGenerate({
         jobId: input.jobId,
@@ -301,6 +305,7 @@ ${feedbackSection}
       totalTokens: lastTokensInput + lastTokensOutput,
       totalCostUsd: accumulatedCostUsd,
       citations: lastCitations,
+      promptHash: lastPromptHash,
     };
   },
 };

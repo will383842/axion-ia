@@ -36,6 +36,7 @@
  */
 
 import { generate as routerGenerate } from "../providers/provider-router";
+import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
@@ -176,6 +177,11 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
     const safeVille = input.anchorVilleSlug ? escapeSlugInput(input.anchorVilleSlug) : null;
 
     // ─── STEP 1 : Outline ─────────────────────────────────────────────────
+    const lastPromptHash = hashPrompt(
+      SYSTEM_PROMPT_OUTLINE +
+        (input.primaryKeyword ?? "IA en entreprise") +
+        (input.anchorVilleSlug ?? ""),
+    ); // P0-3 AI Act art. 50
     const improvementSection = input.improvementFeedback
       ? `\n\n## Retour LLM-judge — axes à renforcer dans ce guide\n${input.improvementFeedback}`
       : "";
@@ -337,6 +343,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       totalTokens: cumulativeTokens,
       totalCostUsd: cumulativeCost,
       citations: outlineResult.citations ?? [],
+      promptHash: lastPromptHash,
     };
   },
 };
