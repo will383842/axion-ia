@@ -1,7 +1,5 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
-//
-// Coverage new V2 — AdminPageShell + AdminPageHeader + AdminCard.
-// Server Actions create + dryRun préservées avec mêmes signatures.
+// Wizard 5 étapes 2026-05-22 — vertical → géo → cibles → keywords → revue.
 
 import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
@@ -20,6 +18,8 @@ import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
 } from "@/server/content-gen/shared/editorial-mix-rules";
+import { getCityEquityData } from "@/server/actions/content-gen/city-equity";
+import { CoverageWizardClient } from "@/components/admin/content-gen/CoverageWizardClient";
 import type {
   CoverageScope,
   ServiceSector,
@@ -53,13 +53,14 @@ function decodeDryRun(raw: string | undefined): EstimateCampaignResult | null {
 
 interface Props {
   adminPrefix: string;
-  searchParams: { dryRun?: string; preset?: string };
+  searchParams: { dryRun?: string; preset?: string; advanced?: string };
 }
 
 export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): Promise<React.ReactElement> {
-  const [distProfiles, audProfiles] = await Promise.all([
+  const [distProfiles, audProfiles, equityData] = await Promise.all([
     listDistributionProfiles(),
     listAudienceMixProfiles(),
+    getCityEquityData(),
   ]);
   const dryRunResult = decodeDryRun(sp.dryRun);
 
@@ -161,6 +162,29 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
     <AdminPageShell>
       <AdminPageHeader title="Nouvelle campagne" />
 
+      {/* Wizard guidé 5 étapes */}
+      {!sp.advanced && (
+        <AdminCard className="mb-[var(--space-admin-6)]">
+          <div className="flex items-center justify-between mb-[var(--space-admin-4)]">
+            <h2 className="admin-h2 mb-0">Assistant campagne</h2>
+            <a
+              href="?advanced=1"
+              className="admin-button-ghost text-[length:var(--text-admin-xs)]"
+            >
+              Mode avancé (JSON)
+            </a>
+          </div>
+          <CoverageWizardClient
+            distProfiles={[...distProfiles]}
+            audProfiles={[...audProfiles]}
+            cityEquity={[...equityData.rows]}
+            onSubmit={create}
+            onDryRun={dryRun}
+            adminPrefix={adminPrefix}
+          />
+        </AdminCard>
+      )}
+
       {presetData ? (
         <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-surface-soft)] px-[var(--space-admin-5)] py-[var(--space-admin-3)]">
           <div className="flex items-center justify-between">
@@ -209,7 +233,14 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
         </AdminCard>
       ) : null}
 
-      <AdminCard>
+      {/* Mode avancé JSON — accès via ?advanced=1 */}
+      {sp.advanced && <AdminCard>
+        <div className="flex items-center justify-between mb-[var(--space-admin-4)]">
+          <h2 className="admin-h2 mb-0">Mode avancé</h2>
+          <a href="?" className="admin-button-ghost text-[length:var(--text-admin-xs)]">
+            ← Retour au wizard
+          </a>
+        </div>
         <form action={create}>
           <div className="admin-filters-grid">
             <div className="admin-field">
@@ -338,7 +369,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
             </button>
           </div>
         </form>
-      </AdminCard>
+      </AdminCard>}
     </AdminPageShell>
   );
 }

@@ -24,6 +24,7 @@ import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -360,6 +361,10 @@ export default async function BlogArticle({ params }: Props) {
               className="object-cover"
             />
           </div>
+          <UnsplashCredit
+            photographerName={view.photographerName}
+            photographerUrl={view.photographerUrl}
+          />
         </Container>
       ) : null}
 

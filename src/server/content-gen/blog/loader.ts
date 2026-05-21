@@ -38,6 +38,9 @@ export interface BlogArticleView {
    * null = pas d'image hero disponible (articles FS ou articles DB sans image).
    */
   readonly featuredImage: string | null;
+  /** Attribution photographe (CGU Unsplash §6 — obligatoire si photo Unsplash). */
+  readonly photographerName: string | null;
+  readonly photographerUrl: string | null;
   /** Sources citées (ContentCitation DB) — émises en isBasedOn JSON-LD. */
   readonly citations: ReadonlyArray<{ name: string; url: string }>;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
@@ -61,6 +64,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     source: "fs",
     // P2-3 — Les articles FS (hardcodés) n'ont pas d'image hero.
     featuredImage: null,
+    photographerName: null,
+    photographerUrl: null,
     citations: [],
     fsPost: post,
   };
@@ -81,12 +86,23 @@ export async function loadBlogArticleForView(
 ): Promise<BlogArticleView | null> {
   const dbArticle = await findArticleBySlug(slug, locale).catch(() => null);
   if (dbArticle) {
-    const rawCitations = await prisma.contentCitation
-      .findMany({
-        where: { articleId: dbArticle.id },
-        include: { externalReference: { select: { url: true, title: true } } },
-      })
-      .catch(() => []);
+    const [rawCitations, imageAsset] = await Promise.all([
+      prisma.contentCitation
+        .findMany({
+          where: { articleId: dbArticle.id },
+          include: { externalReference: { select: { url: true, title: true } } },
+        })
+        .catch(() => []),
+      // CGU Unsplash §6 — lookup photographe depuis ImageAsset par filePath.
+      dbArticle.featuredImage
+        ? prisma.imageAsset
+            .findFirst({
+              where: { filePath: { contains: dbArticle.featuredImage.split("/").pop() ?? "" } },
+              select: { photographerName: true, photographerUrl: true, sourceType: true },
+            })
+            .catch(() => null)
+        : Promise.resolve(null),
+    ]);
     return {
       slug: dbArticle.slug,
       title: dbArticle.title,
@@ -102,6 +118,11 @@ export async function loadBlogArticleForView(
       source: "db",
       // P2-3 — Image hero DB article (Article.featuredImage String?).
       featuredImage: dbArticle.featuredImage ?? null,
+      // CGU Unsplash §6 — attribution photographe (null si pas image Unsplash).
+      photographerName:
+        imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerName ?? null) : null,
+      photographerUrl:
+        imageAsset?.sourceType === "unsplash" ? (imageAsset.photographerUrl ?? null) : null,
       citations: rawCitations.map((c) => ({
         name: c.externalReference.title,
         url: c.externalReference.url,
@@ -144,6 +165,8 @@ export async function loadBlogIndexForView(
     source: "db",
     // P2-3 — Index n'expose pas featuredImage (non sélectionné dans listPublishedArticles).
     featuredImage: null,
+    photographerName: null,
+    photographerUrl: null,
     citations: [],
     fsPost: null,
   }));

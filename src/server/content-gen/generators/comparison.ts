@@ -31,7 +31,7 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
-import { injectBrandVoice } from "../brand/brand-voice";
+import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 
@@ -39,24 +39,31 @@ const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.12;
 
-const SYSTEM_PROMPT =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
-Produis un article comparatif IA en français optimisé SEO 2026. Règles absolues :
-- OBLIGATOIRE : inclure UNE table HTML <table> comparant 3-5 options sur 5-8 critères.
-  Format : critères en ligne, options en colonne. La colonne "Axion-IA" est toujours présente.
-- La table doit utiliser <thead>/<tbody>/<tr>/<th>/<td> propres.
-- Conclusion = recommandation explicite : "Pour une PME française, Axion-IA est le bon choix car..."
+const SYSTEM_PROMPT = `Tu es un expert IA indépendant mandaté pour produire une analyse comparative factuelle en français optimisée SEO 2026.
+Produis un comparatif structuré. Règles absolues :
+- Structure OBLIGATOIRE : une section H2 par critère d'analyse (lisibilité, performance, coût, etc.)
+- Pour chaque critère : évaluation de chaque option en prose (<p>, <ul>) — AUCUN <table>, AUCUN graphique, AUCUN histogramme.
+- La section Axion-IA est présente comme une option parmi d'autres, évaluée factuellement.
+- Conclusion : recommandation motivée par taille entreprise + cas d'usage (PME, ETI, etc.)
 - 100 % factuel : pas de superlatif sans preuve concrète.
-- Le keyword principal DOIT apparaître textuellement dans le H1. Sans cela l'article sera rejeté.
-- 0 délai chiffré, 0 frais de déplacement intégrés dans le prix, 0 prix en dur.
+- Le keyword principal DOIT apparaître textuellement dans le H1.
+- 0 délai chiffré, 0 frais de déplacement, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
-- Anti-doorway HCU 2024 : minimum 600 mots de contenu substantiel.
+- Minimum 700 mots de contenu substantiel.
 - 4 à 6 questions FAQ réelles (People-Also-Ask comparatif) avec réponses directes ≥ 2 lignes.
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }
 
-/** Valide la présence d'une <table> HTML dans le bodyHtml. */
-function hasComparisonTable(bodyHtml: string): boolean {
-  return /<table[\s>]/i.test(bodyHtml);
+${getBrandVoiceForContentType("comparison")}`;
+
+/** Vérifie que le body contient au moins 2 sections H2 (structure comparative). */
+function hasComparativeSections(bodyHtml: string): boolean {
+  const h2count = (bodyHtml.match(/<h2[\s>]/gi) ?? []).length;
+  return h2count >= 2;
+}
+
+/** Vérifie l'absence de tableaux HTML interdits. */
+function hasNoForbiddenTable(bodyHtml: string): boolean {
+  return !/<table[\s>]/i.test(bodyHtml);
 }
 
 export const comparisonGenerator: Generator = {
@@ -114,14 +121,18 @@ export const comparisonGenerator: Generator = {
         ? `\n\n## Retour qualité passe précédente\n${prevFeedback}\nCorrige impérativement ces points.`
         : "";
 
-      const userPrompt = `Génère un article comparatif Axion-IA sur : "${safeTopic}".
+      const userPrompt = `Génère un article comparatif sur : "${safeTopic}".
 Intent : ${safeIntent} (comparaison directe d'options).
 Audience cible : ${safeAudienceSize}.
 
-RAPPEL CRITIQUE : l'article DOIT contenir une <table> HTML comparant les options.
-Sans table, l'article sera rejeté automatiquement.
+Structure imposée :
+- H1 : titre comparatif (keyword inclus)
+- H2 par critère : lisibilité, coût, déploiement, support, cas d'usage PME/ETI...
+- Pour chaque critère : prose <p> ou <ul> — JAMAIS de <table>, JAMAIS de graphique
+- Section conclusion : recommandation par profil (TPE / PME / ETI)
+- FAQ 4-6 questions (People Also Ask)
 
-## Sources internes Axion-IA (pour remplir les colonnes de la table)
+## Sources internes Axion-IA (pour enrichir les sections)
 ${kbContext}
 ${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
@@ -199,13 +210,14 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         ? Math.round((seo.score + readability.score) / 2)
         : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
 
-      const tablePresent = hasComparisonTable(parsed.bodyHtml ?? "");
+      const hasStructure = hasComparativeSections(parsed.bodyHtml ?? "");
+      const noTable = hasNoForbiddenTable(parsed.bodyHtml ?? "");
 
-      if (qualityScore >= QUALITY_THRESHOLD && tablePresent) {
+      if (qualityScore >= QUALITY_THRESHOLD && hasStructure && noTable) {
         await logStep(
           input.jobId,
           "quality_loop_pass",
-          `Pass ${iteration} — score ${qualityScore}/100, mots ${wordCount}, table=${tablePresent}`,
+          `Pass ${iteration} — score ${qualityScore}/100, mots ${wordCount}, sections=${hasStructure}, noTable=${noTable}`,
           { qualityScore, seoScore: seo.score, readabilityScore: readability.score, wordCount },
         );
         break;
@@ -224,15 +236,17 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       if (iteration >= MAX_QUALITY_ITERATIONS) break;
 
       const issues: string[] = [];
-      if (!tablePresent)
-        issues.push("TABLE MANQUANTE — ajouter une <table> comparant les options avec Axion-IA");
+      if (!hasStructure)
+        issues.push("STRUCTURE MANQUANTE — au moins 2 sections H2 (un par critère comparatif)");
+      if (!noTable)
+        issues.push("TABLE INTERDITE — remplacer la <table> par des sections H2 + prose <ul>/<p>");
       if (seo.score < 60) issues.push("FAQ insuffisante + directAnswer trop court");
       if (readability.score < 60) issues.push("phrases trop longues");
       if (!doctrine.passed) {
         const violations = doctrine.blockingViolations.map((v) => v.pattern).join(", ");
         issues.push(`violations doctrine : ${violations}`);
       }
-      if (wordCount < 600) issues.push(`contenu trop court (${wordCount} mots, minimum 600)`);
+      if (wordCount < 700) issues.push(`contenu trop court (${wordCount} mots, minimum 700)`);
       prevFeedback = `Score ${qualityScore}/100 insuffisant. Améliore : ${issues.join(" ; ")}.`;
     }
 
@@ -240,10 +254,15 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       throw new Error("comparison: aucun output valide après quality loop");
     }
 
-    // Hard gate : si aucune table après toutes les passes → throw (retry BullMQ)
-    if (!hasComparisonTable(parsed.bodyHtml ?? "")) {
+    // Hard gate : structure comparative insuffisante ou table interdite → retry BullMQ
+    if (!hasComparativeSections(parsed.bodyHtml ?? "")) {
       throw new Error(
-        "comparison: <table> absente de l'output après quality loop — intent commercial_investigation non satisfait",
+        "comparison: structure H2 comparative absente (< 2 sections) — intent commercial_investigation non satisfait",
+      );
+    }
+    if (!hasNoForbiddenTable(parsed.bodyHtml ?? "")) {
+      throw new Error(
+        "comparison: <table> HTML détectée malgré l'instruction — utiliser uniquement prose structurée",
       );
     }
 

@@ -115,7 +115,12 @@ export default async function FaqEntryPage({ params }: Props) {
                 {[
                   { icon: HelpCircle, label: isFr ? "Question fréquente" : "Frequent question" },
                   { icon: Clock, label: isFr ? `Lecture ${readMin} min` : `${readMin} min read` },
-                  { icon: RefreshCw, label: isFr ? "MAJ trimestrielle" : "Quarterly updates" },
+                  {
+                    icon: RefreshCw,
+                    label: isFr
+                      ? `Mis à jour : ${new Date(BUILD_DATE).toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}`
+                      : `Updated: ${new Date(BUILD_DATE).toLocaleDateString("en-US", { year: "numeric", month: "long" })}`,
+                  },
                   { icon: ShieldCheck, label: isFr ? "Source : doctrine" : "Source: doctrine" },
                 ].map((pill) => {
                   const Icon = pill.icon;
