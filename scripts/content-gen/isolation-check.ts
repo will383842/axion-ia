@@ -97,6 +97,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // exceptions explicites doctrine §4.1bis.
   /^\.github\/workflows\/ci\.yml$/,
   /^\.github\/workflows\/gsc-crawl-stats-weekly\.yml$/,
+  /^\.github\/workflows\/content-gen-seed\.yml$/,
+  /^\.github\/workflows\/enable-openai-embeddings\.yml$/,
   /^prisma\/migrations\/\d+_add_service_sector\/migration\.sql$/,
   /^prisma\/seed\.ts$/,
   /^prisma\/seeds\/blog-fs-bootstrap\.ts$/,
