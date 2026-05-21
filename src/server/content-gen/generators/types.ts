@@ -36,6 +36,14 @@ export interface GeneratorBaseInput {
    * re-génération. Absent = première génération (pas de boucle improve).
    */
   readonly improvementFeedback?: string;
+  /**
+   * Métadonnées de l'item RSS source (blog_from_rss uniquement).
+   * Injectées dans le prompt pour forcer la citation + le ton actualité.
+   */
+  readonly rssSourceName?: string;
+  readonly rssItemTitle?: string;
+  readonly rssItemSummary?: string;
+  readonly rssItemLink?: string;
 }
 
 export interface GeneratedFaqItem {

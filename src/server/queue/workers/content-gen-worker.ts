@@ -272,6 +272,27 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         ? prevOutput["judgeIssues"]
         : undefined;
 
+    // Phase A BUG-5 — Métadonnées RSS pour blog_from_rss : extraites de
+    // inputPayload (rempli par content-rss-fetch-worker) et passées au
+    // generator pour forcer la citation source et le ton actualité.
+    const rssSourceName =
+      contentType === "blog_from_rss" && typeof inputPayload["rssSourceName"] === "string"
+        ? inputPayload["rssSourceName"]
+        : undefined;
+    const rssItemTitle =
+      contentType === "blog_from_rss" && typeof inputPayload["rssTitle"] === "string"
+        ? inputPayload["rssTitle"]
+        : undefined;
+    const rssItemSummary =
+      contentType === "blog_from_rss" &&
+      typeof (inputPayload["rssContent"] ?? inputPayload["rssDescription"]) === "string"
+        ? String(inputPayload["rssContent"] ?? inputPayload["rssDescription"])
+        : undefined;
+    const rssItemLink =
+      contentType === "blog_from_rss" && typeof inputPayload["rssLink"] === "string"
+        ? inputPayload["rssLink"]
+        : undefined;
+
     const startedAt = Date.now();
     const output = await generator.generate({
       jobId: contentGenJobId,
@@ -288,6 +309,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         : {}),
       ...(resolvedKeyword ? { primaryKeyword: resolvedKeyword } : {}),
       ...(improvementFeedback ? { improvementFeedback } : {}),
+      ...(rssSourceName ? { rssSourceName } : {}),
+      ...(rssItemTitle ? { rssItemTitle } : {}),
+      ...(rssItemSummary ? { rssItemSummary } : {}),
+      ...(rssItemLink ? { rssItemLink } : {}),
     });
 
     // B.5 — Validation keyword dans le titre (warning si absent, pas de blocage).
