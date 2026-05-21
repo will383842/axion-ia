@@ -183,29 +183,29 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
   {
     id: "logo-primary",
     kind: "logo",
-    fileUrl: null,
-    format: "SVG",
+    fileUrl: "/images/axion-ia-logo-horizontal-fond-blanc.webp",
+    format: "WebP",
     fr: {
       title: "Logo principal",
-      description: "Wordmark Axion-IA, version couleur, format vectoriel.",
+      description: "Wordmark Axion-IA, version couleur fond blanc.",
     },
     en: {
       title: "Primary logo",
-      description: "Axion-IA wordmark, color version, vector format.",
+      description: "Axion-IA wordmark, color version, white background.",
     },
   },
   {
     id: "logo-monochrome",
     kind: "logo",
-    fileUrl: null,
-    format: "SVG",
+    fileUrl: "/images/axion-ia-logo-horizontal-transparent.webp",
+    format: "WebP",
     fr: {
-      title: "Logo monochrome",
-      description: "Version monochrome pour fonds clairs ou sombres.",
+      title: "Logo fond transparent",
+      description: "Version fond transparent pour intégrations éditorielles.",
     },
     en: {
-      title: "Monochrome logo",
-      description: "Monochrome version for light or dark backgrounds.",
+      title: "Transparent background logo",
+      description: "Transparent background version for editorial use.",
     },
   },
   {

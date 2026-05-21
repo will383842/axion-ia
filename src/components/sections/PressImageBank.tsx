@@ -1,16 +1,5 @@
-// Press image bank section (Sprint M? — axionia-image-bank skill v1.0).
-//
-// Promeut la banque d'images Axion-IA depuis l'espace presse :
-// - Lien interne sitewide vers `/galerie` (boost autorité topique galerie + maillage)
-// - Pattern emprunté à `PressKit` (cards en bg-paper sur surface sand)
-// - Pas de hex hardcodé (palette tokens v3 Design.md)
-// - WCAG 2.2 AA : focus visible, contrast ≥ 4.5:1
-//
-// Le composant reste purement présentationnel — pas de fetch DB. Les vignettes
-// affichées sont les illustrations héros existantes du site (placeholders Phase 1)
-// jusqu'à ce que Sprint 1 de la banque d'images livre les vraies entries DB.
-
 import * as React from "react";
+import Image from "next/image";
 import { ArrowRight, Camera, Image as ImageIcon, ScanLine } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
@@ -19,6 +8,9 @@ interface PressImageBankCategory {
   title: string;
   description: string;
   iconKind: "camera" | "image" | "scanline";
+  /** URL d'aperçu optionnel — image représentative de la catégorie. */
+  previewUrl?: string;
+  previewAlt?: string;
 }
 
 interface PressImageBankProps {
@@ -52,13 +44,28 @@ export function PressImageBank({ labels }: PressImageBankProps) {
           return (
             <li
               key={cat.id}
-              className="border-border bg-paper flex flex-col rounded-xl border p-6 transition hover:shadow-[var(--shadow-subtle)]"
+              className="border-border bg-paper flex flex-col overflow-hidden rounded-xl border transition hover:shadow-[var(--shadow-subtle)]"
             >
-              <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-11 w-11 items-center justify-center rounded-full">
-                <Icon className="h-5 w-5" aria-hidden="true" />
+              {/* Aperçu image si disponible */}
+              {cat.previewUrl ? (
+                <div className="bg-sand relative aspect-[16/9] overflow-hidden">
+                  <Image
+                    src={cat.previewUrl}
+                    alt={cat.previewAlt ?? cat.title}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="bg-terracotta-soft flex aspect-[16/9] items-center justify-center">
+                  <Icon className="text-terracotta-deep h-10 w-10" aria-hidden="true" />
+                </div>
+              )}
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="text-fg mb-2 text-base leading-tight font-semibold">{cat.title}</h3>
+                <p className="text-fg-soft flex-1 text-sm leading-relaxed">{cat.description}</p>
               </div>
-              <h3 className="text-fg mb-2 text-base leading-tight font-semibold">{cat.title}</h3>
-              <p className="text-fg-soft flex-1 text-sm leading-relaxed">{cat.description}</p>
             </li>
           );
         })}

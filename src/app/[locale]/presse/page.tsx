@@ -232,17 +232,18 @@ export default async function PressePage({ params }: Props) {
           <div className="mx-auto max-w-4xl">
             <Illustration
               slot="PRESSE-01-hero"
+              src="/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp"
               aspectRatio="16:9"
               filenameTarget="public/illustrations/presse-hero.avif"
               caption={
                 isFr
-                  ? "Vitrine éditoriale magazine — Une de presse premium"
-                  : "Editorial magazine front — premium press cover"
+                  ? "L'équipe Axion-IA — cabinet IA opérationnel France"
+                  : "The Axion-IA team — operational AI consultancy France"
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une vitrine de magazine premium symbolisant l'espace presse Axion-IA."
-                  : "Editorial illustration of a premium magazine front symbolizing the Axion-IA press room."
+                  ? "L'équipe Axion-IA, cabinet IA opérationnel B2B, pose devant les locaux — 12 collaborateurs."
+                  : "The Axion-IA team, B2B operational AI consultancy, posing at the office — 12 team members."
               }
               priority
             />
@@ -316,18 +317,33 @@ export default async function PressePage({ params }: Props) {
                 iconKind: "image",
                 title: t("imageBankCat1Title"),
                 description: t("imageBankCat1Description"),
+                previewUrl:
+                  "/images/axion-ia-graphique-ia-imperatif-performance-fosse-concurrentiel-dataviz.webp",
+                previewAlt: isFr
+                  ? "Graphique IA — impératif de performance et fossé concurrentiel 2024"
+                  : "AI chart — performance imperative and competitive gap 2024",
               },
               {
                 id: "equipe",
                 iconKind: "camera",
                 title: t("imageBankCat2Title"),
                 description: t("imageBankCat2Description"),
+                previewUrl:
+                  "/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.webp",
+                previewAlt: isFr
+                  ? "Équipe Axion-IA — 12 collaborateurs, cabinet IA opérationnel France"
+                  : "Axion-IA team — 12 staff members, operational AI consultancy France",
               },
               {
                 id: "cas-concrets",
                 iconKind: "scanline",
                 title: t("imageBankCat3Title"),
                 description: t("imageBankCat3Description"),
+                previewUrl:
+                  "/images/axion-ia-comparatif-actions-humaines-vs-automatisation-ia-7-etapes-infographie.webp",
+                previewAlt: isFr
+                  ? "Comparatif actions humaines vs automatisation IA — 7 étapes"
+                  : "Comparison human actions vs AI automation — 7 steps",
               },
             ],
           }}
