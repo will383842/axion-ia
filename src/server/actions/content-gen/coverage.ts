@@ -222,12 +222,53 @@ export async function pauseCampaign(id: string): Promise<void> {
     where: { id },
     data: { status: "paused", pausedAt: new Date() },
   });
+
+  // B.2 P0-10 — purge BullMQ jobs en attente pour cette campagne.
+  // Même pattern que cancelCampaign : seuls les jobs `queued` en DB ont un
+  // BullMQ job correspondant à purger. Les jobs `running` sont laissés
+  // terminer (graceful — le worker vérifie campaign.status à chaque tick).
+  let purgeBullJobs = 0;
+  const queuedJobs = await prisma.contentGenJob.findMany({
+    where: { campaignId: id, status: "queued" },
+    select: { id: true },
+    take: 5000,
+  });
+
+  if (queuedJobs.length > 0) {
+    const queue = getContentGenQueue();
+    if (queue) {
+      for (const job of queuedJobs) {
+        try {
+          const bullJob = await queue.getJob(`gen-${job.id}`);
+          if (bullJob) {
+            const state = await bullJob.getState();
+            if (
+              state === "waiting" ||
+              state === "delayed" ||
+              state === "waiting-children" ||
+              state === "prioritized"
+            ) {
+              await bullJob.remove();
+              purgeBullJobs++;
+            }
+          }
+        } catch {
+          // Job actif ou introuvable — ignore, le worker gère via kill_switch.
+        }
+      }
+    }
+    console.info(
+      `[pauseCampaign] campaign=${id} queued=${queuedJobs.length} bullPurged=${purgeBullJobs}`,
+    );
+  }
+
   revalidatePath(adminBase());
   await logActivity({
     session,
     action: "content-gen.campaign.pause",
     targetType: "CoverageCampaign",
     targetId: id,
+    changes: { queuedJobs: queuedJobs.length, purgeBullJobs },
   });
 }
 
