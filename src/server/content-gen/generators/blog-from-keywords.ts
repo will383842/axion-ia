@@ -88,7 +88,7 @@ export const blogFromKeywordsGenerator: Generator = {
     let lastTokensInput = 0;
     let lastTokensOutput = 0;
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
-    let prevFeedback = "";
+    let prevFeedback = input.improvementFeedback ?? "";
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -152,7 +152,10 @@ ${feedbackSection}
         .replace(/\s+/g, " ")
         .trim();
       const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
-      const internalLinkCount = ((parsed.bodyHtml ?? "").match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+      const _bh = parsed.bodyHtml ?? "";
+      const internalLinkCount =
+        (_bh.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+        (_bh.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
       const readability = computeReadabilityFr(bodyText);
       const seo = computeSeoScore({
         title: parsed.title ?? "",
@@ -233,7 +236,9 @@ ${feedbackSection}
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 
     // 4. Checks finaux (résultats définitifs)
-    const finalInternalLinkCount = (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const finalInternalLinkCount =
+      (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+      (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({

@@ -101,6 +101,10 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
     // selon `input.templateVariant`. Fallback `default` si null/unknown.
     const variant = resolveLandingVilleVariant(input.templateVariant);
 
+    const improvementSection = input.improvementFeedback
+      ? `\n\n## Retour LLM-judge — points à corriger impérativement\n${input.improvementFeedback}`
+      : "";
+
     const userPrompt = `Génère une landing page Axion-IA pour la ville "${safeVilleSlug}".
 Audience : ${safeAudienceSize} × ${safeOrgType}.
 Intent : ${safeIntent}.
@@ -111,7 +115,7 @@ ${variant.userPromptFocusSection}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
-${localEconomicContext}
+${localEconomicContext}${improvementSection}
 
 ## CTA recommandé pour ce variant
 href : ${variant.recommendedCtaHref}
@@ -159,7 +163,9 @@ label : ${variant.recommendedCtaLabel}
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 
     // 4. Quality checks
-    const internalLinkCount = (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const internalLinkCount =
+      (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+      (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({

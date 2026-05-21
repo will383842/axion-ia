@@ -173,6 +173,10 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
     const safeVille = input.anchorVilleSlug ? escapeSlugInput(input.anchorVilleSlug) : null;
 
     // ─── STEP 1 : Outline ─────────────────────────────────────────────────
+    const improvementSection = input.improvementFeedback
+      ? `\n\n## Retour LLM-judge — axes à renforcer dans ce guide\n${input.improvementFeedback}`
+      : "";
+
     const outlineUserPrompt = `Génère le PLAN d'un guide pilier Axion-IA.
 
 Sujet principal : ${safeKeyword}
@@ -181,7 +185,7 @@ Intent : ${safeIntent}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
-${localEconomicContext}
+${localEconomicContext}${improvementSection}
 
 Rappel : 8-15 sections, output JSON strict (cf. system prompt).`;
 
@@ -275,7 +279,9 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 
     // ─── Quality checks ──────────────────────────────────────────────────
-    const internalLinkCount = (assembledBody.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const internalLinkCount =
+      (assembledBody.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+      (assembledBody.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
