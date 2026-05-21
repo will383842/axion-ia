@@ -3190,6 +3190,30 @@ enum KeywordTrackingSource {
   manual
 }
 
+/// B.5 P1.5 — Seeds keywords connectes au pipeline content-gen.
+/// 747 seeds pre-charges via prisma/seeds/content-gen/keyword-seeds.ts.
+/// Rotation equitable par vertical + lastUsedAt (lock atomique anti-doublon).
+model Keyword {
+  id             String    @id @default(cuid())
+  term           String    @unique @db.VarChar(255)
+  termNormalized String    @map("term_normalized") @db.VarChar(255)
+  vertical       String    @db.VarChar(60)
+  searchIntent   String?   @map("search_intent") @db.VarChar(40)
+  isLongTail     Boolean   @default(false) @map("is_long_tail")
+  isLocal        Boolean   @default(false) @map("is_local")
+  cityIds        String[]  @default([]) @map("city_ids")
+  searchVolume   Int?      @map("search_volume")
+  difficulty     Int?
+  clusterId      String?   @map("cluster_id") @db.VarChar(60)
+  usageCount     Int       @default(0) @map("usage_count")
+  lastUsedAt     DateTime? @map("last_used_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@index([vertical])
+  @@index([usageCount, lastUsedAt])
+  @@map("keywords")
+}
+
 // ============================================================
 // IMAGE BANK V1 (Sprint 1 — feat/image-bank-v1)
 // ============================================================

@@ -28,6 +28,7 @@ import { seedContentGenConfig } from "./content-gen-config";
 import { seedSectorCampaigns } from "./sector-campaigns";
 import { seedRssSources } from "./rss-sources";
 import { seedCaseStudies } from "./case-studies";
+import { seedKeywords } from "./seed-keywords";
 
 const prisma = new PrismaClient();
 
@@ -69,6 +70,10 @@ async function main() {
   console.log(
     `  ✓ CaseStudy : ${caseStudies.created} created, ${caseStudies.updated} updated, ${caseStudies.skipped} translations skipped`,
   );
+
+  // P1.5 B.5 P0-7 — 747 keyword seeds (rotation atomique pipeline content-gen).
+  const keywordCount = await seedKeywords(prisma);
+  console.log(`  ✓ Keyword : ${keywordCount} rows upserted (rotation pipeline content-gen)`);
 
   console.log("[content-gen seed] done.");
 }

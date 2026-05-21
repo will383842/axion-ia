@@ -34,6 +34,8 @@ import {
 } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
+// B.5 P1.5 — Rotation 747 keyword seeds.
+import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyword-selector";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -228,6 +230,28 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
   // 4. Resolve generator + generate
   const generator = getGenerator(contentType);
   try {
+    // B.5 P1.5 — Si aucun primaryKeyword dans le payload, selectionner depuis
+    // les seeds (rotation equitable lastUsedAt ASC, fallback in-memory 747 seeds).
+    // Applicable pour blog_article, blog_from_keywords, guide_pilier, landing_ville.
+    let resolvedKeyword: string | undefined =
+      typeof inputPayload["primaryKeyword"] === "string"
+        ? inputPayload["primaryKeyword"]
+        : undefined;
+    if (!resolvedKeyword && contentType !== "blog_from_rss") {
+      const campaignSector =
+        typeof (dbJob as Record<string, unknown>)["campaignSector"] === "string"
+          ? ((dbJob as Record<string, unknown>)["campaignSector"] as string)
+          : "transversal";
+      const selected = await selectKeyword({ vertical: campaignSector, contentType });
+      if (selected) {
+        resolvedKeyword = selected;
+        await logStep(contentGenJobId, "keyword_select", `Keyword selected: ${selected}`, {
+          vertical: campaignSector,
+          source: "keyword-selector",
+        });
+      }
+    }
+
     const startedAt = Date.now();
     const output = await generator.generate({
       jobId: contentGenJobId,
@@ -242,10 +266,21 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       ...(dbJob.targetAudienceOrganisation
         ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
         : {}),
-      ...(typeof inputPayload["primaryKeyword"] === "string"
-        ? { primaryKeyword: inputPayload["primaryKeyword"] }
-        : {}),
+      ...(resolvedKeyword ? { primaryKeyword: resolvedKeyword } : {}),
     });
+
+    // B.5 — Validation keyword dans le titre (warning si absent, pas de blocage).
+    if (resolvedKeyword && output.title) {
+      const kwInTitle = validateKeywordInTitle(output.title, resolvedKeyword);
+      if (!kwInTitle) {
+        await logStep(
+          contentGenJobId,
+          "keyword_validation",
+          `Keyword absent du titre (non-bloquant): "${resolvedKeyword}"`,
+          { keyword: resolvedKeyword, title: output.title },
+        );
+      }
+    }
 
     await logStep(contentGenJobId, "llm_call", "Generator output ready", {
       duration_ms: Date.now() - startedAt,
