@@ -26,7 +26,9 @@
 
 const OPENAI_API_URL = "https://api.openai.com/v1/embeddings";
 const EMBEDDING_MODEL = "text-embedding-3-large";
-export const OPENAI_EMBEDDING_DIMENSION = 3072 as const;
+// 1536 dims via API param : pgvector limite HNSW+IVFFlat a 2000 dims max.
+// text-embedding-3-large a 1536 dims > qualite ada-002 a memes dims.
+export const OPENAI_EMBEDDING_DIMENSION = 1536 as const;
 
 // In-memory compteur tokens consommes par jour (reset boot).
 const tokenCounter = new Map<string, number>();
@@ -97,7 +99,7 @@ export async function embed(text: string): Promise<EmbedResult | null> {
       body: JSON.stringify({
         model: EMBEDDING_MODEL,
         input: text,
-        // 3072 default — pas besoin d'override dimensions.
+        dimensions: OPENAI_EMBEDDING_DIMENSION,
       }),
       signal: AbortSignal.timeout(30_000), // 30s max
     });
