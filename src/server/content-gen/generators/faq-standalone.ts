@@ -16,12 +16,14 @@ import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
+import { injectBrandVoice } from "../brand/brand-voice";
 
 const QUALITY_THRESHOLD = 55;
 const MAX_QUALITY_ITERATIONS = 2;
 const BUDGET_CAP_USD = 0.1;
 
-const SYSTEM_PROMPT = `Tu es l'expert contenu d'Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+const SYSTEM_PROMPT =
+  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
 Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles absolues :
 - 10 à 15 questions réelles posées par des dirigeants PME sur l'IA en entreprise.
 - Chaque réponse : 3-6 phrases, directes, sans jargon inutile, ancrées sur Axion-IA.
@@ -29,7 +31,7 @@ Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles abs
 - 0 numéro de téléphone : contact@axion-ia.com uniquement.
 - 0 prix en dur, 0 promesses de délais chiffrés.
 - bodyHtml = intro thématique HTML (2-3 paragraphes) — les Q/A vont dans faq[].
-- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×10-15], tags }`;
+- Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×10-15], tags }`);
 
 function synthesizeFaqTopic(input: GeneratorBaseInput): string {
   if (input.primaryKeyword) return input.primaryKeyword;

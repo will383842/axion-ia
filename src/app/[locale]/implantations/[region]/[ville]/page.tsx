@@ -27,6 +27,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VilleHeroSchema } from "@/components/sections/VilleHeroSchema";
 import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDetailSection";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 
 import { getRegion } from "@/content/regions";
 import { VILLES, getVille, type Ville } from "@/content/villes";
@@ -858,6 +859,9 @@ export default async function VillePage({ params }: Props) {
           </div>
         }
       />
+
+      {/* AI Act art. 50 — disclosure contenu IA-assisté (P0-5 P4 sprint 2026-05-21). */}
+      <AiContentDisclaimer locale={loc} />
 
       {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 5+
           schemas combinés en 1 seul script @graph pour ne pas bloquer le
