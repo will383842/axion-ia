@@ -959,6 +959,7 @@ model Article {
   mentionedCities String[] @default([]) @map("mentioned_cities")
 
   generationProvenances GenerationProvenance[]
+  factCheckClaims       FactCheckClaim[]
 
   @@index([status])
   @@index([publishedAt])
@@ -995,6 +996,26 @@ model GenerationProvenance {
   @@index([articleId])
   @@index([timestamp])
   @@map("generation_provenance")
+}
+
+/// P4 Sprint P0-6 — Claims factuels extraits + vérifiés par fact-checker.
+/// Persistance individuelle par claim pour audit trail + monitoring qualité.
+/// Claim verification = stub SHA-256 V1 (Voyage AI RAG différé Sprint S+7).
+model FactCheckClaim {
+  id          String   @id @default(cuid())
+  articleId   String   @map("article_id") @db.Uuid
+  claim       String   @db.Text
+  status      String   @default("unverified") @db.VarChar(30)
+  sourceUrl   String?  @map("source_url") @db.VarChar(512)
+  sourceTitle String?  @map("source_title") @db.VarChar(255)
+  confidence  Float    @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@index([status])
+  @@map("factcheck_claims")
 }
 
 model ArticleTranslation {
@@ -2506,6 +2527,9 @@ enum ContentType {
 
 /// 12 statuts pipeline (§ 5.1 + § 27 boucle qualité v1.7).
 /// `quality_improving` v1.7 = passage boucle qualité auto si score 40-74.
+/// 14 statuts pipeline (§ 5.1 + § 27 boucle qualité v1.7 + P4 sprint P0-7).
+/// `quarantined_critical` P4-P0-7 = violation P0 LLM-judge (AI Act, SIREN hardcodé…).
+/// `quarantined_factcheck` P4-P0-6 = score fact-check < 50 — revue manuelle.
 enum ContentGenJobStatus {
   queued
   running
@@ -2519,6 +2543,8 @@ enum ContentGenJobStatus {
   published
   failed
   cancelled
+  quarantined_critical
+  quarantined_factcheck
 }
 
 /// Niveaux de log applicatifs côté workers content-gen.

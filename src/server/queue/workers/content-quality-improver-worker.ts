@@ -242,8 +242,14 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
 
   // V2 re-prompt loop : si verdict=improve ET cap non atteint → persiste le
   // feedback judge dans outputJsonRaw + re-enqueue content-gen pour re-générer
-  // avec le feedback ciblé. Sinon → needs_review (décision manuelle Will).
-  const nextStatus = shouldRegenerate ? "quality_improving" : "needs_review";
+  // avec le feedback ciblé.
+  // P0-7 — REJECT P0 → quarantined_critical (violations AI Act, SIREN hardcodé…).
+  // Cap atteint sans P0 → needs_review (revue éditoriale standard).
+  const nextStatus = isHardReject
+    ? "quarantined_critical"
+    : shouldRegenerate
+      ? "quality_improving"
+      : "needs_review";
 
   // Persiste le feedback judge dans outputJsonRaw.judgeIssues pour que le
   // content-gen-worker puisse l'injecter dans le prompt de re-génération.
