@@ -31,6 +31,11 @@ export interface GeneratorBaseInput {
   readonly kbSectorTagSlugs?: ReadonlyArray<string>;
   /** Liste d'IDs KnowledgeEntry consommés par RAG retrieve (audit trail). */
   readonly kbEntryIds?: ReadonlyArray<string>;
+  /**
+   * Feedback du LLM-judge (quality-improver) à injecter dans le prompt de
+   * re-génération. Absent = première génération (pas de boucle improve).
+   */
+  readonly improvementFeedback?: string;
 }
 
 export interface GeneratedFaqItem {

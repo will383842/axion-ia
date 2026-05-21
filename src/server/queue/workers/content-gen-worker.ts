@@ -248,10 +248,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           : "transversal";
       // P1-8 — Passer campaignId pour log structuré keyword_select_exhausted
       // et préparer l'isolation future des pools par campagne.
+      // Note: spread conditionnel requis (exactOptionalPropertyTypes: true).
       const selected = await selectKeyword({
         vertical: campaignSector,
         contentType,
-        campaignId: dbJob.campaignId ?? undefined,
+        ...(dbJob.campaignId ? { campaignId: dbJob.campaignId } : {}),
       });
       if (selected) {
         resolvedKeyword = selected;
@@ -261,6 +262,15 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         });
       }
     }
+
+    // BUG-4 — Feedback LLM-judge : si c'est une re-génération (quality-improver
+    // a persisté outputJsonRaw.judgeIssues), on l'injecte comme
+    // improvementFeedback pour que le generator ré-oriente le prompt.
+    const prevOutput = dbJob.outputJsonRaw as Record<string, unknown> | null;
+    const improvementFeedback =
+      prevOutput && typeof prevOutput["judgeIssues"] === "string"
+        ? prevOutput["judgeIssues"]
+        : undefined;
 
     const startedAt = Date.now();
     const output = await generator.generate({
@@ -277,6 +287,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
         : {}),
       ...(resolvedKeyword ? { primaryKeyword: resolvedKeyword } : {}),
+      ...(improvementFeedback ? { improvementFeedback } : {}),
     });
 
     // B.5 — Validation keyword dans le titre (warning si absent, pas de blocage).
@@ -657,6 +668,9 @@ export function startContentGenWorker(): Worker<ContentGenJobPayload> {
     connection: { url: redisUrl },
     concurrency: 5,
     limiter: { max: 10, duration: 60_000 }, // 10/min — alignée OpenAI tier 5
+    // Lock BullMQ étendu à 2min pour éviter stall sur jobs LLM long (génération
+    // peut prendre 30-90s selon provider). Défaut BullMQ = 30s insuffisant.
+    lockDuration: 120_000,
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
     // Évite saturation Redis long-terme sur high-volume workers.
