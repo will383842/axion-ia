@@ -145,6 +145,9 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/guides\/page\.tsx$/,
   /^prisma\/migrations\/\d+_p1_audit_topic_fingerprint_and_audit_log\/migration\.sql$/,
   /^prisma\/migrations\/\d+_add_rss_source_table\/migration\.sql$/,
+  // P4 Sprint correctif 2026-05-21 — migrations Manon qui referencent content-gen
+  // dans des commentaires SQL (FK FK campaignId Article). Pas de violation isolation.
+  /^prisma\/migrations\/\d+_add_article_campaign_id\/migration\.sql$/,
   // P1.5 B.4 — Routes API admin articles : RGPD art.17 (forget) + AI Act art.50 (provenance).
   // Consomment des données content-gen (purge cascade + trace LLM) mais sont des
   // endpoints admin transverses, pas du code content-gen core.
