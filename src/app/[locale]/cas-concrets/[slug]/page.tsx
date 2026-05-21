@@ -16,6 +16,7 @@ import { getCaseStudy, getAllSlugs } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildArticleJsonLd, buildReviewJsonLd } from "@/lib/seo";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { splitTitleEm } from "@/lib/title";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
@@ -172,6 +173,15 @@ export default async function CaseStudyPage({ params }: Props) {
           </Container>
         </Section>
       ) : null}
+
+      {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
+      <Container className="max-w-3xl">
+        <AuthorByline
+          authorName={isFr ? "Équipe Axion-IA" : "Axion-IA team"}
+          publishedAt={new Date("2026-05-01")}
+          locale={loc}
+        />
+      </Container>
 
       <Section eyebrow={isFr ? "Contexte" : "Context"}>
         <Container className="text-fg max-w-3xl text-lg leading-relaxed">{copy.context}</Container>

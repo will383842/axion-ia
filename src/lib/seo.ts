@@ -387,6 +387,7 @@ export function buildOrganizationJsonLd({
     "@type": "Organization",
     name: "Axion-IA",
     legalName: "Axion-IA",
+    alternateName: ["AxionIA", "Axion IA", "Axion-IA OÜ", "axion-ia.com"],
     url: SITE_URL,
     logo: `${SITE_URL}/opengraph-image`,
     description: isFr
@@ -450,9 +451,9 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/${locale}/${isFr ? "recherche" : "search"}?q={query}`,
+        urlTemplate: `${SITE_URL}/${locale}/${isFr ? "recherche" : "search"}?q={search_term_string}`,
       },
-      "query-input": "required name=query",
+      "query-input": "required name=search_term_string",
     },
   } as const;
 }

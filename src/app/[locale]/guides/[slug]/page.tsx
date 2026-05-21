@@ -23,9 +23,11 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
+import { ArticleTOC, type TocItem } from "@/components/seo/ArticleTOC";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
 
@@ -102,6 +104,22 @@ export default async function GuidePiliersPage({ params }: Props) {
   // Sinon on splite par double newline pour conserver le rythme original.
   const paragraphs = guide.body.split(/\n{2,}/).filter((p) => p.trim().length > 0);
 
+  // TOC Featured Snippets P0-4 — généré depuis les steps structurées si
+  // disponibles. Chaque step.name devient un h2 dans le rendu, donc une entrée TOC.
+  const tocItems: TocItem[] = guide.hasStructuredSteps
+    ? guide.steps.map((s) => ({
+        anchor: s.name
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, ""),
+        title: s.name,
+        level: 2 as const,
+      }))
+    : [];
+  const pageUrl = `${SITE_URL}/fr/guides/${slug}`;
+
   return (
     <>
       <JsonLd data={jsonLd} />
@@ -111,6 +129,9 @@ export default async function GuidePiliersPage({ params }: Props) {
 
       <Section className="bg-cream">
         <Container className="max-w-3xl">
+          {tocItems.length >= 2 && (
+            <ArticleTOC items={tocItems} pageUrl={pageUrl} locale="fr" sticky={false} />
+          )}
           <div className="mb-6 flex items-center gap-3">
             <Badge variant="accent" className="tracking-wide">
               Guide pilier
@@ -125,6 +146,14 @@ export default async function GuidePiliersPage({ params }: Props) {
           {guide.excerpt && (
             <p className="text-muted mt-6 text-lg leading-relaxed">{guide.excerpt}</p>
           )}
+
+          {/* P3 QW-5 — AuthorByline E-E-A-T (KB-10). */}
+          <AuthorByline
+            authorName="Manon"
+            publishedAt={guide.publishedAt ? new Date(guide.publishedAt) : null}
+            lastReviewedAt={guide.updatedAt ? new Date(guide.updatedAt) : null}
+            locale="fr"
+          />
 
           <div className="mt-12 space-y-6">
             {guide.hasStructuredSteps
