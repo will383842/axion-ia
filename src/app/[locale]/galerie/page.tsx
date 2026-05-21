@@ -195,7 +195,7 @@ export default async function GalleryIndexPage({
   );
 }
 
-export const revalidate = 3600; // ISR 1h
+export const revalidate = 0; // dynamique — pas de cache ISR
 
 // ──────────────────────────────────────────────────────────
 // Helpers
