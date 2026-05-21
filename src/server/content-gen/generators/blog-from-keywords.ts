@@ -27,6 +27,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { getGlossaryContext } from "../brand/glossary-context";
+import { injectInternalLinks } from "../links/internal-link-catalog";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 3;
@@ -95,6 +97,10 @@ export const blogFromKeywordsGenerator: Generator = {
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
     let prevFeedback = input.improvementFeedback ?? "";
     let lastPromptHash = ""; // P0-3 AI Act art. 50
+    // P1-7 — Contexte glossaire IA (60 termes) injecté dans userPrompt.
+    const glossaryContext = getGlossaryContext(
+      [input.primaryKeyword, ...(input.secondaryKeywords ?? [])].filter((k): k is string => !!k),
+    );
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -110,7 +116,7 @@ ${secondaryList ? `Keywords secondaires : ${secondaryList}.` : ""}
 ## Sources internes Axion-IA (à citer en priorité)
 ${kbContext}
 ${feedbackSection}
-
+${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
 
@@ -153,6 +159,18 @@ ${feedbackSection}
 
       // Guard TypeScript : catch block always continues, so parsed is non-null here
       if (!parsed) continue;
+
+      // P1-2 — Gate keyword dans H1.
+      if (input.primaryKeyword) {
+        const kw = input.primaryKeyword.toLowerCase();
+        const h1Match = /<h1[^>]*>(.*?)<\/h1>/i.exec(parsed.bodyHtml ?? "");
+        const h1Text = (h1Match?.[1] ?? "").replace(/<[^>]+>/g, "").toLowerCase();
+        if (!h1Text.includes(kw)) {
+          prevFeedback = `H1 "${h1Match?.[1] ?? "(absent)"}" ne contient pas le keyword "${input.primaryKeyword}". Le keyword DOIT apparaître textuellement dans le H1.`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
+          continue;
+        }
+      }
 
       // Score rapide pour décider de boucler
       const bodyText = (parsed.bodyHtml ?? "")
@@ -235,8 +253,11 @@ ${feedbackSection}
       throw new Error("blog-from-keywords: aucun output valide après quality loop");
     }
 
-    // 3. Sanitize HTML final
+    // 3. Sanitize HTML final + injection liens internes contextuels (P1-12)
     parsed = { ...parsed, bodyHtml: sanitizeContentGenHtml(parsed.bodyHtml ?? "") };
+    if (input.primaryKeyword) {
+      parsed = { ...parsed, bodyHtml: injectInternalLinks(parsed.bodyHtml, input.primaryKeyword) };
+    }
 
     const bodyText = parsed.bodyHtml
       .replace(/<[^>]+>/g, " ")

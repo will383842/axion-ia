@@ -29,6 +29,8 @@ import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { getGlossaryContext } from "../brand/glossary-context";
+import { injectInternalLinks } from "../links/internal-link-catalog";
 
 const QUALITY_THRESHOLD = 55;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -137,6 +139,7 @@ export const qaDerivedGenerator: Generator = {
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
     let prevFeedback = input.improvementFeedback ?? "";
     let lastPromptHash = ""; // P0-3 AI Act art. 50
+    const glossaryContext = getGlossaryContext([question]);
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -148,7 +151,7 @@ export const qaDerivedGenerator: Generator = {
 ## Sources internes Axion-IA (à utiliser pour enrichir la réponse)
 ${kbContext}
 ${feedbackSection}
-
+${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags }`;
 
@@ -227,18 +230,20 @@ ${feedbackSection}
     const safeRelatedFaq = (parsed.relatedFaq ?? []).slice(0, 5);
 
     // 4. Construire bodyHtml final avec QAPage JSON-LD + Speakable
+    // P1-12 — Liens internes injectés après sanitize des composants.
     const finalSlug =
       parsed.slug ??
       escapeSlugInput(question)
         .slice(0, 80)
         .replace(/[^a-z0-9-]/g, "-");
-    const bodyHtml = buildQABodyHtml(
+    const rawBodyHtml = buildQABodyHtml(
       question,
       parsed.directAnswer ?? "",
       safeAnswerHtml,
       safeRelatedFaq,
       finalSlug,
     );
+    const bodyHtml = injectInternalLinks(rawBodyHtml, question);
 
     const bodyText = bodyHtml
       .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "") // exclure JSON-LD du bodyText

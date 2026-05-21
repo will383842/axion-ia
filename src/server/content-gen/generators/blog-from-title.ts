@@ -28,6 +28,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { getGlossaryContext } from "../brand/glossary-context";
+import { injectInternalLinks } from "../links/internal-link-catalog";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 3;
@@ -96,6 +98,7 @@ export const blogFromTitleGenerator: Generator = {
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
     let prevFeedback = input.improvementFeedback ?? "";
     let lastPromptHash = ""; // P0-3 AI Act art. 50
+    const glossaryContext = getGlossaryContext([mandatoryTitle].filter(Boolean));
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -110,7 +113,7 @@ Audience cible : ${safeAudienceSize}.
 ## Sources internes Axion-IA (à citer en priorité)
 ${kbContext}
 ${feedbackSection}
-
+${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
 
@@ -146,6 +149,19 @@ ${feedbackSection}
 
       // Force le titre exact si le LLM l'a modifié
       parsed = { ...parsed, title: mandatoryTitle };
+
+      // P1-2 — Gate keyword dans H1 (le keyword = mandatoryTitle pour blog-from-title).
+      {
+        const kw = mandatoryTitle.toLowerCase();
+        const h1Match = /<h1[^>]*>(.*?)<\/h1>/i.exec(parsed.bodyHtml ?? "");
+        const h1Text = (h1Match?.[1] ?? "").replace(/<[^>]+>/g, "").toLowerCase();
+        if (!h1Text.includes(kw.slice(0, 30))) {
+          // 30 chars suffisent pour detecter
+          prevFeedback = `H1 "${h1Match?.[1] ?? "(absent)"}" ne contient pas le titre "${mandatoryTitle}". Reproduis le titre EXACTEMENT dans le H1.`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
+          continue;
+        }
+      }
 
       const bodyText = (parsed.bodyHtml ?? "")
         .replace(/<[^>]+>/g, " ")
@@ -227,6 +243,8 @@ ${feedbackSection}
       title: mandatoryTitle,
       bodyHtml: sanitizeContentGenHtml(parsed.bodyHtml ?? ""),
     };
+    // P1-12 — Injection liens internes contextuels post-LLM.
+    parsed = { ...parsed, bodyHtml: injectInternalLinks(parsed.bodyHtml, mandatoryTitle) };
 
     const bodyText = parsed.bodyHtml
       .replace(/<[^>]+>/g, " ")

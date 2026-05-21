@@ -24,6 +24,8 @@ import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
+import { getGlossaryContext } from "../brand/glossary-context";
+import { injectInternalLinks } from "../links/internal-link-catalog";
 import { resolveLandingVilleVariant } from "./landing-ville-templates";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
@@ -117,7 +119,10 @@ ${variant.userPromptFocusSection}
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
 ${localEconomicContext}${improvementSection}
-
+${(() => {
+  const gc = getGlossaryContext([input.primaryKeyword ?? ""].filter(Boolean));
+  return gc ? `\n${gc}` : "";
+})()}
 ## CTA recommandé pour ce variant
 href : ${variant.recommendedCtaHref}
 label : ${variant.recommendedCtaLabel}
@@ -157,6 +162,13 @@ label : ${variant.recommendedCtaLabel}
     // Pass B fix P0-5 — sanitize HTML output LLM AVANT toute persistance.
     // Strippe <script>/<iframe>/onerror=/javascript:/etc. Doctrine § 4.1bis.
     parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
+    // P1-12 — Liens internes contextuels (landing-ville : lier vers audits/formations/etc.)
+    if (input.primaryKeyword ?? safePrimaryKeyword) {
+      parsed.bodyHtml = injectInternalLinks(
+        parsed.bodyHtml,
+        input.primaryKeyword ?? safePrimaryKeyword,
+      );
+    }
 
     const bodyText = parsed.bodyHtml
       .replace(/<[^>]+>/g, " ")

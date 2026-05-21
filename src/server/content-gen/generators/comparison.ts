@@ -32,6 +32,8 @@ import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { getGlossaryContext } from "../brand/glossary-context";
+import { injectInternalLinks } from "../links/internal-link-catalog";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -103,6 +105,9 @@ export const comparisonGenerator: Generator = {
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
     let prevFeedback = input.improvementFeedback ?? "";
     let lastPromptHash = ""; // P0-3 AI Act art. 50
+    const glossaryContext = getGlossaryContext(
+      [input.primaryKeyword ?? topic].filter((k): k is string => !!k),
+    );
 
     while (iteration < MAX_QUALITY_ITERATIONS) {
       const feedbackSection = prevFeedback
@@ -119,7 +124,7 @@ Sans table, l'article sera rejeté automatiquement.
 ## Sources internes Axion-IA (pour remplir les colonnes de la table)
 ${kbContext}
 ${feedbackSection}
-
+${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×5], tags }`;
 
@@ -152,6 +157,18 @@ ${feedbackSection}
       }
 
       if (!parsed) continue;
+
+      // P1-2 — Gate keyword dans H1 (comparatif).
+      if (input.primaryKeyword ?? topic) {
+        const kw = (input.primaryKeyword ?? topic).toLowerCase();
+        const h1Match = /<h1[^>]*>(.*?)<\/h1>/i.exec(parsed.bodyHtml ?? "");
+        const h1Text = (h1Match?.[1] ?? "").replace(/<[^>]+>/g, "").toLowerCase();
+        if (!h1Text.includes(kw.slice(0, 25))) {
+          prevFeedback = `H1 "${h1Match?.[1] ?? "(absent)"}" ne contient pas le keyword "${input.primaryKeyword ?? topic}". Le keyword DOIT apparaître dans le H1.`;
+          if (accumulatedCostUsd >= BUDGET_CAP_USD || iteration >= MAX_QUALITY_ITERATIONS) break;
+          continue;
+        }
+      }
 
       const bodyText = (parsed.bodyHtml ?? "")
         .replace(/<[^>]+>/g, " ")
@@ -231,6 +248,13 @@ ${feedbackSection}
     }
 
     parsed = { ...parsed, bodyHtml: sanitizeContentGenHtml(parsed.bodyHtml ?? "") };
+    // P1-12 — Liens internes contextuels.
+    if (input.primaryKeyword ?? topic) {
+      parsed = {
+        ...parsed,
+        bodyHtml: injectInternalLinks(parsed.bodyHtml, input.primaryKeyword ?? topic),
+      };
+    }
 
     const bodyText = parsed.bodyHtml
       .replace(/<[^>]+>/g, " ")

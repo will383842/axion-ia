@@ -153,6 +153,8 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // endpoints admin transverses, pas du code content-gen core.
   /^src\/app\/api\/admin\/articles\/\[id\]\/forget\/route\.ts$/,
   /^src\/app\/api\/admin\/articles\/\[id\]\/provenance\/route\.ts$/,
+  // P5 Sprint — feedback ArticleFeedback endpoint (consomme données content-gen).
+  /^src\/app\/api\/admin\/content-gen\/articles\/\[id\]\/feedback\/route\.ts$/,
 ];
 
 /**

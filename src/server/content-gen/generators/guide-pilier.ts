@@ -46,6 +46,8 @@ import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import { injectBrandVoice } from "../brand/brand-voice";
+import { getGlossaryContext } from "../brand/glossary-context";
+import { injectInternalLinks } from "../links/internal-link-catalog";
 
 const SYSTEM_PROMPT_OUTLINE =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
@@ -186,6 +188,10 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
       ? `\n\n## Retour LLM-judge — axes à renforcer dans ce guide\n${input.improvementFeedback}`
       : "";
 
+    const glossaryContext = getGlossaryContext(
+      [input.primaryKeyword].filter((k): k is string => !!k),
+    );
+
     const outlineUserPrompt = `Génère le PLAN d'un guide pilier Axion-IA.
 
 Sujet principal : ${safeKeyword}
@@ -195,7 +201,7 @@ Intent : ${safeIntent}
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
 ${localEconomicContext}${improvementSection}
-
+${glossaryContext ? `\n${glossaryContext}` : ""}
 Rappel : 8-15 sections, output JSON strict (cf. system prompt).`;
 
     const outlineResult = await routerGenerate({
@@ -280,24 +286,27 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       })
       .join("\n\n");
 
-    const bodyText = assembledBody
+    // P1-12 — Liens internes contextuels injectés après assembly des sections.
+    const enrichedBody = injectInternalLinks(assembledBody, input.primaryKeyword ?? safeKeyword);
+
+    const bodyText = enrichedBody
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 
-    // ─── Quality checks ──────────────────────────────────────────────────
+    // ─── Quality checks (sur enrichedBody avec liens injectés) ──────────────────────────────────────────────────
     const internalLinkCount =
-      (assembledBody.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
-      (assembledBody.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
-    const citationCount = (assembledBody.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
+      (enrichedBody.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+      (enrichedBody.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const citationCount = (enrichedBody.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
       title: outline.title,
       metaDescription: outline.metaDescription,
-      bodyHtml: assembledBody,
+      bodyHtml: enrichedBody,
       bodyText,
       directAnswer: outline.directAnswer,
       faqCount: outline.faq?.length ?? 0,
@@ -321,7 +330,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       metaDescription: outline.metaDescription,
       slug: outline.slug,
       directAnswer: outline.directAnswer,
-      bodyHtml: assembledBody,
+      bodyHtml: enrichedBody,
       bodyText,
       faq: (outline.faq ?? []).map((q) => ({ question: q.q, answer: q.a })),
       // faqJson conserve l'outline original pour audit trail + future re-gen
