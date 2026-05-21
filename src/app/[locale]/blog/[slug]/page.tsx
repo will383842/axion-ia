@@ -237,6 +237,7 @@ export default async function BlogArticle({ params }: Props) {
       keywords: view.tags,
       articleSection: view.category,
       wordCount,
+      ...(view.citations.length > 0 ? { isBasedOn: view.citations } : {}),
     }),
     aiGenerated: true,
     additionalType: "https://schema.org/AIGeneratedContent",

@@ -16,6 +16,7 @@ import { BLOG_POSTS, getBlogPost } from "@/content/transversal";
 import type { BlogPost } from "@/content/blog";
 import { resolveTier } from "@/content/blog";
 import { findArticleBySlug, listPublishedArticles } from "@/lib/knowledge/readers";
+import { prisma } from "@/lib/prisma";
 
 /** Vue unifiée d'un article — shape consommée par la route /blog/[slug]. */
 export interface BlogArticleView {
@@ -37,6 +38,8 @@ export interface BlogArticleView {
    * null = pas d'image hero disponible (articles FS ou articles DB sans image).
    */
   readonly featuredImage: string | null;
+  /** Sources citées (ContentCitation DB) — émises en isBasedOn JSON-LD. */
+  readonly citations: ReadonlyArray<{ name: string; url: string }>;
   /** Référence brute FS — utilisée pour les `related` qui restent FS V1. */
   readonly fsPost: BlogPost | null;
 }
@@ -58,6 +61,7 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     source: "fs",
     // P2-3 — Les articles FS (hardcodés) n'ont pas d'image hero.
     featuredImage: null,
+    citations: [],
     fsPost: post,
   };
 }
@@ -77,6 +81,12 @@ export async function loadBlogArticleForView(
 ): Promise<BlogArticleView | null> {
   const dbArticle = await findArticleBySlug(slug, locale).catch(() => null);
   if (dbArticle) {
+    const rawCitations = await prisma.contentCitation
+      .findMany({
+        where: { articleId: dbArticle.id },
+        include: { externalReference: { select: { url: true, title: true } } },
+      })
+      .catch(() => []);
     return {
       slug: dbArticle.slug,
       title: dbArticle.title,
@@ -92,6 +102,10 @@ export async function loadBlogArticleForView(
       source: "db",
       // P2-3 — Image hero DB article (Article.featuredImage String?).
       featuredImage: dbArticle.featuredImage ?? null,
+      citations: rawCitations.map((c) => ({
+        name: c.externalReference.title,
+        url: c.externalReference.url,
+      })),
       fsPost: null,
     };
   }
@@ -130,6 +144,7 @@ export async function loadBlogIndexForView(
     source: "db",
     // P2-3 — Index n'expose pas featuredImage (non sélectionné dans listPublishedArticles).
     featuredImage: null,
+    citations: [],
     fsPost: null,
   }));
 

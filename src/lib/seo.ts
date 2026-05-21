@@ -394,6 +394,11 @@ export function buildOrganizationJsonLd({
       ? "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises."
       : "Operational B2B AI consultancy — on-site AI sessions, audits and implementation for companies.",
     sameAs: ["https://www.linkedin.com/company/axion-ia", "https://www.facebook.com/axionia"],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
+      url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
+    },
     foundingDate: "2024",
     foundingLocation: {
       "@type": "Place",
@@ -786,6 +791,7 @@ export function buildLocalBusinessJsonLd({
       "@type": "Organization",
       name: "Axion-IA",
       legalName: "Axion-IA",
+      alternateName: ["AxionIA", "Axion IA", "Axion-IA OÜ", "axion-ia.com"],
       url: SITE_URL,
     },
     areaServed: {
@@ -1279,6 +1285,7 @@ export function buildDatasetJsonLd({
       "@type": "Organization",
       name: "Axion-IA",
       legalName: "Axion-IA",
+      alternateName: ["AxionIA", "Axion IA", "Axion-IA OÜ", "axion-ia.com"],
       url: SITE_URL,
     },
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),
