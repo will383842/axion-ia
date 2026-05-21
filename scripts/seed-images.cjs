@@ -228,7 +228,7 @@ async function main() {
     const imageType = detectType(entry.slug);
     const dims = DIMENSIONS[imageType];
     const isLogo = entry.module === "logo";
-    const isAiGenerated = entry.isAiGenerated !== undefined ? entry.isAiGenerated : !isLogo;
+    const isAiGenerated = entry.isAiGenerated === true; // false par défaut — images importées par Will, pas IA-générées
     const sourceType = entry.sourceType || (isLogo ? "original" : "imported");
 
     try {
