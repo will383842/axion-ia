@@ -1,11 +1,9 @@
 "use client";
+// use-client: wizard multi-étapes avec état local React (useState/useTransition)
 
 import { useState, useTransition } from "react";
 import type { CityEquityRow } from "@/server/actions/content-gen/city-equity";
-import {
-  KEYWORD_CATALOG,
-  type VerticalSlug,
-} from "@/server/content-gen/keywords/keyword-catalog";
+import { KEYWORD_CATALOG, type VerticalSlug } from "@/server/content-gen/keywords/keyword-catalog";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -23,7 +21,7 @@ interface Props {
   audProfiles: AudienceProfile[];
   cityEquity: CityEquityRow[];
   onSubmit: (formData: FormData) => Promise<void>;
-  onDryRun: (formData: FormData) => Promise<void>;
+  onDryRun?: (formData: FormData) => Promise<void>;
   adminPrefix: string;
 }
 
@@ -220,11 +218,7 @@ function equityBadge(count: number, target = 10) {
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 
-export function CoverageWizardClient({
-  cityEquity,
-  onSubmit,
-  onDryRun,
-}: Props) {
+export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
   const [step, setStep] = useState(1);
   const [isPending, startTransition] = useTransition();
 
@@ -269,8 +263,8 @@ export function CoverageWizardClient({
                 : "border-[color:var(--color-admin-border)] hover:border-[color:var(--color-admin-accent)]/50"
             }`}
           >
-            <div className="text-2xl mb-2">{v.icon}</div>
-            <div className="font-semibold text-[length:var(--text-admin-sm)]">{v.label}</div>
+            <div className="mb-2 text-2xl">{v.icon}</div>
+            <div className="text-[length:var(--text-admin-sm)] font-semibold">{v.label}</div>
             <div className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
               {v.description}
             </div>
@@ -335,16 +329,18 @@ export function CoverageWizardClient({
   const step2 = (
     <div className="space-y-[var(--space-admin-4)]">
       <h2 className="admin-h2">Étape 2 — Géographie</h2>
-      <div className="flex items-center gap-4 flex-wrap">
+      <div className="flex flex-wrap items-center gap-4">
         <p className="admin-meta-small flex-1">
           {selectedCities.size} ville{selectedCities.size !== 1 ? "s" : ""} sélectionnée
           {selectedCities.size !== 1 ? "s" : ""}. La barre{" "}
-          <span className="text-green-700 font-medium">verte</span> = bien couverte (≥ 10 articles),{" "}
-          <span className="text-yellow-700 font-medium">jaune</span> = partielle,{" "}
-          <span className="text-red-700 font-medium">rouge</span> = non démarrée.
+          <span className="font-medium text-green-700">verte</span> = bien couverte (≥ 10 articles),{" "}
+          <span className="font-medium text-yellow-700">jaune</span> = partielle,{" "}
+          <span className="font-medium text-red-700">rouge</span> = non démarrée.
         </p>
         <div className="admin-field" style={{ minWidth: 200 }}>
-          <label className="admin-label text-[length:var(--text-admin-xs)]">Volume total cible</label>
+          <label className="admin-label text-[length:var(--text-admin-xs)]">
+            Volume total cible
+          </label>
           <input
             type="number"
             min={1}
@@ -356,7 +352,7 @@ export function CoverageWizardClient({
         </div>
       </div>
 
-      <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+      <div className="max-h-[500px] space-y-2 overflow-y-auto pr-1">
         {DEPARTMENTS.map((dept) => {
           const allSelected = dept.cities.every((c) => selectedCities.has(c.slug));
           const someSelected = dept.cities.some((c) => selectedCities.has(c.slug));
@@ -365,9 +361,9 @@ export function CoverageWizardClient({
           return (
             <div
               key={dept.code}
-              className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] overflow-hidden"
+              className="overflow-hidden rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]"
             >
-              <div className="flex items-center gap-3 px-[var(--space-admin-4)] py-2.5 bg-[color:var(--color-admin-surface-soft)]">
+              <div className="flex items-center gap-3 bg-[color:var(--color-admin-surface-soft)] px-[var(--space-admin-4)] py-2.5">
                 <input
                   type="checkbox"
                   checked={allSelected}
@@ -381,10 +377,10 @@ export function CoverageWizardClient({
                 <button
                   type="button"
                   onClick={() => toggleExpandDept(dept.code)}
-                  className="flex-1 text-left text-[length:var(--text-admin-sm)] font-medium flex items-center justify-between"
+                  className="flex flex-1 items-center justify-between text-left text-[length:var(--text-admin-sm)] font-medium"
                 >
                   <span>{dept.label}</span>
-                  <span className="text-[color:var(--color-admin-fg-muted)] ml-2">
+                  <span className="ml-2 text-[color:var(--color-admin-fg-muted)]">
                     {expanded ? "▲" : "▼"} {dept.cities.length} ville
                     {dept.cities.length > 1 ? "s" : ""}
                   </span>
@@ -392,13 +388,13 @@ export function CoverageWizardClient({
               </div>
 
               {expanded && (
-                <div className="px-[var(--space-admin-4)] py-2 space-y-1.5">
+                <div className="space-y-1.5 px-[var(--space-admin-4)] py-2">
                   {dept.cities.map((city) => {
                     const count = equityMap[city.slug] ?? 0;
                     return (
                       <label
                         key={city.slug}
-                        className="flex items-center justify-between gap-3 py-1 cursor-pointer"
+                        className="flex cursor-pointer items-center justify-between gap-3 py-1"
                       >
                         <span className="flex items-center gap-2">
                           <input
@@ -451,13 +447,13 @@ export function CoverageWizardClient({
     <div className="space-y-[var(--space-admin-4)]">
       <h2 className="admin-h2">Étape 3 — Cibles</h2>
       <p className="admin-meta-small">
-        Les prompts et angles éditoriaux s'adapteront à chaque cible sélectionnée.
+        Les prompts et angles éditoriaux s&apos;adapteront à chaque cible sélectionnée.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {AUDIENCE_OPTIONS.map((a) => (
           <label
             key={a.key}
-            className={`flex items-start gap-3 rounded-[var(--radius-admin-md)] border-2 p-[var(--space-admin-4)] cursor-pointer transition-all ${
+            className={`flex cursor-pointer items-start gap-3 rounded-[var(--radius-admin-md)] border-2 p-[var(--space-admin-4)] transition-all ${
               selectedAudiences.has(a.key)
                 ? "border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)]/5"
                 : "border-[color:var(--color-admin-border)]"
@@ -470,7 +466,7 @@ export function CoverageWizardClient({
               className="mt-0.5 h-4 w-4 accent-[color:var(--color-admin-accent)]"
             />
             <span>
-              <span className="font-semibold text-[length:var(--text-admin-sm)]">{a.label}</span>
+              <span className="text-[length:var(--text-admin-sm)] font-semibold">{a.label}</span>
               <span className="ml-2 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 {a.desc}
               </span>
@@ -523,9 +519,9 @@ export function CoverageWizardClient({
         inclure, ajoutez les vôtres.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {catalogKws.map((kw) => (
-          <label key={kw} className="flex items-center gap-2 cursor-pointer py-1">
+          <label key={kw} className="flex cursor-pointer items-center gap-2 py-1">
             <input
               type="checkbox"
               checked={selectedKeywords.has(kw)}
@@ -628,9 +624,7 @@ export function CoverageWizardClient({
     const share = Math.floor(100 / count);
     const remainder = 100 - share * count;
     const keys = [...selectedAudiences];
-    return Object.fromEntries(
-      keys.map((k, i) => [k, i === 0 ? share + remainder : share]),
-    );
+    return Object.fromEntries(keys.map((k, i) => [k, i === 0 ? share + remainder : share]));
   };
 
   const typeDist = buildTypeDistribution();
@@ -650,10 +644,7 @@ export function CoverageWizardClient({
       fd.set("serviceSector", vertical?.dbValue ?? "");
       fd.set("totalTargetCount", String(targetCount));
       fd.set("anchorVilleSlugs", [...selectedCities].join(","));
-      fd.set(
-        "anchorDepartementCodes",
-        [...selectedDepts].join(","),
-      );
+      fd.set("anchorDepartementCodes", [...selectedDepts].join(","));
       fd.set("anchorRegionSlugs", "");
       fd.set("typeDistribution", JSON.stringify(typeDist));
       fd.set("audienceMix", JSON.stringify(audienceMix));
@@ -668,7 +659,7 @@ export function CoverageWizardClient({
     <div className="space-y-[var(--space-admin-4)]">
       <h2 className="admin-h2">Étape 5 — Revue & Lancement</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
           <p className="admin-label mb-2">Verticale</p>
           <p className="font-semibold">
@@ -679,7 +670,7 @@ export function CoverageWizardClient({
 
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
           <p className="admin-label mb-2">Volume cible</p>
-          <p className="font-semibold text-lg">{targetCount} articles</p>
+          <p className="text-lg font-semibold">{targetCount} articles</p>
           <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             Coût estimé : ~${estimatedCost}
           </p>
@@ -687,7 +678,7 @@ export function CoverageWizardClient({
 
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
           <p className="admin-label mb-2">Villes ({selectedCities.size})</p>
-          <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
+          <div className="flex max-h-24 flex-wrap gap-1.5 overflow-y-auto">
             {[...selectedCities].map((slug) => {
               const count = equityMap[slug] ?? 0;
               return (
@@ -716,9 +707,9 @@ export function CoverageWizardClient({
           </div>
         </div>
 
-        <div className="sm:col-span-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)] sm:col-span-2">
           <p className="admin-label mb-2">Mots-clés ({selectedKeywords.size})</p>
-          <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
+          <div className="flex max-h-32 flex-wrap gap-1.5 overflow-y-auto">
             {[...selectedKeywords].map((kw) => (
               <span
                 key={kw}
@@ -730,7 +721,7 @@ export function CoverageWizardClient({
           </div>
         </div>
 
-        <div className="sm:col-span-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)] sm:col-span-2">
           <p className="admin-label mb-2">Distribution types (auto-calculée)</p>
           <div className="flex flex-wrap gap-2">
             {Object.entries(typeDist).map(([type, pct]) => (
@@ -754,9 +745,12 @@ export function CoverageWizardClient({
               const count = equityMap[slug] ?? 0;
               const pct = Math.min(100, (count / 10) * 100);
               return (
-                <div key={slug} className="flex items-center gap-2 text-[length:var(--text-admin-xs)]">
+                <div
+                  key={slug}
+                  className="flex items-center gap-2 text-[length:var(--text-admin-xs)]"
+                >
                   <span className="w-32 truncate">{slug}</span>
-                  <div className="flex-1 bg-[color:var(--color-admin-border)] rounded-full h-1.5">
+                  <div className="h-1.5 flex-1 rounded-full bg-[color:var(--color-admin-border)]">
                     <div
                       className={`h-1.5 rounded-full transition-all ${
                         pct >= 100 ? "bg-green-500" : pct >= 50 ? "bg-yellow-400" : "bg-red-400"
@@ -813,14 +807,14 @@ export function CoverageWizardClient({
       {/* Progress */}
       <nav aria-label="Étapes du wizard" className="flex items-center gap-0">
         {steps.map((s, i) => (
-          <div key={s.n} className="flex items-center flex-1">
+          <div key={s.n} className="flex flex-1 items-center">
             <button
               type="button"
               onClick={() => step > s.n && setStep(s.n)}
               disabled={step <= s.n}
               className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[length:var(--text-admin-xs)] font-bold transition-all ${
                 step > s.n
-                  ? "bg-green-500 text-white cursor-pointer"
+                  ? "cursor-pointer bg-green-500 text-white"
                   : step === s.n
                     ? "bg-[color:var(--color-admin-accent)] text-white"
                     : "bg-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-muted)]"
@@ -840,7 +834,7 @@ export function CoverageWizardClient({
             </span>
             {i < steps.length - 1 && (
               <div
-                className={`mx-2 flex-1 h-0.5 transition-all ${
+                className={`mx-2 h-0.5 flex-1 transition-all ${
                   step > s.n ? "bg-green-400" : "bg-[color:var(--color-admin-border)]"
                 }`}
               />
