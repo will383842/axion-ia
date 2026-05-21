@@ -4,6 +4,12 @@
  * Download avec watermark on-the-fly via Sharp composite.
  * Rate-limit Redis 10 downloads/min/IP (anti-abus).
  * Track `image_download_logs` (RGPD : IP SHA-256 hashée avec IP_HASH_SALT).
+ *
+ * Deux familles de stockage :
+ *   - Slug-based  : filePath = "images/axion-ia-*.webp" → lu depuis public/ (Next.js)
+ *   - UUID-based  : filePath = "/image-bank/{uuid}/…"   → lu depuis Docker volume
+ *
+ * Query param `?format=jpeg` → conversion WebP → JPEG via Sharp.
  */
 
 import { createHash } from "node:crypto";
@@ -39,6 +45,7 @@ export async function GET(
   const url = new URL(request.url);
   const variantParam = url.searchParams.get("variant") ?? "lg";
   const withWatermark = url.searchParams.get("watermark") !== "false";
+  const format = url.searchParams.get("format"); // "jpeg"/"jpg" → JPEG conversion
 
   if (!ALLOWED_VARIANTS.includes(variantParam as VariantKey)) {
     return NextResponse.json({ error: "Invalid variant" }, { status: 400 });
@@ -82,26 +89,52 @@ export async function GET(
     return NextResponse.json({ error: "Image not found" }, { status: 404 });
   }
 
-  const storageBasePath = process.env.IMAGE_BANK_STORAGE_PATH ?? "/data/image-bank";
-  const variantFilename = variant === "original" ? "original" : `image-${variant}.webp`;
-  const variantPath = path.join(storageBasePath, image.id, variantFilename);
+  // ── Résolution du fichier selon le type de stockage ─────────────────────────
+  const isSlugBased = image.filePath && !image.filePath.startsWith("/image-bank");
 
   let buffer: Buffer;
-  try {
-    buffer = await fs.readFile(variantPath);
-  } catch {
-    return NextResponse.json({ error: "Variant not found" }, { status: 404 });
+  if (isSlugBased) {
+    // Images seedées dans public/ — lecture directe depuis le filesystem Next.js
+    const relativePath = image.filePath.replace(/^\//, "");
+    const fullPath = path.join(process.cwd(), "public", relativePath);
+    try {
+      buffer = await fs.readFile(fullPath);
+    } catch {
+      return NextResponse.json({ error: "Image file not found" }, { status: 404 });
+    }
+  } else {
+    // Images admin uploadées dans Docker volume
+    const storageBasePath = process.env.IMAGE_BANK_STORAGE_PATH ?? "/data/image-bank";
+    const variantFilename = variant === "original" ? "original" : `image-${variant}.webp`;
+    const variantPath = path.join(storageBasePath, image.id, variantFilename);
+    try {
+      buffer = await fs.readFile(variantPath);
+    } catch {
+      return NextResponse.json({ error: "Variant not found" }, { status: 404 });
+    }
   }
 
-  let outputBuffer = buffer;
-  if (image.watermarkEnabled && withWatermark) {
+  // ── Watermark (WebP uniquement, avant conversion éventuelle) ──────────────────
+  let outputBuffer: Buffer = buffer;
+  if (image.watermarkEnabled && withWatermark && format !== "jpeg" && format !== "jpg") {
     outputBuffer = await imageWatermarkService.apply(buffer, {
       position: "bottom-right",
       opacity: 0.65,
     });
   }
 
-  // Track download (non-blocking)
+  // ── Conversion JPEG on-the-fly si demandée ────────────────────────────────────
+  let contentType = "image/webp";
+  let fileExtension = "webp";
+
+  if (format === "jpeg" || format === "jpg") {
+    const sharp = (await import("sharp")).default;
+    outputBuffer = await sharp(buffer).jpeg({ quality: 92 }).toBuffer();
+    contentType = "image/jpeg";
+    fileExtension = "jpg";
+  }
+
+  // ── Tracking download (non-blocking) ─────────────────────────────────────────
   void prisma.imageDownloadLog
     .create({
       data: {
@@ -122,12 +155,12 @@ export async function GET(
     .catch(() => undefined);
 
   const t = image.translations[0];
-  const filename = `${t?.slug ?? image.id}-${variant}.webp`;
+  const filename = `${t?.slug ?? image.id}-${variant}.${fileExtension}`;
 
   return new NextResponse(new Uint8Array(outputBuffer), {
     status: 200,
     headers: {
-      "Content-Type": variant === "original" ? `image/${image.fileFormat}` : "image/webp",
+      "Content-Type": contentType,
       "Content-Length": String(outputBuffer.length),
       "Content-Disposition": `attachment; filename="${filename}"`,
       "Cache-Control": "no-store, max-age=0",

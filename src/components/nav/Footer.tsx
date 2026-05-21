@@ -35,6 +35,7 @@ export async function Footer() {
     { href: "/blog", label: t("nav.blog") },
     { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
+    { href: "/galerie", label: isFr ? "Banque d'images" : "Image bank" },
     { href: "/faq", label: "FAQ" },
   ];
 
