@@ -141,7 +141,11 @@ export default async function GalleryIndexPage({
   const graph = buildGalleryHubGraph({
     locale,
     pageUrl,
-    hubModule: isValidModule(filters.module ?? "") ? (filters.module as Module) : null,
+    hubModule: (["interventions", "audits", "implementations"] as const).includes(
+      filters.module as "interventions" | "audits" | "implementations",
+    )
+      ? (filters.module as "interventions" | "audits" | "implementations")
+      : null,
     totalImages: total,
     images: images.map((i) => ({
       id: i.id,

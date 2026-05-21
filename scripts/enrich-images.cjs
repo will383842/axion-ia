@@ -26,7 +26,7 @@ const LIMIT = (() => {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const MODULE_LABELS = {
-  audit: "Audit IA",
+  audits: "Audit IA",
   interventions: "Formation IA",
   implementations: "Automatisation / Implémentation IA",
   "un-a-un": "Accompagnement 1-to-1",

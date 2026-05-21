@@ -31,7 +31,7 @@ import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/gener
 
 export type TaxonomyDetectionResult = {
   module: Module | null;
-  subModule: SubModule | null;
+  subModule: string | null;
   targetEntity: string | null;
   targetCity: string | null;
   targetRegion: string | null;
@@ -84,6 +84,12 @@ const MODULE_KEYWORDS: Record<Module, RegExp[]> = {
     /intégration/i,
     /custom/i,
   ],
+  // Modules image-bank complémentaires — pas de pattern matching auto (valeur figée par seed)
+  "un-a-un": [],
+  graphique: [],
+  logo: [],
+  proposition: [],
+  ville: [],
 };
 
 const PERSONA_KEYWORDS: Record<string, RegExp[]> = {
@@ -150,10 +156,11 @@ function buildSearchText(image: ImageAsset, translations: ImageAssetTranslation[
 }
 
 function detectModule(text: string): { module: Module | null; confidence: number } {
-  const scores: Record<Module, number> = { interventions: 0, audits: 0, implementations: 0 };
-  for (const mod of MODULES) {
+  const coreModules = ["interventions", "audits", "implementations"] as const;
+  const scores: Record<string, number> = { interventions: 0, audits: 0, implementations: 0 };
+  for (const mod of coreModules) {
     for (const pattern of MODULE_KEYWORDS[mod]) {
-      if (pattern.test(text)) scores[mod] += 1;
+      if (pattern.test(text)) scores[mod] = (scores[mod] ?? 0) + 1;
     }
   }
   const top = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
@@ -167,9 +174,9 @@ function detectModule(text: string): { module: Module | null; confidence: number
 function detectSubModule(
   text: string,
   module: Module,
-): { subModule: SubModule | null; confidence: number } {
+): { subModule: string | null; confidence: number } {
   const candidates = SUB_MODULES_BY_MODULE[module];
-  let bestMatch: { sub: SubModule | null; score: number } = { sub: null, score: 0 };
+  let bestMatch: { sub: string | null; score: number } = { sub: null, score: 0 };
   for (const sub of candidates) {
     // Match exact du slug ou variantes hyphen/space
     const variants = [sub, sub.replace(/-/g, " "), sub.replace(/-/g, "")];
@@ -284,7 +291,7 @@ export async function detectTaxonomy(args: {
   const text = buildSearchText(args.image, args.translations);
 
   const moduleResult = detectModule(text);
-  let subModuleResult: { subModule: SubModule | null; confidence: number } = {
+  let subModuleResult: { subModule: string | null; confidence: number } = {
     subModule: null,
     confidence: 0,
   };
@@ -357,7 +364,7 @@ export async function detectTaxonomy(args: {
  */
 export function deriveSubjectOfUrl(args: {
   module: Module | null;
-  subModule: SubModule | null;
+  subModule: string | null;
   targetCity: string | null;
   siteUrl: string;
 }): string | null {
@@ -379,7 +386,7 @@ export function deriveSubjectOfUrl(args: {
  */
 export function deriveSubjectOfType(args: {
   module: Module | null;
-  subModule: SubModule | null;
+  subModule: string | null;
 }): "Service" | "Course" | "Article" | "Event" {
   if (!args.module) return "Article";
   if (args.module === "audits") return "Service";

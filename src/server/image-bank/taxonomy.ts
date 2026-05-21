@@ -14,19 +14,39 @@
 // Modules canoniques (3)
 // ──────────────────────────────────────────────────────────
 
-export const MODULES = ["interventions", "audits", "implementations"] as const;
+export const MODULES = [
+  "interventions",
+  "audits",
+  "implementations",
+  // Modules image-bank complémentaires (non-routes métier, visuels)
+  "un-a-un",
+  "graphique",
+  "logo",
+  "proposition",
+  "ville",
+] as const;
 export type Module = (typeof MODULES)[number];
 
 export const MODULE_LABELS_FR: Record<Module, string> = {
   interventions: "Interventions & Formations",
   audits: "Audits IA",
   implementations: "Implémentations IA",
+  "un-a-un": "Accompagnement 1-to-1",
+  graphique: "Graphique & Dataviz",
+  logo: "Logo Axion-IA",
+  proposition: "Proposition de valeur",
+  ville: "Présence locale",
 };
 
 export const MODULE_LABELS_EN: Record<Module, string> = {
   interventions: "Interventions & Training",
   audits: "AI Audits",
   implementations: "AI Implementations",
+  "un-a-un": "1-to-1 coaching",
+  graphique: "Graphics & Dataviz",
+  logo: "Axion-IA logo",
+  proposition: "Value proposition",
+  ville: "Local presence",
 };
 
 // ──────────────────────────────────────────────────────────
@@ -83,10 +103,15 @@ export type SubModuleAudits = (typeof SUB_MODULES_AUDITS)[number];
 export type SubModuleImplementations = (typeof SUB_MODULES_IMPLEMENTATIONS)[number];
 export type SubModule = SubModuleInterventions | SubModuleAudits | SubModuleImplementations;
 
-export const SUB_MODULES_BY_MODULE: Record<Module, readonly SubModule[]> = {
+export const SUB_MODULES_BY_MODULE: Record<Module, readonly string[]> = {
   interventions: SUB_MODULES_INTERVENTIONS,
   audits: SUB_MODULES_AUDITS,
   implementations: SUB_MODULES_IMPLEMENTATIONS,
+  "un-a-un": [],
+  graphique: [],
+  logo: [],
+  proposition: [],
+  ville: [],
 };
 
 // ──────────────────────────────────────────────────────────
@@ -220,9 +245,8 @@ export function getSurfaceCategoryLabel(cat: SurfaceCategory, locale: "fr" | "en
  * Suggère la SurfaceCategory à partir du module (pour rétro-classement éditorial).
  */
 export function moduleToSurfaceCategory(module: Module): SurfaceCategory {
-  return module === "audits"
-    ? "audits"
-    : module === "implementations"
-      ? "implementations"
-      : "interventions-formations";
+  if (module === "audits") return "audits";
+  if (module === "implementations") return "implementations";
+  if (module === "ville") return "villes-regions";
+  return "interventions-formations";
 }
