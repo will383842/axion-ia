@@ -20,18 +20,18 @@ type Props = {
   cdnUrl?: string;
 };
 
-/** Résout l'URL d'affichage en fonction du type de stockage. */
+/** Résout l'URL d'affichage en fonction du type de stockage.
+ *  Priorité : filePath (image principale) — Next.js Image redimensionne
+ *  automatiquement via sizes. Les thumbnails basse résolution sont exclus
+ *  pour éviter les rendus flous sur la grille publique.
+ */
 function resolveImgSrc(img: ImageWithTranslation, baseUrl: string): string {
-  // Slug-based (seeded via public/images/) — priorité thumbnail
-  if (img.thumbnailPath && !img.thumbnailPath.startsWith("/image-bank")) {
-    const p = img.thumbnailPath.startsWith("/") ? img.thumbnailPath : `/${img.thumbnailPath}`;
-    return p;
-  }
+  // Slug-based : image principale depuis public/ (Next.js optimise la taille)
   if (img.filePath && !img.filePath.startsWith("/image-bank")) {
     const p = img.filePath.startsWith("/") ? img.filePath : `/${img.filePath}`;
     return p;
   }
-  // UUID-based (admin upload via Docker volume)
+  // UUID-based (admin upload via Docker volume) — medium variant
   return `${baseUrl}/image-bank/${img.id}/image-md.webp`;
 }
 
@@ -76,6 +76,7 @@ export function GalleryGrid({ images, locale, cdnUrl }: Props) {
                     src={imgSrc}
                     alt={t.alt ?? t.title ?? ""}
                     fill
+                    quality={85}
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     placeholder={lqipDataUrl ? "blur" : "empty"}
                     {...(lqipDataUrl ? { blurDataURL: lqipDataUrl } : {})}
