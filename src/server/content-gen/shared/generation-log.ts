@@ -64,6 +64,8 @@ export type GenerationLogStep =
   | "quality_loop_pass"
   | "quality_loop_cap_reached"
   | "quality_loop_budget_cap_reached"
+  | "keyword_select"
+  | "keyword_validation"
   | "error";
 
 export interface LogGenerationArgs {

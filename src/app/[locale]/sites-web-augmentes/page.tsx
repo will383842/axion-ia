@@ -126,7 +126,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
     <>
       <JsonLd data={serviceJsonLd} />
 
-      <Section className="bg-gradient-to-b from-white to-[#faf8f3] pt-16 pb-12">
+      <Section className="to-bg bg-gradient-to-b from-white pt-16 pb-12">
         <Container>
           <Breadcrumbs items={breadcrumbItems} />
           <div className="mt-8 max-w-3xl">
@@ -145,7 +145,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         </Container>
       </Section>
 
-      <Section className="bg-[#faf8f3] py-16">
+      <Section className="bg-bg py-16">
         <Container>
           <h2 className="mb-10 text-2xl font-semibold text-gray-900">
             {isFr ? "Ce que nous apportons a votre site" : "What we bring to your website"}
@@ -153,8 +153,8 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {features.map((f) => (
               <div key={f.title} className="flex gap-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#c24a1b]/10">
-                  <f.icon className="h-5 w-5 text-[#c24a1b]" />
+                <div className="bg-terracotta/10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg">
+                  <f.icon className="text-terracotta h-5 w-5" />
                 </div>
                 <div>
                   <h3 className="mb-1 font-semibold text-gray-900">{f.title}</h3>
