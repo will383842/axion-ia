@@ -12,8 +12,9 @@ ALTER TABLE "articles"
 CREATE INDEX IF NOT EXISTS "articles_outline_simhash_idx"
     ON "articles"("outline_simhash");
 
--- HNSW index pour recherche cosine top-K rapide.
--- m=16 ef_construction=64 = config par defaut pgvector pour 10k+ rows.
--- Note : si pgvector < 0.7.0, fallback IVFFlat (cosine_ops aussi disponible).
-CREATE INDEX IF NOT EXISTS "articles_embedding_hnsw_idx"
-    ON "articles" USING hnsw ("embedding" vector_cosine_ops);
+-- IVFFlat index pour recherche cosine top-K rapide.
+-- HNSW pgvector limite a 2000 dims max ; text-embedding-3-large = 3072 → IVFFlat obligatoire.
+-- lists=1 : valeur minimale valide sur table vide (CI fresh DB) ; en prod avec >10k rows,
+-- creer un index concurrent avec lists=100 via migration dedie apres backfill.
+CREATE INDEX IF NOT EXISTS "articles_embedding_ivfflat_idx"
+    ON "articles" USING ivfflat ("embedding" vector_cosine_ops) WITH (lists = 1);
