@@ -334,7 +334,7 @@ describe("Thresholds exposed", () => {
     expect(JUDGE_THRESHOLDS.PUBLISH_MIN).toBe(8.5);
   });
 
-  it("IMPROVE_MIN = 7.0", () => {
-    expect(JUDGE_THRESHOLDS.IMPROVE_MIN).toBe(7.0);
+  it("IMPROVE_MIN = 6.0 (D1 décision Will 2026-05-21 — aligné P5 D-P5-2)", () => {
+    expect(JUDGE_THRESHOLDS.IMPROVE_MIN).toBe(6.0);
   });
 });

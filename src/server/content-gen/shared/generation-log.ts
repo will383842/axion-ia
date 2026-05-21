@@ -64,6 +64,7 @@ export type GenerationLogStep =
   | "quality_loop_pass"
   | "quality_loop_cap_reached"
   | "quality_loop_budget_cap_reached"
+  | "quality_loop_hard_reject"
   | "keyword_select"
   | "keyword_validation"
   | "hero_image_assigned"

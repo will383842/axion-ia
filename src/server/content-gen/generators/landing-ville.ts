@@ -166,6 +166,7 @@ label : ${variant.recommendedCtaLabel}
     const internalLinkCount =
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
       (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const citationCount = (parsed.bodyHtml.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
@@ -176,6 +177,7 @@ label : ${variant.recommendedCtaLabel}
       directAnswer: parsed.directAnswer,
       faqCount: parsed.faq.length,
       internalLinkCount,
+      citationCount,
       ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
       searchIntent: input.targetSearchIntent,
       contentKind: "landing",

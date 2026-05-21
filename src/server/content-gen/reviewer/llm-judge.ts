@@ -15,10 +15,10 @@
  *   - Issues[] avec severity + section + fix suggestion
  *   - Cost tracking via provider anthropic existing
  *
- * Seuils editorial Will (default DB-managed via ContentGenConfig.editorial_review) :
+ * Seuils editorial Will (D1 décision 2026-05-21 — aligné P5 D-P5-2 60/100) :
  *   - publish : globalScore >= 8.5 ET 0 P0 issue
- *   - improve : globalScore 7-8.5 OU >=1 P1 issue (max 2 iter via worker)
- *   - reject : globalScore < 7 OU >=1 P0 issue (escalate humain)
+ *   - improve : globalScore 6.0-8.4 OU >=1 P1 issue (max 2-3 iter via worker)
+ *   - reject : globalScore < 6.0 OU >=1 P0 issue (escalate humain)
  */
 
 import { anthropicProvider } from "@/server/content-gen/providers/anthropic";
@@ -30,8 +30,8 @@ export const JUDGE_MODEL = "claude-sonnet-4-6" as const;
 export const JUDGE_THRESHOLDS = {
   /** globalScore minimum pour publish direct. */
   PUBLISH_MIN: 8.5,
-  /** globalScore minimum pour improve loop. */
-  IMPROVE_MIN: 7.0,
+  /** globalScore minimum pour improve loop. D1=6.0, cohérent avec D-P5-2 (60/100). */
+  IMPROVE_MIN: 6.0,
 } as const;
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -98,8 +98,8 @@ Ton job : noter l'article sur 7 dimensions (0-10 chacune) et donner un verdict f
 
 <thresholds>
 - globalScore >= 8.5 ET 0 P0 issue → verdict = "publish"
-- globalScore 7.0-8.4 OU >=1 P1 issue → verdict = "improve"
-- globalScore < 7.0 OU >=1 P0 issue → verdict = "reject"
+- globalScore 6.0-8.4 OU >=1 P1 issue → verdict = "improve"
+- globalScore < 6.0 OU >=1 P0 issue → verdict = "reject"
 </thresholds>
 
 <issues_severity>

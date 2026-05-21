@@ -159,7 +159,14 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const dbJob = await prisma.contentGenJob.findUnique({ where: { id: contentGenJobId } });
   if (!dbJob) throw new Error(`ContentGenJob ${contentGenJobId} not found`);
 
-  if (dbJob.qualityImprovementAttempts >= settings.maxAttemptsAuto) {
+  // D2 (décision Will 2026-05-21) : 3 itérations pour guide_pilier + landing_ville,
+  // 2 pour les autres types (cohérence coût/qualité).
+  const HIGH_ITERATION_TYPES = new Set<string>(["guide_pilier", "landing_ville"]);
+  const effectiveMaxAttempts = HIGH_ITERATION_TYPES.has(dbJob.contentType ?? "")
+    ? Math.max(settings.maxAttemptsAuto, 3)
+    : settings.maxAttemptsAuto;
+
+  if (dbJob.qualityImprovementAttempts >= effectiveMaxAttempts) {
     // Cap atteint → bascule needs_review pour décision manuelle Will
     await prisma.contentGenJob.update({
       where: { id: contentGenJobId },
@@ -169,7 +176,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       jobId: contentGenJobId,
       level: "warn",
       step: "quality_loop_cap_reached",
-      message: `Cap auto ${settings.maxAttemptsAuto} atteint (score ${previousScore}). Manual review.`,
+      message: `Cap auto ${effectiveMaxAttempts} atteint (score ${previousScore}, type ${dbJob.contentType}). Manual review.`,
     });
     return;
   }
@@ -225,8 +232,13 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
 
   const editorialScoreInt = judge ? Math.round(judge.globalScore * 10) : null; // /100
   const verdict = judge?.verdict ?? "improve";
-  const reachedCap = dbJob.qualityImprovementAttempts + 1 >= settings.maxAttemptsAuto;
+  const reachedCap = dbJob.qualityImprovementAttempts + 1 >= effectiveMaxAttempts;
   const shouldRegenerate = verdict === "improve" && !reachedCap && judge !== null;
+
+  // P0-7 fix 2026-05-21 — Distinguer REJECT (P0 violation) de cap-reached.
+  // Un verdict "reject" du LLM-judge = issues P0 critiques détectées (SIREN hardcodé,
+  // violation AI Act, contenu dangereux). Nécessite escalade immédiate vs simple cap.
+  const isHardReject = verdict === "reject";
 
   // V2 re-prompt loop : si verdict=improve ET cap non atteint → persiste le
   // feedback judge dans outputJsonRaw + re-enqueue content-gen pour re-générer
@@ -251,19 +263,32 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
     },
   });
 
+  // P0-7 — Log escalade REJECT distinct du cap-reached.
+  if (isHardReject && judge) {
+    const p0Issues = judge.issues.filter((i) => i.severity === "P0");
+    await logGeneration({
+      jobId: contentGenJobId,
+      level: "error",
+      step: "quality_loop_hard_reject",
+      message: `LLM-judge HARD REJECT — ${p0Issues.length} P0 issue(s) critiques. Escalade manuelle requise. Score: ${judge.globalScore.toFixed(1)}/10`,
+    });
+  }
+
   await logStep(
     contentGenJobId,
     "quality_loop_pass",
-    `Judge verdict=${verdict} globalScore=${judge?.globalScore ?? "n/a"} attempt=${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto} → ${nextStatus}${shouldRegenerate ? " (re-enqueue content-gen)" : ""}`,
+    `Judge verdict=${verdict}${isHardReject ? " [HARD REJECT — P0 issues]" : ""} globalScore=${judge?.globalScore ?? "n/a"} attempt=${dbJob.qualityImprovementAttempts + 1}/${settings.maxAttemptsAuto} → ${nextStatus}${shouldRegenerate ? " (re-enqueue content-gen)" : ""}`,
     judge
       ? {
           verdict: judge.verdict,
+          is_hard_reject: isHardReject,
           global_score: judge.globalScore,
           dimensions: judge.dimensions,
           issues_count: judge.issues.length,
           p0_issues: judge.issues.filter((i) => i.severity === "P0").length,
           previous_score: previousScore,
           should_regenerate: shouldRegenerate,
+          reached_cap: reachedCap,
         }
       : { previous_score: previousScore, judge_skipped: true },
   );

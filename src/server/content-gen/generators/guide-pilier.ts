@@ -282,6 +282,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
     const internalLinkCount =
       (assembledBody.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
       (assembledBody.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const citationCount = (assembledBody.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
@@ -292,6 +293,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       directAnswer: outline.directAnswer,
       faqCount: outline.faq?.length ?? 0,
       internalLinkCount,
+      citationCount,
       ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
       searchIntent: input.targetSearchIntent,
       contentKind: "guide",

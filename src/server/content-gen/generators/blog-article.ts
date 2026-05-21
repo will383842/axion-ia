@@ -30,6 +30,7 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Anti-doorway HCU 2024 : minimum 600 mots de contenu substantiel.
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
+- Inclure OBLIGATOIREMENT ≥ 2 liens externes vers des sources d'autorité FR (INSEE, DARES, BPI France, France Num, rapport McKinsey, Stanford AI Index, etc.) avec rel="noopener noreferrer". Les AI Overviews Google et Perplexity citent prioritairement les articles sourcés.
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`;
 
 function synthesizeTopic(input: GeneratorBaseInput): string {
@@ -155,6 +156,7 @@ ${feedbackSection}
       const internalLinkCount =
         (_bh.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
         (_bh.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+      const citationCount = (_bh.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
       const readability = computeReadabilityFr(bodyText);
       const seo = computeSeoScore({
         title: parsed.title ?? "",
@@ -164,6 +166,7 @@ ${feedbackSection}
         directAnswer: parsed.directAnswer,
         faqCount: (parsed.faq ?? []).length,
         internalLinkCount,
+        citationCount,
         primaryKeyword: input.primaryKeyword ?? topic,
         searchIntent: input.targetSearchIntent,
         contentKind: "article",
@@ -214,6 +217,7 @@ ${feedbackSection}
     const finalInternalLinkCount =
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
       (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const finalCitationCount = (parsed.bodyHtml.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
     const readability = computeReadabilityFr(bodyText);
     const doctrine = await checkDoctrine(bodyText);
     const seo = computeSeoScore({
@@ -224,6 +228,7 @@ ${feedbackSection}
       directAnswer: parsed.directAnswer,
       faqCount: (parsed.faq ?? []).length,
       internalLinkCount: finalInternalLinkCount,
+      citationCount: finalCitationCount,
       primaryKeyword: input.primaryKeyword ?? topic,
       searchIntent: input.targetSearchIntent,
       contentKind: "article",
