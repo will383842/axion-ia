@@ -37,6 +37,13 @@ interface CampaignData {
   estimatedDurationMinutes: number | null;
   startedAt: Date | null;
   completedAt: Date | null;
+  // Sprint Campaign Controls (§ 25.2 v1.8)
+  cityProcessingMode?: string | null;
+  currentCityIndex?: number | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  recurringSchedule?: string | null;
+  completedReason?: string | null;
 }
 
 interface Props {
@@ -213,6 +220,41 @@ export function CoverageDetailV2({ campaign }: Props): React.ReactElement {
           <li>Terminée : {campaign.completedAt?.toISOString() ?? "—"}</li>
         </ul>
       </AdminCard>
+
+      {/* Sprint Campaign Controls badges */}
+      {(campaign.startDate || campaign.endDate || campaign.recurringSchedule || campaign.cityProcessingMode === "sequential") ? (
+        <AdminCard className="mt-[var(--space-admin-5)]">
+          <h2 className="admin-h2">Planification</h2>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {campaign.startDate && campaign.status === "scheduled" && (
+              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
+                Programmée le {new Date(campaign.startDate).toLocaleString("fr-FR")}
+              </span>
+            )}
+            {campaign.endDate && (
+              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs text-orange-800">
+                Auto-stop le {new Date(campaign.endDate).toLocaleString("fr-FR")}
+              </span>
+            )}
+            {campaign.recurringSchedule && (
+              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-800">
+                Récurrente : {campaign.recurringSchedule}
+              </span>
+            )}
+            {campaign.cityProcessingMode === "sequential" && (
+              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-800">
+                Séquentiel — ville {(campaign.currentCityIndex ?? 0) + 1} /{" "}
+                {campaign.anchorVilleSlugs.length}
+              </span>
+            )}
+            {campaign.completedReason && (
+              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-800">
+                Raison arrêt : {campaign.completedReason}
+              </span>
+            )}
+          </div>
+        </AdminCard>
+      ) : null}
     </AdminPageShell>
   );
 }

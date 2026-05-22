@@ -240,6 +240,21 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
   const [selectedKeywords, setSelectedKeywords] = useState<Set<string>>(new Set());
   const [customKeyword, setCustomKeyword] = useState("");
 
+  // Step 5 — Planification
+  const [cityProcessingMode, setCityProcessingMode] = useState<"parallel" | "sequential">(
+    "parallel",
+  );
+  const [startDateInput, setStartDateInput] = useState("");
+  const [endDateInput, setEndDateInput] = useState("");
+  const [startNow, setStartNow] = useState(true);
+  const [neverEnd, setNeverEnd] = useState(true);
+  const [schedulePreset, setSchedulePreset] = useState<
+    "none" | "daily" | "weekly" | "monthly" | "custom"
+  >("none");
+  const [scheduleDay, setScheduleDay] = useState("1"); // 1=Lundi pour weekly
+  const [scheduleHour, setScheduleHour] = useState("9");
+  const [customCron, setCustomCron] = useState("");
+
   // Equity map
   const equityMap = Object.fromEntries(cityEquity.map((r) => [r.villeSlug, r.publishedArticles]));
 
@@ -596,7 +611,176 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
     </div>
   );
 
-  // ─── Step 5 : Revue & Lancement ────────────────────────────────────────────
+  // ─── Helper Planification ──────────────────────────────────────────────────
+
+  function buildCronExpression(): string | null {
+    if (schedulePreset === "none") return null;
+    if (schedulePreset === "daily") return `0 ${scheduleHour} * * *`;
+    if (schedulePreset === "weekly") return `0 ${scheduleHour} * * ${scheduleDay}`;
+    if (schedulePreset === "monthly") return `0 ${scheduleHour} 1 * *`;
+    if (schedulePreset === "custom") return customCron.trim() || null;
+    return null;
+  }
+
+  // ─── Step 5 : Planification ────────────────────────────────────────────────
+
+  const step5 = (
+    <div className="space-y-[var(--space-admin-4)]">
+      <h2 className="admin-h2">Étape 5 — Planification</h2>
+
+      {/* Mode traitement villes */}
+      <div className="admin-field">
+        <label className="admin-label">Mode traitement villes</label>
+        <div className="space-y-2">
+          <label className="flex cursor-pointer items-center gap-3">
+            <input
+              type="radio"
+              checked={cityProcessingMode === "parallel"}
+              onChange={() => setCityProcessingMode("parallel")}
+              className="h-4 w-4"
+            />
+            <span className="text-[length:var(--text-admin-sm)]">
+              <strong>Parallèle</strong> — toutes les villes simultanément (défaut)
+            </span>
+          </label>
+          <label className="flex cursor-pointer items-center gap-3">
+            <input
+              type="radio"
+              checked={cityProcessingMode === "sequential"}
+              onChange={() => setCityProcessingMode("sequential")}
+              className="h-4 w-4"
+            />
+            <span className="text-[length:var(--text-admin-sm)]">
+              <strong>Séquentiel</strong> — ville par ville dans l&apos;ordre sélectionné
+            </span>
+          </label>
+        </div>
+      </div>
+
+      {/* Date de démarrage */}
+      <div className="admin-field">
+        <label className="admin-label">Date de démarrage</label>
+        <label className="mb-2 flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={startNow}
+            onChange={(e) => setStartNow(e.target.checked)}
+            className="h-4 w-4"
+          />
+          <span className="text-[length:var(--text-admin-sm)]">Démarrer immédiatement</span>
+        </label>
+        {!startNow && (
+          <input
+            type="datetime-local"
+            value={startDateInput}
+            onChange={(e) => setStartDateInput(e.target.value)}
+            className="admin-input"
+          />
+        )}
+      </div>
+
+      {/* Date de fin */}
+      <div className="admin-field">
+        <label className="admin-label">Date de fin (auto-stop)</label>
+        <label className="mb-2 flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={neverEnd}
+            onChange={(e) => setNeverEnd(e.target.checked)}
+            className="h-4 w-4"
+          />
+          <span className="text-[length:var(--text-admin-sm)]">Durée illimitée</span>
+        </label>
+        {!neverEnd && (
+          <input
+            type="datetime-local"
+            value={endDateInput}
+            onChange={(e) => setEndDateInput(e.target.value)}
+            className="admin-input"
+          />
+        )}
+      </div>
+
+      {/* Récurrence */}
+      <div className="admin-field">
+        <label className="admin-label">Récurrence</label>
+        <select
+          value={schedulePreset}
+          onChange={(e) => setSchedulePreset(e.target.value as typeof schedulePreset)}
+          className="admin-input"
+        >
+          <option value="none">One-shot (par défaut)</option>
+          <option value="daily">Quotidien</option>
+          <option value="weekly">Hebdomadaire</option>
+          <option value="monthly">Mensuel (1er du mois)</option>
+          <option value="custom">Cron personnalisé</option>
+        </select>
+        {schedulePreset === "daily" && (
+          <div className="mt-2 flex items-center gap-2">
+            <span className="text-[length:var(--text-admin-sm)]">à</span>
+            <input
+              type="number"
+              min={0}
+              max={23}
+              value={scheduleHour}
+              onChange={(e) => setScheduleHour(e.target.value)}
+              className="admin-input w-20"
+            />
+            h
+          </div>
+        )}
+        {schedulePreset === "weekly" && (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <select
+              value={scheduleDay}
+              onChange={(e) => setScheduleDay(e.target.value)}
+              className="admin-input"
+            >
+              <option value="1">Lundi</option>
+              <option value="2">Mardi</option>
+              <option value="3">Mercredi</option>
+              <option value="4">Jeudi</option>
+              <option value="5">Vendredi</option>
+              <option value="6">Samedi</option>
+              <option value="0">Dimanche</option>
+            </select>
+            <span className="text-[length:var(--text-admin-sm)]">à</span>
+            <input
+              type="number"
+              min={0}
+              max={23}
+              value={scheduleHour}
+              onChange={(e) => setScheduleHour(e.target.value)}
+              className="admin-input w-20"
+            />
+            h
+          </div>
+        )}
+        {schedulePreset === "custom" && (
+          <div className="mt-2">
+            <input
+              type="text"
+              value={customCron}
+              onChange={(e) => setCustomCron(e.target.value)}
+              placeholder="ex: 0 9 * * 1 (lundis 9h)"
+              className="admin-input"
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="admin-filters-actions">
+        <button type="button" onClick={() => setStep(4)} className="admin-button-ghost">
+          ← Retour
+        </button>
+        <button type="button" onClick={() => setStep(6)} className="admin-button">
+          Suivant →
+        </button>
+      </div>
+    </div>
+  );
+
+  // ─── Step 6 : Revue & Lancement ────────────────────────────────────────────
 
   // Calcul automatique de la distribution type → landing_ville pour les villes
   // Répartition : 40% landing_ville + 60% partagé entre blog/guide/faq
@@ -649,15 +833,20 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
       fd.set("typeDistribution", JSON.stringify(typeDist));
       fd.set("audienceMix", JSON.stringify(audienceMix));
       fd.set("primaryKeywords", [...selectedKeywords].join("\n"));
+      // Sprint Campaign Controls — step 5 Planification fields
+      fd.set("cityProcessingMode", cityProcessingMode);
+      fd.set("startDate", startNow ? "" : startDateInput);
+      fd.set("endDate", neverEnd ? "" : endDateInput);
+      fd.set("recurringSchedule", buildCronExpression() ?? "");
       if (launchNow) fd.set("launchNow", "on");
 
       await onSubmit(fd);
     });
   };
 
-  const step5 = (
+  const step6 = (
     <div className="space-y-[var(--space-admin-4)]">
-      <h2 className="admin-h2">Étape 5 — Revue & Lancement</h2>
+      <h2 className="admin-h2">Étape 6 — Revue & Lancement</h2>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
@@ -769,7 +958,7 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
       )}
 
       <div className="admin-filters-actions">
-        <button type="button" onClick={() => setStep(4)} className="admin-button-ghost">
+        <button type="button" onClick={() => setStep(5)} className="admin-button-ghost">
           ← Retour
         </button>
         <button
@@ -799,7 +988,8 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
     { n: 2, label: "Géo" },
     { n: 3, label: "Cibles" },
     { n: 4, label: "Keywords" },
-    { n: 5, label: "Revue" },
+    { n: 5, label: "Planning" },
+    { n: 6, label: "Revue" },
   ];
 
   return (
@@ -850,6 +1040,7 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
         {step === 3 && step3}
         {step === 4 && step4}
         {step === 5 && step5}
+        {step === 6 && step6}
       </div>
     </div>
   );
