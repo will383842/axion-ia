@@ -68,6 +68,7 @@ export type GenerationLogStep =
   | "quality_loop_hard_reject"
   | "keyword_select"
   | "keyword_validation"
+  | "keyword_lock"
   | "hero_image_assigned"
   | "hero_image_pending"
   | "rss_similarity_block"
