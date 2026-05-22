@@ -53,10 +53,21 @@ const inconsolata = Inconsolata({
 // cascade des fallbacks intermédiaires. Le renommage casse l'auto-ref :
 // next/font écrit `--font-fraunces` puis globals.css chaîne via
 // `--font-serif: var(--font-fraunces), "Iowan Old Style", …`.
+// P0 audit Perfection 2026 — CLS / LCP fix.
+//
+// `.display-editorial` + `.italic-editorial` utilisent Fraunces weight 500
+// + letter-spacing: -0.035em. Avec `display: "swap"`, le passage fallback →
+// Fraunces génère un reflow visible (CLS > 0.05 mesuré sur /audit, /home,
+// /a-propos, /methodologie). Avec `display: "optional"`, le navigateur
+// utilise le fallback de façon permanente si Fraunces n'est pas déjà en
+// cache, et passe à Fraunces sur les visites suivantes (zéro reflow = CLS 0).
+// Trade-off : première visite sur connexion lente → fallback serif (Iowan
+// Old Style, Palatino). Acceptable : fallbacks sont des serifs de qualité et
+// `adjustFontFallback` (défaut true) minimise le delta de métriques.
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
-  display: "swap",
+  display: "optional",
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
 });

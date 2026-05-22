@@ -20,6 +20,7 @@
 //   - Mount AdminSessionExpiryWarning (mitigation §3.6 — heartbeat 5min).
 // V1 visuel intact ; les ajouts sont passifs jusqu'à la PR 5/6.
 
+import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
@@ -38,6 +39,14 @@ import "@/app/admin.css";
 import "@/app/print.css";
 
 export const dynamic = "force-dynamic";
+
+// P0 audit Perfection 2026 — toutes les pages admin doivent être noindex.
+// Le robots.txt ne suffit pas (il bloque /admin/ générique mais pas
+// /[adminPrefix]/ dynamique). Cette propagation via layout couvre les
+// 109 pages enfants en une seule déclaration.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 interface AdminLayoutProps {
   children: React.ReactNode;

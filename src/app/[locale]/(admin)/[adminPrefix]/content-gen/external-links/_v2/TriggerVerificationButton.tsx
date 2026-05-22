@@ -1,3 +1,4 @@
+// use-client: useState + useTransition pour le feedback bouton de vérification manuelle.
 "use client";
 
 import { useState, useTransition } from "react";

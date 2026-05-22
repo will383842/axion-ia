@@ -65,7 +65,30 @@ export type WorkerName =
   // Phase 8 Sprint Keywords Perfection 2026-05-22
   | "keyword-opportunity-detector"
   // Sprint External Links Database 2026-05-22 — cron mensuel HEAD verification
-  | "external-links-monitor";
+  | "external-links-monitor"
+  // Sprint Final 2026-05-22 (P0-2 audit final) — reset compteurs cost mensuel
+  | "cost-cap-reset"
+  // Sprint Final 2026-05-22 (P1-2 ratchet Sentry 17/33 → 33/33 audit final)
+  | "booking-crons"
+  | "google-indexing"
+  | "keyword-sync"
+  | "content-monitoring"
+  | "news-lifecycle"
+  | "psi-monitor"
+  | "qa-extract"
+  | "rss-fetch"
+  | "similarity-monitor"
+  | "tier-lifecycle"
+  | "web-vitals-monitor"
+  | "email"
+  | "image-bank-auto-convert"
+  | "image-bank-crons"
+  | "image-bank-enrich"
+  | "image-bank-import"
+  | "image-bank-translate"
+  | "option-expiration"
+  | "option-reminder"
+  | "retention-purge";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
