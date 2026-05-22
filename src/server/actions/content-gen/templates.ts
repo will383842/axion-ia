@@ -27,7 +27,21 @@ const ContentTypeSchema = z.enum([
   "qa_derived",
   "faq_standalone",
 ]);
-const ExpansionModeSchema = z.enum(["per_ville", "per_keyword", "per_intent", "single", "matrix"]);
+// P0-3 — Aligner avec les valeurs UI TemplateForm (manual/all_villes/all_regions/etc.)
+// Option 1 choisie : étendre z.enum pour accepter valeurs UI + valeurs DB (compat ascendante).
+const ExpansionModeSchema = z.enum([
+  "per_ville",
+  "per_keyword",
+  "per_intent",
+  "single",
+  "matrix",
+  // Valeurs exposées par l'UI TemplateForm (wizards admin)
+  "manual",
+  "all_villes",
+  "all_regions",
+  "all_departements",
+  "all_keywords",
+]);
 const ListTemplatesFiltersSchema = z
   .object({
     contentType: ContentTypeSchema.optional(),

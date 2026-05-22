@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "./_auth";
 
 export interface CityEquityRow {
   readonly villeSlug: string;
@@ -25,6 +26,7 @@ const EQUITY_TARGET = 10; // articles publiés minimum par ville pour "bien couv
  * Utilisé par le wizard campagne pour afficher l'équité géographique.
  */
 export async function getCityEquityData(): Promise<CityEquityData> {
+  await requireAdmin();
   // Grouper ContentGenJob par villeSlug + serviceSector pour l'equity
   const jobGroups = await prisma.contentGenJob
     .groupBy({

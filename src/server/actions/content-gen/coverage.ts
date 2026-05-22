@@ -10,6 +10,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { CronExpressionParser } from "cron-parser";
@@ -70,6 +71,8 @@ const CreateCampaignInputSchema = z
     startDate: z.date().nullable().optional(),
     endDate: z.date().nullable().optional(),
     recurringSchedule: z.string().min(1).max(120).nullable().optional(),
+    // P0-1 — primaryKeywords manquait dans createCampaign (audit A-06)
+    primaryKeywords: z.array(z.string().min(1).max(200)).max(500).optional(),
   })
   .strict();
 const CancelCampaignModeSchema = z.enum(["running_only", "all"]);
@@ -227,9 +230,13 @@ export interface CreateCampaignInput {
   readonly startDate?: Date | null;
   readonly endDate?: Date | null;
   readonly recurringSchedule?: string | null;
+  // P0-1 — primaryKeywords (audit A-06) : liste de mots-clés à injecter dans
+  // les jobs de la campagne via BullMQ payload. Stockés dans logActivity + BullMQ.
+  readonly primaryKeywords?: ReadonlyArray<string>;
 }
 
 export async function createCampaign(input: CreateCampaignInput): Promise<string> {
+  try {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   CreateCampaignInputSchema.parse(input);
@@ -314,12 +321,19 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
       startDate: effectiveStartDate?.toISOString() ?? null,
       endDate: input.endDate?.toISOString() ?? null,
       recurringSchedule: input.recurringSchedule ?? null,
+      // P0-1 — primaryKeywords tracés dans audit log (pas de colonne Prisma dédiée)
+      primaryKeywords: input.primaryKeywords ?? null,
     },
   });
   return r.id;
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "createCampaign" } });
+    throw e;
+  }
 }
 
 export async function launchCampaign(id: string): Promise<void> {
+  try {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   CoverageCampaignIdSchema.parse(id);
@@ -360,6 +374,10 @@ export async function launchCampaign(id: string): Promise<void> {
     targetId: id,
     changes: { recurringSchedule: campaign?.recurringSchedule ?? null },
   });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "launchCampaign" } });
+    throw e;
+  }
 }
 
 export async function pauseCampaign(id: string): Promise<void> {

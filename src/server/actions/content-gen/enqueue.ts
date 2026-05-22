@@ -13,6 +13,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { Queue } from "bullmq";
 import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
@@ -89,6 +90,7 @@ export interface EnqueueDirectGenResult {
 export async function enqueueDirectGen(
   input: EnqueueDirectGenInput,
 ): Promise<EnqueueDirectGenResult> {
+  try {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   EnqueueDirectGenInputSchema.parse(input);
@@ -169,4 +171,8 @@ export async function enqueueDirectGen(
     idempotencyKey,
     enqueuedInBullmq,
   };
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "enqueueDirectGen" } });
+    throw e;
+  }
 }

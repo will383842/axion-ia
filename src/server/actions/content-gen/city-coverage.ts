@@ -24,6 +24,7 @@
 
 import { getVille, VILLES } from "@/content/villes";
 import type { EconomicDataDimension } from "@/content/villes/economic-data/types";
+import { requireAdmin } from "./_auth";
 
 /** Map critère ID → champ VilleEconomicData (pour matcher notApplicableFields). */
 const CRITERION_TO_FIELD: Record<string, EconomicDataDimension | null> = {
@@ -499,6 +500,7 @@ export interface CityCoverageSummary {
 
 export async function getCityCoverage(): Promise<CityCoverageSummary> {
   "use server";
+  await requireAdmin();
   const rows = (
     await Promise.all(PILOT_CITY_SLUGS.map((slug) => computeCityCoverage(slug)))
   ).filter((r): r is CityCoverageRow => r !== null);

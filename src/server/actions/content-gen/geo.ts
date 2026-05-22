@@ -8,6 +8,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import type { ContentGenJobStatus } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
@@ -92,6 +93,7 @@ export interface CostsStats {
 }
 
 export async function getCostsStats(): Promise<CostsStats> {
+  try {
   await requireAdmin(); // Pass B fix P0-4
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -131,6 +133,10 @@ export async function getCostsStats(): Promise<CostsStats> {
       monthlyCapUsd: Number(p.monthlyCapUsd),
     })),
   };
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "getCostsStats" } });
+    throw e;
+  }
 }
 
 export interface OrchestratorStats {
@@ -242,6 +248,7 @@ export async function getJobsVilleSectorDetail(
   sortBy: "count" | "score" | "ville" = "count",
   sortDir: "asc" | "desc" = "desc",
 ): Promise<ReadonlyArray<VilleSectorRow>> {
+  try {
   await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   GetJobsVilleSectorDetailSchema.parse({
@@ -291,6 +298,12 @@ export async function getJobsVilleSectorDetail(
     count: row._count.anchorVilleSlug,
     avgQuality: row._avg?.qualityScore ?? null,
   }));
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "getJobsVilleSectorDetail" },
+    });
+    throw e;
+  }
 }
 
 export interface CityCoverageProgress {

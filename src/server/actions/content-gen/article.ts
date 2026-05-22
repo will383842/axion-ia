@@ -31,6 +31,14 @@ import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 const ArticleIdSchema = z.string().min(1).max(64);
+// P0-11 — thumbs feedback input schema
+const SubmitFeedbackInputSchema = z
+  .object({
+    articleId: z.string().cuid(),
+    type: z.enum(["thumbs_up", "thumbs_down"]),
+    comment: z.string().max(500).optional(),
+  })
+  .strict();
 const UpdateArticleInputSchema = z
   .object({
     articleId: ArticleIdSchema,
@@ -475,4 +483,68 @@ export async function rollbackArticle(articleId: string): Promise<void> {
     targetId: articleId,
     changes: { transition: "published→draft+tier_3" },
   });
+}
+
+// ============================================================
+// Thumbs feedback (P0-11 — D-P5-8, V5-08)
+// ============================================================
+
+export interface SubmitFeedbackInput {
+  readonly articleId: string;
+  readonly type: "thumbs_up" | "thumbs_down";
+  readonly comment?: string;
+}
+
+export interface SubmitFeedbackResult {
+  readonly created: boolean;
+  readonly message: string;
+}
+
+/**
+ * Enregistre un feedback thumbs up/down sur un article publié.
+ *
+ * Protection doublon : 1 feedback par (articleId × userId). Si un feedback
+ * existe déjà pour ce binôme, on throw `feedback_already_submitted` pour que
+ * l'UI puisse afficher un état "déjà voté".
+ *
+ * Le `userId` est l'email admin (session.userId = cuid DB ; session.email pour
+ * lisibilité dans l'audit log). On stocke session.userId en colonne `user_id`
+ * pour rester cohérent avec le schéma existant (VARCHAR 255).
+ */
+export async function submitArticleFeedback(
+  input: SubmitFeedbackInput,
+): Promise<SubmitFeedbackResult> {
+  const session = await requireAdmin();
+  // P0-11 — Zod runtime validation.
+  SubmitFeedbackInputSchema.parse(input);
+
+  // Protection doublon : vérifie si un feedback existe déjà pour cet articleId + userId.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const existing = await (prisma as any).articleFeedback.findFirst({
+    where: { articleId: input.articleId, userId: session.userId },
+    select: { id: true },
+  });
+  if (existing) {
+    throw new Error("feedback_already_submitted");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (prisma as any).articleFeedback.create({
+    data: {
+      articleId: input.articleId,
+      userId: session.userId,
+      type: input.type,
+      comment: input.comment ?? null,
+    },
+  });
+
+  await logActivity({
+    session,
+    action: "content-gen.article.feedback",
+    targetType: "Article",
+    targetId: input.articleId,
+    changes: { type: input.type, hasComment: Boolean(input.comment) },
+  });
+
+  return { created: true, message: "feedback_recorded" };
 }

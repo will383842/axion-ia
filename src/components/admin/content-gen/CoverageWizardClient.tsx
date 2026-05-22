@@ -4,6 +4,7 @@
 import { useState, useTransition } from "react";
 import type { CityEquityRow } from "@/server/actions/content-gen/city-equity";
 import { KEYWORD_CATALOG, type VerticalSlug } from "@/server/content-gen/keywords/keyword-catalog";
+import { AdminFormError } from "@/components/admin/ui/AdminFormError";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -234,6 +235,7 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
   const hasTemplates = templates.length > 0;
   const [step, setStep] = useState(hasTemplates ? 0 : 1);
   const [isPending, startTransition] = useTransition();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Step 1 — Vertical
   const [selectedVertical, setSelectedVertical] = useState<VerticalSlug | null>(null);
@@ -460,6 +462,8 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
                 <button
                   type="button"
                   onClick={() => toggleExpandDept(dept.code)}
+                  aria-expanded={expanded}
+                  aria-label={`${expanded ? "Réduire" : "Afficher"} les villes de ${dept.label}`}
                   className="flex flex-1 items-center justify-between text-left text-[length:var(--text-admin-sm)] font-medium"
                 >
                   <span>{dept.label}</span>
@@ -884,6 +888,7 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
   const estimatedCost = Math.round(targetCount * 0.04 * 100) / 100; // ~$0.04/article moyen
 
   const handleSubmit = (launchNow: boolean) => {
+    setSubmitError(null);
     startTransition(async () => {
       const fd = new FormData();
       const vertical = VERTICALS.find((v) => v.slug === selectedVertical);
@@ -908,7 +913,24 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
       fd.set("recurringSchedule", buildCronExpression() ?? "");
       if (launchNow) fd.set("launchNow", "on");
 
-      await onSubmit(fd);
+      try {
+        await onSubmit(fd);
+      } catch (err: unknown) {
+        // NEXT_REDIRECT est une erreur de navigation — ne pas l'intercepter
+        if (
+          err != null &&
+          typeof err === "object" &&
+          "digest" in err &&
+          typeof (err as { digest: unknown }).digest === "string" &&
+          (err as { digest: string }).digest.startsWith("NEXT_REDIRECT")
+        ) {
+          throw err;
+        }
+        if (err instanceof Error && err.message === "NEXT_REDIRECT") throw err;
+        const msg =
+          err instanceof Error ? err.message : "Une erreur inattendue est survenue lors du lancement.";
+        setSubmitError(msg);
+      }
     });
   };
 
@@ -1025,6 +1047,12 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
         </div>
       )}
 
+      {submitError && (
+        <div className="mt-[var(--space-admin-4)]">
+          <AdminFormError message={submitError} onDismiss={() => setSubmitError(null)} />
+        </div>
+      )}
+
       <div className="admin-filters-actions">
         <button type="button" onClick={() => setStep(5)} className="admin-button-ghost">
           ← Retour
@@ -1070,6 +1098,7 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
               type="button"
               onClick={() => step > s.n && setStep(s.n)}
               disabled={step <= s.n}
+              aria-label={`Étape ${s.n} : ${s.label}${step > s.n ? " (complétée)" : step === s.n ? " (en cours)" : ""}`}
               className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[length:var(--text-admin-xs)] font-bold transition-all ${
                 step > s.n
                   ? "cursor-pointer bg-green-500 text-white"

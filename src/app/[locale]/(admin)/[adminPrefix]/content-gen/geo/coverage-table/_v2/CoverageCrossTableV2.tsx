@@ -95,9 +95,20 @@ export async function CoverageCrossTableV2({
         description={`Lignes ${totalLabel} — filtrables par ville et état`}
         actions={
           <div className="flex gap-[var(--space-admin-4)]">
-            <Link href={`${base}/geo/coverage-table/export.csv`} className="admin-button-ghost">
-              ↓ Exporter CSV
-            </Link>
+            {(() => {
+              const csvParams = new URLSearchParams();
+              if (filterStatus) csvParams.set("status", filterStatus);
+              if (filterVille) csvParams.set("ville", filterVille);
+              const csvQs = csvParams.toString();
+              return (
+                <Link
+                  href={`${base}/geo/coverage-table/export.csv${csvQs ? `?${csvQs}` : ""}`}
+                  className="admin-button-ghost"
+                >
+                  ↓ Exporter CSV
+                </Link>
+              );
+            })()}
             <Link href={`${base}/geo`} className="admin-button-ghost">
               ← Cockpit géo
             </Link>

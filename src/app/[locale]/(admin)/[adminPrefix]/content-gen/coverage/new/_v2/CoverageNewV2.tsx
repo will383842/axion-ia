@@ -112,13 +112,25 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
         .map((s) => s.trim())
         .filter(Boolean);
 
-    const typeDistribution = JSON.parse(
-      String(formData.get("typeDistribution") ?? "{}"),
-    ) as Record<string, number>;
-    const audienceMix = JSON.parse(String(formData.get("audienceMix") ?? "{}")) as Record<
-      string,
-      number
-    >;
+    // P0-6 : JSON.parse protégé — erreur explicite si JSON invalide
+    let typeDistribution: Record<string, number>;
+    try {
+      typeDistribution = JSON.parse(
+        String(formData.get("typeDistribution") ?? "{}"),
+      ) as Record<string, number>;
+    } catch {
+      throw new Error("JSON invalide dans le champ \"Distribution types contenu\".");
+    }
+
+    let audienceMix: Record<string, number>;
+    try {
+      audienceMix = JSON.parse(String(formData.get("audienceMix") ?? "{}")) as Record<
+        string,
+        number
+      >;
+    } catch {
+      throw new Error("JSON invalide dans le champ \"Mix audiences\".");
+    }
 
     const estimatedCostUsd = formData.get("estimatedCostUsd")
       ? Number(formData.get("estimatedCostUsd"))
@@ -152,9 +164,15 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
 
   async function dryRun(formData: FormData) {
     "use server";
-    const typeDistribution = JSON.parse(
-      String(formData.get("typeDistribution") ?? "{}"),
-    ) as Record<string, number>;
+    // P0-6 : JSON.parse protégé
+    let typeDistribution: Record<string, number>;
+    try {
+      typeDistribution = JSON.parse(
+        String(formData.get("typeDistribution") ?? "{}"),
+      ) as Record<string, number>;
+    } catch {
+      throw new Error("JSON invalide dans le champ \"Distribution types contenu\".");
+    }
     const totalTargetCount = Number(formData.get("totalTargetCount") ?? 0);
     const estimate = await estimateCampaign({ totalTargetCount, typeDistribution });
     const encoded = Buffer.from(JSON.stringify(estimate)).toString("base64url");

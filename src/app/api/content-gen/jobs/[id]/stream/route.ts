@@ -34,9 +34,25 @@ export async function GET(
 
   const job = await prisma.contentGenJob.findUnique({
     where: { id },
-    select: { id: true },
+    select: { id: true, status: true, qualityScore: true, durationMs: true },
   });
   if (!job) return new Response("job_not_found", { status: 404 });
+
+  // P0-12 Sprint correctif admin — support Accept: application/json pour
+  // fallback polling depuis JobsLiveStream. Si le client demande JSON, on
+  // retourne un snapshot one-shot du job sans ouvrir un stream SSE.
+  const acceptHeader = req.headers.get("accept") ?? "";
+  if (acceptHeader.includes("application/json") && !acceptHeader.includes("text/event-stream")) {
+    const snapshot = await prisma.contentGenJob.findUnique({
+      where: { id },
+      select: { status: true, qualityScore: true, durationMs: true },
+    });
+    if (!snapshot) return new Response("job_not_found", { status: 404 });
+    return new Response(JSON.stringify(snapshot), {
+      status: 200,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    });
+  }
 
   const startedAt = Date.now();
   let lastSeenId: string | null = null;
