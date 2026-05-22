@@ -185,6 +185,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/clients\/perplexity-search\.ts$/,
   /^src\/app\/\[locale\]\/connaissances\/\[slug\]\/page\.tsx$/,
   /^src\/content\/keywords\/clusters\.ts$/,
+  // audit-final-actions.yml : workflow CI qui orchestre les seeds content-gen
+  // en prod (actions Will). Contient "content-gen" dans les commandes shell,
+  // pas du code source content-gen.
+  /^\.github\/workflows\/audit-final-actions\.yml$/,
 ];
 
 /**
