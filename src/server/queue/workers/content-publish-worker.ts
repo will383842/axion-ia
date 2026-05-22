@@ -569,6 +569,7 @@ export function startPublishWorker(): Worker<PublishJobPayload> {
   workerInstance = new Worker<PublishJobPayload>(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 3,
+    lockDuration: 120_000, // évite stall → double-ping IndexNow si opération réseau lente
     limiter: { max: 20, duration: 60_000 }, // 20/min — Prisma serial safe
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
