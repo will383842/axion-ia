@@ -103,7 +103,8 @@ jobs:
           echo "──── P0-5 — Seed CampaignTemplate (idempotent upsert) ────"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$CONTAINER' sh -c \
-            'cd /app && (corepack pnpm content-gen:seed-templates 2>&1 || \
+            'cd /app && (npx --yes tsx@latest prisma/seeds/content-gen/seed-campaign-templates-standalone.ts 2>&1 || \
+              corepack pnpm content-gen:seed-templates 2>&1 || \
               node --experimental-strip-types prisma/seeds/content-gen/seed-campaign-templates-standalone.ts 2>&1 || \
               echo SEED_TEMPLATES_FAILED)'" 2>&1 | tee /tmp/seed-templates.log
           echo "──── P0-5 fin ────"
