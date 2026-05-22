@@ -14,6 +14,7 @@ import { RefererTracker } from "@/components/analytics/RefererTracker";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { Clarity } from "@/components/analytics/Clarity";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
+import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
 import "../globals.css";
@@ -248,20 +249,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               stream sur la console admin. Gain LCP soft-nav -800 à -1200 ms. */}
           <SpeculationRules locale={locale} />
         </NextIntlClientProvider>
-        {/* JSON-LD Organization + WebSite — admin est noindex (cf. robots.ts),
-            Google n'en tient pas compte ; les injecter est sans effet négatif. */}
-        {organizationJsonLd ? (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-          />
-        ) : null}
-        {websiteJsonLd ? (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-          />
-        ) : null}
+        {/* V-04 P5 (Sprint Correctif suite 2026-05-22) — JSON-LD Organization +
+            WebSite consolidés en un seul <script type="application/ld+json">
+            via JsonLdGraph @graph (au lieu de 2 scripts inline séparés).
+            Gain doc parse -300/-500 ms sur 100 % des routes (signal LCP/FCP).
+            Admin noindex (cf. robots.ts) → Google ignore ; sans effet négatif. */}
+        <JsonLdGraph schemas={[organizationJsonLd, websiteJsonLd]} />
         {/* V-04 P3 (2026-05-22) — Speculation Rules désormais posées via
             <SpeculationRules /> client component (gating /admin/* + DOM
             injection). Voir src/components/perf/SpeculationRules.tsx. */}
