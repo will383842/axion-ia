@@ -35,6 +35,9 @@ import { sendTelegram } from "@/lib/telegram";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 // B.4 P1.5 — Traçabilite provenance LLM (AI Act art. 50).
 import { logProvenance, hashPrompt } from "@/server/content-gen/provenance/provenance-logger";
+// V-09 P6 2026-05-22 — Couche 4 dedup : embedding OpenAI text-embedding-3-large.
+// Best-effort post-publish, fire-and-forget. Gate sur OPENAI_EMBEDDINGS_ENABLED.
+import { persistArticleEmbedding } from "@/server/content-gen/dedup/persist-article-embedding";
 
 const QUEUE_NAME = "content-publish";
 
@@ -399,6 +402,37 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     slug: slugCandidate,
     is_news: isNews,
   });
+
+  // V-09 P6 2026-05-22 — Couche 4 dedup : embedding OpenAI text-embedding-3-large.
+  // Best-effort post-publish : ne JAMAIS bloquer la publication sur cet appel.
+  // Default OPENAI_EMBEDDINGS_ENABLED=false → no-op silent (zero cost).
+  // Quand activé en prod, persiste articles.embedding (vector 1536) pour les
+  // comparaisons cosine futures (similarity-monitor + dedup pre-publish v2).
+  {
+    const embeddingResult = await persistArticleEmbedding(prisma, {
+      articleId: article.id,
+      title,
+      ...(metaDescription ? { metaDescription } : {}),
+      ...(bodyText ? { bodyText } : {}),
+    });
+    await logStep(
+      cgJob.id,
+      "embedding_persist",
+      embeddingResult.persisted
+        ? `Embedding persisted (${embeddingResult.tokensUsed} tokens, ${embeddingResult.dimensions} dims)`
+        : `Embedding skipped (${embeddingResult.reason})`,
+      {
+        persisted: embeddingResult.persisted,
+        reason: embeddingResult.reason,
+        ...(embeddingResult.tokensUsed !== undefined
+          ? { tokens_used: embeddingResult.tokensUsed }
+          : {}),
+        ...(embeddingResult.dimensions !== undefined
+          ? { dimensions: embeddingResult.dimensions }
+          : {}),
+      },
+    );
+  }
 
   // B.4 P1.5 — Log provenance LLM pour conformite AI Act art. 50.
   // Fire-and-forget : echec non-bloquant.

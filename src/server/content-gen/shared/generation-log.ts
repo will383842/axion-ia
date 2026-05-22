@@ -44,6 +44,7 @@ export type GenerationLogStep =
   | "doctrine_check"
   | "kill_switch_check"
   | "dedup_check"
+  | "embedding_persist"
   | "seo_score"
   | "readability"
   | "indexnow_ping"
