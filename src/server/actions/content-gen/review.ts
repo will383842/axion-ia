@@ -9,6 +9,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -178,28 +180,34 @@ export async function approveReview(id: string, notes?: string): Promise<void> {
   ReviewNotesOptionalSchema.parse(notes);
   // P1-C fix audit 2026-05-15 — `updateMany` atomique avec status='pending'
   // évite l'override d'une review déjà-approuvée par un autre admin (race).
-  const result = await prisma.reviewQueue.updateMany({
-    where: { id, status: "pending" },
-    data: {
-      status: "approved",
-      reviewedBy: session.userId,
-      reviewNotes: notes ?? null,
-      reviewedAt: new Date(),
-    },
-  });
-  if (result.count === 0) {
-    throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+  try {
+    const result = await prisma.reviewQueue.updateMany({
+      where: { id, status: "pending" },
+      data: {
+        status: "approved",
+        reviewedBy: session.userId,
+        reviewNotes: notes ?? null,
+        reviewedAt: new Date(),
+      },
+    });
+    if (result.count === 0) {
+      throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+    }
+    // Enqueue publish-worker (tier-2 noindex_follow par défaut).
+    await enqueuePublish(id, false);
+    await logActivity({
+      session,
+      action: "content-gen.review.approve",
+      targetType: "ReviewQueue",
+      targetId: id,
+      changes: { transition: "pending→approved", notes: notes ?? null },
+    });
+    revalidatePath(adminBase());
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'approveReview' } });
+    throw e;
   }
-  // Enqueue publish-worker (tier-2 noindex_follow par défaut).
-  await enqueuePublish(id, false);
-  await logActivity({
-    session,
-    action: "content-gen.review.approve",
-    targetType: "ReviewQueue",
-    targetId: id,
-    changes: { transition: "pending→approved", notes: notes ?? null },
-  });
-  revalidatePath(adminBase());
 }
 
 /**
@@ -215,39 +223,44 @@ export async function bulkApproveReviews(
   limit: number = 100,
 ): Promise<{ approved: number }> {
   const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
-  ScoreSchema.parse(minScore);
-  LimitSchema.parse(limit);
-  if (minScore < 0 || minScore > 100) throw new Error("score_range");
-  if (limit < 1 || limit > 500) throw new Error("limit_range");
-  const candidates = await prisma.reviewQueue.findMany({
-    where: {
-      status: "pending",
-      job: { qualityScore: { gte: minScore } },
-    },
-    include: { job: { select: { id: true } } },
-    take: limit,
-  });
-  for (const r of candidates) {
-    await prisma.reviewQueue.update({
-      where: { id: r.id },
-      data: {
-        status: "approved",
-        reviewedBy: session.userId,
-        reviewNotes: `[bulk approve] score >= ${minScore}`,
-        reviewedAt: new Date(),
+  try {    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+    ScoreSchema.parse(minScore);
+    LimitSchema.parse(limit);
+    if (minScore < 0 || minScore > 100) throw new Error("score_range");
+    if (limit < 1 || limit > 500) throw new Error("limit_range");
+    const candidates = await prisma.reviewQueue.findMany({
+      where: {
+        status: "pending",
+        job: { qualityScore: { gte: minScore } },
       },
+      include: { job: { select: { id: true } } },
+      take: limit,
     });
-    await enqueuePublish(r.id, false);
+    for (const r of candidates) {
+      await prisma.reviewQueue.update({
+        where: { id: r.id },
+        data: {
+          status: "approved",
+          reviewedBy: session.userId,
+          reviewNotes: `[bulk approve] score >= ${minScore}`,
+          reviewedAt: new Date(),
+        },
+      });
+      await enqueuePublish(r.id, false);
+    }
+    await logActivity({
+      session,
+      action: "content-gen.review.bulk-approve",
+      targetType: "ReviewQueue",
+      changes: { minScore, count: candidates.length },
+    });
+    revalidatePath(adminBase());
+    return { approved: candidates.length };
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "bulkApproveReviews" } });
+    throw e;
   }
-  await logActivity({
-    session,
-    action: "content-gen.review.bulk-approve",
-    targetType: "ReviewQueue",
-    changes: { minScore, count: candidates.length },
-  });
-  revalidatePath(adminBase());
-  return { approved: candidates.length };
 }
 
 /**
@@ -258,37 +271,42 @@ export async function bulkRejectReviews(
   limit: number = 100,
 ): Promise<{ rejected: number }> {
   const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
-  ScoreSchema.parse(maxScore);
-  LimitSchema.parse(limit);
-  if (maxScore < 0 || maxScore > 100) throw new Error("score_range");
-  if (limit < 1 || limit > 500) throw new Error("limit_range");
-  const candidates = await prisma.reviewQueue.findMany({
-    where: {
-      status: "pending",
-      job: { qualityScore: { lt: maxScore } },
-    },
-    take: limit,
-    select: { id: true },
-  });
-  if (candidates.length === 0) return { rejected: 0 };
-  await prisma.reviewQueue.updateMany({
-    where: { id: { in: candidates.map((c) => c.id) } },
-    data: {
-      status: "rejected",
-      reviewedBy: session.userId,
-      reviewNotes: `[bulk reject] score < ${maxScore}`,
-      reviewedAt: new Date(),
-    },
-  });
-  await logActivity({
-    session,
-    action: "content-gen.review.bulk-reject",
-    targetType: "ReviewQueue",
-    changes: { maxScore, count: candidates.length },
-  });
-  revalidatePath(adminBase());
-  return { rejected: candidates.length };
+  try {    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+    ScoreSchema.parse(maxScore);
+    LimitSchema.parse(limit);
+    if (maxScore < 0 || maxScore > 100) throw new Error("score_range");
+    if (limit < 1 || limit > 500) throw new Error("limit_range");
+    const candidates = await prisma.reviewQueue.findMany({
+      where: {
+        status: "pending",
+        job: { qualityScore: { lt: maxScore } },
+      },
+      take: limit,
+      select: { id: true },
+    });
+    if (candidates.length === 0) return { rejected: 0 };
+    await prisma.reviewQueue.updateMany({
+      where: { id: { in: candidates.map((c) => c.id) } },
+      data: {
+        status: "rejected",
+        reviewedBy: session.userId,
+        reviewNotes: `[bulk reject] score < ${maxScore}`,
+        reviewedAt: new Date(),
+      },
+    });
+    await logActivity({
+      session,
+      action: "content-gen.review.bulk-reject",
+      targetType: "ReviewQueue",
+      changes: { maxScore, count: candidates.length },
+    });
+    revalidatePath(adminBase());
+    return { rejected: candidates.length };
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "bulkRejectReviews" } });
+    throw e;
+  }
 }
 
 export async function rejectReview(id: string, notes: string): Promise<void> {
@@ -298,26 +316,32 @@ export async function rejectReview(id: string, notes: string): Promise<void> {
   ReviewNotesRequiredSchema.parse(notes);
   if (notes.trim().length < 5) throw new Error("notes_required");
   // P1-C fix audit 2026-05-15 — race atomique (idem approveReview).
-  const result = await prisma.reviewQueue.updateMany({
-    where: { id, status: "pending" },
-    data: {
-      status: "rejected",
-      reviewedBy: session.userId,
-      reviewNotes: notes,
-      reviewedAt: new Date(),
-    },
-  });
-  if (result.count === 0) {
-    throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+  try {
+    const result = await prisma.reviewQueue.updateMany({
+      where: { id, status: "pending" },
+      data: {
+        status: "rejected",
+        reviewedBy: session.userId,
+        reviewNotes: notes,
+        reviewedAt: new Date(),
+      },
+    });
+    if (result.count === 0) {
+      throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+    }
+    await logActivity({
+      session,
+      action: "content-gen.review.reject",
+      targetType: "ReviewQueue",
+      targetId: id,
+      changes: { transition: "pending→rejected", notesLen: notes.length },
+    });
+    revalidatePath(adminBase());
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'rejectReview' } });
+    throw e;
   }
-  await logActivity({
-    session,
-    action: "content-gen.review.reject",
-    targetType: "ReviewQueue",
-    targetId: id,
-    changes: { transition: "pending→rejected", notesLen: notes.length },
-  });
-  revalidatePath(adminBase());
 }
 
 /**
@@ -339,36 +363,42 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
   ReviewNotesRequiredSchema.parse(comment);
   if (comment.trim().length < 10) throw new Error("comment_required");
 
-  const review = await prisma.reviewQueue.findUnique({
-    where: { id },
-    select: { jobId: true, status: true },
-  });
-  if (!review) throw new Error("review_not_found");
-  if (review.status !== "pending") throw new Error("review_not_pending");
-
-  await prisma.$transaction([
-    prisma.reviewQueue.update({
+  try {
+    const review = await prisma.reviewQueue.findUnique({
       where: { id },
-      data: {
-        status: "needs_edits",
-        reviewedBy: session.userId,
-        reviewNotes: comment.slice(0, 5000),
-        reviewedAt: new Date(),
-      },
-    }),
-    prisma.contentGenJob.update({
-      where: { id: review.jobId },
-      data: { status: "quality_improving" },
-    }),
-  ]);
-  await logActivity({
-    session,
-    action: "content-gen.review.request-edits",
-    targetType: "ReviewQueue",
-    targetId: id,
-    changes: { transition: "pending→needs_edits", commentLen: comment.length },
-  });
-  revalidatePath(adminBase());
+      select: { jobId: true, status: true },
+    });
+    if (!review) throw new Error("review_not_found");
+    if (review.status !== "pending") throw new Error("review_not_pending");
+  
+    await prisma.$transaction([
+      prisma.reviewQueue.update({
+        where: { id },
+        data: {
+          status: "needs_edits",
+          reviewedBy: session.userId,
+          reviewNotes: comment.slice(0, 5000),
+          reviewedAt: new Date(),
+        },
+      }),
+      prisma.contentGenJob.update({
+        where: { id: review.jobId },
+        data: { status: "quality_improving" },
+      }),
+    ]);
+    await logActivity({
+      session,
+      action: "content-gen.review.request-edits",
+      targetType: "ReviewQueue",
+      targetId: id,
+      changes: { transition: "pending→needs_edits", commentLen: comment.length },
+    });
+    revalidatePath(adminBase());
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'requestEdits' } });
+    throw e;
+  }
 }
 
 export async function promoteToTier1(id: string): Promise<void> {
@@ -378,35 +408,41 @@ export async function promoteToTier1(id: string): Promise<void> {
   // P1-C fix audit 2026-05-15 — promote autorisé depuis `pending` (skip approve)
   // ou `approved` (déjà passé par tier-2). Ne pas autoriser depuis rejected /
   // needs_edits / promoted_t1.
-  const result = await prisma.reviewQueue.updateMany({
-    where: { id, status: { in: ["pending", "approved"] } },
-    data: {
-      status: "promoted_t1",
-      reviewedBy: session.userId,
-      reviewedAt: new Date(),
-      promotedToTier1At: new Date(),
-    },
-  });
-  if (result.count === 0) {
-    throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
-  }
-  // Bascule ContentGenJob → status `publishing` (transitionnel — le worker
-  // publish met à jour `published` une fois l'Article inséré DB).
-  const review = await prisma.reviewQueue.findUnique({ where: { id }, select: { jobId: true } });
-  if (review) {
-    await prisma.contentGenJob.update({
-      where: { id: review.jobId },
-      data: { status: "publishing" },
+  try {
+    const result = await prisma.reviewQueue.updateMany({
+      where: { id, status: { in: ["pending", "approved"] } },
+      data: {
+        status: "promoted_t1",
+        reviewedBy: session.userId,
+        reviewedAt: new Date(),
+        promotedToTier1At: new Date(),
+      },
     });
+    if (result.count === 0) {
+      throw new ReviewAlreadyTransitionedError(await readReviewStatus(id));
+    }
+    // Bascule ContentGenJob → status `publishing` (transitionnel — le worker
+    // publish met à jour `published` une fois l'Article inséré DB).
+    const review = await prisma.reviewQueue.findUnique({ where: { id }, select: { jobId: true } });
+    if (review) {
+      await prisma.contentGenJob.update({
+        where: { id: review.jobId },
+        data: { status: "publishing" },
+      });
+    }
+    // Enqueue publish-worker en mode tier-1 indexable.
+    await enqueuePublish(id, true);
+    await logActivity({
+      session,
+      action: "content-gen.review.promote-tier1",
+      targetType: "ReviewQueue",
+      targetId: id,
+      changes: { promoted: true },
+    });
+    revalidatePath(adminBase());
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'promoteToTier1' } });
+    throw e;
   }
-  // Enqueue publish-worker en mode tier-1 indexable.
-  await enqueuePublish(id, true);
-  await logActivity({
-    session,
-    action: "content-gen.review.promote-tier1",
-    targetType: "ReviewQueue",
-    targetId: id,
-    changes: { promoted: true },
-  });
-  revalidatePath(adminBase());
 }

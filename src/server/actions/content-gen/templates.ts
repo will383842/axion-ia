@@ -8,6 +8,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -195,40 +197,46 @@ export async function upsertTemplate(input: UpsertTemplateInput): Promise<string
   if (input.slug.length < 2) throw new Error("slug_too_short");
   if (input.systemPrompt.length < 30) throw new Error("system_prompt_too_short");
   if (input.userPromptTemplate.length < 5) throw new Error("user_template_too_short");
-  const data = {
-    slug: input.slug,
-    contentType: input.contentType,
-    variant: input.variant ?? null,
-    name: input.name,
-    description: input.description ?? null,
-    systemPrompt: input.systemPrompt,
-    userPromptTemplate: input.userPromptTemplate,
-    outputSchemaZod: input.outputSchemaZod,
-    variables: input.variables as never,
-    expansionMode: input.expansionMode,
-    defaultModel: input.defaultModel ?? null,
-    defaultTemperature: input.defaultTemperature ?? null,
-    defaultMaxTokens: input.defaultMaxTokens ?? null,
-    isActive: input.isActive,
-  };
-  let resultId: string;
-  if (input.id) {
-    const existing = await prisma.contentTemplate.findUnique({ where: { id: input.id } });
-    const nextVersion = (existing?.version ?? 0) + 1;
-    const r = await prisma.contentTemplate.update({
-      where: { id: input.id },
-      data: { ...data, version: nextVersion },
-    });
-    resultId = r.id;
-  } else {
-    const r = await prisma.contentTemplate.create({
-      data: { ...data, version: 1, createdBy: session.userId },
-    });
-    resultId = r.id;
+  try {
+    const data = {
+      slug: input.slug,
+      contentType: input.contentType,
+      variant: input.variant ?? null,
+      name: input.name,
+      description: input.description ?? null,
+      systemPrompt: input.systemPrompt,
+      userPromptTemplate: input.userPromptTemplate,
+      outputSchemaZod: input.outputSchemaZod,
+      variables: input.variables as never,
+      expansionMode: input.expansionMode,
+      defaultModel: input.defaultModel ?? null,
+      defaultTemperature: input.defaultTemperature ?? null,
+      defaultMaxTokens: input.defaultMaxTokens ?? null,
+      isActive: input.isActive,
+    };
+    let resultId: string;
+    if (input.id) {
+      const existing = await prisma.contentTemplate.findUnique({ where: { id: input.id } });
+      const nextVersion = (existing?.version ?? 0) + 1;
+      const r = await prisma.contentTemplate.update({
+        where: { id: input.id },
+        data: { ...data, version: nextVersion },
+      });
+      resultId = r.id;
+    } else {
+      const r = await prisma.contentTemplate.create({
+        data: { ...data, version: 1, createdBy: session.userId },
+      });
+      resultId = r.id;
+    }
+    revalidatePath(adminBase());
+    revalidatePath(`${adminBase()}/${resultId}`);
+    return resultId;
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'upsertTemplate' } });
+    throw e;
   }
-  revalidatePath(adminBase());
-  revalidatePath(`${adminBase()}/${resultId}`);
-  return resultId;
 }
 
 export async function toggleTemplate(id: string, isActive: boolean): Promise<void> {
@@ -236,6 +244,12 @@ export async function toggleTemplate(id: string, isActive: boolean): Promise<voi
   // Sprint Final P1-3 — Zod runtime validation.
   TemplateIdSchema.parse(id);
   z.boolean().parse(isActive);
-  await prisma.contentTemplate.update({ where: { id }, data: { isActive } });
-  revalidatePath(adminBase());
+  try {
+    await prisma.contentTemplate.update({ where: { id }, data: { isActive } });
+    revalidatePath(adminBase());
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'toggleTemplate' } });
+    throw e;
+  }
 }

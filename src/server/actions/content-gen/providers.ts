@@ -9,6 +9,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -91,62 +93,68 @@ export async function updateProvider(input: UpdateProviderInput): Promise<void> 
   // provider pour permettre toggles parallèles sans bloquer l'admin).
   const session = await requireAdminWriteRateLimited(`updateProvider:${input.id}`);
 
-  if (input.monthlyCapUsd < 0 || input.monthlyCapUsd > 100_000) {
-    throw new Error("monthly_cap_out_of_range");
-  }
-  if (input.model.trim().length < 2) throw new Error("model_required");
-
-  // SOC2 audit trail — lecture AVANT update pour capturer le delta.
-  // Read-then-update n'est pas atomique vs lecture concurrente ; tolérable
-  // car les écritures sont human-paced côté admin UI.
-  const existing = await prisma.providerConfig.findUnique({
-    where: { id: input.id },
-    select: {
-      enabled: true,
-      model: true,
-      monthlyCapUsd: true,
-      rateLimitRpm: true,
-    },
-  });
-  const oldValue = existing
-    ? {
-        enabled: existing.enabled,
-        model: existing.model,
-        monthlyCapUsd: existing.monthlyCapUsd.toString(),
-        rateLimitRpm: existing.rateLimitRpm,
-      }
-    : null;
-
-  const newValue = {
-    enabled: input.enabled,
-    model: input.model.trim(),
-    monthlyCapUsd: input.monthlyCapUsd,
-    rateLimitRpm: input.rateLimitRpm ?? null,
-  };
-
-  await prisma.providerConfig.update({
-    where: { id: input.id },
-    data: newValue,
-  });
-
-  // Audit log best-effort (helper writeAuditLog swallow déjà côté impl, mais
-  // try/catch de défense en profondeur pour garantir que update n'échoue pas
-  // si la table audit log devient indisponible).
   try {
-    await writeAuditLog({
-      action: "updateProvider",
-      settingKey: `provider:${input.id}`,
-      oldValue,
-      newValue,
-      actorUserId: session.userId,
-      actorEmail: session.email,
+    if (input.monthlyCapUsd < 0 || input.monthlyCapUsd > 100_000) {
+      throw new Error("monthly_cap_out_of_range");
+    }
+    if (input.model.trim().length < 2) throw new Error("model_required");
+  
+    // SOC2 audit trail — lecture AVANT update pour capturer le delta.
+    // Read-then-update n'est pas atomique vs lecture concurrente ; tolérable
+    // car les écritures sont human-paced côté admin UI.
+    const existing = await prisma.providerConfig.findUnique({
+      where: { id: input.id },
+      select: {
+        enabled: true,
+        model: true,
+        monthlyCapUsd: true,
+        rateLimitRpm: true,
+      },
     });
-  } catch {
-    // SOC2 tolère perte partielle si tracée. Best-effort — ne pas casser
-    // l'update admin pour un problème observability.
+    const oldValue = existing
+      ? {
+          enabled: existing.enabled,
+          model: existing.model,
+          monthlyCapUsd: existing.monthlyCapUsd.toString(),
+          rateLimitRpm: existing.rateLimitRpm,
+        }
+      : null;
+  
+    const newValue = {
+      enabled: input.enabled,
+      model: input.model.trim(),
+      monthlyCapUsd: input.monthlyCapUsd,
+      rateLimitRpm: input.rateLimitRpm ?? null,
+    };
+  
+    await prisma.providerConfig.update({
+      where: { id: input.id },
+      data: newValue,
+    });
+  
+    // Audit log best-effort (helper writeAuditLog swallow déjà côté impl, mais
+    // try/catch de défense en profondeur pour garantir que update n'échoue pas
+    // si la table audit log devient indisponible).
+    try {
+      await writeAuditLog({
+        action: "updateProvider",
+        settingKey: `provider:${input.id}`,
+        oldValue,
+        newValue,
+        actorUserId: session.userId,
+        actorEmail: session.email,
+      });
+    } catch {
+      // SOC2 tolère perte partielle si tracée. Best-effort — ne pas casser
+      // l'update admin pour un problème observability.
+    }
+  
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateProvider' } });
+    throw e;
   }
-
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
 }
 
 /**
@@ -165,32 +173,38 @@ export async function resetProviderSpend(id: string): Promise<void> {
     limit: 10,
     windowSec: 3600,
   });
-
-  // Capture l'ancien spend pour audit log (montre combien a été "remis à
-  // zéro" — important pour reconstituer les caps mensuels en cas d'enquête).
-  const existing = await prisma.providerConfig.findUnique({
-    where: { id },
-    select: { currentMonthSpentUsd: true },
-  });
-  const oldSpend = existing ? existing.currentMonthSpentUsd.toString() : null;
-
-  await prisma.providerConfig.update({
-    where: { id },
-    data: { currentMonthSpentUsd: 0 },
-  });
-
   try {
-    await writeAuditLog({
-      action: "resetProviderSpend",
-      settingKey: `provider:${id}`,
-      oldValue: { currentMonthSpentUsd: oldSpend },
-      newValue: { currentMonthSpentUsd: "0" },
-      actorUserId: session.userId,
-      actorEmail: session.email,
+    // Capture l'ancien spend pour audit log (montre combien a été "remis à
+    // zéro" — important pour reconstituer les caps mensuels en cas d'enquête).
+    const existing = await prisma.providerConfig.findUnique({
+      where: { id },
+      select: { currentMonthSpentUsd: true },
     });
-  } catch {
-    // Best-effort (cf. updateProvider).
-  }
+    const oldSpend = existing ? existing.currentMonthSpentUsd.toString() : null;
 
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
+    await prisma.providerConfig.update({
+      where: { id },
+      data: { currentMonthSpentUsd: 0 },
+    });
+
+    try {
+      await writeAuditLog({
+        action: "resetProviderSpend",
+        settingKey: `provider:${id}`,
+        oldValue: { currentMonthSpentUsd: oldSpend },
+        newValue: { currentMonthSpentUsd: "0" },
+        actorUserId: session.userId,
+        actorEmail: session.email,
+      });
+    } catch {
+      // Best-effort (cf. updateProvider).
+    }
+
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`,
+    );
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "resetProviderSpend" } });
+    throw e;
+  }
 }

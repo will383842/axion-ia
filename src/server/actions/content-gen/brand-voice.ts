@@ -15,6 +15,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
@@ -78,90 +80,96 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
     throw new Error("recalibrateBrandVoice: articleIds array cannot be empty");
   }
 
-  // Récupérer les embeddings pgvector via $queryRawUnsafe (champ Unsupported)
-  const placeholders = articleIds.map((_, i) => `$${i + 1}::uuid`).join(", ");
-  const rows = (await prisma.$queryRawUnsafe(
-    `SELECT
-       a.id,
-       ARRAY(SELECT unnest(a.embedding::real[])) AS embedding_arr
-     FROM articles a
-     WHERE a.id IN (${placeholders})
-       AND a.embedding IS NOT NULL`,
-    ...articleIds,
-  )) as Array<{ id: string; embedding_arr: number[] | null }>;
-
-  const validRows = rows.filter((r) => r.embedding_arr && r.embedding_arr.length > 0);
-
-  if (validRows.length === 0) {
-    throw new Error(
-      "recalibrateBrandVoice: none of the provided articles have embeddings — cannot calibrate",
-    );
-  }
-
-  // Moyenner les embeddings
-  const dimension = (validRows[0]!.embedding_arr as number[]).length;
-  const averaged = new Array<number>(dimension).fill(0);
-  for (const row of validRows) {
-    const emb = row.embedding_arr as number[];
-    for (let i = 0; i < dimension; i++) {
-      averaged[i] = (averaged[i] ?? 0) + (emb[i] ?? 0);
+  try {  
+    // Récupérer les embeddings pgvector via $queryRawUnsafe (champ Unsupported)
+    const placeholders = articleIds.map((_, i) => `$${i + 1}::uuid`).join(", ");
+    const rows = (await prisma.$queryRawUnsafe(
+      `SELECT
+         a.id,
+         ARRAY(SELECT unnest(a.embedding::real[])) AS embedding_arr
+       FROM articles a
+       WHERE a.id IN (${placeholders})
+         AND a.embedding IS NOT NULL`,
+      ...articleIds,
+    )) as Array<{ id: string; embedding_arr: number[] | null }>;
+  
+    const validRows = rows.filter((r) => r.embedding_arr && r.embedding_arr.length > 0);
+  
+    if (validRows.length === 0) {
+      throw new Error(
+        "recalibrateBrandVoice: none of the provided articles have embeddings — cannot calibrate",
+      );
     }
-  }
-  for (let i = 0; i < dimension; i++) {
-    averaged[i] = (averaged[i] ?? 0) / validRows.length;
-  }
-
-  // Normaliser L2 (cosine similarity stable)
-  const norm = Math.sqrt(averaged.reduce((s, v) => s + v * v, 0)) || 1;
-  const normalized = averaged.map((v) => v / norm);
-
-  // Lire l'ancienne valeur pour l'audit diff
-  const existingRow = await prisma.contentGenConfig.findUnique({
-    where: { key: BRAND_VOICE_CONFIG_KEY },
-  });
-  const oldValue = existingRow?.value ?? null;
-
-  // Persister dans ContentGenConfig
-  await prisma.contentGenConfig.upsert({
-    where: { key: BRAND_VOICE_CONFIG_KEY },
-    create: {
-      key: BRAND_VOICE_CONFIG_KEY,
-      value: normalized as never,
-      updatedBy: session.email,
-    },
-    update: {
-      value: normalized as never,
-      updatedBy: session.email,
-    },
-  });
-
-  // SOC2 audit trail
-  await prisma.contentGenAuditLog
-    .create({
-      data: {
-        action: "recalibrateBrandVoice",
-        settingKey: BRAND_VOICE_CONFIG_KEY,
-        oldValue: oldValue as never,
-        newValue: {
-          dimension,
-          articlesUsed: validRows.length,
-          articleIds: validRows.map((r) => r.id),
-          calibratedAt: new Date().toISOString(),
-        } as never,
-        actorUserId: session.userId,
-        actorEmail: session.email,
-        description: `Recalibration brand voice sur ${validRows.length} article(s) — dim=${dimension}`,
-      },
-    })
-    .catch(() => {
-      // fail-soft — audit trail failure non bloquant
+  
+    // Moyenner les embeddings
+    const dimension = (validRows[0]!.embedding_arr as number[]).length;
+    const averaged = new Array<number>(dimension).fill(0);
+    for (const row of validRows) {
+      const emb = row.embedding_arr as number[];
+      for (let i = 0; i < dimension; i++) {
+        averaged[i] = (averaged[i] ?? 0) + (emb[i] ?? 0);
+      }
+    }
+    for (let i = 0; i < dimension; i++) {
+      averaged[i] = (averaged[i] ?? 0) / validRows.length;
+    }
+  
+    // Normaliser L2 (cosine similarity stable)
+    const norm = Math.sqrt(averaged.reduce((s, v) => s + v * v, 0)) || 1;
+    const normalized = averaged.map((v) => v / norm);
+  
+    // Lire l'ancienne valeur pour l'audit diff
+    const existingRow = await prisma.contentGenConfig.findUnique({
+      where: { key: BRAND_VOICE_CONFIG_KEY },
     });
-
-  return {
-    success: true,
-    embeddingDimension: dimension,
-    articlesUsed: validRows.length,
-  };
+    const oldValue = existingRow?.value ?? null;
+  
+    // Persister dans ContentGenConfig
+    await prisma.contentGenConfig.upsert({
+      where: { key: BRAND_VOICE_CONFIG_KEY },
+      create: {
+        key: BRAND_VOICE_CONFIG_KEY,
+        value: normalized as never,
+        updatedBy: session.email,
+      },
+      update: {
+        value: normalized as never,
+        updatedBy: session.email,
+      },
+    });
+  
+    // SOC2 audit trail
+    await prisma.contentGenAuditLog
+      .create({
+        data: {
+          action: "recalibrateBrandVoice",
+          settingKey: BRAND_VOICE_CONFIG_KEY,
+          oldValue: oldValue as never,
+          newValue: {
+            dimension,
+            articlesUsed: validRows.length,
+            articleIds: validRows.map((r) => r.id),
+            calibratedAt: new Date().toISOString(),
+          } as never,
+          actorUserId: session.userId,
+          actorEmail: session.email,
+          description: `Recalibration brand voice sur ${validRows.length} article(s) — dim=${dimension}`,
+        },
+      })
+      .catch(() => {
+        // fail-soft — audit trail failure non bloquant
+      });
+  
+    return {
+      success: true,
+      embeddingDimension: dimension,
+      articlesUsed: validRows.length,
+    };
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "recalibrateBrandVoice" } });
+    throw e;
+  }
 }
 
 /**

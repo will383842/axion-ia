@@ -10,6 +10,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import type { ContentType } from "../../../../prisma/generated/client";
@@ -125,21 +127,27 @@ export async function updateBatchSettings(input: BatchSettings): Promise<void> {
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   BatchSettingsSchema.parse(input);
   if (input.dailyBatchSize < 1 || input.dailyBatchSize > 1000) throw new Error("daily_size_range");
-  if (input.workersConcurrency < 1 || input.workersConcurrency > 20)
-    throw new Error("concurrency_range");
-  if (input.retryMaxAttempts < 0 || input.retryMaxAttempts > 10) throw new Error("retry_range");
-
-  // Sprint 7 V2 : validation per-type targets
-  let totalByType = 0;
-  for (const [type, target] of Object.entries(input.dailyTargetByType)) {
-    if (!CONTENT_TYPES_ALL.includes(type as ContentType)) throw new Error("type_unknown");
-    if (typeof target !== "number" || target < 0 || target > 100) throw new Error("target_range");
-    totalByType += target;
+  try {
+    if (input.workersConcurrency < 1 || input.workersConcurrency > 20)
+      throw new Error("concurrency_range");
+    if (input.retryMaxAttempts < 0 || input.retryMaxAttempts > 10) throw new Error("retry_range");
+  
+    // Sprint 7 V2 : validation per-type targets
+    let totalByType = 0;
+    for (const [type, target] of Object.entries(input.dailyTargetByType)) {
+      if (!CONTENT_TYPES_ALL.includes(type as ContentType)) throw new Error("type_unknown");
+      if (typeof target !== "number" || target < 0 || target > 100) throw new Error("target_range");
+      totalByType += target;
+    }
+    if (totalByType > 500) throw new Error("total_per_type_too_high");
+  
+    await writeContentGenConfig("batches", input, session.userId, "Réglages batches & workers");
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateBatchSettings' } });
+    throw e;
   }
-  if (totalByType > 500) throw new Error("total_per_type_too_high");
-
-  await writeContentGenConfig("batches", input, session.userId, "Réglages batches & workers");
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -154,16 +162,22 @@ export async function updateMaxPublishPerDay(value: number): Promise<void> {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   MaxPublishPerDaySchema.parse(value);
-  if (!Number.isInteger(value) || value < 1 || value > 1000) {
-    throw new Error("max_publish_range");
+  try {
+    if (!Number.isInteger(value) || value < 1 || value > 1000) {
+      throw new Error("max_publish_range");
+    }
+    await writeContentGenConfig(
+      "MAX_PUBLISH_PER_DAY",
+      value,
+      session.userId,
+      `Cap articles/jour mis à jour : ${value}`,
+    );
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateMaxPublishPerDay' } });
+    throw e;
   }
-  await writeContentGenConfig(
-    "MAX_PUBLISH_PER_DAY",
-    value,
-    session.userId,
-    `Cap articles/jour mis à jour : ${value}`,
-  );
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -194,16 +208,22 @@ export async function updatePolicies(input: ContentPolicies): Promise<void> {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   ContentPoliciesSchema.parse(input);
-  if (input.rssAutoPublishMinScore < 0 || input.rssAutoPublishMinScore > 100)
-    throw new Error("score_range");
-  if (input.plagiarismJaccardInternal < 0 || input.plagiarismJaccardInternal > 1)
-    throw new Error("plagiat_internal_range");
-  if (input.plagiarismJaccardRss < 0 || input.plagiarismJaccardRss > 1)
-    throw new Error("plagiat_rss_range");
-  if (input.tier3RetentionDays < 1 || input.tier3RetentionDays > 730)
-    throw new Error("retention_range");
-  await writeContentGenConfig("policies", input, session.userId, "Policies content-gen");
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/policies`);
+  try {
+    if (input.rssAutoPublishMinScore < 0 || input.rssAutoPublishMinScore > 100)
+      throw new Error("score_range");
+    if (input.plagiarismJaccardInternal < 0 || input.plagiarismJaccardInternal > 1)
+      throw new Error("plagiat_internal_range");
+    if (input.plagiarismJaccardRss < 0 || input.plagiarismJaccardRss > 1)
+      throw new Error("plagiat_rss_range");
+    if (input.tier3RetentionDays < 1 || input.tier3RetentionDays > 730)
+      throw new Error("retention_range");
+    await writeContentGenConfig("policies", input, session.userId, "Policies content-gen");
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/policies`);
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updatePolicies' } });
+    throw e;
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -233,9 +253,15 @@ export async function updateLlmsTxt(content: string): Promise<void> {
   // Sprint Final P1-3 — Zod runtime validation.
   LlmsTxtSchema.parse(content);
   if (content.length > 50_000) throw new Error("llms_txt_too_long");
-  await writeContentGenConfig("llms_txt", content, session.userId, "llms.txt édité admin");
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/llms-txt`);
-  revalidatePath("/llms.txt");
+  try {
+    await writeContentGenConfig("llms_txt", content, session.userId, "llms.txt édité admin");
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/llms-txt`);
+    revalidatePath("/llms.txt");
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateLlmsTxt' } });
+    throw e;
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -266,16 +292,22 @@ export async function updateQualityLoop(input: QualityLoopSettings): Promise<voi
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   QualityLoopSettingsSchema.parse(input);
-  if (input.minScoreThreshold < 0 || input.minScoreThreshold > 100)
-    throw new Error("min_score_range");
-  if (input.targetScore <= input.minScoreThreshold) throw new Error("target_must_be_higher");
-  if (input.maxAttemptsAuto < 0 || input.maxAttemptsAuto > 5) throw new Error("max_attempts_range");
-  if (input.monthlyBudgetCapUsd < 0 || input.monthlyBudgetCapUsd > 5000)
-    throw new Error("budget_range");
-  await writeContentGenConfig("quality_loop", input, session.userId, "Boucle qualité v1.7");
-  revalidatePath(
-    `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/quality-loop`,
-  );
+  try {
+    if (input.minScoreThreshold < 0 || input.minScoreThreshold > 100)
+      throw new Error("min_score_range");
+    if (input.targetScore <= input.minScoreThreshold) throw new Error("target_must_be_higher");
+    if (input.maxAttemptsAuto < 0 || input.maxAttemptsAuto > 5) throw new Error("max_attempts_range");
+    if (input.monthlyBudgetCapUsd < 0 || input.monthlyBudgetCapUsd > 5000)
+      throw new Error("budget_range");
+    await writeContentGenConfig("quality_loop", input, session.userId, "Boucle qualité v1.7");
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/quality-loop`,
+    );
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateQualityLoop' } });
+    throw e;
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -302,11 +334,17 @@ export async function updateQaPolicies(input: QaPolicies): Promise<void> {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   QaPoliciesSchema.parse(input);
-  if (input.minWordsPerAnswer < 10 || input.minWordsPerAnswer > 500)
-    throw new Error("min_words_range");
-  if (input.promoteTier1MinCtr < 0 || input.promoteTier1MinCtr > 20) throw new Error("ctr_range");
-  await writeContentGenConfig("qa_policies", input, session.userId, "Q/R post-process v1.7");
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/qa-policies`);
+  try {
+    if (input.minWordsPerAnswer < 10 || input.minWordsPerAnswer > 500)
+      throw new Error("min_words_range");
+    if (input.promoteTier1MinCtr < 0 || input.promoteTier1MinCtr > 20) throw new Error("ctr_range");
+    await writeContentGenConfig("qa_policies", input, session.userId, "Q/R post-process v1.7");
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/qa-policies`);
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateQaPolicies' } });
+    throw e;
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -342,16 +380,22 @@ export async function updateSearchIntentDistribution(
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant check somme=100.
   SearchIntentDistributionSchema.parse(input);
-  const sum =
-    input.informational + input.commercial + input.local + input.transactional + input.navigational;
-  if (Math.abs(sum - 100) > 0.5) throw new Error("sum_must_be_100");
-  await writeContentGenConfig(
-    "search_intent_distribution",
-    input,
-    session.userId,
-    "Distribution intentions de recherche v1.7",
-  );
-  revalidatePath(
-    `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/search-intent-distribution`,
-  );
+  try {
+    const sum =
+      input.informational + input.commercial + input.local + input.transactional + input.navigational;
+    if (Math.abs(sum - 100) > 0.5) throw new Error("sum_must_be_100");
+    await writeContentGenConfig(
+      "search_intent_distribution",
+      input,
+      session.userId,
+      "Distribution intentions de recherche v1.7",
+    );
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/search-intent-distribution`,
+    );
+  
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateSearchIntentDistribution' } });
+    throw e;
+  }
 }
