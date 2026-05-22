@@ -72,9 +72,13 @@ async function main() {
     `  ✓ CaseStudy : ${caseStudies.created} created, ${caseStudies.updated} updated, ${caseStudies.skipped} translations skipped`,
   );
 
-  // P1.5 B.5 P0-7 — 747 keyword seeds (rotation atomique pipeline content-gen).
-  const keywordCount = await seedKeywords(prisma);
-  console.log(`  ✓ Keyword : ${keywordCount} rows upserted (rotation pipeline content-gen)`);
+  // P1.5 B.5 P0-7 — keyword seeds (rotation atomique pipeline content-gen).
+  // V-12 P1 (2026-05-22) — peuple clusterId + cityIds[] + isLocal.
+  const keywordResult = await seedKeywords(prisma);
+  console.log(
+    `  ✓ Keyword : ${keywordResult.upserted} rows upserted ` +
+      `(cluster ${keywordResult.withCluster}, cityIds ${keywordResult.withCityIds}, geo total ${keywordResult.geoKeywordsTotal})`,
+  );
 
   // P4 Sprint — KB facts sectoriels (verticale audits pilote, 10 facts vérifiés).
   const kbFactsCount = await seedKbFacts(prisma);

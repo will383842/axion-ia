@@ -297,6 +297,17 @@ export const brandVoiceDriftMonitorQueue: Queue | null = connection
   : null;
 
 /**
+ * Phase 8 Sprint Keywords Perfection 2026-05-22 — Keyword opportunity detector (cron lundi 06:00 UTC).
+ * Détecte les keywords position > 10 avec opportunité 'high' + alertes rank-drop.
+ */
+export const keywordOpportunityDetectorQueue: Queue | null = connection
+  ? new Queue("keyword-opportunity-detector", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
@@ -771,6 +782,20 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-daily-0400", tick: new Date().toISOString() },
       { repeat: { pattern: "0 4 * * *" }, jobId: "brand-voice-drift-monitor-cron" },
+    );
+  }
+
+  // Phase 8 Keywords Perfection 2026-05-22 — Keyword opportunity detector (lundi 06:00 UTC)
+  if (keywordOpportunityDetectorQueue) {
+    await keywordOpportunityDetectorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 6 * * 1" },
+      "keyword-opportunity-detector-cron",
+    );
+    await keywordOpportunityDetectorQueue.add(
+      "tick",
+      { trigger: "cron-weekly-monday-0600", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 6 * * 1" }, jobId: "keyword-opportunity-detector-cron" },
     );
   }
 }

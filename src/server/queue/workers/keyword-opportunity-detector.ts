@@ -103,10 +103,17 @@ function recommendAction(keyword: string, position: number): string {
   return `Créer contenu initial + LocalBusiness JSON-LD pour "${keyword}"`;
 }
 
-// ── Worker BullMQ ─────────────────────────────────────────────────────────────
+// ── Worker BullMQ (pattern standard startXxx) ─────────────────────────────────
 
-export function createKeywordOpportunityDetectorWorker(redisUrl: string) {
-  const worker = new Worker(
+let workerInstance: Worker | null = null;
+
+export function startKeywordOpportunityDetectorWorker(): Worker {
+  if (workerInstance) return workerInstance;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl)
+    throw new Error("REDIS_URL not set — keyword-opportunity-detector cannot start");
+
+  workerInstance = new Worker(
     QUEUE_NAME,
     async (job: Job) => {
       const startAt = Date.now();
@@ -129,19 +136,23 @@ export function createKeywordOpportunityDetectorWorker(redisUrl: string) {
     {
       connection: { url: redisUrl },
       concurrency: 1,
+      removeOnComplete: { count: 10 },
+      removeOnFail: { count: 7 },
     },
   );
 
-  worker.on("failed", (job, err) => {
+  workerInstance.on("failed", (job, err) => {
     captureWorkerError("keyword-opportunity-detector", QUEUE_NAME, job, err);
+    console.error(`[keyword-opportunity-detector] job ${job?.id} failed:`, err);
   });
 
-  return worker;
+  return workerInstance;
 }
 
-export const KEYWORD_OPPORTUNITY_CRON = {
-  name: "keyword-opportunity-detector-weekly",
-  every: undefined,
-  pattern: "0 6 * * 1", // Lundi 06:00 UTC
-  queueName: QUEUE_NAME,
-};
+/** @deprecated Utiliser startKeywordOpportunityDetectorWorker() */
+export function createKeywordOpportunityDetectorWorker(redisUrl: string): Worker {
+  return new Worker(QUEUE_NAME, async (job: Job) => detectOpportunities(), {
+    connection: { url: redisUrl },
+    concurrency: 1,
+  });
+}

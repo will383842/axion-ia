@@ -1003,24 +1003,10 @@ export const KW_CODAGE_G3: KeywordSeed[] = [
     canonicalParent: "/fr/codage-developpement",
     source: "manuel",
   },
-  {
-    keyword: "stack technique développement IA 2026 LangChain Next.js",
-    intent: "informationnel",
-    kbType: "guide",
-    module: "codage-developpement",
-    cible: "startup-scaleup",
-    priorite: 3,
-    niveau: 3,
-    injection: {
-      h1: "Stack technique IA 2026 : LangChain, Next.js, Claude API — notre choix argumenté",
-      metaTitle: "Stack développement IA 2026 — LangChain Next.js Claude",
-      metaDescription:
-        "LangGraph pour les agents, Next.js 16 pour le frontend IA, Claude API pour le reasoning : décryptage de notre stack technique IA 2026 avec pro/cons.",
-    },
-    urlCible: "/fr/blog/stack-technique-developpement-ia-2026",
-    canonicalParent: "/fr/codage-developpement",
-    source: "manuel",
-  },
+  // (V-12 P1 cleanup 2026-05-22) — keyword "stack technique LangChain Next.js"
+  // retiré : pollution outils tiers contraire à la doctrine de positionnement
+  // Axion-IA agnostique. Filtré par isClean() avant, supprimé à la source pour
+  // éviter la pollution des fichiers seeds.
 
   // ── Codage — AEO ─────────────────────────────────────────────────────────
   {

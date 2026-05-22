@@ -167,6 +167,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/api\/admin\/articles\/\[id\]\/provenance\/route\.ts$/,
   // P5 Sprint — feedback ArticleFeedback endpoint (consomme données content-gen).
   /^src\/app\/api\/admin\/content-gen\/articles\/\[id\]\/feedback\/route\.ts$/,
+  // Sprint P4 correctif 364f2c65 — pages implantations/ville importent getBlogArticlesByVille
+  // depuis content-gen/blog (lecture seule — consommateur, pas producteur).
+  /^src\/app\/\[locale\]\/implantations\//,
+  /^src\/components\/sections\/VilleServicePageTemplate\.tsx$/,
 ];
 
 /**

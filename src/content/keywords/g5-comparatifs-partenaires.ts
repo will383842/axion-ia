@@ -264,59 +264,9 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     note: "Fort volume PME sous Office 365 ; capter l'intent décisionnel early-stage",
   },
 
-  {
-    keyword: "Make vs n8n automatisation PME",
-    intent: "comparatif",
-    kbType: "comparison",
-    module: "transversal",
-    cible: "pme",
-    priorite: 2,
-    niveau: 2,
-    injection: {
-      h1: "Make ou n8n pour automatiser vos processus : comparatif concret pour PME",
-      metaTitle: "Make vs n8n automatisation PME — Comparatif 2026",
-      metaDescription:
-        "No-code, self-hosted, connecteurs IA : faites le bon choix entre Make.com et n8n selon votre budget et vos ressources techniques.",
-      h2Variants: [
-        "Make.com : puissance no-code, dépendance cloud",
-        "n8n : liberté self-hosted, courbe d'apprentissage",
-        "Grille de choix selon votre maturité technique et votre budget",
-      ],
-    },
-    urlCible: "/fr/comparaisons/make-vs-n8n-automatisation-pme",
-    canonicalParent: "/fr/comparaisons",
-    source: "manuel",
-    note: "Keyword fort sur la stack Axion-IA (Make + n8n dans /stack-ia). Différenciateur : expertise terrain clients",
-  },
-
-  {
-    keyword: "Zapier vs n8n avis PME",
-    intent: "comparatif",
-    kbType: "comparison",
-    module: "transversal",
-    cible: "tpe",
-    priorite: 2,
-    niveau: 2,
-    injection: {
-      h1: "Zapier ou n8n : retour d'expérience honnête pour TPE/PME en France",
-      metaTitle: "Zapier vs n8n PME France — Avis & comparatif terrain 2026",
-      metaDescription:
-        "Coût, connecteurs, limites d'exécution : notre retour d'expérience terrain sur Zapier vs n8n après 50+ automatisations clients.",
-      h2Variants: [
-        "Tarification réelle : Zapier devient cher vite",
-        "n8n self-hosted : liberté totale, maintenance à prévoir",
-        "Notre recommandation selon votre profil PME",
-      ],
-    },
-    variables: {
-      chiffre: "50",
-      unite: "automatisations clients",
-    },
-    urlCible: "/fr/comparaisons/zapier-vs-n8n-pme",
-    canonicalParent: "/fr/comparaisons",
-    source: "manuel",
-    note: "Variation sémantique Make vs n8n ; urlCible distincte. Forte intention informelle (avis, retour exp)",
-  },
+  // (V-12 P1 cleanup 2026-05-22) — keywords "Make vs n8n" et "Zapier vs n8n"
+  // retirés : pollution outils tiers contraire à la doctrine de positionnement
+  // Axion-IA agnostique. Filtrés par isClean() avant, supprimés à la source.
 
   {
     keyword: "IA générative vs automatisation RPA",
@@ -652,30 +602,8 @@ export const KW_COMPARATIFS_G5: KeywordSeed[] = [
     note: "Forte intention informelle ; cible aussi AEO (réponse directe Perplexity / ChatGPT)",
   },
 
-  {
-    keyword: "formation IA CPF éligible vs non éligible comparatif",
-    intent: "comparatif",
-    kbType: "comparison",
-    module: "interventions-formations",
-    cible: "toutes-cibles",
-    priorite: 2,
-    niveau: 2,
-    injection: {
-      h1: "Formation IA CPF éligible ou non : ce que le financement change vraiment",
-      metaTitle: "Formation IA CPF éligible vs non éligible | Axion-IA",
-      metaDescription:
-        "Plan de formation et résultats terrain : comprendre les modalités de financement IA et pourquoi l'éligibilité n'est pas le seul critère.",
-      h2Variants: [
-        "Dispositifs de financement et leurs limites sur les formations IA avancées",
-        "Plan de développement des compétences : l'alternative B2B",
-        "Qualité de formation vs éligibilité : notre position claire",
-      ],
-    },
-    urlCible: "/fr/comparaisons/formation-ia-cpf-vs-non-cpf",
-    canonicalParent: "/fr/comparaisons",
-    source: "autocomplete",
-    note: "Axion-IA non certifié formation → page doit être honnête, différencier sur qualité plutôt qu'éligibilité",
-  },
+  // (V-12 P1 cleanup 2026-05-22) — keyword "formation IA CPF éligible" retiré :
+  // pollution certification/financement hors positionnement Axion-IA.
 
   {
     keyword: "IA on-premise vs cloud quelle solution pour entreprise",
@@ -788,28 +716,8 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
     note: "Intent très qualifié (mention explicite Claude API) ; haute conversion potentielle",
   },
 
-  {
-    keyword: "mission LangChain n8n Make entreprises France",
-    intent: "partenaire",
-    kbType: "implementation_playbook",
-    module: "codage-developpement",
-    cible: "sous-traitant-dev",
-    priorite: 3,
-    niveau: 3,
-    injection: {
-      h1: "Missions LangChain, n8n et Make pour entreprises françaises : rejoignez notre réseau",
-      metaTitle: "Mission LangChain n8n Make France — Sous-traitance Axion-IA",
-      metaDescription:
-        "Spécialiste LangChain, n8n ou Make ? Axion-IA mandate régulièrement des développeurs IA pour ses clients PME et ETI.",
-      h2Variants: [
-        "Stack Make.com : automatisations no-code à fort impact",
-        "Stack n8n + LangChain : orchestration avancée agents IA",
-        "Profil idéal et conditions de collaboration",
-      ],
-    },
-    urlCible: "/fr/missions-freelance",
-    source: "manuel",
-  },
+  // (V-12 P1 cleanup 2026-05-22) — keyword "mission LangChain n8n Make" retiré :
+  // pollution outils tiers contraire au positionnement agnostique.
 
   {
     keyword: "développeur IA sous-traitance missions régulières",
@@ -1232,30 +1140,8 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
     note: "Axion-IA se positionne comme intégrateur (sans partenariat financier officiel Make). Attention : stack-ia/page.tsx affirme 'aucun partenariat commercial' — formuler soigneusement : 'expert Make' pas 'partenaire certifié Make'.",
   },
 
-  {
-    keyword: "consultant n8n certifié PME France",
-    intent: "partenaire",
-    kbType: "guide",
-    module: "implementation",
-    cible: "partenaire-commercial",
-    priorite: 3,
-    niveau: 3,
-    injection: {
-      h1: "Consultant n8n pour PME françaises : automatisation open-source et agents IA",
-      metaTitle: "Consultant n8n PME France | Axion-IA",
-      metaDescription:
-        "Déployez n8n dans votre PME avec des consultants qui connaissent les limites et les forces de l'outil dans des contextes réels.",
-      h2Variants: [
-        "Pourquoi n8n est notre outil d'automatisation de référence pour PME",
-        "Nos missions n8n types : de l'install au workflow IA en production",
-        "Self-hosted ou cloud n8n : notre recommandation selon votre contexte",
-      ],
-    },
-    urlCible: "/fr/partenaires",
-    canonicalParent: "/fr/partenaires",
-    source: "manuel",
-    note: "Même précaution que Make : 'expert n8n' et non 'certifié n8n' pour respecter charte éditoriale /stack-ia",
-  },
+  // (V-12 P1 cleanup 2026-05-22) — keyword "consultant n8n certifié PME France"
+  // retiré : pollution outil tiers contraire au positionnement agnostique.
 
   {
     keyword: "agence Claude API France développement",

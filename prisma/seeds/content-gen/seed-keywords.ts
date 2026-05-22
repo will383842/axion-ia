@@ -1,5 +1,5 @@
 /**
- * Seed Keyword table — 747 seeds depuis src/content/keywords/*.ts (B.5 P1.5).
+ * Seed Keyword table — depuis src/content/keywords/*.ts (B.5 P1.5).
  *
  * Mapping KeywordModule → vertical (ServiceSector) :
  *   - "audit" → "audits"
@@ -10,6 +10,11 @@
  *   - "maintenance-ia" → "transversal" (pas de verticale dediee)
  *   - "transversal" → "transversal"
  *
+ * V-12 P1 (2026-05-22) — peuple aussi :
+ *   - `clusterId` via assignClusterId() (catalogue 25 + transversal)
+ *   - `cityIds[]` (codes INSEE) via extractCityInseeCodes() pour keywords géo
+ *   - `isLocal` étendu : keyword géo détecté OU intent="local"
+ *
  * Idempotent : `upsert` by `term` unique constraint. Run 2× = meme resultat.
  * Conserve `usageCount` + `lastUsedAt` existants (rotation continue apres re-seed).
  *
@@ -19,6 +24,8 @@
 import type { PrismaClient } from "../../generated/client";
 import { ALL_KEYWORD_SEEDS } from "../../../src/content/keywords/master";
 import type { KeywordModule, KeywordSeed } from "../../../src/content/keywords/types";
+import { assignClusterId } from "../../../src/content/keywords/clusters";
+import { extractCityInseeCodes } from "../../../src/content/keywords/geo-cities";
 
 const MODULE_TO_VERTICAL: Record<KeywordModule, string> = {
   audit: "audits",
@@ -35,12 +42,26 @@ function normalizeTerm(term: string): string {
 }
 
 /**
- * Seed 747 keywords dans la table `keywords`.
- *
- * Retourne le nombre de rows upsertes (create + update).
+ * Stats agrégés retournés par le seeder.
  */
-export async function seedKeywords(prisma: PrismaClient): Promise<number> {
+export interface SeedKeywordsResult {
+  upserted: number;
+  withCluster: number;
+  withCityIds: number;
+  geoKeywordsTotal: number;
+  skipped: number;
+}
+
+/**
+ * Seed des keywords dans la table `keywords`.
+ *
+ * Peuple `clusterId` + `cityIds[]` + `isLocal` selon V-12 P1.
+ */
+export async function seedKeywords(prisma: PrismaClient): Promise<SeedKeywordsResult> {
   let upserted = 0;
+  let withCluster = 0;
+  let withCityIds = 0;
+  let geoKeywordsTotal = 0;
   const skipped: string[] = [];
 
   for (const seed of ALL_KEYWORD_SEEDS as readonly KeywordSeed[]) {
@@ -50,6 +71,14 @@ export async function seedKeywords(prisma: PrismaClient): Promise<number> {
       continue;
     }
 
+    const clusterId = assignClusterId(seed);
+    const cityIds = extractCityInseeCodes(seed.keyword, seed.urlCible);
+    const isLocal = seed.intent === "local" || cityIds.length > 0;
+
+    if (clusterId) withCluster += 1;
+    if (cityIds.length > 0) withCityIds += 1;
+    if (isLocal) geoKeywordsTotal += 1;
+
     await prisma.keyword.upsert({
       where: { term: seed.keyword },
       // Conserve usageCount/lastUsedAt en cas de re-seed (rotation continue).
@@ -58,6 +87,9 @@ export async function seedKeywords(prisma: PrismaClient): Promise<number> {
         vertical,
         searchIntent: seed.intent,
         isLongTail: seed.niveau === 3,
+        isLocal,
+        cityIds,
+        clusterId,
       },
       create: {
         term: seed.keyword,
@@ -65,8 +97,9 @@ export async function seedKeywords(prisma: PrismaClient): Promise<number> {
         vertical,
         searchIntent: seed.intent,
         isLongTail: seed.niveau === 3,
-        isLocal: seed.intent === "local",
-        cityIds: [],
+        isLocal,
+        cityIds,
+        clusterId,
       },
     });
     upserted += 1;
@@ -78,5 +111,5 @@ export async function seedKeywords(prisma: PrismaClient): Promise<number> {
     );
   }
 
-  return upserted;
+  return { upserted, withCluster, withCityIds, geoKeywordsTotal, skipped: skipped.length };
 }

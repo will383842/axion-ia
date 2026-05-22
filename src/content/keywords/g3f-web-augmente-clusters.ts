@@ -239,7 +239,7 @@ const WEB_GEO: KeywordSeed[] = [
   }),
 ];
 
-// ── CLUSTER 4 : content-generation-ia ────────────────────────────────────────
+// ── CLUSTER 4 : generation-contenu-ia ────────────────────────────────────────
 const WEB_CONTENT_GEN: KeywordSeed[] = [
   s({
     keyword: "génération contenu IA site web entreprise",
