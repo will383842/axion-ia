@@ -29,10 +29,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
         title="Détection Dérive Brand Voice"
         description="Monitoring quotidien (04:00 UTC) — similarité cosine article vs référence Manon. Alerte si < 0.80."
         actions={
-          <Link
-            href={`${base}/brand-voice-drift/recalibrate`}
-            className="admin-button"
-          >
+          <Link href={`${base}/brand-voice-drift/recalibrate`} className="admin-button">
             Recalibrer la référence
           </Link>
         }
@@ -46,17 +43,16 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
             Embedding de référence configuré :{" "}
             <strong>
               {stats?.referenceConfigured ? (
-                <span style={{ color: "var(--color-admin-success, #16a34a)" }}>Oui</span>
+                <span style={{ color: "var(--color-admin-success)" }}>Oui</span>
               ) : (
-                <span style={{ color: "var(--color-admin-terracotta, #c24a1b)" }}>
+                <span style={{ color: "var(--color-admin-terracotta)" }}>
                   Non — recalibrez depuis les articles publiés ci-dessous
                 </span>
               )}
             </strong>
           </li>
           <li>
-            Dernier run :{" "}
-            <strong>{lastRunLabel}</strong>
+            Dernier run : <strong>{lastRunLabel}</strong>
           </li>
         </ul>
       </AdminCard>
@@ -102,33 +98,33 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
             <table className="admin-table w-full text-sm">
               <thead>
                 <tr>
-                  <th className="text-left py-2 px-3">Article ID</th>
-                  <th className="text-left py-2 px-3">Similarité</th>
-                  <th className="text-left py-2 px-3">Niveau</th>
-                  <th className="text-left py-2 px-3">Détecté le</th>
-                  <th className="text-left py-2 px-3">Actions</th>
+                  <th className="px-3 py-2 text-left">Article ID</th>
+                  <th className="px-3 py-2 text-left">Similarité</th>
+                  <th className="px-3 py-2 text-left">Niveau</th>
+                  <th className="px-3 py-2 text-left">Détecté le</th>
+                  <th className="px-3 py-2 text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {stats.recentDrifts.map((drift) => (
                   <tr key={drift.id} className="border-t border-[color:var(--border-admin)]">
-                    <td className="py-2 px-3">
+                    <td className="px-3 py-2">
                       <code className="text-xs">{drift.articleId.slice(0, 12)}…</code>
                     </td>
-                    <td className="py-2 px-3">
+                    <td className="px-3 py-2">
                       <span
                         style={{
                           color:
                             drift.similarity < 0.7
-                              ? "var(--color-admin-terracotta, #c24a1b)"
-                              : "var(--color-admin-warning, #d97706)",
+                              ? "var(--color-admin-terracotta)"
+                              : "var(--color-admin-warning)",
                           fontWeight: "bold",
                         }}
                       >
                         {drift.similarity.toFixed(3)}
                       </span>
                     </td>
-                    <td className="py-2 px-3">
+                    <td className="px-3 py-2">
                       <span
                         className={
                           drift.level === "needs_review"
@@ -139,13 +135,13 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
                         {drift.level === "needs_review" ? "Revue requise" : "Avertissement"}
                       </span>
                     </td>
-                    <td className="py-2 px-3 text-xs text-[color:var(--color-admin-muted)]">
+                    <td className="px-3 py-2 text-xs text-[color:var(--color-admin-muted)]">
                       {new Date(drift.detectedAt).toLocaleString("fr-FR", {
                         dateStyle: "short",
                         timeStyle: "short",
                       })}
                     </td>
-                    <td className="py-2 px-3">
+                    <td className="px-3 py-2">
                       <Link
                         href={`${base}/publications?articleId=${drift.articleId}`}
                         className="admin-link text-xs"
@@ -164,12 +160,12 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
           <h3 className="admin-h3 mb-[var(--space-admin-3)]">Seuils de détection</h3>
           <ul className="admin-meta-block text-sm">
             <li>
-              <strong>similarity &lt; 0.70</strong> → Article mis en{" "}
-              <code>needs_review</code> + audit log SOC2
+              <strong>similarity &lt; 0.70</strong> → Article mis en <code>needs_review</code> +
+              audit log SOC2
             </li>
             <li>
-              <strong>0.70 ≤ similarity &lt; 0.80</strong> → Drift warning loggé
-              (audit log SOC2, pas de changement de statut)
+              <strong>0.70 ≤ similarity &lt; 0.80</strong> → Drift warning loggé (audit log SOC2,
+              pas de changement de statut)
             </li>
             <li>
               <strong>similarity ≥ 0.80</strong> → OK, dans la tonalité brand voice

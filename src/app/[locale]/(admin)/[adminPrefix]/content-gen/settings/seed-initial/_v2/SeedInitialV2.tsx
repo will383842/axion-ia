@@ -1,3 +1,4 @@
+// use-client: bouton seed interactif avec useState + onClick
 "use client";
 
 import { useState } from "react";
