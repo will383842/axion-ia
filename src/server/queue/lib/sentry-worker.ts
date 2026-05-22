@@ -54,7 +54,10 @@ export type WorkerName =
   | "indexnow"
   | "quality-improver"
   | "fact-check"
-  | "weekly-report";
+  | "weekly-report"
+  // Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22)
+  | "content-gen-scheduler"
+  | "content-gen-deadline-checker";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.

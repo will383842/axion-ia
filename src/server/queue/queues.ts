@@ -249,6 +249,28 @@ export const contentWeeklyReportQueue: Queue | null = connection
   : null;
 
 /**
+ * Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22) — C.2
+ * Scheduler worker — cron every-5min — startDate → running.
+ */
+export const contentSchedulerQueue: Queue | null = connection
+  ? new Queue("content-gen-scheduler", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
+ * Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22) — C.3
+ * Deadline checker worker — cron 5 0 * * * — endDate auto-stop.
+ */
+export const contentDeadlineCheckerQueue: Queue | null = connection
+  ? new Queue("content-gen-deadline-checker", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
@@ -666,6 +688,34 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-weekly-mon-0700", tick: new Date().toISOString() },
       { repeat: { pattern: "0 7 * * 1" }, jobId: "content-weekly-report-cron" },
+    );
+  }
+
+  // Sprint Campaign Controls C.2 — scheduler worker toutes les 5 min.
+  if (contentSchedulerQueue) {
+    await contentSchedulerQueue.removeRepeatable(
+      "tick",
+      { pattern: "*/5 * * * *" },
+      "content-gen-scheduler-cron",
+    );
+    await contentSchedulerQueue.add(
+      "tick",
+      { trigger: "cron-5min", tick: new Date().toISOString() },
+      { repeat: { pattern: "*/5 * * * *" }, jobId: "content-gen-scheduler-cron" },
+    );
+  }
+
+  // Sprint Campaign Controls C.3 — deadline checker daily 00:05 UTC.
+  if (contentDeadlineCheckerQueue) {
+    await contentDeadlineCheckerQueue.removeRepeatable(
+      "tick",
+      { pattern: "5 0 * * *" },
+      "content-gen-deadline-checker-cron",
+    );
+    await contentDeadlineCheckerQueue.add(
+      "tick",
+      { trigger: "cron-daily-0005", tick: new Date().toISOString() },
+      { repeat: { pattern: "5 0 * * *" }, jobId: "content-gen-deadline-checker-cron" },
     );
   }
 }

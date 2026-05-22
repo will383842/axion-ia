@@ -26,6 +26,8 @@ import { startContentWebVitalsMonitorWorker } from "./workers/content-web-vitals
 import { startContentPsiMonitorWorker } from "./workers/content-psi-monitor-worker";
 import { startContentMonitoringWorker } from "./workers/content-monitoring-worker";
 import { startContentWeeklyReportWorker } from "./workers/content-weekly-report-worker";
+import { startContentGenSchedulerWorker } from "./workers/content-gen-scheduler-worker";
+import { startContentDeadlineCheckerWorker } from "./workers/content-gen-deadline-checker";
 import { startImageBankEnrichWorker } from "./workers/image-bank-enrich-worker";
 import { startImageBankImportWorker } from "./workers/image-bank-import-worker";
 import { startImageBankTranslateWorker } from "./workers/image-bank-translate-worker";
@@ -66,6 +68,8 @@ async function main() {
     startContentPsiMonitorWorker(), // P2-29 audit 2026-05-15 — weekly Mon 03:00 UTC
     startContentMonitoringWorker(), // Méta-cert 2026-05-15 AGENT 19 — hourly xx:15
     startContentWeeklyReportWorker(), // Sprint A D-P5-3 — lundi 7h00 UTC reporting KPI
+    startContentGenSchedulerWorker(), // Sprint Campaign Controls C.2 — startDate → running (*/5 min)
+    startContentDeadlineCheckerWorker(), // Sprint Campaign Controls C.3 — endDate auto-stop (00:05 UTC)
     // Image Bank V1 (Sprint 1-7 feat/image-bank-v1) — 5 workers
     // Patch post-audit 2026-05-16 P1-2 (activation prod). Sans QA staging
     // initial, désactivable par opérateur via BULLMQ_DISABLED=true.

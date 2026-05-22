@@ -22,7 +22,6 @@ const contentGenJobCreateMock = vi.fn();
 const contentGenJobCountMock = vi.fn();
 const contentGenJobGroupByMock = vi.fn();
 const contentGenJobAggregateMock = vi.fn();
-const contentGenJobCountPublishedMock = vi.fn();
 const readConfigMock = vi.fn();
 const captureWorkerErrorMock = vi.fn();
 const alertCampaignDoneMock = vi.fn();
@@ -81,37 +80,39 @@ import { startOrchestratorWorker } from "../content-orchestrator-worker";
 
 const MOCK_JOB = { id: "job-1", data: { trigger: "cron-15min" } } as Job;
 
-function makeCampaign(overrides: Partial<{
-  id: string;
-  name: string;
-  status: string;
-  scope: string;
-  serviceSector: null;
-  anchorVilleSlugs: string[];
-  anchorDepartementCodes: string[];
-  anchorRegionSlugs: string[];
-  totalTargetCount: number;
-  generatedCount: number;
-  typeDistribution: Record<string, number>;
-  audienceMix: Record<string, number>;
-  searchIntentMix: null;
-  cityProcessingMode: string;
-  currentCityIndex: number | null;
-  endDate: Date | null;
-  qualityImprovedCount: number;
-  publishedCount: number;
-  failedCount: number;
-  startedAt: null;
-  completedAt: null;
-  pausedAt: null;
-  createdAt: Date;
-  createdBy: null;
-  estimatedCostUsd: null;
-  estimatedDurationMinutes: null;
-  startDate: null;
-  recurringSchedule: null;
-  completedReason: null;
-}> = {}) {
+function makeCampaign(
+  overrides: Partial<{
+    id: string;
+    name: string;
+    status: string;
+    scope: string;
+    serviceSector: null;
+    anchorVilleSlugs: string[];
+    anchorDepartementCodes: string[];
+    anchorRegionSlugs: string[];
+    totalTargetCount: number;
+    generatedCount: number;
+    typeDistribution: Record<string, number>;
+    audienceMix: Record<string, number>;
+    searchIntentMix: null;
+    cityProcessingMode: string;
+    currentCityIndex: number | null;
+    endDate: Date | null;
+    qualityImprovedCount: number;
+    publishedCount: number;
+    failedCount: number;
+    startedAt: null;
+    completedAt: null;
+    pausedAt: null;
+    createdAt: Date;
+    createdBy: null;
+    estimatedCostUsd: null;
+    estimatedDurationMinutes: null;
+    startDate: null;
+    recurringSchedule: null;
+    completedReason: null;
+  }> = {},
+) {
   return {
     id: "campaign-1",
     name: "Test Campaign",
@@ -157,7 +158,12 @@ beforeEach(() => {
     return {};
   });
   campaignUpdateMock.mockResolvedValue({ id: "campaign-1" });
-  contentGenJobCreateMock.mockResolvedValue({ id: "job-new", contentType: "landing_ville", targetSearchIntent: "local", inputPayload: {} });
+  contentGenJobCreateMock.mockResolvedValue({
+    id: "job-new",
+    contentType: "landing_ville",
+    targetSearchIntent: "local",
+    inputPayload: {},
+  });
   contentGenJobCountMock.mockResolvedValue(0);
   contentGenJobGroupByMock.mockResolvedValue([]);
   contentGenJobAggregateMock.mockResolvedValue({ _sum: { costUsd: 0 }, _avg: { qualityScore: 0 } });
