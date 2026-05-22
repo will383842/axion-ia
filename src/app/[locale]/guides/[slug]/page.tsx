@@ -31,6 +31,8 @@ import { Badge } from "@/components/ui/badge";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildHowToJsonLd } from "@/lib/seo-content-gen-factories";
 import { loadGuideForView } from "@/server/content-gen/guides/loader";
+import { SuggestedContent } from "@/components/suggested/SuggestedContent";
+import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 
 // ISR pure : `force-dynamic` annule silencieusement `revalidate`. Retiré
 // pour rétablir le cache ISR (audit Web Vitals 2026-05-15).
@@ -198,6 +200,24 @@ export default async function GuidePiliersPage({ params }: Props) {
           <AiContentDisclaimer locale="fr" className="mt-10" />
         </Container>
       </Section>
+
+      {/* V-14 sprint UX 2026-05-22 — section Articles connexes (auparavant absente sur /guides/[slug] → dead-end + bounce maximal). */}
+      <SuggestedContent
+        variant="articles"
+        items={(await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 })).map(
+          (r) => ({
+            href: `/blog/${r.slug}`,
+            title: r.title,
+            excerpt: r.excerpt,
+            publishedAt: r.publishedAt,
+            readingTime: r.readingTime,
+          }),
+        )}
+        eyebrow="Articles connexes"
+        title="À lire aussi"
+        tone="sand"
+        emitJsonLd
+      />
 
       <CtaBlock
         title="Besoin d'un accompagnement opérationnel ?"
