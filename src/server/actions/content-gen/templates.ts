@@ -27,20 +27,18 @@ const ContentTypeSchema = z.enum([
   "qa_derived",
   "faq_standalone",
 ]);
-// P0-3 — Aligner avec les valeurs UI TemplateForm (manual/all_villes/all_regions/etc.)
-// Option 1 choisie : étendre z.enum pour accepter valeurs UI + valeurs DB (compat ascendante).
+// P0-NEW-1 — Aligner avec les 8 vraies valeurs DB enum ExpansionMode (schema.prisma:2568).
+// Les valeurs précédentes (per_ville, per_keyword, all_departements, all_keywords…) étaient
+// inexistantes en DB et causaient des erreurs Prisma silencieuses au upsert.
 const ExpansionModeSchema = z.enum([
-  "per_ville",
-  "per_keyword",
-  "per_intent",
-  "single",
-  "matrix",
-  // Valeurs exposées par l'UI TemplateForm (wizards admin)
   "manual",
   "all_villes",
   "all_regions",
-  "all_departements",
-  "all_keywords",
+  "custom_villes",
+  "from_keywords",
+  "from_questions",
+  "from_rss_items",
+  "from_csv",
 ]);
 const ListTemplatesFiltersSchema = z
   .object({

@@ -14,6 +14,7 @@ import type { ContentGenJobStatus } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { REGIONS } from "@/content/regions";
 import { requireAdmin } from "./_auth";
+import { readContentGenConfig } from "./_settings";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 const GetJobsVilleSectorDetailSchema = z
@@ -315,7 +316,9 @@ export interface CityCoverageProgress {
 /** Nombre de villes distinctes avec au moins 1 article publié (pour barre de progression 39/120). */
 export async function getCityCoverageProgress(): Promise<CityCoverageProgress> {
   await requireAdmin();
-  const TARGET_VILLES = 120;
+  // P0 A-02 — TARGET_VILLES vient de ContentGenConfig (clé `target_villes`).
+  // Fallback à 120 si non configuré en DB (stub.invalid short-circuit → null via proxy → default).
+  const TARGET_VILLES = await readContentGenConfig<number>("target_villes", 120);
   const grouped = await prisma.contentGenJob.groupBy({
     by: ["anchorVilleSlug"],
     where: { anchorVilleSlug: { not: null }, status: "published" },

@@ -143,6 +143,31 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
       rawSector && (SERVICE_SECTORS as ReadonlyArray<string>).includes(rawSector)
         ? (rawSector as ServiceSector)
         : null;
+    // P0-NEW-2 — Lire les 5 champs envoyés par CoverageWizardClient (step 5 Planification)
+    const rawCityProcessingMode = formData.get("cityProcessingMode") as string | null;
+    const cityProcessingMode =
+      rawCityProcessingMode === "sequential" || rawCityProcessingMode === "parallel"
+        ? (rawCityProcessingMode as "parallel" | "sequential")
+        : undefined;
+
+    const rawStartDate = formData.get("startDate") as string | null;
+    const startDate = rawStartDate ? new Date(rawStartDate) : undefined;
+
+    const rawEndDate = formData.get("endDate") as string | null;
+    const endDate = rawEndDate ? new Date(rawEndDate) : undefined;
+
+    const rawRecurringSchedule = formData.get("recurringSchedule") as string | null;
+    const recurringSchedule = rawRecurringSchedule || undefined;
+
+    // CoverageWizardClient envoie primaryKeywords comme string newline-séparée (fd.set(..., [...].join("\n")))
+    const rawPrimaryKeywords = formData.get("primaryKeywords") as string | null;
+    const primaryKeywords = rawPrimaryKeywords
+      ? rawPrimaryKeywords
+          .split("\n")
+          .map((k) => k.trim())
+          .filter(Boolean)
+      : undefined;
+
     const id = await createCampaign({
       name: String(formData.get("name") ?? ""),
       scope: String(formData.get("scope")) as CoverageScope,
@@ -155,6 +180,11 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
       audienceMix,
       ...(estimatedCostUsd !== undefined ? { estimatedCostUsd } : {}),
       ...(estimatedDurationMinutes !== undefined ? { estimatedDurationMinutes } : {}),
+      ...(cityProcessingMode !== undefined ? { cityProcessingMode } : {}),
+      ...(startDate !== undefined ? { startDate } : {}),
+      ...(endDate !== undefined ? { endDate } : {}),
+      ...(recurringSchedule !== undefined ? { recurringSchedule } : {}),
+      ...(primaryKeywords !== undefined ? { primaryKeywords } : {}),
     });
     if (formData.get("launchNow") === "on") {
       await launchCampaign(id);
