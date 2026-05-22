@@ -35,6 +35,8 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     coverageCampaign: {
       update: (args: unknown) => campaignUpdateMock(args),
+      // Sprint Campaign Controls — needed for recurringSchedule lookup in pauseCampaign
+      findUnique: vi.fn(async () => ({ recurringSchedule: null })),
     },
     contentGenJob: {
       findMany: () => contentGenJobFindManyMock(),

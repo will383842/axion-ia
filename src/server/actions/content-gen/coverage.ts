@@ -12,8 +12,10 @@
 
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
+import { CronExpressionParser } from "cron-parser";
 import { prisma } from "@/lib/prisma";
 import type {
+  CityProcessingMode,
   CoverageScope,
   CoverageStatus,
   ServiceSector,
@@ -54,6 +56,13 @@ export interface CampaignRow {
   readonly startedAt: Date | null;
   readonly completedAt: Date | null;
   readonly createdAt: Date;
+  // Sprint Campaign Controls (§ 25.2 v1.8)
+  readonly cityProcessingMode: CityProcessingMode;
+  readonly currentCityIndex: number | null;
+  readonly startDate: Date | null;
+  readonly endDate: Date | null;
+  readonly recurringSchedule: string | null;
+  readonly completedReason: string | null;
 }
 
 export interface CampaignDetail extends CampaignRow {
@@ -110,6 +119,12 @@ function toRow(r: {
   startedAt: Date | null;
   completedAt: Date | null;
   createdAt: Date;
+  cityProcessingMode: CityProcessingMode;
+  currentCityIndex: number | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  recurringSchedule: string | null;
+  completedReason: string | null;
 }): CampaignRow {
   return {
     id: r.id,
@@ -126,6 +141,12 @@ function toRow(r: {
     startedAt: r.startedAt,
     completedAt: r.completedAt,
     createdAt: r.createdAt,
+    cityProcessingMode: r.cityProcessingMode,
+    currentCityIndex: r.currentCityIndex,
+    startDate: r.startDate,
+    endDate: r.endDate,
+    recurringSchedule: r.recurringSchedule,
+    completedReason: r.completedReason,
   };
 }
 
@@ -142,6 +163,11 @@ export interface CreateCampaignInput {
   readonly searchIntentMix?: Record<string, number>;
   readonly estimatedCostUsd?: number;
   readonly estimatedDurationMinutes?: number;
+  // Sprint Campaign Controls (§ 25.2 v1.8)
+  readonly cityProcessingMode?: "parallel" | "sequential";
+  readonly startDate?: Date | null;
+  readonly endDate?: Date | null;
+  readonly recurringSchedule?: string | null;
 }
 
 export async function createCampaign(input: CreateCampaignInput): Promise<string> {
@@ -166,10 +192,34 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
   const audSum = Object.values(input.audienceMix).reduce((a, v) => a + v, 0);
   if (Math.abs(audSum - 100) > 0.5) throw new Error("audience_mix_must_sum_100");
 
+  // Sprint Campaign Controls — validation des 4 nouveaux champs
+  if (input.recurringSchedule) {
+    try {
+      CronExpressionParser.parse(input.recurringSchedule);
+    } catch {
+      throw new Error("invalid_cron_expression");
+    }
+  }
+  const now = new Date();
+  let effectiveStartDate: Date | null = input.startDate ?? null;
+  if (effectiveStartDate && effectiveStartDate < now) {
+    // startDate dans le passé → log warning, démarrage immédiat (pas de throw)
+    console.warn(
+      `[createCampaign] startDate ${effectiveStartDate.toISOString()} is in the past, using null (immediate)`,
+    );
+    effectiveStartDate = null;
+  }
+  if (input.endDate && input.endDate <= now) {
+    throw new Error("end_date_in_past");
+  }
+  // Si startDate futur défini → status scheduled, sinon draft
+  const initialStatus: CoverageStatus = effectiveStartDate ? "scheduled" : "draft";
+  const cityProcessingMode: CityProcessingMode = input.cityProcessingMode ?? "parallel";
+
   const r = await prisma.coverageCampaign.create({
     data: {
       name: input.name,
-      status: "draft",
+      status: initialStatus,
       scope: input.scope,
       serviceSector: input.serviceSector ?? null,
       anchorVilleSlugs: input.anchorVilleSlugs ? [...input.anchorVilleSlugs] : [],
@@ -182,6 +232,10 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
       estimatedCostUsd: input.estimatedCostUsd ?? null,
       estimatedDurationMinutes: input.estimatedDurationMinutes ?? null,
       createdBy: session.userId,
+      cityProcessingMode,
+      startDate: effectiveStartDate,
+      endDate: input.endDate ?? null,
+      recurringSchedule: input.recurringSchedule ?? null,
     },
   });
   revalidatePath(adminBase());
@@ -195,6 +249,10 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
       scope: input.scope,
       serviceSector: input.serviceSector ?? null,
       targetCount: input.totalTargetCount,
+      cityProcessingMode,
+      startDate: effectiveStartDate?.toISOString() ?? null,
+      endDate: input.endDate?.toISOString() ?? null,
+      recurringSchedule: input.recurringSchedule ?? null,
     },
   });
   return r.id;
@@ -202,10 +260,34 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
 
 export async function launchCampaign(id: string): Promise<void> {
   const session = await requireAdmin();
+  const campaign = await prisma.coverageCampaign.findUnique({
+    where: { id },
+    select: { recurringSchedule: true },
+  });
   await prisma.coverageCampaign.update({
     where: { id },
     data: { status: "running", startedAt: new Date() },
   });
+
+  // Sprint Campaign Controls — si campagne récurrente, enregistrer le repeatable job BullMQ
+  if (campaign?.recurringSchedule) {
+    const queue = getContentGenQueue();
+    if (queue) {
+      try {
+        await queue.add(
+          `campaign-${id}-recurring`,
+          { campaignId: id, trigger: "recurring-tick" },
+          {
+            repeat: { pattern: campaign.recurringSchedule, tz: "Europe/Paris" },
+            jobId: `campaign-${id}-recurring`,
+          },
+        );
+      } catch (err) {
+        console.warn(`[launchCampaign] failed to register repeatable job for campaign ${id}:`, err);
+      }
+    }
+  }
+
   revalidatePath(adminBase());
   revalidatePath(`${adminBase()}/${id}`);
   await logActivity({
@@ -213,11 +295,17 @@ export async function launchCampaign(id: string): Promise<void> {
     action: "content-gen.campaign.launch",
     targetType: "CoverageCampaign",
     targetId: id,
+    changes: { recurringSchedule: campaign?.recurringSchedule ?? null },
   });
 }
 
 export async function pauseCampaign(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Campaign Controls — récupérer recurringSchedule avant l'update pour cleanup BullMQ repeatable
+  const campaignBeforePause = await prisma.coverageCampaign.findUnique({
+    where: { id },
+    select: { recurringSchedule: true },
+  });
   await prisma.coverageCampaign.update({
     where: { id },
     data: { status: "paused", pausedAt: new Date() },
@@ -262,13 +350,32 @@ export async function pauseCampaign(id: string): Promise<void> {
     );
   }
 
+  // Sprint Campaign Controls — retirer le repeatable job si la campagne a un recurringSchedule
+  if (campaignBeforePause?.recurringSchedule) {
+    const queue = getContentGenQueue();
+    if (queue) {
+      try {
+        await queue.removeRepeatable(`campaign-${id}-recurring`, {
+          pattern: campaignBeforePause.recurringSchedule,
+          tz: "Europe/Paris",
+        });
+      } catch (err) {
+        console.warn(`[pauseCampaign] failed to remove repeatable job for campaign ${id}:`, err);
+      }
+    }
+  }
+
   revalidatePath(adminBase());
   await logActivity({
     session,
     action: "content-gen.campaign.pause",
     targetType: "CoverageCampaign",
     targetId: id,
-    changes: { queuedJobs: queuedJobs.length, purgeBullJobs },
+    changes: {
+      queuedJobs: queuedJobs.length,
+      purgeBullJobs,
+      removedRecurring: Boolean(campaignBeforePause?.recurringSchedule),
+    },
   });
 }
 
@@ -542,4 +649,55 @@ export async function estimateCampaign(
     estimatedDurationMinutes,
     breakdown,
   };
+}
+
+// ============================================================
+// Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22)
+// ============================================================
+
+/**
+ * Passe une campagne draft → scheduled avec une date de démarrage future.
+ * Le scheduler worker (content-gen-scheduler-worker) scanne toutes les 5 min
+ * les campagnes scheduled dont startDate <= NOW() et les passe running.
+ */
+export async function scheduleCampaign(id: string, startDate: Date): Promise<void> {
+  const session = await requireAdmin();
+  const now = new Date();
+  if (startDate <= now) throw new Error("start_date_must_be_future");
+  await prisma.coverageCampaign.update({
+    where: { id },
+    data: { status: "scheduled", startDate },
+  });
+  revalidatePath(adminBase());
+  revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.schedule",
+    targetType: "CoverageCampaign",
+    targetId: id,
+    changes: { startDate: startDate.toISOString() },
+  });
+}
+
+/**
+ * Étend la date de fin d'une campagne active.
+ * Audit SOC2 obligatoire : action CAMPAIGN_DEADLINE_EXTENDED loggée.
+ */
+export async function extendCampaignDeadline(id: string, newEndDate: Date): Promise<void> {
+  const session = await requireAdmin();
+  const now = new Date();
+  if (newEndDate <= now) throw new Error("end_date_in_past");
+  await prisma.coverageCampaign.update({
+    where: { id },
+    data: { endDate: newEndDate },
+  });
+  revalidatePath(adminBase());
+  revalidatePath(`${adminBase()}/${id}`);
+  await logActivity({
+    session,
+    action: "content-gen.campaign.extend-deadline",
+    targetType: "CoverageCampaign",
+    targetId: id,
+    changes: { newEndDate: newEndDate.toISOString(), soc2: "CAMPAIGN_DEADLINE_EXTENDED" },
+  });
 }
