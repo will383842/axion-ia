@@ -3641,6 +3641,7 @@ model ArticleFeedback {
 
   article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
+  @@unique([articleId, userId])
   @@index([articleId])
   @@index([userId])
   @@map("article_feedback")

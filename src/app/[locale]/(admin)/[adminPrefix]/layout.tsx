@@ -104,7 +104,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // Fire-and-forget au rendu SSR ; si DB non disponible (stub) → 0, pas de badge.
   let failedJobsCount = 0;
   // A-12 SP-X3 — Notifications topbar + badge alertes sidebar.
-  let notificationItems: AdminNotificationItem[] = [];
+  const notificationItems: AdminNotificationItem[] = [];
   let alertsCount = 0;
 
   if (showSidebar) {
@@ -222,10 +222,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
           brand={<strong className="admin-brand">Axion-IA · Admin</strong>}
           commandPalette={<AdminCommandPalette adminPrefix={adminPrefix} />}
           notifications={
-            <AdminNotificationsDropdown
-              items={notificationItems}
-              allHref={`${adminBase}/alerts`}
-            />
+            <AdminNotificationsDropdown items={notificationItems} allHref={`${adminBase}/alerts`} />
           }
           userMenu={
             session.user.email ? (
@@ -234,7 +231,11 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
           }
         />
         <div className="flex">
-          <AdminSidebarNav items={nav} failedJobsCount={failedJobsCount} alertsCount={alertsCount} />
+          <AdminSidebarNav
+            items={nav}
+            failedJobsCount={failedJobsCount}
+            alertsCount={alertsCount}
+          />
           <main className="admin-main min-w-0 flex-1">{children}</main>
         </div>
         <AdminSessionExpiryWarning />

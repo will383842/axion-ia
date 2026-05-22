@@ -106,9 +106,9 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
                   color: "var(--color-admin-destructive-fg)",
                 }
               : {
-                  backgroundColor: "#fff8ed",
-                  borderColor: "#f59e0b",
-                  color: "#92400e",
+                  backgroundColor: "var(--color-admin-warning-soft)",
+                  borderColor: "var(--color-admin-warning)",
+                  color: "var(--color-admin-warning-fg)",
                 }
           }
         >
@@ -116,8 +116,8 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
             {costCapAt100 ? "🛑 Plafond mensuel atteint" : "⚠️ Coût mensuel"} (
             {costCapVal.pct ?? "?"}%)
           </strong>{" "}
-          Provider {costCapVal.provider ?? "?"} : ${costCapVal.spent_usd?.toFixed(2) ?? "?"} /{" "}
-          ${costCapVal.cap_usd?.toFixed(2) ?? "?"}.
+          Provider {costCapVal.provider ?? "?"} : ${costCapVal.spent_usd?.toFixed(2) ?? "?"} / $
+          {costCapVal.cap_usd?.toFixed(2) ?? "?"}.
           {costCapAt100
             ? " Workers en pause. Réactivation via reset cap ou 1er du mois."
             : " Le plafond sera atteint prochainement."}{" "}
