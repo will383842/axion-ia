@@ -8,9 +8,11 @@
 `src/server/queue/queues.ts` (802 lignes) — déclaration centralisée des **30+ queues** BullMQ + helpers d'enqueue typés + `bootRepeatableJobs()` qui registre tous les crons.
 
 ### Queues content-gen
+
 `contentGenQueue` `:94`, `contentOrchestratorQueue` `:102`, `contentQualityImproverQueue` `:110`, `contentRssFetchQueue` `:118`, `contentSimilarityMonitorQueue` `:126`, `contentNewsLifecycleQueue` `:134`, `contentPublishQueue` `:142`, `contentIndexNowQueue` `:150`, `contentQaExtractQueue` `:165`, `contentFactCheckQueue` `:179`, `contentTierLifecycleQueue` `:192`, `contentKeywordSyncQueue` `:205`, `contentWebVitalsMonitorQueue` `:219`, `contentPsiMonitorQueue` `:232`, `contentWeeklyReportQueue` `:244`, `contentSchedulerQueue` `:255`, `contentDeadlineCheckerQueue` `:266`, `embeddingsBackfillQueue` `:280`, `brandVoiceDriftMonitorQueue` `:292`, `keywordOpportunityDetectorQueue` `:303`, `contentMonitoringQueue` `:320`.
 
 ### Queues misc
+
 `emailsQueue`, `optionExpirationQueue`, `optionReminderQueue`, `newsletterQueue`, `searchIndexerQueue`, `retentionPurgeQueue`, `bookingCronsQueue`, `imageBank*` (5).
 
 ## defaultJobOptions (`:31-36`)
@@ -26,6 +28,7 @@ Bornage Redis OK : auto-purge à 7j complete / 30j failed + cap nombre. Anti-sat
 ## Cost tracker INCR atomique
 
 **`src/server/queue/workers/content-publish-worker.ts:160-188`** : cap quotidien `MAX_PUBLISH_PER_DAY` via Redis INCR atomique.
+
 - `redis.incr('axion:pub:${today}')` `:163`
 - TTL minuit UTC posé au 1er INCR `:164-171`
 - Si > cap : `redis.decr` rollback `:174` + `job.moveToDelayed(nextWindowTs)` `:186`
@@ -43,6 +46,7 @@ Build stub `:47-64` : si `REDIS_URL.includes("stub.invalid")` → Proxy no-op. C
 ## Cleanup jobs
 
 `bootRepeatableJobs()` `:472` :
+
 - Pattern préservant idempotence : `removeRepeatable` + `add` (anti-doublons en HA scaling, Sprint 15 Fork 1 W2)
 - Cron RGPD `retention-purge` quotidienne 03:00 UTC `:506-514`
 - Tous les crons content-gen + image-bank + booking listés ici
@@ -50,6 +54,7 @@ Build stub `:47-64` : si `REDIS_URL.includes("stub.invalid")` → Proxy no-op. C
 ## Monitoring queue depth
 
 `src/server/queue/workers/content-monitoring-worker.ts:1-80` :
+
 - 4 queues monitored : `content-gen`, `content-publish`, `content-orchestrator`, `emails` `:45-50`
 - Snapshot capturé toutes les heures dans Redis `axion:monitoring:queue-snapshot:*` (TTL 3 h) `:77-78`
 - Si waiting count stable > 30 min `:53` → `alertQueueStuck()` Telegram
@@ -57,13 +62,16 @@ Build stub `:47-64` : si `REDIS_URL.includes("stub.invalid")` → Proxy no-op. C
 ## Findings
 
 ### P0
+
 Aucun.
 
 ### P1
+
 1. **`content-monitoring` ne surveille que 4 queues sur 30+** (`content-monitoring-worker.ts:45-50`). Queues critiques omises : `content-fact-check` (Perplexity outage), `content-quality-improver` (Claude Sonnet outage), `content-rss-fetch`, `embeddings-backfill`. Risque : queue stuck silent sur ces 4 = stall pipeline non détecté.
 2. **`emailsQueue` BullMQ defaults seulement** (`queues.ts:38-40`) : `attempts: 5` mais pas de cap remove fail → si SMTP down longuement, accumulation. Acceptable mais à surveiller.
 
 ### P2
+
 3. `getXxxQueue()` lazy-load dans plusieurs workers (`content-gen-worker.ts:127-145`) — connection Redis ouverte par instance worker, pas réutilisée du module `queues.ts`. Doublonnage des connections (cosmétique, ioredis multiplexe les commandes).
 4. Pas de visibility côté admin sur les queue depths en temps réel (admin V2 n'a pas de panel BullMQ board ; cf. M16 backlog).
 

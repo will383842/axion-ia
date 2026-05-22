@@ -319,12 +319,7 @@ export default async function VillePage({ params }: Props) {
           "Implantations locales France",
           "Transformation numérique PME",
         ]
-      : [
-          "Enterprise AI",
-          "AI audit",
-          "France local presence",
-          "SME digital transformation",
-        ],
+      : ["Enterprise AI", "AI audit", "France local presence", "SME digital transformation"],
     knowsLanguage: ["fr-FR"],
     // AI Act EU art. 50 — disclosure machine-readable persona IA.
     aiGenerated: true,
@@ -351,9 +346,7 @@ export default async function VillePage({ params }: Props) {
       ? `Cabinet IA opérationnel à ${ville.nameFr} · Axion-IA`
       : `Operational AI consultancy in ${ville.nameFr} · Axion-IA`,
     abstract: abstractText,
-    alternativeHeadline: isFr
-      ? `Axion-IA ${ville.nameFr}`
-      : `Axion-IA ${ville.nameFr}`,
+    alternativeHeadline: isFr ? `Axion-IA ${ville.nameFr}` : `Axion-IA ${ville.nameFr}`,
     description: (isFr ? copy.pitchFr : copy.pitchEn).slice(0, 300),
     inLanguage: loc,
     isPartOf: { "@id": `${SITE_URL}/#website` },

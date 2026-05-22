@@ -23,6 +23,7 @@ assertCostCapAvailable(provider, estimatedCostUsd)
 ```
 
 `handleCostCapHit()` `:36` cascade :
+
 1. **Disable provider** : `ProviderConfig.enabled=false` `:38-48`
 2. **Telegram MONITORING** : tag, payload sanitized via `safeTelegramContext()` `:54` (ADR 0010 PII RGPD art. 32) `:53-73`
 3. **Kill-switch global** si plus aucun provider role=text enabled `:76-118` → `ContentGenConfig.kill_switch.active=true` + alerte INCIDENT
@@ -37,6 +38,7 @@ Idempotent : appeler 2× même état final. Fail-soft : chaque step a son try/ca
 ## Track cost post-call
 
 `trackCost(args):258` :
+
 ```ts
 prisma.$transaction(async tx => {
   tx.costLedger.create(...)
@@ -49,6 +51,7 @@ prisma.$transaction(async tx => {
 ## Kill-switch
 
 `ContentGenConfig.kill_switch.active=true` propagé en :
+
 - `content-gen-worker.ts:160-166` (avant lookup)
 - `content-publish-worker.ts:128-134` (avant publish)
 - `content-orchestrator-worker.ts:374-378` (avant tick)
@@ -65,12 +68,15 @@ Pas de check programmatique du coût moyen (juste accumulation `currentMonthSpen
 ## Findings
 
 ### P0
+
 Aucun.
 
 ### P1
+
 1. **`resetMonthlyCostCounters()` `:292` semble non câblé en cron repeatable** — grep `queues.ts:472-801` ne trouve pas de pattern `0 0 1 * *` ni d'appel à `resetMonthlyCostCounters` dans un worker. **À confirmer** : si jamais le reset ne tourne pas → cap mensuel jamais reset → après 1ʳᵉ mois full, kill-switch permanent. Si Will reset manuellement OK, sinon **fix indispensable avant prod**.
 
 ### P2
+
 2. **Pas d'alerte 50 %/90 %** entre 80 % (one-shot) et 100 % (cascade). Saut de granularité large. Recommandation : ajouter `alertCostCap90` pour donner 24 h de réaction à Will avant disable provider.
 3. **Pricing hardcoded** dans providers (voir B-05 P1 #2) — drift potentiel sur Anthropic.
 4. **Pas de coût moyen par article tracking** — agrégation côté UI uniquement.

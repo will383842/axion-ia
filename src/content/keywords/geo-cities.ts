@@ -61,9 +61,10 @@ function normalize(s: string): string {
     .trim();
 }
 
-const BY_NAME_SORTED: ReadonlyArray<{ name: string; nameNorm: string; record: CityRecord }> = CITIES
-  .map((c) => ({ name: c.name, nameNorm: normalize(c.name), record: c }))
-  .sort((a, b) => b.nameNorm.length - a.nameNorm.length);
+const BY_NAME_SORTED: ReadonlyArray<{ name: string; nameNorm: string; record: CityRecord }> =
+  CITIES.map((c) => ({ name: c.name, nameNorm: normalize(c.name), record: c })).sort(
+    (a, b) => b.nameNorm.length - a.nameNorm.length,
+  );
 
 /**
  * Échappe une string pour usage dans une regex.

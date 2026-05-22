@@ -29,6 +29,7 @@
 ## FK cascade : RESTRICT ✅
 
 `schema.prisma:982` :
+
 ```prisma
 article Article @relation(fields: [articleId], references: [id], onDelete: Restrict)
 ```
@@ -38,12 +39,15 @@ Conforme P2 P0-1 (Sprint Correctif). Articles ne peuvent être supprimés tant q
 ## Hash chaîné
 
 `src/server/content-gen/provenance/provenance-logger.ts:34` :
+
 ```ts
-computeProvenanceHash(previousHash, promptHash, timestamp)
-  = sha256(`${previousHash}:${promptHash}:${timestamp.toISOString()}`).slice(0,64)
+computeProvenanceHash(previousHash, promptHash, timestamp) = sha256(
+  `${previousHash}:${promptHash}:${timestamp.toISOString()}`,
+).slice(0, 64);
 ```
 
 `logProvenance():59` :
+
 1. Recherche dernière row (`articleId`, order `timestamp desc`) → `previousHash` `:62-66`
 2. Calcule nouveau `hash = sha256(previous + promptHash + ts)` `:69`
 3. Insert avec `previousHash` + `hash` + `regulationVersion="AI-Act-2024/1689"` `:71-87`
@@ -55,6 +59,7 @@ computeProvenanceHash(previousHash, promptHash, timestamp)
 `hashPrompt(prompt)` `:49` : `sha256(prompt).digest("hex").slice(0,64)`.
 
 Câblé dans `content-publish-worker.ts:488-494` :
+
 ```ts
 const rawPromptHash = (cgJob.outputJsonRaw as Record<string, unknown> | null)?.promptHash;
 const promptHash =
@@ -82,12 +87,15 @@ Pas de cron purge spécifique à GenerationProvenance dans `bootRepeatableJobs()
 ## Findings
 
 ### P0
+
 Aucun.
 
 ### P1
+
 1. **Race condition post-publish/pré-provenance** (`content-publish-worker.ts:330-394` transaction puis `:495` logProvenance hors transaction). Si crash worker entre les deux, article publié sans 1ʳᵉ entrée provenance. Mitigation possible : déplacer `logProvenance` dans la transaction Prisma (mais ça bloquerait publish sur fail provenance — trade-off à arbitrer).
 
 ### P2
+
 2. **Pas de vérification d'intégrité de la chaîne** (script audit qui recompute tous les `hash` et vérifie cohérence `previousHash`). À ajouter pour rapport SOC2/AI Act audit externe.
 3. **`cost Decimal(10, 6)`** : précision potentiellement insuffisante pour cache_read Anthropic ($0.0000003/token → cost individuel peut être < 0.000001). Borderline (somme reste OK).
 4. **promptHash tronqué à 64 chars** = full SHA-256 hex déjà 64 chars donc le `.slice(0, 64)` est un no-op. Cosmétique.

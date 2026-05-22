@@ -1,4 +1,5 @@
 # F-09 UX brand coherence
+
 ## Score : 22/25 — 🟢
 
 ## Findings (preuves)
@@ -25,7 +26,7 @@
 
 4. **Composants UI SSOT** (`src/components/ui/`) : 18 composants Radix-based + tests :
    - accordion, alert, badge, button, card, checkbox, dialog, dropdown-menu, input, label, popover, radio-group, select, separator, sheet, skeleton, slider, switch, tabs, textarea, tooltip
-   - + `ImageBankPicture.tsx` (variant SSOT image)
+   - - `ImageBankPicture.tsx` (variant SSOT image)
    - Pattern Radix UI accessible.
 
 5. **Header data-tone="terracotta"** (Header.tsx:65) : signalétique unique fond terracotta sticky. Logo en bulle ivoire (`bg-paper` l. 81) pour contraste correct.
@@ -44,15 +45,19 @@
 10. **Persona slogan/positionnement** : 5 verticales reflétées dans `Footer.tsx:14-30` (interventions, audit, implementation, codage-developpement, un-a-un) + `Header.tsx:29-37` (Interventions, Audit, Implementation, Cas-concrets, Implantations).
 
 ## P0 bloquants prod
+
 - **Aucun**.
 
 ## P1 importants
+
 - `BRAND.legalName: "Axion-IA"` (brand.ts:16) → quand Will tranche raison sociale officielle FR (ex. « Axion-IA SASU » + SIREN), updater ici uniquement (propagation auto via JSON-LD Organization l. 389 + Person workfor).
 - 5e verticale `codage-developpement` / `sites-web-augmentes` : 2 chemins coexistent (Footer.tsx:23 + page distincte `/sites-web-augmentes`). Confusion potentielle utilisateur — choisir SSOT.
 
 ## P2 polish
+
 - Brand identity: `BRAND` est complet mais aucun composant ne consomme `BRAND.sloganFr`/`sloganEn` directement (grep). Slogan reste dans i18n messages `home`.
 - Le bleu primary sur CTA principal réserver pourrait être perçu comme dérogation à la doctrine « bleu uniquement en pointe » — à clarifier dans charte interne (doctrine accepte ici car CTA pivot service phare).
 
 ## Verdict
+
 Brand identity solide : SSOT `BRAND` + couleurs respectées (terracotta primary, ivoire fond, bleu en pointes/CTA pivot uniquement) + composants UI SSOT Radix-accessible + typo trois fonts justifiée + 5 verticales cohérentes Header/Footer + Manon persona AI Act compliant. Score 22/25 ; -3 pour `legalName` placeholder D7, duplication codage-developpement/sites-web-augmentes, et `sloganFr` non consommé directement.

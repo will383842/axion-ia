@@ -1,5 +1,7 @@
 # Production Checklist — 100 items
+
 ## Date : 2026-05-22 — HEAD 81f6ea0e
+
 ## Score : 78/100 (78 %) — 🟡 Sprint Final requis avant GO
 
 ---
@@ -125,17 +127,18 @@
 ---
 
 ## Total checklist : 100 items
+
 ## Score : **78/100 = 78 % prêt prod**
 
 ### Répartition
 
-| Bloc | Items OK | Items KO | Score |
-|------|----------|----------|-------|
-| Frontend | 22/25 | 3 (1 P0 + 2 P1) | 88 % |
-| Backend | 20/25 | 5 (3 P0 + 2 P1) | 80 % |
-| Flows | 24/25 | 1 (P0-5 action Will) | 96 % |
-| Prod readiness | 21/25 | 4 P1 | 84 % |
-| **TOTAL** | **87/100 si on compte les P1 comme "à venir"** | 13 partiels | 87 % |
+| Bloc           | Items OK                                       | Items KO             | Score |
+| -------------- | ---------------------------------------------- | -------------------- | ----- |
+| Frontend       | 22/25                                          | 3 (1 P0 + 2 P1)      | 88 %  |
+| Backend        | 20/25                                          | 5 (3 P0 + 2 P1)      | 80 %  |
+| Flows          | 24/25                                          | 1 (P0-5 action Will) | 96 %  |
+| Prod readiness | 21/25                                          | 4 P1                 | 84 %  |
+| **TOTAL**      | **87/100 si on compte les P1 comme "à venir"** | 13 partiels          | 87 %  |
 
 ### Verdict checklist
 

@@ -9,23 +9,19 @@
  */
 
 export type ExternalLinkCategory =
-  | "gov_fr"            // .gouv.fr / .fr public (autorité 5)
-  | "gov_eu"            // .europa.eu (autorité 4-5)
-  | "academic"          // .edu / Stanford / MIT / ESSEC / HEC (autorité 5)
+  | "gov_fr" // .gouv.fr / .fr public (autorité 5)
+  | "gov_eu" // .europa.eu (autorité 4-5)
+  | "academic" // .edu / Stanford / MIT / ESSEC / HEC (autorité 5)
   | "research_industry" // McKinsey RI / Gartner / Forrester / IDC / Capgemini RI (autorité 4)
-  | "press_top"         // JDN / Frenchweb / Numerama / Les Échos Tech (autorité 3)
-  | "industry_assoc"    // Syntec, observatoires sectoriels (autorité 3)
-  | "official_doc"      // ISO, AFNOR, IEEE, ArXiv (autorité 5)
-  | "mairie"            // Mairie officielle .fr (autorité 4)
-  | "cci"               // CCI .fr (autorité 4)
-  | "opco"              // OPCO formation (autorité 4)
-  | "international";    // OECD, UNESCO, World Bank (autorité 4)
+  | "press_top" // JDN / Frenchweb / Numerama / Les Échos Tech (autorité 3)
+  | "industry_assoc" // Syntec, observatoires sectoriels (autorité 3)
+  | "official_doc" // ISO, AFNOR, IEEE, ArXiv (autorité 5)
+  | "mairie" // Mairie officielle .fr (autorité 4)
+  | "cci" // CCI .fr (autorité 4)
+  | "opco" // OPCO formation (autorité 4)
+  | "international"; // OECD, UNESCO, World Bank (autorité 4)
 
-export type ExternalLinkScope =
-  | "national"
-  | "regional"
-  | "local"
-  | "international";
+export type ExternalLinkScope = "national" | "regional" | "local" | "international";
 
 export type ExternalLinkStatus =
   | "active"
@@ -38,7 +34,7 @@ export type ExternalLinkStatus =
 export type ExternalLinkAuthority = 1 | 2 | 3 | 4 | 5;
 
 export type ExternalLinkRotationMode =
-  | "round_robin"        // Privilégie liens peu utilisés (default)
+  | "round_robin" // Privilégie liens peu utilisés (default)
   | "weighted_authority" // Pondération autorité pure
   | "random";
 

@@ -52,7 +52,7 @@ Quand Will charge `https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login` en navigati
 
 ```js
 F = !!(I && I.startsWith(i.RSC_CONTENT_TYPE_HEADER));
-if (!F && !D) throw new Error("An unexpected response was received from the server.")
+if (!F && !D) throw new Error("An unexpected response was received from the server.");
 ```
 
 Confirmé via `curl -s /_next/static/chunks/8000-XXX.js | grep "unexpected response"`.
@@ -76,30 +76,32 @@ EN_LOCALE_ENABLED = false (locale EN désactivé runtime, redirect 301 vers /fr)
 
 ### 1.4 Ce qui a déjà été tenté (session 8h, **TOUT échoué** côté résolution finale)
 
-| Tentative | Description | Résultat |
-|---|---|---|
-| Cycle 1-4 | Audit verif-fix-deploy (12 routes V1/V2 + heap NODE_OPTIONS 6144) | OOM pipeline résolu mais admin crash persiste après deploy |
-| Cycle 5 | `runs-on: ubuntu-latest-large` 32 GB | Runner indisponible, cancelled |
-| Cycle 6 | D4-QW1 : `BUILD_SSG_VILLES_INDEXABLE_ONLY=true` (réduit ~6450 pages SSG villes) | Pipeline OK + Coolify deploy OK |
-| Cycle 7 | Dockerfile fix : fresh prisma + engines via npm dans `/tmp/prisma-cli` | Migrations Prisma OK |
-| Migrate manuel | Workflow `admin-emergency-migrate.yml` SSH + force `migrate deploy` | 5 migrations manquantes appliquées (Country, ImageBank, etc.) |
-| Speculation rules disable | Commenter custom speculation rules dans `layout.tsx` | Bug admin persiste, désactivation inutile |
-| Disk cleanup | `docker system prune -af` libéré 22 GB (disque était à 100%) | OK |
-| Coolify queue restart | `docker restart coolify` réinitialise Horizon workers | OK |
-| Fix #1 (b80eef1) | `page.tsx` dashboard : return null sur RSC prefetch (headers `RSC: 1` / `Next-Router-Prefetch: 1`) | Insuffisant — middleware Auth.js intercepte avant `page.tsx` |
-| Fix #2 (9432e16) | `auth.config.ts:authorized()` : return 200 vide sur RSC prefetch | Encore insuffisant — vrai vecteur est Server Action POST, pas GET prefetch |
-| Fix #3 (c33a831) | `auth.config.ts:authorized()` : 303 + `x-action-redirect` header sur Server Action POST (Accept: text/x-component + Next-Action) | **PAS ENCORE DÉPLOYÉ EFFECTIVEMENT** — Coolify ne pull pas la nouvelle image |
-| Fix #4 (8d73d19) | Force-recreate aggressive : pull fresh + `docker rmi` cached Coolify tags + recreate | À tester quand build sera live |
+| Tentative                 | Description                                                                                                                      | Résultat                                                                     |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Cycle 1-4                 | Audit verif-fix-deploy (12 routes V1/V2 + heap NODE_OPTIONS 6144)                                                                | OOM pipeline résolu mais admin crash persiste après deploy                   |
+| Cycle 5                   | `runs-on: ubuntu-latest-large` 32 GB                                                                                             | Runner indisponible, cancelled                                               |
+| Cycle 6                   | D4-QW1 : `BUILD_SSG_VILLES_INDEXABLE_ONLY=true` (réduit ~6450 pages SSG villes)                                                  | Pipeline OK + Coolify deploy OK                                              |
+| Cycle 7                   | Dockerfile fix : fresh prisma + engines via npm dans `/tmp/prisma-cli`                                                           | Migrations Prisma OK                                                         |
+| Migrate manuel            | Workflow `admin-emergency-migrate.yml` SSH + force `migrate deploy`                                                              | 5 migrations manquantes appliquées (Country, ImageBank, etc.)                |
+| Speculation rules disable | Commenter custom speculation rules dans `layout.tsx`                                                                             | Bug admin persiste, désactivation inutile                                    |
+| Disk cleanup              | `docker system prune -af` libéré 22 GB (disque était à 100%)                                                                     | OK                                                                           |
+| Coolify queue restart     | `docker restart coolify` réinitialise Horizon workers                                                                            | OK                                                                           |
+| Fix #1 (b80eef1)          | `page.tsx` dashboard : return null sur RSC prefetch (headers `RSC: 1` / `Next-Router-Prefetch: 1`)                               | Insuffisant — middleware Auth.js intercepte avant `page.tsx`                 |
+| Fix #2 (9432e16)          | `auth.config.ts:authorized()` : return 200 vide sur RSC prefetch                                                                 | Encore insuffisant — vrai vecteur est Server Action POST, pas GET prefetch   |
+| Fix #3 (c33a831)          | `auth.config.ts:authorized()` : 303 + `x-action-redirect` header sur Server Action POST (Accept: text/x-component + Next-Action) | **PAS ENCORE DÉPLOYÉ EFFECTIVEMENT** — Coolify ne pull pas la nouvelle image |
+| Fix #4 (8d73d19)          | Force-recreate aggressive : pull fresh + `docker rmi` cached Coolify tags + recreate                                             | À tester quand build sera live                                               |
 
 ### 1.5 Audit profond précédent (4 sub-agents, session précédente)
 
 Sub-agent **A1 (flow login)** :
+
 - Confirmé matcher `proxy.ts` exclut `/api/*` (donc `/api/auth/*` Server Actions Auth.js bypass middleware) MAIS inclut `/fr/admin-*/login` (donc Server Actions de cette URL passent par `authorized()`).
 - Tous les redirects identifiés : `proxy.ts` (EN→FR), `auth.config.ts` (admin auth), `layout.tsx` (locale check + adminPrefix), `page.tsx` (session check), `actions.ts` (signInAction succès), `login/page.tsx` (déjà loggé).
 - Aucun fetch/Server Action invoqué au MOUNT de la page login. Tous les hooks `useEffect` étudiés.
 - Verdict : E394 fire UNIQUEMENT pendant un Server Action POST dont la réponse n'a pas le bon content-type. Si fire au mount sans interaction, il faut creuser ailleurs.
 
 Sub-agent **A2 (issues web)** :
+
 - [Next.js #65394 OPEN](https://github.com/vercel/next.js/issues/65394) — "Server Actions don't respect NextResponse.redirect from Middleware". Workaround officiel = status 303 + `x-action-redirect` header.
 - [Next.js #79346](https://github.com/vercel/next.js/issues/79346) — "Redirects drop `_rsc` & lead to dirty cache in Chrome". Recommande `Vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept`.
 - [Next.js discussion #89607](https://github.com/vercel/next.js/discussions/89607) — Reconnaît "An unexpected response..." comme régression Next 16.x sans fix upstream.
@@ -107,6 +109,7 @@ Sub-agent **A2 (issues web)** :
 - [next-auth discussion #10704](https://github.com/nextauthjs/next-auth/discussions/10704) — Server actions cassent en prod avec v5 beta.
 
 Sub-agent **A3 (client components)** :
+
 - `AdminSessionExpiryWarning` gated par `showSidebar = !!session?.user`, donc NON MONTÉ sur page login. Éliminé.
 - `LoginForm` n'invoque pas `signInAction` au mount (`useActionState` est passif).
 - `WebVitals` skip routes admin (regex check).
@@ -114,6 +117,7 @@ Sub-agent **A3 (client components)** :
 - Sentry init lazy via `requestIdleCallback`, pas de fetch synchrone.
 
 Sub-agent **A4 (chunk minifié)** :
+
 - Confirme E394 vient de `fetchServerAction` dans `server-action-reducer.ts`.
 - Caller path : composant client → `dispatchAction` → `serverActionReducer` → `fetchServerAction` → POST canonicalUrl avec header `next-action: <hash>`.
 - URL POST = la page courante (`canonicalUrl`), pas un endpoint séparé.
@@ -168,6 +172,7 @@ Will dispose de l'UI Coolify mais on n'a pas son URL/credentials documentées. �
 ### 2.1 Objectif unique
 
 🟢 **Admin login fonctionnel + design V2 visible** :
+
 - Curl `/fr/admin-xfz5hk0j7hrk/login` → 200 + HTML form sans error boundary client.
 - Will login avec ses identifiants → dashboard V2 affiché (sidebar V2, primitives V2, etc.).
 - 5 routes admin testées sans crash : `/`, `/login`, `/reservations`, `/users`, `/settings`.
@@ -250,6 +255,7 @@ grep -nE "admin|api" src/proxy.ts | head -20
 ### 4.5 Stop & ask Phase 0
 
 Si :
+
 - Prod SHA ≠ HEAD → force-recreate puis attendre.
 - Working tree dirty avec fichiers non reconnus → flag.
 - Plus de 3 runs in_progress > 60 min → cancel + diagnose Coolify.
@@ -265,6 +271,7 @@ Spawne en parallèle (un seul message avec 6 Agent calls) :
 ### D1 — Network reproduction via Playwright (le plus important)
 
 Brief :
+
 - Installe Playwright si manquant (`pnpm add -D @playwright/test playwright`).
 - Crée un script `_AUDIT/.../d1-repro.spec.ts` qui :
   1. Lance Chromium en headless.
@@ -283,6 +290,7 @@ Tools : Bash, Read, Write. **PRIORITÉ ABSOLUE — c'est la seule manière de PR
 ### D2 — Code source audit complet flow admin
 
 Lis EN ENTIER (path absolu Windows) :
+
 - `src/proxy.ts`
 - `src/auth.config.ts`
 - `src/auth.ts`
@@ -299,6 +307,7 @@ Lis EN ENTIER (path absolu Windows) :
 - TOUS les Client Components dans root locale layout.
 
 Identifie :
+
 1. **Diagramme exhaustif du flow** : depuis le clic Will → response render → mount client → premier crash.
 2. **TOUS les fetch / Server Action / `<Link prefetch>`** dans la chaîne render admin login.
 3. **TOUS les `redirect()`, `notFound()`, `Response.redirect()`** dans le flow.
@@ -337,6 +346,7 @@ Identifie :
 
 - Hypothèse : un cookie `__Host-authjs.csrf-token` ou `__Secure-authjs.session-token` corrompu/expiré déclenche un redirect dans Auth.js qui se traduit en non-RSC response.
 - Tests :
+
   ```bash
   # Sans aucun cookie
   curl -sI -H "RSC: 1" https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login -H "Cookie: "
@@ -352,6 +362,7 @@ Identifie :
 
 Attendre les 6 livrables. Croiser les findings. Produire :
 `01-DIAGNOSTIC-PROFOND-V2.md` avec :
+
 - Diagramme du flow consolidé
 - L'URL exacte coupable (depuis D1 Playwright)
 - Le response coupable (status + content-type + body 200 chars)
@@ -366,10 +377,10 @@ Format `02-PLAN-TESTS.md` :
 ```markdown
 ## Hypothèses ranked
 
-| # | Hypothèse | Probabilité | Preuve |
-|---|---|---|---|
-| 1 | ... | X% | D1 Playwright a vu URL Y → response Z |
-| 2 | ... | Y% | ... |
+| #   | Hypothèse | Probabilité | Preuve                                |
+| --- | --------- | ----------- | ------------------------------------- |
+| 1   | ...       | X%          | D1 Playwright a vu URL Y → response Z |
+| 2   | ...       | Y%          | ...                                   |
 
 ## Tests CIBLES (ordre d'exécution)
 
@@ -382,6 +393,7 @@ Format `02-PLAN-TESTS.md` :
 ## 7. PHASE 3 — TESTS REPRODUCTIBLES (~1 h)
 
 Exécuter les tests dans l'ordre. Pour chaque test :
+
 - Commit + push spécifique au test.
 - Wait deploy effective (vérifier `x-axion-build-sha` matches HEAD).
 - Si Coolify ne pull pas, trigger `coolify-force-recreate.yml` immédiatement après.
@@ -418,9 +430,7 @@ Modifier `proxy.ts` matcher pour exclure `/fr/admin-*/login` du wrapper Auth.js 
 
 ```ts
 export const config = {
-  matcher: [
-    "/((?!api|_next|.*\\.|admin-[a-z0-9]+/login).*)",
-  ],
+  matcher: ["/((?!api|_next|.*\\.|admin-[a-z0-9]+/login).*)"],
 };
 ```
 
@@ -474,6 +484,7 @@ Tous DOIVENT passer. Si un échoue → Phase 4 next option.
 ## 10. PHASE 6 — VERDICT + LIVRABLES (~30 min)
 
 Produire :
+
 - `VERDICT-FINAL-ADMIN-FIX.md` (verdict, durée, fix appliqué, smoke results)
 - `EXEC-SUMMARY-WILL.md` (≤ 50 lignes non-tech)
 - `MANIFEST.md`
@@ -659,22 +670,26 @@ L'agent doit répondre par "GO admin crash deep audit" et démarrer Phase 0 imm�
 🛑 STOP & ASK UNIQUEMENT si :
 
 ### Cas 1 — Plafonds dépassés
+
 - Temps > 8 h.
 - Tests > 10 sans succès.
 - Coût runner > $20.
 - Commits fix > 10.
 
 ### Cas 2 — Risque prod
+
 - Action nécessaire qui mettrait la prod hors-ligne > 5 min.
 - Découverte d'un secret leaké.
 - Force push main demandé.
 
 ### Cas 3 — Dépendances majeures
+
 - Activation paid Coolify plan / paid runners requiert l'accord Will.
 - Migration Auth.js stable v5 release (requiert validation).
 - Reset complet Coolify app (requiert clic Will).
 
 ### Cas 4 — Audit confirme bug upstream non-corrigeable
+
 - Bug Next.js / Auth.js sans workaround viable.
 - Nécessite décision Will : migration Vercel/Render, downgrade major version, ou rewrite auth flow.
 

@@ -677,13 +677,7 @@ export const KEYWORD_CLUSTERS: readonly KeywordCluster[] = [
     id: "transversal",
     label: "Transversal (brand, presse, positionnements, maintenance)",
     vertical: "transversal",
-    urlPatterns: [
-      "/fr/a-propos",
-      "/fr/presse",
-      "/fr/ressources",
-      "/fr/maintenance",
-      "/fr/contact",
-    ],
+    urlPatterns: ["/fr/a-propos", "/fr/presse", "/fr/ressources", "/fr/maintenance", "/fr/contact"],
     keywordHints: [
       "axion-ia",
       "axion ia",

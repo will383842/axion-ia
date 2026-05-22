@@ -24,10 +24,7 @@ export interface BlogSearchProps {
 }
 
 function normalize(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
+  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
 
 function matchScore(item: BlogSearchItem, query: string): number {
@@ -159,7 +156,7 @@ export function BlogSearch({
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onInputKeyDown}
                 placeholder={placeholder}
-                className="flex-1 bg-transparent text-sm outline-none placeholder:text-fg-muted"
+                className="placeholder:text-fg-muted flex-1 bg-transparent text-sm outline-none"
               />
               <kbd className="border-border text-fg-muted bg-sand rounded border px-1.5 py-0.5 text-[10px]">
                 Esc

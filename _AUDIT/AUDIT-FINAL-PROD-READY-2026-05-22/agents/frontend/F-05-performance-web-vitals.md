@@ -1,4 +1,5 @@
 # F-05 Performance Web Vitals
+
 ## Score : 20/25 — 🟢
 
 ## Findings (preuves)
@@ -33,7 +34,7 @@
 
 7. **WebVitals component** (`src/components/analytics/WebVitals.tsx`) : monté dans layout l. 230 → mesure RUM côté visiteur (route `/api/vitals`).
 
-8. **SpeculationRules client-side** (`SpeculationRules.tsx`, mounted l. 250) : gating route publique uniquement (skip /admin/*) — gain LCP soft-nav -800/-1200ms (V-04 P3).
+8. **SpeculationRules client-side** (`SpeculationRules.tsx`, mounted l. 250) : gating route publique uniquement (skip /admin/\*) — gain LCP soft-nav -800/-1200ms (V-04 P3).
 
 9. **JsonLdGraph @graph consolidé** (l. 257) : 2 JSON-LD scripts inline → 1 script `@graph` → gain doc-parse -300/-500ms (V-04 P5).
 
@@ -41,21 +42,25 @@
 
 11. **Bundle gate** : `package.json:79` `bundle:check: size-limit` + doctrine ligne 199-200 « 75 KB gz/route shell, 110 KB /reserver ». `@size-limit/preset-app ^12.1.0` installé.
 
-12. **Cache headers SEO** (`next.config.ts:212-238`) : sitemap.xml + sitemap/* cachés `max-age=300, s-maxage=600, swr=3600` ; OG images `max-age=86400, s-maxage=604800`.
+12. **Cache headers SEO** (`next.config.ts:212-238`) : sitemap.xml + sitemap/\* cachés `max-age=300, s-maxage=600, swr=3600` ; OG images `max-age=86400, s-maxage=604800`.
 
 ## P0 bloquants prod
+
 - **Aucun**.
 
 ## P1 importants
+
 - LHCI gate CLS relâché de 0 à 0.1 (vs cible interne stricte AGENTS.md = 0). Cible doctrine non gated en error → on accepte 0.1 (Google good threshold).
 - LHCI TBT relâché 150 → 200ms — décalage avec doctrine AGENTS.md.
 - INP non testé en LHCI (off lab). Confiance dépend du RUM Plausible/`api/vitals`.
 - L’illustration SVG hero (~554 lignes inline dans `src/app/[locale]/page.tsx:267-824`) = ~10-15 KB HTML compressé. Cachée mobile mais parsée toujours. Pourrait être lazy-rendered.
 
 ## P2 polish
+
 - `legacy-javascript` / `unused-javascript` / `dom-size` audits passés en WARN (doctrine acceptée ligne 74 du LHCI).
 - `bf-cache` WARN : false positive Auth.js cookies (doctrine doc ligne 77).
 - `productionBrowserSourceMaps: false` (l. 90) — OK pour perf, source maps Sentry uploadées au build.
 
 ## Verdict
+
 Setup performance excellent : Next 16 standalone + inlineCss + optimizePackageImports + AVIF/WebP + 3 fonts swap + serverExternalPackages strict + JsonLdGraph consolidé + SpeculationRules client-side + LCP priority sur hero pages + size-limit gate + LHCI gate strict (LCP/CLS/FCP/SI). Plausible Web Vitals monitoring actif. Quelques cibles internes (CLS=0, TBT=150ms) relâchées dans gate effectif (0.1/200ms). Score 20/25 ; -5 pour le décalage cible doctrine/gate effectif + INP non lab-testé + SVG hero inline pesant.

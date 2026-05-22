@@ -36,6 +36,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -288,6 +289,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
 
     const finalInternalLinkCount =
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
@@ -348,6 +350,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       citations: lastCitations,
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      mentionedCities,
     };
   },
 };

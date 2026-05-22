@@ -1,4 +1,5 @@
 # F-02 Routes admin
+
 ## Score : 22/25 — 🟢
 
 ## Findings (preuves)
@@ -25,14 +26,18 @@
 9. **Failed jobs badge** : `getFailedJobsCount()` (ligne 96) émet badge sidebar — fire-and-forget, stub-safe (try/catch).
 
 ## P0 bloquants prod
+
 - **Aucun**.
 
 ## P1 importants
+
 - `signOut` exposé uniquement via form action POST dans dashboard root V2 (commentaire layout l. 118) — vérifier que `AdminUserMenu` ne tente pas un GET sur `/api/auth/signout` (Auth.js v5 → 405).
 - `ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9"` (fallback hardcodé l. 69 + proxy.ts:62 + auth.config.ts:17) : si env absent en prod → fallback prefix devient public. Devrait throw au boot si NODE_ENV=production.
 
 ## P2 polish
+
 - Le robots `/admin/`, `/fr/admin/`, `/en/admin/` est Disallow mais le vrai prefix `admin-dev-x7k2n9` (ou customisé) n’est pas dans la liste — couvert par auth + 404 mais GSC pourrait crawler.
 
 ## Verdict
+
 Architecture admin solide : segment URL secret + Auth.js v5 + redirect locale FR + 4 sections claires (Pilotage/Sources/Suivi/Réglages) conformes D-P5-6. 125 pages V2 toutes derrière auth. Sidebar SSOT + Command palette + session warning. Cloisonnement CSS impeccable (pas de leakage shell public dans admin). Score 22/25 ; -3 pour fallback prefix hardcodé et hygiène signOut à valider e2e.
