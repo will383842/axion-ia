@@ -1,3 +1,4 @@
+// use-client: filtres interactifs (useState) + pagination + table live
 "use client";
 
 /**
@@ -61,7 +62,15 @@ function ProgressBar({ value, max, color }: { value: number; max: number; color:
 }
 
 // ── Card métrique ──────────────────────────────────────────────────────────────
-function MetricCard({ label, value, sub }: { label: string; value: number | string; sub?: string }) {
+function MetricCard({
+  label,
+  value,
+  sub,
+}: {
+  label: string;
+  value: number | string;
+  sub?: string;
+}) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
       <p className="text-sm text-gray-500">{label}</p>
@@ -185,7 +194,9 @@ export function KeywordStrategyView({ searchParams }: Props) {
                 <ProgressBar
                   value={count}
                   max={seeds.length / 5}
-                  color={count >= 250 ? "bg-green-500" : count >= 150 ? "bg-yellow-400" : "bg-red-400"}
+                  color={
+                    count >= 250 ? "bg-green-500" : count >= 150 ? "bg-yellow-400" : "bg-red-400"
+                  }
                 />
               </div>
             );
@@ -217,7 +228,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
             setVertical(e.target.value);
             setPage(1);
           }}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">Toutes les verticales</option>
           {allVerticals.map((v) => (
@@ -233,7 +244,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
             setIntent(e.target.value);
             setPage(1);
           }}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">Tous les intents</option>
           {allIntents.map((i) => (
@@ -251,7 +262,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
             setQuery(e.target.value);
             setPage(1);
           }}
-          className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
 
         <span className="flex items-center text-sm text-gray-500">
@@ -295,7 +306,9 @@ export function KeywordStrategyView({ searchParams }: Props) {
                       {INTENT_LABELS[s.intent] ?? s.intent}
                     </span>
                   </td>
-                  <td className="max-w-xs truncate px-4 py-2 text-xs text-gray-400">{s.urlCible}</td>
+                  <td className="max-w-xs truncate px-4 py-2 text-xs text-gray-400">
+                    {s.urlCible}
+                  </td>
                   <td className="px-4 py-2 text-center">
                     <span
                       className={`font-bold ${s.priorite === 1 ? "text-red-600" : s.priorite === 2 ? "text-yellow-600" : "text-gray-400"}`}
