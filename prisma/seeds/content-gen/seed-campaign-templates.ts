@@ -1,92 +1,131 @@
 /**
- * Seed 6 campaign template presets (D-P5-1 Sprint P5).
+ * Seed campaign template presets (D-P5-1 Sprint P5, mis à jour P6 2026-05-22).
+ * Couvre les 5 verticales Axion-IA × TPE/PME/ETI/GE.
  * Idempotent via upsert on slug.
  */
 
 import type { PrismaClient } from "../../generated/client";
 
+const ALL_VERTICALS = [
+  "interventions_formations",
+  "audits",
+  "implementations",
+  "un_a_un",
+  "sites_web_augmentes",
+];
+
+const ALL_TARGETS = ["tpe", "pme", "eti", "ge"];
+
 const TEMPLATES = [
+  // ── Preset universel ────────────────────────────────────────────────────
   {
-    slug: "pme-audits",
-    name: "PME audits",
-    description: "Campagne audit IA pour PME — blog pilier + landing ville, cap 30/jour.",
+    slug: "toutes-verticales-general",
+    name: "Toutes verticales — Général",
+    description:
+      "Campagne générale couvrant les 5 services Axion-IA pour toutes tailles d'entreprise — blog depuis keywords, 30/j.",
+    config: {
+      verticals: ALL_VERTICALS,
+      target: ALL_TARGETS,
+      types: ["blog_from_keywords", "qa_derived"],
+      batchSize: 30,
+      dailyCap: 30,
+      cityProcessingMode: "sequential",
+    },
+  },
+
+  // ── Par verticale, toutes cibles ────────────────────────────────────────
+  {
+    slug: "interventions-formations-all",
+    name: "Interventions & Formations — Toutes cibles",
+    description: "Articles formations IA pour TPE, PME, ETI et GE — blog pilier + keywords + Q/R.",
+    config: {
+      verticals: ["interventions_formations"],
+      target: ALL_TARGETS,
+      types: ["blog_pillar", "blog_from_keywords", "qa_derived"],
+      batchSize: 30,
+      dailyCap: 30,
+    },
+  },
+  {
+    slug: "audits-all",
+    name: "Audits IA — Toutes cibles",
+    description: "Articles audit IA + landing pages villes pour toutes tailles d'entreprise.",
     config: {
       verticals: ["audits"],
-      target: ["pme"],
-      types: ["blog_pillar", "landing_ville"],
+      target: ALL_TARGETS,
+      types: ["blog_pillar", "landing_ville", "blog_from_keywords"],
       batchSize: 20,
       dailyCap: 30,
-      // Sprint Campaign Controls — ville par ville, approche stratégique
       cityProcessingMode: "sequential",
     },
   },
   {
-    slug: "interventions-weekly",
-    name: "Interventions weekly",
-    description: "Articles hebdo interventions formations PME/ETI — lundi 9h, keywords + Q/A.",
+    slug: "implementations-all",
+    name: "Implémentations IA — Toutes cibles",
+    description:
+      "Articles implémentations IA (chatbots, RAG, automatisation) pour toutes tailles d'entreprise.",
     config: {
-      verticals: ["interventions_formations"],
-      target: ["pme", "eti"],
-      types: ["blog_from_keywords", "qa_derived"],
-      schedule: "0 9 * * 1",
-      batchSize: 50,
-      // Sprint Campaign Controls — recurringSchedule explicite (déjà dans schedule pour référence)
-      recurringSchedule: "0 9 * * 1",
-    },
-  },
-  {
-    slug: "tpe-burst",
-    name: "TPE burst",
-    description: "Burst articles interventions+audits TPE — 50 articles/jour depuis keywords.",
-    config: {
-      verticals: ["interventions_formations", "audits"],
-      target: ["tpe"],
-      types: ["blog_from_keywords"],
-      batchSize: 100,
-      dailyCap: 50,
-      // Sprint Campaign Controls — burst limité 30j (endDateOffsetDays = offset relatif à la création)
-      endDateOffsetDays: 30,
-    },
-  },
-  {
-    slug: "eti-pilier",
-    name: "ETI pilier",
-    description: "Articles pilier haute qualite ETI — implementations et audits, seuil 75/100.",
-    config: {
-      verticals: ["implementations", "audits"],
-      target: ["eti"],
-      types: ["blog_pillar"],
-      batchSize: 10,
-      qualityThreshold: 75,
-      // Sprint Campaign Controls — volume ETI : parallèle (toutes villes simultanément)
-      cityProcessingMode: "parallel",
-    },
-  },
-  {
-    slug: "cities-paris",
-    name: "Cities Paris",
-    description: "Landing pages ville ancrees Paris — toutes verticales, batch 20.",
-    config: {
-      verticals: ["interventions_formations", "audits", "implementations"],
-      target: ["tpe", "pme", "eti", "ge"],
-      types: ["landing_ville"],
-      anchorVilleSlug: "paris",
+      verticals: ["implementations"],
+      target: ALL_TARGETS,
+      types: ["blog_pillar", "blog_from_keywords", "comparison"],
       batchSize: 20,
-      // Sprint Campaign Controls — Paris first : séquentiel
+      dailyCap: 30,
+    },
+  },
+  {
+    slug: "un-a-un-all",
+    name: "Coaching 1-to-1 IA — Toutes cibles",
+    description: "Articles coaching individuel IA pour dirigeants et managers — blog pilier + Q/R.",
+    config: {
+      verticals: ["un_a_un"],
+      target: ALL_TARGETS,
+      types: ["blog_pillar", "qa_derived", "blog_from_keywords"],
+      batchSize: 15,
+      dailyCap: 20,
+    },
+  },
+  {
+    slug: "sites-web-augmentes-all",
+    name: "Sites Web Augmentés IA — Toutes cibles",
+    description:
+      "Articles création/augmentation de sites web par l'IA pour toutes tailles d'entreprise.",
+    config: {
+      verticals: ["sites_web_augmentes"],
+      target: ALL_TARGETS,
+      types: ["blog_pillar", "blog_from_keywords", "comparison", "qa_derived"],
+      batchSize: 20,
+      dailyCap: 30,
+    },
+  },
+
+  // ── Landing pages villes (toutes verticales) ────────────────────────────
+  {
+    slug: "landing-villes-all",
+    name: "Landing pages villes — 5 verticales",
+    description:
+      "Landing pages géolocalisées pour les 120 villes FR — couvre toutes les verticales et toutes les cibles.",
+    config: {
+      verticals: ALL_VERTICALS,
+      target: ALL_TARGETS,
+      types: ["landing_ville"],
+      batchSize: 20,
+      dailyCap: 30,
       cityProcessingMode: "sequential",
     },
   },
+
+  // ── RSS actualité IA ────────────────────────────────────────────────────
   {
     slug: "rss-daily",
-    name: "RSS daily",
-    description: "Blog depuis RSS quotidien 7h — interventions formations, seuil qualite 65.",
+    name: "RSS quotidien — Actualité IA",
+    description: "Blog depuis flux RSS IA chaque matin à 7h — couvre toutes les verticales.",
     config: {
-      verticals: ["interventions_formations"],
+      verticals: ALL_VERTICALS,
+      target: ALL_TARGETS,
       types: ["blog_from_rss"],
       schedule: "0 7 * * *",
       batchSize: 10,
       qualityThreshold: 65,
-      // Sprint Campaign Controls — recurringSchedule quotidien 7h CET
       recurringSchedule: "0 7 * * *",
     },
   },
