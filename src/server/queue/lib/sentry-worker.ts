@@ -61,7 +61,9 @@ export type WorkerName =
   // Phase F Sprint Perfection 2026 — embeddings backfill daily cron
   | "embeddings-backfill"
   // Sprint Perfection 2026 — brand-voice drift monitor
-  | "brand-voice-drift-monitor";
+  | "brand-voice-drift-monitor"
+  // Phase 8 Sprint Keywords Perfection 2026-05-22
+  | "keyword-opportunity-detector";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.

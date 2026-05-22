@@ -23,6 +23,8 @@
 import { prisma } from "@/lib/prisma";
 import { ALL_KEYWORD_SEEDS } from "@/content/keywords/master";
 import type { KeywordModule } from "@/content/keywords/types";
+import { generateGeoKeywords, selectGeoKeyword } from "./keyword-templates";
+import type { CityRef } from "./keyword-templates";
 
 // ── Mapping vertical (ServiceSector) → KeywordModule ─────────────────────────
 
@@ -68,6 +70,11 @@ export interface SelectKeywordOptions {
   /** ContentType hint pour affiner la selection (optionnel). */
   readonly contentType?: string;
   /**
+   * Phase 6 Sprint Perfection 2026-05-22 — ID ville pour keywords géo à la volée.
+   * Si fourni + ville pas dans les 100 seeds en dur : génère keyword géo via keyword-templates.ts.
+   */
+  readonly city?: CityRef;
+  /**
    * P1-8 — ID de la campagne appelante (ContentGenJob.campaignId).
    * Utilise pour le log structure keyword_select_exhausted et reserve
    * pour un futur filtre SQL quand la table `keywords` aura un campaign_id.
@@ -95,7 +102,19 @@ interface AtomicSelectResult {
  * Fire-and-forget safe : les erreurs DB sont absorbees, fallback in-memory.
  */
 export async function selectKeyword(options: SelectKeywordOptions): Promise<string | null> {
-  const { vertical, campaignId } = options;
+  const { vertical, campaignId, city } = options;
+
+  // 0. Mode géo à la volée — villes tier 3/4 non seedées en DB.
+  if (city) {
+    const geoKws = generateGeoKeywords(vertical, city);
+    if (geoKws.length > 0) {
+      // Rotation simple basée sur le compteur in-memory de la vertical.
+      const counter = inMemoryCounters.get(`geo_${vertical}_${city.name}`) ?? 0;
+      const kw = selectGeoKeyword(vertical, city, counter);
+      inMemoryCounters.set(`geo_${vertical}_${city.name}`, counter + 1);
+      return kw;
+    }
+  }
 
   // 1. Tentative DB mode avec lock atomique (Postgres-only).
   try {

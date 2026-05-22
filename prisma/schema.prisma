@@ -3246,11 +3246,31 @@ model KeywordTracking {
   firstSeenAt   DateTime              @default(now())
   createdAt     DateTime              @default(now())
   updatedAt     DateTime              @updatedAt
+  // Phase 8 Sprint Keywords Perfection 2026-05-22 — intelligence concurrentielle
+  /// URL du concurrent actuellement en position 1 pour ce keyword.
+  competitorTopUrl    String?   @map("competitor_top_url") @db.VarChar(512)
+  /// Nom du concurrent en position 1 (ex: "axionai.fr", "Capgemini", "Cegos").
+  competitorTopName   String?   @map("competitor_top_name") @db.VarChar(100)
+  /// Tags faiblesses observées chez le concurrent (ex: ["thin_content", "no_schema"]).
+  competitorWeaknesses String[] @default([]) @map("competitor_weaknesses")
+  /// Niveau d'opportunité calculé : 'high' | 'medium' | 'low'.
+  axionOpportunity    String?   @map("axion_opportunity") @db.VarChar(10)
+  /// Action recommandée pour dominer ce keyword (ex: "Pilier 3000 mots + FAQ schema").
+  recommendedAction   String?   @map("recommended_action") @db.Text
+  /// Date à laquelle Axion-IA est entré dans le top 10 pour ce keyword.
+  ourFirstRankAt      DateTime? @map("our_first_rank_at")
+  /// Meilleur rank atteint (1 = position 1). null si jamais rankés.
+  ourBestRank         Int?      @map("our_best_rank")
+  /// Rang actuel observé. null si non suivi.
+  ourCurrentRank      Int?      @map("our_current_rank")
+  /// Tendance de position sur 7 jours : 'up' | 'down' | 'stable'.
+  trendDirection      String?   @map("trend_direction") @db.VarChar(10)
 
   @@unique([keyword, targetUrl])
   @@index([articleId])
   @@index([syncedAt])
   @@index([position])
+  @@index([axionOpportunity])
   @@map("keyword_tracking")
 }
 
