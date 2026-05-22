@@ -8,6 +8,7 @@
 
 "use server";
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ServiceSector } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
@@ -312,4 +313,67 @@ export async function getSectorBreakdownToday(): Promise<SectorBreakdownResult> 
   ];
 
   return { cards, windowStart: start };
+}
+
+// ────────────────────────────────────────────────────────────────────
+// QualityV2 — Distribution `qualityImprovementAttempts`
+// Sprint Final P1-13 — Combien d'articles ont nécessité 0, 1, 2, 3+
+// itérations de la boucle LLM-judge → quality-improver-worker (§ 27 v1.7).
+// Source : ContentGenJob (le champ vit côté job, pas Article). On filtre
+// sur les statuts terminaux pertinents pour le post-mortem qualité :
+// `published` (article finalement publié) + `needs_review` (review humaine).
+// ────────────────────────────────────────────────────────────────────
+
+export interface QualityAttemptsBucket {
+  readonly attempts: number;
+  readonly count: number;
+}
+
+export interface QualityAttemptsDistribution {
+  readonly buckets: ReadonlyArray<QualityAttemptsBucket>;
+  readonly total: number;
+}
+
+// Sprint Final P1-3 — Validation Zod du shape de sortie (defense-in-depth
+// cohérente avec distribution.ts / coverage.ts).
+const QualityAttemptsBucketSchema = z
+  .object({
+    attempts: z.number().int().min(0),
+    count: z.number().int().min(0),
+  })
+  .strict();
+const QualityAttemptsDistributionSchema = z
+  .object({
+    buckets: z.array(QualityAttemptsBucketSchema),
+    total: z.number().int().min(0),
+  })
+  .strict();
+
+export async function getQualityImprovementAttemptsDistribution(): Promise<QualityAttemptsDistribution> {
+  await requireAdmin();
+
+  const grouped = await safeCount(
+    prisma.contentGenJob.groupBy({
+      by: ["qualityImprovementAttempts"],
+      _count: { _all: true },
+      where: { status: { in: ["published", "needs_review"] } },
+    }),
+    [] as Array<{
+      qualityImprovementAttempts: number;
+      _count: { _all: number };
+    }>,
+  );
+
+  const buckets: QualityAttemptsBucket[] = grouped
+    .map((row) => ({
+      attempts: row.qualityImprovementAttempts,
+      count: row._count._all,
+    }))
+    .sort((a, b) => a.attempts - b.attempts);
+
+  const total = buckets.reduce((s, b) => s + b.count, 0);
+  const result: QualityAttemptsDistribution = { buckets, total };
+  // Output Zod check (gate runtime — Prisma typing déjà strict mais cohérent
+  // avec P1-3 doctrine "Zod aux frontières serveur").
+  return QualityAttemptsDistributionSchema.parse(result);
 }

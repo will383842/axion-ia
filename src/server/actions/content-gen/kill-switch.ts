@@ -13,11 +13,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 
 const KEY = "kill_switch";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ActivateReasonSchema = z.string().min(1).max(1000);
 
 export interface KillSwitchState {
   readonly active: boolean;
@@ -31,6 +35,8 @@ export async function getKillSwitch(): Promise<KillSwitchState> {
 
 export async function activateKillSwitch(reason: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ActivateReasonSchema.parse(reason);
   await writeContentGenConfig(
     KEY,
     {

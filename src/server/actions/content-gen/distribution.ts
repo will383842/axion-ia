@@ -16,10 +16,45 @@
 // client/server sans constraint).
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ServiceSector } from "../../../../prisma/generated/client";
 import { assertEditorialKeys, assertSum100 } from "@/server/content-gen/shared/editorial-mix-rules";
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ServiceSectorSchema = z.enum([
+  "interventions_formations",
+  "audits",
+  "implementations",
+  "un_a_un",
+  "sites_web_augmentes",
+]);
+const SlugSchema = z
+  .string()
+  .min(2)
+  .max(80)
+  .regex(/^[a-z0-9\-_]+$/, "slug doit être [a-z0-9-_]");
+const PercentRecordSchema = z.record(z.string().min(1).max(120), z.number().min(0).max(100));
+const UpsertDistributionProfileSchema = z
+  .object({
+    slug: SlugSchema,
+    name: z.string().min(1).max(200),
+    description: z.string().max(1000).optional(),
+    distribution: PercentRecordSchema,
+    isDefault: z.boolean().optional(),
+    serviceSector: ServiceSectorSchema.nullable().optional(),
+  })
+  .strict();
+const UpsertAudienceMixProfileSchema = z
+  .object({
+    slug: SlugSchema,
+    name: z.string().min(1).max(200),
+    description: z.string().max(1000).optional(),
+    mix: PercentRecordSchema,
+    isDefault: z.boolean().optional(),
+  })
+  .strict();
 
 function adminPath(suffix: string): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/${suffix}`;
@@ -43,6 +78,8 @@ export interface DistributionRow {
 export async function listDistributionProfiles(filters?: {
   readonly serviceSector?: ServiceSector;
 }): Promise<ReadonlyArray<DistributionRow>> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  if (filters?.serviceSector !== undefined) ServiceSectorSchema.parse(filters.serviceSector);
   const rows = await prisma.coverageDistributionProfile.findMany({
     where: filters?.serviceSector ? { serviceSector: filters.serviceSector } : {},
     orderBy: [{ isDefault: "desc" }, { slug: "asc" }],
@@ -68,6 +105,8 @@ export async function upsertDistributionProfile(input: {
   serviceSector?: ServiceSector | null;
 }): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  UpsertDistributionProfileSchema.parse(input);
   if (input.slug.length < 2 || input.slug.length > 80) throw new Error("slug_length");
   assertEditorialKeys(input.distribution, "distribution");
   assertSum100(input.distribution, "distribution");
@@ -102,6 +141,8 @@ export async function upsertDistributionProfile(input: {
 
 export async function deleteDistributionProfile(slug: string): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  SlugSchema.parse(slug);
   await prisma.coverageDistributionProfile.delete({ where: { slug } });
   revalidatePath(adminPath("coverage-distribution"));
 }
@@ -143,6 +184,8 @@ export async function upsertAudienceMixProfile(input: {
   isDefault?: boolean;
 }): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  UpsertAudienceMixProfileSchema.parse(input);
   if (input.slug.length < 2 || input.slug.length > 80) throw new Error("slug_length");
   assertSum100(input.mix, "audience_mix");
   await prisma.$transaction(async (tx) => {
@@ -174,6 +217,8 @@ export async function upsertAudienceMixProfile(input: {
 
 export async function deleteAudienceMixProfile(slug: string): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  SlugSchema.parse(slug);
   await prisma.audienceMixProfile.delete({ where: { slug } });
   revalidatePath(adminPath("audience-mix"));
 }

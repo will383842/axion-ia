@@ -81,6 +81,10 @@ vi.mock("@/server/content-gen/shared/faq-sanitizer", () => ({
   }),
 }));
 
+vi.mock("@/server/queue/lib/sentry-worker", () => ({
+  captureWorkerError: vi.fn(),
+}));
+
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
 interface QaJobData {

@@ -16,9 +16,42 @@
 import { Queue } from "bullmq";
 import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ContentTypeSchema = z.enum([
+  "landing_ville",
+  "blog_article",
+  "blog_from_rss",
+  "blog_from_keywords",
+  "blog_from_title",
+  "comparison",
+  "guide_pilier",
+  "qa_derived",
+  "faq_standalone",
+]);
+const SearchIntentSchema = z.enum([
+  "informational",
+  "commercial",
+  "transactional",
+  "navigational",
+  "local",
+]);
+const EnqueueDirectGenInputSchema = z
+  .object({
+    contentType: ContentTypeSchema,
+    targetSearchIntent: SearchIntentSchema,
+    anchorVilleSlug: z.string().min(1).max(120).optional(),
+    anchorRegionSlug: z.string().min(1).max(120).optional(),
+    anchorDepartementCode: z.string().min(2).max(5).optional(),
+    primaryKeyword: z.string().max(500).optional(),
+    title: z.string().max(500).optional(),
+    templateId: z.string().min(1).max(64).optional(),
+  })
+  .strict();
 
 let contentGenQueue: Queue | null = null;
 function getContentGenQueue(): Queue | null {
@@ -57,6 +90,8 @@ export async function enqueueDirectGen(
   input: EnqueueDirectGenInput,
 ): Promise<EnqueueDirectGenResult> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  EnqueueDirectGenInputSchema.parse(input);
 
   // Anti-doublon clic : slot 60s sur (type + ville + keyword + intent).
   const slot = Math.floor(Date.now() / 60_000);

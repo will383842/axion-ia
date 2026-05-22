@@ -12,8 +12,29 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+// Structurel ici (longueur/typage) ; les règles métier (persona disclaimer)
+// restent en code applicatif après parse() pour messages d'erreur stables.
+const SlugSchema = z.string().min(1).max(120);
+
+const UpdateAuthorInputSchema = z
+  .object({
+    slug: SlugSchema,
+    displayName: z.string().min(2).max(80),
+    jobTitle: z.string().min(2).max(120),
+    bioMd: z.string().max(20_000),
+    photoAlt: z.string().max(300).optional(),
+    aiGenerated: z.boolean(),
+    linkedinUrl: z.string().max(500).optional(),
+    knowsAbout: z.array(z.string().max(200)).max(50).optional(),
+    isPersona: z.boolean(),
+    personaDisclaimer: z.string().max(1000).optional(),
+  })
+  .strict();
 
 export interface AuthorRow {
   readonly id: string;
@@ -38,7 +59,8 @@ export interface AuthorRow {
 }
 
 export async function getAuthor(slug: string): Promise<AuthorRow | null> {
-  const r = await prisma.authorProfile.findUnique({ where: { slug } });
+  const validatedSlug = SlugSchema.parse(slug);
+  const r = await prisma.authorProfile.findUnique({ where: { slug: validatedSlug } });
   if (!r) return null;
   return {
     id: r.id,
@@ -78,6 +100,8 @@ export interface UpdateAuthorInput {
 
 export async function updateAuthor(input: UpdateAuthorInput): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant les checks métier.
+  UpdateAuthorInputSchema.parse(input);
   if (input.displayName.length < 2 || input.displayName.length > 80)
     throw new Error("display_name_length");
   if (input.jobTitle.length < 2 || input.jobTitle.length > 120) throw new Error("job_title_length");

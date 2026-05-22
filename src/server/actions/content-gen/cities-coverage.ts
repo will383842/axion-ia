@@ -10,7 +10,39 @@
  *   - exportCitiesCSV : export CSV des villes filtrées
  */
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const SortBySchema = z.enum(["priority", "population", "name", "articlesCount"]);
+const SortDirSchema = z.enum(["asc", "desc"]);
+const ListCitiesParamsSchema = z
+  .object({
+    page: z.number().int().min(1).max(100_000).optional(),
+    pageSize: z.number().int().min(1).max(500).optional(),
+    deptCode: z.string().min(2).max(5).optional(),
+    regionSlug: z.string().min(1).max(120).optional(),
+    isCovered: z.boolean().nullable().optional(),
+    populationMin: z.number().int().min(0).max(20_000_000).optional(),
+    populationMax: z.number().int().min(0).max(20_000_000).optional(),
+    search: z.string().max(500).optional(),
+    sortBy: SortBySchema.optional(),
+    sortDir: SortDirSchema.optional(),
+  })
+  .strict();
+const CitySlugSchema = z
+  .string()
+  .min(1)
+  .max(120)
+  .regex(/^[a-z0-9\-]+$/, "slug doit être [a-z0-9-]");
+const MarkPrioritySchema = z.array(CitySlugSchema).min(1).max(5000);
+const ExportCsvParamsSchema = z
+  .object({
+    deptCode: z.string().min(2).max(5).optional(),
+    regionSlug: z.string().min(1).max(120).optional(),
+    isCovered: z.boolean().nullable().optional(),
+  })
+  .strict();
 
 export interface CityRow {
   id: string;
@@ -62,6 +94,8 @@ export async function listCities(params: {
   sortBy?: "priority" | "population" | "name" | "articlesCount";
   sortDir?: "asc" | "desc";
 }): Promise<CitiesListResult> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  ListCitiesParamsSchema.parse(params);
   const {
     page = 1,
     pageSize = 50,
@@ -169,6 +203,8 @@ export async function getCitiesStats(): Promise<CitiesStatsResult> {
 }
 
 export async function markCitiesPriority(citySlugs: string[]): Promise<{ updated: number }> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  MarkPrioritySchema.parse(citySlugs);
   const result = await prisma.city.updateMany({
     where: { slug: { in: citySlugs } },
     data: { isTargeted: true },
@@ -181,6 +217,8 @@ export async function exportCitiesCSV(params: {
   regionSlug?: string;
   isCovered?: boolean | null;
 }): Promise<string> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  ExportCsvParamsSchema.parse(params);
   const where = {
     isTargeted: true,
     ...(params.deptCode ? { departmentCode: params.deptCode } : {}),

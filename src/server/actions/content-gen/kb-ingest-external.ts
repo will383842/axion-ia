@@ -15,12 +15,18 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { extractArticleFromUrl } from "@/server/content-gen/kb-ingest/url-extractor";
 import { parseSitemap } from "@/server/content-gen/kb-ingest/sitemap-parser";
 import { publishToKB } from "@/server/content-gen/kb-feeder";
 import { requireAdmin } from "./_auth";
 
 const MAX_SITEMAP_BATCH = 50;
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+// URL schema strict : .url() est plus restrictif que regex http(s)?:// pour anti-SSRF.
+const ExternalUrlSchema = z.string().url().max(2048);
+const SitemapLimitSchema = z.number().int().min(1).max(MAX_SITEMAP_BATCH);
 
 export interface IngestUrlResult {
   readonly url: string;
@@ -41,6 +47,11 @@ export async function ingestKbFromUrl(rawUrl: string): Promise<IngestUrlResult> 
   const url = rawUrl.trim();
   if (!url) {
     return { url, accepted: false, status: "invalid_input", rejectReason: "URL vide" };
+  }
+  // Sprint Final P1-3 — Zod runtime validation (anti-SSRF / anti-injection).
+  const parsed = ExternalUrlSchema.safeParse(url);
+  if (!parsed.success) {
+    return { url, accepted: false, status: "invalid_url", rejectReason: "URL invalide" };
   }
 
   const extracted = await extractArticleFromUrl(url);
@@ -99,6 +110,9 @@ export async function ingestKbFromSitemap(
 ): Promise<IngestSitemapResult> {
   await requireAdmin();
   const sitemapUrl = rawSitemapUrl.trim();
+  // Sprint Final P1-3 — Zod runtime validation (anti-SSRF / anti-injection).
+  ExternalUrlSchema.parse(sitemapUrl);
+  if (limit !== undefined) SitemapLimitSchema.parse(limit);
   const max = Math.max(1, Math.min(MAX_SITEMAP_BATCH, limit ?? MAX_SITEMAP_BATCH));
 
   const urls = await parseSitemap(sitemapUrl);

@@ -11,11 +11,27 @@
 
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ReviewStatus } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 import { ReviewAlreadyTransitionedError } from "./review-errors";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ReviewIdSchema = z.string().min(1).max(64);
+const ReviewStatusSchema = z.enum([
+  "pending",
+  "approved",
+  "rejected",
+  "needs_edits",
+  "promoted_t1",
+]);
+const ReviewNotesOptionalSchema = z.string().max(5000).optional();
+const ReviewNotesRequiredSchema = z.string().min(1).max(5000);
+const ReviewPageSchema = z.number().int().min(1).max(100_000);
+const ScoreSchema = z.number().min(0).max(100);
+const LimitSchema = z.number().int().min(1).max(500);
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/review-queue`;
@@ -82,6 +98,9 @@ export async function listReviewPaginated(
   status?: ReviewStatus,
   page: number = 1,
 ): Promise<ListReviewResult> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  if (status !== undefined) ReviewStatusSchema.parse(status);
+  ReviewPageSchema.parse(page);
   const where = status ? { status } : {};
   const p = Math.max(1, page);
   const [total, rows] = await Promise.all([
@@ -116,6 +135,8 @@ export async function listReviewPaginated(
 }
 
 export async function listReview(status?: ReviewStatus): Promise<ReadonlyArray<ReviewRow>> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  if (status !== undefined) ReviewStatusSchema.parse(status);
   const where = status ? { status } : {};
   const rows = await prisma.reviewQueue.findMany({
     where,
@@ -152,6 +173,9 @@ async function readReviewStatus(id: string): Promise<ReviewStatus | undefined> {
 
 export async function approveReview(id: string, notes?: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ReviewIdSchema.parse(id);
+  ReviewNotesOptionalSchema.parse(notes);
   // P1-C fix audit 2026-05-15 — `updateMany` atomique avec status='pending'
   // évite l'override d'une review déjà-approuvée par un autre admin (race).
   const result = await prisma.reviewQueue.updateMany({
@@ -191,6 +215,9 @@ export async function bulkApproveReviews(
   limit: number = 100,
 ): Promise<{ approved: number }> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  ScoreSchema.parse(minScore);
+  LimitSchema.parse(limit);
   if (minScore < 0 || minScore > 100) throw new Error("score_range");
   if (limit < 1 || limit > 500) throw new Error("limit_range");
   const candidates = await prisma.reviewQueue.findMany({
@@ -231,6 +258,9 @@ export async function bulkRejectReviews(
   limit: number = 100,
 ): Promise<{ rejected: number }> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  ScoreSchema.parse(maxScore);
+  LimitSchema.parse(limit);
   if (maxScore < 0 || maxScore > 100) throw new Error("score_range");
   if (limit < 1 || limit > 500) throw new Error("limit_range");
   const candidates = await prisma.reviewQueue.findMany({
@@ -263,6 +293,9 @@ export async function bulkRejectReviews(
 
 export async function rejectReview(id: string, notes: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ReviewIdSchema.parse(id);
+  ReviewNotesRequiredSchema.parse(notes);
   if (notes.trim().length < 5) throw new Error("notes_required");
   // P1-C fix audit 2026-05-15 — race atomique (idem approveReview).
   const result = await prisma.reviewQueue.updateMany({
@@ -301,6 +334,9 @@ export async function rejectReview(id: string, notes: string): Promise<void> {
  */
 export async function requestEdits(id: string, comment: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ReviewIdSchema.parse(id);
+  ReviewNotesRequiredSchema.parse(comment);
   if (comment.trim().length < 10) throw new Error("comment_required");
 
   const review = await prisma.reviewQueue.findUnique({
@@ -337,6 +373,8 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
 
 export async function promoteToTier1(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ReviewIdSchema.parse(id);
   // P1-C fix audit 2026-05-15 — promote autorisé depuis `pending` (skip approve)
   // ou `approved` (déjà passé par tier-2). Ne pas autoriser depuis rejected /
   // needs_edits / promoted_t1.

@@ -9,10 +9,24 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 
 const KEY = "rss_sources";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const RssUrlSchema = z.string().url().max(2048);
+const RssSourceSchema = z
+  .object({
+    url: RssUrlSchema,
+    name: z.string().min(2).max(200),
+    tags: z.array(z.string().min(1).max(80)).max(100),
+    pollIntervalMin: z.number().int().min(5).max(1440),
+    autoPublish: z.boolean(),
+    enabled: z.boolean(),
+  })
+  .strict();
 
 export interface RssSource {
   readonly url: string;
@@ -29,6 +43,8 @@ export async function listRssSources(): Promise<ReadonlyArray<RssSource>> {
 
 export async function addRssSource(input: RssSource): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (anti-SSRF / anti-injection).
+  RssSourceSchema.parse(input);
   if (!/^https?:\/\//.test(input.url)) throw new Error("url_invalid");
   if (input.name.length < 2) throw new Error("name_too_short");
   if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
@@ -41,6 +57,8 @@ export async function addRssSource(input: RssSource): Promise<void> {
 
 export async function removeRssSource(url: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  RssUrlSchema.parse(url);
   const current = await listRssSources();
   await writeContentGenConfig(
     KEY,
@@ -60,6 +78,9 @@ export async function removeRssSource(url: string): Promise<void> {
  */
 export async function updateRssSource(originalUrl: string, input: RssSource): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  RssUrlSchema.parse(originalUrl);
+  RssSourceSchema.parse(input);
   if (!/^https?:\/\//.test(input.url)) throw new Error("url_invalid");
   if (input.name.length < 2) throw new Error("name_too_short");
   if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
@@ -84,6 +105,9 @@ export async function updateRssSource(originalUrl: string, input: RssSource): Pr
  */
 export async function toggleRssSource(url: string, enabled: boolean): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  RssUrlSchema.parse(url);
+  z.boolean().parse(enabled);
   const current = await listRssSources();
   const idx = current.findIndex((s) => s.url === url);
   if (idx === -1) throw new Error("source_not_found");

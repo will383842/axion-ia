@@ -211,7 +211,9 @@ describe("updateProvider — P0-1 rate-limit + SOC2 audit log", () => {
     expect(revalidatePathMock).toHaveBeenCalledTimes(1);
   });
 
-  it("throw 'monthly_cap_out_of_range' si cap > 100 000 USD", async () => {
+  it("rejette cap > 100 000 USD (Zod runtime validation Sprint Final P1-3)", async () => {
+    // Sprint Final P1-3 — Zod runtime validation rejette les inputs hors plage AVANT
+    // les checks métier. L'erreur Zod sérialisée contient `monthlyCapUsd` + `too_big`.
     await expect(
       updateProvider({
         id: "prov-1",
@@ -219,12 +221,14 @@ describe("updateProvider — P0-1 rate-limit + SOC2 audit log", () => {
         model: "claude-opus-4-1",
         monthlyCapUsd: 200_000,
       }),
-    ).rejects.toThrow("monthly_cap_out_of_range");
+    ).rejects.toThrow(/monthlyCapUsd|too_big|monthly_cap_out_of_range/);
     expect(providerUpdateMock).not.toHaveBeenCalled();
     expect(auditLogCreateMock).not.toHaveBeenCalled();
   });
 
-  it("throw 'model_required' si model trop court", async () => {
+  it("rejette model trop court (Zod runtime validation Sprint Final P1-3)", async () => {
+    // Sprint Final P1-3 — Zod runtime validation rejette les inputs trop courts AVANT
+    // les checks métier. L'erreur Zod sérialisée contient `model` + `too_small`.
     await expect(
       updateProvider({
         id: "prov-1",
@@ -232,7 +236,7 @@ describe("updateProvider — P0-1 rate-limit + SOC2 audit log", () => {
         model: "x",
         monthlyCapUsd: 500,
       }),
-    ).rejects.toThrow("model_required");
+    ).rejects.toThrow(/model|too_small|model_required/);
     expect(providerUpdateMock).not.toHaveBeenCalled();
     expect(auditLogCreateMock).not.toHaveBeenCalled();
   });

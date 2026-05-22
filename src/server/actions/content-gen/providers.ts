@@ -10,10 +10,23 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { writeAuditLog } from "@/server/content-gen/audit-log";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
 import { requireAdminWriteRateLimited } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ProviderIdSchema = z.string().min(1).max(64);
+const UpdateProviderInputSchema = z
+  .object({
+    id: ProviderIdSchema,
+    enabled: z.boolean(),
+    model: z.string().min(2).max(200),
+    monthlyCapUsd: z.number().min(0).max(100_000),
+    rateLimitRpm: z.number().int().min(0).max(1_000_000).optional(),
+  })
+  .strict();
 
 export interface ProviderRow {
   readonly id: string;
@@ -71,6 +84,9 @@ export interface UpdateProviderInput {
  *      oldValue → newValue tracé, best-effort fail-soft.
  */
 export async function updateProvider(input: UpdateProviderInput): Promise<void> {
+  // Sprint Final P1-3 — Zod runtime validation AVANT rate-limit (sinon un input
+  // malveillant peut consommer le budget rate-limit avec des objets corrompus).
+  UpdateProviderInputSchema.parse(input);
   // Rate-limit + auth admin (60 writes/min/admin/providerId — isolation par
   // provider pour permettre toggles parallèles sans bloquer l'admin).
   const session = await requireAdminWriteRateLimited(`updateProvider:${input.id}`);
@@ -141,6 +157,8 @@ export async function updateProvider(input: UpdateProviderInput): Promise<void> 
  * pour bloquer un reset accidentel ou abusif en boucle.
  */
 export async function resetProviderSpend(id: string): Promise<void> {
+  // Sprint Final P1-3 — Zod runtime validation AVANT rate-limit.
+  ProviderIdSchema.parse(id);
   // Rate-limit serré : 10/heure (window 3600s). Un reset doit rester une
   // action exceptionnelle (typiquement après bascule de billing cycle).
   const session = await requireAdminWriteRateLimited(`resetProviderSpend:${id}`, {

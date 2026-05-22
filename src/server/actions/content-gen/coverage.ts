@@ -13,6 +13,7 @@
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { CronExpressionParser } from "cron-parser";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type {
   CityProcessingMode,
@@ -27,6 +28,59 @@ import { requireAdmin } from "./_auth";
 // avec rate-limit (60/min/admin/key) + audit log SOC2 diff (oldValue → newValue).
 // Avant : `prisma.contentGenConfig.upsert(...)` direct → bypass rate-limit + audit.
 import { writeContentGenConfig } from "./_settings";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+// Schemas structurels — validations métier (somme=100, cron, types interdits)
+// restent en code applicatif après parse() pour erreurs stables et messages clairs.
+const CoverageCampaignIdSchema = z.string().min(1).max(64);
+const CoverageStatusSchema = z.enum([
+  "draft",
+  "scheduled",
+  "running",
+  "paused",
+  "completed",
+  "cancelled",
+]);
+const ServiceSectorSchema = z.enum([
+  "interventions_formations",
+  "audits",
+  "implementations",
+  "un_a_un",
+  "sites_web_augmentes",
+]);
+const CoverageScopeSchema = z.enum(["national", "region", "departement", "ville"]);
+const SlugStringSchema = z.string().min(1).max(120);
+const DepartmentCodeSchema = z.string().min(2).max(5);
+const PercentRecordSchema = z.record(z.string(), z.number().min(0).max(100));
+const CreateCampaignInputSchema = z
+  .object({
+    name: z.string().min(3).max(200),
+    scope: CoverageScopeSchema,
+    serviceSector: ServiceSectorSchema.nullable().optional(),
+    anchorVilleSlugs: z.array(SlugStringSchema).max(2000).optional(),
+    anchorDepartementCodes: z.array(DepartmentCodeSchema).max(110).optional(),
+    anchorRegionSlugs: z.array(SlugStringSchema).max(20).optional(),
+    totalTargetCount: z.number().int().min(1).max(10_000),
+    typeDistribution: PercentRecordSchema,
+    audienceMix: PercentRecordSchema,
+    searchIntentMix: PercentRecordSchema.optional(),
+    estimatedCostUsd: z.number().min(0).max(100_000).optional(),
+    estimatedDurationMinutes: z.number().int().min(0).max(1_000_000).optional(),
+    cityProcessingMode: z.enum(["parallel", "sequential"]).optional(),
+    startDate: z.date().nullable().optional(),
+    endDate: z.date().nullable().optional(),
+    recurringSchedule: z.string().min(1).max(120).nullable().optional(),
+  })
+  .strict();
+const CancelCampaignModeSchema = z.enum(["running_only", "all"]);
+const DeltaSchema = z.number().int().min(1).max(1000);
+const EstimateCampaignInputSchema = z
+  .object({
+    totalTargetCount: z.number().int().min(1).max(10_000),
+    typeDistribution: PercentRecordSchema,
+  })
+  .strict();
+const FutureDateSchema = z.date();
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/coverage`;
@@ -79,6 +133,9 @@ export async function listCampaigns(
   status?: CoverageStatus,
   serviceSector?: ServiceSector,
 ): Promise<ReadonlyArray<CampaignRow>> {
+  // Sprint Final P1-3 — Zod runtime validation (optional enums).
+  if (status !== undefined) CoverageStatusSchema.parse(status);
+  if (serviceSector !== undefined) ServiceSectorSchema.parse(serviceSector);
   const rows = await prisma.coverageCampaign.findMany({
     where: {
       ...(status ? { status } : {}),
@@ -90,6 +147,8 @@ export async function listCampaigns(
 }
 
 export async function getCampaign(id: string): Promise<CampaignDetail | null> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
   const r = await prisma.coverageCampaign.findUnique({ where: { id } });
   if (!r) return null;
   return {
@@ -172,6 +231,8 @@ export interface CreateCampaignInput {
 
 export async function createCampaign(input: CreateCampaignInput): Promise<string> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  CreateCampaignInputSchema.parse(input);
   if (input.name.length < 3) throw new Error("name_too_short");
   if (input.totalTargetCount < 1 || input.totalTargetCount > 10_000)
     throw new Error("target_count_range");
@@ -260,6 +321,8 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
 
 export async function launchCampaign(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
   const campaign = await prisma.coverageCampaign.findUnique({
     where: { id },
     select: { recurringSchedule: true },
@@ -301,6 +364,8 @@ export async function launchCampaign(id: string): Promise<void> {
 
 export async function pauseCampaign(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
   // Sprint Campaign Controls — récupérer recurringSchedule avant l'update pour cleanup BullMQ repeatable
   const campaignBeforePause = await prisma.coverageCampaign.findUnique({
     where: { id },
@@ -381,6 +446,8 @@ export async function pauseCampaign(id: string): Promise<void> {
 
 export async function resumeCampaign(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
   // P2-9 fix audit opérationnel 2026-05-14 — archiver l'historique pausedAt
   // dans ContentGenConfig pour audit trail au lieu de NULL silencieux.
   const campaign = await prisma.coverageCampaign.findUnique({
@@ -457,6 +524,9 @@ export async function cancelCampaign(
   mode: CancelCampaignMode = "running_only",
 ): Promise<CancelCampaignResult> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
+  CancelCampaignModeSchema.parse(mode);
 
   // 1. Flippe la campagne en cancelled + completedAt (terminal).
   await prisma.coverageCampaign.update({
@@ -547,6 +617,9 @@ export async function cancelCampaign(
  */
 export async function incrementCampaignTarget(id: string, delta: number): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
+  DeltaSchema.parse(delta);
   if (delta < 1 || delta > 1000) throw new Error("delta_range");
   const campaign = await prisma.coverageCampaign.findUnique({
     where: { id },
@@ -623,6 +696,8 @@ export async function estimateCampaign(
   input: EstimateCampaignInput,
 ): Promise<EstimateCampaignResult> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  EstimateCampaignInputSchema.parse(input);
   if (input.totalTargetCount < 1 || input.totalTargetCount > 10_000) {
     throw new Error("target_count_range");
   }
@@ -662,6 +737,9 @@ export async function estimateCampaign(
  */
 export async function scheduleCampaign(id: string, startDate: Date): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
+  FutureDateSchema.parse(startDate);
   const now = new Date();
   if (startDate <= now) throw new Error("start_date_must_be_future");
   await prisma.coverageCampaign.update({
@@ -714,6 +792,9 @@ export async function listCampaignTemplates(): Promise<ReadonlyArray<CampaignTem
 
 export async function extendCampaignDeadline(id: string, newEndDate: Date): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CoverageCampaignIdSchema.parse(id);
+  FutureDateSchema.parse(newEndDate);
   const now = new Date();
   if (newEndDate <= now) throw new Error("end_date_in_past");
   await prisma.coverageCampaign.update({

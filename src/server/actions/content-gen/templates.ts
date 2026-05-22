@@ -9,9 +9,50 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ContentType, ExpansionMode } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const TemplateIdSchema = z.string().min(1).max(64);
+const ContentTypeSchema = z.enum([
+  "landing_ville",
+  "blog_article",
+  "blog_from_rss",
+  "blog_from_keywords",
+  "blog_from_title",
+  "comparison",
+  "guide_pilier",
+  "qa_derived",
+  "faq_standalone",
+]);
+const ExpansionModeSchema = z.enum(["per_ville", "per_keyword", "per_intent", "single", "matrix"]);
+const ListTemplatesFiltersSchema = z
+  .object({
+    contentType: ContentTypeSchema.optional(),
+    isActive: z.boolean().optional(),
+  })
+  .strict();
+const UpsertTemplateInputSchema = z
+  .object({
+    id: TemplateIdSchema.optional(),
+    slug: z.string().min(2).max(120),
+    contentType: ContentTypeSchema,
+    variant: z.string().min(1).max(120).optional(),
+    name: z.string().min(1).max(200),
+    description: z.string().max(2000).optional(),
+    systemPrompt: z.string().min(30).max(100_000),
+    userPromptTemplate: z.string().min(5).max(100_000),
+    outputSchemaZod: z.string().max(50_000),
+    variables: z.unknown(),
+    expansionMode: ExpansionModeSchema,
+    defaultModel: z.string().min(1).max(200).optional(),
+    defaultTemperature: z.number().min(0).max(2).optional(),
+    defaultMaxTokens: z.number().int().min(1).max(200_000).optional(),
+    isActive: z.boolean(),
+  })
+  .strict();
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/templates`;
@@ -50,6 +91,8 @@ export async function listTemplates(filters?: {
   contentType?: ContentType;
   isActive?: boolean;
 }): Promise<ReadonlyArray<TemplateRow>> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  if (filters !== undefined) ListTemplatesFiltersSchema.parse(filters);
   const rows = await prisma.contentTemplate.findMany({
     where: {
       ...(filters?.contentType ? { contentType: filters.contentType } : {}),
@@ -61,6 +104,8 @@ export async function listTemplates(filters?: {
 }
 
 export async function getTemplate(id: string): Promise<TemplateDetail | null> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  TemplateIdSchema.parse(id);
   const r = await prisma.contentTemplate.findUnique({ where: { id } });
   if (!r) return null;
   return {
@@ -133,6 +178,8 @@ export interface UpsertTemplateInput {
 
 export async function upsertTemplate(input: UpsertTemplateInput): Promise<string> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  UpsertTemplateInputSchema.parse(input);
   if (input.slug.length < 2) throw new Error("slug_too_short");
   if (input.systemPrompt.length < 30) throw new Error("system_prompt_too_short");
   if (input.userPromptTemplate.length < 5) throw new Error("user_template_too_short");
@@ -174,6 +221,9 @@ export async function upsertTemplate(input: UpsertTemplateInput): Promise<string
 
 export async function toggleTemplate(id: string, isActive: boolean): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  TemplateIdSchema.parse(id);
+  z.boolean().parse(isActive);
   await prisma.contentTemplate.update({ where: { id }, data: { isActive } });
   revalidatePath(adminBase());
 }

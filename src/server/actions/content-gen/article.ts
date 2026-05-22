@@ -11,6 +11,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { IndexationTier, PublishStatus } from "../../../../prisma/generated/client";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
@@ -27,6 +28,25 @@ import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
 // `tx.articleSlugHistory.create` dans la transaction `updateArticle` ci-dessous
 // pour atomicité avec l'update slug.
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ArticleIdSchema = z.string().min(1).max(64);
+const UpdateArticleInputSchema = z
+  .object({
+    articleId: ArticleIdSchema,
+    title: z.string().min(3).max(255),
+    slug: z
+      .string()
+      .max(255)
+      .regex(/^[a-z0-9-]*$/, "slug doit être [a-z0-9-]")
+      .optional(),
+    excerpt: z.string().max(2000).optional(),
+    body: z.string().min(50).max(500_000),
+    metaTitle: z.string().max(70).optional(),
+    metaDescription: z.string().max(160).optional(),
+  })
+  .strict();
+const DeleteArticleConfirmationSchema = z.literal("DELETE");
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`;
@@ -94,6 +114,8 @@ export interface ArticleDetail {
 
 export async function getArticleDetail(id: string): Promise<ArticleDetail | null> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ArticleIdSchema.parse(id);
   const a = await prisma.article.findUnique({
     where: { id },
     include: {
@@ -141,6 +163,8 @@ export interface UpdateArticleInput {
 
 export async function updateArticle(input: UpdateArticleInput): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant les checks métier.
+  UpdateArticleInputSchema.parse(input);
   if (input.title.length < 3 || input.title.length > 255) throw new Error("title_length");
   if (input.body.length < 50) throw new Error("body_too_short");
   if (input.metaTitle && input.metaTitle.length > 70) throw new Error("meta_title_length");
@@ -238,6 +262,8 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
 
 export async function demoteArticle(articleId: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ArticleIdSchema.parse(articleId);
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -281,6 +307,8 @@ export async function demoteArticle(articleId: string): Promise<void> {
 
 export async function archiveArticle(articleId: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ArticleIdSchema.parse(articleId);
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -321,6 +349,8 @@ export async function archiveArticle(articleId: string): Promise<void> {
 
 export async function unarchiveArticle(articleId: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ArticleIdSchema.parse(articleId);
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -358,6 +388,9 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
 
 export async function deleteArticle(articleId: string, confirmation: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ArticleIdSchema.parse(articleId);
+  DeleteArticleConfirmationSchema.parse(confirmation);
   // Anti-clic accidentel : impose une chaîne de confirmation côté UI.
   if (confirmation !== "DELETE") throw new Error("confirmation_required");
 
@@ -407,6 +440,8 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
  */
 export async function rollbackArticle(articleId: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ArticleIdSchema.parse(articleId);
   const article = await prisma.article.findUnique({
     where: { id: articleId },
     include: { translations: { where: { locale: "fr" }, take: 1 } },

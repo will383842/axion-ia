@@ -7,11 +7,28 @@
  * Cf. /content-gen/external-links admin page.
  */
 
+import { z } from "zod";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ALL_EXTERNAL_LINKS } from "@/data/external-links/master";
 import { getExternalLinksStats } from "@/data/external-links/master";
 import type { ExternalLink, ExternalLinkAuthority } from "@/data/external-links/types";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const ListExternalLinksFiltersSchema = z
+  .object({
+    category: z.string().max(120).optional(),
+    scope: z.string().max(120).optional(),
+    minAuthority: z.number().int().min(0).max(10).optional(),
+    status: z.string().max(60).optional(),
+    regionSlug: z.string().max(120).optional(),
+    vertical: z.string().max(120).optional(),
+    search: z.string().max(500).optional(),
+    limit: z.number().int().min(1).max(5000).optional(),
+    offset: z.number().int().min(0).max(1_000_000).optional(),
+    onlyProblems: z.boolean().optional(),
+  })
+  .strict();
 
 export interface ExternalLinkRow extends ExternalLink {
   readonly usageCountFromDb: number;
@@ -60,6 +77,8 @@ export async function listExternalLinks(
   filters: ListExternalLinksFilters = {},
 ): Promise<ListExternalLinksResult> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ListExternalLinksFiltersSchema.parse(filters);
 
   const {
     category,

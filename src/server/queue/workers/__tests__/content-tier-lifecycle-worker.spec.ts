@@ -81,6 +81,10 @@ vi.mock("@/server/content-gen/shared/content-gen-alerts", () => ({
   alertTier3Stagnant: alertTier3Mock,
 }));
 
+vi.mock("@/server/queue/lib/sentry-worker", () => ({
+  captureWorkerError: vi.fn(),
+}));
+
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
 interface ArticleFixture {

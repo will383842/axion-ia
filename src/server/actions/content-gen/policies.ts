@@ -11,10 +11,72 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import type { ContentType } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 import { CONTENT_TYPES_ALL } from "./policies-constants";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+// Schemas structurels — règles métier (somme=100, target_must_be_higher) restent
+// en code applicatif après parse() pour messages d'erreur stables.
+const ContentTypeKeySchema = z.enum([
+  "landing_ville",
+  "blog_article",
+  "blog_from_rss",
+  "blog_from_keywords",
+  "blog_from_title",
+  "comparison",
+  "guide_pilier",
+  "qa_derived",
+  "faq_standalone",
+]);
+const BatchSettingsSchema = z
+  .object({
+    dailyBatchSize: z.number().int().min(1).max(1000),
+    workersConcurrency: z.number().int().min(1).max(20),
+    retryMaxAttempts: z.number().int().min(0).max(10),
+    retryBackoffMs: z.number().int().min(0).max(3_600_000),
+    dailyTargetByType: z.record(ContentTypeKeySchema, z.number().min(0).max(100)),
+    antiBurstEnabled: z.boolean(),
+  })
+  .strict();
+const MaxPublishPerDaySchema = z.number().int().min(1).max(1000);
+const ContentPoliciesSchema = z
+  .object({
+    skipVilleIfCopyExists: z.boolean(),
+    rssAutoPublishMinScore: z.number().min(0).max(100),
+    plagiarismJaccardInternal: z.number().min(0).max(1),
+    plagiarismJaccardRss: z.number().min(0).max(1),
+    tier3RetentionDays: z.number().int().min(1).max(730),
+  })
+  .strict();
+const LlmsTxtSchema = z.string().max(50_000);
+const QualityLoopSettingsSchema = z
+  .object({
+    enabled: z.boolean(),
+    minScoreThreshold: z.number().min(0).max(100),
+    targetScore: z.number().min(0).max(100),
+    maxAttemptsAuto: z.number().int().min(0).max(5),
+    monthlyBudgetCapUsd: z.number().min(0).max(5000),
+  })
+  .strict();
+const QaPoliciesSchema = z
+  .object({
+    autoCreatePages: z.boolean(),
+    minWordsPerAnswer: z.number().int().min(10).max(500),
+    promoteTier1MinCtr: z.number().min(0).max(20),
+  })
+  .strict();
+const SearchIntentDistributionSchema = z
+  .object({
+    informational: z.number().min(0).max(100),
+    commercial: z.number().min(0).max(100),
+    local: z.number().min(0).max(100),
+    transactional: z.number().min(0).max(100),
+    navigational: z.number().min(0).max(100),
+  })
+  .strict();
 
 // ────────────────────────────────────────────────────────────────────
 // /settings/batches
@@ -60,6 +122,8 @@ export async function getBatchSettings(): Promise<BatchSettings> {
 
 export async function updateBatchSettings(input: BatchSettings): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  BatchSettingsSchema.parse(input);
   if (input.dailyBatchSize < 1 || input.dailyBatchSize > 1000) throw new Error("daily_size_range");
   if (input.workersConcurrency < 1 || input.workersConcurrency > 20)
     throw new Error("concurrency_range");
@@ -88,6 +152,8 @@ export async function getMaxPublishPerDay(): Promise<number> {
 
 export async function updateMaxPublishPerDay(value: number): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  MaxPublishPerDaySchema.parse(value);
   if (!Number.isInteger(value) || value < 1 || value > 1000) {
     throw new Error("max_publish_range");
   }
@@ -126,6 +192,8 @@ export async function getPolicies(): Promise<ContentPolicies> {
 
 export async function updatePolicies(input: ContentPolicies): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  ContentPoliciesSchema.parse(input);
   if (input.rssAutoPublishMinScore < 0 || input.rssAutoPublishMinScore > 100)
     throw new Error("score_range");
   if (input.plagiarismJaccardInternal < 0 || input.plagiarismJaccardInternal > 1)
@@ -162,6 +230,8 @@ export async function getLlmsTxt(): Promise<string> {
 
 export async function updateLlmsTxt(content: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  LlmsTxtSchema.parse(content);
   if (content.length > 50_000) throw new Error("llms_txt_too_long");
   await writeContentGenConfig("llms_txt", content, session.userId, "llms.txt édité admin");
   revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/llms-txt`);
@@ -194,6 +264,8 @@ export async function getQualityLoop(): Promise<QualityLoopSettings> {
 
 export async function updateQualityLoop(input: QualityLoopSettings): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  QualityLoopSettingsSchema.parse(input);
   if (input.minScoreThreshold < 0 || input.minScoreThreshold > 100)
     throw new Error("min_score_range");
   if (input.targetScore <= input.minScoreThreshold) throw new Error("target_must_be_higher");
@@ -228,6 +300,8 @@ export async function getQaPolicies(): Promise<QaPolicies> {
 
 export async function updateQaPolicies(input: QaPolicies): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  QaPoliciesSchema.parse(input);
   if (input.minWordsPerAnswer < 10 || input.minWordsPerAnswer > 500)
     throw new Error("min_words_range");
   if (input.promoteTier1MinCtr < 0 || input.promoteTier1MinCtr > 20) throw new Error("ctr_range");
@@ -266,6 +340,8 @@ export async function updateSearchIntentDistribution(
   input: SearchIntentDistribution,
 ): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation (structurel) avant check somme=100.
+  SearchIntentDistributionSchema.parse(input);
   const sum =
     input.informational + input.commercial + input.local + input.transactional + input.navigational;
   if (Math.abs(sum - 100) > 0.5) throw new Error("sum_must_be_100");

@@ -9,11 +9,23 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
 
 const VALID_SEVERITY = new Set(["warn", "block"]);
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const IdSchema = z.string().min(1).max(64);
+const CreateBannedPhraseSchema = z
+  .object({
+    pattern: z.string().min(1).max(500),
+    reason: z.string().max(500).optional(),
+    severity: z.enum(["warn", "block"]),
+  })
+  .strict();
+const ScanPhraseSchema = z.string().min(1).max(500);
 
 export interface BannedPhraseRow {
   readonly id: string;
@@ -44,6 +56,8 @@ export async function createBannedPhrase(input: {
   severity: string;
 }): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  CreateBannedPhraseSchema.parse(input);
   const pattern = input.pattern.trim();
   if (pattern.length < 2 || pattern.length > 200) throw new Error("pattern_length_invalid");
   if (!VALID_SEVERITY.has(input.severity)) throw new Error("severity_invalid");
@@ -70,6 +84,9 @@ export async function createBannedPhrase(input: {
 
 export async function toggleBannedPhrase(id: string, isActive: boolean): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  IdSchema.parse(id);
+  z.boolean().parse(isActive);
   await prisma.bannedPhrase.update({
     where: { id },
     data: { isActive },
@@ -81,6 +98,8 @@ export async function toggleBannedPhrase(id: string, isActive: boolean): Promise
 
 export async function deleteBannedPhrase(id: string): Promise<void> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  IdSchema.parse(id);
   await prisma.bannedPhrase.delete({ where: { id } });
   revalidatePath(
     `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
@@ -114,6 +133,8 @@ export async function scanArticlesForPhrase(phrase: string): Promise<{
   readonly capped: boolean;
 }> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  ScanPhraseSchema.parse(phrase);
   const needle = phrase.trim();
   if (needle.length < 2 || needle.length > 200) throw new Error("phrase_length_invalid");
 

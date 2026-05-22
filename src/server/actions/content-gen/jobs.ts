@@ -10,6 +10,7 @@
 
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type {
   ContentGenJobStatus,
@@ -18,6 +19,52 @@ import type {
 } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const JobIdSchema = z.string().min(1).max(64);
+const ContentGenJobStatusSchema = z.enum([
+  "queued",
+  "running",
+  "needs_review",
+  "approved",
+  "publishing",
+  "published",
+  "failed",
+  "cancelled",
+  "quality_improving",
+  "quarantined_critical",
+  "quarantined_factcheck",
+]);
+const ContentTypeSchema = z.enum([
+  "landing_ville",
+  "blog_article",
+  "blog_from_rss",
+  "blog_from_keywords",
+  "blog_from_title",
+  "comparison",
+  "guide_pilier",
+  "qa_derived",
+  "faq_standalone",
+]);
+const ServiceSectorSchema = z.enum([
+  "interventions_formations",
+  "audits",
+  "implementations",
+  "un_a_un",
+  "sites_web_augmentes",
+]);
+const JobsListFiltersSchema = z
+  .object({
+    status: ContentGenJobStatusSchema.optional(),
+    contentType: ContentTypeSchema.optional(),
+    templateId: z.string().min(1).max(64).optional(),
+    campaignId: z.string().min(1).max(64).optional(),
+    serviceSector: ServiceSectorSchema.optional(),
+    anchorVilleSlug: z.string().min(1).max(120).optional(),
+    search: z.string().max(500).optional(),
+    page: z.number().int().min(1).max(100_000).optional(),
+  })
+  .strict();
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/jobs`;
@@ -105,6 +152,8 @@ export interface JobsListResult {
 const PAGE_SIZE = 50;
 
 export async function listJobs(filters: JobsListFilters = {}): Promise<JobsListResult> {
+  // Sprint Final P1-3 — Zod runtime validation.
+  JobsListFiltersSchema.parse(filters);
   const page = Math.max(1, filters.page ?? 1);
   const where = {
     ...(filters.status ? { status: filters.status } : {}),
@@ -161,6 +210,8 @@ export async function listJobs(filters: JobsListFilters = {}): Promise<JobsListR
 }
 
 export async function getJob(id: string) {
+  // Sprint Final P1-3 — Zod runtime validation.
+  JobIdSchema.parse(id);
   const r = await prisma.contentGenJob.findUnique({
     where: { id },
     include: {
@@ -174,6 +225,8 @@ export async function getJob(id: string) {
 
 export async function retryJob(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  JobIdSchema.parse(id);
   await prisma.contentGenJob.update({
     where: { id },
     data: {
@@ -199,6 +252,8 @@ export async function retryJob(id: string): Promise<void> {
 
 export async function cancelJob(id: string): Promise<void> {
   const session = await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  JobIdSchema.parse(id);
   await prisma.contentGenJob.update({
     where: { id },
     data: {

@@ -80,6 +80,10 @@ vi.mock("@/server/actions/content-gen/_settings", () => ({
   writeContentGenConfig: writeConfigMock,
 }));
 
+vi.mock("@/server/queue/lib/sentry-worker", () => ({
+  captureWorkerError: vi.fn(),
+}));
+
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
 async function getProcessor(): Promise<(job: Job) => Promise<void>> {

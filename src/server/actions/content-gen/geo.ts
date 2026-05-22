@@ -8,10 +8,23 @@
 
 "use server";
 
+import { z } from "zod";
 import type { ContentGenJobStatus } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { REGIONS } from "@/content/regions";
 import { requireAdmin } from "./_auth";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+const GetJobsVilleSectorDetailSchema = z
+  .object({
+    limit: z.number().int().min(1).max(5000),
+    filterStatus: z.string().min(1).max(60).optional(),
+    filterVille: z.string().min(1).max(120).optional(),
+    offset: z.number().int().min(0).max(1_000_000),
+    sortBy: z.enum(["count", "score", "ville"]),
+    sortDir: z.enum(["asc", "desc"]),
+  })
+  .strict();
 
 export interface RegionGeoStat {
   readonly slug: string;
@@ -230,6 +243,15 @@ export async function getJobsVilleSectorDetail(
   sortDir: "asc" | "desc" = "desc",
 ): Promise<ReadonlyArray<VilleSectorRow>> {
   await requireAdmin();
+  // Sprint Final P1-3 — Zod runtime validation.
+  GetJobsVilleSectorDetailSchema.parse({
+    limit,
+    filterStatus,
+    filterVille,
+    offset,
+    sortBy,
+    sortDir,
+  });
   // serviceSector is on CoverageCampaign, not ContentGenJob.
   // We group by (ville, campaignId, status) then batch-join campaign sectors.
   const orderBy =

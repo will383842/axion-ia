@@ -15,9 +15,23 @@
 
 "use server";
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 import { BRAND_VOICE_CONFIG_KEY } from "./brand-voice-constants";
+
+// Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
+// `articleIds` borné à 500 pour éviter saturer pgvector / $queryRawUnsafe.
+const RecalibrateBrandVoiceSchema = z
+  .array(
+    z
+      .string()
+      .min(1)
+      .max(64)
+      .regex(/^[a-zA-Z0-9\-_]+$/, "articleId doit être [a-zA-Z0-9-_]"),
+  )
+  .min(1)
+  .max(500);
 
 export interface DriftAuditEntry {
   readonly id: string;
@@ -56,6 +70,9 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
     limit: 10,
     windowSec: 60,
   });
+
+  // Sprint Final P1-3 — Zod runtime validation (anti-injection $queryRawUnsafe).
+  RecalibrateBrandVoiceSchema.parse(articleIds);
 
   if (!articleIds || articleIds.length === 0) {
     throw new Error("recalibrateBrandVoice: articleIds array cannot be empty");
