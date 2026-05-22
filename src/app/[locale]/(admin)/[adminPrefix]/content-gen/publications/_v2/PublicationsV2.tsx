@@ -2,6 +2,7 @@
 //
 // Publications list V2 — AdminPageShell + AdminPageHeader + AdminCard.
 // Server Actions archive/demote/rollback/unarchive préservées.
+// SP-04 P0-9 — pagination prev/next + indicateur Page X / Y.
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
@@ -13,9 +14,11 @@ import {
   unarchiveArticle,
 } from "@/server/actions/content-gen/article";
 
+const PAGE_SIZE = 100;
+
 interface Props {
   adminPrefix: string;
-  searchParams: { status?: string; tier?: string };
+  searchParams: { status?: string; tier?: string; page?: string };
 }
 
 export async function PublicationsV2({
@@ -42,22 +45,40 @@ export async function PublicationsV2({
     where.indexationTier = sp.tier;
   }
 
-  const recent = await prisma.article.findMany({
-    where,
-    orderBy: { publishedAt: "desc" },
-    take: 100,
-    include: {
-      translations: { where: { locale: "fr" }, take: 1, select: { title: true, slug: true } },
-    },
-  });
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  const skip = (page - 1) * PAGE_SIZE;
+
+  const [total, recent] = await Promise.all([
+    prisma.article.count({ where }),
+    prisma.article.findMany({
+      where,
+      orderBy: { publishedAt: "desc" },
+      skip,
+      take: PAGE_SIZE,
+      include: {
+        translations: { where: { locale: "fr" }, take: 1, select: { title: true, slug: true } },
+      },
+    }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const base = `/fr/${adminPrefix}/content-gen/publications`;
+
+  function pageUrl(p: number): string {
+    const params = new URLSearchParams();
+    if (sp.status) params.set("status", sp.status);
+    if (sp.tier) params.set("tier", sp.tier);
+    if (p > 1) params.set("page", String(p));
+    const qs = params.toString();
+    return qs ? `${base}?${qs}` : base;
+  }
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Publications"
-        description={`${recent.length} article${recent.length > 1 ? "s" : ""} content-gen · ${(where.status ?? "published") as string}${where.indexationTier ? ` · ${where.indexationTier}` : ""}`}
+        description={`${total} article${total > 1 ? "s" : ""} content-gen · ${(where.status ?? "published") as string}${where.indexationTier ? ` · ${where.indexationTier}` : ""} · page ${page}/${totalPages}`}
         actions={
           <a
             href={`/api/content-gen/export?type=articles${sp.status ? `&status=${sp.status}` : ""}${sp.tier ? `&tier=${sp.tier}` : ""}`}
@@ -110,7 +131,7 @@ export async function PublicationsV2({
         </form>
       </AdminCard>
 
-      <AdminCard variant="compact">
+      <AdminCard variant="compact" className="mb-0">
         <div className="admin-table-wrapper">
           <table className="admin-table">
             <thead>
@@ -167,6 +188,27 @@ export async function PublicationsV2({
             </tbody>
           </table>
         </div>
+
+        {/* Pagination P0-9 */}
+        {totalPages > 1 && (
+          <div className="mt-[var(--space-admin-5)] flex items-center justify-between">
+            <p className="admin-meta">
+              Page {page} / {totalPages} · {total} articles
+            </p>
+            <div className="flex gap-[var(--space-admin-3)]">
+              {page > 1 && (
+                <Link href={pageUrl(page - 1)} className="admin-button-ghost">
+                  ← Précédent
+                </Link>
+              )}
+              {page < totalPages && (
+                <Link href={pageUrl(page + 1)} className="admin-button-ghost">
+                  Suivant →
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
       </AdminCard>
     </AdminPageShell>
   );
