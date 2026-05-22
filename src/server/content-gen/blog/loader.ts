@@ -22,6 +22,10 @@ import { prisma } from "@/lib/prisma";
 export interface BlogArticleView {
   readonly slug: string;
   readonly title: string;
+  /** SEO `<title>` override (V-07 sprint UX 2026-05-22). null = fallback `title`. */
+  readonly metaTitle: string | null;
+  /** SEO meta description override (160 chars max). null = fallback `excerpt`. */
+  readonly metaDescription: string | null;
   readonly excerpt: string;
   readonly body: string;
   readonly publishedAt: string;
@@ -52,6 +56,8 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
   return {
     slug: post.slug,
     title: copy.title,
+    metaTitle: null,
+    metaDescription: null,
     excerpt: copy.excerpt,
     body: copy.body,
     publishedAt: post.publishedAt,
@@ -106,6 +112,8 @@ export async function loadBlogArticleForView(
     return {
       slug: dbArticle.slug,
       title: dbArticle.title,
+      metaTitle: dbArticle.metaTitle,
+      metaDescription: dbArticle.metaDescription,
       excerpt: dbArticle.excerpt ?? "",
       body: dbArticle.body ?? dbArticle.bodyText ?? "",
       publishedAt: isoDate(dbArticle.publishedAt),
@@ -153,6 +161,8 @@ export async function loadBlogIndexForView(
   const dbAsView: BlogArticleView[] = dbList.map((a) => ({
     slug: a.slug,
     title: a.title,
+    metaTitle: null,
+    metaDescription: null,
     excerpt: a.excerpt ?? "",
     body: "",
     publishedAt: isoDate(a.publishedAt),

@@ -62,11 +62,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     return {};
   }
+  // V-07 sprint UX 2026-05-22 — préfère DB metaTitle/metaDescription si fournis
+  // (champs SEO-tunés au moment de la rédaction Manon ou via factory content-gen).
+  // Fallback : title + excerpt rétrocompatible articles FS.
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: `${view.title} · Axion-IA`,
-    description: view.excerpt,
+    title: view.metaTitle ?? `${view.title} · Axion-IA`,
+    description: view.metaDescription ?? view.excerpt,
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
   // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow
