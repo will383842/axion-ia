@@ -2660,8 +2660,8 @@ enum SearchIntent {
   transactional
   navigational
   local
-  voice_search     // conversationnel Alexa/Siri/Google Assistant
-  ai_overview      // optimise Google AI Overview / SGE factuel
+  voice_search // conversationnel Alexa/Siri/Google Assistant
+  ai_overview // optimise Google AI Overview / SGE factuel
   featured_snippet // position 0 paragraph 40-60 mots
 }
 
@@ -2898,41 +2898,41 @@ model AudienceMixProfile {
 /// Campagne de couverture territoriale (§ 25.2 v1.7).
 /// 1 campagne = N jobs ContentGenJob exécutés selon distribution + audience mix + intent mix.
 model CoverageCampaign {
-  id                       String         @id @default(cuid())
+  id                       String             @id @default(cuid())
   name                     String
-  status                   CoverageStatus @default(draft)
+  status                   CoverageStatus     @default(draft)
   scope                    CoverageScope
   // Secteur métier (interventions_formations / audits / implementations) —
   // optionnel pour rétro-compat des campagnes pré-2026-05-16. Les nouvelles
   // campagnes éditoriales DOIVENT renseigner le secteur (validé Server Action).
   // Les campagnes landing_ville pures peuvent rester NULL.
   serviceSector            ServiceSector?
-  anchorVilleSlugs         String[]       @default([])
-  anchorDepartementCodes   String[]       @default([])
-  anchorRegionSlugs        String[]       @default([])
+  anchorVilleSlugs         String[]           @default([])
+  anchorDepartementCodes   String[]           @default([])
+  anchorRegionSlugs        String[]           @default([])
   totalTargetCount         Int
   typeDistribution         Json
   audienceMix              Json
   searchIntentMix          Json?
-  estimatedCostUsd         Decimal?       @db.Decimal(10, 2)
+  estimatedCostUsd         Decimal?           @db.Decimal(10, 2)
   estimatedDurationMinutes Int?
-  generatedCount           Int            @default(0)
-  publishedCount           Int            @default(0)
-  failedCount              Int            @default(0)
-  qualityImprovedCount     Int            @default(0)
+  generatedCount           Int                @default(0)
+  publishedCount           Int                @default(0)
+  failedCount              Int                @default(0)
+  qualityImprovedCount     Int                @default(0)
   // Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22) — 4 capabilities
-  cityProcessingMode CityProcessingMode @default(parallel) @map("city_processing_mode")
-  currentCityIndex   Int?               @map("current_city_index")
-  startDate          DateTime?          @map("start_date")
-  endDate            DateTime?          @map("end_date")
-  recurringSchedule  String?            @map("recurring_schedule")
-  completedReason    String?            @map("completed_reason")
+  cityProcessingMode       CityProcessingMode @default(parallel) @map("city_processing_mode")
+  currentCityIndex         Int?               @map("current_city_index")
+  startDate                DateTime?          @map("start_date")
+  endDate                  DateTime?          @map("end_date")
+  recurringSchedule        String?            @map("recurring_schedule")
+  completedReason          String?            @map("completed_reason")
 
-  startedAt                DateTime?
-  pausedAt                 DateTime?
-  completedAt              DateTime?
-  createdAt                DateTime       @default(now())
-  createdBy                String?
+  startedAt   DateTime?
+  pausedAt    DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  createdBy   String?
 
   jobs ContentGenJob[]
 
@@ -3222,49 +3222,49 @@ model ContentCitation {
 ///  - gaps (mots-clés rankant 11-20 → opportunité tier-1 promote article)
 ///  - cannibalization (plusieurs articles sur même mot-clé)
 model KeywordTracking {
-  id            String                @id @default(cuid())
-  keyword       String                @db.VarChar(255)
+  id                   String                @id @default(cuid())
+  keyword              String                @db.VarChar(255)
   /// URL ciblée (page qui rank). Match Article via slug ou KnowledgeEntry.
-  targetUrl     String                @db.VarChar(512)
+  targetUrl            String                @db.VarChar(512)
   /// Article.id (UUID) si la page tracked est un Article — sinon null.
-  articleId     String?               @db.Uuid
+  articleId            String?               @db.Uuid
   /// Position SERP Google (1 = top). Float pour moyenne pondérée.
-  position      Decimal               @db.Decimal(5, 2)
+  position             Decimal               @db.Decimal(5, 2)
   /// Variation position vs dernier sync (delta). + = recule, - = monte.
-  positionDelta Decimal?              @db.Decimal(5, 2)
+  positionDelta        Decimal?              @db.Decimal(5, 2)
   /// CTR observé (0-1). null si pas encore d'impressions.
-  ctr           Decimal?              @db.Decimal(6, 4)
+  ctr                  Decimal?              @db.Decimal(6, 4)
   /// Impressions sur fenêtre (default 28j GSC).
-  impressions   Int                   @default(0)
+  impressions          Int                   @default(0)
   /// Clicks sur fenêtre.
-  clicks        Int                   @default(0)
+  clicks               Int                   @default(0)
   /// Source de mesure.
-  source        KeywordTrackingSource @default(gsc)
+  source               KeywordTrackingSource @default(gsc)
   /// Date du dernier sync (run du worker hebdo).
-  syncedAt      DateTime              @default(now())
+  syncedAt             DateTime              @default(now())
   /// Date première détection de ce keyword pour cette URL.
-  firstSeenAt   DateTime              @default(now())
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  firstSeenAt          DateTime              @default(now())
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
   // Phase 8 Sprint Keywords Perfection 2026-05-22 — intelligence concurrentielle
   /// URL du concurrent actuellement en position 1 pour ce keyword.
-  competitorTopUrl    String?   @map("competitor_top_url") @db.VarChar(512)
+  competitorTopUrl     String?               @map("competitor_top_url") @db.VarChar(512)
   /// Nom du concurrent en position 1 (ex: "axionai.fr", "Capgemini", "Cegos").
-  competitorTopName   String?   @map("competitor_top_name") @db.VarChar(100)
+  competitorTopName    String?               @map("competitor_top_name") @db.VarChar(100)
   /// Tags faiblesses observées chez le concurrent (ex: ["thin_content", "no_schema"]).
-  competitorWeaknesses String[] @default([]) @map("competitor_weaknesses")
+  competitorWeaknesses String[]              @default([]) @map("competitor_weaknesses")
   /// Niveau d'opportunité calculé : 'high' | 'medium' | 'low'.
-  axionOpportunity    String?   @map("axion_opportunity") @db.VarChar(10)
+  axionOpportunity     String?               @map("axion_opportunity") @db.VarChar(10)
   /// Action recommandée pour dominer ce keyword (ex: "Pilier 3000 mots + FAQ schema").
-  recommendedAction   String?   @map("recommended_action") @db.Text
+  recommendedAction    String?               @map("recommended_action") @db.Text
   /// Date à laquelle Axion-IA est entré dans le top 10 pour ce keyword.
-  ourFirstRankAt      DateTime? @map("our_first_rank_at")
+  ourFirstRankAt       DateTime?             @map("our_first_rank_at")
   /// Meilleur rank atteint (1 = position 1). null si jamais rankés.
-  ourBestRank         Int?      @map("our_best_rank")
+  ourBestRank          Int?                  @map("our_best_rank")
   /// Rang actuel observé. null si non suivi.
-  ourCurrentRank      Int?      @map("our_current_rank")
+  ourCurrentRank       Int?                  @map("our_current_rank")
   /// Tendance de position sur 7 jours : 'up' | 'down' | 'stable'.
-  trendDirection      String?   @map("trend_direction") @db.VarChar(10)
+  trendDirection       String?               @map("trend_direction") @db.VarChar(10)
 
   @@unique([keyword, targetUrl])
   @@index([articleId])
@@ -3655,19 +3655,19 @@ model ArticleFeedback {
 /// 2 100 communes ordonnees par population decroissante (Paris = priority 1).
 /// Suivi couverture content-gen : isCovered / articlesCount / lastArticleAt.
 model City {
-  id             String   @id @default(cuid())
-  slug           String   @unique @db.VarChar(100)
-  name           String   @db.VarChar(100)
+  id             String @id @default(cuid())
+  slug           String @unique @db.VarChar(100)
+  name           String @db.VarChar(100)
   population     Int
-  departmentCode String   @map("department_code") @db.VarChar(3)
-  departmentName String   @map("department_name") @db.VarChar(80)
-  regionSlug     String   @map("region_slug") @db.VarChar(80)
-  regionName     String   @map("region_name") @db.VarChar(80)
-  inseeCode      String   @unique @map("insee_code") @db.VarChar(6)
+  departmentCode String @map("department_code") @db.VarChar(3)
+  departmentName String @map("department_name") @db.VarChar(80)
+  regionSlug     String @map("region_slug") @db.VarChar(80)
+  regionName     String @map("region_name") @db.VarChar(80)
+  inseeCode      String @unique @map("insee_code") @db.VarChar(6)
   latitude       Float
   longitude      Float
   /// 1=>=100k hab, 2=20k-100k, 3=10k-20k, 4=5k-10k
-  populationTier Int      @map("population_tier")
+  populationTier Int    @map("population_tier")
   /// Rang par population decroissante (Paris = 1)
   priority       Int
 
@@ -3686,4 +3686,29 @@ model City {
   @@index([isTargeted, isCovered])
   @@index([populationTier])
   @@map("cities")
+}
+
+// ============================================================
+// EXTERNAL LINKS USAGE — Rotation équitable du catalogue (~2400 liens)
+// Tracking usageCount + lastUsedAt pour scoring round_robin.
+// Cf. src/data/external-links/helpers.ts trackExternalLinksUsage()
+// Sprint External Links Database 2026-05-22.
+// ============================================================
+
+/// Tracking d'usage des liens externes (rotation équitable).
+/// `externalLinkId` référence l'id du fichier TypeScript (PAS de FK Prisma).
+model ExternalLinkUsage {
+  id              String   @id @default(cuid())
+  externalLinkId  String   @unique @map("external_link_id") @db.VarChar(120)
+  usageCount      Int      @default(0) @map("usage_count")
+  monthUsageCount Int      @default(0) @map("month_usage_count")
+  lastUsedAt      DateTime @default(now()) @map("last_used_at")
+  monthResetAt    DateTime @default(now()) @map("month_reset_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([externalLinkId])
+  @@index([lastUsedAt])
+  @@index([usageCount])
+  @@map("external_link_usage")
 }
