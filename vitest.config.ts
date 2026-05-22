@@ -12,6 +12,14 @@ export default defineConfig({
     // c'est acceptable pour débloquer l'audit A1 NODE_VERSION=24 + A7 CI
     // gate-d. Tests : 818 verts confirmés post-workaround.
     pool: "forks",
+    // Sprint Final P2 (audit final 2026-05-22) — fileParallelism désactivé pour
+    // garantir isolation 100 % entre test files. Sans ce flag, 7 tests workers
+    // failent en mode parallèle (pollution shared module state des nouveaux
+    // imports captureWorkerError dans 22 workers) alors qu'ils passent
+    // isolément + en `--no-file-parallelism`. Trade-off : CI 200s → ~365s mais
+    // gates strict + baseline 1687/1694 maintenu. À investiguer / retirer
+    // après upgrade Vitest 3.x (qui supporte Node 24 nativement).
+    fileParallelism: false,
     environment: "jsdom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],

@@ -165,8 +165,8 @@
     "@types/nodemailer": "^8.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@typescript-eslint/eslint-plugin": "^8.59.2",
-    "@typescript-eslint/parser": "^8.59.2",
+    "@typescript-eslint/eslint-plugin": "^8.59.4",
+    "@typescript-eslint/parser": "^8.59.4",
     "@vitest/coverage-v8": "^2.1.9",
     "@vitest/ui": "^2.1.9",
     "eslint": "^9",
@@ -248,9 +248,15 @@
       "@tailwindcss/oxide",
       "sharp"
     ],
-    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. esbuild/tmp/vite restent devDeps (moderate dev-only), couverts par dependabot weekly. Override vite >=6.4.2 incompatible vitest 2.x SSR — reporté V1.5 (upgrade vitest 3.x).",
+    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. Sprint Final P1-19 (2026-05-22) — overrides supplémentaires devDeps moderate/low : brace-expansion >=5.0.6 (DoS minimatch transitive), ws >=8.20.1 (memory disclosure jsdom transitive), tmp >=0.2.4 (symlink traversal lhci transitive), esbuild >=0.25.0 (CORS dev server vitest>vite transitive), uuid >=11.1.1 (buffer bounds lhci transitive), qs >=6.15.2 (prototype pollution lhci>express transitive). Override vite >=6.4.2 incompatible vitest 2.x SSR (peer ^5.0.0) — reporté V1.5 (upgrade vitest 3.x ou 4.x). Vuln vite path traversal n'affecte que dev server exposé via --host, non-applicable prod/CI.",
     "overrides": {
-      "postcss": ">=8.5.10"
+      "postcss": ">=8.5.10",
+      "brace-expansion@>=5.0.0 <5.0.6": ">=5.0.6",
+      "ws@>=8.0.0 <8.20.1": ">=8.20.1",
+      "tmp@<0.2.4": ">=0.2.4",
+      "esbuild@<=0.24.2": ">=0.25.0",
+      "uuid@<11.1.1": ">=11.1.1",
+      "qs@<6.15.2": ">=6.15.2"
     }
   }
 }
