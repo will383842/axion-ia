@@ -93,20 +93,53 @@ jobs:
       # ─────────────────────────────────────────────────────────────────────
       # P0-5 — Seed 6 CampaignTemplate
       # ─────────────────────────────────────────────────────────────────────
-      - name: P0-5 — Seed CampaignTemplate (6 presets D-P5-1)
+      - name: P0-5 — Seed CampaignTemplate (8 presets D-P5-1) inline node
         if: inputs.run_seed_templates == 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
         timeout-minutes: 5
         run: |
           set -euo pipefail
-          echo "──── P0-5 — Seed CampaignTemplate (idempotent upsert) ────"
+          echo "──── P0-5 — Seed CampaignTemplate inline node script ────"
+          # 8 templates D-P5-1 directement embedés (cohérent avec
+          # prisma/seeds/content-gen/seed-campaign-templates.ts).
+          # Approche inline car container axionia prod n'a pas tsx en runtime
+          # (devDep). PrismaClient JS-only suffit pour les upserts.
+          ALL_V='["interventions_formations","audits","implementations","un_a_un","sites_web_augmentes"]'
+          ALL_T='["tpe","pme","eti","ge"]'
+
           ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker exec '$CONTAINER' sh -c \
-            'cd /app && (npx --yes tsx@latest prisma/seeds/content-gen/seed-campaign-templates-standalone.ts 2>&1 || \
-              corepack pnpm content-gen:seed-templates 2>&1 || \
-              node --experimental-strip-types prisma/seeds/content-gen/seed-campaign-templates-standalone.ts 2>&1 || \
-              echo SEED_TEMPLATES_FAILED)'" 2>&1 | tee /tmp/seed-templates.log
+            "docker exec '$CONTAINER' node -e \
+            \"
+            const {PrismaClient} = require('/app/prisma/generated/client');
+            const p = new PrismaClient();
+            const ALL_V = ['interventions_formations','audits','implementations','un_a_un','sites_web_augmentes'];
+            const ALL_T = ['tpe','pme','eti','ge'];
+            const TEMPLATES = [
+              {slug:'toutes-verticales-general', name:'Toutes verticales — Général', description:'Campagne générale couvrant les 5 services Axion-IA pour toutes tailles d entreprise — blog depuis keywords, 30/j.', config:{verticals:ALL_V, target:ALL_T, types:['blog_from_keywords','qa_derived'], batchSize:30, dailyCap:30, cityProcessingMode:'sequential'}},
+              {slug:'interventions-formations-all', name:'Interventions & Formations — Toutes cibles', description:'Articles formations IA pour TPE, PME, ETI et GE — blog pilier + keywords + Q/R.', config:{verticals:['interventions_formations'], target:ALL_T, types:['blog_pillar','blog_from_keywords','qa_derived'], batchSize:30, dailyCap:30}},
+              {slug:'audits-all', name:'Audits IA — Toutes cibles', description:'Articles audit IA + landing pages villes pour toutes tailles d entreprise.', config:{verticals:['audits'], target:ALL_T, types:['blog_pillar','landing_ville','blog_from_keywords'], batchSize:20, dailyCap:30, cityProcessingMode:'sequential'}},
+              {slug:'implementations-all', name:'Implémentations IA — Toutes cibles', description:'Articles implémentations IA (chatbots, RAG, automatisation) pour toutes tailles d entreprise.', config:{verticals:['implementations'], target:ALL_T, types:['blog_pillar','blog_from_keywords','comparison'], batchSize:20, dailyCap:30}},
+              {slug:'un-a-un-all', name:'Coaching 1-to-1 IA — Toutes cibles', description:'Articles coaching individuel IA pour dirigeants et managers — blog pilier + Q/R.', config:{verticals:['un_a_un'], target:ALL_T, types:['blog_pillar','qa_derived','blog_from_keywords'], batchSize:15, dailyCap:20}},
+              {slug:'sites-web-augmentes-all', name:'Sites Web Augmentés IA — Toutes cibles', description:'Articles création/augmentation de sites web par l IA pour toutes tailles d entreprise.', config:{verticals:['sites_web_augmentes'], target:ALL_T, types:['blog_pillar','blog_from_keywords','comparison','qa_derived'], batchSize:20, dailyCap:30}},
+              {slug:'landing-villes-all', name:'Landing pages villes — 5 verticales', description:'Landing pages géolocalisées pour les 120 villes FR — couvre toutes les verticales et toutes les cibles.', config:{verticals:ALL_V, target:ALL_T, types:['landing_ville'], batchSize:20, dailyCap:30, cityProcessingMode:'sequential'}},
+              {slug:'rss-daily', name:'RSS quotidien — Actualité IA', description:'Blog depuis flux RSS IA chaque matin à 7h — couvre toutes les verticales.', config:{verticals:ALL_V, target:ALL_T, types:['blog_from_rss'], schedule:'0 7 * * *', batchSize:10, qualityThreshold:65, recurringSchedule:'0 7 * * *'}}
+            ];
+            (async () => {
+              let count = 0;
+              for (const t of TEMPLATES) {
+                await p.campaignTemplate.upsert({
+                  where:{slug:t.slug},
+                  create:{slug:t.slug, name:t.name, description:t.description, config:t.config, isSystem:true, isActive:true},
+                  update:{name:t.name, description:t.description, config:t.config, isSystem:true, isActive:true}
+                });
+                count++;
+                console.log('  upserted ' + t.slug);
+              }
+              console.log('[seed-campaign-templates] ' + count + ' templates upserted.');
+              process.exit(0);
+            })().catch((e) => { console.error('SEED_ERROR:', e.message); process.exit(1); });
+            \"" 2>&1 | tee /tmp/seed-templates.log
           echo "──── P0-5 fin ────"
 
       - name: P0-5 — Verify CampaignTemplate count
