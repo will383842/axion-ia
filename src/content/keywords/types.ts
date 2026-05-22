@@ -24,7 +24,15 @@ export type KeywordIntent =
   | "comparatif"
   | "local"
   | "partenaire"
-  | "sectoriel";
+  | "sectoriel"
+  /** Requête vocale naturelle (format question). Doit se terminer par '?'. */
+  | "voice_search"
+  /** Résumé direct sourceable par les Answer Engines (Perplexity, SGE). */
+  | "ai_overview"
+  /** Ciblage position 0 Google (liste étapes / définition concise). */
+  | "featured_snippet"
+  /** Comparaison / évaluation (vs, ou, différence entre). */
+  | "commercial_investigation";
 
 export type KeywordModule =
   | "interventions-formations"

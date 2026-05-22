@@ -36,6 +36,9 @@ export function validateKeywordSeed(seed: KeywordSeed): KeywordValidationResult 
   if (seed.intent === "aeo" && seed.keyword && !seed.keyword.trim().endsWith("?"))
     errors.push("keyword AEO doit se terminer par '?'");
 
+  if (seed.intent === "voice_search" && seed.keyword && !seed.keyword.trim().endsWith("?"))
+    errors.push("keyword voice_search doit se terminer par '?' (format question naturelle)");
+
   return { valid: errors.length === 0, errors };
 }
 

@@ -26,6 +26,18 @@ import { KW_SECTEURS_G7C } from "./g7c-secteurs-conso-culture";
 import { KW_AUDIENCES_G8 } from "./g8-audiences-manquantes";
 import { KW_WEB_DIGITAL_G3B } from "./g3b-web-digital-augmente";
 import { KW_BALANCE_G9 } from "./g9-balance";
+// Phase 2 Sprint Perfection 2026-05-22 — 5 fichiers clusters (1400+ keywords)
+import { KW_AUDIT_CLUSTERS } from "./g1c-audit-clusters";
+import { KW_FORMATIONS_CLUSTERS } from "./g2c-formations-clusters";
+import { KW_COACHING_CLUSTERS } from "./g6c-coaching-clusters";
+import { KW_IMPLEMENTATIONS_CLUSTERS } from "./g3e-implementations-clusters";
+import { KW_WEB_AUGMENTE_CLUSTERS } from "./g3f-web-augmente-clusters";
+// Phase 2 expansions — couverture géo + secteurs + offres
+import { KW_INTERVENTIONS_EXPANSION } from "./g-expansion-interventions";
+import { KW_COACHING_EXPANSION, KW_IMPLEMENTATIONS_EXPANSION } from "./g-expansion-coaching-impl";
+import { KW_AUDIT_EXPANSION, KW_WEB_EXPANSION } from "./g-expansion-audit-web";
+// Phase 3 — Top-up équilibrage ≥250 par verticale
+import { KW_PHASE3_TOPUP } from "./g-phase3-balance-topup";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -145,6 +157,20 @@ export const ALL_KEYWORD_SEEDS: KeywordSeed[] = [
   ...KW_SECTORIEL,
   // Phase E Sprint Perfection 2026-05-22 — équilibrage verticales déficitaires
   ...KW_BALANCE_G9.filter(isClean),
+  // Phase 2 Sprint Keywords Perfection 2026-05-22 — 5 verticales × 10-12 clusters
+  ...KW_AUDIT_CLUSTERS.filter(isClean),
+  ...KW_FORMATIONS_CLUSTERS.filter(isClean),
+  ...KW_COACHING_CLUSTERS.filter(isClean),
+  ...KW_IMPLEMENTATIONS_CLUSTERS.filter(isClean),
+  ...KW_WEB_AUGMENTE_CLUSTERS.filter(isClean),
+  // Expansions géo + secteurs + offres
+  ...KW_AUDIT_EXPANSION.filter(isClean),
+  ...KW_INTERVENTIONS_EXPANSION.filter(isClean),
+  ...KW_COACHING_EXPANSION.filter(isClean),
+  ...KW_IMPLEMENTATIONS_EXPANSION.filter(isClean),
+  ...KW_WEB_EXPANSION.filter(isClean),
+  // Phase 3 — top-up ≥250 par verticale
+  ...KW_PHASE3_TOPUP.filter(isClean),
 ];
 
 // ─── Filtres utiles pour le Content Engine ───────────────────────────────────
