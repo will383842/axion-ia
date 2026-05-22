@@ -378,6 +378,7 @@ export function startExternalLinksMonitorWorker(): Worker {
     {
       connection: { url: redisUrl },
       concurrency: 1, // 1 run global à la fois (le job lui-même parallélise 30)
+      lockDuration: 120_000,
     },
   );
 

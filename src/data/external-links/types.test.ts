@@ -38,11 +38,17 @@ describe("ExternalLink types & invariants", () => {
     }
   });
 
-  it("Aucun lien bootstrap ne marque isCompetitor=true", () => {
+  it("Liens isCompetitor=true sont auto-seeded uniquement (jamais bootstrap manuel)", () => {
+    // Les concurrents potentiels viennent du seed Claude qui peut récupérer des URLs
+    // borderline — la détection isCompetitorDomain() les marque pour les exclure du
+    // sélecteur. Aucun lien curé manuellement (bootstrap) ne doit être un concurrent.
     for (const link of ALL_EXTERNAL_LINKS) {
-      expect(link.isCompetitor, `${link.id} ne doit pas être marqué concurrent dans bootstrap`).toBe(
-        false,
-      );
+      if (link.isCompetitor) {
+        expect(
+          link.id.startsWith("auto-") || link.notes?.includes("Auto-seeded"),
+          `${link.id} (${link.url}) marqué isCompetitor mais pas du seed auto — bug bootstrap`,
+        ).toBe(true);
+      }
     }
   });
 });

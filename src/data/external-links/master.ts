@@ -17,6 +17,7 @@ import { LINKS_VERTICALES } from "./verticales";
 import { LINKS_TOPICS } from "./topics";
 import { LINKS_PRESS_FR } from "./press-fr";
 import { LINKS_MANUAL_ADDITIONS } from "./manual-additions";
+import { LINKS_AUTO_SEEDED } from "./auto-seeded";
 import verificationStatusRaw from "./verification-status.json";
 
 interface VerificationOverride {
@@ -57,6 +58,7 @@ export const ALL_EXTERNAL_LINKS: ExternalLink[] = [
   ...LINKS_TOPICS,
   ...LINKS_PRESS_FR,
   ...LINKS_MANUAL_ADDITIONS,
+  ...LINKS_AUTO_SEEDED,
 ].map((l) => {
   const override = verificationOverrides[l.id];
   if (!override) return { ...l };

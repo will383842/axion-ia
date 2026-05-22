@@ -1,7 +1,3728 @@
 {
-  "_meta": {
-    "lastFullScanAt": null,
-    "scriptVersion": "1.0",
-    "note": "Overrides écrits par src/scripts/verify-external-links-head.ts — voir _AUDIT/EXTERNAL-LINKS-2026-05-22/verification-report.md"
+  "fr-nat-bpifrance-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.187Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-nat-economie-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.205Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-nat-cci-france-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.219Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-nat-legifrance-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.235Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "intl-oecd-002": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.248Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "intl-wef-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.860Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "intl-eu-ai-act-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.237Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "fr-nat-arcep-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.203Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-insee-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.022Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-dares-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.184Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-anssi-002": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.201Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-data-gouv-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.211Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-insee-002": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.217Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-travail-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.207Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-medef-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.222Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-france-num-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.190Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-afnor-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.208Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-cpme-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.221Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-cnil-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.197Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-eu-commission-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.239Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-cnil-002": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.215Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-france-travail-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.195Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-secretariat-num-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.210Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-unesco-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.356Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-grand-est-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:00.397Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-region-normandie-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:00.424Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-nat-france-competences-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.192Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-paris-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:00.502Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 405
+  },
+  "fr-nat-anssi-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.199Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-oecd-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.247Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-afd-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.233Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-w3c-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.177Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-ile-de-france-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.226Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-provence-alpes-cote-azur-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.414Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-iso-27001-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.792Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-iso-42001-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.680Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-owasp-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.130Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-corse-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.480Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-audits-gartner-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.140Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-city-lyon-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.553Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-auvergne-rhone-alpes-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.292Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-bourgogne-franche-comte-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.474Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-pays-de-la-loire-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.420Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-marseille-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.551Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-nantes-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.698Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-montpellier-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.701Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-nice-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.650Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-audits-forrester-001": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:01.161Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "intl-eu-edpb-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.246Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-impl-bcg-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.499Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-city-bordeaux-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.922Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-reims-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.139Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-rennes-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.088Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-audits-idc-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.168Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-nat-cnam-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.231Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-hauts-de-france-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.396Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "intl-nist-ai-rmf-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.483Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-toulouse-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.570Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-openai-research-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.747Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "vert-1to1-stanford-gsb-001": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:01.437Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "vert-form-opco-atlas-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.306Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-arxiv-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.691Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-strasbourg-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.817Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-city-lille-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.037Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-1to1-hbr-001": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:01.421Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "vert-impl-bain-001": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:01.504Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "vert-web-schema-org-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.622Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-web-mdn-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.658Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-form-uniformation-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.409Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-deepmind-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.761Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-impl-mit-tech-review-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.515Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "press-fr-jdn-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.893Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-nantes-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:02.026Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "press-fr-numerama-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.912Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "press-fr-usine-digitale-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.928Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "fr-region-centre-val-de-loire-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.477Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "press-fr-bfm-tech-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.954Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-le-havre-004": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:02.207Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "vert-form-akto-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.231Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-1to1-mit-sloan-001": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:01.426Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "vert-impl-capgemini-ri-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.439Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-hugging-face-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.848Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "press-fr-zdnet-fr-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.981Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-villeurbanne-007": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.299Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-clermont-ferrand-013": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:02.471Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-grenoble-009": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.342Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-rennes-003": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.169Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-limoges-018": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:02.630Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "press-fr-maddyness-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.932Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-le-mans-012": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.462Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-papers-with-code-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.804Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-stanford-ai-index-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.681Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-eu-ai-act-faq-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.822Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-bretagne-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.422Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-aix-en-provence-016": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.596Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-toulon-005": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.230Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-nimes-008": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.321Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-annecy-022": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.876Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-saint-etienne-002": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.114Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-web-web-dev-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.536Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-saint-paul-031": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.272Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-caen-030": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.228Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-brest-017": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.623Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-amiens-015": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.581Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-orleans-021": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.859Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-boulogne-billancourt-019": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.781Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-roubaix-034": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.320Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-montreuil-027": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.019Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "vert-web-google-search-central-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.528Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-perpignan-020": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.834Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-rouen-026": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.017Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-dunkerque-038": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.426Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-metz-025": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.983Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-avignon-035": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.380Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-rueil-malmaison-045": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.658Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-le-tampon-046": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.727Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-cherbourg-en-cotentin-047": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.791Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-courbevoie-042": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.624Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-angers-010": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.383Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-dijon-006": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.279Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "press-fr-frenchweb-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.908Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-occitanie-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.327Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-haguenau-049": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:04.210Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "vert-form-opcommerce-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.215Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-city-poitiers-039": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.508Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-aulnay-sous-bois-043": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.646Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-tours-014": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.576Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-versailles-040": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.544Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-ile-de-france-054": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:04.291Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-tourcoing-033": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.311Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-ile-de-france-056": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:04.334Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-city-nancy-032": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.305Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-argenteuil-028": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.129Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-auvergne-rhone-alpes-060": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:04.854Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-city-istres-048": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.201Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-region-nouvelle-aquitaine-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:00.318Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-asnieres-sur-seine-041": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.620Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-ile-de-france-052": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.261Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-vitry-sur-seine-036": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.382Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-nouvelle-aquitaine-069": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.142Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-city-nanterre-044": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.651Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-creteil-037": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:03.401Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-ile-de-france-053": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.276Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-nouvelle-aquitaine-074": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.672Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-auvergne-rhone-alpes-063": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:04.986Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-nouvelle-aquitaine-076": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.749Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-nouvelle-aquitaine-070": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.303Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-nouvelle-aquitaine-073": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.340Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-city-mulhouse-029": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:03.169Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-auvergne-rhone-alpes-064": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.016Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-auvergne-rhone-alpes-067": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.115Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-auvergne-rhone-alpes-066": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.072Z",
+    "paywall": false,
+    "indexable": false,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-ile-de-france-057": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.463Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-auvergne-rhone-alpes-065": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.035Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-nouvelle-aquitaine-071": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.320Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-hauts-de-france-080": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.882Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-hauts-de-france-079": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.879Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-nouvelle-aquitaine-072": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.338Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-ile-de-france-055": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.301Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-grand-est-087": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.151Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-city-biarritz-050": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.213Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-hauts-de-france-084": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.956Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-grand-est-091": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.330Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-grand-est-090": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.296Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-grand-est-088": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.285Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-grand-est-093": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.441Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-grand-est-092": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.367Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-nouvelle-aquitaine-077": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.821Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-ile-de-france-059": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.553Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-nouvelle-aquitaine-075": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.692Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-grand-est-095": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:06.565Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-hauts-de-france-081": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.910Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-grand-est-089": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:06.288Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-hauts-de-france-086": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.978Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-auvergne-rhone-alpes-061": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.899Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-provence-alpes-cote-azur-103": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:06.918Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-provence-alpes-cote-azur-100": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.847Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-pays-de-la-loire-107": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.114Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-pays-de-la-loire-106": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.082Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-pays-de-la-loire-111": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.176Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-grand-est-094": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:06.480Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-provence-alpes-cote-azur-104": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:06.962Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-auvergne-rhone-alpes-068": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.130Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-bretagne-113": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.210Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-grand-est-096": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:06.650Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-provence-alpes-cote-azur-105": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.028Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-pays-de-la-loire-109": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.130Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-provence-alpes-cote-azur-099": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:06.834Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-provence-alpes-cote-azur-097": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:06.799Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-bretagne-119": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.485Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-bretagne-118": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.393Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 405
+  },
+  "auto-region-pays-de-la-loire-108": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.120Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-provence-alpes-cote-azur-098": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:06.806Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-city-colombes-051": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.215Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-bretagne-121": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.544Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-normandie-123": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.567Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-normandie-122": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.561Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-normandie-125": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.613Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-normandie-124": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.581Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-bourgogne-franche-comte-126": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.618Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-bretagne-120": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.488Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-bourgogne-franche-comte-128": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.714Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-centre-val-de-loire-130": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.772Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-centre-val-de-loire-133": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.912Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-bourgogne-franche-comte-127": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.710Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-centre-val-de-loire-134": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.970Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-auvergne-rhone-alpes-062": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.951Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-corse-137": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.032Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-centre-val-de-loire-131": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:07.806Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-corse-138": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.082Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-corse-139": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.119Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-corse-136": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.022Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-region-bourgogne-franche-comte-129": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.738Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-bretagne-115": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.277Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-1-144": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.268Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-centre-val-de-loire-132": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.834Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-provence-alpes-cote-azur-102": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:06.883Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-corse-142": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.226Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-corse-140": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.121Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-natfr-1-146": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.320Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-1-149": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.373Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-region-pays-de-la-loire-112": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.201Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-bretagne-117": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.335Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-corse-141": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.157Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-152": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.380Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-pays-de-la-loire-110": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.149Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-151": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.377Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-157": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.599Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-153": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.389Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-154": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.442Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-1-150": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.376Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-155": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.461Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-158": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.612Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-156": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.532Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-2-160": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.694Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-1-143": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.267Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-1-147": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.356Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-3-165": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.857Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-3-164": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.823Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-2-159": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.679Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-3-166": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.887Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-1-145": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.289Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-centre-val-de-loire-135": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.977Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-4-171": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:08.946Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-3-167": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.904Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "fr-nat-syntec-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:56:59.213Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-natfr-4-174": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:09.010Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-3-161": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.736Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-3-168": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.909Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-3-163": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.820Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-5-180": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.292Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-3-162": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.777Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-5-182": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.321Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-5-184": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.386Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-5-183": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.383Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-1-148": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:08.370Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-5-181": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.299Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-5-179": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.193Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-hauts-de-france-078": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.876Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-5-188": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.638Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-6-194": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:09.867Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-5-187": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.562Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-5-186": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.525Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-6-190": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.716Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-6-189": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.697Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-hauts-de-france-085": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.957Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-natfr-5-185": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.519Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-6-191": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.741Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-6-192": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.743Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-7-195": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.942Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-7-198": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.996Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-8-202": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.168Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-city-besancon-023": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:02.889Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-hauts-de-france-083": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:05.955Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-natfr-8-205": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.290Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-8-201": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.074Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-8-206": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.329Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-8-200": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.068Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-8-203": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.176Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-8-209": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.457Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-4-170": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:08.940Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-audits-1-211": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.474Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-4-173": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:08.994Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-6-193": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.824Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-210": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.470Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-8-207": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.377Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-8-204": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.204Z",
+    "paywall": true,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-4-177": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.095Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-audits-1-215": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.582Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-natfr-8-208": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.451Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-214": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.576Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "fr-nat-ifri-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:56:59.212Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-218": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.641Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-audits-2-219": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.649Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "topic-anthropic-research-001": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:01.735Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-2-222": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.715Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-7-197": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.966Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-213": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.514Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-bretagne-116": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.327Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-2-224": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.762Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-2-223": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.743Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-212": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.498Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-un_a_un-1-235": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.162Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-un_a_un-1-234": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.138Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-interventions_formations-1-231": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.080Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-un_a_un-1-236": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.184Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-un_a_un-1-237": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.213Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-audits-2-220": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.709Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-un_a_un-2-241": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.271Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-un_a_un-2-242": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.291Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "vert-1to1-mckinsey-ri-001": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:01.413Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-un_a_un-1-238": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.222Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-interventions_formations-1-232": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.097Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-216": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.597Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-implementations-1-247": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.500Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-implementations-1-248": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.523Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-7-196": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.944Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-interventions_formations-1-229": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.967Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-7-199": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:09.999Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-un_a_un-1-239": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.232Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-un_a_un-1-240": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.247Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-region-bretagne-114": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:07.258Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-interventions_formations-1-227": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.878Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-interventions_formations-1-228": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.931Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-audits-1-217": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.606Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-2-256": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.856Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-audits-2-226": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.797Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-provence-alpes-cote-azur-101": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:06.882Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-implementations-2-257": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.868Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-4-172": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:08.977Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-4-169": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:08.934Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-natfr-4-175": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.018Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-1-250": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.597Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-natfr-4-176": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.032Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-interventions_formations-1-230": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.972Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-natfr-4-178": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:09.127Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-hauts-de-france-082": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:05.934Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-sites_web_augmentes-1-263": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:11.961Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-audits-2-221": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:10.712Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-implementations-1-249": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:11.587Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-2-260": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.929Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-city-saint-denis-de-la-reunion-011": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:02.446Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-vert-sites_web_augmentes-1-272": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.301Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-268": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.109Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-2-261": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.942Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-sites_web_augmentes-1-267": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.090Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-269": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.179Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-270": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.203Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-266": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.083Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-264": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.061Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-271": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.266Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-interventions_formations-2-233": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.136Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-sites_web_augmentes-2-282": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.535Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-1-265": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.080Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-1-252": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:11.666Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-2-274": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.365Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-research-287": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:12.701Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-topic-ai-research-288": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:12.744Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-sites_web_augmentes-2-278": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.475Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-2-273": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.325Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-1-251": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:11.658Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-2-280": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.489Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-city-saint-denis-024": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:02.921Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 0
+  },
+  "auto-vert-audits-2-225": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:10.780Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-2-281": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.513Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-act-293": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.842Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-topic-ai-research-291": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.778Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-2-276": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.448Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-act-294": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.853Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-topic-ai-research-292": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.836Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-2-262": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:11.956Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-sites_web_augmentes-2-279": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.486Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-vert-implementations-2-258": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.876Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ai-act-297": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.923Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-topic-ai-act-295": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.915Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-topic-ai-act-296": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.920Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-topic-ai-act-301": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:13.011Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 405
+  },
+  "auto-vert-sites_web_augmentes-2-275": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.398Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-act-299": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.990Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 202
+  },
+  "auto-intl-1-311": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:13.134Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-topic-ia-securite-308": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.103Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ia-securite-309": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.104Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-research-283": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.595Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-intl-1-313": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:13.185Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-sites_web_augmentes-2-277": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.471Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ia-securite-302": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.013Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ia-securite-303": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.016Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ai-research-285": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.614Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ai-research-286": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.654Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-intl-1-318": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:13.262Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-intl-1-315": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:13.251Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 403
+  },
+  "auto-vert-implementations-2-259": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:11.906Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-intl-1-317": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.258Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-intl-1-312": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.172Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ia-securite-305": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.072Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-research-284": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.603Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ia-securite-310": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.107Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ai-act-298": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:12.927Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ia-securite-304": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.060Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ia-securite-307": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.100Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-intl-1-316": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.252Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ai-research-290": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.770Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-intl-1-314": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:13.205Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-topic-ia-securite-306": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.088Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-act-300": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:13.008Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-topic-ai-research-289": {
+    "status": "404",
+    "lastCheckedAt": "2026-05-22T16:57:12.754Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": false,
+    "httpStatus": 404
+  },
+  "auto-region-ile-de-france-058": {
+    "status": "active",
+    "lastCheckedAt": "2026-05-22T16:57:04.531Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": true,
+    "isCompetitor": false,
+    "httpStatus": 200
+  },
+  "auto-vert-implementations-1-243": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.329Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-implementations-1-244": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.346Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-implementations-1-245": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.414Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-implementations-1-246": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.454Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-implementations-2-253": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.677Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-implementations-2-254": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.764Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
+  },
+  "auto-vert-implementations-2-255": {
+    "status": "deprecated",
+    "lastCheckedAt": "2026-05-22T16:57:11.767Z",
+    "paywall": false,
+    "indexable": true,
+    "hasSchemaOrg": false,
+    "isCompetitor": true,
+    "httpStatus": 0
   }
 }
