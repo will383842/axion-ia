@@ -594,6 +594,31 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   // P0-10 — best-effort post-transaction : un échec revalidate NE doit PAS
   // masquer la publication. L'article reste publié et sera servi via ISR 1h
   // naturellement même si le revalidate échoue.
+  // V-01 P1 revalidation cascade (suite Sprint Correctif P0 2026-05-22) — pour
+  // chaque ville mentionnée dans l'article, invalide les caches ISR des 5 hubs
+  // ville-spécifique qui affichent les articles factory via
+  // `getBlogArticlesByVille()` (cf. implantations/[region]/[ville]/page.tsx et
+  // VilleServicePageTemplate). Sans cette cascade, un article fraîchement
+  // publié n'apparaît sur les hubs villes qu'après expiration ISR 24h.
+  //
+  // Note : import dynamique pour éviter de charger les ~2150 villes
+  // au module-eval (ralentit les tests throttle qui mock le worker).
+  const cityPaths: string[] = [];
+  if (mentionedCities.length > 0) {
+    const { getVille } = await import("@/content/villes");
+    for (const citySlug of mentionedCities) {
+      const ville = getVille(citySlug);
+      if (!ville) continue;
+      cityPaths.push(
+        `/fr/implantations/${ville.region}/${ville.slug}`,
+        `/fr/audit/par-ville/${ville.slug}`,
+        `/fr/interventions/par-ville/${ville.slug}`,
+        `/fr/implementation/par-ville/${ville.slug}`,
+        `/fr/un-a-un/par-ville/${ville.slug}`,
+      );
+    }
+  }
+
   const paths = [
     `/fr/blog/${slugCandidate}`,
     ...(isNews ? [`/fr/actualites/${slugCandidate}`, "/fr/actualites"] : []),
@@ -601,11 +626,14 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     "/sitemap.xml",
     "/sitemap-index.xml",
     ...(isNews ? ["/sitemap-news.xml"] : []),
+    ...cityPaths,
   ];
   try {
     await revalidateContent({ paths });
     await logStep(cgJob.id, "revalidate_path", "Revalidate paths via internal API", {
       paths,
+      city_cascade_count: cityPaths.length,
+      mentioned_cities: mentionedCities,
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
