@@ -38,15 +38,23 @@ describe("ExternalLink types & invariants", () => {
     }
   });
 
-  it("Liens isCompetitor=true sont auto-seeded uniquement (jamais bootstrap manuel)", () => {
-    // Les concurrents potentiels viennent du seed Claude qui peut récupérer des URLs
-    // borderline — la détection isCompetitorDomain() les marque pour les exclure du
-    // sélecteur. Aucun lien curé manuellement (bootstrap) ne doit être un concurrent.
+  it("Liens isCompetitor=true sont soit auto-seeded soit faux-positifs documentés", () => {
+    // Les concurrents potentiels viennent :
+    //  - Du seed Claude (URLs borderline auto-détectées) → id "auto-*"
+    //  - De faux-positifs du filtre isCompetitorDomain() sur des sub-paths Research
+    //    légitimes (ex : mckinsey.com/capabilities/quantumblack/our-insights = McKinsey
+    //    Research Institute, pas le service conseil concurrent direct). Ces entries
+    //    bootstrap ont une `notes:` mentionnant "exception" ou "Research".
     for (const link of ALL_EXTERNAL_LINKS) {
       if (link.isCompetitor) {
+        const isAutoSeeded =
+          link.id.startsWith("auto-") || (link.notes ?? "").includes("Auto-seeded");
+        const isDocumentedException =
+          (link.notes ?? "").toLowerCase().includes("exception") ||
+          (link.notes ?? "").toLowerCase().includes("research");
         expect(
-          link.id.startsWith("auto-") || link.notes?.includes("Auto-seeded"),
-          `${link.id} (${link.url}) marqué isCompetitor mais pas du seed auto — bug bootstrap`,
+          isAutoSeeded || isDocumentedException,
+          `${link.id} (${link.url}) marqué isCompetitor sans justification documentée`,
         ).toBe(true);
       }
     }
