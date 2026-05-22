@@ -1,24 +1,24 @@
 # Verification Report — External Links Database
 
-Date : 2026-05-22T16:57:21.781Z
+Date : 2026-05-22T19:07:36.304Z
 Sprint : External Links Database 2026-05-22
-Durée : 0.4 min
-Total liens vérifiés : 414
+Durée : 0.6 min
+Total liens vérifiés : 740
 
 ## Stats agrégées
 
-| Statut | Count | % |
-|---|---:|---:|
-| active | 224 | 54.1% |
-| redirect_acceptable | 0 | 0.0% |
-| 404 | 73 | 17.6% |
-| deprecated (timeout/5xx) | 117 | 28.3% |
-| paywall détecté | 37 | 8.9% |
-| non indexable robots.txt | 1 | 0.2% |
-| Schema.org détecté | 72 | 17.4% |
-| concurrent détecté | 8 | 1.9% |
+| Statut                   | Count |     % |
+| ------------------------ | ----: | ----: |
+| active                   |   351 | 47.4% |
+| redirect_acceptable      |     0 |  0.0% |
+| 404                      |   220 | 29.7% |
+| deprecated (timeout/5xx) |   169 | 22.8% |
+| paywall détecté          |    46 |  6.2% |
+| non indexable robots.txt |     1 |  0.1% |
+| Schema.org détecté       |   118 | 15.9% |
+| concurrent détecté       |    17 |  2.3% |
 
-## Liens problématiques (223)
+## Liens problématiques (431)
 
 - fr-nat-insee-001 | https://www.insee.fr/fr/statistiques → paywall
 - fr-nat-bpifrance-001 | https://www.bpifrance.fr/ → deprecated (HTTP 403)
@@ -27,7 +27,6 @@ Total liens vérifiés : 414
 - fr-nat-economie-001 | https://www.economie.gouv.fr/ → deprecated (HTTP 403)
 - fr-nat-secretariat-num-001 | https://www.numerique.gouv.fr/ → paywall
 - fr-nat-data-gouv-001 | https://www.data.gouv.fr/ → paywall
-- fr-nat-syntec-001 | https://syntec-numerique.fr/ → deprecated (HTTP 0)
 - fr-nat-insee-002 | https://www.insee.fr/fr/statistiques?theme=89 → paywall
 - fr-nat-cci-france-001 | https://www.cci.fr/ → deprecated (HTTP 403)
 - fr-nat-afd-001 | https://www.afd.fr/ → paywall
@@ -120,10 +119,11 @@ Total liens vérifiés : 414
 - auto-region-bourgogne-franche-comte-127 | https://www.insee.fr/fr/regions/bourgogne-franche-comte/ → deprecated (HTTP 0)
 - auto-region-bourgogne-franche-comte-128 | https://www.bourgogne-franche-comte.gouv.fr/ → deprecated (HTTP 0)
 - auto-region-centre-val-de-loire-130 | https://www.centrevaldeloire.cci.fr/ → deprecated (HTTP 0)
+- auto-region-centre-val-de-loire-131 | https://www.insee.fr/fr/regions/centre-val-de-loire/ → deprecated (HTTP 0)
 
 ## Actions Will
 
-1. Review les 223 liens problématiques ci-dessus
+1. Review les 431 liens problématiques ci-dessus
 2. Décider : virer / patcher l'URL / accepter (ex : paywall acceptable pour HBR)
 3. Re-lancer ce script après edits
 
