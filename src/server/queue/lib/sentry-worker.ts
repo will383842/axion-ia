@@ -63,7 +63,9 @@ export type WorkerName =
   // Sprint Perfection 2026 — brand-voice drift monitor
   | "brand-voice-drift-monitor"
   // Phase 8 Sprint Keywords Perfection 2026-05-22
-  | "keyword-opportunity-detector";
+  | "keyword-opportunity-detector"
+  // Sprint External Links Database 2026-05-22 — cron mensuel HEAD verification
+  | "external-links-monitor";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
