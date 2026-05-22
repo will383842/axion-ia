@@ -958,6 +958,9 @@ function VilleStub({ ville, regionNameFr, regionSlug, breadcrumbItems, isFr }: V
             : `Book an engagement · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
         </Cta>
       </div>
+      {/* V-07 P0 audit 2026-05-22 — AI Act art. 50 disclosure même pour les ~2150
+          villes stub (description IA-assistée paramétrée par city data). */}
+      <AiContentDisclaimer locale={isFr ? "fr" : "en"} className="mt-8" />
     </Section>
   );
 }
