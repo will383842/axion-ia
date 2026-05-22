@@ -3383,7 +3383,7 @@ model ImageAsset {
   // License (CC BY 4.0 par défaut)
   licenseType      String  @default("cc-by-4.0") @map("license_type") @db.VarChar(50)
   licenseUrl       String? @default("https://creativecommons.org/licenses/by/4.0/") @map("license_url") @db.VarChar(500)
-  copyrightHolder  String  @default("Axion-IA OÜ") @map("copyright_holder") @db.VarChar(255)
+  copyrightHolder  String  @default("Axion-IA") @map("copyright_holder") @db.VarChar(255)
   photographerName String? @map("photographer_name") @db.VarChar(255)
   photographerUrl  String? @map("photographer_url") @db.VarChar(500)
 

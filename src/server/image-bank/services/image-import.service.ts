@@ -104,6 +104,7 @@ export class ImageImportService {
     await sharp(input.buffer, SHARP_LIMITS)
       .resize({ width: THUMBNAIL_WIDTH, withoutEnlargement: true })
       .webp({ quality: WEBP_QUALITY, effort: WEBP_EFFORT })
+      .withMetadata({ orientation: 1 })
       .toFile(thumbOut);
 
     // 6) AVIF — md/lg (qualité 55 = visuellement équivalent à WebP 80, mais plus léger)
@@ -114,6 +115,7 @@ export class ImageImportService {
       await sharp(input.buffer, SHARP_LIMITS)
         .resize({ width: Math.min(v.width, meta.width), withoutEnlargement: true })
         .avif({ quality: AVIF_QUALITY, effort: AVIF_EFFORT })
+        .withMetadata({ orientation: 1 })
         .toFile(out);
       if (v.name === "lg" || (v.name === "md" && !avifPath)) {
         avifPath = publicUrlFromLocalPath(out);

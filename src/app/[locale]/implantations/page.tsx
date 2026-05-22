@@ -15,7 +15,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 
 import { REGIONS, getIndexableRegions, getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles, VILLES } from "@/content/villes";
-import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildItemListJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -53,6 +54,36 @@ export default async function ImplantationsHub({ params }: Props) {
 
   const breadcrumbItems = [{ href: "/implantations", label: isFr ? "Implantations" : "Locations" }];
 
+  // P0 audit Perfection 2026 — Organization + Service France-level (E1).
+  // Hub national manquait d'un signal GEO explicite « areaServed: France ».
+  const organizationFranceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: "Axion-IA",
+    url: SITE_URL,
+    areaServed: {
+      "@type": "Country",
+      name: isFr ? "France" : "France",
+      sameAs: "https://www.wikidata.org/wiki/Q142",
+    },
+    description: isFr
+      ? "Cabinet IA opérationnel — interventions sur site dans 12 régions françaises et 2 150+ communes."
+      : "Operational AI consultancy — on-site delivery across 12 French regions and 2,150+ communes.",
+  };
+  const serviceNationalJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path: "/implantations",
+    name: isFr
+      ? "Services IA opérationnels sur site partout en France"
+      : "Operational AI services on-site across France",
+    description: isFr
+      ? "Audit IA, interventions de formation et implémentations déployés sur site dans 12 régions et 2 150+ communes françaises."
+      : "AI audits, training sessions and implementations delivered on-site across 12 regions and 2,150+ French communes.",
+    serviceType: isFr ? "Services IA opérationnels" : "Operational AI services",
+    areasServed: buildServiceAreasServed(loc),
+  });
+
   // ItemList JSON-LD régions — signal AEO/GEO : LLMs énumèrent les 12 régions
   // couvertes quand un utilisateur demande « où intervient Axion-IA ? ».
   const regionsItemList = buildItemListJsonLd({
@@ -72,6 +103,16 @@ export default async function ImplantationsHub({ params }: Props) {
 
   return (
     <>
+      <JsonLd
+        data={organizationFranceJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-implantations-org"
+      />
+      <JsonLd
+        data={serviceNationalJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-implantations-service"
+      />
       <JsonLd data={regionsItemList} />
 
       {/* Hero — Section h1 (auto halo-warm + décoration) */}

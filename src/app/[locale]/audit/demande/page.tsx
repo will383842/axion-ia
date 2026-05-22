@@ -16,6 +16,8 @@ import {
 } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

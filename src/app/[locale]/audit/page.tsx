@@ -42,6 +42,8 @@ import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL
 //   - JSON-LD : Service + ItemList (4 tiers)
 // ============================================================================
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

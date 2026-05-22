@@ -18,6 +18,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
+import * as Sentry from "@sentry/nextjs";
 
 export type AuditState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -127,50 +128,58 @@ export async function submitAuditRequestAction(
 
   const locale = parseLocale(formData.get("locale"));
 
-  const submission = await prisma.submission.create({
-    data: {
-      type: "audit",
-      locale,
-      companyName: parsed.data.companyName ?? parsed.data.contact,
-      contactName: encryptPii(parsed.data.contact),
-      contactEmail: encryptPii(parsed.data.email),
-      contactPhone: encryptPii(parsed.data.phone) ?? null,
-      contactRole: parsed.data.role ?? null,
-      sector: parsed.data.industry,
-      employeesCount: parsed.data.size,
-      address: `${parsed.data.city}, ${parsed.data.country}`,
-      details: {
-        auditType: parsed.data.auditType,
-        modality: parsed.data.modality,
-        scope: parsed.data.scope,
-        scopeDetail: parsed.data.scopeDetail,
-        maturity: parsed.data.maturity,
-        goals: parsed.data.goals,
-        tools: parsed.data.tools ?? [],
-        toolsOther: parsed.data.toolsOther,
+  try {
+    const submission = await prisma.submission.create({
+      data: {
+        type: "audit",
+        locale,
+        companyName: parsed.data.companyName ?? parsed.data.contact,
+        contactName: encryptPii(parsed.data.contact),
+        contactEmail: encryptPii(parsed.data.email),
+        contactPhone: encryptPii(parsed.data.phone) ?? null,
+        contactRole: parsed.data.role ?? null,
+        sector: parsed.data.industry,
+        employeesCount: parsed.data.size,
+        address: `${parsed.data.city}, ${parsed.data.country}`,
+        details: {
+          auditType: parsed.data.auditType,
+          modality: parsed.data.modality,
+          scope: parsed.data.scope,
+          scopeDetail: parsed.data.scopeDetail,
+          maturity: parsed.data.maturity,
+          goals: parsed.data.goals,
+          tools: parsed.data.tools ?? [],
+          toolsOther: parsed.data.toolsOther,
+        },
+        ipAddress: ip,
+        ipHash: hashIp(ip),
+        userAgent: (await headers()).get("user-agent") ?? null,
       },
-      ipAddress: ip,
-      ipHash: hashIp(ip),
-      userAgent: (await headers()).get("user-agent") ?? null,
-    },
-  });
+    });
 
-  await sendTelegram({
-    tag: "AUDIT",
-    body: `Nouvelle demande audit ${parsed.data.auditType} • ${parsed.data.size}\n• Secteur : ${parsed.data.industry}\n• Lieu : ${parsed.data.city}, ${parsed.data.country} (${parsed.data.modality})\n• Maturité : ${parsed.data.maturity}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
-  });
+    await sendTelegram({
+      tag: "AUDIT",
+      body: `Nouvelle demande audit ${parsed.data.auditType} • ${parsed.data.size}\n• Secteur : ${parsed.data.industry}\n• Lieu : ${parsed.data.city}, ${parsed.data.country} (${parsed.data.modality})\n• Maturité : ${parsed.data.maturity}\n• Contact : ${redactContactLine(parsed.data.contact, parsed.data.email)}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    });
 
-  // Sprint 15 fix Fork 2 W1-2 : enqueue avec tools/role pour Telegram + email
-  await enqueueEmail("audit-confirmed", parsed.data.email, locale, {
-    contactName: parsed.data.contact,
-    auditType: parsed.data.auditType,
-    size: parsed.data.size,
-    industry: parsed.data.industry,
-    submissionId: submission.id,
-    tools: parsed.data.tools ?? [],
-    toolsOther: parsed.data.toolsOther,
-    role: parsed.data.role,
-  });
+    // Sprint 15 fix Fork 2 W1-2 : enqueue avec tools/role pour Telegram + email
+    await enqueueEmail("audit-confirmed", parsed.data.email, locale, {
+      contactName: parsed.data.contact,
+      auditType: parsed.data.auditType,
+      size: parsed.data.size,
+      industry: parsed.data.industry,
+      submissionId: submission.id,
+      tools: parsed.data.tools ?? [],
+      toolsOther: parsed.data.toolsOther,
+      role: parsed.data.role,
+    });
 
-  return { ok: true, submissionId: submission.id };
+    return { ok: true, submissionId: submission.id };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "submitAuditRequestAction", locale } });
+    return {
+      ok: false,
+      error: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
+    };
+  }
 }

@@ -391,8 +391,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/reserver",
     title:
       locale === "fr"
-        ? "Réserver une intervention ou Audit IA · calendrier · Axion-IA"
-        : "Book an AI session or audit · calendar · Axion-IA",
+        ? "Réserver · interventions & audit IA · Axion-IA"
+        : "Book · AI sessions & audit · Axion-IA",
     description:
       locale === "fr"
         ? "Sélectionnez une date disponible, choisissez l'intervention ou l'audit IA souhaité, la ville et la durée. Confirmation par email sous 1 h ouvrée."

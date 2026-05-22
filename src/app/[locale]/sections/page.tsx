@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
+
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Hero } from "@/components/sections/Hero";

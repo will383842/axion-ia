@@ -21,6 +21,8 @@ import {
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { buildProductMetadata, buildItemListJsonLd, buildFaqJsonLd, SITE_URL } from "@/lib/seo";
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

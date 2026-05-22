@@ -16,6 +16,7 @@ import {
   getIndustryLabel,
 } from "@/content/case-studies";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -153,6 +154,7 @@ export default async function CaseStudiesIndustryPage({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      <AiContentDisclaimer locale={loc} />
       <JsonLd data={collectionJsonLd} />
     </>
   );

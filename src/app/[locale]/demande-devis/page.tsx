@@ -128,8 +128,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path,
     title: isFr
-      ? "Demande de devis qualifiée · projets sur-mesure · Axion-IA"
-      : "Qualified quote request · custom projects · Axion-IA",
+      ? "Demande de devis · projets IA sur-mesure · Axion-IA"
+      : "AI project quote request · Axion-IA",
     description: isFr
       ? "Formulaire pour formats > 5 000 € HT, IA Custom, packs annuels. Réponse sous 24-48 h ouvrées."
       : "Form for formats > €5,000, custom AI, annual packs. Reply within 24-48 business hours.",

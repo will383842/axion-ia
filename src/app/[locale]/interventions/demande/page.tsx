@@ -22,6 +22,8 @@ import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 //   - Aucun bloc « nos coordonnées » (Will : pas besoin)
 // ============================================================================
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ objet?: string }>;

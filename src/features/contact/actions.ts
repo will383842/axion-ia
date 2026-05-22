@@ -19,6 +19,7 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+import * as Sentry from "@sentry/nextjs";
 
 export type ContactState = { ok: true } | { ok: false; error: string };
 
@@ -58,32 +59,40 @@ export async function submitContactAction(
   if (Object.keys(utm).length > 0) funnel.utm = utm;
   if (refCity && refCity.length > 0 && refCity.length <= 120) funnel.referrerCity = refCity;
 
-  const submission = await prisma.submission.create({
-    data: {
-      type: "contact",
-      locale,
-      companyName: parsed.data.company ?? "—",
-      contactName: encryptPii(parsed.data.name),
-      contactEmail: encryptPii(parsed.data.email),
-      details: {
-        message: parsed.data.message,
-        ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
-      } as object,
-      ipAddress: ip,
-      ipHash: hashIp(ip),
-      userAgent,
-    },
-  });
+  try {
+    const submission = await prisma.submission.create({
+      data: {
+        type: "contact",
+        locale,
+        companyName: parsed.data.company ?? "—",
+        contactName: encryptPii(parsed.data.name),
+        contactEmail: encryptPii(parsed.data.email),
+        details: {
+          message: parsed.data.message,
+          ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
+        } as object,
+        ipAddress: ip,
+        ipHash: hashIp(ip),
+        userAgent,
+      },
+    });
 
-  await sendTelegram({
-    tag: "CONTACT",
-    body: `Nouveau message\n• De : ${redactContactLine(parsed.data.name, parsed.data.email)}${parsed.data.company ? `\n• Société : ${parsed.data.company}` : ""}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
-  });
+    await sendTelegram({
+      tag: "CONTACT",
+      body: `Nouveau message\n• De : ${redactContactLine(parsed.data.name, parsed.data.email)}${parsed.data.company ? `\n• Société : ${parsed.data.company}` : ""}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    });
 
-  await enqueueEmail("contact-confirmed", parsed.data.email, locale, {
-    contactName: parsed.data.name,
-    submissionId: submission.id,
-  });
+    await enqueueEmail("contact-confirmed", parsed.data.email, locale, {
+      contactName: parsed.data.name,
+      submissionId: submission.id,
+    });
 
-  return { ok: true };
+    return { ok: true };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "submitContactAction", locale } });
+    return {
+      ok: false,
+      error: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
+    };
+  }
 }

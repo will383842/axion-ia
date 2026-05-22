@@ -20,6 +20,7 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+import * as Sentry from "@sentry/nextjs";
 
 export type QuoteRequestState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -91,54 +92,63 @@ export async function submitQuoteRequestAction(
 
   // Persistance Submission. Pipeline V1 :
   //   status='new' à la création, Will fait passer en 'qualifying' depuis admin.
-  const submission = await prisma.submission.create({
-    data: {
-      type: "quote_request",
-      status: "new",
-      locale,
+  try {
+    const submission = await prisma.submission.create({
+      data: {
+        type: "quote_request",
+        status: "new",
+        locale,
+        companyName: parsed.data.companyName,
+        sector: parsed.data.companySector,
+        address: parsed.data.city,
+        employeesCount: parsed.data.companySize,
+        contactName: encryptPii(parsed.data.contactName),
+        contactEmail: encryptPii(parsed.data.contactEmail),
+        contactPhone: encryptPii(parsed.data.contactPhone),
+        // Le payload est rangé dans `details` JSONB pour conserver la requête
+        // brute (audit + qualification ultérieure par Will).
+        details: {
+          interventionSlug: parsed.data.interventionSlug ?? null,
+          contextBusiness: parsed.data.contextBusiness,
+          budgetIndicative: parsed.data.budgetIndicative ?? null,
+          timingWeeks: parsed.data.timingWeeks ?? null,
+          willingToTravel: parsed.data.willingToTravel ?? null,
+          participantsEstimate: parsed.data.participantsEstimate ?? null,
+          // Sprint X.18 — funnel attribution (UTM cookie + pSEO referrerCity).
+          sourceReferer: referer,
+          ...(funnelData ? { funnel: funnelData as unknown as object } : {}),
+        } as object,
+        ipAddress: ip,
+        ipHash: hashIp(ip),
+        userAgent,
+        ...(referer ? { referer } : {}),
+      },
+    });
+
+    // Telegram Will — sans PII (redactContactLine masque email/nom).
+    await sendTelegram({
+      tag: "QUOTE_REQUEST_RECEIVED",
+      body: `📋 Demande de devis qualifiée\n• Société : ${parsed.data.companyName} (${parsed.data.companySize} · ${parsed.data.companySector})\n• Contact : ${redactContactLine(parsed.data.contactName, parsed.data.contactEmail)}\n• Format : ${parsed.data.interventionSlug ?? "non précisé"}\n• Ville : ${parsed.data.city}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
+    }).catch(() => {
+      /* fail-soft Telegram : ne bloque pas la submission */
+    });
+
+    // Email visiteur : confirmation de réception + ETA 24-48h (négo libre).
+    await enqueueEmail("quote-request-received", parsed.data.contactEmail, locale, {
+      contactName: parsed.data.contactName,
       companyName: parsed.data.companyName,
-      sector: parsed.data.companySector,
-      address: parsed.data.city,
-      employeesCount: parsed.data.companySize,
-      contactName: encryptPii(parsed.data.contactName),
-      contactEmail: encryptPii(parsed.data.contactEmail),
-      contactPhone: encryptPii(parsed.data.contactPhone),
-      // Le payload est rangé dans `details` JSONB pour conserver la requête
-      // brute (audit + qualification ultérieure par Will).
-      details: {
-        interventionSlug: parsed.data.interventionSlug ?? null,
-        contextBusiness: parsed.data.contextBusiness,
-        budgetIndicative: parsed.data.budgetIndicative ?? null,
-        timingWeeks: parsed.data.timingWeeks ?? null,
-        willingToTravel: parsed.data.willingToTravel ?? null,
-        participantsEstimate: parsed.data.participantsEstimate ?? null,
-        // Sprint X.18 — funnel attribution (UTM cookie + pSEO referrerCity).
-        sourceReferer: referer,
-        ...(funnelData ? { funnel: funnelData as unknown as object } : {}),
-      } as object,
-      ipAddress: ip,
-      ipHash: hashIp(ip),
-      userAgent,
-      ...(referer ? { referer } : {}),
-    },
-  });
+      submissionId: submission.id,
+    }).catch(() => {
+      /* fail-soft email queue (BullMQ Redis down → email manquant mais submission OK) */
+    });
 
-  // Telegram Will — sans PII (redactContactLine masque email/nom).
-  await sendTelegram({
-    tag: "QUOTE_REQUEST_RECEIVED",
-    body: `📋 Demande de devis qualifiée\n• Société : ${parsed.data.companyName} (${parsed.data.companySize} · ${parsed.data.companySector})\n• Contact : ${redactContactLine(parsed.data.contactName, parsed.data.contactEmail)}\n• Format : ${parsed.data.interventionSlug ?? "non précisé"}\n• Ville : ${parsed.data.city}\n• Locale : ${locale}\n• ID : \`${submission.id}\``,
-  }).catch(() => {
-    /* fail-soft Telegram : ne bloque pas la submission */
-  });
-
-  // Email visiteur : confirmation de réception + ETA 24-48h (négo libre).
-  await enqueueEmail("quote-request-received", parsed.data.contactEmail, locale, {
-    contactName: parsed.data.contactName,
-    companyName: parsed.data.companyName,
-    submissionId: submission.id,
-  }).catch(() => {
-    /* fail-soft email queue (BullMQ Redis down → email manquant mais submission OK) */
-  });
-
-  return { ok: true, submissionId: submission.id };
+    return { ok: true, submissionId: submission.id };
+  } catch (err) {
+    const locale = parseLocale(formData.get("locale"));
+    Sentry.captureException(err, { tags: { action: "submitQuoteRequestAction", locale } });
+    return {
+      ok: false,
+      error: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
+    };
+  }
 }

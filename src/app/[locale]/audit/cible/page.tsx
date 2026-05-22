@@ -12,6 +12,8 @@ import { buildProductMetadata } from "@/lib/seo";
 
 const TIER = "audit-cible" as const;
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

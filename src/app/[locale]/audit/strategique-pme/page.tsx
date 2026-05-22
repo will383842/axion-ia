@@ -11,6 +11,8 @@ import { buildProductMetadata } from "@/lib/seo";
 
 const TIER = "audit-strategique-pme" as const;
 
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }
