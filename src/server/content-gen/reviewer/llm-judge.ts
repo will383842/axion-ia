@@ -22,6 +22,10 @@
  */
 
 import { anthropicProvider } from "@/server/content-gen/providers/anthropic";
+import {
+  analyzeDiversity,
+  type DiversityScore,
+} from "@/server/content-gen/linguistic/diversity-checker";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -64,6 +68,22 @@ export interface JudgeIssue {
   readonly suggestedFix: string;
 }
 
+export interface LinguisticDiversityDimension {
+  /** Score brut retourné par analyzeDiversity. */
+  readonly score: DiversityScore;
+  /**
+   * Score 0-10 calculé depuis les métriques de diversité.
+   *
+   * Déductions :
+   *   ttr < 0.50          → -3 (P1 issue ajoutée)
+   *   ttr [0.50, 0.65[    → -1
+   *   stdSentenceLength < 3 → -2 (P2 issue ajoutée)
+   *   passiveVoiceRatio > 0.30 → -2 (P1 issue ajoutée)
+   *   passiveVoiceRatio [0.20, 0.30] → -1
+   */
+  readonly dimensionScore: number;
+}
+
 export interface JudgeResult {
   readonly verdict: JudgeVerdict;
   readonly globalScore: number; // 0-10 (moyenne ponderee)
@@ -76,6 +96,8 @@ export interface JudgeResult {
     readonly valueToReader: DimensionScore;
     readonly toneAxioniaAlignment: DimensionScore;
   };
+  /** 8e dimension — calculée localement, sans appel LLM. Optionnelle si bodyText absent. */
+  readonly linguisticDiversity?: LinguisticDiversityDimension;
   readonly issues: ReadonlyArray<JudgeIssue>;
   readonly reasoning: string;
 }
@@ -167,6 +189,46 @@ const DIMENSION_KEYS = [
   "toneAxioniaAlignment",
 ] as const;
 
+/**
+ * Poids des 7 dimensions LLM (total = 0.90) + linguisticDiversity 0.10.
+ * Total = 1.00 exact.
+ *
+ * Phase G — Diversification Linguistique :
+ *   Les 7 dimensions LLM passent de 1/7 chacune (~0.143) à ~0.129 chacune,
+ *   la différence (0.10) va à linguisticDiversity.
+ */
+const LLM_DIM_WEIGHT = 0.9 / DIMENSION_KEYS.length; // ~0.1286 chacune
+const LINGUISTIC_DIVERSITY_WEIGHT = 0.1;
+
+/**
+ * Calcule le dimensionScore (0-10) de la dimension linguisticDiversity
+ * depuis les métriques de DiversityScore.
+ *
+ * Déductions appliquées :
+ *   ttr < 0.50           → -3
+ *   ttr [0.50, 0.65[     → -1
+ *   stdSentenceLength < 3 → -2
+ *   passiveVoiceRatio > 0.30 → -2
+ *   passiveVoiceRatio [0.20, 0.30] → -1
+ */
+export function computeLinguisticDimensionScore(d: DiversityScore): number {
+  let score = 10;
+  if (d.ttr < 0.5) {
+    score -= 3;
+  } else if (d.ttr < 0.65) {
+    score -= 1;
+  }
+  if (d.stdSentenceLength < 3) {
+    score -= 2;
+  }
+  if (d.passiveVoiceRatio > 0.3) {
+    score -= 2;
+  } else if (d.passiveVoiceRatio > 0.2) {
+    score -= 1;
+  }
+  return Math.max(0, Math.min(10, score));
+}
+
 function clampScore(n: unknown): number {
   if (typeof n !== "number" || !Number.isFinite(n)) return 0;
   return Math.max(0, Math.min(10, n));
@@ -250,10 +312,19 @@ export function parseJudgeResponse(raw: string): JudgeResult {
     toneAxioniaAlignment: asDimension(dimensionsRaw["toneAxioniaAlignment"]),
   };
 
-  // Compute globalScore : moyenne arithmetique 7 dim (LLM peut proposer mais on
-  // re-calcule pour eviter hallucination).
-  const sum = DIMENSION_KEYS.reduce((s, k) => s + dimensions[k].score, 0);
-  const globalScore = Math.round((sum / DIMENSION_KEYS.length) * 10) / 10;
+  // Compute globalScore : somme pondérée des 7 dimensions LLM × LLM_DIM_WEIGHT.
+  // La dimension linguisticDiversity (weight 0.10) est ajoutée dans reviewArticle
+  // lorsque bodyText est disponible. Ici on ne connaît pas encore ce score, donc
+  // on normalise sur 0.90 et on ajustera si nécessaire dans reviewArticle.
+  // Formule : sum(score_i × w_i) / 0.90 → score sur 10.
+  // En pratique parseJudgeResponse retourne toujours un score sur les 7 dim LLM seules ;
+  // reviewArticle recalcule globalScore final après injection linguisticDiversity.
+  const llmWeightedSum = DIMENSION_KEYS.reduce(
+    (s, k) => s + dimensions[k].score * LLM_DIM_WEIGHT,
+    0,
+  );
+  // Normalise sur 0.90 pour obtenir un score 0-10 comparable à l'ancien calcul.
+  const globalScore = Math.round((llmWeightedSum / 0.9) * 10) / 10;
 
   const issues = asIssues(obj["issues"]);
   const verdict = deriveVerdict(globalScore, issues);
@@ -267,6 +338,11 @@ export function parseJudgeResponse(raw: string): JudgeResult {
  *
  * Cost approx : ~$0.03-0.06 par article (input ~3-5k tokens + output ~500-800).
  * Latency : ~5-15s (streaming).
+ *
+ * Phase G — Diversification Linguistique :
+ *   Si article.bodyText est fourni, calcule localement la dimension linguisticDiversity
+ *   (0 appel LLM supplémentaire) et l'intègre au globalScore final (poids 0.10).
+ *   Issues P1/P2 injectées dans le résultat si TTR ou passiveVoiceRatio dégradés.
  *
  * Echec gracieux : si l'API throw (rate limit, auth, etc.) — la fonction relais
  * l'erreur au caller (worker logue + bascule status `error`).
@@ -283,5 +359,71 @@ export async function reviewArticle(article: ArticleForReview): Promise<JudgeRes
     maxTokens: 2048,
     temperature: 0.2,
   });
-  return parseJudgeResponse(response.output);
+
+  const baseResult = parseJudgeResponse(response.output);
+
+  // ── Dimension linguisticDiversity (Phase G) ──────────────────────────────
+  const textForAnalysis = article.bodyText ?? article.bodyHtml;
+  if (!textForAnalysis || textForAnalysis.trim().length === 0) {
+    // bodyText absent → dégradation gracieuse, pas de dimension linguistique.
+    return baseResult;
+  }
+
+  const diversityScore = analyzeDiversity(textForAnalysis);
+  const dimensionScore = computeLinguisticDimensionScore(diversityScore);
+
+  // Issues supplémentaires injectées depuis les métriques locales.
+  const extraIssues: JudgeIssue[] = [];
+  if (diversityScore.ttr < 0.5) {
+    extraIssues.push({
+      severity: "P1",
+      section: "body",
+      issue: `TTR trop bas (${diversityScore.ttr.toFixed(2)}) — vocabulaire trop répétitif`,
+      suggestedFix:
+        "Varier le lexique : synonymes, reformulations, termes sectoriels complémentaires.",
+    });
+  }
+  if (diversityScore.stdSentenceLength < 3) {
+    extraIssues.push({
+      severity: "P2",
+      section: "body",
+      issue: `Longueur des phrases trop uniforme (std=${diversityScore.stdSentenceLength.toFixed(1)})`,
+      suggestedFix: "Alterner phrases courtes (<10 mots) et développements plus longs.",
+    });
+  }
+  if (diversityScore.passiveVoiceRatio > 0.3) {
+    extraIssues.push({
+      severity: "P1",
+      section: "body",
+      issue: `Trop de voix passive (${(diversityScore.passiveVoiceRatio * 100).toFixed(0)}%)`,
+      suggestedFix: "Reformuler les constructions passives en voix active pour plus d'impact.",
+    });
+  }
+
+  const allIssues: ReadonlyArray<JudgeIssue> = [...baseResult.issues, ...extraIssues];
+
+  // Recalcul du globalScore final avec les 8 dimensions pondérées.
+  // Poids : 7 dim LLM × LLM_DIM_WEIGHT (0.90 total) + linguisticDiversity × 0.10.
+  const llmWeightedSum = DIMENSION_KEYS.reduce(
+    (s, k) => s + baseResult.dimensions[k].score * LLM_DIM_WEIGHT,
+    0,
+  );
+  const finalGlobalScore =
+    Math.round((llmWeightedSum + dimensionScore * LINGUISTIC_DIVERSITY_WEIGHT) * 10) / 10;
+
+  const finalVerdict = deriveVerdict(finalGlobalScore, allIssues);
+
+  const linguisticDiversity: LinguisticDiversityDimension = {
+    score: diversityScore,
+    dimensionScore,
+  };
+
+  return {
+    verdict: finalVerdict,
+    globalScore: finalGlobalScore,
+    dimensions: baseResult.dimensions,
+    linguisticDiversity,
+    issues: allIssues,
+    reasoning: baseResult.reasoning,
+  };
 }

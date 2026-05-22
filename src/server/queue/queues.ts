@@ -271,6 +271,32 @@ export const contentDeadlineCheckerQueue: Queue | null = connection
   : null;
 
 /**
+ * Phase F Sprint Perfection 2026 — Embeddings backfill daily 03:00 UTC.
+ * Backfille les embeddings OpenAI (text-embedding-3-large, 1536 dims)
+ * sur les articles publiés sans embedding (couche 4 dédup sémantique B.7).
+ * Gate : OPENAI_EMBEDDINGS_ENABLED=true requis (défaut false).
+ * Limite : 1 000 articles/run, cap OPENAI_EMBEDDINGS_MAX_TOKENS_PER_DAY.
+ */
+export const embeddingsBackfillQueue: Queue | null = connection
+  ? new Queue("embeddings-backfill", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
+ * Sprint H 2026-05-22 — Brand Voice Drift Monitor (cron daily 04:00 UTC).
+ * Calcule la similarité cosine embeddings article vs référence brand voice.
+ * Alerte (needs_review) si < 0.70, drift warning si < 0.80.
+ */
+export const brandVoiceDriftMonitorQueue: Queue | null = connection
+  ? new Queue("brand-voice-drift-monitor", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
@@ -716,6 +742,35 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-daily-0005", tick: new Date().toISOString() },
       { repeat: { pattern: "5 0 * * *" }, jobId: "content-gen-deadline-checker-cron" },
+    );
+  }
+
+  // Phase F Sprint Perfection 2026 — embeddings backfill daily 03:00 UTC.
+  // Gate : OPENAI_EMBEDDINGS_ENABLED=true (le worker gère le skip silencieux si false).
+  if (embeddingsBackfillQueue) {
+    await embeddingsBackfillQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 3 * * *" },
+      "embeddings-backfill-cron",
+    );
+    await embeddingsBackfillQueue.add(
+      "tick",
+      { trigger: "cron-daily-0300", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 3 * * *" }, jobId: "embeddings-backfill-cron" },
+    );
+  }
+
+  // Sprint H 2026-05-22 — Brand Voice Drift Monitor daily 04:00 UTC.
+  if (brandVoiceDriftMonitorQueue) {
+    await brandVoiceDriftMonitorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 4 * * *" },
+      "brand-voice-drift-monitor-cron",
+    );
+    await brandVoiceDriftMonitorQueue.add(
+      "tick",
+      { trigger: "cron-daily-0400", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 4 * * *" }, jobId: "brand-voice-drift-monitor-cron" },
     );
   }
 }

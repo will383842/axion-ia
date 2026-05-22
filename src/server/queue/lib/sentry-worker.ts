@@ -57,7 +57,11 @@ export type WorkerName =
   | "weekly-report"
   // Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22)
   | "content-gen-scheduler"
-  | "content-gen-deadline-checker";
+  | "content-gen-deadline-checker"
+  // Phase F Sprint Perfection 2026 — embeddings backfill daily cron
+  | "embeddings-backfill"
+  // Sprint Perfection 2026 — brand-voice drift monitor
+  | "brand-voice-drift-monitor";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.

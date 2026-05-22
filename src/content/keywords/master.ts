@@ -25,6 +25,7 @@ import { KW_SUPPLEMENTS_X } from "./x-supplements";
 import { KW_SECTEURS_G7C } from "./g7c-secteurs-conso-culture";
 import { KW_AUDIENCES_G8 } from "./g8-audiences-manquantes";
 import { KW_WEB_DIGITAL_G3B } from "./g3b-web-digital-augmente";
+import { KW_BALANCE_G9 } from "./g9-balance";
 
 // Termes à filtrer :
 // 1. Certifications et financements formation hors-positionnement
@@ -142,6 +143,8 @@ export const ALL_KEYWORD_SEEDS: KeywordSeed[] = [
   ...KW_COMPARATIF,
   ...KW_PARTENAIRE,
   ...KW_SECTORIEL,
+  // Phase E Sprint Perfection 2026-05-22 — équilibrage verticales déficitaires
+  ...KW_BALANCE_G9.filter(isClean),
 ];
 
 // ─── Filtres utiles pour le Content Engine ───────────────────────────────────

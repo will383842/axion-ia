@@ -57,6 +57,11 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
     description: "Auto-create pages, seuil mots, CTR promotion",
   },
   { href: "kill-switch", label: "Kill switch", description: "Stop all generations en 1 clic" },
+  {
+    href: "seed-initial",
+    label: "🚀 Init KB + Presets",
+    description: "Charge les 130 facts KB et les 6 presets de campagne en base (1 clic)",
+  },
 ];
 
 interface Props {

@@ -33,6 +33,8 @@ import { startImageBankImportWorker } from "./workers/image-bank-import-worker";
 import { startImageBankTranslateWorker } from "./workers/image-bank-translate-worker";
 import { startImageBankCronsWorker } from "./workers/image-bank-crons-worker";
 import { startImageBankAutoConvertWorker } from "./workers/image-bank-auto-convert-worker";
+import { startEmbeddingsBackfillWorker } from "./workers/embeddings-backfill-worker";
+import { startBrandVoiceDriftMonitorWorker } from "./workers/brand-voice-drift-monitor";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -78,6 +80,8 @@ async function main() {
     startImageBankTranslateWorker(),
     startImageBankCronsWorker(),
     startImageBankAutoConvertWorker(), // 2026-05-20 — conversion slug-based PNG→WebP/AVIF (public/images/)
+    startEmbeddingsBackfillWorker(), // Phase F Sprint Perfection 2026 — daily 03:00 UTC embeddings backfill
+    startBrandVoiceDriftMonitorWorker(), // Sprint H 2026-05-22 — daily 04:00 UTC brand voice drift detection
   ];
 
   await bootRepeatableJobs();
