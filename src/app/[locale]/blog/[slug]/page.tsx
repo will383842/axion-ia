@@ -16,8 +16,7 @@ import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/ArticleTOC";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
-import { ArticleCard } from "@/components/marketing/ArticleCard";
-import { BLOG_POSTS, getAllBlogSlugs } from "@/content/transversal";
+import { getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
@@ -25,6 +24,8 @@ import { findArticleTombstone } from "@/server/content-gen/tombstone";
 import { Tombstone } from "@/components/content-gen/Tombstone";
 import { findArticleSlugRedirect } from "@/server/content-gen/slug-history";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { SuggestedContent } from "@/components/suggested/SuggestedContent";
+import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -255,18 +256,15 @@ export default async function BlogArticle({ params }: Props) {
   // TL;DR Canonical Answer (audit AEO/GEO 2026-05-15 § 3.5).
   const tldrText = deriveTldr(view.excerpt, view.body);
 
-  // Articles connexes : priorité même catégorie, puis plus récents.
-  // Reste sourcé FS V1 (les articles DB n'ont pas encore de catégorie
-  // structurée — Sprint 9+). Toujours 2 cards max.
-  const related = [...BLOG_POSTS]
-    .filter((p) => p.slug !== slug)
-    .sort((a, b) => {
-      const aSame = a.category === view.category ? 0 : 1;
-      const bSame = b.category === view.category ? 0 : 1;
-      if (aSame !== bSame) return aSame - bSame;
-      return b.publishedAt.localeCompare(a.publishedAt);
-    })
-    .slice(0, 2);
+  // V-14 sprint UX 2026-05-22 — Articles connexes : DB+FS merge via helper.
+  // Auparavant FS uniquement (3 articles hardcodés) → maintenant inclut articles
+  // DB publiés. Toujours tier-1 only (anti-doorway HCU). 4 max suggestion.
+  const related = await findRelatedArticles({
+    currentSlug: slug,
+    currentCategory: view.category,
+    locale: loc,
+    limit: 4,
+  });
 
   return (
     <>
@@ -411,32 +409,20 @@ export default async function BlogArticle({ params }: Props) {
         </Container>
       </Section>
 
-      {related.length > 0 ? (
-        <Section
-          eyebrow={isFr ? "Articles connexes" : "Related articles"}
-          title={isFr ? "À lire aussi" : "Read next"}
-          tone="sand"
-        >
-          <Container>
-            <ul className="grid gap-4 sm:grid-cols-2">
-              {related.map((p) => {
-                const c = p[loc];
-                return (
-                  <li key={p.slug}>
-                    <ArticleCard
-                      href={`/blog/${p.slug}`}
-                      title={c.title}
-                      excerpt={c.excerpt}
-                      publishedAt={p.publishedAt}
-                      readingTime={p.readingTime}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          </Container>
-        </Section>
-      ) : null}
+      <SuggestedContent
+        variant="articles"
+        items={related.map((r) => ({
+          href: `/blog/${r.slug}`,
+          title: r.title,
+          excerpt: r.excerpt,
+          publishedAt: r.publishedAt,
+          readingTime: r.readingTime,
+        }))}
+        eyebrow={isFr ? "Articles connexes" : "Related articles"}
+        title={isFr ? "À lire aussi" : "Read next"}
+        tone="sand"
+        emitJsonLd
+      />
 
       <CtaBlock
         title={isFr ? "Mettre en pratique" : "Put it to work"}

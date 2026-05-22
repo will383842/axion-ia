@@ -28,6 +28,7 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { VilleHeroSchema } from "@/components/sections/VilleHeroSchema";
 import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDetailSection";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { SuggestedContent } from "@/components/suggested/SuggestedContent";
 
 import { getRegion } from "@/content/regions";
 import { VILLES, getVille, type Ville } from "@/content/villes";
@@ -676,42 +677,23 @@ export default async function VillePage({ params }: Props) {
       ) : null}
 
       {/* 6. VILLES PROCHES (Haversine) — maillage régional */}
-      {nearbyVilles.length > 0 ? (
-        <Section
-          eyebrow={isFr ? "Maillage régional" : "Regional mesh"}
-          title={isFr ? "Villes proches" : "Cities near"}
-          titleEm={ville.nameFr}
-          description={
-            isFr
-              ? "Communes éligibles aux interventions sur site, triées par distance. Cliquez pour voir leur page locale."
-              : "Communes eligible for on-site engagements, sorted by distance. Click to see their local page."
-          }
-        >
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {nearbyVilles.map(({ ville: v, distanceKm }) => (
-              <li key={v.slug}>
-                <Link
-                  href={`/implantations/${v.region}/${v.slug}` as never}
-                  data-source-region={v.region}
-                  data-source-ville={v.slug}
-                  className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <span
-                    className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {v.nameFr}
-                  </span>
-                  <span className="text-fg-muted mt-0.5 block text-[11px] tabular-nums">
-                    {Math.round(distanceKm)} km · {fmtPopulation(v.population, isFr ? "fr" : "en")}{" "}
-                    {isFr ? "hab." : "inhab."}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      ) : null}
+      {/* V-14 sprint UX 2026-05-22 — refactor via composant générique SuggestedContent. */}
+      <SuggestedContent
+        variant="cities"
+        items={nearbyVilles.map(({ ville: v, distanceKm }) => ({
+          href: `/implantations/${v.region}/${v.slug}`,
+          title: v.nameFr,
+          subMeta: `${Math.round(distanceKm)} km · ${fmtPopulation(v.population, isFr ? "fr" : "en")} ${isFr ? "hab." : "inhab."}`,
+        }))}
+        eyebrow={isFr ? "Maillage régional" : "Regional mesh"}
+        title={isFr ? "Villes proches" : "Cities near"}
+        titleEm={ville.nameFr}
+        description={
+          isFr
+            ? "Communes éligibles aux interventions sur site, triées par distance. Cliquez pour voir leur page locale."
+            : "Communes eligible for on-site engagements, sorted by distance. Click to see their local page."
+        }
+      />
 
       {/* 7. FAQ géolocalisée (Speakable JSON-LD émis ailleurs) */}
       {faqItems.length > 0 ? (
@@ -733,39 +715,21 @@ export default async function VillePage({ params }: Props) {
         />
       ) : null}
 
-      {/* 8. ARTICLES BLOG LIÉS — silence si rien ne matche */}
-      {relatedPosts.length > 0 ? (
-        <Section
-          eyebrow={isFr ? "Articles & ressources" : "Articles & resources"}
-          title={isFr ? "Lecture complémentaire" : "Further reading"}
-          titleEm={ville.nameFr}
-          tone="paper"
-        >
-          <ul className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {relatedPosts.map((post) => (
-              <li key={post.slug}>
-                <Link
-                  href={`/blog/${post.slug}` as never}
-                  className="group bg-bg hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card block h-full rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                    {post.category} · {post.readingTime}
-                  </p>
-                  <p
-                    className="text-fg mt-2 text-lg leading-tight font-semibold"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {post.title}
-                  </p>
-                  <p className="text-fg-soft mt-3 line-clamp-3 text-sm leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      ) : null}
+      {/* 8. ARTICLES BLOG LIÉS — V-14 sprint UX 2026-05-22 via SuggestedContent (variant cases = card markup). */}
+      <SuggestedContent
+        variant="cases"
+        items={relatedPosts.map((post) => ({
+          href: `/blog/${post.slug}`,
+          title: post.title,
+          excerpt: post.excerpt,
+          meta: post.category,
+          subMeta: post.readingTime,
+        }))}
+        eyebrow={isFr ? "Articles & ressources" : "Articles & resources"}
+        title={isFr ? "Lecture complémentaire" : "Further reading"}
+        titleEm={ville.nameFr}
+        tone="paper"
+      />
 
       {/* 9. TISSU LOCAL — bandeau dense data INSEE + secteurs + accès.
           Anti-doorway HCU 2024 : preuve de différenciation par ville
