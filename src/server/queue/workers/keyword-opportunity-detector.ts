@@ -136,6 +136,7 @@ export function startKeywordOpportunityDetectorWorker(): Worker {
     {
       connection: { url: redisUrl },
       concurrency: 1,
+      lockDuration: 120_000,
       removeOnComplete: { count: 10 },
       removeOnFail: { count: 7 },
     },
@@ -154,5 +155,6 @@ export function createKeywordOpportunityDetectorWorker(redisUrl: string): Worker
   return new Worker(QUEUE_NAME, async (job: Job) => detectOpportunities(), {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
   });
 }

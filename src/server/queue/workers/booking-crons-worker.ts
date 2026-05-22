@@ -13,6 +13,7 @@
 
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "../queues";
 import { decryptPii } from "@/lib/pii-crypto";
@@ -591,6 +592,7 @@ export function startBookingCronsWorker(): Worker<BookingCronJobData> {
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 1,
+      lockDuration: 120_000,
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
       // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
       // Évite saturation Redis long-terme sur high-volume workers.
@@ -600,9 +602,10 @@ export function startBookingCronsWorker(): Worker<BookingCronJobData> {
   );
 
   worker.on("ready", () => console.log("[booking-crons-worker] ready"));
-  worker.on("failed", (job, err) =>
-    console.error(`[booking-crons-worker] failed type=${job?.data?.type ?? "?"}: ${err.message}`),
-  );
+  worker.on("failed", (job, err) => {
+    console.error(`[booking-crons-worker] failed type=${job?.data?.type ?? "?"}: ${err.message}`);
+    captureWorkerError("booking-crons", "booking-crons", job, err);
+  });
 
   return worker;
 }

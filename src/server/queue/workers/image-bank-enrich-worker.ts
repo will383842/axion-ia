@@ -8,6 +8,7 @@ import { Worker } from "bullmq";
 import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 export type ImageBankEnrichJobData = {
   imageId: string;
@@ -30,6 +31,7 @@ export function startImageBankEnrichWorker(): Worker<ImageBankEnrichJobData, voi
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 2,
+      lockDuration: 120_000,
       // P0-7 — Rate limit Claude : 10 jobs/min max (aligné quota Claude API).
       limiter: { max: 10, duration: 60_000 },
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
@@ -54,6 +56,7 @@ export function startImageBankEnrichWorker(): Worker<ImageBankEnrichJobData, voi
         attemptsMade: job?.attemptsMade,
       },
     });
+    captureWorkerError("image-bank-enrich", "image-bank-enrich", job, err);
   });
 
   return worker;

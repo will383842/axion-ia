@@ -269,6 +269,7 @@ export function startBrandVoiceDriftMonitorWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
     removeOnComplete: { count: 30 },
     removeOnFail: { count: 14 },
   });

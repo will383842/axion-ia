@@ -55,6 +55,7 @@ export function startContentGenSchedulerWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-gen-scheduler-worker] job ${job?.id} failed:`, err);

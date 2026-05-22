@@ -16,6 +16,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { indexingPublishUrl, isIndexingApiReady } from "@/server/content-gen/seo/indexing-client";
 
@@ -67,6 +68,7 @@ export function startGoogleIndexingWorker(): Worker<GoogleIndexingJobPayload> {
   workerInstance = new Worker<GoogleIndexingJobPayload>(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
     limiter: { max: 200, duration: 24 * 60 * 60 * 1000 }, // quota Google 200/jour gratuit
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
@@ -76,6 +78,7 @@ export function startGoogleIndexingWorker(): Worker<GoogleIndexingJobPayload> {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-google-indexing-worker] job ${job?.id} failed:`, err);
+    captureWorkerError("google-indexing", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

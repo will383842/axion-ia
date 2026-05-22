@@ -10,6 +10,7 @@ import { Worker } from "bullmq";
 import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 
 export type ImageBankImportJobData = {
@@ -101,6 +102,7 @@ export function startImageBankImportWorker(): Worker<ImageBankImportJobData, voi
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 1,
+      lockDuration: 120_000,
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
       // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
       // Évite saturation Redis long-terme sur high-volume workers.
@@ -126,6 +128,7 @@ export function startImageBankImportWorker(): Worker<ImageBankImportJobData, voi
         attemptsMade: job?.attemptsMade,
       },
     });
+    captureWorkerError("image-bank-import", "image-bank-import", job, err);
   });
 
   return worker;

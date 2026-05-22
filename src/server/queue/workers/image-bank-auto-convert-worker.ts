@@ -20,6 +20,7 @@ import { Worker } from "bullmq";
 import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { SHARP_LIMITS, AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -198,6 +199,7 @@ export function startImageBankAutoConvertWorker(): Worker<
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 2,
+      lockDuration: 120_000,
       // Bornage retention Redis — aligné sur les autres image-bank workers.
       removeOnComplete: { count: 1000 },
       removeOnFail: { count: 5000 },
@@ -222,6 +224,7 @@ export function startImageBankAutoConvertWorker(): Worker<
         attemptsMade: job?.attemptsMade,
       },
     });
+    captureWorkerError("image-bank-auto-convert", AUTO_CONVERT_QUEUE_NAME, job, err);
   });
 
   return worker;

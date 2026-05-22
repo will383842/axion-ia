@@ -42,6 +42,8 @@ import { persistArticleEmbedding } from "@/server/content-gen/dedup/persist-arti
 // Sprint External Links Database 2026-05-22 — Validation post-publish (≥ 2 liens
 // externes + détection hallucinations URL hors catalogue) + tracking usage.
 import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-links/helpers";
+// Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
+import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 
 const QUEUE_NAME = "content-publish";
 
@@ -693,11 +695,34 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     );
   }
 
+  // Sprint Final P1-14 — Release global keyword lock Redis. Le lock a été
+  // acquis par content-gen-worker juste avant l'appel LLM (Fl-08 multi-campagnes
+  // parallèles). Best-effort : un échec release n'impacte pas la publication —
+  // le TTL de 30 min garantit auto-expire de toute façon. Source du keyword :
+  // outputJsonRaw.primaryKeyword (écrit par tous les generators), fallback sur
+  // inputPayload.primaryKeyword (rétro-compat articles antérieurs).
+  const keywordToRelease =
+    typeof output["primaryKeyword"] === "string"
+      ? (output["primaryKeyword"] as string)
+      : primaryKeyword;
+  if (keywordToRelease) {
+    try {
+      await releaseKeywordLock(keywordToRelease);
+    } catch (err) {
+      // releaseKeywordLock ne throw pas (catché en interne), mais double-safety.
+      console.warn(
+        `[publish] releaseKeywordLock failed (TTL will auto-expire) for "${keywordToRelease}":`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
   await logStep(cgJob.id, "publish", "Publish pipeline complete", {
     article_id: article.id,
     tier: indexationTier,
     slug: slugCandidate,
     is_news: isNews,
+    ...(keywordToRelease ? { keyword_lock_released: keywordToRelease } : {}),
   });
   console.log(
     `[publish] article ${article.id} published (tier=${indexationTier}, slug=${slugCandidate}, isNews=${isNews})`,

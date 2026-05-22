@@ -145,6 +145,7 @@ export function startIndexNowWorker(): Worker<IndexNowJobPayload> {
   workerInstance = new Worker<IndexNowJobPayload>(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 2,
+    lockDuration: 120_000,
     limiter: { max: 30, duration: 60_000 }, // 30/min — IndexNow rate-limit safe
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).

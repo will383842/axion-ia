@@ -23,6 +23,7 @@
 
 import { Worker, type Job } from "bullmq";
 import { revalidatePath } from "next/cache";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
@@ -187,6 +188,7 @@ export function startContentQaExtractWorker(): Worker<QaExtractJobPayload> {
   workerInstance = new Worker<QaExtractJobPayload>(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 2,
+    lockDuration: 120_000,
     limiter: { max: 30, duration: 60_000 }, // 30/min — ne pas saturer DB
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
@@ -196,6 +198,7 @@ export function startContentQaExtractWorker(): Worker<QaExtractJobPayload> {
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-qa-extract-worker] job ${job?.id} failed:`, err);
+    captureWorkerError("qa-extract", QUEUE_NAME, job, err);
   });
   workerInstance.on("completed", (job) => {
     console.log(`[content-qa-extract-worker] job ${job.id} completed`);

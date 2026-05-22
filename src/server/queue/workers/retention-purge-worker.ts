@@ -32,6 +32,7 @@
 
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import type { RetentionPurgeJobData } from "../types";
 
@@ -212,6 +213,7 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 1,
+      lockDuration: 120_000,
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
       // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
       // Évite saturation Redis long-terme sur high-volume workers.
@@ -221,9 +223,10 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
   );
 
   worker.on("ready", () => console.log("[retention-purge-worker] ready"));
-  worker.on("failed", (_job, err) =>
-    console.error(`[retention-purge-worker] failed: ${err.message}`),
-  );
+  worker.on("failed", (job, err) => {
+    console.error(`[retention-purge-worker] failed: ${err.message}`);
+    captureWorkerError("retention-purge", "retention-purge", job, err);
+  });
 
   return worker;
 }

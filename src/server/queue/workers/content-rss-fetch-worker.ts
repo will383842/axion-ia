@@ -21,6 +21,7 @@
 
 import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 import {
@@ -303,9 +304,11 @@ export function startRssFetchWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1, // serial pour éviter de spammer les sources tiers
+    lockDuration: 120_000,
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-rss-fetch-worker] job ${job?.id} failed:`, err);
+    captureWorkerError("rss-fetch", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

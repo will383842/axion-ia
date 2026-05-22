@@ -8,6 +8,7 @@
 
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
+import { captureWorkerError } from "../lib/sentry-worker";
 import { sendEmail } from "@/lib/email/client";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import type { EmailJobData, EmailJobName } from "../types";
@@ -40,6 +41,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 8,
+      lockDuration: 120_000,
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
       // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
       // Évite saturation Redis long-terme sur high-volume workers.
@@ -50,9 +52,11 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
 
   worker.on("ready", () => console.log("[email-worker] ready"));
   worker.on("completed", (job) => console.log(`[email-worker] sent: ${job.name} → ${job.data.to}`));
-  worker.on("failed", (job, err) =>
-    console.error(`[email-worker] failed: ${job?.name} → ${job?.data?.to}: ${err.message}`),
-  );
+  worker.on("failed", (job, err) => {
+    console.error(`[email-worker] failed: ${job?.name} → ${job?.data?.to}: ${err.message}`);
+    // Sprint Final P1-2 (audit final 2026-05-22) — Sentry capture email-worker.
+    captureWorkerError("email", "emails", job, err);
+  });
 
   return worker;
 }

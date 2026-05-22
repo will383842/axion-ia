@@ -28,6 +28,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { alertWebVitalsBulk } from "@/server/content-gen/shared/content-gen-alerts";
 
@@ -301,10 +302,12 @@ export function startContentPsiMonitorWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
     limiter: { max: 2, duration: 24 * 3600_000 }, // 2/jour max (cron weekly mais safety)
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-psi-monitor] job ${job?.id} failed:`, err);
+    captureWorkerError("psi-monitor", QUEUE_NAME, job, err);
   });
   workerInstance.on("completed", (job) => {
     console.log(`[content-psi-monitor] job ${job.id} completed`);

@@ -40,6 +40,8 @@ import { selectKeyword, validateKeywordInTitle } from "@/server/content-gen/keyw
 import { assignHeroImage } from "@/server/content-gen/images/assign-hero-image";
 // B.7 P1.5 P0-6 — Outline SimHash dedup (couche A.3 post-IA).
 import { checkOutlineDedup } from "@/server/content-gen/quality/dedup-guard";
+// Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes parallèles).
+import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
 
 interface KillSwitchState {
   readonly active: boolean;
@@ -266,6 +268,47 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           source: "keyword-selector",
         });
       }
+    }
+
+    // Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes
+    // parallèles). Audit final 23/25 — défense N+1 vs keyword-selector DB lock.
+    // Évite que 3 campagnes parallèles avec un keyword commun (ex: blog-from-
+    // title forçant `primaryKeyword="formation IA Paris"`) publient en double.
+    // TTL 30 min = couvre gen + judge + improve + publish (typique 5-15 min).
+    // Released par content-publish-worker. Auto-release via TTL si crash.
+    // Stub-aware build SSG : acquire=true no-op.
+    if (resolvedKeyword) {
+      const locked = await acquireKeywordLock(resolvedKeyword);
+      if (!locked) {
+        await logStep(
+          contentGenJobId,
+          "keyword_lock",
+          `Keyword "${resolvedKeyword}" en cours de génération par un autre worker — skip`,
+          {
+            keyword: resolvedKeyword,
+            campaign_id: dbJob.campaignId ?? null,
+            reason: "global_keyword_lock_held",
+          },
+        );
+        // Job complété sans publication. Le keyword sera ré-éligible après
+        // expiration du lock (30 min max). Le keyword-selector le repassera
+        // naturellement via rotation `last_used_at ASC`. Pas d'erreur thrown :
+        // le job est marqué cancelled (pas failed) pour éviter pollution
+        // métriques "batch fail" Telegram (alertBatchFail).
+        await prisma.contentGenJob.update({
+          where: { id: contentGenJobId },
+          data: {
+            status: "cancelled",
+            errorMessage: `Keyword lock held by another worker (concurrent campaign): ${resolvedKeyword}`,
+            completedAt: new Date(),
+          },
+        });
+        return;
+      }
+      await logStep(contentGenJobId, "keyword_lock", `Keyword lock acquired: ${resolvedKeyword}`, {
+        keyword: resolvedKeyword,
+        ttl_sec: 1800,
+      });
     }
 
     // BUG-4 — Feedback LLM-judge : si c'est une re-génération (quality-improver

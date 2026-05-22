@@ -31,6 +31,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import {
   alertQueueStuck,
@@ -347,9 +348,11 @@ export function startContentMonitoringWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-monitoring-worker] job ${job?.id} failed:`, err);
+    captureWorkerError("content-monitoring", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

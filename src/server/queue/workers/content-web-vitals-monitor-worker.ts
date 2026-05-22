@@ -28,6 +28,7 @@
  */
 
 import { Worker, type Job } from "bullmq";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import {
   alertLcpDegraded,
@@ -254,6 +255,7 @@ export function startContentWebVitalsMonitorWorker(): Worker<WebVitalsMonitorTic
   workerInstance = new Worker<WebVitalsMonitorTick>(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
     limiter: { max: 4, duration: 3600_000 }, // 4/h cap (cron daily mais safety)
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).

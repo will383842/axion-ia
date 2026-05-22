@@ -12,6 +12,7 @@
 
 import { Worker, type Job } from "bullmq";
 import { revalidatePath } from "next/cache";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
@@ -142,9 +143,11 @@ export function startNewsLifecycleWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
+    lockDuration: 120_000,
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[news-lifecycle] job ${job?.id} failed:`, err);
+    captureWorkerError("news-lifecycle", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }
