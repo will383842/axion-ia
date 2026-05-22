@@ -89,6 +89,99 @@ export function validateIntentAlignment(input: IntentValidationInput): IntentVal
       warnings.push("Intent navigational : pages réservées aux contenus manuels (§ 26.4)");
       break;
     }
+    case "voice_search": {
+      // Voice search 2026 : phrases courtes ≤ 15 mots TTS-friendly + conversationnel.
+      const plainBody = input.bodyHtml
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      const sentences = plainBody.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+      const longSentences = sentences.filter(
+        (s) =>
+          s
+            .trim()
+            .split(/\s+/)
+            .filter((w) => w.length > 0).length > 15,
+      );
+      const longRatio = sentences.length > 0 ? longSentences.length / sentences.length : 0;
+      // ≥ 30 % de phrases > 15 mots → hard fail (TTS-unfriendly).
+      if (longRatio >= 0.3) {
+        hardFails.push(
+          `Intent voice_search : ${longSentences.length}/${sentences.length} phrases > 15 mots (>= 30% TTS-unfriendly)`,
+        );
+      } else if (longRatio >= 0.15) {
+        warnings.push(
+          `Intent voice_search : ${longSentences.length}/${sentences.length} phrases > 15 mots (cible < 15%)`,
+        );
+      }
+      // Title conversationnel : commence par interrogatif ou inclut un point d'interrogation.
+      const isConversational =
+        /^(comment|pourquoi|qu'est-ce|quel|quand|combien|où|qui|est-ce)/i.test(input.title) ||
+        input.title.includes("?");
+      if (!isConversational) {
+        warnings.push(
+          "Title intent voice_search : devrait être conversationnel (question ou starter interrogatif)",
+        );
+      }
+      break;
+    }
+    case "ai_overview": {
+      // AI Overview 2026 (SGE) : définition sourcée P1 40-50 mots dans le premier paragraphe.
+      // metaDescription doit faire office de réponse directe ≤ 50 mots.
+      const metaWordCount = input.metaDescription.split(/\s+/).filter((w) => w.length > 0).length;
+      if (metaWordCount < 30 || metaWordCount > 60) {
+        warnings.push(
+          `Intent ai_overview : metaDescription ${metaWordCount} mots (cible 30-60 pour SGE)`,
+        );
+      }
+      // Premier <p> du body doit contenir une définition courte (40-50 mots ±20%).
+      const firstParagraphMatch = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(input.bodyHtml);
+      const firstParagraphText = (firstParagraphMatch?.[1] ?? "")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      const firstParagraphWordCount = firstParagraphText
+        .split(/\s+/)
+        .filter((w) => w.length > 0).length;
+      if (firstParagraphText.length === 0) {
+        hardFails.push("Intent ai_overview : premier <p> introuvable dans bodyHtml");
+      } else if (firstParagraphWordCount < 30 || firstParagraphWordCount > 70) {
+        warnings.push(
+          `Intent ai_overview : premier paragraphe ${firstParagraphWordCount} mots (cible 30-70 pour AI Overview)`,
+        );
+      }
+      // Citations P1 : au moins 1 citation source primaire attendue.
+      if ((input.citationCount ?? 0) < 1) {
+        warnings.push(
+          `Intent ai_overview : ${input.citationCount ?? 0} citation (cible >= 1 source P1)`,
+        );
+      }
+      break;
+    }
+    case "featured_snippet": {
+      // Featured snippet position 0 : 40-60 mots data-aeo="tldr" en début de contenu.
+      const tldrMatch = /<[^>]+\bdata-aeo=["']tldr["'][^>]*>([\s\S]*?)<\/[^>]+>/i.exec(
+        input.bodyHtml,
+      );
+      if (!tldrMatch) {
+        hardFails.push(
+          'Intent featured_snippet : bloc data-aeo="tldr" manquant (position 0 requise)',
+        );
+      } else {
+        const tldrText =
+          tldrMatch[1]
+            ?.replace(/<[^>]+>/g, " ")
+            .replace(/\s+/g, " ")
+            .trim() ?? "";
+        const tldrWordCount = tldrText.split(/\s+/).filter((w) => w.length > 0).length;
+        if (tldrWordCount < 30 || tldrWordCount > 75) {
+          warnings.push(
+            `Intent featured_snippet : bloc TLDR ${tldrWordCount} mots (cible 40-60 pour position 0)`,
+          );
+        }
+      }
+      break;
+    }
   }
 
   return {

@@ -69,6 +69,7 @@ export type GenerationLogStep =
   | "keyword_validation"
   | "hero_image_assigned"
   | "hero_image_pending"
+  | "rss_similarity_block"
   | "error";
 
 export interface LogGenerationArgs {

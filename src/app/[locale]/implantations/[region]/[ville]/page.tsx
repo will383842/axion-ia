@@ -32,6 +32,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { getRegion } from "@/content/regions";
 import { VILLES, getVille, type Ville } from "@/content/villes";
 import { getNearbyVilles, getNearbyCases, getRelatedBlogPosts } from "@/lib/geo";
+import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
@@ -145,7 +146,61 @@ export default async function VillePage({ params }: Props) {
     sameRegion: ville.region,
   });
   const nearbyCases = getNearbyCases(ville.geo, 50, 3);
-  const relatedPosts = getRelatedBlogPosts(ville, 3);
+
+  // V-01 P0c (Sprint Correctif 2026-05-22) — Wire `getBlogArticlesByVille()` :
+  // les articles factory mentionnant la ville (DB, peuplée au publish via
+  // `mentionedCities[]`) sont désormais affichés en haut, et complétés si besoin
+  // par les blog posts FS legacy. Dedup par slug.
+  const [fsRelatedPosts, dbRelatedPosts] = await Promise.all([
+    Promise.resolve(getRelatedBlogPosts(ville, 3)),
+    getBlogArticlesByVille(ville.slug, loc, 3),
+  ]);
+  const seenSlugs = new Set<string>();
+  const relatedPosts: ReadonlyArray<{
+    slug: string;
+    title: string;
+    excerpt: string;
+    category: string;
+    readingTime: string;
+  }> = (() => {
+    const merged: Array<{
+      slug: string;
+      title: string;
+      excerpt: string;
+      category: string;
+      readingTime: string;
+    }> = [];
+    // Articles factory DB d'abord (les plus frais + signal V-01 multi-targets).
+    for (const a of dbRelatedPosts) {
+      if (seenSlugs.has(a.slug)) continue;
+      seenSlugs.add(a.slug);
+      const excerptWords = (a.excerpt ?? "").split(/\s+/).filter((w) => w.length > 0).length;
+      merged.push({
+        slug: a.slug,
+        title: a.title,
+        excerpt: a.excerpt ?? "",
+        category: isFr ? "Article" : "Article",
+        readingTime: isFr
+          ? `${Math.max(1, Math.round(excerptWords / 50))} min`
+          : `${Math.max(1, Math.round(excerptWords / 50))} min`,
+      });
+      if (merged.length >= 3) break;
+    }
+    // Compléter avec les FS legacy si moins de 3.
+    for (const post of fsRelatedPosts) {
+      if (merged.length >= 3) break;
+      if (seenSlugs.has(post.slug)) continue;
+      seenSlugs.add(post.slug);
+      merged.push({
+        slug: post.slug,
+        title: isFr ? post.fr.title : post.en.title,
+        excerpt: isFr ? post.fr.excerpt : post.en.excerpt,
+        category: post.category,
+        readingTime: post.readingTime,
+      });
+    }
+    return merged;
+  })();
 
   // ---- JSON-LD stack (4 schemas + BreadcrumbList auto via <Breadcrumbs>) ----
   const localBusinessJsonLd = buildLocalBusinessJsonLd({
@@ -700,10 +755,10 @@ export default async function VillePage({ params }: Props) {
                     className="text-fg mt-2 text-lg leading-tight font-semibold"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    {isFr ? post.fr.title : post.en.title}
+                    {post.title}
                   </p>
                   <p className="text-fg-soft mt-3 line-clamp-3 text-sm leading-relaxed">
-                    {isFr ? post.fr.excerpt : post.en.excerpt}
+                    {post.excerpt}
                   </p>
                 </Link>
               </li>
@@ -865,7 +920,10 @@ export default async function VillePage({ params }: Props) {
 
       {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 5+
           schemas combinés en 1 seul script @graph pour ne pas bloquer le
-          parsing du contenu visible. Google + Bing supportent @graph. */}
+          parsing du contenu visible. Google + Bing supportent @graph.
+          V-04 P0i (Sprint Correctif 2026-05-22) — strategy="afterInteractive"
+          défère l'injection après hydratation (-300 à -500 ms TBT mesuré audit).
+          Googlebot exécute JS, second pass crawler lit le JSON-LD. */}
       <JsonLdGraph
         schemas={[
           localBusinessJsonLd,
@@ -873,6 +931,8 @@ export default async function VillePage({ params }: Props) {
           faqSpeakableJsonLd ?? null,
           nearbyItemList ?? null,
         ]}
+        strategy="afterInteractive"
+        scriptId={`jsonld-ville-${ville.slug}`}
       />
     </>
   );

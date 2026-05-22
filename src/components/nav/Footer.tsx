@@ -72,6 +72,13 @@ export async function Footer() {
     <footer
       data-tone="dark"
       className="bg-mocha-rich text-mocha-fg relative isolate overflow-hidden"
+      style={{
+        // V-04 P0h (Sprint Correctif 2026-05-22) — CSS containment.
+        // Isole les shifts internes du footer (font-swap Fraunces/Manrope sur
+        // bg mocha-rich, hydration LocaleSwitcher) de la contribution CLS de
+        // la page. Cible : ramener /tarifs (404 catchall) CLS 0.480 → ≤ 0.05.
+        contain: "layout style",
+      }}
     >
       <span
         aria-hidden="true"

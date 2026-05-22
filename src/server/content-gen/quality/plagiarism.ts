@@ -82,3 +82,43 @@ export function checkPlagiarism(
     threshold,
   };
 }
+
+export interface RssSimilarityResult {
+  readonly similarity: number;
+  readonly threshold: number;
+  readonly passed: boolean;
+}
+
+/**
+ * V-06 P0b (Sprint Correctif 2026-05-22) — Vérifie la similarité Jaccard entre
+ * un contenu généré et un résumé RSS source unique.
+ *
+ * Contrairement à `checkPlagiarism` (qui balaye un corpus N→1), ce helper compare
+ * 1→1 contenu vs source RSS. Utilisé par `blog-from-rss.ts` pour bloquer toute
+ * régurgitation directe du résumé d'origine (le pipeline doit RÉ-ÉCRIRE, pas
+ * paraphraser trivialement).
+ *
+ * Seuil par défaut : 0.10 (plus strict que les 0.30 internes — la source RSS
+ * étant la "tentation directe" de plagiat).
+ *
+ * @param content texte généré (body article)
+ * @param rssItemSummary résumé/extrait fourni par le flux RSS source
+ * @param threshold seuil Jaccard bloquant (default 0.10)
+ * @returns similarity, threshold, passed (true si < seuil)
+ */
+export function checkRssSimilarity(
+  content: string,
+  rssItemSummary: string,
+  threshold: number = 0.1,
+): RssSimilarityResult {
+  // Texte source vide → passé d'office (rien à régurgiter).
+  if (!rssItemSummary || rssItemSummary.trim().length === 0) {
+    return { similarity: 0, threshold, passed: true };
+  }
+  const similarity = jaccardSimilarity(content, rssItemSummary);
+  return {
+    similarity,
+    threshold,
+    passed: similarity < threshold,
+  };
+}

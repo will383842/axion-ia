@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { shingles, jaccardSimilarity, checkPlagiarism } from "../plagiarism";
+import { shingles, jaccardSimilarity, checkPlagiarism, checkRssSimilarity } from "../plagiarism";
 import { computeReadabilityFr } from "../readability";
 import { computeSeoScore } from "../seo-score";
 import { levenshteinSimilarity, topicFingerprint } from "../dedup-guard";
@@ -38,6 +38,38 @@ describe("Plagiarism — shingling + Jaccard", () => {
     );
     expect(result.maxSimilarity).toBeGreaterThan(0.3);
     expect(result.passed).toBe(false);
+  });
+
+  // V-06 P0b — checkRssSimilarity (Sprint Correctif 2026-05-22)
+  it("checkRssSimilarity returns passed=true on empty source", () => {
+    const r = checkRssSimilarity("Article généré par Axion-IA.", "");
+    expect(r.passed).toBe(true);
+    expect(r.similarity).toBe(0);
+  });
+
+  it("checkRssSimilarity flags near-verbatim regurgitation (>= 0.10)", () => {
+    const rssSummary =
+      "Anthropic publie Claude Opus 4.7 avec une fenêtre de contexte de un million de tokens pour les développeurs et les entreprises";
+    // Le contenu généré reprend littéralement la phrase → Jaccard 1.0 sur shingles.
+    const r = checkRssSimilarity(rssSummary, rssSummary);
+    expect(r.similarity).toBeGreaterThanOrEqual(0.1);
+    expect(r.passed).toBe(false);
+  });
+
+  it("checkRssSimilarity passes when content is genuinely rewritten", () => {
+    const rssSummary =
+      "Anthropic publie Claude Opus 4.7 avec une fenêtre de contexte de un million de tokens.";
+    const rewritten =
+      "Le nouveau modèle Claude propose désormais une mémoire contextuelle élargie qui change la donne pour les agents IA en entreprise française.";
+    const r = checkRssSimilarity(rewritten, rssSummary);
+    expect(r.similarity).toBeLessThan(0.1);
+    expect(r.passed).toBe(true);
+  });
+
+  it("checkRssSimilarity respects custom threshold", () => {
+    const r = checkRssSimilarity("a b c d e f g h i j", "a b c d e f g h i j", 0.5);
+    expect(r.passed).toBe(false); // sim=1, > 0.5
+    expect(r.threshold).toBe(0.5);
   });
 });
 

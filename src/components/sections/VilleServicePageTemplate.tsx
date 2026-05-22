@@ -17,6 +17,7 @@ import { fmtPopulation } from "@/lib/intl";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
@@ -27,6 +28,7 @@ import { VilleServiceDetailSection } from "@/components/sections/VilleServiceDet
 import { getRegion } from "@/content/regions";
 import { VILLES, getIndexableVilles, getVille } from "@/content/villes";
 import { getNearbyVilles } from "@/lib/geo";
+import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
@@ -294,6 +296,11 @@ export async function renderVilleServicePage({
     sameRegion: ville.region,
   });
 
+  // V-01 P0d (Sprint Correctif 2026-05-22) — articles factory mentionnant la
+  // ville (Article DB + champ `mentionedCities[]`). Fail-soft : tableau vide
+  // si DB down / table absente bootstrap (cf. fonction helper).
+  const cityArticles = await getBlogArticlesByVille(ville.slug, loc, 3);
+
   // === JSON-LD stack — Phase C 2026-05-20 (centralisé via buildVilleServiceJsonLdGraph) ===
   // Les 5 variables individuelles ont été remplacées par le graph builder centralisé
   // (`src/lib/seo/ville-service-jsonld.ts`) qui émet 7 schémas :
@@ -447,6 +454,55 @@ export async function renderVilleServicePage({
             tone="sand"
           />
         </div>
+      ) : null}
+
+      {/* V-01 P0d (Sprint Correctif 2026-05-22) — Articles factory mentionnant
+          la ville. Affichés sur les 4 hubs services (audit / interventions /
+          implementation / un-a-un) pour exposer les contenus factory aux pages
+          ville-spécifiques (résolution gap V-01 multi-targets de l'audit). */}
+      {cityArticles.length > 0 ? (
+        <Section
+          eyebrow={isFr ? "Articles & ressources" : "Articles & resources"}
+          title={isFr ? "Articles mentionnant" : "Articles mentioning"}
+          titleEm={ville.nameFr}
+          description={
+            isFr
+              ? `Lecture complémentaire sur ${meta.nameFr.toLowerCase()} et l'écosystème IA à ${ville.nameFr}.`
+              : `Further reading on ${meta.nameEn.toLowerCase()} and the AI ecosystem in ${ville.nameFr}.`
+          }
+          tone="paper"
+        >
+          <ul className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {cityArticles.map((article) => (
+              <li key={article.slug}>
+                <Link
+                  href={`/blog/${article.slug}` as never}
+                  data-cta-tracking={`ville_service_${service}_article`}
+                  data-source-ville={ville.slug}
+                  className="group bg-bg hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card block h-full rounded-2xl border-2 p-6 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
+                    {isFr ? "Article" : "Article"}
+                    {article.publishedAt
+                      ? ` · ${new Date(article.publishedAt).toLocaleDateString(isFr ? "fr-FR" : "en-GB", { year: "numeric", month: "short" })}`
+                      : ""}
+                  </p>
+                  <p
+                    className="text-fg mt-2 text-lg leading-tight font-semibold"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {article.title}
+                  </p>
+                  {article.excerpt ? (
+                    <p className="text-fg-soft mt-3 line-clamp-3 text-sm leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                  ) : null}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Section>
       ) : null}
 
       {/* Cross-services à la même ville — maillage 4 services × ville
@@ -634,11 +690,24 @@ export async function renderVilleServicePage({
         }
       />
 
+      {/* V-07 P0f (Sprint Correctif 2026-05-22) — AI Act art. 50 disclosure.
+          Couvre les pages tier-1 indexables ville × service (4 verticales × 39
+          pilotes = 156 pages effectives + extensions futures). Wording exact D4
+          consolidé dans `AiContentDisclaimer`. */}
+      <AiContentDisclaimer locale={loc} />
+
       {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — Phase C
           2026-05-20 : 7 schémas combinés (Service + LocalBusiness + BreadcrumbList
           + FAQPage Speakable + HowTo + Person E-E-A-T + ItemList villes proches)
-          via buildVilleServiceJsonLdGraph. Cumul ~4 services × 2 150 villes = ~17 200 SSG. */}
-      <JsonLdGraph schemas={jsonLdSchemas} />
+          via buildVilleServiceJsonLdGraph. Cumul ~4 services × 2 150 villes = ~17 200 SSG.
+          V-04 P0i (Sprint Correctif 2026-05-22) — strategy="afterInteractive"
+          défère l'injection 7-schema (~3 KB JSON sur villes pilotes) après
+          hydratation, retire du parsing HTML initial (-300 à -500 ms TBT). */}
+      <JsonLdGraph
+        schemas={jsonLdSchemas}
+        strategy="afterInteractive"
+        scriptId={`jsonld-ville-service-${villeSlug}-${service}`}
+      />
     </>
   );
 }

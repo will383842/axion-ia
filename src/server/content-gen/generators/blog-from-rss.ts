@@ -1,19 +1,23 @@
 /**
  * Generator — blog from RSS NewsArticle (Sprint 2 + 5 + Phase A BUG-5).
  *
- * Pipeline (Phase A BUG-5 2026-05-21) :
+ * Pipeline (Phase A BUG-5 2026-05-21 + Sprint Correctif P0 V-06 2026-05-22) :
  * 1. KB retrieve top 8 chunks hybride (contexte interne Axion-IA)
  * 2. LLM génération article d'actualité (OpenAI → Anthropic fallback)
  *    - Ton : actualité réactive, pas conseil opérationnel pur
- *    - Citation source obligatoire (rssSourceName + rssItemLink)
- *    - L'article commente/contextualise l'actu RSS dans le prisme Axion-IA
+ *    - L'article RÉ-ÉCRIT l'info dans le prisme Axion-IA sans citer la source RSS
+ *      dans le body visible (directive Will : "ne pas dire la source").
+ *    - La traçabilité source reste préservée côté machine via NewsArticle
+ *      JSON-LD `isBasedOn` (AI Act art. 50 + GEO/AEO providers).
  * 3. Quality loop (2 passes max, budget $0.10)
+ *    - Anti-plagiat RSS source : `checkRssSimilarity(body, rssItemSummary, 0.10)`
+ *      bloque toute régurgitation directe du résumé (V-06 P0b).
  * 4. Checks finaux (readability + SEO + doctrine + soft-404)
  * 5. Return GeneratorOutput avec indexationTier=tier_2_noindex_follow par défaut
  *
  * Différences vs blog-from-keywords :
  * - Input enrichi avec métadonnées RSS (titre item, résumé, source)
- * - SYSTEM_PROMPT dédié actualité + citation
+ * - SYSTEM_PROMPT dédié actualité, sans citation visible
  * - indexationTier : tier_2 si qualité ≥ 55, tier_3 sinon (jamais tier_1 direct
  *   pour RSS — politique éditoriale : modération humaine avant promotion)
  * - budget plus court ($0.10) — article plus court attendu (500-800 mots)
@@ -34,6 +38,7 @@ import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
+import { checkRssSimilarity } from "../quality/plagiarism";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
@@ -51,7 +56,8 @@ const SYSTEM_PROMPT = `Tu es un journaliste expert en IA produisant un article d
 Règles absolues :
 - Introduction : commence par l'information elle-même, pas par "Chez Axion-IA" — l'intro est centrée sur l'actu.
 - Style journalistique : réactif, factuel, contextuel. Explique l'info, donne le contexte marché, puis impact pour PME françaises.
-- Citation source obligatoire : mentionne le nom de la source dans le body ("Selon [Source], ...").
+- INTERDICTION DE CITER LA SOURCE : ne mentionne JAMAIS dans le body visible le nom du média/site/source d'origine ni d'expressions du type "Selon X", "d'après Y", "le média Z rapporte". Présente l'information comme un constat factuel ré-analysé sous le prisme Axion-IA. (Traçabilité préservée côté machine via JSON-LD \`isBasedOn\` au publish — AI Act art. 50.)
+- Ré-écriture obligatoire : reformule TOTALEMENT le résumé fourni. Ne reprends pas de phrases littérales (similarité Jaccard 5-gram bloquante à 0.10).
 - Section Axion-IA : UNE section H2 en fin d'article ("Ce que cela signifie pour les PME françaises") — angle conseil.
 - CTA discret en fin d'article uniquement : "Axion-IA accompagne les PME dans leur transformation IA — contact@axion-ia.com."
 - Le keyword principal DOIT apparaître textuellement dans le H1.
@@ -91,17 +97,23 @@ export const blogFromRssGenerator: Generator = {
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
 
-    // Bloc citation source RSS injecté dans le prompt
+    // Bloc actualité source RSS injecté dans le prompt — usage CONTEXTE INTERNE
+    // uniquement. Le nom de la source / URL sont fournis au modèle pour comprendre
+    // le sujet et éviter le hors-sujet, mais l'output visible ne doit JAMAIS les
+    // mentionner (directive Will "ne pas dire la source"). La traçabilité reste
+    // assurée côté machine via JSON-LD NewsArticle.isBasedOn (AI Act art. 50).
     const rssSection =
       input.rssSourceName || input.rssItemSummary
         ? [
-            `## Actualité source à commenter`,
+            `## Actualité à RÉ-ÉCRIRE (contexte interne — NE PAS citer dans le body)`,
             input.rssSourceName
-              ? `Source : ${escapeLlmInput(input.rssSourceName, { maxLen: 80 })}`
+              ? `Source d'origine (NE PAS mentionner) : ${escapeLlmInput(input.rssSourceName, { maxLen: 80 })}`
               : "",
-            input.rssItemLink ? `URL : ${escapeLlmInput(input.rssItemLink, { maxLen: 200 })}` : "",
+            input.rssItemLink
+              ? `URL d'origine (NE PAS mentionner) : ${escapeLlmInput(input.rssItemLink, { maxLen: 200 })}`
+              : "",
             input.rssItemSummary
-              ? `\nRésumé de l'actu :\n${escapeLlmInput(input.rssItemSummary, { maxLen: 800 })}`
+              ? `\nRésumé brut (à reformuler totalement, jamais citer littéralement) :\n${escapeLlmInput(input.rssItemSummary, { maxLen: 800 })}`
               : "",
           ]
             .filter(Boolean)
@@ -220,12 +232,25 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         ? Math.round((seo.score + readability.score) / 2)
         : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
 
-      if (qualityScore >= QUALITY_THRESHOLD) {
+      // V-06 P0b — gate Jaccard 0.10 vs résumé source RSS. Doit passer AVANT
+      // d'accepter l'output, sinon un article "qualité OK" pourrait régurgiter
+      // la source. Si la similarité dépasse, on force une nouvelle itération.
+      const rssSim = input.rssItemSummary
+        ? checkRssSimilarity(bodyText, input.rssItemSummary, 0.1)
+        : { similarity: 0, threshold: 0.1, passed: true };
+
+      if (qualityScore >= QUALITY_THRESHOLD && rssSim.passed) {
         await logStep(
           input.jobId,
           "quality_loop_pass",
-          `Pass ${iteration} — score ${qualityScore}/100, mots ${wordCount}, cost $${accumulatedCostUsd.toFixed(4)}`,
-          { qualityScore, seoScore: seo.score, readabilityScore: readability.score, wordCount },
+          `Pass ${iteration} — score ${qualityScore}/100, mots ${wordCount}, RSS sim ${rssSim.similarity.toFixed(3)}, cost $${accumulatedCostUsd.toFixed(4)}`,
+          {
+            qualityScore,
+            seoScore: seo.score,
+            readabilityScore: readability.score,
+            wordCount,
+            rssSimilarity: rssSim.similarity,
+          },
         );
         break;
       }
@@ -250,11 +275,27 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         issues.push(`violations doctrine : ${violations}`);
       }
       if (wordCount < 400) issues.push(`contenu trop court (${wordCount} mots, minimum 400)`);
+      // V-06 P0a (Sprint Correctif 2026-05-22) — gate INVERSÉ : si la source RSS
+      // est mentionnée dans le body, c'est un fail (directive Will "ne pas dire
+      // la source"). Traçabilité source via JSON-LD NewsArticle.isBasedOn.
       if (
         input.rssSourceName &&
-        !bodyText.toLowerCase().includes(input.rssSourceName.toLowerCase())
+        bodyText.toLowerCase().includes(input.rssSourceName.toLowerCase())
       ) {
-        issues.push(`citation source "${input.rssSourceName}" manquante dans le body`);
+        issues.push(
+          `mention de la source "${input.rssSourceName}" détectée dans le body — interdit (la source ne doit jamais apparaître visiblement, traçabilité via JSON-LD isBasedOn)`,
+        );
+      }
+      // V-06 P0b (Sprint Correctif 2026-05-22) — gate anti-régurgitation Jaccard
+      // 0.10 vs résumé RSS source. Si la similarité dépasse, l'article paraphrase
+      // trop la source → re-write strict obligatoire.
+      if (input.rssItemSummary) {
+        const rssSim = checkRssSimilarity(bodyText, input.rssItemSummary, 0.1);
+        if (!rssSim.passed) {
+          issues.push(
+            `similarité avec le résumé source ${rssSim.similarity.toFixed(3)} >= seuil ${rssSim.threshold} — ré-écris totalement (pas de paraphrase directe)`,
+          );
+        }
       }
       prevFeedback = `Score ${qualityScore}/100 insuffisant. Améliore : ${issues.join(" ; ")}.`;
     }
@@ -309,11 +350,28 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       faqCount: (parsed.faq ?? []).length,
     });
 
+    // V-06 P0b — check final anti-régurgitation RSS source post-loop. Si la
+    // similarité reste ≥ 0.10, downgrade tier_3_noindex_nofollow (modération
+    // humaine obligatoire). On préserve aussi un audit log.
+    const finalRssSim = input.rssItemSummary
+      ? checkRssSimilarity(bodyText, input.rssItemSummary, 0.1)
+      : { similarity: 0, threshold: 0.1, passed: true };
+
+    if (!finalRssSim.passed) {
+      await logStep(
+        input.jobId,
+        "rss_similarity_block",
+        `Similarité résumé RSS ${finalRssSim.similarity.toFixed(3)} >= ${finalRssSim.threshold} après quality loop — tier_3 forcé`,
+        { rssSimilarity: finalRssSim.similarity, threshold: finalRssSim.threshold },
+      );
+    }
+
     // Politique RSS : jamais tier_1 direct — modération humaine requise avant
-    // promotion. tier_2_noindex_follow max si qualité suffisante.
+    // promotion. tier_2_noindex_follow max si qualité suffisante ET pas de
+    // régurgitation de la source RSS (V-06 P0b).
     const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
       ? "tier_3_noindex_nofollow"
-      : doctrine.passed && qualityScore >= 55
+      : doctrine.passed && qualityScore >= 55 && finalRssSim.passed
         ? "tier_2_noindex_follow"
         : "tier_3_noindex_nofollow";
 

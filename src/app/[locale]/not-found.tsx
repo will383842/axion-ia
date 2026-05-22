@@ -38,45 +38,50 @@ export default async function LocaleNotFound() {
     { href: "/reserver", label: t("notFoundLinkBook") },
   ] as const;
 
+  // V-04 P0h (Sprint Correctif 2026-05-22) — wrapper min-h-[60vh] pour empêcher
+  // le footer de remonter au-dessus de la fold sur les pages 404 courtes (ex.
+  // /tarifs catchall). Stabilise le calcul CLS (mesuré above-the-fold).
   return (
-    <Section
-      titleAs="h1"
-      eyebrow={t("notFoundEyebrow")}
-      title={t("notFoundTitle")}
-      titleEm={t("notFoundTitleEm")}
-      description={t("notFoundBody")}
-    >
-      <div className="flex flex-wrap items-center gap-4">
-        <Cta href="/" size="lg">
-          {t("notFoundCta")}
-          <ArrowRight aria-hidden="true" className="h-4 w-4" />
-        </Cta>
-        <Cta href="/contact" variant="outline" size="lg">
-          {t("notFoundSecondary")}
-        </Cta>
-      </div>
+    <div className="min-h-[60vh]">
+      <Section
+        titleAs="h1"
+        eyebrow={t("notFoundEyebrow")}
+        title={t("notFoundTitle")}
+        titleEm={t("notFoundTitleEm")}
+        description={t("notFoundBody")}
+      >
+        <div className="flex flex-wrap items-center gap-4">
+          <Cta href="/" size="lg">
+            {t("notFoundCta")}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Cta>
+          <Cta href="/contact" variant="outline" size="lg">
+            {t("notFoundSecondary")}
+          </Cta>
+        </div>
 
-      <div className="mt-14 max-w-2xl">
-        <p className="text-fg-muted mb-5 text-[12px] font-semibold tracking-[0.16em] uppercase">
-          {t("notFoundSuggestionsTitle")}
-        </p>
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {suggestions.map((s) => (
-            <li key={s.href}>
-              <Link
-                href={s.href as never}
-                className="bg-paper border-border hover:border-terracotta hover:shadow-card group flex items-center justify-between rounded-xl border px-5 py-4 text-sm font-semibold transition-all"
-              >
-                <span className="text-fg">{s.label}</span>
-                <ArrowRight
-                  aria-hidden="true"
-                  className="text-terracotta-deep h-4 w-4 transition-transform group-hover:translate-x-1"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Section>
+        <div className="mt-14 max-w-2xl">
+          <p className="text-fg-muted mb-5 text-[12px] font-semibold tracking-[0.16em] uppercase">
+            {t("notFoundSuggestionsTitle")}
+          </p>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {suggestions.map((s) => (
+              <li key={s.href}>
+                <Link
+                  href={s.href as never}
+                  className="bg-paper border-border hover:border-terracotta hover:shadow-card group flex items-center justify-between rounded-xl border px-5 py-4 text-sm font-semibold transition-all"
+                >
+                  <span className="text-fg">{s.label}</span>
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="text-terracotta-deep h-4 w-4 transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    </div>
   );
 }
