@@ -91,9 +91,52 @@ jobs:
           echo "Container: $NAME"
 
       # ─────────────────────────────────────────────────────────────────────
-      # P0-5 — Seed 6 CampaignTemplate
+      # P0-5 — Resolve failed migration + apply pending + seed CampaignTemplate
       # ─────────────────────────────────────────────────────────────────────
-      - name: P0-5 — Seed CampaignTemplate (8 presets D-P5-1) inline node
+      - name: P0-5a — Resolve failed migration add_article_campaign_id + deploy pending
+        if: inputs.run_seed_templates == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          echo "──── P0-5a — Resolve add_article_campaign_id (failed migration) ────"
+          # La migration add_article_campaign_id avait CREATE INDEX CONCURRENTLY
+          # qui a fail dans le transaction wrapper de Prisma (P3018 / E25001).
+          # Le commit 27d6bf48 sur origin/main retire CONCURRENTLY ; mais la
+          # row failed reste dans _prisma_migrations table → bloque les
+          # migrations suivantes (dont add_campaign_template_and_feedback).
+          # Fix : marquer rolled-back + re-deploy (idempotent ADD COLUMN IF NOT
+          # EXISTS + nouveau CREATE INDEX sans CONCURRENTLY).
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && /tmp/prisma-fresh/node_modules/.bin/prisma migrate resolve --rolled-back 20260521150200_add_article_campaign_id --schema=/app/prisma/schema.prisma 2>&1 || \
+              /app/prisma-cli/node_modules/.bin/prisma migrate resolve --rolled-back 20260521150200_add_article_campaign_id --schema=/app/prisma/schema.prisma 2>&1 || \
+              echo RESOLVE_SKIP_OR_DONE'" 2>&1 | tail -10
+
+          echo ""
+          echo "──── Pull latest code (fix CONCURRENTLY) + deploy migrations ────"
+          # Le container utilise le code de l'image GHCR ; on a besoin du
+          # fichier migration.sql à jour. Solution : copier le SQL fix via
+          # docker cp depuis le workflow runner.
+          # Actually plus simple : on télécharge le fix depuis GitHub et
+          # le SCP dans le container.
+          MIGRATION_FILE="prisma/migrations/20260521150200_add_article_campaign_id/migration.sql"
+          curl -fsSL "https://raw.githubusercontent.com/will383842/axion-ia/main/$MIGRATION_FILE" -o /tmp/fixed-migration.sql
+          echo "── Downloaded fix ($(wc -l < /tmp/fixed-migration.sql) lines) ──"
+          scp -o BatchMode=yes /tmp/fixed-migration.sql "root@178.105.55.15:/tmp/fixed-migration.sql"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker cp /tmp/fixed-migration.sql '$CONTAINER':/app/$MIGRATION_FILE"
+
+          echo "── Run migrate deploy ──"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && (/tmp/prisma-fresh/node_modules/.bin/prisma migrate deploy --schema=/app/prisma/schema.prisma 2>&1 || \
+              /app/prisma-cli/node_modules/.bin/prisma migrate deploy --schema=/app/prisma/schema.prisma 2>&1 || \
+              echo MIGRATE_DEPLOY_FAILED)'" 2>&1 | tail -30
+          echo "──── P0-5a fin ────"
+
+      - name: P0-5b — Seed CampaignTemplate (8 presets D-P5-1) inline node
         if: inputs.run_seed_templates == 'true'
         env:
           CONTAINER: ${{ steps.container.outputs.name }}
