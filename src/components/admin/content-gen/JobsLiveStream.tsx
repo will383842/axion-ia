@@ -46,15 +46,15 @@ const STATUS_PROGRESS: Record<string, number> = {
 };
 
 function statusColor(status: string): string {
-  if (status === "published") return "var(--color-admin-success, #16a34a)";
+  if (status === "published") return "var(--color-admin-success)";
   if (
     status === "failed" ||
     status === "quarantined_critical" ||
     status === "quarantined_factcheck"
   )
-    return "var(--color-admin-destructive, #dc2626)";
-  if (status === "cancelled") return "var(--color-admin-fg-muted, #6b7280)";
-  return "var(--color-admin-info, #2563eb)";
+    return "var(--color-admin-destructive)";
+  if (status === "cancelled") return "var(--color-admin-fg-muted)";
+  return "var(--color-admin-info)";
 }
 
 function qualityBadgeClass(score: number): string {
