@@ -90,6 +90,16 @@ export interface GeneratorOutput {
    * Calculé par chaque generator via `hashPrompt()`. Absent = articles antérieurs au fix.
    */
   readonly promptHash?: string;
+  /**
+   * Sprint External Links Database 2026-05-22.
+   * IDs des liens externes du catalogue (`src/data/external-links/`) injectés dans
+   * le SYSTEM_PROMPT du generator via `injectExternalLinks()`. Le content-publish-worker
+   * appelle `trackExternalLinksUsage(selectedExternalLinkIds)` après publication
+   * pour alimenter la rotation équitable (table `ExternalLinkUsage`).
+   *
+   * Optionnel : V1 generators ou cas filtres trop stricts → array vide acceptable.
+   */
+  readonly selectedExternalLinkIds?: ReadonlyArray<string>;
 }
 
 export interface Generator<TInput extends GeneratorBaseInput = GeneratorBaseInput> {

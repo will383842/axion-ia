@@ -21,6 +21,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 
 const QUALITY_THRESHOLD = 60;
@@ -92,6 +93,10 @@ export const blogArticleGenerator: Generator = {
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
 
+    // Sprint External Links Database 2026-05-22 — sélection 4 sources d'autorité
+    // pour injection systématique (anti-hallucination + co-citation E-E-A-T).
+    const externalLinksCtx = injectExternalLinks(input, { count: 4, minAuthority: 4 });
+
     let iteration = 0;
     let accumulatedCostUsd = 0;
     let lastOutput = "";
@@ -123,7 +128,7 @@ Audience cible : ${safeAudienceSize}.
 
 ## Sources internes Axion-IA (à citer en priorité)
 ${kbContext}
-${feedbackSection}${glossaryContext ? `\n${glossaryContext}` : ""}
+${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×6-8], tags }`;
 
@@ -290,6 +295,7 @@ ${feedbackSection}${glossaryContext ? `\n${glossaryContext}` : ""}
       totalCostUsd: accumulatedCostUsd,
       citations: lastCitations,
       promptHash: lastPromptHash,
+      selectedExternalLinkIds: externalLinksCtx.ids,
     };
   },
 };

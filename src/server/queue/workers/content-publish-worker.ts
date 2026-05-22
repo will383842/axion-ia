@@ -39,6 +39,9 @@ import { logProvenance, hashPrompt } from "@/server/content-gen/provenance/prove
 // V-09 P6 2026-05-22 — Couche 4 dedup : embedding OpenAI text-embedding-3-large.
 // Best-effort post-publish, fire-and-forget. Gate sur OPENAI_EMBEDDINGS_ENABLED.
 import { persistArticleEmbedding } from "@/server/content-gen/dedup/persist-article-embedding";
+// Sprint External Links Database 2026-05-22 — Validation post-publish (≥ 2 liens
+// externes + détection hallucinations URL hors catalogue) + tracking usage.
+import { trackExternalLinksUsage, detectHallucinations } from "@/data/external-links/helpers";
 
 const QUEUE_NAME = "content-publish";
 
@@ -396,6 +399,50 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     slug: slugCandidate,
     is_news: isNews,
   });
+
+  // Sprint External Links Database 2026-05-22 — Validation + tracking usage.
+  // Best-effort post-publish : NE BLOQUE PAS la publication même si validation échoue
+  // (l'article est déjà inséré). Logge un warning + update needs_review pour Will.
+  try {
+    const rawSelectedIds = output["selectedExternalLinkIds"];
+    const selectedIds: string[] = Array.isArray(rawSelectedIds)
+      ? rawSelectedIds.filter((s): s is string => typeof s === "string" && s.length > 0)
+      : [];
+
+    const detection = detectHallucinations(bodyHtml);
+    const externalLinkCount = detection.valid.length + detection.hallucinated.length;
+    const hasEnoughExternalLinks = externalLinkCount >= 2;
+    const noHallucinations = detection.hallucinated.length === 0;
+
+    await logStep(
+      cgJob.id,
+      "external_links_validation",
+      `External links : ${externalLinkCount} total (valid=${detection.valid.length}, halluciné=${detection.hallucinated.length})`,
+      {
+        external_link_count: externalLinkCount,
+        valid_count: detection.valid.length,
+        hallucinated_count: detection.hallucinated.length,
+        selected_count: selectedIds.length,
+        has_enough_external_links: hasEnoughExternalLinks,
+        no_hallucinations: noHallucinations,
+        hallucinated_sample: detection.hallucinated.slice(0, 5),
+      },
+    );
+
+    // Tracking usage : on incrémente sur la base de l'union (IDs sélectionnés par
+    // selectExternalLinks + IDs valides détectés dans le body). Si validation
+    // partielle, on alimente la rotation tout de même (le lien a bien été cité).
+    const linksToTrack = Array.from(new Set([...selectedIds, ...detection.valid]));
+    if (linksToTrack.length > 0) {
+      await trackExternalLinksUsage(linksToTrack);
+    }
+  } catch (err) {
+    // Best-effort : on ne re-throw pas. Le worker continue.
+    console.warn(
+      "[publish] external_links_validation failed (non-blocking):",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 
   // V-09 P6 2026-05-22 — Couche 4 dedup : embedding OpenAI text-embedding-3-large.
   // Best-effort post-publish : ne JAMAIS bloquer la publication sur cet appel.

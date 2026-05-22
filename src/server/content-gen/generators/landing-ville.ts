@@ -27,6 +27,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { injectExternalLinks } from "../links/external-links-injector";
 import { resolveLandingVilleVariant } from "./landing-ville-templates";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
@@ -111,6 +112,9 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
       ? `\n\n## Retour LLM-judge — points à corriger impérativement\n${input.improvementFeedback}`
       : "";
 
+    // Sprint External Links Database 2026-05-22 — 4 sources d'autorité (city-aware).
+    const externalLinksCtx = injectExternalLinks(input, { count: 4, minAuthority: 4 });
+
     const userPrompt = `Génère une landing page Axion-IA pour la ville "${safeVilleSlug}".
 Audience : ${safeAudienceSize} × ${safeOrgType}.
 Intent : ${safeIntent}.
@@ -121,7 +125,7 @@ ${variant.userPromptFocusSection}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
-${localEconomicContext}${improvementSection}
+${externalLinksCtx.markdownSection}${localEconomicContext}${improvementSection}
 ${(() => {
   const gc = getGlossaryContext([input.primaryKeyword ?? ""].filter(Boolean));
   return gc ? `\n${gc}` : "";
@@ -264,6 +268,7 @@ label : ${variant.recommendedCtaLabel}
       citations: llmResult.citations ?? [],
       promptHash: lastPromptHash,
       mentionedCities,
+      selectedExternalLinkIds: externalLinksCtx.ids,
     };
   },
 };

@@ -31,6 +31,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 
 const QUALITY_THRESHOLD = 55;
@@ -121,6 +122,9 @@ export const qaDerivedGenerator: Generator = {
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
 
+    // Sprint External Links Database 2026-05-22 — 3 sources d'autorité pour Q/R FAQ.
+    const externalLinksCtx = injectExternalLinks(input, { count: 3, minAuthority: 4 });
+
     // 2. Quality loop (max 2 passes pour Q/R — anti-thin HCU clé ici)
     let iteration = 0;
     let accumulatedCostUsd = 0;
@@ -151,7 +155,7 @@ export const qaDerivedGenerator: Generator = {
 
 ## Sources internes Axion-IA (à utiliser pour enrichir la réponse)
 ${kbContext}
-${feedbackSection}
+${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags }`;
@@ -313,6 +317,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       totalCostUsd: accumulatedCostUsd,
       citations: lastCitations,
       promptHash: lastPromptHash,
+      selectedExternalLinkIds: externalLinksCtx.ids,
     };
   },
 };

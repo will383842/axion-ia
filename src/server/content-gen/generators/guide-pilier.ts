@@ -48,6 +48,7 @@ import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 
 const QUALITY_THRESHOLD = 60;
@@ -181,6 +182,9 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
     });
     const safeVille = input.anchorVilleSlug ? escapeSlugInput(input.anchorVilleSlug) : null;
 
+    // Sprint External Links Database 2026-05-22 — 5 sources d'autorité (guide long-form).
+    const externalLinksCtx = injectExternalLinks(input, { count: 5, minAuthority: 4 });
+
     // ─── STEP 1 : Outline ─────────────────────────────────────────────────
     const lastPromptHash = hashPrompt(
       SYSTEM_PROMPT_OUTLINE +
@@ -204,7 +208,7 @@ Intent : ${safeIntent}
 
 ## Contexte Axion-IA — sources internes prioritaires
 ${kbContext}
-${localEconomicContext}${improvementSection}
+${externalLinksCtx.markdownSection}${localEconomicContext}${improvementSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 Rappel : 8-15 sections, output JSON strict (cf. system prompt).`;
 
@@ -250,7 +254,7 @@ Position : ${section.position}/${sections.length}
 
 ## Contexte Axion-IA partagé
 ${kbContext}
-
+${externalLinksCtx.markdownSection}
 Rappel : 250-450 mots, HTML inline (pas de <h2>, pas de wrapper <section>).
 Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
 
@@ -359,6 +363,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       totalCostUsd: cumulativeCost,
       citations: outlineResult.citations ?? [],
       promptHash: lastPromptHash,
+      selectedExternalLinkIds: externalLinksCtx.ids,
     };
   },
 };

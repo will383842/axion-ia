@@ -71,6 +71,7 @@ export type GenerationLogStep =
   | "hero_image_assigned"
   | "hero_image_pending"
   | "rss_similarity_block"
+  | "external_links_validation"
   | "error";
 
 export interface LogGenerationArgs {

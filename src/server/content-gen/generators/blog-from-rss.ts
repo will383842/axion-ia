@@ -46,6 +46,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 
 const QUALITY_THRESHOLD = 55;
@@ -96,6 +97,9 @@ export const blogFromRssGenerator: Generator = {
     const kbContext = kbChunks
       .map((c) => `[${c.type}] ${c.title}\n${c.excerpt ?? ""}`)
       .join("\n\n");
+
+    // Sprint External Links Database 2026-05-22 — 4 sources d'autorité injectées.
+    const externalLinksCtx = injectExternalLinks(input, { count: 4, minAuthority: 4 });
 
     // Bloc actualité source RSS injecté dans le prompt — usage CONTEXTE INTERNE
     // uniquement. Le nom de la source / URL sont fournis au modèle pour comprendre
@@ -154,7 +158,7 @@ Audience cible : ${safeAudienceSize}.
 ${rssSection ? `\n${rssSection}\n` : ""}
 ## Contexte Axion-IA — sources internes (à citer comme expertise)
 ${kbContext}
-${feedbackSection}
+${externalLinksCtx.markdownSection}${feedbackSection}
 ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×5], tags }`;
@@ -395,6 +399,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       totalCostUsd: accumulatedCostUsd,
       citations: lastCitations,
       promptHash: lastPromptHash,
+      selectedExternalLinkIds: externalLinksCtx.ids,
     };
   },
 };
