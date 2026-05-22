@@ -171,6 +171,20 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // depuis content-gen/blog (lecture seule — consommateur, pas producteur).
   /^src\/app\/\[locale\]\/implantations\//,
   /^src\/components\/sections\/VilleServicePageTemplate\.tsx$/,
+  // Sprint Final audit-final 2026-05-22 — exceptions ajoutées :
+  // - cost-cap-reset-worker : appelle resetMonthlyCostCounters de content-gen/lib
+  //   (worker transverse infra cost-cap, pas content-gen core, P0-2 audit final).
+  // - external-links-monitor-worker : commentaire référence content-gen consumer
+  //   (sprint External Links Database 2026-05-22 Manon).
+  // - manual-additions.ts + perplexity-search : data + client transverses external-links.
+  // - connaissances/[slug] : KB publique consume content-gen articles factory.
+  // - keywords/clusters : data keywords transverse content-gen.
+  /^src\/server\/queue\/workers\/cost-cap-reset-worker\.ts$/,
+  /^src\/server\/queue\/workers\/external-links-monitor-worker\.ts$/,
+  /^src\/data\/external-links\/manual-additions\.ts$/,
+  /^src\/server\/clients\/perplexity-search\.ts$/,
+  /^src\/app\/\[locale\]\/connaissances\/\[slug\]\/page\.tsx$/,
+  /^src\/content\/keywords\/clusters\.ts$/,
 ];
 
 /**
