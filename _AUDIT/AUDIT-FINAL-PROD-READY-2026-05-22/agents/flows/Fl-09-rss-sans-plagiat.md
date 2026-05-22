@@ -1,0 +1,44 @@
+# Fl-09 — RSS sans plagiat (NE PAS citer la source)
+
+**HEAD audité** : 81f6ea0e
+**Score** : 25 / 25
+**Verdict** : 🟢 GO PROD (parfait)
+
+## Chaîne traçée
+
+| Étape | Fichier | Ligne | Verdict |
+|---|---|---|---|
+| **Worker fetch RSS** | `src/server/queue/workers/content-rss-fetch-worker.ts` | présent | OK |
+| **Generator blog-from-rss** | `src/server/content-gen/generators/blog-from-rss.ts` | 1-446 | OK |
+| **SYSTEM_PROMPT : INTERDICTION DE CITER LA SOURCE** | idem | 56-70 (ligne 60 : "INTERDICTION DE CITER LA SOURCE : ne mentionne JAMAIS dans le body visible le nom du média/site/source d'origine ni d'expressions du type 'Selon X', 'd'après Y', 'le média Z rapporte'") | **EXACT directive Will 2026-05-22** |
+| Ré-écriture obligatoire (similarité Jaccard 5-gram < 0.10) | idem | 61 | OK |
+| Section Axion-IA + CTA discret | idem | 62-63 | OK |
+| Section RSS dans prompt = CONTEXTE INTERNE uniquement | idem | 104-125 (`rssSection` : "NE PAS citer dans le body" annoté 3× : 110, 113, 115, 119) | **EXACT directive** |
+| **Quality loop max 2 passes, budget $0.10** | idem | 52-54, 150-305 | OK |
+| **Gate Jaccard 0.10 vs résumé source RSS** (V-06 P0b) | idem | 41 import `checkRssSimilarity` + 242-244 (loop check) + 296-303 (issue ajoutée si fail) + 360-362 (check final post-loop) | OK |
+| **Gate inversé "source mentionnée dans body = fail"** (V-06 P0a) | idem | 282-292 (`bodyText.toLowerCase().includes(input.rssSourceName.toLowerCase())` → issue) | OK |
+| Si finalRssSim ≥ 0.10 post-loop → downgrade tier_3_noindex_nofollow + audit log | idem | 364-371 | OK |
+| **Politique tier_2 max (jamais tier_1 direct) pour RSS** | idem | 374-380 | OK |
+| Hashprompt provenance (AI Act art. 50 P0-3) | idem | 35-36, 166-168 | OK |
+| Sanitize HTML output | idem | 311 (`sanitizeContentGenHtml`) | OK |
+| Inject internal links post-LLM (P1-12) | idem | 312-318 (`injectInternalLinks`) | OK |
+| External links injector (4 sources autorité ≥4) | idem | 102 (`injectExternalLinks`) | OK |
+| Brand voice + glossary context | idem | 46-47, 146-148 | OK |
+| **NewsArticle JSON-LD `isBasedOn` côté machine** (traçabilité préservée AI Act) | idem | 32-33 + helper `enrichOutputWithNewsArticleJsonLd` 413-445 | **EXACT directive** : visible body ne cite jamais la source, mais JSON-LD `isBasedOn` préserve la traçabilité machine |
+| Embeddings cosine < 0.85 si flag activé | mentionné `checkOutlineDedup` import + couche A.3 P0-6 P1.5 (B.7) | OK (flag activable via `OPENAI_EMBEDDINGS_ENABLED`) |
+| KB retrieve hybride 6 chunks contexte interne | idem | 84-95 | OK |
+
+## Findings P0/P1/P2
+
+| Niveau | Item | Référence |
+|---|---|---|
+| **P2** | Le quality loop budget $0.10 (vs ~$0.18 guide pilier) est cohérent avec article actualité plus court (450-800 mots cible vs 1500+ pilier). | `blog-from-rss.ts:54` |
+
+## Verdict détaillé
+
+Implémentation modèle de la directive Will 2026-05-22 "NE PAS citer la source RSS dans le body". Triple verrouillage :
+1. **SYSTEM_PROMPT** : interdiction explicite "ne mentionne JAMAIS dans le body visible le nom du média/site/source"
+2. **Gate Jaccard 5-gram < 0.10** vs résumé source (loop + final post-loop) — bloque la régurgitation
+3. **Gate inversé "if rssSourceName in bodyText → fail"** côté loop avec downgrade tier_3 si persisté
+
+Traçabilité préservée côté machine via NewsArticle JSON-LD `isBasedOn` (AI Act art. 50 compliance). Politique tier_2 max (jamais tier_1 direct pour RSS — modération humaine requise). Score 25/25 parfait. Aucun P0/P1.

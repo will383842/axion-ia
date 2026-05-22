@@ -1,0 +1,105 @@
+# Test 02 — Lighthouse 10 pages (substitut audit code)
+## Date : 2026-05-22
+
+Mode AUDIT-ONLY : pas d'exécution Lighthouse live. Vérification lighthouserc.json + bundle stats.
+
+## lighthouserc.json
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "http://localhost:3000/fr",
+        "http://localhost:3000/en",
+        "http://localhost:3000/fr/interventions",
+        "http://localhost:3000/en/interventions",
+        "http://localhost:3000/fr/interventions/essentielle",
+        "http://localhost:3000/en/interventions/essential",
+        "http://localhost:3000/fr/audit",
+        "http://localhost:3000/en/audit",
+        "http://localhost:3000/fr/implementation",
+        "http://localhost:3000/en/implementation",
+        "http://localhost:3000/fr/cas-concrets",
+        "http://localhost:3000/en/case-studies",
+        "http://localhost:3000/fr/blog",
+        "http://localhost:3000/en/blog",
+        "http://localhost:3000/fr/contact",
+        "http://localhost:3000/en/contact",
+        "http://localhost:3000/fr/galerie",
+        "http://localhost:3000/en/gallery"
+      ],
+      "startServerCommand": "pnpm start",
+      "startServerReadyPattern": "Ready",
+      "numberOfRuns": 3,
+      "settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
+    },
+    "assert": {
+      "preset": "lighthouse:no-pwa",
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "categories:accessibility": ["warn", { "minScore": 0.9 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }],
+        "categories:seo": ["warn", { "minScore": 0.9 }],
+
+        "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+        "interaction-to-next-paint": "off",
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 200 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
+        "speed-index": ["error", { "maxNumericValue": 2500 }],
+
+        "forced-reflow-insight": "off",
+        "inspector-issues": "off",
+        "network-dependency-tree-insight": "off",
+        "dom-size-insight": "off",
+        "dom-size": "off",
+        "cache-insight": "off",
+        "legacy-javascript-insight": ["warn", { "minScore": 0.5 }],
+        "legacy-javascript": ["warn", { "maxLength": 5 }],
+        "unused-javascript": ["warn", { "maxLength": 10 }],
+        "uses-long-cache-ttl": "off",
+
+        "bf-cache": ["warn", { "minScore": 1 }],
+        "target-size": ["warn", { "minScore": 1 }],
+        "robots-txt": "off",
+        "canonical": ["warn", { "minScore": 1 }],
+        "list": ["warn", { "minScore": 1 }],
+        "listitem": ["warn", { "minScore": 1 }],
+        "label-content-name-mismatch": ["warn", { "minScore": 1 }],
+        "color-contrast": ["warn", { "minScore": 1 }],
+        "deprecations": ["warn", { "minScore": 1 }],
+        "errors-in-console": ["warn", { "minScore": 1 }]
+      }
+    },
+    "_assert_doctrine": [
+      "Sprint Web Vitals fix 2026-05-17 — tuning runbook deploy recovery.",
+      "Doctrine : assertions Core Web Vitals (LCP/CLS/TBT/FCP/SI) restent ERROR strict.",
+      "INP audit toujours auditRan=0 en CI (lab Lighthouse n'a pas d'interaction utilisateur réelle) → off, mesuré uniquement par CrUX field data.",
+      "CLS desserré 0.05 → 0.1 (Google 'good' threshold) car /fr/audit CWV CLS dépasse 0.05. Doctrine interne 0 conservée mais gate accepte 0.1.",
+      "TBT desserré 150 → 200 ms (Google 'good') car LHCI Lighthouse 12 a recalibré certains scripts.",
+      "Insights Lighthouse 12+ (forced-reflow-insight, inspector-issues, network-dependency-tree-insight, dom-size-insight, cache-insight) sont des audits expérimentaux qui retournent score=0 quand notApplicable. Désactivés du gate strict, garder en analyse manuelle.",
+      "Audits perf legacy-javascript / unused-javascript / dom-size passés en WARN (improvement progressif via Sprint Web Vitals follow-up V3-V6 dédié, voir axionia_audit_web_vitals_v3_v6_pending memory).",
+      "robots-txt audit OFF — false positive causé par directive Cloudflare Managed Content-Signal non-standard (action humaine UI CF Security → AI Settings → disable Content-Signal Policy pour fix vrai).",
+      "canonical/list/listitem/label-content-name-mismatch/color-contrast/deprecations/errors-in-console passés en WARN — à fixer par Sprint A11y dédié follow-up (P1).",
+      "bf-cache passé en WARN — false positive Next.js + Auth.js v5 : cookies HttpOnly SameSite=Lax empêchent le BF cache sur les routes dynamiques. Limitation connue, non actionnable sans changer la stratégie auth.",
+      "target-size passé en WARN — zones tactiles < 48px sur certains composants (nav mobile, footer links). À corriger par Sprint A11y dédié (P1)."
+    ],
+    "upload": {
+      "target": "filesystem",
+      "outputDir": "./lhci"
+    }
+  }
+}
+
+## Bundle stats files presents
+
+## Web Vitals memos _AUDIT
+_perf-chunk-inspect.cjs
+_perf-firstload-gz.cjs
+_perf-scan.cjs
+AUDIT-PERFECTION-FINALE-2026-05-07.md
+AUDIT-PERFECTION-FINALE-V2-2026-05-07.md
+AUDIT-WEB-VITALS-2026-BASELINE-A.md
+AUDIT-WEB-VITALS-2026-BUDGETS.md
+AUDIT-WEB-VITALS-2026-DIAGNOSTIC.md
+AUDIT-WEB-VITALS-2026-PATCHES.md
+AUDIT-WEB-VITALS-2026-ROADMAP.md

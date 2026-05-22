@@ -1,0 +1,41 @@
+# Fl-08 — Multi-campagnes parallèles
+
+**HEAD audité** : 81f6ea0e
+**Score** : 23 / 25
+**Verdict** : 🟢 GO PROD
+
+## Chaîne traçée
+
+| Étape | Fichier | Ligne | Verdict |
+|---|---|---|---|
+| **BullMQ concurrency content-gen-worker = 5** | `src/server/queue/workers/content-gen-worker.ts` | 699 (`concurrency: 5`) | OK |
+| Rate-limiter content-gen = 10/min (OpenAI tier 5) | idem | 700 | OK |
+| **`lockDuration: 120_000` (2min anti-stall)** | idem | 703 | OK acquis P0-2 |
+| Retention Redis 1000 completed / 5000 failed | idem | 707-708 | OK |
+| **content-publish-worker concurrency = 3** | `src/server/queue/workers/content-publish-worker.ts` | 715 | OK |
+| Limiter publish = 20/min (Prisma serial safe) | idem | 717 | OK |
+| `lockDuration: 120_000` publish | idem | 716 | OK acquis P0-2 anti-double-publish |
+| **Cap MAX_PUBLISH_PER_DAY = 30 ramp 30→500 via Redis INCR atomique** | idem | 86-97 (env > DB > rampe `<60=30`, `<300=100`, `<600=200`, `≥600=500`) + 154-188 INCR Redis atomique | **EXACT D-W1** |
+| TTL Redis key `axion:pub:YYYY-MM-DD` calé minuit UTC | idem | 161-171 | OK |
+| Decrement Redis si cap dépassé (compteur intact) | idem | 173-174 | OK |
+| `moveToDelayed` jusqu'au prochain drip window | idem | 186 | OK |
+| **Drip 8h-22h CET Europe/Paris** | idem | 99-152 | OK |
+| Kill-switch hard-gate publish | idem | 125-134 | OK |
+| **Isolation `campaignId`** dans ContentGenJob | `content-gen-worker.ts` | 254, 260 (`dbJob.campaignId` passé aux logs + alerts) ; 676 (alertBatchFail par campaignId) | OK |
+| **Cost tracker monthly cap respecté** | `src/server/content-gen/lib/cost-tracker.ts` | 36-100 (`handleCostCapHit`) | OK |
+| Désactive provider + Telegram + kill switch si tous providers off | idem | 39-100 | OK chaîne complète |
+| Audit trail `ContentGenConfig.cost_cap_events` | idem | comment 30 | OK |
+| Idempotency ContentGenJob | `content-orchestrator-worker.ts:14` (commentaire `idempotencyKey = hash(campaign.id + tickIndex)`) | OK |
+| Sample weighted distribution | idem | 77-88 (`sampleWeighted`) | OK |
+| Sample audienceMix | idem | 90-98 | OK |
+
+## Findings P0/P1/P2
+
+| Niveau | Item | Référence |
+|---|---|---|
+| **P1** | Aucun "global lock per primary keyword" trouvé : si 2 campagnes parallèles tirent le même keyword aléatoire, elles peuvent générer 2 articles concurrents pour la même cible (SimHash dedup post-IA bloquera, mais on aura payé 2× le LLM). Le P1.5 B.5 `keyword-selector` est censé éviter par rotation. À vérifier en charge réelle. | `content-gen-worker.ts:38` import `selectKeyword` |
+| **P1** | Le rate-limit `content-gen-worker` = 10/min global (pas par campaign). Avec MAX_PUBLISH ramp à 500/jour il faut ~50min minimum pour épuiser le batch → cap publish ramp 500/jour ne sera jamais atteint si gen=10/min × 24h = 14k mais publish=20/min × 14h drip = 16800/jour théorique. Bottleneck = gen 10/min × 14h = 8400/jour théorique. Plafond réel = 500/jour publish window. Cohérent. | `content-gen-worker.ts:700` + `content-publish-worker.ts:717` |
+
+## Verdict détaillé
+
+Multi-campagnes correctement isolées avec concurrency BullMQ (gen=5, publish=3), rate-limiters (10/min gen, 20/min publish), MAX_PUBLISH cap atomique via Redis INCR (D-W1 ramp 30→500 EXACT câblé), `lockDuration: 120s` anti-double-publish, `campaignId` propagé dans logs + alertes batch. Cost-tracker monthly cap cascade : disable provider → Telegram → kill switch global si plus aucun provider text enabled. Score 23/25 (−2 P1 : pas de global-lock par primary keyword inter-campagnes ; rate-limit global pas par-campagne).
