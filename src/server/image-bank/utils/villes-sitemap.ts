@@ -39,7 +39,10 @@ export const REGION_LABELS: Readonly<Record<string, string>> = {
 export function buildVilleUrlBlock(v: VilleData, imageSlug: string): string {
   const region = REGION_LABELS[v.region] ?? v.region;
   const dept = v.departementLabel ?? v.departement;
-  const pageUrl = `${SITE_BASE}/fr/ia-${v.slug}`;
+  // V-11 P1-1 audit 2026-05-22 — Auparavant `/fr/ia-${v.slug}` (route inexistante)
+  // → orphan URLs dans sitemap images. Aligné sur la route ville réelle :
+  // `/fr/implantations/{region}/{slug}` (cohérence text sitemap + page rendue).
+  const pageUrl = `${SITE_BASE}/fr/implantations/${v.region}/${v.slug}`;
   const imgUrl = `${SITE_BASE}/images/${imageSlug}.webp`;
   const title = escapeXml(`Formation IA à ${v.nameFr} — Axion-IA`);
   const caption = escapeXml(
