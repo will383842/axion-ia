@@ -2614,6 +2614,15 @@ enum CoverageStatus {
   completed
   failed
   cancelled
+  scheduled
+}
+
+/// Mode de traitement des villes dans une campagne (§ 25.2 v1.8 Sprint Campaign Controls).
+/// `parallel` : toutes les villes simultanément (défaut, comportement antérieur).
+/// `sequential` : ville par ville dans l'ordre sélectionné (currentCityIndex trace la progression).
+enum CityProcessingMode {
+  parallel
+  sequential
 }
 
 /// Périmètre d'une campagne (§ 25.2 v1.7).
@@ -2907,6 +2916,14 @@ model CoverageCampaign {
   publishedCount           Int            @default(0)
   failedCount              Int            @default(0)
   qualityImprovedCount     Int            @default(0)
+  // Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22) — 4 capabilities
+  cityProcessingMode CityProcessingMode @default(parallel) @map("city_processing_mode")
+  currentCityIndex   Int?               @map("current_city_index")
+  startDate          DateTime?          @map("start_date")
+  endDate            DateTime?          @map("end_date")
+  recurringSchedule  String?            @map("recurring_schedule")
+  completedReason    String?            @map("completed_reason")
+
   startedAt                DateTime?
   pausedAt                 DateTime?
   completedAt              DateTime?

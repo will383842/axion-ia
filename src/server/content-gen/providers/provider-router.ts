@@ -100,7 +100,7 @@ export function _resetCircuits(): void {
  * Lu depuis ProviderConfig DB en Day 2 (V1 hardcodé pour squelette).
  */
 const ROLE_TO_PROVIDERS = {
-  text: [openaiProvider, anthropicProvider],
+  text: [openaiProvider],
   image: [openaiProvider], // V1 = OpenAI image (V2 = gpt_image + fallback Unsplash)
   data: [perplexityProvider],
   stock_image: [unsplashProvider],

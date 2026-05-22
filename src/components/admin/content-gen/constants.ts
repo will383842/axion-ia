@@ -148,6 +148,7 @@ export const COVERAGE_STATUS_LABELS_FR: Record<string, string> = {
   completed: "Terminée",
   failed: "Échec",
   cancelled: "Annulée",
+  scheduled: "Planifiée",
 };
 
 export const COVERAGE_STATUS_VARIANT: Record<
@@ -161,6 +162,7 @@ export const COVERAGE_STATUS_VARIANT: Record<
   completed: "success",
   failed: "danger",
   cancelled: "neutral",
+  scheduled: "neutral",
 };
 
 export const COVERAGE_SCOPE_LABELS_FR: Record<string, string> = {
