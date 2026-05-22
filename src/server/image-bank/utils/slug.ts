@@ -1,7 +1,7 @@
-// Force ASCII pour les slugs (les slugs Unicode cassent les URL dans les vieux
-// clients mail/Slack et les paths Windows utilisés en dev). Pas de dep externe
-// `slugify` : impl inline alignée sur `src/lib/geo.ts:90` du repo.
+// Wrapper SSOT V-10 — délègue à src/lib/slug.ts (consolidation 2026-05-22).
+// API conservée pour rétro-compat services image-bank.
 
+import { slugify, isValidSlug } from "@/lib/slug";
 import { SLUG_MAX_LENGTH, type ImageBankLocale } from "../constants";
 
 /**
@@ -11,16 +11,10 @@ import { SLUG_MAX_LENGTH, type ImageBankLocale } from "../constants";
  * services.
  */
 export function ensureAsciiSlug(input: string, _locale?: ImageBankLocale): string {
-  const ascii = input
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return ascii.slice(0, SLUG_MAX_LENGTH) || "image";
+  return slugify(input, { maxLen: SLUG_MAX_LENGTH, fallback: "image" });
 }
 
 /** Valide qu'un slug est ASCII safe (utiliser dans les Zod refinements). */
 export function isAsciiSlug(slug: string): boolean {
-  return /^[a-z0-9][a-z0-9-]{0,99}$/.test(slug);
+  return isValidSlug(slug, { maxLen: SLUG_MAX_LENGTH });
 }

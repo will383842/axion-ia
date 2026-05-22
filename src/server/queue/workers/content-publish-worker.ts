@@ -26,6 +26,7 @@
 import { Queue, Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
+import { slugify } from "@/lib/slug";
 import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generators/blog-from-rss";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
@@ -64,15 +65,8 @@ function getQaExtractQueue(): Queue {
   return qaExtractQueue;
 }
 
-function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 80);
-}
+// slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
+// Anciennement défini inline ici avec maxLen 80 — comportement identique préservé.
 
 // P1.5 QW-2 — Google Scaled Content Policy + AI Act compliance.
 // MAX_PUBLISH_PER_DAY : cap journalier publications. Env override possible.

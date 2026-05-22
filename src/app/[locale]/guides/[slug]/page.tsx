@@ -15,7 +15,8 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -67,7 +68,19 @@ export default async function GuidePiliersPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   const guide = await loadGuideForView(slug, locale as Locale);
-  if (!guide) notFound();
+  if (!guide) {
+    // V-10 KB redirect wire 2026-05-22 — 301 vers nouveau slug si entry
+    // KnowledgeSlugHistory existe. Préserve link juice après rename KB.
+    const hit = await findRedirectFromHistory({
+      oldSlug: slug,
+      oldLocale: locale as Locale,
+      oldType: "guide",
+    });
+    if (hit?.currentPath) {
+      permanentRedirect(hit.currentPath);
+    }
+    notFound();
+  }
   setRequestLocale(locale);
 
   // JSON-LD : HowTo si steps fiables (≥ 2 extraites), sinon Article fallback.

@@ -12,6 +12,7 @@ import {
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
+import { slugify } from "@/lib/slug";
 
 // Helpers locaux pour dériver les phrases FAQ multilingues à partir du SSOT
 // pricing. Aucun prix hardcodé : si Will modifie un tier, ces phrases se
@@ -658,13 +659,7 @@ export function getAllFaqIds(): string[] {
   return FAQ_GLOBAL.map((f) => f.id);
 }
 
-function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+// slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
+// Anciennement défini inline ici — comportement identique préservé (maxLen default 80).
 
 export { slugify };

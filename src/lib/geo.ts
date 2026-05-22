@@ -12,6 +12,7 @@ import type { CaseStudy } from "@/content/case-studies";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { BLOG_POSTS, type BlogPost } from "@/content/transversal";
 import { VILLES } from "@/content/villes";
+import { slugify } from "@/lib/slug";
 
 const EARTH_RADIUS_KM = 6371;
 
@@ -93,13 +94,6 @@ export function getNearbyCases(
  * legacy blog posts inline-coded.
  */
 export function getRelatedBlogPosts(ville: Ville, n = 3): BlogPost[] {
-  const slugify = (s: string): string =>
-    s
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
   const wantedTags = new Set([ville.slug, ville.region]);
   const matches = BLOG_POSTS.filter((post) => {
     if (post.relatedCities?.includes(ville.slug)) return true;

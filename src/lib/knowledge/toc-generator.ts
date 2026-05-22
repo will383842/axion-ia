@@ -8,6 +8,8 @@
  *  - JSON-LD `Article.hasPart` (V2)
  */
 
+import { slugify } from "@/lib/slug";
+
 export interface TocEntry {
   readonly level: 2 | 3;
   readonly id: string;
@@ -21,14 +23,7 @@ const HEADING_REGEX = /<h([23])(?:\s[^>]*)?>([\s\S]*?)<\/h\1>/gi;
  * Identique à slugify(title) côté KB pour cohérence.
  */
 function slugifyHeading(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/<[^>]+>/g, "") // strip nested tags
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 80);
+  return slugify(text, { stripHtml: true, maxLen: 80 });
 }
 
 /**

@@ -22,6 +22,7 @@ import { prisma } from "@/lib/prisma";
 import { imageImportService } from "@/server/image-bank/services/image-import.service";
 import { imageBankService } from "@/server/image-bank/services/image-bank.service";
 import { enqueueImageBankEnrich } from "@/server/queue/queues";
+import { slugify } from "@/lib/slug";
 
 // Dossiers sources Axion-IA → module DB auto-détecté
 const SOURCE_FOLDERS = [
@@ -164,13 +165,5 @@ export async function uploadImageAction(formData: FormData): Promise<UploadActio
 }
 
 function slugifyAscii(input: string): string {
-  return (
-    input
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 100) || "image"
-  );
+  return slugify(input, { maxLen: 100, fallback: "image" });
 }

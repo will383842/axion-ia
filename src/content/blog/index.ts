@@ -19,6 +19,7 @@ import type {
 import { POST as POST_AUDIT_AVANT } from "./posts/pourquoi-auditer-avant-implementer";
 import { POST as POST_QUICK_WINS } from "./posts/3-quick-wins-2026";
 import { POST as POST_IA_CUSTOM } from "./posts/ia-custom-quand-vraiment";
+import { slugify } from "@/lib/slug";
 
 export type {
   BlogPost,
@@ -117,13 +118,7 @@ export function getIndexableBlogPosts(): ReadonlyArray<BlogPost> {
 // Helpers taxonomies — pages d'index
 // ============================================================================
 
-const slugify = (s: string): string =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+// slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
 
 // --- Catégorie ---
 export function getAllBlogCategorySlugs(): ReadonlyArray<string> {

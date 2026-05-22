@@ -27,6 +27,7 @@ import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { sanitizeFaqAnswer, sanitizeFaqQuestion } from "@/server/content-gen/shared/faq-sanitizer";
+import { slugify } from "@/lib/slug";
 
 const QUEUE_NAME = "content-qa-extract";
 
@@ -46,15 +47,8 @@ export interface QaExtractJobPayload {
  * Préfixé par le slug article parent pour cohérence + désambiguïsation.
  */
 function slugifyQuestion(articleSlug: string, question: string): string {
-  const base = question
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 60);
+  // Q/R slug composite : articleSlug + slug court de la question (cap 60), total 180 max.
+  const base = slugify(question, { maxLen: 60 });
   return `${articleSlug}-${base}`.slice(0, 180);
 }
 

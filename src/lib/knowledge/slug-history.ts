@@ -18,6 +18,35 @@ export interface SlugHistoryHit {
   readonly currentSlug: string;
   readonly currentType: KbType;
   readonly currentLocale: Locale;
+  /** Path URL public (sprint UX 2026-05-22) — null si type non-public. */
+  readonly currentPath: string | null;
+}
+
+/**
+ * Mappe un KbType vers son segment URL public ou null si type non-routé.
+ * V-10 wire 2026-05-22 — réplique la convention pathnames `i18n/routing.ts`.
+ */
+export function kbTypeToPublicPath(type: KbType, locale: Locale, slug: string): string | null {
+  switch (type) {
+    case "article":
+      return `/${locale}/blog/${slug}`;
+    case "guide":
+      return `/${locale}/guides/${slug}`;
+    case "glossary_term":
+      return locale === "fr" ? `/${locale}/glossaire/${slug}` : `/${locale}/glossary/${slug}`;
+    case "case_study":
+      return locale === "fr"
+        ? `/${locale}/cas-concrets/${slug}`
+        : `/${locale}/case-studies/${slug}`;
+    case "help_article":
+      return locale === "fr" ? `/${locale}/centre-aide/${slug}` : `/${locale}/help-center/${slug}`;
+    case "faq":
+      return `/${locale}/faq/${slug}`;
+    case "methodology":
+      return locale === "fr" ? `/${locale}/methodologie/${slug}` : `/${locale}/methodology/${slug}`;
+    default:
+      return null; // doctrine/adr/prompt_template/sop/etc. → admin-only
+  }
 }
 
 /**
@@ -51,5 +80,6 @@ export async function findRedirectFromHistory(params: {
     currentSlug: translation.slug,
     currentType: hit.entry.type,
     currentLocale: params.oldLocale,
+    currentPath: kbTypeToPublicPath(hit.entry.type, params.oldLocale, translation.slug),
   };
 }

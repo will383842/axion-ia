@@ -16,6 +16,7 @@ import { BLOG_POSTS } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { slugify } from "@/lib/slug";
 
 // Sprint 8 V2 : ISR Next 16 — pré-rendue au build, revalidée toutes les heures
 // pour que les articles DB publiés par la factory apparaissent automatiquement
@@ -27,14 +28,7 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
-function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+// slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
