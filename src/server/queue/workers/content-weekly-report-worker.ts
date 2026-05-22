@@ -3,7 +3,7 @@
  *
  * Cron lundi 7h00 UTC (≈ 8h CET été / 8h CET hiver).
  * Agrège les KPIs de la semaine écoulée et envoie un email récapitulatif
- * à WEEKLY_REPORT_EMAIL (défaut williamsjullin@gmail.com).
+ * à WEEKLY_REPORT_EMAIL (défaut contact@axion-ia.com).
  *
  * KPIs inclus :
  * - Articles publiés / jobs rejetés / quarantainés
