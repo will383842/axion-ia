@@ -78,7 +78,9 @@ async function main() {
 
   // P4 Sprint — KB facts sectoriels (verticale audits pilote, 10 facts vérifiés).
   const kbFactsCount = await seedKbFacts(prisma);
-  console.log(`  ✓ KbFacts (audits) : ${kbFactsCount} entries upserted (KnowledgeEntry + Translation FR)`);
+  console.log(
+    `  ✓ KbFacts (audits) : ${kbFactsCount} entries upserted (KnowledgeEntry + Translation FR)`,
+  );
 
   console.log("[content-gen seed] done.");
 }

@@ -58,7 +58,10 @@ vi.mock("bullmq", () => ({
 }));
 
 // Import AFTER mocks.
-import { startEmbeddingsBackfillWorker, EMBEDDINGS_BACKFILL_QUEUE } from "../embeddings-backfill-worker";
+import {
+  startEmbeddingsBackfillWorker,
+  EMBEDDINGS_BACKFILL_QUEUE,
+} from "../embeddings-backfill-worker";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -214,9 +217,7 @@ describe("embeddings-backfill-worker", () => {
     queryRawUnsafeMock.mockResolvedValueOnce([...batch1, ...batch2]);
 
     // Batch 1 → erreur OpenAI
-    openaiEmbeddingsCreateMock.mockRejectedValueOnce(
-      new Error("OpenAI rate limit exceeded"),
-    );
+    openaiEmbeddingsCreateMock.mockRejectedValueOnce(new Error("OpenAI rate limit exceeded"));
     // Batch 2 → succès
     openaiEmbeddingsCreateMock.mockResolvedValueOnce(makeEmbeddingResponse(3));
 

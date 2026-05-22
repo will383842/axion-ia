@@ -72,9 +72,7 @@ describe("listCities", () => {
     expect(result.cities).toHaveLength(1);
     expect(result.total).toBe(100);
     expect(result.totalPages).toBe(2);
-    expect(findManyMock).toHaveBeenCalledWith(
-      expect.objectContaining({ skip: 0, take: 50 }),
-    );
+    expect(findManyMock).toHaveBeenCalledWith(expect.objectContaining({ skip: 0, take: 50 }));
   });
 
   it("filters by department code", async () => {

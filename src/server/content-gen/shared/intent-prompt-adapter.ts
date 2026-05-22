@@ -86,17 +86,24 @@ export function classifyKeywordIntent(keyword: string): SearchIntentAll | null {
   const kw = keyword.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
   // voice_search : question longue (≥ 4 mots) commençant par mot interrogatif
-  const VOICE_TRIGGERS = /^(comment|qu['\s]est[\s-]ce que|pourquoi|ou|quand|est[\s-]ce que|quelle?s?|comment faire|comment utiliser)/;
+  const VOICE_TRIGGERS =
+    /^(comment|qu['\s]est[\s-]ce que|pourquoi|ou|quand|est[\s-]ce que|quelle?s?|comment faire|comment utiliser)/;
   if (VOICE_TRIGGERS.test(kw) && kw.split(/\s+/).length >= 4) return "voice_search";
 
   // ai_overview : intent factuel direct (définition, explication)
-  const AIO_TRIGGERS = /\b(qu['\s]est[\s-]ce qu|definition|definir|signification|expliqu|c['\s]est quoi|introduction a)\b/;
+  const AIO_TRIGGERS =
+    /\b(qu['\s]est[\s-]ce qu|definition|definir|signification|expliqu|c['\s]est quoi|introduction a)\b/;
   if (AIO_TRIGGERS.test(kw)) return "ai_overview";
 
   // featured_snippet : court (2-4 mots) + intent informatif direct sans géo
-  const FS_NOT_LOCAL = !/\b(paris|lyon|marseille|france|region|departement|ville|proche|a proximite)\b/.test(kw);
+  const FS_NOT_LOCAL =
+    !/\b(paris|lyon|marseille|france|region|departement|ville|proche|a proximite)\b/.test(kw);
   const isShort = kw.split(/\s+/).length <= 4;
-  if (isShort && FS_NOT_LOCAL && /\b(audit|formation|coaching|implentation|ia|intelligence artificielle)\b/.test(kw)) {
+  if (
+    isShort &&
+    FS_NOT_LOCAL &&
+    /\b(audit|formation|coaching|implentation|ia|intelligence artificielle)\b/.test(kw)
+  ) {
     return "featured_snippet";
   }
 

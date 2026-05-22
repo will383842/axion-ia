@@ -52,7 +52,10 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
   embeddingDimension: number;
   articlesUsed: number;
 }> {
-  const session = await requireAdminWriteRateLimited("recalibrateBrandVoice", { limit: 10, windowSec: 60 });
+  const session = await requireAdminWriteRateLimited("recalibrateBrandVoice", {
+    limit: 10,
+    windowSec: 60,
+  });
 
   if (!articleIds || articleIds.length === 0) {
     throw new Error("recalibrateBrandVoice: articleIds array cannot be empty");
@@ -70,9 +73,7 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
     ...articleIds,
   )) as Array<{ id: string; embedding_arr: number[] | null }>;
 
-  const validRows = rows.filter(
-    (r) => r.embedding_arr && r.embedding_arr.length > 0,
-  );
+  const validRows = rows.filter((r) => r.embedding_arr && r.embedding_arr.length > 0);
 
   if (validRows.length === 0) {
     throw new Error(
@@ -182,7 +183,8 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
     const articleId = typeof val["articleId"] === "string" ? val["articleId"] : null;
     const similarity = typeof val["similarity"] === "number" ? val["similarity"] : null;
     const level = val["level"] === "needs_review" ? "needs_review" : "warn";
-    const detectedAt = typeof val["detectedAt"] === "string" ? val["detectedAt"] : log.createdAt.toISOString();
+    const detectedAt =
+      typeof val["detectedAt"] === "string" ? val["detectedAt"] : log.createdAt.toISOString();
     if (!articleId || similarity === null) continue;
     parsedDrifts.push({
       id: log.id,
@@ -195,9 +197,7 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
   }
 
   // Top 10 les plus dérivés (plus basse similarity)
-  const top10Drifted = [...parsedDrifts]
-    .sort((a, b) => a.similarity - b.similarity)
-    .slice(0, 10);
+  const top10Drifted = [...parsedDrifts].sort((a, b) => a.similarity - b.similarity).slice(0, 10);
 
   // Compter depuis les logs — dédupliquer par articleId pour éviter doublons
   const uniqueArticles = new Set(parsedDrifts.map((d) => d.articleId));
@@ -220,6 +220,6 @@ export async function getBrandVoiceDriftStats(): Promise<BrandVoiceDriftStats> {
     articlesFlagged: uniqueArticles.size,
     articlesNeedsReview: needsReviewSet.size,
     recentDrifts: top10Drifted,
-    referenceConfigured: !!(referenceRow?.value),
+    referenceConfigured: !!referenceRow?.value,
   };
 }

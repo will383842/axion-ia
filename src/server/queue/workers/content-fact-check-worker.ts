@@ -150,12 +150,19 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
                 ? "contradicted"
                 : "unverified",
           confidence:
-            verdicts[i]?.status === "validated" ? 0.85 : verdicts[i]?.status === "refuted" ? 0.1 : 0.4,
+            verdicts[i]?.status === "validated"
+              ? 0.85
+              : verdicts[i]?.status === "refuted"
+                ? 0.1
+                : 0.4,
         })),
         skipDuplicates: true,
       })
       .catch((err: unknown) => {
-        console.warn(`[fact-check] claims insert failed:`, err instanceof Error ? err.message : String(err));
+        console.warn(
+          `[fact-check] claims insert failed:`,
+          err instanceof Error ? err.message : String(err),
+        );
       });
   }
 

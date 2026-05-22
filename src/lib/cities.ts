@@ -97,7 +97,12 @@ export async function getCitiesCoverageStats(): Promise<{
       covered: 0,
       uncovered: 0,
       coveragePercent: 0,
-      byTier: { 1: { total: 0, covered: 0 }, 2: { total: 0, covered: 0 }, 3: { total: 0, covered: 0 }, 4: { total: 0, covered: 0 } },
+      byTier: {
+        1: { total: 0, covered: 0 },
+        2: { total: 0, covered: 0 },
+        3: { total: 0, covered: 0 },
+        4: { total: 0, covered: 0 },
+      },
     };
   }
 

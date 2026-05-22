@@ -15,10 +15,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  getIntentPromptAddendum,
-  classifyKeywordIntent,
-} from "../intent-prompt-adapter";
+import { getIntentPromptAddendum, classifyKeywordIntent } from "../intent-prompt-adapter";
 
 describe("getIntentPromptAddendum", () => {
   it("voice_search returns TTS addendum with 'phrases courtes'", () => {
@@ -83,6 +80,8 @@ describe("classifyKeywordIntent", () => {
   });
 
   it("generic transactional keyword → null", () => {
-    expect(classifyKeywordIntent("devis accompagnement intelligence artificielle pme region")).toBeNull();
+    expect(
+      classifyKeywordIntent("devis accompagnement intelligence artificielle pme region"),
+    ).toBeNull();
   });
 });

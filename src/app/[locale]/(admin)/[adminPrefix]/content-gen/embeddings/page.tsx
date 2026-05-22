@@ -64,17 +64,19 @@ function formatDate(iso: string): string {
 
 async function fetchEmbeddingsStats() {
   const [withEmbedding, withoutEmbedding, lastRunConfig, costConfig] = await Promise.all([
-    prisma.$queryRawUnsafe<Array<{ count: string }>>(
-      `SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NOT NULL`,
-    ).catch(() => [{ count: "0" }]),
+    prisma
+      .$queryRawUnsafe<
+        Array<{ count: string }>
+      >(`SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NOT NULL`)
+      .catch(() => [{ count: "0" }]),
 
-    prisma.$queryRawUnsafe<Array<{ count: string }>>(
-      `SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NULL`,
-    ).catch(() => [{ count: "0" }]),
+    prisma
+      .$queryRawUnsafe<
+        Array<{ count: string }>
+      >(`SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NULL`)
+      .catch(() => [{ count: "0" }]),
 
-    prisma.contentGenConfig
-      .findUnique({ where: { key: "embeddings_last_run" } })
-      .catch(() => null),
+    prisma.contentGenConfig.findUnique({ where: { key: "embeddings_last_run" } }).catch(() => null),
 
     prisma.contentGenConfig
       .findUnique({ where: { key: "embeddings_daily_cost_usd" } })
@@ -127,7 +129,9 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
         description="Surveillance du backfill d'embeddings OpenAI (text-embedding-3-large, 1536 dims) — couche 4 dédup sémantique pipeline B.7."
         meta={
           <AdminBadge tone={stats.embeddingsEnabled ? "success" : "warning"}>
-            {stats.embeddingsEnabled ? "OPENAI_EMBEDDINGS_ENABLED=true" : "OPENAI_EMBEDDINGS_ENABLED=false (désactivé)"}
+            {stats.embeddingsEnabled
+              ? "OPENAI_EMBEDDINGS_ENABLED=true"
+              : "OPENAI_EMBEDDINGS_ENABLED=false (désactivé)"}
           </AdminBadge>
         }
       />
@@ -144,7 +148,13 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
           label="Articles sans embedding"
           value={stats.countWithout.toLocaleString("fr-FR")}
           meta="à traiter"
-          tone={stats.countWithout === 0 ? "success" : stats.countWithout < 500 ? "warning" : "destructive"}
+          tone={
+            stats.countWithout === 0
+              ? "success"
+              : stats.countWithout < 500
+                ? "warning"
+                : "destructive"
+          }
         />
         <AdminStatCard
           label="Couverture"
@@ -156,7 +166,13 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
           label="Jours restants estimés"
           value={stats.countWithout === 0 ? "0" : stats.daysRemaining.toString()}
           meta="à 1 000 articles/jour"
-          tone={stats.daysRemaining === 0 ? "success" : stats.daysRemaining <= 7 ? "warning" : "destructive"}
+          tone={
+            stats.daysRemaining === 0
+              ? "success"
+              : stats.daysRemaining <= 7
+                ? "warning"
+                : "destructive"
+          }
         />
       </div>
 
@@ -168,7 +184,8 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
           </h2>
           {stats.lastRun === null ? (
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Aucun run enregistré — le worker n&apos;a pas encore tourné ou la table ContentGenConfig est vide.
+              Aucun run enregistré — le worker n&apos;a pas encore tourné ou la table
+              ContentGenConfig est vide.
             </p>
           ) : stats.lastRun.skippedReason ? (
             <div className="flex flex-col gap-[var(--space-admin-3)]">
@@ -202,7 +219,7 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
             <dl className="grid grid-cols-2 gap-x-[var(--space-admin-6)] gap-y-[var(--space-admin-4)]">
               {stats.lastRun.at ? (
                 <>
-                  <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+                  <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                     Date
                   </dt>
                   <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
@@ -210,19 +227,19 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
                   </dd>
                 </>
               ) : null}
-              <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+              <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                 Traités
               </dt>
               <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
                 {stats.lastRun.processed ?? 0}
               </dd>
-              <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+              <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                 Ignorés
               </dt>
               <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
                 {stats.lastRun.skipped ?? 0}
               </dd>
-              <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+              <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                 Erreurs
               </dt>
               <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
@@ -232,7 +249,7 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
               </dd>
               {stats.lastRun.durationMs !== undefined ? (
                 <>
-                  <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+                  <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                     Durée
                   </dt>
                   <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
@@ -250,42 +267,42 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
             Coût &amp; configuration
           </h2>
           <dl className="grid grid-cols-2 gap-x-[var(--space-admin-6)] gap-y-[var(--space-admin-4)]">
-            <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+            <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
               Coût dernier run
             </dt>
             <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               {stats.lastCost !== null ? `$${stats.lastCost.toFixed(4)}` : "—"}
             </dd>
-            <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+            <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
               Coût estimé total
             </dt>
             <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               {stats.countWithout > 0
-                ? `~$${((stats.countWithout * 695 * 0.00000013)).toFixed(2)}`
+                ? `~$${(stats.countWithout * 695 * 0.00000013).toFixed(2)}`
                 : "$0.00"}
             </dd>
-            <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+            <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
               Modèle
             </dt>
             <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               text-embedding-3-large
             </dd>
-            <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+            <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
               Dimensions
             </dt>
             <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               1 536
             </dd>
-            <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+            <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
               Limite/run
             </dt>
             <dd className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               1 000 articles
             </dd>
-            <dt className="text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+            <dt className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
               Cron
             </dt>
-            <dd className="text-[length:var(--text-admin-sm)] font-mono text-[color:var(--color-admin-fg)]">
+            <dd className="font-mono text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               0 3 * * * (03:00 UTC)
             </dd>
           </dl>

@@ -32,7 +32,9 @@ export async function getCityEquityData(): Promise<CityEquityData> {
       where: { anchorVilleSlug: { not: null } },
       _count: { id: true },
     })
-    .catch(() => [] as Array<{ anchorVilleSlug: string | null; status: string; _count: { id: number } }>);
+    .catch(
+      () => [] as Array<{ anchorVilleSlug: string | null; status: string; _count: { id: number } }>,
+    );
 
   // Compter les articles publiés (outputBlogPostId non null = article créé)
   const publishedByVille = await prisma.contentGenJob
@@ -54,8 +56,7 @@ export async function getCityEquityData(): Promise<CityEquityData> {
     if (!g.anchorVilleSlug) continue;
     totalMap[g.anchorVilleSlug] = (totalMap[g.anchorVilleSlug] ?? 0) + g._count.id;
     if (g.status === "completed") {
-      completedMap[g.anchorVilleSlug] =
-        (completedMap[g.anchorVilleSlug] ?? 0) + g._count.id;
+      completedMap[g.anchorVilleSlug] = (completedMap[g.anchorVilleSlug] ?? 0) + g._count.id;
     }
   }
 
@@ -65,10 +66,7 @@ export async function getCityEquityData(): Promise<CityEquityData> {
     publishedMap[p.anchorVilleSlug] = p._count.id;
   }
 
-  const allSlugs = new Set([
-    ...Object.keys(totalMap),
-    ...Object.keys(publishedMap),
-  ]);
+  const allSlugs = new Set([...Object.keys(totalMap), ...Object.keys(publishedMap)]);
 
   const rows: CityEquityRow[] = [...allSlugs].map((slug) => ({
     villeSlug: slug,
@@ -91,4 +89,6 @@ export async function getCityEquityData(): Promise<CityEquityData> {
   return { rows, totalCities, avgPublished, maxPublished, wellCovered };
 }
 
-export { EQUITY_TARGET };
+// EQUITY_TARGET non exporté — "use server" n'autorise que les fonctions async en export
+// La valeur est utilisée uniquement en interne. Les composants client utilisent
+// wellCovered du résultat de getCityEquityData() pour afficher la progression.

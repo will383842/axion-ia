@@ -198,9 +198,7 @@ describe("listCitiesAdmin", () => {
     const result = await listCitiesAdmin({ page: 2, pageSize: 10 });
     expect(result.total).toBe(150);
     expect(result.totalPages).toBe(15);
-    expect(findManyMock).toHaveBeenCalledWith(
-      expect.objectContaining({ skip: 10, take: 10 }),
-    );
+    expect(findManyMock).toHaveBeenCalledWith(expect.objectContaining({ skip: 10, take: 10 }));
   });
 
   it("combines department + region filters", async () => {

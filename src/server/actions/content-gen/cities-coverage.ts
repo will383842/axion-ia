@@ -82,9 +82,7 @@ export async function listCities(params: {
     ...(isCovered !== null && isCovered !== undefined ? { isCovered } : {}),
     ...(populationMin !== undefined ? { population: { gte: populationMin } } : {}),
     ...(populationMax !== undefined ? { population: { lte: populationMax } } : {}),
-    ...(search?.trim()
-      ? { name: { contains: search.trim(), mode: "insensitive" as const } }
-      : {}),
+    ...(search?.trim() ? { name: { contains: search.trim(), mode: "insensitive" as const } } : {}),
   };
 
   const [cities, total] = await Promise.all([
@@ -139,11 +137,19 @@ export async function getCitiesStats(): Promise<CitiesStatsResult> {
   });
 
   function tierTotal(t: number) {
-    return tierCounts.find((r: { populationTier: number; _count: { _all: number } }) => r.populationTier === t)?._count._all ?? 0;
+    return (
+      tierCounts.find(
+        (r: { populationTier: number; _count: { _all: number } }) => r.populationTier === t,
+      )?._count._all ?? 0
+    );
   }
 
   function tierCovered(t: number) {
-    return tierCoveredCounts.find((r: { populationTier: number; _count: { _all: number } }) => r.populationTier === t)?._count._all ?? 0;
+    return (
+      tierCoveredCounts.find(
+        (r: { populationTier: number; _count: { _all: number } }) => r.populationTier === t,
+      )?._count._all ?? 0
+    );
   }
 
   return {
@@ -204,7 +210,18 @@ export async function exportCitiesCSV(params: {
   const header = "slug,name,population,dept_code,dept_name,region,tier,priority,covered,articles\n";
   const rows = cities
     .map(
-      (c: { slug: string; name: string; population: number; departmentCode: string; departmentName: string; regionName: string; populationTier: number; priority: number; isCovered: boolean; articlesCount: number }) =>
+      (c: {
+        slug: string;
+        name: string;
+        population: number;
+        departmentCode: string;
+        departmentName: string;
+        regionName: string;
+        populationTier: number;
+        priority: number;
+        isCovered: boolean;
+        articlesCount: number;
+      }) =>
         `${c.slug},"${c.name}",${c.population},${c.departmentCode},"${c.departmentName}","${c.regionName}",${c.populationTier},${c.priority},${c.isCovered ? "oui" : "non"},${c.articlesCount}`,
     )
     .join("\n");
