@@ -15,7 +15,7 @@ import {
   getBlogPostsByCategory,
   getBlogCategoryLabel,
 } from "@/content/transversal";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -149,6 +149,16 @@ export default async function BlogCategoryPage({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [
+            { name: "Blog", href: "/blog" },
+            { name: label, href: `/blog/categorie/${slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-blog-categorie"
+      />
       <JsonLd data={collectionJsonLd} />
     </>
   );

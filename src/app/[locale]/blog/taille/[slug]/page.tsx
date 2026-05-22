@@ -17,7 +17,7 @@ import {
   resolveTier,
   type BlogCompanySize,
 } from "@/content/blog";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -141,6 +141,16 @@ export default async function BlogCompanySizePage({ params }: Props) {
           )}
         </Container>
       </Section>
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [
+            { name: "Blog", href: "/blog" },
+            { name: label, href: `/blog/taille/${slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-blog-taille"
+      />
       <JsonLd data={collectionJsonLd} />
     </>
   );

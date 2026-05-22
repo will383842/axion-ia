@@ -9,6 +9,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/marketing/JsonLd";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -111,6 +112,25 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
           </Cta>
         </Container>
       </Section>
+      <JsonLd
+        data={
+          safeType === "intervention"
+            ? {
+                "@context": "https://schema.org",
+                "@type": "Reservation",
+                reservationStatus: "http://schema.org/ReservationConfirmed",
+                name: isFr ? "Réservation confirmée · Axion-IA" : "Booking confirmed · Axion-IA",
+              }
+            : {
+                "@context": "https://schema.org",
+                "@type": "Order",
+                orderStatus: "http://schema.org/OrderProcessing",
+                name: isFr ? "Demande reçue · Axion-IA" : "Request received · Axion-IA",
+              }
+        }
+        strategy="afterInteractive"
+        scriptId="jsonld-confirmation"
+      />
     </>
   );
 }

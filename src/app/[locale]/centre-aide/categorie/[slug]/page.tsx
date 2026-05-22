@@ -67,13 +67,27 @@ export default async function HelpCategoryPage({ params }: Props) {
     url: `${SITE_URL}/${locale}/centre-aide/categorie/${slug}`,
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
+    speakable: { cssSelector: ["[data-aeo='category-desc']"] },
     hasPart: articles.map((a) => ({
       "@type": "Article",
       headline: a[loc].title,
       description: a[loc].excerpt,
       url: `${SITE_URL}/${locale}/centre-aide/${a.slug}`,
     })),
-  } as const;
+  };
+
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: isFr ? `Centre d'aide · ${label}` : `Help centre · ${label}`,
+    numberOfItems: articles.length,
+    itemListElement: articles.map((a, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: isFr ? a.fr.title : a.en.title,
+      url: `${SITE_URL}/${loc}/centre-aide/${a.slug}`,
+    })),
+  };
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -96,9 +110,11 @@ export default async function HelpCategoryPage({ params }: Props) {
         title={isFr ? "Catégorie" : "Category"}
         titleEm={label}
         description={
-          isFr
-            ? `${articles.length} article${articles.length > 1 ? "s" : ""} d'aide dans cette catégorie. Réponses courtes, sources vérifiées, mise à jour régulière.`
-            : `${articles.length} help article${articles.length > 1 ? "s" : ""} in this category. Short answers, verified sources, regular updates.`
+          <span data-aeo="category-desc">
+            {isFr
+              ? `${articles.length} article${articles.length > 1 ? "s" : ""} d'aide dans cette catégorie. Réponses courtes, sources vérifiées, mise à jour régulière.`
+              : `${articles.length} help article${articles.length > 1 ? "s" : ""} in this category. Short answers, verified sources, regular updates.`}
+          </span>
         }
       >
         <Container className="mt-8 max-w-2xl">
@@ -154,6 +170,11 @@ export default async function HelpCategoryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={collectionJsonLd} />
+      <JsonLd
+        data={itemListJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-centre-aide-categorie-itemlist"
+      />
     </>
   );
 }

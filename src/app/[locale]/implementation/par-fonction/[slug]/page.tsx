@@ -10,7 +10,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AUTOMATISATIONS, getAutomatisationByLocaleSlug } from "@/content/automatisations";
-import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -106,6 +107,50 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
     })),
   } as const;
 
+  const faqs = isFr
+    ? [
+        {
+          id: `q-${slug}-gain`,
+          question: `Quel ROI pour l'IA dans la fonction ${cat.fr.pageTitle} ${cat.fr.pageTitleEm} ?`,
+          answer:
+            "En général : 20-40 % de gain de productivité sur les tâches répétitives, réduction de 30-50 % des délais de traitement, et amélioration de la qualité via la détection d'erreurs automatique. Les résultats précis dépendent de votre volume de données et de l'adoption équipe.",
+        },
+        {
+          id: `q-${slug}-delai`,
+          question: "Combien de temps pour implémenter l'IA dans cette fonction ?",
+          answer:
+            "De 2 semaines (automatisation simple via no-code) à 8 semaines (agent sur mesure intégré dans votre SI). Le premier résultat mesurable est visible dès la 1ère semaine pour les quick-wins. Devis ferme sous 48 h.",
+        },
+        {
+          id: `q-${slug}-prerequis`,
+          question: "Faut-il des données structurées ou un volume minimum ?",
+          answer:
+            "Non. On part de vos processus actuels, même manuels ou partiellement digitalisés. Si vous avez des données exportables (CSV, PDF, emails), on peut démarrer. Le volume minimum n'existe pas — on a implémenté l'IA dans des équipes de 3 personnes comme dans des groupes de 500.",
+        },
+      ]
+    : [
+        {
+          id: `q-${slug}-gain`,
+          question: `What ROI for AI in the ${cat.en.pageTitle} ${cat.en.pageTitleEm} function?`,
+          answer:
+            "Typically: 20-40% productivity gain on repetitive tasks, 30-50% reduction in processing times, and quality improvement via automatic error detection. Exact results depend on your data volume and team adoption.",
+        },
+        {
+          id: `q-${slug}-delay`,
+          question: "How long to implement AI in this function?",
+          answer:
+            "From 2 weeks (simple no-code automation) to 8 weeks (custom agent integrated into your IT systems). The first measurable result is visible from week 1 for quick-wins. Firm quote within 48 h.",
+        },
+        {
+          id: `q-${slug}-prerequisites`,
+          question: "Do you need structured data or a minimum volume?",
+          answer:
+            "No. We start from your current processes, even manual or partially digitized. If you have exportable data (CSV, PDF, emails), we can start. There's no minimum volume — we've implemented AI in teams of 3 as well as groups of 500.",
+        },
+      ];
+
+  const faqJsonLd = buildFaqJsonLd({ items: faqs });
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -166,6 +211,21 @@ export default async function AutomatisationCategoryPage({ params }: Props) {
           </Cta>
         </div>
       </Section>
+
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Vos questions" : "Your questions"}
+        title={isFr ? "Réponses" : "Straight"}
+        titleEm={isFr ? "directes" : "answers"}
+      >
+        <FaqAccordion items={faqs} className="mx-auto max-w-3xl" emitJsonLd={false} />
+      </Section>
+
+      <JsonLd
+        data={faqJsonLd}
+        strategy="afterInteractive"
+        scriptId={`jsonld-par-fonction-${slug}-faq`}
+      />
 
       <CtaBlock
         eyebrow={isFr ? "Forfait fixe · sans abonnement" : "Fixed fee · no subscription"}

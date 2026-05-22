@@ -87,6 +87,19 @@ export default async function ConnaissancesHub({ params }: Props) {
     })),
   };
 
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Base de connaissances IA · Axion-IA",
+    numberOfItems: items.length,
+    itemListElement: items.slice(0, 100).map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.title,
+      url: `${SITE_URL}/fr/connaissances/${item.slug}`,
+    })),
+  };
+
   return (
     <>
       <Section tone="paper" className="pt-8 lg:pt-12">
@@ -162,6 +175,11 @@ export default async function ConnaissancesHub({ params }: Props) {
       />
 
       <JsonLd data={collectionJsonLd} />
+      <JsonLd
+        data={itemListJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-connaissances-itemlist"
+      />
     </>
   );
 }

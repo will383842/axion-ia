@@ -9,6 +9,7 @@ import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { buildProductMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/marketing/JsonLd";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -42,33 +43,45 @@ export default async function ConfirmationPage({ params }: Props) {
   const isFr = locale === "fr";
 
   return (
-    <section className="bg-halo-warm relative overflow-hidden py-16 sm:py-20 lg:py-24">
-      <Container className="relative">
-        <div className="bg-paper shadow-card border-sage/40 mx-auto max-w-2xl rounded-3xl border-2 p-8 text-center sm:p-10 lg:p-12">
-          <CheckCircle2 aria-hidden="true" className="text-sage mx-auto h-14 w-14" />
-          <h1 className="display-editorial text-fg mt-6">
-            {isFr ? "Demande bien reçue" : "Request received"}
-          </h1>
-          <p className="text-fg-soft mt-5 text-lg leading-relaxed">
-            {isFr
-              ? "Merci, votre demande de devis qualifiée est entre nos mains. William vous recontactera sous 24 à 48 heures ouvrées pour un appel de cadrage personnalisé."
-              : "Thank you, your qualified quote request is in our hands. William will get back to you within 24 to 48 business hours for a personalized scoping call."}
-          </p>
-          <p className="text-fg-muted mt-4 text-sm">
-            {isFr
-              ? "Vous recevrez un email de confirmation à l'adresse fournie dans les prochaines minutes."
-              : "You will receive a confirmation email at the address provided in the next few minutes."}
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Cta href="/interventions" size="lg">
-              {isFr ? "Voir les formats standards" : "See standard formats"}
-            </Cta>
-            <Cta href="/" variant="outline" size="lg">
-              {isFr ? "Retour à l'accueil" : "Back to home"}
-            </Cta>
+    <>
+      <section className="bg-halo-warm relative overflow-hidden py-16 sm:py-20 lg:py-24">
+        <Container className="relative">
+          <div className="bg-paper shadow-card border-sage/40 mx-auto max-w-2xl rounded-3xl border-2 p-8 text-center sm:p-10 lg:p-12">
+            <CheckCircle2 aria-hidden="true" className="text-sage mx-auto h-14 w-14" />
+            <h1 className="display-editorial text-fg mt-6">
+              {isFr ? "Demande bien reçue" : "Request received"}
+            </h1>
+            <p className="text-fg-soft mt-5 text-lg leading-relaxed">
+              {isFr
+                ? "Merci, votre demande de devis qualifiée est entre nos mains. William vous recontactera sous 24 à 48 heures ouvrées pour un appel de cadrage personnalisé."
+                : "Thank you, your qualified quote request is in our hands. William will get back to you within 24 to 48 business hours for a personalized scoping call."}
+            </p>
+            <p className="text-fg-muted mt-4 text-sm">
+              {isFr
+                ? "Vous recevrez un email de confirmation à l'adresse fournie dans les prochaines minutes."
+                : "You will receive a confirmation email at the address provided in the next few minutes."}
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Cta href="/interventions" size="lg">
+                {isFr ? "Voir les formats standards" : "See standard formats"}
+              </Cta>
+              <Cta href="/" variant="outline" size="lg">
+                {isFr ? "Retour à l'accueil" : "Back to home"}
+              </Cta>
+            </div>
           </div>
-        </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Order",
+          orderStatus: "http://schema.org/OrderProcessing",
+          name: isFr ? "Demande de devis reçue · Axion-IA" : "Quote request received · Axion-IA",
+        }}
+        strategy="afterInteractive"
+        scriptId="jsonld-order-confirm"
+      />
+    </>
   );
 }

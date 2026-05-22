@@ -18,7 +18,8 @@ import {
   getEntryPriceEur,
   getTierById,
 } from "@/content/pricing";
-import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { buildProductMetadata, buildItemListJsonLd, buildFaqJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -61,6 +62,62 @@ export default async function ImplementationByTechPage({ params }: Props) {
       label: isFr ? "Par technologie" : "By technology",
     },
   ];
+
+  const faqs = isFr
+    ? [
+        {
+          id: "q-techno-chatbot-agents",
+          question: "Quelle différence entre un chatbot et un agent IA ?",
+          answer:
+            "Un chatbot répond à des questions sur une base documentaire (RAG). Un agent IA agit de manière autonome : il prend des décisions, exécute des tâches, appelle des APIs. Pour une FAQ ou un support client, optez pour le chatbot. Pour automatiser un process métier, optez pour les agents.",
+        },
+        {
+          id: "q-techno-structuration",
+          question: "Quand a-t-on besoin de structurer ses données avant une implémentation IA ?",
+          answer:
+            "Quand vos données sont non structurées (PDF, emails, notes libres) ou dispersées dans plusieurs systèmes sans API commune. La structuration préalable réduit le coût des modèles IA de 40-60 % et améliore la qualité des résultats. Si vos données sont déjà en base SQL ou exposent une API, on peut aller directement à l'implémentation.",
+        },
+        {
+          id: "q-techno-no-code",
+          question: "Vaut-il mieux partir sur du no-code ou du code custom pour une IA ?",
+          answer:
+            "No-code (Make, n8n, Zapier) si le besoin est simple et qu'une petite équipe doit maintenir en autonomie. Code custom si vous avez des règles métier complexes, des volumes élevés, ou des exigences de performance et de sécurité spécifiques. On vous aide à choisir lors du cadrage.",
+        },
+        {
+          id: "q-techno-stack",
+          question: "Avec quelle stack travaillez-vous ?",
+          answer:
+            "Next.js, Laravel, Django, Rails, FastAPI, Node.js pour le backend. OpenAI, Anthropic, Mistral pour les LLMs. Pinecone, pgvector pour les bases vectorielles. Make, n8n pour le no-code. On s'adapte à votre stack existante.",
+        },
+      ]
+    : [
+        {
+          id: "q-techno-chatbot-agents",
+          question: "What's the difference between a chatbot and an AI agent?",
+          answer:
+            "A chatbot answers questions from a document base (RAG). An AI agent acts autonomously: it makes decisions, executes tasks, calls APIs. For a FAQ or customer support, go with a chatbot. For automating a business process, go with agents.",
+        },
+        {
+          id: "q-techno-structuration",
+          question: "When do you need to structure data before an AI implementation?",
+          answer:
+            "When your data is unstructured (PDFs, emails, free notes) or spread across systems without a common API. Prior structuring reduces AI model costs by 40-60% and improves result quality. If your data is already in SQL or exposes an API, you can go straight to implementation.",
+        },
+        {
+          id: "q-techno-no-code",
+          question: "Is it better to start with no-code or custom code for AI?",
+          answer:
+            "No-code (Make, n8n, Zapier) if the need is simple and a small team needs to maintain it independently. Custom code if you have complex business rules, high volumes, or specific performance and security requirements. We help you choose during scoping.",
+        },
+        {
+          id: "q-techno-stack",
+          question: "What tech stack do you work with?",
+          answer:
+            "Next.js, Laravel, Django, Rails, FastAPI, Node.js for backend. OpenAI, Anthropic, Mistral for LLMs. Pinecone, pgvector for vector databases. Make, n8n for no-code. We adapt to your existing stack.",
+        },
+      ];
+
+  const faqJsonLd = buildFaqJsonLd({ items: faqs });
 
   // ItemList JSON-LD — expose les 9 prestations IMPLEMENTATIONS au crawler
   // (AEO/GEO 2026 : LLMs résolvent « quelles prestations IA Axion-IA par
@@ -118,6 +175,17 @@ export default async function ImplementationByTechPage({ params }: Props) {
           })}
         </ul>
       </Section>
+
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Vos questions" : "Your questions"}
+        title={isFr ? "Réponses" : "Straight"}
+        titleEm={isFr ? "directes" : "answers"}
+      >
+        <FaqAccordion items={faqs} className="mx-auto max-w-3xl" emitJsonLd={false} />
+      </Section>
+
+      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-par-techno-faq" />
 
       <CtaBlock
         eyebrow={isFr ? "Premium" : "Premium"}

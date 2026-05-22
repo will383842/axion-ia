@@ -9,7 +9,7 @@ import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getAllBlogTagSlugs, getBlogPostsByTag } from "@/content/transversal";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -101,6 +101,16 @@ export default async function BlogTagPage({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [
+            { name: "Blog", href: "/blog" },
+            { name: `#${slug}`, href: `/blog/tag/${slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-blog-tag"
+      />
       <JsonLd data={collectionJsonLd} />
     </>
   );

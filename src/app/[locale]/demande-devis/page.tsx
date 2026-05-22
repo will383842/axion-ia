@@ -13,7 +13,8 @@ import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { QuoteRequestForm, type QuoteRequestFormLabels } from "@/components/forms/QuoteRequestForm";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { JsonLd } from "@/components/marketing/JsonLd";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -187,6 +188,29 @@ export default async function DemandeDevisPage({ params, searchParams }: Props) 
           />
         </Container>
       </section>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "OrderAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${SITE_URL}/${locale}/demande-devis`,
+            actionPlatform: [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/MobileWebPlatform",
+            ],
+          },
+          result: {
+            "@type": "Order",
+            orderStatus: "http://schema.org/OrderProcessing",
+            name: isFr
+              ? "Demande de devis personnalisé · Axion-IA"
+              : "Custom quote request · Axion-IA",
+          },
+        }}
+        strategy="afterInteractive"
+        scriptId="jsonld-order-action"
+      />
     </>
   );
 }

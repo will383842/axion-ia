@@ -63,6 +63,21 @@ export default async function GlossaryPage({ params }: Props) {
     })),
   } as const;
 
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: isFr
+      ? `Glossaire IA — ${terms.length} termes essentiels · Axion-IA`
+      : `AI glossary — ${terms.length} essential terms · Axion-IA`,
+    numberOfItems: terms.length,
+    itemListElement: terms.slice(0, 100).map((t, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: isFr ? t.term : t.term,
+      url: `${SITE_URL}/${loc}/glossaire/${t.slug}`,
+    })),
+  };
+
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" }];
@@ -127,6 +142,11 @@ export default async function GlossaryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={definedTermSetJsonLd} />
+      <JsonLd
+        data={itemListJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-glossaire-itemlist"
+      />
     </>
   );
 }

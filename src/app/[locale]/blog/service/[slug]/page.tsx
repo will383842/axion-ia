@@ -17,7 +17,7 @@ import {
   resolveTier,
   type BlogServiceType,
 } from "@/content/blog";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -146,6 +146,16 @@ export default async function BlogServicePage({ params }: Props) {
           )}
         </Container>
       </Section>
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [
+            { name: "Blog", href: "/blog" },
+            { name: label, href: `/blog/service/${slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-blog-service"
+      />
       <JsonLd data={collectionJsonLd} />
     </>
   );

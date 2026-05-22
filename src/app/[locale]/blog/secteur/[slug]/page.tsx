@@ -17,7 +17,7 @@ import {
   resolveTier,
   type BlogSector,
 } from "@/content/blog";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -146,6 +146,16 @@ export default async function BlogSectorPage({ params }: Props) {
           )}
         </Container>
       </Section>
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [
+            { name: "Blog", href: "/blog" },
+            { name: label, href: `/blog/secteur/${slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-blog-secteur"
+      />
       <JsonLd data={collectionJsonLd} />
     </>
   );

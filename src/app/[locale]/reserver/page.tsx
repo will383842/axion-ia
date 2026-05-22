@@ -10,7 +10,8 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTION_TIERS, formatPrice, getTierById } from "@/content/pricing";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { JsonLd } from "@/components/marketing/JsonLd";
 import { prisma } from "@/lib/prisma";
 import { enumToSlug } from "@/lib/intervention-type";
 
@@ -469,12 +470,12 @@ export default async function ReserverPage({ params }: Props) {
         eyebrow={isFr ? "À noter" : "Note"}
         title={
           isFr
-            ? `L'Essentielle ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "fr")}`
+            ? `L’Essentielle ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "fr")}`
             : `The Essential ${formatPrice(getTierById(INTERVENTION_TIERS, "intervention-essentielle"), "en")}`
         }
         description={
           isFr
-            ? "Le créneau est verrouillé après le versement de l'acompte 50 %. Conditions de réservation détaillées dans les CGV."
+            ? "Le créneau est verrouillé après le versement de l’acompte 50 %. Conditions de réservation détaillées dans les CGV."
             : "The slot is locked after the 50 % deposit is received. Booking conditions detailed in the Terms."
         }
         cta={
@@ -482,6 +483,28 @@ export default async function ReserverPage({ params }: Props) {
             {isFr ? "Voir les CGV" : "See Terms"} â†’
           </Cta>
         }
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ReservationAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${SITE_URL}/${loc}/reserver`,
+            actionPlatform: [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/MobileWebPlatform",
+            ],
+          },
+          result: {
+            "@type": "Reservation",
+            name: isFr
+              ? "Réservation d’intervention IA · Axion-IA"
+              : "AI session reservation · Axion-IA",
+          },
+        }}
+        strategy="afterInteractive"
+        scriptId="jsonld-reservation-action"
       />
     </>
   );

@@ -14,7 +14,7 @@ import { BlogHeroSchema } from "@/components/sections/BlogHeroSchema";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { BLOG_POSTS } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { slugify } from "@/lib/slug";
 import { BlogSearch } from "@/components/blog/BlogSearch";
@@ -359,6 +359,13 @@ export default async function BlogListing({ params, searchParams }: Props) {
         tone="dark"
       />
 
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [{ name: "Blog", href: "/blog" }],
+        })}
+        scriptId="jsonld-breadcrumb-blog"
+      />
       <JsonLd data={itemListJsonLd} />
     </>
   );

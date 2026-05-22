@@ -15,7 +15,12 @@ import {
   getBlogPostsByAuthor,
   getBlogAuthorLabel,
 } from "@/content/transversal";
-import { buildProductMetadata, buildPersonJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildPersonJsonLd,
+  buildBreadcrumbJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -152,6 +157,16 @@ export default async function BlogAuthorPage({ params }: Props) {
           </ul>
         </Container>
       </Section>
+      <JsonLd
+        data={buildBreadcrumbJsonLd({
+          locale: loc,
+          items: [
+            { name: "Blog", href: "/blog" },
+            { name: author, href: `/blog/auteur/${slug}` },
+          ],
+        })}
+        scriptId="jsonld-breadcrumb-blog-auteur"
+      />
       <JsonLd data={profileJsonLd} />
     </>
   );
