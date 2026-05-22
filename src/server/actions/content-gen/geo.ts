@@ -226,10 +226,18 @@ export async function getJobsVilleSectorDetail(
   filterStatus?: string,
   filterVille?: string,
   offset = 0,
+  sortBy: "count" | "score" | "ville" = "count",
+  sortDir: "asc" | "desc" = "desc",
 ): Promise<ReadonlyArray<VilleSectorRow>> {
   await requireAdmin();
   // serviceSector is on CoverageCampaign, not ContentGenJob.
   // We group by (ville, campaignId, status) then batch-join campaign sectors.
+  const orderBy =
+    sortBy === "score"
+      ? { _avg: { qualityScore: sortDir } }
+      : sortBy === "ville"
+        ? { anchorVilleSlug: sortDir }
+        : { _count: { anchorVilleSlug: sortDir } };
   const grouped = await prisma.contentGenJob.groupBy({
     by: ["anchorVilleSlug", "campaignId", "status"],
     _count: { anchorVilleSlug: true },
@@ -238,7 +246,7 @@ export async function getJobsVilleSectorDetail(
       anchorVilleSlug: filterVille ? { equals: filterVille } : { not: null },
       ...(filterStatus ? { status: { equals: filterStatus as ContentGenJobStatus } } : {}),
     },
-    orderBy: { _count: { anchorVilleSlug: "desc" } },
+    orderBy,
     take: limit,
     skip: offset,
   });

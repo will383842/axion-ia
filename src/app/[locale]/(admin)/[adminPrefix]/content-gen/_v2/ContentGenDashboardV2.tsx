@@ -268,19 +268,33 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         </div>
       </AdminCard>
 
-      {/* P0-5 Sprint P5 — 4 sections sémantiques */}
+      {/* P0-5 Sprint P5 — 4 sections sémantiques / P5.x — badges compteurs */}
       <div className="grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
         <AdminCard>
           <h2 className="admin-h2">🎯 Pilotage</h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
-              <Link href={`${base}/coverage`}>📦 Campagnes</Link>
+              <Link href={`${base}/coverage`}>
+                📦 Campagnes
+                {orchestrator.activeCampaigns.length > 0 && (
+                  <span className="admin-badge ml-[var(--space-admin-2)]">
+                    {orchestrator.activeCampaigns.length} actives
+                  </span>
+                )}
+              </Link>
             </li>
             <li>
               <Link href={`${base}/costs`}>💸 Coûts &amp; budget</Link>
             </li>
             <li>
-              <Link href={`${base}/quality`}>📊 Qualité</Link>
+              <Link href={`${base}/quality`}>
+                📊 Qualité
+                {kpis.pendingReview > 0 && (
+                  <span className="admin-badge ml-[var(--space-admin-2)]">
+                    {kpis.pendingReview} en revue
+                  </span>
+                )}
+              </Link>
             </li>
             <li>
               <Link href={`${base}/geo`}>🗺️ Cockpit géo</Link>
@@ -298,7 +312,14 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/keyword-tracking`}>🔑 Keyword tracking</Link>
             </li>
             <li>
-              <Link href={`${base}/kb-readonly`}>📚 KB (lecture seule)</Link>
+              <Link href={`${base}/kb-readonly`}>
+                📚 KB (lecture seule)
+                {kpis.kbHealth.chunks > 0 && (
+                  <span className="admin-badge ml-[var(--space-admin-2)]">
+                    {kpis.kbHealth.chunks}
+                  </span>
+                )}
+              </Link>
             </li>
             <li>
               <Link href={`${base}/coverage/presets`}>📋 Presets campagnes</Link>
@@ -313,13 +334,32 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           <h2 className="admin-h2">📊 Suivi</h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
-              <Link href={`${base}/jobs`}>🛠️ Jobs &amp; logs</Link>
+              <Link href={`${base}/jobs`}>
+                🛠️ Jobs &amp; logs
+                {kpis.activeQueue.running + kpis.activeQueue.waiting > 0 && (
+                  <span className="admin-badge ml-[var(--space-admin-2)]">
+                    {kpis.activeQueue.running + kpis.activeQueue.waiting} actifs
+                  </span>
+                )}
+              </Link>
             </li>
             <li>
-              <Link href={`${base}/review-queue`}>👀 Review queue ({kpis.pendingReview})</Link>
+              <Link href={`${base}/review-queue`}>
+                👀 Review queue
+                {kpis.pendingReview > 0 && (
+                  <span className="admin-badge ml-[var(--space-admin-2)]">
+                    {kpis.pendingReview}
+                  </span>
+                )}
+              </Link>
             </li>
             <li>
-              <Link href={`${base}/city-coverage`}>🏙️ Villes couvertes</Link>
+              <Link href={`${base}/city-coverage`}>
+                🏙️ Villes couvertes
+                <span className="admin-badge ml-[var(--space-admin-2)]">
+                  {cityProgress.publishedVilles}/{cityProgress.targetVilles}
+                </span>
+              </Link>
             </li>
             <li>
               <Link href={`${base}/geo/coverage-table`}>🔢 Tableau croisé</Link>

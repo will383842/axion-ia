@@ -143,6 +143,24 @@ export function CoverageDetailV2({ campaign }: Props): React.ReactElement {
         <p className="admin-meta-block">
           {campaign.generatedCount} / {campaign.totalTargetCount} générés ({progressPct} %)
         </p>
+        <progress
+          value={campaign.generatedCount}
+          max={campaign.totalTargetCount}
+          aria-label={`${progressPct}% généré`}
+          style={{
+            width: "100%",
+            height: 10,
+            appearance: "none",
+            borderRadius: "var(--radius-admin-sm)",
+            overflow: "hidden",
+            accentColor:
+              progressPct < 33
+                ? "var(--color-admin-destructive)"
+                : progressPct < 66
+                  ? "var(--color-admin-warning)"
+                  : "var(--color-admin-success)",
+          }}
+        />
         <p className="admin-meta-block">
           Publiés {campaign.publishedCount} · Failed {campaign.failedCount} · Quality re-loop{" "}
           {campaign.qualityImprovedCount}

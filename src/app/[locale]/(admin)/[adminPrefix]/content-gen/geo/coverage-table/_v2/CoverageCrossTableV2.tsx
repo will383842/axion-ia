@@ -1,6 +1,7 @@
 // P1-5 Sprint P5 - Tableau croise ville x secteur x etat.
 // Resolution D-P5-4: tableau croise dynamique (pas heatmap).
 // P5.5 — serviceSector + filtres URL + pagination 50/page + export CSV.
+// P5.x — tri serveur par colonne (count/score/ville) + direction asc/desc.
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
@@ -8,7 +9,7 @@ import { getJobsVilleSectorDetail } from "@/server/actions/content-gen/geo";
 
 interface Props {
   adminPrefix: string;
-  searchParams?: { status?: string; ville?: string; page?: string };
+  searchParams?: { status?: string; ville?: string; page?: string; sort?: string; dir?: string };
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -32,6 +33,9 @@ const SECTOR_LABELS: Record<string, string> = {
 
 const PAGE_SIZE = 50;
 
+const VALID_SORT = ["count", "score", "ville"] as const;
+type SortBy = (typeof VALID_SORT)[number];
+
 export async function CoverageCrossTableV2({
   adminPrefix,
   searchParams,
@@ -40,12 +44,18 @@ export async function CoverageCrossTableV2({
   const page = Math.max(1, Number(searchParams?.page ?? "1") || 1);
   const filterStatus = searchParams?.status ?? "";
   const filterVille = searchParams?.ville ?? "";
+  const sortBy: SortBy = VALID_SORT.includes(searchParams?.sort as SortBy)
+    ? (searchParams?.sort as SortBy)
+    : "count";
+  const sortDir: "asc" | "desc" = searchParams?.dir === "asc" ? "asc" : "desc";
 
   const rows = await getJobsVilleSectorDetail(
     PAGE_SIZE,
     filterStatus || undefined,
     filterVille || undefined,
     (page - 1) * PAGE_SIZE,
+    sortBy,
+    sortDir,
   );
 
   const totalLabel =
@@ -57,6 +67,8 @@ export async function CoverageCrossTableV2({
     const sp = new URLSearchParams();
     if (filterStatus) sp.set("status", filterStatus);
     if (filterVille) sp.set("ville", filterVille);
+    if (sortBy !== "count") sp.set("sort", sortBy);
+    if (sortDir !== "desc") sp.set("dir", sortDir);
     if (page > 1) sp.set("page", String(page));
     Object.entries(params).forEach(([k, v]) => {
       if (v) sp.set(k, v);
@@ -64,6 +76,16 @@ export async function CoverageCrossTableV2({
     });
     const qs = sp.toString();
     return `${base}/geo/coverage-table${qs ? `?${qs}` : ""}`;
+  }
+
+  function sortUrl(col: SortBy) {
+    const nextDir = sortBy === col && sortDir === "desc" ? "asc" : "desc";
+    return buildUrl({ sort: col, dir: nextDir, page: "1" });
+  }
+
+  function sortIndicator(col: SortBy) {
+    if (sortBy !== col) return " ↕";
+    return sortDir === "desc" ? " ↓" : " ↑";
   }
 
   return (
@@ -133,11 +155,23 @@ export async function CoverageCrossTableV2({
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Ville</th>
+                <th>
+                  <Link href={sortUrl("ville")} className="admin-link">
+                    Ville{sortIndicator("ville")}
+                  </Link>
+                </th>
                 <th>Secteur</th>
                 <th>État</th>
-                <th className="text-right">Articles</th>
-                <th className="text-right">Score moy.</th>
+                <th className="text-right">
+                  <Link href={sortUrl("count")} className="admin-link">
+                    Articles{sortIndicator("count")}
+                  </Link>
+                </th>
+                <th className="text-right">
+                  <Link href={sortUrl("score")} className="admin-link">
+                    Score moy.{sortIndicator("score")}
+                  </Link>
+                </th>
               </tr>
             </thead>
             <tbody>

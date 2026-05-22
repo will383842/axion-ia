@@ -10,7 +10,13 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{ status?: string; ville?: string; page?: string }>;
+  searchParams: Promise<{
+    status?: string;
+    ville?: string;
+    page?: string;
+    sort?: string;
+    dir?: string;
+  }>;
 }
 
 export default async function CoverageCrossTablePage({ params, searchParams }: PageProps) {
