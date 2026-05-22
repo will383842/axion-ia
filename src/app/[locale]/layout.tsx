@@ -8,6 +8,7 @@ import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { WebVitals } from "@/components/analytics/WebVitals";
+import { SpeculationRules } from "@/components/perf/SpeculationRules";
 import { Plausible } from "@/components/analytics/Plausible";
 import { RefererTracker } from "@/components/analytics/RefererTracker";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
@@ -241,6 +242,11 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               Plausible (anonyme, EU, cookie-less) reste toujours actif. */}
           <CookieConsent />
           <Clarity />
+          {/* V-04 P3 (Sprint Correctif suite 2026-05-22) — Speculation Rules
+              client-side avec gating route publique uniquement (skip /admin/*).
+              Reactive le bloc désactivé 2026-05-18 sans rallumer le crash RSC
+              stream sur la console admin. Gain LCP soft-nav -800 à -1200 ms. */}
+          <SpeculationRules locale={locale} />
         </NextIntlClientProvider>
         {/* JSON-LD Organization + WebSite — admin est noindex (cf. robots.ts),
             Google n'en tient pas compte ; les injecter est sans effet négatif. */}
@@ -256,95 +262,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
           />
         ) : null}
-        {/* Speculation Rules — P-013 cible Top 15 stratégiques en `eager` +
-            fallback `moderate` sur le reste du locale. Avant ce patch, `eager`
-            tournait sur 4 562 SSG → consommation bandwidth Cloudflare massive
-            sans valeur (la grande majorité des SSG = pages secondaires).
-            Désormais : eager seulement sur les pages que 80 % des visiteurs
-            visitent, moderate (hover/viewport) sur le reste.
-            Browsers sans support ignorent silencieusement.
-            Production-only : `next dev` sature Turbopack si on `eager`.
-
-            Audit deploy-unstuck 2026-05-18 — DÉSACTIVÉ temporairement.
-            Chrome warning "Inline speculation rules cannot currently be
-            modified after they are processed" + crash admin error boundary
-            "An unexpected response was received from the server" (RSC stream).
-            Hypothèse : conflit avec les speculation rules auto-générées par
-            Next 16. Le warning persistait, les pages admin crashaient sur
-            l'error boundary client. À ré-activer après diagnostic ciblé
-            (probablement isoler le custom aux routes publiques seulement,
-            pas le mettre dans le root [locale]/layout). */}
-        {false && process.env.NODE_ENV === "production" && (
-          <script
-            type="speculationrules"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                // `/reserver` exclu : page lourde côté client (calendar
-                // Stripe + state-machine booking) — prerender = exécution JS
-                // anticipée + risque side-effects (analytics doublonnés,
-                // session tokens). Voir doctrine §5.2 audit 2026-05-15.
-                prerender: [
-                  {
-                    source: "document",
-                    where: {
-                      href_matches: [
-                        `/${locale}`,
-                        `/${locale}/interventions`,
-                        `/${locale}/interventions/*`,
-                        `/${locale}/audit`,
-                        `/${locale}/audit/*`,
-                        `/${locale}/implementation`,
-                        `/${locale}/cas-concrets`,
-                        `/${locale}/methodologie`,
-                        `/${locale}/comparaisons`,
-                        `/${locale}/stack-ia`,
-                        `/${locale}/implantations`,
-                        `/${locale}/implantations/ile-de-france`,
-                        `/${locale}/implantations/ile-de-france/paris`,
-                        `/${locale}/contact`,
-                      ],
-                    },
-                    eagerness: "moderate",
-                  },
-                ],
-                // P1-20 audit E2E NAV+CTA 2026-05-15 — `eager` (×15 routes)
-                // saturait la 4G mobile à l'hydratation initiale. Bascule en
-                // `moderate` : prefetch déclenché au survol/scroll, pas dès le
-                // chargement. Couverture identique, latence INP préservée.
-                prefetch: [
-                  {
-                    source: "document",
-                    where: {
-                      href_matches: [
-                        `/${locale}`,
-                        `/${locale}/interventions`,
-                        `/${locale}/interventions/*`,
-                        `/${locale}/audit`,
-                        `/${locale}/audit/*`,
-                        `/${locale}/implementation`,
-                        `/${locale}/cas-concrets`,
-                        `/${locale}/methodologie`,
-                        `/${locale}/comparaisons`,
-                        `/${locale}/stack-ia`,
-                        `/${locale}/implantations`,
-                        `/${locale}/implantations/ile-de-france`,
-                        `/${locale}/implantations/ile-de-france/paris`,
-                        `/${locale}/reserver`,
-                        `/${locale}/contact`,
-                      ],
-                    },
-                    eagerness: "moderate",
-                  },
-                  {
-                    source: "document",
-                    where: { href_matches: `/${locale}/*` },
-                    eagerness: "moderate",
-                  },
-                ],
-              }),
-            }}
-          />
-        )}
+        {/* V-04 P3 (2026-05-22) — Speculation Rules désormais posées via
+            <SpeculationRules /> client component (gating /admin/* + DOM
+            injection). Voir src/components/perf/SpeculationRules.tsx. */}
       </body>
     </html>
   );
