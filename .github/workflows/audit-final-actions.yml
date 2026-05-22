@@ -73,12 +73,18 @@ jobs:
 
       - name: Find axion-ia container
         id: container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set -euo pipefail
-          NAME=$(ssh -o BatchMode=yes root@178.105.55.15 \
-            "docker ps --format '{{.Names}}' | grep -E '^web-' | head -1")
+          CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Image}}|{{.Status}}"' 2>&1)
+          echo "── All containers ──"
+          echo "$CONTAINERS"
+          echo "──────"
+          NAME=$(echo "$CONTAINERS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
           if [ -z "$NAME" ]; then
-            echo "::error::No web-* container found on VPS"
+            echo "::error::No container matching COOLIFY_APP_UUID found"
             exit 1
           fi
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
