@@ -13,6 +13,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getComparison, getAllComparisonSlugs } from "@/content/comparaisons";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { WasHelpful } from "@/components/marketing/WasHelpful";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -182,6 +183,12 @@ export default async function ComparisonPage({ params }: Props) {
           </div>
         </Container>
       </Section>
+      <div className="border-border border-t py-6">
+        <Container>
+          <WasHelpful isFr={isFr} />
+        </Container>
+      </div>
+
       <CtaBlock
         title={isFr ? "Besoin d'arbitrer pour votre cas ?" : "Need to arbitrate for your case?"}
         description={

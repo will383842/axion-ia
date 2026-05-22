@@ -26,6 +26,7 @@ import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
 import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
 import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { Illustration } from "@/components/visual/Illustration";
 
 // ============================================================================
 // Sprint 14.10.8 (Will 2026-05-12) — refonte hub /audit en 2 axes toggle.
@@ -195,6 +196,22 @@ export default async function AuditHub({ params }: Props) {
                 <Mail aria-hidden="true" className="h-4 w-4" />
                 {isFr ? "Demander un cadrage" : "Request framing"}
               </Cta>
+            </div>
+
+            {/* Hero illustration — Sprint visual 2026-05-22 */}
+            <div className="mx-auto mt-10 max-w-3xl">
+              <Illustration
+                slot="AUDIT-HUB-01-hero"
+                aspectRatio="16:9"
+                priority
+                filenameTarget="public/illustrations/audit-hub-hero.avif"
+                alt={
+                  isFr
+                    ? "Illustration éditoriale — audit IA en entreprise, équipe Axion-IA"
+                    : "Editorial illustration — AI audit for business, Axion-IA team"
+                }
+                caption={isFr ? "Audit IA · Axion-IA" : "AI Audit · Axion-IA"}
+              />
             </div>
           </div>
         </Container>

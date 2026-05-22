@@ -92,6 +92,17 @@ export default async function HelpCenter({ params }: Props) {
     })),
   } as const;
 
+  const helpWebPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: `${SITE_URL}/${locale}/centre-aide`,
+    name: isFr ? "Centre d'aide · Axion-IA" : "Help center · Axion-IA",
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-aeo='help-intro']"],
+    },
+  } as const;
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -118,7 +129,10 @@ export default async function HelpCenter({ params }: Props) {
                   {isFr ? "rapide" : "answer"}
                 </span>
               </h1>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              <p
+                data-aeo="help-intro"
+                className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+              >
                 {isFr
                   ? "Articles groupés par thématique. Chaque question ouvre sur sa propre page indexable. 6 grandes familles couvrent l'essentiel."
                   : "Articles grouped by topic. Each question opens on its own indexable page. 6 main families cover the essentials."}
@@ -245,6 +259,7 @@ export default async function HelpCenter({ params }: Props) {
       />
 
       <JsonLd data={itemListJsonLd} />
+      <JsonLd data={helpWebPageJsonLd} />
     </>
   );
 }

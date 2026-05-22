@@ -55,6 +55,10 @@ export default async function GlossaryPage({ params }: Props) {
     name: isFr ? "Glossaire IA Axion-IA" : "Axion-IA AI glossary",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/glossaire`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-aeo='glossary-intro']"],
+    },
     hasDefinedTerm: terms.map((t) => ({
       "@type": "DefinedTerm",
       name: t.term,
@@ -93,9 +97,11 @@ export default async function GlossaryPage({ params }: Props) {
         title={isFr ? "Termes IA" : "Essential AI"}
         titleEm={isFr ? "essentiels" : "terms"}
         description={
-          isFr
-            ? `${terms.length} termes pour parler IA en réunion sans se tromper. Définitions courtes, sourcées, citables par les LLMs. MAJ à chaque évolution majeure.`
-            : `${terms.length} terms to discuss AI in meetings without errors. Short, sourced, LLM-citable definitions. Updated on each major evolution.`
+          <span data-aeo="glossary-intro">
+            {isFr
+              ? `${terms.length} termes pour parler IA en réunion sans se tromper. Définitions courtes, sourcées, citables par les LLMs. MAJ à chaque évolution majeure.`
+              : `${terms.length} terms to discuss AI in meetings without errors. Short, sourced, LLM-citable definitions. Updated on each major evolution.`}
+          </span>
         }
       >
         <Container className="mt-8 max-w-2xl">

@@ -69,6 +69,10 @@ export default async function ComparisonsListPage({ params }: Props) {
     url: `${SITE_URL}/${locale}/comparaisons`,
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-aeo='comparaisons-intro']"],
+    },
     hasPart: COMPARISONS.map((c) => ({
       "@type": "Article",
       headline: c[loc].title,
@@ -107,7 +111,10 @@ export default async function ComparisonsListPage({ params }: Props) {
                   {isFr ? "honnêtes" : "comparisons"}
                 </span>
               </h1>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              <p
+                data-aeo="comparaisons-intro"
+                className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+              >
                 {isFr
                   ? "Tableaux de décision factuels — pas de FUD, pas de complaisance vendeur. Cabinet IA, SaaS, internalisation : ce qui colle vraiment à votre contexte."
                   : "Factual decision tables — no FUD, no vendor complacency. AI consultancy, SaaS, in-house: what actually fits your context."}

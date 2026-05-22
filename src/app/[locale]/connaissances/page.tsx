@@ -79,6 +79,10 @@ export default async function ConnaissancesHub({ params }: Props) {
     isPartOf: { "@id": `${SITE_URL}/fr#website` },
     description:
       "Base de connaissances Axion-IA — articles, méthodologies, comparatifs, playbooks et études de cas IA opérationnels.",
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-aeo='kb-intro']"],
+    },
     hasPart: items.slice(0, 12).map((item) => ({
       "@type": "Article",
       headline: item.title,
@@ -121,7 +125,10 @@ export default async function ConnaissancesHub({ params }: Props) {
                 <span className="italic">IA opérationnelles</span>
               </em>
             </h1>
-            <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+            <p
+              data-aeo="kb-intro"
+              className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+            >
               Articles, méthodologies, comparatifs, playbooks et études de cas pour dirigeants de
               PME et ETI. Mise à jour continue par l&apos;équipe Axion-IA.
             </p>

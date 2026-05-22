@@ -22,6 +22,7 @@ import {
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { Illustration } from "@/components/visual/Illustration";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -539,6 +540,22 @@ export default async function WebDigitalPage({ params }: Props) {
             <Cta href="/audit" variant="outline" size="lg" track="web-digital-hero-audit">
               {isFr ? "Commencer par un audit" : "Start with an audit"}
             </Cta>
+          </div>
+
+          {/* Hero illustration — Sprint visual 2026-05-22 */}
+          <div className="mt-10">
+            <Illustration
+              slot="CODAGE-WEB-01-hero"
+              aspectRatio="16:9"
+              priority
+              filenameTarget="public/illustrations/codage-web-digital-hero.avif"
+              alt={
+                isFr
+                  ? "Illustration éditoriale — plateforme web sur mesure IA intégrée par défaut, Axion-IA"
+                  : "Editorial illustration — custom web platform with AI built in by default, Axion-IA"
+              }
+              caption={isFr ? "Web & Digital IA · Axion-IA" : "AI Web & Digital · Axion-IA"}
+            />
           </div>
         </Container>
       </section>

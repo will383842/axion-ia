@@ -366,19 +366,55 @@ export default async function InterventionsListing({ params }: Props) {
 
   // JSON-LD Service principal — pointe vers le hub et liste les 3 familles
   // via le ItemList plus bas.
-  const serviceJsonLd = buildServiceJsonLd({
-    locale: loc,
-    path: "/interventions",
-    name: isFr
-      ? "Interventions IA en entreprise · 4 familles · Axion-IA"
-      : "Corporate AI sessions · 4 families · Axion-IA",
-    description: isFr
-      ? `Catalogue d'interventions et formations IA opérationnelles sur site, organisé en 4 familles : formations équipe (4 paliers durée de 4 h à 3 j+, à partir de ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
-      : `Catalogue of operational AI sessions on site, organised in 4 families: team trainings (4 duration tiers from 4 h to 3 d+, from ${essentielleEntry}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
-    serviceType: "AI training & engagement",
-    priceEur: getEntryPriceEur(INTERVENTION_TIERS) ?? 0,
-    areasServed: buildServiceAreasServed(loc),
-  });
+  const serviceJsonLd = {
+    ...buildServiceJsonLd({
+      locale: loc,
+      path: "/interventions",
+      name: isFr
+        ? "Interventions IA en entreprise · 4 familles · Axion-IA"
+        : "Corporate AI sessions · 4 families · Axion-IA",
+      description: isFr
+        ? `Catalogue d'interventions et formations IA opérationnelles sur site, organisé en 4 familles : formations équipe (4 paliers durée de 4 h à 3 j+, à partir de ${essentielleEntry}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
+        : `Catalogue of operational AI sessions on site, organised in 4 families: team trainings (4 duration tiers from 4 h to 3 d+, from ${essentielleEntry}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
+      serviceType: "AI training & engagement",
+      priceEur: getEntryPriceEur(INTERVENTION_TIERS) ?? 0,
+      areasServed: buildServiceAreasServed(loc),
+    }),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: isFr ? "Familles d'interventions IA · Axion-IA" : "AI session families · Axion-IA",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Interventions collectives" : "Team sessions",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Coaching individuel" : "Individual coaching",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Interventions dirigeants" : "Executive sessions",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Conférences IA" : "AI talks",
+          },
+        },
+      ],
+    },
+  };
 
   const familyCards = buildFamilyCards(isFr);
 

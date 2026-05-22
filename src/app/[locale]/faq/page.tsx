@@ -60,7 +60,7 @@ export default async function FaqPage({ params }: Props) {
     answer: isFr ? entry.answerFr : entry.answerEn,
   }));
 
-  const faqJsonLd = buildFaqSpeakableJsonLd({ items });
+  const faqJsonLd = buildFaqSpeakableJsonLd({ items, speakableSelector: "[data-aeo='faq-intro']" });
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: "/faq", label: "FAQ" }];
@@ -92,7 +92,10 @@ export default async function FaqPage({ params }: Props) {
                   {isFr ? "fréquentes" : "questions"}
                 </span>
               </h1>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              <p
+                data-aeo="faq-intro"
+                className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl"
+              >
                 {isFr
                   ? "Tout savoir sur les interventions, l'audit, l'implémentation, la souveraineté des données et la facturation. Réponses courtes, sourcées, citables par les LLMs."
                   : "Everything about sessions, audit, implementation, data sovereignty and billing. Short, sourced, LLM-citable answers."}

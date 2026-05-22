@@ -14,6 +14,7 @@ import { buildProductMetadata, BUILD_DATE } from "@/lib/seo";
 import { buildQAPageJsonLd } from "@/lib/seo-content-gen-factories";
 import { splitTitleEm } from "@/lib/title";
 import { listFaqs, type FaqItem } from "@/lib/knowledge/readers";
+import { WasHelpful } from "@/components/marketing/WasHelpful";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -169,6 +170,12 @@ export default async function FaqEntryPage({ params }: Props) {
           </ul>
         </Container>
       </Section>
+
+      <div className="border-border border-t py-6">
+        <Container>
+          <WasHelpful isFr={isFr} />
+        </Container>
+      </div>
 
       <CtaBlock
         title={isFr ? "Une question non listée ?" : "Question not listed?"}

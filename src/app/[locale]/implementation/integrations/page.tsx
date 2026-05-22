@@ -8,6 +8,8 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getImplementation } from "@/content/implementation";
 import { buildProductMetadata, buildServiceJsonLd, buildFaqJsonLd } from "@/lib/seo";
+import { Section } from "@/components/layout/Section";
+import { Link } from "@/i18n/navigation";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -67,6 +69,38 @@ export default async function IntegrationsPage({ params }: Props) {
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />
+      {/* Maillage interne — sous-services liés */}
+      <Section
+        tone="paper"
+        eyebrow={isFr ? "Services liés" : "Related services"}
+        title={isFr ? "Voir aussi" : "See also"}
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[
+            {
+              href: "/implementation/no-code",
+              label: isFr ? "No-code IA" : "No-code AI",
+              description: isFr ? "Automatisations sans code technique" : "No-code automations",
+            },
+            {
+              href: "/implementation/crm-erp",
+              label: isFr ? "CRM / ERP IA" : "CRM / ERP AI",
+              description: isFr
+                ? "IA intégrée dans votre CRM/ERP"
+                : "AI integrated in your CRM/ERP",
+            },
+          ].map((s) => (
+            <Link
+              key={s.href}
+              href={s.href as never}
+              className="border-border bg-paper hover:border-terracotta block rounded-2xl border p-5 transition"
+            >
+              <p className="text-fg text-base font-semibold">{s.label}</p>
+              <p className="text-fg-soft mt-1 text-sm">{s.description}</p>
+            </Link>
+          ))}
+        </div>
+      </Section>
     </>
   );
 }

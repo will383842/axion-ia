@@ -19,8 +19,12 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { SITE_URL, buildProductMetadata } from "@/lib/seo";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
+import { buildProductMetadata } from "@/lib/seo";
+import { buildArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
+import { SuggestedContent } from "@/components/suggested/SuggestedContent";
+import { findRelatedArticles } from "@/server/content-gen/links/related-articles";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -68,19 +72,17 @@ export default async function ConnaissanceDetail({ params }: Props) {
   const publishedStr = formatDate(entry.publishedAt);
   const updatedStr = formatDate(entry.updatedAt);
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "@id": `${SITE_URL}/fr/connaissances/${entry.slug}#article`,
-    headline: entry.title,
-    url: `${SITE_URL}/fr/connaissances/${entry.slug}`,
-    inLanguage: "fr-FR",
-    isPartOf: { "@id": `${SITE_URL}/fr/connaissances#collection` },
-    ...(entry.publishedAt ? { datePublished: entry.publishedAt.toISOString() } : {}),
-    dateModified: entry.updatedAt.toISOString(),
-    ...(entry.excerpt ? { description: entry.excerpt } : {}),
-    author: { "@type": "Organization", name: "Axion-IA" },
-  };
+  const articleJsonLd = buildArticleJsonLd({
+    title: entry.title,
+    description: entry.excerpt ?? entry.title,
+    slug: entry.slug,
+    locale: "fr",
+    publishedAt: entry.publishedAt ?? entry.updatedAt,
+    updatedAt: entry.updatedAt,
+    section: "Connaissances IA",
+    urlSegment: "connaissances",
+    ...(entry.readingTime ? { readingTimeMinutes: entry.readingTime } : {}),
+  });
 
   return (
     <>
@@ -117,9 +119,28 @@ export default async function ConnaissanceDetail({ params }: Props) {
               // par le pipeline éditorial (Tiptap rendered + DOMPurify). Source : KB-3 alts validation.
               dangerouslySetInnerHTML={{ __html: entry.body }}
             />
+            <AiContentDisclaimer locale="fr" className="mt-10" />
           </article>
         </Container>
       </Section>
+
+      {/* Articles connexes — évite le dead-end + réduit le bounce sur /connaissances/[slug]. */}
+      <SuggestedContent
+        variant="articles"
+        items={(await findRelatedArticles({ currentSlug: slug, locale: "fr", limit: 4 })).map(
+          (r) => ({
+            href: `/blog/${r.slug}`,
+            title: r.title,
+            excerpt: r.excerpt,
+            publishedAt: r.publishedAt,
+            readingTime: r.readingTime,
+          }),
+        )}
+        eyebrow="Articles connexes"
+        title="À lire aussi"
+        tone="sand"
+        emitJsonLd
+      />
 
       <CtaBlock
         title="Vous voulez en discuter"

@@ -654,19 +654,80 @@ export default async function ImplementationListing({ params }: Props) {
       ];
 
   // Service JSON-LD avec areasServed multi-régions (Sprint 14.9 levier 2).
-  const serviceJsonLd = buildServiceJsonLd({
-    locale: loc,
-    path: "/implementation",
-    name: isFr
-      ? "Implémentation IA opérationnelle · Axion-IA"
-      : "Operational AI implementation · Axion-IA",
-    description: isFr
-      ? `Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}.`
-      : `Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en")}.`,
-    serviceType: "AI implementation",
-    priceEur: getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0,
-    areasServed: buildServiceAreasServed(loc),
-  });
+  const serviceJsonLd = {
+    ...buildServiceJsonLd({
+      locale: loc,
+      path: "/implementation",
+      name: isFr
+        ? "Implémentation IA opérationnelle · Axion-IA"
+        : "Operational AI implementation · Axion-IA",
+      description: isFr
+        ? `Mise en production de cas IA opérationnels en 6 à 12 semaines : agents conversationnels, automatisation back-office, intégration CRM/ERP, IA custom. ROI chiffré, formation incluse, dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr")}.`
+        : `Production deployment of operational AI cases in 6 to 12 weeks: conversational agents, back-office automation, CRM/ERP integration, custom AI. Costed ROI, training included, from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en")}.`,
+      serviceType: "AI implementation",
+      priceEur: getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0,
+      areasServed: buildServiceAreasServed(loc),
+    }),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: isFr
+        ? "Services d'implémentation IA · Axion-IA"
+        : "AI implementation services · Axion-IA",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: isFr ? "IA Custom" : "Custom AI" },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: "Chatbot RAG" },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Automatisation processus" : "Process automation",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Structuration données" : "Data structuring",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: "CRM / ERP IA" },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Documents IA" : "AI Documents",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Agents IA" : "AI Agents",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: isFr ? "Intégrations" : "Integrations",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: "No-code IA" },
+        },
+      ],
+    },
+  };
 
   return (
     <>
