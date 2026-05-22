@@ -226,12 +226,12 @@ label : ${variant.recommendedCtaLabel}
       faqCount: parsed.faq.length,
     });
 
-    const indexationTier: GeneratorOutput["indexationTier"] = soft404.isSoft404
-      ? "tier_3_noindex_nofollow"
-      : doctrine.passed && qualityScore >= 70
-        ? "tier_2_noindex_follow"
-        : "tier_3_noindex_nofollow";
-
+    const indexationTier: GeneratorOutput["indexationTier"] =
+      soft404.isSoft404 || qualityScore < QUALITY_THRESHOLD
+        ? "tier_3_noindex_nofollow"
+        : doctrine.passed && qualityScore >= 70
+          ? "tier_2_noindex_follow"
+          : "tier_3_noindex_nofollow";
 
     // Sprint S+2 City Domination — Phase C strat ville.
     // Extraction automatique des villes mentionnées dans le body. Pour
