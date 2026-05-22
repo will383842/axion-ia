@@ -26,6 +26,7 @@ import {
 import { alertCampaignDone } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type {
+  CityProcessingMode,
   CompanySize,
   ContentType,
   OrganisationType,
@@ -94,6 +95,279 @@ function sampleAudienceMix(
   const [size, org] = key.split(":") as [string, string];
   if (!size || !org) return null;
   return { size: size as CompanySize, org: org as OrganisationType };
+}
+
+/**
+ * Crée 1 ContentGenJob row + enqueue BullMQ pour un slot donné.
+ * Factorisée pour partager la logique entre mode parallel et sequential.
+ *
+ * @returns true si enqueue réussi, false si idempotency hit ou erreur soft
+ */
+async function createJobForSlot(opts: {
+  campaign: {
+    id: string;
+    name: string;
+    serviceSector: ServiceSector | null;
+  };
+  contentType: ContentType;
+  aud: { size: CompanySize; org: OrganisationType } | null;
+  searchIntent: SearchIntent | "informational";
+  anchorVilleSlug?: string;
+  anchorDepartementCode?: string;
+  anchorRegionSlug?: string;
+  slotIndex: number;
+}): Promise<boolean> {
+  const {
+    campaign,
+    contentType,
+    aud,
+    searchIntent,
+    anchorVilleSlug,
+    anchorDepartementCode,
+    anchorRegionSlug,
+    slotIndex,
+  } = opts;
+  const idempotencyKey = crypto
+    .createHash("sha256")
+    .update(
+      `${campaign.id}::${slotIndex}::${contentType}::${anchorVilleSlug ?? anchorRegionSlug ?? "global"}`,
+    )
+    .digest("hex")
+    .slice(0, 32);
+
+  try {
+    const job = await prisma.contentGenJob.create({
+      data: {
+        idempotencyKey,
+        contentType: contentType as ContentType,
+        status: "queued",
+        priority: 5,
+        campaignId: campaign.id,
+        inputPayload: {
+          campaignName: campaign.name,
+          slotIndex,
+          ...(contentType === "blog_from_keywords"
+            ? { primaryKeyword: deriveBlogKeyword(campaign.serviceSector, anchorVilleSlug) }
+            : {}),
+        },
+        targetLocale: "fr",
+        ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
+        ...(anchorDepartementCode ? { anchorDepartementCode } : {}),
+        ...(anchorRegionSlug ? { anchorRegionSlug } : {}),
+        ...(aud ? { targetAudienceSize: aud.size, targetAudienceOrganisation: aud.org } : {}),
+        targetSearchIntent: searchIntent as SearchIntent,
+        primaryProvider: "openai",
+        fallbackProvider: "anthropic",
+      },
+    });
+    await getContentGenQueue().add(
+      "generate",
+      {
+        contentGenJobId: job.id,
+        contentType: job.contentType,
+        targetSearchIntent: job.targetSearchIntent,
+        inputPayload: job.inputPayload,
+      },
+      { jobId: `gen-${job.id}` },
+    );
+    return true;
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!msg.includes("Unique constraint")) {
+      console.error("[orchestrator] insert ContentGenJob failed:", msg);
+    }
+    return false;
+  }
+}
+
+/**
+ * Mode séquentiel : traite une seule ville à la fois.
+ * Attend que tous les jobs de la ville courante soient terminés avant de passer à la suivante.
+ * Met à jour currentCityIndex après enqueue de la nouvelle ville.
+ */
+async function processSequentialCampaign(
+  campaign: {
+    id: string;
+    name: string;
+    serviceSector: ServiceSector | null;
+    anchorVilleSlugs: string[];
+    anchorDepartementCodes: string[];
+    anchorRegionSlugs: string[];
+    typeDistribution: unknown;
+    audienceMix: unknown;
+    searchIntentMix: unknown;
+    scope: string;
+    currentCityIndex: number | null;
+    generatedCount: number;
+    totalTargetCount: number;
+    cityProcessingMode: CityProcessingMode;
+  },
+  toEnqueue: number,
+  hasPerTypeMode: boolean,
+  remainingByType: Partial<Record<ContentType, number>>,
+): Promise<number> {
+  const villeAnchors = campaign.anchorVilleSlugs;
+  if (villeAnchors.length === 0) {
+    // Pas de villes → fallback parallel (scope non-ville)
+    return processParallelCampaign(
+      campaign,
+      toEnqueue,
+      hasPerTypeMode,
+      remainingByType,
+      undefined,
+    );
+  }
+
+  const currentCityIdx = campaign.currentCityIndex ?? 0;
+  if (currentCityIdx >= villeAnchors.length) {
+    // Toutes les villes terminées → ne rien enqueue
+    console.log(
+      `[orchestrator] sequential campaign=${campaign.id} all cities done (idx=${currentCityIdx}/${villeAnchors.length})`,
+    );
+    return 0;
+  }
+
+  const currentCitySlug = villeAnchors[currentCityIdx]!;
+
+  // Compter les jobs en cours pour cette ville
+  const pendingCount = await prisma.contentGenJob.count({
+    where: {
+      campaignId: campaign.id,
+      anchorVilleSlug: currentCitySlug,
+      status: { in: ["queued", "running", "needs_review", "quality_improving"] },
+    },
+  });
+
+  if (pendingCount > 0) {
+    // Ville en cours — attendre la prochaine tick
+    console.log(
+      `[orchestrator] sequential campaign=${campaign.id} city=${currentCitySlug} pending=${pendingCount}, waiting`,
+    );
+    return 0;
+  }
+
+  // Ville courante terminée (ou jamais démarrée) → créer les jobs pour cette ville
+  const typeDist = campaign.typeDistribution as Record<ContentType, number>;
+  const audienceMix = campaign.audienceMix as Record<string, number>;
+  const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
+
+  let enqueued = 0;
+  for (let i = 0; i < toEnqueue; i++) {
+    let contentType: ContentType | null;
+    if (hasPerTypeMode) {
+      const next = Object.entries(remainingByType).find(([, count]) => (count ?? 0) > 0);
+      if (!next) break;
+      contentType = next[0] as ContentType;
+      remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
+    } else {
+      contentType = sampleWeighted(typeDist);
+    }
+    if (!contentType) continue;
+    const aud = sampleAudienceMix(audienceMix);
+    const searchIntent = intentMix ? sampleWeighted(intentMix) : "informational";
+    const slotIndex = campaign.generatedCount + i;
+    const ok = await createJobForSlot({
+      campaign,
+      contentType,
+      aud,
+      searchIntent: (searchIntent ?? "informational") as SearchIntent,
+      anchorVilleSlug: currentCitySlug,
+      slotIndex,
+    });
+    if (ok) enqueued++;
+  }
+
+  // Avancer l'index de ville
+  await prisma.coverageCampaign.update({
+    where: { id: campaign.id },
+    data: { currentCityIndex: currentCityIdx + 1 },
+  });
+
+  console.log(
+    `[orchestrator] sequential campaign=${campaign.id} city=${currentCitySlug} (${currentCityIdx + 1}/${villeAnchors.length}) enqueued=${enqueued}`,
+  );
+  return enqueued;
+}
+
+/**
+ * Mode parallèle : comportement original — toutes les villes simultanément.
+ * forcedVilleSlug permet de forcer une ville (appelé depuis sequential pour scope non-ville).
+ */
+async function processParallelCampaign(
+  campaign: {
+    id: string;
+    name: string;
+    serviceSector: ServiceSector | null;
+    anchorVilleSlugs: string[];
+    anchorDepartementCodes: string[];
+    anchorRegionSlugs: string[];
+    typeDistribution: unknown;
+    audienceMix: unknown;
+    searchIntentMix: unknown;
+    scope: string;
+    generatedCount: number;
+  },
+  toEnqueue: number,
+  hasPerTypeMode: boolean,
+  remainingByType: Partial<Record<ContentType, number>>,
+  forcedVilleSlug?: string,
+): Promise<number> {
+  const typeDist = campaign.typeDistribution as Record<ContentType, number>;
+  const audienceMix = campaign.audienceMix as Record<string, number>;
+  const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
+  const villeAnchors = campaign.anchorVilleSlugs;
+  const deptAnchors = campaign.anchorDepartementCodes;
+  const regionAnchors = campaign.anchorRegionSlugs;
+
+  let enqueued = 0;
+  for (let i = 0; i < toEnqueue; i++) {
+    let contentType: ContentType | null;
+    if (hasPerTypeMode) {
+      const next = Object.entries(remainingByType).find(([, count]) => (count ?? 0) > 0);
+      if (!next) break;
+      contentType = next[0] as ContentType;
+      remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
+    } else {
+      contentType = sampleWeighted(typeDist);
+    }
+    if (!contentType) continue;
+    const aud = sampleAudienceMix(audienceMix);
+    const searchIntent = intentMix ? sampleWeighted(intentMix) : "informational";
+
+    let anchorVilleSlug: string | undefined = forcedVilleSlug;
+    let anchorDepartementCode: string | undefined;
+    let anchorRegionSlug: string | undefined;
+
+    if (!anchorVilleSlug) {
+      if (campaign.scope === "ville" && villeAnchors.length > 0) {
+        anchorVilleSlug = villeAnchors[Math.floor(Math.random() * villeAnchors.length)];
+      } else if (campaign.scope === "departement" && deptAnchors.length > 0) {
+        anchorDepartementCode = deptAnchors[Math.floor(Math.random() * deptAnchors.length)];
+      } else if (campaign.scope === "region" && regionAnchors.length > 0) {
+        anchorRegionSlug = regionAnchors[Math.floor(Math.random() * regionAnchors.length)];
+      } else if (campaign.scope === "multi") {
+        if (villeAnchors.length > 0) {
+          anchorVilleSlug = villeAnchors[Math.floor(Math.random() * villeAnchors.length)];
+        } else if (regionAnchors.length > 0) {
+          anchorRegionSlug = regionAnchors[Math.floor(Math.random() * regionAnchors.length)];
+        }
+      }
+    }
+
+    const slotIndex = campaign.generatedCount + i;
+    const ok = await createJobForSlot({
+      campaign,
+      contentType,
+      aud,
+      searchIntent: (searchIntent ?? "informational") as SearchIntent,
+      ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
+      ...(anchorDepartementCode ? { anchorDepartementCode } : {}),
+      ...(anchorRegionSlug ? { anchorRegionSlug } : {}),
+      slotIndex,
+    });
+    if (ok) enqueued++;
+  }
+  return enqueued;
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
@@ -166,6 +440,12 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   let totalEnqueued = 0;
 
   for (const campaign of runningCampaigns) {
+    // Sprint Campaign Controls — skip si endDate dépassée (deadline-checker gère le passage completed)
+    if (campaign.endDate && campaign.endDate <= new Date()) {
+      console.log(`[orchestrator] campaign=${campaign.id} endDate passed, skip tick`);
+      continue;
+    }
+
     const remaining = campaign.totalTargetCount - campaign.generatedCount;
     if (remaining <= 0) {
       await prisma.coverageCampaign.update({
@@ -201,108 +481,25 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     }
     const toEnqueue = Math.min(perCampaignTick, remaining);
 
-    const typeDist = campaign.typeDistribution as Record<ContentType, number>;
-    const audienceMix = campaign.audienceMix as Record<string, number>;
-    const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
-
-    // Anchors disponibles pour cette campagne
-    const villeAnchors = campaign.anchorVilleSlugs;
-    const deptAnchors = campaign.anchorDepartementCodes;
-    const regionAnchors = campaign.anchorRegionSlugs;
-
-    for (let i = 0; i < toEnqueue; i++) {
-      // Sprint 7 V2 : si mode per-type actif, pick le prochain type dont
-      // le résidu > 0. Sinon fallback V1 = sampleWeighted typeDist.
-      let contentType: ContentType | null;
-      if (hasPerTypeMode) {
-        const next = Object.entries(remainingByType).find(([, count]) => (count ?? 0) > 0);
-        if (!next) break;
-        contentType = next[0] as ContentType;
-        remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
-      } else {
-        contentType = sampleWeighted(typeDist);
-      }
-      if (!contentType) continue;
-      const aud = sampleAudienceMix(audienceMix);
-      const searchIntent = intentMix ? sampleWeighted(intentMix) : "informational";
-
-      // Sample anchor (selon scope)
-      let anchorVilleSlug: string | undefined;
-      let anchorDepartementCode: string | undefined;
-      let anchorRegionSlug: string | undefined;
-      if (campaign.scope === "ville" && villeAnchors.length > 0) {
-        anchorVilleSlug = villeAnchors[Math.floor(Math.random() * villeAnchors.length)];
-      } else if (campaign.scope === "departement" && deptAnchors.length > 0) {
-        anchorDepartementCode = deptAnchors[Math.floor(Math.random() * deptAnchors.length)];
-      } else if (campaign.scope === "region" && regionAnchors.length > 0) {
-        anchorRegionSlug = regionAnchors[Math.floor(Math.random() * regionAnchors.length)];
-      } else if (campaign.scope === "multi") {
-        if (villeAnchors.length > 0) {
-          anchorVilleSlug = villeAnchors[Math.floor(Math.random() * villeAnchors.length)];
-        } else if (regionAnchors.length > 0) {
-          anchorRegionSlug = regionAnchors[Math.floor(Math.random() * regionAnchors.length)];
-        }
-      }
-
-      // Idempotency key = hash(campaignId + slot index global + contentType)
-      const slotIndex = campaign.generatedCount + i;
-      const idempotencyKey = crypto
-        .createHash("sha256")
-        .update(
-          `${campaign.id}::${slotIndex}::${contentType}::${anchorVilleSlug ?? anchorRegionSlug ?? "global"}`,
-        )
-        .digest("hex")
-        .slice(0, 32);
-
-      // Insert ContentGenJob row (status=queued)
-      try {
-        const job = await prisma.contentGenJob.create({
-          data: {
-            idempotencyKey,
-            contentType: contentType as ContentType,
-            status: "queued",
-            priority: 5,
-            campaignId: campaign.id,
-            inputPayload: {
-              campaignName: campaign.name,
-              slotIndex,
-              ...(contentType === "blog_from_keywords"
-                ? {
-                    primaryKeyword: deriveBlogKeyword(campaign.serviceSector, anchorVilleSlug),
-                  }
-                : {}),
-            },
-            targetLocale: "fr",
-            ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
-            ...(anchorDepartementCode ? { anchorDepartementCode } : {}),
-            ...(anchorRegionSlug ? { anchorRegionSlug } : {}),
-            ...(aud ? { targetAudienceSize: aud.size, targetAudienceOrganisation: aud.org } : {}),
-            targetSearchIntent: searchIntent as SearchIntent,
-            primaryProvider: "openai",
-            fallbackProvider: "anthropic",
-          },
-        });
-
-        // Enqueue BullMQ
-        await getContentGenQueue().add(
-          "generate",
-          {
-            contentGenJobId: job.id,
-            contentType: job.contentType,
-            targetSearchIntent: job.targetSearchIntent,
-            inputPayload: job.inputPayload,
-          },
-          { jobId: `gen-${job.id}` },
-        );
-        totalEnqueued++;
-      } catch (err) {
-        // P2002 unique constraint = idempotency hit → skip silently
-        const msg = err instanceof Error ? err.message : String(err);
-        if (!msg.includes("Unique constraint")) {
-          console.error("[orchestrator] insert ContentGenJob failed:", msg);
-        }
-      }
+    // Sprint Campaign Controls — dispatch selon cityProcessingMode
+    let enqueued: number;
+    if (campaign.cityProcessingMode === "sequential") {
+      enqueued = await processSequentialCampaign(
+        campaign,
+        toEnqueue,
+        hasPerTypeMode,
+        remainingByType,
+      );
+    } else {
+      enqueued = await processParallelCampaign(
+        campaign,
+        toEnqueue,
+        hasPerTypeMode,
+        remainingByType,
+        undefined,
+      );
     }
+    totalEnqueued += enqueued;
 
     await prisma.coverageCampaign.update({
       where: { id: campaign.id },
