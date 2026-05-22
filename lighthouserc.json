@@ -35,9 +35,9 @@
         "categories:seo": ["warn", { "minScore": 0.9 }],
 
         "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-        "interaction-to-next-paint": "off",
-        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
-        "total-blocking-time": ["error", { "maxNumericValue": 200 }],
+        "interaction-to-next-paint": ["warn", { "maxNumericValue": 80 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 150 }],
         "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
         "speed-index": ["error", { "maxNumericValue": 2500 }],
 
@@ -65,11 +65,13 @@
       }
     },
     "_assert_doctrine": [
-      "Sprint Web Vitals fix 2026-05-17 — tuning runbook deploy recovery.",
+      "Sprint Final P1 2026-05-22 — ratchet cibles strictes alignées AGENTS.md (CLS=0.05 / TBT≤150 / INP≤80 warn).",
+      "Sprint Web Vitals fix 2026-05-17 — tuning runbook deploy recovery (historique).",
       "Doctrine : assertions Core Web Vitals (LCP/CLS/TBT/FCP/SI) restent ERROR strict.",
-      "INP audit toujours auditRan=0 en CI (lab Lighthouse n'a pas d'interaction utilisateur réelle) → off, mesuré uniquement par CrUX field data.",
-      "CLS desserré 0.05 → 0.1 (Google 'good' threshold) car /fr/audit CWV CLS dépasse 0.05. Doctrine interne 0 conservée mais gate accepte 0.1.",
-      "TBT desserré 150 → 200 ms (Google 'good') car LHCI Lighthouse 12 a recalibré certains scripts.",
+      "Mobile gate actif : `collect.settings` inclut `[{preset:desktop},{preset:mobile}]` → chaque URL est testée en desktop ET mobile, assertions appliquées aux deux runs.",
+      "INP audit gated en WARN @ 80ms (P1-7 fix 2026-05-22) — Lighthouse 12+ produit un INP estimé via simulated throttling. WARN car auditRan peut rester 0 en CI sur certaines pages statiques sans interaction simulable (gate field via CrUX prod = source de vérité finale).",
+      "CLS ratcheté 0.1 → 0.05 (P1-7 2026-05-22) — alignement doctrine AGENTS.md (CLS=0 cible interne, 0.05 gate p75). Si /fr/audit régresse, corriger le composant root cause plutôt que de relâcher.",
+      "TBT ratcheté 200 → 150 ms (P1-7 2026-05-22) — alignement budget AGENTS.md TBT≤150 ms lab desktop.",
       "Insights Lighthouse 12+ (forced-reflow-insight, inspector-issues, network-dependency-tree-insight, dom-size-insight, cache-insight) sont des audits expérimentaux qui retournent score=0 quand notApplicable. Désactivés du gate strict, garder en analyse manuelle.",
       "Audits perf legacy-javascript / unused-javascript / dom-size passés en WARN (improvement progressif via Sprint Web Vitals follow-up V3-V6 dédié, voir axionia_audit_web_vitals_v3_v6_pending memory).",
       "robots-txt audit OFF — false positive causé par directive Cloudflare Managed Content-Signal non-standard (action humaine UI CF Security → AI Settings → disable Content-Signal Policy pour fix vrai).",

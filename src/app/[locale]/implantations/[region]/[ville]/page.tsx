@@ -50,6 +50,8 @@ import {
   buildLocalBusinessJsonLd,
   buildPlaceJsonLd,
   buildFaqSpeakableJsonLd,
+  buildBreadcrumbJsonLd,
+  buildServiceJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -203,10 +205,53 @@ export default async function VillePage({ params }: Props) {
     return merged;
   })();
 
-  // ---- JSON-LD stack (4 schemas + BreadcrumbList auto via <Breadcrumbs>) ----
+  // ---- JSON-LD stack — Sprint Final P1-12 (2026-05-22) ----
+  // Audit Fl-02 (visiteur recherche locale) score 22/25 → enrichissement de
+  // 4 schemas vers 8 dans le `@graph` page-level pour combler le gap citation
+  // AI Overviews / Perplexity / Claude.ai sur les pages ville hub. Les schemas
+  // Organization + WebSite restent émis 1 seule fois via le root layout
+  // (`src/app/[locale]/layout.tsx`) — pas de re-injection ici (anti-duplication).
+  //
+  // 8 schemas page-level :
+  //   1. Service (offre cabinet IA opérationnel multi-services à la ville)
+  //   2. LocalBusiness/ProfessionalService (siège local)
+  //   3. Place (point géo INSEE)
+  //   4. BreadcrumbList (hiérarchie navigation — auparavant emitté inline par
+  //      <Breadcrumbs>, désormais consolidé dans le @graph via emitJsonLd=false)
+  //   5. FAQPage + Speakable (questions géolocalisées)
+  //   6. Person Manon (E-E-A-T signal — autrice éditoriale)
+  //   7. WebPage + abstract (cible position 0 / featured snippet)
+  //   8. ItemList villes proches (maillage régional Haversine)
+  const path = `/implantations/${region.slug}/${ville.slug}` as `/${string}`;
+  const url = `${SITE_URL}/${loc}${path}`;
+  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(ville.nameFr.replace(/ /g, "_"))}`;
+
+  const serviceJsonLd = buildServiceJsonLd({
+    locale: loc,
+    path,
+    name: isFr
+      ? `Cabinet IA opérationnel à ${ville.nameFr} · Axion-IA`
+      : `Operational AI consultancy in ${ville.nameFr} · Axion-IA`,
+    description: isFr ? copy.pitchFr : copy.pitchEn,
+    serviceType: isFr ? "Cabinet IA opérationnel B2B" : "Operational B2B AI consultancy",
+    areasServed: [
+      {
+        type: "City",
+        name: ville.nameFr,
+        url,
+      },
+      {
+        type: "AdministrativeArea",
+        name: region.nameFr,
+        url: `${SITE_URL}/${loc}/${isFr ? "implantations" : "locations"}/${region.slug}`,
+      },
+      { type: "Country", name: "France" },
+    ],
+  });
+
   const localBusinessJsonLd = buildLocalBusinessJsonLd({
     locale: loc,
-    path: `/implantations/${region.slug}/${ville.slug}`,
+    path,
     name: isFr
       ? `Axion-IA · cabinet IA opérationnel à ${ville.nameFr}`
       : `Axion-IA · operational AI consultancy in ${ville.nameFr}`,
@@ -223,7 +268,7 @@ export default async function VillePage({ params }: Props) {
 
   const placeJsonLd = buildPlaceJsonLd({
     locale: loc,
-    path: `/implantations/${region.slug}/${ville.slug}`,
+    path,
     name: ville.nameFr,
     geo: { latitude: ville.geo.lat, longitude: ville.geo.lon },
     containedInPlace: {
@@ -233,17 +278,111 @@ export default async function VillePage({ params }: Props) {
     population: ville.population,
   });
 
+  // BreadcrumbList consolidé dans le @graph (au lieu d'être émis inline par
+  // <Breadcrumbs emitJsonLd={false}>). Permet à Google de relier breadcrumb +
+  // WebPage + LocalBusiness via @id cross-references.
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd({
+    locale: loc,
+    items: [
+      { name: isFr ? "Implantations" : "Locations", href: "/implantations" },
+      { name: region.nameFr, href: `/implantations/${region.slug}` },
+      { name: ville.nameFr, href: path },
+    ],
+  });
+
   const faqSpeakableJsonLd = copy.faqGeolocalisee?.length
     ? buildFaqSpeakableJsonLd({
         items: copy.faqGeolocalisee.map((f) => ({ question: f.q, answer: f.a })),
       })
     : null;
 
+  // Person Manon — E-E-A-T inline (sans appel DB, SSG-safe sur ~2150 routes).
+  // Cohérent avec le pattern `ville-service-jsonld.ts` (qui sert /audit/par-ville,
+  // /interventions/par-ville, etc.). Aligne le signal d'authorship sur le hub
+  // ville. `aiGenerated:true` requis AI Act art. 50 (deadline 2026-08-02).
+  const personManonJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/fr/equipe/manon#person`,
+    name: "Manon",
+    jobTitle: isFr ? "Plume éditoriale Axion-IA" : "Editorial voice Axion-IA",
+    url: `${SITE_URL}/fr/equipe/manon`,
+    worksFor: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Axion-IA",
+    },
+    knowsAbout: isFr
+      ? [
+          "Intelligence artificielle en entreprise",
+          "Audit IA",
+          "Implantations locales France",
+          "Transformation numérique PME",
+        ]
+      : [
+          "Enterprise AI",
+          "AI audit",
+          "France local presence",
+          "SME digital transformation",
+        ],
+    knowsLanguage: ["fr-FR"],
+    // AI Act EU art. 50 — disclosure machine-readable persona IA.
+    aiGenerated: true,
+    additionalType: "https://schema.org/AIGeneratedContent",
+    disambiguatingDescription: isFr
+      ? "Persona éditoriale Axion-IA. Portrait généré par IA, contenus IA-assistés supervisés par l'équipe Axion-IA (AI Act EU art. 50)."
+      : "Axion-IA editorial persona. AI-generated portrait, AI-assisted content supervised by the Axion-IA team (EU AI Act art. 50).",
+  } as const;
+
+  // WebPage avec abstract — cible #1 featured snippets / position 0 / AI Overviews.
+  // `abstract` (< 160 chars) extrait en priorité par Google, Perplexity, Claude.ai.
+  // `alternativeHeadline` = signal requête courte ("Axion-IA Lyon", "IA Paris").
+  const directAnswerText = isFr
+    ? (copy.directAnswerFr ?? copy.pitchFr)
+    : (copy.directAnswerEn ?? copy.pitchEn);
+  const abstractText =
+    directAnswerText.length > 160 ? directAnswerText.slice(0, 157) + "…" : directAnswerText;
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: isFr
+      ? `Cabinet IA opérationnel à ${ville.nameFr} · Axion-IA`
+      : `Operational AI consultancy in ${ville.nameFr} · Axion-IA`,
+    abstract: abstractText,
+    alternativeHeadline: isFr
+      ? `Axion-IA ${ville.nameFr}`
+      : `Axion-IA ${ville.nameFr}`,
+    description: (isFr ? copy.pitchFr : copy.pitchEn).slice(0, 300),
+    inLanguage: loc,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: [
+      { "@type": "City", name: ville.nameFr, sameAs: cityWikiUrl },
+      { "@type": "AdministrativeArea", name: region.nameFr },
+    ],
+    breadcrumb: { "@id": `${url}#breadcrumb` },
+    primaryImageOfPage: `${SITE_URL}/opengraph-image`,
+    potentialAction: {
+      "@type": "ReserveAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/${loc}/reserver?ville=${ville.slug}`,
+      },
+      result: {
+        "@type": "Reservation",
+        name: isFr
+          ? `Réservation intervention IA à ${ville.nameFr}`
+          : `AI engagement booking in ${ville.nameFr}`,
+      },
+    },
+  } as const;
+
   const nearbyItemList =
     nearbyVilles.length > 0
       ? buildItemListJsonLd({
           locale: loc,
-          path: `/implantations/${region.slug}/${ville.slug}`,
+          path,
           name: isFr ? `Villes proches de ${ville.nameFr}` : `Cities near ${ville.nameFr}`,
           items: nearbyVilles.map(({ ville: v }, idx) => ({
             position: idx + 1,
@@ -270,7 +409,10 @@ export default async function VillePage({ params }: Props) {
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             <div>
               <div className="mb-8">
-                <Breadcrumbs items={breadcrumbItems} />
+                {/* Sprint Final P1-12 (2026-05-22) — BreadcrumbList consolidé
+                    dans le @graph JSON-LD page-level (cf. plus bas). On désactive
+                    l'émission inline ici pour éviter le doublon. */}
+                <Breadcrumbs items={breadcrumbItems} emitJsonLd={false} />
               </div>
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span
@@ -882,17 +1024,25 @@ export default async function VillePage({ params }: Props) {
       {/* AI Act art. 50 — disclosure contenu IA-assisté (P0-5 P4 sprint 2026-05-21). */}
       <AiContentDisclaimer locale={loc} />
 
-      {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 5+
+      {/* JSON-LD posé en fin de page (audit Web Vitals 2026-05-15 §1.6) — 8
           schemas combinés en 1 seul script @graph pour ne pas bloquer le
           parsing du contenu visible. Google + Bing supportent @graph.
+          Sprint Final P1-12 (2026-05-22) — enrichissement de 4 schemas vers 8
+          (Service + BreadcrumbList + Person Manon + WebPage en plus) pour combler
+          le gap Fl-02 audit final (visiteur recherche locale — score 22/25).
+          Organization + WebSite restent émis 1 seule fois via le root layout.
           V-04 P0i (Sprint Correctif 2026-05-22) — strategy="afterInteractive"
           défère l'injection après hydratation (-300 à -500 ms TBT mesuré audit).
           Googlebot exécute JS, second pass crawler lit le JSON-LD. */}
       <JsonLdGraph
         schemas={[
+          serviceJsonLd,
           localBusinessJsonLd,
           placeJsonLd,
+          breadcrumbJsonLd,
           faqSpeakableJsonLd ?? null,
+          personManonJsonLd,
+          webPageJsonLd,
           nearbyItemList ?? null,
         ]}
         strategy="afterInteractive"

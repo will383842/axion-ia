@@ -145,21 +145,24 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Build
         run: pnpm build
+      # Sprint Final P1-8 (audit final 2026-05-22) — Bundle delta + LHCI passés
+      # en STRICT (continue-on-error retiré) pour enforcer le contrat AGENTS.md :
+      # « Bundle delta gate (size-limit) bloque les PR avec > +5 KB gz vs main »
+      # et « Lighthouse CI (pnpm lhci) gate les PR ».
+      # Playwright et Gate C Docker restent continue-on-error: true tant que les
+      # bugs UI (P1-2 dédié) + env fixture Gate C ne sont pas livrés.
       - name: Bundle size
         run: pnpm bundle:check
-        continue-on-error: true
       - name: Bundle delta vs main
         uses: andresz1/size-limit-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           skip_step: install
-        continue-on-error: true
       - name: Playwright suite (continue-on-error tant que P1-2 bugs UI non fixés)
         run: pnpm test:e2e --project=chromium
         continue-on-error: true
       - name: Lighthouse CI
         run: pnpm lhci:autorun
-        continue-on-error: true
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4

@@ -4,6 +4,7 @@
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { getQualityImprovementAttemptsDistribution } from "@/server/actions/content-gen/dashboard";
 
 interface DailyScore {
   readonly day: string;
@@ -92,6 +93,78 @@ async function loadDailyScores(): Promise<ReadonlyArray<DailyScore>> {
     .sort((a, b) => (a.day < b.day ? 1 : -1));
 }
 
+/**
+ * Sprint Final P1-13 — Histogramme distribution des tentatives quality-improver.
+ *
+ * Affiche combien d'articles ont nécessité 0, 1, 2, 3+ itérations LLM-judge →
+ * quality-improver-worker avant d'atteindre `published` ou `needs_review`.
+ * Source data : ContentGenJob.qualityImprovementAttempts.
+ *
+ * Rendu : server component async (RSC). Pas d'export `revalidate` ici — la
+ * page parent est `force-dynamic` (cohérent avec les autres KPIs admin qui
+ * exigent fraîcheur temps-réel). Couleurs : terracotta brand sur fond ivoire
+ * (--color-admin-paper / --color-admin-terracotta).
+ */
+async function QualityAttemptsDistributionBlock(): Promise<React.ReactElement> {
+  const { buckets, total } = await getQualityImprovementAttemptsDistribution();
+  const maxCount = buckets.reduce((m, b) => (b.count > m ? b.count : m), 0);
+
+  // Bucket "3+" : on agrège tous les attempts >= 3 pour rester lisible (la cap
+  // configurable côté worker est typiquement 3-5, peu de jobs au-delà).
+  interface DisplayBucket {
+    label: string;
+    count: number;
+  }
+  const display: DisplayBucket[] = [];
+  for (let i = 0; i <= 2; i++) {
+    const c = buckets.filter((b) => b.attempts === i).reduce((s, b) => s + b.count, 0);
+    display.push({ label: `${i} itération${i > 1 ? "s" : ""}`, count: c });
+  }
+  const threePlus = buckets.filter((b) => b.attempts >= 3).reduce((s, b) => s + b.count, 0);
+  display.push({ label: "3+ itérations", count: threePlus });
+  const displayMax = display.reduce((m, d) => (d.count > m ? d.count : m), Math.max(1, maxCount));
+
+  return (
+    <AdminCard className="mt-[var(--space-admin-5)]">
+      <h2 className="admin-h2">Distribution boucle qualité (LLM-judge → improver)</h2>
+      <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-text-muted)]">
+        Nombre d&apos;itérations LLM-judge nécessaires avant statut terminal{" "}
+        <code>published</code> ou <code>needs_review</code>. {total} job
+        {total > 1 ? "s" : ""} agrégé{total > 1 ? "s" : ""}.
+      </p>
+      <div className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-3)]">
+        {total === 0 ? (
+          <div className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-text-muted)]">
+            Aucun job en statut <code>published</code> / <code>needs_review</code> à agréger.
+          </div>
+        ) : (
+          display.map((d) => {
+            const pct = displayMax === 0 ? 0 : Math.round((d.count / displayMax) * 100);
+            const pctTotal = total === 0 ? 0 : Math.round((d.count / total) * 100);
+            return (
+              <div
+                key={d.label}
+                className="flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
+              >
+                <span className="w-[140px]">{d.label}</span>
+                <div className="h-[14px] flex-1 overflow-hidden rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-surface-soft)]">
+                  <div
+                    style={{ width: `${pct}%`, backgroundColor: "var(--color-admin-terracotta)" }}
+                    className="h-full"
+                  />
+                </div>
+                <span className="w-[80px] text-right tabular-nums">
+                  {d.count} ({pctTotal}%)
+                </span>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </AdminCard>
+  );
+}
+
 function ScoreBar({ label, value, max }: { label: string; value: number; max: number }) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100));
   return (
@@ -176,6 +249,9 @@ export async function QualityV2(): Promise<React.ReactElement> {
           </table>
         </div>
       </AdminCard>
+
+      {/* Sprint Final P1-13 — Bloc additionnel distribution boucle qualité */}
+      <QualityAttemptsDistributionBlock />
     </AdminPageShell>
   );
 }

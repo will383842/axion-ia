@@ -10,22 +10,32 @@ interface BreadcrumbItem {
 
 interface BreadcrumbsProps {
   items: ReadonlyArray<BreadcrumbItem>;
+  /**
+   * Sprint Final P1-12 (2026-05-22) — opt-out de l'émission du JSON-LD
+   * BreadcrumbList inline. Permet aux pages qui consolident leurs schemas
+   * dans un seul `@graph` (ex. `/implantations/[region]/[ville]`) d'inclure
+   * BreadcrumbList dans leur graph sans dupliquer le script. Default = true
+   * pour préserver le comportement historique sur les ~94 pages consommatrices.
+   */
+  emitJsonLd?: boolean;
 }
 
 // Visible visually + Schema.org BreadcrumbList JSON-LD (axionia-seo-aeo).
 // Caller passes the path tail (without home). JSON-LD délégué à la factory
 // `lib/seo.ts` pour rester cohérent avec les autres pages qui l'utilisent.
-export async function Breadcrumbs({ items }: BreadcrumbsProps) {
+export async function Breadcrumbs({ items, emitJsonLd = true }: BreadcrumbsProps) {
   const t = await getTranslations("breadcrumb");
   const locale = (await getLocale()) as Locale;
   const homeLabel = t("home");
 
   const fullItems: ReadonlyArray<BreadcrumbItem> = [{ href: "/", label: homeLabel }, ...items];
 
-  const jsonLd = buildBreadcrumbJsonLd({
-    locale,
-    items: fullItems.map((item) => ({ name: item.label, href: item.href })),
-  });
+  const jsonLd = emitJsonLd
+    ? buildBreadcrumbJsonLd({
+        locale,
+        items: fullItems.map((item) => ({ name: item.label, href: item.href })),
+      })
+    : null;
 
   return (
     <>
@@ -50,10 +60,12 @@ export async function Breadcrumbs({ items }: BreadcrumbsProps) {
           })}
         </ol>
       </nav>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {jsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      ) : null}
     </>
   );
 }

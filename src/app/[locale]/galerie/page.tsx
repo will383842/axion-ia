@@ -211,7 +211,10 @@ export default async function GalleryIndexPage({
   );
 }
 
-export const revalidate = 0; // dynamique — pas de cache ISR
+// ISR 60s : galerie publique avec filtres URL — perf optimisée (P1-16 fix 2026-05-22).
+// La page lit `searchParams` (module/page) donc Next.js applique le cache par variante de query.
+// 60s = trade-off entre fraîcheur (nouvelles images publiées admin) et perf SSR.
+export const revalidate = 60;
 
 // ──────────────────────────────────────────────────────────
 // Helpers

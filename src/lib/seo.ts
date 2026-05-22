@@ -400,12 +400,14 @@ export function buildOrganizationJsonLd({
       url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
     },
     foundingDate: "2024",
+    // Décision Will D7 (2026-05-21) : société française pure, siège principal Paris.
+    // Cf. memory [[axionia_decisions_will_final_2026-05-21]].
     foundingLocation: {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
         addressCountry: "FR",
-        addressLocality: "[Ville — France]",
+        addressLocality: "Paris",
       },
     },
     areaServed: ["FR", "EU"],

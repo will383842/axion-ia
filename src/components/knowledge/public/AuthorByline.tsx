@@ -45,12 +45,20 @@ export function AuthorByline(props: AuthorBylineProps) {
   return (
     <aside className="border-border my-6 flex flex-wrap items-start gap-3 rounded border p-4">
       {authorAvatarUrl ? (
+        // Sprint Final P1-6 (audit 2026-05-22) — `<img>` conservé car
+        // `authorAvatarUrl` est une URL remote arbitraire (DB) et
+        // `next.config.ts` `images.remotePatterns: []` n'autorise pas
+        // l'optimizer next/image dessus. Ajout `loading="lazy"` +
+        // `decoding="async"` pour éviter blocage main-thread + lazy off-fold.
+        // CLS déjà mitigé par width/height fixés.
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={authorAvatarUrl}
           alt={isFr ? `Portrait de ${authorName}` : `Portrait of ${authorName}`}
           width={56}
           height={56}
+          loading="lazy"
+          decoding="async"
           className="rounded-full"
         />
       ) : null}
