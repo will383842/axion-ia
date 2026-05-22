@@ -89,6 +89,7 @@ export function BlogSearch({
     if (isOpen) {
       // Focus input after dialog mount + reset state.
       requestAnimationFrame(() => inputRef.current?.focus());
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveIdx(0);
     } else {
       setQuery("");
@@ -96,6 +97,7 @@ export function BlogSearch({
   }, [isOpen]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveIdx(0);
   }, [query]);
 
@@ -132,6 +134,7 @@ export function BlogSearch({
       </button>
 
       {isOpen ? (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events
         <div
           role="dialog"
           aria-modal="true"

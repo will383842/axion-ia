@@ -4,7 +4,7 @@
  */
 import { describe, it, expect } from "vitest";
 import { ALL_KEYWORD_SEEDS } from "../master";
-import { validateAllSeeds } from "../validate";
+import { validateAllSeeds as _validateAllSeeds } from "../validate";
 import { KW_AUDIT_CLUSTERS } from "../g1c-audit-clusters";
 import { KW_FORMATIONS_CLUSTERS } from "../g2c-formations-clusters";
 import { KW_COACHING_CLUSTERS } from "../g6c-coaching-clusters";

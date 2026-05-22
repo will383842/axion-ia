@@ -152,7 +152,7 @@ export function startKeywordOpportunityDetectorWorker(): Worker {
 
 /** @deprecated Utiliser startKeywordOpportunityDetectorWorker() */
 export function createKeywordOpportunityDetectorWorker(redisUrl: string): Worker {
-  return new Worker(QUEUE_NAME, async (job: Job) => detectOpportunities(), {
+  return new Worker(QUEUE_NAME, async (_job: Job) => detectOpportunities(), {
     connection: { url: redisUrl },
     concurrency: 1,
     lockDuration: 120_000,
