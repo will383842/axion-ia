@@ -76,8 +76,8 @@ src/server/image-bank/utils/paths.ts:51:/\*\* URL absolue du téléchargement wa
 
 ## License CC BY 4.0 default
 
-src/server/image-bank/constants.ts:54:export const DEFAULT*LICENSE_TYPE = "cc-by-4.0";
-src/server/image-bank/constants.ts:58:/\** Credit text (CC BY 4.0 attribution short form). \_/
+src/server/image-bank/constants.ts:54:export const DEFAULT\*LICENSE_TYPE = "cc-by-4.0";
+src/server/image-bank/constants.ts:58:/\*\* Credit text (CC BY 4.0 attribution short form). \_/
 src/server/image-bank/constants.ts:174:export const WATERMARK_DEFAULT_TEXT_FN = (year: number) => `© ${year} Axion-IA — CC BY 4.0`;
 src/server/image-bank/services/image-jsonld-graph.service.ts:343: ? `Banque d'images ${moduleLabel} d'Axion-IA — ${args.totalImages} images sous licence CC BY 4.0.`
 src/server/image-bank/services/image-jsonld-graph.service.ts:344: : `${moduleLabel} image bank by Axion-IA — ${args.totalImages} CC BY 4.0 licensed images.`,
