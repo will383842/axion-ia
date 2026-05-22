@@ -27,11 +27,11 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
-
-const QUALITY_THRESHOLD = 60;
 import { resolveLandingVilleVariant } from "./landing-ville-templates";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
+
+const QUALITY_THRESHOLD = 60;
 
 export const landingVilleGenerator: Generator = {
   contentType: "landing_ville",

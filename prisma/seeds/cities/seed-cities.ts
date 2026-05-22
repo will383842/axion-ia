@@ -18,7 +18,8 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import type { PrismaClient } from "../../generated/client";
+import { PrismaClient } from "../../generated/client";
+import type { PrismaClient as PrismaClientType } from "../../generated/client";
 
 interface CityRaw {
   slug: string;
@@ -41,15 +42,11 @@ function getPopulationTier(pop: number): number {
 }
 
 function hasEconomicDataFile(slug: string): boolean {
-  const filePath = path.resolve(
-    __dirname,
-    "../../../src/data/villes/economic-data",
-    `${slug}.ts`,
-  );
+  const filePath = path.resolve(__dirname, "../../../src/data/villes/economic-data", `${slug}.ts`);
   return fs.existsSync(filePath);
 }
 
-export async function seedCities(prisma: PrismaClient): Promise<number> {
+export async function seedCities(prisma: PrismaClientType): Promise<number> {
   const jsonPath = path.resolve(__dirname, "cities-france-5000plus.json");
   if (!fs.existsSync(jsonPath)) {
     console.warn("[seed-cities] cities-france-5000plus.json introuvable — skip");
@@ -110,12 +107,9 @@ export async function seedCities(prisma: PrismaClient): Promise<number> {
 
 // CLI standalone
 if (require.main === module) {
-  const { PrismaClient: PC } = require("../../generated/client") as {
-    PrismaClient: new () => PrismaClient;
-  };
-  const prisma = new PC();
+  const prisma = new PrismaClient();
 
-  seedCities(prisma)
+  seedCities(prisma as unknown as PrismaClientType)
     .then((count) => {
       console.log(`[seed-cities] ${count} villes upserted.`);
     })
