@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
+import { getCityCoverageProgress, getOrchestratorStats } from "@/server/actions/content-gen/geo";
 import type { ContentType, SearchIntent } from "../../../../../../../prisma/generated/client";
 
 interface Props {
@@ -17,9 +18,11 @@ interface Props {
 
 export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<React.ReactElement> {
   const base = `/fr/${adminPrefix}/content-gen`;
-  const [kpis, sectorBreakdown] = await Promise.all([
+  const [kpis, sectorBreakdown, cityProgress, orchestrator] = await Promise.all([
     getDashboardKpis(),
     getSectorBreakdownToday(),
+    getCityCoverageProgress(),
+    getOrchestratorStats(),
   ]);
 
   async function quickGen(formData: FormData) {
@@ -41,6 +44,9 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
     redirect(`/fr/${adminPrefix}/content-gen/jobs/${result.jobId}`);
   }
 
+  // Onboarding zero-state : aucune campagne et aucun job → wizard premier pas
+  const zeroCampaigns = orchestrator.activeCampaigns.length === 0 && kpis.jobsRun7d === 0;
+
   return (
     <AdminPageShell>
       <AdminPageHeader
@@ -61,6 +67,23 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           </div>
         }
       />
+
+      {zeroCampaigns && (
+        <AdminCard className="mb-[var(--space-admin-6)] border-2 border-[#c24a1b]">
+          <h2 className="admin-h2">🚀 Démarrer la génération de contenus</h2>
+          <p className="admin-meta-block">
+            Aucune campagne active. Créez votre première campagne depuis un preset ou en mode libre.
+          </p>
+          <div className="mt-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
+            <Link href={`${base}/coverage/presets`} className="admin-button-cta">
+              Choisir un preset →
+            </Link>
+            <Link href={`${base}/coverage/new`} className="admin-button-ghost">
+              Campagne libre
+            </Link>
+          </div>
+        </AdminCard>
+      )}
 
       <AdminCard className="mb-[var(--space-admin-6)]">
         <h2 className="admin-h2">
@@ -114,6 +137,43 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         <AdminStatCard label="Plagiat bloqués" value={kpis.plagiarismBlocks7d} />
         <AdminStatCard label="KB entries" value={kpis.kbHealth.chunks} />
       </section>
+
+      {/* P2 — Progression couverture villes */}
+      <AdminCard className="mb-[var(--space-admin-6)]">
+        <h2 className="admin-h2">Progression couverture villes</h2>
+        <p className="admin-meta-block">
+          {cityProgress.publishedVilles} / {cityProgress.targetVilles} villes avec au moins 1
+          article publié
+        </p>
+        <div className="mt-[var(--space-admin-3)]">
+          <progress
+            value={cityProgress.publishedVilles}
+            max={cityProgress.targetVilles}
+            aria-label={`${cityProgress.pct}% des villes cibles couvertes`}
+            style={{
+              width: "100%",
+              height: 12,
+              appearance: "none",
+              borderRadius: "var(--radius-admin-sm)",
+              overflow: "hidden",
+              accentColor:
+                cityProgress.pct < 33 ? "#b13a2b" : cityProgress.pct < 66 ? "#a8651b" : "#2f7d3a",
+            }}
+          />
+          <p className="admin-meta mt-[var(--space-admin-2)]">
+            {cityProgress.pct}%{" "}
+            {cityProgress.pct < 33
+              ? "🔴 démarrage"
+              : cityProgress.pct < 66
+                ? "🟡 en progression"
+                : "🟢 bonne couverture"}
+            {" · "}
+            <Link href={`${base}/city-coverage`} className="admin-link">
+              Détail villes →
+            </Link>
+          </p>
+        </div>
+      </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-6)]">
         <h2 className="admin-h2">Queue temps réel</h2>

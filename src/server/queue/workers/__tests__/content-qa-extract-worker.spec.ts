@@ -66,6 +66,21 @@ vi.mock("next/cache", () => ({
   revalidatePath: revalidatePathMock,
 }));
 
+// Mock faq-sanitizer: pass-through pour isoler le worker des dépendances DOMPurify/jsdom.
+// Le sanitizer a ses propres tests dans faq-sanitizer.test.ts.
+vi.mock("@/server/content-gen/shared/faq-sanitizer", () => ({
+  sanitizeFaqQuestion: (q: string | null | undefined) => ({
+    html: q?.trim() ?? "",
+    skip: !q?.trim(),
+    reason: undefined,
+  }),
+  sanitizeFaqAnswer: (a: string | null | undefined) => ({
+    html: a?.trim() ?? "",
+    skip: !a?.trim(),
+    reason: undefined,
+  }),
+}));
+
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
 interface QaJobData {

@@ -42,35 +42,63 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
                 <th>Scope</th>
                 <th>Avancement</th>
                 <th>Statut</th>
+                <th>ETA</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {stats.activeCampaigns.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="admin-table-empty">
+                  <td colSpan={6} className="admin-table-empty">
                     Aucune campagne active.
                   </td>
                 </tr>
               ) : (
-                stats.activeCampaigns.map((c) => (
-                  <tr key={c.id}>
-                    <td>{c.name}</td>
-                    <td>{c.scope}</td>
-                    <td>
-                      {c.generatedCount}/{c.totalTargetCount}
-                    </td>
-                    <td>{c.status}</td>
-                    <td>
-                      <Link
-                        href={`/fr/${adminPrefix}/content-gen/coverage/${c.id}`}
-                        className="admin-button-ghost"
-                      >
-                        Détail
-                      </Link>
-                    </td>
-                  </tr>
-                ))
+                stats.activeCampaigns.map((c) => {
+                  const pct =
+                    c.totalTargetCount > 0
+                      ? Math.round((c.generatedCount / c.totalTargetCount) * 100)
+                      : 0;
+                  return (
+                    <tr key={c.id}>
+                      <td>{c.name}</td>
+                      <td>{c.scope}</td>
+                      <td style={{ minWidth: 160 }}>
+                        <div className="flex flex-col gap-[var(--space-admin-1)]">
+                          <span className="text-[length:var(--text-admin-xs)] tabular-nums">
+                            {c.generatedCount}/{c.totalTargetCount} ({pct}%)
+                          </span>
+                          <progress
+                            value={c.generatedCount}
+                            max={c.totalTargetCount}
+                            aria-label={`${pct}% généré`}
+                            style={{
+                              width: "100%",
+                              height: 6,
+                              accentColor: pct < 33 ? "#b13a2b" : pct < 66 ? "#a8651b" : "#2f7d3a",
+                            }}
+                          />
+                        </div>
+                      </td>
+                      <td>{c.status}</td>
+                      <td>
+                        {c.etaDays != null ? (
+                          <span className="admin-meta">~{c.etaDays}j</span>
+                        ) : (
+                          <span className="admin-meta">—</span>
+                        )}
+                      </td>
+                      <td>
+                        <Link
+                          href={`/fr/${adminPrefix}/content-gen/coverage/${c.id}`}
+                          className="admin-button-ghost"
+                        >
+                          Détail
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

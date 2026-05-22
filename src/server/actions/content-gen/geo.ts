@@ -128,6 +128,8 @@ export interface OrchestratorStats {
     readonly status: string;
     readonly totalTargetCount: number;
     readonly generatedCount: number;
+    readonly velocity7d: number;
+    readonly etaDays: number | null;
   }>;
   readonly dailyPlanJobs24h: number;
   readonly totalActiveTarget: number;
@@ -137,6 +139,7 @@ export interface OrchestratorStats {
 export async function getOrchestratorStats(): Promise<OrchestratorStats> {
   await requireAdmin(); // Pass B fix P0-4
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const [activeCampaigns, dailyPlan] = await Promise.all([
     prisma.coverageCampaign.findMany({
       where: { status: { in: ["running", "paused"] } },
@@ -146,15 +149,39 @@ export async function getOrchestratorStats(): Promise<OrchestratorStats> {
       where: { createdAt: { gte: oneDayAgo } },
     }),
   ]);
+
+  // Velocity per campaign (jobs published last 7d)
+  const velocityRows =
+    activeCampaigns.length > 0
+      ? await prisma.contentGenJob.groupBy({
+          by: ["campaignId"],
+          _count: { _all: true },
+          where: {
+            campaignId: { in: activeCampaigns.map((c) => c.id) },
+            status: "published",
+            completedAt: { gte: sevenDaysAgo },
+          },
+        })
+      : [];
+  const velocityMap = new Map(velocityRows.map((r) => [r.campaignId, r._count._all]));
+
   return {
-    activeCampaigns: activeCampaigns.map((c) => ({
-      id: c.id,
-      name: c.name,
-      scope: c.scope,
-      status: c.status,
-      totalTargetCount: c.totalTargetCount,
-      generatedCount: c.generatedCount,
-    })),
+    activeCampaigns: activeCampaigns.map((c) => {
+      const velocity7d = velocityMap.get(c.id) ?? 0;
+      const remaining = c.totalTargetCount - c.generatedCount;
+      const etaDays =
+        velocity7d > 0 && remaining > 0 ? Math.ceil(remaining / (velocity7d / 7)) : null;
+      return {
+        id: c.id,
+        name: c.name,
+        scope: c.scope,
+        status: c.status,
+        totalTargetCount: c.totalTargetCount,
+        generatedCount: c.generatedCount,
+        velocity7d,
+        etaDays,
+      };
+    }),
     dailyPlanJobs24h: dailyPlan,
     totalActiveTarget: activeCampaigns.reduce((a, c) => a + c.totalTargetCount, 0),
     totalActiveGenerated: activeCampaigns.reduce((a, c) => a + c.generatedCount, 0),
@@ -234,4 +261,26 @@ export async function getJobsVilleSectorDetail(
     count: row._count.anchorVilleSlug,
     avgQuality: row._avg?.qualityScore ?? null,
   }));
+}
+
+export interface CityCoverageProgress {
+  readonly publishedVilles: number;
+  readonly targetVilles: number;
+  readonly pct: number;
+}
+
+/** Nombre de villes distinctes avec au moins 1 article publié (pour barre de progression 39/120). */
+export async function getCityCoverageProgress(): Promise<CityCoverageProgress> {
+  await requireAdmin();
+  const TARGET_VILLES = 120;
+  const grouped = await prisma.contentGenJob.groupBy({
+    by: ["anchorVilleSlug"],
+    where: { anchorVilleSlug: { not: null }, status: "published" },
+  });
+  const publishedVilles = grouped.length;
+  return {
+    publishedVilles,
+    targetVilles: TARGET_VILLES,
+    pct: TARGET_VILLES > 0 ? Math.round((publishedVilles / TARGET_VILLES) * 100) : 0,
+  };
 }
