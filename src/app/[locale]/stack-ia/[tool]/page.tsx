@@ -285,8 +285,10 @@ export default async function StackToolPage({ params }: Props) {
 
   return (
     <>
+      {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Product inline (SEO
+          critique), FAQ déféré afterInteractive (-100 à -180 ms TBT). */}
       <JsonLd data={productJsonLdEnriched} />
-      <JsonLd data={faqJsonLd} />
+      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-stack-ia-tool-faq" />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />

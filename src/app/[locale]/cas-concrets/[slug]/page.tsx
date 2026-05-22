@@ -236,8 +236,13 @@ export default async function CaseStudyPage({ params }: Props) {
         tone="dark"
       />
 
+      {/* V-04 P1 — Article inline (SEO racine), Review déféré afterInteractive. */}
       <JsonLd data={articleJsonLd} />
-      <JsonLd data={reviewJsonLd} />
+      <JsonLd
+        data={reviewJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-cas-concret-review"
+      />
     </>
   );
 }

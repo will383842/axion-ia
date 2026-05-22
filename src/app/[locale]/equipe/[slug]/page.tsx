@@ -107,12 +107,15 @@ export default async function PublicAuthorPage({ params }: Props) {
           </header>
 
           <figure style={{ margin: "0 0 32px", maxWidth: 420 }}>
+            {/* V-04 P2 (Sprint Correctif suite 2026-05-22) — portrait above-the-fold
+                = LCP candidate, priority + fetchpriority=high obligatoires. */}
             <Image
               src={profile.photoUrl1024}
               alt={profile.photoAlt ?? `${profile.displayName} — portrait éditorial Axion-IA`}
               width={420}
               height={420}
               sizes="(max-width: 640px) 100vw, 420px"
+              priority
               style={{ width: "100%", height: "auto", borderRadius: 8 }}
             />
           </figure>

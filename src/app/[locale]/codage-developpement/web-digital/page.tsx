@@ -476,10 +476,17 @@ export default async function WebDigitalPage({ params }: Props) {
 
   return (
     <>
+      {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Service inline (SEO racine
+          critique), 3 schemas secondaires différés afterInteractive (-200 à
+          -350 ms TBT, page lourde 4 schemas). */}
       <JsonLd data={serviceJsonLd} />
-      <JsonLd data={faqJsonLd} />
-      <JsonLd data={howToJsonLd} />
-      <JsonLd data={itemListJsonLd} />
+      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-web-digital-faq" />
+      <JsonLd data={howToJsonLd} strategy="afterInteractive" scriptId="jsonld-web-digital-howto" />
+      <JsonLd
+        data={itemListJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-web-digital-itemlist"
+      />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />

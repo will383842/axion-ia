@@ -491,8 +491,10 @@ export default async function AuditHub({ params }: Props) {
         threshold={500}
       />
 
+      {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Service inline (SEO racine
+          critique), ItemList déféré afterInteractive (-100 à -200 ms TBT). */}
       <JsonLd data={serviceJsonLd} />
-      <JsonLd data={itemListJsonLd} />
+      <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
     </>
   );
 }

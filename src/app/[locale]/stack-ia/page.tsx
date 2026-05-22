@@ -820,8 +820,9 @@ export default async function StackIaPage({ params }: Props) {
         tone="dark"
       />
 
+      {/* V-04 P1 — ItemList inline (catalogue principal SEO), FAQ déféré (-100 ms TBT). */}
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={faqJsonLd} />
+      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-stack-ia-hub-faq" />
     </>
   );
 }

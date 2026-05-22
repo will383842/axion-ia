@@ -120,9 +120,16 @@ export default async function RegionPage({ params }: Props) {
 
   return (
     <>
+      {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — LocalBusiness inline
+          (Local SEO racine critique), Place + ItemList villes différés
+          afterInteractive (-150 à -250 ms TBT page hub région). */}
       <JsonLd data={localBusinessJsonLd} />
-      <JsonLd data={placeJsonLd} />
-      <JsonLd data={villesItemList} />
+      <JsonLd data={placeJsonLd} strategy="afterInteractive" scriptId="jsonld-region-place" />
+      <JsonLd
+        data={villesItemList}
+        strategy="afterInteractive"
+        scriptId="jsonld-region-villes-itemlist"
+      />
 
       {/* Hero */}
       <Section

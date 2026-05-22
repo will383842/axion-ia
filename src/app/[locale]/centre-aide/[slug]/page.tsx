@@ -231,8 +231,9 @@ export default async function HelpArticlePage({ params }: Props) {
         }
       />
 
+      {/* V-04 P1 — Article inline (SEO racine), QAPage déféré afterInteractive. */}
       <JsonLd data={articleJsonLd} />
-      <JsonLd data={qaJsonLd} />
+      <JsonLd data={qaJsonLd} strategy="afterInteractive" scriptId="jsonld-centre-aide-qa" />
     </>
   );
 }
