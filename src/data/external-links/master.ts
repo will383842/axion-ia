@@ -7,7 +7,7 @@
  * Cf. _AUDIT/EXTERNAL-LINKS-2026-05-22/PHASE-0-RACCORDEMENT.md
  */
 
-import type { ExternalLink } from "./types";
+import type { ExternalLink, ExternalLinkStatus } from "./types";
 
 import { LINKS_NATIONAL_FR } from "./national-fr";
 import { LINKS_INTERNATIONAL } from "./international";
@@ -17,10 +17,36 @@ import { LINKS_VERTICALES } from "./verticales";
 import { LINKS_TOPICS } from "./topics";
 import { LINKS_PRESS_FR } from "./press-fr";
 import { LINKS_MANUAL_ADDITIONS } from "./manual-additions";
+import verificationStatusRaw from "./verification-status.json";
+
+interface VerificationOverride {
+  readonly status: ExternalLinkStatus;
+  readonly lastCheckedAt: string;
+  readonly paywall: boolean;
+  readonly indexable: boolean;
+  readonly hasSchemaOrg: boolean;
+  readonly isCompetitor: boolean;
+  readonly httpStatus?: number;
+}
+
+const verificationOverrides: Record<string, VerificationOverride> = Object.fromEntries(
+  Object.entries(verificationStatusRaw as Record<string, unknown>).filter(
+    ([k]) => !k.startsWith("_"),
+  ),
+) as Record<string, VerificationOverride>;
 
 /**
  * Liste mutable (pour permettre l'hydratation `refreshUsageStats()` qui
  * met à jour `usageCount` / `lastUsedAt` depuis la DB).
+ *
+ * Overrides appliqués depuis `verification-status.json` (produit par
+ * `src/scripts/verify-external-links-head.ts`) :
+ *  - status (active / 404 / deprecated / redirect_*)
+ *  - lastCheckedAt
+ *  - paywall (détection keywords)
+ *  - indexable (robots.txt)
+ *  - hasSchemaOrg (signal E-E-A-T)
+ *  - isCompetitor (détection runtime hostname)
  */
 export const ALL_EXTERNAL_LINKS: ExternalLink[] = [
   ...LINKS_NATIONAL_FR,
@@ -31,7 +57,19 @@ export const ALL_EXTERNAL_LINKS: ExternalLink[] = [
   ...LINKS_TOPICS,
   ...LINKS_PRESS_FR,
   ...LINKS_MANUAL_ADDITIONS,
-].map((l) => ({ ...l })); // clone pour rendre mutable les champs `usageCount` / `lastUsedAt`
+].map((l) => {
+  const override = verificationOverrides[l.id];
+  if (!override) return { ...l };
+  return {
+    ...l,
+    status: override.status,
+    lastCheckedAt: override.lastCheckedAt,
+    paywall: override.paywall,
+    indexable: override.indexable,
+    isCompetitor: override.isCompetitor,
+    hasSchemaOrg: override.hasSchemaOrg,
+  };
+});
 
 /**
  * Stats agrégées synchrones (calculées au chargement).
