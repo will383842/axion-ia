@@ -32,6 +32,7 @@ import {
 } from "@/components/admin/ui";
 import { buildAdminNav } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
+import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
 
 import "@/app/admin.css";
 import "@/app/print.css";
@@ -87,6 +88,17 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   const nav: NavItem[] = buildNav(adminPrefix);
   const adminBase = `/fr/${adminPrefix}`;
 
+  // Sprint A-suite P6 — Item 2. Badge rouge failed jobs sidebar.
+  // Fire-and-forget au rendu SSR ; si DB non disponible (stub) → 0, pas de badge.
+  let failedJobsCount = 0;
+  if (showSidebar) {
+    try {
+      failedJobsCount = await getFailedJobsCount();
+    } catch {
+      // Silencieux — build-time stub ou DB indisponible.
+    }
+  }
+
   // CSS injecté côté admin (force-dynamic) pour masquer le Header/Footer publics
   // rendus par [locale]/layout.tsx. Cette approche remplace l'ancienne lecture
   // headers() dans le root layout qui forçait TOUTES les pages en dynamic (no-store),
@@ -121,7 +133,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
           }
         />
         <div className="flex">
-          <AdminSidebarNav items={nav} />
+          <AdminSidebarNav items={nav} failedJobsCount={failedJobsCount} />
           <main className="admin-main min-w-0 flex-1">{children}</main>
         </div>
         <AdminSessionExpiryWarning />

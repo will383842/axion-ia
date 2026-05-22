@@ -7,7 +7,9 @@ import {
   createCampaign,
   estimateCampaign,
   launchCampaign,
+  listCampaignTemplates,
   type EstimateCampaignResult,
+  type CampaignTemplateRow,
 } from "@/server/actions/content-gen/coverage";
 import { prisma } from "@/lib/prisma";
 import {
@@ -57,10 +59,11 @@ interface Props {
 }
 
 export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): Promise<React.ReactElement> {
-  const [distProfiles, audProfiles, equityData] = await Promise.all([
+  const [distProfiles, audProfiles, equityData, campaignTemplates] = await Promise.all([
     listDistributionProfiles(),
     listAudienceMixProfiles(),
     getCityEquityData(),
+    listCampaignTemplates(),
   ]);
   const dryRunResult = decodeDryRun(sp.dryRun);
 
@@ -181,6 +184,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
             onSubmit={create}
             onDryRun={dryRun}
             adminPrefix={adminPrefix}
+            templates={[...campaignTemplates]}
           />
         </AdminCard>
       )}

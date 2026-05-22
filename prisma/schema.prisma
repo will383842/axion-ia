@@ -2995,6 +2995,9 @@ model ContentGenJob {
   readabilityScore    Decimal? @db.Decimal(5, 2)
   doctrineCheckPassed Boolean?
   seoScore            Int?
+  /// Sprint A-suite P6 — Item 4. Score fact-check (0-100) posé par le fact-check
+  /// worker. Null = fact-check pas encore run. Gate publication dans publish-worker.
+  factCheckScore      Int?     @map("fact_check_score")
 
   // Boucle qualité v1.7 (§ 27)
   qualityImprovementAttempts Int @default(0)
@@ -3015,6 +3018,11 @@ model ContentGenJob {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdBy String?
+
+  /// Sprint A-suite P6 — Item 3. Traçabilité end-to-end entre orchestrateur,
+  /// gen-worker et publish-worker. UUID v4 généré à la création du job par
+  /// l'orchestrateur et propagé dans les logs de chaque worker.
+  correlationId String? @map("correlation_id") @db.VarChar(36)
 
   logs        GenerationLog[]
   reviewQueue ReviewQueue?

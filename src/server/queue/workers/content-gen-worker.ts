@@ -172,9 +172,14 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // sans backoff inutile.
     throw new UnrecoverableError(`ContentGenJob ${contentGenJobId} not found`);
   }
+  // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
+  if (dbJob.correlationId) {
+    console.log("[gen] correlationId=", dbJob.correlationId, "jobId=", contentGenJobId);
+  }
   await logStep(contentGenJobId, "kb_retrieve", "Job found, starting pipeline", {
     contentType,
     targetSearchIntent,
+    ...(dbJob.correlationId ? { correlationId: dbJob.correlationId } : {}),
   });
 
   // 2. Hard gate KB ready

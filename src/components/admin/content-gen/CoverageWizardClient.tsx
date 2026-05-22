@@ -16,6 +16,15 @@ interface AudienceProfile {
   readonly label?: string | null;
 }
 
+// Sprint A-suite P6 — Item 6. CampaignTemplate preset pour step 0 wizard.
+interface CampaignTemplateItem {
+  readonly id: string;
+  readonly slug: string;
+  readonly name: string;
+  readonly description: string;
+  readonly config: unknown;
+}
+
 interface Props {
   distProfiles: DistributionProfile[];
   audProfiles: AudienceProfile[];
@@ -23,6 +32,8 @@ interface Props {
   onSubmit: (formData: FormData) => Promise<void>;
   onDryRun?: (formData: FormData) => Promise<void>;
   adminPrefix: string;
+  /** Presets CampaignTemplate actifs. Si vide → step 0 ignoré. */
+  templates?: CampaignTemplateItem[];
 }
 
 // ─── Données statiques ────────────────────────────────────────────────────────
@@ -218,8 +229,10 @@ function equityBadge(count: number, target = 10) {
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 
-export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
-  const [step, setStep] = useState(1);
+export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: Props) {
+  // Step 0 si des templates sont disponibles, sinon on commence à 1.
+  const hasTemplates = templates.length > 0;
+  const [step, setStep] = useState(hasTemplates ? 0 : 1);
   const [isPending, startTransition] = useTransition();
 
   // Step 1 — Vertical
@@ -257,6 +270,61 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
 
   // Equity map
   const equityMap = Object.fromEntries(cityEquity.map((r) => [r.villeSlug, r.publishedArticles]));
+
+  // ─── Step 0 : Preset (Sprint A-suite P6 — Item 6) ────────────────────────
+  // Affiché uniquement si templates.length > 0. Permet de choisir un preset
+  // CampaignTemplate ou de partir de zéro (→ step 1).
+
+  const applyPreset = (tmpl: CampaignTemplateItem) => {
+    const cfg = tmpl.config as Record<string, unknown>;
+    // Pre-fill vertical
+    const verticals = Array.isArray(cfg.verticals) ? (cfg.verticals as string[]) : [];
+    if (verticals[0]) {
+      const v = VERTICALS.find((vv) => vv.slug === verticals[0] || vv.dbValue === verticals[0]);
+      if (v) {
+        setSelectedVertical(v.slug);
+        setSelectedKeywords(new Set(KEYWORD_CATALOG[v.slug]));
+      }
+    }
+    // Pre-fill city processing mode
+    if (cfg.cityProcessingMode === "sequential" || cfg.cityProcessingMode === "parallel") {
+      setCityProcessingMode(cfg.cityProcessingMode as "parallel" | "sequential");
+    }
+    // Pre-fill recurring schedule
+    if (typeof cfg.recurringSchedule === "string" && cfg.recurringSchedule) {
+      setSchedulePreset("custom");
+      setCustomCron(cfg.recurringSchedule);
+    }
+    // Sauter directement à l'étape 2 (Géo) après sélection preset.
+    setStep(2);
+  };
+
+  const step0 = hasTemplates ? (
+    <div className="space-y-[var(--space-admin-4)]">
+      <h2 className="admin-h2">Étape 0 — Choisir un preset</h2>
+      <p className="admin-meta-small">Démarrez avec un preset pré-configuré ou partez de zéro.</p>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {templates.map((tmpl) => (
+          <button
+            key={tmpl.id}
+            type="button"
+            onClick={() => applyPreset(tmpl)}
+            className="rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border)] p-[var(--space-admin-4)] text-left transition-all hover:border-[color:var(--color-admin-accent)]/50 hover:bg-[color:var(--color-admin-accent)]/5"
+          >
+            <div className="text-[length:var(--text-admin-sm)] font-semibold">{tmpl.name}</div>
+            <div className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {tmpl.description}
+            </div>
+          </button>
+        ))}
+      </div>
+      <div className="admin-filters-actions">
+        <button type="button" onClick={() => setStep(1)} className="admin-button-ghost">
+          Partir de zéro →
+        </button>
+      </div>
+    </div>
+  ) : null;
 
   // ─── Step 1 : Vertical ─────────────────────────────────────────────────────
 
@@ -1035,6 +1103,7 @@ export function CoverageWizardClient({ cityEquity, onSubmit }: Props) {
 
       {/* Step content */}
       <div>
+        {step === 0 && step0}
         {step === 1 && step1}
         {step === 2 && step2}
         {step === 3 && step3}

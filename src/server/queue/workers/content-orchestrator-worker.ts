@@ -135,6 +135,10 @@ async function createJobForSlot(opts: {
     .digest("hex")
     .slice(0, 32);
 
+  // Sprint A-suite P6 — Item 3. correlationId UUID v4 pour traçabilité
+  // end-to-end orchestrateur → gen-worker → publish-worker.
+  const correlationId = crypto.randomUUID();
+
   try {
     const job = await prisma.contentGenJob.create({
       data: {
@@ -143,6 +147,7 @@ async function createJobForSlot(opts: {
         status: "queued",
         priority: 5,
         campaignId: campaign.id,
+        correlationId,
         inputPayload: {
           campaignName: campaign.name,
           slotIndex,
@@ -209,13 +214,7 @@ async function processSequentialCampaign(
   const villeAnchors = campaign.anchorVilleSlugs;
   if (villeAnchors.length === 0) {
     // Pas de villes → fallback parallel (scope non-ville)
-    return processParallelCampaign(
-      campaign,
-      toEnqueue,
-      hasPerTypeMode,
-      remainingByType,
-      undefined,
-    );
+    return processParallelCampaign(campaign, toEnqueue, hasPerTypeMode, remainingByType, undefined);
   }
 
   const currentCityIdx = campaign.currentCityIndex ?? 0;

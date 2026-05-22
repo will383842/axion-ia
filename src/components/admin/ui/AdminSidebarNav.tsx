@@ -10,6 +10,7 @@
 // - Collapse 64px icons-only via toggle Cmd+B (mémorisé localStorage).
 // - Groupes collapsibles (UX dense — Linear / Vercel pattern).
 // - Min target size WCAG 2.2 §2.5.8.
+// - Sprint A-suite P6 — Mobile hamburger : translate-x (CLS=0), masqué sm/md.
 //
 // La sidebar V1 (src/components/admin/AdminSidebar.tsx) reste utilisable
 // derrière flag `ADMIN_V2_ENABLED=false` ; layout.tsx switchera en PR 6+.
@@ -54,6 +55,8 @@ import {
   KeyRound,
   ChevronDown,
   ChevronRight,
+  Menu,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
@@ -109,17 +112,22 @@ interface AdminSidebarNavProps {
   /** Permet l'override server-side du collapse initial (SSR). */
   defaultCollapsed?: boolean;
   className?: string;
+  /** Compteur de jobs en échec pour le badge rouge. */
+  failedJobsCount?: number;
 }
 
 export function AdminSidebarNav({
   items,
   defaultCollapsed = false,
   className,
+  failedJobsCount = 0,
 }: AdminSidebarNavProps): React.ReactElement {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [collapsedGroups, setCollapsedGroups] = useState<Set<AdminNavGroup>>(new Set());
   const [search, setSearch] = useState("");
+  // Mobile : sidebar masquée par défaut (translate-x-full), ouverte via hamburger.
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Restore depuis localStorage (microtask defer pour set-state-in-effect)
   useEffect(() => {
@@ -139,6 +147,18 @@ export function AdminSidebarNav({
       cancelled = true;
     };
   }, []);
+
+  // Ferme automatiquement la sidebar mobile après navigation.
+  // Pattern microtask pour éviter le lint set-state-in-effect (render cascade).
+  useEffect(() => {
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) setMobileOpen(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
 
   // Raccourci Cmd+B / Ctrl+B
   useEffect(() => {
@@ -181,114 +201,163 @@ export function AdminSidebarNav({
   }, [items, search]);
 
   return (
-    <aside
-      aria-label="Navigation admin"
-      className={cn(
-        "admin-sidebar-v2 sticky top-0 h-screen overflow-y-auto",
-        "border-r border-[color:var(--color-admin-border)]",
-        "bg-[color:var(--color-admin-paper-alt)]",
-        "transition-[width] duration-[var(--duration-admin-base)]",
-        collapsed ? "w-[64px]" : "w-[240px]",
-        className,
+    <>
+      {/* Bouton hamburger — visible uniquement mobile (< lg) */}
+      <button
+        type="button"
+        onClick={() => setMobileOpen((o) => !o)}
+        aria-label={mobileOpen ? "Fermer la navigation" : "Ouvrir la navigation"}
+        aria-expanded={mobileOpen}
+        aria-controls="admin-sidebar-mobile"
+        className={cn(
+          "fixed top-[var(--space-admin-4)] left-[var(--space-admin-4)] z-[var(--z-admin-sticky)]",
+          "flex items-center justify-center",
+          "rounded-[var(--radius-admin-sm)] p-[var(--space-admin-2)]",
+          "border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]",
+          "text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-hover)]",
+          "min-h-[var(--target-admin-min-desktop)] min-w-[var(--target-admin-min-desktop)]",
+          "lg:hidden",
+        )}
+      >
+        {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+      </button>
+
+      {/* Overlay mobile (backdrop) */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-[calc(var(--z-admin-sticky)-1)] bg-black/30 lg:hidden"
+          aria-hidden="true"
+          onClick={() => setMobileOpen(false)}
+        />
       )}
-    >
-      <div className="flex items-center justify-between px-[var(--space-admin-4)] py-[var(--space-admin-4)]">
-        {!collapsed ? (
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Filtrer la nav…"
-            aria-label="Filtrer la navigation admin"
+
+      <aside
+        id="admin-sidebar-mobile"
+        aria-label="Navigation admin"
+        className={cn(
+          "admin-sidebar-v2 sticky top-0 h-screen overflow-y-auto",
+          "border-r border-[color:var(--color-admin-border)]",
+          "bg-[color:var(--color-admin-paper-alt)]",
+          // Desktop : largeur fluide selon collapsed (comportement existant)
+          "transition-[width,transform] duration-[var(--duration-admin-base)]",
+          collapsed ? "w-[64px]" : "w-[240px]",
+          // Mobile : masqué via translate-x (CLS=0, pas de reflow layout)
+          "max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-[var(--z-admin-sticky)] max-lg:h-screen max-lg:w-[280px]",
+          mobileOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full",
+          className,
+        )}
+      >
+        <div className="flex items-center justify-between px-[var(--space-admin-4)] py-[var(--space-admin-4)]">
+          {!collapsed ? (
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Filtrer la nav…"
+              aria-label="Filtrer la navigation admin"
+              className={cn(
+                "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]",
+                "px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
+                "text-[length:var(--text-admin-sm)]",
+                "focus:border-[color:var(--color-admin-info)] focus:outline-none",
+              )}
+            />
+          ) : null}
+          <button
+            type="button"
+            onClick={() => {
+              setCollapsed((c) => {
+                const next = !c;
+                try {
+                  window.localStorage.setItem(COLLAPSE_LS_KEY, next ? "1" : "0");
+                } catch {
+                  /* ignore */
+                }
+                return next;
+              });
+            }}
+            aria-label={collapsed ? "Étendre la sidebar" : "Réduire la sidebar"}
+            aria-pressed={collapsed}
+            title="Cmd+B"
             className={cn(
-              "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]",
-              "px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
-              "text-[length:var(--text-admin-sm)]",
-              "focus:border-[color:var(--color-admin-info)] focus:outline-none",
+              "shrink-0 rounded-[var(--radius-admin-sm)] p-[var(--space-admin-2)]",
+              "text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-hover)]",
+              "min-h-[var(--target-admin-min-desktop)] min-w-[var(--target-admin-min-desktop)]",
             )}
-          />
-        ) : null}
-        <button
-          type="button"
-          onClick={() => {
-            setCollapsed((c) => {
-              const next = !c;
-              try {
-                window.localStorage.setItem(COLLAPSE_LS_KEY, next ? "1" : "0");
-              } catch {
-                /* ignore */
-              }
-              return next;
-            });
-          }}
-          aria-label={collapsed ? "Étendre la sidebar" : "Réduire la sidebar"}
-          aria-pressed={collapsed}
-          title="Cmd+B"
-          className={cn(
-            "shrink-0 rounded-[var(--radius-admin-sm)] p-[var(--space-admin-2)]",
-            "text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-hover)]",
-            "min-h-[var(--target-admin-min-desktop)] min-w-[var(--target-admin-min-desktop)]",
-          )}
-        >
-          {collapsed ? <ChevronRight size={16} /> : <ChevronDown size={16} />}
-        </button>
-      </div>
-      {ADMIN_NAV_GROUP_ORDER.map((g) => {
-        const groupItems = filtered.filter((it) => it.group === g);
-        if (groupItems.length === 0) return null;
-        const isCollapsed = collapsedGroups.has(g);
-        return (
-          <div key={g} className="px-[var(--space-admin-3)] pb-[var(--space-admin-4)]">
-            {!collapsed ? (
-              <button
-                type="button"
-                onClick={() => toggleGroup(g)}
-                aria-expanded={!isCollapsed}
-                className={cn(
-                  "flex w-full items-center justify-between",
-                  "px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
-                  "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
-                  "text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg-soft)]",
-                )}
-              >
-                {ADMIN_NAV_GROUP_LABELS[g]}
-                {isCollapsed ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
-              </button>
-            ) : null}
-            {!isCollapsed ? (
-              <ul className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-1)]">
-                {groupItems.map((item) => {
-                  const Icon = ICON_MAP[item.label] ?? FolderOpen;
-                  const active = pathname === item.href;
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        {...(active ? { "aria-current": "page" } : {})}
-                        title={collapsed ? item.label : undefined}
-                        className={cn(
-                          "flex items-center gap-[var(--space-admin-3)]",
-                          "rounded-[var(--radius-admin-sm)]",
-                          "px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
-                          "min-h-[var(--target-admin-min-desktop)]",
-                          "text-[length:var(--text-admin-sm)]",
-                          "transition-colors",
-                          active
-                            ? "bg-[color:var(--color-admin-info-soft)] font-medium text-[color:var(--color-admin-info)]"
-                            : "text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] hover:text-[color:var(--color-admin-fg)]",
-                        )}
-                      >
-                        <Icon size={16} aria-hidden="true" className="shrink-0" />
-                        {!collapsed ? <span className="truncate">{item.label}</span> : null}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : null}
-          </div>
-        );
-      })}
-    </aside>
+          >
+            {collapsed ? <ChevronRight size={16} /> : <ChevronDown size={16} />}
+          </button>
+        </div>
+        {ADMIN_NAV_GROUP_ORDER.map((g) => {
+          const groupItems = filtered.filter((it) => it.group === g);
+          if (groupItems.length === 0) return null;
+          const isCollapsed = collapsedGroups.has(g);
+          return (
+            <div key={g} className="px-[var(--space-admin-3)] pb-[var(--space-admin-4)]">
+              {!collapsed ? (
+                <button
+                  type="button"
+                  onClick={() => toggleGroup(g)}
+                  aria-expanded={!isCollapsed}
+                  className={cn(
+                    "flex w-full items-center justify-between",
+                    "px-[var(--space-admin-3)] py-[var(--space-admin-2)]",
+                    "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
+                    "text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg-soft)]",
+                  )}
+                >
+                  {ADMIN_NAV_GROUP_LABELS[g]}
+                  {isCollapsed ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
+                </button>
+              ) : null}
+              {!isCollapsed ? (
+                <ul className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-1)]">
+                  {groupItems.map((item) => {
+                    const Icon = ICON_MAP[item.label] ?? FolderOpen;
+                    const active = pathname === item.href;
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          {...(active ? { "aria-current": "page" } : {})}
+                          title={collapsed ? item.label : undefined}
+                          className={cn(
+                            "flex items-center gap-[var(--space-admin-3)]",
+                            "rounded-[var(--radius-admin-sm)]",
+                            "px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+                            "min-h-[var(--target-admin-min-desktop)]",
+                            "text-[length:var(--text-admin-sm)]",
+                            "transition-colors",
+                            active
+                              ? "bg-[color:var(--color-admin-info-soft)] font-medium text-[color:var(--color-admin-info)]"
+                              : "text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] hover:text-[color:var(--color-admin-fg)]",
+                          )}
+                        >
+                          <Icon size={16} aria-hidden="true" className="shrink-0" />
+                          {!collapsed ? (
+                            <>
+                              <span className="truncate">{item.label}</span>
+                              {/* Badge rouge jobs failed/quarantined (Item 2 Sprint A-suite) */}
+                              {failedJobsCount > 0 && item.href.includes("/content-gen/jobs") ? (
+                                <span
+                                  className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                                  aria-label={`${failedJobsCount} jobs en échec`}
+                                >
+                                  {failedJobsCount > 99 ? "99+" : failedJobsCount}
+                                </span>
+                              ) : null}
+                            </>
+                          ) : null}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
+            </div>
+          );
+        })}
+      </aside>
+    </>
   );
 }

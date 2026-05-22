@@ -227,6 +227,19 @@ export async function cancelJob(id: string): Promise<void> {
   });
 }
 
+/**
+ * Sprint A-suite P6 — Item 2. Compte les jobs en état failed ou quarantined
+ * non traités (liés à une campagne). Utilisé par le badge rouge sidebar.
+ */
+export async function getFailedJobsCount(): Promise<number> {
+  return prisma.contentGenJob.count({
+    where: {
+      status: { in: ["failed", "quarantined_critical", "quarantined_factcheck"] },
+      campaignId: { not: null },
+    },
+  });
+}
+
 export async function retryAllFailed(): Promise<number> {
   const session = await requireAdmin();
   const failed = await prisma.contentGenJob.findMany({

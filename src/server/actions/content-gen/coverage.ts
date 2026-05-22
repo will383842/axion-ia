@@ -683,6 +683,35 @@ export async function scheduleCampaign(id: string, startDate: Date): Promise<voi
  * Étend la date de fin d'une campagne active.
  * Audit SOC2 obligatoire : action CAMPAIGN_DEADLINE_EXTENDED loggée.
  */
+// Sprint A-suite P6 — Item 6. CampaignTemplate preset selector wizard.
+
+export interface CampaignTemplateRow {
+  readonly id: string;
+  readonly slug: string;
+  readonly name: string;
+  readonly description: string;
+  readonly config: unknown;
+}
+
+/**
+ * Retourne les CampaignTemplate actifs triés par slug.
+ * Utilisé par le wizard Coverage (step 0 Preset) pour afficher les presets.
+ */
+export async function listCampaignTemplates(): Promise<ReadonlyArray<CampaignTemplateRow>> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rows = await (prisma as any).campaignTemplate.findMany({
+      where: { isActive: true },
+      orderBy: { slug: "asc" },
+      select: { id: true, slug: true, name: true, description: true, config: true },
+    });
+    return (rows as CampaignTemplateRow[]) ?? [];
+  } catch {
+    // DB non disponible (stub build-time) ou table non encore créée → tableau vide.
+    return [];
+  }
+}
+
 export async function extendCampaignDeadline(id: string, newEndDate: Date): Promise<void> {
   const session = await requireAdmin();
   const now = new Date();

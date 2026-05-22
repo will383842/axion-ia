@@ -198,6 +198,42 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   }
 
   const cgJob = review.job;
+
+  // Sprint A-suite P6 — Item 4. Gate factCheckScore avant publication.
+  // Si le score fact-check est inférieur au seuil configuré, le job passe en
+  // quarantined (non publié) avec un message explicite. Si factCheckScore est
+  // null (fact-check pas encore run), le gate est ignoré (non-bloquant).
+  interface FactCheckGateConfig {
+    enabled: boolean;
+    minScore: number;
+  }
+  const factCheckGate = await readContentGenConfig<FactCheckGateConfig>("factcheck_gate", {
+    enabled: true,
+    minScore: 40,
+  });
+  if (
+    factCheckGate.enabled &&
+    cgJob.factCheckScore !== null &&
+    cgJob.factCheckScore !== undefined &&
+    cgJob.factCheckScore < factCheckGate.minScore
+  ) {
+    const errMsg = `factcheck_score_below_threshold:${cgJob.factCheckScore}`;
+    await prisma.contentGenJob.update({
+      where: { id: cgJob.id },
+      data: { status: "quarantined_factcheck", errorMessage: errMsg },
+    });
+    captureWorkerError("publish", QUEUE_NAME, undefined, new Error(errMsg));
+    console.log(
+      JSON.stringify({
+        event: "factcheck_gate_quarantine",
+        jobId: cgJob.id,
+        factCheckScore: cgJob.factCheckScore,
+        minScore: factCheckGate.minScore,
+      }),
+    );
+    return;
+  }
+
   const output = cgJob.outputJsonRaw as Record<string, unknown> | null;
   if (!output) {
     throw new Error(`ContentGenJob ${cgJob.id} has no outputJsonRaw`);
@@ -277,6 +313,10 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   // Article + Translation insert (transaction)
   const indexationTier = promoteToTier1 ? "tier_1_indexable" : "tier_2_noindex_follow";
 
+  // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
+  if (cgJob.correlationId) {
+    console.log("[publish] correlationId=", cgJob.correlationId, "jobId=", cgJob.id);
+  }
   await logStep(cgJob.id, "publish", "Publish pipeline start", {
     review_queue_id: reviewQueueId,
     promote_to_tier_1: promoteToTier1,
@@ -284,6 +324,7 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
     target_search_intent: cgJob.targetSearchIntent,
     is_news: isNews,
     slug_candidate: slugCandidate,
+    ...(cgJob.correlationId ? { correlationId: cgJob.correlationId } : {}),
   });
 
   const article = await prisma.$transaction(async (tx) => {

@@ -6,6 +6,7 @@
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
+import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
 
 interface JobLog {
@@ -168,7 +169,13 @@ export function JobDetailV2({ job }: Props): React.ReactElement {
       ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Live stream</h2>
+        <h2 className="admin-h2">Progression temps réel</h2>
+        {/* Sprint A-suite P6 — Item 5. JobsLiveStream : statut + progress bar + qualityScore SSE. */}
+        <JobsLiveStream jobId={job.id} initialStatus={job.status} />
+      </AdminCard>
+
+      <AdminCard className="mb-[var(--space-admin-5)]">
+        <h2 className="admin-h2">Live stream (logs)</h2>
         <JobLogStream jobId={job.id} />
       </AdminCard>
 
