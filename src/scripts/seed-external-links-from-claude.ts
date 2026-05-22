@@ -34,8 +34,8 @@ import type { ExternalLink, ExternalLinkCategory } from "../data/external-links/
 // Web_search inject ~14K tokens/query → 2 queries/min max avec web_search.
 // Pour villes : pas de web_search nécessaire (Claude knows paris.fr etc.) → batch rapide.
 // Pour thématiques : web_search avec throttle séquentiel 30s.
-const CONCURRENCY_CITIES = 8;            // No web_search, ~200 tokens/query
-const CONCURRENCY_THEMATIC = 1;          // Web_search + throttle 30s
+const CONCURRENCY_CITIES = 8; // No web_search, ~200 tokens/query
+// CONCURRENCY_THEMATIC retiré : Pass 2 utilise un loop séquentiel pur (concurrency=1 implicit)
 const THEMATIC_DELAY_MS = 32_000;
 const MODEL = "claude-sonnet-4-6" as const;
 const MAX_WEB_SEARCH_USES = 1;
@@ -83,7 +83,10 @@ function inferCategory(url: string, fallback: ExternalLinkCategory): ExternalLin
   if (host.endsWith(".europa.eu") || host.includes("eur-lex.europa.eu")) return "gov_eu";
   if (host.endsWith(".edu") || host.includes("stanford.edu") || host.includes("mit.edu"))
     return "academic";
-  if (host.endsWith(".org") && (host.includes("iso.") || host.includes("ieee.") || host.includes("w3.")))
+  if (
+    host.endsWith(".org") &&
+    (host.includes("iso.") || host.includes("ieee.") || host.includes("w3."))
+  )
     return "official_doc";
   if (host.includes("oecd") || host.includes("unesco") || host.includes("worldbank"))
     return "international";
@@ -409,8 +412,12 @@ async function main(): Promise<void> {
   const cityBatches = allBatches.filter((b) => !b.useWebSearch);
   const thematicBatches = allBatches.filter((b) => b.useWebSearch);
   console.log(`[seed-claude] ${allBatches.length} queries totales :`);
-  console.log(`  - ${cityBatches.length} villes (knowledge-only, concurrent x${CONCURRENCY_CITIES})`);
-  console.log(`  - ${thematicBatches.length} thématiques (web_search, séquentiel ${THEMATIC_DELAY_MS / 1000}s)`);
+  console.log(
+    `  - ${cityBatches.length} villes (knowledge-only, concurrent x${CONCURRENCY_CITIES})`,
+  );
+  console.log(
+    `  - ${thematicBatches.length} thématiques (web_search, séquentiel ${THEMATIC_DELAY_MS / 1000}s)`,
+  );
 
   const newLinks: ExternalLink[] = [];
   let totalCost = 0;
@@ -432,73 +439,78 @@ async function main(): Promise<void> {
       succeeded += 1;
       totalCost += computeClaudeCost(MODEL, result.tokensInput, result.tokensOutput);
 
-          const parsed = parseLinksFromContent(result.content);
-          // Compléter avec urls extraites si parse < 5
-          if (parsed.length < 5) {
-            for (const u of result.urls) {
-              if (parsed.length >= 10) break;
-              if (!parsed.some((p) => p.url === u)) {
-                parsed.push({ url: u, title: "" });
-              }
-            }
+      const parsed = parseLinksFromContent(result.content);
+      // Compléter avec urls extraites si parse < 5
+      if (parsed.length < 5) {
+        for (const u of result.urls) {
+          if (parsed.length >= 10) break;
+          if (!parsed.some((p) => p.url === u)) {
+            parsed.push({ url: u, title: "" });
           }
+        }
+      }
 
-          let added = 0;
-          for (const p of parsed) {
-            if (existingUrls.has(p.url)) continue;
-            if (!p.url.startsWith("https://")) continue;
-            let host: string;
-            try {
-              host = new URL(p.url).hostname;
-            } catch {
-              continue;
-            }
-            const competitor = isCompetitorDomain(host);
+      let added = 0;
+      for (const p of parsed) {
+        if (existingUrls.has(p.url)) continue;
+        if (!p.url.startsWith("https://")) continue;
+        let host: string;
+        try {
+          host = new URL(p.url).hostname;
+        } catch {
+          continue;
+        }
+        const competitor = isCompetitorDomain(host);
 
-            const link: ExternalLink = {
-              id: makeId(batch.idPrefix, newLinks.length + 1),
-              url: p.url,
-              title: p.title || p.url,
-              organization: inferOrganization(p.url),
-              category: inferCategory(p.url, batch.defaultCategory),
-              scope: batch.scope,
-              ...(batch.defaultRegionSlug ? { regionSlug: batch.defaultRegionSlug } : {}),
-              ...(batch.defaultCityIds ? { cityIds: batch.defaultCityIds } : {}),
-              verticales: batch.defaultVerticales,
-              topics: batch.defaultTopics,
-              language: batch.defaultLanguage,
-              authority: batch.defaultAuthority,
-              verifiedAt: TODAY,
-              lastCheckedAt: NOW_ISO,
-              status: "pending_verify",
-              isCompetitor: competitor,
-              paywall: false,
-              indexable: true,
-              isHttps: true,
-              usageCount: 0,
-              notes: `Auto-seeded from Claude Sonnet 4.6 + web_search ${TODAY} (batch=${batch.label})`,
-            };
-            newLinks.push(link);
-            existingUrls.add(p.url);
-            added += 1;
-          }
-      process.stdout.write(`  [✓] ${batch.label} +${added} liens (tokens=${result.tokensInput}/${result.tokensOutput})\n`);
+        const link: ExternalLink = {
+          id: makeId(batch.idPrefix, newLinks.length + 1),
+          url: p.url,
+          title: p.title || p.url,
+          organization: inferOrganization(p.url),
+          category: inferCategory(p.url, batch.defaultCategory),
+          scope: batch.scope,
+          ...(batch.defaultRegionSlug ? { regionSlug: batch.defaultRegionSlug } : {}),
+          ...(batch.defaultCityIds ? { cityIds: batch.defaultCityIds } : {}),
+          verticales: batch.defaultVerticales,
+          topics: batch.defaultTopics,
+          language: batch.defaultLanguage,
+          authority: batch.defaultAuthority,
+          verifiedAt: TODAY,
+          lastCheckedAt: NOW_ISO,
+          status: "pending_verify",
+          isCompetitor: competitor,
+          paywall: false,
+          indexable: true,
+          isHttps: true,
+          usageCount: 0,
+          notes: `Auto-seeded from Claude Sonnet 4.6 + web_search ${TODAY} (batch=${batch.label})`,
+        };
+        newLinks.push(link);
+        existingUrls.add(p.url);
+        added += 1;
+      }
+      process.stdout.write(
+        `  [✓] ${batch.label} +${added} liens (tokens=${result.tokensInput}/${result.tokensOutput})\n`,
+      );
     } catch (err) {
       failed += 1;
-      const msg = err instanceof ClaudeSearchError
-        ? `${err.status} ${err.message}`
-        : (err as Error).message;
+      const msg =
+        err instanceof ClaudeSearchError ? `${err.status} ${err.message}` : (err as Error).message;
       process.stdout.write(`  [✗] ${batch.label} ${msg}\n`);
     }
   }
 
   // === Pass 1 : villes en concurrent (no web_search, rapide) ===
-  console.log(`\n[seed-claude] Pass 1/2 — ${cityBatches.length} villes concurrent x${CONCURRENCY_CITIES}...`);
+  console.log(
+    `\n[seed-claude] Pass 1/2 — ${cityBatches.length} villes concurrent x${CONCURRENCY_CITIES}...`,
+  );
   const limitCities = createConcurrencyLimiter(CONCURRENCY_CITIES);
   await Promise.all(cityBatches.map((batch) => limitCities(() => processBatch(batch))));
 
   // === Pass 2 : thématiques séquentiel + throttle ===
-  console.log(`\n[seed-claude] Pass 2/2 — ${thematicBatches.length} thématiques séquentiel + throttle ${THEMATIC_DELAY_MS / 1000}s...`);
+  console.log(
+    `\n[seed-claude] Pass 2/2 — ${thematicBatches.length} thématiques séquentiel + throttle ${THEMATIC_DELAY_MS / 1000}s...`,
+  );
   for (const batch of thematicBatches) {
     await processBatch(batch);
     await new Promise((r) => setTimeout(r, THEMATIC_DELAY_MS));
@@ -530,7 +542,9 @@ export const LINKS_AUTO_SEEDED: ReadonlyArray<ExternalLink> = ${JSON.stringify(n
   console.log("");
   console.log("=".repeat(70));
   console.log(`[seed-claude] TOTAL : ${newLinks.length} liens auto-seedés`);
-  console.log(`[seed-claude] Queries succès : ${succeeded} / ${allBatches.length} (échecs : ${failed})`);
+  console.log(
+    `[seed-claude] Queries succès : ${succeeded} / ${allBatches.length} (échecs : ${failed})`,
+  );
   console.log(`[seed-claude] Coût Claude tokens : $${totalCost.toFixed(4)}`);
   console.log(`[seed-claude] (+ web_search à $10/1000 uses, non comptabilisé ici)`);
   console.log(`[seed-claude] Durée : ${(durationMs / 1000 / 60).toFixed(1)} min`);
@@ -538,7 +552,7 @@ export const LINKS_AUTO_SEEDED: ReadonlyArray<ExternalLink> = ${JSON.stringify(n
   console.log("=".repeat(70));
   console.log("");
   console.log("Prochaines étapes :");
-  console.log("  1. Ajouter `import { LINKS_AUTO_SEEDED } from \"./auto-seeded\";` à master.ts");
+  console.log('  1. Ajouter `import { LINKS_AUTO_SEEDED } from "./auto-seeded";` à master.ts');
   console.log("  2. Lancer : pnpm tsx src/scripts/verify-external-links-head.ts");
   console.log("  3. Review master.ts + verification-report.md");
   console.log("  4. git add + commit + push");

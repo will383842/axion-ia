@@ -20,17 +20,13 @@ describe("perplexitySearch", () => {
   it("Throw si PERPLEXITY_API_KEY absente", async () => {
     delete process.env.PERPLEXITY_API_KEY;
     const { perplexitySearch, PerplexitySearchError } = await import("./perplexity-search");
-    await expect(perplexitySearch({ query: "test" })).rejects.toBeInstanceOf(
-      PerplexitySearchError,
-    );
+    await expect(perplexitySearch({ query: "test" })).rejects.toBeInstanceOf(PerplexitySearchError);
   });
 
   it("Throw si PERPLEXITY_API_KEY=stub.invalid (build mode)", async () => {
     process.env.PERPLEXITY_API_KEY = "stub.invalid";
     const { perplexitySearch, PerplexitySearchError } = await import("./perplexity-search");
-    await expect(perplexitySearch({ query: "test" })).rejects.toBeInstanceOf(
-      PerplexitySearchError,
-    );
+    await expect(perplexitySearch({ query: "test" })).rejects.toBeInstanceOf(PerplexitySearchError);
   });
 
   it("Throw avec status code 429 retryable", async () => {
@@ -40,7 +36,7 @@ describe("perplexitySearch", () => {
       text: () => Promise.resolve("Rate limited"),
     });
     vi.stubGlobal("fetch", mockFetch);
-    const { perplexitySearch, PerplexitySearchError } = await import("./perplexity-search");
+    const { perplexitySearch } = await import("./perplexity-search");
     await expect(perplexitySearch({ query: "test" })).rejects.toMatchObject({
       name: "PerplexitySearchError",
       status: 429,

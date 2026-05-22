@@ -88,7 +88,7 @@ export function extractUrlsFromText(text: string): string[] {
   const out: string[] = [];
   let match: RegExpExecArray | null;
   while ((match = re.exec(text)) !== null) {
-    let url = match[0].replace(/[.,;:!?]+$/, "");
+    const url = match[0].replace(/[.,;:!?]+$/, "");
     if (!seen.has(url)) {
       seen.add(url);
       out.push(url);

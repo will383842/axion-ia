@@ -15,21 +15,41 @@ interface RegionSeed {
 
 const REGION_SEEDS: ReadonlyArray<RegionSeed> = [
   { slug: "ile-de-france", url: "https://www.iledefrance.fr/", name: "Île-de-France" },
-  { slug: "auvergne-rhone-alpes", url: "https://www.auvergnerhonealpes.fr/", name: "Auvergne-Rhône-Alpes" },
-  { slug: "nouvelle-aquitaine", url: "https://www.nouvelle-aquitaine.fr/", name: "Nouvelle-Aquitaine" },
+  {
+    slug: "auvergne-rhone-alpes",
+    url: "https://www.auvergnerhonealpes.fr/",
+    name: "Auvergne-Rhône-Alpes",
+  },
+  {
+    slug: "nouvelle-aquitaine",
+    url: "https://www.nouvelle-aquitaine.fr/",
+    name: "Nouvelle-Aquitaine",
+  },
   { slug: "occitanie", url: "https://www.laregion.fr/", name: "Occitanie" },
   { slug: "hauts-de-france", url: "https://www.hautsdefrance.fr/", name: "Hauts-de-France" },
   { slug: "grand-est", url: "https://www.grandest.fr/", name: "Grand Est" },
-  { slug: "provence-alpes-cote-azur", url: "https://www.maregionsud.fr/", name: "Provence-Alpes-Côte d'Azur" },
+  {
+    slug: "provence-alpes-cote-azur",
+    url: "https://www.maregionsud.fr/",
+    name: "Provence-Alpes-Côte d'Azur",
+  },
   { slug: "pays-de-la-loire", url: "https://www.paysdelaloire.fr/", name: "Pays de la Loire" },
   { slug: "bretagne", url: "https://www.bretagne.bzh/", name: "Bretagne" },
   { slug: "normandie", url: "https://www.normandie.fr/", name: "Normandie" },
-  { slug: "bourgogne-franche-comte", url: "https://www.bourgognefranchecomte.fr/", name: "Bourgogne-Franche-Comté" },
-  { slug: "centre-val-de-loire", url: "https://www.centre-valdeloire.fr/", name: "Centre-Val de Loire" },
+  {
+    slug: "bourgogne-franche-comte",
+    url: "https://www.bourgognefranchecomte.fr/",
+    name: "Bourgogne-Franche-Comté",
+  },
+  {
+    slug: "centre-val-de-loire",
+    url: "https://www.centre-valdeloire.fr/",
+    name: "Centre-Val de Loire",
+  },
   { slug: "corse", url: "https://www.isula.corsica/", name: "Corse" },
 ];
 
-export const LINKS_REGIONS: ReadonlyArray<ExternalLink> = REGION_SEEDS.map((r, idx) => ({
+export const LINKS_REGIONS: ReadonlyArray<ExternalLink> = REGION_SEEDS.map((r) => ({
   id: `fr-region-${r.slug}-001`,
   url: r.url,
   title: `Conseil régional ${r.name}`,
