@@ -3713,3 +3713,112 @@ model ExternalLinkUsage {
   @@index([usageCount])
   @@map("external_link_usage")
 }
+
+// ============================================================
+// SITE EXPLORER — Catalogue exhaustif des URLs publiques
+// Sprint Site Explorer Admin 2026-05-22.
+// RÈGLE STRICTE : ce catalogue ne contient QUE des URLs publiques
+// visibles par les visiteurs réels du site. Toute route (admin),
+// [adminPrefix], /api/, Server Actions est exclue par construction.
+// ============================================================
+
+enum SiteRouteType {
+  static
+  dynamic_template
+  dynamic_db
+  dynamic_filesystem
+}
+
+enum SiteRouteStatus {
+  live
+  draft
+  preview
+  not_found
+  redirect
+  error
+  unknown
+}
+
+/// Visibilité — UNIQUEMENT 'public' par design.
+/// Les valeurs 'admin' et 'api_only' sont intentionnellement omises :
+/// le Site Explorer ne catalogue PAS les pages admin ni API.
+enum SiteRouteVisibility {
+  public
+}
+
+model SiteRoute {
+  id              String              @id @default(cuid())
+  pathPattern     String              @map("path_pattern") @db.VarChar(1000)
+  pathRendered    String?             @map("path_rendered") @db.VarChar(1000)
+  pathSlug        String?             @map("path_slug") @db.VarChar(500)
+
+  type            SiteRouteType
+  status          SiteRouteStatus     @default(unknown)
+  visibility      SiteRouteVisibility @default(public)
+
+  source          String              @db.VarChar(200)
+  filePath        String?             @map("file_path") @db.VarChar(500)
+
+  parentRouteId   String?             @map("parent_route_id")
+  parentRoute     SiteRoute?          @relation("RouteHierarchy", fields: [parentRouteId], references: [id])
+  childRoutes     SiteRoute[]         @relation("RouteHierarchy")
+  depth           Int                 @default(0)
+
+  section         String?             @db.VarChar(100)
+  verticales      String[]            @default([])
+  cityIds         String[]            @default([]) @map("city_ids")
+
+  httpStatus      Int?                @map("http_status")
+  metaTitle       String?             @map("meta_title") @db.VarChar(500)
+  metaDescription String?             @map("meta_description") @db.Text
+  h1              String?             @db.VarChar(500)
+  wordCount       Int?                @map("word_count")
+  jsonLdCount     Int?                @map("json_ld_count")
+  internalLinkCount Int?              @map("internal_link_count")
+  externalLinkCount Int?              @map("external_link_count")
+  hasAiDisclaimer Boolean?            @map("has_ai_disclaimer")
+  lastModifiedAt  DateTime?           @map("last_modified_at")
+  lastInspectedAt DateTime?           @map("last_inspected_at")
+
+  lighthousePerf  Int?                @map("lighthouse_perf")
+  lighthouseSeo   Int?                @map("lighthouse_seo")
+  lighthouseA11y  Int?                @map("lighthouse_a11y")
+  lighthouseBP    Int?                @map("lighthouse_bp")
+  lighthouseRunAt DateTime?           @map("lighthouse_run_at")
+
+  editable        Boolean             @default(false)
+  editorRoute     String?             @map("editor_route") @db.VarChar(500)
+  sourceDbTable   String?             @map("source_db_table") @db.VarChar(100)
+  sourceDbId      String?             @map("source_db_id") @db.VarChar(100)
+
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+
+  anomalies       SiteRouteAnomaly[]
+
+  @@unique([pathPattern, pathSlug])
+  @@index([type])
+  @@index([status])
+  @@index([section])
+  @@index([visibility])
+  @@index([depth])
+  @@index([editable])
+  @@map("site_routes")
+}
+
+model SiteRouteAnomaly {
+  id          String    @id @default(cuid())
+  siteRouteId String    @map("site_route_id")
+  siteRoute   SiteRoute @relation(fields: [siteRouteId], references: [id], onDelete: Cascade)
+  type        String    @db.VarChar(100)
+  severity    String    @db.VarChar(20)
+  description String    @db.Text
+  detectedAt  DateTime  @default(now()) @map("detected_at")
+  resolvedAt  DateTime? @map("resolved_at")
+
+  @@index([siteRouteId])
+  @@index([type])
+  @@index([severity])
+  @@index([resolvedAt])
+  @@map("site_route_anomalies")
+}

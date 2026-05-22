@@ -18,6 +18,8 @@ import type {
   RetentionPurgeJobData,
   BookingCronJobData,
   BookingCronJobType,
+  SiteRouteInspectorJobData,
+  SiteRouteAnomalyDetectorJobData,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -332,6 +334,22 @@ export const externalLinksMonitorQueue: Queue | null = connection
       defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
     })
   : null;
+
+// Sprint Site Explorer Admin 2026-05-22 — inspection quotidienne + détection anomalies.
+export const siteRouteInspectorQueue: Queue<SiteRouteInspectorJobData> | null = connection
+  ? new Queue<SiteRouteInspectorJobData>("site-route-inspector", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+export const siteRouteAnomalyDetectorQueue: Queue<SiteRouteAnomalyDetectorJobData> | null =
+  connection
+    ? new Queue<SiteRouteAnomalyDetectorJobData>("site-route-anomaly-detector", {
+        connection,
+        defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+      })
+    : null;
 
 /**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
@@ -852,6 +870,34 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-monthly-1st-0200", tick: new Date().toISOString() },
       { repeat: { pattern: "0 2 1 * *" }, jobId: "external-links-monitor-cron" },
+    );
+  }
+
+  // Sprint Site Explorer Admin 2026-05-22 — inspection URLs publiques daily 02:00 UTC.
+  if (siteRouteInspectorQueue) {
+    await siteRouteInspectorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 2 * * *" },
+      "site-route-inspector-cron",
+    );
+    await siteRouteInspectorQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 2 * * *" }, jobId: "site-route-inspector-cron" },
+    );
+  }
+
+  // Sprint Site Explorer Admin 2026-05-22 — détection anomalies daily 03:00 UTC.
+  if (siteRouteAnomalyDetectorQueue) {
+    await siteRouteAnomalyDetectorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 3 * * *" },
+      "site-route-anomaly-detector-cron",
+    );
+    await siteRouteAnomalyDetectorQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 3 * * *" }, jobId: "site-route-anomaly-detector-cron" },
     );
   }
 }

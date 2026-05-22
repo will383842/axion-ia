@@ -39,6 +39,9 @@ import { startKeywordOpportunityDetectorWorker } from "./workers/keyword-opportu
 // Sprint Final 2026-05-22 (P0-2 + P0-3 audit final) — 2 workers manquants au bootstrap.
 import { startCostCapResetWorker } from "./workers/cost-cap-reset-worker";
 import { startExternalLinksMonitorWorker } from "./workers/external-links-monitor-worker";
+// Sprint Site Explorer Admin 2026-05-22
+import { startSiteRouteInspectorWorker } from "./workers/site-route-inspector-worker";
+import { startSiteRouteAnomalyDetectorWorker } from "./workers/site-route-anomaly-detector-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -90,6 +93,9 @@ async function main() {
     // Sprint Final 2026-05-22 (P0-2 + P0-3 audit final pré-prod)
     startCostCapResetWorker(), // P0-2 — Reset compteurs cost mensuel (1er du mois 00:00 UTC)
     startExternalLinksMonitorWorker(), // P0-3 — HEAD check liens externes (1er du mois 02:00 UTC)
+    // Sprint Site Explorer Admin 2026-05-22
+    startSiteRouteInspectorWorker(), // daily 02:00 UTC — inspection URLs publiques
+    startSiteRouteAnomalyDetectorWorker(), // daily 03:00 UTC — détection anomalies
   ];
 
   await bootRepeatableJobs();

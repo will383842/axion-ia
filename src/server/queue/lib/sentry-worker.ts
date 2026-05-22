@@ -88,7 +88,10 @@ export type WorkerName =
   | "image-bank-translate"
   | "option-expiration"
   | "option-reminder"
-  | "retention-purge";
+  | "retention-purge"
+  // Sprint Site Explorer Admin 2026-05-22
+  | "site-route-inspector"
+  | "site-route-anomaly-detector";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
