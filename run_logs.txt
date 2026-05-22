@@ -1,0 +1,1091 @@
+Build & push image to GHCR	Set up job	﻿2026-05-18T01:33:20.5787250Z Current runner version: '2.334.0'
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5823839Z ##[group]Runner Image Provisioner
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5825026Z Hosted Compute Agent
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5825795Z Version: 20260213.493
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5826747Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5827824Z Build Date: 2026-02-13T00:28:41Z
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5828723Z Worker ID: {921746af-5b34-425d-8d61-7ec0a3f8279a}
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5830192Z Azure Region: eastus
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5830969Z ##[endgroup]
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5833079Z ##[group]Operating System
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5834068Z Ubuntu
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5834793Z 24.04.4
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5835404Z LTS
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5836276Z ##[endgroup]
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5837032Z ##[group]Runner Image
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5837853Z Image: ubuntu-24.04
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5838639Z Version: 20260513.135.3
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5840376Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260513.135/images/ubuntu/Ubuntu2404-Readme.md
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5843099Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260513.135
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5845013Z ##[endgroup]
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5846776Z ##[group]GITHUB_TOKEN Permissions
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5849788Z Contents: read
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5850683Z Metadata: read
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5851502Z Packages: write
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5852198Z ##[endgroup]
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5855229Z Secret source: Actions
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.5856543Z Prepare workflow directory
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.6326890Z Prepare all required actions
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.6382753Z Getting action download info
+Build & push image to GHCR	Set up job	2026-05-18T01:33:20.9707702Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Build & push image to GHCR	Set up job	2026-05-18T01:33:21.1050366Z Download action repository 'docker/setup-buildx-action@v3' (SHA:8d2750c68a42422c14e847fe6c8ac0403b4cbd6f)
+Build & push image to GHCR	Set up job	2026-05-18T01:33:21.3091331Z Download action repository 'docker/login-action@v3' (SHA:c94ce9fb468520275223c153574b00df6fe4bcc9)
+Build & push image to GHCR	Set up job	2026-05-18T01:33:21.5325202Z Download action repository 'docker/metadata-action@v5' (SHA:c299e40c65443455700f0fdfc63efafe5b349051)
+Build & push image to GHCR	Set up job	2026-05-18T01:33:21.8007591Z Download action repository 'docker/build-push-action@v6' (SHA:10e90e3645eae34f1e60eeb005ba3a3d33f178e8)
+Build & push image to GHCR	Set up job	2026-05-18T01:33:22.1756140Z Complete job name: Build & push image to GHCR
+Build & push image to GHCR	Free disk space (max headroom)	﻿2026-05-18T01:33:22.2469592Z ##[group]Run set -x
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2470823Z [36;1mset -x[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2471658Z [36;1mdf -h /[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2472550Z [36;1msudo rm -rf \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2473586Z [36;1m  /usr/share/dotnet \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2474641Z [36;1m  /usr/local/lib/android \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2475707Z [36;1m  /opt/ghc \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2476708Z [36;1m  /opt/hostedtoolcache/CodeQL \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2477922Z [36;1m  /opt/hostedtoolcache/Python \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2479068Z [36;1m  /opt/hostedtoolcache/PyPy \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2480401Z [36;1m  /opt/hostedtoolcache/Ruby \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2481597Z [36;1m  /opt/hostedtoolcache/go \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2482831Z [36;1m  /usr/local/share/boost \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2483965Z [36;1m  /usr/local/share/chromium \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2485085Z [36;1m  /usr/local/share/powershell \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2486208Z [36;1m  /usr/lib/jvm \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2487142Z [36;1m  /usr/lib/google-cloud-sdk \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2488439Z [36;1m  /usr/lib/firefox \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2489713Z [36;1m  /opt/az \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2490694Z [36;1m  /opt/microsoft \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2491663Z [36;1m  /opt/google \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2492622Z [36;1m  /opt/pipx \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2493866Z [36;1m  "$AGENT_TOOLSDIRECTORY" || true[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2495299Z [36;1msudo docker system prune --all --force --volumes || true[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2496817Z [36;1msudo apt-get autoremove -y --purge \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2497975Z [36;1m  azure-cli \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2498936Z [36;1m  firefox \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2500400Z [36;1m  google-chrome-stable \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2501546Z [36;1m  microsoft-edge-stable \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2502569Z [36;1m  mongodb-* \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2503484Z [36;1m  mysql-* \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2504424Z [36;1m  postgresql-* \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2505533Z [36;1m  mono-* \[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2506463Z [36;1m  powershell || true[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2507437Z [36;1msudo apt-get clean[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2508477Z [36;1mdf -h /[0m
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2551079Z shell: /usr/bin/bash -e {0}
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2552386Z ##[endgroup]
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2693299Z + df -h /
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2746409Z Filesystem      Size  Used Avail Use% Mounted on
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2747888Z /dev/root       145G   55G   90G  39% /
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:33:22.2754605Z + sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /opt/hostedtoolcache/Python /opt/hostedtoolcache/PyPy /opt/hostedtoolcache/Ruby /opt/hostedtoolcache/go /usr/local/share/boost /usr/local/share/chromium /usr/local/share/powershell /usr/lib/jvm /usr/lib/google-cloud-sdk /usr/lib/firefox /opt/az /opt/microsoft /opt/google /opt/pipx /opt/hostedtoolcache
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:14.5486061Z + sudo docker system prune --all --force --volumes
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3648006Z Deleted Images:
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3648971Z untagged: ghcr.io/github/gh-aw-firewall/agent:latest
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3650237Z untagged: ghcr.io/github/gh-aw-firewall/agent@sha256:71511dd944cd13a4d980a57bcf7a071f8662cb482686c58db294d9903e0960e4
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3651723Z deleted: sha256:f81e758f01b1599c33a8452d3ae2bc39f1c71241ae7bad933bba97cd5e20b37e
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3652812Z deleted: sha256:c7bf6f39ad4e65865725a767977f3503033cded2194a65882c3101925a380304
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3653384Z deleted: sha256:b827b36db264488ce5a66b33e2bc88f6b5a36b8fa5f37d083663f185bcfb4367
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3654372Z deleted: sha256:527384ff37c7270a4f29ae5df8ddb476ee6fff3393710087d2a56a7d6f279787
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3655200Z deleted: sha256:dbf453b055c7af6902aef12ed20d04b55732bb5f65d1794c9a24361436333688
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3655995Z deleted: sha256:94ecf0a59ee8ddf8b951a04ab371fc8d845faec110e5724f5f91786398eab77d
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3656888Z deleted: sha256:ef49f2286fda2998d0191c94beaa0111e7edb2cb2ad5fb5581fa28cb93ffa899
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3657694Z deleted: sha256:4c830c00cd6af27efa6ab14640b5b5ece36afcfafef4757fb8adc573acc4a322
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3663769Z deleted: sha256:beb78fe14b800ff16b2eefb8754e8a1de25254b24b21b02be858af6775c5b7a6
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3664820Z deleted: sha256:56d5d2fc18100082a7b1b03366cda9cfda76f367159e7ff21b42144a56ad09de
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3665767Z deleted: sha256:2fee25a9e566fe0fe2e692e5faae1bbc8ef317ea119a46fe2693b147ef52ccac
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3666747Z deleted: sha256:10b180b5dcaec077429a9a2fb073d0fe3483388831099fdac823bb1a4dc3f614
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3667721Z deleted: sha256:a3284f40c8d030116a10a1ed8cd2815aa49b1767459ea1073960869743853b65
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3668700Z deleted: sha256:ea5c51094bbb6883a598139f03fad899d156cd0f5afd274bedb82f900c948c95
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3669803Z deleted: sha256:0c8db9c5ff62a7278dd4a205804bf2ca7126ce2f4a184321bd33a322cc46745f
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3670811Z deleted: sha256:f1520bea0465cf98ec0ca2245e7008cf2d826c652d55f8b01dda809be62fb15c
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3671803Z deleted: sha256:70415ee8e4ea073f1d8053ec9ad8aac2fa6caeb596b83a8be784425ce4505c1c
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3672685Z deleted: sha256:ec6c70248b9db49522ef6e47f418fbca39be89795cc99821096baace050a5fd2
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3673722Z deleted: sha256:39fbf5f8fe523b2ea819cd8eb2bf68807d8eaee383549f7ab80a44503ed6860b
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3674456Z untagged: ghcr.io/github/gh-aw-mcpg:latest
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3675414Z untagged: ghcr.io/github/gh-aw-mcpg@sha256:2bb8eef86006a4c5963c55616a9c51c32f27bfdecb023b8aa6f91f6718d9171c
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3676571Z deleted: sha256:ff9dffcd1d7333a3dbc461b162f5b10c0b876d24111daeda83eb3f526879ba5c
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3677460Z deleted: sha256:415bedc66484afb1c8c96841edc361ea695e9935eb13af7cbe97b05478890e67
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3678631Z deleted: sha256:49885c8505daa2a26b84681ceeb3a1efc3ba863c5c7116c0347e8a0c813fc8c9
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3679975Z deleted: sha256:8133568aa761972b6fc315cc52193f54ee3c702eab5e03318f49429110f34d7f
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3681022Z deleted: sha256:8bcb137825b48e72402967b1c31807048a908972d970e3dedcc8b5e5845651a3
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3681816Z deleted: sha256:ea3d3913e23099f33c3e3e95ab2a6099b023d1bae678d1b64cb7766fb631aae7
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3682437Z deleted: sha256:92c84dcca46cb1be807d483dc20583aa30dd169ca5609b30ddfcb468826304ec
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3683167Z deleted: sha256:4a2ef8dbfd7df7dfa0c3153c1e52e1dc65cec294529d46f4e5b3424f79d772c7
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3683707Z untagged: ghcr.io/dependabot/dependabot-updater-core:latest
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3684492Z untagged: ghcr.io/dependabot/dependabot-updater-core@sha256:16c5d4fa97d5d0c7722fa71696583e0531f3e884d3e040b97005debb9e4ec806
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3685284Z deleted: sha256:1cc921573beb2933277039e966a0b9383983f0b7974e00a5ad0b8c3d1266e0ae
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3686095Z deleted: sha256:bf6c77e4937dbb49e704d6c56192d8a0c15f8e38144802863b5dcddafc500fdd
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3687119Z deleted: sha256:1e9e574266db1a86f6b35bcf8493e4b450dcb4a7fce3d0a6231a6085642373a6
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3687955Z deleted: sha256:77cc1179f14ff82e7e00b23ac0efae360d801ac796517d89acdbe8274f1f2c63
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3688765Z deleted: sha256:dfa40df5ec038601f6e3592e489e627c039a63fdbb7d4156d6ab53d75f709c79
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3689928Z deleted: sha256:3753a43af3db3539d8451aad95bf9652c754ebb31e3f4816d7ce9296ab7045db
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3690856Z deleted: sha256:203ce648677b6f3954cea3d7d70a18112e1ce9bd50e6c53c8a0ad6966b24cff4
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3691860Z deleted: sha256:26afdcf60b60208282061f1f19ec1797aff12196c4f91ee99734a4f8337cc221
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3692699Z deleted: sha256:329e1569ad72edc56f52721d6afcbe151cedb365311f1b34c85f2bf8edda06a0
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3693713Z deleted: sha256:bd6f7a22c5b7d030c54eec93d433e483607f94df0d3d3a66fee763717c1bcc52
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3694584Z deleted: sha256:705d2240b7c034435a2e4c685c93a0ad4c568a4b9fa6a875cf2c26bf601cea26
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3695516Z deleted: sha256:5c2b6cdf6fe745fe132d74f54516a16d1d54d315d904ac3fa612a9b6eb8c70f4
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3696563Z deleted: sha256:538812a4b9bd45adaac2b5e5b967daa6999aa44eb110aa32ae7c69702b906475
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3697413Z untagged: ghcr.io/github/gh-aw-firewall/api-proxy:latest
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3698668Z untagged: ghcr.io/github/gh-aw-firewall/api-proxy@sha256:aca29886ea3317bc185562633e4cf5af95f06c4740a0345ba4c56bc391792d3f
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3700576Z deleted: sha256:7f67e4311848507609d3f5563628681a5e713f70f032f2ec4cd2a2812aadb76d
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3701524Z deleted: sha256:3639fb8b2df6e8870c8a55c2b35207f0243cc0db4774b7975de4f96a7d5e583f
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3702464Z deleted: sha256:bd6057180fdd00a8d971934dcb079d52bb9b94a544521473102af2c7ef898501
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3703545Z deleted: sha256:9516478f152f1960998e6930799cb92651a8a4488c2424780e5a6018f56feca7
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3704558Z deleted: sha256:dc6336bbae73b9d55502c836448894d86c6c64b245c84b3aa0a2da20ed791302
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3705257Z deleted: sha256:2c3c73a2691cbc03de99e65b56c85190e36be59cc33bc6d0f0ab3ef539692ca2
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3706255Z deleted: sha256:17759ea2c784d3d830948f1d86ab448f06a097d56149462db3d6e6b8329c6064
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3707074Z deleted: sha256:c793eba734e16ab9e9e3ea12997ec7084f2feea7e8d4554e1cd0175333820e2e
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3707725Z deleted: sha256:c8a05c7831cde64a8bc370bf5311658472c383ba0319683f28b6f4a5c5e5e206
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3708572Z deleted: sha256:6a3a16d8c970216c1057dca7c2da9e39bc036378456ac86b1f7c5e21c85f2d60
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3709469Z deleted: sha256:4d9a0ea9537acd38c6f6143c433baa01cd4f8458f52cd080fe78a62747861564
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3710298Z deleted: sha256:29df493baa13de438d6d2ece3a8333032e0b7b9b9d8cce4ee82194da255f61e1
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3711040Z untagged: ghcr.io/github/github-mcp-server:latest
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3712386Z untagged: ghcr.io/github/github-mcp-server@sha256:e3816a476a977cfb836e7d221510011436c654d11861db66ecfd826601aba6a4
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3713830Z deleted: sha256:aeb9334375fe31ca45751a0e5747c8acfb84976cf902276f1a30682925ffb93b
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3714866Z deleted: sha256:e451f1ad8390379ecc060b833a79c2618a6322cfe8c3d94e0153b1b4019a04a0
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3715607Z deleted: sha256:5d2d3fa4f52527c409198b5dd58d7fc77c2574ed6adde701156599711884b632
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3716385Z deleted: sha256:ef9c65e81a3140454df64000852051633a217740cadd4230d8a68b33c9eb6fd6
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3717086Z deleted: sha256:44d0cb736798a30817877c6c37ceb891f91d581279d51d962c38d0b7d3cefb1f
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3717791Z deleted: sha256:3e005f61e911be389b7090ab5e7dac5c293012172a91dceec6ec3cb008877589
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3718485Z deleted: sha256:447769e80022d633258a358a32ec185c08acf39d52ff7992a62465580862727b
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3719399Z deleted: sha256:7d2cd16d5223db171e85e78e005304348a2972c71f63003a0b491ed077558d11
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3720187Z deleted: sha256:52c4df99df6b16bf709a7d57852c4baa88cca6daddf8e1380b1cb965b246a531
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3720838Z deleted: sha256:d4bd505626ba298bdb5a4d594c55bbd659d6e7e53569dc80083d82a5775526b8
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3721567Z deleted: sha256:7c60cb27043e7c7917a896b67c0653fa29fedc90f2dce187dce8e22e9bb1d560
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3722221Z deleted: sha256:b8997b2eca37711a7ca830639978654ebc5a0e1f13f7e3af8f992b895f1550d3
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3722909Z deleted: sha256:0020b32e5a73ed88fe2de1c7889a43bdfc9541a7145fbb48ec6147dcc01da62f
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3723659Z deleted: sha256:bd59e7e428c9e76bc724f38578c163243152a507a5da6e0f63c0d61da952ba5b
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3724317Z deleted: sha256:34165fb0807042c1f8ed197fd1ea5a031ca3e27e6e3fba9fbcf49a20052d19b7
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3725004Z deleted: sha256:3bd325ec8c2d0894ea95758a6b235d7e2da1cb28f1cc2b76aeede98d5f8f425a
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3725613Z deleted: sha256:a33ba213ad26a605d904a741f67154f3904c74a43182c872c35f36b10fa005e0
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3726300Z untagged: ghcr.io/github/gh-aw-firewall/squid:latest
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3727087Z untagged: ghcr.io/github/gh-aw-firewall/squid@sha256:bc13486f73cc9b8327e276839f936ecf2492cf86a9bee9114d2b018bdfc54782
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3727898Z deleted: sha256:b98f0e1764ffea7228e12ecdf8fac171c9fa2145e72d3cf32c8d0fa988724c6e
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3728675Z deleted: sha256:276c3ae4d41546b174e87ef2a5ff62a0f9a2401b47c76d86b497282a2ea9748e
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3729753Z deleted: sha256:bc31df9492067a8da6ac03540c805795048fb97cf9e0594360a771d9c504cdff
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3730704Z deleted: sha256:47d1aa69d83063af53fdba1b9dc37c53353ced01d6abd4d5ca391dcae4e80e37
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3731475Z deleted: sha256:9cb45b4872656981f87478910290c2253405920564bf4df1b7f4bf6be938d641
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3732155Z deleted: sha256:18b8983bb021aeaf0d3dd60c74b83c5af746dd4e851b7272a3165130b2740bd3
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3732830Z deleted: sha256:0f7aceedbeef2527fd8b8cb81c5e0ebbb3032d42cbd0847080e679dfa6deb274
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3733560Z deleted: sha256:7b26b80c1cff713367db892365d8d1227498773be6690e7a39165099060acef2
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3734301Z deleted: sha256:e8bce0aabd687e9ee90e0bada33884f40b277196f72aac9934357472863a80ae
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3734721Z 
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3734958Z Total reclaimed space: 1.78GB
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:29.3755110Z + sudo apt-get autoremove -y --purge azure-cli firefox google-chrome-stable microsoft-edge-stable 'mongodb-*' 'mysql-*' 'postgresql-*' 'mono-*' powershell
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.3874163Z Reading package lists...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.6196458Z Building dependency tree...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.6255192Z Reading state information...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8150826Z Package 'mongodb-dev' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8186170Z Package 'mongodb-server' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8186822Z Package 'mysql-client-5.7' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8187360Z Package 'mysql-client-core-5.7' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8187884Z Package 'mysql-server-5.5' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8188359Z Package 'mysql-server-5.7' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8188838Z Package 'mysql-server-core-5.7' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8189987Z Package 'mysql-client-core-5.5' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8190504Z Package 'mysql-client-core-5.6' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8190991Z Package 'mysql-client-5.5' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8191473Z Package 'mysql-client-5.6' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8192161Z Package 'mysql-cluster-community-client-plugins' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8192809Z Package 'mysql-server-core-5.5' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8193327Z Package 'mysql-server-core-5.6' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8193849Z Package 'mysql-server-5.6' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8194344Z Package 'mysql-testsuite-5.5' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8194855Z Package 'mysql-testsuite-5.6' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8195351Z Package 'mysql-testsuite-5.7' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8195870Z Package 'postgresql-pgmp' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8196357Z Package 'postgresql-9.1' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8196879Z Package 'postgresql-postgis-java' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8197481Z Package 'postgresql-11-auto-failover' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8198072Z Package 'postgresql-12-auto-failover' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8198663Z Package 'postgresql-13-auto-failover' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8199436Z Package 'postgresql-14-auto-failover' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8200028Z Package 'postgresql-15-auto-failover' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8200624Z Package 'postgresql-doc-18' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8201104Z Package 'mono-xsp-base' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8201573Z Package 'mono-dmcs' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8202021Z Package 'mono-1.0-service' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8202529Z Package 'mono-apache-server1' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8203068Z Package 'mono-server' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8203889Z Package 'mono-reference-assemblies-2.0' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8204561Z Package 'mono-reference-assemblies-3.5' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8205183Z Package 'mono-reference-assemblies-4.0' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8205742Z Package 'mono-1.0-devel' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8206203Z Package 'mono-2.0-devel' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8206654Z Package 'mono-gmcs' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8207134Z Package 'mono-fastcgi-server1' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8207642Z Package 'mono-1.0-runtime' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8208137Z Package 'mono-2.0-runtime' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8208598Z Package 'mono-common' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8209038Z Package 'mono-jit' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8209672Z Package 'mono-jit-dbg' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8210153Z Package 'mysql-testsuite' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8210657Z Package 'mysql-testsuite-8.0' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8211133Z Package 'mysql-router' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8211592Z Package 'mysql-sandbox' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8212042Z Package 'mysql-shell' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8212512Z Package 'mysql-source-8.0' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8213006Z Package 'postgresql-client' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8213675Z Package 'postgresql-doc-16' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8214161Z Package 'postgresql-doc' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8214702Z Package 'postgresql-server-dev-all' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8215259Z Package 'postgresql-contrib' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8215789Z Package 'postgresql-plperl-16' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8216343Z Package 'postgresql-plpython3-16' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8216888Z Package 'postgresql-pltcl-16' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8217400Z Package 'postgresql-pgrouting' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8217940Z Package 'postgresql-comparator' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8218481Z Package 'postgresql-filedump' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8219005Z Package 'postgresql-postgis' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8219739Z Package 'postgresql-16-auto-failover' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8220311Z Package 'postgresql-16-age' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8220836Z Package 'postgresql-16-asn1oid' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8221412Z Package 'postgresql-16-bgw-replstatus' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8222018Z Package 'postgresql-16-credcheck' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8222572Z Package 'postgresql-16-cron' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8223123Z Package 'postgresql-16-debversion' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8223709Z Package 'postgresql-16-decoderbufs' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8224294Z Package 'postgresql-16-dirtyread' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8224939Z Package 'postgresql-16-extra-window-functions' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8225616Z Package 'postgresql-16-first-last-agg' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8226193Z Package 'postgresql-16-h3' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8226717Z Package 'postgresql-16-hll' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8227242Z Package 'postgresql-16-hypopg' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8227784Z Package 'postgresql-16-icu-ext' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8228494Z Package 'postgresql-16-ip4r' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8229042Z Package 'postgresql-16-jsquery' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8229759Z Package 'postgresql-16-londiste-sql' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8230355Z Package 'postgresql-16-pgq-node' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8230913Z Package 'postgresql-16-mimeo' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8231467Z Package 'postgresql-16-mysql-fdw' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8232028Z Package 'postgresql-16-numeral' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8232606Z Package 'postgresql-16-ogr-fdw' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8233159Z Package 'postgresql-16-omnidb' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8233714Z Package 'postgresql-16-orafce' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8234251Z Package 'postgresql-16-partman' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8234824Z Package 'postgresql-16-periods' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8235406Z Package 'postgresql-16-pg-catcheck' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8236017Z Package 'postgresql-16-pg-checksums' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8236646Z Package 'postgresql-16-pg-fact-loader' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8237304Z Package 'postgresql-16-pg-failover-slots' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8237922Z Package 'postgresql-16-pg-gvm' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8238467Z Package 'postgresql-16-pg-qualstats' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8239387Z Package 'postgresql-16-pg-stat-kcache' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8240015Z Package 'postgresql-16-pg-track-settings' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8240659Z Package 'postgresql-16-pg-wait-sampling' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8241251Z Package 'postgresql-16-pgaudit' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8241820Z Package 'postgresql-16-pgauditlogtofile' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8242414Z Package 'postgresql-16-pgextwlist' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8242963Z Package 'postgresql-16-pgfincore' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8243534Z Package 'postgresql-16-pgl-ddl-deploy' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8244105Z Package 'postgresql-16-pglogical' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8244674Z Package 'postgresql-16-pglogical-ticker' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8245264Z Package 'postgresql-16-pgmemcache' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8245788Z Package 'postgresql-16-pgmp' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8246303Z Package 'postgresql-16-pgpcre' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8246817Z Package 'postgresql-16-pgpool2' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8247330Z Package 'postgresql-16-pgq3' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8247848Z Package 'postgresql-16-pgrouting' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8248431Z Package 'postgresql-16-pgrouting-scripts' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8249062Z Package 'postgresql-16-pgrouting-doc' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8249839Z Package 'postgresql-16-pgsphere' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8250377Z Package 'postgresql-16-pgtap' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8250890Z Package 'postgresql-16-pgvector' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8251437Z Package 'postgresql-16-pldebugger' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8251971Z Package 'postgresql-16-pllua' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8252505Z Package 'postgresql-16-plpgsql-check' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8253290Z Package 'postgresql-16-plprofiler' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8253819Z Package 'postgresql-16-plproxy' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8254324Z Package 'postgresql-16-plr' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8254804Z Package 'postgresql-16-plsh' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8255321Z Package 'postgresql-16-pointcloud' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8255865Z Package 'postgresql-16-postgis-3' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:35.8256437Z Package 'postgresql-16-postgis-3-scripts' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0310630Z Package 'postgresql-16-powa' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0311640Z Package 'postgresql-16-prefix' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0312486Z Package 'postgresql-16-preprepare' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0313331Z Package 'postgresql-16-prioritize' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0314280Z Package 'postgresql-16-q3c' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0315029Z Package 'postgresql-16-rational' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0315816Z Package 'postgresql-16-rdkit' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0316592Z Package 'postgresql-16-repack' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0317403Z Package 'postgresql-16-repmgr' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0318234Z Package 'postgresql-16-rum' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0318999Z Package 'postgresql-16-semver' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0320396Z Package 'postgresql-16-set-user' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0321238Z Package 'postgresql-16-show-plans' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0322118Z Package 'postgresql-16-similarity' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0322967Z Package 'postgresql-16-slony1-2' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0323804Z Package 'postgresql-16-snakeoil' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0324631Z Package 'postgresql-16-squeeze' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0325412Z Package 'postgresql-16-statviz' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0326238Z Package 'postgresql-16-tablelog' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0327081Z Package 'postgresql-16-tdigest' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0327950Z Package 'postgresql-16-tds-fdw' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0328747Z Package 'postgresql-16-toastinfo' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0329758Z Package 'postgresql-16-unit' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0330573Z Package 'postgresql-16-wal2json' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0331356Z Package 'postgresql-all' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0332108Z Package 'postgresql-autodoc' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0332958Z Package 'postgresql-pgrouting-scripts' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0333875Z Package 'postgresql-postgis-scripts' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0334765Z Package 'postgresql-server-dev-16' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0335540Z Package 'mono-gac' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0336217Z Package 'mono-runtime' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0336891Z Package 'mono-xsp4' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0337613Z Package 'mono-apache-server4' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0338431Z Package 'mono-fastcgi-server4' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0339367Z Package 'mono-mcs' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0340080Z Package 'mono-runtime-common' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0340813Z Package 'mono-utils' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0341728Z Package 'mono-devel' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0342396Z Package 'mono-xbuild' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0343099Z Package 'mono-tools-devel' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0343762Z Package 'mono-apache-server' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0344403Z Package 'mono-4.0-gac' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0345018Z Package 'mono-4.0-service' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0345650Z Package 'mono-xsp4-base' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0346272Z Package 'mono-complete' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0346927Z Package 'mono-runtime-sgen' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0347618Z Package 'mono-csharp-shell' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0348227Z Package 'mono-dbg' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0348874Z Package 'mono-fastcgi-server' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0349769Z Package 'mono-fpm-server' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0350480Z Package 'mono-runtime-boehm' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0351183Z Package 'mono-runtime-dbg' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0351857Z Package 'mono-source' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0352478Z Package 'mono-xsp' is not installed, so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0353045Z The following packages will be REMOVED:
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0353912Z   adwaita-icon-theme* at-spi2-common* azure-cli* dconf-gsettings-backend*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0354762Z   dconf-service* firefox* fontconfig* google-chrome-stable*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0355745Z   gtk-update-icon-cache* hicolor-icon-theme* humanity-icon-theme*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0356637Z   libatk-bridge2.0-0t64* libatk1.0-0t64* libatspi2.0-0t64* libavahi-client3*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0357484Z   libavahi-common-data* libavahi-common3* libcairo-gobject2* libcairo2*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0358341Z   libcanberra0t64* libcgi-fast-perl* libcgi-pm-perl* libclone-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0359277Z   libcolord2* libcommon-sense-perl* libcups2t64* libdatrie1*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0360130Z   libdbusmenu-glib4* libdbusmenu-gtk3-4* libdconf1* libencode-locale-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0361078Z   libepoxy0* libevent-pthreads-2.1-7t64* libfcgi-bin* libfcgi-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0361929Z   libfcgi0t64* libgdk-pixbuf-2.0-0* libgdk-pixbuf2.0-common* libgraphite2-3*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0362751Z   libgtk-3-0t64* libgtk-3-common* libharfbuzz0b* libhtml-parser-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0363554Z   libhtml-tagset-perl* libhtml-template-perl* libhttp-date-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0364417Z   libhttp-message-perl* libio-html-perl* libjson-perl* libjson-xs-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0365326Z   liblldb-16t64* liblldb-17t64* libllvm19* liblwp-mediatypes-perl* libmecab2*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0366190Z   libmysqlclient-dev* libmysqlclient21* libogg0* libpango-1.0-0*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0367005Z   libpangocairo-1.0-0* libpangoft2-1.0-0* libprotobuf-lite32t64* libre2-10*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0367863Z   libtdb1* libthai-data* libthai0* libtimedate-perl* libtypes-serialiser-perl*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0368659Z   liburi-perl* libvorbis0a* libvorbisfile3* libwayland-client0*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0369554Z   libwayland-cursor0* libwayland-egl1* libxcb-render0* libxcomposite1*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0370340Z   libxcursor1* libxdamage1* libxfixes3* libxinerama1* libzstd-dev*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0371117Z   mecab-ipadic* mecab-ipadic-utf8* mecab-utils* microsoft-edge-stable*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0371923Z   mysql-client* mysql-client-8.0* mysql-client-core-8.0* mysql-common*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0372751Z   mysql-server* mysql-server-8.0* mysql-server-core-8.0* postgresql-16*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0373535Z   postgresql-client-16* postgresql-client-common* postgresql-common*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0374273Z   powershell* sound-theme-freedesktop* sphinxsearch* ubuntu-mono* xdg-utils*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.0374894Z   xul-ext-ubufox*
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.3156693Z 0 upgraded, 0 newly installed, 102 to remove and 0 not upgraded.
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.3157411Z After this operation, 2719 MB disk space will be freed.
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4409408Z (Reading database ... 
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4409822Z (Reading database ... 5%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4410065Z (Reading database ... 10%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4410357Z (Reading database ... 15%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4410561Z (Reading database ... 20%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4410757Z (Reading database ... 25%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4410942Z (Reading database ... 30%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4411133Z (Reading database ... 35%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4411434Z (Reading database ... 40%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4411775Z (Reading database ... 45%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.4412064Z (Reading database ... 50%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.5266569Z (Reading database ... 55%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:36.8765716Z (Reading database ... 60%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:37.2344537Z (Reading database ... 65%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:37.5255676Z (Reading database ... 70%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:37.8178555Z (Reading database ... 75%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:38.3076624Z (Reading database ... 80%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:38.9957001Z (Reading database ... 85%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:39.5394182Z (Reading database ... 90%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2489329Z (Reading database ... 95%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2489884Z (Reading database ... 100%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2490446Z (Reading database ... 202286 files and directories currently installed.)
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2537537Z Removing firefox (150.0.2+build2-0ubuntu0.24.04.1~mt1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2641377Z update-alternatives: warning: alternative /usr/bin/firefox (part of link group gnome-www-browser) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2643377Z update-alternatives: warning: alternative /usr/bin/google-chrome-stable (part of link group gnome-www-browser) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2644449Z update-alternatives: warning: alternative /usr/bin/microsoft-edge-stable (part of link group gnome-www-browser) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2645711Z update-alternatives: warning: /etc/alternatives/gnome-www-browser is dangling; it will be updated with best choice
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2653528Z update-alternatives: warning: alternative /usr/bin/firefox (part of link group x-www-browser) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2654580Z update-alternatives: warning: alternative /usr/bin/google-chrome-stable (part of link group x-www-browser) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2655974Z update-alternatives: warning: alternative /usr/bin/microsoft-edge-stable (part of link group x-www-browser) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.2657255Z update-alternatives: warning: /etc/alternatives/x-www-browser is dangling; it will be updated with best choice
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.3565605Z Removing microsoft-edge-stable (148.0.3967.54-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.5089801Z update-alternatives: warning: alternative /usr/bin/microsoft-edge-stable (part of link group microsoft-edge) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.5091118Z update-alternatives: warning: /etc/alternatives/microsoft-edge is dangling; it will be updated with best choice
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.5394014Z Removing libdbusmenu-gtk3-4:amd64 (18.10.20180917~bzr492+repack1-3.1ubuntu5) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.5686064Z Removing google-chrome-stable (148.0.7778.167-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.7138713Z update-alternatives: warning: alternative /usr/bin/google-chrome-stable (part of link group google-chrome) doesn't exist; removing from list of alternatives
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.7140158Z update-alternatives: warning: /etc/alternatives/google-chrome is dangling; it will be updated with best choice
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.7526604Z Removing libgtk-3-0t64:amd64 (3.24.41-4ubuntu1.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.8154463Z Removing libatk-bridge2.0-0t64:amd64 (2.52.0-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.8347327Z Removing libatk1.0-0t64:amd64 (2.52.0-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.8491793Z Removing at-spi2-common (2.52.0-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:40.8625388Z Removing azure-cli (2.86.0-1~noble) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.0045948Z Removing libgtk-3-common (3.24.41-4ubuntu1.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.0699928Z Removing dconf-gsettings-backend:amd64 (0.40.0-4ubuntu0.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.1031531Z Removing dconf-service (0.40.0-4ubuntu0.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.1201681Z Removing libpangocairo-1.0-0:amd64 (1.52.1+ds-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.1404284Z Removing libpangoft2-1.0-0:amd64 (1.52.1+ds-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.1546967Z Removing libpango-1.0-0:amd64 (1.52.1+ds-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.1687748Z Removing fontconfig (2.15.0-1.1ubuntu2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.2013934Z Removing libatspi2.0-0t64:amd64 (2.52.0-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.2149629Z Removing libcups2t64:amd64 (2.4.7-1.2ubuntu7.9) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.2394314Z Removing libavahi-client3:amd64 (0.8-13ubuntu6.2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.2581597Z Removing libavahi-common3:amd64 (0.8-13ubuntu6.2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.2820288Z Removing libavahi-common-data:amd64 (0.8-13ubuntu6.2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.3018165Z Removing libcairo-gobject2:amd64 (1.18.0-3build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.3160261Z Removing libcairo2:amd64 (1.18.0-3build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.3301102Z Removing libcanberra0t64:amd64 (0.30-10ubuntu10) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.3538621Z Removing libcgi-fast-perl (1:2.17-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.3828878Z Removing libhtml-template-perl (2.97-2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.4084198Z Removing libcgi-pm-perl (4.63-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.4304060Z Removing libhttp-message-perl (6.45-1ubuntu1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.4542889Z Removing libclone-perl:amd64 (0.46-1build3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.4736856Z Removing libcolord2:amd64 (1.4.7-1build2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.4884910Z Removing libjson-xs-perl (4.040-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.5140332Z Removing libtypes-serialiser-perl (1.01-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.5280514Z Removing libcommon-sense-perl:amd64 (3.75-3build3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.5427609Z Removing libthai0:amd64 (0.1.29-2build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.5566719Z Removing libdatrie1:amd64 (0.2.13-3build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.5752297Z Removing libdbusmenu-glib4:amd64 (18.10.20180917~bzr492+repack1-3.1ubuntu5) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.5888036Z Removing libdconf1:amd64 (0.40.0-4ubuntu0.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.6173134Z Removing libencode-locale-perl (1.05-3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.6311606Z Removing libepoxy0:amd64 (1.5.10-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.6641315Z Removing mysql-server (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:41.6889834Z Removing mysql-server-8.0 (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.0226760Z update-alternatives: using /etc/mysql/my.cnf.fallback to provide /etc/mysql/my.cnf (my.cnf) in auto mode
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.0602648Z Removing mysql-server-core-8.0 (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.1891273Z Removing libevent-pthreads-2.1-7t64:amd64 (2.1.12-stable-9ubuntu2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.2138847Z Removing libfcgi-bin (2.4.2-2.1ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.2278883Z Removing libfcgi-perl (0.82+ds-3build2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.2430400Z Removing libfcgi0t64:amd64 (2.4.2-2.1ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.2642201Z Removing libharfbuzz0b:amd64 (8.3.0-2build2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.2782488Z Removing libgraphite2-3:amd64 (1.3.14-2build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.2920800Z Removing libhtml-parser-perl:amd64 (3.81-1build3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.3717879Z Removing libhtml-tagset-perl (3.20-6) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.3856219Z Removing libhttp-date-perl (6.06-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.4032968Z Removing libio-html-perl (1.004-3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.4172625Z Removing postgresql-16 (16.13-1.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:42.8368171Z update-alternatives: warning: forcing reinstallation of alternative /usr/share/postgresql/16/man/man1/psql.1.gz because link group psql.1.gz is broken
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.2299735Z Removing postgresql-common (290.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.3264383Z Removing 'diversion of /usr/bin/pg_config to /usr/bin/pg_config.libpq-dev by postgresql-common'
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.6216724Z Removing libjson-perl (4.10000-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.6425688Z Removing liblldb-16t64 (1:16.0.6-23ubuntu4) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.6725192Z Removing liblldb-17t64 (1:17.0.6-9ubuntu1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.7005860Z Removing libllvm19:amd64 (1:19.1.1-1ubuntu1~24.04.2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.7144956Z Removing liblwp-mediatypes-perl (6.04-2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.7305165Z Removing mecab-ipadic-utf8 (2.7.0-20070801+main-3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.7360675Z update-alternatives: using /var/lib/mecab/dic/ipadic to provide /var/lib/mecab/dic/debian (mecab-dictionary) in auto mode
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.7591130Z Removing mecab-ipadic (2.7.0-20070801+main-3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.8054234Z Removing mecab-utils (0.996-14ubuntu4) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.8214233Z Removing libmecab2:amd64 (0.996-14ubuntu4) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.8393951Z Removing libmysqlclient-dev (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.8608073Z Removing sphinxsearch (2.2.11-8build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.9312555Z Removing libmysqlclient21:amd64 (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.9452511Z Removing libvorbisfile3:amd64 (1.3.7-1build3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.9604338Z Removing libvorbis0a:amd64 (1.3.7-1build3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:43.9801618Z Removing libogg0:amd64 (1.3.5-3build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.0008838Z Removing libprotobuf-lite32t64:amd64 (3.21.12-8.2ubuntu0.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.0160041Z Removing libre2-10:amd64 (20230301-3build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.0364102Z Removing libtdb1:amd64 (1.4.10-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.0572708Z Removing libthai-data (0.1.29-2build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.0875346Z Removing libtimedate-perl (2.3300-2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1041106Z Removing liburi-perl (5.27-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1213517Z Removing libwayland-cursor0:amd64 (1.22.0-2.1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1358395Z Removing libwayland-client0:amd64 (1.22.0-2.1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1495484Z Removing libwayland-egl1:amd64 (1.22.0-2.1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1634832Z Removing libxcb-render0:amd64 (1.15-1ubuntu2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1826039Z Removing libxcomposite1:amd64 (1:0.4.5-1build3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.1969513Z Removing libxcursor1:amd64 (1:1.2.1-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.2110043Z Removing libxdamage1:amd64 (1:1.1.6-1build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.2308909Z Removing libxfixes3:amd64 (1:6.0.0-2build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.2446372Z Removing libxinerama1:amd64 (2:1.1.4-3build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.2587665Z Removing libzstd-dev:amd64 (1.5.5+dfsg2-2build1.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.2795270Z Removing mysql-client (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.2936910Z Removing mysql-client-8.0 (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.3081480Z Removing mysql-client-core-8.0 (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.3225031Z Removing mysql-common (5.8+1.1.0build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.3636157Z Removing postgresql-client-16 (16.13-1.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.4278836Z Removing postgresql-client-common (290.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.4779970Z Removing powershell (7.4.15-1.deb) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.5300022Z Removing sound-theme-freedesktop (0.8-2ubuntu1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.5554550Z Removing xdg-utils (1.1.3-4.1ubuntu3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.5873605Z Removing xul-ext-ubufox (3.4-0ubuntu1.17.10.4) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.6565028Z Removing ubuntu-mono (24.04-0ubuntu1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:44.9821756Z Removing humanity-icon-theme (0.6.16) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:45.5979598Z Removing adwaita-icon-theme (46.0-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:45.7010708Z Removing gtk-update-icon-cache (3.24.41-4ubuntu1.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:45.7145390Z Removing hicolor-icon-theme (0.17-2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.1371385Z Removing libgdk-pixbuf-2.0-0:amd64 (2.42.10+dfsg-3ubuntu3.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.1682459Z Removing libgdk-pixbuf2.0-common (2.42.10+dfsg-3ubuntu3.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.2018146Z Processing triggers for man-db (2.12.0-4build2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.2038225Z Not building database; man-db/auto-update is not 'true'.
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.2050801Z Processing triggers for libglib2.0-0t64:amd64 (2.80.0-6ubuntu3.8) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.2179480Z No schema files found: removed existing output file.
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.2217126Z Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3324218Z (Reading database ... 
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3325006Z (Reading database ... 5%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3325374Z (Reading database ... 10%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3326049Z (Reading database ... 15%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3326296Z (Reading database ... 20%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3326488Z (Reading database ... 25%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3326713Z (Reading database ... 30%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3326906Z (Reading database ... 35%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3327093Z (Reading database ... 40%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3327297Z (Reading database ... 45%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3327482Z (Reading database ... 50%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3327673Z (Reading database ... 55%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3435935Z (Reading database ... 60%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3465973Z (Reading database ... 65%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3491411Z (Reading database ... 70%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3518619Z (Reading database ... 75%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3546652Z (Reading database ... 80%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3584047Z (Reading database ... 85%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3629385Z (Reading database ... 90%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3826076Z (Reading database ... 95%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3826399Z (Reading database ... 100%
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3826715Z (Reading database ... 154645 files and directories currently installed.)
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.3856029Z Purging configuration files for microsoft-edge-stable (148.0.3967.54-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.4240551Z Purging configuration files for postgresql-client-common (290.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.4466477Z Purging configuration files for mysql-server-8.0 (8.0.45-0ubuntu0.24.04.1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.8982638Z Purging configuration files for libmecab2:amd64 (0.996-14ubuntu4) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.9070399Z Purging configuration files for mysql-common (5.8+1.1.0build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.9242893Z dpkg: warning: while removing mysql-common, directory '/etc/mysql' not empty so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.9358674Z Purging configuration files for fontconfig (2.15.0-1.1ubuntu2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.9588420Z Purging configuration files for google-chrome-stable (148.0.7778.167-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:46.9867849Z Purging configuration files for postgresql-16 (16.13-1.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.0628788Z Dropping cluster main...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.1539968Z Purging configuration files for firefox (150.0.2+build2-0ubuntu0.24.04.1~mt1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.1812921Z Purging configuration files for ubuntu-mono (24.04-0ubuntu1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.1976607Z Purging configuration files for humanity-icon-theme (0.6.16) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.2143031Z Purging configuration files for adwaita-icon-theme (46.0-1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.2307701Z Purging configuration files for sphinxsearch (2.2.11-8build1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.5157578Z Purging configuration files for libgtk-3-0t64:amd64 (3.24.41-4ubuntu1.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:47.5346475Z Purging configuration files for postgresql-common (290.pgdg24.04+1) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.4468400Z Purging configuration files for powershell (7.4.15-1.deb) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.4530348Z dpkg: warning: while removing powershell, directory '/usr/local/share/man/man1' not empty so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.4530994Z dpkg: warning: while removing powershell, directory '/opt' not empty so not removed
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.4647412Z Purging configuration files for libgdk-pixbuf-2.0-0:amd64 (2.42.10+dfsg-3ubuntu3.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.4813894Z Purging configuration files for xul-ext-ubufox (3.4-0ubuntu1.17.10.4) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.5030108Z Purging configuration files for libgtk-3-common (3.24.41-4ubuntu1.3) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.5119564Z Purging configuration files for azure-cli (2.86.0-1~noble) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.5415525Z Processing triggers for man-db (2.12.0-4build2) ...
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:48.5432778Z Not building database; man-db/auto-update is not 'true'.
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:50.6422457Z + sudo apt-get clean
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:50.6668678Z + df -h /
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:50.6680523Z Filesystem      Size  Used Avail Use% Mounted on
+Build & push image to GHCR	Free disk space (max headroom)	2026-05-18T01:35:50.6681044Z /dev/root       145G   25G  120G  18% /
+Build & push image to GHCR	Checkout	﻿2026-05-18T01:35:50.6863489Z ##[group]Run actions/checkout@v4
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6863760Z with:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6863953Z   repository: will383842/axion-ia
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6864357Z   token: ***
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6864537Z   ssh-strict: true
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6864722Z   ssh-user: git
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6864918Z   persist-credentials: true
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6865151Z   clean: true
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6865341Z   sparse-checkout-cone-mode: true
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6865565Z   fetch-depth: 1
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6865742Z   fetch-tags: false
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6865917Z   show-progress: true
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6866102Z   lfs: false
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6866258Z   submodules: false
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6866447Z   set-safe-directory: true
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.6866654Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8022702Z Syncing repository: will383842/axion-ia
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8024589Z ##[group]Getting Git version info
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8025047Z Working directory is '/home/runner/work/axion-ia/axion-ia'
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8025809Z [command]/usr/bin/git version
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8081617Z git version 2.54.0
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8106637Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8128673Z Temporarily overriding HOME='/home/runner/work/_temp/a49b9571-d28b-4bee-84dd-9ea2f3661832' before making global git config changes
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8129739Z Adding repository directory to the temporary git global config as a safe directory
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8134378Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/axion-ia/axion-ia
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8178750Z Deleting the contents of '/home/runner/work/axion-ia/axion-ia'
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8182687Z ##[group]Initializing the repository
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8186744Z [command]/usr/bin/git init /home/runner/work/axion-ia/axion-ia
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8256660Z hint: Using 'master' as the name for the initial branch. This default branch name
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8257312Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8257912Z hint: to use in all of your new repositories, which will suppress this warning,
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8258481Z hint: call:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8258736Z hint:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8259270Z hint: 	git config --global init.defaultBranch <name>
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8259708Z hint:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8260098Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8260844Z hint: 'development'. The just-created branch can be renamed via this command:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8261389Z hint:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8261685Z hint: 	git branch -m <name>
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8262000Z hint:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8262428Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8262975Z Initialized empty Git repository in /home/runner/work/axion-ia/axion-ia/.git/
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8272281Z [command]/usr/bin/git remote add origin https://github.com/will383842/axion-ia
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8312111Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8312483Z ##[group]Disabling automatic garbage collection
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8316575Z [command]/usr/bin/git config --local gc.auto 0
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8346189Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8346604Z ##[group]Setting up auth
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8353477Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8388619Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8703473Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8736509Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.8975050Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.9010540Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.9254772Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.9292980Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.9293605Z ##[group]Fetching the repository
+Build & push image to GHCR	Checkout	2026-05-18T01:35:50.9302451Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f193e2e1e6f8db072104d722feba5b4b8bd6deb3:refs/remotes/origin/main
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8834978Z From https://github.com/will383842/axion-ia
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8835647Z  * [new ref]         f193e2e1e6f8db072104d722feba5b4b8bd6deb3 -> origin/main
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8868439Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8868842Z ##[group]Determining the checkout info
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8871376Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8876458Z [command]/usr/bin/git sparse-checkout disable
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8921203Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8947976Z ##[group]Checking out the ref
+Build & push image to GHCR	Checkout	2026-05-18T01:35:51.8952780Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+Build & push image to GHCR	Checkout	2026-05-18T01:35:52.0801101Z Switched to a new branch 'main'
+Build & push image to GHCR	Checkout	2026-05-18T01:35:52.0802011Z branch 'main' set up to track 'origin/main'.
+Build & push image to GHCR	Checkout	2026-05-18T01:35:52.0817922Z ##[endgroup]
+Build & push image to GHCR	Checkout	2026-05-18T01:35:52.0862860Z [command]/usr/bin/git log -1 --format=%H
+Build & push image to GHCR	Checkout	2026-05-18T01:35:52.0887011Z f193e2e1e6f8db072104d722feba5b4b8bd6deb3
+Build & push image to GHCR	Set up Docker Buildx	﻿2026-05-18T01:35:52.1090261Z ##[group]Run docker/setup-buildx-action@v3
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1090553Z with:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1090741Z   driver: docker-container
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1090963Z   use: true
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1091136Z   keep-state: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1091333Z   cache-binary: true
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1091531Z   cleanup: true
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1091706Z   install: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.1091894Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.3761976Z ##[group]Docker info
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.3779595Z [command]/usr/bin/docker version
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4362080Z Client: Docker Engine - Community
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4362709Z  Version:           28.0.4
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4363266Z  API version:       1.48
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4363678Z  Go version:        go1.23.7
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4364097Z  Git commit:        b8034c0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4364658Z  Built:             Tue Mar 25 15:07:16 2025
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4365209Z  OS/Arch:           linux/amd64
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4365729Z  Context:           default
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4366213Z 
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4366639Z Server: Docker Engine - Community
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4367158Z  Engine:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4367590Z   Version:          28.0.4
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4368134Z   API version:      1.48 (minimum version 1.24)
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4368746Z   Go version:       go1.23.7
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4369513Z   Git commit:       6430e49
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4370039Z   Built:            Tue Mar 25 15:07:16 2025
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4370594Z   OS/Arch:          linux/amd64
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4371185Z   Experimental:     false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4371718Z  containerd:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4372003Z   Version:          v2.2.3
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4372412Z   GitCommit:        77c84241c7cbdd9b4eca2591793e3d4f4317c590
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4373003Z  runc:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4373278Z   Version:          1.3.5
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4373571Z   GitCommit:        v1.3.5-0-g488fc13e
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4374471Z  docker-init:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4374729Z   Version:          0.19.0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4375041Z   GitCommit:        de40ad0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:52.4416911Z [command]/usr/bin/docker info
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4525022Z Client: Docker Engine - Community
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4525536Z  Version:    28.0.4
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4525835Z  Context:    default
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4526032Z  Debug Mode: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4526229Z  Plugins:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4526418Z   buildx: Docker Buildx (Docker Inc.)
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4526677Z     Version:  v0.33.0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4526934Z     Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4527251Z   compose: Docker Compose (Docker Inc.)
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4527485Z     Version:  v2.38.2
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4527734Z     Path:     /usr/libexec/docker/cli-plugins/docker-compose
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4527980Z 
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4528057Z Server:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4528215Z  Containers: 0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4528394Z   Running: 0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4528562Z   Paused: 0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4528770Z   Stopped: 0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4528925Z  Images: 0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4529390Z  Server Version: 28.0.4
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4529604Z  Storage Driver: overlay2
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4529821Z   Backing Filesystem: extfs
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4530035Z   Supports d_type: true
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4530234Z   Using metacopy: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4530439Z   Native Overlay Diff: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4530646Z   userxattr: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4530839Z  Logging Driver: json-file
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4531041Z  Cgroup Driver: systemd
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4531236Z  Cgroup Version: 2
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4531402Z  Plugins:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4531565Z   Volume: local
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4531773Z   Network: bridge host ipvlan macvlan null overlay
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4532154Z   Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4532841Z  Swarm: inactive
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4533049Z  Runtimes: io.containerd.runc.v2 runc
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4533295Z  Default Runtime: runc
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4533493Z  Init Binary: docker-init
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4533975Z  containerd version: 77c84241c7cbdd9b4eca2591793e3d4f4317c590
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4534281Z  runc version: v1.3.5-0-g488fc13e
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4534509Z  init version: de40ad0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4534696Z  Security Options:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4534875Z   apparmor
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4535076Z   seccomp
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4535243Z    Profile: builtin
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4535421Z   cgroupns
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4535595Z  Kernel Version: 6.17.0-1013-azure
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4535833Z  Operating System: Ubuntu 24.04.4 LTS
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4536067Z  OSType: linux
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4536251Z  Architecture: x86_64
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4536435Z  CPUs: 4
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4536602Z  Total Memory: 15.61GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4536792Z  Name: runnervmrw5os
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4537011Z  ID: a8f8c85e-0846-485a-8ac7-2f95cc5801cd
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4537260Z  Docker Root Dir: /var/lib/docker
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4537481Z  Debug Mode: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4537663Z  Username: githubactions
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4538006Z  Experimental: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4538275Z  Insecure Registries:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4545428Z   ::1/128
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4545716Z   127.0.0.0/8
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4545992Z  Live Restore Enabled: false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4546210Z 
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.4546730Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.5746895Z ##[group]Buildx version
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.5773820Z [command]/usr/bin/docker buildx version
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6299024Z github.com/docker/buildx v0.33.0 f7897eba028583e0071642db3c011e860444f8cf
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6332820Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6491071Z ##[group]Inspecting default docker context
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6631115Z [
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6631462Z   {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6631710Z     "Name": "default",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6632081Z     "Metadata": {},
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6632368Z     "Endpoints": {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6632645Z       "docker": {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6632954Z         "Host": "unix:///var/run/docker.sock",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6633370Z         "SkipTLSVerify": false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6633696Z       }
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6633921Z     },
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6634172Z     "TLSMaterial": {},
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6634469Z     "Storage": {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6634762Z       "MetadataPath": "<IN MEMORY>",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6635121Z       "TLSPath": "<IN MEMORY>"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6635407Z     }
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6635636Z   }
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6635855Z ]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6636464Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.6636989Z ##[group]Creating a new builder instance
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.7911239Z [command]/usr/bin/docker buildx create --name builder-4a27e328-a209-4b9d-8722-3ad92dad2422 --driver docker-container --buildkitd-flags --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host --use
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.8868188Z builder-4a27e328-a209-4b9d-8722-3ad92dad2422
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.8906854Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.8907462Z ##[group]Booting builder
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.8938930Z [command]/usr/bin/docker buildx inspect --bootstrap --builder builder-4a27e328-a209-4b9d-8722-3ad92dad2422
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:56.9472901Z #1 [internal] booting buildkit
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:57.0980408Z #1 pulling image moby/buildkit:buildx-stable-1
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.1143190Z #1 pulling image moby/buildkit:buildx-stable-1 2.2s done
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.2647390Z #1 creating container buildx_buildkit_builder-4a27e328-a209-4b9d-8722-3ad92dad24220
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.7763131Z #1 creating container buildx_buildkit_builder-4a27e328-a209-4b9d-8722-3ad92dad24220 0.7s done
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.7779615Z #1 DONE 2.8s
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8183026Z Name:          builder-4a27e328-a209-4b9d-8722-3ad92dad2422
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8183648Z Driver:        docker-container
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8184013Z Last Activity: 2026-05-18 01:35:56 +0000 UTC
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8184921Z 
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8185015Z Nodes:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8186212Z Name:                  builder-4a27e328-a209-4b9d-8722-3ad92dad24220
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8190729Z Endpoint:              unix:///var/run/docker.sock
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8191595Z Status:                running
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8192574Z BuildKit daemon flags: --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8193521Z BuildKit version:      v0.29.0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8194145Z Platforms:             linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/386
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8194786Z Labels:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8195277Z  org.mobyproject.buildkit.worker.executor:         oci
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8196022Z  org.mobyproject.buildkit.worker.hostname:         4966bddfbbc5
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8196767Z  org.mobyproject.buildkit.worker.network:          host
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8197500Z  org.mobyproject.buildkit.worker.oci.process-mode: sandbox
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8198280Z  org.mobyproject.buildkit.worker.selinux.enabled:  false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8199045Z  org.mobyproject.buildkit.worker.snapshotter:      overlayfs
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8199991Z GC Policy rule#0:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8200411Z  All:            false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8201054Z  Filters:        type==source.local,type==exec.cachemount,type==source.git.checkout
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8201778Z  Keep Duration:  48h0m0s
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8202209Z  Max Used Space: 488.3MiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8202630Z GC Policy rule#1:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8203094Z  All:            false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8203545Z  Keep Duration:  1440h0m0s
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8204020Z  Reserved Space: 9.313GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8204479Z  Max Used Space: 93.13GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8204919Z  Min Free Space: 27.01GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8205357Z GC Policy rule#2:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8205759Z  All:            false
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8206161Z  Reserved Space: 9.313GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8206586Z  Max Used Space: 93.13GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8207065Z  Min Free Space: 27.01GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8207512Z GC Policy rule#3:
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8207884Z  All:            true
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8208279Z  Reserved Space: 9.313GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8208926Z  Max Used Space: 93.13GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8210411Z  Min Free Space: 27.01GiB
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.8244969Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9364049Z ##[group]Inspect builder
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9366399Z {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9366909Z   "nodes": [
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9367191Z     {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9367457Z       "name": "builder-4a27e328-a209-4b9d-8722-3ad92dad24220",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9367825Z       "endpoint": "unix:///var/run/docker.sock",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9368098Z       "status": "running",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9368621Z       "buildkitd-flags": "--allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9369341Z       "buildkit": "v0.29.0",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9369711Z       "platforms": "linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/386",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9370180Z       "features": {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9370466Z         "Automatically load images to the Docker Engine image store": true,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9370814Z         "Cache export": true,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9371155Z         "Direct push": true,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9371370Z         "Docker exporter": true,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9371603Z         "Multi-platform build": true,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9371834Z         "OCI exporter": true
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9372033Z       },
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9372186Z       "labels": {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9372431Z         "org.mobyproject.buildkit.worker.executor": "oci",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9372875Z         "org.mobyproject.buildkit.worker.hostname": "4966bddfbbc5",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9373295Z         "org.mobyproject.buildkit.worker.network": "host",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9373672Z         "org.mobyproject.buildkit.worker.oci.process-mode": "sandbox",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9374083Z         "org.mobyproject.buildkit.worker.selinux.enabled": "false",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9374788Z         "org.mobyproject.buildkit.worker.snapshotter": "overlayfs"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9375084Z       },
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9375250Z       "gcPolicy": [
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9375430Z         {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9375749Z           "all": false,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9375937Z           "filter": [
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9376132Z             "type==source.local",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9376357Z             "type==exec.cachemount",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9376600Z             "type==source.git.checkout"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9376822Z           ],
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9377001Z           "keepDuration": "48h0m0s",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9377225Z           "maxUsedSpace": "488.3MiB"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9377470Z         },
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9377627Z         {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9377809Z           "all": false,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9378008Z           "keepDuration": "1440h0m0s",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9378238Z           "reservedSpace": "9.313GiB",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9378467Z           "maxUsedSpace": "93.13GiB",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9378699Z           "minFreeSpace": "27.01GiB"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9378907Z         },
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9379056Z         {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9379973Z           "all": false,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9380217Z           "reservedSpace": "9.313GiB",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9380474Z           "maxUsedSpace": "93.13GiB",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9380703Z           "minFreeSpace": "27.01GiB"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9380908Z         },
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9381068Z         {
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9381231Z           "all": true,
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9381439Z           "reservedSpace": "9.313GiB",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9381667Z           "maxUsedSpace": "93.13GiB",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9381888Z           "minFreeSpace": "27.01GiB"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9382087Z         }
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9382239Z       ]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9382384Z     }
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9382534Z   ],
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9382745Z   "name": "builder-4a27e328-a209-4b9d-8722-3ad92dad2422",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9383032Z   "driver": "docker-container",
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9383283Z   "lastActivity": "2026-05-18T01:35:56.000Z"
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9383511Z }
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9384122Z ##[endgroup]
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9384507Z ##[group]BuildKit version
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9384882Z builder-4a27e328-a209-4b9d-8722-3ad92dad24220: v0.29.0
+Build & push image to GHCR	Set up Docker Buildx	2026-05-18T01:35:59.9385431Z ##[endgroup]
+Build & push image to GHCR	Login to GHCR	﻿2026-05-18T01:35:59.9516532Z ##[group]Run docker/login-action@v3
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:35:59.9516788Z with:
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:35:59.9516963Z   registry: ghcr.io
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:35:59.9517157Z   username: will383842
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:35:59.9517630Z   password: ***
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:35:59.9517830Z   logout: true
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:35:59.9518003Z ##[endgroup]
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:36:00.2646019Z Logging into ghcr.io...
+Build & push image to GHCR	Login to GHCR	2026-05-18T01:36:00.5190260Z Login Succeeded!
+Build & push image to GHCR	Extract metadata (tags, labels)	﻿2026-05-18T01:36:00.5349295Z ##[group]Run docker/metadata-action@v5
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:00.5349647Z with:
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:00.5349843Z   images: ghcr.io/will383842/axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:00.5350362Z   tags: type=raw,value=latest,enable={{is_default_branch}}
+Build & push image to GHCR	Extract metadata (tags, labels)	type=sha,prefix=sha-,format=short
+Build & push image to GHCR	Extract metadata (tags, labels)	type=ref,event=branch
+Build & push image to GHCR	Extract metadata (tags, labels)	type=ref,event=tag
+Build & push image to GHCR	Extract metadata (tags, labels)	
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:00.5350899Z   context: workflow
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:00.5351238Z   github-token: ***
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:00.5351435Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1396653Z ##[group]Context info
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1397289Z eventName: push
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1398349Z sha: f193e2e1e6f8db072104d722feba5b4b8bd6deb3
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1398818Z ref: refs/heads/main
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1399807Z workflow: Build & Deploy · GHCR + Coolify (axion-ia.com)
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1400243Z action: meta
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1400502Z actor: will383842
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1400780Z runNumber: 140
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1401050Z runId: 26008830067
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1401486Z commitDate: Mon May 18 2026 01:31:52 GMT+0000 (Coordinated Universal Time)
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1402873Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1410045Z ##[group]Processing images input
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1410675Z name=ghcr.io/will383842/axion-ia,enable=true
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1411895Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1423475Z ##[group]Processing tags input
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1423927Z type=ref,event=branch,enable=true,priority=600
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1424622Z type=ref,event=tag,enable=true,priority=600
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1425197Z type=raw,value=latest,enable={{is_default_branch}},priority=200
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1425850Z type=sha,prefix=sha-,format=short,enable=true,priority=100
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1426578Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1427320Z ##[group]Processing flavor input
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1428116Z latest=auto
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1428377Z prefix=
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1428644Z prefixLatest=false
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1428928Z suffix=
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1429343Z suffixLatest=false
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1429839Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1496278Z ##[group]Docker image version
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1496664Z main
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1497121Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1501943Z ##[group]Docker tags
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1502288Z ghcr.io/will383842/axion-ia:main
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1502696Z ghcr.io/will383842/axion-ia:latest
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1503101Z ghcr.io/will383842/axion-ia:sha-f193e2e
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1503683Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1582465Z ##[group]Docker labels
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1582952Z org.opencontainers.image.created=2026-05-18T01:36:01.142Z
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1583498Z org.opencontainers.image.description=
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1583926Z org.opencontainers.image.licenses=
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1584502Z org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1585277Z org.opencontainers.image.source=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1585882Z org.opencontainers.image.title=axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1586429Z org.opencontainers.image.url=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1587014Z org.opencontainers.image.version=main
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1587614Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1588043Z ##[group]Annotations
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1588481Z manifest:org.opencontainers.image.created=2026-05-18T01:36:01.142Z
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1589063Z manifest:org.opencontainers.image.description=
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1589750Z manifest:org.opencontainers.image.licenses=
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1590392Z manifest:org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1591253Z manifest:org.opencontainers.image.source=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1591919Z manifest:org.opencontainers.image.title=axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1592547Z manifest:org.opencontainers.image.url=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1593194Z manifest:org.opencontainers.image.version=main
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1593804Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1594871Z ##[group]JSON output
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1595481Z {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1596415Z   "tags": [
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1596695Z     "ghcr.io/will383842/axion-ia:main",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1597097Z     "ghcr.io/will383842/axion-ia:latest",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1597516Z     "ghcr.io/will383842/axion-ia:sha-f193e2e"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1597903Z   ],
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1598126Z   "tag-names": [
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1598386Z     "main",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1598616Z     "latest",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1598864Z     "sha-f193e2e"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1599266Z   ],
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1599498Z   "labels": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1599862Z     "org.opencontainers.image.created": "2026-05-18T01:36:01.142Z",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1600436Z     "org.opencontainers.image.description": "",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1600887Z     "org.opencontainers.image.licenses": "",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1601499Z     "org.opencontainers.image.revision": "f193e2e1e6f8db072104d722feba5b4b8bd6deb3",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1602319Z     "org.opencontainers.image.source": "https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1602974Z     "org.opencontainers.image.title": "axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1603603Z     "org.opencontainers.image.url": "https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1604279Z     "org.opencontainers.image.version": "main"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1604898Z   },
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1605123Z   "annotations": [
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1605570Z     "manifest:org.opencontainers.image.created=2026-05-18T01:36:01.142Z",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1606174Z     "manifest:org.opencontainers.image.description=",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1606650Z     "manifest:org.opencontainers.image.licenses=",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1607357Z     "manifest:org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1608237Z     "manifest:org.opencontainers.image.source=https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1608942Z     "manifest:org.opencontainers.image.title=axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1617630Z     "manifest:org.opencontainers.image.url=https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1618349Z     "manifest:org.opencontainers.image.version=main"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1618768Z   ]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1618992Z }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1619644Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1620149Z ##[group]Bake file definition (tags)
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1620487Z {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1620700Z   "target": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1620973Z     "docker-metadata-action": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1621291Z       "tags": [
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1621574Z         "ghcr.io/will383842/axion-ia:main",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1621975Z         "ghcr.io/will383842/axion-ia:latest",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1622390Z         "ghcr.io/will383842/axion-ia:sha-f193e2e"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1622759Z       ],
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1622987Z       "args": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1623326Z         "DOCKER_META_IMAGES": "ghcr.io/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1623781Z         "DOCKER_META_VERSION": "main"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1624112Z       }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1624340Z     }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1624550Z   }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1624779Z }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1625195Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1625650Z ##[group]Bake file definition (labels)
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1625986Z {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1626196Z   "target": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1626468Z     "docker-metadata-action": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1626794Z       "labels": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1627188Z         "org.opencontainers.image.created": "2026-05-18T01:36:01.142Z",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1627767Z         "org.opencontainers.image.description": "",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1628234Z         "org.opencontainers.image.licenses": "",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1628872Z         "org.opencontainers.image.revision": "f193e2e1e6f8db072104d722feba5b4b8bd6deb3",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1629849Z         "org.opencontainers.image.source": "https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1630499Z         "org.opencontainers.image.title": "axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1631113Z         "org.opencontainers.image.url": "https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1631731Z         "org.opencontainers.image.version": "main"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1632393Z       }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1632604Z     }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1632823Z   }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1633035Z }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1633463Z ##[endgroup]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1633945Z ##[group]Bake file definition (annotations)
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1634308Z {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1634528Z   "target": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1634812Z     "docker-metadata-action": {
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1635142Z       "annotations": [
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1635596Z         "manifest:org.opencontainers.image.created=2026-05-18T01:36:01.142Z",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1636219Z         "manifest:org.opencontainers.image.description=",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1636715Z         "manifest:org.opencontainers.image.licenses=",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1637402Z         "manifest:org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1638296Z         "manifest:org.opencontainers.image.source=https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1639026Z         "manifest:org.opencontainers.image.title=axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1639851Z         "manifest:org.opencontainers.image.url=https://github.com/will383842/axion-ia",
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1640741Z         "manifest:org.opencontainers.image.version=main"
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1641150Z       ]
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1641376Z     }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1641584Z   }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1641805Z }
+Build & push image to GHCR	Extract metadata (tags, labels)	2026-05-18T01:36:01.1642225Z ##[endgroup]
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	﻿2026-05-18T01:36:01.2188108Z ##[group]Run echo "value=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2188637Z [36;1mecho "value=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"[0m
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2225578Z shell: /usr/bin/bash -e {0}
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2225803Z env:
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2225999Z   DOCKER_METADATA_OUTPUT_VERSION: main
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2226561Z   DOCKER_METADATA_OUTPUT_TAGS: ghcr.io/will383842/axion-ia:main
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	ghcr.io/will383842/axion-ia:latest
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	ghcr.io/will383842/axion-ia:sha-f193e2e
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2227175Z   DOCKER_METADATA_OUTPUT_TAG_NAMES: main
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	latest
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	sha-f193e2e
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2228897Z   DOCKER_METADATA_OUTPUT_LABELS: org.opencontainers.image.created=2026-05-18T01:36:01.142Z
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.description=
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.licenses=
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.source=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.title=axion-ia
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.url=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	org.opencontainers.image.version=main
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2232341Z   DOCKER_METADATA_OUTPUT_ANNOTATIONS: manifest:org.opencontainers.image.created=2026-05-18T01:36:01.142Z
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.description=
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.licenses=
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.source=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.title=axion-ia
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.url=https://github.com/will383842/axion-ia
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	manifest:org.opencontainers.image.version=main
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2237795Z   DOCKER_METADATA_OUTPUT_JSON: {"tags":["ghcr.io/will383842/axion-ia:main","ghcr.io/will383842/axion-ia:latest","ghcr.io/will383842/axion-ia:sha-f193e2e"],"tag-names":["main","latest","sha-f193e2e"],"labels":{"org.opencontainers.image.created":"2026-05-18T01:36:01.142Z","org.opencontainers.image.description":"","org.opencontainers.image.licenses":"","org.opencontainers.image.revision":"f193e2e1e6f8db072104d722feba5b4b8bd6deb3","org.opencontainers.image.source":"https://github.com/will383842/axion-ia","org.opencontainers.image.title":"axion-ia","org.opencontainers.image.url":"https://github.com/will383842/axion-ia","org.opencontainers.image.version":"main"},"annotations":["manifest:org.opencontainers.image.created=2026-05-18T01:36:01.142Z","manifest:org.opencontainers.image.description=","manifest:org.opencontainers.image.licenses=","manifest:org.opencontainers.image.revision=f193e2e1e6f8db072104d722feba5b4b8bd6deb3","manifest:org.opencontainers.image.source=https://github.com/will383842/axion-ia","manifest:org.opencontainers.image.title=axion-ia","manifest:org.opencontainers.image.url=https://github.com/will383842/axion-ia","manifest:org.opencontainers.image.version=main"]}
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2242292Z   DOCKER_METADATA_OUTPUT_BAKE_FILE_TAGS: /home/runner/work/_temp/docker-actions-toolkit-HarX0c/docker-metadata-action-bake-tags.json
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2243134Z   DOCKER_METADATA_OUTPUT_BAKE_FILE_LABELS: /home/runner/work/_temp/docker-actions-toolkit-HarX0c/docker-metadata-action-bake-labels.json
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2244017Z   DOCKER_METADATA_OUTPUT_BAKE_FILE_ANNOTATIONS: /home/runner/work/_temp/docker-actions-toolkit-HarX0c/docker-metadata-action-bake-annotations.json
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2244849Z   DOCKER_METADATA_OUTPUT_BAKE_FILE: /home/runner/work/_temp/docker-actions-toolkit-HarX0c/docker-metadata-action-bake.json
+Build & push image to GHCR	Compute BUILD_TIME (ISO 8601 UTC)	2026-05-18T01:36:01.2245335Z ##[endgroup]
