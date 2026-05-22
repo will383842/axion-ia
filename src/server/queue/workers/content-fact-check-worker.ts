@@ -28,6 +28,7 @@ import {
 } from "@/server/content-gen/fact-check/claims-extractor";
 import { perplexityProvider } from "@/server/content-gen/providers/perplexity";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-fact-check";
 
@@ -194,6 +195,7 @@ export function startFactCheckWorker(): Worker<FactCheckJobPayload> {
   workerInstance = new Worker<FactCheckJobPayload>(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 2,
+    lockDuration: 120_000,
     limiter: { max: 60, duration: 60_000 },
     // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
     // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
@@ -201,8 +203,12 @@ export function startFactCheckWorker(): Worker<FactCheckJobPayload> {
     removeOnComplete: { count: 1000 },
     removeOnFail: { count: 5000 },
   });
-  workerInstance.on("failed", (j, err) => {
-    console.error(`[content-fact-check-worker] job ${j?.id} failed:`, err);
+  // Sprint Final 2026-05-22 (P0-4 audit final) — Sentry capture sur worker
+  // chokepoint AI Act gating. Avant ce fix, outages Perplexity = silent fail
+  // console only → articles publiés sans claims vérifiés invisible.
+  workerInstance.on("failed", (job, err) => {
+    console.error(`[content-fact-check-worker] job ${job?.id} failed:`, err);
+    captureWorkerError("fact-check", QUEUE_NAME, job, err);
   });
   return workerInstance;
 }

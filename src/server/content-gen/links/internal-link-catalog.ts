@@ -20,7 +20,7 @@ export interface InternalLinkEntry {
 const STATIC_CATALOG: readonly InternalLinkEntry[] = [
   {
     topic: "audit IA",
-    url: "/audits",
+    url: "/audit",
     keywords: [
       "audit",
       "audits",
@@ -31,12 +31,12 @@ const STATIC_CATALOG: readonly InternalLinkEntry[] = [
   },
   {
     topic: "interventions formations IA",
-    url: "/interventions-formations",
+    url: "/interventions",
     keywords: ["intervention", "formation", "atelier", "sensibilisation IA", "accompagnement"],
   },
   {
     topic: "implémentation IA",
-    url: "/implementations",
+    url: "/implementation",
     keywords: ["implémentation", "déploiement", "intégration IA", "mise en place", "projet IA"],
   },
   {
@@ -66,9 +66,9 @@ const STATIC_CATALOG: readonly InternalLinkEntry[] = [
     keywords: ["contact", "devis", "rendez-vous", "prise de contact"],
   },
   {
-    topic: "tarifs IA",
-    url: "/tarifs",
-    keywords: ["tarif", "prix", "coût", "budget IA", "tarification"],
+    topic: "demande de devis IA",
+    url: "/demande-devis",
+    keywords: ["tarif", "prix", "coût", "budget IA", "tarification", "devis"],
   },
   {
     topic: "glossaire IA",
