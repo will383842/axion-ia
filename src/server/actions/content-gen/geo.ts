@@ -8,6 +8,7 @@
 
 "use server";
 
+import type { ContentGenJobStatus } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { REGIONS } from "@/content/regions";
 import { requireAdmin } from "./_auth";
@@ -187,6 +188,7 @@ export async function getGlobalGeoStats(): Promise<GlobalGeoStats> {
 }
 export interface VilleSectorRow {
   readonly anchorVilleSlug: string;
+  readonly serviceSector: string | null;
   readonly status: string;
   readonly count: number;
   readonly avgQuality: number | null;
@@ -194,20 +196,42 @@ export interface VilleSectorRow {
 
 export async function getJobsVilleSectorDetail(
   limit = 200,
+  filterStatus?: string,
+  filterVille?: string,
+  offset = 0,
 ): Promise<ReadonlyArray<VilleSectorRow>> {
   await requireAdmin();
+  // serviceSector is on CoverageCampaign, not ContentGenJob.
+  // We group by (ville, campaignId, status) then batch-join campaign sectors.
   const grouped = await prisma.contentGenJob.groupBy({
-    by: ["anchorVilleSlug", "status"],
+    by: ["anchorVilleSlug", "campaignId", "status"],
     _count: { anchorVilleSlug: true },
     _avg: { qualityScore: true },
-    where: { anchorVilleSlug: { not: null } },
+    where: {
+      anchorVilleSlug: filterVille ? { equals: filterVille } : { not: null },
+      ...(filterStatus ? { status: { equals: filterStatus as ContentGenJobStatus } } : {}),
+    },
     orderBy: { _count: { anchorVilleSlug: "desc" } },
     take: limit,
+    skip: offset,
   });
+
+  // Batch-fetch sectors from campaigns
+  const campaignIds = [...new Set(grouped.map((r) => r.campaignId).filter(Boolean))] as string[];
+  const campaigns =
+    campaignIds.length > 0
+      ? await prisma.coverageCampaign.findMany({
+          where: { id: { in: campaignIds } },
+          select: { id: true, serviceSector: true },
+        })
+      : [];
+  const sectorMap = new Map(campaigns.map((c) => [c.id, c.serviceSector as string | null]));
+
   return grouped.map((row) => ({
     anchorVilleSlug: row.anchorVilleSlug ?? "",
+    serviceSector: row.campaignId ? (sectorMap.get(row.campaignId) ?? null) : null,
     status: row.status,
     count: row._count.anchorVilleSlug,
-    avgQuality: row._avg.qualityScore ?? null,
+    avgQuality: row._avg?.qualityScore ?? null,
   }));
 }

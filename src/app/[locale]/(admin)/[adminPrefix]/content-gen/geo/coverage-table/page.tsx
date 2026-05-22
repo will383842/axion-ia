@@ -10,12 +10,14 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
+  searchParams: Promise<{ status?: string; ville?: string; page?: string }>;
 }
 
-export default async function CoverageCrossTablePage({ params }: PageProps) {
+export default async function CoverageCrossTablePage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+  const sp = await searchParams;
 
-  return <CoverageCrossTableV2 adminPrefix={adminPrefix} />;
+  return <CoverageCrossTableV2 adminPrefix={adminPrefix} searchParams={sp} />;
 }

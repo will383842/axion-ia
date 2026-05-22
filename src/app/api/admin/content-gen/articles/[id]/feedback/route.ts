@@ -13,6 +13,10 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const role = (session.user as { role?: string }).role ?? "reader";
+  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const { id: articleId } = await params;
   const body = (await req.json()) as { type?: string; comment?: string };

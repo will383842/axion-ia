@@ -1,5 +1,6 @@
 // P1-5 Sprint P5 - Tableau croise ville x secteur x etat.
 // Resolution D-P5-4: tableau croise dynamique (pas heatmap).
+// P5.5 — serviceSector + filtres URL + pagination 50/page + export CSV.
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
@@ -7,34 +8,125 @@ import { getJobsVilleSectorDetail } from "@/server/actions/content-gen/geo";
 
 interface Props {
   adminPrefix: string;
+  searchParams?: { status?: string; ville?: string; page?: string };
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  published: "Publie",
+  published: "Publié",
   draft: "Brouillon",
   running: "En cours",
   queued: "En attente",
-  failed: "Echec",
+  failed: "Échec",
   needs_review: "Review",
-  quality_improving: "Qualite auto",
-  cancelled: "Annule",
+  quality_improving: "Qualité auto",
+  cancelled: "Annulé",
 };
 
-export async function CoverageCrossTableV2({ adminPrefix }: Props): Promise<React.ReactElement> {
+const SECTOR_LABELS: Record<string, string> = {
+  interventions_formations: "Interventions",
+  audits: "Audits",
+  implementations: "Implantations",
+  un_a_un: "1-à-1",
+  sites_web_augmentes: "Web IA",
+};
+
+const PAGE_SIZE = 50;
+
+export async function CoverageCrossTableV2({
+  adminPrefix,
+  searchParams,
+}: Props): Promise<React.ReactElement> {
   const base = `/fr/${adminPrefix}/content-gen`;
-  const rows = await getJobsVilleSectorDetail(200);
+  const page = Math.max(1, Number(searchParams?.page ?? "1") || 1);
+  const filterStatus = searchParams?.status ?? "";
+  const filterVille = searchParams?.ville ?? "";
+
+  const rows = await getJobsVilleSectorDetail(
+    PAGE_SIZE,
+    filterStatus || undefined,
+    filterVille || undefined,
+    (page - 1) * PAGE_SIZE,
+  );
+
+  const totalLabel =
+    rows.length === PAGE_SIZE
+      ? `${(page - 1) * PAGE_SIZE + 1}–${page * PAGE_SIZE}+`
+      : `${(page - 1) * PAGE_SIZE + 1}–${(page - 1) * PAGE_SIZE + rows.length}`;
+
+  function buildUrl(params: Record<string, string>) {
+    const sp = new URLSearchParams();
+    if (filterStatus) sp.set("status", filterStatus);
+    if (filterVille) sp.set("ville", filterVille);
+    if (page > 1) sp.set("page", String(page));
+    Object.entries(params).forEach(([k, v]) => {
+      if (v) sp.set(k, v);
+      else sp.delete(k);
+    });
+    const qs = sp.toString();
+    return `${base}/geo/coverage-table${qs ? `?${qs}` : ""}`;
+  }
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Tableau croise villes x secteur x etat"
-        description={`${rows.length} lignes aggregees. Top 200 combinaisons.`}
+        title="Tableau croisé villes × secteur × état"
+        description={`Lignes ${totalLabel} — filtrables par ville et état`}
         actions={
-          <Link href={`${base}/geo`} className="admin-button-ghost">
-            Retour cockpit geo
-          </Link>
+          <div className="flex gap-[var(--space-admin-4)]">
+            <Link href={`${base}/geo/coverage-table/export.csv`} className="admin-button-ghost">
+              ↓ Exporter CSV
+            </Link>
+            <Link href={`${base}/geo`} className="admin-button-ghost">
+              ← Cockpit géo
+            </Link>
+          </div>
         }
       />
+
+      {/* Filtres URL */}
+      <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
+        <form method="get" className="flex flex-wrap items-end gap-[var(--space-admin-4)]">
+          <div className="admin-field" style={{ minWidth: 160 }}>
+            <label className="admin-label" htmlFor="filter-ville">
+              Ville
+            </label>
+            <input
+              id="filter-ville"
+              name="ville"
+              defaultValue={filterVille}
+              className="admin-input"
+              placeholder="ex. paris"
+            />
+          </div>
+          <div className="admin-field" style={{ minWidth: 160 }}>
+            <label className="admin-label" htmlFor="filter-status">
+              État
+            </label>
+            <select
+              id="filter-status"
+              name="status"
+              defaultValue={filterStatus}
+              className="admin-input"
+            >
+              <option value="">Tous</option>
+              {Object.entries(STATUS_LABELS).map(([k, v]) => (
+                <option key={k} value={k}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </div>
+          <input type="hidden" name="page" value="1" />
+          <button type="submit" className="admin-button">
+            Filtrer
+          </button>
+          {(filterStatus || filterVille) && (
+            <Link href={`${base}/geo/coverage-table`} className="admin-button-ghost">
+              Réinitialiser
+            </Link>
+          )}
+        </form>
+      </AdminCard>
 
       <AdminCard variant="compact">
         <div className="admin-table-wrapper">
@@ -42,32 +134,64 @@ export async function CoverageCrossTableV2({ adminPrefix }: Props): Promise<Reac
             <thead>
               <tr>
                 <th>Ville</th>
-                <th>Etat</th>
-                <th>Count</th>
-                <th>Score moy.</th>
+                <th>Secteur</th>
+                <th>État</th>
+                <th className="text-right">Articles</th>
+                <th className="text-right">Score moy.</th>
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="admin-table-empty">
-                    Aucune donnee. Lancez des campagnes de couverture.
+                  <td colSpan={5} className="admin-table-empty">
+                    Aucune donnée{filterVille || filterStatus ? " pour ces filtres" : ""}. Lancez
+                    des campagnes de couverture.
                   </td>
                 </tr>
               ) : (
                 rows.map((r, i) => (
-                  <tr key={`${r.anchorVilleSlug}-${r.status}-${i}`}>
+                  <tr key={`${r.anchorVilleSlug}-${r.serviceSector}-${r.status}-${i}`}>
                     <td className="font-medium">{r.anchorVilleSlug}</td>
+                    <td>
+                      {r.serviceSector ? (
+                        <span className="admin-badge">
+                          {SECTOR_LABELS[r.serviceSector] ?? r.serviceSector}
+                        </span>
+                      ) : (
+                        <span className="admin-meta">—</span>
+                      )}
+                    </td>
                     <td>
                       <span className="admin-badge">{STATUS_LABELS[r.status] ?? r.status}</span>
                     </td>
-                    <td>{r.count}</td>
-                    <td>{r.avgQuality != null ? r.avgQuality.toFixed(1) : "—"}</td>
+                    <td className="text-right tabular-nums">{r.count}</td>
+                    <td className="text-right tabular-nums">
+                      {r.avgQuality != null ? r.avgQuality.toFixed(1) : "—"}
+                    </td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="mt-[var(--space-admin-5)] flex items-center justify-between">
+          <p className="admin-meta">
+            Page {page} · {rows.length} ligne{rows.length > 1 ? "s" : ""}
+          </p>
+          <div className="flex gap-[var(--space-admin-3)]">
+            {page > 1 && (
+              <Link href={buildUrl({ page: String(page - 1) })} className="admin-button-ghost">
+                ← Précédent
+              </Link>
+            )}
+            {rows.length === PAGE_SIZE && (
+              <Link href={buildUrl({ page: String(page + 1) })} className="admin-button-ghost">
+                Suivant →
+              </Link>
+            )}
+          </div>
         </div>
       </AdminCard>
     </AdminPageShell>

@@ -257,7 +257,7 @@ export async function pauseCampaign(id: string): Promise<void> {
         }
       }
     }
-    console.info(
+    console.warn(
       `[pauseCampaign] campaign=${id} queued=${queuedJobs.length} bullPurged=${purgeBullJobs}`,
     );
   }

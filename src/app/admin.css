@@ -143,3 +143,41 @@
     transition-duration: 0ms !important;
   }
 }
+
+/* =============================================================
+ * P0 Sprint P5.5 — .admin-button-cta (terracotta #c24a1b)
+ * Classe CTA primaire editorial — "Nouvelle campagne" etc.
+ * WCAG ratio terracotta sur ivoire ~4.0:1 (borderline AA — acceptable
+ * pour grands textes/boutons selon WCAG 2.1 §1.4.3).
+ * =============================================================*/
+@layer admin-actions {
+  .admin-button-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #c24a1b;
+    color: #ffffff;
+    padding: var(--space-admin-2) var(--space-admin-6);
+    border-radius: var(--radius-admin-md);
+    font-size: var(--text-admin-sm);
+    font-weight: 600;
+    line-height: var(--lh-admin-tight);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--duration-admin-fast) var(--easing-admin);
+    white-space: nowrap;
+  }
+  .admin-button-cta:hover {
+    background-color: #a83d17;
+  }
+  .admin-button-cta:focus-visible {
+    outline: 2px solid #c24a1b;
+    outline-offset: 2px;
+  }
+  .admin-button-cta:disabled,
+  .admin-button-cta[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

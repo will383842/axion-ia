@@ -1,6 +1,9 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
 // P0-2 Sprint P5 — QualityIterationsBadge + qualityImprovementAttempts field.
+// P5.5 — ArticleFeedback thumbs up/down (D-P5-8, V5-08 correction).
 
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import {
   approveReview,
@@ -21,6 +24,7 @@ interface ReviewData {
     seoScore: number | null;
     outputJsonRaw: unknown;
     qualityImprovementAttempts: number;
+    outputBlogPostId?: string | null;
   };
 }
 
@@ -47,6 +51,7 @@ function QualityIterationsBadge({ attempts }: { attempts: number }): React.React
 
 export function ReviewDetailV2({ review }: Props): React.ReactElement {
   const id = review.id;
+  const articleId = review.job.outputBlogPostId ?? null;
 
   async function approve(formData: FormData) {
     "use server";
@@ -63,6 +68,23 @@ export function ReviewDetailV2({ review }: Props): React.ReactElement {
   async function askEdits(formData: FormData) {
     "use server";
     await requestEdits(id, String(formData.get("comment") ?? ""));
+  }
+  async function submitFeedback(formData: FormData) {
+    "use server";
+    if (!articleId) return;
+    const session = await auth();
+    if (!session?.user?.email) return;
+    const type = formData.get("type") as string;
+    if (type !== "up" && type !== "down") return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (prisma as any).articleFeedback.create({
+      data: {
+        articleId,
+        userId: session.user.email,
+        type,
+        comment: null,
+      },
+    });
   }
 
   return (
@@ -98,6 +120,40 @@ export function ReviewDetailV2({ review }: Props): React.ReactElement {
           </pre>
         </details>
       </AdminCard>
+
+      {articleId && (
+        <AdminCard className="mb-[var(--space-admin-5)]">
+          <h2 className="admin-h2">Feedback éditorial</h2>
+          <p className="admin-meta-block">
+            Donnez un retour rapide sur la qualité globale de cet article pour améliorer les futures
+            générations.
+          </p>
+          <div className="flex gap-[var(--space-admin-4)]">
+            <form action={submitFeedback}>
+              <input type="hidden" name="type" value="up" />
+              <button
+                type="submit"
+                className="admin-button"
+                aria-label="Feedback positif — article de bonne qualité"
+                title="Bon article"
+              >
+                👍 Bon
+              </button>
+            </form>
+            <form action={submitFeedback}>
+              <input type="hidden" name="type" value="down" />
+              <button
+                type="submit"
+                className="admin-button-ghost"
+                aria-label="Feedback négatif — article à améliorer"
+                title="À améliorer"
+              >
+                👎 À améliorer
+              </button>
+            </form>
+          </div>
+        </AdminCard>
+      )}
 
       <AdminCard>
         <h2 className="admin-h2">Actions de revue</h2>
