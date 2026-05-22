@@ -17,6 +17,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { slugify } from "@/lib/slug";
+import { BlogSearch } from "@/components/blog/BlogSearch";
 
 // Sprint 8 V2 : ISR Next 16 — pré-rendue au build, revalidée toutes les heures
 // pour que les articles DB publiés par la factory apparaissent automatiquement
@@ -26,20 +27,33 @@ export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
+}
+
+// V-02 sprint UX 2026-05-22 — pagination v1.
+const ARTICLES_PER_PAGE = 20;
+
+function parsePage(raw: string | undefined): number {
+  const n = parseInt(raw ?? "1", 10);
+  return Number.isFinite(n) && n >= 1 ? n : 1;
 }
 
 // slugify importé depuis @/lib/slug (SSOT V-10 2026-05-22).
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const sp = await searchParams;
+  const page = parsePage(sp.page);
   if (!hasLocale(routing.locales, locale)) return {};
+  const titleBase =
+    locale === "fr"
+      ? "Blog · méthodologie & cas d'usage IA · Axion-IA"
+      : "Blog · methodology & AI use cases · Axion-IA";
+  const title = page > 1 ? `${titleBase} · page ${page}` : titleBase;
   const meta = buildProductMetadata({
     locale,
-    path: "/blog",
-    title:
-      locale === "fr"
-        ? "Blog · méthodologie & cas d'usage IA · Axion-IA"
-        : "Blog · methodology & AI use cases · Axion-IA",
+    path: page > 1 ? `/blog?page=${page}` : "/blog",
+    title,
     description:
       locale === "fr"
         ? "Articles Axion-IA : méthodologie d'audit IA, quick-wins opérationnels, stratégie IA Custom."
@@ -54,8 +68,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BlogListing({ params }: Props) {
+export default async function BlogListing({ params, searchParams }: Props) {
   const { locale } = await params;
+  const sp = await searchParams;
+  const page = parsePage(sp.page);
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
@@ -79,6 +95,13 @@ export default async function BlogListing({ params }: Props) {
 
   // Posts pour le hero schema (3 plus récents par publishedAt desc)
   const sortedPosts = [...BLOG_POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  // V-02 sprint UX 2026-05-22 — Pagination v1 (offset/limit).
+  const totalPages = Math.max(1, Math.ceil(sortedPosts.length / ARTICLES_PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const offset = (currentPage - 1) * ARTICLES_PER_PAGE;
+  const paginatedPosts = sortedPosts.slice(offset, offset + ARTICLES_PER_PAGE);
+  const hasPrev = currentPage > 1;
+  const hasNext = currentPage < totalPages;
   const heroSchemaPosts = sortedPosts.slice(0, 3).map((p) => ({
     slug: p.slug,
     category: p.category,
@@ -177,6 +200,18 @@ export default async function BlogListing({ params }: Props) {
                 <Cta href={`/${locale}/blog/feed.xml`} variant="outline" size="lg">
                   {isFr ? "S'abonner RSS" : "Subscribe RSS"}
                 </Cta>
+                {/* V-02 sprint UX 2026-05-22 — search Cmd+K autocomplete (gap audit 74 → +15 pts). */}
+                <BlogSearch
+                  items={BLOG_POSTS.map((p) => ({
+                    slug: p.slug,
+                    title: p[loc].title,
+                    category: p.category,
+                    tags: p.tags,
+                  }))}
+                  placeholder={isFr ? "Rechercher un article…" : "Search articles…"}
+                  emptyLabel={isFr ? "Aucun résultat" : "No results"}
+                  triggerLabel={isFr ? "Rechercher" : "Search"}
+                />
               </div>
             </div>
             <BlogHeroSchema
@@ -249,8 +284,19 @@ export default async function BlogListing({ params }: Props) {
         title={isFr ? "Derniers articles" : "Latest articles"}
       >
         <Container>
+          {hasPrev || hasNext ? (
+            // V-02 sprint UX — prev/next link headers (SEO discovery).
+            <>
+              {hasPrev ? (
+                <link rel="prev" href={`/${locale}/blog?page=${currentPage - 1}`} />
+              ) : null}
+              {hasNext ? (
+                <link rel="next" href={`/${locale}/blog?page=${currentPage + 1}`} />
+              ) : null}
+            </>
+          ) : null}
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {sortedPosts.map((post) => {
+            {paginatedPosts.map((post) => {
               const c = post[loc];
               return (
                 <li key={post.slug}>
@@ -265,6 +311,36 @@ export default async function BlogListing({ params }: Props) {
               );
             })}
           </ul>
+          {totalPages > 1 ? (
+            <nav
+              aria-label={isFr ? "Pagination des articles" : "Articles pagination"}
+              className="mt-10 flex items-center justify-between"
+            >
+              {hasPrev ? (
+                <Cta
+                  href={`/blog${currentPage - 1 === 1 ? "" : `?page=${currentPage - 1}`}` as never}
+                  variant="outline"
+                  size="md"
+                >
+                  ← {isFr ? "Précédent" : "Previous"}
+                </Cta>
+              ) : (
+                <span />
+              )}
+              <span className="text-fg-muted text-sm tabular-nums">
+                {isFr
+                  ? `Page ${currentPage} sur ${totalPages}`
+                  : `Page ${currentPage} of ${totalPages}`}
+              </span>
+              {hasNext ? (
+                <Cta href={`/blog?page=${currentPage + 1}` as never} variant="outline" size="md">
+                  {isFr ? "Suivant" : "Next"} →
+                </Cta>
+              ) : (
+                <span />
+              )}
+            </nav>
+          ) : null}
         </Container>
       </Section>
 
