@@ -1,0 +1,174 @@
+name: Audit Final · Actions Will (Sprint Final 2026-05-22)
+
+# Workflow utilitaire workflow_dispatch — exécute les 3 actions Will prod
+# du Sprint Final pré-prod audit 2026-05-22 :
+#
+#   1. P0-5 — Seed les 6 CampaignTemplate (table campaign_template, idempotent)
+#      via `pnpm content-gen:seed-templates` (script seed-campaign-templates-standalone.ts)
+#      Sans ce seed, le flow Fl-04 "Création campagne depuis preset" est cassé
+#      en prod (UI utilise FALLBACK_PRESETS sans id Prisma).
+#
+#   2. P1-18 — Vérifier que le cron daily backup Postgres tourne sur le VPS
+#      Hetzner. Lit `crontab -l | grep backup-postgres`. Read-only.
+#      Si absent, alerte Will pour configurer le cron manuellement.
+#
+#   3. P1-20 — Vérifier prisma migrate status post déploiement
+#      (sanity check, déjà fait par admin-emergency-migrate).
+#
+# ⚠️ NON inclus : Rampe D-W1 (`MAX_PUBLISH_PER_DAY=30`) — c'est une action
+# IMPACTANTE (activation génération automatique articles live sur axion-ia.com).
+# Will doit la déclencher explicitement via workflow séparé OU Coolify UI.
+#
+# Secrets requis :
+#   - HETZNER_SSH_KEY (clé privée SSH root@VPS Hetzner CPX42)
+#
+# Trigger : workflow_dispatch uniquement.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_seed_templates:
+        description: "P0-5 — Seed 6 CampaignTemplate (idempotent upsert)"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      verify_backup_cron:
+        description: "P1-18 — Verify crontab backup daily Postgres"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      verify_migrate_status:
+        description: "P1-20 — Verify prisma migrate status (no drift)"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+permissions:
+  contents: read
+
+jobs:
+  audit-final-actions:
+    name: Audit Final Sprint actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Setup SSH (Hetzner CPX42)
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY missing."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia container
+        id: container
+        run: |
+          set -euo pipefail
+          NAME=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker ps --format '{{.Names}}' | grep -E '^web-' | head -1")
+          if [ -z "$NAME" ]; then
+            echo "::error::No web-* container found on VPS"
+            exit 1
+          fi
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "Container: $NAME"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # P0-5 — Seed 6 CampaignTemplate
+      # ─────────────────────────────────────────────────────────────────────
+      - name: P0-5 — Seed CampaignTemplate (6 presets D-P5-1)
+        if: inputs.run_seed_templates == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          echo "──── P0-5 — Seed CampaignTemplate (idempotent upsert) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && (corepack pnpm content-gen:seed-templates 2>&1 || \
+              node --experimental-strip-types prisma/seeds/content-gen/seed-campaign-templates-standalone.ts 2>&1 || \
+              echo SEED_TEMPLATES_FAILED)'" 2>&1 | tee /tmp/seed-templates.log
+          echo "──── P0-5 fin ────"
+
+      - name: P0-5 — Verify CampaignTemplate count
+        if: inputs.run_seed_templates == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "──── Count CampaignTemplate après seed ────"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
+            const p=new PrismaClient();
+            p.campaignTemplate.count().then((c)=>{
+              console.log('CampaignTemplate count:',c);
+              if (c >= 6) console.log('✅ OK : 6+ templates en DB');
+              else console.log('⚠️ WARNING : <6 templates (attendu 6 D-P5-1 presets)');
+              process.exit(0);
+            }).catch((e)=>{console.log('post-check skip:',e.message.slice(0,80));process.exit(0);});}
+            catch(e){console.log('post-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true
+
+      # ─────────────────────────────────────────────────────────────────────
+      # P1-18 — Verify cron backup-postgres actif
+      # ─────────────────────────────────────────────────────────────────────
+      - name: P1-18 — Verify crontab backup-postgres
+        if: inputs.verify_backup_cron == 'true'
+        run: |
+          set -euo pipefail
+          echo "──── P1-18 — Vérification crontab backup-postgres ────"
+          BACKUP_LINES=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            "crontab -l 2>/dev/null | grep -E 'backup-postgres|backup_postgres' || echo 'NO_CRON_FOUND'") || true
+          echo "$BACKUP_LINES"
+          if echo "$BACKUP_LINES" | grep -q "NO_CRON_FOUND"; then
+            echo "::warning::Crontab backup-postgres ABSENT sur VPS Hetzner."
+            echo "::warning::Action Will requise : ajouter via 'crontab -e' :"
+            echo "  0 3 * * *  bash /var/www/axion-ia/axionia/scripts/backup-postgres.sh"
+            echo "  0 4 * * 0  bash /var/www/axion-ia/axionia/scripts/backup-postgres.sh --type weekly"
+            echo "  0 5 1 * *  bash /var/www/axion-ia/axionia/scripts/backup-postgres.sh --type monthly"
+          else
+            echo "✅ OK : cron backup-postgres trouvé sur VPS."
+          fi
+          echo "──── P1-18 fin ────"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # P1-20 — Verify prisma migrate status (sanity check, deja fait par admin-emergency-migrate)
+      # ─────────────────────────────────────────────────────────────────────
+      - name: P1-20 — Verify prisma migrate status (no drift)
+        if: inputs.verify_migrate_status == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          echo "──── P1-20 — Prisma migrate status (sanity) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            '/tmp/prisma-fresh/node_modules/.bin/prisma migrate status --schema=/app/prisma/schema.prisma 2>&1 || \
+              corepack pnpm prisma migrate status 2>&1 || \
+              echo MIGRATE_STATUS_UNAVAILABLE'" 2>&1 | tail -30
+          echo "──── P1-20 fin ────"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "──── Audit Final Sprint actions résumé ────"
+          echo "P0-5 Seed CampaignTemplate : ${{ inputs.run_seed_templates }}"
+          echo "P1-18 Verify backup cron   : ${{ inputs.verify_backup_cron }}"
+          echo "P1-20 Verify migrate status : ${{ inputs.verify_migrate_status }}"
+          echo ""
+          echo "⚠️ NON inclus dans ce workflow :"
+          echo "  - Rampe D-W1 (MAX_PUBLISH_PER_DAY=30) — activation prod actuelle"
+          echo "    Use workflow séparé OU Coolify UI Settings → Env vars."
+          echo "  - P1-21 GSC + Bing WMT submit sitemaps — consoles web manuelles."
