@@ -25,6 +25,30 @@ const MAX_URLS = SITEMAP_CHUNK_SIZE;
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
+// V-11 sprint UX 2026-05-22 — quand EN locale désactivé (AGENTS.md §EN locale
+// désactivé 2026-05-16), retourner sitemap vide pour éviter de déclarer des URLs
+// /en/gallery/ qui sont 301 vers /fr/galerie/ (gap audit V-11 P1-2 résolu).
+const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
+
+function emptySitemapResponse(): Response {
+  const body = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
+</urlset>
+`;
+  return new Response(body, {
+    headers: {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": SITEMAP_CACHE_HEADER,
+      "X-Sitemap-Tag": CACHE_TAGS.sitemap,
+      "X-Sitemap-Disabled-Reason": "en-locale-disabled",
+    },
+  });
+}
+
 interface ImageRow {
   filePath: string;
   geoPlacename: string | null;
@@ -77,6 +101,9 @@ async function fetchPublishedImages(): Promise<ImageRow[]> {
 }
 
 export async function GET(): Promise<Response> {
+  if (!EN_LOCALE_ENABLED) {
+    return emptySitemapResponse();
+  }
   const rows = await fetchPublishedImages();
 
   const urlBlocks: string[] = [];

@@ -123,6 +123,10 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // `robots.ts` (formulaire deposit-gated, pas pertinent SERP). On le retire
   // aussi du sitemap pour cohérence (sinon GSC affiche "no description").
   "/reserver",
+  // V-11 sprint UX 2026-05-22 — `/glossaire` hub double-déclaré entre pages.xml
+  // et glossaire.xml. On retire de pages.xml — il reste émis depuis glossaire.xml
+  // (sub-sitemap dédié : hub + 60 termes) où il est canonique.
+  "/glossaire",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {
