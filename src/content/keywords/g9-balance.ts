@@ -2276,15 +2276,8 @@ const AUDIT_SUPP: KeywordSeed[] = [
 // INTERVENTIONS-FORMATIONS (supplement) — +2
 // ============================================================
 const INTERV_SUPP: KeywordSeed[] = [
-  s({
-    keyword: "financement formation ia opco france 2026",
-    module: "interventions-formations",
-    intent: "informationnel",
-    cible: "pme",
-    priorite: 2,
-    niveau: 2,
-    urlCible: "/fr/formation-ia",
-  }),
+  // (V-12 P1 cleanup 2026-05-22) — keyword "financement formation ia opco" retiré :
+  // pollution financement formation hors positionnement Axion-IA.
   s({
     keyword: "programme formation ia sur mesure equipe",
     module: "interventions-formations",
