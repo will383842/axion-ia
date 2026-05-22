@@ -69,7 +69,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
       />
 
       {zeroCampaigns && (
-        <AdminCard className="mb-[var(--space-admin-6)] border-2 border-[#c24a1b]">
+        <AdminCard className="mb-[var(--space-admin-6)] border-2 border-[color:var(--color-admin-terracotta)]">
           <h2 className="admin-h2">🚀 Démarrer la génération de contenus</h2>
           <p className="admin-meta-block">
             Aucune campagne active. Créez votre première campagne depuis un preset ou en mode libre.
@@ -157,7 +157,11 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               borderRadius: "var(--radius-admin-sm)",
               overflow: "hidden",
               accentColor:
-                cityProgress.pct < 33 ? "#b13a2b" : cityProgress.pct < 66 ? "#a8651b" : "#2f7d3a",
+                cityProgress.pct < 33
+                  ? "var(--color-admin-destructive)"
+                  : cityProgress.pct < 66
+                    ? "var(--color-admin-warning)"
+                    : "var(--color-admin-success)",
             }}
           />
           <p className="admin-meta mt-[var(--space-admin-2)]">

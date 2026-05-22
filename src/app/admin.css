@@ -50,6 +50,8 @@
     --color-admin-destructive-soft: #f7e1dd;
     --color-admin-destructive-fg: #6a1c10;
 
+    --color-admin-terracotta: #c24a1b; /* terracotta éditoriale — brand Axion-IA, CTA admin */
+
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
     --color-admin-info-soft: #e8efff; /* = --color-primary-soft */
     --color-admin-info-fg: #ffffff;

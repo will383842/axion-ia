@@ -75,7 +75,12 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
                             style={{
                               width: "100%",
                               height: 6,
-                              accentColor: pct < 33 ? "#b13a2b" : pct < 66 ? "#a8651b" : "#2f7d3a",
+                              accentColor:
+                                pct < 33
+                                  ? "var(--color-admin-destructive)"
+                                  : pct < 66
+                                    ? "var(--color-admin-warning)"
+                                    : "var(--color-admin-success)",
                             }}
                           />
                         </div>

@@ -52,7 +52,10 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
           {alertCount > 0 && (
             <span
               className="ml-[var(--space-admin-3)] inline-flex items-center justify-center rounded-full px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-bold"
-              style={{ backgroundColor: "#b13a2b", color: "#fff" }}
+              style={{
+                backgroundColor: "var(--color-admin-destructive)",
+                color: "var(--color-admin-paper)",
+              }}
               aria-label={`${alertCount} alerte${alertCount > 1 ? "s" : ""} monitoring actives`}
             >
               {alertCount} alerte{alertCount > 1 ? "s" : ""}
@@ -70,7 +73,11 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
         <div
           role="alert"
           className="border-b px-[var(--space-admin-6)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]"
-          style={{ backgroundColor: "#f7e1dd", borderColor: "#b13a2b", color: "#6a1c10" }}
+          style={{
+            backgroundColor: "var(--color-admin-destructive-soft)",
+            borderColor: "var(--color-admin-destructive)",
+            color: "var(--color-admin-destructive-fg)",
+          }}
         >
           <strong>⚠️ Anomalies détectées ({alertCount}) :</strong> {alertLabels.join(" · ")}
           {" · "}
