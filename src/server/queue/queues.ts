@@ -308,6 +308,32 @@ export const keywordOpportunityDetectorQueue: Queue | null = connection
   : null;
 
 /**
+ * Sprint Final 2026-05-22 (P0-2 audit final) — Reset monthly cost counters cron
+ * (1er du mois à 00:00 UTC). Sans ce cron, `resetMonthlyCostCounters()` n'est
+ * jamais appelé, le compteur Redis du mois courant s'accumule indéfiniment et
+ * le kill-switch global content-gen se déclenche à perpétuité dès le 1er mois.
+ */
+export const costCapResetQueue: Queue | null = connection
+  ? new Queue("cost-cap-reset", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
+ * Sprint Final 2026-05-22 (P0-3 audit final) — External links monthly HEAD
+ * check cron (1er du mois à 02:00 UTC). Worker existait depuis Sprint External
+ * Links Database 2026-05-22 mais n'avait pas de cron déclencheur.
+ * Gate `EXTERNAL_LINKS_MONITOR_ENABLED=true` requise côté worker (no-op sinon).
+ */
+export const externalLinksMonitorQueue: Queue | null = connection
+  ? new Queue("external-links-monitor", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+/**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
  * Câble les helpers Telegram ready-to-call non-câblés :
  *  - `alertQueueStuck` (BullMQ waiting count stable > 30 min)
@@ -796,6 +822,36 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-weekly-monday-0600", tick: new Date().toISOString() },
       { repeat: { pattern: "0 6 * * 1" }, jobId: "keyword-opportunity-detector-cron" },
+    );
+  }
+
+  // Sprint Final 2026-05-22 — Reset cost counters monthly (1er du mois 00:00 UTC).
+  // Sans ce cron, kill-switch global content-gen se déclenche après le 1er mois.
+  if (costCapResetQueue) {
+    await costCapResetQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 0 1 * *" },
+      "cost-cap-reset-cron",
+    );
+    await costCapResetQueue.add(
+      "tick",
+      { trigger: "cron-monthly-1st-0000", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 0 1 * *" }, jobId: "cost-cap-reset-cron" },
+    );
+  }
+
+  // Sprint Final 2026-05-22 — External links monthly HEAD check (1er du mois 02:00 UTC).
+  // Gate EXTERNAL_LINKS_MONITOR_ENABLED=true côté worker (no-op sinon).
+  if (externalLinksMonitorQueue) {
+    await externalLinksMonitorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 2 1 * *" },
+      "external-links-monitor-cron",
+    );
+    await externalLinksMonitorQueue.add(
+      "tick",
+      { trigger: "cron-monthly-1st-0200", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 2 1 * *" }, jobId: "external-links-monitor-cron" },
     );
   }
 }

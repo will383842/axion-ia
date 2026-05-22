@@ -36,6 +36,9 @@ import { startImageBankAutoConvertWorker } from "./workers/image-bank-auto-conve
 import { startEmbeddingsBackfillWorker } from "./workers/embeddings-backfill-worker";
 import { startBrandVoiceDriftMonitorWorker } from "./workers/brand-voice-drift-monitor";
 import { startKeywordOpportunityDetectorWorker } from "./workers/keyword-opportunity-detector";
+// Sprint Final 2026-05-22 (P0-2 + P0-3 audit final) — 2 workers manquants au bootstrap.
+import { startCostCapResetWorker } from "./workers/cost-cap-reset-worker";
+import { startExternalLinksMonitorWorker } from "./workers/external-links-monitor-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -84,6 +87,9 @@ async function main() {
     startEmbeddingsBackfillWorker(), // Phase F Sprint Perfection 2026 — daily 03:00 UTC embeddings backfill
     startBrandVoiceDriftMonitorWorker(), // Sprint H 2026-05-22 — daily 04:00 UTC brand voice drift detection
     startKeywordOpportunityDetectorWorker(), // Phase 8 Keywords Perfection 2026-05-22 — weekly lundi 06:00 UTC
+    // Sprint Final 2026-05-22 (P0-2 + P0-3 audit final pré-prod)
+    startCostCapResetWorker(), // P0-2 — Reset compteurs cost mensuel (1er du mois 00:00 UTC)
+    startExternalLinksMonitorWorker(), // P0-3 — HEAD check liens externes (1er du mois 02:00 UTC)
   ];
 
   await bootRepeatableJobs();
