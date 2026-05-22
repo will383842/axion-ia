@@ -14,15 +14,15 @@ export function validateKeywordSeed(seed: KeywordSeed): KeywordValidationResult 
   if (seed.niveau === 1 && seed.priorite === 1)
     errors.push("niveau=1 + priorite=1 interdit (HEAD ne peut être attaqué maintenant)");
 
-  if (seed.injection.h1 && seed.injection.h1.toLowerCase() === seed.keyword.toLowerCase())
+  if (seed.injection?.h1 && seed.injection.h1.toLowerCase() === seed.keyword.toLowerCase())
     errors.push("H1 = keyword brut interdit (règle R5)");
 
-  if (seed.injection.metaTitle && seed.injection.metaTitle.length > 60)
+  if (seed.injection?.metaTitle && seed.injection.metaTitle.length > 60)
     errors.push(
       `metaTitle trop long: ${seed.injection.metaTitle.length} chars > 60 (valeur: "${seed.injection.metaTitle}")`,
     );
 
-  if (seed.injection.metaDescription && seed.injection.metaDescription.length > 155)
+  if (seed.injection?.metaDescription && seed.injection.metaDescription.length > 155)
     errors.push(
       `metaDescription trop longue: ${seed.injection.metaDescription.length} chars > 155`,
     );

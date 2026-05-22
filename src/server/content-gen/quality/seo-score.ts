@@ -193,6 +193,17 @@ function checkIntentAlignment(input: SeoScoreInput): boolean {
       return /<table[\s>]/i.test(input.bodyHtml);
     case "navigational":
       return true; // pas auto-généré V1
+    case "voice_search":
+      // Phrases conversationnelles courtes (heuristique : H1 en forme de question)
+      return /\?/.test(input.bodyHtml.slice(0, 500));
+    case "ai_overview":
+      // ≥ 2 sources externes citées (optimisation AI Overview)
+      return (input.citationCount ?? 0) >= 2;
+    case "featured_snippet":
+      // Doit avoir paragraphe data-aeo="tldr"
+      return /data-aeo="tldr"/.test(input.bodyHtml);
+    default:
+      return true;
   }
 }
 

@@ -33,10 +33,14 @@ function formatPop(n: number): string {
 
 function tierLabel(tier: number): string {
   switch (tier) {
-    case 1: return "≥ 100 k hab";
-    case 2: return "20-100 k hab";
-    case 3: return "10-20 k hab";
-    default: return "5-10 k hab";
+    case 1:
+      return "≥ 100 k hab";
+    case 2:
+      return "20-100 k hab";
+    case 3:
+      return "10-20 k hab";
+    default:
+      return "5-10 k hab";
   }
 }
 
@@ -44,13 +48,13 @@ function coverageBar(covered: number, total: number): React.ReactElement {
   const pct = total > 0 ? Math.round((covered / total) * 100) : 0;
   return (
     <div className="flex items-center gap-[var(--space-admin-3)]">
-      <div className="flex-1 h-2 bg-[color:var(--color-admin-surface-2)] rounded-full overflow-hidden">
+      <div className="h-2 flex-1 overflow-hidden rounded-full bg-[color:var(--color-admin-surface-2)]">
         <div
-          className="h-full bg-[color:var(--color-admin-accent)] rounded-full"
+          className="h-full rounded-full bg-[color:var(--color-admin-accent)]"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)] whitespace-nowrap">
+      <span className="text-[length:var(--text-admin-sm)] whitespace-nowrap text-[color:var(--color-admin-fg-soft)]">
         {covered}/{total} ({pct}%)
       </span>
     </div>
@@ -63,10 +67,10 @@ function cityStateIcon(city: CityRow): string {
   return "⏸️";
 }
 
-function cityStateTone(city: CityRow): "success" | "warning" | "default" {
+function cityStateTone(city: CityRow): "success" | "warning" | "neutral" {
   if (city.isCovered && city.articlesCount > 0) return "success";
   if (city.articlesCount > 0) return "warning";
-  return "default";
+  return "neutral";
 }
 
 export async function CitiesCoverageV2({
@@ -104,16 +108,9 @@ export async function CitiesCoverageV2({
       />
 
       {/* Progress global */}
-      <div className="mb-[var(--space-admin-5)] flex gap-[var(--space-admin-4)] flex-wrap">
-        <AdminStatCard
-          label="Villes ciblées"
-          value={String(stats.total)}
-        />
-        <AdminStatCard
-          label="Couvertes"
-          value={String(stats.covered)}
-          tone="success"
-        />
+      <div className="mb-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-4)]">
+        <AdminStatCard label="Villes ciblées" value={String(stats.total)} />
+        <AdminStatCard label="Couvertes" value={String(stats.covered)} tone="success" />
         <AdminStatCard
           label="À couvrir"
           value={String(stats.uncovered)}
@@ -122,7 +119,13 @@ export async function CitiesCoverageV2({
         <AdminStatCard
           label="Progression"
           value={`${stats.coveragePercent}%`}
-          tone={stats.coveragePercent >= 50 ? "success" : stats.coveragePercent >= 10 ? "warning" : "destructive"}
+          tone={
+            stats.coveragePercent >= 50
+              ? "success"
+              : stats.coveragePercent >= 10
+                ? "warning"
+                : "destructive"
+          }
         />
       </div>
 
@@ -143,7 +146,7 @@ export async function CitiesCoverageV2({
 
       {/* Filtres */}
       <AdminCard className="mb-[var(--space-admin-4)]" variant="compact">
-        <form method="GET" className="flex flex-wrap gap-[var(--space-admin-3)] items-end">
+        <form method="GET" className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
           <div>
             <label className="admin-label">Recherche</label>
             <input
@@ -166,7 +169,11 @@ export async function CitiesCoverageV2({
           </div>
           <div>
             <label className="admin-label">État</label>
-            <select name="covered" className="admin-select" defaultValue={isCovered === true ? "oui" : isCovered === false ? "non" : ""}>
+            <select
+              name="covered"
+              className="admin-select"
+              defaultValue={isCovered === true ? "oui" : isCovered === false ? "non" : ""}
+            >
               <option value="">Tous</option>
               <option value="oui">Couvertes</option>
               <option value="non">À couvrir</option>
@@ -175,7 +182,10 @@ export async function CitiesCoverageV2({
           <button type="submit" className="admin-btn admin-btn-primary">
             Filtrer
           </button>
-          <a href={`/fr/${adminPrefix}/content-gen/cities-coverage`} className="admin-btn admin-btn-secondary">
+          <a
+            href={`/fr/${adminPrefix}/content-gen/cities-coverage`}
+            className="admin-btn admin-btn-secondary"
+          >
             Réinitialiser
           </a>
         </form>
@@ -218,7 +228,7 @@ export async function CitiesCoverageV2({
                     <td className="font-medium">{city.name}</td>
                     <td className="tabular-nums">{formatPop(city.population)}</td>
                     <td>{city.departmentCode}</td>
-                    <td className="text-[color:var(--color-admin-fg-soft)] text-[length:var(--text-admin-xs)]">
+                    <td className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
                       {city.regionName}
                     </td>
                     <td>
@@ -227,7 +237,11 @@ export async function CitiesCoverageV2({
                     <td>
                       <AdminBadge tone={cityStateTone(city)}>
                         {cityStateIcon(city)}{" "}
-                        {city.isCovered ? "Couverte" : city.articlesCount > 0 ? "En cours" : "À faire"}
+                        {city.isCovered
+                          ? "Couverte"
+                          : city.articlesCount > 0
+                            ? "En cours"
+                            : "À faire"}
                       </AdminBadge>
                     </td>
                     <td className="tabular-nums">{city.articlesCount}</td>
@@ -240,7 +254,7 @@ export async function CitiesCoverageV2({
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-2)] flex-wrap">
+          <div className="mt-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-2)]">
             {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => (
               <a
                 key={p}

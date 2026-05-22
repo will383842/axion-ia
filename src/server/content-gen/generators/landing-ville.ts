@@ -24,8 +24,11 @@ import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
+import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+
+const QUALITY_THRESHOLD = 60;
 import { resolveLandingVilleVariant } from "./landing-ville-templates";
 import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
@@ -132,11 +135,13 @@ label : ${variant.recommendedCtaLabel}
 
     const lastPromptHash = hashPrompt(variant.systemPromptOverride + userPrompt); // P0-3 AI Act art. 50
 
+    const systemPromptWithBrandVoice = `${variant.systemPromptOverride}\n\n${getBrandVoiceForContentType("landing_ville")}`;
+
     const llmResult = await routerGenerate({
       jobId: input.jobId,
       contentType: "landing_ville",
       role: "text",
-      systemPrompt: variant.systemPromptOverride,
+      systemPrompt: systemPromptWithBrandVoice,
       userPrompt,
       maxTokens: 4096,
       temperature: 0.7,
@@ -226,6 +231,7 @@ label : ${variant.recommendedCtaLabel}
       : doctrine.passed && qualityScore >= 70
         ? "tier_2_noindex_follow"
         : "tier_3_noindex_nofollow";
+
 
     // Sprint S+2 City Domination — Phase C strat ville.
     // Extraction automatique des villes mentionnées dans le body. Pour

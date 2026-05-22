@@ -48,6 +48,9 @@ import { ECONOMIC_DATA_BY_SLUG } from "@/content/villes/economic-data";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+
+const QUALITY_THRESHOLD = 60;
 
 const SYSTEM_PROMPT_OUTLINE =
   injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
@@ -181,6 +184,7 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
     // ─── STEP 1 : Outline ─────────────────────────────────────────────────
     const lastPromptHash = hashPrompt(
       SYSTEM_PROMPT_OUTLINE +
+        getIntentPromptAddendum(input.targetSearchIntent) +
         (input.primaryKeyword ?? "IA en entreprise") +
         (input.anchorVilleSlug ?? ""),
     ); // P0-3 AI Act art. 50
@@ -208,7 +212,7 @@ Rappel : 8-15 sections, output JSON strict (cf. system prompt).`;
       jobId: input.jobId,
       contentType: "guide_pilier",
       role: "text",
-      systemPrompt: SYSTEM_PROMPT_OUTLINE,
+      systemPrompt: SYSTEM_PROMPT_OUTLINE + getIntentPromptAddendum(input.targetSearchIntent),
       userPrompt: outlineUserPrompt,
       maxTokens: 2048,
       temperature: 0.6,
@@ -343,7 +347,9 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       },
       tags: outline.tags ?? [],
       indexationTier:
-        doctrine.passed && qualityScore >= 70 ? "tier_2_noindex_follow" : "tier_3_noindex_nofollow",
+        doctrine.passed && qualityScore >= QUALITY_THRESHOLD && qualityScore >= 70
+          ? "tier_2_noindex_follow"
+          : "tier_3_noindex_nofollow",
       qualityScore,
       seoScore: seo.score,
       readabilityScore: readability.score,

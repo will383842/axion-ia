@@ -60,8 +60,8 @@ vi.mock("bullmq", () => ({
 import {
   startBrandVoiceDriftMonitorWorker,
   cosineSimilarityNullSafe,
-  DRIFT_THRESHOLD_REVIEW,
-  DRIFT_THRESHOLD_WARN,
+  DRIFT_THRESHOLD_REVIEW as _DRIFT_THRESHOLD_REVIEW,
+  DRIFT_THRESHOLD_WARN as _DRIFT_THRESHOLD_WARN,
 } from "../brand-voice-drift-monitor";
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
@@ -129,9 +129,7 @@ describe("brand-voice-drift-monitor worker", () => {
     const { reference, article } = makeEmbeddingPair(0.95, dim);
 
     configFindUniqueMock.mockResolvedValue({ value: reference });
-    queryRawUnsafeMock.mockResolvedValue([
-      { id: "article-ok", embedding_arr: article },
-    ]);
+    queryRawUnsafeMock.mockResolvedValue([{ id: "article-ok", embedding_arr: article }]);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
@@ -148,9 +146,7 @@ describe("brand-voice-drift-monitor worker", () => {
     const { reference, article } = makeEmbeddingPair(0.75, dim);
 
     configFindUniqueMock.mockResolvedValue({ value: reference });
-    queryRawUnsafeMock.mockResolvedValue([
-      { id: "article-warn", embedding_arr: article },
-    ]);
+    queryRawUnsafeMock.mockResolvedValue([{ id: "article-warn", embedding_arr: article }]);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
@@ -167,27 +163,21 @@ describe("brand-voice-drift-monitor worker", () => {
     expect(articleUpdateMock).not.toHaveBeenCalled();
   });
 
-  // Test 4 — Article with similarity 0.65 → needs_review status update
-  it("T4: article with similarity 0.65 → article status updated to needs_review", async () => {
+  // Test 4 — Article with similarity 0.65 → audit log flagged (needs_review level)
+  // Note: article.status NOT updated (PublishStatus enum = draft/published/archived only).
+  // Tracking se fait uniquement via ContentGenAuditLog + dashboard brand-voice-drift.
+  it("T4: article with similarity 0.65 → audit log flagged with needs_review level", async () => {
     const dim = 4;
     const { reference, article } = makeEmbeddingPair(0.65, dim);
 
     configFindUniqueMock.mockResolvedValue({ value: reference });
-    queryRawUnsafeMock.mockResolvedValue([
-      { id: "article-critical", embedding_arr: article },
-    ]);
+    queryRawUnsafeMock.mockResolvedValue([{ id: "article-critical", embedding_arr: article }]);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
 
-    // Article status update
-    expect(articleUpdateMock).toHaveBeenCalledOnce();
-    const updateArg = articleUpdateMock.mock.calls[0]?.[0] as {
-      where: { id: string };
-      data: { status: string };
-    };
-    expect(updateArg.where.id).toBe("article-critical");
-    expect(updateArg.data.status).toBe("needs_review");
+    // No article status update (PublishStatus doesn't have needs_review)
+    expect(articleUpdateMock).not.toHaveBeenCalled();
 
     // Audit log write for needs_review level
     expect(auditLogCreateMock).toHaveBeenCalledOnce();
@@ -216,9 +206,7 @@ describe("brand-voice-drift-monitor worker", () => {
   it("T6: article with null embedding → skipped, not counted in analyzed", async () => {
     const reference = makeVector(4, 0);
     configFindUniqueMock.mockResolvedValue({ value: reference });
-    queryRawUnsafeMock.mockResolvedValue([
-      { id: "article-no-embed", embedding_arr: null },
-    ]);
+    queryRawUnsafeMock.mockResolvedValue([{ id: "article-no-embed", embedding_arr: null }]);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
@@ -253,13 +241,15 @@ describe("brand-voice-drift-monitor worker", () => {
 
     // 2 audit log entries: 1 warn + 1 needs_review
     expect(auditLogCreateMock).toHaveBeenCalledTimes(2);
-    // 1 article update: needs_review
-    expect(articleUpdateMock).toHaveBeenCalledOnce();
+    // No article status update (PublishStatus doesn't have needs_review — audit log only)
+    expect(articleUpdateMock).not.toHaveBeenCalled();
 
     // Stats verification
     expect(configUpsertMock).toHaveBeenCalledOnce();
     const statsArg = configUpsertMock.mock.calls[0]?.[0] as {
-      create: { value: { articlesAnalyzed: number; articlesFlagged: number; articlesNeedsReview: number } };
+      create: {
+        value: { articlesAnalyzed: number; articlesFlagged: number; articlesNeedsReview: number };
+      };
     };
     expect(statsArg.create.value.articlesAnalyzed).toBe(3);
     expect(statsArg.create.value.articlesFlagged).toBe(2); // warn + needs_review
@@ -407,11 +397,16 @@ describe("brand voice recalibration logic (pure)", () => {
       const similarity = typeof val["similarity"] === "number" ? val["similarity"] : null;
       const level = val["level"] === "needs_review" ? "needs_review" : ("warn" as const);
       const detectedAt =
-        typeof val["detectedAt"] === "string"
-          ? val["detectedAt"]
-          : log.createdAt.toISOString();
+        typeof val["detectedAt"] === "string" ? val["detectedAt"] : log.createdAt.toISOString();
       if (!articleId || similarity === null) continue;
-      parsedDrifts.push({ id: log.id, articleId, similarity, level, detectedAt, createdAt: log.createdAt });
+      parsedDrifts.push({
+        id: log.id,
+        articleId,
+        similarity,
+        level,
+        detectedAt,
+        createdAt: log.createdAt,
+      });
     }
 
     // Top 10 by lowest similarity

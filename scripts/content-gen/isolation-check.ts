@@ -114,8 +114,20 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/actions\/knowledge\/_transition\.ts$/,
   /^src\/server\/actions\/knowledge\/delete-entry\.ts$/,
   /^src\/server\/actions\/knowledge\/update-entry\.ts$/,
-  // Tests co-located workers content-* (__tests__/)
-  /^src\/server\/queue\/workers\/__tests__\/content-.*\.spec\.ts$/,
+  // Tests co-located workers content-* (__tests__/) — .spec.ts et .test.ts
+  /^src\/server\/queue\/workers\/__tests__\/content-.*\.(spec|test)\.ts$/,
+  // Tests co-located workers non-content (orchestrator, scheduler, deadline, etc.)
+  // qui mockent ContentGenConfig/ContentGenJob pour tester l'infrastructure queue.
+  /^src\/server\/queue\/workers\/__tests__\/.*\.(spec|test)\.ts$/,
+  // seed-cities.ts — mentionne "content-gen" dans un commentaire de contexte seulement.
+  /^prisma\/seeds\/cities\/seed-cities\.ts$/,
+  // AdminSidebarNav — navigation admin légitime vers /content-gen routes.
+  /^src\/components\/admin\/ui\/AdminSidebarNav\.tsx$/,
+  // Workers transverses qui lisent ContentGenConfig de façon légitime (lecture seule).
+  /^src\/server\/queue\/workers\/embeddings-backfill-worker\.ts$/,
+  /^src\/server\/queue\/workers\/brand-voice-drift-monitor\.ts$/,
+  // content-gen-deadline-checker.ts — worker content-gen non matché par pattern -worker.ts
+  /^src\/server\/queue\/workers\/content-gen-deadline-checker\.ts$/,
   // Exceptions ajoutées 2026-05-18 (audit verif-fix-deploy refonte admin V2).
   // Ces fichiers mentionnent "content-gen" uniquement comme group/label dans
   // la nav SSOT v2 (`src/lib/admin-nav.ts` PR 9) ou comme placeholder loading

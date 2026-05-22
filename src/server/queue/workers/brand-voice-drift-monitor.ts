@@ -28,10 +28,10 @@ import { BRAND_VOICE_CONFIG_KEY } from "@/server/actions/content-gen/brand-voice
 export const QUEUE_NAME = "brand-voice-drift-monitor";
 
 /** Seuil bas : article mis en needs_review (dérive sévère). */
-export const DRIFT_THRESHOLD_REVIEW = 0.70;
+export const DRIFT_THRESHOLD_REVIEW = 0.7;
 
 /** Seuil haut : drift warning loggé dans ContentGenAuditLog. */
-export const DRIFT_THRESHOLD_WARN = 0.80;
+export const DRIFT_THRESHOLD_WARN = 0.8;
 
 /** Clé ContentGenConfig pour les stats du dernier run. */
 const DRIFT_LAST_RUN_KEY = "brand_voice_drift_last_run";
@@ -134,7 +134,9 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const articles = await fetchRecentArticlesWithEmbeddings(since);
 
   if (articles.length === 0) {
-    console.info("[brand-voice-drift-monitor] nothing to process — no articles published in last 24h");
+    console.info(
+      "[brand-voice-drift-monitor] nothing to process — no articles published in last 24h",
+    );
     return;
   }
 
@@ -168,20 +170,9 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
         }),
       );
 
-      // Update article status → needs_review
-      await prisma.article
-        .update({
-          where: { id: article.id },
-          data: { status: "needs_review" as never },
-        })
-        .catch((err) => {
-          // needs_review may not be a valid status if not in enum — fail-soft
-          console.warn(
-            `[brand-voice-drift-monitor] could not update article ${article.id} status:`,
-            err instanceof Error ? err.message : String(err),
-          );
-        });
-
+      // Note: "needs_review" n'est pas dans l'enum PublishStatus (draft/published/archived).
+      // On trace uniquement via ContentGenAuditLog — l'admin voit les articles concernés
+      // dans le dashboard /content-gen/brand-voice-drift.
       // Write ContentGenAuditLog for needs_review (also logs drift < 0.80)
       await prisma.contentGenAuditLog
         .create({
@@ -194,8 +185,8 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
               level: "needs_review",
               threshold: DRIFT_THRESHOLD_REVIEW,
               detectedAt: new Date().toISOString(),
-            } as never,
-            description: `Dérive brand voice critique (similarity=${similarity.toFixed(4)} < ${DRIFT_THRESHOLD_REVIEW}) — article mis en needs_review`,
+            },
+            description: `Dérive brand voice critique (similarity=${similarity.toFixed(4)} < ${DRIFT_THRESHOLD_REVIEW}) — admin review requis`,
           },
         })
         .catch(() => {

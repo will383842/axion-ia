@@ -22,20 +22,20 @@ export function SeedInitialV2(): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Initialisation KB + Presets"
-        description="Charge les 130 facts KB sectoriels et les 6 presets de campagne en base. Idempotent — sans danger si lancé plusieurs fois."
+        description="Charge les 290 facts KB sectoriels et les 8 presets de campagne en base. Idempotent — sans danger si lancé plusieurs fois."
       />
 
       <AdminCard>
         <p className="admin-meta-block">Ce bouton exécute deux seeds en base de données :</p>
         <ul className="admin-meta-block" style={{ paddingLeft: "1.25rem", listStyle: "disc" }}>
           <li>
-            <strong>KB sectorielle</strong> — 130 facts vérifiés sur tes 5 services (Audits,
+            <strong>KB sectorielle</strong> — 290 facts vérifiés sur tes 5 services (Audits,
             Interventions/Formations, Un-à-un, Implémentations, Web IA). Le robot s&apos;en sert
             pour écrire des articles précis sur ton offre.
           </li>
           <li>
-            <strong>6 presets de campagne</strong> — PME audits, Interventions weekly, TPE burst,
-            ETI pilier, Cities Paris, RSS daily. Disponibles dans le wizard de nouvelle campagne.
+            <strong>8 presets de campagne</strong> — couvrant les 5 services × toutes tailles
+            d&apos;entreprise (TPE/PME/ETI/GE). Disponibles dans le wizard de nouvelle campagne.
           </li>
         </ul>
         <p className="admin-meta-block">

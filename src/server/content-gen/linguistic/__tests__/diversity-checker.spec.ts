@@ -60,7 +60,7 @@ const GOOD_STD =
   "Bien sûr.";
 
 /** Texte court mais avec des caractéristiques saines. */
-const GOOD_SHORT =
+const _GOOD_SHORT =
   "Axion-IA réalise des audits IA pour PME. " +
   "Nous intervenons rapidement. " +
   "Nos experts analysent vos processus, identifient les risques et proposent des recommandations concrètes. " +

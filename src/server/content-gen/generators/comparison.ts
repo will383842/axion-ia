@@ -34,6 +34,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -139,13 +140,15 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×5], tags }`;
 
-      lastPromptHash = hashPrompt(SYSTEM_PROMPT + userPrompt);
+      lastPromptHash = hashPrompt(
+        SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent) + userPrompt,
+      );
 
       const llmResult = await routerGenerate({
         jobId: input.jobId,
         contentType: "comparison",
         role: "text",
-        systemPrompt: SYSTEM_PROMPT,
+        systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent),
         userPrompt,
         maxTokens: 4096,
         temperature: iteration === 0 ? 0.65 : 0.5,

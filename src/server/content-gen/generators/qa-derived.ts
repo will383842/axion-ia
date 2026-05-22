@@ -31,6 +31,7 @@ import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { injectBrandVoice } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
+import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
 
 const QUALITY_THRESHOLD = 55;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -155,13 +156,15 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 ## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags }`;
 
-      lastPromptHash = hashPrompt(SYSTEM_PROMPT + userPrompt);
+      lastPromptHash = hashPrompt(
+        SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent) + userPrompt,
+      );
 
       const llmResult = await routerGenerate({
         jobId: input.jobId,
         contentType: "qa_derived",
         role: "text",
-        systemPrompt: SYSTEM_PROMPT,
+        systemPrompt: SYSTEM_PROMPT + getIntentPromptAddendum(input.targetSearchIntent),
         userPrompt,
         maxTokens: 2048,
         temperature: iteration === 0 ? 0.65 : 0.5,

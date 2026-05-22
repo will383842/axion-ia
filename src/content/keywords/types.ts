@@ -109,7 +109,7 @@ export interface KeywordSeed {
   /** Dimension primaire D1-D8. */
   readonly intent: KeywordIntent;
   /** Type KB cible pour la génération de contenu. */
-  readonly kbType: KeywordKbType;
+  readonly kbType?: KeywordKbType;
   /** Service Axion-IA associé. */
   readonly module: KeywordModule;
   /** Segment cible. */
@@ -120,8 +120,10 @@ export interface KeywordSeed {
   readonly priorite: KeywordPriorite;
   /** 1 = HEAD (fort volume), 2 = BODY, 3 = LONGUE TRAÎNE. */
   readonly niveau: KeywordNiveau;
+  /** Volume de recherche mensuel estimé (optionnel, pour priorisation). */
+  readonly volume?: number;
   /** Injection dans le contenu (H1, meta, H2). */
-  readonly injection: KeywordInjection;
+  readonly injection?: KeywordInjection;
   /** Variables d'injection bénéfice (chiffres défendables). */
   readonly variables?: KeywordVariables;
   /** URL page destination, doit commencer par `/fr/`. */

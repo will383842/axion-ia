@@ -387,7 +387,7 @@ export function buildOrganizationJsonLd({
     "@type": "Organization",
     name: "Axion-IA",
     legalName: "Axion-IA",
-    alternateName: ["AxionIA", "Axion IA", "Axion-IA OÜ", "axion-ia.com"],
+    alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
     url: SITE_URL,
     logo: `${SITE_URL}/opengraph-image`,
     description: isFr
@@ -791,7 +791,7 @@ export function buildLocalBusinessJsonLd({
       "@type": "Organization",
       name: "Axion-IA",
       legalName: "Axion-IA",
-      alternateName: ["AxionIA", "Axion IA", "Axion-IA OÜ", "axion-ia.com"],
+      alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
       url: SITE_URL,
     },
     areaServed: {
@@ -1285,7 +1285,7 @@ export function buildDatasetJsonLd({
       "@type": "Organization",
       name: "Axion-IA",
       legalName: "Axion-IA",
-      alternateName: ["AxionIA", "Axion IA", "Axion-IA OÜ", "axion-ia.com"],
+      alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
       url: SITE_URL,
     },
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),
