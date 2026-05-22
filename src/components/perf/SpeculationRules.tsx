@@ -1,4 +1,8 @@
 "use client";
+// use-client: usePathname() + useEffect requis pour gating route /admin/* +
+// injection DOM `<script type="speculationrules">` post-hydratation. Server
+// component impossible : layout root rendrait dynamique (no-store) et casserait
+// le BF-cache + dégraderait LCP. Cf. doctrine V-04 P3 2026-05-22.
 
 /**
  * V-04 P3 (Sprint Correctif suite 2026-05-22) — Speculation Rules custom.
