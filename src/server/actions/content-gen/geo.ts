@@ -94,45 +94,45 @@ export interface CostsStats {
 
 export async function getCostsStats(): Promise<CostsStats> {
   try {
-  await requireAdmin(); // Pass B fix P0-4
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const startOfMonth = new Date();
-  startOfMonth.setUTCDate(1);
-  startOfMonth.setUTCHours(0, 0, 0, 0);
-  const [byProvider30d, totalMonth, total7d, providers] = await Promise.all([
-    prisma.costLedger.groupBy({
-      by: ["provider"],
-      _sum: { costUsd: true, tokensInput: true, tokensOutput: true },
-      where: { timestamp: { gte: thirtyDaysAgo } },
-    }),
-    prisma.costLedger.aggregate({
-      _sum: { costUsd: true },
-      where: { timestamp: { gte: startOfMonth } },
-    }),
-    prisma.costLedger.aggregate({
-      _sum: { costUsd: true },
-      where: { timestamp: { gte: sevenDaysAgo } },
-    }),
-    prisma.providerConfig.findMany(),
-  ]);
-  return {
-    thirtyDaysAgo,
-    sevenDaysAgo,
-    startOfMonth,
-    byProvider: byProvider30d.map((p) => ({
-      provider: p.provider,
-      costUsd: p._sum.costUsd ? Number(p._sum.costUsd) : 0,
-      tokensInput: p._sum.tokensInput ?? 0,
-      tokensOutput: p._sum.tokensOutput ?? 0,
-    })),
-    totalMonthUsd: totalMonth._sum.costUsd ? Number(totalMonth._sum.costUsd) : 0,
-    total7dUsd: total7d._sum.costUsd ? Number(total7d._sum.costUsd) : 0,
-    providers: providers.map((p) => ({
-      provider: p.provider,
-      monthlyCapUsd: Number(p.monthlyCapUsd),
-    })),
-  };
+    await requireAdmin(); // Pass B fix P0-4
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const startOfMonth = new Date();
+    startOfMonth.setUTCDate(1);
+    startOfMonth.setUTCHours(0, 0, 0, 0);
+    const [byProvider30d, totalMonth, total7d, providers] = await Promise.all([
+      prisma.costLedger.groupBy({
+        by: ["provider"],
+        _sum: { costUsd: true, tokensInput: true, tokensOutput: true },
+        where: { timestamp: { gte: thirtyDaysAgo } },
+      }),
+      prisma.costLedger.aggregate({
+        _sum: { costUsd: true },
+        where: { timestamp: { gte: startOfMonth } },
+      }),
+      prisma.costLedger.aggregate({
+        _sum: { costUsd: true },
+        where: { timestamp: { gte: sevenDaysAgo } },
+      }),
+      prisma.providerConfig.findMany(),
+    ]);
+    return {
+      thirtyDaysAgo,
+      sevenDaysAgo,
+      startOfMonth,
+      byProvider: byProvider30d.map((p) => ({
+        provider: p.provider,
+        costUsd: p._sum.costUsd ? Number(p._sum.costUsd) : 0,
+        tokensInput: p._sum.tokensInput ?? 0,
+        tokensOutput: p._sum.tokensOutput ?? 0,
+      })),
+      totalMonthUsd: totalMonth._sum.costUsd ? Number(totalMonth._sum.costUsd) : 0,
+      total7dUsd: total7d._sum.costUsd ? Number(total7d._sum.costUsd) : 0,
+      providers: providers.map((p) => ({
+        provider: p.provider,
+        monthlyCapUsd: Number(p.monthlyCapUsd),
+      })),
+    };
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "getCostsStats" } });
     throw e;
@@ -249,55 +249,55 @@ export async function getJobsVilleSectorDetail(
   sortDir: "asc" | "desc" = "desc",
 ): Promise<ReadonlyArray<VilleSectorRow>> {
   try {
-  await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation.
-  GetJobsVilleSectorDetailSchema.parse({
-    limit,
-    filterStatus,
-    filterVille,
-    offset,
-    sortBy,
-    sortDir,
-  });
-  // serviceSector is on CoverageCampaign, not ContentGenJob.
-  // We group by (ville, campaignId, status) then batch-join campaign sectors.
-  const orderBy =
-    sortBy === "score"
-      ? { _avg: { qualityScore: sortDir } }
-      : sortBy === "ville"
-        ? { anchorVilleSlug: sortDir }
-        : { _count: { anchorVilleSlug: sortDir } };
-  const grouped = await prisma.contentGenJob.groupBy({
-    by: ["anchorVilleSlug", "campaignId", "status"],
-    _count: { anchorVilleSlug: true },
-    _avg: { qualityScore: true },
-    where: {
-      anchorVilleSlug: filterVille ? { equals: filterVille } : { not: null },
-      ...(filterStatus ? { status: { equals: filterStatus as ContentGenJobStatus } } : {}),
-    },
-    orderBy,
-    take: limit,
-    skip: offset,
-  });
+    await requireAdmin();
+    // Sprint Final P1-3 — Zod runtime validation.
+    GetJobsVilleSectorDetailSchema.parse({
+      limit,
+      filterStatus,
+      filterVille,
+      offset,
+      sortBy,
+      sortDir,
+    });
+    // serviceSector is on CoverageCampaign, not ContentGenJob.
+    // We group by (ville, campaignId, status) then batch-join campaign sectors.
+    const orderBy =
+      sortBy === "score"
+        ? { _avg: { qualityScore: sortDir } }
+        : sortBy === "ville"
+          ? { anchorVilleSlug: sortDir }
+          : { _count: { anchorVilleSlug: sortDir } };
+    const grouped = await prisma.contentGenJob.groupBy({
+      by: ["anchorVilleSlug", "campaignId", "status"],
+      _count: { anchorVilleSlug: true },
+      _avg: { qualityScore: true },
+      where: {
+        anchorVilleSlug: filterVille ? { equals: filterVille } : { not: null },
+        ...(filterStatus ? { status: { equals: filterStatus as ContentGenJobStatus } } : {}),
+      },
+      orderBy,
+      take: limit,
+      skip: offset,
+    });
 
-  // Batch-fetch sectors from campaigns
-  const campaignIds = [...new Set(grouped.map((r) => r.campaignId).filter(Boolean))] as string[];
-  const campaigns =
-    campaignIds.length > 0
-      ? await prisma.coverageCampaign.findMany({
-          where: { id: { in: campaignIds } },
-          select: { id: true, serviceSector: true },
-        })
-      : [];
-  const sectorMap = new Map(campaigns.map((c) => [c.id, c.serviceSector as string | null]));
+    // Batch-fetch sectors from campaigns
+    const campaignIds = [...new Set(grouped.map((r) => r.campaignId).filter(Boolean))] as string[];
+    const campaigns =
+      campaignIds.length > 0
+        ? await prisma.coverageCampaign.findMany({
+            where: { id: { in: campaignIds } },
+            select: { id: true, serviceSector: true },
+          })
+        : [];
+    const sectorMap = new Map(campaigns.map((c) => [c.id, c.serviceSector as string | null]));
 
-  return grouped.map((row) => ({
-    anchorVilleSlug: row.anchorVilleSlug ?? "",
-    serviceSector: row.campaignId ? (sectorMap.get(row.campaignId) ?? null) : null,
-    status: row.status,
-    count: row._count.anchorVilleSlug,
-    avgQuality: row._avg?.qualityScore ?? null,
-  }));
+    return grouped.map((row) => ({
+      anchorVilleSlug: row.anchorVilleSlug ?? "",
+      serviceSector: row.campaignId ? (sectorMap.get(row.campaignId) ?? null) : null,
+      status: row.status,
+      count: row._count.anchorVilleSlug,
+      avgQuality: row._avg?.qualityScore ?? null,
+    }));
   } catch (e) {
     Sentry.captureException(e, {
       tags: { area: "content-gen", action: "getJobsVilleSectorDetail" },

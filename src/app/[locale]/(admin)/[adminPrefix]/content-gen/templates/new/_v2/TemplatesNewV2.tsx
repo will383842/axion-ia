@@ -38,7 +38,7 @@ export function TemplatesNewV2({ adminPrefix }: Props): React.ReactElement {
     try {
       variables = JSON.parse(String(formData.get("variables") ?? "{}"));
     } catch {
-      throw new Error("JSON invalide dans le champ \"Variables d'entrée\".");
+      throw new Error('JSON invalide dans le champ "Variables d\'entrée".');
     }
 
     const id = await upsertTemplate({

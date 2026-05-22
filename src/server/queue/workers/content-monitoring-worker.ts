@@ -211,23 +211,6 @@ async function checkIndexationStagnant(): Promise<void> {
   }
 }
 
-/**
- * P0-2 Sprint correctif admin — Reset une alerte résolue (active: false).
- * Appelé quand la condition anormale n'est plus détectée, pour éviter que le
- * bandeau layout reste affiché indéfiniment sur une alerte périmée.
- */
-async function resolveAnomaly(key: string): Promise<void> {
-  await prisma.contentGenConfig
-    .updateMany({
-      where: { key },
-      data: {
-        value: { active: false, resolvedAt: new Date().toISOString() },
-        updatedBy: "content-monitoring-worker",
-      },
-    })
-    .catch(() => {});
-}
-
 // P0-3 Sprint P5 follow-up — Anomaly detection business (D-P5-7 A5-07).
 // 3 checks business lancés toutes les 15 min via cron content-monitoring.
 // Fail-soft : erreur Prisma n'interrompt pas les autres checks.
@@ -259,7 +242,6 @@ async function checkAnomalies(): Promise<void> {
           create: {
             key: "alert_quality_drop",
             value: {
-              active: true,
               value: drop,
               detectedAt: new Date().toISOString(),
               message: `Chute qualite : -${drop.toFixed(1)} pts sur 1h`,
@@ -268,7 +250,6 @@ async function checkAnomalies(): Promise<void> {
           },
           update: {
             value: {
-              active: true,
               value: drop,
               detectedAt: new Date().toISOString(),
               message: `Chute qualite : -${drop.toFixed(1)} pts sur 1h`,
@@ -278,9 +259,6 @@ async function checkAnomalies(): Promise<void> {
         })
         .catch(() => {});
       console.warn(`[content-monitoring] ALERT quality_drop=${drop.toFixed(1)}`);
-    } else {
-      // Condition résolue — désactiver l'alerte si elle était active.
-      await resolveAnomaly("alert_quality_drop");
     }
   }
 
@@ -299,7 +277,6 @@ async function checkAnomalies(): Promise<void> {
         create: {
           key: "alert_reject_spike",
           value: {
-            active: true,
             value: pct,
             detectedAt: new Date().toISOString(),
             message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
@@ -308,7 +285,6 @@ async function checkAnomalies(): Promise<void> {
         },
         update: {
           value: {
-            active: true,
             value: pct,
             detectedAt: new Date().toISOString(),
             message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
@@ -318,9 +294,6 @@ async function checkAnomalies(): Promise<void> {
       })
       .catch(() => {});
     console.warn(`[content-monitoring] ALERT reject_spike=${failedRecent}/${totalRecent}`);
-  } else {
-    // Condition résolue — désactiver l'alerte si elle était active.
-    await resolveAnomaly("alert_reject_spike");
   }
 
   // Check 3 : 0 jobs crees depuis 4h sur campagne running
@@ -336,7 +309,6 @@ async function checkAnomalies(): Promise<void> {
         create: {
           key: "alert_pipeline_stall",
           value: {
-            active: true,
             runningCampaigns,
             detectedAt: new Date().toISOString(),
             message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
@@ -345,7 +317,6 @@ async function checkAnomalies(): Promise<void> {
         },
         update: {
           value: {
-            active: true,
             runningCampaigns,
             detectedAt: new Date().toISOString(),
             message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
@@ -355,9 +326,6 @@ async function checkAnomalies(): Promise<void> {
       })
       .catch(() => {});
     console.warn(`[content-monitoring] ALERT pipeline_stall campaigns=${runningCampaigns}`);
-  } else {
-    // Condition résolue — désactiver l'alerte si elle était active.
-    await resolveAnomaly("alert_pipeline_stall");
   }
 }
 

@@ -1,8 +1,6 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
 // P0-2 Sprint P5 — QualityIterationsBadge + qualityImprovementAttempts field.
 // P5.5 — ArticleFeedback thumbs up/down (D-P5-8, V5-08 correction).
-// SP-04 P0-11 UI — boutons feedback disabled après vote (lecture serveur).
-// SP-04 P0-13 — section Historique de décision (4 champs DB reviewedBy/reviewNotes/reviewedAt/promotedToTier1At).
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -19,10 +17,6 @@ interface ReviewData {
   id: string;
   jobId: string;
   status: string;
-  reviewedBy?: string | null;
-  reviewNotes?: string | null;
-  reviewedAt?: Date | null;
-  promotedToTier1At?: Date | null;
   job: {
     contentType: string;
     anchorVilleSlug: string | null;
@@ -55,16 +49,9 @@ function QualityIterationsBadge({ attempts }: { attempts: number }): React.React
   );
 }
 
-export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElement> {
+export function ReviewDetailV2({ review }: Props): React.ReactElement {
   const id = review.id;
   const articleId = review.job.outputBlogPostId ?? null;
-
-  // P0-11 UI — vérifier si un feedback a déjà été soumis pour cet article
-  const feedbackAlreadyExists =
-    articleId != null
-      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Boolean(await (prisma as any).articleFeedback.findFirst({ where: { articleId } }))
-      : false;
 
   async function approve(formData: FormData) {
     "use server";
@@ -141,71 +128,32 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             Donnez un retour rapide sur la qualité globale de cet article pour améliorer les futures
             générations.
           </p>
-          {feedbackAlreadyExists ? (
-            <p className="admin-meta-block text-[color:var(--color-admin-success)]">
-              Feedback déjà enregistré pour cet article.
-            </p>
-          ) : (
-            <div className="flex gap-[var(--space-admin-4)]">
-              <form action={submitFeedback}>
-                <input type="hidden" name="type" value="up" />
-                <button
-                  type="submit"
-                  className="admin-button"
-                  aria-label="Feedback positif — article de bonne qualité"
-                  title="Bon article"
-                  disabled={feedbackAlreadyExists}
-                >
-                  👍 Bon
-                </button>
-              </form>
-              <form action={submitFeedback}>
-                <input type="hidden" name="type" value="down" />
-                <button
-                  type="submit"
-                  className="admin-button-ghost"
-                  aria-label="Feedback négatif — article à améliorer"
-                  title="À améliorer"
-                  disabled={feedbackAlreadyExists}
-                >
-                  👎 À améliorer
-                </button>
-              </form>
-            </div>
-          )}
+          <div className="flex gap-[var(--space-admin-4)]">
+            <form action={submitFeedback}>
+              <input type="hidden" name="type" value="up" />
+              <button
+                type="submit"
+                className="admin-button"
+                aria-label="Feedback positif — article de bonne qualité"
+                title="Bon article"
+              >
+                👍 Bon
+              </button>
+            </form>
+            <form action={submitFeedback}>
+              <input type="hidden" name="type" value="down" />
+              <button
+                type="submit"
+                className="admin-button-ghost"
+                aria-label="Feedback négatif — article à améliorer"
+                title="À améliorer"
+              >
+                👎 À améliorer
+              </button>
+            </form>
+          </div>
         </AdminCard>
       )}
-
-      {/* P0-13 — Historique de décision (4 champs DB) */}
-      {(review.reviewedBy || review.reviewNotes || review.reviewedAt || review.promotedToTier1At) ? (
-        <AdminCard className="mb-[var(--space-admin-5)]">
-          <h2 className="admin-h2">Historique de décision</h2>
-          <ul className="admin-inline-list">
-            {review.reviewedBy ? (
-              <li>
-                <strong>Révisé par :</strong> {review.reviewedBy}
-              </li>
-            ) : null}
-            {review.reviewedAt ? (
-              <li>
-                <strong>Révisé le :</strong>{" "}
-                {new Date(review.reviewedAt).toLocaleString("fr-FR")}
-              </li>
-            ) : null}
-            {review.promotedToTier1At ? (
-              <li>
-                <strong>Promu tier-1 le :</strong>{" "}
-                {new Date(review.promotedToTier1At).toLocaleString("fr-FR")}
-              </li>
-            ) : null}
-            {review.reviewNotes ? (
-              <li>
-                <strong>Notes :</strong> {review.reviewNotes}
-              </li>
-            ) : null}
-          </ul>
-        </AdminCard>
-      ) : null}
 
       <AdminCard>
         <h2 className="admin-h2">Actions de revue</h2>

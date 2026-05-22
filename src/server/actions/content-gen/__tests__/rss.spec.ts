@@ -195,25 +195,23 @@ describe("updateRssSource", () => {
 
   it("throw source_not_found si URL absente", async () => {
     mockExistingConfig([SECOND_SOURCE]);
-    await expect(
-      updateRssSource("https://example.com/feed.xml", VALID_SOURCE),
-    ).rejects.toThrow("source_not_found");
+    await expect(updateRssSource("https://example.com/feed.xml", VALID_SOURCE)).rejects.toThrow(
+      "source_not_found",
+    );
   });
 
   it("throw url_already_added si nouvelle URL conflicte avec une autre source", async () => {
     mockExistingConfig([VALID_SOURCE, SECOND_SOURCE]);
     const conflicting: RssSource = { ...VALID_SOURCE, url: SECOND_SOURCE.url };
-    await expect(
-      updateRssSource("https://example.com/feed.xml", conflicting),
-    ).rejects.toThrow("url_already_added");
+    await expect(updateRssSource("https://example.com/feed.xml", conflicting)).rejects.toThrow(
+      "url_already_added",
+    );
   });
 
   it("accepte un changement d'URL sans conflit", async () => {
     mockExistingConfig([VALID_SOURCE]);
     const updated: RssSource = { ...VALID_SOURCE, url: "https://newurl.com/feed.xml" };
-    await expect(
-      updateRssSource("https://example.com/feed.xml", updated),
-    ).resolves.toBeUndefined();
+    await expect(updateRssSource("https://example.com/feed.xml", updated)).resolves.toBeUndefined();
   });
 });
 
@@ -240,9 +238,9 @@ describe("toggleRssSource", () => {
 
   it("throw source_not_found si URL absente", async () => {
     mockExistingConfig([]);
-    await expect(
-      toggleRssSource("https://missing.com/rss", true),
-    ).rejects.toThrow("source_not_found");
+    await expect(toggleRssSource("https://missing.com/rss", true)).rejects.toThrow(
+      "source_not_found",
+    );
   });
 
   it("throw si URL invalide (Zod)", async () => {

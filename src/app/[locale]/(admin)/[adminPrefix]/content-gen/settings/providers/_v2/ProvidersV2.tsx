@@ -61,11 +61,7 @@ export function ProvidersV2({ rows }: Props): React.ReactElement {
       ) : (
         rows.map((r) => (
           <AdminCard key={r.id} className="mb-[var(--space-admin-5)]">
-            <ProviderFormClient
-              row={r}
-              saveAction={save}
-              resetSpendAction={resetSpend}
-            />
+            <ProviderFormClient row={r} saveAction={save} resetSpendAction={resetSpend} />
           </AdminCard>
         ))
       )}

@@ -252,23 +252,18 @@ export async function CitiesCoverageV2({
           </table>
         </div>
 
-        {/* Pagination — P1 fix: conserver tous les filtres actifs (covered inclus) */}
+        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-2)]">
-            {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => {
-              const coveredParam =
-                isCovered === true ? "&covered=oui" : isCovered === false ? "&covered=non" : "";
-              const href = `?page=${p}${deptCode ? `&dept=${encodeURIComponent(deptCode)}` : ""}${search ? `&search=${encodeURIComponent(search)}` : ""}${coveredParam}`;
-              return (
-                <a
-                  key={p}
-                  href={href}
-                  className={`admin-btn ${p === page ? "admin-btn-primary" : "admin-btn-secondary"}`}
-                >
-                  {p}
-                </a>
-              );
-            })}
+            {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => (
+              <a
+                key={p}
+                href={`?page=${p}${deptCode ? `&dept=${deptCode}` : ""}${search ? `&search=${encodeURIComponent(search)}` : ""}`}
+                className={`admin-btn ${p === page ? "admin-btn-primary" : "admin-btn-secondary"}`}
+              >
+                {p}
+              </a>
+            ))}
             {totalPages > 10 && (
               <span className="admin-meta-block">… {totalPages} pages au total</span>
             )}

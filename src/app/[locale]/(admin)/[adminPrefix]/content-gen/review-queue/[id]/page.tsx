@@ -30,10 +30,6 @@ export default async function ReviewDetailPage({ params }: PageProps) {
         id: review.id,
         jobId: review.jobId,
         status: review.status,
-        reviewedBy: review.reviewedBy,
-        reviewNotes: review.reviewNotes,
-        reviewedAt: review.reviewedAt,
-        promotedToTier1At: review.promotedToTier1At,
         job: {
           contentType: review.job.contentType,
           anchorVilleSlug: review.job.anchorVilleSlug,
@@ -41,7 +37,6 @@ export default async function ReviewDetailPage({ params }: PageProps) {
           seoScore: review.job.seoScore,
           outputJsonRaw: review.job.outputJsonRaw,
           qualityImprovementAttempts: review.job.qualityImprovementAttempts,
-          outputBlogPostId: review.job.outputBlogPostId,
         },
       }}
     />

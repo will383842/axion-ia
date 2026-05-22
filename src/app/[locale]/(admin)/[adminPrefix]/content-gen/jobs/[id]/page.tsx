@@ -21,5 +21,5 @@ export default async function JobDetailPage({ params }: PageProps) {
   const job = await getJob(id);
   if (!job) notFound();
 
-  return <JobDetailV2 job={job} adminPrefix={adminPrefix} />;
+  return <JobDetailV2 job={job} />;
 }

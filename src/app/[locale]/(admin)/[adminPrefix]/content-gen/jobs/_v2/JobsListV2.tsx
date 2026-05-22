@@ -2,7 +2,6 @@
 //
 // Jobs list V2 — utilise AdminPageShell + AdminPageHeader + AdminCard.
 // Filtres status + type + template + secteur + ville + search préservés.
-// SP-04 P1 — prev/next pagination buttons.
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
@@ -65,19 +64,6 @@ export async function JobsListV2({
   ]);
 
   const base = `/fr/${adminPrefix}/content-gen/jobs`;
-
-  function pageUrl(p: number): string {
-    const params = new URLSearchParams();
-    if (sp["status"]) params.set("status", sp["status"]);
-    if (sp["contentType"]) params.set("contentType", sp["contentType"]);
-    if (sp["templateId"]) params.set("templateId", sp["templateId"]);
-    if (sp["serviceSector"]) params.set("serviceSector", sp["serviceSector"]);
-    if (sp["anchorVilleSlug"]) params.set("anchorVilleSlug", sp["anchorVilleSlug"]);
-    if (sp["search"]) params.set("search", sp["search"]);
-    if (p > 1) params.set("page", String(p));
-    const qs = params.toString();
-    return qs ? `${base}?${qs}` : base;
-  }
 
   async function retryAll() {
     "use server";
@@ -262,27 +248,6 @@ export async function JobsListV2({
             </tbody>
           </table>
         </div>
-
-        {/* Pagination P1 */}
-        {result.totalPages > 1 && (
-          <div className="mt-[var(--space-admin-5)] flex items-center justify-between">
-            <p className="admin-meta">
-              Page {result.page} / {result.totalPages} · {result.total} jobs
-            </p>
-            <div className="flex gap-[var(--space-admin-3)]">
-              {result.page > 1 && (
-                <Link href={pageUrl(result.page - 1)} className="admin-button-ghost">
-                  ← Précédent
-                </Link>
-              )}
-              {result.page < result.totalPages && (
-                <Link href={pageUrl(result.page + 1)} className="admin-button-ghost">
-                  Suivant →
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
       </AdminCard>
     </AdminPageShell>
   );

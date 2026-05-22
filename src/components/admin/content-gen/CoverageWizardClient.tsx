@@ -928,7 +928,9 @@ export function CoverageWizardClient({ cityEquity, onSubmit, templates = [] }: P
         }
         if (err instanceof Error && err.message === "NEXT_REDIRECT") throw err;
         const msg =
-          err instanceof Error ? err.message : "Une erreur inattendue est survenue lors du lancement.";
+          err instanceof Error
+            ? err.message
+            : "Une erreur inattendue est survenue lors du lancement.";
         setSubmitError(msg);
       }
     });

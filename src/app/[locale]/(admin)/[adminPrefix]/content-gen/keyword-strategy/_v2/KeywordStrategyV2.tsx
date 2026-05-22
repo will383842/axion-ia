@@ -263,7 +263,9 @@ export async function KeywordStrategyV2({
                     </td>
                     <td className="px-4 py-2 text-gray-500">{VERTICAL_LABELS[v] ?? v}</td>
                     <td className="px-4 py-2">
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${intentBadge}`}>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${intentBadge}`}
+                      >
                         {INTENT_LABELS[s.intent] ?? s.intent}
                       </span>
                     </td>
@@ -303,7 +305,7 @@ export async function KeywordStrategyV2({
               ← Précédent
             </a>
           ) : (
-            <span className="rounded-md border border-gray-300 px-3 py-1.5 text-sm pointer-events-none opacity-50">
+            <span className="pointer-events-none rounded-md border border-gray-300 px-3 py-1.5 text-sm opacity-50">
               ← Précédent
             </span>
           )}
@@ -318,7 +320,7 @@ export async function KeywordStrategyV2({
               Suivant →
             </a>
           ) : (
-            <span className="rounded-md border border-gray-300 px-3 py-1.5 text-sm pointer-events-none opacity-50">
+            <span className="pointer-events-none rounded-md border border-gray-300 px-3 py-1.5 text-sm opacity-50">
               Suivant →
             </span>
           )}
