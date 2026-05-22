@@ -16,6 +16,8 @@ const TEMPLATES = [
       types: ["blog_pillar", "landing_ville"],
       batchSize: 20,
       dailyCap: 30,
+      // Sprint Campaign Controls — ville par ville, approche stratégique
+      cityProcessingMode: "sequential",
     },
   },
   {
@@ -28,6 +30,8 @@ const TEMPLATES = [
       types: ["blog_from_keywords", "qa_derived"],
       schedule: "0 9 * * 1",
       batchSize: 50,
+      // Sprint Campaign Controls — recurringSchedule explicite (déjà dans schedule pour référence)
+      recurringSchedule: "0 9 * * 1",
     },
   },
   {
@@ -40,6 +44,8 @@ const TEMPLATES = [
       types: ["blog_from_keywords"],
       batchSize: 100,
       dailyCap: 50,
+      // Sprint Campaign Controls — burst limité 30j (endDateOffsetDays = offset relatif à la création)
+      endDateOffsetDays: 30,
     },
   },
   {
@@ -52,6 +58,8 @@ const TEMPLATES = [
       types: ["blog_pillar"],
       batchSize: 10,
       qualityThreshold: 75,
+      // Sprint Campaign Controls — volume ETI : parallèle (toutes villes simultanément)
+      cityProcessingMode: "parallel",
     },
   },
   {
@@ -64,6 +72,8 @@ const TEMPLATES = [
       types: ["landing_ville"],
       anchorVilleSlug: "paris",
       batchSize: 20,
+      // Sprint Campaign Controls — Paris first : séquentiel
+      cityProcessingMode: "sequential",
     },
   },
   {
@@ -76,6 +86,8 @@ const TEMPLATES = [
       schedule: "0 7 * * *",
       batchSize: 10,
       qualityThreshold: 65,
+      // Sprint Campaign Controls — recurringSchedule quotidien 7h CET
+      recurringSchedule: "0 7 * * *",
     },
   },
 ];
