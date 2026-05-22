@@ -89,6 +89,19 @@ export default async function TransparencePage({ params }: Props) {
       ],
     },
     {
+      icon: Sparkles,
+      title: isFr ? "Persona Manon — détail éditorial" : "Manon persona — editorial detail",
+      body: isFr
+        ? "Manon est une persona éditoriale assistée par IA (et non une personne physique), explicitement présentée comme telle sur sa fiche /equipe/manon (portrait IA disclosed, doctrine v2.1). Sa voix est codifiée en SSOT versionné dans le repo : ton consultatif, accessible mais rigoureux, première personne du pluriel privilégiée. Sources prioritaires : INSEE, DARES, BPI France, France Num, ANSSI, CNIL, AI Act EUR-Lex. Vocabulaire canonique : « IA » (pas « AI »), « Machine Learning (ML) ». Mots interdits : « révolutionner », « disruptif », « next-gen », « game-changer », « magique », « révolutionnaire », « garanti ». Aucun prix en dur, aucun délai chiffré, aucun numéro de téléphone — contact@axion-ia.com uniquement. Cette persona est injectée dans le system prompt de chacun des 9 générateurs (blog-article, blog-from-keywords, blog-from-title, blog-from-rss, comparison, faq-standalone, guide-pilier, landing-ville, qa-derived) et fait l'objet d'un test de couverture vitest qui interdit toute régression silencieuse."
+        : "Manon is an AI-assisted editorial persona (not a physical person), explicitly disclosed on her /equipe/manon profile (AI-disclosed portrait, doctrine v2.1). Her voice is codified in a versioned SSOT in the repository: consultative tone, accessible yet rigorous, first-person plural preferred. Priority sources: INSEE, DARES, BPI France, France Num, ANSSI, CNIL, AI Act EUR-Lex. Canonical vocabulary: « IA » (not « AI »), « Machine Learning (ML) ». Forbidden words: « revolutionize », « disruptive », « next-gen », « game-changer », « magical », « guaranteed ». No hardcoded prices, no quantified delays, no phone number — contact@axion-ia.com only. This persona is injected into the system prompt of each of the 9 generators and is covered by a vitest test that prevents silent regressions.",
+      links: [
+        {
+          href: "/equipe/manon",
+          label: isFr ? "Fiche Manon complète" : "Full Manon profile",
+        },
+      ],
+    },
+    {
       icon: Users,
       title: isFr ? "Sous-processeurs IA" : "AI sub-processors",
       body: isFr
