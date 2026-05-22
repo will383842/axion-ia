@@ -49,6 +49,27 @@ axion-ia.com, www.axion-ia.com {
 	# CPU runtime acceptable (level 9 ~2-3× level 6, level 11 ~10× — éliminé).
 	# `minimum_length 4096` évite de compresser les petits assets où le gain
 	# est négatif (overhead du header > économie). HTML pSEO villes > 4 KB.
+	#
+	# V-04 P6 2026-05-22 — Pre-compression build-time Brotli 11 + Gzip 9 :
+	# scripts/precompress-static.ts génère `.br` (qualité 11, ratio max) et
+	# `.gz` (qualité 9) à côté des assets `.next/static/**`. Caddy `encode`
+	# en runtime préserve la compatibilité (fallback Brotli 9 pour les routes
+	# dynamiques HTML/RSC) mais pour servir directement les `.br`/`.gz` pre-
+	# compressés, il faudrait basculer `/_next/static/*` en `file_server` au
+	# lieu de reverse_proxy (sous-jacent Next standalone). Cette bascule est
+	# DIFFÉRÉE — l'effort opérationnel (mounter .next/static dans Caddy via
+	# bind-mount Docker, tester live-reload pipeline GHCR) > le gain estimé
+	# (~5-10 % bande passante sur les chunks JS, déjà très bien compressés
+	# par Brotli 9 runtime de Caddy). Quand la bascule sera faite, ajouter :
+	#   handle_path /_next/static/* {
+	#     root * /var/www/_next/static
+	#     file_server { precompressed br gzip }
+	#   }
+	# La pré-compression build-time est néanmoins maintenue car :
+	#   - Caddy `encode` peut consommer `.br` via le module précompressé tiers
+	#     (caddy-server/replace-response — futur)
+	#   - Si on bascule un jour vers un CDN type Bunny/Fastly avec pull, les
+	#     `.br`/`.gz` sont directement servis.
 	encode {
 		zstd
 		br 9
