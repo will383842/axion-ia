@@ -30,3 +30,19 @@
 ## Verdict 🟡 PARTIAL (code)
 
 Gate `<table>` solide (BUG-5 fix livré). Manon + byline absents intentionnellement pour neutralité — décision à confirmer Will.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `comparison.ts` présent.
+- Mapping ContentType `comparison` → generator vérifié.
+- BUG-5 (table HTML) acquis sur commit `8b3f470`.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

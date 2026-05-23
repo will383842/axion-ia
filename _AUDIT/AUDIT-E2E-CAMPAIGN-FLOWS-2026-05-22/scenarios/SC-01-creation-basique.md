@@ -51,3 +51,21 @@
 ## Verdict 🟢 OK (code)
 
 Câblage complet du déclenchement (wizard) à la publication. Aucun gap critique. Couverture vitest présente sur le chemin admin → DB. **Non exécuté en runtime** (Docker daemon absent, dev server absent, clés LLM absentes en `.env.local`).
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement runtime** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP. Clés Anthropic+OpenAI réelles présentes dans `.env.local`.
+
+**Evidence collectée** :
+
+- DB schema `coverage_campaigns` confirmé : colonnes `start_date`, `end_date`, `recurring_schedule`, `city_processing_mode`, `current_city_index`, `completed_reason`, `status` toutes présentes.
+- DB schema `content_gen_jobs` confirmé : `idempotencyKey`, `contentType`, `status` (enum 14 valeurs), `campaignId`, `qualityScore`, `qualityImprovementAttempts`.
+- Route handler `/[locale]/(admin)/[adminPrefix]/content-gen/coverage/new/page.tsx` présente (wizard).
+- `/fr/admin-dev-x7k2n9/` → HTTP 308 vers login (auth gate fonctionnelle).
+- Pas de campagne `TEST_E2E_01_*` créée live (budget tokens LLM ~$0.50 par article non engagé sans validation explicite).
+
+**Verdict runtime** : 🟢 **CONFIRMÉ OK** côté schema + wiring. Génération LLM réelle non exécutée (limite budget). Le chemin est prêt à recevoir une campagne.
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

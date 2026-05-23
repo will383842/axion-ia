@@ -23,3 +23,18 @@
 ## Verdict 🟢 OK (code)
 
 Preset burst seedé. Aucune divergence détectée par rapport au pattern SC-02.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- DB query : slug `tpe-burst` **absent**. Pas d'équivalent direct (la notion de burst n'existe plus comme preset).
+- Le comportement burst (cadence rapide) est désormais configurable via `config.batchSize` sur n'importe quel template.
+
+**Verdict runtime** : 🟡 PARTIAL runtime (preset retiré, fonctionnalité accessible via config)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

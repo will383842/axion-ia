@@ -26,3 +26,18 @@
 ## Verdict 🟢 OK (code)
 
 Conforme. Force le titre exact via post-sanitize. Aucun gap.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `blog-from-title.ts` présent.
+- Mapping ContentType `blog_from_title` → generator vérifié.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

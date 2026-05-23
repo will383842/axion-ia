@@ -35,3 +35,20 @@
 ## Verdict 🟢 OK (code)
 
 Repeatable BullMQ pleinement câblé. Test runtime nécessite Redis up.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Schema `coverage_campaigns.recurring_schedule` (text) CONFIRMÉ runtime.
+- Validation cron-parser au input wizard.
+- BullMQ `add(... { repeat: { pattern } })` câblé dans createCampaign (coverage.ts).
+- deadline-checker `removeRepeatable(`campaign-${campaign.id}-recurring`, ...)` à completion (deadline-checker.ts:97).
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

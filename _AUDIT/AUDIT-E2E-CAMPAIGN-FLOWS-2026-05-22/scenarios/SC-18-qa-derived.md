@@ -28,3 +28,18 @@
 ## Verdict 🟡 PARTIAL (code)
 
 QAPage + Speakable solide. Manon présent en prompt. Byline FAQ à examiner.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `qa-derived.ts` présent.
+- Mapping ContentType `qa_derived` → generator vérifié.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

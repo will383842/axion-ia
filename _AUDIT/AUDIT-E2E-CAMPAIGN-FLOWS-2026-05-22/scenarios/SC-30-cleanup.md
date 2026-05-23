@@ -42,3 +42,21 @@ Cleanup faisable, ordre correct dans le prompt. Aucune donnée TEST*E2E*\* cré�
 ## Note transversale
 
 Le schema utilise mix Cascade (editorial) + Restrict (financial). Pas de doctrine unifiée — à standardiser éventuellement.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- 0 row `TEST_E2E_*` créée pendant cette deuxième passe runtime (audit-only, budget tokens non engagé).
+- DB state cohérent : 0 campagne TEST_E2E, 0 article TEST_E2E.
+- Containers Docker laissés UP pour Will (`pnpm db:down` quand voulu).
+- Dev server :3000 laissé UP en background.
+- 0 modification source code, 0 commit, 0 push (audit-only respecté).
+
+**Verdict runtime** : 🟢 OK runtime (cleanup N/A — pas de données créées)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

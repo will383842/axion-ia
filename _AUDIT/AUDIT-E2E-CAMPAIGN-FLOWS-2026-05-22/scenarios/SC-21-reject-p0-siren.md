@@ -33,3 +33,19 @@
 ## Verdict 🟢 OK (code)
 
 REJECT-P0 cascade complète + Telegram. Solide.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Status `quarantined_critical` CONFIRMÉ en enum `ContentGenJobStatus` (14 valeurs).
+- Détection P0 SIREN : `src/server/content-gen/reviewer/llm-judge.ts:128` — prompt explicite "doctrine violation (SIREN/SIRET/RCS hardcode)".
+- Tests vitest : `llm-judge.spec.ts:214-215` (`issue: 'Cite SIREN forbidden'`).
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

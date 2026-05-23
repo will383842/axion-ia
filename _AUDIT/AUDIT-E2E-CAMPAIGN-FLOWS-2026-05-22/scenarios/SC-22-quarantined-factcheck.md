@@ -40,3 +40,19 @@
 ## Verdict 🟢 OK (code)
 
 Cascade fact-check quarantine + publish gate + audit trail. Note : 2 seuils différents (50 quarantine vs 40 publish) — documenter.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Status `quarantined_factcheck` CONFIRMÉ en enum `ContentGenJobStatus`.
+- Code `content-fact-check-worker.ts:177-179` : .update({ status: 'quarantined_factcheck' }) + console.warn quand `score < 50`.
+- Schema `articles.fact_check_score` (integer) CONFIRMÉ.
+
+**Verdict runtime** : 🟢 OK runtime (seuil 50 strict)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

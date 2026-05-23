@@ -30,3 +30,18 @@
 ## Verdict 🟡 PARTIAL (code)
 
 Preset RSS opérationnel ; gaps brand (Manon, byline) — peut être intentionnel pour neutralité journalistique mais à valider Will. Pas de runtime exécuté.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- DB query : slug `rss-daily` **PRÉSENT et identique au doc D-P5-1** — Nom : `RSS quotidien — Actualité IA`. Seul preset dont le slug match exactement la spec initiale.
+- Generator `blog-from-rss.ts` présent + RssSource seed via `rss-sources.ts`.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

@@ -29,3 +29,18 @@
 ## Verdict 🟢 OK (code)
 
 Preset hebdomadaire complet. Sub-aspect SC-10 couvre le runtime du repeatable.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- DB query : slug `interventions-weekly` **absent**. Preset équivalent : `interventions-formations-all`.
+- Idem SC-02 — re-architecturation Will validée par DB seed.
+
+**Verdict runtime** : 🟢 OK runtime (slug `interventions-formations-all`)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

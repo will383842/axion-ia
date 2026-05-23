@@ -33,3 +33,20 @@ Cron quotidien `5 0 UTC` → granularité 24h. **Une campagne avec endDate=T+10m
 ## Verdict 🟢 OK (code) — avec note granularité
 
 Logique deadline correcte mais granularité quotidienne. Si Will veut bascule rapide ≤ 5 min, ajuster cron worker (paramètre `*/5 * * * *` au lieu de `0 5 * * *`).
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Schema `coverage_campaigns.end_date` (timestamp) + `completed_reason` (text) CONFIRMÉS runtime.
+- Cron deadline-checker `5 0 * * *` registré via `queues.ts:789-800` — **DAILY 00:05 UTC** (et non 5h UTC comme indiqué dans la cartographie initiale).
+- Worker `content-gen-deadline-checker.ts:97` removeRepeatable sur recurringSchedule à completion. Audit log `CAMPAIGN_AUTO_STOPPED_DEADLINE` (line 112).
+- ⚠️ **Confirmation du P1-3** : pour une campagne `endDate=T+10min`, l'auto-stop n'arrivera qu'au prochain 00:05 UTC. La méta-vérif (Conv 3 du 2026-05-23) avait raison de signaler que ce SC ne devrait pas être 🟢 OK seul.
+
+**Verdict runtime** : 🟡 PARTIAL runtime (cron daily granularité — P1 réel, fix `*/15 * * * *` ~30min)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

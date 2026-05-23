@@ -36,3 +36,20 @@
 ## Verdict 🟢 OK (code)
 
 Boucle improve fonctionnelle, cap D2 respecté, fallback `needs_review` correct.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Schema `content_gen_jobs.qualityScore` + `qualityImprovementAttempts` CONFIRMÉS runtime.
+- Code `content-quality-improver-worker.ts:172` : `if (dbJob.qualityImprovementAttempts >= effectiveMaxAttempts) ...`.
+- Increment atomique : `qualityImprovementAttempts: { increment: 1 }` (line 269).
+- Status `needs_review` (line 296 + nextStatus logic) CONFIRMÉ dans enum `ContentGenJobStatus`.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

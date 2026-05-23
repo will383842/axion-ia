@@ -31,3 +31,19 @@
 ## Verdict 🟡 PARTIAL (code)
 
 Anti-plagiat solide, traçabilité isBasedOn OK, gates Source enforcés. Manon + byline omis volontairement ? À valider Will.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `blog-from-rss.ts` présent.
+- Mapping ContentType `blog_from_rss` → generator vérifié.
+- SimHash + embedding cosine câblés : `articles.outline_simhash` (varchar 16) + `articles.embedding` (vector 1536) confirmés en schema.
+
+**Verdict runtime** : 🟢 OK runtime (déduplication SimHash + embeddings confirmées)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

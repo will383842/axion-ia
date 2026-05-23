@@ -33,3 +33,29 @@
 ## Verdict 🟡 PARTIAL (code)
 
 Sélection + filtres + monitor solides MAIS rotation **non boucle de feedback** (usageCount jamais incrémenté) + FK orpheline. P1 fix.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- **P0-2 du verdict initial RÉFUTÉ par runtime.** `trackExternalLinksUsage` est BIEN appelé.
+- Code `content-publish-worker.ts:44,439` :
+- ```ts
+
+  ```
+- import { trackExternalLinksUsage, detectHallucinations } from '@/data/external-links/helpers';
+- ...
+- await trackExternalLinksUsage(linksToTrack);
+- ```
+
+  ```
+- Sprint External Links Database livré (2026-05-22, commit `8ed99871`) — corrige le gap signalé.
+- ⚠️ Schema `external_link_usage` confirmé sans FK constraint vers `external_link_id` (P1-4 audit confirmé runtime — pas de FK trouvée via `information_schema.table_constraints`).
+
+**Verdict runtime** : 🟢 OK runtime (P0-2 OBSOLÈTE ; P1-4 FK manquante confirmée mais P1 mineur)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

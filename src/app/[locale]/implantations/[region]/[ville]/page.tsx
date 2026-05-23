@@ -249,6 +249,17 @@ export default async function VillePage({ params }: Props) {
     ],
   });
 
+  // Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will) —
+  // Service Area Business safe : Axion-IA a 1 siège FR (Paris), pas un bureau
+  // par ville. Le LocalBusiness/ProfessionalService émis ici NE doit PAS prétendre
+  // un bureau physique à `ville.geo` (coordonnées INSEE, pas du bureau).
+  //   ❌ RETIRÉ `geo` (coords INSEE de la ville ≠ bureau réel)
+  //   ❌ RETIRÉ `address.postalCode` (CP ville ≠ CP bureau)
+  //   ✅ GARDÉ `address.addressLocality + addressRegion + addressCountry` (zone de service)
+  //   ✅ GARDÉ `areaServed` (cœur du pattern Service Area Business)
+  // L'info géographique précise de la ville reste émise via `placeJsonLd` ci-dessous
+  // (Place ≠ LocalBusiness : Place décrit la ville, pas un bureau).
+  // Ref : https://developers.google.com/search/docs/appearance/structured-data/local-business
   const localBusinessJsonLd = buildLocalBusinessJsonLd({
     locale: loc,
     path,
@@ -261,9 +272,7 @@ export default async function VillePage({ params }: Props) {
       city: ville.nameFr,
       region: region.nameFr,
       country: "FR",
-      ...(ville.postalCode ? { postalCode: ville.postalCode } : {}),
     },
-    geo: { latitude: ville.geo.lat, longitude: ville.geo.lon },
   });
 
   const placeJsonLd = buildPlaceJsonLd({

@@ -23,3 +23,18 @@
 ## Verdict 🟢 OK (code)
 
 Preset villes Paris seedé, landing-ville generator présent. Gap SC-14 ⚠️ sur LocalBusiness JSON-LD + section villes proches (cf. SC-14).
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- DB query : slug `cities-paris` **absent**. Preset équivalent : `landing-villes-all` (5 verticales).
+- Spec landing-villes-all couvre toutes les villes via `anchorVilleSlugs` paramétrable. Pour Paris spécifique : créer une campagne dérivée du template avec `anchorVilleSlugs=['paris']`.
+
+**Verdict runtime** : 🟢 OK runtime (slug `landing-villes-all`)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

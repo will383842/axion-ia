@@ -786,17 +786,31 @@ export async function bootRepeatableJobs(): Promise<void> {
     );
   }
 
-  // Sprint Campaign Controls C.3 — deadline checker daily 00:05 UTC.
+  // Sprint Campaign Controls C.3 — deadline checker every 15 min.
+  // Sprint Correctif P1 (2026-05-23 — audit E2E passe 2 runtime) : passage du
+  // pattern daily `5 0 * * *` → `*/15 * * * *`. Granularité 24h trop coarse
+  // pour les campagnes avec endDate sub-day (ex: endDate=T+10min stoppait
+  // au prochain 00:05 UTC = ~24h de retard). 15min suffit pour respecter
+  // les endDate utilisateur sans saturer le scheduler.
+  // Idempotence : ancien jobId `content-gen-deadline-checker-cron` retiré via
+  // removeRepeatable (les 2 patterns sont nettoyés pour migration safe).
   if (contentDeadlineCheckerQueue) {
+    // Retire l'ancien pattern daily (migration idempotente)
     await contentDeadlineCheckerQueue.removeRepeatable(
       "tick",
       { pattern: "5 0 * * *" },
       "content-gen-deadline-checker-cron",
     );
+    // Retire le nouveau pattern aussi (idempotent re-add)
+    await contentDeadlineCheckerQueue.removeRepeatable(
+      "tick",
+      { pattern: "*/15 * * * *" },
+      "content-gen-deadline-checker-cron",
+    );
     await contentDeadlineCheckerQueue.add(
       "tick",
-      { trigger: "cron-daily-0005", tick: new Date().toISOString() },
-      { repeat: { pattern: "5 0 * * *" }, jobId: "content-gen-deadline-checker-cron" },
+      { trigger: "cron-15min", tick: new Date().toISOString() },
+      { repeat: { pattern: "*/15 * * * *" }, jobId: "content-gen-deadline-checker-cron" },
     );
   }
 

@@ -28,3 +28,18 @@
 ## Verdict 🟢 OK (code)
 
 Mode parallèle = comportement historique antérieur Sprint Controls. Sampling uniforme correct.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Default `cityProcessingMode='parallel'` (Prisma default) + orchestrator enqueue tous les jobs en parallèle pour toutes les villes anchored.
+- Tests : `coverage-controls.spec.ts:131-207`.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

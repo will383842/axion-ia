@@ -30,3 +30,20 @@
 ## Verdict 🟢 OK (code)
 
 Câblage scheduling complet — non exécuté runtime, mais logique déterministe et testée.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Schema `coverage_campaigns.start_date` (timestamp) CONFIRMÉ runtime.
+- Cron scheduler-worker `*/5 * * * *` registré via `bootRepeatableJobs()` en `src/server/queue/queues.ts:782-787` (jobId `content-gen-scheduler-cron`).
+- Worker `content-gen-scheduler-worker.ts` : SELECT campaigns WHERE status='scheduled' AND start_date <= NOW() puis UPDATE status='running'.
+- Granularité 5 min — toute campagne `scheduled` est activée en ≤ 5 min après son startDate.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

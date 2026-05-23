@@ -32,3 +32,27 @@
 ## Verdict 🟢 OK (code)
 
 Règle absolue "zéro DALL-E" stricte. Aucun fallback IA générative. Code align.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Code `src/server/content-gen/images/assign-hero-image.ts:135` :
+- ```ts
+
+  ```
+- isAiGenerated: false,
+- ```
+
+  ```
+- Doctrine 0 IA appliquée comme filtre DB.
+- Tests `assign-hero-image.spec.ts:60-66` confirment le filtre `isActive=true + isAiGenerated=false + deletedAt=null`.
+- Schema `image_assets.isAiGenerated` (boolean) présent.
+
+**Verdict runtime** : 🟢 OK runtime (Doctrine 0 IA strict)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

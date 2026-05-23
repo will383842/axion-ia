@@ -40,3 +40,28 @@
 ## Verdict 🟢 OK (code)
 
 Cap journalier atomique + drip window + rampe progressive. Status `awaiting_publish_slot` à formaliser (currently implicit).
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Code `content-publish-worker.ts:162-167` :
+- ```ts
+
+  ```
+- const maxPublishPerDay = await getEffectivePublishCap();
+- const redisKey = `axion:pub:${today}`;
+- const countAfterIncr = await redis.incr(redisKey);
+- ```
+
+  ```
+- Atomicité INCR Redis confirmée. TTL set jusqu'à minuit UTC au premier incr.
+- ⚠️ DB `content_gen_config` VIDE en local — le cap utilise donc le fallback Prisma (à confirmer en prod : `SELECT * FROM content_gen_config WHERE key='MAX_PUBLISH_PER_DAY'`).
+
+**Verdict runtime** : 🟢 OK runtime (atomicité OK ; seed config en prod à vérifier)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

@@ -30,3 +30,19 @@
 ## Verdict 🟢 OK (code)
 
 Preset seedé + chargeable UI + pré-remplissage wizard. Non exécuté runtime.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- DB query `SELECT slug, name FROM campaign_templates ORDER BY slug` → **8 templates seedés** : `audits-all`, `implementations-all`, `interventions-formations-all`, `landing-villes-all`, `rss-daily`, `sites-web-augmentes-all`, `toutes-verticales-general`, `un-a-un-all`.
+- ⚠️ Le slug `pme-audits` documenté en D-P5-1 **n'existe pas en DB**. Le preset équivalent est `audits-all` (Audits IA — Toutes cibles). Will a re-architecturé les presets autour des 5 verticales + 1 général + 1 villes + RSS plutôt qu'autour des audiences (PME/TPE/ETI). Code OK, doc obsolète.
+- Seed re-exécuté runtime via `pnpm tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts` → 8 templates upserted (idempotent).
+
+**Verdict runtime** : 🟢 OK runtime (slug `audits-all` au lieu de `pme-audits`)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

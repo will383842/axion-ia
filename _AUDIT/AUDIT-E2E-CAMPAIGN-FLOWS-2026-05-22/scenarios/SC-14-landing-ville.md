@@ -33,3 +33,19 @@
 ## Verdict 🟡 PARTIAL (code)
 
 Generator fonctionnel pour texte mais 3 gaps SEO/UX à examiner : LocalBusiness JSON-LD, villes proches HTML, AuthorByline.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `src/server/content-gen/generators/landing-ville.ts` présent (+ `landing-ville-templates.ts`).
+- Hub ville URL `/fr/implantations/{region}/{slug}` → HTTP 200 runtime (test sur Paris : 17s cold compile, 1.7s warm).
+- ⚠️ À auditer (P1-1, P1-2) : émission LocalBusiness JSON-LD + rendu HTML `villes proches`. Non vérifié au curl direct (nécessite article publié pour observer le composant).
+
+**Verdict runtime** : 🟡 PARTIAL runtime (generator OK, JSON-LD LocalBusiness + villes proches à vérifier sur article publié réel)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

@@ -742,7 +742,12 @@ interface LocalBusinessJsonLdInput {
   priceRange?: string;
   /**
    * Opening hours typés Schema.org (cf. https://schema.org/OpeningHoursSpecification).
-   * Default : Mo-Fr 09:00-18:00.
+   * **Pas de default** depuis Sprint Correctif P1-2 2026-05-23 (audit E2E passe 2).
+   * Avant : default Mo-Fr 09:00-18:00 → fake-claim de bureau ouvert dans chaque
+   * ville où LB émis. Maintenant : omettre = pas d'openingHours dans le JSON-LD
+   * (compatible Service Area Business pattern Google). À passer explicitement
+   * UNIQUEMENT pour les pages avec un vrai bureau physique (ex: /a-propos siège
+   * Paris).
    * Cert C6 2026-05-08 : forme objet typée requise (Google Validator rejette les
    * arrays de strings type "Mo-Fr 09:00-18:00").
    */
@@ -757,7 +762,13 @@ interface LocalBusinessJsonLdInput {
   }>;
 }
 
-const DEFAULT_OPENING_HOURS = [
+/**
+ * Default opening hours utilisables par la page /a-propos ou /contact (siège
+ * Paris réel). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
+ * appliquées automatiquement par `buildLocalBusinessJsonLd` (cf. commentaire
+ * de la fonction) — à passer explicitement.
+ */
+export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
   {
     dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     opens: "09:00",
@@ -765,11 +776,27 @@ const DEFAULT_OPENING_HOURS = [
   },
 ] as const;
 
-// LocalBusiness JSON-LD — required for «#1 ville/région» strategy.
-// Each city/region landing page (Sprint 15) emits this so Google Maps,
-// Google AI Overviews local pack, and Apple Maps surface Axion-IA as the
-// AI consultancy for that geography. Available NOW so Will can wire it
-// when he creates the pages.
+// LocalBusiness JSON-LD — Service Area Business safe mode.
+//
+// Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will
+// 2026-05-23) : Axion-IA = 1 siège FR (Paris) qui sert toute la France. Pour
+// chaque page ville/région : on émet `ProfessionalService` (compatible LocalBusiness
+// schema.org) avec `areaServed` mais SANS les attributs qui claim un bureau
+// physique (`geo`, `openingHoursSpecification`, `priceRange`, `address.postalCode`)
+// SAUF si le caller passe ces valeurs explicitement.
+//
+// Avant : `priceRange='€€€'` + `openingHours=DEFAULT_OPENING_HOURS` étaient appliqués
+// par défaut → chaque ville prétendait avoir un bureau ouvert 9h-18h Mo-Fr avec un
+// tarif € € €. Source de risque "deceptive structured data" (Google guidelines).
+//
+// Maintenant : ces champs ne sont émis QUE si explicitement passés. Les pages
+// ville (`implantations/[ville]`, `audit/par-ville/[ville]`, etc.) appellent
+// sans `geo`/`openingHours`/`priceRange` → JSON-LD propre Service Area Business.
+// Une seule page peut/doit passer les vraies valeurs : `/a-propos` ou `/contact`
+// avec address Paris réelle (TODO Will).
+//
+// Référence Google : « Do not mark up an address that is not a real, accurate
+// physical address. » → https://developers.google.com/search/docs/appearance/structured-data/local-business
 export function buildLocalBusinessJsonLd({
   locale,
   path,
@@ -778,8 +805,8 @@ export function buildLocalBusinessJsonLd({
   areaServed,
   address,
   geo,
-  priceRange = "€€€",
-  openingHours = DEFAULT_OPENING_HOURS,
+  priceRange,
+  openingHours,
 }: LocalBusinessJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
   return {
@@ -801,7 +828,7 @@ export function buildLocalBusinessJsonLd({
       name: areaServed.name,
     },
     knowsLanguage: ["fr", "en"],
-    priceRange,
+    ...(priceRange ? { priceRange } : {}),
     ...(address
       ? {
           address: {
@@ -822,7 +849,7 @@ export function buildLocalBusinessJsonLd({
           },
         }
       : {}),
-    ...(openingHours.length
+    ...(openingHours && openingHours.length > 0
       ? {
           openingHoursSpecification: openingHours.map((spec) => ({
             "@type": "OpeningHoursSpecification",

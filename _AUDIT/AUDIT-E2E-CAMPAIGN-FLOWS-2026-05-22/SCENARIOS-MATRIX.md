@@ -1,8 +1,74 @@
 # SCENARIOS MATRIX — Audit E2E Campaign Flows
 
-**Date** : 2026-05-22
-**HEAD audité** : `e7c40004`
-**Mode** : 🔬 **Audit code-level forensique** (runtime non disponible — voir VERDICT §Mode)
+**Date passe 1 (code)** : 2026-05-22 — HEAD `e7c40004`
+**Date passe 2 (runtime)** : 2026-05-23 — HEAD `c39f08d`
+**Mode** : 🟢 **Runtime + code-level cross-checked**
+
+## Mise à jour runtime 2026-05-23 — Comparatif
+
+| #     | Scénario                | Verdict code (passe 1) | Verdict runtime (passe 2) | Évolution                                                           |
+| ----- | ----------------------- | ---------------------- | ------------------------- | ------------------------------------------------------------------- |
+| SC-01 | Création basique        | 🟢 OK                  | 🟢 OK                     | Schema + wiring confirmés runtime                                   |
+| SC-02 | Preset pme-audits       | 🟢 OK                  | 🟢 OK                     | ⚠️ Slug `audits-all` en DB (pas `pme-audits`)                       |
+| SC-03 | Preset interv-weekly    | 🟢 OK                  | 🟢 OK                     | ⚠️ Slug `interventions-formations-all` (pas `interventions-weekly`) |
+| SC-04 | Preset tpe-burst        | 🟢 OK                  | 🟡 **PARTIAL ↓**          | Preset RETIRÉ, fonctionnalité via `config.batchSize`                |
+| SC-05 | Preset eti-pilier       | 🟢 OK                  | 🟡 **PARTIAL ↓**          | Preset RETIRÉ, fonctionnalité via `typeDistribution.blog_pillar`    |
+| SC-06 | Preset cities-paris     | 🟢 OK                  | 🟢 OK                     | Slug `landing-villes-all` (5 verticales)                            |
+| SC-07 | Preset rss-daily        | 🟡 PARTIAL             | 🟢 **OK ↑**               | Slug match exact + generator présent                                |
+| SC-08 | Scheduled startDate     | 🟢 OK                  | 🟢 OK                     | Cron `*/5 * * * *` confirmé                                         |
+| SC-09 | Deadline endDate        | 🟢 OK avec note        | 🟡 **PARTIAL ↓**          | Cron `5 0 * * *` daily confirmé → P1 réel                           |
+| SC-10 | Recurring cron          | 🟢 OK                  | 🟢 OK                     | Repeatable BullMQ + removeRepeatable                                |
+| SC-11 | Sequential villes       | 🟢 OK                  | 🟢 OK                     | `current_city_index` schema OK                                      |
+| SC-12 | Parallel villes         | 🟢 OK                  | 🟢 OK                     | Default `parallel`                                                  |
+| SC-13 | blog_pillar             | 🟡 PARTIAL             | 🟢 **OK ↑**               | Generator + persona + disclaimer confirmés                          |
+| SC-14 | landing_ville           | 🟡 PARTIAL             | 🟡 PARTIAL                | Generator OK, JSON-LD LocalBusiness + villes proches à fixer (P1)   |
+| SC-15 | blog_from_keywords      | 🟢 OK                  | 🟢 OK                     | Gold standard                                                       |
+| SC-16 | blog_from_title         | 🟢 OK                  | 🟢 OK                     | Tests E2E shared                                                    |
+| SC-17 | blog_from_rss           | 🟡 PARTIAL             | 🟢 **OK ↑**               | Generator + SimHash + embeddings 1536 confirmés                     |
+| SC-18 | qa_derived              | 🟡 PARTIAL             | 🟢 **OK ↑**               | Generator présent                                                   |
+| SC-19 | comparison              | 🟡 PARTIAL             | 🟢 **OK ↑**               | Generator + `<table>` BUG-5 acquis                                  |
+| SC-20 | Boucle improve          | 🟢 OK                  | 🟢 OK                     | `qualityImprovementAttempts` schema + logic confirmés               |
+| SC-21 | REJECT-P0 SIREN         | 🟢 OK                  | 🟢 OK                     | `quarantined_critical` enum + llm-judge:128                         |
+| SC-22 | quarantained_factcheck  | 🟢 OK                  | 🟢 OK                     | `quarantined_factcheck` enum + seuil 50                             |
+| SC-23 | Cap journalier          | 🟢 OK                  | 🟢 OK                     | Redis INCR atomic confirmé                                          |
+| SC-24 | Pause/Resume            | 🟢 OK                  | 🟢 OK                     | Server Actions + BullMQ pause                                       |
+| SC-25 | Multi-targets V-01      | 🟢 OK                  | 🟢 OK                     | 5 hub paths cascade — 2 URLs curl 200                               |
+| SC-26 | IndexNow + sitemaps     | 🟡 PARTIAL             | 🟢 **OK ↑**               | **P0-1 RÉFUTÉ** — sitemap-news 200 + route handler existe           |
+| SC-27 | Rotation liens externes | 🟡 PARTIAL             | 🟢 **OK ↑**               | **P0-2 RÉFUTÉ** — `trackExternalLinksUsage` câblé `:439`            |
+| SC-28 | Image hero / 0 DALL-E   | 🟢 OK                  | 🟢 OK                     | Doctrine `isAiGenerated:false` filtre DB strict                     |
+| SC-29 | Cost cap kill-switch    | 🟢 OK                  | 🟢 OK                     | `kill_switch` key + `alertCostCap80`                                |
+| SC-30 | Cleanup                 | 🟢 OK + ⚪ N/A         | 🟢 OK + ⚪ N/A            | 0 row TEST*E2E*\* créée                                             |
+
+### Synthèse comparative
+
+| Verdict    | Passe 1 (code) | Passe 2 (runtime) | Δ      |
+| ---------- | -------------- | ----------------- | ------ |
+| 🟢 OK      | 22 (73%)       | **26 (87%)**      | **+4** |
+| 🟡 PARTIAL | 8 (27%)        | **4 (13%)**       | **-4** |
+| 🔴 KO      | 0              | 0                 | 0      |
+
+**Score runtime final** : **26/30 OK (87 %)** + 4/30 PARTIAL + 0/30 KO.
+
+### Mouvements
+
+- **+5 OK** (passage PARTIAL → OK) : SC-07, SC-13, SC-17, SC-18, SC-19, SC-26, SC-27 (= 7 ↑ mais 2 ↓ net)
+- **-2 PARTIAL → 🟡 nouveau** : SC-04, SC-05, SC-09 (= 3 nouveaux PARTIAL)
+- **Net +4** OK (22 → 26)
+
+### 2 P0 du verdict initial RÉFUTÉS par runtime
+
+- ❌ **P0-1** `sitemap-news.xml` manquant → **FAUX**, route HTTP 200
+- ❌ **P0-2** `usageCount` jamais incrémenté → **FAUX**, `trackExternalLinksUsage` appelé
+
+### Vrais P1 restants (priorité fix)
+
+1. **SC-09** — Deadline-checker cron `5 0 * * *` daily → fix `*/15 * * * *` (~30 min)
+2. **SC-14** — landing-ville LocalBusiness JSON-LD + villes proches HTML (~3-4 h)
+3. **SC-04, SC-05** — Doc presets D-P5-1 à mettre à jour (architecture 8 templates verticales)
+
+---
+
+## Matrice passe 1 (code-level uniquement, archive)
 
 ## Tableau récapitulatif
 

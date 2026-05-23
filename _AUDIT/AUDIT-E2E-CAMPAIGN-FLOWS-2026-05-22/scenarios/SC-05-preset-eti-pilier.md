@@ -22,3 +22,18 @@
 ## Verdict 🟢 OK (code)
 
 Preset ETI pilier opérationnel — preset + generator + boucle qualité D2 alignés.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- DB query : slug `eti-pilier` **absent**. Cas couvert via `toutes-verticales-general` + `typeDistribution.blog_pillar=100`.
+- Configurabilité préservée, preset dédié supprimé.
+
+**Verdict runtime** : 🟡 PARTIAL runtime (preset retiré, fonctionnalité accessible via config)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

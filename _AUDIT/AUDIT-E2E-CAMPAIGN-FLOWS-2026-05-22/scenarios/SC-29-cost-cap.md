@@ -37,3 +37,28 @@
 ## Verdict 🟢 OK (code)
 
 Cascade kill-switch robuste, idempotent, audit trail. Manque tests dédiés.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Schema `cost_ledger` (jobId, provider, model, tokensInput, tokensOutput, costUsd, timestamp) CONFIRMÉ runtime.
+- Code `src/server/content-gen/lib/cost-tracker.ts:82-84` :
+- ```ts
+
+  ```
+- where: { key: 'kill_switch' },
+- create: { key: 'kill_switch', ... }
+- ```
+
+  ```
+- `alertCostCap80` invoked when 80% monthly cap reached (line 216-220).
+- ⚠️ DB `content_gen_config` VIDE en local — pas de row `kill_switch` ni `provider_*_disabled`. Le cost-tracker fonctionnera dès qu'une row sera créée par un cost overflow réel.
+
+**Verdict runtime** : 🟢 OK runtime (logique OK ; seed config recommandé en prod)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

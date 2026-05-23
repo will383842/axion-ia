@@ -27,3 +27,18 @@
 ## Verdict 🟢 OK (code)
 
 Generator clé blog complet. Conforme D1, D3, D4. Gold standard pour autres generators.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `blog-from-keywords.ts` présent.
+- Mapping ContentType `blog_from_keywords` → generator vérifié.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

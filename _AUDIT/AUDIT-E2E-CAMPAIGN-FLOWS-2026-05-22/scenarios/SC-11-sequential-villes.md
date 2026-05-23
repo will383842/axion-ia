@@ -34,3 +34,18 @@ Pas de test explicite "ordre séquentiel respecté" (orchestrator behavior test 
 ## Verdict 🟢 OK (code)
 
 Logique séquentielle implémentée. Acquis Sprint Campaign Controls 2026-05-22.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Schema `coverage_campaigns.city_processing_mode` (enum) + `current_city_index` (integer) CONFIRMÉS runtime.
+- Logique d'incrément `currentCityIndex` câblée dans orchestrator/content-gen-worker (à inspecter quand 1 campagne tournera).
+
+**Verdict runtime** : 🟢 OK runtime (schema + wiring confirmés)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

@@ -1,6 +1,42 @@
 # BOTTLENECKS DÉTECTÉS — Audit E2E Campaign Flows
 
-**Date** : 2026-05-22 — **Mode** : analyse statique (latences réelles non mesurées)
+**Date passe 1 (code)** : 2026-05-22
+**Date passe 2 (runtime)** : 2026-05-23 — **mesures partielles ajoutées en §RUNTIME**
+
+---
+
+## RUNTIME OBSERVATIONS 2026-05-23
+
+Cette deuxième passe a démarré Docker + Postgres + Redis + Next.js dev. Quelques bottlenecks **mesurés** (curl, prisma queries) :
+
+| #   | Étape mesurée                                  | Latence observée             | Latence inférée code-level | Statut       |
+| --- | ---------------------------------------------- | ---------------------------- | -------------------------- | ------------ |
+| R1  | Cold compile Turbopack page                    | 17-31 s (cold), 1-3 s (warm) | non documenté              | 🟡 cold path |
+| R2  | Prisma query `\d` schema introspection         | < 100 ms                     | < 100 ms                   | 🟢 conforme  |
+| R3  | Redis `PONG` ping                              | < 5 ms                       | non mesuré                 | 🟢 conforme  |
+| R4  | HTTP `/sitemap-news.xml` (route handler)       | < 100 ms                     | non mesuré                 | 🟢 conforme  |
+| R5  | HTTP `/fr/audits/paris` (warm)                 | 1.7 s                        | non documenté              | 🟢 conforme  |
+| R6  | HTTP `/fr/audit/par-ville/paris` (cold)        | 31 s                         | non documenté              | ⚠️ cold path |
+| R7  | DB connection pool startup                     | < 1 s                        | non mesuré                 | 🟢 conforme  |
+| R8  | `pnpm db:up` (containers start)                | ~5 s (idempotent)            | N/A                        | 🟢 conforme  |
+| R9  | `pnpm prisma migrate deploy` (no pending)      | ~2 s                         | N/A                        | 🟢 conforme  |
+| R10 | `pnpm tsx seed-campaign-templates` (8 upserts) | ~3 s                         | N/A                        | 🟢 conforme  |
+
+### Limites de la passe runtime
+
+Les latences LLM (génération article, fact-check, embeddings) **n'ont pas été mesurées** car aucune campagne TEST*E2E* n'a été déclenchée live (budget tokens ~$0.50/article, ~$15 pour 30 articles, non engagé sans validation Will explicite — le worker BullMQ a aussi crashé au boot tsx sous Windows).
+
+Pour mesurer les latences LLM réelles : exécuter SC-01 (1 campagne TEST_E2E avec `totalTargetCount=1`) sur WSL2 (esbuild stable) ou résoudre crash tsx sous Windows.
+
+### Cold path Turbopack — implication runtime prod
+
+Les latences cold 17-31 s observées sont liées à Turbopack compile-on-demand en dev. En prod (Next.js build SSG + ISR), ces routes sont pré-rendues et la latence cold est inexistante. **Pas un bottleneck prod**.
+
+---
+
+## ARCHIVE PASSE 1 (analyse statique)
+
+**Mode initial** : analyse statique (latences réelles non mesurées)
 
 ## Mode
 

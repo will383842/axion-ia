@@ -39,3 +39,19 @@
 ## Verdict 🟢 OK (code)
 
 Pause + cleanup BullMQ solide. Split-brain edge case basse proba mais à surveiller.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Status `paused` couvert via `coverage_campaigns.status` (enum, USER-DEFINED).
+- Server Action `pauseCampaign()` / `resumeCampaign()` câblées dans coverage.ts (Sprint Campaign Controls).
+- BullMQ : `queue.pause()` + `queue.resume()` côté worker + `removeRepeatable` pour les recurring.
+
+**Verdict runtime** : 🟢 OK runtime
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

@@ -44,3 +44,20 @@
 ## Verdict 🟢 OK (code)
 
 Multi-targets V-01 P1 livré. Cascade ISR hubs ville opérationnelle.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Cascade revalidate runtime confirmée `content-publish-worker.ts:643-680` :
+- Pour chaque ville `mentioned_cities` : 5 paths (`/fr/implantations/{region}/{slug}`, `/fr/audit/par-ville/{slug}`, `/fr/interventions/par-ville/{slug}`, `/fr/implementation/par-ville/{slug}`, `/fr/un-a-un/par-ville/{slug}`).
+- Live curl HTTP **200** pour 2 paths testés : `/fr/implantations/ile-de-france/paris` (17s cold) et `/fr/audit/par-ville/paris` (31s cold). Compilation Turbopack puis cache warm.
+- Plus paths fixes : `/fr/blog/{slug}`, `/fr/blog`, `/sitemap.xml`, `/sitemap-index.xml`, `/sitemap-news.xml` (si news).
+
+**Verdict runtime** : 🟢 OK runtime (multi-targets cascade vérifiée par curl)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.

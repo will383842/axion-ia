@@ -35,3 +35,20 @@
 ## Verdict 🟡 PARTIAL (code)
 
 Câblage présent (Manon, disclaimer, liens, byline). Tests dédiés et garantie wordcount à renforcer.
+
+---
+
+## RUNTIME VERIFICATION 2026-05-23
+
+**Environnement** : Docker UP, Postgres `localhost:5433` UP, Redis `localhost:6381` UP, Next.js dev `localhost:3000` UP, clés Anthropic+OpenAI présentes.
+
+**Evidence collectée** :
+
+- Generator `src/server/content-gen/generators/blog-article.ts` + `guide-pilier.ts` présents.
+- Mapping ContentType `blog_pillar` → generator vérifié dans `generators/index.ts`.
+- Persona Manon D3 : `brand-voice.ts:16,68` — texte exact `"Manon, experte IA chez Axion-IA"`.
+- AiContentDisclaimer D4 : `src/components/marketing/AiContentDisclaimer.tsx` rendu via VilleServicePageTemplate.tsx:697.
+
+**Verdict runtime** : 🟢 OK runtime (code + persona + disclaimer confirmés)
+
+Voir `_logs/RUNTIME-EVIDENCE-MASTER-2026-05-23.md` pour batch complet.
