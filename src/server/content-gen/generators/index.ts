@@ -21,6 +21,21 @@ import { comparisonGenerator } from "./comparison";
 import { guidePilierGenerator } from "./guide-pilier";
 import { qaDerivedGenerator } from "./qa-derived";
 import { faqStandaloneGenerator } from "./faq-standalone";
+// Sprint v7 Phase 8 commit 2/4 — 12 nouveaux generators content types.
+import {
+  longTailKeywordGenerator,
+  painPointSolutionGenerator,
+  vsComparatorGenerator,
+  alternativeToGenerator,
+  topXInYGenerator,
+  howToXInYGenerator,
+  bestForXInYGenerator,
+  calculatorRoiGenerator,
+  glossaryTermGenerator,
+  whatIsXGenerator,
+  faqGeoGenerator,
+  caseStudyLocalGenerator,
+} from "./v7-phase8-generators";
 
 const REGISTRY: Record<ContentType, Generator> = {
   landing_ville: landingVilleGenerator,
@@ -32,6 +47,19 @@ const REGISTRY: Record<ContentType, Generator> = {
   guide_pilier: guidePilierGenerator,
   qa_derived: qaDerivedGenerator,
   faq_standalone: faqStandaloneGenerator,
+  // Sprint v7 Phase 8 — 12 nouveaux content types.
+  long_tail_keyword: longTailKeywordGenerator,
+  pain_point_solution: painPointSolutionGenerator,
+  vs_comparator: vsComparatorGenerator,
+  alternative_to: alternativeToGenerator,
+  top_x_in_y: topXInYGenerator,
+  how_to_x_in_y: howToXInYGenerator,
+  best_for_x_in_y: bestForXInYGenerator,
+  calculator_roi: calculatorRoiGenerator,
+  glossary_term: glossaryTermGenerator,
+  what_is_x: whatIsXGenerator,
+  faq_geo: faqGeoGenerator,
+  case_study_local: caseStudyLocalGenerator,
 };
 
 export function getGenerator(contentType: ContentType): Generator {
