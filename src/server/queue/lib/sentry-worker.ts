@@ -91,7 +91,11 @@ export type WorkerName =
   | "retention-purge"
   // Sprint Site Explorer Admin 2026-05-22
   | "site-route-inspector"
-  | "site-route-anomaly-detector";
+  | "site-route-anomaly-detector"
+  // Sprint v7 Phase 9 — GSC HCU monitoring daily cron
+  | "gsc-hcu-monitor"
+  // Sprint v7 Phase 13 — Content refresh monthly cron
+  | "content-refresh";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
