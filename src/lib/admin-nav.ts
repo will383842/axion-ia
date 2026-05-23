@@ -87,6 +87,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "⚖️",
       group: "content",
     },
+    {
+      href: `${base}/content-gen/cities-order`,
+      label: "Ordre villes",
+      icon: "📋",
+      group: "content",
+    },
+    {
+      href: `${base}/content-gen/coverage-map`,
+      label: "Carte couverture",
+      icon: "🗺️",
+      group: "content",
+    },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },
