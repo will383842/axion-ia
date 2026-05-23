@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -475,18 +476,18 @@ export default async function Home({ params }: HomeProps) {
             <div className="hidden lg:block">
               <Illustration
                 slot="HOME-01-hero"
-                src="/images/axion-ia-automatisation-ia-avant-apres-tableau-bord-45-pourcent-photo-carre.avif"
+                src="/illustrations/home-hero-equipe.png"
                 aspectRatio="1:1"
-                filenameTarget="public/illustrations/home-hero-dashboard.avif"
+                filenameTarget="public/illustrations/home-hero-equipe.png"
                 caption={
                   isFr
-                    ? "Avant / après Axion-IA — +45 % de productivité opérationnelle"
-                    : "Before / after Axion-IA — +45% operational productivity"
+                    ? "L'équipe Axion-IA — l'IA au service de l'humain"
+                    : "The Axion-IA team — AI at the service of humans"
                 }
                 alt={
                   isFr
-                    ? "Tableau de bord Axion-IA — comparaison avant/après automatisation IA, +45 % de productivité."
-                    : "Axion-IA dashboard — before/after AI automation comparison, +45% productivity."
+                    ? "Photo de l'équipe Axion-IA en pulls terracotta sous le logo « Axion-IA.com — L'intelligence artificielle au service de l'humain »."
+                    : "Photo of the Axion-IA team wearing terracotta sweaters under the « Axion-IA.com — AI at the service of humans » sign."
                 }
                 priority
               />
@@ -673,52 +674,59 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── ÉQUIPE (photo + 4 atouts courts) ─────────────
-          Section visage humain — photo équipe pleine largeur + 4 atouts
-          synthétiques en ligne. Remplace l'ancienne section « Why »
-          (4 paragraphes longs) par un mix visuel + texte minimal. */}
-      <section className="bg-halo-cool py-20 sm:py-24 lg:py-28">
-        <Container>
-          <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-16">
-            <FadeInOnView>
-              <Illustration
-                slot="HOME-04-team"
-                src="/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.avif"
-                aspectRatio="4:5"
-                filenameTarget="public/illustrations/home-equipe.avif"
-                caption={
-                  isFr
-                    ? "L'équipe Axion-IA — l'IA au service de l'humain"
-                    : "The Axion-IA team — AI at the service of humans"
-                }
-                alt={
-                  isFr
-                    ? "Photo de l'équipe Axion-IA — cabinet IA opérationnel, l'IA au service de l'humain."
-                    : "Photo of the Axion-IA team — operational AI consultancy, AI at the service of humans."
-                }
-              />
-            </FadeInOnView>
-            <FadeInOnView delay={120}>
-              <p className="text-fg-muted mb-6 text-[13px] font-semibold tracking-[0.18em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {t("valueWhyEyebrow")}
-              </p>
-              <ul className="grid gap-5">
-                {whyPoints.map((point, idx) => (
-                  <li key={idx} className="text-fg flex items-start gap-4">
-                    <span
-                      className="text-terracotta shrink-0 text-2xl font-medium tabular-nums"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                      aria-hidden="true"
-                    >
-                      0{idx + 1}
-                    </span>
-                    <span className="text-base leading-snug sm:text-lg">{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </FadeInOnView>
+      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS (pleine largeur) ─────────────
+          Composite 4 photos coworking + logo Axion-IA.com overlay. Image
+          réelle de l'équipe en action. Sert de séparateur visuel fort entre
+          logos et atouts. Ratio ~21:9 → display full-width. */}
+      <section className="bg-bg py-12 sm:py-16">
+        <FadeInOnView>
+          <div className="relative w-full overflow-hidden">
+            <Image
+              src="/illustrations/home-bandeau-team.png"
+              alt={
+                isFr
+                  ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
+                  : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait."
+              }
+              width={1961}
+              height={802}
+              loading="lazy"
+              decoding="async"
+              sizes="100vw"
+              className="h-auto w-full"
+            />
           </div>
+        </FadeInOnView>
+      </section>
+
+      {/* ───────────── 4 ATOUTS EN STRIP (Why simplifié) ─────────────
+          Strip horizontale sans photo (le bandeau au-dessus apporte le
+          visuel). 4 atouts ultra-courts (1 ligne chacun). */}
+      <section className="bg-halo-cool py-16 sm:py-20">
+        <Container>
+          <FadeInOnView>
+            <p className="text-fg-muted mb-10 text-center text-[13px] font-semibold tracking-[0.18em] uppercase">
+              <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+              {t("valueWhyEyebrow")}
+            </p>
+            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {whyPoints.map((point, idx) => (
+                <li
+                  key={idx}
+                  className="bg-paper border-border flex flex-col gap-3 rounded-2xl border p-6"
+                >
+                  <span
+                    className="text-terracotta text-3xl font-medium tabular-nums"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                    aria-hidden="true"
+                  >
+                    0{idx + 1}
+                  </span>
+                  <span className="text-fg text-base leading-snug">{point}</span>
+                </li>
+              ))}
+            </ul>
+          </FadeInOnView>
         </Container>
       </section>
 
