@@ -637,6 +637,93 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ───────────── SECTION FONDATEUR (crédibilité + "Top 1 %") ─────────────
+          Insérée après le bandeau équipe. Adapte le design "Fondateur &
+          CEO" de l'exemple : eyebrow + headline 2 lignes + description +
+          tagline italic / photo dirigeant + stats bar 3 colonnes.
+          Photo placeholder : drop `public/illustrations/home-founder-william.jpg`. */}
+      <section className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28">
+        <Container>
+          <FadeInOnView>
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              {/* Colonne gauche : copy */}
+              <div className="max-w-xl">
+                <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
+                  <span className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                  {t("founderEyebrow")}
+                </p>
+                <h2
+                  className="text-fg text-[clamp(2.5rem,5vw,4.25rem)] leading-[1.02] font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t("founderTitleLine1")}
+                  <br />
+                  <span className="text-terracotta italic">{t("founderTitleLine2")}</span>
+                </h2>
+                <p className="text-fg-soft mt-7 text-lg leading-relaxed">
+                  {t("founderDescription")}
+                </p>
+                <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
+                  <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
+                  <p
+                    className="text-fg-soft text-base leading-relaxed italic"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {t("founderTagline")}
+                  </p>
+                </div>
+              </div>
+
+              {/* Colonne droite : carte fondateur */}
+              <div className="flex justify-center lg:justify-end">
+                <div className="w-full max-w-xs">
+                  <Illustration
+                    slot="HOME-04-founder"
+                    src="/illustrations/home-founder-william.jpg"
+                    aspectRatio="4:5"
+                    filenameTarget="public/illustrations/home-founder-william.jpg"
+                    caption={
+                      isFr
+                        ? "William J. — Fondateur & CEO Axion-IA"
+                        : "William J. — Founder & CEO Axion-IA"
+                    }
+                    alt={t("founderPhotoAlt")}
+                  />
+                  <div className="mt-4 text-center">
+                    <p className="text-fg text-lg font-semibold">{t("founderName")}</p>
+                    <p className="text-fg-muted text-sm">{t("founderRole")}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats bar — 3 colonnes séparées par des dividers verticaux */}
+            <div
+              className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10"
+              style={{ borderColor: "var(--color-border-strong)" }}
+            >
+              {(
+                [
+                  { number: t("founderStat1Number"), label: t("founderStat1Label") },
+                  { number: t("founderStat2Number"), label: t("founderStat2Label") },
+                  { number: t("founderStat3Number"), label: t("founderStat3Label") },
+                ] as const
+              ).map((stat, idx) => (
+                <div key={idx} className="flex flex-col gap-1 px-6 first:pl-0 last:pr-0">
+                  <span
+                    className="text-fg text-[clamp(1.25rem,2.5vw,1.75rem)] leading-tight font-semibold tracking-tight"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {stat.number}
+                  </span>
+                  <span className="text-fg-soft text-sm leading-snug">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </FadeInOnView>
+        </Container>
+      </section>
+
       {/* ───────────── 4 ATOUTS EN STRIP (Why simplifié) ─────────────
           Strip horizontale sans photo (le bandeau au-dessus apporte le
           visuel). 4 atouts ultra-courts (1 ligne chacun). */}
