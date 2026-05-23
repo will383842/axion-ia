@@ -228,7 +228,7 @@ export async function CoverageNewV2({ adminPrefix, searchParams: sp }: Props): P
           <CoverageWizardClient
             distProfiles={[...distProfiles]}
             audProfiles={[...audProfiles]}
-            cityEquity={[...equityData.rows]}
+            cityEquity={[...equityData]}
             onSubmit={create}
             onDryRun={dryRun}
             adminPrefix={adminPrefix}

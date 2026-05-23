@@ -37,6 +37,7 @@ import {
   alertQueueStuck,
   alertSoft404Detected,
   alertIndexationStagnant,
+  alertCityEquityImbalance,
 } from "@/server/content-gen/shared/content-gen-alerts";
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 
@@ -361,13 +362,95 @@ async function checkAnomalies(): Promise<void> {
   }
 }
 
+/**
+ * Détecte les campagnes ville running depuis ≥7j avec >30% des villes sans
+ * aucun contenu généré — signe d'un déséquilibre géographique (Tier 1 saturé,
+ * Tier 3/4 ignorés). Alerte Telegram + upsert ContentGenConfig pour bandeau admin.
+ */
+async function checkCityEquity(): Promise<void> {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000);
+  const runningCampaigns = await prisma.coverageCampaign
+    .findMany({
+      where: { status: "running", startedAt: { lte: sevenDaysAgo }, scope: "ville" },
+      select: { id: true, name: true, anchorVilleSlugs: true },
+    })
+    .catch(() => []);
+
+  for (const campaign of runningCampaigns) {
+    if (campaign.anchorVilleSlugs.length === 0) continue;
+
+    const jobsByCity = await prisma.contentGenJob
+      .groupBy({
+        by: ["anchorVilleSlug"],
+        where: {
+          campaignId: campaign.id,
+          anchorVilleSlug: { in: campaign.anchorVilleSlugs },
+          status: { not: "cancelled" },
+        },
+        _count: { _all: true },
+      })
+      .catch(() => []);
+
+    const covered = new Set(
+      jobsByCity.filter((j) => j.anchorVilleSlug !== null).map((j) => j.anchorVilleSlug!),
+    );
+    const zeroCitiesCount = campaign.anchorVilleSlugs.filter((s) => !covered.has(s)).length;
+    const ratio = zeroCitiesCount / campaign.anchorVilleSlugs.length;
+
+    if (ratio > 0.3 && zeroCitiesCount >= 3) {
+      await prisma.contentGenConfig
+        .upsert({
+          where: { key: "alert_city_equity" },
+          create: {
+            key: "alert_city_equity",
+            value: {
+              active: true,
+              campaignId: campaign.id,
+              campaignName: campaign.name,
+              zeroCitiesCount,
+              totalCities: campaign.anchorVilleSlugs.length,
+              detectedAt: new Date().toISOString(),
+              message: `Déséquilibre villes : ${zeroCitiesCount}/${campaign.anchorVilleSlugs.length} villes sans contenu`,
+            },
+            updatedBy: "content-monitoring-worker",
+          },
+          update: {
+            value: {
+              active: true,
+              campaignId: campaign.id,
+              campaignName: campaign.name,
+              zeroCitiesCount,
+              totalCities: campaign.anchorVilleSlugs.length,
+              detectedAt: new Date().toISOString(),
+              message: `Déséquilibre villes : ${zeroCitiesCount}/${campaign.anchorVilleSlugs.length} villes sans contenu`,
+            },
+            updatedBy: "content-monitoring-worker",
+          },
+        })
+        .catch(() => {});
+      void alertCityEquityImbalance(
+        campaign.id,
+        campaign.name,
+        zeroCitiesCount,
+        campaign.anchorVilleSlugs.length,
+      ).catch(() => undefined);
+      console.warn(
+        `[content-monitoring] ALERT city_equity campaign=${campaign.id} zero=${zeroCitiesCount}/${campaign.anchorVilleSlugs.length}`,
+      );
+    } else {
+      await resolveAnomaly("alert_city_equity");
+    }
+  }
+}
+
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
-  // 4 checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
+  // 5 checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
   await Promise.allSettled([
     checkQueueStuck(),
     checkSoft404(),
     checkIndexationStagnant(),
     checkAnomalies(),
+    checkCityEquity(),
   ]);
 }
 

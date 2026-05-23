@@ -235,6 +235,41 @@ export interface CreateCampaignInput {
   readonly primaryKeywords?: ReadonlyArray<string>;
 }
 
+/**
+ * Réordonne les slugs villes en interleaving tier-aware (Tier1→2→3→4→1→...)
+ * pour garantir la représentation de toutes les strates de population si
+ * la campagne se termine avant couverture complète.
+ * Ex: [P,L,M(T1), a,b,c(T2), x,y(T3)] → [P,a,x, L,b,y, M,c]
+ */
+async function buildTierInterleavedSlugs(slugs: string[]): Promise<string[]> {
+  if (slugs.length <= 1) return slugs;
+  const cities = await prisma.city.findMany({
+    where: { slug: { in: slugs } },
+    select: { slug: true, populationTier: true },
+  });
+  const tierBySlug = new Map(cities.map((c) => [c.slug, c.populationTier ?? 4]));
+  const byTier: Record<number, string[]> = { 1: [], 2: [], 3: [], 4: [] };
+  for (const slug of slugs) {
+    const tier = tierBySlug.get(slug) ?? 4;
+    (byTier[tier] ??= []).push(slug);
+  }
+  const activeTiers = ([1, 2, 3, 4] as const).filter((t) => (byTier[t]?.length ?? 0) > 0);
+  if (activeTiers.length <= 1) return slugs;
+  const indices: Record<number, number> = Object.fromEntries(activeTiers.map((t) => [t, 0]));
+  const result: string[] = [];
+  while (result.length < slugs.length) {
+    for (const tier of activeTiers) {
+      const arr = byTier[tier]!;
+      const idx = indices[tier]!;
+      if (idx < arr.length) {
+        result.push(arr[idx]!);
+        indices[tier] = idx + 1;
+      }
+    }
+  }
+  return result;
+}
+
 export async function createCampaign(input: CreateCampaignInput): Promise<string> {
   try {
     const session = await requireAdmin();
@@ -284,13 +319,22 @@ export async function createCampaign(input: CreateCampaignInput): Promise<string
     const initialStatus: CoverageStatus = effectiveStartDate ? "scheduled" : "draft";
     const cityProcessingMode: CityProcessingMode = input.cityProcessingMode ?? "parallel";
 
+    // P2 — Interleaving tier-aware pour équité géographique en mode parallel.
+    // En mode sequential, l'ordre est contrôlé volontairement par currentCityIndex.
+    const orderedVilleSlugs =
+      input.scope === "ville" &&
+      cityProcessingMode === "parallel" &&
+      (input.anchorVilleSlugs?.length ?? 0) > 1
+        ? await buildTierInterleavedSlugs([...(input.anchorVilleSlugs ?? [])])
+        : [...(input.anchorVilleSlugs ?? [])];
+
     const r = await prisma.coverageCampaign.create({
       data: {
         name: input.name,
         status: initialStatus,
         scope: input.scope,
         serviceSector: input.serviceSector ?? null,
-        anchorVilleSlugs: input.anchorVilleSlugs ? [...input.anchorVilleSlugs] : [],
+        anchorVilleSlugs: orderedVilleSlugs,
         anchorDepartementCodes: input.anchorDepartementCodes
           ? [...input.anchorDepartementCodes]
           : [],

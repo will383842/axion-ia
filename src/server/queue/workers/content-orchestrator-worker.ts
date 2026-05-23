@@ -71,26 +71,34 @@ function getContentGenQueue(): Queue {
 }
 
 /**
- * Sample weighted distribution. Returns la clé choisie selon poids %.
- * Ex : { landing_ville: 50, blog_from_title: 30, comparison: 20 } → ~50% landing_ville.
+ * Sélection déterministe par slot index. Garantit une distribution exacte
+ * sur N slots sans dérive aléatoire (remplace Math.random()).
+ * seed = offset pour décorreler type / intent / audience sur le même slotIndex.
+ * Ex : dist={A:40,B:30,C:30}, slotIndex=0→A, slotIndex=40→B, slotIndex=70→C.
  */
-function sampleWeighted<K extends string>(dist: Record<K, number>): K | null {
+function sampleWeighted<K extends string>(
+  dist: Record<K, number>,
+  slotIndex: number,
+  seed = 0,
+): K | null {
   const entries = Object.entries(dist) as Array<[K, number]>;
   if (entries.length === 0) return null;
   const total = entries.reduce((a, [, w]) => a + w, 0);
   if (total <= 0) return null;
-  let r = Math.random() * total;
+  const position = (slotIndex + seed) % total;
+  let cumulative = 0;
   for (const [key, w] of entries) {
-    r -= w;
-    if (r <= 0) return key;
+    cumulative += w;
+    if (position < cumulative) return key;
   }
   return entries[entries.length - 1]![0];
 }
 
 function sampleAudienceMix(
   mix: Record<string, number>,
+  slotIndex: number,
 ): { size: CompanySize; org: OrganisationType } | null {
-  const key = sampleWeighted(mix);
+  const key = sampleWeighted(mix, slotIndex, 37);
   if (!key) return null;
   const [size, org] = key.split(":") as [string, string];
   if (!size || !org) return null;
@@ -252,6 +260,7 @@ async function processSequentialCampaign(
 
   let enqueued = 0;
   for (let i = 0; i < toEnqueue; i++) {
+    const slotIndex = campaign.generatedCount + i;
     let contentType: ContentType | null;
     if (hasPerTypeMode) {
       const next = Object.entries(remainingByType).find(([, count]) => (count ?? 0) > 0);
@@ -259,12 +268,11 @@ async function processSequentialCampaign(
       contentType = next[0] as ContentType;
       remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
     } else {
-      contentType = sampleWeighted(typeDist);
+      contentType = sampleWeighted(typeDist, slotIndex);
     }
     if (!contentType) continue;
-    const aud = sampleAudienceMix(audienceMix);
-    const searchIntent = intentMix ? sampleWeighted(intentMix) : "informational";
-    const slotIndex = campaign.generatedCount + i;
+    const aud = sampleAudienceMix(audienceMix, slotIndex);
+    const searchIntent = intentMix ? sampleWeighted(intentMix, slotIndex, 73) : "informational";
     const ok = await createJobForSlot({
       campaign,
       contentType,
@@ -320,6 +328,7 @@ async function processParallelCampaign(
 
   let enqueued = 0;
   for (let i = 0; i < toEnqueue; i++) {
+    const slotIndex = campaign.generatedCount + i;
     let contentType: ContentType | null;
     if (hasPerTypeMode) {
       const next = Object.entries(remainingByType).find(([, count]) => (count ?? 0) > 0);
@@ -327,17 +336,15 @@ async function processParallelCampaign(
       contentType = next[0] as ContentType;
       remainingByType[contentType] = (remainingByType[contentType] ?? 1) - 1;
     } else {
-      contentType = sampleWeighted(typeDist);
+      contentType = sampleWeighted(typeDist, slotIndex);
     }
     if (!contentType) continue;
-    const aud = sampleAudienceMix(audienceMix);
-    const searchIntent = intentMix ? sampleWeighted(intentMix) : "informational";
+    const aud = sampleAudienceMix(audienceMix, slotIndex);
+    const searchIntent = intentMix ? sampleWeighted(intentMix, slotIndex, 73) : "informational";
 
     let anchorVilleSlug: string | undefined = forcedVilleSlug;
     let anchorDepartementCode: string | undefined;
     let anchorRegionSlug: string | undefined;
-
-    const slotIndex = campaign.generatedCount + i;
 
     if (!anchorVilleSlug) {
       if (campaign.scope === "ville" && villeAnchors.length > 0) {
