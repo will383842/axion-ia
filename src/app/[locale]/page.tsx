@@ -3,7 +3,7 @@ import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, Users, Search, Wand2, UserRound, Globe } from "lucide-react";
+import { ArrowRight, Users, Search, Wand2, UserRound, Globe } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
@@ -163,39 +163,43 @@ export default async function Home({ params }: HomeProps) {
 
   // Mapping classes Tailwind pour chaque accent (évite la concaténation
   // dynamique non détectable par le compilateur Tailwind).
+  // Polish v5 — Cards en COULEUR PLEINE avec texte paper (contraste fort).
+  // gainBg = couleur pleine (background card), gainText = couleur claire pour
+  // texte. Numéro géant en couleur très claire (accent-soft) pour contraste
+  // typographique.
   const accentClasses = {
     terracotta: {
-      iconBg: "bg-terracotta-soft",
-      iconFg: "text-terracotta-deep",
-      number: "text-terracotta",
-      headline: "text-terracotta",
+      iconBg: "bg-terracotta-deep",
+      iconFg: "text-terracotta",
+      number: "text-terracotta-soft/40",
+      headline: "text-terracotta-soft",
       hoverBorder: "hover:border-terracotta",
-      bulletIcon: "text-terracotta-deep",
-      gainBg: "bg-terracotta-soft",
-      gainText: "text-terracotta-deep",
-      ringHalo: "before:bg-terracotta/8",
+      bulletIcon: "text-terracotta-soft",
+      gainBg: "bg-terracotta",
+      gainText: "text-paper",
+      ringHalo: "before:bg-terracotta/20",
     },
     primary: {
-      iconBg: "bg-primary-soft",
+      iconBg: "bg-primary",
       iconFg: "text-primary",
-      number: "text-primary",
-      headline: "text-primary",
+      number: "text-primary-soft/40",
+      headline: "text-primary-soft",
       hoverBorder: "hover:border-primary",
-      bulletIcon: "text-primary",
-      gainBg: "bg-primary-soft",
-      gainText: "text-primary",
-      ringHalo: "before:bg-primary/8",
+      bulletIcon: "text-primary-soft",
+      gainBg: "bg-primary",
+      gainText: "text-paper",
+      ringHalo: "before:bg-primary/20",
     },
     sage: {
-      iconBg: "bg-sage-soft",
+      iconBg: "bg-sage",
       iconFg: "text-sage",
-      number: "text-sage",
-      headline: "text-sage",
+      number: "text-sage-soft/50",
+      headline: "text-sage-soft",
       hoverBorder: "hover:border-sage",
-      bulletIcon: "text-sage",
-      gainBg: "bg-sage-soft",
-      gainText: "text-sage",
-      ringHalo: "before:bg-sage/8",
+      bulletIcon: "text-sage-soft",
+      gainBg: "bg-sage",
+      gainText: "text-paper",
+      ringHalo: "before:bg-sage/20",
     },
   } as const;
 
@@ -500,26 +504,9 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── MANIFESTO (Blueprint §5 — accroche manifeste) ─────────────
-          Phrase positionnement forte, séparateur entre hero et services.
-          120-160 px hauteur. Indexée prioritairement par moteurs IA (SGE,
-          Perplexity, ChatGPT) → contient « Axion-IA », « cabinet IA »,
-          « France ». Voir blueprint §21 AEO. */}
-      <section className="bg-sand-soft border-border-strong border-y py-12 sm:py-16">
-        <Container>
-          <div className="mx-auto max-w-4xl text-center">
-            <p
-              className="text-fg text-2xl leading-snug font-medium tracking-tight sm:text-3xl lg:text-[2.5rem] lg:leading-[1.15]"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {t("manifestoLine")}
-            </p>
-            <p className="text-fg-muted mt-4 text-sm leading-relaxed sm:text-base">
-              {t("manifestoContext")}
-            </p>
-          </div>
-        </Container>
-      </section>
+      {/* ─── MANIFESTO retiré (commit polish v5, demande Will) ───
+          Phrase positionnement déplacée vers metaDescription seo + AEO via
+          Organization JSON-LD. Visuel privilégié au texte. */}
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUE PROPOSITION (5 services + bénéfice client) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           C'est LA section la plus importante de la page — visibilité maximum,
@@ -549,98 +536,82 @@ export default async function Home({ params }: HomeProps) {
             </div>
           </FadeInOnView>
 
-          <ul className="grid gap-8 lg:grid-cols-3">
+          {/* 5 cartes en 1 ligne sur desktop (lg+), 2 col tablet, 1 col mobile.
+              Cartes compactes, ULTRA contrastées : background accent-soft +
+              numéro géant outline serif + action bold + headline lead.
+              Pas de prix (visible sur la page service détail). */}
+          {/* 5 cartes en couleur PLEINE — punch maximal. Numéro géant en
+              filigrane (background décoratif), icône paper-circle accent en
+              haut, h3 + headline en bas. Aspect 3:4 vertical strict, 5 col
+              toujours, grid responsive 320→1280+. */}
+          <ul className="grid grid-cols-5 gap-2.5 md:gap-4">
             {valuePropositions.map((v, idx) => {
               const Icon = v.icon;
               const a = accentClasses[v.accent];
               return (
-                <FadeInOnView key={v.id} delay={idx * 100}>
+                <FadeInOnView key={v.id} delay={idx * 80}>
                   <li className="h-full">
                     <Link
                       href={v.href}
                       className={cn(
-                        // Toute la card est cliquable. Visuel d'affordance :
-                        // hover lift -2px + shadow + accent border + flèche slide.
-                        "group bg-bg border-border focus-visible:ring-primary hover:shadow-elevated relative flex h-full flex-col gap-7 overflow-hidden rounded-3xl border p-10 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                        a.hoverBorder,
-                        // Halo accent diffus en arrière-plan, plus visible au hover
-                        "before:pointer-events-none before:absolute before:-top-32 before:-right-20 before:h-72 before:w-72 before:rounded-full before:opacity-50 before:blur-3xl before:transition-opacity before:duration-500 group-hover:before:opacity-100",
-                        a.ringHalo,
+                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-3 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-5",
+                        a.gainBg,
                       )}
                     >
-                      {/* En-tête : numéro géant serif + icône accent */}
-                      <div className="relative flex items-start justify-between">
-                        <span
-                          className={cn("text-7xl leading-none font-medium tabular-nums", a.number)}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                          aria-hidden="true"
-                        >
-                          0{idx + 1}
-                        </span>
-                        <span
-                          className={cn(
-                            "inline-flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110",
-                            a.iconBg,
-                            a.iconFg,
-                          )}
-                        >
-                          <Icon className="h-6 w-6" aria-hidden="true" />
-                        </span>
-                      </div>
+                      {/* Numéro géant en filigrane — background décoratif */}
+                      <span
+                        className={cn(
+                          "pointer-events-none absolute -top-2 -right-3 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-4 md:text-[8rem]",
+                          a.number,
+                        )}
+                        style={{ fontFamily: "var(--font-serif)" }}
+                        aria-hidden="true"
+                      >
+                        0{idx + 1}
+                      </span>
 
-                      {/* Action + headline */}
-                      <div className="relative">
+                      {/* Icône accent — bulle paper en haut */}
+                      <span
+                        className={cn(
+                          "bg-paper relative z-10 inline-flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12",
+                          a.iconFg,
+                        )}
+                      >
+                        <Icon className="h-4 w-4 md:h-6 md:w-6" aria-hidden="true" />
+                      </span>
+
+                      {/* Action + headline — colonne basse */}
+                      <div className="relative z-10 mt-auto flex flex-col gap-1.5">
                         <h3
-                          className="text-fg text-3xl leading-[1.1] font-medium tracking-tight"
-                          style={{ fontFamily: "var(--font-serif)" }}
+                          className={cn(
+                            "text-[13px] leading-tight font-bold tracking-tight sm:text-sm md:text-lg",
+                            a.gainText,
+                          )}
                         >
                           {v.action}
                         </h3>
                         <p
-                          className={cn("mt-3 text-lg italic", a.headline)}
-                          style={{ fontFamily: "var(--font-serif)" }}
+                          className={cn(
+                            "text-[10.5px] leading-snug sm:text-[11px] md:text-sm",
+                            a.gainText,
+                            "opacity-90",
+                          )}
                         >
                           {v.headline}
                         </p>
                       </div>
 
-                      {/* Bullets ultra-concrets */}
-                      <ul className="relative flex flex-1 flex-col gap-4">
-                        {v.bullets.map((b, i) => (
-                          <li
-                            key={i}
-                            className="text-fg-soft flex items-start gap-3 text-[15px] leading-relaxed"
-                          >
-                            <Check
-                              className={cn("mt-1 h-4 w-4 shrink-0", a.bulletIcon)}
-                              aria-hidden="true"
-                            />
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Gain client — bandeau coloré accent (mise en avant maximale) */}
-                      <div className={cn("relative rounded-xl px-5 py-4", a.gainBg)}>
-                        <p className={cn("text-base leading-snug font-semibold", a.gainText)}>
-                          {v.gain}
-                        </p>
-                      </div>
-
-                      {/* Prix + flèche d'affordance (toute la card est cliquable) */}
-                      <div className="border-border relative flex items-center justify-between border-t pt-5">
-                        <span className="text-fg text-sm font-semibold">{v.price}</span>
-                        <span
-                          className={cn(
-                            "inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110",
-                            a.iconBg,
-                            a.iconFg,
-                          )}
-                          aria-hidden="true"
-                        >
-                          <ArrowRight className="h-5 w-5" />
-                        </span>
-                      </div>
+                      {/* Flèche bas droit (apparait au hover) */}
+                      <span
+                        className={cn(
+                          "absolute right-3 bottom-3 z-10 inline-flex h-6 w-6 items-center justify-center rounded-full opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 md:right-4 md:bottom-4 md:h-8 md:w-8",
+                          "bg-paper",
+                          a.iconFg,
+                        )}
+                        aria-hidden="true"
+                      >
+                        <ArrowRight className="h-3 w-3 md:h-4 md:w-4" />
+                      </span>
                     </Link>
                   </li>
                 </FadeInOnView>
@@ -674,29 +645,30 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS (pleine largeur) ─────────────
-          Composite 4 photos coworking + logo Axion-IA.com overlay. Image
-          réelle de l'équipe en action. Sert de séparateur visuel fort entre
-          logos et atouts. Ratio ~21:9 → display full-width. */}
+      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS (contenu container) ─────────────
+          Composite 4 photos coworking + logo Axion-IA.com overlay. Resserré
+          en Container (max-w-7xl) avec coins arrondis — pas pleine largeur. */}
       <section className="bg-bg py-12 sm:py-16">
-        <FadeInOnView>
-          <div className="relative w-full overflow-hidden">
-            <Image
-              src="/illustrations/home-bandeau-team.png"
-              alt={
-                isFr
-                  ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
-                  : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait."
-              }
-              width={1961}
-              height={802}
-              loading="lazy"
-              decoding="async"
-              sizes="100vw"
-              className="h-auto w-full"
-            />
-          </div>
-        </FadeInOnView>
+        <Container>
+          <FadeInOnView>
+            <div className="shadow-elevated relative overflow-hidden rounded-2xl">
+              <Image
+                src="/illustrations/home-bandeau-team.png"
+                alt={
+                  isFr
+                    ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
+                    : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait."
+                }
+                width={1961}
+                height={802}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 1280px) 100vw, 1200px"
+                className="h-auto w-full"
+              />
+            </div>
+          </FadeInOnView>
+        </Container>
       </section>
 
       {/* ───────────── 4 ATOUTS EN STRIP (Why simplifié) ─────────────
