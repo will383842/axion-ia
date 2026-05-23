@@ -6,63 +6,43 @@ export type { ClientLogo };
 
 interface LogosMarqueeProps {
   logos: ClientLogo[];
-  /** Vitesse de défilement en secondes pour un cycle complet. Plus haut = plus lent. */
+  /** Conservé pour compat API — non utilisé en mode grille statique. */
   speedSec?: number;
   className?: string;
 }
 
-// Marquee CSS pur — pas de JS, pas de framer-motion. Server component.
-// Hauteur logos = 40 px (centre du range 32-48 du blueprint §8). Grayscale
-// par défaut, retour couleur réelle au hover sur le track entier (transition
-// 300 ms). prefers-reduced-motion : animation suspendue (rule globale dans
-// globals.css forçant animation-duration: 0ms).
+// Grille statique 2 lignes — refonte « polish v2 » Will 2026-05-23 :
+// (1) logos en COULEUR (pas grayscale) pour pep's visuel
+// (2) plus GROS (hauteur effective ~56-64 px vs 40 px avant)
+// (3) STABLES, ne bougent pas (suppression du marquee défilant)
+// (4) responsive : 4 col mobile / 5 sm / 6 md / 8 lg / 9 xl
 //
-// Pattern double-track : on duplique la liste 2x pour créer un loop parfait.
-// translateX(-50%) à la fin = remise à zéro invisible car la 2e moitié est
-// identique à la 1re visible à l'instant 0.
-export function LogosMarquee({ logos, speedSec = 50, className }: LogosMarqueeProps) {
-  const items = [...logos, ...logos];
+// SSR pure, 0 JS shipped. Aspect ratio préservé via width/height intrinsèques
+// → 0 CLS. Hover subtil (scale 1.05) sans casser la lecture.
+export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
   return (
-    <div
+    <ul
+      aria-label="Logos clients Axion-IA"
       className={cn(
-        "logos-marquee-mask group relative w-full overflow-hidden",
-        // Fade sur les bords gauche/droite pour éviter le "pop-in" visuel
-        "[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]",
+        "grid items-center justify-items-center gap-x-8 gap-y-10 sm:gap-x-12 sm:gap-y-12",
+        "grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-9",
         className,
       )}
-      aria-label="Logos clients Axion-IA"
     >
-      <ul
-        className="logos-marquee-track flex w-max items-center gap-12 hover:[animation-play-state:paused] motion-reduce:!animate-none sm:gap-16"
-        style={{
-          animation: `logos-marquee ${speedSec}s linear infinite`,
-        }}
-      >
-        {items.map((logo, idx) => (
-          <li
-            key={`${logo.slug}-${idx}`}
-            className="flex shrink-0 items-center"
-            aria-hidden={idx >= logos.length ? "true" : undefined}
-          >
-            <Image
-              src={logo.src}
-              alt={idx < logos.length ? `Logo ${logo.name} — client Axion-IA` : ""}
-              width={logo.width ?? 160}
-              height={logo.height ?? 40}
-              loading="lazy"
-              decoding="async"
-              className="h-10 w-auto opacity-70 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-              data-client={logo.slug}
-            />
-          </li>
-        ))}
-      </ul>
-      <style>{`
-        @keyframes logos-marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-      `}</style>
-    </div>
+      {logos.map((logo) => (
+        <li key={logo.slug} className="flex h-16 w-full items-center justify-center sm:h-20">
+          <Image
+            src={logo.src}
+            alt={`Logo ${logo.name} — client Axion-IA`}
+            width={logo.width ?? 200}
+            height={logo.height ?? 60}
+            loading="lazy"
+            decoding="async"
+            className="h-12 w-auto max-w-full object-contain transition-transform duration-300 hover:scale-105 sm:h-14"
+            data-client={logo.slug}
+          />
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -475,17 +475,18 @@ export default async function Home({ params }: HomeProps) {
             <div className="hidden lg:block">
               <Illustration
                 slot="HOME-01-hero"
+                src="/images/axion-ia-automatisation-ia-avant-apres-tableau-bord-45-pourcent-photo-carre.avif"
                 aspectRatio="1:1"
                 filenameTarget="public/illustrations/home-hero-dashboard.avif"
                 caption={
                   isFr
-                    ? "Dashboard Axion-IA — vue produit ou livrable opérationnel"
-                    : "Axion-IA dashboard — product or deliverable view"
+                    ? "Avant / après Axion-IA — +45 % de productivité opérationnelle"
+                    : "Before / after Axion-IA — +45% operational productivity"
                 }
                 alt={
                   isFr
-                    ? "Illustration éditoriale du tableau de bord Axion-IA — IA opérationnelle pour entreprises."
-                    : "Editorial illustration of the Axion-IA dashboard — operational AI for companies."
+                    ? "Tableau de bord Axion-IA — comparaison avant/après automatisation IA, +45 % de productivité."
+                    : "Axion-IA dashboard — before/after AI automation comparison, +45% productivity."
                 }
                 priority
               />
@@ -668,7 +669,7 @@ export default async function Home({ params }: HomeProps) {
               </p>
             </div>
           </FadeInOnView>
-          <LogosMarquee logos={CLIENT_LOGOS} speedSec={60} />
+          <LogosMarquee logos={CLIENT_LOGOS} />
         </Container>
       </section>
 
@@ -771,17 +772,18 @@ export default async function Home({ params }: HomeProps) {
             <div className="mb-16">
               <Illustration
                 slot="HOME-02-method"
+                src="/images/axion-ia-audit-ia-methode-5-etapes-analyse-roi-recommandations-infographie.avif"
                 aspectRatio="16:9"
                 filenameTarget="public/illustrations/home-method-process.avif"
                 caption={
                   isFr
-                    ? "Workshop Axion-IA — cadrage 30 min puis démonstration sur données réelles"
-                    : "Axion-IA workshop — 30-min scoping then demo on real data"
+                    ? "Méthode Axion-IA en 5 étapes — analyse, ROI, recommandations"
+                    : "Axion-IA 5-step method — analysis, ROI, recommendations"
                 }
                 alt={
                   isFr
-                    ? "Photographie éditoriale d'un workshop Axion-IA : équipe, écran, tableau d'idéation."
-                    : "Editorial photograph of an Axion-IA workshop: team, screen, ideation board."
+                    ? "Infographie de la méthode Axion-IA en 5 étapes : cadrage, démonstration, plan chiffré, mise en production."
+                    : "Infographic of the Axion-IA 5-step method: scoping, demonstration, costed plan, go-live."
                 }
               />
             </div>
@@ -987,17 +989,18 @@ export default async function Home({ params }: HomeProps) {
           <div className="mx-auto max-w-5xl">
             <Illustration
               slot="HOME-03-team"
+              src="/images/axion-ia-automatisation-ia-benefices-concrets-mesurables-durables-banniere.avif"
               aspectRatio="16:9"
               filenameTarget="public/illustrations/home-team-intervention.avif"
               caption={
                 isFr
-                  ? "Intervention Axion-IA sur site client — démonstration et formation"
-                  : "On-site Axion-IA engagement — live demonstration and training"
+                  ? "Bénéfices concrets, mesurables et durables — automatisation IA Axion-IA"
+                  : "Concrete, measurable, lasting benefits — Axion-IA automation"
               }
               alt={
                 isFr
-                  ? "Intervention Axion-IA en entreprise : équipe et consultant autour d'un écran de démonstration IA."
-                  : "Axion-IA on-site engagement: team and consultant gathered around an AI demo screen."
+                  ? "Bannière éditoriale Axion-IA : bénéfices automatisation IA concrets, mesurables et durables."
+                  : "Editorial Axion-IA banner: concrete, measurable, lasting AI automation benefits."
               }
             />
           </div>
