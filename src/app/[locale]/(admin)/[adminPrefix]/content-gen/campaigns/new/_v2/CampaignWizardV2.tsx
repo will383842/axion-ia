@@ -17,12 +17,12 @@ import { toast } from "sonner";
 
 import { AdminBadge, AdminCard, AdminPageHeader, AdminPageShell } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
+import { createCampaignFromWizard } from "@/server/actions/content-gen/campaign-wizard";
 import {
-  createCampaignFromWizard,
   WIZARD_CONTENT_TYPES,
   WIZARD_SECTIONS,
   type WizardContentType,
-} from "@/server/actions/content-gen/campaign-wizard";
+} from "@/server/actions/content-gen/campaign-wizard-constants";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
