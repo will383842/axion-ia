@@ -50,7 +50,10 @@ function countWords(html: string): number {
   // Extrait le texte de <main> ou <article> si disponible, sinon <body>
   const mainMatch = html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i);
   const content = mainMatch?.[1] ?? html;
-  const text = content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const text = content
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   return text.split(" ").filter((w) => w.length > 0).length;
 }
 
@@ -60,7 +63,6 @@ function countJsonLd(html: string): number {
 }
 
 function countInternalLinks(html: string): number {
-  const domain = new URL(SITE_URL).hostname;
   const internalPattern = new RegExp(`href=["'](?:${SITE_URL}|/)[^"']*["']`, "gi");
   const matches = html.matchAll(internalPattern);
   return [...matches].length;
@@ -105,7 +107,12 @@ async function inspectRoute(siteRouteId: string, urlPath: string): Promise<void>
         where: { id: siteRouteId },
         data: {
           httpStatus,
-          status: httpStatus === 404 ? "not_found" : httpStatus >= 300 && httpStatus < 400 ? "redirect" : "error",
+          status:
+            httpStatus === 404
+              ? "not_found"
+              : httpStatus >= 300 && httpStatus < 400
+                ? "redirect"
+                : "error",
           lastInspectedAt: new Date(),
         },
       });
@@ -151,14 +158,16 @@ async function inspectRoute(siteRouteId: string, urlPath: string): Promise<void>
     });
   } catch (e) {
     // Timeout ou réseau : marque comme erreur sans cracher le worker
-    await prisma.siteRoute.update({
-      where: { id: siteRouteId },
-      data: {
-        httpStatus: null,
-        status: "error",
-        lastInspectedAt: new Date(),
-      },
-    }).catch(() => void 0);
+    await prisma.siteRoute
+      .update({
+        where: { id: siteRouteId },
+        data: {
+          httpStatus: null,
+          status: "error",
+          lastInspectedAt: new Date(),
+        },
+      })
+      .catch(() => void 0);
     console.warn(`[site-route-inspector] timeout/error for ${urlPath}:`, (e as Error).message);
   }
 }

@@ -39,7 +39,6 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
   const { anomalies, total } = await listAnomalies(filters);
   const backUrl = adminPath("fr", "site-explorer");
 
-  const SEVERITY_ORDER = ["high", "medium", "low"];
   const severityBadge = (severity: string) => {
     if (severity === "high") return "bg-red-100 text-red-700";
     if (severity === "medium") return "bg-orange-100 text-orange-700";
@@ -49,7 +48,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-3">
-        <a href={backUrl} className="text-blue-600 hover:underline text-sm">
+        <a href={backUrl} className="text-sm text-blue-600 hover:underline">
           ← Site Explorer
         </a>
         <span className="text-gray-300">/</span>
@@ -62,20 +61,26 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
           <a
             key={sev}
             href={`?severity=${sev}&resolved=false`}
-            className={`rounded-full px-3 py-1 text-xs font-medium border ${
+            className={`rounded-full border px-3 py-1 text-xs font-medium ${
               (sp.severity ?? "") === sev
-                ? "bg-gray-800 text-white border-gray-800"
+                ? "border-gray-800 bg-gray-800 text-white"
                 : "border-gray-300 hover:bg-gray-50"
             }`}
           >
-            {sev === "" ? "Toutes" : sev === "high" ? "🔴 High" : sev === "medium" ? "🟠 Medium" : "🟡 Low"}
+            {sev === ""
+              ? "Toutes"
+              : sev === "high"
+                ? "🔴 High"
+                : sev === "medium"
+                  ? "🟠 Medium"
+                  : "🟡 Low"}
           </a>
         ))}
         <a
           href="?resolved=true"
-          className={`rounded-full px-3 py-1 text-xs font-medium border ${
+          className={`rounded-full border px-3 py-1 text-xs font-medium ${
             sp.resolved === "true"
-              ? "bg-gray-800 text-white border-gray-800"
+              ? "border-gray-800 bg-gray-800 text-white"
               : "border-gray-300 hover:bg-gray-50"
           }`}
         >
@@ -83,11 +88,13 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
         </a>
       </div>
 
-      <div className="text-sm text-gray-500">{total.toLocaleString("fr-FR")} anomalie{total > 1 ? "s" : ""}</div>
+      <div className="text-sm text-gray-500">
+        {total.toLocaleString("fr-FR")} anomalie{total > 1 ? "s" : ""}
+      </div>
 
       {anomalies.length === 0 ? (
         <div className="rounded-lg border border-green-200 bg-green-50 py-8 text-center">
-          <p className="text-green-700 font-medium">🎉 Aucune anomalie active</p>
+          <p className="font-medium text-green-700">🎉 Aucune anomalie active</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -98,26 +105,30 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${severityBadge(a.severity)}`}>
+                  <span
+                    className={`rounded px-1.5 py-0.5 text-xs font-medium ${severityBadge(a.severity)}`}
+                  >
                     {a.severity}
                   </span>
-                  <span className="text-xs text-gray-500 font-mono">{a.type}</span>
+                  <span className="font-mono text-xs text-gray-500">{a.type}</span>
                 </div>
                 <p className="text-sm text-gray-800">{a.description}</p>
                 <a
-                  href={adminPath("fr", `site-explorer/${(a as { siteRoute?: { pathPattern: string } }).siteRoute ? "" : ""}`)}
-                  className="text-xs text-blue-600 hover:underline font-mono"
+                  href={adminPath(
+                    "fr",
+                    `site-explorer/${(a as { siteRoute?: { pathPattern: string } }).siteRoute ? "" : ""}`,
+                  )}
+                  className="font-mono text-xs text-blue-600 hover:underline"
                 >
                   {a.siteRoute.pathRendered ?? a.siteRoute.pathPattern}
                 </a>
                 <p className="text-xs text-gray-400">
                   Détectée : {new Date(a.detectedAt).toLocaleDateString("fr-FR")}
-                  {a.resolvedAt && ` — Résolue : ${new Date(a.resolvedAt).toLocaleDateString("fr-FR")}`}
+                  {a.resolvedAt &&
+                    ` — Résolue : ${new Date(a.resolvedAt).toLocaleDateString("fr-FR")}`}
                 </p>
               </div>
-              {!a.resolvedAt && (
-                <ResolveAnomalyButton anomalyId={a.id} />
-              )}
+              {!a.resolvedAt && <ResolveAnomalyButton anomalyId={a.id} />}
             </div>
           ))}
         </div>

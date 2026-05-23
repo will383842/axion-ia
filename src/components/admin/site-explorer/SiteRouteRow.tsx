@@ -9,10 +9,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 
 interface Props {
   route: SiteRouteListItem;
-  adminPrefix: string;
 }
 
-export function SiteRouteRow({ route, adminPrefix }: Props) {
+export function SiteRouteRow({ route }: Props) {
   const displayPath = route.pathRendered ?? route.pathPattern;
   const isResolvable = !displayPath.includes("[");
   const anomalyCount = route._count?.anomalies ?? 0;
@@ -30,17 +29,17 @@ export function SiteRouteRow({ route, adminPrefix }: Props) {
       <div className="min-w-0 flex-1">
         <Link
           href={adminPath("fr", `site-explorer/${route.id}`)}
-          className="font-mono text-xs text-blue-600 hover:underline truncate block"
+          className="block truncate font-mono text-xs text-blue-600 hover:underline"
         >
           {displayPath}
         </Link>
         {route.metaTitle && (
-          <p className="mt-0.5 text-xs text-gray-500 truncate">{route.metaTitle}</p>
+          <p className="mt-0.5 truncate text-xs text-gray-500">{route.metaTitle}</p>
         )}
       </div>
 
       {/* Badges */}
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex shrink-0 items-center gap-2">
         {route.section && (
           <span className="hidden rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600 md:inline">
             {route.section}
@@ -63,7 +62,7 @@ export function SiteRouteRow({ route, adminPrefix }: Props) {
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-1 shrink-0">
+      <div className="flex shrink-0 items-center gap-1">
         {isResolvable && (
           <a
             href={`${SITE_URL}${displayPath}`}

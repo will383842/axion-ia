@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { siteRouteInspectorQueue, siteRouteAnomalyDetectorQueue } from "@/server/queue/queues";
+import { siteRouteInspectorQueue } from "@/server/queue/queues";
 import type { SiteRouteType, SiteRouteStatus } from "../../../../prisma/generated/client";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────

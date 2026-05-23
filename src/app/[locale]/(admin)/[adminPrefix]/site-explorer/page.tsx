@@ -98,13 +98,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
       </Suspense>
 
       {/* Liste */}
-      <SiteExplorerList
-        routes={routes}
-        total={total}
-        page={page}
-        pageSize={pageSize}
-        adminPrefix={adminPrefix}
-      />
+      <SiteExplorerList routes={routes} total={total} page={page} pageSize={pageSize} />
     </div>
   );
 }

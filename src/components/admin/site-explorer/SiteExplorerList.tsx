@@ -10,10 +10,9 @@ interface Props {
   total: number;
   page: number;
   pageSize: number;
-  adminPrefix: string;
 }
 
-export function SiteExplorerList({ routes, total, page, pageSize, adminPrefix }: Props) {
+export function SiteExplorerList({ routes, total, page, pageSize }: Props) {
   const totalPages = Math.ceil(total / pageSize);
   const baseUrl = adminPath("fr", "site-explorer");
 
@@ -29,15 +28,19 @@ export function SiteExplorerList({ routes, total, page, pageSize, adminPrefix }:
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm text-gray-500">
-        <span>{total.toLocaleString("fr-FR")} URL{total > 1 ? "s" : ""} publique{total > 1 ? "s" : ""}</span>
+        <span>
+          {total.toLocaleString("fr-FR")} URL{total > 1 ? "s" : ""} publique{total > 1 ? "s" : ""}
+        </span>
         {totalPages > 1 && (
-          <span>Page {page} / {totalPages}</span>
+          <span>
+            Page {page} / {totalPages}
+          </span>
         )}
       </div>
 
       <div className="space-y-1">
         {routes.map((route) => (
-          <SiteRouteRow key={route.id} route={route} adminPrefix={adminPrefix} />
+          <SiteRouteRow key={route.id} route={route} />
         ))}
       </div>
 

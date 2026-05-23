@@ -181,10 +181,10 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
   try {
     if (input.metaDescription && input.metaDescription.length > 160)
       throw new Error("meta_description_length");
-  
+
     // Sanitize HTML pour éviter XSS persisté (même règle que content-publish-worker).
     const cleanBody = sanitizeContentGenHtml(input.body);
-  
+
     const article = await prisma.article.findUnique({
       where: { id: input.articleId },
       include: { translations: { where: { locale: "fr" }, take: 1 } },
@@ -192,7 +192,7 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
     if (!article) throw new Error("article_not_found");
     const t = article.translations[0];
     if (!t) throw new Error("translation_fr_not_found");
-  
+
     const newSlug = input.slug && input.slug.length > 0 ? input.slug : t.slug;
     const slugChanged = newSlug !== t.slug;
     await prisma.$transaction(async (tx) => {
@@ -224,7 +224,7 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
         data: { updatedAt: new Date() },
       });
     });
-  
+
     // Revalidate paths impactés + IndexNow ping si tier-1 indexable
     revalidatePath(`/fr/blog/${t.slug}`);
     if (slugChanged) revalidatePath(`/fr/blog/${newSlug}`);
@@ -234,7 +234,7 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
     }
     revalidatePath("/sitemap.xml");
     revalidatePath(`${adminBase()}/publications`);
-  
+
     if (article.status === "published" && article.indexationTier === "tier_1_indexable") {
       // Audit indexation 2026-05-15 P0-5/P0-6 — ping nouveau URL en `update` +
       // ancien URL en `delete` si rename (signal Google URL_DELETED → désindexe
@@ -265,9 +265,8 @@ export async function updateArticle(input: UpdateArticleInput): Promise<void> {
         bodyLen: cleanBody.length,
       },
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateArticle' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateArticle" } });
     throw e;
   }
 }
@@ -289,7 +288,7 @@ export async function demoteArticle(articleId: string): Promise<void> {
     if (article.indexationTier !== "tier_1_indexable") {
       throw new Error("article_not_tier_1");
     }
-  
+
     await prisma.article.update({
       where: { id: articleId },
       data: {
@@ -297,7 +296,7 @@ export async function demoteArticle(articleId: string): Promise<void> {
         promotedAt: null,
       },
     });
-  
+
     const t = article.translations[0];
     if (t) {
       revalidatePath(`/fr/blog/${t.slug}`);
@@ -316,9 +315,8 @@ export async function demoteArticle(articleId: string): Promise<void> {
       targetId: articleId,
       changes: { transition: "tier_1→tier_2" },
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'demoteArticle' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "demoteArticle" } });
     throw e;
   }
 }
@@ -338,7 +336,7 @@ export async function archiveArticle(articleId: string): Promise<void> {
     });
     if (!article) throw new Error("article_not_found");
     if (article.status === "archived") return; // idempotent
-  
+
     await prisma.article.update({
       where: { id: articleId },
       data: {
@@ -346,7 +344,7 @@ export async function archiveArticle(articleId: string): Promise<void> {
         indexationTier: "tier_3_noindex_nofollow", // archived → noindex+nofollow
       },
     });
-  
+
     const t = article.translations[0];
     if (t) {
       revalidatePath(`/fr/blog/${t.slug}`);
@@ -364,9 +362,8 @@ export async function archiveArticle(articleId: string): Promise<void> {
       targetId: articleId,
       changes: { transition: "published→archived+tier_3" },
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'archiveArticle' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "archiveArticle" } });
     throw e;
   }
 }
@@ -386,7 +383,7 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
     });
     if (!article) throw new Error("article_not_found");
     if (article.status !== "archived") throw new Error("article_not_archived");
-  
+
     await prisma.article.update({
       where: { id: articleId },
       data: {
@@ -394,7 +391,7 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
         indexationTier: "tier_2_noindex_follow", // restore en tier-2 par sécurité
       },
     });
-  
+
     const t = article.translations[0];
     if (t) {
       revalidatePath(`/fr/blog/${t.slug}`);
@@ -409,9 +406,8 @@ export async function unarchiveArticle(articleId: string): Promise<void> {
       targetId: articleId,
       changes: { transition: "archived→published+tier_2" },
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'unarchiveArticle' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "unarchiveArticle" } });
     throw e;
   }
 }
@@ -434,13 +430,13 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
       include: { translations: { where: { locale: "fr" }, take: 1 } },
     });
     if (!article) throw new Error("article_not_found");
-  
+
     // Cascade Prisma : ArticleTranslation supprimée (onDelete: Cascade).
     // FAQ.parentArticleId → SetNull (préserve les Q/R post-process).
     // ContentCitation.articleId → SetNull.
     // ContentGenJob.outputBlogPostId reste (audit trail).
     await prisma.article.delete({ where: { id: articleId } });
-  
+
     const t = article.translations[0];
     if (t) {
       revalidatePath(`/fr/blog/${t.slug}`);
@@ -459,9 +455,8 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
       targetId: articleId,
       changes: { destructive: true, isNews: article.isNews },
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'deleteArticle' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "deleteArticle" } });
     throw e;
   }
 }
@@ -489,7 +484,7 @@ export async function rollbackArticle(articleId: string): Promise<void> {
     });
     if (!article) throw new Error("article_not_found");
     if (article.status !== "published") throw new Error("article_not_published");
-  
+
     await prisma.article.update({
       where: { id: articleId },
       data: {
@@ -498,7 +493,7 @@ export async function rollbackArticle(articleId: string): Promise<void> {
         promotedAt: null,
       },
     });
-  
+
     const t = article.translations[0];
     if (t) {
       revalidatePath(`/fr/blog/${t.slug}`);
@@ -516,9 +511,8 @@ export async function rollbackArticle(articleId: string): Promise<void> {
       targetId: articleId,
       changes: { transition: "published→draft+tier_3" },
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'rollbackArticle' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "rollbackArticle" } });
     throw e;
   }
 }
@@ -557,16 +551,15 @@ export async function submitArticleFeedback(
   SubmitFeedbackInputSchema.parse(input);
 
   // Protection doublon : vérifie si un feedback existe déjà pour cet articleId + userId.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   try {
-    const existing = await (prisma as any).articleFeedback.findFirst({
+    const existing = await prisma.articleFeedback.findFirst({
       where: { articleId: input.articleId, userId: session.userId },
       select: { id: true },
     });
     if (existing) {
       throw new Error("feedback_already_submitted");
     }
-  
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (prisma as any).articleFeedback.create({
       data: {
@@ -576,7 +569,7 @@ export async function submitArticleFeedback(
         comment: input.comment ?? null,
       },
     });
-  
+
     await logActivity({
       session,
       action: "content-gen.article.feedback",
@@ -584,11 +577,10 @@ export async function submitArticleFeedback(
       targetId: input.articleId,
       changes: { type: input.type, hasComment: Boolean(input.comment) },
     });
-  
+
     return { created: true, message: "feedback_recorded" };
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'submitArticleFeedback' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "submitArticleFeedback" } });
     throw e;
   }
 }

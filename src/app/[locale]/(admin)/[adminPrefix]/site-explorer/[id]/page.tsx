@@ -3,7 +3,11 @@
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { getSiteRouteDetail, triggerInspection, resolveAnomaly } from "@/server/actions/site-explorer/site-routes";
+import {
+  getSiteRouteDetail,
+  triggerInspection,
+  resolveAnomaly,
+} from "@/server/actions/site-explorer/site-routes";
 import { SiteRouteStatusBadge } from "@/components/admin/site-explorer/SiteRouteStatusBadge";
 import { adminPath } from "@/lib/admin-path";
 
@@ -42,7 +46,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-3">
-        <a href={backUrl} className="text-blue-600 hover:underline text-sm">
+        <a href={backUrl} className="text-sm text-blue-600 hover:underline">
           ← Site Explorer
         </a>
         <span className="text-gray-300">/</span>
@@ -51,12 +55,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900 font-mono">
-            {displayPath}
-          </h1>
-          {route.metaTitle && (
-            <p className="mt-1 text-gray-600">{route.metaTitle}</p>
-          )}
+          <h1 className="font-mono text-xl font-bold text-gray-900">{displayPath}</h1>
+          {route.metaTitle && <p className="mt-1 text-gray-600">{route.metaTitle}</p>}
         </div>
         <div className="flex items-center gap-2">
           <SiteRouteStatusBadge status={route.status} httpStatus={route.httpStatus} />
@@ -104,7 +104,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Métadonnées */}
-        <section className="rounded-lg border border-gray-200 p-4 space-y-3">
+        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
           <h2 className="font-semibold text-gray-900">Métadonnées SEO</h2>
           <dl className="space-y-2 text-sm">
             <Row label="Type" value={route.type} />
@@ -118,7 +118,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Métriques contenu */}
-        <section className="rounded-lg border border-gray-200 p-4 space-y-3">
+        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
           <h2 className="font-semibold text-gray-900">Métriques contenu</h2>
           <dl className="space-y-2 text-sm">
             <Row label="Mots" value={route.wordCount?.toLocaleString("fr-FR") ?? "—"} />
@@ -128,22 +128,27 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             <Row
               label="AiDisclaimer"
               value={
-                route.hasAiDisclaimer === null ? "?" :
-                route.hasAiDisclaimer ? "✅ Présent" : "❌ Absent"
+                route.hasAiDisclaimer === null
+                  ? "?"
+                  : route.hasAiDisclaimer
+                    ? "✅ Présent"
+                    : "❌ Absent"
               }
             />
             <Row
               label="Dernière inspection"
-              value={route.lastInspectedAt
-                ? new Date(route.lastInspectedAt).toLocaleString("fr-FR")
-                : "Jamais"}
+              value={
+                route.lastInspectedAt
+                  ? new Date(route.lastInspectedAt).toLocaleString("fr-FR")
+                  : "Jamais"
+              }
             />
           </dl>
         </section>
 
         {/* Lighthouse */}
         {(route.lighthousePerf !== null || route.lighthouseSeo !== null) && (
-          <section className="rounded-lg border border-gray-200 p-4 space-y-3">
+          <section className="space-y-3 rounded-lg border border-gray-200 p-4">
             <h2 className="font-semibold text-gray-900">Lighthouse</h2>
             <div className="flex gap-4">
               {[
@@ -151,24 +156,25 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                 { label: "SEO", score: route.lighthouseSeo },
                 { label: "A11y", score: route.lighthouseA11y },
                 { label: "BP", score: route.lighthouseBP },
-              ].map(({ label, score }) => (
-                score !== null && (
-                  <div key={label} className="text-center">
-                    <div
-                      className={`text-2xl font-bold ${
-                        (score ?? 0) >= 90
-                          ? "text-green-600"
-                          : (score ?? 0) >= 70
-                            ? "text-orange-500"
-                            : "text-red-600"
-                      }`}
-                    >
-                      {score}
+              ].map(
+                ({ label, score }) =>
+                  score !== null && (
+                    <div key={label} className="text-center">
+                      <div
+                        className={`text-2xl font-bold ${
+                          (score ?? 0) >= 90
+                            ? "text-green-600"
+                            : (score ?? 0) >= 70
+                              ? "text-orange-500"
+                              : "text-red-600"
+                        }`}
+                      >
+                        {score}
+                      </div>
+                      <div className="text-xs text-gray-500">{label}</div>
                     </div>
-                    <div className="text-xs text-gray-500">{label}</div>
-                  </div>
-                )
-              ))}
+                  ),
+              )}
             </div>
             {route.lighthouseRunAt && (
               <p className="text-xs text-gray-400">
@@ -180,16 +186,14 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
         {/* Anomalies */}
         {route.anomalies.length > 0 && (
-          <section className="rounded-lg border border-red-200 bg-red-50 p-4 space-y-3">
-            <h2 className="font-semibold text-red-800">
-              ⚠️ Anomalies ({route.anomalies.length})
-            </h2>
+          <section className="space-y-3 rounded-lg border border-red-200 bg-red-50 p-4">
+            <h2 className="font-semibold text-red-800">⚠️ Anomalies ({route.anomalies.length})</h2>
             <ul className="space-y-2">
               {route.anomalies.map((a) => (
                 <li key={a.id} className="flex items-start justify-between gap-3">
                   <div>
                     <span
-                      className={`inline-flex rounded px-1.5 py-0.5 text-xs font-medium mr-1.5 ${
+                      className={`mr-1.5 inline-flex rounded px-1.5 py-0.5 text-xs font-medium ${
                         a.severity === "high"
                           ? "bg-red-100 text-red-700"
                           : a.severity === "medium"
@@ -201,7 +205,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                     </span>
                     <span className="text-sm text-red-800">{a.description}</span>
                   </div>
-                  <ResolveButton anomalyId={a.id} routeId={id} adminPrefix={adminPrefix} />
+                  <ResolveButton anomalyId={a.id} routeId={id} />
                 </li>
               ))}
             </ul>
@@ -223,15 +227,7 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
   );
 }
 
-function ResolveButton({
-  anomalyId,
-  routeId,
-  adminPrefix,
-}: {
-  anomalyId: string;
-  routeId: string;
-  adminPrefix: string;
-}) {
+function ResolveButton({ anomalyId, routeId }: { anomalyId: string; routeId: string }) {
   async function handleResolve() {
     "use server";
     await resolveAnomaly(anomalyId);
