@@ -21,13 +21,13 @@ export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
     <ul
       aria-label="Logos clients Axion-IA"
       className={cn(
-        "grid items-center justify-items-center gap-x-6 gap-y-7 sm:gap-x-8 sm:gap-y-8",
+        "grid items-center justify-items-center gap-x-3 gap-y-4 sm:gap-x-4 sm:gap-y-5",
         "grid-cols-4 sm:grid-cols-5",
         className,
       )}
     >
       {logos.map((logo) => (
-        <li key={logo.slug} className="flex h-14 w-full items-center justify-center">
+        <li key={logo.slug} className="flex h-16 w-full items-center justify-center sm:h-20">
           <Image
             src={logo.src}
             alt={`Logo ${logo.name} — client Axion-IA`}
@@ -35,7 +35,7 @@ export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
             height={logo.height ?? 60}
             loading="lazy"
             decoding="async"
-            className="max-h-9 max-w-[120px] object-contain opacity-75 transition-opacity duration-200 hover:opacity-100 sm:max-h-10 sm:max-w-[140px]"
+            className="max-h-12 max-w-[150px] object-contain opacity-75 transition-opacity duration-200 hover:opacity-100 sm:max-h-14 sm:max-w-[180px]"
             data-client={logo.slug}
           />
         </li>

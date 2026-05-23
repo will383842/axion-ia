@@ -378,9 +378,25 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {t("heroDescription")}
               </p>
-              {/* Polish v7 (Will 2026-05-23) : pas de CTA hero (les 5 cards services
-                  font office de CTA). Proof line minimale réintégrée. */}
-              <p className="text-fg-muted mt-8 text-sm leading-relaxed sm:text-base">
+              {/* Hero CTAs (2026-05-23 Will) : 2 boutons côte à côte
+                  — Primary : réserver un appel (calendrier interne /reserver, équivalent Calendly)
+                  — Secondary : formulaire de contact (/contact, réponse 24h) */}
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link
+                  href="/reserver"
+                  className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-fg border-border-strong hover:bg-paper cta-lift focus-visible:ring-fg inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Link>
+              </div>
+              <p className="text-fg-muted mt-6 text-sm leading-relaxed sm:text-base">
                 <span className="text-terracotta font-semibold">{t("heroProofLine")}</span>
               </p>
             </div>
@@ -480,7 +496,7 @@ export default async function Home({ params }: HomeProps) {
                       <div className="relative z-10 mt-auto flex flex-col gap-2">
                         <h3
                           className={cn(
-                            "text-lg leading-[1.1] font-bold tracking-tight sm:text-xl md:text-3xl lg:text-[1.95rem]",
+                            "text-xl leading-[1.05] font-bold tracking-tight sm:text-2xl md:text-[2.25rem] lg:text-[2.4rem]",
                             a.gainText,
                           )}
                         >
@@ -630,256 +646,273 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── CE QUI NOUS DISTINGUE — infographie complète ─────────────
-          Remplace les 4 atouts par 6 différenciateurs + équipe dédiée + capacités
-          modulables + 3 signaux de confiance + tagline. Reconstruction JSX
-          accessible/SEO d'une infographie image. */}
-      <section className="bg-halo-cool py-16 sm:py-20 lg:py-24">
+      {/* ─────────────── POURQUOI AXION-IA — design éditorial v2 ───────────────
+          Refonte from-scratch (Will 2026-05-23) : hiérarchie claire en 4 blocs
+          visuels distincts au lieu d'une infographie compacte surchargée.
+          1. Header (eyebrow + h2 + lead)
+          2. 6 différenciateurs en grid 3×2 éditoriale (numéros géants serif)
+          3. Modularité — 6 capacités en bandeau horizontal (sans répétition)
+          4. Trust signals + tagline finale */}
+      <section className="bg-halo-cool relative py-24 sm:py-28 lg:py-32">
         <Container>
+          {/* BLOC 1 — Header */}
           <FadeInOnView>
-            {/* En-tête conforme au reste de la page : eyebrow + h2 + description */}
-            <div className="mx-auto mb-12 max-w-3xl text-center">
+            <div className="mx-auto mb-20 max-w-3xl text-center sm:mb-24">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {isFr ? "Ce qui nous distingue" : "What sets us apart"}
               </p>
               <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {isFr ? "Six raisons concrètes de " : "Six concrete reasons to "}
+                {isFr ? "Six raisons concrètes" : "Six concrete reasons"}
+                <br />
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "nous choisir" : "choose us"}
+                  {isFr ? "de nous choisir" : "to choose us"}
                 </span>
                 .
               </h2>
               <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
                 {isFr
-                  ? "Chaque expertise peut être prise seule ou combinée — c'est vous qui choisissez selon vos besoins."
-                  : "Every expertise can be taken alone or combined — you choose based on your needs."}
+                  ? "Chaque expertise est autonome — combinable avec les autres ou prise seule. C'est vous qui choisissez selon vos besoins."
+                  : "Each expertise stands alone — combinable with the others or taken solo. You choose based on your needs."}
               </p>
             </div>
+          </FadeInOnView>
 
-            {/* 6 cartes différenciateurs */}
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              {(
-                [
-                  {
-                    num: "01",
-                    Icon: User,
-                    titleFr: "Zéro intermédiaire",
-                    titleEn: "Zero middleman",
-                    descFr:
-                      "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
-                    descEn: "Trainers, developers, implementers — all senior, all in-house.",
-                    accentFr: "De l'audit à la mise en prod.",
-                    accentEn: "From audit to production.",
-                  },
-                  {
-                    num: "02",
-                    Icon: InfinityIcon,
-                    titleFr: "De A à Z",
-                    titleEn: "End-to-end",
-                    descFr: "Formation, audit, 1-to-1, automatisation, plateforme IA.",
-                    descEn: "Training, audit, 1-to-1, automation, AI platform.",
-                    accentFr: "Un seul interlocuteur. Toute la chaîne.",
-                    accentEn: "One contact. The whole chain.",
-                  },
-                  {
-                    num: "03",
-                    Icon: MapPin,
-                    titleFr: "Partout en France",
-                    titleEn: "Across France",
-                    descFr: "Présence dans toutes les villes.",
-                    descEn: "Presence in every city.",
-                    accentFr:
-                      "En présentiel ou à distance — selon ce qui est le plus efficace pour vous.",
-                    accentEn: "On-site or remote — whichever works best for you.",
-                  },
-                  {
-                    num: "04",
-                    Icon: UserCheck,
-                    titleFr: "Vous parlez au senior",
-                    titleEn: "You talk to the senior",
-                    descFr: "Pas à un commercial. Pas à un junior.",
-                    descEn: "Not to sales. Not to a junior.",
-                    accentFr: "Directement à celui qui fait le travail.",
-                    accentEn: "Directly to the person doing the work.",
-                  },
-                  {
-                    num: "05",
-                    Icon: Star,
-                    titleFr: "Vous êtes au centre",
-                    titleEn: "You're at the center",
-                    descFr: "Votre projet, votre rythme, votre contexte.",
-                    descEn: "Your project, your pace, your context.",
-                    accentFr: "On s'adapte à vous — jamais l'inverse.",
-                    accentEn: "We adapt to you — never the reverse.",
-                  },
-                  {
-                    num: "06",
-                    Icon: Trophy,
-                    titleFr: "Exigence senior absolue",
-                    titleEn: "Strict senior standards",
-                    descFr: "Exigence maximale. Résultats mesurables.",
-                    descEn: "Maximum standards. Measurable results.",
-                    accentFr: "Le même niveau pour un artisan ou un grand groupe.",
-                    accentEn: "Same level for a craftsman or a large group.",
-                  },
-                ] as const
-              ).map((card) => (
-                <li
-                  key={card.num}
-                  className="bg-paper border-border flex flex-col gap-3 rounded-2xl border p-5"
-                >
-                  <div className="flex items-center justify-between">
+          {/* BLOC 2 — 6 différenciateurs en grid 3×2 (mobile : 1 col, tablet : 2 col) */}
+          <ul className="mb-24 grid gap-5 sm:mb-28 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {(
+              [
+                {
+                  num: "01",
+                  Icon: User,
+                  titleFr: "Zéro intermédiaire",
+                  titleEn: "Zero middleman",
+                  descFr:
+                    "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
+                  descEn: "Trainers, developers, implementers — all senior, all in-house.",
+                  accentFr: "De l'audit à la mise en prod.",
+                  accentEn: "From audit to production.",
+                },
+                {
+                  num: "02",
+                  Icon: InfinityIcon,
+                  titleFr: "De A à Z",
+                  titleEn: "End-to-end",
+                  descFr: "Formation, audit, 1-to-1, automatisation, plateforme IA.",
+                  descEn: "Training, audit, 1-to-1, automation, AI platform.",
+                  accentFr: "Un seul interlocuteur. Toute la chaîne.",
+                  accentEn: "One contact. The whole chain.",
+                },
+                {
+                  num: "03",
+                  Icon: MapPin,
+                  titleFr: "Partout en France",
+                  titleEn: "Across France",
+                  descFr: "Présence dans toutes les villes — métropole et outre-mer.",
+                  descEn: "Presence in every city — mainland and overseas.",
+                  accentFr: "En présentiel ou à distance — selon ce qui est le plus efficace.",
+                  accentEn: "On-site or remote — whichever is most effective.",
+                },
+                {
+                  num: "04",
+                  Icon: UserCheck,
+                  titleFr: "Vous parlez au senior",
+                  titleEn: "You talk to the senior",
+                  descFr: "Pas à un commercial. Pas à un junior.",
+                  descEn: "Not to sales. Not to a junior.",
+                  accentFr: "Directement à celui qui fait le travail.",
+                  accentEn: "Directly to the person doing the work.",
+                },
+                {
+                  num: "05",
+                  Icon: Star,
+                  titleFr: "Vous êtes au centre",
+                  titleEn: "You're at the center",
+                  descFr: "Votre projet, votre rythme, votre contexte.",
+                  descEn: "Your project, your pace, your context.",
+                  accentFr: "On s'adapte à vous — jamais l'inverse.",
+                  accentEn: "We adapt to you — never the reverse.",
+                },
+                {
+                  num: "06",
+                  Icon: Trophy,
+                  titleFr: "Exigence senior absolue",
+                  titleEn: "Strict senior standards",
+                  descFr: "Exigence maximale. Résultats mesurables.",
+                  descEn: "Maximum standards. Measurable results.",
+                  accentFr: "Le même niveau pour un artisan ou un grand groupe.",
+                  accentEn: "Same level for a craftsman or a large group.",
+                },
+              ] as const
+            ).map((card, idx) => (
+              <FadeInOnView key={card.num} delay={idx * 50}>
+                <li className="bg-paper border-border shadow-subtle hover:shadow-card relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl border p-7 transition sm:p-8">
+                  {/* Numéro géant en filigrane background */}
+                  <span
+                    aria-hidden="true"
+                    className="text-terracotta/8 pointer-events-none absolute -top-4 -right-2 text-[7rem] leading-none font-bold tabular-nums select-none sm:-top-6 sm:-right-4 sm:text-[9rem]"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {card.num}
+                  </span>
+                  {/* Icon + label numéro */}
+                  <div className="relative flex items-center gap-3">
+                    <span className="bg-terracotta text-paper inline-flex h-11 w-11 items-center justify-center rounded-full">
+                      <card.Icon className="h-5 w-5" aria-hidden="true" strokeWidth={2.5} />
+                    </span>
                     <span
-                      className="text-terracotta text-3xl font-bold tabular-nums"
+                      className="text-terracotta text-sm font-bold tracking-[0.18em] uppercase tabular-nums"
                       style={{ fontFamily: "var(--font-serif)" }}
-                      aria-hidden="true"
                     >
                       {card.num}
                     </span>
-                    <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-full">
-                      <card.Icon className="h-5 w-5" aria-hidden="true" />
-                    </span>
                   </div>
-                  <h3 className="text-fg text-base leading-tight font-bold">
+                  {/* Title */}
+                  <h3
+                    className="text-fg relative text-2xl leading-tight font-semibold tracking-tight sm:text-[1.75rem]"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
                     {isFr ? card.titleFr : card.titleEn}
                   </h3>
-                  <p className="text-fg-soft text-sm leading-relaxed">
+                  {/* Description */}
+                  <p className="text-fg-soft relative text-base leading-relaxed">
                     {isFr ? card.descFr : card.descEn}
                   </p>
-                  <p className="text-terracotta text-sm leading-relaxed font-medium">
-                    {isFr ? card.accentFr : card.accentEn}
-                  </p>
+                  {/* Accent line séparateur + texte italic terracotta */}
+                  <div className="border-terracotta/30 relative mt-auto flex items-start gap-3 border-t pt-4">
+                    <span
+                      className="bg-terracotta mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full"
+                      aria-hidden="true"
+                    />
+                    <p
+                      className="text-terracotta text-sm leading-relaxed italic"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {isFr ? card.accentFr : card.accentEn}
+                    </p>
+                  </div>
                 </li>
-              ))}
-            </ul>
+              </FadeInOnView>
+            ))}
+          </ul>
 
-            {/* Bandeau bas : équipe dédiée + 6 capacités modulables + 3 trust signals */}
-            <div className="bg-paper border-border mt-8 rounded-2xl border p-6 sm:p-8">
-              <div className="grid gap-8 lg:grid-cols-[1fr_2fr_1fr]">
-                {/* Équipe dédiée */}
-                <div>
-                  <p className="text-terracotta text-[11px] font-bold tracking-[0.15em] uppercase">
-                    {isFr ? "Une équipe dédiée à votre projet" : "A team dedicated to your project"}
-                  </p>
-                  <p className="text-fg-soft mt-3 text-sm leading-relaxed">
-                    {isFr
-                      ? "Experts seniors, complémentaires, alignés sur vos objectifs."
-                      : "Senior experts, complementary, aligned with your goals."}
-                  </p>
-                </div>
-
-                {/* 6 capacités combinables */}
-                <div className="border-border lg:border-x lg:px-8">
-                  <ul className="flex flex-wrap items-start justify-center gap-x-3 gap-y-4 sm:gap-x-4">
-                    {(
-                      [
-                        { Icon: Search, fr: "Audit", en: "Audit" },
-                        { Icon: GraduationCap, fr: "Formation", en: "Training" },
-                        { Icon: User, fr: "1-to-1", en: "1-to-1" },
-                        { Icon: Cog, fr: "Automatisation", en: "Automation" },
-                        { Icon: Brain, fr: "Plateforme IA", en: "AI Platform" },
-                        { Icon: Rocket, fr: "Mise en prod", en: "Go-live" },
-                      ] as const
-                    ).map((cap, idx) => (
-                      <li key={cap.fr} className="flex items-center gap-2">
-                        <div className="flex flex-col items-center gap-1.5 text-center">
-                          <span className="text-terracotta inline-flex h-9 w-9 items-center justify-center">
-                            <cap.Icon className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                          <span className="text-fg text-xs font-bold tracking-tight uppercase">
-                            {isFr ? cap.fr : cap.en}
-                          </span>
-                          <span className="text-fg-muted text-[10px] leading-tight">
-                            {isFr ? "Peut être prise seule" : "Can be taken alone"}
-                          </span>
-                        </div>
-                        {idx < 5 ? (
-                          <Plus
-                            className="text-terracotta/40 mx-1 h-4 w-4 shrink-0"
-                            aria-hidden="true"
-                          />
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-terracotta mt-5 text-center text-xs font-bold tracking-[0.12em] uppercase">
-                    {isFr
-                      ? "Prise seule ou combinée, selon vos objectifs."
-                      : "Standalone or combined, based on your goals."}
-                  </p>
-                  <p className="text-fg-muted mt-1 text-center text-xs">
-                    {isFr ? "À votre choix." : "Your choice."}
-                  </p>
-                </div>
-
-                {/* 3 trust signals */}
-                <ul className="flex flex-col gap-4">
-                  {(
-                    [
-                      {
-                        Icon: Shield,
-                        titleFr: "Sécurité & confidentialité",
-                        titleEn: "Security & confidentiality",
-                        descFr:
-                          "Vos données sont protégées. Votre confidentialité est notre priorité.",
-                        descEn: "Your data is protected. Confidentiality is our priority.",
-                      },
-                      {
-                        Icon: TrendingUp,
-                        titleFr: "Résultats mesurables",
-                        titleEn: "Measurable results",
-                        descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
-                        descEn: "Clear goals, precise indicators, concrete impact.",
-                      },
-                      {
-                        Icon: Clock,
-                        titleFr: "Accompagnement dans la durée",
-                        titleEn: "Long-term support",
-                        descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
-                        descEn: "A reliable partner at every stage of your growth.",
-                      },
-                    ] as const
-                  ).map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <span className="text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center">
-                        <item.Icon className="h-5 w-5" aria-hidden="true" />
+          {/* BLOC 3 — Modularité : titre centré + 6 capacités en bandeau horizontal */}
+          <FadeInOnView>
+            <div className="mx-auto max-w-5xl">
+              <div className="mb-10 text-center">
+                <p className="text-fg-muted mb-3 text-[12px] font-medium tracking-[0.16em] uppercase">
+                  {isFr ? "Modulaire par design" : "Modular by design"}
+                </p>
+                <h3
+                  className="text-fg text-[clamp(1.5rem,3vw,2.25rem)] leading-tight font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "Six expertises. " : "Six expertises. "}
+                  <span className="text-terracotta italic">
+                    {isFr ? "Indépendantes ou combinées." : "Independent or combined."}
+                  </span>
+                </h3>
+              </div>
+              {/* Bandeau capacités : 6 pills + connecteurs */}
+              <ul className="bg-paper border-border flex flex-wrap items-center justify-center gap-2 rounded-2xl border p-6 sm:gap-3 sm:p-8">
+                {(
+                  [
+                    { Icon: Search, fr: "Audit", en: "Audit" },
+                    { Icon: GraduationCap, fr: "Formation", en: "Training" },
+                    { Icon: User, fr: "1-to-1", en: "1-to-1" },
+                    { Icon: Cog, fr: "Automatisation", en: "Automation" },
+                    { Icon: Brain, fr: "Plateforme IA", en: "AI Platform" },
+                    { Icon: Rocket, fr: "Mise en prod", en: "Go-live" },
+                  ] as const
+                ).map((cap, idx) => (
+                  <li key={cap.fr} className="flex items-center gap-2 sm:gap-3">
+                    <div className="bg-bg border-border flex flex-col items-center gap-2 rounded-xl border px-4 py-3 sm:px-5 sm:py-4">
+                      <span className="text-terracotta inline-flex items-center justify-center">
+                        <cap.Icon
+                          className="h-5 w-5 sm:h-6 sm:w-6"
+                          aria-hidden="true"
+                          strokeWidth={2}
+                        />
                       </span>
-                      <div>
-                        <p className="text-terracotta text-[12px] font-bold tracking-tight">
-                          {isFr ? item.titleFr : item.titleEn}
-                        </p>
-                        <p className="text-fg-soft text-xs leading-relaxed">
-                          {isFr ? item.descFr : item.descEn}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                      <span className="text-fg text-[11px] font-bold tracking-tight uppercase sm:text-xs">
+                        {isFr ? cap.fr : cap.en}
+                      </span>
+                    </div>
+                    {idx < 5 ? (
+                      <Plus
+                        className="text-terracotta/50 h-3 w-3 shrink-0 sm:h-4 sm:w-4"
+                        aria-hidden="true"
+                        strokeWidth={3}
+                      />
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+              {/* Bandeau conclusion terracotta */}
+              <div className="bg-terracotta mt-6 rounded-xl px-6 py-4 text-center">
+                <p className="text-paper text-sm font-bold tracking-[0.12em] uppercase sm:text-base">
+                  {isFr
+                    ? "Combinées ou indépendantes : c'est vous qui décidez."
+                    : "Combined or independent: you decide."}
+                </p>
               </div>
             </div>
+          </FadeInOnView>
 
-            {/* Bandeau de conclusion terracotta */}
-            <div className="bg-terracotta mt-6 rounded-xl py-4 text-center">
-              <p className="text-paper text-sm font-bold tracking-[0.12em] uppercase sm:text-base">
-                {isFr
-                  ? "Combinées ou indépendantes : c'est vous qui décidez."
-                  : "Combined or independent: you decide."}
-              </p>
+          {/* BLOC 4 — Trust signals (3 colonnes inline) + tagline finale */}
+          <FadeInOnView>
+            <div className="border-border mt-20 grid gap-8 border-t pt-12 sm:mt-24 sm:grid-cols-3 sm:gap-10">
+              {(
+                [
+                  {
+                    Icon: Shield,
+                    titleFr: "Sécurité & confidentialité",
+                    titleEn: "Security & confidentiality",
+                    descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
+                    descEn: "Your data is protected. Confidentiality is our priority.",
+                  },
+                  {
+                    Icon: TrendingUp,
+                    titleFr: "Résultats mesurables",
+                    titleEn: "Measurable results",
+                    descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
+                    descEn: "Clear goals, precise indicators, concrete impact.",
+                  },
+                  {
+                    Icon: Clock,
+                    titleFr: "Accompagnement dans la durée",
+                    titleEn: "Long-term support",
+                    descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
+                    descEn: "A reliable partner at every stage of your growth.",
+                  },
+                ] as const
+              ).map((item, idx) => (
+                <div key={idx} className="flex flex-col gap-3 text-center sm:text-left">
+                  <span className="text-terracotta inline-flex h-10 w-10 items-center justify-center self-center sm:self-start">
+                    <item.Icon className="h-6 w-6" aria-hidden="true" strokeWidth={2} />
+                  </span>
+                  <h4 className="text-fg text-base font-bold tracking-tight">
+                    {isFr ? item.titleFr : item.titleEn}
+                  </h4>
+                  <p className="text-fg-soft text-sm leading-relaxed">
+                    {isFr ? item.descFr : item.descEn}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            {/* Tagline finale */}
+            {/* Tagline finale — pleine largeur centrée, serif italic */}
             <p
-              className="text-fg-muted mt-8 text-center text-base sm:text-lg"
+              className="text-fg-muted mx-auto mt-16 max-w-3xl text-center text-lg leading-relaxed sm:mt-20 sm:text-xl"
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {isFr
                 ? "Une vision. Une équipe. Une méthode. Un seul objectif : "
                 : "One vision. One team. One method. One goal: "}
-              <span className="text-fg font-semibold">
+              <span className="text-terracotta font-semibold italic">
                 {isFr ? "votre réussite." : "your success."}
               </span>
             </p>
