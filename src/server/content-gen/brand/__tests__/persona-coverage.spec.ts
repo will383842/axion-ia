@@ -26,6 +26,10 @@ import {
 } from "../brand-voice";
 
 const GENERATORS_DIR = resolve(__dirname, "..", "..", "generators");
+// Sprint v7 Phase 5 commit 1 — landing-ville.ts est devenu un dispatcher qui
+// route vers 5 generators verticaux. Le pipeline réel (KB retrieve + LLM +
+// brand-voice injection + quality checks) vit dans landing-ville-shared.ts ;
+// c'est donc ce fichier qui doit injecter la persona Manon, pas le dispatcher.
 const GENERATOR_FILES = [
   "blog-article.ts",
   "blog-from-keywords.ts",
@@ -34,7 +38,7 @@ const GENERATOR_FILES = [
   "comparison.ts",
   "faq-standalone.ts",
   "guide-pilier.ts",
-  "landing-ville.ts",
+  "landing-ville-shared.ts",
   "qa-derived.ts",
 ] as const;
 
