@@ -110,7 +110,7 @@ export default async function Home({ params }: HomeProps) {
       action: t("value1Action"),
       headline: t("value1Headline"),
       price: t("value1Price", { price: interventionEntryPrice }),
-      bullets: [t("value1Bullet1"), t("value1Bullet2"), t("value1Bullet3")],
+      bullets: [t("value1Bullet1")],
       gain: t("value1Gain"),
       href: "/interventions" as const,
     },
@@ -121,7 +121,7 @@ export default async function Home({ params }: HomeProps) {
       action: t("value2Action"),
       headline: t("value2Headline"),
       price: t("value2Price", { priceRange: auditRange }),
-      bullets: [t("value2Bullet1"), t("value2Bullet2"), t("value2Bullet3")],
+      bullets: [t("value2Bullet1")],
       gain: t("value2Gain"),
       href: "/audit" as const,
     },
@@ -132,7 +132,7 @@ export default async function Home({ params }: HomeProps) {
       action: t("value4Action"),
       headline: t("value4Headline"),
       price: t("value4Price", { price: unAUnEntryPrice }),
-      bullets: [t("value4Bullet1"), t("value4Bullet2"), t("value4Bullet3")],
+      bullets: [t("value4Bullet1")],
       gain: t("value4Gain"),
       href: "/un-a-un" as const,
     },
@@ -143,7 +143,7 @@ export default async function Home({ params }: HomeProps) {
       action: t("value3Action"),
       headline: t("value3Headline"),
       price: t("value3Price", { price: implEntryPrice }),
-      bullets: [t("value3Bullet1"), t("value3Bullet2"), t("value3Bullet3")],
+      bullets: [t("value3Bullet1")],
       gain: t("value3Gain"),
       href: "/implementation" as const,
     },
@@ -673,29 +673,52 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ WHY YOU CAN ONLY WIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ───────────── ÉQUIPE (photo + 4 atouts courts) ─────────────
+          Section visage humain — photo équipe pleine largeur + 4 atouts
+          synthétiques en ligne. Remplace l'ancienne section « Why »
+          (4 paragraphes longs) par un mix visuel + texte minimal. */}
       <section className="bg-halo-cool py-20 sm:py-24 lg:py-28">
         <Container>
-          <FadeInOnView>
-            <p className="text-fg-muted mb-10 text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-              {t("valueWhyEyebrow")}
-            </p>
-            <ul className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
-              {whyPoints.map((point, idx) => (
-                <li key={idx} className="text-fg flex items-start gap-4">
-                  <span
-                    className="text-terracotta text-2xl font-medium tabular-nums"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                    aria-hidden="true"
-                  >
-                    0{idx + 1}
-                  </span>
-                  <span className="text-base leading-relaxed sm:text-lg">{point}</span>
-                </li>
-              ))}
-            </ul>
-          </FadeInOnView>
+          <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-16">
+            <FadeInOnView>
+              <Illustration
+                slot="HOME-04-team"
+                src="/images/axion-ia-equipe-ia-service-humain-12-personnes-photo-groupe.avif"
+                aspectRatio="4:5"
+                filenameTarget="public/illustrations/home-equipe.avif"
+                caption={
+                  isFr
+                    ? "L'équipe Axion-IA — l'IA au service de l'humain"
+                    : "The Axion-IA team — AI at the service of humans"
+                }
+                alt={
+                  isFr
+                    ? "Photo de l'équipe Axion-IA — cabinet IA opérationnel, l'IA au service de l'humain."
+                    : "Photo of the Axion-IA team — operational AI consultancy, AI at the service of humans."
+                }
+              />
+            </FadeInOnView>
+            <FadeInOnView delay={120}>
+              <p className="text-fg-muted mb-6 text-[13px] font-semibold tracking-[0.18em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {t("valueWhyEyebrow")}
+              </p>
+              <ul className="grid gap-5">
+                {whyPoints.map((point, idx) => (
+                  <li key={idx} className="text-fg flex items-start gap-4">
+                    <span
+                      className="text-terracotta shrink-0 text-2xl font-medium tabular-nums"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                      aria-hidden="true"
+                    >
+                      0{idx + 1}
+                    </span>
+                    <span className="text-base leading-snug sm:text-lg">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </FadeInOnView>
+          </div>
         </Container>
       </section>
 
