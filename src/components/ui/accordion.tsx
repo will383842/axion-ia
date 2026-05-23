@@ -55,7 +55,9 @@ export const AccordionContent = React.forwardRef<
       className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden text-base text-fg-soft"
       {...rest}
     >
-      <div className={cn("pb-4 pt-0", className)}>{children}</div>
+      <div className={cn("pb-4 pt-0", className)} data-faq-a itemProp="text">
+        {children}
+      </div>
     </AccordionPrimitive.Content>
   );
 });

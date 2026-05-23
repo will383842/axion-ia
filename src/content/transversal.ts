@@ -125,6 +125,58 @@ export interface FaqEntry {
 
 export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
+    id: "geo-paris",
+    fr: {
+      question: "Réalisez-vous des audits IA à Paris et en Île-de-France ?",
+      answer:
+        "Oui. Notre siège est à Paris et nous intervenons dans toute l'Île-de-France (75, 92, 93, 94, 77, 78, 91, 95) en présentiel ou à distance. Délai de premier rendez-vous : 5 jours ouvrés.",
+    },
+    en: {
+      question: "Do you provide AI audits in Paris and Île-de-France?",
+      answer:
+        "Yes. Our office is in Paris and we operate across the whole Île-de-France region (75, 92, 93, 94, 77, 78, 91, 95) on-site or remote. First meeting within 5 working days.",
+    },
+  },
+  {
+    id: "geo-metropoles",
+    fr: {
+      question: "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux) ?",
+      answer:
+        "Oui. Nous nous déplaçons régulièrement à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice. Frais de déplacement inclus pour les capitales régionales.",
+    },
+    en: {
+      question: "Do you work in regional cities (Lyon, Marseille, Toulouse, Bordeaux)?",
+      answer:
+        "Yes. We regularly travel to Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice. Travel costs included for regional capitals.",
+    },
+  },
+  {
+    id: "geo-province",
+    fr: {
+      question: "Et en province ou en zone rurale, pour les TPE et PME ?",
+      answer:
+        "Absolument. Nous accompagnons artisans, commerçants, PME et ETI partout en France métropolitaine. Le mode distance est souvent plus efficace pour ces formats, sans perdre en qualité d'accompagnement.",
+    },
+    en: {
+      question: "What about smaller towns or rural areas, for SMEs?",
+      answer:
+        "Absolutely. We support craftsmen, retailers, SMEs and mid-cap companies across mainland France. Remote mode is often more effective for these formats, without losing quality of support.",
+    },
+  },
+  {
+    id: "geo-distance",
+    fr: {
+      question: "Pouvez-vous réaliser l'audit ou la formation à distance ?",
+      answer:
+        "Oui, intégralement à distance si vous préférez. Visio sécurisée, partage d'écran chiffré, livrables transmis sous 48h. Nous proposons aussi un format hybride (1 jour sur site + suite à distance).",
+    },
+    en: {
+      question: "Can the audit or training be delivered fully remote?",
+      answer:
+        "Yes, fully remote if you prefer. Secure video calls, encrypted screen sharing, deliverables within 48h. We also offer a hybrid format (1 day on-site + remote follow-up).",
+    },
+  },
+  {
     id: "definition",
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",

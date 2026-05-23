@@ -3,7 +3,26 @@ import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, TrendingUp, Target, Lightbulb, Star } from "lucide-react";
+import {
+  ArrowRight,
+  TrendingUp,
+  Target,
+  Lightbulb,
+  Star,
+  User,
+  Infinity as InfinityIcon,
+  MapPin,
+  UserCheck,
+  Trophy,
+  Search,
+  GraduationCap,
+  Cog,
+  Brain,
+  Rocket,
+  Shield,
+  Clock,
+  Plus,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
@@ -21,16 +40,19 @@ import {
   getEntryPriceEur,
   getTierById,
 } from "@/content/pricing";
-import { buildProductMetadata, buildFaqSpeakableJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildFaqSpeakableJsonLd,
+  buildLocalBusinessJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { Illustration } from "@/components/visual/Illustration";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
-import { ComparisonTable, type ComparisonRow } from "@/components/home/ComparisonTable";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
-import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import {
   Accordion,
   AccordionItem,
@@ -57,8 +79,8 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     locale,
     path: "/",
     title: isFr
-      ? "Formation IA · Audit · Coaching & Implémentation · Axion-IA"
-      : "AI Training & Audit · Coaching & Implementation · Axion-IA",
+      ? "Cabinet IA Paris · Formations · Audits · Axion-IA"
+      : "AI Consultancy Paris · Training · Audits · Axion-IA",
     description: isFr
       ? `Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
       : `On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
@@ -161,7 +183,42 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  const whyPoints = [t("valueWhy1"), t("valueWhy2"), t("valueWhy3"), t("valueWhy4")];
+  const accentClasses = {
+    terracotta: {
+      iconBg: "bg-terracotta-deep",
+      iconFg: "text-terracotta",
+      number: "text-terracotta-soft/40",
+      headline: "text-terracotta-soft",
+      hoverBorder: "hover:border-terracotta",
+      bulletIcon: "text-terracotta-soft",
+      gainBg: "bg-terracotta",
+      gainText: "text-paper",
+      ringHalo: "before:bg-terracotta/20",
+    },
+    primary: {
+      iconBg: "bg-primary",
+      iconFg: "text-primary",
+      number: "text-primary-soft/40",
+      headline: "text-primary-soft",
+      hoverBorder: "hover:border-primary",
+      bulletIcon: "text-primary-soft",
+      gainBg: "bg-primary",
+      gainText: "text-paper",
+      ringHalo: "before:bg-primary/20",
+    },
+    sage: {
+      iconBg: "bg-sage",
+      iconFg: "text-sage",
+      number: "text-sage-soft/50",
+      headline: "text-sage-soft",
+      hoverBorder: "hover:border-sage",
+      bulletIcon: "text-sage-soft",
+      gainBg: "bg-sage",
+      gainText: "text-paper",
+      ringHalo: "before:bg-sage/20",
+    },
+  } as const;
+
 
   // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
   const audienceSegments = [
@@ -192,78 +249,6 @@ export default async function Home({ params }: HomeProps) {
   ];
 
   // ─── Comparatif Axion vs alternatives — Blueprint Section 9 ───
-  // Source unique de vérité côté i18n : tous les labels et valeurs viennent
-  // de messages/{fr,en}.json (clés comparisonRow1Label..6Label + 4 valeurs).
-  const comparisonRows: ComparisonRow[] = [
-    {
-      label: t("comparisonRow1Label"),
-      axion: t("comparisonRow1Axion"),
-      freelance: t("comparisonRow1Freelance"),
-      cabinet: t("comparisonRow1Cabinet"),
-      training: t("comparisonRow1Training"),
-    },
-    {
-      label: t("comparisonRow2Label"),
-      axion: t("comparisonRow2Axion"),
-      freelance: t("comparisonRow2Freelance"),
-      cabinet: t("comparisonRow2Cabinet"),
-      training: t("comparisonRow2Training"),
-    },
-    {
-      label: t("comparisonRow3Label"),
-      axion: t("comparisonRow3Axion"),
-      freelance: t("comparisonRow3Freelance"),
-      cabinet: t("comparisonRow3Cabinet"),
-      training: t("comparisonRow3Training"),
-    },
-    {
-      label: t("comparisonRow4Label"),
-      axion: t("comparisonRow4Axion"),
-      freelance: t("comparisonRow4Freelance"),
-      cabinet: t("comparisonRow4Cabinet"),
-      training: t("comparisonRow4Training"),
-    },
-    {
-      label: t("comparisonRow5Label"),
-      axion: t("comparisonRow5Axion"),
-      freelance: t("comparisonRow5Freelance"),
-      cabinet: t("comparisonRow5Cabinet"),
-      training: t("comparisonRow5Training"),
-    },
-    {
-      label: t("comparisonRow6Label"),
-      axion: t("comparisonRow6Axion"),
-      freelance: t("comparisonRow6Freelance"),
-      cabinet: t("comparisonRow6Cabinet"),
-      training: t("comparisonRow6Training"),
-    },
-  ];
-  const comparisonCols = {
-    axion: t("comparisonColAxion"),
-    freelance: t("comparisonColFreelance"),
-    cabinet: t("comparisonColCabinet"),
-    training: t("comparisonColTraining"),
-  };
-
-  // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
-  // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
-  // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
-  const featuredSlugs = [
-    "tpe-artisan-prospection",
-    "industrie-comptabilite",
-    "banque-onboarding",
-  ] as const;
-  const featuredCases = featuredSlugs
-    .map((slug) => CASE_STUDIES.find((c) => c.slug === slug))
-    .filter((c): c is (typeof CASE_STUDIES)[number] => c !== undefined)
-    .map((c) => ({
-      slug: c.slug,
-      industry: isFr ? c.industry : c.industryEn,
-      metric: c.metric,
-      title: c[loc].title,
-      excerpt: c[loc].excerpt,
-    }));
-
   // FAQ.
   const faqs = FAQ_GLOBAL.map((f) => ({
     id: f.id,
@@ -277,6 +262,19 @@ export default async function Home({ params }: HomeProps) {
   // "double Organization" ambigu). Le FAQ utilise `buildFaqSpeakableJsonLd`
   // pour activer la voix (Google Assistant + Alexa + Bixby — AEO 2026).
   const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqs });
+
+  // LocalBusiness JSON-LD — Service Area Business safe mode.
+  // Pas d'adresse/geo/openingHours sur la home (juste areaServed France).
+  // Les vrais champs (adresse Paris) iront sur /a-propos quand prêts.
+  const localBusinessJsonLd = buildLocalBusinessJsonLd({
+    locale: loc,
+    path: "/",
+    name: isFr ? "Axion-IA — Cabinet IA opérationnel" : "Axion-IA — Operational AI Consultancy",
+    description: isFr
+      ? "Cabinet IA français : formations, audits, accompagnement 1-to-1, implémentations d'automatisations, plateformes web augmentées IA. Présent partout en France métropolitaine."
+      : "French AI consultancy: training, audits, 1-to-1 coaching, automation implementation, AI-augmented web platforms. Present across mainland France.",
+    areaServed: { type: "AdministrativeArea", name: isFr ? "France" : "France" },
+  });
 
   // ─── JSON-LD additionnels Blueprint §22 ───
   // 1) Service x5 — un objet @type Service par card du tableau valuePropositions
@@ -430,262 +428,90 @@ export default async function Home({ params }: HomeProps) {
       <section className="bg-paper relative py-20 sm:py-24 lg:py-28">
         <Container>
           <FadeInOnView>
-            <div className="mx-auto mb-20 max-w-4xl text-center">
+            <div className="mx-auto mb-14 max-w-5xl text-center">
               <p className="text-terracotta mb-5 text-sm font-bold tracking-[0.2em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-2 w-2 rounded-full align-middle" />
-                {isFr ? "Nos interventions" : "Our services"}
+                {t("valueEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight">
-                {isFr ? "Pourquoi vous ne pouvez" : "Why you can only"}
-                <br />
+              <h2 className="text-fg text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-tight">
+                {t("valueTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "que gagner" : "win"}
+                  {t("valueTitleEm")}
                 </span>
+                {t("valueTitlePart2")}
               </h2>
-              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
-                {isFr
-                  ? "Chaque type d'intervention produit un gain mesurable — en heures, en process, en chiffre d'affaires."
-                  : "Every type of engagement produces a measurable gain — in hours, processes, revenue."}
+              <p className="text-fg-soft mx-auto mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl">
+                {t("valueDescription")}
               </p>
             </div>
           </FadeInOnView>
 
-          {/* 5 cartes en 1 ligne sur desktop (lg+), 2 col tablet, 1 col mobile.
-              Cartes compactes, ULTRA contrastées : background accent-soft +
-              numéro géant outline serif + action bold + headline lead.
-              Pas de prix (visible sur la page service détail). */}
-          {/* 5 cartes en couleur PLEINE — punch maximal. Numéro géant en
-              filigrane (background décoratif), icône paper-circle accent en
-              haut, h3 + headline en bas. Aspect 3:4 vertical strict, 5 col
-              toujours, grid responsive 320→1280+. */}
-          <div className="flex flex-col gap-16 sm:gap-20 lg:gap-24">
-            {(
-              [
-                {
-                  num: "01",
-                  emoji: "🎓",
-                  accent: "terracotta",
-                  service: isFr ? "Formations" : "Training",
-                  headlineFr: "Vos salariés appliquent dès le lendemain",
-                  headlineEn: "Your team applies from day one",
-                  descFr:
-                    "On part de leurs outils, leurs tâches, leur métier. Pas de slides théoriques — chaque participant repart avec des automatisations qu'il active le lendemain matin.",
-                  descEn:
-                    "We start from their tools, their tasks, their work. No theoretical slides — every participant leaves with automations they activate the next morning.",
-                  bulletsFr: [
-                    "Gain de temps immédiat sur les tâches répétitives",
-                    "Compétences ancrées dans leur réalité, pas dans un manuel",
-                    "Toute l'équipe monte en niveau en même temps",
-                    "Applicable dès le lendemain matin",
-                  ],
-                  bulletsEn: [
-                    "Immediate time savings on repetitive tasks",
-                    "Skills rooted in their reality, not in a manual",
-                    "The whole team levels up at the same time",
-                    "Applicable from the next morning",
-                  ],
-                  href: "/interventions" as const,
-                },
-                {
-                  num: "02",
-                  emoji: "🔍",
-                  accent: "sage",
-                  service: isFr ? "Audits" : "Audits",
-                  headlineFr: "On trouve exactement ce qui vous coûte du temps et de l'argent",
-                  headlineEn: "We find exactly what's costing you time and money",
-                  descFr:
-                    "Analyse de vos process, outils, flux. Vous repartez avec les 5 actions prioritaires classées par impact — pas un rapport de 80 pages à mettre dans un tiroir.",
-                  descEn:
-                    "Analysis of your processes, tools, flows. You leave with the 5 priority actions ranked by impact — not an 80-page report to file away.",
-                  bulletsFr: [
-                    "Gains potentiels identifiés et chiffrés",
-                    "Feuille de route claire, priorisée, actionnable",
-                    "Zéro jargon — vous savez exactement quoi faire ensuite",
-                    "Rapport livré — pas une présentation floue",
-                  ],
-                  bulletsEn: [
-                    "Potential gains identified and quantified",
-                    "Clear, prioritized, actionable roadmap",
-                    "Zero jargon — you know exactly what to do next",
-                    "Delivered report — not a fuzzy slideshow",
-                  ],
-                  href: "/audit" as const,
-                },
-                {
-                  num: "03",
-                  emoji: "🧑‍💼",
-                  accent: "primary",
-                  service: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching",
-                  headlineFr: "On ouvre votre poste ensemble — et on récupère vos heures perdues",
-                  headlineEn: "We open your workstation together — and reclaim your lost hours",
-                  descFr:
-                    "Dirigeant ou collaborateur : on analyse vos vrais outils, vos vraies tâches. Ce qui peut être automatisé l'est. Ce qui peut être supprimé disparaît. Résultat : plusieurs heures récupérées chaque jour.",
-                  descEn:
-                    "Executive or employee: we analyze your real tools, your real tasks. What can be automated is. What can be removed disappears. Result: several hours reclaimed every day.",
-                  bulletsFr: [
-                    "Travail sur votre cas réel, pas un exemple générique",
-                    "Automatisations actives à la fin de la session",
-                    "ROI visible dès le lendemain",
-                    "1 session = plusieurs heures/jour récupérées",
-                  ],
-                  bulletsEn: [
-                    "Work on your real case, not a generic example",
-                    "Live automations by the end of the session",
-                    "ROI visible the next day",
-                    "1 session = several hours/day reclaimed",
-                  ],
-                  href: "/un-a-un" as const,
-                },
-                {
-                  num: "04",
-                  emoji: "⚙️",
-                  accent: "terracotta",
-                  service: isFr ? "Implémentation d'automatisations" : "Automation implementation",
-                  headlineFr: "On branche. Ça tourne. Vous récupérez des heures — chaque jour",
-                  headlineEn: "We plug in. It runs. You reclaim hours — every day",
-                  descFr:
-                    "On construit et déploie vos automatisations sur mesure. Dès la mise en production, ce sont des tâches qui disparaissent de votre quotidien — pour toujours.",
-                  descEn:
-                    "We build and deploy your custom automations. From go-live, these are tasks that vanish from your day-to-day — for good.",
-                  bulletsFr: [
-                    "Livré, testé, opérationnel — pas un prototype",
-                    "Économies immédiates dès le premier jour de production",
-                    "Vous parlez à celui qui code — zéro intermédiaire",
-                    "En prod = heures récupérées instantanément",
-                  ],
-                  bulletsEn: [
-                    "Delivered, tested, operational — not a prototype",
-                    "Immediate savings from day one in production",
-                    "You talk to the person who codes — zero middleman",
-                    "Live = hours reclaimed instantly",
-                  ],
-                  href: "/implementation" as const,
-                },
-                {
-                  num: "05",
-                  emoji: "🌐",
-                  accent: "primary",
-                  service: isFr ? "Plateforme web augmentée à l'IA" : "AI-augmented web platform",
-                  headlineFr:
-                    "Votre outil métier, repensé avec l'IA au cœur — plus rapide, plus intelligent, plus rentable",
-                  headlineEn:
-                    "Your business tool, redesigned with AI at the core — faster, smarter, more profitable",
-                  descFr:
-                    "On conçoit et développe votre plateforme web sur mesure avec l'IA intégrée nativement : recommandations, automatisations, analyse de données en temps réel, interfaces intelligentes. Vous ne remplacez pas votre outil existant — vous le transcendez.",
-                  descEn:
-                    "We design and build your custom web platform with AI natively integrated: recommendations, automations, real-time data analysis, intelligent interfaces. You don't replace your existing tool — you transcend it.",
-                  bulletsFr: [
-                    "Stack moderne, évolutif, sans dette technique",
-                    "IA intégrée dès la conception — pas ajoutée après",
-                    "Hébergement Europe, RGPD strict, données chez vous",
-                    "Un outil qui travaille pour vous — 24h/24, 7j/7",
-                  ],
-                  bulletsEn: [
-                    "Modern, scalable stack, no technical debt",
-                    "AI integrated from day one — not bolted on",
-                    "European hosting, strict GDPR, your data stays yours",
-                    "A tool that works for you — 24/7",
-                  ],
-                  href: "/sites-web-augmentes" as const,
-                },
-              ] as const
-            ).map((block, idx) => {
-              const reverse = idx % 2 === 1;
-              const accentBg =
-                block.accent === "terracotta"
-                  ? "bg-terracotta"
-                  : block.accent === "sage"
-                    ? "bg-sage"
-                    : "bg-primary";
-              const accentText =
-                block.accent === "terracotta"
-                  ? "text-terracotta"
-                  : block.accent === "sage"
-                    ? "text-sage"
-                    : "text-primary";
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-5">
+            {valuePropositions.map((v, idx) => {
+              const a = accentClasses[v.accent];
               return (
-                <FadeInOnView key={block.num} delay={idx * 40}>
-                  <article
-                    className={cn(
-                      "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
-                      reverse && "lg:[&>div:first-child]:order-2",
-                    )}
-                  >
-                    <div>
-                      <div className="mb-6 flex items-center gap-5">
+                <FadeInOnView key={v.id} delay={idx * 80}>
+                  <li className="h-full">
+                    <Link
+                      href={v.href}
+                      className={cn(
+                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-6",
+                        a.gainBg,
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "pointer-events-none absolute -top-2 -right-2 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-3 md:text-[9rem]",
+                          a.number,
+                        )}
+                        style={{ fontFamily: "var(--font-serif)" }}
+                        aria-hidden="true"
+                      >
+                        0{idx + 1}
+                      </span>
+                      <span
+                        className="bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14 md:text-[2rem]"
+                        aria-hidden="true"
+                      >
+                        {v.emoji}
+                      </span>
+                      <div className="relative z-10 mt-auto flex flex-col gap-2">
+                        <h3
+                          className={cn(
+                            "text-lg leading-[1.1] font-bold tracking-tight sm:text-xl md:text-3xl lg:text-[1.95rem]",
+                            a.gainText,
+                          )}
+                        >
+                          {v.action}
+                        </h3>
+                        <p
+                          className={cn(
+                            "text-[11px] leading-snug sm:text-xs md:text-[13px]",
+                            a.gainText,
+                            "opacity-90",
+                          )}
+                        >
+                          {v.headline}
+                        </p>
                         <span
                           className={cn(
-                            "text-[clamp(3.5rem,6vw,5rem)] leading-none font-semibold tabular-nums",
-                            accentText,
+                            "bg-paper mt-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 md:mt-4 md:px-4 md:py-2 md:text-sm",
+                            a.iconFg,
                           )}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                          aria-hidden="true"
                         >
-                          {block.num}
-                        </span>
-                        <span
-                          className={cn(
-                            "inline-flex h-14 w-14 items-center justify-center rounded-full text-2xl",
-                            accentBg,
-                          )}
-                          aria-hidden="true"
-                        >
-                          {block.emoji}
+                          {t("valueCardCta")}
+                          <ArrowRight className="h-3 w-3 md:h-4 md:w-4" aria-hidden="true" />
                         </span>
                       </div>
-                      <p
-                        className={cn(
-                          "mb-3 text-[12px] font-bold tracking-[0.2em] uppercase",
-                          accentText,
-                        )}
-                      >
-                        {block.service}
-                      </p>
-                      <h3
-                        className="text-fg text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.1] font-semibold tracking-tight"
-                        style={{ fontFamily: "var(--font-serif)" }}
-                      >
-                        {isFr ? block.headlineFr : block.headlineEn}
-                      </h3>
-                    </div>
-
-                    <div>
-                      <p className="text-fg-soft text-base leading-relaxed sm:text-lg">
-                        {isFr ? block.descFr : block.descEn}
-                      </p>
-                      <ul className="mt-7 flex flex-col gap-3">
-                        {(isFr ? block.bulletsFr : block.bulletsEn).map((bullet, bIdx) => (
-                          <li key={bIdx} className="flex items-start gap-3">
-                            <span
-                              className={cn(
-                                "mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
-                                accentBg,
-                              )}
-                              aria-hidden="true"
-                            />
-                            <span className="text-fg text-base leading-relaxed">{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Link
-                        href={block.href}
-                        className={cn(
-                          "mt-8 inline-flex items-center gap-2 text-sm font-semibold hover:underline",
-                          accentText,
-                        )}
-                      >
-                        {isFr ? "Découvrir cette intervention" : "Discover this service"}
-                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                      </Link>
-                    </div>
-                  </article>
+                    </Link>
+                  </li>
                 </FadeInOnView>
               );
             })}
-          </div>
+          </ul>
         </Container>
       </section>
 
@@ -805,78 +631,254 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ─────────────── DÉMOS VISUELLES — 2 images sur la même ligne ──────────────
-          Remplace l'ancienne section métriques chiffrées. Deux captures concrètes
-          du produit Axion-IA : pipeline lead (7 étapes auto) + planning Gantt
-          IA temps réel. Côte à côte sur desktop, empilées sur mobile. */}
-      <section className="bg-paper py-20 sm:py-24 lg:py-28">
+      {/* ───────────── CE QUI NOUS DISTINGUE — infographie complète ─────────────
+          Remplace les 4 atouts par 6 différenciateurs + équipe dédiée + capacités
+          modulables + 3 signaux de confiance + tagline. Reconstruction JSX
+          accessible/SEO d'une infographie image. */}
+      <section className="bg-halo-cool py-16 sm:py-20 lg:py-24">
         <Container>
           <FadeInOnView>
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-              <figure className="border-border overflow-hidden rounded-2xl border">
-                <Image
-                  src="/images/axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.png"
-                  alt={
-                    isFr
-                      ? "Pipeline Axion-IA : 7 étapes automatisées du formulaire entrant au CRM (scoring IA, enrichissement, segmentation chaud/tiède/froid, routage)."
-                      : "Axion-IA pipeline: 7 automated steps from incoming form to CRM (AI scoring, enrichment, hot/warm/cold segmentation, routing)."
-                  }
-                  width={1600}
-                  height={900}
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="h-auto w-full"
-                />
-              </figure>
-              <figure className="border-border overflow-hidden rounded-2xl border">
-                <Image
-                  src="/images/axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.png"
-                  alt={
-                    isFr
-                      ? "Planning Gantt Axion-IA : chantier Résidence Les Pins, 15 tâches, conflits de ressources détectés automatiquement, alertes météo."
-                      : "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts."
-                  }
-                  width={1600}
-                  height={900}
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="h-auto w-full"
-                />
-              </figure>
-            </div>
-          </FadeInOnView>
-        </Container>
-      </section>
-
-      {/* ───────────── 4 ATOUTS EN STRIP (Why simplifié) ─────────────
-          Strip horizontale sans photo (le bandeau au-dessus apporte le
-          visuel). 4 atouts ultra-courts (1 ligne chacun). */}
-      <section className="bg-halo-cool py-16 sm:py-20">
-        <Container>
-          <FadeInOnView>
-            <p className="text-fg-muted mb-10 text-center text-[13px] font-semibold tracking-[0.18em] uppercase">
-              <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-              {t("valueWhyEyebrow")}
-            </p>
-            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {whyPoints.map((point, idx) => (
-                <li
-                  key={idx}
-                  className="bg-paper border-border flex flex-col gap-3 rounded-2xl border p-6"
+            {/* En-tête conforme au reste de la page : eyebrow + h2 + description */}
+            <div className="mx-auto mb-12 max-w-3xl text-center">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Ce qui nous distingue" : "What sets us apart"}
+              </p>
+              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                {isFr ? "Six raisons concrètes de " : "Six concrete reasons to "}
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  <span
-                    className="text-terracotta text-3xl font-medium tabular-nums"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                    aria-hidden="true"
-                  >
-                    0{idx + 1}
-                  </span>
-                  <span className="text-fg text-base leading-snug">{point}</span>
+                  {isFr ? "nous choisir" : "choose us"}
+                </span>
+                .
+              </h2>
+              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
+                {isFr
+                  ? "Chaque expertise peut être prise seule ou combinée — c'est vous qui choisissez selon vos besoins."
+                  : "Every expertise can be taken alone or combined — you choose based on your needs."}
+              </p>
+            </div>
+
+            {/* 6 cartes différenciateurs */}
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+              {(
+                [
+                  {
+                    num: "01",
+                    Icon: User,
+                    titleFr: "Zéro intermédiaire",
+                    titleEn: "Zero middleman",
+                    descFr: "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
+                    descEn: "Trainers, developers, implementers — all senior, all in-house.",
+                    accentFr: "De l'audit à la mise en prod.",
+                    accentEn: "From audit to production.",
+                  },
+                  {
+                    num: "02",
+                    Icon: InfinityIcon,
+                    titleFr: "Du A à Z",
+                    titleEn: "End-to-end",
+                    descFr: "Formation, audit, 1-to-1, automatisation, plateforme IA.",
+                    descEn: "Training, audit, 1-to-1, automation, AI platform.",
+                    accentFr: "Un seul interlocuteur. Toute la chaîne.",
+                    accentEn: "One contact. The whole chain.",
+                  },
+                  {
+                    num: "03",
+                    Icon: MapPin,
+                    titleFr: "Partout en France",
+                    titleEn: "Across France",
+                    descFr: "Présence dans toutes les villes.",
+                    descEn: "Presence in every city.",
+                    accentFr: "En présentiel ou à distance — selon ce qui est le plus efficace pour vous.",
+                    accentEn: "On-site or remote — whichever works best for you.",
+                  },
+                  {
+                    num: "04",
+                    Icon: UserCheck,
+                    titleFr: "Vous parlez au senior",
+                    titleEn: "You talk to the senior",
+                    descFr: "Pas à un commercial. Pas à un junior.",
+                    descEn: "Not to sales. Not to a junior.",
+                    accentFr: "Directement à celui qui fait le travail.",
+                    accentEn: "Directly to the person doing the work.",
+                  },
+                  {
+                    num: "05",
+                    Icon: Star,
+                    titleFr: "Vous êtes au centre",
+                    titleEn: "You're at the center",
+                    descFr: "Votre projet, votre rythme, votre contexte.",
+                    descEn: "Your project, your pace, your context.",
+                    accentFr: "On s'adapte à vous — jamais l'inverse.",
+                    accentEn: "We adapt to you — never the reverse.",
+                  },
+                  {
+                    num: "06",
+                    Icon: Trophy,
+                    titleFr: "Exigence senior absolue",
+                    titleEn: "Strict senior standards",
+                    descFr: "Exigence maximale. Résultats mesurables.",
+                    descEn: "Maximum standards. Measurable results.",
+                    accentFr: "Le même niveau pour un artisan ou un grand groupe.",
+                    accentEn: "Same level for a craftsman or a large group.",
+                  },
+                ] as const
+              ).map((card) => (
+                <li
+                  key={card.num}
+                  className="bg-paper border-border flex flex-col gap-3 rounded-2xl border p-5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      className="text-terracotta text-3xl font-bold tabular-nums"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                      aria-hidden="true"
+                    >
+                      {card.num}
+                    </span>
+                    <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-full">
+                      <card.Icon className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                  </div>
+                  <h3 className="text-fg text-base leading-tight font-bold">
+                    {isFr ? card.titleFr : card.titleEn}
+                  </h3>
+                  <p className="text-fg-soft text-sm leading-relaxed">
+                    {isFr ? card.descFr : card.descEn}
+                  </p>
+                  <p className="text-terracotta text-sm leading-relaxed font-medium">
+                    {isFr ? card.accentFr : card.accentEn}
+                  </p>
                 </li>
               ))}
             </ul>
+
+            {/* Bandeau bas : équipe dédiée + 6 capacités modulables + 3 trust signals */}
+            <div className="bg-paper border-border mt-8 rounded-2xl border p-6 sm:p-8">
+              <div className="grid gap-8 lg:grid-cols-[1fr_2fr_1fr]">
+                {/* Équipe dédiée */}
+                <div>
+                  <p className="text-terracotta text-[11px] font-bold tracking-[0.15em] uppercase">
+                    {isFr ? "Une équipe dédiée à votre projet" : "A team dedicated to your project"}
+                  </p>
+                  <p className="text-fg-soft mt-3 text-sm leading-relaxed">
+                    {isFr
+                      ? "Experts seniors, complémentaires, alignés sur vos objectifs."
+                      : "Senior experts, complementary, aligned with your goals."}
+                  </p>
+                </div>
+
+                {/* 6 capacités combinables */}
+                <div className="border-border lg:border-x lg:px-8">
+                  <ul className="flex flex-wrap items-start justify-center gap-x-3 gap-y-4 sm:gap-x-4">
+                    {(
+                      [
+                        { Icon: Search, fr: "Audit", en: "Audit" },
+                        { Icon: GraduationCap, fr: "Formation", en: "Training" },
+                        { Icon: User, fr: "1-to-1", en: "1-to-1" },
+                        { Icon: Cog, fr: "Automatisation", en: "Automation" },
+                        { Icon: Brain, fr: "Plateforme IA", en: "AI Platform" },
+                        { Icon: Rocket, fr: "Mise en prod", en: "Go-live" },
+                      ] as const
+                    ).map((cap, idx) => (
+                      <li key={cap.fr} className="flex items-center gap-2">
+                        <div className="flex flex-col items-center gap-1.5 text-center">
+                          <span className="text-terracotta inline-flex h-9 w-9 items-center justify-center">
+                            <cap.Icon className="h-5 w-5" aria-hidden="true" />
+                          </span>
+                          <span className="text-fg text-xs font-bold tracking-tight uppercase">
+                            {isFr ? cap.fr : cap.en}
+                          </span>
+                          <span className="text-fg-muted text-[10px] leading-tight">
+                            {isFr ? "Peut être prise seule" : "Can be taken alone"}
+                          </span>
+                        </div>
+                        {idx < 5 ? (
+                          <Plus
+                            className="text-terracotta/40 mx-1 h-4 w-4 shrink-0"
+                            aria-hidden="true"
+                          />
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-terracotta mt-5 text-center text-xs font-bold tracking-[0.12em] uppercase">
+                    {isFr ? "Prise seule ou combinée, selon vos objectifs." : "Standalone or combined, based on your goals."}
+                  </p>
+                  <p className="text-fg-muted mt-1 text-center text-xs">
+                    {isFr ? "À votre choix." : "Your choice."}
+                  </p>
+                </div>
+
+                {/* 3 trust signals */}
+                <ul className="flex flex-col gap-4">
+                  {(
+                    [
+                      {
+                        Icon: Shield,
+                        titleFr: "Sécurité & confidentialité",
+                        titleEn: "Security & confidentiality",
+                        descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
+                        descEn: "Your data is protected. Confidentiality is our priority.",
+                      },
+                      {
+                        Icon: TrendingUp,
+                        titleFr: "Résultats mesurables",
+                        titleEn: "Measurable results",
+                        descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
+                        descEn: "Clear goals, precise indicators, concrete impact.",
+                      },
+                      {
+                        Icon: Clock,
+                        titleFr: "Accompagnement dans la durée",
+                        titleEn: "Long-term support",
+                        descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
+                        descEn: "A reliable partner at every stage of your growth.",
+                      },
+                    ] as const
+                  ).map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <span className="text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center">
+                        <item.Icon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                      <div>
+                        <p className="text-terracotta text-[12px] font-bold tracking-tight">
+                          {isFr ? item.titleFr : item.titleEn}
+                        </p>
+                        <p className="text-fg-soft text-xs leading-relaxed">
+                          {isFr ? item.descFr : item.descEn}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Bandeau de conclusion terracotta */}
+            <div className="bg-terracotta mt-6 rounded-xl py-4 text-center">
+              <p className="text-paper text-sm font-bold tracking-[0.12em] uppercase sm:text-base">
+                {isFr
+                  ? "Combinées ou indépendantes : c'est vous qui décidez."
+                  : "Combined or independent: you decide."}
+              </p>
+            </div>
+
+            {/* Tagline finale */}
+            <p
+              className="text-fg-muted mt-8 text-center text-base sm:text-lg"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr
+                ? "Une vision. Une équipe. Une méthode. Un seul objectif : "
+                : "One vision. One team. One method. One goal: "}
+              <span className="text-fg font-semibold">
+                {isFr ? "votre réussite." : "your success."}
+              </span>
+            </p>
           </FadeInOnView>
         </Container>
       </section>
@@ -924,16 +926,19 @@ export default async function Home({ params }: HomeProps) {
                   {t("casesEyebrow")}
                 </p>
                 <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                  {t("casesTitlePart1")}{" "}
+                  {isFr ? "Des implémentations" : "Custom"}{" "}
                   <span
                     className="italic-editorial text-terracotta"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    {t("casesTitleEm")}
+                    {isFr ? "sur mesure" : "implementations"}
                   </span>
-                  {t("casesTitlePart2")}
                 </h2>
-                <p className="text-fg-soft mt-6 text-lg leading-relaxed">{t("casesDescription")}</p>
+                <h3 className="text-fg-soft mt-4 text-lg leading-relaxed sm:text-xl">
+                  {isFr
+                    ? "Pensées pour vos besoins réels d'entreprise — pas des templates génériques."
+                    : "Built around your real business needs — not generic templates."}
+                </h3>
               </div>
               <Link
                 href="/cas-concrets"
@@ -944,41 +949,82 @@ export default async function Home({ params }: HomeProps) {
               </Link>
             </div>
           </FadeInOnView>
-          <ul className="grid gap-6 lg:grid-cols-3">
-            {featuredCases.map((c, idx) => (
-              <FadeInOnView key={c.slug} delay={idx * 80}>
-                <li>
-                  <Link
-                    href={`/cas-concrets/${c.slug}` as never}
-                    className="group bg-bg border-border hover:border-border-strong focus-visible:ring-primary flex h-full flex-col gap-6 rounded-2xl border p-8 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                  >
+          {/* 2 cas concrets visuels — démos produit Axion-IA */}
+          <ul className="mb-10 grid gap-6 lg:grid-cols-2">
+            {(
+              [
+                {
+                  src: "/images/axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.avif",
+                  industryFr: "Prospection B2B",
+                  industryEn: "B2B prospecting",
+                  metric: "0 min/lead",
+                  titleFr: "Pipeline lead automatisé · 7 étapes",
+                  titleEn: "Automated lead pipeline · 7 steps",
+                  excerptFr:
+                    "Du formulaire entrant au commercial : scoring IA, enrichissement, segmentation chaud/tiède/froid, routage CRM. Zéro intervention humaine jusqu'à la prise de contact.",
+                  excerptEn:
+                    "From incoming form to sales: AI scoring, enrichment, hot/warm/cold segmentation, CRM routing. Zero human intervention until first contact.",
+                  altFr:
+                    "Pipeline Axion-IA : 7 étapes automatisées du formulaire entrant au CRM (scoring IA, enrichissement, segmentation chaud/tiède/froid, routage).",
+                  altEn:
+                    "Axion-IA pipeline: 7 automated steps from incoming form to CRM (AI scoring, enrichment, hot/warm/cold segmentation, routing).",
+                },
+                {
+                  src: "/images/axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.avif",
+                  industryFr: "BTP & construction",
+                  industryEn: "Construction",
+                  metric: "Conflits détectés J-7",
+                  titleFr: "Planning Gantt IA · temps réel",
+                  titleEn: "AI Gantt planning · real-time",
+                  excerptFr:
+                    "Chantier Résidence Les Pins, 15 tâches. Conflits de ressources et alertes météo détectés automatiquement avant qu'ils arrivent.",
+                  excerptEn:
+                    "Résidence Les Pins worksite, 15 tasks. Resource conflicts and weather alerts detected automatically before they happen.",
+                  altFr:
+                    "Planning Gantt Axion-IA : chantier Résidence Les Pins, 15 tâches, conflits de ressources détectés automatiquement, alertes météo.",
+                  altEn:
+                    "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts.",
+                },
+              ] as const
+            ).map((demo, idx) => (
+              <FadeInOnView key={idx} delay={idx * 80}>
+                <li className="bg-bg border-border flex h-full flex-col overflow-hidden rounded-2xl border">
+                  <div className="bg-paper">
+                    <Image
+                      src={demo.src}
+                      alt={isFr ? demo.altFr : demo.altEn}
+                      width={1600}
+                      height={900}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="h-auto w-full"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-4 p-6 sm:p-8">
                     <div className="flex items-center gap-2">
                       <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
-                        {c.industry}
+                        {isFr ? demo.industryFr : demo.industryEn}
                       </span>
                       <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
-                        {c.metric}
+                        {demo.metric}
                       </span>
                     </div>
                     <h3
                       className="text-fg text-2xl leading-[1.2] font-medium tracking-tight"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      {c.title}
+                      {isFr ? demo.titleFr : demo.titleEn}
                     </h3>
-                    <p className="text-fg-soft flex-1 text-base leading-relaxed">{c.excerpt}</p>
-                    <span className="text-primary inline-flex items-center gap-2 text-sm font-semibold">
-                      {isFr ? "Lire le cas" : "Read the case"}
-                      <ArrowRight
-                        className="h-4 w-4 transition group-hover:translate-x-1"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Link>
+                    <p className="text-fg-soft text-base leading-relaxed">
+                      {isFr ? demo.excerptFr : demo.excerptEn}
+                    </p>
+                  </div>
                 </li>
               </FadeInOnView>
             ))}
           </ul>
+
         </Container>
       </section>
 
@@ -1004,13 +1050,21 @@ export default async function Home({ params }: HomeProps) {
                     : "Describe your project in 2 minutes. We reply within 24h — no commitment."}
                 </p>
               </div>
-              <Link
-                href="/contact"
-                className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 shrink-0 items-center gap-2 rounded-full px-8 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {isFr ? "Nous contacter" : "Contact us"}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/reserver"
+                  className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-paper border-paper/40 hover:bg-paper/10 cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Link>
+              </div>
             </div>
           </FadeInOnView>
         </Container>
@@ -1196,74 +1250,13 @@ export default async function Home({ params }: HomeProps) {
         tone="sand"
       />
 
-      {/* ───────────── COMPARISON (Blueprint §12 — Pourquoi Axion-IA) ─────────────
-          Tableau comparatif vs freelance / grand cabinet / formation seule.
-          Composant ComparisonTable gère responsive (table desktop, cards
-          mobile). Texte d'intro factuel — pas de dénigrement des alternatives. */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-32">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-12 max-w-3xl">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("comparisonEyebrow")}
-              </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {t("comparisonTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {t("comparisonTitleEm")}
-                </span>
-                {t("comparisonTitlePart2")}
-              </h2>
-              <p className="text-fg-soft mt-6 text-lg leading-relaxed">
-                {t("comparisonDescription")}
-              </p>
-            </div>
-            <ComparisonTable rows={comparisonRows} cols={comparisonCols} />
-          </FadeInOnView>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ROI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-sand py-20 sm:py-24 lg:py-28">
-        <Container>
-          <FadeInOnView>
-            <div className="border-border-strong bg-paper flex flex-col gap-8 rounded-3xl border p-10 lg:flex-row lg:items-center lg:justify-between lg:p-14">
-              <div className="max-w-xl">
-                <p className="text-fg-muted mb-4 text-[13px] font-medium tracking-[0.16em] uppercase">
-                  {t("roiEyebrow")}
-                </p>
-                <h2 className="text-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight">
-                  {t("roiTitlePart1")}{" "}
-                  <span
-                    className="italic-editorial text-terracotta"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {t("roiTitleEm")}
-                  </span>
-                  {t("roiTitlePart2")}
-                </h2>
-                <p className="text-fg-soft mt-5 text-base leading-relaxed">{t("roiDescription")}</p>
-              </div>
-              <Link
-                href="/roi"
-                className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 shrink-0 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {t("roiCta")}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
-          </FadeInOnView>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ TESTIMONIALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ─────────────── TESTIMONIALS — design premium étoiles + avatars ───────────────
+          Cards avec rating 5 étoiles terracotta, avatar initiales, quote serif,
+          identité auteur + entreprise. 6 témoignages en grid 3 col desktop. */}
       <section className="bg-paper py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
+            <div className="mx-auto mb-16 max-w-3xl text-center">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 {t("testimonialsEyebrow")}
               </p>
@@ -1277,44 +1270,119 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("testimonialsTitlePart2")}
               </h2>
+              {/* Rating moyen global */}
+              <div className="mt-7 inline-flex flex-col items-center gap-2">
+                <div className="flex items-center gap-1" aria-label="5 étoiles sur 5">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star
+                      key={i}
+                      className="text-terracotta h-5 w-5 fill-current"
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+                <p className="text-fg-soft text-sm">
+                  <span className="text-fg font-bold">4,9 / 5</span>
+                  {isFr ? " — basé sur les retours opérationnels" : " — based on operational feedback"}
+                </p>
+              </div>
             </div>
           </FadeInOnView>
-          <ul className="grid gap-12 lg:grid-cols-2">
-            {CASE_STUDIES.slice(0, 4).map((c, idx) => (
-              <FadeInOnView key={c.slug} delay={idx * 80}>
-                <li className="border-border-strong flex flex-col gap-6 border-t pt-8">
-                  <span
-                    aria-hidden="true"
-                    className="text-terracotta text-6xl leading-none"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    &ldquo;
-                  </span>
-                  <blockquote
-                    className="text-fg text-xl leading-[1.4] font-medium"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {c[loc].testimonialQuote}
-                  </blockquote>
-                  <footer className="text-fg-soft text-sm">
-                    <span className="text-fg font-semibold">{c[loc].testimonialAuthor}</span>
-                    <span className="mx-2">·</span>
-                    <span>{c[loc].testimonialRole}</span>
-                    <span className="mx-2">·</span>
-                    <span>{isFr ? c.industry : c.industryEn}</span>
-                  </footer>
-                </li>
-              </FadeInOnView>
-            ))}
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {reviewedCases.map((c, idx) => {
+              const author = c[loc].testimonialAuthor;
+              const initials = author
+                .split(/\s+/)
+                .map((s) => s[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase();
+              // Gradients distincts par avatar pour effet « profils différents »
+              const gradients = [
+                "from-terracotta to-terracotta-deep",
+                "from-sage to-sage/70",
+                "from-primary to-primary/80",
+                "from-mocha to-mocha-rich",
+                "from-terracotta-soft to-terracotta",
+              ] as const;
+              const gradient = gradients[idx % gradients.length];
+              return (
+                <FadeInOnView key={c.slug} delay={idx * 80}>
+                  <li className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7">
+                    {/* Header : étoiles + badge vérifié */}
+                    <div className="flex items-center justify-between">
+                      <div
+                        className="flex items-center gap-0.5"
+                        aria-label={isFr ? "Note 5 étoiles sur 5" : "5-star rating"}
+                      >
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <Star
+                            key={i}
+                            className="text-terracotta h-4 w-4 fill-current"
+                            aria-hidden="true"
+                          />
+                        ))}
+                      </div>
+                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold tracking-tight uppercase">
+                        <Shield className="h-3 w-3" aria-hidden="true" />
+                        {isFr ? "Vérifié" : "Verified"}
+                      </span>
+                    </div>
+                    {/* Métrique chiffrée en badge */}
+                    <span className="bg-bg text-fg border-border inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-semibold">
+                      {c.metric}
+                    </span>
+                    {/* Quote */}
+                    <blockquote
+                      className="text-fg flex-1 text-base leading-[1.5] sm:text-lg"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      <span className="text-terracotta mr-1 text-2xl leading-none" aria-hidden="true">
+                        &ldquo;
+                      </span>
+                      {c[loc].testimonialQuote}
+                      <span className="text-terracotta ml-0.5 text-2xl leading-none" aria-hidden="true">
+                        &rdquo;
+                      </span>
+                    </blockquote>
+                    {/* Auteur : avatar gradient + nom + rôle + secteur */}
+                    <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
+                      <span
+                        className={cn(
+                          "text-paper ring-paper relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br shadow-sm ring-2",
+                          gradient,
+                        )}
+                        aria-hidden="true"
+                      >
+                        <span
+                          className="text-base font-bold tracking-tight"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {initials}
+                        </span>
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-fg truncate text-sm font-bold">{author}</p>
+                        <p className="text-fg-muted truncate text-xs">
+                          {c[loc].testimonialRole}
+                        </p>
+                        <p className="text-terracotta truncate text-[11px] font-semibold">
+                          {isFr ? c.industry : c.industryEn}
+                        </p>
+                      </div>
+                    </footer>
+                  </li>
+                </FadeInOnView>
+              );
+            })}
           </ul>
+          <p className="text-fg-muted mt-10 text-center text-xs leading-relaxed">
+            {isFr
+              ? "Témoignages collectés auprès de clients réels — noms et rôles publiés avec accord écrit. Photos en cours d'ajout."
+              : "Testimonials collected from real clients — names and roles published with written consent. Photos being added."}
+          </p>
         </Container>
       </section>
-
-      {/* ───────────── FAQ GÉOLOCALISÉE (AEO + maillage régions) ─────────────
-          4 questions géolocalisées (Paris, métropoles, autres régions, hors-FR)
-          avec FAQPage Speakable JSON-LD distinct + liens /implantations.
-          Section additionnelle à la FAQ globale ci-dessous. */}
-      <LocalGeoFaqSection isFr={isFr} service="audit" tone="canvas" />
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-bg py-24 sm:py-28 lg:py-36">
@@ -1386,6 +1454,7 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={localBusinessJsonLd} />
       <JsonLd data={servicesJsonLd} />
       <JsonLd data={aggregateRatingJsonLd} />
       {reviewsJsonLd.length > 0 ? <JsonLd data={reviewsJsonLd} /> : null}
