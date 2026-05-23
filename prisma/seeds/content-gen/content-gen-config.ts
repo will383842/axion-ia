@@ -27,14 +27,14 @@ const SEEDS: ReadonlyArray<ConfigSeed> = [
   {
     key: "batches",
     value: {
-      dailyBatchSize: 20,
       workersConcurrency: 3,
       retryMaxAttempts: 3,
       retryBackoffMs: 30_000,
       dailyTargetByType: {},
       antiBurstEnabled: true,
     },
-    description: "Réglages batches & workers (master prompt §12.5)",
+    description:
+      "Réglages batches & workers (master prompt §12.5 — v7 phase 4 : per-campaign dailyArticles)",
   },
   // §12.5 — Policies (skip-existing, RSS auto-publish, plagiat, retention)
   {

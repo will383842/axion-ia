@@ -35,7 +35,6 @@ const ContentTypeKeySchema = z.enum([
 ]);
 const BatchSettingsSchema = z
   .object({
-    dailyBatchSize: z.number().int().min(1).max(1000),
     workersConcurrency: z.number().int().min(1).max(20),
     retryMaxAttempts: z.number().int().min(0).max(10),
     retryBackoffMs: z.number().int().min(0).max(3_600_000),
@@ -91,18 +90,16 @@ const SearchIntentDistributionSchema = z
 export type DailyTargetByType = Partial<Record<ContentType, number>>;
 
 export interface BatchSettings {
-  readonly dailyBatchSize: number;
   readonly workersConcurrency: number;
   readonly retryMaxAttempts: number;
   readonly retryBackoffMs: number;
-  /** Sprint 7 V2 : cibles/jour par type. Vide = mode V1 (dailyBatchSize global). */
+  /** Sprint 7 V2 : cibles/jour par type (override per-campaign dailyArticles). */
   readonly dailyTargetByType: DailyTargetByType;
   /** Sprint 7 V2 : étalement uniforme sur 24h (vs burst d'un coup). */
   readonly antiBurstEnabled: boolean;
 }
 
 const BATCH_DEFAULTS: BatchSettings = {
-  dailyBatchSize: 20,
   workersConcurrency: 3,
   retryMaxAttempts: 3,
   retryBackoffMs: 30_000,
@@ -113,7 +110,6 @@ const BATCH_DEFAULTS: BatchSettings = {
 export async function getBatchSettings(): Promise<BatchSettings> {
   const raw = await readContentGenConfig<Partial<BatchSettings>>("batches", BATCH_DEFAULTS);
   return {
-    dailyBatchSize: raw.dailyBatchSize ?? BATCH_DEFAULTS.dailyBatchSize,
     workersConcurrency: raw.workersConcurrency ?? BATCH_DEFAULTS.workersConcurrency,
     retryMaxAttempts: raw.retryMaxAttempts ?? BATCH_DEFAULTS.retryMaxAttempts,
     retryBackoffMs: raw.retryBackoffMs ?? BATCH_DEFAULTS.retryBackoffMs,
@@ -124,9 +120,7 @@ export async function getBatchSettings(): Promise<BatchSettings> {
 
 export async function updateBatchSettings(input: BatchSettings): Promise<void> {
   const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   BatchSettingsSchema.parse(input);
-  if (input.dailyBatchSize < 1 || input.dailyBatchSize > 1000) throw new Error("daily_size_range");
   try {
     if (input.workersConcurrency < 1 || input.workersConcurrency > 20)
       throw new Error("concurrency_range");

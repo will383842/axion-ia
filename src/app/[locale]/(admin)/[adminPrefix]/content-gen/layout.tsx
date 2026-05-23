@@ -86,7 +86,7 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
           )}
         </nav>
         <Link
-          href={`${base}/coverage/new`}
+          href={`${base}/campaigns/new`}
           className="admin-button-cta text-[length:var(--text-admin-xs)]"
         >
           + Nouvelle campagne
