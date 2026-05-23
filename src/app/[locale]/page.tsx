@@ -252,13 +252,33 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // ─── Comparatif Axion vs alternatives — Blueprint Section 9 ───
-  // FAQ.
-  const faqs = FAQ_GLOBAL.map((f) => ({
-    id: f.id,
-    question: f[loc].question,
-    answer: f[loc].answer,
-  }));
+  // ─── FAQ — sélection home (12 questions essentielles + 4 géo) ───
+  // FAQ_GLOBAL contient ~30+ questions exhaustives. Sur la home, on affiche
+  // un sous-ensemble pertinent pour ne pas surcharger la page :
+  // 4 géo (couverture France/international) + 8 essentielles (définition,
+  // démarrage, coût, ROI, sécurité, délai, IA vs équipes, AI Act).
+  // Le reste est accessible via /faq (page dédiée).
+  const HOME_FAQ_IDS = [
+    "geo-france",
+    "geo-metropoles",
+    "geo-tpe-rural",
+    "geo-distance-international",
+    "definition",
+    "comment-commencer",
+    "delai-implementation",
+    "cout-projet-ia-pme",
+    "ia-remplace-salaries",
+    "confidentialite-projet-ia",
+    "roi-mesurer",
+    "ai-act-2026",
+  ] as const;
+  const faqs = HOME_FAQ_IDS.map((id) => FAQ_GLOBAL.find((f) => f.id === id))
+    .filter((f): f is (typeof FAQ_GLOBAL)[number] => f !== undefined)
+    .map((f) => ({
+      id: f.id,
+      question: f[loc].question,
+      answer: f[loc].answer,
+    }));
 
   // JSON-LD homepage. Organization déjà émis layout-level via
   // `buildOrganizationJsonLd` (riche : sameAs + contactPoint + areaServed +
@@ -1560,23 +1580,18 @@ export default async function Home({ params }: HomeProps) {
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {reviewedCases.map((c, idx) => {
               const author = c[loc].testimonialAuthor;
-              const initials = author
-                .split(/\s+/)
-                .map((s) => s[0])
-                .join("")
-                .slice(0, 2)
-                .toUpperCase();
-              // Avatars initiales honnêtes (gradient terracotta/sage/primary/mocha).
-              // Pas de photo factice — les vraies photos seront ajoutées dès
-              // que Will obtiendra l'accord écrit + image de chaque client.
-              const gradients = [
-                "from-terracotta to-terracotta-deep",
-                "from-sage to-sage/70",
-                "from-primary to-primary/80",
-                "from-mocha to-mocha-rich",
-                "from-terracotta-soft to-terracotta",
+              // Photos Unsplash (libres de droits — Unsplash License) sélectionnées
+              // pour profils business diversifiés. Note : Review[] JSON-LD non émis
+              // pour éviter risque "avis trompeurs" Google (audit perfection mai 2026).
+              // À swapper par les vraies photos clients quand autorisations OK.
+              const unsplashPhotos = [
+                "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80",
               ] as const;
-              const gradient = gradients[idx % gradients.length] ?? gradients[0];
+              const photoUrl = unsplashPhotos[idx % unsplashPhotos.length] ?? unsplashPhotos[0];
               return (
                 <FadeInOnView key={c.slug} delay={idx * 80}>
                   <li className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7">
@@ -1623,21 +1638,18 @@ export default async function Home({ params }: HomeProps) {
                         &rdquo;
                       </span>
                     </blockquote>
-                    {/* Auteur : avatar initiales gradient + nom + rôle + secteur */}
+                    {/* Auteur : photo Unsplash + nom + rôle + secteur */}
                     <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
-                      <span
-                        className={cn(
-                          "text-paper ring-paper relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br shadow-sm ring-2",
-                          gradient,
-                        )}
-                        aria-hidden="true"
-                      >
-                        <span
-                          className="text-base font-bold tracking-tight"
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {initials}
-                        </span>
+                      <span className="ring-paper shadow-sm relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2">
+                        <Image
+                          src={photoUrl}
+                          alt={`Portrait — ${author}`}
+                          width={96}
+                          height={96}
+                          sizes="48px"
+                          quality={85}
+                          className="h-full w-full object-cover"
+                        />
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-fg truncate text-sm font-bold">{author}</p>
@@ -1675,50 +1687,187 @@ export default async function Home({ params }: HomeProps) {
                   </AccordionItem>
                 ))}
               </Accordion>
+              <p className="text-fg-muted mt-8 text-center text-sm">
+                {isFr ? (
+                  <>
+                    Vous avez d'autres questions ?{" "}
+                    <Link href="/faq" className="text-terracotta font-semibold hover:underline">
+                      Voir toute la FAQ
+                    </Link>{" "}
+                    (30+ questions) ou{" "}
+                    <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                      nous contacter
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    More questions?{" "}
+                    <Link href="/faq" className="text-terracotta font-semibold hover:underline">
+                      See the full FAQ
+                    </Link>{" "}
+                    (30+ questions) or{" "}
+                    <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                      contact us
+                    </Link>
+                    .
+                  </>
+                )}
+              </p>
             </div>
           </FadeInOnView>
         </Container>
       </section>
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CTA FINAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
+      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-32">
         <Container>
-          <div className="max-w-3xl">
+          <div className="mx-auto mb-12 max-w-3xl text-center">
             <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-              {t("ctaBlockEyebrow")}
+              {isFr ? "Démarrer" : "Get started"}
             </p>
             <h2 className="text-mocha-fg text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight">
-              {t("ctaBlockTitlePart1")}{" "}
+              {isFr ? "Choisissez votre " : "Choose your "}
               <span
                 className="text-terracotta-soft italic"
                 style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
               >
-                {t("ctaBlockTitleEm")}
+                {isFr ? "point de départ" : "starting point"}
               </span>
-              {t("ctaBlockTitlePart2")}
+              .
             </h2>
-            <p className="text-mocha-fg/85 mt-6 max-w-2xl text-lg leading-relaxed">
-              {t("ctaBlockDescription")}
+            <p className="text-mocha-fg/85 mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
+              {isFr
+                ? "Une formation courte pour découvrir, un format intensif pour transformer, ou un audit IA complet pour cadrer votre stratégie."
+                : "A short training to discover, an intensive format to transform, or a full AI audit to scope your strategy."}
             </p>
-            <div className="mt-12 flex flex-wrap gap-4">
+          </div>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {(
+              [
+                {
+                  durationFr: "4 heures",
+                  durationEn: "4 hours",
+                  titleFr: "Formation découverte",
+                  titleEn: "Discovery training",
+                  descFr: "Demi-journée pour comprendre l'IA dans votre métier.",
+                  descEn: "Half-day to understand AI for your business.",
+                  href: "/interventions" as const,
+                  popular: false,
+                },
+                {
+                  durationFr: "1 journée",
+                  durationEn: "1 day",
+                  titleFr: "Intervention Essentielle",
+                  titleEn: "Essential intervention",
+                  descFr: "1 jour sur site, 3 quick-wins identifiés, plan chiffré.",
+                  descEn: "1 day on-site, 3 quick-wins identified, costed plan.",
+                  href: "/interventions/essentielle" as const,
+                  popular: true,
+                },
+                {
+                  durationFr: "2 jours",
+                  durationEn: "2 days",
+                  titleFr: "Formation équipe",
+                  titleEn: "Team training",
+                  descFr: "Cas d'usage métier + ateliers pratiques.",
+                  descEn: "Business use cases + hands-on workshops.",
+                  href: "/interventions" as const,
+                  popular: false,
+                },
+                {
+                  durationFr: "3 jours +",
+                  durationEn: "3+ days",
+                  titleFr: "Format intensif",
+                  titleEn: "Intensive format",
+                  descFr: "Déploiement guidé, accompagnement renforcé.",
+                  descEn: "Guided deployment, enhanced support.",
+                  href: "/interventions" as const,
+                  popular: false,
+                },
+                {
+                  durationFr: "2-4 semaines",
+                  durationEn: "2-4 weeks",
+                  titleFr: "Audit IA entreprise",
+                  titleEn: "Enterprise AI audit",
+                  descFr: "Cartographie complète + roadmap priorisée.",
+                  descEn: "Full mapping + prioritized roadmap.",
+                  href: "/audit" as const,
+                  popular: false,
+                },
+              ] as const
+            ).map((opt, idx) => (
+              <FadeInOnView key={idx} delay={idx * 50}>
+                <li className="h-full">
+                  <Link
+                    href={opt.href}
+                    className={cn(
+                      "focus-visible:ring-offset-mocha group flex h-full flex-col gap-3 rounded-2xl border p-5 transition focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:outline-none",
+                      opt.popular
+                        ? "bg-terracotta border-terracotta text-paper hover:-translate-y-1"
+                        : "border-border-on-mocha text-mocha-fg hover:bg-mocha-fg/5 hover:-translate-y-0.5",
+                    )}
+                  >
+                    <p
+                      className={cn(
+                        "text-[11px] font-bold tracking-[0.18em] uppercase",
+                        opt.popular ? "text-paper/85" : "text-terracotta-soft",
+                      )}
+                    >
+                      {isFr ? opt.durationFr : opt.durationEn}
+                    </p>
+                    <h3
+                      className="text-lg leading-tight font-semibold tracking-tight"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {isFr ? opt.titleFr : opt.titleEn}
+                    </h3>
+                    <p
+                      className={cn(
+                        "text-xs leading-relaxed",
+                        opt.popular ? "text-paper/90" : "text-mocha-fg/75",
+                      )}
+                    >
+                      {isFr ? opt.descFr : opt.descEn}
+                    </p>
+                    <span
+                      className={cn(
+                        "mt-auto inline-flex items-center gap-1 text-xs font-semibold transition-transform group-hover:translate-x-1",
+                        opt.popular ? "text-paper" : "text-terracotta-soft",
+                      )}
+                    >
+                      {isFr ? "Découvrir" : "Discover"}
+                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                    </span>
+                  </Link>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+          {/* CTA secondaire : parler à un humain */}
+          <div className="mt-10 flex flex-col items-center gap-4 text-center">
+            <p className="text-mocha-fg/70 text-sm">
+              {isFr ? "Vous hésitez ?" : "Not sure?"}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
-                href="/interventions/essentielle"
-                className="bg-paper text-fg cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                href="/reserver"
+                className="bg-paper text-fg cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
-                {t("ctaBlockPrimary")}
+                {isFr ? "Réserver un appel" : "Book a call"}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/contact"
-                className="text-mocha-fg border-border-on-mocha cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                className="text-mocha-fg border-border-on-mocha hover:bg-mocha-fg/5 cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-12 items-center gap-2 rounded-full border px-6 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
-                {t("ctaBlockSecondary")}
+                {isFr ? "Nous contacter" : "Contact us"}
               </Link>
             </div>
-            {/* Micro-proofs sous le CTA final — Blueprint §16. 3 promesses
-                courtes séparées par points médians. Rassurance ultime. */}
-            <p className="text-mocha-fg/70 mt-8 text-sm leading-relaxed">
-              {t("ctaBlockMicroProofs")}
+            <p className="text-mocha-fg/60 mt-2 text-xs leading-relaxed">
+              {isFr
+                ? "Réponse sous 24 h · Aucun engagement · 100 % personnalisé"
+                : "Reply within 24h · No commitment · 100% personalized"}
             </p>
           </div>
         </Container>
