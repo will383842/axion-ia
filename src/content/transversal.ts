@@ -140,7 +140,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "geo-metropoles",
     fr: {
-      question: "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux) ?",
+      question:
+        "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux) ?",
       answer:
         "Oui. Nous nous déplaçons régulièrement à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice. Frais de déplacement inclus pour les capitales régionales.",
     },

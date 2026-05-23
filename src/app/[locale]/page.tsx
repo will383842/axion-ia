@@ -219,7 +219,6 @@ export default async function Home({ params }: HomeProps) {
     },
   } as const;
 
-
   // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
   const audienceSegments = [
     {
@@ -670,7 +669,8 @@ export default async function Home({ params }: HomeProps) {
                     Icon: User,
                     titleFr: "Zéro intermédiaire",
                     titleEn: "Zero middleman",
-                    descFr: "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
+                    descFr:
+                      "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
                     descEn: "Trainers, developers, implementers — all senior, all in-house.",
                     accentFr: "De l'audit à la mise en prod.",
                     accentEn: "From audit to production.",
@@ -692,7 +692,8 @@ export default async function Home({ params }: HomeProps) {
                     titleEn: "Across France",
                     descFr: "Présence dans toutes les villes.",
                     descEn: "Presence in every city.",
-                    accentFr: "En présentiel ou à distance — selon ce qui est le plus efficace pour vous.",
+                    accentFr:
+                      "En présentiel ou à distance — selon ce qui est le plus efficace pour vous.",
                     accentEn: "On-site or remote — whichever works best for you.",
                   },
                   {
@@ -806,7 +807,9 @@ export default async function Home({ params }: HomeProps) {
                     ))}
                   </ul>
                   <p className="text-terracotta mt-5 text-center text-xs font-bold tracking-[0.12em] uppercase">
-                    {isFr ? "Prise seule ou combinée, selon vos objectifs." : "Standalone or combined, based on your goals."}
+                    {isFr
+                      ? "Prise seule ou combinée, selon vos objectifs."
+                      : "Standalone or combined, based on your goals."}
                   </p>
                   <p className="text-fg-muted mt-1 text-center text-xs">
                     {isFr ? "À votre choix." : "Your choice."}
@@ -821,7 +824,8 @@ export default async function Home({ params }: HomeProps) {
                         Icon: Shield,
                         titleFr: "Sécurité & confidentialité",
                         titleEn: "Security & confidentiality",
-                        descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
+                        descFr:
+                          "Vos données sont protégées. Votre confidentialité est notre priorité.",
                         descEn: "Your data is protected. Confidentiality is our priority.",
                       },
                       {
@@ -1024,7 +1028,6 @@ export default async function Home({ params }: HomeProps) {
               </FadeInOnView>
             ))}
           </ul>
-
         </Container>
       </section>
 
@@ -1283,7 +1286,9 @@ export default async function Home({ params }: HomeProps) {
                 </div>
                 <p className="text-fg-soft text-sm">
                   <span className="text-fg font-bold">4,9 / 5</span>
-                  {isFr ? " — basé sur les retours opérationnels" : " — based on operational feedback"}
+                  {isFr
+                    ? " — basé sur les retours opérationnels"
+                    : " — based on operational feedback"}
                 </p>
               </div>
             </div>
@@ -1337,11 +1342,17 @@ export default async function Home({ params }: HomeProps) {
                       className="text-fg flex-1 text-base leading-[1.5] sm:text-lg"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      <span className="text-terracotta mr-1 text-2xl leading-none" aria-hidden="true">
+                      <span
+                        className="text-terracotta mr-1 text-2xl leading-none"
+                        aria-hidden="true"
+                      >
                         &ldquo;
                       </span>
                       {c[loc].testimonialQuote}
-                      <span className="text-terracotta ml-0.5 text-2xl leading-none" aria-hidden="true">
+                      <span
+                        className="text-terracotta ml-0.5 text-2xl leading-none"
+                        aria-hidden="true"
+                      >
                         &rdquo;
                       </span>
                     </blockquote>
@@ -1363,9 +1374,7 @@ export default async function Home({ params }: HomeProps) {
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-fg truncate text-sm font-bold">{author}</p>
-                        <p className="text-fg-muted truncate text-xs">
-                          {c[loc].testimonialRole}
-                        </p>
+                        <p className="text-fg-muted truncate text-xs">{c[loc].testimonialRole}</p>
                         <p className="text-terracotta truncate text-[11px] font-semibold">
                           {isFr ? c.industry : c.industryEn}
                         </p>
