@@ -49,6 +49,8 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Anti-doorway HCU 2024 : minimum 500 mots de contenu substantiel.
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
 
 export const blogFromTitleGenerator: Generator = {

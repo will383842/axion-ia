@@ -337,23 +337,23 @@ async function processParallelCampaign(
     let anchorDepartementCode: string | undefined;
     let anchorRegionSlug: string | undefined;
 
+    const slotIndex = campaign.generatedCount + i;
+
     if (!anchorVilleSlug) {
       if (campaign.scope === "ville" && villeAnchors.length > 0) {
-        anchorVilleSlug = villeAnchors[Math.floor(Math.random() * villeAnchors.length)];
+        anchorVilleSlug = villeAnchors[slotIndex % villeAnchors.length];
       } else if (campaign.scope === "departement" && deptAnchors.length > 0) {
-        anchorDepartementCode = deptAnchors[Math.floor(Math.random() * deptAnchors.length)];
+        anchorDepartementCode = deptAnchors[slotIndex % deptAnchors.length];
       } else if (campaign.scope === "region" && regionAnchors.length > 0) {
-        anchorRegionSlug = regionAnchors[Math.floor(Math.random() * regionAnchors.length)];
+        anchorRegionSlug = regionAnchors[slotIndex % regionAnchors.length];
       } else if (campaign.scope === "multi") {
         if (villeAnchors.length > 0) {
-          anchorVilleSlug = villeAnchors[Math.floor(Math.random() * villeAnchors.length)];
+          anchorVilleSlug = villeAnchors[slotIndex % villeAnchors.length];
         } else if (regionAnchors.length > 0) {
-          anchorRegionSlug = regionAnchors[Math.floor(Math.random() * regionAnchors.length)];
+          anchorRegionSlug = regionAnchors[slotIndex % regionAnchors.length];
         }
       }
     }
-
-    const slotIndex = campaign.generatedCount + i;
     const ok = await createJobForSlot({
       campaign,
       contentType,

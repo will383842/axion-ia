@@ -105,8 +105,8 @@ describe("V-13 persona Manon — résolution par contentType", () => {
   it("comparison utilise expert analytique (pas Manon directe) — exigence neutralité", () => {
     const block = getBrandVoiceForContentType("comparison");
     expect(block).toMatch(/expert analytique impartial/);
-    // INTERDIT tableaux HTML pour Featured Snippet AEO 2026.
-    expect(block).toMatch(/INTERDIT.*<table>/);
+    // OBLIGATOIRE <table> récapitulatif pour Featured Snippet 2026 (ADR P0-3 2026-05-23).
+    expect(block).toMatch(/OBLIGATOIRE.*<table>/);
   });
 
   it("blog_from_rss utilise persona éditoriale neutre (pas Chez Axion-IA en intro)", () => {

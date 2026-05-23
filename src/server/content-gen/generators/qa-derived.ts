@@ -49,6 +49,8 @@ Produis une page FAQ détaillée en français optimisée AEO/GEO 2026. Règles a
 - relatedFaq : 3-5 questions similaires fréquentes avec réponses directes ≥ 1 phrase.
 - 0 délai chiffré, 0 frais de déplacement intégrés dans le prix, 0 prix en dur.
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict :
   { title, metaTitle, metaDescription, slug, directAnswer, answerHtml, relatedFaq:[{q,a}×3-5], tags }`);
 

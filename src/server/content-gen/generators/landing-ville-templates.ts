@@ -58,7 +58,9 @@ Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - SIREN : [SIREN à compléter] (utiliser le placeholder jusqu'à réception du numéro définitif)
 - Positionnement brand : "cabinet IA opérationnel" + "interventions" (ne pas dire "agence de formation")
 - Le mot "formation" est autorisé en copy quand pertinent (descriptif sessions interventions collectives), mais "intervention" reste le naming canonique
-- FR uniquement (FR-FR + x-default)`;
+- FR uniquement (FR-FR + x-default)
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"`;
 
 export const LANDING_VILLE_VARIANTS: Record<LandingVilleVariantSlug, LandingVilleVariant> = {
   default: {

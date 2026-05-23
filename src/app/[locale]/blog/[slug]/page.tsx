@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: view.metaTitle ?? `${view.title} · Axion-IA`,
+    title: view.metaTitle ?? view.title,
     description: view.metaDescription ?? view.excerpt,
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
@@ -246,6 +246,10 @@ export default async function BlogArticle({ params }: Props) {
     }),
     aiGenerated: true,
     additionalType: "https://schema.org/AIGeneratedContent",
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+    },
   };
 
   const breadcrumbItems = [

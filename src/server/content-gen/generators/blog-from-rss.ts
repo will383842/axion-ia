@@ -66,6 +66,8 @@ Règles absolues :
 - 0 délai chiffré, 0 frais de déplacement, 0 prix en dur.
 - Minimum 450 mots de contenu substantiel (article d'actualité = plus court que guide).
 - 4 à 6 questions FAQ réelles avec réponses directes ≥ 2 lignes.
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }
 
 ${getBrandVoiceForContentType("blog_from_rss")}`;
