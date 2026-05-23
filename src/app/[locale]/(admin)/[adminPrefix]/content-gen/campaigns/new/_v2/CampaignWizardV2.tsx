@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import {
   createCampaignFromWizard,
   WIZARD_CONTENT_TYPES,
+  WIZARD_SECTIONS,
   type WizardContentType,
 } from "@/server/actions/content-gen/campaign-wizard";
 
@@ -66,16 +67,37 @@ const SERVICE_LABELS: Record<ServiceSector, { fr: string; desc: string }> = {
   sites_web_augmentes: { fr: "Sites web augmentés IA", desc: "Refonte/build sites avec couche IA" },
 };
 
+// Sprint v7 Phase 8 — 21 sliders (9 V1 + 12 Phase 8) groupés en 6 sections.
+// Default 'équilibré' : core 30% + sources 12% + comparatifs 11% + Q&A 13% +
+// SEO long-tail 19% + conversion 15% = 100%.
 const DEFAULT_WEIGHTS_BALANCED: Record<WizardContentType, number> = {
-  landing_ville: 15,
-  blog_article: 20,
-  blog_from_keywords: 15,
-  blog_from_title: 5,
-  blog_from_rss: 10,
-  comparison: 8,
-  guide_pilier: 12,
-  qa_derived: 8,
-  faq_standalone: 7,
+  // Section 1 — Core (3) = 30%
+  landing_ville: 10,
+  blog_article: 12,
+  guide_pilier: 8,
+  // Section 2 — Sources externes (3) = 12%
+  blog_from_rss: 5,
+  blog_from_keywords: 5,
+  blog_from_title: 2,
+  // Section 3 — Comparatifs (3) = 11%
+  comparison: 5,
+  vs_comparator: 3,
+  alternative_to: 3,
+  // Section 4 — Q&A (3) = 13%
+  qa_derived: 5,
+  faq_standalone: 4,
+  faq_geo: 4,
+  // Section 5 — SEO long-tail (5) = 19%
+  long_tail_keyword: 5,
+  top_x_in_y: 4,
+  how_to_x_in_y: 4,
+  best_for_x_in_y: 3,
+  what_is_x: 3,
+  // Section 6 — Conversion locale (4) = 15%
+  pain_point_solution: 5,
+  case_study_local: 4,
+  calculator_roi: 3,
+  glossary_term: 3,
 };
 
 // ─── Composant principal ────────────────────────────────────────────────────
@@ -140,7 +162,7 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Nouvelle campagne"
-        description={`Étape ${state.step} sur 4 — wizard simplifié 9 sliders ContentType (Phase 8 ajoutera 12 nouveaux types).`}
+        description={`Étape ${state.step} sur 4 — wizard 21 sliders × 6 sections (9 V1 + 12 Phase 8).`}
       />
 
       {/* Stepper visuel */}
@@ -335,11 +357,11 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
         </AdminCard>
       ) : null}
 
-      {/* Step 3 — Mix contenu (9 sliders) */}
+      {/* Step 3 — Mix contenu (21 sliders groupés en 6 sections — Phase 8) */}
       {state.step === 3 ? (
         <AdminCard>
           <h2 className="mb-[var(--space-admin-5,12px)] text-[length:var(--text-admin-lg)] font-semibold">
-            Étape 3 — Mix types contenu (9 sliders actuels)
+            Étape 3 — Mix types contenu (21 sliders · 6 sections)
           </h2>
           <div className="mb-[var(--space-admin-4,8px)] flex items-center gap-2">
             <span className="text-[length:var(--text-admin-sm)]">Mode :</span>
@@ -369,33 +391,42 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
               Preset équilibré
             </button>
           </div>
-          <div className="space-y-[var(--space-admin-3,6px)]">
-            {WIZARD_CONTENT_TYPES.map((ct) => (
-              <div
-                key={ct}
-                className="grid grid-cols-12 items-center gap-2 border-b border-[color:var(--color-admin-border)] py-2"
-              >
-                <span className="col-span-4 font-mono text-[length:var(--text-admin-sm)]">
-                  {ct}
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={state.mixMode === "percentage" ? 100 : 500}
-                  value={state.contentTypeWeights[ct]}
-                  onChange={(e) =>
-                    update("contentTypeWeights", {
-                      ...state.contentTypeWeights,
-                      [ct]: parseInt(e.target.value, 10) || 0,
-                    })
-                  }
-                  className="col-span-6"
-                  aria-label={`Slider ${ct}`}
-                />
-                <span className="col-span-2 text-right text-[length:var(--text-admin-sm)] font-semibold">
-                  {state.contentTypeWeights[ct]}
-                  {state.mixMode === "percentage" ? "%" : ""}
-                </span>
+          <div className="space-y-[var(--space-admin-5,12px)]">
+            {WIZARD_SECTIONS.map((section) => (
+              <div key={section.id}>
+                <h3 className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] uppercase tracking-wide mb-[var(--space-admin-2,4px)]">
+                  {section.label} ({section.types.length})
+                </h3>
+                <div className="space-y-[var(--space-admin-3,6px)]">
+                  {section.types.map((ct) => (
+                    <div
+                      key={ct}
+                      className="grid grid-cols-12 items-center gap-2 border-b border-[color:var(--color-admin-border)] py-2"
+                    >
+                      <span className="col-span-4 font-mono text-[length:var(--text-admin-sm)]">
+                        {ct}
+                      </span>
+                      <input
+                        type="range"
+                        min={0}
+                        max={state.mixMode === "percentage" ? 100 : 500}
+                        value={state.contentTypeWeights[ct as WizardContentType] ?? 0}
+                        onChange={(e) =>
+                          update("contentTypeWeights", {
+                            ...state.contentTypeWeights,
+                            [ct]: parseInt(e.target.value, 10) || 0,
+                          })
+                        }
+                        className="col-span-6"
+                        aria-label={`Slider ${ct}`}
+                      />
+                      <span className="col-span-2 text-right text-[length:var(--text-admin-sm)] font-semibold">
+                        {state.contentTypeWeights[ct as WizardContentType] ?? 0}
+                        {state.mixMode === "percentage" ? "%" : ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

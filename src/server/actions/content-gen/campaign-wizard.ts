@@ -28,21 +28,75 @@ function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/campaigns`;
 }
 
-// ─── Constantes ContentType (les 9 actuels — Phase 8 ajoutera 12 nouveaux) ──
+// ─── Constantes ContentType — Sprint v7 Phase 8 (21 sliders 6 sections) ────
+// 9 types V1 + 12 types Phase 8 (commit 1/4 = migration enum, ce commit = wizard).
+// L'ordre du tableau = ordre d'affichage step 3 (groupé en 6 sections via UI).
 
 export const WIZARD_CONTENT_TYPES = [
+  // Section 1 — Core (3)
   "landing_ville",
   "blog_article",
+  "guide_pilier",
+  // Section 2 — Sources externes (3)
   "blog_from_rss",
   "blog_from_keywords",
   "blog_from_title",
+  // Section 3 — Comparatifs (3)
   "comparison",
-  "guide_pilier",
+  "vs_comparator",
+  "alternative_to",
+  // Section 4 — Q&A (3)
   "qa_derived",
   "faq_standalone",
+  "faq_geo",
+  // Section 5 — SEO long-tail (5)
+  "long_tail_keyword",
+  "top_x_in_y",
+  "how_to_x_in_y",
+  "best_for_x_in_y",
+  "what_is_x",
+  // Section 6 — Conversion locale (4)
+  "pain_point_solution",
+  "case_study_local",
+  "calculator_roi",
+  "glossary_term",
 ] as const;
 
 export type WizardContentType = (typeof WIZARD_CONTENT_TYPES)[number];
+
+/** 6 sections wizard step 3 — pour rendu UI groupé. */
+export const WIZARD_SECTIONS = [
+  {
+    id: "core",
+    label: "Core (essentiels)",
+    types: ["landing_ville", "blog_article", "guide_pilier"] as const,
+  },
+  {
+    id: "sources",
+    label: "Sources externes",
+    types: ["blog_from_rss", "blog_from_keywords", "blog_from_title"] as const,
+  },
+  {
+    id: "comparatifs",
+    label: "Comparatifs",
+    types: ["comparison", "vs_comparator", "alternative_to"] as const,
+  },
+  {
+    id: "qa",
+    label: "Q&A",
+    types: ["qa_derived", "faq_standalone", "faq_geo"] as const,
+  },
+  {
+    id: "seo-longtail",
+    label: "SEO long-tail",
+    types: ["long_tail_keyword", "top_x_in_y", "how_to_x_in_y", "best_for_x_in_y", "what_is_x"] as const,
+  },
+  {
+    id: "conversion-local",
+    label: "Conversion locale",
+    types: ["pain_point_solution", "case_study_local", "calculator_roi", "glossary_term"] as const,
+  },
+] as const;
 
 // ─── Zod schema (validation Step 4 submit) ──────────────────────────────────
 
