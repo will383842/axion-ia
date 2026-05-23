@@ -30,7 +30,7 @@ export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
       )}
     >
       {logos.map((logo) => (
-        <li key={logo.slug} className="flex h-16 w-full items-center justify-center sm:h-20">
+        <li key={logo.slug} className="flex h-12 w-full items-center justify-center sm:h-14">
           <Image
             src={logo.src}
             alt={`Logo ${logo.name} — client Axion-IA`}
@@ -38,7 +38,7 @@ export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
             height={logo.height ?? 60}
             loading="lazy"
             decoding="async"
-            className="h-12 w-auto max-w-full object-contain transition-transform duration-300 hover:scale-105 sm:h-14"
+            className="h-9 w-auto max-w-full object-contain transition-transform duration-300 hover:scale-105 sm:h-10"
             data-client={logo.slug}
           />
         </li>

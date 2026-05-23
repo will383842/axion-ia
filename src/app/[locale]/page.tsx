@@ -449,28 +449,9 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {t("heroDescription")}
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link
-                  href="/interventions"
-                  data-cta="home-hero-primary"
-                  data-cta-tracking="home_hero_primary_click"
-                  className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  {t("heroCtaPrimary", { price: interventionEntryPrice })}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-                <Link
-                  href="/cas-concrets"
-                  data-cta="home-hero-secondary"
-                  data-cta-tracking="home_hero_secondary_click"
-                  className="text-fg border-border-strong cta-lift bg-paper/60 focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold backdrop-blur focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  {t("heroCtaSecondary")}
-                </Link>
-              </div>
-              {/* Ligne de preuve sociale — Blueprint Section 4 (sous les CTA hero).
-                  Affichée en 14 px, fg-muted, points médians comme séparateurs. */}
-              <p className="text-fg-muted mt-6 text-sm leading-relaxed">{t("heroProofLine")}</p>
+              {/* Polish v6 (Will 2026-05-23) : suppression des 2 CTA hero + proof
+                  line. Les CTA sont maintenant les 5 cards services elles-mêmes
+                  (toute la card cliquable + bouton « Découvrir → » visible). */}
             </div>
 
             {/* Colonne droite : photo hero placeholder. Will drop l'image
@@ -512,15 +493,15 @@ export default async function Home({ params }: HomeProps) {
           C'est LA section la plus importante de la page — visibilité maximum,
           chaque service a SA couleur d'accent dédiée (rotation terracotta /
           primary / sage sur 5 cartes). Layout 3+2 sur lg desktop. */}
-      <section className="bg-paper relative py-28 sm:py-32 lg:py-40">
+      <section className="bg-paper relative py-20 sm:py-24 lg:py-28">
         <Container>
           <FadeInOnView>
-            <div className="mb-20 max-w-4xl">
-              <p className="text-fg-muted mb-6 text-[13px] font-semibold tracking-[0.18em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+            <div className="mx-auto mb-14 max-w-5xl text-center">
+              <p className="text-terracotta mb-5 text-sm font-bold tracking-[0.2em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-2 w-2 rounded-full align-middle" />
                 {t("valueEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.0] font-semibold tracking-tight">
+              <h2 className="text-fg text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-tight">
                 {t("valueTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -530,7 +511,7 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("valueTitlePart2")}
               </h2>
-              <p className="text-fg-soft mt-8 max-w-3xl text-lg leading-relaxed sm:text-xl">
+              <p className="text-fg-soft mx-auto mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl">
                 {t("valueDescription")}
               </p>
             </div>
@@ -554,14 +535,14 @@ export default async function Home({ params }: HomeProps) {
                     <Link
                       href={v.href}
                       className={cn(
-                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-3 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-5",
+                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-6",
                         a.gainBg,
                       )}
                     >
                       {/* Numéro géant en filigrane — background décoratif */}
                       <span
                         className={cn(
-                          "pointer-events-none absolute -top-2 -right-3 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-4 md:text-[8rem]",
+                          "pointer-events-none absolute -top-2 -right-2 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-3 md:text-[9rem]",
                           a.number,
                         )}
                         style={{ fontFamily: "var(--font-serif)" }}
@@ -573,18 +554,18 @@ export default async function Home({ params }: HomeProps) {
                       {/* Icône accent — bulle paper en haut */}
                       <span
                         className={cn(
-                          "bg-paper relative z-10 inline-flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12",
+                          "bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14",
                           a.iconFg,
                         )}
                       >
-                        <Icon className="h-4 w-4 md:h-6 md:w-6" aria-hidden="true" />
+                        <Icon className="h-5 w-5 md:h-7 md:w-7" aria-hidden="true" />
                       </span>
 
-                      {/* Action + headline — colonne basse */}
-                      <div className="relative z-10 mt-auto flex flex-col gap-1.5">
+                      {/* Action — h3 TRÈS gros + headline + CTA visible */}
+                      <div className="relative z-10 mt-auto flex flex-col gap-2">
                         <h3
                           className={cn(
-                            "text-[13px] leading-tight font-bold tracking-tight sm:text-sm md:text-lg",
+                            "text-base leading-[1.15] font-bold tracking-tight sm:text-lg md:text-2xl",
                             a.gainText,
                           )}
                         >
@@ -592,26 +573,26 @@ export default async function Home({ params }: HomeProps) {
                         </h3>
                         <p
                           className={cn(
-                            "text-[10.5px] leading-snug sm:text-[11px] md:text-sm",
+                            "text-xs leading-snug sm:text-sm md:text-[15px]",
                             a.gainText,
                             "opacity-90",
                           )}
                         >
                           {v.headline}
                         </p>
-                      </div>
 
-                      {/* Flèche bas droit (apparait au hover) */}
-                      <span
-                        className={cn(
-                          "absolute right-3 bottom-3 z-10 inline-flex h-6 w-6 items-center justify-center rounded-full opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 md:right-4 md:bottom-4 md:h-8 md:w-8",
-                          "bg-paper",
-                          a.iconFg,
-                        )}
-                        aria-hidden="true"
-                      >
-                        <ArrowRight className="h-3 w-3 md:h-4 md:w-4" />
-                      </span>
+                        {/* CTA « Découvrir → » TOUJOURS visible, sur fond paper.
+                            Signale la cliquabilité sans hover. */}
+                        <span
+                          className={cn(
+                            "bg-paper mt-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 md:mt-4 md:px-4 md:py-2 md:text-sm",
+                            a.iconFg,
+                          )}
+                        >
+                          {t("valueCardCta")}
+                          <ArrowRight className="h-3 w-3 md:h-4 md:w-4" aria-hidden="true" />
+                        </span>
+                      </div>
                     </Link>
                   </li>
                 </FadeInOnView>
