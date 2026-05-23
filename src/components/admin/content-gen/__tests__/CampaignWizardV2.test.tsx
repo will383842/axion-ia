@@ -86,7 +86,8 @@ describe("CampaignWizardV2 — Sprint v7 Phase 3 commit 1", () => {
     await user.type(screen.getByLabelText("Nom de la campagne"), "Test campagne");
     await user.click(screen.getByText("Suivant →"));
 
-    expect(screen.getByText("Étape 3 — Mix types contenu (9 sliders actuels)")).toBeTruthy();
+    // Sprint v7 Phase 8 commit 3/4 — wizard étendu 9 → 21 sliders en 6 sections.
+    expect(screen.getByText("Étape 3 — Mix types contenu (21 sliders · 6 sections)")).toBeTruthy();
     expect(screen.getByText(/Somme :/)).toBeTruthy();
   });
 
