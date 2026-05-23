@@ -38,17 +38,20 @@ export interface VideoTestimonial {
 //
 // Width/height = dimensions du viewBox SVG (anti-CLS). Tous sont sous
 // `public/logos/clients/{slug}.svg`.
+// Toutes les hauteurs normalisées à 60 px (référence commune) pour que
+// max-h-9 CSS contraigne tous les logos au même facteur d'échelle 0.6×.
+// Les widths reflètent les proportions visuelles réelles de chaque marque.
 export const CLIENT_LOGOS: ClientLogo[] = [
   { slug: "leclerc", name: "E.Leclerc", src: "/logos/clients/leclerc.svg", width: 200, height: 60 },
   {
     slug: "intermarche",
     name: "Intermarché",
     src: "/logos/clients/intermarche.svg",
-    width: 200,
-    height: 38,
+    width: 160,
+    height: 60,
   },
-  { slug: "point-p", name: "Point P", src: "/logos/clients/point-p.svg", width: 200, height: 53 },
-  { slug: "gedimat", name: "Gedimat", src: "/logos/clients/gedimat.svg", width: 200, height: 53 },
+  { slug: "point-p", name: "Point P", src: "/logos/clients/point-p.svg", width: 180, height: 60 },
+  { slug: "gedimat", name: "Gedimat", src: "/logos/clients/gedimat.svg", width: 180, height: 60 },
   { slug: "renault", name: "Renault", src: "/logos/clients/renault.svg", width: 180, height: 60 },
   {
     slug: "volkswagen",
@@ -61,34 +64,34 @@ export const CLIENT_LOGOS: ClientLogo[] = [
     slug: "ad-auto",
     name: "AD Auto Distribution",
     src: "/logos/clients/ad-auto.svg",
-    width: 200,
-    height: 53,
+    width: 180,
+    height: 60,
   },
   { slug: "axa", name: "AXA", src: "/logos/clients/axa.svg", width: 80, height: 60 },
   {
     slug: "generali",
     name: "Generali",
     src: "/logos/clients/generali.svg",
-    width: 220,
-    height: 40,
+    width: 200,
+    height: 60,
   },
-  { slug: "iad", name: "IAD", src: "/logos/clients/iad.svg", width: 160, height: 53 },
-  { slug: "safti", name: "SAFTI", src: "/logos/clients/safti.svg", width: 200, height: 53 },
+  { slug: "iad", name: "IAD", src: "/logos/clients/iad.svg", width: 140, height: 60 },
+  { slug: "safti", name: "SAFTI", src: "/logos/clients/safti.svg", width: 180, height: 60 },
   {
     slug: "pharmacie-lafayette",
     name: "Pharmacie Lafayette",
     src: "/logos/clients/pharmacie-lafayette.svg",
-    width: 220,
-    height: 53,
+    width: 200,
+    height: 60,
   },
-  { slug: "ecf", name: "ECF", src: "/logos/clients/ecf.svg", width: 160, height: 53 },
-  { slug: "krys", name: "Krys", src: "/logos/clients/krys.svg", width: 180, height: 53 },
+  { slug: "ecf", name: "ECF", src: "/logos/clients/ecf.svg", width: 140, height: 60 },
+  { slug: "krys", name: "Krys", src: "/logos/clients/krys.svg", width: 160, height: 60 },
   {
     slug: "jardiland",
     name: "Jardiland",
     src: "/logos/clients/jardiland.svg",
-    width: 200,
-    height: 53,
+    width: 180,
+    height: 60,
   },
   {
     slug: "la-poste",
@@ -101,8 +104,8 @@ export const CLIENT_LOGOS: ClientLogo[] = [
     slug: "intersport",
     name: "Intersport",
     src: "/logos/clients/intersport.svg",
-    width: 240,
-    height: 26,
+    width: 200,
+    height: 60,
   },
 ];
 

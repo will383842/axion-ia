@@ -3,7 +3,7 @@ import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TrendingUp, Target, Lightbulb, Star } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
@@ -306,13 +306,6 @@ export default async function Home({ params }: HomeProps) {
   ];
 
   // 4 étapes méthode.
-  const methodSteps = [
-    { id: "scope", n: "01", title: t("method1Title"), description: t("method1Description") },
-    { id: "demo", n: "02", title: t("method2Title"), description: t("method2Description") },
-    { id: "plan", n: "03", title: t("method3Title"), description: t("method3Description") },
-    { id: "golive", n: "04", title: t("method4Title"), description: t("method4Description") },
-  ];
-
   // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
   // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
   // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
@@ -611,28 +604,62 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS ─────────────
-          Pleine largeur, sans cadre, sans ombre, marge haute réduite.
-          L'image suit directement les logos clients. */}
-      <section className="bg-bg pb-12 sm:pb-16">
+      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS — full-bleed ─────────────
+          Hors Container pour aller bord-à-bord sans cadre blanc latéral. */}
+      <section className="bg-bg">
+        <Image
+          src="/illustrations/home-bandeau-team.png"
+          alt={
+            isFr
+              ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
+              : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait."
+          }
+          width={1961}
+          height={802}
+          loading="lazy"
+          decoding="async"
+          sizes="100vw"
+          className="h-auto w-full"
+        />
+      </section>
+
+      {/* ─────────────── METRICS — juste avant le fondateur ─────────────────── */}
+      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
-            <div className="relative overflow-hidden rounded-2xl">
-              <Image
-                src="/illustrations/home-bandeau-team.png"
-                alt={
-                  isFr
-                    ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
-                    : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait."
-                }
-                width={1961}
-                height={802}
-                loading="lazy"
-                decoding="async"
-                sizes="(max-width: 1280px) 100vw, 1200px"
-                className="h-auto w-full"
-              />
+            <div className="mb-16 max-w-3xl">
+              <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                {t("metricsEyebrow")}
+              </p>
+              <h2 className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                {t("metricsTitlePart1")}{" "}
+                <span
+                  className="italic-editorial text-terracotta-soft"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t("metricsTitleEm")}
+                </span>
+                {t("metricsTitlePart2")}
+              </h2>
             </div>
+            <dl className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
+              {metrics.map((m) => (
+                <div key={m.id} className="flex flex-col gap-3">
+                  <dt className="text-mocha-fg/70 order-2 text-sm leading-snug">{m.label}</dt>
+                  <dd
+                    className="text-mocha-fg order-1 [font-feature-settings:'tnum'] text-[clamp(3.5rem,7vw,6rem)] leading-[0.95] font-medium tracking-[-0.04em]"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {m.number}
+                    {m.suffix ? (
+                      <span className="text-terracotta-soft ml-1 text-2xl font-medium">
+                        {m.suffix}
+                      </span>
+                    ) : null}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </FadeInOnView>
         </Container>
       </section>
@@ -755,117 +782,6 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ METRICS (mocha riche) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
-              <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("metricsEyebrow")}
-              </p>
-              <h2 className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {t("metricsTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta-soft"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {t("metricsTitleEm")}
-                </span>
-                {t("metricsTitlePart2")}
-              </h2>
-            </div>
-            <dl className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-              {metrics.map((m) => (
-                <div key={m.id} className="flex flex-col gap-3">
-                  <dt className="text-mocha-fg/70 order-2 text-sm leading-snug">{m.label}</dt>
-                  <dd
-                    className="text-mocha-fg order-1 [font-feature-settings:'tnum'] text-[clamp(3.5rem,7vw,6rem)] leading-[0.95] font-medium tracking-[-0.04em]"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {m.number}
-                    {m.suffix ? (
-                      <span className="text-terracotta-soft ml-1 text-2xl font-medium">
-                        {m.suffix}
-                      </span>
-                    ) : null}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </FadeInOnView>
-        </Container>
-      </section>
-
-      {/* ───────────── METHOD ─────────────
-          Schema visuel des 4 étapes du process (placeholder image 16:9).
-          Will drop l'image d'un workshop / cadrage / livrable réel dans
-          public/illustrations/home-method-process.avif. */}
-      <section className="bg-bg py-24 sm:py-28 lg:py-36">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-12 max-w-3xl">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("methodEyebrow")}
-              </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {t("methodTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {t("methodTitleEm")}
-                </span>
-                {t("methodTitlePart2")}
-              </h2>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
-                {t("methodDescription")}
-              </p>
-            </div>
-          </FadeInOnView>
-          {/* Image hero méthode — placeholder. Drop dans
-              public/illustrations/home-method-process.avif. */}
-          <FadeInOnView>
-            <div className="mb-16">
-              <Illustration
-                slot="HOME-02-method"
-                src="/images/axion-ia-audit-ia-methode-5-etapes-analyse-roi-recommandations-infographie.avif"
-                aspectRatio="16:9"
-                filenameTarget="public/illustrations/home-method-process.avif"
-                caption={
-                  isFr
-                    ? "Méthode Axion-IA en 5 étapes — analyse, ROI, recommandations"
-                    : "Axion-IA 5-step method — analysis, ROI, recommendations"
-                }
-                alt={
-                  isFr
-                    ? "Infographie de la méthode Axion-IA en 5 étapes : cadrage, démonstration, plan chiffré, mise en production."
-                    : "Infographic of the Axion-IA 5-step method: scoping, demonstration, costed plan, go-live."
-                }
-              />
-            </div>
-          </FadeInOnView>
-          <ol className="grid gap-12 lg:grid-cols-4">
-            {methodSteps.map((step, idx) => (
-              <FadeInOnView key={step.id} delay={idx * 60}>
-                <li className="border-border-strong flex flex-col gap-4 border-t pt-6">
-                  <span
-                    className="text-terracotta text-2xl font-medium tabular-nums"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                    aria-hidden="true"
-                  >
-                    {step.n}
-                  </span>
-                  <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight">
-                    {step.title}
-                  </h3>
-                  <p className="text-fg-soft text-base leading-relaxed">{step.description}</p>
-                </li>
-              </FadeInOnView>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
       {/* ───────────── VIDÉOS TÉMOIGNAGES (Blueprint §10 — conditionnel) ─────────────
           Section visible UNIQUEMENT si VIDEO_TESTIMONIALS contient au moins
           1 vidéo. Sinon le composant retourne null → section masquée. Voir
@@ -967,6 +883,40 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ───────────── CTA CONTACT — après cas clients ─────────────
+          Après avoir vu des résultats concrets, inciter à passer à l'action.
+          Section courte, directe, lien vers /contact (formulaire existant). */}
+      <section className="bg-terracotta py-16 sm:py-20">
+        <Container>
+          <FadeInOnView>
+            <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
+              <div className="max-w-2xl">
+                <h2
+                  className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr
+                    ? "Votre projet mérite une réponse concrète."
+                    : "Your project deserves a concrete answer."}
+                </h2>
+                <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
+                  {isFr
+                    ? "Décrivez votre situation en 2 minutes. On revient vers vous sous 24h avec une analyse honnête, sans engagement."
+                    : "Describe your situation in 2 minutes. We'll get back to you within 24h with an honest analysis, no commitment."}
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 shrink-0 items-center gap-2 rounded-full px-8 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                {isFr ? "Nous contacter" : "Contact us"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+          </FadeInOnView>
+        </Container>
+      </section>
+
       {/* ───────────── AUDIENCE + SECTEURS (Blueprint §11) ─────────────
           4 segments TPE/PME/ETI/Grande + nuage des secteurs. Texte
           riche en keywords pour AEO ("IA pour PME françaises", "cabinet
@@ -1037,29 +987,100 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── ILLUSTRATION ÉQUIPE (séparateur visuel) ─────────────
-          Photo éditoriale équipe / intervention client (placeholder 16:9).
-          Drop dans public/illustrations/home-team-intervention.avif. */}
+      {/* ───────────── BÉNÉFICES (ancienne image HOME-03 recréée en code) ─────────────
+          Layout fidèle à la bannière : logo gauche / bénéfices droite / tagline bas. */}
       <section className="bg-paper py-16 sm:py-20">
         <Container>
-          <div className="mx-auto max-w-5xl">
-            <Illustration
-              slot="HOME-03-team"
-              src="/images/axion-ia-automatisation-ia-benefices-concrets-mesurables-durables-banniere.avif"
-              aspectRatio="16:9"
-              filenameTarget="public/illustrations/home-team-intervention.avif"
-              caption={
-                isFr
-                  ? "Bénéfices concrets, mesurables et durables — automatisation IA Axion-IA"
-                  : "Concrete, measurable, lasting benefits — Axion-IA automation"
-              }
-              alt={
-                isFr
-                  ? "Bannière éditoriale Axion-IA : bénéfices automatisation IA concrets, mesurables et durables."
-                  : "Editorial Axion-IA banner: concrete, measurable, lasting AI automation benefits."
-              }
-            />
-          </div>
+          <FadeInOnView>
+            <div className="border-border mx-auto max-w-5xl overflow-hidden rounded-3xl border">
+              {/* Corps 2 colonnes */}
+              <div className="grid lg:grid-cols-[1fr_2px_1.6fr]">
+                {/* Colonne gauche : branding */}
+                <div className="flex items-center justify-center px-10 py-16 lg:py-20">
+                  <div className="text-center">
+                    <p
+                      className="text-fg text-[clamp(3rem,6vw,5rem)] leading-none font-bold tracking-tight"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      Axion-<span className="text-terracotta">IA</span>
+                    </p>
+                    <div className="mt-3 flex items-center justify-center gap-3">
+                      <span className="bg-terracotta block h-px w-10" />
+                      <p className="text-fg text-xl font-medium tracking-wide">.com</p>
+                      <span className="bg-terracotta block h-px w-10" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Séparateur vertical */}
+                <div className="bg-border hidden lg:block" />
+
+                {/* Colonne droite : headline + 4 bénéfices */}
+                <div className="px-10 py-10 lg:py-14">
+                  <h2
+                    className="text-fg text-[clamp(1.6rem,2.5vw,2.25rem)] leading-[1.15] font-semibold tracking-tight"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    Des <span className="text-terracotta italic">bénéfices</span> concrets,
+                    <br />
+                    mesurables, durables.
+                  </h2>
+                  <span className="bg-terracotta mt-4 mb-8 block h-0.5 w-10" />
+                  <ul className="flex flex-col gap-6">
+                    {[
+                      {
+                        Icon: TrendingUp,
+                        title: isFr ? "GAIN DE TEMPS" : "TIME SAVINGS",
+                        desc: isFr
+                          ? "Automatisez les tâches répétitives et concentrez-vous sur l'essentiel."
+                          : "Automate repetitive tasks and focus on what matters.",
+                      },
+                      {
+                        Icon: Target,
+                        title: isFr ? "MEILLEURE PRISE DE DÉCISION" : "BETTER DECISION-MAKING",
+                        desc: isFr
+                          ? "Exploitez la puissance des données pour des décisions plus éclairées."
+                          : "Harness the power of data for more informed decisions.",
+                      },
+                      {
+                        Icon: Lightbulb,
+                        title: isFr ? "INNOVATION ACCÉLÉRÉE" : "ACCELERATED INNOVATION",
+                        desc: isFr
+                          ? "Libérez votre créativité et votre capacité d'innovation grâce à l'IA."
+                          : "Unlock your creativity and innovation capacity through AI.",
+                      },
+                      {
+                        Icon: Star,
+                        title: isFr ? "PERFORMANCE DURABLE" : "LASTING PERFORMANCE",
+                        desc: isFr
+                          ? "Améliorez vos résultats tout en renforçant l'engagement et la satisfaction."
+                          : "Improve results while strengthening engagement and satisfaction.",
+                      },
+                    ].map(({ Icon, title, desc }) => (
+                      <li key={title} className="flex items-start gap-4">
+                        <span className="border-terracotta text-terracotta flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2">
+                          <Icon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <div>
+                          <p className="text-fg text-[11px] font-bold tracking-[0.15em] uppercase">
+                            {title}
+                          </p>
+                          <p className="text-fg-soft mt-1 text-sm leading-relaxed">{desc}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Tagline bas */}
+              <div className="border-border border-t py-5 text-center">
+                <p className="text-fg-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
+                  {isFr ? "Comprendre. Former. Transformer." : "Understand. Train. Transform."}
+                </p>
+              </div>
+            </div>
+          </FadeInOnView>
         </Container>
       </section>
 
