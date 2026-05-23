@@ -67,6 +67,7 @@ export function ImageLightbox({
             height={height}
             loading="lazy"
             decoding="async"
+            quality={92}
             sizes={sizes}
             className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
           />
@@ -107,6 +108,7 @@ export function ImageLightbox({
                 width={width}
                 height={height}
                 sizes="100vw"
+                quality={95}
                 className="h-auto w-full rounded-lg"
                 priority
               />
