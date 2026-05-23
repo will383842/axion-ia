@@ -26,12 +26,22 @@ import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { ComparisonTable, type ComparisonRow } from "@/components/home/ComparisonTable";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+
+// ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
+// /implementation). Sans ce flag, la home reste sur le comportement par défaut
+// Next.js (re-rendue à chaque requête en dev, figée en prod selon config).
+// 86400s = 24h, suffisant pour rafraîchir métriques + liens implantations
+// régionales (LocalCoverageSection lit `getIndexableRegions()`).
+export const revalidate = 86400;
 
 interface HomeProps {
   params: Promise<{ locale: string }>;
@@ -1484,6 +1494,19 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ───────────── COUVERTURE NATIONALE (SEO local) ─────────────
+          Section « Disponibles partout en France » réutilisée des pages
+          services (12 régions). Signal national fort sur la home — page
+          la mieux positionnée du site. Service par défaut = audit
+          (verticale phare, génère le plus de maillage régional). */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'audit IA"
+        serviceLabelEn="AI audit"
+        serviceSlug="audit"
+        tone="sand"
+      />
+
       {/* ───────────── COMPARISON (Blueprint §12 — Pourquoi Axion-IA) ─────────────
           Tableau comparatif vs freelance / grand cabinet / formation seule.
           Composant ComparisonTable gère responsive (table desktop, cards
@@ -1598,6 +1621,12 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ───────────── FAQ GÉOLOCALISÉE (AEO + maillage régions) ─────────────
+          4 questions géolocalisées (Paris, métropoles, autres régions, hors-FR)
+          avec FAQPage Speakable JSON-LD distinct + liens /implantations.
+          Section additionnelle à la FAQ globale ci-dessous. */}
+      <LocalGeoFaqSection isFr={isFr} service="audit" tone="canvas" />
+
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-bg py-24 sm:py-28 lg:py-36">
         <Container className="max-w-3xl">
@@ -1672,6 +1701,17 @@ export default async function Home({ params }: HomeProps) {
       <JsonLd data={aggregateRatingJsonLd} />
       {reviewsJsonLd.length > 0 ? <JsonLd data={reviewsJsonLd} /> : null}
       {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
+
+      {/* ───────────── STICKY MOBILE CTA (Blueprint §19) ─────────────
+          Bouton fixé bas d'écran sur mobile, apparaît après scroll > 600 px.
+          Disparaît à 320 px du bottom (laisse place au CTA final natif).
+          rAF dedup pour INP < 100 ms (cf. perf budget). */}
+      <StickyMobileCta
+        href="/interventions/essentielle"
+        label={t("heroCtaPrimary", { price: interventionEntryPrice })}
+        track="home-sticky-mobile"
+        threshold={600}
+      />
     </>
   );
 }
