@@ -14,6 +14,7 @@
 import { readdirSync, existsSync } from "node:fs";
 import { join, relative } from "node:path";
 import { prisma } from "@/lib/prisma";
+import { adminPath } from "@/lib/admin-path";
 import type { SiteRouteType, SiteRouteStatus } from "../../prisma/generated/client";
 
 const PROJECT_ROOT = process.cwd();
@@ -23,7 +24,16 @@ const LOCALE = "fr";
 const EXCLUDED_SEGMENTS = ["(admin)", "[adminPrefix]", "(auth)", "api", ".well-known"];
 
 function isPublicPath(pathPattern: string): boolean {
-  const forbidden = ["(admin)", "[adminPrefix]", "/api/", "_next", "/api"];
+  const forbidden = [
+    "(admin)",
+    "[adminPrefix]",
+    "(auth)",
+    "/api/",
+    "_next",
+    "/api",
+    "/login",
+    "/logout",
+  ];
   return !forbidden.some((f) => pathPattern.includes(f));
 }
 
@@ -133,7 +143,7 @@ async function resolveArticles() {
       type: "dynamic_db",
       section,
       editable: true,
-      editorRoute: `/fr/admin-route/blog/${article.id}/edit`,
+      editorRoute: adminPath("fr", `content-gen/publications/${article.id}/edit`),
       sourceDbTable: "articles",
       sourceDbId: article.id,
     });
@@ -155,7 +165,7 @@ async function resolveCaseStudies() {
       type: "dynamic_db" as SiteRouteType,
       section: "cas-concrets",
       editable: true,
-      editorRoute: `/fr/admin-route/case-studies/${cs.id}/edit`,
+      editorRoute: adminPath("fr", `case-studies/${cs.id}`),
       sourceDbTable: "case_studies",
       sourceDbId: cs.id,
     }));

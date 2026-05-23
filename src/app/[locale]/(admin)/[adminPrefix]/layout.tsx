@@ -106,6 +106,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // A-12 SP-X3 — Notifications topbar + badge alertes sidebar.
   const notificationItems: AdminNotificationItem[] = [];
   let alertsCount = 0;
+  // Vérif Site Explorer — Badge anomalies high severity (non résolues).
+  let siteExplorerAnomaliesHighCount = 0;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -116,7 +118,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       "cost_cap_80_active",
     ] as const;
 
-    const [failedCount, anomalyRows] = await Promise.all([
+    const [failedCount, anomalyRows, siteExplorerHighCount] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
         .findMany({
@@ -124,9 +126,13 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
           select: { key: true, value: true, updatedAt: true },
         })
         .catch(() => [] as Array<{ key: string; value: unknown; updatedAt: Date }>),
+      prisma.siteRouteAnomaly
+        .count({ where: { severity: "high", resolvedAt: null } })
+        .catch(() => 0),
     ]);
 
     failedJobsCount = failedCount;
+    siteExplorerAnomaliesHighCount = siteExplorerHighCount;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -235,6 +241,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             items={nav}
             failedJobsCount={failedJobsCount}
             alertsCount={alertsCount}
+            siteExplorerAnomaliesHighCount={siteExplorerAnomaliesHighCount}
           />
           <main className="admin-main min-w-0 flex-1">{children}</main>
         </div>
