@@ -116,26 +116,26 @@ export default async function Home({ params }: HomeProps) {
       href: "/interventions" as const,
     },
     {
-      id: "audit",
-      emoji: "🔍",
-      accent: "primary" as const,
-      action: t("value2Action"),
-      headline: t("value2Headline"),
-      price: t("value2Price", { priceRange: auditRange }),
-      bullets: [t("value2Bullet1")],
-      gain: t("value2Gain"),
-      href: "/audit" as const,
-    },
-    {
       id: "coach",
       emoji: "🧑‍💼",
-      accent: "sage" as const,
+      accent: "primary" as const,
       action: t("value4Action"),
       headline: t("value4Headline"),
       price: t("value4Price", { price: unAUnEntryPrice }),
       bullets: [t("value4Bullet1")],
       gain: t("value4Gain"),
       href: "/un-a-un" as const,
+    },
+    {
+      id: "audit",
+      emoji: "🔍",
+      accent: "sage" as const,
+      action: t("value2Action"),
+      headline: t("value2Headline"),
+      price: t("value2Price", { priceRange: auditRange }),
+      bullets: [t("value2Bullet1")],
+      gain: t("value2Gain"),
+      href: "/audit" as const,
     },
     {
       id: "implement",
@@ -560,11 +560,11 @@ export default async function Home({ params }: HomeProps) {
                         {v.emoji}
                       </span>
 
-                      {/* Action — h3 TRÈS gros + headline + CTA visible */}
+                      {/* Action — h3 GÉANT (titre = élément principal de la card) */}
                       <div className="relative z-10 mt-auto flex flex-col gap-2">
                         <h3
                           className={cn(
-                            "text-base leading-[1.15] font-bold tracking-tight sm:text-lg md:text-2xl",
+                            "text-lg leading-[1.1] font-bold tracking-tight sm:text-xl md:text-3xl lg:text-[1.95rem]",
                             a.gainText,
                           )}
                         >
@@ -572,7 +572,7 @@ export default async function Home({ params }: HomeProps) {
                         </h3>
                         <p
                           className={cn(
-                            "text-xs leading-snug sm:text-sm md:text-[15px]",
+                            "text-[11px] leading-snug sm:text-xs md:text-[13px]",
                             a.gainText,
                             "opacity-90",
                           )}
