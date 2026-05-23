@@ -53,6 +53,7 @@ import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import {
   Accordion,
   AccordionItem,
@@ -986,8 +987,8 @@ export default async function Home({ params }: HomeProps) {
               </Link>
             </div>
           </FadeInOnView>
-          {/* 2 cas concrets visuels — démos produit Axion-IA */}
-          <ul className="mb-10 grid gap-6 lg:grid-cols-2">
+          {/* 4 cas concrets visuels — démos produit Axion-IA (click-to-enlarge via lightbox) */}
+          <ul className="mb-10 grid gap-6 sm:grid-cols-2">
             {(
               [
                 {
@@ -1022,24 +1023,52 @@ export default async function Home({ params }: HomeProps) {
                   altEn:
                     "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts.",
                 },
+                {
+                  src: "/images/axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere.avif",
+                  industryFr: "Ressources humaines",
+                  industryEn: "Human resources",
+                  metric: "8 sem → 3 sem · 80% auto",
+                  titleFr: "Recrutement IA · cycle divisé par 2,5",
+                  titleEn: "AI recruitment · cycle divided by 2.5",
+                  excerptFr:
+                    "Publication multi-plateformes, collecte CVs, scoring et classement, fiche candidat auto, convocations, CR entretien, contrat rédigé. RH ne valide que la shortlist et conduit les entretiens.",
+                  excerptEn:
+                    "Multi-platform posting, CV collection, scoring and ranking, auto candidate sheet, invites, interview report, contract draft. HR only validates the shortlist and conducts interviews.",
+                  altFr:
+                    "Schéma 3 couloirs Axion-IA : système IA (publication, collecte CV, scoring, fiche, convocation, CR, contrat), RH (validation shortlist, entretiens, signature), candidat. 8 semaines → 3 semaines, 80% des tâches automatisées.",
+                  altEn:
+                    "Axion-IA 3-lane diagram: AI system (posting, CV collection, scoring, sheet, invitation, report, contract), HR (shortlist validation, interviews, signature), candidate. 8 weeks → 3 weeks, 80% of tasks automated.",
+                },
+                {
+                  src: "/images/axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.avif",
+                  industryFr: "Groupe international",
+                  industryEn: "International group",
+                  metric: "3 sem → J+1 · 278 salariés",
+                  titleFr: "Consolidation groupe 4 pays · IA continue",
+                  titleEn: "4-country group consolidation · continuous AI",
+                  excerptFr:
+                    "France, Allemagne, Singapour, Brésil. Comptabilité, paie, supply chain, RH et compliance temps réel. Le cerveau IA agrège les 4 moteurs, détecte les anomalies cross-entités et génère le rapport consolidé J+1.",
+                  excerptEn:
+                    "France, Germany, Singapore, Brazil. Real-time accounting, payroll, supply chain, HR and compliance. AI brain aggregates the 4 engines, detects cross-entity anomalies and generates the consolidated report on D+1.",
+                  altFr:
+                    "Architecture groupe international Axion-IA : 4 entités (France siège, Allemagne production, Singapour Asie hub, Brésil commercial), tableau de bord groupe temps réel, cerveau IA central, consolidation financière 4 devises, compliance multi-juridictions, supply chain intelligente, RH groupe centralisé.",
+                  altEn:
+                    "Axion-IA international group architecture: 4 entities (France HQ, Germany production, Singapore Asia hub, Brazil commercial), real-time group dashboard, central AI brain, 4-currency financial consolidation, multi-jurisdiction compliance, intelligent supply chain, centralized group HR.",
+                },
               ] as const
             ).map((demo, idx) => (
-              <FadeInOnView key={idx} delay={idx * 80}>
+              <FadeInOnView key={idx} delay={idx * 60}>
                 <li className="bg-bg border-border flex h-full flex-col overflow-hidden rounded-2xl border">
-                  <div className="bg-paper">
-                    <Image
-                      src={demo.src}
-                      alt={isFr ? demo.altFr : demo.altEn}
-                      width={1600}
-                      height={900}
-                      loading="lazy"
-                      decoding="async"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="h-auto w-full"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-4 p-6 sm:p-8">
-                    <div className="flex items-center gap-2">
+                  <ImageLightbox
+                    src={demo.src}
+                    alt={isFr ? demo.altFr : demo.altEn}
+                    width={1600}
+                    height={900}
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="rounded-none rounded-t-2xl"
+                  />
+                  <div className="flex flex-col gap-3 p-5 sm:p-6">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
                         {isFr ? demo.industryFr : demo.industryEn}
                       </span>
@@ -1048,12 +1077,12 @@ export default async function Home({ params }: HomeProps) {
                       </span>
                     </div>
                     <h3
-                      className="text-fg text-2xl leading-[1.2] font-medium tracking-tight"
+                      className="text-fg text-xl leading-[1.2] font-medium tracking-tight sm:text-2xl"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
                       {isFr ? demo.titleFr : demo.titleEn}
                     </h3>
-                    <p className="text-fg-soft text-base leading-relaxed">
+                    <p className="text-fg-soft text-sm leading-relaxed">
                       {isFr ? demo.excerptFr : demo.excerptEn}
                     </p>
                   </div>
