@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { buildAdminNav, ADMIN_NAV_GROUP_LABELS, ADMIN_NAV_GROUP_ORDER } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 39 items (snapshot count — +1 Équité villes 2026-05-23)", () => {
+  it("returns 43 items (snapshot count — +2 Nouvelle campagne + Ad-hoc v7 phase 4)", () => {
     const items = buildAdminNav("admin-test-prefix");
-    expect(items.length).toBe(39);
+    expect(items.length).toBe(43);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

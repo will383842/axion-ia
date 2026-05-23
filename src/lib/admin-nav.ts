@@ -99,6 +99,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🗺️",
       group: "content",
     },
+    {
+      href: `${base}/content-gen/campaigns/new`,
+      label: "Nouvelle campagne",
+      icon: "➕",
+      group: "content",
+    },
+    {
+      href: `${base}/content-gen/orchestrator/adhoc`,
+      label: "Lancement ad-hoc",
+      icon: "⚡",
+      group: "content",
+    },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },

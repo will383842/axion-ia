@@ -1,14 +1,11 @@
 /**
- * Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22) — C.1
- *
- * Tests orchestrator sequential city processing.
- * 6 scénarios :
- *  1. mode parallel → ignore currentCityIndex, traite toutes villes simultanément
- *  2. mode sequential, ville 0 pending → skip enqueue
- *  3. mode sequential, ville 0 terminée → enqueue ville 0 + incrément currentCityIndex
- *  4. mode sequential, currentCityIndex = villes.length → skip (fin)
- *  5. mode sequential, currentCityIndex null → démarre à 0
- *  6. mode parallel avec campaign sans villes → comportement inchangé
+ * Sprint v7 Phase 4 — orchestrator per-campaign dailyArticles budget.
+ * 5 scénarios :
+ *  P1. dailyArticles=96 → 1 job/tick (ceil(96/96)=1)
+ *  P2. dailyArticles=192 → 2 jobs/tick (ceil(192/96)=2)
+ *  P3. custom_subset avec slugs → utilise customVilleSlugs
+ *  P4. custom_subset vide → fallback anchorVilleSlugs
+ *  P5. global_queue sans anchors → query CityGenerationOrder
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -37,7 +34,6 @@ vi.mock("@/lib/prisma", () => ({
     },
     contentGenJob: {
       create: (args: unknown) => contentGenJobCreateMock(args),
-      // count is called multiple times — first call is for pending in sequential, others for complete/failed
       count: (args: unknown) => contentGenJobCountMock(args),
       groupBy: () => contentGenJobGroupByMock(),
       aggregate: () => contentGenJobAggregateMock(),
@@ -76,8 +72,6 @@ vi.mock("bullmq", () => ({
   }),
 }));
 
-// ─── Import worker after mocks ────────────────────────────────────────────────
-
 import { startOrchestratorWorker } from "../content-orchestrator-worker";
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
@@ -97,11 +91,15 @@ function makeCampaign(
     totalTargetCount: number;
     generatedCount: number;
     typeDistribution: Record<string, number>;
+    contentTypeWeights: null;
     audienceMix: Record<string, number>;
     searchIntentMix: null;
     cityProcessingMode: string;
     currentCityIndex: number | null;
     endDate: Date | null;
+    dailyArticles: number;
+    villeScopeMode: string;
+    customVilleSlugs: string[];
     qualityImprovedCount: number;
     publishedCount: number;
     failedCount: number;
@@ -123,16 +121,16 @@ function makeCampaign(
     status: "running",
     scope: "ville",
     serviceSector: null,
-    anchorVilleSlugs: ["paris", "lyon", "marseille"],
+    anchorVilleSlugs: ["paris", "lyon"],
     anchorDepartementCodes: [],
     anchorRegionSlugs: [],
-    totalTargetCount: 30,
+    totalTargetCount: 500,
     generatedCount: 0,
     typeDistribution: { landing_ville: 100 },
     contentTypeWeights: null,
     audienceMix: { "PME:entreprise_privee": 100 },
     searchIntentMix: null,
-    cityProcessingMode: "sequential",
+    cityProcessingMode: "parallel",
     currentCityIndex: null,
     endDate: null,
     dailyArticles: 30,
@@ -186,97 +184,91 @@ function getProcessor() {
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
-describe("Orchestrator — sequential city processing", () => {
-  it("C1: mode parallel — traite toutes les villes simultanément (ignore currentCityIndex)", async () => {
-    const campaign = makeCampaign({ cityProcessingMode: "parallel", currentCityIndex: 1 });
-    campaignFindManyMock.mockResolvedValue([campaign]);
-    contentGenJobCountMock.mockResolvedValue(0); // no pending
-
-    const fn = getProcessor();
-    await fn(MOCK_JOB);
-
-    // En mode parallel, contentGenJob.count pour sequential n'est pas appelé avec anchorVilleSlug
-    // On vérifie que create est appelé (jobs créés)
-    expect(contentGenJobCreateMock).toHaveBeenCalled();
-  });
-
-  it("C2: mode sequential, ville 0 pending → skip enqueue (count > 0)", async () => {
-    const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: 0 });
-    campaignFindManyMock.mockResolvedValue([campaign]);
-    // Première ville (paris) a des jobs pending
-    contentGenJobCountMock.mockResolvedValue(3);
-
-    const fn = getProcessor();
-    await fn(MOCK_JOB);
-
-    // Aucun job créé
-    expect(contentGenJobCreateMock).not.toHaveBeenCalled();
-  });
-
-  it("C3: mode sequential, ville 0 terminée → enqueue jobs + incrément currentCityIndex", async () => {
-    const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: 0 });
-    campaignFindManyMock.mockResolvedValue([campaign]);
-    // Ville courante (index 0 = paris) : 0 jobs pending
-    contentGenJobCountMock.mockResolvedValue(0);
-
-    const fn = getProcessor();
-    await fn(MOCK_JOB);
-
-    // Des jobs ont été créés
-    expect(contentGenJobCreateMock).toHaveBeenCalled();
-    // currentCityIndex incrémenté
-    const updateCalls = campaignUpdateMock.mock.calls as unknown[][];
-    const cityIndexUpdate = updateCalls.find(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (call) => (call[0] as any)?.data?.currentCityIndex !== undefined,
-    );
-    expect(cityIndexUpdate).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((cityIndexUpdate?.[0] as any)?.data?.currentCityIndex).toBe(1);
-  });
-
-  it("C4: mode sequential, currentCityIndex = villes.length → skip (toutes villes terminées)", async () => {
+describe("Orchestrator — per-campaign dailyArticles budget (Phase 4)", () => {
+  it("P1: dailyArticles=96 → ceil(96/96)=1 job enqueued per tick", async () => {
     const campaign = makeCampaign({
-      cityProcessingMode: "sequential",
-      currentCityIndex: 3, // = anchorVilleSlugs.length (3 villes)
+      dailyArticles: 96,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["paris"],
     });
     campaignFindManyMock.mockResolvedValue([campaign]);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
 
-    expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+    expect(contentGenJobCreateMock).toHaveBeenCalledTimes(1);
   });
 
-  it("C5: mode sequential, currentCityIndex null → démarre à index 0 (paris)", async () => {
-    const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: null });
+  it("P2: dailyArticles=192 → ceil(192/96)=2 jobs enqueued per tick", async () => {
+    const campaign = makeCampaign({
+      dailyArticles: 192,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["paris"],
+    });
     campaignFindManyMock.mockResolvedValue([campaign]);
-    contentGenJobCountMock.mockResolvedValue(0);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
 
-    // Jobs créés avec anchorVilleSlug = "paris" (index 0)
-    expect(contentGenJobCreateMock).toHaveBeenCalled();
+    expect(contentGenJobCreateMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("P3: villeScopeMode=custom_subset avec slugs → utilise customVilleSlugs", async () => {
+    const campaign = makeCampaign({
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["bordeaux", "nantes"],
+      anchorVilleSlugs: ["paris"],
+      dailyArticles: 96,
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const createArg: any = contentGenJobCreateMock.mock.calls[0]?.[0];
-    expect(createArg?.data?.anchorVilleSlug).toBe("paris");
+    expect(["bordeaux", "nantes"]).toContain(createArg?.data?.anchorVilleSlug);
+    expect(cityGenerationOrderFindManyMock).not.toHaveBeenCalled();
   });
 
-  it("C6: mode parallel sans villes → comportement inchangé (anchorVilleSlug non forcé)", async () => {
+  it("P4: villeScopeMode=custom_subset vide → fallback anchorVilleSlugs", async () => {
     const campaign = makeCampaign({
-      cityProcessingMode: "parallel",
-      anchorVilleSlugs: [], // pas de villes
-      scope: "multi",
-      currentCityIndex: null,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: [],
+      anchorVilleSlugs: ["lyon"],
+      dailyArticles: 96,
     });
     campaignFindManyMock.mockResolvedValue([campaign]);
-    contentGenJobCountMock.mockResolvedValue(0);
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
 
-    // Doit créer des jobs même sans villes (scope multi)
-    expect(contentGenJobCreateMock).toHaveBeenCalled();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const createArg: any = contentGenJobCreateMock.mock.calls[0]?.[0];
+    expect(createArg?.data?.anchorVilleSlug).toBe("lyon");
+    expect(cityGenerationOrderFindManyMock).not.toHaveBeenCalled();
+  });
+
+  it("P5: villeScopeMode=global_queue sans anchors → query CityGenerationOrder", async () => {
+    const campaign = makeCampaign({
+      villeScopeMode: "global_queue",
+      customVilleSlugs: [],
+      anchorVilleSlugs: [],
+      scope: "ville",
+      dailyArticles: 96,
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    cityGenerationOrderFindManyMock.mockResolvedValue([
+      { villeSlug: "marseille" },
+      { villeSlug: "toulouse" },
+    ]);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(cityGenerationOrderFindManyMock).toHaveBeenCalled();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const createArg: any = contentGenJobCreateMock.mock.calls[0]?.[0];
+    expect(["marseille", "toulouse"]).toContain(createArg?.data?.anchorVilleSlug);
   });
 });

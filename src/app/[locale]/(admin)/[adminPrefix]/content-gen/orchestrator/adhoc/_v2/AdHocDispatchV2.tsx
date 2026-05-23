@@ -1,0 +1,142 @@
+// use-client: formulaire interactif avec state React (useState, sonner toast) — dispatch ad-hoc non rendable côté serveur.
+"use client";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import { dispatchAdHocJob } from "@/server/actions/content-gen/adhoc";
+
+const CONTENT_TYPES = [
+  { value: "landing_ville", label: "Landing ville" },
+  { value: "blog_article", label: "Blog article" },
+  { value: "blog_from_rss", label: "Blog depuis RSS" },
+  { value: "blog_from_keywords", label: "Blog depuis keywords" },
+  { value: "blog_from_title", label: "Blog depuis titre" },
+  { value: "comparison", label: "Comparatif" },
+  { value: "guide_pilier", label: "Guide pilier" },
+  { value: "qa_derived", label: "Q&A dérivé" },
+  { value: "faq_standalone", label: "FAQ standalone" },
+] as const;
+
+const SEARCH_INTENTS = [
+  { value: "informational", label: "Informationnel" },
+  { value: "commercial", label: "Commercial" },
+  { value: "local", label: "Local" },
+  { value: "transactional", label: "Transactionnel" },
+  { value: "navigational", label: "Navigationnel" },
+] as const;
+
+interface Props {
+  adminPrefix: string;
+}
+
+export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
+  const [contentType, setContentType] = useState<string>("landing_ville");
+  const [anchorVilleSlug, setAnchorVilleSlug] = useState("");
+  const [searchIntent, setSearchIntent] = useState<string>("informational");
+  const [campaignId, setCampaignId] = useState("");
+  const [lastJobId, setLastJobId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const result = await dispatchAdHocJob({
+        contentType: contentType as Parameters<typeof dispatchAdHocJob>[0]["contentType"],
+        ...(anchorVilleSlug ? { anchorVilleSlug } : {}),
+        searchIntent: searchIntent as Parameters<typeof dispatchAdHocJob>[0]["searchIntent"],
+        ...(campaignId ? { campaignId } : {}),
+      });
+      setLastJobId(result.jobId);
+      toast.success(`Job dispatché — ID : ${result.jobId}`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Erreur inconnue";
+      toast.error(`Erreur dispatch : ${msg}`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="mx-auto max-w-xl space-y-6 p-6">
+      <div>
+        <h1 className="text-xl font-semibold">Lancement ad-hoc</h1>
+        <p className="text-muted-foreground text-sm">
+          Dispatch un job de génération immédiat, hors cycle orchestrateur.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Type de contenu</label>
+          <select
+            value={contentType}
+            onChange={(e) => setContentType(e.target.value)}
+            className="w-full rounded border px-3 py-2 text-sm"
+            required
+          >
+            {CONTENT_TYPES.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Ville (slug, optionnel)</label>
+          <input
+            type="text"
+            value={anchorVilleSlug}
+            onChange={(e) => setAnchorVilleSlug(e.target.value)}
+            placeholder="ex: paris, lyon-3e"
+            className="w-full rounded border px-3 py-2 text-sm"
+            maxLength={100}
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Intent de recherche</label>
+          <select
+            value={searchIntent}
+            onChange={(e) => setSearchIntent(e.target.value)}
+            className="w-full rounded border px-3 py-2 text-sm"
+          >
+            {SEARCH_INTENTS.map((i) => (
+              <option key={i.value} value={i.value}>
+                {i.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Campaign ID (optionnel)</label>
+          <input
+            type="text"
+            value={campaignId}
+            onChange={(e) => setCampaignId(e.target.value)}
+            placeholder="cuid de la campagne à rattacher"
+            className="w-full rounded border px-3 py-2 font-mono text-sm"
+            maxLength={30}
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-primary text-primary-fg hover:bg-primary-hover rounded px-4 py-2 text-sm font-medium disabled:opacity-50"
+        >
+          {loading ? "Envoi…" : "Dispatcher le job"}
+        </button>
+      </form>
+
+      {lastJobId && (
+        <div className="bg-muted/40 rounded border p-3 text-sm">
+          <span className="font-medium">Dernier job dispatché :</span>{" "}
+          <code className="font-mono text-xs">{lastJobId}</code>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -4,12 +4,13 @@
  * Pick CoverageCampaign WHERE status='running' AND generatedCount < totalTargetCount.
  * Pour chaque campagne :
  *  1. Sample distribution selon typeDistribution + audienceMix + searchIntentMix
- *  2. Crée N ContentGenJob rows (batch tick = min(dailyBatchSize, restant))
+ *  2. Crée N ContentGenJob rows (batch tick = min(perCampaignTick, restant))
  *  3. Enqueue jobs vers queue 'content-gen' (worker primaire pick)
  *  4. Met à jour CoverageCampaign.generatedCount
  *
- * Cron toutes les 15 minutes (configurable). Pas de re-tick si campaign
- * passe en 'completed' (generatedCount >= totalTargetCount).
+ * Cron toutes les 15 minutes (96 ticks/jour). Budget par campagne (V2) :
+ *  - si dailyTargetByType configuré → anti-burst par type
+ *  - sinon → ceil(campaign.dailyArticles / 96) par tick
  *
  * Idempotency : ContentGenJob.idempotencyKey = hash(campaign.id + tickIndex)
  * pour éviter doublons si le worker tick re-trigger plus tôt que prévu.
@@ -51,7 +52,6 @@ function deriveBlogKeyword(
 }
 
 interface BatchSettings {
-  readonly dailyBatchSize: number;
   readonly workersConcurrency: number;
   readonly dailyTargetByType?: Partial<Record<ContentType, number>>;
   readonly antiBurstEnabled?: boolean;
@@ -194,6 +194,35 @@ async function createJobForSlot(opts: {
 }
 
 /**
+ * Résout la liste de villes pour une campagne :
+ *  - custom_subset → customVilleSlugs (ou anchorVilleSlugs en fallback)
+ *  - global_queue  → top-200 de CityGenerationOrder (pinned d'abord, puis rank)
+ *  - (héritage)    → anchorVilleSlugs de la campagne
+ */
+async function resolveVilleAnchors(campaign: {
+  villeScopeMode: string;
+  customVilleSlugs: string[];
+  anchorVilleSlugs: string[];
+  scope: string;
+}): Promise<string[]> {
+  if (campaign.villeScopeMode === "custom_subset") {
+    return campaign.customVilleSlugs.length > 0
+      ? campaign.customVilleSlugs
+      : campaign.anchorVilleSlugs;
+  }
+  if (campaign.anchorVilleSlugs.length > 0) return campaign.anchorVilleSlugs;
+  if (campaign.scope === "ville" || campaign.scope === "multi") {
+    const rows = await prisma.cityGenerationOrder.findMany({
+      orderBy: [{ pinned: "desc" }, { rank: "asc" }],
+      take: 200,
+      select: { villeSlug: true },
+    });
+    return rows.map((r) => r.villeSlug);
+  }
+  return [];
+}
+
+/**
  * Mode séquentiel : traite une seule ville à la fois.
  * Attend que tous les jobs de la ville courante soient terminés avant de passer à la suivante.
  * Met à jour currentCityIndex après enqueue de la nouvelle ville.
@@ -203,10 +232,10 @@ async function processSequentialCampaign(
     id: string;
     name: string;
     serviceSector: ServiceSector | null;
-    anchorVilleSlugs: string[];
     anchorDepartementCodes: string[];
     anchorRegionSlugs: string[];
     typeDistribution: unknown;
+    contentTypeWeights: unknown;
     audienceMix: unknown;
     searchIntentMix: unknown;
     scope: string;
@@ -218,11 +247,18 @@ async function processSequentialCampaign(
   toEnqueue: number,
   hasPerTypeMode: boolean,
   remainingByType: Partial<Record<ContentType, number>>,
+  villeAnchors: string[],
 ): Promise<number> {
-  const villeAnchors = campaign.anchorVilleSlugs;
   if (villeAnchors.length === 0) {
     // Pas de villes → fallback parallel (scope non-ville)
-    return processParallelCampaign(campaign, toEnqueue, hasPerTypeMode, remainingByType, undefined);
+    return processParallelCampaign(
+      campaign,
+      toEnqueue,
+      hasPerTypeMode,
+      remainingByType,
+      undefined,
+      villeAnchors,
+    );
   }
 
   const currentCityIdx = campaign.currentCityIndex ?? 0;
@@ -254,7 +290,9 @@ async function processSequentialCampaign(
   }
 
   // Ville courante terminée (ou jamais démarrée) → créer les jobs pour cette ville
-  const typeDist = campaign.typeDistribution as Record<ContentType, number>;
+  const typeDist = (
+    campaign.contentTypeWeights != null ? campaign.contentTypeWeights : campaign.typeDistribution
+  ) as Record<ContentType, number>;
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
 
@@ -305,10 +343,10 @@ async function processParallelCampaign(
     id: string;
     name: string;
     serviceSector: ServiceSector | null;
-    anchorVilleSlugs: string[];
     anchorDepartementCodes: string[];
     anchorRegionSlugs: string[];
     typeDistribution: unknown;
+    contentTypeWeights: unknown;
     audienceMix: unknown;
     searchIntentMix: unknown;
     scope: string;
@@ -317,12 +355,14 @@ async function processParallelCampaign(
   toEnqueue: number,
   hasPerTypeMode: boolean,
   remainingByType: Partial<Record<ContentType, number>>,
-  forcedVilleSlug?: string,
+  forcedVilleSlug: string | undefined,
+  villeAnchors: string[],
 ): Promise<number> {
-  const typeDist = campaign.typeDistribution as Record<ContentType, number>;
+  const typeDist = (
+    campaign.contentTypeWeights != null ? campaign.contentTypeWeights : campaign.typeDistribution
+  ) as Record<ContentType, number>;
   const audienceMix = campaign.audienceMix as Record<string, number>;
   const intentMix = campaign.searchIntentMix as Record<SearchIntent, number> | null;
-  const villeAnchors = campaign.anchorVilleSlugs;
   const deptAnchors = campaign.anchorDepartementCodes;
   const regionAnchors = campaign.anchorRegionSlugs;
 
@@ -385,7 +425,6 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   }
 
   const batchSettings = await readContentGenConfig<BatchSettings>("batches", {
-    dailyBatchSize: 20,
     workersConcurrency: 3,
   });
 
@@ -401,11 +440,11 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
 
   // Sprint 7 V2 : si dailyTargetByType configuré, on dérive `perCampaignTick`
   // depuis les décisions anti-burst (somme des enqueueCount actuels). Sinon
-  // fallback V1 = dailyBatchSize global.
+  // fallback V2 = ceil(campaign.dailyArticles / 96) par campagne.
   const perTypeTargets = batchSettings.dailyTargetByType ?? {};
   const hasPerTypeMode = Object.values(perTypeTargets).some((v) => (v ?? 0) > 0);
 
-  let tickBudget: number;
+  let tickBudget = 0;
   let perTypeDecisions: ReadonlyArray<{ contentType: ContentType; enqueueCount: number }> = [];
   if (hasPerTypeMode) {
     const startOfDayUtc = new Date();
@@ -430,12 +469,8 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       console.log("[orchestrator] per-type schedule says nothing to enqueue this tick");
       return;
     }
-  } else {
-    tickBudget = batchSettings.dailyBatchSize;
   }
-
-  // Repartition equitable du tick budget entre campagnes actives
-  const perCampaignTick = Math.max(1, Math.floor(tickBudget / runningCampaigns.length));
+  // !hasPerTypeMode → budget V2 per-campaign (dailyArticles / 96 ticks/day), computed in loop
 
   // Sprint 7 V2 : compteur résiduel par type pour distribuer entre campagnes
   const remainingByType: Partial<Record<ContentType, number>> = {};
@@ -485,7 +520,13 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       }
       continue;
     }
+
+    // V2 : budget par campagne — per-type ou per-campaign dailyArticles
+    const perCampaignTick = hasPerTypeMode
+      ? Math.max(1, Math.floor(tickBudget / runningCampaigns.length))
+      : Math.max(1, Math.ceil(((campaign.dailyArticles ?? 30) as number) / 96));
     const toEnqueue = Math.min(perCampaignTick, remaining);
+    const villeAnchors = await resolveVilleAnchors(campaign);
 
     // Sprint Campaign Controls — dispatch selon cityProcessingMode
     let enqueued: number;
@@ -495,6 +536,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
         toEnqueue,
         hasPerTypeMode,
         remainingByType,
+        villeAnchors,
       );
     } else {
       enqueued = await processParallelCampaign(
@@ -503,6 +545,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
         hasPerTypeMode,
         remainingByType,
         undefined,
+        villeAnchors,
       );
     }
     totalEnqueued += enqueued;
@@ -515,7 +558,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
 
   console.log(
     `[orchestrator] tick OK — ${totalEnqueued} jobs enqueued across ${runningCampaigns.length} campaigns ` +
-      `(mode=${hasPerTypeMode ? "per-type-antiburst" : "global-v1"}, tickBudget=${tickBudget})`,
+      `(mode=${hasPerTypeMode ? "per-type-antiburst" : "per-campaign-dailyArticles"}, tickBudget=${tickBudget})`,
   );
 }
 
