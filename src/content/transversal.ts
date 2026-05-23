@@ -125,56 +125,57 @@ export interface FaqEntry {
 
 export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
-    id: "geo-paris",
+    id: "geo-france",
     fr: {
-      question: "Réalisez-vous des audits IA à Paris et en Île-de-France ?",
+      question: "Couvrez-vous toute la France — métropole et outre-mer ?",
       answer:
-        "Oui. Notre siège est à Paris et nous intervenons dans toute l'Île-de-France (75, 92, 93, 94, 77, 78, 91, 95) en présentiel ou à distance. Délai de premier rendez-vous : 5 jours ouvrés.",
+        "Oui. Nous intervenons partout en France : Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire, Corse — ainsi qu'en Outre-mer (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte).",
     },
     en: {
-      question: "Do you provide AI audits in Paris and Île-de-France?",
+      question: "Do you cover the whole of France — mainland and overseas?",
       answer:
-        "Yes. Our office is in Paris and we operate across the whole Île-de-France region (75, 92, 93, 94, 77, 78, 91, 95) on-site or remote. First meeting within 5 working days.",
+        "Yes. We operate everywhere in France: Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Brittany, Grand Est, Normandy, Bourgogne-Franche-Comté, Centre-Val de Loire, Corsica — as well as Overseas territories (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte).",
     },
   },
   {
     id: "geo-metropoles",
     fr: {
       question:
-        "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux) ?",
+        "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui. Nous nous déplaçons régulièrement à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice. Frais de déplacement inclus pour les capitales régionales.",
+        "Oui. Nos consultants se déplacent dans toutes les capitales régionales : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement toute ville française. Frais de déplacement inclus.",
     },
     en: {
-      question: "Do you work in regional cities (Lyon, Marseille, Toulouse, Bordeaux)?",
+      question:
+        "Do you work in regional cities (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…)?",
       answer:
-        "Yes. We regularly travel to Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice. Travel costs included for regional capitals.",
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — and more broadly any French city. Travel costs included.",
     },
   },
   {
-    id: "geo-province",
+    id: "geo-tpe-rural",
     fr: {
-      question: "Et en province ou en zone rurale, pour les TPE et PME ?",
+      question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
       answer:
-        "Absolument. Nous accompagnons artisans, commerçants, PME et ETI partout en France métropolitaine. Le mode distance est souvent plus efficace pour ces formats, sans perdre en qualité d'accompagnement.",
+        "Absolument. Nous accompagnons artisans, commerçants, TPE, PME et ETI partout en France, y compris en zone rurale et petites villes. Le format à distance est souvent plus rentable pour ces structures — sans perdre en qualité d'accompagnement.",
     },
     en: {
-      question: "What about smaller towns or rural areas, for SMEs?",
+      question: "What about SMEs, craftsmen in rural areas or small towns?",
       answer:
-        "Absolutely. We support craftsmen, retailers, SMEs and mid-cap companies across mainland France. Remote mode is often more effective for these formats, without losing quality of support.",
+        "Absolutely. We support craftsmen, retailers, SMEs and mid-cap companies across France, including rural areas and small towns. Remote format is often more cost-effective for these structures — without losing quality of support.",
     },
   },
   {
-    id: "geo-distance",
+    id: "geo-distance-international",
     fr: {
-      question: "Pouvez-vous réaliser l'audit ou la formation à distance ?",
+      question: "Pouvez-vous intervenir à distance ou à l'international ?",
       answer:
-        "Oui, intégralement à distance si vous préférez. Visio sécurisée, partage d'écran chiffré, livrables transmis sous 48h. Nous proposons aussi un format hybride (1 jour sur site + suite à distance).",
+        "Oui aux deux. Visio sécurisée, partage d'écran chiffré, livrables sous 48h. Nous intervenons en français ou en anglais, dans toute l'Union européenne et au-delà (Suisse, Royaume-Uni, Québec, Maghreb francophone). Format hybride possible (présentiel + remote).",
     },
     en: {
-      question: "Can the audit or training be delivered fully remote?",
+      question: "Can you work fully remote or internationally?",
       answer:
-        "Yes, fully remote if you prefer. Secure video calls, encrypted screen sharing, deliverables within 48h. We also offer a hybrid format (1 day on-site + remote follow-up).",
+        "Yes to both. Secure video calls, encrypted screen sharing, deliverables within 48h. We deliver in French or English, across the European Union and beyond (Switzerland, UK, Quebec, French-speaking North Africa). Hybrid format available (on-site + remote).",
     },
   },
   {
