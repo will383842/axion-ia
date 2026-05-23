@@ -53,12 +53,14 @@ Cap journalier atomique + drip window + rampe progressive. Status `awaiting_publ
 - ```ts
 
   ```
+
 - const maxPublishPerDay = await getEffectivePublishCap();
 - const redisKey = `axion:pub:${today}`;
 - const countAfterIncr = await redis.incr(redisKey);
 - ```
 
   ```
+
 - Atomicité INCR Redis confirmée. TTL set jusqu'à minuit UTC au premier incr.
 - ⚠️ DB `content_gen_config` VIDE en local — le cap utilise donc le fallback Prisma (à confirmer en prod : `SELECT * FROM content_gen_config WHERE key='MAX_PUBLISH_PER_DAY'`).
 

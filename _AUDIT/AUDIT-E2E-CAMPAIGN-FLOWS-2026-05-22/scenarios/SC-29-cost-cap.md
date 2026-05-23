@@ -51,11 +51,13 @@ Cascade kill-switch robuste, idempotent, audit trail. Manque tests dédiés.
 - ```ts
 
   ```
+
 - where: { key: 'kill_switch' },
 - create: { key: 'kill_switch', ... }
 - ```
 
   ```
+
 - `alertCostCap80` invoked when 80% monthly cap reached (line 216-220).
 - ⚠️ DB `content_gen_config` VIDE en local — pas de row `kill_switch` ni `provider_*_disabled`. Le cost-tracker fonctionnera dès qu'une row sera créée par un cost overflow réel.
 

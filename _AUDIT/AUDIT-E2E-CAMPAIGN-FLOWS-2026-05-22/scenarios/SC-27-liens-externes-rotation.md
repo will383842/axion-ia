@@ -47,12 +47,14 @@ Sélection + filtres + monitor solides MAIS rotation **non boucle de feedback** 
 - ```ts
 
   ```
+
 - import { trackExternalLinksUsage, detectHallucinations } from '@/data/external-links/helpers';
 - ...
 - await trackExternalLinksUsage(linksToTrack);
 - ```
 
   ```
+
 - Sprint External Links Database livré (2026-05-22, commit `8ed99871`) — corrige le gap signalé.
 - ⚠️ Schema `external_link_usage` confirmé sans FK constraint vers `external_link_id` (P1-4 audit confirmé runtime — pas de FK trouvée via `information_schema.table_constraints`).
 

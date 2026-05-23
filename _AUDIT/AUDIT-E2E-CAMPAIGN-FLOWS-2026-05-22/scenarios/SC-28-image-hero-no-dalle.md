@@ -45,10 +45,12 @@ Règle absolue "zéro DALL-E" stricte. Aucun fallback IA générative. Code alig
 - ```ts
 
   ```
+
 - isAiGenerated: false,
 - ```
 
   ```
+
 - Doctrine 0 IA appliquée comme filtre DB.
 - Tests `assign-hero-image.spec.ts:60-66` confirment le filtre `isActive=true + isAiGenerated=false + deletedAt=null`.
 - Schema `image_assets.isAiGenerated` (boolean) présent.
