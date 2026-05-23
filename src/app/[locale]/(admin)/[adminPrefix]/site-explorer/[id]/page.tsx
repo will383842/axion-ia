@@ -1,0 +1,251 @@
+// Site Explorer — Détail route — Sprint Site Explorer Admin 2026-05-22.
+
+import type { Metadata } from "next";
+import { redirect, notFound } from "next/navigation";
+import { auth } from "@/auth";
+import { getSiteRouteDetail, triggerInspection, resolveAnomaly } from "@/server/actions/site-explorer/site-routes";
+import { SiteRouteStatusBadge } from "@/components/admin/site-explorer/SiteRouteStatusBadge";
+import { adminPath } from "@/lib/admin-path";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Détail URL — Site Explorer Admin",
+  robots: { index: false, follow: false },
+};
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+const GITHUB_REPO = "https://github.com/will383842/axion-ia/blob/main";
+
+interface PageProps {
+  params: Promise<{ locale: string; adminPrefix: string; id: string }>;
+}
+
+export default async function SiteRouteDetailPage({ params }: PageProps) {
+  const { adminPrefix, id } = await params;
+  const session = await auth();
+  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
+
+  const route = await getSiteRouteDetail(id);
+  if (!route) notFound();
+
+  const backUrl = adminPath("fr", "site-explorer");
+  const displayPath = route.pathRendered ?? route.pathPattern;
+  const isResolvable = !displayPath.includes("[");
+
+  async function handleReInspect() {
+    "use server";
+    await triggerInspection(id);
+    redirect(adminPath("fr", `site-explorer/${id}`));
+  }
+
+  return (
+    <div className="space-y-6 p-6">
+      <div className="flex items-center gap-3">
+        <a href={backUrl} className="text-blue-600 hover:underline text-sm">
+          ← Site Explorer
+        </a>
+        <span className="text-gray-300">/</span>
+        <code className="text-sm text-gray-700">{displayPath}</code>
+      </div>
+
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900 font-mono">
+            {displayPath}
+          </h1>
+          {route.metaTitle && (
+            <p className="mt-1 text-gray-600">{route.metaTitle}</p>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <SiteRouteStatusBadge status={route.status} httpStatus={route.httpStatus} />
+          {isResolvable && (
+            <a
+              href={`${SITE_URL}${displayPath}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+            >
+              🌐 Voir la page
+            </a>
+          )}
+          {route.editable && route.editorRoute && (
+            <a
+              href={route.editorRoute}
+              className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+            >
+              ✏️ Éditer
+            </a>
+          )}
+          {!route.editable && route.filePath && (
+            <a
+              href={`${GITHUB_REPO}/${route.filePath}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
+              title="Page statique — voir le code source"
+            >
+              📁 Code source
+            </a>
+          )}
+          {isResolvable && (
+            <form action={handleReInspect}>
+              <button
+                type="submit"
+                className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+              >
+                🔄 Re-inspecter
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Métadonnées */}
+        <section className="rounded-lg border border-gray-200 p-4 space-y-3">
+          <h2 className="font-semibold text-gray-900">Métadonnées SEO</h2>
+          <dl className="space-y-2 text-sm">
+            <Row label="Type" value={route.type} />
+            <Row label="Section" value={route.section ?? "—"} />
+            <Row label="metaTitle" value={route.metaTitle ?? "—"} mono />
+            <Row label="metaDescription" value={route.metaDescription ?? "—"} />
+            <Row label="H1" value={route.h1 ?? "—"} />
+            <Row label="Source" value={route.sourceDbTable ?? "static"} />
+            {route.sourceDbId && <Row label="Source DB ID" value={route.sourceDbId} mono />}
+          </dl>
+        </section>
+
+        {/* Métriques contenu */}
+        <section className="rounded-lg border border-gray-200 p-4 space-y-3">
+          <h2 className="font-semibold text-gray-900">Métriques contenu</h2>
+          <dl className="space-y-2 text-sm">
+            <Row label="Mots" value={route.wordCount?.toLocaleString("fr-FR") ?? "—"} />
+            <Row label="JSON-LD" value={route.jsonLdCount?.toString() ?? "—"} />
+            <Row label="Liens internes" value={route.internalLinkCount?.toString() ?? "—"} />
+            <Row label="Liens externes" value={route.externalLinkCount?.toString() ?? "—"} />
+            <Row
+              label="AiDisclaimer"
+              value={
+                route.hasAiDisclaimer === null ? "?" :
+                route.hasAiDisclaimer ? "✅ Présent" : "❌ Absent"
+              }
+            />
+            <Row
+              label="Dernière inspection"
+              value={route.lastInspectedAt
+                ? new Date(route.lastInspectedAt).toLocaleString("fr-FR")
+                : "Jamais"}
+            />
+          </dl>
+        </section>
+
+        {/* Lighthouse */}
+        {(route.lighthousePerf !== null || route.lighthouseSeo !== null) && (
+          <section className="rounded-lg border border-gray-200 p-4 space-y-3">
+            <h2 className="font-semibold text-gray-900">Lighthouse</h2>
+            <div className="flex gap-4">
+              {[
+                { label: "Perf", score: route.lighthousePerf },
+                { label: "SEO", score: route.lighthouseSeo },
+                { label: "A11y", score: route.lighthouseA11y },
+                { label: "BP", score: route.lighthouseBP },
+              ].map(({ label, score }) => (
+                score !== null && (
+                  <div key={label} className="text-center">
+                    <div
+                      className={`text-2xl font-bold ${
+                        (score ?? 0) >= 90
+                          ? "text-green-600"
+                          : (score ?? 0) >= 70
+                            ? "text-orange-500"
+                            : "text-red-600"
+                      }`}
+                    >
+                      {score}
+                    </div>
+                    <div className="text-xs text-gray-500">{label}</div>
+                  </div>
+                )
+              ))}
+            </div>
+            {route.lighthouseRunAt && (
+              <p className="text-xs text-gray-400">
+                Audit: {new Date(route.lighthouseRunAt).toLocaleString("fr-FR")}
+              </p>
+            )}
+          </section>
+        )}
+
+        {/* Anomalies */}
+        {route.anomalies.length > 0 && (
+          <section className="rounded-lg border border-red-200 bg-red-50 p-4 space-y-3">
+            <h2 className="font-semibold text-red-800">
+              ⚠️ Anomalies ({route.anomalies.length})
+            </h2>
+            <ul className="space-y-2">
+              {route.anomalies.map((a) => (
+                <li key={a.id} className="flex items-start justify-between gap-3">
+                  <div>
+                    <span
+                      className={`inline-flex rounded px-1.5 py-0.5 text-xs font-medium mr-1.5 ${
+                        a.severity === "high"
+                          ? "bg-red-100 text-red-700"
+                          : a.severity === "medium"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {a.severity}
+                    </span>
+                    <span className="text-sm text-red-800">{a.description}</span>
+                  </div>
+                  <ResolveButton anomalyId={a.id} routeId={id} adminPrefix={adminPrefix} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Composants auxiliaires ────────────────────────────────────────────────────
+
+function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="flex gap-2">
+      <dt className="w-32 shrink-0 text-gray-500">{label}</dt>
+      <dd className={`break-all text-gray-900 ${mono ? "font-mono text-xs" : ""}`}>{value}</dd>
+    </div>
+  );
+}
+
+function ResolveButton({
+  anomalyId,
+  routeId,
+  adminPrefix,
+}: {
+  anomalyId: string;
+  routeId: string;
+  adminPrefix: string;
+}) {
+  async function handleResolve() {
+    "use server";
+    await resolveAnomaly(anomalyId);
+    redirect(adminPath("fr", `site-explorer/${routeId}`));
+  }
+
+  return (
+    <form action={handleResolve}>
+      <button
+        type="submit"
+        className="shrink-0 rounded border border-red-300 px-2 py-0.5 text-xs text-red-600 hover:bg-red-100"
+      >
+        Résoudre
+      </button>
+    </form>
+  );
+}
