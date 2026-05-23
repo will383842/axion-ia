@@ -11,26 +11,31 @@ interface LogosMarqueeProps {
   className?: string;
 }
 
-// Grille statique 2 lignes — refonte « polish v2 » Will 2026-05-23 :
-// (1) logos en COULEUR (pas grayscale) pour pep's visuel
-// (2) plus GROS (hauteur effective ~56-64 px vs 40 px avant)
-// (3) STABLES, ne bougent pas (suppression du marquee défilant)
-// (4) responsive : 4 col mobile / 5 sm / 6 md / 8 lg / 9 xl
+// Polish v8 (Will 2026-05-23) : NORMALISATION VISUELLE STRICTE des logos.
+// Chaque logo est dans un container fixe de même dimension (h-16 w-32),
+// avec `object-contain` → l'image est centrée et redimensionnée pour
+// rentrer en respectant son ratio. Tous les logos paraissent à la même
+// "grosseur visuelle" malgré leurs ratios SVG différents (carré Wikimedia
+// vs wordmark allongé).
 //
-// SSR pure, 0 JS shipped. Aspect ratio préservé via width/height intrinsèques
-// → 0 CLS. Hover subtil (scale 1.05) sans casser la lecture.
+// Avant : `h-9 w-auto` faisait que les logos carrés (Wikimedia avec fond
+// blanc 192x192) paraissaient minuscules à côté des wordmarks allongés.
+// Maintenant : tous occupent la même boîte 128×64 px.
+//
+// Grille responsive : 3 col mobile / 4 sm / 5 md / 6 lg / 9 xl (9 = ligne
+// unique sur 1280+ avec 17 logos = 9+8 sur 2 lignes).
 export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
   return (
     <ul
       aria-label="Logos clients Axion-IA"
       className={cn(
-        "grid items-center justify-items-center gap-x-8 gap-y-10 sm:gap-x-12 sm:gap-y-12",
+        "grid items-center justify-items-center gap-x-4 gap-y-6 sm:gap-x-8 sm:gap-y-8",
         "grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-9",
         className,
       )}
     >
       {logos.map((logo) => (
-        <li key={logo.slug} className="flex h-12 w-full items-center justify-center sm:h-14">
+        <li key={logo.slug} className="flex h-16 w-full max-w-[128px] items-center justify-center">
           <Image
             src={logo.src}
             alt={`Logo ${logo.name} — client Axion-IA`}
@@ -38,7 +43,7 @@ export function LogosMarquee({ logos, className }: LogosMarqueeProps) {
             height={logo.height ?? 60}
             loading="lazy"
             decoding="async"
-            className="h-9 w-auto max-w-full object-contain transition-transform duration-300 hover:scale-105 sm:h-10"
+            className="max-h-12 max-w-full object-contain transition-transform duration-300 hover:scale-105"
             data-client={logo.slug}
           />
         </li>

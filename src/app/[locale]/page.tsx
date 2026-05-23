@@ -601,26 +601,12 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── LOGOS CLIENTS (Blueprint §8) ─────────────
-          17 marques (8 logos officiels Wikimedia + 9 wordmarks). Marquee CSS
-          pur défilement infini, pause au hover, grayscale → couleur au hover.
-          Toutes ont l'accord écrit (cf. axionia/src/content/home-data.ts). */}
-      <section className="bg-bg border-border border-t border-b py-16 sm:py-20">
+      {/* ───────────── LOGOS CLIENTS — header retiré (polish v8 Will) ─────────────
+          Juste les 17 logos, pas de eyebrow/title/caption. Box normalisée
+          dans LogosMarquee pour que tous les logos paraissent à la même
+          taille visuelle (object-contain dans container fixe). */}
+      <section className="bg-bg border-border border-t border-b py-12 sm:py-16">
         <Container>
-          <FadeInOnView>
-            <div className="mb-10 text-center">
-              <p className="text-fg-muted text-[13px] font-semibold tracking-[0.18em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {t("logosEyebrow")}
-              </p>
-              <h2 className="text-fg mt-4 text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">
-                {t("logosTitle")}
-              </h2>
-              <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-sm leading-relaxed sm:text-base">
-                {t("logosCaption")}
-              </p>
-            </div>
-          </FadeInOnView>
           <LogosMarquee logos={CLIENT_LOGOS} />
         </Container>
       </section>
