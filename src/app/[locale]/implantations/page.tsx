@@ -303,13 +303,13 @@ export default async function ImplantationsHub({ params }: Props) {
 
       {/* CTA final */}
       <CtaBlock
-        eyebrow={isFr ? "Réservation directe" : "Direct booking"}
+        eyebrow={isFr ? "Pré-réservation sans engagement" : "No-commitment pre-booking"}
         title={isFr ? "Vous démarrez où ?" : "Where do you start?"}
         titleEm={isFr ? "Réservez en ligne" : "Book online"}
         description={
           isFr
-            ? "Calendrier réel temps réel. Acompte 50 % à la confirmation. Frais de déplacement inclus en intra-Paris et capitales régionales."
-            : "Real-time calendar. 50% deposit on confirmation. Travel fees included in inner-Paris and regional capitals."
+            ? "Pré-réservez votre créneau en ligne — formation ou intervention — sans engagement. Vous confirmez (acompte 50 %) quand vous êtes prêt. Calendrier temps réel, frais de déplacement inclus en intra-Paris et capitales régionales."
+            : "Pre-book your slot online — training or engagement — with no commitment. Confirm (50% deposit) when you're ready. Real-time calendar, travel fees included in inner-Paris and regional capitals."
         }
         cta={
           <div className="flex flex-wrap items-center justify-center gap-3">

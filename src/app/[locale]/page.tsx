@@ -1000,8 +1000,8 @@ export default async function Home({ params }: HomeProps) {
                 </h2>
                 <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
                   {isFr
-                    ? "Décrivez votre situation en 2 minutes. On revient vers vous sous 24h avec une analyse honnête, sans engagement."
-                    : "Describe your situation in 2 minutes. We'll get back to you within 24h with an honest analysis, no commitment."}
+                    ? "Décrivez votre projet en 2 minutes. On vous répond sous 24h — sans engagement."
+                    : "Describe your project in 2 minutes. We reply within 24h — no commitment."}
                 </p>
               </div>
               <Link
@@ -1190,8 +1190,8 @@ export default async function Home({ params }: HomeProps) {
           (verticale phare, génère le plus de maillage régional). */}
       <LocalCoverageSection
         isFr={isFr}
-        serviceLabelFr="L'audit IA"
-        serviceLabelEn="AI audit"
+        serviceLabelFr="Axion-IA"
+        serviceLabelEn="Axion-IA"
         serviceSlug="audit"
         tone="sand"
       />
