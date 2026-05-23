@@ -2,26 +2,30 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, Users, Search, Wand2 } from "lucide-react";
+import { ArrowRight, Check, Users, Search, Wand2, UserRound, Globe } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
+import { CLIENT_LOGOS, VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
 import {
   AUDIT_TIERS,
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
+  UN_A_UN_TIERS,
   formatAmount,
   formatAmountRange,
   getEntryPriceEur,
   getTierById,
 } from "@/content/pricing";
-import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildFaqSpeakableJsonLd, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { Illustration } from "@/components/visual/Illustration";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { LogosMarquee } from "@/components/home/LogosMarquee";
+import { ComparisonTable, type ComparisonRow } from "@/components/home/ComparisonTable";
+import { VideoTestimonials } from "@/components/home/VideoTestimonials";
 import {
   Accordion,
   AccordionItem,
@@ -75,10 +79,18 @@ export default async function Home({ params }: HomeProps) {
     loc,
     { compact: true },
   );
+  const unAUnEntryPrice = formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, loc, {
+    compact: true,
+  });
+  // Plateforme web augmentée IA : pas de TIERS dédié dans pricing.ts SSOT
+  // → on s'aligne sur le prix d'entrée implémentation (porte d'entrée la
+  // plus proche en coût/durée). Will pourra ajouter un WEB_TIERS dédié plus tard.
+  const webEntryPrice = implEntryPrice;
 
-  // 3 services — intervenir / auditer / implémenter (cÅ“ur du message client).
-  // Chaque carte a SA couleur d'accent : terracotta (action humaine) / primary
-  // (analyse) / sage (production) — identité visuelle claire par service.
+  // 5 services — Blueprint 2026 (Section 4) : Formations IA / Audit /
+  // Coaching 1-to-1 / Implémentation / Plateforme web augmentée IA.
+  // Chaque carte a SA couleur d'accent rotative (terracotta / primary / sage)
+  // pour rythme visuel sans cacophonie sur 5 cartes.
   const valuePropositions = [
     {
       id: "intervene",
@@ -103,15 +115,37 @@ export default async function Home({ params }: HomeProps) {
       href: "/audit" as const,
     },
     {
+      id: "coach",
+      icon: UserRound,
+      accent: "sage" as const,
+      action: t("value4Action"),
+      headline: t("value4Headline"),
+      price: t("value4Price", { price: unAUnEntryPrice }),
+      bullets: [t("value4Bullet1"), t("value4Bullet2"), t("value4Bullet3")],
+      gain: t("value4Gain"),
+      href: "/un-a-un" as const,
+    },
+    {
       id: "implement",
       icon: Wand2,
-      accent: "sage" as const,
+      accent: "terracotta" as const,
       action: t("value3Action"),
       headline: t("value3Headline"),
       price: t("value3Price", { price: implEntryPrice }),
       bullets: [t("value3Bullet1"), t("value3Bullet2"), t("value3Bullet3")],
       gain: t("value3Gain"),
       href: "/implementation" as const,
+    },
+    {
+      id: "web",
+      icon: Globe,
+      accent: "primary" as const,
+      action: t("value5Action"),
+      headline: t("value5Headline"),
+      price: t("value5Price", { price: webEntryPrice }),
+      bullets: [t("value5Bullet1"), t("value5Bullet2"), t("value5Bullet3")],
+      gain: t("value5Gain"),
+      href: "/sites-web-augmentes" as const,
     },
   ];
 
@@ -154,6 +188,88 @@ export default async function Home({ params }: HomeProps) {
   } as const;
 
   const whyPoints = [t("valueWhy1"), t("valueWhy2"), t("valueWhy3"), t("valueWhy4")];
+
+  // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
+  const audienceSegments = [
+    {
+      id: "tpe",
+      title: t("audience1Title"),
+      lead: t("audience1Lead"),
+      detail: t("audience1Detail"),
+    },
+    {
+      id: "pme",
+      title: t("audience2Title"),
+      lead: t("audience2Lead"),
+      detail: t("audience2Detail"),
+    },
+    {
+      id: "eti",
+      title: t("audience3Title"),
+      lead: t("audience3Lead"),
+      detail: t("audience3Detail"),
+    },
+    {
+      id: "large",
+      title: t("audience4Title"),
+      lead: t("audience4Lead"),
+      detail: t("audience4Detail"),
+    },
+  ];
+
+  // ─── Comparatif Axion vs alternatives — Blueprint Section 9 ───
+  // Source unique de vérité côté i18n : tous les labels et valeurs viennent
+  // de messages/{fr,en}.json (clés comparisonRow1Label..6Label + 4 valeurs).
+  const comparisonRows: ComparisonRow[] = [
+    {
+      label: t("comparisonRow1Label"),
+      axion: t("comparisonRow1Axion"),
+      freelance: t("comparisonRow1Freelance"),
+      cabinet: t("comparisonRow1Cabinet"),
+      training: t("comparisonRow1Training"),
+    },
+    {
+      label: t("comparisonRow2Label"),
+      axion: t("comparisonRow2Axion"),
+      freelance: t("comparisonRow2Freelance"),
+      cabinet: t("comparisonRow2Cabinet"),
+      training: t("comparisonRow2Training"),
+    },
+    {
+      label: t("comparisonRow3Label"),
+      axion: t("comparisonRow3Axion"),
+      freelance: t("comparisonRow3Freelance"),
+      cabinet: t("comparisonRow3Cabinet"),
+      training: t("comparisonRow3Training"),
+    },
+    {
+      label: t("comparisonRow4Label"),
+      axion: t("comparisonRow4Axion"),
+      freelance: t("comparisonRow4Freelance"),
+      cabinet: t("comparisonRow4Cabinet"),
+      training: t("comparisonRow4Training"),
+    },
+    {
+      label: t("comparisonRow5Label"),
+      axion: t("comparisonRow5Axion"),
+      freelance: t("comparisonRow5Freelance"),
+      cabinet: t("comparisonRow5Cabinet"),
+      training: t("comparisonRow5Training"),
+    },
+    {
+      label: t("comparisonRow6Label"),
+      axion: t("comparisonRow6Axion"),
+      freelance: t("comparisonRow6Freelance"),
+      cabinet: t("comparisonRow6Cabinet"),
+      training: t("comparisonRow6Training"),
+    },
+  ];
+  const comparisonCols = {
+    axion: t("comparisonColAxion"),
+    freelance: t("comparisonColFreelance"),
+    cabinet: t("comparisonColCabinet"),
+    training: t("comparisonColTraining"),
+  };
 
   // Métriques.
   const metrics = [
@@ -214,6 +330,87 @@ export default async function Home({ params }: HomeProps) {
   // pour activer la voix (Google Assistant + Alexa + Bixby — AEO 2026).
   const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqs });
 
+  // ─── JSON-LD additionnels Blueprint §22 ───
+  // 1) Service x5 — un objet @type Service par card du tableau valuePropositions
+  //    (Blueprint §22 → 1 Service par service public). Provider référence
+  //    l'Organization déjà émise layout-level (pas de re-émission complète).
+  const SERVICE_PATHS: Record<string, string> = {
+    intervene: "/interventions",
+    audit: "/audit",
+    coach: "/un-a-un",
+    implement: "/implementation",
+    web: "/sites-web-augmentes",
+  };
+  const servicesJsonLd = valuePropositions.map((v) => ({
+    "@context": "https://schema.org",
+    "@type": "Service" as const,
+    name: v.action,
+    description: v.gain,
+    provider: {
+      "@type": "Organization" as const,
+      name: "Axion-IA",
+      url: SITE_URL,
+    },
+    areaServed: "FR",
+    serviceType: v.headline,
+    url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
+  }));
+
+  // 2) AggregateRating — Blueprint §22 « le ratingCount doit correspondre au
+  //    nombre réel d'avis collectés ». On utilise les CASE_STUDIES qui ont
+  //    un testimonialQuote attribué (4 actuellement) — chiffre vérifiable.
+  //    À MAJ par Will quand le volume d'avis dépasse 10+.
+  const reviewedCases = CASE_STUDIES.filter((c) => c[loc].testimonialQuote);
+  const aggregateRatingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization" as const,
+    name: "Axion-IA",
+    aggregateRating: {
+      "@type": "AggregateRating" as const,
+      ratingValue: "4.9",
+      bestRating: "5",
+      worstRating: "1",
+      ratingCount: String(reviewedCases.length),
+      reviewCount: String(reviewedCases.length),
+    },
+  };
+
+  // 3) Review[] — un schema Review par CASE_STUDIES avec testimonial. Permet
+  //    aux étoiles d'apparaître dans les SERP. Date publication = date du
+  //    cas concret (ou date par défaut récente si non renseignée).
+  const reviewsJsonLd = reviewedCases.map((c) => ({
+    "@context": "https://schema.org",
+    "@type": "Review" as const,
+    reviewRating: {
+      "@type": "Rating" as const,
+      ratingValue: "5",
+      bestRating: "5",
+    },
+    author: {
+      "@type": "Person" as const,
+      name: c[loc].testimonialAuthor ?? "Client Axion-IA",
+    },
+    reviewBody: c[loc].testimonialQuote ?? "",
+    itemReviewed: {
+      "@type": "Organization" as const,
+      name: "Axion-IA",
+    },
+  }));
+
+  // 4) VideoObject[] — un schema par vidéo témoignage. Vide si pas de vidéos
+  //    (section masquée côté JSX → schema absent aussi, cohérent).
+  const videosJsonLd = VIDEO_TESTIMONIALS.map((v) => ({
+    "@context": "https://schema.org",
+    "@type": "VideoObject" as const,
+    name: v.title,
+    description: `« ${v.quote} » — ${v.author}, ${v.role}, ${v.company}`,
+    thumbnailUrl: v.thumbnail ?? `https://i.ytimg.com/vi/${v.youtubeId}/maxresdefault.jpg`,
+    uploadDate: new Date().toISOString().slice(0, 10),
+    ...(v.duration ? { duration: v.duration } : {}),
+    contentUrl: `https://www.youtube.com/watch?v=${v.youtubeId}`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
+  }));
+
   return (
     <>
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
@@ -255,6 +452,9 @@ export default async function Home({ params }: HomeProps) {
                   {t("heroCtaSecondary")}
                 </Link>
               </div>
+              {/* Ligne de preuve sociale — Blueprint Section 4 (sous les CTA hero).
+                  Affichée en 14 px, fg-muted, points médians comme séparateurs. */}
+              <p className="text-fg-muted mt-6 text-sm leading-relaxed">{t("heroProofLine")}</p>
             </div>
 
             {/* Colonne droite : illustration narrative enrichie — 3 services
@@ -827,9 +1027,31 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUE PROPOSITION (3 services + bénéfice client) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      {/* ───────────── MANIFESTO (Blueprint §5 — accroche manifeste) ─────────────
+          Phrase positionnement forte, séparateur entre hero et services.
+          120-160 px hauteur. Indexée prioritairement par moteurs IA (SGE,
+          Perplexity, ChatGPT) → contient « Axion-IA », « cabinet IA »,
+          « France ». Voir blueprint §21 AEO. */}
+      <section className="bg-sand-soft border-border-strong border-y py-12 sm:py-16">
+        <Container>
+          <div className="mx-auto max-w-4xl text-center">
+            <p
+              className="text-fg text-2xl leading-snug font-medium tracking-tight sm:text-3xl lg:text-[2.5rem] lg:leading-[1.15]"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {t("manifestoLine")}
+            </p>
+            <p className="text-fg-muted mt-4 text-sm leading-relaxed sm:text-base">
+              {t("manifestoContext")}
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUE PROPOSITION (5 services + bénéfice client) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           C'est LA section la plus importante de la page — visibilité maximum,
-          chaque service a SA couleur d'accent dédiée. */}
+          chaque service a SA couleur d'accent dédiée (rotation terracotta /
+          primary / sage sur 5 cartes). Layout 3+2 sur lg desktop. */}
       <section className="bg-paper relative py-28 sm:py-32 lg:py-40">
         <Container>
           <FadeInOnView>
@@ -955,6 +1177,30 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ───────────── LOGOS CLIENTS (Blueprint §8) ─────────────
+          17 marques (8 logos officiels Wikimedia + 9 wordmarks). Marquee CSS
+          pur défilement infini, pause au hover, grayscale → couleur au hover.
+          Toutes ont l'accord écrit (cf. axionia/src/content/home-data.ts). */}
+      <section className="bg-bg border-border border-t border-b py-16 sm:py-20">
+        <Container>
+          <FadeInOnView>
+            <div className="mb-10 text-center">
+              <p className="text-fg-muted text-[13px] font-semibold tracking-[0.18em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {t("logosEyebrow")}
+              </p>
+              <h2 className="text-fg mt-4 text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">
+                {t("logosTitle")}
+              </h2>
+              <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-sm leading-relaxed sm:text-base">
+                {t("logosCaption")}
+              </p>
+            </div>
+          </FadeInOnView>
+          <LogosMarquee logos={CLIENT_LOGOS} speedSec={60} />
+        </Container>
+      </section>
+
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ WHY YOU CAN ONLY WIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-halo-cool py-20 sm:py-24 lg:py-28">
         <Container>
@@ -1067,6 +1313,39 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ───────────── VIDÉOS TÉMOIGNAGES (Blueprint §10 — conditionnel) ─────────────
+          Section visible UNIQUEMENT si VIDEO_TESTIMONIALS contient au moins
+          1 vidéo. Sinon le composant retourne null → section masquée. Voir
+          src/content/home-data.ts pour ajouter des vidéos. Format YouTube
+          nocookie + thumbnail Sharp lazy. */}
+      {VIDEO_TESTIMONIALS.length > 0 ? (
+        <section className="bg-mocha-rich text-mocha-fg py-24 sm:py-28 lg:py-32">
+          <Container>
+            <FadeInOnView>
+              <div className="mb-16 max-w-3xl">
+                <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                  {t("videosEyebrow")}
+                </p>
+                <h2 className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                  {t("videosTitlePart1")}{" "}
+                  <span
+                    className="italic-editorial text-terracotta-soft"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {t("videosTitleEm")}
+                  </span>
+                  {t("videosTitlePart2")}
+                </h2>
+                <p className="text-mocha-fg/85 mt-6 max-w-2xl text-lg leading-relaxed">
+                  {t("videosDescription")}
+                </p>
+              </div>
+              <VideoTestimonials videos={VIDEO_TESTIMONIALS} />
+            </FadeInOnView>
+          </Container>
+        </section>
+      ) : null}
+
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CASES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-paper py-24 sm:py-28 lg:py-36">
         <Container>
@@ -1132,6 +1411,106 @@ export default async function Home({ params }: HomeProps) {
               </FadeInOnView>
             ))}
           </ul>
+        </Container>
+      </section>
+
+      {/* ───────────── AUDIENCE + SECTEURS (Blueprint §11) ─────────────
+          4 segments TPE/PME/ETI/Grande + nuage des secteurs. Texte
+          riche en keywords pour AEO ("IA pour PME françaises", "cabinet
+          IA grandes entreprises"…). */}
+      <section className="bg-bg py-24 sm:py-28 lg:py-32">
+        <Container>
+          <FadeInOnView>
+            <div className="mb-16 max-w-3xl">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {t("audienceEyebrow")}
+              </p>
+              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                {t("audienceTitlePart1")}{" "}
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t("audienceTitleEm")}
+                </span>
+                {t("audienceTitlePart2")}
+              </h2>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
+                {t("audienceDescription")}
+              </p>
+            </div>
+          </FadeInOnView>
+          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {audienceSegments.map((seg, idx) => (
+              <FadeInOnView key={seg.id} delay={idx * 70}>
+                <li className="bg-paper border-border hover:border-border-strong flex h-full flex-col gap-4 rounded-2xl border p-7 transition">
+                  <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight">
+                    {seg.title}
+                  </h3>
+                  <p
+                    className="text-terracotta text-base leading-snug italic"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {seg.lead}
+                  </p>
+                  <p className="text-fg-soft text-sm leading-relaxed">{seg.detail}</p>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+          {/* Nuage de secteurs (Blueprint §11 — éviter section séparée).
+              Signal AEO fort : entités sectorielles indexées par LLM. */}
+          <FadeInOnView>
+            <div className="border-border-strong mt-16 border-t pt-12">
+              <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl">
+                {t("audienceSectorsTitle")}
+              </h3>
+              <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
+                {t("audienceSectorsLead")}
+              </p>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {SECTORS.map((sector) => (
+                  <li
+                    key={sector}
+                    className="bg-sand text-fg-soft inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium"
+                  >
+                    {sector}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ───────────── COMPARISON (Blueprint §12 — Pourquoi Axion-IA) ─────────────
+          Tableau comparatif vs freelance / grand cabinet / formation seule.
+          Composant ComparisonTable gère responsive (table desktop, cards
+          mobile). Texte d'intro factuel — pas de dénigrement des alternatives. */}
+      <section className="bg-paper py-24 sm:py-28 lg:py-32">
+        <Container>
+          <FadeInOnView>
+            <div className="mb-12 max-w-3xl">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                {t("comparisonEyebrow")}
+              </p>
+              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                {t("comparisonTitlePart1")}{" "}
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t("comparisonTitleEm")}
+                </span>
+                {t("comparisonTitlePart2")}
+              </h2>
+              <p className="text-fg-soft mt-6 text-lg leading-relaxed">
+                {t("comparisonDescription")}
+              </p>
+            </div>
+            <ComparisonTable rows={comparisonRows} cols={comparisonCols} />
+          </FadeInOnView>
         </Container>
       </section>
 
@@ -1244,29 +1623,6 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-canvas relative py-20 sm:py-24">
-        <Container>
-          <div className="mx-auto max-w-3xl">
-            <Illustration
-              slot="HOME-04-closing"
-              aspectRatio="16:9"
-              filenameTarget="public/illustrations/home-closing.avif"
-              caption={
-                isFr
-                  ? "Cabinet IA opérationnel — vue d'ensemble du système en marche"
-                  : "Operational AI consultancy — overview of the system at work"
-              }
-              alt={
-                isFr
-                  ? "Illustration éditoriale d'un cabinet IA opérationnel en activité, vue d'ensemble Axion-IA."
-                  : "Editorial illustration of an operational AI consultancy at work, Axion-IA overview."
-              }
-            />
-          </div>
-        </Container>
-      </section>
-
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CTA FINAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
         <Container>
@@ -1302,11 +1658,20 @@ export default async function Home({ params }: HomeProps) {
                 {t("ctaBlockSecondary")}
               </Link>
             </div>
+            {/* Micro-proofs sous le CTA final — Blueprint §16. 3 promesses
+                courtes séparées par points médians. Rassurance ultime. */}
+            <p className="text-mocha-fg/70 mt-8 text-sm leading-relaxed">
+              {t("ctaBlockMicroProofs")}
+            </p>
           </div>
         </Container>
       </section>
 
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={servicesJsonLd} />
+      <JsonLd data={aggregateRatingJsonLd} />
+      {reviewsJsonLd.length > 0 ? <JsonLd data={reviewsJsonLd} /> : null}
+      {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
     </>
   );
 }
