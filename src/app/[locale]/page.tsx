@@ -3,7 +3,7 @@ import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Users, Search, Wand2, UserRound, Globe } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
@@ -106,7 +106,7 @@ export default async function Home({ params }: HomeProps) {
   const valuePropositions = [
     {
       id: "intervene",
-      icon: Users,
+      emoji: "🎓",
       accent: "terracotta" as const,
       action: t("value1Action"),
       headline: t("value1Headline"),
@@ -117,7 +117,7 @@ export default async function Home({ params }: HomeProps) {
     },
     {
       id: "audit",
-      icon: Search,
+      emoji: "🔍",
       accent: "primary" as const,
       action: t("value2Action"),
       headline: t("value2Headline"),
@@ -128,7 +128,7 @@ export default async function Home({ params }: HomeProps) {
     },
     {
       id: "coach",
-      icon: UserRound,
+      emoji: "🧑‍💼",
       accent: "sage" as const,
       action: t("value4Action"),
       headline: t("value4Headline"),
@@ -139,7 +139,7 @@ export default async function Home({ params }: HomeProps) {
     },
     {
       id: "implement",
-      icon: Wand2,
+      emoji: "⚙️",
       accent: "terracotta" as const,
       action: t("value3Action"),
       headline: t("value3Headline"),
@@ -150,12 +150,12 @@ export default async function Home({ params }: HomeProps) {
     },
     {
       id: "web",
-      icon: Globe,
+      emoji: "🌐",
       accent: "primary" as const,
       action: t("value5Action"),
       headline: t("value5Headline"),
       price: t("value5Price", { price: webEntryPrice }),
-      bullets: [t("value5Bullet1"), t("value5Bullet2"), t("value5Bullet3")],
+      bullets: [t("value5Bullet1")],
       gain: t("value5Gain"),
       href: "/sites-web-augmentes" as const,
     },
@@ -449,9 +449,11 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {t("heroDescription")}
               </p>
-              {/* Polish v6 (Will 2026-05-23) : suppression des 2 CTA hero + proof
-                  line. Les CTA sont maintenant les 5 cards services elles-mêmes
-                  (toute la card cliquable + bouton « Découvrir → » visible). */}
+              {/* Polish v7 (Will 2026-05-23) : pas de CTA hero (les 5 cards services
+                  font office de CTA). Proof line minimale réintégrée. */}
+              <p className="text-fg-muted mt-8 text-sm leading-relaxed sm:text-base">
+                <span className="text-terracotta font-semibold">{t("heroProofLine")}</span>
+              </p>
             </div>
 
             {/* Colonne droite : photo hero placeholder. Will drop l'image
@@ -527,7 +529,6 @@ export default async function Home({ params }: HomeProps) {
               toujours, grid responsive 320→1280+. */}
           <ul className="grid grid-cols-5 gap-2.5 md:gap-4">
             {valuePropositions.map((v, idx) => {
-              const Icon = v.icon;
               const a = accentClasses[v.accent];
               return (
                 <FadeInOnView key={v.id} delay={idx * 80}>
@@ -551,14 +552,12 @@ export default async function Home({ params }: HomeProps) {
                         0{idx + 1}
                       </span>
 
-                      {/* Icône accent — bulle paper en haut */}
+                      {/* Emoji accent — sur fond paper, taille proéminente */}
                       <span
-                        className={cn(
-                          "bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14",
-                          a.iconFg,
-                        )}
+                        className="bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14 md:text-[2rem]"
+                        aria-hidden="true"
                       >
-                        <Icon className="h-5 w-5 md:h-7 md:w-7" aria-hidden="true" />
+                        {v.emoji}
                       </span>
 
                       {/* Action — h3 TRÈS gros + headline + CTA visible */}
