@@ -59,6 +59,7 @@
     "content-gen:seed": "tsx prisma/seeds/content-gen/index.ts",
     "content-gen:seed-templates": "tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts",
     "content-gen:seed-cities": "tsx prisma/seeds/cities/seed-cities.ts",
+    "db:seed:cities-order": "tsx scripts/seed-city-generation-order.ts",
     "content-gen:seed-kb": "tsx prisma/seeds/content-gen/seed-kb-facts.ts",
     "content-gen:seed-keywords": "tsx prisma/seeds/content-gen/seed-keywords.ts",
     "content-gen:map-intents": "tsx prisma/seeds/content-gen/map-keywords-intents.ts",
