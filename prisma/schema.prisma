@@ -2524,6 +2524,21 @@ enum ContentType {
   guide_pilier
   qa_derived
   faq_standalone
+  // ─── Sprint v7 Phase 8 — 12 nouveaux content types ────────────────────────
+  // Ajoutés par migration 2026-05-23 (v7_phase8_add_12_content_types).
+  // Mapping generators dans src/server/content-gen/generators/index.ts.
+  long_tail_keyword
+  pain_point_solution
+  vs_comparator
+  alternative_to
+  top_x_in_y
+  how_to_x_in_y
+  best_for_x_in_y
+  calculator_roi
+  glossary_term
+  what_is_x
+  faq_geo
+  case_study_local
 }
 
 /// 12 statuts pipeline (§ 5.1 + § 27 boucle qualité v1.7).
