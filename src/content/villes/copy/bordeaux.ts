@@ -542,7 +542,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (traitement de commandes, lecture de factures, génération de fiches produits) pour un vignoble, un petit négociant ou une TPE de services bordelaise.",
           },
@@ -648,7 +648,7 @@ export const BORDEAUX_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (order processing, invoice reading, product sheet generation) for a wine estate, small merchant or Bordeaux services micro-firm.",
           },

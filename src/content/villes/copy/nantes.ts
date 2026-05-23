@@ -558,7 +558,7 @@ export const NANTES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads) — pour TPE nantaises, cabinets et agences.",
           },
@@ -664,7 +664,7 @@ export const NANTES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) — for Nantes micro-firms, practices and agencies.",
           },

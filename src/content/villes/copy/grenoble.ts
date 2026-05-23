@@ -538,7 +538,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (traitement de rapports, qualification de leads, génération de documentation) pour spin-offs et start-ups grenobloises.",
           },
@@ -644,7 +644,7 @@ export const GRENOBLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (report processing, lead qualification, documentation generation) for Grenoble spin-offs and start-ups.",
           },

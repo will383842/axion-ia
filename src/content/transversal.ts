@@ -377,12 +377,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA travaille-t-il avec les ETI et grands comptes ?",
       answer:
-        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et grands comptes. Pour les ETI et grands comptes (25-80k€ de projet), Axion-IA propose des programmes multi-sites, des audits stratégiques approfondis et des implémentations IA à large envergure avec gouvernance des données.",
+        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et grands comptes. Pour les ETI et grands comptes, Axion-IA propose des programmes multi-sites sur devis, des audits stratégiques approfondis et des implémentations IA à large envergure avec gouvernance des données.",
     },
     en: {
       question: "Does Axion-IA work with mid-caps and large companies?",
       answer:
-        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts (€25-80k projects), Axion-IA offers multi-site programmes, in-depth strategic audits and large-scale AI implementations with data governance.",
+        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts, Axion-IA offers multi-site programmes (on request), in-depth strategic audits and large-scale AI implementations with data governance.",
     },
   },
   {

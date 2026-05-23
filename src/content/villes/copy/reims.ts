@@ -539,7 +539,7 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (traduction automatique fiche Champagne, compte-rendu réunion, qualification leads export) en quelques semaines.",
           },
@@ -645,7 +645,7 @@ export const REIMS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (automatic Champagne sheet translation, meeting notes, export lead qualification) over a few weeks.",
           },

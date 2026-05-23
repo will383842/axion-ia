@@ -22,9 +22,10 @@ const CONFIG: VerticalConfig = {
   systemPromptOverride: `${DOCTRINE_INTOUCHABLE}
 
 Verticale landing-ville : IMPLEMENTATIONS (Module 3).
-Pivote sur le Module 3 Implémentation IA entreprise. Couvre les 4 niveaux :
-automatisation simple (à partir 990 €), projet intermédiaire (à partir 2 900 €),
-projet complet (à partir 5 900 €), IA custom (8 000-50 000 € — service premium).
+Pivote sur le Module 3 Implémentation IA entreprise. Couvre les 5 paliers :
+Pilote IA (990 € → 4 900 € HT, TPE), Mission PME (sur devis), Mission ETI
+(sur devis), Grand programme (sur devis), IA custom d'entreprise (sur devis,
+service premium fine-tuning + intégration profonde).
 
 KPIs centraux : déploiement effectif, agents IA en production, CRM/ERP intégré,
 chatbot opérationnel. Délai de livraison annoncé (1-12 semaines selon niveau).
@@ -33,11 +34,11 @@ Tone : technique mais accessible, deliverables concrets, "code livré + maintena
 Sub-prompt complet : prompts/landing-ville.md megapack (variant implementations).`,
   userPromptFocusSection: `## Focus IMPLEMENTATIONS (Module 3)
 Pivote sur l'implémentation IA. Tone technique accessible, deliverables concrets.
-Présente les 4 niveaux : automatisation simple 990 €, projet intermédiaire
-2 900 €, projet complet 5 900 €, IA Custom 8-50k €. Mention service premium.
-CTA principal : /implementation (formulaire 4 étapes → étude personnalisée).
-Sections obligatoires : Hero implémentation · 4 niveaux · cas concret IA Custom
-local · FAQ technique × 8 · CTA implementation final.`,
+Présente les 5 paliers : Pilote IA (TPE, 990 → 4 900 € HT), Mission PME (sur
+devis), Mission ETI (sur devis), Grand programme (sur devis), IA Custom (sur
+devis, service premium). CTA principal : /implementation (formulaire 4 étapes
+→ étude personnalisée). Sections obligatoires : Hero implémentation · 5 paliers
+· cas concret IA Custom local · FAQ technique × 8 · CTA implementation final.`,
   recommendedCtaHref: "/implementation",
   recommendedCtaLabel: "Démarrer une implémentation IA",
 };

@@ -538,7 +538,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple sur quelques semaines (génération de rapport, comptes-rendus de réunion, qualification leads).",
           },
@@ -644,7 +644,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case over a few weeks (report generation, meeting minutes, lead qualification).",
           },

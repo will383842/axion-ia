@@ -540,7 +540,7 @@ export const TOURS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads) — adapté aux PME et startups tourangelles cherchant un premier déploiement rapide.",
           },
@@ -646,7 +646,7 @@ export const TOURS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) — suited to Tours SMEs and startups seeking a first fast deployment.",
           },

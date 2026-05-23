@@ -558,7 +558,7 @@ export const NICE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus, qualification leads, réponses email).",
           },
@@ -664,7 +664,7 @@ export const NICE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification, email responses).",
           },

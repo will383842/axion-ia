@@ -560,7 +560,7 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (traitement emails, qualification de devis, comptes-rendus) pour indépendants et petites structures de l'agglomération toulonnaise.",
           },
@@ -666,7 +666,7 @@ export const TOULON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (email handling, quote qualification, meeting minutes) for independents and small Toulon agglomeration structures.",
           },
