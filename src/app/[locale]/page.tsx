@@ -457,13 +457,13 @@ export default async function Home({ params }: HomeProps) {
                     <Link
                       href={v.href}
                       className={cn(
-                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-6",
+                        "group focus-visible:ring-paper hover:shadow-elevated relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:min-h-[280px] sm:p-6",
                         a.gainBg,
                       )}
                     >
                       <span
                         className={cn(
-                          "pointer-events-none absolute -top-2 -right-2 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-3 md:text-[9rem]",
+                          "pointer-events-none absolute -top-1 -right-1 text-[3.5rem] leading-none font-semibold tabular-nums select-none sm:-top-2 sm:-right-2 sm:text-[4.5rem]",
                           a.number,
                         )}
                         style={{ fontFamily: "var(--font-serif)" }}
@@ -472,7 +472,7 @@ export default async function Home({ params }: HomeProps) {
                         0{idx + 1}
                       </span>
                       <span
-                        className="bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14 md:text-[2rem]"
+                        className="bg-paper relative z-10 inline-flex h-11 w-11 items-center justify-center rounded-full text-xl transition-transform duration-300 group-hover:scale-110 sm:h-12 sm:w-12 sm:text-2xl"
                         aria-hidden="true"
                       >
                         {v.emoji}
@@ -480,7 +480,7 @@ export default async function Home({ params }: HomeProps) {
                       <div className="relative z-10 mt-auto flex flex-col gap-2">
                         <h3
                           className={cn(
-                            "text-lg leading-[1.1] font-bold tracking-tight sm:text-xl md:text-3xl lg:text-[1.95rem]",
+                            "text-lg leading-[1.15] font-bold tracking-tight sm:text-xl",
                             a.gainText,
                           )}
                         >
@@ -488,7 +488,7 @@ export default async function Home({ params }: HomeProps) {
                         </h3>
                         <p
                           className={cn(
-                            "text-[11px] leading-snug sm:text-xs md:text-[13px]",
+                            "text-xs leading-snug sm:text-[13px]",
                             a.gainText,
                             "opacity-90",
                           )}
@@ -497,12 +497,12 @@ export default async function Home({ params }: HomeProps) {
                         </p>
                         <span
                           className={cn(
-                            "bg-paper mt-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 md:mt-4 md:px-4 md:py-2 md:text-sm",
+                            "bg-paper mt-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1",
                             a.iconFg,
                           )}
                         >
                           {t("valueCardCta")}
-                          <ArrowRight className="h-3 w-3 md:h-4 md:w-4" aria-hidden="true" />
+                          <ArrowRight className="h-3 w-3" aria-hidden="true" />
                         </span>
                       </div>
                     </Link>
@@ -678,7 +678,7 @@ export default async function Home({ params }: HomeProps) {
                   {
                     num: "02",
                     Icon: InfinityIcon,
-                    titleFr: "Du A à Z",
+                    titleFr: "De A à Z",
                     titleEn: "End-to-end",
                     descFr: "Formation, audit, 1-to-1, automatisation, plateforme IA.",
                     descEn: "Training, audit, 1-to-1, automation, AI platform.",
