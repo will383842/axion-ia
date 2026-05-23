@@ -306,46 +306,27 @@ export default async function Home({ params }: HomeProps) {
     url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
   }));
 
-  // 2) AggregateRating — Blueprint §22 « le ratingCount doit correspondre au
-  //    nombre réel d'avis collectés ». On utilise les CASE_STUDIES qui ont
-  //    un testimonialQuote attribué (4 actuellement) — chiffre vérifiable.
-  //    À MAJ par Will quand le volume d'avis dépasse 10+.
+  // 2) Reviewed cases — utilisés pour le rendu visuel des testimonials.
+  // AggregateRating + Review[] JSON-LD RETIRÉS (audit perfection mai 2026) :
+  // - Google exige n ≥ 5 avis vérifiables avec datePublished
+  // - Photos clients pas encore disponibles (autorisations en cours)
+  // → Risque "trompeur" si on émet un JSON-LD avec données factices.
+  // Ré-activer quand Will aura collecté ≥ 5 vrais avis avec accord écrit + dates.
   const reviewedCases = CASE_STUDIES.filter((c) => c[loc].testimonialQuote);
-  const aggregateRatingJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization" as const,
-    name: "Axion-IA",
-    aggregateRating: {
-      "@type": "AggregateRating" as const,
-      ratingValue: "4.9",
-      bestRating: "5",
-      worstRating: "1",
-      ratingCount: String(reviewedCases.length),
-      reviewCount: String(reviewedCases.length),
-    },
-  };
 
-  // 3) Review[] — un schema Review par CASE_STUDIES avec testimonial. Permet
-  //    aux étoiles d'apparaître dans les SERP. Date publication = date du
-  //    cas concret (ou date par défaut récente si non renseignée).
-  const reviewsJsonLd = reviewedCases.map((c) => ({
+  // 3) BreadcrumbList JSON-LD — même pour la home (signal SEO + structure indexable)
+  const breadcrumbJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Review" as const,
-    reviewRating: {
-      "@type": "Rating" as const,
-      ratingValue: "5",
-      bestRating: "5",
-    },
-    author: {
-      "@type": "Person" as const,
-      name: c[loc].testimonialAuthor ?? "Client Axion-IA",
-    },
-    reviewBody: c[loc].testimonialQuote ?? "",
-    itemReviewed: {
-      "@type": "Organization" as const,
-      name: "Axion-IA",
-    },
-  }));
+    "@type": "BreadcrumbList" as const,
+    itemListElement: [
+      {
+        "@type": "ListItem" as const,
+        position: 1,
+        name: isFr ? "Accueil" : "Home",
+        item: `${SITE_URL}/${loc}`,
+      },
+    ],
+  };
 
   // 4) VideoObject[] — un schema par vidéo témoignage. Vide si pas de vidéos
   //    (section masquée côté JSX → schema absent aussi, cohérent).
@@ -413,9 +394,9 @@ export default async function Home({ params }: HomeProps) {
             <div className="hidden lg:block">
               <Illustration
                 slot="HOME-01-hero"
-                src="/illustrations/home-hero-equipe.png"
+                src="/illustrations/home-hero-equipe.avif"
                 aspectRatio="1:1"
-                filenameTarget="public/illustrations/home-hero-equipe.png"
+                filenameTarget="public/illustrations/home-hero-equipe.avif"
                 caption={
                   isFr
                     ? "L'équipe Axion-IA — l'IA au service de l'humain"
@@ -549,7 +530,7 @@ export default async function Home({ params }: HomeProps) {
           Hors Container pour aller bord-à-bord sans cadre blanc latéral. */}
       <section className="bg-bg">
         <Image
-          src="/illustrations/home-bandeau-team.png"
+          src="/illustrations/home-bandeau-team.avif"
           alt={
             isFr
               ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
@@ -568,7 +549,7 @@ export default async function Home({ params }: HomeProps) {
           Insérée après le bandeau équipe. Adapte le design "Fondateur &
           CEO" de l'exemple : eyebrow + headline 2 lignes + description +
           tagline italic / photo dirigeant + stats bar 3 colonnes.
-          Photo placeholder : drop `public/illustrations/home-founder-william.jpg`. */}
+          Photo placeholder : drop `public/illustrations/home-founder-william.avif`. */}
       <section className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28">
         <Container>
           <FadeInOnView>
@@ -606,9 +587,9 @@ export default async function Home({ params }: HomeProps) {
                 <div className="w-full max-w-xs">
                   <Illustration
                     slot="HOME-04-founder"
-                    src="/illustrations/home-founder-william.jpg"
+                    src="/illustrations/home-founder-william.avif"
                     aspectRatio="4:5"
-                    filenameTarget="public/illustrations/home-founder-william.jpg"
+                    filenameTarget="public/illustrations/home-founder-william.avif"
                     caption={
                       isFr
                         ? "William J. — Fondateur & CEO Axion-IA"
@@ -1289,11 +1270,11 @@ export default async function Home({ params }: HomeProps) {
                     {isFr ? "sur mesure" : "implementations"}
                   </span>
                 </h2>
-                <h3 className="text-fg-soft mt-4 text-lg leading-relaxed sm:text-xl">
+                <p className="text-fg-soft mt-4 text-lg leading-relaxed sm:text-xl">
                   {isFr
                     ? "Pensées pour vos besoins réels d'entreprise — pas des templates génériques."
                     : "Built around your real business needs — not generic templates."}
-                </h3>
+                </p>
               </div>
               <Link
                 href="/cas-concrets"
@@ -1579,17 +1560,23 @@ export default async function Home({ params }: HomeProps) {
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {reviewedCases.map((c, idx) => {
               const author = c[loc].testimonialAuthor;
-              // Photos Unsplash (libres de droits — Unsplash License) sélectionnées
-              // pour mimer des profils business diversifiés. À swapper par les vraies
-              // photos clients dès que Will obtient les autorisations.
-              const unsplashPhotos = [
-                "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
-                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80",
+              const initials = author
+                .split(/\s+/)
+                .map((s) => s[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase();
+              // Avatars initiales honnêtes (gradient terracotta/sage/primary/mocha).
+              // Pas de photo factice — les vraies photos seront ajoutées dès
+              // que Will obtiendra l'accord écrit + image de chaque client.
+              const gradients = [
+                "from-terracotta to-terracotta-deep",
+                "from-sage to-sage/70",
+                "from-primary to-primary/80",
+                "from-mocha to-mocha-rich",
+                "from-terracotta-soft to-terracotta",
               ] as const;
-              const photoUrl = unsplashPhotos[idx % unsplashPhotos.length] ?? unsplashPhotos[0];
+              const gradient = gradients[idx % gradients.length] ?? gradients[0];
               return (
                 <FadeInOnView key={c.slug} delay={idx * 80}>
                   <li className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7">
@@ -1618,6 +1605,7 @@ export default async function Home({ params }: HomeProps) {
                     </span>
                     {/* Quote */}
                     <blockquote
+                      cite={`${SITE_URL}/${loc}/cas-concrets/${c.slug}`}
                       className="text-fg flex-1 text-base leading-[1.5] sm:text-lg"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
@@ -1635,17 +1623,21 @@ export default async function Home({ params }: HomeProps) {
                         &rdquo;
                       </span>
                     </blockquote>
-                    {/* Auteur : photo réelle (Unsplash CC) + nom + rôle + secteur */}
+                    {/* Auteur : avatar initiales gradient + nom + rôle + secteur */}
                     <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
-                      <span className="ring-paper shadow-sm relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2">
-                        <Image
-                          src={photoUrl}
-                          alt={`Photo profil — ${author}`}
-                          width={96}
-                          height={96}
-                          sizes="48px"
-                          className="h-full w-full object-cover"
-                        />
+                      <span
+                        className={cn(
+                          "text-paper ring-paper relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br shadow-sm ring-2",
+                          gradient,
+                        )}
+                        aria-hidden="true"
+                      >
+                        <span
+                          className="text-base font-bold tracking-tight"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {initials}
+                        </span>
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-fg truncate text-sm font-bold">{author}</p>
@@ -1735,8 +1727,7 @@ export default async function Home({ params }: HomeProps) {
       <JsonLd data={faqJsonLd} />
       <JsonLd data={localBusinessJsonLd} />
       <JsonLd data={servicesJsonLd} />
-      <JsonLd data={aggregateRatingJsonLd} />
-      {reviewsJsonLd.length > 0 ? <JsonLd data={reviewsJsonLd} /> : null}
+      <JsonLd data={breadcrumbJsonLd} />
       {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
 
       {/* ───────────── STICKY MOBILE CTA (Blueprint §19) ─────────────

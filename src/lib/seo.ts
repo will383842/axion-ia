@@ -6,6 +6,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 
 // SITE_URL — résolu via env validé (`src/env.ts`).
 //
@@ -393,7 +394,14 @@ export function buildOrganizationJsonLd({
     description: isFr
       ? "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises."
       : "Operational B2B AI consultancy — on-site AI sessions, audits and implementation for companies.",
-    sameAs: ["https://www.linkedin.com/company/axion-ia", "https://www.facebook.com/axionia"],
+    // Wikidata Q-number prepended si WIKIDATA_QNUMBER_AXIONIA configuré
+    // (Sprint v7 Phase 10 — Knowledge Graph triangulation). Fallback safe :
+    // sans env var, retombe sur les 2 sources sociales historiques.
+    sameAs: [
+      ...buildOrganizationSameAs(),
+      "https://www.linkedin.com/company/axion-ia",
+      "https://www.facebook.com/axionia",
+    ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
@@ -707,14 +715,19 @@ interface FaqSpeakableInput {
 // (some FAQs are too long to be spoken). Opt-in only.
 export function buildFaqSpeakableJsonLd({
   items,
-  speakableSelector = "[itemprop='text']",
+  speakableSelector,
 }: FaqSpeakableInput) {
+  // Speakable v2.6 best practice : couvrir question (itemprop=name) ET réponse (itemprop=text)
+  // pour que voice search lise le Q+R complet.
+  const selectors = speakableSelector
+    ? [speakableSelector]
+    : ["[itemprop='name']", "[itemprop='text']", "[data-faq-q]", "[data-faq-a]"];
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: [speakableSelector],
+      cssSelector: selectors,
     },
     mainEntity: items.map((item) => ({
       "@type": "Question",

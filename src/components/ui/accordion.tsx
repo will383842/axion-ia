@@ -33,6 +33,8 @@ export const AccordionTrigger = React.forwardRef<
           "text-fg hover:text-primary flex flex-1 items-center justify-between py-4 text-left text-base font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary [&[data-state=open]>svg]:rotate-180",
           className,
         )}
+        data-faq-q
+        itemProp="name"
         {...rest}
       >
         {children}
