@@ -611,13 +611,13 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS (contenu container) ─────────────
-          Composite 4 photos coworking + logo Axion-IA.com overlay. Resserré
-          en Container (max-w-7xl) avec coins arrondis — pas pleine largeur. */}
-      <section className="bg-bg py-12 sm:py-16">
+      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS ─────────────
+          Pleine largeur, sans cadre, sans ombre, marge haute réduite.
+          L'image suit directement les logos clients. */}
+      <section className="bg-bg pb-12 sm:pb-16">
         <Container>
           <FadeInOnView>
-            <div className="shadow-elevated relative overflow-hidden rounded-2xl">
+            <div className="relative overflow-hidden rounded-2xl">
               <Image
                 src="/illustrations/home-bandeau-team.png"
                 alt={
