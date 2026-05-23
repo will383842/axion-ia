@@ -23,6 +23,7 @@ import {
 import { buildProductMetadata, buildFaqSpeakableJsonLd, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { Illustration } from "@/components/visual/Illustration";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { ComparisonTable, type ComparisonRow } from "@/components/home/ComparisonTable";
 import { VideoTestimonials } from "@/components/home/VideoTestimonials";
@@ -467,572 +468,32 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-muted mt-6 text-sm leading-relaxed">{t("heroProofLine")}</p>
             </div>
 
-            {/* Colonne droite : illustration narrative enrichie — 3 services
-                connectés à votre entreprise avec courbes, sparkline, badges.
-                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carré 576×576 lg+,
-                aligné sur les 10 autres pages (Audit, Cas-concrets, etc.) pour
-                harmonisation stricte. preserveAspectRatio="meet" letterbox
-                léger sides (~34px) pour viewBox 600×680 dans box 1:1. */}
-            <div aria-hidden="true" className="hero-schema pointer-events-none hidden lg:block">
-              <svg
-                viewBox="0 0 600 680"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid meet"
-                className="block h-full w-full"
-              >
-                <defs>
-                  {/* Halos diffus radiaux par couleur */}
-                  <radialGradient id="halo-center" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
-                    <stop offset="40%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="halo-tc" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.30" />
-                    <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.10" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="halo-pr" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.30" />
-                    <stop offset="60%" stopColor="var(--color-primary)" stopOpacity="0.10" />
-                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="halo-sg" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.30" />
-                    <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.10" />
-                    <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
-                  </radialGradient>
-                  {/* Gradient diagonal pour cercle central — effet sphère */}
-                  <linearGradient id="grad-center" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-paper)" stopOpacity="1" />
-                    <stop offset="100%" stopColor="var(--color-bg)" stopOpacity="1" />
-                  </linearGradient>
-                  {/* Gradients linéaires pour connexions */}
-                  <linearGradient id="grad-link-tc" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.7" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.15" />
-                  </linearGradient>
-                  <linearGradient id="grad-link-pr" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0.7" />
-                  </linearGradient>
-                  <linearGradient id="grad-link-sg" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0.7" />
-                  </linearGradient>
-                  {/* Pattern grid très subtil — donne de la matière */}
-                  <pattern id="grid-fine" width="32" height="32" patternUnits="userSpaceOnUse">
-                    <path
-                      d="M 32 0 L 0 0 0 32"
-                      fill="none"
-                      stroke="var(--color-border-strong)"
-                      strokeWidth="0.5"
-                      strokeOpacity="0.35"
-                    />
-                  </pattern>
-                  {/* Filter glow doux */}
-                  <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                  {/* Mask radial pour fade le grid sur les bords */}
-                  <radialGradient id="grid-mask" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="white" stopOpacity="0.6" />
-                    <stop offset="70%" stopColor="white" stopOpacity="0.1" />
-                    <stop offset="100%" stopColor="white" stopOpacity="0" />
-                  </radialGradient>
-                  <mask id="vignette-mask">
-                    <rect width="100%" height="100%" fill="url(#grid-mask)" />
-                  </mask>
-                </defs>
-
-                {/* â”€â”€ Background : grid texturé fade radial â”€â”€ */}
-                <rect width="600" height="680" fill="url(#grid-fine)" mask="url(#vignette-mask)" />
-
-                {/* â”€â”€ Halo ambient large â”€â”€ */}
-                <circle cx="300" cy="310" r="290" fill="url(#halo-center)" />
-
-                {/* â”€â”€ Anneaux concentriques décoratifs (3 niveaux) â”€â”€ */}
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="220"
-                  stroke="var(--color-border-strong)"
-                  strokeOpacity="0.18"
-                  strokeDasharray="1 8"
-                  fill="none"
-                />
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="170"
-                  stroke="var(--color-border-strong)"
-                  strokeOpacity="0.30"
-                  strokeDasharray="2 6"
-                  fill="none"
-                />
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="125"
-                  stroke="var(--color-border-strong)"
-                  strokeOpacity="0.55"
-                  fill="none"
-                />
-
-                {/* â”€â”€ Connexions courbes Bézier multi-couches (3 services â†’ centre) â”€â”€ */}
-                {/* Service 1 — Intervenir (haut-droite) â†’ centre : courbe douce + écho */}
-                <path
-                  d="M 460 110 C 420 170, 380 230, 340 270"
-                  stroke="url(#grad-link-tc)"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 460 110 C 410 160, 360 220, 340 270"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.25"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-                {/* Service 2 — Auditer (gauche) â†’ centre */}
-                <path
-                  d="M 130 320 C 180 318, 230 315, 260 312"
-                  stroke="url(#grad-link-pr)"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 130 320 C 190 340, 240 332, 260 320"
-                  stroke="var(--color-primary)"
-                  strokeOpacity="0.25"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-                {/* Service 3 — Implémenter (bas-droite) â†’ centre */}
-                <path
-                  d="M 460 540 C 420 480, 380 410, 340 360"
-                  stroke="url(#grad-link-sg)"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 460 540 C 430 470, 380 420, 340 360"
-                  stroke="var(--color-sage)"
-                  strokeOpacity="0.25"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-
-                {/* â”€â”€ Centre : "votre entreprise" — sphère gradient + glow â”€â”€ */}
-                {/* Outer glow ring */}
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="100"
-                  fill="var(--color-terracotta)"
-                  fillOpacity="0.06"
-                  filter="url(#soft-glow)"
-                />
-                {/* Sphère principale */}
-                <circle cx="300" cy="310" r="88" fill="url(#grad-center)" />
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="88"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.5"
-                  strokeWidth="2"
-                  fill="none"
-                />
-                {/* Anneau interne décoratif */}
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="76"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.18"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-                {/* Highlight diagonal (effet sphère 3D subtil) */}
-                <ellipse
-                  cx="278"
-                  cy="288"
-                  rx="32"
-                  ry="14"
-                  fill="var(--color-paper)"
-                  fillOpacity="0.6"
-                  transform="rotate(-30 278 288)"
-                />
-                {/* Icône Brain stylisée enrichie */}
-                <g
-                  transform="translate(283, 280)"
-                  stroke="var(--color-terracotta)"
-                  fill="none"
-                  strokeWidth="1.6"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                >
-                  <path d="M 17 5 C 12 2, 5 5, 5 12 C 2 14, 2 20, 6 22 C 6 25, 10 27, 13 26 L 13 30 L 17 30 L 17 5 Z" />
-                  <path d="M 17 5 C 22 2, 29 5, 29 12 C 32 14, 32 20, 28 22 C 28 25, 24 27, 21 26 L 21 30 L 17 30" />
-                  {/* Synapses internes */}
-                  <path
-                    d="M 11 13 L 17 13 M 23 13 L 17 13 M 11 19 L 17 19 M 23 19 L 17 19"
-                    strokeOpacity="0.4"
-                    strokeWidth="0.9"
-                  />
-                  <circle cx="11" cy="13" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                  <circle cx="23" cy="13" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                  <circle cx="11" cy="19" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                  <circle cx="23" cy="19" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                </g>
-                {/* Label centre */}
-                <text
-                  x="300"
-                  y="345"
-                  textAnchor="middle"
-                  fontFamily="var(--font-serif)"
-                  fontSize="20"
-                  fontStyle="italic"
-                  fontWeight="500"
-                  fill="var(--color-terracotta)"
-                >
-                  Votre entreprise
-                </text>
-                <text
-                  x="300"
-                  y="364"
-                  textAnchor="middle"
-                  fontFamily="var(--font-sans)"
-                  fontSize="10"
-                  fontWeight="600"
-                  letterSpacing="0.20em"
-                  fill="var(--color-fg-muted)"
-                >
-                  + IA = GAINS
-                </text>
-
-                {/* â”€â”€ Service 1 : INTERVENIR (haut-droite, terracotta)
-                    Mission : accompagner vos équipes. */}
-                <g>
-                  <circle cx="460" cy="110" r="80" fill="url(#halo-tc)" />
-                  {/* Pulse ring décoratif extérieur */}
-                  <circle
-                    cx="460"
-                    cy="110"
-                    r="60"
-                    stroke="var(--color-terracotta)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="2 4"
-                    fill="none"
-                  />
-                  <circle cx="460" cy="110" r="54" fill="var(--color-paper)" />
-                  <circle
-                    cx="460"
-                    cy="110"
-                    r="54"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="2.4"
-                  />
-                  {/* Icône Users (3 cercles + lignes corps) */}
-                  <circle cx="446" cy="100" r="4.5" fill="var(--color-terracotta)" />
-                  <circle cx="462" cy="98" r="5.5" fill="var(--color-terracotta)" />
-                  <circle cx="478" cy="100" r="4.5" fill="var(--color-terracotta)" />
-                  <path
-                    d="M 440 116 Q 446 112 452 116 M 453 114 Q 462 108 471 114 M 472 116 Q 478 112 484 116"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="2"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                  <text
-                    x="460"
-                    y="140"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="10"
-                    fontWeight="700"
-                    letterSpacing="0.16em"
-                    fill="var(--color-terracotta)"
-                  >
-                    INTERVENIR
-                  </text>
-                  {/* Sous-label mission — glassmorphism léger via rect */}
-                  <rect
-                    x="378"
-                    y="178"
-                    width="164"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    fillOpacity="0.85"
-                    stroke="var(--color-border)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="460"
-                    y="199"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-fg)"
-                  >
-                    Accompagner vos équipes
-                  </text>
-                </g>
-
-                {/* â”€â”€ Service 2 : AUDITER (gauche, primary)
-                    Mission : trouver où gagner du temps et de l'argent. */}
-                <g>
-                  <circle cx="120" cy="310" r="80" fill="url(#halo-pr)" />
-                  <circle
-                    cx="120"
-                    cy="310"
-                    r="60"
-                    stroke="var(--color-primary)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="2 4"
-                    fill="none"
-                  />
-                  <circle cx="120" cy="310" r="54" fill="var(--color-paper)" />
-                  <circle
-                    cx="120"
-                    cy="310"
-                    r="54"
-                    stroke="var(--color-primary)"
-                    strokeWidth="2.4"
-                  />
-                  {/* Icône Loupe enrichie (avec poignée + reflet) */}
-                  <circle
-                    cx="115"
-                    cy="304"
-                    r="13"
-                    stroke="var(--color-primary)"
-                    strokeWidth="2.4"
-                    fill="none"
-                  />
-                  {/* Reflet sur la lentille */}
-                  <path
-                    d="M 109 298 Q 112 300 114 304"
-                    stroke="var(--color-primary)"
-                    strokeWidth="1.5"
-                    strokeOpacity="0.5"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                  <line
-                    x1="124"
-                    y1="313"
-                    x2="135"
-                    y2="324"
-                    stroke="var(--color-primary)"
-                    strokeWidth="2.4"
-                    strokeLinecap="round"
-                  />
-                  <text
-                    x="120"
-                    y="350"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="10"
-                    fontWeight="700"
-                    letterSpacing="0.16em"
-                    fill="var(--color-primary)"
-                  >
-                    AUDITER
-                  </text>
-                  {/* Sous-label mission */}
-                  <rect
-                    x="44"
-                    y="378"
-                    width="152"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    fillOpacity="0.85"
-                    stroke="var(--color-border)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="120"
-                    y="399"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-fg)"
-                  >
-                    Trouver où gagner
-                  </text>
-                </g>
-
-                {/* â”€â”€ Service 3 : IMPLÉMENTER (bas-droite, sage)
-                    Mission : coder & déployer les outils sur mesure. */}
-                <g>
-                  <circle cx="460" cy="540" r="80" fill="url(#halo-sg)" />
-                  <circle
-                    cx="460"
-                    cy="540"
-                    r="60"
-                    stroke="var(--color-sage)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="2 4"
-                    fill="none"
-                  />
-                  <circle cx="460" cy="540" r="54" fill="var(--color-paper)" />
-                  <circle cx="460" cy="540" r="54" stroke="var(--color-sage)" strokeWidth="2.4" />
-                  {/* Icône Code </> enrichie */}
-                  <path
-                    d="M 450 530 L 440 540 L 450 550"
-                    stroke="var(--color-sage)"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M 470 530 L 480 540 L 470 550"
-                    stroke="var(--color-sage)"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <line
-                    x1="466"
-                    y1="528"
-                    x2="454"
-                    y2="552"
-                    stroke="var(--color-sage)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <text
-                    x="460"
-                    y="580"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="10"
-                    fontWeight="700"
-                    letterSpacing="0.14em"
-                    fill="var(--color-sage)"
-                  >
-                    IMPLÉMENTER
-                  </text>
-                  {/* Sous-label mission */}
-                  <rect
-                    x="384"
-                    y="600"
-                    width="152"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    fillOpacity="0.85"
-                    stroke="var(--color-border)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="460"
-                    y="621"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-fg)"
-                  >
-                    Coder & déployer
-                  </text>
-                </g>
-
-                {/* â”€â”€ Particules + petits anneaux décoratifs flottants â”€â”€ */}
-                {/* Mini ring orphelin (top-left) */}
-                <circle
-                  cx="60"
-                  cy="80"
-                  r="14"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.35"
-                  strokeWidth="1"
-                  fill="none"
-                />
-                <circle cx="60" cy="80" r="2.5" fill="var(--color-terracotta)" opacity="0.7" />
-                {/* Mini ring (top-right) */}
-                <circle
-                  cx="540"
-                  cy="280"
-                  r="10"
-                  stroke="var(--color-sage)"
-                  strokeOpacity="0.35"
-                  strokeWidth="1"
-                  fill="none"
-                />
-                <circle cx="540" cy="280" r="2" fill="var(--color-sage)" opacity="0.6" />
-                {/* Particules dispersées */}
-                <circle cx="240" cy="50" r="2" fill="var(--color-primary)" opacity="0.55" />
-                <circle cx="40" cy="220" r="1.8" fill="var(--color-terracotta)" opacity="0.5" />
-                <circle cx="220" cy="540" r="2.5" fill="var(--color-primary)" opacity="0.55" />
-                <circle cx="30" cy="480" r="1.8" fill="var(--color-sage)" opacity="0.5" />
-                <circle cx="380" cy="60" r="1.5" fill="var(--color-sage)" opacity="0.5" />
-                {/* Étoiles 4-pointes */}
-                <path
-                  d="M 50 380 L 52 386 L 58 388 L 52 390 L 50 396 L 48 390 L 42 388 L 48 386 Z"
-                  fill="var(--color-terracotta)"
-                  opacity="0.6"
-                />
-                <path
-                  d="M 555 440 L 557 445 L 562 447 L 557 449 L 555 454 L 553 449 L 548 447 L 553 445 Z"
-                  fill="var(--color-primary)"
-                  opacity="0.5"
-                />
-                {/* Segments géométriques décoratifs */}
-                <line
-                  x1="30"
-                  y1="160"
-                  x2="50"
-                  y2="160"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.4"
-                  strokeWidth="1"
-                />
-                <line
-                  x1="555"
-                  y1="180"
-                  x2="572"
-                  y2="180"
-                  stroke="var(--color-sage)"
-                  strokeOpacity="0.4"
-                  strokeWidth="1"
-                />
-                <line
-                  x1="555"
-                  y1="510"
-                  x2="572"
-                  y2="510"
-                  stroke="var(--color-primary)"
-                  strokeOpacity="0.4"
-                  strokeWidth="1"
-                />
-              </svg>
+            {/* Colonne droite : photo hero placeholder. Will drop l'image
+                réelle (dashboard / livrable Axion-IA / capture produit) dans
+                `public/illustrations/home-hero-dashboard.avif`. En attendant,
+                placeholder on-brand respectant aspect ratio 1:1 → 0 CLS. */}
+            <div className="hidden lg:block">
+              <Illustration
+                slot="HOME-01-hero"
+                aspectRatio="1:1"
+                filenameTarget="public/illustrations/home-hero-dashboard.avif"
+                caption={
+                  isFr
+                    ? "Dashboard Axion-IA — vue produit ou livrable opérationnel"
+                    : "Axion-IA dashboard — product or deliverable view"
+                }
+                alt={
+                  isFr
+                    ? "Illustration éditoriale du tableau de bord Axion-IA — IA opérationnelle pour entreprises."
+                    : "Editorial illustration of the Axion-IA dashboard — operational AI for companies."
+                }
+                priority
+              />
             </div>
+            {/* Bloc SVG décoratif retiré (commit polish) — remplacé par
+                Illustration placeholder photo (LCP optimisé, bundle -657 l.).
+                Ancien SVG complexe préservé dans git history si besoin de
+                revert : commit c617a046^. */}
           </div>
         </Container>
       </section>
@@ -1278,11 +739,14 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ METHOD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ───────────── METHOD ─────────────
+          Schema visuel des 4 étapes du process (placeholder image 16:9).
+          Will drop l'image d'un workshop / cadrage / livrable réel dans
+          public/illustrations/home-method-process.avif. */}
       <section className="bg-bg py-24 sm:py-28 lg:py-36">
         <Container>
           <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
+            <div className="mb-12 max-w-3xl">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 {t("methodEyebrow")}
               </p>
@@ -1299,6 +763,27 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
                 {t("methodDescription")}
               </p>
+            </div>
+          </FadeInOnView>
+          {/* Image hero méthode — placeholder. Drop dans
+              public/illustrations/home-method-process.avif. */}
+          <FadeInOnView>
+            <div className="mb-16">
+              <Illustration
+                slot="HOME-02-method"
+                aspectRatio="16:9"
+                filenameTarget="public/illustrations/home-method-process.avif"
+                caption={
+                  isFr
+                    ? "Workshop Axion-IA — cadrage 30 min puis démonstration sur données réelles"
+                    : "Axion-IA workshop — 30-min scoping then demo on real data"
+                }
+                alt={
+                  isFr
+                    ? "Photographie éditoriale d'un workshop Axion-IA : équipe, écran, tableau d'idéation."
+                    : "Editorial photograph of an Axion-IA workshop: team, screen, ideation board."
+                }
+              />
             </div>
           </FadeInOnView>
           <ol className="grid gap-12 lg:grid-cols-4">
@@ -1491,6 +976,31 @@ export default async function Home({ params }: HomeProps) {
               </ul>
             </div>
           </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ───────────── ILLUSTRATION ÉQUIPE (séparateur visuel) ─────────────
+          Photo éditoriale équipe / intervention client (placeholder 16:9).
+          Drop dans public/illustrations/home-team-intervention.avif. */}
+      <section className="bg-paper py-16 sm:py-20">
+        <Container>
+          <div className="mx-auto max-w-5xl">
+            <Illustration
+              slot="HOME-03-team"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/home-team-intervention.avif"
+              caption={
+                isFr
+                  ? "Intervention Axion-IA sur site client — démonstration et formation"
+                  : "On-site Axion-IA engagement — live demonstration and training"
+              }
+              alt={
+                isFr
+                  ? "Intervention Axion-IA en entreprise : équipe et consultant autour d'un écran de démonstration IA."
+                  : "Axion-IA on-site engagement: team and consultant gathered around an AI demo screen."
+              }
+            />
+          </div>
         </Container>
       </section>
 
