@@ -10,9 +10,12 @@ import {
   Lightbulb,
   Star,
   User,
+  Users,
+  Layers,
   Infinity as InfinityIcon,
   MapPin,
   UserCheck,
+  BadgeCheck,
   Trophy,
   Search,
   GraduationCap,
@@ -22,6 +25,7 @@ import {
   Shield,
   Clock,
   Plus,
+  Sparkles,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
@@ -682,24 +686,33 @@ export default async function Home({ params }: HomeProps) {
             </div>
           </FadeInOnView>
 
-          {/* BLOC 2 — 6 différenciateurs en grid 3×2 (mobile : 1 col, tablet : 2 col) */}
+          {/* BLOC 2 — 6 différenciateurs en grid 3×2 avec hero band coloré rotatif
+              Design v3 : chaque carte a un en-tête couleur pleine avec icône
+              proéminente + numéro géant serif, body blanc, hover lift + scale. */}
           <ul className="mb-24 grid gap-5 sm:mb-28 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {(
               [
                 {
                   num: "01",
-                  Icon: User,
+                  Icon: Users,
+                  bandClass: "bg-terracotta",
+                  bandText: "text-paper",
+                  accentBg: "bg-terracotta-soft",
+                  accentText: "text-terracotta-deep",
                   titleFr: "Zéro intermédiaire",
                   titleEn: "Zero middleman",
-                  descFr:
-                    "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
+                  descFr: "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
                   descEn: "Trainers, developers, implementers — all senior, all in-house.",
                   accentFr: "De l'audit à la mise en prod.",
                   accentEn: "From audit to production.",
                 },
                 {
                   num: "02",
-                  Icon: InfinityIcon,
+                  Icon: Layers,
+                  bandClass: "bg-sage",
+                  bandText: "text-paper",
+                  accentBg: "bg-sage/15",
+                  accentText: "text-sage",
                   titleFr: "De A à Z",
                   titleEn: "End-to-end",
                   descFr: "Formation, audit, 1-to-1, automatisation, plateforme IA.",
@@ -710,16 +723,24 @@ export default async function Home({ params }: HomeProps) {
                 {
                   num: "03",
                   Icon: MapPin,
+                  bandClass: "bg-primary",
+                  bandText: "text-paper",
+                  accentBg: "bg-primary/15",
+                  accentText: "text-primary",
                   titleFr: "Partout en France",
                   titleEn: "Across France",
                   descFr: "Présence dans toutes les villes — métropole et outre-mer.",
                   descEn: "Presence in every city — mainland and overseas.",
-                  accentFr: "En présentiel ou à distance — selon ce qui est le plus efficace.",
+                  accentFr: "Présentiel ou à distance — selon ce qui est le plus efficace.",
                   accentEn: "On-site or remote — whichever is most effective.",
                 },
                 {
                   num: "04",
-                  Icon: UserCheck,
+                  Icon: BadgeCheck,
+                  bandClass: "bg-mocha-rich",
+                  bandText: "text-paper",
+                  accentBg: "bg-mocha-rich/10",
+                  accentText: "text-mocha-rich",
                   titleFr: "Vous parlez au senior",
                   titleEn: "You talk to the senior",
                   descFr: "Pas à un commercial. Pas à un junior.",
@@ -729,7 +750,11 @@ export default async function Home({ params }: HomeProps) {
                 },
                 {
                   num: "05",
-                  Icon: Star,
+                  Icon: Target,
+                  bandClass: "bg-terracotta",
+                  bandText: "text-paper",
+                  accentBg: "bg-terracotta-soft",
+                  accentText: "text-terracotta-deep",
                   titleFr: "Vous êtes au centre",
                   titleEn: "You're at the center",
                   descFr: "Votre projet, votre rythme, votre contexte.",
@@ -739,7 +764,11 @@ export default async function Home({ params }: HomeProps) {
                 },
                 {
                   num: "06",
-                  Icon: Trophy,
+                  Icon: Sparkles,
+                  bandClass: "bg-sage",
+                  bandText: "text-paper",
+                  accentBg: "bg-sage/15",
+                  accentText: "text-sage",
                   titleFr: "Exigence senior absolue",
                   titleEn: "Strict senior standards",
                   descFr: "Exigence maximale. Résultats mesurables.",
@@ -750,50 +779,74 @@ export default async function Home({ params }: HomeProps) {
               ] as const
             ).map((card, idx) => (
               <FadeInOnView key={card.num} delay={idx * 50}>
-                <li className="bg-paper border-border shadow-subtle hover:shadow-card relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl border p-7 transition sm:p-8">
-                  {/* Numéro géant en filigrane background */}
-                  <span
-                    aria-hidden="true"
-                    className="text-terracotta/8 pointer-events-none absolute -top-4 -right-2 text-[7rem] leading-none font-bold tabular-nums select-none sm:-top-6 sm:-right-4 sm:text-[9rem]"
-                    style={{ fontFamily: "var(--font-serif)" }}
+                <li className="bg-paper border-border shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition duration-300 hover:-translate-y-1">
+                  {/* Hero band coloré : icône XL + numéro géant serif + SVG pattern décoratif */}
+                  <div
+                    className={cn(
+                      "relative flex items-center justify-between overflow-hidden px-6 py-7 sm:px-7 sm:py-8",
+                      card.bandClass,
+                    )}
                   >
-                    {card.num}
-                  </span>
-                  {/* Icon + label numéro */}
-                  <div className="relative flex items-center gap-3">
-                    <span className="bg-terracotta text-paper inline-flex h-11 w-11 items-center justify-center rounded-full">
-                      <card.Icon className="h-5 w-5" aria-hidden="true" strokeWidth={2.5} />
-                    </span>
+                    {/* SVG décoratif : 3 cercles concentriques en filigrane */}
+                    <svg
+                      aria-hidden="true"
+                      className="text-paper/10 pointer-events-none absolute -right-8 -bottom-8 h-32 w-32 select-none sm:h-40 sm:w-40"
+                      viewBox="0 0 100 100"
+                      fill="none"
+                    >
+                      <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="1" />
+                      <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="1" />
+                      <circle cx="50" cy="50" r="15" stroke="currentColor" strokeWidth="1" />
+                    </svg>
+                    {/* Icône dans cercle blanc proéminent */}
                     <span
-                      className="text-terracotta text-sm font-bold tracking-[0.18em] uppercase tabular-nums"
+                      className={cn(
+                        "bg-paper relative z-10 inline-flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16",
+                        card.accentText,
+                      )}
+                      aria-hidden="true"
+                    >
+                      <card.Icon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2} />
+                    </span>
+                    {/* Numéro géant serif */}
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "relative z-10 text-[4rem] leading-none font-bold tabular-nums sm:text-[5rem]",
+                        card.bandText,
+                        "opacity-90",
+                      )}
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
                       {card.num}
                     </span>
                   </div>
-                  {/* Title */}
-                  <h3
-                    className="text-fg relative text-2xl leading-tight font-semibold tracking-tight sm:text-[1.75rem]"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {isFr ? card.titleFr : card.titleEn}
-                  </h3>
-                  {/* Description */}
-                  <p className="text-fg-soft relative text-base leading-relaxed">
-                    {isFr ? card.descFr : card.descEn}
-                  </p>
-                  {/* Accent line séparateur + texte italic terracotta */}
-                  <div className="border-terracotta/30 relative mt-auto flex items-start gap-3 border-t pt-4">
-                    <span
-                      className="bg-terracotta mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full"
-                      aria-hidden="true"
-                    />
-                    <p
-                      className="text-terracotta text-sm leading-relaxed italic"
+                  {/* Body : title + description + accent badge */}
+                  <div className="flex flex-1 flex-col gap-4 p-6 sm:p-7">
+                    <h3
+                      className="text-fg text-[1.5rem] leading-tight font-semibold tracking-tight sm:text-[1.7rem]"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      {isFr ? card.accentFr : card.accentEn}
+                      {isFr ? card.titleFr : card.titleEn}
+                    </h3>
+                    <p className="text-fg-soft text-base leading-relaxed">
+                      {isFr ? card.descFr : card.descEn}
                     </p>
+                    {/* Accent ribbon — pill colorée avec coche */}
+                    <div
+                      className={cn(
+                        "mt-auto inline-flex w-fit items-center gap-2 rounded-full px-3 py-1.5",
+                        card.accentBg,
+                      )}
+                    >
+                      <span
+                        className={cn("inline-block h-1 w-3 rounded-full", card.bandClass)}
+                        aria-hidden="true"
+                      />
+                      <p className={cn("text-xs leading-snug font-semibold", card.accentText)}>
+                        {isFr ? card.accentFr : card.accentEn}
+                      </p>
+                    </div>
                   </div>
                 </li>
               </FadeInOnView>
