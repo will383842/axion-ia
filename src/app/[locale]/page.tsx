@@ -1040,8 +1040,9 @@ export default async function Home({ params }: HomeProps) {
               </Link>
             </div>
           </FadeInOnView>
-          {/* 4 cas concrets visuels — démos produit Axion-IA (click-to-enlarge via lightbox) */}
-          <ul className="mb-10 grid gap-6 sm:grid-cols-2">
+          {/* 4 cas concrets visuels — 4 cards sur 1 ligne lg, photos compactes
+              (click-to-enlarge via ImageLightbox, divisé par 2 vs version v2) */}
+          <ul className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {(
               [
                 {
@@ -1117,25 +1118,25 @@ export default async function Home({ params }: HomeProps) {
                     alt={isFr ? demo.altFr : demo.altEn}
                     width={1600}
                     height={900}
-                    sizes="(max-width: 640px) 100vw, 50vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="rounded-none rounded-t-2xl"
                   />
-                  <div className="flex flex-col gap-3 p-5 sm:p-6">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+                  <div className="flex flex-col gap-2.5 p-4">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium">
                         {isFr ? demo.industryFr : demo.industryEn}
                       </span>
-                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
+                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold">
                         {demo.metric}
                       </span>
                     </div>
                     <h3
-                      className="text-fg text-xl leading-[1.2] font-medium tracking-tight sm:text-2xl"
+                      className="text-fg text-sm leading-tight font-semibold tracking-tight"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
                       {isFr ? demo.titleFr : demo.titleEn}
                     </h3>
-                    <p className="text-fg-soft text-sm leading-relaxed">
+                    <p className="text-fg-soft line-clamp-3 text-xs leading-relaxed">
                       {isFr ? demo.excerptFr : demo.excerptEn}
                     </p>
                   </div>
@@ -1258,100 +1259,214 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ───────────── BÉNÉFICES (ancienne image HOME-03 recréée en code) ─────────────
-          Layout fidèle à la bannière : logo gauche / bénéfices droite / tagline bas. */}
-      <section className="bg-paper py-16 sm:py-20">
+      {/* ───────────── GRILLE TARIFAIRE — 3 paliers Essentielle / Approfondie / Sur mesure
+          Remplace l'ancienne section "Bénéfices" générique. Tarifs dérivés du
+          SSOT pricing.ts. CTA réservation. Carte centrale "Approfondie" highlightée. */}
+      <section className="bg-paper py-24 sm:py-28 lg:py-32">
         <Container>
           <FadeInOnView>
-            <div className="border-border mx-auto max-w-5xl overflow-hidden rounded-3xl border">
-              {/* Corps 2 colonnes */}
-              <div className="grid lg:grid-cols-[1fr_2px_1.6fr]">
-                {/* Colonne gauche : branding */}
-                <div className="flex items-center justify-center px-10 py-16 lg:py-20">
-                  <div className="text-center">
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Tarifs transparents" : "Transparent pricing"}
+              </p>
+              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                {isFr ? "Trois formules. " : "Three formulas. "}
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "Un prix de départ clair." : "A clear starting price."}
+                </span>
+              </h2>
+              <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-lg leading-relaxed">
+                {isFr
+                  ? "Choisissez le format qui correspond à votre besoin — vous pouvez toujours évoluer ensuite."
+                  : "Choose the format that fits your need — you can always evolve later."}
+              </p>
+            </div>
+          </FadeInOnView>
+          <ul className="grid gap-5 lg:grid-cols-3 lg:gap-6">
+            {(
+              [
+                {
+                  id: "essentielle",
+                  highlight: false,
+                  nameFr: "Essentielle",
+                  nameEn: "Essential",
+                  taglineFr: "Pour découvrir et démarrer",
+                  taglineEn: "To discover and start",
+                  priceFr: `${interventionEntryPrice} HT`,
+                  priceEn: `${interventionEntryPrice} excl. tax`,
+                  priceLabelFr: "À partir de · 1 journée sur site",
+                  priceLabelEn: "From · 1 day on-site",
+                  includes: [
+                    isFr ? "1 journée d'intervention sur site" : "1 on-site day",
+                    isFr ? "Diagnostic IA flash de vos process" : "Flash AI diagnosis of your processes",
+                    isFr ? "Plan d'action 5 priorités chiffrées" : "5 quantified priority action plan",
+                    isFr ? "Recommandations outils IA adaptés" : "Tailored AI tool recommendations",
+                    isFr ? "Support email 30 jours inclus" : "30-day email support included",
+                  ],
+                  ctaFr: "Réserver une intervention",
+                  ctaEn: "Book an intervention",
+                  ctaHref: "/interventions" as const,
+                },
+                {
+                  id: "approfondie",
+                  highlight: true,
+                  nameFr: "Approfondie",
+                  nameEn: "Comprehensive",
+                  taglineFr: "Pour cadrer et démontrer",
+                  taglineEn: "To scope and demonstrate",
+                  priceFr: auditRange,
+                  priceEn: auditRange,
+                  priceLabelFr: "Audit IA complet · 2-4 semaines",
+                  priceLabelEn: "Full AI audit · 2-4 weeks",
+                  includes: [
+                    isFr ? "Audit IA complet de vos process" : "Full AI audit of your processes",
+                    isFr ? "Cartographie gains chiffrés action par action" : "Quantified gains map action by action",
+                    isFr ? "Roadmap priorisée 6-12 mois" : "Prioritized 6-12 month roadmap",
+                    isFr ? "Démos POC sur vos vraies données" : "POC demos on your real data",
+                    isFr ? "3 sessions coaching 1-to-1 dirigeant" : "3 executive 1-to-1 coaching sessions",
+                  ],
+                  ctaFr: "Demander un audit",
+                  ctaEn: "Request an audit",
+                  ctaHref: "/audit" as const,
+                },
+                {
+                  id: "sur-mesure",
+                  highlight: false,
+                  nameFr: "Sur mesure",
+                  nameEn: "Custom",
+                  taglineFr: "Pour déployer et industrialiser",
+                  taglineEn: "To deploy and scale",
+                  priceFr: isFr ? "Sur devis" : "Quote on demand",
+                  priceEn: isFr ? "Sur devis" : "Quote on demand",
+                  priceLabelFr: `Implémentation IA · à partir de ${implEntryPrice}`,
+                  priceLabelEn: `AI implementation · from ${implEntryPrice}`,
+                  includes: [
+                    isFr ? "Implémentation IA sur mesure" : "Custom AI implementation",
+                    isFr ? "Intégration CRM/ERP existant" : "Existing CRM/ERP integration",
+                    isFr ? "Tests utilisateurs + go-live" : "User testing + go-live",
+                    isFr ? "Formation équipes incluse" : "Team training included",
+                    isFr ? "Support production 90 jours" : "90-day production support",
+                  ],
+                  ctaFr: "Discuter d'un projet",
+                  ctaEn: "Discuss a project",
+                  ctaHref: "/implementation" as const,
+                },
+              ] as const
+            ).map((tier, idx) => (
+              <FadeInOnView key={tier.id} delay={idx * 60}>
+                <li
+                  className={cn(
+                    "relative flex h-full flex-col rounded-3xl border p-7 transition sm:p-8",
+                    tier.highlight
+                      ? "bg-mocha-rich text-mocha-fg border-terracotta shadow-card -translate-y-0 lg:-translate-y-3"
+                      : "bg-paper border-border shadow-subtle",
+                  )}
+                >
+                  {tier.highlight ? (
+                    <span className="bg-terracotta text-paper absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.18em] uppercase">
+                      {isFr ? "Le plus choisi" : "Most chosen"}
+                    </span>
+                  ) : null}
+                  <div className="mb-6">
                     <p
-                      className="text-fg text-[clamp(3rem,6vw,5rem)] leading-none font-bold tracking-tight"
+                      className={cn(
+                        "mb-2 text-[12px] font-bold tracking-[0.18em] uppercase",
+                        tier.highlight ? "text-terracotta-soft" : "text-terracotta",
+                      )}
+                    >
+                      {isFr ? tier.nameFr : tier.nameEn}
+                    </p>
+                    <p
+                      className={cn(
+                        "text-sm leading-relaxed italic",
+                        tier.highlight ? "text-mocha-fg/80" : "text-fg-muted",
+                      )}
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      Axion-<span className="text-terracotta">IA</span>
+                      {isFr ? tier.taglineFr : tier.taglineEn}
                     </p>
-                    <div className="mt-3 flex items-center justify-center gap-3">
-                      <span className="bg-terracotta block h-px w-10" />
-                      <p className="text-fg text-xl font-medium tracking-wide">.com</p>
-                      <span className="bg-terracotta block h-px w-10" />
-                    </div>
                   </div>
-                </div>
-
-                {/* Séparateur vertical */}
-                <div className="bg-border hidden lg:block" />
-
-                {/* Colonne droite : headline + 4 bénéfices */}
-                <div className="px-10 py-10 lg:py-14">
-                  <h2
-                    className="text-fg text-[clamp(1.6rem,2.5vw,2.25rem)] leading-[1.15] font-semibold tracking-tight"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    Des <span className="text-terracotta italic">bénéfices</span> concrets,
-                    <br />
-                    mesurables, durables.
-                  </h2>
-                  <span className="bg-terracotta mt-4 mb-8 block h-0.5 w-10" />
-                  <ul className="flex flex-col gap-6">
-                    {[
-                      {
-                        Icon: TrendingUp,
-                        title: isFr ? "GAIN DE TEMPS" : "TIME SAVINGS",
-                        desc: isFr
-                          ? "Automatisez les tâches répétitives et concentrez-vous sur l'essentiel."
-                          : "Automate repetitive tasks and focus on what matters.",
-                      },
-                      {
-                        Icon: Target,
-                        title: isFr ? "MEILLEURE PRISE DE DÉCISION" : "BETTER DECISION-MAKING",
-                        desc: isFr
-                          ? "Exploitez la puissance des données pour des décisions plus éclairées."
-                          : "Harness the power of data for more informed decisions.",
-                      },
-                      {
-                        Icon: Lightbulb,
-                        title: isFr ? "INNOVATION ACCÉLÉRÉE" : "ACCELERATED INNOVATION",
-                        desc: isFr
-                          ? "Libérez votre créativité et votre capacité d'innovation grâce à l'IA."
-                          : "Unlock your creativity and innovation capacity through AI.",
-                      },
-                      {
-                        Icon: Star,
-                        title: isFr ? "PERFORMANCE DURABLE" : "LASTING PERFORMANCE",
-                        desc: isFr
-                          ? "Améliorez vos résultats tout en renforçant l'engagement et la satisfaction."
-                          : "Improve results while strengthening engagement and satisfaction.",
-                      },
-                    ].map(({ Icon, title, desc }) => (
-                      <li key={title} className="flex items-start gap-4">
-                        <span className="border-terracotta text-terracotta flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2">
-                          <Icon className="h-5 w-5" aria-hidden="true" />
+                  <div className="mb-6">
+                    <p
+                      className={cn(
+                        "text-[clamp(2rem,3.5vw,2.75rem)] leading-none font-bold tracking-tight",
+                        tier.highlight ? "text-mocha-fg" : "text-fg",
+                      )}
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {isFr ? tier.priceFr : tier.priceEn}
+                    </p>
+                    <p
+                      className={cn(
+                        "mt-2 text-xs leading-relaxed",
+                        tier.highlight ? "text-mocha-fg/70" : "text-fg-soft",
+                      )}
+                    >
+                      {isFr ? tier.priceLabelFr : tier.priceLabelEn}
+                    </p>
+                  </div>
+                  <ul className="mb-8 flex flex-1 flex-col gap-3">
+                    {tier.includes.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <span
+                          className={cn(
+                            "mt-1 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full",
+                            tier.highlight ? "bg-terracotta-soft" : "bg-terracotta-soft",
+                          )}
+                          aria-hidden="true"
+                        >
+                          <BadgeCheck className="text-terracotta-deep h-3 w-3" />
                         </span>
-                        <div>
-                          <p className="text-fg text-[11px] font-bold tracking-[0.15em] uppercase">
-                            {title}
-                          </p>
-                          <p className="text-fg-soft mt-1 text-sm leading-relaxed">{desc}</p>
-                        </div>
+                        <span
+                          className={cn(
+                            "text-sm leading-relaxed",
+                            tier.highlight ? "text-mocha-fg/90" : "text-fg-soft",
+                          )}
+                        >
+                          {item}
+                        </span>
                       </li>
                     ))}
                   </ul>
-                </div>
-              </div>
-
-              {/* Tagline bas */}
-              <div className="border-border border-t py-5 text-center">
-                <p className="text-fg-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
-                  {isFr ? "Comprendre. Former. Transformer." : "Understand. Train. Transform."}
-                </p>
-              </div>
-            </div>
-          </FadeInOnView>
+                  <Link
+                    href={tier.ctaHref}
+                    className={cn(
+                      "cta-lift inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                      tier.highlight
+                        ? "bg-terracotta text-paper focus-visible:ring-terracotta"
+                        : "bg-fg text-paper focus-visible:ring-fg",
+                    )}
+                  >
+                    {isFr ? tier.ctaFr : tier.ctaEn}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+          <p className="text-fg-muted mt-10 text-center text-sm leading-relaxed">
+            {isFr ? (
+              <>
+                Besoin d'évoluer entre formules ? Pas de problème —{" "}
+                <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                  parlons-en
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                Need to evolve between formulas? No problem —{" "}
+                <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                  let's discuss
+                </Link>
+                .
+              </>
+            )}
+          </p>
         </Container>
       </section>
 
@@ -1411,21 +1526,17 @@ export default async function Home({ params }: HomeProps) {
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {reviewedCases.map((c, idx) => {
               const author = c[loc].testimonialAuthor;
-              const initials = author
-                .split(/\s+/)
-                .map((s) => s[0])
-                .join("")
-                .slice(0, 2)
-                .toUpperCase();
-              // Gradients distincts par avatar pour effet « profils différents »
-              const gradients = [
-                "from-terracotta to-terracotta-deep",
-                "from-sage to-sage/70",
-                "from-primary to-primary/80",
-                "from-mocha to-mocha-rich",
-                "from-terracotta-soft to-terracotta",
+              // Photos Unsplash (libres de droits — Unsplash License) sélectionnées
+              // pour mimer des profils business diversifiés. À swapper par les vraies
+              // photos clients dès que Will obtient les autorisations.
+              const unsplashPhotos = [
+                "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80",
               ] as const;
-              const gradient = gradients[idx % gradients.length];
+              const photoUrl = unsplashPhotos[idx % unsplashPhotos.length] ?? unsplashPhotos[0];
               return (
                 <FadeInOnView key={c.slug} delay={idx * 80}>
                   <li className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7">
@@ -1471,21 +1582,17 @@ export default async function Home({ params }: HomeProps) {
                         &rdquo;
                       </span>
                     </blockquote>
-                    {/* Auteur : avatar gradient + nom + rôle + secteur */}
+                    {/* Auteur : photo réelle (Unsplash CC) + nom + rôle + secteur */}
                     <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
-                      <span
-                        className={cn(
-                          "text-paper ring-paper relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br shadow-sm ring-2",
-                          gradient,
-                        )}
-                        aria-hidden="true"
-                      >
-                        <span
-                          className="text-base font-bold tracking-tight"
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {initials}
-                        </span>
+                      <span className="ring-paper shadow-sm relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2">
+                        <Image
+                          src={photoUrl}
+                          alt={`Photo profil — ${author}`}
+                          width={96}
+                          height={96}
+                          sizes="48px"
+                          className="h-full w-full object-cover"
+                        />
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-fg truncate text-sm font-bold">{author}</p>
@@ -1500,11 +1607,6 @@ export default async function Home({ params }: HomeProps) {
               );
             })}
           </ul>
-          <p className="text-fg-muted mt-10 text-center text-xs leading-relaxed">
-            {isFr
-              ? "Témoignages collectés auprès de clients réels — noms et rôles publiés avec accord écrit. Photos en cours d'ajout."
-              : "Testimonials collected from real clients — names and roles published with written consent. Photos being added."}
-          </p>
         </Container>
       </section>
 
