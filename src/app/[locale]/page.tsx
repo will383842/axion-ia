@@ -652,11 +652,12 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ─────────────── GRILLE TARIFAIRE — 3 NIVEAUX D'ENGAGEMENT ───────────────
-          Refonte (Will 2026-05-24) : 3 niveaux d'engagement (Découverte 1j /
-          Cadrage 2-4 sem / Déploiement 2-6 mois). Chaque niveau couvre TOUTES
-          les verticales (formation, audit, 1-to-1, implémentation, plateforme web).
-          Position : juste après le fondateur William J. ("On la livre"). */}
+
+      {/* ─────────────── TARIFS — 5 services avec prix de départ ───────────────
+          Refonte (Will 2026-05-24) : tarifs PAR SERVICE (pas par "niveau d'engagement").
+          5 cards : Formation / Audit / 1-to-1 / Implémentation / Site web IA.
+          Chaque card : nom + emoji + "à partir de X €" clair + 3-4 inclus + CTA service.
+          Tarifs depuis SSOT pricing.ts (zéro hardcode prix). */}
       <section className="bg-paper py-24 sm:py-28 lg:py-32">
         <Container>
           <FadeInOnView>
@@ -666,250 +667,240 @@ export default async function Home({ params }: HomeProps) {
                 {isFr ? "Tarifs transparents" : "Transparent pricing"}
               </p>
               <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {isFr ? "Trois niveaux. " : "Three levels. "}
+                {isFr ? "Un prix de départ " : "A starting price "}
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "Vous choisissez la profondeur." : "You choose the depth."}
+                  {isFr ? "pour chaque service" : "for every service"}
                 </span>
+                .
               </h2>
               <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-lg leading-relaxed">
                 {isFr
-                  ? "Du diagnostic flash en 1 journée au déploiement complet sur plusieurs mois — chaque niveau couvre toutes nos expertises (formation, audit, 1-to-1, implémentation, plateforme web)."
-                  : "From a 1-day flash diagnosis to full multi-month deployment — each level covers all our expertise areas (training, audit, 1-to-1, implementation, web platform)."}
+                  ? "Cinq expertises, cinq tarifs de départ clairs. Chaque service peut être pris seul ou combiné avec les autres."
+                  : "Five expertise areas, five clear starting prices. Each service can be taken alone or combined with the others."}
               </p>
             </div>
           </FadeInOnView>
-          <ul className="grid gap-5 lg:grid-cols-3 lg:gap-6">
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {(
               [
                 {
-                  id: "decouverte",
-                  highlight: false,
-                  nameFr: "Découverte",
-                  nameEn: "Discovery",
-                  durationFr: "1 journée sur site",
-                  durationEn: "1 day on-site",
-                  taglineFr: "Tester l'IA dans votre contexte, sans engagement",
-                  taglineEn: "Test AI in your context, no commitment",
-                  priceLabel: `${interventionEntryPrice} HT`,
-                  priceSubFr: "Forfait journée — frais inclus capitales régionales",
-                  priceSubEn: "Day package — travel included for regional capitals",
+                  emoji: "🎓",
+                  accent: "terracotta",
+                  serviceFr: "Formation IA",
+                  serviceEn: "AI Training",
+                  taglineFr: "Formez vos équipes",
+                  taglineEn: "Train your teams",
+                  priceLabel: `${interventionEntryPrice}`,
+                  priceSubFr: "HT · à partir de · 1 journée",
+                  priceSubEn: "Excl. tax · from · 1 day",
                   includesFr: [
-                    "Diagnostic flash de vos process",
-                    "Démonstration d'outils IA sur vos vrais cas",
-                    "Plan d'action 5 priorités chiffrées",
-                    "Synthèse écrite + recommandations livrée sous 48h",
-                    "Support email 30 jours inclus",
+                    "Ateliers pratiques sur vos cas métier",
+                    "Formats 4h / 1j / 2j / 3j+",
+                    "Sur site ou à distance",
                   ],
                   includesEn: [
-                    "Flash diagnosis of your processes",
-                    "AI tools demo on your real cases",
-                    "5 quantified priority action plan",
-                    "Written summary + recommendations within 48h",
-                    "30-day email support included",
+                    "Hands-on workshops on your business cases",
+                    "4h / 1d / 2d / 3d+ formats",
+                    "On-site or remote",
                   ],
-                  ctaFr: "Réserver une journée",
-                  ctaEn: "Book a day",
-                  ctaHref: "/reserver" as const,
-                  Icon: Sparkles,
+                  href: "/interventions" as const,
                 },
                 {
-                  id: "cadrage",
-                  highlight: true,
-                  nameFr: "Cadrage",
-                  nameEn: "Scoping",
-                  durationFr: "2 à 4 semaines",
-                  durationEn: "2 to 4 weeks",
-                  taglineFr: "Cartographier, prioriser, démontrer le ROI",
-                  taglineEn: "Map, prioritize, demonstrate ROI",
-                  priceLabel: auditRange,
-                  priceSubFr: "Audit IA complet · selon taille entreprise",
-                  priceSubEn: "Full AI audit · based on company size",
+                  emoji: "🔍",
+                  accent: "sage",
+                  serviceFr: "Audit IA",
+                  serviceEn: "AI Audit",
+                  taglineFr: "Cartographiez vos gains",
+                  taglineEn: "Map your gains",
+                  priceLabel: `${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, { compact: true })}`,
+                  priceSubFr: "HT · à partir de · 4 niveaux",
+                  priceSubEn: "Excl. tax · from · 4 tiers",
                   includesFr: [
-                    "Audit IA complet de vos process & outils",
-                    "Cartographie gains chiffrés action par action",
+                    "Diagnostic complet process & outils",
+                    "Gains chiffrés action par action",
                     "Roadmap priorisée 6-12 mois",
-                    "Démos POC sur vos données réelles",
-                    "3 sessions coaching 1-to-1 dirigeant",
-                    "Rapport livré · pas une présentation floue",
                   ],
                   includesEn: [
-                    "Full AI audit of your processes & tools",
-                    "Quantified gains map action by action",
+                    "Full diagnosis of processes & tools",
+                    "Quantified gains action by action",
                     "Prioritized 6-12 month roadmap",
-                    "POC demos on your real data",
-                    "3 executive 1-to-1 coaching sessions",
-                    "Delivered report · not a fuzzy slideshow",
                   ],
-                  ctaFr: "Demander un cadrage",
-                  ctaEn: "Request scoping",
-                  ctaHref: "/audit" as const,
-                  Icon: Target,
+                  href: "/audit" as const,
                 },
                 {
-                  id: "deploiement",
-                  highlight: false,
-                  nameFr: "Déploiement",
-                  nameEn: "Deployment",
-                  durationFr: "2 à 6 mois",
-                  durationEn: "2 to 6 months",
-                  taglineFr: "Construire, livrer, former, supporter",
-                  taglineEn: "Build, deliver, train, support",
-                  priceLabel: isFr ? "Sur devis" : "Quote on demand",
-                  priceSubFr: `Implémentation IA ou plateforme web · à partir de ${implEntryPrice}`,
-                  priceSubEn: `AI implementation or web platform · from ${implEntryPrice}`,
+                  emoji: "🧑‍💼",
+                  accent: "primary",
+                  serviceFr: "Coaching 1-to-1",
+                  serviceEn: "1-to-1 Coaching",
+                  taglineFr: "Dirigeant ou collaborateur",
+                  taglineEn: "Executive or employee",
+                  priceLabel: `${unAUnEntryPrice}`,
+                  priceSubFr: "HT · à partir de · par session",
+                  priceSubEn: "Excl. tax · from · per session",
                   includesFr: [
-                    "Implémentation IA ou site web augmenté IA sur mesure",
-                    "Intégration outils existants (CRM, ERP, etc.)",
-                    "Formation équipes incluse (modules adaptés)",
-                    "Tests utilisateurs + go-live",
-                    "Support production 90 jours",
+                    "Sessions individuelles sur cas réels",
+                    "Automatisations actives dès la session",
+                    "ROI visible dès le lendemain",
+                  ],
+                  includesEn: [
+                    "Individual sessions on real cases",
+                    "Active automations from the session",
+                    "ROI visible the next day",
+                  ],
+                  href: "/un-a-un" as const,
+                },
+                {
+                  emoji: "⚙️",
+                  accent: "terracotta",
+                  serviceFr: "Implémentation IA",
+                  serviceEn: "AI Implementation",
+                  taglineFr: "Construire et déployer",
+                  taglineEn: "Build and deploy",
+                  priceLabel: `${implEntryPrice}`,
+                  priceSubFr: "HT · à partir de · sur mesure",
+                  priceSubEn: "Excl. tax · from · custom",
+                  includesFr: [
+                    "Automatisations sur mesure",
+                    "Intégration CRM / ERP existant",
+                    "Tests + go-live + support 90 j",
+                  ],
+                  includesEn: [
+                    "Custom automations",
+                    "Existing CRM / ERP integration",
+                    "Tests + go-live + 90-day support",
+                  ],
+                  href: "/implementation" as const,
+                },
+                {
+                  emoji: "🌐",
+                  accent: "primary",
+                  serviceFr: "Site web IA",
+                  serviceEn: "AI website",
+                  taglineFr: "Plateforme web augmentée",
+                  taglineEn: "AI-augmented web platform",
+                  priceLabel: `${webEntryPrice}`,
+                  priceSubFr: "HT · à partir de · sur devis",
+                  priceSubEn: "Excl. tax · from · custom quote",
+                  includesFr: [
+                    "Plateforme web sur mesure",
+                    "IA intégrée nativement (reco, search, etc.)",
                     "Hébergement Europe RGPD strict",
                   ],
                   includesEn: [
-                    "Custom AI implementation or AI-augmented website",
-                    "Integration with existing tools (CRM, ERP, etc.)",
-                    "Team training included (adapted modules)",
-                    "User testing + go-live",
-                    "90-day production support",
+                    "Custom web platform",
+                    "Native AI integration (reco, search, etc.)",
                     "European hosting, strict GDPR",
                   ],
-                  ctaFr: "Discuter d'un projet",
-                  ctaEn: "Discuss a project",
-                  ctaHref: "/contact" as const,
-                  Icon: Rocket,
+                  href: "/sites-web-augmentes" as const,
                 },
               ] as const
-            ).map((tier, idx) => (
-              <FadeInOnView key={tier.id} delay={idx * 60}>
-                <li
-                  className={cn(
-                    "relative flex h-full flex-col rounded-3xl border p-7 transition sm:p-8",
-                    tier.highlight
-                      ? "bg-mocha-rich text-mocha-fg border-terracotta shadow-card lg:-translate-y-3"
-                      : "bg-paper border-border shadow-subtle",
-                  )}
-                >
-                  {tier.highlight ? (
-                    <span className="bg-terracotta text-paper absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.18em] uppercase">
-                      {isFr ? "Le plus choisi" : "Most chosen"}
-                    </span>
-                  ) : null}
-                  <div className="mb-6 flex items-start gap-4">
-                    <span
-                      className={cn(
-                        "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full",
-                        tier.highlight
-                          ? "bg-terracotta text-paper"
-                          : "bg-terracotta-soft text-terracotta-deep",
-                      )}
-                      aria-hidden="true"
-                    >
-                      <tier.Icon className="h-5 w-5" strokeWidth={2.2} />
-                    </span>
+            ).map((tier, idx) => {
+              const accentBg =
+                tier.accent === "terracotta"
+                  ? "bg-terracotta"
+                  : tier.accent === "sage"
+                    ? "bg-sage"
+                    : "bg-primary";
+              const accentText =
+                tier.accent === "terracotta"
+                  ? "text-terracotta"
+                  : tier.accent === "sage"
+                    ? "text-sage"
+                    : "text-primary";
+              const accentBgSoft =
+                tier.accent === "terracotta"
+                  ? "bg-terracotta-soft"
+                  : tier.accent === "sage"
+                    ? "bg-sage/15"
+                    : "bg-primary/15";
+              return (
+                <FadeInOnView key={idx} delay={idx * 50}>
+                  <li className="bg-bg border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-4 rounded-2xl border p-6 transition hover:-translate-y-1">
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={cn(
+                          "inline-flex h-12 w-12 items-center justify-center rounded-full text-2xl",
+                          accentBgSoft,
+                        )}
+                        aria-hidden="true"
+                      >
+                        {tier.emoji}
+                      </span>
+                    </div>
                     <div>
                       <p
                         className={cn(
-                          "text-[12px] font-bold tracking-[0.18em] uppercase",
-                          tier.highlight ? "text-terracotta-soft" : "text-terracotta",
+                          "text-[11px] font-bold tracking-[0.16em] uppercase",
+                          accentText,
                         )}
                       >
-                        {isFr ? tier.nameFr : tier.nameEn}
+                        {isFr ? tier.serviceFr : tier.serviceEn}
                       </p>
-                      <p
-                        className={cn(
-                          "mt-1 text-xs font-medium",
-                          tier.highlight ? "text-mocha-fg/80" : "text-fg-muted",
-                        )}
-                      >
-                        {isFr ? tier.durationFr : tier.durationEn}
+                      <p className="text-fg-muted mt-1 text-xs italic">
+                        {isFr ? tier.taglineFr : tier.taglineEn}
                       </p>
                     </div>
-                  </div>
-                  <p
-                    className={cn(
-                      "mb-6 text-base leading-relaxed italic",
-                      tier.highlight ? "text-mocha-fg" : "text-fg",
-                    )}
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {isFr ? tier.taglineFr : tier.taglineEn}
-                  </p>
-                  <div className="mb-6">
-                    <p
+                    <div className="border-border border-t pt-3">
+                      <p className="text-fg-muted text-[10px] font-medium tracking-[0.14em] uppercase">
+                        {isFr ? "À partir de" : "From"}
+                      </p>
+                      <p
+                        className="text-fg mt-1 text-[clamp(1.5rem,2.5vw,2rem)] leading-none font-bold tracking-tight"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {tier.priceLabel}
+                      </p>
+                      <p className="text-fg-muted mt-1 text-[10px] leading-tight">
+                        {isFr ? tier.priceSubFr : tier.priceSubEn}
+                      </p>
+                    </div>
+                    <ul className="flex flex-1 flex-col gap-2">
+                      {(isFr ? tier.includesFr : tier.includesEn).map((item, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <BadgeCheck
+                            className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", accentText)}
+                            aria-hidden="true"
+                            strokeWidth={2.2}
+                          />
+                          <span className="text-fg-soft text-xs leading-snug">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href={tier.href}
                       className={cn(
-                        "text-[clamp(1.75rem,3vw,2.5rem)] leading-none font-bold tracking-tight",
-                        tier.highlight ? "text-mocha-fg" : "text-fg",
-                      )}
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {tier.priceLabel}
-                    </p>
-                    <p
-                      className={cn(
-                        "mt-2 text-xs leading-relaxed",
-                        tier.highlight ? "text-mocha-fg/70" : "text-fg-soft",
+                        "cta-lift mt-2 inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-full text-xs font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                        accentBg,
+                        "text-paper hover:opacity-90",
                       )}
                     >
-                      {isFr ? tier.priceSubFr : tier.priceSubEn}
-                    </p>
-                  </div>
-                  <ul className="mb-8 flex flex-1 flex-col gap-3">
-                    {(isFr ? tier.includesFr : tier.includesEn).map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <BadgeCheck
-                          className={cn(
-                            "mt-0.5 h-4 w-4 shrink-0",
-                            tier.highlight ? "text-terracotta-soft" : "text-terracotta",
-                          )}
-                          aria-hidden="true"
-                          strokeWidth={2.2}
-                        />
-                        <span
-                          className={cn(
-                            "text-sm leading-relaxed",
-                            tier.highlight ? "text-mocha-fg/90" : "text-fg-soft",
-                          )}
-                        >
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href={tier.ctaHref}
-                    className={cn(
-                      "cta-lift inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                      tier.highlight
-                        ? "bg-terracotta text-paper focus-visible:ring-terracotta"
-                        : "bg-fg text-paper focus-visible:ring-fg",
-                    )}
-                  >
-                    {isFr ? tier.ctaFr : tier.ctaEn}
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </Link>
-                </li>
-              </FadeInOnView>
-            ))}
+                      {isFr ? "Découvrir" : "Discover"}
+                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                    </Link>
+                  </li>
+                </FadeInOnView>
+              );
+            })}
           </ul>
           <p className="text-fg-muted mt-10 text-center text-sm leading-relaxed">
             {isFr ? (
               <>
-                Pas sûr du bon niveau ?{" "}
+                Besoin de combiner plusieurs services ?{" "}
                 <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                   Parlons-en
                 </Link>{" "}
-                — on vous oriente sans engagement.
+                — on construit votre formule sur mesure.
               </>
             ) : (
               <>
-                Not sure which level fits?{" "}
+                Need to combine multiple services?{" "}
                 <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                   Let's discuss
                 </Link>{" "}
-                — we guide you, no commitment.
+                — we'll build your custom formula.
               </>
             )}
           </p>
