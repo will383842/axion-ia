@@ -32,12 +32,9 @@ function adminBase(): string {
 // Source de vérité : `./campaign-wizard-constants.ts` (sans "use server" pour
 // importable côté tests vitest sans chaîne next-auth → next/server).
 
-export {
-  WIZARD_CONTENT_TYPES,
-  WIZARD_SECTIONS,
-  type WizardContentType,
-} from "./campaign-wizard-constants";
-
+// Note : les constantes (WIZARD_CONTENT_TYPES, WIZARD_SECTIONS, WizardContentType)
+// doivent être importées DIRECTEMENT depuis "./campaign-wizard-constants" — un
+// fichier "use server" ne peut exporter que des fonctions async (contrainte Next 16).
 import { WIZARD_CONTENT_TYPES } from "./campaign-wizard-constants";
 
 // ─── Zod schema (validation Step 4 submit) ──────────────────────────────────
