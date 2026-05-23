@@ -161,48 +161,6 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // Mapping classes Tailwind pour chaque accent (évite la concaténation
-  // dynamique non détectable par le compilateur Tailwind).
-  // Polish v5 — Cards en COULEUR PLEINE avec texte paper (contraste fort).
-  // gainBg = couleur pleine (background card), gainText = couleur claire pour
-  // texte. Numéro géant en couleur très claire (accent-soft) pour contraste
-  // typographique.
-  const accentClasses = {
-    terracotta: {
-      iconBg: "bg-terracotta-deep",
-      iconFg: "text-terracotta",
-      number: "text-terracotta-soft/40",
-      headline: "text-terracotta-soft",
-      hoverBorder: "hover:border-terracotta",
-      bulletIcon: "text-terracotta-soft",
-      gainBg: "bg-terracotta",
-      gainText: "text-paper",
-      ringHalo: "before:bg-terracotta/20",
-    },
-    primary: {
-      iconBg: "bg-primary",
-      iconFg: "text-primary",
-      number: "text-primary-soft/40",
-      headline: "text-primary-soft",
-      hoverBorder: "hover:border-primary",
-      bulletIcon: "text-primary-soft",
-      gainBg: "bg-primary",
-      gainText: "text-paper",
-      ringHalo: "before:bg-primary/20",
-    },
-    sage: {
-      iconBg: "bg-sage",
-      iconFg: "text-sage",
-      number: "text-sage-soft/50",
-      headline: "text-sage-soft",
-      hoverBorder: "hover:border-sage",
-      bulletIcon: "text-sage-soft",
-      gainBg: "bg-sage",
-      gainText: "text-paper",
-      ringHalo: "before:bg-sage/20",
-    },
-  } as const;
-
   const whyPoints = [t("valueWhy1"), t("valueWhy2"), t("valueWhy3"), t("valueWhy4")];
 
   // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
@@ -287,25 +245,6 @@ export default async function Home({ params }: HomeProps) {
     training: t("comparisonColTraining"),
   };
 
-  // Métriques.
-  const metrics = [
-    { id: "roi", number: t("metric1Number"), suffix: t("metric1Suffix"), label: t("metric1Label") },
-    { id: "eu", number: t("metric2Number"), suffix: t("metric2Suffix"), label: t("metric2Label") },
-    {
-      id: "ticket",
-      number: t("metric3Number"),
-      suffix: t("metric3Suffix"),
-      label: t("metric3Label"),
-    },
-    {
-      id: "lockin",
-      number: t("metric4Number"),
-      suffix: t("metric4Suffix"),
-      label: t("metric4Label"),
-    },
-  ];
-
-  // 4 étapes méthode.
   // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
   // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
   // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
@@ -491,23 +430,25 @@ export default async function Home({ params }: HomeProps) {
       <section className="bg-paper relative py-20 sm:py-24 lg:py-28">
         <Container>
           <FadeInOnView>
-            <div className="mx-auto mb-14 max-w-5xl text-center">
+            <div className="mx-auto mb-20 max-w-4xl text-center">
               <p className="text-terracotta mb-5 text-sm font-bold tracking-[0.2em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-2 w-2 rounded-full align-middle" />
-                {t("valueEyebrow")}
+                {isFr ? "Nos interventions" : "Our services"}
               </p>
-              <h2 className="text-fg text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-tight">
-                {t("valueTitlePart1")}{" "}
+              <h2 className="text-fg text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight">
+                {isFr ? "Pourquoi vous ne pouvez" : "Why you can only"}
+                <br />
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {t("valueTitleEm")}
+                  {isFr ? "que gagner" : "win"}
                 </span>
-                {t("valueTitlePart2")}
               </h2>
-              <p className="text-fg-soft mx-auto mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl">
-                {t("valueDescription")}
+              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
+                {isFr
+                  ? "Chaque type d'intervention produit un gain mesurable — en heures, en process, en chiffre d'affaires."
+                  : "Every type of engagement produces a measurable gain — in hours, processes, revenue."}
               </p>
             </div>
           </FadeInOnView>
@@ -520,77 +461,231 @@ export default async function Home({ params }: HomeProps) {
               filigrane (background décoratif), icône paper-circle accent en
               haut, h3 + headline en bas. Aspect 3:4 vertical strict, 5 col
               toujours, grid responsive 320→1280+. */}
-          <ul className="grid grid-cols-5 gap-2.5 md:gap-4">
-            {valuePropositions.map((v, idx) => {
-              const a = accentClasses[v.accent];
+          <div className="flex flex-col gap-16 sm:gap-20 lg:gap-24">
+            {(
+              [
+                {
+                  num: "01",
+                  emoji: "🎓",
+                  accent: "terracotta",
+                  service: isFr ? "Formations" : "Training",
+                  headlineFr: "Vos salariés appliquent dès le lendemain",
+                  headlineEn: "Your team applies from day one",
+                  descFr:
+                    "On part de leurs outils, leurs tâches, leur métier. Pas de slides théoriques — chaque participant repart avec des automatisations qu'il active le lendemain matin.",
+                  descEn:
+                    "We start from their tools, their tasks, their work. No theoretical slides — every participant leaves with automations they activate the next morning.",
+                  bulletsFr: [
+                    "Gain de temps immédiat sur les tâches répétitives",
+                    "Compétences ancrées dans leur réalité, pas dans un manuel",
+                    "Toute l'équipe monte en niveau en même temps",
+                    "Applicable dès le lendemain matin",
+                  ],
+                  bulletsEn: [
+                    "Immediate time savings on repetitive tasks",
+                    "Skills rooted in their reality, not in a manual",
+                    "The whole team levels up at the same time",
+                    "Applicable from the next morning",
+                  ],
+                  href: "/interventions" as const,
+                },
+                {
+                  num: "02",
+                  emoji: "🔍",
+                  accent: "sage",
+                  service: isFr ? "Audits" : "Audits",
+                  headlineFr: "On trouve exactement ce qui vous coûte du temps et de l'argent",
+                  headlineEn: "We find exactly what's costing you time and money",
+                  descFr:
+                    "Analyse de vos process, outils, flux. Vous repartez avec les 5 actions prioritaires classées par impact — pas un rapport de 80 pages à mettre dans un tiroir.",
+                  descEn:
+                    "Analysis of your processes, tools, flows. You leave with the 5 priority actions ranked by impact — not an 80-page report to file away.",
+                  bulletsFr: [
+                    "Gains potentiels identifiés et chiffrés",
+                    "Feuille de route claire, priorisée, actionnable",
+                    "Zéro jargon — vous savez exactement quoi faire ensuite",
+                    "Rapport livré — pas une présentation floue",
+                  ],
+                  bulletsEn: [
+                    "Potential gains identified and quantified",
+                    "Clear, prioritized, actionable roadmap",
+                    "Zero jargon — you know exactly what to do next",
+                    "Delivered report — not a fuzzy slideshow",
+                  ],
+                  href: "/audit" as const,
+                },
+                {
+                  num: "03",
+                  emoji: "🧑‍💼",
+                  accent: "primary",
+                  service: isFr ? "Accompagnement 1-to-1" : "1-to-1 coaching",
+                  headlineFr: "On ouvre votre poste ensemble — et on récupère vos heures perdues",
+                  headlineEn: "We open your workstation together — and reclaim your lost hours",
+                  descFr:
+                    "Dirigeant ou collaborateur : on analyse vos vrais outils, vos vraies tâches. Ce qui peut être automatisé l'est. Ce qui peut être supprimé disparaît. Résultat : plusieurs heures récupérées chaque jour.",
+                  descEn:
+                    "Executive or employee: we analyze your real tools, your real tasks. What can be automated is. What can be removed disappears. Result: several hours reclaimed every day.",
+                  bulletsFr: [
+                    "Travail sur votre cas réel, pas un exemple générique",
+                    "Automatisations actives à la fin de la session",
+                    "ROI visible dès le lendemain",
+                    "1 session = plusieurs heures/jour récupérées",
+                  ],
+                  bulletsEn: [
+                    "Work on your real case, not a generic example",
+                    "Live automations by the end of the session",
+                    "ROI visible the next day",
+                    "1 session = several hours/day reclaimed",
+                  ],
+                  href: "/un-a-un" as const,
+                },
+                {
+                  num: "04",
+                  emoji: "⚙️",
+                  accent: "terracotta",
+                  service: isFr ? "Implémentation d'automatisations" : "Automation implementation",
+                  headlineFr: "On branche. Ça tourne. Vous récupérez des heures — chaque jour",
+                  headlineEn: "We plug in. It runs. You reclaim hours — every day",
+                  descFr:
+                    "On construit et déploie vos automatisations sur mesure. Dès la mise en production, ce sont des tâches qui disparaissent de votre quotidien — pour toujours.",
+                  descEn:
+                    "We build and deploy your custom automations. From go-live, these are tasks that vanish from your day-to-day — for good.",
+                  bulletsFr: [
+                    "Livré, testé, opérationnel — pas un prototype",
+                    "Économies immédiates dès le premier jour de production",
+                    "Vous parlez à celui qui code — zéro intermédiaire",
+                    "En prod = heures récupérées instantanément",
+                  ],
+                  bulletsEn: [
+                    "Delivered, tested, operational — not a prototype",
+                    "Immediate savings from day one in production",
+                    "You talk to the person who codes — zero middleman",
+                    "Live = hours reclaimed instantly",
+                  ],
+                  href: "/implementation" as const,
+                },
+                {
+                  num: "05",
+                  emoji: "🌐",
+                  accent: "primary",
+                  service: isFr ? "Plateforme web augmentée à l'IA" : "AI-augmented web platform",
+                  headlineFr:
+                    "Votre outil métier, repensé avec l'IA au cœur — plus rapide, plus intelligent, plus rentable",
+                  headlineEn:
+                    "Your business tool, redesigned with AI at the core — faster, smarter, more profitable",
+                  descFr:
+                    "On conçoit et développe votre plateforme web sur mesure avec l'IA intégrée nativement : recommandations, automatisations, analyse de données en temps réel, interfaces intelligentes. Vous ne remplacez pas votre outil existant — vous le transcendez.",
+                  descEn:
+                    "We design and build your custom web platform with AI natively integrated: recommendations, automations, real-time data analysis, intelligent interfaces. You don't replace your existing tool — you transcend it.",
+                  bulletsFr: [
+                    "Stack moderne, évolutif, sans dette technique",
+                    "IA intégrée dès la conception — pas ajoutée après",
+                    "Hébergement Europe, RGPD strict, données chez vous",
+                    "Un outil qui travaille pour vous — 24h/24, 7j/7",
+                  ],
+                  bulletsEn: [
+                    "Modern, scalable stack, no technical debt",
+                    "AI integrated from day one — not bolted on",
+                    "European hosting, strict GDPR, your data stays yours",
+                    "A tool that works for you — 24/7",
+                  ],
+                  href: "/sites-web-augmentes" as const,
+                },
+              ] as const
+            ).map((block, idx) => {
+              const reverse = idx % 2 === 1;
+              const accentBg =
+                block.accent === "terracotta"
+                  ? "bg-terracotta"
+                  : block.accent === "sage"
+                    ? "bg-sage"
+                    : "bg-primary";
+              const accentText =
+                block.accent === "terracotta"
+                  ? "text-terracotta"
+                  : block.accent === "sage"
+                    ? "text-sage"
+                    : "text-primary";
               return (
-                <FadeInOnView key={v.id} delay={idx * 80}>
-                  <li className="h-full">
-                    <Link
-                      href={v.href}
-                      className={cn(
-                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-6",
-                        a.gainBg,
-                      )}
-                    >
-                      {/* Numéro géant en filigrane — background décoratif */}
-                      <span
-                        className={cn(
-                          "pointer-events-none absolute -top-2 -right-2 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-3 md:text-[9rem]",
-                          a.number,
-                        )}
-                        style={{ fontFamily: "var(--font-serif)" }}
-                        aria-hidden="true"
-                      >
-                        0{idx + 1}
-                      </span>
-
-                      {/* Emoji accent — sur fond paper, taille proéminente */}
-                      <span
-                        className="bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14 md:text-[2rem]"
-                        aria-hidden="true"
-                      >
-                        {v.emoji}
-                      </span>
-
-                      {/* Action — h3 GÉANT (titre = élément principal de la card) */}
-                      <div className="relative z-10 mt-auto flex flex-col gap-2">
-                        <h3
-                          className={cn(
-                            "text-lg leading-[1.1] font-bold tracking-tight sm:text-xl md:text-3xl lg:text-[1.95rem]",
-                            a.gainText,
-                          )}
-                        >
-                          {v.action}
-                        </h3>
-                        <p
-                          className={cn(
-                            "text-[11px] leading-snug sm:text-xs md:text-[13px]",
-                            a.gainText,
-                            "opacity-90",
-                          )}
-                        >
-                          {v.headline}
-                        </p>
-
-                        {/* CTA « Découvrir → » TOUJOURS visible, sur fond paper.
-                            Signale la cliquabilité sans hover. */}
+                <FadeInOnView key={block.num} delay={idx * 40}>
+                  <article
+                    className={cn(
+                      "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
+                      reverse && "lg:[&>div:first-child]:order-2",
+                    )}
+                  >
+                    <div>
+                      <div className="mb-6 flex items-center gap-5">
                         <span
                           className={cn(
-                            "bg-paper mt-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 md:mt-4 md:px-4 md:py-2 md:text-sm",
-                            a.iconFg,
+                            "text-[clamp(3.5rem,6vw,5rem)] leading-none font-semibold tabular-nums",
+                            accentText,
                           )}
+                          style={{ fontFamily: "var(--font-serif)" }}
+                          aria-hidden="true"
                         >
-                          {t("valueCardCta")}
-                          <ArrowRight className="h-3 w-3 md:h-4 md:w-4" aria-hidden="true" />
+                          {block.num}
+                        </span>
+                        <span
+                          className={cn(
+                            "inline-flex h-14 w-14 items-center justify-center rounded-full text-2xl",
+                            accentBg,
+                          )}
+                          aria-hidden="true"
+                        >
+                          {block.emoji}
                         </span>
                       </div>
-                    </Link>
-                  </li>
+                      <p
+                        className={cn(
+                          "mb-3 text-[12px] font-bold tracking-[0.2em] uppercase",
+                          accentText,
+                        )}
+                      >
+                        {block.service}
+                      </p>
+                      <h3
+                        className="text-fg text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.1] font-semibold tracking-tight"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {isFr ? block.headlineFr : block.headlineEn}
+                      </h3>
+                    </div>
+
+                    <div>
+                      <p className="text-fg-soft text-base leading-relaxed sm:text-lg">
+                        {isFr ? block.descFr : block.descEn}
+                      </p>
+                      <ul className="mt-7 flex flex-col gap-3">
+                        {(isFr ? block.bulletsFr : block.bulletsEn).map((bullet, bIdx) => (
+                          <li key={bIdx} className="flex items-start gap-3">
+                            <span
+                              className={cn(
+                                "mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
+                                accentBg,
+                              )}
+                              aria-hidden="true"
+                            />
+                            <span className="text-fg text-base leading-relaxed">{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Link
+                        href={block.href}
+                        className={cn(
+                          "mt-8 inline-flex items-center gap-2 text-sm font-semibold hover:underline",
+                          accentText,
+                        )}
+                      >
+                        {isFr ? "Découvrir cette intervention" : "Discover this service"}
+                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                      </Link>
+                    </div>
+                  </article>
                 </FadeInOnView>
               );
             })}
-          </ul>
+          </div>
         </Container>
       </section>
 
@@ -621,47 +716,6 @@ export default async function Home({ params }: HomeProps) {
           sizes="100vw"
           className="h-auto w-full"
         />
-      </section>
-
-      {/* ─────────────── METRICS — juste avant le fondateur ─────────────────── */}
-      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
-              <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("metricsEyebrow")}
-              </p>
-              <h2 className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {t("metricsTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta-soft"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {t("metricsTitleEm")}
-                </span>
-                {t("metricsTitlePart2")}
-              </h2>
-            </div>
-            <dl className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-              {metrics.map((m) => (
-                <div key={m.id} className="flex flex-col gap-3">
-                  <dt className="text-mocha-fg/70 order-2 text-sm leading-snug">{m.label}</dt>
-                  <dd
-                    className="text-mocha-fg order-1 [font-feature-settings:'tnum'] text-[clamp(3.5rem,7vw,6rem)] leading-[0.95] font-medium tracking-[-0.04em]"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {m.number}
-                    {m.suffix ? (
-                      <span className="text-terracotta-soft ml-1 text-2xl font-medium">
-                        {m.suffix}
-                      </span>
-                    ) : null}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </FadeInOnView>
-        </Container>
       </section>
 
       {/* ───────────── SECTION FONDATEUR (crédibilité + "Top 1 %") ─────────────
@@ -746,6 +800,51 @@ export default async function Home({ params }: HomeProps) {
                   <span className="text-fg-soft text-sm leading-snug">{stat.label}</span>
                 </div>
               ))}
+            </div>
+          </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ─────────────── DÉMOS VISUELLES — 2 images sur la même ligne ──────────────
+          Remplace l'ancienne section métriques chiffrées. Deux captures concrètes
+          du produit Axion-IA : pipeline lead (7 étapes auto) + planning Gantt
+          IA temps réel. Côte à côte sur desktop, empilées sur mobile. */}
+      <section className="bg-paper py-20 sm:py-24 lg:py-28">
+        <Container>
+          <FadeInOnView>
+            <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+              <figure className="border-border overflow-hidden rounded-2xl border">
+                <Image
+                  src="/images/axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.png"
+                  alt={
+                    isFr
+                      ? "Pipeline Axion-IA : 7 étapes automatisées du formulaire entrant au CRM (scoring IA, enrichissement, segmentation chaud/tiède/froid, routage)."
+                      : "Axion-IA pipeline: 7 automated steps from incoming form to CRM (AI scoring, enrichment, hot/warm/cold segmentation, routing)."
+                  }
+                  width={1600}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="h-auto w-full"
+                />
+              </figure>
+              <figure className="border-border overflow-hidden rounded-2xl border">
+                <Image
+                  src="/images/axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.png"
+                  alt={
+                    isFr
+                      ? "Planning Gantt Axion-IA : chantier Résidence Les Pins, 15 tâches, conflits de ressources détectés automatiquement, alertes météo."
+                      : "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts."
+                  }
+                  width={1600}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="h-auto w-full"
+                />
+              </figure>
             </div>
           </FadeInOnView>
         </Container>
