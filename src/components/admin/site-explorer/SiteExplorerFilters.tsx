@@ -62,12 +62,29 @@ export function SiteExplorerFilters() {
         className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
       >
         <option value="">Toutes les sections</option>
-        {["blog", "guides", "cas-concrets", "glossaire", "galerie", "presse", "stack-ia", "audits", "interventions-formations", "un-a-un", "implementations", "sites-web-augmentes", "implantations", "equipe"].map((s) => (
-          <option key={s} value={s}>{s}</option>
+        {[
+          "blog",
+          "guides",
+          "cas-concrets",
+          "glossaire",
+          "galerie",
+          "presse",
+          "stack-ia",
+          "audits",
+          "interventions-formations",
+          "un-a-un",
+          "implementations",
+          "sites-web-augmentes",
+          "implantations",
+          "equipe",
+        ].map((s) => (
+          <option key={s} value={s}>
+            {s}
+          </option>
         ))}
       </select>
 
-      <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
         <input
           type="checkbox"
           checked={sp.get("editable") === "true"}
@@ -77,7 +94,7 @@ export function SiteExplorerFilters() {
         Éditables uniquement
       </label>
 
-      <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
         <input
           type="checkbox"
           checked={sp.get("anomaliesOnly") === "true"}
@@ -95,7 +112,7 @@ export function SiteExplorerFilters() {
         onKeyDown={(e) => {
           if (e.key === "Enter") update("search", (e.target as HTMLInputElement).value);
         }}
-        className="rounded-lg border border-gray-300 px-3 py-2 text-sm w-56"
+        className="w-56 rounded-lg border border-gray-300 px-3 py-2 text-sm"
         aria-label="Recherche"
       />
     </div>

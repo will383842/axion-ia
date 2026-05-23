@@ -80,7 +80,7 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
     throw new Error("recalibrateBrandVoice: articleIds array cannot be empty");
   }
 
-  try {  
+  try {
     // Récupérer les embeddings pgvector via $queryRawUnsafe (champ Unsupported)
     const placeholders = articleIds.map((_, i) => `$${i + 1}::uuid`).join(", ");
     const rows = (await prisma.$queryRawUnsafe(
@@ -92,15 +92,15 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
          AND a.embedding IS NOT NULL`,
       ...articleIds,
     )) as Array<{ id: string; embedding_arr: number[] | null }>;
-  
+
     const validRows = rows.filter((r) => r.embedding_arr && r.embedding_arr.length > 0);
-  
+
     if (validRows.length === 0) {
       throw new Error(
         "recalibrateBrandVoice: none of the provided articles have embeddings — cannot calibrate",
       );
     }
-  
+
     // Moyenner les embeddings
     const dimension = (validRows[0]!.embedding_arr as number[]).length;
     const averaged = new Array<number>(dimension).fill(0);
@@ -113,17 +113,17 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
     for (let i = 0; i < dimension; i++) {
       averaged[i] = (averaged[i] ?? 0) / validRows.length;
     }
-  
+
     // Normaliser L2 (cosine similarity stable)
     const norm = Math.sqrt(averaged.reduce((s, v) => s + v * v, 0)) || 1;
     const normalized = averaged.map((v) => v / norm);
-  
+
     // Lire l'ancienne valeur pour l'audit diff
     const existingRow = await prisma.contentGenConfig.findUnique({
       where: { key: BRAND_VOICE_CONFIG_KEY },
     });
     const oldValue = existingRow?.value ?? null;
-  
+
     // Persister dans ContentGenConfig
     await prisma.contentGenConfig.upsert({
       where: { key: BRAND_VOICE_CONFIG_KEY },
@@ -137,7 +137,7 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
         updatedBy: session.email,
       },
     });
-  
+
     // SOC2 audit trail
     await prisma.contentGenAuditLog
       .create({
@@ -159,13 +159,12 @@ export async function recalibrateBrandVoice(articleIds: string[]): Promise<{
       .catch(() => {
         // fail-soft — audit trail failure non bloquant
       });
-  
+
     return {
       success: true,
       embeddingDimension: dimension,
       articlesUsed: validRows.length,
     };
-  
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "recalibrateBrandVoice" } });
     throw e;

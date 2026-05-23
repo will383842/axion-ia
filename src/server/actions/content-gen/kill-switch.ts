@@ -51,7 +51,9 @@ export async function activateKillSwitch(reason: string): Promise<void> {
       "Kill switch global content-gen — stop all generations",
     );
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`);
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/kill-switch`);
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/kill-switch`,
+    );
     await logActivity({
       session,
       action: "content-gen.kill-switch.activate",
@@ -59,9 +61,8 @@ export async function activateKillSwitch(reason: string): Promise<void> {
       targetId: KEY,
       changes: { reason: reason.slice(0, 280) },
     });
-
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'activateKillSwitch' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "activateKillSwitch" } });
     throw e;
   }
 }
@@ -76,16 +77,17 @@ export async function deactivateKillSwitch(): Promise<void> {
       "Kill switch désactivé manuellement",
     );
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`);
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/kill-switch`);
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/kill-switch`,
+    );
     await logActivity({
       session,
       action: "content-gen.kill-switch.deactivate",
       targetType: "ContentGenConfig",
       targetId: KEY,
     });
-
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'deactivateKillSwitch' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "deactivateKillSwitch" } });
     throw e;
   }
 }

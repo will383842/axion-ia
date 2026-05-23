@@ -251,9 +251,8 @@ export async function retryJob(id: string): Promise<void> {
       targetType: "ContentGenJob",
       targetId: id,
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'retryJob' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "retryJob" } });
     throw e;
   }
 }
@@ -289,9 +288,8 @@ export async function cancelJob(id: string): Promise<void> {
       targetType: "ContentGenJob",
       targetId: id,
     });
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'cancelJob' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "cancelJob" } });
     throw e;
   }
 }
@@ -344,9 +342,8 @@ export async function retryAllFailed(): Promise<number> {
       changes: { count: failed.length },
     });
     return failed.length;
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'retryAllFailed' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "retryAllFailed" } });
     throw e;
   }
 }

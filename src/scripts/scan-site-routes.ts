@@ -41,7 +41,9 @@ function walkDir(dir: string, results: string[] = []): string[] {
 }
 
 function filePathToUrlPattern(filePath: string): string {
-  const relPath = relative(APP_DIR, filePath).replace(/\\/g, "/").replace(/\/page\.tsx$/, "");
+  const relPath = relative(APP_DIR, filePath)
+    .replace(/\\/g, "/")
+    .replace(/\/page\.tsx$/, "");
   return "/" + relPath.replace("[locale]", LOCALE);
 }
 
@@ -65,9 +67,19 @@ function calcDepth(urlPattern: string): number {
   return Math.max(0, urlPattern.split("/").filter(Boolean).length - 1);
 }
 
-function scanFilesystem(): Array<{ pathPattern: string; filePath: string; type: SiteRouteType; section: string | null }> {
+function scanFilesystem(): Array<{
+  pathPattern: string;
+  filePath: string;
+  type: SiteRouteType;
+  section: string | null;
+}> {
   const pages = walkDir(APP_DIR);
-  const results: Array<{ pathPattern: string; filePath: string; type: SiteRouteType; section: string | null }> = [];
+  const results: Array<{
+    pathPattern: string;
+    filePath: string;
+    type: SiteRouteType;
+    section: string | null;
+  }> = [];
 
   for (const pagePath of pages) {
     const relFromApp = relative(APP_DIR, pagePath).replace(/\\/g, "/");
@@ -81,7 +93,8 @@ function scanFilesystem(): Array<{ pathPattern: string; filePath: string; type: 
     }
 
     const remainingParams = urlPattern.match(/\[(?!locale)[^\]]+\]/g);
-    const type: SiteRouteType = remainingParams && remainingParams.length > 0 ? "dynamic_template" : "static";
+    const type: SiteRouteType =
+      remainingParams && remainingParams.length > 0 ? "dynamic_template" : "static";
     const section = detectSection(urlPattern);
 
     results.push({ pathPattern: urlPattern, filePath: `src/app/${relFromApp}`, type, section });
@@ -96,14 +109,34 @@ async function resolveArticles() {
     include: { translations: { where: { locale: LOCALE as never }, select: { slug: true } } },
   });
 
-  const routes: Array<{ pathPattern: string; pathRendered: string; pathSlug: string; type: SiteRouteType; section: string; editable: boolean; editorRoute: string; sourceDbTable: string; sourceDbId: string }> = [];
+  const routes: Array<{
+    pathPattern: string;
+    pathRendered: string;
+    pathSlug: string;
+    type: SiteRouteType;
+    section: string;
+    editable: boolean;
+    editorRoute: string;
+    sourceDbTable: string;
+    sourceDbId: string;
+  }> = [];
 
   for (const article of articles) {
     const tr = article.translations[0];
     if (!tr?.slug) continue;
     const isGuide = article.templateVariant?.startsWith("guide") || tr.slug.startsWith("guide-");
     const section = isGuide ? "guides" : "blog";
-    routes.push({ pathPattern: `/fr/${section}/[slug]`, pathRendered: `/fr/${section}/${tr.slug}`, pathSlug: tr.slug, type: "dynamic_db", section, editable: true, editorRoute: `/fr/admin-route/blog/${article.id}/edit`, sourceDbTable: "articles", sourceDbId: article.id });
+    routes.push({
+      pathPattern: `/fr/${section}/[slug]`,
+      pathRendered: `/fr/${section}/${tr.slug}`,
+      pathSlug: tr.slug,
+      type: "dynamic_db",
+      section,
+      editable: true,
+      editorRoute: `/fr/admin-route/blog/${article.id}/edit`,
+      sourceDbTable: "articles",
+      sourceDbId: article.id,
+    });
   }
   return routes;
 }
@@ -113,33 +146,65 @@ async function resolveCaseStudies() {
     where: { status: "published" },
     include: { translations: { where: { locale: LOCALE as never }, select: { slug: true } } },
   });
-  return items.filter((cs) => cs.translations[0]?.slug).map((cs) => ({
-    pathPattern: `/fr/cas-concrets/[slug]`, pathRendered: `/fr/cas-concrets/${cs.translations[0]!.slug}`,
-    pathSlug: cs.translations[0]!.slug, type: "dynamic_db" as SiteRouteType, section: "cas-concrets",
-    editable: true, editorRoute: `/fr/admin-route/case-studies/${cs.id}/edit`, sourceDbTable: "case_studies", sourceDbId: cs.id,
-  }));
+  return items
+    .filter((cs) => cs.translations[0]?.slug)
+    .map((cs) => ({
+      pathPattern: `/fr/cas-concrets/[slug]`,
+      pathRendered: `/fr/cas-concrets/${cs.translations[0]!.slug}`,
+      pathSlug: cs.translations[0]!.slug,
+      type: "dynamic_db" as SiteRouteType,
+      section: "cas-concrets",
+      editable: true,
+      editorRoute: `/fr/admin-route/case-studies/${cs.id}/edit`,
+      sourceDbTable: "case_studies",
+      sourceDbId: cs.id,
+    }));
 }
 
 async function resolveGallery() {
-  const items = await prisma.imageAssetTranslation.findMany({ where: { languageCode: "fr", isPublished: true }, select: { slug: true, imageId: true } });
-  return items.filter((t) => t.slug).map((t) => ({
-    pathPattern: `/fr/galerie/[slug]`, pathRendered: `/fr/galerie/${t.slug}`, pathSlug: t.slug,
-    type: "dynamic_db" as SiteRouteType, section: "galerie", editable: false,
-    editorRoute: null as string | null, sourceDbTable: "image_assets", sourceDbId: t.imageId,
-  }));
+  const items = await prisma.imageAssetTranslation.findMany({
+    where: { languageCode: "fr", isPublished: true },
+    select: { slug: true, imageId: true },
+  });
+  return items
+    .filter((t) => t.slug)
+    .map((t) => ({
+      pathPattern: `/fr/galerie/[slug]`,
+      pathRendered: `/fr/galerie/${t.slug}`,
+      pathSlug: t.slug,
+      type: "dynamic_db" as SiteRouteType,
+      section: "galerie",
+      editable: false,
+      editorRoute: null as string | null,
+      sourceDbTable: "image_assets",
+      sourceDbId: t.imageId,
+    }));
 }
 
 async function resolveAuthors() {
   const items = await prisma.author.findMany({ select: { id: true, slug: true } });
-  return items.filter((a) => a.slug).map((a) => ({
-    pathPattern: `/fr/equipe/[slug]`, pathRendered: `/fr/equipe/${a.slug}`, pathSlug: a.slug!,
-    type: "dynamic_db" as SiteRouteType, section: "equipe", editable: false,
-    editorRoute: null as string | null, sourceDbTable: "authors", sourceDbId: a.id,
-  }));
+  return items
+    .filter((a) => a.slug)
+    .map((a) => ({
+      pathPattern: `/fr/equipe/[slug]`,
+      pathRendered: `/fr/equipe/${a.slug}`,
+      pathSlug: a.slug!,
+      type: "dynamic_db" as SiteRouteType,
+      section: "equipe",
+      editable: false,
+      editorRoute: null as string | null,
+      sourceDbTable: "authors",
+      sourceDbId: a.id,
+    }));
 }
 
 async function resolveCityRoutes() {
-  const cities = await prisma.city.findMany({ where: { isTargeted: true }, orderBy: { priority: "asc" }, take: 200, select: { id: true, slug: true, inseeCode: true } });
+  const cities = await prisma.city.findMany({
+    where: { isTargeted: true },
+    orderBy: { priority: "asc" },
+    take: 200,
+    select: { id: true, slug: true, inseeCode: true },
+  });
   const verticals = [
     { pattern: `/fr/audits/[ville]`, section: "audits" },
     { pattern: `/fr/interventions-formations/[ville]`, section: "interventions-formations" },
@@ -147,25 +212,77 @@ async function resolveCityRoutes() {
     { pattern: `/fr/implementations/[ville]`, section: "implementations" },
     { pattern: `/fr/sites-web-augmentes/[ville]`, section: "sites-web-augmentes" },
   ];
-  const routes: Array<{ pathPattern: string; pathRendered: string; pathSlug: string; type: SiteRouteType; section: string; editable: boolean; editorRoute: null; sourceDbTable: string; sourceDbId: string; cityIds: string[] }> = [];
+  const routes: Array<{
+    pathPattern: string;
+    pathRendered: string;
+    pathSlug: string;
+    type: SiteRouteType;
+    section: string;
+    editable: boolean;
+    editorRoute: null;
+    sourceDbTable: string;
+    sourceDbId: string;
+    cityIds: string[];
+  }> = [];
   for (const city of cities) {
     for (const v of verticals) {
-      routes.push({ pathPattern: v.pattern, pathRendered: v.pattern.replace("[ville]", city.slug), pathSlug: city.slug, type: "dynamic_db", section: v.section, editable: false, editorRoute: null, sourceDbTable: "cities", sourceDbId: city.id, cityIds: [city.inseeCode] });
+      routes.push({
+        pathPattern: v.pattern,
+        pathRendered: v.pattern.replace("[ville]", city.slug),
+        pathSlug: city.slug,
+        type: "dynamic_db",
+        section: v.section,
+        editable: false,
+        editorRoute: null,
+        sourceDbTable: "cities",
+        sourceDbId: city.id,
+        cityIds: [city.inseeCode],
+      });
     }
   }
   return routes;
 }
 
-function resolveImplantations(): Array<{ pathPattern: string; pathRendered: string; pathSlug: string; type: SiteRouteType; section: string }> {
+function resolveImplantations(): Array<{
+  pathPattern: string;
+  pathRendered: string;
+  pathSlug: string;
+  type: SiteRouteType;
+  section: string;
+}> {
   const dir = join(PROJECT_ROOT, "src", "data", "villes", "economic-data");
   if (!existsSync(dir)) return [];
-  return readdirSync(dir).filter((f) => f.endsWith(".ts")).map((f) => {
-    const slug = f.replace(".ts", "");
-    return { pathPattern: `/fr/implantations/[ville]`, pathRendered: `/fr/implantations/${slug}`, pathSlug: slug, type: "dynamic_filesystem" as SiteRouteType, section: "implantations" };
-  });
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".ts"))
+    .map((f) => {
+      const slug = f.replace(".ts", "");
+      return {
+        pathPattern: `/fr/implantations/[ville]`,
+        pathRendered: `/fr/implantations/${slug}`,
+        pathSlug: slug,
+        type: "dynamic_filesystem" as SiteRouteType,
+        section: "implantations",
+      };
+    });
 }
 
-async function upsertRoute(data: { pathPattern: string; pathSlug?: string | null; pathRendered?: string | null; type: SiteRouteType; status?: SiteRouteStatus; source: string; filePath?: string | null; section?: string | null; verticales?: string[]; cityIds?: string[]; editable?: boolean; editorRoute?: string | null; sourceDbTable?: string | null; sourceDbId?: string | null; depth?: number }) {
+async function upsertRoute(data: {
+  pathPattern: string;
+  pathSlug?: string | null;
+  pathRendered?: string | null;
+  type: SiteRouteType;
+  status?: SiteRouteStatus;
+  source: string;
+  filePath?: string | null;
+  section?: string | null;
+  verticales?: string[];
+  cityIds?: string[];
+  editable?: boolean;
+  editorRoute?: string | null;
+  sourceDbTable?: string | null;
+  sourceDbId?: string | null;
+  depth?: number;
+}) {
   if (!isPublicPath(data.pathPattern)) {
     console.warn(`[scanner] SKIP upsert (safety net) : ${data.pathPattern}`);
     return null;
@@ -176,18 +293,61 @@ async function upsertRoute(data: { pathPattern: string; pathSlug?: string | null
 
   return prisma.siteRoute.upsert({
     where: { pathPattern_pathSlug: { pathPattern: data.pathPattern, pathSlug: pathSlug ?? "" } },
-    create: { pathPattern: data.pathPattern, pathSlug, pathRendered: data.pathRendered ?? null, type: data.type, status: data.status ?? "unknown", visibility: "public", source: data.source, filePath: data.filePath ?? null, section: data.section ?? null, verticales, cityIds: data.cityIds ?? [], editable: data.editable ?? false, editorRoute: data.editorRoute ?? null, sourceDbTable: data.sourceDbTable ?? null, sourceDbId: data.sourceDbId ?? null, depth },
-    update: { pathRendered: data.pathRendered ?? null, type: data.type, source: data.source, filePath: data.filePath ?? null, section: data.section ?? null, verticales, cityIds: data.cityIds ?? [], editable: data.editable ?? false, editorRoute: data.editorRoute ?? null, sourceDbTable: data.sourceDbTable ?? null, sourceDbId: data.sourceDbId ?? null, depth },
+    create: {
+      pathPattern: data.pathPattern,
+      pathSlug,
+      pathRendered: data.pathRendered ?? null,
+      type: data.type,
+      status: data.status ?? "unknown",
+      visibility: "public",
+      source: data.source,
+      filePath: data.filePath ?? null,
+      section: data.section ?? null,
+      verticales,
+      cityIds: data.cityIds ?? [],
+      editable: data.editable ?? false,
+      editorRoute: data.editorRoute ?? null,
+      sourceDbTable: data.sourceDbTable ?? null,
+      sourceDbId: data.sourceDbId ?? null,
+      depth,
+    },
+    update: {
+      pathRendered: data.pathRendered ?? null,
+      type: data.type,
+      source: data.source,
+      filePath: data.filePath ?? null,
+      section: data.section ?? null,
+      verticales,
+      cityIds: data.cityIds ?? [],
+      editable: data.editable ?? false,
+      editorRoute: data.editorRoute ?? null,
+      sourceDbTable: data.sourceDbTable ?? null,
+      sourceDbId: data.sourceDbId ?? null,
+      depth,
+    },
   });
 }
 
 async function main() {
   console.log("[scanner] Démarrage scan routes publiques…");
-  const stats = { static: 0, dynamic_template: 0, dynamic_db: 0, dynamic_filesystem: 0, skipped: 0 };
+  const stats = {
+    static: 0,
+    dynamic_template: 0,
+    dynamic_db: 0,
+    dynamic_filesystem: 0,
+    skipped: 0,
+  };
 
   const fsRoutes = scanFilesystem();
   for (const r of fsRoutes) {
-    const result = await upsertRoute({ pathPattern: r.pathPattern, pathSlug: null, type: r.type, source: "filesystem", filePath: r.filePath, section: r.section });
+    const result = await upsertRoute({
+      pathPattern: r.pathPattern,
+      pathSlug: null,
+      type: r.type,
+      source: "filesystem",
+      filePath: r.filePath,
+      section: r.section,
+    });
     if (result) stats[r.type]++;
     else stats.skipped++;
   }
@@ -226,7 +386,9 @@ async function main() {
   }
 
   const total = stats.static + stats.dynamic_template + stats.dynamic_db + stats.dynamic_filesystem;
-  console.log(`\n[scanner] TOTAL: ${total} routes publiques (${stats.static} statiques, ${stats.dynamic_db} DB, ${stats.dynamic_template} templates, ${stats.dynamic_filesystem} filesystem, ${stats.skipped} skipped)`);
+  console.log(
+    `\n[scanner] TOTAL: ${total} routes publiques (${stats.static} statiques, ${stats.dynamic_db} DB, ${stats.dynamic_template} templates, ${stats.dynamic_filesystem} filesystem, ${stats.skipped} skipped)`,
+  );
   await prisma.$disconnect();
 }
 

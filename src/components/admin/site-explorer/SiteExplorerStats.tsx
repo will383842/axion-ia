@@ -9,7 +9,15 @@ interface Props {
 
 export function SiteExplorerStats({ stats }: Props) {
   const formatDate = (d: Date | null) =>
-    d ? new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "jamais";
+    d
+      ? new Date(d).toLocaleDateString("fr-FR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "jamais";
 
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6">
@@ -17,11 +25,7 @@ export function SiteExplorerStats({ stats }: Props) {
       <StatCard label="Statiques" value={stats.byType.static ?? 0} color="green" />
       <StatCard label="Dynamiques DB" value={stats.byType.dynamic_db ?? 0} color="purple" />
       <StatCard label="Templates" value={stats.byType.dynamic_template ?? 0} color="gray" />
-      <StatCard
-        label="Live"
-        value={stats.byStatus.live ?? 0}
-        color="green"
-      />
+      <StatCard label="Live" value={stats.byStatus.live ?? 0} color="green" />
       <StatCard
         label="404"
         value={stats.byStatus.not_found ?? 0}

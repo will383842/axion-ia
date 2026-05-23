@@ -232,9 +232,8 @@ export async function upsertTemplate(input: UpsertTemplateInput): Promise<string
     revalidatePath(adminBase());
     revalidatePath(`${adminBase()}/${resultId}`);
     return resultId;
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'upsertTemplate' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "upsertTemplate" } });
     throw e;
   }
 }
@@ -247,9 +246,8 @@ export async function toggleTemplate(id: string, isActive: boolean): Promise<voi
   try {
     await prisma.contentTemplate.update({ where: { id }, data: { isActive } });
     revalidatePath(adminBase());
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'toggleTemplate' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "toggleTemplate" } });
     throw e;
   }
 }

@@ -140,9 +140,10 @@ export async function upsertDistributionProfile(input: {
       });
     });
     revalidatePath(adminPath("coverage-distribution"));
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'upsertDistributionProfile' } });
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "upsertDistributionProfile" },
+    });
     throw e;
   }
 }
@@ -154,9 +155,10 @@ export async function deleteDistributionProfile(slug: string): Promise<void> {
   try {
     await prisma.coverageDistributionProfile.delete({ where: { slug } });
     revalidatePath(adminPath("coverage-distribution"));
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'deleteDistributionProfile' } });
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "deleteDistributionProfile" },
+    });
     throw e;
   }
 }
@@ -228,9 +230,10 @@ export async function upsertAudienceMixProfile(input: {
       });
     });
     revalidatePath(adminPath("audience-mix"));
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'upsertAudienceMixProfile' } });
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "upsertAudienceMixProfile" },
+    });
     throw e;
   }
 }
@@ -242,9 +245,10 @@ export async function deleteAudienceMixProfile(slug: string): Promise<void> {
   try {
     await prisma.audienceMixProfile.delete({ where: { slug } });
     revalidatePath(adminPath("audience-mix"));
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'deleteAudienceMixProfile' } });
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "deleteAudienceMixProfile" },
+    });
     throw e;
   }
 }

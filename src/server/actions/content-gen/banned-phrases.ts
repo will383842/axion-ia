@@ -83,9 +83,8 @@ export async function createBannedPhrase(input: {
       targetId: row.id,
       changes: { pattern, severity: input.severity },
     });
-
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'createBannedPhrase' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "createBannedPhrase" } });
     throw e;
   }
 }
@@ -103,9 +102,8 @@ export async function toggleBannedPhrase(id: string, isActive: boolean): Promise
     revalidatePath(
       `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
     );
-
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'toggleBannedPhrase' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "toggleBannedPhrase" } });
     throw e;
   }
 }
@@ -119,9 +117,8 @@ export async function deleteBannedPhrase(id: string): Promise<void> {
     revalidatePath(
       `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
     );
-
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'deleteBannedPhrase' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "deleteBannedPhrase" } });
     throw e;
   }
 }
@@ -158,7 +155,7 @@ export async function scanArticlesForPhrase(phrase: string): Promise<{
   try {
     const needle = phrase.trim();
     if (needle.length < 2 || needle.length > 200) throw new Error("phrase_length_invalid");
-  
+
     const LIMIT = 200;
     const rows = await prisma.articleTranslation.findMany({
       where: {
@@ -179,7 +176,7 @@ export async function scanArticlesForPhrase(phrase: string): Promise<{
       orderBy: { article: { publishedAt: "desc" } },
       take: LIMIT + 1,
     });
-  
+
     const hits: PhraseScanHit[] = rows.slice(0, LIMIT).map((t) => {
       const matchedIn: PhraseScanHit["matchedIn"][number][] = [];
       const lc = needle.toLowerCase();
@@ -196,7 +193,7 @@ export async function scanArticlesForPhrase(phrase: string): Promise<{
         matchedIn,
       };
     });
-  
+
     return {
       phrase: needle,
       hits,

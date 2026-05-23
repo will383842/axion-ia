@@ -107,7 +107,8 @@ export async function updateAuthor(input: UpdateAuthorInput): Promise<void> {
     UpdateAuthorInputSchema.parse(input);
     if (input.displayName.length < 2 || input.displayName.length > 80)
       throw new Error("display_name_length");
-    if (input.jobTitle.length < 2 || input.jobTitle.length > 120) throw new Error("job_title_length");
+    if (input.jobTitle.length < 2 || input.jobTitle.length > 120)
+      throw new Error("job_title_length");
     if (input.bioMd.length > 20_000) throw new Error("bio_too_long");
     if (input.slug === "manon" && input.isPersona && !input.personaDisclaimer) {
       throw new Error("persona_disclaimer_required");
@@ -129,9 +130,8 @@ export async function updateAuthor(input: UpdateAuthorInput): Promise<void> {
     const adminBase = `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/author/${input.slug}`;
     revalidatePath(adminBase);
     revalidatePath(`/fr/equipe/${input.slug}`);
-
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateAuthor' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateAuthor" } });
     throw e;
   }
 }

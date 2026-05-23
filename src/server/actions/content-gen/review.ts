@@ -203,9 +203,8 @@ export async function approveReview(id: string, notes?: string): Promise<void> {
       changes: { transition: "pending→approved", notes: notes ?? null },
     });
     revalidatePath(adminBase());
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'approveReview' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "approveReview" } });
     throw e;
   }
 }
@@ -223,7 +222,8 @@ export async function bulkApproveReviews(
   limit: number = 100,
 ): Promise<{ approved: number }> {
   const session = await requireAdmin();
-  try {    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  try {
+    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
     ScoreSchema.parse(minScore);
     LimitSchema.parse(limit);
     if (minScore < 0 || minScore > 100) throw new Error("score_range");
@@ -256,7 +256,6 @@ export async function bulkApproveReviews(
     });
     revalidatePath(adminBase());
     return { approved: candidates.length };
-  
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "bulkApproveReviews" } });
     throw e;
@@ -271,7 +270,8 @@ export async function bulkRejectReviews(
   limit: number = 100,
 ): Promise<{ rejected: number }> {
   const session = await requireAdmin();
-  try {    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+  try {
+    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
     ScoreSchema.parse(maxScore);
     LimitSchema.parse(limit);
     if (maxScore < 0 || maxScore > 100) throw new Error("score_range");
@@ -302,7 +302,6 @@ export async function bulkRejectReviews(
     });
     revalidatePath(adminBase());
     return { rejected: candidates.length };
-  
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "bulkRejectReviews" } });
     throw e;
@@ -337,9 +336,8 @@ export async function rejectReview(id: string, notes: string): Promise<void> {
       changes: { transition: "pending→rejected", notesLen: notes.length },
     });
     revalidatePath(adminBase());
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'rejectReview' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "rejectReview" } });
     throw e;
   }
 }
@@ -370,7 +368,7 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
     });
     if (!review) throw new Error("review_not_found");
     if (review.status !== "pending") throw new Error("review_not_pending");
-  
+
     await prisma.$transaction([
       prisma.reviewQueue.update({
         where: { id },
@@ -394,9 +392,8 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
       changes: { transition: "pending→needs_edits", commentLen: comment.length },
     });
     revalidatePath(adminBase());
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'requestEdits' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "requestEdits" } });
     throw e;
   }
 }
@@ -440,9 +437,8 @@ export async function promoteToTier1(id: string): Promise<void> {
       changes: { promoted: true },
     });
     revalidatePath(adminBase());
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'promoteToTier1' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "promoteToTier1" } });
     throw e;
   }
 }

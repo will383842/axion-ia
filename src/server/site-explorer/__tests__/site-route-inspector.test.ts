@@ -23,7 +23,10 @@ function extractH1(html: string): string | null {
 function countWords(html: string): number {
   const mainMatch = html.match(/<(?:main|article)[^>]*>([\s\S]*?)<\/(?:main|article)>/i);
   const content = mainMatch?.[1] ?? html;
-  const text = content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const text = content
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   return text.split(" ").filter((w) => w.length > 0).length;
 }
 
@@ -70,9 +73,7 @@ describe("Site Route Inspector — extracteurs HTML", () => {
   });
 
   it("extrait la metaDescription correctement", () => {
-    expect(extractMetaDescription(SAMPLE_HTML)).toBe(
-      "Formez vos equipes avec Axion-IA.",
-    );
+    expect(extractMetaDescription(SAMPLE_HTML)).toBe("Formez vos equipes avec Axion-IA.");
   });
 
   it("extrait le H1 correctement", () => {

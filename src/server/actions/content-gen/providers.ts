@@ -98,7 +98,7 @@ export async function updateProvider(input: UpdateProviderInput): Promise<void> 
       throw new Error("monthly_cap_out_of_range");
     }
     if (input.model.trim().length < 2) throw new Error("model_required");
-  
+
     // SOC2 audit trail — lecture AVANT update pour capturer le delta.
     // Read-then-update n'est pas atomique vs lecture concurrente ; tolérable
     // car les écritures sont human-paced côté admin UI.
@@ -119,19 +119,19 @@ export async function updateProvider(input: UpdateProviderInput): Promise<void> 
           rateLimitRpm: existing.rateLimitRpm,
         }
       : null;
-  
+
     const newValue = {
       enabled: input.enabled,
       model: input.model.trim(),
       monthlyCapUsd: input.monthlyCapUsd,
       rateLimitRpm: input.rateLimitRpm ?? null,
     };
-  
+
     await prisma.providerConfig.update({
       where: { id: input.id },
       data: newValue,
     });
-  
+
     // Audit log best-effort (helper writeAuditLog swallow déjà côté impl, mais
     // try/catch de défense en profondeur pour garantir que update n'échoue pas
     // si la table audit log devient indisponible).
@@ -148,11 +148,10 @@ export async function updateProvider(input: UpdateProviderInput): Promise<void> 
       // SOC2 tolère perte partielle si tracée. Best-effort — ne pas casser
       // l'update admin pour un problème observability.
     }
-  
+
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateProvider' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateProvider" } });
     throw e;
   }
 }
@@ -200,9 +199,7 @@ export async function resetProviderSpend(id: string): Promise<void> {
       // Best-effort (cf. updateProvider).
     }
 
-    revalidatePath(
-      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`,
-    );
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "resetProviderSpend" } });
     throw e;

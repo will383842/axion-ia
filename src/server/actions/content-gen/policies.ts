@@ -131,7 +131,7 @@ export async function updateBatchSettings(input: BatchSettings): Promise<void> {
     if (input.workersConcurrency < 1 || input.workersConcurrency > 20)
       throw new Error("concurrency_range");
     if (input.retryMaxAttempts < 0 || input.retryMaxAttempts > 10) throw new Error("retry_range");
-  
+
     // Sprint 7 V2 : validation per-type targets
     let totalByType = 0;
     for (const [type, target] of Object.entries(input.dailyTargetByType)) {
@@ -140,12 +140,11 @@ export async function updateBatchSettings(input: BatchSettings): Promise<void> {
       totalByType += target;
     }
     if (totalByType > 500) throw new Error("total_per_type_too_high");
-  
+
     await writeContentGenConfig("batches", input, session.userId, "Réglages batches & workers");
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateBatchSettings' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateBatchSettings" } });
     throw e;
   }
 }
@@ -173,9 +172,8 @@ export async function updateMaxPublishPerDay(value: number): Promise<void> {
       `Cap articles/jour mis à jour : ${value}`,
     );
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/batches`);
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateMaxPublishPerDay' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateMaxPublishPerDay" } });
     throw e;
   }
 }
@@ -219,9 +217,8 @@ export async function updatePolicies(input: ContentPolicies): Promise<void> {
       throw new Error("retention_range");
     await writeContentGenConfig("policies", input, session.userId, "Policies content-gen");
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/policies`);
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updatePolicies' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updatePolicies" } });
     throw e;
   }
 }
@@ -257,9 +254,8 @@ export async function updateLlmsTxt(content: string): Promise<void> {
     await writeContentGenConfig("llms_txt", content, session.userId, "llms.txt édité admin");
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/llms-txt`);
     revalidatePath("/llms.txt");
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateLlmsTxt' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateLlmsTxt" } });
     throw e;
   }
 }
@@ -296,16 +292,16 @@ export async function updateQualityLoop(input: QualityLoopSettings): Promise<voi
     if (input.minScoreThreshold < 0 || input.minScoreThreshold > 100)
       throw new Error("min_score_range");
     if (input.targetScore <= input.minScoreThreshold) throw new Error("target_must_be_higher");
-    if (input.maxAttemptsAuto < 0 || input.maxAttemptsAuto > 5) throw new Error("max_attempts_range");
+    if (input.maxAttemptsAuto < 0 || input.maxAttemptsAuto > 5)
+      throw new Error("max_attempts_range");
     if (input.monthlyBudgetCapUsd < 0 || input.monthlyBudgetCapUsd > 5000)
       throw new Error("budget_range");
     await writeContentGenConfig("quality_loop", input, session.userId, "Boucle qualité v1.7");
     revalidatePath(
       `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/quality-loop`,
     );
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateQualityLoop' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateQualityLoop" } });
     throw e;
   }
 }
@@ -339,10 +335,11 @@ export async function updateQaPolicies(input: QaPolicies): Promise<void> {
       throw new Error("min_words_range");
     if (input.promoteTier1MinCtr < 0 || input.promoteTier1MinCtr > 20) throw new Error("ctr_range");
     await writeContentGenConfig("qa_policies", input, session.userId, "Q/R post-process v1.7");
-    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/qa-policies`);
-  
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/qa-policies`,
+    );
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateQaPolicies' } });
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateQaPolicies" } });
     throw e;
   }
 }
@@ -382,7 +379,11 @@ export async function updateSearchIntentDistribution(
   SearchIntentDistributionSchema.parse(input);
   try {
     const sum =
-      input.informational + input.commercial + input.local + input.transactional + input.navigational;
+      input.informational +
+      input.commercial +
+      input.local +
+      input.transactional +
+      input.navigational;
     if (Math.abs(sum - 100) > 0.5) throw new Error("sum_must_be_100");
     await writeContentGenConfig(
       "search_intent_distribution",
@@ -393,9 +394,10 @@ export async function updateSearchIntentDistribution(
     revalidatePath(
       `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/search-intent-distribution`,
     );
-  
   } catch (e) {
-    Sentry.captureException(e, { tags: { area: 'content-gen', action: 'updateSearchIntentDistribution' } });
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "updateSearchIntentDistribution" },
+    });
     throw e;
   }
 }
