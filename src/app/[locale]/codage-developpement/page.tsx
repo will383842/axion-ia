@@ -24,6 +24,7 @@ import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -313,46 +314,18 @@ export default async function CodageDeveloppementHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, var(--color-border-strong) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border-strong) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-            maskImage: "radial-gradient(ellipse at center, white 20%, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, white 20%, transparent 75%)",
-            opacity: 0.18,
-          }}
-        />
-        <Container className="relative max-w-3xl">
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            />
-            {isFr ? "Web & Digital · augmentés par l'IA" : "Web & Digital · AI-augmented"}
-          </p>
-
-          <h1 className="display-editorial text-fg mt-5">
-            {isFr ? "Des plateformes web qui" : "Web platforms that"}
-            <span
-              className="text-terracotta mx-2 italic"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {isFr ? "pensent et agissent." : "think and act."}
-            </span>
-          </h1>
-
-          <p className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
-            {isFr
-              ? "On construit votre plateforme sur mesure avec l'IA intégrée dès la conception — ou on augmente ce que vous avez déjà. Agents autonomes, automatisations, chatbot RAG, search sémantique. Toute stack, on s'adapte."
-              : "We build your custom platform with AI integrated from day one — or we augment what you already have. Autonomous agents, automations, RAG chatbot, semantic search. Any stack, we adapt."}
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
+      <ServiceHero
+        eyebrow={isFr ? "Module 3B · Web & Digital IA" : "Module 3B · Web & Digital AI"}
+        title={isFr ? "Des plateformes web qui" : "Web platforms that"}
+        titleEm={isFr ? "pensent et agissent" : "think and act"}
+        description={
+          isFr
+            ? "On construit votre plateforme sur mesure avec l'IA intégrée dès la conception — ou on augmente ce que vous avez déjà. Agents autonomes, automatisations, chatbot RAG, search sémantique. Toute stack, on s'adapte."
+            : "We build your custom platform with AI integrated from day one — or we augment what you already have. Autonomous agents, automations, RAG chatbot, semantic search. Any stack, we adapt."
+        }
+        ctas={
+          <>
             <Cta href="/contact" size="lg" track="codage-hub-hero-primary">
               {isFr ? "Décrire mon projet · devis 48 h" : "Describe my project · quote 48 h"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -360,13 +333,57 @@ export default async function CodageDeveloppementHub({ params }: Props) {
             <Cta href="/audit" variant="outline" size="lg" track="codage-hub-hero-audit">
               {isFr ? "Commencer par un audit" : "Start with an audit"}
             </Cta>
-          </div>
-
-          {/* Hero illustration retirée 2026-05-24 (Will) — placeholder
-              bizarre car `codage-developpement-hero.avif` n'est pas généré.
-              À ré-instancier quand l'illustration sera disponible. */}
-        </Container>
-      </section>
+          </>
+        }
+        schemaCenterLabel={isFr ? "Votre plateforme" : "Your platform"}
+        schemaAriaLabel={
+          isFr
+            ? "Schéma : votre plateforme au centre, entourée des 8 couches IA modulaires (chatbot RAG, search sémantique, agents autonomes, automatisations, génération contenu, vision IA, recommandation, analytics)."
+            : "Diagram: your platform at the center, surrounded by 8 modular AI layers (RAG chatbot, semantic search, autonomous agents, automations, content generation, AI vision, recommendation, analytics)."
+        }
+        schemaNodes={[
+          {
+            label: isFr ? "Chatbot RAG" : "RAG chatbot",
+            benefit: isFr ? "Vos docs en assistant" : "Your docs as assistant",
+            accent: "terracotta",
+          },
+          {
+            label: isFr ? "Search sémantique" : "Semantic search",
+            benefit: isFr ? "Trouver par sens" : "Find by meaning",
+            accent: "primary",
+          },
+          {
+            label: isFr ? "Agents IA" : "AI agents",
+            benefit: isFr ? "Workflows autonomes" : "Autonomous workflows",
+            accent: "sage",
+          },
+          {
+            label: "Automatisations",
+            benefit: isFr ? "Make, n8n, Zapier" : "Make, n8n, Zapier",
+            accent: "mocha",
+          },
+          {
+            label: isFr ? "Génération" : "Generation",
+            benefit: isFr ? "Texte, image, code" : "Text, image, code",
+            accent: "terracotta",
+          },
+          {
+            label: "Vision IA",
+            benefit: isFr ? "OCR, classification" : "OCR, classification",
+            accent: "primary",
+          },
+          {
+            label: "Recommandation",
+            benefit: isFr ? "Cross-sell, perso" : "Cross-sell, perso",
+            accent: "sage",
+          },
+          {
+            label: "Analytics",
+            benefit: isFr ? "Insights live" : "Live insights",
+            accent: "mocha",
+          },
+        ]}
+      />
 
       {/* RÉASSURANCE */}
       <section className="bg-paper border-border border-y py-8">

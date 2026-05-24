@@ -11,6 +11,7 @@ import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { ServiceHero, type ServiceHeroNode } from "@/components/sections/ServiceHero";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -76,38 +77,91 @@ export default async function UnAUnHubPage({ params }: Props) {
         />
       </Container>
 
-      <Section
-        titleAs="h1"
-        eyebrow={isFr ? "Accompagnement IA individuel" : "Individual AI coaching"}
+      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will).
+          Pattern unifié sur les 5 pages services (calqué sur /implementation). */}
+      <ServiceHero
+        eyebrow={isFr ? "Module 4 · Accompagnement 1-to-1" : "Module 4 · 1-to-1 coaching"}
         title={isFr ? "Un expert IA" : "One AI expert"}
         titleEm={isFr ? "pour une personne" : "for one person"}
         description={
           isFr
-            ? "Un collaborateur, un expert IA Axion-IA. Pas une formation groupe, pas un audit d'entreprise — un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne."
-            : "One employee, one Axion-IA AI expert. Not a group training, not a company audit — individual coaching calibrated to the real role, daily tools and concrete objectives of the person."
+            ? `Un collaborateur, un expert IA Axion-IA. Pas une formation groupe, pas un audit d'entreprise — un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. À partir de ${formattedPrice}.`
+            : `One employee, one Axion-IA AI expert. Not a group training, not a company audit — individual coaching calibrated to the real role, daily tools and concrete objectives of the person. From ${formattedPrice}.`
         }
-      >
-        <Container className="text-fg max-w-3xl">
-          <p data-aeo="tldr" className="tldr-answer mb-6 text-lg leading-relaxed">
-            {isFr
-              ? `L'accompagnement 1-to-1 d'Axion-IA met en relation un collaborateur (manager, RH, commercial, opérateur, dirigeant…) avec un expert IA dédié. Les sessions sont calibrées sur le poste, les outils et les objectifs réels — pas sur un programme générique. À partir de ${formattedPrice}.`
-              : `Axion-IA's 1-to-1 coaching connects one employee (manager, HR, sales, operator, executive…) with a dedicated AI expert. Sessions are calibrated to the role, tools and real objectives — not a generic programme. From ${formattedPrice}.`}
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Cta href="/contact" variant="primary" size="lg" shape="pill">
+        ctas={
+          <>
+            <Cta
+              href="/contact"
+              variant="primary"
+              size="lg"
+              shape="pill"
+              track="un-a-un-hero-primary"
+            >
               {isFr ? "Démarrer mon accompagnement" : "Start my coaching"}
               <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
-            <Cta href={"/interventions" as never} variant="ghost" size="lg" shape="pill">
+            <Cta
+              href={"/interventions/collectives" as never}
+              variant="outline"
+              size="lg"
+              shape="pill"
+              track="un-a-un-hero-formations"
+            >
               {isFr ? "Voir les formations groupe" : "See group training"}
             </Cta>
-          </div>
-
-          {/* Hero illustration retirée 2026-05-24 (Will) — placeholder bizarre
-              car `public/illustrations/un-a-un-hero.avif` n'est pas généré. À
-              ré-instancier quand l'illustration sera disponible. */}
-        </Container>
-      </Section>
+          </>
+        }
+        schemaCenterLabel={isFr ? "1 collaborateur" : "1 employee"}
+        schemaAriaLabel={
+          isFr
+            ? "Schéma : un collaborateur au centre, entouré des 8 objectifs maîtrisables en coaching 1-to-1 (productivité, automatisation, outils IA, communication, reporting, prise de décision, autonomie, transfert d'expertise)."
+            : "Diagram: one employee at the center, surrounded by 8 objectives masterable in 1-to-1 coaching (productivity, automation, AI tools, communication, reporting, decision-making, autonomy, expertise transfer)."
+        }
+        schemaNodes={
+          [
+            {
+              label: isFr ? "Productivité" : "Productivity",
+              benefit: isFr ? "1-3 h/jour gagnées" : "1-3 h/day saved",
+              accent: "terracotta",
+            },
+            {
+              label: isFr ? "Automatisation" : "Automation",
+              benefit: isFr ? "Tâches répétitives" : "Repetitive tasks",
+              accent: "primary",
+            },
+            {
+              label: isFr ? "Outils IA" : "AI tools",
+              benefit: isFr ? "ChatGPT, Claude, Copilot" : "ChatGPT, Claude, Copilot",
+              accent: "sage",
+            },
+            {
+              label: isFr ? "Communication" : "Communication",
+              benefit: isFr ? "Mails, comptes-rendus" : "Emails, reports",
+              accent: "mocha",
+            },
+            {
+              label: isFr ? "Reporting" : "Reporting",
+              benefit: isFr ? "Synthèse auto" : "Auto-synthesis",
+              accent: "terracotta",
+            },
+            {
+              label: isFr ? "Décision" : "Decision",
+              benefit: isFr ? "Données structurées" : "Structured data",
+              accent: "primary",
+            },
+            {
+              label: isFr ? "Autonomie" : "Autonomy",
+              benefit: isFr ? "Plus de dépendance" : "No more dependency",
+              accent: "sage",
+            },
+            {
+              label: isFr ? "Transfert" : "Transfer",
+              benefit: isFr ? "Équipe formée" : "Team trained",
+              accent: "mocha",
+            },
+          ] as const satisfies ReadonlyArray<ServiceHeroNode>
+        }
+      />
 
       <Section
         eyebrow={isFr ? "Pour qui ?" : "Who for?"}

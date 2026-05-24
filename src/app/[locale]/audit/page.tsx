@@ -24,6 +24,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
 import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
 import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
@@ -137,73 +138,100 @@ export default async function AuditHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO */}
-      <section className="bg-halo-warm relative overflow-hidden py-14 sm:py-18 lg:py-22">
-        <Container className={cn("relative", TIGHT_X)}>
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr
-                ? "Audit IA PME & ETI · 4 niveaux · 2 portes d'entrée"
-                : "AI audit for SMEs & mid-caps · 4 levels · 2 entry doors"}
-            </p>
+      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
+      <ServiceHero
+        eyebrow={isFr ? "Module 2 · Audit IA · 4 niveaux" : "Module 2 · AI Audit · 4 levels"}
+        title={isFr ? "Audit IA pour PME & ETI" : "AI Audit for SMEs & mid-caps"}
+        titleEm={isFr ? "dès 490 €" : "from €490"}
+        description={
+          isFr
+            ? "4 niveaux d'audit IA pour entreprise — du diagnostic Flash 490 € à l'audit Stratégique ETI 12 000 €+. Choisissez l'angle qui vous parle : la taille de votre entreprise OU votre situation."
+            : "4 AI audit levels for companies — from €490 Flash diagnosis to €12,000+ Strategic mid-cap audit. Choose the angle that speaks to you: your company size OR your situation."
+        }
+        ctas={
+          <>
+            <Cta
+              href="/reserver?intervention=audit-flash-onsite"
+              size="lg"
+              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
+              track="audit-hero-flash"
+            >
+              <Calendar aria-hidden="true" className="h-4 w-4" />
+              {isFr ? `Réserver un Flash terrain · 890 €` : `Book on-site Flash · €890`}
+            </Cta>
+            <Cta href="/audit/demande" variant="outline" size="lg" track="audit-hero-cadrage">
+              <Mail aria-hidden="true" className="h-4 w-4" />
+              {isFr ? "Demander un cadrage" : "Request framing"}
+            </Cta>
+          </>
+        }
+        schemaCenterLabel={isFr ? "Votre entreprise" : "Your company"}
+        schemaAriaLabel={
+          isFr
+            ? "Schéma : votre entreprise au centre, entourée des 8 fonctions à auditer pour identifier les opportunités IA (commercial, marketing, RH, finance, opérations, IT, service client, direction)."
+            : "Diagram: your company at the center, surrounded by 8 functions to audit for AI opportunities (sales, marketing, HR, finance, operations, IT, customer service, leadership)."
+        }
+        schemaNodes={[
+          {
+            label: isFr ? "Commercial" : "Sales",
+            benefit: isFr ? "Leads, propositions" : "Leads, proposals",
+            accent: "terracotta",
+          },
+          {
+            label: "Marketing",
+            benefit: isFr ? "Contenu, SEO, social" : "Content, SEO, social",
+            accent: "primary",
+          },
+          {
+            label: "RH",
+            benefit: isFr ? "Recrutement, onboarding" : "Recruitment, onboarding",
+            accent: "sage",
+          },
+          {
+            label: "Finance",
+            benefit: isFr ? "Factures, reporting" : "Invoices, reporting",
+            accent: "mocha",
+          },
+          {
+            label: isFr ? "Opérations" : "Operations",
+            benefit: isFr ? "Process, qualité" : "Process, quality",
+            accent: "terracotta",
+          },
+          {
+            label: "IT",
+            benefit: isFr ? "Support, déploiement" : "Support, deployment",
+            accent: "primary",
+          },
+          {
+            label: isFr ? "Service client" : "Customer service",
+            benefit: isFr ? "Tickets, chatbot" : "Tickets, chatbot",
+            accent: "sage",
+          },
+          {
+            label: isFr ? "Direction" : "Leadership",
+            benefit: isFr ? "Décision, vision" : "Decision, vision",
+            accent: "mocha",
+          },
+        ]}
+      />
 
-            <h1 className="display-editorial text-fg mt-5">
-              {isFr ? "Audit IA pour PME & ETI " : "AI Audit for SMEs & mid-caps "}
-              <span
-                className="text-terracotta-deep mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
+      {/* Trust pills sous le hero — bandeau réassurance pleine largeur */}
+      <Container className={cn("py-6", TIGHT_X)}>
+        <ul className="flex flex-wrap items-center justify-center gap-2">
+          {heroPills.map((p) => {
+            const Icon = p.icon;
+            return (
+              <li
+                key={p.label}
+                className="bg-paper border-border text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium"
               >
-                {isFr ? "dès 490 €" : "from €490"}
-              </span>
-            </h1>
-
-            <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
-              {isFr
-                ? "4 niveaux d'audit IA pour entreprise — du diagnostic Flash 490 € à l'audit Stratégique ETI 12 000 €+. Choisissez l'angle qui vous parle : la taille de votre entreprise OU votre situation."
-                : "4 AI audit levels for companies — from €490 Flash diagnosis to €12,000+ Strategic mid-cap audit. Choose the angle that speaks to you: your company size OR your situation."}
-            </p>
-
-            {/* Trust pills */}
-            <ul className="mt-6 flex flex-wrap items-center justify-center gap-2">
-              {heroPills.map((p) => {
-                const Icon = p.icon;
-                return (
-                  <li
-                    key={p.label}
-                    className="bg-paper border-border text-fg inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium"
-                  >
-                    <Icon aria-hidden="true" className="text-terracotta-deep h-3.5 w-3.5" />
-                    {p.label}
-                  </li>
-                );
-              })}
-            </ul>
-
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Cta
-                href="/reserver?intervention=audit-flash-onsite"
-                size="lg"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-cta-terracotta"
-              >
-                <Calendar aria-hidden="true" className="h-4 w-4" />
-                {isFr ? `Réserver un Flash terrain · 890 €` : `Book on-site Flash · €890`}
-              </Cta>
-              <Cta href="/audit/demande" variant="outline" size="lg">
-                <Mail aria-hidden="true" className="h-4 w-4" />
-                {isFr ? "Demander un cadrage" : "Request framing"}
-              </Cta>
-            </div>
-
-            {/* Hero illustration retirée 2026-05-24 (Will) — placeholder
-                bizarre car `audit-hub-hero.avif` n'est pas généré. À ré-
-                instancier quand l'illustration sera disponible. */}
-          </div>
-        </Container>
-      </section>
+                <Icon aria-hidden="true" className="text-terracotta-deep h-3.5 w-3.5" />
+                {p.label}
+              </li>
+            );
+          })}
+        </ul>
+      </Container>
 
       {/* HUB TOGGLE — 2 axes Par taille / Par situation */}
       <Section

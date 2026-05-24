@@ -29,6 +29,7 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -179,50 +180,81 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO */}
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-16 sm:py-20 lg:py-24">
-        <Container className={cn("relative", TIGHT_X)}>
-          <div className="max-w-3xl">
-            <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span
-                aria-hidden="true"
-                className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-              />
-              {isFr ? "Famille · Formations équipe" : "Family · Team trainings"}
-            </p>
-
-            <h1 className="display-editorial text-fg mt-5">
-              {isFr ? "Vos équipes plus performantes " : "Your teams more efficient "}
-              <span
-                className="text-terracotta mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? "en une demi-journée à 3 jours" : "in a half-day to 3 days"}
-              </span>
-            </h1>
-
-            <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
-              {isFr
-                ? "Vos équipes apprennent l'IA sur leurs vrais outils, leurs vrais cas. Elles ressortent avec des automatisations qui tournent dès le lendemain, des heures gagnées chaque semaine, et une autonomie nouvelle. Choisissez la durée selon vos objectifs — 4 h pour démarrer, 1 ou 2 jours pour structurer, plusieurs jours pour transformer."
-                : "Your teams learn AI on their real tools, their real cases. They leave with automations running from day one, hours saved every week, and new autonomy. Pick the duration that matches your goals — 4 h to kick off, 1 or 2 days to structure, several days to transform."}
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Cta
-                href="/reserver"
-                size="lg"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
-              >
-                {isFr ? "Pré-réservez sur le calendrier" : "Pre-book on the calendar"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </Cta>
-              <Cta href="/interventions" variant="outline" size="lg">
-                {isFr ? "← Retour aux familles" : "← Back to families"}
-              </Cta>
-            </div>
-          </div>
-        </Container>
-      </section>
+      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
+      <ServiceHero
+        eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
+        title={isFr ? "Vos équipes plus performantes" : "Your teams more efficient"}
+        titleEm={isFr ? "en 4 h à 3 jours" : "in 4 h to 3 days"}
+        description={
+          isFr
+            ? "Vos équipes apprennent l'IA sur leurs vrais outils, leurs vrais cas. Elles ressortent avec des automatisations qui tournent dès le lendemain, des heures gagnées chaque semaine, et une autonomie nouvelle."
+            : "Your teams learn AI on their real tools, their real cases. They leave with automations running from day one, hours saved every week, and new autonomy."
+        }
+        ctas={
+          <>
+            <Cta
+              href="/reserver"
+              size="lg"
+              className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep shadow-[0_8px_24px_-8px_rgba(205,107,72,0.6)]"
+              track="collectives-hero-primary"
+            >
+              {isFr ? "Pré-réserver sur le calendrier" : "Pre-book on the calendar"}
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Cta>
+            <Cta href="/interventions" variant="outline" size="lg" track="collectives-hero-back">
+              {isFr ? "← Retour aux familles" : "← Back to families"}
+            </Cta>
+          </>
+        }
+        schemaCenterLabel={isFr ? "Votre équipe" : "Your team"}
+        schemaAriaLabel={
+          isFr
+            ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM, Make, Zapier) avec leur usage métier."
+            : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM, Make, Zapier) with their business use."
+        }
+        schemaNodes={[
+          {
+            label: "ChatGPT",
+            benefit: isFr ? "Rédaction, synthèse" : "Writing, synthesis",
+            accent: "terracotta",
+          },
+          {
+            label: "Claude",
+            benefit: isFr ? "Analyse, code" : "Analysis, code",
+            accent: "primary",
+          },
+          {
+            label: "Copilot",
+            benefit: isFr ? "Office, Outlook" : "Office, Outlook",
+            accent: "sage",
+          },
+          {
+            label: "Gemini",
+            benefit: isFr ? "Google Workspace" : "Google Workspace",
+            accent: "mocha",
+          },
+          {
+            label: "Perplexity",
+            benefit: isFr ? "Recherche sourcée" : "Sourced research",
+            accent: "terracotta",
+          },
+          {
+            label: "NotebookLM",
+            benefit: isFr ? "Docs en assistant" : "Docs as assistant",
+            accent: "primary",
+          },
+          {
+            label: "Make",
+            benefit: isFr ? "Automatisations" : "Automations",
+            accent: "sage",
+          },
+          {
+            label: "Zapier",
+            benefit: isFr ? "Workflows métier" : "Business workflows",
+            accent: "mocha",
+          },
+        ]}
+      />
 
       {/* 4 CARDS PALIER DURÉE */}
       <Section
