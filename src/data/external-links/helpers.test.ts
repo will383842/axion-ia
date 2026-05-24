@@ -8,7 +8,9 @@ import { selectExternalLinksPure } from "./helpers-server-safe";
 
 const NOW = Date.now();
 
-function mkLink(overrides: Partial<ExternalLink> & { id: string; organization: string }): ExternalLink {
+function mkLink(
+  overrides: Partial<ExternalLink> & { id: string; organization: string },
+): ExternalLink {
   const { id, organization, ...rest } = overrides;
   return {
     id,
@@ -122,10 +124,7 @@ describe("selectExternalLinksPure — filtres contexte & diversification", () =>
   });
 
   it("excludeIds : exclusion explicite (session courante)", () => {
-    const pool = [
-      mkLink({ id: "a", organization: "A" }),
-      mkLink({ id: "b", organization: "B" }),
-    ];
+    const pool = [mkLink({ id: "a", organization: "A" }), mkLink({ id: "b", organization: "B" })];
     const result = selectExternalLinksPure(pool, { count: 2, excludeIds: ["a"] });
     expect(result.map((l) => l.id)).toEqual(["b"]);
   });
@@ -188,7 +187,13 @@ describe("selectExternalLinksPure — scoring géo", () => {
 
   it("Boost lien région correspondante", () => {
     const pool = [
-      mkLink({ id: "a", organization: "A", regionSlug: "ile-de-france", scope: "regional", authority: 4 }),
+      mkLink({
+        id: "a",
+        organization: "A",
+        regionSlug: "ile-de-france",
+        scope: "regional",
+        authority: 4,
+      }),
       mkLink({ id: "b", organization: "B", authority: 4 }),
     ];
     const result = selectExternalLinksPure(pool, { count: 1, regionSlug: "ile-de-france" });

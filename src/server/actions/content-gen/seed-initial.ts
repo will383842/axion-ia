@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "./_auth";
 import { seedKbFacts } from "../../../../prisma/seeds/content-gen/seed-kb-facts";
 import { seedCampaignTemplates } from "../../../../prisma/seeds/content-gen/seed-campaign-templates";
 
@@ -12,6 +13,7 @@ export interface SeedResult {
 }
 
 export async function runInitialSeed(): Promise<SeedResult> {
+  await requireAdmin();
   try {
     const [kbFacts, campaignTemplates] = await Promise.all([
       seedKbFacts(prisma as Parameters<typeof seedKbFacts>[0]),

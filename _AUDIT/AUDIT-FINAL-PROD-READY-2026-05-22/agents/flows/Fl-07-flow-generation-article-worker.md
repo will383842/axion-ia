@@ -6,41 +6,41 @@
 
 ## Chaîne traçée
 
-| Étape | Fichier | Ligne | Verdict |
-|---|---|---|---|
-| **1. Orchestrator pick CoverageCampaign running** | `src/server/queue/workers/content-orchestrator-worker.ts` | 1-50+ (cron 15min, sample distribution + audienceMix + intentMix, INSERT N ContentGenJob, enqueue to `content-gen` queue) | OK |
-| **2. content-gen-worker pickup** | `src/server/queue/workers/content-gen-worker.ts` | 1-80 (10 steps documented) | OK |
-| Hard gate KB ready (`assertKbReady`) | idem | 24, 80+ | OK |
-| Pre-IA dedup-guard (4 couches v1.7) | idem | 25 import `checkDedup` | OK |
-| **Resolve generator par contentType** | idem | 23 `getGenerator(contentType)` → `src/server/content-gen/generators/index.ts` (route map) | OK |
-| Plagiarism gate (Jaccard) | idem | 26 import `checkPlagiarism` | OK |
-| Intent alignment validator | idem | 27 import `validateIntentAlignment` | OK |
-| **Outline SimHash dedup (P0-6 B.7 P1.5)** | idem | 42 import `checkOutlineDedup` | OK |
-| Hero image assign (B.6 P1.5 P0-4) | idem | 40 import `assignHeroImage` | OK |
-| Keyword selector rotation (B.5 P1.5) | idem | 38 import `selectKeyword` + `validateKeywordInTitle` | OK |
-| **3. LLM-judge reviewer** | `src/server/content-gen/reviewer/llm-judge.ts` | 1-100+ (Claude Sonnet 4.6 distinct du generator) | OK |
-| **Seuil D1 = 6.0/10 reject** | idem | 34-39 (`IMPROVE_MIN: 6.0`, `PUBLISH_MIN: 8.5`) + commentaire ligne 38 "D1=6.0, cohérent avec D-P5-2 (60/100)" | **EXACT D1** |
-| Verdict `publish` / `improve` / `reject` | idem | 43 (`JudgeVerdict` type) | OK |
-| Rubric 7 dimensions + linguistic-diversity 8e | idem | 89-100 | OK |
-| Issues[] avec severity P0/P1/P2 | idem | 64-69 | OK |
-| **4. quality-improver worker** | `src/server/queue/workers/content-quality-improver-worker.ts` | présent, concurrency=2, lockDuration=120s (P0-2) | OK |
-| **5. content-publish-worker** | `src/server/queue/workers/content-publish-worker.ts` | 1-50 (pipeline 5 étapes) | OK |
-| **6. IndexNow ping centralisé tier-1** | idem | 530-563 (`enqueue-indexing` Sprint 9 V2) | OK |
-| ISR revalidate cascade | idem | 680-694 (`revalidateContent`) | OK |
-| Fact-check enqueue post-publish | idem | 18 ("fact-check enqueue") | OK (cf. `content-fact-check-worker.ts`) |
-| **Daily MAX_PUBLISH cap Redis INCR atomique (D-W1 ramp 30→500)** | idem | 86-97 (env > DB > rampe `<60 articles=30`, `<300=100`, `<600=200`, `≥600=500`) + 154-188 (INCR Redis avec TTL minuit UTC) | **EXACT D-W1 ramp 30→500** |
-| **Drip window 8h-22h CET** | idem | 99-152 | OK |
-| Kill-switch hard-gate | idem | 125-134 | OK |
-| Sitemap update via ISR revalidatePath | idem | 680-694 | OK |
-| `logStep`/`logStepError` audit trail | `src/server/content-gen/shared/generation-log.ts` (importé) | OK |
-| Sentry capture worker failed | `content-publish-worker.ts:724-734` + `content-gen-worker.ts:35` | OK |
+| Étape                                                            | Fichier                                                          | Ligne                                                                                                                     | Verdict                                 |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| **1. Orchestrator pick CoverageCampaign running**                | `src/server/queue/workers/content-orchestrator-worker.ts`        | 1-50+ (cron 15min, sample distribution + audienceMix + intentMix, INSERT N ContentGenJob, enqueue to `content-gen` queue) | OK                                      |
+| **2. content-gen-worker pickup**                                 | `src/server/queue/workers/content-gen-worker.ts`                 | 1-80 (10 steps documented)                                                                                                | OK                                      |
+| Hard gate KB ready (`assertKbReady`)                             | idem                                                             | 24, 80+                                                                                                                   | OK                                      |
+| Pre-IA dedup-guard (4 couches v1.7)                              | idem                                                             | 25 import `checkDedup`                                                                                                    | OK                                      |
+| **Resolve generator par contentType**                            | idem                                                             | 23 `getGenerator(contentType)` → `src/server/content-gen/generators/index.ts` (route map)                                 | OK                                      |
+| Plagiarism gate (Jaccard)                                        | idem                                                             | 26 import `checkPlagiarism`                                                                                               | OK                                      |
+| Intent alignment validator                                       | idem                                                             | 27 import `validateIntentAlignment`                                                                                       | OK                                      |
+| **Outline SimHash dedup (P0-6 B.7 P1.5)**                        | idem                                                             | 42 import `checkOutlineDedup`                                                                                             | OK                                      |
+| Hero image assign (B.6 P1.5 P0-4)                                | idem                                                             | 40 import `assignHeroImage`                                                                                               | OK                                      |
+| Keyword selector rotation (B.5 P1.5)                             | idem                                                             | 38 import `selectKeyword` + `validateKeywordInTitle`                                                                      | OK                                      |
+| **3. LLM-judge reviewer**                                        | `src/server/content-gen/reviewer/llm-judge.ts`                   | 1-100+ (Claude Sonnet 4.6 distinct du generator)                                                                          | OK                                      |
+| **Seuil D1 = 6.0/10 reject**                                     | idem                                                             | 34-39 (`IMPROVE_MIN: 6.0`, `PUBLISH_MIN: 8.5`) + commentaire ligne 38 "D1=6.0, cohérent avec D-P5-2 (60/100)"             | **EXACT D1**                            |
+| Verdict `publish` / `improve` / `reject`                         | idem                                                             | 43 (`JudgeVerdict` type)                                                                                                  | OK                                      |
+| Rubric 7 dimensions + linguistic-diversity 8e                    | idem                                                             | 89-100                                                                                                                    | OK                                      |
+| Issues[] avec severity P0/P1/P2                                  | idem                                                             | 64-69                                                                                                                     | OK                                      |
+| **4. quality-improver worker**                                   | `src/server/queue/workers/content-quality-improver-worker.ts`    | présent, concurrency=2, lockDuration=120s (P0-2)                                                                          | OK                                      |
+| **5. content-publish-worker**                                    | `src/server/queue/workers/content-publish-worker.ts`             | 1-50 (pipeline 5 étapes)                                                                                                  | OK                                      |
+| **6. IndexNow ping centralisé tier-1**                           | idem                                                             | 530-563 (`enqueue-indexing` Sprint 9 V2)                                                                                  | OK                                      |
+| ISR revalidate cascade                                           | idem                                                             | 680-694 (`revalidateContent`)                                                                                             | OK                                      |
+| Fact-check enqueue post-publish                                  | idem                                                             | 18 ("fact-check enqueue")                                                                                                 | OK (cf. `content-fact-check-worker.ts`) |
+| **Daily MAX_PUBLISH cap Redis INCR atomique (D-W1 ramp 30→500)** | idem                                                             | 86-97 (env > DB > rampe `<60 articles=30`, `<300=100`, `<600=200`, `≥600=500`) + 154-188 (INCR Redis avec TTL minuit UTC) | **EXACT D-W1 ramp 30→500**              |
+| **Drip window 8h-22h CET**                                       | idem                                                             | 99-152                                                                                                                    | OK                                      |
+| Kill-switch hard-gate                                            | idem                                                             | 125-134                                                                                                                   | OK                                      |
+| Sitemap update via ISR revalidatePath                            | idem                                                             | 680-694                                                                                                                   | OK                                      |
+| `logStep`/`logStepError` audit trail                             | `src/server/content-gen/shared/generation-log.ts` (importé)      | OK                                                                                                                        |
+| Sentry capture worker failed                                     | `content-publish-worker.ts:724-734` + `content-gen-worker.ts:35` | OK                                                                                                                        |
 
 ## Findings P0/P1/P2
 
-| Niveau | Item | Référence |
-|---|---|---|
+| Niveau | Item                                                                                                                                                                                                                                                                                                                                                                                    | Référence                                                     |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | **P1** | Le worker `content-fact-check-worker.ts` existe (file présent) mais sa chaîne d'enqueue post-publish n'a pas été vérifiée ligne-par-ligne — il faut s'assurer que `processJob` du publish-worker enqueue effectivement un job fact-check après l'insertion Article. Documentation mentionne "fact-check enqueue" mais grep ne montre pas explicitement l'appel `factCheckQueue.add(…)`. | À investiguer dans `content-publish-worker.ts` lignes 600-695 |
-| **P2** | Le seuil REJECT 6.0/10 (D1) côté llm-judge est exposé via constante `JUDGE_THRESHOLDS.IMPROVE_MIN = 6.0` mais le mapping avec `qualityScore` workflow (en /100 dans Article) nécessite multiplication ×10 — bien commenté ligne 38 ("aligné P5 D-P5-2 60/100"). | `llm-judge.ts:34-39` |
+| **P2** | Le seuil REJECT 6.0/10 (D1) côté llm-judge est exposé via constante `JUDGE_THRESHOLDS.IMPROVE_MIN = 6.0` mais le mapping avec `qualityScore` workflow (en /100 dans Article) nécessite multiplication ×10 — bien commenté ligne 38 ("aligné P5 D-P5-2 60/100").                                                                                                                         | `llm-judge.ts:34-39`                                          |
 
 ## Verdict détaillé
 

@@ -1,4 +1,5 @@
 # F-07 Maillage interne
+
 ## Score : 16/25 — 🟡
 
 ## Findings (preuves)
@@ -33,16 +34,20 @@
 10. **Footer maillage** : `Footer.tsx` expose 4 colonnes (services / resources / company / legal) + topRegions × 6 = ~25 liens internes globaux toutes pages.
 
 ## P0 bloquants prod
+
 - **🔴 P0 — `internal-link-catalog.ts`** : 4/9 entries pointent vers des URLs inexistantes. Tous les nouveaux articles content-gen produiront ~4 liens 404 → impact SEO (link rot signal négatif Google) + UX (visiteur clique sur lien article, atterrit sur 404).
 
 ## P1 importants
+
 - Le catalog statique V1 (9 topics) est limité → V2 (Sprint S+7) prévu pour scan dynamique filesystem + DB Article. Mais corriger les URLs immédiatement.
 - Pas de validation au build time que les URLs du catalog existent vraiment dans `routing.pathnames`. Aucun test ne le couvre.
 - Footer.tsx topRegions = 6 régions PIB — devrait potentiellement varier par page (pertinence locale).
 
 ## P2 polish
+
 - Aucune métrique d’audit du nombre moyen de liens internes par article (à mesurer post-fix).
 - Pas de `nofollow` sur certains liens externes (à valider trust-tier policy).
 
 ## Verdict
+
 Architecture maillage solide en intention : SuggestedContent SSOT + findRelatedArticles + external-links-injector + trust-tier + Breadcrumbs JSON-LD. MAIS le catalog interne est cassé sur 4/9 entrées (44 %) → bug P0 réel qui pollue tous les articles content-gen. Fix trivial : remplacer `/audits` → `/audit`, `/interventions-formations` → `/interventions`, `/implementations` → `/implementation`, retirer `/tarifs` ou créer route. Score 16/25 ; -9 pour le bug bloquant + absence de validation routing automatisée.

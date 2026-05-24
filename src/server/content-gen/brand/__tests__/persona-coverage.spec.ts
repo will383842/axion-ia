@@ -26,6 +26,15 @@ import {
 } from "../brand-voice";
 
 const GENERATORS_DIR = resolve(__dirname, "..", "..", "generators");
+// Sprint v7 Phase 5 commit 1 — landing-ville.ts est devenu un dispatcher qui
+// route vers 5 generators verticaux. Le pipeline réel (KB retrieve + LLM +
+// brand-voice injection + quality checks) vit dans landing-ville-shared.ts ;
+// c'est donc ce fichier qui doit injecter la persona Manon, pas le dispatcher.
+//
+// Sprint v7 Phase 8 commit 2/4 — 12 nouveaux content types partagent
+// `v7-phase8-shared.ts` (pipeline mutualisé) qui injecte aussi brand-voice
+// via getBrandVoiceForContentType. On ajoute ce file à la liste pour couvrir
+// les 12 nouveaux types collectivement.
 const GENERATOR_FILES = [
   "blog-article.ts",
   "blog-from-keywords.ts",
@@ -34,8 +43,9 @@ const GENERATOR_FILES = [
   "comparison.ts",
   "faq-standalone.ts",
   "guide-pilier.ts",
-  "landing-ville.ts",
+  "landing-ville-shared.ts",
   "qa-derived.ts",
+  "v7-phase8-shared.ts",
 ] as const;
 
 const PERSONA_INJECTION_PATTERN =
@@ -66,7 +76,7 @@ describe("V-13 persona Manon — SSOT brand-voice", () => {
   });
 });
 
-describe("V-13 persona Manon — couverture 9/9 generators", () => {
+describe("V-13 persona Manon — couverture 10/10 generator files (incl. v7-phase8-shared)", () => {
   it.each(GENERATOR_FILES)(
     "le générateur %s référence brand-voice (injectBrandVoice ou getBrandVoiceForContentType)",
     (file) => {
@@ -81,7 +91,7 @@ describe("V-13 persona Manon — couverture 9/9 generators", () => {
     // Le test ci-dessus couvre la liste blanche. Ce test ajoute un guard
     // explicite : si un nouveau generator apparait, il devra être ajouté à
     // GENERATOR_FILES ET passer la couverture brand-voice.
-    expect(GENERATOR_FILES.length).toBeGreaterThanOrEqual(9);
+    expect(GENERATOR_FILES.length).toBeGreaterThanOrEqual(10);
   });
 });
 
@@ -105,8 +115,8 @@ describe("V-13 persona Manon — résolution par contentType", () => {
   it("comparison utilise expert analytique (pas Manon directe) — exigence neutralité", () => {
     const block = getBrandVoiceForContentType("comparison");
     expect(block).toMatch(/expert analytique impartial/);
-    // INTERDIT tableaux HTML pour Featured Snippet AEO 2026.
-    expect(block).toMatch(/INTERDIT.*<table>/);
+    // OBLIGATOIRE <table> récapitulatif pour Featured Snippet 2026 (ADR P0-3 2026-05-23).
+    expect(block).toMatch(/OBLIGATOIRE.*<table>/);
   });
 
   it("blog_from_rss utilise persona éditoriale neutre (pas Chez Axion-IA en intro)", () => {

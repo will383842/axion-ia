@@ -11,6 +11,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -100,30 +102,36 @@ export interface UpdateAuthorInput {
 
 export async function updateAuthor(input: UpdateAuthorInput): Promise<void> {
   await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation (structurel) avant les checks métier.
-  UpdateAuthorInputSchema.parse(input);
-  if (input.displayName.length < 2 || input.displayName.length > 80)
-    throw new Error("display_name_length");
-  if (input.jobTitle.length < 2 || input.jobTitle.length > 120) throw new Error("job_title_length");
-  if (input.bioMd.length > 20_000) throw new Error("bio_too_long");
-  if (input.slug === "manon" && input.isPersona && !input.personaDisclaimer) {
-    throw new Error("persona_disclaimer_required");
+  try {
+    // Sprint Final P1-3 — Zod runtime validation (structurel) avant les checks métier.
+    UpdateAuthorInputSchema.parse(input);
+    if (input.displayName.length < 2 || input.displayName.length > 80)
+      throw new Error("display_name_length");
+    if (input.jobTitle.length < 2 || input.jobTitle.length > 120)
+      throw new Error("job_title_length");
+    if (input.bioMd.length > 20_000) throw new Error("bio_too_long");
+    if (input.slug === "manon" && input.isPersona && !input.personaDisclaimer) {
+      throw new Error("persona_disclaimer_required");
+    }
+    await prisma.authorProfile.update({
+      where: { slug: input.slug },
+      data: {
+        displayName: input.displayName,
+        jobTitle: input.jobTitle,
+        bioMd: input.bioMd,
+        photoAlt: input.photoAlt ?? null,
+        aiGenerated: input.aiGenerated,
+        linkedinUrl: input.linkedinUrl?.trim() || null,
+        knowsAbout: input.knowsAbout ? [...input.knowsAbout] : [],
+        isPersona: input.isPersona,
+        personaDisclaimer: input.personaDisclaimer?.trim() || null,
+      },
+    });
+    const adminBase = `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/author/${input.slug}`;
+    revalidatePath(adminBase);
+    revalidatePath(`/fr/equipe/${input.slug}`);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateAuthor" } });
+    throw e;
   }
-  await prisma.authorProfile.update({
-    where: { slug: input.slug },
-    data: {
-      displayName: input.displayName,
-      jobTitle: input.jobTitle,
-      bioMd: input.bioMd,
-      photoAlt: input.photoAlt ?? null,
-      aiGenerated: input.aiGenerated,
-      linkedinUrl: input.linkedinUrl?.trim() || null,
-      knowsAbout: input.knowsAbout ? [...input.knowsAbout] : [],
-      isPersona: input.isPersona,
-      personaDisclaimer: input.personaDisclaimer?.trim() || null,
-    },
-  });
-  const adminBase = `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/author/${input.slug}`;
-  revalidatePath(adminBase);
-  revalidatePath(`/fr/equipe/${input.slug}`);
 }

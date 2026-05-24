@@ -275,6 +275,10 @@ export const routing = defineRouting({
       en: "/case-studies/industry/[slug]",
     },
     "/reserver": { fr: "/reserver", en: "/book" },
+    // Sprint Header refonte 2026-05-24 (Will) — page récap tarifs multi-modules
+    // (Audit / Formations / 1-to-1 / Implémentation / Plateforme). Source de
+    // vérité unique = pricing.ts. Sert le nouvel onglet header « Tarifs ».
+    "/tarifs": { fr: "/tarifs", en: "/pricing" },
     "/roi": "/roi",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },

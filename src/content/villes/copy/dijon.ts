@@ -549,7 +549,7 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture factures, rédaction fiche produit, scoring leads) pour indépendants et petites structures dijonnaises.",
           },
@@ -655,7 +655,7 @@ export const DIJON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, product sheet writing, lead scoring) for Dijon freelancers and small structures.",
           },

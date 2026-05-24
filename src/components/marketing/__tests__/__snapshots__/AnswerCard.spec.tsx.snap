@@ -35,9 +35,9 @@ exports[`<AnswerCard> > matches snapshot (FR, question + source link) 1`] = `
     >
       À partir de 
       <strong>
-        490 € HT
+        690 € HT
       </strong>
-       (TPE 1-19 salariés). 790 € (PME) ou 1 190 € (ETI). Inclut diagnostic, plan d'action chiffré, accompagnement 30 jours.
+       (TPE 1-19 salariés). 890 € (PME) ou 1 490 € (ETI). Inclut diagnostic, plan d'action chiffré, accompagnement 30 jours.
     </div>
     <p
       class="text-fg-muted mt-1 text-xs"

@@ -606,7 +606,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple — automatisation devis ou bons de livraison, comptes-rendus réunion, qualification prospects pour TPE et indépendants perpignanais.",
           },
@@ -712,7 +712,7 @@ export const PERPIGNAN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case — quote or delivery note automation, meeting minutes, prospect qualification for Perpignan micro-businesses and freelancers.",
           },

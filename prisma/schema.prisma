@@ -2524,6 +2524,21 @@ enum ContentType {
   guide_pilier
   qa_derived
   faq_standalone
+  // ─── Sprint v7 Phase 8 — 12 nouveaux content types ────────────────────────
+  // Ajoutés par migration 2026-05-23 (v7_phase8_add_12_content_types).
+  // Mapping generators dans src/server/content-gen/generators/index.ts.
+  long_tail_keyword
+  pain_point_solution
+  vs_comparator
+  alternative_to
+  top_x_in_y
+  how_to_x_in_y
+  best_for_x_in_y
+  calculator_roi
+  glossary_term
+  what_is_x
+  faq_geo
+  case_study_local
 }
 
 /// 12 statuts pipeline (§ 5.1 + § 27 boucle qualité v1.7).
@@ -2623,6 +2638,37 @@ enum CoverageStatus {
 enum CityProcessingMode {
   parallel
   sequential
+}
+
+/// Mode scope villes pour une campagne (Sprint v7 Phase 1 — D3 prompt 2026-05-23).
+/// `global_queue` : la campagne consomme la file CityGenerationOrder partagée
+/// (ordre rank ascendant, modifiable depuis `/content-gen/cities-order`).
+/// `custom_subset` : sous-ensemble explicite de villeSlugs renseigné via
+/// CoverageCampaign.customVilleSlugs (wizard step 2 drag-and-drop).
+enum VilleScopeMode {
+  global_queue
+  custom_subset
+}
+
+/// Mode mix contenu pour une campagne (Sprint v7 Phase 1 — D8 prompt 2026-05-23).
+/// `percentage` : sliders 0-100 par contentType, sum = 100% (distribute by weight).
+/// `manual` : quotas absolus par contentType (Int count, override % entièrement).
+enum MixMode {
+  percentage
+  manual
+}
+
+/// Phase démarrage progressif (Sprint v7 Phase 9 — D16 prompt 2026-05-23).
+/// `phase_a` : pilote 1 verticale x 39 villes pilotes (mois 1-3).
+/// `phase_b` : 5 verticales x 39 villes pilotes (mois 4-6).
+/// `phase_c` : 5 verticales x 200 villes T1+T2 (mois 7-12).
+/// `phase_d` : 5 verticales x 2150 villes (mois 13-24, nationale).
+/// Transitions gated par worker `phase-transition-monitor.ts` (Phase 9).
+enum ExpansionPhase {
+  phase_a
+  phase_b
+  phase_c
+  phase_d
 }
 
 /// Périmètre d'une campagne (§ 25.2 v1.7).
@@ -2928,6 +2974,28 @@ model CoverageCampaign {
   recurringSchedule        String?            @map("recurring_schedule")
   completedReason          String?            @map("completed_reason")
 
+  // Sprint v7 Phase 1 (2026-05-23) — refonte wizard + parallel campaigns.
+  // `dailyArticles` : volume articles/jour configurable per-campaign (1..1000,
+  // déprécie le setting global `batches.dailyBatchSize`). Orchestrator
+  // répartit ce budget sur les villes du scope selon mixMode.
+  dailyArticles      Int             @default(30) @map("daily_articles")
+  // `villeScopeMode` : choisir entre file globale CityGenerationOrder ou
+  // sous-ensemble customVilleSlugs[] (wizard step 2 drag-and-drop).
+  villeScopeMode     VilleScopeMode  @default(global_queue) @map("ville_scope_mode")
+  // `customVilleSlugs` : utilisé uniquement si villeScopeMode = custom_subset.
+  // Sinon [] et la campagne consomme la file globale (ordre rank ascendant).
+  customVilleSlugs   String[]        @default([]) @map("custom_ville_slugs")
+  // `mixMode` : sliders % ou quotas absolus (cf. enum MixMode).
+  mixMode            MixMode         @default(percentage) @map("mix_mode")
+  // `contentTypeWeights` : sliders 0-100 par ContentType (mode percentage,
+  // sum = 100%) OU quotas Int par ContentType (mode manual, sum libre).
+  // Forme: { "blog_article": 10, "qa_individual": 15, ... } (clés = enum ContentType).
+  // Validation Zod côté server action (cf. wizard Phase 3).
+  contentTypeWeights Json?           @map("content_type_weights")
+  // `expansionPhase` : phase démarrage progressif (Phase 9). NULL = pas
+  // gated par phase (campagnes legacy ou manuelles hors roadmap progressive).
+  expansionPhase     ExpansionPhase? @map("expansion_phase")
+
   startedAt   DateTime?
   pausedAt    DateTime?
   completedAt DateTime?
@@ -2938,7 +3006,48 @@ model CoverageCampaign {
 
   @@index([status, createdAt(sort: Desc)])
   @@index([serviceSector, status])
+  // Sprint v7 Phase 9 — index pour worker phase-transition-monitor (lookup
+  // campagnes par phase courante, groupage transition).
+  @@index([expansionPhase, status])
   @@map("coverage_campaigns")
+}
+
+/// File globale ordre génération villes (Sprint v7 Phase 1 — D3 prompt 2026-05-23).
+///
+/// 1 ligne = 1 ville indexable (cible : 2150 villes FR métropole + DROM).
+/// `rank` = position dans la file consommée par les campagnes en mode
+/// `villeScopeMode='global_queue'`. Géré via page admin `/content-gen/cities-order`
+/// (drag-and-drop virtualisé + filtres + recherche debounce 150ms).
+///
+/// Champs dénormalisés (regionSlug, deptCode, tier, pop) : permettent les
+/// filtres + tri admin sans JOIN runtime côté Ville (TS hardcode). Re-sync
+/// scriptable via `scripts/seed-city-generation-order.ts` quand `src/content/villes/`
+/// est mis à jour.
+///
+/// `pinned` : épingle la ville en top de file (avant tous les autres ranks).
+/// Use case : Will force Paris/Lyon en priorité pendant la campagne audits Q1.
+/// Plusieurs villes pinned coexistent — leur ordre relatif suit `pinnedAt DESC`
+/// (dernière épinglée en premier).
+model CityGenerationOrder {
+  villeSlug  String    @id @map("ville_slug")
+  rank       Int       @unique
+  pinned     Boolean   @default(false)
+  pinnedAt   DateTime? @map("pinned_at")
+  // Champs dénormalisés depuis src/content/villes (TS hardcode SSOT).
+  // Resync via script. Permet filtres/tri admin sans JOIN.
+  regionSlug String    @map("region_slug")
+  deptCode   String    @map("dept_code")
+  tier       String // "T1" | "T2" | "T3" | "T4" — pas d'enum pour rester flex
+  pop        Int // population INSEE
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@index([rank])
+  @@index([pinned, pinnedAt(sort: Desc)])
+  @@index([regionSlug, rank])
+  @@index([deptCode, rank])
+  @@index([tier, rank])
+  @@map("city_generation_order")
 }
 
 /// Job content-gen unique. Pivot des pipelines (§ 5.1 + § 25 + § 26 + § 27).
@@ -3641,6 +3750,7 @@ model ArticleFeedback {
 
   article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
+  @@unique([articleId, userId])
   @@index([articleId])
   @@index([userId])
   @@map("article_feedback")
@@ -3711,4 +3821,113 @@ model ExternalLinkUsage {
   @@index([lastUsedAt])
   @@index([usageCount])
   @@map("external_link_usage")
+}
+
+// ============================================================
+// SITE EXPLORER — Catalogue exhaustif des URLs publiques
+// Sprint Site Explorer Admin 2026-05-22.
+// RÈGLE STRICTE : ce catalogue ne contient QUE des URLs publiques
+// visibles par les visiteurs réels du site. Toute route (admin),
+// [adminPrefix], /api/, Server Actions est exclue par construction.
+// ============================================================
+
+enum SiteRouteType {
+  static
+  dynamic_template
+  dynamic_db
+  dynamic_filesystem
+}
+
+enum SiteRouteStatus {
+  live
+  draft
+  preview
+  not_found
+  redirect
+  error
+  unknown
+}
+
+/// Visibilité — UNIQUEMENT 'public' par design.
+/// Les valeurs 'admin' et 'api_only' sont intentionnellement omises :
+/// le Site Explorer ne catalogue PAS les pages admin ni API.
+enum SiteRouteVisibility {
+  public
+}
+
+model SiteRoute {
+  id           String  @id @default(cuid())
+  pathPattern  String  @map("path_pattern") @db.VarChar(1000)
+  pathRendered String? @map("path_rendered") @db.VarChar(1000)
+  pathSlug     String? @map("path_slug") @db.VarChar(500)
+
+  type       SiteRouteType
+  status     SiteRouteStatus     @default(unknown)
+  visibility SiteRouteVisibility @default(public)
+
+  source   String  @db.VarChar(200)
+  filePath String? @map("file_path") @db.VarChar(500)
+
+  parentRouteId String?     @map("parent_route_id")
+  parentRoute   SiteRoute?  @relation("RouteHierarchy", fields: [parentRouteId], references: [id])
+  childRoutes   SiteRoute[] @relation("RouteHierarchy")
+  depth         Int         @default(0)
+
+  section    String?  @db.VarChar(100)
+  verticales String[] @default([])
+  cityIds    String[] @default([]) @map("city_ids")
+
+  httpStatus        Int?      @map("http_status")
+  metaTitle         String?   @map("meta_title") @db.VarChar(500)
+  metaDescription   String?   @map("meta_description") @db.Text
+  h1                String?   @db.VarChar(500)
+  wordCount         Int?      @map("word_count")
+  jsonLdCount       Int?      @map("json_ld_count")
+  internalLinkCount Int?      @map("internal_link_count")
+  externalLinkCount Int?      @map("external_link_count")
+  hasAiDisclaimer   Boolean?  @map("has_ai_disclaimer")
+  lastModifiedAt    DateTime? @map("last_modified_at")
+  lastInspectedAt   DateTime? @map("last_inspected_at")
+
+  lighthousePerf  Int?      @map("lighthouse_perf")
+  lighthouseSeo   Int?      @map("lighthouse_seo")
+  lighthouseA11y  Int?      @map("lighthouse_a11y")
+  lighthouseBP    Int?      @map("lighthouse_bp")
+  lighthouseRunAt DateTime? @map("lighthouse_run_at")
+
+  editable      Boolean @default(false)
+  editorRoute   String? @map("editor_route") @db.VarChar(500)
+  sourceDbTable String? @map("source_db_table") @db.VarChar(100)
+  sourceDbId    String? @map("source_db_id") @db.VarChar(100)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  anomalies SiteRouteAnomaly[]
+
+  @@unique([pathPattern, pathSlug])
+  @@index([type])
+  @@index([status])
+  @@index([section])
+  @@index([visibility])
+  @@index([depth])
+  @@index([editable])
+  @@map("site_routes")
+}
+
+model SiteRouteAnomaly {
+  id          String    @id @default(cuid())
+  siteRouteId String    @map("site_route_id")
+  siteRoute   SiteRoute @relation(fields: [siteRouteId], references: [id], onDelete: Cascade)
+  type        String    @db.VarChar(100)
+  severity    String    @db.VarChar(20)
+  description String    @db.Text
+  detectedAt  DateTime  @default(now()) @map("detected_at")
+  resolvedAt  DateTime? @map("resolved_at")
+
+  @@index([siteRouteId])
+  @@index([type])
+  @@index([severity])
+  @@index([resolvedAt])
+  @@map("site_route_anomalies")
 }

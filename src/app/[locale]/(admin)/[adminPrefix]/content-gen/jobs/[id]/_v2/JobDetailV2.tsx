@@ -3,7 +3,9 @@
 // Job detail V2 — utilise AdminPageShell + AdminPageHeader + AdminCard.
 // IMPORTANT : JobLogStream préservé intégralement (contrat SSE inchangé).
 // Server Actions retry/cancel inline préservées.
+// SP-04 P1 — liens contextuels template parent + review-queue associée.
 
+import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
@@ -43,13 +45,19 @@ interface JobData {
   errorMessage: string | null;
   createdAt: Date;
   logs: ReadonlyArray<JobLog>;
+  // Liens contextuels SP-04 P1
+  templateId?: string | null;
+  campaignId?: string | null;
+  template?: { id: string; name: string; version: number } | null;
+  reviewQueue?: { id: string; status: string } | null;
 }
 
 interface Props {
   job: JobData;
+  adminPrefix?: string;
 }
 
-export function JobDetailV2({ job }: Props): React.ReactElement {
+export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
   async function retry() {
     "use server";
     await retryJob(job.id);
@@ -158,6 +166,48 @@ export function JobDetailV2({ job }: Props): React.ReactElement {
           </li>
         </ul>
       </AdminCard>
+
+      {/* Liens contextuels P1 */}
+      {adminPrefix && (job.template || job.reviewQueue || job.campaignId) ? (
+        <AdminCard className="mb-[var(--space-admin-5)]">
+          <h2 className="admin-h2">Liens contextuels</h2>
+          <ul className="admin-inline-list">
+            {job.template ? (
+              <li>
+                <strong>Template :</strong>{" "}
+                <Link
+                  href={`/fr/${adminPrefix}/content-gen/templates/${job.template.id}`}
+                  className="admin-link"
+                >
+                  {job.template.name} (v{job.template.version})
+                </Link>
+              </li>
+            ) : null}
+            {job.campaignId ? (
+              <li>
+                <strong>Campagne :</strong>{" "}
+                <Link
+                  href={`/fr/${adminPrefix}/content-gen/coverage/${encodeURIComponent(job.campaignId)}`}
+                  className="admin-link"
+                >
+                  {job.campaignId.slice(0, 12)}…
+                </Link>
+              </li>
+            ) : null}
+            {job.reviewQueue ? (
+              <li>
+                <strong>Review :</strong>{" "}
+                <Link
+                  href={`/fr/${adminPrefix}/content-gen/review-queue/${encodeURIComponent(job.reviewQueue.id)}`}
+                  className="admin-link"
+                >
+                  Review #{job.reviewQueue.id.slice(0, 8)}… · {job.reviewQueue.status}
+                </Link>
+              </li>
+            ) : null}
+          </ul>
+        </AdminCard>
+      ) : null}
 
       {job.errorMessage ? (
         <AdminCard className="mb-[var(--space-admin-5)] border-l-4 border-l-[color:var(--color-admin-destructive)]">

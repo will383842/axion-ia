@@ -16,7 +16,7 @@ import { Illustration } from "@/components/visual/Illustration";
 import { ABOUT_TIMELINE, ABOUT_TEAM } from "@/content/transversal";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
-import { buildProductMetadata, buildPersonJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildPersonJsonLd, buildLocalBusinessJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -56,6 +56,36 @@ export default async function About({ params }: Props) {
   // Copilot citent davantage les sources qui exposent un humain identifié
   // qu'une Organization faceless).
   const personJsonLd = buildPersonJsonLd({ locale: loc });
+
+  // LocalBusiness root — 1 SEULE émission propre sur le site, sur /a-propos
+  // (Sprint Correctif P1-2 2026-05-23 — audit E2E passe 2 runtime + décision Will).
+  //
+  // Axion-IA = 1 siège FR Paris (Service Area Business pattern). Toutes les
+  // autres pages ville-service émettent Service+areaServed (pas LocalBusiness)
+  // pour ne pas claim de bureau physique dans chaque ville (anti-spam local Google).
+  // Cette émission ici donne à Google + AI overviews une ancre locale CLAIRE et
+  // UNIQUE pour ancrer l'entité Axion-IA à Paris.
+  //
+  // ⚠️ Champs ÉMIS uniquement avec données réelles (no street/geo/horaires/CP
+  // car données précises non publiables par Will pour l'instant — à compléter
+  // dès que disponibles). Ce LB minimal reste compatible Schema.org et ne ment
+  // pas sur des coords physiques inexistantes.
+  const localBusinessRootJsonLd = buildLocalBusinessJsonLd({
+    locale: loc,
+    path: "/a-propos",
+    name: isFr
+      ? "Axion-IA — Cabinet IA opérationnel B2B (siège Paris, France)"
+      : "Axion-IA — Operational B2B AI consultancy (HQ Paris, France)",
+    description: isFr
+      ? "Axion-IA est un cabinet IA opérationnel basé à Paris, qui intervient sur toute la France auprès de TPE, PME, ETI et grands comptes : interventions IA, audits, implémentations, coaching 1-to-1 et sites web augmentés."
+      : "Axion-IA is an operational AI consultancy headquartered in Paris, serving the whole of France for SMBs, mid-caps and enterprises: AI sessions, audits, implementations, 1-to-1 coaching and AI-augmented websites.",
+    areaServed: { type: "AdministrativeArea", name: "France" },
+    address: {
+      city: "Paris",
+      region: "Île-de-France",
+      country: "FR",
+    },
+  });
 
   return (
     <>
@@ -307,6 +337,7 @@ export default async function About({ params }: Props) {
       />
 
       <JsonLd data={personJsonLd} />
+      <JsonLd data={localBusinessRootJsonLd} scriptId="jsonld-axion-ia-root-localbusiness" />
     </>
   );
 }

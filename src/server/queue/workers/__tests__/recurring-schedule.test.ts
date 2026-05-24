@@ -47,6 +47,9 @@ vi.mock("@/lib/prisma", () => ({
       groupBy: () => contentGenJobGroupByMock(),
       aggregate: () => contentGenJobAggregateMock(),
     },
+    cityGenerationOrder: {
+      findMany: vi.fn().mockResolvedValue([]),
+    },
     activityLog: {
       create: (args: unknown) => activityLogCreateMock(args),
     },
@@ -124,7 +127,7 @@ beforeEach(() => {
   logActivityMock.mockResolvedValue(undefined);
   readConfigMock.mockImplementation(async (key: string) => {
     if (key === "kill_switch") return { active: false };
-    if (key === "batches") return { dailyBatchSize: 10, workersConcurrency: 3 };
+    if (key === "batches") return { workersConcurrency: 3 };
     return {};
   });
   contentGenJobCreateMock.mockResolvedValue({
@@ -198,11 +201,15 @@ describe("Recurring schedule — orchestrator tick", () => {
         totalTargetCount: 10,
         generatedCount: 0,
         typeDistribution: { landing_ville: 100 },
+        contentTypeWeights: null,
         audienceMix: { "PME:entreprise_privee": 100 },
         searchIntentMix: null,
         cityProcessingMode: "parallel",
         currentCityIndex: null,
         endDate: null,
+        dailyArticles: 10,
+        villeScopeMode: "custom_subset",
+        customVilleSlugs: [],
         recurringSchedule: "0 9 * * 1",
       },
     ]);
@@ -241,11 +248,15 @@ describe("Recurring schedule — orchestrator tick", () => {
         totalTargetCount: 10,
         generatedCount: 0,
         typeDistribution: { landing_ville: 100 },
+        contentTypeWeights: null,
         audienceMix: { "PME:entreprise_privee": 100 },
         searchIntentMix: null,
         cityProcessingMode: "parallel",
         currentCityIndex: null,
         endDate: new Date(Date.now() - 60_000), // dans le passé
+        dailyArticles: 10,
+        villeScopeMode: "custom_subset",
+        customVilleSlugs: [],
         recurringSchedule: "0 9 * * 1",
       },
     ]);

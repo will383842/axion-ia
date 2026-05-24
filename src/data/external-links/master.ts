@@ -19,6 +19,7 @@ import { LINKS_PRESS_FR } from "./press-fr";
 import { LINKS_MANUAL_ADDITIONS } from "./manual-additions";
 import { LINKS_AUTO_SEEDED } from "./auto-seeded";
 import { LINKS_AUTO_SEEDED_VERTICAL } from "./auto-seeded-vertical";
+import { LINKS_AUTO_SEEDED_REGIONS_BOOST } from "./auto-seeded-regions-boost";
 import verificationStatusRaw from "./verification-status.json";
 
 interface VerificationOverride {
@@ -61,6 +62,7 @@ export const ALL_EXTERNAL_LINKS: ExternalLink[] = [
   ...LINKS_MANUAL_ADDITIONS,
   ...LINKS_AUTO_SEEDED,
   ...LINKS_AUTO_SEEDED_VERTICAL,
+  ...LINKS_AUTO_SEEDED_REGIONS_BOOST,
 ].map((l) => {
   const override = verificationOverrides[l.id];
   if (!override) return { ...l };

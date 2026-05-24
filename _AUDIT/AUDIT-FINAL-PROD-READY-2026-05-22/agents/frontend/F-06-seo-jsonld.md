@@ -1,4 +1,5 @@
 # F-06 SEO & JSON-LD
+
 ## Score : 23/25 — 🟢
 
 ## Findings (preuves)
@@ -51,15 +52,19 @@
 14. **JSON-LD `aiGenerated`** : 11 fichiers contiennent ce flag → conforme transparence AI Act EU art. 50 (deadline 2026-08-02 memory).
 
 ## P0 bloquants prod
+
 - **Aucun**.
 
 ## P1 importants
+
 - `buildOrganizationJsonLd:408` : `addressLocality: "[Ville — France]"` **placeholder** non remplacé. Devrait être ville réelle (« Paris » ou ville Will). Signal SEO Local incomplet ; risque GSC Local Pack faible.
 - `legalName: "Axion-IA"` partout (l. 389) mais selon D7 = société française SAS/SASU + SIREN. Quand Will valide la raison sociale officielle (ex. « Axion-IA SASU » + RCS XXXX), updater via `BRAND.legalName` (`src/lib/brand.ts:16`).
 
 ## P2 polish
+
 - `LocalBusiness` JSON-LD : pas trouvé en grep dédié — pourrait être ajouté pour pages services-villes (Local Pack).
 - `BreadcrumbList` : factory existe (l. 341), à vérifier émission sur toutes les pages détail (blog, cas-concrets, ville).
 
 ## Verdict
+
 JSON-LD très bien structuré : SSOT centralisée + 4 schemas core (Organization/WebSite/Article/FAQPage) + AI Act art. 50 systématique + Person Manon + Speakable + factories par type (Service, Product, QAPage, Breadcrumb). hreflang propre EN→FR géré. Bémol : placeholder ville `[Ville — France]` exposé en prod et `legalName` pas encore raison sociale réelle (deps action Will). Score 23/25 ; -2 pour le placeholder visible et `LocalBusiness` non émis.

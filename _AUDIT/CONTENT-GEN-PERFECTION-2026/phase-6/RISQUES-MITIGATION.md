@@ -22,9 +22,11 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ### Priorite 1 — Actions immediates ou J+30
 
 #### R4 — Non-conformite AI Act art. 50 (deadline J+72 = 2026-08-02)
+
 **Severite** : CRITIQUE | **Probabilite** : FAIBLE | **Priorite** : Critique
 
 **Mitigations acquises :**
+
 - `AiContentDisclaimer` composant deploye sur blog, guides, cas-concrets, glossaire, presse, centre-aide
 - `aiGenerated: true` dans JSON-LD (tous les generators)
 - `GenerationProvenance` + `provenance-logger.ts` : trace audit complete (promptHash reel, model, cost)
@@ -32,6 +34,7 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 - Schema Prisma RESTRICT sur relations provenance (commit e573da64)
 
 **Mitigations restantes (actions recommandees) :**
+
 - Check conformite manuel avant 2026-08-02 : 5 articles prod, verification `AiContentDisclaimer` visible + JSON-LD `aiGenerated:true` en source
 - Verifier `/charte-editoriale` mention AI Act art. 50 explicite
 - DPA Anthropic (reporte J+180 — decision Will)
@@ -41,9 +44,11 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ---
 
 #### R1 — Regression HCU Google (scaled content)
+
 **Severite** : HAUTE | **Probabilite** : MOYENNE | **Priorite** : Haute
 
 **Mitigations acquises :**
+
 - Rampe progressive automatique : 30/j → 100/j → 200/j → 500/j basee sur articles publies
 - `MAX_PUBLISH_PER_DAY` DB + env var override (double securite)
 - Drip window 8h-22h CET — signal "publication humaine"
@@ -51,6 +56,7 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 - LLM-judge REJECT < 6.0 : filtre editorial pre-publication
 
 **Mitigations restantes (actions recommandees) :**
+
 - Setup GSC impressions/CTR weekly avec alerte si drop >20% sur les 15 pages strategiques
 - Diversification types de contenu a 300/j (mix blog + FAQ + comparatifs + cas-concrets)
 - Audit HCU trimestriel (premier : J+90 apres passage 100/j)
@@ -60,15 +66,18 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ---
 
 #### R7 — Drift qualite editoriale a 500/j
+
 **Severite** : MOYENNE | **Probabilite** : HAUTE | **Priorite** : Haute
 
 **Mitigations acquises :**
+
 - `brand-voice.ts` SSOT injecte dans les 8 generators
 - LLM-judge 7 dimensions, seuils : publish >= 8.5 / improve 6.0-8.4 / reject < 6.0
 - `checkAnomalies()` : alerte Telegram si chute score >15 pts sur 1h
 - Weekly report : `avgQualityScore`, `rejected`, `quarantined` par email
 
 **Mitigations restantes (actions recommandees) :**
+
 - Formaliser review humain mensuel : Will lit 5-10 articles aleatoires → process ecrit
 - Enrichir weekly report avec breakdown par type de contenu (blog vs FAQ vs guide vs landing-ville)
 - Envisager judge sur modele distinct pour articles borderline 6.0-7.0 (anti self-judge bias)
@@ -79,15 +88,18 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ---
 
 #### R2 — Derive cout LLM au-dela du budget
+
 **Severite** : MOYENNE | **Probabilite** : MOYENNE | **Priorite** : Moyenne
 
 **Mitigations acquises :**
+
 - `assertCostCapAvailable()` pre-call : alerte Telegram a 80%, desactivation + kill switch a 100%
 - `trackCost()` transactionnel atomic — zero desynchro
 - Trail d'audit `cost_cap_events` (50 derniers evenements) dashboard admin
 - `resetMonthlyCostCounters()` pour cron 1er du mois
 
 **Mitigations restantes (actions recommandees) :**
+
 - Upgrader cap mensuel Anthropic Console avant passage 100/j (D12 — action Will)
 - Ajouter budget alert Anthropic natif en complement du Telegram applicatif
 - Verifier que le cron `resetMonthlyCostCounters()` est bien schedule (confirmer dans cron-worker)
@@ -99,16 +111,19 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ### Priorite 2 — Actions J+60 a J+90
 
 #### R5 — Concurrent axionai.fr capture brand
+
 **Severite** : MOYENNE | **Probabilite** : MOYENNE | **Priorite** : Moyenne
 
 **NOTE : Wikidata = decision Will ferme (renoncement). Document comme decision assumee, hors scope action technique.**
 
 **Mitigations acquises :**
+
 - `alternateName` + `legalName` dans JSON-LD Organization (`lib/brand.ts`, `lib/seo.ts`)
 - `sameAs` vers domaine canonique `axion-ia.com`
 - Hreflang FR canonique sur pages strategiques
 
 **Mitigations restantes (actions recommandees) :**
+
 - Google Business Profile (GBP) apres adresse FR confirmee (D10)
 - Mentions presse B2B FR (ancrage entite index de connaissances Google, non Wikidata)
 - Monitoring SERP branded "Axion IA" hebdomadaire
@@ -118,15 +133,18 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ---
 
 #### R6 — Crash worker BullMQ / double publication
+
 **Severite** : MOYENNE | **Probabilite** : FAIBLE | **Priorite** : Basse
 
 **Mitigations acquises :**
+
 - `lockDuration: 120_000` dans `content-gen-worker.ts` (2 min vs defaut 30s)
 - Redis INCR atomique pour compteurs journaliers
 - Saga post-publish transactionnel (Prisma + IndexNow + Google Indexing)
 - `removeOnFail: { count: 26 }` + `removeOnComplete` configures
 
 **Mitigations restantes (actions recommandees) :**
+
 - Verifier `lockDuration` dans `content-publish-worker.ts` (non confirme a l'inspection code)
 - Test de chaos : simuler crash worker pendant publication en staging avant 200/j
 - Monitoring BullMQ jobs stalled (Bull Board ou alerte custom)
@@ -136,15 +154,18 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ---
 
 #### R8 — Dependance API Anthropic (vendor lock-in)
+
 **Severite** : MOYENNE | **Probabilite** : FAIBLE | **Priorite** : Basse
 
 **Mitigations acquises :**
+
 - Architecture multi-provider (`ProviderConfig`, `ProviderKey`) — extensible sans code change
 - Fallback chain automatique si provider desactive
 - Kill switch global gracieux (pause, pas crash)
 - `AI_MODEL_DISCLOSURE_NAME` env var (changement modele affiche sans redeploy)
 
 **Mitigations restantes (actions recommandees) :**
+
 - Ajouter OpenAI GPT-4o-mini comme provider `role=text` secondaire dans le seed DB
 - Monitoring SLA Anthropic `status.anthropic.com` → webhook Telegram
 - Test de basculement provider en staging
@@ -156,15 +177,18 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ### Priorite 3 — Actions J+180 ou vigilance continue
 
 #### R3 — Changement algo Google SGE / AI Overviews
+
 **Severite** : MOYENNE | **Probabilite** : FAIBLE | **Priorite** : Basse
 
 **Mitigations acquises :**
+
 - `FAQPage` + `QAPage` + `speakable` JSON-LD operationnels
 - `AuthorByline` EEAT signal deploye
 - `AiContentDisclaimer` transparence (signal EEAT renforce depuis 2025)
 - `isBasedOn` schema dans `seo-content-gen-factories.ts`
 
 **Mitigations restantes (actions recommandees) :**
+
 - Strategie backlinks autorite FR (Les Echos, JDN, L'Usine Digitale)
 - Suivi Citations AI Overviews
 - Veille Google algo via Search Central Blog RSS → Telegram
@@ -191,6 +215,7 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ```
 
 **Zones d'action prioritaire** :
+
 - Critique/Faible (R4) : deadline legale non negociable → traiter en premier
 - Haute/Moyenne (R1) : risque business fort → monitoring ongoing
 - Moyenne/Haute (R7) : seul risque combinant impact et probabilite eleve → process continu
@@ -200,6 +225,7 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 ## Checklist actions par horizon
 
 ### Immediat (avant J+7)
+
 - [ ] R4 : verifier `lockDuration` dans `content-publish-worker.ts`
 - [ ] R1 : configurer monitoring GSC impressions/CTR weekly
 - [ ] R5 : setup monitoring SERP branded "Axion IA"
@@ -207,21 +233,25 @@ Le pipeline est en production avec des mitigations solides sur les 8 risques ide
 - [ ] R7 : formaliser process review humain mensuel (5-10 articles)
 
 ### J+30
+
 - [ ] R2 : upgrader cap mensuel Anthropic Console avant 100/j
 - [ ] R7 : enrichir weekly report breakdown par type de contenu
 - [ ] R8 : abonnement monitoring SLA Anthropic → Telegram
 
 ### J+60 a J+72
+
 - [ ] R4 : check conformite AI Act manuel (5 articles prod, visuel + JSON-LD)
 - [ ] R4 : verifier `/charte-editoriale` mention art. 50 explicite
 - [ ] R6 : test de chaos crash worker en staging
 - [ ] R8 : ajouter provider fallback OpenAI seed DB
 
 ### J+90
+
 - [ ] R1 : audit HCU trimestriel (apres passage 100/j)
 - [ ] R7 : review prompt LLM-judge vs nouvelles guidelines HCU
 
 ### J+180
+
 - [ ] R4 : DPA Anthropic (decision Will)
 - [ ] R3 : backlinks autorite FR (3-5 mentions presse B2B)
 - [ ] R5 : GBP apres adresse FR (D10)
@@ -239,5 +269,5 @@ Les risques suivants ont ete identifies comme hors scope de ce pipeline et trait
 
 ---
 
-*Document de synthese phase 6 — AUDIT-ONLY — 2026-05-22*  
-*Source detaillee : `_AUDIT/CONTENT-GEN-PERFECTION-2026/phase-6/agents/A6-10-risques.md`*
+_Document de synthese phase 6 — AUDIT-ONLY — 2026-05-22_  
+_Source detaillee : `_AUDIT/CONTENT-GEN-PERFECTION-2026/phase-6/agents/A6-10-risques.md`_

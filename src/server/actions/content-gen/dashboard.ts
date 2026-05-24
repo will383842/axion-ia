@@ -118,6 +118,20 @@ export async function getDashboardKpis(): Promise<DashboardKpis> {
     getKillSwitch().catch(() => ({ active: false })),
   ]);
 
+  // P0 A-02 — Calcul lastIngestAgoDays : dernière entrée KB modifiée (updatedAt desc).
+  // Le stub Proxy retourne null pour findFirst → lastIngestAgoDays restera null en build.
+  const lastKbEntry = await safeCount(
+    prisma.knowledgeEntry.findFirst({
+      orderBy: { updatedAt: "desc" },
+      select: { updatedAt: true },
+    }),
+    null,
+  );
+  const lastIngestAgoDays =
+    lastKbEntry?.updatedAt != null
+      ? Math.floor((Date.now() - lastKbEntry.updatedAt.getTime()) / (1000 * 60 * 60 * 24))
+      : null;
+
   return {
     jobsRun7d: jobsRun,
     published7d: published,
@@ -127,7 +141,7 @@ export async function getDashboardKpis(): Promise<DashboardKpis> {
     avgQualityScore7d: aggQuality._avg.qualityScore ? Number(aggQuality._avg.qualityScore) : null,
     plagiarismBlocks7d: plagBlocks,
     activeQueue: { running, waiting, failed: failedActive },
-    kbHealth: { chunks: kbCount, lastIngestAgoDays: null },
+    kbHealth: { chunks: kbCount, lastIngestAgoDays },
     killSwitchActive: killState.active,
   };
 }

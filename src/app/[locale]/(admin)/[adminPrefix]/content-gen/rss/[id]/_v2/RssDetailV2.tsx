@@ -1,31 +1,24 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
+// Sprint v7 post-audit FIX (F2) — migration UI legacy `rss.ts` (ContentGenConfig
+// JSON, keyed by URL) → `rss-sources.ts` (Prisma `rss_sources`, keyed by id).
 //
 // RSS detail V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
-import { removeRssSource } from "@/server/actions/content-gen/rss";
-
-interface RssSource {
-  readonly url: string;
-  readonly name: string;
-  readonly tags: ReadonlyArray<string>;
-  readonly pollIntervalMin: number;
-  readonly autoPublish: boolean;
-  readonly enabled: boolean;
-}
+import { removeRssSourceFromDb, type RssSourceRow } from "@/server/actions/content-gen/rss-sources";
 
 interface Props {
   adminPrefix: string;
-  source: RssSource;
+  source: RssSourceRow;
 }
 
 export function RssDetailV2({ adminPrefix, source }: Props): React.ReactElement {
-  const url = source.url;
+  const id = source.id;
 
   async function remove() {
     "use server";
-    await removeRssSource(url);
+    await removeRssSourceFromDb(id);
     redirect(`/fr/${adminPrefix}/content-gen/rss`);
   }
 
@@ -48,8 +41,11 @@ export function RssDetailV2({ adminPrefix, source }: Props): React.ReactElement 
         <ul className="admin-inline-list">
           <li>Intervalle : {source.pollIntervalMin} min</li>
           <li>Tags : {source.tags.join(", ") || "—"}</li>
+          <li>Verticale : {source.verticale ?? "—"}</li>
+          <li>Langue : {source.language}</li>
           <li>Auto-publish : {source.autoPublish ? "✅" : "🚫"}</li>
           <li>Actif : {source.enabled ? "✅" : "🚫"}</li>
+          <li>Échecs consécutifs : {source.failureCount}</li>
         </ul>
       </AdminCard>
 

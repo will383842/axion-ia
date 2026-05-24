@@ -78,3 +78,6 @@ export { AdminShortcutListener } from "./AdminShortcutListener";
 export type { AdminShortcut } from "./AdminShortcutListener";
 export { AdminFormDirtyGuard } from "./AdminFormDirtyGuard";
 export { AdminUndoToast } from "./AdminUndoToast";
+
+// Sprint correctif SP-01 — error UI inline formulaires
+export { AdminFormError } from "./AdminFormError";

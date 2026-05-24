@@ -19,12 +19,12 @@ export async function generateMetadata({
     path: "/interventions/demarrage-ia-express",
     title:
       loc === "fr"
-        ? "Démarrage IA Express · formation 4 h · 390 € HT · Axion-IA"
-        : "AI Express Kickoff · 4-h training · €390 · Axion-IA",
+        ? "Démarrage IA Express · formation 4 h · 590 € HT · Axion-IA"
+        : "AI Express Kickoff · 4-h training · €590 · Axion-IA",
     description:
       loc === "fr"
-        ? "Demi-journée (4 h) pour démystifier l'IA dans votre équipe : panorama outils 2026, démos live sur cas réels de votre secteur, 2-3 prompts opérationnels testés. 390 € HT, 2 à 20 personnes, sur site."
-        : "Half-day (4 h) to demystify AI for your team: 2026 tools panorama, live demos on real cases from your sector, 2-3 operational prompts tested. €390 (excl. VAT), 2 to 20 people, on site.",
+        ? "Demi-journée (4 h) pour démystifier l'IA dans votre équipe : panorama outils 2026, démos live sur cas réels de votre secteur, 2-3 prompts opérationnels testés. 590 € HT, 2 à 20 personnes, sur site."
+        : "Half-day (4 h) to demystify AI for your team: 2026 tools panorama, live demos on real cases from your sector, 2-3 operational prompts tested. €590 (excl. VAT), 2 to 20 people, on site.",
   });
 }
 

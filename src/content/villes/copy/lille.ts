@@ -548,7 +548,7 @@ export const LILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (génération fiches produits e-commerce, tri emails clients, comptes-rendus réunions) pour les TPE et startups EuraTechnologies.",
           },
@@ -654,7 +654,7 @@ export const LILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (e-commerce product sheet generation, customer email sorting, meeting minutes) for micro-businesses and EuraTechnologies startups.",
           },

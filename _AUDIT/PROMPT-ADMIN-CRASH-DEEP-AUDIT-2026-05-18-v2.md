@@ -55,7 +55,7 @@ Confirme par "GO admin crash deep audit v2" et démarre Phase 0.
 
 ```js
 F = !!(I && I.startsWith(i.RSC_CONTENT_TYPE_HEADER));
-if (!F && !D) throw new Error("An unexpected response was received from the server.")
+if (!F && !D) throw new Error("An unexpected response was received from the server.");
 ```
 
 C'est dans `packages/next/src/client/components/router-reducer/reducers/server-action-reducer.ts:283-290`. `fetchServerAction` throw quand response d'un POST n'a NI `content-type: text/x-component`, NI header `x-action-redirect`.
@@ -113,6 +113,7 @@ GSC_OAUTH_*
 ### 1.8 Sentry configuration (à vérifier)
 
 Fichiers à inspecter :
+
 - `sentry.server.config.ts`, `sentry.edge.config.ts`, `sentry.client.config.ts` ou `instrumentation-client.ts`
 - `next.config.ts` (wrapper `withSentryConfig`)
 - DSN public probablement dans `NEXT_PUBLIC_SENTRY_DSN` env var.
@@ -124,6 +125,7 @@ L'erreur est capturée par `error.tsx` admin avec `Sentry.captureException(error
 ## 2. MISSION
 
 🟢 **Admin login fonctionnel + design V2 visible** :
+
 - Curl `/fr/admin-xfz5hk0j7hrk/login` → 200 + HTML form sans error boundary client.
 - Will login → dashboard V2 affiché.
 - 5 routes admin testées sans crash : `/`, `/login`, `/reservations`, `/users`, `/settings`.
@@ -167,6 +169,7 @@ Plafond cumulé : **8 h**.
 ### 4.1 PRIORITÉ #1 — Sentry dashboard
 
 **Avant tout autre check**, demander à Will :
+
 1. URL du projet Sentry (probablement `https://sentry.io/organizations/<org>/issues/?project=axion-ia` ou similar).
 2. **Will doit chercher les events avec tag `route:admin` + `boundary:adminPrefix-root`** dans les 24h.
 3. Pour chaque event, capturer :
@@ -218,6 +221,7 @@ curl -sI "https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login?_rsc=abc123" | head -
 ```
 
 **Output attendu si fix `c33a831` était appliqué** :
+
 - (2) → 200 (RSC prefetch parent non logged) OU 200 + `text/x-component`
 - (4) → 303 + `x-action-redirect`
 
@@ -250,14 +254,21 @@ Spawn en 1 message avec 6 Agent calls.
 ### D1 — Reproduction Playwright (PRIORITÉ HAUTE — capture réseau complète)
 
 Brief :
+
 - Installe Playwright si manquant : `pnpm add -D @playwright/test playwright` + `pnpm playwright install chromium`.
 - Crée `_AUDIT/.../d1-repro.spec.ts` :
+
   ```typescript
   import { test, expect } from "@playwright/test";
 
   test("admin login crash repro", async ({ page, context }) => {
-    const requests: Array<{ url: string; method: string; headers: Record<string,string> }> = [];
-    const responses: Array<{ url: string; status: number; headers: Record<string,string>; body?: string }> = [];
+    const requests: Array<{ url: string; method: string; headers: Record<string, string> }> = [];
+    const responses: Array<{
+      url: string;
+      status: number;
+      headers: Record<string, string>;
+      body?: string;
+    }> = [];
     const consoleMessages: Array<{ type: string; text: string }> = [];
 
     page.on("request", (req) => {
@@ -284,15 +295,21 @@ Brief :
       consoleMessages.push({ type: "pageerror", text: err.toString() });
     });
 
-    await page.goto("https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login", { waitUntil: "networkidle" });
+    await page.goto("https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login", {
+      waitUntil: "networkidle",
+    });
     await page.waitForTimeout(3000); // attendre que l'error boundary fire
 
     await page.screenshot({ path: "_AUDIT/.../d1-screenshot.png" });
 
     const fs = require("fs");
-    fs.writeFileSync("_AUDIT/.../d1-network.json", JSON.stringify({ requests, responses, consoleMessages }, null, 2));
+    fs.writeFileSync(
+      "_AUDIT/.../d1-network.json",
+      JSON.stringify({ requests, responses, consoleMessages }, null, 2),
+    );
   });
   ```
+
 - Run : `pnpm playwright test _AUDIT/.../d1-repro.spec.ts --reporter=line --timeout=30000`
 - **Identifier dans `d1-network.json` :**
   1. Toutes les responses avec status >= 300 OU content-type ≠ `text/x-component`/`text/html` quand RSC fetch.
@@ -302,12 +319,14 @@ Brief :
 LIVRABLE : `d1-rapport.md` + `d1-network.json` + `d1-screenshot.png`. Section "URL exacte coupable" avec preuve réseau.
 
 **Fallback si Playwright fail à install** :
+
 - Utiliser `puppeteer-core` + Chrome headless installé localement.
 - OU demander à Will d'ouvrir DevTools → Network → reproduire → copier HAR → coller dans le repo.
 
 ### D2 — Sentry events fetch via API (en parallèle de D1)
 
 Brief :
+
 - Si Will a fourni Sentry org slug + project slug + token (auth bearer ou public DSN):
   ```bash
   curl -H "Authorization: Bearer $SENTRY_TOKEN" \
@@ -323,6 +342,7 @@ Brief :
 ### D3 — Code source audit complet flow admin
 
 Lis EN ENTIER :
+
 - `src/proxy.ts`, `src/auth.config.ts`, `src/auth.ts`, `src/middleware.ts` (si existe)
 - `src/app/[locale]/(admin)/[adminPrefix]/{layout,page,error,loading,not-found}.tsx`
 - `src/app/[locale]/(admin)/[adminPrefix]/login/{page,LoginForm}.tsx`
@@ -333,6 +353,7 @@ Lis EN ENTIER :
 - `sentry.*.config.ts`, `instrumentation-client.ts`
 
 Identifie :
+
 1. **Diagramme exhaustif du flow** request → response → mount → crash.
 2. **CSP `connect-src`** : whitelist URLs autorisées pour fetch côté client. Si une URL n'y est pas, browser bloque silencieusement. Match avec URLs RSC fetches Next.js (`/fr/admin-*` etc.).
 3. **next.config.ts headers()** : peuvent injecter des headers qui modifient le RSC response.
@@ -345,6 +366,7 @@ Identifie :
 Hypothèse : CF ou Caddy strip/modify headers `RSC`, `Next-Action`, `Next-Router-Prefetch`, `x-action-redirect` ou content-type.
 
 Tests :
+
 ```bash
 # Direct depuis Internet (passe CF + Caddy)
 curl -sI -H "RSC: 1" https://axion-ia.com/fr/admin-xfz5hk0j7hrk
@@ -382,8 +404,9 @@ git bisect good fea4b2e
 Hypothèse : un Client Component dans `[locale]/layout.tsx` cause le crash sur admin route.
 
 Composants à tester (commenter 1 par 1, rebuild local, retest) :
+
 - `<WebVitals>` (déjà skip admin via regex)
-- `<Plausible>` 
+- `<Plausible>`
 - `<RefererTracker>`
 - `<CookieConsent>`
 - `<Clarity>`
@@ -470,11 +493,11 @@ Croiser tous les findings D1-D6. Produire `02-PLAN-TESTS.md` :
 ```markdown
 ## Hypothèses ranked
 
-| # | Hypothèse | Probabilité | Preuve (commande + output) |
-|---|---|---|---|
-| 1 | URL X retourne content-type Y | 90% | D1 Playwright network.json line N |
-| 2 | ... | 70% | D2 Sentry breadcrumb |
-| 3 | ... | 50% | D4 Cloudflare strip header |
+| #   | Hypothèse                     | Probabilité | Preuve (commande + output)        |
+| --- | ----------------------------- | ----------- | --------------------------------- |
+| 1   | URL X retourne content-type Y | 90%         | D1 Playwright network.json line N |
+| 2   | ...                           | 70%         | D2 Sentry breadcrumb              |
+| 3   | ...                           | 50%         | D4 Cloudflare strip header        |
 
 ## Plan tests (ordre)
 
@@ -488,6 +511,7 @@ T3 (10 min) — ...
 ## 8. PHASE 4 — TESTS REPRODUCTIBLES (~1 h)
 
 Pour chaque test :
+
 1. Commit + push spécifique avec message `test(admin): T<N> hypothesis description`.
 2. Wait deploy effective (`x-axion-build-sha` = HEAD).
 3. Force-recreate si Coolify cache.
@@ -504,6 +528,7 @@ Pour chaque test :
 ### T2 — Désactiver Server Actions LoginForm
 
 Modifier `LoginForm.tsx` :
+
 - Remplacer `useActionState(signInAction, ...)` par `useState` manuel.
 - Remplacer `<form action={formAction}>` par `<form onSubmit={async (e) => { e.preventDefault(); /* fetch('/api/admin/login', ...) */ }}>`.
 - Créer route handler `/api/admin/login` qui call `signInAction` internally.
@@ -554,9 +579,7 @@ authorized({ auth, request }) {
 
 ```typescript
 export const config = {
-  matcher: [
-    "/((?!api|_next|.*\\.|admin-[a-z0-9]+/login).*)",
-  ],
+  matcher: ["/((?!api|_next|.*\\.|admin-[a-z0-9]+/login).*)"],
 };
 ```
 
@@ -657,6 +680,7 @@ axionia/_AUDIT/ADMIN-CRASH-DEEP-AUDIT-2026-05-18/
 ### 13.1 Sentry-first
 
 Si l'erreur est captée par Sentry, **vérifier Sentry AVANT toute autre investigation**. Sentry a souvent :
+
 - Stack trace déminifié (sourcemaps uploadés au build)
 - Breadcrumbs réseau (URL + status code de chaque request avant le crash)
 - Browser version + OS user
@@ -667,6 +691,7 @@ Si l'erreur est captée par Sentry, **vérifier Sentry AVANT toute autre investi
 ### 13.2 Local repro > prod repro
 
 Setup local 30 min permet :
+
 - Logs server temps réel (pas besoin SSH dump container)
 - Sourcemaps actifs par défaut
 - Pas de Cloudflare/Caddy/Coolify dans le path
@@ -710,6 +735,7 @@ Max 6 simultanés (overhead synchro).
 ### 13.9 Verbose logging temporaire
 
 Si bloqué :
+
 - Ajouter `console.log` server + client + middleware.
 - Push + deploy + reproduire + collecter logs.
 - Retirer après diagnostic (commit `chore: remove debug logs`).
@@ -823,17 +849,20 @@ L'agent doit répondre par "GO admin crash deep audit v2" et démarrer Phase 0.
 ## 30. STOP & ASK (4 cas catastrophiques uniquement)
 
 ### Cas 1 — Plafonds dépassés
+
 - Temps > 8 h.
 - Tests > 10 sans succès.
 - Coût runner > $20.
 - Commits fix > 10.
 
 ### Cas 2 — Risque prod
+
 - Action mettrait prod hors-ligne > 5 min.
 - Découverte secret leaké.
 - Force push main demandé.
 
 ### Cas 3 — Dépendances majeures
+
 - Sentry token nécessaire et pas dans secrets (demander à Will).
 - URL Coolify UI nécessaire et pas connue.
 - Activation paid Coolify plan / paid runner.
@@ -841,6 +870,7 @@ L'agent doit répondre par "GO admin crash deep audit v2" et démarrer Phase 0.
 - Migration major version dependency.
 
 ### Cas 4 — Audit confirme bug upstream irréparable
+
 - Bug Next.js / Auth.js sans workaround.
 - Nécessite décision Will : migration Vercel/Render, downgrade major, rewrite auth flow.
 

@@ -8,6 +8,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -227,59 +229,69 @@ export async function retryJob(id: string): Promise<void> {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   JobIdSchema.parse(id);
-  await prisma.contentGenJob.update({
-    where: { id },
-    data: {
-      status: "queued",
-      errorMessage: null,
-      retryCount: { increment: 1 },
-      completedAt: null,
-      startedAt: null,
-    },
-  });
-  // P0-7 fix : re-enqueue BullMQ immédiatement. Sans cet appel, le job restait
-  // zombie (status=queued en DB sans worker pour le picker → bloqué).
-  await enqueueGenJob(id);
-  revalidatePath(adminBase());
-  revalidatePath(`${adminBase()}/${id}`);
-  await logActivity({
-    session,
-    action: "content-gen.job.retry",
-    targetType: "ContentGenJob",
-    targetId: id,
-  });
+  try {
+    await prisma.contentGenJob.update({
+      where: { id },
+      data: {
+        status: "queued",
+        errorMessage: null,
+        retryCount: { increment: 1 },
+        completedAt: null,
+        startedAt: null,
+      },
+    });
+    // P0-7 fix : re-enqueue BullMQ immédiatement. Sans cet appel, le job restait
+    // zombie (status=queued en DB sans worker pour le picker → bloqué).
+    await enqueueGenJob(id);
+    revalidatePath(adminBase());
+    revalidatePath(`${adminBase()}/${id}`);
+    await logActivity({
+      session,
+      action: "content-gen.job.retry",
+      targetType: "ContentGenJob",
+      targetId: id,
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "retryJob" } });
+    throw e;
+  }
 }
 
 export async function cancelJob(id: string): Promise<void> {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   JobIdSchema.parse(id);
-  await prisma.contentGenJob.update({
-    where: { id },
-    data: {
-      status: "cancelled",
-      errorMessage: "Annulé manuellement par admin",
-      completedAt: new Date(),
-    },
-  });
-  // Best-effort : si un job BullMQ est encore waiting/delayed, on le purge.
-  const queue = getContentGenQueue();
-  if (queue) {
-    try {
-      const bullJob = await queue.getJob(`gen-${id}`);
-      if (bullJob) await bullJob.remove();
-    } catch {
-      // Le job est peut-être en cours (active) — laisse le worker finir.
+  try {
+    await prisma.contentGenJob.update({
+      where: { id },
+      data: {
+        status: "cancelled",
+        errorMessage: "Annulé manuellement par admin",
+        completedAt: new Date(),
+      },
+    });
+    // Best-effort : si un job BullMQ est encore waiting/delayed, on le purge.
+    const queue = getContentGenQueue();
+    if (queue) {
+      try {
+        const bullJob = await queue.getJob(`gen-${id}`);
+        if (bullJob) await bullJob.remove();
+      } catch {
+        // Le job est peut-être en cours (active) — laisse le worker finir.
+      }
     }
+    revalidatePath(adminBase());
+    revalidatePath(`${adminBase()}/${id}`);
+    await logActivity({
+      session,
+      action: "content-gen.job.cancel",
+      targetType: "ContentGenJob",
+      targetId: id,
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "cancelJob" } });
+    throw e;
   }
-  revalidatePath(adminBase());
-  revalidatePath(`${adminBase()}/${id}`);
-  await logActivity({
-    session,
-    action: "content-gen.job.cancel",
-    targetType: "ContentGenJob",
-    targetId: id,
-  });
 }
 
 /**
@@ -297,36 +309,41 @@ export async function getFailedJobsCount(): Promise<number> {
 
 export async function retryAllFailed(): Promise<number> {
   const session = await requireAdmin();
-  const failed = await prisma.contentGenJob.findMany({
-    where: { status: "failed" },
-    select: { id: true },
-    take: 500, // cap raisonnable pour éviter saturation BullMQ d'un coup
-  });
-  if (failed.length === 0) {
+  try {
+    const failed = await prisma.contentGenJob.findMany({
+      where: { status: "failed" },
+      select: { id: true },
+      take: 500, // cap raisonnable pour éviter saturation BullMQ d'un coup
+    });
+    if (failed.length === 0) {
+      revalidatePath(adminBase());
+      return 0;
+    }
+    await prisma.contentGenJob.updateMany({
+      where: { id: { in: failed.map((f) => f.id) } },
+      data: {
+        status: "queued",
+        errorMessage: null,
+        completedAt: null,
+        startedAt: null,
+        retryCount: { increment: 1 },
+      },
+    });
+    // P0-7 fix : re-enqueue chaque job en BullMQ. updateMany seul laissait les
+    // jobs zombies (DB queued sans worker pick).
+    for (const f of failed) {
+      await enqueueGenJob(f.id);
+    }
     revalidatePath(adminBase());
-    return 0;
+    await logActivity({
+      session,
+      action: "content-gen.job.retry-bulk",
+      targetType: "ContentGenJob",
+      changes: { count: failed.length },
+    });
+    return failed.length;
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "retryAllFailed" } });
+    throw e;
   }
-  await prisma.contentGenJob.updateMany({
-    where: { id: { in: failed.map((f) => f.id) } },
-    data: {
-      status: "queued",
-      errorMessage: null,
-      completedAt: null,
-      startedAt: null,
-      retryCount: { increment: 1 },
-    },
-  });
-  // P0-7 fix : re-enqueue chaque job en BullMQ. updateMany seul laissait les
-  // jobs zombies (DB queued sans worker pick).
-  for (const f of failed) {
-    await enqueueGenJob(f.id);
-  }
-  revalidatePath(adminBase());
-  await logActivity({
-    session,
-    action: "content-gen.job.retry-bulk",
-    targetType: "ContentGenJob",
-    changes: { count: failed.length },
-  });
-  return failed.length;
 }

@@ -63,7 +63,7 @@ describe("<AnswerCard>", () => {
         sourceLabel="Doctrine Axion-IA"
         sourceUrl="https://axion-ia.com/fr/tarifs"
       >
-        À partir de <strong>490 € HT</strong> (TPE 1-19 salariés). 790 € (PME) ou 1 190 € (ETI).
+        À partir de <strong>690 € HT</strong> (TPE 1-19 salariés). 890 € (PME) ou 1 490 € (ETI).
         Inclut diagnostic, plan d&apos;action chiffré, accompagnement 30 jours.
       </AnswerCard>,
     );

@@ -6,6 +6,7 @@
 ## Sentry config
 
 ### Server (`src/sentry.server.config.ts`)
+
 - DSN via `process.env.SENTRY_DSN` `:4` (init opt-in si absent)
 - `tracesSampleRate: 0.02` prod (P6 V-04 Sprint Correctif), `1.0` dev `:15` — alignement budget audit V-04
 - `environment` via `NEXT_PUBLIC_APP_ENV` `:16`
@@ -14,10 +15,12 @@
 - `beforeSend: piiScrubBeforeSend` `:23` (scrub PII custom)
 
 ### Edge (`src/sentry.edge.config.ts`)
+
 - Cohérent server config
 - `tracesSampleRate: 0.1` prod (pas 0.02 — divergence avec server, à harmoniser)
 
 ### Client (`src/instrumentation-client.ts`)
+
 - **Lazy-load** `:30` via `initSentryLazy()` (init différée `requestIdleCallback` + 3s fallback `:84-101`)
 - `defaultIntegrations: false` `:47` + 6 integrations slim selectionnées `:48-55` (économie ~80-100 KB raw)
 - `tracesSampleRate: 0` `:56` — RUM client OFF (cohérent : RUM Web Vitals via `src/lib/observability/web-vitals.ts` côté maison)
@@ -29,6 +32,7 @@
 ## Helper sentry-worker
 
 `src/server/queue/lib/sentry-worker.ts:83` `captureWorkerError(workerName, queueName, job, err)` :
+
 - Tags `worker`, `queue`, `jobId`, `jobName`
 - Extras PII-safe via `sanitizeJobData(job.data)` `:110`
 - **Fingerprint déterministe** `[workerName, errName, errMsg.slice(0,100)]` `:116` → groupage dashboard
@@ -41,6 +45,7 @@ Couverture : 12/33 workers (cf. B-01 finding P1 #1).
 Champ DB `ContentGenJob.correlationId` (P6 acquis) — UUID v4 généré par orchestrator.
 
 Workers loggant correlationId :
+
 - `content-orchestrator-worker.ts:140` `correlationId = crypto.randomUUID()`
 - `content-gen-worker.ts:177-178` `console.log("[gen] correlationId=", ...)`
 - `content-publish-worker.ts:317-318` `console.log("[publish] correlationId=", ...)`
@@ -52,6 +57,7 @@ Test : `src/server/queue/workers/__tests__/correlation-id.test.ts` présent ✅.
 ## tokensInput non-hardcodé 0
 
 **Mémoire P2 P1-4 mentionne `tokensInput non-hardcodé 0`** ; vérification :
+
 - `content-gen-worker.ts:538` : `tokensInput: 0, // détaillé via CostLedger` — **HARDCODÉ 0** dans ContentGenJob.update
 - CostLedger reçoit bien la vraie valeur via `trackCost()` (`cost-tracker.ts:258`)
 
@@ -74,14 +80,17 @@ Cas problématiques (debug oublié) : aucun trouvé dans l'échantillon parcouru
 ## Findings
 
 ### P0
+
 Aucun.
 
 ### P1
+
 1. **`tokensInput` hardcodé 0 sur ContentGenJob** (`content-gen-worker.ts:538`) — l'audit P2 P1-4 acquis est partiel : la donnée vit dans CostLedger mais l'UI/queries Job direct ne le voient pas. À affecter `output.totalTokens * 0.7` ou similaire si exactement aligné avec provenance-logger `:484`.
 2. **Edge tracesSampleRate divergent 0.1 vs server 0.02** (`sentry.edge.config.ts:9`) — incohérence budget Sentry.
-3. **Sentry coverage workers 12/33** (cf. B-01) — gap critique sur fact-check, image-bank-*, monitoring.
+3. **Sentry coverage workers 12/33** (cf. B-01) — gap critique sur fact-check, image-bank-\*, monitoring.
 
 ### P2
+
 4. **Pas de logger structuré dédié** (pino/winston) ; mix `console.log` + `logStep()` DB. Acceptable mais Coolify logs/Loki ingestion serait plus propre.
 5. **3 s gap d'erreurs client pré-init Sentry** documenté trade-off — petit (~5 % nav initiale impactée).
 6. **`SENTRY_DSN` non-throw si absent** (`sentry.server.config.ts:6` `if (dsn)`) — OK mais env prod doit valoir vrai DSN, sinon obs silencieuse.

@@ -11,35 +11,35 @@
 
 ### 1.1 Coût de génération par article
 
-| Composant | Coût unitaire | Base de calcul |
-|-----------|--------------|----------------|
-| Claude Sonnet 4.6 | $0.085 (mid-range $0.07–$0.10) | ~3K tokens input + ~2K tokens output |
-| OpenAI text-embedding-3-large | $0.00013 | 1536 dim / vecteur |
-| **Total par article** | **$0.08513 ≈ $0.085** | — |
+| Composant                     | Coût unitaire                  | Base de calcul                       |
+| ----------------------------- | ------------------------------ | ------------------------------------ |
+| Claude Sonnet 4.6             | $0.085 (mid-range $0.07–$0.10) | ~3K tokens input + ~2K tokens output |
+| OpenAI text-embedding-3-large | $0.00013                       | 1536 dim / vecteur                   |
+| **Total par article**         | **$0.08513 ≈ $0.085**          | —                                    |
 
 > Note : on retiendra $0.10/article (arrondi conservateur) pour les calculs de scénario, conformément aux données d'entrée.
 
 ### 1.2 Calendrier de montée en charge (Scénario BASE)
 
-| Période | Label | Rythme | Jours | Articles |
-|---------|-------|--------|-------|----------|
-| J+0 → J+90 | Q3 2026 | 30/j | 90 | 2 700 |
-| J+91 → J+180 | Q4 2026 | 100/j | 90 | 9 000 |
-| J+181 → J+270 | Q1 2027 | 300/j | 90 | 27 000 |
-| J+271 → J+365 | Q2 2027 | 500/j | 95 | 47 500 |
-| **Total** | — | — | **365** | **86 200** |
+| Période       | Label   | Rythme | Jours   | Articles   |
+| ------------- | ------- | ------ | ------- | ---------- |
+| J+0 → J+90    | Q3 2026 | 30/j   | 90      | 2 700      |
+| J+91 → J+180  | Q4 2026 | 100/j  | 90      | 9 000      |
+| J+181 → J+270 | Q1 2027 | 300/j  | 90      | 27 000     |
+| J+271 → J+365 | Q2 2027 | 500/j  | 95      | 47 500     |
+| **Total**     | —       | —      | **365** | **86 200** |
 
 > Correction par rapport aux données d'entrée : Q2 2027 = 95j (365 − 90 − 90 − 90) × 500 = 47 500, non 45 000. Les tableaux ci-dessous utilisent les deux bases pour comparaison.
 
 ### 1.3 Coûts fixes mensuels
 
-| Poste | $/mois | Notes |
-|-------|--------|-------|
-| Hetzner VPS CPX42 | $50 | Existant |
-| GHCR | $0 | Public repo |
-| Cloudflare | $0 | Plan Free |
-| Ahrefs (optionnel) | $99 | Si D10 = activé |
-| Adresse FR Sedomicilier (si D10=A) | $33 | ≈ 30 €/mois |
+| Poste                              | $/mois | Notes           |
+| ---------------------------------- | ------ | --------------- |
+| Hetzner VPS CPX42                  | $50    | Existant        |
+| GHCR                               | $0     | Public repo     |
+| Cloudflare                         | $0     | Plan Free       |
+| Ahrefs (optionnel)                 | $99    | Si D10 = activé |
+| Adresse FR Sedomicilier (si D10=A) | $33    | ≈ 30 €/mois     |
 
 ### 1.4 Coût développement (sprints autopilot)
 
@@ -53,42 +53,42 @@
 
 ### 2a. Sans Ahrefs, sans adresse FR
 
-| Poste | Q3 2026 | Q4 2026 | Q1 2027 | Q2 2027 | Total 12 m |
-|-------|---------|---------|---------|---------|------------|
-| LLM génération (Claude) | $229.50 | $765.00 | $2 295.00 | $4 037.50 | $7 327.00 |
-| LLM embeddings (OpenAI) | $0.35 | $1.17 | $3.51 | $6.18 | $11.21 |
-| LLM dev sprints | $24 | $24 | $24 | $26 | $98 |
-| Infra Hetzner | $150 | $150 | $150 | $158 | $608 |
-| Adresse FR | — | — | — | — | — |
-| Ahrefs | — | — | — | — | — |
-| **TOTAL** | **$403.85** | **$940.17** | **$2 472.51** | **$4 227.68** | **$8 044.21** |
+| Poste                   | Q3 2026     | Q4 2026     | Q1 2027       | Q2 2027       | Total 12 m    |
+| ----------------------- | ----------- | ----------- | ------------- | ------------- | ------------- |
+| LLM génération (Claude) | $229.50     | $765.00     | $2 295.00     | $4 037.50     | $7 327.00     |
+| LLM embeddings (OpenAI) | $0.35       | $1.17       | $3.51         | $6.18         | $11.21        |
+| LLM dev sprints         | $24         | $24         | $24           | $26           | $98           |
+| Infra Hetzner           | $150        | $150        | $150          | $158          | $608          |
+| Adresse FR              | —           | —           | —             | —             | —             |
+| Ahrefs                  | —           | —           | —             | —             | —             |
+| **TOTAL**               | **$403.85** | **$940.17** | **$2 472.51** | **$4 227.68** | **$8 044.21** |
 
 > Calcul LLM génération : articles × $0.085 (coût réel) + embeddings × $0.00013  
 > Pour lisibilité, la ligne "génération" inclut Claude + embeddings agrégés.
 
 ### 2b. Avec adresse FR Sedomicilier (30 €/mois ≈ $33)
 
-| Poste | Q3 2026 | Q4 2026 | Q1 2027 | Q2 2027 | Total 12 m |
-|-------|---------|---------|---------|---------|------------|
-| LLM génération (Claude) | $229.50 | $765.00 | $2 295.00 | $4 037.50 | $7 327.00 |
-| LLM embeddings (OpenAI) | $0.35 | $1.17 | $3.51 | $6.18 | $11.21 |
-| LLM dev sprints | $24 | $24 | $24 | $26 | $98 |
-| Infra Hetzner | $150 | $150 | $150 | $158 | $608 |
-| Adresse FR (D10=A) | $99 | $99 | $99 | $104 | $401 |
-| Ahrefs | — | — | — | — | — |
-| **TOTAL** | **$502.85** | **$1 039.17** | **$2 571.51** | **$4 331.68** | **$8 445.21** |
+| Poste                   | Q3 2026     | Q4 2026       | Q1 2027       | Q2 2027       | Total 12 m    |
+| ----------------------- | ----------- | ------------- | ------------- | ------------- | ------------- |
+| LLM génération (Claude) | $229.50     | $765.00       | $2 295.00     | $4 037.50     | $7 327.00     |
+| LLM embeddings (OpenAI) | $0.35       | $1.17         | $3.51         | $6.18         | $11.21        |
+| LLM dev sprints         | $24         | $24           | $24           | $26           | $98           |
+| Infra Hetzner           | $150        | $150          | $150          | $158          | $608          |
+| Adresse FR (D10=A)      | $99         | $99           | $99           | $104          | $401          |
+| Ahrefs                  | —           | —             | —             | —             | —             |
+| **TOTAL**               | **$502.85** | **$1 039.17** | **$2 571.51** | **$4 331.68** | **$8 445.21** |
 
 ### 2c. Avec adresse FR + Ahrefs
 
-| Poste | Q3 2026 | Q4 2026 | Q1 2027 | Q2 2027 | Total 12 m |
-|-------|---------|---------|---------|---------|------------|
-| LLM génération (Claude) | $229.50 | $765.00 | $2 295.00 | $4 037.50 | $7 327.00 |
-| LLM embeddings (OpenAI) | $0.35 | $1.17 | $3.51 | $6.18 | $11.21 |
-| LLM dev sprints | $24 | $24 | $24 | $26 | $98 |
-| Infra Hetzner | $150 | $150 | $150 | $158 | $608 |
-| Adresse FR (D10=A) | $99 | $99 | $99 | $104 | $401 |
-| Ahrefs | $297 | $297 | $297 | $313 | $1 204 |
-| **TOTAL** | **$799.85** | **$1 336.17** | **$2 868.51** | **$4 644.68** | **$9 649.21** |
+| Poste                   | Q3 2026     | Q4 2026       | Q1 2027       | Q2 2027       | Total 12 m    |
+| ----------------------- | ----------- | ------------- | ------------- | ------------- | ------------- |
+| LLM génération (Claude) | $229.50     | $765.00       | $2 295.00     | $4 037.50     | $7 327.00     |
+| LLM embeddings (OpenAI) | $0.35       | $1.17         | $3.51         | $6.18         | $11.21        |
+| LLM dev sprints         | $24         | $24           | $24           | $26           | $98           |
+| Infra Hetzner           | $150        | $150          | $150          | $158          | $608          |
+| Adresse FR (D10=A)      | $99         | $99           | $99           | $104          | $401          |
+| Ahrefs                  | $297        | $297          | $297          | $313          | $1 204        |
+| **TOTAL**               | **$799.85** | **$1 336.17** | **$2 868.51** | **$4 644.68** | **$9 649.21** |
 
 ---
 
@@ -130,11 +130,11 @@
 
 ## 4. Analyse de sensibilité — coût par article
 
-| Hypothèse LLM | Scénario LOW | Scénario BASE | Scénario HIGH |
-|---------------|-------------|---------------|---------------|
-| $0.07/article (optimiste) | $1 462 | $7 137 | $11 428 |
-| $0.085/article (réaliste) | $1 628 | $8 044 | $12 641 |
-| $0.10/article (conservateur) | $1 895 | $9 270 | $14 500 |
+| Hypothèse LLM                | Scénario LOW | Scénario BASE | Scénario HIGH |
+| ---------------------------- | ------------ | ------------- | ------------- |
+| $0.07/article (optimiste)    | $1 462       | $7 137        | $11 428       |
+| $0.085/article (réaliste)    | $1 628       | $8 044        | $12 641       |
+| $0.10/article (conservateur) | $1 895       | $9 270        | $14 500       |
 
 > Les données d'entrée utilisent $0.10 (conservateur). L'écart optimiste/conservateur représente 30%.
 
@@ -144,33 +144,33 @@
 
 ### 5.1 Hypothèses de conversion
 
-| Métrique | Valeur |
-|----------|--------|
-| Panier moyen formation B2B | 2 000 € |
-| Panier moyen audit/implémentation | 5 000 € |
-| Taux de conversion lead → client | 15% |
+| Métrique                                  | Valeur        |
+| ----------------------------------------- | ------------- |
+| Panier moyen formation B2B                | 2 000 €       |
+| Panier moyen audit/implémentation         | 5 000 €       |
+| Taux de conversion lead → client          | 15%           |
 | Délai SEO avant premiers leads organiques | J+90 (3 mois) |
 
 ### 5.2 Scenario ROI 1 — 1 lead/mois à partir de J+90
 
-| Mois | Cumul revenus | Cumul coûts (BASE, sans options) | Solde |
-|------|--------------|----------------------------------|-------|
-| M1–M3 (Q3 2026) | $0 | $403 | −$403 |
-| M4 (1er lead → 15% conv = 0.15 client) | $540 | $717 | −$177 |
-| M5 | $1 080 | $1 030 | +$50 |
-| **Break-even** | **M5** | — | **+$50** |
+| Mois                                   | Cumul revenus | Cumul coûts (BASE, sans options) | Solde    |
+| -------------------------------------- | ------------- | -------------------------------- | -------- |
+| M1–M3 (Q3 2026)                        | $0            | $403                             | −$403    |
+| M4 (1er lead → 15% conv = 0.15 client) | $540          | $717                             | −$177    |
+| M5                                     | $1 080        | $1 030                           | +$50     |
+| **Break-even**                         | **M5**        | —                                | **+$50** |
 
 > Avec 1 lead/mois et 15% conv : ~0.15 client/mois × 2 000 € × 0.8 ($/€ ≈ $1.10) = ~$270/mois revenus.  
 > Break-even atteint au **mois 5** (J+120 environ).
 
 ### 5.3 Scenario ROI 2 — 10 leads/mois à partir de J+180
 
-| Période | Leads/mois | Clients/mois (15%) | Revenus/mois | Revenus cumulés |
-|---------|-----------|-------------------|--------------|-----------------|
-| J+0 → J+180 | 0–1 | 0–0.15 | $0–$270 | ~$540 |
-| J+181 → J+270 (Q1 2027) | 10 | 1.5 | $2 727 | ~$8 181 |
-| J+271 → J+365 (Q2 2027) | 10 | 1.5 | $2 727 | ~$10 908 |
-| **Total revenus 12 mois** | — | — | — | **~$19 629** |
+| Période                   | Leads/mois | Clients/mois (15%) | Revenus/mois | Revenus cumulés |
+| ------------------------- | ---------- | ------------------ | ------------ | --------------- |
+| J+0 → J+180               | 0–1        | 0–0.15             | $0–$270      | ~$540           |
+| J+181 → J+270 (Q1 2027)   | 10         | 1.5                | $2 727       | ~$8 181         |
+| J+271 → J+365 (Q2 2027)   | 10         | 1.5                | $2 727       | ~$10 908        |
+| **Total revenus 12 mois** | —          | —                  | —            | **~$19 629**    |
 
 - **Coûts totaux 12m (BASE sans options)** : $8 044
 - **Marge nette 12 mois** : ~$11 585 (ROI = +144%)
@@ -224,4 +224,4 @@ Si 30% des leads convertissent sur audit/implémentation à $5 000 :
 
 ---
 
-*Fichier généré par l'agent A6-09 le 2026-05-22 — AUDIT-ONLY, aucune modification de code.*
+_Fichier généré par l'agent A6-09 le 2026-05-22 — AUDIT-ONLY, aucune modification de code._

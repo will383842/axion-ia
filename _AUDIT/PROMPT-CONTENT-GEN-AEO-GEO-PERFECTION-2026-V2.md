@@ -11,6 +11,7 @@
 ## 🚨 PROTOCOLE D'EXÉCUTION — LIRE EN PREMIER
 
 ### Règle d'or absolue
+
 **NE JAMAIS POSER DE QUESTION À WILL.** Toutes les décisions sont déjà prises dans ce document. Si une ambiguïté apparaît, suivre cet ordre de résolution :
 
 1. **Chercher le pattern existant** dans le code (`grep -rn "<feature>" src/`)
@@ -19,6 +20,7 @@
 4. **Documenter le choix dans le verdict final** (pas en ASK)
 
 ### Quand s'arrêter (HARD STOP uniquement)
+
 - 🛑 Migration Prisma conflictuelle avec une PR Manon en parallèle → push impossible
 - 🛑 Build TypeScript échoue après 3 tentatives de fix
 - 🛑 Vitest échoue avec > 10 tests cassés (= cassure structurelle)
@@ -27,6 +29,7 @@
 Tout autre obstacle → résoudre seul + continuer.
 
 ### Gestion stash multi-conversations (CRITIQUE)
+
 D'autres sessions Claude/Manon tournent en parallèle. Avant CHAQUE commit :
 
 ```bash
@@ -46,9 +49,11 @@ git stash list  # cherche "On main: lint-staged auto..."
 ```
 
 ### Progress tracking obligatoire
+
 **AU DÉMARRAGE**, créer un TaskCreate avec les 10 phases en tâches. Updater au fur et à mesure (in_progress → completed).
 
 ### Resume capability (si interrompu)
+
 Si la session redémarre à mi-parcours :
 
 ```bash
@@ -66,6 +71,7 @@ git log --oneline main --grep="aeo-geo\|content-gen-v2" -20
 ## 📂 CONTEXTE — État du système au lancement (2026-05-22)
 
 ### Déjà livré (commit `5d8e8b6f`)
+
 - ✅ Wizard 5 étapes (vertical → géo → cibles → keywords → revue)
 - ✅ 5 personas éditoriales (Manon × 3 + éditorial neutre + expert analytique)
 - ✅ Comparison sans tableaux (hard gate inversé)
@@ -76,6 +82,7 @@ git log --oneline main --grep="aeo-geo\|content-gen-v2" -20
 - ✅ blog/loader.ts : photographerName/photographerUrl
 
 ### À livrer (ce sprint)
+
 - ⏳ Câblage keywords wizard → ContentGenJob (P0 URGENT)
 - ⏳ HowTo JSON-LD sur guide_pilier
 - ⏳ Citations sources DANS le body (≥ 2 par article)
@@ -150,12 +157,15 @@ grep -n "photographerName\|photographerUrl" prisma/schema.prisma | head -5
 **Pourquoi prioritaire** : Sans ça, les keywords du wizard sont **perdus** (le wizard envoie `primaryKeywords` dans FormData mais `createCampaign()` ne le lit pas → aucun job créé avec le keyword spécifique).
 
 ### Dépendances
+
 Aucune (phase indépendante)
 
 ### Skip-if
+
 Cette phase n'est PAS skippable — c'est le P0.
 
 ### Fichiers à toucher
+
 - `prisma/schema.prisma` (champ `primaryKeywords String[]` sur CoverageCampaign)
 - `prisma/migrations/YYYYMMDDHHMMSS_add_coverage_campaign_primary_keywords/migration.sql`
 - `src/server/actions/content-gen/coverage.ts` (lire formData → DB)
@@ -176,6 +186,7 @@ ALTER TABLE "coverage_campaigns"
 ```
 
 Dans schema.prisma sur `CoverageCampaign` :
+
 ```prisma
 primaryKeywords          String[]       @default([]) @map("primary_keywords")
 ```
@@ -187,6 +198,7 @@ Dans `src/server/actions/content-gen/coverage.ts`, ajouter `primaryKeywords?: Re
 #### 1.3 Worker orchestrator
 
 Logique à implémenter :
+
 ```typescript
 // Pseudo
 const keywords = campaign.primaryKeywords;
@@ -215,6 +227,7 @@ for (const [contentType, pct] of types) {
 #### 1.4 CoverageNewV2.tsx — lire formData
 
 Dans la server action `create(formData)` :
+
 ```typescript
 const primaryKeywords = String(formData.get("primaryKeywords") ?? "")
   .split("\n")
@@ -241,6 +254,7 @@ pnpm lint
 ```
 
 ### Commit
+
 ```
 feat(content-gen): câblage keywords wizard → ContentGenJob (Phase 1 AEO/GEO v2)
 - CoverageCampaign.primaryKeywords (String[] @default([]))
@@ -256,12 +270,15 @@ feat(content-gen): câblage keywords wizard → ContentGenJob (Phase 1 AEO/GEO v
 **Pourquoi** : Google cite massivement les pages HowTo schema en AI Overview pour les requêtes "comment".
 
 ### Dépendances
+
 Aucune
 
 ### Skip-if
+
 Le generator `guide_pilier` n'existe pas (vérifier `ls src/server/content-gen/generators/guide-pilier.ts`)
 
 ### Fichiers à toucher
+
 - `src/lib/seo-content-gen-factories.ts` (ajouter `buildHowToJsonLd`)
 - `src/server/content-gen/generators/guide-pilier.ts` (détection + émission)
 - `src/server/content-gen/generators/types.ts` (`howToJsonLd?: Record<string,unknown>` sur GeneratorOutput)
@@ -314,9 +331,7 @@ function isHowToContent(primaryKeyword: string | undefined, bodyHtml: string): b
   if (/\b(comment|méthode|étapes?|guide pour|tutoriel|tuto)\b/i.test(kw)) return true;
   // Détection structurelle : ≥ 3 sections H2 numérotées (1., 2., 3. ou Étape 1, Étape 2...)
   const h2matches = bodyHtml.match(/<h2[^>]*>([^<]+)<\/h2>/gi) ?? [];
-  const numbered = h2matches.filter((h) =>
-    /(^|\s)(\d+[.)]|étape\s+\d+|step\s+\d+)/i.test(h),
-  );
+  const numbered = h2matches.filter((h) => /(^|\s)(\d+[.)]|étape\s+\d+|step\s+\d+)/i.test(h));
   return numbered.length >= 3;
 }
 
@@ -326,7 +341,11 @@ function extractHowToSteps(bodyHtml: string): ReadonlyArray<{ name: string; text
   let m;
   while ((m = regex.exec(bodyHtml)) !== null) {
     const name = m[1].replace(/<[^>]+>/g, "").trim();
-    const text = m[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 500);
+    const text = m[2]
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 500);
     if (name && text) sections.push({ name, text });
   }
   return sections;
@@ -334,6 +353,7 @@ function extractHowToSteps(bodyHtml: string): ReadonlyArray<{ name: string; text
 ```
 
 Dans le generator, après assembly :
+
 ```typescript
 let howToJsonLd: Record<string, unknown> | undefined;
 if (isHowToContent(input.primaryKeyword, enrichedBody)) {
@@ -356,6 +376,7 @@ return {
 #### 2.3 GeneratorOutput
 
 Ajouter dans `src/server/content-gen/generators/types.ts` :
+
 ```typescript
 readonly howToJsonLd?: Record<string, unknown>;
 ```
@@ -365,11 +386,13 @@ readonly howToJsonLd?: Record<string, unknown>;
 Lire la guide depuis DB (KnowledgeEntry probablement), si `howToJsonLd` présent → `<JsonLd data={howToJsonLd} />`.
 
 ### Acceptance tests
+
 - [ ] Schema.org validator passe : https://validator.schema.org/
 - [ ] Vitest : `buildHowToJsonLd` test unit
 - [ ] grep : `grep -rn "buildHowToJsonLd" src/server/content-gen/`
 
 ### Commit
+
 ```
 feat(content-gen): HowTo JSON-LD sur guide_pilier (Phase 2 AEO/GEO v2)
 - buildHowToJsonLd factory
@@ -385,6 +408,7 @@ feat(content-gen): HowTo JSON-LD sur guide_pilier (Phase 2 AEO/GEO v2)
 **Pourquoi** : Les IA citent les contenus qui citent eux-mêmes des sources crédibles (INSEE, BPI France, AI Act, CNIL, ANSSI, ISO 42001).
 
 ### Fichiers à toucher
+
 - `src/server/content-gen/quality/source-injection.ts` (NOUVEAU)
 - `src/server/content-gen/generators/blog-article.ts`
 - `src/server/content-gen/generators/blog-from-keywords.ts`
@@ -410,14 +434,54 @@ export interface CanonicalSource {
 }
 
 export const CANONICAL_SOURCES: ReadonlyArray<CanonicalSource> = [
-  { key: "INSEE", organization: "INSEE", url: "https://www.insee.fr", contextHint: "statistiques entreprises France" },
-  { key: "BPI", organization: "BPI France", url: "https://www.bpifrance.fr", contextHint: "financement innovation PME" },
-  { key: "CNIL", organization: "CNIL", url: "https://www.cnil.fr", contextHint: "données personnelles RGPD" },
-  { key: "AI_ACT", organization: "Règlement européen IA", url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj", contextHint: "conformité AI Act" },
-  { key: "ANSSI", organization: "ANSSI", url: "https://www.ssi.gouv.fr", contextHint: "cybersécurité systèmes IA" },
-  { key: "ISO_42001", organization: "ISO/IEC 42001", url: "https://www.iso.org/standard/81230.html", contextHint: "norme gouvernance IA" },
-  { key: "DARES", organization: "DARES", url: "https://dares.travail-emploi.gouv.fr", contextHint: "emploi et compétences" },
-  { key: "FRANCE_NUM", organization: "France Num", url: "https://www.francenum.gouv.fr", contextHint: "transformation numérique TPE/PME" },
+  {
+    key: "INSEE",
+    organization: "INSEE",
+    url: "https://www.insee.fr",
+    contextHint: "statistiques entreprises France",
+  },
+  {
+    key: "BPI",
+    organization: "BPI France",
+    url: "https://www.bpifrance.fr",
+    contextHint: "financement innovation PME",
+  },
+  {
+    key: "CNIL",
+    organization: "CNIL",
+    url: "https://www.cnil.fr",
+    contextHint: "données personnelles RGPD",
+  },
+  {
+    key: "AI_ACT",
+    organization: "Règlement européen IA",
+    url: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+    contextHint: "conformité AI Act",
+  },
+  {
+    key: "ANSSI",
+    organization: "ANSSI",
+    url: "https://www.ssi.gouv.fr",
+    contextHint: "cybersécurité systèmes IA",
+  },
+  {
+    key: "ISO_42001",
+    organization: "ISO/IEC 42001",
+    url: "https://www.iso.org/standard/81230.html",
+    contextHint: "norme gouvernance IA",
+  },
+  {
+    key: "DARES",
+    organization: "DARES",
+    url: "https://dares.travail-emploi.gouv.fr",
+    contextHint: "emploi et compétences",
+  },
+  {
+    key: "FRANCE_NUM",
+    organization: "France Num",
+    url: "https://www.francenum.gouv.fr",
+    contextHint: "transformation numérique TPE/PME",
+  },
 ];
 
 export function countCanonicalSourcesInBody(bodyHtml: string): number {
@@ -440,6 +504,7 @@ export { MIN_CITATIONS };
 #### 3.2 Update SYSTEM_PROMPT chaque generator
 
 Pattern à appliquer aux 9 generators : ajouter dans le prompt
+
 ```typescript
 import { buildSourceInjectionPromptSection } from "../quality/source-injection";
 
@@ -453,6 +518,7 @@ ${getBrandVoiceForContentType("blog_from_keywords")}`;
 #### 3.3 Quality gate dans quality loop
 
 Pattern à appliquer aux 9 generators dans leur boucle qualité :
+
 ```typescript
 import { countCanonicalSourcesInBody, MIN_CITATIONS } from "../quality/source-injection";
 
@@ -466,10 +532,12 @@ if (citationCount < MIN_CITATIONS) {
 ```
 
 ### Acceptance tests
+
 - [ ] Vitest couvre `countCanonicalSourcesInBody`
 - [ ] grep : `grep -rn "countCanonicalSourcesInBody" src/server/content-gen/generators/ | wc -l` ≥ 9
 
 ### Commit
+
 ```
 feat(content-gen): citations sources canoniques DANS body (Phase 3 AEO/GEO v2)
 - source-injection.ts : 8 sources canoniques (INSEE, BPI, CNIL, AI Act, ANSSI, ISO 42001, DARES, France Num)
@@ -482,6 +550,7 @@ feat(content-gen): citations sources canoniques DANS body (Phase 3 AEO/GEO v2)
 ## PHASE 4 — Audience-specific prompts TPE/PME/ETI/GE 🟠 P1 (1h30)
 
 ### Fichiers
+
 - `src/server/content-gen/brand/audience-voice.ts` (NOUVEAU)
 - 9 generators (injection `audienceContext` dans userPrompt)
 
@@ -537,6 +606,7 @@ export function getAudienceContext(audienceSize: string | null | undefined): str
 ### Injection dans chaque generator (9 fichiers)
 
 Pattern :
+
 ```typescript
 import { getAudienceContext } from "../brand/audience-voice";
 
@@ -549,9 +619,11 @@ ${audienceContext}
 ```
 
 ### Acceptance
+
 - [ ] grep : `grep -rn "getAudienceContext" src/server/content-gen/generators/ | wc -l` ≥ 9
 
 ### Commit
+
 ```
 feat(content-gen): audience-specific prompts TPE/PME/ETI/GE (Phase 4 AEO/GEO v2)
 - audience-voice.ts : 4 contextes éditoriaux (budget, organisation, ROI, vocabulaire, sources)
@@ -564,6 +636,7 @@ feat(content-gen): audience-specific prompts TPE/PME/ETI/GE (Phase 4 AEO/GEO v2)
 ## PHASE 5 — Keywords par vertical × content_type 🟠 P1 (1h30)
 
 ### Fichier
+
 - `src/server/content-gen/keywords/keyword-catalog.ts` (REFACTOR)
 - `src/components/admin/content-gen/CoverageWizardClient.tsx` (utilise nouveau helper)
 
@@ -609,15 +682,8 @@ export const KEYWORD_CATALOG_V2: Record<
       "qui peut faire un audit IA",
       "quels livrables audit IA",
     ],
-    faq_standalone: [
-      "FAQ audit IA PME française",
-      "questions fréquentes audit conformité IA",
-    ],
-    landing_ville: [
-      "cabinet audit IA",
-      "audit IA local PME",
-      "expert audit IA proximité",
-    ],
+    faq_standalone: ["FAQ audit IA PME française", "questions fréquentes audit conformité IA"],
+    landing_ville: ["cabinet audit IA", "audit IA local PME", "expert audit IA proximité"],
     comparison: [
       "audit IA vs diagnostic IA",
       "audit interne vs cabinet externe IA",
@@ -645,15 +711,8 @@ export const KEYWORD_CATALOG_V2: Record<
       "formation IA finançable OPCO",
     ],
     faq_standalone: ["FAQ formation IA entreprise"],
-    landing_ville: [
-      "formation IA",
-      "formateur IA PME",
-      "atelier IA pratique",
-    ],
-    comparison: [
-      "formation IA en ligne vs présentiel",
-      "formation IA OPCO vs autofinancée",
-    ],
+    landing_ville: ["formation IA", "formateur IA PME", "atelier IA pratique"],
+    comparison: ["formation IA en ligne vs présentiel", "formation IA OPCO vs autofinancée"],
   },
   implementations: {
     blog_from_keywords: [
@@ -676,11 +735,7 @@ export const KEYWORD_CATALOG_V2: Record<
       "comment choisir une solution IA",
     ],
     faq_standalone: ["FAQ implémentation IA entreprise"],
-    landing_ville: [
-      "implémentation IA",
-      "déploiement IA local",
-      "intégrateur IA",
-    ],
+    landing_ville: ["implémentation IA", "déploiement IA local", "intégrateur IA"],
     comparison: [
       "IA sur-mesure vs SaaS prêt-à-l'emploi",
       "ChatGPT vs Mistral entreprise",
@@ -706,10 +761,7 @@ export const KEYWORD_CATALOG_V2: Record<
     ],
     faq_standalone: ["FAQ coaching IA dirigeant"],
     landing_ville: ["coach IA", "mentor IA PME", "advisory IA"],
-    comparison: [
-      "coaching IA vs formation IA",
-      "consultant IA salarié vs externe",
-    ],
+    comparison: ["coaching IA vs formation IA", "consultant IA salarié vs externe"],
   },
   sites_web_augmentes: {
     blog_from_keywords: [
@@ -729,15 +781,8 @@ export const KEYWORD_CATALOG_V2: Record<
       "quel chatbot pour PME",
     ],
     faq_standalone: ["FAQ site web IA PME"],
-    landing_ville: [
-      "site web IA",
-      "développeur site IA",
-      "agence site IA augmenté",
-    ],
-    comparison: [
-      "chatbot dialogflow vs claude",
-      "site web statique vs IA conversationnelle",
-    ],
+    landing_ville: ["site web IA", "développeur site IA", "agence site IA augmenté"],
+    comparison: ["chatbot dialogflow vs claude", "site web statique vs IA conversationnelle"],
   },
 };
 
@@ -762,10 +807,12 @@ export function getKeywordsForVerticalAndType(
 Adapter pour utiliser `getAllKeywordsForVertical(vertical)` au lieu de `KEYWORD_CATALOG[vertical]`.
 
 ### Acceptance
+
 - [ ] grep : `getKeywordsForVerticalAndType` exporté
 - [ ] Vitest : helpers couvertes
 
 ### Commit
+
 ```
 feat(content-gen): keywords par vertical × content_type (Phase 5 AEO/GEO v2)
 - KEYWORD_CATALOG_V2 : 5 verticales × 6 content_types = 30 cellules
@@ -779,6 +826,7 @@ feat(content-gen): keywords par vertical × content_type (Phase 5 AEO/GEO v2)
 ## PHASE 6 — Llms.txt + ai.txt + llms-full.txt 🟠 P1 (1h)
 
 ### Fichiers
+
 - `src/app/llms.txt/route.ts` (NOUVEAU)
 - `src/app/ai.txt/route.ts` (NOUVEAU)
 - `src/app/llms-full.txt/route.ts` (NOUVEAU)
@@ -979,11 +1027,13 @@ ${dynamicSection || "_(Liste populée dès la première ISR — DB stubbée au b
 ```
 
 ### Acceptance
+
 - [ ] curl localhost:3000/llms.txt → 200
 - [ ] curl localhost:3000/ai.txt → 200
 - [ ] curl localhost:3000/llms-full.txt → 200
 
 ### Commit
+
 ```
 feat(seo): llms.txt + ai.txt + llms-full.txt (Phase 6 AEO/GEO v2)
 - /llms.txt : résumé site pour crawlers IA (verticales, ressources, conformité)
@@ -996,9 +1046,11 @@ feat(seo): llms.txt + ai.txt + llms-full.txt (Phase 6 AEO/GEO v2)
 ## PHASE 7 — AggregateRating JSON-LD 🟠 P1 (1h)
 
 ### Skip-if (IMPÉRATIF — éviter l'invention)
+
 Si **aucune** table `Review`, `Testimonial`, `CustomerReview` n'existe en DB → **SKIP cette phase**.
 
 Vérification :
+
 ```bash
 grep -E "^model (Review|Testimonial|CustomerReview|ClientReview)" prisma/schema.prisma
 ```
@@ -1006,11 +1058,13 @@ grep -E "^model (Review|Testimonial|CustomerReview|ClientReview)" prisma/schema.
 Si aucun match → noter dans verdict "Phase 7 SKIPPED — pas de table Review en DB" → continuer.
 
 ### Si table existe
+
 - Factory `buildAggregateRatingJsonLd` dans `src/lib/seo-content-gen-factories.ts`
 - Lookup DB côté landing-ville generator ou template render
 - Injection si `reviewCount >= 5`
 
 ### Commit (si non-skip)
+
 ```
 feat(seo): AggregateRating JSON-LD (Phase 7 AEO/GEO v2)
 - buildAggregateRatingJsonLd factory
@@ -1022,6 +1076,7 @@ feat(seo): AggregateRating JSON-LD (Phase 7 AEO/GEO v2)
 ## PHASE 8 — Quota automatique par ville 🟡 P2 (1h)
 
 ### Fichier
+
 - `src/server/actions/content-gen/city-equity.ts` (étendre)
 - `src/components/admin/content-gen/CoverageWizardClient.tsx` (bouton)
 - `src/app/[locale]/(admin)/[adminPrefix]/content-gen/city-coverage/_v2/CityCoverageV2.tsx` (KPI gap)
@@ -1032,12 +1087,45 @@ feat(seo): AggregateRating JSON-LD (Phase 7 AEO/GEO v2)
 
 ```typescript
 const PILOT_CITIES: ReadonlyArray<string> = [
-  "paris", "marseille", "lyon", "toulouse", "nice", "nantes", "montpellier",
-  "strasbourg", "bordeaux", "lille", "rennes", "toulon", "reims", "saint-etienne",
-  "le-havre", "villeurbanne", "dijon", "angers", "grenoble", "nimes",
-  "aix-en-provence", "clermont-ferrand", "le-mans", "brest", "tours", "amiens",
-  "annecy", "limoges", "metz", "perpignan", "boulogne-billancourt", "besancon",
-  "orleans", "rouen", "montreuil", "caen", "argenteuil", "mulhouse", "nancy",
+  "paris",
+  "marseille",
+  "lyon",
+  "toulouse",
+  "nice",
+  "nantes",
+  "montpellier",
+  "strasbourg",
+  "bordeaux",
+  "lille",
+  "rennes",
+  "toulon",
+  "reims",
+  "saint-etienne",
+  "le-havre",
+  "villeurbanne",
+  "dijon",
+  "angers",
+  "grenoble",
+  "nimes",
+  "aix-en-provence",
+  "clermont-ferrand",
+  "le-mans",
+  "brest",
+  "tours",
+  "amiens",
+  "annecy",
+  "limoges",
+  "metz",
+  "perpignan",
+  "boulogne-billancourt",
+  "besancon",
+  "orleans",
+  "rouen",
+  "montreuil",
+  "caen",
+  "argenteuil",
+  "mulhouse",
+  "nancy",
 ];
 
 export async function getCityCoverageGaps(): Promise<{
@@ -1047,12 +1135,11 @@ export async function getCityCoverageGaps(): Promise<{
 }> {
   const data = await getCityEquityData();
   const equityMap = Object.fromEntries(data.rows.map((r) => [r.villeSlug, r.publishedArticles]));
-  const underCovered = PILOT_CITIES
-    .map((slug) => ({
-      villeSlug: slug,
-      current: equityMap[slug] ?? 0,
-      gap: EQUITY_TARGET - (equityMap[slug] ?? 0),
-    }))
+  const underCovered = PILOT_CITIES.map((slug) => ({
+    villeSlug: slug,
+    current: equityMap[slug] ?? 0,
+    gap: EQUITY_TARGET - (equityMap[slug] ?? 0),
+  }))
     .filter((r) => r.gap > 0)
     .sort((a, b) => b.gap - a.gap);
   const zeroCovered = PILOT_CITIES.filter((slug) => !equityMap[slug]);
@@ -1081,6 +1168,7 @@ export async function getCityCoverageGaps(): Promise<{
 Ajouter une carte "Gap total : X articles à produire pour atteindre 10/ville sur 39 villes".
 
 ### Commit
+
 ```
 feat(content-gen): quota automatique villes (Phase 8 AEO/GEO v2)
 - getCityCoverageGaps : detection villes < EQUITY_TARGET
@@ -1093,13 +1181,16 @@ feat(content-gen): quota automatique villes (Phase 8 AEO/GEO v2)
 ## PHASE 9 — UnsplashCredit sur guides 🟡 P2 (30min)
 
 ### Fichier
+
 - `src/app/[locale]/guides/[slug]/page.tsx` (ajout UnsplashCredit)
 - Loader guides (si pas déjà fait : exposer photographerName/photographerUrl)
 
 ### Skip-if
+
 Les pages guides n'utilisent pas de hero image (vérifier `grep -n "featuredImage\|heroImage" src/app/\[locale\]/guides/\[slug\]/page.tsx`)
 
 ### Commit
+
 ```
 feat(seo): UnsplashCredit sur pages guides (Phase 9 AEO/GEO v2)
 - Crédit photographe affiché sous image hero guide (CGU Unsplash §6)
@@ -1111,12 +1202,14 @@ feat(seo): UnsplashCredit sur pages guides (Phase 9 AEO/GEO v2)
 ## PHASE 10 — Audit cross-cutting JSON-LD matrice 🟡 P2 (1h)
 
 ### Fichier
+
 - `scripts/audit-jsonld-coverage.ts` (NOUVEAU)
 - `package.json` : `"audit:jsonld": "tsx scripts/audit-jsonld-coverage.ts"`
 
 ### Implémentation
 
 Script qui :
+
 1. Lit la matrice JSON-LD attendue (voir tableau dans le prompt v1)
 2. Pour chaque contentType, prend 1 article DB exemple
 3. Render la page → extrait tous les `<script type="application/ld+json">`
@@ -1141,10 +1234,12 @@ const EXPECTED_JSONLD: Record<string, ReadonlyArray<string>> = {
 ```
 
 ### Acceptance
+
 - [ ] `pnpm audit:jsonld` exit 0
 - [ ] Si gaps détectés → patch les generators manquants
 
 ### Commit
+
 ```
 feat(content-gen): audit cross-cutting JSON-LD (Phase 10 AEO/GEO v2)
 - scripts/audit-jsonld-coverage.ts : vérifie matrice contentType × JSON-LD
@@ -1168,18 +1263,18 @@ feat(content-gen): audit cross-cutting JSON-LD (Phase 10 AEO/GEO v2)
 
 ## Score par phase (sur 100 chacune)
 
-| Phase | Description | Score | Commit |
-|---|---|---|---|
-| 1 | Câblage keywords wizard → jobs | XX/100 | `abc1234` |
-| 2 | HowTo JSON-LD guide_pilier | XX/100 | `abc1234` |
-| 3 | Citations sources DANS body | XX/100 | `abc1234` |
-| 4 | Audience prompts TPE/PME/ETI/GE | XX/100 | `abc1234` |
-| 5 | Keywords vertical × content_type | XX/100 | `abc1234` |
-| 6 | Llms.txt + ai.txt + llms-full | XX/100 | `abc1234` |
-| 7 | AggregateRating JSON-LD | XX/100 | `abc1234` ou SKIPPED |
-| 8 | Quota auto villes | XX/100 | `abc1234` |
-| 9 | UnsplashCredit guides | XX/100 | `abc1234` |
-| 10 | Audit cross-cutting JSON-LD | XX/100 | `abc1234` |
+| Phase | Description                      | Score  | Commit               |
+| ----- | -------------------------------- | ------ | -------------------- |
+| 1     | Câblage keywords wizard → jobs   | XX/100 | `abc1234`            |
+| 2     | HowTo JSON-LD guide_pilier       | XX/100 | `abc1234`            |
+| 3     | Citations sources DANS body      | XX/100 | `abc1234`            |
+| 4     | Audience prompts TPE/PME/ETI/GE  | XX/100 | `abc1234`            |
+| 5     | Keywords vertical × content_type | XX/100 | `abc1234`            |
+| 6     | Llms.txt + ai.txt + llms-full    | XX/100 | `abc1234`            |
+| 7     | AggregateRating JSON-LD          | XX/100 | `abc1234` ou SKIPPED |
+| 8     | Quota auto villes                | XX/100 | `abc1234`            |
+| 9     | UnsplashCredit guides            | XX/100 | `abc1234`            |
+| 10    | Audit cross-cutting JSON-LD      | XX/100 | `abc1234`            |
 
 **Total : XXX / 1000**
 
@@ -1232,6 +1327,7 @@ metadata:
 Sprint livré commits `<hash1>...<hashN>`. 10 phases AEO/GEO 2026.
 
 **Livré :**
+
 - Phase 1 : keywords wizard → jobs (CoverageCampaign.primaryKeywords)
 - Phase 2 : HowTo JSON-LD sur guide_pilier + factory buildHowToJsonLd
 - Phase 3 : citations sources canoniques dans 9 generators (≥ 2 par article)
@@ -1253,6 +1349,7 @@ Liens : `_AUDIT/VERDICT-CONTENT-GEN-AEO-GEO-PERFECTION-2026-V2.md`
 ```
 
 Puis Read `MEMORY.md` et ajouter une ligne en haut :
+
 ```
 - [🟢 AxionIA AEO/GEO Perfection V2 2026-05-22 — XXX/1000](axionia_content_gen_aeo_geo_v2_2026_05_22.md) — 10 phases (keywords câblés, HowTo, sources, audience, catalog v2, llms.txt, équité, audit JSON-LD)
 ```
@@ -1272,6 +1369,7 @@ gh run watch
 ```
 
 Le pipeline GH Actions :
+
 1. Build Docker (~25 min) → push GHCR
 2. Coolify pull → restart container (~30s à 28 min)
 3. Cloudflare purge
@@ -1292,7 +1390,7 @@ Groupe A (générateurs — séquentiel)
 
 Groupe B (factories + UI — parallèle possible)
   Phase 2 (HowTo) || Phase 6 (llms.txt) || Phase 8 (quota villes)
-  
+
 Groupe C (post-livraison)
   Phase 5 → Phase 9 → Phase 10
 ```

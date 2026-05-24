@@ -113,9 +113,9 @@ export default async function Approfondie({ params }: Props) {
       {/* Section 3 tranches — miroir de la page Essentielle. Will (audit
           /interventions 2026-05-12) — Approfondie partage la même grille
           d'effectif que l'Essentielle (2-8 / 9-15 / 16-30 personnes) mais
-          des prix différents (880 / 1 420 / 2 140 €). Avant cette section,
-          la page n'exposait aucun palier visible et le calendrier facturait
-          systématiquement 880 € (palier minimum). */}
+          des prix différents (cf. pricing.ts APPROFONDIE_SUB_TIERS). Avant
+          cette section, la page n'exposait aucun palier visible et le
+          calendrier facturait systématiquement le palier minimum. */}
       <Section
         tone="paper"
         eyebrow={isFr ? "Choisissez votre tranche" : "Pick your tier"}

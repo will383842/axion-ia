@@ -50,6 +50,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
 
@@ -303,6 +304,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
 
     // ─── Quality checks (sur enrichedBody avec liens injectés) ──────────────────────────────────────────────────
     const internalLinkCount =
@@ -364,6 +366,7 @@ Pas de sur-promesses ("garanti", "révolutionnaire" interdits).`;
       citations: outlineResult.citations ?? [],
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      mentionedCities,
     };
   },
 };

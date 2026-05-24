@@ -1,5 +1,30 @@
 /**
- * Seed campaign template presets (D-P5-1 Sprint P5, mis à jour P6 2026-05-22).
+ * Seed campaign template presets — Source of truth pour les presets disponibles.
+ *
+ * Historique architectural :
+ *   - Sprint P5 (2026-05-21, D-P5-1) : 6 presets centrés audience/cadence —
+ *     `pme-audits`, `interventions-weekly`, `tpe-burst`, `eti-pilier`,
+ *     `cities-paris`, `rss-daily`.
+ *   - Sprint P6 (2026-05-22) : refactor vers 8 presets centrés verticales —
+ *     1 général × 5 verticales × 1 landing-villes × 1 RSS quotidien. Plus
+ *     scalable car les cadences (burst / weekly) sont configurables via
+ *     `config.batchSize` + `config.dailyCap` sur n'importe quel preset.
+ *   - Sprint Correctif P1-3 (2026-05-23, audit E2E passe 2 runtime) : confirmation
+ *     par DB query — `SELECT slug FROM campaign_templates` retourne les 8 slugs
+ *     ci-dessous, et seul `rss-daily` matche le doc D-P5-1 initial. Doc D-P5-1
+ *     historique conservée dans la mémoire `axionia_p5_decisions_canoniques_2026-05-21`
+ *     mais cette source de vérité (le code seed) reflète l'architecture actuelle P6.
+ *
+ * 8 presets actuels :
+ *   1. `toutes-verticales-general` — Couvre les 5 services + toutes tailles
+ *   2. `interventions-formations-all` — Verticale formations
+ *   3. `audits-all` — Verticale audits
+ *   4. `implementations-all` — Verticale implémentations
+ *   5. `un-a-un-all` — Verticale coaching 1-to-1
+ *   6. `sites-web-augmentes-all` — Verticale sites web augmentés
+ *   7. `landing-villes-all` — Landing pages multi-villes (5 verticales)
+ *   8. `rss-daily` — RSS quotidien actualité IA
+ *
  * Couvre les 5 verticales Axion-IA × TPE/PME/ETI/GE.
  * Idempotent via upsert on slug.
  */

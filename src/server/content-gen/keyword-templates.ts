@@ -151,7 +151,11 @@ export const TOP_100_VILLES_FRANCE: readonly CityRef[] = [
   // Tier 1 — Top 10 villes
   { name: "Paris", regionName: "Île-de-France", departmentName: "Paris" },
   { name: "Lyon", regionName: "Auvergne-Rhône-Alpes", departmentName: "Rhône" },
-  { name: "Marseille", regionName: "Provence-Alpes-Côte d'Azur", departmentName: "Bouches-du-Rhône" },
+  {
+    name: "Marseille",
+    regionName: "Provence-Alpes-Côte d'Azur",
+    departmentName: "Bouches-du-Rhône",
+  },
   { name: "Toulouse", regionName: "Occitanie", departmentName: "Haute-Garonne" },
   { name: "Nice", regionName: "Provence-Alpes-Côte d'Azur", departmentName: "Alpes-Maritimes" },
   { name: "Nantes", regionName: "Pays de la Loire", departmentName: "Loire-Atlantique" },
@@ -168,7 +172,11 @@ export const TOP_100_VILLES_FRANCE: readonly CityRef[] = [
   { name: "Angers", regionName: "Pays de la Loire", departmentName: "Maine-et-Loire" },
   { name: "Nîmes", regionName: "Occitanie", departmentName: "Gard" },
   { name: "Villeurbanne", regionName: "Auvergne-Rhône-Alpes", departmentName: "Rhône" },
-  { name: "Aix-en-Provence", regionName: "Provence-Alpes-Côte d'Azur", departmentName: "Bouches-du-Rhône" },
+  {
+    name: "Aix-en-Provence",
+    regionName: "Provence-Alpes-Côte d'Azur",
+    departmentName: "Bouches-du-Rhône",
+  },
   { name: "Brest", regionName: "Bretagne", departmentName: "Finistère" },
   { name: "Le Havre", regionName: "Normandie", departmentName: "Seine-Maritime" },
   { name: "Amiens", regionName: "Hauts-de-France", departmentName: "Somme" },

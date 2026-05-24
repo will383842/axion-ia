@@ -1,0 +1,120 @@
+"use client";
+// use-client: useRouter + useSearchParams pour navigation filtres URL
+// Filtres Site Explorer — Sprint Site Explorer Admin 2026-05-22.
+// Client component : lit/écrit les search params via navigation.
+
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useTransition } from "react";
+
+export function SiteExplorerFilters() {
+  const router = useRouter();
+  const sp = useSearchParams();
+  const [, startTransition] = useTransition();
+
+  const update = useCallback(
+    (key: string, value: string) => {
+      const params = new URLSearchParams(sp.toString());
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+      params.delete("page");
+      startTransition(() => router.push(`?${params.toString()}`));
+    },
+    [router, sp],
+  );
+
+  return (
+    <div className="flex flex-wrap gap-3">
+      <select
+        value={sp.get("type") ?? ""}
+        onChange={(e) => update("type", e.target.value)}
+        aria-label="Filtrer par type"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Tous les types</option>
+        <option value="static">Statique</option>
+        <option value="dynamic_db">Dynamique DB</option>
+        <option value="dynamic_template">Template</option>
+        <option value="dynamic_filesystem">Filesystem</option>
+      </select>
+
+      <select
+        value={sp.get("status") ?? ""}
+        onChange={(e) => update("status", e.target.value)}
+        aria-label="Filtrer par statut"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Tous les statuts</option>
+        <option value="live">Live (200)</option>
+        <option value="not_found">404</option>
+        <option value="redirect">Redirect</option>
+        <option value="error">Erreur</option>
+        <option value="unknown">Inconnu</option>
+        <option value="draft">Draft</option>
+      </select>
+
+      <select
+        value={sp.get("section") ?? ""}
+        onChange={(e) => update("section", e.target.value)}
+        aria-label="Filtrer par section"
+        className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="">Toutes les sections</option>
+        {[
+          "blog",
+          "guides",
+          "cas-concrets",
+          "glossaire",
+          "galerie",
+          "presse",
+          "stack-ia",
+          "audits",
+          "interventions-formations",
+          "un-a-un",
+          "implementations",
+          "sites-web-augmentes",
+          "implantations",
+          "equipe",
+        ].map((s) => (
+          <option key={s} value={s}>
+            {s}
+          </option>
+        ))}
+      </select>
+
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+        <input
+          type="checkbox"
+          checked={sp.get("editable") === "true"}
+          onChange={(e) => update("editable", e.target.checked ? "true" : "")}
+          className="rounded"
+        />
+        Éditables uniquement
+      </label>
+
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+        <input
+          type="checkbox"
+          checked={sp.get("anomaliesOnly") === "true"}
+          onChange={(e) => update("anomaliesOnly", e.target.checked ? "true" : "")}
+          className="rounded"
+        />
+        Avec anomalies
+      </label>
+
+      <input
+        type="search"
+        placeholder="Rechercher un path ou titre…"
+        defaultValue={sp.get("search") ?? ""}
+        onBlur={(e) => update("search", e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") update("search", (e.target as HTMLInputElement).value);
+        }}
+        className="w-56 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+        aria-label="Recherche"
+      />
+    </div>
+  );
+}

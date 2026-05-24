@@ -13,11 +13,13 @@
 Will a **explicitement autorisé** l'autopilote total le 2026-05-17 dans ce contexte précis (déploiement bloqué depuis plusieurs heures). **Tu ne dois PAS faire de STOP & ASK** sauf dans 3 situations strictement définies :
 
 ### 3 SEULES situations qui justifient un STOP & ASK
+
 1. **Une action irrécupérable** est sur le point d'être prise (drop database prod, rm -rf /, force-push sur main, suppression d'un secret sans backup). Dans ce cas seulement, demande confirmation avant.
 2. **Tous les fallbacks ont échoué** (Coolify API down + SSH down + GH workflow_dispatch down + manual deploy down) — rapporter et attendre Will.
 3. **Une preuve forte de compromission/sécurité** (clé exposée, accès non autorisé détecté) — geler et alerter.
 
 ### TOUT le reste est PRÉ-APPROUVÉ
+
 ✅ Kill un déploiement Coolify hung — GO
 ✅ Restart container Coolify — GO
 ✅ `docker system prune -af --volumes` sur Hetzner — GO
@@ -32,9 +34,11 @@ Will a **explicitement autorisé** l'autopilote total le 2026-05-17 dans ce cont
 ✅ Purge CF cache via API — GO
 
 ### Boucle "détecter → fix → vérifier" jusqu'à GREEN
+
 Tu **ne t'arrêtes PAS** au premier fix. Tu vérifies, et si pas GREEN, tu re-triages (catégorie suivante) et tu re-fixes. Maximum **5 itérations**, puis tu escalades à Will avec rapport complet.
 
 ### Reporting continu
+
 À chaque transition de phase, **un message ≤ 5 lignes** à Will avec : où tu en es, ce qui vient d'être fait, prochaine étape, ETA. Pas plus, pas moins. Will lit en passant, il ne valide pas chaque étape.
 
 ---
@@ -62,7 +66,9 @@ Au moment où ce prompt est écrit, voici ce qui a été observé en boîte noir
 **Une autre session Claude a passé ~10h sur ce problème et a identifié 5 causes empilées, pas une seule.** Tu DOIS partir de cette base et la **vérifier + compléter** :
 
 ### Cause #1 — 🔧 Dette technique CI/CD du repo (CAUSE PROFONDE)
+
 Les workflows GitHub Actions ont 9 mois de gates strictes ajoutées par couches successives (Pass B, Sprint S6.3, méta-cert, audit V14...) **sans jamais être testées toutes ensemble** :
+
 - Coverage 60% threshold irréaliste après +5000 LOC sans tests
 - `bundle:check` requiert Chrome installé via Playwright **placé APRÈS** dans le workflow → fail systémique
 - Build exige toutes les env vars production (`IP_HASH_SALT`, `PII_ENCRYPTION_KEY`) ajoutées récemment **sans les fournir au CI**
@@ -74,6 +80,7 @@ Les workflows GitHub Actions ont 9 mois de gates strictes ajoutées par couches 
 → **À vérifier en Phase 0** : `git log --oneline --since="2026-05-16" -- .github/workflows/ axionia/.github/workflows/` doit montrer ces 13 fix.
 
 ### Cause #2 — 🧟 Zombie deploy Coolify (CAUSE BLOQUANTE — déjà cancelée par Agent 1)
+
 Un deploy de **2026-05-16 15:08** avait crashé sur **containerd snapshotter write error** (probablement saturation disque temporaire). Coolify a marqué `finished_at` mais a laissé `status="in_progress"` → état inconsistant.
 
 Le **Horizon queue dispatcher** ne pickup qu'**UN seul `in_progress` par app** → tous les deploys suivants restaient `queued` indéfiniment.
@@ -83,7 +90,9 @@ C'est un **bug Coolify upstream**, pas le tien. **Agent 1 (autre session Claude)
 → **À vérifier en Phase 0** : confirmer qu'il n'y a plus de zombie `in_progress` dans `/api/v1/deployments`. Si un NOUVEAU zombie est apparu depuis → re-canceler.
 
 ### Cause #3 — 🤖 Sessions Claude parallèles non coordonnées
+
 Une autre conversation Claude (Manon) travaillait sur la même branche `feat/image-bank-v1` pendant que la session 1 faisait audit + patches :
+
 - Switches HEAD automatiques (perdu des edits 2-3 fois)
 - Commits interleaved (`8433bba`, `fde9fa7`) qui ont écrasé certains patches
 - Commit fantôme `6d51bb7` (titre trompeur, contenu pas du primaire)
@@ -92,19 +101,23 @@ Une autre conversation Claude (Manon) travaillait sur la même branche `feat/ima
 → **Action obligatoire** : créer un garde-fou repo (`.claude/coordination.md` + CONTRIBUTING.md section "multi-agent" + CODEOWNERS si applicable) pour qu'AUCUNE autre session Claude ne touche `main` ou `feat/image-bank-v1` pendant cette session.
 
 ### Cause #4 — 🏗️ Setup deploy pas prêt avant push
+
 Le merge PR #14 a été déclenché **sans que les env vars Coolify nécessaires** (`INDEXNOW_INTERNAL_HMAC_SECRET`, `DOCUSEAL_STRICT_HMAC`, peut-être d'autres) soient set d'abord. Si elles l'avaient été, le `prisma migrate deploy` + container start aurait été straight-forward.
 
 → **À vérifier en Phase 0.4** : lister TOUTES les env vars de l'app Coolify et comparer avec `.env.example` du repo. Toute absence = P0 à set AVANT redeploy.
 
 ### Cause #5 — ⏱️ Build local impossible (ADR 0026)
+
 Build Docker externalisé sur GitHub Actions car trop lourd pour CPX42. Donc **impossible de tester un fix CI en local rapidement** — chaque cycle = 5-25 min CI feedback. Un debug qui aurait pris 5 min en local prend 30 min en CI.
 
 → **À optimiser** : matrix CI avec fail-fast, parallelisation des Gates, cache layers Docker Buildx agressif, séparer le job "image build" du job "deploy" (déjà fait), peut-être un mode "dev fast build" qui skip certaines étapes lourdes.
 
 ### 📋 Sprint CI/CD cleanup obligatoire (POST-deploy GREEN)
+
 **Cause racine globale** : repo avec beaucoup de code récent ajouté **sans que les pipelines CI/CD ne soient maintenus en parallèle**. Dette CI/CD accumulée qui aurait dû être réglée avant la première grosse PR.
 
 Sprint « CI/CD cleanup » à exécuter **dans cette même session autopilote** (Phase 8.bis) :
+
 1. ✅ Aligner coverage threshold sur réalité avec ratchet (déjà fait — vérifier)
 2. ⚙️ Réordonner steps Gate B (**Playwright install AVANT bundle:check**)
 3. ⚙️ Migrer `size-limit` vers `preset-app` sans plugin Chrome
@@ -115,10 +128,12 @@ Sprint « CI/CD cleanup » à exécuter **dans cette même session autopilote** 
 Ces 6 points couvrent 100% des 13 fix CI appliqués hier — les remplacent par des fix propres et durables.
 
 ### 🚫 2 faux ennemis à ne PAS chasser
+
 - ❌ **Le code image-bank V1** : tests Vitest 887/887 verts, typecheck OK, lint OK, prisma migrate diff OK — innocent
 - ❌ **Les décisions tactiques des autres agents** : ils ont juste découvert + patché les 13 problèmes successifs cachés
 
 ### ✅ 2 vrais ennemis à éliminer durablement
+
 - ✅ **Workflows CI obsolètes** → Sprint cleanup Phase 8.bis
 - ✅ **Coolify queue fragile** (zombies non cleanup auto, bug upstream) → cron auto-cleanup Phase 7.5 cause A
 
@@ -127,6 +142,7 @@ Ces 6 points couvrent 100% des 13 fix CI appliqués hier — les remplacent par 
 ## 2 · Stack & doctrine de référence (rappel pour toi)
 
 ### Infra prod
+
 - **Domaine** : `axion-ia.com` (Namecheap)
 - **Cloudflare Free** : DNS orange, SSL Full strict, HSTS 12mo preload, HTTP/3, Brotli, 5 Cache Rules, Bot Fight ON + AI Scrapers OFF (AEO/GEO)
 - **Hetzner CPX42** Nuremberg, IP `178.105.55.15` (8 vCPU / 16 GB RAM / 320 GB NVMe)
@@ -137,12 +153,14 @@ Ces 6 points couvrent 100% des 13 fix CI appliqués hier — les remplacent par 
 - **Image registry** : `ghcr.io/will383842/axion-ia:<sha>` + tag `:main` (image PUBLIQUE pour permettre pull sans auth Coolify)
 
 ### Repos
+
 - **Super-repo** : `C:\Users\willi\Documents\Projets\Axion-IA` (contient `_AUDIT/` racine + sous-modules de docs)
 - **Sous-repo applicatif** : `C:\Users\willi\Documents\Projets\Axion-IA\axionia` (= repo GitHub `will383842/axion-ia`)
 - **Branche prod** : `main` (déploiement auto sur push main)
 - **Local user** : `Votre Nom` / git config OK
 
 ### Doctrine immuable (NE PAS VIOLER même en autopilot)
+
 - ✅ Commits Conventional ; pas de `--no-verify` ; pas de force-push sur `main`
 - ✅ Hetzner CPX42 + Coolify + Caddy + CF Free figés (ADR 0009 + ADR 0026)
 - ✅ Build externalisé GH Actions (ADR 0026) — **interdit** de réactiver le build Coolify in-place
@@ -168,6 +186,7 @@ Ces 6 points couvrent 100% des 13 fix CI appliqués hier — les remplacent par 
 Lance ces commandes **en parallèle** (multi tool-calls dans une seule réponse) et capture les outputs dans `_AUDIT/DEPLOY-RECOVERY-2026-05-17/00-snapshot/` :
 
 ### 4.1 Snapshot Git (super-repo + sous-repo)
+
 - `git status -uno --short` sur les 2 repos
 - `git log --oneline -20` sur main des 2 repos
 - `git branch -vv` sur les 2 repos
@@ -175,6 +194,7 @@ Lance ces commandes **en parallèle** (multi tool-calls dans une seule réponse)
 - Identifier les fichiers modifiés/non commités → catégoriser (audit-only / code / config / secrets)
 
 ### 4.2 Snapshot GitHub Actions (sous-repo `axionia`)
+
 - `gh run list --limit 30 --branch main --json conclusion,name,status,createdAt,displayTitle,databaseId,event,headSha`
 - `gh run view <ID_DERNIER_BUILD_DEPLOY_FAILED> --log-failed | tail -200`
 - `gh run view <ID_DERNIER_BUILD_DEPLOY_FAILED> --log | grep -E "(error|fail|timeout|queued|ECONN|status:)" | tail -50`
@@ -185,15 +205,18 @@ Lance ces commandes **en parallèle** (multi tool-calls dans une seule réponse)
 - Récupérer aussi : SHA + timestamp du dernier déploiement Coolify **réussi** (= dernière référence de bon état)
 
 ### 4.3 Snapshot GHCR
+
 - `gh api /users/will383842/packages/container/axion-ia/versions --jq '.[0:10] | .[] | {id, name, created_at, tags: .metadata.container.tags}'`
 - Confirmer image dernier commit main publiée + publique
 - `gh api /users/will383842/packages/container/axion-ia` → vérifier `visibility: public`
 - Tester manifest accessible sans auth : `curl -sI "https://ghcr.io/v2/will383842/axion-ia/manifests/main"` (devrait renvoyer 401 sans token mais avec un `Www-Authenticate` qui pointe vers le bon realm)
 
 ### 4.4 Snapshot Coolify (via API en autopilot)
+
 Utiliser un workflow `workflow_dispatch` temporaire (voir 4.4bis) ou si tu as accès aux secrets en local via `gh secret`, tester depuis ta machine en passant par l'API.
 
 **Endpoints à interroger** (avec `Authorization: Bearer $COOLIFY_API_TOKEN`) :
+
 - `GET /api/v1/deployments` — liste 10 derniers déploiements + statuts + timestamps + UUID app
 - `GET /api/v1/applications` — état app axion-ia (running / stopped / restarting / error)
 - `GET /api/v1/applications/<uuid>` — config détaillée : image, env vars, healthcheck
@@ -202,18 +225,20 @@ Utiliser un workflow `workflow_dispatch` temporaire (voir 4.4bis) ou si tu as ac
 - `GET /api/v1/teams` — vérifier permissions du token
 
 ### 4.4bis Workflow diagnostic Coolify (créer si secrets non accessibles localement)
+
 Créer `.github/workflows/coolify-diagnose.yml` :
+
 ```yaml
 name: Coolify Diagnose (autopilot)
 on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'list-deployments | kill-stuck | restart-app | dump-state'
+        description: "list-deployments | kill-stuck | restart-app | dump-state"
         required: true
-        default: 'dump-state'
+        default: "dump-state"
       target_uuid:
-        description: 'UUID to target (optional)'
+        description: "UUID to target (optional)"
         required: false
 jobs:
   diagnose:
@@ -245,31 +270,37 @@ jobs:
               ;;
           esac
 ```
+
 Commit + push, puis `gh workflow run coolify-diagnose.yml -f action=dump-state` et `gh run watch <id>`. **Tous les outputs sont masqués automatiquement si touchés au secret. Pas de leak.**
 
 ### 4.5 Snapshot site prod (lecture seule, parallélisé)
+
 - `curl -sI https://axion-ia.com/` → status + `cf-cache-status` + `cf-ray` + `server` + `x-served-by`
 - Idem pour : `/fr/`, `/en/`, `/fr/reserver`, `/fr/galerie`, `/sitemap.xml`, `/sitemap-index.xml`, `/robots.txt`, `/manifest.webmanifest`, `/fr/audits`, `/fr/interventions`, `/fr/implementations`
 - Vérifier le SHA du build via header custom OU `<meta name="build-sha">` OU footer dans HTML — comparer avec dernier déploiement Coolify connu
 
 ### 4.6 Snapshot Hetzner SSH AUTOPILOTE
+
 **Test d'accès SSH en autopilot** (3 méthodes en cascade) :
 
 **Méthode A — SSH local depuis Claude Code (préféré si clé disponible)** :
+
 ```bash
 ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new root@178.105.55.15 'echo SSH_OK'
 ```
+
 Si retourne `SSH_OK` → autopilote SSH GO. Sinon → méthode B.
 
 **Méthode B — Workflow GH Actions SSH** :
 Si `gh secret list | grep -i HETZNER_SSH_KEY` montre une clé déjà stockée → créer `.github/workflows/hetzner-diagnose.yml` :
+
 ```yaml
 name: Hetzner Diagnose (autopilot)
 on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'Bash command to run as root@178.105.55.15'
+        description: "Bash command to run as root@178.105.55.15"
         required: true
         default: 'df -h / && free -h && docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}" | head -30'
 jobs:
@@ -287,12 +318,14 @@ jobs:
           CMD: ${{ inputs.command }}
         run: ssh root@178.105.55.15 "$CMD"
 ```
+
 Commit + push + `gh workflow run hetzner-diagnose.yml -f command='df -h /'` puis `gh run view <id> --log`.
 
 **Méthode C — Hetzner Cloud API (rescue mode + console)** :
 Si A et B échouent, utiliser `hcloud` CLI ou API Hetzner directe pour ouvrir une console série/VNC. **Last resort** car pas autopilotable, demanderait Will.
 
 **Commandes à exécuter sur Hetzner** (peu importe la méthode) :
+
 ```bash
 df -h /                                           # disque libre
 free -h                                           # RAM libre
@@ -309,9 +342,11 @@ cat /etc/coolify/.env 2>/dev/null | grep -v -E '^(PASSWORD|TOKEN|SECRET)='   # c
 ls -la /var/lib/docker/volumes/ | head -20
 du -sh /var/lib/docker/{containers,volumes,overlay2} 2>/dev/null
 ```
+
 Output → `_AUDIT/DEPLOY-RECOVERY-2026-05-17/00-snapshot/hetzner-state.txt`
 
 ### 4.7 Snapshot Cloudflare (lecture seule)
+
 - `curl -sH "Authorization: Bearer $CF_API_TOKEN" "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/settings/cache_level" | jq '.'`
 - Lister les Cache Rules actuelles
 - État du Bot Fight Mode + AI Scrapers
@@ -323,20 +358,21 @@ Output → `_AUDIT/DEPLOY-RECOVERY-2026-05-17/00-snapshot/hetzner-state.txt`
 
 **⚠️ RAPPEL §1.5 : le problème est COMPOSITE (5 couches). Ne pas s'arrêter à 1 catégorie.** Identifier TOUTES les causes actives, puis prioriser.
 
-| # | Catégorie | Symptômes (à confirmer) | État connu §1.5 | Fix Phase 3 |
-|---|-----------|---------------------------|------------------|-------------|
-| **A** | **File Coolify gelée par déploiement précédent hung (zombie)** | ≥ 1 déploiement `in_progress` depuis > 30 min dans `/api/v1/deployments`. Bug Coolify upstream : `finished_at` set mais `status="in_progress"`. Horizon dispatcher pickup 1 max par app → reste bloque. | **Cause #2 — déjà cancelée par Agent 1.** Vérifier qu'aucun NOUVEAU zombie n'est apparu. | Cancel via API + restart Coolify + cron auto-cleanup |
-| **B** | **Coolify worker mort / scheduler stoppé** | `docker logs coolify` montre exception/crash loop. `docker ps` montre coolify `Restarting` ou `Exited`. | À vérifier post-cancel zombie. | `docker restart coolify` + verify |
-| **C** | **Disque Hetzner re-saturé** (causa du containerd snapshotter error qui a créé zombie) | `df -h /` ≥ 85 %. Logs Docker : `no space left on device`. `containerd snapshotter write error`. | **Probablement nettoyé par disk-cleanup-prod.yml 03:03Z.** Confirmer en SSH. | `docker system prune -af --volumes` + retention 24h |
-| **D** | **Lock DB Coolify (Postgres deadlock / long-running query)** | Logs : `lock`/`deadlock`. `pg_stat_activity` montre query bloquée > 10 min | À vérifier. | `pg_terminate_backend(pid)` |
-| **E** | **Image GHCR introuvable/inaccessible côté Coolify** | Logs Coolify : `manifest unknown` / `unauthorized`. Image GHCR pas publique. | Builds GHCR success constatés → image existe. Vérifier visibility. | Re-rendre publique via `gh api` |
-| **F** | **Secrets `COOLIFY_API_TOKEN` / `COOLIFY_URL` invalides ou expirés** | `POST /api/v1/deploy` retourne 401/403/404 dans logs GHA | POST renvoie UUID valide → secrets OK. | Régénérer token Coolify + `gh secret set` |
-| **G** | **Network Hetzner → GHCR coupé (firewall / DNS / rate-limit)** | Sur Hetzner : `curl -I https://ghcr.io/v2/` timeout. `ip route` anormal. | À vérifier en SSH. | Fix réseau (DNS, route, firewall) |
-| **H** | **App Coolify mal configurée post-merge PR #14 (env vars manquantes)** | Env vars manquantes : `INDEXNOW_INTERNAL_HMAC_SECRET`, `DOCUSEAL_STRICT_HMAC`, peut-être autres (`IP_HASH_SALT`, `PII_ENCRYPTION_KEY`). Healthcheck failing, container restart loop. | **Cause #4 forte probabilité.** Lister env vars Coolify vs `.env.example`. | Set env vars via API Coolify + restart |
-| **I** | **Dette CI/CD (workflows obsolètes) — cause profonde non bloquante deploy mais P0 cleanup** | 13 fix CI hier soir. Coverage threshold irréaliste. Bundle:check sans Chrome préinstallé. Playwright webServer local-only. Gitleaks shallow clone. | **Cause #1 — confirmée par Agent 1.** À traiter Phase 8.bis. | Sprint CI/CD cleanup 6 points (Phase 8.bis) |
-| **J** | **Coordination multi-agents Claude (sessions parallèles non coordonnées)** | Switches HEAD inopinés, commits interleaved, branche multi-thématique | **Cause #3 — historique constaté.** Mettre garde-fou repo. | `.claude/coordination.md` + CONTRIBUTING.md section multi-agent |
+| #     | Catégorie                                                                                   | Symptômes (à confirmer)                                                                                                                                                                                 | État connu §1.5                                                                          | Fix Phase 3                                                     |
+| ----- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| **A** | **File Coolify gelée par déploiement précédent hung (zombie)**                              | ≥ 1 déploiement `in_progress` depuis > 30 min dans `/api/v1/deployments`. Bug Coolify upstream : `finished_at` set mais `status="in_progress"`. Horizon dispatcher pickup 1 max par app → reste bloque. | **Cause #2 — déjà cancelée par Agent 1.** Vérifier qu'aucun NOUVEAU zombie n'est apparu. | Cancel via API + restart Coolify + cron auto-cleanup            |
+| **B** | **Coolify worker mort / scheduler stoppé**                                                  | `docker logs coolify` montre exception/crash loop. `docker ps` montre coolify `Restarting` ou `Exited`.                                                                                                 | À vérifier post-cancel zombie.                                                           | `docker restart coolify` + verify                               |
+| **C** | **Disque Hetzner re-saturé** (causa du containerd snapshotter error qui a créé zombie)      | `df -h /` ≥ 85 %. Logs Docker : `no space left on device`. `containerd snapshotter write error`.                                                                                                        | **Probablement nettoyé par disk-cleanup-prod.yml 03:03Z.** Confirmer en SSH.             | `docker system prune -af --volumes` + retention 24h             |
+| **D** | **Lock DB Coolify (Postgres deadlock / long-running query)**                                | Logs : `lock`/`deadlock`. `pg_stat_activity` montre query bloquée > 10 min                                                                                                                              | À vérifier.                                                                              | `pg_terminate_backend(pid)`                                     |
+| **E** | **Image GHCR introuvable/inaccessible côté Coolify**                                        | Logs Coolify : `manifest unknown` / `unauthorized`. Image GHCR pas publique.                                                                                                                            | Builds GHCR success constatés → image existe. Vérifier visibility.                       | Re-rendre publique via `gh api`                                 |
+| **F** | **Secrets `COOLIFY_API_TOKEN` / `COOLIFY_URL` invalides ou expirés**                        | `POST /api/v1/deploy` retourne 401/403/404 dans logs GHA                                                                                                                                                | POST renvoie UUID valide → secrets OK.                                                   | Régénérer token Coolify + `gh secret set`                       |
+| **G** | **Network Hetzner → GHCR coupé (firewall / DNS / rate-limit)**                              | Sur Hetzner : `curl -I https://ghcr.io/v2/` timeout. `ip route` anormal.                                                                                                                                | À vérifier en SSH.                                                                       | Fix réseau (DNS, route, firewall)                               |
+| **H** | **App Coolify mal configurée post-merge PR #14 (env vars manquantes)**                      | Env vars manquantes : `INDEXNOW_INTERNAL_HMAC_SECRET`, `DOCUSEAL_STRICT_HMAC`, peut-être autres (`IP_HASH_SALT`, `PII_ENCRYPTION_KEY`). Healthcheck failing, container restart loop.                    | **Cause #4 forte probabilité.** Lister env vars Coolify vs `.env.example`.               | Set env vars via API Coolify + restart                          |
+| **I** | **Dette CI/CD (workflows obsolètes) — cause profonde non bloquante deploy mais P0 cleanup** | 13 fix CI hier soir. Coverage threshold irréaliste. Bundle:check sans Chrome préinstallé. Playwright webServer local-only. Gitleaks shallow clone.                                                      | **Cause #1 — confirmée par Agent 1.** À traiter Phase 8.bis.                             | Sprint CI/CD cleanup 6 points (Phase 8.bis)                     |
+| **J** | **Coordination multi-agents Claude (sessions parallèles non coordonnées)**                  | Switches HEAD inopinés, commits interleaved, branche multi-thématique                                                                                                                                   | **Cause #3 — historique constaté.** Mettre garde-fou repo.                               | `.claude/coordination.md` + CONTRIBUTING.md section multi-agent |
 
 **Délivrable** : `01-triage.md` avec :
+
 - ✅ Liste des catégories ACTIVES MAINTENANT (à T=Phase 0)
 - ✅ Liste des catégories HISTORIQUES déjà fixées (preuve : commit/action)
 - ✅ Catégorie BLOQUANTE actuelle (celle qui empêche le prochain deploy de réussir)
@@ -362,6 +398,7 @@ Selon catégorie identifiée en Phase 1, exécuter le run d'investigation corres
 - Si H : `curl ... /api/v1/applications/<uuid>` + diff env vars vs `.env.example` repo
 
 **Délivrable** : `02-root-cause.md` avec :
+
 - ✅ Cause technique exacte (1 phrase)
 - ✅ Mécanisme de la panne (3-5 phrases)
 - ✅ Pourquoi ça n'a pas été détecté avant (1-2 phrases)
@@ -373,12 +410,15 @@ Selon catégorie identifiée en Phase 1, exécuter le run d'investigation corres
 ## 7 · Phase 3 — Fix AUTOPILOTE + ré-armement (≤ 30 min)
 
 ### 7.1 Fix immédiat (déblocage)
+
 Selon catégorie, appliquer l'action de la table Phase 1. **Tracer chaque commande** dans `03-fix-actions.md` avec timestamp + résultat.
 
 **Tu es autorisé à enchaîner les fix de plusieurs catégories** si la cause est composite. Ex : C (disque saturé) + A (queue gelée) → prune disque d'abord, puis kill queue, puis redeploy.
 
 ### 7.2 Snapshot post-fix immédiat
+
 Avant de relancer un déploiement, **re-snapshotter** l'état Coolify + Hetzner pour confirmer que le fix a bien levé le blocage :
+
 - `/api/v1/deployments` : plus de déploiement `in_progress` antérieur
 - `docker ps` : Coolify en `Up X minutes` (pas restarting)
 - `df -h /` : disque > 50 % libre
@@ -386,7 +426,9 @@ Avant de relancer un déploiement, **re-snapshotter** l'état Coolify + Hetzner 
 Si snapshot post-fix montre que le blocage persiste → **rollback** (restart Coolify à nouveau) → ré-investigation Phase 2 catégorie suivante (boucle, max 5 itérations).
 
 ### 7.3 Re-trigger déploiement
+
 Une fois le blocage levé :
+
 ```bash
 cd axionia/
 gh workflow run deploy-coolify.yml --ref main
@@ -395,7 +437,9 @@ gh run watch $NEW_RUN
 ```
 
 ### 7.4 Surveillance live multi-fenêtres
+
 En parallèle pendant le `gh run watch` :
+
 - Polling manuel `/api/v1/deployments/$DEPLOYMENT_UUID` toutes les 30s → confirmer transition `queued → in_progress → finished`
 - Logs Hetzner SSH `docker logs -f coolify` en streaming pour voir le pull GHCR + restart container
 - `docker ps -a` sur Hetzner pour voir le nouveau container app démarrer
@@ -414,6 +458,7 @@ Selon root cause, **au moins un** durcissement commité Conventional sur main :
 - **Si H (env vars)** : ajouter step "compare Coolify env vars vs .env.example" en pre-flight (warning si manquantes)
 
 ### 7.6 Bonus durcissement (à appliquer dans tous les cas)
+
 - **Réduire timeout polling Coolify** : 60 min → 15 min
 - **Early-fail** : exit 1 si status reste `queued` > 5 min consécutives (signe certain de queue gelée)
 - **Concurrency lock** : `concurrency: { group: deploy-main, cancel-in-progress: true }` sur le workflow
@@ -428,7 +473,9 @@ Selon root cause, **au moins un** durcissement commité Conventional sur main :
 **Cette phase est cruciale** : le déploiement peut marcher mais l'infra peut être en état dégradé. Audit profond OBLIGATOIRE pour passer en GREEN final.
 
 ### 8.1 Audit workflow `deploy-coolify.yml` (lecture + score)
+
 Critères (chaque ✅/❌) :
+
 - [ ] Concurrency lock présent
 - [ ] Timeouts raisonnables (< 30 min total)
 - [ ] Retry avec backoff sur appels API Coolify (3 tentatives)
@@ -443,25 +490,30 @@ Critères (chaque ✅/❌) :
 Score /10 → si < 8/10, patcher en Phase 3.6.
 
 ### 8.2 Audit tous les workflows critiques
+
 Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`, `release.yml`, `gsc-crawl-stats-weekly.yml`. Détecter :
+
 - Workflows désactivés (`if: false`) qui devraient être réactivés
 - Workflows en doublon
 - Workflows qui exposent des secrets en logs
 - Workflows sans timeout (boucle infinie possible)
 
 ### 8.3 Audit secrets et rotation
+
 - `gh secret list` : tous les secrets présents
 - Pour chaque secret, vérifier dans la doc/code qu'il est encore utilisé (`grep -r "secrets.NOM" .github/`)
 - Secrets orphelins (non référencés) → proposer suppression
 - Secrets qui ressemblent à des passwords ou tokens longue durée → recommander rotation
 
 ### 8.4 Audit GHCR
+
 - Liste des packages du user `will383842`
 - Visibilité (public/private)
 - Retention policy (combien de versions gardées)
 - Total taille (impact quota GitHub Free 500 MB → upgrade nécessaire si dépassé)
 
 ### 8.5 Audit Coolify (post-fix)
+
 - Liste applications + statut
 - Pour chaque app : config (image, env vars, healthcheck, volumes, network)
 - Backups Postgres Coolify (existent ? automatisés ? rétention ?)
@@ -469,6 +521,7 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 - Updates dispo ?
 
 ### 8.6 Audit Hetzner CPX42
+
 - Uptime
 - Load avg
 - Disk usage par mount
@@ -479,6 +532,7 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 - Certificats SSL (Caddy auto-renew → vérifier dernière date renew)
 
 ### 8.7 Audit Cloudflare
+
 - Toutes les Cache Rules
 - Page Rules legacy résiduelles ?
 - WAF rules actives
@@ -488,17 +542,20 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 - DNS records : tous orange ?
 
 ### 8.8 Audit code applicatif vs prod
+
 - Lire `axionia/package.json` → version applicative
 - Comparer avec version visible en prod (header / footer / build-info endpoint)
 - Si divergence → confirmer que le bon SHA est servi
 
 ### 8.9 Audit sécurité minimal
+
 - Pas de secret commité dans le repo (`git log -p | grep -iE "(BEGIN PRIVATE KEY|api_key|password.*=)"` quick scan)
 - `.env*` bien dans `.gitignore`
 - Pas de fichier `.env` commité par erreur
 - `gitleaks` doit avoir tourné récemment
 
 ### 8.10 Audit Web Vitals + SEO post-deploy (sample)
+
 - Lighthouse sur `/`, `/fr/`, `/fr/galerie`, `/fr/reserver` (mobile + desktop)
 - LCP, INP, CLS doivent matcher thresholds `lighthouserc.json`
 - JSON-LD validé sur 3 pages (curl + jq)
@@ -514,6 +571,7 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 **Cette phase est NON-NÉGOCIABLE et fait partie du contrat autopilote.** Sans ce sprint, les 13 fix appliqués hier resteront fragiles et le prochain push cassera tout à nouveau.
 
 ### 8.bis.1 — Pré-requis
+
 - Audit Phase 8 terminé
 - Liste des 13 fix CI récents identifiés via `git log --oneline --since="2026-05-16" -- .github/workflows/`
 - Comprendre chaque fix : était-ce un patch ou un workaround ?
@@ -521,24 +579,28 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 ### 8.bis.2 — Les 6 points obligatoires (1 commit par point ou batch logique)
 
 #### Point 1 — Coverage threshold ratchet
+
 - Vérifier que coverage threshold est aligné sur réalité actuelle (probablement ~30-40% pas 60%)
 - Mettre en place un **ratchet** : le seuil monte automatiquement quand coverage s'améliore, ne baisse jamais
 - Outil : `vitest --coverage` config + un script `scripts/ci/coverage-ratchet.ts` qui compare avec baseline et fail si baisse
 - Commit : `fix(ci): coverage threshold ratchet aligned with reality (was 60% unrealistic)`
 
 #### Point 2 — Réordonner steps Gate B
+
 - Lire `.github/workflows/ci.yml` job Gate B
 - Repositionner `pnpm exec playwright install --with-deps chromium` AVANT `bundle:check`
 - Vérifier que toutes les étapes qui requièrent Chrome (Playwright, Lighthouse local, bundle:check) sont après l'install
 - Commit : `fix(ci): gate B reorder — Playwright install AVANT bundle:check`
 
 #### Point 3 — Migrer size-limit vers preset-app
+
 - Lire `package.json` config `size-limit`
 - Si plugin Puppeteer/Chrome utilisé → migrer vers `@size-limit/preset-app` qui n'a pas besoin de browser
 - Tester localement que la mesure est cohérente
 - Commit : `fix(ci): size-limit migrate preset-app — no more Chrome dep`
 
 #### Point 4 — Playwright webServer CI-aware
+
 - Lire `playwright.config.ts`
 - Modifier `webServer` pour gérer 2 modes :
   - Local dev : démarre `pnpm dev`
@@ -547,6 +609,7 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 - Commit : `fix(ci): playwright webServer CI-aware (build + start, not dev)`
 
 #### Point 5 — `.env.ci` séparé documenté
+
 - Créer `.env.ci.example` avec TOUTES les env vars requises pour CI (stubs/dummy values)
 - Documenter dans `docs/ci/ENV-VARS.md` : 3 colonnes (Variable / Prod source / CI value / Required for)
 - Workflow `ci.yml` consomme `.env.ci.example` comme source via `cp .env.ci.example .env`
@@ -554,11 +617,13 @@ Idem 8.1 pour : `ci.yml`, `staging.yml`, `nightly.yml`, `disk-cleanup-prod.yml`,
 - Commit : `docs(ci): env-vars CI vs prod separated + .env.ci.example`
 
 #### Point 6 — Auto-cleanup zombie deploys Coolify
+
 - Créer `.github/workflows/coolify-zombie-cleanup.yml` (cron daily 03:30 UTC, juste après disk-cleanup) :
+
 ```yaml
 name: Coolify Zombie Deploy Cleanup
 on:
-  schedule: [{ cron: '30 3 * * *' }]
+  schedule: [{ cron: "30 3 * * *" }]
   workflow_dispatch:
 jobs:
   cleanup:
@@ -580,22 +645,28 @@ jobs:
             curl -s -X POST -H "Authorization: Bearer $COOLIFY_API_TOKEN" "$COOLIFY_URL/api/v1/deployments/$uuid/cancel"
           done
 ```
+
 - Commit : `feat(ci): coolify zombie deploy auto-cleanup cron daily (anti-Cause-#2)`
 
 ### 8.bis.3 — Garde-fou coordination multi-agents (Cause #3)
+
 - Créer `axionia/.claude/coordination.md` :
+
 ```markdown
 # Multi-agent Claude coordination
 
 Si plusieurs sessions Claude travaillent sur le repo en parallèle :
 
 ## Règles obligatoires
+
 1. **Une session = une branche feature**. Jamais 2 sessions sur la même branche.
 2. **Main est lock** : aucune session ne push directement sur main sans confirmation Will explicite hors PR.
 3. **Coordination via fichier** : avant de start, écrire dans `.claude/active-sessions.md` (locked file) :
-   ```
-   - session-<uuid> | branch=<name> | started=<ts> | scope=<short desc> | owner=<conv-id>
-   ```
+```
+
+- session-<uuid> | branch=<name> | started=<ts> | scope=<short desc> | owner=<conv-id>
+
+```
 4. **Au démarrage**, lire `.claude/active-sessions.md` et SI une autre session est sur la même branche → STOP & ASK Will (override autopilote autorisé).
 5. **À la fin** (ou crash), nettoyer son entrée dans `.claude/active-sessions.md`.
 
@@ -604,16 +675,19 @@ Si plusieurs sessions Claude travaillent sur le repo en parallèle :
 - Commits interleaved → `git log --oneline -20` et identifier qui a écrit quoi (committer)
 - Si overwrite détecté → `git reflog` pour récupérer
 ```
+
 - Créer `axionia/.claude/active-sessions.md` vide initial (template avec format clair)
 - Mettre à jour `CONTRIBUTING.md` avec section "Working with multiple Claude sessions"
 - Commit : `docs(repo): multi-agent Claude coordination guardrails (anti-Cause-#3)`
 
 ### 8.bis.4 — Validation post-Sprint
+
 - Re-run `gh workflow run ci.yml --ref main` (PR de validation OU push direct si Sprint déjà commité)
 - Tous les Gates A + B + C + D doivent passer en < 30 min total
 - Si fail → identifier quel Point a régressé → fix → re-run (max 3 itérations)
 
 ### 8.bis.5 — Documentation des 13 fix CI hier
+
 - Lister dans `_AUDIT/DEPLOY-RECOVERY-2026-05-17/06-ci-debt-history.md` les 13 commits avec :
   - SHA + message + date
   - Quelle des 5 Causes empilées il patche
@@ -625,11 +699,14 @@ Si plusieurs sessions Claude travaillent sur le repo en parallèle :
 ## 9 · Phase 5 — Recommit + push HEAD finale AUTOPILOTE (≤ 25 min)
 
 ### 9.1 Décider du sort des fichiers non commités
+
 Au moment T0 de ce prompt, fichiers `M` détectés :
+
 - `axionia/`: CHANGELOG.md, audits image-bank, pages admin image-bank, sitemaps, lighthouserc.json, package.json, schema.prisma, components, etc. (≥ 60 fichiers)
 - super-repo: `_AUDIT/CHANGELOG-v10.2.md` (deleted), `_AUDIT/CONTENT-GEN-V1-AUTOPILOT-LOG.md` (modified)
 
 **Stratégie autopilote** (pas d'attente Will) :
+
 1. **Audits seuls** (`_AUDIT/**`) → commit unique `docs(audit): batch audits image-bank + post-fix deploy 2026-05-17`
 2. **Code applicatif** (pages admin, sitemaps, components, scripts) → analyser le diff
    - Si lié à PR #14 patches → commit `fix(image-bank): patches post-merge cleanup`
@@ -640,7 +717,9 @@ Au moment T0 de ce prompt, fichiers `M` détectés :
 6. **Generated files** (généralement à exclure) → vérifier .gitignore, si oubli → fix .gitignore + commit
 
 ### 9.2 Avant push : sanity checks bloquants
+
 Dans `axionia/` :
+
 - `pnpm install` (idempotent)
 - `pnpm typecheck` → doit passer
 - `pnpm lint` → doit passer (warnings OK, errors KO)
@@ -652,11 +731,13 @@ Dans `axionia/` :
 Si un check fail → fixer le check (ne pas push avec fail) → max 3 itérations sinon stash + escalade.
 
 ### 9.3 Push + suivi
+
 - `git push origin main` (sous-repo d'abord) + (super-repo ensuite si pertinent)
 - **Jamais force**. Si push refused (non-fast-forward) → `git pull --rebase` + résoudre conflits + retest + push
 - Surveiller le nouveau run `deploy-coolify.yml` en live (gh run watch)
 
 ### 9.4 Vérifier que le nouveau commit triggere bien le pipeline
+
 - Si pas de trigger auto (rare) → `gh workflow run deploy-coolify.yml --ref main`
 - Confirmer SHA déployé = HEAD main après deploy success
 
@@ -715,6 +796,7 @@ echo "RESULT: $PASS pass / $FAIL fail / $((PASS+FAIL)) total"
 ```
 
 **Critères d'acceptation GREEN** :
+
 - ✅ **100 % des routes ≠ 500/502/503/504**
 - ✅ Pages publiques : 200 ou 308 (redir trailing slash)
 - ✅ Sitemaps : 200 + content-type `application/xml`
@@ -725,6 +807,7 @@ echo "RESULT: $PASS pass / $FAIL fail / $((PASS+FAIL)) total"
 **Si FAIL > 0** → identifier les routes KO + investigation focalisée + fix (potentiellement Phase 2 re-bouclée pour cause spécifique route).
 
 ### 10.1 Smoke avancé
+
 - POST `/api/contact` avec body de test minimal → 200/202 ou validation error attendue (pas 500)
 - GET `/api/healthz` → 200 + JSON `{status: "ok"}`
 - Download image bank `/fr/galerie/<slug>/telecharger` (premier slug du sitemap-images) → 200 + content-type image
@@ -732,11 +815,13 @@ echo "RESULT: $PASS pass / $FAIL fail / $((PASS+FAIL)) total"
 - JSON-LD valide sur `/`, `/fr/reserver`, `/fr/galerie/paris` (curl + jq)
 
 ### 10.2 Build SHA assertion
+
 - Récupérer le SHA visible en prod (header `x-axion-build-sha` ou meta tag ou footer)
 - Doit ÉGALER `git rev-parse HEAD` du repo `axionia` post-Phase 5
 - Si différent → le déploiement n'a pas vraiment livré la dernière version → retour Phase 2
 
 ### 10.3 Workers BullMQ (background jobs)
+
 - Si endpoint admin existe : vérifier que les workers image-bank (variants, watermark, OCR, AI translation) + content-gen sont `running`
 - Sinon : SSH Hetzner → `docker ps | grep worker` → tous `Up`
 
@@ -745,7 +830,9 @@ echo "RESULT: $PASS pass / $FAIL fail / $((PASS+FAIL)) total"
 ## 11 · Phase 7 — Post-mortem + memory AUTOPILOTE (≤ 20 min)
 
 ### 11.1 Livrables
+
 Créer ces fichiers dans `_AUDIT/DEPLOY-RECOVERY-2026-05-17/` :
+
 - `00-snapshot/` — outputs Phase 0 (raws)
 - `01-triage.md` — catégorie + preuves
 - `02-root-cause.md` — analyse forensique
@@ -758,6 +845,7 @@ Créer ces fichiers dans `_AUDIT/DEPLOY-RECOVERY-2026-05-17/` :
 - `RUNBOOK-DEPLOY-STUCK.md` (recopié dans `docs/ops/`)
 
 ### 11.2 Commit final
+
 ```
 docs(ops): deploy recovery 2026-05-17 — runbook + post-mortem + ADR XXXX
 
@@ -768,7 +856,9 @@ Smoke prod: 30/30 routes OK
 ```
 
 ### 11.3 Memory entries à écrire (super-repo `C:\Users\willi\.claude\projects\C--Users-willi\memory\`)
+
 Créer fichier `axionia_deploy_recovery_2026-05-17.md` :
+
 ```markdown
 ---
 name: axionia-deploy-recovery-2026-05-17
@@ -791,22 +881,27 @@ Voir aussi [[axionia_session_2026-05-16_deploy_recovery_resolved]].
 ```
 
 Ajouter ligne dans `MEMORY.md` :
+
 ```
 - [✅ AxionIA deploy recovery 2026-05-17 — root cause <X>](axionia_deploy_recovery_2026-05-17.md) — Pipeline GHCR+Coolify restauré. Fix durable runbook + workflow durci. Smoke 30/30.
 ```
 
 Mettre à jour memories existantes si état d'infra a changé :
+
 - `axionia_session_2026-05-16_deploy_recovery_resolved` (état précédent)
 - `axionia_domain_hosting` (si URL Coolify, IP, ou config a bougé)
 
 ### 11.4 ADR si décision archi durable prise
+
 Créer `axionia/docs/adr/00XX-coolify-deploy-monitoring.md` (numéro suivant disponible) avec :
+
 - Contexte (incident)
 - Décision (durcissements appliqués)
 - Conséquences (positives + négatives)
 - Alternatives rejetées
 
 ### 11.5 Cleanup repo
+
 - Supprimer workflows diagnostic temporaires (`coolify-diagnose.yml`, `hetzner-diagnose.yml`) **OU** les garder en `workflow_dispatch` only avec doc claire (recommandé pour récidive future)
 - Si gardés : ajouter README dans `docs/ops/` qui documente leur usage
 
@@ -835,6 +930,7 @@ Créer `axionia/docs/adr/00XX-coolify-deploy-monitoring.md` (numéro suivant dis
 Le travail est terminé **uniquement** si **TOUS** ces points sont ✅ :
 
 ### Catégorie A — Déploiement opérationnel
+
 - [ ] Root cause(s) composite(s) documentée(s) avec preuves dans `02-root-cause.md` (les 5 causes empilées identifiées + état actuel de chacune)
 - [ ] Fix immédiat appliqué et validé (déploiement vert end-to-end)
 - [ ] Fix durable commité Conventional + pushé main
@@ -846,6 +942,7 @@ Le travail est terminé **uniquement** si **TOUS** ces points sont ✅ :
 - [ ] Lighthouse post-deploy gate vert (ou justifié)
 
 ### Catégorie B — Anti-récidive durable (Phase 8.bis Sprint CI/CD)
+
 - [ ] **Point 1** : Coverage threshold ratchet en place + commité
 - [ ] **Point 2** : Gate B steps réordonnés (Playwright AVANT bundle:check) + commité
 - [ ] **Point 3** : size-limit migré preset-app + commité
@@ -855,6 +952,7 @@ Le travail est terminé **uniquement** si **TOUS** ces points sont ✅ :
 - [ ] **Garde-fou multi-agents** : `.claude/coordination.md` + `.claude/active-sessions.md` + CONTRIBUTING.md section créés
 
 ### Catégorie C — Audit profond + livrables
+
 - [ ] Audit profond Phase 4 livré, scores ≥ 8/10 par section (ou action items P0 traités dans Sprint cleanup)
 - [ ] `06-ci-debt-history.md` : les 13 fix CI mappés aux 5 Causes + état OBSOLETED post-cleanup
 - [ ] Runbook `docs/ops/RUNBOOK-DEPLOY-STUCK.md` commité + scripté (`.sh` exécutable)
@@ -863,12 +961,14 @@ Le travail est terminé **uniquement** si **TOUS** ces points sont ✅ :
 - [ ] ADR créée si décision archi durable (cron zombie cleanup, .env.ci structure)
 
 ### Catégorie D — Cleanup & non-régression
+
 - [ ] Tous les fichiers `M` de Phase 0 sont soit commités soit explicitement stashés/discardés (zéro oubli)
 - [ ] Workflows diagnostic temporaires : nettoyés ou documentés
 - [ ] **Aucune régression** détectée : autres workflows (ci.yml, staging.yml, nightly.yml) toujours verts après Sprint cleanup
 - [ ] `gh run list --limit 5 --branch main` montre Build & Deploy + CI = success
 
 ### Catégorie E — Communication
+
 - [ ] **Rapport final à Will** : 1 message ≤ 30 lignes (format §14) avec **les 5 causes adressées** + récap Sprint cleanup
 
 Si UN seul critère manque → relancer la boucle "détecter→fix→vérifier" jusqu'à GREEN total ou plafond 5 itérations.
@@ -930,6 +1030,7 @@ Durée totale : <X>h <Y>min — <N> itérations
 ### 15.1 Scripts SSH réutilisables (à commit dans `scripts/ops/`)
 
 **`scripts/ops/hetzner-coolify-health.sh`** :
+
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -944,6 +1045,7 @@ echo "=== NET CHECK GHCR ===" ; curl -sIL https://ghcr.io/v2/ | head -5
 ```
 
 **`scripts/ops/coolify-cancel-stuck.sh`** :
+
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -957,23 +1059,27 @@ done
 ```
 
 ### 15.2 Healthcheck endpoint à créer si absent
+
 Si `/api/healthz` n'existe pas dans axionia/, le créer (Next.js App Router) :
+
 ```typescript
 // src/app/api/healthz/route.ts
-import { NextResponse } from 'next/server';
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
+import { NextResponse } from "next/server";
+export const runtime = "edge";
+export const dynamic = "force-dynamic";
 export async function GET() {
   return NextResponse.json({
-    status: 'ok',
-    sha: process.env.NEXT_PUBLIC_BUILD_SHA ?? 'unknown',
+    status: "ok",
+    sha: process.env.NEXT_PUBLIC_BUILD_SHA ?? "unknown",
     ts: new Date().toISOString(),
   });
 }
 ```
 
 ### 15.3 Header build SHA si absent
+
 Vérifier dans `next.config.ts` qu'un header `x-axion-build-sha` est posé :
+
 ```typescript
 async headers() {
   return [{ source: '/(.*)', headers: [{ key: 'x-axion-build-sha', value: process.env.BUILD_SHA ?? 'dev' }] }];
@@ -988,27 +1094,27 @@ async headers() {
 
 ## 16 · Récapitulatif des sections (table des matières)
 
-| § | Section | Phase | Durée cible |
-|---|---------|-------|-------------|
-| 0 | Mode autopilote total — règles d'engagement | — | — |
-| 1 | TL;DR problème observé | — | — |
-| **1.5** | **🚨 Analyse cross-session — 5 causes empilées** | — | — |
-| 2 | Stack & doctrine | — | — |
-| 3 | Mission — 5 livrables | — | — |
-| 4 | Phase 0 — Snapshot initial | Phase 0 | 20 min |
-| 5 | Phase 1 — Triage composite (10 catégories) | Phase 1 | 15 min |
-| 6 | Phase 2 — Investigation forensique | Phase 2 | 30 min |
-| 7 | Phase 3 — Fix + ré-armement | Phase 3 | 30 min |
-| 8 | Phase 4 — Audit profond infra+sécu | Phase 4 | 45 min |
-| **8.bis** | **🛠️ Phase 4.bis — Sprint CI/CD cleanup (6 points + garde-fou)** | **Phase 4.bis** | **60 min** |
-| 9 | Phase 5 — Recommit + push HEAD finale | Phase 5 | 25 min |
-| 10 | Phase 6 — Smoke prod profond 30+ routes | Phase 6 | 15 min |
-| 11 | Phase 7 — Post-mortem + memory + ADR | Phase 7 | 20 min |
-| 12 | Contraintes & garde-fous | — | — |
-| 13 | Critères de succès finaux (Gate GREEN) — 5 catégories | — | — |
-| 14 | Format rapport final Will | — | — |
-| 15 | Annexes (scripts, healthcheck, header SHA, phrase invocation) | — | — |
-| 16 | Récapitulatif | — | — |
+| §         | Section                                                          | Phase           | Durée cible |
+| --------- | ---------------------------------------------------------------- | --------------- | ----------- |
+| 0         | Mode autopilote total — règles d'engagement                      | —               | —           |
+| 1         | TL;DR problème observé                                           | —               | —           |
+| **1.5**   | **🚨 Analyse cross-session — 5 causes empilées**                 | —               | —           |
+| 2         | Stack & doctrine                                                 | —               | —           |
+| 3         | Mission — 5 livrables                                            | —               | —           |
+| 4         | Phase 0 — Snapshot initial                                       | Phase 0         | 20 min      |
+| 5         | Phase 1 — Triage composite (10 catégories)                       | Phase 1         | 15 min      |
+| 6         | Phase 2 — Investigation forensique                               | Phase 2         | 30 min      |
+| 7         | Phase 3 — Fix + ré-armement                                      | Phase 3         | 30 min      |
+| 8         | Phase 4 — Audit profond infra+sécu                               | Phase 4         | 45 min      |
+| **8.bis** | **🛠️ Phase 4.bis — Sprint CI/CD cleanup (6 points + garde-fou)** | **Phase 4.bis** | **60 min**  |
+| 9         | Phase 5 — Recommit + push HEAD finale                            | Phase 5         | 25 min      |
+| 10        | Phase 6 — Smoke prod profond 30+ routes                          | Phase 6         | 15 min      |
+| 11        | Phase 7 — Post-mortem + memory + ADR                             | Phase 7         | 20 min      |
+| 12        | Contraintes & garde-fous                                         | —               | —           |
+| 13        | Critères de succès finaux (Gate GREEN) — 5 catégories            | —               | —           |
+| 14        | Format rapport final Will                                        | —               | —           |
+| 15        | Annexes (scripts, healthcheck, header SHA, phrase invocation)    | —               | —           |
+| 16        | Récapitulatif                                                    | —               | —           |
 
 **Durée totale cible** : ~4h30 (1 itération clean) → 6h30 max (avec 2-3 itérations sur fix composites)
 

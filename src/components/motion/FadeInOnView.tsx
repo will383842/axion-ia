@@ -21,27 +21,33 @@ interface FadeInOnViewProps {
 // de motion = −30 KB gz × millions de page-views/an.
 export function FadeInOnView({ children, delay = 0, className }: FadeInOnViewProps) {
   const ref = React.useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = React.useState(false);
+  // 2026-05-23 — Stratégie « progressive enhancement » : la section est
+  // VISIBLE par défaut (opacity 1). L'IntersectionObserver est utilisé
+  // uniquement pour déclencher l'animation d'entrée sur les machines
+  // suffisamment réactives. Si JS bloque / IO ne déclenche pas (CPU
+  // saturé, navigateur strict, prefers-reduced-motion) → le contenu reste
+  // visible. Garantit zéro section invisible quelle que soit la
+  // performance du client.
+  //
+  // Avant : useState(false) → SSR rendait opacity 0, hydration restait à 0,
+  // sections invisibles tant que IO ne firait pas. Sous charge CPU (dev
+  // server + tests parallèles), Will voyait des sections vides.
+  const [animated, setAnimated] = React.useState(false);
 
   React.useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    // IntersectionObserver est universellement supporté depuis 2017 (Chrome
-    // 51+, Firefox 55+, Safari 12.1+, Edge 15+). Pas de fallback nécessaire
-    // en 2026 — Next 16 cible déjà des navigateurs modernes.
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            // setState appelé depuis un callback IO async (browser event loop)
-            // — pas de cascading render. Le lint react-hooks ne flag pas ici.
-            setVisible(true);
+            setAnimated(true);
             io.disconnect();
             break;
           }
         }
       },
-      { rootMargin: "-10% 0px -10% 0px" },
+      { rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(node);
     return () => io.disconnect();
@@ -52,11 +58,10 @@ export function FadeInOnView({ children, delay = 0, className }: FadeInOnViewPro
       ref={ref}
       className={className}
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translate3d(0, 0, 0)" : "translate3d(0, 8px, 0)",
-        transition: `opacity 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-        // `will-change` optimise sans coût (composite layer une seule fois).
-        willChange: visible ? "auto" : "opacity, transform",
+        opacity: 1,
+        transform: animated ? "translate3d(0, 0, 0)" : "translate3d(0, 8px, 0)",
+        transition: `transform 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+        willChange: animated ? "auto" : "transform",
       }}
     >
       {children}

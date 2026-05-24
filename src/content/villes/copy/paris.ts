@@ -558,7 +558,7 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple en quelques semaines (lecture factures, comptes-rendus, qualification leads).",
           },
@@ -664,7 +664,7 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case over a few weeks (invoice reading, meeting minutes, lead qualification).",
           },

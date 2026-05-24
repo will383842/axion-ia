@@ -29,6 +29,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -80,10 +81,9 @@ export default async function CorrectionsPage({ params }: Props) {
     // P1-21 verification fix 2026-05-18 — cohérence avec /charte-editoriale
     // (audit indépendant agent Explore a relevé l'absence sur cette page).
     mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".tldr-answer", '[data-aeo="tldr"]'],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: [".tldr-answer", '[data-aeo="tldr"]'],
+    }),
   } as const;
 
   const breadcrumbItems = [{ href: "/corrections", label: isFr ? "Corrections" : "Corrections" }];
