@@ -1,5 +1,6 @@
 // P5.5 — Export CSV tableau croisé villes × secteur × état
 // GET /[locale]/[adminPrefix]/content-gen/geo/coverage-table/export.csv
+// SP-04 P0-8 — csvEscape() + propagation filtres status/ville depuis querystring
 
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
@@ -9,6 +10,16 @@ export const dynamic = "force-dynamic";
 
 interface RouteParams {
   params: Promise<{ locale: string; adminPrefix: string }>;
+}
+
+/** Échappe une valeur CSV : wrap dans double-quotes + double les guillemets internes. */
+function csvEscape(value: string | number | null | undefined): string {
+  if (value == null) return "";
+  const str = String(value);
+  if (str.includes('"') || str.includes(",") || str.includes("\n") || str.includes("\r")) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
 }
 
 export async function GET(req: NextRequest, { params: _params }: RouteParams) {
@@ -29,9 +40,14 @@ export async function GET(req: NextRequest, { params: _params }: RouteParams) {
 
   const header = "ville,secteur,etat,articles,score_moyen\n";
   const body = rows
-    .map(
-      (r) =>
-        `${r.anchorVilleSlug},${r.serviceSector ?? ""},${r.status},${r.count},${r.avgQuality != null ? r.avgQuality.toFixed(2) : ""}`,
+    .map((r) =>
+      [
+        csvEscape(r.anchorVilleSlug),
+        csvEscape(r.serviceSector),
+        csvEscape(r.status),
+        csvEscape(r.count),
+        csvEscape(r.avgQuality != null ? r.avgQuality.toFixed(2) : null),
+      ].join(","),
     )
     .join("\n");
 

@@ -18,8 +18,9 @@ export const INTERVENTION_SLUGS = [
   // Sprint 14.10.8 (Will 2026-05-12) — audit Flash sur site (890 €) réservable
   // directement sur le calendrier depuis le hub /audit refondu.
   "audit-flash-onsite",
-  // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe 390 €
-  // promues bookables direct calendrier (au lieu du formulaire générique).
+  // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe (cf.
+  // pricing.ts intervention-4h, 590 € HT) promues bookables direct calendrier
+  // (au lieu du formulaire générique).
   "demarrage-ia-express",
   "atelier-ia-cible",
 ] as const;
@@ -65,7 +66,7 @@ const SLUG_TO_TIER_ID: Record<InterventionSlug, string> = {
   // Audit Flash terrain — mappe vers le tier audit-flash, sous-tier audit-flash-onsite.
   "audit-flash-onsite": "audit-flash",
   // Will (audit /interventions 2026-05-12) — 2 formations 4 h partagent le
-  // même tier `intervention-4h` (390 € flat, cf. pricing.ts:347).
+  // même tier `intervention-4h` (590 € flat, cf. pricing.ts intervention-4h).
   "demarrage-ia-express": "intervention-4h",
   "atelier-ia-cible": "intervention-4h",
 };

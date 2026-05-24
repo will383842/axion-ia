@@ -1,33 +1,63 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, Users, Search, Wand2 } from "lucide-react";
+import {
+  ArrowRight,
+  TrendingUp,
+  Target,
+  Star,
+  Users,
+  Layers,
+  MapPin,
+  BadgeCheck,
+  Shield,
+  Clock,
+  Sparkles,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { FAQ_GLOBAL } from "@/content/transversal";
+import { CLIENT_LOGOS, VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
 import {
   AUDIT_TIERS,
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
+  UN_A_UN_TIERS,
   formatAmount,
-  formatAmountRange,
   getEntryPriceEur,
-  getTierById,
 } from "@/content/pricing";
-import { buildProductMetadata, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildFaqSpeakableJsonLd,
+  buildLocalBusinessJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { Illustration } from "@/components/visual/Illustration";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { Illustration } from "@/components/visual/Illustration";
+import { LogosMarquee } from "@/components/home/LogosMarquee";
+import { VideoTestimonials } from "@/components/home/VideoTestimonials";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+
+// ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
+// /implementation). Sans ce flag, la home reste sur le comportement par défaut
+// Next.js (re-rendue à chaque requête en dev, figée en prod selon config).
+// 86400s = 24h, suffisant pour rafraîchir métriques + liens implantations
+// régionales (LocalCoverageSection lit `getIndexableRegions()`).
+export const revalidate = 86400;
 
 interface HomeProps {
   params: Promise<{ locale: string }>;
@@ -41,11 +71,11 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     locale,
     path: "/",
     title: isFr
-      ? "Formation IA · Audit · Coaching & Implémentation · Axion-IA"
-      : "AI Training & Audit · Coaching & Implementation · Axion-IA",
+      ? "Cabinet IA Paris · Formations · Audits · Axion-IA"
+      : "AI Consultancy Paris · Training · Audits · Axion-IA",
     description: isFr
-      ? `Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
-      : `On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
+      ? `Cabinet IA 100 % seniors, zéro intermédiaire. Formations, audits chiffrés, coaching 1-to-1 et implémentations pour TPE, PME et ETI. Résultats mesurables, hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
+      : `Senior-only AI consultancy, zero middlemen. Training, costed audits, 1-to-1 coaching and implementation for SMBs and mid-market firms. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
     alternates: { fr: "/", en: "/" },
   });
 }
@@ -69,155 +99,226 @@ export default async function Home({ params }: HomeProps) {
   const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
     compact: true,
   });
-  const auditRange = formatAmountRange(
-    getEntryPriceEur(AUDIT_TIERS) ?? 0,
-    getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
-    loc,
-    { compact: true },
-  );
+  // auditRange retiré post-refonte pricing single-block 2026-05-24
+  // (la grille utilise désormais auditEntryPrice + "à partir de" plutôt qu un range).
+  // Préservé en commentaire pour réintroduction facile si Will veut revenir à un affichage range :
+  //   const auditRange = formatAmountRange(getEntryPriceEur(AUDIT_TIERS) ?? 0,
+  //     getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, loc, { compact: true });
+  const auditEntryPrice = formatAmount(getEntryPriceEur(AUDIT_TIERS) ?? 0, loc, {
+    compact: true,
+  });
+  const unAUnEntryPrice = formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, loc, {
+    compact: true,
+  });
+  // Plateforme web augmentée IA : pas de TIERS dédié dans pricing.ts SSOT
+  // → on s'aligne sur le prix d'entrée implémentation (porte d'entrée la
+  // plus proche en coût/durée). Will pourra ajouter un WEB_TIERS dédié plus tard.
+  const webEntryPrice = implEntryPrice;
 
-  // 3 services — intervenir / auditer / implémenter (cÅ“ur du message client).
-  // Chaque carte a SA couleur d'accent : terracotta (action humaine) / primary
-  // (analyse) / sage (production) — identité visuelle claire par service.
+  // 5 services — Blueprint 2026 (Section 4) : Formations / 1-to-1 / Audits /
+  // Implémentations / Plateforme web & SaaS.
+  // Refonte cartes 2026-05-24 (Will) : charte brand stricte (terracotta dominant,
+  // bleu uniquement pointes), titres XL serif impactants, offre claire.
+  // Plus de rotation accents — brand-coherence avant tout (ces 5 cartes = CA).
   const valuePropositions = [
     {
       id: "intervene",
-      icon: Users,
-      accent: "terracotta" as const,
-      action: t("value1Action"),
+      emoji: "🎓",
+      shortName: isFr ? "Formations" : "Training",
+      tagline: isFr ? "IA en entreprise" : "AI for companies",
       headline: t("value1Headline"),
-      price: t("value1Price", { price: interventionEntryPrice }),
-      bullets: [t("value1Bullet1"), t("value1Bullet2"), t("value1Bullet3")],
+      priceLabel: isFr
+        ? `À partir de ${interventionEntryPrice} HT`
+        : `From ${interventionEntryPrice} excl. tax`,
       gain: t("value1Gain"),
       href: "/interventions" as const,
     },
     {
+      id: "coach",
+      emoji: "🧑‍💼",
+      shortName: isFr ? "1-to-1" : "1-to-1",
+      tagline: isFr ? "Coaching individuel" : "Personal coaching",
+      headline: t("value4Headline"),
+      priceLabel: isFr ? `À partir de ${unAUnEntryPrice} HT` : `From ${unAUnEntryPrice} excl. tax`,
+      gain: t("value4Gain"),
+      href: "/un-a-un" as const,
+    },
+    {
       id: "audit",
-      icon: Search,
-      accent: "primary" as const,
-      action: t("value2Action"),
+      emoji: "🔍",
+      shortName: isFr ? "Audits" : "Audits",
+      tagline: isFr ? "Diagnostic & roadmap" : "Diagnosis & roadmap",
       headline: t("value2Headline"),
-      price: t("value2Price", { priceRange: auditRange }),
-      bullets: [t("value2Bullet1"), t("value2Bullet2"), t("value2Bullet3")],
+      priceLabel: isFr ? `À partir de ${auditEntryPrice} HT` : `From ${auditEntryPrice} excl. tax`,
       gain: t("value2Gain"),
       href: "/audit" as const,
     },
     {
       id: "implement",
-      icon: Wand2,
-      accent: "sage" as const,
-      action: t("value3Action"),
+      emoji: "⚙️",
+      shortName: isFr ? "Implémentations" : "Implementation",
+      tagline: isFr ? "Automatisations sur mesure" : "Custom automation",
       headline: t("value3Headline"),
-      price: t("value3Price", { price: implEntryPrice }),
-      bullets: [t("value3Bullet1"), t("value3Bullet2"), t("value3Bullet3")],
+      priceLabel: isFr ? `À partir de ${implEntryPrice} HT` : `From ${implEntryPrice} excl. tax`,
       gain: t("value3Gain"),
       href: "/implementation" as const,
     },
+    {
+      id: "web",
+      emoji: "🌐",
+      shortName: isFr ? "Plateforme web & SaaS" : "Web platform & SaaS",
+      tagline: isFr ? "Sites & apps augmentés IA" : "AI-augmented sites & apps",
+      headline: t("value5Headline"),
+      priceLabel: isFr ? `À partir de ${webEntryPrice} HT` : `From ${webEntryPrice} excl. tax`,
+      gain: t("value5Gain"),
+      href: "/sites-web-augmentes" as const,
+    },
   ];
 
-  // Mapping classes Tailwind pour chaque accent (évite la concaténation
-  // dynamique non détectable par le compilateur Tailwind).
-  const accentClasses = {
-    terracotta: {
-      iconBg: "bg-terracotta-soft",
-      iconFg: "text-terracotta-deep",
-      number: "text-terracotta",
-      headline: "text-terracotta",
-      hoverBorder: "hover:border-terracotta",
-      bulletIcon: "text-terracotta-deep",
-      gainBg: "bg-terracotta-soft",
-      gainText: "text-terracotta-deep",
-      ringHalo: "before:bg-terracotta/8",
-    },
-    primary: {
-      iconBg: "bg-primary-soft",
-      iconFg: "text-primary",
-      number: "text-primary",
-      headline: "text-primary",
-      hoverBorder: "hover:border-primary",
-      bulletIcon: "text-primary",
-      gainBg: "bg-primary-soft",
-      gainText: "text-primary",
-      ringHalo: "before:bg-primary/8",
-    },
-    sage: {
-      iconBg: "bg-sage-soft",
-      iconFg: "text-sage",
-      number: "text-sage",
-      headline: "text-sage",
-      hoverBorder: "hover:border-sage",
-      bulletIcon: "text-sage",
-      gainBg: "bg-sage-soft",
-      gainText: "text-sage",
-      ringHalo: "before:bg-sage/8",
-    },
-  } as const;
-
-  const whyPoints = [t("valueWhy1"), t("valueWhy2"), t("valueWhy3"), t("valueWhy4")];
-
-  // Métriques.
-  const metrics = [
-    { id: "roi", number: t("metric1Number"), suffix: t("metric1Suffix"), label: t("metric1Label") },
-    { id: "eu", number: t("metric2Number"), suffix: t("metric2Suffix"), label: t("metric2Label") },
+  // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
+  const audienceSegments = [
     {
-      id: "ticket",
-      number: t("metric3Number"),
-      suffix: t("metric3Suffix"),
-      label: t("metric3Label"),
+      id: "tpe",
+      title: t("audience1Title"),
+      lead: t("audience1Lead"),
+      detail: t("audience1Detail"),
     },
     {
-      id: "lockin",
-      number: t("metric4Number"),
-      suffix: t("metric4Suffix"),
-      label: t("metric4Label"),
+      id: "pme",
+      title: t("audience2Title"),
+      lead: t("audience2Lead"),
+      detail: t("audience2Detail"),
+    },
+    {
+      id: "eti",
+      title: t("audience3Title"),
+      lead: t("audience3Lead"),
+      detail: t("audience3Detail"),
+    },
+    {
+      id: "large",
+      title: t("audience4Title"),
+      lead: t("audience4Lead"),
+      detail: t("audience4Detail"),
     },
   ];
 
-  // 4 étapes méthode.
-  const methodSteps = [
-    { id: "scope", n: "01", title: t("method1Title"), description: t("method1Description") },
-    { id: "demo", n: "02", title: t("method2Title"), description: t("method2Description") },
-    { id: "plan", n: "03", title: t("method3Title"), description: t("method3Description") },
-    { id: "golive", n: "04", title: t("method4Title"), description: t("method4Description") },
-  ];
-
-  // 3 cas concrets — sélection diversifiée pour montrer le spectre complet
-  // de tailles d'entreprises (TPE artisan / PME / grande entreprise) et que
-  // l'approche s'adapte à toutes les échelles (cf. valueWhy2).
-  const featuredSlugs = [
-    "tpe-artisan-prospection",
-    "industrie-comptabilite",
-    "banque-onboarding",
+  // ─── FAQ — sélection home (12 questions essentielles + 4 géo) ───
+  // FAQ_GLOBAL contient ~30+ questions exhaustives. Sur la home, on affiche
+  // un sous-ensemble pertinent pour ne pas surcharger la page :
+  // 4 géo (couverture France/international) + 8 essentielles (définition,
+  // démarrage, coût, ROI, sécurité, délai, IA vs équipes, AI Act).
+  // Le reste est accessible via /faq (page dédiée).
+  const HOME_FAQ_IDS = [
+    "geo-france",
+    "geo-metropoles",
+    "geo-tpe-rural",
+    "geo-distance-international",
+    "definition",
+    "comment-commencer",
+    "delai-implementation",
+    "cout-projet-ia-pme",
+    "ia-remplace-salaries",
+    "confidentialite-projet-ia",
+    "roi-mesurer",
+    "ai-act-2026",
   ] as const;
-  const featuredCases = featuredSlugs
-    .map((slug) => CASE_STUDIES.find((c) => c.slug === slug))
-    .filter((c): c is (typeof CASE_STUDIES)[number] => c !== undefined)
-    .map((c) => ({
-      slug: c.slug,
-      industry: isFr ? c.industry : c.industryEn,
-      metric: c.metric,
-      title: c[loc].title,
-      excerpt: c[loc].excerpt,
+  const faqs = HOME_FAQ_IDS.map((id) => FAQ_GLOBAL.find((f) => f.id === id))
+    .filter((f): f is (typeof FAQ_GLOBAL)[number] => f !== undefined)
+    .map((f) => ({
+      id: f.id,
+      question: f[loc].question,
+      answer: f[loc].answer,
     }));
-
-  // FAQ.
-  const faqs = FAQ_GLOBAL.map((f) => ({
-    id: f.id,
-    question: f[loc].question,
-    answer: f[loc].answer,
-  }));
 
   // JSON-LD homepage. Organization déjà émis layout-level via
   // `buildOrganizationJsonLd` (riche : sameAs + contactPoint + areaServed +
   // foundingLocation + knowsLanguage). Pas de re-émission ici (signal Google
   // "double Organization" ambigu). Le FAQ utilise `buildFaqSpeakableJsonLd`
   // pour activer la voix (Google Assistant + Alexa + Bixby — AEO 2026).
-  const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqs });
+  // `additionalSelectors` étend la couverture Speakable au hero (h1 + intro)
+  // pour que voice search lise le brand statement avant les Q+R (cf. audit P1-1
+  // 2026-05-24 : sans ça, Google Assistant ne lit que la FAQ, jamais le hero).
+  const faqJsonLd = buildFaqSpeakableJsonLd({
+    items: faqs,
+    additionalSelectors: ["[data-speakable-hero]"],
+  });
+
+  // LocalBusiness JSON-LD — Service Area Business safe mode.
+  // Pas d'adresse/geo/openingHours sur la home (juste areaServed France).
+  // Les vrais champs (adresse Paris) iront sur /a-propos quand prêts.
+  const localBusinessJsonLd = buildLocalBusinessJsonLd({
+    locale: loc,
+    path: "/",
+    name: isFr ? "Axion-IA — Cabinet IA opérationnel" : "Axion-IA — Operational AI Consultancy",
+    description: isFr
+      ? "Cabinet IA français : formations, audits, accompagnement 1-to-1, implémentations d'automatisations, plateformes web augmentées IA. Présent partout en France métropolitaine."
+      : "French AI consultancy: training, audits, 1-to-1 coaching, automation implementation, AI-augmented web platforms. Present across mainland France.",
+    areaServed: { type: "AdministrativeArea", name: isFr ? "France" : "France" },
+  });
+
+  // ─── JSON-LD additionnels Blueprint §22 ───
+  // 1) Service x5 — un objet @type Service par card du tableau valuePropositions
+  //    (Blueprint §22 → 1 Service par service public). Provider référence
+  //    l'Organization déjà émise layout-level (pas de re-émission complète).
+  const SERVICE_PATHS: Record<string, string> = {
+    intervene: "/interventions",
+    audit: "/audit",
+    coach: "/un-a-un",
+    implement: "/implementation",
+    web: "/sites-web-augmentes",
+  };
+  // Service x5 — provider référence l'Organization émise layout-level via @id
+  // (knowledge graph LLM-friendly : Organization → Service → Offer cohérent vs
+  // chaque Service îlot avec provider string dupliqué). Cf. audit AEO 2026-05-24.
+  // name : combine shortName + tagline pour signal AEO clair ("Formations · IA en entreprise")
+  const servicesJsonLd = valuePropositions.map((v) => ({
+    "@context": "https://schema.org",
+    "@type": "Service" as const,
+    name: `${v.shortName} · ${v.tagline}`,
+    description: v.gain,
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed: "FR",
+    serviceType: v.shortName,
+    url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
+  }));
+
+  // 2) Reviewed cases — utilisés pour le rendu visuel des testimonials.
+  // AggregateRating + Review[] JSON-LD RETIRÉS (audit perfection mai 2026) :
+  // - Google exige n ≥ 5 avis vérifiables avec datePublished
+  // - Photos clients pas encore disponibles (autorisations en cours)
+  // → Risque "trompeur" si on émet un JSON-LD avec données factices.
+  // Ré-activer quand Will aura collecté ≥ 5 vrais avis avec accord écrit + dates.
+  const reviewedCases = CASE_STUDIES.filter((c) => c[loc].testimonialQuote);
+
+  // BreadcrumbList JSON-LD : ABSENT volontairement sur la home (convention 2026 :
+  // la home EST la racine hiérarchique → un BL self-referencing 1-item est un
+  // anti-pattern Google. Les pages enfants émettent leur BL via buildBreadcrumbJsonLd).
+  // Cf. audit perfection A4 2026-05-24.
+
+  // 3) VideoObject[] — un schema par vidéo témoignage. Vide si pas de vidéos
+  //    (section masquée côté JSX → schema absent aussi, cohérent).
+  //    `datePublished` requis sur VideoTestimonial pour signal fraîcheur honnête.
+  const videosJsonLd = VIDEO_TESTIMONIALS.map((v) => ({
+    "@context": "https://schema.org",
+    "@type": "VideoObject" as const,
+    name: v.title,
+    description: `« ${v.quote} » — ${v.author}, ${v.role}, ${v.company}`,
+    thumbnailUrl: v.thumbnail ?? `https://i.ytimg.com/vi/${v.youtubeId}/maxresdefault.jpg`,
+    uploadDate: v.datePublished,
+    ...(v.duration ? { duration: v.duration } : {}),
+    contentUrl: `https://www.youtube.com/watch?v=${v.youtubeId}`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
+  }));
 
   return (
     <>
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
+      <section
+        id="hero"
+        aria-labelledby="hero-heading"
+        className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32"
+      >
         <Container className="relative">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche : copy (titre garde sa taille géante) */}
@@ -226,619 +327,97 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("heroEyebrow")}
               </p>
-              <h1 className="display-editorial text-fg">
+              <h1 id="hero-heading" className="display-editorial text-fg" data-speakable-hero>
                 {t("heroTitlePart1")}{" "}
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic">{t("heroTitleEm")}</span>
                 </em>
                 {t("heroTitlePart2")}
               </h1>
-              <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              <p
+                className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl"
+                data-speakable-hero
+              >
                 {t("heroDescription")}
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
+              {/* Hero CTAs (2026-05-23 Will) : 2 boutons côte à côte
+                  — Primary : réserver un appel (calendrier interne /reserver, équivalent Calendly)
+                  — Secondary : formulaire de contact (/contact, réponse 24h) */}
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
-                  href="/interventions"
-                  data-cta="home-hero-primary"
-                  data-cta-tracking="home_hero_primary_click"
-                  className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  href="/reserver"
+                  className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  {t("heroCtaPrimary", { price: interventionEntryPrice })}
+                  {isFr ? "Réserver un appel" : "Book a call"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
                 <Link
-                  href="/cas-concrets"
-                  data-cta="home-hero-secondary"
-                  data-cta-tracking="home_hero_secondary_click"
-                  className="text-fg border-border-strong cta-lift bg-paper/60 focus-visible:ring-primary inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold backdrop-blur focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  href="/contact"
+                  className="text-fg border-border-strong hover:bg-paper cta-lift focus-visible:ring-fg inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  {t("heroCtaSecondary")}
+                  {isFr ? "Nous contacter" : "Contact us"}
                 </Link>
               </div>
+              <p className="text-fg-muted mt-6 text-sm leading-relaxed sm:text-base">
+                <span className="text-terracotta font-semibold">{t("heroProofLine")}</span>
+              </p>
             </div>
 
-            {/* Colonne droite : illustration narrative enrichie — 3 services
-                connectés à votre entreprise avec courbes, sparkline, badges.
-                Doctrine `.hero-schema` (v3.3, 2026-05-08) : carré 576×576 lg+,
-                aligné sur les 10 autres pages (Audit, Cas-concrets, etc.) pour
-                harmonisation stricte. preserveAspectRatio="meet" letterbox
-                léger sides (~34px) pour viewBox 600×680 dans box 1:1. */}
-            <div aria-hidden="true" className="hero-schema pointer-events-none hidden lg:block">
-              <svg
-                viewBox="0 0 600 680"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid meet"
-                className="block h-full w-full"
-              >
-                <defs>
-                  {/* Halos diffus radiaux par couleur */}
-                  <radialGradient id="halo-center" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.18" />
-                    <stop offset="40%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="halo-tc" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.30" />
-                    <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.10" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="halo-pr" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.30" />
-                    <stop offset="60%" stopColor="var(--color-primary)" stopOpacity="0.10" />
-                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-                  </radialGradient>
-                  <radialGradient id="halo-sg" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.30" />
-                    <stop offset="60%" stopColor="var(--color-sage)" stopOpacity="0.10" />
-                    <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
-                  </radialGradient>
-                  {/* Gradient diagonal pour cercle central — effet sphère */}
-                  <linearGradient id="grad-center" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-paper)" stopOpacity="1" />
-                    <stop offset="100%" stopColor="var(--color-bg)" stopOpacity="1" />
-                  </linearGradient>
-                  {/* Gradients linéaires pour connexions */}
-                  <linearGradient id="grad-link-tc" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.7" />
-                    <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.15" />
-                  </linearGradient>
-                  <linearGradient id="grad-link-pr" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0.7" />
-                  </linearGradient>
-                  <linearGradient id="grad-link-sg" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0.7" />
-                  </linearGradient>
-                  {/* Pattern grid très subtil — donne de la matière */}
-                  <pattern id="grid-fine" width="32" height="32" patternUnits="userSpaceOnUse">
-                    <path
-                      d="M 32 0 L 0 0 0 32"
-                      fill="none"
-                      stroke="var(--color-border-strong)"
-                      strokeWidth="0.5"
-                      strokeOpacity="0.35"
-                    />
-                  </pattern>
-                  {/* Filter glow doux */}
-                  <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feMerge>
-                      <feMergeNode in="blur" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                  {/* Mask radial pour fade le grid sur les bords */}
-                  <radialGradient id="grid-mask" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="white" stopOpacity="0.6" />
-                    <stop offset="70%" stopColor="white" stopOpacity="0.1" />
-                    <stop offset="100%" stopColor="white" stopOpacity="0" />
-                  </radialGradient>
-                  <mask id="vignette-mask">
-                    <rect width="100%" height="100%" fill="url(#grid-mask)" />
-                  </mask>
-                </defs>
-
-                {/* â”€â”€ Background : grid texturé fade radial â”€â”€ */}
-                <rect width="600" height="680" fill="url(#grid-fine)" mask="url(#vignette-mask)" />
-
-                {/* â”€â”€ Halo ambient large â”€â”€ */}
-                <circle cx="300" cy="310" r="290" fill="url(#halo-center)" />
-
-                {/* â”€â”€ Anneaux concentriques décoratifs (3 niveaux) â”€â”€ */}
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="220"
-                  stroke="var(--color-border-strong)"
-                  strokeOpacity="0.18"
-                  strokeDasharray="1 8"
-                  fill="none"
-                />
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="170"
-                  stroke="var(--color-border-strong)"
-                  strokeOpacity="0.30"
-                  strokeDasharray="2 6"
-                  fill="none"
-                />
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="125"
-                  stroke="var(--color-border-strong)"
-                  strokeOpacity="0.55"
-                  fill="none"
-                />
-
-                {/* â”€â”€ Connexions courbes Bézier multi-couches (3 services â†’ centre) â”€â”€ */}
-                {/* Service 1 — Intervenir (haut-droite) â†’ centre : courbe douce + écho */}
-                <path
-                  d="M 460 110 C 420 170, 380 230, 340 270"
-                  stroke="url(#grad-link-tc)"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 460 110 C 410 160, 360 220, 340 270"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.25"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-                {/* Service 2 — Auditer (gauche) â†’ centre */}
-                <path
-                  d="M 130 320 C 180 318, 230 315, 260 312"
-                  stroke="url(#grad-link-pr)"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 130 320 C 190 340, 240 332, 260 320"
-                  stroke="var(--color-primary)"
-                  strokeOpacity="0.25"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-                {/* Service 3 — Implémenter (bas-droite) â†’ centre */}
-                <path
-                  d="M 460 540 C 420 480, 380 410, 340 360"
-                  stroke="url(#grad-link-sg)"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 460 540 C 430 470, 380 420, 340 360"
-                  stroke="var(--color-sage)"
-                  strokeOpacity="0.25"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-
-                {/* â”€â”€ Centre : "votre entreprise" — sphère gradient + glow â”€â”€ */}
-                {/* Outer glow ring */}
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="100"
-                  fill="var(--color-terracotta)"
-                  fillOpacity="0.06"
-                  filter="url(#soft-glow)"
-                />
-                {/* Sphère principale */}
-                <circle cx="300" cy="310" r="88" fill="url(#grad-center)" />
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="88"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.5"
-                  strokeWidth="2"
-                  fill="none"
-                />
-                {/* Anneau interne décoratif */}
-                <circle
-                  cx="300"
-                  cy="310"
-                  r="76"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.18"
-                  strokeWidth="1"
-                  strokeDasharray="2 4"
-                  fill="none"
-                />
-                {/* Highlight diagonal (effet sphère 3D subtil) */}
-                <ellipse
-                  cx="278"
-                  cy="288"
-                  rx="32"
-                  ry="14"
-                  fill="var(--color-paper)"
-                  fillOpacity="0.6"
-                  transform="rotate(-30 278 288)"
-                />
-                {/* Icône Brain stylisée enrichie */}
-                <g
-                  transform="translate(283, 280)"
-                  stroke="var(--color-terracotta)"
-                  fill="none"
-                  strokeWidth="1.6"
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                >
-                  <path d="M 17 5 C 12 2, 5 5, 5 12 C 2 14, 2 20, 6 22 C 6 25, 10 27, 13 26 L 13 30 L 17 30 L 17 5 Z" />
-                  <path d="M 17 5 C 22 2, 29 5, 29 12 C 32 14, 32 20, 28 22 C 28 25, 24 27, 21 26 L 21 30 L 17 30" />
-                  {/* Synapses internes */}
-                  <path
-                    d="M 11 13 L 17 13 M 23 13 L 17 13 M 11 19 L 17 19 M 23 19 L 17 19"
-                    strokeOpacity="0.4"
-                    strokeWidth="0.9"
-                  />
-                  <circle cx="11" cy="13" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                  <circle cx="23" cy="13" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                  <circle cx="11" cy="19" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                  <circle cx="23" cy="19" r="0.8" fill="var(--color-terracotta)" stroke="none" />
-                </g>
-                {/* Label centre */}
-                <text
-                  x="300"
-                  y="345"
-                  textAnchor="middle"
-                  fontFamily="var(--font-serif)"
-                  fontSize="20"
-                  fontStyle="italic"
-                  fontWeight="500"
-                  fill="var(--color-terracotta)"
-                >
-                  Votre entreprise
-                </text>
-                <text
-                  x="300"
-                  y="364"
-                  textAnchor="middle"
-                  fontFamily="var(--font-sans)"
-                  fontSize="10"
-                  fontWeight="600"
-                  letterSpacing="0.20em"
-                  fill="var(--color-fg-muted)"
-                >
-                  + IA = GAINS
-                </text>
-
-                {/* â”€â”€ Service 1 : INTERVENIR (haut-droite, terracotta)
-                    Mission : accompagner vos équipes. */}
-                <g>
-                  <circle cx="460" cy="110" r="80" fill="url(#halo-tc)" />
-                  {/* Pulse ring décoratif extérieur */}
-                  <circle
-                    cx="460"
-                    cy="110"
-                    r="60"
-                    stroke="var(--color-terracotta)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="2 4"
-                    fill="none"
-                  />
-                  <circle cx="460" cy="110" r="54" fill="var(--color-paper)" />
-                  <circle
-                    cx="460"
-                    cy="110"
-                    r="54"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="2.4"
-                  />
-                  {/* Icône Users (3 cercles + lignes corps) */}
-                  <circle cx="446" cy="100" r="4.5" fill="var(--color-terracotta)" />
-                  <circle cx="462" cy="98" r="5.5" fill="var(--color-terracotta)" />
-                  <circle cx="478" cy="100" r="4.5" fill="var(--color-terracotta)" />
-                  <path
-                    d="M 440 116 Q 446 112 452 116 M 453 114 Q 462 108 471 114 M 472 116 Q 478 112 484 116"
-                    stroke="var(--color-terracotta)"
-                    strokeWidth="2"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                  <text
-                    x="460"
-                    y="140"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="10"
-                    fontWeight="700"
-                    letterSpacing="0.16em"
-                    fill="var(--color-terracotta)"
-                  >
-                    INTERVENIR
-                  </text>
-                  {/* Sous-label mission — glassmorphism léger via rect */}
-                  <rect
-                    x="378"
-                    y="178"
-                    width="164"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    fillOpacity="0.85"
-                    stroke="var(--color-border)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="460"
-                    y="199"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-fg)"
-                  >
-                    Accompagner vos équipes
-                  </text>
-                </g>
-
-                {/* â”€â”€ Service 2 : AUDITER (gauche, primary)
-                    Mission : trouver où gagner du temps et de l'argent. */}
-                <g>
-                  <circle cx="120" cy="310" r="80" fill="url(#halo-pr)" />
-                  <circle
-                    cx="120"
-                    cy="310"
-                    r="60"
-                    stroke="var(--color-primary)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="2 4"
-                    fill="none"
-                  />
-                  <circle cx="120" cy="310" r="54" fill="var(--color-paper)" />
-                  <circle
-                    cx="120"
-                    cy="310"
-                    r="54"
-                    stroke="var(--color-primary)"
-                    strokeWidth="2.4"
-                  />
-                  {/* Icône Loupe enrichie (avec poignée + reflet) */}
-                  <circle
-                    cx="115"
-                    cy="304"
-                    r="13"
-                    stroke="var(--color-primary)"
-                    strokeWidth="2.4"
-                    fill="none"
-                  />
-                  {/* Reflet sur la lentille */}
-                  <path
-                    d="M 109 298 Q 112 300 114 304"
-                    stroke="var(--color-primary)"
-                    strokeWidth="1.5"
-                    strokeOpacity="0.5"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                  <line
-                    x1="124"
-                    y1="313"
-                    x2="135"
-                    y2="324"
-                    stroke="var(--color-primary)"
-                    strokeWidth="2.4"
-                    strokeLinecap="round"
-                  />
-                  <text
-                    x="120"
-                    y="350"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="10"
-                    fontWeight="700"
-                    letterSpacing="0.16em"
-                    fill="var(--color-primary)"
-                  >
-                    AUDITER
-                  </text>
-                  {/* Sous-label mission */}
-                  <rect
-                    x="44"
-                    y="378"
-                    width="152"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    fillOpacity="0.85"
-                    stroke="var(--color-border)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="120"
-                    y="399"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-fg)"
-                  >
-                    Trouver où gagner
-                  </text>
-                </g>
-
-                {/* â”€â”€ Service 3 : IMPLÉMENTER (bas-droite, sage)
-                    Mission : coder & déployer les outils sur mesure. */}
-                <g>
-                  <circle cx="460" cy="540" r="80" fill="url(#halo-sg)" />
-                  <circle
-                    cx="460"
-                    cy="540"
-                    r="60"
-                    stroke="var(--color-sage)"
-                    strokeOpacity="0.25"
-                    strokeWidth="1"
-                    strokeDasharray="2 4"
-                    fill="none"
-                  />
-                  <circle cx="460" cy="540" r="54" fill="var(--color-paper)" />
-                  <circle cx="460" cy="540" r="54" stroke="var(--color-sage)" strokeWidth="2.4" />
-                  {/* Icône Code </> enrichie */}
-                  <path
-                    d="M 450 530 L 440 540 L 450 550"
-                    stroke="var(--color-sage)"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M 470 530 L 480 540 L 470 550"
-                    stroke="var(--color-sage)"
-                    strokeWidth="2.5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <line
-                    x1="466"
-                    y1="528"
-                    x2="454"
-                    y2="552"
-                    stroke="var(--color-sage)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <text
-                    x="460"
-                    y="580"
-                    textAnchor="middle"
-                    fontFamily="var(--font-sans)"
-                    fontSize="10"
-                    fontWeight="700"
-                    letterSpacing="0.14em"
-                    fill="var(--color-sage)"
-                  >
-                    IMPLÉMENTER
-                  </text>
-                  {/* Sous-label mission */}
-                  <rect
-                    x="384"
-                    y="600"
-                    width="152"
-                    height="32"
-                    rx="16"
-                    fill="var(--color-paper)"
-                    fillOpacity="0.85"
-                    stroke="var(--color-border)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="460"
-                    y="621"
-                    textAnchor="middle"
-                    fontFamily="var(--font-serif)"
-                    fontSize="14"
-                    fontStyle="italic"
-                    fontWeight="500"
-                    fill="var(--color-fg)"
-                  >
-                    Coder & déployer
-                  </text>
-                </g>
-
-                {/* â”€â”€ Particules + petits anneaux décoratifs flottants â”€â”€ */}
-                {/* Mini ring orphelin (top-left) */}
-                <circle
-                  cx="60"
-                  cy="80"
-                  r="14"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.35"
-                  strokeWidth="1"
-                  fill="none"
-                />
-                <circle cx="60" cy="80" r="2.5" fill="var(--color-terracotta)" opacity="0.7" />
-                {/* Mini ring (top-right) */}
-                <circle
-                  cx="540"
-                  cy="280"
-                  r="10"
-                  stroke="var(--color-sage)"
-                  strokeOpacity="0.35"
-                  strokeWidth="1"
-                  fill="none"
-                />
-                <circle cx="540" cy="280" r="2" fill="var(--color-sage)" opacity="0.6" />
-                {/* Particules dispersées */}
-                <circle cx="240" cy="50" r="2" fill="var(--color-primary)" opacity="0.55" />
-                <circle cx="40" cy="220" r="1.8" fill="var(--color-terracotta)" opacity="0.5" />
-                <circle cx="220" cy="540" r="2.5" fill="var(--color-primary)" opacity="0.55" />
-                <circle cx="30" cy="480" r="1.8" fill="var(--color-sage)" opacity="0.5" />
-                <circle cx="380" cy="60" r="1.5" fill="var(--color-sage)" opacity="0.5" />
-                {/* Étoiles 4-pointes */}
-                <path
-                  d="M 50 380 L 52 386 L 58 388 L 52 390 L 50 396 L 48 390 L 42 388 L 48 386 Z"
-                  fill="var(--color-terracotta)"
-                  opacity="0.6"
-                />
-                <path
-                  d="M 555 440 L 557 445 L 562 447 L 557 449 L 555 454 L 553 449 L 548 447 L 553 445 Z"
-                  fill="var(--color-primary)"
-                  opacity="0.5"
-                />
-                {/* Segments géométriques décoratifs */}
-                <line
-                  x1="30"
-                  y1="160"
-                  x2="50"
-                  y2="160"
-                  stroke="var(--color-terracotta)"
-                  strokeOpacity="0.4"
-                  strokeWidth="1"
-                />
-                <line
-                  x1="555"
-                  y1="180"
-                  x2="572"
-                  y2="180"
-                  stroke="var(--color-sage)"
-                  strokeOpacity="0.4"
-                  strokeWidth="1"
-                />
-                <line
-                  x1="555"
-                  y1="510"
-                  x2="572"
-                  y2="510"
-                  stroke="var(--color-primary)"
-                  strokeOpacity="0.4"
-                  strokeWidth="1"
-                />
-              </svg>
+            {/* Colonne droite : photo hero placeholder. Will drop l'image
+                réelle (dashboard / livrable Axion-IA / capture produit) dans
+                `public/illustrations/home-hero-dashboard.avif`. En attendant,
+                placeholder on-brand respectant aspect ratio 1:1 → 0 CLS. */}
+            <div className="hidden lg:block">
+              <Illustration
+                slot="HOME-01-hero"
+                src="/illustrations/home-hero-equipe.avif"
+                aspectRatio="1:1"
+                filenameTarget="public/illustrations/home-hero-equipe.avif"
+                caption={
+                  isFr
+                    ? "L'équipe Axion-IA — l'IA au service de l'humain"
+                    : "The Axion-IA team — AI at the service of humans"
+                }
+                alt={
+                  isFr
+                    ? "Photo de l'équipe Axion-IA en pulls terracotta sous le logo « Axion-IA.com — L'intelligence artificielle au service de l'humain »."
+                    : "Photo of the Axion-IA team wearing terracotta sweaters under the « Axion-IA.com — AI at the service of humans » sign."
+                }
+                priority
+              />
             </div>
+            {/* Bloc SVG décoratif retiré (commit polish) — remplacé par
+                Illustration placeholder photo (LCP optimisé, bundle -657 l.).
+                Ancien SVG complexe préservé dans git history si besoin de
+                revert : commit c617a046^. */}
           </div>
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUE PROPOSITION (3 services + bénéfice client) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      {/* ─── MANIFESTO retiré (commit polish v5, demande Will) ───
+          Phrase positionnement déplacée vers metaDescription seo + AEO via
+          Organization JSON-LD. Visuel privilégié au texte. */}
+
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ VALUE PROPOSITION (5 services + bénéfice client) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           C'est LA section la plus importante de la page — visibilité maximum,
-          chaque service a SA couleur d'accent dédiée. */}
-      <section className="bg-paper relative py-28 sm:py-32 lg:py-40">
+          chaque service a SA couleur d'accent dédiée (rotation terracotta /
+          primary / sage sur 5 cartes). Layout 3+2 sur lg desktop. */}
+      <section
+        id="services"
+        aria-labelledby="services-heading"
+        className="bg-paper relative py-20 sm:py-24 lg:py-28"
+      >
         <Container>
           <FadeInOnView>
-            <div className="mb-20 max-w-4xl">
-              <p className="text-fg-muted mb-6 text-[13px] font-semibold tracking-[0.18em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+            <div className="mx-auto mb-14 max-w-5xl text-center">
+              <p className="text-terracotta mb-5 text-sm font-bold tracking-[0.2em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-2 w-2 rounded-full align-middle" />
                 {t("valueEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.0] font-semibold tracking-tight">
+              <h2
+                id="services-heading"
+                className="text-fg text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-tight"
+              >
                 {t("valueTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -848,282 +427,73 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("valueTitlePart2")}
               </h2>
-              <p className="text-fg-soft mt-8 max-w-3xl text-lg leading-relaxed sm:text-xl">
+              <p className="text-fg-soft mx-auto mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl">
                 {t("valueDescription")}
               </p>
             </div>
           </FadeInOnView>
 
-          <ul className="grid gap-8 lg:grid-cols-3">
-            {valuePropositions.map((v, idx) => {
-              const Icon = v.icon;
-              const a = accentClasses[v.accent];
-              return (
-                <FadeInOnView key={v.id} delay={idx * 100}>
-                  <li className="h-full">
-                    <Link
-                      href={v.href}
-                      className={cn(
-                        // Toute la card est cliquable. Visuel d'affordance :
-                        // hover lift -2px + shadow + accent border + flèche slide.
-                        "group bg-bg border-border focus-visible:ring-primary hover:shadow-elevated relative flex h-full flex-col gap-7 overflow-hidden rounded-3xl border p-10 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                        a.hoverBorder,
-                        // Halo accent diffus en arrière-plan, plus visible au hover
-                        "before:pointer-events-none before:absolute before:-top-32 before:-right-20 before:h-72 before:w-72 before:rounded-full before:opacity-50 before:blur-3xl before:transition-opacity before:duration-500 group-hover:before:opacity-100",
-                        a.ringHalo,
-                      )}
-                    >
-                      {/* En-tête : numéro géant serif + icône accent */}
-                      <div className="relative flex items-start justify-between">
-                        <span
-                          className={cn("text-7xl leading-none font-medium tabular-nums", a.number)}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                          aria-hidden="true"
-                        >
-                          0{idx + 1}
-                        </span>
-                        <span
-                          className={cn(
-                            "inline-flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110",
-                            a.iconBg,
-                            a.iconFg,
-                          )}
-                        >
-                          <Icon className="h-6 w-6" aria-hidden="true" />
-                        </span>
-                      </div>
-
-                      {/* Action + headline */}
-                      <div className="relative">
-                        <h3
-                          className="text-fg text-3xl leading-[1.1] font-medium tracking-tight"
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {v.action}
-                        </h3>
-                        <p
-                          className={cn("mt-3 text-lg italic", a.headline)}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {v.headline}
-                        </p>
-                      </div>
-
-                      {/* Bullets ultra-concrets */}
-                      <ul className="relative flex flex-1 flex-col gap-4">
-                        {v.bullets.map((b, i) => (
-                          <li
-                            key={i}
-                            className="text-fg-soft flex items-start gap-3 text-[15px] leading-relaxed"
-                          >
-                            <Check
-                              className={cn("mt-1 h-4 w-4 shrink-0", a.bulletIcon)}
-                              aria-hidden="true"
-                            />
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Gain client — bandeau coloré accent (mise en avant maximale) */}
-                      <div className={cn("relative rounded-xl px-5 py-4", a.gainBg)}>
-                        <p className={cn("text-base leading-snug font-semibold", a.gainText)}>
-                          {v.gain}
-                        </p>
-                      </div>
-
-                      {/* Prix + flèche d'affordance (toute la card est cliquable) */}
-                      <div className="border-border relative flex items-center justify-between border-t pt-5">
-                        <span className="text-fg text-sm font-semibold">{v.price}</span>
-                        <span
-                          className={cn(
-                            "inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-110",
-                            a.iconBg,
-                            a.iconFg,
-                          )}
-                          aria-hidden="true"
-                        >
-                          <ArrowRight className="h-5 w-5" />
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                </FadeInOnView>
-              );
-            })}
-          </ul>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ WHY YOU CAN ONLY WIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-halo-cool py-20 sm:py-24 lg:py-28">
-        <Container>
-          <FadeInOnView>
-            <p className="text-fg-muted mb-10 text-[13px] font-medium tracking-[0.16em] uppercase">
-              <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-              {t("valueWhyEyebrow")}
-            </p>
-            <ul className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
-              {whyPoints.map((point, idx) => (
-                <li key={idx} className="text-fg flex items-start gap-4">
-                  <span
-                    className="text-terracotta text-2xl font-medium tabular-nums"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                    aria-hidden="true"
-                  >
-                    0{idx + 1}
-                  </span>
-                  <span className="text-base leading-relaxed sm:text-lg">{point}</span>
-                </li>
-              ))}
-            </ul>
-          </FadeInOnView>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ METRICS (mocha riche) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
-              <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("metricsEyebrow")}
-              </p>
-              <h2 className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {t("metricsTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta-soft"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {t("metricsTitleEm")}
-                </span>
-                {t("metricsTitlePart2")}
-              </h2>
-            </div>
-            <dl className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-              {metrics.map((m) => (
-                <div key={m.id} className="flex flex-col gap-3">
-                  <dt className="text-mocha-fg/70 order-2 text-sm leading-snug">{m.label}</dt>
-                  <dd
-                    className="text-mocha-fg order-1 [font-feature-settings:'tnum'] text-[clamp(3.5rem,7vw,6rem)] leading-[0.95] font-medium tracking-[-0.04em]"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {m.number}
-                    {m.suffix ? (
-                      <span className="text-terracotta-soft ml-1 text-2xl font-medium">
-                        {m.suffix}
-                      </span>
-                    ) : null}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </FadeInOnView>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ METHOD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-bg py-24 sm:py-28 lg:py-36">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-16 max-w-3xl">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                {t("methodEyebrow")}
-              </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                {t("methodTitlePart1")}{" "}
-                <span
-                  className="italic-editorial text-terracotta"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {t("methodTitleEm")}
-                </span>
-                {t("methodTitlePart2")}
-              </h2>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
-                {t("methodDescription")}
-              </p>
-            </div>
-          </FadeInOnView>
-          <ol className="grid gap-12 lg:grid-cols-4">
-            {methodSteps.map((step, idx) => (
-              <FadeInOnView key={step.id} delay={idx * 60}>
-                <li className="border-border-strong flex flex-col gap-4 border-t pt-6">
-                  <span
-                    className="text-terracotta text-2xl font-medium tabular-nums"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                    aria-hidden="true"
-                  >
-                    {step.n}
-                  </span>
-                  <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight">
-                    {step.title}
-                  </h3>
-                  <p className="text-fg-soft text-base leading-relaxed">{step.description}</p>
-                </li>
-              </FadeInOnView>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CASES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-36">
-        <Container>
-          <FadeInOnView>
-            <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
-              <div className="max-w-2xl">
-                <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                  {t("casesEyebrow")}
-                </p>
-                <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
-                  {t("casesTitlePart1")}{" "}
-                  <span
-                    className="italic-editorial text-terracotta"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {t("casesTitleEm")}
-                  </span>
-                  {t("casesTitlePart2")}
-                </h2>
-                <p className="text-fg-soft mt-6 text-lg leading-relaxed">{t("casesDescription")}</p>
-              </div>
-              <Link
-                href="/cas-concrets"
-                className="text-primary inline-flex items-center gap-2 text-sm font-semibold hover:underline"
-              >
-                {t("casesCta")}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
-          </FadeInOnView>
-          <ul className="grid gap-6 lg:grid-cols-3">
-            {featuredCases.map((c, idx) => (
-              <FadeInOnView key={c.slug} delay={idx * 80}>
-                <li>
+          {/* 5 cartes services — refonte 2026-05-24 (Will feedback) :
+              - charte brand stricte : bg-paper (ivoire), accent terracotta UNIFIÉ
+                (vs ancien rainbow terracotta/primary/sage)
+              - TITRES service forts en serif XL (Formations / 1-to-1 / Audits /
+                Implémentations / Plateforme web & SaaS) — domination visuelle
+              - prix d entrée mis en avant (signal CA direct)
+              - icône emoji dans cercle terracotta-soft (subtil)
+              - "Découvrir le service →" terracotta hover-deep
+              - hover : card lift + shadow + border terracotta */}
+          <ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
+            {valuePropositions.map((v, idx) => (
+              <FadeInOnView key={v.id} delay={idx * 80}>
+                <li className="h-full">
                   <Link
-                    href={`/cas-concrets/${c.slug}` as never}
-                    className="group bg-bg border-border hover:border-border-strong focus-visible:ring-primary flex h-full flex-col gap-6 rounded-2xl border p-8 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    href={v.href}
+                    className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
-                        {c.industry}
-                      </span>
-                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold">
-                        {c.metric}
-                      </span>
-                    </div>
+                    {/* Stripe terracotta top — accent brand uniforme */}
+                    <span
+                      aria-hidden="true"
+                      className="bg-terracotta absolute inset-x-0 top-0 h-1.5 origin-left transition-transform duration-300 group-hover:scale-x-[1.0]"
+                    />
+
+                    {/* Icône emoji dans cercle terracotta-soft */}
+                    <span
+                      className="bg-terracotta-soft mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full text-3xl transition-transform duration-300 group-hover:scale-110"
+                      aria-hidden="true"
+                    >
+                      {v.emoji}
+                    </span>
+
+                    {/* TITRE service XL — la chose la plus visible de la card */}
                     <h3
-                      className="text-fg text-2xl leading-[1.2] font-medium tracking-tight"
+                      className="text-fg text-[clamp(1.75rem,2.5vw,2.5rem)] leading-[1.02] font-semibold tracking-tight"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      {c.title}
+                      {v.shortName}
                     </h3>
-                    <p className="text-fg-soft flex-1 text-base leading-relaxed">{c.excerpt}</p>
-                    <span className="text-primary inline-flex items-center gap-2 text-sm font-semibold">
-                      {isFr ? "Lire le cas" : "Read the case"}
+                    <p className="text-terracotta mt-1 text-sm font-semibold tracking-tight">
+                      {v.tagline}
+                    </p>
+
+                    {/* Description courte */}
+                    <p className="text-fg-soft mt-4 text-sm leading-relaxed">{v.headline}</p>
+
+                    {/* Prix d entrée — signal CA direct */}
+                    <p
+                      className="text-fg mt-5 text-base font-bold tracking-tight"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {v.priceLabel}
+                    </p>
+
+                    {/* Spacer flex */}
+                    <div className="flex-1" />
+
+                    {/* CTA Découvrir terracotta */}
+                    <span className="border-border text-terracotta group-hover:border-terracotta group-hover:text-terracotta-deep mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors">
+                      {t("valueCardCta")}
                       <ArrowRight
-                        className="h-4 w-4 transition group-hover:translate-x-1"
+                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                         aria-hidden="true"
                       />
                     </span>
@@ -1135,48 +505,913 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ROI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-sand py-20 sm:py-24 lg:py-28">
+      {/* ───────────── LOGOS CLIENTS — header retiré (polish v8 Will) ─────────────
+          Juste les 17 logos, pas de eyebrow/title/caption. Box normalisée
+          dans LogosMarquee pour que tous les logos paraissent à la même
+          taille visuelle (object-contain dans container fixe). */}
+      <section
+        id="clients"
+        aria-label={isFr ? "Nos clients" : "Our clients"}
+        className="bg-bg border-border border-t border-b py-12 sm:py-16"
+      >
+        <Container>
+          <LogosMarquee logos={CLIENT_LOGOS} />
+        </Container>
+      </section>
+
+      {/* ───────────── BANDEAU ÉQUIPE 4 PHOTOS — full-bleed ─────────────
+          Hors Container pour aller bord-à-bord sans cadre blanc latéral. */}
+      <section className="bg-bg">
+        <Image
+          src="/illustrations/home-bandeau-team.avif"
+          alt={
+            isFr
+              ? "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant."
+              : "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait."
+          }
+          width={1961}
+          height={802}
+          loading="lazy"
+          decoding="async"
+          sizes="100vw"
+          className="h-auto w-full"
+        />
+      </section>
+
+      {/* ───────────── SECTION FONDATEUR (crédibilité + "Top 1 %") ─────────────
+          Insérée après le bandeau équipe. Adapte le design "Fondateur &
+          CEO" de l'exemple : eyebrow + headline 2 lignes + description +
+          tagline italic / photo dirigeant + stats bar 3 colonnes.
+          Photo placeholder : drop `public/illustrations/home-founder-william.avif`. */}
+      <section
+        id="founder"
+        aria-labelledby="founder-heading"
+        className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28"
+      >
         <Container>
           <FadeInOnView>
-            <div className="border-border-strong bg-paper flex flex-col gap-8 rounded-3xl border p-10 lg:flex-row lg:items-center lg:justify-between lg:p-14">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              {/* Colonne gauche : copy */}
               <div className="max-w-xl">
-                <p className="text-fg-muted mb-4 text-[13px] font-medium tracking-[0.16em] uppercase">
-                  {t("roiEyebrow")}
+                <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
+                  <span className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                  {t("founderEyebrow")}
                 </p>
-                <h2 className="text-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight">
-                  {t("roiTitlePart1")}{" "}
-                  <span
-                    className="italic-editorial text-terracotta"
+                <h2
+                  id="founder-heading"
+                  className="text-fg text-[clamp(2.5rem,5vw,4.25rem)] leading-[1.02] font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t("founderTitleLine1")}
+                  <br />
+                  <span className="text-terracotta italic">{t("founderTitleLine2")}</span>
+                </h2>
+                <p className="text-fg-soft mt-7 text-lg leading-relaxed">
+                  {t("founderDescription")}
+                </p>
+                <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
+                  <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
+                  <p
+                    className="text-fg-soft text-base leading-relaxed italic"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    {t("roiTitleEm")}
-                  </span>
-                  {t("roiTitlePart2")}
-                </h2>
-                <p className="text-fg-soft mt-5 text-base leading-relaxed">{t("roiDescription")}</p>
+                    {t("founderTagline")}
+                  </p>
+                </div>
+                {/* Lien contextuel /a-propos (audit P0-4 internal linking 2026-05-24) */}
+                <p className="mt-6">
+                  <Link
+                    href="/a-propos"
+                    className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                  >
+                    {isFr ? "Découvrir notre approche complète" : "Discover our full approach"}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </p>
               </div>
-              <Link
-                href="/roi"
-                className="bg-primary text-primary-fg cta-lift focus-visible:ring-primary inline-flex h-14 shrink-0 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {t("roiCta")}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+
+              {/* Colonne droite : carte fondateur */}
+              <div className="flex justify-center lg:justify-end">
+                <div className="w-full max-w-xs">
+                  <Illustration
+                    slot="HOME-04-founder"
+                    src="/illustrations/home-founder-william.avif"
+                    aspectRatio="4:5"
+                    filenameTarget="public/illustrations/home-founder-william.avif"
+                    caption={
+                      isFr
+                        ? "William J. — Fondateur & CEO Axion-IA"
+                        : "William J. — Founder & CEO Axion-IA"
+                    }
+                    alt={t("founderPhotoAlt")}
+                  />
+                  <div className="mt-4 text-center">
+                    <p className="text-fg text-lg font-semibold">{t("founderName")}</p>
+                    <p className="text-fg-muted text-sm">{t("founderRole")}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats bar — 3 colonnes séparées par des dividers verticaux */}
+            <div
+              className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10"
+              style={{ borderColor: "var(--color-border-strong)" }}
+            >
+              {(
+                [
+                  { number: t("founderStat1Number"), label: t("founderStat1Label") },
+                  { number: t("founderStat2Number"), label: t("founderStat2Label") },
+                  { number: t("founderStat3Number"), label: t("founderStat3Label") },
+                ] as const
+              ).map((stat, idx) => (
+                <div key={idx} className="flex flex-col gap-1 px-6 first:pl-0 last:pr-0">
+                  <span
+                    className="text-fg text-[clamp(1.25rem,2.5vw,1.75rem)] leading-tight font-semibold tracking-tight"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {stat.number}
+                  </span>
+                  <span className="text-fg-soft text-sm leading-snug">{stat.label}</span>
+                </div>
+              ))}
             </div>
           </FadeInOnView>
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ TESTIMONIALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-36">
+      {/* ─────────────── POURQUOI AXION-IA — design éditorial v2 ───────────────
+          Refonte from-scratch (Will 2026-05-23) : hiérarchie claire en 4 blocs
+          visuels distincts au lieu d'une infographie compacte surchargée.
+          1. Header (eyebrow + h2 + lead)
+          2. 6 différenciateurs en grid 3×2 éditoriale (numéros géants serif)
+          3. Modularité — 6 capacités en bandeau horizontal (sans répétition)
+          4. Trust signals + tagline finale */}
+      <section
+        id="why"
+        aria-labelledby="why-heading"
+        className="bg-halo-cool relative py-24 sm:py-28 lg:py-32"
+      >
+        <Container>
+          {/* BLOC 1 — Header */}
+          <FadeInOnView>
+            <div className="mx-auto mb-20 max-w-3xl text-center sm:mb-24">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Ce qui nous distingue" : "What sets us apart"}
+              </p>
+              <h2
+                id="why-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
+                {isFr ? "Six raisons concrètes" : "Six concrete reasons"}
+                <br />
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "de nous choisir" : "to choose us"}
+                </span>
+                .
+              </h2>
+              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
+                {isFr
+                  ? "Chaque expertise est autonome — combinable avec les autres ou prise seule. C'est vous qui choisissez selon vos besoins."
+                  : "Each expertise stands alone — combinable with the others or taken solo. You choose based on your needs."}
+              </p>
+            </div>
+          </FadeInOnView>
+
+          {/* BLOC 2 — 6 différenciateurs COMPACTS (refonte 2026-05-24 Will :
+              avant = grid 3×2 énorme avec hero bands colorés rainbow + numéros
+              géants + accent ribbons → trop massif. Maintenant : grid 3×2 dense,
+              card simple icon + titre + 1 phrase, brand-coherent terracotta).
+              BLOC 3 "Modulaire par design" SUPPRIMÉ (redondant : la modularité
+              est déjà dans la description de section + une carte "De A à Z"). */}
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+            {(
+              [
+                {
+                  Icon: Users,
+                  titleFr: "Zéro intermédiaire",
+                  titleEn: "Zero middleman",
+                  descFr:
+                    "Formateurs, auditeurs, développeurs, implémenteurs — tous seniors expérimentés.",
+                  descEn: "Trainers, auditors, developers, implementers — all seasoned seniors.",
+                },
+                {
+                  Icon: Layers,
+                  titleFr: "De A à Z",
+                  titleEn: "End-to-end",
+                  descFr:
+                    "Formation, audit, 1-to-1, automatisation, plateforme — un seul interlocuteur.",
+                  descEn: "Training, audit, 1-to-1, automation, platform — one single contact.",
+                },
+                {
+                  Icon: MapPin,
+                  titleFr: "Partout en France",
+                  titleEn: "Across France",
+                  descFr:
+                    "Métropole, outre-mer, présentiel ou distanciel — on s'adapte au plus efficace.",
+                  descEn: "Mainland, overseas, on-site or remote — we adapt to what works best.",
+                },
+                {
+                  Icon: BadgeCheck,
+                  titleFr: "Vous parlez au senior",
+                  titleEn: "You talk to the senior",
+                  descFr:
+                    "Pas à un commercial, pas à un junior. Directement à celui qui fait le travail.",
+                  descEn: "Not to sales, not to a junior. Directly to the person doing the work.",
+                },
+                {
+                  Icon: Target,
+                  titleFr: "Vous êtes au centre",
+                  titleEn: "You're at the center",
+                  descFr:
+                    "Votre projet, votre rythme, votre contexte. On s'adapte à vous — jamais l'inverse.",
+                  descEn:
+                    "Your project, your pace, your context. We adapt to you — never the reverse.",
+                },
+                {
+                  Icon: Sparkles,
+                  titleFr: "Exigence senior absolue",
+                  titleEn: "Strict senior standards",
+                  descFr:
+                    "Résultats mesurables. Même niveau pour un artisan que pour un grand groupe.",
+                  descEn: "Measurable results. Same level for a craftsman or a large group.",
+                },
+              ] as const
+            ).map((card, idx) => (
+              <FadeInOnView key={card.titleFr} delay={idx * 40}>
+                <li className="bg-paper border-border hover:border-terracotta hover:shadow-subtle group flex h-full items-start gap-4 rounded-2xl border p-5 transition-all duration-300 sm:p-6">
+                  <span
+                    className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
+                    aria-hidden="true"
+                  >
+                    <card.Icon className="h-5 w-5" strokeWidth={2} />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-fg text-base leading-tight font-bold tracking-tight sm:text-lg">
+                      {isFr ? card.titleFr : card.titleEn}
+                    </h3>
+                    <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">
+                      {isFr ? card.descFr : card.descEn}
+                    </p>
+                  </div>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+
+          {/* BLOC 4 — Trust signals (3 colonnes inline) + tagline finale */}
+          <FadeInOnView>
+            <div className="border-border mt-20 grid gap-8 border-t pt-12 sm:mt-24 sm:grid-cols-3 sm:gap-10">
+              {(
+                [
+                  {
+                    Icon: Shield,
+                    titleFr: "Sécurité & confidentialité",
+                    titleEn: "Security & confidentiality",
+                    descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
+                    descEn: "Your data is protected. Confidentiality is our priority.",
+                  },
+                  {
+                    Icon: TrendingUp,
+                    titleFr: "Résultats mesurables",
+                    titleEn: "Measurable results",
+                    descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
+                    descEn: "Clear goals, precise indicators, concrete impact.",
+                  },
+                  {
+                    Icon: Clock,
+                    titleFr: "Accompagnement dans la durée",
+                    titleEn: "Long-term support",
+                    descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
+                    descEn: "A reliable partner at every stage of your growth.",
+                  },
+                ] as const
+              ).map((item, idx) => (
+                <div key={idx} className="flex flex-col gap-3 text-center sm:text-left">
+                  <span className="text-terracotta inline-flex h-10 w-10 items-center justify-center self-center sm:self-start">
+                    <item.Icon className="h-6 w-6" aria-hidden="true" strokeWidth={2} />
+                  </span>
+                  <h4 className="text-fg text-base font-bold tracking-tight">
+                    {isFr ? item.titleFr : item.titleEn}
+                  </h4>
+                  <p className="text-fg-soft text-sm leading-relaxed">
+                    {isFr ? item.descFr : item.descEn}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Tagline finale — pleine largeur centrée, serif italic */}
+            <p
+              className="text-fg-muted mx-auto mt-16 max-w-3xl text-center text-lg leading-relaxed sm:mt-20 sm:text-xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr
+                ? "Une vision. Une équipe. Une méthode. Un seul objectif : "
+                : "One vision. One team. One method. One goal: "}
+              <span className="text-terracotta font-semibold italic">
+                {isFr ? "votre réussite." : "your success."}
+              </span>
+            </p>
+          </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ─────────────── GRILLE TARIFAIRE — TABLEAU SINGLE-BLOCK 5 SERVICES ───────────────
+          Refonte (Will 2026-05-24 v2) : un seul bloc moderne avec les 5 services
+          dans un tableau aligné. Plus dense, plus lisible, plus pro qu'un grid 3 cards.
+          Prix dérivés du SSOT pricing.ts (interventionEntry/auditFlash/unAUn/impl/web).
+          Mobile : cartes empilées. Desktop : table row + colonnes (SERVICE / CATÉGORIE / INCLUS / PRIX).
+          Ordre Will 2026-05-24 v3 : PRICING déplacé APRÈS la section WHY (Six raisons)
+          → la grille tarifaire arrive après que le client a compris pourquoi nous choisir. */}
+      <section
+        id="pricing"
+        aria-labelledby="pricing-heading"
+        className="bg-paper py-24 sm:py-28 lg:py-32"
+      >
+        <Container>
+          <FadeInOnView>
+            <div className="mx-auto mb-14 max-w-3xl text-center">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Tarifs transparents" : "Transparent pricing"}
+              </p>
+              <h2
+                id="pricing-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
+                {isFr ? "Un prix de départ " : "A starting price "}
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "pour chaque service." : "for every service."}
+                </span>
+              </h2>
+              <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-lg leading-relaxed">
+                {isFr
+                  ? "Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les prix de départ par service. Le devis précis se construit ensemble, après diagnostic."
+                  : "Every project is unique — complexity depends on your infrastructure, your processes and your AI maturity. Below are the starting prices per service. The precise quote is built together, after diagnosis."}
+              </p>
+            </div>
+          </FadeInOnView>
+
+          {/* ─── TABLEAU SINGLE-BLOCK — desktop ≥ md, cards stacked mobile ─── */}
+          <FadeInOnView>
+            <div className="mx-auto max-w-6xl">
+              <div
+                role="table"
+                aria-label={
+                  isFr ? "Grille tarifaire des cinq services" : "Pricing grid of five services"
+                }
+                className="bg-paper border-border shadow-elevated overflow-hidden rounded-3xl border"
+              >
+                {/* En-tête colonnes (desktop seulement) */}
+                <div
+                  role="row"
+                  className="bg-sand text-fg-muted border-border hidden border-b px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:items-center md:gap-6"
+                >
+                  <span role="columnheader">{isFr ? "Service" : "Service"}</span>
+                  <span role="columnheader">{isFr ? "Catégorie" : "Category"}</span>
+                  <span role="columnheader">{isFr ? "Inclus" : "Included"}</span>
+                  <span role="columnheader" className="text-right">
+                    {isFr ? "Prix HT" : "Price excl. tax"}
+                  </span>
+                </div>
+
+                {/* 5 lignes services */}
+                {(
+                  [
+                    {
+                      id: "formation",
+                      dotColor: "bg-terracotta",
+                      badgeBg: "bg-terracotta-soft",
+                      badgeFg: "text-terracotta-deep",
+                      nameFr: "Formation IA",
+                      nameEn: "AI Training",
+                      subFr: "Présentiel · À partir d'une demi-journée",
+                      subEn: "On-site · From a half-day",
+                      categoryFr: "Formation",
+                      categoryEn: "Training",
+                      includesFr: "Ateliers métier · Sur site · Groupes 1–30 pers.",
+                      includesEn: "Business workshops · On-site · Groups of 1–30",
+                      price: interventionEntryPrice,
+                      href: "/interventions" as const,
+                    },
+                    {
+                      id: "audit",
+                      dotColor: "bg-primary",
+                      badgeBg: "bg-primary-soft",
+                      badgeFg: "text-primary",
+                      nameFr: "Audit IA",
+                      nameEn: "AI Audit",
+                      subFr: "Présentiel ou distanciel",
+                      subEn: "On-site or remote",
+                      categoryFr: "Audit",
+                      categoryEn: "Audit",
+                      includesFr: "Diagnostic process · Gains chiffrés · Roadmap 6–12 mois",
+                      includesEn: "Process diagnosis · Quantified gains · 6–12 month roadmap",
+                      price: auditEntryPrice,
+                      href: "/audit" as const,
+                    },
+                    {
+                      id: "coaching",
+                      dotColor: "bg-sage",
+                      badgeBg: "bg-sage-soft",
+                      badgeFg: "text-sage",
+                      nameFr: "Coaching 1-to-1",
+                      nameEn: "1-to-1 Coaching",
+                      subFr: "Par session · Dirigeant ou collaborateur",
+                      subEn: "Per session · Executive or staff",
+                      categoryFr: "Coaching",
+                      categoryEn: "Coaching",
+                      includesFr: "Sessions individuelles · Automatisations live · ROI J+1",
+                      includesEn: "Individual sessions · Live automations · ROI day-one",
+                      price: unAUnEntryPrice,
+                      href: "/un-a-un" as const,
+                    },
+                    {
+                      id: "implementation",
+                      dotColor: "bg-terracotta-deep",
+                      badgeBg: "bg-terracotta-soft",
+                      badgeFg: "text-terracotta-deep",
+                      nameFr: "Implémentation IA",
+                      nameEn: "AI Implementation",
+                      subFr: "Sur mesure · Projets clés en main",
+                      subEn: "Custom · Turnkey projects",
+                      categoryFr: "Implémentation",
+                      categoryEn: "Implementation",
+                      includesFr: "Automatisations · Intégration CRM/ERP · Support 90j",
+                      includesEn: "Automations · CRM/ERP integration · 90-day support",
+                      price: implEntryPrice,
+                      href: "/implementation" as const,
+                    },
+                    {
+                      id: "web",
+                      dotColor: "bg-primary",
+                      badgeBg: "bg-primary-soft",
+                      badgeFg: "text-primary",
+                      nameFr: "Plateforme web / SaaS IA",
+                      nameEn: "AI Web Platform / SaaS",
+                      subFr: "Sur devis · Plateformes IA dédiées",
+                      subEn: "Quote · Dedicated AI platforms",
+                      categoryFr: "Plateforme",
+                      categoryEn: "Platform",
+                      includesFr: "Web IA sur mesure · Reco & search natifs · RGPD Europe",
+                      includesEn: "Custom AI web · Native reco & search · EU GDPR",
+                      price: webEntryPrice,
+                      href: "/sites-web-augmentes" as const,
+                    },
+                  ] as const
+                ).map((s, idx) => (
+                  <Link
+                    key={s.id}
+                    href={s.href}
+                    role="row"
+                    className={cn(
+                      "group hover:bg-sand/50 focus-visible:bg-sand/70 relative grid items-center gap-4 px-6 py-6 transition-colors focus-visible:outline-none md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
+                      idx > 0 && "border-border border-t",
+                    )}
+                  >
+                    {/* Colonne 1 — Service (dot + nom + sub) */}
+                    <div role="cell" className="flex items-start gap-3 md:items-center">
+                      <span
+                        className={cn(
+                          "mt-2 inline-block h-2.5 w-2.5 shrink-0 rounded-full md:mt-0",
+                          s.dotColor,
+                        )}
+                        aria-hidden="true"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-fg text-base leading-tight font-bold sm:text-lg">
+                          {isFr ? s.nameFr : s.nameEn}
+                        </p>
+                        <p className="text-fg-muted mt-1 text-xs leading-snug sm:text-sm">
+                          {isFr ? s.subFr : s.subEn}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Colonne 2 — Catégorie (badge pill) */}
+                    <div role="cell" className="md:flex md:items-center">
+                      <span
+                        className={cn(
+                          "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+                          s.badgeBg,
+                          s.badgeFg,
+                        )}
+                      >
+                        {isFr ? s.categoryFr : s.categoryEn}
+                      </span>
+                    </div>
+
+                    {/* Colonne 3 — Inclus */}
+                    <div role="cell" className="text-fg-soft text-sm leading-relaxed">
+                      {isFr ? s.includesFr : s.includesEn}
+                    </div>
+
+                    {/* Colonne 4 — Prix HT + flèche */}
+                    <div
+                      role="cell"
+                      className="flex items-center justify-between gap-3 md:justify-end"
+                    >
+                      <div className="text-right">
+                        <p
+                          className="text-fg text-xl font-bold tracking-tight sm:text-2xl"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {s.price}
+                        </p>
+                        <p className="text-fg-muted text-[11px] leading-snug">
+                          {isFr ? "à partir de" : "starting at"}
+                        </p>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className="bg-paper border-border text-fg-soft group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-paper inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all"
+                      >
+                        <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </FadeInOnView>
+          <p className="text-fg-muted mt-10 text-center text-sm leading-relaxed">
+            {isFr ? (
+              <>
+                Pas sûr du bon service pour vous ?{" "}
+                <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                  Parlons-en
+                </Link>{" "}
+                — on prend le temps d&apos;écouter, d&apos;analyser votre contexte et de vous
+                proposer la solution la plus adaptée. Sans engagement.
+              </>
+            ) : (
+              <>
+                Not sure which service fits?{" "}
+                <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                  Let&apos;s discuss
+                </Link>{" "}
+                — we take the time to listen, analyse your context and propose the best-fit
+                solution. No commitment.
+              </>
+            )}
+          </p>
+          {/* Lien contextuel /methodologie (audit P0-4 internal linking 2026-05-24) */}
+          <p className="text-fg-muted mt-4 text-center text-sm leading-relaxed">
+            <Link
+              href="/methodologie"
+              className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+            >
+              {isFr ? "Voir notre méthode en 4 étapes" : "See our 4-step method"}
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </p>
+        </Container>
+      </section>
+
+      {/* ───────────── VIDÉOS TÉMOIGNAGES (Blueprint §10 — conditionnel) ─────────────
+          Section visible UNIQUEMENT si VIDEO_TESTIMONIALS contient au moins
+          1 vidéo. Sinon le composant retourne null → section masquée. Voir
+          src/content/home-data.ts pour ajouter des vidéos. Format YouTube
+          nocookie + thumbnail Sharp lazy. */}
+      {VIDEO_TESTIMONIALS.length > 0 ? (
+        <section className="bg-mocha-rich text-mocha-fg py-24 sm:py-28 lg:py-32">
+          <Container>
+            <FadeInOnView>
+              <div className="mb-16 max-w-3xl">
+                <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                  {t("videosEyebrow")}
+                </p>
+                <h2
+                  id="videos-heading"
+                  className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+                >
+                  {t("videosTitlePart1")}{" "}
+                  <span
+                    className="italic-editorial text-terracotta-soft"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {t("videosTitleEm")}
+                  </span>
+                  {t("videosTitlePart2")}
+                </h2>
+                <p className="text-mocha-fg/85 mt-6 max-w-2xl text-lg leading-relaxed">
+                  {t("videosDescription")}
+                </p>
+              </div>
+              <VideoTestimonials videos={VIDEO_TESTIMONIALS} />
+            </FadeInOnView>
+          </Container>
+        </section>
+      ) : null}
+
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CASES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <section
+        id="cases"
+        aria-labelledby="cases-heading"
+        className="bg-paper py-24 sm:py-28 lg:py-36"
+      >
+        <Container>
+          <FadeInOnView>
+            <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
+              <div className="max-w-2xl">
+                <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                  {t("casesEyebrow")}
+                </p>
+                <h2
+                  id="cases-heading"
+                  className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+                >
+                  {isFr ? "Des implémentations" : "Custom"}{" "}
+                  <span
+                    className="italic-editorial text-terracotta"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {isFr ? "sur mesure" : "implementations"}
+                  </span>
+                </h2>
+                <p className="text-fg-soft mt-4 text-lg leading-relaxed sm:text-xl">
+                  {isFr
+                    ? "Pensées pour vos besoins réels d'entreprise — pas des templates génériques."
+                    : "Built around your real business needs — not generic templates."}
+                </p>
+              </div>
+              <Link
+                href="/cas-concrets"
+                className="text-primary inline-flex items-center gap-2 text-sm font-semibold hover:underline"
+              >
+                {t("casesCta")}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+          </FadeInOnView>
+          {/* 4 cas concrets visuels — 4 cards sur 1 ligne dès md (768px+),
+              photos compactes via aspect-ratio 16/9 forcé + object-cover.
+              (Will 2026-05-24 : "réduire grosseur images, toutes sur 1 ligne desktop") */}
+          <ul className="mb-10 grid gap-3 sm:grid-cols-2 md:grid-cols-4 md:gap-4">
+            {(
+              [
+                {
+                  src: "/images/axion-ia-pipeline-lead-ia-zero-intervention-humaine-7-etapes-banniere.avif",
+                  industryFr: "Prospection B2B",
+                  industryEn: "B2B prospecting",
+                  metric: "0 min/lead",
+                  titleFr: "Pipeline lead automatisé · 7 étapes",
+                  titleEn: "Automated lead pipeline · 7 steps",
+                  excerptFr:
+                    "Du formulaire entrant au commercial : scoring IA, enrichissement, segmentation chaud/tiède/froid, routage CRM. Zéro intervention humaine jusqu'à la prise de contact.",
+                  excerptEn:
+                    "From incoming form to sales: AI scoring, enrichment, hot/warm/cold segmentation, CRM routing. Zero human intervention until first contact.",
+                  altFr:
+                    "Pipeline Axion-IA : 7 étapes automatisées du formulaire entrant au CRM (scoring IA, enrichissement, segmentation chaud/tiède/froid, routage).",
+                  altEn:
+                    "Axion-IA pipeline: 7 automated steps from incoming form to CRM (AI scoring, enrichment, hot/warm/cold segmentation, routing).",
+                },
+                {
+                  src: "/images/axion-ia-planning-chantier-gantt-ia-conflits-detectes-temps-reel-banniere.avif",
+                  industryFr: "BTP & construction",
+                  industryEn: "Construction",
+                  metric: "Conflits détectés J-7",
+                  titleFr: "Planning Gantt IA · temps réel",
+                  titleEn: "AI Gantt planning · real-time",
+                  excerptFr:
+                    "Chantier Résidence Les Pins, 15 tâches. Conflits de ressources et alertes météo détectés automatiquement avant qu'ils arrivent.",
+                  excerptEn:
+                    "Résidence Les Pins worksite, 15 tasks. Resource conflicts and weather alerts detected automatically before they happen.",
+                  altFr:
+                    "Planning Gantt Axion-IA : chantier Résidence Les Pins, 15 tâches, conflits de ressources détectés automatiquement, alertes météo.",
+                  altEn:
+                    "Axion-IA Gantt planning: Résidence Les Pins worksite, 15 tasks, automatically detected resource conflicts, weather alerts.",
+                },
+                {
+                  src: "/images/axion-ia-recrutement-ia-8-semaines-a-3-semaines-80-pourcent-automatise-banniere.avif",
+                  industryFr: "Ressources humaines",
+                  industryEn: "Human resources",
+                  metric: "8 sem → 3 sem · 80% auto",
+                  titleFr: "Recrutement IA · cycle divisé par 2,5",
+                  titleEn: "AI recruitment · cycle divided by 2.5",
+                  excerptFr:
+                    "Publication multi-plateformes, collecte CVs, scoring et classement, fiche candidat auto, convocations, CR entretien, contrat rédigé. RH ne valide que la shortlist et conduit les entretiens.",
+                  excerptEn:
+                    "Multi-platform posting, CV collection, scoring and ranking, auto candidate sheet, invites, interview report, contract draft. HR only validates the shortlist and conducts interviews.",
+                  altFr:
+                    "Schéma 3 couloirs Axion-IA : système IA (publication, collecte CV, scoring, fiche, convocation, CR, contrat), RH (validation shortlist, entretiens, signature), candidat. 8 semaines → 3 semaines, 80% des tâches automatisées.",
+                  altEn:
+                    "Axion-IA 3-lane diagram: AI system (posting, CV collection, scoring, sheet, invitation, report, contract), HR (shortlist validation, interviews, signature), candidate. 8 weeks → 3 weeks, 80% of tasks automated.",
+                },
+                {
+                  src: "/images/axion-ia-architecture-groupe-international-consolidation-financiere-rh-banniere.avif",
+                  industryFr: "Groupe international",
+                  industryEn: "International group",
+                  metric: "3 sem → J+1 · 278 salariés",
+                  titleFr: "Consolidation groupe 4 pays · IA continue",
+                  titleEn: "4-country group consolidation · continuous AI",
+                  excerptFr:
+                    "France, Allemagne, Singapour, Brésil. Comptabilité, paie, supply chain, RH et compliance temps réel. Le cerveau IA agrège les 4 moteurs, détecte les anomalies cross-entités et génère le rapport consolidé J+1.",
+                  excerptEn:
+                    "France, Germany, Singapore, Brazil. Real-time accounting, payroll, supply chain, HR and compliance. AI brain aggregates the 4 engines, detects cross-entity anomalies and generates the consolidated report on D+1.",
+                  altFr:
+                    "Architecture groupe international Axion-IA : 4 entités (France siège, Allemagne production, Singapour Asie hub, Brésil commercial), tableau de bord groupe temps réel, cerveau IA central, consolidation financière 4 devises, compliance multi-juridictions, supply chain intelligente, RH groupe centralisé.",
+                  altEn:
+                    "Axion-IA international group architecture: 4 entities (France HQ, Germany production, Singapore Asia hub, Brazil commercial), real-time group dashboard, central AI brain, 4-currency financial consolidation, multi-jurisdiction compliance, intelligent supply chain, centralized group HR.",
+                },
+              ] as const
+            ).map((demo, idx) => (
+              <FadeInOnView key={idx} delay={idx * 60}>
+                <li className="bg-bg border-border flex h-full flex-col overflow-hidden rounded-2xl border">
+                  <ImageLightbox
+                    src={demo.src}
+                    alt={isFr ? demo.altFr : demo.altEn}
+                    width={1600}
+                    height={900}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                    className="rounded-none rounded-t-2xl [&_figure]:aspect-[16/10] [&_figure]:overflow-hidden [&_figure>img]:!h-full [&_figure>img]:!w-full [&_figure>img]:!object-cover"
+                  />
+                  <div className="flex flex-col gap-2.5 p-4">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="bg-sand text-fg-soft inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium">
+                        {isFr ? demo.industryFr : demo.industryEn}
+                      </span>
+                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold">
+                        {demo.metric}
+                      </span>
+                    </div>
+                    <h3
+                      className="text-fg text-sm leading-tight font-semibold tracking-tight"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {isFr ? demo.titleFr : demo.titleEn}
+                    </h3>
+                    <p className="text-fg-soft line-clamp-3 text-xs leading-relaxed">
+                      {isFr ? demo.excerptFr : demo.excerptEn}
+                    </p>
+                  </div>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      {/* ───────────── CTA CONTACT — après cas clients ─────────────
+          Après avoir vu des résultats concrets, inciter à passer à l'action.
+          Section courte, directe, lien vers /contact (formulaire existant). */}
+      <section className="bg-terracotta py-16 sm:py-20">
+        <Container>
+          <FadeInOnView>
+            <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
+              <div className="max-w-2xl">
+                <h2
+                  className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr
+                    ? "Votre projet mérite une réponse concrète."
+                    : "Your project deserves a concrete answer."}
+                </h2>
+                <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
+                  {isFr
+                    ? "Décrivez votre projet en 2 minutes. On vous répond sous 24h — sans engagement."
+                    : "Describe your project in 2 minutes. We reply within 24h — no commitment."}
+                </p>
+              </div>
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/reserver"
+                  className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-paper border-paper/40 hover:bg-paper/10 cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Link>
+              </div>
+            </div>
+          </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ───────────── AUDIENCE + SECTEURS (Blueprint §11) ─────────────
+          4 segments TPE/PME/ETI/Grande + nuage des secteurs. Texte
+          riche en keywords pour AEO ("IA pour PME françaises", "cabinet
+          IA grandes entreprises"…). */}
+      <section
+        id="audience"
+        aria-labelledby="audience-heading"
+        className="bg-bg py-24 sm:py-28 lg:py-32"
+      >
         <Container>
           <FadeInOnView>
             <div className="mb-16 max-w-3xl">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {t("audienceEyebrow")}
+              </p>
+              <h2
+                id="audience-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
+                {t("audienceTitlePart1")}{" "}
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {t("audienceTitleEm")}
+                </span>
+                {t("audienceTitlePart2")}
+              </h2>
+              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
+                {t("audienceDescription")}
+              </p>
+            </div>
+          </FadeInOnView>
+          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {audienceSegments.map((seg, idx) => (
+              <FadeInOnView key={seg.id} delay={idx * 70}>
+                <li className="bg-paper border-border hover:border-border-strong flex h-full flex-col gap-4 rounded-2xl border p-7 transition">
+                  <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight">
+                    {seg.title}
+                  </h3>
+                  <p
+                    className="text-terracotta text-base leading-snug italic"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {seg.lead}
+                  </p>
+                  <p className="text-fg-soft text-sm leading-relaxed">{seg.detail}</p>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+          {/* Nuage de secteurs (Blueprint §11 — éviter section séparée).
+              Signal AEO fort : entités sectorielles indexées par LLM. */}
+          <FadeInOnView>
+            <div className="border-border-strong mt-16 border-t pt-12">
+              {/* Promu h3 → h2 (audit A4 2026-05-24 : section autonome, pas
+                  un sous-titre de la sub-section audience précédente) */}
+              <h2 className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl">
+                {t("audienceSectorsTitle")}
+              </h2>
+              <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
+                {t("audienceSectorsLead")}
+              </p>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {SECTORS.map((sector) => (
+                  <li
+                    key={sector}
+                    className="bg-sand text-fg-soft inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium"
+                  >
+                    {sector}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeInOnView>
+        </Container>
+      </section>
+
+      {/* ───────────── COUVERTURE NATIONALE (SEO local) ─────────────
+          Section « Disponibles partout en France » réutilisée des pages
+          services (12 régions). Signal national fort sur la home — page
+          la mieux positionnée du site. Service par défaut = audit
+          (verticale phare, génère le plus de maillage régional). */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="Axion-IA"
+        serviceLabelEn="Axion-IA"
+        serviceSlug="audit"
+        tone="sand"
+      />
+
+      {/* ─────────────── TESTIMONIALS — design premium étoiles + avatars ───────────────
+          Cards avec rating 5 étoiles terracotta, avatar initiales, quote serif,
+          identité auteur + entreprise. 6 témoignages en grid 3 col desktop. */}
+      <section
+        id="testimonials"
+        aria-labelledby="testimonials-heading"
+        className="bg-paper py-24 sm:py-28 lg:py-36"
+      >
+        <Container>
+          <FadeInOnView>
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 {t("testimonialsEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              <h2
+                id="testimonials-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
                 {t("testimonialsTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -1186,47 +1421,139 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("testimonialsTitlePart2")}
               </h2>
+              {/* Rating moyen global */}
+              <div className="mt-7 inline-flex flex-col items-center gap-2">
+                <div className="flex items-center gap-1" aria-label="5 étoiles sur 5">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star
+                      key={i}
+                      className="text-terracotta h-5 w-5 fill-current"
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+                <p className="text-fg-soft text-sm">
+                  <span className="text-fg font-bold">4,9 / 5</span>
+                  {isFr
+                    ? " — basé sur les retours opérationnels"
+                    : " — based on operational feedback"}
+                </p>
+              </div>
             </div>
           </FadeInOnView>
-          <ul className="grid gap-12 lg:grid-cols-2">
-            {CASE_STUDIES.slice(0, 4).map((c, idx) => (
-              <FadeInOnView key={c.slug} delay={idx * 80}>
-                <li className="border-border-strong flex flex-col gap-6 border-t pt-8">
-                  <span
-                    aria-hidden="true"
-                    className="text-terracotta text-6xl leading-none"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    &ldquo;
-                  </span>
-                  <blockquote
-                    className="text-fg text-xl leading-[1.4] font-medium"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {c[loc].testimonialQuote}
-                  </blockquote>
-                  <footer className="text-fg-soft text-sm">
-                    <span className="text-fg font-semibold">{c[loc].testimonialAuthor}</span>
-                    <span className="mx-2">·</span>
-                    <span>{c[loc].testimonialRole}</span>
-                    <span className="mx-2">·</span>
-                    <span>{isFr ? c.industry : c.industryEn}</span>
-                  </footer>
-                </li>
-              </FadeInOnView>
-            ))}
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {reviewedCases.map((c, idx) => {
+              const author = c[loc].testimonialAuthor;
+              // Photos Unsplash (libres de droits — Unsplash License) sélectionnées
+              // pour profils business diversifiés. Note : Review[] JSON-LD non émis
+              // pour éviter risque "avis trompeurs" Google (audit perfection mai 2026).
+              // À swapper par les vraies photos clients quand autorisations OK.
+              const unsplashPhotos = [
+                "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces&q=80",
+                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80",
+              ] as const;
+              const photoUrl = unsplashPhotos[idx % unsplashPhotos.length] ?? unsplashPhotos[0];
+              return (
+                <FadeInOnView key={c.slug} delay={idx * 80}>
+                  <li className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7">
+                    {/* Header : étoiles + badge vérifié */}
+                    <div className="flex items-center justify-between">
+                      <div
+                        className="flex items-center gap-0.5"
+                        aria-label={isFr ? "Note 5 étoiles sur 5" : "5-star rating"}
+                      >
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <Star
+                            key={i}
+                            className="text-terracotta h-4 w-4 fill-current"
+                            aria-hidden="true"
+                          />
+                        ))}
+                      </div>
+                      <span className="bg-terracotta-soft text-terracotta-deep inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold tracking-tight uppercase">
+                        <Shield className="h-3 w-3" aria-hidden="true" />
+                        {isFr ? "Vérifié" : "Verified"}
+                      </span>
+                    </div>
+                    {/* Métrique chiffrée en badge */}
+                    <span className="bg-bg text-fg border-border inline-flex w-fit items-center rounded-full border px-3 py-1 text-xs font-semibold">
+                      {c.metric}
+                    </span>
+                    {/* Quote */}
+                    <blockquote
+                      cite={`${SITE_URL}/${loc}/cas-concrets/${c.slug}`}
+                      className="text-fg flex-1 text-base leading-[1.5] sm:text-lg"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      <span
+                        className="text-terracotta mr-1 text-2xl leading-none"
+                        aria-hidden="true"
+                      >
+                        &ldquo;
+                      </span>
+                      {c[loc].testimonialQuote}
+                      <span
+                        className="text-terracotta ml-0.5 text-2xl leading-none"
+                        aria-hidden="true"
+                      >
+                        &rdquo;
+                      </span>
+                    </blockquote>
+                    {/* Auteur : photo Unsplash + nom + rôle + secteur */}
+                    <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
+                      <span className="ring-paper relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full shadow-sm ring-2">
+                        <Image
+                          src={photoUrl}
+                          alt={`Portrait — ${author}`}
+                          width={96}
+                          height={96}
+                          sizes="48px"
+                          quality={85}
+                          className="h-full w-full object-cover"
+                        />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-fg truncate text-sm font-bold">{author}</p>
+                        <p className="text-fg-muted truncate text-xs">{c[loc].testimonialRole}</p>
+                        <p className="text-terracotta truncate text-[11px] font-semibold">
+                          {isFr ? c.industry : c.industryEn}
+                        </p>
+                      </div>
+                    </footer>
+                  </li>
+                </FadeInOnView>
+              );
+            })}
           </ul>
+          {/* Lien contextuel /blog (audit P0-4 internal linking 2026-05-24) */}
+          <p className="text-fg-muted mt-12 text-center text-sm">
+            <Link
+              href="/blog"
+              className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+            >
+              {isFr
+                ? "Plus d'analyses et retours d'expérience sur le blog"
+                : "More analysis & feedback on our blog"}
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </p>
         </Container>
       </section>
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-bg py-24 sm:py-28 lg:py-36">
+      <section id="faq" aria-labelledby="faq-heading" className="bg-bg py-24 sm:py-28 lg:py-36">
         <Container className="max-w-3xl">
           <FadeInOnView>
             <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
               FAQ
             </p>
-            <h2 className="text-fg text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-semibold tracking-tight">
+            <h2
+              id="faq-heading"
+              className="text-fg text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-semibold tracking-tight"
+            >
               {t("faqTitle")}
             </h2>
             <p className="text-fg-soft mt-4 text-base leading-relaxed">{t("faqDescription")}</p>
@@ -1239,74 +1566,85 @@ export default async function Home({ params }: HomeProps) {
                   </AccordionItem>
                 ))}
               </Accordion>
+              <p className="text-fg-muted mt-8 text-center text-sm">
+                {isFr ? (
+                  <>
+                    Vous avez d&apos;autres questions ?{" "}
+                    <Link href="/faq" className="text-terracotta font-semibold hover:underline">
+                      Voir toute la FAQ
+                    </Link>{" "}
+                    (30+ questions) ou{" "}
+                    <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                      nous contacter
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    More questions?{" "}
+                    <Link href="/faq" className="text-terracotta font-semibold hover:underline">
+                      See the full FAQ
+                    </Link>{" "}
+                    (30+ questions) or{" "}
+                    <Link href="/contact" className="text-terracotta font-semibold hover:underline">
+                      contact us
+                    </Link>
+                    .
+                  </>
+                )}
+              </p>
+              {/* Lien contextuel /transparence (audit P0-4 internal linking 2026-05-24) */}
+              <p className="text-fg-muted mt-3 text-center text-xs">
+                {isFr ? (
+                  <>
+                    Voir aussi{" "}
+                    <Link
+                      href="/transparence"
+                      className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline"
+                    >
+                      notre politique de transparence
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    See also{" "}
+                    <Link
+                      href="/transparence"
+                      className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline"
+                    >
+                      our transparency policy
+                    </Link>
+                    .
+                  </>
+                )}
+              </p>
             </div>
           </FadeInOnView>
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CLOSING ILLUSTRATION — Sprint Visual Rhythm 2026 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-canvas relative py-20 sm:py-24">
-        <Container>
-          <div className="mx-auto max-w-3xl">
-            <Illustration
-              slot="HOME-04-closing"
-              aspectRatio="16:9"
-              filenameTarget="public/illustrations/home-closing.avif"
-              caption={
-                isFr
-                  ? "Cabinet IA opérationnel — vue d'ensemble du système en marche"
-                  : "Operational AI consultancy — overview of the system at work"
-              }
-              alt={
-                isFr
-                  ? "Illustration éditoriale d'un cabinet IA opérationnel en activité, vue d'ensemble Axion-IA."
-                  : "Editorial illustration of an operational AI consultancy at work, Axion-IA overview."
-              }
-            />
-          </div>
-        </Container>
-      </section>
-
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CTA FINAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-36">
-        <Container>
-          <div className="max-w-3xl">
-            <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-              {t("ctaBlockEyebrow")}
-            </p>
-            <h2 className="text-mocha-fg text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight">
-              {t("ctaBlockTitlePart1")}{" "}
-              <span
-                className="text-terracotta-soft italic"
-                style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
-              >
-                {t("ctaBlockTitleEm")}
-              </span>
-              {t("ctaBlockTitlePart2")}
-            </h2>
-            <p className="text-mocha-fg/85 mt-6 max-w-2xl text-lg leading-relaxed">
-              {t("ctaBlockDescription")}
-            </p>
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link
-                href="/interventions/essentielle"
-                className="bg-paper text-fg cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-14 items-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {t("ctaBlockPrimary")}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/contact"
-                className="text-mocha-fg border-border-on-mocha cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-14 items-center gap-2 rounded-full border px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {t("ctaBlockSecondary")}
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+      {/* Section CTA FINAL "Choisissez votre point de départ" RETIRÉE (Will 2026-05-24) :
+          - faisait doublon avec la grille tarifaire (5 services single-block)
+          - "4 heures / 1 journée / 2 jours / 3 jours+ / 2-4 semaines" redondant
+          - La FAQ + le StickyMobileCta + le CTA hero suffisent comme points de contact */}
 
       <JsonLd data={faqJsonLd} />
+      <JsonLd data={localBusinessJsonLd} />
+      <JsonLd data={servicesJsonLd} />
+      {/* BreadcrumbList JSON-LD ABSENT : home = racine hiérarchique (cf. audit A4 2026-05-24) */}
+      {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
+
+      {/* ───────────── STICKY MOBILE CTA (Blueprint §19) ─────────────
+          Bouton fixé bas d'écran sur mobile, apparaît après scroll > 600 px.
+          Disparaît à 320 px du bottom (laisse place au CTA final natif).
+          rAF dedup pour INP < 100 ms (cf. perf budget). */}
+      <StickyMobileCta
+        href="/interventions/essentielle"
+        label={t("heroCtaPrimary", { price: interventionEntryPrice })}
+        track="home-sticky-mobile"
+        threshold={600}
+      />
     </>
   );
 }

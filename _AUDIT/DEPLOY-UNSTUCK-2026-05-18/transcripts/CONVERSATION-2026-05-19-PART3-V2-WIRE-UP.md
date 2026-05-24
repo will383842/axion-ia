@@ -14,7 +14,7 @@ Suite de `CONVERSATION-2026-05-18-PART2-ADMIN-CRASH.md`. Sauvegarde demandée pa
 Cause root identifiée en profondeur :
 
 - `layout.tsx` importait `AdminSidebar` (V1 emojis) en dur, sans aucun check du flag.
-- Commentaire dans `AdminSidebarNav.tsx:15-16` disait littéralement : *« La sidebar V1 reste utilisable derrière flag ADMIN_V2_ENABLED=false ; layout.tsx switchera en PR 6+. »* → PR 6 a livré le composant V2 mais n'a jamais fait le câblage.
+- Commentaire dans `AdminSidebarNav.tsx:15-16` disait littéralement : _« La sidebar V1 reste utilisable derrière flag ADMIN_V2_ENABLED=false ; layout.tsx switchera en PR 6+. »_ → PR 6 a livré le composant V2 mais n'a jamais fait le câblage.
 - Donc même flag à true → shell V1 visible en permanence (sidebar emojis, header plain), seules les pages internes rendaient V2.
 
 Fix appliqué dans `5ca2eb5` :
@@ -95,6 +95,7 @@ return (
 Effort estimé : ~30 min/page × 11 = **~5h30 d'autopilote**.
 
 Composants V2 à utiliser (déjà exportés, voir `src/components/admin/ui/index.ts`) :
+
 - `AdminPageShell` (wrapper section, max-width 1280px)
 - `AdminPageHeader` (titre + description + actions + meta + breadcrumbs)
 - `AdminCard` (variant informational/compact/interactive)
@@ -114,10 +115,12 @@ Login : à voir s'il faut migrer ou laisser tel quel (V2 layout ne s'applique pa
 ## Sentry — scope token à corriger
 
 Token `SENTRY_AUTH_TOKEN` actuel (Internal Integration) :
+
 - ✅ Marche pour `/projects/{org}/{project}/issues/` → `list-recent` OK
 - ❌ HTTP 401 « Invalid token » sur `/issues/{id}/events/latest/` → `event-detail` bloqué
 
 Will doit :
+
 1. Sentry → Settings → Developer Settings → Internal Integrations → axion-ia
 2. Ajouter scopes : `Event: Read` + `Issue & Event: Read`
 3. Sauvegarder (Sentry peut demander de régénérer le token — si oui, refaire `gh secret set SENTRY_AUTH_TOKEN`)
@@ -140,6 +143,7 @@ Issue à investiguer une fois scope corrigé : **118951810 « Error: failed to p
 ⚠️ **V2 shell PAS visible en prod malgré tout** — bug runtime à creuser mercredi.
 
 Vérifications faites :
+
 - ✅ Bundle compilé contient `admin-sidebar-v2` + `AdminSidebarNav` (curl chunks statiques)
 - ✅ Container post-restart 23:41 UTC : `docker exec ... printenv | grep ADMIN_V2_ENABLED` → `true`
 - ✅ Sentry-release header confirme `5ca2eb5` en prod
@@ -148,11 +152,13 @@ Vérifications faites :
 - ❌ `/api/admin/session-ping` retourne 401 en boucle (suspect : `auth()` retourne null dans API routes mais OK dans Server Components ?)
 
 **Hypothèses à investiguer mercredi** (ordre de probabilité) :
+
 1. **Next.js inline `process.env["ADMIN_V2_ENABLED"]` au build** malgré bracket notation — webpack DefinePlugin ou Next standalone build pre-resolution. Si var pas set au build (GH Actions), inline → undefined → false runtime. **Test** : add `data-debug-env={process.env.ADMIN_V2_ENABLED ?? "undefined"}` + `data-debug-v2={String(v2)}` sur le wrapper layout. Push. Inspecter DOM.
 2. **Auth.js v5 session resolution differ entre API routes et Server Components** — session-ping 401 mais page sees session. Si `auth()` retourne null dans LAYOUT (qui est Server Component) mais OK dans PAGE, alors `showSidebar=false` → branche V1 même sans flag check. **Test** : ajouter `data-debug-session={String(!!session?.user)}`.
 3. **Layout compilation différente du reste** — Next.js peut compiler la layout avec une stratégie de cache différente (e.g., shared layout cache). **Test** : grep le server bundle `.next/server/app/[locale]/(admin)/[adminPrefix]/layout.js` via SSH pour vérifier que `"admin-layout-v2"` string est présent.
 
 **Plan d'action mercredi (par ordre)** :
+
 1. Push commit diagnostic avec 3 `data-debug-*` attributs sur le wrapper layout V1 (pour qu'on les voie même quand v2=false). Deploy ~25 min.
 2. Will inspecte DOM et donne valeurs des 3 attributs → on sait exactement.
 3. Fix root cause selon ce que les attributs révèlent.
@@ -160,6 +166,7 @@ Vérifications faites :
 5. ENSUITE seulement, attaquer la migration des 11 pages V1 fall-through.
 
 **État infra au moment du STOP final** :
+
 - HEAD origin/main : `5ca2eb5 feat(admin): wire V2 shell in layout when ADMIN_V2_ENABLED=true (PR 6 promise)`
 - Container Coolify : restarted 2026-05-19 23:40:33 UTC + ADMIN_V2_ENABLED=true confirmé
 - Aucun commit unpushed sur main

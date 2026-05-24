@@ -439,6 +439,31 @@ export async function alertIndexNowFailStreak(
 }
 
 /**
+ * 17. Déséquilibre villes campagne (>30% villes sans contenu après 7j running).
+ */
+export async function alertCityEquityImbalance(
+  campaignId: string,
+  campaignName: string,
+  zeroCitiesCount: number,
+  totalCities: number,
+): Promise<void> {
+  const pct = Math.round((zeroCitiesCount / totalCities) * 100);
+  try {
+    await sendTelegram({
+      tag: "MONITORING",
+      silent: true,
+      body:
+        `*[⚠️ DÉSÉQUILIBRE VILLES]* Campagne « ${campaignName} »\n` +
+        `${zeroCitiesCount}/${totalCities} villes sans contenu (${pct}%) après 7j.\n` +
+        `→ ${adminUrl("/city-equity")}\n` +
+        `Action : vérifier cityProcessingMode + distribution par tier de population.`,
+    });
+  } catch {
+    // best-effort
+  }
+}
+
+/**
  * 15. Tier-3 stagnant 90 j (info, auto-purge prévue). Runbook : R26.
  *
  * Trigger : cron quotidien retention (peut être appelé depuis content-tier-lifecycle-worker

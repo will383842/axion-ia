@@ -5,7 +5,28 @@
  * 8 dimensions × 18 critères. Indexable = secteurs NAF sourcés (≥3).
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+// P0-7 — requireAdmin() ajouté à getCityCoverage() → mock @/auth pour les tests
+vi.mock("@/auth", () => ({
+  auth: vi.fn(async () => ({
+    user: { id: "user-admin-1", email: "admin@axion-ia.com", role: "admin" },
+  })),
+}));
+
+vi.mock("next/headers", () => ({
+  headers: vi.fn(async () => new Headers()),
+}));
+
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(async () => ({
+    allowed: true,
+    count: 1,
+    remaining: 59,
+    resetAt: Date.now() + 60_000,
+  })),
+}));
+
 import {
   PILOT_CITY_SLUGS,
   computeCityCoverage,

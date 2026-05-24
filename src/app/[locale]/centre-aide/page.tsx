@@ -16,6 +16,7 @@ import { slugify } from "@/content/transversal";
 import { listHelpArticles } from "@/lib/help-articles/reader";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -97,10 +98,9 @@ export default async function HelpCenter({ params }: Props) {
     "@type": "WebPage",
     url: `${SITE_URL}/${locale}/centre-aide`,
     name: isFr ? "Centre d'aide · Axion-IA" : "Help center · Axion-IA",
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["[data-aeo='help-intro']"],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: ["[data-aeo='help-intro']"],
+    }),
   } as const;
 
   return (

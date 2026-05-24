@@ -11,11 +11,7 @@
 
 import "server-only";
 
-import type {
-  ExternalLink,
-  ExternalLinkAuthority,
-  SelectExternalLinksOptions,
-} from "./types";
+import type { ExternalLink, ExternalLinkAuthority, SelectExternalLinksOptions } from "./types";
 import { isCompetitorDomain } from "./types";
 import { ALL_EXTERNAL_LINKS } from "./master";
 import { prisma } from "@/lib/prisma";
@@ -24,7 +20,11 @@ import { prisma } from "@/lib/prisma";
  * Filtre dur qualité SEO/AEO 2026.
  * Doit être passé pour qu'un lien soit éligible à toute sélection.
  */
-function passesHardFilters(link: ExternalLink, minAuthority: ExternalLinkAuthority, language: "fr" | "en"): boolean {
+function passesHardFilters(
+  link: ExternalLink,
+  minAuthority: ExternalLinkAuthority,
+  language: "fr" | "en",
+): boolean {
   return (
     (link.status === "active" || link.status === "redirect_acceptable") &&
     !link.isCompetitor &&
@@ -136,7 +136,9 @@ export function selectExternalLinks(opts: SelectExternalLinksOptions): ExternalL
  * Valide un lien candidat (utilisé avant ajout manuel admin).
  * Vérifie : URL HTTPS, domaine non concurrent, format ExternalLink complet.
  */
-export function validateLink(link: Partial<ExternalLink>): { ok: true } | { ok: false; reason: string } {
+export function validateLink(
+  link: Partial<ExternalLink>,
+): { ok: true } | { ok: false; reason: string } {
   if (!link.url) return { ok: false, reason: "url required" };
   let parsed: URL;
   try {
@@ -222,7 +224,10 @@ export async function refreshUsageStats(): Promise<void> {
  *
  * Retourne `{ valid: linkIds[], hallucinated: urls[] }`.
  */
-export function detectHallucinations(bodyHtml: string): { valid: string[]; hallucinated: string[] } {
+export function detectHallucinations(bodyHtml: string): {
+  valid: string[];
+  hallucinated: string[];
+} {
   const matches = bodyHtml.match(/<a[^>]+href="(https?:\/\/[^"]+)"/g) ?? [];
   const externalUrls = matches
     .map((m) => m.match(/href="([^"]+)"/)?.[1] ?? "")
@@ -254,9 +259,7 @@ export function detectHallucinations(bodyHtml: string): { valid: string[]; hallu
 export function buildExternalLinksPromptSection(links: ReadonlyArray<ExternalLink>): string {
   if (links.length === 0) return "";
 
-  const bulletList = links
-    .map((l) => `- **${l.title}** (${l.organization}) — ${l.url}`)
-    .join("\n");
+  const bulletList = links.map((l) => `- **${l.title}** (${l.organization}) — ${l.url}`).join("\n");
 
   return [
     "",

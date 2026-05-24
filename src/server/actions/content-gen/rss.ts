@@ -8,6 +8,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "./_auth";
@@ -47,26 +49,36 @@ export async function addRssSource(input: RssSource): Promise<void> {
   RssSourceSchema.parse(input);
   if (!/^https?:\/\//.test(input.url)) throw new Error("url_invalid");
   if (input.name.length < 2) throw new Error("name_too_short");
-  if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
-    throw new Error("poll_interval_range");
-  const current = await listRssSources();
-  if (current.some((s) => s.url === input.url)) throw new Error("url_already_added");
-  await writeContentGenConfig(KEY, [...current, input], session.userId, "RSS source added");
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  try {
+    if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
+      throw new Error("poll_interval_range");
+    const current = await listRssSources();
+    if (current.some((s) => s.url === input.url)) throw new Error("url_already_added");
+    await writeContentGenConfig(KEY, [...current, input], session.userId, "RSS source added");
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "addRssSource" } });
+    throw e;
+  }
 }
 
 export async function removeRssSource(url: string): Promise<void> {
   const session = await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   RssUrlSchema.parse(url);
-  const current = await listRssSources();
-  await writeContentGenConfig(
-    KEY,
-    current.filter((s) => s.url !== url),
-    session.userId,
-    "RSS source removed",
-  );
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  try {
+    const current = await listRssSources();
+    await writeContentGenConfig(
+      KEY,
+      current.filter((s) => s.url !== url),
+      session.userId,
+      "RSS source removed",
+    );
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "removeRssSource" } });
+    throw e;
+  }
 }
 
 /**
@@ -83,20 +95,25 @@ export async function updateRssSource(originalUrl: string, input: RssSource): Pr
   RssSourceSchema.parse(input);
   if (!/^https?:\/\//.test(input.url)) throw new Error("url_invalid");
   if (input.name.length < 2) throw new Error("name_too_short");
-  if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
-    throw new Error("poll_interval_range");
+  try {
+    if (input.pollIntervalMin < 5 || input.pollIntervalMin > 1440)
+      throw new Error("poll_interval_range");
 
-  const current = await listRssSources();
-  const idx = current.findIndex((s) => s.url === originalUrl);
-  if (idx === -1) throw new Error("source_not_found");
-  // Si on change l'URL et qu'une autre source a déjà cette URL → conflit.
-  if (input.url !== originalUrl && current.some((s) => s.url === input.url)) {
-    throw new Error("url_already_added");
+    const current = await listRssSources();
+    const idx = current.findIndex((s) => s.url === originalUrl);
+    if (idx === -1) throw new Error("source_not_found");
+    // Si on change l'URL et qu'une autre source a déjà cette URL → conflit.
+    if (input.url !== originalUrl && current.some((s) => s.url === input.url)) {
+      throw new Error("url_already_added");
+    }
+    const next = [...current];
+    next[idx] = input;
+    await writeContentGenConfig(KEY, next, session.userId, `RSS source updated (${input.url})`);
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "updateRssSource" } });
+    throw e;
   }
-  const next = [...current];
-  next[idx] = input;
-  await writeContentGenConfig(KEY, next, session.userId, `RSS source updated (${input.url})`);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
 }
 
 /**
@@ -108,16 +125,21 @@ export async function toggleRssSource(url: string, enabled: boolean): Promise<vo
   // Sprint Final P1-3 — Zod runtime validation.
   RssUrlSchema.parse(url);
   z.boolean().parse(enabled);
-  const current = await listRssSources();
-  const idx = current.findIndex((s) => s.url === url);
-  if (idx === -1) throw new Error("source_not_found");
-  const next = [...current];
-  next[idx] = { ...current[idx]!, enabled };
-  await writeContentGenConfig(
-    KEY,
-    next,
-    session.userId,
-    `RSS source ${enabled ? "enabled" : "disabled"} (${url})`,
-  );
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  try {
+    const current = await listRssSources();
+    const idx = current.findIndex((s) => s.url === url);
+    if (idx === -1) throw new Error("source_not_found");
+    const next = [...current];
+    next[idx] = { ...current[idx]!, enabled };
+    await writeContentGenConfig(
+      KEY,
+      next,
+      session.userId,
+      `RSS source ${enabled ? "enabled" : "disabled"} (${url})`,
+    );
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/rss`);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "toggleRssSource" } });
+    throw e;
+  }
 }

@@ -14,6 +14,7 @@ import { RefererTracker } from "@/components/analytics/RefererTracker";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { Clarity } from "@/components/analytics/Clarity";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
+import { buildSiteNavigationJsonLd } from "@/lib/seo/extended-schemas";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
@@ -178,6 +179,40 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const organizationJsonLd = buildOrganizationJsonLd(organizationJsonLdInput);
   const websiteJsonLd = buildWebsiteJsonLd({ locale: locale as Locale });
 
+  // Sprint v7 post-audit FIX F4 — SiteNavigationElement JSON-LD (helper Phase 12).
+  // SSOT des 5 items canoniques du header desktop (cf. `Header.tsx` navLeft+navRight).
+  // Signal AEO/GEO 2026 : permet à Perplexity/Claude.ai/SGE de comprendre la
+  // structure de navigation primaire du site et de citer les hubs pertinents.
+  // URLs en FR (locale par défaut + EN désactivé 2026-05-16, cf. AGENTS.md).
+  const isFrLocale = (locale as Locale) === "fr";
+  const siteNavigationJsonLd = buildSiteNavigationJsonLd([
+    {
+      name: isFrLocale ? "Interventions" : "Interventions",
+      url: `${SITE_URL}/${locale}/interventions`,
+      position: 1,
+    },
+    {
+      name: isFrLocale ? "Audit" : "Audit",
+      url: `${SITE_URL}/${locale}/audit`,
+      position: 2,
+    },
+    {
+      name: isFrLocale ? "Implémentation" : "Implementation",
+      url: `${SITE_URL}/${locale}/implementation`,
+      position: 3,
+    },
+    {
+      name: isFrLocale ? "Cas concrets" : "Case studies",
+      url: `${SITE_URL}/${locale}/cas-concrets`,
+      position: 4,
+    },
+    {
+      name: isFrLocale ? "Implantations" : "Locations",
+      url: `${SITE_URL}/${locale}/implantations`,
+      position: 5,
+    },
+  ]);
+
   // P1-14 (audit re-run 2026-05-15 AGENT 5) — Resource Hints preconnect.
   // Réduit le TBT initial de ~60-150 ms p75 en pré-établissant les
   // connexions TCP+TLS vers les origines tierces critiques avant que les
@@ -265,7 +300,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             via JsonLdGraph @graph (au lieu de 2 scripts inline séparés).
             Gain doc parse -300/-500 ms sur 100 % des routes (signal LCP/FCP).
             Admin noindex (cf. robots.ts) → Google ignore ; sans effet négatif. */}
-        <JsonLdGraph schemas={[organizationJsonLd, websiteJsonLd]} />
+        <JsonLdGraph schemas={[organizationJsonLd, websiteJsonLd, siteNavigationJsonLd]} />
         {/* V-04 P3 (2026-05-22) — Speculation Rules désormais posées via
             <SpeculationRules /> client component (gating /admin/* + DOM
             injection). Voir src/components/perf/SpeculationRules.tsx. */}

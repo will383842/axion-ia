@@ -18,6 +18,8 @@ import type {
   RetentionPurgeJobData,
   BookingCronJobData,
   BookingCronJobType,
+  SiteRouteInspectorJobData,
+  SiteRouteAnomalyDetectorJobData,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -332,6 +334,22 @@ export const externalLinksMonitorQueue: Queue | null = connection
       defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
     })
   : null;
+
+// Sprint Site Explorer Admin 2026-05-22 — inspection quotidienne + détection anomalies.
+export const siteRouteInspectorQueue: Queue<SiteRouteInspectorJobData> | null = connection
+  ? new Queue<SiteRouteInspectorJobData>("site-route-inspector", {
+      connection,
+      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+    })
+  : null;
+
+export const siteRouteAnomalyDetectorQueue: Queue<SiteRouteAnomalyDetectorJobData> | null =
+  connection
+    ? new Queue<SiteRouteAnomalyDetectorJobData>("site-route-anomaly-detector", {
+        connection,
+        defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
+      })
+    : null;
 
 /**
  * Méta-cert 2026-05-15 AGENT 19 — health monitoring multi-check (cron hourly).
@@ -768,17 +786,31 @@ export async function bootRepeatableJobs(): Promise<void> {
     );
   }
 
-  // Sprint Campaign Controls C.3 — deadline checker daily 00:05 UTC.
+  // Sprint Campaign Controls C.3 — deadline checker every 15 min.
+  // Sprint Correctif P1 (2026-05-23 — audit E2E passe 2 runtime) : passage du
+  // pattern daily `5 0 * * *` → `*/15 * * * *`. Granularité 24h trop coarse
+  // pour les campagnes avec endDate sub-day (ex: endDate=T+10min stoppait
+  // au prochain 00:05 UTC = ~24h de retard). 15min suffit pour respecter
+  // les endDate utilisateur sans saturer le scheduler.
+  // Idempotence : ancien jobId `content-gen-deadline-checker-cron` retiré via
+  // removeRepeatable (les 2 patterns sont nettoyés pour migration safe).
   if (contentDeadlineCheckerQueue) {
+    // Retire l'ancien pattern daily (migration idempotente)
     await contentDeadlineCheckerQueue.removeRepeatable(
       "tick",
       { pattern: "5 0 * * *" },
       "content-gen-deadline-checker-cron",
     );
+    // Retire le nouveau pattern aussi (idempotent re-add)
+    await contentDeadlineCheckerQueue.removeRepeatable(
+      "tick",
+      { pattern: "*/15 * * * *" },
+      "content-gen-deadline-checker-cron",
+    );
     await contentDeadlineCheckerQueue.add(
       "tick",
-      { trigger: "cron-daily-0005", tick: new Date().toISOString() },
-      { repeat: { pattern: "5 0 * * *" }, jobId: "content-gen-deadline-checker-cron" },
+      { trigger: "cron-15min", tick: new Date().toISOString() },
+      { repeat: { pattern: "*/15 * * * *" }, jobId: "content-gen-deadline-checker-cron" },
     );
   }
 
@@ -852,6 +884,34 @@ export async function bootRepeatableJobs(): Promise<void> {
       "tick",
       { trigger: "cron-monthly-1st-0200", tick: new Date().toISOString() },
       { repeat: { pattern: "0 2 1 * *" }, jobId: "external-links-monitor-cron" },
+    );
+  }
+
+  // Sprint Site Explorer Admin 2026-05-22 — inspection URLs publiques daily 02:00 UTC.
+  if (siteRouteInspectorQueue) {
+    await siteRouteInspectorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 2 * * *" },
+      "site-route-inspector-cron",
+    );
+    await siteRouteInspectorQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 2 * * *" }, jobId: "site-route-inspector-cron" },
+    );
+  }
+
+  // Sprint Site Explorer Admin 2026-05-22 — détection anomalies daily 03:00 UTC.
+  if (siteRouteAnomalyDetectorQueue) {
+    await siteRouteAnomalyDetectorQueue.removeRepeatable(
+      "tick",
+      { pattern: "0 3 * * *" },
+      "site-route-anomaly-detector-cron",
+    );
+    await siteRouteAnomalyDetectorQueue.add(
+      "tick",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: "0 3 * * *" }, jobId: "site-route-anomaly-detector-cron" },
     );
   }
 }

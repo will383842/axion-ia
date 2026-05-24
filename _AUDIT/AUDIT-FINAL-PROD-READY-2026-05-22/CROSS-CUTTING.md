@@ -9,6 +9,7 @@ Analyses transverses qui traversent plusieurs blocs.
 **Constat** : la chaîne `orchestrator → keyword-selector → content-gen-worker → llm-judge → quality-improver → content-publish-worker → content-indexnow-worker` est **structurellement complète et testée** (Fl-07 24/25). Décisions Will (D1=6.0, D2 3/2 itér, D4 wording) toutes retrouvées EXACT dans le code.
 
 **Risques croisés** :
+
 - P0-1 (catalog liens) impacte 100% des articles publiés via `injectInternalLinks()` appelé par tous generators
 - P0-2 (resetMonthlyCostCounters absent) interrompt toute la chaîne à J+30
 - P0-4 (fact-check Sentry-aveugle) masque outages Perplexity = gating publish invisible si Perplexity down
@@ -20,6 +21,7 @@ Analyses transverses qui traversent plusieurs blocs.
 ## C2 — AI Act art. 50 (deadline 2026-08-02)
 
 **Constat** : conformité **anticipée 2,5 mois avant échéance** sur 4 piliers indépendants :
+
 1. AiContentDisclaimer (composant + wording D4 bilingue)
 2. JSON-LD `aiGenerated:true` + `additionalType:AIGeneratedContent`
 3. GenerationProvenance 16 champs + hash chain SHA-256 + rétention 6 ans
@@ -34,6 +36,7 @@ Analyses transverses qui traversent plusieurs blocs.
 ## C3 — Cost tracker ↔ rampe MAX_PUBLISH
 
 **Constat** : trois mécanismes redondants empêchent dépassement budget :
+
 1. Cap quotidien `MAX_PUBLISH_PER_DAY` (Redis INCR atomique, P2 P0-4)
 2. Cost cap mensuel par provider (`assertCostCapAvailable` + `trackCost`)
 3. Kill-switch global si tous providers role=text en cap (`handleCostCapHit`)
@@ -49,6 +52,7 @@ Analyses transverses qui traversent plusieurs blocs.
 **Constat** : Sentry server + edge + client configurés correctement (tracesSampleRate 0.02 prod), mais **16 workers (48 %) n'ont pas de captureException ou captureWorkerError**.
 
 **Workers Sentry-aveugles identifiés** :
+
 - booking-crons-worker
 - content-fact-check-worker ⚠️ P0-4
 - content-google-indexing-worker
@@ -74,24 +78,24 @@ Analyses transverses qui traversent plusieurs blocs.
 
 Toutes les décisions Will figées (D-W1-5, D-P5-1-6, D1-D5, D7) ont été **retrouvées EXACT dans le code** :
 
-| Décision | Code retrouvé | Statut |
-|----------|---------------|--------|
-| D-W1 MAX_PUBLISH=30 ramp 30→500 | Redis INCR `MAX_PUBLISH_PER_DAY` | ✅ EXACT |
-| D-W3 factoryAutoPublishAllBlogTypes ACTIVÉ | Flag présent | ✅ EXACT |
-| D-W4 OpenAI text-embedding-3-large | Provider câblé | ✅ EXACT |
-| D-P5-1 6 presets CampaignTemplate | Model Prisma + FALLBACK_PRESETS | ⚠️ Seed prod manquant P0-5 |
-| D-P5-2 Seuil qualité 60/100 | LLM-judge threshold | ✅ EXACT |
-| D-P5-3 Reporting email lundi 8h | weekly-report-worker | ✅ retrouvé |
-| D-P5-4 Tableau croisé (pas heatmap) | Dashboard UI | ✅ retrouvé |
-| D-P5-5 MAX_PUBLISH rampe manuelle UI | Admin settings | ✅ retrouvé |
-| D-P5-6 Ordre Phase A puis B | Roadmap respectée | ✅ retrouvé |
-| D-P5-6 4 sections dashboard | Pilotage/Sources/Suivi/Réglages | ✅ EXACT |
-| D1 Seuil REJECT 6.0/10 | llm-judge.ts threshold | ✅ EXACT |
-| D2 3 itér pilier+landing, 2 autres | quality-improver config | ✅ EXACT |
-| D3 Persona Manon | `buildPersonJsonLd` | ✅ EXACT |
-| D4 Wording AiContentDisclaimer | Composant + wording Claude Sonnet 4.6 | ✅ EXACT |
-| D5 Reporting email lundi 8h | weekly-report-worker | ✅ EXACT |
-| D7 Société française pure | `BRAND.legalName="Axion-IA"` placeholder | ⚠️ raison sociale officielle pendante P1-4 |
+| Décision                                   | Code retrouvé                            | Statut                                     |
+| ------------------------------------------ | ---------------------------------------- | ------------------------------------------ |
+| D-W1 MAX_PUBLISH=30 ramp 30→500            | Redis INCR `MAX_PUBLISH_PER_DAY`         | ✅ EXACT                                   |
+| D-W3 factoryAutoPublishAllBlogTypes ACTIVÉ | Flag présent                             | ✅ EXACT                                   |
+| D-W4 OpenAI text-embedding-3-large         | Provider câblé                           | ✅ EXACT                                   |
+| D-P5-1 6 presets CampaignTemplate          | Model Prisma + FALLBACK_PRESETS          | ⚠️ Seed prod manquant P0-5                 |
+| D-P5-2 Seuil qualité 60/100                | LLM-judge threshold                      | ✅ EXACT                                   |
+| D-P5-3 Reporting email lundi 8h            | weekly-report-worker                     | ✅ retrouvé                                |
+| D-P5-4 Tableau croisé (pas heatmap)        | Dashboard UI                             | ✅ retrouvé                                |
+| D-P5-5 MAX_PUBLISH rampe manuelle UI       | Admin settings                           | ✅ retrouvé                                |
+| D-P5-6 Ordre Phase A puis B                | Roadmap respectée                        | ✅ retrouvé                                |
+| D-P5-6 4 sections dashboard                | Pilotage/Sources/Suivi/Réglages          | ✅ EXACT                                   |
+| D1 Seuil REJECT 6.0/10                     | llm-judge.ts threshold                   | ✅ EXACT                                   |
+| D2 3 itér pilier+landing, 2 autres         | quality-improver config                  | ✅ EXACT                                   |
+| D3 Persona Manon                           | `buildPersonJsonLd`                      | ✅ EXACT                                   |
+| D4 Wording AiContentDisclaimer             | Composant + wording Claude Sonnet 4.6    | ✅ EXACT                                   |
+| D5 Reporting email lundi 8h                | weekly-report-worker                     | ✅ EXACT                                   |
+| D7 Société française pure                  | `BRAND.legalName="Axion-IA"` placeholder | ⚠️ raison sociale officielle pendante P1-4 |
 
 **Conclusion** : zéro régression sur les décisions Will. 2 partiels (D-P5-1 seed prod, D7 raison sociale).
 
@@ -100,6 +104,7 @@ Toutes les décisions Will figées (D-W1-5, D-P5-1-6, D1-D5, D7) ont été **ret
 ## C6 — Sécurité ↔ RGPD ↔ AI Act : convergence
 
 **Constat** : les trois domaines partagent des composants communs solides :
+
 - IP hashing SHA-256 → RGPD (anonymisation) + Sécurité (pas d'IP en clair logs)
 - `regulationVersion="AI-Act-2024/1689"` dans GenerationProvenance → AI Act art. 50 + audit trail
 - Argon2id + 2FA TOTP → Sécurité + RGPD art. 32 (mesures techniques)
@@ -113,6 +118,7 @@ Toutes les décisions Will figées (D-W1-5, D-P5-1-6, D1-D5, D7) ont été **ret
 ## C7 — Web Vitals 2026 : zone à surveiller
 
 **Constat** : doctrine AGENTS.md affiche cibles strictes (LCP ≤1800ms, INP ≤80ms, CLS ≤0.05, JS ≤75KB gz) mais :
+
 - `lighthouserc.json` cibles relâchées (CLS 0.1, TBT 200ms — vs doctrine 0.05/150ms)
 - INP non lab-testé (pas dans LHCI config)
 - LHCI gate `continue-on-error: true` en CI (P1-8) — donc régressions Web Vitals NE BLOQUENT PAS les PR
@@ -126,6 +132,7 @@ Toutes les décisions Will figées (D-W1-5, D-P5-1-6, D1-D5, D7) ont été **ret
 ## C8 — Build externalisé GH Actions ↔ stub.invalid : intégrité
 
 **Constat** : ADR 0026 (build externalisé GHCR) bien documenté + magic string `"stub.invalid"` correctement propagée :
+
 - `src/lib/prisma.ts` : Proxy si stub
 - `src/lib/redis.ts` : Proxy si stub
 - `knowledge-rss.ts` + `knowledge-sitemap.ts` : early-exit explicite
@@ -140,6 +147,7 @@ Toutes les décisions Will figées (D-W1-5, D-P5-1-6, D1-D5, D7) ont été **ret
 ## C9 — Synergie image-bank ↔ content-gen ↔ AI Act
 
 **Constat** : pipeline image-bank parfaitement isolé (B-10 23/25) + cloisonnement strict acquis (skill `axionia-image-bank`).
+
 - Doctrine "0 image AI-générée" (`feedback_no_dalle_images.md`) appliquée via flag + migration cleanup
 - License CC BY 4.0 par défaut (Copyright Axion-IA OÜ — à updater post-D7 société française)
 - JSON-LD ImageObject + 4 sub-sitemaps Google 1.1

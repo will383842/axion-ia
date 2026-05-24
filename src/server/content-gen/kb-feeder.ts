@@ -45,6 +45,21 @@ const CONTENT_TYPE_TO_KB_TYPE: Record<ContentType, KbType> = {
   guide_pilier: "implementation_playbook",
   qa_derived: "faq",
   faq_standalone: "faq",
+  // ─── Sprint v7 Phase 8 — 12 nouveaux content types → mapping KbType ─────────
+  // Choix conservateurs : on réutilise les KbType existants pour ne pas
+  // étendre l'enum côté KB V4 (impact downstream cluster scoring).
+  long_tail_keyword: "article",
+  pain_point_solution: "industry_use_case",
+  vs_comparator: "comparison",
+  alternative_to: "comparison",
+  top_x_in_y: "article",
+  how_to_x_in_y: "implementation_playbook",
+  best_for_x_in_y: "article",
+  calculator_roi: "implementation_playbook",
+  glossary_term: "glossary_term",
+  what_is_x: "glossary_term",
+  faq_geo: "faq",
+  case_study_local: "case_study",
 };
 
 export interface KbIngestPayload {

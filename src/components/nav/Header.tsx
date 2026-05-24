@@ -4,61 +4,73 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
-import { INTERVENTION_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
-import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
-import { InterventionsMegaMenu } from "./InterventionsMegaMenu";
+import { SolutionsMegaMenu } from "./SolutionsMegaMenu";
 
-// Server Component. 4 items desktop + ZERO dropdown (CLAUDE.md v6 §9.2 —
-// révision §9.2-bis acceptée en bloc 2026-05-07 mais Sprint 15 différé).
-// Editorial doctrine v3 — fond `bg-terracotta` constant (figé, pas de
-// transition au scroll). Layout balanced :
-// [Logo badge] [Nav 1, 2]    [CTA centré + badge prix]    [Nav 3, 4] [Locale]
+// Server Component. Sprint Header refonte 2026-05-24 (Will).
 //
-// Mobile drawer (§9.4 partiel) : items principaux (4) + extras (6) +
-// CTA réserver. CTA bar permanente niveau 2 reportée Sprint 15.
+// Doctrine 2026/2027 — loi de Hick : 3 onglets top-level desktop + 1 CTA pur :
+//   [Logo]   [Nos solutions ▾]  [Tarifs]  [Cas concrets]   [Contact CTA]
+//
+// Changements clés vs v3 (Editorial doctrine héritée) :
+//   - Mega-menu unique « Nos solutions » regroupe les 5 offres
+//     (Formations / Audits / Implémentations / 1-to-1 / Plateforme web)
+//     au lieu des 5 items éclatés + l'ancien InterventionsMegaMenu
+//   - CTA central « Contact » remplace l'ancien « Réserver une intervention »
+//     + badge prix dynamique. Plus de liaison à pricing.ts côté Header.
+//   - LocaleSwitcher retiré (Will 2026-05-24 — réintégration ultérieure)
+//
+// Conservé :
+//   - Fond `bg-terracotta` constant, hairline mocha, sticky z-40, backdrop-blur
+//   - Logo en badge ivoire (shadow-subtle → shadow-card au hover)
+//   - Drawer mobile Radix Sheet (focus trap, ESC, click-outside)
+//   - Tous les attributs ARIA WCAG 2.2 AA
 export async function Header() {
   const t = await getTranslations();
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // Nav items split — 2 gauche du CTA, 3 droite du CTA (desktop).
-  // 5e item « Implantations » ajouté Sprint 14.9 (pSEO villes/régions, ADR 0006)
-  // — point d'entrée vers les 12 régions et 2 157 communes éligibles.
-  const navLeft = [
-    { href: "/interventions", label: t("nav.interventions") },
-    { href: "/audit", label: t("nav.audit") },
-  ] as const;
-  const navRight = [
-    { href: "/implementation", label: t("nav.implementation") },
+  // 3 onglets top-level (hors CTA central) : 1 mega-menu + 2 simples.
+  // SolutionsMegaMenu est rendu inline (besoin des props i18n), Tarifs + Cas
+  // concrets sont des NavLink standards.
+  const navAfterSolutions = [
+    { href: "/tarifs", label: t("nav.pricing") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
-    { href: "/implantations", label: t("nav.implantations") },
   ] as const;
-  const navAll = [...navLeft, ...navRight];
 
-  // Items supplémentaires affichés UNIQUEMENT dans le drawer mobile (§9.4
-  // partiel — la doctrine demande ces pages stratégiques accessibles depuis
-  // le menu mobile, pas seulement le footer).
+  // Items supplémentaires uniquement dans le drawer mobile (pages stratégiques
+  // accessibles depuis mobile, pas seulement depuis le footer).
   const navMobileExtras = [
+    { href: "/implantations", label: t("nav.implantations") },
     { href: "/stack-ia", label: isFr ? "Stack IA" : "AI Stack" },
     { href: "/blog", label: t("nav.blog") },
     { href: "/faq", label: "FAQ" },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
     { href: "/a-propos", label: t("nav.about") },
-    { href: "/contact", label: t("nav.contact") },
   ] as const;
 
-  // Badge prix CTA central (§9.3) — dérivé de pricing.ts (source unique).
-  // Sprint 14.10.3 : un changement de tarif Essentielle dans pricing.ts se
-  // propage automatiquement ici sans modification du Header.
-  const entryFormatted = formatPrice(getEntryTier(INTERVENTION_TIERS), isFr ? "fr" : "en");
-  // Sprint 14.10.7 (Will 2026-05-11) : « À partir de » / « Starting at »
-  // au lieu de « dès » / « from » pour cohérence end-to-end sur tout le site.
-  const ctaPriceBadge = isFr
-    ? `À partir de ${entryFormatted.replace(" HT", "")}`
-    : `Starting at ${entryFormatted.replace(" (excl. VAT)", "")}`;
-  const ctaAriaLabel = `${t("cta.bookInterventionLong")} — ${ctaPriceBadge}`;
+  // Solutions mega-menu — i18n résolu côté server, passé client en props.
+  const solutionsItems = {
+    formations: { label: t("nav.formations"), hint: t("nav.formationsHint") },
+    oneToOne: { label: t("nav.oneToOne"), hint: t("nav.oneToOneHint") },
+    audit: { label: t("nav.auditShort"), hint: t("nav.auditHint") },
+    implementation: {
+      label: t("nav.implementationShort"),
+      hint: t("nav.implementationHint"),
+    },
+    platform: { label: t("nav.platform"), hint: t("nav.platformHint") },
+  } as const;
+
+  // Items mobile mega-menu Solutions (plat, sans featured card pour limiter
+  // la profondeur du drawer)
+  const solutionsMobileItems = [
+    { href: "/interventions/collectives", label: t("nav.formations") },
+    { href: "/audit", label: t("nav.auditShort") },
+    { href: "/implementation", label: t("nav.implementationShort") },
+    { href: "/un-a-un", label: t("nav.oneToOne") },
+    { href: "/codage-developpement", label: t("nav.platform") },
+  ] as const;
 
   return (
     <header
@@ -70,11 +82,10 @@ export async function Header() {
         aria-hidden="true"
         className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
-      {/* Layout pleine largeur : Logo + Nav split + CTA centré + Locale */}
+      {/* Layout pleine largeur : Logo + Nav split + CTA central Contact */}
       <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-3 lg:px-12 xl:gap-4 xl:px-16">
-        {/* GAUCHE : Logo (avec bulle ivoire pour ressortir) + Nav 1+2 */}
+        {/* GAUCHE : Logo (avec bulle ivoire) + Nav mega-menu Solutions */}
         <div className="flex flex-1 items-center justify-between gap-6 lg:gap-8">
-          {/* Logo image — badge ivoire pour ressortir sur fond terracotta. */}
           <Link
             href={ROUTES.home}
             aria-label={BRAND.name}
@@ -90,92 +101,81 @@ export async function Header() {
             />
           </Link>
 
-          {/* Desktop nav — 2 premiers items, poussés à droite (près du CTA).
-              P2-26 audit E2E NAV+CTA 2026-05-15 — `aria-label="Accueil"` n'était
-              pas sémantique ; remplacé par « Navigation principale ».
-              P0-4 audit E2E NAV+CTA 2026-05-15 — premier item Interventions
-              instancié via `InterventionsMegaMenu` (override doctrine §9.2 sur
-              demande Will). Récupère 7 pages money desktop (4 familles + 3
-              pages best-seller) absentes avant. Audit page reste accessible
-              par le lien trigger du mega-menu. */}
           <nav
             aria-label={t("nav.primaryLabel")}
             className="hidden items-center gap-6 lg:flex lg:justify-end xl:gap-8"
           >
-            <InterventionsMegaMenu isFr={isFr} triggerLabel={t("nav.interventions")} />
-            <NavLink href="/audit" label={t("nav.audit")} />
+            <SolutionsMegaMenu
+              isFr={isFr}
+              triggerLabel={t("nav.solutions")}
+              panelLabel={t("nav.solutionsLabel")}
+              tagline={t("nav.solutionsTagline")}
+              featuredTitle={t("nav.featuredTitle")}
+              featuredDesc={t("nav.featuredDesc")}
+              featuredCta={t("nav.featuredCta")}
+              items={solutionsItems}
+            />
           </nav>
         </div>
 
-        {/* CENTRE : CTA pill bleu primary saillant + badge prix Essentielle */}
+        {/* CENTRE : CTA Contact (pill primary, AUCUN badge prix — pure UX 2027) */}
         <Link
-          href="/reserver"
-          aria-label={ctaAriaLabel}
+          href={ROUTES.contact}
+          aria-label={t("cta.contactAria")}
           data-cta="header-central"
-          data-cta-tracking="cta_central_click"
-          className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 hidden h-12 shrink-0 items-center gap-2 rounded-full pr-5 pl-6 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:inline-flex"
+          data-cta-tracking="cta_central_contact_click"
+          className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 hidden h-12 shrink-0 items-center gap-2 rounded-full px-6 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:inline-flex"
         >
-          <span>{t("cta.bookInterventionLong")}</span>
-          <span
-            aria-hidden="true"
-            className="bg-paper text-primary inline-flex h-7 items-center rounded-full px-2.5 text-[11px] font-bold tracking-tight tabular-nums"
-          >
-            {ctaPriceBadge}
-          </span>
+          <span>{t("cta.contactLong")}</span>
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
 
-        {/* DROITE : Nav 3+4+5 + Locale */}
+        {/* DROITE : Tarifs + Cas concrets */}
         <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-8">
           <nav
             aria-label={t("nav.primaryLabel")}
             className="hidden items-center gap-6 lg:flex lg:justify-start xl:gap-8"
             data-nav-section="secondary"
           >
-            {navRight.map((item) => (
+            {navAfterSolutions.map((item) => (
               <NavLink key={item.href} href={item.href} label={item.label} />
             ))}
           </nav>
-          <LocaleSwitcher />
         </div>
 
         {/* Mobile drawer trigger (mobile only) */}
         <div className="ml-auto lg:hidden">
           <MobileNav>
-            <nav aria-label={t("nav.home")} className="flex flex-col gap-1 text-base">
-              {/* Items principaux (4) — strict miroir du desktop */}
-              {navAll.map((item) => (
+            <nav aria-label={t("nav.primaryLabel")} className="flex flex-col gap-1 text-base">
+              {/* Section Solutions (5 items développés à plat — pas de nested
+                  accordion pour limiter la profondeur de navigation mobile) */}
+              <p className="text-fg-muted mt-1 mb-1.5 text-[11px] font-semibold tracking-[0.16em] uppercase">
+                {t("nav.solutions")}
+              </p>
+              {solutionsMobileItems.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
-              {/* Séparateur fin avant les pages secondaires */}
+              {/* Séparateur fin avant Tarifs + Cas concrets */}
               <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
+              {navAfterSolutions.map((item) => (
+                <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
+              ))}
               {/* Items secondaires (6) — pages stratégiques accessibles depuis mobile */}
+              <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
               {navMobileExtras.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
-              {/* CTA réserver + badge prix (parité desktop) */}
+              {/* CTA Contact mobile (parité desktop, sans badge prix) */}
               <Link
-                href="/reserver"
-                aria-label={ctaAriaLabel}
+                href={ROUTES.contact}
+                aria-label={t("cta.contactAria")}
                 data-cta="header-mobile-central"
-                data-cta-tracking="cta_central_click"
+                data-cta-tracking="cta_central_contact_click"
                 className="bg-terracotta text-mocha-fg mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
               >
-                <span>{t("cta.bookInterventionLong")}</span>
-                <span
-                  aria-hidden="true"
-                  className="bg-paper text-terracotta-deep inline-flex h-6 items-center rounded-full px-2 text-[11px] font-bold tracking-tight tabular-nums"
-                >
-                  {ctaPriceBadge}
-                </span>
+                <span>{t("cta.contactLong")}</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
-              <div className="border-border mt-6 flex items-center justify-between border-t pt-4">
-                <span className="text-fg-muted text-xs tracking-[0.16em] uppercase">
-                  {t("common.switchLanguage")}
-                </span>
-                <LocaleSwitcher />
-              </div>
             </nav>
           </MobileNav>
         </div>

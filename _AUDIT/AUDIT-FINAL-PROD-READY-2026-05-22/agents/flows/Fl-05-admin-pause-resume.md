@@ -6,34 +6,34 @@
 
 ## Chaîne traçée
 
-| Étape | Fichier | Ligne | Verdict |
-|---|---|---|---|
-| **Server action `pauseCampaign`** | `src/server/actions/content-gen/coverage.ts` | 302-380 | OK |
-| `requireAdmin()` guard | idem | 303 | OK SOC2 |
-| Récup `recurringSchedule` avant update | idem | 304-308 | OK |
-| Status `paused` + `pausedAt` | idem | 309-312 | OK |
-| **Purge BullMQ jobs `queued`** (B.2 P0-10 P1.5) | idem | 315-351 (`getJob('gen-…')` + `bullJob.remove()` si state in waiting/delayed/waiting-children/prioritized) | OK acquis P1.5 B.2 |
-| Cap purge 5000 jobs | idem | 322 | OK |
-| **Retrait du repeatable job cron** | idem | 354-366 (`queue.removeRepeatable(…)`) | OK |
-| `revalidatePath` + `logActivity` SOC2 (qty queued + bullPurged + removedRecurring) | idem | 368-379 | OK |
-| **Server action `resumeCampaign`** | idem | 382-436 | OK |
-| Archive `pausedAt` dans `campaign_pause_history` via chokepoint `writeContentGenConfig` (SOC2 + rate-limit) | idem | 386-423 | OK (acquis Sprint S+4-F audit 06 §8.9 P1-1) |
-| Status `running` + `pausedAt: null` | idem | 425-428 | OK |
-| `logActivity` resume | idem | 430-435 | OK |
-| **`launchCampaign`** (draft → running) | idem | 261-300 | OK |
-| Création repeatable job si `recurringSchedule` (tz Europe/Paris) | idem | 273-289 | OK |
-| **`cancelCampaign` (mode running_only \| all)** | idem | 455-541 | OK |
-| Purge BullMQ identique | idem | 498-520 | OK |
-| Status `cancelled` + `completedAt` | idem | 461-465 | OK |
-| **Worker honore `campaign.status` à chaque tick** (graceful pause) | `src/server/queue/workers/content-orchestrator-worker.ts` (présent) ; le worker filtre par `status='running'` | OK |
-| **Status DB transitions** | enum `CoverageStatus` via Prisma | OK (referenced lines 79-83) |
+| Étape                                                                                                       | Fichier                                                                                                       | Ligne                                                                                                     | Verdict                                     |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| **Server action `pauseCampaign`**                                                                           | `src/server/actions/content-gen/coverage.ts`                                                                  | 302-380                                                                                                   | OK                                          |
+| `requireAdmin()` guard                                                                                      | idem                                                                                                          | 303                                                                                                       | OK SOC2                                     |
+| Récup `recurringSchedule` avant update                                                                      | idem                                                                                                          | 304-308                                                                                                   | OK                                          |
+| Status `paused` + `pausedAt`                                                                                | idem                                                                                                          | 309-312                                                                                                   | OK                                          |
+| **Purge BullMQ jobs `queued`** (B.2 P0-10 P1.5)                                                             | idem                                                                                                          | 315-351 (`getJob('gen-…')` + `bullJob.remove()` si state in waiting/delayed/waiting-children/prioritized) | OK acquis P1.5 B.2                          |
+| Cap purge 5000 jobs                                                                                         | idem                                                                                                          | 322                                                                                                       | OK                                          |
+| **Retrait du repeatable job cron**                                                                          | idem                                                                                                          | 354-366 (`queue.removeRepeatable(…)`)                                                                     | OK                                          |
+| `revalidatePath` + `logActivity` SOC2 (qty queued + bullPurged + removedRecurring)                          | idem                                                                                                          | 368-379                                                                                                   | OK                                          |
+| **Server action `resumeCampaign`**                                                                          | idem                                                                                                          | 382-436                                                                                                   | OK                                          |
+| Archive `pausedAt` dans `campaign_pause_history` via chokepoint `writeContentGenConfig` (SOC2 + rate-limit) | idem                                                                                                          | 386-423                                                                                                   | OK (acquis Sprint S+4-F audit 06 §8.9 P1-1) |
+| Status `running` + `pausedAt: null`                                                                         | idem                                                                                                          | 425-428                                                                                                   | OK                                          |
+| `logActivity` resume                                                                                        | idem                                                                                                          | 430-435                                                                                                   | OK                                          |
+| **`launchCampaign`** (draft → running)                                                                      | idem                                                                                                          | 261-300                                                                                                   | OK                                          |
+| Création repeatable job si `recurringSchedule` (tz Europe/Paris)                                            | idem                                                                                                          | 273-289                                                                                                   | OK                                          |
+| **`cancelCampaign` (mode running_only \| all)**                                                             | idem                                                                                                          | 455-541                                                                                                   | OK                                          |
+| Purge BullMQ identique                                                                                      | idem                                                                                                          | 498-520                                                                                                   | OK                                          |
+| Status `cancelled` + `completedAt`                                                                          | idem                                                                                                          | 461-465                                                                                                   | OK                                          |
+| **Worker honore `campaign.status` à chaque tick** (graceful pause)                                          | `src/server/queue/workers/content-orchestrator-worker.ts` (présent) ; le worker filtre par `status='running'` | OK                                                                                                        |
+| **Status DB transitions**                                                                                   | enum `CoverageStatus` via Prisma                                                                              | OK (referenced lines 79-83)                                                                               |
 
 ## Findings P0/P1/P2
 
-| Niveau | Item | Référence |
-|---|---|---|
+| Niveau | Item                                                                                                                                                                                                                                                    | Référence                                   |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | **P2** | Jobs `running` ne sont pas tués par `pauseCampaign` (graceful : le worker re-check `campaign.status` à chaque tick). Cohérent avec doctrine "ne pas perdre le contenu généré payé" mais le bouton pause peut avoir un délai 30-90s avant arrêt complet. | `coverage.ts:315-321` commentaire explicite |
-| **P2** | `try/catch` swallowed pour les jobs introuvables (`catch {}` lignes 343-345, 516-518) — acceptable pour purge best-effort. | idem |
+| **P2** | `try/catch` swallowed pour les jobs introuvables (`catch {}` lignes 343-345, 516-518) — acceptable pour purge best-effort.                                                                                                                              | idem                                        |
 
 ## Verdict détaillé
 

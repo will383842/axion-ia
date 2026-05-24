@@ -18,7 +18,7 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Orchestrateur"
-        description={`Vue globale § 12.1 v1.7. Daily batch size config : ${batches.dailyBatchSize} · Concurrency : ${batches.workersConcurrency}`}
+        description={`Vue globale § 12.1 v1.7. Concurrency workers : ${batches.workersConcurrency} · Anti-burst : ${batches.antiBurstEnabled ? "on" : "off"}`}
       />
 
       <section
@@ -29,7 +29,7 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
         <AdminStatCard label="Cible cumulée" value={stats.totalActiveTarget} />
         <AdminStatCard label="Générées (campagnes)" value={stats.totalActiveGenerated} />
         <AdminStatCard label="Jobs 24 h" value={stats.dailyPlanJobs24h} />
-        <AdminStatCard label="Quota daily configuré" value={batches.dailyBatchSize} />
+        <AdminStatCard label="Concurrency workers" value={batches.workersConcurrency} />
       </section>
 
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">

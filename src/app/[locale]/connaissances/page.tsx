@@ -25,6 +25,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Link } from "@/i18n/navigation";
 import { SITE_URL, buildProductMetadata } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { fetchPublicKbList } from "@/lib/knowledge/public-fetch";
 
 export const revalidate = 3600;
@@ -79,10 +80,9 @@ export default async function ConnaissancesHub({ params }: Props) {
     isPartOf: { "@id": `${SITE_URL}/fr#website` },
     description:
       "Base de connaissances Axion-IA — articles, méthodologies, comparatifs, playbooks et études de cas IA opérationnels.",
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["[data-aeo='kb-intro']"],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: ["[data-aeo='kb-intro']"],
+    }),
     hasPart: items.slice(0, 12).map((item) => ({
       "@type": "Article",
       headline: item.title,

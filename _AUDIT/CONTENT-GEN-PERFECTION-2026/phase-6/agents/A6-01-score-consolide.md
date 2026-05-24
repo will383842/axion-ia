@@ -1,6 +1,9 @@
 # A6-01 — Score consolidé Content-Gen Perfection 2026
+
 ## Agent : A6-01 (Score consolidation)
+
 ## Date : 2026-05-22
+
 ## HEAD local : 7236dfd0 | origin/main : e573da6
 
 ---
@@ -12,13 +15,13 @@ baseline P6 (HEAD e0b1973b, score 3598/5000) jusqu'au HEAD local 7236dfd0.
 
 ### Commits post-baseline P6 intégrés
 
-| SHA | Description | Poussé origin/main |
-|-----|-------------|-------------------|
-| `4516f39f` | S+7 : P1-7 getGlossaryContext() + P1-12 injectInternalLinks() + P1-2 H1 gate sur 8 generators | OUI |
-| `e573da64` | P5 follow-up : 4 P0 (worker lit MAX_PUBLISH DB, checkAnomalies, prefill wizard, seuil 60) | OUI |
-| `023266f9` | Sprint A : schema.prisma R6 restrict + blog-article.ts 9e generator + Telegram REJECT-P0 + weekly-report-worker | NON (local) |
-| `9851f8e3` | Fix email defaut weekly-report (contact@axion-ia.com) | NON (local) |
-| `5d8e8b6f` + `7236dfd0` | Wizard 5 etapes cascade + 5 personas + no-table gate + Unsplash + keyword-catalog + city-equity | NON (local) |
+| SHA                     | Description                                                                                                     | Poussé origin/main |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `4516f39f`              | S+7 : P1-7 getGlossaryContext() + P1-12 injectInternalLinks() + P1-2 H1 gate sur 8 generators                   | OUI                |
+| `e573da64`              | P5 follow-up : 4 P0 (worker lit MAX_PUBLISH DB, checkAnomalies, prefill wizard, seuil 60)                       | OUI                |
+| `023266f9`              | Sprint A : schema.prisma R6 restrict + blog-article.ts 9e generator + Telegram REJECT-P0 + weekly-report-worker | NON (local)        |
+| `9851f8e3`              | Fix email defaut weekly-report (contact@axion-ia.com)                                                           | NON (local)        |
+| `5d8e8b6f` + `7236dfd0` | Wizard 5 etapes cascade + 5 personas + no-table gate + Unsplash + keyword-catalog + city-equity                 | NON (local)        |
 
 ---
 
@@ -26,21 +29,21 @@ baseline P6 (HEAD e0b1973b, score 3598/5000) jusqu'au HEAD local 7236dfd0.
 
 ### D-Etat (P1.5) — Pipeline complet, 9 generators, types articles
 
-| Score P6 baseline | 795/1000 |
-|---|---|
-| Base verifiee P1.5 | 770-820 estimee (audit A1-A11 phase 1) |
-| Retenu comme baseline honnete | 795/1000 |
+| Score P6 baseline             | 795/1000                               |
+| ----------------------------- | -------------------------------------- |
+| Base verifiee P1.5            | 770-820 estimee (audit A1-A11 phase 1) |
+| Retenu comme baseline honnete | 795/1000                               |
 
 **Items livres depuis P6 baseline :**
 
-| Item | Commit | Gain pts | Justification |
-|------|--------|----------|---------------|
-| blog-article.ts wiring getGlossaryContext + injectInternalLinks (9e/9 generators complet) | `023266f9` | +5 | Le 9e generator etait le seul non wire post-4516f39f. Ferme le gap "9/9 generators" au lieu de 8/9. Gain modere car delta marginal vs les 8 deja faits. |
-| Wizard campagne 5 etapes cascade (vertical→dept→villes→cibles→keywords→revue) | `5d8e8b6f`/`7236dfd0` | +8 | Fonctionnalite admin substantielle non comptee P6. UX pilotage markedly improved. |
-| 5 personas distinctes par type de generator (Manon consultante/pedagogique/directe, editorial neutre, expert analytique) | `5d8e8b6f`/`7236dfd0` | +4 | Specifique par type, au-dela du persona Manon unique P4. |
-| comparison.ts hard gate no-table + structure H2 par critere | `5d8e8b6f`/`7236dfd0` | +3 | Qualite editoriale generator comparison. |
-| keyword-catalog.ts 55 mots-cles pre-remplis par verticale (5 verticales × ~11) | `5d8e8b6f`/`7236dfd0` | +4 | Outillage generator keyword, pas compris dans P4 S+7. |
-| city-equity.ts server action + CoverageWizardClient equity bars | `5d8e8b6f`/`7236dfd0` | +3 | Distribution equitable villes = qualite pilotage P6-level. |
+| Item                                                                                                                     | Commit                | Gain pts | Justification                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------ | --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| blog-article.ts wiring getGlossaryContext + injectInternalLinks (9e/9 generators complet)                                | `023266f9`            | +5       | Le 9e generator etait le seul non wire post-4516f39f. Ferme le gap "9/9 generators" au lieu de 8/9. Gain modere car delta marginal vs les 8 deja faits. |
+| Wizard campagne 5 etapes cascade (vertical→dept→villes→cibles→keywords→revue)                                            | `5d8e8b6f`/`7236dfd0` | +8       | Fonctionnalite admin substantielle non comptee P6. UX pilotage markedly improved.                                                                       |
+| 5 personas distinctes par type de generator (Manon consultante/pedagogique/directe, editorial neutre, expert analytique) | `5d8e8b6f`/`7236dfd0` | +4       | Specifique par type, au-dela du persona Manon unique P4.                                                                                                |
+| comparison.ts hard gate no-table + structure H2 par critere                                                              | `5d8e8b6f`/`7236dfd0` | +3       | Qualite editoriale generator comparison.                                                                                                                |
+| keyword-catalog.ts 55 mots-cles pre-remplis par verticale (5 verticales × ~11)                                           | `5d8e8b6f`/`7236dfd0` | +4       | Outillage generator keyword, pas compris dans P4 S+7.                                                                                                   |
+| city-equity.ts server action + CoverageWizardClient equity bars                                                          | `5d8e8b6f`/`7236dfd0` | +3       | Distribution equitable villes = qualite pilotage P6-level.                                                                                              |
 
 **Total gain D-Etat : +27 pts**
 
@@ -51,18 +54,19 @@ baseline P6 (HEAD e0b1973b, score 3598/5000) jusqu'au HEAD local 7236dfd0.
 ### D-Archi (P2) — Infrastructure, schema, securite, isolation
 
 | Score P6 baseline | 796/1000 (796 inclut deja la decouverte promptHash = hashPrompt reel) |
-|---|---|
+| ----------------- | --------------------------------------------------------------------- |
 
 **Items livres depuis P6 baseline :**
 
-| Item | Commit | Gain pts | Justification |
-|------|--------|----------|---------------|
-| schema.prisma GenerationProvenance onDelete Cascade → Restrict (R6 AI Act) | `023266f9` | +10 | R6 etait cite comme critique dans le verdict P6 "5 min fix". La migration Restrict elimine le risque de suppression en cascade de donnees de provenance. Item P0 documente. |
-| weekly-report-worker : queue BullMQ enregistree + cron lundi 7h UTC | `023266f9` | +5 | Infrastructure queue correctement cloisonnee, sentry worker declare. |
-| UnsplashCredit component (attribution CGU Unsplash §6 conformite) | `5d8e8b6f`/`7236dfd0` | +3 | Conformite legale images externe = archi. |
-| blog/[slug]/page.tsx : credit Unsplash + faq/[slug] BUILD_DATE | `5d8e8b6f`/`7236dfd0` | +2 | Mineure mais concrete. |
+| Item                                                                       | Commit                | Gain pts | Justification                                                                                                                                                               |
+| -------------------------------------------------------------------------- | --------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| schema.prisma GenerationProvenance onDelete Cascade → Restrict (R6 AI Act) | `023266f9`            | +10      | R6 etait cite comme critique dans le verdict P6 "5 min fix". La migration Restrict elimine le risque de suppression en cascade de donnees de provenance. Item P0 documente. |
+| weekly-report-worker : queue BullMQ enregistree + cron lundi 7h UTC        | `023266f9`            | +5       | Infrastructure queue correctement cloisonnee, sentry worker declare.                                                                                                        |
+| UnsplashCredit component (attribution CGU Unsplash §6 conformite)          | `5d8e8b6f`/`7236dfd0` | +3       | Conformite legale images externe = archi.                                                                                                                                   |
+| blog/[slug]/page.tsx : credit Unsplash + faq/[slug] BUILD_DATE             | `5d8e8b6f`/`7236dfd0` | +2       | Mineure mais concrete.                                                                                                                                                      |
 
 **Items deja compts en P6 baseline (NO-OP, non a re-crediter) :**
+
 - schema.prisma ligne 982 Restrict : confirme deja OK dans P6 baseline (la lecture fichier le confirme — le commit `023266f9` ajuste GenerationProvenance distincte de la ligne 982 — gain reel donc +10)
 - lockDuration 120s : deja dans P6 baseline
 - promptHash = hashPrompt reel : deja dans P6 baseline
@@ -76,15 +80,15 @@ baseline P6 (HEAD e0b1973b, score 3598/5000) jusqu'au HEAD local 7236dfd0.
 ### D-Visi (P3) — SEO/AEO/GEO/AI Overviews
 
 | Score P6 baseline | 775/1000 |
-|---|---|
+| ----------------- | -------- |
 
 **Items livres depuis P6 baseline :**
 
-| Item | Commit | Gain pts | Justification |
-|------|--------|----------|---------------|
-| blog/[slug] AuthorByline et ArticleTOC | `823e8ea2` (P3 follow-up, deja dans P6 baseline e0b1973b) | +0 | Ces items etaient deja integres dans le score P6 baseline 775 (commit pre-e0b1973b) |
-| UnsplashCredit blog page.tsx | `5d8e8b6f` | +2 | Signal E-E-A-T photos creditees = signal SEO (attribution source). Mineur mais reel. |
-| FAQ page BUILD_DATE mise a jour visible | `7236dfd0` | +1 | Signal freshness contenu. |
+| Item                                    | Commit                                                    | Gain pts | Justification                                                                        |
+| --------------------------------------- | --------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------ |
+| blog/[slug] AuthorByline et ArticleTOC  | `823e8ea2` (P3 follow-up, deja dans P6 baseline e0b1973b) | +0       | Ces items etaient deja integres dans le score P6 baseline 775 (commit pre-e0b1973b)  |
+| UnsplashCredit blog page.tsx            | `5d8e8b6f`                                                | +2       | Signal E-E-A-T photos creditees = signal SEO (attribution source). Mineur mais reel. |
+| FAQ page BUILD_DATE mise a jour visible | `7236dfd0`                                                | +1       | Signal freshness contenu.                                                            |
 
 **Aucun nouveau item SEO/AEO/GEO majeur livre depuis e0b1973b.**
 Actions Will pendantes (Wikidata, adresse FR) non livrees = pas de gain.
@@ -98,21 +102,21 @@ Actions Will pendantes (Wikidata, adresse FR) non livrees = pas de gain.
 ### D-Qual (P4) — Qualite editoriale, keyword gates, KB, brand voice
 
 | Score P6 baseline | 712/1000 (verifie par V4 : 662 post-discordances + 2 corrections P0-5 et D3 = 712) |
-|---|---|
+| ----------------- | ---------------------------------------------------------------------------------- |
 
 **Rappel : le score P6 baseline 712 integrait deja les 2 corrections de discordances livrees dans commit `364f2c65` (P4 verif follow-up).**
 
 **Items livres depuis P6 baseline :**
 
-| Item | Commit | Gain pts | Justification |
-|------|--------|----------|---------------|
-| P1-7 getGlossaryContext() injecte dans 8 generators (blog-from-keywords, blog-from-rss, blog-from-title, comparison, qa-derived, faq-standalone, guide-pilier, landing-ville) | `4516f39f` | +18 | Le verdict V4 estimait +10 pts pour le wiring. 8 generators completement wires (max 6 termes IA par keyword). Gain rehausse a +18 car 8/9 generators (9e = blog-article commit `023266f9`). |
-| P1-12 injectInternalLinks() cable post-sanitize dans 8 generators (catalogue 10 entrees statiques) | `4516f39f` | +14 | Infrastructure livrée P4 mais non wiree. 8 generators maintenant cables. Catalogue statique OK pour V1. |
-| P1-2 H1 keyword gate propage aux 7 generators restants (blog-from-keywords, blog-from-rss, blog-from-title, comparison, faq-standalone, guide-pilier, landing-ville, qa-derived) | `4516f39f` | +10 | Gate valide sur toute la suite, elimine les H1 sans keyword. |
-| blog-article.ts wiring complet (9e generator) getGlossaryContext + injectInternalLinks | `023266f9` | +3 | Complement des 8 precedents. |
-| 5 personas distinctes par type generator | `5d8e8b6f`/`7236dfd0` | +6 | Au-dela de Manon generique P4 : persona journalistique neutre (blog-from-rss), editorial neutre, expert analytique (comparison) = qualite editoriale differentielle. |
-| comparison.ts hard gate no-table + structure H2 critere | `5d8e8b6f`/`7236dfd0` | +4 | Elimine les tableaux HTML mal rendus, structure editoriale stricte. |
-| faq-standalone.ts D3 persona Manon : residuel corrige | `4516f39f` (inclut faq-standalone dans la liste des 8 generators) | +3 | La discordance D3 faq-standalone detectee en V4 est resolue car getGlossaryContext inject = persona correctement propage. |
+| Item                                                                                                                                                                             | Commit                                                            | Gain pts | Justification                                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1-7 getGlossaryContext() injecte dans 8 generators (blog-from-keywords, blog-from-rss, blog-from-title, comparison, qa-derived, faq-standalone, guide-pilier, landing-ville)    | `4516f39f`                                                        | +18      | Le verdict V4 estimait +10 pts pour le wiring. 8 generators completement wires (max 6 termes IA par keyword). Gain rehausse a +18 car 8/9 generators (9e = blog-article commit `023266f9`). |
+| P1-12 injectInternalLinks() cable post-sanitize dans 8 generators (catalogue 10 entrees statiques)                                                                               | `4516f39f`                                                        | +14      | Infrastructure livrée P4 mais non wiree. 8 generators maintenant cables. Catalogue statique OK pour V1.                                                                                     |
+| P1-2 H1 keyword gate propage aux 7 generators restants (blog-from-keywords, blog-from-rss, blog-from-title, comparison, faq-standalone, guide-pilier, landing-ville, qa-derived) | `4516f39f`                                                        | +10      | Gate valide sur toute la suite, elimine les H1 sans keyword.                                                                                                                                |
+| blog-article.ts wiring complet (9e generator) getGlossaryContext + injectInternalLinks                                                                                           | `023266f9`                                                        | +3       | Complement des 8 precedents.                                                                                                                                                                |
+| 5 personas distinctes par type generator                                                                                                                                         | `5d8e8b6f`/`7236dfd0`                                             | +6       | Au-dela de Manon generique P4 : persona journalistique neutre (blog-from-rss), editorial neutre, expert analytique (comparison) = qualite editoriale differentielle.                        |
+| comparison.ts hard gate no-table + structure H2 critere                                                                                                                          | `5d8e8b6f`/`7236dfd0`                                             | +4       | Elimine les tableaux HTML mal rendus, structure editoriale stricte.                                                                                                                         |
+| faq-standalone.ts D3 persona Manon : residuel corrige                                                                                                                            | `4516f39f` (inclut faq-standalone dans la liste des 8 generators) | +3       | La discordance D3 faq-standalone detectee en V4 est resolue car getGlossaryContext inject = persona correctement propage.                                                                   |
 
 **Total gain D-Qual : +58 pts**
 
@@ -123,22 +127,23 @@ Actions Will pendantes (Wikidata, adresse FR) non livrees = pas de gain.
 ### D-Ops (P5) — Console admin, monitoring, reporting, presets
 
 | Score P6 baseline | 519/1000 (verifie V5) + 74 pts post-P6 (4 P0 corr) = estimé 519 baseline |
-|---|---|
+| ----------------- | ------------------------------------------------------------------------ |
 
 **Note : le score P6 baseline 560 inclut deja les 4 P0 (e573da64) et seuil 60 livres dans la meme session P6. Score honnete baseline P5 = 519/1000 post-verification, puis apres les correctifs de la session P6 = 560 retenu comme baseline.**
 
 **Items livres depuis P6 baseline (560) :**
 
-| Item | Commit | Gain pts | Justification |
-|------|--------|----------|---------------|
-| content-weekly-report-worker.ts : cron lundi 7h UTC, email D-P5-3 (KPI hebdo) | `023266f9` + `9851f8e3` | +25 | D-P5-3 etait classe "NON" dans V5 (0/30). Worker complet : KPIs qualite/volume/ville, email via nodemailer, queue BullMQ enregistree. Gain conservateur (SMTP non confirme en prod = pas le max). |
-| Telegram REJECT-P0 notification sur hard_reject | `023266f9` | +10 | P0-7 "alerte" partielle en V5. Le webhook Telegram manquait. Maintenant implemente dans quality-improver-worker. +10 conservateur (env var TELEGRAM_BOT_TOKEN encore a configurer). |
-| Wizard 5 etapes cascade (vertical→dept→villes→cibles→keywords→revue) | `5d8e8b6f`/`7236dfd0` | +12 | UX wizard etait "PARTIAL" en V5. La cascade 5 etapes avec progress bar + equity bars est une amelioration substantielle de l'experience de creation de campagne. |
-| keyword-catalog.ts 55 mots-cles pre-remplis par verticale | `5d8e8b6f`/`7236dfd0` | +5 | Aide wizard : pre-remplissage keywords par verticale. |
-| city-equity.ts + equity bars CoverageWizardClient | `5d8e8b6f`/`7236dfd0` | +5 | Dashboard couverture villes avec equity = observabilite avancee. |
-| blog-from-rss.ts persona neutralisee (pas d'intro Axion-IA) | `5d8e8b6f`/`7236dfd0` | +2 | Qualite editoriale RSS. |
+| Item                                                                          | Commit                  | Gain pts | Justification                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------- | ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| content-weekly-report-worker.ts : cron lundi 7h UTC, email D-P5-3 (KPI hebdo) | `023266f9` + `9851f8e3` | +25      | D-P5-3 etait classe "NON" dans V5 (0/30). Worker complet : KPIs qualite/volume/ville, email via nodemailer, queue BullMQ enregistree. Gain conservateur (SMTP non confirme en prod = pas le max). |
+| Telegram REJECT-P0 notification sur hard_reject                               | `023266f9`              | +10      | P0-7 "alerte" partielle en V5. Le webhook Telegram manquait. Maintenant implemente dans quality-improver-worker. +10 conservateur (env var TELEGRAM_BOT_TOKEN encore a configurer).               |
+| Wizard 5 etapes cascade (vertical→dept→villes→cibles→keywords→revue)          | `5d8e8b6f`/`7236dfd0`   | +12      | UX wizard etait "PARTIAL" en V5. La cascade 5 etapes avec progress bar + equity bars est une amelioration substantielle de l'experience de creation de campagne.                                  |
+| keyword-catalog.ts 55 mots-cles pre-remplis par verticale                     | `5d8e8b6f`/`7236dfd0`   | +5       | Aide wizard : pre-remplissage keywords par verticale.                                                                                                                                             |
+| city-equity.ts + equity bars CoverageWizardClient                             | `5d8e8b6f`/`7236dfd0`   | +5       | Dashboard couverture villes avec equity = observabilite avancee.                                                                                                                                  |
+| blog-from-rss.ts persona neutralisee (pas d'intro Axion-IA)                   | `5d8e8b6f`/`7236dfd0`   | +2       | Qualite editoriale RSS.                                                                                                                                                                           |
 
 **Items P6 baseline deja compts (inclus dans 560, NO-OP) :**
+
 - P0-2 worker lit MAX_PUBLISH DB : deja dans 560
 - P0-3 checkAnomalies : deja dans 560
 - P0-4 wizard prefill preset : deja dans 560
@@ -152,14 +157,14 @@ Actions Will pendantes (Wikidata, adresse FR) non livrees = pas de gain.
 
 ## 3. Tableau de synthese
 
-| Dimension | Score P6 baseline | Items livrés post-P6 | Gain | Score revisite |
-|-----------|------------------|----------------------|------|----------------|
-| D-Etat (P1.5) — Pipeline complet | 795/1000 | 9e generator blog-article, wizard 5 étapes, 5 personas, no-table, keyword-catalog, city-equity | +27 | **822/1000** |
-| D-Archi (P2) — Infrastructure | 796/1000 | schema.prisma R6 Restrict, weekly-report queue, UnsplashCredit conformité | +20 | **816/1000** |
-| D-Visi (P3) — SEO/AEO/GEO | 775/1000 | UnsplashCredit E-E-A-T signal, BUILD_DATE freshness | +3 | **778/1000** |
-| D-Qual (P4) — Qualité éditoriale | 712/1000 | P1-7 getGlossaryContext 8 gen, P1-12 injectInternalLinks 8 gen, P1-2 H1 gate 7 gen, 5 personas, no-table gate | +58 | **770/1000** |
-| D-Ops (P5) — Console admin | 560/1000 | weekly-report worker D-P5-3, Telegram P0-7, wizard 5 étapes, keyword-catalog, city-equity | +59 | **619/1000** |
-| **TOTAL** | **3638/5000** | | **+167** | **3805/5000** |
+| Dimension                        | Score P6 baseline | Items livrés post-P6                                                                                          | Gain     | Score revisite |
+| -------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------- | -------- | -------------- |
+| D-Etat (P1.5) — Pipeline complet | 795/1000          | 9e generator blog-article, wizard 5 étapes, 5 personas, no-table, keyword-catalog, city-equity                | +27      | **822/1000**   |
+| D-Archi (P2) — Infrastructure    | 796/1000          | schema.prisma R6 Restrict, weekly-report queue, UnsplashCredit conformité                                     | +20      | **816/1000**   |
+| D-Visi (P3) — SEO/AEO/GEO        | 775/1000          | UnsplashCredit E-E-A-T signal, BUILD_DATE freshness                                                           | +3       | **778/1000**   |
+| D-Qual (P4) — Qualité éditoriale | 712/1000          | P1-7 getGlossaryContext 8 gen, P1-12 injectInternalLinks 8 gen, P1-2 H1 gate 7 gen, 5 personas, no-table gate | +58      | **770/1000**   |
+| D-Ops (P5) — Console admin       | 560/1000          | weekly-report worker D-P5-3, Telegram P0-7, wizard 5 étapes, keyword-catalog, city-equity                     | +59      | **619/1000**   |
+| **TOTAL**                        | **3638/5000**     |                                                                                                               | **+167** | **3805/5000**  |
 
 > Note sur le baseline : le score P6 original etait 3598/5000 (e0b1973b). La difference avec
 > 3638 provient du re-calibrage D-Archi de 756 → 796 (decouverte promptHash deja resolu,
@@ -231,13 +236,13 @@ Legende : █ = score atteint | ░ = ecart au maximum
 
 ### Score global : 3805/5000 (76.1%)
 
-| Seuil | Valeur | Ecart |
-|-------|--------|-------|
-| GO | ≥ 4500 | -695 pts (-13.9%) |
-| Seuil CONDITIONNEL haut | 4499 | -694 pts |
-| **Score actuel** | **3805** | — |
-| Seuil CONDITIONNEL bas | 3500 | +305 pts au-dessus |
-| NO-GO | < 3500 | +305 pts de marge |
+| Seuil                   | Valeur   | Ecart              |
+| ----------------------- | -------- | ------------------ |
+| GO                      | ≥ 4500   | -695 pts (-13.9%)  |
+| Seuil CONDITIONNEL haut | 4499     | -694 pts           |
+| **Score actuel**        | **3805** | —                  |
+| Seuil CONDITIONNEL bas  | 3500     | +305 pts au-dessus |
+| NO-GO                   | < 3500   | +305 pts de marge  |
 
 ### Verdict : CONDITIONNEL (3500-4499)
 
@@ -271,17 +276,18 @@ Le verdict reste CONDITIONNEL et non GO pour trois raisons principales :
 Repartition du potentiel residuel :
 
 | Dimension | Score actuel | Max theorique | Potentiel residuel |
-|-----------|-------------|---------------|--------------------|
-| D-Etat    | 822 | 1000 | 178 pts |
-| D-Archi   | 816 | 1000 | 184 pts |
-| D-Visi    | 778 | 1000 | 222 pts |
-| D-Qual    | 770 | 1000 | 230 pts |
-| D-Ops     | 619 | 1000 | 381 pts |
-| **TOTAL** | **3805** | **5000** | **1195 pts** |
+| --------- | ------------ | ------------- | ------------------ |
+| D-Etat    | 822          | 1000          | 178 pts            |
+| D-Archi   | 816          | 1000          | 184 pts            |
+| D-Visi    | 778          | 1000          | 222 pts            |
+| D-Qual    | 770          | 1000          | 230 pts            |
+| D-Ops     | 619          | 1000          | 381 pts            |
+| **TOTAL** | **3805**     | **5000**      | **1195 pts**       |
 
 Les 695 pts manquants representent 58% du potentiel residuel (1195 pts). Le ratio est
 atteignable mais necessite : SMTP prod confirme + Wikidata Will + KB sectorielle complete
-+ filtres tableau croise + gate factCheckScore + badge sidebar.
+
+- filtres tableau croise + gate factCheckScore + badge sidebar.
 
 **Priorites pour approcher GO :**
 
@@ -315,5 +321,5 @@ selon roadmap 7 phases).
 
 ---
 
-*Agent A6-01 — Score consolide — 2026-05-22*
-*HEAD local 7236dfd0 | origin/main e573da6 | Audit-only, 0 commit, 0 modif code*
+_Agent A6-01 — Score consolide — 2026-05-22_
+_HEAD local 7236dfd0 | origin/main e573da6 | Audit-only, 0 commit, 0 modif code_

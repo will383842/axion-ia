@@ -221,9 +221,74 @@ export async function assertCostCapAvailable(
         } catch {
           // best-effort
         }
+        // UI banner : upsert ContentGenConfig so layout can display a banner.
+        try {
+          const pctValue = Math.round(((spent + estimatedCostUsd) / cap) * 100);
+          await prisma.contentGenConfig.upsert({
+            where: { key: "cost_cap_80_active" },
+            create: {
+              key: "cost_cap_80_active",
+              value: {
+                active: true,
+                provider,
+                pct: pctValue,
+                spent_usd: Number((spent + estimatedCostUsd).toFixed(2)),
+                cap_usd: Number(cap.toFixed(2)),
+                triggered_at: new Date().toISOString(),
+              } as never,
+              updatedBy: "system:cost-tracker",
+            },
+            update: {
+              value: {
+                active: true,
+                provider,
+                pct: pctValue,
+                spent_usd: Number((spent + estimatedCostUsd).toFixed(2)),
+                cap_usd: Number(cap.toFixed(2)),
+                triggered_at: new Date().toISOString(),
+              } as never,
+              updatedBy: "system:cost-tracker",
+              updatedAt: new Date(),
+            },
+          });
+        } catch {
+          // fail-soft — DB indisponible ou migration manquante.
+        }
       })();
     }
     if (spent + estimatedCostUsd > cap) {
+      // UI banner : upsert cost_cap_80_active at 100% so layout shows red banner.
+      void prisma.contentGenConfig
+        .upsert({
+          where: { key: "cost_cap_80_active" },
+          create: {
+            key: "cost_cap_80_active",
+            value: {
+              active: true,
+              provider,
+              pct: 100,
+              spent_usd: Number(spent.toFixed(2)),
+              cap_usd: Number(cap.toFixed(2)),
+              triggered_at: new Date().toISOString(),
+            } as never,
+            updatedBy: "system:cost-tracker",
+          },
+          update: {
+            value: {
+              active: true,
+              provider,
+              pct: 100,
+              spent_usd: Number(spent.toFixed(2)),
+              cap_usd: Number(cap.toFixed(2)),
+              triggered_at: new Date().toISOString(),
+            } as never,
+            updatedBy: "system:cost-tracker",
+            updatedAt: new Date(),
+          },
+        })
+        .catch(() => {
+          // fail-soft
+        });
       // Audit final P1-9 fix — auto-trigger cascade : disable provider +
       // Telegram + éventuel kill-switch global si fallback chain épuisée.
       // Helper isolé fail-soft, ne bloque jamais le throw ci-dessous.

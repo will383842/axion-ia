@@ -41,11 +41,7 @@ const DEFAULT_TTL_SEC = 1800; // 30 min — couvre gen + judge + improve + publi
  * échappée pour éviter tout caractère invisible dans la regex source.
  */
 function normalize(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .trim();
+  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
 }
 
 /** Détection runtime du Redis stub (build SSG). */

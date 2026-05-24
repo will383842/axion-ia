@@ -607,7 +607,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants argenteuillais.",
           },
@@ -713,7 +713,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Argenteuil micro-businesses and freelancers.",
           },

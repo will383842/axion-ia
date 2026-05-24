@@ -88,103 +88,112 @@ function fakeJob(): Job<{ readonly trigger: string }> {
   return { data: { trigger: "cron" }, id: "nlc-1" } as unknown as Job<{ readonly trigger: string }>;
 }
 
-describe("content-news-lifecycle-worker — Sprint S+5 P2-10 sub-agent C", () => {
-  beforeEach(() => {
-    findManyMock.mockReset();
-    articleUpdateMock.mockReset();
-    countMock.mockReset();
-    readConfigMock.mockReset();
-    readConfigMock.mockResolvedValue({ active: false });
-    enqueueIndexingMock.mockClear();
-    revalidatePathMock.mockClear();
-    workerCtorMock.mockClear();
-  });
-
-  it("happy path — 1 article > 90j → archive + revalidate + enqueueIndexing delete", async () => {
-    // ContentGenConfig: settings default (kill_switch + news_lifecycle)
-    readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
-      if (key === "kill_switch") return { active: false };
-      if (key === "news_lifecycle") return defaultValue;
-      return defaultValue;
+// Timeout 15s (vs default 5s) — chaque test re-importe le module via
+// `vi.resetModules()` + `await import(...)` ce qui coûte ~2.8s sur Windows
+// (vitest setup + transform + environment ~7s ammortis sur 4 tests). Sous
+// charge système (run full vitest // forks), test 1 peut dépasser 5s.
+// Fix post-audit Sprint v7 — la vraie limite vient de l'init module pas du worker.
+describe(
+  "content-news-lifecycle-worker — Sprint S+5 P2-10 sub-agent C",
+  { timeout: 15_000 },
+  () => {
+    beforeEach(() => {
+      findManyMock.mockReset();
+      articleUpdateMock.mockReset();
+      countMock.mockReset();
+      readConfigMock.mockReset();
+      readConfigMock.mockResolvedValue({ active: false });
+      enqueueIndexingMock.mockClear();
+      revalidatePathMock.mockClear();
+      workerCtorMock.mockClear();
     });
-    findManyMock.mockResolvedValue([{ id: "cg-job-old-1", outputBlogPostId: "article-old-1" }]);
-    articleUpdateMock.mockResolvedValue({
-      id: "article-old-1",
-      translations: [{ slug: "audit-rgpd-2024" }],
+
+    it("happy path — 1 article > 90j → archive + revalidate + enqueueIndexing delete", async () => {
+      // ContentGenConfig: settings default (kill_switch + news_lifecycle)
+      readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
+        if (key === "kill_switch") return { active: false };
+        if (key === "news_lifecycle") return defaultValue;
+        return defaultValue;
+      });
+      findManyMock.mockResolvedValue([{ id: "cg-job-old-1", outputBlogPostId: "article-old-1" }]);
+      articleUpdateMock.mockResolvedValue({
+        id: "article-old-1",
+        translations: [{ slug: "audit-rgpd-2024" }],
+      });
+      countMock.mockResolvedValue(3); // 3 candidates demote tier-2
+
+      const processor = await getProcessor();
+      await processor(fakeJob());
+
+      expect(articleUpdateMock).toHaveBeenCalledTimes(1);
+      const updateArg = articleUpdateMock.mock.calls[0]?.[0] as {
+        where: { id: string };
+        data: { status: string; indexationTier: string };
+      };
+      expect(updateArg.where.id).toBe("article-old-1");
+      expect(updateArg.data.status).toBe("archived");
+      expect(updateArg.data.indexationTier).toBe("tier_3_noindex_nofollow");
+
+      expect(revalidatePathMock).toHaveBeenCalledWith("/fr/actualites/audit-rgpd-2024");
+      expect(enqueueIndexingMock).toHaveBeenCalledTimes(1);
+      const enqArg = enqueueIndexingMock.mock.calls[0]?.[0] as {
+        articleId: string;
+        slug: string;
+        lifecycleEvent: string;
+      };
+      expect(enqArg.articleId).toBe("article-old-1");
+      expect(enqArg.slug).toBe("audit-rgpd-2024");
+      expect(enqArg.lifecycleEvent).toBe("delete");
     });
-    countMock.mockResolvedValue(3); // 3 candidates demote tier-2
 
-    const processor = await getProcessor();
-    await processor(fakeJob());
+    it("failure path — Article.update throw (article supprimé) → swallow, pas d'indexing", async () => {
+      readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
+        if (key === "kill_switch") return { active: false };
+        if (key === "news_lifecycle") return defaultValue;
+        return defaultValue;
+      });
+      findManyMock.mockResolvedValue([{ id: "cg-job-ghost", outputBlogPostId: "article-ghost" }]);
+      articleUpdateMock.mockRejectedValue(new Error("Record not found"));
+      countMock.mockResolvedValue(0);
 
-    expect(articleUpdateMock).toHaveBeenCalledTimes(1);
-    const updateArg = articleUpdateMock.mock.calls[0]?.[0] as {
-      where: { id: string };
-      data: { status: string; indexationTier: string };
-    };
-    expect(updateArg.where.id).toBe("article-old-1");
-    expect(updateArg.data.status).toBe("archived");
-    expect(updateArg.data.indexationTier).toBe("tier_3_noindex_nofollow");
+      const processor = await getProcessor();
+      // Doit ne pas throw (swallow caché)
+      await expect(processor(fakeJob())).resolves.toBeUndefined();
 
-    expect(revalidatePathMock).toHaveBeenCalledWith("/fr/actualites/audit-rgpd-2024");
-    expect(enqueueIndexingMock).toHaveBeenCalledTimes(1);
-    const enqArg = enqueueIndexingMock.mock.calls[0]?.[0] as {
-      articleId: string;
-      slug: string;
-      lifecycleEvent: string;
-    };
-    expect(enqArg.articleId).toBe("article-old-1");
-    expect(enqArg.slug).toBe("audit-rgpd-2024");
-    expect(enqArg.lifecycleEvent).toBe("delete");
-  });
-
-  it("failure path — Article.update throw (article supprimé) → swallow, pas d'indexing", async () => {
-    readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
-      if (key === "kill_switch") return { active: false };
-      if (key === "news_lifecycle") return defaultValue;
-      return defaultValue;
+      expect(articleUpdateMock).toHaveBeenCalledTimes(1);
+      expect(enqueueIndexingMock).not.toHaveBeenCalled();
     });
-    findManyMock.mockResolvedValue([{ id: "cg-job-ghost", outputBlogPostId: "article-ghost" }]);
-    articleUpdateMock.mockRejectedValue(new Error("Record not found"));
-    countMock.mockResolvedValue(0);
 
-    const processor = await getProcessor();
-    // Doit ne pas throw (swallow caché)
-    await expect(processor(fakeJob())).resolves.toBeUndefined();
+    it("edge case — 0 article à archiver, N candidates demote → log seulement", async () => {
+      readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
+        if (key === "kill_switch") return { active: false };
+        if (key === "news_lifecycle") return defaultValue;
+        return defaultValue;
+      });
+      findManyMock.mockResolvedValue([]);
+      countMock.mockResolvedValue(7);
 
-    expect(articleUpdateMock).toHaveBeenCalledTimes(1);
-    expect(enqueueIndexingMock).not.toHaveBeenCalled();
-  });
+      const processor = await getProcessor();
+      await processor(fakeJob());
 
-  it("edge case — 0 article à archiver, N candidates demote → log seulement", async () => {
-    readConfigMock.mockImplementation(async (key: string, defaultValue: unknown) => {
-      if (key === "kill_switch") return { active: false };
-      if (key === "news_lifecycle") return defaultValue;
-      return defaultValue;
+      expect(articleUpdateMock).not.toHaveBeenCalled();
+      expect(enqueueIndexingMock).not.toHaveBeenCalled();
+      // Pas d'archives → pas de revalidate sitemap-news global
+      expect(revalidatePathMock).not.toHaveBeenCalled();
+      // count appelé pour demote candidates
+      expect(countMock).toHaveBeenCalledTimes(1);
     });
-    findManyMock.mockResolvedValue([]);
-    countMock.mockResolvedValue(7);
 
-    const processor = await getProcessor();
-    await processor(fakeJob());
+    it("kill switch actif → early-return, 0 Prisma call, 0 indexing", async () => {
+      readConfigMock.mockResolvedValue({ active: true });
 
-    expect(articleUpdateMock).not.toHaveBeenCalled();
-    expect(enqueueIndexingMock).not.toHaveBeenCalled();
-    // Pas d'archives → pas de revalidate sitemap-news global
-    expect(revalidatePathMock).not.toHaveBeenCalled();
-    // count appelé pour demote candidates
-    expect(countMock).toHaveBeenCalledTimes(1);
-  });
+      const processor = await getProcessor();
+      await processor(fakeJob());
 
-  it("kill switch actif → early-return, 0 Prisma call, 0 indexing", async () => {
-    readConfigMock.mockResolvedValue({ active: true });
-
-    const processor = await getProcessor();
-    await processor(fakeJob());
-
-    expect(findManyMock).not.toHaveBeenCalled();
-    expect(articleUpdateMock).not.toHaveBeenCalled();
-    expect(countMock).not.toHaveBeenCalled();
-    expect(enqueueIndexingMock).not.toHaveBeenCalled();
-  });
-});
+      expect(findManyMock).not.toHaveBeenCalled();
+      expect(articleUpdateMock).not.toHaveBeenCalled();
+      expect(countMock).not.toHaveBeenCalled();
+      expect(enqueueIndexingMock).not.toHaveBeenCalled();
+    });
+  },
+);

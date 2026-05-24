@@ -114,6 +114,10 @@ interface AdminSidebarNavProps {
   className?: string;
   /** Compteur de jobs en échec pour le badge rouge. */
   failedJobsCount?: number;
+  /** Compteur d'alertes ops (Sentry + UptimeRobot + Coolify) pour badge sur /alerts. */
+  alertsCount?: number;
+  /** Compteur anomalies Site Explorer high severity non résolues. */
+  siteExplorerAnomaliesHighCount?: number;
 }
 
 export function AdminSidebarNav({
@@ -121,6 +125,8 @@ export function AdminSidebarNav({
   defaultCollapsed = false,
   className,
   failedJobsCount = 0,
+  alertsCount = 0,
+  siteExplorerAnomaliesHighCount = 0,
 }: AdminSidebarNavProps): React.ReactElement {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
@@ -344,6 +350,27 @@ export function AdminSidebarNav({
                                   aria-label={`${failedJobsCount} jobs en échec`}
                                 >
                                   {failedJobsCount > 99 ? "99+" : failedJobsCount}
+                                </span>
+                              ) : null}
+                              {/* Badge alertes ops (A-12 SP-X3) */}
+                              {alertsCount > 0 && item.href.includes("/alerts") ? (
+                                <span
+                                  className="ml-auto rounded-full bg-orange-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                                  aria-label={`${alertsCount} alerte${alertsCount > 1 ? "s" : ""} ops`}
+                                >
+                                  {alertsCount > 99 ? "99+" : alertsCount}
+                                </span>
+                              ) : null}
+                              {/* Badge anomalies Site Explorer high severity */}
+                              {siteExplorerAnomaliesHighCount > 0 &&
+                              item.href.includes("/site-explorer") ? (
+                                <span
+                                  className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                                  aria-label={`${siteExplorerAnomaliesHighCount} anomalie${siteExplorerAnomaliesHighCount > 1 ? "s" : ""} critiques`}
+                                >
+                                  {siteExplorerAnomaliesHighCount > 99
+                                    ? "99+"
+                                    : siteExplorerAnomaliesHighCount}
                                 </span>
                               ) : null}
                             </>

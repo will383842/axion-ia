@@ -604,7 +604,7 @@ export const BESANCON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple — automatisation devis, comptes-rendus, qualification leads pour TPE et indépendants bisontins.",
           },
@@ -710,7 +710,7 @@ export const BESANCON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case — quote automation, meeting minutes, lead qualification for Besançon micro-businesses and freelancers.",
           },

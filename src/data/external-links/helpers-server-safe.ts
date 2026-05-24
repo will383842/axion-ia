@@ -8,11 +8,7 @@
  * Pour la sélection runtime en server actions / workers : utiliser `helpers.ts`.
  */
 
-import type {
-  ExternalLink,
-  ExternalLinkAuthority,
-  SelectExternalLinksOptions,
-} from "./types";
+import type { ExternalLink, ExternalLinkAuthority, SelectExternalLinksOptions } from "./types";
 import { isCompetitorDomain } from "./types";
 import { ALL_EXTERNAL_LINKS } from "./master";
 
@@ -50,8 +46,7 @@ export function selectExternalLinksPure(
   } = opts;
 
   let candidates = pool.filter(
-    (link) =>
-      passesHardFilters(link, minAuthority, language) && !excludeIds.includes(link.id),
+    (link) => passesHardFilters(link, minAuthority, language) && !excludeIds.includes(link.id),
   );
 
   if (vertical) {

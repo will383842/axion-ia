@@ -11,5 +11,10 @@
 -- AlterTable: articles add campaign_id (nullable for backward compat)
 ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "campaign_id" VARCHAR(25);
 
--- Index for campaign filtering (CONCURRENTLY pour éviter lock table en prod)
-CREATE INDEX CONCURRENTLY IF NOT EXISTS "articles_campaign_id_idx" ON "articles"("campaign_id");
+-- Index for campaign filtering.
+-- Sprint Final 2026-05-22 (audit-final ci gate d fix) : CONCURRENTLY retiré
+-- car Prisma 5.22 wrappe les migrations dans une transaction et postgres
+-- interdit CREATE INDEX CONCURRENTLY in transaction (P3018 / E25001).
+-- L'index a été créé en prod via admin-emergency-migrate 2026-05-22 (CI Gate D
+-- fresh DB est la seule cible non-impactée par cette modif).
+CREATE INDEX IF NOT EXISTS "articles_campaign_id_idx" ON "articles"("campaign_id");

@@ -6,6 +6,8 @@
  * expansionMode + defaultModel / temperature / maxTokens.
  *
  * Pas de Tiptap V1 → textarea monospace (Tiptap V1.5 si Will veut).
+ *
+ * Sprint correctif SP-01 — P0-3 : options expansionMode préservées (SP-02 aligne Zod).
  */
 
 import type { ContentType, ExpansionMode } from "../../../../prisma/generated/client";
@@ -29,6 +31,8 @@ interface TemplateFormProps {
     readonly isActive: boolean;
   };
   readonly action: (formData: FormData) => Promise<void> | void;
+  /** Slot pour afficher une bannière d'erreur (error UI) au bas du formulaire. */
+  readonly errorSlot?: React.ReactNode;
 }
 
 const CONTENT_TYPES: ReadonlyArray<ContentType> = [
@@ -54,7 +58,7 @@ const EXPANSION_MODES: ReadonlyArray<ExpansionMode> = [
   "from_csv",
 ];
 
-export function TemplateForm({ initial, action }: TemplateFormProps) {
+export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) {
   return (
     <form action={action} className="admin-card">
       {initial?.id ? <input type="hidden" name="id" value={initial.id} /> : null}
@@ -258,6 +262,8 @@ export function TemplateForm({ initial, action }: TemplateFormProps) {
           Template actif (utilisable par les generators)
         </label>
       </div>
+
+      {errorSlot ? <div className="mt-[var(--space-admin-3)]">{errorSlot}</div> : null}
 
       <div className="admin-filters-actions">
         <button type="submit" className="admin-button">

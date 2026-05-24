@@ -822,7 +822,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Format équipes étendu · 2 jours sur site",
         title: "Approfondie",
         titleEm: "2 jours équipes",
-        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 880 / 1 420 / 2 140 € HT). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
+        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : 1 190 / 1 590 / 2 490 € HT). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
         ctaPrimary: "Réserver l'Approfondie",
         faqIntro: "équipes",
       }),
@@ -845,7 +845,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         {
           title: "Tarif dégressif au nombre de participants",
           description:
-            "3 paliers d'effectif : 2-8 personnes (880 € HT), 9-15 (1 420 € HT), 16-30 (2 140 € HT). Plus l'équipe est grande, plus le coût par personne baisse.",
+            "3 paliers d'effectif : 2-8 personnes (1 190 € HT), 9-15 (1 590 € HT), 16-30 (2 490 € HT). Plus l'équipe est grande, plus le coût par personne baisse.",
         },
       ],
       metrics: [
@@ -1566,7 +1566,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         title: "Intervention Claude",
         titleEm: "Chat · Cowork · Code",
         answer:
-          "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Format petit groupe (2 à 8 personnes) pour profondeur maximale. Tarif fixe 690 € HT — réservation directe sur le calendrier.",
+          "Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). Format petit groupe (2 à 8 personnes) pour profondeur maximale. Tarif fixe 990 € HT — réservation directe sur le calendrier.",
         ctaPrimary: "Réserver la Formation Claude",
         faqIntro: "équipes Claude",
       }),
@@ -1625,7 +1625,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
       ctaBlockDescription:
-        "Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe 690 € HT pour 2 à 8 personnes.",
+        "Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. Tarif fixe 990 € HT pour 2 à 8 personnes.",
       metaSeo: {
         title: "Expert Claude (Anthropic) · Formation IA outil-spécifique · Axion-IA",
         description:
@@ -1638,7 +1638,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         title: "Claude intervention",
         titleEm: "Chat · Cowork · Code",
         answer:
-          "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). Small-group format (2 to 8 people) for maximum depth. Fixed fee €690 (excl. VAT) — direct calendar booking.",
+          "A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). Small-group format (2 to 8 people) for maximum depth. Fixed fee €990 (excl. VAT) — direct calendar booking.",
         ctaPrimary: "Book the Claude Training",
         faqIntro: "Claude teams",
       }),
@@ -1697,7 +1697,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       ctaBlockTitle: "Master Claude (Anthropic) in depth",
       ctaBlockDescription:
-        "Book the next date — live calendar, instant confirmation. Fixed fee €690 (excl. VAT) for 2 to 8 people.",
+        "Book the next date — live calendar, instant confirmation. Fixed fee €990 (excl. VAT) for 2 to 8 people.",
       metaSeo: {
         title: "Claude (Anthropic) Expert Training · AI Tool-specific Session · Axion-IA",
         description:

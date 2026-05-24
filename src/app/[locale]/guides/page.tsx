@@ -38,6 +38,7 @@ import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { loadGuidesIndexForView } from "@/server/content-gen/guides/loader";
 
 // ISR pure : revalidate=3600 → nouveaux guides visibles sous 1h.
@@ -105,10 +106,9 @@ export default async function GuidesHubPage({ params }: Props) {
         name: isFr ? "Guides piliers Axion-IA" : "Axion-IA pillar guides",
         inLanguage: locale,
         isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
-        speakable: {
-          "@type": "SpeakableSpecification",
-          cssSelector: ['[data-aeo="guides-hub-intro"]'],
-        },
+        speakable: buildSpeakableSpecification({
+          selectors: ['[data-aeo="guides-hub-intro"]'],
+        }),
       },
       {
         "@type": "BreadcrumbList",

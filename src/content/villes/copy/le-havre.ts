@@ -545,7 +545,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (traitement de documents, automatisation emails, qualification leads) pour les TPE et petites PME havraises.",
           },
@@ -651,7 +651,7 @@ export const LE_HAVRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (document processing, email automation, lead qualification) for Le Havre micro-businesses and small SMEs.",
           },

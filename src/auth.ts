@@ -61,7 +61,6 @@ declare module "next-auth" {
 // allow first-login bootstrap. To re-enforce, restore in the requires2FA
 // expression below: `|| _ROLES_REQUIRING_2FA.has(user.role)`.
 const _ROLES_REQUIRING_2FA: ReadonlySet<AdminRole> = new Set(["super_admin", "admin"]);
-void _ROLES_REQUIRING_2FA;
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -182,8 +181,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // 5. Verify 2FA if enabled (bootstrap window: super_admin/admin can
         //    log in without 2FA on first sign-in, must enable via /2fa/setup
         //    afterwards which then makes 2FA mandatory).
-        // To re-enforce role-based 2FA, restore: `|| ROLES_REQUIRING_2FA.has(user.role)`
-        const requires2FA = user.twoFactorEnabled;
+        // P0-4 Sprint correctif admin — 2FA obligatoire pour super_admin/admin
+        // même sans twoFactorEnabled (ANSSI hardening). Le flag twoFactorEnabled
+        // reste le vecteur principal ; le rôle enforce l'obligation.
+        const requires2FA = user.twoFactorEnabled || _ROLES_REQUIRING_2FA.has(user.role);
         if (requires2FA) {
           if (!user.twoFactorSecret) {
             // 2FA enabled but no secret — corrupted state, refuse.

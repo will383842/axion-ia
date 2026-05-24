@@ -144,11 +144,18 @@ export async function PaiementsV2({
       <AdminPageHeader
         title="Paiements"
         description={`${total} paiement(s) · page ${page}/${totalPages}`}
-        actions={
-          <Link href={`${base}/export`} className="admin-button-ghost">
-            Exporter CSV
-          </Link>
-        }
+        actions={(() => {
+          const exportParams = new URLSearchParams();
+          if (status) exportParams.set("status", status);
+          if (provider) exportParams.set("provider", provider);
+          const exportQs = exportParams.toString();
+          const exportHref = exportQs ? `${base}/export?${exportQs}` : `${base}/export`;
+          return (
+            <Link href={exportHref} className="admin-button-ghost">
+              Exporter CSV
+            </Link>
+          );
+        })()}
       />
       <section
         aria-label="Trésorerie"

@@ -6,6 +6,7 @@
 ## Évidence
 
 ### Sentry (frontend + backend + edge)
+
 - `src/sentry.server.config.ts` (Node runtime) + `src/sentry.edge.config.ts` (Edge runtime) — séparés conformément Next 16.
 - DSN gated par `SENTRY_DSN` env (ligne 4-6) — Sentry n'init que si DSN présent (fail-soft).
 - `tracesSampleRate: production ? 0.02 : 1.0` (ligne 15) — overhead RUM/TTFB optimisé via V-04 P6 (2026-05-22).
@@ -16,6 +17,7 @@
 - Capture worker errors `_AUDIT/...` S+4 P1-C 2026-05-18 (memory) — helper `captureWorkerError` + sanitize-job-data PII.
 
 ### Telegram alerts
+
 - `src/lib/telegram.ts` ✅ — fail-soft si `TELEGRAM_BOT_TOKEN` ou `TELEGRAM_CHAT_ID` absent (ligne 49-53 console.warn skip).
 - Usage observé :
   - `src/app/api/gdpr-erase/route.ts:96-99` → DPO RGPD Art. 17 trace
@@ -23,23 +25,27 @@
   - Worker incidents (mémoires Sprint S+4 / S+5)
 
 ### Web Vitals RUM
+
 - `src/app/api/vitals/route.ts` ✅ endpoint INP/CLS/LCP collector RUM (Zod-validated d'après grep `z.object` ligne 13).
 - `web-vitals@5.2.0` package installé (node_modules confirmed).
 - LHCI `lighthouserc.json` 18 URLs (9 routes × FR+EN) avec assertions CWV strict (LCP ≤ 1800ms error, CLS ≤ 0.1 error, TBT ≤ 200ms error, FCP ≤ 1500ms error, SI ≤ 2500ms error).
 - Workflow `gsc-crawl-stats-weekly.yml` actif (PSI weekly).
 
 ### Cost tracker
+
 - `src/server/content-gen/lib/cost-tracker.ts` ✅ + tests `__tests__/cost-tracker.spec.ts`.
 - DB `GenerationProvenance.cost` Decimal(10,6) (`prisma/schema.prisma:991`) — observabilité par génération.
 - `cost_ledger` table évoquée commentaire `gdpr-erase/route.ts:23` (legal hold).
 
 ### Runbooks ops
+
 - `scripts/ops/` 3 scripts : `coolify-cancel-stuck.sh`, `disk-cleanup.sh`, `hetzner-coolify-health.sh`.
 - `_AUDIT/E2E-2026-05-09/02-AGENTS/AGT-14-MONITORING-DR.md` ✅ (méta-cert monitoring + DR documenté).
 - `_AUDIT/agent-6-monitoring-bp-securite.md` ✅.
 - `_AUDIT/DEPLOY-RECOVERY-2026-05-17/` 11 livrables runbook (mémoire 2026-05-18).
 
 ### Healthz endpoint
+
 - `src/app/api/healthz/route.ts:56-75` payload structuré `{status, timestamp, version, db, redis}`. Best-effort check + status 200 même en degraded (Caddy ne couperait que sur 5xx, ligne 66-67).
 
 ## Findings P0 / P1 / P2

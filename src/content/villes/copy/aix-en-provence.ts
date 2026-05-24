@@ -544,7 +544,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture de factures, comptes-rendus de réunion, qualification de leads) pour les TPE aixoises.",
           },
@@ -650,7 +650,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) for Aix micro-businesses.",
           },

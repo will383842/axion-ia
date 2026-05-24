@@ -6,6 +6,7 @@
 ## Évidence
 
 ### Droit à l'effacement (Art. 17)
+
 - `src/app/api/gdpr-erase/route.ts:1-123` endpoint POST self-service complet :
   - Token HMAC `gdpr-token.ts` + anti-replay `v.email !== email` (ligne 66-68)
   - Rate limit 1/jour/email (ligne 57)
@@ -17,10 +18,12 @@
 - Endpoint complémentaire `/api/gdpr-export` + `/api/gdpr-export/request` (token email-gated).
 
 ### IP Hashing SHA-256
+
 - `src/lib/security/ip-hash.ts:33` `SHA-256(salt::ip)` tronqué 16 hex (64 bits entropie) via `IP_HASH_SALT` env var.
 - Confirmé requis dans CI env (`ci.yml:112` IP_HASH_SALT dummy).
 
 ### Pages légales présentes et structurées
+
 - `/rgpd` `src/app/[locale]/rgpd/page.tsx` ✅
 - `/mentions-legales` `src/app/[locale]/mentions-legales/page.tsx` ✅
 - `/politique-confidentialite` `src/app/[locale]/politique-confidentialite/page.tsx` ✅ (template `LegalPageTemplate` + JSON-LD breadcrumbs)
@@ -33,17 +36,21 @@
 - Source contenus centralisée `src/content/legal.ts`.
 
 ### Cookies banner
+
 - `src/components/analytics/CookieConsent.tsx` composant client CMP avec consent gating.
 - CSP autorise Microsoft Clarity uniquement post-consent (`src/lib/csp.ts:76-82` commentaire explicite gating).
 
 ### Sentry PII scrubbing
+
 - `src/sentry.server.config.ts:22-23` `sendDefaultPii: false` + `beforeSend: piiScrubBeforeSend` (`src/lib/observability/sentry-pii-scrub.ts`).
 - Audit E2E 2026-05-11 P0-CONF-06 documenté (RGPD Art. 32).
 
 ### Registre traitements Art. 30
+
 - ActivityLog Prisma table = registre forensique opérationnel par défaut (création login/auth/gdpr/admin actions). Pas de document Word/PDF dédié observé dans `_AUDIT/**/*REGISTRE*` (0 résultats).
 
 ### Exclusion Will (rappel, non comptabilisé en gap)
+
 - DPA Anthropic : reporté (décision Will), non audité.
 
 ## Findings P0 / P1 / P2

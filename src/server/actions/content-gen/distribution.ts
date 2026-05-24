@@ -9,6 +9,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 // NOTE : "use server" interdit les exports non-async (Next 16). Les constantes
 // (SERVICE_SECTORS, BANNED_FROM_EDITORIAL_MIX, SERVICE_SECTOR_LABELS) et les
 // pure validators (assertEditorialKeys, assertSum100) vivent dans
@@ -108,43 +110,57 @@ export async function upsertDistributionProfile(input: {
   // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
   UpsertDistributionProfileSchema.parse(input);
   if (input.slug.length < 2 || input.slug.length > 80) throw new Error("slug_length");
-  assertEditorialKeys(input.distribution, "distribution");
-  assertSum100(input.distribution, "distribution");
-  await prisma.$transaction(async (tx) => {
-    if (input.isDefault) {
-      await tx.coverageDistributionProfile.updateMany({
-        data: { isDefault: false },
-        where: { isDefault: true, NOT: { slug: input.slug } },
+  try {
+    assertEditorialKeys(input.distribution, "distribution");
+    assertSum100(input.distribution, "distribution");
+    await prisma.$transaction(async (tx) => {
+      if (input.isDefault) {
+        await tx.coverageDistributionProfile.updateMany({
+          data: { isDefault: false },
+          where: { isDefault: true, NOT: { slug: input.slug } },
+        });
+      }
+      await tx.coverageDistributionProfile.upsert({
+        where: { slug: input.slug },
+        create: {
+          slug: input.slug,
+          name: input.name,
+          description: input.description ?? null,
+          distribution: input.distribution as never,
+          isDefault: input.isDefault ?? false,
+          serviceSector: input.serviceSector ?? null,
+        },
+        update: {
+          name: input.name,
+          description: input.description ?? null,
+          distribution: input.distribution as never,
+          isDefault: input.isDefault ?? false,
+          serviceSector: input.serviceSector ?? null,
+        },
       });
-    }
-    await tx.coverageDistributionProfile.upsert({
-      where: { slug: input.slug },
-      create: {
-        slug: input.slug,
-        name: input.name,
-        description: input.description ?? null,
-        distribution: input.distribution as never,
-        isDefault: input.isDefault ?? false,
-        serviceSector: input.serviceSector ?? null,
-      },
-      update: {
-        name: input.name,
-        description: input.description ?? null,
-        distribution: input.distribution as never,
-        isDefault: input.isDefault ?? false,
-        serviceSector: input.serviceSector ?? null,
-      },
     });
-  });
-  revalidatePath(adminPath("coverage-distribution"));
+    revalidatePath(adminPath("coverage-distribution"));
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "upsertDistributionProfile" },
+    });
+    throw e;
+  }
 }
 
 export async function deleteDistributionProfile(slug: string): Promise<void> {
   await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   SlugSchema.parse(slug);
-  await prisma.coverageDistributionProfile.delete({ where: { slug } });
-  revalidatePath(adminPath("coverage-distribution"));
+  try {
+    await prisma.coverageDistributionProfile.delete({ where: { slug } });
+    revalidatePath(adminPath("coverage-distribution"));
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "deleteDistributionProfile" },
+    });
+    throw e;
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -187,38 +203,52 @@ export async function upsertAudienceMixProfile(input: {
   // Sprint Final P1-3 — Zod runtime validation.
   UpsertAudienceMixProfileSchema.parse(input);
   if (input.slug.length < 2 || input.slug.length > 80) throw new Error("slug_length");
-  assertSum100(input.mix, "audience_mix");
-  await prisma.$transaction(async (tx) => {
-    if (input.isDefault) {
-      await tx.audienceMixProfile.updateMany({
-        data: { isDefault: false },
-        where: { isDefault: true, NOT: { slug: input.slug } },
+  try {
+    assertSum100(input.mix, "audience_mix");
+    await prisma.$transaction(async (tx) => {
+      if (input.isDefault) {
+        await tx.audienceMixProfile.updateMany({
+          data: { isDefault: false },
+          where: { isDefault: true, NOT: { slug: input.slug } },
+        });
+      }
+      await tx.audienceMixProfile.upsert({
+        where: { slug: input.slug },
+        create: {
+          slug: input.slug,
+          name: input.name,
+          description: input.description ?? null,
+          mix: input.mix as never,
+          isDefault: input.isDefault ?? false,
+        },
+        update: {
+          name: input.name,
+          description: input.description ?? null,
+          mix: input.mix as never,
+          isDefault: input.isDefault ?? false,
+        },
       });
-    }
-    await tx.audienceMixProfile.upsert({
-      where: { slug: input.slug },
-      create: {
-        slug: input.slug,
-        name: input.name,
-        description: input.description ?? null,
-        mix: input.mix as never,
-        isDefault: input.isDefault ?? false,
-      },
-      update: {
-        name: input.name,
-        description: input.description ?? null,
-        mix: input.mix as never,
-        isDefault: input.isDefault ?? false,
-      },
     });
-  });
-  revalidatePath(adminPath("audience-mix"));
+    revalidatePath(adminPath("audience-mix"));
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "upsertAudienceMixProfile" },
+    });
+    throw e;
+  }
 }
 
 export async function deleteAudienceMixProfile(slug: string): Promise<void> {
   await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   SlugSchema.parse(slug);
-  await prisma.audienceMixProfile.delete({ where: { slug } });
-  revalidatePath(adminPath("audience-mix"));
+  try {
+    await prisma.audienceMixProfile.delete({ where: { slug } });
+    revalidatePath(adminPath("audience-mix"));
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "deleteAudienceMixProfile" },
+    });
+    throw e;
+  }
 }

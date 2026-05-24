@@ -1,4 +1,5 @@
 # F-10 Cookieless & privacy
+
 ## Score : 21/25 — 🟢
 
 ## Findings (preuves)
@@ -49,22 +50,27 @@
 11. **Persona Manon transparence AI Act** : `disambiguatingDescription`, `aiGenerated: true`, link `/equipe/manon` → page transparence persona.
 
 ## P0 bloquants prod
+
 - **Aucun**.
 
 ## P1 importants
+
 - Pages `/cookies` et `/preferences-cookies` existent — vérifier contenu copywriting RGPD-CNIL parfaitement aligné (audit AUDIT-ONLY ne lit pas le contenu MDX/templates ici).
 - Banner CookieConsent stocke en `localStorage` — fonctionne même avec navigateur sans cookies tiers, mais une fuite via `<script>` analytics non gaté pourrait poser problème. Validation : Plausible cookie-less = OK CNIL ; Clarity gaté = OK.
 - `IP_HASH_SALT` env var critique : si rotation jamais effectuée → reverse-lookup IP théorique. À documenter rotation policy.
 
 ## P2 polish
+
 - `Clarity` est US (Microsoft) — DPA US-EU à valider quand env var Clarity ID set (memory mentionne DPA reporté).
 - `Plausible self-hosted` : si hébergé chez Hetzner FR/DE → EU only, conforme. Vérifier que `plausible.axion-ia.com` pointe bien sur infra UE.
 - Pas de bannière P3P/COPPA dédiée — non requis pour B2B FR.
 
 ## Verdict
+
 Privacy stack first-party rigoureuse : Plausible self-hosted EU cookie-less + zero Google Analytics + Clarity gaté consent CNIL + cookies fonctionnels minimaux (UTM/referer pSEO) + IP hashing SHA-256 systémique image-bank + droit à l’effacement RGPD implémenté côté code + 12 pages légales présentes + CSP per-request avec nonce + Permissions-Policy minimaliste. Score 21/25 ; -4 pour rotation policy `IP_HASH_SALT` non documentée + audit content RGPD copy non vérifié texte par texte + DPA Clarity US (memory).
 
 ## Synthèse globale frontend
+
 - F-01 routes pub : 22/25
 - F-02 routes admin : 22/25
 - F-03 mobile : 19/25

@@ -6,6 +6,7 @@
 ## Évidence
 
 ### Script backup chiffré AES-256 (Sprint 23 / M11)
+
 - `scripts/backup-postgres.sh` complet, 189 lignes :
   - pg_dump SQL plain UTF-8 → gzip -9 → openssl AES-256-CBC PBKDF2 100k iter (ligne 144-153)
   - Upload Hetzner Storage Box via rsync over SSH (ligne 160-163)
@@ -17,19 +18,23 @@
 - Variant R2 disponible `scripts/backup-postgres-r2.sh` (Cloudflare R2 fallback).
 
 ### Storage Box Hetzner BX11
+
 - Mémoire 2026-05-17 : BX11 1TB Helsinki, ~3.20€/mois HT. Premier backup OK 2026-05-17 (axion_crm_pro mais infra share).
 - Retention 7j local / 30j distant (rotation script).
 
 ### Cron prévu
+
 - Commentaire backup-postgres.sh ligne 21-24 : daily 03h, weekly dim 04h, monthly 1er 05h.
 - Workflow `.github/workflows/disk-cleanup-prod.yml` actif (cleanup VPS).
 
 ### Plan DR (Disaster Recovery)
+
 - `_AUDIT/RUNBOOK-PG-RESTORE-DRILL-2026-05-16.md` ✅ runbook restauration documenté (1 fichier).
 - `_AUDIT/E2E-2026-05-09/02-AGENTS/AGT-14-MONITORING-DR.md` + `_AUDIT/CERTIFICATION-FRONTEND-2026/28-DATA-RESILIENCE-DR-2026.md` ✅ — documentation DR multi-pass.
 - `scripts/restore-postgres-test.sh` + `scripts/restore-postgres-test-r2.sh` ✅ — script test restore (mensuel doctrine §15).
 
 ### RTO / RPO
+
 - RPO ≤ 24h (backup daily). Weekly + monthly = défense-en-profondeur multi-window.
 - RTO non documenté chiffré dans le runbook lu (à compléter). Caddy `health_uri /api/healthz` (`src/app/api/healthz/route.ts`) couvre re-routing en cas de container restart, mais bascule DR full (VPS perdu) non chronométrée.
 

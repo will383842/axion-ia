@@ -83,9 +83,9 @@ describe("TOP_100_VILLES_FRANCE", () => {
   });
 
   it("toutes les villes ont un nom et une région", () => {
-    expect(
-      TOP_100_VILLES_FRANCE.every((v) => v.name.length > 0 && v.regionName.length > 0),
-    ).toBe(true);
+    expect(TOP_100_VILLES_FRANCE.every((v) => v.name.length > 0 && v.regionName.length > 0)).toBe(
+      true,
+    );
   });
 
   it("Paris est dans la liste", () => {

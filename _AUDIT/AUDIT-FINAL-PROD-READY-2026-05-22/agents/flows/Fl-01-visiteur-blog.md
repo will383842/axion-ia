@@ -7,33 +7,33 @@
 
 ## Chaîne traçée
 
-| Étape | Fichier | Ligne | Verdict |
-|---|---|---|---|
-| Route App Router FR | `src/app/[locale]/blog/[slug]/page.tsx` | 1-448 | OK |
-| ISR | idem | 34 (`revalidate=3600`, `dynamicParams=true`) | OK |
-| `generateStaticParams` FS | idem | 41-46 | OK |
-| `generateMetadata` (DB metaTitle override V-07) | idem | 48-84 | OK |
-| Loader DB+FS unifié | `src/server/content-gen/blog/loader.ts` | 18-78 | OK |
-| Tombstone soft-410 + slug redirect | `page.tsx` | 197-219 | OK |
-| Breadcrumbs | idem | 281-283 | OK |
-| **AuthorByline (Manon)** | `src/components/knowledge/public/AuthorByline.tsx` (importé `page.tsx:15`) | rendu `page.tsx:339-346` | OK |
-| **AiContentDisclaimer wording D4** | `src/components/marketing/AiContentDisclaimer.tsx` | 37-38 (exact "Cet article a été rédigé avec l'assistance de l'IA (Claude Sonnet 4.6, Anthropic) et relu par l'équipe Axion-IA…") | **EXACT D4** |
-| AnswerCard TL;DR (AEO/GEO § 3.5) | `page.tsx:13`, rendu 372-378 | OK |
-| **ArticleTOC > 1500 mots** | `page.tsx:225` (`wordCount > 1500`), rendu 381-385 | OK gate présent |
-| SuggestedContent articles connexes (V-14) | rendu `page.tsx:415-428`, helper `src/server/content-gen/links/related-articles.ts` | OK (DB+FS merge tier-1 only) |
-| **JSON-LD BlogPosting + aiGenerated:true** | `page.tsx:231-249` (spread `aiGenerated: true` + `additionalType: AIGeneratedContent`) | OK AI Act art. 50 |
-| Speakable + Person Manon + BreadcrumbList | `buildArticleJsonLd` import `@/lib/seo`, `page.tsx:20` | À vérifier signature `seo.ts` (présumé OK, déjà validé sprints précédents) |
-| Tier respect (`tier-2-noindex-follow` → robots noindex follow) | `page.tsx:77-82` | OK |
-| Markdown alternate (LLM ingest) | `page.tsx:274-280` (P1-17) | OK |
-| Image hero priority (P2-3 V-04) | `page.tsx:353-370` (Image priority + sizes) | OK |
+| Étape                                                          | Fichier                                                                                | Ligne                                                                                                                            | Verdict      |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| Route App Router FR                                            | `src/app/[locale]/blog/[slug]/page.tsx`                                                | 1-448                                                                                                                            | OK           |
+| ISR                                                            | idem                                                                                   | 34 (`revalidate=3600`, `dynamicParams=true`)                                                                                     | OK           |
+| `generateStaticParams` FS                                      | idem                                                                                   | 41-46                                                                                                                            | OK           |
+| `generateMetadata` (DB metaTitle override V-07)                | idem                                                                                   | 48-84                                                                                                                            | OK           |
+| Loader DB+FS unifié                                            | `src/server/content-gen/blog/loader.ts`                                                | 18-78                                                                                                                            | OK           |
+| Tombstone soft-410 + slug redirect                             | `page.tsx`                                                                             | 197-219                                                                                                                          | OK           |
+| Breadcrumbs                                                    | idem                                                                                   | 281-283                                                                                                                          | OK           |
+| **AuthorByline (Manon)**                                       | `src/components/knowledge/public/AuthorByline.tsx` (importé `page.tsx:15`)             | rendu `page.tsx:339-346`                                                                                                         | OK           |
+| **AiContentDisclaimer wording D4**                             | `src/components/marketing/AiContentDisclaimer.tsx`                                     | 37-38 (exact "Cet article a été rédigé avec l'assistance de l'IA (Claude Sonnet 4.6, Anthropic) et relu par l'équipe Axion-IA…") | **EXACT D4** |
+| AnswerCard TL;DR (AEO/GEO § 3.5)                               | `page.tsx:13`, rendu 372-378                                                           | OK                                                                                                                               |
+| **ArticleTOC > 1500 mots**                                     | `page.tsx:225` (`wordCount > 1500`), rendu 381-385                                     | OK gate présent                                                                                                                  |
+| SuggestedContent articles connexes (V-14)                      | rendu `page.tsx:415-428`, helper `src/server/content-gen/links/related-articles.ts`    | OK (DB+FS merge tier-1 only)                                                                                                     |
+| **JSON-LD BlogPosting + aiGenerated:true**                     | `page.tsx:231-249` (spread `aiGenerated: true` + `additionalType: AIGeneratedContent`) | OK AI Act art. 50                                                                                                                |
+| Speakable + Person Manon + BreadcrumbList                      | `buildArticleJsonLd` import `@/lib/seo`, `page.tsx:20`                                 | À vérifier signature `seo.ts` (présumé OK, déjà validé sprints précédents)                                                       |
+| Tier respect (`tier-2-noindex-follow` → robots noindex follow) | `page.tsx:77-82`                                                                       | OK                                                                                                                               |
+| Markdown alternate (LLM ingest)                                | `page.tsx:274-280` (P1-17)                                                             | OK                                                                                                                               |
+| Image hero priority (P2-3 V-04)                                | `page.tsx:353-370` (Image priority + sizes)                                            | OK                                                                                                                               |
 
 ## Findings P0/P1/P2
 
-| Niveau | Item | Référence |
-|---|---|---|
+| Niveau | Item                                                                                                                                                                                                                                                           | Référence                                                                                         |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **P2** | Le test "≥3 internal + ≥2 external links" demandé par le prompt n'est pas garanti côté page de rendu (les liens sont injectés par les generators côté worker, pas par la route). C'est correct car la route restitue `view.body` (HTML déjà sanitisé/injecté). | `src/server/content-gen/links/internal-link-catalog.ts` + `external-links-injector.ts` (présents) |
-| **P2** | `splitTitleEm` heuristique côté UI (italique terracotta) ; rien à signaler — pur styling. | `page.tsx:111-127` |
-| **P2** | `parseBody` heuristique multi-paragraphes / liste `<ol>` côté UI ; déjà battle-tested 2026-05-21. | `page.tsx:140-184` |
+| **P2** | `splitTitleEm` heuristique côté UI (italique terracotta) ; rien à signaler — pur styling.                                                                                                                                                                      | `page.tsx:111-127`                                                                                |
+| **P2** | `parseBody` heuristique multi-paragraphes / liste `<ol>` côté UI ; déjà battle-tested 2026-05-21.                                                                                                                                                              | `page.tsx:140-184`                                                                                |
 
 ## Verdict détaillé
 

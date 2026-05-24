@@ -3,6 +3,7 @@
 // Coverage detail V2 — AdminPageShell + AdminPageHeader + AdminCard.
 // Server Actions launch/pause/resume/cancel/addSlots préservées.
 
+import Link from "next/link";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -48,9 +49,10 @@ interface CampaignData {
 
 interface Props {
   campaign: CampaignData;
+  adminPrefix?: string;
 }
 
-export function CoverageDetailV2({ campaign }: Props): React.ReactElement {
+export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactElement {
   const id = campaign.id;
 
   async function launch() {
@@ -172,6 +174,14 @@ export function CoverageDetailV2({ campaign }: Props): React.ReactElement {
           Publiés {campaign.publishedCount} · Failed {campaign.failedCount} · Quality re-loop{" "}
           {campaign.qualityImprovedCount}
         </p>
+        {adminPrefix ? (
+          <Link
+            href={`/fr/${adminPrefix}/content-gen/jobs?campaignId=${encodeURIComponent(id)}`}
+            className="admin-link text-[length:var(--text-admin-sm)]"
+          >
+            → Voir les jobs de cette campagne
+          </Link>
+        ) : null}
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">

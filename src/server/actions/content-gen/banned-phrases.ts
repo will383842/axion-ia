@@ -8,6 +8,8 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -56,54 +58,69 @@ export async function createBannedPhrase(input: {
   severity: string;
 }): Promise<void> {
   const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation.
-  CreateBannedPhraseSchema.parse(input);
-  const pattern = input.pattern.trim();
-  if (pattern.length < 2 || pattern.length > 200) throw new Error("pattern_length_invalid");
-  if (!VALID_SEVERITY.has(input.severity)) throw new Error("severity_invalid");
-  const row = await prisma.bannedPhrase.create({
-    data: {
-      pattern,
-      reason: input.reason?.trim() || null,
-      severity: input.severity,
-      isActive: true,
-    },
-    select: { id: true },
-  });
-  revalidatePath(
-    `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
-  );
-  await logActivity({
-    session,
-    action: "content-gen.banned-phrase.create",
-    targetType: "BannedPhrase",
-    targetId: row.id,
-    changes: { pattern, severity: input.severity },
-  });
+  try {
+    // Sprint Final P1-3 — Zod runtime validation.
+    CreateBannedPhraseSchema.parse(input);
+    const pattern = input.pattern.trim();
+    if (pattern.length < 2 || pattern.length > 200) throw new Error("pattern_length_invalid");
+    if (!VALID_SEVERITY.has(input.severity)) throw new Error("severity_invalid");
+    const row = await prisma.bannedPhrase.create({
+      data: {
+        pattern,
+        reason: input.reason?.trim() || null,
+        severity: input.severity,
+        isActive: true,
+      },
+      select: { id: true },
+    });
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
+    );
+    await logActivity({
+      session,
+      action: "content-gen.banned-phrase.create",
+      targetType: "BannedPhrase",
+      targetId: row.id,
+      changes: { pattern, severity: input.severity },
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "createBannedPhrase" } });
+    throw e;
+  }
 }
 
 export async function toggleBannedPhrase(id: string, isActive: boolean): Promise<void> {
   await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation.
-  IdSchema.parse(id);
-  z.boolean().parse(isActive);
-  await prisma.bannedPhrase.update({
-    where: { id },
-    data: { isActive },
-  });
-  revalidatePath(
-    `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
-  );
+  try {
+    // Sprint Final P1-3 — Zod runtime validation.
+    IdSchema.parse(id);
+    z.boolean().parse(isActive);
+    await prisma.bannedPhrase.update({
+      where: { id },
+      data: { isActive },
+    });
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
+    );
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "toggleBannedPhrase" } });
+    throw e;
+  }
 }
 
 export async function deleteBannedPhrase(id: string): Promise<void> {
   await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation.
-  IdSchema.parse(id);
-  await prisma.bannedPhrase.delete({ where: { id } });
-  revalidatePath(
-    `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
-  );
+  try {
+    // Sprint Final P1-3 — Zod runtime validation.
+    IdSchema.parse(id);
+    await prisma.bannedPhrase.delete({ where: { id } });
+    revalidatePath(
+      `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/banned-phrases`,
+    );
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "deleteBannedPhrase" } });
+    throw e;
+  }
 }
 
 /**
@@ -135,50 +152,55 @@ export async function scanArticlesForPhrase(phrase: string): Promise<{
   await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   ScanPhraseSchema.parse(phrase);
-  const needle = phrase.trim();
-  if (needle.length < 2 || needle.length > 200) throw new Error("phrase_length_invalid");
+  try {
+    const needle = phrase.trim();
+    if (needle.length < 2 || needle.length > 200) throw new Error("phrase_length_invalid");
 
-  const LIMIT = 200;
-  const rows = await prisma.articleTranslation.findMany({
-    where: {
-      locale: "fr",
-      article: { status: "published" },
-      OR: [
-        { title: { contains: needle, mode: "insensitive" } },
-        { body: { contains: needle, mode: "insensitive" } },
-        { metaTitle: { contains: needle, mode: "insensitive" } },
-        { metaDescription: { contains: needle, mode: "insensitive" } },
-      ],
-    },
-    include: {
-      article: {
-        select: { id: true, publishedAt: true, indexationTier: true },
+    const LIMIT = 200;
+    const rows = await prisma.articleTranslation.findMany({
+      where: {
+        locale: "fr",
+        article: { status: "published" },
+        OR: [
+          { title: { contains: needle, mode: "insensitive" } },
+          { body: { contains: needle, mode: "insensitive" } },
+          { metaTitle: { contains: needle, mode: "insensitive" } },
+          { metaDescription: { contains: needle, mode: "insensitive" } },
+        ],
       },
-    },
-    orderBy: { article: { publishedAt: "desc" } },
-    take: LIMIT + 1,
-  });
+      include: {
+        article: {
+          select: { id: true, publishedAt: true, indexationTier: true },
+        },
+      },
+      orderBy: { article: { publishedAt: "desc" } },
+      take: LIMIT + 1,
+    });
 
-  const hits: PhraseScanHit[] = rows.slice(0, LIMIT).map((t) => {
-    const matchedIn: PhraseScanHit["matchedIn"][number][] = [];
-    const lc = needle.toLowerCase();
-    if (t.title.toLowerCase().includes(lc)) matchedIn.push("title");
-    if (t.body.toLowerCase().includes(lc)) matchedIn.push("body");
-    if (t.metaTitle?.toLowerCase().includes(lc)) matchedIn.push("metaTitle");
-    if (t.metaDescription?.toLowerCase().includes(lc)) matchedIn.push("metaDescription");
+    const hits: PhraseScanHit[] = rows.slice(0, LIMIT).map((t) => {
+      const matchedIn: PhraseScanHit["matchedIn"][number][] = [];
+      const lc = needle.toLowerCase();
+      if (t.title.toLowerCase().includes(lc)) matchedIn.push("title");
+      if (t.body.toLowerCase().includes(lc)) matchedIn.push("body");
+      if (t.metaTitle?.toLowerCase().includes(lc)) matchedIn.push("metaTitle");
+      if (t.metaDescription?.toLowerCase().includes(lc)) matchedIn.push("metaDescription");
+      return {
+        articleId: t.article.id,
+        slug: t.slug,
+        title: t.title,
+        publishedAt: t.article.publishedAt,
+        indexationTier: t.article.indexationTier,
+        matchedIn,
+      };
+    });
+
     return {
-      articleId: t.article.id,
-      slug: t.slug,
-      title: t.title,
-      publishedAt: t.article.publishedAt,
-      indexationTier: t.article.indexationTier,
-      matchedIn,
+      phrase: needle,
+      hits,
+      capped: rows.length > LIMIT,
     };
-  });
-
-  return {
-    phrase: needle,
-    hits,
-    capped: rows.length > LIMIT,
-  };
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "scanArticlesForPhrase" } });
+    throw e;
+  }
 }

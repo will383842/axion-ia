@@ -1,42 +1,44 @@
 # Test 10 — LHCI gates
+
 ## Date : 2026-05-22 — mode AUDIT-ONLY
 
 ## lighthouserc.json content
+
 {
-  "ci": {
-    "collect": {
-      "url": [
-        "http://localhost:3000/fr",
-        "http://localhost:3000/en",
-        "http://localhost:3000/fr/interventions",
-        "http://localhost:3000/en/interventions",
-        "http://localhost:3000/fr/interventions/essentielle",
-        "http://localhost:3000/en/interventions/essential",
-        "http://localhost:3000/fr/audit",
-        "http://localhost:3000/en/audit",
-        "http://localhost:3000/fr/implementation",
-        "http://localhost:3000/en/implementation",
-        "http://localhost:3000/fr/cas-concrets",
-        "http://localhost:3000/en/case-studies",
-        "http://localhost:3000/fr/blog",
-        "http://localhost:3000/en/blog",
-        "http://localhost:3000/fr/contact",
-        "http://localhost:3000/en/contact",
-        "http://localhost:3000/fr/galerie",
-        "http://localhost:3000/en/gallery"
-      ],
-      "startServerCommand": "pnpm start",
-      "startServerReadyPattern": "Ready",
-      "numberOfRuns": 3,
-      "settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
-    },
-    "assert": {
-      "preset": "lighthouse:no-pwa",
-      "assertions": {
-        "categories:performance": ["error", { "minScore": 0.9 }],
-        "categories:accessibility": ["warn", { "minScore": 0.9 }],
-        "categories:best-practices": ["warn", { "minScore": 0.9 }],
-        "categories:seo": ["warn", { "minScore": 0.9 }],
+"ci": {
+"collect": {
+"url": [
+"http://localhost:3000/fr",
+"http://localhost:3000/en",
+"http://localhost:3000/fr/interventions",
+"http://localhost:3000/en/interventions",
+"http://localhost:3000/fr/interventions/essentielle",
+"http://localhost:3000/en/interventions/essential",
+"http://localhost:3000/fr/audit",
+"http://localhost:3000/en/audit",
+"http://localhost:3000/fr/implementation",
+"http://localhost:3000/en/implementation",
+"http://localhost:3000/fr/cas-concrets",
+"http://localhost:3000/en/case-studies",
+"http://localhost:3000/fr/blog",
+"http://localhost:3000/en/blog",
+"http://localhost:3000/fr/contact",
+"http://localhost:3000/en/contact",
+"http://localhost:3000/fr/galerie",
+"http://localhost:3000/en/gallery"
+],
+"startServerCommand": "pnpm start",
+"startServerReadyPattern": "Ready",
+"numberOfRuns": 3,
+"settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
+},
+"assert": {
+"preset": "lighthouse:no-pwa",
+"assertions": {
+"categories:performance": ["error", { "minScore": 0.9 }],
+"categories:accessibility": ["warn", { "minScore": 0.9 }],
+"categories:best-practices": ["warn", { "minScore": 0.9 }],
+"categories:seo": ["warn", { "minScore": 0.9 }],
 
         "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
         "interaction-to-next-paint": "off",
@@ -85,5 +87,6 @@
       "target": "filesystem",
       "outputDir": "./lhci"
     }
-  }
+
+}
 }

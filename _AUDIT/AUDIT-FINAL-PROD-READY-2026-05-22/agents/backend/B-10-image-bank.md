@@ -8,6 +8,7 @@
 `src/server/image-bank/` : 19 fichiers TS, 7 services + 4 utils + types + constants + taxonomy.
 
 ### Services principaux
+
 - `image-import.service.ts` (ImageImportService) — Sharp pipeline
 - `image-bank.service.ts` (330 lignes) — orchestration
 - `image-translation.service.ts` — Claude Sonnet 4.6 vision auto-translate
@@ -21,6 +22,7 @@
 ## Pipeline Sharp (`image-import.service.ts:42`)
 
 `importImage(input)` `:47` :
+
 1. **Sharp metadata via SHARP_LIMITS** (limitInputPixels 100M anti zip-bomb) `:49`
 2. Format whitelist `ACCEPTED_INPUT_FORMATS` `:53`
 3. Size cap `UPLOAD_BYTES_MAX` `:56-58`
@@ -48,9 +50,10 @@
 
 Référence présent dans workflow image-bank-crons + `enqueueIndexingForTier1()` (worker indexnow content-gen). Image-bank ne fait pas son propre IndexNow direct — délègue au pipeline content-publish indirectement ou via cron dédié (à vérifier).
 
-## sitemap-images-*.xml Google 1.1
+## sitemap-images-\*.xml Google 1.1
 
 Sitemap routes présentes :
+
 - `src/app/sitemap-images-services.xml/route.ts` (services pages)
 - `src/app/sitemaps/images-fr.xml/route.ts` (FR canonique)
 - `src/app/sitemaps/images-en.xml/route.ts` (EN miroir)
@@ -82,12 +85,15 @@ Migration `20260516200000_rgpd_ip_hash_additif` + `image-download-log` schéma (
 ## Findings
 
 ### P0
+
 Aucun.
 
 ### P1
+
 1. **IndexNow ping pour images non vu explicitement** dans le code image-bank. Le pipeline content-publish fait l'IndexNow article ; les images publiées hors d'un article (galerie publique `/galerie`) doivent avoir leur propre IndexNow ping. À confirmer dans `image-bank-crons-worker.ts` ou `image-bank-import-worker.ts`.
 
 ### P2
+
 2. **Cloisonnement strict** doctrine skill : `src/server/image-bank/**`, `src/app/[locale]/(admin)/[adminPrefix]/image-bank/**`, `src/app/[locale]/galerie/**`, `src/components/admin/image-bank/**`. Pas vérifié à 100 % mais structure semble conforme.
 3. **Copyright "Axion-IA OÜ"** : à confirmer cohérence avec décision Will 2026-05-21 (société FR pure, pas OÜ) — texte hardcodé dans `customXmpData` à mettre à jour si copy bouge.
 4. **Web Vitals stricts** doctrine image-bank : LCP ≤ 1800 ms, INP ≤ 80 ms, CLS ≤ 0.05, JS ≤ 75 KB gz. Non audité ici (cf. front bundle frontend block).

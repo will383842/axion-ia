@@ -1,73 +1,21 @@
 /**
- * Content Generator — Coverage campaign create (§ 25.2).
+ * Redirect 308 (permanent) — Sprint v7 Phase 3 commit 2 cleanup (2026-05-23).
  *
- * V1 form simplifié : nom + scope + slugs (CSV) + total cible + distributions
- * JSON. Le launch immédiat ou en draft est laissé à l'admin via boutons distincts.
+ * Ancien wizard 5 étapes `/coverage/new` remplacé par le wizard 4 steps
+ * `/campaigns/new` (commit 8f4d0e9d). On garde cette route comme stub
+ * permanentRedirect pour préserver les bookmarks et liens externes existants.
+ *
+ * Cf. §5.1 prompt v7 : "Redirect 308 → /campaigns/new (garder route stub
+ * pour bookmarks)".
  */
 
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import {
-  createCampaign,
-  estimateCampaign,
-  launchCampaign,
-  type EstimateCampaignResult,
-} from "@/server/actions/content-gen/coverage";
-import {
-  listAudienceMixProfiles,
-  listDistributionProfiles,
-} from "@/server/actions/content-gen/distribution";
-import {
-  SERVICE_SECTOR_LABELS,
-  SERVICE_SECTORS,
-} from "@/server/content-gen/shared/editorial-mix-rules";
-import { CoverageNewV2 } from "./_v2/CoverageNewV2";
-import type {
-  CoverageScope,
-  ServiceSector,
-} from "../../../../../../../../prisma/generated/client";
-
-export const dynamic = "force-dynamic";
+import { permanentRedirect } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
-  searchParams: Promise<{ dryRun?: string; preset?: string }>;
 }
 
-const SCOPES: ReadonlyArray<CoverageScope> = ["ville", "departement", "region", "multi"];
-
-// § 25.3 — Distribution éditoriale uniquement. `landing_ville` et `blog_from_rss`
-// ont leurs propres pipelines (coverage villes / RSS worker).
-const DEFAULT_TYPE_DIST = `{
-  "blog_from_title": 30,
-  "blog_from_keywords": 25,
-  "comparison": 20,
-  "guide_pilier": 15,
-  "faq_standalone": 10
-}`;
-const DEFAULT_AUDIENCE_MIX = `{
-  "TPE:entreprise_privee": 25,
-  "PME:entreprise_privee": 40,
-  "ETI:entreprise_privee": 20,
-  "GE:entreprise_privee": 10,
-  "PME:secteur_public": 5
-}`;
-
-function decodeDryRun(raw: string | undefined): EstimateCampaignResult | null {
-  if (!raw) return null;
-  try {
-    return JSON.parse(Buffer.from(raw, "base64url").toString("utf8")) as EstimateCampaignResult;
-  } catch {
-    return null;
-  }
+export default async function CoverageNewLegacyRedirect({ params }: PageProps) {
+  const { locale, adminPrefix } = await params;
+  permanentRedirect(`/${locale}/${adminPrefix}/content-gen/campaigns/new`);
 }
-
-export default async function NewCampaignPage({ params, searchParams }: PageProps) {
-  const { adminPrefix } = await params;
-  const sp = await searchParams;
-  const session = await auth();
-  if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
-
-  return <CoverageNewV2 adminPrefix={adminPrefix} searchParams={sp} />;
-}
-

@@ -265,6 +265,7 @@ export function startContentWebVitalsMonitorWorker(): Worker<WebVitalsMonitorTic
   });
   workerInstance.on("failed", (job, err) => {
     console.error(`[content-web-vitals-monitor] job ${job?.id} failed:`, err);
+    captureWorkerError("web-vitals-monitor", QUEUE_NAME, job, err);
   });
   workerInstance.on("completed", (job) => {
     console.log(`[content-web-vitals-monitor] job ${job.id} completed`);

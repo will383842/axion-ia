@@ -550,7 +550,7 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture de factures, comptes-rendus, qualification leads) pour une TPE ou startup angevine.",
           },
@@ -656,7 +656,7 @@ export const ANGERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, meeting minutes, lead qualification) for an Angers micro-business or startup.",
           },

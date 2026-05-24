@@ -13,6 +13,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { Queue } from "bullmq";
 import crypto from "node:crypto";
 import { revalidatePath } from "next/cache";
@@ -89,84 +90,93 @@ export interface EnqueueDirectGenResult {
 export async function enqueueDirectGen(
   input: EnqueueDirectGenInput,
 ): Promise<EnqueueDirectGenResult> {
-  const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation.
-  EnqueueDirectGenInputSchema.parse(input);
+  try {
+    const session = await requireAdmin();
+    // Sprint Final P1-3 — Zod runtime validation.
+    EnqueueDirectGenInputSchema.parse(input);
 
-  // Anti-doublon clic : slot 60s sur (type + ville + keyword + intent).
-  const slot = Math.floor(Date.now() / 60_000);
-  const idemSource = [
-    input.contentType,
-    input.anchorVilleSlug ?? "",
-    input.anchorRegionSlug ?? "",
-    input.primaryKeyword ?? "",
-    input.title ?? "",
-    input.targetSearchIntent,
-    slot,
-  ].join("::");
-  const idempotencyKey = crypto.createHash("sha256").update(idemSource).digest("hex").slice(0, 32);
+    // Anti-doublon clic : slot 60s sur (type + ville + keyword + intent).
+    const slot = Math.floor(Date.now() / 60_000);
+    const idemSource = [
+      input.contentType,
+      input.anchorVilleSlug ?? "",
+      input.anchorRegionSlug ?? "",
+      input.primaryKeyword ?? "",
+      input.title ?? "",
+      input.targetSearchIntent,
+      slot,
+    ].join("::");
+    const idempotencyKey = crypto
+      .createHash("sha256")
+      .update(idemSource)
+      .digest("hex")
+      .slice(0, 32);
 
-  // Si une row existe déjà avec ce key, on retourne son id (no-op insert).
-  const existing = await prisma.contentGenJob.findUnique({
-    where: { idempotencyKey },
-    select: { id: true },
-  });
-  if (existing) {
-    return {
-      jobId: existing.id,
-      idempotencyKey,
-      enqueuedInBullmq: false,
-    };
-  }
+    // Si une row existe déjà avec ce key, on retourne son id (no-op insert).
+    const existing = await prisma.contentGenJob.findUnique({
+      where: { idempotencyKey },
+      select: { id: true },
+    });
+    if (existing) {
+      return {
+        jobId: existing.id,
+        idempotencyKey,
+        enqueuedInBullmq: false,
+      };
+    }
 
-  const inputPayload: Record<string, unknown> = {};
-  if (input.primaryKeyword) inputPayload["primaryKeyword"] = input.primaryKeyword;
-  if (input.title) inputPayload["title"] = input.title;
+    const inputPayload: Record<string, unknown> = {};
+    if (input.primaryKeyword) inputPayload["primaryKeyword"] = input.primaryKeyword;
+    if (input.title) inputPayload["title"] = input.title;
 
-  const dbJob = await prisma.contentGenJob.create({
-    data: {
-      idempotencyKey,
-      contentType: input.contentType,
-      status: "queued",
-      priority: 3, // user-initiated > campagnes (5)
-      ...(input.templateId ? { templateId: input.templateId } : {}),
-      ...(input.anchorVilleSlug ? { anchorVilleSlug: input.anchorVilleSlug } : {}),
-      ...(input.anchorRegionSlug ? { anchorRegionSlug: input.anchorRegionSlug } : {}),
-      ...(input.anchorDepartementCode
-        ? { anchorDepartementCode: input.anchorDepartementCode }
-        : {}),
-      inputPayload: inputPayload as never,
-      targetLocale: "fr",
-      targetSearchIntent: input.targetSearchIntent,
-      primaryProvider: "openai",
-      fallbackProvider: "anthropic",
-      createdBy: session.userId,
-    },
-    select: { id: true },
-  });
-
-  const queue = getContentGenQueue();
-  let enqueuedInBullmq = false;
-  if (queue) {
-    await queue.add(
-      "generate",
-      {
-        contentGenJobId: dbJob.id,
+    const dbJob = await prisma.contentGenJob.create({
+      data: {
+        idempotencyKey,
         contentType: input.contentType,
+        status: "queued",
+        priority: 3, // user-initiated > campagnes (5)
+        ...(input.templateId ? { templateId: input.templateId } : {}),
+        ...(input.anchorVilleSlug ? { anchorVilleSlug: input.anchorVilleSlug } : {}),
+        ...(input.anchorRegionSlug ? { anchorRegionSlug: input.anchorRegionSlug } : {}),
+        ...(input.anchorDepartementCode
+          ? { anchorDepartementCode: input.anchorDepartementCode }
+          : {}),
+        inputPayload: inputPayload as never,
+        targetLocale: "fr",
         targetSearchIntent: input.targetSearchIntent,
-        inputPayload,
+        primaryProvider: "openai",
+        fallbackProvider: "anthropic",
+        createdBy: session.userId,
       },
-      { jobId: `gen-${dbJob.id}` },
-    );
-    enqueuedInBullmq = true;
+      select: { id: true },
+    });
+
+    const queue = getContentGenQueue();
+    let enqueuedInBullmq = false;
+    if (queue) {
+      await queue.add(
+        "generate",
+        {
+          contentGenJobId: dbJob.id,
+          contentType: input.contentType,
+          targetSearchIntent: input.targetSearchIntent,
+          inputPayload,
+        },
+        { jobId: `gen-${dbJob.id}` },
+      );
+      enqueuedInBullmq = true;
+    }
+
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`);
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/jobs`);
+
+    return {
+      jobId: dbJob.id,
+      idempotencyKey,
+      enqueuedInBullmq,
+    };
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "enqueueDirectGen" } });
+    throw e;
   }
-
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`);
-  revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/jobs`);
-
-  return {
-    jobId: dbJob.id,
-    idempotencyKey,
-    enqueuedInBullmq,
-  };
 }

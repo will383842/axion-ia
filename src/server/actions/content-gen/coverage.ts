@@ -10,6 +10,7 @@
 
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { CronExpressionParser } from "cron-parser";
@@ -70,6 +71,8 @@ const CreateCampaignInputSchema = z
     startDate: z.date().nullable().optional(),
     endDate: z.date().nullable().optional(),
     recurringSchedule: z.string().min(1).max(120).nullable().optional(),
+    // P0-1 — primaryKeywords manquait dans createCampaign (audit A-06)
+    primaryKeywords: z.array(z.string().min(1).max(200)).max(500).optional(),
   })
   .strict();
 const CancelCampaignModeSchema = z.enum(["running_only", "all"]);
@@ -227,139 +230,203 @@ export interface CreateCampaignInput {
   readonly startDate?: Date | null;
   readonly endDate?: Date | null;
   readonly recurringSchedule?: string | null;
+  // P0-1 — primaryKeywords (audit A-06) : liste de mots-clés à injecter dans
+  // les jobs de la campagne via BullMQ payload. Stockés dans logActivity + BullMQ.
+  readonly primaryKeywords?: ReadonlyArray<string>;
+}
+
+/**
+ * Réordonne les slugs villes en interleaving tier-aware (Tier1→2→3→4→1→...)
+ * pour garantir la représentation de toutes les strates de population si
+ * la campagne se termine avant couverture complète.
+ * Ex: [P,L,M(T1), a,b,c(T2), x,y(T3)] → [P,a,x, L,b,y, M,c]
+ */
+async function buildTierInterleavedSlugs(slugs: string[]): Promise<string[]> {
+  if (slugs.length <= 1) return slugs;
+  const cities = await prisma.city.findMany({
+    where: { slug: { in: slugs } },
+    select: { slug: true, populationTier: true },
+  });
+  const tierBySlug = new Map(cities.map((c) => [c.slug, c.populationTier ?? 4]));
+  const byTier: Record<number, string[]> = { 1: [], 2: [], 3: [], 4: [] };
+  for (const slug of slugs) {
+    const tier = tierBySlug.get(slug) ?? 4;
+    (byTier[tier] ??= []).push(slug);
+  }
+  const activeTiers = ([1, 2, 3, 4] as const).filter((t) => (byTier[t]?.length ?? 0) > 0);
+  if (activeTiers.length <= 1) return slugs;
+  const indices: Record<number, number> = Object.fromEntries(activeTiers.map((t) => [t, 0]));
+  const result: string[] = [];
+  while (result.length < slugs.length) {
+    for (const tier of activeTiers) {
+      const arr = byTier[tier]!;
+      const idx = indices[tier]!;
+      if (idx < arr.length) {
+        result.push(arr[idx]!);
+        indices[tier] = idx + 1;
+      }
+    }
+  }
+  return result;
 }
 
 export async function createCampaign(input: CreateCampaignInput): Promise<string> {
-  const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
-  CreateCampaignInputSchema.parse(input);
-  if (input.name.length < 3) throw new Error("name_too_short");
-  if (input.totalTargetCount < 1 || input.totalTargetCount > 10_000)
-    throw new Error("target_count_range");
-  // § 25.3 — Si campagne éditoriale (serviceSector défini), les types
-  // `landing_ville` et `blog_from_rss` sont interdits dans la distribution.
-  // Ils ont leur propre pipeline (coverage villes / RSS worker).
-  if (input.serviceSector) {
-    for (const key of Object.keys(input.typeDistribution)) {
-      if ((BANNED_FROM_EDITORIAL_MIX as ReadonlyArray<string>).includes(key)) {
-        throw new Error(
-          `editorial_distribution_banned_type:${key} (landing_ville et blog_from_rss ont leur propre pipeline)`,
-        );
+  try {
+    const session = await requireAdmin();
+    // Sprint Final P1-3 — Zod runtime validation (structurel) avant checks métier.
+    CreateCampaignInputSchema.parse(input);
+    if (input.name.length < 3) throw new Error("name_too_short");
+    if (input.totalTargetCount < 1 || input.totalTargetCount > 10_000)
+      throw new Error("target_count_range");
+    // § 25.3 — Si campagne éditoriale (serviceSector défini), les types
+    // `landing_ville` et `blog_from_rss` sont interdits dans la distribution.
+    // Ils ont leur propre pipeline (coverage villes / RSS worker).
+    if (input.serviceSector) {
+      for (const key of Object.keys(input.typeDistribution)) {
+        if ((BANNED_FROM_EDITORIAL_MIX as ReadonlyArray<string>).includes(key)) {
+          throw new Error(
+            `editorial_distribution_banned_type:${key} (landing_ville et blog_from_rss ont leur propre pipeline)`,
+          );
+        }
       }
     }
-  }
-  const typeSum = Object.values(input.typeDistribution).reduce((a, v) => a + v, 0);
-  if (Math.abs(typeSum - 100) > 0.5) throw new Error("type_distribution_must_sum_100");
-  const audSum = Object.values(input.audienceMix).reduce((a, v) => a + v, 0);
-  if (Math.abs(audSum - 100) > 0.5) throw new Error("audience_mix_must_sum_100");
+    const typeSum = Object.values(input.typeDistribution).reduce((a, v) => a + v, 0);
+    if (Math.abs(typeSum - 100) > 0.5) throw new Error("type_distribution_must_sum_100");
+    const audSum = Object.values(input.audienceMix).reduce((a, v) => a + v, 0);
+    if (Math.abs(audSum - 100) > 0.5) throw new Error("audience_mix_must_sum_100");
 
-  // Sprint Campaign Controls — validation des 4 nouveaux champs
-  if (input.recurringSchedule) {
-    try {
-      CronExpressionParser.parse(input.recurringSchedule);
-    } catch {
-      throw new Error("invalid_cron_expression");
+    // Sprint Campaign Controls — validation des 4 nouveaux champs
+    if (input.recurringSchedule) {
+      try {
+        CronExpressionParser.parse(input.recurringSchedule);
+      } catch {
+        throw new Error("invalid_cron_expression");
+      }
     }
-  }
-  const now = new Date();
-  let effectiveStartDate: Date | null = input.startDate ?? null;
-  if (effectiveStartDate && effectiveStartDate < now) {
-    // startDate dans le passé → log warning, démarrage immédiat (pas de throw)
-    console.warn(
-      `[createCampaign] startDate ${effectiveStartDate.toISOString()} is in the past, using null (immediate)`,
-    );
-    effectiveStartDate = null;
-  }
-  if (input.endDate && input.endDate <= now) {
-    throw new Error("end_date_in_past");
-  }
-  // Si startDate futur défini → status scheduled, sinon draft
-  const initialStatus: CoverageStatus = effectiveStartDate ? "scheduled" : "draft";
-  const cityProcessingMode: CityProcessingMode = input.cityProcessingMode ?? "parallel";
+    const now = new Date();
+    let effectiveStartDate: Date | null = input.startDate ?? null;
+    if (effectiveStartDate && effectiveStartDate < now) {
+      // startDate dans le passé → log warning, démarrage immédiat (pas de throw)
+      console.warn(
+        `[createCampaign] startDate ${effectiveStartDate.toISOString()} is in the past, using null (immediate)`,
+      );
+      effectiveStartDate = null;
+    }
+    if (input.endDate && input.endDate <= now) {
+      throw new Error("end_date_in_past");
+    }
+    // Si startDate futur défini → status scheduled, sinon draft
+    const initialStatus: CoverageStatus = effectiveStartDate ? "scheduled" : "draft";
+    const cityProcessingMode: CityProcessingMode = input.cityProcessingMode ?? "parallel";
 
-  const r = await prisma.coverageCampaign.create({
-    data: {
-      name: input.name,
-      status: initialStatus,
-      scope: input.scope,
-      serviceSector: input.serviceSector ?? null,
-      anchorVilleSlugs: input.anchorVilleSlugs ? [...input.anchorVilleSlugs] : [],
-      anchorDepartementCodes: input.anchorDepartementCodes ? [...input.anchorDepartementCodes] : [],
-      anchorRegionSlugs: input.anchorRegionSlugs ? [...input.anchorRegionSlugs] : [],
-      totalTargetCount: input.totalTargetCount,
-      typeDistribution: input.typeDistribution as never,
-      audienceMix: input.audienceMix as never,
-      ...(input.searchIntentMix ? { searchIntentMix: input.searchIntentMix as never } : {}),
-      estimatedCostUsd: input.estimatedCostUsd ?? null,
-      estimatedDurationMinutes: input.estimatedDurationMinutes ?? null,
-      createdBy: session.userId,
-      cityProcessingMode,
-      startDate: effectiveStartDate,
-      endDate: input.endDate ?? null,
-      recurringSchedule: input.recurringSchedule ?? null,
-    },
-  });
-  revalidatePath(adminBase());
-  await logActivity({
-    session,
-    action: "content-gen.campaign.create",
-    targetType: "CoverageCampaign",
-    targetId: r.id,
-    changes: {
-      name: input.name,
-      scope: input.scope,
-      serviceSector: input.serviceSector ?? null,
-      targetCount: input.totalTargetCount,
-      cityProcessingMode,
-      startDate: effectiveStartDate?.toISOString() ?? null,
-      endDate: input.endDate?.toISOString() ?? null,
-      recurringSchedule: input.recurringSchedule ?? null,
-    },
-  });
-  return r.id;
+    // P2 — Interleaving tier-aware pour équité géographique en mode parallel.
+    // En mode sequential, l'ordre est contrôlé volontairement par currentCityIndex.
+    const orderedVilleSlugs =
+      input.scope === "ville" &&
+      cityProcessingMode === "parallel" &&
+      (input.anchorVilleSlugs?.length ?? 0) > 1
+        ? await buildTierInterleavedSlugs([...(input.anchorVilleSlugs ?? [])])
+        : [...(input.anchorVilleSlugs ?? [])];
+
+    const r = await prisma.coverageCampaign.create({
+      data: {
+        name: input.name,
+        status: initialStatus,
+        scope: input.scope,
+        serviceSector: input.serviceSector ?? null,
+        anchorVilleSlugs: orderedVilleSlugs,
+        anchorDepartementCodes: input.anchorDepartementCodes
+          ? [...input.anchorDepartementCodes]
+          : [],
+        anchorRegionSlugs: input.anchorRegionSlugs ? [...input.anchorRegionSlugs] : [],
+        totalTargetCount: input.totalTargetCount,
+        typeDistribution: input.typeDistribution as never,
+        audienceMix: input.audienceMix as never,
+        ...(input.searchIntentMix ? { searchIntentMix: input.searchIntentMix as never } : {}),
+        estimatedCostUsd: input.estimatedCostUsd ?? null,
+        estimatedDurationMinutes: input.estimatedDurationMinutes ?? null,
+        createdBy: session.userId,
+        cityProcessingMode,
+        startDate: effectiveStartDate,
+        endDate: input.endDate ?? null,
+        recurringSchedule: input.recurringSchedule ?? null,
+      },
+    });
+    revalidatePath(adminBase());
+    await logActivity({
+      session,
+      action: "content-gen.campaign.create",
+      targetType: "CoverageCampaign",
+      targetId: r.id,
+      changes: {
+        name: input.name,
+        scope: input.scope,
+        serviceSector: input.serviceSector ?? null,
+        targetCount: input.totalTargetCount,
+        cityProcessingMode,
+        startDate: effectiveStartDate?.toISOString() ?? null,
+        endDate: input.endDate?.toISOString() ?? null,
+        recurringSchedule: input.recurringSchedule ?? null,
+        // P0-1 — primaryKeywords tracés dans audit log (pas de colonne Prisma dédiée)
+        primaryKeywords: input.primaryKeywords ?? null,
+      },
+    });
+    return r.id;
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "createCampaign" } });
+    throw e;
+  }
 }
 
 export async function launchCampaign(id: string): Promise<void> {
-  const session = await requireAdmin();
-  // Sprint Final P1-3 — Zod runtime validation.
-  CoverageCampaignIdSchema.parse(id);
-  const campaign = await prisma.coverageCampaign.findUnique({
-    where: { id },
-    select: { recurringSchedule: true },
-  });
-  await prisma.coverageCampaign.update({
-    where: { id },
-    data: { status: "running", startedAt: new Date() },
-  });
+  try {
+    const session = await requireAdmin();
+    // Sprint Final P1-3 — Zod runtime validation.
+    CoverageCampaignIdSchema.parse(id);
+    const campaign = await prisma.coverageCampaign.findUnique({
+      where: { id },
+      select: { recurringSchedule: true },
+    });
+    await prisma.coverageCampaign.update({
+      where: { id },
+      data: { status: "running", startedAt: new Date() },
+    });
 
-  // Sprint Campaign Controls — si campagne récurrente, enregistrer le repeatable job BullMQ
-  if (campaign?.recurringSchedule) {
-    const queue = getContentGenQueue();
-    if (queue) {
-      try {
-        await queue.add(
-          `campaign-${id}-recurring`,
-          { campaignId: id, trigger: "recurring-tick" },
-          {
-            repeat: { pattern: campaign.recurringSchedule, tz: "Europe/Paris" },
-            jobId: `campaign-${id}-recurring`,
-          },
-        );
-      } catch (err) {
-        console.warn(`[launchCampaign] failed to register repeatable job for campaign ${id}:`, err);
+    // Sprint Campaign Controls — si campagne récurrente, enregistrer le repeatable job BullMQ
+    if (campaign?.recurringSchedule) {
+      const queue = getContentGenQueue();
+      if (queue) {
+        try {
+          await queue.add(
+            `campaign-${id}-recurring`,
+            { campaignId: id, trigger: "recurring-tick" },
+            {
+              repeat: { pattern: campaign.recurringSchedule, tz: "Europe/Paris" },
+              jobId: `campaign-${id}-recurring`,
+            },
+          );
+        } catch (err) {
+          console.warn(
+            `[launchCampaign] failed to register repeatable job for campaign ${id}:`,
+            err,
+          );
+        }
       }
     }
-  }
 
-  revalidatePath(adminBase());
-  revalidatePath(`${adminBase()}/${id}`);
-  await logActivity({
-    session,
-    action: "content-gen.campaign.launch",
-    targetType: "CoverageCampaign",
-    targetId: id,
-    changes: { recurringSchedule: campaign?.recurringSchedule ?? null },
-  });
+    revalidatePath(adminBase());
+    revalidatePath(`${adminBase()}/${id}`);
+    await logActivity({
+      session,
+      action: "content-gen.campaign.launch",
+      targetType: "CoverageCampaign",
+      targetId: id,
+      changes: { recurringSchedule: campaign?.recurringSchedule ?? null },
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { area: "content-gen", action: "launchCampaign" } });
+    throw e;
+  }
 }
 
 export async function pauseCampaign(id: string): Promise<void> {

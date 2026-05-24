@@ -544,7 +544,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple — analyse automatisée de rapports cliniques, qualification de leads IT, documentation technique jeux vidéo.",
           },
@@ -650,7 +650,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case — automated clinical report analysis, IT lead qualification, video-game technical documentation.",
           },

@@ -1,4 +1,5 @@
 # F-08 Sitemaps & robots
+
 ## Score : 24/25 — 🟢
 
 ## Findings (preuves)
@@ -9,8 +10,8 @@
    - `pages`, `blog`, `faq`, `help`, `cas-concrets`, `comparaisons`, `guides`, `glossaire`, `presse`, `implementation`, `implantations`
    - `services-villes-{audit,interventions,implementation,un-a-un}` (4)
    - `stack-ia-tools`
-   - + dynamiques `villes-<region>[-<chunk>]` (chunking 1000 URLs auto)
-   - + `knowledge-N` chunks DB-aware (l. 296-299, bootstrap-safe count=0)
+   - - dynamiques `villes-<region>[-<chunk>]` (chunking 1000 URLs auto)
+   - - `knowledge-N` chunks DB-aware (l. 296-299, bootstrap-safe count=0)
 
 3. **`/sitemap-index.xml`** : route handler dédié `src/app/sitemap-index.xml/route.ts` (confirmé Test-Path) — Google le découvre via `robots.ts:130` `sitemap: ${SITE_URL}/sitemap-index.xml`. `/sitemap.xml` redirect 301 → `/sitemap-index.xml` (`next.config.ts:196-200`).
 
@@ -28,7 +29,7 @@
 8. **EXCLUDED_FROM_INDEX** (l. 108-130) : 10 routes retirées du sitemap (`/design`, `/components`, `/sections`, `/desabonnement`, `/mes-donnees`, `/mes-donnees/export`, `/confirmation`, `/recherche`, `/preferences-cookies`, `/reserver`, `/glossaire` hub dédupé).
 
 9. **robots.ts complet** (`src/app/robots.ts:91-133`) :
-   - User-agent `*` Disallow standard (api, _next, mes-donnees, reserver, admin, design, components, sections)
+   - User-agent `*` Disallow standard (api, \_next, mes-donnees, reserver, admin, design, components, sections)
    - Allow `/api/og` (fix GSC indexable OG dynamique)
    - `Bingbot` Crawl-delay 1s (P1-16)
    - **13 AI bots ALLOW** (l. 58-82) : GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, anthropic-ai, Claude-Web, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, Mistral-User, Bingbot, Meta-ExternalAgent, YandexBot, Googlebot-Image ✅
@@ -41,19 +42,23 @@
     - `src/app/api/indexnow/route.ts` (webhook)
     - `src/server/queue/queues.ts`, `worker.ts` (queue dédiée)
 
-11. **Cache headers** (`next.config.ts:212-238`) : sitemap.xml + sitemap/* → `s-maxage=600` (10 min, P1-13 audit indexation), swr 3600.
+11. **Cache headers** (`next.config.ts:212-238`) : sitemap.xml + sitemap/\* → `s-maxage=600` (10 min, P1-13 audit indexation), swr 3600.
 
 12. **`/.well-known/` + `/llms.txt` + `/llms-full.txt` + `/ai.txt`** : tous présents, exclus du proxy i18n (`src/proxy.ts:139`). RFC security.txt / IndexNow key.
 
 ## P0 bloquants prod
+
 - **Aucun**.
 
 ## P1 importants
+
 - `EN_LOCALE_DISABLED` lu via `process.env.EN_LOCALE_ENABLED !== "true"` (sitemap.ts:146). Si env var pas définie en prod Coolify → comportement attendu (EN off), mais à valider explicitement dans CI.
 
 ## P2 polish
+
 - `knowledge-N` chunks DB-aware : si `countKnowledgePublicEntries()` plante au build (DB stub `stub.invalid` → return 0), KB sitemap absent. ISR runtime devrait re-générer mais à monitorer (memory note ADR 0026).
 - `priority` champ MetadataRoute.Sitemap toujours présent (déprécié par Google depuis 2017 mais reste informatif Bing).
 
 ## Verdict
+
 Architecture sitemap+robots de classe entreprise : 18 sub-sitemaps + chunking auto + Google News + Google Images + KB DB-aware + IndexNow ping post-publish + BUILD_TIME stable + EN locale toggle propre. 13 AI bots ALLOW (GPTBot, ClaudeBot, PerplexityBot, etc.) + 4 scrapers DISALLOW conformément à la doctrine AEO/GEO. Tout est bien isolé et testé. Score 24/25 ; -1 pour absence de test CI validant EN_LOCALE_ENABLED behavior end-to-end.

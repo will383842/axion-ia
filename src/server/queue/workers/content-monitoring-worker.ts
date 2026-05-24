@@ -37,6 +37,7 @@ import {
   alertQueueStuck,
   alertSoft404Detected,
   alertIndexationStagnant,
+  alertCityEquityImbalance,
 } from "@/server/content-gen/shared/content-gen-alerts";
 import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 
@@ -211,6 +212,23 @@ async function checkIndexationStagnant(): Promise<void> {
   }
 }
 
+/**
+ * P0-2 Sprint correctif admin — Reset une alerte résolue (active: false).
+ * Appelé quand la condition anormale n'est plus détectée, pour éviter que le
+ * bandeau layout reste affiché indéfiniment sur une alerte périmée.
+ */
+async function resolveAnomaly(key: string): Promise<void> {
+  await prisma.contentGenConfig
+    .updateMany({
+      where: { key },
+      data: {
+        value: { active: false, resolvedAt: new Date().toISOString() },
+        updatedBy: "content-monitoring-worker",
+      },
+    })
+    .catch(() => {});
+}
+
 // P0-3 Sprint P5 follow-up — Anomaly detection business (D-P5-7 A5-07).
 // 3 checks business lancés toutes les 15 min via cron content-monitoring.
 // Fail-soft : erreur Prisma n'interrompt pas les autres checks.
@@ -242,6 +260,7 @@ async function checkAnomalies(): Promise<void> {
           create: {
             key: "alert_quality_drop",
             value: {
+              active: true,
               value: drop,
               detectedAt: new Date().toISOString(),
               message: `Chute qualite : -${drop.toFixed(1)} pts sur 1h`,
@@ -250,6 +269,7 @@ async function checkAnomalies(): Promise<void> {
           },
           update: {
             value: {
+              active: true,
               value: drop,
               detectedAt: new Date().toISOString(),
               message: `Chute qualite : -${drop.toFixed(1)} pts sur 1h`,
@@ -259,6 +279,9 @@ async function checkAnomalies(): Promise<void> {
         })
         .catch(() => {});
       console.warn(`[content-monitoring] ALERT quality_drop=${drop.toFixed(1)}`);
+    } else {
+      // Condition résolue — désactiver l'alerte si elle était active.
+      await resolveAnomaly("alert_quality_drop");
     }
   }
 
@@ -277,6 +300,7 @@ async function checkAnomalies(): Promise<void> {
         create: {
           key: "alert_reject_spike",
           value: {
+            active: true,
             value: pct,
             detectedAt: new Date().toISOString(),
             message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
@@ -285,6 +309,7 @@ async function checkAnomalies(): Promise<void> {
         },
         update: {
           value: {
+            active: true,
             value: pct,
             detectedAt: new Date().toISOString(),
             message: `Spike rejets : ${failedRecent}/${totalRecent} (${pct}%) sur 1h`,
@@ -294,6 +319,9 @@ async function checkAnomalies(): Promise<void> {
       })
       .catch(() => {});
     console.warn(`[content-monitoring] ALERT reject_spike=${failedRecent}/${totalRecent}`);
+  } else {
+    // Condition résolue — désactiver l'alerte si elle était active.
+    await resolveAnomaly("alert_reject_spike");
   }
 
   // Check 3 : 0 jobs crees depuis 4h sur campagne running
@@ -309,6 +337,7 @@ async function checkAnomalies(): Promise<void> {
         create: {
           key: "alert_pipeline_stall",
           value: {
+            active: true,
             runningCampaigns,
             detectedAt: new Date().toISOString(),
             message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
@@ -317,6 +346,7 @@ async function checkAnomalies(): Promise<void> {
         },
         update: {
           value: {
+            active: true,
             runningCampaigns,
             detectedAt: new Date().toISOString(),
             message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
@@ -326,16 +356,101 @@ async function checkAnomalies(): Promise<void> {
       })
       .catch(() => {});
     console.warn(`[content-monitoring] ALERT pipeline_stall campaigns=${runningCampaigns}`);
+  } else {
+    // Condition résolue — désactiver l'alerte si elle était active.
+    await resolveAnomaly("alert_pipeline_stall");
+  }
+}
+
+/**
+ * Détecte les campagnes ville running depuis ≥7j avec >30% des villes sans
+ * aucun contenu généré — signe d'un déséquilibre géographique (Tier 1 saturé,
+ * Tier 3/4 ignorés). Alerte Telegram + upsert ContentGenConfig pour bandeau admin.
+ */
+async function checkCityEquity(): Promise<void> {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000);
+  const runningCampaigns = await prisma.coverageCampaign
+    .findMany({
+      where: { status: "running", startedAt: { lte: sevenDaysAgo }, scope: "ville" },
+      select: { id: true, name: true, anchorVilleSlugs: true },
+    })
+    .catch(() => []);
+
+  for (const campaign of runningCampaigns) {
+    if (campaign.anchorVilleSlugs.length === 0) continue;
+
+    const jobsByCity = await prisma.contentGenJob
+      .groupBy({
+        by: ["anchorVilleSlug"],
+        where: {
+          campaignId: campaign.id,
+          anchorVilleSlug: { in: campaign.anchorVilleSlugs },
+          status: { not: "cancelled" },
+        },
+        _count: { _all: true },
+      })
+      .catch(() => []);
+
+    const covered = new Set(
+      jobsByCity.filter((j) => j.anchorVilleSlug !== null).map((j) => j.anchorVilleSlug!),
+    );
+    const zeroCitiesCount = campaign.anchorVilleSlugs.filter((s) => !covered.has(s)).length;
+    const ratio = zeroCitiesCount / campaign.anchorVilleSlugs.length;
+
+    if (ratio > 0.3 && zeroCitiesCount >= 3) {
+      await prisma.contentGenConfig
+        .upsert({
+          where: { key: "alert_city_equity" },
+          create: {
+            key: "alert_city_equity",
+            value: {
+              active: true,
+              campaignId: campaign.id,
+              campaignName: campaign.name,
+              zeroCitiesCount,
+              totalCities: campaign.anchorVilleSlugs.length,
+              detectedAt: new Date().toISOString(),
+              message: `Déséquilibre villes : ${zeroCitiesCount}/${campaign.anchorVilleSlugs.length} villes sans contenu`,
+            },
+            updatedBy: "content-monitoring-worker",
+          },
+          update: {
+            value: {
+              active: true,
+              campaignId: campaign.id,
+              campaignName: campaign.name,
+              zeroCitiesCount,
+              totalCities: campaign.anchorVilleSlugs.length,
+              detectedAt: new Date().toISOString(),
+              message: `Déséquilibre villes : ${zeroCitiesCount}/${campaign.anchorVilleSlugs.length} villes sans contenu`,
+            },
+            updatedBy: "content-monitoring-worker",
+          },
+        })
+        .catch(() => {});
+      void alertCityEquityImbalance(
+        campaign.id,
+        campaign.name,
+        zeroCitiesCount,
+        campaign.anchorVilleSlugs.length,
+      ).catch(() => undefined);
+      console.warn(
+        `[content-monitoring] ALERT city_equity campaign=${campaign.id} zero=${zeroCitiesCount}/${campaign.anchorVilleSlugs.length}`,
+      );
+    } else {
+      await resolveAnomaly("alert_city_equity");
+    }
   }
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
-  // 4 checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
+  // 5 checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
   await Promise.allSettled([
     checkQueueStuck(),
     checkSoft404(),
     checkIndexationStagnant(),
     checkAnomalies(),
+    checkCityEquity(),
   ]);
 }
 

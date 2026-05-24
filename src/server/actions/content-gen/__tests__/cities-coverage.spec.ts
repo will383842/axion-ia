@@ -21,6 +21,26 @@ const countMock = vi.fn();
 const groupByMock = vi.fn();
 const updateManyMock = vi.fn();
 
+// P0-7 — requireAdmin() ajouté aux 4 fonctions → mock @/auth pour les tests
+vi.mock("@/auth", () => ({
+  auth: vi.fn(async () => ({
+    user: { id: "user-admin-1", email: "admin@axion-ia.com", role: "admin" },
+  })),
+}));
+
+vi.mock("next/headers", () => ({
+  headers: vi.fn(async () => new Headers()),
+}));
+
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(async () => ({
+    allowed: true,
+    count: 1,
+    remaining: 59,
+    resetAt: Date.now() + 60_000,
+  })),
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     city: {

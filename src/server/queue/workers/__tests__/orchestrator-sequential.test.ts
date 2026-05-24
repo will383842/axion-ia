@@ -22,6 +22,7 @@ const contentGenJobCreateMock = vi.fn();
 const contentGenJobCountMock = vi.fn();
 const contentGenJobGroupByMock = vi.fn();
 const contentGenJobAggregateMock = vi.fn();
+const cityGenerationOrderFindManyMock = vi.fn();
 const readConfigMock = vi.fn();
 const captureWorkerErrorMock = vi.fn();
 const alertCampaignDoneMock = vi.fn();
@@ -40,6 +41,9 @@ vi.mock("@/lib/prisma", () => ({
       count: (args: unknown) => contentGenJobCountMock(args),
       groupBy: () => contentGenJobGroupByMock(),
       aggregate: () => contentGenJobAggregateMock(),
+    },
+    cityGenerationOrder: {
+      findMany: () => cityGenerationOrderFindManyMock(),
     },
   },
 }));
@@ -125,11 +129,15 @@ function makeCampaign(
     totalTargetCount: 30,
     generatedCount: 0,
     typeDistribution: { landing_ville: 100 },
+    contentTypeWeights: null,
     audienceMix: { "PME:entreprise_privee": 100 },
     searchIntentMix: null,
     cityProcessingMode: "sequential",
     currentCityIndex: null,
     endDate: null,
+    dailyArticles: 30,
+    villeScopeMode: "custom_subset",
+    customVilleSlugs: [],
     qualityImprovedCount: 0,
     publishedCount: 0,
     failedCount: 0,
@@ -154,7 +162,7 @@ beforeEach(() => {
   process.env.REDIS_URL = "redis://test.invalid:6379";
   readConfigMock.mockImplementation(async (key: string) => {
     if (key === "kill_switch") return { active: false };
-    if (key === "batches") return { dailyBatchSize: 10, workersConcurrency: 3 };
+    if (key === "batches") return { workersConcurrency: 3 };
     return {};
   });
   campaignUpdateMock.mockResolvedValue({ id: "campaign-1" });
@@ -167,6 +175,7 @@ beforeEach(() => {
   contentGenJobCountMock.mockResolvedValue(0);
   contentGenJobGroupByMock.mockResolvedValue([]);
   contentGenJobAggregateMock.mockResolvedValue({ _sum: { costUsd: 0 }, _avg: { qualityScore: 0 } });
+  cityGenerationOrderFindManyMock.mockResolvedValue([]);
   alertCampaignDoneMock.mockResolvedValue(undefined);
 });
 

@@ -28,6 +28,6 @@ export default async function CampaignDetailPage({ params }: PageProps) {
   const campaign = await getCampaign(id);
   if (!campaign) notFound();
 
-  return <CoverageDetailV2 campaign={campaign} />;
+  return <CoverageDetailV2 campaign={campaign} adminPrefix={adminPrefix} />;
 }
 

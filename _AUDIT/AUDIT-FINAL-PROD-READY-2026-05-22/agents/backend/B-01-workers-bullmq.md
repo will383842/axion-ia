@@ -25,11 +25,12 @@
 Couverture : 12/33 workers (helper centralisé `src/server/queue/lib/sentry-worker.ts:83`). Workers couverts :
 content-publish, content-gen, content-orchestrator, content-indexnow, content-quality-improver, content-fact-check (NON — voir P1 ci-dessous), content-weekly-report, embeddings-backfill, brand-voice-drift-monitor, content-gen-scheduler, content-gen-deadline-checker, keyword-opportunity-detector, external-links-monitor.
 
-Manquants critiques : content-monitoring-worker, content-rss-fetch-worker, content-qa-extract-worker, content-similarity-monitor-worker, content-tier-lifecycle-worker, content-news-lifecycle-worker, content-keyword-sync-worker, content-google-indexing-worker, content-web-vitals-monitor-worker, content-psi-monitor-worker, email-worker, option-*-worker, retention-purge-worker, image-bank-*. Fact-check : capture absente dans le handler `on("failed")` (`content-fact-check-worker.ts:204-206` log console only).
+Manquants critiques : content-monitoring-worker, content-rss-fetch-worker, content-qa-extract-worker, content-similarity-monitor-worker, content-tier-lifecycle-worker, content-news-lifecycle-worker, content-keyword-sync-worker, content-google-indexing-worker, content-web-vitals-monitor-worker, content-psi-monitor-worker, email-worker, option-_-worker, retention-purge-worker, image-bank-_. Fact-check : capture absente dans le handler `on("failed")` (`content-fact-check-worker.ts:204-206` log console only).
 
 ### Retry 3 + backoff exponentiel
 
 Définis au niveau **Queue** (`src/server/queue/queues.ts:31-36`) via `defaultJobOptions: { attempts: 5, backoff: { type: "exponential", delay: 5000 } }`. **Surchargés** par queue :
+
 - `content-gen`, `content-publish` : attempts=3 (conforme cible)
 - `content-quality-improver` : attempts=2
 - `content-orchestrator`, `content-rss-fetch`, `content-similarity-monitor`, `content-news-lifecycle`, `content-tier-lifecycle`, `content-keyword-sync`, `content-web-vitals`, `content-psi-monitor`, `content-gen-scheduler`, `content-gen-deadline-checker`, `embeddings-backfill`, `brand-voice-drift-monitor`, `keyword-opportunity-detector`, `content-monitoring`, `option-expiration`, `option-reminder`, `retention-purge` : **attempts=1** (no retry — acceptable pour cron ticks idempotents).
@@ -48,14 +49,17 @@ Pas d'override `attempts:`/`backoff:` au niveau `Worker` (BullMQ standard : retr
 ## Findings
 
 ### P0 (bloquant prod)
+
 Aucun bloquant absolu : le core pipeline (gen/publish/quality/orchestrator) est complet.
 
 ### P1 (important)
+
 1. **`content-fact-check-worker.ts:204` — pas de `captureWorkerError`** ; Perplexity outage = silent fail console only. Worker chokepoint Sentry-aveugle.
 2. **30/33 workers sans `lockDuration` explicite** ; risque stall + double-exec sur tout worker dont processJob > 30 s (RSS fetch externe, Perplexity, GSC API). Cf. `content-rss-fetch-worker.ts`, `content-fact-check-worker.ts:194`, `content-keyword-sync-worker.ts`.
 3. **`content-orchestrator-worker.ts:521-524` — pas de `removeOnComplete/Fail`** ; tick toutes les 15 min ⇒ ~96 jobs/jour qui s'accumulent indéfiniment dans Redis si BullMQ defaults ne s'appliquent pas (à vérifier ; ailleurs hardé). Risque saturation long-terme.
 
 ### P2 (mineur)
+
 4. `content-publish-worker.ts:538` ; tokensInput hardcodé `0` (`content-gen-worker.ts:538`) — détail vrai stocké dans CostLedger mais `ContentGenJob.tokensInput` reste à 0 (UI admin ne montre que tokensOutput). Acquis P2 P1-4 (claim audit antérieur) n'a touché que les bonnes pratiques, le hardcode reste.
 5. Pattern lazy `getXxxQueue()` (content-gen-worker `:127-145`, content-publish-worker `:48-69`) instancie une Queue par appel sans cleanup périodique ; OK car singleton module-scoped, mais nécessite `await queue.close()` symétrique au `stop*Worker()` (présent sur orchestrator `:540-542`, absent sur la plupart). Minor leak Redis connections au restart container.
 

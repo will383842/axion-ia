@@ -36,6 +36,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -43,8 +44,7 @@ const BUDGET_CAP_USD = 0.12;
 
 const SYSTEM_PROMPT = `Tu es un expert IA indépendant mandaté pour produire une analyse comparative factuelle en français optimisée SEO 2026.
 Produis un comparatif structuré. Règles absolues :
-- Structure OBLIGATOIRE : une section H2 par critère d'analyse (lisibilité, performance, coût, etc.)
-- Pour chaque critère : évaluation de chaque option en prose (<p>, <ul>) — AUCUN <table>, AUCUN graphique, AUCUN histogramme.
+- Structure OBLIGATOIRE : une section H2 par critère + une <table> comparatif récapitulatif obligatoire (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible). Featured Snippet 2026.
 - La section Axion-IA est présente comme une option parmi d'autres, évaluée factuellement.
 - Conclusion : recommandation motivée par taille entreprise + cas d'usage (PME, ETI, etc.)
 - 100 % factuel : pas de superlatif sans preuve concrète.
@@ -53,6 +53,8 @@ Produis un comparatif structuré. Règles absolues :
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Minimum 700 mots de contenu substantiel.
 - 4 à 6 questions FAQ réelles (People-Also-Ask comparatif) avec réponses directes ≥ 2 lignes.
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }
 
 ${getBrandVoiceForContentType("comparison")}`;
@@ -63,9 +65,9 @@ function hasComparativeSections(bodyHtml: string): boolean {
   return h2count >= 2;
 }
 
-/** Vérifie l'absence de tableaux HTML interdits. */
-function hasNoForbiddenTable(bodyHtml: string): boolean {
-  return !/<table[\s>]/i.test(bodyHtml);
+/** Vérifie la présence d'un tableau HTML comparatif obligatoire. */
+function hasComparisonTable(bodyHtml: string): boolean {
+  return /<table[\s>]/i.test(bodyHtml);
 }
 
 export const comparisonGenerator: Generator = {
@@ -133,7 +135,7 @@ Audience cible : ${safeAudienceSize}.
 Structure imposée :
 - H1 : titre comparatif (keyword inclus)
 - H2 par critère : lisibilité, coût, déploiement, support, cas d'usage PME/ETI...
-- Pour chaque critère : prose <p> ou <ul> — JAMAIS de <table>, JAMAIS de graphique
+- Pour chaque critère : prose <p> ou <ul> — plus une <table> récapitulatif H2 OBLIGATOIRE
 - Section conclusion : recommandation par profil (TPE / PME / ETI)
 - FAQ 4-6 questions (People Also Ask)
 
@@ -218,13 +220,13 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
 
       const hasStructure = hasComparativeSections(parsed.bodyHtml ?? "");
-      const noTable = hasNoForbiddenTable(parsed.bodyHtml ?? "");
+      const hasTable = hasComparisonTable(parsed.bodyHtml ?? "");
 
-      if (qualityScore >= QUALITY_THRESHOLD && hasStructure && noTable) {
+      if (qualityScore >= QUALITY_THRESHOLD && hasStructure && hasTable) {
         await logStep(
           input.jobId,
           "quality_loop_pass",
-          `Pass ${iteration} — score ${qualityScore}/100, mots ${wordCount}, sections=${hasStructure}, noTable=${noTable}`,
+          `Pass ${iteration} — score ${qualityScore}/100, mots ${wordCount}, sections=${hasStructure}, hasTable=${hasTable}`,
           { qualityScore, seoScore: seo.score, readabilityScore: readability.score, wordCount },
         );
         break;
@@ -245,8 +247,10 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       const issues: string[] = [];
       if (!hasStructure)
         issues.push("STRUCTURE MANQUANTE — au moins 2 sections H2 (un par critère comparatif)");
-      if (!noTable)
-        issues.push("TABLE INTERDITE — remplacer la <table> par des sections H2 + prose <ul>/<p>");
+      if (!hasTable)
+        issues.push(
+          "TABLE MANQUANTE — ajouter un <table> récapitulatif obligatoire (3-5 colonnes) pour Featured Snippet",
+        );
       if (seo.score < 60) issues.push("FAQ insuffisante + directAnswer trop court");
       if (readability.score < 60) issues.push("phrases trop longues");
       if (!doctrine.passed) {
@@ -267,9 +271,9 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
         "comparison: structure H2 comparative absente (< 2 sections) — intent commercial_investigation non satisfait",
       );
     }
-    if (!hasNoForbiddenTable(parsed.bodyHtml ?? "")) {
+    if (!hasComparisonTable(parsed.bodyHtml ?? "")) {
       throw new Error(
-        "comparison: <table> HTML détectée malgré l'instruction — utiliser uniquement prose structurée",
+        "comparison: <table> comparatif absente — Featured Snippet commercial_investigation non satisfait",
       );
     }
 
@@ -288,6 +292,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
 
     const finalInternalLinkCount =
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
@@ -348,6 +353,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       citations: lastCitations,
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      mentionedCities,
     };
   },
 };

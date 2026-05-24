@@ -23,6 +23,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 3;
@@ -39,6 +40,8 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
 - Le keyword principal DOIT apparaître textuellement dans le H1. Sans cela l'article sera rejeté.
 - Inclure OBLIGATOIREMENT ≥ 2 liens externes vers des sources d'autorité FR (INSEE, DARES, BPI France, France Num, rapport McKinsey, Stanford AI Index, etc.) avec rel="noopener noreferrer". Les AI Overviews Google et Perplexity citent prioritairement les articles sourcés.
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
 
 function synthesizeTopic(input: GeneratorBaseInput): string {
@@ -235,6 +238,7 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
     const finalInternalLinkCount =
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
       (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
@@ -296,6 +300,7 @@ ${externalLinksCtx.markdownSection}${feedbackSection}${glossaryContext ? `\n${gl
       citations: lastCitations,
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      mentionedCities,
     };
   },
 };

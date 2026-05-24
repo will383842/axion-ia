@@ -33,6 +33,8 @@ export const AccordionTrigger = React.forwardRef<
           "text-fg hover:text-primary flex flex-1 items-center justify-between py-4 text-left text-base font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary [&[data-state=open]>svg]:rotate-180",
           className,
         )}
+        data-faq-q
+        itemProp="name"
         {...rest}
       >
         {children}
@@ -55,7 +57,9 @@ export const AccordionContent = React.forwardRef<
       className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden text-base text-fg-soft"
       {...rest}
     >
-      <div className={cn("pb-4 pt-0", className)}>{children}</div>
+      <div className={cn("pb-4 pt-0", className)} data-faq-a itemProp="text">
+        {children}
+      </div>
     </AccordionPrimitive.Content>
   );
 });

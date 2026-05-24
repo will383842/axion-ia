@@ -58,7 +58,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         }
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
-            <Link href={`${base}/coverage/new`} className="admin-button">
+            <Link href={`${base}/coverage/new`} className="admin-button-cta">
               + Nouvelle campagne
             </Link>
             <Link href={`${base}/settings/kill-switch`} className="admin-button-ghost">

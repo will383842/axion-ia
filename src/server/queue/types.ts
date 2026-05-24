@@ -161,3 +161,21 @@ export interface BookingCronJobData {
   type: BookingCronJobType;
   tick: string;
 }
+
+// ============================================================
+// Queue: site-route-inspector (Sprint Site Explorer 2026-05-22 — daily 02:00)
+// ============================================================
+
+export interface SiteRouteInspectorJobData {
+  tick: string;
+  /** Si présent, inspecte uniquement cette route (trigger manuel). */
+  siteRouteId?: string;
+}
+
+// ============================================================
+// Queue: site-route-anomaly-detector (Sprint Site Explorer 2026-05-22 — daily 03:00)
+// ============================================================
+
+export interface SiteRouteAnomalyDetectorJobData {
+  tick: string;
+}

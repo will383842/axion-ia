@@ -18,6 +18,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
@@ -68,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: view.metaTitle ?? `${view.title} · Axion-IA`,
+    title: view.metaTitle ?? view.title,
     description: view.metaDescription ?? view.excerpt,
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
@@ -246,6 +247,9 @@ export default async function BlogArticle({ params }: Props) {
     }),
     aiGenerated: true,
     additionalType: "https://schema.org/AIGeneratedContent",
+    speakable: buildSpeakableSpecification({
+      selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+    }),
   };
 
   const breadcrumbItems = [
