@@ -19,12 +19,32 @@
     "contact": "Contact",
     "primaryLabel": "Primary navigation",
     "footerLabel": "Footer links",
-    "breadcrumbLabel": "Breadcrumb"
+    "breadcrumbLabel": "Breadcrumb",
+    "solutions": "Our solutions",
+    "solutionsLabel": "AI solutions catalogue",
+    "solutionsTagline": "5 ways to put AI to work in your company",
+    "pricing": "Pricing",
+    "formations": "Team trainings",
+    "formationsHint": "4 h, 1, 2 or 3+ days · 2 to 30 people",
+    "oneToOne": "1-to-1 coaching",
+    "oneToOneHint": "Executive or key team member day",
+    "auditShort": "AI audits",
+    "auditHint": "Flash €490 to Strategic mid-cap €12,000",
+    "implementationShort": "AI implementations",
+    "implementationHint": "Pilot, RAG chatbot, agents, automations",
+    "platform": "Web platform / SaaS",
+    "platformHint": "AI-native site or graft on existing",
+    "featuredTitle": "Not sure where to start?",
+    "featuredDesc": "Describe your need in 2 min — personalised reply within 24 business hours.",
+    "featuredCta": "Request a quote in 48 h"
   },
   "cta": {
     "bookIntervention": "Book a session",
     "bookInterventionLong": "Book an AI session or audit",
-    "priceFrom": "from"
+    "priceFrom": "from",
+    "contact": "Contact",
+    "contactLong": "Contact us",
+    "contactAria": "Contact us — reply within 24 business hours"
   },
   "footer": {
     "identity": "Identity",
