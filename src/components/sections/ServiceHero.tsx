@@ -36,12 +36,40 @@ export interface ServiceHeroProps {
   description: string;
   /** CTAs (1-2 boutons) — passés en ReactNode pour flexibilité. */
   ctas: ReactNode;
-  /** Label central du schéma SVG (ex "Votre entreprise", "Votre équipe"). */
-  schemaCenterLabel: string;
-  /** 8 satellites du schéma — un par fonction/objectif du service. */
-  schemaNodes: ReadonlyArray<ServiceHeroNode>;
-  /** aria-label complet pour le schéma SVG (a11y). */
-  schemaAriaLabel: string;
+  /**
+   * Visuel custom à afficher dans la colonne droite (image, illustration,
+   * autre SVG, etc.). Si fourni, OVERRIDE le schéma orbital par défaut.
+   *
+   * Exemple — image custom par page :
+   *   customVisual={
+   *     <Image
+   *       src="/illustrations/tarifs-hero.avif"
+   *       alt="Catalogue tarifaire Axion-IA"
+   *       width={560} height={560}
+   *       priority
+   *       className="rounded-2xl"
+   *     />
+   *   }
+   *
+   * Quand omis, le schéma orbital `ImplementationHeroSchema` est utilisé
+   * (nécessite alors les 3 props `schema*` ci-dessous).
+   */
+  customVisual?: ReactNode;
+  /**
+   * Label central du schéma SVG (ex "Votre entreprise", "Votre équipe").
+   * Requis SI `customVisual` est omis.
+   */
+  schemaCenterLabel?: string;
+  /**
+   * 8 satellites du schéma orbital — un par fonction/objectif du service.
+   * Requis SI `customVisual` est omis.
+   */
+  schemaNodes?: ReadonlyArray<ServiceHeroNode>;
+  /**
+   * aria-label complet pour le schéma SVG (a11y).
+   * Requis SI `customVisual` est omis.
+   */
+  schemaAriaLabel?: string;
 }
 
 const accentBg: Record<Accent, string> = {
@@ -64,10 +92,16 @@ export function ServiceHero({
   titleEm,
   description,
   ctas,
+  customVisual,
   schemaCenterLabel,
   schemaNodes,
   schemaAriaLabel,
 }: ServiceHeroProps): ReactNode {
+  // Garde-fou : il faut soit un customVisual, soit les 3 props schema*.
+  // En dev, on warn pour aider à diagnostiquer. En prod, on rend rien (pas
+  // de crash, juste pas de visuel à droite — graceful degradation).
+  const hasSchema = schemaCenterLabel != null && schemaNodes != null && schemaAriaLabel != null;
+
   return (
     <section className="bg-paper relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
       <Container className="relative">
@@ -99,38 +133,45 @@ export function ServiceHero({
             <div className="mt-8 flex flex-wrap items-center gap-4">{ctas}</div>
           </div>
 
-          {/* Colonne droite — schéma SVG (desktop) + grid satellites (mobile/tablet) */}
+          {/* Colonne droite — customVisual prioritaire, sinon schéma orbital */}
           <div className="relative mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-none">
-            {/* Mobile / tablette < lg : grid compact 2×4. Même contenu que SVG,
-                meilleure densité lisible sur petit écran. */}
-            <ul aria-label={schemaAriaLabel} className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden">
-              {schemaNodes.map((node) => (
-                <li
-                  key={node.label}
-                  className={`flex flex-col gap-1.5 rounded-xl border p-4 ${accentBg[node.accent]}`}
+            {customVisual ? (
+              customVisual
+            ) : hasSchema ? (
+              <>
+                {/* Mobile / tablette < lg : grid compact 2×4. Même contenu que SVG. */}
+                <ul
+                  aria-label={schemaAriaLabel}
+                  className="grid grid-cols-2 gap-3 sm:gap-4 lg:hidden"
                 >
-                  <span className="flex items-center gap-2">
-                    <span
-                      aria-hidden="true"
-                      className={`inline-block h-2 w-2 rounded-full ${accentDot[node.accent]}`}
-                    />
-                    <span className="text-fg text-sm leading-tight font-semibold">
-                      {node.label}
-                    </span>
-                  </span>
-                  <span className="text-fg-soft text-[13px] leading-snug">{node.benefit}</span>
-                </li>
-              ))}
-            </ul>
+                  {schemaNodes.map((node) => (
+                    <li
+                      key={node.label}
+                      className={`flex flex-col gap-1.5 rounded-xl border p-4 ${accentBg[node.accent]}`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span
+                          aria-hidden="true"
+                          className={`inline-block h-2 w-2 rounded-full ${accentDot[node.accent]}`}
+                        />
+                        <span className="text-fg text-sm leading-tight font-semibold">
+                          {node.label}
+                        </span>
+                      </span>
+                      <span className="text-fg-soft text-[13px] leading-snug">{node.benefit}</span>
+                    </li>
+                  ))}
+                </ul>
 
-            {/* Desktop ≥ lg : schéma SVG circulaire. Réutilise le composant
-                /implementation existant (decoration + 8 satellites orbitaux). */}
-            <ImplementationHeroSchema
-              className="hero-schema pointer-events-none hidden lg:block"
-              centerLabel={schemaCenterLabel}
-              ariaLabel={schemaAriaLabel}
-              nodes={schemaNodes}
-            />
+                {/* Desktop ≥ lg : schéma SVG circulaire. */}
+                <ImplementationHeroSchema
+                  className="hero-schema pointer-events-none hidden lg:block"
+                  centerLabel={schemaCenterLabel}
+                  ariaLabel={schemaAriaLabel}
+                  nodes={schemaNodes}
+                />
+              </>
+            ) : null}
           </div>
         </div>
       </Container>
