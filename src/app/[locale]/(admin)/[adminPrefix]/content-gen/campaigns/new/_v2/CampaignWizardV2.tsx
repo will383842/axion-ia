@@ -19,7 +19,6 @@ import { AdminBadge, AdminCard, AdminPageHeader, AdminPageShell } from "@/compon
 import { cn } from "@/lib/utils";
 import { createCampaignFromWizard } from "@/server/actions/content-gen/campaign-wizard";
 import {
-  WIZARD_CONTENT_TYPES,
   WIZARD_SECTIONS,
   type WizardContentType,
 } from "@/server/actions/content-gen/campaign-wizard-constants";
@@ -394,7 +393,7 @@ export function CampaignWizardV2({ adminPrefix }: Props): React.ReactElement {
           <div className="space-y-[var(--space-admin-5,12px)]">
             {WIZARD_SECTIONS.map((section) => (
               <div key={section.id}>
-                <h3 className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] uppercase tracking-wide mb-[var(--space-admin-2,4px)]">
+                <h3 className="mb-[var(--space-admin-2,4px)] text-[length:var(--text-admin-sm)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                   {section.label} ({section.types.length})
                 </h3>
                 <div className="space-y-[var(--space-admin-3,6px)]">
