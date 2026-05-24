@@ -8,32 +8,37 @@ import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
 import { SolutionsMegaMenu } from "./SolutionsMegaMenu";
 
-// Server Component. Sprint Header refonte 2026-05-24 (Will).
+// Server Component. Sprint Header v2 2026-05-24 (Will, 5 onglets).
 //
-// Doctrine 2026/2027 — loi de Hick : 3 onglets top-level desktop + 1 CTA pur :
-//   [Logo]   [Nos solutions ▾]  [Tarifs]  [Cas concrets]   [Contact CTA]
+// Structure nav desktop — 5 onglets top-level + 1 CTA central :
+//   [Logo]  [Nos solutions ▾]  [Nos formations]  [Audit entreprise]
+//                                [Contact CTA]
+//                                [Tarifs]  [Cas concrets]
 //
-// Changements clés vs v3 (Editorial doctrine héritée) :
-//   - Mega-menu unique « Nos solutions » regroupe les 5 offres
-//     (Formations / Audits / Implémentations / 1-to-1 / Plateforme web)
-//     au lieu des 5 items éclatés + l'ancien InterventionsMegaMenu
-//   - CTA central « Contact » remplace l'ancien « Réserver une intervention »
-//     + badge prix dynamique. Plus de liaison à pricing.ts côté Header.
-//   - LocaleSwitcher retiré (Will 2026-05-24 — réintégration ultérieure)
+// 2 raccourcis directs (Nos formations + Audit entreprise) sont aussi dans
+// le mega-menu Solutions — doublon volontaire Will pour mettre en avant les
+// 2 entrées commerciales primaires (la pyramide CA 2026 est 65 % formations
+// + 22 % audits = 87 % du revenue → ils méritent leur onglet direct).
 //
-// Conservé :
-//   - Fond `bg-terracotta` constant, hairline mocha, sticky z-40, backdrop-blur
-//   - Logo en badge ivoire (shadow-subtle → shadow-card au hover)
-//   - Drawer mobile Radix Sheet (focus trap, ESC, click-outside)
-//   - Tous les attributs ARIA WCAG 2.2 AA
+// Conservé du Sprint Header v1 (PR #22) :
+//   - Mega-menu unique « Nos solutions » avec 5 items
+//   - CTA central « Contact » (pas de badge prix, pas de liaison pricing.ts)
+//   - LocaleSwitcher retiré (Will — réintégration ultérieure)
+//   - Server Component, fond bg-terracotta, hairline mocha, sticky z-40
+//   - Drawer mobile Radix Sheet, WCAG 2.2 AA
 export async function Header() {
   const t = await getTranslations();
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // 3 onglets top-level (hors CTA central) : 1 mega-menu + 2 simples.
-  // SolutionsMegaMenu est rendu inline (besoin des props i18n), Tarifs + Cas
-  // concrets sont des NavLink standards.
+  // 2 raccourcis DIRECTS à gauche du CTA (à côté du mega-menu Solutions).
+  // Ces 2 liens dupliquent volontairement 2 items du mega-menu (Will 2026-05-24).
+  const navLeftOfCta = [
+    { href: "/interventions/collectives", label: t("nav.ourFormations") },
+    { href: "/audit", label: t("nav.companyAudit") },
+  ] as const;
+
+  // 2 onglets secondaires À DROITE du CTA.
   const navAfterSolutions = [
     { href: "/tarifs", label: t("nav.pricing") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
@@ -103,7 +108,7 @@ export async function Header() {
 
           <nav
             aria-label={t("nav.primaryLabel")}
-            className="hidden items-center gap-6 lg:flex lg:justify-end xl:gap-8"
+            className="hidden items-center gap-5 lg:flex lg:justify-end xl:gap-7"
           >
             <SolutionsMegaMenu
               isFr={isFr}
@@ -115,6 +120,9 @@ export async function Header() {
               featuredCta={t("nav.featuredCta")}
               items={solutionsItems}
             />
+            {navLeftOfCta.map((item) => (
+              <NavLink key={item.href} href={item.href} label={item.label} />
+            ))}
           </nav>
         </div>
 
@@ -147,6 +155,12 @@ export async function Header() {
         <div className="ml-auto lg:hidden">
           <MobileNav>
             <nav aria-label={t("nav.primaryLabel")} className="flex flex-col gap-1 text-base">
+              {/* Raccourcis directs (Nos formations + Audit entreprise) en
+                  tête du drawer — parité avec les onglets top-level desktop */}
+              {navLeftOfCta.map((item) => (
+                <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
+              ))}
+              <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
               {/* Section Solutions (5 items développés à plat — pas de nested
                   accordion pour limiter la profondeur de navigation mobile) */}
               <p className="text-fg-muted mt-1 mb-1.5 text-[11px] font-semibold tracking-[0.16em] uppercase">
