@@ -125,103 +125,73 @@ export default async function Home({ params }: HomeProps) {
   // plus proche en coût/durée). Will pourra ajouter un WEB_TIERS dédié plus tard.
   const webEntryPrice = implEntryPrice;
 
-  // 5 services — Blueprint 2026 (Section 4) : Formations IA / Audit /
-  // Coaching 1-to-1 / Implémentation / Plateforme web augmentée IA.
-  // Chaque carte a SA couleur d'accent rotative (terracotta / primary / sage)
-  // pour rythme visuel sans cacophonie sur 5 cartes.
+  // 5 services — Blueprint 2026 (Section 4) : Formations / 1-to-1 / Audits /
+  // Implémentations / Plateforme web & SaaS.
+  // Refonte cartes 2026-05-24 (Will) : charte brand stricte (terracotta dominant,
+  // bleu uniquement pointes), titres XL serif impactants, offre claire.
+  // Plus de rotation accents — brand-coherence avant tout (ces 5 cartes = CA).
   const valuePropositions = [
     {
       id: "intervene",
       emoji: "🎓",
-      accent: "terracotta" as const,
-      action: t("value1Action"),
+      shortName: isFr ? "Formations" : "Training",
+      tagline: isFr ? "IA en entreprise" : "AI for companies",
       headline: t("value1Headline"),
-      price: t("value1Price", { price: interventionEntryPrice }),
-      bullets: [t("value1Bullet1")],
+      priceLabel: isFr
+        ? `À partir de ${interventionEntryPrice} HT`
+        : `From ${interventionEntryPrice} excl. tax`,
       gain: t("value1Gain"),
       href: "/interventions" as const,
     },
     {
       id: "coach",
       emoji: "🧑‍💼",
-      accent: "primary" as const,
-      action: t("value4Action"),
+      shortName: isFr ? "1-to-1" : "1-to-1",
+      tagline: isFr ? "Coaching individuel" : "Personal coaching",
       headline: t("value4Headline"),
-      price: t("value4Price", { price: unAUnEntryPrice }),
-      bullets: [t("value4Bullet1")],
+      priceLabel: isFr
+        ? `À partir de ${unAUnEntryPrice} HT`
+        : `From ${unAUnEntryPrice} excl. tax`,
       gain: t("value4Gain"),
       href: "/un-a-un" as const,
     },
     {
       id: "audit",
       emoji: "🔍",
-      accent: "sage" as const,
-      action: t("value2Action"),
+      shortName: isFr ? "Audits" : "Audits",
+      tagline: isFr ? "Diagnostic & roadmap" : "Diagnosis & roadmap",
       headline: t("value2Headline"),
-      price: t("value2Price", { priceRange: auditRange }),
-      bullets: [t("value2Bullet1")],
+      priceLabel: isFr
+        ? `À partir de ${auditEntryPrice} HT`
+        : `From ${auditEntryPrice} excl. tax`,
       gain: t("value2Gain"),
       href: "/audit" as const,
     },
     {
       id: "implement",
       emoji: "⚙️",
-      accent: "terracotta" as const,
-      action: t("value3Action"),
+      shortName: isFr ? "Implémentations" : "Implementation",
+      tagline: isFr ? "Automatisations sur mesure" : "Custom automation",
       headline: t("value3Headline"),
-      price: t("value3Price", { price: implEntryPrice }),
-      bullets: [t("value3Bullet1")],
+      priceLabel: isFr
+        ? `À partir de ${implEntryPrice} HT`
+        : `From ${implEntryPrice} excl. tax`,
       gain: t("value3Gain"),
       href: "/implementation" as const,
     },
     {
       id: "web",
       emoji: "🌐",
-      accent: "primary" as const,
-      action: t("value5Action"),
+      shortName: isFr ? "Plateforme web & SaaS" : "Web platform & SaaS",
+      tagline: isFr ? "Sites & apps augmentés IA" : "AI-augmented sites & apps",
       headline: t("value5Headline"),
-      price: t("value5Price", { price: webEntryPrice }),
-      bullets: [t("value5Bullet1")],
+      priceLabel: isFr
+        ? `À partir de ${webEntryPrice} HT`
+        : `From ${webEntryPrice} excl. tax`,
       gain: t("value5Gain"),
       href: "/sites-web-augmentes" as const,
     },
   ];
-
-  const accentClasses = {
-    terracotta: {
-      iconBg: "bg-terracotta-deep",
-      iconFg: "text-terracotta",
-      number: "text-terracotta-soft/40",
-      headline: "text-terracotta-soft",
-      hoverBorder: "hover:border-terracotta",
-      bulletIcon: "text-terracotta-soft",
-      gainBg: "bg-terracotta",
-      gainText: "text-paper",
-      ringHalo: "before:bg-terracotta/20",
-    },
-    primary: {
-      iconBg: "bg-primary",
-      iconFg: "text-primary",
-      number: "text-primary-soft/40",
-      headline: "text-primary-soft",
-      hoverBorder: "hover:border-primary",
-      bulletIcon: "text-primary-soft",
-      gainBg: "bg-primary",
-      gainText: "text-paper",
-      ringHalo: "before:bg-primary/20",
-    },
-    sage: {
-      iconBg: "bg-sage",
-      iconFg: "text-sage",
-      number: "text-sage-soft/50",
-      headline: "text-sage-soft",
-      hoverBorder: "hover:border-sage",
-      bulletIcon: "text-sage-soft",
-      gainBg: "bg-sage",
-      gainText: "text-paper",
-      ringHalo: "before:bg-sage/20",
-    },
-  } as const;
 
   // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
   const audienceSegments = [
@@ -319,14 +289,15 @@ export default async function Home({ params }: HomeProps) {
   // Service x5 — provider référence l'Organization émise layout-level via @id
   // (knowledge graph LLM-friendly : Organization → Service → Offer cohérent vs
   // chaque Service îlot avec provider string dupliqué). Cf. audit AEO 2026-05-24.
+  // name : combine shortName + tagline pour signal AEO clair ("Formations · IA en entreprise")
   const servicesJsonLd = valuePropositions.map((v) => ({
     "@context": "https://schema.org",
     "@type": "Service" as const,
-    name: v.action,
+    name: `${v.shortName} · ${v.tagline}`,
     description: v.gain,
     provider: { "@id": `${SITE_URL}/#organization` },
     areaServed: "FR",
-    serviceType: v.headline,
+    serviceType: v.shortName,
     url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
   }));
 
@@ -480,68 +451,73 @@ export default async function Home({ params }: HomeProps) {
             </div>
           </FadeInOnView>
 
-          <ul className="grid grid-cols-5 gap-2.5 md:gap-4">
-            {valuePropositions.map((v, idx) => {
-              const a = accentClasses[v.accent];
-              return (
-                <FadeInOnView key={v.id} delay={idx * 80}>
-                  <li className="h-full">
-                    <Link
-                      href={v.href}
-                      className={cn(
-                        "group focus-visible:ring-paper hover:shadow-elevated relative flex aspect-[3/4] h-full flex-col overflow-hidden rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-6",
-                        a.gainBg,
-                      )}
+          {/* 5 cartes services — refonte 2026-05-24 (Will feedback) :
+              - charte brand stricte : bg-paper (ivoire), accent terracotta UNIFIÉ
+                (vs ancien rainbow terracotta/primary/sage)
+              - TITRES service forts en serif XL (Formations / 1-to-1 / Audits /
+                Implémentations / Plateforme web & SaaS) — domination visuelle
+              - prix d entrée mis en avant (signal CA direct)
+              - icône emoji dans cercle terracotta-soft (subtil)
+              - "Découvrir le service →" terracotta hover-deep
+              - hover : card lift + shadow + border terracotta */}
+          <ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
+            {valuePropositions.map((v, idx) => (
+              <FadeInOnView key={v.id} delay={idx * 80}>
+                <li className="h-full">
+                  <Link
+                    href={v.href}
+                    className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
+                  >
+                    {/* Stripe terracotta top — accent brand uniforme */}
+                    <span
+                      aria-hidden="true"
+                      className="bg-terracotta absolute inset-x-0 top-0 h-1.5 origin-left transition-transform duration-300 group-hover:scale-x-[1.0]"
+                    />
+
+                    {/* Icône emoji dans cercle terracotta-soft */}
+                    <span
+                      className="bg-terracotta-soft mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full text-3xl transition-transform duration-300 group-hover:scale-110"
+                      aria-hidden="true"
                     >
-                      <span
-                        className={cn(
-                          "pointer-events-none absolute -top-2 -right-2 text-[5rem] leading-none font-semibold tabular-nums select-none md:-top-4 md:-right-3 md:text-[9rem]",
-                          a.number,
-                        )}
-                        style={{ fontFamily: "var(--font-serif)" }}
-                        aria-hidden="true"
-                      >
-                        0{idx + 1}
-                      </span>
-                      <span
-                        className="bg-paper relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-transform duration-300 group-hover:scale-110 md:h-14 md:w-14 md:text-[2rem]"
-                        aria-hidden="true"
-                      >
-                        {v.emoji}
-                      </span>
-                      <div className="relative z-10 mt-auto flex flex-col gap-2">
-                        <h3
-                          className={cn(
-                            "text-xl leading-[1.05] font-bold tracking-tight sm:text-2xl md:text-[2.25rem] lg:text-[2.4rem]",
-                            a.gainText,
-                          )}
-                        >
-                          {v.action}
-                        </h3>
-                        <p
-                          className={cn(
-                            "text-[11px] leading-snug sm:text-xs md:text-[13px]",
-                            a.gainText,
-                            "opacity-90",
-                          )}
-                        >
-                          {v.headline}
-                        </p>
-                        <span
-                          className={cn(
-                            "bg-paper mt-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 md:mt-4 md:px-4 md:py-2 md:text-sm",
-                            a.iconFg,
-                          )}
-                        >
-                          {t("valueCardCta")}
-                          <ArrowRight className="h-3 w-3 md:h-4 md:w-4" aria-hidden="true" />
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                </FadeInOnView>
-              );
-            })}
+                      {v.emoji}
+                    </span>
+
+                    {/* TITRE service XL — la chose la plus visible de la card */}
+                    <h3
+                      className="text-fg text-[clamp(1.75rem,2.5vw,2.5rem)] leading-[1.02] font-semibold tracking-tight"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {v.shortName}
+                    </h3>
+                    <p className="text-terracotta mt-1 text-sm font-semibold tracking-tight">
+                      {v.tagline}
+                    </p>
+
+                    {/* Description courte */}
+                    <p className="text-fg-soft mt-4 text-sm leading-relaxed">
+                      {v.headline}
+                    </p>
+
+                    {/* Prix d entrée — signal CA direct */}
+                    <p
+                      className="text-fg mt-5 text-base font-bold tracking-tight"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {v.priceLabel}
+                    </p>
+
+                    {/* Spacer flex */}
+                    <div className="flex-1" />
+
+                    {/* CTA Découvrir terracotta */}
+                    <span className="border-border text-terracotta group-hover:border-terracotta group-hover:text-terracotta-deep mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors">
+                      {t("valueCardCta")}
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                    </span>
+                  </Link>
+                </li>
+              </FadeInOnView>
+            ))}
           </ul>
         </Container>
       </section>
@@ -1801,166 +1777,10 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CTA FINAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section
-        id="start"
-        aria-labelledby="start-heading"
-        className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-32"
-      >
-        <Container>
-          <div className="mx-auto mb-12 max-w-3xl text-center">
-            <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-              {isFr ? "Démarrer" : "Get started"}
-            </p>
-            <h2
-              id="start-heading"
-              className="text-mocha-fg text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight"
-            >
-              {isFr ? "Choisissez votre " : "Choose your "}
-              <span
-                className="text-terracotta-soft italic"
-                style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
-              >
-                {isFr ? "point de départ" : "starting point"}
-              </span>
-              .
-            </h2>
-            <p className="text-mocha-fg/85 mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
-              {isFr
-                ? "Une formation courte pour découvrir, un format intensif pour transformer, ou un audit IA complet pour cadrer votre stratégie."
-                : "A short training to discover, an intensive format to transform, or a full AI audit to scope your strategy."}
-            </p>
-          </div>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {(
-              [
-                {
-                  durationFr: "4 heures",
-                  durationEn: "4 hours",
-                  titleFr: "Formation découverte",
-                  titleEn: "Discovery training",
-                  descFr: "Demi-journée pour comprendre l'IA dans votre métier.",
-                  descEn: "Half-day to understand AI for your business.",
-                  href: "/interventions" as const,
-                  popular: false,
-                },
-                {
-                  durationFr: "1 journée",
-                  durationEn: "1 day",
-                  titleFr: "Intervention Essentielle",
-                  titleEn: "Essential intervention",
-                  descFr: "1 jour sur site, 3 quick-wins identifiés, plan chiffré.",
-                  descEn: "1 day on-site, 3 quick-wins identified, costed plan.",
-                  href: "/interventions/essentielle" as const,
-                  popular: true,
-                },
-                {
-                  durationFr: "2 jours",
-                  durationEn: "2 days",
-                  titleFr: "Formation équipe",
-                  titleEn: "Team training",
-                  descFr: "Cas d'usage métier + ateliers pratiques.",
-                  descEn: "Business use cases + hands-on workshops.",
-                  href: "/interventions" as const,
-                  popular: false,
-                },
-                {
-                  durationFr: "3 jours +",
-                  durationEn: "3+ days",
-                  titleFr: "Format intensif",
-                  titleEn: "Intensive format",
-                  descFr: "Déploiement guidé, accompagnement renforcé.",
-                  descEn: "Guided deployment, enhanced support.",
-                  href: "/interventions" as const,
-                  popular: false,
-                },
-                {
-                  durationFr: "2-4 semaines",
-                  durationEn: "2-4 weeks",
-                  titleFr: "Audit IA entreprise",
-                  titleEn: "Enterprise AI audit",
-                  descFr: "Cartographie complète + roadmap priorisée.",
-                  descEn: "Full mapping + prioritized roadmap.",
-                  href: "/audit" as const,
-                  popular: false,
-                },
-              ] as const
-            ).map((opt, idx) => (
-              <FadeInOnView key={idx} delay={idx * 50}>
-                <li className="h-full">
-                  <Link
-                    href={opt.href}
-                    className={cn(
-                      "focus-visible:ring-offset-mocha group flex h-full flex-col gap-3 rounded-2xl border p-5 transition focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:outline-none",
-                      opt.popular
-                        ? "bg-terracotta border-terracotta text-paper hover:-translate-y-1"
-                        : "border-border-on-mocha text-mocha-fg hover:bg-mocha-fg/5 hover:-translate-y-0.5",
-                    )}
-                  >
-                    <p
-                      className={cn(
-                        "text-[11px] font-bold tracking-[0.18em] uppercase",
-                        opt.popular ? "text-paper/85" : "text-terracotta-soft",
-                      )}
-                    >
-                      {isFr ? opt.durationFr : opt.durationEn}
-                    </p>
-                    <h3
-                      className="text-lg leading-tight font-semibold tracking-tight"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {isFr ? opt.titleFr : opt.titleEn}
-                    </h3>
-                    <p
-                      className={cn(
-                        "text-xs leading-relaxed",
-                        opt.popular ? "text-paper/90" : "text-mocha-fg/75",
-                      )}
-                    >
-                      {isFr ? opt.descFr : opt.descEn}
-                    </p>
-                    <span
-                      className={cn(
-                        "mt-auto inline-flex items-center gap-1 text-xs font-semibold transition-transform group-hover:translate-x-1",
-                        opt.popular ? "text-paper" : "text-terracotta-soft",
-                      )}
-                    >
-                      {isFr ? "Découvrir" : "Discover"}
-                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
-                    </span>
-                  </Link>
-                </li>
-              </FadeInOnView>
-            ))}
-          </ul>
-          {/* CTA secondaire : parler à un humain */}
-          <div className="mt-10 flex flex-col items-center gap-4 text-center">
-            <p className="text-mocha-fg/70 text-sm">
-              {isFr ? "Vous hésitez ?" : "Not sure?"}
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/reserver"
-                className="bg-paper text-fg cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {isFr ? "Réserver un appel" : "Book a call"}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/contact"
-                className="text-mocha-fg border-border-on-mocha hover:bg-mocha-fg/5 cta-lift focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-12 items-center gap-2 rounded-full border px-6 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
-                {isFr ? "Nous contacter" : "Contact us"}
-              </Link>
-            </div>
-            <p className="text-mocha-fg/60 mt-2 text-xs leading-relaxed">
-              {isFr
-                ? "Réponse sous 24 h · Aucun engagement · 100 % personnalisé"
-                : "Reply within 24h · No commitment · 100% personalized"}
-            </p>
-          </div>
-        </Container>
-      </section>
+      {/* Section CTA FINAL "Choisissez votre point de départ" RETIRÉE (Will 2026-05-24) :
+          - faisait doublon avec la grille tarifaire (5 services single-block)
+          - "4 heures / 1 journée / 2 jours / 3 jours+ / 2-4 semaines" redondant
+          - La FAQ + le StickyMobileCta + le CTA hero suffisent comme points de contact */}
 
       <JsonLd data={faqJsonLd} />
       <JsonLd data={localBusinessJsonLd} />

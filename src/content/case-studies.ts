@@ -193,7 +193,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
         "Pipeline IA de lecture des justificatifs + extraction des champs + scoring de cohérence automatique. Conseiller valide en 15 min un dossier pré-instruit.",
       result:
         "Délai moyen ramené à 1.5 jour, abandons divisés par 4, conformité sur le terrain auditable.",
-      testimonialQuote: "Nous ouvrons 3× plus de comptes par mois, à effectif constant.",
+      testimonialQuote:
+        "Le délai a vraiment fondu et nos conseillers se concentrent enfin sur l'accompagnement client, pas sur la vérification documentaire.",
       testimonialAuthor: "L. Vidal",
       testimonialRole: "Directeur transformation",
     },
@@ -206,7 +207,8 @@ export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
       solution:
         "AI pipeline reading supporting documents + field extraction + auto coherence scoring. Advisor validates a pre-processed file in 15 min.",
       result: "Lead time down to 1.5 days, drop-off divided by 4, auditable field compliance.",
-      testimonialQuote: "We open 3× more accounts per month with the same headcount.",
+      testimonialQuote:
+        "Lead time really dropped and our advisors finally focus on client advice rather than document checks.",
       testimonialAuthor: "L. Vidal",
       testimonialRole: "Transformation Director",
     },

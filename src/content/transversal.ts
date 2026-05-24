@@ -272,12 +272,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "L'IA va-t-elle remplacer mes salariés ?",
       answer:
-        "Non. L'IA telle que déployée par Axion-IA automatise les tâches répétitives (rédaction d'emails, comptes-rendus, classement, recherche d'informations) pour libérer du temps sur les tâches à valeur ajoutée. L'objectif est d'augmenter la productivité de vos équipes, pas de les remplacer.",
+        "L'IA automatise les tâches répétitives à faible valeur (saisie, classement, rédaction d'e-mails standards, comptes-rendus, recherche d'informations) pour libérer du temps sur les missions à forte valeur ajoutée. En pratique : vos équipes produisent plus avec le même effectif, votre masse salariale n'augmente plus au rythme de votre croissance, et certains postes peuvent évoluer vers des missions plus stratégiques. C'est un levier de productivité — nous vous accompagnons sur le diagnostic technique et la transformation des process, pas sur l'organisation RH interne (qui reste votre décision).",
     },
     en: {
       question: "Will AI replace my employees?",
       answer:
-        "No. AI as deployed by Axion-IA automates repetitive tasks (email writing, meeting notes, filing, information search) to free up time for value-added work. The goal is to boost your teams' productivity, not to replace them.",
+        "AI automates low-value repetitive tasks (data entry, filing, standard email drafting, meeting notes, information search) to free up time for higher-value work. In practice: your teams produce more with the same headcount, your payroll no longer scales at the same pace as your growth, and some roles can evolve toward more strategic missions. It's a productivity lever — we support you on the technical diagnosis and process transformation, not on internal HR organisation (which stays your decision).",
     },
   },
   {
