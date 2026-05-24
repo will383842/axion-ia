@@ -92,7 +92,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       kt.locale             AS "locale",
       ts_rank_cd(
         kt.search_vector,
-        websearch_to_tsquery($1, $2)
+        websearch_to_tsquery($1::regconfig, $2)
       )
       * (CASE WHEN ke.pinned THEN 1.5 ELSE 1.0 END)
       * (CASE WHEN ke.featured THEN 1.3 ELSE 1.0 END)
@@ -118,7 +118,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       )`
           : ""
       }
-      AND kt.search_vector @@ websearch_to_tsquery($1, $2)
+      AND kt.search_vector @@ websearch_to_tsquery($1::regconfig, $2)
     ORDER BY "rank" DESC, ke.published_at DESC NULLS LAST
     LIMIT ${limit} OFFSET ${offset};
     `,
@@ -152,7 +152,7 @@ export async function searchKnowledge(params: KbSearchParams): Promise<KbSearchR
       )`
           : ""
       }
-      AND kt.search_vector @@ websearch_to_tsquery($1, $2);
+      AND kt.search_vector @@ websearch_to_tsquery($1::regconfig, $2);
     `,
     tsConfig,
     q,

@@ -23,6 +23,7 @@ import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
+import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
 import { logStep } from "../shared/generation-log";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
@@ -90,7 +91,7 @@ export const blogFromKeywordsGenerator: Generator = {
     let iteration = 0;
     let accumulatedCostUsd = 0;
     let lastOutput: string = "";
-    let parsed: {
+    type BlogFromKeywordsParsed = {
       title: string;
       metaTitle: string;
       metaDescription: string;
@@ -99,7 +100,8 @@ export const blogFromKeywordsGenerator: Generator = {
       bodyHtml: string;
       faq: ReadonlyArray<{ q: string; a: string }>;
       tags: ReadonlyArray<string>;
-    } | null = null;
+    };
+    let parsed: BlogFromKeywordsParsed | null = null;
     let lastTokensInput = 0;
     let lastTokensOutput = 0;
     let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
@@ -151,7 +153,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
 
       // Parse JSON
       try {
-        parsed = JSON.parse(lastOutput);
+        parsed = parseLlmJson<BlogFromKeywordsParsed>(lastOutput);
       } catch {
         prevFeedback =
           "La réponse précédente n'était pas du JSON valide. Retourne UNIQUEMENT un objet JSON valide, sans balise markdown.";

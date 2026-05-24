@@ -22,6 +22,7 @@ import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
 import { sanitizeContentGenHtml } from "../shared/html-sanitizer";
+import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput, escapeSlugInput } from "../shared/prompt-input-escape";
 import { getBrandVoiceForContentType } from "../brand/brand-voice";
 import { getGlossaryContext } from "../brand/glossary-context";
@@ -154,43 +155,14 @@ Consigne : ancrer le contenu sur ces réalités locales pour différencier de pa
   // Sprint External Links Database 2026-05-22 — 4 sources d'autorité (city-aware).
   const externalLinksCtx = injectExternalLinks(input, { count: 4, minAuthority: 4 });
 
-  const userPrompt = `Génère une landing page Axion-IA pour la ville "${safeVilleSlug}".
-Audience : ${safeAudienceSize} × ${safeOrgType}.
-Intent : ${safeIntent}.
-Primary keyword : ${safePrimaryKeyword}.
-Verticale : ${config.slug} (${config.label}).
-
-${config.userPromptFocusSection}
-
-## Contexte Axion-IA — sources internes prioritaires
-${kbContext}
-${externalLinksCtx.markdownSection}${localEconomicContext}${improvementSection}
-${(() => {
-  const gc = getGlossaryContext([input.primaryKeyword ?? ""].filter(Boolean));
-  return gc ? `\n${gc}` : "";
-})()}
-## CTA recommandé pour cette verticale
-href : ${config.recommendedCtaHref}
-label : ${config.recommendedCtaLabel}
-
-## Output attendu (JSON)
-{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8], tags }`;
-
-  const lastPromptHash = hashPrompt(config.systemPromptOverride + userPrompt); // P0-3 AI Act art. 50
+  // Quality loop 3 iter + $0.15 budget cap (audit 2026-05-24 V2)
+  const MAX_QUALITY_ITERATIONS = 3;
+  const BUDGET_CAP_USD = 0.15;
+  const MIN_WORD_COUNT = 1500;
 
   const systemPromptWithBrandVoice = `${config.systemPromptOverride}\n\n${getBrandVoiceForContentType("landing_ville")}`;
 
-  const llmResult = await routerGenerate({
-    jobId: input.jobId,
-    contentType: "landing_ville",
-    role: "text",
-    systemPrompt: systemPromptWithBrandVoice,
-    userPrompt,
-    maxTokens: 4096,
-    temperature: 0.7,
-  });
-
-  let parsed: {
+  type Parsed = {
     title: string;
     metaTitle: string;
     metaDescription: string;
@@ -200,55 +172,167 @@ label : ${config.recommendedCtaLabel}
     faq: ReadonlyArray<{ q: string; a: string }>;
     tags: ReadonlyArray<string>;
   };
-  try {
-    parsed = JSON.parse(llmResult.output);
-  } catch (err) {
+  let bestParsed: Parsed | null = null;
+  let bestScore = -1;
+  let bestExtras: {
+    wordCount: number;
+    readabilityScore: number;
+    seoScore: number;
+    doctrinePassed: boolean;
+    bodyText: string;
+  } | null = null;
+  let accumulatedCostUsd = 0;
+  let lastTokensInput = 0;
+  let lastTokensOutput = 0;
+  let lastCitations: ReadonlyArray<{ url: string; title: string; publishedAt?: string }> = [];
+  let lastPromptHash = "";
+  let prevFeedback = input.improvementFeedback ?? "";
+  let iteration = 0;
+
+  while (iteration < MAX_QUALITY_ITERATIONS) {
+    const feedbackSection = prevFeedback
+      ? `\n\n## Retour qualité passe précédente — corrige impérativement\n${prevFeedback}`
+      : improvementSection;
+
+    const userPrompt = `Génère une landing page Axion-IA pour la ville "${safeVilleSlug}".
+Audience : ${safeAudienceSize} × ${safeOrgType}.
+Intent : ${safeIntent}.
+Primary keyword : ${safePrimaryKeyword}.
+Verticale : ${config.slug} (${config.label}).
+
+${config.userPromptFocusSection}
+
+## CONTRAINTES STRICTES (re-gen si non-respect)
+- Body HTML : ${MIN_WORD_COUNT}-2500 mots minimum (anti-doorway HCU 2024)
+- Structure : ≥ 6 balises <h2> + ≥ 10 balises <h3>
+- FAQ : 8-10 paires Q/R substantielles (≥ 2 lignes/réponse)
+- ≥ 4 liens externes vers sources d'autorité (INSEE, BPI, France Num, AI Act eur-lex…)
+- ≥ 3 liens internes vers /audit, /interventions/essentielle, /implementations
+- Le primary keyword DOIT apparaître textuellement dans le <h1> ET début du metaTitle
+
+## Contexte Axion-IA — sources internes prioritaires
+${kbContext}
+${externalLinksCtx.markdownSection}${localEconomicContext}${feedbackSection}
+${(() => {
+  const gc = getGlossaryContext([input.primaryKeyword ?? ""].filter(Boolean));
+  return gc ? `\n${gc}` : "";
+})()}
+## CTA recommandé pour cette verticale
+href : ${config.recommendedCtaHref}
+label : ${config.recommendedCtaLabel}
+
+## Output attendu (JSON strict, sans balise markdown)
+{ title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×8-10], tags:[string×4-8] }`;
+
+    lastPromptHash = hashPrompt(systemPromptWithBrandVoice + userPrompt);
+
+    const llmResult = await routerGenerate({
+      jobId: input.jobId,
+      contentType: "landing_ville",
+      role: "text",
+      systemPrompt: systemPromptWithBrandVoice,
+      userPrompt,
+      maxTokens: 8000,
+      temperature: iteration === 0 ? 0.7 : iteration === 1 ? 0.5 : 0.3,
+    });
+
+    accumulatedCostUsd += llmResult.costUsd;
+    lastTokensInput = llmResult.tokensInput;
+    lastTokensOutput = llmResult.tokensOutput;
+    lastCitations = llmResult.citations ?? [];
+    iteration++;
+
+    let parsed: Parsed;
+    try {
+      parsed = parseLlmJson<Parsed>(llmResult.output);
+    } catch {
+      prevFeedback =
+        "La réponse précédente n'était pas du JSON valide. Retourne UNIQUEMENT un objet JSON, sans balise markdown.";
+      if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+      continue;
+    }
+
+    parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
+    if (input.primaryKeyword ?? safePrimaryKeyword) {
+      parsed.bodyHtml = injectInternalLinks(
+        parsed.bodyHtml,
+        input.primaryKeyword ?? safePrimaryKeyword,
+      );
+    }
+
+    const bodyText = parsed.bodyHtml
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
+    const internalLinkCount =
+      (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
+      (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
+    const citationCount = (parsed.bodyHtml.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
+    const readability = computeReadabilityFr(bodyText);
+    const doctrine = await checkDoctrine(bodyText);
+    const seo = computeSeoScore({
+      title: parsed.title,
+      metaDescription: parsed.metaDescription,
+      bodyHtml: parsed.bodyHtml,
+      bodyText,
+      directAnswer: parsed.directAnswer,
+      faqCount: parsed.faq.length,
+      internalLinkCount,
+      citationCount,
+      ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
+      searchIntent: input.targetSearchIntent,
+      contentKind: "landing",
+      hasPersonManonJsonLd: true,
+    });
+
+    const score = doctrine.passed
+      ? Math.round((seo.score + readability.score) / 2)
+      : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestParsed = parsed;
+      bestExtras = {
+        wordCount,
+        readabilityScore: readability.score,
+        seoScore: seo.score,
+        doctrinePassed: doctrine.passed,
+        bodyText,
+      };
+    }
+
+    if (score >= QUALITY_THRESHOLD && wordCount >= MIN_WORD_COUNT) break;
+    if (accumulatedCostUsd >= BUDGET_CAP_USD) break;
+
+    const issues: string[] = [];
+    if (wordCount < MIN_WORD_COUNT)
+      issues.push(`wordCount=${wordCount} < ${MIN_WORD_COUNT} requis — étoffer chaque section`);
+    if (seo.score < 60) issues.push("densité keyword faible OU balises H2/H3 insuffisantes");
+    if (readability.score < 60) issues.push("phrases trop longues — viser 15-20 mots/phrase max");
+    if (!doctrine.passed)
+      issues.push(
+        `violations doctrine : ${doctrine.blockingViolations.map((v) => v.pattern).join(", ")}`,
+      );
+    if (parsed.faq.length < 8) issues.push(`FAQ ${parsed.faq.length} < 8 — ajouter questions`);
+    if (citationCount < 4)
+      issues.push(`citations externes ${citationCount} < 4 — ajouter sources d'autorité`);
+    prevFeedback = `Score ${score}/100 insuffisant. À corriger : ${issues.join(" ; ")}.`;
+  }
+
+  if (!bestParsed || !bestExtras) {
     throw new Error(
-      `landing-ville (vertical=${config.slug}) LLM output not valid JSON: ${String(err)}`,
+      `landing-ville (vertical=${config.slug}) aucun output valide après ${iteration} itérations (cost=$${accumulatedCostUsd.toFixed(4)})`,
     );
   }
-
-  // Pass B fix P0-5 — sanitize HTML AVANT toute persistance.
-  parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
-  // P1-12 — Liens internes contextuels.
-  if (input.primaryKeyword ?? safePrimaryKeyword) {
-    parsed.bodyHtml = injectInternalLinks(
-      parsed.bodyHtml,
-      input.primaryKeyword ?? safePrimaryKeyword,
-    );
-  }
-
-  const bodyText = parsed.bodyHtml
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
+  const parsed = bestParsed;
+  const bodyText = bestExtras.bodyText;
+  const wordCount = bestExtras.wordCount;
   const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
-
-  const internalLinkCount =
-    (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
-    (parsed.bodyHtml.match(/\[.*?\]\(\/[^)]+\)/g) ?? []).length;
-  const citationCount = (parsed.bodyHtml.match(/<a\b[^>]*href="https?:\/\//gi) ?? []).length;
-  const readability = computeReadabilityFr(bodyText);
-  const doctrine = await checkDoctrine(bodyText);
-  const seo = computeSeoScore({
-    title: parsed.title,
-    metaDescription: parsed.metaDescription,
-    bodyHtml: parsed.bodyHtml,
-    bodyText,
-    directAnswer: parsed.directAnswer,
-    faqCount: parsed.faq.length,
-    internalLinkCount,
-    citationCount,
-    ...(input.primaryKeyword ? { primaryKeyword: input.primaryKeyword } : {}),
-    searchIntent: input.targetSearchIntent,
-    contentKind: "landing",
-    hasPersonManonJsonLd: true,
-  });
-
-  const qualityScore = doctrine.passed
-    ? Math.round((seo.score + readability.score) / 2)
-    : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+  const qualityScore = bestScore;
+  const readability = { score: bestExtras.readabilityScore };
+  const doctrine = { passed: bestExtras.doctrinePassed };
+  const seo = { score: bestExtras.seoScore };
 
   // City Domination 2026-05-18 P1-5 — Soft-404 word count gate anti-doorway HCU.
   const soft404 = evaluateSoft404({
@@ -287,9 +371,9 @@ label : ${config.recommendedCtaLabel}
     readabilityScore: readability.score,
     wordCount,
     readingTimeMinutes,
-    totalTokens: llmResult.tokensInput + llmResult.tokensOutput,
-    totalCostUsd: llmResult.costUsd,
-    citations: llmResult.citations ?? [],
+    totalTokens: lastTokensInput + lastTokensOutput,
+    totalCostUsd: accumulatedCostUsd,
+    citations: lastCitations,
     promptHash: lastPromptHash,
     mentionedCities,
     selectedExternalLinkIds: externalLinksCtx.ids,
