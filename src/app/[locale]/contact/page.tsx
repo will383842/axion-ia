@@ -10,7 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { ContactForm } from "@/components/forms/ContactForm";
+import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { ContactHeroSchema } from "@/components/sections/ContactHeroSchema";
 import { FaqBlock } from "@/components/sections/FaqBlock";
@@ -321,36 +321,7 @@ export default async function Contact({ params }: Props) {
 
       <Section id="message" eyebrow={isFr ? "Message direct" : "Direct message"}>
         <Container className="max-w-2xl">
-          <ContactForm
-            labels={
-              isFr
-                ? {
-                    name: "Nom & prénom",
-                    email: "Email professionnel",
-                    company: "Entreprise (optionnel)",
-                    message: "Votre message",
-                    consent:
-                      "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité.",
-                    submit: "Envoyer le message",
-                    sending: "Envoi…",
-                    success: "Message reçu. Nous vous répondons sous 48 h ouvrées.",
-                    failure:
-                      "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
-                  }
-                : {
-                    name: "Full name",
-                    email: "Professional email",
-                    company: "Company (optional)",
-                    message: "Your message",
-                    consent:
-                      "I agree to my data being used to process this request in accordance with the privacy policy.",
-                    submit: "Send message",
-                    sending: "Sending…",
-                    success: "Message received. We will reply within 48 business hours.",
-                    failure: "An error occurred. Try again or email contact@axion-ia.com.",
-                  }
-            }
-          />
+          <UnifiedContactForm defaultType="autre" source="/contact" />
         </Container>
       </Section>
 

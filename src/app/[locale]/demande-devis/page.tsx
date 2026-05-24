@@ -12,7 +12,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { QuoteRequestForm, type QuoteRequestFormLabels } from "@/components/forms/QuoteRequestForm";
+import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { JsonLd } from "@/components/marketing/JsonLd";
 
@@ -28,47 +28,6 @@ const COPY = {
     description:
       "Pour les formats > 5 000 € HT, IA Custom, packs annuels ou transformations multi-services : remplissez ce formulaire qualifié. William vous recontactera sous 24-48 h ouvrées pour un appel de cadrage personnalisé.",
     breadcrumb: "Demande de devis",
-    formLabels: {
-      sectionCompany: "Votre entreprise",
-      sectionContact: "Vos coordonnées",
-      sectionProject: "Votre projet",
-      sectionConsents: "Consentements",
-      companyName: "Raison sociale",
-      companySize: "Taille (INSEE)",
-      companySizeOptions: {
-        tpe: "TPE — 1 à 19 salariés",
-        pme: "PME — 20 à 250 salariés",
-        eti: "ETI — 250 à 5 000 salariés",
-        grande_entreprise: "Grande entreprise — 5 000+ salariés",
-      },
-      companySector: "Secteur d'activité",
-      companySectorPlaceholder: "Ex : Tech / SaaS, Industrie, Distribution, Santé…",
-      contactName: "Nom & prénom",
-      contactEmail: "Email professionnel",
-      contactPhone: "Téléphone direct",
-      contextBusiness: "Contexte business & besoin",
-      contextBusinessHint:
-        "Minimum 200 caractères. Décrivez votre situation actuelle, ce que vous attendez de l'IA, vos contraintes éventuelles. Plus c'est précis, plus le cadrage est efficace.",
-      budgetIndicative: "Budget pressenti (optionnel)",
-      budgetIndicativePlaceholder: "Ex : 10-20 k€, 50 k€+, à définir",
-      timingWeeks: "Timing souhaité",
-      timingWeeksOptions: {
-        "0-4": "0-4 semaines",
-        "4-8": "4-8 semaines",
-        "8-12": "8-12 semaines",
-        "12+": "12+ semaines",
-      },
-      city: "Ville (siège ou intervention)",
-      willingToTravel: "Vous acceptez les déplacements sur site",
-      participantsEstimate: "Effectif estimé (optionnel)",
-      consentTerms:
-        "J'ai pris connaissance des Conditions Générales de Vente et de la politique de confidentialité.",
-      consentGdpr:
-        "J'accepte le traitement de mes données pour répondre à cette demande (RGPD art. 6.1.b).",
-      submit: "Envoyer la demande",
-      sending: "Envoi…",
-      failure: "Une erreur est survenue, réessayez ou contactez-nous directement.",
-    } satisfies QuoteRequestFormLabels,
   },
   en: {
     title: "Qualified quote request",
@@ -76,46 +35,6 @@ const COPY = {
     description:
       "For formats > €5,000 (excl. VAT), custom AI, annual packs, or multi-department transformations: fill in this qualified form. William will get back to you within 24-48 business hours for a personalized scoping call.",
     breadcrumb: "Quote request",
-    formLabels: {
-      sectionCompany: "Your company",
-      sectionContact: "Your contact details",
-      sectionProject: "Your project",
-      sectionConsents: "Consents",
-      companyName: "Company name",
-      companySize: "Size (INSEE)",
-      companySizeOptions: {
-        tpe: "Small — 1 to 19 staff",
-        pme: "SME — 20 to 250 staff",
-        eti: "Mid-cap — 250 to 5,000 staff",
-        grande_entreprise: "Enterprise — 5,000+ staff",
-      },
-      companySector: "Sector",
-      companySectorPlaceholder: "e.g. Tech / SaaS, Industry, Retail, Healthcare…",
-      contactName: "Full name",
-      contactEmail: "Work email",
-      contactPhone: "Direct phone",
-      contextBusiness: "Business context & needs",
-      contextBusinessHint:
-        "Minimum 200 characters. Describe your current situation, what you expect from AI, any constraints. The more specific, the more effective the scoping.",
-      budgetIndicative: "Indicative budget (optional)",
-      budgetIndicativePlaceholder: "e.g. 10-20 k€, 50 k€+, to be defined",
-      timingWeeks: "Desired timing",
-      timingWeeksOptions: {
-        "0-4": "0-4 weeks",
-        "4-8": "4-8 weeks",
-        "8-12": "8-12 weeks",
-        "12+": "12+ weeks",
-      },
-      city: "City (HQ or session location)",
-      willingToTravel: "You accept on-site travel",
-      participantsEstimate: "Estimated headcount (optional)",
-      consentTerms: "I've read the Terms of Service and Privacy Policy.",
-      consentGdpr:
-        "I consent to the processing of my data to handle this request (GDPR art. 6.1.b).",
-      submit: "Send request",
-      sending: "Sending…",
-      failure: "An error occurred, please try again or contact us directly.",
-    } satisfies QuoteRequestFormLabels,
   },
 } as const;
 
@@ -182,9 +101,11 @@ export default async function DemandeDevisPage({ params, searchParams }: Props) 
 
       <section className="py-12 sm:py-16">
         <Container className="max-w-2xl">
-          <QuoteRequestForm
-            labels={t.formLabels}
-            {...(defaultIntervention ? { defaultInterventionSlug: defaultIntervention } : {})}
+          <UnifiedContactForm
+            defaultType="audit"
+            advancedOpenByDefault
+            source="/demande-devis"
+            {...(defaultIntervention ? { defaultSubType: defaultIntervention } : {})}
           />
         </Container>
       </section>

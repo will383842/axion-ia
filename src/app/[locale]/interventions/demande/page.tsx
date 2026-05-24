@@ -7,7 +7,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { InterventionRequestForm } from "@/components/forms/InterventionRequestForm";
+import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { mapObjetToSubject } from "@/lib/intervention-subject-mapping";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { INTERVENTION_FORMATS } from "@/content/interventions-taxonomy";
@@ -91,46 +91,6 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
         { icon: BookOpenCheck, label: "Documented method" },
       ];
 
-  const formLabels = isFr
-    ? {
-        firstName: "Prénom",
-        lastName: "Nom",
-        company: "Société",
-        email: "Email professionnel",
-        phoneCountryCode: "Indicatif pays",
-        phoneNumber: "Téléphone",
-        subject: "Objet de la demande",
-        subjectPlaceholder: "Sélectionnez l'intervention qui vous intéresse…",
-        description: "Décrivez votre besoin",
-        descriptionPlaceholder:
-          "Taille d'équipe, secteur d'activité, niveau IA actuel, dates envisagées, contraintes particulières…",
-        consent:
-          "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité.",
-        submit: "Envoyer ma demande",
-        sending: "Envoi en cours…",
-        success: "Demande reçue. Nous revenons vers vous sous 48 h ouvrées.",
-        failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
-      }
-    : {
-        firstName: "First name",
-        lastName: "Last name",
-        company: "Company",
-        email: "Professional email",
-        phoneCountryCode: "Country code",
-        phoneNumber: "Phone number",
-        subject: "Request subject",
-        subjectPlaceholder: "Select the session you're interested in…",
-        description: "Describe your need",
-        descriptionPlaceholder:
-          "Team size, sector, current AI level, target dates, specific constraints…",
-        consent:
-          "I agree to my data being used to process this request in accordance with the privacy policy.",
-        submit: "Send my request",
-        sending: "Sending…",
-        success: "Request received. We will get back to you within 48 business hours.",
-        failure: "An error occurred. Try again or email contact@axion-ia.com.",
-      };
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
@@ -188,10 +148,11 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
 
             {/* Colonne droite : FORMULAIRE en hero */}
             <div className="bg-paper border-border shadow-card rounded-3xl border p-6 sm:p-8">
-              <InterventionRequestForm
-                labels={formLabels}
-                {...(defaultSubject ? { defaultSubject } : {})}
-                {...(defaultDescription ? { defaultDescription } : {})}
+              <UnifiedContactForm
+                defaultType={defaultSubject === "coaching-individuel" ? "un_a_un" : "formation"}
+                source="/interventions/demande"
+                {...(defaultSubject ? { defaultSubType: defaultSubject } : {})}
+                {...(defaultDescription ? { defaultMessage: defaultDescription } : {})}
               />
             </div>
           </div>

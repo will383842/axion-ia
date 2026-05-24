@@ -65,7 +65,7 @@ export default async function AgentsPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=agents"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

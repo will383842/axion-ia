@@ -65,7 +65,7 @@ export default async function ChatbotPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=chatbot"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

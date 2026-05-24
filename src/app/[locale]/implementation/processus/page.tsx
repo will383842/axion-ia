@@ -65,7 +65,7 @@ export default async function ProcessusPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=processus"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

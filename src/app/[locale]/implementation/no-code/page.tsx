@@ -65,7 +65,7 @@ export default async function NoCodePage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=no-code"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

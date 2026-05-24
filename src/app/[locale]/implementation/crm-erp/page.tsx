@@ -65,7 +65,7 @@ export default async function CrmErpPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=crm-erp"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

@@ -65,7 +65,7 @@ export default async function StructurationPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=structuration"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

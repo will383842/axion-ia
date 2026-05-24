@@ -23,14 +23,8 @@
 //   DATABASE_URL=$DATABASE_URL_TEST pnpm prisma migrate deploy
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import {
-  bookingSchema,
-  option48hSchema,
-  contactSchema,
-  newsletterSchema,
-  auditSchema,
-  implementationSchema,
-} from "@/lib/schemas/forms";
+import { bookingSchema, option48hSchema, newsletterSchema } from "@/lib/schemas/forms";
+import { unifiedContactSchema } from "@/lib/schemas/unified-contact-schema";
 import { signInSchema } from "@/lib/schemas/auth";
 import { localeSchema, parseLocale } from "@/lib/schemas/locale";
 import {
@@ -153,12 +147,10 @@ describe("Server Actions integration — schemas chain", () => {
     });
   });
 
-  describe("contact + newsletter + audit + implementation schemas", () => {
+  describe("unified contact + newsletter schemas", () => {
     it("all reject empty payloads", () => {
-      expect(contactSchema.safeParse({}).success).toBe(false);
+      expect(unifiedContactSchema.safeParse({}).success).toBe(false);
       expect(newsletterSchema.safeParse({}).success).toBe(false);
-      expect(auditSchema.safeParse({}).success).toBe(false);
-      expect(implementationSchema.safeParse({}).success).toBe(false);
     });
 
     it("intervention slug schema is strict", () => {
@@ -210,14 +202,17 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     await prisma.$disconnect();
   });
 
-  it("submitContactAction persists Submission + activityLog (smoke pipeline)", async () => {
-    const { submitContactAction } = await import("@/features/contact/actions");
+  it("submitUnifiedContactAction persists Submission + activityLog (smoke pipeline)", async () => {
+    const { submitUnifiedContactAction } = await import("@/features/unified-contact/actions");
     const { prisma } = await import("@/lib/prisma");
 
     const fd = new FormData();
-    fd.set("name", "Integration Test");
+    fd.set("type", "autre");
+    fd.set("nom", "Integration Test");
     fd.set("email", EMAIL_MARKER);
-    fd.set("company", "Test SAS");
+    fd.set("telephone", "+33 6 12 34 56 78");
+    fd.set("ville", "Paris");
+    fd.set("companyName", "Test SAS");
     fd.set(
       "message",
       "Message de test integration suffisamment long pour passer la validation Zod ≥ 20 caractères.",
@@ -227,7 +222,7 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     // Pas de cf-turnstile-response → en env test (DEV_KEYS ou pas de secret),
     // verifyTurnstile peut fail-soft (NEXT_PUBLIC_APP_ENV != production).
 
-    const result = await submitContactAction({ ok: false, error: "" }, fd);
+    const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
     // En dev (sans Turnstile secret + sans NEXT_PUBLIC_APP_ENV=production),
     // l'action doit passer.
     expect(result.ok, `Action failed: ${result.ok ? "" : result.error}`).toBe(true);
@@ -237,6 +232,7 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
       orderBy: { submittedAt: "desc" },
     });
     expect(submission, "Submission not persisted in DB").toBeTruthy();
+    // type=autre → SubmissionType.contact
     expect(submission?.type).toBe("contact");
     if (submission) trackingIds.push(submission.id);
   });
@@ -261,14 +257,17 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     expect(row?.status).toBe("pending");
   });
 
-  it("submitContactAction is idempotent under double-click within 1s", async () => {
-    const { submitContactAction } = await import("@/features/contact/actions");
+  it("submitUnifiedContactAction is idempotent under double-click within 1s", async () => {
+    const { submitUnifiedContactAction } = await import("@/features/unified-contact/actions");
     const { prisma } = await import("@/lib/prisma");
 
     const fdFactory = () => {
       const fd = new FormData();
-      fd.set("name", "Double Submit Test");
+      fd.set("type", "autre");
+      fd.set("nom", "Double Submit Test");
       fd.set("email", EMAIL_MARKER);
+      fd.set("telephone", "+33 6 12 34 56 78");
+      fd.set("ville", "Paris");
       fd.set("message", "Double click test message Audit E2E P0-CONF-13 — twenty plus chars");
       fd.set("consent", "true");
       fd.set("locale", "fr");
@@ -277,8 +276,8 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
 
     const before = await prisma.submission.count({ where: { contactEmail: EMAIL_MARKER } });
     const [r1, r2] = await Promise.all([
-      submitContactAction({ ok: false, error: "" }, fdFactory()),
-      submitContactAction({ ok: false, error: "" }, fdFactory()),
+      submitUnifiedContactAction({ ok: false, error: "" }, fdFactory()),
+      submitUnifiedContactAction({ ok: false, error: "" }, fdFactory()),
     ]);
     const after = await prisma.submission.count({ where: { contactEmail: EMAIL_MARKER } });
 

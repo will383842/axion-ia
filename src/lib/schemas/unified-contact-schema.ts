@@ -1,0 +1,96 @@
+// Unified contact form — schema Zod (2026-05-24).
+//
+// Remplace 6 schemas distincts (contact, audit, audit-request, implementation,
+// quote-request, intervention) par un seul, discriminé par le champ `type`.
+//
+// Voir _AUDIT/FORMS-UNIFICATION-2026-05-24/02-DESIGN.md.
+
+import { z } from "zod";
+
+// ---- Types & enums ---------------------------------------------------------
+
+export const UNIFIED_CONTACT_TYPES = [
+  "formation",
+  "un_a_un",
+  "audit",
+  "implementation",
+  "autre",
+] as const;
+export type UnifiedContactType = (typeof UNIFIED_CONTACT_TYPES)[number];
+
+export const COMPANY_SIZES = ["tpe", "pme", "eti", "grande_entreprise"] as const;
+export type CompanySize = (typeof COMPANY_SIZES)[number];
+
+export const TIMING_WEEKS = ["0-4", "4-8", "8-12", "12+"] as const;
+export type TimingWeeks = (typeof TIMING_WEEKS)[number];
+
+// ---- Schema ---------------------------------------------------------------
+
+/**
+ * Schema unifié.
+ *
+ * - Champs base (6) : type, nom, email, telephone, ville, message — tous requis.
+ * - Champs avancés (5) : companyName, companySize, companySector,
+ *   budgetIndicative, timingWeeks — tous optionnels.
+ * - Métadonnées hidden : locale, source, subType, consentVersion.
+ * - Consentement obligatoire.
+ */
+export const unifiedContactSchema = z.object({
+  // -- Discriminant
+  type: z.enum(UNIFIED_CONTACT_TYPES, {
+    errorMap: () => ({ message: "Type de demande requis." }),
+  }),
+
+  // -- Base (6 champs visibles)
+  nom: z.string().trim().min(2, "Nom requis (2 caractères minimum).").max(80, "Nom trop long."),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email requis.")
+    .email("Email invalide.")
+    .max(254, "Email trop long."),
+  telephone: z
+    .string()
+    .trim()
+    .min(6, "Téléphone requis.")
+    .max(30, "Téléphone trop long.")
+    .regex(/^[+0-9 ()\-.]{6,30}$/, "Format de téléphone invalide."),
+  ville: z.string().trim().min(2, "Ville requise.").max(120, "Ville trop longue."),
+  message: z
+    .string()
+    .trim()
+    .min(20, "Au moins 20 caractères.")
+    .max(2000, "2 000 caractères maximum."),
+
+  // -- Avancé (5 champs optionnels, révélés via toggle)
+  companyName: z.string().trim().max(255).optional(),
+  companySize: z.enum(COMPANY_SIZES).optional(),
+  companySector: z.string().trim().max(100).optional(),
+  budgetIndicative: z.string().trim().max(80).optional(),
+  timingWeeks: z.enum(TIMING_WEEKS).optional(),
+
+  // -- Métadonnées
+  locale: z.enum(["fr", "en"]).default("fr"),
+  source: z.string().max(500).optional(),
+  subType: z.string().max(80).optional(),
+
+  // -- Consentement
+  consent: z.literal(true, {
+    errorMap: () => ({ message: "Consentement requis." }),
+  }),
+});
+
+export type UnifiedContactInput = z.infer<typeof unifiedContactSchema>;
+
+// ---- Helper : libellé i18n du type ----------------------------------------
+
+export function unifiedTypeLabel(type: UnifiedContactType, locale: "fr" | "en"): string {
+  const labels: Record<UnifiedContactType, { fr: string; en: string }> = {
+    formation: { fr: "Formation", en: "Training" },
+    un_a_un: { fr: "Coaching 1-à-1", en: "1-on-1 coaching" },
+    audit: { fr: "Audit IA", en: "AI audit" },
+    implementation: { fr: "Implémentation IA", en: "AI implementation" },
+    autre: { fr: "Autre demande", en: "Other request" },
+  };
+  return labels[type][locale];
+}

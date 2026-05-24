@@ -65,7 +65,7 @@ export default async function IaCustomPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=ia-custom"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />

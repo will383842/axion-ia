@@ -65,7 +65,7 @@ export default async function IntegrationsPage({ params }: Props) {
         isFr={isFr}
         accent="purple"
         copy={copy}
-        ctaPrimaryHref="/contact"
+        ctaPrimaryHref="/contact?type=implementation&subType=integrations"
         ctaSecondaryHref="/cas-concrets"
         jsonLd={jsonLd}
       />
