@@ -17,6 +17,14 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
 import { Illustration } from "@/components/visual/Illustration";
 import { UN_A_UN_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
+// Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
+// Ajout ProcessSteps + FaqAccordion + LocalCoverageSection + LocalGeoFaqSection
+// + StickyMobileCta. Contenu MINIMAL (réutilisation existant + Q/R triviales).
+import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -160,27 +168,123 @@ export default async function UnAUnHubPage({ params }: Props) {
         eyebrow={isFr ? "Format" : "Format"}
         title={isFr ? "Comment ça se passe" : "How it works"}
       >
-        <Container className="max-w-3xl">
-          <ol className="text-fg list-decimal space-y-4 pl-6 text-lg leading-relaxed">
-            <li>
-              <strong>{isFr ? "Cadrage individuel" : "Individual scoping"}</strong>{" "}
-              {isFr
-                ? "(30 min, gratuit). On apprend à connaître le poste, les outils utilisés, les tâches chronophages et les objectifs prioritaires de la personne."
-                : "(30 min, free). We get to know the role, tools used, time-consuming tasks and priority objectives of the person."}
-            </li>
-            <li>
-              <strong>{isFr ? "Sessions de coaching" : "Coaching sessions"}</strong>{" "}
-              {isFr
-                ? "En visio ou sur site selon la préférence. Rythme adapté à l'agenda — pas de format imposé. Chaque session travaille sur des cas réels tirés du quotidien de la personne."
-                : "Remote or on-site according to preference. Pace adapted to the schedule — no imposed format. Each session works on real cases from the person's daily life."}
-            </li>
-            <li>
-              <strong>{isFr ? "Progression mesurable" : "Measurable progress"}</strong>{" "}
-              {isFr
-                ? "À chaque étape, on valide ce qui est acquis et on ajuste la suite. L'objectif : que la personne soit autonome sur l'IA dans son poste — pas dépendante d'un prestataire."
-                : "At each stage, we validate what has been acquired and adjust what comes next. The objective: the person becomes autonomous with AI in their role — not dependent on a provider."}
-            </li>
-          </ol>
+        <Container>
+          <ProcessSteps
+            orientation="horizontal"
+            steps={[
+              {
+                id: "step-1-cadrage",
+                title: isFr ? "Cadrage individuel" : "Individual scoping",
+                description: isFr
+                  ? "30 min, gratuit. On apprend à connaître le poste, les outils utilisés, les tâches chronophages et les objectifs prioritaires de la personne."
+                  : "30 min, free. We get to know the role, tools used, time-consuming tasks and priority objectives of the person.",
+              },
+              {
+                id: "step-2-coaching",
+                title: isFr ? "Sessions de coaching" : "Coaching sessions",
+                description: isFr
+                  ? "En visio ou sur site selon la préférence. Rythme adapté à l'agenda — pas de format imposé. Chaque session travaille sur des cas réels tirés du quotidien de la personne."
+                  : "Remote or on-site according to preference. Pace adapted to the schedule — no imposed format. Each session works on real cases from the person's daily life.",
+              },
+              {
+                id: "step-3-progression",
+                title: isFr ? "Progression mesurable" : "Measurable progress",
+                description: isFr
+                  ? "À chaque étape, on valide ce qui est acquis et on ajuste la suite. L'objectif : que la personne soit autonome sur l'IA dans son poste — pas dépendante d'un prestataire."
+                  : "At each stage, we validate what has been acquired and adjust what comes next. The objective: the person becomes autonomous with AI in their role — not dependent on a provider.",
+              },
+            ]}
+          />
+        </Container>
+      </Section>
+
+      {/* Couverture nationale — composant centralisé Sprint 14.9 levier 3 */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="L'accompagnement 1-to-1 IA"
+        serviceLabelEn="1-to-1 AI coaching"
+        serviceSlug="un-a-un"
+        tone="paper"
+      />
+
+      {/* FAQ géo locale — composant centralisé (FAQS_BY_SERVICE pré-existants) */}
+      <LocalGeoFaqSection isFr={isFr} service="un-a-un" tone="sand" />
+
+      {/* FAQ générique 1-to-1 (5 questions essentielles, contenu factuel) */}
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? "L'essentiel" : "The essentials"}
+        titleEm={isFr ? "à savoir" : "to know"}
+      >
+        <Container>
+          <FaqAccordion
+            className="mx-auto max-w-3xl"
+            items={
+              isFr
+                ? [
+                    {
+                      id: "duree-session",
+                      question: "Combien de temps dure une session ?",
+                      answer:
+                        "La journée standard fait 7 h sur site (9h-17h avec pause déjeuner). En visio, on adapte par blocs de 2-3 h selon l'agenda de la personne. Pas de format imposé.",
+                    },
+                    {
+                      id: "prix",
+                      question: "Combien ça coûte ?",
+                      answer: `${formattedPrice} pour la journée 1-to-1 dirigeant. Pour un collaborateur clé (non-dirigeant), 890 € HT. Frais de déplacement facturés en sus selon distance/durée — devis transparent avant signature.`,
+                    },
+                    {
+                      id: "visio-ou-site",
+                      question: "Visio ou sur site ?",
+                      answer:
+                        "Au choix. La visio fonctionne très bien pour le coaching IA (partage d'écran sur les outils réels de la personne). Le sur site est privilégié quand il faut voir le contexte physique (atelier, ligne de production, point de vente).",
+                    },
+                    {
+                      id: "outils",
+                      question: "Quels outils IA sont enseignés ?",
+                      answer:
+                        "Ceux que la personne utilise déjà ou qui correspondent à son poste : ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM, plus les automatisations métier (Make, Zapier) si pertinent. Pas de techno imposée — on travaille sur ses outils réels.",
+                    },
+                    {
+                      id: "garantie",
+                      question: "Garantie de résultat ?",
+                      answer:
+                        "Si la personne n'a rien tiré de la journée (cas extrêmement rare), on rembourse intégralement. Concrètement, 100 % de nos clients 1-to-1 ressortent avec 3-5 automatisations ou améliorations directement applicables à leur poste.",
+                    },
+                  ]
+                : [
+                    {
+                      id: "session-length",
+                      question: "How long is a session?",
+                      answer:
+                        "Standard day is 7 h on-site (9am-5pm with lunch break). Remotely, we adapt in 2-3 h blocks based on the person's schedule. No imposed format.",
+                    },
+                    {
+                      id: "price",
+                      question: "How much does it cost?",
+                      answer: `${formattedPrice} for the 1-to-1 executive day. For a key employee (non-executive), €890 ex. VAT. Travel expenses billed separately based on distance/duration — transparent quote before signature.`,
+                    },
+                    {
+                      id: "remote-or-onsite",
+                      question: "Remote or on-site?",
+                      answer:
+                        "Either. Remote works very well for AI coaching (screen sharing on the person's real tools). On-site is preferred when the physical context matters (workshop, production line, point of sale).",
+                    },
+                    {
+                      id: "tools",
+                      question: "Which AI tools are taught?",
+                      answer:
+                        "The ones the person already uses or that fit their role: ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM, plus business automations (Make, Zapier) if relevant. No imposed tech — we work on their real tools.",
+                    },
+                    {
+                      id: "guarantee",
+                      question: "Guarantee?",
+                      answer:
+                        "If the person got nothing from the day (extremely rare), we refund in full. Concretely, 100 % of our 1-to-1 customers come out with 3-5 automations or improvements directly applicable to their role.",
+                    },
+                  ]
+            }
+          />
         </Container>
       </Section>
 
@@ -197,6 +301,13 @@ export default async function UnAUnHubPage({ params }: Props) {
           </Cta>
         }
         tone="dark"
+      />
+
+      {/* CTA mobile sticky — apparaît au scroll, masqué sur lg+ */}
+      <StickyMobileCta
+        href="/contact"
+        label={isFr ? "Démarrer mon 1-to-1" : "Start my 1-to-1"}
+        track="un-a-un-sticky-mobile"
       />
 
       <JsonLd data={serviceJsonLd} />
