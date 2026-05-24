@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import {
   ArrowRight,
   TrendingUp,
+  Target,
   Star,
   User,
   Users,
@@ -697,18 +698,18 @@ export default async function Home({ params }: HomeProps) {
                 id="pricing-heading"
                 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
               >
-                {isFr ? "Cinq services. " : "Five services. "}
+                {isFr ? "Un prix de départ " : "A starting price "}
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "Un prix d'entrée clair." : "One clear entry price."}
+                  {isFr ? "pour chaque service." : "for every service."}
                 </span>
               </h2>
               <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-lg leading-relaxed">
                 {isFr
-                  ? "De la formation au déploiement, chaque service a son prix d'entrée transparent. Sans devis flou, sans surprise."
-                  : "From training to deployment, every service has its transparent entry price. No fuzzy quotes, no surprises."}
+                  ? "Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les prix de départ par service. Le devis précis se construit ensemble, après diagnostic."
+                  : "Every project is unique — complexity depends on your infrastructure, your processes and your AI maturity. Below are the starting prices per service. The precise quote is built together, after diagnosis."}
               </p>
             </div>
           </FadeInOnView>
@@ -1332,9 +1333,10 @@ export default async function Home({ params }: HomeProps) {
               </Link>
             </div>
           </FadeInOnView>
-          {/* 4 cas concrets visuels — 4 cards sur 1 ligne lg, photos compactes
-              (click-to-enlarge via ImageLightbox, divisé par 2 vs version v2) */}
-          <ul className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          {/* 4 cas concrets visuels — 4 cards sur 1 ligne dès md (768px+),
+              photos compactes via aspect-ratio 16/9 forcé + object-cover.
+              (Will 2026-05-24 : "réduire grosseur images, toutes sur 1 ligne desktop") */}
+          <ul className="mb-10 grid gap-3 sm:grid-cols-2 md:grid-cols-4 md:gap-4">
             {(
               [
                 {
@@ -1410,8 +1412,8 @@ export default async function Home({ params }: HomeProps) {
                     alt={isFr ? demo.altFr : demo.altEn}
                     width={1600}
                     height={900}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="rounded-none rounded-t-2xl"
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                    className="rounded-none rounded-t-2xl [&_figure]:aspect-[16/10] [&_figure]:overflow-hidden [&_figure>img]:!h-full [&_figure>img]:!w-full [&_figure>img]:!object-cover"
                   />
                   <div className="flex flex-col gap-2.5 p-4">
                     <div className="flex flex-wrap items-center gap-1.5">
