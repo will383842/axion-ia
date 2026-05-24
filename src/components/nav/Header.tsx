@@ -57,14 +57,11 @@ export async function Header() {
 
   // Solutions mega-menu — i18n résolu côté server, passé client en props.
   const solutionsItems = {
-    formations: { label: t("nav.formations"), hint: t("nav.formationsHint") },
-    oneToOne: { label: t("nav.oneToOne"), hint: t("nav.oneToOneHint") },
-    audit: { label: t("nav.auditShort"), hint: t("nav.auditHint") },
-    implementation: {
-      label: t("nav.implementationShort"),
-      hint: t("nav.implementationHint"),
-    },
-    platform: { label: t("nav.platform"), hint: t("nav.platformHint") },
+    formations: { label: t("nav.formations") },
+    oneToOne: { label: t("nav.oneToOne") },
+    audit: { label: t("nav.auditShort") },
+    implementation: { label: t("nav.implementationShort") },
+    platform: { label: t("nav.platform") },
   } as const;
 
   // Items mobile mega-menu Solutions (plat, sans featured card pour limiter
@@ -111,13 +108,9 @@ export async function Header() {
             className="hidden items-center gap-5 lg:flex lg:justify-end xl:gap-7"
           >
             <SolutionsMegaMenu
-              isFr={isFr}
               triggerLabel={t("nav.solutions")}
               panelLabel={t("nav.solutionsLabel")}
               tagline={t("nav.solutionsTagline")}
-              featuredTitle={t("nav.featuredTitle")}
-              featuredDesc={t("nav.featuredDesc")}
-              featuredCta={t("nav.featuredCta")}
               items={solutionsItems}
             />
             {navLeftOfCta.map((item) => (
