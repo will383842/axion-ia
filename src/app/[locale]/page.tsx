@@ -646,11 +646,187 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
+      {/* ─────────────── POURQUOI AXION-IA — design éditorial v2 ───────────────
+          Refonte from-scratch (Will 2026-05-23) : hiérarchie claire en 4 blocs
+          visuels distincts au lieu d'une infographie compacte surchargée.
+          1. Header (eyebrow + h2 + lead)
+          2. 6 différenciateurs en grid 3×2 éditoriale (numéros géants serif)
+          3. Modularité — 6 capacités en bandeau horizontal (sans répétition)
+          4. Trust signals + tagline finale */}
+      <section
+        id="why"
+        aria-labelledby="why-heading"
+        className="bg-halo-cool relative py-24 sm:py-28 lg:py-32"
+      >
+        <Container>
+          {/* BLOC 1 — Header */}
+          <FadeInOnView>
+            <div className="mx-auto mb-20 max-w-3xl text-center sm:mb-24">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Ce qui nous distingue" : "What sets us apart"}
+              </p>
+              <h2
+                id="why-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
+                {isFr ? "Six raisons concrètes" : "Six concrete reasons"}
+                <br />
+                <span
+                  className="italic-editorial text-terracotta"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "de nous choisir" : "to choose us"}
+                </span>
+                .
+              </h2>
+              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
+                {isFr
+                  ? "Chaque expertise est autonome — combinable avec les autres ou prise seule. C'est vous qui choisissez selon vos besoins."
+                  : "Each expertise stands alone — combinable with the others or taken solo. You choose based on your needs."}
+              </p>
+            </div>
+          </FadeInOnView>
+
+          {/* BLOC 2 — 6 différenciateurs COMPACTS (refonte 2026-05-24 Will :
+              avant = grid 3×2 énorme avec hero bands colorés rainbow + numéros
+              géants + accent ribbons → trop massif. Maintenant : grid 3×2 dense,
+              card simple icon + titre + 1 phrase, brand-coherent terracotta).
+              BLOC 3 "Modulaire par design" SUPPRIMÉ (redondant : la modularité
+              est déjà dans la description de section + une carte "De A à Z"). */}
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+            {(
+              [
+                {
+                  Icon: Users,
+                  titleFr: "Zéro intermédiaire",
+                  titleEn: "Zero middleman",
+                  descFr: "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
+                  descEn: "Trainers, developers, implementers — all senior, all in-house.",
+                },
+                {
+                  Icon: Layers,
+                  titleFr: "De A à Z",
+                  titleEn: "End-to-end",
+                  descFr: "Formation, audit, 1-to-1, automatisation, plateforme — un seul interlocuteur.",
+                  descEn: "Training, audit, 1-to-1, automation, platform — one single contact.",
+                },
+                {
+                  Icon: MapPin,
+                  titleFr: "Partout en France",
+                  titleEn: "Across France",
+                  descFr: "Métropole, outre-mer, présentiel ou distanciel — on s'adapte au plus efficace.",
+                  descEn: "Mainland, overseas, on-site or remote — we adapt to what works best.",
+                },
+                {
+                  Icon: BadgeCheck,
+                  titleFr: "Vous parlez au senior",
+                  titleEn: "You talk to the senior",
+                  descFr: "Pas à un commercial, pas à un junior. Directement à celui qui fait le travail.",
+                  descEn: "Not to sales, not to a junior. Directly to the person doing the work.",
+                },
+                {
+                  Icon: Target,
+                  titleFr: "Vous êtes au centre",
+                  titleEn: "You're at the center",
+                  descFr: "Votre projet, votre rythme, votre contexte. On s'adapte à vous — jamais l'inverse.",
+                  descEn: "Your project, your pace, your context. We adapt to you — never the reverse.",
+                },
+                {
+                  Icon: Sparkles,
+                  titleFr: "Exigence senior absolue",
+                  titleEn: "Strict senior standards",
+                  descFr: "Résultats mesurables. Même niveau pour un artisan que pour un grand groupe.",
+                  descEn: "Measurable results. Same level for a craftsman or a large group.",
+                },
+              ] as const
+            ).map((card, idx) => (
+              <FadeInOnView key={card.titleFr} delay={idx * 40}>
+                <li className="bg-paper border-border hover:border-terracotta hover:shadow-subtle group flex h-full items-start gap-4 rounded-2xl border p-5 transition-all duration-300 sm:p-6">
+                  <span
+                    className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
+                    aria-hidden="true"
+                  >
+                    <card.Icon className="h-5 w-5" strokeWidth={2} />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-fg text-base font-bold leading-tight tracking-tight sm:text-lg">
+                      {isFr ? card.titleFr : card.titleEn}
+                    </h3>
+                    <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">
+                      {isFr ? card.descFr : card.descEn}
+                    </p>
+                  </div>
+                </li>
+              </FadeInOnView>
+            ))}
+          </ul>
+
+          {/* BLOC 4 — Trust signals (3 colonnes inline) + tagline finale */}
+          <FadeInOnView>
+            <div className="border-border mt-20 grid gap-8 border-t pt-12 sm:mt-24 sm:grid-cols-3 sm:gap-10">
+              {(
+                [
+                  {
+                    Icon: Shield,
+                    titleFr: "Sécurité & confidentialité",
+                    titleEn: "Security & confidentiality",
+                    descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
+                    descEn: "Your data is protected. Confidentiality is our priority.",
+                  },
+                  {
+                    Icon: TrendingUp,
+                    titleFr: "Résultats mesurables",
+                    titleEn: "Measurable results",
+                    descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
+                    descEn: "Clear goals, precise indicators, concrete impact.",
+                  },
+                  {
+                    Icon: Clock,
+                    titleFr: "Accompagnement dans la durée",
+                    titleEn: "Long-term support",
+                    descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
+                    descEn: "A reliable partner at every stage of your growth.",
+                  },
+                ] as const
+              ).map((item, idx) => (
+                <div key={idx} className="flex flex-col gap-3 text-center sm:text-left">
+                  <span className="text-terracotta inline-flex h-10 w-10 items-center justify-center self-center sm:self-start">
+                    <item.Icon className="h-6 w-6" aria-hidden="true" strokeWidth={2} />
+                  </span>
+                  <h4 className="text-fg text-base font-bold tracking-tight">
+                    {isFr ? item.titleFr : item.titleEn}
+                  </h4>
+                  <p className="text-fg-soft text-sm leading-relaxed">
+                    {isFr ? item.descFr : item.descEn}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Tagline finale — pleine largeur centrée, serif italic */}
+            <p
+              className="text-fg-muted mx-auto mt-16 max-w-3xl text-center text-lg leading-relaxed sm:mt-20 sm:text-xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {isFr
+                ? "Une vision. Une équipe. Une méthode. Un seul objectif : "
+                : "One vision. One team. One method. One goal: "}
+              <span className="text-terracotta font-semibold italic">
+                {isFr ? "votre réussite." : "your success."}
+              </span>
+            </p>
+          </FadeInOnView>
+        </Container>
+      </section>
+
       {/* ─────────────── GRILLE TARIFAIRE — TABLEAU SINGLE-BLOCK 5 SERVICES ───────────────
           Refonte (Will 2026-05-24 v2) : un seul bloc moderne avec les 5 services
           dans un tableau aligné. Plus dense, plus lisible, plus pro qu'un grid 3 cards.
           Prix dérivés du SSOT pricing.ts (interventionEntry/auditFlash/unAUn/impl/web).
-          Mobile : cartes empilées. Desktop : table row + colonnes (SERVICE / CATÉGORIE / INCLUS / PRIX). */}
+          Mobile : cartes empilées. Desktop : table row + colonnes (SERVICE / CATÉGORIE / INCLUS / PRIX).
+          Ordre Will 2026-05-24 v3 : PRICING déplacé APRÈS la section WHY (Six raisons)
+          → la grille tarifaire arrive après que le client a compris pourquoi nous choisir. */}
       <section
         id="pricing"
         aria-labelledby="pricing-heading"
@@ -892,180 +1068,6 @@ export default async function Home({ params }: HomeProps) {
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </p>
-        </Container>
-      </section>
-
-      {/* ─────────────── POURQUOI AXION-IA — design éditorial v2 ───────────────
-          Refonte from-scratch (Will 2026-05-23) : hiérarchie claire en 4 blocs
-          visuels distincts au lieu d'une infographie compacte surchargée.
-          1. Header (eyebrow + h2 + lead)
-          2. 6 différenciateurs en grid 3×2 éditoriale (numéros géants serif)
-          3. Modularité — 6 capacités en bandeau horizontal (sans répétition)
-          4. Trust signals + tagline finale */}
-      <section
-        id="why"
-        aria-labelledby="why-heading"
-        className="bg-halo-cool relative py-24 sm:py-28 lg:py-32"
-      >
-        <Container>
-          {/* BLOC 1 — Header */}
-          <FadeInOnView>
-            <div className="mx-auto mb-20 max-w-3xl text-center sm:mb-24">
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {isFr ? "Ce qui nous distingue" : "What sets us apart"}
-              </p>
-              <h2
-                id="why-heading"
-                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
-              >
-                {isFr ? "Six raisons concrètes" : "Six concrete reasons"}
-                <br />
-                <span
-                  className="italic-editorial text-terracotta"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {isFr ? "de nous choisir" : "to choose us"}
-                </span>
-                .
-              </h2>
-              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
-                {isFr
-                  ? "Chaque expertise est autonome — combinable avec les autres ou prise seule. C'est vous qui choisissez selon vos besoins."
-                  : "Each expertise stands alone — combinable with the others or taken solo. You choose based on your needs."}
-              </p>
-            </div>
-          </FadeInOnView>
-
-          {/* BLOC 2 — 6 différenciateurs COMPACTS (refonte 2026-05-24 Will :
-              avant = grid 3×2 énorme avec hero bands colorés rainbow + numéros
-              géants + accent ribbons → trop massif. Maintenant : grid 3×2 dense,
-              card simple icon + titre + 1 phrase, brand-coherent terracotta).
-              BLOC 3 "Modulaire par design" SUPPRIMÉ (redondant : la modularité
-              est déjà dans la description de section + une carte "De A à Z"). */}
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {(
-              [
-                {
-                  Icon: Users,
-                  titleFr: "Zéro intermédiaire",
-                  titleEn: "Zero middleman",
-                  descFr: "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
-                  descEn: "Trainers, developers, implementers — all senior, all in-house.",
-                },
-                {
-                  Icon: Layers,
-                  titleFr: "De A à Z",
-                  titleEn: "End-to-end",
-                  descFr: "Formation, audit, 1-to-1, automatisation, plateforme — un seul interlocuteur.",
-                  descEn: "Training, audit, 1-to-1, automation, platform — one single contact.",
-                },
-                {
-                  Icon: MapPin,
-                  titleFr: "Partout en France",
-                  titleEn: "Across France",
-                  descFr: "Métropole, outre-mer, présentiel ou distanciel — on s'adapte au plus efficace.",
-                  descEn: "Mainland, overseas, on-site or remote — we adapt to what works best.",
-                },
-                {
-                  Icon: BadgeCheck,
-                  titleFr: "Vous parlez au senior",
-                  titleEn: "You talk to the senior",
-                  descFr: "Pas à un commercial, pas à un junior. Directement à celui qui fait le travail.",
-                  descEn: "Not to sales, not to a junior. Directly to the person doing the work.",
-                },
-                {
-                  Icon: Target,
-                  titleFr: "Vous êtes au centre",
-                  titleEn: "You're at the center",
-                  descFr: "Votre projet, votre rythme, votre contexte. On s'adapte à vous — jamais l'inverse.",
-                  descEn: "Your project, your pace, your context. We adapt to you — never the reverse.",
-                },
-                {
-                  Icon: Sparkles,
-                  titleFr: "Exigence senior absolue",
-                  titleEn: "Strict senior standards",
-                  descFr: "Résultats mesurables. Même niveau pour un artisan que pour un grand groupe.",
-                  descEn: "Measurable results. Same level for a craftsman or a large group.",
-                },
-              ] as const
-            ).map((card, idx) => (
-              <FadeInOnView key={card.titleFr} delay={idx * 40}>
-                <li className="bg-paper border-border hover:border-terracotta hover:shadow-subtle group flex h-full items-start gap-4 rounded-2xl border p-5 transition-all duration-300 sm:p-6">
-                  <span
-                    className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
-                    aria-hidden="true"
-                  >
-                    <card.Icon className="h-5 w-5" strokeWidth={2} />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-fg text-base font-bold leading-tight tracking-tight sm:text-lg">
-                      {isFr ? card.titleFr : card.titleEn}
-                    </h3>
-                    <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">
-                      {isFr ? card.descFr : card.descEn}
-                    </p>
-                  </div>
-                </li>
-              </FadeInOnView>
-            ))}
-          </ul>
-
-          {/* BLOC 4 — Trust signals (3 colonnes inline) + tagline finale */}
-          <FadeInOnView>
-            <div className="border-border mt-20 grid gap-8 border-t pt-12 sm:mt-24 sm:grid-cols-3 sm:gap-10">
-              {(
-                [
-                  {
-                    Icon: Shield,
-                    titleFr: "Sécurité & confidentialité",
-                    titleEn: "Security & confidentiality",
-                    descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
-                    descEn: "Your data is protected. Confidentiality is our priority.",
-                  },
-                  {
-                    Icon: TrendingUp,
-                    titleFr: "Résultats mesurables",
-                    titleEn: "Measurable results",
-                    descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
-                    descEn: "Clear goals, precise indicators, concrete impact.",
-                  },
-                  {
-                    Icon: Clock,
-                    titleFr: "Accompagnement dans la durée",
-                    titleEn: "Long-term support",
-                    descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
-                    descEn: "A reliable partner at every stage of your growth.",
-                  },
-                ] as const
-              ).map((item, idx) => (
-                <div key={idx} className="flex flex-col gap-3 text-center sm:text-left">
-                  <span className="text-terracotta inline-flex h-10 w-10 items-center justify-center self-center sm:self-start">
-                    <item.Icon className="h-6 w-6" aria-hidden="true" strokeWidth={2} />
-                  </span>
-                  <h4 className="text-fg text-base font-bold tracking-tight">
-                    {isFr ? item.titleFr : item.titleEn}
-                  </h4>
-                  <p className="text-fg-soft text-sm leading-relaxed">
-                    {isFr ? item.descFr : item.descEn}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Tagline finale — pleine largeur centrée, serif italic */}
-            <p
-              className="text-fg-muted mx-auto mt-16 max-w-3xl text-center text-lg leading-relaxed sm:mt-20 sm:text-xl"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {isFr
-                ? "Une vision. Une équipe. Une méthode. Un seul objectif : "
-                : "One vision. One team. One method. One goal: "}
-              <span className="text-terracotta font-semibold italic">
-                {isFr ? "votre réussite." : "your success."}
-              </span>
-            </p>
-          </FadeInOnView>
         </Container>
       </section>
 
