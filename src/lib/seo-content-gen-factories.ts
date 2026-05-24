@@ -12,6 +12,8 @@
  */
 
 import type { AuthorProfile } from "../../prisma/generated/client";
+import { buildPersonManonSameAs } from "@/lib/seo/wikidata-sameas";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // Lecture process.env directe (pas @/env t3-validator) pour rester testable
 // côté Vitest (t3-env throw "client-side detected" en test sans NEXT_RUNTIME).
@@ -78,7 +80,11 @@ export function buildPersonManonJsonLd(
     knowsAbout: profile.knowsAbout,
     knowsLanguage: ["fr-FR"],
     worksFor: { "@id": `${SITE_URL}/#organization` },
-    // GARDE-FOU v2.1 : pas de sameAs (Manon n'a aucun réseau social)
+    // GARDE-FOU v2.1 : pas de sameAs réseau social (Manon est une persona IA-générée).
+    // Sprint v7 Phase 10 — Wikidata Q-number autorisé exclusivement (Knowledge Graph,
+    // pas réseau social). Helper retourne array vide si WIKIDATA_QNUMBER_MANON
+    // absent → key sameAs absente du JSON-LD émis (signal propre).
+    ...(buildPersonManonSameAs().length > 0 ? { sameAs: buildPersonManonSameAs() } : {}),
   };
 }
 
@@ -196,10 +202,9 @@ function buildArticleBase(
     // sur les selectors AnswerCard rendus côté page. Inoffensif si la page
     // n'a pas (encore) d'AnswerCard — le sélecteur ne matche simplement
     // rien et Google ignore silencieusement.
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+    }),
   };
 }
 
@@ -304,10 +309,7 @@ export function buildQAPageJsonLd(input: QAPageJsonLdInput): Record<string, unkn
     },
     author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
     publisher: { "@id": `${SITE_URL}/#organization` },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: speakable,
-    },
+    speakable: buildSpeakableSpecification({ selectors: speakable }),
   };
 }
 

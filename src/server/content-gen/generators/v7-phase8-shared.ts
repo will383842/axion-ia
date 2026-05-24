@@ -36,8 +36,17 @@ import { computeReadabilityFr } from "../quality/readability";
 import { computeSeoScore } from "../quality/seo-score";
 import { checkDoctrine } from "../quality/doctrine-check";
 import { evaluateSoft404 } from "../quality/soft-404-gate";
+import {
+  composeMultiJudge,
+  scanWithOriginalityAi,
+  passesOriginalityGate,
+  type JudgeResult,
+} from "../quality";
 import type { ContentType } from "../../../../prisma/generated/client";
 import type { GeneratorBaseInput, GeneratorOutput } from "./types";
+
+const ORIGINALITY_SCAN_TIMEOUT_MS = 5_000;
+const ORIGINALITY_MIN_BODY_CHARS = 100;
 
 const QUALITY_THRESHOLD = 60;
 
@@ -138,9 +147,63 @@ label : ${config.recommendedCtaLabel}
     hasPersonManonJsonLd: false,
   });
 
-  const qualityScore = doctrine.passed
+  const baseQualityScore = doctrine.passed
     ? Math.round((seo.score + readability.score) / 2)
     : Math.max(0, Math.round((seo.score + readability.score) / 2) - 30);
+
+  // ── Sprint v7 Phase 16 wiring (post-prod fix F3) ────────────────────────────
+  // Multi-judge ensemble — env-gated MULTI_JUDGE_ENABLED. Quand off, retourne
+  // exactement le 1er judge fourni (= identique au single-judge actuel : no-op).
+  // V1 = on synthétise un "judge interne" depuis baseQualityScore en attendant
+  // les adapters LLM réels (Sessions 11+). Coût 0, déterministe.
+  const internalJudge: JudgeResult = {
+    judgeName: "internal-heuristic",
+    score: baseQualityScore,
+    feedback: `seo:${seo.score} readability:${readability.score} doctrine:${doctrine.passed ? "ok" : "fail"}`,
+    costUsd: 0,
+    tokens: 0,
+  };
+  const multiJudge = composeMultiJudge([internalJudge]);
+  const qualityScore = multiJudge.consensusScore;
+  if (multiJudge.tieBreakerUsed) {
+    console.log(
+      `[v7-phase8-pipeline] multi-judge arbitered ${config.contentTypeSlug} consensus=${qualityScore} variance=${multiJudge.variance}`,
+    );
+  }
+
+  // Originality.ai gate — env-gated ORIGINALITY_AI_API_KEY. Sans clé → fallback
+  // safe (passed=true, fallback reason loggé). Timeout dur 5s + try/catch pour
+  // ne jamais bloquer un article si l'API externe rame.
+  let originalityPassed = true;
+  let originalityReason: string | null = null;
+  let originalityCostUsd = 0;
+  if (bodyText.length >= ORIGINALITY_MIN_BODY_CHARS) {
+    try {
+      const scan = await Promise.race([
+        scanWithOriginalityAi({
+          contentText: bodyText,
+          contentType: config.contentTypeSlug,
+        }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("originality_timeout")), ORIGINALITY_SCAN_TIMEOUT_MS),
+        ),
+      ]);
+      originalityCostUsd = scan.costUsd;
+      const gate = passesOriginalityGate(scan);
+      originalityPassed = gate.passed;
+      originalityReason = gate.reason;
+      if (!originalityPassed) {
+        console.log(
+          `[v7-phase8-pipeline] originality gate FAIL ${config.contentTypeSlug} reason=${originalityReason}`,
+        );
+      }
+    } catch (err) {
+      // Non-bloquant : on log et on continue avec passed=true (fallback safe).
+      console.log(
+        `[v7-phase8-pipeline] originality scan error ${config.contentTypeSlug} err=${String(err)}`,
+      );
+    }
+  }
 
   const soft404 = evaluateSoft404({
     wordCount,
@@ -150,7 +213,7 @@ label : ${config.recommendedCtaLabel}
   });
 
   const indexationTier: GeneratorOutput["indexationTier"] =
-    soft404.isSoft404 || qualityScore < QUALITY_THRESHOLD
+    soft404.isSoft404 || qualityScore < QUALITY_THRESHOLD || !originalityPassed
       ? "tier_3_noindex_nofollow"
       : doctrine.passed && qualityScore >= 70
         ? "tier_2_noindex_follow"
@@ -173,7 +236,7 @@ label : ${config.recommendedCtaLabel}
     wordCount,
     readingTimeMinutes,
     totalTokens: llmResult.tokensInput + llmResult.tokensOutput,
-    totalCostUsd: llmResult.costUsd,
+    totalCostUsd: llmResult.costUsd + originalityCostUsd,
     citations: llmResult.citations ?? [],
     promptHash: lastPromptHash,
   };

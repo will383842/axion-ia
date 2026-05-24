@@ -29,6 +29,8 @@ import {
 } from "@/content/press";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildFaqSpeakableJsonLd, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { getRealTestimonialsOnly } from "@/server/actions/content-gen/real-testimonials";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -55,6 +57,12 @@ export default async function PressePage({ params }: Props) {
   const isFr = loc === "fr";
   const t = await getTranslations({ locale: loc, namespace: "press" });
   const pitch = PRESS_PITCH[loc];
+
+  // Sprint v7 Phase 15 (F5) — consumer real testimonials.
+  // Section invisible si aucun real testimonial (return null plus bas).
+  // Build-time stub-aware : `getRealTestimonialsOnly` retourne [] si
+  // DATABASE_URL=stub.invalid (cf. `real-testimonials.ts`).
+  const realTestimonials = await getRealTestimonialsOnly();
 
   const facts = PRESS_FACTS.map((f) => ({
     id: f.id,
@@ -120,10 +128,9 @@ export default async function PressePage({ params }: Props) {
     description: t("metaDescription"),
     inLanguage: loc,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["#press-pitch", "#press-boilerplate"],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: ["#press-pitch", "#press-boilerplate"],
+    }),
     about: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -395,6 +402,55 @@ export default async function PressePage({ params }: Props) {
           }}
         />
       </Section>
+
+      {/* TÉMOIGNAGES VÉRIFIÉS (Sprint v7 Phase 15 / F5) — section invisible
+          si aucun real testimonial n'a été marqué côté admin. Affiche
+          uniquement les testimonials avec source vérifiable + consentement
+          RGPD documenté (cf. `markAsRealTestimonial`). */}
+      {realTestimonials.length > 0 ? (
+        <Section
+          id="temoignages-verifies"
+          tone="paper"
+          title={isFr ? "Témoignages vérifiés" : "Verified testimonials"}
+          description={
+            isFr
+              ? "Témoignages clients dont la source est identifiable et le consentement RGPD documenté."
+              : "Client testimonials with identifiable source and documented GDPR consent."
+          }
+        >
+          <Container>
+            <ul className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
+              {realTestimonials.map((rt) => (
+                <li key={rt.id} className="border-border bg-canvas rounded-lg border p-6 shadow-sm">
+                  <blockquote className="text-fg text-base leading-relaxed">
+                    “{rt.shortQuoteFr}”
+                  </blockquote>
+                  <footer className="text-fg-soft mt-4 text-sm">
+                    <div className="font-medium">
+                      {rt.firstName} {rt.lastName}
+                    </div>
+                    {rt.role || rt.company ? (
+                      <div>
+                        {rt.role ?? ""}
+                        {rt.role && rt.company ? " · " : ""}
+                        {rt.company ?? ""}
+                      </div>
+                    ) : null}
+                    <a
+                      href={rt.realMeta.source}
+                      target="_blank"
+                      rel="noopener nofollow"
+                      className="text-terracotta mt-2 inline-block underline"
+                    >
+                      {isFr ? "Source vérifiable →" : "Verifiable source →"}
+                    </a>
+                  </footer>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* COUVERTURE MÉDIAS */}
       <Section

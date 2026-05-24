@@ -7,6 +7,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // SITE_URL — résolu via env validé (`src/env.ts`).
 //
@@ -314,10 +315,7 @@ export function buildFaqJsonLd({ items, speakable = true }: FaqJsonLdInput) {
     })),
     ...(speakable !== false
       ? {
-          speakable: {
-            "@type": "SpeakableSpecification",
-            cssSelector: [speakableSelector],
-          },
+          speakable: buildSpeakableSpecification({ selectors: [speakableSelector] }),
         }
       : {}),
   } as const;
@@ -713,10 +711,7 @@ interface FaqSpeakableInput {
 // Why a separate factory (vs amending `buildFaqJsonLd`) : Speakable adds
 // a `speakable` property at the FAQPage level that not every caller wants
 // (some FAQs are too long to be spoken). Opt-in only.
-export function buildFaqSpeakableJsonLd({
-  items,
-  speakableSelector,
-}: FaqSpeakableInput) {
+export function buildFaqSpeakableJsonLd({ items, speakableSelector }: FaqSpeakableInput) {
   // Speakable v2.6 best practice : couvrir question (itemprop=name) ET réponse (itemprop=text)
   // pour que voice search lise le Q+R complet.
   const selectors = speakableSelector
@@ -725,10 +720,7 @@ export function buildFaqSpeakableJsonLd({
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: selectors,
-    },
+    speakable: buildSpeakableSpecification({ selectors }),
     mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,

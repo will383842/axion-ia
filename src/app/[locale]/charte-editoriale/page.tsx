@@ -34,6 +34,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -83,10 +84,9 @@ export default async function CharteEditorialePage({ params }: Props) {
     datePublished: "2026-05-18",
     dateModified: LAST_REVIEWED,
     mainContentOfPage: { "@type": "WebPageElement", cssSelector: "main" },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".tldr-answer", '[data-aeo="tldr"]'],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: [".tldr-answer", '[data-aeo="tldr"]'],
+    }),
   } as const;
 
   const breadcrumbItems = [{ href: path, label: isFr ? "Charte éditoriale" : "Editorial policy" }];

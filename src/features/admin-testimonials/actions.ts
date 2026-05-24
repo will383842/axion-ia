@@ -79,6 +79,9 @@ export async function listTestimonialsAction(input: Partial<ListTestimonialsInpu
         resultHighlight: true,
         displayOrder: true,
         updatedAt: true,
+        // Sprint v7 Phase 15 (F5) : permet au listing d'afficher le badge
+        // "Authentifié" pour les testimonials réels (realMeta.isReal).
+        displayPages: true,
       },
     }),
   ]);
